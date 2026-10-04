@@ -13,11 +13,11 @@ import '../../settings/app_settings.dart';
 import '../../shared/format.dart';
 import '../../theme/theme.dart';
 import '../conversation/attachments.dart';
-import '../conversation/mail_streams.dart';
 import '../conversation/sheets.dart';
 import 'compose_args.dart';
 import 'compose_recovery.dart';
 import 'compose_text.dart';
+import 'identity_selection.dart';
 import 'recipient_field.dart';
 import 'send_later.dart';
 import '../../theme/loupe_icons.dart';
@@ -381,7 +381,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       final r = ComposeText.replyRecipients(
         source,
         all: args.mode == ComposeMode.replyAll,
-        own: ownAddresses(_accounts),
+        isOwn: OwnAddresses(_accounts).contains,
       );
       r.to.forEach(_to.add);
       r.cc.forEach(_cc.add);
