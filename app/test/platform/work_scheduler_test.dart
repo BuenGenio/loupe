@@ -61,5 +61,28 @@ void main() {
 
   test('every job is the background sync', () {
     expect(backgroundSyncTask, 'loupe.sync');
+    expect(isBackgroundSyncTask(backgroundSyncTask), isTrue);
+    expect(isBackgroundSyncTask(iosRefreshTask), isTrue, reason: 'iOS names the job by its identifier');
+    expect(isBackgroundSyncTask('iOSPerformFetch'), isFalse);
+  });
+
+  group('iOS', () {
+    late AppRefreshScheduler ios;
+
+    setUp(() => ios = AppRefreshScheduler(work));
+
+    test('the background refresh is the identifier Info.plist permits', () async {
+      // Also in ios/Runner/Info.plist and AppDelegate.swift.
+      expect(iosRefreshTask, 'io.github.buengenio.loupe.sync');
+      await ios.setEnabled(true);
+      expect(work.periodic, {iosRefreshTask: const Duration(minutes: 15)});
+      await ios.setEnabled(false);
+      expect(work.periodic, isEmpty);
+    });
+
+    test('there are no wake-ups at a set time', () async {
+      await ios.scheduleWakeUp(DateTime(2026, 10, 4, 10));
+      expect(work.once, isEmpty);
+    });
   });
 }

@@ -19,19 +19,28 @@ import 'include_sheet.dart';
 import 'rule_format.dart';
 
 /// Edits a rule, or makes a new one ([ruleId] null), optionally with a
-/// condition already filled in ("Make This a Rule" from a search).
+/// condition, a name and actions already filled in ("Make This a Rule" from
+/// a search, "Create Rule" from Subscriptions).
 class RuleEditorScreen extends ConsumerStatefulWidget {
-  const RuleEditorScreen({super.key, this.ruleId, this.initialCondition = ''});
+  const RuleEditorScreen({
+    super.key,
+    this.ruleId,
+    this.initialCondition = '',
+    this.initialName = '',
+    this.initialActions = const [],
+  });
 
   final String? ruleId;
   final String initialCondition;
+  final String initialName;
+  final List<RuleAction> initialActions;
 
   @override
   ConsumerState<RuleEditorScreen> createState() => _RuleEditorScreenState();
 }
 
 class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
-  late final _name = TextEditingController();
+  late final _name = TextEditingController(text: widget.initialName.trim());
   late final _condition = QueryTextController(text: widget.initialCondition.trim());
   final _conditionFocus = FocusNode();
   late final String _id = widget.ruleId ?? newRuleId();
@@ -39,7 +48,7 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
   bool _loading = true;
   bool _saving = false;
   Set<String> _accounts = {};
-  List<RuleAction> _actions = [];
+  late List<RuleAction> _actions = [...widget.initialActions];
   bool _stop = false;
   bool _enabled = true;
   RuleLocation _location = RuleLocation.device;

@@ -177,6 +177,7 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
               SliverToBoxAdapter(child: _ListsSection(editing: _editing)),
               SliverToBoxAdapter(child: _SmartSection(editing: _editing)),
               SliverToBoxAdapter(child: _TagSection(editing: _editing)),
+              SliverToBoxAdapter(child: _ToolsSection(editing: _editing)),
               const SliverToBoxAdapter(child: SizedBox(height: 24)),
             ],
           ],
@@ -562,5 +563,34 @@ class _TagSection extends ConsumerWidget {
     ];
     if (rows.isEmpty) return const SizedBox.shrink();
     return InsetGroup(header: 'Tags', largeHeader: true, separatorIndent: 51, children: rows);
+  }
+}
+
+/// Tools: Subscriptions (the unsubscribe centre).
+class _ToolsSection extends ConsumerWidget {
+  const _ToolsSection({required this.editing});
+
+  final bool editing;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final v = _visibility(ref);
+    if (!editing && !v.visible('tool.subscriptions')) return const SizedBox.shrink();
+    return InsetGroup(
+      header: 'Tools',
+      largeHeader: true,
+      separatorIndent: 51,
+      children: [
+        _MailboxTile(
+          key: const ValueKey('tool.subscriptions'),
+          title: 'Subscriptions',
+          icon: LoupeIcons.subscriptions,
+          editing: editing,
+          visible: v.visible('tool.subscriptions'),
+          onToggleVisible: () => v.toggle('tool.subscriptions'),
+          onTap: () => context.push(Routes.subscriptions),
+        ),
+      ],
+    );
   }
 }

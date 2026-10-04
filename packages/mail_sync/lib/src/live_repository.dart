@@ -19,7 +19,7 @@ import 'util.dart';
 /// sends overdue outbox messages). Call [pause] when the app goes to the
 /// background and [resume] when it returns; [syncOnce] serves background
 /// fetch tasks. [dispose] stops everything but leaves the store open.
-final class LiveMailRepository implements MailRepository, MailingLists {
+final class LiveMailRepository implements MailRepository, MailingLists, MailSubscriptions {
   LiveMailRepository(
     this.store,
     this.transports,
@@ -398,6 +398,17 @@ final class LiveMailRepository implements MailRepository, MailingLists {
     final unread = await store.unreadInThread(thread.accountId, thread.threadId);
     if (unread.isNotEmpty) await setKeywords(unread, add: {Keywords.seen});
   }
+
+  // Subscriptions -----------------------------------------------------------
+
+  /// Counted from the store on this device; "recent" is relative to when
+  /// the stream is listened to.
+  @override
+  Stream<List<Subscription>> watchSubscriptions() => store.watchSubscriptions(now: _now());
+
+  @override
+  Stream<List<EmailSummary>> watchSubscriptionEmails(String key, {bool inboxOnly = false, int limit = 200}) =>
+      store.watchSubscriptionEmails(key, inboxOnly: inboxOnly, limit: limit);
 
   // Messages ----------------------------------------------------------------
 

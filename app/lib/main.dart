@@ -25,18 +25,18 @@ Future<void> main() async {
   final prefs = await SharedPreferences.getInstance();
   final taps = NotificationTaps();
   final android = !kIsWeb && Platform.isAndroid;
+  final ios = !kIsWeb && Platform.isIOS;
   final overrides = [
     sharedPreferencesProvider.overrideWithValue(prefs),
     repositoryProvider.overrideWith(repositoryForMode),
     notificationTapsProvider.overrideWithValue(taps),
   ];
-  // Background sync (WorkManager) and new-mail notifications, Android only
-  // for now. Neither may keep the app from starting.
-  if (android) {
+  // Background sync (WorkManager on Android, a BGAppRefreshTask on iOS) and
+  // new-mail notifications. None of them may keep the app from starting.
+  if (android || ios) {
     try {
-      final work = WorkmanagerWorkScheduler();
-      await work.initialize(backgroundTaskDispatcher);
-      final scheduler = WorkmanagerBackgroundScheduler(work);
+      await WorkmanagerWorkScheduler().initialize(backgroundTaskDispatcher);
+      final scheduler = platformSyncScheduler()!;
       overrides.addAll([
         backgroundSchedulerProvider.overrideWithValue(scheduler),
         periodicSyncProvider.overrideWithValue(scheduler),
@@ -44,13 +44,17 @@ Future<void> main() async {
     } on Object catch (e) {
       debugPrint('Background sync unavailable: $e');
     }
-    try {
-      overrides.addAll([
-        instantServiceProvider.overrideWithValue(ForegroundTaskInstantService()),
-        instantDeliveryAvailableProvider.overrideWithValue(true),
-      ]);
-    } on Object catch (e) {
-      debugPrint('Instant Delivery unavailable: $e');
+    // Android only: iOS allows no lasting connection, and Settings doesn't
+    // offer it there.
+    if (android) {
+      try {
+        overrides.addAll([
+          instantServiceProvider.overrideWithValue(ForegroundTaskInstantService()),
+          instantDeliveryAvailableProvider.overrideWithValue(true),
+        ]);
+      } on Object catch (e) {
+        debugPrint('Instant Delivery unavailable: $e');
+      }
     }
     try {
       final (notifier, launch) = await LocalMailNotifier.initialize(

@@ -38,6 +38,10 @@ ListIdParts? parseListId(String? header) {
 /// The URIs of a List-Unsubscribe, List-Post, List-Help… header (RFC 2369):
 /// angle-bracketed and comma-separated, in order of preference. Folding
 /// whitespace inside a URI is removed; values that aren't URIs are skipped.
+///
+/// Senders that leave out the brackets (`mailto:leave@example.org`) are
+/// understood when the whole value is comma-separated `mailto:`, `http:` or
+/// `https:` URIs.
 List<Uri> parseListUris(String? header) {
   if (header == null) return const [];
   final out = <Uri>[];
@@ -45,6 +49,13 @@ List<Uri> parseListUris(String? header) {
     final raw = m[1]!.replaceAll(RegExp(r'\s+'), '');
     final uri = Uri.tryParse(raw);
     if (uri != null && uri.scheme.isNotEmpty) out.add(uri);
+  }
+  if (out.isNotEmpty || header.contains('<')) return out;
+  for (final part in header.split(',')) {
+    final raw = part.trim();
+    if (raw.isEmpty || raw.contains(RegExp(r'\s'))) continue;
+    final uri = Uri.tryParse(raw);
+    if (uri != null && const {'mailto', 'http', 'https'}.contains(uri.scheme.toLowerCase())) out.add(uri);
   }
   return out;
 }

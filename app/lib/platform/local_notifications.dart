@@ -13,7 +13,45 @@ const _icon = 'ic_stat_loupe';
 /// The navy of the app icon, for the small icon's circle and the buttons.
 const _accent = Color(0xFF1F4E8C);
 
-/// [MailNotifier] on Android, through flutter_local_notifications.
+/// iOS notification categories: the buttons a notification gets (iOS
+/// registers them once, at start-up, rather than per notification).
+const _withArchive = 'loupe.message';
+const _withoutArchive = 'loupe.message.noArchive';
+
+/// Archive and Mark as Read run in the background, like on Android; Reply
+/// opens the app.
+DarwinNotificationAction _darwinAction(MailAction a) => DarwinNotificationAction.plain(
+  a.id,
+  a.label,
+  options: {if (a == MailAction.reply) DarwinNotificationActionOption.foreground},
+);
+
+final _settings = InitializationSettings(
+  android: const AndroidInitializationSettings(_icon),
+  // Asks nothing at start: [LocalMailNotifier.requestPermission] does, at
+  // the same moment as on Android.
+  iOS: DarwinInitializationSettings(
+    requestAlertPermission: false,
+    requestBadgePermission: false,
+    requestSoundPermission: false,
+    notificationCategories: [
+      DarwinNotificationCategory(
+        _withArchive,
+        actions: [
+          for (final a in [MailAction.archive, MailAction.markRead, MailAction.reply]) _darwinAction(a),
+        ],
+      ),
+      DarwinNotificationCategory(
+        _withoutArchive,
+        actions: [
+          for (final a in [MailAction.markRead, MailAction.reply]) _darwinAction(a),
+        ],
+      ),
+    ],
+  ),
+);
+
+/// [MailNotifier] on Android and iOS, through flutter_local_notifications.
 final class LocalMailNotifier implements MailNotifier {
   LocalMailNotifier._(this._plugin);
 
@@ -21,6 +59,9 @@ final class LocalMailNotifier implements MailNotifier {
 
   AndroidFlutterLocalNotificationsPlugin? get _android =>
       _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+
+  IOSFlutterLocalNotificationsPlugin? get _ios =>
+      _plugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>();
 
   /// Sets the plugin up in the app's main isolate: taps and Reply go to
   /// [onTap]; Archive and Mark as Read run [onBackgroundAction] in a
@@ -31,7 +72,7 @@ final class LocalMailNotifier implements MailNotifier {
   }) async {
     final plugin = FlutterLocalNotificationsPlugin();
     await plugin.initialize(
-      settings: const InitializationSettings(android: AndroidInitializationSettings(_icon)),
+      settings: _settings,
       onDidReceiveNotificationResponse: (response) {
         final tap = tapOf(response);
         if (tap != null) onTap(tap);
@@ -49,10 +90,7 @@ final class LocalMailNotifier implements MailNotifier {
     required DidReceiveBackgroundNotificationResponseCallback onBackgroundAction,
   }) async {
     final plugin = FlutterLocalNotificationsPlugin();
-    await plugin.initialize(
-      settings: const InitializationSettings(android: AndroidInitializationSettings(_icon)),
-      onDidReceiveBackgroundNotificationResponse: onBackgroundAction,
-    );
+    await plugin.initialize(settings: _settings, onDidReceiveBackgroundNotificationResponse: onBackgroundAction);
     return LocalMailNotifier._(plugin);
   }
 
@@ -69,13 +107,19 @@ final class LocalMailNotifier implements MailNotifier {
   }
 
   @override
-  Future<bool> permissionGranted() async => await _android?.areNotificationsEnabled() ?? false;
+  Future<bool> permissionGranted() async =>
+      await _android?.areNotificationsEnabled() ?? (await _ios?.checkPermissions())?.isEnabled ?? false;
+
+  /// On iOS also asks for the badge, which app_badge_plus needs.
+  @override
+  Future<bool> requestPermission() async =>
+      await _android?.requestNotificationsPermission() ??
+      await _ios?.requestPermissions(alert: true, badge: true, sound: true) ??
+      false;
 
   @override
-  Future<bool> requestPermission() async => await _android?.requestNotificationsPermission() ?? false;
-
-  @override
-  Future<void> openSystemSettings() async => _android?.openAppNotificationSettings();
+  Future<void> openSystemSettings() async =>
+      await _android?.openAppNotificationSettings() ?? await _ios?.openAppNotificationSettings();
 
   @override
   Future<void> syncChannels(List<MailAccount> accounts) async {
@@ -97,16 +141,31 @@ final class LocalMailNotifier implements MailNotifier {
 
   @override
   Future<void> show(List<MailNotification> notifications) async {
+    final ios = _ios != null;
     for (final n in notifications) {
+      // iOS groups an account's notifications itself (by thread) and sums
+      // them up: no summary notification there.
+      if (ios && n.isSummary) continue;
       await _plugin.show(
         id: n.id,
         title: n.title,
-        body: n.body,
-        notificationDetails: NotificationDetails(android: _details(n)),
+        // iOS has no expanded style; the body shows several lines anyway.
+        body: ios ? n.expandedBody ?? n.body : n.body,
+        notificationDetails: NotificationDetails(android: _details(n), iOS: _darwinDetails(n)),
         payload: n.target?.encode(),
       );
     }
   }
+
+  static DarwinNotificationDetails _darwinDetails(MailNotification n) => DarwinNotificationDetails(
+    threadIdentifier: n.groupKey,
+    subtitle: n.subText,
+    categoryIdentifier: n.actions.isEmpty
+        ? null
+        : n.actions.contains(MailAction.archive)
+        ? _withArchive
+        : _withoutArchive,
+  );
 
   static AndroidNotificationDetails _details(MailNotification n) => AndroidNotificationDetails(
     n.channel.id,
@@ -156,10 +215,11 @@ final class LocalMailNotifier implements MailNotifier {
     return '<b>${escape(text.substring(0, newline))}</b><br>${escape(text.substring(newline + 1))}';
   }
 
+  /// iOS reports no tag, but the payload, which is the same target.
   @override
   Future<List<ShownNotification>> shown() async => [
     for (final n in await _plugin.getActiveNotifications())
-      if (n.id case final int id) ShownNotification(id: id, tag: n.tag, title: n.title, body: n.body),
+      if (n.id case final int id) ShownNotification(id: id, tag: n.tag ?? n.payload, title: n.title, body: n.body),
   ];
 
   @override
