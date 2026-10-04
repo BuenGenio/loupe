@@ -23,6 +23,7 @@ The packages are developed in parallel. These are the seams:
 |---|---|---|---|
 | `MailRepository` | mail_model `src/repository.dart` | app demo repository; mail_sync `LiveMailRepository` | app |
 | `MailingLists` (lists by List-Id, forum threads, muted threads) | mail_model `src/lists.dart` | app demo repository; mail_sync `LiveMailRepository` | app (`repository is MailingLists`) |
+| `MailSubscriptions` (bulk mail by List-Id or sender, read rates), `unsubscribeMethods`, `unsubscribeMessage` | mail_model `src/subscriptions.dart` | app demo repository; mail_sync `LiveMailRepository` | app (`repository is MailSubscriptions`) |
 | `MailTransport`, `MailSender`, `MessageComposer`, `TransportFactory` | mail_model `src/transport.dart` | mail_imap | mail_sync |
 | `CredentialStore` | mail_model `src/transport.dart` | mail_platform | mail_sync (through the app) |
 | `SearchExpr` (search syntax tree) | mail_model `src/search.dart` | expr_search (parser) | app, mail_store (SQL), mail_imap (IMAP), mail_sync |
@@ -80,10 +81,41 @@ Rules (`app/lib/platform/`):
 - **Patches:** readable recognises `git format-patch` diffs, diffstats and quoted hunks in text bodies
   (`pipeline/patch.dart`) and renders them as diffs (`render/diff.dart`).
 
+## Subscriptions (the unsubscribe centre)
+
+Mailboxes › Tools › Subscriptions ranks newsletters and other bulk mail by how much of it goes unread. Everything is
+counted on the device; services that do this elsewhere read the mail on their servers.
+
+- **Bulk mail** (`subscriptionKeyOf`): a List-Id, a List-Unsubscribe header, or a Message-ID of a bulk-mail service
+  (`bulkMessageIdDomains`: Mailchimp, SendGrid, Amazon SES…). It groups by List-Id, else by sender address. A sender
+  found only by its Message-ID needs two messages. `Precedence: bulk` isn't fetched (such mail nearly always has
+  List-Unsubscribe too), and when a message was opened isn't known: the read rate (`$seen`) stands in for it.
+- **Counting** (`summarizeSubscriptions` is the reference): copies in several mailboxes count once; Junk, Sent, Drafts
+  and the user's own addresses are left out (Trash counts: deleting unread is not reading). Messages a month and the
+  read rate use the last 90 days (the read rate over all mail when fewer than three came then). The ranking is unread
+  mail a month.
+- **Store:** one query over `emails` (`MailStore.watchSubscriptions`), no new table or index: 40,000 messages take
+  about 110 ms on a laptop, on the store's isolate, and only while a Subscriptions screen is open.
+- **Unsubscribing** (`unsubscribeMethods`), in this order:
+  1. RFC 8058 one-click (List-Unsubscribe-Post and an `https` URI): a POST of exactly `List-Unsubscribe=One-Click`
+     (`application/x-www-form-urlencoded`) without cookies, user agent, referrer or languages; 2xx or 303 means done;
+     other redirects are followed with the same POST on the same host only (three at most); 20 s timeout; the answer's
+     page isn't read. It is the only request Loupe makes outside the mail protocols, made only when the user taps
+     Unsubscribe; the first time, the confirmation explains it. The demo pretends.
+  2. `mailto:` through the normal send path (`unsubscribeMessage`): from the identity the mail was addressed to, to
+     the URI's recipients only (its `cc=`/`bcc=` are ignored), with its subject and body (RFC 6068: `+` is a plus).
+  3. The web page, in the in-app browser, after showing its host (homographs flagged).
+- **Records** stay on the device (SharedPreferences `subscriptions.unsubscribed`: date and method). Mail arriving more
+  than seven days later marks the row "Still sending".
+- **Follow-ups** reuse what exists: Archive All moves the Inbox copies through `MailActions` (with Undo); Create Rule
+  opens the rule editor with the condition (`from:` the sender, or the List-Id of a list with several senders), the
+  name and Move to Archive filled in; Block Sender saves a device rule that moves to Junk.
+
 ## Conventions
 
 - Dart 3.13, `dart analyze` clean with the root `analysis_options.yaml`; 120-column lines.
 - Pure Dart packages test with `dart test`, Flutter packages with `flutter test`; `tool/ci/test.sh` runs them all.
 - Generated code (drift) is committed, so CI needs no build_runner step.
 - No network access in unit tests. Integration tests against real IMAP servers are tagged `integration` and need `LOUPE_TEST_IMAP_HOST`; see `tool/test-servers/`.
-- No analytics or tracking code, ever. Remote content stays blocked by default.
+- No analytics or tracking code, ever. Remote content stays blocked by default. The only network request outside the
+  mail protocols is the one-click unsubscribe the user taps (see Subscriptions).
