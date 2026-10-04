@@ -141,6 +141,9 @@ final class FakeServer {
   /// Error thrown by SMTP until cleared.
   MailException? smtpFailure;
 
+  /// The previews argument of every fetchSummaries call.
+  final summaryPreviews = <bool>[];
+
   /// How long an SMTP send takes.
   Duration smtpLatency = Duration.zero;
 
@@ -497,8 +500,9 @@ final class FakeTransport implements MailTransport {
   }
 
   @override
-  Future<List<EmailSummary>> fetchSummaries(List<String> emailIds) async {
+  Future<List<EmailSummary>> fetchSummaries(List<String> emailIds, {bool previews = true}) async {
     await _op('fetchSummaries');
+    server.summaryPreviews.add(previews);
     return [
       for (final id in emailIds)
         if (_find(id) case (final mb, final m)) _summary(mb, m),

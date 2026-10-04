@@ -139,7 +139,9 @@ abstract interface class MailTransport {
   Future<MailboxSyncResult> fetchOlder(RemoteMailbox mailbox, MailboxSyncState state, {int count = 100});
 
   /// Summaries for specific ids (e.g. server search hits not stored yet).
-  Future<List<EmailSummary>> fetchSummaries(List<String> emailIds);
+  /// Without [previews] their preview stays empty, which saves fetching the
+  /// start of every body (refreshing header fields of stored summaries).
+  Future<List<EmailSummary>> fetchSummaries(List<String> emailIds, {bool previews = true});
 
   Future<EmailContent> fetchContent(String emailId);
   Future<Uint8List> fetchAttachment(String emailId, String partId);
