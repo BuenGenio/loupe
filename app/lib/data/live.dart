@@ -45,6 +45,11 @@ Future<MailStore> openLiveStore({bool createKey = true}) async {
 }
 
 /// The live repository over [store], not yet started.
+///
+/// The background isolates (WorkManager, Instant Delivery, iOS background
+/// refresh) build theirs here too: OAuth tokens are refreshed with a plain
+/// HTTPS POST (mail_platform's TokenEndpointClient), which needs no plugin,
+/// activity or browser. Only signing in uses flutter_appauth.
 LiveMailRepository buildLiveRepository(MailStore store, {SyncConfig config = const SyncConfig()}) {
   final credentials = CredentialsService(store: SecureCredentialStore(KeychainSecretStorage()));
   return LiveMailRepository(
