@@ -6,6 +6,7 @@ import 'package:mail_model/mail_model.dart';
 
 import 'syntax/format.dart';
 import 'syntax/parser.dart';
+import 'syntax/suggest.dart';
 
 /// A parse problem, with the character range it refers to.
 final class QueryError {
@@ -57,7 +58,13 @@ final class ParsedQuery {
 
 /// A completion offered while typing, e.g. `from:` or `is:unread`.
 final class QuerySuggestion {
-  const QuerySuggestion({required this.label, required this.insertText, this.detail});
+  const QuerySuggestion({
+    required this.label,
+    required this.insertText,
+    this.detail,
+    this.replaceStart,
+    this.replaceEnd,
+  });
 
   /// Shown in the list, e.g. "from: — sender contains".
   final String label;
@@ -65,6 +72,14 @@ final class QuerySuggestion {
   /// Replaces the word at the cursor.
   final String insertText;
   final String? detail;
+
+  /// The range of the word at the cursor that [insertText] replaces (set by
+  /// [suggest]).
+  final int? replaceStart;
+  final int? replaceEnd;
+
+  @override
+  String toString() => 'QuerySuggestion($insertText)';
 }
 
 /// Parses [input]. Never throws; problems are reported in [ParsedQuery.errors]
@@ -93,8 +108,15 @@ String formatQuery(SearchExpr expr, {List<TagDefinition> tags = TagDefinition.th
 String describeTerm(SearchExpr expr, {List<TagDefinition> tags = TagDefinition.thunderbirdDefaults}) =>
     TermDescriber(tags).describe(expr);
 
-/// Completions for the word at [cursor] in [input].
-List<QuerySuggestion> suggest(String input, int cursor) => const [];
+/// Completions for the word at [cursor] in [input]: operators with a one-line
+/// description, `is:` values, tag names, date and size shortcuts. [now]
+/// dates the shortcuts; [tags] lists the tag names.
+List<QuerySuggestion> suggest(
+  String input,
+  int cursor, {
+  DateTime? now,
+  List<TagDefinition> tags = TagDefinition.thunderbirdDefaults,
+}) => suggestAt(input, cursor, now: now ?? DateTime.now(), tags: tags);
 
 /// Pushes negations down to the terms (negation normal form).
 SearchExpr toNnf(SearchExpr expr) => expr;
