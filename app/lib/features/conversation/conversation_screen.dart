@@ -196,9 +196,9 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
     }
   }
 
-  /// True inside another screen's Scaffold (the tablet split view): no back
-  /// button, and archiving doesn't pop the enclosing route.
-  bool get _embedded => Scaffold.maybeOf(context) != null;
+  /// True in a pane of the wide layout (or inside another screen's
+  /// Scaffold): no back button, and archiving doesn't pop the enclosing route.
+  bool get _embedded => widget.onClose != null || Scaffold.maybeOf(context) != null;
 
   void _close() {
     if (!mounted) return;

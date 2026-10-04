@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../features/panes/pane_layout.dart';
 import '../theme/theme.dart';
 import '../theme/loupe_icons.dart';
 
@@ -177,6 +178,8 @@ class LoupeTitleBar extends StatelessWidget {
     final canPop = ModalRoute.of(context)?.impliesAppBarDismissal ?? false;
     final lead =
         leading ??
+        // In the wide layout's list pane: the sidebar button.
+        (automaticallyImplyLeading && !canPop ? MailPaneScope.maybeOf(context)?.titleLeading : null) ??
         (automaticallyImplyLeading && canPop
             ? Semantics(
                 button: true,

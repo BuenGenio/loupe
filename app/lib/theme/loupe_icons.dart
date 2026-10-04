@@ -115,6 +115,9 @@ abstract final class LoupeIcons {
   static const IconData moreCircle = FluentIcons.more_circle_24_regular;
   static const IconData back = FluentIcons.chevron_left_24_regular;
 
+  /// Shows or hides the Mailboxes sidebar on wide screens.
+  static const IconData sidebar = FluentIcons.panel_left_24_regular;
+
   /// The chevron at the end of a row that opens something.
   static const IconData disclosure = FluentIcons.chevron_right_24_regular;
 
