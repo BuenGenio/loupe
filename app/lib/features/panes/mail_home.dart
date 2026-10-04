@@ -178,9 +178,9 @@ class _MailHomeState extends ConsumerState<MailHome> with CommandScopeState<Mail
     if (previous == null) {
       if (layout.wide) _routeChanged();
     } else if (previous.wide && !layout.wide) {
-      // Folded: the phone pages show what the panes showed.
-      final s = ref.read(mailSelectionProvider);
-      _toStack = s.list != null || s.messageId != null ? s : null;
+      // Folded: the phone pages show what the panes showed, the list
+      // (All Inboxes if none was picked) and the conversation.
+      _toStack = ref.read(mailSelectionProvider);
       _sidebarOpen = false;
     } else if (!previous.wide && layout.wide) {
       _toStack = null;
@@ -206,7 +206,7 @@ class _MailHomeState extends ConsumerState<MailHome> with CommandScopeState<Mail
     final selection = ref.read(mailSelectionProvider);
     final list = ref.read(mailCommandsProvider).latest<MessageListNeighbors>();
     final next = list is CommandScope && (list as CommandScope).acceptsCommands
-        ? list?.replacementFor(selection)
+        ? list!.replacementFor(selection)
         : null;
     final notifier = ref.read(mailSelectionProvider.notifier);
     next == null ? notifier.closeMessage() : notifier.showMessage(next.latest.id, threadId: next.threadId);

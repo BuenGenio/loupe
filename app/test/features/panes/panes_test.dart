@@ -187,11 +187,11 @@ void main() {
       expect(stackOf(tester), [Routes.mailboxes, Routes.list(const VirtualMailboxRef(VirtualMailbox.flagged))]);
     });
 
-    testWidgets('folding with nothing chosen stays at Mailboxes', (tester) async {
+    testWidgets('folding with nothing chosen shows the list the panes showed', (tester) async {
       await pumpLoupe(tester, size: wide);
       await resize(tester, phone);
-      expect(stackOf(tester), [Routes.mailboxes]);
-      expect(find.byType(MailboxesScreen), findsOneWidget);
+      expect(stackOf(tester), [Routes.mailboxes, Routes.list(allInboxes)]);
+      expect(find.byType(MessageListScreen), findsOneWidget);
     });
 
     testWidgets('a page over the panes waits: folding under Settings rebuilds the stack after it', (tester) async {

@@ -112,6 +112,13 @@ counted on the device; services that do this elsewhere read the mail on their se
   opens the rule editor with the condition (`from:` the sender, or the List-Id of a list with several senders), the
   name and Move to Archive filled in; Block Sender saves a device rule that moves to Junk.
 
+## Wide screens and keyboards
+
+The `/` route is `MailHome`: Mailboxes on a phone, mail panes from 840 dp. In the panes `mailSelectionProvider` says
+what is shown and the route stack stays at `/`; crossing the breakpoint converts one into the other. Keyboard
+shortcuts and the command palette act on the screen on top through `MailCommands`. See
+[tablet-and-keyboard.md](tablet-and-keyboard.md).
+
 ## Conventions
 
 - Dart 3.13, `dart analyze` clean with the root `analysis_options.yaml`; 120-column lines.

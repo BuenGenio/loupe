@@ -18,8 +18,8 @@
 - **Crossing the breakpoint** converts one into the other:
   - Widening (unfolding, rotating a tablet) takes the list and conversation pages above `/` into the panes and pops
     them.
-  - Narrowing pushes them again (`/list/…`, `/message/…`), so Back works as on a phone. If another page is on top
-    (Settings, Compose), that waits until it closes.
+  - Narrowing pushes them again (`/list/…`, All Inboxes if no list was picked, then `/message/…`), so Back works as
+    on a phone. If another page is on top (Settings, Compose), that waits until it closes.
 - **Pushes over the panes:** while wide, a list or conversation route pushed right above `/` opens in its pane. The
   push and the pop happen before the next frame, so the page never shows. This covers a mailbox tapped in the
   Mailboxes pane, search results, the Snoozed and mailing-list screens in the list pane, and notification taps.
