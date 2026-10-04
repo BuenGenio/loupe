@@ -67,6 +67,7 @@
       },
       {
         "type": "p",
+        "align": "center",
         "inlines": [
           {
             "img": 0
@@ -87,6 +88,7 @@
       },
       {
         "type": "p",
+        "align": "center",
         "inlines": [
           {
             "text": "Preferences",
@@ -95,7 +97,7 @@
             "link": 3
           },
           {
-            "text": " | ",
+            "text": " · ",
             "scale": 0.8
           },
           {
@@ -105,7 +107,7 @@
             "link": 4
           },
           {
-            "text": " | ",
+            "text": " · ",
             "scale": 0.8
           },
           {
@@ -161,7 +163,7 @@
             "link": 0
           },
           {
-            "text": " | "
+            "text": " · "
           },
           {
             "text": "Unsubscribe"
@@ -171,7 +173,7 @@
             "link": 1
           },
           {
-            "text": " | "
+            "text": " · "
           },
           {
             "text": "Archive"

@@ -265,10 +265,30 @@ void main() {
       expect(isFine(d, 'You are receiving this'), isTrue);
     });
 
+    test('navigation rows: one line each, separators as dots, buttons and icons kept', () {
+      final d = readable('39_');
+      final lines = d.blocks.whereType<ParagraphBlock>().map((p) => inlineText(p.inlines)).toList();
+      expect(lines, contains('Property · Legal · Financial'));
+      expect(lines, contains('Privacy · Terms · Preferences · Unsubscribe'));
+      expect(d.blocks.whereType<TableBlock>(), isEmpty);
+      expect(d.blocks.whereType<ButtonBlock>().map((b) => b.text), ['Read the briefing', 'Book a seminar']);
+      // Floated icon tables flow on one line.
+      expect(
+        d.blocks.whereType<ParagraphBlock>().where((p) => p.inlines.whereType<InlineImage>().length == 3),
+        hasLength(1),
+      );
+      // Cells of several lines stay stacked, without a stray "|" between.
+      expect(lines, contains('Example Firm LLP\n1 Example Square, Edinburgh'));
+      expect(lines, isNot(contains('|')));
+      // The Outlook signature row of the legal footer.
+      final legal = readable('36_').blocks.whereType<ParagraphBlock>().map((p) => inlineText(p.inlines));
+      expect(legal, contains('Property · Legal · Financial'));
+    });
+
     test('social icons and footer links become single lines', () {
       final d = readable('33_');
       final lines = d.blocks.whereType<ParagraphBlock>().map((p) => inlineText(p.inlines)).toList();
-      expect(lines, contains('Preferences | Unsubscribe | Archive'));
+      expect(lines, contains('Preferences · Unsubscribe · Archive'));
       expect(
         d.blocks.whereType<ParagraphBlock>().where((p) => p.inlines.whereType<InlineImage>().length == 3),
         hasLength(1),

@@ -110,41 +110,21 @@
             "scale": 0.8,
             "color": "#1f3864",
             "link": 1
-          }
-        ]
-      },
-      {
-        "type": "p",
-        "inlines": [
+          },
           {
-            "text": "|",
+            "text": " · ",
             "scale": 0.8
-          }
-        ]
-      },
-      {
-        "type": "p",
-        "inlines": [
+          },
           {
             "text": "Legal",
             "scale": 0.8,
             "color": "#1f3864",
             "link": 2
-          }
-        ]
-      },
-      {
-        "type": "p",
-        "inlines": [
+          },
           {
-            "text": "|",
+            "text": " · ",
             "scale": 0.8
-          }
-        ]
-      },
-      {
-        "type": "p",
-        "inlines": [
+          },
           {
             "text": "Financial",
             "scale": 0.8,
@@ -294,40 +274,20 @@
           {
             "text": " [2]",
             "link": 1
-          }
-        ]
-      },
-      {
-        "type": "p",
-        "inlines": [
+          },
           {
-            "text": "|"
-          }
-        ]
-      },
-      {
-        "type": "p",
-        "inlines": [
+            "text": " · "
+          },
           {
             "text": "Legal"
           },
           {
             "text": " [3]",
             "link": 2
-          }
-        ]
-      },
-      {
-        "type": "p",
-        "inlines": [
+          },
           {
-            "text": "|"
-          }
-        ]
-      },
-      {
-        "type": "p",
-        "inlines": [
+            "text": " · "
+          },
           {
             "text": "Financial"
           },

@@ -186,6 +186,7 @@
       },
       {
         "type": "p",
+        "align": "center",
         "inlines": [
           {
             "img": 2

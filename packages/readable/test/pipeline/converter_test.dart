@@ -260,7 +260,68 @@ void main() {
         '<table><tr><td><a href="https://x.example/u">Unsubscribe</a></td><td>|</td>'
         '<td><a href="https://x.example/p">Preferences</a></td></tr></table>',
       );
-      expect(text(doc.blocks.single), 'Unsubscribe | Preferences');
+      expect(text(doc.blocks.single), 'Unsubscribe · Preferences');
+    });
+
+    test('inline rows: wrappers, separators, labels and icons', () {
+      String row(String cells) => text(readable('<table><tr>$cells</tr></table>').blocks.single);
+      // Outlook wraps each cell's text in a paragraph.
+      expect(
+        row(
+          '<td><p class=MsoNormal><span style="font-size:8pt"><a href="https://x.example/p">Property</a></span></p></td>'
+          '<td><p class=MsoNormal>|</p></td><td><p class=MsoNormal><a href="https://x.example/l">Legal</a></p></td>'
+          '<td><p class=MsoNormal><o:p>&nbsp;</o:p></p></td>',
+        ),
+        'Property · Legal',
+      );
+      expect(row('<td>A</td><td>•</td><td>B</td><td>-</td><td>C</td><td>·</td><td>D</td>'), 'A · B · C · D');
+      expect(row('<td>One</td><td>Two</td>'), 'One · Two');
+      expect(row('<td>Order:</td><td>#1234</td>'), 'Order: #1234');
+      expect(row('<td><div><table><tr><td><b>Nested</b></td></tr></table></div></td><td>Cell</td>'), 'Nested · Cell');
+      final icons =
+          readable(
+                '<table><tr><td><img src="https://x.example/a.png" width="24" height="24"></td><td>|</td>'
+                '<td><img src="https://x.example/b.png" width="24" height="24"></td></tr></table>',
+              ).blocks.single
+              as ParagraphBlock;
+      expect(icons.inlines.whereType<InlineImage>(), hasLength(2));
+      expect(text(icons), ' · ');
+    });
+
+    test('rows that are not inline stay stacked', () {
+      List<String> rows(String cells) => readable('<table><tr>$cells</tr></table>').blocks.map(text).toList();
+      // Several lines in a cell.
+      expect(rows('<td>Name<br>Title</td><td>|</td><td>Phone</td>'), ['Name\nTitle', 'Phone']);
+      // Long text.
+      expect(rows('<td>${'long ' * 12}</td><td>Short</td>'), hasLength(2));
+      // Block content.
+      expect(rows('<td><ul><li>a</li></ul></td><td>b</td>').length, 2);
+      // A content image.
+      expect(rows('<td><img src="https://x.example/p.jpg" width="300" height="200"></td><td>Caption</td>').length, 2);
+      // Buttons side by side stay buttons.
+      final buttons = readable(
+        '<table><tr><td bgcolor="#003a70"><a href="https://x.example/a">Yes</a></td><td width="8"></td>'
+        '<td bgcolor="#003a70"><a href="https://x.example/b">No</a></td></tr></table>',
+      ).blocks;
+      expect(buttons.map((b) => b.runtimeType), [ButtonBlock, ButtonBlock]);
+    });
+
+    test('a column of lone separators makes a table layout, not data', () {
+      final doc = readable(
+        '<table><tr><td>Property</td><td>|</td><td>Legal</td></tr><tr><td>Tax</td><td>|</td><td>Funds</td></tr></table>',
+      );
+      expect(doc.blocks.map(text), ['Property · Legal', 'Tax · Funds']);
+    });
+
+    test('floated icon tables flow on one line', () {
+      final icon =
+          '<table align="left"><tr><td><a href="https://x.example/s"><img src="https://x.example/i.png" '
+          'width="24" height="24"></a></td></tr></table>';
+      final doc = readable('<div>Follow us: $icon$icon$icon</div><p>After</p>');
+      final p = doc.blocks.first as ParagraphBlock;
+      expect(p.inlines.whereType<InlineImage>(), hasLength(3));
+      expect(text(p), startsWith('Follow us:'));
+      expect(text(doc.blocks.last), 'After');
     });
 
     test('data tables stay tables, with colspans', () {
