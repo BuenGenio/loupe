@@ -2,12 +2,15 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_imap/mail_imap.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:mail_platform/mail_platform.dart';
 import 'package:mail_store/mail_store.dart';
 import 'package:mail_sync/mail_sync.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../features/openpgp/openpgp_providers.dart';
 
 /// Keychain entry holding the database encryption key.
 const _databaseKeyName = 'loupe.database.key';
@@ -22,7 +25,11 @@ Future<MailRepository> createLiveRepository(Ref ref) async {
   // Never delete the database on failure: a MailStoreException surfaces in
   // the live gate, and the user decides.
   final store = await openLiveStore();
-  final repository = buildLiveRepository(store);
+  // Before the first send: the composer signs, encrypts and adds Autocrypt
+  // headers synchronously from the keyring and the unlocked keys.
+  final keyring = await ref.watch(liveKeyringProvider.future);
+  await (await ref.read(openPgpServiceProvider.future)).ready;
+  final repository = buildLiveRepository(store, keys: SessionSendKeys(keyring, () => ref.read(keySessionProvider)));
   ref.onDispose(() async {
     await repository.dispose();
     await store.close();
@@ -44,16 +51,41 @@ Future<MailStore> openLiveStore({bool createKey = true}) async {
   return MailStore.open('${directory.path}/loupe.db', encryptionKey: key);
 }
 
-/// The live repository over [store], not yet started.
-LiveMailRepository buildLiveRepository(MailStore store, {SyncConfig config = const SyncConfig()}) {
+/// The live repository over [store], not yet started. Its composer writes
+/// OpenPGP mail (and Autocrypt headers) with [keys]; a message that asks
+/// for encryption it can't do stays in the Outbox, never goes out in the clear.
+LiveMailRepository buildLiveRepository(
+  MailStore store, {
+  required PgpSendKeys keys,
+  SyncConfig config = const SyncConfig(),
+}) {
   final credentials = CredentialsService(store: SecureCredentialStore(KeychainSecretStorage()));
   return LiveMailRepository(
     store,
-    ImapTransportFactory(),
+    ImapTransportFactory(composer: PgpMessageComposer(MimeMessageComposer(), keys, backend: const DartPgBackend())),
     credentials.store,
     config: config,
     refreshOAuth: (account, current) => credentials.oauth.refresh(account.provider, current),
   );
+}
+
+/// OpenPGP keys for a background isolate (sync, notification actions): the
+/// keyring from the keychain and the keys stored without a passphrase.
+/// Mail that needs a passphrase waits in the Outbox for the app.
+Future<PgpSendKeys> backgroundSendKeys() async {
+  final keyring = Keyring(SecretStorageKeyring(KeychainSecretStorage()), prefix: liveKeyringPrefix);
+  final session = KeySession();
+  try {
+    await keyring.load();
+    for (final k in keyring.state.ownKeys) {
+      if (k.isProtected) continue;
+      final secret = await keyring.secretKey(k.fingerprint, const DartPgBackend());
+      if (secret != null && !secret.isProtected) session.put(secret, pin: true);
+    }
+  } on Object {
+    // A keychain that can't be read: encrypted mail waits for the app.
+  }
+  return SessionSendKeys(keyring, () => session);
 }
 
 /// Reads the database key, creating a random 256-bit one on first use.

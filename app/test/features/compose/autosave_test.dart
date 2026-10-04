@@ -257,6 +257,7 @@ void main() {
         mode: ComposeMode.reply,
         sourceEmailId: 'm1',
         draftId: 'd1',
+        security: const OutgoingSecurity(encrypt: true, sign: true),
       );
       final back = ComposeRecord.decode(
         ComposeRecord(session: 's', message: message, savedAt: at, sendAt: at).encode(),
@@ -267,6 +268,7 @@ void main() {
       expect(back.message.mode, ComposeMode.reply);
       expect(back.message.references, ['w@y', 'x@y']);
       expect(back.message.draftId, 'd1');
+      expect(back.message.security, const OutgoingSecurity(encrypt: true, sign: true));
       expect(back.sendAt, at);
       expect(back.attachmentsOmitted, 0);
 

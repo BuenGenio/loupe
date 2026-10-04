@@ -229,6 +229,12 @@ class SettingsScreen extends ConsumerWidget {
               onTap: () => context.push(Routes.rules),
             ),
             GroupedRow(
+              key: const Key('encryption-settings'),
+              leading: SettingsIcon(LoupeIcons.e2ee, colors.success),
+              title: 'End-to-End Encryption',
+              onTap: () => context.push(Routes.encryption),
+            ),
+            GroupedRow(
               leading: SettingsIcon(LoupeIcons.settings, colors.swipeMore),
               title: 'Advanced',
               onTap: () => context.push(Routes.advancedSettings),
