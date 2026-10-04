@@ -5,6 +5,10 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>io.github.buengenio.loupe.oauth</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>io.github.buengenio.loupe</string>
@@ -24,7 +28,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>loupe</string>
+	<string>Loupe</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -37,6 +41,12 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Loupe uses the camera to scan the QR codes Thunderbird shows when you export accounts.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Loupe doesn’t use the microphone. The camera only scans QR codes, without sound.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Loupe saves images from your messages to your photo library when you ask it to.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Loupe doesn’t look through your photo library. It only uses photos you pick yourself.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
