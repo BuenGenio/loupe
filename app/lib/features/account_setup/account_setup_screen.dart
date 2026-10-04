@@ -5,7 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart' hide TextField;
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../providers.dart';
+import '../../data/repositories.dart';
+import '../../settings/app_mode.dart';
 import '../../router.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_text.dart';
@@ -51,7 +52,8 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
   MailAccount? _account;
   int _colorIndex = 0;
 
-  MailRepository get _repo => ref.read(repositoryProvider);
+  /// The demo mailbox in demo mode, the real repository otherwise.
+  Future<MailRepository> get _repo => ref.read(setupRepositoryProvider.future);
 
   @override
   void dispose() {
@@ -97,7 +99,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     AccountDiscovery discovery;
     String? note;
     try {
-      discovery = await _repo.discover(email);
+      discovery = await (await _repo).discover(email);
     } on MailException catch (e) {
       discovery = AccountDiscovery(email: email, provider: ProviderKind.generic, authKind: AuthKind.password);
       note = e.message;
@@ -152,7 +154,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     });
     final name = _name.text.trim();
     try {
-      final account = await _repo.addAccount(
+      final account = await (await _repo).addAccount(
         AccountSetup(
           email: _email.text.trim(),
           displayName: _defaultDescription,
@@ -227,12 +229,14 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     final description = _description.text.trim();
     setState(() => _busy = true);
     try {
-      await _repo.updateAccount(
+      await (await _repo).updateAccount(
         account.copyWith(displayName: description.isEmpty ? account.displayName : description, colorIndex: _colorIndex),
       );
     } on MailException catch (e) {
       if (mounted) showSnack(ScaffoldMessenger.of(context), e.message);
     }
+    // The first real account switches the app from the welcome screen to live mode.
+    if (ref.read(appModeProvider) == AppMode.none) await ref.read(appModeProvider.notifier).set(AppMode.live);
     if (mounted) context.go(Routes.mailboxes);
   }
 

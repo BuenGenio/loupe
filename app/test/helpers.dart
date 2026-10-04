@@ -38,6 +38,8 @@ Future<DemoMailRepository> pumpLoupe(
       overrides: [
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
         demoRepositoryProvider.overrideWithValue(repo),
+        // Stands in for the real repository: live mode needs a device.
+        liveRepositoryProvider.overrideWith((ref) async => repo),
         repositoryProvider.overrideWith(repositoryForMode),
       ],
       child: const LoupeApp(),

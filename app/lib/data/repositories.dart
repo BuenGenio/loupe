@@ -23,3 +23,13 @@ MailRepository repositoryForMode(Ref ref) => switch (ref.watch(appModeProvider))
   AppMode.live => ref.watch(liveRepositoryProvider).requireValue,
   AppMode.demo || AppMode.none => ref.watch(demoRepositoryProvider),
 };
+
+/// Where account setup adds accounts: the demo mailbox in demo mode,
+/// otherwise the real repository (also on first launch, before live mode is
+/// switched on by the first successful setup).
+final setupRepositoryProvider = FutureProvider<MailRepository>(
+  (ref) async => switch (ref.watch(appModeProvider)) {
+    AppMode.demo => ref.watch(demoRepositoryProvider),
+    AppMode.none || AppMode.live => await ref.watch(liveRepositoryProvider.future),
+  },
+);

@@ -1,3 +1,5 @@
+import 'package:loupe/app.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/router.dart';
@@ -22,14 +24,35 @@ void main() {
     expect(prefs.getString(AppModeController.key), 'demo');
   });
 
-  testWidgets('Add Account on first launch offers demo mail instead', (tester) async {
+  testWidgets('Add Account on first launch sets up an account and switches to live mode', (tester) async {
     await pumpLoupe(tester, mode: AppMode.none);
     await tester.tap(find.text('Add Account'));
     await tester.pumpAndSettle();
-    expect(find.text('Real accounts are on their way'), findsOneWidget);
-    await tester.tap(find.text('Try Demo Mail'));
+    await tester.enterText(find.byKey(const Key('setup-name')), 'Jane Doe');
+    await tester.enterText(find.byKey(const Key('setup-email')), 'jane@example.org');
+    await tester.tap(find.byKey(const Key('setup-continue')));
     await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const Key('setup-password')), 'secret');
+    await tester.ensureVisible(find.byKey(const Key('setup-sign-in')));
+    await tester.tap(find.byKey(const Key('setup-sign-in')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('setup-done')));
+    await tester.pumpAndSettle();
+    final container = ProviderScope.containerOf(tester.element(find.byType(LoupeApp)));
+    expect(container.read(appModeProvider), AppMode.live);
     expect(find.text('All Inboxes'), findsOneWidget);
+  });
+
+  testWidgets('backing out of the first account setup returns to the welcome screen', (tester) async {
+    await pumpLoupe(tester, mode: AppMode.none);
+    await tester.tap(find.text('Add Account'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('setup-email')), findsOneWidget);
+    final container = ProviderScope.containerOf(tester.element(find.byType(LoupeApp)));
+    container.read(routerProvider).pop();
+    await tester.pumpAndSettle();
+    expect(container.read(appModeProvider), AppMode.none);
+    expect(find.text('Try with demo mail'), findsOneWidget);
   });
 
   testWidgets('Mailboxes shows unified counts and every account', (tester) async {

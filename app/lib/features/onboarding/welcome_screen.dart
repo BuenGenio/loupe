@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../router.dart';
 import '../../settings/app_mode.dart';
 import '../../theme/theme.dart';
 
@@ -25,16 +27,9 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> with SingleTicker
 
   Future<void> _tryDemo() => ref.read(appModeProvider.notifier).set(AppMode.demo);
 
-  Future<void> _addAccount() async {
-    // Real accounts aren't wired up yet: offer the demo instead.
-    final useDemo = await showModalBottomSheet<bool>(
-      context: context,
-      useSafeArea: true,
-      isScrollControlled: true,
-      builder: (context) => const _ComingSoonSheet(),
-    );
-    if (useDemo ?? false) await _tryDemo();
-  }
+  /// Account setup runs against the real repository; live mode switches on
+  /// once the first account is added, so backing out returns here.
+  void _addAccount() => context.push(Routes.addAccount);
 
   Widget _stagger(double start, Widget child) {
     final animation = CurvedAnimation(
@@ -189,52 +184,6 @@ class _Feature extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _ComingSoonSheet extends StatelessWidget {
-  const _ComingSoonSheet();
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = LoupeColors.of(context);
-    final styles = LoupeTextStyles.of(context);
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(28, 4, 28, 16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Icon(CupertinoIcons.envelope_open, size: 44, color: colors.unreadDot),
-            const SizedBox(height: 14),
-            Text(
-              'Real accounts are on their way',
-              style: styles.navTitle.copyWith(fontSize: 20),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'This early build doesn’t connect to mail servers yet. Explore Loupe with a demo mailbox in the '
-              'meantime: everything works, and nothing leaves your phone.',
-              style: styles.subject.copyWith(color: colors.secondaryText, height: 1.35),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 22),
-            FilledButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(50),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
-              ),
-              child: const Text('Try Demo Mail'),
-            ),
-            CupertinoButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Not Now')),
-          ],
-        ),
       ),
     );
   }

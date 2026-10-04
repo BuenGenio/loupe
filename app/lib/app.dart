@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mail_sync/mail_sync.dart';
 
 import 'data/repositories.dart';
 import 'router.dart';
@@ -61,7 +64,8 @@ class _LiveGate extends ConsumerWidget {
     return ref
         .watch(liveRepositoryProvider)
         .when(
-          data: (_) => child,
+          data: (repository) =>
+              repository is LiveMailRepository ? _SyncLifecycle(repository: repository, child: child) : child,
           loading: () => const ColoredBox(
             color: Colors.black12,
             child: Center(child: CupertinoActivityIndicator(radius: 14)),
@@ -107,4 +111,38 @@ class _LiveUnavailable extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// Pauses syncing while the app is in the background (queued sends still go
+/// out) and resumes it in the foreground.
+class _SyncLifecycle extends StatefulWidget {
+  const _SyncLifecycle({required this.repository, required this.child});
+
+  final LiveMailRepository repository;
+  final Widget child;
+
+  @override
+  State<_SyncLifecycle> createState() => _SyncLifecycleState();
+}
+
+class _SyncLifecycleState extends State<_SyncLifecycle> {
+  late final AppLifecycleListener _listener;
+
+  @override
+  void initState() {
+    super.initState();
+    _listener = AppLifecycleListener(
+      onHide: () => unawaited(widget.repository.pause()),
+      onShow: () => unawaited(widget.repository.resume()),
+    );
+  }
+
+  @override
+  void dispose() {
+    _listener.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }

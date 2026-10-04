@@ -8,6 +8,7 @@ import 'package:loupe/features/conversation/raw_source_screen.dart';
 import 'package:loupe/providers.dart';
 import 'package:loupe/settings/app_settings.dart';
 import 'package:loupe/theme/theme.dart';
+import 'package:loupe/data/repositories.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'fake_mail_repository.dart';
@@ -62,6 +63,7 @@ Future<GoRouter> pumpTestApp(
     ProviderScope(
       overrides: [
         repositoryProvider.overrideWithValue(repository),
+        setupRepositoryProvider.overrideWith((ref) async => repository),
         sharedPreferencesProvider.overrideWithValue(sharedPrefs),
       ],
       child: MaterialApp.router(theme: LoupeTheme.light(), routerConfig: router),
