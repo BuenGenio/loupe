@@ -243,6 +243,76 @@ void main() {
     });
   });
 
+  group('button chips', () {
+    const labels = ['View my work', 'Approve', 'Register now', 'Confirm your attendance at the annual general meeting'];
+    const html =
+        // A pill: an anchor with a background colour and padding.
+        '<p><a href="https://x.example/work" style="background-color:#2e7d32;color:#fff;padding:12px 28px;'
+        'border-radius:24px;display:inline-block">View my work</a></p>'
+        // Bulletproof: a coloured cell around a link.
+        '<table><tr><td bgcolor="#348eda" style="padding:12px 24px"><a href="https://x.example/c" '
+        'style="color:#ffffff">Approve</a></td></tr></table>'
+        // VML-backed, with the HTML fallback for everyone else.
+        '<div><!--[if mso]><v:roundrect href="https://x.example/r" style="height:40px;width:200px" '
+        'fillcolor="#556270"><center>Register now</center></v:roundrect><![endif]-->'
+        '<a href="https://x.example/r" style="background-color:#556270;color:#ffffff;display:inline-block;'
+        'line-height:40px;width:200px;mso-hide:all">Register now</a></div>'
+        // A label that wraps.
+        '<p><a href="https://x.example/agm" style="background:#7b1fa2;color:#fff;padding:10px">'
+        'Confirm your attendance at the annual general meeting</a></p>';
+
+    /// The union of the glyph boxes of [label], globally.
+    Rect labelRect(String label) {
+      final range = find.textRange.ofSubstring(label).evaluate().single;
+      final boxes = range.renderObject.getBoxesForSelection(
+        TextSelection(baseOffset: range.textRange.start, extentOffset: range.textRange.end),
+      );
+      final local = boxes.map((b) => b.toRect()).reduce((a, b) => a.expandToInclude(b));
+      return local.shift(range.renderObject.localToGlobal(Offset.zero));
+    }
+
+    for (final scale in [0.8, 1.0, 1.4]) {
+      testWidgets('labels are centred in their chips at text scale $scale', (tester) async {
+        tester.view.physicalSize = const Size(1080, 2400);
+        tester.view.devicePixelRatio = 3;
+        addTearDown(tester.view.reset);
+        await pumpReader(
+          tester,
+          email(html: html),
+          settings: ReaderSettings(textScale: scale),
+        );
+        expect(tester.takeException(), isNull);
+        for (final label in labels) {
+          final chip = tester.getRect(find.ancestor(of: find.text(label), matching: find.byType(Material)).first);
+          final text = labelRect(label);
+          expect(chip.height, greaterThanOrEqualTo(44), reason: label);
+          expect(text.center.dy, closeTo(chip.center.dy, 0.5), reason: '$label at $scale');
+          // (A wrapped label's line boxes include the space at each break.)
+          if (label != labels.last) expect(text.center.dx, closeTo(chip.center.dx, 0.5), reason: '$label at $scale');
+          expect(text.top - chip.top, closeTo(chip.bottom - text.bottom, 1), reason: label);
+        }
+        // The long label wraps inside its chip.
+        final long = labelRect(labels.last);
+        expect(long.height, greaterThan(tester.getSize(find.text('Approve')).height * 1.5));
+      });
+    }
+
+    testWidgets('chips in a row share a centre line', (tester) async {
+      await pumpReader(
+        tester,
+        email(
+          html:
+              '<p><a href="https://x.example/y" style="background:#1a73e8;color:#fff">Yes</a> '
+              '<a href="https://x.example/m" style="background:#e8eaed;color:#3c4043">Maybe</a></p>',
+        ),
+      );
+      final yes = tester.getRect(find.ancestor(of: find.text('Yes'), matching: find.byType(Material)).first);
+      final maybe = tester.getRect(find.ancestor(of: find.text('Maybe'), matching: find.byType(Material)).first);
+      expect(yes.center.dy, closeTo(maybe.center.dy, 0.5));
+      expect(labelRect('Maybe').center.dy, closeTo(maybe.center.dy, 0.5));
+    });
+  });
+
   group('plain mode', () {
     const quoted = 'Sounds good.\n\nOn Monday, Alex wrote:\n> Shall we meet?\n> > Earlier text\n\n-- \nSam';
 

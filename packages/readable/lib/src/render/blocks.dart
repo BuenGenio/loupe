@@ -61,6 +61,7 @@ List<Widget> blockWidgets(List<Block> blocks, {int depth = 0, int indent = 0, Bl
           spacing: 8,
           runSpacing: 8,
           alignment: b.align == BlockAlign.start ? WrapAlignment.start : WrapAlignment.center,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [for (final button in row) _ButtonChip(button, aligned: false)],
         ),
       );
@@ -326,14 +327,29 @@ class _ButtonChip extends StatelessWidget {
         child: InkWell(
           onTap: () => scope.onLinkTap(button.link),
           onLongPress: () => scope.onLinkLongPress(button.link),
+          // At least a 44 px tap target, the label centred in it whatever
+          // its size or number of lines: the box is never taller than the
+          // label alone would make it without the minimum, and the label
+          // sits in the middle of the extra height.
           child: ConstrainedBox(
             constraints: const BoxConstraints(minHeight: 44),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 11),
-              child: Text(
-                button.text,
-                textAlign: TextAlign.center,
-                style: scope.styles.body.copyWith(color: label, fontWeight: FontWeight.w600, height: 1.25),
+              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+              child: Align(
+                widthFactor: 1,
+                heightFactor: 1,
+                child: Text(
+                  button.text,
+                  textAlign: TextAlign.center,
+                  style: scope.styles.body.copyWith(
+                    color: label,
+                    fontWeight: FontWeight.w600,
+                    // Even leading puts the glyphs in the middle of each line
+                    // (the default gives the extra space to the ascent).
+                    height: 1.2,
+                    leadingDistribution: TextLeadingDistribution.even,
+                  ),
+                ),
               ),
             ),
           ),
