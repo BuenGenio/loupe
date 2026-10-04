@@ -8,5 +8,12 @@ export 'src/compose/mime_composer.dart' show MimeMessageComposer;
 export 'src/discovery/discoverer.dart' show AccountDiscoverer, ServerProbe;
 export 'src/factory.dart' show ImapTransportFactory;
 export 'src/imap/imap_transport.dart' show ImapTransport;
-export 'src/net/secure_socket.dart' show UntrustedCertificate, normalizeFingerprint, untrustedFingerprintOf;
+export 'src/net/secure_socket.dart'
+    show
+        UntrustedCertificate,
+        WireProtocol,
+        normalizeFingerprint,
+        openMailSocket,
+        secureMailSocket,
+        untrustedFingerprintOf;
 export 'src/smtp/smtp_sender.dart' show ImapSmtpSender;

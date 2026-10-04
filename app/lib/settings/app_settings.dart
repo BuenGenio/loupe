@@ -7,7 +7,7 @@ import 'app_mode.dart';
 
 enum Density { comfortable, compact }
 
-enum SwipeAction { none, toggleRead, toggleFlag, archive, trash, move, more }
+enum SwipeAction { none, toggleRead, toggleFlag, archive, trash, move, snooze, more }
 
 /// What the number on the app icon counts (Settings › Notifications).
 enum BadgeCount { off, inboxes, vip }

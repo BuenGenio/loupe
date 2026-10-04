@@ -18,7 +18,7 @@ import 'values.dart';
 
 /// enough_mail's client with three additions: a future for the greeting, a
 /// future for the connection closing (it otherwise leaves pending commands
-/// hanging), and binary literals for APPEND.
+/// hanging), and binary literals (APPEND, SETMETADATA).
 final class LoupeImapClient extends ImapClient {
   LoupeImapClient() : super(isLogEnabled: false);
 
@@ -100,6 +100,11 @@ final class ImapConnection {
   bool get supportsCondstore => has('CONDSTORE') || has('QRESYNC');
   bool get supportsUidPlus => has('UIDPLUS');
   bool get supportsEsearch => has('ESEARCH');
+
+  /// Annotations on the server itself, i.e. the empty mailbox name (RFC 5464:
+  /// `METADATA` covers server and mailbox annotations, `METADATA-SERVER`
+  /// only server ones).
+  bool get supportsServerMetadata => has('METADATA') || has('METADATA-SERVER');
 
   /// Connects and logs in with the credentials [credentials] returns.
   /// Throws [MailException]; authentication failures have kind
@@ -295,12 +300,29 @@ final class ImapConnection {
   }
 
   /// APPENDs [data] as a binary literal.
-  Future<GenericResult> append(String path, Uint8List data, List<String> flags) async {
+  Future<GenericResult> append(String path, Uint8List data, List<String> flags) {
     final flagList = flags.isEmpty ? '' : ' (${flags.join(' ')})';
-    final command = Command('APPEND ${mailboxArg(path)}$flagList {${data.length}}');
-    client._pendingLiteral = data;
+    return sendLiteral(
+      'APPEND ${mailboxArg(path)}$flagList {${data.length}}',
+      data,
+      '',
+      GenericParser(),
+      timeout: const Duration(minutes: 5),
+    );
+  }
+
+  /// Sends [head] (ending in a `{n}` literal announcement), then, once the
+  /// server asks for it, the [literal] bytes followed by [tail] and CRLF.
+  Future<T> sendLiteral<T>(
+    String head,
+    Uint8List literal,
+    String tail,
+    ResponseParser<T> parser, {
+    Duration? timeout,
+  }) async {
+    client._pendingLiteral = Uint8List.fromList([...literal, ...utf8.encode(tail)]);
     try {
-      return await send(command, GenericParser(), timeout: const Duration(minutes: 5));
+      return await send(Command(head), parser, timeout: timeout);
     } finally {
       client._pendingLiteral = null;
     }

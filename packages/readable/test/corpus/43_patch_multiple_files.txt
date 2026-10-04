@@ -1,0 +1,62 @@
+From: Alice Example <alice@example.org>
+
+The read path took frob_lock only to look the context up. Cache the
+lookup per context and read it with READ_ONCE(), so readers no longer
+contend with writers.
+
+Reported-by: Carol Example <carol@example.org>
+Signed-off-by: Alice Example <alice@example.org>
+---
+v2: use READ_ONCE() (Bob)
+
+ drivers/frob/core.c | 14 ++++++++------
+ drivers/frob/core.h |  3 +++
+ 2 files changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/frob/core.c b/drivers/frob/core.c
+index 3b18e51..a1d2c4f 100644
+--- a/drivers/frob/core.c
++++ b/drivers/frob/core.c
+@@ -10,7 +10,7 @@
+ #include <linux/spinlock.h>
+ #include "core.h"
+ 
+-static DEFINE_SPINLOCK(frob_lock);
++static DEFINE_SPINLOCK(frob_lock); /* writers only */
+ 
+ struct frob_ctx *frob_find(int id)
+ {
+@@ -42,13 +42,15 @@ int frob_read(struct frob_ctx *ctx, char *buf, size_t len)
+ {
+ 	struct frob_entry *e;
+ 
+-	spin_lock(&frob_lock);
+-	e = frob_lookup(ctx);
+-	spin_unlock(&frob_lock);
++	e = READ_ONCE(ctx->cached);
++	if (!e) {
++		e = frob_lookup(ctx);
++		WRITE_ONCE(ctx->cached, e);
++	}
+ 	if (!e)
+ 		return -ENOENT;
+-	return frob_copy(e, buf, len);
++	return frob_copy(e, buf, min(len, e->size));
+ }
+ 
+ EXPORT_SYMBOL_GPL(frob_read);
+diff --git a/drivers/frob/core.h b/drivers/frob/core.h
+index 77c0a2b..0e9d1f3 100644
+--- a/drivers/frob/core.h
++++ b/drivers/frob/core.h
+@@ -5,4 +5,7 @@ struct frob_ctx {
+ 	int id;
+ 	struct list_head node;
+ 	unsigned long flags;
++
++	/* Last entry found by frob_read(); NULL until then. */
++	struct frob_entry *cached;
+ };
+\ No newline at end of file
+-- 
+2.43.0

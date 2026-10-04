@@ -7,6 +7,7 @@ import 'demo_attachments.dart';
 import 'demo_bodies.dart';
 import 'demo_mime.dart';
 import 'demo_openpgp.dart';
+import 'demo_patches.dart';
 import 'demo_security.dart';
 
 /// An attachment of a demo message and where its bytes come from.
@@ -85,6 +86,11 @@ abstract final class DemoPeople {
   static const kai = EmailAddress('kai.lindqvist@example.org', 'Kai Lindqvist');
   static const noor = EmailAddress('noor@haddad.example', 'Noor Haddad');
   static const gardenList = EmailAddress('open-garden@lists.opengarden.example', 'Open Garden');
+  static const kestrelList = EmailAddress('dev@lists.example.org', 'Kestrel developers');
+  static const ines = EmailAddress('ines@kestrel.example', 'Ines Duarte');
+  static const oskar = EmailAddress('oskar@kestrel.example', 'Oskar Lind');
+  static const malik = EmailAddress('malik@kestrel.example', 'Malik Osei');
+  static const yuki = EmailAddress('yuki.tanabe@example.net', 'Yuki Tanabe');
 
   static const trailhead = EmailAddress('news@trailhead.example', 'Trailhead Outfitters');
   static const bank = EmailAddress('alerts@lumenbank.example', 'Lumen Bank');
@@ -96,6 +102,7 @@ abstract final class DemoPeople {
   static const security = EmailAddress('no-reply@accounts.gmail.example', 'Account Security');
   static const bookshop = EmailAddress('orders@cornerbookshop.example', 'Corner Bookshop');
   static const fieldNotes = EmailAddress('hello@fieldnotes.example', 'Field Notes Weekly');
+  static const deals = EmailAddress('deals@megamart.example', 'MegaMart Deals');
   static const bookClub = EmailAddress('club@riversidebooks.example', 'Riverside Book Club');
   static const coffee = EmailAddress('receipts@harborcoffee.example', 'Harbor Coffee');
   static const registrar = EmailAddress('billing@namewell.example', 'Namewell Domains');
@@ -145,10 +152,13 @@ final class DemoSeed {
     _personal();
     _work();
     _fastmail();
+    _kestrel();
     _filler();
     _olderMail();
     _serverMail();
     securityCases();
+    _snoozed();
+    _deals();
     openPgpCases();
   }
 
@@ -280,6 +290,7 @@ final class DemoSeed {
     box(f, 'Trash', role: MailboxRole.trash);
     box(f, 'Lists');
     box(f, 'Lists/Open Garden');
+    box(f, 'Lists/Kestrel');
     // Not subscribed: hidden unless Show All Folders is on (Settings › account).
     box(f, 'Lists/Retired', subscribed: false);
     box(f, 'Newsletters');
@@ -354,6 +365,8 @@ final class DemoSeed {
     if (role == MailboxRole.sent) keywords.add(Keywords.seen);
     // Like real clients, preview the HTML part when there is one (preheaders included).
     final body = html != null ? htmlToPreviewText(html) : text ?? '';
+    String? header(String name) => headers.where((h) => h.$1.toLowerCase() == name.toLowerCase()).firstOrNull?.$2;
+    final list = parseListId(header('List-Id'));
     final summary = EmailSummary(
       id: MailIds.jmapEmail(account, 'M$n'),
       accountId: account,
@@ -373,6 +386,11 @@ final class DemoSeed {
       size: (html?.length ?? 0) + (text?.length ?? 0) + 1800 + attachments.fold(0, (s, a) => s + a.attachment.size),
       keywords: keywords,
       hasAttachment: attachments.any((a) => !a.attachment.isInline),
+      listId: list?.id,
+      listName: list?.name,
+      listPost: header('List-Post'),
+      listUnsubscribe: header('List-Unsubscribe'),
+      listUnsubscribePost: header('List-Unsubscribe-Post'),
     );
     if (thread != null) refs.add(messageId);
     final message = DemoMessage(
@@ -550,7 +568,8 @@ final class DemoSeed {
           '15:00 Quinta da Regaleira\n18:30 back to Lisbon\n\nTom',
       thread: lisbon,
       unread: true,
-      tags: {Keywords.label3},
+      // Snoozed until this morning: back in the Inbox, marked "Snoozed".
+      tags: {Keywords.label3, Keywords.newAgain},
     );
 
     // Dinner thread with a VIP.
@@ -1105,6 +1124,33 @@ final class DemoSeed {
     );
   }
 
+  // A daily deals mail nobody reads ---------------------------------------------
+
+  /// Unsubscribe by mail only (mailto: with a subject); never opened, so
+  /// it heads Mailboxes › Subscriptions. Added last, without the random
+  /// generator, so the rest of the demo stays as it was.
+  void _deals() {
+    const offers = ['Flash sale: 40% off kitchen', 'Weekend deals inside', 'Your picks are back in stock'];
+    for (var d = 2; d <= 42; d += 5) {
+      add(
+        account: DemoAccounts.personal,
+        box: '[Gmail]/All Mail',
+        at: at(d, 5, 40),
+        from: DemoPeople.deals,
+        subject: offers[d % offers.length],
+        html:
+            '<div style="font-family:Arial,sans-serif;max-width:560px">'
+            '<h1 style="color:#c8102e">Today only</h1><p>Deals picked for you. Prices valid while stocks last.</p>'
+            '<img src="https://t.megamart.example/open/$d.gif" width="1" height="1" alt=""></div>',
+        unread: true,
+        headers: const [
+          ('List-Unsubscribe', '<mailto:unsubscribe@megamart.example?subject=Unsubscribe%20daily%20deals>'),
+          ('Precedence', 'bulk'),
+        ],
+      );
+    }
+  }
+
   // Bulk mail (notifications, newsletters, small talk) -----------------------------------
 
   T _pick<T>(List<T> list) => list[_random.nextInt(list.length)];
@@ -1114,6 +1160,161 @@ final class DemoSeed {
     final days = [for (var i = 0; i < count; i++) _random.nextInt(maxDays)];
     days.sort();
     return days;
+  }
+
+  // The Kestrel developers' list: a patch series with reviews -----------------
+
+  static const _kestrelHeaders = [
+    ('List-Id', 'Kestrel developers <dev.lists.example.org>'),
+    ('List-Post', '<mailto:dev@lists.example.org>'),
+    ('List-Help', '<mailto:dev-request@lists.example.org?subject=help>'),
+    ('List-Unsubscribe', '<mailto:dev-leave@lists.example.org>, <https://lists.example.org/postorius/lists/dev/>'),
+    ('List-Archive', '<https://lists.example.org/archives/list/dev@lists.example.org/>'),
+    ('Precedence', 'list'),
+  ];
+
+  void _kestrel() {
+    const a = DemoAccounts.fastmail;
+    const box = 'Lists/Kestrel';
+    const series = 'kestrel-cache-v2';
+    const list = DemoPeople.kestrelList;
+    final headers = [..._kestrelHeaders, ('X-Mailer', 'git-send-email 2.47.0')];
+    add(
+      account: a,
+      box: box,
+      at: at(2, 9, 0),
+      from: DemoPeople.ines,
+      to: [list],
+      subject: '[PATCH v2 0/3] Cache parsed headers on keep-alive connections',
+      text: kestrelCoverLetter,
+      thread: series,
+      headers: headers,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(2, 9, 1),
+      from: DemoPeople.ines,
+      to: [list],
+      subject: '[PATCH v2 1/3] cache: add a small LRU for parsed headers',
+      text: kestrelPatch1,
+      thread: series,
+      headers: headers,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(2, 9, 1),
+      from: DemoPeople.ines,
+      to: [list],
+      subject: '[PATCH v2 2/3] http: reuse cached headers on keep-alive connections',
+      text: kestrelPatch2,
+      thread: series,
+      headers: headers,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(2, 9, 2),
+      from: DemoPeople.ines,
+      to: [list],
+      subject: '[PATCH v2 3/3] tests: cover the header cache',
+      text: kestrelPatch3,
+      thread: series,
+      headers: headers,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(1, 16, 40),
+      from: DemoPeople.oskar,
+      to: [list],
+      cc: [DemoPeople.ines],
+      subject: 'Re: [PATCH v2 2/3] http: reuse cached headers on keep-alive connections',
+      text: kestrelReview,
+      thread: series,
+      headers: _kestrelHeaders,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(1, 19, 5),
+      from: DemoPeople.ines,
+      to: [list],
+      cc: [DemoPeople.oskar],
+      subject: 'Re: [PATCH v2 2/3] http: reuse cached headers on keep-alive connections',
+      text: kestrelReviewAnswer,
+      thread: series,
+      unread: true,
+      headers: _kestrelHeaders,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(0, 8, 20),
+      from: DemoPeople.malik,
+      to: [list],
+      subject: 'Re: [PATCH v2 0/3] Cache parsed headers on keep-alive connections',
+      text:
+          'On Thu, Ines Duarte wrote:\n> This series caches the parsed request headers per connection, so\n'
+          '> keep-alive requests that repeat them skip the parser.\n\nRan the series on the staging proxies '
+          'overnight: p99 down from 4.1 ms to 3.2 ms, no leaks under valgrind.\n\n'
+          'Tested-by: Malik Osei <malik@kestrel.example>\n\n-- \nMalik',
+      thread: series,
+      unread: true,
+      headers: _kestrelHeaders,
+    );
+
+    const release = 'kestrel-release';
+    add(
+      account: a,
+      box: box,
+      at: at(4, 11, 0),
+      from: DemoPeople.oskar,
+      to: [list],
+      subject: 'Planning 2.4: freeze on the 20th?',
+      text:
+          'Hi all,\n\nI would like to freeze 2.4 on the 20th and tag a week later. Open items:\n\n'
+          '- the header cache series (Ines)\n- HTTP/2 priorities cleanup\n- dropping OpenSSL 1.1\n\n'
+          'Shout if something else must go in.\n\nOskar',
+      thread: release,
+      headers: _kestrelHeaders,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(3, 8, 45),
+      from: DemoPeople.malik,
+      to: [list],
+      subject: 'Re: Planning 2.4: freeze on the 20th?',
+      text:
+          '> - dropping OpenSSL 1.1\n\nPlease, yes. Debian oldstable is the last one shipping it and they '
+          'carry their own patches anyway.\n\nMalik',
+      thread: release,
+      headers: _kestrelHeaders,
+    );
+    add(
+      account: a,
+      box: 'Sent',
+      at: at(3, 10, 0),
+      from: const EmailAddress('lists@rivera.example', 'Sam Rivera'),
+      to: [list],
+      subject: 'Re: Planning 2.4: freeze on the 20th?',
+      text: 'The 20th works for me. I can take the release notes again.\n\nSam',
+      thread: release,
+      headers: _kestrelHeaders,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(0, 7, 55),
+      from: DemoPeople.yuki,
+      to: [list],
+      subject: '[PATCH] docs: fix the keepalive_timeout example',
+      text: kestrelDocsPatch,
+      unread: true,
+      headers: headers,
+    );
   }
 
   void _filler() {
@@ -1246,6 +1447,7 @@ final class DemoSeed {
         at: at(d, 9 + _random.nextInt(9), _random.nextInt(60)),
         from: DemoPeople.tracker,
         subject: '[$key] $title',
+        headers: const [('List-Unsubscribe', '<https://tracker.northwind.example/settings/notifications>')],
         text:
             '${dev.displayName} $event.\n\n'
             '${event == 'commented' ? '"Repro is reliable on the staging account with 40k messages. Looking at the batching now."\n\n' : ''}'
@@ -1263,6 +1465,9 @@ final class DemoSeed {
         at: at(d, 11 + _random.nextInt(7), _random.nextInt(60)),
         from: DemoPeople.ci,
         subject: failed ? 'Build failed: atlas-app #$build' : 'Build fixed: atlas-app #$build',
+        headers: const [
+          ('List-Unsubscribe', '<mailto:builds-off@ci.northwind.example?subject=unsubscribe%20atlas-app>'),
+        ],
         text: failed
             ? 'Build #$build failed on main.\n\nFailing step: integration-tests (3 failures)\nCommit: 7f3a2c1 by Leo Martins'
             : 'Build #$build is green again on main.',
@@ -1464,6 +1669,56 @@ final class DemoSeed {
   String _monthName(int daysAgo) {
     const names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return names[now.subtract(Duration(days: daysAgo)).month - 1];
+  }
+
+  /// Snoozed messages (the Snoozed mailbox). The Lisbon reply from Tom woke
+  /// up this morning.
+  void _snoozed() {
+    const p = DemoAccounts.personal;
+    const f = DemoAccounts.fastmail;
+    for (final account in const [p, f]) {
+      mailboxes.add(
+        Mailbox(
+          id: MailIds.mailbox(account, Snooze.folderName),
+          accountId: account,
+          name: Snooze.folderName,
+          path: Snooze.folderName,
+          sortOrder: mailboxes.length,
+        ),
+      );
+    }
+    DateTime day(int days, int hour) => DateTime(now.year, now.month, now.day + days, hour);
+    final toMonday = (DateTime.monday - now.weekday) % 7;
+    add(
+      account: p,
+      box: Snooze.folderName,
+      at: at(2, 18, 40),
+      from: DemoPeople.rail,
+      subject: 'Your tickets: Lisbon Oriente, Friday 07:42',
+      text:
+          'Your e-tickets are ready. Show the QR code at the gate; no need to print it.\n\n'
+          'Coach 4, seats 41 and 42. Have a good trip!',
+      tags: {Snooze.keyword(day(1, 8))},
+    );
+    add(
+      account: f,
+      box: Snooze.folderName,
+      at: at(1, 11, 5),
+      from: DemoPeople.registrar,
+      subject: 'Your card on file expires this month',
+      text: 'The card ending 4410 expires at the end of the month. Update it before your domains renew in November.',
+      tags: {Snooze.keyword(day(toMonday == 0 ? 7 : toMonday, 8))},
+    );
+    add(
+      account: f,
+      box: Snooze.folderName,
+      at: at(3, 20, 15),
+      from: DemoPeople.backup,
+      subject: 'Weekly backup report: 2 warnings',
+      text: 'Backups finished with 2 warnings: the photo library was busy twice. Everything else is up to date.',
+      unread: true,
+      tags: {Snooze.keyword(day(3, 9))},
+    );
   }
 
   void _serverMail() {

@@ -21,6 +21,9 @@ final class FakeMessage {
     this.text = '',
     this.gmailThreadId,
     this.size = 1000,
+    this.listId,
+    this.listUnsubscribe,
+    this.listUnsubscribePost,
   }) : keywords = {...keywords};
 
   int uid;
@@ -36,6 +39,11 @@ final class FakeMessage {
   final DateTime receivedAt;
   final String? gmailThreadId;
   final int size;
+
+  /// The List-Id identifier (List-Post is `<mailto:` + the first label + `@` the rest).
+  final String? listId;
+  final String? listUnsubscribe;
+  final String? listUnsubscribePost;
   int modseq = 0;
 
   FakeMessage copy(int newUid) => FakeMessage(
@@ -52,6 +60,9 @@ final class FakeMessage {
     text: text,
     gmailThreadId: gmailThreadId,
     size: size,
+    listId: listId,
+    listUnsubscribe: listUnsubscribe,
+    listUnsubscribePost: listUnsubscribePost,
   );
 }
 
@@ -112,8 +123,16 @@ final class FakeServer {
 
   String password;
   final bool gmail;
+
+  /// False: summaries come without the List-* headers (an older client's
+  /// fetch), except from fetchSummaries.
+  bool listHeadersInSync = true;
   bool idle;
   bool uidPlus;
+
+  /// Stores keywords other than the system flags (PERMANENTFLAGS has `\*`).
+  /// When false, like Outlook.com, they are accepted but not kept.
+  bool storesKeywords = true;
 
   /// While true every operation fails with a connection error.
   bool offline = false;
@@ -130,6 +149,15 @@ final class FakeServer {
 
   /// Overrides server search results (ids).
   List<String> Function(SearchExpr expr, String? path)? onSearch;
+
+  /// IMAP METADATA support; without it, documents go to the folder.
+  bool metadata = true;
+
+  /// The largest METADATA value the server accepts (MAXSIZE).
+  int metadataMaxSize = 1 << 20;
+
+  /// Server annotations: entry → value.
+  final annotations = <String, String>{};
 
   final mailboxes = <String, FakeMailbox>{};
   final log = <String>[];
@@ -159,6 +187,9 @@ final class FakeServer {
     Set<String> keywords = const {},
     String text = '',
     DateTime? at,
+    String? listId,
+    String? listUnsubscribe,
+    String? listUnsubscribePost,
   }) {
     final mb = box(path);
     final m = FakeMessage(
@@ -175,6 +206,9 @@ final class FakeServer {
       gmailThreadId: gmail
           ? 'thr-${references.isNotEmpty ? references.first : (inReplyTo ?? messageId ?? _clock)}'
           : null,
+      listId: listId,
+      listUnsubscribe: listUnsubscribe,
+      listUnsubscribePost: listUnsubscribePost,
     );
     _add(mb, m);
     if (gmail && path != allMailPath && mailboxes.containsKey(allMailPath)) {
@@ -234,12 +268,41 @@ final class FakeServer {
     }
   }
 
+  /// The subject of folder copies of document [name].
+  static String documentSubject(String name) => 'Loupe settings: $name';
+
+  /// Stores a folder copy of document [name] (another device writing).
+  void putFolderDocument(String name, String content) {
+    final folder =
+        mailboxes[ServerDocuments.folderName] ?? (addMailbox(ServerDocuments.folderName)..subscribed = false);
+    _add(
+      folder,
+      FakeMessage(
+        uid: folder.uidNext++,
+        subject: documentSubject(name),
+        from: const EmailAddress('me@example.com'),
+        receivedAt: DateTime(2026, 9, 1),
+        text: content,
+        keywords: const {Keywords.seen},
+      ),
+    );
+  }
+
+  /// Contents of the folder copies of document [name], oldest first.
+  List<String> folderDocuments(String name) => [
+    for (final m in mailboxes[ServerDocuments.folderName]?.messages.values ?? const <FakeMessage>[])
+      if (m.subject == documentSubject(name)) m.text,
+  ];
+
   /// Finds a message by subject in [path].
   FakeMessage? find(String path, String subject) =>
       box(path).messages.values.where((m) => m.subject == subject).firstOrNull;
 
   List<String> subjects(String path) => [for (final m in box(path).messages.values) m.subject];
 }
+
+/// What a server without `\*` in PERMANENTFLAGS still stores (Outlook.com's list).
+const _systemKeywords = {Keywords.seen, Keywords.answered, Keywords.flagged, Keywords.draft, r'$mdnsent'};
 
 /// A [MailTransport] over a [FakeServer].
 final class FakeTransport implements MailTransport {
@@ -310,7 +373,7 @@ final class FakeTransport implements MailTransport {
   String _mailboxId(FakeMailbox mb) => MailIds.mailbox(account.id, mb.path);
   String _id(FakeMailbox mb, int uid) => MailIds.imapEmail(account.id, mb.path, mb.uidValidity, uid);
 
-  EmailSummary _summary(FakeMailbox mb, FakeMessage m) => EmailSummary(
+  EmailSummary _summary(FakeMailbox mb, FakeMessage m, {bool listHeaders = true}) => EmailSummary(
     id: _id(mb, m.uid),
     accountId: account.id,
     mailboxId: _mailboxId(mb),
@@ -327,6 +390,10 @@ final class FakeTransport implements MailTransport {
     preview: m.text.length > 256 ? m.text.substring(0, 256) : m.text,
     size: m.size,
     keywords: {...m.keywords},
+    listId: listHeaders ? m.listId : null,
+    listPost: listHeaders && m.listId != null ? '<mailto:${m.listId!.replaceFirst('.', '@')}>' : null,
+    listUnsubscribe: listHeaders ? m.listUnsubscribe : null,
+    listUnsubscribePost: listHeaders ? m.listUnsubscribePost : null,
   );
 
   (FakeMailbox, FakeMessage)? _find(String emailId) {
@@ -362,6 +429,12 @@ final class FakeTransport implements MailTransport {
     _box(mailbox).subscribed = subscribed;
   }
 
+  @override
+  Future<void> createMailbox(String path) async {
+    await _op('create:$path');
+    if (!server.mailboxes.containsKey(path)) server.addMailbox(path);
+  }
+
   MailboxSyncState _state(FakeMailbox mb, int oldest) =>
       MailboxSyncState({'uv': mb.uidValidity, 'next': mb.uidNext, 'oldest': oldest, 'modseq': mb.modseq});
 
@@ -380,11 +453,12 @@ final class FakeTransport implements MailTransport {
       final oldest = window.isEmpty ? mb.uidNext : window.first;
       return MailboxSyncResult(
         state: _state(mb, oldest),
-        added: [for (final u in window) _summary(mb, mb.messages[u]!)],
+        added: [for (final u in window) _summary(mb, mb.messages[u]!, listHeaders: server.listHeadersInSync)],
         resetAll: prev != null,
         totalCount: uids.length,
         unreadCount: mb.unread,
         hasOlder: uids.any((u) => u < oldest),
+        canStoreKeywords: server.storesKeywords,
       );
     }
     final next = prev['next']! as int;
@@ -394,7 +468,7 @@ final class FakeTransport implements MailTransport {
       state: _state(mb, oldest),
       added: [
         for (final m in mb.messages.values)
-          if (m.uid >= next) _summary(mb, m),
+          if (m.uid >= next) _summary(mb, m, listHeaders: server.listHeadersInSync),
       ],
       keywordUpdates: {
         for (final m in mb.messages.values)
@@ -407,6 +481,7 @@ final class FakeTransport implements MailTransport {
       totalCount: uids.length,
       unreadCount: mb.unread,
       hasOlder: uids.any((u) => u < oldest),
+      canStoreKeywords: server.storesKeywords,
     );
   }
 
@@ -420,7 +495,7 @@ final class FakeTransport implements MailTransport {
     final newOldest = page.isEmpty ? oldest : page.first;
     return MailboxSyncResult(
       state: MailboxSyncState({...state.data, 'oldest': newOldest}),
-      added: [for (final u in page) _summary(mb, mb.messages[u]!)],
+      added: [for (final u in page) _summary(mb, mb.messages[u]!, listHeaders: server.listHeadersInSync)],
       totalCount: mb.messages.length,
       unreadCount: mb.unread,
       hasOlder: mb.messages.keys.any((u) => u < newOldest),
@@ -464,7 +539,8 @@ final class FakeTransport implements MailTransport {
       final found = _find(id);
       if (found == null) continue;
       final (mb, m) = found;
-      m.keywords = {...m.keywords.difference(remove), ...add};
+      final kept = server.storesKeywords ? add : add.where(_systemKeywords.contains);
+      m.keywords = {...m.keywords.difference(remove), ...kept};
       m.modseq = ++mb.modseq;
     }
   }
@@ -559,6 +635,45 @@ final class FakeTransport implements MailTransport {
     );
     server._add(mb, m);
     return server.uidPlus ? _id(mb, m.uid) : null;
+  }
+
+  @override
+  Future<List<ServerDocument>> readDocuments(String name) async {
+    await _op('readDocuments');
+    if (server.gmail) throw const MailException(MailErrorKind.unsupported, 'Gmail can’t keep Loupe settings');
+    final value = server.metadata ? server.annotations[ServerDocuments.metadataEntry(name)] : null;
+    final folder = server.mailboxes[ServerDocuments.folderName];
+    return [
+      if (value != null) ServerDocument(content: value, storage: ServerStorage.metadata),
+      for (final m in folder?.messages.values ?? const <FakeMessage>[])
+        if (m.subject == FakeServer.documentSubject(name))
+          ServerDocument(content: m.text, storage: ServerStorage.folder, ref: _id(folder!, m.uid)),
+    ];
+  }
+
+  @override
+  Future<ServerStorage> writeDocument(String name, String content, {List<ServerDocument> replaces = const []}) async {
+    await _op('writeDocument');
+    if (server.gmail) throw const MailException(MailErrorKind.unsupported, 'Gmail can’t keep Loupe settings');
+    final entry = ServerDocuments.metadataEntry(name);
+    final ServerStorage where;
+    if (server.metadata && content.length <= server.metadataMaxSize) {
+      server.annotations[entry] = content;
+      where = ServerStorage.metadata;
+    } else {
+      server.putFolderDocument(name, content);
+      if (replaces.any((d) => d.storage == ServerStorage.metadata)) server.annotations.remove(entry);
+      where = ServerStorage.folder;
+    }
+    for (final d in replaces) {
+      if (d.storage != ServerStorage.folder) continue;
+      final found = _find(d.ref!);
+      if (found == null) continue;
+      final (mb, m) = found;
+      mb.messages.remove(m.uid);
+      mb.expunged[m.uid] = ++mb.modseq;
+    }
+    return where;
   }
 
   @override

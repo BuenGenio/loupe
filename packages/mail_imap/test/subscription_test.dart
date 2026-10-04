@@ -68,4 +68,48 @@ void main() {
       );
     });
   });
+
+  group('createMailbox', () {
+    late ScriptedImapServer server;
+    late ImapTransport transport;
+
+    setUp(() async {
+      server = await ScriptedImapServer.start();
+      transport = ImapTransport(
+        _account(server.port),
+        ({forceRefresh = false}) async => const PasswordCredentials('pw'),
+      );
+      await transport.connect();
+    });
+
+    tearDown(() async {
+      await transport.disconnect();
+      await server.close();
+    });
+
+    test('creates and subscribes', () async {
+      await transport.createMailbox('Snoozed');
+      expect(server.commands, ['CREATE "Snoozed"', 'SUBSCRIBE "Snoozed"']);
+    });
+
+    test('a mailbox another client just created is fine', () async {
+      server
+        ..listLines = const [r'LIST (\HasNoChildren) "/" INBOX', r'LIST (\HasNoChildren) "/" Snoozed']
+        ..reply = (command) => command.startsWith('CREATE') ? 'NO [ALREADYEXISTS] Mailbox already exists' : null;
+      await transport.createMailbox('Snoozed');
+      expect(server.commands.first, 'CREATE "Snoozed"');
+      expect(server.commands.last, 'SUBSCRIBE "Snoozed"');
+    });
+
+    test('a refusal is a server error', () async {
+      server.reply = (command) => command.startsWith('CREATE') ? 'NO Permission denied' : null;
+      await expectLater(transport.createMailbox('Snoozed'), _failsWith(MailErrorKind.server));
+      expect(server.commands, isNot(contains('SUBSCRIBE "Snoozed"')));
+    });
+
+    test('subscribing is best effort', () async {
+      server.reply = (command) => command.startsWith('SUBSCRIBE') ? 'NO Not today' : null;
+      await transport.createMailbox('Snoozed');
+    });
+  });
 }

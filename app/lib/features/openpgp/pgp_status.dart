@@ -468,13 +468,21 @@ class _Row extends StatelessWidget {
 }
 
 /// The conversation's subject: the protected one of an encrypted message
-/// (whose outer subject is "..."), once [content] has loaded.
+/// (whose outer subject is "..."), once [content] has loaded; [trailing]
+/// spans follow it (the muted mark).
 class ProtectedSubject extends StatelessWidget {
-  const ProtectedSubject({super.key, required this.subject, required this.content, this.style});
+  const ProtectedSubject({
+    super.key,
+    required this.subject,
+    required this.content,
+    this.style,
+    this.trailing = const [],
+  });
 
   final String subject;
   final Future<EmailContent>? content;
   final TextStyle? style;
+  final List<InlineSpan> trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -484,7 +492,15 @@ class ProtectedSubject extends StatelessWidget {
       builder: (context, snapshot) {
         final data = snapshot.data;
         final protected = data == null ? null : pgpStatusOf(data)?.protectedSubject;
-        return Text(shown(protected ?? subject), style: style);
+        return Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(text: shown(protected ?? subject)),
+              ...trailing,
+            ],
+          ),
+          style: style,
+        );
       },
     );
   }

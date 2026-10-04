@@ -63,8 +63,39 @@ final class PendingOp {
 
 /// Persisted sync position of a mailbox.
 final class MailboxSyncInfo {
-  const MailboxSyncInfo({required this.state, required this.hasOlder, required this.syncedAt});
+  const MailboxSyncInfo({
+    required this.state,
+    required this.hasOlder,
+    required this.syncedAt,
+    this.staleHeaders = false,
+  });
   final MailboxSyncState state;
   final bool hasOlder;
   final DateTime syncedAt;
+
+  /// The stored summaries predate header fields added to the store since
+  /// (the List-* headers): fetch them again, pass them to
+  /// `MailStore.fillHeaders` and call `MailStore.markHeadersFresh`.
+  final bool staleHeaders;
+}
+
+/// How far device rules have run in a mailbox: messages stored after [seq]
+/// (the store's insertion order) are candidates, and of those with IMAP ids
+/// only the ones with a UID above [uid] under the same [uidValidity] are
+/// new mail (not older mail loaded later, search hits or moves).
+final class RuleWatermark {
+  const RuleWatermark({required this.seq, this.uidValidity, this.uid});
+  final int seq;
+  final int? uidValidity;
+  final int? uid;
+
+  @override
+  bool operator ==(Object other) =>
+      other is RuleWatermark && other.seq == seq && other.uidValidity == uidValidity && other.uid == uid;
+
+  @override
+  int get hashCode => Object.hash(seq, uidValidity, uid);
+
+  @override
+  String toString() => 'RuleWatermark($seq, $uidValidity:$uid)';
 }

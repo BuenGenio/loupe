@@ -10,8 +10,11 @@ import '../../demo/demo_openpgp.dart';
 import '../../router.dart';
 import '../../settings/app_mode.dart';
 import '../../settings/app_settings.dart';
+import 'openpgp_keys.dart';
 import 'openpgp_service.dart';
 import 'passphrase_dialog.dart';
+
+export 'openpgp_keys.dart';
 
 /// Runs OpenPGP work (key derivation, decryption) off the UI isolate.
 typedef PgpRunner = Future<T> Function<T>(T Function() work);
@@ -23,21 +26,6 @@ final pgpRunnerProvider = Provider<PgpRunner>((ref) => _isolate);
 
 /// The OpenPGP engine (dart_pg, pure Dart).
 final pgpBackendProvider = Provider<PgpBackend>((ref) => const DartPgBackend());
-
-/// [KeyringStorage] in the platform keychain (mail_platform's [SecretStorage]).
-final class SecretStorageKeyring implements KeyringStorage {
-  SecretStorageKeyring(this._secrets);
-  final SecretStorage _secrets;
-
-  @override
-  Future<String?> read(String key) => _secrets.read(key);
-
-  @override
-  Future<void> write(String key, String value) => _secrets.write(key, value);
-
-  @override
-  Future<void> delete(String key) => _secrets.delete(key);
-}
 
 /// Where the real keyring lives; tests override it with memory.
 final keyringStorageProvider = Provider<KeyringStorage>((ref) => SecretStorageKeyring(KeychainSecretStorage()));
@@ -55,7 +43,7 @@ Future<Keyring> _open(Ref ref, Keyring keyring) async {
 
 /// The keyring of real accounts: keys and settings in the keychain.
 final liveKeyringProvider = FutureProvider<Keyring>(
-  (ref) => _open(ref, Keyring(ref.watch(keyringStorageProvider), prefix: 'loupe.openpgp')),
+  (ref) => _open(ref, Keyring(ref.watch(keyringStorageProvider), prefix: liveKeyringPrefix)),
 );
 
 /// The demo keyring: Sam's key and the keys of a few colleagues, in memory.
@@ -134,21 +122,6 @@ final openPgpServiceProvider = FutureProvider<OpenPgpService>((ref) async {
     prompt: (key, {error}) => ref.read(passphrasePromptProvider)(key, error: error),
   );
 });
-
-/// What the composer reads at send time: [keyring]'s state and the
-/// session's unlocked keys (the session of the moment: it changes with the mode).
-final class SessionSendKeys implements PgpSendKeys {
-  SessionSendKeys(this.keyring, this.session);
-
-  final Keyring keyring;
-  final KeySession Function() session;
-
-  @override
-  KeyringState get state => keyring.state;
-
-  @override
-  PgpKey? unlockedKey(String fingerprint) => session()[fingerprint];
-}
 
 /// Builds [builder] once the OpenPGP service is ready; [fallback] until then.
 class WithOpenPgp extends ConsumerWidget {

@@ -890,7 +890,7 @@ final class _Sink {
             out.add(const TextRun('• '));
             out.addAll(_flattenToInlines(item));
           }
-        case TableBlock() || RuleBlock():
+        case TableBlock() || RuleBlock() || DiffBlock() || DiffStatBlock():
           break;
       }
     }
@@ -1410,7 +1410,7 @@ int visibleBlocksLength(List<Block> blocks) {
       ListBlock(:final items) => items.fold(0, (s, i) => s + visibleBlocksLength(i)),
       ButtonBlock(text: final t) => t.replaceAll(_blank, '').length,
       TableBlock(:final rows) => rows.fold(0, (s, r) => s + r.fold(0, (s, c) => s + text(c.inlines))),
-      RuleBlock() || ImageBlock() || CarouselBlock() => 0,
+      RuleBlock() || ImageBlock() || CarouselBlock() || DiffBlock() || DiffStatBlock() => 0,
     };
   }
   return n;

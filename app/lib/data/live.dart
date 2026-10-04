@@ -16,42 +16,83 @@ import '../features/openpgp/openpgp_providers.dart';
 const _databaseKeyName = 'loupe.database.key';
 
 /// Builds the real repository: the encrypted store, the IMAP transports and
-/// the keychain, then starts syncing. Disposed with the provider.
+/// the keychain. Disposed with the provider.
+///
+/// It starts paused: accounts are loaded (so messages open and actions
+/// work), but syncing waits until the app is in the foreground and no
+/// background sync holds the database (`ForegroundSync` resumes it).
 Future<MailRepository> createLiveRepository(Ref ref) async {
-  final secrets = KeychainSecretStorage();
-  final key = await _databaseKey(secrets);
-  final directory = await getApplicationSupportDirectory();
   // Never delete the database on failure: a MailStoreException surfaces in
   // the live gate, and the user decides.
-  final store = await MailStore.open('${directory.path}/loupe.db', encryptionKey: key);
-  final credentials = CredentialsService(store: SecureCredentialStore(secrets));
+  final store = await openLiveStore();
   // Before the first send: the composer signs, encrypts and adds Autocrypt
   // headers synchronously from the keyring and the unlocked keys.
   final keyring = await ref.watch(liveKeyringProvider.future);
   await (await ref.read(openPgpServiceProvider.future)).ready;
-  final composer = PgpMessageComposer(
-    MimeMessageComposer(),
-    SessionSendKeys(keyring, () => ref.read(keySessionProvider)),
-    backend: ref.read(pgpBackendProvider),
-  );
-  final repository = LiveMailRepository(
-    store,
-    ImapTransportFactory(composer: composer),
-    credentials.store,
-    refreshOAuth: (account, current) => credentials.oauth.refresh(account.provider, current),
-  );
+  final repository = buildLiveRepository(store, keys: SessionSendKeys(keyring, () => ref.read(keySessionProvider)));
   ref.onDispose(() async {
     await repository.dispose();
     await store.close();
   });
+  await repository.pause();
   await repository.start();
   return repository;
 }
 
+/// Opens the encrypted mail database with the key from the keychain. The app
+/// and the background isolates (sync, notification actions) all open it
+/// through here.
+///
+/// Without [createKey], a missing key throws a [MailStoreException] instead
+/// of starting a new, empty database (background work never creates one).
+Future<MailStore> openLiveStore({bool createKey = true}) async {
+  final key = await _databaseKey(KeychainSecretStorage(), create: createKey);
+  final directory = await getApplicationSupportDirectory();
+  return MailStore.open('${directory.path}/loupe.db', encryptionKey: key);
+}
+
+/// The live repository over [store], not yet started. Its composer writes
+/// OpenPGP mail (and Autocrypt headers) with [keys]; a message that asks
+/// for encryption it can't do stays in the Outbox, never goes out in the clear.
+LiveMailRepository buildLiveRepository(
+  MailStore store, {
+  required PgpSendKeys keys,
+  SyncConfig config = const SyncConfig(),
+}) {
+  final credentials = CredentialsService(store: SecureCredentialStore(KeychainSecretStorage()));
+  return LiveMailRepository(
+    store,
+    ImapTransportFactory(composer: PgpMessageComposer(MimeMessageComposer(), keys, backend: const DartPgBackend())),
+    credentials.store,
+    config: config,
+    refreshOAuth: (account, current) => credentials.oauth.refresh(account.provider, current),
+  );
+}
+
+/// OpenPGP keys for a background isolate (sync, notification actions): the
+/// keyring from the keychain and the keys stored without a passphrase.
+/// Mail that needs a passphrase waits in the Outbox for the app.
+Future<PgpSendKeys> backgroundSendKeys() async {
+  final keyring = Keyring(SecretStorageKeyring(KeychainSecretStorage()), prefix: liveKeyringPrefix);
+  final session = KeySession();
+  try {
+    await keyring.load();
+    for (final k in keyring.state.ownKeys) {
+      if (k.isProtected) continue;
+      final secret = await keyring.secretKey(k.fingerprint, const DartPgBackend());
+      if (secret != null && !secret.isProtected) session.put(secret, pin: true);
+    }
+  } on Object {
+    // A keychain that can't be read: encrypted mail waits for the app.
+  }
+  return SessionSendKeys(keyring, () => session);
+}
+
 /// Reads the database key, creating a random 256-bit one on first use.
-Future<String> _databaseKey(SecretStorage secrets) async {
+Future<String> _databaseKey(SecretStorage secrets, {required bool create}) async {
   final existing = await secrets.read(_databaseKeyName);
   if (existing != null) return existing;
+  if (!create) throw const MailStoreException('The database key is missing');
   final random = Random.secure();
   final key = base64.encode([for (var i = 0; i < 32; i++) random.nextInt(256)]);
   await secrets.write(_databaseKeyName, key);

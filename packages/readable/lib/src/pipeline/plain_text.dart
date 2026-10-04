@@ -1,10 +1,11 @@
 // Plain text: reflow format=flowed (RFC 3676), nest quote levels, dim the
-// signature, linkify URLs and addresses. Also used for text-only messages in
-// Readable mode.
+// signature, linkify URLs and addresses, and show patches (diffs, diffstats,
+// quoted hunks) as such. Also used for text-only messages in Readable mode.
 
 import '../model/document.dart';
 import 'limits.dart';
 import 'links.dart';
+import 'patch.dart';
 import 'redirects.dart';
 
 /// One logical line after quote stripping and reflow.
@@ -23,15 +24,40 @@ ReaderDocument parsePlainText(String input, {bool flowed = false, PipelineLimits
     text = text.substring(0, limits.maxInputChars);
     truncated = true;
   }
-  text = text.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
+  // CR CR LF: a patch of a file with CRLF line ends, sent with CRLF.
+  text = text.replaceAll(RegExp(r'\r+\n'), '\n').replaceAll('\r', '\n');
   final raw = text.split('\n');
-  final lines = flowed ? _reflow(raw) : [for (final l in raw) _quoted(l, flowed: false)];
-  _markSignatures(lines);
+  // Diffs keep their lines (reflowing would join them); the prose around
+  // them is reflowed as usual.
+  final items = <Object>[];
+  if (!looksLikePatch(text)) {
+    items.addAll(flowed ? _reflow(raw) : [for (final l in raw) _quoted(l, flowed: false)]);
+  } else {
+    final quoted = [for (final l in raw) _quoted(l, flowed: flowed)];
+    final regions = findPatchRegions([for (final l in quoted) l.text], [for (final l in quoted) l.depth]);
+    var next = 0;
+    for (var i = 0; i < quoted.length;) {
+      if (next < regions.length && regions[next].start == i) {
+        items.add(regions[next]);
+        i = regions[next++].end;
+        continue;
+      }
+      final end = next < regions.length ? regions[next].start : quoted.length;
+      items.addAll(flowed ? _reflow(raw.sublist(i, end)) : quoted.sublist(i, end));
+      i = end;
+    }
+  }
+  _markSignatures(items.whereType<_Line>().toList());
 
   final links = <LinkRef>[];
   final builder = _TreeBuilder(links, limits);
-  for (final line in lines) {
-    builder.add(line);
+  for (final item in items) {
+    switch (item) {
+      case final PatchRegion r:
+        builder.addBlocks(r.depth, r.blocks);
+      case final _Line line:
+        builder.add(line);
+    }
   }
   final blocks = builder.finish();
   return ReaderDocument(
@@ -144,16 +170,32 @@ final class _TreeBuilder {
   final _para = <String>[];
   var _paraSig = false;
 
-  void add(_Line line) {
-    if (line.depth != _stack.length - 1) {
-      _flush();
-      while (_stack.length - 1 > line.depth) {
-        _close();
-      }
-      while (_stack.length - 1 < line.depth) {
-        _stack.add([]);
-      }
+  void _enter(int depth) {
+    if (depth == _stack.length - 1) return;
+    _flush();
+    while (_stack.length - 1 > depth) {
+      _close();
     }
+    while (_stack.length - 1 < depth) {
+      _stack.add([]);
+    }
+  }
+
+  /// Blocks the patch parser made of a run of lines at [depth].
+  void addBlocks(int depth, List<Block> blocks) {
+    _flush();
+    _enter(depth);
+    for (final b in blocks) {
+      if (_blocks++ >= limits.maxBlocks) {
+        truncated = true;
+        return;
+      }
+      _stack.last.add(b);
+    }
+  }
+
+  void add(_Line line) {
+    _enter(line.depth);
     final blank = line.text.trim().isEmpty;
     if (blank) {
       _flush();

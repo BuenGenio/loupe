@@ -44,6 +44,11 @@ class SyncStates extends Table {
   BoolColumn get hasOlder => boolean().withDefault(const Constant(false))();
   IntColumn get syncedAt => integer()();
 
+  /// The stored summaries lack header fields added since they were fetched
+  /// (schema version 3: the List-* headers); the sync engine fetches them
+  /// again once and clears this.
+  BoolColumn get staleHeaders => boolean().withDefault(const Constant(false))();
+
   @override
   Set<Column> get primaryKey => {mailboxId};
 }
@@ -58,6 +63,7 @@ class SyncStates extends Table {
 @TableIndex(name: 'emails_message_id', columns: {#accountId, #messageIdHeader})
 @TableIndex(name: 'emails_base_subject', columns: {#accountId, #baseSubject, #receivedAt})
 @TableIndex(name: 'emails_from', columns: {#fromEmail})
+@TableIndex(name: 'emails_list', columns: {#listId, #receivedAt})
 class Emails extends Table {
   IntColumn get seq => integer().autoIncrement()();
   TextColumn get id => text().unique()();
@@ -89,6 +95,14 @@ class Emails extends Table {
   BoolColumn get isSeen => boolean().withDefault(const Constant(false))();
   BoolColumn get isFlagged => boolean().withDefault(const Constant(false))();
   BoolColumn get hasAttachment => boolean().withDefault(const Constant(false))();
+
+  /// The List-Id identifier (lower-cased, no brackets) and phrase; the
+  /// other List-* headers as sent. Schema version 3.
+  TextColumn get listId => text().nullable()();
+  TextColumn get listName => text().nullable()();
+  TextColumn get listPost => text().nullable()();
+  TextColumn get listUnsubscribe => text().nullable()();
+  TextColumn get listUnsubscribePost => text().nullable()();
 }
 
 /// One row per (email, keyword), maintained by triggers on [Emails].
@@ -208,6 +222,43 @@ class IdAliases extends Table {
   Set<Column> get primaryKey => {oldId};
 }
 
+/// Mail rules; [json] is a serialised `Rule` whose order is [sortOrder].
+@DataClassName('RuleRow')
+class Rules extends Table {
+  TextColumn get id => text()();
+  TextColumn get json => text()();
+  IntColumn get sortOrder => integer().withDefault(const Constant(0))();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+/// How far device rules have run in a mailbox (the Inbox): messages stored
+/// after [seq] whose IMAP UID is above [uid] (same [uidValidity]) are new.
+@DataClassName('RuleWatermarkRow')
+class RuleWatermarks extends Table {
+  TextColumn get mailboxId => text().references(Mailboxes, #id, onDelete: KeyAction.cascade)();
+  IntColumn get seq => integer()();
+  IntColumn get uidValidity => integer().nullable()();
+  IntColumn get uid => integer().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {mailboxId};
+}
+
+/// Conversations the user muted (local only). New messages of a muted
+/// thread arrive read and stay out of the mailing-list view. Schema
+/// version 3.
+@DataClassName('MutedThreadRow')
+class MutedThreads extends Table {
+  TextColumn get accountId => text().references(Accounts, #id, onDelete: KeyAction.cascade)();
+  TextColumn get threadId => text()();
+  IntColumn get mutedAt => integer()();
+
+  @override
+  Set<Column> get primaryKey => {accountId, threadId};
+}
+
 /// SQL rendering an address JSON column as searchable text ("name email …").
 String _addrText(String column) =>
     "(SELECT group_concat(coalesce(json_extract(value, '\$.n'), '') || ' ' || json_extract(value, '\$.e'), ' ') "
@@ -285,13 +336,19 @@ END;''',
     AddressBook,
     ThreadRefs,
     IdAliases,
+    Rules,
+    RuleWatermarks,
+    MutedThreads,
   ],
 )
 class StoreDatabase extends _$StoreDatabase {
   StoreDatabase(super.e);
 
+  /// 1: the first release. 2: rules and their watermarks. 3: mailing-list
+  /// headers on emails (with the `emails_list` index), muted threads, and
+  /// `stale_headers` on sync states.
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -299,6 +356,28 @@ class StoreDatabase extends _$StoreDatabase {
       await m.createAll();
       for (final sql in _ftsAndTriggers) {
         await customStatement(sql);
+      }
+    },
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.createTable(rules);
+        await m.createTable(ruleWatermarks);
+      }
+      if (from < 3) {
+        for (final column in [
+          emails.listId,
+          emails.listName,
+          emails.listPost,
+          emails.listUnsubscribe,
+          emails.listUnsubscribePost,
+        ]) {
+          await m.addColumn(emails, column);
+        }
+        await m.createIndex(emailsList);
+        await m.createTable(mutedThreads);
+        // Summaries stored so far were fetched without the List-* headers.
+        await m.addColumn(syncStates, syncStates.staleHeaders);
+        await customStatement('UPDATE sync_states SET stale_headers = 1');
       }
     },
     beforeOpen: (details) async {

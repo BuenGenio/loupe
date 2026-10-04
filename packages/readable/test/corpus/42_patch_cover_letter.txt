@@ -1,0 +1,20 @@
+This series speeds up the frobnicator by caching lookups and dropping
+the global lock on the read path.
+
+Changes since v1:
+- rebased on v6.12-rc1
+- patch 2: use READ_ONCE() as suggested by Bob
+
+Alice Example (3):
+  frob: cache lookups per context
+  frob: drop the global lock on reads
+  frob: add tests for the cache
+
+ drivers/frob/core.c      | 48 +++++++++++++++++++++++++++++--------
+ drivers/frob/core.h      |  6 +++++
+ tools/testing/frob/run.c | 31 ++++++++++++++++++++++++
+ 3 files changed, 73 insertions(+), 12 deletions(-)
+ create mode 100644 tools/testing/frob/run.c
+
+-- 
+2.43.0

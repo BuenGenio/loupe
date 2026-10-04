@@ -87,6 +87,9 @@ class _FolderRow extends StatelessWidget {
     final toggle = !fixed && mailbox.isSelectable;
     return GroupedRow(
       title: name,
+      subtitle: ServerDocuments.isFolder(mailbox)
+          ? 'Keeps your Smart Mailboxes for your other devices. Hidden on the Mailboxes screen.'
+          : null,
       indent: folderIndent(depth),
       leading: Icon(mailboxIcon(mailbox.role), color: colors.unreadDot, size: 24),
       detail: fixed ? 'Always Shown' : null,

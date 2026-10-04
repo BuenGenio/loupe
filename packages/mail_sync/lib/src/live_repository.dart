@@ -4,10 +4,12 @@ import 'dart:typed_data';
 
 import 'package:clock/clock.dart';
 import 'package:mail_model/mail_model.dart';
+import 'package:mail_sieve/mail_sieve.dart' show ManageSieveConnector, SieveConnector;
 import 'package:mail_store/mail_store.dart';
 
 import 'account_syncer.dart';
 import 'config.dart';
+import 'live_rules.dart';
 import 'util.dart';
 
 /// The real [MailRepository]: the local [MailStore] kept in sync with the
@@ -17,7 +19,7 @@ import 'util.dart';
 /// sends overdue outbox messages). Call [pause] when the app goes to the
 /// background and [resume] when it returns; [syncOnce] serves background
 /// fetch tasks. [dispose] stops everything but leaves the store open.
-final class LiveMailRepository implements MailRepository {
+final class LiveMailRepository implements MailRepository, MailingLists, MailSubscriptions {
   LiveMailRepository(
     this.store,
     this.transports,
@@ -25,7 +27,8 @@ final class LiveMailRepository implements MailRepository {
     this.config = const SyncConfig(),
     this._clock,
     this.refreshOAuth,
-  });
+    SieveConnector? sieve,
+  }) : _sieve = sieve ?? const ManageSieveConnector();
 
   final MailStore store;
   final TransportFactory transports;
@@ -36,7 +39,13 @@ final class LiveMailRepository implements MailRepository {
   final OAuthRefresher? refreshOAuth;
 
   final Clock? _clock;
+  final SieveConnector _sieve;
   late final _host = _Host(this);
+
+  /// Mail rules: device rules run here after each Inbox sync; server rules
+  /// go to the account's ManageSieve server.
+  @override
+  late final LiveRules rules = LiveRules(_host, _sieve);
   final _syncers = <String, AccountSyncer>{};
   final _statusById = <String, AccountSyncStatus>{};
   final _statuses = ValueStream<List<AccountSyncStatus>>(const []);
@@ -46,11 +55,15 @@ final class LiveMailRepository implements MailRepository {
   bool _started = false;
   bool _paused = false;
   bool _disposed = false;
+  Future<void>? _disposing;
 
   Timer? _outboxTimer;
   int _outboxGeneration = 0;
   bool _outboxBusy = false;
   bool _outboxAgain = false;
+
+  Timer? _snoozeTimer;
+  int _snoozeGeneration = 0;
 
   DateTime _now() => (_clock ?? clock).now();
 
@@ -74,6 +87,7 @@ final class LiveMailRepository implements MailRepository {
       }
     }
     await _scheduleOutbox();
+    await _scheduleSnoozeTimer();
   }
 
   Future<void> _loadAccounts() async {
@@ -87,6 +101,9 @@ final class LiveMailRepository implements MailRepository {
   /// Queued sends still go out when due.
   Future<void> pause() async {
     _paused = true;
+    // Background wake-ups (syncOnce) wake snoozed messages meanwhile.
+    _snoozeTimer?.cancel();
+    _snoozeTimer = null;
     await Future.wait([for (final s in _syncers.values) s.pause()]);
   }
 
@@ -98,6 +115,7 @@ final class LiveMailRepository implements MailRepository {
       s.start();
     }
     await _scheduleOutbox();
+    await _scheduleSnoozeTimer();
   }
 
   /// One full sync of every account plus due sends and queued operations,
@@ -112,10 +130,25 @@ final class LiveMailRepository implements MailRepository {
     if (!_started || _paused) await Future.wait([for (final s in _syncers.values) s.pause()]);
   }
 
-  /// Stops all syncing. The store stays open (the app owns it).
-  Future<void> dispose() async {
+  /// Replays queued operations of every account now, e.g. after a
+  /// notification action changed a message from a background isolate. Works
+  /// without [start]; closes connections afterwards unless the repository is
+  /// running. Never throws; failures go to the sync status.
+  Future<void> flushOps() async {
+    if (_disposed) return;
+    await _loadAccounts();
+    await Future.wait([for (final s in _syncers.values) s.flushOps()]);
+    if (!_started || _paused) await Future.wait([for (final s in _syncers.values) s.pause()]);
+  }
+
+  /// Stops all syncing, including a running [syncOnce] (after the command in
+  /// flight). The store stays open (the app owns it).
+  Future<void> dispose() => _disposing ??= _dispose();
+
+  Future<void> _dispose() async {
     _disposed = true;
     _outboxTimer?.cancel();
+    _snoozeTimer?.cancel();
     await Future.wait([for (final s in _syncers.values) s.dispose()]);
     _syncers.clear();
     await _statuses.close();
@@ -341,6 +374,41 @@ final class LiveMailRepository implements MailRepository {
   @override
   Stream<List<AccountSyncStatus>> watchSyncStatus() => _statuses.stream;
 
+  // Mailing lists -----------------------------------------------------------
+
+  @override
+  Stream<List<MailingList>> watchMailingLists() => store.watchMailingLists();
+
+  @override
+  Stream<List<ListThread>> watchListThreads(String listId, {bool includeMuted = false, int limit = 200}) =>
+      store.watchListThreads(listId, includeMuted: includeMuted, limit: limit);
+
+  @override
+  Stream<Set<String>> watchMutedThreads() => store.watchMutedThreads();
+
+  /// Muting also marks the conversation read; its later mail arrives read
+  /// (see `AccountSyncer`). Unmuting leaves the messages as they are.
+  @override
+  Future<void> setThreadMuted(String emailId, {required bool muted}) async {
+    final thread = await store.threadOf(emailId);
+    if (thread == null) throw const MailException(MailErrorKind.notFound, 'This message no longer exists.');
+    await store.setThreadMuted(thread.accountId, thread.threadId, muted: muted, now: _now());
+    if (!muted) return;
+    final unread = await store.unreadInThread(thread.accountId, thread.threadId);
+    if (unread.isNotEmpty) await setKeywords(unread, add: {Keywords.seen});
+  }
+
+  // Subscriptions -----------------------------------------------------------
+
+  /// Counted from the store on this device; "recent" is relative to when
+  /// the stream is listened to.
+  @override
+  Stream<List<Subscription>> watchSubscriptions() => store.watchSubscriptions(now: _now());
+
+  @override
+  Stream<List<EmailSummary>> watchSubscriptionEmails(String key, {bool inboxOnly = false, int limit = 200}) =>
+      store.watchSubscriptionEmails(key, inboxOnly: inboxOnly, limit: limit);
+
   // Messages ----------------------------------------------------------------
 
   @override
@@ -384,29 +452,41 @@ final class LiveMailRepository implements MailRepository {
 
   @override
   Future<void> setKeywords(List<String> emailIds, {Set<String> add = const {}, Set<String> remove = const {}}) async {
-    final adds = add.map(Keywords.normalize).toSet();
-    final removes = remove.map(Keywords.normalize).toSet();
     for (final MapEntry(key: accountId, value: ids) in groupByAccount(emailIds).entries) {
-      final resolved = await _resolveAll(ids);
-      await store.transaction(() async {
-        final previous = await store.updateKeywords(resolved, add: adds, remove: removes);
-        final changed = [
-          for (final id in previous.keys)
-            if (!isLocalEmailId(id)) id,
-        ];
-        if (changed.isEmpty) return;
-        await store.enqueueOp(accountId, OpType.setKeywords, {
-          'ids': changed,
-          'add': adds.toList(),
-          'remove': removes.toList(),
-          'previous': {for (final id in changed) id: previous[id]!.toList()},
-        }, now: _now());
-      });
-      _kick(accountId);
+      await _setKeywordsWithin(accountId, await _resolveAll(ids), add: add, remove: remove);
     }
   }
 
-  Future<void> _moveWithin(String accountId, List<String> ids, String targetMailboxId) async {
+  /// Changes keywords of resolved [ids] of one account and queues the change.
+  Future<void> _setKeywordsWithin(
+    String accountId,
+    List<String> ids, {
+    Set<String> add = const {},
+    Set<String> remove = const {},
+  }) async {
+    final adds = add.map(Keywords.normalize).toSet();
+    final removes = remove.map(Keywords.normalize).toSet();
+    await store.transaction(() async {
+      final previous = await store.updateKeywords(ids, add: adds, remove: removes);
+      final changed = [
+        for (final id in previous.keys)
+          if (!isLocalEmailId(id)) id,
+      ];
+      if (changed.isEmpty) return;
+      await store.enqueueOp(accountId, OpType.setKeywords, {
+        'ids': changed,
+        'add': adds.toList(),
+        'remove': removes.toList(),
+        'previous': {for (final id in changed) id: previous[id]!.toList()},
+      }, now: _now());
+    });
+    _kick(accountId);
+  }
+
+  /// Moves resolved [ids] of one account and queues the move. Inside an
+  /// outer transaction pass [kick] false and kick after it: a replay started
+  /// in the transaction's zone would run inside it.
+  Future<void> _moveWithin(String accountId, List<String> ids, String targetMailboxId, {bool kick = true}) async {
     await store.transaction(() async {
       final previous = await store.moveLocally(ids, targetMailboxId);
       final moved = [
@@ -420,7 +500,7 @@ final class LiveMailRepository implements MailRepository {
         'previous': {for (final id in moved) id: previous[id]},
       }, now: _now());
     });
-    _kick(accountId);
+    if (kick) _kick(accountId);
   }
 
   Future<void> _deletePermanently(String accountId, List<String> ids) async {
@@ -525,6 +605,226 @@ final class LiveMailRepository implements MailRepository {
         ], inbox.id);
       }
     }
+  }
+
+  // Snooze ------------------------------------------------------------------
+
+  /// The account's snooze folder (`Snoozed` before `INBOX.Snoozed`), if any.
+  Future<Mailbox?> _snoozeFolder(String accountId) async {
+    final folders = (await store.getMailboxes(accountId: accountId)).where(Snooze.isFolder).toList()
+      ..sort((a, b) => a.path.length.compareTo(b.path.length));
+    return folders.firstOrNull;
+  }
+
+  /// Where to create the snooze folder: `Snoozed` at the top level, unless
+  /// every folder lives under the Inbox (servers with an `INBOX.` namespace,
+  /// such as Courier), where it becomes `INBOX.Snoozed`.
+  static String _snoozePath(List<Mailbox> mailboxes) {
+    final others = [
+      for (final m in mailboxes)
+        if (m.role != MailboxRole.inbox && m.path.toUpperCase() != 'INBOX') m.path,
+    ];
+    for (final delimiter in const ['.', '/']) {
+      if (others.isNotEmpty && others.every((p) => p.toUpperCase().startsWith('INBOX$delimiter'))) {
+        return 'INBOX$delimiter${Snooze.folderName}';
+      }
+    }
+    return Snooze.folderName;
+  }
+
+  /// The account's snooze folder; one is added locally, its creation queued
+  /// for the server, when there is none yet.
+  Future<Mailbox> _ensureSnoozeFolder(AccountSyncer syncer) async {
+    final accountId = syncer.account.id;
+    final existing = await _snoozeFolder(accountId);
+    if (existing != null) return existing;
+    final path = _snoozePath(await store.getMailboxes(accountId: accountId));
+    final id = MailIds.mailbox(accountId, path);
+    await store.transaction(() async {
+      await syncer.addLocalMailbox(
+        RemoteMailbox(path: path, name: Snooze.folderName, parentPath: path == Snooze.folderName ? null : 'INBOX'),
+      );
+      await store.enqueueOp(accountId, OpType.createMailbox, {
+        'mailboxId': id,
+        'path': path,
+        'name': Snooze.folderName,
+      }, now: _now());
+    });
+    return await store.getMailbox(id) ??
+        (throw const MailException(MailErrorKind.unknown, 'Couldn’t add the Snoozed folder'));
+  }
+
+  @override
+  Future<SnoozeStorage> snooze(List<String> emailIds, DateTime until) async {
+    final keyword = Snooze.keyword(until);
+    var storage = SnoozeStorage.server;
+    for (final MapEntry(key: accountId, value: ids) in groupByAccount(emailIds).entries) {
+      final syncer = _syncerFor(accountId);
+      final emails = await store.getEmails(await _resolveAll(ids));
+      if (emails.isEmpty) continue;
+      final folder = await _ensureSnoozeFolder(syncer);
+      final resolved = [for (final e in emails) e.id];
+      final stale = {for (final e in emails) ...Snooze.keywordsIn(e.keywords)}..remove(keyword);
+      final away = [
+        for (final e in emails)
+          if (e.mailboxId != folder.id) e.id,
+      ];
+      if (syncer.storesKeywords) {
+        // The time goes first, so the message never waits without one.
+        await _setKeywordsWithin(accountId, resolved, add: {keyword}, remove: stale);
+        await _forgetLocalSnoozes(accountId, resolved);
+        if (away.isNotEmpty) await _moveWithin(accountId, away, folder.id);
+        continue;
+      }
+      // The server can't keep the time: move it, and keep the time here.
+      storage = SnoozeStorage.device;
+      await store.transaction(() async {
+        await store.updateKeywords(resolved, add: {keyword}, remove: stale);
+        if (away.isNotEmpty) await _moveWithin(accountId, away, folder.id, kick: false);
+        await _forgetLocalSnoozes(accountId, resolved);
+        // After the move, so its ids follow the server's new ones.
+        await store.enqueueOp(accountId, OpType.localSnooze, {
+          'ids': [
+            for (final id in resolved)
+              if (!isLocalEmailId(id)) id,
+          ],
+          'until': until.toUtc().toIso8601String(),
+        }, now: _now());
+      });
+      _kick(accountId);
+    }
+    await _scheduleSnoozeTimer();
+    return storage;
+  }
+
+  @override
+  Future<void> unsnooze(List<String> emailIds) async {
+    for (final MapEntry(key: accountId, value: ids) in groupByAccount(emailIds).entries) {
+      final emails = await store.getEmails(await _resolveAll(ids));
+      if (emails.isNotEmpty) await _wake(_syncerFor(accountId), emails);
+    }
+    await _scheduleSnoozeTimer();
+  }
+
+  /// Brings snoozed [emails] of one account back to its Inbox: snooze
+  /// keywords removed, unread and `$new`, in that order on the server.
+  Future<void> _wake(AccountSyncer syncer, List<EmailSummary> emails) async {
+    final accountId = syncer.account.id;
+    final inbox =
+        await store.mailboxByRole(accountId, MailboxRole.inbox) ??
+        (throw const MailException(MailErrorKind.notFound, 'This account has no Inbox.'));
+    final ids = [for (final e in emails) e.id];
+    final stale = {for (final e in emails) ...Snooze.keywordsIn(e.keywords)};
+    if (syncer.storesKeywords) {
+      await _setKeywordsWithin(accountId, ids, add: {Keywords.newAgain}, remove: {Keywords.seen, ...stale});
+    } else {
+      // Only \Seen reaches a server without keywords; the rest is local.
+      await store.updateKeywords(ids, add: {Keywords.newAgain}, remove: stale);
+      await _setKeywordsWithin(accountId, ids, remove: {Keywords.seen});
+    }
+    await _forgetLocalSnoozes(accountId, ids);
+    final away = [
+      for (final e in emails)
+        if (e.mailboxId != inbox.id) e.id,
+    ];
+    if (away.isNotEmpty) await _moveWithin(accountId, away, inbox.id);
+  }
+
+  /// Drops [ids] from the account's device-only snoozes.
+  Future<void> _forgetLocalSnoozes(String accountId, List<String> ids) async {
+    final gone = ids.toSet();
+    for (final op in await store.pendingOps(accountId: accountId)) {
+      if (op.type != OpType.localSnooze) continue;
+      final kept = [
+        for (final id in (op.payload['ids'] as List<Object?>? ?? const [])) ?(gone.contains(id) ? null : id),
+      ];
+      if (kept.isEmpty) {
+        await store.deleteOp(op.id);
+      } else if (kept.length != (op.payload['ids']! as List).length) {
+        await store.updateOp(op.id, payload: {...op.payload, 'ids': kept}, attempts: op.attempts);
+      }
+    }
+  }
+
+  /// Wakes the account's messages whose time has come; after every full
+  /// sync, so the Snoozed folder is up to date and a time another device
+  /// changed counts.
+  Future<void> _wakeDue(AccountSyncer syncer) async {
+    final accountId = syncer.account.id;
+    final folder = await _snoozeFolder(accountId);
+    if (folder == null) return;
+    final waiting = await store.emailIdsIn(folder.id);
+    await _pruneLocalSnoozes(accountId, waiting.toSet());
+    final now = _now();
+    final due = [
+      for (final e in await store.getEmails(waiting))
+        if (e.snoozedUntil case final t? when !t.isAfter(now)) e,
+    ];
+    if (due.isNotEmpty) await _wake(syncer, due);
+  }
+
+  /// Drops device-only snoozes of messages that left the Snoozed folder
+  /// (moved or deleted by hand, or woken by another device).
+  Future<void> _pruneLocalSnoozes(String accountId, Set<String> waiting) async {
+    final gone = <String>[];
+    for (final op in await store.pendingOps(accountId: accountId)) {
+      if (op.type != OpType.localSnooze) continue;
+      for (final id in (op.payload['ids'] as List<Object?>? ?? const []).cast<String>()) {
+        if (!waiting.contains(await store.resolveId(id))) gone.add(id);
+      }
+    }
+    if (gone.isNotEmpty) await _forgetLocalSnoozes(accountId, gone);
+  }
+
+  @override
+  Stream<List<EmailSummary>> watchSnoozed() => store.watchSnoozed().map((list) => [...list]..sort(Snooze.compare));
+
+  /// While the app runs, wakes the next snoozed message on time instead of
+  /// at the next poll.
+  Future<void> _scheduleSnoozeTimer() async {
+    if (_disposed) return;
+    final generation = ++_snoozeGeneration;
+    DateTime? next;
+    for (final e in await store.watchSnoozed().first) {
+      final t = e.snoozedUntil;
+      if (t != null && (next == null || t.isBefore(next))) next = t;
+    }
+    if (generation != _snoozeGeneration || _disposed) return;
+    _snoozeTimer?.cancel();
+    _snoozeTimer = null;
+    if (next == null || !_started || _paused) return;
+    var delay = next.difference(_now());
+    // Overdue but still waiting (its wake failed): try again in a while.
+    if (delay <= Duration.zero) delay = const Duration(minutes: 1);
+    _snoozeTimer = Timer(delay, () {
+      _snoozeTimer = null;
+      unawaited(_onSnoozeTimer());
+    });
+  }
+
+  Future<void> _onSnoozeTimer() async {
+    for (final syncer in [..._syncers.values]) {
+      final folder = await _snoozeFolder(syncer.account.id);
+      if (folder == null) continue;
+      // Another device may have woken it or changed the time; never throws.
+      await syncer.syncMailboxes([folder.id]);
+      try {
+        await _wakeDue(syncer);
+      } on MailException catch (e) {
+        _reportError(e);
+      }
+    }
+    await _scheduleSnoozeTimer();
+  }
+
+  Future<void> _afterFullSync(AccountSyncer syncer) async {
+    try {
+      await _wakeDue(syncer);
+    } on MailException catch (e) {
+      // No Inbox to wake into: not a sync failure.
+      _reportError(e);
+    }
+    unawaited(_scheduleSnoozeTimer());
   }
 
   // Search ------------------------------------------------------------------
@@ -938,6 +1238,20 @@ final class LiveMailRepository implements MailRepository {
     await _deletePermanently(accountId, [id]);
   }
 
+  // Documents on the server -------------------------------------------------
+
+  @override
+  Future<List<ServerDocument>> readServerDocuments(String accountId, String name) =>
+      _syncerFor(accountId).onMain((t) => t.readDocuments(name));
+
+  @override
+  Future<ServerStorage> writeServerDocument(
+    String accountId,
+    String name,
+    String content, {
+    List<ServerDocument> replaces = const [],
+  }) => _syncerFor(accountId).onMain((t) => t.writeDocument(name, content, replaces: replaces));
+
   // People ------------------------------------------------------------------
 
   @override
@@ -962,9 +1276,14 @@ final class _SearchTarget {
   final bool Function(EmailSummary)? filter;
 }
 
-final class _Host implements SyncHost {
+final class _Host implements SyncHost, RulesHost {
   _Host(this._repo);
   final LiveMailRepository _repo;
+
+  @override
+  MailRepository get repository => _repo;
+  @override
+  Future<void> inboxSynced(MailAccount account, String inboxId) => _repo.rules.inboxSynced(account, inboxId);
 
   @override
   MailStore get store => _repo.store;
@@ -980,4 +1299,6 @@ final class _Host implements SyncHost {
   void reportStatus(AccountSyncStatus status) => _repo._reportStatus(status);
   @override
   void reportError(MailException error) => _repo._reportError(error);
+  @override
+  Future<void> wakeSnoozed(AccountSyncer syncer) => _repo._afterFullSync(syncer);
 }

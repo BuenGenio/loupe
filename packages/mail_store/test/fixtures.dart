@@ -42,6 +42,11 @@ EmailSummary mail(
   String? threadId,
   int size = 1000,
   bool hasAttachment = false,
+  String? listId,
+  String? listName,
+  String? listPost,
+  String? listUnsubscribe,
+  String? listUnsubscribePost,
 }) => EmailSummary(
   id: eid(path, uid, account: account, validity: validity),
   accountId: account,
@@ -60,6 +65,11 @@ EmailSummary mail(
   keywords: keywords,
   size: size,
   hasAttachment: hasAttachment,
+  listId: listId,
+  listName: listName,
+  listPost: listPost,
+  listUnsubscribe: listUnsubscribe,
+  listUnsubscribePost: listUnsubscribePost,
 );
 
 const standardMailboxes = [

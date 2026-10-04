@@ -139,7 +139,8 @@ void main() {
     await repo.send(message, sendAt: tomorrow);
     final scheduler = _RecordingScheduler();
     await pumpLoupe(tester, repository: repo, overrides: [backgroundSchedulerProvider.overrideWithValue(scheduler)]);
-    expect(scheduler.times, [tomorrow]);
+    // The demo's snoozed messages ask for theirs too.
+    expect(scheduler.times.where((t) => t.isAtSameMomentAs(tomorrow)), [tomorrow]);
     repo.dispose();
   });
 }

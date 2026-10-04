@@ -14,6 +14,10 @@ import 'schema.dart';
 import 'search_sql.dart';
 import 'threading.dart';
 
+/// How long a connection waits for another one's write lock before failing
+/// with SQLITE_BUSY, in milliseconds.
+const _busyTimeoutMs = 10000;
+
 /// Inline parts larger than this are not cached.
 const maxInlinePartBytes = 512 * 1024;
 
@@ -24,6 +28,11 @@ const maxInlineBytesPerMessage = 4 * 1024 * 1024;
 /// (virtual mailboxes): Gmail's All Mail/Starred/Important duplicate other
 /// mailboxes, and Trash/Junk are not wanted there.
 const _virtualExcludedRoles = "'trash', 'junk', 'all', 'flagged', 'important'";
+
+/// SQL true for `mailboxes m` that are their account's snooze folder (see
+/// `Snooze.isFolderPath`). Snoozed messages stay out of Unread, Flagged and
+/// VIP until they wake.
+const _snoozeFolderSql = "(m.is_selectable = 1 AND lower(m.path) IN ('snoozed', 'inbox.snoozed', 'inbox/snoozed'))";
 
 /// SQL listing the user's own addresses (account and identity addresses).
 const _meSql =
@@ -61,6 +70,9 @@ final class MailStore {
       // Fails with SQLITE_NOTADB if the key is wrong.
       db.select('SELECT count(*) FROM sqlite_master');
       db.execute('PRAGMA journal_mode = WAL');
+      // Background work (sync, notification actions) opens its own
+      // connection; a writer waits for another one instead of failing.
+      db.execute('PRAGMA busy_timeout = $_busyTimeoutMs');
       _configure(db);
     }
 
@@ -333,7 +345,53 @@ final class MailStore {
       state: MailboxSyncState((jsonDecode(row.state) as Map).cast<String, Object?>()),
       hasOlder: row.hasOlder,
       syncedAt: fromMillis(row.syncedAt),
+      staleHeaders: row.staleHeaders,
     );
+  }
+
+  /// Asks the sync engine to fetch the stored summaries of [mailboxId]
+  /// again for their header fields (see [MailboxSyncInfo.staleHeaders]).
+  Future<void> markHeadersStale(String mailboxId) => _write(
+    'UPDATE sync_states SET stale_headers = 1 WHERE mailbox_id = ? AND stale_headers = 0',
+    [mailboxId],
+    {_db.syncStates},
+    kind: UpdateKind.update,
+  );
+
+  /// The summaries of [mailboxId] have their header fields again (see
+  /// [MailboxSyncInfo.staleHeaders]).
+  Future<void> markHeadersFresh(String mailboxId) => _write(
+    'UPDATE sync_states SET stale_headers = 0 WHERE mailbox_id = ? AND stale_headers = 1',
+    [mailboxId],
+    {_db.syncStates},
+    kind: UpdateKind.update,
+  );
+
+  /// Fills header fields that stored summaries lack from [fetched] copies
+  /// of them; nothing else changes (keywords and mailboxes stay as the
+  /// store has them). Unknown ids are ignored. Watchers hear of it once.
+  Future<void> fillHeaders(List<EmailSummary> fetched) async {
+    const sql =
+        'UPDATE emails SET list_id = coalesce(list_id, ?1), list_name = coalesce(list_name, ?2), '
+        'list_post = coalesce(list_post, ?3), list_unsubscribe = coalesce(list_unsubscribe, ?4), '
+        'list_unsubscribe_post = coalesce(list_unsubscribe_post, ?5) '
+        'WHERE id = ?6 AND ((list_id IS NULL AND ?1 IS NOT NULL) OR (list_name IS NULL AND ?2 IS NOT NULL) '
+        'OR (list_post IS NULL AND ?3 IS NOT NULL) OR (list_unsubscribe IS NULL AND ?4 IS NOT NULL) '
+        'OR (list_unsubscribe_post IS NULL AND ?5 IS NOT NULL))';
+    var changed = 0;
+    await _db.transaction(() async {
+      for (final e in fetched) {
+        final values = [e.listId, e.listName, e.listPost, e.listUnsubscribe, e.listUnsubscribePost];
+        if (values.every((v) => v == null)) continue;
+        changed += await _db.customUpdate(
+          sql,
+          variables: [
+            for (final v in [...values, e.id]) _var(v),
+          ],
+        );
+      }
+    });
+    if (changed > 0) _db.notifyUpdates({TableUpdate.onTable(_db.emails, kind: UpdateKind.update)});
   }
 
   /// Applies a transport sync result to [mailboxId] atomically: drops
@@ -475,12 +533,23 @@ final class MailStore {
           isFlagged: Value(e.keywords.contains(Keywords.flagged)),
           threadId: given != null && given.isNotEmpty ? Value(given) : const Value.absent(),
           preview: e.preview.isNotEmpty && e.preview != old.preview ? Value(e.preview) : const Value.absent(),
+          // Header fields the stored copy predates.
+          listId: _fill(old.listId, e.listId),
+          listName: _fill(old.listName, e.listName),
+          listPost: _fill(old.listPost, e.listPost),
+          listUnsubscribe: _fill(old.listUnsubscribe, e.listUnsubscribe),
+          listUnsubscribePost: _fill(old.listUnsubscribePost, e.listUnsubscribePost),
         );
         final changed =
             old.mailboxId != e.mailboxId ||
             old.keywords != keywords ||
             (companion.threadId.present && old.threadId != given) ||
-            companion.preview.present;
+            companion.preview.present ||
+            companion.listId.present ||
+            companion.listName.present ||
+            companion.listPost.present ||
+            companion.listUnsubscribe.present ||
+            companion.listUnsubscribePost.present;
         if (changed) await (_db.update(_db.emails)..where((t) => t.id.equals(e.id))).write(companion);
         continue;
       }
@@ -513,10 +582,18 @@ final class MailStore {
               isSeen: Value(e.keywords.contains(Keywords.seen)),
               isFlagged: Value(e.keywords.contains(Keywords.flagged)),
               hasAttachment: Value(e.hasAttachment),
+              listId: Value(e.listId),
+              listName: Value(e.listName),
+              listPost: Value(e.listPost),
+              listUnsubscribe: Value(e.listUnsubscribe),
+              listUnsubscribePost: Value(e.listUnsubscribePost),
             ),
           );
     }
   }
+
+  static Value<String?> _fill(String? stored, String? fetched) =>
+      stored == null && fetched != null ? Value(fetched) : const Value.absent();
 
   Future<void> _deleteEmailRows(List<String> ids) async {
     for (final chunk in _chunks(ids)) {
@@ -701,11 +778,13 @@ final class MailStore {
       case VirtualMailboxRef(:final kind):
         return switch (kind) {
           VirtualMailbox.allInboxes => "m.role = 'inbox'",
-          VirtualMailbox.unread => "e.is_seen = 0 AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')",
-          VirtualMailbox.flagged => 'e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles)',
+          VirtualMailbox.unread =>
+            "e.is_seen = 0 AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $_snoozeFolderSql",
+          VirtualMailbox.flagged =>
+            'e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles) AND NOT $_snoozeFolderSql',
           VirtualMailbox.vip =>
             'e.from_email IN (SELECT email FROM vip_addresses) '
-                "AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')",
+                "AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $_snoozeFolderSql",
           VirtualMailbox.allDrafts => "m.role = 'drafts'",
           VirtualMailbox.allSent => "m.role = 'sent'",
         };
@@ -844,7 +923,7 @@ SELECT * FROM members WHERE copy_rank = 1 ORDER BY received_at ASC, seq ASC''';
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts() {
     const distinctKey = "count(DISTINCT e.account_id || '|' || coalesce(e.message_id_header, e.id))";
     const from = 'FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id';
-    const unreadRoles = "m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')";
+    const unreadRoles = "m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $_snoozeFolderSql";
     const sql =
         '''
 SELECT
@@ -854,9 +933,10 @@ SELECT
     LEFT JOIN (SELECT mailbox_id, count(*) AS n FROM emails WHERE is_seen = 0 GROUP BY mailbox_id) l
       ON l.mailbox_id = m.id
     WHERE $unreadRoles) AS unread,
-  (SELECT $distinctKey $from WHERE e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles)) AS flagged,
+  (SELECT $distinctKey $from WHERE e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles)
+    AND NOT $_snoozeFolderSql) AS flagged,
   (SELECT $distinctKey $from WHERE e.is_seen = 0 AND e.from_email IN (SELECT email FROM vip_addresses)
-    AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')) AS vip,
+    AND $unreadRoles) AS vip,
   (SELECT coalesce(sum(total_count), 0) FROM mailboxes WHERE role = 'drafts') AS drafts''';
     return _select(sql, [], {_db.emails, _db.mailboxes, _db.vipAddresses}).watch().distinct(_rowsEqual).map((rows) {
       final r = rows.single;
@@ -869,6 +949,334 @@ SELECT
         VirtualMailbox.allSent: 0,
       };
     });
+  }
+
+  /// Messages in every account's snooze folder (see `Snooze`), in no
+  /// particular order.
+  Stream<List<EmailSummary>> watchSnoozed() => _select(
+    'SELECT e.* FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id WHERE $_snoozeFolderSql',
+    [],
+    {_db.emails, _db.mailboxes, _db.emailKeywords},
+  ).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) summaryFromRow(_emailRow(r))]);
+
+  // Mailing lists -----------------------------------------------------------
+
+  /// Messages of `emails e` (joined with `mailboxes m`) on mailing lists,
+  /// one copy per message, outside Trash and Junk; [where] narrows them.
+  static String _listCandidates(String where) =>
+      '''
+candidates AS (
+  SELECT e.*, ROW_NUMBER() OVER (PARTITION BY e.account_id, coalesce(e.message_id_header, e.id)
+    ORDER BY $_copyRank, e.seq) AS copy_rank
+  FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id
+  WHERE $where AND m.role NOT IN ('trash', 'junk')
+)''';
+
+  /// The mailing lists with mail, newest activity first; see
+  /// `MailingLists.watchMailingLists`.
+  Stream<List<MailingList>> watchMailingLists() {
+    final sql =
+        '''
+WITH ${_listCandidates('e.list_id IS NOT NULL')},
+scoped AS (
+  SELECT c.*, (t.thread_id IS NOT NULL) AS muted FROM candidates c
+  LEFT JOIN muted_threads t ON t.account_id = c.account_id AND t.thread_id = c.thread_id
+  WHERE c.copy_rank = 1
+)
+SELECT s.list_id, count(*) AS messages, sum(CASE WHEN s.is_seen = 0 AND s.muted = 0 THEN 1 ELSE 0 END) AS unread,
+  max(s.received_at) AS last_at, group_concat(DISTINCT s.account_id) AS accounts,
+  (SELECT x.list_name FROM scoped x WHERE x.list_id = s.list_id AND x.list_name IS NOT NULL
+    ORDER BY x.received_at DESC LIMIT 1) AS name,
+  (SELECT x.list_post FROM scoped x WHERE x.list_id = s.list_id AND x.list_post IS NOT NULL
+    ORDER BY x.received_at DESC LIMIT 1) AS post
+FROM scoped s GROUP BY s.list_id ORDER BY last_at DESC, s.list_id''';
+    return _select(sql, [], {_db.emails, _db.mailboxes, _db.mutedThreads})
+        .watch()
+        .distinct(_rowsEqual)
+        .map(
+          (rows) => [
+            for (final r in rows)
+              MailingList(
+                id: r.read<String>('list_id'),
+                name: r.read<String?>('name') ?? r.read<String>('list_id'),
+                postAddress: listPostAddress(r.read<String?>('post')),
+                messageCount: r.read<int>('messages'),
+                unreadCount: r.read<int>('unread'),
+                lastActivity: fromMillis(r.read<int>('last_at')),
+                accountIds: (r.read<String?>('accounts') ?? '').split(',').where((a) => a.isNotEmpty).toList()..sort(),
+              ),
+          ],
+        );
+  }
+
+  /// The conversations of list [listId], newest activity first; see
+  /// `MailingLists.watchListThreads`.
+  Stream<List<ListThread>> watchListThreads(String listId, {bool includeMuted = false, int limit = 200}) {
+    final sql =
+        '''
+WITH ${_listCandidates('e.list_id = ?')},
+scoped AS (
+  SELECT c.*, (t.thread_id IS NOT NULL) AS muted FROM candidates c
+  LEFT JOIN muted_threads t ON t.account_id = c.account_id AND t.thread_id = c.thread_id
+  WHERE c.copy_rank = 1${includeMuted ? '' : ' AND t.thread_id IS NULL'}
+),
+ranked AS (
+  SELECT s.*,
+    ROW_NUMBER() OVER (t ORDER BY s.received_at DESC, s.seq DESC) AS rn_new,
+    ROW_NUMBER() OVER (t ORDER BY s.received_at ASC, s.seq ASC) AS rn_old,
+    count(*) OVER t AS thread_count,
+    sum(1 - s.is_seen) OVER t AS thread_unread,
+    max(s.received_at) OVER t AS last_at,
+    json_group_array(json(s.from_json)) OVER (t ORDER BY s.received_at ASC, s.seq ASC
+      ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS thread_from,
+    json_group_array(s.subject) FILTER (WHERE instr(s.subject, 'PATCH') > 0) OVER t AS patch_subjects
+  FROM scoped s
+  WINDOW t AS (PARTITION BY s.account_id, s.thread_id)
+),
+threads AS (
+  SELECT account_id, thread_id FROM ranked WHERE rn_new = 1 ORDER BY last_at DESC, seq DESC LIMIT ?
+)
+SELECT r.* FROM ranked r JOIN threads th ON th.account_id = r.account_id AND th.thread_id = r.thread_id
+WHERE r.rn_new = 1 OR r.rn_old = 1
+ORDER BY r.last_at DESC, r.account_id, r.thread_id, r.rn_new''';
+    return _select(
+      sql,
+      [listId.toLowerCase(), limit],
+      {_db.emails, _db.mailboxes, _db.mutedThreads},
+    ).watch().distinct(_rowsEqual).map(_listThreadsFromRows);
+  }
+
+  List<ListThread> _listThreadsFromRows(List<QueryRow> rows) {
+    String keyOf(QueryRow r) => '${r.read<String>('account_id')}|${r.read<String>('thread_id')}';
+    final out = <ListThread>[];
+    for (var i = 0; i < rows.length;) {
+      final key = keyOf(rows[i]);
+      var j = i + 1;
+      while (j < rows.length && keyOf(rows[j]) == key) {
+        j++;
+      }
+      final group = rows.sublist(i, j);
+      i = j;
+      final newest = group.firstWhere((x) => x.read<int>('rn_new') == 1);
+      final oldest = group.firstWhere((x) => x.read<int>('rn_old') == 1);
+      final first = summaryFromRow(_emailRow(oldest));
+      final participants = <EmailAddress>[];
+      final seen = <String>{};
+      for (final list in jsonDecode(newest.read<String>('thread_from')) as List<Object?>) {
+        for (final a in list! as List<Object?>) {
+          final m = (a! as Map).cast<String, Object?>();
+          final email = m['e']! as String;
+          if (seen.add(email.toLowerCase())) participants.add(EmailAddress(email, m['n'] as String?));
+        }
+      }
+      final subjects = [
+        for (final s in jsonDecode(newest.read<String?>('patch_subjects') ?? '[]') as List<Object?>) ?s as String?,
+      ];
+      out.add(
+        ListThread(
+          threadId: newest.read<String>('thread_id'),
+          first: first,
+          latest: summaryFromRow(_emailRow(newest)),
+          messageCount: newest.read<int>('thread_count'),
+          unreadCount: newest.read<int>('thread_unread'),
+          participants: participants,
+          patchCount: ListThread.countPatches(subjects, series: PatchTag.parse(first.subject)),
+          isMuted: newest.read<int>('muted') != 0,
+        ),
+      );
+    }
+    return out;
+  }
+
+  /// Ids of the muted conversations of all accounts.
+  Stream<Set<String>> watchMutedThreads() => _select('SELECT thread_id FROM muted_threads ORDER BY thread_id', [], {
+    _db.mutedThreads,
+  }).watch().distinct(_rowsEqual).map((rows) => {for (final r in rows) r.read<String>('thread_id')});
+
+  /// The account and conversation of [emailId] (resolving moved ids), or
+  /// null when it isn't stored.
+  Future<({String accountId, String threadId})?> threadOf(String emailId) async {
+    final id = await resolveId(emailId);
+    final row = await (_db.select(_db.emails)..where((e) => e.id.equals(id))).getSingleOrNull();
+    return row == null ? null : (accountId: row.accountId, threadId: row.threadId);
+  }
+
+  /// Mutes or unmutes conversation [threadId] of [accountId].
+  Future<void> setThreadMuted(String accountId, String threadId, {required bool muted, DateTime? now}) async {
+    if (muted) {
+      await _db
+          .into(_db.mutedThreads)
+          .insert(
+            MutedThreadsCompanion.insert(
+              accountId: accountId,
+              threadId: threadId,
+              mutedAt: (now ?? DateTime.now()).millisecondsSinceEpoch,
+            ),
+            mode: InsertMode.insertOrIgnore,
+          );
+    } else {
+      await (_db.delete(
+        _db.mutedThreads,
+      )..where((t) => t.accountId.equals(accountId) & t.threadId.equals(threadId))).go();
+    }
+  }
+
+  /// Unread messages of conversation [threadId] of [accountId].
+  Future<List<String>> unreadInThread(String accountId, String threadId) async {
+    final rows = await _select(
+      'SELECT id FROM emails WHERE account_id = ? AND thread_id = ? AND is_seen = 0',
+      [accountId, threadId],
+      {_db.emails},
+    ).get();
+    return [for (final r in rows) r.read<String>('id')];
+  }
+
+  /// The unread ones among [emailIds] whose conversation is muted.
+  Future<List<String>> unreadInMutedThreads(Iterable<String> emailIds) async {
+    final out = <String>[];
+    for (final chunk in _chunks(emailIds.toSet().toList())) {
+      final rows = await _select(
+        'SELECT e.id FROM emails e JOIN muted_threads t ON t.account_id = e.account_id AND t.thread_id = e.thread_id '
+        'WHERE e.is_seen = 0 AND e.id IN (${List.filled(chunk.length, '?').join(', ')})',
+        chunk,
+        {_db.emails, _db.mutedThreads},
+      ).get();
+      out.addAll([for (final r in rows) r.read<String>('id')]);
+    }
+    return out;
+  }
+
+  // Subscriptions -----------------------------------------------------------
+
+  /// SQL true for bulk mail of `emails e`; see `subscriptionKeyOf`. LIKE is
+  /// case-insensitive for ASCII, as domains are.
+  static final String _bulkSql = [
+    "(e.list_id IS NOT NULL AND e.list_id <> '')",
+    'e.list_unsubscribe IS NOT NULL',
+    for (final d in bulkMessageIdDomains) ...["e.message_id_header LIKE '%@$d'", "e.message_id_header LIKE '%.$d'"],
+  ].join(' OR ');
+
+  /// The subscription key of `emails e`; see `Subscription.key`.
+  static const _subscriptionKeySql =
+      "CASE WHEN e.list_id IS NOT NULL AND e.list_id <> '' THEN 'list:' || e.list_id ELSE 'from:' || e.from_email END";
+
+  /// Messages counted for subscriptions (see `summarizeSubscriptions`):
+  /// `emails e` joined with `mailboxes m`, after a `me` CTE.
+  static const _subscriptionScopeSql =
+      "m.role NOT IN ('junk', 'sent', 'drafts') AND e.from_email <> '' AND e.from_email NOT IN (SELECT addr FROM me)";
+
+  /// "Newest value" of a column within a group: the maximum of the receipt
+  /// time (zero-padded) and the value, so `max()` picks the newest row's.
+  static String _newest(String value) => "printf('%015d', received_at) || char(31) || $value";
+
+  static String? _newestValue(String? packed) {
+    if (packed == null) return null;
+    final at = packed.indexOf('\u001f');
+    return at < 0 ? null : packed.substring(at + 1);
+  }
+
+  /// Bulk mail grouped into subscriptions, ranked by
+  /// `Subscription.compareByNeglect`; see `MailSubscriptions`. Counts read
+  /// and recent mail relative to [now].
+  Stream<List<Subscription>> watchSubscriptions({DateTime? now}) {
+    final sql =
+        '''
+WITH me(addr) AS ($_meSql),
+copies AS (
+  SELECT e.account_id, coalesce(e.message_id_header, e.id) AS mid, e.mailbox_id, m.role, e.received_at, e.is_seen,
+    e.from_email, e.list_name, e.list_unsubscribe, e.list_unsubscribe_post,
+    trim(coalesce(json_extract(e.from_json, '\$[0].n'), '')) AS from_name,
+    $_subscriptionKeySql AS gkey,
+    (e.list_id IS NOT NULL OR e.list_unsubscribe IS NOT NULL) AS has_headers
+  FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id
+  WHERE $_subscriptionScopeSql AND ($_bulkSql)
+),
+messages AS (
+  SELECT min(gkey) AS gkey, max(received_at) AS received_at, max(is_seen) AS seen, max(role = 'inbox') AS inbox
+  FROM copies GROUP BY account_id, mid
+),
+stats AS (
+  SELECT gkey, count(*) AS total, sum(seen) AS seen, sum(received_at >= ?1) AS recent,
+    sum(CASE WHEN received_at >= ?1 THEN seen ELSE 0 END) AS recent_seen, sum(inbox) AS inbox,
+    max(received_at) AS last_at
+  FROM messages GROUP BY gkey
+),
+details AS (
+  SELECT gkey, group_concat(DISTINCT mailbox_id) AS boxes, group_concat(DISTINCT account_id) AS accounts,
+    count(DISTINCT from_email) AS senders, max(has_headers) AS has_headers,
+    max(${_newest('from_email')}) AS sender,
+    max(CASE WHEN trim(coalesce(list_name, '')) <> '' THEN ${_newest('trim(list_name)')} END) AS list_name,
+    max(CASE WHEN from_name <> '' THEN ${_newest('from_name')} END) AS from_name,
+    max(CASE WHEN list_unsubscribe IS NOT NULL THEN ${_newest("list_unsubscribe || char(31) || coalesce(list_unsubscribe_post, '')")} END) AS unsubscribe
+  FROM copies GROUP BY gkey
+)
+SELECT s.*, d.boxes, d.accounts, d.senders, d.sender, d.list_name, d.from_name, d.unsubscribe
+FROM stats s JOIN details d ON d.gkey = s.gkey
+WHERE d.has_headers = 1 OR s.total >= 2''';
+    final cutoff = (now ?? DateTime.now()).subtract(Subscription.window).millisecondsSinceEpoch;
+    return _select(sql, [cutoff], {_db.emails, _db.mailboxes, _db.accounts})
+        .watch()
+        .distinct(_rowsEqual)
+        .map((rows) => [for (final r in rows) _subscriptionFromRow(r)]..sort(Subscription.compareByNeglect));
+  }
+
+  static Subscription _subscriptionFromRow(QueryRow r) {
+    final key = r.read<String>('gkey');
+    final address = _newestValue(r.read<String?>('sender')) ?? '';
+    final isList = key.startsWith('list:');
+    final name =
+        (isList ? _newestValue(r.read<String?>('list_name')) : null) ?? _newestValue(r.read<String?>('from_name'));
+    final unsubscribe = _newestValue(r.read<String?>('unsubscribe'))?.split('\u001f');
+    List<String> split(String column) =>
+        (r.read<String?>(column) ?? '').split(',').where((s) => s.isNotEmpty).toList()..sort();
+    return Subscription(
+      key: key,
+      name: name ?? (isList ? key.substring(5) : address),
+      address: address,
+      messageCount: r.read<int>('total'),
+      readCount: r.read<int>('seen'),
+      recentCount: r.read<int>('recent'),
+      recentReadCount: r.read<int>('recent_seen'),
+      inboxCount: r.read<int>('inbox'),
+      senderCount: r.read<int>('senders'),
+      lastReceived: fromMillis(r.read<int>('last_at')),
+      mailboxIds: split('boxes'),
+      accountIds: split('accounts'),
+      listUnsubscribe: unsubscribe?.first,
+      listUnsubscribePost: switch (unsubscribe) {
+        [_, final post] when post.isNotEmpty => post,
+        _ => null,
+      },
+    );
+  }
+
+  /// The messages of subscription [key], newest first; see
+  /// `MailSubscriptions.watchSubscriptionEmails`.
+  Stream<List<EmailSummary>> watchSubscriptionEmails(String key, {bool inboxOnly = false, int limit = 200}) {
+    final args = <Object?>[];
+    final String match;
+    if (key.startsWith('list:')) {
+      match = 'e.list_id = ?';
+      args.add(key.substring(5));
+    } else if (key.startsWith('from:')) {
+      match = "(e.list_id IS NULL OR e.list_id = '') AND e.from_email = ? AND ($_bulkSql)";
+      args.add(key.substring(5));
+    } else {
+      return Stream.value(const []);
+    }
+    args.add(limit);
+    final sql =
+        '''
+WITH me(addr) AS ($_meSql)
+SELECT e.* FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id
+WHERE $match AND $_subscriptionScopeSql${inboxOnly ? " AND m.role = 'inbox'" : ''}
+ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
+    return _select(sql, args, {
+      _db.emails,
+      _db.mailboxes,
+      _db.accounts,
+      _db.emailKeywords,
+    }).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) summaryFromRow(_emailRow(r))]);
   }
 
   // Search ------------------------------------------------------------------
@@ -1124,6 +1532,75 @@ SELECT
       payload: payload == null ? const Value.absent() : Value(jsonEncode(payload)),
     ),
   );
+
+  // Rules -------------------------------------------------------------------
+
+  Rule _ruleFromRow(QueryRow r) =>
+      Rule.fromJson((jsonDecode(r.read<String>('json')) as Map).cast<String, Object?>())
+          .copyWith(order: r.read<int>('sort_order'));
+
+  /// Every rule, in order.
+  Stream<List<Rule>> watchRules() => _select('SELECT * FROM rules ORDER BY sort_order, id', [], {
+    _db.rules,
+  }).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) _ruleFromRow(r)]);
+
+  Future<List<Rule>> getRules() async => [
+    for (final r in await _select('SELECT * FROM rules ORDER BY sort_order, id', [], {_db.rules}).get())
+      _ruleFromRow(r),
+  ];
+
+  /// Stores [rule]: a new one goes last, an existing one keeps its place
+  /// ([Rule.order] is ignored; see [reorderRules]).
+  Future<void> saveRule(Rule rule) => _db.transaction(() async {
+    final json = jsonEncode(rule.toJson()..remove('order'));
+    final updated = await _write('UPDATE rules SET json = ? WHERE id = ?', [json, rule.id], {_db.rules});
+    if (updated > 0) return;
+    final last = await _select('SELECT coalesce(max(sort_order), -1) AS m FROM rules', [], {_db.rules}).getSingle();
+    await _db
+        .into(_db.rules)
+        .insert(RulesCompanion.insert(id: rule.id, json: json, sortOrder: Value(last.read<int>('m') + 1)));
+  });
+
+  Future<void> deleteRule(String id) => (_db.delete(_db.rules)..where((r) => r.id.equals(id))).go();
+
+  /// Puts the rules in the order of [ids]; rules not listed go after them.
+  Future<void> reorderRules(List<String> ids) => _db.transaction(() async {
+    final rest = [
+      for (final r in await getRules())
+        if (!ids.contains(r.id)) r.id,
+    ];
+    for (final (i, id) in [...ids, ...rest].indexed) {
+      await _write('UPDATE rules SET sort_order = ? WHERE id = ? AND sort_order != ?', [i, id, i], {_db.rules});
+    }
+  });
+
+  /// Where device rules stopped in [mailboxId]; null before they first ran.
+  Future<RuleWatermark?> ruleWatermark(String mailboxId) async {
+    final row = await (_db.select(_db.ruleWatermarks)..where((w) => w.mailboxId.equals(mailboxId))).getSingleOrNull();
+    return row == null ? null : RuleWatermark(seq: row.seq, uidValidity: row.uidValidity, uid: row.uid);
+  }
+
+  Future<void> setRuleWatermark(String mailboxId, RuleWatermark watermark) => _db
+      .into(_db.ruleWatermarks)
+      .insertOnConflictUpdate(
+        RuleWatermarksCompanion.insert(
+          mailboxId: mailboxId,
+          seq: watermark.seq,
+          uidValidity: Value(watermark.uidValidity),
+          uid: Value(watermark.uid),
+        ),
+      );
+
+  /// Messages stored in [mailboxId] after [seq] (insertion order), oldest
+  /// insertion first, with their seq.
+  Future<List<(int, EmailSummary)>> emailsStoredAfter(String mailboxId, int seq) async {
+    final rows =
+        await (_db.select(_db.emails)
+              ..where((e) => e.seq.isBiggerThanValue(seq) & e.mailboxId.equals(mailboxId))
+              ..orderBy([(e) => OrderingTerm.asc(e.seq)]))
+            .get();
+    return [for (final r in rows) (r.seq, summaryFromRow(r))];
+  }
 
   // VIPs --------------------------------------------------------------------
 

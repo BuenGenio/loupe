@@ -1,0 +1,446 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 990,
+      "keptText": 990,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:alice@example.org"
+      },
+      {
+        "url": "mailto:alice@example.org"
+      },
+      {
+        "url": "mailto:bob@example.org"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "On Mon, 6 Oct 2025 at 10:00, Alice Example <"
+          },
+          {
+            "text": "alice@example.org",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "> wrote:"
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "The read path took frob_lock only to look the context up. Cache the\nlookup per context and read it with READ_ONCE()."
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Signed-off-by: Alice Example <"
+              },
+              {
+                "text": "alice@example.org",
+                "u": true,
+                "link": 1
+              },
+              {
+                "text": ">"
+              }
+            ]
+          },
+          {
+            "type": "hr"
+          },
+          {
+            "type": "diffstat",
+            "summary": "1 file changed, 8 insertions(+), 6 deletions(-)",
+            "files": [
+              [
+                "drivers/frob/core.c",
+                14,
+                "++++++++------"
+              ]
+            ]
+          },
+          {
+            "type": "diff",
+            "fragment": true,
+            "old": "drivers/frob/core.c",
+            "new": "drivers/frob/core.c",
+            "headers": [
+              "diff --git a/drivers/frob/core.c b/drivers/frob/core.c",
+              "index 3b18e51..a1d2c4f 100644"
+            ],
+            "hunks": [
+              {
+                "header": "@@ -42,13 +42,15 @@ int frob_read(struct frob_ctx *ctx, char *buf, size_t len)",
+                "lines": [
+                  "42:42  {",
+                  "43:43         struct frob_entry *e;",
+                  "44:44  ",
+                  "45: -       spin_lock(&frob_lock);",
+                  "46: -       e = frob_lookup(ctx);",
+                  "47: -       spin_unlock(&frob_lock);",
+                  ":45 +       e = READ_ONCE(ctx->cached);"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "What keeps ctx->cached alive here? Nothing pins the entry once the\nlock is gone."
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "diff",
+            "fragment": true,
+            "hunks": [
+              {
+                "header": "",
+                "lines": [
+                  ": +       if (!e) {",
+                  ": +               e = frob_lookup(ctx);",
+                  ": +               WRITE_ONCE(ctx->cached, e);",
+                  ": +       }"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[...]"
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "diff",
+            "fragment": true,
+            "hunks": [
+              {
+                "header": "",
+                "lines": [
+                  ": -       return frob_copy(e, buf, len);",
+                  ": +       return frob_copy(e, buf, min(len, e->size));"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Good catch, but this is a separate fix; please split it out with a\nFixes: tag."
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "quote",
+            "children": [
+              {
+                "type": "p",
+                "inlines": [
+                  {
+                    "text": "Earlier, Carol wrote:\n- item one of a plain list\n- item two"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "With those addressed:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Reviewed-by: Bob Example <"
+          },
+          {
+            "text": "bob@example.org",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\nBob"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 990,
+      "keptText": 990,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:alice@example.org"
+      },
+      {
+        "url": "mailto:alice@example.org"
+      },
+      {
+        "url": "mailto:bob@example.org"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "On Mon, 6 Oct 2025 at 10:00, Alice Example <"
+          },
+          {
+            "text": "alice@example.org",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "> wrote:"
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "The read path took frob_lock only to look the context up. Cache the\nlookup per context and read it with READ_ONCE()."
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Signed-off-by: Alice Example <"
+              },
+              {
+                "text": "alice@example.org",
+                "u": true,
+                "link": 1
+              },
+              {
+                "text": ">"
+              }
+            ]
+          },
+          {
+            "type": "hr"
+          },
+          {
+            "type": "diffstat",
+            "summary": "1 file changed, 8 insertions(+), 6 deletions(-)",
+            "files": [
+              [
+                "drivers/frob/core.c",
+                14,
+                "++++++++------"
+              ]
+            ]
+          },
+          {
+            "type": "diff",
+            "fragment": true,
+            "old": "drivers/frob/core.c",
+            "new": "drivers/frob/core.c",
+            "headers": [
+              "diff --git a/drivers/frob/core.c b/drivers/frob/core.c",
+              "index 3b18e51..a1d2c4f 100644"
+            ],
+            "hunks": [
+              {
+                "header": "@@ -42,13 +42,15 @@ int frob_read(struct frob_ctx *ctx, char *buf, size_t len)",
+                "lines": [
+                  "42:42  {",
+                  "43:43         struct frob_entry *e;",
+                  "44:44  ",
+                  "45: -       spin_lock(&frob_lock);",
+                  "46: -       e = frob_lookup(ctx);",
+                  "47: -       spin_unlock(&frob_lock);",
+                  ":45 +       e = READ_ONCE(ctx->cached);"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "What keeps ctx->cached alive here? Nothing pins the entry once the\nlock is gone."
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "diff",
+            "fragment": true,
+            "hunks": [
+              {
+                "header": "",
+                "lines": [
+                  ": +       if (!e) {",
+                  ": +               e = frob_lookup(ctx);",
+                  ": +               WRITE_ONCE(ctx->cached, e);",
+                  ": +       }"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[...]"
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "diff",
+            "fragment": true,
+            "hunks": [
+              {
+                "header": "",
+                "lines": [
+                  ": -       return frob_copy(e, buf, len);",
+                  ": +       return frob_copy(e, buf, min(len, e->size));"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Good catch, but this is a separate fix; please split it out with a\nFixes: tag."
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "quote",
+            "children": [
+              {
+                "type": "p",
+                "inlines": [
+                  {
+                    "text": "Earlier, Carol wrote:\n- item one of a plain list\n- item two"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "With those addressed:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Reviewed-by: Bob Example <"
+          },
+          {
+            "text": "bob@example.org",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\nBob"
+          }
+        ]
+      }
+    ]
+  }
+}
