@@ -10,3 +10,11 @@
 - `gpg/leading-zero-*.sig`: Ed25519 signatures by gpg Alice whose R (or S)
   has a leading zero octet, so its MPI is 31 octets: upstream dart_pg 2.1.0
   rejected these (see third_party/dart_pg/CHANGELOG.md).
+- `smime/`: made with OpenSSL 3.5 by `make_smime_vectors.sh`: a test root
+  and intermediate CA ("Loupe Test Mail CA"), user certificates (Alice RSA,
+  Bob EC P-256, Carol expired, Dave signing only, Erin a TLS certificate,
+  Frank issued by a non-CA, Gina and Hank under a name-constrained CA,
+  Mallory from an untrusted CA), PKCS #12 files (`alice.p12` and
+  `alice-legacy.p12`: password `alice-pass`; `bob-*.p12`: `bob-pass`;
+  `dave-nopass.p12`: empty) and messages signed and encrypted by
+  `openssl cms`. Test keys only.

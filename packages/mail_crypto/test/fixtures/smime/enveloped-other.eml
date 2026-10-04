@@ -1,0 +1,22 @@
+To: Bob Example <bob@example.net>
+From: Alice Example <alice@example.org>
+Subject: For Carol
+MIME-Version: 1.0
+Content-Disposition: attachment; filename="smime.p7m"
+Content-Type: application/pkcs7-mime; smime-type=enveloped-data; name="smime.p7m"
+Content-Transfer-Encoding: base64
+
+MIICTQYJKoZIhvcNAQcDoIICPjCCAjoCAQAxggFTMIIBTwIBADA3MDIxEzARBgNV
+BAoMCkxvdXBlIFRlc3QxGzAZBgNVBAMMEkxvdXBlIFRlc3QgTWFpbCBDQQIBZjAN
+BgkqhkiG9w0BAQEFAASCAQAaXuJrF3FhtkqM3r9EFdwVFQibs0ykK1KUlz8EGY9d
+g3ICxJSwBUV/McinqcRB7FooZo9997hwAa4/YOVyfa9vjOo6QpKAduNfSJ8/jUno
++/i1AC2ZeEoNlwYqk3r9rV2Hax/uPrpu6YPu3uI+uFTLt7rwjnmv60BE+pHlBGTs
+JP/pL3UPGDi7mNRBs4w3eohPeDsN0RWb2feHz/YnhogupI3DO2E6GgO3tzIAJhce
+UG+BRo22oyPl7IMrwM4LdMUh8voXliTeUlc7C5aP+WEKpWn1VXKUaTqjrMo+BrE0
+oumXxv4OnzdMMYbZXpsaVhhgoJx/F0eT7KNB8h8vupILMIHdBgkqhkiG9w0BBwEw
+HQYJYIZIAWUDBAEqBBCA2s+/5VipcmUNqNlyCdyogIGwrbFk3ta1tGyD2OjPBnG9
+UZaUYheg8MuyZyETYVTXoiS9bA353WSWoyDHZdWavXE4b2R3dE0ZABmQdFgX2ve2
+i6UXLCRv+FDz1zz4TDofNZd5eTFEOOWTE9rwpkXjzpGlgWG+tRSx1VYriQQgnv24
+bMnZjK/GcLPOxhusy/lu8DmFsIyzj6azzVeY03v2dzX1N2GjZgunKrSQQM9UC+VK
+BKYDPUxldGyFj3hQ07zVEX0=
+
