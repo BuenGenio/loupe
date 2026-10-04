@@ -38,6 +38,22 @@ Rules:
   - mail_sync post-filters server hits with `matchesEmail`.
 - **Changing a contract:** edit mail_model (or the API file) in its own commit, run `dart analyze` on the whole workspace, and fix every user in the same change.
 
+## Background work (Android)
+
+Besides the app, three kinds of isolates open the database, each through `openLiveStore` (`app/lib/data/live.dart`):
+
+| Who | When | Entry point |
+|---|---|---|
+| Periodic sync | WorkManager, every 15 minutes, and one-off wake-ups (`BackgroundScheduler`) | `backgroundTaskDispatcher` |
+| Notification buttons | Archive, Mark as Read (flutter_local_notifications' background isolate) | `onNotificationAction` |
+| Instant Delivery | Experimental `specialUse` foreground service holding IMAP IDLE | `startInstantDelivery` |
+
+Rules (`app/lib/platform/`):
+
+- **One syncer at a time.** Whoever syncs keeps a lease file fresh (`SyncLeases`). The app always wins: background work starts only without the app's lease and stops when the app comes back; the app waits briefly for it. A lease goes stale after 45 s, so a dead process never blocks the others.
+- **Hand work to whoever syncs.** A notification button goes to the app's main isolate, then to Instant Delivery (`ForegroundBridge`), and only otherwise opens the database itself.
+- **New mail is what passed a watermark.** `detectNewMail` remembers the newest arrival per inbox (and VIP mail elsewhere) in `new_mail.json`; a list seen for the first time only sets its watermark. The app moves the watermarks silently when it goes to the background.
+
 ## Conventions
 
 - Dart 3.13, `dart analyze` clean with the root `analysis_options.yaml`; 120-column lines.
