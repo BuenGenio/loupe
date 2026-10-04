@@ -36,6 +36,9 @@ Rules:
   - The store translates it to SQL/FTS5.
   - The transport compiles it for the server via expr_search and widens what the server can't do.
   - mail_sync post-filters server hits with `matchesEmail`.
+- **Settings on the server:** `MailTransport.readDocuments`/`writeDocument` keep small app documents on the user's
+  mail server (an IMAP METADATA annotation, else a message in the `Loupe Settings` folder). Smart Mailboxes use them;
+  see [smart-mailboxes-format.md](smart-mailboxes-format.md).
 - **Changing a contract:** edit mail_model (or the API file) in its own commit, run `dart analyze` on the whole workspace, and fix every user in the same change.
 
 ## Conventions
