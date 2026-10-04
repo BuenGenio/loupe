@@ -49,8 +49,35 @@ int mailboxRoleOrder(MailboxRole role) => switch (role) {
   MailboxRole.none => 10,
 };
 
-/// Display name of a mailbox: role mailboxes get their familiar names
-/// ("Sent Mail" and "Sent Items" are both "Sent").
+/// [mailboxes] with each role held by at most one mailbox per account; the
+/// others become plain folders ([MailboxRole.none]) and show their real
+/// names. The transports already assign roles that way; this keeps a stale
+/// or odd mailbox list from showing two "Archive" folders. The holder is the
+/// mailbox named like the role, else the one with the shortest path.
+List<Mailbox> withUniqueRoles(List<Mailbox> mailboxes) {
+  final holders = <(String, MailboxRole), Mailbox>{};
+  int rank(Mailbox m) => mailboxDisplayName(m).toLowerCase() == m.name.toLowerCase() ? 0 : 1;
+  for (final m in mailboxes) {
+    if (m.role == MailboxRole.none) continue;
+    final key = (m.accountId, m.role);
+    final held = holders[key];
+    if (held == null || rank(m) < rank(held) || (rank(m) == rank(held) && m.path.length < held.path.length)) {
+      holders[key] = m;
+    }
+  }
+  if (holders.length == mailboxes.where((m) => m.role != MailboxRole.none).length) return mailboxes;
+  return [
+    for (final m in mailboxes)
+      if (m.role == MailboxRole.none || identical(holders[(m.accountId, m.role)], m))
+        m
+      else
+        m.copyWith(role: MailboxRole.none),
+  ];
+}
+
+/// Display name of a mailbox: the mailbox holding a role gets its familiar
+/// name ("Sent Mail" and "Sent Items" are both "Sent"); see
+/// [withUniqueRoles] for why only one per account does.
 String mailboxDisplayName(Mailbox box) => switch (box.role) {
   MailboxRole.inbox => 'Inbox',
   MailboxRole.drafts => 'Drafts',
