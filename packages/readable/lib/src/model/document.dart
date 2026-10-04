@@ -220,8 +220,6 @@ final class ListBlock extends Block {
   final ListMarker marker;
   final int start;
 
-  bool get ordered => marker != ListMarker.disc && marker != ListMarker.none;
-
   @override
   Map<String, Object?> toJson() => {
     'type': 'list',
@@ -492,8 +490,6 @@ final class ReaderDocument {
   final List<LinkRef> links;
   final ReaderStats stats;
 
-  bool get hasRemoteImages => images.any((i) => i.isRemote);
-
   Map<String, Object?> toJson() => {
     'stats': stats.toJson(),
     'links': [for (final l in links) l.toJson()],
@@ -504,21 +500,3 @@ final class ReaderDocument {
 
 /// Visible text of inlines (images count as nothing).
 String inlineText(Iterable<Inline> inlines) => inlines.whereType<TextRun>().map((r) => r.text).join();
-
-/// Length of all text in [blocks], recursively.
-int blocksTextLength(Iterable<Block> blocks) {
-  var n = 0;
-  for (final b in blocks) {
-    n += switch (b) {
-      ParagraphBlock(:final inlines) ||
-      HeadingBlock(:final inlines) ||
-      PreBlock(:final inlines) => inlineText(inlines).length,
-      QuoteBlock(:final children) => blocksTextLength(children),
-      ListBlock(:final items) => items.fold(0, (s, i) => s + blocksTextLength(i)),
-      ButtonBlock(:final text) => text.length,
-      TableBlock(:final rows) => rows.fold(0, (s, r) => s + r.fold(0, (s, c) => s + inlineText(c.inlines).length)),
-      RuleBlock() || ImageBlock() || CarouselBlock() => 0,
-    };
-  }
-  return n;
-}
