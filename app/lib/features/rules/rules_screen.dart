@@ -1,0 +1,341 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mail_model/mail_model.dart';
+
+import '../../providers.dart';
+import '../../router.dart';
+import '../../shared/bars.dart';
+import '../../shared/grouped_list.dart';
+import '../../theme/loupe_icons.dart';
+import '../../theme/theme.dart';
+import 'include_sheet.dart';
+import 'rule_format.dart';
+
+/// Settings › Rules: every rule in the order they run, with a switch each,
+/// touch and hold to reorder, and how server rules stand per account.
+class RulesScreen extends ConsumerWidget {
+  const RulesScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colors = LoupeColors.of(context);
+    final styles = LoupeTextStyles.of(context);
+    final rules = ref.watch(rulesProvider);
+    final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];
+    final list = rules.value ?? const <Rule>[];
+    final serverAccounts = [
+      for (final a in accounts)
+        if (list.any((r) => r.location == RuleLocation.server && r.appliesTo(a.id))) a,
+    ];
+    return Scaffold(
+      backgroundColor: colors.groupedBackground,
+      body: CustomScrollView(
+        slivers: [
+          LoupeTitleBar(
+            title: 'Rules',
+            trailing: [
+              BarIconButton(
+                icon: LoupeIcons.compose,
+                tooltip: 'New Rule',
+                onPressed: () => context.push(Routes.newRule()),
+              ),
+            ],
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 8)),
+          if (rules.hasError)
+            SliverToBoxAdapter(
+              child: RuleNotice(text: 'Couldn’t load the rules.', icon: LoupeIcons.error, tint: colors.destructive),
+            )
+          else if (!rules.hasValue)
+            const SliverToBoxAdapter(child: Center(child: CupertinoActivityIndicator()))
+          else if (list.isEmpty)
+            SliverToBoxAdapter(
+              child: _Empty(styles: styles, colors: colors),
+            )
+          else
+            SliverToBoxAdapter(child: _RuleList(rules: list)),
+          if (serverAccounts.isNotEmpty)
+            SliverToBoxAdapter(
+              child: InsetGroup(
+                header: 'Server Rules',
+                footer:
+                    'Server rules run on the mail server as mail arrives, also while this phone is off. '
+                    'They are kept in a Sieve script named “loupe”.',
+                separatorIndent: 54,
+                children: [for (final a in serverAccounts) _ServerStatusRow(account: a)],
+              ),
+            ),
+          SliverToBoxAdapter(child: SizedBox(height: 24 + MediaQuery.paddingOf(context).bottom)),
+        ],
+      ),
+    );
+  }
+}
+
+class _Empty extends StatelessWidget {
+  const _Empty({required this.styles, required this.colors});
+
+  final LoupeTextStyles styles;
+  final LoupeColors colors;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.fromLTRB(32, 48, 32, 24),
+    child: Column(
+      children: [
+        Icon(LoupeIcons.rules, size: 44, color: colors.tertiaryText),
+        const SizedBox(height: 12),
+        Text('No Rules', style: styles.sectionHeader),
+        const SizedBox(height: 6),
+        Text(
+          'Rules file, tag and flag new mail for you. Make one with the compose button above, or from a search with '
+          '“Make This a Rule”.',
+          style: styles.footnote,
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ),
+  );
+}
+
+/// The rules in a card; touch and hold a rule (or drag its handle) to move it.
+class _RuleList extends ConsumerStatefulWidget {
+  const _RuleList({required this.rules});
+
+  final List<Rule> rules;
+
+  @override
+  ConsumerState<_RuleList> createState() => _RuleListState();
+}
+
+class _RuleListState extends ConsumerState<_RuleList> {
+  /// The order shown until the repository catches up with a drag.
+  List<Rule>? _pending;
+
+  List<Rule> get _rules {
+    final pending = _pending;
+    if (pending == null) return widget.rules;
+    final ids = [for (final r in pending) r.id];
+    if (ids.length == widget.rules.length && [for (final r in widget.rules) r.id].join('|') == ids.join('|')) {
+      return widget.rules;
+    }
+    final byId = {for (final r in widget.rules) r.id: r};
+    return [for (final id in ids) ?byId[id]];
+  }
+
+  Future<void> _reorder(int from, int to) async {
+    final rules = [..._rules];
+    rules.insert(to, rules.removeAt(from));
+    setState(() => _pending = rules);
+    await _guard(() => ref.read(repositoryProvider).rules.reorderRules([for (final r in rules) r.id]));
+  }
+
+  Future<void> _toggle(Rule rule, bool enabled) =>
+      _guard(() => ref.read(repositoryProvider).rules.saveRule(rule.copyWith(enabled: enabled)));
+
+  Future<void> _guard(Future<void> Function() action) async {
+    try {
+      await action();
+    } on MailException catch (e) {
+      if (!mounted) return;
+      await showCupertinoDialog<void>(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+          title: const Text('Couldn’t Change the Rule'),
+          content: Text(e.message),
+          actions: [CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: const Text('OK'))],
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = LoupeColors.of(context);
+    final mailboxes = {for (final m in ref.watch(mailboxesProvider).value ?? const <Mailbox>[]) m.id: m};
+    final rules = _rules;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Material(
+              color: colors.cellBackground,
+              child: ReorderableListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                buildDefaultDragHandles: false,
+                itemCount: rules.length,
+                onReorderItem: _reorder,
+                proxyDecorator: (child, index, animation) =>
+                    Material(color: colors.cellBackground, elevation: 6, child: child),
+                itemBuilder: (context, i) {
+                  final rule = rules[i];
+                  return ReorderableDelayedDragStartListener(
+                    key: ValueKey(rule.id),
+                    index: i,
+                    child: _RuleRow(
+                      rule: rule,
+                      index: i,
+                      summary: describeActions(rule, mailboxes),
+                      last: i == rules.length - 1,
+                      onToggle: (v) => _toggle(rule, v),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 7, 16, 0),
+            child: Text(
+              'Rules run from top to bottom on new mail in the Inbox. Touch and hold a rule to move it.',
+              style: LoupeTextStyles.of(context).footnote,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RuleRow extends StatelessWidget {
+  const _RuleRow({
+    required this.rule,
+    required this.index,
+    required this.summary,
+    required this.last,
+    required this.onToggle,
+  });
+
+  final Rule rule;
+  final int index;
+  final String summary;
+  final bool last;
+  final ValueChanged<bool> onToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = LoupeColors.of(context);
+    final styles = LoupeTextStyles.of(context);
+    final condition = rule.condition.trim().isEmpty ? 'Every message' : rule.condition.trim();
+    return InkWell(
+      onTap: () => context.push(Routes.editRule(rule.id)),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: last ? null : Border(bottom: BorderSide(color: colors.separator, width: 0.5)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(4, 8, 10, 8),
+          child: Row(
+            children: [
+              ReorderableDragStartListener(
+                index: index,
+                child: Semantics(
+                  label: 'Move ${rule.name}',
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Icon(LoupeIcons.reorder, size: 20, color: colors.tertiaryText),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            rule.name,
+                            style: styles.body.copyWith(color: rule.enabled ? colors.label : colors.secondaryText),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        RuleLocationBadge(rule.location),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      condition,
+                      style: styles.footnote.copyWith(fontFamily: 'monospace', fontSize: 12.5),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(summary, style: styles.footnote, maxLines: 1, overflow: TextOverflow.ellipsis),
+                  ],
+                ),
+              ),
+              Semantics(
+                label: '${rule.name} on',
+                child: CupertinoSwitch(value: rule.enabled, activeTrackColor: colors.success, onChanged: onToggle),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// How server rules stand on one account, with the way to turn them on.
+class _ServerStatusRow extends ConsumerWidget {
+  const _ServerStatusRow({required this.account});
+
+  final MailAccount account;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colors = LoupeColors.of(context);
+    final status = ref.watch(serverRulesStatusProvider(account.id));
+    final s = status.value;
+    final (IconData icon, Color tint, String detail, String? subtitle) = switch (s) {
+      null when status.hasError => (LoupeIcons.error, colors.destructive, 'Unknown', 'Couldn’t ask the server.'),
+      null => (LoupeIcons.ruleServer, colors.secondaryText, 'Checking…', null),
+      ServerRulesStatus(state: ServerRulesState.active, viaInclude: true, :final activeScript) => (
+        LoupeIcons.check,
+        colors.success,
+        'On',
+        'Run from “$activeScript”.',
+      ),
+      ServerRulesStatus(state: ServerRulesState.active) => (LoupeIcons.check, colors.success, 'On', null),
+      ServerRulesStatus(state: ServerRulesState.inactive, :final activeScript?) => (
+        LoupeIcons.warning,
+        colors.flag,
+        'Off',
+        '“$activeScript” is the active script. Tap to let it run Loupe’s rules too.',
+      ),
+      ServerRulesStatus(state: ServerRulesState.inactive) => (
+        LoupeIcons.warning,
+        colors.flag,
+        'Off',
+        'No script is active on the server. Saving a server rule turns Loupe’s on.',
+      ),
+      ServerRulesStatus(:final message) => (
+        LoupeIcons.error,
+        colors.destructive,
+        'Not Available',
+        message ?? 'This account’s server has no ManageSieve.',
+      ),
+    };
+    final canInclude = s != null && s.state == ServerRulesState.inactive && s.activeScript != null;
+    return GroupedRow(
+      leading: Icon(icon, color: tint, size: 22),
+      title: account.displayName,
+      subtitle: subtitle,
+      detail: detail,
+      chevron: canInclude,
+      onTap: canInclude
+          ? () => unawaited(showIncludeSheet(context, accountId: account.id, accountName: account.displayName))
+          : () => ref.invalidate(serverRulesStatusProvider(account.id)),
+    );
+  }
+}

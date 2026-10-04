@@ -96,6 +96,11 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
             GroupedRow(
+              leading: SettingsIcon(LoupeIcons.rules, colors.vip),
+              title: 'Rules',
+              onTap: () => context.push(Routes.rules),
+            ),
+            GroupedRow(
               leading: SettingsIcon(LoupeIcons.undoSend, colors.flag),
               title: 'Undo Send Delay',
               detail: undoDelayLabel(settings.undoSendSeconds),

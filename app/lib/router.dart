@@ -13,6 +13,8 @@ import 'features/mailboxes/mailboxes_screen.dart';
 import 'features/message_list/message_list_screen.dart';
 import 'features/onboarding/welcome_screen.dart';
 import 'features/outbox/outbox_screen.dart';
+import 'features/rules/rule_editor_screen.dart';
+import 'features/rules/rules_screen.dart';
 import 'features/search/search_screen.dart';
 import 'features/search/smart_mailbox_screen.dart';
 import 'features/settings/account_settings_screen.dart';
@@ -37,6 +39,14 @@ abstract final class Routes {
 
   /// Messages waiting to be sent (scheduled, queued, failed).
   static const outbox = '/outbox';
+
+  /// Settings › Rules, and the rule editor.
+  static const rules = '/settings/rules';
+  static String editRule(String id) => '$rules/edit/${Uri.encodeComponent(id)}';
+
+  /// A new rule, with [condition] filled in ("Make This a Rule").
+  static String newRule({String condition = ''}) =>
+      Uri(path: '$rules/new', queryParameters: condition.isEmpty ? null : {'q': condition}).toString();
 
   static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
   static String message(String emailId) => '/message/${Uri.encodeComponent(emailId)}';
@@ -119,6 +129,24 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: 'swipes', builder: (context, state) => const SwipeSettingsScreen()),
           GoRoute(path: 'advanced', builder: (context, state) => const AdvancedSettingsScreen()),
           GoRoute(path: 'notifications', builder: (context, state) => const NotificationSettingsScreen()),
+          GoRoute(
+            path: 'rules',
+            builder: (context, state) => const RulesScreen(),
+            routes: [
+              GoRoute(
+                path: 'new',
+                pageBuilder: (context, state) => MaterialPage(
+                  fullscreenDialog: true,
+                  child: RuleEditorScreen(initialCondition: state.uri.queryParameters['q'] ?? ''),
+                ),
+              ),
+              GoRoute(
+                path: 'edit/:id',
+                pageBuilder: (context, state) =>
+                    MaterialPage(fullscreenDialog: true, child: RuleEditorScreen(ruleId: state.pathParameters['id']!)),
+              ),
+            ],
+          ),
           GoRoute(
             path: 'account/:id',
             builder: (context, state) => AccountSettingsScreen(accountId: state.pathParameters['id']!),

@@ -147,6 +147,19 @@ abstract final class LoupeIcons {
   static const IconData images = FluentIcons.image_24_regular;
   static const IconData notifications = FluentIcons.alert_24_regular;
 
+  // Rules -------------------------------------------------------------------
+
+  static const IconData rules = FluentIcons.flash_flow_24_regular;
+  static const IconData makeRule = FluentIcons.flash_24_regular;
+
+  /// Where a rule runs: on this phone, or on the mail server (Sieve).
+  static const IconData ruleDevice = FluentIcons.phone_24_regular;
+  static const IconData ruleServer = FluentIcons.server_24_regular;
+  static const IconData reorder = FluentIcons.re_order_dots_vertical_24_regular;
+  static const IconData keepInInbox = FluentIcons.mail_inbox_checkmark_24_regular;
+  static const IconData stopRules = FluentIcons.hand_right_24_regular;
+  static const IconData applyRule = FluentIcons.wand_24_regular;
+
   // Attachments by type -----------------------------------------------------
 
   static const IconData file = FluentIcons.document_24_regular;
