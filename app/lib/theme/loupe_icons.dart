@@ -31,6 +31,14 @@ abstract final class LoupeIcons {
   static const IconData tag = FluentIcons.tag_24_regular;
   static const IconData tagFilled = FluentIcons.tag_24_filled;
 
+  // Mailing lists -------------------------------------------------------------
+
+  static const IconData mailingList = FluentIcons.people_community_24_regular;
+  static const IconData replyToList = FluentIcons.people_team_24_regular;
+  static const IconData replies = FluentIcons.comment_multiple_24_regular;
+  static const IconData mute = FluentIcons.alert_off_24_regular;
+  static const IconData patch = FluentIcons.branch_24_regular;
+
   // Message actions ---------------------------------------------------------
 
   static const IconData compose = FluentIcons.compose_24_regular;

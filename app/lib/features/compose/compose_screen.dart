@@ -378,11 +378,10 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       _body.text = '${_withSignature('')}\n\n${ComposeText.forwardBlock(source, text)}';
       if (content != null) warning ??= await _loadAttachments(source.id, content);
     } else {
-      final r = ComposeText.replyRecipients(
-        source,
-        all: args.mode == ComposeMode.replyAll,
-        own: ownAddresses(_accounts),
-      );
+      final list = args.toList ? listPostAddress(source.listPost) : null;
+      final r = list != null
+          ? (to: [list], cc: const <EmailAddress>[])
+          : ComposeText.replyRecipients(source, all: args.mode == ComposeMode.replyAll, own: ownAddresses(_accounts));
       r.to.forEach(_to.add);
       r.cc.forEach(_cc.add);
       _subject.text = ComposeText.replySubject(source.subject);

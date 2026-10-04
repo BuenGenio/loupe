@@ -11,6 +11,7 @@ import 'features/compose/compose_screen.dart';
 import 'features/conversation/conversation_screen.dart';
 import 'features/conversation/raw_source_screen.dart';
 import 'features/mailboxes/mailboxes_screen.dart';
+import 'features/mailing_lists/mailing_list_screen.dart';
 import 'features/message_list/message_list_screen.dart';
 import 'features/onboarding/welcome_screen.dart';
 import 'features/outbox/outbox_screen.dart';
@@ -43,6 +44,9 @@ abstract final class Routes {
   static const outbox = '/outbox';
 
   static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
+
+  /// A mailing list's threads, by List-Id.
+  static String mailingList(String listId) => '/mailing-list/${Uri.encodeComponent(listId)}';
   static String message(String emailId) => '/message/${Uri.encodeComponent(emailId)}';
   static String source(String emailId) => '/source/${Uri.encodeComponent(emailId)}';
 
@@ -89,6 +93,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/list/:ref',
         builder: (context, state) =>
             MessageListScreen(mailboxRef: MailboxRefCodec.decode(state.pathParameters['ref']!)),
+      ),
+      GoRoute(
+        path: '/mailing-list/:id',
+        builder: (context, state) => MailingListScreen(listId: state.pathParameters['id']!),
       ),
       GoRoute(
         path: '/message/:id',

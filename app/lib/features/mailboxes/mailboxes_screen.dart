@@ -20,6 +20,7 @@ import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
 import '../compose/compose_recovery.dart';
 import '../compose/send_later.dart';
+import '../mailing_lists/list_providers.dart';
 import '../outbox/outbox_screen.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
@@ -163,6 +164,7 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
                 SliverToBoxAdapter(
                   child: _AccountSection(key: ValueKey(account.id), account: account, editing: _editing, onOpen: _open),
                 ),
+              SliverToBoxAdapter(child: _ListsSection(editing: _editing)),
               SliverToBoxAdapter(child: _SmartSection(editing: _editing)),
               SliverToBoxAdapter(child: _TagSection(editing: _editing)),
               const SliverToBoxAdapter(child: SizedBox(height: 24)),
@@ -439,6 +441,35 @@ class _AccountSection extends ConsumerWidget {
       },
       children: rows,
     );
+  }
+}
+
+/// Mailing lists by List-Id, once there is list mail.
+class _ListsSection extends ConsumerWidget {
+  const _ListsSection({required this.editing});
+
+  final bool editing;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final lists = ref.watch(mailingListsProvider).value ?? const <MailingList>[];
+    final v = _visibility(ref);
+    final rows = [
+      for (final l in lists)
+        if (editing || v.visible('list.${l.id}'))
+          _MailboxTile(
+            key: ValueKey('list.${l.id}'),
+            title: l.name,
+            icon: LoupeIcons.mailingList,
+            count: l.unreadCount,
+            editing: editing,
+            visible: v.visible('list.${l.id}'),
+            onToggleVisible: () => v.toggle('list.${l.id}'),
+            onTap: () => context.push(Routes.mailingList(l.id)),
+          ),
+    ];
+    if (rows.isEmpty) return const SizedBox.shrink();
+    return InsetGroup(header: 'Mailing Lists', largeHeader: true, separatorIndent: 51, children: rows);
   }
 }
 
