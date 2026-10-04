@@ -97,6 +97,29 @@ void main() {
     expect(identities.last.name, 'Help Desk');
   });
 
+  test('an account added once stays added when its other identities fail to save', () async {
+    repo.updateAccountError = StateError('database is locked');
+    controller
+      ..addPayload(
+        tbPayload(
+          accounts: [
+            tbAccount(
+              incoming: tbIncoming(password: 'secret'),
+              identities: [
+                ['jane@example.com', 'Jane'],
+                ['help@example.com', 'Help Desk'],
+              ],
+            ),
+          ],
+        ),
+      )
+      ..review();
+    await controller.importSelected();
+    expect(controller.rows.single.status, ImportStatus.added, reason: 'adding it again would duplicate it');
+    expect(controller.selected, isEmpty);
+    expect(repo.setups, hasLength(1));
+  });
+
   test('asks for missing passwords before adding anything', () async {
     controller
       ..addPayload(code(password: ''))

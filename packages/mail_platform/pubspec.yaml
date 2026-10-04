@@ -1,5 +1,5 @@
 name: mail_platform
-description: "Platform services for Loupe: keychain credential store, OAuth sign-in."
+description: "Platform services for Loupe: keychain credential store, OAuth sign-in and token refresh."
 publish_to: none
 version: 0.1.0
 resolution: workspace
@@ -13,6 +13,8 @@ dependencies:
   flutter_appauth: ^12.1.0
   # BSD-3-Clause; Keychain on iOS, Keystore-backed storage on Android.
   flutter_secure_storage: ^11.2.0
+  # BSD-3-Clause (Dart team); token refreshes as a plain HTTPS POST, also in background isolates.
+  http: ^1.6.0
   mail_model: {path: ../mail_model}
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:clock/clock.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import '../../shared/format.dart';
 import '../../theme/theme.dart';
 import '../conversation/attachments.dart';
 import '../conversation/sheets.dart';
+import '../keyboard/mail_commands.dart';
 import '../openpgp/compose_security.dart';
 import '../openpgp/content_loader.dart';
 import '../openpgp/openpgp_providers.dart';
@@ -65,7 +67,7 @@ class ComposeScreen extends ConsumerStatefulWidget {
 
 enum _CloseChoice { delete, save, discardChanges }
 
-class _ComposeScreenState extends ConsumerState<ComposeScreen> {
+class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScopeState<ComposeScreen> {
   final _to = RecipientController();
   final _cc = RecipientController();
   final _bcc = RecipientController();
@@ -146,7 +148,15 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     _lifecycle = AppLifecycleListener(onHide: _saveNow, onPause: _saveNow);
     ref.listenManual(keyringStateProvider, (_, _) => _updateSecurity());
     ref.listenManual(smimeStateProvider, (_, _) => _updateSecurity());
-    unawaited(_prepare());
+    unawaited(
+      _prepare().catchError((Object e) {
+        // A source message that can't be quoted must not leave compose
+        // preparing forever (Send disabled): start from what is there.
+        debugPrint('Preparing compose failed: ${e.runtimeType}');
+        if (mounted && _preparing) setState(() => _preparing = false);
+      }),
+    );
+    registerCommands(ref.read(mailCommandsProvider));
   }
 
   @override
@@ -165,6 +175,23 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     _bodyFocus.dispose();
     _security.dispose();
     super.dispose();
+  }
+
+  // Keyboard: Ctrl/⌘+Enter sends, Esc closes like Cancel (even from a field).
+
+  @override
+  int get priority => 40;
+
+  @override
+  bool canRun(MailCommand command) => command == MailCommand.send || command == MailCommand.back;
+
+  @override
+  void run(MailCommand command) {
+    if (command == MailCommand.back) {
+      unawaited(_cancel());
+    } else if (_canSend) {
+      unawaited(_send());
+    }
   }
 
   void _changed() {
@@ -250,7 +277,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       return;
     }
     unawaited(
-      _recovery.write(ComposeRecord(session: _session, message: message, savedAt: DateTime.now(), sendAt: _sendAt)),
+      _recovery.write(ComposeRecord(session: _session, message: message, savedAt: clock.now(), sendAt: _sendAt)),
     );
   }
 
@@ -724,7 +751,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
   // Sending and closing -----------------------------------------------------------
 
   Future<void> _pickSendLater() async {
-    final choice = await showSendLaterSheet(context, now: DateTime.now(), current: _sendAt);
+    final choice = await showSendLaterSheet(context, now: clock.now(), current: _sendAt);
     if (choice == null || !mounted) return;
     _sendAt = choice.at;
     _changed();
@@ -756,7 +783,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     final repo = _repo;
     final undoSeconds = ref.read(appSettingsProvider).undoSendSeconds;
     // A time that has passed meanwhile sends now, with the usual undo delay.
-    final now = DateTime.now();
+    final now = clock.now();
     final at = _sendAt != null && _sendAt!.isAfter(now) ? _sendAt : null;
     final when = at == null ? null : formatSendTimeFor(context, at, now: now);
     // Captured before popping: the snack bar and Undo outlive this screen.
@@ -771,13 +798,18 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
           showSnack(messenger, 'It was sent before your changes, which are saved in Drafts.');
           return;
         }
+        // Taken out of the Outbox: this screen holds the only copy now, and
+        // a retry after a failure below simply sends it.
+        _outboxId = null;
       }
       final outboxId = await repo.send(
         message,
         undoDelay: Duration(seconds: undoSeconds),
         sendAt: at,
       );
-      if (at != null) wakeUpAt(ref, at);
+      // Queued: nothing below may end in the failure path (a retry would
+      // queue it twice).
+      if (at != null && mounted) wakeUpAt(ref, at);
       _forgetLocal();
       _closeNow();
       final undo = at != null || undoSeconds > 0;
@@ -796,9 +828,10 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
               )
             : null,
       );
-    } on MailException catch (e) {
+    } on Object catch (e) {
+      // The message stays here; Send can be tried again.
       if (mounted) setState(() => _busy = false);
-      showSnack(messenger, e.message);
+      showSnack(messenger, e is MailException ? e.message : 'Couldn’t send. Try again.');
     }
   }
 

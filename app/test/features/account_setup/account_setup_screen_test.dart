@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loupe/data/live.dart';
 import 'package:loupe/features/account_setup/account_setup_screen.dart';
 import 'package:mail_model/mail_model.dart';
 
@@ -67,6 +69,25 @@ void main() {
     await signIn(tester, 'wrong');
     expect(find.textContaining('Password rejected'), findsOneWidget);
     expect(find.byKey(const Key('setup-sign-in')), findsOneWidget);
+  });
+
+  testWidgets('an unexpected failure ends the spinner with a message', (tester) async {
+    final repo = FakeMailRepository()..onDiscover = (_) async => throw StateError('database is locked');
+    await openSetup(tester, repo);
+    await enterAddress(tester, 'jane@example.com');
+    expect(find.textContaining('Something went wrong (StateError)'), findsOneWidget);
+    expect(find.byType(CupertinoActivityIndicator), findsNothing);
+
+    // A keychain error while adding the account, after discovery worked.
+    repo
+      ..onDiscover = null
+      ..onAddAccount = (_) async => throw const DatabaseKeyUnavailable(missing: true);
+    await tester.tap(find.byKey(const Key('setup-continue')));
+    await tester.pumpAndSettle();
+    await signIn(tester, 'secret');
+    expect(find.textContaining('couldn’t open its mail database'), findsOneWidget);
+    expect(find.byKey(const Key('setup-sign-in')), findsOneWidget);
+    expect(tester.widget<FilledButton>(find.byKey(const Key('setup-sign-in'))).onPressed, isNotNull);
   });
 
   testWidgets('offers to trust a certificate and retries with its fingerprint', (tester) async {

@@ -37,6 +37,36 @@ void main() {
     });
   });
 
+  test('no logins for documents while the server refuses the password', () {
+    fakeTime((async) async {
+      final h = Harness();
+      final server = FakeServer();
+      final a = await h.add(server);
+      // Changed on another device.
+      server.password = 'changed elsewhere';
+      await server.dropConnections();
+      await h.repo.refresh();
+      await settle();
+      expect((await h.status(a)).phase, SyncPhase.error);
+
+      final logins = server.logins;
+      for (var i = 0; i < 5; i++) {
+        await expectLater(
+          h.repo.readServerDocuments(a.id, _name),
+          throwsA(isA<MailException>().having((e) => e.kind, 'kind', MailErrorKind.authentication)),
+        );
+      }
+      expect(server.logins, logins, reason: 'fail2ban counts every refused LOGIN');
+
+      // The password is right again: the next sync logs in and documents work.
+      server.password = 'secret';
+      await h.repo.refresh();
+      await settle();
+      expect(await h.repo.readServerDocuments(a.id, _name), isEmpty);
+      await h.dispose();
+    });
+  });
+
   test('offline: a connection error the caller can retry later', () {
     fakeTime((async) async {
       final h = Harness();

@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
@@ -11,6 +12,7 @@ import 'features/notifications/mail_notifier.dart';
 import 'features/notifications/notifications_coordinator.dart';
 import 'platform/background.dart';
 import 'platform/background_entry.dart';
+import 'platform/error_log.dart';
 import 'platform/instant_delivery.dart';
 import 'platform/local_notifications.dart';
 import 'platform/work_scheduler.dart';
@@ -19,6 +21,7 @@ import 'settings/app_settings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  installErrorHandlers(ErrorLog(getApplicationSupportDirectory()));
   final prefs = await SharedPreferences.getInstance();
   final taps = NotificationTaps();
   final android = !kIsWeb && Platform.isAndroid;

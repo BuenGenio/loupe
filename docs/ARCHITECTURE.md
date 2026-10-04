@@ -11,7 +11,7 @@ app (UI, Riverpod, go_router)
               ├─ mail_store (drift + FTS5 + sqlite3mc)
               └─ TransportFactory ◄── mail_imap (enough_mail; IMAP, SMTP, MIME, discovery)
                                   ◄── mail_jmap (Phase 3)
-mail_platform: CredentialStore (keychain), OAuth sign-in
+mail_platform: CredentialStore (keychain), OAuth sign-in (AppAuth) and token refresh (HTTPS)
 mail_crypto: OpenPGP (dart_pg, vendored in third_party/): keys, keyring,
              PGP/MIME reading and writing, Autocrypt; S/MIME (pure Dart on
              pointycastle): certificates, PKCS #12, CMS, chain validation;
@@ -31,6 +31,7 @@ The packages are developed in parallel. These are the seams:
 | `MailSubscriptions` (bulk mail by List-Id or sender, read rates), `unsubscribeMethods`, `unsubscribeMessage` | mail_model `src/subscriptions.dart` | app demo repository; mail_sync `LiveMailRepository` | app (`repository is MailSubscriptions`) |
 | `MailTransport`, `MailSender`, `MessageComposer`, `TransportFactory` | mail_model `src/transport.dart` | mail_imap | mail_sync |
 | `CredentialStore` | mail_model `src/transport.dart` | mail_platform | mail_sync (through the app) |
+| `SignInRenewal` ("Sign in again" after a revoked OAuth grant), `SignInRequiredException` | mail_model `src/sign_in.dart` | mail_sync `LiveMailRepository` | app (`repository is SignInRenewal`); mail_platform throws the exception |
 | `SearchExpr` (search syntax tree) | mail_model `src/search.dart` | expr_search (parser) | app, mail_store (SQL), mail_imap (IMAP), mail_sync |
 | `parseQuery`, `formatQuery`, `describeTerm`, `suggest`, `matchesEmail`, `widenForServer`, `compileImap`, `compileGmailRaw`, `compileJmapFilter` | expr_search `lib/src/api.dart` | expr_search | app, mail_imap, mail_sync |
 | `ReadableMessageView`, `ReaderSettings`, `showImageGallery`, `analyzeContent` (link and privacy findings), `unwrapRedirect`, `inspectHost` | readable `lib/src/api.dart` | readable | app |
@@ -126,6 +127,8 @@ Rules (`app/lib/platform/`):
 
 - **One syncer at a time.** Whoever syncs keeps a lease file fresh (`SyncLeases`). The app always wins: background work starts only without the app's lease and stops when the app comes back; the app waits briefly for it. A lease goes stale after 45 s, so a dead process never blocks the others.
 - **Hand work to whoever syncs.** A notification button goes to the app's main isolate, then to Instant Delivery (`ForegroundBridge`), and only otherwise opens the database itself.
+- **A message is sent by whoever claimed it.** Any process may send the outbox; `claimOutbox` marks a due entry as sending with the time of the claim, and the others leave it alone until the claim is older than `SyncConfig.sendClaimTimeout` (15 min, much longer than a send), when it counts as left by a process that died and is queued again. Every attempt uses the same Message-ID.
+- **The database key is never replaced.** A new key is made only when there is no database file; a keychain that can't give the key back shows the recovery screen (`DatabaseKeyUnavailable`), and only the user's explicit reset deletes the database.
 - **New mail is what passed a watermark.** `detectNewMail` remembers the newest arrival per inbox (and VIP mail elsewhere) in `new_mail.json`; a list seen for the first time only sets its watermark. The app moves the watermarks silently when it goes to the background.
 
 ## Mailing lists
@@ -174,6 +177,13 @@ counted on the device; services that do this elsewhere read the mail on their se
 - **Follow-ups** reuse what exists: Archive All moves the Inbox copies through `MailActions` (with Undo); Create Rule
   opens the rule editor with the condition (`from:` the sender, or the List-Id of a list with several senders), the
   name and Move to Archive filled in; Block Sender saves a device rule that moves to Junk.
+
+## Wide screens and keyboards
+
+The `/` route is `MailHome`: Mailboxes on a phone, mail panes from 840 dp. In the panes `mailSelectionProvider` says
+what is shown and the route stack stays at `/`; crossing the breakpoint converts one into the other. Keyboard
+shortcuts and the command palette act on the screen on top through `MailCommands`. See
+[tablet-and-keyboard.md](tablet-and-keyboard.md).
 
 ## Conventions
 

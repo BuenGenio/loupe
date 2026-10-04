@@ -445,6 +445,12 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
           opacity: stale ? 0.6 : 1,
           sliver: SliverList.builder(
             itemCount: results.items.length,
+            // Rows keep their state (a swipe under way) when results change.
+            findChildIndexCallback: (key) {
+              if (key is! ValueKey<String>) return null;
+              final i = results.items.indexWhere((e) => e.id == key.value);
+              return i < 0 ? null : i;
+            },
             itemBuilder: (context, i) {
               final email = results.items[i];
               final box = boxes[email.mailboxId];

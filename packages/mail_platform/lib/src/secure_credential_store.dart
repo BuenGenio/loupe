@@ -17,14 +17,34 @@ abstract interface class SecretStorage {
 /// [SecretStorage] on flutter_secure_storage: the iOS Keychain (readable
 /// after first unlock, so background refresh works; never synced to other
 /// devices) and Keystore-encrypted storage on Android.
+///
+/// On Android a secret that can't be decrypted makes [read] throw: the
+/// plugin's default (`resetOnError`) would delete it and answer null, and a
+/// Keystore hiccup (seen on Samsung devices, and after restoring a backup)
+/// would then lose the database key for good. Only [discardingUnreadable]
+/// deletes what it can't read, for an explicit reset.
 final class KeychainSecretStorage implements SecretStorage {
   KeychainSecretStorage([FlutterSecureStorage? storage])
     : _storage =
           storage ??
           const FlutterSecureStorage(
-            iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
-            mOptions: MacOsOptions(accessibility: KeychainAccessibility.first_unlock_this_device),
+            aOptions: AndroidOptions(resetOnError: false),
+            iOptions: _iOptions,
+            mOptions: _macOptions,
           );
+
+  /// Storage that deletes secrets it can't decrypt (and, if the Keystore key
+  /// itself is gone, every secret) so it works again: for resetting the app
+  /// after the user agreed to lose them.
+  KeychainSecretStorage.discardingUnreadable()
+    : _storage = const FlutterSecureStorage(
+        aOptions: AndroidOptions(resetOnError: true),
+        iOptions: _iOptions,
+        mOptions: _macOptions,
+      );
+
+  static const _iOptions = IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device);
+  static const _macOptions = MacOsOptions(accessibility: KeychainAccessibility.first_unlock_this_device);
 
   final FlutterSecureStorage _storage;
 

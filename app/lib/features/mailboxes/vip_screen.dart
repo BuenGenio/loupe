@@ -30,12 +30,15 @@ class _VipScreenState extends ConsumerState<VipScreen> {
   }
 
   Future<void> _loadNames() async {
-    final people = await ref.read(repositoryProvider).suggestAddresses('', limit: 200);
+    // Read before the awaits: `ref` throws once the screen is gone.
+    final repo = ref.read(repositoryProvider);
     final vips = ref.read(vipAddressesProvider).value ?? const <String>{};
+    final people = await repo.suggestAddresses('', limit: 200);
     final named = <String, EmailAddress>{for (final p in people) p.email.toLowerCase(): p};
     for (final v in vips) {
       if (named.containsKey(v)) continue;
-      final hits = await ref.read(repositoryProvider).suggestAddresses(v, limit: 1);
+      if (!mounted) return;
+      final hits = await repo.suggestAddresses(v, limit: 1);
       if (hits.isNotEmpty) named[v] = hits.first;
     }
     if (mounted) setState(() => _names.addAll(named));

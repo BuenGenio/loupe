@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../data/oauth.dart';
 import '../../data/repositories.dart';
 import '../../router.dart';
 import '../../settings/app_mode.dart';
@@ -15,6 +16,7 @@ import '../../shared/bars.dart';
 import '../../shared/grouped_list.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
+import '../account_setup/oauth_accounts.dart' show oauthProviderName;
 import '../account_setup/server_settings.dart' show FormRow, NoteCard, confirmNoEncryption;
 import '../account_setup/setup_text.dart' show gmailAppPasswordHelp;
 import '../conversation/sheets.dart' show showSnack;
@@ -36,7 +38,10 @@ class AccountImportScreen extends ConsumerStatefulWidget {
 }
 
 class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with WidgetsBindingObserver {
-  late final _import = AccountImportController(repository: () => ref.read(setupRepositoryProvider.future));
+  late final _import = AccountImportController(
+    repository: () => ref.read(setupRepositoryProvider.future),
+    oauth: ref.read(oauthSignInProvider),
+  );
 
   bool _reviewing = false;
   bool _opening = false;
@@ -505,11 +510,26 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
         note(LoupeIcons.info, block.message)
       else if (row.status != ImportStatus.added) ...[
         if (row.alreadyAdded) note(LoupeIcons.info, 'An account with this address is already in Loupe.'),
-        if (c.usesOAuth && c.provider == ProviderKind.gmail)
+        if (row.signsIn)
           note(
             LoupeIcons.info,
-            'Thunderbird signs in to Gmail with Google. “Sign in with Google” arrives in a later build; until then, '
-            'add the account with an app password (it needs 2-Step Verification).',
+            'You’ll sign in with ${oauthProviderName(c.provider)} when it’s added, as in Thunderbird.',
+            actions: [
+              if (c.provider == ProviderKind.gmail)
+                TextButton(
+                  key: ValueKey('import-app-password-$index'),
+                  onPressed: busy ? null : () => _import.useAppPassword(row),
+                  child: const Text('Use an App Password Instead'),
+                ),
+            ],
+          )
+        else if (c.usesOAuth && c.provider == ProviderKind.gmail)
+          note(
+            LoupeIcons.info,
+            c.canSignIn
+                ? 'Add the account with an app password (it needs 2-Step Verification).'
+                : 'Thunderbird signs in to Gmail with Google. “Sign in with Google” arrives in a later build; until '
+                      'then, add the account with an app password (it needs 2-Step Verification).',
             actions: [
               TextButton(
                 onPressed: () => _open(gmailAppPasswordHelp),

@@ -101,11 +101,38 @@ void main() {
       expect((await h.repo.watchMailingLists().first).single.messageCount, 1);
       expect((await h.store.getSyncInfo(inbox))!.staleHeaders, isFalse);
       expect(server.log.where((l) => l == 'fetchSummaries'), hasLength(1));
+      expect(server.summaryPreviews, everyElement(isFalse), reason: 'header fields only');
 
       server.log.clear();
       await h.repo.refresh(ref: RealMailboxRef(inbox));
       await settle();
       expect(server.log, isNot(contains('fetchSummaries')));
+      await h.dispose();
+    });
+  });
+
+  test('the header refetch waits for a foreground sync', () {
+    fakeTime((async) async {
+      final h = Harness();
+      final server = FakeServer()
+        ..listHeadersInSync = false
+        ..deliver('INBOX', subject: 'Old list mail', listId: dev);
+      final account = await h.add(server);
+      final inbox = h.mailbox(account, 'INBOX');
+      await h.store.markHeadersStale(inbox);
+      server.listHeadersInSync = true;
+
+      // Background work (paused syncers) syncs new mail only.
+      await h.repo.pause();
+      await h.repo.syncOnce();
+      await settle();
+      expect(server.log, isNot(contains('fetchSummaries')));
+      expect((await h.store.getSyncInfo(inbox))!.staleHeaders, isTrue);
+
+      await h.repo.resume();
+      await settle();
+      expect((await h.email(account, 'INBOX', 'Old list mail')).listId, dev);
+      expect((await h.store.getSyncInfo(inbox))!.staleHeaders, isFalse);
       await h.dispose();
     });
   });

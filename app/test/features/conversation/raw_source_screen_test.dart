@@ -111,6 +111,14 @@ void main() {
     expect(SourceLines.parse('end\r\n').rows, ['end']);
   });
 
+  test('cuts long lines between characters, never inside an emoji', () {
+    final lines = SourceLines.parse('${'x' * 9}😀${'y' * 5}', maxLineLength: 10);
+    expect(lines.rows, ['x' * 9, '😀${'y' * 5}']);
+    for (final row in lines.rows) {
+      expect(row.runes.any((r) => r >= 0xD800 && r <= 0xDFFF), isFalse, reason: 'no lone surrogate in "$row"');
+    }
+  });
+
   test('decodes UTF-8 and falls back to Latin-1', () {
     expect(decodeRawSource([0x63, 0x61, 0x66, 0xC3, 0xA9]), 'café');
     expect(decodeRawSource([0x63, 0x61, 0x66, 0xE9]), 'café');

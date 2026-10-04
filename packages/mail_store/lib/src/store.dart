@@ -50,6 +50,11 @@ final class MailStore {
   /// An unencrypted in-memory store, for tests. Runs on the calling isolate.
   factory MailStore.memory() => MailStore._(StoreDatabase(NativeDatabase.memory(setup: _configure)));
 
+  /// A store on [executor], for benchmarks and tests that observe the
+  /// statements it runs (drift's `interceptWith`). The executor must enable
+  /// foreign keys itself.
+  factory MailStore.forExecutor(QueryExecutor executor) => MailStore._(StoreDatabase(executor));
+
   final StoreDatabase _db;
 
   /// Opens (or creates) the encrypted database at [path].
@@ -769,44 +774,61 @@ final class MailStore {
 
   // Lists -------------------------------------------------------------------
 
-  /// SQL restricting `emails e` (joined with `mailboxes m`) to [ref].
-  String _scopeSql(MailboxRef ref, List<Object?> args) {
+  /// SQL restricting `emails e` (joined with `mailboxes m`) to [ref]; [e]
+  /// and [m] name other aliases of those tables.
+  String _scopeSql(MailboxRef ref, List<Object?> args, {String e = 'e', String m = 'm'}) {
+    final snoozeFolder = _snoozeFolderSql.replaceAll('m.', '$m.');
     switch (ref) {
       case RealMailboxRef(:final mailboxId):
         args.add(mailboxId);
-        return 'e.mailbox_id = ?';
+        return '$e.mailbox_id = ?';
       case VirtualMailboxRef(:final kind):
         return switch (kind) {
-          VirtualMailbox.allInboxes => "m.role = 'inbox'",
+          VirtualMailbox.allInboxes => "$m.role = 'inbox'",
           VirtualMailbox.unread =>
-            "e.is_seen = 0 AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $_snoozeFolderSql",
+            "$e.is_seen = 0 AND $m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $snoozeFolder",
           VirtualMailbox.flagged =>
-            'e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles) AND NOT $_snoozeFolderSql',
+            '$e.is_flagged = 1 AND $m.role NOT IN ($_virtualExcludedRoles) AND NOT $snoozeFolder',
           VirtualMailbox.vip =>
-            'e.from_email IN (SELECT email FROM vip_addresses) '
-                "AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $_snoozeFolderSql",
-          VirtualMailbox.allDrafts => "m.role = 'drafts'",
-          VirtualMailbox.allSent => "m.role = 'sent'",
+            '$e.from_email IN (SELECT email FROM vip_addresses) '
+                "AND $m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $snoozeFolder",
+          VirtualMailbox.allDrafts => "$m.role = 'drafts'",
+          VirtualMailbox.allSent => "$m.role = 'sent'",
         };
     }
   }
 
-  static String _filterSql(QuickFilter f) => switch (f) {
-    QuickFilter.unread => 'e.is_seen = 0',
-    QuickFilter.flagged => 'e.is_flagged = 1',
-    QuickFilter.toMe => "EXISTS (SELECT 1 FROM json_each(e.to_json) j WHERE lower(json_extract(j.value, '\$.e')) IN (SELECT addr FROM me))",
-    QuickFilter.ccMe => "EXISTS (SELECT 1 FROM json_each(e.cc_json) j WHERE lower(json_extract(j.value, '\$.e')) IN (SELECT addr FROM me))",
-    QuickFilter.hasAttachment => 'e.has_attachment = 1',
+  static String _filterSql(QuickFilter f, {String e = 'e'}) => switch (f) {
+    QuickFilter.unread => '$e.is_seen = 0',
+    QuickFilter.flagged => '$e.is_flagged = 1',
+    QuickFilter.toMe =>
+      "EXISTS (SELECT 1 FROM json_each($e.to_json) j WHERE lower(json_extract(j.value, '\$.e')) IN (SELECT addr FROM me))",
+    QuickFilter.ccMe =>
+      "EXISTS (SELECT 1 FROM json_each($e.cc_json) j WHERE lower(json_extract(j.value, '\$.e')) IN (SELECT addr FROM me))",
+    QuickFilter.hasAttachment => '$e.has_attachment = 1',
     QuickFilter.unreplied =>
-      "NOT EXISTS (SELECT 1 FROM email_keywords k WHERE k.email_id = e.id AND k.keyword = '\$answered')",
-    QuickFilter.fromVip => 'e.from_email IN (SELECT email FROM vip_addresses)',
+      "NOT EXISTS (SELECT 1 FROM email_keywords k WHERE k.email_id = $e.id AND k.keyword = '\$answered')",
+    QuickFilter.fromVip => '$e.from_email IN (SELECT email FROM vip_addresses)',
   };
+
+  /// [_scopeSql] and the [filters], for the aliases [e] and [m].
+  String _listWhere(MailboxRef ref, Set<QuickFilter> filters, List<Object?> args, {String e = 'e', String m = 'm'}) =>
+      [_scopeSql(ref, args, e: e, m: m), for (final f in filters) _filterSql(f, e: e)].join(' AND ');
 
   /// Ranks copies of one message across mailboxes (lower is preferred).
   static const _copyRank =
       "CASE m.role WHEN 'inbox' THEN 0 WHEN 'all' THEN 3 WHEN 'flagged' THEN 2 WHEN 'important' THEN 2 ELSE 1 END";
 
+  /// Threads looked at beyond the page, for copies that change a thread's
+  /// place (see [watchList]).
+  static const _threadSlack = 50;
+
   /// The message list of [ref], newest first; see `MailRepository.watchList`.
+  ///
+  /// A threaded list first finds the newest threads with an index walk that
+  /// stops after a page ([_threadSlack] more), then ranks and counts only
+  /// their messages: the work follows the page, not the mailbox (a 40,000
+  /// message inbox took ~300 ms with the window functions over everything).
   Stream<List<ThreadSummary>> watchList(
     MailboxRef ref, {
     Set<QuickFilter> filters = const {},
@@ -814,22 +836,37 @@ final class MailStore {
     int limit = 200,
   }) {
     final args = <Object?>[];
-    final where = [_scopeSql(ref, args), for (final f in filters) _filterSql(f)].join(' AND ');
     // Virtual mailboxes may hold several copies of one message (labels).
     final dedup = ref is VirtualMailboxRef;
-    final scoped =
-        '''
-WITH me(addr) AS ($_meSql),
-candidates AS (
-  SELECT e.*, ${dedup ? 'ROW_NUMBER() OVER (PARTITION BY e.account_id, coalesce(e.message_id_header, e.id) ORDER BY $_copyRank, e.seq)' : '1'} AS copy_rank
-  FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id WHERE $where
-),
-scoped AS (SELECT * FROM candidates WHERE copy_rank = 1)''';
+    final copyRank = dedup
+        ? 'ROW_NUMBER() OVER (PARTITION BY e.account_id, coalesce(e.message_id_header, e.id) ORDER BY $_copyRank, e.seq)'
+        : '1';
     final String sql;
     if (threaded) {
+      // A thread's newest message in scope: none newer in scope. The index
+      // hints keep SQLite (without statistics) from scanning the mailbox
+      // per message instead of the thread.
+      final headWhere = _listWhere(ref, filters, args);
+      final newerWhere = _listWhere(ref, filters, args, e: 'n', m: 'nm');
+      args.add(limit + _threadSlack);
+      final memberWhere = _listWhere(ref, filters, args);
       sql =
           '''
-$scoped,
+WITH me(addr) AS ($_meSql),
+heads AS (
+  SELECT e.account_id, e.thread_id FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id
+  WHERE $headWhere AND NOT EXISTS (
+    SELECT 1 FROM emails n INDEXED BY emails_thread JOIN mailboxes nm ON nm.id = n.mailbox_id
+    WHERE n.account_id = e.account_id AND n.thread_id = e.thread_id
+      AND (n.received_at > e.received_at OR (n.received_at = e.received_at AND n.seq > e.seq)) AND $newerWhere)
+  ORDER BY e.received_at DESC, e.seq DESC LIMIT ?
+),
+candidates AS (
+  SELECT e.*, $copyRank AS copy_rank
+  FROM heads h CROSS JOIN emails e INDEXED BY emails_thread ON e.account_id = h.account_id AND e.thread_id = h.thread_id
+  JOIN mailboxes m ON m.id = e.mailbox_id WHERE $memberWhere
+),
+scoped AS (SELECT * FROM candidates WHERE copy_rank = 1),
 ranked AS (
   SELECT s.*,
     ROW_NUMBER() OVER w AS rn,
@@ -842,8 +879,37 @@ ranked AS (
     w AS (PARTITION BY s.account_id, s.thread_id ORDER BY s.received_at DESC, s.seq DESC)
 )
 SELECT * FROM ranked WHERE rn = 1 ORDER BY received_at DESC, seq DESC LIMIT ?''';
+    } else if (dedup) {
+      // The newest messages in scope, then every copy of them in scope to
+      // pick the preferred one: again work by the page.
+      final recentWhere = _listWhere(ref, filters, args);
+      args.add(limit + _threadSlack);
+      final copyWhere = _listWhere(ref, filters, args);
+      sql =
+          '''
+WITH me(addr) AS ($_meSql),
+recent AS (
+  SELECT e.seq, e.account_id, e.message_id_header AS mid FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id
+  WHERE $recentWhere ORDER BY e.received_at DESC, e.seq DESC LIMIT ?
+),
+copies AS (
+  SELECT seq FROM recent
+  UNION SELECT c.seq FROM recent r CROSS JOIN emails c INDEXED BY emails_message_id
+    ON c.account_id = r.account_id AND c.message_id_header = r.mid
+),
+candidates AS (
+  SELECT e.*, $copyRank AS copy_rank FROM copies x CROSS JOIN emails e ON e.seq = x.seq
+  JOIN mailboxes m ON m.id = e.mailbox_id WHERE $copyWhere
+),
+scoped AS (SELECT * FROM candidates WHERE copy_rank = 1)
+SELECT * FROM scoped ORDER BY received_at DESC, seq DESC LIMIT ?''';
     } else {
-      sql = '$scoped SELECT * FROM scoped ORDER BY received_at DESC, seq DESC LIMIT ?';
+      final where = _listWhere(ref, filters, args);
+      sql =
+          '''
+WITH me(addr) AS ($_meSql)
+SELECT e.*, 1 AS copy_rank FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id WHERE $where
+ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
     }
     args.add(limit);
     return _select(sql, args, {
@@ -921,19 +987,22 @@ SELECT * FROM members WHERE copy_rank = 1 ORDER BY received_at ASC, seq ASC''';
   /// stored ones. A mailbox whose server count is unknown stores the local
   /// count (see [applySync]), so it adds nothing.
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts() {
-    const distinctKey = "count(DISTINCT e.account_id || '|' || coalesce(e.message_id_header, e.id))";
+    // Mailboxes first, then their unread or flagged messages through the
+    // partial indexes (emails_unread, emails_flagged), which cover the key.
+    const distinctKey = "count(DISTINCT e.account_id || '|' || coalesce(e.message_id_header, '#' || e.seq))";
+    const byMailbox = 'FROM mailboxes m CROSS JOIN emails e ON e.mailbox_id = m.id';
     const from = 'FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id';
     const unreadRoles = "m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $_snoozeFolderSql";
     const sql =
         '''
 SELECT
   (SELECT coalesce(sum(unread_count), 0) FROM mailboxes WHERE role = 'inbox') AS all_inboxes,
-  (SELECT $distinctKey $from WHERE e.is_seen = 0 AND $unreadRoles) +
+  (SELECT $distinctKey $byMailbox WHERE e.is_seen = 0 AND $unreadRoles) +
   (SELECT coalesce(sum(max(0, m.unread_count - coalesce(l.n, 0))), 0) FROM mailboxes m
     LEFT JOIN (SELECT mailbox_id, count(*) AS n FROM emails WHERE is_seen = 0 GROUP BY mailbox_id) l
       ON l.mailbox_id = m.id
     WHERE $unreadRoles) AS unread,
-  (SELECT $distinctKey $from WHERE e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles)
+  (SELECT $distinctKey $byMailbox WHERE e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles)
     AND NOT $_snoozeFolderSql) AS flagged,
   (SELECT $distinctKey $from WHERE e.is_seen = 0 AND e.from_email IN (SELECT email FROM vip_addresses)
     AND $unreadRoles) AS vip,
@@ -973,7 +1042,10 @@ candidates AS (
 )''';
 
   /// The mailing lists with mail, newest activity first; see
-  /// `MailingLists.watchMailingLists`.
+  /// `MailingLists.watchMailingLists`. One pass over the list mail: the
+  /// newest name and post address are packed into max() ([_newest]), where
+  /// a subquery per list re-ran the whole scan for each one (200 lists in a
+  /// 40,000 message inbox took 140 ms per emission here).
   Stream<List<MailingList>> watchMailingLists() {
     final sql =
         '''
@@ -985,10 +1057,8 @@ scoped AS (
 )
 SELECT s.list_id, count(*) AS messages, sum(CASE WHEN s.is_seen = 0 AND s.muted = 0 THEN 1 ELSE 0 END) AS unread,
   max(s.received_at) AS last_at, group_concat(DISTINCT s.account_id) AS accounts,
-  (SELECT x.list_name FROM scoped x WHERE x.list_id = s.list_id AND x.list_name IS NOT NULL
-    ORDER BY x.received_at DESC LIMIT 1) AS name,
-  (SELECT x.list_post FROM scoped x WHERE x.list_id = s.list_id AND x.list_post IS NOT NULL
-    ORDER BY x.received_at DESC LIMIT 1) AS post
+  max(CASE WHEN s.list_name IS NOT NULL THEN ${_newest('s.list_name')} END) AS name,
+  max(CASE WHEN s.list_post IS NOT NULL THEN ${_newest('s.list_post')} END) AS post
 FROM scoped s GROUP BY s.list_id ORDER BY last_at DESC, s.list_id''';
     return _select(sql, [], {_db.emails, _db.mailboxes, _db.mutedThreads})
         .watch()
@@ -998,8 +1068,8 @@ FROM scoped s GROUP BY s.list_id ORDER BY last_at DESC, s.list_id''';
             for (final r in rows)
               MailingList(
                 id: r.read<String>('list_id'),
-                name: r.read<String?>('name') ?? r.read<String>('list_id'),
-                postAddress: listPostAddress(r.read<String?>('post')),
+                name: _newestValue(r.read<String?>('name')) ?? r.read<String>('list_id'),
+                postAddress: listPostAddress(_newestValue(r.read<String?>('post'))),
                 messageCount: r.read<int>('messages'),
                 unreadCount: r.read<int>('unread'),
                 lastActivity: fromMillis(r.read<int>('last_at')),
@@ -1300,8 +1370,12 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
     final labels = cond.needsPostFilter
         ? {for (final a in await getAccounts()) a.id: '${a.displayName} ${a.email}'}
         : const <String, String>{};
+    // Outside one mailbox, walk the messages newest first and stop at the
+    // page: SQLite would otherwise fetch every full-text match and sort
+    // them (a one-letter prefix while typing matches most of the mail).
+    final newestFirst = scope is MailboxScope && scope.ref is RealMailboxRef ? '' : ' INDEXED BY emails_received';
     final sql =
-        'SELECT e.*, $_copyRank AS copy_pref FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id '
+        'SELECT e.*, $_copyRank AS copy_pref FROM emails e$newestFirst JOIN mailboxes m ON m.id = e.mailbox_id '
         'WHERE $scopeSql AND ${cond.sql} ORDER BY e.received_at DESC, e.seq DESC LIMIT ? OFFSET ?';
     final byKey = <String, (EmailSummary, int)>{};
     final order = <String>[];
@@ -1432,17 +1506,32 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
     _db.outboxItems,
   }).watch().map((rows) => [for (final r in rows) _outboxFromRow(_db.outboxItems.map(r.data))]);
 
-  /// Atomically marks a queued (or failed) entry as sending. Returns it, or
-  /// null if it is gone or already being sent.
-  Future<OutboxEntry?> claimOutbox(String id) => _db.transaction(() async {
+  /// Atomically marks a queued (or failed) entry that is due at [now] as
+  /// sending. Returns it, or null if it is gone, being sent, or was moved to
+  /// later meanwhile.
+  ///
+  /// While an entry is sending, its `sendAfter` holds the time of the claim,
+  /// so a claim left by a process that died can be told from one in
+  /// progress (see [releaseStaleOutboxClaims]).
+  Future<OutboxEntry?> claimOutbox(String id, {DateTime? now}) => _db.transaction(() async {
+    final at = (now ?? DateTime.now()).millisecondsSinceEpoch;
     final n = await _write(
-      'UPDATE outbox_items SET status = ? WHERE id = ? AND status != ?',
-      [OutboxStatus.sending.name, id, OutboxStatus.sending.name],
+      'UPDATE outbox_items SET status = ?, send_after = ? WHERE id = ? AND status != ? AND send_after <= ?',
+      [OutboxStatus.sending.name, at, id, OutboxStatus.sending.name, at],
       {_db.outboxItems},
       kind: UpdateKind.update,
     );
     return n == 0 ? null : getOutbox(id);
   });
+
+  /// Queues again the entries claimed for sending at or before
+  /// [claimedBy]: the process sending them died. Returns how many.
+  Future<int> releaseStaleOutboxClaims(DateTime claimedBy) => _write(
+    'UPDATE outbox_items SET status = ? WHERE status = ? AND send_after <= ?',
+    [OutboxStatus.queued.name, OutboxStatus.sending.name, claimedBy.millisecondsSinceEpoch],
+    {_db.outboxItems},
+    kind: UpdateKind.update,
+  );
 
   /// Removes an entry unless it is being sent. Returns it if removed.
   Future<OutboxEntry?> takeOutbox(String id) => _db.transaction(() async {

@@ -3,6 +3,7 @@
 // agreement with those packages. The implementations live in syntax/, eval/
 // and compile/.
 
+import 'package:clock/clock.dart';
 import 'package:mail_model/mail_model.dart';
 
 import 'compile/gmail.dart';
@@ -90,11 +91,12 @@ final class QuerySuggestion {
 
 /// Parses [input]. Never throws; problems are reported in [ParsedQuery.errors]
 /// with a best-effort [ParsedQuery.expr]. [now] anchors relative dates
-/// ("today", "7d"). [tags] resolves `tag:` labels (Thunderbird's defaults
+/// ("today", "7d"); it defaults to `clock.now()` (package:clock, so tests can
+/// pin it with `withClock`). [tags] resolves `tag:` labels (Thunderbird's defaults
 /// unless the account defines its own).
 ParsedQuery parseQuery(String input, {DateTime? now, List<TagDefinition> tags = TagDefinition.thunderbirdDefaults}) {
   try {
-    return QueryParser(input, now: now ?? DateTime.now(), tags: tags).parse();
+    return QueryParser(input, now: now ?? clock.now(), tags: tags).parse();
   } on Object {
     // Only absurd nesting (stack overflow) gets here.
     return ParsedQuery(expr: const MatchAll(), errors: [QueryError('Query too complex', 0, input.length)]);
@@ -122,7 +124,7 @@ List<QuerySuggestion> suggest(
   int cursor, {
   DateTime? now,
   List<TagDefinition> tags = TagDefinition.thunderbirdDefaults,
-}) => suggestAt(input, cursor, now: now ?? DateTime.now(), tags: tags);
+}) => suggestAt(input, cursor, now: now ?? clock.now(), tags: tags);
 
 /// Pushes negations down to the terms (negation normal form). Nested AND/OR
 /// of the same kind are flattened; `Not` remains only directly above terms.

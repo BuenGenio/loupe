@@ -13,6 +13,7 @@ import '../../settings/app_settings.dart';
 import '../../shared/mail_actions.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
+import '../keyboard/mail_commands.dart';
 import '../openpgp/content_loader.dart';
 import '../openpgp/pgp_status.dart';
 import '../mailing_lists/list_providers.dart';
@@ -45,7 +46,7 @@ class ConversationScreen extends ConsumerStatefulWidget {
   ConsumerState<ConversationScreen> createState() => _ConversationScreenState();
 }
 
-class _ConversationScreenState extends ConsumerState<ConversationScreen> {
+class _ConversationScreenState extends ConsumerState<ConversationScreen> with CommandScopeState<ConversationScreen> {
   StreamSubscription<List<EmailSummary>>? _sub;
   List<EmailSummary>? _messages;
   Object? _error;
@@ -74,6 +75,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
   void initState() {
     super.initState();
     _subscribe();
+    registerCommands(ref.read(mailCommandsProvider));
   }
 
   @override
@@ -199,9 +201,9 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
     }
   }
 
-  /// True inside another screen's Scaffold (the tablet split view): no back
-  /// button, and archiving doesn't pop the enclosing route.
-  bool get _embedded => Scaffold.maybeOf(context) != null;
+  /// True in a pane of the wide layout (or inside another screen's
+  /// Scaffold): no back button, and archiving doesn't pop the enclosing route.
+  bool get _embedded => widget.onClose != null || Scaffold.maybeOf(context) != null;
 
   void _close() {
     if (!mounted) return;
@@ -404,6 +406,78 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
       case MessageAction.search:
         final query = await showSearchFromSheet(context, m);
         if (query != null && mounted) await context.push(Routes.search(query));
+    }
+  }
+
+  // Keyboard and command palette -----------------------------------------------
+
+  @override
+  int get priority => 30;
+
+  /// Whether the target can be archived (there is an archive, and it isn't there).
+  bool _canArchive(EmailSummary m) {
+    final accounts = ref.read(accountsStreamProvider).value ?? const <MailAccount>[];
+    final mailboxes = ref.read(accountMailboxesProvider(m.accountId)).value ?? const <Mailbox>[];
+    final gmail = accounts.any((a) => a.id == m.accountId && a.provider == ProviderKind.gmail);
+    final role = mailboxes.where((b) => b.id == m.mailboxId).firstOrNull?.role;
+    return (gmail || mailboxes.any((b) => b.role == MailboxRole.archive)) && role != MailboxRole.archive;
+  }
+
+  /// The conversation [delta] rows away in the list this one was opened
+  /// from, on a phone (in the panes the list moves its selection itself).
+  ThreadSummary? _neighbor(int delta) {
+    final t = _target;
+    if (t == null || _embedded) return null;
+    return ref.read(mailCommandsProvider).latest<MessageListNeighbors>()?.neighborOf(t, delta);
+  }
+
+  @override
+  bool canRun(MailCommand command) {
+    final t = _target;
+    if (t == null) return false;
+    return switch (command) {
+      MailCommand.reply ||
+      MailCommand.replyAll ||
+      MailCommand.forward ||
+      MailCommand.trash ||
+      MailCommand.toggleRead ||
+      MailCommand.toggleFlag ||
+      MailCommand.snooze ||
+      MailCommand.move => true,
+      MailCommand.archive => _canArchive(t),
+      MailCommand.nextMessage => _neighbor(1) != null,
+      MailCommand.previousMessage => _neighbor(-1) != null,
+      _ => false,
+    };
+  }
+
+  @override
+  void run(MailCommand command) {
+    final t = _target;
+    if (t == null) return;
+    switch (command) {
+      case MailCommand.reply:
+        _reply(t, ComposeMode.reply);
+      case MailCommand.replyAll:
+        _reply(t, ComposeMode.replyAll);
+      case MailCommand.forward:
+        _reply(t, ComposeMode.forward);
+      case MailCommand.archive:
+        _archive(_thread(t), close: true);
+      case MailCommand.trash:
+        _trash(_thread(t), close: true);
+      case MailCommand.toggleRead:
+        _setSeen(t, !t.isSeen);
+      case MailCommand.toggleFlag:
+        _setFlag(t, !t.isFlagged);
+      case MailCommand.snooze:
+        unawaited(_snooze(t));
+      case MailCommand.move:
+        unawaited(_move(t, _thread(t), close: true));
+      case MailCommand.nextMessage || MailCommand.previousMessage:
+        final next = _neighbor(command == MailCommand.nextMessage ? 1 : -1);
+        if (next != null) context.pushReplacement(Routes.message(next.latest.id));
+      default:
     }
   }
 

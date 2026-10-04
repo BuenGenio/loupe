@@ -29,19 +29,26 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" tools:node="remove" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />
     <uses-feature android:name="android.hardware.camera.any" android:required="false" tools:replace="android:required" />
+    <!-- No backups and no phone-to-phone copies of Loupe's data (see res/xml/data_extraction_rules.xml):
+         the database key lives in the Keystore, which doesn't move with them. -->
     <application
         android:label="Loupe"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        tools:targetApi="s">
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:taskAffinity=""
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
+            <!-- No android:taskAffinity="" (Flutter's template has it): with an empty affinity the browser's
+                 OAuth redirect (Gmail, Microsoft) lands in a new task and never reaches flutter_appauth's
+                 waiting activity (flutter_appauth README, "No Redirect to app after login"). -->
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
@@ -53,6 +60,21 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <!-- OAuth redirects (docs/oauth-setup.md). AppAuth's own filter takes the appAuthRedirectScheme placeholder
+             (build.gradle.kts), Google's io.github.buengenio.loupe:/oauth2redirect. This one adds Microsoft's
+             msauth.io.github.buengenio.loupe://auth: Entra only accepts custom schemes with "//", and this form is
+             the one it generates for the bundle id. The manifest merger keeps both filters. -->
+        <activity
+            android:name="net.openid.appauth.RedirectUriReceiverActivity"
+            android:exported="true"
+            tools:node="merge">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="msauth.io.github.buengenio.loupe" android:host="auth" />
             </intent-filter>
         </activity>
         <!-- flutter_local_notifications: the Archive and Mark as Read buttons of new-mail notifications. -->

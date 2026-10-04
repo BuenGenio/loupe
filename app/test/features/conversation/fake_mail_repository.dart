@@ -46,6 +46,18 @@ class FakeMailRepository implements MailRepository {
   /// Thrown by loadContent when set.
   Object? contentError;
 
+  /// Fails search and loadOlder with this when set.
+  Object? searchError;
+
+  /// Fails saveDraft with this when set.
+  Object? draftError;
+
+  /// Fails updateAccount with this when set.
+  Object? updateAccountError;
+
+  /// Holds reads of server documents until completed.
+  Completer<void>? holdDocuments;
+
   /// Raw sources by email id; others get a small generated message.
   final rawSources = <String, String>{};
 
@@ -123,6 +135,7 @@ class FakeMailRepository implements MailRepository {
   @override
   Future<void> updateAccount(MailAccount account) async {
     log.add('updateAccount ${account.id} ${account.displayName} ${account.colorIndex}');
+    if (updateAccountError case final e?) throw e;
     final i = accounts.indexWhere((a) => a.id == account.id);
     if (i >= 0) accounts[i] = account;
     _changed();
@@ -162,7 +175,7 @@ class FakeMailRepository implements MailRepository {
   }) => _watch(() => const []);
 
   @override
-  Future<bool> loadOlder(MailboxRef ref) async => false;
+  Future<bool> loadOlder(MailboxRef ref) async => searchError == null ? false : throw searchError!;
 
   @override
   Future<void> refresh({MailboxRef? ref}) async {}
@@ -257,7 +270,8 @@ class FakeMailRepository implements MailRepository {
   // Search -------------------------------------------------------------------
 
   @override
-  Stream<SearchResults> search(SearchRequest request) => _watch(() => const SearchResults(items: []));
+  Stream<SearchResults> search(SearchRequest request) =>
+      searchError == null ? _watch(() => const SearchResults(items: [])) : Stream.error(searchError!);
 
   // Compose ------------------------------------------------------------------
 
@@ -324,6 +338,7 @@ class FakeMailRepository implements MailRepository {
   Future<String> saveDraft(OutgoingMessage message) async {
     log.add('saveDraft ${message.subject}');
     await holdSaves?.future;
+    if (draftError case final e?) throw e;
     drafts.add(message);
     return 'draft-${drafts.length}';
   }
@@ -350,6 +365,7 @@ class FakeMailRepository implements MailRepository {
   @override
   Future<List<ServerDocument>> readServerDocuments(String accountId, String name) async {
     log.add('readServerDocuments $accountId $name');
+    await holdDocuments?.future;
     if (serverDocumentsError case final e?) throw e;
     final content = serverDocuments[accountId]?[name];
     return [if (content != null) ServerDocument(content: content, storage: ServerStorage.metadata)];

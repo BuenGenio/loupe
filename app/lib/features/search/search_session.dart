@@ -218,12 +218,25 @@ class SearchSession extends ChangeNotifier {
     final text = query;
     final request = SearchRequest(expr: parseQuery(text).expr, text: text, scope: scope, includeServer: includeServer);
     _stop();
-    _subscription = repository.search(request).listen((r) {
-      if (_disposed) return;
-      results = r;
-      resultsQuery = text;
-      notifyListeners();
-    });
+    _subscription = repository
+        .search(request)
+        .listen(
+          (r) {
+            if (_disposed) return;
+            results = r;
+            resultsQuery = text;
+            notifyListeners();
+          },
+          // A failed search (the local store couldn't run it) ends with what was
+          // found so far, instead of "Searching…" forever and an uncaught error.
+          onError: (Object e) {
+            if (_disposed) return;
+            debugPrint('Search failed: ${e.runtimeType}');
+            results = SearchResults(items: results?.items ?? const []);
+            resultsQuery = text;
+            notifyListeners();
+          },
+        );
   }
 
   void _cancelTimers() {

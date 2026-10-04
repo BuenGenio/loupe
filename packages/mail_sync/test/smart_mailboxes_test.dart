@@ -344,6 +344,37 @@ void main() {
       });
     });
 
+    test('a scope another app filled with something odd breaks nothing', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer();
+        final a = await h.add(server);
+        final at = _t(0).toIso8601String();
+        server.annotations[ServerDocuments.metadataEntry(_name)] = _doc([
+          {
+            'id': 'odd',
+            'name': 'Odd',
+            'query': 'is:unread',
+            'modifiedAt': at,
+            'scope': {'mailbox': 5},
+          },
+          {
+            'id': 'odder',
+            'name': 'Odder',
+            'query': 'is:unread',
+            'modifiedAt': at,
+            'scope': {'virtual': 5},
+          },
+        ]);
+        final r = await round(h, [_r(_e('mine'))], [a]);
+        expect(r.failed, isEmpty);
+        expect(live(r), containsAll(['mine:mine', 'odd:Odd', 'odder:Odder']));
+        final odd = r.records.firstWhere((rec) => rec.id == 'odd').entry;
+        expect([odd.mailboxPath, odd.virtualKind, odd.isAccountScoped], [null, null, false]);
+        await h.dispose();
+      });
+    });
+
     test('an unreadable copy is replaced by a valid one', () {
       fakeTime((async) async {
         final h = Harness();

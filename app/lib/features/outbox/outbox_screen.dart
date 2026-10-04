@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -77,6 +78,9 @@ class OutboxActions {
       await action(messenger);
     } on MailException catch (e) {
       showSnack(messenger, e.message);
+    } on Object catch (e) {
+      debugPrint('Outbox action failed: ${e.runtimeType}');
+      showSnack(messenger, 'That didn’t work. The message is still in the Outbox.');
     }
   }
 
@@ -103,7 +107,7 @@ class OutboxActions {
     final scheduled = item.status == OutboxStatus.scheduled;
     final choice = await showSendLaterSheet(
       context,
-      now: DateTime.now(),
+      now: clock.now(),
       current: scheduled ? item.sendAt : null,
       title: 'Reschedule',
     );
@@ -132,14 +136,26 @@ class OutboxActions {
     if (choice == null || !context.mounted) return;
     final repo = _repo;
     await _run((messenger) async {
+      if (choice) {
+        // Into Drafts first: if saving fails (often why sending failed:
+        // the server refused it), the message stays in the Outbox.
+        final draftId = await repo.saveDraft(item.message);
+        if (await repo.cancelSend(item.id) == null) {
+          // It went out meanwhile: the copy in Drafts isn't wanted.
+          try {
+            await repo.deleteDraft(draftId);
+          } on Object {
+            // Left in Drafts; harmless.
+          }
+          showSnack(messenger, 'Already sent.');
+          return;
+        }
+        showSnack(messenger, 'Moved to Drafts');
+        return;
+      }
       final message = await repo.cancelSend(item.id);
       if (message == null) {
         showSnack(messenger, 'Already sent.');
-        return;
-      }
-      if (choice) {
-        await repo.saveDraft(message);
-        showSnack(messenger, 'Moved to Drafts');
         return;
       }
       // Undo restores the schedule as it was; one that is overdue by then

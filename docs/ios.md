@@ -36,7 +36,7 @@ If Swift Package Manager ever has to be switched off (`flutter config --no-enabl
 
 | Key | Why |
 |---|---|
-| `CFBundleURLTypes` → `io.github.buengenio.loupe` | The OAuth redirect (`io.github.buengenio.loupe:/oauth2redirect`) for flutter_appauth. Same scheme as on Android. |
+| `CFBundleURLTypes` → `io.github.buengenio.loupe`, `msauth.io.github.buengenio.loupe` | The OAuth redirects for flutter_appauth: Google's `io.github.buengenio.loupe:/oauth2redirect` and Microsoft's `msauth.io.github.buengenio.loupe://auth`. The same as on Android; see [oauth-setup.md](oauth-setup.md). |
 | `CFBundleAllowMixedLocalizations` | Loupe is English-only. This key lets system UI (the share sheet, permission alerts) follow the phone's language, as share_plus's README advises. |
 | `NSCameraUsageDescription` | Scanning Thunderbird's "Export for Mobile" QR codes. |
 | `NSPhotoLibraryAddUsageDescription` | "Save Image" in the share sheet writes to Photos. Without this key iOS ends the app when the user taps it. |
@@ -204,12 +204,12 @@ Pick one:
 | `LOUPE_GOOGLE_IOS_CLIENT_ID` | optional, see below |
 | `LOUPE_MICROSOFT_CLIENT_ID` | optional, the same client ID as on Android |
 
-**Sign-in with Google and Microsoft:**
+**Sign-in with Google and Microsoft:** [oauth-setup.md](oauth-setup.md) has the steps.
 
-- **Google** no longer accepts custom schemes for Android clients. iOS needs its own **iOS** OAuth client in Google Cloud Console, with bundle ID `io.github.buengenio.loupe`.
-  - [Google allows](https://developers.google.com/identity/protocols/oauth2/native-app) a reverse-domain scheme such as `io.github.buengenio.loupe:/oauth2redirect` for iOS clients.
-  - If it rejects it, add the reversed client ID (`com.googleusercontent.apps.…`) as a second URL scheme, and make the redirect URI per platform in `packages/mail_platform/lib/src/oauth.dart`.
-- **Microsoft** works with the existing "Mobile and desktop" redirect URI.
+- **Google** needs its own **iOS** OAuth client, with bundle ID `io.github.buengenio.loupe`.
+  - It takes the bundle id as the redirect scheme (`io.github.buengenio.loupe:/oauth2redirect`), like Thunderbird for iOS. No reversed client id is needed.
+  - Its id goes into `LOUPE_GOOGLE_IOS_CLIENT_ID`.
+- **Microsoft** uses the same registration and client id as Android. Its iOS / macOS redirect `msauth.io.github.buengenio.loupe://auth` serves both.
 
 ### 5. Turn on the TestFlight job
 
