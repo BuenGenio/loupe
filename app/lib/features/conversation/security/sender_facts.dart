@@ -20,12 +20,7 @@ Future<SenderFacts> gatherSenderFacts(MailRepository repo, EmailSummary message)
 
   final email = sender.email.toLowerCase();
   final vips = await _orEmpty(repo.watchVipAddresses().first, const <String>{});
-  SenderHistory? history;
-  try {
-    history = await repo.senderHistory(email);
-  } on Object {
-    history = null;
-  }
+  final SenderHistory? history = await _orEmpty(repo.senderHistory(email), null);
 
   final namesakes = <Namesake>[];
   final name = normalizeName(sender.name ?? '');
@@ -58,9 +53,11 @@ Future<SenderFacts> gatherSenderFacts(MailRepository repo, EmailSummary message)
   );
 }
 
+/// [future]'s value, or [fallback] if it fails or takes too long: the
+/// message body waits for the check, so a stuck lookup must not hold it.
 Future<T> _orEmpty<T>(Future<T> future, T fallback) async {
   try {
-    return await future;
+    return await future.timeout(const Duration(seconds: 5));
   } on Object {
     return fallback;
   }
