@@ -17,19 +17,25 @@ class ComposeArgs {
     this.message,
     this.sendAt,
     this.outboxId,
-  });
+  }) : recoverySession = null,
+       attachmentsFromDraft = false;
 
   /// Reopens [message] as it was (after "Undo" of a send, from the Outbox,
   /// or a recovered draft), with its Send Later time.
-  const ComposeArgs.restore(OutgoingMessage this.message, {this.sendAt, this.outboxId})
-    : mode = ComposeMode.newMessage,
-      sourceEmailId = null,
-      accountId = null,
-      to = const [],
-      cc = const [],
-      bcc = const [],
-      subject = null,
-      body = null;
+  const ComposeArgs.restore(
+    OutgoingMessage this.message, {
+    this.sendAt,
+    this.outboxId,
+    this.recoverySession,
+    this.attachmentsFromDraft = false,
+  }) : mode = ComposeMode.newMessage,
+       sourceEmailId = null,
+       accountId = null,
+       to = const [],
+       cc = const [],
+       bcc = const [],
+       subject = null,
+       body = null;
 
   final ComposeMode mode;
 
@@ -53,6 +59,14 @@ class ComposeArgs {
   /// Editing this waiting message of the Outbox: sending replaces it there,
   /// and nothing is autosaved to Drafts.
   final String? outboxId;
+
+  /// Continues the compose session that left this message behind (crash
+  /// recovery), taking over its local copy.
+  final String? recoverySession;
+
+  /// The local copy couldn't keep the attachments: load them from the draft
+  /// ([OutgoingMessage.draftId]).
+  final bool attachmentsFromDraft;
 
   /// Arguments for a `mailto:` link.
   static ComposeArgs fromMailto(Uri uri, {String? accountId}) {

@@ -18,6 +18,7 @@ import '../../shared/sync_status.dart';
 import '../../shared/tags.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
+import '../compose/compose_recovery.dart';
 import '../outbox/outbox_screen.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
@@ -49,6 +50,10 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
     // Focusing the field (a tap, the keyboard) enters search.
     _focus.addListener(() {
       if (_focus.hasFocus && !_searching) _setSearching(true);
+    });
+    // A message left unsent when Loupe last closed: offer to continue it.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) unawaited(offerComposeRecovery(context, ref));
     });
   }
 

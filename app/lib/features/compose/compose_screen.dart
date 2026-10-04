@@ -16,6 +16,7 @@ import '../conversation/attachments.dart';
 import '../conversation/mail_streams.dart';
 import '../conversation/sheets.dart';
 import 'compose_args.dart';
+import 'compose_recovery.dart';
 import 'compose_text.dart';
 import 'recipient_field.dart';
 import 'send_later.dart';
@@ -28,10 +29,27 @@ import '../../theme/loupe_icons.dart';
 /// Send Later: the clock beside Send (or a long-press on Send) picks a time;
 /// Send then shows it and schedules the message. Opened from the Outbox
 /// ([ComposeArgs.outboxId]), sending replaces the waiting message.
+///
+/// Autosave: [autosaveDelay] after the last edit the message is saved to the
+/// account's Drafts, replacing the previous save (the draft id is kept), and
+/// a local copy is kept in [ComposeRecoveryStore] soon after every edit and
+/// when the app goes to the background, so a crash loses nothing. Closing
+/// still offers Delete Draft (which deletes both) and Save Draft.
 class ComposeScreen extends ConsumerStatefulWidget {
   const ComposeScreen({super.key, this.args = const ComposeArgs()});
 
   final ComposeArgs args;
+
+  /// Quiet time after an edit before the draft is saved to the server.
+  static const autosaveDelay = Duration(seconds: 3);
+
+  /// The same, with attachments over [largeAttachmentBytes]: each save
+  /// uploads them again.
+  static const autosaveDelayLarge = Duration(seconds: 30);
+  static const largeAttachmentBytes = 2 * 1024 * 1024;
+
+  /// Quiet time after an edit before the local copy is written.
+  static const localCopyDelay = Duration(milliseconds: 500);
 
   @override
   ConsumerState<ComposeScreen> createState() => _ComposeScreenState();
@@ -73,19 +91,43 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
   /// The state when the screen opened; closing an unchanged message asks nothing.
   String? _initial;
 
+  // Autosave.
+  late final String _session = widget.args.recoverySession ?? ComposeSessions.newId();
+  late final ComposeRecoveryStore _recovery;
+  late final AppLifecycleListener _lifecycle;
+
+  /// The draft this screen started from (editing a draft), if any.
+  String? _originalDraftId;
+
+  /// [_snapshot] at the last save to Drafts, and of the last local copy.
+  String? _lastSaved;
+  String? _lastLocal;
+  Timer? _serverTimer;
+  Timer? _localTimer;
+  Future<void>? _saving;
+  bool _saveAgain = false;
+
   MailRepository get _repo => ref.read(repositoryProvider);
 
   @override
   void initState() {
     super.initState();
+    ComposeSessions.opened(_session);
+    _recovery = ref.read(composeRecoveryProvider);
     for (final l in [_to, _cc, _bcc, _subject, _body]) {
       l.addListener(_changed);
     }
+    // Swiped away from the app switcher comes after this: save what's there.
+    _lifecycle = AppLifecycleListener(onHide: _saveNow, onPause: _saveNow);
     unawaited(_prepare());
   }
 
   @override
   void dispose() {
+    _serverTimer?.cancel();
+    _localTimer?.cancel();
+    _lifecycle.dispose();
+    ComposeSessions.closed(_session);
     for (final c in [_to, _cc, _bcc]) {
       c.dispose();
     }
@@ -98,19 +140,111 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
   }
 
   void _changed() {
-    if (mounted) setState(() {});
+    if (!mounted) return;
+    setState(() {});
+    _scheduleAutosave();
   }
 
   String _snapshot() => [
     for (final c in [_to, _cc, _bcc]) c.withPending.map((a) => a.email).join(','),
     _subject.text,
     _body.text,
-    _attachments.length,
+    for (final a in _attachments) '${a.filename}:${a.data.length}',
     _identity?.id,
     _sendAt?.millisecondsSinceEpoch,
   ].join('\u0000');
 
   bool get _dirty => _initial == null || _snapshot() != _initial;
+
+  // Autosave ---------------------------------------------------------------------
+
+  /// Outbox messages aren't drafts: editing one saves nothing on the side.
+  bool get _autosaves => !_preparing && !_closing && _outboxId == null && _identity != null;
+
+  /// Debounces both saves after an edit (text fields also notify on cursor moves).
+  void _scheduleAutosave() {
+    if (!_autosaves) return;
+    final snapshot = _snapshot();
+    if (snapshot != _lastLocal) {
+      _localTimer?.cancel();
+      _localTimer = Timer(ComposeScreen.localCopyDelay, _writeLocal);
+    }
+    if (snapshot != _lastSaved) {
+      final size = _attachments.fold<int>(0, (n, a) => n + a.data.length);
+      _serverTimer?.cancel();
+      _serverTimer = Timer(
+        size > ComposeScreen.largeAttachmentBytes ? ComposeScreen.autosaveDelayLarge : ComposeScreen.autosaveDelay,
+        () => unawaited(_saveDraftQuietly()),
+      );
+    }
+  }
+
+  /// The app is going to the background: save both at once.
+  void _saveNow() {
+    if (!_autosaves || !_dirty) return;
+    _writeLocal();
+    unawaited(_saveDraftQuietly());
+  }
+
+  /// Keeps the local copy; an unchanged message needs none.
+  void _writeLocal({bool force = false}) {
+    _localTimer?.cancel();
+    if (!_autosaves) return;
+    final snapshot = _snapshot();
+    if (!force && snapshot == _lastLocal) return;
+    final message = _message();
+    if (message == null) return;
+    _lastLocal = snapshot;
+    if (!_dirty && _draftId == _originalDraftId) {
+      unawaited(_recovery.clear(session: _session));
+      return;
+    }
+    unawaited(
+      _recovery.write(ComposeRecord(session: _session, message: message, savedAt: DateTime.now(), sendAt: _sendAt)),
+    );
+  }
+
+  /// Saves to Drafts, replacing the previous save; one save at a time.
+  /// Failures are quiet: the local copy stays, and the next edit tries again.
+  Future<void> _saveDraftQuietly() {
+    _serverTimer?.cancel();
+    if (_saving case final running?) {
+      _saveAgain = true;
+      return running;
+    }
+    return _saving = _runSaves().whenComplete(() => _saving = null);
+  }
+
+  Future<void> _runSaves() async {
+    final repo = _repo;
+    do {
+      _saveAgain = false;
+      if (!_autosaves) return;
+      final snapshot = _snapshot();
+      final message = _message();
+      if (message == null || snapshot == _lastSaved) return;
+      try {
+        _draftId = await repo.saveDraft(message);
+        _lastSaved = snapshot;
+      } on MailException {
+        return;
+      }
+      if (!mounted) return;
+      // The local copy learns the draft's new id.
+      _writeLocal(force: true);
+    } while (_saveAgain && mounted);
+  }
+
+  /// Stops autosaving and waits for a save in progress, so [_draftId] is final.
+  Future<void> _stopAutosave() async {
+    _serverTimer?.cancel();
+    _localTimer?.cancel();
+    _saveAgain = false;
+    await _saving;
+  }
+
+  /// Forgets the local copy (the message was sent, saved or deleted).
+  void _forgetLocal() => unawaited(_recovery.clear(session: _session));
 
   // Preparing ------------------------------------------------------------------
 
@@ -129,6 +263,8 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       _restore(m);
       // From the Outbox, closing without changes asks nothing.
       if (_outboxId != null) _initial = _snapshot();
+      if (args.attachmentsFromDraft) warning = await _attachmentsFromDraft(m.draftId);
+      if (!mounted) return;
     } else {
       switch (args.mode) {
         case ComposeMode.newMessage:
@@ -147,7 +283,12 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       _initial = _snapshot();
     }
     _showCcBcc = _cc.items.isNotEmpty || _bcc.items.isNotEmpty;
+    _originalDraftId = _draftId;
+    _lastSaved = _initial;
+    _lastLocal = _initial;
     setState(() => _preparing = false);
+    // A message brought back (Undo, crash recovery) is saved again soon.
+    if (args.message != null) _scheduleAutosave();
     if (warning != null) showSnack(ScaffoldMessenger.of(context), warning);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
@@ -260,6 +401,19 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     }
   }
 
+  /// Crash recovery without the attachments' data: they are in the draft.
+  Future<String?> _attachmentsFromDraft(String? draftId) async {
+    const lost = 'The attachments couldn’t be recovered. Add them again.';
+    if (draftId == null) return lost;
+    try {
+      final content = await _repo.loadContent(draftId);
+      if (!mounted) return null;
+      return await _loadAttachments(draftId, content);
+    } on MailException {
+      return lost;
+    }
+  }
+
   Future<String?> _loadAttachments(String emailId, EmailContent content) async {
     try {
       for (final a in content.visibleAttachments) {
@@ -313,6 +467,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       _identity = identity;
       _body.text = ComposeText.replaceSignature(_body.text, oldSignature, identity.signature);
     });
+    _scheduleAutosave();
   }
 
   Future<void> _attach() async {
@@ -323,7 +478,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
         final data = await f.readAsBytes();
         _attachments.add(OutgoingAttachment(filename: f.name, mimeType: mimeTypeFor(f.name), data: data));
       }
-      if (mounted) setState(() {});
+      _changed();
       final total = _attachments.fold<int>(0, (n, a) => n + a.data.length);
       if (total > 20 * 1024 * 1024) {
         showSnack(messenger, 'Attachments total ${formatBytes(total)}; some servers refuse messages this large.');
@@ -361,7 +516,8 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
   Future<void> _pickSendLater() async {
     final choice = await showSendLaterSheet(context, now: DateTime.now(), current: _sendAt);
     if (choice == null || !mounted) return;
-    setState(() => _sendAt = choice.at);
+    _sendAt = choice.at;
+    _changed();
   }
 
   Future<void> _send() async {
@@ -374,6 +530,11 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       final send = await _confirm('No Subject', 'This message has no subject. Send it anyway?', confirm: 'Send');
       if (!send) return;
     }
+    // The message goes out with the draft's final id; sending deletes the draft.
+    setState(() => _busy = true);
+    await _stopAutosave();
+    if (!mounted) return;
+    setState(() => _busy = false);
     final message = _message();
     if (message == null || !mounted) return;
     final repo = _repo;
@@ -402,6 +563,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
         sendAt: at,
       );
       if (at != null) wakeUpAt(ref, at);
+      _forgetLocal();
       _closeNow();
       final undo = at != null || undoSeconds > 0;
       showSnack(
@@ -447,7 +609,8 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
 
   Future<void> _cancel() async {
     if (_busy) return;
-    if (!_dirty || _preparing) return _closeNow();
+    if (_preparing) return _closeNow();
+    if (!_dirty) return _closeUnchanged();
     if (_outboxId != null) {
       final choice = await showActionSheet<_CloseChoice>(
         context,
@@ -474,11 +637,17 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
         case _CloseChoice.discardChanges:
           _closeNow();
         case _CloseChoice.delete:
+          // Autosave may have saved it: delete that draft and the local copy.
+          await _stopAutosave();
           if (_draftId case final id?) await _repo.deleteDraft(id);
+          _forgetLocal();
           _closeNow();
         case _CloseChoice.save:
+          // Usually autosave has already done it.
+          await _stopAutosave();
           final message = _message();
-          if (message != null) await _repo.saveDraft(message);
+          if (message != null && _snapshot() != _lastSaved) await _repo.saveDraft(message);
+          _forgetLocal();
           _closeNow();
           showSnack(messenger, 'Draft saved');
       }
@@ -486,6 +655,29 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       if (mounted) setState(() => _busy = false);
       showSnack(messenger, e.message);
     }
+  }
+
+  /// Closes a message that is as it was opened. If autosave saved it
+  /// meanwhile (edits that were undone), a new message's draft is deleted
+  /// and an edited draft is saved back as it was.
+  Future<void> _closeUnchanged() async {
+    setState(() => _busy = true);
+    await _stopAutosave();
+    if (!mounted) return;
+    final saved = _draftId;
+    if (saved != null && saved != _originalDraftId) {
+      try {
+        if (_originalDraftId == null) {
+          await _repo.deleteDraft(saved);
+        } else if (_message() case final message?) {
+          await _repo.saveDraft(message);
+        }
+      } on MailException {
+        // Not worth keeping the screen open for.
+      }
+    }
+    _forgetLocal();
+    _closeNow();
   }
 
   void _closeNow() {
@@ -659,7 +851,10 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
                         InputChip(
                           avatar: Icon(attachmentIcon(a.mimeType, a.filename), size: 18),
                           label: Text('${a.filename} · ${formatBytes(a.data.length)}'),
-                          onDeleted: () => setState(() => _attachments.remove(a)),
+                          onDeleted: () {
+                            _attachments.remove(a);
+                            _changed();
+                          },
                           deleteIcon: const Icon(LoupeIcons.clear, size: 18),
                           deleteButtonTooltipMessage: 'Remove',
                         ),
