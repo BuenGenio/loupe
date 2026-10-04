@@ -8,6 +8,15 @@ import 'package:mail_sync/mail_sync.dart';
 
 import 'data/repositories.dart';
 import 'features/notifications/app_icon_badge.dart';
+import 'features/notifications/new_mail_check.dart';
+import 'features/notifications/notification_settings.dart';
+import 'features/notifications/notifications_coordinator.dart';
+import 'platform/background.dart';
+import 'platform/background_entry.dart';
+import 'platform/foreground_sync.dart';
+import 'platform/instant_delivery.dart';
+import 'platform/support_directory.dart';
+import 'platform/sync_leases.dart';
 import 'router.dart';
 import 'settings/app_mode.dart';
 import 'settings/app_settings.dart';
@@ -29,8 +38,11 @@ class LoupeApp extends ConsumerWidget {
       scrollBehavior: const LoupeScrollBehavior(),
       routerConfig: ref.watch(routerProvider),
       builder: (context, child) => _SystemBars(
-        // The badge reads mail counts, so it waits behind the live gate.
-        child: _LiveGate(child: AppIconBadgeUpdater(child: child ?? const SizedBox.shrink())),
+        // The badge and notification taps need the repository, so they wait
+        // behind the live gate.
+        child: _LiveGate(
+          child: AppIconBadgeUpdater(child: NotificationsCoordinator(child: child ?? const SizedBox.shrink())),
+        ),
       ),
     );
   }
@@ -118,33 +130,65 @@ class _LiveUnavailable extends ConsumerWidget {
   }
 }
 
-/// Pauses syncing while the app is in the background (queued sends still go
-/// out) and resumes it in the foreground.
-class _SyncLifecycle extends StatefulWidget {
+/// Syncs while the app is in the foreground and pauses in the background
+/// (queued sends still go out), never at the same time as the background
+/// sync (see [ForegroundSync]). Going to the background also marks the mail
+/// that arrived meanwhile as seen for notifications, and asks for a wake-up
+/// when a queued message is due.
+class _SyncLifecycle extends ConsumerStatefulWidget {
   const _SyncLifecycle({required this.repository, required this.child});
 
   final LiveMailRepository repository;
   final Widget child;
 
   @override
-  State<_SyncLifecycle> createState() => _SyncLifecycleState();
+  ConsumerState<_SyncLifecycle> createState() => _SyncLifecycleState();
 }
 
-class _SyncLifecycleState extends State<_SyncLifecycle> {
+class _SyncLifecycleState extends ConsumerState<_SyncLifecycle> {
   late final AppLifecycleListener _listener;
+  late final ForegroundSync _sync;
 
   @override
   void initState() {
     super.initState();
-    _listener = AppLifecycleListener(
-      onHide: () => unawaited(widget.repository.pause()),
-      onShow: () => unawaited(widget.repository.resume()),
+    final repository = widget.repository;
+    final container = ProviderScope.containerOf(context, listen: false);
+    _sync = ForegroundSync(
+      leases: container.read(supportDirectoryProvider.future).then(SyncLeases.new),
+      pause: repository.pause,
+      resume: repository.resume,
+      onBackground: () => _wentToBackground(container, repository),
+      // Instant Delivery holds the database in the background: let go now.
+      onClaimed: container.read(instantServiceProvider).nudge,
     );
+    _listener = AppLifecycleListener(
+      onHide: () => unawaited(_sync.enterBackground()),
+      onShow: () => unawaited(_sync.enterForeground()),
+    );
+    final state = WidgetsBinding.instance.lifecycleState;
+    if (state == null || state == AppLifecycleState.resumed || state == AppLifecycleState.inactive) {
+      unawaited(_sync.enterForeground());
+    }
+  }
+
+  static Future<void> _wentToBackground(ProviderContainer container, LiveMailRepository repository) async {
+    try {
+      await container
+          .read(newMailCheckProvider)
+          .run(repository, container.read(notificationSettingsProvider), silent: true);
+      final due = await nextOutboxDue(repository);
+      if (due != null) await container.read(backgroundSchedulerProvider).scheduleWakeUp(due);
+    } on Object catch (e) {
+      debugPrint('Going to the background: $e');
+    }
   }
 
   @override
   void dispose() {
     _listener.dispose();
+    // Left live mode: stop syncing and let background work have the database.
+    unawaited(_sync.enterBackground().then((_) => _sync.dispose()));
     super.dispose();
   }
 

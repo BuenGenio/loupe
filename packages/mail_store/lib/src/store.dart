@@ -14,6 +14,10 @@ import 'schema.dart';
 import 'search_sql.dart';
 import 'threading.dart';
 
+/// How long a connection waits for another one's write lock before failing
+/// with SQLITE_BUSY, in milliseconds.
+const _busyTimeoutMs = 10000;
+
 /// Inline parts larger than this are not cached.
 const maxInlinePartBytes = 512 * 1024;
 
@@ -61,6 +65,9 @@ final class MailStore {
       // Fails with SQLITE_NOTADB if the key is wrong.
       db.select('SELECT count(*) FROM sqlite_master');
       db.execute('PRAGMA journal_mode = WAL');
+      // Background work (sync, notification actions) opens its own
+      // connection; a writer waits for another one instead of failing.
+      db.execute('PRAGMA busy_timeout = $_busyTimeoutMs');
       _configure(db);
     }
 

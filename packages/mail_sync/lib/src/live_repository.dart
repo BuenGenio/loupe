@@ -46,6 +46,7 @@ final class LiveMailRepository implements MailRepository {
   bool _started = false;
   bool _paused = false;
   bool _disposed = false;
+  Future<void>? _disposing;
 
   Timer? _outboxTimer;
   int _outboxGeneration = 0;
@@ -112,8 +113,22 @@ final class LiveMailRepository implements MailRepository {
     if (!_started || _paused) await Future.wait([for (final s in _syncers.values) s.pause()]);
   }
 
-  /// Stops all syncing. The store stays open (the app owns it).
-  Future<void> dispose() async {
+  /// Replays queued operations of every account now, e.g. after a
+  /// notification action changed a message from a background isolate. Works
+  /// without [start]; closes connections afterwards unless the repository is
+  /// running. Never throws; failures go to the sync status.
+  Future<void> flushOps() async {
+    if (_disposed) return;
+    await _loadAccounts();
+    await Future.wait([for (final s in _syncers.values) s.flushOps()]);
+    if (!_started || _paused) await Future.wait([for (final s in _syncers.values) s.pause()]);
+  }
+
+  /// Stops all syncing, including a running [syncOnce] (after the command in
+  /// flight). The store stays open (the app owns it).
+  Future<void> dispose() => _disposing ??= _dispose();
+
+  Future<void> _dispose() async {
     _disposed = true;
     _outboxTimer?.cancel();
     await Future.wait([for (final s in _syncers.values) s.dispose()]);

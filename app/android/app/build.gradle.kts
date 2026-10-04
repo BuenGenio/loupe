@@ -20,6 +20,8 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
+        // flutter_local_notifications needs core library desugaring (java.time on older Android).
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -36,6 +38,8 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // As flutter_local_notifications' setup asks, with desugaring.
+        multiDexEnabled = true
         // flutter_appauth (mail_platform): OAuth redirect io.github.buengenio.loupe:/oauth2redirect
         manifestPlaceholders["appAuthRedirectScheme"] = "io.github.buengenio.loupe"
     }
@@ -67,4 +71,9 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // flutter_local_notifications: the desugaring library its README pins.
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
