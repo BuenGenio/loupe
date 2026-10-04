@@ -9,6 +9,8 @@ import 'dart:convert';
 
 import 'package:mail_model/mail_model.dart';
 
+import 'util.dart';
+
 /// `format` of the document.
 const smartMailboxesFormat = 'loupe.smart-mailboxes';
 
@@ -54,11 +56,18 @@ final class SmartMailboxEntry {
   /// written back unchanged.
   final Map<String, Object?> extra;
 
-  /// The folder path of a `{"mailbox": …}` scope.
-  String? get mailboxPath => scope?['mailbox'] as String?;
+  /// The folder path of a `{"mailbox": …}` scope (null unless a string:
+  /// another app's document may hold anything).
+  String? get mailboxPath => switch (scope?['mailbox']) {
+    final String path => path,
+    _ => null,
+  };
 
   /// The kind of a `{"virtual": …}` scope.
-  String? get virtualKind => scope?['virtual'] as String?;
+  String? get virtualKind => switch (scope?['virtual']) {
+    final String kind => kind,
+    _ => null,
+  };
 
   /// Whether the entry belongs in the document of the account that owns its
   /// folder (rather than the home account's).
@@ -344,6 +353,9 @@ Future<SmartMailboxSyncReport> syncSmartMailboxes(
       }
     } on MailException catch (e) {
       failed[accountId] = e;
+    } on Object catch (e) {
+      // Whatever goes wrong with one account's document leaves the others.
+      failed[accountId] = asMailException(e, 'Smart Mailboxes couldn’t be synced');
     }
   }
   return SmartMailboxSyncReport(records: records, synced: synced, failed: failed, newerFormat: newer);
