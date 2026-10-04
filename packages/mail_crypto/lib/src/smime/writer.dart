@@ -91,7 +91,8 @@ final class SmimeMessageComposer implements MessageComposer {
           content,
           SmimeKeyPair(own.certificate, key),
           chain: own.chain,
-          now: now,
+          // The signing time is the message's date, as readers compare them.
+          now: date ?? now,
           encryptionCertificate: own.certificate.canEncrypt ? own.certificate : null,
         );
       } on SmimeException catch (e) {

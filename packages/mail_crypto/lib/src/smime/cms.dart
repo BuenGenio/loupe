@@ -51,10 +51,15 @@ final class SmimeSignerCheck {
     this.capabilities = const [],
     this.problem,
     this.modified = false,
+    this.weak = false,
   });
 
   /// The signature matches the content (and the signed attributes).
   final bool valid;
+
+  /// Made with an algorithm that isn't safe anymore (SHA-1, MD5): not
+  /// accepted, as Thunderbird doesn't accept it.
+  final bool weak;
 
   /// The signature was checked and doesn't match: the content (or the
   /// signature) was changed after signing.
@@ -167,11 +172,28 @@ SmimeSignedData verifySignedData(Uint8List der, {Uint8List? detached, List<Smime
         signerInfos = c;
       }
     }
-    final data = content ?? detached;
-    final signers = [
+    final data = detached ?? content;
+    var signers = [
       for (final si in signerInfos?.children ?? const <Asn1>[])
         _checkSigner(si, data, contentType, [...certificates, ...known]),
     ];
+    // A multipart/signed whose signature carries other content than the
+    // signed part (Thunderbird's "mismatch-econtent"): what is shown isn't what was signed.
+    if (detached != null && content != null && !constantEquals(detached, content)) {
+      signers = [
+        for (final s in signers)
+          SmimeSignerCheck(
+            valid: false,
+            modified: true,
+            signer: s.signer,
+            certificate: s.certificate,
+            signingTime: s.signingTime,
+            digestAlgorithm: s.digestAlgorithm,
+            capabilities: s.capabilities,
+            problem: 'The signature carries other content than the message.',
+          ),
+      ];
+    }
     return SmimeSignedData(contentType: contentType, content: content, certificates: certificates, signers: signers);
   } on Asn1Exception catch (e) {
     _malformed(e);
@@ -212,9 +234,10 @@ SmimeSignerCheck _checkSigner(Asn1 si, Uint8List? content, String contentType, L
       }
     }
   }
-  SmimeSignerCheck result(bool valid, [String? problem, bool modified = false]) => SmimeSignerCheck(
+  SmimeSignerCheck result(bool valid, [String? problem, bool modified = false, bool weak = false]) => SmimeSignerCheck(
     valid: valid,
     modified: modified,
+    weak: weak,
     signer: sid,
     certificate: cert,
     signingTime: signingTime,
@@ -223,6 +246,9 @@ SmimeSignerCheck _checkSigner(Asn1 si, Uint8List? content, String contentType, L
     problem: problem,
   );
   if (content == null) return result(false, 'The signed content is missing.');
+  if (_weak.contains(digestOid) || _weak.contains(sigAlg[0].oid)) {
+    return result(false, 'It is signed with ${digestName(digestOid)}, which isn’t safe anymore.', false, true);
+  }
   if (cert == null) return result(false, 'The signer’s certificate isn’t in the message.');
   final d = digestFor(digestOid);
   if (d == null) return result(false, 'The digest ${digestName(digestOid)} isn’t supported.');
@@ -251,6 +277,9 @@ SmimeSignerCheck _checkSigner(Asn1 si, Uint8List? content, String contentType, L
     return result(false, e.message);
   }
 }
+
+/// Digests and signature algorithms that aren't accepted anymore.
+const _weak = {Oid.sha1, Oid.md5, Oid.sha1WithRsa, Oid.md5WithRsa, Oid.ecdsaWithSha1};
 
 /// Checks [signature] over [data] with [cert]'s key. [algorithm] is the
 /// signature algorithm (a combined one, or just the key's with [digestOid]).
@@ -303,6 +332,8 @@ bool verifySignature(
 
 /// Whether [issuer]'s key signed [cert].
 bool certificateSignedBy(SmimeCertificate cert, SmimeCertificate issuer) {
+  // SHA-1 certificates aren't trusted anymore (as Mozilla decided in 2017).
+  if (_weak.contains(cert.signatureAlgorithm)) return false;
   try {
     final params = cert.signatureParameters == null ? null : Asn1.parse(cert.signatureParameters!);
     return verifySignature(issuer, cert.signatureAlgorithm, params, Oid.sha256, cert.tbs, cert.signature);

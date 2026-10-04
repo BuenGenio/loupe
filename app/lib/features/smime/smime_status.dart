@@ -53,8 +53,14 @@ final class SmimeStatusView {
     final trust = sig.trust;
     final (String label, PgpTone tone, bool check) = switch (sig) {
       SmimeSignatureStatus(modified: true) => ('Signature invalid: message modified', PgpTone.bad, false),
+      SmimeSignatureStatus(weak: true) => ('Signature insecure: outdated algorithm', PgpTone.bad, false),
       SmimeSignatureStatus(valid: false) => ('Signature can’t be checked', PgpTone.caution, false),
       _ when trust == null => ('Signed · certificate missing', PgpTone.caution, false),
+      SmimeSignatureStatus(dateMismatch: true) when trust.trusted => (
+        'Signed by $name · at another date',
+        PgpTone.caution,
+        false,
+      ),
       _ => switch (trust.problem) {
         null => ('Signed by $name', PgpTone.good, true),
         SmimeProblem.invalidChain => ('Signed by $name · invalid certificate', PgpTone.bad, false),
@@ -285,6 +291,7 @@ class SmimeStatusSheet extends ConsumerWidget {
                   if (sig.signingTime case final at?) _Row(label: 'Signed', value: _date(at)),
                   for (final p in trust?.problems ?? const <SmimeProblem>{})
                     _Row(label: 'Problem', value: problemText(p)),
+                  if (sig.dateMismatch) const _Row(label: 'Problem', value: _dateMismatch),
                   if (!sig.valid && sig.problem != null) _Row(label: 'Problem', value: sig.problem),
                   if (canTrust && top != null && top != cert && top.isCa)
                     SheetRow(
@@ -348,6 +355,7 @@ class SmimeStatusSheet extends ConsumerWidget {
     if (!sig.valid) return '$encrypted${sig.problem ?? 'The signature can’t be checked.'}';
     final trust = sig.trust;
     if (trust == null) return '${encrypted}The signer’s certificate isn’t in the message, so it can’t be checked.';
+    if (sig.dateMismatch && trust.trusted) return '$encrypted$_dateMismatch';
     return encrypted +
         switch (trust.problem) {
           null => 'The signature is valid, and ${trust.issuerName} vouches that the certificate belongs to the sender.',
@@ -366,6 +374,9 @@ class SmimeStatusSheet extends ConsumerWidget {
     return '${_day(d)} ${two(l.hour)}:${two(l.minute)}';
   }
 }
+
+const _dateMismatch =
+    'It was signed more than an hour away from the message’s date: it may be an old message sent again.';
 
 /// A certificate problem in words.
 String problemText(SmimeProblem p) => switch (p) {

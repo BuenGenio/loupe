@@ -46,6 +46,8 @@ final class SmimeSignatureStatus {
     this.capabilities = const [],
     this.certificates = const [],
     this.modified = false,
+    this.weak = false,
+    this.dateMismatch = false,
   });
 
   /// The signature matches the content: it wasn't modified.
@@ -53,6 +55,14 @@ final class SmimeSignatureStatus {
 
   /// The signature doesn't match: the message was changed after signing.
   final bool modified;
+
+  /// Made with SHA-1 or MD5: not accepted.
+  final bool weak;
+
+  /// The signing time is more than an hour away from the message's Date
+  /// (which the signature doesn't cover): an old signed message sent again,
+  /// or a changed date. Thunderbird's rule.
+  final bool dateMismatch;
 
   /// The signer's certificate; null when the message doesn't carry it.
   final SmimeCertificate? certificate;
@@ -70,8 +80,21 @@ final class SmimeSignatureStatus {
   /// Every certificate the message carried (the signer's chain).
   final List<SmimeCertificate> certificates;
 
-  /// Valid, by a trusted certificate of the sender: "Signed by … ✓".
-  bool get good => valid && (trust?.trusted ?? false);
+  /// Valid, by a trusted certificate of the sender, at the message's date: "Signed by … ✓".
+  bool get good => valid && !dateMismatch && (trust?.trusted ?? false);
+
+  SmimeSignatureStatus withDateMismatch() => SmimeSignatureStatus(
+    valid: valid,
+    certificate: certificate,
+    signingTime: signingTime,
+    trust: trust,
+    problem: problem,
+    capabilities: capabilities,
+    certificates: certificates,
+    modified: modified,
+    weak: weak,
+    dateMismatch: true,
+  );
 }
 
 /// The outcome for one message.

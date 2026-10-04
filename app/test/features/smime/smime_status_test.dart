@@ -57,6 +57,17 @@ void main() {
     expect((modified.signatureText, modified.signatureTone), ('Signature invalid: message modified', PgpTone.bad));
     expect(SmimeStatusView.of(signed(valid: false)).signatureText, 'Signature can’t be checked');
     expect(SmimeStatusView.of(signed(withCertificate: false)).signatureText, 'Signed · certificate missing');
+    final weak = SmimeMessageStatus(signature: SmimeSignatureStatus(valid: false, weak: true, certificate: alice));
+    expect(SmimeStatusView.of(weak).signatureText, 'Signature insecure: outdated algorithm');
+    final redated = SmimeMessageStatus(
+      signature: SmimeSignatureStatus(
+        valid: true,
+        dateMismatch: true,
+        certificate: alice,
+        trust: SmimeTrustCheck(chain: [alice, ca, testRoot], anchor: testRoot),
+      ),
+    );
+    expect(SmimeStatusView.of(redated).signatureText, 'Signed by Alice Example · at another date');
   });
 
   test('encryption failures', () {

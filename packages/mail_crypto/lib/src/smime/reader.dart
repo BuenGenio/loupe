@@ -129,7 +129,10 @@ final class SmimeReader {
               (p) => _signatureTypes.contains(p.mimeType) || (p.filename ?? '').toLowerCase().endsWith('.p7s'),
               orElse: () => entity.parts[1],
             );
-        signature ??= _verify(p7s.decodedBody, canonicalLineEnds(signed.raw), known, trustAnchors, at, from);
+        signature = _combine(
+          signature,
+          _verify(p7s.decodedBody, canonicalLineEnds(signed.raw), known, trustAnchors, at, from),
+        );
         entity = signed;
         unwrapped = true;
         continue;
@@ -139,7 +142,7 @@ final class SmimeReader {
       if (kind == SmimeProtection.signedOpaque) {
         protection ??= kind;
         final checked = _verifyOpaque(der, known, trustAnchors, at, from);
-        signature ??= checked.$2;
+        signature = _combine(signature, checked.$2);
         if (checked.$1 == null) return SmimeReadResult(status: status());
         entity = MimeEntity.parse(checked.$1!);
         unwrapped = true;
@@ -148,6 +151,9 @@ final class SmimeReader {
       if (kind == SmimeProtection.none) break;
       protection ??= kind;
       encrypted = true;
+      // A signature around encrypted data only covers the ciphertext: anyone
+      // can sign someone else's. Only signatures inside count (as Thunderbird).
+      signature = null;
       try {
         recipients = backend.recipientsOf(der);
         final decrypted = backend.decrypt(der, keys);
@@ -162,7 +168,25 @@ final class SmimeReader {
       }
     }
     if (protection == null) return const SmimeReadResult(status: SmimeMessageStatus.none);
+    // The Date header isn't signed: more than an hour from the signing time
+    // is an old signed message sent again, or a changed date (Thunderbird's rule).
+    final signedAt = signature?.signingTime;
+    final date = parseMailDate(root.header('date'));
+    if (signature != null && signedAt != null && date != null && date.difference(signedAt).abs() > dateTolerance) {
+      signature = signature.withDateMismatch();
+    }
     return SmimeReadResult(status: status(), entity: unwrapped ? entity : null);
+  }
+
+  /// How far the signing time may be from the Date header.
+  static const dateTolerance = Duration(hours: 1);
+
+  /// The signature to report of nested ones: the outermost, unless an
+  /// inner one is bad (a bad signature is never hidden by a good one).
+  static SmimeSignatureStatus? _combine(SmimeSignatureStatus? outer, SmimeSignatureStatus inner) {
+    if (outer == null) return inner;
+    if (outer.valid && !inner.valid) return inner;
+    return outer;
   }
 
   SmimeProtection _kind(MimeEntity e) => _protectionOf(e.contentType, e.filename);
@@ -244,6 +268,7 @@ final class SmimeReader {
       trust: trust,
       problem: signer.problem,
       modified: signer.modified,
+      weak: signer.weak,
       capabilities: signer.capabilities,
       certificates: signed.certificates,
     );
@@ -257,4 +282,54 @@ final class SmimeReader {
     SmimeErrorKind.unsupported => SmimeDecryptFailure.unsupported,
     _ => SmimeDecryptFailure.damaged,
   };
+}
+
+const _months = {
+  'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6, //
+  'jul': 7, 'aug': 8, 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12,
+};
+
+const _zones = {
+  'ut': 0,
+  'gmt': 0,
+  'z': 0,
+  'edt': -4,
+  'est': -5,
+  'cdt': -5,
+  'cst': -6,
+  'mdt': -6,
+  'mst': -7,
+  'pdt': -7,
+  'pst': -8,
+};
+
+/// An RFC 5322 date (`Wed, 08 Jul 2026 17:36:38 +0000`), in UTC; null when it can't be read.
+DateTime? parseMailDate(String? value) {
+  if (value == null) return null;
+  final m = RegExp(
+    r'(\d{1,2})\s+([A-Za-z]{3})[a-z]*\s+(\d{2,4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s*([+-]\d{4}|[A-Za-z]+)?',
+  ).firstMatch(value);
+  if (m == null) return null;
+  final month = _months[m.group(2)!.toLowerCase()];
+  if (month == null) return null;
+  var year = int.parse(m.group(3)!);
+  if (year < 100) year += year < 50 ? 2000 : 1900;
+  var t = DateTime.utc(
+    year,
+    month,
+    int.parse(m.group(1)!),
+    int.parse(m.group(4)!),
+    int.parse(m.group(5)!),
+    int.parse(m.group(6) ?? '0'),
+  );
+  final zone = m.group(7);
+  if (zone != null) {
+    if (zone.startsWith('+') || zone.startsWith('-')) {
+      final minutes = int.parse(zone.substring(1, 3)) * 60 + int.parse(zone.substring(3, 5));
+      t = t.subtract(Duration(minutes: zone.startsWith('+') ? minutes : -minutes));
+    } else {
+      t = t.subtract(Duration(hours: _zones[zone.toLowerCase()] ?? 0));
+    }
+  }
+  return t;
 }

@@ -18,3 +18,10 @@
   `alice-legacy.p12`: password `alice-pass`; `bob-*.p12`: `bob-pass`;
   `dave-nopass.p12`: empty) and messages signed and encrypted by
   `openssl cms`. Test keys only.
+- `thunderbird-smime/`: a subset of Thunderbird's S/MIME test data
+  (comm-central `mailnews/test/data/smime`, MPL-2.0, at 829a39b523f0),
+  made by NSS's test suite: the NSS test CA, Alice, Bob and Dave (`.p12`
+  password `nss`, valid until 2031-07-08) and messages signed, encrypted
+  and nested the ways Thunderbird writes and reads them.
+  `thunderbird_test.dart` checks Thunderbird's expectations for them
+  (`mailnews/mime/test/unit/test_smime_decrypt.js`).
