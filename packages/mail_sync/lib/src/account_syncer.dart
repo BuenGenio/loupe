@@ -418,8 +418,13 @@ final class AccountSyncer {
           if (!isLocalEmailId(id)) id,
       ];
       for (var i = 0; i < ids.length; i += _headerBatch) {
+        // Only while syncing in the foreground: background work has a time
+        // budget for new mail, and a paused syncer holds no connection.
+        // The mailbox stays marked; the next sync starts again.
+        if (!_running || _disposed) return;
         final chunk = ids.sublist(i, i + _headerBatch > ids.length ? ids.length : i + _headerBatch);
-        await onMain((t) async => _store.fillHeaders(await t.fetchSummaries(chunk)));
+        // Without previews: a fraction of the bytes for the header fields.
+        await onMain((t) async => _store.fillHeaders(await t.fetchSummaries(chunk, previews: false)));
       }
       await _store.markHeadersFresh(m.id);
     } catch (_) {
