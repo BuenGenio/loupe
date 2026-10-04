@@ -45,10 +45,14 @@ final class SmimeSignatureStatus {
     this.problem,
     this.capabilities = const [],
     this.certificates = const [],
+    this.modified = false,
   });
 
   /// The signature matches the content: it wasn't modified.
   final bool valid;
+
+  /// The signature doesn't match: the message was changed after signing.
+  final bool modified;
 
   /// The signer's certificate; null when the message doesn't carry it.
   final SmimeCertificate? certificate;

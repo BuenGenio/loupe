@@ -31,7 +31,7 @@ void main() {
       (SmimeProtection.signedDetached, false, true, true),
     );
     expect(s.certificate?.displayName, 'Alice Example');
-    expect(s.trust?.issuerName, 'Loupe Test Mail CA');
+    expect(s.trust?.issuerName, 'Loupe Test');
     expect(r.entity?.text, contains('signed with S/MIME. Grüße!'));
   });
 
@@ -45,7 +45,7 @@ void main() {
 
   test('problems: modified, expired, untrusted, wrong address', () {
     final modified = read('signed-modified.eml').status.signature!;
-    expect((modified.valid, modified.good), (false, false));
+    expect((modified.valid, modified.modified, modified.good), (false, true, false));
 
     final expired = read('signed-expired.eml').status.signature!;
     expect(expired.valid, isTrue);

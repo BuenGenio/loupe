@@ -243,6 +243,7 @@ final class SmimeReader {
       signingTime: signedAt,
       trust: trust,
       problem: signer.problem,
+      modified: signer.modified,
       capabilities: signer.capabilities,
       certificates: signed.certificates,
     );

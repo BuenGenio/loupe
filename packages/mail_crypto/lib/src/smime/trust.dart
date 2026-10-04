@@ -57,8 +57,13 @@ final class SmimeTrustCheck {
 
   SmimeCertificate get certificate => chain.first;
 
-  /// The CA that issued the certificate, by name (a trusted one or not).
-  String get issuerName => chain.length > 1 ? chain[1].displayName : certificate.issuerName;
+  /// The CA that issued the certificate (trusted or not), as people know
+  /// it: its organisation, else its common name.
+  String get issuerName {
+    if (chain.length < 2) return certificate.issuerName;
+    final issuer = chain[1].subject;
+    return issuer.organization ?? issuer.displayName;
+  }
 }
 
 /// The roots Loupe trusts for mail: Mozilla's list and the user's own.

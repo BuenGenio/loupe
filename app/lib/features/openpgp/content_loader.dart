@@ -6,34 +6,55 @@ import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../providers.dart';
+import '../smime/smime_providers.dart';
+import '../smime/smime_service.dart';
 import 'openpgp_providers.dart';
 import 'openpgp_service.dart';
 
 final _statuses = Expando<PgpMessageStatus>('OpenPGP status');
+final _smimeStatuses = Expando<SmimeMessageStatus>('S/MIME status');
 
 /// The OpenPGP status of content from [ContentLoader]; null when the
 /// message wasn't encrypted or signed.
 PgpMessageStatus? pgpStatusOf(EmailContent content) => _statuses[content];
 
+/// The S/MIME status of content from [ContentLoader]; null when the
+/// message wasn't S/MIME.
+SmimeMessageStatus? smimeStatusOf(EmailContent content) => _smimeStatuses[content];
+
+/// Whether [content] came encrypted, and with which standard (null when it didn't).
+SecurityTechnology? encryptedWith(EmailContent content) {
+  if (pgpStatusOf(content)?.encrypted ?? false) return SecurityTechnology.openPgp;
+  if (smimeStatusOf(content)?.encrypted ?? false) return SecurityTechnology.smime;
+  return null;
+}
+
 /// Loads message bodies and attachments for reading. Wraps the
-/// repository: OpenPGP messages come back decrypted and verified (see
-/// [pgpStatusOf]), and Autocrypt headers teach the keyring new keys.
+/// repository: OpenPGP and S/MIME messages come back decrypted and
+/// verified (see [pgpStatusOf], [smimeStatusOf]), Autocrypt headers teach
+/// the keyring new keys, and signed S/MIME mail brings its certificate.
 final contentLoaderProvider = Provider<ContentLoader>(
-  (ref) =>
-      ContentLoader(repository: ref.watch(repositoryProvider), openPgp: () => ref.read(openPgpServiceProvider.future)),
+  (ref) => ContentLoader(
+    repository: ref.watch(repositoryProvider),
+    openPgp: () => ref.read(openPgpServiceProvider.future),
+    smime: () => ref.read(smimeServiceProvider.future),
+  ),
 );
 
-/// Part ids of decrypted messages start with this; their bytes come from
-/// the decrypted message, not the server.
+/// Part ids of decrypted messages (OpenPGP and S/MIME) start with this;
+/// their bytes come from the decrypted message, not the server.
 const decryptedPartPrefix = 'pgp:';
 
 final class ContentLoader {
-  ContentLoader({required this.repository, required this.openPgp});
+  ContentLoader({required this.repository, required this.openPgp, this.smime});
 
   final MailRepository repository;
 
   /// The OpenPGP service, once the keyring has loaded.
   final Future<OpenPgpService> Function() openPgp;
+
+  /// The S/MIME service, once the certificate store has loaded.
+  final Future<SmimeService> Function()? smime;
 
   /// Decrypted messages, to serve their attachments (a few, newest last).
   final _entities = <String, MimeEntity>{};
@@ -42,6 +63,8 @@ final class ContentLoader {
   /// The content of [emailId], decrypted when it is OpenPGP mail.
   Future<EmailContent> loadContent(String emailId) async {
     final content = await repository.loadContent(emailId);
+    final smimeProtection = detectSmime(content.headers);
+    if (smimeProtection != SmimeProtection.none && smime != null) return _loadSmime(emailId, content);
     final protection = detectProtection(content.headers, text: content.text);
     final autocrypt = content.headers.any((h) => h.$1.toLowerCase() == 'autocrypt');
     // Plain mail without Autocrypt never waits for the keyring.
@@ -107,6 +130,49 @@ final class ContentLoader {
     return shown;
   }
 
+  Future<EmailContent> _loadSmime(String emailId, EmailContent content) async {
+    final SmimeService service;
+    try {
+      service = await smime!();
+    } on Object {
+      return content;
+    }
+    final summary = await repository.getEmail(emailId);
+    final sender = summary?.sender?.email;
+    SmimeMessageStatus status;
+    SmimeReadOutcome? outcome;
+    try {
+      final raw = await repository.loadRawSource(emailId);
+      outcome = await service.read(emailId, raw, sender: sender);
+      status = outcome.status;
+    } on SmimeException catch (e) {
+      status = SmimeMessageStatus(
+        protection: detectSmime(content.headers),
+        encrypted: detectSmime(content.headers) != SmimeProtection.signedDetached,
+        failure: SmimeDecryptFailure.damaged,
+        failureMessage: e.message,
+      );
+    }
+    final EmailContent shown;
+    if (status.encrypted && status.failure != null) {
+      shown = _copy(content, text: _explainSmime(status.failure!), html: null, attachments: _withoutPlumbing(content));
+    } else if (outcome?.content case final inner?) {
+      _remember(emailId, outcome!.entity!);
+      shown = _copy(inner, headers: content.headers, attachments: inner.attachments);
+    } else {
+      shown = _copy(content, attachments: _withoutPlumbing(content));
+    }
+    _smimeStatuses[shown] = status;
+    // Mail the user received brings its sender's certificate (not drafts, sent mail or junk).
+    final signature = status.signature;
+    if (signature != null && sender != null && summary != null && !summary.isDraft) {
+      if (!summary.keywords.contains(Keywords.junk)) {
+        unawaited(service.collect(signature, sender: sender).then((_) {}, onError: (Object _) {}));
+      }
+    }
+    return shown;
+  }
+
   /// The bytes of an attachment, from the decrypted message for `pgp:` parts.
   Future<Uint8List> loadAttachment(String emailId, String partId) async {
     if (!partId.startsWith(decryptedPartPrefix)) return repository.loadAttachment(emailId, partId);
@@ -151,10 +217,19 @@ final class ContentLoader {
 
   static List<Attachment> _withoutPlumbing(EmailContent c) => [
     for (final a in c.attachments)
-      if (!_plumbing.contains(a.mimeType.toLowerCase()) && a.filename != 'encrypted.asc') a,
+      if (!_plumbing.contains(a.mimeType.toLowerCase()) && !_plumbingNames.contains(a.filename?.toLowerCase())) a,
   ];
 
-  static const _plumbing = {'application/pgp-encrypted', 'application/pgp-signature'};
+  static const _plumbing = {'application/pgp-encrypted', 'application/pgp-signature', ...smimePlumbingTypes};
+  static const _plumbingNames = {'encrypted.asc', 'smime.p7s', 'smime.p7m'};
+
+  static String _explainSmime(SmimeDecryptFailure failure) => switch (failure) {
+    SmimeDecryptFailure.noKey =>
+      'This message is encrypted with S/MIME, but not to any certificate on this device. Import your certificate '
+          '(a .p12 or .pfx file) in Settings › End-to-End Encryption.',
+    SmimeDecryptFailure.damaged => 'This encrypted message is damaged, so it can’t be decrypted safely.',
+    SmimeDecryptFailure.unsupported => 'This message uses encryption that Loupe can’t read yet.',
+  };
 
   static String _explain(PgpDecryptFailure failure) => switch (failure) {
     PgpDecryptFailure.locked => 'This message is encrypted. Unlock your OpenPGP key to read it.',

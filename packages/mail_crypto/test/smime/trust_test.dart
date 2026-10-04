@@ -29,7 +29,7 @@ void main() {
     expect(c.trusted, isTrue);
     expect(c.chain, [aliceCert, testCa, testRoot]);
     expect(c.anchor, testRoot);
-    expect(c.issuerName, 'Loupe Test Mail CA');
+    expect(c.issuerName, 'Loupe Test');
     expect(check(bobCert, intermediates: [testCa], usage: SmimeUsage.encryption).trusted, isTrue);
   });
 

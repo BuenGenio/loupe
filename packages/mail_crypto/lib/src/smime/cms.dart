@@ -50,10 +50,15 @@ final class SmimeSignerCheck {
     this.digestAlgorithm = '',
     this.capabilities = const [],
     this.problem,
+    this.modified = false,
   });
 
   /// The signature matches the content (and the signed attributes).
   final bool valid;
+
+  /// The signature was checked and doesn't match: the content (or the
+  /// signature) was changed after signing.
+  final bool modified;
 
   /// Who the SignerInfo says signed.
   final SmimeRecipientId signer;
@@ -207,8 +212,9 @@ SmimeSignerCheck _checkSigner(Asn1 si, Uint8List? content, String contentType, L
       }
     }
   }
-  SmimeSignerCheck result(bool valid, [String? problem]) => SmimeSignerCheck(
+  SmimeSignerCheck result(bool valid, [String? problem, bool modified = false]) => SmimeSignerCheck(
     valid: valid,
+    modified: modified,
     signer: sid,
     certificate: cert,
     signingTime: signingTime,
@@ -224,9 +230,9 @@ SmimeSignerCheck _checkSigner(Asn1 si, Uint8List? content, String contentType, L
   Uint8List signedBytes;
   if (signedAttrs != null) {
     if (messageDigest == null || !constantEquals(messageDigest, contentHash)) {
-      return result(false, 'The message was changed after it was signed.');
+      return result(false, 'The message was changed after it was signed.', true);
     }
-    if (attrContentType != contentType) return result(false, 'The signed content type doesn’t match.');
+    if (attrContentType != contentType) return result(false, 'The signed content type doesn’t match.', true);
     signedBytes = retag(signedAttrs.encoded, Tag.set);
   } else {
     signedBytes = content;
@@ -240,7 +246,7 @@ SmimeSignerCheck _checkSigner(Asn1 si, Uint8List? content, String contentType, L
       signedBytes,
       signature,
     );
-    return ok ? result(true) : result(false, 'The message was changed after it was signed.');
+    return ok ? result(true) : result(false, 'The message was changed after it was signed.', true);
   } on SmimeException catch (e) {
     return result(false, e.message);
   }

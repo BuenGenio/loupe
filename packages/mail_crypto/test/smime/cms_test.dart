@@ -49,7 +49,7 @@ void main() {
     test('a modified message fails; a missing certificate is found among known ones', () {
       final (p7s, signed) = cmsOf('signed-modified.eml');
       final s = smime.verify(p7s, content: signed).signers.single;
-      expect(s.valid, isFalse);
+      expect((s.valid, s.modified), (false, true));
       expect(s.problem, contains('changed'));
 
       final (noCerts, original) = cmsOf('signed-noattr.eml');
