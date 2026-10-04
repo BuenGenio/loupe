@@ -231,19 +231,17 @@
         "inlines": [
           {
             "text": "Questions? Reply to this email or visit ",
-            "scale": 0.85,
-            "color": "#777777"
+            "scale": 0.8
           },
           {
             "text": "coffee.example/help",
             "u": true,
-            "scale": 0.85,
+            "scale": 0.8,
             "link": 0
           },
           {
             "text": ".",
-            "scale": 0.85,
-            "color": "#777777"
+            "scale": 0.8
           }
         ]
       }

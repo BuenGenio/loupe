@@ -359,6 +359,31 @@ void main() {
     expect(MediaQuery.textScalerOf(context).scale(10), closeTo(15, 0.001));
   });
 
+  testWidgets('fine print is smaller and in the secondary text colour', (tester) async {
+    await pumpReader(
+      tester,
+      email(
+        html:
+            '<p>The body of the message, long enough to be the body.</p>'
+            '<p style="font-size:7.5pt;color:#000000">Legal notice and <a href="https://x.example/privacy">privacy</a></p>',
+      ),
+    );
+    List<TextSpan> spansOf(String text) =>
+        (tester.widget<Text>(find.ancestor(of: richText(text), matching: find.byType(Text)).first).textSpan!
+                as TextSpan)
+            .children!
+            .whereType<TextSpan>()
+            .toList();
+    final body = spansOf('The body').single.style!;
+    final fine = spansOf('Legal notice');
+    final scheme = Theme.of(tester.element(richText('Legal notice'))).colorScheme;
+    expect(fine.first.style!.fontSize, closeTo(body.fontSize! * 0.8, 0.01));
+    expect(fine.first.style!.color, scheme.onSurfaceVariant);
+    // Links in fine print stay links.
+    expect(fine.last.style!.color, scheme.primary);
+    expect(fine.last.style!.fontSize, closeTo(body.fontSize! * 0.8, 0.01));
+  });
+
   testWidgets('dark mode adapts dark text colours; keepOriginalColors does not', (tester) async {
     final content = email(html: '<p><span style="color:#111111">Dark ink</span></p>');
     await pumpReader(tester, content, theme: ThemeData(brightness: Brightness.dark));

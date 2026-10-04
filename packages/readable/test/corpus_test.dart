@@ -140,13 +140,43 @@ void main() {
       expect(flatten(d.blocks).whereType<ParagraphBlock>().where((p) => p.dir == TextDir.rtl), hasLength(5));
     });
 
-    test('tiny fonts are floored at 0.85', () {
+    test('a message set entirely in tiny type reads at body size', () {
       final runs = flatten(readable('09_').blocks)
           .whereType<ParagraphBlock>()
           .expand((p) => p.inlines)
           .whereType<TextRun>()
           .map((r) => r.style.scale);
-      expect(runs.every((s) => s >= 0.85), isTrue);
+      expect(runs.every((s) => s == 1.0), isTrue);
+    });
+
+    test('footers and disclaimers set smaller are fine print', () {
+      List<TextRun> runsOf(ReaderDocument d, String text) =>
+          flatten(d.blocks)
+              .whereType<ParagraphBlock>()
+              .where((p) => inlineText(p.inlines).contains(text))
+              .single
+              .inlines
+              .whereType<TextRun>()
+              .toList();
+      for (final (name, text) in [
+        ('01_', 'All rights reserved'),
+        ('24_', 'having trouble with the button'),
+        ('25_', 'You are receiving this email'),
+        ('35_', 'CONFIDENTIALITY NOTICE'),
+      ]) {
+        final runs = runsOf(readable(name), text);
+        expect(runs.every((r) => r.style.fine), isTrue, reason: name);
+        // Grey text takes the reader's secondary colour.
+        expect(runs.where((r) => r.style.link == null).every((r) => r.style.color == null), isTrue, reason: name);
+      }
+      // The body around them is not.
+      expect(runsOf(readable('35_'), 'signed contract').single.style.fine, isFalse);
+      expect(runsOf(readable('25_'), 'Invitation from').single.style.fine, isTrue);
+      final table = readable('25_').blocks.whereType<TableBlock>().single;
+      expect(
+        table.rows.expand((r) => r).expand((c) => c.inlines).whereType<TextRun>().any((r) => r.style.fine),
+        isFalse,
+      );
     });
 
     test('preheaders and every kind of tracker are removed', () {

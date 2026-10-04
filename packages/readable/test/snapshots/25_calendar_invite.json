@@ -163,8 +163,7 @@
         "inlines": [
           {
             "text": "Invitation from Example Calendar. You are receiving this email because you are an attendee of the event.",
-            "scale": 0.85,
-            "color": "#70757a"
+            "scale": 0.8
           }
         ]
       }

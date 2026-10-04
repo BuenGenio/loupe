@@ -42,8 +42,12 @@ final class RunStyle {
   final bool strike;
   final bool mono;
 
-  /// Relative font size, one of a few steps between 0.85 and 1.5.
+  /// Relative font size: 0.8 (fine print, shown in the secondary text colour
+  /// unless the run has its own colour), 1.0, or a larger step up to 1.5.
   final double scale;
+
+  /// Fine print: legal notices, footers, text the sender set clearly smaller.
+  bool get fine => scale < 1;
   final ScriptPosition script;
 
   /// Text colour (0xAARRGGBB), null for the theme's text colour.

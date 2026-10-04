@@ -100,7 +100,8 @@ TextStyle runTextStyle(ReaderScope scope, TextStyle base, RunStyle run, {bool la
     run.color,
     bg: bg,
     large: large || run.scale >= 1.3,
-    fallback: isLink && run.color == null ? scope.styles.link : base.color,
+    // Fine print without a colour of its own is secondary text.
+    fallback: isLink && run.color == null ? scope.styles.link : (run.fine ? scope.styles.muted : base.color),
   );
   final decorations = <TextDecoration>[
     if (run.underline) TextDecoration.underline,

@@ -9,6 +9,7 @@ import 'package:html/dom.dart';
 
 import '../model/document.dart';
 import 'css.dart';
+import 'fine_print.dart';
 import 'limits.dart';
 import 'links.dart';
 import 'plain_text.dart' show expandTabs, linkify;
@@ -27,9 +28,6 @@ ReaderDocument convertBody(Element body, {required Budget budget, CidResolver? r
   final blocks = root.finish();
   return c.document(blocks);
 }
-
-/// Default browser font size; email sizes are relative to it.
-const _basePx = 16.0;
 
 /// Inline elements whose background colour is a highlight (block
 /// backgrounds are layout and are dropped).
@@ -111,7 +109,7 @@ const _maxAlignedChars = 160;
 final class _Ctx {
   const _Ctx({
     this.run = RunStyle.plain,
-    this.px = _basePx,
+    this.px = defaultBodyPx,
     this.align = BlockAlign.start,
     this.dir = TextDir.auto,
     this.pre = false,
@@ -171,7 +169,7 @@ final class _Converter {
   int dataImageBytes = 0;
 
   ReaderDocument document(List<Block> blocks) {
-    final grouped = groupImages(blocks, images);
+    final grouped = resolveTextSizes(groupImages(blocks, images));
     var contentImages = 0;
     void countImages(List<Block> bs) {
       for (final b in bs) {
@@ -227,7 +225,7 @@ final class _Converter {
         run = run.copyWith(mono: true);
         pre = true;
       case 'small':
-        px = px * 0.85;
+        px = px / 1.2; // font-size: smaller
       case 'big':
         px = px * 1.2;
       case 'sub':
@@ -299,7 +297,7 @@ final class _Converter {
       if (ws != null && ws.startsWith('pre')) pre = true;
       if (ws == 'normal' || ws == 'nowrap') pre = false;
     }
-    if (px != ctx.px) run = run.copyWith(scale: scaleStep(px));
+    if (px != ctx.px) run = run.copyWith(scale: provisionalScale(px));
     return _Ctx(
       run: run,
       px: px,
