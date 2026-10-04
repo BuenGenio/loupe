@@ -423,6 +423,16 @@ final class MailStore {
       }
     }
     final byAccount = <String, ThreadAssigner>{};
+    final fresh = [
+      for (final e in emails)
+        if (!existing.containsKey(e.id)) e,
+    ];
+    for (final accountId in {for (final e in fresh) e.accountId}) {
+      await (byAccount[accountId] = ThreadAssigner(
+        _db,
+        accountId,
+      )).preload(fresh.where((e) => e.accountId == accountId));
+    }
     // Oldest first, so parents tend to be threaded before replies.
     final sorted = [...emails]..sort((a, b) => a.receivedAt.compareTo(b.receivedAt));
     for (final e in sorted) {

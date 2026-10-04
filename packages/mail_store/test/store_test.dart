@@ -33,6 +33,7 @@ void main() {
         MailStore.open(path, encryptionKey: 'wrong', inBackground: false),
         throwsA(isA<MailStoreException>()),
       );
+      await expectLater(MailStore.open(path, encryptionKey: 'wrong'), throwsA(isA<MailStoreException>()));
       await expectLater(MailStore.open(path, encryptionKey: ''), throwsA(isA<MailStoreException>()));
     });
   });
