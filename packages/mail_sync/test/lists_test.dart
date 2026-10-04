@@ -86,6 +86,14 @@ void main() {
       // What the store migration does for every synced mailbox.
       await h.store.markHeadersStale(inbox);
       server.listHeadersInSync = true;
+
+      // A failed refetch leaves the mailbox marked for the next sync.
+      server.failOnce['fetchSummaries'] = const MailException(MailErrorKind.server, 'NO try later');
+      await h.repo.refresh(ref: RealMailboxRef(inbox));
+      await settle();
+      expect((await h.store.getSyncInfo(inbox))!.staleHeaders, isTrue);
+      expect((await h.email(account, 'INBOX', 'Old list mail')).listId, isNull);
+
       server.log.clear();
       await h.repo.refresh(ref: RealMailboxRef(inbox));
       await settle();

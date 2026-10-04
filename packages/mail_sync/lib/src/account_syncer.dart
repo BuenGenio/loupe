@@ -335,7 +335,7 @@ final class AccountSyncer {
       return _readMutedArrivals(result.added);
     });
     if (readMuted) kickOps();
-    if (info != null && info.staleHeaders) await _refetchHeaders(t, m);
+    if (info != null && info.staleHeaders) unawaited(_refetchHeaders(m));
   }
 
   /// New mail of a muted conversation arrives read (like Thunderbird's
@@ -360,18 +360,30 @@ final class AccountSyncer {
     return true;
   }
 
+  /// Mailboxes whose headers are being fetched again.
+  final _refetching = <String>{};
+
   /// Fetches the stored summaries of [m] again for the header fields they
-  /// predate (see `MailboxSyncInfo.staleHeaders`), once per mailbox.
-  Future<void> _refetchHeaders(MailTransport t, Mailbox m) async {
-    final ids = [
-      for (final id in await _store.emailIdsIn(m.id))
-        if (!isLocalEmailId(id)) id,
-    ];
-    for (var i = 0; i < ids.length; i += _headerBatch) {
-      final chunk = ids.sublist(i, i + _headerBatch > ids.length ? ids.length : i + _headerBatch);
-      await _store.fillHeaders(await t.fetchSummaries(chunk));
+  /// predate (see `MailboxSyncInfo.staleHeaders`), once per mailbox. Each
+  /// batch is its own main-queue task, so user actions don't wait for all
+  /// of them; a failure leaves the mailbox marked for the next sync.
+  Future<void> _refetchHeaders(Mailbox m) async {
+    if (!_refetching.add(m.id)) return;
+    try {
+      final ids = [
+        for (final id in await _store.emailIdsIn(m.id))
+          if (!isLocalEmailId(id)) id,
+      ];
+      for (var i = 0; i < ids.length; i += _headerBatch) {
+        final chunk = ids.sublist(i, i + _headerBatch > ids.length ? ids.length : i + _headerBatch);
+        await onMain((t) async => _store.fillHeaders(await t.fetchSummaries(chunk)));
+      }
+      await _store.markHeadersFresh(m.id);
+    } catch (_) {
+      // Offline or the mailbox is gone: the next sync tries again.
+    } finally {
+      _refetching.remove(m.id);
     }
-    await _store.markHeadersFresh(m.id);
   }
 
   /// Summaries per request when refetching headers.
