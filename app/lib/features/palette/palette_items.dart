@@ -187,16 +187,24 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
   );
 
   // Places.
-  PaletteItem place(String id, String title, IconData icon, String location, {String? subtitle, Color? color}) =>
-      PaletteItem(
-        id: id,
-        title: title,
-        subtitle: subtitle,
-        kind: PaletteKind.mailbox,
-        icon: icon,
-        color: color,
-        run: () => router.push<void>(location),
-      );
+  PaletteItem place(
+    String id,
+    String title,
+    IconData icon,
+    String location, {
+    String? subtitle,
+    Color? color,
+    List<String> keywords = const [],
+  }) => PaletteItem(
+    id: id,
+    title: title,
+    subtitle: subtitle,
+    kind: PaletteKind.mailbox,
+    icon: icon,
+    color: color,
+    keywords: keywords,
+    run: () => router.push<void>(location),
+  );
   final accounts = container.read(accountsProvider).value ?? const <MailAccount>[];
   for (final kind in const [
     VirtualMailbox.allInboxes,
@@ -217,7 +225,10 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
   }
   items
     ..add(place('mailbox.snoozed', 'Snoozed', LoupeIcons.snoozed, Routes.snoozed))
-    ..add(place('mailbox.outbox', 'Outbox', LoupeIcons.outbox, Routes.outbox));
+    ..add(place('mailbox.outbox', 'Outbox', LoupeIcons.outbox, Routes.outbox))
+    ..add(
+      place('tool.subscriptions', 'Subscriptions', LoupeIcons.subscriptions, Routes.subscriptions, subtitle: 'Tools'),
+    );
   final mailboxes = container.read(mailboxesProvider).value ?? const <Mailbox>[];
   final showAll = container.read(showAllFoldersProvider);
   for (final account in accounts) {
