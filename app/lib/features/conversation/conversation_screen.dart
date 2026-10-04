@@ -20,6 +20,7 @@ import 'reader_options_sheet.dart';
 import 'reader_prefs.dart';
 import 'sheets.dart';
 import '../../theme/loupe_icons.dart';
+import '../../settings/ui_state.dart';
 
 /// A conversation: its messages stacked oldest to newest, the "Aa" view
 /// options and an Apple-Mail-style toolbar.
@@ -227,6 +228,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
       repository: _repo,
       accountId: from.accountId,
       currentMailboxId: from.mailboxId,
+      showAllFolders: ref.read(showAllFoldersProvider).contains(from.accountId),
     );
     if (target == null || !mounted) return;
     await _act(() => _repo.move(ids, target.id), done: 'Moved to ${target.name}', close: close);

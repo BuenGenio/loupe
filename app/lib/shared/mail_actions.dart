@@ -12,6 +12,7 @@ import '../theme/theme.dart';
 import 'sheets.dart';
 import 'swipe_row.dart';
 import '../theme/loupe_icons.dart';
+import '../settings/ui_state.dart';
 
 /// Message actions shared by lists, search results and smart mailboxes:
 /// they work on whole conversations, are optimistic, and offer Undo.
@@ -138,6 +139,7 @@ class MailActions {
       accountId: accountId,
       accountName: account?.displayName,
       disabled: {for (final r in list) r.latest.mailboxId},
+      showAllFolders: ref.read(showAllFoldersProvider).contains(accountId),
     );
     if (target == null) return;
     final emails = await _membersOf(list);

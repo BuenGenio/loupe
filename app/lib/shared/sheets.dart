@@ -120,11 +120,14 @@ Future<String?> showMailboxPicker(
   required String accountId,
   String? accountName,
   Set<String> disabled = const {},
+  bool showAllFolders = false,
 }) {
-  final tree = mailboxTree([
+  final ofAccount = [
     for (final m in mailboxes)
       if (m.accountId == accountId) m,
-  ]);
+  ];
+  // Same folders as the Mailboxes screen: subscribed ones unless the account shows all.
+  final tree = mailboxTree(showAllFolders ? ofAccount : subscribedFolders(ofAccount));
   return showModalBottomSheet<String>(
     context: context,
     isScrollControlled: true,

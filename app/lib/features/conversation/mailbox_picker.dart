@@ -4,6 +4,7 @@ import 'package:mail_model/mail_model.dart';
 import '../../theme/theme.dart';
 import 'sheets.dart';
 import '../../theme/loupe_icons.dart';
+import '../../shared/mailbox_display.dart';
 
 /// Icon for a mailbox role.
 IconData mailboxIcon(MailboxRole role) => switch (role) {
@@ -69,6 +70,7 @@ Future<Mailbox?> showMailboxPicker(
   required String accountId,
   String? currentMailboxId,
   String title = 'Move to…',
+  bool showAllFolders = false,
 }) => showLoupeSheet<Mailbox>(
   context,
   expand: true,
@@ -76,15 +78,24 @@ Future<Mailbox?> showMailboxPicker(
     stream: repository.watchMailboxes(accountId: accountId),
     currentMailboxId: currentMailboxId,
     title: title,
+    showAllFolders: showAllFolders,
   ),
 );
 
 class _MailboxPicker extends StatelessWidget {
-  const _MailboxPicker({required this.stream, required this.currentMailboxId, required this.title});
+  const _MailboxPicker({
+    required this.stream,
+    required this.currentMailboxId,
+    required this.title,
+    required this.showAllFolders,
+  });
 
   final Stream<List<Mailbox>> stream;
   final String? currentMailboxId;
   final String title;
+
+  /// Unsubscribed folders too (the account's "Show All Folders" setting).
+  final bool showAllFolders;
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +111,7 @@ class _MailboxPicker extends StatelessWidget {
         } else if (!snapshot.hasData) {
           body = const Center(child: CircularProgressIndicator.adaptive());
         } else {
-          final tree = mailboxTree(snapshot.data!);
+          final tree = mailboxTree(showAllFolders ? snapshot.data! : subscribedFolders(snapshot.data!));
           body = ListView.builder(
             controller: PrimaryScrollController.maybeOf(context),
             itemCount: tree.length,
