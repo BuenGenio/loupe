@@ -966,7 +966,7 @@ class DemoMailRepository implements MailRepository {
   Identity _identity(OutgoingMessage message) {
     final account = _account(message.accountId);
     if (account == null) throw const MailException(MailErrorKind.notFound, 'This account no longer exists.');
-    return account.identities.where((i) => i.id == message.identityId).firstOrNull ?? account.defaultIdentity;
+    return account.identityById(message.identityId);
   }
 
   DemoMessage _addLocal({

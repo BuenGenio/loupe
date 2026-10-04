@@ -73,7 +73,16 @@ enum AuthKind { password, oauth2 }
 
 /// A sending identity: the From address and its signature.
 final class Identity {
-  const Identity({required this.id, required this.email, this.name, this.signature, this.replyTo});
+  const Identity({
+    required this.id,
+    required this.email,
+    this.name,
+    this.signature,
+    this.replyTo,
+    this.autoCc,
+    this.autoBcc,
+    this.replyPatterns = const [],
+  });
 
   final String id;
   final String email;
@@ -83,7 +92,47 @@ final class Identity {
   final String? signature;
   final String? replyTo;
 
-  Map<String, Object?> toJson() => {'id': id, 'email': email, 'name': name, 'signature': signature, 'replyTo': replyTo};
+  /// Added to Cc of every message from this identity (a copy to oneself).
+  final String? autoCc;
+
+  /// Added to Bcc of every message from this identity.
+  final String? autoBcc;
+
+  /// "Use for replies to": addresses or wildcards (`*@example.com`,
+  /// `me+*@example.com`). A reply to a message sent to a matching address
+  /// is sent from this identity.
+  final List<String> replyPatterns;
+
+  Identity copyWith({
+    String? id,
+    String? email,
+    String? name,
+    String? signature,
+    String? replyTo,
+    String? autoCc,
+    String? autoBcc,
+    List<String>? replyPatterns,
+  }) => Identity(
+    id: id ?? this.id,
+    email: email ?? this.email,
+    name: name ?? this.name,
+    signature: signature ?? this.signature,
+    replyTo: replyTo ?? this.replyTo,
+    autoCc: autoCc ?? this.autoCc,
+    autoBcc: autoBcc ?? this.autoBcc,
+    replyPatterns: replyPatterns ?? this.replyPatterns,
+  );
+
+  Map<String, Object?> toJson() => {
+    'id': id,
+    'email': email,
+    'name': name,
+    'signature': signature,
+    'replyTo': replyTo,
+    if (autoCc != null) 'autoCc': autoCc,
+    if (autoBcc != null) 'autoBcc': autoBcc,
+    if (replyPatterns.isNotEmpty) 'replyPatterns': replyPatterns,
+  };
 
   factory Identity.fromJson(Map<String, Object?> json) => Identity(
     id: json['id']! as String,
@@ -91,6 +140,9 @@ final class Identity {
     name: json['name'] as String?,
     signature: json['signature'] as String?,
     replyTo: json['replyTo'] as String?,
+    autoCc: json['autoCc'] as String?,
+    autoBcc: json['autoBcc'] as String?,
+    replyPatterns: [for (final p in (json['replyPatterns'] as List? ?? const [])) p as String],
   );
 }
 
@@ -128,6 +180,33 @@ final class MailAccount {
   final int colorIndex;
 
   Identity get defaultIdentity => identities.isNotEmpty ? identities.first : Identity(id: '$id/default', email: email);
+
+  /// An unsaved identity sending as [email]: an address of this account that
+  /// isn't one of its [identities], such as a catch-all alias. It has the
+  /// default identity's name and signature. Its id names the address, so a
+  /// draft, the Outbox and crash recovery keep it (see [identityById]).
+  Identity aliasIdentity(String email) {
+    final d = defaultIdentity;
+    return Identity(id: '$id$_aliasMark${email.trim()}', email: email.trim(), name: d.name, signature: d.signature);
+  }
+
+  /// Whether [identity] is an unsaved [aliasIdentity].
+  bool isAliasIdentity(Identity identity) => identity.id.startsWith('$id$_aliasMark');
+
+  /// The identity a message with [identityId] is sent as: one of
+  /// [identities], an [aliasIdentity], or else the [defaultIdentity].
+  Identity identityById(String identityId) {
+    for (final i in identities) {
+      if (i.id == identityId) return i;
+    }
+    final prefix = '$id$_aliasMark';
+    if (identityId.startsWith(prefix) && identityId.length > prefix.length) {
+      return aliasIdentity(identityId.substring(prefix.length));
+    }
+    return defaultIdentity;
+  }
+
+  static const _aliasMark = '/alias:';
 
   MailAccount copyWith({
     String? displayName,
