@@ -340,6 +340,7 @@ class _MessageCardState extends State<MessageCard> {
           _OriginalHint(onUseOriginal: widget.onUseOriginal),
         ReadableMessageView(
           content: content,
+          senderDomain: widget.message.sender?.domain,
           settings: widget.settings,
           remoteContent: widget.remoteContent,
           onAllowRemoteContent: widget.onAllowRemoteContent,
