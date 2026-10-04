@@ -122,11 +122,12 @@ final class MailStore {
 
   // Accounts ----------------------------------------------------------------
 
-  Stream<List<MailAccount>> watchAccounts() =>
-      (_db.select(_db.accounts)..orderBy([(a) => OrderingTerm.asc(a.sortOrder), (a) => OrderingTerm.asc(a.email)]))
-          .watch()
-          .map((rows) => [for (final r in rows) _accountFromRow(r)])
-          .distinct(_listEquals(_accountsEqual));
+  // Watched queries use customSelect: drift's typed `select().watch()` maps
+  // rows through a pause/resume transformer that stalls under fake_async.
+
+  Stream<List<MailAccount>> watchAccounts() => _select('SELECT * FROM accounts ORDER BY sort_order, email', [], {
+    _db.accounts,
+  }).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) _accountFromRow(_db.accounts.map(r.data))]);
 
   Future<List<MailAccount>> getAccounts() async {
     final rows = await (_db.select(_db.accounts)..orderBy([(a) => OrderingTerm.asc(a.sortOrder)])).get();
@@ -140,8 +141,6 @@ final class MailStore {
 
   static MailAccount _accountFromRow(AccountRow r) =>
       MailAccount.fromJson((jsonDecode(r.json) as Map).cast<String, Object?>());
-
-  static bool _accountsEqual(MailAccount a, MailAccount b) => jsonEncode(a.toJson()) == jsonEncode(b.toJson());
 
   /// Inserts or updates [account]. New accounts sort after existing ones.
   Future<void> saveAccount(MailAccount account) => _db.transaction(() async {
@@ -190,18 +189,12 @@ final class MailStore {
 
   // Mailboxes ---------------------------------------------------------------
 
-  Stream<List<Mailbox>> watchMailboxes({String? accountId}) {
-    final q = _db.select(_db.mailboxes).join([
-      innerJoin(_db.accounts, _db.accounts.id.equalsExp(_db.mailboxes.accountId)),
-    ]);
-    if (accountId != null) q.where(_db.mailboxes.accountId.equals(accountId));
-    q.orderBy([OrderingTerm.asc(_db.accounts.sortOrder), OrderingTerm.asc(_db.mailboxes.sortOrder)]);
-    return q
-        .watch()
-        .map((rows) => [for (final r in rows) r.readTable(_db.mailboxes)])
-        .distinct(_listEquals<MailboxRow>((a, b) => a == b))
-        .map((rows) => [for (final r in rows) mailboxFromRow(r)]);
-  }
+  Stream<List<Mailbox>> watchMailboxes({String? accountId}) => _select(
+    'SELECT m.* FROM mailboxes m JOIN accounts a ON a.id = m.account_id '
+    '${accountId == null ? '' : 'WHERE m.account_id = ? '}ORDER BY a.sort_order, m.sort_order',
+    [?accountId],
+    {_db.mailboxes, _db.accounts},
+  ).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) mailboxFromRow(_db.mailboxes.map(r.data))]);
 
   Future<List<Mailbox>> getMailboxes({String? accountId}) async {
     final q = _db.select(_db.mailboxes);
@@ -976,9 +969,9 @@ SELECT
     return [for (final r in await q.get()) _outboxFromRow(r)];
   }
 
-  Stream<List<OutboxEntry>> watchOutbox() => (_db.select(
+  Stream<List<OutboxEntry>> watchOutbox() => _select('SELECT * FROM outbox_items ORDER BY send_after', [], {
     _db.outboxItems,
-  )..orderBy([(o) => OrderingTerm.asc(o.sendAfter)])).watch().map((rows) => [for (final r in rows) _outboxFromRow(r)]);
+  }).watch().map((rows) => [for (final r in rows) _outboxFromRow(_db.outboxItems.map(r.data))]);
 
   /// Atomically marks a queued (or failed) entry as sending. Returns it, or
   /// null if it is gone or already being sent.
@@ -1071,8 +1064,9 @@ SELECT
 
   // VIPs --------------------------------------------------------------------
 
-  Stream<Set<String>> watchVipAddresses() =>
-      _db.select(_db.vipAddresses).watch().map((rows) => {for (final r in rows) r.email});
+  Stream<Set<String>> watchVipAddresses() => _select('SELECT email FROM vip_addresses', [], {
+    _db.vipAddresses,
+  }).watch().distinct(_rowsEqual).map((rows) => {for (final r in rows) r.read<String>('email')});
 
   Future<void> setVip(String email, {required bool vip}) async {
     final e = email.trim().toLowerCase();
@@ -1142,14 +1136,6 @@ SELECT
     return [for (final r in rows) EmailAddress(r.read<String>('email'), r.readNullable<String>('name'))];
   }
 }
-
-bool Function(List<T>, List<T>) _listEquals<T>(bool Function(T, T) eq) => (a, b) {
-  if (a.length != b.length) return false;
-  for (var i = 0; i < a.length; i++) {
-    if (!eq(a[i], b[i])) return false;
-  }
-  return true;
-};
 
 bool _rowsEqual(List<QueryRow> a, List<QueryRow> b) {
   if (a.length != b.length) return false;
