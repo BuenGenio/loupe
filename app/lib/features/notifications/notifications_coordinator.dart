@@ -53,8 +53,8 @@ class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordina
     final launch = taps.takeLaunch();
     if (launch != null) WidgetsBinding.instance.addPostFrameCallback((_) => _safely(() => _open(launch)));
     if (ref.read(servesNotificationActionsProvider)) _bridge = ForegroundBridge.serve(_handleRequest);
-    ref.listenManual<AppMode>(appModeProvider, (previous, mode) => _safely(() => _modeChanged(previous, mode)));
-    _safely(() => _modeChanged(null, ref.read(appModeProvider)));
+    ref.listenManual<AppMode>(appModeProvider, (_, mode) => _safely(() => _modeChanged(mode)));
+    _safely(() => _modeChanged(ref.read(appModeProvider)));
     ref.listenManual<AsyncValue<List<MailAccount>>>(
       accountsProvider,
       (_, next) => _safely(() => _accountsChanged(next.value)),
@@ -79,11 +79,13 @@ class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordina
     super.dispose();
   }
 
-  Future<void> _modeChanged(AppMode? previous, AppMode mode) async {
+  Future<void> _modeChanged(AppMode mode) async {
     final live = mode == AppMode.live;
     await ref.read(periodicSyncProvider).setEnabled(live);
-    // Notifications point at real messages; they mean nothing elsewhere.
-    if (previous == AppMode.live && !live) {
+    // Notifications point at real messages; outside live mode they mean
+    // nothing. (Leaving live mode may rebuild this widget, so it checks the
+    // mode, not the change.)
+    if (!live) {
       _channelsFor = null;
       await ref.read(mailNotifierProvider).cancelAll();
     }

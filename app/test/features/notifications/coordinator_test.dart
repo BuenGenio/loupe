@@ -91,6 +91,18 @@ void main() {
     expect(demo.enabled, isFalse, reason: 'demo mail never syncs in the background');
   });
 
+  testWidgets('starting outside live mode clears notifications left from live mode', (tester) async {
+    notifier.showing[1] = const MailNotification(
+      id: 1,
+      channel: MailChannel.vip,
+      groupKey: 'g',
+      title: 'Left over',
+      target: MessageTarget('work|INBOX|1|1', 'work'),
+    );
+    await pumpWithNotifications(tester, notifier: notifier);
+    expect(notifier.showing, isEmpty);
+  });
+
   testWidgets('asks for notifications right after the first account, and only once', (tester) async {
     final notifier = FakeNotifier(granted: false);
     await pumpWithNotifications(tester, notifier: notifier, mode: AppMode.none);
