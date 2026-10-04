@@ -300,8 +300,13 @@ final class OAuthSignIn {
   Future<OAuthCredentials> refresh(ProviderKind provider, OAuthCredentials current) async {
     final config = configFor(provider);
     if (config == null) {
-      // A build without this provider's client id can't refresh its tokens.
-      throw SignInRequiredException('Sign-in with ${providerName(provider)} isn’t available in this build.');
+      // A build without this provider's client id (a local debug build) can't
+      // refresh. The grant may still be good: not a SignInRequiredException,
+      // which would make the repository forget it.
+      throw MailException(
+        MailErrorKind.unsupported,
+        'Sign-in with ${providerName(provider)} isn’t available in this build of Loupe.',
+      );
     }
     final refreshToken = current.refreshToken;
     if (refreshToken == null || refreshToken.isEmpty) throw const SignInRequiredException();

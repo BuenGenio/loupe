@@ -338,12 +338,12 @@ void main() {
       );
     });
 
-    test('a build without the client id can’t refresh and asks for a new sign-in', () async {
+    test('a build without the client id can’t refresh, but doesn’t give the grant up', () async {
       final unconfigured = OAuthSignIn(
         agent: NoBrowserAgent(),
         tokens: TokenEndpointClient(client: endpoint.client),
       );
-      await expectLater(unconfigured.refresh(ProviderKind.microsoft, current()), signInRequired);
+      await expectLater(unconfigured.refresh(ProviderKind.microsoft, current()), mailError(MailErrorKind.unsupported));
       expect(endpoint.requests, isEmpty);
     });
   });
