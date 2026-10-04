@@ -26,15 +26,18 @@ Future<MailRepository> createLiveRepository(Ref ref) async {
   // Never delete the database on failure: a MailStoreException or
   // DatabaseKeyUnavailable surfaces in the live gate, and the user decides.
   final store = await openLiveStore();
+  // Closed with the provider even if a step below fails (Try Again on the
+  // recovery screen would open a second connection otherwise).
+  LiveMailRepository? repository;
+  ref.onDispose(() async {
+    await repository?.dispose();
+    await store.close();
+  });
   // Before the first send: the composer signs, encrypts and adds Autocrypt
   // headers synchronously from the keyring and the unlocked keys.
   final keyring = await ref.watch(liveKeyringProvider.future);
   await (await ref.read(openPgpServiceProvider.future)).ready;
-  final repository = buildLiveRepository(store, keys: SessionSendKeys(keyring, () => ref.read(keySessionProvider)));
-  ref.onDispose(() async {
-    await repository.dispose();
-    await store.close();
-  });
+  repository = buildLiveRepository(store, keys: SessionSendKeys(keyring, () => ref.read(keySessionProvider)));
   await repository.pause();
   await repository.start();
   return repository;
