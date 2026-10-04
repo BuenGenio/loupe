@@ -73,18 +73,20 @@ class MailActions {
 
   Future<void> setRead(Iterable<ThreadSummary> rows, {required bool read}) async {
     // Reading state covers the whole conversation, including your replies.
-    final ids = <String>[];
+    final emails = <EmailSummary>[];
     for (final r in rows) {
       if (threaded && r.messageCount > 1) {
-        ids.addAll((await _repo.watchConversation(r.latest.id).first).map((e) => e.id));
+        emails.addAll(await _repo.watchConversation(r.latest.id).first);
       } else {
-        ids.add(r.latest.id);
+        emails.add(r.latest);
       }
     }
+    // Read, a message that woke from snooze is ordinary again.
+    final woken = read && emails.any((e) => e.keywords.contains(Keywords.newAgain));
     await _repo.setKeywords(
-      ids,
+      [for (final e in emails) e.id],
       add: read ? const {Keywords.seen} : const {},
-      remove: read ? const {} : const {Keywords.seen},
+      remove: read ? (woken ? const {Keywords.newAgain} : const {}) : const {Keywords.seen},
     );
   }
 

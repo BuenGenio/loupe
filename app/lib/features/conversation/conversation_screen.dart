@@ -136,8 +136,10 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
         if (!m.isSeen && _expanded.contains(m.id)) m.id,
     ];
     if (ids.isEmpty) return;
+    // Read, a message that woke from snooze is ordinary again.
+    final woken = messages.any((m) => ids.contains(m.id) && m.keywords.contains(Keywords.newAgain));
     try {
-      await _repo.setKeywords(ids, add: {Keywords.seen});
+      await _repo.setKeywords(ids, add: {Keywords.seen}, remove: woken ? {Keywords.newAgain} : const {});
     } on MailException {
       // Not worth interrupting reading; the list still shows it unread.
     }

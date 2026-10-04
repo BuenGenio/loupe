@@ -22,6 +22,7 @@ import 'features/settings/manage_folders_screen.dart';
 import 'features/settings/notification_settings_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/settings/swipe_settings_screen.dart';
+import 'features/snooze/snoozed_screen.dart';
 import 'settings/app_mode.dart';
 import 'shared/mailbox_ref_codec.dart';
 
@@ -41,6 +42,9 @@ abstract final class Routes {
 
   /// Messages waiting to be sent (scheduled, queued, failed).
   static const outbox = '/outbox';
+
+  /// Snoozed messages of every account, with their wake times.
+  static const snoozed = '/snoozed';
 
   static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
   static String message(String emailId) => '/message/${Uri.encodeComponent(emailId)}';
@@ -85,6 +89,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.mailboxes, builder: (context, state) => const MailboxesScreen()),
       GoRoute(path: Routes.welcome, builder: (context, state) => const WelcomeScreen()),
       GoRoute(path: Routes.outbox, builder: (context, state) => const OutboxScreen()),
+      GoRoute(path: Routes.snoozed, builder: (context, state) => const SnoozedScreen()),
       GoRoute(
         path: '/list/:ref',
         builder: (context, state) =>
