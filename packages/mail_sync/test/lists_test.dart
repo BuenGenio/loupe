@@ -1,4 +1,5 @@
 import 'package:mail_model/mail_model.dart';
+import 'package:mail_sync/mail_sync.dart';
 import 'package:test/test.dart';
 
 import 'support/fake_server.dart';
@@ -108,6 +109,48 @@ void main() {
       await settle();
       expect(server.log, isNot(contains('fetchSummaries')));
       await h.dispose();
+    });
+  });
+
+  test('the header refetch goes on where it stopped, newest first', () {
+    fakeTime((async) async {
+      const config = SyncConfig(pollInterval: Duration(hours: 1), initialWindow: 500);
+      final h = Harness(config: config);
+      final server = FakeServer()..listHeadersInSync = false;
+      for (var i = 0; i < 450; i++) {
+        server.deliver('INBOX', subject: 'Post $i', listId: dev);
+      }
+      final account = await h.add(server);
+      final inbox = h.mailbox(account, 'INBOX');
+      final newestFirst = await h.store.emailIdsIn(inbox);
+      expect(newestFirst, hasLength(450));
+      await h.store.markHeadersStale(inbox);
+      server.listHeadersInSync = true;
+
+      // The first batch of 200 arrives; then the connection drops (or the
+      // app is killed).
+      var calls = 0;
+      server.onFetchSummaries = (_) {
+        if (++calls == 2) throw const MailException(MailErrorKind.connection, 'Connection lost');
+      };
+      await h.repo.refresh(ref: RealMailboxRef(inbox));
+      await settle();
+      expect(server.summaryRequests, [newestFirst.take(200).toList()]);
+      expect((await h.store.getSyncInfo(inbox))!.staleHeaders, isTrue);
+      await h.repo.dispose();
+
+      // The app starts again: the refetch goes on after the first batch.
+      server.summaryRequests.clear();
+      final again = LiveMailRepository(h.store, h.factory, h.credentials, config: config);
+      await again.start();
+      await settle();
+      expect(server.summaryRequests.map((r) => r.length), [200, 50]);
+      expect(server.summaryRequests.expand((r) => r), newestFirst.skip(200));
+      expect((await h.store.getSyncInfo(inbox))!.staleHeaders, isFalse);
+      expect((await h.store.getEmails(newestFirst)).every((e) => e.listId == dev), isTrue);
+      expect((await again.watchMailingLists().first).single.messageCount, 450);
+      await again.dispose();
+      await h.store.close();
     });
   });
 

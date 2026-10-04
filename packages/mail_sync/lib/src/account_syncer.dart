@@ -425,28 +425,39 @@ final class AccountSyncer {
   final _refetching = <String>{};
 
   /// Fetches the stored summaries of [m] again for the header fields they
-  /// predate (see `MailboxSyncInfo.staleHeaders`), once per mailbox. Each
-  /// batch is its own main-queue task, so user actions don't wait for all
-  /// of them; a failure leaves the mailbox marked for the next sync.
+  /// predate (see `MailboxSyncInfo.staleHeaders`), once per mailbox, newest
+  /// first. Each batch is its own main-queue task, so user actions don't
+  /// wait for all of them, and the store keeps the progress with it: a
+  /// refetch cut short (the app killed, offline, paused) goes on from there
+  /// at the next sync instead of starting over.
   Future<void> _refetchHeaders(Mailbox m) async {
     if (!_refetching.add(m.id)) return;
     try {
-      final ids = [
-        for (final id in await _store.emailIdsIn(m.id))
-          if (!isLocalEmailId(id)) id,
-      ];
-      for (var i = 0; i < ids.length; i += _headerBatch) {
+      StaleHeadersBatch? last;
+      while (true) {
         // Only while syncing in the foreground: background work has a time
         // budget for new mail, and a paused syncer holds no connection.
-        // The mailbox stays marked; the next sync starts again.
         if (!_running || _disposed) return;
-        final chunk = ids.sublist(i, i + _headerBatch > ids.length ? ids.length : i + _headerBatch);
+        final batch = await _store.nextStaleHeaders(m.id, limit: _headerBatch);
+        if (batch == null) break;
+        // Never the same batch twice (progress that wasn't saved).
+        if (last != null && (batch.receivedAt, batch.seq) == (last.receivedAt, last.seq)) return;
+        last = batch;
+        final ids = [
+          for (final id in batch.emailIds)
+            if (!isLocalEmailId(id)) id,
+        ];
         // Without previews: a fraction of the bytes for the header fields.
-        await onMain((t) async => _store.fillHeaders(await t.fetchSummaries(chunk, previews: false)));
+        await onMain(
+          (t) async => _store.fillHeaders(
+            ids.isEmpty ? const [] : await t.fetchSummaries(ids, previews: false),
+            progress: batch,
+          ),
+        );
       }
       await _store.markHeadersFresh(m.id);
     } catch (_) {
-      // Offline or the mailbox is gone: the next sync tries again.
+      // Offline or the mailbox is gone: the next sync goes on.
     } finally {
       _refetching.remove(m.id);
     }

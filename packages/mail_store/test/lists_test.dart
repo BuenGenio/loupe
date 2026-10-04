@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:drift/drift.dart' show driftRuntimeOptions;
@@ -209,6 +208,49 @@ void main() {
       expect((await store.getEmail(eid('INBOX', 2)))!.listUnsubscribe, '<https://news.example/u>');
     });
 
+    test('the refetch goes newest first in batches and keeps its progress across restarts', () async {
+      final dir = Directory.systemTemp.createTempSync('mail_store_refetch');
+      addTearDown(() => dir.deleteSync(recursive: true));
+      final path = '${dir.path}/mail.db';
+      var store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
+      await store.saveAccount(account());
+      await store.replaceMailboxes(accountId, standardMailboxes);
+      // Five arrived in the same minute: their order comes from the store.
+      await addMails(store, [
+        for (final (uid, minutes) in const [(1, 0), (2, 5), (3, 5), (4, 5), (5, 5), (6, 5), (7, 9)])
+          mail(uid, minutes: minutes),
+      ]);
+      final inbox = mbox('INBOX');
+      expect(await store.nextStaleHeaders(inbox), isNull, reason: 'not marked');
+      await store.markHeadersStale(inbox);
+
+      final done = <String>[];
+      final times = <int>[];
+      for (var i = 0; ; i++) {
+        final batch = await store.nextStaleHeaders(inbox, limit: 2);
+        if (batch == null) break;
+        expect(batch.emailIds, hasLength(lessThanOrEqualTo(2)));
+        done.addAll(batch.emailIds);
+        final at = {for (final e in await store.getEmails(batch.emailIds)) e.id: e.receivedAt.millisecondsSinceEpoch};
+        times.addAll([for (final id in batch.emailIds) at[id]!]);
+        await store.fillHeaders(const [], progress: batch);
+        // The app is killed and started again between batches.
+        await store.close();
+        store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
+      }
+      expect(done.toSet(), {for (var uid = 1; uid <= 7; uid++) eid('INBOX', uid)});
+      expect(done, hasLength(7), reason: 'each once');
+      expect(done.first, eid('INBOX', 7));
+      expect(done.last, eid('INBOX', 1));
+      expect(times, orderedEquals(List<int>.of(times)..sort((a, b) => b.compareTo(a))), reason: 'newest first');
+
+      await store.markHeadersFresh(inbox);
+      expect(await store.nextStaleHeaders(inbox), isNull);
+      await store.markHeadersStale(inbox);
+      expect((await store.nextStaleHeaders(inbox, limit: 1))!.emailIds, [eid('INBOX', 7)], reason: 'from the start');
+      await store.close();
+    });
+
     test('mailboxes synced after the upgrade start with fresh headers', () async {
       final store = await seededStore();
       await store.applySync(mbox('INBOX'), added([mail(1)]));
@@ -221,42 +263,7 @@ void main() {
     setUp(() => dir = Directory.systemTemp.createTempSync('mail_store_migration'));
     tearDown(() => dir.deleteSync(recursive: true));
 
-    /// A database of schema [version] at [path], as that release created it,
-    /// with an account, a mailbox, a synced message and its content (and a
-    /// rule from version 2 on).
-    void create(String path, int version) {
-      final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
-      final ddl = File('test/schemas/v$version.sql').readAsStringSync().split(RegExp(r'^--$', multiLine: true));
-      for (final statement in ddl) {
-        final sql = statement.split('\n').where((l) => !l.startsWith('-- ')).join('\n').trim();
-        if (sql.isNotEmpty) db.execute(sql);
-      }
-      db
-        ..execute('INSERT INTO accounts (id, email, display_name, json) VALUES (?, ?, ?, ?)', [
-          accountId,
-          'me@example.com',
-          'Work',
-          jsonEncode(account().toJson()),
-        ])
-        ..execute("INSERT INTO mailboxes (id, account_id, name, path, role) VALUES (?, ?, 'Inbox', 'INBOX', 'inbox')", [
-          mbox('INBOX'),
-          accountId,
-        ])
-        ..execute("INSERT INTO sync_states (mailbox_id, state, synced_at) VALUES (?, '{\"v\":1}', 1)", [mbox('INBOX')])
-        ..execute(
-          'INSERT INTO emails (id, account_id, mailbox_id, thread_id, subject, received_at, keywords) '
-          "VALUES (?, ?, ?, 'acc1|t:x', 'Before the upgrade', 1000, ?)",
-          [eid('INBOX', 1), accountId, mbox('INBOX'), '["\$seen"]'],
-        )
-        ..execute(
-          "INSERT INTO contents (email_id, plain_text, body_text, fetched_at) VALUES (?, 'kumquat', 'kumquat', 1)",
-          [eid('INBOX', 1)],
-        );
-      if (version >= 2) db.execute("INSERT INTO rules (id, json, sort_order) VALUES ('r1', '{}', 0)");
-      db
-        ..execute('PRAGMA user_version = $version')
-        ..close();
-    }
+    void create(String path, int version) => createOldDatabase(path, version);
 
     for (final version in [1, 2]) {
       test('version $version upgrades past 3: list columns, index, muted threads, stale headers', () async {
@@ -286,7 +293,7 @@ void main() {
 
         final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
         addTearDown(db.close);
-        expect(db.select('PRAGMA user_version').single.values.single, 4);
+        expect(db.select('PRAGMA user_version').single.values.single, latestSchemaVersion);
         final columns = {for (final r in db.select('PRAGMA table_info(emails)')) r['name'] as String};
         expect(
           columns,
@@ -319,7 +326,7 @@ void main() {
 
         final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
         addTearDown(db.close);
-        expect(db.select('PRAGMA user_version').single.values.single, 4);
+        expect(db.select('PRAGMA user_version').single.values.single, latestSchemaVersion);
         final indexes = {for (final r in db.select("SELECT name FROM sqlite_master WHERE type = 'index'")) r['name']};
         expect(indexes, containsAll(['emails_unread', 'emails_flagged', 'emails_list', 'emails_thread']));
         final plan = db

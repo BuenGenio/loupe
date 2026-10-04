@@ -99,7 +99,7 @@ void main() {
         'contents_after_delete',
       ]),
     );
-    expect(db.select('PRAGMA user_version').single.values.single, 4);
+    expect(db.select('PRAGMA user_version').single.values.single, latestSchemaVersion);
   });
 
   group('accounts and mailboxes', () {
@@ -666,6 +666,39 @@ void main() {
       expect((await store.getOutbox('o3'))!.status, OutboxStatus.sending);
       expect(await store.releaseStaleOutboxClaims(at), 1);
       expect((await store.getOutbox('o3'))!.status, OutboxStatus.queued);
+    });
+
+    test('a held entry is never claimed until it is rescheduled', () async {
+      final store = await seededStore();
+      final msg = OutgoingMessage(accountId: accountId, identityId: 'acc1/default', subject: 'Refused');
+      await store.putOutbox(
+        OutboxEntry(id: 'o4', accountId: accountId, message: msg, sendAfter: base, createdAt: base),
+      );
+      await store.claimOutbox('o4', now: base);
+      await store.updateOutbox(
+        'o4',
+        status: OutboxStatus.failed,
+        attempts: 1,
+        lastError: 'Recipient bob@x.test rejected: 5.1.1 User unknown',
+        held: true,
+      );
+      final held = (await store.getOutbox('o4'))!;
+      expect(held.held, isTrue);
+      expect(held.status, OutboxStatus.failed);
+      final much = base.add(const Duration(days: 30));
+      expect(await store.claimOutbox('o4', now: much), isNull);
+      expect(await store.releaseStaleOutboxClaims(much), 0);
+      // Another process's claim (a background run) doesn't take it either;
+      // the user's Retry does.
+      expect(await store.rescheduleOutbox('o4', sendAfter: much, status: OutboxStatus.queued), isTrue);
+      final retried = (await store.getOutbox('o4'))!;
+      expect(retried.held, isFalse);
+      expect(retried.lastError, isNull);
+      expect((await store.claimOutbox('o4', now: much))!.status, OutboxStatus.sending);
+      // A temporary failure is never held.
+      await store.updateOutbox('o4', status: OutboxStatus.failed, attempts: 2, lastError: 'offline', sendAfter: much);
+      expect((await store.getOutbox('o4'))!.held, isFalse);
+      expect(await store.claimOutbox('o4', now: much), isNotNull);
     });
 
     test('pending ops keep order and update', () async {

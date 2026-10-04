@@ -266,6 +266,185 @@ void main() {
     });
   });
 
+  group('refused for good', () {
+    const spam = PermanentMailException(
+      MailErrorKind.server,
+      'Message rejected by smtp.example.com: 5.7.1 Message rejected as spam',
+    );
+
+    test('a refusal for good waits for Retry, in background runs too', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer()..smtpFailure = spam;
+        final a = await h.add(server);
+        final id = await h.repo.send(outgoing(a), undoDelay: const Duration(seconds: 1));
+        await settle();
+        final failed = (await h.repo.watchOutbox().first).single;
+        expect(failed.status, OutboxStatus.failed);
+        expect(failed.error, spam.message);
+        expect(h.errors.single.message, contains('until you tap Retry'));
+        expect((await h.store.getOutbox(id))!.held, isTrue);
+        expect(server.smtpAttempts, 1);
+
+        // Hours go by, the app goes away and comes back, and background
+        // work sends the outbox: nobody tries it again.
+        await settle(const Duration(hours: 3));
+        await h.repo.pause();
+        await h.repo.resume();
+        final background = LiveMailRepository(h.store, h.factory, h.credentials, config: fastConfig);
+        await background.syncOnce();
+        await background.dispose();
+        await settle();
+        expect(server.smtpAttempts, 1);
+
+        // The user fixed it on the server and taps Retry.
+        server.smtpFailure = null;
+        await h.repo.sendNow(id);
+        await settle();
+        expect(server.smtpAttempts, 2);
+        expect(server.sent, hasLength(1));
+        expect(await h.store.outboxEntries(), isEmpty);
+        await h.dispose();
+      }, step: _step);
+    });
+
+    test('a refusal for now keeps the backoff retries', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer()
+          ..smtpFailure = const MailException(MailErrorKind.server, 'Message rejected: 4.7.1 Try again later');
+        final a = await h.add(server);
+        await h.repo.send(outgoing(a), undoDelay: const Duration(seconds: 1));
+        await settle();
+        expect(server.smtpAttempts, 1);
+        // Retried after 30 s, then 60 s.
+        await settle(const Duration(seconds: 31));
+        expect(server.smtpAttempts, 2);
+        await settle(const Duration(seconds: 61));
+        expect(server.smtpAttempts, 3);
+        final entry = (await h.store.outboxEntries()).single;
+        expect(entry.held, isFalse);
+        expect(entry.attempts, 3);
+        server.smtpFailure = null;
+        await settle(const Duration(minutes: 3));
+        expect(server.sent, hasLength(1));
+        expect(await h.store.outboxEntries(), isEmpty);
+        await h.dispose();
+      }, step: _step);
+    });
+
+    test('signing in again resends what failed, but not what the server refused for good', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer();
+        final a = await h.add(server);
+        final later = clock.now().add(const Duration(hours: 1));
+        for (final (id, held) in [('later', false), ('refused', true)]) {
+          await h.store.putOutbox(
+            OutboxEntry(
+              id: id,
+              accountId: a.id,
+              message: outgoing(a, subject: id),
+              sendAfter: later,
+              createdAt: clock.now(),
+              status: OutboxStatus.failed,
+              attempts: 1,
+              lastError: 'failed',
+              held: held,
+            ),
+          );
+        }
+        await h.repo.renewSignIn(a.id, const PasswordCredentials('secret'));
+        await settle();
+        expect([for (final m in server.sent) m.json['subject']], ['later']);
+        expect((await h.store.outboxEntries()).single.id, 'refused');
+        await h.dispose();
+      });
+    });
+
+    OutgoingMessage toThree(MailAccount a) => OutgoingMessage(
+      accountId: a.id,
+      identityId: a.defaultIdentity.id,
+      to: const [EmailAddress('bob@example.org', 'Bob'), EmailAddress('carol@example.org', 'Carol')],
+      bcc: const [EmailAddress('dave@example.org')],
+      subject: 'Team lunch',
+      text: 'Friday?',
+    );
+    const unknownBob = PermanentMailException(
+      MailErrorKind.server,
+      'Recipient bob@example.org rejected by smtp.example.com: 5.1.1 User unknown',
+    );
+
+    test('refused recipients stay in the Outbox; the others get the message', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer();
+        server.refusedRecipients['bob@example.org'] = unknownBob;
+        final a = await h.add(server);
+        final id = await h.repo.send(toThree(a), undoDelay: const Duration(seconds: 1));
+        await settle();
+        expect(server.sent.single.recipients, ['carol@example.org', 'dave@example.org']);
+        expect(await h.subjects(a, 'Sent'), ['Team lunch']);
+        expect(h.errors.single.message, contains('not to everyone'));
+        expect(h.errors.single.message, contains('bob@example.org'));
+
+        final left = (await h.repo.watchOutbox().first).single;
+        expect(left.id, isNot(id), reason: 'a message of its own, with its own Message-ID');
+        expect(left.status, OutboxStatus.failed);
+        expect(left.error, unknownBob.message);
+        expect([for (final r in left.message.to) r.email], ['bob@example.org']);
+        expect(left.message.cc, isEmpty);
+        expect(left.message.bcc, isEmpty);
+        expect(left.message.subject, 'Team lunch');
+        expect((await h.store.getOutbox(left.id))!.held, isTrue);
+        await settle(const Duration(hours: 2));
+        expect(server.smtpAttempts, 1);
+
+        // Retry once the mailbox exists.
+        server.refusedRecipients.clear();
+        await h.repo.sendNow(left.id);
+        await settle();
+        expect(server.sent, hasLength(2));
+        expect(server.sent.last.recipients, ['bob@example.org']);
+        expect(server.sent.last.json['messageId'], isNot(server.sent.first.json['messageId']));
+        expect(await h.store.outboxEntries(), isEmpty);
+        await h.dispose();
+      }, step: _step);
+    });
+
+    test('recipients refused for now are retried on their own; those refused for good then wait', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer();
+        server.refusedRecipients
+          ..['bob@example.org'] = unknownBob
+          ..['carol@example.org'] = const MailException(
+            MailErrorKind.server,
+            'Recipient carol@example.org rejected by smtp.example.com: 4.2.1 Greylisted',
+          );
+        final a = await h.add(server);
+        await h.repo.send(toThree(a), undoDelay: const Duration(seconds: 1));
+        await settle();
+        expect(server.sent.single.recipients, ['dave@example.org']);
+        final left = (await h.store.outboxEntries()).single;
+        expect(left.held, isFalse, reason: 'Carol may work later');
+        expect([for (final r in left.message.to) r.email], ['bob@example.org', 'carol@example.org']);
+
+        // The greylisting is over: Carol gets it; Bob's refusal waits for Retry.
+        server.refusedRecipients.remove('carol@example.org');
+        await settle(const Duration(seconds: 31));
+        expect(server.sent, hasLength(2));
+        expect(server.sent.last.recipients, ['carol@example.org']);
+        final bob = (await h.store.outboxEntries()).single;
+        expect(bob.held, isTrue);
+        expect([for (final r in bob.message.to) r.email], ['bob@example.org']);
+        await settle(const Duration(hours: 1));
+        expect(server.smtpAttempts, 2);
+        await h.dispose();
+      }, step: _step);
+    });
+  });
+
   group('scheduled send', () {
     // fakeTime starts at 2026-09-01 12:00.
     final tomorrow8 = DateTime(2026, 9, 2, 8);
@@ -412,12 +591,12 @@ void main() {
           final h = Harness();
           final server = FakeServer();
           final a = await h.add(server);
-          server.smtpFailure = const MailException(MailErrorKind.server, '554 Relay access denied');
+          server.smtpFailure = const MailException(MailErrorKind.server, '451 4.3.0 Try again later');
           final id = await h.repo.send(outgoing(a), sendAt: DateTime(2026, 9, 1, 13));
           await settle(const Duration(hours: 1, seconds: 1));
           final failed = (await h.repo.watchOutbox().first).single;
           expect(failed.status, OutboxStatus.failed);
-          expect(failed.error, '554 Relay access denied');
+          expect(failed.error, '451 4.3.0 Try again later');
           expect(failed.sendAt.isAfter(DateTime(2026, 9, 1, 13)), isTrue, reason: 'retried after a backoff');
           server.smtpFailure = null;
           await h.repo.sendNow(id);

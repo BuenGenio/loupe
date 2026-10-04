@@ -48,8 +48,12 @@ void main() {
     final all = await store.emailsStoredAfter(inbox, 0);
     expect([for (final (_, e) in all) e.id], [eid('INBOX', 1), eid('INBOX', 2)]);
     final last = all.last.$1;
-    await store.setRuleWatermark(inbox, RuleWatermark(seq: last, uidValidity: 1, uid: 2));
-    expect(await store.ruleWatermark(inbox), RuleWatermark(seq: last, uidValidity: 1, uid: 2));
+    final mark = RuleWatermark(seq: last, uidValidity: 1, uid: 2);
+    expect(await store.advanceRuleWatermark(inbox, from: null, to: mark), isTrue);
+    expect(await store.ruleWatermark(inbox), mark);
+    // Only from where it is: another process moved it first.
+    expect(await store.advanceRuleWatermark(inbox, from: null, to: RuleWatermark(seq: last + 1)), isFalse);
+    expect(await store.ruleWatermark(inbox), mark);
     await addMails(store, [mail(3)]);
     expect([for (final (_, e) in await store.emailsStoredAfter(inbox, last)) e.id], [eid('INBOX', 3)]);
     // Gone with the mailbox.
@@ -77,7 +81,7 @@ void main() {
         .customSelect("SELECT name FROM sqlite_master WHERE type = 'table' AND name LIKE 'rule%' ORDER BY name")
         .get();
     expect([for (final t in tables) t.read<String>('name')], ['rule_watermarks', 'rules']);
-    expect((await db.customSelect('PRAGMA user_version').getSingle()).read<int>('user_version'), 4);
+    expect((await db.customSelect('PRAGMA user_version').getSingle()).read<int>('user_version'), latestSchemaVersion);
     await db.close();
   });
 }

@@ -4,6 +4,7 @@ import 'account.dart';
 import 'email.dart';
 import 'mailbox.dart';
 import 'outgoing.dart';
+import 'repository.dart';
 import 'search.dart';
 import 'server_documents.dart';
 
@@ -183,8 +184,25 @@ abstract interface class MailTransport {
 
 /// Sends a ready-made message (SMTP).
 abstract interface class MailSender {
-  Future<void> send(Uint8List rfc822, {required String envelopeFrom, required List<String> recipients});
+  /// Hands [rfc822] to the server for [recipients].
+  ///
+  /// Throws when nothing was sent: a [PermanentMailException] when the
+  /// server refused for good (sending it again fails the same way), another
+  /// [MailException] when it may work later. When the server refuses only
+  /// some recipients, the message goes to the others and the receipt names
+  /// the refused ones.
+  Future<SendReceipt> send(Uint8List rfc822, {required String envelopeFrom, required List<String> recipients});
   Future<void> close();
+}
+
+/// What [MailSender.send] did with a message the server took.
+final class SendReceipt {
+  const SendReceipt({this.refused = const {}});
+
+  /// Recipients the server refused while it took the message for the
+  /// others: address → why (a [PermanentMailException] when for good).
+  /// Empty when it took every recipient.
+  final Map<String, MailException> refused;
 }
 
 /// Builds RFC 822 bytes from an [OutgoingMessage].

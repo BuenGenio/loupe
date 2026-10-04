@@ -53,7 +53,9 @@ final class SyncConfig {
   /// reverted and reported.
   final int maxOpAttempts;
 
-  /// Retry backoff of failed sends; sends are retried until cancelled.
+  /// Retry backoff of failed sends. Temporary failures (offline, timeouts,
+  /// SMTP 4xx) are retried until cancelled; a refusal for good (SMTP 5xx, a
+  /// `PermanentMailException`) waits for the user's Retry.
   final Duration sendRetryBase;
   final Duration sendRetryMax;
 

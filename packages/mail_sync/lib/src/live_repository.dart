@@ -290,9 +290,10 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     _setSignInRequired(accountId, false);
     if (_disposed) return;
     if (!_paused) unawaited(_syncers[accountId]?.syncAll());
-    // Sends that failed for want of a sign-in go out now, not after their backoff.
+    // Sends that failed for want of a sign-in go out now, not after their
+    // backoff. Those the server refused for good wait for Retry.
     for (final e in await store.outboxEntries()) {
-      if (e.accountId == accountId && e.status == OutboxStatus.failed) {
+      if (e.accountId == accountId && e.status == OutboxStatus.failed && !e.held) {
         await store.rescheduleOutbox(e.id, sendAfter: _now(), status: OutboxStatus.queued);
       }
     }
@@ -729,9 +730,13 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     final accountId = syncer.account.id;
     final existing = await _snoozeFolder(accountId);
     if (existing != null) return existing;
-    final path = _snoozePath(await store.getMailboxes(accountId: accountId));
-    final id = MailIds.mailbox(accountId, path);
-    await store.transaction(() async {
+    // Looked for again with the write lock held: another process (the app,
+    // a notification action) may have added it meanwhile.
+    final id = await store.transaction(() async {
+      final added = await _snoozeFolder(accountId);
+      if (added != null) return added.id;
+      final path = _snoozePath(await store.getMailboxes(accountId: accountId));
+      final id = MailIds.mailbox(accountId, path);
       await syncer.addLocalMailbox(
         RemoteMailbox(path: path, name: Snooze.folderName, parentPath: path == Snooze.folderName ? null : 'INBOX'),
       );
@@ -740,6 +745,7 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
         'path': path,
         'name': Snooze.folderName,
       }, now: _now());
+      return id;
     });
     return await store.getMailbox(id) ??
         (throw const MailException(MailErrorKind.unknown, 'Couldn’t add the Snoozed folder'));
@@ -821,8 +827,10 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     if (away.isNotEmpty) await _moveWithin(accountId, away, inbox.id);
   }
 
-  /// Drops [ids] from the account's device-only snoozes.
-  Future<void> _forgetLocalSnoozes(String accountId, List<String> ids) async {
+  /// Drops [ids] from the account's device-only snoozes. One transaction:
+  /// another process may change the same operations (snooze, wake), and an
+  /// edit made from a stale read would bring back what it removed.
+  Future<void> _forgetLocalSnoozes(String accountId, List<String> ids) => store.transaction(() async {
     final gone = ids.toSet();
     for (final op in await store.pendingOps(accountId: accountId)) {
       if (op.type != OpType.localSnooze) continue;
@@ -835,7 +843,7 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
         await store.updateOp(op.id, payload: {...op.payload, 'ids': kept}, attempts: op.attempts);
       }
     }
-  }
+  });
 
   /// Wakes the account's messages whose time has come; after every full
   /// sync, so the Snoozed folder is up to date and a time another device
@@ -1115,8 +1123,9 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     final generation = ++_outboxGeneration;
     final due = [
       for (final e in await store.outboxEntries())
-        // A claim is looked at again once it may be stale.
-        e.status == OutboxStatus.sending ? e.sendAfter.add(config.sendClaimTimeout) : e.sendAfter,
+        // Held entries wait for Retry; a claim is looked at again once it
+        // may be stale.
+        if (!e.held) e.status == OutboxStatus.sending ? e.sendAfter.add(config.sendClaimTimeout) : e.sendAfter,
     ];
     if (generation != _outboxGeneration || _disposed) return;
     _outboxTimer?.cancel();
@@ -1160,7 +1169,7 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
         await store.releaseStaleOutboxClaims(now.subtract(config.sendClaimTimeout));
         for (final e in await store.outboxEntries()) {
           if (_disposed) return;
-          if (e.status == OutboxStatus.sending || e.sendAfter.isAfter(now)) continue;
+          if (e.status == OutboxStatus.sending || e.held || e.sendAfter.isAfter(now)) continue;
           final claimed = await store.claimOutbox(e.id, now: _now());
           if (claimed != null) await _sendOne(claimed);
         }
@@ -1170,10 +1179,15 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     }
   }
 
+  /// Sends a claimed entry. A failure leaves it failed: retried after a
+  /// backoff, or held for Retry when the server refused for good
+  /// ([PermanentMailException]). Recipients the server refused while taking
+  /// the message for the others stay in the Outbox (see [_refusedPart]).
   Future<void> _sendOne(OutboxEntry entry) async {
     final m = entry.message;
     final MailAccount account;
     final Uint8List bytes;
+    final SendReceipt receipt;
     try {
       account =
           await store.getAccount(entry.accountId) ??
@@ -1192,7 +1206,7 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
       }.toList();
       final sender = transports.createSender(account, _credentialsFor(account));
       try {
-        await sender.send(bytes, envelopeFrom: identity.email, recipients: recipients);
+        receipt = await sender.send(bytes, envelopeFrom: identity.email, recipients: recipients);
       } finally {
         try {
           await sender.close();
@@ -1203,35 +1217,80 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     } catch (error) {
       final e = asMailException(error, 'Sending failed');
       final attempts = entry.attempts + 1;
+      // Sending it again unchanged would fail the same way: it waits for
+      // Retry, in this process and in every other one.
+      final held = error is PermanentMailException;
       await store.updateOutbox(
         entry.id,
         status: OutboxStatus.failed,
         attempts: attempts,
         lastError: e.message,
-        sendAfter: _now().add(backoff(config.sendRetryBase, config.sendRetryMax, attempts - 1)),
+        held: held,
+        sendAfter: held ? null : _now().add(backoff(config.sendRetryBase, config.sendRetryMax, attempts - 1)),
       );
-      _reportError(MailException(e.kind, 'Couldn’t send a message: ${e.message}. It stays in the Outbox.', e));
+      final stays = held ? 'It stays in the Outbox until you tap Retry.' : 'It stays in the Outbox.';
+      _reportError(MailException(e.kind, 'Couldn’t send a message: ${e.message}. $stays', e));
       return;
     }
     // Sent: whatever fails from here on must not send it again.
+    final refused = _refusedPart(entry, receipt.refused);
     try {
-      await _afterSend(account, entry, bytes);
+      await _afterSend(account, entry, bytes, refused: refused);
     } on Object catch (error) {
       try {
-        await store.deleteOutbox(entry.id);
+        await store.transaction(() async {
+          await store.deleteOutbox(entry.id);
+          if (refused != null) await store.putOutbox(refused);
+        });
       } on Object {
         // Left claimed; the store is gone (released only when stale).
       }
       _reportError(asMailException(error, 'A message was sent, but not filed in Sent'));
     }
+    if (receipt.refused.isNotEmpty) {
+      final reasons = [for (final e in receipt.refused.values) e.message].join('; ');
+      _reportError(MailException(MailErrorKind.server, 'A message was sent, but not to everyone: $reasons'));
+    }
   }
 
-  Future<void> _afterSend(MailAccount account, OutboxEntry entry, Uint8List bytes) async {
+  /// What the server refused of [entry] while taking it for the others: a
+  /// new message to just the [refused] recipients (its own Message-ID), left
+  /// failed with their reasons. It waits for Retry when every refusal was
+  /// for good; otherwise it is retried like any failed send, and those
+  /// refused for good then split off again.
+  OutboxEntry? _refusedPart(OutboxEntry entry, Map<String, MailException> refused) {
+    if (refused.isEmpty) return null;
+    final gone = {for (final a in refused.keys) a.trim().toLowerCase()};
+    List<EmailAddress> only(List<EmailAddress> list) => [
+      for (final a in list)
+        if (gone.contains(a.email.trim().toLowerCase())) a,
+    ];
+    final m = entry.message;
+    final (to, cc, bcc) = (only(m.to), only(m.cc), only(m.bcc));
+    if (to.isEmpty && cc.isEmpty && bcc.isEmpty) return null;
+    final held = refused.values.every((e) => e is PermanentMailException);
+    final now = _now();
+    return OutboxEntry(
+      id: newId(),
+      accountId: entry.accountId,
+      message: m.withoutDraft().copyWith(to: to, cc: cc, bcc: bcc),
+      sendAfter: held ? now : now.add(backoff(config.sendRetryBase, config.sendRetryMax, 0)),
+      createdAt: now,
+      status: OutboxStatus.failed,
+      attempts: 1,
+      lastError: [for (final e in refused.values) e.message].join('; '),
+      held: held,
+    );
+  }
+
+  Future<void> _afterSend(MailAccount account, OutboxEntry entry, Uint8List bytes, {OutboxEntry? refused}) async {
     final m = entry.message;
     final now = _now();
     final sent = await store.mailboxByRole(account.id, MailboxRole.sent);
     await store.transaction(() async {
       await store.deleteOutbox(entry.id);
+      // The refused recipients' part takes its place in the same step.
+      if (refused != null) await store.putOutbox(refused);
       // Gmail files sent mail itself.
       if (account.provider != ProviderKind.gmail && sent != null) {
         await store.enqueueOp(account.id, OpType.append, {

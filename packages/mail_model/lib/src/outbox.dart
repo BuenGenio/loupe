@@ -1,4 +1,5 @@
 import 'outgoing.dart';
+import 'repository.dart';
 
 /// Where a message waiting in the outbox stands.
 enum OutboxStatus {
@@ -13,7 +14,9 @@ enum OutboxStatus {
   sending,
 
   /// The last attempt failed ([OutboxItem.error]). It is retried at
-  /// [OutboxItem.sendAt], or at once with `sendNow`.
+  /// [OutboxItem.sendAt], or at once with `sendNow` (Retry). A message the
+  /// server refused for good ([PermanentMailException]) is retried only by
+  /// `sendNow`.
   failed,
 }
 

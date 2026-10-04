@@ -9,6 +9,11 @@ import 'smtp_client.dart';
 
 /// Sends messages through the account's outgoing server. Each [send] opens
 /// its own session (sending is rare, and a fresh session can't be stale).
+///
+/// Failures are classified for the Outbox (see [isPermanentSmtpReply]): 5yz
+/// replies, a login refused even after an OAuth refresh, and messages that
+/// can't go as they are throw [PermanentMailException]; 4yz replies, network
+/// errors and timeouts throw a plain [MailException].
 final class ImapSmtpSender implements MailSender {
   ImapSmtpSender(this.account, this._credentials);
 
@@ -16,16 +21,16 @@ final class ImapSmtpSender implements MailSender {
   final CredentialsCallback _credentials;
 
   @override
-  Future<void> send(Uint8List rfc822, {required String envelopeFrom, required List<String> recipients}) async {
+  Future<SendReceipt> send(Uint8List rfc822, {required String envelopeFrom, required List<String> recipients}) async {
     final server = account.outgoing;
     if (server == null || server.protocol != ServerProtocol.smtp) {
-      throw const MailException(MailErrorKind.unsupported, 'This account has no outgoing (SMTP) server.');
+      throw const PermanentMailException(MailErrorKind.unsupported, 'This account has no outgoing (SMTP) server.');
     }
     final to = {for (final r in recipients) r.trim()}.where((r) => r.isNotEmpty).toList();
-    if (to.isEmpty) throw const MailException(MailErrorKind.server, 'The message has no recipients.');
+    if (to.isEmpty) throw const PermanentMailException(MailErrorKind.server, 'The message has no recipients.');
     final session = await _login(server);
     try {
-      await session.sendMail(envelopeFrom, to, rfc822);
+      return SendReceipt(refused: await session.sendMail(envelopeFrom, to, rfc822));
     } finally {
       await session.quit();
     }

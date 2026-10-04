@@ -235,4 +235,19 @@ class MailException implements Exception {
   String toString() => 'MailException(${kind.name}): $message';
 }
 
+/// A failure that trying again unchanged can't fix: the server refused for
+/// good, such as an SMTP 5xx reply (an unknown mailbox, a message rejected
+/// as spam, a sender the account may not use) or a login it still refuses
+/// with freshly refreshed credentials. Other [MailException]s (offline, a
+/// timeout, a 4xx reply) may go away by themselves.
+///
+/// The Outbox keeps a message that failed this way until the user taps
+/// Retry, instead of trying it again and again.
+final class PermanentMailException extends MailException {
+  const PermanentMailException(super.kind, super.message, [super.cause]);
+
+  @override
+  String toString() => 'PermanentMailException(${kind.name}): $message';
+}
+
 enum MailErrorKind { authentication, connection, certificate, server, notFound, unsupported, cancelled, unknown }
