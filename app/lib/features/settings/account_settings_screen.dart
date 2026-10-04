@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mail_model/mail_model.dart' hide TextField;
+import 'package:mail_model/mail_model.dart';
 
 import '../../providers.dart';
 import '../../shared/grouped_list.dart';

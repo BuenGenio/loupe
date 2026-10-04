@@ -99,7 +99,7 @@ void main() {
   test('search answers locally first, then adds server-only hits', () async {
     final results = <SearchResults>[];
     await for (final r in repo.search(
-      const SearchRequest(expr: TextTerm(TextField.any, 'photos'), scope: AllMailboxesScope()),
+      const SearchRequest(expr: TextTerm(SearchField.any, 'photos'), scope: AllMailboxesScope()),
     )) {
       results.add(r);
       if (r.isComplete) break;
@@ -116,7 +116,7 @@ void main() {
     final r = await repo
         .search(
           const SearchRequest(
-            expr: TextTerm(TextField.any, 'photos'),
+            expr: TextTerm(SearchField.any, 'photos'),
             scope: AllMailboxesScope(),
             includeServer: false,
           ),

@@ -60,22 +60,22 @@ final class ImapCompiler {
       case TextTerm(:final field, :final value):
         final q = imapString(value);
         if (q == null) return _widen();
-        if (field == TextField.any && !negated) {
+        if (field == SearchField.any && !negated) {
           // TEXT also searches other headers: a superset, fine when positive.
           _exact = false;
           return ['TEXT $q'];
         }
         final key = switch (field) {
-          TextField.from => 'FROM $q',
-          TextField.to => 'TO $q',
-          TextField.cc => 'CC $q',
-          TextField.bcc => 'BCC $q',
-          TextField.subject => 'SUBJECT $q',
-          TextField.body => 'BODY $q',
-          TextField.recipients => 'OR TO $q OR CC $q BCC $q',
-          TextField.participants => 'OR FROM $q OR TO $q OR CC $q BCC $q',
-          TextField.any => 'OR FROM $q OR TO $q OR CC $q OR SUBJECT $q BODY $q',
-          TextField.attachment => null,
+          SearchField.from => 'FROM $q',
+          SearchField.to => 'TO $q',
+          SearchField.cc => 'CC $q',
+          SearchField.bcc => 'BCC $q',
+          SearchField.subject => 'SUBJECT $q',
+          SearchField.body => 'BODY $q',
+          SearchField.recipients => 'OR TO $q OR CC $q BCC $q',
+          SearchField.participants => 'OR FROM $q OR TO $q OR CC $q BCC $q',
+          SearchField.any => 'OR FROM $q OR TO $q OR CC $q OR SUBJECT $q BODY $q',
+          SearchField.attachment => null,
         };
         return key == null ? _widen() : [n(key)];
       case HeaderTerm(:final name, :final value):

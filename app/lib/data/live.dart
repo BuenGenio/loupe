@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_imap/mail_imap.dart';
-import 'package:mail_model/mail_model.dart' hide TextField;
+import 'package:mail_model/mail_model.dart';
 import 'package:mail_platform/mail_platform.dart';
 import 'package:mail_store/mail_store.dart';
 import 'package:mail_sync/mail_sync.dart';

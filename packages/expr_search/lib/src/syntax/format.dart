@@ -32,10 +32,10 @@ final class QueryFormatter {
       SearchAnd(:final children) => _wrap(ctx == _Ctx.and || ctx == _Ctx.not, _joinAnd(children)),
       SearchOr(:final children) => _wrap(ctx != _Ctx.top, children.map((c) => _fmt(c, _Ctx.or)).join(' or ')),
       SearchNot(:final child) => _not(child),
-      TextTerm(field: TextField.any, :final value) => quoteValue(value),
+      TextTerm(field: SearchField.any, :final value) => quoteValue(value),
       TextTerm(:final field, :final value) => '${textOperatorFor(field)}:${quoteValue(value)}',
       RegexTerm(:final field, :final pattern, :final caseSensitive) =>
-        field == TextField.any
+        field == SearchField.any
             ? regexLiteral(pattern, caseSensitive)
             : '${textOperatorFor(field)}:${regexLiteral(pattern, caseSensitive)}',
       HeaderTerm(:final name, :final value) => 'header:${quoteValue(value.isEmpty ? name : '$name=$value')}',
@@ -59,7 +59,7 @@ final class QueryFormatter {
     final b = StringBuffer();
     for (var i = 0; i < children.length; i++) {
       final c = children[i];
-      if (i > 0) b.write(c is TextTerm && c.field == TextField.any && !needsQuotes(c.value) ? ' and ' : ' ');
+      if (i > 0) b.write(c is TextTerm && c.field == SearchField.any && !needsQuotes(c.value) ? ' and ' : ' ');
       b.write(_fmt(c, _Ctx.and));
     }
     return b.toString();
@@ -113,13 +113,13 @@ SearchExpr tidy(SearchExpr e) {
 
 /// `to:v` parses to To-or-Cc; returns the value (and pattern) for that shape.
 (String, RegexTerm?)? toOrCcShape(SearchExpr e) => switch (e) {
-  SearchOr(children: [TextTerm(field: TextField.to, value: final a), TextTerm(field: TextField.cc, value: final b)])
+  SearchOr(children: [TextTerm(field: SearchField.to, value: final a), TextTerm(field: SearchField.cc, value: final b)])
       when a == b =>
     (a, null),
   SearchOr(
     children: [
-      RegexTerm(field: TextField.to) && final to,
-      RegexTerm(field: TextField.cc, :final pattern, :final caseSensitive),
+      RegexTerm(field: SearchField.to) && final to,
+      RegexTerm(field: SearchField.cc, :final pattern, :final caseSensitive),
     ],
   )
       when to.pattern == pattern && to.caseSensitive == caseSensitive =>
@@ -132,22 +132,22 @@ List<String>? onlyShape(SearchExpr e) {
   if (e is! SearchAnd || e.children.length < 2) return null;
   final people = <String>[];
   for (final c in e.children.take(e.children.length - 1)) {
-    if (c case TextTerm(field: TextField.to, :final value) when value.isNotEmpty && value == value.trim()) {
+    if (c case TextTerm(field: SearchField.to, :final value) when value.isNotEmpty && value == value.trim()) {
       if (value.contains(',')) return null;
       people.add(value);
     } else {
       return null;
     }
   }
-  return e.children.last == SearchNot(RegexTerm(TextField.to, onlyPattern(people))) ? people : null;
+  return e.children.last == SearchNot(RegexTerm(SearchField.to, onlyPattern(people))) ? people : null;
 }
 
 /// The value `simple:` produced: subject text plus its case-sensitive form.
 String? simpleShape(SearchExpr e) => switch (e) {
   SearchAnd(
     children: [
-      TextTerm(field: TextField.subject, :final value),
-      RegexTerm(field: TextField.subject, :final pattern, caseSensitive: true),
+      TextTerm(field: SearchField.subject, :final value),
+      RegexTerm(field: SearchField.subject, :final pattern, caseSensitive: true),
     ],
   )
       when pattern == RegExp.escape(value) =>
@@ -200,9 +200,9 @@ final class TermDescriber {
       SearchAnd(:final children) => children.map(_part).join(', '),
       SearchOr(:final children) => _describeOr(children),
       SearchNot(:final child) => _not(child),
-      TextTerm(field: TextField.any, :final value) => value,
+      TextTerm(field: SearchField.any, :final value) => value,
       TextTerm(:final field, :final value) => '${fieldLabel(field)}: $value',
-      RegexTerm(field: TextField.any, :final pattern, :final caseSensitive) =>
+      RegexTerm(field: SearchField.any, :final pattern, :final caseSensitive) =>
         'Matches ${regexLiteral(pattern, caseSensitive)}',
       RegexTerm(:final field, :final pattern, :final caseSensitive) =>
         '${fieldLabel(field)} matches ${regexLiteral(pattern, caseSensitive)}',
@@ -225,7 +225,7 @@ final class TermDescriber {
 
   String _describeOr(List<SearchExpr> children) {
     final fields = {for (final c in children) c is TextTerm ? c.field : null};
-    if (fields.length == 1 && fields.single != null && fields.single != TextField.any) {
+    if (fields.length == 1 && fields.single != null && fields.single != SearchField.any) {
       return '${fieldLabel(fields.single!)}: ${children.map((c) => (c as TextTerm).value).join(' or ')}';
     }
     return children.map(_part).join(' or ');
@@ -243,9 +243,9 @@ final class TermDescriber {
         return 'No attachment';
       case HeaderTerm(:final name, value: ''):
         return 'No header $name';
-      case RegexTerm(field: TextField.any, :final pattern, :final caseSensitive):
+      case RegexTerm(field: SearchField.any, :final pattern, :final caseSensitive):
         return 'Doesn’t match ${regexLiteral(pattern, caseSensitive)}';
-      case TextTerm(field: TextField.any) || HeaderTerm():
+      case TextTerm(field: SearchField.any) || HeaderTerm():
         return 'Not ${describe(child)}';
       case SearchAnd() || SearchOr() when toOrCcShape(child) == null && onlyShape(child) == null:
         return 'Not (${describe(child)})';
@@ -266,15 +266,15 @@ final class TermDescriber {
   static String _day(DateTime d) => '${d.day} ${monthAbbrevs[d.month - 1]} ${d.year}';
 }
 
-String fieldLabel(TextField f) => switch (f) {
-  TextField.any => 'Text',
-  TextField.from => 'From',
-  TextField.to => 'To',
-  TextField.cc => 'Cc',
-  TextField.bcc => 'Bcc',
-  TextField.recipients => 'Recipients',
-  TextField.participants => 'Address',
-  TextField.subject => 'Subject',
-  TextField.body => 'Body',
-  TextField.attachment => 'Attachment',
+String fieldLabel(SearchField f) => switch (f) {
+  SearchField.any => 'Text',
+  SearchField.from => 'From',
+  SearchField.to => 'To',
+  SearchField.cc => 'Cc',
+  SearchField.bcc => 'Bcc',
+  SearchField.recipients => 'Recipients',
+  SearchField.participants => 'Address',
+  SearchField.subject => 'Subject',
+  SearchField.body => 'Body',
+  SearchField.attachment => 'Attachment',
 };

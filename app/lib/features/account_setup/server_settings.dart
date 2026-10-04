@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mail_model/mail_model.dart' hide TextField;
+import 'package:mail_model/mail_model.dart';
 
 import '../../theme/theme.dart';
 import '../conversation/sheets.dart';

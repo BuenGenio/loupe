@@ -66,7 +66,7 @@ final class ExprGen {
   }
 
   SearchExpr term() {
-    final field = pick(TextField.values);
+    final field = pick(SearchField.values);
     return switch (r.nextInt(12)) {
       0 || 1 => TextTerm(field, value()),
       2 => RegexTerm(field, pattern(), caseSensitive: r.nextBool()),
@@ -85,11 +85,11 @@ final class ExprGen {
   SearchExpr _toOrCc() {
     if (r.nextBool()) {
       final v = value();
-      return SearchOr([TextTerm(TextField.to, v), TextTerm(TextField.cc, v)]);
+      return SearchOr([TextTerm(SearchField.to, v), TextTerm(SearchField.cc, v)]);
     }
     final p = pattern();
     final cs = r.nextBool();
-    return SearchOr([RegexTerm(TextField.to, p, caseSensitive: cs), RegexTerm(TextField.cc, p, caseSensitive: cs)]);
+    return SearchOr([RegexTerm(SearchField.to, p, caseSensitive: cs), RegexTerm(SearchField.cc, p, caseSensitive: cs)]);
   }
 
   SearchExpr _only() {
@@ -97,8 +97,8 @@ final class ExprGen {
       for (var i = 0; i < 1 + r.nextInt(3); i++) pick(['tom', 'Jerry Smith', 'a"b', 'x.y', 'é']),
     ];
     return SearchAnd([
-      for (final p in people) TextTerm(TextField.to, p),
-      SearchNot(RegexTerm(TextField.to, '^(?!.*(?:${people.map(RegExp.escape).join('|')}))')),
+      for (final p in people) TextTerm(SearchField.to, p),
+      SearchNot(RegexTerm(SearchField.to, '^(?!.*(?:${people.map(RegExp.escape).join('|')}))')),
     ]);
   }
 
@@ -106,8 +106,8 @@ final class ExprGen {
     final v = nonEmptyValue().trim();
     final s = v.isEmpty ? 'x' : v;
     return SearchAnd([
-      TextTerm(TextField.subject, s),
-      RegexTerm(TextField.subject, RegExp.escape(s), caseSensitive: true),
+      TextTerm(SearchField.subject, s),
+      RegexTerm(SearchField.subject, RegExp.escape(s), caseSensitive: true),
     ]);
   }
 }
@@ -117,7 +117,7 @@ final class ExprGen {
 List<SearchExpr> vocabularyLiterals() {
   const words = ['alice', 'bob', 'invoice', 'tom', 'example.org', 'x.y', 'team-x', 'jerry smith', 'é', 'pdf'];
   return [
-    for (final f in TextField.values)
+    for (final f in SearchField.values)
       for (final w in words) TextTerm(f, w),
     for (final h in ['List-Id', 'X-Mailer', 'X-Absent'])
       for (final w in ['', ...words]) HeaderTerm(h, w),
@@ -128,7 +128,7 @@ List<SearchExpr> vocabularyLiterals() {
       for (final b in [100, 1024, 1536, 600 * 1024]) SizeTerm(c, b),
     const HasAttachmentTerm(),
     const AccountTerm('work'),
-    const RegexTerm(TextField.subject, '^a'),
+    const RegexTerm(SearchField.subject, '^a'),
   ];
 }
 

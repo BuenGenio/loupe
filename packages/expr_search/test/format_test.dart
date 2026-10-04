@@ -6,7 +6,7 @@ import 'support/generators.dart';
 import 'support/help_examples.dart';
 import 'support/terms.dart';
 
-final _only = and([toOnly('tom'), toOnly('jerry'), not(re(TextField.to, '^(?!.*(?:tom|jerry))'))]);
+final _only = and([toOnly('tom'), toOnly('jerry'), not(re(SearchField.to, '^(?!.*(?:tom|jerry))'))]);
 
 void main() {
   group('formatQuery', () {
@@ -81,9 +81,9 @@ void main() {
       (larger(500 * kb), 'larger:500K'),
       (smaller(1500), 'smaller:1500B'),
       (larger(0), 'larger:0B'),
-      (re(TextField.any, 'a/b'), r'/a\/b/i'),
-      (re(TextField.subject, r'^\[x\]', cs: true), r'subject:/^\[x\]/'),
-      (or([re(TextField.to, 'x'), re(TextField.cc, 'x')]), 'to:/x/i'),
+      (re(SearchField.any, 'a/b'), r'/a\/b/i'),
+      (re(SearchField.subject, r'^\[x\]', cs: true), r'subject:/^\[x\]/'),
+      (or([re(SearchField.to, 'x'), re(SearchField.cc, 'x')]), 'to:/x/i'),
       (const HeaderTerm('List-Id', 'x y'), 'header:"List-Id=x y"'),
       (const HeaderTerm('X-Mailer', ''), 'header:X-Mailer'),
       (hasAttachment, 'attachment:yes'),
@@ -180,9 +180,9 @@ void main() {
       (const HeaderTerm('List-Id', ''), 'Has header List-Id'),
       (not(const HeaderTerm('List-Id', '')), 'No header List-Id'),
       (const HeaderTerm('List-Id', 'dev'), 'List-Id: dev'),
-      (re(TextField.subject, '^x'), 'Subject matches /^x/i'),
-      (re(TextField.any, 'x', cs: true), 'Matches /x/'),
-      (not(re(TextField.any, 'x')), 'Doesn’t match /x/i'),
+      (re(SearchField.subject, '^x'), 'Subject matches /^x/i'),
+      (re(SearchField.any, 'x', cs: true), 'Matches /x/'),
+      (not(re(SearchField.any, 'x')), 'Doesn’t match /x/i'),
       (_only, 'Only to: tom, jerry'),
       (parseQuery('simple:Re: x').expr, 'Subject (exact): Re: x'),
       (or([from('a'), from('b')]), 'From: a or b'),

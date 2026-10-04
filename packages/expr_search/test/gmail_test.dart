@@ -99,7 +99,7 @@ void main() {
       expect(gmailSupports(from('a')), isTrue);
       expect(gmailSupports(read), isTrue);
       expect(gmailSupports(kw(Keywords.answered)), isFalse);
-      expect(gmailSupports(re(TextField.subject, 'x')), isFalse);
+      expect(gmailSupports(re(SearchField.subject, 'x')), isFalse);
       expect(gmailSupports(const AccountTerm('x')), isFalse);
       expect(gmailSupports(subject('')), isFalse);
     });

@@ -155,7 +155,7 @@ void main() {
   });
 
   test('search', () async {
-    const expr = TextTerm(TextField.subject, 'Seed 5');
+    const expr = TextTerm(SearchField.subject, 'Seed 5');
     final ids = await transport.search(expr, mailbox: box);
     expect(ids, hasLength(1));
     final hit = (await transport.fetchSummaries(ids)).single;
@@ -164,7 +164,7 @@ void main() {
     expect(everywhere, contains(ids.single));
 
     await transport.append(box, seedMessage(subject: 'Grüße aus Köln'));
-    final utf8Hits = await transport.search(const TextTerm(TextField.subject, 'grüße'), mailbox: box);
+    final utf8Hits = await transport.search(const TextTerm(SearchField.subject, 'grüße'), mailbox: box);
     expect((await transport.fetchSummaries(utf8Hits)).map((e) => e.subject), ['Grüße aus Köln']);
 
     expect(await transport.search(const SearchNot(MatchAll()), mailbox: box), isEmpty);

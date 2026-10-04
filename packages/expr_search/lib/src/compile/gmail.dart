@@ -63,15 +63,15 @@ _G? _literal(SearchExpr t, bool negated) {
           negated ? _All([for (final o in ops) _Atom('-$o:$v')]) : _Any([for (final o in ops) _Atom('$o:$v')]);
       return switch (field) {
         // Gmail has no body-only operator; plain text searches everywhere.
-        TextField.any || TextField.body => a(v),
-        TextField.from => a('from:$v'),
-        TextField.to => a('to:$v'),
-        TextField.cc => a('cc:$v'),
-        TextField.bcc => a('bcc:$v'),
-        TextField.subject => a('subject:$v'),
-        TextField.attachment => a('filename:$v'),
-        TextField.recipients => spread(const ['to', 'cc', 'bcc']),
-        TextField.participants => spread(const ['from', 'to', 'cc', 'bcc']),
+        SearchField.any || SearchField.body => a(v),
+        SearchField.from => a('from:$v'),
+        SearchField.to => a('to:$v'),
+        SearchField.cc => a('cc:$v'),
+        SearchField.bcc => a('bcc:$v'),
+        SearchField.subject => a('subject:$v'),
+        SearchField.attachment => a('filename:$v'),
+        SearchField.recipients => spread(const ['to', 'cc', 'bcc']),
+        SearchField.participants => spread(const ['from', 'to', 'cc', 'bcc']),
       };
     case HasAttachmentTerm():
       return a('has:attachment');

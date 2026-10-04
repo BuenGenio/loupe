@@ -14,17 +14,17 @@ final class SqlCondition {
 
 const _anyColumns = ['subject', 'from_addr', 'to_addr', 'cc_addr', 'bcc_addr', 'preview', 'body'];
 
-List<String> _columnsFor(TextField field) => switch (field) {
-  TextField.any => _anyColumns,
-  TextField.from => const ['from_addr'],
-  TextField.to => const ['to_addr'],
-  TextField.cc => const ['cc_addr'],
-  TextField.bcc => const ['bcc_addr'],
-  TextField.recipients => const ['to_addr', 'cc_addr', 'bcc_addr'],
-  TextField.participants => const ['from_addr', 'to_addr', 'cc_addr', 'bcc_addr'],
-  TextField.subject => const ['subject'],
-  TextField.body => const ['preview', 'body'],
-  TextField.attachment => const ['attachments'],
+List<String> _columnsFor(SearchField field) => switch (field) {
+  SearchField.any => _anyColumns,
+  SearchField.from => const ['from_addr'],
+  SearchField.to => const ['to_addr'],
+  SearchField.cc => const ['cc_addr'],
+  SearchField.bcc => const ['bcc_addr'],
+  SearchField.recipients => const ['to_addr', 'cc_addr', 'bcc_addr'],
+  SearchField.participants => const ['from_addr', 'to_addr', 'cc_addr', 'bcc_addr'],
+  SearchField.subject => const ['subject'],
+  SearchField.body => const ['preview', 'body'],
+  SearchField.attachment => const ['attachments'],
 };
 
 final _tokenSplit = RegExp(r'[^\p{L}\p{N}\p{M}]+', unicode: true);
@@ -45,12 +45,12 @@ String? ftsMatchQuery(String text, List<String> columns) {
 }
 
 /// Header names the store can answer from columns.
-TextField? _headerField(String name) => switch (name.toLowerCase()) {
-  'from' => TextField.from,
-  'to' => TextField.to,
-  'cc' => TextField.cc,
-  'bcc' => TextField.bcc,
-  'subject' => TextField.subject,
+SearchField? _headerField(String name) => switch (name.toLowerCase()) {
+  'from' => SearchField.from,
+  'to' => SearchField.to,
+  'cc' => SearchField.cc,
+  'bcc' => SearchField.bcc,
+  'subject' => SearchField.subject,
   _ => null,
 };
 
@@ -63,7 +63,7 @@ SqlCondition translateSearch(SearchExpr expr) {
   final args = <Object?>[];
   var widened = false;
 
-  String text(TextField field, String value) {
+  String text(SearchField field, String value) {
     final q = ftsMatchQuery(value, _columnsFor(field));
     if (q == null) {
       widened = true;
@@ -98,8 +98,8 @@ SqlCondition translateSearch(SearchExpr expr) {
         if (children.isEmpty) return neg ? '1' : '0';
         final parts = [for (final c in children) tr(c, neg)];
         return '(${parts.join(neg ? ' AND ' : ' OR ')})';
-      case TextTerm(field: TextField.attachment, :final value):
-        final match = text(TextField.attachment, value);
+      case TextTerm(field: SearchField.attachment, :final value):
+        final match = text(SearchField.attachment, value);
         if (match == '1') return '1';
         // Attachment names are only known once content is cached: an
         // uncached message with attachments may match.

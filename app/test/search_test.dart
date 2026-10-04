@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/router.dart';
-import 'package:mail_model/mail_model.dart' hide TextField;
+import 'package:mail_model/mail_model.dart';
 
 import 'helpers.dart';
 

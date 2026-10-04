@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/shared/mailbox_ref_codec.dart';
-import 'package:mail_model/mail_model.dart' hide TextField;
+import 'package:mail_model/mail_model.dart';
 
 void main() {
   test('round-trips real and virtual refs, even after an extra decode', () {

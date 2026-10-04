@@ -51,7 +51,7 @@ final class OpSpec {
   final String name;
   final List<String> aliases;
   final OpKind kind;
-  final TextField? field;
+  final SearchField? field;
 
   /// A few words for completion lists.
   final String summary;
@@ -66,10 +66,17 @@ final class OpSpec {
 
 /// Every operator, in the order suggestions list them.
 const operators = <OpSpec>[
-  OpSpec('from', OpKind.text, 'sender contains', 'from:alice', aliases: ['f'], field: TextField.from),
+  OpSpec('from', OpKind.text, 'sender contains', 'from:alice', aliases: ['f'], field: SearchField.from),
   OpSpec('to', OpKind.toOrCc, 'To or Cc contains', 'to:bob', aliases: ['t', 'toorcc']),
-  OpSpec('subject', OpKind.text, 'subject contains', 'subject:invoice', aliases: ['s'], field: TextField.subject),
-  OpSpec('body', OpKind.text, 'message text contains', 'body:"tracking number"', aliases: ['b'], field: TextField.body),
+  OpSpec('subject', OpKind.text, 'subject contains', 'subject:invoice', aliases: ['s'], field: SearchField.subject),
+  OpSpec(
+    'body',
+    OpKind.text,
+    'message text contains',
+    'body:"tracking number"',
+    aliases: ['b'],
+    field: SearchField.body,
+  ),
   OpSpec('is', OpKind.status, 'unread, flagged, replied…', 'is:unread', aliases: ['status', 'i', 'u']),
   OpSpec('tag', OpKind.tag, 'has a tag', 'tag:work', aliases: ['l', 'label']),
   OpSpec('attachment', OpKind.attachment, 'yes, no, or a file name', 'attachment:yes', aliases: ['a']),
@@ -84,17 +91,17 @@ const operators = <OpSpec>[
     'older_than:1y',
     aliases: ['days', 'age', 'ag', 'da', 'ot'],
   ),
-  OpSpec('cc', OpKind.text, 'Cc contains', 'cc:carol', aliases: ['c'], field: TextField.cc),
-  OpSpec('bcc', OpKind.text, 'Bcc contains', 'bcc:dave', aliases: ['bc'], field: TextField.bcc),
-  OpSpec('tonocc', OpKind.text, 'To (not Cc) contains', 'tonocc:bob', aliases: ['tn'], field: TextField.to),
-  OpSpec('recipients', OpKind.text, 'To, Cc or Bcc contains', 'recipients:team', field: TextField.recipients),
+  OpSpec('cc', OpKind.text, 'Cc contains', 'cc:carol', aliases: ['c'], field: SearchField.cc),
+  OpSpec('bcc', OpKind.text, 'Bcc contains', 'bcc:dave', aliases: ['bc'], field: SearchField.bcc),
+  OpSpec('tonocc', OpKind.text, 'To (not Cc) contains', 'tonocc:bob', aliases: ['tn'], field: SearchField.to),
+  OpSpec('recipients', OpKind.text, 'To, Cc or Bcc contains', 'recipients:team', field: SearchField.recipients),
   OpSpec(
     'fromto',
     OpKind.text,
     'any address contains',
     'fromto:alice',
     aliases: ['ft', 'ftc', 'fromtocc', 'alladdresses'],
-    field: TextField.participants,
+    field: SearchField.participants,
   ),
   OpSpec('only', OpKind.only, 'the only To recipients', 'only:(tom,jerry)', aliases: ['o']),
   OpSpec(
@@ -103,7 +110,7 @@ const operators = <OpSpec>[
     'addresses, subject or body contain',
     'all:weekend',
     aliases: ['al'],
-    field: TextField.any,
+    field: SearchField.any,
   ),
   OpSpec('larger', OpKind.larger, 'larger than (KB, or 2M)', 'larger:2M', aliases: ['size', 'si']),
   OpSpec('smaller', OpKind.smaller, 'smaller than (KB, or 2M)', 'smaller:100K', aliases: ['sm']),
@@ -113,7 +120,7 @@ const operators = <OpSpec>[
     'attachment name or type contains',
     'filename:pdf',
     aliases: ['fi', 'fn', 'file'],
-    field: TextField.attachment,
+    field: SearchField.attachment,
   ),
   OpSpec('has', OpKind.has, 'has:attachment', 'has:attachment'),
   OpSpec('account', OpKind.account, 'account name or address contains', 'account:work', aliases: ['acc']),
@@ -122,7 +129,7 @@ const operators = <OpSpec>[
     OpKind.simple,
     'subject contains, case-sensitive',
     'simple:Re: (urgent)',
-    field: TextField.subject,
+    field: SearchField.subject,
     restOfInput: true,
   ),
   OpSpec(
@@ -131,7 +138,7 @@ const operators = <OpSpec>[
     'subject matches a pattern',
     r'regex:/^\[jira\]/i',
     aliases: ['re', 'r', 'subre'],
-    field: TextField.subject,
+    field: SearchField.subject,
     restOfInput: true,
   ),
   OpSpec(
@@ -140,7 +147,7 @@ const operators = <OpSpec>[
     'message text matches a pattern',
     r'bodyre:/order #\d{6}/',
     aliases: ['br'],
-    field: TextField.body,
+    field: SearchField.body,
     restOfInput: true,
   ),
   OpSpec(
@@ -149,7 +156,7 @@ const operators = <OpSpec>[
     'sender matches a pattern',
     r'fromre:/@example\.org/',
     aliases: ['fr'],
-    field: TextField.from,
+    field: SearchField.from,
     restOfInput: true,
   ),
   OpSpec(
@@ -158,7 +165,7 @@ const operators = <OpSpec>[
     'a recipient matches a pattern',
     'tore:^team-',
     aliases: ['tr'],
-    field: TextField.recipients,
+    field: SearchField.recipients,
     restOfInput: true,
   ),
   OpSpec('header', OpKind.header, 'a header contains', 'header:"List-Id=dev"'),
@@ -180,15 +187,15 @@ final Map<String, OpSpec> operatorsByName = {
 };
 
 /// The canonical operator for a plain text field (`any` has none).
-String? textOperatorFor(TextField field) => switch (field) {
-  TextField.any => null,
-  TextField.from => 'from',
-  TextField.to => 'tonocc',
-  TextField.cc => 'cc',
-  TextField.bcc => 'bcc',
-  TextField.recipients => 'recipients',
-  TextField.participants => 'fromto',
-  TextField.subject => 'subject',
-  TextField.body => 'body',
-  TextField.attachment => 'filename',
+String? textOperatorFor(SearchField field) => switch (field) {
+  SearchField.any => null,
+  SearchField.from => 'from',
+  SearchField.to => 'tonocc',
+  SearchField.cc => 'cc',
+  SearchField.bcc => 'bcc',
+  SearchField.recipients => 'recipients',
+  SearchField.participants => 'fromto',
+  SearchField.subject => 'subject',
+  SearchField.body => 'body',
+  SearchField.attachment => 'filename',
 };

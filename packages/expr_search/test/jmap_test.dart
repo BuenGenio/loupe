@@ -168,14 +168,14 @@ void main() {
       expect(jmapSupports(from('a')), isTrue);
       expect(jmapSupports(hasAttachment), isTrue);
       expect(jmapSupports(attachment('pdf')), isFalse);
-      expect(jmapSupports(re(TextField.any, 'x')), isFalse);
+      expect(jmapSupports(re(SearchField.any, 'x')), isFalse);
       expect(jmapSupports(const AccountTerm('w')), isFalse);
     });
   });
 
   group('semantics against a reference server', () {
     bool inexact(SearchExpr t) =>
-        !jmapSupports(t) || (t is TextTerm && t.field == TextField.any) || t is RegexTerm || t is AccountTerm;
+        !jmapSupports(t) || (t is TextTerm && t.field == SearchField.any) || t is RegexTerm || t is AccountTerm;
 
     test('every literal, negated or not', () {
       final gen = ExprGen(41);

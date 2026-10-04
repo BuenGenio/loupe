@@ -381,7 +381,7 @@ void main() {
       final moved = (await store.getEmail(eid('INBOX', 1)))!;
       expect(moved.id, eid('Archive', 77));
       expect((await store.getContent(eid('INBOX', 1)))!.text, 'pineapple');
-      expect(await store.search(const TextTerm(TextField.body, 'pineap')), [moved]);
+      expect(await store.search(const TextTerm(SearchField.body, 'pineap')), [moved]);
       final conv = await store.watchConversation(eid('INBOX', 1)).first;
       expect(conv.single.id, eid('Archive', 77));
     });
@@ -428,10 +428,10 @@ void main() {
       expect(c.isFlowed, isTrue);
       expect(c.headers.single, ('List-Id', '<news.example.com>'));
       expect(c.attachments.single.filename, 'invoice-42.pdf');
-      expect(await store.search(const TextTerm(TextField.body, 'zebra')), hasLength(1));
-      expect(await store.search(const TextTerm(TextField.attachment, 'invoice')), hasLength(1));
+      expect(await store.search(const TextTerm(SearchField.body, 'zebra')), hasLength(1));
+      expect(await store.search(const TextTerm(SearchField.attachment, 'invoice')), hasLength(1));
       expect(await store.evictContent(DateTime.now().add(const Duration(days: 1))), 1);
-      expect(await store.search(const TextTerm(TextField.body, 'zebra')), isEmpty);
+      expect(await store.search(const TextTerm(SearchField.body, 'zebra')), isEmpty);
       await store.putContent(EmailContent(emailId: 'unknown', text: 'x'));
     });
   });

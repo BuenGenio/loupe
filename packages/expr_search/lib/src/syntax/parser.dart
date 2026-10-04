@@ -252,7 +252,7 @@ final class QueryParser {
   }
 
   SearchExpr? _term(OpSpec? op, _Atom a) {
-    if (op == null) return a.regex ? _regexTerm(TextField.any, a) : TextTerm(TextField.any, a.text);
+    if (op == null) return a.regex ? _regexTerm(SearchField.any, a) : TextTerm(SearchField.any, a.text);
     if (a.regex && !_acceptsRegex(op.kind)) return _fail('A pattern can’t be used with “${op.name}:”', a);
     final v = a.text;
     if (!a.regex && v.trim().isEmpty && !_acceptsEmpty(op.kind)) return _fail('Empty value for “${op.name}:”', a);
@@ -260,29 +260,29 @@ final class QueryParser {
       case OpKind.text:
         return a.regex ? _regexTerm(op.field!, a) : TextTerm(op.field!, v);
       case OpKind.toOrCc:
-        return switch (a.regex ? _regexTerm(TextField.to, a) : TextTerm(TextField.to, v)) {
+        return switch (a.regex ? _regexTerm(SearchField.to, a) : TextTerm(SearchField.to, v)) {
           RegexTerm(:final pattern, :final caseSensitive) && final to => SearchOr([
             to,
-            RegexTerm(TextField.cc, pattern, caseSensitive: caseSensitive),
+            RegexTerm(SearchField.cc, pattern, caseSensitive: caseSensitive),
           ]),
-          final SearchExpr to => SearchOr([to, TextTerm(TextField.cc, v)]),
+          final SearchExpr to => SearchOr([to, TextTerm(SearchField.cc, v)]),
           null => null,
         };
       case OpKind.regex:
         return a.regex ? _regexTerm(op.field!, a) : _pattern(op.field!, v, caseSensitive: false, a);
       case OpKind.simple:
         return SearchAnd([
-          TextTerm(TextField.subject, v),
-          RegexTerm(TextField.subject, RegExp.escape(v), caseSensitive: true),
+          TextTerm(SearchField.subject, v),
+          RegexTerm(SearchField.subject, RegExp.escape(v), caseSensitive: true),
         ]);
       case OpKind.header || OpKind.headerRegex:
         return _header(op.kind, a);
       case OpKind.attachment:
-        if (a.regex) return _regexTerm(TextField.attachment, a);
+        if (a.regex) return _regexTerm(SearchField.attachment, a);
         return switch (v.trim().toLowerCase()) {
           'yes' || 'y' || '1' => const HasAttachmentTerm(),
           'no' || 'n' || '0' => const SearchNot(HasAttachmentTerm()),
-          _ => TextTerm(TextField.attachment, v),
+          _ => TextTerm(SearchField.attachment, v),
         };
       case OpKind.has:
         return switch (v.trim().toLowerCase()) {
@@ -343,7 +343,7 @@ final class QueryParser {
 
   static bool _acceptsEmpty(OpKind k) => k == OpKind.text || k == OpKind.toOrCc || k == OpKind.account;
 
-  SearchExpr? _regexTerm(TextField field, _Atom a) {
+  SearchExpr? _regexTerm(SearchField field, _Atom a) {
     var caseSensitive = true;
     for (final f in a.flags.split('')) {
       if (f == 'i') {
@@ -355,7 +355,7 @@ final class QueryParser {
     return _pattern(field, a.text, caseSensitive: caseSensitive, a);
   }
 
-  SearchExpr? _pattern(TextField field, String pattern, _Atom a, {required bool caseSensitive}) {
+  SearchExpr? _pattern(SearchField field, String pattern, _Atom a, {required bool caseSensitive}) {
     if (pattern.isEmpty) return _fail('Empty pattern', a);
     try {
       RegExp(pattern, caseSensitive: caseSensitive);
@@ -397,8 +397,8 @@ final class QueryParser {
 /// "The given people are the only To recipients": each is in To, and no To
 /// address lacks all of them.
 SearchExpr onlyExpr(List<String> people) => SearchAnd([
-  for (final p in people) TextTerm(TextField.to, p),
-  SearchNot(RegexTerm(TextField.to, onlyPattern(people))),
+  for (final p in people) TextTerm(SearchField.to, p),
+  SearchNot(RegexTerm(SearchField.to, onlyPattern(people))),
 ]);
 
 /// Matches an address that contains none of [people].

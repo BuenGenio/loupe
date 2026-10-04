@@ -73,12 +73,12 @@ final class EmailMatcher {
 
   // ---------------------------------------------------------- text fields
 
-  bool? _text(TextField field, String value) {
+  bool? _text(SearchField field, String value) {
     final needle = _norm(value);
     return _field(field, (hay) => _norm(hay).contains(needle));
   }
 
-  bool? _regex(TextField field, String pattern, bool caseSensitive) {
+  bool? _regex(SearchField field, String pattern, bool caseSensitive) {
     final re = _compile(pattern, caseSensitive);
     if (re == null) return false;
     return _field(field, re.hasMatch);
@@ -87,22 +87,23 @@ final class EmailMatcher {
   /// Applies [test] to the texts of [field]. Each address is one text,
   /// `Name <address>` (or just the address without a name), so a pattern
   /// sees the whole address; `only:` relies on that.
-  bool? _field(TextField field, bool Function(String) test) {
+  bool? _field(SearchField field, bool Function(String) test) {
     bool addresses(Iterable<EmailAddress> list) => list.any((a) {
       final name = a.name?.trim() ?? '';
       return test(name.isEmpty ? a.email : '$name <${a.email}>');
     });
     return switch (field) {
-      TextField.from => addresses(email.from),
-      TextField.to => addresses(email.to),
-      TextField.cc => addresses(email.cc),
-      TextField.bcc => addresses(email.bcc),
-      TextField.recipients => addresses([...email.to, ...email.cc, ...email.bcc]),
-      TextField.participants => addresses([...email.from, ...email.to, ...email.cc, ...email.bcc]),
-      TextField.subject => test(email.subject),
-      TextField.body => _body(test),
-      TextField.attachment => _attachments(test),
-      TextField.any => addresses([...email.from, ...email.to, ...email.cc]) || test(email.subject) ? true : _body(test),
+      SearchField.from => addresses(email.from),
+      SearchField.to => addresses(email.to),
+      SearchField.cc => addresses(email.cc),
+      SearchField.bcc => addresses(email.bcc),
+      SearchField.recipients => addresses([...email.to, ...email.cc, ...email.bcc]),
+      SearchField.participants => addresses([...email.from, ...email.to, ...email.cc, ...email.bcc]),
+      SearchField.subject => test(email.subject),
+      SearchField.body => _body(test),
+      SearchField.attachment => _attachments(test),
+      SearchField.any =>
+        addresses([...email.from, ...email.to, ...email.cc]) || test(email.subject) ? true : _body(test),
     };
   }
 

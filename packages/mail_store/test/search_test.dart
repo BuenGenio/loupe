@@ -23,7 +23,7 @@ void main() {
   group('translateSearch', () {
     test('pushes negation down and widens unsupported terms', () {
       final c = translateSearch(
-        const SearchNot(SearchAnd([KeywordTerm(Keywords.seen), RegexTerm(TextField.subject, 'x+')])),
+        const SearchNot(SearchAnd([KeywordTerm(Keywords.seen), RegexTerm(SearchField.subject, 'x+')])),
       );
       expect(c.sql, '(NOT (e.is_seen = 1) OR 1)');
       expect(c.needsPostFilter, isTrue);
@@ -55,30 +55,30 @@ void main() {
         [for (final e in await store.search(expr, scope: scope, limit: limit)) e.subject];
 
     test('text terms with column filters and prefixes', () async {
-      expect(await run(const TextTerm(TextField.subject, 'invo')), [
+      expect(await run(const TextTerm(SearchField.subject, 'invo')), [
         'Invoice from home',
         'Re: Invoice',
         'Invoice 2026-42',
       ]);
-      expect(await run(const TextTerm(TextField.from, 'bob build')), ['Re: Invoice']);
-      expect(await run(const TextTerm(TextField.from, 'billing@shop.test')), ['Invoice 2026-42']);
-      expect(await run(const TextTerm(TextField.cc, 'carol')), ['Re: Invoice']);
-      expect(await run(const TextTerm(TextField.participants, 'carol')), ['Re: Invoice']);
-      expect(await run(const TextTerm(TextField.body, 'cafe')), ['Lunch on Friday?'], reason: 'diacritics folded');
-      expect(await run(const TextTerm(TextField.any, 'friday')), ['Lunch on Friday?']);
-      expect(await run(const TextTerm(TextField.subject, '2026-42')), ['Invoice 2026-42']);
-      expect(await run(const TextTerm(TextField.subject, 'invoice'), limit: 1), ['Invoice from home']);
+      expect(await run(const TextTerm(SearchField.from, 'bob build')), ['Re: Invoice']);
+      expect(await run(const TextTerm(SearchField.from, 'billing@shop.test')), ['Invoice 2026-42']);
+      expect(await run(const TextTerm(SearchField.cc, 'carol')), ['Re: Invoice']);
+      expect(await run(const TextTerm(SearchField.participants, 'carol')), ['Re: Invoice']);
+      expect(await run(const TextTerm(SearchField.body, 'cafe')), ['Lunch on Friday?'], reason: 'diacritics folded');
+      expect(await run(const TextTerm(SearchField.any, 'friday')), ['Lunch on Friday?']);
+      expect(await run(const TextTerm(SearchField.subject, '2026-42')), ['Invoice 2026-42']);
+      expect(await run(const TextTerm(SearchField.subject, 'invoice'), limit: 1), ['Invoice from home']);
     });
 
     test('boolean structure', () async {
       expect(
         await run(
-          const SearchAnd([TextTerm(TextField.subject, 'invoice'), SearchNot(TextTerm(TextField.from, 'bob'))]),
+          const SearchAnd([TextTerm(SearchField.subject, 'invoice'), SearchNot(TextTerm(SearchField.from, 'bob'))]),
         ),
         ['Invoice from home', 'Invoice 2026-42'],
       );
       expect(
-        await run(const SearchOr([TextTerm(TextField.subject, 'lunch'), TextTerm(TextField.subject, 'holiday')])),
+        await run(const SearchOr([TextTerm(SearchField.subject, 'lunch'), TextTerm(SearchField.subject, 'holiday')])),
         ['Holiday photos', 'Lunch on Friday?'],
       );
       expect(await run(const SearchOr([])), isEmpty);
@@ -103,9 +103,9 @@ void main() {
     test('scopes', () async {
       final work = MailboxScope(RealMailboxRef(mbox('Work')));
       expect(await run(const MatchAll(), scope: work), ['Quarterly report']);
-      expect(await run(const TextTerm(TextField.subject, 'invoice'), scope: work), isEmpty);
+      expect(await run(const TextTerm(SearchField.subject, 'invoice'), scope: work), isEmpty);
       const inboxes = MailboxScope(VirtualMailboxRef(VirtualMailbox.allInboxes));
-      expect(await run(const TextTerm(TextField.subject, 'invoice'), scope: inboxes), hasLength(3));
+      expect(await run(const TextTerm(SearchField.subject, 'invoice'), scope: inboxes), hasLength(3));
     });
 
     test('regex and unknown headers are widened in SQL and post-filtered', () async {
@@ -124,7 +124,7 @@ void main() {
         return out;
       }
 
-      const regex = SearchAnd([RegexTerm(TextField.subject, r'^Invoice \d+'), HasAttachmentTerm()]);
+      const regex = SearchAnd([RegexTerm(SearchField.subject, r'^Invoice \d+'), HasAttachmentTerm()]);
       expect(await run(regex), await expected(regex, const HasAttachmentTerm()));
       const header = HeaderTerm('List-Id', 'news');
       expect(await run(header), await expected(header, const MatchAll()));
@@ -150,7 +150,7 @@ void main() {
         '(((',
       ];
       for (final text in evil) {
-        for (final field in TextField.values) {
+        for (final field in SearchField.values) {
           await store.search(TextTerm(field, text));
         }
         await store.search(HeaderTerm('Message-ID', text));
@@ -158,9 +158,9 @@ void main() {
         await store.search(KeywordTerm(text));
       }
       expect(await run(const MatchAll()), hasLength(7));
-      expect(await run(const TextTerm(TextField.subject, '"quotes" * and')), [startsWith('Weird')]);
-      expect(await run(const TextTerm(TextField.subject, 'NEAR(x)')), [startsWith('Weird')]);
-      expect(await run(const TextTerm(TextField.subject, '{subject}: -minus ^caret')), [startsWith('Weird')]);
+      expect(await run(const TextTerm(SearchField.subject, '"quotes" * and')), [startsWith('Weird')]);
+      expect(await run(const TextTerm(SearchField.subject, 'NEAR(x)')), [startsWith('Weird')]);
+      expect(await run(const TextTerm(SearchField.subject, '{subject}: -minus ^caret')), [startsWith('Weird')]);
       expect(await run(const HeaderTerm('Message-ID', '%')), isEmpty);
     });
 
@@ -173,7 +173,7 @@ void main() {
         mail(10, messageId: 'dup@x', subject: 'Twice', minutes: 9),
         mail(10, path: 'All Mail', messageId: 'dup@x', subject: 'Twice', minutes: 9),
       ]);
-      final hits = await store.search(const TextTerm(TextField.subject, 'twice'));
+      final hits = await store.search(const TextTerm(SearchField.subject, 'twice'));
       expect(hits.single.mailboxId, mbox('INBOX'));
     });
   });

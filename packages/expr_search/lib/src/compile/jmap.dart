@@ -8,7 +8,7 @@ typedef Json = Map<String, Object?>;
 /// Whether RFC 8621 `Email/query` can filter on [term]: everything except
 /// patterns, attachment names and accounts.
 bool jmapCanExpress(SearchExpr term) => switch (term) {
-  RegexTerm() || AccountTerm() || TextTerm(field: TextField.attachment) => false,
+  RegexTerm() || AccountTerm() || TextTerm(field: SearchField.attachment) => false,
   _ => true,
 };
 
@@ -38,17 +38,17 @@ Json _literal(SearchExpr t, bool negated) {
         return _op(negated ? 'NOT' : 'OR', conditions);
       }
       return switch (field) {
-        TextField.from ||
-        TextField.to ||
-        TextField.cc ||
-        TextField.bcc ||
-        TextField.subject ||
-        TextField.body => maybeNot({field.name: value}),
-        TextField.recipients => anyOf(const ['to', 'cc', 'bcc']),
-        TextField.participants => anyOf(const ['from', 'to', 'cc', 'bcc']),
+        SearchField.from ||
+        SearchField.to ||
+        SearchField.cc ||
+        SearchField.bcc ||
+        SearchField.subject ||
+        SearchField.body => maybeNot({field.name: value}),
+        SearchField.recipients => anyOf(const ['to', 'cc', 'bcc']),
+        SearchField.participants => anyOf(const ['from', 'to', 'cc', 'bcc']),
         // `text` also covers Bcc and attachments: a superset, fine when positive.
-        TextField.any => negated ? anyOf(const ['from', 'to', 'cc', 'subject', 'body']) : {'text': value},
-        TextField.attachment => const {},
+        SearchField.any => negated ? anyOf(const ['from', 'to', 'cc', 'subject', 'body']) : {'text': value},
+        SearchField.attachment => const {},
       };
     case KeywordTerm(:final keyword):
       return {negated ? 'notKeyword' : 'hasKeyword': Keywords.normalize(keyword)};

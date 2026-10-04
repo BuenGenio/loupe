@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:expr_search/expr_search.dart';
 import 'package:flutter/cupertino.dart';
-// mail_model's TextField (search fields) is meant here, not the widget.
-import 'package:flutter/material.dart' hide TextField;
+// mail_model's SearchField (search fields) is meant here, not the widget.
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
@@ -253,7 +253,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
     final styles = LoupeTextStyles.of(context);
     final parsed = _session.parsed;
     final terms = parsed.isValid ? queryTerms(parsed.expr) : const <SearchExpr>[];
-    final showChips = terms.length > 1 || terms.any((t) => !(t is TextTerm && t.field == TextField.any));
+    final showChips = terms.length > 1 || terms.any((t) => !(t is TextTerm && t.field == SearchField.any));
     final results = _session.results;
     final accounts = {for (final a in ref.watch(accountsProvider).value ?? const <MailAccount>[]) a.id: a};
     final boxes = {for (final m in ref.watch(mailboxesProvider).value ?? const <Mailbox>[]) m.id: m};

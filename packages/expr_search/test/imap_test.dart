@@ -111,7 +111,7 @@ void main() {
     });
 
     test('extra unsupported terms', () {
-      bool noBody(SearchExpr t) => !(t is TextTerm && t.field == TextField.body);
+      bool noBody(SearchExpr t) => !(t is TextTerm && t.field == SearchField.body);
       final r = compileImap(parseQuery('f:a b:x').expr, supported: noBody);
       expect((r.criteria, r.exact), ('FROM "a"', false));
       expect(compileImap(parseQuery('f:a').expr, supported: noBody).exact, isTrue);

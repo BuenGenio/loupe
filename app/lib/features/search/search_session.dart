@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:expr_search/expr_search.dart';
-// mail_model's TextField (search fields) is meant here, not the widget.
-import 'package:flutter/material.dart' hide TextField;
+// mail_model's SearchField (search fields) is meant here, not the widget.
+import 'package:flutter/material.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../shared/tags.dart';
@@ -30,7 +30,7 @@ abstract final class SearchTokens {
   /// the sender's phrase.
   static String from(EmailAddress address) {
     final quoted = 'from:"${address.email}"';
-    final term = TextTerm(TextField.from, address.email);
+    final term = TextTerm(SearchField.from, address.email);
     return parseQuery(quoted).expr == term ? quoted : queryTextFor(term, 'from:${address.email}');
   }
 }

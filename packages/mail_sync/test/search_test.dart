@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 import 'support/fake_server.dart';
 import 'support/harness.dart';
 
-const _subjectInvoice = TextTerm(TextField.subject, 'invoice');
+const _subjectInvoice = TextTerm(SearchField.subject, 'invoice');
 
 SearchRequest request(SearchExpr expr, {bool server = true, SearchScope scope = const AllMailboxesScope()}) =>
     SearchRequest(expr: expr, scope: scope, includeServer: server);

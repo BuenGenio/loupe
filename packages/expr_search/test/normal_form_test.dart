@@ -10,7 +10,7 @@ import 'support/terms.dart';
 final a = from('a');
 final b = subject('b');
 final c = body('c');
-final rx = re(TextField.subject, 'x');
+final rx = re(SearchField.subject, 'x');
 const none = SearchNot(MatchAll());
 
 bool noRegex(SearchExpr t) => t is! RegexTerm;

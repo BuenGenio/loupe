@@ -56,7 +56,7 @@ final class SearchNot extends SearchExpr {
 }
 
 /// Where a text term looks.
-enum TextField {
+enum SearchField {
   /// Headers (from, to, cc, subject) and body.
   any,
   from,
@@ -79,7 +79,7 @@ enum TextField {
 /// Substring match on a field.
 final class TextTerm extends SearchExpr {
   const TextTerm(this.field, this.value);
-  final TextField field;
+  final SearchField field;
   final String value;
   @override
   bool operator ==(Object other) => other is TextTerm && other.field == field && other.value == value;
@@ -93,7 +93,7 @@ final class TextTerm extends SearchExpr {
 /// locally (the server gets a superset).
 final class RegexTerm extends SearchExpr {
   const RegexTerm(this.field, this.pattern, {this.caseSensitive = false});
-  final TextField field;
+  final SearchField field;
   final String pattern;
   final bool caseSensitive;
   @override
