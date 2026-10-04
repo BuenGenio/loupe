@@ -26,6 +26,7 @@ import '../conversation/sheets.dart' show showSnack;
 import '../keyboard/mail_commands.dart';
 import '../palette/command_palette.dart';
 import '../panes/mail_selection.dart';
+import '../panes/message_drag.dart';
 import '../panes/pane_layout.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
@@ -613,32 +614,55 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
           final role = boxes[email.mailboxId]?.role;
           final account = accounts[email.accountId];
           final checked = _selected.contains(row.threadId);
+          final longPress = _editing
+              ? null
+              : () {
+                  unawaited(HapticFeedback.mediumImpact());
+                  unawaited(actions.showMore(row));
+                };
+          final messageRow = MessageRow(
+            key: _rowKeys.putIfAbsent(row.threadId, GlobalKey.new),
+            email: email,
+            messageCount: row.messageCount,
+            unread: row.unreadCount > 0,
+            isVip: email.from.any((f) => vips.contains(f.email.toLowerCase())),
+            accountColor: unified && account != null ? colors.accountColor(account.colorIndex) : null,
+            selected: selection?.shows(row) ?? _cursor == row.threadId,
+            editing: _editing,
+            checked: checked,
+            showRecipients: role == MailboxRole.sent || role == MailboxRole.drafts,
+            onTap: _editing
+                ? () => setState(() => checked ? _selected.remove(row.threadId) : _selected.add(row.threadId))
+                : () => _openRow(row, role: role, actions: actions),
+            // In the panes a long press lifts the row to drop on a mailbox,
+            // and opens More when put back.
+            onLongPress: _inPane ? null : longPress,
+          );
           return SwipeActionRow(
             key: ValueKey(row.threadId),
             enabled: !_editing,
             leading: actions.leadingSwipes(row, settings),
             trailing: actions.trailingSwipes(row, settings),
-            child: MessageRow(
-              key: _rowKeys.putIfAbsent(row.threadId, GlobalKey.new),
-              email: email,
-              messageCount: row.messageCount,
-              unread: row.unreadCount > 0,
-              isVip: email.from.any((f) => vips.contains(f.email.toLowerCase())),
-              accountColor: unified && account != null ? colors.accountColor(account.colorIndex) : null,
-              selected: selection?.shows(row) ?? _cursor == row.threadId,
-              editing: _editing,
-              checked: checked,
-              showRecipients: role == MailboxRole.sent || role == MailboxRole.drafts,
-              onTap: _editing
-                  ? () => setState(() => checked ? _selected.remove(row.threadId) : _selected.add(row.threadId))
-                  : () => _openRow(row, role: role, actions: actions),
-              onLongPress: _editing
-                  ? null
-                  : () {
-                      unawaited(HapticFeedback.mediumImpact());
-                      unawaited(actions.showMore(row));
-                    },
-            ),
+            child: !_inPane
+                ? messageRow
+                : DraggableMessageRow(
+                    // A selected row carries the whole selection.
+                    drag: () => MessageDrag(
+                      rows: _editing && checked
+                          ? [
+                              for (final r in _rows)
+                                if (_selected.contains(r.threadId)) r,
+                            ]
+                          : [row],
+                      scope: widget.mailboxRef,
+                      threaded: settings.threaded,
+                      onMoved: () {
+                        if (mounted && _editing) _toggleEditing();
+                      },
+                    ),
+                    onLongPress: longPress,
+                    child: messageRow,
+                  ),
           );
         },
       ),

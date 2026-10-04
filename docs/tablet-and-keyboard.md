@@ -28,6 +28,16 @@
 - **Snack bars** show once, across the width: the panes sit in one outer Scaffold.
 - **After Archive or Delete** the next conversation of the list opens (the one before at the end), as in Apple Mail
   and Thunderbird.
+- **Mailboxes pane** highlights the list shown beside it.
+
+## Drag and drop
+
+In the panes, a long press on a row lifts it; drop it on a folder in the Mailboxes pane to move it there
+(`MailActions.move`, with Undo). In Edit mode a selected row carries the whole selection, and the card shows the
+count. A row put back where it was lifted opens the More sheet, so the long press still does what it does on a
+phone. While dragging, a closed sidebar (840–1100 dp) or a hidden Mailboxes column comes out and goes away after the
+drop. Folders take messages of their own account only (moves between accounts aren't supported), and not the
+folder they are in. Phones are unchanged: there is nowhere to drop.
 
 ## Keyboard shortcuts
 

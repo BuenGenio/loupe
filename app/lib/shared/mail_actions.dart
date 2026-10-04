@@ -126,6 +126,11 @@ class MailActions {
     });
   }
 
+  /// Moves the conversations of [rows] to [targetMailboxId] (a drop on a
+  /// mailbox). Returns whether it happened.
+  Future<bool> move(Iterable<ThreadSummary> rows, String targetMailboxId) async =>
+      moveEmails(await _membersOf(rows), targetMailboxId);
+
   /// Asks for a target mailbox, then moves.
   Future<void> moveWithPicker(Iterable<ThreadSummary> rows) async {
     final list = rows.toList();

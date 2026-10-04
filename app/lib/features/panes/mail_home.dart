@@ -19,6 +19,7 @@ import '../outbox/outbox_screen.dart';
 import '../search/smart_mailbox_screen.dart';
 import '../snooze/snoozed_screen.dart';
 import 'mail_selection.dart';
+import 'message_drag.dart';
 import 'pane_divider.dart';
 import 'pane_layout.dart';
 
@@ -63,12 +64,32 @@ class _MailHomeState extends ConsumerState<MailHome> with CommandScopeState<Mail
   /// The Mailboxes sidebar of the split layout.
   bool _sidebarOpen = false;
 
+  /// Mailboxes shown only while messages are dragged (a closed sidebar, a
+  /// hidden column), to drop them on.
+  bool _shownForDrag = false;
+
   @override
   void initState() {
     super.initState();
     // A new list closes the sidebar it was picked from.
     ref.listenManual(mailSelectionProvider.select((s) => s.list), (previous, next) {
       if (previous != next && _sidebarOpen && mounted) setState(() => _sidebarOpen = false);
+    });
+    // Dragging messages brings Mailboxes out to drop them on.
+    ref.listenManual(messageDraggingProvider, (_, dragging) {
+      if (!mounted || !(_layout?.wide ?? false)) return;
+      final hidden = _layout == PaneLayout.split ? !_sidebarOpen : ref.read(paneWidthsProvider).mailboxesHidden;
+      if (dragging && hidden) {
+        setState(() {
+          _shownForDrag = true;
+          if (_layout == PaneLayout.split) _sidebarOpen = true;
+        });
+      } else if (!dragging && _shownForDrag) {
+        setState(() {
+          _shownForDrag = false;
+          if (_layout == PaneLayout.split) _sidebarOpen = false;
+        });
+      }
     });
     registerCommands(ref.read(mailCommandsProvider));
   }
@@ -223,7 +244,7 @@ class _MailHomeState extends ConsumerState<MailHome> with CommandScopeState<Mail
               child: ConversationScreen(key: ValueKey(messageId), emailId: messageId, onClose: _conversationClosed),
             ),
     );
-    final mailboxesShown = layout == PaneLayout.threePane ? !widths.mailboxesHidden : _sidebarOpen;
+    final mailboxesShown = layout == PaneLayout.threePane ? !widths.mailboxesHidden || _shownForDrag : _sidebarOpen;
     final sidebarButton = BarIconButton(
       key: const Key('sidebar-toggle'),
       icon: LoupeIcons.sidebar,
