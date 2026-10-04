@@ -13,3 +13,4 @@ library;
 
 export 'src/config.dart';
 export 'src/live_repository.dart';
+export 'src/smart_mailboxes.dart';
