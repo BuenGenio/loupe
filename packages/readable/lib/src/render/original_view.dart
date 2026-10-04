@@ -74,6 +74,9 @@ class OriginalWebView extends StatefulWidget {
 class _OriginalWebViewState extends State<OriginalWebView> {
   late final WebViewController _controller;
   double _height = 120;
+
+  /// The height the view was last laid out with (what the page sees).
+  double? _laidOutHeight;
   double? _width;
   int _measureGeneration = 0;
   final _timers = <Timer>[];
@@ -153,8 +156,12 @@ class _OriginalWebViewState extends State<OriginalWebView> {
       final next = measured.clamp(1.0, _maxHeight);
       if ((next - _height).abs() < 1) return;
       setState(() => _height = next);
-      // Let the new height lay out before checking again.
-      await Future<void>.delayed(const Duration(milliseconds: 60));
+      // Measure again only once the view really has the new height: the
+      // scroll probe is relative to it.
+      await WidgetsBinding.instance.endOfFrame;
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+      if (!mounted || generation != _measureGeneration) return;
+      if (_laidOutHeight != _height) await WidgetsBinding.instance.endOfFrame;
     }
   }
 
@@ -179,7 +186,7 @@ class _OriginalWebViewState extends State<OriginalWebView> {
       await _controller.scrollTo(0, 0);
       // Android reports physical pixels.
       final extra = android ? pos.dy / dpr : pos.dy;
-      return _height + extra;
+      return (_laidOutHeight ?? _height) + extra;
     } catch (_) {
       return null;
     }
@@ -196,6 +203,7 @@ class _OriginalWebViewState extends State<OriginalWebView> {
           _width = constraints.maxWidth;
           if (!first) _scheduleMeasure();
         }
+        _laidOutHeight = _height;
         return ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: SizedBox(

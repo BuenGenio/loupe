@@ -274,13 +274,19 @@ class _ReaderViewState extends State<ReaderView> {
       context,
       OriginalViewRequest(html: _page, onOpenLink: widget.onOpenLink, textScale: scale),
     );
-    if (_remoteAllowed || original.remoteImages == 0) return view;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [_banner(), const SizedBox(height: 16), view],
-    );
+    return _withBanner(show: !_remoteAllowed && original.remoteImages > 0, body: view);
   }
+
+  /// The body under an optional banner. The body is keyed so that dismissing
+  /// the banner keeps its state (and doesn't recreate a WebView).
+  Widget _withBanner({required bool show, required Widget body}) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      if (show) ...[_banner(), const SizedBox(height: 16)],
+      KeyedSubtree(key: const ValueKey('readable-body'), child: body),
+    ],
+  );
 
   Widget _banner() => RemoteContentBanner(
     senderDomain: _senderDomain,
@@ -431,12 +437,7 @@ class _ReaderViewState extends State<ReaderView> {
     final doc = out.document;
     final showBanner = !plain && !_remoteAllowed && doc.stats.remoteImages > 0;
     final body = _document(context, doc, plain: plain, mono: plain && widget.settings.plainFont == PlainTextFont.mono);
-    if (!showBanner) return body;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [_banner(), const SizedBox(height: 16), body],
-    );
+    return _withBanner(show: showBanner, body: body);
   }
 
   Widget _document(BuildContext context, ReaderDocument doc, {required bool plain, required bool mono}) {

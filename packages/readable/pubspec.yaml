@@ -16,3 +16,4 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  webview_flutter_platform_interface: ^2.15.1
