@@ -313,6 +313,8 @@ void main() {
         await h.add(server);
         expect((await h.repo.suggestAddresses('zo')).single.name, 'Zoe Q');
         expect((await h.repo.suggestAddresses('q')).single.email, 'zoe@example.org');
+        expect(await h.repo.senderHistory('Zoe@example.org'), const SenderHistory(received: 1));
+        expect(await h.repo.senderHistory('nobody@example.org'), SenderHistory.none);
         await h.dispose();
       });
     });

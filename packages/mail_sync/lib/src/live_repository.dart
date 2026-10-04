@@ -909,6 +909,9 @@ final class LiveMailRepository implements MailRepository {
 
   @override
   Future<void> setVip(String email, {required bool vip}) => store.setVip(email, vip: vip);
+
+  @override
+  Future<SenderHistory> senderHistory(String email) => store.senderHistory(email);
 }
 
 final class _SearchTarget {

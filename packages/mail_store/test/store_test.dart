@@ -227,6 +227,21 @@ void main() {
       expect(await store.suggestAddresses('spam'), isEmpty);
       expect(await store.suggestAddresses('%'), isEmpty);
     });
+
+    test('knows how often an address wrote and was written to', () async {
+      final store = await seededStore();
+      await addMails(store, [
+        mail(1, from: 'alice@example.com'),
+        mail(2, from: 'Alice@Example.com'),
+        mail(3, path: 'Sent', from: 'me@example.com', to: ['alice@example.com', 'bob@example.org']),
+        mail(4, path: 'Junk', from: 'spam@spam.test'),
+      ]);
+      expect(await store.senderHistory('ALICE@example.com'), const SenderHistory(received: 2, sent: 1));
+      expect(await store.senderHistory('bob@example.org'), const SenderHistory(sent: 1));
+      expect(await store.senderHistory('spam@spam.test'), SenderHistory.none);
+      expect(await store.senderHistory('nobody@example.net'), SenderHistory.none);
+      expect((await store.senderHistory('alice@example.com')).isKnown, isTrue);
+    });
   });
 
   group('threading', () {

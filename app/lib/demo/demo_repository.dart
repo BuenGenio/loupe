@@ -1146,6 +1146,26 @@ class DemoMailRepository implements MailRepository {
     vip ? _vips.add(key) : _vips.remove(key);
     _notify();
   }
+
+  /// Like the store's address book: senders outside Junk, Trash and Drafts,
+  /// and recipients of the user's own messages.
+  @override
+  Future<SenderHistory> senderHistory(String email) async {
+    final e = email.trim().toLowerCase();
+    var received = 0;
+    var sent = 0;
+    for (final m in _messages.values) {
+      final s = m.summary;
+      final box = _mailboxes[s.mailboxId];
+      if (box == null || _isBin(box) || box.role == MailboxRole.drafts) continue;
+      if (_isFromMe(s)) {
+        if ([...s.to, ...s.cc, ...s.bcc].any((a) => a.email.toLowerCase() == e)) sent++;
+      } else if (s.from.any((a) => a.email.toLowerCase() == e)) {
+        received++;
+      }
+    }
+    return SenderHistory(received: received, sent: sent);
+  }
 }
 
 /// One MIME part: its header lines (without the final blank line) and body.

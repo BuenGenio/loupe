@@ -1171,6 +1171,30 @@ SELECT
     }
   }
 
+  /// How often [email] wrote to the user (outside Junk and Trash) and the
+  /// user to it. The address book remembers mail that was deleted since,
+  /// but counts a sender once per sync batch, so the messages in the store
+  /// are counted too and the larger number wins.
+  Future<SenderHistory> senderHistory(String email) async {
+    final e = email.trim().toLowerCase();
+    if (e.isEmpty) return SenderHistory.none;
+    final book = await _select(
+      'SELECT seen_count, sent_count FROM address_book WHERE email = ?',
+      [e],
+      {_db.addressBook},
+    ).getSingleOrNull();
+    final stored = await _select(
+      'SELECT count(DISTINCT coalesce(e.message_id_header, e.id)) AS n FROM emails e '
+      'JOIN mailboxes m ON m.id = e.mailbox_id '
+      "WHERE e.from_email = ? AND m.role NOT IN ('junk', 'trash', 'sent', 'drafts')",
+      [e],
+      {_db.emails, _db.mailboxes},
+    ).getSingle();
+    final seen = book?.read<int>('seen_count') ?? 0;
+    final n = stored.read<int>('n');
+    return SenderHistory(received: seen > n ? seen : n, sent: book?.read<int>('sent_count') ?? 0);
+  }
+
   /// Addresses whose email or name (or a word of the name) starts with
   /// [prefix], most used first.
   Future<List<EmailAddress>> suggestAddresses(String prefix, {int limit = 8}) async {

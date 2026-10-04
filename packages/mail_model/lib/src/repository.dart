@@ -19,6 +19,36 @@ final class AccountSyncStatus {
   final String? error;
 }
 
+/// What the local address book knows about one address: how often it wrote
+/// to the user and the user to it. Feeds the phishing check ("first message
+/// from this sender", look-alikes of known contacts).
+final class SenderHistory {
+  const SenderHistory({this.received = 0, this.sent = 0});
+
+  /// Nothing known about the address.
+  static const none = SenderHistory();
+
+  /// Messages received from the address outside Junk and Trash, including
+  /// the one being read once it is synced.
+  final int received;
+
+  /// Messages the user sent to the address.
+  final int sent;
+
+  /// The user wrote to the address, or has had mail from it before the
+  /// message being read.
+  bool get isKnown => sent > 0 || received > 1;
+
+  @override
+  bool operator ==(Object other) => other is SenderHistory && other.received == received && other.sent == sent;
+
+  @override
+  int get hashCode => Object.hash(received, sent);
+
+  @override
+  String toString() => 'SenderHistory(received: $received, sent: $sent)';
+}
+
 /// The app-facing API. The UI depends only on this.
 ///
 /// Implementations: the demo repository (app, fake data) and the live
@@ -121,6 +151,11 @@ abstract interface class MailRepository {
 
   Stream<Set<String>> watchVipAddresses();
   Future<void> setVip(String email, {required bool vip});
+
+  /// How often [email] wrote to the user and the user to it, from the local
+  /// address book (case-insensitive). Unknown addresses give
+  /// [SenderHistory.none].
+  Future<SenderHistory> senderHistory(String email);
 }
 
 /// Errors surfaced to the UI. [message] is shown as is.

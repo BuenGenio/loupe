@@ -22,6 +22,9 @@ class FakeMailRepository implements MailRepository {
   final Map<String, EmailContent> contents;
   final vips = <String>{};
 
+  /// Address-book histories by lower-cased address; others are unknown.
+  final senderHistories = <String, SenderHistory>{};
+
   /// Every call, as "method args" strings, in order.
   final log = <String>[];
   final keywordCalls = <({List<String> ids, Set<String> add, Set<String> remove})>[];
@@ -274,6 +277,9 @@ class FakeMailRepository implements MailRepository {
     vip ? vips.add(email.toLowerCase()) : vips.remove(email.toLowerCase());
     _changed();
   }
+
+  @override
+  Future<SenderHistory> senderHistory(String email) async => senderHistories[email.toLowerCase()] ?? SenderHistory.none;
 }
 
 const testAccount = MailAccount(
