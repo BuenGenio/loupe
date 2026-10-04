@@ -62,11 +62,20 @@ jobs:
           LOUPE_KEYSTORE_PASSWORD: ${{ secrets.LOUPE_KEYSTORE_PASSWORD }}
           LOUPE_KEY_ALIAS: ${{ secrets.LOUPE_KEY_ALIAS }}
           LOUPE_KEY_PASSWORD: ${{ secrets.LOUPE_KEY_PASSWORD }}
+          # OAuth client ids (docs/oauth-setup.md). Empty (no secret, or a pull
+          # request from a fork) leaves "Sign in with Google/Microsoft" hidden.
+          # Passed through the environment, not spliced into the script.
+          LOUPE_GOOGLE_CLIENT_ID: ${{ secrets.LOUPE_GOOGLE_CLIENT_ID }}
+          LOUPE_MICROSOFT_CLIENT_ID: ${{ secrets.LOUPE_MICROSOFT_CLIENT_ID }}
         run: |
+          echo "Sign in with Google: $([ -n "$LOUPE_GOOGLE_CLIENT_ID" ] && echo on || echo off)"
+          echo "Sign in with Microsoft: $([ -n "$LOUPE_MICROSOFT_CLIENT_ID" ] && echo on || echo off)"
           flutter build apk --release --split-per-abi \
             --target-platform android-arm64,android-x64 \
             --build-number=${{ github.run_number }} \
-            --build-name=0.1.${{ github.run_number }}
+            --build-name=0.1.${{ github.run_number }} \
+            --dart-define=LOUPE_GOOGLE_CLIENT_ID="$LOUPE_GOOGLE_CLIENT_ID" \
+            --dart-define=LOUPE_MICROSOFT_CLIENT_ID="$LOUPE_MICROSOFT_CLIENT_ID"
           mkdir -p ../dist
           cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk ../dist/loupe-0.1.${{ github.run_number }}-arm64.apk
           cp build/app/outputs/flutter-apk/app-x86_64-release.apk ../dist/loupe-0.1.${{ github.run_number }}-x86_64.apk
