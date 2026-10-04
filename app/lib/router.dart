@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mail_model/mail_model.dart';
+
+import 'features/account_setup/account_setup_screen.dart';
+import 'features/compose/compose_args.dart';
+import 'features/compose/compose_screen.dart';
+import 'features/conversation/conversation_screen.dart';
+import 'features/conversation/raw_source_screen.dart';
+import 'features/mailboxes/mailboxes_screen.dart';
+import 'features/message_list/message_list_screen.dart';
+import 'features/onboarding/welcome_screen.dart';
+import 'features/settings/settings_screen.dart';
+import 'shared/mailbox_ref_codec.dart';
+
+/// Paths of every screen. Navigate with `context.push(Routes.message(id))`.
+abstract final class Routes {
+  static const mailboxes = '/';
+  static const welcome = '/welcome';
+  static const settings = '/settings';
+  static const addAccount = '/add-account';
+  static const compose = '/compose';
+
+  static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
+  static String message(String emailId) => '/message/${Uri.encodeComponent(emailId)}';
+  static String source(String emailId) => '/source/${Uri.encodeComponent(emailId)}';
+}
+
+final routerProvider = Provider<GoRouter>((ref) {
+  return GoRouter(
+    initialLocation: Routes.mailboxes,
+    routes: [
+      GoRoute(path: Routes.mailboxes, builder: (context, state) => const MailboxesScreen()),
+      GoRoute(path: Routes.welcome, builder: (context, state) => const WelcomeScreen()),
+      GoRoute(
+        path: '/list/:ref',
+        builder: (context, state) =>
+            MessageListScreen(mailboxRef: MailboxRefCodec.decode(state.pathParameters['ref']!)),
+      ),
+      GoRoute(
+        path: '/message/:id',
+        builder: (context, state) => ConversationScreen(emailId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/source/:id',
+        builder: (context, state) => RawSourceScreen(emailId: state.pathParameters['id']!),
+      ),
+      GoRoute(path: Routes.settings, builder: (context, state) => const SettingsScreen()),
+      GoRoute(path: Routes.addAccount, builder: (context, state) => const AccountSetupScreen()),
+      GoRoute(
+        path: Routes.compose,
+        pageBuilder: (context, state) => MaterialPage(
+          fullscreenDialog: true,
+          child: ComposeScreen(args: state.extra is ComposeArgs ? state.extra! as ComposeArgs : const ComposeArgs()),
+        ),
+      ),
+    ],
+  );
+});
