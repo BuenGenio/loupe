@@ -77,4 +77,17 @@ void main() {
     expect(find.text('All Mailboxes'), findsNothing);
     expect(find.byIcon(CupertinoIcons.square_pencil), findsOneWidget);
   });
+
+  testWidgets('typing an operator offers completions from the search language', (tester) async {
+    await pumpLoupe(tester);
+    await goTo(tester, Routes.search(''));
+    await tester.enterText(find.byType(CupertinoSearchTextField), 'is:unr');
+    await tester.pump();
+    await tester.tap(find.text('is:unreplied'));
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pumpAndSettle();
+    final field = tester.widget<CupertinoSearchTextField>(find.byType(CupertinoSearchTextField));
+    expect(field.controller!.text, 'is:unreplied ');
+    expect(find.text('Unreplied'), findsOneWidget);
+  });
 }

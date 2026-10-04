@@ -45,6 +45,11 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
 
   SearchSession get _session => widget.session;
 
+  int get _cursor {
+    final selection = _session.controller.selection;
+    return selection.isValid ? selection.baseOffset.clamp(0, _session.query.length) : _session.query.length;
+  }
+
   Future<List<EmailAddress>> _peopleFor(String prefix) {
     if (prefix != _peopleQuery || _people == null) {
       _peopleQuery = prefix;
@@ -257,6 +262,10 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
     final actions = MailActions(context, ref, scope: null, threaded: false);
     final lastWord = _session.query.split(RegExp(r'\s+')).lastWhere((w) => w.isNotEmpty, orElse: () => '');
     final suggestPeople = widget.showSuggestions && lastWord.length >= 2 && !lastWord.contains(':');
+    final word = _session.currentWord;
+    final completions = widget.showSuggestions && word.isNotEmpty
+        ? suggest(_session.query, _cursor).where((c) => c.insertText != word).take(4).toList()
+        : const <QuerySuggestion>[];
     final stale = results != null && _session.resultsQuery != _session.query;
 
     return [
@@ -281,6 +290,18 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
               ],
             ),
           ),
+        ),
+      if (completions.isNotEmpty)
+        SliverList.list(
+          children: [
+            for (final c in completions)
+              _SuggestionRow(
+                icon: CupertinoIcons.text_cursor,
+                label: c.insertText,
+                detail: c.detail,
+                onTap: () => _session.completeWord(c.insertText),
+              ),
+          ],
         ),
       if (suggestPeople)
         SliverToBoxAdapter(

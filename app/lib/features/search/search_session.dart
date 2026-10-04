@@ -26,8 +26,13 @@ abstract final class SearchTokens {
     return queryTextFor(KeywordTerm(keyword), label.contains(' ') ? 'tag:"$label"' : 'tag:${label.toLowerCase()}');
   }
 
-  static String from(EmailAddress address) =>
-      queryTextFor(TextTerm(TextField.from, address.email), 'from:${address.email}');
+  /// Quoted, so words typed after it start a new term instead of joining
+  /// the sender's phrase.
+  static String from(EmailAddress address) {
+    final quoted = 'from:"${address.email}"';
+    final term = TextTerm(TextField.from, address.email);
+    return parseQuery(quoted).expr == term ? quoted : queryTextFor(term, 'from:${address.email}');
+  }
 }
 
 /// The top-level AND terms of a query, shown as chips.
@@ -163,6 +168,29 @@ class SearchSession extends ChangeNotifier {
   void addToken(String token) {
     final current = query.trimRight();
     setQuery(current.isEmpty ? '$token ' : '$current $token ');
+  }
+
+  /// The word being typed at the cursor; empty after a space.
+  String get currentWord {
+    final end = controller.selection.isValid ? controller.selection.baseOffset.clamp(0, query.length) : query.length;
+    final before = query.substring(0, end);
+    final start = before.lastIndexOf(RegExp(r'\s')) + 1;
+    return before.substring(start);
+  }
+
+  /// Completes the word at the cursor with [text] (from `suggest`). Operators
+  /// ("from:") keep the cursor right after them for the value.
+  void completeWord(String text) {
+    final word = currentWord;
+    final end = controller.selection.isValid ? controller.selection.baseOffset.clamp(0, query.length) : query.length;
+    final start = end - word.length;
+    final insert = text.endsWith(':') ? text : '$text ';
+    final next = query.replaceRange(start, end, insert);
+    controller.value = TextEditingValue(
+      text: next,
+      selection: TextSelection.collapsed(offset: start + insert.length),
+    );
+    onChanged(next);
   }
 
   void setScope(SearchScope next) {
