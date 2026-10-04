@@ -17,6 +17,7 @@ import '../../shared/mailbox_display.dart';
 import '../../shared/sync_status.dart';
 import '../../shared/tags.dart';
 import '../../theme/theme.dart';
+import '../account_setup/sign_in_again.dart' show SignInBanner;
 import '../compose/compose_args.dart';
 import '../compose/compose_recovery.dart';
 import '../compose/send_later.dart';
@@ -166,6 +167,7 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
             else ...[
               CupertinoSliverRefreshControl(onRefresh: () => ref.read(repositoryProvider).refresh()),
               const SliverToBoxAdapter(child: SizedBox(height: 4)),
+              const SliverToBoxAdapter(child: SignInBanner()),
               SliverToBoxAdapter(
                 child: _VirtualSection(editing: _editing, onOpen: _open),
               ),
