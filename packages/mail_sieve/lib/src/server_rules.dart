@@ -289,6 +289,14 @@ final class ServerRules {
         final before = await s.getScript(active);
         final edit = planInclude(before);
         if (edit == null) return null;
+        if (!s.capabilities.extensions.contains('include')) {
+          throw MailException(
+            MailErrorKind.unsupported,
+            'The server can’t run one script from another (it has no Sieve include extension), so Loupe’s '
+            'rules only run if “$loupeScriptName” is made the active script, which would turn off “$active”. '
+            'Keep these rules on this device instead.',
+          );
+        }
         return SieveIncludeProposal(
           accountId: accountId,
           scriptName: active,
