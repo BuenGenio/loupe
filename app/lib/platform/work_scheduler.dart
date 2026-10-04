@@ -81,7 +81,6 @@ final class WorkmanagerWorkScheduler implements WorkScheduler {
     frequency: frequency,
     constraints: _constraints,
     existingWorkPolicy: ExistingPeriodicWorkPolicy.keep,
-    backoffPolicy: BackoffPolicy.exponential,
     tag: _tag,
   );
 
@@ -92,7 +91,6 @@ final class WorkmanagerWorkScheduler implements WorkScheduler {
     initialDelay: delay,
     constraints: _constraints,
     existingWorkPolicy: ExistingWorkPolicy.keep,
-    backoffPolicy: BackoffPolicy.exponential,
     tag: _tag,
   );
 
