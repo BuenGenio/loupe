@@ -6,7 +6,14 @@ resolution: workspace
 environment:
   sdk: ^3.13.0
 dependencies:
-  mail_model: {path: ../mail_model}
+  crypto: ^3.0.6
+  # MPL-2.0. Pinned exactly: lib/src/imap/protocol.dart uses its src/ types.
+  enough_mail: 2.1.7
+  enough_convert: ^1.7.1
   expr_search: {path: ../expr_search}
+  http: ^1.6.0
+  mail_model: {path: ../mail_model}
+  # enough_mail 2.1.7 requires xml < 7.
+  xml: ^6.5.0
 dev_dependencies:
   test: any
