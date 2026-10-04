@@ -22,6 +22,8 @@ final class FakeMessage {
     this.gmailThreadId,
     this.size = 1000,
     this.listId,
+    this.listUnsubscribe,
+    this.listUnsubscribePost,
   }) : keywords = {...keywords};
 
   int uid;
@@ -40,6 +42,8 @@ final class FakeMessage {
 
   /// The List-Id identifier (List-Post is `<mailto:` + the first label + `@` the rest).
   final String? listId;
+  final String? listUnsubscribe;
+  final String? listUnsubscribePost;
   int modseq = 0;
 
   FakeMessage copy(int newUid) => FakeMessage(
@@ -57,6 +61,8 @@ final class FakeMessage {
     gmailThreadId: gmailThreadId,
     size: size,
     listId: listId,
+    listUnsubscribe: listUnsubscribe,
+    listUnsubscribePost: listUnsubscribePost,
   );
 }
 
@@ -182,6 +188,8 @@ final class FakeServer {
     String text = '',
     DateTime? at,
     String? listId,
+    String? listUnsubscribe,
+    String? listUnsubscribePost,
   }) {
     final mb = box(path);
     final m = FakeMessage(
@@ -199,6 +207,8 @@ final class FakeServer {
           ? 'thr-${references.isNotEmpty ? references.first : (inReplyTo ?? messageId ?? _clock)}'
           : null,
       listId: listId,
+      listUnsubscribe: listUnsubscribe,
+      listUnsubscribePost: listUnsubscribePost,
     );
     _add(mb, m);
     if (gmail && path != allMailPath && mailboxes.containsKey(allMailPath)) {
@@ -382,6 +392,8 @@ final class FakeTransport implements MailTransport {
     keywords: {...m.keywords},
     listId: listHeaders ? m.listId : null,
     listPost: listHeaders && m.listId != null ? '<mailto:${m.listId!.replaceFirst('.', '@')}>' : null,
+    listUnsubscribe: listHeaders ? m.listUnsubscribe : null,
+    listUnsubscribePost: listHeaders ? m.listUnsubscribePost : null,
   );
 
   (FakeMailbox, FakeMessage)? _find(String emailId) {

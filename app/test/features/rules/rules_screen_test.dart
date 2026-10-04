@@ -202,4 +202,30 @@ void main() {
     expect(field.controller!.text, 'lisbon');
     expect(find.byType(CupertinoSlidingSegmentedControl<RuleLocation>), findsOneWidget);
   });
+
+  testWidgets('a new rule can start with a name and actions (Subscriptions › Create Rule)', (tester) async {
+    final repo = await pumpLoupe(tester);
+    final archive = MailIds.mailbox(DemoAccounts.work, 'Archive');
+    final location = Routes.newRule(
+      condition: 'from:builds@ci.northwind.example',
+      name: 'CI builds',
+      actions: [MoveToMailboxAction(archive), const MarkReadAction()],
+    );
+    expect(Routes.ruleActionsFrom(Uri.parse(location).queryParameters['actions']), [
+      MoveToMailboxAction(archive),
+      const MarkReadAction(),
+    ]);
+    expect(Routes.ruleActionsFrom('not json'), isEmpty);
+    expect(Routes.ruleActionsFrom('{"type": "flag"}'), isEmpty);
+    await goTo(tester, location);
+    expect(find.text('CI builds'), findsOneWidget);
+    expect(find.text('Move to Archive'), findsOneWidget);
+    expect(find.text('Mark as Read'), findsOneWidget);
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+    final saved = (await _rules(repo)).last;
+    expect(saved.name, 'CI builds');
+    expect(saved.condition, 'from:builds@ci.northwind.example');
+    expect(saved.actions, [MoveToMailboxAction(archive), const MarkReadAction()]);
+  });
 }

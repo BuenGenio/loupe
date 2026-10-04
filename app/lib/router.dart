@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -27,6 +29,8 @@ import 'features/settings/notification_settings_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/settings/swipe_settings_screen.dart';
 import 'features/snooze/snoozed_screen.dart';
+import 'features/subscriptions/subscription_screen.dart';
+import 'features/subscriptions/subscriptions_screen.dart';
 import 'settings/app_mode.dart';
 import 'shared/mailbox_ref_codec.dart';
 
@@ -51,12 +55,40 @@ abstract final class Routes {
   static const rules = '/settings/rules';
   static String editRule(String id) => '$rules/edit/${Uri.encodeComponent(id)}';
 
-  /// A new rule, with [condition] filled in ("Make This a Rule").
-  static String newRule({String condition = ''}) =>
-      Uri(path: '$rules/new', queryParameters: condition.isEmpty ? null : {'q': condition}).toString();
+  /// A new rule, with [condition], [name] and [actions] filled in ("Make
+  /// This a Rule", Subscriptions › Create Rule).
+  static String newRule({String condition = '', String name = '', List<RuleAction> actions = const []}) {
+    final query = {
+      if (condition.isNotEmpty) 'q': condition,
+      if (name.isNotEmpty) 'name': name,
+      if (actions.isNotEmpty) 'actions': jsonEncode([for (final a in actions) a.toJson()]),
+    };
+    return Uri(path: '$rules/new', queryParameters: query.isEmpty ? null : query).toString();
+  }
+
+  /// The actions [newRule] put in a location's query.
+  static List<RuleAction> ruleActionsFrom(String? encoded) {
+    if (encoded == null) return const [];
+    final Object? decoded;
+    try {
+      decoded = jsonDecode(encoded);
+    } on FormatException {
+      return const [];
+    }
+    return [
+      if (decoded is List)
+        for (final a in decoded)
+          if (a is Map) ?RuleAction.fromJson(a.cast()),
+    ];
+  }
 
   /// Snoozed messages of every account, with their wake times.
   static const snoozed = '/snoozed';
+
+  /// Mailboxes › Subscriptions (the unsubscribe centre), and one of them by
+  /// `Subscription.key`.
+  static const subscriptions = '/subscriptions';
+  static String subscription(String key) => '$subscriptions/${Uri.encodeComponent(key)}';
 
   static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
 
@@ -109,6 +141,16 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.outbox, builder: (context, state) => const OutboxScreen()),
       GoRoute(path: Routes.snoozed, builder: (context, state) => const SnoozedScreen()),
       GoRoute(
+        path: Routes.subscriptions,
+        builder: (context, state) => const SubscriptionsScreen(),
+        routes: [
+          GoRoute(
+            path: ':key',
+            builder: (context, state) => SubscriptionScreen(subscriptionKey: state.pathParameters['key']!),
+          ),
+        ],
+      ),
+      GoRoute(
         path: '/list/:ref',
         builder: (context, state) =>
             MessageListScreen(mailboxRef: MailboxRefCodec.decode(state.pathParameters['ref']!)),
@@ -159,7 +201,11 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: 'new',
                 pageBuilder: (context, state) => MaterialPage(
                   fullscreenDialog: true,
-                  child: RuleEditorScreen(initialCondition: state.uri.queryParameters['q'] ?? ''),
+                  child: RuleEditorScreen(
+                    initialCondition: state.uri.queryParameters['q'] ?? '',
+                    initialName: state.uri.queryParameters['name'] ?? '',
+                    initialActions: Routes.ruleActionsFrom(state.uri.queryParameters['actions']),
+                  ),
                 ),
               ),
               GoRoute(

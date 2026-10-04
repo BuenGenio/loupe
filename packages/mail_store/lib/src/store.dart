@@ -1146,6 +1146,139 @@ ORDER BY r.last_at DESC, r.account_id, r.thread_id, r.rn_new''';
     return out;
   }
 
+  // Subscriptions -----------------------------------------------------------
+
+  /// SQL true for bulk mail of `emails e`; see `subscriptionKeyOf`. LIKE is
+  /// case-insensitive for ASCII, as domains are.
+  static final String _bulkSql = [
+    "(e.list_id IS NOT NULL AND e.list_id <> '')",
+    'e.list_unsubscribe IS NOT NULL',
+    for (final d in bulkMessageIdDomains) ...["e.message_id_header LIKE '%@$d'", "e.message_id_header LIKE '%.$d'"],
+  ].join(' OR ');
+
+  /// The subscription key of `emails e`; see `Subscription.key`.
+  static const _subscriptionKeySql =
+      "CASE WHEN e.list_id IS NOT NULL AND e.list_id <> '' THEN 'list:' || e.list_id ELSE 'from:' || e.from_email END";
+
+  /// Messages counted for subscriptions (see `summarizeSubscriptions`):
+  /// `emails e` joined with `mailboxes m`, after a `me` CTE.
+  static const _subscriptionScopeSql =
+      "m.role NOT IN ('junk', 'sent', 'drafts') AND e.from_email <> '' AND e.from_email NOT IN (SELECT addr FROM me)";
+
+  /// "Newest value" of a column within a group: the maximum of the receipt
+  /// time (zero-padded) and the value, so `max()` picks the newest row's.
+  static String _newest(String value) => "printf('%015d', received_at) || char(31) || $value";
+
+  static String? _newestValue(String? packed) {
+    if (packed == null) return null;
+    final at = packed.indexOf('\u001f');
+    return at < 0 ? null : packed.substring(at + 1);
+  }
+
+  /// Bulk mail grouped into subscriptions, ranked by
+  /// `Subscription.compareByNeglect`; see `MailSubscriptions`. Counts read
+  /// and recent mail relative to [now].
+  Stream<List<Subscription>> watchSubscriptions({DateTime? now}) {
+    final sql =
+        '''
+WITH me(addr) AS ($_meSql),
+copies AS (
+  SELECT e.account_id, coalesce(e.message_id_header, e.id) AS mid, e.mailbox_id, m.role, e.received_at, e.is_seen,
+    e.from_email, e.list_name, e.list_unsubscribe, e.list_unsubscribe_post,
+    trim(coalesce(json_extract(e.from_json, '\$[0].n'), '')) AS from_name,
+    $_subscriptionKeySql AS gkey,
+    (e.list_id IS NOT NULL OR e.list_unsubscribe IS NOT NULL) AS has_headers
+  FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id
+  WHERE $_subscriptionScopeSql AND ($_bulkSql)
+),
+messages AS (
+  SELECT min(gkey) AS gkey, max(received_at) AS received_at, max(is_seen) AS seen, max(role = 'inbox') AS inbox
+  FROM copies GROUP BY account_id, mid
+),
+stats AS (
+  SELECT gkey, count(*) AS total, sum(seen) AS seen, sum(received_at >= ?1) AS recent,
+    sum(CASE WHEN received_at >= ?1 THEN seen ELSE 0 END) AS recent_seen, sum(inbox) AS inbox,
+    max(received_at) AS last_at
+  FROM messages GROUP BY gkey
+),
+details AS (
+  SELECT gkey, group_concat(DISTINCT mailbox_id) AS boxes, group_concat(DISTINCT account_id) AS accounts,
+    count(DISTINCT from_email) AS senders, max(has_headers) AS has_headers,
+    max(${_newest('from_email')}) AS sender,
+    max(CASE WHEN trim(coalesce(list_name, '')) <> '' THEN ${_newest('trim(list_name)')} END) AS list_name,
+    max(CASE WHEN from_name <> '' THEN ${_newest('from_name')} END) AS from_name,
+    max(CASE WHEN list_unsubscribe IS NOT NULL THEN ${_newest("list_unsubscribe || char(31) || coalesce(list_unsubscribe_post, '')")} END) AS unsubscribe
+  FROM copies GROUP BY gkey
+)
+SELECT s.*, d.boxes, d.accounts, d.senders, d.sender, d.list_name, d.from_name, d.unsubscribe
+FROM stats s JOIN details d ON d.gkey = s.gkey
+WHERE d.has_headers = 1 OR s.total >= 2''';
+    final cutoff = (now ?? DateTime.now()).subtract(Subscription.window).millisecondsSinceEpoch;
+    return _select(sql, [cutoff], {_db.emails, _db.mailboxes, _db.accounts})
+        .watch()
+        .distinct(_rowsEqual)
+        .map((rows) => [for (final r in rows) _subscriptionFromRow(r)]..sort(Subscription.compareByNeglect));
+  }
+
+  static Subscription _subscriptionFromRow(QueryRow r) {
+    final key = r.read<String>('gkey');
+    final address = _newestValue(r.read<String?>('sender')) ?? '';
+    final isList = key.startsWith('list:');
+    final name =
+        (isList ? _newestValue(r.read<String?>('list_name')) : null) ?? _newestValue(r.read<String?>('from_name'));
+    final unsubscribe = _newestValue(r.read<String?>('unsubscribe'))?.split('\u001f');
+    List<String> split(String column) =>
+        (r.read<String?>(column) ?? '').split(',').where((s) => s.isNotEmpty).toList()..sort();
+    return Subscription(
+      key: key,
+      name: name ?? (isList ? key.substring(5) : address),
+      address: address,
+      messageCount: r.read<int>('total'),
+      readCount: r.read<int>('seen'),
+      recentCount: r.read<int>('recent'),
+      recentReadCount: r.read<int>('recent_seen'),
+      inboxCount: r.read<int>('inbox'),
+      senderCount: r.read<int>('senders'),
+      lastReceived: fromMillis(r.read<int>('last_at')),
+      mailboxIds: split('boxes'),
+      accountIds: split('accounts'),
+      listUnsubscribe: unsubscribe?.first,
+      listUnsubscribePost: switch (unsubscribe) {
+        [_, final post] when post.isNotEmpty => post,
+        _ => null,
+      },
+    );
+  }
+
+  /// The messages of subscription [key], newest first; see
+  /// `MailSubscriptions.watchSubscriptionEmails`.
+  Stream<List<EmailSummary>> watchSubscriptionEmails(String key, {bool inboxOnly = false, int limit = 200}) {
+    final args = <Object?>[];
+    final String match;
+    if (key.startsWith('list:')) {
+      match = 'e.list_id = ?';
+      args.add(key.substring(5));
+    } else if (key.startsWith('from:')) {
+      match = "(e.list_id IS NULL OR e.list_id = '') AND e.from_email = ? AND ($_bulkSql)";
+      args.add(key.substring(5));
+    } else {
+      return Stream.value(const []);
+    }
+    args.add(limit);
+    final sql =
+        '''
+WITH me(addr) AS ($_meSql)
+SELECT e.* FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id
+WHERE $match AND $_subscriptionScopeSql${inboxOnly ? " AND m.role = 'inbox'" : ''}
+ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
+    return _select(sql, args, {
+      _db.emails,
+      _db.mailboxes,
+      _db.accounts,
+      _db.emailKeywords,
+    }).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) summaryFromRow(_emailRow(r))]);
+  }
+
   // Search ------------------------------------------------------------------
 
   /// Searches stored messages, newest first, one row per message (copies in
