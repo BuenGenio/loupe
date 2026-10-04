@@ -638,12 +638,17 @@ final class AccountSyncer {
   }) => _searchQueue.run(() async {
     const cancelled = MailException(MailErrorKind.cancelled, 'Search cancelled');
     if (isCancelled() || _disposed) throw cancelled;
+    final label = '${_account.displayName} ${_account.email}';
+    // Account terms resolve per account; a query that can't match here never
+    // reaches this server.
+    final bound = bindAccountTerms(expr, label);
+    if (matchesNothing(bound)) return (hits: const <EmailSummary>[], fromServer: const <String>{});
     _runningSearch = token;
     _searchCreated = true;
     try {
       final ids = await _withConnection(
         _search,
-        (t) => t.search(expr, mailbox: mailbox, limit: limit),
+        (t) => t.search(bound, mailbox: mailbox, limit: limit),
       ).timeout(_config.searchTimeout);
       if (isCancelled()) throw cancelled;
       final known = await _store.getEmails(ids);
@@ -659,7 +664,6 @@ final class AccountSyncer {
         // Stored so the results can be opened like any other message.
         await _store.insertEmails(fetched);
       }
-      final label = '${_account.displayName} ${_account.email}';
       return (
         hits: [
           for (final e in [...known, ...fetched])
