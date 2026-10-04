@@ -15,10 +15,13 @@ class ComposeArgs {
     this.cc = const [],
     this.bcc = const [],
     this.message,
+    this.sendAt,
+    this.outboxId,
   });
 
-  /// Reopens [message] as it was (after "Undo" of a send).
-  const ComposeArgs.restore(OutgoingMessage this.message)
+  /// Reopens [message] as it was (after "Undo" of a send, from the Outbox,
+  /// or a recovered draft), with its Send Later time.
+  const ComposeArgs.restore(OutgoingMessage this.message, {this.sendAt, this.outboxId})
     : mode = ComposeMode.newMessage,
       sourceEmailId = null,
       accountId = null,
@@ -43,6 +46,13 @@ class ComposeArgs {
 
   /// A complete message to edit again; overrides everything else.
   final OutgoingMessage? message;
+
+  /// The Send Later time to start with.
+  final DateTime? sendAt;
+
+  /// Editing this waiting message of the Outbox: sending replaces it there,
+  /// and nothing is autosaved to Drafts.
+  final String? outboxId;
 
   /// Arguments for a `mailto:` link.
   static ComposeArgs fromMailto(Uri uri, {String? accountId}) {

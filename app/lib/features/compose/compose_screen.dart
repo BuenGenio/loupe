@@ -18,11 +18,16 @@ import '../conversation/sheets.dart';
 import 'compose_args.dart';
 import 'compose_text.dart';
 import 'recipient_field.dart';
+import 'send_later.dart';
 import '../../theme/loupe_icons.dart';
 
 /// Writes a new message, reply, forward or draft. Apple-Mail-clean: Cancel,
 /// the subject as title and Send; To, a collapsed "Cc/Bcc, From" row,
 /// Subject and a plain-text body.
+///
+/// Send Later: the clock beside Send (or a long-press on Send) picks a time;
+/// Send then shows it and schedules the message. Opened from the Outbox
+/// ([ComposeArgs.outboxId]), sending replaces the waiting message.
 class ComposeScreen extends ConsumerStatefulWidget {
   const ComposeScreen({super.key, this.args = const ComposeArgs()});
 
@@ -32,7 +37,7 @@ class ComposeScreen extends ConsumerStatefulWidget {
   ConsumerState<ComposeScreen> createState() => _ComposeScreenState();
 }
 
-enum _CloseChoice { delete, save }
+enum _CloseChoice { delete, save, discardChanges }
 
 class _ComposeScreenState extends ConsumerState<ComposeScreen> {
   final _to = RecipientController();
@@ -58,6 +63,12 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
   String? _draftId;
   String? _inReplyTo;
   List<String> _references = const [];
+
+  /// When to send ("Send Later"); null sends now (after the undo delay).
+  DateTime? _sendAt;
+
+  /// The Outbox message being edited, if any.
+  String? _outboxId;
 
   /// The state when the screen opened; closing an unchanged message asks nothing.
   String? _initial;
@@ -96,6 +107,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     _body.text,
     _attachments.length,
     _identity?.id,
+    _sendAt?.millisecondsSinceEpoch,
   ].join('\u0000');
 
   bool get _dirty => _initial == null || _snapshot() != _initial;
@@ -111,8 +123,12 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     }
     if (!mounted) return;
     String? warning;
+    _sendAt = args.sendAt;
+    _outboxId = args.outboxId;
     if (args.message case final m?) {
       _restore(m);
+      // From the Outbox, closing without changes asks nothing.
+      if (_outboxId != null) _initial = _snapshot();
     } else {
       switch (args.mode) {
         case ComposeMode.newMessage:
@@ -342,6 +358,12 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
 
   // Sending and closing -----------------------------------------------------------
 
+  Future<void> _pickSendLater() async {
+    final choice = await showSendLaterSheet(context, now: DateTime.now(), current: _sendAt);
+    if (choice == null || !mounted) return;
+    setState(() => _sendAt = choice.at);
+  }
+
   Future<void> _send() async {
     final invalid = [..._to.invalid, ..._cc.invalid, ..._bcc.invalid];
     if (invalid.isNotEmpty) {
@@ -356,19 +378,45 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     if (message == null || !mounted) return;
     final repo = _repo;
     final undoSeconds = ref.read(appSettingsProvider).undoSendSeconds;
+    // A time that has passed meanwhile sends now, with the usual undo delay.
+    final now = DateTime.now();
+    final at = _sendAt != null && _sendAt!.isAfter(now) ? _sendAt : null;
+    final when = at == null ? null : formatSendTimeFor(context, at, now: now);
     // Captured before popping: the snack bar and Undo outlive this screen.
     final messenger = ScaffoldMessenger.of(context);
     final router = GoRouter.maybeOf(context);
     setState(() => _busy = true);
     try {
-      final outboxId = await repo.send(message, undoDelay: Duration(seconds: undoSeconds));
+      if (_outboxId case final id?) {
+        if (await repo.cancelSend(id) == null) {
+          // It went out while being edited: keep the edits.
+          await repo.saveDraft(message);
+          _closeNow();
+          showSnack(messenger, 'It was sent before your changes, which are saved in Drafts.');
+          return;
+        }
+      }
+      final outboxId = await repo.send(
+        message,
+        undoDelay: Duration(seconds: undoSeconds),
+        sendAt: at,
+      );
+      if (at != null) wakeUpAt(ref, at);
       _closeNow();
+      final undo = at != null || undoSeconds > 0;
       showSnack(
         messenger,
-        undoSeconds > 0 ? 'Sending…' : 'Sent',
-        duration: Duration(seconds: undoSeconds > 0 ? undoSeconds : 3),
-        action: undoSeconds > 0
-            ? SnackBarAction(label: 'Undo', onPressed: () => _undoSend(repo, outboxId, messenger, router))
+        at != null
+            ? 'Scheduled for $when'
+            : undoSeconds > 0
+            ? 'Sending…'
+            : 'Sent',
+        duration: Duration(seconds: at == null && undoSeconds > 0 ? undoSeconds : 4),
+        action: undo
+            ? SnackBarAction(
+                label: 'Undo',
+                onPressed: () => _undoSend(repo, outboxId, messenger, router, sendAt: at),
+              )
             : null,
       );
     } on MailException catch (e) {
@@ -377,19 +425,20 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     }
   }
 
-  /// Cancels a queued send and reopens it. Runs after this screen is gone.
+  /// Cancels a queued or scheduled send and reopens it. Runs after this screen is gone.
   static Future<void> _undoSend(
     MailRepository repo,
     String outboxId,
     ScaffoldMessengerState messenger,
-    GoRouter? router,
-  ) async {
+    GoRouter? router, {
+    DateTime? sendAt,
+  }) async {
     try {
       final message = await repo.cancelSend(outboxId);
       if (message == null) {
         showSnack(messenger, 'Already sent.');
       } else {
-        await router?.push<void>(Routes.compose, extra: ComposeArgs.restore(message));
+        await router?.push<void>(Routes.compose, extra: ComposeArgs.restore(message, sendAt: sendAt));
       }
     } on MailException catch (e) {
       showSnack(messenger, e.message);
@@ -399,6 +448,17 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
   Future<void> _cancel() async {
     if (_busy) return;
     if (!_dirty || _preparing) return _closeNow();
+    if (_outboxId != null) {
+      final choice = await showActionSheet<_CloseChoice>(
+        context,
+        actions: const [
+          SheetAction('Discard Changes', _CloseChoice.discardChanges, destructive: true),
+          SheetAction('Save Changes', _CloseChoice.save),
+        ],
+      );
+      if (choice == null || !mounted) return;
+      return choice == _CloseChoice.save ? _send() : _closeNow();
+    }
     final choice = await showActionSheet<_CloseChoice>(
       context,
       actions: const [
@@ -411,6 +471,8 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     setState(() => _busy = true);
     try {
       switch (choice) {
+        case _CloseChoice.discardChanges:
+          _closeNow();
         case _CloseChoice.delete:
           if (_draftId case final id?) await _repo.deleteDraft(id);
           _closeNow();
@@ -493,20 +555,15 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
               icon: const Icon(LoupeIcons.attachment),
               onPressed: _preparing || _busy ? null : _attach,
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: IconButton.filled(
-                key: const Key('compose-send'),
-                tooltip: 'Send',
-                icon: _busy
-                    ? const SizedBox.square(
-                        dimension: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                      )
-                    : const Icon(LoupeIcons.send),
-                onPressed: _canSend ? _send : null,
-              ),
+            IconButton(
+              key: const Key('compose-send-later'),
+              tooltip: 'Send Later',
+              isSelected: _sendAt != null,
+              icon: const Icon(LoupeIcons.sendLater),
+              selectedIcon: Icon(LoupeIcons.sendLaterFilled, color: theme.colorScheme.primary),
+              onPressed: _preparing || _busy || _identity == null ? null : _pickSendLater,
             ),
+            Padding(padding: const EdgeInsets.only(right: 8), child: _sendButton(context)),
           ],
           bottom: _preparing
               ? const PreferredSize(preferredSize: Size.fromHeight(2), child: LinearProgressIndicator(minHeight: 2))
@@ -630,6 +687,43 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  /// Send, or with a Send Later time a pill showing it. A long-press picks the time.
+  Widget _sendButton(BuildContext context) {
+    final at = _sendAt;
+    final onPressed = _canSend ? _send : null;
+    final spinner = SizedBox.square(
+      dimension: 18,
+      child: CircularProgressIndicator(strokeWidth: 2, color: Theme.of(context).colorScheme.onPrimary),
+    );
+    final when = at == null ? null : formatSendTimeFor(context, at, now: DateTime.now(), compact: true);
+    return Semantics(
+      button: true,
+      label: when == null ? 'Send' : 'Send $when',
+      hint: 'Long-press to send later',
+      excludeSemantics: true,
+      child: GestureDetector(
+        onLongPress: onPressed == null ? null : _pickSendLater,
+        child: when == null
+            ? IconButton.filled(
+                key: const Key('compose-send'),
+                icon: _busy ? spinner : const Icon(LoupeIcons.send),
+                onPressed: onPressed,
+              )
+            : FilledButton.icon(
+                key: const Key('compose-send'),
+                onPressed: onPressed,
+                icon: _busy ? spinner : const Icon(LoupeIcons.send, size: 18),
+                label: Text(when, maxLines: 1),
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  visualDensity: VisualDensity.compact,
+                  textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+              ),
       ),
     );
   }
