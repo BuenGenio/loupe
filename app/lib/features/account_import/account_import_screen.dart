@@ -575,11 +575,9 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
             leading: leading,
             title: c.email,
             subtitle: '${c.name} · ${c.incoming.host}',
-            detail: switch (row.status) {
-              ImportStatus.added => 'Added',
-              _ when !c.canImport => 'Not Supported',
-              _ => null,
-            },
+            detail: row.status == ImportStatus.added ? 'Added' : null,
+            // Accounts that can't be added are greyed out; their note says why.
+            enabled: c.canImport,
             chevron: false,
             onTap: row.canToggle && !busy ? () => _import.toggle(row) : null,
           ),

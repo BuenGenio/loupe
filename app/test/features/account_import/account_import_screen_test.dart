@@ -411,7 +411,6 @@ void main() {
       200,
       scrollable: find.byType(Scrollable).first,
     );
-    expect(find.text('Not Supported'), findsNWidgets(2));
     // Only Gmail can be selected.
     expect(find.text('Add 1 Account'), findsOneWidget);
     await tapKey(tester, 'import-toggle-1');
