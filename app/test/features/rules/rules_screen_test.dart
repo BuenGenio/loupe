@@ -15,6 +15,9 @@ void main() {
   testWidgets('Settings › Rules lists the rules with their place, and switches turn them off', (tester) async {
     final repo = await pumpLoupe(tester);
     await goTo(tester, Routes.settings);
+    await tester.scrollTo(find.text('Rules'));
+    await tester.ensureVisible(find.text('Rules'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Rules'));
     await tester.pumpAndSettle();
 

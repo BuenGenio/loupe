@@ -66,17 +66,62 @@ abstract final class ComposeText {
     return s.isEmpty ? '' : '-- \n$s';
   }
 
-  /// Swaps the [from] signature block in [body] for [to] (identity change).
-  /// Appends [to] if [from] isn't found.
+  static const _forwardMarker = '---------- Forwarded message ----------';
+  static final _delimiter = RegExp(r'^-- ?$', multiLine: true);
+
+  /// Where the quoted or forwarded original starts in [body]: the
+  /// attribution line ("…wrote:") before the first "> " line, or the
+  /// forwarded-message line. The length of [body] if there is none.
+  static int quoteStart(String body) {
+    var offset = 0;
+    var previous = -1;
+    var previousLine = '';
+    for (final line in body.split('\n')) {
+      if (line.startsWith('>')) return previous >= 0 && previousLine.trimRight().endsWith(':') ? previous : offset;
+      if (line.trim() == _forwardMarker) return offset;
+      previous = offset;
+      previousLine = line;
+      offset += line.length + 1;
+    }
+    return body.length;
+  }
+
+  /// The signature in [body], before the quoted original: [block] where it
+  /// still stands as inserted, else from the last "-- " line to the end of
+  /// the user's text (an edited signature). Null if there is none.
+  static (int, int)? signatureRange(String body, {String? block}) {
+    final head = body.substring(0, quoteStart(body));
+    if (block != null && block.isNotEmpty) {
+      // As inserted: a whole block, not the start of an edited one.
+      for (var i = head.lastIndexOf(block); i >= 0; i = i == 0 ? -1 : head.lastIndexOf(block, i - 1)) {
+        final end = i + block.length;
+        if (end == head.length || head[end] == '\n') return (i, end);
+      }
+    }
+    final delimiter = _delimiter.allMatches(head).lastOrNull;
+    if (delimiter == null) return null;
+    final end = head.trimRight().length;
+    return (delimiter.start, end < delimiter.end ? delimiter.end : end);
+  }
+
+  /// Swaps the signature in [body] for [to]'s (an identity change) and keeps
+  /// the user's text around it: the [from] signature, or one the user edited
+  /// after the "-- " line. Without one, [to]'s goes after the user's text,
+  /// before the quoted original.
   static String replaceSignature(String body, String? from, String? to) {
-    final oldBlock = signatureBlock(from);
     final newBlock = signatureBlock(to);
-    if (oldBlock.isNotEmpty) {
-      final i = body.indexOf(oldBlock);
-      if (i >= 0) return body.replaceRange(i, i + oldBlock.length, newBlock);
+    final quote = quoteStart(body);
+    final head = body.substring(0, quote);
+    final rest = body.substring(quote);
+    final range = signatureRange(body, block: signatureBlock(from));
+    if (range case (final start, final end)) {
+      if (newBlock.isNotEmpty) return body.replaceRange(start, end, newBlock);
+      // Without a signature, the blank lines before it go too.
+      return '${head.substring(0, start).trimRight()}${head.substring(end)}$rest';
     }
     if (newBlock.isEmpty) return body;
-    return '${body.trimRight()}\n\n$newBlock';
+    final mine = head.trimRight();
+    return '${mine.isEmpty ? '\n\n' : '$mine\n\n'}$newBlock${rest.isEmpty ? '' : '\n\n$rest'}';
   }
 
   /// Plain text of a message: the text part, or text generated from the HTML.
@@ -156,22 +201,26 @@ abstract final class ComposeText {
     ];
   }
 
-  /// Recipients of a reply to [source]. [own] are the user's addresses
-  /// (lower-cased); they never receive a Reply All, and replying to one's own
-  /// message goes to its original recipients.
+  /// Recipients of a reply to [source]. [isOwn] tells the user's addresses
+  /// (identities, aliases, plus-addresses); they never receive a Reply All,
+  /// and replying to one's own message goes to its original recipients.
   static ({List<EmailAddress> to, List<EmailAddress> cc}) replyRecipients(
     EmailSummary source, {
     required bool all,
-    required Set<String> own,
+    required bool Function(String email) isOwn,
   }) {
-    final fromMe = source.from.isNotEmpty && own.contains(source.from.first.email.toLowerCase());
+    List<EmailAddress> others(Iterable<EmailAddress> list, {Set<String> exclude = const {}}) => [
+      for (final a in dedupe(list, exclude: exclude))
+        if (!isOwn(a.email)) a,
+    ];
+    final fromMe = source.from.isNotEmpty && isOwn(source.from.first.email);
     final primary = fromMe ? source.to : (source.replyTo.isNotEmpty ? source.replyTo : source.from);
     if (!all) {
-      final to = dedupe(primary, exclude: fromMe ? own : const {});
+      final to = fromMe ? others(primary) : dedupe(primary);
       return (to: to.isEmpty ? dedupe(primary) : to, cc: const []);
     }
-    final to = dedupe([...primary, if (!fromMe) ...source.to], exclude: own);
-    final cc = dedupe(source.cc, exclude: {...own, ...to.map((a) => a.email)});
+    final to = others([...primary, if (!fromMe) ...source.to]);
+    final cc = others(source.cc, exclude: {...to.map((a) => a.email)});
     return (to: to.isEmpty && cc.isEmpty ? dedupe(primary) : to, cc: cc);
   }
 

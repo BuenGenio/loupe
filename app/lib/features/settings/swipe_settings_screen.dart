@@ -18,6 +18,7 @@ class SwipeSettingsScreen extends ConsumerWidget {
     SwipeAction.archive,
     SwipeAction.trash,
     SwipeAction.move,
+    SwipeAction.snooze,
     SwipeAction.more,
   ];
 

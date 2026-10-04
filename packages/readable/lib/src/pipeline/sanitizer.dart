@@ -90,6 +90,12 @@ final class SanitizeResult {
   int hiddenElements = 0;
   int hiddenTextLength = 0;
   int trackers = 0;
+
+  /// Hosts of the removed tracking pixels.
+  final trackerHosts = <String>{};
+
+  /// Password fields of (removed) forms.
+  int passwordFields = 0;
   bool truncated = false;
 }
 
@@ -151,6 +157,7 @@ final class _Sanitizer {
         return [node];
       case 'input':
         final type = (node.attributes['type'] ?? 'text').toLowerCase();
+        if (type == 'password') result.passwordFields++;
         final value = node.attributes['value']?.trim() ?? '';
         return (type == 'submit' || type == 'button' || type == 'reset') && value.isNotEmpty ? [Text(value)] : const [];
       case 'textarea':
@@ -229,19 +236,27 @@ final class _Sanitizer {
     if (src.isEmpty) return true;
     final w = imageDimension(img, 'width', style);
     final h = imageDimension(img, 'height', style);
+    final uri = Uri.tryParse(src);
     if ((w != null && w <= 2) || (h != null && h <= 2)) {
-      if (src.startsWith('http')) result.trackers++;
+      if (src.startsWith('http')) _tracker(uri);
       return true;
     }
-    final uri = Uri.tryParse(src);
     if (uri != null && (uri.scheme == 'http' || uri.scheme == 'https')) {
       if (isTrackerHost(uri.host) || _trackerPath.hasMatch(uri.path)) {
-        result.trackers++;
+        _tracker(uri);
         return true;
       }
       if (_spacerName.hasMatch(uri.path) && (img.attributes['alt'] ?? '').trim().isEmpty) return true;
     }
     return false;
+  }
+}
+
+extension on _Sanitizer {
+  void _tracker(Uri? uri) {
+    result.trackers++;
+    final host = uri?.host.toLowerCase() ?? '';
+    if (host.isNotEmpty) result.trackerHosts.add(host);
   }
 }
 

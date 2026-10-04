@@ -5,6 +5,7 @@ import 'email.dart';
 import 'mailbox.dart';
 import 'outgoing.dart';
 import 'search.dart';
+import 'server_documents.dart';
 
 /// A mailbox as the server lists it.
 final class RemoteMailbox {
@@ -44,6 +45,7 @@ final class MailboxSyncResult {
     this.totalCount,
     this.unreadCount,
     this.hasOlder = false,
+    this.canStoreKeywords,
   });
 
   final MailboxSyncState state;
@@ -65,6 +67,11 @@ final class MailboxSyncResult {
 
   /// More, older messages exist on the server.
   final bool hasOlder;
+
+  /// Whether the mailbox keeps new keywords permanently (IMAP: PERMANENTFLAGS
+  /// lists `\*`). Null when the server didn't say, which means yes (RFC 9051).
+  /// Snooze needs it for its wake-time keyword.
+  final bool? canStoreKeywords;
 }
 
 final class TransportCapabilities {
@@ -119,6 +126,11 @@ abstract interface class MailTransport {
   /// when the server no longer has the mailbox.
   Future<void> setSubscribed(RemoteMailbox mailbox, bool subscribed);
 
+  /// Creates the mailbox [path] (IMAP CREATE) and subscribes to it. Succeeds
+  /// when it exists already (another client may have been faster). Used for
+  /// the Snoozed folder.
+  Future<void> createMailbox(String path);
+
   /// Brings a mailbox up to date. With [previous] null, fetches the newest
   /// [initialWindow] messages. Uses CONDSTORE/QRESYNC when available.
   Future<MailboxSyncResult> syncMailbox(RemoteMailbox mailbox, MailboxSyncState? previous, {int initialWindow = 200});
@@ -153,6 +165,18 @@ abstract interface class MailTransport {
   /// Emits whenever the server reports a change in [mailbox] (IMAP IDLE).
   /// The stream ends when the connection drops.
   Stream<void> watch(RemoteMailbox mailbox);
+
+  /// Every stored copy of Loupe's document [name] on this server (empty when
+  /// there is none): the METADATA entry [ServerDocuments.metadataEntry] where
+  /// the server supports it, and messages in the [ServerDocuments.folderName]
+  /// folder.
+  Future<List<ServerDocument>> readDocuments(String name);
+
+  /// Stores [content] as document [name], as METADATA when the server
+  /// accepts it and otherwise as a message in the documents folder (created
+  /// when missing), then removes the copies in [replaces]. Returns where it
+  /// went.
+  Future<ServerStorage> writeDocument(String name, String content, {List<ServerDocument> replaces = const []});
 }
 
 /// Sends a ready-made message (SMTP).

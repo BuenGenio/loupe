@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import 'features/account_import/account_import_screen.dart';
 import 'features/account_setup/account_setup_screen.dart';
 import 'features/attachments/attachment_viewer_screen.dart';
 import 'features/compose/compose_args.dart';
@@ -19,10 +20,12 @@ import 'features/search/search_screen.dart';
 import 'features/search/smart_mailbox_screen.dart';
 import 'features/settings/account_settings_screen.dart';
 import 'features/settings/advanced_settings_screen.dart';
+import 'features/settings/identities_screen.dart';
 import 'features/settings/manage_folders_screen.dart';
 import 'features/settings/notification_settings_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/settings/swipe_settings_screen.dart';
+import 'features/snooze/snoozed_screen.dart';
 import 'settings/app_mode.dart';
 import 'shared/mailbox_ref_codec.dart';
 
@@ -32,6 +35,9 @@ abstract final class Routes {
   static const welcome = '/welcome';
   static const settings = '/settings';
   static const addAccount = '/add-account';
+
+  /// Accounts from Thunderbird desktop's "Export for Mobile" QR codes.
+  static const importAccounts = '/import-accounts';
   static const compose = '/compose';
   static const swipeSettings = '/settings/swipes';
   static const advancedSettings = '/settings/advanced';
@@ -47,6 +53,9 @@ abstract final class Routes {
   /// A new rule, with [condition] filled in ("Make This a Rule").
   static String newRule({String condition = ''}) =>
       Uri(path: '$rules/new', queryParameters: condition.isEmpty ? null : {'q': condition}).toString();
+
+  /// Snoozed messages of every account, with their wake times.
+  static const snoozed = '/snoozed';
 
   static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
   static String message(String emailId) => '/message/${Uri.encodeComponent(emailId)}';
@@ -69,6 +78,9 @@ abstract final class Routes {
 
   /// Every server folder of an account, with subscribe switches.
   static String manageFolders(String accountId) => '${accountSettings(accountId)}/folders';
+
+  /// The addresses an account sends from.
+  static String identities(String accountId) => '${accountSettings(accountId)}/identities';
 }
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -82,7 +94,8 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final location = state.matchedLocation;
       if (mode.value == AppMode.none) {
-        return location == Routes.welcome || location == Routes.addAccount ? null : Routes.welcome;
+        const open = {Routes.welcome, Routes.addAccount, Routes.importAccounts};
+        return open.contains(location) ? null : Routes.welcome;
       }
       return location == Routes.welcome ? Routes.mailboxes : null;
     },
@@ -90,6 +103,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.mailboxes, builder: (context, state) => const MailboxesScreen()),
       GoRoute(path: Routes.welcome, builder: (context, state) => const WelcomeScreen()),
       GoRoute(path: Routes.outbox, builder: (context, state) => const OutboxScreen()),
+      GoRoute(path: Routes.snoozed, builder: (context, state) => const SnoozedScreen()),
       GoRoute(
         path: '/list/:ref',
         builder: (context, state) =>
@@ -155,11 +169,16 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: 'folders',
                 builder: (context, state) => ManageFoldersScreen(accountId: state.pathParameters['id']!),
               ),
+              GoRoute(
+                path: 'identities',
+                builder: (context, state) => IdentitiesScreen(accountId: state.pathParameters['id']!),
+              ),
             ],
           ),
         ],
       ),
       GoRoute(path: Routes.addAccount, builder: (context, state) => const AccountSetupScreen()),
+      GoRoute(path: Routes.importAccounts, builder: (context, state) => const AccountImportScreen()),
       GoRoute(
         path: Routes.compose,
         pageBuilder: (context, state) => MaterialPage(

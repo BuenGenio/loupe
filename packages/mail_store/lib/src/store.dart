@@ -14,6 +14,10 @@ import 'schema.dart';
 import 'search_sql.dart';
 import 'threading.dart';
 
+/// How long a connection waits for another one's write lock before failing
+/// with SQLITE_BUSY, in milliseconds.
+const _busyTimeoutMs = 10000;
+
 /// Inline parts larger than this are not cached.
 const maxInlinePartBytes = 512 * 1024;
 
@@ -24,6 +28,11 @@ const maxInlineBytesPerMessage = 4 * 1024 * 1024;
 /// (virtual mailboxes): Gmail's All Mail/Starred/Important duplicate other
 /// mailboxes, and Trash/Junk are not wanted there.
 const _virtualExcludedRoles = "'trash', 'junk', 'all', 'flagged', 'important'";
+
+/// SQL true for `mailboxes m` that are their account's snooze folder (see
+/// `Snooze.isFolderPath`). Snoozed messages stay out of Unread, Flagged and
+/// VIP until they wake.
+const _snoozeFolderSql = "(m.is_selectable = 1 AND lower(m.path) IN ('snoozed', 'inbox.snoozed', 'inbox/snoozed'))";
 
 /// SQL listing the user's own addresses (account and identity addresses).
 const _meSql =
@@ -61,6 +70,9 @@ final class MailStore {
       // Fails with SQLITE_NOTADB if the key is wrong.
       db.select('SELECT count(*) FROM sqlite_master');
       db.execute('PRAGMA journal_mode = WAL');
+      // Background work (sync, notification actions) opens its own
+      // connection; a writer waits for another one instead of failing.
+      db.execute('PRAGMA busy_timeout = $_busyTimeoutMs');
       _configure(db);
     }
 
@@ -701,11 +713,13 @@ final class MailStore {
       case VirtualMailboxRef(:final kind):
         return switch (kind) {
           VirtualMailbox.allInboxes => "m.role = 'inbox'",
-          VirtualMailbox.unread => "e.is_seen = 0 AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')",
-          VirtualMailbox.flagged => 'e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles)',
+          VirtualMailbox.unread =>
+            "e.is_seen = 0 AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $_snoozeFolderSql",
+          VirtualMailbox.flagged =>
+            'e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles) AND NOT $_snoozeFolderSql',
           VirtualMailbox.vip =>
             'e.from_email IN (SELECT email FROM vip_addresses) '
-                "AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')",
+                "AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $_snoozeFolderSql",
           VirtualMailbox.allDrafts => "m.role = 'drafts'",
           VirtualMailbox.allSent => "m.role = 'sent'",
         };
@@ -844,7 +858,7 @@ SELECT * FROM members WHERE copy_rank = 1 ORDER BY received_at ASC, seq ASC''';
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts() {
     const distinctKey = "count(DISTINCT e.account_id || '|' || coalesce(e.message_id_header, e.id))";
     const from = 'FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id';
-    const unreadRoles = "m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')";
+    const unreadRoles = "m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $_snoozeFolderSql";
     const sql =
         '''
 SELECT
@@ -854,9 +868,10 @@ SELECT
     LEFT JOIN (SELECT mailbox_id, count(*) AS n FROM emails WHERE is_seen = 0 GROUP BY mailbox_id) l
       ON l.mailbox_id = m.id
     WHERE $unreadRoles) AS unread,
-  (SELECT $distinctKey $from WHERE e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles)) AS flagged,
+  (SELECT $distinctKey $from WHERE e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles)
+    AND NOT $_snoozeFolderSql) AS flagged,
   (SELECT $distinctKey $from WHERE e.is_seen = 0 AND e.from_email IN (SELECT email FROM vip_addresses)
-    AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')) AS vip,
+    AND $unreadRoles) AS vip,
   (SELECT coalesce(sum(total_count), 0) FROM mailboxes WHERE role = 'drafts') AS drafts''';
     return _select(sql, [], {_db.emails, _db.mailboxes, _db.vipAddresses}).watch().distinct(_rowsEqual).map((rows) {
       final r = rows.single;
@@ -870,6 +885,14 @@ SELECT
       };
     });
   }
+
+  /// Messages in every account's snooze folder (see `Snooze`), in no
+  /// particular order.
+  Stream<List<EmailSummary>> watchSnoozed() => _select(
+    'SELECT e.* FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id WHERE $_snoozeFolderSql',
+    [],
+    {_db.emails, _db.mailboxes, _db.emailKeywords},
+  ).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) summaryFromRow(_emailRow(r))]);
 
   // Search ------------------------------------------------------------------
 
@@ -1250,6 +1273,30 @@ SELECT
     } else if (role != MailboxRole.drafts) {
       await recordAddresses([for (final e in emails) ...e.from], now: now);
     }
+  }
+
+  /// How often [email] wrote to the user (outside Junk and Trash) and the
+  /// user to it. The address book remembers mail that was deleted since,
+  /// but counts a sender once per sync batch, so the messages in the store
+  /// are counted too and the larger number wins.
+  Future<SenderHistory> senderHistory(String email) async {
+    final e = email.trim().toLowerCase();
+    if (e.isEmpty) return SenderHistory.none;
+    final book = await _select(
+      'SELECT seen_count, sent_count FROM address_book WHERE email = ?',
+      [e],
+      {_db.addressBook},
+    ).getSingleOrNull();
+    final stored = await _select(
+      'SELECT count(DISTINCT coalesce(e.message_id_header, e.id)) AS n FROM emails e '
+      'JOIN mailboxes m ON m.id = e.mailbox_id '
+      "WHERE e.from_email = ? AND m.role NOT IN ('junk', 'trash', 'sent', 'drafts')",
+      [e],
+      {_db.emails, _db.mailboxes},
+    ).getSingle();
+    final seen = book?.read<int>('seen_count') ?? 0;
+    final n = stored.read<int>('n');
+    return SenderHistory(received: seen > n ? seen : n, sent: book?.read<int>('sent_count') ?? 0);
   }
 
   /// Addresses whose email or name (or a word of the name) starts with

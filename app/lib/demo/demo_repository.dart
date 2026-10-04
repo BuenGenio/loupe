@@ -127,11 +127,24 @@ class DemoMailRepository implements MailRepository {
   /// Every message in [_older] and [_serverOnly], by id.
   final _remote = <String, DemoMessage>{};
   final _vips = <String>{};
+
+  /// Documents "on the server": account id → document name → content.
+  /// Tests write here to play another device.
+  final serverDocuments = <String, Map<String, String>>{};
+
+  /// Demo accounts whose server has no METADATA: their documents live in a
+  /// Loupe Settings folder, created on the first write. Gmail accounts
+  /// can't keep documents at all, like the real one.
+  static const _withoutMetadata = {DemoAccounts.work};
   final _sync = <String, AccountSyncStatus>{};
   final _outbox = <String, _Queued>{};
   final _contentCache = <String, EmailContent>{};
   final _changes = StreamController<void>.broadcast();
   final _timers = <Timer>{};
+
+  /// Wakes the next message snoozed in this session on time. Seeded
+  /// snoozes wake on refresh (no timer pending in tests).
+  Timer? _snoozeTimer;
   int _incomingIndex = 0;
   int _nextId = 100000;
   bool _disposed = false;
@@ -158,6 +171,7 @@ class DemoMailRepository implements MailRepository {
     for (final q in _outbox.values) {
       q.timer?.cancel();
     }
+    _snoozeTimer?.cancel();
     _timers.clear();
     _outbox.clear();
     unawaited(_changes.close());
@@ -208,7 +222,11 @@ class DemoMailRepository implements MailRepository {
 
   static bool _isBin(Mailbox box) => box.role == MailboxRole.trash || box.role == MailboxRole.junk;
 
-  static bool _isRegular(Mailbox box) => !_isBin(box) && box.role != MailboxRole.sent && box.role != MailboxRole.drafts;
+  /// Bins and the Snoozed folder stay out of Flagged.
+  static bool _isAside(Mailbox box) => _isBin(box) || Snooze.isFolder(box);
+
+  static bool _isRegular(Mailbox box) =>
+      !_isAside(box) && box.role != MailboxRole.sent && box.role != MailboxRole.drafts;
 
   Set<String> _myAddresses(String accountId) {
     final a = _account(accountId);
@@ -406,6 +424,7 @@ class DemoMailRepository implements MailRepository {
     _older.removeWhere((id, _) => MailIds.accountOf(id) == accountId);
     _serverOnly.remove(accountId);
     _sync.remove(accountId);
+    serverDocuments.remove(accountId);
     _notify();
   }
 
@@ -443,7 +462,7 @@ class DemoMailRepository implements MailRepository {
       if (box == null) continue;
       final s = m.summary;
       if (box.role == MailboxRole.drafts) drafts++;
-      if (s.isFlagged && !_isBin(box)) flagged++;
+      if (s.isFlagged && !_isAside(box)) flagged++;
       if (s.isSeen) continue;
       if (box.role == MailboxRole.inbox) inboxes++;
       if (_isRegular(box)) {
@@ -471,7 +490,7 @@ class DemoMailRepository implements MailRepository {
       VirtualMailboxRef(:final kind) => switch (kind) {
         VirtualMailbox.allInboxes => box.role == MailboxRole.inbox,
         VirtualMailbox.unread => !s.isSeen && _isRegular(box),
-        VirtualMailbox.flagged => s.isFlagged && !_isBin(box),
+        VirtualMailbox.flagged => s.isFlagged && !_isAside(box),
         VirtualMailbox.vip => _isVip(s) && _isRegular(box),
         VirtualMailbox.allDrafts => box.role == MailboxRole.drafts,
         VirtualMailbox.allSent => box.role == MailboxRole.sent,
@@ -601,6 +620,7 @@ class DemoMailRepository implements MailRepository {
     }
     _notify();
     await _wait(_jitter(latency.network));
+    _wakeDue();
     final roll = _random.nextDouble();
     final count = roll < 0.35 ? 0 : (roll < 0.8 ? 1 : 2);
     final candidates = DemoSeed.incoming.where((t) => accounts.contains(t.$1)).toList();
@@ -738,6 +758,7 @@ class DemoMailRepository implements MailRepository {
       ('From', addresses(s.from)),
       if (s.to.isNotEmpty) ('To', addresses(s.to)),
       if (s.cc.isNotEmpty) ('Cc', addresses(s.cc)),
+      if (s.replyTo.isNotEmpty) ('Reply-To', addresses(s.replyTo)),
       ('Subject', enc(s.subject)),
       ...m.extraHeaders,
       ('MIME-Version', '1.0'),
@@ -875,6 +896,99 @@ class DemoMailRepository implements MailRepository {
     _notify();
   }
 
+  // Snooze --------------------------------------------------------------------------------
+
+  /// The account's Snoozed folder, added when it has none yet.
+  Mailbox _snoozeBox(String accountId) {
+    final existing = _mailboxes.values.where((m) => m.accountId == accountId && Snooze.isFolder(m)).firstOrNull;
+    if (existing != null) return existing;
+    final id = MailIds.mailbox(accountId, Snooze.folderName);
+    return _mailboxes[id] = Mailbox(
+      id: id,
+      accountId: accountId,
+      name: Snooze.folderName,
+      path: Snooze.folderName,
+      sortOrder: _mailboxes.length,
+    );
+  }
+
+  @override
+  Future<SnoozeStorage> snooze(List<String> emailIds, DateTime until) async {
+    final keyword = Snooze.keyword(until);
+    for (final id in emailIds) {
+      final m = _local(id);
+      if (m == null) continue;
+      final k = m.summary.keywords;
+      m.summary = m.summary.copyWith(
+        mailboxId: _snoozeBox(m.summary.accountId).id,
+        keywords: {...k.difference(Snooze.keywordsIn(k)), keyword},
+      );
+    }
+    _armSnoozeTimer();
+    _notify();
+    return SnoozeStorage.server;
+  }
+
+  @override
+  Future<void> unsnooze(List<String> emailIds) async {
+    for (final id in emailIds) {
+      final m = _local(id);
+      if (m != null) _wake(m);
+    }
+    _armSnoozeTimer();
+    _notify();
+  }
+
+  /// Back to the Inbox, unread, `$new`, without its snooze keywords.
+  void _wake(DemoMessage m) {
+    final k = m.summary.keywords;
+    m.summary = m.summary.copyWith(
+      mailboxId: _roleBox(m.summary.accountId, MailboxRole.inbox)?.id,
+      keywords: {
+        ...k.difference({...Snooze.keywordsIn(k), Keywords.seen}),
+        Keywords.newAgain,
+      },
+    );
+  }
+
+  bool _isSnoozed(DemoMessage m) => _mailboxes[m.summary.mailboxId]?.let(Snooze.isFolder) ?? false;
+
+  /// Wakes the messages whose time has come.
+  void _wakeDue() {
+    final now = _clock();
+    for (final m in _messages.values) {
+      final t = m.summary.snoozedUntil;
+      if (t != null && !t.isAfter(now) && _isSnoozed(m)) _wake(m);
+    }
+  }
+
+  void _armSnoozeTimer() {
+    _snoozeTimer?.cancel();
+    _snoozeTimer = null;
+    if (_disposed) return;
+    DateTime? next;
+    for (final m in _messages.values) {
+      final t = m.summary.snoozedUntil;
+      if (t != null && _isSnoozed(m) && (next == null || t.isBefore(next))) next = t;
+    }
+    if (next == null) return;
+    final delay = next.difference(_clock());
+    _snoozeTimer = Timer(delay.isNegative ? Duration.zero : delay, () {
+      _snoozeTimer = null;
+      if (_disposed) return;
+      _wakeDue();
+      _notify();
+    });
+  }
+
+  @override
+  Stream<List<EmailSummary>> watchSnoozed() => _watch(
+    () => [
+      for (final m in _messages.values)
+        if (_isSnoozed(m)) m.summary,
+    ]..sort(Snooze.compare),
+  );
+
   // Search ------------------------------------------------------------------------------
 
   Set<String> _accountsOf(SearchScope scope) => switch (scope) {
@@ -981,7 +1095,7 @@ class DemoMailRepository implements MailRepository {
   Identity _identity(OutgoingMessage message) {
     final account = _account(message.accountId);
     if (account == null) throw const MailException(MailErrorKind.notFound, 'This account no longer exists.');
-    return account.identities.where((i) => i.id == message.identityId).firstOrNull ?? account.defaultIdentity;
+    return account.identityById(message.identityId);
   }
 
   DemoMessage _addLocal({
@@ -1241,6 +1355,55 @@ class DemoMailRepository implements MailRepository {
     return hits.take(limit).toList();
   }
 
+  // Documents on the server ---------------------------------------------------------
+
+  void _requireAccount(String accountId) {
+    final account = _account(accountId);
+    if (account == null) throw const MailException(MailErrorKind.notFound, 'This account no longer exists.');
+    if (account.provider == ProviderKind.gmail) {
+      throw const MailException(MailErrorKind.unsupported, 'Gmail can’t keep Loupe settings on the server.');
+    }
+  }
+
+  @override
+  Future<List<ServerDocument>> readServerDocuments(String accountId, String name) async {
+    _requireAccount(accountId);
+    await _wait(_jitter(latency.content));
+    final content = serverDocuments[accountId]?[name];
+    return [
+      if (content != null)
+        _withoutMetadata.contains(accountId)
+            ? ServerDocument(content: content, storage: ServerStorage.folder, ref: '$accountId/$name')
+            : ServerDocument(content: content, storage: ServerStorage.metadata),
+    ];
+  }
+
+  @override
+  Future<ServerStorage> writeServerDocument(
+    String accountId,
+    String name,
+    String content, {
+    List<ServerDocument> replaces = const [],
+  }) async {
+    _requireAccount(accountId);
+    await _wait(_jitter(latency.content));
+    (serverDocuments[accountId] ??= {})[name] = content;
+    if (!_withoutMetadata.contains(accountId)) return ServerStorage.metadata;
+    final folder = MailIds.mailbox(accountId, ServerDocuments.folderName);
+    if (!_mailboxes.containsKey(folder)) {
+      _mailboxes[folder] = Mailbox(
+        id: folder,
+        accountId: accountId,
+        name: ServerDocuments.folderName,
+        path: ServerDocuments.folderName,
+        isSubscribed: false,
+        sortOrder: _mailboxes.length,
+      );
+      _notify();
+    }
+    return ServerStorage.folder;
+  }
+
   // People -----------------------------------------------------------------------------
 
   @override
@@ -1251,6 +1414,26 @@ class DemoMailRepository implements MailRepository {
     final key = email.toLowerCase();
     vip ? _vips.add(key) : _vips.remove(key);
     _notify();
+  }
+
+  /// Like the store's address book: senders outside Junk, Trash and Drafts,
+  /// and recipients of the user's own messages.
+  @override
+  Future<SenderHistory> senderHistory(String email) async {
+    final e = email.trim().toLowerCase();
+    var received = 0;
+    var sent = 0;
+    for (final m in _messages.values) {
+      final s = m.summary;
+      final box = _mailboxes[s.mailboxId];
+      if (box == null || _isBin(box) || box.role == MailboxRole.drafts) continue;
+      if (_isFromMe(s)) {
+        if ([...s.to, ...s.cc, ...s.bcc].any((a) => a.email.toLowerCase() == e)) sent++;
+      } else if (s.from.any((a) => a.email.toLowerCase() == e)) {
+        received++;
+      }
+    }
+    return SenderHistory(received: received, sent: sent);
   }
 }
 

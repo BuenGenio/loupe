@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'address.dart';
 import 'keywords.dart';
+import 'snooze.dart';
 
 /// What the message list needs for one row. Cheap to load in bulk.
 final class EmailSummary {
@@ -69,8 +70,16 @@ final class EmailSummary {
   bool get isAnswered => keywords.contains(Keywords.answered);
   bool get isDraft => keywords.contains(Keywords.draft);
 
-  /// User-visible tags (keywords that are not system state).
-  Iterable<String> get tags => keywords.where((k) => !Keywords.system.contains(k));
+  /// User-visible tags (keywords that are not system or snooze state).
+  Iterable<String> get tags => keywords.where((k) => !Keywords.system.contains(k) && !Snooze.isSnoozeKeyword(k));
+
+  /// When the message wakes from snooze (its earliest `$snoozed-…`
+  /// keyword), or null.
+  DateTime? get snoozedUntil => Snooze.wakeAtOf(keywords);
+
+  /// Woke from snooze (or was otherwise brought back) and is shown as new:
+  /// `$new` on an unread message.
+  bool get isNewAgain => keywords.contains(Keywords.newAgain) && !isSeen;
 
   EmailAddress? get sender => from.isNotEmpty ? from.first : null;
 

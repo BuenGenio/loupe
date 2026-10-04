@@ -5,6 +5,7 @@
 import '../model/document.dart';
 import 'limits.dart';
 import 'links.dart';
+import 'redirects.dart';
 
 /// One logical line after quote stripping and reflow.
 final class _Line {
@@ -223,7 +224,8 @@ List<Inline> linkify(String text, List<LinkRef> links, [RunStyle style = RunStyl
   for (final m in found) {
     if (m.start > pos) out.add(TextRun(text.substring(pos, m.start), style));
     final label = text.substring(m.start, m.end);
-    links.add(LinkRef(m.url, text: label));
+    // The text is the URL itself: nothing to mismatch.
+    links.add(LinkRef(m.url, text: label, redirect: unwrapRedirect(m.url)));
     out.add(TextRun(label, style.copyWith(link: () => links.length - 1, underline: true)));
     pos = m.end;
   }

@@ -14,3 +14,4 @@ library;
 export 'src/config.dart';
 export 'src/live_repository.dart';
 export 'src/live_rules.dart' show LiveRules;
+export 'src/smart_mailboxes.dart';

@@ -235,8 +235,73 @@ void main() {
     expect(boxes.map((b) => b.role), contains(MailboxRole.inbox));
   });
 
+  test('senderHistory counts mail from and to an address', () async {
+    final jordan = await repo.senderHistory('Jordan.Lee@example.com');
+    expect(jordan.received, greaterThan(1));
+    expect(jordan.sent, greaterThan(0));
+    expect(jordan.isKnown, isTrue);
+    final phish = await repo.senderHistory('service@parcelpost-notice.example.net');
+    expect(phish, const SenderHistory(received: 1));
+    expect(phish.isKnown, isFalse);
+    expect(await repo.senderHistory('nobody@nowhere.example'), SenderHistory.none);
+  });
+
   test('suggestAddresses ranks frequent correspondents', () async {
     final people = await repo.suggestAddresses('jo');
     expect(people.first.email, 'jordan.lee@example.com');
+  });
+
+  group('snooze', () {
+    test('moves to Snoozed, lists by wake time and wakes on refresh once due', () async {
+      var clock = now;
+      final repo = DemoMailRepository.instant(clock: () => clock);
+      addTearDown(repo.dispose);
+      const inbox = VirtualMailboxRef(VirtualMailbox.allInboxes);
+      final rows = await repo.watchList(inbox, threaded: false).first;
+      final first = rows[0].latest;
+      final second = rows[1].latest;
+      final before = (await repo.watchSnoozed().first).length;
+
+      final tomorrow = DateTime(2026, 10, 5, 8);
+      final evening = DateTime(2026, 10, 4, 18);
+      expect(await repo.snooze([first.id], tomorrow), SnoozeStorage.server);
+      await repo.snooze([second.id], evening);
+      final inboxIds = [for (final t in await repo.watchList(inbox, threaded: false).first) t.latest.id];
+      expect(inboxIds, isNot(contains(first.id)));
+      final snoozed = await repo.watchSnoozed().first;
+      expect(snoozed, hasLength(before + 2));
+      final mine = snoozed.where((e) => e.id == first.id || e.id == second.id).toList();
+      expect(mine.map((e) => e.id), [second.id, first.id], reason: 'soonest first');
+      expect(mine.last.snoozedUntil, tomorrow.toUtc());
+      final box = (await repo.watchMailboxes().first).firstWhere((b) => b.id == mine.last.mailboxId);
+      expect(Snooze.isFolder(box), isTrue);
+
+      // Not due yet: a refresh leaves them.
+      await repo.refresh();
+      expect((await repo.watchSnoozed().first).map((e) => e.id), containsAll([first.id, second.id]));
+      clock = DateTime(2026, 10, 4, 18, 1);
+      await repo.refresh();
+      final woken = (await repo.getEmail(second.id))!;
+      expect(woken.snoozedUntil, isNull);
+      expect(woken.isNewAgain, isTrue);
+      expect(woken.isSeen, isFalse);
+      expect((await repo.watchSnoozed().first).map((e) => e.id), contains(first.id));
+
+      await repo.unsnooze([first.id]);
+      expect((await repo.getEmail(first.id))!.isNewAgain, isTrue);
+      expect((await repo.watchSnoozed().first).map((e) => e.id), isNot(contains(first.id)));
+    });
+
+    test('snoozed messages stay out of Unread and Flagged', () async {
+      final unread = await repo.watchList(const VirtualMailboxRef(VirtualMailbox.unread), threaded: false).first;
+      final target = unread.first.latest;
+      final count = (await repo.watchVirtualCounts().first)[VirtualMailbox.unread]!;
+      await repo.setKeywords([target.id], add: {Keywords.flagged});
+      final flagged = (await repo.watchVirtualCounts().first)[VirtualMailbox.flagged]!;
+      await repo.snooze([target.id], DateTime(2026, 10, 5, 8));
+      final counts = await repo.watchVirtualCounts().first;
+      expect(counts[VirtualMailbox.unread], count - 1);
+      expect(counts[VirtualMailbox.flagged], flagged - 1);
+    });
   });
 }

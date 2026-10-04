@@ -15,4 +15,6 @@ export 'src/outgoing.dart';
 export 'src/repository.dart';
 export 'src/rules.dart';
 export 'src/search.dart';
+export 'src/server_documents.dart';
+export 'src/snooze.dart';
 export 'src/transport.dart';

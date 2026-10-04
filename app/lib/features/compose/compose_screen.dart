@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,11 +14,11 @@ import '../../settings/app_settings.dart';
 import '../../shared/format.dart';
 import '../../theme/theme.dart';
 import '../conversation/attachments.dart';
-import '../conversation/mail_streams.dart';
 import '../conversation/sheets.dart';
 import 'compose_args.dart';
 import 'compose_recovery.dart';
 import 'compose_text.dart';
+import 'identity_selection.dart';
 import 'recipient_field.dart';
 import 'send_later.dart';
 import '../../theme/loupe_icons.dart';
@@ -71,6 +72,12 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
   List<MailAccount> _accounts = const [];
   MailAccount? _account;
   Identity? _identity;
+
+  /// How the identity of a reply or forward was chosen, with an alias to offer.
+  IdentityChoice? _choice;
+
+  /// The user chose an identity (or waved the alias away): stop suggesting it.
+  bool _aliasDismissed = false;
   bool _showCcBcc = false;
   bool _preparing = true;
   bool _busy = false;
@@ -287,10 +294,11 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     } else {
       switch (args.mode) {
         case ComposeMode.newMessage:
-          _setIdentity(_accountById(args.accountId), null);
+          _useDefaultIdentity(_accountById(args.accountId));
           args.to.forEach(_to.add);
           args.cc.forEach(_cc.add);
           args.bcc.forEach(_bcc.add);
+          _swapAutoCopies(null, _identity);
           _subject.text = args.subject ?? '';
           _body.text = _withSignature(args.body ?? '');
         case ComposeMode.reply || ComposeMode.replyAll || ComposeMode.forward:
@@ -322,13 +330,21 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
 
   MailAccount? _accountById(String? id) => _accounts.where((a) => a.id == id).firstOrNull ?? _accounts.firstOrNull;
 
-  /// Picks the identity of [account] that [recipients] were sent to, or its default.
-  void _setIdentity(MailAccount? account, Iterable<EmailAddress>? recipients) {
+  void _useDefaultIdentity(MailAccount? account) {
     _account = account;
-    if (account == null) return;
-    final emails = {...?recipients?.map((a) => a.email.toLowerCase())};
+    _identity = account?.defaultIdentity;
+  }
+
+  /// The identity a draft was written from: its sender's, or an alias for it.
+  void _useSenderIdentity(MailAccount? account, List<EmailAddress> from) {
+    _useDefaultIdentity(account);
+    final email = from.firstOrNull?.email.trim() ?? '';
+    if (account == null || email.isEmpty) return;
     _identity =
-        account.identities.where((i) => emails.contains(i.email.toLowerCase())).firstOrNull ?? account.defaultIdentity;
+        IdentitySelection.identitiesOf(account)
+            .where((i) => i.email.toLowerCase() == email.toLowerCase())
+            .firstOrNull ??
+        account.aliasIdentity(email);
   }
 
   String _withSignature(String text) {
@@ -339,7 +355,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
 
   void _restore(OutgoingMessage m) {
     _account = _accountById(m.accountId);
-    _identity = _account?.identities.where((i) => i.id == m.identityId).firstOrNull ?? _account?.defaultIdentity;
+    _identity = _account?.identityById(m.identityId);
     m.to.forEach(_to.add);
     m.cc.forEach(_cc.add);
     m.bcc.forEach(_bcc.add);
@@ -358,12 +374,11 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     final source = id == null ? null : await _repo.getEmail(id);
     if (!mounted) return null;
     if (source == null) {
-      _setIdentity(_accountById(args.accountId), null);
+      _useDefaultIdentity(_accountById(args.accountId));
       _body.text = _withSignature('');
       return "Couldn't find the original message.";
     }
     _sourceEmailId = source.id;
-    _setIdentity(_accountById(source.accountId), [...source.to, ...source.cc, ...source.bcc]);
     String? warning;
     EmailContent? content;
     try {
@@ -372,6 +387,11 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       warning = e.message;
     }
     if (!mounted) return null;
+    // Delivered-To and the like tell which of the user's addresses it reached.
+    final headers = content?.headers ?? const <(String, String)>[];
+    _choice = IdentitySelection.choose(accounts: _accounts, source: source, headers: headers);
+    _account = _choice?.account;
+    _identity = _choice?.identity;
     final text = content == null ? source.preview : ComposeText.plainTextOf(content);
     if (args.mode == ComposeMode.forward) {
       _subject.text = ComposeText.forwardSubject(source.subject);
@@ -381,7 +401,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       final r = ComposeText.replyRecipients(
         source,
         all: args.mode == ComposeMode.replyAll,
-        own: ownAddresses(_accounts),
+        isOwn: OwnAddresses(_accounts, extra: IdentitySelection.envelopeAddresses(headers)).contains,
       );
       r.to.forEach(_to.add);
       r.cc.forEach(_cc.add);
@@ -390,6 +410,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       _inReplyTo = source.messageIdHeader;
       _references = ComposeText.replyReferences(source);
     }
+    _swapAutoCopies(null, _identity);
     return warning;
   }
 
@@ -398,11 +419,11 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     final draft = id == null ? null : await _repo.getEmail(id);
     if (!mounted) return null;
     if (draft == null) {
-      _setIdentity(_accountById(args.accountId), null);
+      _useDefaultIdentity(_accountById(args.accountId));
       return "Couldn't find the draft.";
     }
     _draftId = draft.id;
-    _setIdentity(_accountById(draft.accountId), draft.from);
+    _useSenderIdentity(_accountById(draft.accountId), draft.from);
     draft.to.forEach(_to.add);
     draft.cc.forEach(_cc.add);
     draft.bcc.forEach(_bcc.add);
@@ -448,45 +469,162 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
 
   // Editing ---------------------------------------------------------------------
 
+  /// An unsaved alias to send from: the current identity, or the address
+  /// the original was sent to (until it is saved as an identity).
+  (MailAccount, Identity)? get _aliasOption {
+    final account = _account;
+    final identity = _identity;
+    if (account != null && identity != null && account.isAliasIdentity(identity)) return (account, identity);
+    final alias = _choice?.alias;
+    final owner = _accounts.where((a) => a.id == _choice?.aliasAccount?.id).firstOrNull;
+    if (alias == null || owner == null) return null;
+    final saved = IdentitySelection.identitiesOf(owner).any((i) => i.email.toLowerCase() == alias.email.toLowerCase());
+    return saved ? null : (owner, alias);
+  }
+
+  /// "Reply from …?" under the header: the original went to an alias,
+  /// not to an identity.
+  (MailAccount, Identity)? get _aliasSuggestion {
+    if (_aliasDismissed || !(_choice?.suggestsAlias ?? false)) return null;
+    final option = _aliasOption;
+    return option == null || option.$2.id == _identity?.id ? null : option;
+  }
+
+  String get _fromVerb => _mode == ComposeMode.reply || _mode == ComposeMode.replyAll ? 'Reply' : 'Send';
+
+  /// The From picker: the alias to offer, then every identity by account.
   Future<void> _pickIdentity() async {
-    final choices = [
-      for (final a in _accounts)
-        for (final i in a.identities.isEmpty ? [a.defaultIdentity] : a.identities) (a, i),
-    ];
-    if (choices.length < 2) return;
-    final picked = await showLoupeSheet<(MailAccount, Identity)>(
+    final alias = _aliasOption;
+    final groups = [for (final a in _accounts) (a, IdentitySelection.identitiesOf(a))];
+    final count = groups.fold<int>(alias == null ? 0 : 1, (n, g) => n + g.$2.length);
+    if (count < 2) return;
+    final picked = await showLoupeSheet<({MailAccount account, Identity identity, bool save})>(
       context,
-      builder: (context) => SafeArea(
-        top: false,
-        child: SingleChildScrollView(
-          child: SheetGroup(
-            header: 'From',
-            children: [
-              for (final (a, i) in choices)
-                ListTile(
-                  key: ValueKey('identity-${i.id}'),
-                  dense: true,
-                  title: Text(EmailAddress(i.email, i.name).toString(), style: const TextStyle(fontSize: 15)),
-                  subtitle: Text(a.displayName),
-                  trailing: i.id == _identity?.id
-                      ? Icon(LoupeIcons.check, color: Theme.of(context).colorScheme.primary)
-                      : null,
-                  onTap: () => Navigator.of(context).pop((a, i)),
-                ),
-            ],
+      builder: (context) {
+        final primary = Theme.of(context).colorScheme.primary;
+        Widget? check(Identity i) => i.id == _identity?.id ? Icon(LoupeIcons.check, color: primary) : null;
+        return SafeArea(
+          top: false,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                if (alias case (final account, final identity)?)
+                  SheetGroup(
+                    header: 'From',
+                    children: [
+                      ListTile(
+                        key: const ValueKey('identity-alias'),
+                        dense: true,
+                        title: Text('$_fromVerb from ${identity.email}', style: const TextStyle(fontSize: 15)),
+                        subtitle: Text('Not saved as an identity · ${account.displayName}'),
+                        trailing: check(identity),
+                        onTap: () => Navigator.of(context).pop((account: account, identity: identity, save: false)),
+                      ),
+                      SheetRow(
+                        key: const ValueKey('identity-save-alias'),
+                        icon: LoupeIcons.add,
+                        label: 'Save as Identity',
+                        onTap: () => Navigator.of(context).pop((account: account, identity: identity, save: true)),
+                      ),
+                    ],
+                  ),
+                for (final (account, identities) in groups)
+                  SheetGroup(
+                    header: alias == null && groups.length == 1 ? 'From' : account.displayName,
+                    children: [
+                      for (final i in identities)
+                        ListTile(
+                          key: ValueKey('identity-${i.id}'),
+                          dense: true,
+                          title: Text(EmailAddress(i.email, i.name).toString(), style: const TextStyle(fontSize: 15)),
+                          subtitle: i.replyTo == null ? null : Text('Reply-To: ${i.replyTo}'),
+                          trailing: check(i),
+                          onTap: () => Navigator.of(context).pop((account: account, identity: i, save: false)),
+                        ),
+                    ],
+                  ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
     if (picked == null || !mounted) return;
-    final (account, identity) = picked;
-    final oldSignature = _identity?.signature;
-    setState(() {
-      _account = account;
-      _identity = identity;
-      _body.text = ComposeText.replaceSignature(_body.text, oldSignature, identity.signature);
-    });
-    _scheduleAutosave();
+    _aliasDismissed = true;
+    if (picked.save) return _saveAlias(picked.account, picked.identity);
+    _switchIdentity(picked.account, picked.identity);
+  }
+
+  /// Sends from [identity]: swaps the signature in place and the automatic
+  /// Cc and Bcc; the Reply-To follows the identity.
+  void _switchIdentity(MailAccount account, Identity identity) {
+    final old = _identity;
+    _account = account;
+    _identity = identity;
+    _setBody(ComposeText.replaceSignature(_body.text, old?.signature, identity.signature));
+    _swapAutoCopies(old, identity);
+    // Replying to everyone from an address takes it out of the recipients.
+    if (_mode == ComposeMode.replyAll) {
+      _to.removeEmail(identity.email);
+      _cc.removeEmail(identity.email);
+    }
+    _changed();
+  }
+
+  /// Saves the alias [alias] of [account] as an identity and sends from it.
+  Future<void> _saveAlias(MailAccount account, Identity alias) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final saved = Identity(
+      id: newIdentityId(account),
+      email: alias.email,
+      name: alias.name,
+      signature: alias.signature,
+    );
+    MailAccount next;
+    try {
+      final current = (await _repo.watchAccounts().first).where((a) => a.id == account.id).firstOrNull ?? account;
+      // An account without saved identities keeps its default first.
+      next = current.copyWith(identities: [...IdentitySelection.identitiesOf(current), saved]);
+      await _repo.updateAccount(next);
+    } on MailException catch (e) {
+      showSnack(messenger, e.message);
+      return;
+    }
+    if (!mounted) return;
+    _accounts = [for (final a in _accounts) a.id == next.id ? next : a];
+    _switchIdentity(next, saved);
+    showSnack(messenger, '${alias.email} is saved as an identity.');
+  }
+
+  /// Takes [old]'s automatic Cc and Bcc out of the recipients and adds [next]'s.
+  void _swapAutoCopies(Identity? old, Identity? next) {
+    String? clean(String? a) => a == null || a.trim().isEmpty ? null : a.trim();
+    for (final (field, before, after) in [
+      (_cc, clean(old?.autoCc), clean(next?.autoCc)),
+      (_bcc, clean(old?.autoBcc), clean(next?.autoBcc)),
+    ]) {
+      if (before?.toLowerCase() == after?.toLowerCase()) continue;
+      if (before != null) field.removeEmail(before);
+      if (after != null) field.add(EmailAddress(after));
+    }
+    if (_cc.items.isNotEmpty || _bcc.items.isNotEmpty) _showCcBcc = true;
+  }
+
+  /// Replaces the body, keeping the cursor in the text that didn't change.
+  void _setBody(String text) {
+    final old = _body.value;
+    if (text == old.text) return;
+    var same = 0;
+    final shorter = min(text.length, old.text.length);
+    while (same < shorter && text.codeUnitAt(same) == old.text.codeUnitAt(same)) {
+      same++;
+    }
+    final at = old.selection.baseOffset;
+    final moved = at <= same ? at : (at + text.length - old.text.length).clamp(same, text.length);
+    _body.value = TextEditingValue(
+      text: text,
+      selection: at < 0 ? const TextSelection.collapsed(offset: -1) : TextSelection.collapsed(offset: moved),
+    );
   }
 
   Future<void> _attach() async {
@@ -827,24 +965,70 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
                   context,
                   key: const Key('compose-from'),
                   onTap: _pickIdentity,
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text.rich(
                         TextSpan(
-                          text: 'From: ',
-                          style: TextStyle(color: colors.secondaryText),
+                          children: [
+                            TextSpan(
+                              text: 'From: ',
+                              style: TextStyle(color: colors.secondaryText),
+                            ),
+                            TextSpan(
+                              text: _identity == null ? '' : EmailAddress(_identity!.email, _identity!.name).toString(),
+                            ),
+                          ],
                         ),
-                        TextSpan(
-                          text: _identity == null ? '' : EmailAddress(_identity!.email, _identity!.name).toString(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      if (_identity?.replyTo case final replyTo? when replyTo.trim().isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 2),
+                          child: Text(
+                            'Reply-To: $replyTo',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: colors.secondaryText, fontSize: 13),
+                          ),
                         ),
-                      ],
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 16),
+                    ],
                   ),
                 ),
               ],
+              if (_aliasSuggestion case (final account, final alias)?)
+                _row(
+                  context,
+                  key: const Key('compose-alias-suggestion'),
+                  onTap: () {
+                    _aliasDismissed = true;
+                    _switchIdentity(account, alias);
+                  },
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '$_fromVerb from ${alias.email}?',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: theme.colorScheme.primary, fontSize: 15),
+                        ),
+                      ),
+                      Semantics(
+                        button: true,
+                        label: 'Dismiss',
+                        child: InkResponse(
+                          key: const Key('compose-alias-dismiss'),
+                          radius: 18,
+                          onTap: () => setState(() => _aliasDismissed = true),
+                          child: Icon(LoupeIcons.close, size: 18, color: colors.secondaryText),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               _row(
                 context,
                 child: TextField(

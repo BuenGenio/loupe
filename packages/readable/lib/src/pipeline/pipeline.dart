@@ -5,7 +5,9 @@ import 'dart:isolate';
 
 import 'package:html/parser.dart' as html_parser;
 
+import '../model/analysis.dart';
 import '../model/document.dart';
+import 'analysis.dart';
 import 'converter.dart';
 import 'html_to_plain.dart';
 import 'limits.dart';
@@ -45,7 +47,7 @@ final class PipelineInput {
 
 /// What the views render.
 final class PipelineOutput {
-  const PipelineOutput({required this.document, this.original});
+  const PipelineOutput({required this.document, this.original, this.analysis});
 
   /// The Readable or Plain document (Original mode: the plain fallback for
   /// text-only messages).
@@ -53,6 +55,9 @@ final class PipelineOutput {
 
   /// Original mode with an HTML part.
   final OriginalHtml? original;
+
+  /// Readable mode: link and privacy findings, from the same run.
+  final ReadableAnalysis? analysis;
 }
 
 /// Runs the pipeline in a background isolate.
@@ -75,9 +80,15 @@ PipelineOutput runPipeline(PipelineInput input) {
       if (input.hasHtml) return PipelineOutput(document: toPlainDocument(buildReadable(input)));
       return const PipelineOutput(document: ReaderDocument.empty);
     case PipelineMode.readable:
-      if (input.hasHtml) return PipelineOutput(document: buildReadable(input));
-      if (input.hasText) return PipelineOutput(document: _plain(input));
-      return const PipelineOutput(document: ReaderDocument.empty);
+      if (input.hasHtml) {
+        final (document, analysis) = _readable(input);
+        return PipelineOutput(document: document, analysis: analysis);
+      }
+      if (input.hasText) {
+        final document = _plain(input);
+        return PipelineOutput(document: document, analysis: analyzeDocument(document));
+      }
+      return const PipelineOutput(document: ReaderDocument.empty, analysis: ReadableAnalysis.empty);
   }
 }
 
@@ -85,7 +96,10 @@ ReaderDocument _plain(PipelineInput input) =>
     parsePlainText(input.text ?? '', flowed: input.isFlowed, limits: input.limits);
 
 /// The Readable document of the HTML part.
-ReaderDocument buildReadable(PipelineInput input) {
+ReaderDocument buildReadable(PipelineInput input) => _readable(input).$1;
+
+/// The Readable document of the HTML part and its analysis.
+(ReaderDocument, ReadableAnalysis) _readable(PipelineInput input) {
   var html = input.html!;
   var truncated = false;
   if (html.length > input.limits.maxInputChars) {
@@ -101,9 +115,10 @@ ReaderDocument buildReadable(PipelineInput input) {
   final lower = {for (final id in ids) id.toLowerCase(): id};
   String? resolve(String cid) => ids.contains(cid) ? cid : lower[cid.toLowerCase()];
 
-  final doc = convertBody(cleaned.body, budget: budget, resolveCid: resolve);
+  final removedLinks = <String>[];
+  final doc = convertBody(cleaned.body, budget: budget, resolveCid: resolve, removedLinks: removedLinks);
   final s = doc.stats;
-  return ReaderDocument(
+  final readable = ReaderDocument(
     blocks: doc.blocks,
     images: doc.images,
     links: doc.links,
@@ -118,4 +133,11 @@ ReaderDocument buildReadable(PipelineInput input) {
       truncated: truncated || cleaned.truncated || s.truncated || budget.exhausted,
     ),
   );
+  final analysis = analyzeDocument(
+    readable,
+    trackerHosts: cleaned.trackerHosts,
+    removedLinks: removedLinks,
+    passwordFields: cleaned.passwordFields,
+  );
+  return (readable, analysis);
 }
