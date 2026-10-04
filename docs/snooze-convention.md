@@ -27,8 +27,9 @@ Example: a message to wake on 23 May 2025 at 18:00 UTC carries `$snoozed-2913372
 - No special-use attribute is required. RFC 9979 registers `\Snoozed` for a mailbox like this one; a client MAY
   set it (`CREATE Snoozed (USE (\Snoozed))` where CREATE-SPECIAL-USE is offered) but MUST NOT depend on it.
   Loupe creates the mailbox without it.
-- Clients SHOULD hide the mailbox from ordinary folder lists and show a "Snoozed" view instead, and SHOULD keep
-  its messages out of unified views such as Unread, Flagged and VIP.
+- Clients SHOULD hide the mailbox from ordinary folder lists and show a "Snoozed" view instead (soonest wake
+  time first), and SHOULD keep its messages out of unified views such as Unread, Flagged and VIP. Loupe does
+  both; its Snoozed mailbox spans all accounts.
 
 ## The wake-time keyword
 
@@ -43,6 +44,8 @@ snooze-keyword = "$snoozed-" 1*10DIGIT   ; whole minutes since 1970-01-01T00:00:
   backslashes or `]`) and a valid JMAP keyword, and is far below Dovecot's 50-character limit.
 - Anything else starting with `$snoozed-` is not a valid snooze keyword. Clients ignore it for waking, leave
   it alone, and don't show it as a tag.
+- Only messages in `Snoozed` are snoozed. A snooze keyword on a message elsewhere (moved out by hand) means
+  nothing; clients ignore it and MAY remove it.
 - If a message carries more than one valid snooze keyword (two clients changed the time at the same moment),
   the **earliest** wins. Whoever changes the time removes all of them before adding the new one.
 
@@ -51,7 +54,8 @@ snooze-keyword = "$snoozed-" 1*10DIGIT   ; whole minutes since 1970-01-01T00:00:
 A client checks the `PERMANENTFLAGS` response code when it selects the Inbox or the Snoozed mailbox. Without
 `\*` in it, new keywords are not stored permanently (Outlook.com and Exchange behave like this). Such an
 account can't hold snooze times on the server. Loupe then still moves the message to `Snoozed`, keeps the
-wake time on the device only, and tells the user that the snooze works on that device alone. Other clients see
+wake time on the device only (in its offline queue), and tells the user that the snooze works on that device
+alone. Other clients see
 a message in `Snoozed` without a time and leave it there (they MAY offer to wake it).
 
 When `PERMANENTFLAGS` isn't sent at all, RFC 9051 says all flags can be changed permanently; clients assume
@@ -80,7 +84,7 @@ At or after *T*, the first client that sees the message does this:
 The order again keeps a message from reaching the Inbox with a stale time on it. The message keeps its date
 (INTERNALDATE), so it returns to its place in a date-sorted list; `$new` and the unread state make it stand out
 (RFC 9979: `$new` asks clients to show a message as new "due to a recent system action"). Loupe shows a small
-"Snoozed" marker on unread messages with `$new` and removes `$new` when the message is opened.
+"Snoozed" marker on unread messages with `$new` and removes `$new` when the message is read.
 
 "Wake now" is the same thing done before *T*.
 

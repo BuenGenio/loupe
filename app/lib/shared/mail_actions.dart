@@ -22,8 +22,9 @@ import '../settings/ui_state.dart';
 ///
 /// Archive, Trash, Move, Junk / Not Junk, Snooze and Wake Now show a snack
 /// bar whose Undo puts every message back in the mailbox it came from (and
-/// restores the keywords the action changed: junk, snooze times, unread). The row methods work on whole conversations; the
-/// `…Emails` methods on the given messages (the conversation view).
+/// restores the keywords the action changed: junk, snooze times, unread).
+/// The row methods work on whole conversations; the `…Emails` methods on
+/// the given messages (the conversation view).
 ///
 /// Deleting permanently (Trash in the Trash mailbox) can't be undone, so it
 /// asks first instead: the server expunges at once, and an expunge delayed
