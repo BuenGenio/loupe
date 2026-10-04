@@ -240,6 +240,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
         return;
       }
       if (!mounted) return;
+      setState(() {});
       // The local copy learns the draft's new id.
       _writeLocal(force: true);
     } while (_saveAgain && mounted);
@@ -552,9 +553,11 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     setState(() => _busy = true);
     await _stopAutosave();
     if (!mounted) return;
-    setState(() => _busy = false);
     final message = _message();
-    if (message == null || !mounted) return;
+    if (message == null) {
+      setState(() => _busy = false);
+      return;
+    }
     final repo = _repo;
     final undoSeconds = ref.read(appSettingsProvider).undoSendSeconds;
     // A time that has passed meanwhile sends now, with the usual undo delay.
@@ -564,7 +567,6 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     // Captured before popping: the snack bar and Undo outlive this screen.
     final messenger = ScaffoldMessenger.of(context);
     final router = GoRouter.maybeOf(context);
-    setState(() => _busy = true);
     try {
       if (_outboxId case final id?) {
         if (await repo.cancelSend(id) == null) {
@@ -746,7 +748,9 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     final noAccount = !_preparing && _identity == null;
     final title = _subject.text.trim().isEmpty ? 'New Message' : _subject.text.trim();
     return PopScope(
-      canPop: _closing || !_dirty,
+      // Back closes an untouched message at once; anything autosave may
+      // have left behind goes through Cancel's cleanup.
+      canPop: _closing || (!_dirty && _draftId == _originalDraftId),
       onPopInvokedWithResult: (didPop, _) {
         if (!didPop) unawaited(_cancel());
       },

@@ -129,6 +129,25 @@ void main() {
       expect(await _localCopy(), isNull);
     });
 
+    testWidgets('system Back closes an untouched message at once, and cleans up after undone edits', (tester) async {
+      final repo = FakeMailRepository();
+      await _openCompose(tester, repo, const ComposeArgs(to: [bob], subject: 'Hi'));
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      expect(find.text('home'), findsOneWidget);
+
+      await _openCompose(tester, repo, const ComposeArgs(to: [bob], subject: 'Hi'));
+      await tester.enterText(_subject, 'Hi there');
+      await tester.pump(ComposeScreen.autosaveDelay);
+      await tester.enterText(_subject, 'Hi');
+      await tester.pump();
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      expect(find.text('home'), findsOneWidget);
+      expect(repo.log, contains('deleteDraft draft-1'));
+      expect(await _localCopy(), isNull);
+    });
+
     testWidgets('a hanging save doesn\'t hold up Send; the draft it makes is deleted', (tester) async {
       final repo = FakeMailRepository()..holdSaves = Completer<void>();
       await _openCompose(tester, repo, const ComposeArgs(to: [bob]));
