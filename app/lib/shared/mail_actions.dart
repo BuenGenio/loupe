@@ -6,7 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../features/compose/compose_args.dart';
+import '../features/compose/send_later.dart' show formatSendTimeFor, wakeUpAt;
 import '../features/conversation/sheets.dart' show showSnack;
+import '../features/snooze/snooze_sheet.dart';
 import '../providers.dart';
 import '../settings/app_settings.dart';
 import '../theme/theme.dart';
@@ -18,9 +20,9 @@ import '../settings/ui_state.dart';
 /// Message actions shared by lists, search results, smart mailboxes and the
 /// conversation view: optimistic, and with Undo.
 ///
-/// Archive, Trash, Move and Junk / Not Junk show a snack bar whose Undo puts
-/// every message back in the mailbox it came from (and, for junk, restores
-/// its junk keywords). The row methods work on whole conversations; the
+/// Archive, Trash, Move, Junk / Not Junk, Snooze and Wake Now show a snack
+/// bar whose Undo puts every message back in the mailbox it came from (and
+/// restores the keywords the action changed: junk, snooze times, unread). The row methods work on whole conversations; the
 /// `…Emails` methods on the given messages (the conversation view).
 ///
 /// Deleting permanently (Trash in the Trash mailbox) can't be undone, so it
@@ -147,6 +149,33 @@ class MailActions {
     await moveEmails(await _membersOf(list), target);
   }
 
+  /// Whether [email] waits in its account's Snoozed folder.
+  bool isSnoozed(EmailSummary email) {
+    final box = _boxes[email.mailboxId];
+    return box != null && Snooze.isFolder(box);
+  }
+
+  /// The Snooze sheet; [current] is the time of a snoozed message.
+  Future<DateTime?> askSnoozeTime({DateTime? current}) => showSnoozeSheet(
+    context,
+    now: DateTime.now(),
+    current: current,
+    title: current == null ? 'Snooze' : 'Change Snooze Time',
+  );
+
+  /// Asks when, then snoozes the conversations of [rows] (or gives snoozed
+  /// ones a new time). Returns whether it happened.
+  Future<bool> snooze(Iterable<ThreadSummary> rows) async {
+    final list = rows.toList();
+    if (list.isEmpty) return false;
+    final at = await askSnoozeTime(current: list.length == 1 ? list.single.latest.snoozedUntil : null);
+    if (at == null || !context.mounted) return false;
+    return snoozeEmails(await _membersOf(list), at);
+  }
+
+  /// Wakes the snoozed conversations of [rows] now.
+  Future<bool> wake(Iterable<ThreadSummary> rows) async => wakeEmails(await _membersOf(rows));
+
   // Messages ----------------------------------------------------------------------------
 
   /// Archives [emails]. Returns whether it happened.
@@ -202,20 +231,48 @@ class MailActions {
     );
   }
 
+  /// Snoozes [emails] until [at]; Undo brings them back as they were. Asks
+  /// the system to wake Loupe then. Returns whether it happened.
+  Future<bool> snoozeEmails(List<EmailSummary> emails, DateTime at) async {
+    final when = formatSendTimeFor(context, at, now: DateTime.now());
+    var storage = SnoozeStorage.server;
+    final ok = await _withUndo(
+      emails,
+      _label(emails.length, (n) => 'Snoozed $n until $when'),
+      () async => storage = await _repo.snooze(_ids(emails), at),
+      restoreKeywords: {Snooze.keyword(at), for (final e in emails) ...Snooze.keywordsIn(e.keywords)},
+      relabel: () => storage == SnoozeStorage.device
+          ? 'Snoozed until $when on this device only: the server can’t store snooze times.'
+          : null,
+    );
+    if (ok && context.mounted) wakeUpAt(ref, at);
+    return ok;
+  }
+
+  /// Wakes snoozed [emails] now: back to the Inbox, unread.
+  Future<bool> wakeEmails(List<EmailSummary> emails) => _withUndo(
+    emails,
+    _label(emails.length, (n) => 'Moved $n to Inbox'),
+    () => _repo.unsnooze(_ids(emails)),
+    restoreKeywords: {Keywords.seen, Keywords.newAgain, for (final e in emails) ...Snooze.keywordsIn(e.keywords)},
+  );
+
   static List<String> _ids(List<EmailSummary> emails) => [for (final e in emails) e.id];
 
   /// "Archived 1 message", "Moved 3 messages to Junk".
   static String _label(int count, String Function(String messages) text) =>
       text(count == 1 ? '1 message' : '$count messages');
 
-  /// Runs [action] and shows [label] with Undo for [undoable] (default: all
-  /// of [emails]). Errors are shown instead. Returns whether it ran.
+  /// Runs [action] and shows [label] (or what [relabel] says afterwards)
+  /// with Undo for [undoable] (default: all of [emails]). Errors are shown
+  /// instead. Returns whether it ran.
   Future<bool> _withUndo(
     List<EmailSummary> emails,
     String label,
     Future<void> Function() action, {
     List<EmailSummary>? undoable,
     Set<String> restoreKeywords = const {},
+    String? Function()? relabel,
   }) async {
     if (emails.isEmpty) return false;
     final messenger = ScaffoldMessenger.maybeOf(context);
@@ -231,7 +288,7 @@ class MailActions {
     if (messenger != null) {
       showSnack(
         messenger,
-        label,
+        relabel?.call() ?? label,
         action: restore.isEmpty
             ? null
             : SnackBarAction(
@@ -324,6 +381,12 @@ class MailActions {
         color: colors.swipeArchive,
         onTriggered: () => moveWithPicker([row]),
       ),
+      SwipeAction.snooze => SwipeActionSpec(
+        icon: LoupeIcons.swipeSnooze,
+        label: 'Snooze',
+        color: colors.snooze,
+        onTriggered: () => snooze([row]),
+      ),
       SwipeAction.more => SwipeActionSpec(
         icon: LoupeIcons.swipeMore,
         label: 'More',
@@ -357,6 +420,7 @@ class MailActions {
     final latest = row.latest;
     final role = _boxes[latest.mailboxId]?.role;
     final unread = row.unreadCount > 0;
+    final snoozed = isSnoozed(latest);
     final recipients = {...latest.to, ...latest.cc}.length;
     final choice = await showActionSheet<String>(
       context,
@@ -371,6 +435,11 @@ class MailActions {
           'read',
           icon: unread ? LoupeIcons.markRead : LoupeIcons.markUnread,
         ),
+        if (snoozed) ...[
+          const SheetAction('Wake Now', 'wake', icon: LoupeIcons.wakeNow),
+          const SheetAction('Change Snooze Time…', 'snooze', icon: LoupeIcons.snooze),
+        ] else
+          const SheetAction('Snooze…', 'snooze', icon: LoupeIcons.snooze),
         const SheetAction('Tag…', 'tag', icon: LoupeIcons.tag),
         const SheetAction('Move Message…', 'move', icon: LoupeIcons.move),
         if (role == MailboxRole.junk)
@@ -399,6 +468,10 @@ class MailActions {
         await setFlag([row], flagged: !latest.isFlagged);
       case 'read':
         await setRead([row], read: unread);
+      case 'snooze':
+        await snooze([row]);
+      case 'wake':
+        await wake([row]);
       case 'tag':
         final tags = await showTagPicker(context, current: latest.tags.toSet());
         if (tags != null) await setTags(row, tags);

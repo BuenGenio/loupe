@@ -316,8 +316,24 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
     );
   }
 
+  /// Snoozes the conversation's messages in [m]'s mailbox (or gives them a
+  /// new time) and closes the conversation.
+  Future<void> _snooze(EmailSummary m) async {
+    final actions = _mailActions;
+    final emails = _thread(m);
+    final at = await actions.askSnoozeTime(current: m.snoozedUntil);
+    if (at == null || !mounted) return;
+    if (await actions.snoozeEmails(emails, at)) _close();
+  }
+
   Future<void> _showMenu(EmailSummary m, {required bool canArchive, required MailboxRole role}) async {
-    final action = await showMessageMenu(context, message: m, canArchive: canArchive, mailboxRole: role);
+    final action = await showMessageMenu(
+      context,
+      message: m,
+      canArchive: canArchive,
+      mailboxRole: role,
+      snoozed: _mailActions.isSnoozed(m),
+    );
     if (action == null || !mounted) return;
     final single = (_messages?.length ?? 0) <= 1;
     switch (action) {
@@ -338,6 +354,10 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
           onToggle: (k, on) =>
               _act(() => _repo.setKeywords([m.id], add: on ? {k} : const {}, remove: on ? const {} : {k})),
         );
+      case MessageAction.snooze:
+        await _snooze(m);
+      case MessageAction.wakeNow:
+        await _mailActions.wakeEmails(_thread(m));
       case MessageAction.move:
         await _move(m, [m], close: single);
       case MessageAction.archive:

@@ -20,6 +20,7 @@ String swipeActionLabel(SwipeAction a) => switch (a) {
   SwipeAction.archive => 'Archive',
   SwipeAction.trash => 'Trash',
   SwipeAction.move => 'Move Message',
+  SwipeAction.snooze => 'Snooze',
   SwipeAction.more => 'More',
 };
 
