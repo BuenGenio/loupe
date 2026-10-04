@@ -11,6 +11,8 @@ import '../../shared/tags.dart';
 import '../../theme/theme.dart';
 import 'attachments.dart';
 import 'auth_results.dart';
+import 'security/security_badge.dart';
+import 'security/security_gate.dart';
 import '../../theme/loupe_icons.dart';
 
 /// One message of a conversation: a one-line summary when collapsed, the
@@ -133,7 +135,7 @@ class _MessageCardState extends State<MessageCard> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _header(context, auth),
+          _header(context, auth, content),
           AnimatedSize(
             duration: const Duration(milliseconds: 180),
             alignment: Alignment.topCenter,
@@ -152,7 +154,7 @@ class _MessageCardState extends State<MessageCard> {
     },
   );
 
-  Widget _header(BuildContext context, AuthResults auth) {
+  Widget _header(BuildContext context, AuthResults auth, EmailContent? content) {
     final theme = Theme.of(context);
     final colors = LoupeColors.of(context);
     final sender = _m.sender;
@@ -189,7 +191,7 @@ class _MessageCardState extends State<MessageCard> {
                         ),
                       ),
                     ),
-                    AuthBadge(verdict: auth.verdict, summary: auth.summary),
+                    SecurityBadge(message: _m, content: content),
                   ],
                 ),
                 InkWell(
@@ -343,15 +345,22 @@ class _MessageCardState extends State<MessageCard> {
       children: [
         if (widget.showOriginalHint && widget.settings.mode == ReaderMode.readable)
           _OriginalHint(onUseOriginal: widget.onUseOriginal),
-        ReadableMessageView(
+        SecurityGate(
+          message: _m,
           content: content,
-          senderDomain: widget.message.sender?.domain,
-          settings: widget.settings,
-          remoteContent: widget.remoteContent,
-          onAllowRemoteContent: widget.onAllowRemoteContent,
-          onOpenLink: widget.onOpenLink,
-          loadAttachment: widget.loadAttachment,
-          onSuggestOriginal: widget.onSuggestOriginal,
+          placeholder: const BodySkeleton(),
+          builder: (context, {required inert, required openLinksDirectly}) => ReadableMessageView(
+            content: content,
+            senderDomain: widget.message.sender?.domain,
+            settings: widget.settings,
+            remoteContent: widget.remoteContent,
+            onAllowRemoteContent: widget.onAllowRemoteContent,
+            onOpenLink: widget.onOpenLink,
+            loadAttachment: widget.loadAttachment,
+            onSuggestOriginal: widget.onSuggestOriginal,
+            openLinksDirectly: openLinksDirectly,
+            inert: inert,
+          ),
         ),
         AttachmentList(content: content, load: widget.loadAttachment),
       ],

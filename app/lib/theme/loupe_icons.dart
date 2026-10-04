@@ -121,6 +121,15 @@ abstract final class LoupeIcons {
   static const IconData unverified = FluentIcons.shield_error_24_filled;
   static const IconData readable = FluentIcons.sparkle_24_regular;
 
+  // Security (the phishing check and privacy report) --------------------------
+
+  static const IconData phishing = FluentIcons.shield_dismiss_24_filled;
+  static const IconData caution = FluentIcons.shield_error_24_filled;
+  static const IconData shield = FluentIcons.shield_24_regular;
+  static const IconData trackers = FluentIcons.eye_tracking_off_24_regular;
+  static const IconData redirect = FluentIcons.arrow_routing_24_regular;
+  static const IconData openDirectly = FluentIcons.link_24_regular;
+
   // Settings ----------------------------------------------------------------
 
   static const IconData swipeActions = FluentIcons.swipe_right_24_regular;
