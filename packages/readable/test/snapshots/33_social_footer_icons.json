@@ -67,6 +67,7 @@
       },
       {
         "type": "p",
+        "align": "center",
         "inlines": [
           {
             "img": 0
@@ -87,31 +88,32 @@
       },
       {
         "type": "p",
+        "align": "center",
         "inlines": [
           {
             "text": "Preferences",
             "u": true,
-            "scale": 0.85,
+            "scale": 0.8,
             "link": 3
           },
           {
-            "text": " | ",
-            "scale": 0.85
+            "text": " · ",
+            "scale": 0.8
           },
           {
             "text": "Unsubscribe",
             "u": true,
-            "scale": 0.85,
+            "scale": 0.8,
             "link": 4
           },
           {
-            "text": " | ",
-            "scale": 0.85
+            "text": " · ",
+            "scale": 0.8
           },
           {
             "text": "Archive",
             "u": true,
-            "scale": 0.85,
+            "scale": 0.8,
             "link": 5
           }
         ]
@@ -161,7 +163,7 @@
             "link": 0
           },
           {
-            "text": " | "
+            "text": " · "
           },
           {
             "text": "Unsubscribe"
@@ -171,7 +173,7 @@
             "link": 1
           },
           {
-            "text": " | "
+            "text": " · "
           },
           {
             "text": "Archive"

@@ -9,6 +9,7 @@ import 'package:html/dom.dart';
 
 import '../model/document.dart';
 import 'css.dart';
+import 'fine_print.dart';
 import 'limits.dart';
 import 'links.dart';
 import 'plain_text.dart' show expandTabs, linkify;
@@ -27,9 +28,6 @@ ReaderDocument convertBody(Element body, {required Budget budget, CidResolver? r
   final blocks = root.finish();
   return c.document(blocks);
 }
-
-/// Default browser font size; email sizes are relative to it.
-const _basePx = 16.0;
 
 /// Inline elements whose background colour is a highlight (block
 /// backgrounds are layout and are dropped).
@@ -111,7 +109,7 @@ const _maxAlignedChars = 160;
 final class _Ctx {
   const _Ctx({
     this.run = RunStyle.plain,
-    this.px = _basePx,
+    this.px = defaultBodyPx,
     this.align = BlockAlign.start,
     this.dir = TextDir.auto,
     this.pre = false,
@@ -171,7 +169,7 @@ final class _Converter {
   int dataImageBytes = 0;
 
   ReaderDocument document(List<Block> blocks) {
-    final grouped = groupImages(blocks, images);
+    final grouped = resolveTextSizes(groupImages(blocks, images), links);
     var contentImages = 0;
     void countImages(List<Block> bs) {
       for (final b in bs) {
@@ -227,7 +225,7 @@ final class _Converter {
         run = run.copyWith(mono: true);
         pre = true;
       case 'small':
-        px = px * 0.85;
+        px = px / 1.2; // font-size: smaller
       case 'big':
         px = px * 1.2;
       case 'sub':
@@ -291,7 +289,7 @@ final class _Converter {
       final direction = style['direction']?.toLowerCase();
       if (direction == 'rtl') dir = TextDir.rtl;
       if (direction == 'ltr') dir = TextDir.ltr;
-      final fontSize = style['font-size'];
+      final fontSize = fontSizeOf(style);
       if (fontSize != null) px = parseFontSize(fontSize, px) ?? px;
       final family = style['font-family'];
       if (family != null) run = run.copyWith(mono: isMonospaceFamily(family));
@@ -299,7 +297,7 @@ final class _Converter {
       if (ws != null && ws.startsWith('pre')) pre = true;
       if (ws == 'normal' || ws == 'nowrap') pre = false;
     }
-    if (px != ctx.px) run = run.copyWith(scale: scaleStep(px));
+    if (px != ctx.px) run = run.copyWith(scale: provisionalScale(px));
     return _Ctx(
       run: run,
       px: px,
@@ -417,6 +415,10 @@ final class _Sink {
   final _inlines = <Inline>[];
   var _attrs = const _ParaAttrs();
 
+  /// Walking cells of an inline row (or an inline icon table): block
+  /// wrappers inside don't break the line.
+  var _flat = false;
+
   /// The line element that produced the last paragraph, while consecutive
   /// lines can still be tight.
   Element? _lastLine;
@@ -456,8 +458,8 @@ final class _Sink {
     final style = parseStyle(n.attributes['style']);
     var inner = c.derive(n, ctx, tag, style);
 
-    if (_attrs.pre && tag != 'img' && tag != 'br' && tag != 'a') {
-      // Inside <pre>, everything is inline.
+    if ((_attrs.pre || _flat) && tag != 'img' && tag != 'br' && tag != 'a') {
+      // Inside <pre> and inline rows, everything is inline.
       visitChildren(n, inner);
       return;
     }
@@ -477,7 +479,7 @@ final class _Sink {
 
     switch (tag) {
       case 'br':
-        _inlines.add(TextRun('\n', ctx.run));
+        _inlines.add(TextRun(_flat ? ' ' : '\n', ctx.run));
       case 'wbr':
         _inlines.add(TextRun('\u200b', ctx.run));
       case 'img':
@@ -485,7 +487,7 @@ final class _Sink {
       case 'hr':
         addBlock(const RuleBlock());
       case 'a':
-        _anchor(n, style, ctx, inner, displayBlock);
+        _anchor(n, style, ctx, inner, displayBlock && !_flat);
       case 'ul' || 'ol' || 'menu' || 'dir':
         _list(n, inner, style, ordered: tag == 'ol');
       case 'blockquote':
@@ -704,6 +706,15 @@ final class _Sink {
   // -- Tables ----------------------------------------------------------------
 
   void _table(Element table, _Ctx outer) {
+    if (_isInlineIconTable(table)) {
+      // Floated icon tables side by side (social icons): one line.
+      if (_endsWithImage()) _inlines.add(TextRun('\u2003', outer.run));
+      final saved = _flat;
+      _flat = true;
+      visitChildren(table, outer);
+      _flat = saved;
+      return;
+    }
     flush();
     // Tables don't inherit text alignment (quirks mode, and what email CSS
     // assumes): a centred outer cell shouldn't centre every paragraph.
@@ -714,6 +725,8 @@ final class _Sink {
       return;
     }
     // Layout table: linearise in reading (DOM) order; columns become one.
+    // A centred table (or one in a centred cell) centres its short rows.
+    final centred = outer.align == BlockAlign.center || table.attributes['align']?.toLowerCase() == 'center';
     for (final caption in table.children.where((e) => e.localName == 'caption')) {
       _block(caption, c.derive(caption, ctx, 'caption'));
     }
@@ -722,62 +735,87 @@ final class _Sink {
       final rowCtx = c.derive(row, ctx, 'tr');
       final cells = row.children.where((e) => e.localName == 'td' || e.localName == 'th').toList();
       if (_isInlineRow(cells)) {
-        _inlineRow(row, cells, rowCtx);
+        _inlineRow(row, cells, rowCtx, centred: centred);
       } else {
         for (final cell in cells) {
+          // A lone "|" between stacked cells separates nothing.
+          if (_isSeparatorCell(cell)) continue;
           visit(cell, rowCtx);
         }
       }
     }
   }
 
-  /// A row of short, inline-only cells (footer links, social icons) becomes
-  /// one line instead of a stack of tiny paragraphs.
+  /// A row of short, inline-only cells (navigation and footer links, social
+  /// icons) becomes one line instead of a stack of tiny paragraphs. Cells
+  /// may wrap their line in paragraphs, divs or one-cell tables (Outlook
+  /// puts every cell's text in a `<p class=MsoNormal>`).
   bool _isInlineRow(List<Element> cells) {
-    var nonEmpty = 0;
+    var content = 0;
     var total = 0;
     for (final cell in cells) {
-      final len = visibleTextLength(cell);
-      final hasImage = cell.querySelector('img') != null;
-      if (len == 0 && !hasImage) continue;
-      if (len > 40) return false;
-      total += len;
-      nonEmpty++;
-      for (final e in cell.querySelectorAll('*')) {
-        final t = e.localName;
-        if (_blockContentTags.contains(t) || t == 'div' || t == 'p' || t == 'br') return false;
-        if (t == 'img' && !_looksLikeIcon(e)) return false;
-      }
+      final shape = _inlineCell(cell);
+      if (shape == null) return false;
+      if (shape.text == 0 && shape.images == 0) continue;
+      // Buttons side by side stay buttons (they share a row anyway).
+      if (_isButtonCell(cell)) return false;
+      total += shape.text;
+      content++;
     }
-    return nonEmpty >= 2 && total <= 100;
+    return content >= 2 && total <= _maxInlineRowChars;
   }
 
-  void _inlineRow(Element row, List<Element> cells, _Ctx ctx) {
+  void _inlineRow(Element row, List<Element> cells, _Ctx ctx, {bool centred = false}) {
     flush();
     final saved = _attrs;
     final first = cells.firstWhere((c) => visibleTextLength(c) > 0 || c.querySelector('img') != null);
     final firstCtx = c.derive(first, ctx, 'td');
-    _attrs = _ParaAttrs(element: row, align: firstCtx.align, dir: firstCtx.dir, muted: firstCtx.muted);
+    final align = firstCtx.align == BlockAlign.start && centred ? BlockAlign.center : firstCtx.align;
+    _attrs = _ParaAttrs(element: row, align: align, dir: firstCtx.dir, muted: firstCtx.muted);
+    final savedFlat = _flat;
+    _flat = true;
     String? previous;
+    var separated = false;
     for (final cell in cells) {
-      final text = flatText(cell, 100).trim();
+      final text = flatText(cell, 200).replaceAll(_blank, ' ').trim();
       final hasImage = cell.querySelector('img') != null;
       if (text.isEmpty && !hasImage) continue;
-      if (previous != null) {
-        final separatorLike = RegExp(r'^[|•·\-–—/]$');
-        final sep = previous.isEmpty || text.isEmpty
-            ? '\u2003'
-            : (separatorLike.hasMatch(previous) || separatorLike.hasMatch(text) || previous.endsWith(':')
-                  ? ' '
-                  : ' · ');
-        _inlines.add(TextRun(sep, ctx.run));
+      if (!hasImage && _separator.hasMatch(text)) {
+        // Separator cells are dropped; the cells around them get " · ".
+        separated = true;
+        continue;
       }
-      final cellCtx = c.derive(cell, ctx, 'td');
-      visitChildren(cell, cellCtx);
+      if (previous != null) {
+        final String sep;
+        if (previous.isEmpty || text.isEmpty) {
+          sep = separated ? ' · ' : '\u2003'; // icons
+        } else {
+          sep = previous.endsWith(':') ? ' ' : ' · ';
+        }
+        _inlines.add(TextRun(sep, _separatorStyle(ctx)));
+      }
+      visitChildren(cell, c.derive(cell, ctx, 'td'));
       previous = text;
+      separated = false;
     }
     flush();
+    _flat = savedFlat;
     _attrs = saved;
+  }
+
+  /// A separator takes the size of the text before it, without its link.
+  RunStyle _separatorStyle(_Ctx row) {
+    final last = _inlines.whereType<TextRun>().lastOrNull;
+    return RunStyle(scale: last?.style.scale ?? row.run.scale, color: row.run.color);
+  }
+
+  bool _endsWithImage() {
+    for (var i = _inlines.length - 1; i >= 0; i--) {
+      final inline = _inlines[i];
+      if (inline is InlineImage) return true;
+      if (inline is TextRun && inline.text.replaceAll(_blank, '').isNotEmpty) return false;
+    }
+    return false;
   }
 
   void _dataTable(List<Element> rows, _Ctx ctx) {
@@ -1136,6 +1174,8 @@ bool isDataTable(Element table, [List<Element>? rowList]) {
   var cellCount = 0;
   var textTotal = 0;
   final filledColumns = <int>{};
+  // Columns whose filled cells are all a lone "|" or "·": separators.
+  final separatorColumns = <int, bool>{};
   for (final row in rows) {
     var col = 0;
     for (final cell in row.children) {
@@ -1149,7 +1189,11 @@ bool isDataTable(Element table, [List<Element>? rowList]) {
       }
       final len = visibleTextLength(cell);
       if (len > 200) return false;
-      if (len > 0) filledColumns.add(col);
+      if (len > 0) {
+        filledColumns.add(col);
+        final lone = len == 1 && _separatorColumn.hasMatch(cell.text.trim());
+        separatorColumns[col] = (separatorColumns[col] ?? true) && lone;
+      }
       textTotal += len;
       cellCount++;
       col += (int.tryParse(cell.attributes['colspan'] ?? '') ?? 1).clamp(1, 12);
@@ -1158,12 +1202,125 @@ bool isDataTable(Element table, [List<Element>? rowList]) {
   }
   final columns = counts.entries.reduce((a, b) => a.value >= b.value ? a : b).key;
   if (columns < 2 || columns > 12) return false;
-  // Spacer columns (always empty) are layout.
+  // Spacer columns (always empty) and separator columns are layout.
   if (filledColumns.length < columns) return false;
+  if (separatorColumns.values.any((s) => s)) return false;
   if (hasHeader) return true;
   final regular = counts[columns]! / rows.length >= 0.75;
   return regular && cellCount > 0 && textTotal / cellCount <= 40;
 }
+
+/// Most visible characters of one cell of an inline row.
+const _maxInlineCellChars = 40;
+
+/// Most visible characters of a whole inline row.
+const _maxInlineRowChars = 240;
+
+/// Text of a cell that only separates its neighbours.
+final _separator = RegExp(r'^[|¦‖•·\-–—/]$');
+
+/// A cell holding only a separator. Its text is read first: that stops after
+/// a few characters, while looking for an image walks the whole cell.
+bool _isSeparatorCell(Element cell) =>
+    _separator.hasMatch(flatText(cell, 20).replaceAll(_blank, ' ').trim()) && cell.querySelector('img') == null;
+
+/// The visible characters and icons of a cell holding one short line of
+/// inline content (text, links, icons, whatever wrappers around them), or
+/// null when it holds more: several lines, block content, a content image or
+/// long text.
+({int text, int images})? _inlineCell(Element cell) {
+  var text = 0;
+  var images = 0;
+  var lines = 0;
+  // Whether a line ended (a block element or a <br>) since the last content.
+  var broken = true;
+  var seen = 0;
+  const boundary = Object();
+  final stack = <Object>[...cell.nodes.reversed];
+  while (stack.isNotEmpty) {
+    if (++seen > 300) return null;
+    final n = stack.removeLast();
+    if (identical(n, boundary)) {
+      broken = true;
+      continue;
+    }
+    if (n is Text) {
+      final len = n.data.replaceAll(_blank, '').length;
+      if (len == 0) continue;
+      text += len;
+      if (text > _maxInlineCellChars) return null;
+    } else if (n is Element) {
+      final tag = n.localName ?? '';
+      if (tag == 'br') {
+        broken = true;
+        continue;
+      }
+      if (tag == 'img') {
+        if (!_looksLikeIcon(n)) return null;
+        images++;
+      } else {
+        if (tag != 'table' && _blockContentTags.contains(tag)) return null;
+        if (tag == 'table' || _blockTags.contains(tag)) {
+          broken = true;
+          stack.add(boundary);
+        }
+        stack.addAll(n.nodes.reversed);
+        continue;
+      }
+    } else {
+      continue;
+    }
+    // Text or an icon: content on the current line.
+    if (broken) {
+      if (++lines > 1) return null;
+      broken = false;
+    }
+  }
+  return (text: text, images: images);
+}
+
+/// A coloured cell around one link, or a link with its own background.
+bool _isButtonCell(Element cell) {
+  final style = parseStyle(cell.attributes['style']);
+  final bg = parseColor(style['background-color'] ?? style['background'] ?? cell.attributes['bgcolor']);
+  if (bg != null && _soleAnchor(cell) != null) return true;
+  for (final a in cell.querySelectorAll('a')) {
+    final s = parseStyle(a.attributes['style']);
+    if (parseColor(s['background-color'] ?? s['background'] ?? a.attributes['bgcolor']) != null) return true;
+  }
+  return false;
+}
+
+/// A floated or inline table holding only icons (Mailchimp's social icons,
+/// one table each): it flows with its neighbours.
+bool _isInlineIconTable(Element table) {
+  final style = parseStyle(table.attributes['style']);
+  final align = table.attributes['align']?.toLowerCase();
+  final display = style['display']?.toLowerCase() ?? '';
+  final float = style['float']?.toLowerCase() ?? '';
+  if (align != 'left' && align != 'right' && !display.startsWith('inline') && float != 'left' && float != 'right') {
+    return false;
+  }
+  var icons = 0;
+  var seen = 0;
+  final stack = <Node>[table];
+  while (stack.isNotEmpty) {
+    if (++seen > 100) return false;
+    final n = stack.removeLast();
+    if (n is Text) {
+      if (n.data.replaceAll(_blank, '').isNotEmpty) return false;
+    } else if (n is Element) {
+      if (n.localName == 'img') {
+        if (!_looksLikeIcon(n)) return false;
+        icons++;
+      }
+      stack.addAll(n.nodes);
+    }
+  }
+  return icons > 0;
+}
+
+final _separatorColumn = RegExp(r'^[|¦‖•·]$');
 
 bool _looksLikeIcon(Element img) {
   final style = parseStyle(img.attributes['style']);

@@ -1,0 +1,397 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 582,
+      "keptText": 582,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://news.gardenclub.example/web/123"
+      },
+      {
+        "url": "https://news.gardenclub.example/swap/123"
+      },
+      {
+        "url": "https://news.gardenclub.example/confirm/123"
+      },
+      {
+        "url": "https://news.gardenclub.example/prefs/123"
+      },
+      {
+        "url": "https://news.gardenclub.example/unsubscribe/123"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "align": "right",
+        "inlines": [
+          {
+            "text": "View in browser",
+            "u": true,
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "h1",
+        "inlines": [
+          {
+            "text": "The Garden Club monthly",
+            "color": "#2e7d32"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Hello Eugene,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Spring is here, and so is our plant swap. Bring cuttings, seeds and spare pots, and take home something new. We will also have a short talk on composting for small gardens."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The swap is on Saturday 14 March, from 10:00 to 13:00, at the community hall."
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "text": "See what's on offer",
+        "link": 1,
+        "bg": "#2e7d32",
+        "color": "#ffffff"
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "See you there,\nRobin, club secretary"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "align": "center",
+        "inlines": [
+          {
+            "text": "You are receiving this because you signed up at the spring fair. ",
+            "color": "#666666"
+          },
+          {
+            "text": "Confirm your membership",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": " to keep getting club news.",
+            "color": "#666666"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "align": "center",
+        "inlines": [
+          {
+            "text": "You received this email because you subscribed to The Garden Club newsletter at gardenclub.example.",
+            "scale": 0.8
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "align": "center",
+        "inlines": [
+          {
+            "text": "Manage preferences",
+            "u": true,
+            "scale": 0.8,
+            "color": "#666666",
+            "link": 3
+          },
+          {
+            "text": " · ",
+            "scale": 0.8
+          },
+          {
+            "text": "Unsubscribe",
+            "u": true,
+            "scale": 0.8,
+            "color": "#666666",
+            "link": 4
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "align": "center",
+        "inlines": [
+          {
+            "text": "The Garden Club, 12 Example Lane, Sampletown ST1 2AB",
+            "color": "#666666"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "align": "center",
+        "inlines": [
+          {
+            "text": "Questions? Just reply to this email.",
+            "color": "#666666"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 582,
+      "keptText": 582,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://news.gardenclub.example/web/123"
+      },
+      {
+        "url": "https://news.gardenclub.example/swap/123"
+      },
+      {
+        "url": "https://news.gardenclub.example/confirm/123"
+      },
+      {
+        "url": "https://news.gardenclub.example/prefs/123"
+      },
+      {
+        "url": "https://news.gardenclub.example/unsubscribe/123"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "View in browser"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The Garden Club monthly"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Hello Eugene,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Spring is here, and so is our plant swap. Bring cuttings, seeds and spare pots, and take home something new. We will also have a short talk on composting for small gardens."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The swap is on Saturday 14 March, from 10:00 to 13:00, at the community hall."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "See what's on offer"
+          },
+          {
+            "text": " [2]",
+            "link": 1
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "See you there,\nRobin, club secretary"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "You are receiving this because you signed up at the spring fair. "
+          },
+          {
+            "text": "Confirm your membership"
+          },
+          {
+            "text": " [3]",
+            "link": 2
+          },
+          {
+            "text": " to keep getting club news."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "You received this email because you subscribed to The Garden Club newsletter at gardenclub.example."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Manage preferences"
+          },
+          {
+            "text": " [4]",
+            "link": 3
+          },
+          {
+            "text": " · "
+          },
+          {
+            "text": "Unsubscribe"
+          },
+          {
+            "text": " [5]",
+            "link": 4
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The Garden Club, 12 Example Lane, Sampletown ST1 2AB"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Questions? Just reply to this email."
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://news.gardenclub.example/web/123",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[2] "
+          },
+          {
+            "text": "https://news.gardenclub.example/swap/123",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[3] "
+          },
+          {
+            "text": "https://news.gardenclub.example/confirm/123",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[4] "
+          },
+          {
+            "text": "https://news.gardenclub.example/prefs/123",
+            "u": true,
+            "link": 3
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[5] "
+          },
+          {
+            "text": "https://news.gardenclub.example/unsubscribe/123",
+            "u": true,
+            "link": 4
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

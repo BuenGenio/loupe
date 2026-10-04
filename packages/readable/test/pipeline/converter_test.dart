@@ -96,7 +96,7 @@ void main() {
       expect((r as TextRun).style.mono, isTrue);
     });
 
-    test('font sizes map to relative steps; tiny fonts are floored', () {
+    test('font sizes map to relative steps; small text is fine print', () {
       final runs =
           (readable(
                     '<p><span style="font-size:8px">a</span> <span style="font-size:18px">b</span> '
@@ -107,7 +107,7 @@ void main() {
               .cast<TextRun>()
               .where((r) => r.text.trim().isNotEmpty)
               .map((r) => r.style.scale);
-      expect(runs, [0.85, 1.15, 1.0]);
+      expect(runs, [0.8, 1.15, 1.0]);
     });
 
     test('big text becomes a heading', () {
@@ -137,6 +137,103 @@ void main() {
     });
   });
 
+  group('fine print', () {
+    const body = '<p>The body of the message, at the size the sender chose for it, long enough to count as body.</p>';
+
+    /// Scales of the runs of the last paragraph of [html].
+    List<double> lastScales(String html) =>
+        (readable(html).blocks.last as ParagraphBlock).inlines.whereType<TextRun>().map((r) => r.style.scale).toList();
+
+    test('every way of setting text smaller', () {
+      for (final small in [
+        '<p style="font-size:7.5pt">x</p>',
+        '<p style="font-size:8.0pt">x</p>',
+        '<p style="font-size:11px">x</p>',
+        '<p style="font-size:0.75em">x</p>',
+        '<p style="font-size:80%">x</p>',
+        '<p style="font-size:x-small">x</p>',
+        '<p style="font-size:small">x</p>',
+        '<p style="font-size:smaller">x</p>',
+        '<p style="font:italic 9pt/1.2 Arial">x</p>',
+        '<p><font size="1">x</font></p>',
+        '<p><font size="2">x</font></p>',
+        '<p><small>x</small></p>',
+        '<style>p.disclaimer{font-size:8pt}</style><p class="disclaimer">x</p>',
+        '<style>.footer{font-size:11px}</style><div class="footer"><p>x</p></div>',
+      ]) {
+        expect(lastScales('$body$small'), [0.8], reason: small);
+      }
+    });
+
+    test('slightly smaller text is not fine print', () {
+      for (final html in ['<p style="font-size:14px">x</p>', '<p style="font-size:10.5pt">x</p>']) {
+        expect(lastScales('$body$html'), [1.0], reason: html);
+      }
+    });
+
+    test('sizes compare with the body size the message sets', () {
+      // A newsletter set entirely in 13 px: body size, with an 11 px footer.
+      final doc = readable(
+        '<body style="font-size:13px"><p>First paragraph of the newsletter, set in thirteen pixels.</p>'
+        '<p>Second paragraph, also in thirteen pixels, and the bulk of the text.</p>'
+        '<p>Third paragraph, the same again, so that the body is clearly thirteen.</p>'
+        '<p style="font-size:11px">Sent by the newsletter. Unsubscribe.</p></body>',
+      );
+      final scales = [for (final b in doc.blocks) (b as ParagraphBlock).inlines.cast<TextRun>().single.style.scale];
+      expect(scales, [1.0, 1.0, 1.0, 0.8]);
+      // The same with the size on each paragraph instead of the body.
+      final inline = readable(
+        '${'<p style="font-size:13px">A paragraph of the newsletter in thirteen pixels.</p>' * 3}'
+        '<p style="font-size:13px">The closing paragraph, also thirteen.</p>',
+      );
+      expect(inline.blocks.cast<ParagraphBlock>().every((p) => !(p.inlines.single as TextRun).style.fine), isTrue);
+      // Outlook: an 11 pt body with a 9 pt signature line and a 10 pt note.
+      expect(
+        lastScales(
+          '<style>p.MsoNormal{font-size:11.0pt}</style><p class=MsoNormal>Hi Sam, the draft looks good to me.</p>'
+          '<p class=MsoNormal>Please send it on to the client today.</p><p class=MsoNormal>Thanks</p>'
+          '<p class=MsoNormal><span style="font-size:10.0pt">Sent from the office</span> '
+          '<span style="font-size:9.0pt">Partner</span></p>',
+        ),
+        [1.0, 0.8],
+      );
+    });
+
+    test('a long disclaimer does not set the body size', () {
+      final doc = readable(
+        '<p>Please find the draft attached.</p><p>Regards,<br>Alex</p><p>Example LLP</p>'
+        '<p style="font-size:9px">${'This message is confidential. ' * 30}</p>',
+      );
+      expect((doc.blocks.last as ParagraphBlock).inlines.cast<TextRun>().single.style.fine, isTrue);
+      expect((doc.blocks.first as ParagraphBlock).inlines.cast<TextRun>().single.style.fine, isFalse);
+    });
+
+    test('grey fine print takes the secondary colour; links and brand colours keep theirs', () {
+      final runs =
+          (readable(
+                    '$body<p style="font-size:10px;color:#777777">Grey <span style="color:#000000">black</span> '
+                    '<span style="color:#c5221f">red</span> <a href="https://x.example/u" style="color:#999999">link</a> '
+                    '<span style="background:#ffff00;color:#333333">marked</span></p>',
+                  ).blocks.last
+                  as ParagraphBlock)
+              .inlines
+              .cast<TextRun>()
+              .where((r) => r.text.trim().isNotEmpty)
+              .toList();
+      expect(runs.every((r) => r.style.fine), isTrue);
+      // Grey and black merge into one run once their colours are dropped.
+      expect(runs.first.text, 'Grey black ');
+      expect(runs.map((r) => r.style.color), [null, 0xFFC5221F, 0xFF999999, 0xFF333333]);
+    });
+
+    test('code is never fine print', () {
+      final doc = readable('$body<pre style="font-size:11px">x = 1</pre><p><code style="font-size:11px">y</code></p>');
+      final pre = doc.blocks[1] as PreBlock;
+      expect((pre.inlines.single as TextRun).style.scale, 1.0);
+      expect(lastScales('$body<p><code style="font-size:11px">y</code></p>'), [1.0]);
+    });
+  });
+
   group('structure', () {
     test('headings, quotes, lists, pre, hr', () {
       final doc = readable(
@@ -163,7 +260,68 @@ void main() {
         '<table><tr><td><a href="https://x.example/u">Unsubscribe</a></td><td>|</td>'
         '<td><a href="https://x.example/p">Preferences</a></td></tr></table>',
       );
-      expect(text(doc.blocks.single), 'Unsubscribe | Preferences');
+      expect(text(doc.blocks.single), 'Unsubscribe · Preferences');
+    });
+
+    test('inline rows: wrappers, separators, labels and icons', () {
+      String row(String cells) => text(readable('<table><tr>$cells</tr></table>').blocks.single);
+      // Outlook wraps each cell's text in a paragraph.
+      expect(
+        row(
+          '<td><p class=MsoNormal><span style="font-size:8pt"><a href="https://x.example/p">Property</a></span></p></td>'
+          '<td><p class=MsoNormal>|</p></td><td><p class=MsoNormal><a href="https://x.example/l">Legal</a></p></td>'
+          '<td><p class=MsoNormal><o:p>&nbsp;</o:p></p></td>',
+        ),
+        'Property · Legal',
+      );
+      expect(row('<td>A</td><td>•</td><td>B</td><td>-</td><td>C</td><td>·</td><td>D</td>'), 'A · B · C · D');
+      expect(row('<td>One</td><td>Two</td>'), 'One · Two');
+      expect(row('<td>Order:</td><td>#1234</td>'), 'Order: #1234');
+      expect(row('<td><div><table><tr><td><b>Nested</b></td></tr></table></div></td><td>Cell</td>'), 'Nested · Cell');
+      final icons =
+          readable(
+                '<table><tr><td><img src="https://x.example/a.png" width="24" height="24"></td><td>|</td>'
+                '<td><img src="https://x.example/b.png" width="24" height="24"></td></tr></table>',
+              ).blocks.single
+              as ParagraphBlock;
+      expect(icons.inlines.whereType<InlineImage>(), hasLength(2));
+      expect(text(icons), ' · ');
+    });
+
+    test('rows that are not inline stay stacked', () {
+      List<String> rows(String cells) => readable('<table><tr>$cells</tr></table>').blocks.map(text).toList();
+      // Several lines in a cell.
+      expect(rows('<td>Name<br>Title</td><td>|</td><td>Phone</td>'), ['Name\nTitle', 'Phone']);
+      // Long text.
+      expect(rows('<td>${'long ' * 12}</td><td>Short</td>'), hasLength(2));
+      // Block content.
+      expect(rows('<td><ul><li>a</li></ul></td><td>b</td>').length, 2);
+      // A content image.
+      expect(rows('<td><img src="https://x.example/p.jpg" width="300" height="200"></td><td>Caption</td>').length, 2);
+      // Buttons side by side stay buttons.
+      final buttons = readable(
+        '<table><tr><td bgcolor="#003a70"><a href="https://x.example/a">Yes</a></td><td width="8"></td>'
+        '<td bgcolor="#003a70"><a href="https://x.example/b">No</a></td></tr></table>',
+      ).blocks;
+      expect(buttons.map((b) => b.runtimeType), [ButtonBlock, ButtonBlock]);
+    });
+
+    test('a column of lone separators makes a table layout, not data', () {
+      final doc = readable(
+        '<table><tr><td>Property</td><td>|</td><td>Legal</td></tr><tr><td>Tax</td><td>|</td><td>Funds</td></tr></table>',
+      );
+      expect(doc.blocks.map(text), ['Property · Legal', 'Tax · Funds']);
+    });
+
+    test('floated icon tables flow on one line', () {
+      final icon =
+          '<table align="left"><tr><td><a href="https://x.example/s"><img src="https://x.example/i.png" '
+          'width="24" height="24"></a></td></tr></table>';
+      final doc = readable('<div>Follow us: $icon$icon$icon</div><p>After</p>');
+      final p = doc.blocks.first as ParagraphBlock;
+      expect(p.inlines.whereType<InlineImage>(), hasLength(3));
+      expect(text(p), startsWith('Follow us:'));
+      expect(text(doc.blocks.last), 'After');
     });
 
     test('data tables stay tables, with colspans', () {

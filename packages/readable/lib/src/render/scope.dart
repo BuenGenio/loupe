@@ -130,14 +130,12 @@ class ReaderScope extends InheritedWidget {
     return scope!;
   }
 
-  /// Applies colour adaptation to a text colour over an optional highlight.
+  /// Applies colour adaptation to the sender's text colour [fg] (or our own
+  /// [fallback]) over an optional highlight [bg], as a pair.
   Color textColor(int? fg, {int? bg, bool large = false, Color? fallback}) {
     final adapter = colors;
     if (adapter == null) return fg != null ? Color(fg) : (fallback ?? styles.body.color!);
-    if (fg == null && fallback != null) {
-      return Color(adapter.foreground(fallback.toARGB32(), bg: bg, large: large));
-    }
-    return Color(adapter.foreground(fg, bg: bg, large: large));
+    return Color(adapter.foreground(fg, bg: bg, large: large, fallback: fallback?.toARGB32()));
   }
 
   Color highlight(int bg) => colors == null ? Color(bg) : Color(colors!.background(bg));

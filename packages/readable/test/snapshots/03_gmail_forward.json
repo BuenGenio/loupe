@@ -128,13 +128,12 @@
         "inlines": [
           {
             "text": "Ticket #8812 · ",
-            "scale": 0.85,
-            "color": "#999999"
+            "scale": 0.8
           },
           {
             "text": "View online",
             "u": true,
-            "scale": 0.85,
+            "scale": 0.8,
             "color": "#999999",
             "link": 2
           }

@@ -24,8 +24,7 @@
         "type": "p",
         "inlines": [
           {
-            "text": "This conference programme was designed for a very wide screen. The text is tiny, at nine pixels, and every column is seven hundred pixels wide. On a phone none of this should matter: the reader ignores widths and floors the font size.",
-            "scale": 0.85
+            "text": "This conference programme was designed for a very wide screen. The text is tiny, at nine pixels, and every column is seven hundred pixels wide. On a phone none of this should matter: the reader ignores widths and floors the font size."
           }
         ]
       },
@@ -33,8 +32,7 @@
         "type": "p",
         "inlines": [
           {
-            "text": "Second column, even smaller at eight pixels. Session times: 09:00 keynote, 10:30 workshops, 12:00 lunch, 13:30 panels and 16:00 closing remarks.",
-            "scale": 0.85
+            "text": "Second column, even smaller at eight pixels. Session times: 09:00 keynote, 10:30 workshops, 12:00 lunch, 13:30 panels and 16:00 closing remarks."
           }
         ]
       },
@@ -47,7 +45,6 @@
         "inlines": [
           {
             "text": "Fine print in six points that never wraps in the original: registration fees are non-refundable after 1 November 2026.",
-            "scale": 0.85,
             "color": "#999999"
           }
         ]

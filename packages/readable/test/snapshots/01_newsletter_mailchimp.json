@@ -81,7 +81,7 @@
           {
             "text": "View this email in your browser",
             "u": true,
-            "scale": 0.85,
+            "scale": 0.8,
             "color": "#656565",
             "link": 0
           }
@@ -186,6 +186,7 @@
       },
       {
         "type": "p",
+        "align": "center",
         "inlines": [
           {
             "img": 2
@@ -210,48 +211,42 @@
           {
             "text": "Copyright © 2026 The Weekly Loaf, All rights reserved.",
             "i": true,
-            "scale": 0.85,
-            "color": "#656565"
+            "scale": 0.8
           },
           {
             "text": "\nYou are receiving this email because you opted in via our website.\n\n",
-            "scale": 0.85,
-            "color": "#656565"
+            "scale": 0.8
           },
           {
             "text": "Our mailing address is:",
             "b": true,
-            "scale": 0.85,
-            "color": "#656565"
+            "scale": 0.8
           },
           {
             "text": "\nThe Weekly Loaf · 1 Example Street · Sampletown 12345\n\nWant to change how you receive these emails?\nYou can ",
-            "scale": 0.85,
-            "color": "#656565"
+            "scale": 0.8
           },
           {
             "text": "update your preferences",
             "u": true,
-            "scale": 0.85,
+            "scale": 0.8,
             "color": "#656565",
             "link": 6
           },
           {
             "text": " or ",
-            "scale": 0.85,
-            "color": "#656565"
+            "scale": 0.8
           },
           {
             "text": "unsubscribe from this list",
             "u": true,
-            "scale": 0.85,
+            "scale": 0.8,
             "color": "#656565",
             "link": 7
           },
           {
             "text": ".",
-            "scale": 0.85,
-            "color": "#656565"
+            "scale": 0.8
           }
         ]
       }

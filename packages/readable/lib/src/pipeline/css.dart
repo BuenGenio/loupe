@@ -191,6 +191,23 @@ double? parseFontSize(String value, double parentPx) {
   return parseLength(v, fontPx: parentPx);
 }
 
+final _fontShorthandSize = RegExp(
+  r'(?:^|\s)((?:[0-9]*\.)?[0-9]+(?:px|pt|em|rem|%)|xx-small|x-small|small|medium|large|x-large|xx-large|smaller|larger)'
+  r'(?:\s*/\s*\S+)?(?=\s|$)',
+  caseSensitive: false,
+);
+
+/// The size in a `font` shorthand (`bold 10px/1.2 Arial`, `8pt Verdana`).
+String? fontShorthandSize(String value) => _fontShorthandSize.firstMatch(value)?[1];
+
+/// The `font-size` of a parsed style, or the size of its `font` shorthand.
+String? fontSizeOf(Map<String, String> style) {
+  final size = style['font-size'];
+  if (size != null) return size;
+  final font = style['font'];
+  return font == null ? null : fontShorthandSize(font);
+}
+
 /// `<font size="…">`: 1–7, or relative (+1, -2) to 3.
 double? legacyFontSize(String value) {
   final v = value.trim();
@@ -200,14 +217,35 @@ double? legacyFontSize(String value) {
   return const [10.0, 13.0, 16.0, 18.0, 24.0, 32.0, 48.0][level - 1];
 }
 
-/// Maps a font size in px to one of the reader's relative steps.
-double scaleStep(double px) {
+/// The browser's default font size, which email sizes are relative to.
+const defaultBodyPx = 16.0;
+
+/// Text set below this share of the message's body size is fine print. 14 px
+/// under a 16 px body (0.875) is secondary text, not fine print; 13 px,
+/// `<small>`, 10 pt and `<font size="2">` under 16 px are.
+const finePrintRatio = 0.87;
+
+/// The relative step of a font size in px, before the body size of the
+/// message is known. Larger sizes map to absolute steps (big text becomes a
+/// heading); sizes below 16 px keep their exact ratio to 16 px until
+/// [resolveScale] compares them with the message's body size.
+double provisionalScale(double px) {
   if (px >= 23) return 1.5;
   if (px >= 19.5) return 1.3;
   if (px >= 17.5) return 1.15;
-  if (px < 12.5) return 0.85;
-  return 1.0;
+  if (px >= defaultBodyPx) return 1.0;
+  return math.max(px, 1) / defaultBodyPx;
 }
+
+/// The final step of a [provisionalScale] in a message whose body text is
+/// [bodyPx] (at most 16): fine print or body size; larger steps stay.
+double resolveScale(double scale, double bodyPx) {
+  if (scale >= 1) return scale;
+  return scale * defaultBodyPx < bodyPx * finePrintRatio ? finePrintScale : 1.0;
+}
+
+/// The reader's single step below body size.
+const finePrintScale = 0.8;
 
 final _monoFamilies = RegExp(
   r'courier|consolas|menlo|monaco|monospace|lucida console|lucida sans typewriter|andale mono|source code|'

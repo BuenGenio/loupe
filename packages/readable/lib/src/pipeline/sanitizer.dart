@@ -5,6 +5,7 @@ import 'package:html/dom.dart';
 
 import 'css.dart';
 import 'limits.dart';
+import 'style_inliner.dart';
 
 /// Elements removed together with their content.
 const _dropWithContent = {
@@ -92,10 +93,12 @@ final class SanitizeResult {
   bool truncated = false;
 }
 
-/// Cleans [document] in place and returns its body.
+/// Cleans [document] in place and returns its body. Simple `<style>` rules
+/// are applied as inline styles first, so class-based hiding counts too.
 SanitizeResult sanitize(Document document, Budget budget) {
+  inlineStyleSheets(document, budget);
   final body = document.body ?? document.documentElement ?? Element.tag('body');
-  final s = _Sanitizer(budget, _hiddenClasses(document));
+  final s = _Sanitizer(budget);
   final result = SanitizeResult(body);
   s.result = result;
   s.cleanChildren(body, 0);
@@ -104,10 +107,9 @@ SanitizeResult sanitize(Document document, Budget budget) {
 }
 
 final class _Sanitizer {
-  _Sanitizer(this.budget, this.hiddenClasses);
+  _Sanitizer(this.budget);
 
   final Budget budget;
-  final Set<String> hiddenClasses;
   late final SanitizeResult result;
 
   void cleanChildren(Element el, int depth) {
@@ -203,8 +205,7 @@ final class _Sanitizer {
     final cls = e.attributes['class'];
     if (cls != null && cls.isNotEmpty) {
       for (final c in cls.split(RegExp(r'\s+'))) {
-        final lc = c.toLowerCase();
-        if (hiddenClasses.contains(lc) || lc.contains('preheader')) return true;
+        if (c.toLowerCase().contains('preheader')) return true;
       }
     }
     return false;
@@ -260,45 +261,6 @@ double? imageDimension(Element img, String name, Map<String, String> style) {
   final attr = img.attributes[name]?.trim();
   if (attr == null || attr.isEmpty || attr.endsWith('%')) return null;
   return double.tryParse(attr.replaceFirst(RegExp(r'px$', caseSensitive: false), ''));
-}
-
-/// Classes hidden by simple top-level `<style>` rules (`.x { display:none }`).
-/// Rules inside `@media` are ignored: those are the responsive variants.
-Set<String> _hiddenClasses(Document document) {
-  final out = <String>{};
-  for (final style in document.getElementsByTagName('style')) {
-    final css = style.text.replaceAll(RegExp(r'/\*.*?\*/', dotAll: true), '');
-    var i = 0;
-    while (i < css.length) {
-      final open = css.indexOf('{', i);
-      if (open < 0) break;
-      final selectors = css.substring(i, open).trim();
-      if (selectors.contains('@')) {
-        i = _skipBlock(css, open);
-        continue;
-      }
-      final close = css.indexOf('}', open);
-      if (close < 0) break;
-      final decls = parseStyle(css.substring(open + 1, close));
-      if ((decls['display'] ?? '').toLowerCase().startsWith('none')) {
-        for (final sel in selectors.split(',')) {
-          final m = RegExp(r'^[a-zA-Z0-9]*\.([A-Za-z0-9_-]+)$').firstMatch(sel.trim());
-          if (m != null) out.add(m[1]!.toLowerCase());
-        }
-      }
-      i = close + 1;
-    }
-  }
-  return out;
-}
-
-int _skipBlock(String css, int open) {
-  var depth = 0;
-  for (var j = open; j < css.length; j++) {
-    if (css[j] == '{') depth++;
-    if (css[j] == '}' && --depth == 0) return j + 1;
-  }
-  return css.length;
 }
 
 /// Number of non-whitespace characters in the text under [root]; iterative so

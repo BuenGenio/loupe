@@ -1,0 +1,255 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 556,
+      "keptText": 556,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 1,
+      "remoteImages": 1,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://readingroom.example/leave"
+      }
+    ],
+    "images": [
+      {
+        "src": "https://cdn.readingroom.example/winter.jpg",
+        "width": 560.0,
+        "height": 300.0,
+        "alt": "The reading room in the snow"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "h2",
+        "inlines": [
+          {
+            "text": "Notes from the reading room",
+            "color": "#0b5394"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "This month we read three short novels set in winter. Each one is under two hundred pages, and each one is about a small community waiting for the thaw.",
+            "color": "#222222"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The group liked the second one best: a lighthouse keeper, a storm, and a stranger who arrives with nothing but a box of letters.",
+            "color": "#222222"
+          }
+        ]
+      },
+      {
+        "type": "img",
+        "image": 0
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The reading room in January, before the heating was fixed.",
+            "color": "#666666"
+          }
+        ]
+      },
+      {
+        "type": "h2",
+        "inlines": [
+          {
+            "text": "Next month",
+            "color": "#0b5394"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "We turn to essays: a collection about walking in cities, chosen by Priya. Copies are on the shelf by the door.",
+            "color": "#222222"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "We meet on the first Thursday at seven. Bring a friend, and a mug.",
+            "color": "#222222"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The Reading Room · 4 Example Row · Sampletown",
+            "scale": 0.8
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "You are receiving this because you joined the reading room list. ",
+            "scale": 0.8
+          },
+          {
+            "text": "Leave the list",
+            "u": true,
+            "scale": 0.8,
+            "link": 0
+          },
+          {
+            "text": ".",
+            "scale": 0.8
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 556,
+      "keptText": 556,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 1,
+      "remoteImages": 1,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://readingroom.example/leave"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Notes from the reading room"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "This month we read three short novels set in winter. Each one is under two hundred pages, and each one is about a small community waiting for the thaw."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The group liked the second one best: a lighthouse keeper, a storm, and a stranger who arrives with nothing but a box of letters."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[The reading room in the snow]"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The reading room in January, before the heating was fixed."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Next month"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "We turn to essays: a collection about walking in cities, chosen by Priya. Copies are on the shelf by the door."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "We meet on the first Thursday at seven. Bring a friend, and a mug."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The Reading Room · 4 Example Row · Sampletown"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "You are receiving this because you joined the reading room list. "
+          },
+          {
+            "text": "Leave the list"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://readingroom.example/leave",
+            "u": true,
+            "link": 0
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 1,
+    "contentIds": []
+  }
+}

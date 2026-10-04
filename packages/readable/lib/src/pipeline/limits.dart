@@ -63,6 +63,9 @@ final class Budget {
     return true;
   }
 
+  /// True once the shared time budget is spent.
+  bool get timeUp => _clock.elapsed > limits.timeLimit;
+
   /// Starts a new stage with a fresh node count (the time budget is shared).
   void resetNodes() {
     if (_exhausted) _truncated = true;

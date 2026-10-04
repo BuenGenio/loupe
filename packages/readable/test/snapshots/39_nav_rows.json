@@ -1,0 +1,533 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 351,
+      "keptText": 351,
+      "hiddenText": 0,
+      "hiddenElements": 1,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 3,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://www.firm.example/property"
+      },
+      {
+        "url": "https://www.firm.example/legal"
+      },
+      {
+        "url": "https://www.firm.example/financial"
+      },
+      {
+        "url": "https://www.firm.example/briefing"
+      },
+      {
+        "url": "https://www.firm.example/seminars"
+      },
+      {
+        "url": "https://social.example/firm"
+      },
+      {
+        "url": "https://video.example/firm"
+      },
+      {
+        "url": "https://www.firm.example/"
+      },
+      {
+        "url": "https://www.firm.example/privacy"
+      },
+      {
+        "url": "https://www.firm.example/terms"
+      },
+      {
+        "url": "https://www.firm.example/preferences"
+      },
+      {
+        "url": "https://www.firm.example/unsubscribe"
+      },
+      {
+        "url": "https://www.firm.example"
+      }
+    ],
+    "images": [
+      {
+        "src": "https://cdn.firm.example/i/linkedin.png",
+        "width": 24.0,
+        "height": 24.0,
+        "alt": "LinkedIn",
+        "link": 5,
+        "icon": true
+      },
+      {
+        "src": "https://cdn.firm.example/i/video.png",
+        "width": 24.0,
+        "height": 24.0,
+        "alt": "Video",
+        "link": 6,
+        "icon": true
+      },
+      {
+        "src": "https://cdn.firm.example/i/web.png",
+        "width": 24.0,
+        "height": 24.0,
+        "alt": "Website",
+        "link": 7,
+        "icon": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "p",
+        "align": "center",
+        "inlines": [
+          {
+            "text": "Property",
+            "color": "#003a70",
+            "link": 0
+          },
+          {
+            "text": " · "
+          },
+          {
+            "text": "Legal",
+            "color": "#003a70",
+            "link": 1
+          },
+          {
+            "text": " · "
+          },
+          {
+            "text": "Financial",
+            "color": "#003a70",
+            "link": 2
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Dear client,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Our autumn briefing covers the new commercial lease rules, a change to stamp duty on transfers between companies, and what both mean for property owners this year."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Read it online or come to one of our breakfast seminars."
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "text": "Read the briefing",
+        "link": 3,
+        "bg": "#003a70",
+        "color": "#ffffff"
+      },
+      {
+        "type": "button",
+        "text": "Book a seminar",
+        "link": 4,
+        "bg": "#e8eef5",
+        "color": "#003a70"
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "img": 0
+          },
+          {
+            "text": "  "
+          },
+          {
+            "img": 1
+          },
+          {
+            "text": "  "
+          },
+          {
+            "img": 2
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "align": "center",
+        "inlines": [
+          {
+            "text": "Privacy",
+            "u": true,
+            "scale": 0.8,
+            "color": "#666666",
+            "link": 8
+          },
+          {
+            "text": " · ",
+            "scale": 0.8
+          },
+          {
+            "text": "Terms",
+            "u": true,
+            "scale": 0.8,
+            "color": "#666666",
+            "link": 9
+          },
+          {
+            "text": " · ",
+            "scale": 0.8
+          },
+          {
+            "text": "Preferences",
+            "u": true,
+            "scale": 0.8,
+            "color": "#666666",
+            "link": 10
+          },
+          {
+            "text": " · ",
+            "scale": 0.8
+          },
+          {
+            "text": "Unsubscribe",
+            "u": true,
+            "scale": 0.8,
+            "color": "#666666",
+            "link": 11
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Example Firm LLP\n1 Example Square, Edinburgh",
+            "scale": 0.8
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "T: +44 131 496 0000\n",
+            "scale": 0.8
+          },
+          {
+            "text": "www.firm.example",
+            "u": true,
+            "scale": 0.8,
+            "color": "#666666",
+            "link": 12
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 351,
+      "keptText": 351,
+      "hiddenText": 0,
+      "hiddenElements": 1,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 3,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://www.firm.example/property"
+      },
+      {
+        "url": "https://www.firm.example/legal"
+      },
+      {
+        "url": "https://www.firm.example/financial"
+      },
+      {
+        "url": "https://www.firm.example/briefing"
+      },
+      {
+        "url": "https://www.firm.example/seminars"
+      },
+      {
+        "url": "https://www.firm.example/privacy"
+      },
+      {
+        "url": "https://www.firm.example/terms"
+      },
+      {
+        "url": "https://www.firm.example/preferences"
+      },
+      {
+        "url": "https://www.firm.example/unsubscribe"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Property"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          },
+          {
+            "text": " · "
+          },
+          {
+            "text": "Legal"
+          },
+          {
+            "text": " [2]",
+            "link": 1
+          },
+          {
+            "text": " · "
+          },
+          {
+            "text": "Financial"
+          },
+          {
+            "text": " [3]",
+            "link": 2
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Dear client,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Our autumn briefing covers the new commercial lease rules, a change to stamp duty on transfers between companies, and what both mean for property owners this year."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Read it online or come to one of our breakfast seminars."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Read the briefing"
+          },
+          {
+            "text": " [4]",
+            "link": 3
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Book a seminar"
+          },
+          {
+            "text": " [5]",
+            "link": 4
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Privacy"
+          },
+          {
+            "text": " [6]",
+            "link": 5
+          },
+          {
+            "text": " · "
+          },
+          {
+            "text": "Terms"
+          },
+          {
+            "text": " [7]",
+            "link": 6
+          },
+          {
+            "text": " · "
+          },
+          {
+            "text": "Preferences"
+          },
+          {
+            "text": " [8]",
+            "link": 7
+          },
+          {
+            "text": " · "
+          },
+          {
+            "text": "Unsubscribe"
+          },
+          {
+            "text": " [9]",
+            "link": 8
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Example Firm LLP\n1 Example Square, Edinburgh"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "T: +44 131 496 0000\n"
+          },
+          {
+            "text": "www.firm.example"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://www.firm.example/property",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[2] "
+          },
+          {
+            "text": "https://www.firm.example/legal",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[3] "
+          },
+          {
+            "text": "https://www.firm.example/financial",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[4] "
+          },
+          {
+            "text": "https://www.firm.example/briefing",
+            "u": true,
+            "link": 3
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[5] "
+          },
+          {
+            "text": "https://www.firm.example/seminars",
+            "u": true,
+            "link": 4
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[6] "
+          },
+          {
+            "text": "https://www.firm.example/privacy",
+            "u": true,
+            "link": 5
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[7] "
+          },
+          {
+            "text": "https://www.firm.example/terms",
+            "u": true,
+            "link": 6
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[8] "
+          },
+          {
+            "text": "https://www.firm.example/preferences",
+            "u": true,
+            "link": 7
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[9] "
+          },
+          {
+            "text": "https://www.firm.example/unsubscribe",
+            "u": true,
+            "link": 8
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 3,
+    "contentIds": []
+  }
+}

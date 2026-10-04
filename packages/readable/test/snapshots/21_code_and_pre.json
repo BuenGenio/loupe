@@ -26,8 +26,7 @@
         "inlines": [
           {
             "text": "$ flutter build apk\nFAILURE: Build failed with an exception.\n* What went wrong:\nExecution failed for task ':app:compileReleaseKotlin'.\n>   Could not resolve all files for configuration ':app:releaseRuntimeClasspath'.",
-            "mono": true,
-            "scale": 0.85
+            "mono": true
           }
         ]
       },

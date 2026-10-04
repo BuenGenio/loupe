@@ -43,9 +43,27 @@ void main() {
     expect(parseFontSize('150%', 16), 24);
     expect(parseFontSize('x-large', 16), 24);
     expect(legacyFontSize('+1'), 18);
-    expect(scaleStep(9), 0.85);
-    expect(scaleStep(16), 1.0);
-    expect(scaleStep(28), 1.5);
+    expect(parseFontSize('7.5pt', 16), 10);
+    expect(parseFontSize('smaller', 12), 10);
+    expect(parseFontSize('80%', 15), 12);
+    expect(parseFontSize('x-small', 16), 10);
+    expect(fontShorthandSize('italic bold 8pt/10pt "Arial", sans-serif'), '8pt');
+    expect(fontShorthandSize('small-caps 700 x-small Verdana'), 'x-small');
+    expect(fontShorthandSize('Arial'), isNull);
+  });
+
+  test('provisional sizes resolve against the body size', () {
+    expect(provisionalScale(28), 1.5);
+    expect(provisionalScale(18), 1.15);
+    expect(provisionalScale(16), 1.0);
+    expect(provisionalScale(12), 0.75);
+    // Under a 16 px body: 13 px is fine print, 14 px is not.
+    expect(resolveScale(provisionalScale(13), 16), finePrintScale);
+    expect(resolveScale(provisionalScale(14), 16), 1.0);
+    // Under a 13 px body, 13 px is body text and 11 px fine print.
+    expect(resolveScale(provisionalScale(13), 13), 1.0);
+    expect(resolveScale(provisionalScale(11), 13), finePrintScale);
+    expect(resolveScale(1.3, 13), 1.3);
   });
 
   test('monospace families', () {

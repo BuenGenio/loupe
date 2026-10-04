@@ -140,13 +140,43 @@ void main() {
       expect(flatten(d.blocks).whereType<ParagraphBlock>().where((p) => p.dir == TextDir.rtl), hasLength(5));
     });
 
-    test('tiny fonts are floored at 0.85', () {
+    test('a message set entirely in tiny type reads at body size', () {
       final runs = flatten(readable('09_').blocks)
           .whereType<ParagraphBlock>()
           .expand((p) => p.inlines)
           .whereType<TextRun>()
           .map((r) => r.style.scale);
-      expect(runs.every((s) => s >= 0.85), isTrue);
+      expect(runs.every((s) => s == 1.0), isTrue);
+    });
+
+    test('footers and disclaimers set smaller are fine print', () {
+      List<TextRun> runsOf(ReaderDocument d, String text) =>
+          flatten(d.blocks)
+              .whereType<ParagraphBlock>()
+              .where((p) => inlineText(p.inlines).contains(text))
+              .single
+              .inlines
+              .whereType<TextRun>()
+              .toList();
+      for (final (name, text) in [
+        ('01_', 'All rights reserved'),
+        ('24_', 'having trouble with the button'),
+        ('25_', 'You are receiving this email'),
+        ('35_', 'CONFIDENTIALITY NOTICE'),
+      ]) {
+        final runs = runsOf(readable(name), text);
+        expect(runs.every((r) => r.style.fine), isTrue, reason: name);
+        // Grey text takes the reader's secondary colour.
+        expect(runs.where((r) => r.style.link == null).every((r) => r.style.color == null), isTrue, reason: name);
+      }
+      // The body around them is not.
+      expect(runsOf(readable('35_'), 'signed contract').single.style.fine, isFalse);
+      expect(runsOf(readable('25_'), 'Invitation from').single.style.fine, isTrue);
+      final table = readable('25_').blocks.whereType<TableBlock>().single;
+      expect(
+        table.rows.expand((r) => r).expand((c) => c.inlines).whereType<TextRun>().any((r) => r.style.fine),
+        isFalse,
+      );
     });
 
     test('preheaders and every kind of tracker are removed', () {
@@ -199,10 +229,66 @@ void main() {
       expect(calendar.blocks.whereType<TableBlock>(), hasLength(1));
     });
 
+    bool isFine(ReaderDocument d, String text) =>
+        flatten(d.blocks)
+            .whereType<ParagraphBlock>()
+            .firstWhere((p) => inlineText(p.inlines).contains(text))
+            .inlines
+            .whereType<TextRun>()
+            .every((r) => r.style.fine);
+
+    test('legal footer: class sizes, a Mimecast stamp and an unmarked notice are fine print', () {
+      final d = readable('36_');
+      expect(isFine(d, 'Thank you for your instructions'), isFalse);
+      expect(isFine(d, 'Kind regards'), isFalse);
+      expect(isFine(d, 'Associate | Real Estate'), isTrue); // 9 pt under an 11 pt body
+      expect(isFine(d, 'Important Notice'), isTrue); // p.Disclaimer {font-size:7.5pt}
+      expect(isFine(d, 'limited liability partnership'), isTrue); // .mc-disclaimer {font-size:8pt}
+      expect(isFine(d, 'how we handle and process'), isTrue); // body size, but reads as a footer
+    });
+
+    test('newsletter footer: fine print by its wording, but not the call to action', () {
+      final d = readable('37_');
+      expect(isFine(d, 'You received this email because'), isTrue);
+      expect(isFine(d, 'Manage preferences'), isTrue);
+      expect(isFine(d, 'Confirm your membership'), isFalse);
+      expect(isFine(d, 'View in browser'), isFalse); // not in the trailing part
+      expect(isFine(d, 'Spring is here'), isFalse);
+    });
+
+    test('a newsletter set in 13 px keeps its body size; its 11 px footer is fine print', () {
+      final d = readable('38_');
+      expect(isFine(d, 'three short novels'), isFalse);
+      expect(isFine(d, 'We turn to essays'), isFalse);
+      expect(isFine(d, 'before the heating was fixed'), isFalse); // 12 px caption
+      expect(isFine(d, 'The Reading Room'), isTrue);
+      expect(isFine(d, 'You are receiving this'), isTrue);
+    });
+
+    test('navigation rows: one line each, separators as dots, buttons and icons kept', () {
+      final d = readable('39_');
+      final lines = d.blocks.whereType<ParagraphBlock>().map((p) => inlineText(p.inlines)).toList();
+      expect(lines, contains('Property · Legal · Financial'));
+      expect(lines, contains('Privacy · Terms · Preferences · Unsubscribe'));
+      expect(d.blocks.whereType<TableBlock>(), isEmpty);
+      expect(d.blocks.whereType<ButtonBlock>().map((b) => b.text), ['Read the briefing', 'Book a seminar']);
+      // Floated icon tables flow on one line.
+      expect(
+        d.blocks.whereType<ParagraphBlock>().where((p) => p.inlines.whereType<InlineImage>().length == 3),
+        hasLength(1),
+      );
+      // Cells of several lines stay stacked, without a stray "|" between.
+      expect(lines, contains('Example Firm LLP\n1 Example Square, Edinburgh'));
+      expect(lines, isNot(contains('|')));
+      // The Outlook signature row of the legal footer.
+      final legal = readable('36_').blocks.whereType<ParagraphBlock>().map((p) => inlineText(p.inlines));
+      expect(legal, contains('Property · Legal · Financial'));
+    });
+
     test('social icons and footer links become single lines', () {
       final d = readable('33_');
       final lines = d.blocks.whereType<ParagraphBlock>().map((p) => inlineText(p.inlines)).toList();
-      expect(lines, contains('Preferences | Unsubscribe | Archive'));
+      expect(lines, contains('Preferences · Unsubscribe · Archive'));
       expect(
         d.blocks.whereType<ParagraphBlock>().where((p) => p.inlines.whereType<InlineImage>().length == 3),
         hasLength(1),
