@@ -72,8 +72,16 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
   /// The message shown in the detail pane (wide layout).
   String? _detailId;
   String? _detailThread;
+
+  /// Whether the list has been scrolled past the search field after the
+  /// first rows arrived (while loading, the offset can't stick).
+  bool _searchHidden = false;
   ScrollController? _scroll;
   final _focus = FocusNode();
+
+  /// Replaced to reset the navigation bar's own search state (it can only be
+  /// closed by tapping Cancel otherwise), e.g. on Android Back.
+  Key _navBarKey = UniqueKey();
   late final SearchSession _search = SearchSession(
     repository: ref.read(repositoryProvider),
     scope: MailboxScope(widget.mailboxRef),
@@ -120,6 +128,12 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
         ..clear()
         ..setScope(MailboxScope(widget.mailboxRef));
     }
+  }
+
+  /// Closes search from outside the bar (Android Back).
+  void _closeSearch() {
+    setState(() => _navBarKey = UniqueKey());
+    _onSearchActive(false);
   }
 
   void _toggleEditing() {
@@ -184,6 +198,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     final next = await showModalBottomSheet<Set<QuickFilter>>(
       context: context,
       useSafeArea: true,
+      isScrollControlled: true,
       builder: (context) => _FilterSheet(initial: current),
     );
     if (next == null || !mounted) return;
@@ -259,6 +274,16 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     final title = mailboxRefTitle(widget.mailboxRef, mailboxes);
     final async = ref.watch(messageListProvider(_query(settings)));
     final rows = async.value ?? const <ThreadSummary>[];
+    if (!_searchHidden && rows.isNotEmpty) {
+      _searchHidden = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final scroll = _scroll;
+        if (!mounted || scroll == null || !scroll.hasClients) return;
+        final extent = searchBarExtent(context);
+        final position = scroll.position;
+        if (position.pixels == 0 && position.maxScrollExtent >= extent) scroll.jumpTo(extent);
+      });
+    }
     final actions = _actions(settings);
     final selectedRows = [
       for (final r in rows)
@@ -270,61 +295,68 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
       ..quotedColor = colors.success
       ..errorColor = colors.destructive;
 
-    return Scaffold(
-      bottomNavigationBar: _searching
-          ? null
-          : _editing
-          ? _editBar(selectedRows, actions, mailboxes)
-          : _toolbar(rows),
-      body: NotificationListener<ScrollNotification>(
-        onNotification: _onScroll,
-        child: CustomScrollView(
-          controller: _scroll,
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          slivers: [
-            CupertinoSliverNavigationBar.search(
-              largeTitle: Text(
-                _editing ? (_selected.isEmpty ? 'Select Messages' : '${_selected.length} Selected') : title,
+    return PopScope(
+      canPop: !_searching,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && _searching) _closeSearch();
+      },
+      child: Scaffold(
+        bottomNavigationBar: _searching
+            ? null
+            : _editing
+            ? _editBar(selectedRows, actions, mailboxes)
+            : _toolbar(rows),
+        body: NotificationListener<ScrollNotification>(
+          onNotification: _onScroll,
+          child: CustomScrollView(
+            controller: _scroll,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            slivers: [
+              CupertinoSliverNavigationBar.search(
+                key: _navBarKey,
+                largeTitle: Text(
+                  _editing ? (_selected.isEmpty ? 'Select Messages' : '${_selected.length} Selected') : title,
+                ),
+                previousPageTitle: 'Mailboxes',
+                automaticallyImplyLeading: !_editing,
+                backgroundColor: colors.barBackground,
+                border: Border(bottom: BorderSide(color: colors.separator, width: 0.5)),
+                leading: _editing
+                    ? BarTextButton(
+                        label: _selected.length == rows.length && rows.isNotEmpty ? 'Deselect All' : 'Select All',
+                        onPressed: () => setState(() {
+                          if (_selected.length == rows.length) {
+                            _selected.clear();
+                          } else {
+                            _selected
+                              ..clear()
+                              ..addAll(rows.map((r) => r.threadId));
+                          }
+                        }),
+                      )
+                    : null,
+                trailing: BarTextButton(label: _editing ? 'Done' : 'Edit', bold: _editing, onPressed: _toggleEditing),
+                searchField: LoupeSearchField(
+                  controller: _search.controller,
+                  focusNode: _focus,
+                  onChanged: _search.onChanged,
+                  onSubmitted: (_) => _search.submit(),
+                ),
+                onSearchableBottomTap: _onSearchActive,
               ),
-              previousPageTitle: 'Mailboxes',
-              automaticallyImplyLeading: !_editing,
-              backgroundColor: colors.barBackground,
-              border: Border(bottom: BorderSide(color: colors.separator, width: 0.5)),
-              leading: _editing
-                  ? BarTextButton(
-                      label: _selected.length == rows.length && rows.isNotEmpty ? 'Deselect All' : 'Select All',
-                      onPressed: () => setState(() {
-                        if (_selected.length == rows.length) {
-                          _selected.clear();
-                        } else {
-                          _selected
-                            ..clear()
-                            ..addAll(rows.map((r) => r.threadId));
-                        }
-                      }),
-                    )
-                  : null,
-              trailing: BarTextButton(label: _editing ? 'Done' : 'Edit', bold: _editing, onPressed: _toggleEditing),
-              searchField: LoupeSearchField(
-                controller: _search.controller,
-                focusNode: _focus,
-                onChanged: _search.onChanged,
-                onSubmitted: (_) => _search.submit(),
-              ),
-              onSearchableBottomTap: _onSearchActive,
-            ),
-            if (_searching)
-              SearchSlivers(session: _search, thisMailbox: widget.mailboxRef)
-            else ...[
-              CupertinoSliverRefreshControl(
-                onRefresh: () async {
-                  await ref.read(repositoryProvider).refresh(ref: widget.mailboxRef);
-                  unawaited(HapticFeedback.lightImpact());
-                },
-              ),
-              ..._rowsSlivers(context, async, rows, settings, actions, mailboxes, wide),
+              if (_searching)
+                SearchSlivers(session: _search, thisMailbox: widget.mailboxRef)
+              else ...[
+                CupertinoSliverRefreshControl(
+                  onRefresh: () async {
+                    await ref.read(repositoryProvider).refresh(ref: widget.mailboxRef);
+                    unawaited(HapticFeedback.lightImpact());
+                  },
+                ),
+                ..._rowsSlivers(context, async, rows, settings, actions, mailboxes, wide),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
@@ -340,7 +372,16 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     bool wide,
   ) {
     if (async.isLoading && !async.hasValue) {
-      return const [SliverFillRemaining(hasScrollBody: false, child: Center(child: CupertinoActivityIndicator()))];
+      // Taller than the screen, so the initial offset that hides the search
+      // field stays in range until the rows arrive.
+      return [
+        SliverToBoxAdapter(
+          child: SizedBox(
+            height: MediaQuery.sizeOf(context).height,
+            child: const Align(alignment: Alignment(0, -0.5), child: CupertinoActivityIndicator()),
+          ),
+        ),
+      ];
     }
     if (async.hasError && !async.hasValue) {
       return [
@@ -537,53 +578,55 @@ class _FilterSheetState extends State<_FilterSheet> {
       QuickFilter.fromVip,
     ];
     return SafeArea(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 8, 4),
-            child: Row(
-              children: [
-                Expanded(child: Text('Filter', style: styles.navTitle)),
-                CupertinoButton(
-                  onPressed: () => Navigator.of(context).pop(_selected),
-                  child: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
-                ),
-              ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 8, 4),
+              child: Row(
+                children: [
+                  Expanded(child: Text('Filter', style: styles.navTitle)),
+                  CupertinoButton(
+                    onPressed: () => Navigator.of(context).pop(_selected),
+                    child: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(32, 4, 16, 6),
-            child: Text('INCLUDE', style: styles.footnote),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Material(
-                color: colors.cellBackground,
-                child: Column(
-                  children: [
-                    for (final f in order)
-                      ListTile(
-                        dense: true,
-                        leading: Icon(quickFilterIcon(f), color: colors.unreadDot),
-                        title: Text(quickFilterLabel(f), style: styles.body),
-                        trailing: _selected.contains(f)
-                            ? Icon(CupertinoIcons.checkmark_alt, color: colors.unreadDot)
-                            : null,
-                        onTap: () {
-                          unawaited(HapticFeedback.selectionClick());
-                          setState(() => _selected.contains(f) ? _selected.remove(f) : _selected.add(f));
-                        },
-                      ),
-                  ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(32, 4, 16, 6),
+              child: Text('INCLUDE', style: styles.footnote),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Material(
+                  color: colors.cellBackground,
+                  child: Column(
+                    children: [
+                      for (final f in order)
+                        ListTile(
+                          dense: true,
+                          leading: Icon(quickFilterIcon(f), color: colors.unreadDot),
+                          title: Text(quickFilterLabel(f), style: styles.body),
+                          trailing: _selected.contains(f)
+                              ? Icon(CupertinoIcons.checkmark_alt, color: colors.unreadDot)
+                              : null,
+                          onTap: () {
+                            unawaited(HapticFeedback.selectionClick());
+                            setState(() => _selected.contains(f) ? _selected.remove(f) : _selected.add(f));
+                          },
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -34,6 +34,10 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
   bool _searching = false;
   ScrollController? _scroll;
   final _focus = FocusNode();
+
+  /// Replaced to reset the navigation bar's own search state (it can only be
+  /// closed by tapping Cancel otherwise), e.g. on Android Back.
+  Key _navBarKey = UniqueKey();
   late final SearchSession _search = SearchSession(repository: ref.read(repositoryProvider));
 
   @override
@@ -66,6 +70,12 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
     }
   }
 
+  /// Closes search from outside the bar (Android Back).
+  void _closeSearch() {
+    setState(() => _navBarKey = UniqueKey());
+    _onSearchActive(false);
+  }
+
   void _open(MailboxRef target) => context.push(Routes.list(target));
 
   @override
@@ -77,67 +87,74 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
       ..quotedColor = colors.success
       ..errorColor = colors.destructive;
     final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];
-    return Scaffold(
-      backgroundColor: colors.groupedBackground,
-      bottomNavigationBar: _searching
-          ? null
-          : LoupeBottomBar(
-              center: const SyncStatusLine(),
-              trailing: BarIconButton(
-                icon: CupertinoIcons.square_pencil,
-                tooltip: 'New Message',
-                onPressed: () => openCompose(context),
+    return PopScope(
+      canPop: !_searching,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && _searching) _closeSearch();
+      },
+      child: Scaffold(
+        backgroundColor: colors.groupedBackground,
+        bottomNavigationBar: _searching
+            ? null
+            : LoupeBottomBar(
+                center: const SyncStatusLine(),
+                trailing: BarIconButton(
+                  icon: CupertinoIcons.square_pencil,
+                  tooltip: 'New Message',
+                  onPressed: () => openCompose(context),
+                ),
               ),
+        body: CustomScrollView(
+          controller: _scroll,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          slivers: [
+            CupertinoSliverNavigationBar.search(
+              key: _navBarKey,
+              largeTitle: const Text('Mailboxes'),
+              backgroundColor: colors.barBackground,
+              border: Border(bottom: BorderSide(color: colors.separator, width: 0.5)),
+              leading: _editing
+                  ? null
+                  : CupertinoButton(
+                      padding: EdgeInsets.zero,
+                      minimumSize: const Size(44, 44),
+                      onPressed: () => context.push(Routes.settings),
+                      child: const Icon(CupertinoIcons.gear, semanticLabel: 'Settings'),
+                    ),
+              trailing: BarTextButton(
+                label: _editing ? 'Done' : 'Edit',
+                bold: _editing,
+                onPressed: () {
+                  unawaited(HapticFeedback.selectionClick());
+                  setState(() => _editing = !_editing);
+                },
+              ),
+              searchField: LoupeSearchField(
+                controller: _search.controller,
+                focusNode: _focus,
+                onChanged: _search.onChanged,
+                onSubmitted: (_) => _search.submit(),
+              ),
+              onSearchableBottomTap: _onSearchActive,
             ),
-      body: CustomScrollView(
-        controller: _scroll,
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        slivers: [
-          CupertinoSliverNavigationBar.search(
-            largeTitle: const Text('Mailboxes'),
-            backgroundColor: colors.barBackground,
-            border: Border(bottom: BorderSide(color: colors.separator, width: 0.5)),
-            leading: _editing
-                ? null
-                : CupertinoButton(
-                    padding: EdgeInsets.zero,
-                    minimumSize: const Size(44, 44),
-                    onPressed: () => context.push(Routes.settings),
-                    child: const Icon(CupertinoIcons.gear, semanticLabel: 'Settings'),
-                  ),
-            trailing: BarTextButton(
-              label: _editing ? 'Done' : 'Edit',
-              bold: _editing,
-              onPressed: () {
-                unawaited(HapticFeedback.selectionClick());
-                setState(() => _editing = !_editing);
-              },
-            ),
-            searchField: LoupeSearchField(
-              controller: _search.controller,
-              focusNode: _focus,
-              onChanged: _search.onChanged,
-              onSubmitted: (_) => _search.submit(),
-            ),
-            onSearchableBottomTap: _onSearchActive,
-          ),
-          if (_searching)
-            SearchSlivers(session: _search)
-          else ...[
-            CupertinoSliverRefreshControl(onRefresh: () => ref.read(repositoryProvider).refresh()),
-            const SliverToBoxAdapter(child: SizedBox(height: 4)),
-            SliverToBoxAdapter(
-              child: _VirtualSection(editing: _editing, onOpen: _open),
-            ),
-            for (final account in accounts)
+            if (_searching)
+              SearchSlivers(session: _search)
+            else ...[
+              CupertinoSliverRefreshControl(onRefresh: () => ref.read(repositoryProvider).refresh()),
+              const SliverToBoxAdapter(child: SizedBox(height: 4)),
               SliverToBoxAdapter(
-                child: _AccountSection(key: ValueKey(account.id), account: account, editing: _editing, onOpen: _open),
+                child: _VirtualSection(editing: _editing, onOpen: _open),
               ),
-            SliverToBoxAdapter(child: _SmartSection(editing: _editing)),
-            SliverToBoxAdapter(child: _TagSection(editing: _editing)),
-            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+              for (final account in accounts)
+                SliverToBoxAdapter(
+                  child: _AccountSection(key: ValueKey(account.id), account: account, editing: _editing, onOpen: _open),
+                ),
+              SliverToBoxAdapter(child: _SmartSection(editing: _editing)),
+              SliverToBoxAdapter(child: _TagSection(editing: _editing)),
+              const SliverToBoxAdapter(child: SizedBox(height: 24)),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
@@ -159,6 +176,7 @@ class _MailboxTile extends StatelessWidget {
     this.expanded,
     this.onToggleExpanded,
     this.trailing,
+    this.reserveDisclosure = false,
   });
 
   final String title;
@@ -176,6 +194,9 @@ class _MailboxTile extends StatelessWidget {
   final VoidCallback? onToggleExpanded;
   final Widget? trailing;
 
+  /// Keeps the disclosure column so icons line up in sections with subfolders.
+  final bool reserveDisclosure;
+
   @override
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
@@ -186,7 +207,7 @@ class _MailboxTile extends StatelessWidget {
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: metrics.groupedRowHeight),
         child: Padding(
-          padding: EdgeInsetsDirectional.only(start: 12 + depth * 18.0, end: 12),
+          padding: EdgeInsetsDirectional.only(start: (reserveDisclosure ? 12 : 16) + depth * 18.0, end: 12),
           child: Row(
             children: [
               AnimatedSize(
@@ -204,24 +225,25 @@ class _MailboxTile extends StatelessWidget {
                       )
                     : const SizedBox.shrink(),
               ),
-              SizedBox(
-                width: 18,
-                child: expanded == null
-                    ? null
-                    : GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: onToggleExpanded,
-                        child: Semantics(
-                          button: true,
-                          label: expanded! ? 'Collapse' : 'Expand',
-                          child: AnimatedRotation(
-                            turns: expanded! ? 0.25 : 0,
-                            duration: const Duration(milliseconds: 180),
-                            child: Icon(CupertinoIcons.chevron_forward, size: 14, color: colors.secondaryText),
+              if (expanded != null || reserveDisclosure)
+                SizedBox(
+                  width: 18,
+                  child: expanded == null
+                      ? null
+                      : GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: onToggleExpanded,
+                          child: Semantics(
+                            button: true,
+                            label: expanded! ? 'Collapse' : 'Expand',
+                            child: AnimatedRotation(
+                              turns: expanded! ? 0.25 : 0,
+                              duration: const Duration(milliseconds: 180),
+                              child: Icon(CupertinoIcons.chevron_forward, size: 14, color: colors.secondaryText),
+                            ),
                           ),
                         ),
-                      ),
-              ),
+                ),
               Icon(icon, color: iconColor ?? colors.unreadDot, size: 23),
               const SizedBox(width: 12),
               Expanded(
@@ -292,7 +314,7 @@ class _VirtualSection extends ConsumerWidget {
           ),
     ];
     if (rows.isEmpty) return const SizedBox.shrink();
-    return InsetGroup(separatorIndent: 66, children: rows);
+    return InsetGroup(separatorIndent: 51, children: rows);
   }
 }
 
@@ -313,6 +335,7 @@ class _AccountSection extends ConsumerWidget {
         .toList();
     final v = _visibility(ref);
     final tree = mailboxTree(mailboxes, expanded: expanded);
+    final nested = tree.any((n) => n.hasChildren);
     final rows = <Widget>[
       if (!collapsed)
         for (final node in tree)
@@ -328,6 +351,7 @@ class _AccountSection extends ConsumerWidget {
                 _ => node.mailbox.unreadCount,
               },
               expanded: node.hasChildren ? expanded.contains(node.mailbox.id) : null,
+              reserveDisclosure: nested,
               onToggleExpanded: () {
                 unawaited(HapticFeedback.selectionClick());
                 unawaited(ref.read(expandedFoldersProvider.notifier).toggle(node.mailbox.id));
@@ -341,7 +365,8 @@ class _AccountSection extends ConsumerWidget {
     return InsetGroup(
       header: account.displayName,
       largeHeader: true,
-      separatorIndent: 66,
+      // Separators start where the titles do.
+      separatorIndent: nested ? 65 : 51,
       headerLeading: Container(
         width: 10,
         height: 10,
@@ -381,7 +406,7 @@ class _SmartSection extends ConsumerWidget {
     return InsetGroup(
       header: 'Smart Mailboxes',
       largeHeader: true,
-      separatorIndent: 66,
+      separatorIndent: 51,
       footer: smart.isEmpty ? 'Save a search to keep it here.' : null,
       children: [
         for (final s in smart)
@@ -431,6 +456,6 @@ class _TagSection extends ConsumerWidget {
           ),
     ];
     if (rows.isEmpty) return const SizedBox.shrink();
-    return InsetGroup(header: 'Tags', largeHeader: true, separatorIndent: 66, children: rows);
+    return InsetGroup(header: 'Tags', largeHeader: true, separatorIndent: 51, children: rows);
   }
 }

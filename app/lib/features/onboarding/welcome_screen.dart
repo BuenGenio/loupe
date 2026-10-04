@@ -30,6 +30,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> with SingleTicker
     final useDemo = await showModalBottomSheet<bool>(
       context: context,
       useSafeArea: true,
+      isScrollControlled: true,
       builder: (context) => const _ComingSoonSheet(),
     );
     if (useDemo ?? false) await _tryDemo();

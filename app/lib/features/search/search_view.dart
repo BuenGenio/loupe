@@ -312,30 +312,44 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
           padding: const EdgeInsets.fromLTRB(16, 10, 6, 4),
           child: Row(
             children: [
-              Expanded(
-                child: Text(
-                  results == null
-                      ? 'Searching…'
-                      : results.items.isEmpty && results.isComplete
-                      ? 'No Results'
-                      : '${results.items.length} ${results.items.length == 1 ? 'Result' : 'Results'}',
-                  style: styles.sectionHeader.copyWith(fontSize: 17),
-                ),
+              Text(
+                results == null
+                    ? 'Searching…'
+                    : results.items.isEmpty && results.isComplete
+                    ? 'No Results'
+                    : '${results.items.length} ${results.items.length == 1 ? 'Result' : 'Results'}',
+                style: styles.sectionHeader.copyWith(fontSize: 17),
               ),
-              if (widget.showSuggestions && _session.hasQuery)
-                CupertinoButton(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  minimumSize: const Size(44, 32),
-                  onPressed: _saveSmartMailbox,
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(CupertinoIcons.plus_rectangle_on_rectangle, size: 18),
-                      SizedBox(width: 4),
-                      Text('Save as Smart Mailbox', style: TextStyle(fontSize: 15)),
-                    ],
+              if (widget.showSuggestions && _session.hasQuery) ...[
+                const Spacer(),
+                Flexible(
+                  child: Semantics(
+                    button: true,
+                    label: 'Save as Smart Mailbox',
+                    excludeSemantics: true,
+                    child: CupertinoButton(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      minimumSize: const Size(44, 32),
+                      onPressed: _saveSmartMailbox,
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(CupertinoIcons.plus_rectangle_on_rectangle, size: 18),
+                          SizedBox(width: 4),
+                          Flexible(
+                            child: Text(
+                              'Save as Smart Mailbox',
+                              style: TextStyle(fontSize: 15),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
+              ],
             ],
           ),
         ),

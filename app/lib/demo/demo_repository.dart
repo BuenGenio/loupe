@@ -1091,26 +1091,39 @@ class DemoMailRepository implements MailRepository {
   @override
   Future<List<EmailAddress>> suggestAddresses(String prefix, {int limit = 8}) async {
     final mine = {for (final a in _accounts) ..._myAddresses(a.id)};
-    final counts = <String, int>{};
+    // People you write to rank far above senders you only receive from, so
+    // newsletters and notifications don't crowd out friends.
+    final scores = <String, int>{};
+    final sentTo = <String>{};
     final names = <String, EmailAddress>{};
+    void count(EmailAddress a, int score, {bool sent = false}) {
+      final key = a.email.toLowerCase();
+      if (mine.contains(key)) return;
+      scores[key] = (scores[key] ?? 0) + score;
+      if (sent) sentTo.add(key);
+      if (a.name != null && a.name!.isNotEmpty) names[key] = a;
+      names.putIfAbsent(key, () => a);
+    }
+
     for (final m in _messages.values) {
       final s = m.summary;
-      for (final a in [...s.from, ...s.to, ...s.cc]) {
-        final key = a.email.toLowerCase();
-        if (mine.contains(key)) continue;
-        counts[key] = (counts[key] ?? 0) + 1;
-        if (a.name != null && a.name!.isNotEmpty) names[key] = a;
-        names.putIfAbsent(key, () => a);
+      final fromMe = _isFromMe(s);
+      for (final a in [...s.to, ...s.cc]) {
+        count(a, fromMe ? 5 : 1, sent: fromMe);
+      }
+      for (final a in s.from) {
+        count(a, 1);
       }
     }
     final p = prefix.trim().toLowerCase();
     bool matches(EmailAddress a) =>
-        p.isEmpty ||
         a.email.toLowerCase().startsWith(p) ||
-        (a.name ?? '').toLowerCase().split(RegExp(r'\s+')).any((w) => w.startsWith(p)) ||
-        (a.name ?? '').toLowerCase().startsWith(p);
-    final hits = names.values.where(matches).toList()
-      ..sort((a, b) => counts[b.email.toLowerCase()]!.compareTo(counts[a.email.toLowerCase()]!));
+        (a.name ?? '').toLowerCase().startsWith(p) ||
+        (a.name ?? '').toLowerCase().split(RegExp(r'\s+')).any((w) => w.startsWith(p));
+    final hits = [
+      for (final MapEntry(:key, value: a) in names.entries)
+        if (p.isEmpty ? sentTo.contains(key) : matches(a)) a,
+    ]..sort((a, b) => scores[b.email.toLowerCase()]!.compareTo(scores[a.email.toLowerCase()]!));
     return hits.take(limit).toList();
   }
 

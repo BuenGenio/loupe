@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/router.dart';
+import 'package:mail_model/mail_model.dart' hide TextField;
 
 import 'helpers.dart';
 
@@ -51,5 +52,29 @@ void main() {
     await tester.pumpAndSettle();
     expect(textContaining('Saved “lisbon”'), findsOneWidget);
     await drainTimers(tester);
+  });
+
+  testWidgets('the list search field appears on pull-down, searches this mailbox, and Back closes it', (tester) async {
+    await pumpLoupe(tester);
+    await goTo(tester, Routes.list(const VirtualMailboxRef(VirtualMailbox.allInboxes)));
+    expect(find.byType(CupertinoSearchTextField).hitTestable(), findsNothing);
+
+    await tester.drag(find.byType(CustomScrollView), const Offset(0, 60));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(CupertinoSearchTextField));
+    await tester.pumpAndSettle();
+    expect(find.text('All Mailboxes'), findsOneWidget);
+    expect(find.byIcon(CupertinoIcons.square_pencil), findsNothing);
+
+    await tester.enterText(find.byType(CupertinoSearchTextField), 'roadmap');
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pumpAndSettle();
+    expect(find.text('RE: Atlas Q4 roadmap review'), findsWidgets);
+
+    final popped = await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(popped, isTrue);
+    expect(find.text('All Mailboxes'), findsNothing);
+    expect(find.byIcon(CupertinoIcons.square_pencil), findsOneWidget);
   });
 }

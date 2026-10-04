@@ -1551,7 +1551,8 @@ final class DemoSeed {
 String makePreview(String text) {
   final collapsed = text
       .split('\n')
-      .where((l) => !l.trimLeft().startsWith('>'))
+      // Quotes and their "On …, X wrote:" lines say nothing new.
+      .where((l) => !l.trimLeft().startsWith('>') && !l.trimRight().endsWith('wrote:'))
       .join(' ')
       .replaceAll(RegExp(r'\s+'), ' ')
       .trim();

@@ -194,6 +194,7 @@ Future<Set<String>?> showTagPicker(BuildContext context, {required Set<String> c
   return showModalBottomSheet<Set<String>>(
     context: context,
     useSafeArea: true,
+    isScrollControlled: true,
     builder: (context) {
       final selected = {...current};
       return StatefulBuilder(
