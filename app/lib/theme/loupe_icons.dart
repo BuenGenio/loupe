@@ -67,6 +67,25 @@ abstract final class LoupeIcons {
   static const IconData swipeReschedule = FluentIcons.calendar_clock_24_filled;
   static const IconData swipeCancelSend = FluentIcons.dismiss_circle_24_filled;
 
+  // Snooze --------------------------------------------------------------------
+
+  /// The Snoozed mailbox.
+  static const IconData snoozed = FluentIcons.mail_clock_24_regular;
+
+  /// The Snooze action, and the "Snoozed" mark on a message that woke up.
+  static const IconData snooze = FluentIcons.clock_alarm_24_regular;
+  static const IconData snoozeFilled = FluentIcons.clock_alarm_24_filled;
+  static const IconData snoozeLaterToday = FluentIcons.hourglass_half_24_regular;
+  static const IconData snoozeEvening = FluentIcons.weather_moon_24_regular;
+  static const IconData snoozeTomorrow = FluentIcons.weather_sunny_low_24_regular;
+  static const IconData snoozeWeekend = FluentIcons.beach_24_regular;
+  static const IconData snoozeNextWeek = FluentIcons.calendar_week_start_24_regular;
+
+  /// Wake a snoozed message now.
+  static const IconData wakeNow = FluentIcons.weather_sunny_24_regular;
+  static const IconData swipeSnooze = FluentIcons.clock_alarm_24_filled;
+  static const IconData swipeWakeNow = FluentIcons.weather_sunny_24_filled;
+
   // Swipe actions: white on solid colour.
 
   static const IconData swipeMarkRead = FluentIcons.mail_read_24_filled;

@@ -31,6 +31,7 @@ class LoupeColors extends ThemeExtension<LoupeColors> {
     this.destructive = const Color(0xFFFF3B30),
     this.success = const Color(0xFF34C759),
     this.selectedRow = const Color(0xFFE5E5EA),
+    this.snooze = const Color(0xFF5856D6),
   });
 
   final Color unreadDot;
@@ -70,6 +71,9 @@ class LoupeColors extends ThemeExtension<LoupeColors> {
   /// A selected (or pressed) row.
   final Color selectedRow;
 
+  /// Snooze: its swipe action and the "Snoozed" mark (iOS indigo).
+  final Color snooze;
+
   static LoupeColors of(BuildContext context) => Theme.of(context).extension<LoupeColors>()!;
 
   Color accountColor(int index) => accountColors[index % accountColors.length];
@@ -96,6 +100,7 @@ class LoupeColors extends ThemeExtension<LoupeColors> {
     destructive: destructive,
     success: success,
     selectedRow: selectedRow,
+    snooze: snooze,
   );
 
   @override
@@ -358,6 +363,7 @@ abstract final class LoupeTheme {
           destructive: sys(CupertinoColors.systemRed),
           success: sys(CupertinoColors.systemGreen),
           selectedRow: dark ? const Color(0xFF2C2C2E) : const Color(0xFFE5E5EA),
+          snooze: sys(CupertinoColors.systemIndigo),
         ),
         styles,
         LoupeMetrics(density: density),
