@@ -94,6 +94,10 @@ const minTextContrast = 4.5;
 /// WCAG AA for large text (headings).
 const minLargeTextContrast = 3.0;
 
+/// Button labels: big and bold, and part of the sender's brand, so only a
+/// clearly unreadable label (white on yellow) is changed.
+const minButtonContrast = 2.4;
+
 /// Adapts sender colours to one reader background. Results are memoised;
 /// create one per theme.
 final class ColorAdapter {
@@ -109,15 +113,18 @@ final class ColorAdapter {
   final _fg = <(int, int, bool), int>{};
   final _bg = <int, int>{};
 
-  /// The highlight colour to draw behind text. In dark mode, light highlights
-  /// are darkened (lightness flipped, hue kept) so they don't glare and light
-  /// text stays readable on them.
+  /// The highlight colour to draw behind text. In dark mode, very light
+  /// highlights are toned down (lightness lowered, hue and chroma kept): a
+  /// yellow marker stays a yellow marker without glaring, and the text on it
+  /// turns dark.
   int background(int bg) => _bg.putIfAbsent(bg, () {
     if (!dark) return bg;
     final o = toOklch(bg);
-    if (o.l <= 0.6) return bg;
-    return fromOklch(math.max(1 - o.l, 0.28), o.c, o.h);
+    if (o.l <= _maxDarkHighlightLightness) return bg;
+    return fromOklch(_maxDarkHighlightLightness, o.c, o.h);
   });
+
+  static const _maxDarkHighlightLightness = 0.78;
 
   /// The text colour to use for [fg] (null: the theme text colour) over
   /// [bg] (null: the page), adjusted until it reaches the WCAG minimum.
@@ -125,8 +132,19 @@ final class ColorAdapter {
     final color = fg ?? text;
     final behind = bg == null ? page : background(bg);
     if (fg == null && bg == null) return text;
-    return _fg.putIfAbsent((color, behind, large), () {
-      return ensureContrast(color, behind, large ? minLargeTextContrast : minTextContrast, flipFirst: dark);
+    // A pair the sender chose together (white on a red label) is a design
+    // decision: hold it to the large-text minimum only.
+    final chosenPair = fg != null && bg != null && behind == bg;
+    return _fg.putIfAbsent((color, behind, large || chosenPair), () {
+      final min = large || chosenPair ? minLargeTextContrast : minTextContrast;
+      if (contrastRatio(color, behind) >= min) return color;
+      // Grey "body text" that fails (dark ink in dark mode, white text from
+      // a dark newsletter in light mode) reads best as the theme's text.
+      if (bg == null && contrastRatio(text, behind) >= min) {
+        final o = toOklch(color);
+        if (o.c < 0.035 && (dark ? o.l < 0.36 : o.l > 0.75)) return text;
+      }
+      return ensureContrast(color, behind, min, flipFirst: dark);
     });
   }
 

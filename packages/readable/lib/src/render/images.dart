@@ -120,8 +120,12 @@ class InlineIcon extends StatelessWidget {
     final w = scaler.scale(ref.width ?? ref.height ?? 20);
     final h = scaler.scale(ref.height ?? ref.width ?? 20);
     final provider = scope.imageFor(index);
+    final alt = ref.alt?.trim() ?? '';
     Widget child = provider == null
-        ? Icon(Icons.image_not_supported_outlined, size: h.clamp(10, 20), color: scope.styles.muted)
+        // Blocked: the alt text says more than a broken-image glyph.
+        ? (alt.isNotEmpty
+              ? Text(alt, style: scope.styles.body.copyWith(color: scope.styles.muted, fontSize: 13))
+              : Icon(Icons.image_not_supported_outlined, size: h.clamp(10, 20), color: scope.styles.muted))
         : Image(
             image: sizedProvider(provider, w, MediaQuery.devicePixelRatioOf(context)),
             width: w,
@@ -214,17 +218,16 @@ class _ImageCarouselState extends State<ImageCarousel> {
     super.dispose();
   }
 
-  /// Height/width of the tallest image with a known size, within reason.
+  /// Height/width of the strip: the median of the images with a known size
+  /// (one odd portrait shouldn't letterbox all the landscapes).
   double _aspect(ReaderDocument doc) {
-    var best = 0.0;
-    for (final i in widget.images) {
-      final r = doc.images[i];
-      if (r.width != null && r.height != null && r.width! > 0) {
-        final a = r.height! / r.width!;
-        if (a > best) best = a;
-      }
-    }
-    return best == 0 ? 0.75 : best.clamp(0.4, 1.25);
+    final ratios = [
+      for (final i in widget.images)
+        if ((doc.images[i].width ?? 0) > 0 && doc.images[i].height != null)
+          doc.images[i].height! / doc.images[i].width!,
+    ]..sort();
+    if (ratios.isEmpty) return 0.75;
+    return ratios[ratios.length ~/ 2].clamp(0.4, 1.25);
   }
 
   @override

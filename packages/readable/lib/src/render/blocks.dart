@@ -1,6 +1,8 @@
 // Block widgets: paragraphs, headings, quotes, lists, pre, tables, buttons,
 // images. Our own spacing replaces the sender's margins.
 
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../color/color_adapter.dart';
@@ -345,17 +347,21 @@ class _ButtonChip extends StatelessWidget {
     final adapter = scope.colors;
     final fillArgb = fill.toARGB32();
     if (adapter == null) return (fg ?? fallback.toARGB32());
-    return ensureContrast(fg ?? fallback.toARGB32(), fillArgb, minTextContrast);
+    return ensureContrast(fg ?? fallback.toARGB32(), fillArgb, minButtonContrast);
   }
 }
 
-/// A data table: its own horizontal scroll, columns sized to content (long
-/// cells wrap), numbers aligned to the end.
+/// A data table: as wide as the screen when it fits (the column with the most
+/// text takes the slack), otherwise its own horizontal scroll. Columns are
+/// sized to content up to a cap, long cells wrap, numbers align to the end.
 class _DataTableView extends StatelessWidget {
   const _DataTableView(this.table);
   final TableBlock table;
 
   static final _numeric = RegExp(r'^[\s\-+(]*[$€£¥₹]?\s*[\d.,\s]+%?\s*[$€£¥₹)]?\s*[A-Z]{0,3}$');
+
+  /// Widest a column grows to fit its content before its cells wrap.
+  static const _columnCap = 260.0;
 
   @override
   Widget build(BuildContext context) {
@@ -363,24 +369,23 @@ class _DataTableView extends StatelessWidget {
     final styles = scope.styles;
     final columns = table.columns;
     final rows = <TableRow>[];
+    final textPerColumn = List<int>.filled(columns, 0);
     for (final row in table.rows) {
       final cells = <Widget>[];
       final header = row.every((c) => c.header);
       for (final cell in row) {
         final text = inlineText(cell.inlines).trim();
+        if (cell.colspan == 1 && cells.length < columns && text.length > textPerColumn[cells.length]) {
+          textPerColumn[cells.length] = text.length;
+        }
         final end = cell.align == BlockAlign.right || (_numeric.hasMatch(text) && text.isNotEmpty);
         cells.add(
-          ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 260),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-              child: InlineText(
-                cell.inlines,
-                style: cell.header ? styles.body.copyWith(fontWeight: FontWeight.w600) : styles.body,
-                align: cell.align == BlockAlign.center
-                    ? BlockAlign.center
-                    : (end ? BlockAlign.right : BlockAlign.start),
-              ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+            child: InlineText(
+              cell.inlines,
+              style: cell.header ? styles.body.copyWith(fontWeight: FontWeight.w600) : styles.body,
+              align: cell.align == BlockAlign.center ? BlockAlign.center : (end ? BlockAlign.right : BlockAlign.start),
             ),
           ),
         );
@@ -399,18 +404,58 @@ class _DataTableView extends StatelessWidget {
         ),
       );
     }
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Table(
-        defaultColumnWidth: const IntrinsicColumnWidth(),
-        defaultVerticalAlignment: TableCellVerticalAlignment.top,
-        border: TableBorder(
-          horizontalInside: BorderSide(color: styles.divider),
-          top: BorderSide(color: styles.divider),
-          bottom: BorderSide(color: styles.divider),
+    var widest = 0;
+    for (var i = 1; i < columns; i++) {
+      if (textPerColumn[i] > textPerColumn[widest]) widest = i;
+    }
+    return LayoutBuilder(
+      builder: (context, constraints) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minWidth: constraints.maxWidth.isFinite ? constraints.maxWidth : 0),
+          child: Table(
+            defaultColumnWidth: const _CappedIntrinsicWidth(_columnCap),
+            columnWidths: {widest: const _CappedIntrinsicWidth(_columnCap, flexFactor: 1)},
+            defaultVerticalAlignment: TableCellVerticalAlignment.top,
+            border: TableBorder(
+              horizontalInside: BorderSide(color: styles.divider),
+              top: BorderSide(color: styles.divider),
+              bottom: BorderSide(color: styles.divider),
+            ),
+            children: rows,
+          ),
         ),
-        children: rows,
       ),
     );
   }
+}
+
+/// Intrinsic column width capped at [cap]; with [flexFactor], the column also
+/// takes the table's spare width.
+class _CappedIntrinsicWidth extends TableColumnWidth {
+  const _CappedIntrinsicWidth(this.cap, {this.flexFactor});
+
+  final double cap;
+  final double? flexFactor;
+
+  @override
+  double minIntrinsicWidth(Iterable<RenderBox> cells, double containerWidth) {
+    var result = 0.0;
+    for (final cell in cells) {
+      result = math.max(result, cell.getMinIntrinsicWidth(double.infinity));
+    }
+    return math.min(result, cap);
+  }
+
+  @override
+  double maxIntrinsicWidth(Iterable<RenderBox> cells, double containerWidth) {
+    var result = 0.0;
+    for (final cell in cells) {
+      result = math.max(result, cell.getMaxIntrinsicWidth(double.infinity));
+    }
+    return math.min(result, cap);
+  }
+
+  @override
+  double? flex(Iterable<RenderBox> cells) => flexFactor;
 }

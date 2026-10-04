@@ -48,9 +48,9 @@ void main() {
       expect(adapter.foreground(0xFFD32F2F), 0xFFD32F2F);
     });
 
-    test('white-on-white becomes readable', () {
-      final c = adapter.foreground(white);
-      expect(contrastRatio(c, white), greaterThanOrEqualTo(minTextContrast));
+    test('white text (from a dark newsletter) becomes the theme text colour', () {
+      expect(adapter.foreground(white), darkText);
+      expect(adapter.foreground(0xFFEEEEEE), darkText);
     });
 
     test('light grey is darkened just enough, keeping its hue', () {
@@ -69,8 +69,14 @@ void main() {
 
     test('highlights are kept; text on them is checked against them', () {
       expect(adapter.background(0xFFFFFF00), 0xFFFFFF00);
-      final onYellow = adapter.foreground(0xFFFFFFFF, bg: 0xFFFFFF00);
+      final onYellow = adapter.foreground(null, bg: 0xFFFFFF00);
       expect(contrastRatio(onYellow, 0xFFFFFF00), greaterThanOrEqualTo(minTextContrast));
+    });
+
+    test('a text/highlight pair chosen by the sender only needs 3:1', () {
+      expect(adapter.foreground(white, bg: 0xFFFF0000), white); // 4.0:1
+      final onYellow = adapter.foreground(white, bg: 0xFFFFFF00); // 1.1:1
+      expect(contrastRatio(onYellow, 0xFFFFFF00), greaterThanOrEqualTo(minLargeTextContrast));
     });
 
     test('default text without colours is the theme colour', () {
@@ -86,10 +92,16 @@ void main() {
       expect(ColorAdapter(page: white, text: darkText).dark, isFalse);
     });
 
-    test('black text flips to light', () {
-      final c = adapter.foreground(black);
+    test('dark grey body text becomes the theme text colour', () {
+      expect(adapter.foreground(black), lightText);
+      expect(adapter.foreground(0xFF202020), lightText);
+      expect(adapter.foreground(0xFF333333), lightText);
+    });
+
+    test('muted greys flip but stay muted', () {
+      final c = adapter.foreground(0xFF666666);
       expect(contrastRatio(c, darkPage), greaterThanOrEqualTo(minTextContrast));
-      expect(toOklch(c).l, greaterThan(0.8));
+      expect(c, isNot(lightText));
     });
 
     test('dark blue links flip lightness but keep their hue', () {
@@ -103,11 +115,12 @@ void main() {
       expect(adapter.foreground(0xFFFFD54F), 0xFFFFD54F);
     });
 
-    test('a yellow highlight stays yellow-ish but dark, and text stays readable on it', () {
+    test('a yellow highlight stays yellow but is toned down, and text on it turns dark', () {
       const yellow = 0xFFFFFF00;
       final bg = adapter.background(yellow);
-      expect(toOklch(bg).l, lessThan(0.5));
-      expect(hueDistance(bg, yellow), lessThan(0.2));
+      expect(toOklch(bg).l, closeTo(0.78, 0.01));
+      expect(hueDistance(bg, yellow), lessThan(0.1));
+      expect(toOklch(bg).c, greaterThan(0.12));
       final text = adapter.foreground(null, bg: yellow);
       expect(contrastRatio(text, bg), greaterThanOrEqualTo(minTextContrast));
       // Black text on a yellow highlight follows the flipped highlight.
