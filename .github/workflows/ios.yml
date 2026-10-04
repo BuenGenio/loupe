@@ -33,8 +33,12 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
+      # The newest released Xcode on the runner: App Store Connect only
+      # takes builds from Xcode 26 and the iOS 26 SDK or later.
       - name: Toolchain
         run: |
+          xcode=$(ls -d /Applications/Xcode_*.app | grep -vi beta | sort -V | tail -1)
+          if [ -n "$xcode" ]; then sudo xcode-select -s "$xcode"; fi
           xcodebuild -version
           flutter --version
       - name: Use CocoaPods instead of Swift Package Manager
@@ -109,6 +113,11 @@ jobs:
   #         flutter-version: ${{ env.FLUTTER_VERSION }}
   #         channel: stable
   #         cache: true
+  #     - name: Toolchain
+  #       run: |
+  #         xcode=$(ls -d /Applications/Xcode_*.app | grep -vi beta | sort -V | tail -1)
+  #         if [ -n "$xcode" ]; then sudo xcode-select -s "$xcode"; fi
+  #         xcodebuild -version
   #     - run: flutter pub get
   #     - name: Signing keychain and profile
   #       env:
