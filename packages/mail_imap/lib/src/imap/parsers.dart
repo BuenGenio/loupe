@@ -117,6 +117,13 @@ final class SelectData {
   bool noModSeq = false;
   bool readOnly = false;
   List<String> permanentFlags = const [];
+
+  /// Whether the server sent PERMANENTFLAGS at all.
+  bool permanentFlagsSent = false;
+
+  /// Whether new keywords are stored permanently (`\*` in PERMANENTFLAGS);
+  /// null if the server didn't say, which RFC 9051 says means yes.
+  bool? get canStoreKeywords => permanentFlagsSent ? permanentFlags.contains(r'\*') : null;
 }
 
 final class SelectParser extends ResponseParser<SelectData> {
@@ -152,6 +159,7 @@ final class SelectParser extends ResponseParser<SelectData> {
         case 'NOMODSEQ':
           _data.noModSeq = true;
         case 'PERMANENTFLAGS':
+          _data.permanentFlagsSent = true;
           _data.permanentFlags = code
               .substring('PERMANENTFLAGS'.length)
               .replaceAll(RegExp(r'[()]'), ' ')

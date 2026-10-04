@@ -188,6 +188,27 @@ final class ImapTransport implements MailTransport {
     }
   });
 
+  @override
+  Future<void> createMailbox(String path) => _run((c) async {
+    final arg = c.mailboxArg(path);
+    try {
+      await c.send(Command('CREATE $arg'), GenericParser());
+    } on MailException catch (e) {
+      if (e.kind != MailErrorKind.server) rethrow;
+      // [ALREADYEXISTS], or a server that words it differently: fine if the
+      // mailbox is there now (another client created it first).
+      final listed = await listMailboxes();
+      if (!listed.any((b) => b.path == path)) rethrow;
+    }
+    try {
+      await c.send(Command(subscriptionCommand(arg, subscribe: true)), GenericParser());
+    } on MailException catch (e) {
+      // Unsubscribed works too; Loupe syncs the folder anyway.
+      if (e.kind != MailErrorKind.server) rethrow;
+    }
+    _mailboxes = null;
+  });
+
   // Sync ---------------------------------------------------------------------
 
   @override
@@ -231,6 +252,7 @@ final class ImapTransport implements MailTransport {
       totalCount: sel.exists,
       unreadCount: await _unreadCount(c, sel),
       hasOlder: lo > 1,
+      canStoreKeywords: sel.canStoreKeywords,
     );
   }
 
@@ -307,6 +329,7 @@ final class ImapTransport implements MailTransport {
       totalCount: sel.exists,
       unreadCount: await _unreadCount(c, sel),
       hasOlder: state.olderExist(sel.exists),
+      canStoreKeywords: sel.canStoreKeywords,
     );
   }
 
