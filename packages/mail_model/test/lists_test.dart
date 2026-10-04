@@ -93,4 +93,25 @@ void main() {
       [e.listId, e.listName, e.listPost, e.listUnsubscribe, e.listUnsubscribePost],
     );
   });
+
+  group('ListThread badges', () {
+    EmailSummary mail(String subject) =>
+        EmailSummary(id: subject, accountId: 'a', mailboxId: 'm', receivedAt: DateTime(2026), subject: subject);
+    ListThread thread(String subject, {int patches = 0, int messages = 1}) =>
+        ListThread(threadId: 't', first: mail(subject), latest: mail('x'), messageCount: messages, patchCount: patches);
+
+    test('a series counts the patches that arrived', () {
+      expect(thread('[PATCH v2 0/3] cover', patches: 3, messages: 6).patchBadge, 'PATCH v2 3/3');
+      expect(thread('[PATCH 0/3] cover', patches: 2).patchBadge, 'PATCH 2/3');
+      expect(thread('[PATCH v2 1/3] first', patches: 3).patchBadge, 'PATCH v2 3/3');
+    });
+
+    test('lone patches and discussions', () {
+      expect(thread('[PATCH] fix').patchBadge, 'PATCH');
+      expect(thread('[RFC PATCH 2/5] alone', patches: 1).patchBadge, 'RFC PATCH 2/5');
+      expect(thread('Re: [PATCH] fix').patchBadge, isNull);
+      expect(thread('Release planning', messages: 4).patchBadge, isNull);
+      expect(thread('Release planning', messages: 4).replyCount, 3);
+    });
+  });
 }

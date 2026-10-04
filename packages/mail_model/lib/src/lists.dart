@@ -2,6 +2,7 @@
 // `[PATCH v2 3/7]` tags of `git format-patch` subjects.
 
 import 'address.dart';
+import 'email.dart';
 
 /// The parts of a List-Id header: the identifier, lower-cased and without
 /// angle brackets, and the phrase before it, if any.
@@ -170,4 +171,138 @@ final class PatchTag {
 
   @override
   String toString() => 'PatchTag($label${isReply ? ', reply' : ''})';
+}
+
+// ---------------------------------------------------------------------------
+// Mailing lists and muted threads
+
+/// A mailing list the user gets mail from: the messages that share a List-Id,
+/// across accounts, outside Trash and Junk.
+final class MailingList {
+  const MailingList({
+    required this.id,
+    required this.name,
+    this.postAddress,
+    this.messageCount = 0,
+    this.unreadCount = 0,
+    this.lastActivity,
+    this.accountIds = const [],
+  });
+
+  /// The List-Id identifier, lower-cased: `dev.lists.example.org`.
+  final String id;
+
+  /// The List-Id phrase of the newest message that has one, else [id].
+  final String name;
+
+  /// Where to post (List-Post), if the list allows posting.
+  final EmailAddress? postAddress;
+  final int messageCount;
+
+  /// Unread messages outside muted threads.
+  final int unreadCount;
+  final DateTime? lastActivity;
+
+  /// The accounts that receive the list.
+  final List<String> accountIds;
+
+  @override
+  bool operator ==(Object other) =>
+      other is MailingList &&
+      other.id == id &&
+      other.name == name &&
+      other.postAddress == postAddress &&
+      other.messageCount == messageCount &&
+      other.unreadCount == unreadCount &&
+      other.lastActivity == lastActivity &&
+      _listEquals(other.accountIds, accountIds);
+
+  @override
+  int get hashCode => Object.hash(id, name, messageCount, unreadCount, lastActivity);
+}
+
+bool _listEquals<T>(List<T> a, List<T> b) {
+  if (a.length != b.length) return false;
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] != b[i]) return false;
+  }
+  return true;
+}
+
+/// One conversation of a mailing list, as the forum-style list view shows
+/// it. Only the conversation's messages that came through the list count.
+final class ListThread {
+  const ListThread({
+    required this.threadId,
+    required this.first,
+    required this.latest,
+    required this.messageCount,
+    this.unreadCount = 0,
+    this.participants = const [],
+    this.patchCount = 0,
+    this.isMuted = false,
+  });
+
+  final String threadId;
+
+  /// The oldest message: its subject names the thread, its sender started it.
+  final EmailSummary first;
+
+  /// The newest message: the last activity.
+  final EmailSummary latest;
+  final int messageCount;
+  final int unreadCount;
+
+  /// Distinct senders, in the order they first wrote.
+  final List<EmailAddress> participants;
+
+  /// Patches of the series [patch] names that arrived (`[PATCH v2 2/3]`
+  /// subjects that aren't replies; the cover letter doesn't count).
+  final int patchCount;
+  final bool isMuted;
+
+  int get replyCount => messageCount > 0 ? messageCount - 1 : 0;
+  DateTime get lastActivity => latest.receivedAt;
+
+  /// The patch tag of the thread's first message, if it is a patch or a
+  /// cover letter.
+  PatchTag? get patch {
+    final tag = PatchTag.parse(first.subject);
+    return tag == null || tag.isReply ? null : tag;
+  }
+
+  /// "PATCH v2 3/3" for a series (patches arrived / announced), else the
+  /// tag's own label ("PATCH", "RFC PATCH 2/5"); null for a discussion.
+  String? get patchBadge {
+    final tag = patch;
+    if (tag == null) return null;
+    final total = tag.total;
+    if (total == null || (!tag.isCoverLetter && total <= 1)) return tag.label;
+    if (!tag.isCoverLetter && patchCount <= 1) return tag.label;
+    final head = [tag.prefix, if (tag.version > 1) 'v${tag.version}'].join(' ');
+    return '$head ${patchCount.clamp(0, total)}/$total';
+  }
+}
+
+/// Mailing lists (grouped by List-Id) and muted threads. The repositories
+/// implement it next to `MailRepository`; check with `repository is
+/// MailingLists`. All `watch*` streams emit the current value at once and
+/// again whenever it changes.
+///
+/// Muting is local to the device: a muted conversation leaves the list
+/// view, its unread messages are marked read, and later messages of it
+/// arrive read, so they never notify.
+abstract interface class MailingLists {
+  /// Lists with mail outside Trash and Junk, most recent activity first.
+  Stream<List<MailingList>> watchMailingLists();
+
+  /// The conversations of list [listId], most recent activity first. Muted
+  /// ones only with [includeMuted].
+  Stream<List<ListThread>> watchListThreads(String listId, {bool includeMuted = false, int limit = 200});
+
+  /// Ids of the muted conversations, of all accounts.
+  Stream<Set<String>> watchMutedThreads();
+
+  /// Mutes or unmutes the conversation [emailId] belongs to.
+  Future<void> setThreadMuted(String emailId, {required bool muted});
 }
