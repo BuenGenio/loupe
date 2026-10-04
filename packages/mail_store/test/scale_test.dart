@@ -353,6 +353,7 @@ void main() {
     }
     await first('watchMailingLists', store.watchMailingLists);
     await first('watchListThreads', () => store.watchListThreads(lists.first.id));
+    await first('watchSubscriptions', () => store.watchSubscriptions(now: base.add(const Duration(days: 1000))));
   });
 
   test('virtual counts', () async {
