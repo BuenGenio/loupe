@@ -142,7 +142,9 @@ class OutboxActions {
         showSnack(messenger, 'Moved to Drafts');
         return;
       }
-      final scheduled = item.status == OutboxStatus.scheduled && item.sendAt.isAfter(DateTime.now());
+      // Undo restores the schedule as it was; one that is overdue by then
+      // is sent at once by the repository.
+      final scheduled = item.status == OutboxStatus.scheduled;
       showSnack(
         messenger,
         'Message discarded',
