@@ -20,6 +20,9 @@ abstract interface class SyncHost {
   void reportStatus(AccountSyncStatus status);
   void reportError(MailException error);
 
+  /// The Inbox [inboxId] of [account] was just synced (device rules run).
+  Future<void> inboxSynced(MailAccount account, String inboxId);
+
   /// Called after each full sync of [syncer]'s account (its Snoozed folder
   /// is fresh then): wakes the messages whose snooze is over.
   Future<void> wakeSnoozed(AccountSyncer syncer);
@@ -253,6 +256,7 @@ final class AccountSyncer {
       for (final m in await _mailboxesForFullSync()) {
         if (_disposed) return;
         await onMain((t) => _syncMailbox(t, m));
+        if (m.role == MailboxRole.inbox) await _inboxSynced(m);
       }
       // Later syncs also fill in a few never-opened mailboxes.
       if (!firstSync) {
@@ -344,6 +348,7 @@ final class AccountSyncer {
         final m = await _store.getMailbox(id);
         if (m == null || !m.isSelectable) continue;
         await onMain((t) => _syncMailbox(t, m));
+        if (m.role == MailboxRole.inbox) await _inboxSynced(m);
       }
       _failures = 0;
       _lastSuccess = _host.now();
@@ -367,6 +372,16 @@ final class AccountSyncer {
     final result = await t.syncMailbox(_remoteFor(m), info?.state, initialWindow: _config.initialWindow);
     _noteKeywordSupport(m, result.canStoreKeywords);
     await _store.applySync(m.id, await _overlay(result), now: _host.now());
+  }
+
+  /// Lets device rules handle new Inbox mail (outside the main queue, so
+  /// they can load content). Their failures never fail the sync.
+  Future<void> _inboxSynced(Mailbox inbox) async {
+    try {
+      await _host.inboxSynced(_account, inbox.id);
+    } catch (e) {
+      _host.reportError(asMailException(e, 'Rules couldn’t run on new mail'));
+    }
   }
 
   void _noteKeywordSupport(Mailbox m, bool? stores) {

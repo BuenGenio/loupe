@@ -6,6 +6,7 @@ import 'email.dart';
 import 'mailbox.dart';
 import 'outbox.dart';
 import 'outgoing.dart';
+import 'rules.dart';
 import 'search.dart';
 import 'server_documents.dart';
 import 'snooze.dart';
@@ -211,6 +212,12 @@ abstract interface class MailRepository {
 
   Stream<Set<String>> watchVipAddresses();
   Future<void> setVip(String email, {required bool vip});
+
+  // Rules ----------------------------------------------------------------------
+
+  /// Mail rules: the list, Apply to Existing Messages, and server rules
+  /// (Sieve through ManageSieve).
+  MailRules get rules;
 
   /// How often [email] wrote to the user and the user to it, from the local
   /// address book (case-insensitive). Unknown addresses give

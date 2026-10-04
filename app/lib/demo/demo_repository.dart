@@ -8,6 +8,7 @@ import 'package:mail_model/mail_model.dart';
 
 import 'demo_data.dart';
 import 'demo_mime.dart';
+import 'demo_rules.dart';
 
 export 'demo_data.dart' show DemoAccounts, DemoPeople;
 
@@ -150,9 +151,20 @@ class DemoMailRepository implements MailRepository {
 
   static Future<Uint8List> _loadFromBundle(String path) async => (await rootBundle.load(path)).buffer.asUint8List();
 
+  /// Rules, with simulated ManageSieve servers (see [DemoRules]).
+  @override
+  late final DemoRules rules = DemoRules(
+    this,
+    accounts: _accounts,
+    mailboxes: [..._mailboxes.values],
+    clock: _clock,
+    latency: latency.content,
+  );
+
   /// Stops timers and closes streams.
   void dispose() {
     _disposed = true;
+    rules.dispose();
     for (final t in _timers) {
       t.cancel();
     }
@@ -612,11 +624,12 @@ class DemoMailRepository implements MailRepository {
     final roll = _random.nextDouble();
     final count = roll < 0.35 ? 0 : (roll < 0.8 ? 1 : 2);
     final candidates = DemoSeed.incoming.where((t) => accounts.contains(t.$1)).toList();
+    final arrived = <EmailSummary>[];
     for (var i = 0; i < count && candidates.isNotEmpty; i++) {
       final (accountId, from, subject, text) = candidates[(_incomingIndex++) % candidates.length];
       final inbox = _roleBox(accountId, MailboxRole.inbox);
       if (inbox == null) continue;
-      _addLocal(
+      final message = _addLocal(
         accountId: accountId,
         mailboxId: inbox.id,
         from: from,
@@ -626,7 +639,9 @@ class DemoMailRepository implements MailRepository {
         at: _clock().subtract(Duration(seconds: 30 * i)),
         seen: false,
       );
+      arrived.add(message.summary);
     }
+    await rules.runOnArrivals(arrived);
     final now = _clock();
     for (final id in accounts) {
       if (_account(id) == null) continue;

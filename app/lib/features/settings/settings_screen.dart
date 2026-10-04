@@ -212,6 +212,11 @@ class SettingsScreen extends ConsumerWidget {
               onTap: () => context.push(Routes.notificationSettings),
             ),
             GroupedRow(
+              leading: SettingsIcon(LoupeIcons.rules, colors.vip),
+              title: 'Rules',
+              onTap: () => context.push(Routes.rules),
+            ),
+            GroupedRow(
               leading: SettingsIcon(LoupeIcons.settings, colors.swipeMore),
               title: 'Advanced',
               onTap: () => context.push(Routes.advancedSettings),

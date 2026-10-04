@@ -9,6 +9,7 @@ dependencies:
   mail_model: {path: ../mail_model}
   mail_store: {path: ../mail_store}
   expr_search: {path: ../expr_search}
+  mail_sieve: {path: ../mail_sieve}
   clock: ^1.1.2
 dev_dependencies:
   test: any

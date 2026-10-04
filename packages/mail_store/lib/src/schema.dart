@@ -208,6 +208,30 @@ class IdAliases extends Table {
   Set<Column> get primaryKey => {oldId};
 }
 
+/// Mail rules; [json] is a serialised `Rule` whose order is [sortOrder].
+@DataClassName('RuleRow')
+class Rules extends Table {
+  TextColumn get id => text()();
+  TextColumn get json => text()();
+  IntColumn get sortOrder => integer().withDefault(const Constant(0))();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+/// How far device rules have run in a mailbox (the Inbox): messages stored
+/// after [seq] whose IMAP UID is above [uid] (same [uidValidity]) are new.
+@DataClassName('RuleWatermarkRow')
+class RuleWatermarks extends Table {
+  TextColumn get mailboxId => text().references(Mailboxes, #id, onDelete: KeyAction.cascade)();
+  IntColumn get seq => integer()();
+  IntColumn get uidValidity => integer().nullable()();
+  IntColumn get uid => integer().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {mailboxId};
+}
+
 /// SQL rendering an address JSON column as searchable text ("name email …").
 String _addrText(String column) =>
     "(SELECT group_concat(coalesce(json_extract(value, '\$.n'), '') || ' ' || json_extract(value, '\$.e'), ' ') "
@@ -285,13 +309,16 @@ END;''',
     AddressBook,
     ThreadRefs,
     IdAliases,
+    Rules,
+    RuleWatermarks,
   ],
 )
 class StoreDatabase extends _$StoreDatabase {
   StoreDatabase(super.e);
 
+  /// 2: rules and their watermarks.
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -299,6 +326,12 @@ class StoreDatabase extends _$StoreDatabase {
       await m.createAll();
       for (final sql in _ftsAndTriggers) {
         await customStatement(sql);
+      }
+    },
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.createTable(rules);
+        await m.createTable(ruleWatermarks);
       }
     },
     beforeOpen: (details) async {

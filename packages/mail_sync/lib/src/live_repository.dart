@@ -4,10 +4,12 @@ import 'dart:typed_data';
 
 import 'package:clock/clock.dart';
 import 'package:mail_model/mail_model.dart';
+import 'package:mail_sieve/mail_sieve.dart' show ManageSieveConnector, SieveConnector;
 import 'package:mail_store/mail_store.dart';
 
 import 'account_syncer.dart';
 import 'config.dart';
+import 'live_rules.dart';
 import 'util.dart';
 
 /// The real [MailRepository]: the local [MailStore] kept in sync with the
@@ -25,7 +27,8 @@ final class LiveMailRepository implements MailRepository {
     this.config = const SyncConfig(),
     this._clock,
     this.refreshOAuth,
-  });
+    SieveConnector? sieve,
+  }) : _sieve = sieve ?? const ManageSieveConnector();
 
   final MailStore store;
   final TransportFactory transports;
@@ -36,7 +39,13 @@ final class LiveMailRepository implements MailRepository {
   final OAuthRefresher? refreshOAuth;
 
   final Clock? _clock;
+  final SieveConnector _sieve;
   late final _host = _Host(this);
+
+  /// Mail rules: device rules run here after each Inbox sync; server rules
+  /// go to the account's ManageSieve server.
+  @override
+  late final LiveRules rules = LiveRules(_host, _sieve);
   final _syncers = <String, AccountSyncer>{};
   final _statusById = <String, AccountSyncStatus>{};
   final _statuses = ValueStream<List<AccountSyncStatus>>(const []);
@@ -1232,9 +1241,14 @@ final class _SearchTarget {
   final bool Function(EmailSummary)? filter;
 }
 
-final class _Host implements SyncHost {
+final class _Host implements SyncHost, RulesHost {
   _Host(this._repo);
   final LiveMailRepository _repo;
+
+  @override
+  MailRepository get repository => _repo;
+  @override
+  Future<void> inboxSynced(MailAccount account, String inboxId) => _repo.rules.inboxSynced(account, inboxId);
 
   @override
   MailStore get store => _repo.store;

@@ -4727,6 +4727,489 @@ class IdAliasesCompanion extends UpdateCompanion<IdAliasRow> {
   }
 }
 
+class $RulesTable extends Rules with TableInfo<$RulesTable, RuleRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RulesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _jsonMeta = const VerificationMeta('json');
+  @override
+  late final GeneratedColumn<String> json = GeneratedColumn<String>(
+    'json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sortOrderMeta = const VerificationMeta('sortOrder');
+  @override
+  late final GeneratedColumn<int> sortOrder = GeneratedColumn<int>(
+    'sort_order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, json, sortOrder];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'rules';
+  @override
+  VerificationContext validateIntegrity(Insertable<RuleRow> instance, {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('json')) {
+      context.handle(_jsonMeta, json.isAcceptableOrUnknown(data['json']!, _jsonMeta));
+    } else if (isInserting) {
+      context.missing(_jsonMeta);
+    }
+    if (data.containsKey('sort_order')) {
+      context.handle(_sortOrderMeta, sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  RuleRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RuleRow(
+      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      json: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}json'])!,
+      sortOrder: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}sort_order'])!,
+    );
+  }
+
+  @override
+  $RulesTable createAlias(String alias) {
+    return $RulesTable(attachedDatabase, alias);
+  }
+}
+
+class RuleRow extends DataClass implements Insertable<RuleRow> {
+  final String id;
+  final String json;
+  final int sortOrder;
+  const RuleRow({required this.id, required this.json, required this.sortOrder});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['json'] = Variable<String>(json);
+    map['sort_order'] = Variable<int>(sortOrder);
+    return map;
+  }
+
+  RulesCompanion toCompanion(bool nullToAbsent) {
+    return RulesCompanion(id: Value(id), json: Value(json), sortOrder: Value(sortOrder));
+  }
+
+  factory RuleRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RuleRow(
+      id: serializer.fromJson<String>(json['id']),
+      json: serializer.fromJson<String>(json['json']),
+      sortOrder: serializer.fromJson<int>(json['sortOrder']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'json': serializer.toJson<String>(json),
+      'sortOrder': serializer.toJson<int>(sortOrder),
+    };
+  }
+
+  RuleRow copyWith({String? id, String? json, int? sortOrder}) =>
+      RuleRow(id: id ?? this.id, json: json ?? this.json, sortOrder: sortOrder ?? this.sortOrder);
+  RuleRow copyWithCompanion(RulesCompanion data) {
+    return RuleRow(
+      id: data.id.present ? data.id.value : this.id,
+      json: data.json.present ? data.json.value : this.json,
+      sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RuleRow(')
+          ..write('id: $id, ')
+          ..write('json: $json, ')
+          ..write('sortOrder: $sortOrder')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, json, sortOrder);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RuleRow && other.id == this.id && other.json == this.json && other.sortOrder == this.sortOrder);
+}
+
+class RulesCompanion extends UpdateCompanion<RuleRow> {
+  final Value<String> id;
+  final Value<String> json;
+  final Value<int> sortOrder;
+  final Value<int> rowid;
+  const RulesCompanion({
+    this.id = const Value.absent(),
+    this.json = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RulesCompanion.insert({
+    required String id,
+    required String json,
+    this.sortOrder = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       json = Value(json);
+  static Insertable<RuleRow> custom({
+    Expression<String>? id,
+    Expression<String>? json,
+    Expression<int>? sortOrder,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (json != null) 'json': json,
+      if (sortOrder != null) 'sort_order': sortOrder,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RulesCompanion copyWith({Value<String>? id, Value<String>? json, Value<int>? sortOrder, Value<int>? rowid}) {
+    return RulesCompanion(
+      id: id ?? this.id,
+      json: json ?? this.json,
+      sortOrder: sortOrder ?? this.sortOrder,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (json.present) {
+      map['json'] = Variable<String>(json.value);
+    }
+    if (sortOrder.present) {
+      map['sort_order'] = Variable<int>(sortOrder.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RulesCompanion(')
+          ..write('id: $id, ')
+          ..write('json: $json, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RuleWatermarksTable extends RuleWatermarks with TableInfo<$RuleWatermarksTable, RuleWatermarkRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RuleWatermarksTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _mailboxIdMeta = const VerificationMeta('mailboxId');
+  @override
+  late final GeneratedColumn<String> mailboxId = GeneratedColumn<String>(
+    'mailbox_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('REFERENCES mailboxes (id) ON DELETE CASCADE'),
+  );
+  static const VerificationMeta _seqMeta = const VerificationMeta('seq');
+  @override
+  late final GeneratedColumn<int> seq = GeneratedColumn<int>(
+    'seq',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _uidValidityMeta = const VerificationMeta('uidValidity');
+  @override
+  late final GeneratedColumn<int> uidValidity = GeneratedColumn<int>(
+    'uid_validity',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _uidMeta = const VerificationMeta('uid');
+  @override
+  late final GeneratedColumn<int> uid = GeneratedColumn<int>(
+    'uid',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [mailboxId, seq, uidValidity, uid];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'rule_watermarks';
+  @override
+  VerificationContext validateIntegrity(Insertable<RuleWatermarkRow> instance, {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('mailbox_id')) {
+      context.handle(_mailboxIdMeta, mailboxId.isAcceptableOrUnknown(data['mailbox_id']!, _mailboxIdMeta));
+    } else if (isInserting) {
+      context.missing(_mailboxIdMeta);
+    }
+    if (data.containsKey('seq')) {
+      context.handle(_seqMeta, seq.isAcceptableOrUnknown(data['seq']!, _seqMeta));
+    } else if (isInserting) {
+      context.missing(_seqMeta);
+    }
+    if (data.containsKey('uid_validity')) {
+      context.handle(_uidValidityMeta, uidValidity.isAcceptableOrUnknown(data['uid_validity']!, _uidValidityMeta));
+    }
+    if (data.containsKey('uid')) {
+      context.handle(_uidMeta, uid.isAcceptableOrUnknown(data['uid']!, _uidMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {mailboxId};
+  @override
+  RuleWatermarkRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RuleWatermarkRow(
+      mailboxId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}mailbox_id'])!,
+      seq: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}seq'])!,
+      uidValidity: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}uid_validity']),
+      uid: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}uid']),
+    );
+  }
+
+  @override
+  $RuleWatermarksTable createAlias(String alias) {
+    return $RuleWatermarksTable(attachedDatabase, alias);
+  }
+}
+
+class RuleWatermarkRow extends DataClass implements Insertable<RuleWatermarkRow> {
+  final String mailboxId;
+  final int seq;
+  final int? uidValidity;
+  final int? uid;
+  const RuleWatermarkRow({required this.mailboxId, required this.seq, this.uidValidity, this.uid});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['mailbox_id'] = Variable<String>(mailboxId);
+    map['seq'] = Variable<int>(seq);
+    if (!nullToAbsent || uidValidity != null) {
+      map['uid_validity'] = Variable<int>(uidValidity);
+    }
+    if (!nullToAbsent || uid != null) {
+      map['uid'] = Variable<int>(uid);
+    }
+    return map;
+  }
+
+  RuleWatermarksCompanion toCompanion(bool nullToAbsent) {
+    return RuleWatermarksCompanion(
+      mailboxId: Value(mailboxId),
+      seq: Value(seq),
+      uidValidity: uidValidity == null && nullToAbsent ? const Value.absent() : Value(uidValidity),
+      uid: uid == null && nullToAbsent ? const Value.absent() : Value(uid),
+    );
+  }
+
+  factory RuleWatermarkRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RuleWatermarkRow(
+      mailboxId: serializer.fromJson<String>(json['mailboxId']),
+      seq: serializer.fromJson<int>(json['seq']),
+      uidValidity: serializer.fromJson<int?>(json['uidValidity']),
+      uid: serializer.fromJson<int?>(json['uid']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'mailboxId': serializer.toJson<String>(mailboxId),
+      'seq': serializer.toJson<int>(seq),
+      'uidValidity': serializer.toJson<int?>(uidValidity),
+      'uid': serializer.toJson<int?>(uid),
+    };
+  }
+
+  RuleWatermarkRow copyWith({
+    String? mailboxId,
+    int? seq,
+    Value<int?> uidValidity = const Value.absent(),
+    Value<int?> uid = const Value.absent(),
+  }) => RuleWatermarkRow(
+    mailboxId: mailboxId ?? this.mailboxId,
+    seq: seq ?? this.seq,
+    uidValidity: uidValidity.present ? uidValidity.value : this.uidValidity,
+    uid: uid.present ? uid.value : this.uid,
+  );
+  RuleWatermarkRow copyWithCompanion(RuleWatermarksCompanion data) {
+    return RuleWatermarkRow(
+      mailboxId: data.mailboxId.present ? data.mailboxId.value : this.mailboxId,
+      seq: data.seq.present ? data.seq.value : this.seq,
+      uidValidity: data.uidValidity.present ? data.uidValidity.value : this.uidValidity,
+      uid: data.uid.present ? data.uid.value : this.uid,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RuleWatermarkRow(')
+          ..write('mailboxId: $mailboxId, ')
+          ..write('seq: $seq, ')
+          ..write('uidValidity: $uidValidity, ')
+          ..write('uid: $uid')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(mailboxId, seq, uidValidity, uid);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RuleWatermarkRow &&
+          other.mailboxId == this.mailboxId &&
+          other.seq == this.seq &&
+          other.uidValidity == this.uidValidity &&
+          other.uid == this.uid);
+}
+
+class RuleWatermarksCompanion extends UpdateCompanion<RuleWatermarkRow> {
+  final Value<String> mailboxId;
+  final Value<int> seq;
+  final Value<int?> uidValidity;
+  final Value<int?> uid;
+  final Value<int> rowid;
+  const RuleWatermarksCompanion({
+    this.mailboxId = const Value.absent(),
+    this.seq = const Value.absent(),
+    this.uidValidity = const Value.absent(),
+    this.uid = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RuleWatermarksCompanion.insert({
+    required String mailboxId,
+    required int seq,
+    this.uidValidity = const Value.absent(),
+    this.uid = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : mailboxId = Value(mailboxId),
+       seq = Value(seq);
+  static Insertable<RuleWatermarkRow> custom({
+    Expression<String>? mailboxId,
+    Expression<int>? seq,
+    Expression<int>? uidValidity,
+    Expression<int>? uid,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (mailboxId != null) 'mailbox_id': mailboxId,
+      if (seq != null) 'seq': seq,
+      if (uidValidity != null) 'uid_validity': uidValidity,
+      if (uid != null) 'uid': uid,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RuleWatermarksCompanion copyWith({
+    Value<String>? mailboxId,
+    Value<int>? seq,
+    Value<int?>? uidValidity,
+    Value<int?>? uid,
+    Value<int>? rowid,
+  }) {
+    return RuleWatermarksCompanion(
+      mailboxId: mailboxId ?? this.mailboxId,
+      seq: seq ?? this.seq,
+      uidValidity: uidValidity ?? this.uidValidity,
+      uid: uid ?? this.uid,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (mailboxId.present) {
+      map['mailbox_id'] = Variable<String>(mailboxId.value);
+    }
+    if (seq.present) {
+      map['seq'] = Variable<int>(seq.value);
+    }
+    if (uidValidity.present) {
+      map['uid_validity'] = Variable<int>(uidValidity.value);
+    }
+    if (uid.present) {
+      map['uid'] = Variable<int>(uid.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RuleWatermarksCompanion(')
+          ..write('mailboxId: $mailboxId, ')
+          ..write('seq: $seq, ')
+          ..write('uidValidity: $uidValidity, ')
+          ..write('uid: $uid, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$StoreDatabase extends GeneratedDatabase {
   _$StoreDatabase(QueryExecutor e) : super(e);
   $StoreDatabaseManager get managers => $StoreDatabaseManager(this);
@@ -4743,6 +5226,8 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
   late final $AddressBookTable addressBook = $AddressBookTable(this);
   late final $ThreadRefsTable threadRefs = $ThreadRefsTable(this);
   late final $IdAliasesTable idAliases = $IdAliasesTable(this);
+  late final $RulesTable rules = $RulesTable(this);
+  late final $RuleWatermarksTable ruleWatermarks = $RuleWatermarksTable(this);
   late final Index emailsMailboxReceived = Index(
     'emails_mailbox_received',
     'CREATE INDEX emails_mailbox_received ON emails (mailbox_id, received_at)',
@@ -4782,6 +5267,8 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     addressBook,
     threadRefs,
     idAliases,
+    rules,
+    ruleWatermarks,
     emailsMailboxReceived,
     emailsReceived,
     emailsThread,
@@ -4839,6 +5326,10 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     WritePropagation(
       on: TableUpdateQuery.onTableName('accounts', limitUpdateKind: UpdateKind.delete),
       result: [TableUpdate('thread_refs', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('mailboxes', limitUpdateKind: UpdateKind.delete),
+      result: [TableUpdate('rule_watermarks', kind: UpdateKind.delete)],
     ),
   ]);
 }
@@ -5323,6 +5814,20 @@ final class $$MailboxesTableReferences extends BaseReferences<_$StoreDatabase, $
     final cache = $_typedResult.readTableOrNull(_emailsRefsTable($_db));
     return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
   }
+
+  static MultiTypedResultKey<$RuleWatermarksTable, List<RuleWatermarkRow>> _ruleWatermarksRefsTable(
+    _$StoreDatabase db,
+  ) => MultiTypedResultKey.fromTable(db.ruleWatermarks, aliasName: 'mailboxes__id__rule_watermarks__mailbox_id');
+
+  $$RuleWatermarksTableProcessedTableManager get ruleWatermarksRefs {
+    final manager = $$RuleWatermarksTableTableManager(
+      $_db,
+      $_db.ruleWatermarks,
+    ).filter((f) => f.mailboxId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_ruleWatermarksRefsTable($_db));
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$MailboxesTableFilterComposer extends Composer<_$StoreDatabase, $MailboxesTable> {
@@ -5405,6 +5910,24 @@ class $$MailboxesTableFilterComposer extends Composer<_$StoreDatabase, $Mailboxe
           $$EmailsTableFilterComposer(
             $db: $db,
             $table: $db.emails,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> ruleWatermarksRefs(Expression<bool> Function($$RuleWatermarksTableFilterComposer f) f) {
+    final $$RuleWatermarksTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.ruleWatermarks,
+      getReferencedColumn: (t) => t.mailboxId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$RuleWatermarksTableFilterComposer(
+            $db: $db,
+            $table: $db.ruleWatermarks,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
@@ -5553,6 +6076,26 @@ class $$MailboxesTableAnnotationComposer extends Composer<_$StoreDatabase, $Mail
     );
     return f(composer);
   }
+
+  Expression<T> ruleWatermarksRefs<T extends Object>(
+    Expression<T> Function($$RuleWatermarksTableAnnotationComposer a) f,
+  ) {
+    final $$RuleWatermarksTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.ruleWatermarks,
+      getReferencedColumn: (t) => t.mailboxId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$RuleWatermarksTableAnnotationComposer(
+            $db: $db,
+            $table: $db.ruleWatermarks,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$MailboxesTableTableManager
@@ -5568,7 +6111,7 @@ class $$MailboxesTableTableManager
           $$MailboxesTableUpdateCompanionBuilder,
           (MailboxRow, $$MailboxesTableReferences),
           MailboxRow,
-          PrefetchHooks Function({bool accountId, bool syncStatesRefs, bool emailsRefs})
+          PrefetchHooks Function({bool accountId, bool syncStatesRefs, bool emailsRefs, bool ruleWatermarksRefs})
         > {
   $$MailboxesTableTableManager(_$StoreDatabase db, $MailboxesTable table)
     : super(
@@ -5637,61 +6180,75 @@ class $$MailboxesTableTableManager
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable<$MailboxesTable, MailboxRow>(table), $$MailboxesTableReferences(db, table, e)))
               .toList(),
-          prefetchHooksCallback: ({accountId = false, syncStatesRefs = false, emailsRefs = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [if (syncStatesRefs) db.syncStates, if (emailsRefs) db.emails],
-              addJoins:
-                  <
-                    T extends TableManagerState<
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic
-                    >
-                  >(state) {
-                    if (accountId) {
-                      state = state.withJoin(
-                        currentTable: table,
-                        currentColumn: table.accountId,
-                        referencedTable: $$MailboxesTableReferences._accountIdTable(db),
-                        referencedColumn: $$MailboxesTableReferences._accountIdTable(db).id,
-                      ) as T;
-                    }
+          prefetchHooksCallback:
+              ({accountId = false, syncStatesRefs = false, emailsRefs = false, ruleWatermarksRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (syncStatesRefs) db.syncStates,
+                    if (emailsRefs) db.emails,
+                    if (ruleWatermarksRefs) db.ruleWatermarks,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (accountId) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.accountId,
+                            referencedTable: $$MailboxesTableReferences._accountIdTable(db),
+                            referencedColumn: $$MailboxesTableReferences._accountIdTable(db).id,
+                          ) as T;
+                        }
 
-                    return state;
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (syncStatesRefs)
+                        await $_getPrefetchedData<MailboxRow, $MailboxesTable, SyncStateRow>(
+                          currentTable: table,
+                          referencedTable: $$MailboxesTableReferences._syncStatesRefsTable(db),
+                          managerFromTypedResult: (p0) => $$MailboxesTableReferences(db, table, p0).syncStatesRefs,
+                          referencedItemsForCurrentItem: (item, referencedItems) =>
+                              referencedItems.where((e) => e.mailboxId == item.id),
+                          typedResults: items,
+                        ),
+                      if (emailsRefs)
+                        await $_getPrefetchedData<MailboxRow, $MailboxesTable, EmailRow>(
+                          currentTable: table,
+                          referencedTable: $$MailboxesTableReferences._emailsRefsTable(db),
+                          managerFromTypedResult: (p0) => $$MailboxesTableReferences(db, table, p0).emailsRefs,
+                          referencedItemsForCurrentItem: (item, referencedItems) =>
+                              referencedItems.where((e) => e.mailboxId == item.id),
+                          typedResults: items,
+                        ),
+                      if (ruleWatermarksRefs)
+                        await $_getPrefetchedData<MailboxRow, $MailboxesTable, RuleWatermarkRow>(
+                          currentTable: table,
+                          referencedTable: $$MailboxesTableReferences._ruleWatermarksRefsTable(db),
+                          managerFromTypedResult: (p0) => $$MailboxesTableReferences(db, table, p0).ruleWatermarksRefs,
+                          referencedItemsForCurrentItem: (item, referencedItems) =>
+                              referencedItems.where((e) => e.mailboxId == item.id),
+                          typedResults: items,
+                        ),
+                    ];
                   },
-              getPrefetchedDataCallback: (items) async {
-                return [
-                  if (syncStatesRefs)
-                    await $_getPrefetchedData<MailboxRow, $MailboxesTable, SyncStateRow>(
-                      currentTable: table,
-                      referencedTable: $$MailboxesTableReferences._syncStatesRefsTable(db),
-                      managerFromTypedResult: (p0) => $$MailboxesTableReferences(db, table, p0).syncStatesRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where((e) => e.mailboxId == item.id),
-                      typedResults: items,
-                    ),
-                  if (emailsRefs)
-                    await $_getPrefetchedData<MailboxRow, $MailboxesTable, EmailRow>(
-                      currentTable: table,
-                      referencedTable: $$MailboxesTableReferences._emailsRefsTable(db),
-                      managerFromTypedResult: (p0) => $$MailboxesTableReferences(db, table, p0).emailsRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where((e) => e.mailboxId == item.id),
-                      typedResults: items,
-                    ),
-                ];
+                );
               },
-            );
-          },
         ),
       );
 }
@@ -5708,7 +6265,7 @@ typedef $$MailboxesTableProcessedTableManager =
       $$MailboxesTableUpdateCompanionBuilder,
       (MailboxRow, $$MailboxesTableReferences),
       MailboxRow,
-      PrefetchHooks Function({bool accountId, bool syncStatesRefs, bool emailsRefs})
+      PrefetchHooks Function({bool accountId, bool syncStatesRefs, bool emailsRefs, bool ruleWatermarksRefs})
     >;
 typedef $$SyncStatesTableCreateCompanionBuilder = SyncStatesCompanion Function({
   required String mailboxId,
@@ -8587,6 +9144,375 @@ typedef $$IdAliasesTableProcessedTableManager =
       IdAliasRow,
       PrefetchHooks Function()
     >;
+typedef $$RulesTableCreateCompanionBuilder = RulesCompanion Function({
+  required String id,
+  required String json,
+  Value<int> sortOrder,
+  Value<int> rowid,
+});
+typedef $$RulesTableUpdateCompanionBuilder = RulesCompanion Function({
+  Value<String> id,
+  Value<String> json,
+  Value<int> sortOrder,
+  Value<int> rowid,
+});
+
+class $$RulesTableFilterComposer extends Composer<_$StoreDatabase, $RulesTable> {
+  $$RulesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get json => $composableBuilder(column: $table.json, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get sortOrder =>
+      $composableBuilder(column: $table.sortOrder, builder: (column) => ColumnFilters(column));
+}
+
+class $$RulesTableOrderingComposer extends Composer<_$StoreDatabase, $RulesTable> {
+  $$RulesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get json =>
+      $composableBuilder(column: $table.json, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get sortOrder =>
+      $composableBuilder(column: $table.sortOrder, builder: (column) => ColumnOrderings(column));
+}
+
+class $$RulesTableAnnotationComposer extends Composer<_$StoreDatabase, $RulesTable> {
+  $$RulesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get json => $composableBuilder(column: $table.json, builder: (column) => column);
+
+  GeneratedColumn<int> get sortOrder => $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+}
+
+class $$RulesTableTableManager
+    extends
+        RootTableManager<
+          _$StoreDatabase,
+          $RulesTable,
+          RuleRow,
+          $$RulesTableFilterComposer,
+          $$RulesTableOrderingComposer,
+          $$RulesTableAnnotationComposer,
+          $$RulesTableCreateCompanionBuilder,
+          $$RulesTableUpdateCompanionBuilder,
+          (RuleRow, BaseReferences<_$StoreDatabase, $RulesTable, RuleRow>),
+          RuleRow,
+          PrefetchHooks Function()
+        > {
+  $$RulesTableTableManager(_$StoreDatabase db, $RulesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () => $$RulesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$RulesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$RulesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> json = const Value.absent(),
+            Value<int> sortOrder = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) => RulesCompanion(id: id, json: json, sortOrder: sortOrder, rowid: rowid),
+          createCompanionCallback: ({
+            required String id,
+            required String json,
+            Value<int> sortOrder = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) => RulesCompanion.insert(id: id, json: json, sortOrder: sortOrder, rowid: rowid),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$RulesTable, RuleRow>(table),
+                  BaseReferences<_$StoreDatabase, $RulesTable, RuleRow>(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RulesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$StoreDatabase,
+      $RulesTable,
+      RuleRow,
+      $$RulesTableFilterComposer,
+      $$RulesTableOrderingComposer,
+      $$RulesTableAnnotationComposer,
+      $$RulesTableCreateCompanionBuilder,
+      $$RulesTableUpdateCompanionBuilder,
+      (RuleRow, BaseReferences<_$StoreDatabase, $RulesTable, RuleRow>),
+      RuleRow,
+      PrefetchHooks Function()
+    >;
+typedef $$RuleWatermarksTableCreateCompanionBuilder = RuleWatermarksCompanion Function({
+  required String mailboxId,
+  required int seq,
+  Value<int?> uidValidity,
+  Value<int?> uid,
+  Value<int> rowid,
+});
+typedef $$RuleWatermarksTableUpdateCompanionBuilder = RuleWatermarksCompanion Function({
+  Value<String> mailboxId,
+  Value<int> seq,
+  Value<int?> uidValidity,
+  Value<int?> uid,
+  Value<int> rowid,
+});
+
+final class $$RuleWatermarksTableReferences
+    extends BaseReferences<_$StoreDatabase, $RuleWatermarksTable, RuleWatermarkRow> {
+  $$RuleWatermarksTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $MailboxesTable _mailboxIdTable(_$StoreDatabase db) =>
+      db.mailboxes.createAlias('rule_watermarks__mailbox_id__mailboxes__id');
+
+  $$MailboxesTableProcessedTableManager get mailboxId {
+    final $_column = $_itemColumn<String>('mailbox_id')!;
+
+    final manager = $$MailboxesTableTableManager($_db, $_db.mailboxes).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_mailboxIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$RuleWatermarksTableFilterComposer extends Composer<_$StoreDatabase, $RuleWatermarksTable> {
+  $$RuleWatermarksTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get seq => $composableBuilder(column: $table.seq, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get uidValidity =>
+      $composableBuilder(column: $table.uidValidity, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get uid => $composableBuilder(column: $table.uid, builder: (column) => ColumnFilters(column));
+
+  $$MailboxesTableFilterComposer get mailboxId {
+    final $$MailboxesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.mailboxId,
+      referencedTable: $db.mailboxes,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MailboxesTableFilterComposer(
+            $db: $db,
+            $table: $db.mailboxes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$RuleWatermarksTableOrderingComposer extends Composer<_$StoreDatabase, $RuleWatermarksTable> {
+  $$RuleWatermarksTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get seq => $composableBuilder(column: $table.seq, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get uidValidity =>
+      $composableBuilder(column: $table.uidValidity, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get uid => $composableBuilder(column: $table.uid, builder: (column) => ColumnOrderings(column));
+
+  $$MailboxesTableOrderingComposer get mailboxId {
+    final $$MailboxesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.mailboxId,
+      referencedTable: $db.mailboxes,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MailboxesTableOrderingComposer(
+            $db: $db,
+            $table: $db.mailboxes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$RuleWatermarksTableAnnotationComposer extends Composer<_$StoreDatabase, $RuleWatermarksTable> {
+  $$RuleWatermarksTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get seq => $composableBuilder(column: $table.seq, builder: (column) => column);
+
+  GeneratedColumn<int> get uidValidity => $composableBuilder(column: $table.uidValidity, builder: (column) => column);
+
+  GeneratedColumn<int> get uid => $composableBuilder(column: $table.uid, builder: (column) => column);
+
+  $$MailboxesTableAnnotationComposer get mailboxId {
+    final $$MailboxesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.mailboxId,
+      referencedTable: $db.mailboxes,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MailboxesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.mailboxes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$RuleWatermarksTableTableManager
+    extends
+        RootTableManager<
+          _$StoreDatabase,
+          $RuleWatermarksTable,
+          RuleWatermarkRow,
+          $$RuleWatermarksTableFilterComposer,
+          $$RuleWatermarksTableOrderingComposer,
+          $$RuleWatermarksTableAnnotationComposer,
+          $$RuleWatermarksTableCreateCompanionBuilder,
+          $$RuleWatermarksTableUpdateCompanionBuilder,
+          (RuleWatermarkRow, $$RuleWatermarksTableReferences),
+          RuleWatermarkRow,
+          PrefetchHooks Function({bool mailboxId})
+        > {
+  $$RuleWatermarksTableTableManager(_$StoreDatabase db, $RuleWatermarksTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () => $$RuleWatermarksTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$RuleWatermarksTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$RuleWatermarksTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> mailboxId = const Value.absent(),
+                Value<int> seq = const Value.absent(),
+                Value<int?> uidValidity = const Value.absent(),
+                Value<int?> uid = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RuleWatermarksCompanion(
+                mailboxId: mailboxId,
+                seq: seq,
+                uidValidity: uidValidity,
+                uid: uid,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String mailboxId,
+                required int seq,
+                Value<int?> uidValidity = const Value.absent(),
+                Value<int?> uid = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RuleWatermarksCompanion.insert(
+                mailboxId: mailboxId,
+                seq: seq,
+                uidValidity: uidValidity,
+                uid: uid,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$RuleWatermarksTable, RuleWatermarkRow>(table),
+                  $$RuleWatermarksTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({mailboxId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (mailboxId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.mailboxId,
+                        referencedTable: $$RuleWatermarksTableReferences._mailboxIdTable(db),
+                        referencedColumn: $$RuleWatermarksTableReferences._mailboxIdTable(db).id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$RuleWatermarksTableProcessedTableManager =
+    ProcessedTableManager<
+      _$StoreDatabase,
+      $RuleWatermarksTable,
+      RuleWatermarkRow,
+      $$RuleWatermarksTableFilterComposer,
+      $$RuleWatermarksTableOrderingComposer,
+      $$RuleWatermarksTableAnnotationComposer,
+      $$RuleWatermarksTableCreateCompanionBuilder,
+      $$RuleWatermarksTableUpdateCompanionBuilder,
+      (RuleWatermarkRow, $$RuleWatermarksTableReferences),
+      RuleWatermarkRow,
+      PrefetchHooks Function({bool mailboxId})
+    >;
 
 class $StoreDatabaseManager {
   final _$StoreDatabase _db;
@@ -8604,4 +9530,6 @@ class $StoreDatabaseManager {
   $$AddressBookTableTableManager get addressBook => $$AddressBookTableTableManager(_db, _db.addressBook);
   $$ThreadRefsTableTableManager get threadRefs => $$ThreadRefsTableTableManager(_db, _db.threadRefs);
   $$IdAliasesTableTableManager get idAliases => $$IdAliasesTableTableManager(_db, _db.idAliases);
+  $$RulesTableTableManager get rules => $$RulesTableTableManager(_db, _db.rules);
+  $$RuleWatermarksTableTableManager get ruleWatermarks => $$RuleWatermarksTableTableManager(_db, _db.ruleWatermarks);
 }

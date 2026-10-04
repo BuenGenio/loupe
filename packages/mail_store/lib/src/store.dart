@@ -1148,6 +1148,75 @@ SELECT
     ),
   );
 
+  // Rules -------------------------------------------------------------------
+
+  Rule _ruleFromRow(QueryRow r) =>
+      Rule.fromJson((jsonDecode(r.read<String>('json')) as Map).cast<String, Object?>())
+          .copyWith(order: r.read<int>('sort_order'));
+
+  /// Every rule, in order.
+  Stream<List<Rule>> watchRules() => _select('SELECT * FROM rules ORDER BY sort_order, id', [], {
+    _db.rules,
+  }).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) _ruleFromRow(r)]);
+
+  Future<List<Rule>> getRules() async => [
+    for (final r in await _select('SELECT * FROM rules ORDER BY sort_order, id', [], {_db.rules}).get())
+      _ruleFromRow(r),
+  ];
+
+  /// Stores [rule]: a new one goes last, an existing one keeps its place
+  /// ([Rule.order] is ignored; see [reorderRules]).
+  Future<void> saveRule(Rule rule) => _db.transaction(() async {
+    final json = jsonEncode(rule.toJson()..remove('order'));
+    final updated = await _write('UPDATE rules SET json = ? WHERE id = ?', [json, rule.id], {_db.rules});
+    if (updated > 0) return;
+    final last = await _select('SELECT coalesce(max(sort_order), -1) AS m FROM rules', [], {_db.rules}).getSingle();
+    await _db
+        .into(_db.rules)
+        .insert(RulesCompanion.insert(id: rule.id, json: json, sortOrder: Value(last.read<int>('m') + 1)));
+  });
+
+  Future<void> deleteRule(String id) => (_db.delete(_db.rules)..where((r) => r.id.equals(id))).go();
+
+  /// Puts the rules in the order of [ids]; rules not listed go after them.
+  Future<void> reorderRules(List<String> ids) => _db.transaction(() async {
+    final rest = [
+      for (final r in await getRules())
+        if (!ids.contains(r.id)) r.id,
+    ];
+    for (final (i, id) in [...ids, ...rest].indexed) {
+      await _write('UPDATE rules SET sort_order = ? WHERE id = ? AND sort_order != ?', [i, id, i], {_db.rules});
+    }
+  });
+
+  /// Where device rules stopped in [mailboxId]; null before they first ran.
+  Future<RuleWatermark?> ruleWatermark(String mailboxId) async {
+    final row = await (_db.select(_db.ruleWatermarks)..where((w) => w.mailboxId.equals(mailboxId))).getSingleOrNull();
+    return row == null ? null : RuleWatermark(seq: row.seq, uidValidity: row.uidValidity, uid: row.uid);
+  }
+
+  Future<void> setRuleWatermark(String mailboxId, RuleWatermark watermark) => _db
+      .into(_db.ruleWatermarks)
+      .insertOnConflictUpdate(
+        RuleWatermarksCompanion.insert(
+          mailboxId: mailboxId,
+          seq: watermark.seq,
+          uidValidity: Value(watermark.uidValidity),
+          uid: Value(watermark.uid),
+        ),
+      );
+
+  /// Messages stored in [mailboxId] after [seq] (insertion order), oldest
+  /// insertion first, with their seq.
+  Future<List<(int, EmailSummary)>> emailsStoredAfter(String mailboxId, int seq) async {
+    final rows =
+        await (_db.select(_db.emails)
+              ..where((e) => e.seq.isBiggerThanValue(seq) & e.mailboxId.equals(mailboxId))
+              ..orderBy([(e) => OrderingTerm.asc(e.seq)]))
+            .get();
+    return [for (final r in rows) (r.seq, summaryFromRow(r))];
+  }
+
   // VIPs --------------------------------------------------------------------
 
   Stream<Set<String>> watchVipAddresses() => _select('SELECT email FROM vip_addresses', [], {

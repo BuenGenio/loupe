@@ -10,6 +10,7 @@ import 'package:mail_model/mail_model.dart';
 
 import '../../providers.dart';
 import '../../router.dart';
+import '../../shared/bars.dart';
 import '../../settings/app_settings.dart';
 import '../../settings/ui_state.dart';
 import '../../shared/format.dart';
@@ -91,6 +92,27 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
     await ref.read(smartMailboxesProvider.notifier).add(name, query, scope: scope);
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Saved “$name” to Mailboxes')));
+  }
+
+  /// The search's menu: what to make of this search.
+  Future<void> _showMenu() async {
+    final query = _session.query.trim();
+    final choice = await showActionSheet<String>(
+      context,
+      title: query,
+      actions: const [
+        SheetAction('Make This a Rule', 'rule', icon: LoupeIcons.makeRule),
+        SheetAction('Save as Smart Mailbox', 'smart', icon: LoupeIcons.saveSearch),
+      ],
+    );
+    if (!mounted) return;
+    switch (choice) {
+      case 'rule':
+        FocusManager.instance.primaryFocus?.unfocus();
+        unawaited(context.push(Routes.newRule(condition: query)));
+      case 'smart':
+        await _saveSmartMailbox();
+    }
   }
 
   Future<void> _editChip(List<SearchExpr> terms, int index) async {
@@ -370,6 +392,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
                     ),
                   ),
                 ),
+                BarIconButton(icon: LoupeIcons.moreCircle, tooltip: 'Search Menu', size: 22, onPressed: _showMenu),
               ],
             ],
           ),

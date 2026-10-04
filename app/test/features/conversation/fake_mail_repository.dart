@@ -380,6 +380,11 @@ class FakeMailRepository implements MailRepository {
     _changed();
   }
 
+  // Rules --------------------------------------------------------------------
+
+  @override
+  MailRules get rules => throw UnimplementedError('FakeMailRepository has no rules');
+
   @override
   Future<SenderHistory> senderHistory(String email) async => senderHistories[email.toLowerCase()] ?? SenderHistory.none;
 }

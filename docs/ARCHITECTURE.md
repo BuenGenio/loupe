@@ -6,7 +6,8 @@ app (UI, Riverpod, go_router)
  ├─ expr_search ──────────┤
  └─ MailRepository  ◄─────┼── demo repository (app/lib/demo, fake data)
         ▲                 │
-        └── mail_sync (LiveMailRepository: sync engine, offline queue)
+        └── mail_sync (LiveMailRepository: sync engine, offline queue, device rules)
+              ├─ mail_sieve (rules: Sieve generation, ManageSieve client, rule runner)
               ├─ mail_store (drift + FTS5 + sqlite3mc)
               └─ TransportFactory ◄── mail_imap (enough_mail; IMAP, SMTP, MIME, discovery)
                                   ◄── mail_jmap (Phase 3)
@@ -26,6 +27,8 @@ The packages are developed in parallel. These are the seams:
 | `SearchExpr` (search syntax tree) | mail_model `src/search.dart` | expr_search (parser) | app, mail_store (SQL), mail_imap (IMAP), mail_sync |
 | `parseQuery`, `formatQuery`, `describeTerm`, `suggest`, `matchesEmail`, `widenForServer`, `compileImap`, `compileGmailRaw`, `compileJmapFilter` | expr_search `lib/src/api.dart` | expr_search | app, mail_imap, mail_sync |
 | `ReadableMessageView`, `ReaderSettings`, `showImageGallery`, `analyzeContent` (link and privacy findings), `unwrapRedirect`, `inspectHost` | readable `lib/src/api.dart` | readable | app |
+| `Rule`, `RuleAction`, `MailRules` (`MailRepository.rules`) | mail_model `src/rules.dart` | app `DemoRules`; mail_sync `LiveRules` | app |
+| `compileSieve`, `generateLoupeScript`, `parseLoupeScript`, `planInclude`, `SieveConnector`, `ServerRules`, `RuleRunner` | mail_sieve `lib/mail_sieve.dart` | mail_sieve | mail_sync, app demo |
 
 Rules:
 
