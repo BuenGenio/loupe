@@ -333,7 +333,44 @@ final class MailStore {
       state: MailboxSyncState((jsonDecode(row.state) as Map).cast<String, Object?>()),
       hasOlder: row.hasOlder,
       syncedAt: fromMillis(row.syncedAt),
+      staleHeaders: row.staleHeaders,
     );
+  }
+
+  /// The summaries of [mailboxId] have their header fields again (see
+  /// [MailboxSyncInfo.staleHeaders]).
+  Future<void> markHeadersFresh(String mailboxId) => _write(
+    'UPDATE sync_states SET stale_headers = 0 WHERE mailbox_id = ? AND stale_headers = 1',
+    [mailboxId],
+    {_db.syncStates},
+    kind: UpdateKind.update,
+  );
+
+  /// Fills header fields that stored summaries lack from [fetched] copies
+  /// of them; nothing else changes (keywords and mailboxes stay as the
+  /// store has them). Unknown ids are ignored. Watchers hear of it once.
+  Future<void> fillHeaders(List<EmailSummary> fetched) async {
+    const sql =
+        'UPDATE emails SET list_id = coalesce(list_id, ?1), list_name = coalesce(list_name, ?2), '
+        'list_post = coalesce(list_post, ?3), list_unsubscribe = coalesce(list_unsubscribe, ?4), '
+        'list_unsubscribe_post = coalesce(list_unsubscribe_post, ?5) '
+        'WHERE id = ?6 AND ((list_id IS NULL AND ?1 IS NOT NULL) OR (list_name IS NULL AND ?2 IS NOT NULL) '
+        'OR (list_post IS NULL AND ?3 IS NOT NULL) OR (list_unsubscribe IS NULL AND ?4 IS NOT NULL) '
+        'OR (list_unsubscribe_post IS NULL AND ?5 IS NOT NULL))';
+    var changed = 0;
+    await _db.transaction(() async {
+      for (final e in fetched) {
+        final values = [e.listId, e.listName, e.listPost, e.listUnsubscribe, e.listUnsubscribePost];
+        if (values.every((v) => v == null)) continue;
+        changed += await _db.customUpdate(
+          sql,
+          variables: [
+            for (final v in [...values, e.id]) _var(v),
+          ],
+        );
+      }
+    });
+    if (changed > 0) _db.notifyUpdates({TableUpdate.onTable(_db.emails, kind: UpdateKind.update)});
   }
 
   /// Applies a transport sync result to [mailboxId] atomically: drops
@@ -475,12 +512,23 @@ final class MailStore {
           isFlagged: Value(e.keywords.contains(Keywords.flagged)),
           threadId: given != null && given.isNotEmpty ? Value(given) : const Value.absent(),
           preview: e.preview.isNotEmpty && e.preview != old.preview ? Value(e.preview) : const Value.absent(),
+          // Header fields the stored copy predates.
+          listId: _fill(old.listId, e.listId),
+          listName: _fill(old.listName, e.listName),
+          listPost: _fill(old.listPost, e.listPost),
+          listUnsubscribe: _fill(old.listUnsubscribe, e.listUnsubscribe),
+          listUnsubscribePost: _fill(old.listUnsubscribePost, e.listUnsubscribePost),
         );
         final changed =
             old.mailboxId != e.mailboxId ||
             old.keywords != keywords ||
             (companion.threadId.present && old.threadId != given) ||
-            companion.preview.present;
+            companion.preview.present ||
+            companion.listId.present ||
+            companion.listName.present ||
+            companion.listPost.present ||
+            companion.listUnsubscribe.present ||
+            companion.listUnsubscribePost.present;
         if (changed) await (_db.update(_db.emails)..where((t) => t.id.equals(e.id))).write(companion);
         continue;
       }
@@ -513,10 +561,18 @@ final class MailStore {
               isSeen: Value(e.keywords.contains(Keywords.seen)),
               isFlagged: Value(e.keywords.contains(Keywords.flagged)),
               hasAttachment: Value(e.hasAttachment),
+              listId: Value(e.listId),
+              listName: Value(e.listName),
+              listPost: Value(e.listPost),
+              listUnsubscribe: Value(e.listUnsubscribe),
+              listUnsubscribePost: Value(e.listUnsubscribePost),
             ),
           );
     }
   }
+
+  static Value<String?> _fill(String? stored, String? fetched) =>
+      stored == null && fetched != null ? Value(fetched) : const Value.absent();
 
   Future<void> _deleteEmailRows(List<String> ids) async {
     for (final chunk in _chunks(ids)) {
@@ -869,6 +925,207 @@ SELECT
         VirtualMailbox.allSent: 0,
       };
     });
+  }
+
+  // Mailing lists -----------------------------------------------------------
+
+  /// Messages of `emails e` (joined with `mailboxes m`) on mailing lists,
+  /// one copy per message, outside Trash and Junk; [where] narrows them.
+  static String _listCandidates(String where) =>
+      '''
+candidates AS (
+  SELECT e.*, ROW_NUMBER() OVER (PARTITION BY e.account_id, coalesce(e.message_id_header, e.id)
+    ORDER BY $_copyRank, e.seq) AS copy_rank
+  FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id
+  WHERE $where AND m.role NOT IN ('trash', 'junk')
+)''';
+
+  /// The mailing lists with mail, newest activity first; see
+  /// `MailingLists.watchMailingLists`.
+  Stream<List<MailingList>> watchMailingLists() {
+    final sql =
+        '''
+WITH ${_listCandidates('e.list_id IS NOT NULL')},
+scoped AS (
+  SELECT c.*, (t.thread_id IS NOT NULL) AS muted FROM candidates c
+  LEFT JOIN muted_threads t ON t.account_id = c.account_id AND t.thread_id = c.thread_id
+  WHERE c.copy_rank = 1
+)
+SELECT s.list_id, count(*) AS messages, sum(CASE WHEN s.is_seen = 0 AND s.muted = 0 THEN 1 ELSE 0 END) AS unread,
+  max(s.received_at) AS last_at, group_concat(DISTINCT s.account_id) AS accounts,
+  (SELECT x.list_name FROM scoped x WHERE x.list_id = s.list_id AND x.list_name IS NOT NULL
+    ORDER BY x.received_at DESC LIMIT 1) AS name,
+  (SELECT x.list_post FROM scoped x WHERE x.list_id = s.list_id AND x.list_post IS NOT NULL
+    ORDER BY x.received_at DESC LIMIT 1) AS post
+FROM scoped s GROUP BY s.list_id ORDER BY last_at DESC, s.list_id''';
+    return _select(sql, [], {_db.emails, _db.mailboxes, _db.mutedThreads})
+        .watch()
+        .distinct(_rowsEqual)
+        .map(
+          (rows) => [
+            for (final r in rows)
+              MailingList(
+                id: r.read<String>('list_id'),
+                name: r.read<String?>('name') ?? r.read<String>('list_id'),
+                postAddress: listPostAddress(r.read<String?>('post')),
+                messageCount: r.read<int>('messages'),
+                unreadCount: r.read<int>('unread'),
+                lastActivity: fromMillis(r.read<int>('last_at')),
+                accountIds: (r.read<String?>('accounts') ?? '').split(',').where((a) => a.isNotEmpty).toList()..sort(),
+              ),
+          ],
+        );
+  }
+
+  /// The conversations of list [listId], newest activity first; see
+  /// `MailingLists.watchListThreads`.
+  Stream<List<ListThread>> watchListThreads(String listId, {bool includeMuted = false, int limit = 200}) {
+    final sql =
+        '''
+WITH ${_listCandidates('e.list_id = ?')},
+scoped AS (
+  SELECT c.*, (t.thread_id IS NOT NULL) AS muted FROM candidates c
+  LEFT JOIN muted_threads t ON t.account_id = c.account_id AND t.thread_id = c.thread_id
+  WHERE c.copy_rank = 1${includeMuted ? '' : ' AND t.thread_id IS NULL'}
+),
+ranked AS (
+  SELECT s.*,
+    ROW_NUMBER() OVER (t ORDER BY s.received_at DESC, s.seq DESC) AS rn_new,
+    ROW_NUMBER() OVER (t ORDER BY s.received_at ASC, s.seq ASC) AS rn_old,
+    count(*) OVER t AS thread_count,
+    sum(1 - s.is_seen) OVER t AS thread_unread,
+    max(s.received_at) OVER t AS last_at,
+    json_group_array(json(s.from_json)) OVER (t ORDER BY s.received_at ASC, s.seq ASC
+      ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS thread_from,
+    json_group_array(s.subject) FILTER (WHERE instr(s.subject, 'PATCH') > 0) OVER t AS patch_subjects
+  FROM scoped s
+  WINDOW t AS (PARTITION BY s.account_id, s.thread_id)
+),
+threads AS (
+  SELECT account_id, thread_id FROM ranked WHERE rn_new = 1 ORDER BY last_at DESC, seq DESC LIMIT ?
+)
+SELECT r.* FROM ranked r JOIN threads th ON th.account_id = r.account_id AND th.thread_id = r.thread_id
+WHERE r.rn_new = 1 OR r.rn_old = 1
+ORDER BY r.last_at DESC, r.account_id, r.thread_id, r.rn_new''';
+    return _select(
+      sql,
+      [listId.toLowerCase(), limit],
+      {_db.emails, _db.mailboxes, _db.mutedThreads},
+    ).watch().distinct(_rowsEqual).map(_listThreadsFromRows);
+  }
+
+  List<ListThread> _listThreadsFromRows(List<QueryRow> rows) {
+    String keyOf(QueryRow r) => '${r.read<String>('account_id')}|${r.read<String>('thread_id')}';
+    final out = <ListThread>[];
+    for (var i = 0; i < rows.length;) {
+      final key = keyOf(rows[i]);
+      var j = i + 1;
+      while (j < rows.length && keyOf(rows[j]) == key) {
+        j++;
+      }
+      final group = rows.sublist(i, j);
+      i = j;
+      final newest = group.firstWhere((x) => x.read<int>('rn_new') == 1);
+      final oldest = group.firstWhere((x) => x.read<int>('rn_old') == 1);
+      final first = summaryFromRow(_emailRow(oldest));
+      final participants = <EmailAddress>[];
+      final seen = <String>{};
+      for (final list in jsonDecode(newest.read<String>('thread_from')) as List<Object?>) {
+        for (final a in list! as List<Object?>) {
+          final m = (a! as Map).cast<String, Object?>();
+          final email = m['e']! as String;
+          if (seen.add(email.toLowerCase())) participants.add(EmailAddress(email, m['n'] as String?));
+        }
+      }
+      final subjects = [
+        for (final s in jsonDecode(newest.read<String?>('patch_subjects') ?? '[]') as List<Object?>) ?s as String?,
+      ];
+      out.add(
+        ListThread(
+          threadId: newest.read<String>('thread_id'),
+          first: first,
+          latest: summaryFromRow(_emailRow(newest)),
+          messageCount: newest.read<int>('thread_count'),
+          unreadCount: newest.read<int>('thread_unread'),
+          participants: participants,
+          patchCount: patchCount(subjects, PatchTag.parse(first.subject)),
+          isMuted: newest.read<int>('muted') != 0,
+        ),
+      );
+    }
+    return out;
+  }
+
+  /// How many patches of a series arrived: distinct positions of non-reply
+  /// `[PATCH …]` subjects (cover letters don't count), of the version
+  /// [series] names when it is the thread's own patch tag.
+  static int patchCount(Iterable<String> subjects, PatchTag? series) {
+    final positions = <int>{};
+    for (final s in subjects) {
+      final tag = PatchTag.parse(s);
+      if (tag == null || tag.isReply || tag.isCoverLetter) continue;
+      if (series != null && !series.isReply && tag.version != series.version) continue;
+      positions.add(tag.index ?? 1);
+    }
+    return positions.length;
+  }
+
+  /// Ids of the muted conversations of all accounts.
+  Stream<Set<String>> watchMutedThreads() => _select('SELECT thread_id FROM muted_threads ORDER BY thread_id', [], {
+    _db.mutedThreads,
+  }).watch().distinct(_rowsEqual).map((rows) => {for (final r in rows) r.read<String>('thread_id')});
+
+  /// The account and conversation of [emailId] (resolving moved ids), or
+  /// null when it isn't stored.
+  Future<({String accountId, String threadId})?> threadOf(String emailId) async {
+    final id = await resolveId(emailId);
+    final row = await (_db.select(_db.emails)..where((e) => e.id.equals(id))).getSingleOrNull();
+    return row == null ? null : (accountId: row.accountId, threadId: row.threadId);
+  }
+
+  /// Mutes or unmutes conversation [threadId] of [accountId].
+  Future<void> setThreadMuted(String accountId, String threadId, {required bool muted, DateTime? now}) async {
+    if (muted) {
+      await _db
+          .into(_db.mutedThreads)
+          .insert(
+            MutedThreadsCompanion.insert(
+              accountId: accountId,
+              threadId: threadId,
+              mutedAt: (now ?? DateTime.now()).millisecondsSinceEpoch,
+            ),
+            mode: InsertMode.insertOrIgnore,
+          );
+    } else {
+      await (_db.delete(
+        _db.mutedThreads,
+      )..where((t) => t.accountId.equals(accountId) & t.threadId.equals(threadId))).go();
+    }
+  }
+
+  /// Unread messages of conversation [threadId] of [accountId].
+  Future<List<String>> unreadInThread(String accountId, String threadId) async {
+    final rows = await _select(
+      'SELECT id FROM emails WHERE account_id = ? AND thread_id = ? AND is_seen = 0',
+      [accountId, threadId],
+      {_db.emails},
+    ).get();
+    return [for (final r in rows) r.read<String>('id')];
+  }
+
+  /// The unread ones among [emailIds] whose conversation is muted.
+  Future<List<String>> unreadInMutedThreads(Iterable<String> emailIds) async {
+    final out = <String>[];
+    for (final chunk in _chunks(emailIds.toSet().toList())) {
+      final rows = await _select(
+        'SELECT e.id FROM emails e JOIN muted_threads t ON t.account_id = e.account_id AND t.thread_id = e.thread_id '
+        'WHERE e.is_seen = 0 AND e.id IN (${List.filled(chunk.length, '?').join(', ')})',
+        chunk,
+        {_db.emails, _db.mutedThreads},
+      ).get();
+      out.addAll([for (final r in rows) r.read<String>('id')]);
+    }
+    return out;
   }
 
   // Search ------------------------------------------------------------------
