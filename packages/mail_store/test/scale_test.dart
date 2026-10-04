@@ -353,7 +353,23 @@ void main() {
     final statements = await first('watchVirtualCounts', store.watchVirtualCounts);
     final counts = await store.watchVirtualCounts().first;
     expect(counts[VirtualMailbox.unread], greaterThan(_scale ~/ 2));
-    _report('  ${statements.length} statement(s)');
+    final p = await plan(statements.single.sql, const []);
+    if (Platform.environment['LOUPE_PLAN'] != null) stdout.writeln(p);
+    expect(p, isNot(contains(RegExp(r'^SCAN e$', multiLine: true))), reason: 'counts read the partial indexes:\n$p');
+
+    // The same numbers as counting over every message (copies once).
+    const excluded = "'trash', 'junk', 'all', 'flagged', 'important'";
+    final reference = (await executor.runSelect(
+      '''
+SELECT
+  (SELECT count(DISTINCT e.account_id || '|' || coalesce(e.message_id_header, e.id)) FROM emails e
+    JOIN mailboxes m ON m.id = e.mailbox_id WHERE e.is_seen = 0 AND m.role NOT IN ($excluded, 'sent', 'drafts')) AS unread,
+  (SELECT count(DISTINCT e.account_id || '|' || coalesce(e.message_id_header, e.id)) FROM emails e
+    JOIN mailboxes m ON m.id = e.mailbox_id WHERE e.is_flagged = 1 AND m.role NOT IN ($excluded)) AS flagged''',
+      const [],
+    )).single;
+    expect(counts[VirtualMailbox.unread], reference['unread'], reason: 'every server count equals the stored one');
+    expect(counts[VirtualMailbox.flagged], reference['flagged']);
   });
 
   test('conversation', () async {

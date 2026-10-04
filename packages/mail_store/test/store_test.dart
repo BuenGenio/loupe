@@ -99,7 +99,7 @@ void main() {
         'contents_after_delete',
       ]),
     );
-    expect(db.select('PRAGMA user_version').single.values.single, 3);
+    expect(db.select('PRAGMA user_version').single.values.single, 4);
   });
 
   group('accounts and mailboxes', () {

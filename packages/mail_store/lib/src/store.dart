@@ -987,19 +987,22 @@ SELECT * FROM members WHERE copy_rank = 1 ORDER BY received_at ASC, seq ASC''';
   /// stored ones. A mailbox whose server count is unknown stores the local
   /// count (see [applySync]), so it adds nothing.
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts() {
-    const distinctKey = "count(DISTINCT e.account_id || '|' || coalesce(e.message_id_header, e.id))";
+    // Mailboxes first, then their unread or flagged messages through the
+    // partial indexes (emails_unread, emails_flagged), which cover the key.
+    const distinctKey = "count(DISTINCT e.account_id || '|' || coalesce(e.message_id_header, '#' || e.seq))";
+    const byMailbox = 'FROM mailboxes m CROSS JOIN emails e ON e.mailbox_id = m.id';
     const from = 'FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id';
     const unreadRoles = "m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $_snoozeFolderSql";
     const sql =
         '''
 SELECT
   (SELECT coalesce(sum(unread_count), 0) FROM mailboxes WHERE role = 'inbox') AS all_inboxes,
-  (SELECT $distinctKey $from WHERE e.is_seen = 0 AND $unreadRoles) +
+  (SELECT $distinctKey $byMailbox WHERE e.is_seen = 0 AND $unreadRoles) +
   (SELECT coalesce(sum(max(0, m.unread_count - coalesce(l.n, 0))), 0) FROM mailboxes m
     LEFT JOIN (SELECT mailbox_id, count(*) AS n FROM emails WHERE is_seen = 0 GROUP BY mailbox_id) l
       ON l.mailbox_id = m.id
     WHERE $unreadRoles) AS unread,
-  (SELECT $distinctKey $from WHERE e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles)
+  (SELECT $distinctKey $byMailbox WHERE e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles)
     AND NOT $_snoozeFolderSql) AS flagged,
   (SELECT $distinctKey $from WHERE e.is_seen = 0 AND e.from_email IN (SELECT email FROM vip_addresses)
     AND $unreadRoles) AS vip,

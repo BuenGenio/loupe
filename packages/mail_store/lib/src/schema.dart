@@ -321,6 +321,16 @@ CREATE TRIGGER contents_after_delete AFTER DELETE ON contents BEGIN
 END;''',
 ];
 
+/// Partial indexes of the unread and the flagged messages, covering what
+/// the virtual mailboxes' counts read: those scan only these messages, and
+/// none of their wide rows (35,000 unread in a 40,000 message inbox took
+/// ~45 ms to count over the table).
+const _countIndexes = [
+  'CREATE INDEX IF NOT EXISTS emails_unread ON emails (mailbox_id, account_id, message_id_header) WHERE is_seen = 0',
+  'CREATE INDEX IF NOT EXISTS emails_flagged ON emails (mailbox_id, account_id, message_id_header) '
+      'WHERE is_flagged = 1',
+];
+
 @DriftDatabase(
   tables: [
     Accounts,
@@ -346,15 +356,16 @@ class StoreDatabase extends _$StoreDatabase {
 
   /// 1: the first release. 2: rules and their watermarks. 3: mailing-list
   /// headers on emails (with the `emails_list` index), muted threads, and
-  /// `stale_headers` on sync states.
+  /// `stale_headers` on sync states. 4: the partial indexes of unread and
+  /// flagged messages ([_countIndexes]).
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) async {
       await m.createAll();
-      for (final sql in _ftsAndTriggers) {
+      for (final sql in [..._ftsAndTriggers, ..._countIndexes]) {
         await customStatement(sql);
       }
     },
@@ -378,6 +389,11 @@ class StoreDatabase extends _$StoreDatabase {
         // Summaries stored so far were fetched without the List-* headers.
         await m.addColumn(syncStates, syncStates.staleHeaders);
         await customStatement('UPDATE sync_states SET stale_headers = 1');
+      }
+      if (from < 4) {
+        for (final sql in _countIndexes) {
+          await customStatement(sql);
+        }
       }
     },
     beforeOpen: (details) async {
