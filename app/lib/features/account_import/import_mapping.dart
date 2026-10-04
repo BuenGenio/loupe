@@ -51,10 +51,14 @@ final class ImportCandidate {
     required this.otherIdentities,
     required this.includedPassword,
     required this.usesOAuth,
+    required this.canSignIn,
     required this.block,
   });
 
-  factory ImportCandidate.fromThunderbird(TbAccount account) {
+  /// [signInProviders] are the providers this build can sign in with
+  /// (OAuth); Thunderbird's OAuth accounts with them sign in during the
+  /// import instead of asking for a password.
+  factory ImportCandidate.fromThunderbird(TbAccount account, {Set<ProviderKind> signInProviders = const {}}) {
     final email = account.email;
     final provider = providerForHost(account.incoming.host);
     ServerConfig server(ServerProtocol protocol, TbServer s) {
@@ -71,6 +75,7 @@ final class ImportCandidate {
 
     final auths = {account.incoming.auth, account.outgoing.auth};
     final oauth = auths.contains(TbAuth.oauth2);
+    final canSignIn = oauth && signInProviders.contains(provider);
     final block = account.protocol == TbIncomingProtocol.pop3
         ? ImportBlock.pop3
         : auths.contains(TbAuth.gssapi)
@@ -79,7 +84,7 @@ final class ImportCandidate {
         ? ImportBlock.ntlm
         : auths.contains(TbAuth.tlsCertificate)
         ? ImportBlock.clientCertificate
-        : oauth && provider == ProviderKind.microsoft
+        : oauth && provider == ProviderKind.microsoft && !canSignIn
         ? ImportBlock.microsoftSignIn
         : null;
     // Thunderbird names accounts after their address unless renamed;
@@ -100,6 +105,7 @@ final class ImportCandidate {
       // Loupe keeps one password per account; Thunderbird usually has the same for both servers.
       includedPassword: oauth ? null : account.incoming.password ?? account.outgoing.password,
       usesOAuth: oauth,
+      canSignIn: canSignIn,
       block: block,
     );
   }
@@ -119,9 +125,12 @@ final class ImportCandidate {
   /// The password from the code, if the export included it.
   final String? includedPassword;
 
-  /// Thunderbird signs in through the browser (OAuth); Loupe can't yet, so
-  /// it asks for an (app) password.
+  /// Thunderbird signs in through the browser (OAuth). Unless Loupe
+  /// [canSignIn] too, it asks for an (app) password.
   final bool usesOAuth;
+
+  /// Loupe signs in with the provider (Google, Microsoft) in the browser.
+  final bool canSignIn;
 
   /// Set when the account can't be added.
   final ImportBlock? block;
@@ -133,11 +142,16 @@ final class ImportCandidate {
   /// "App Password" for providers that need one.
   String get passwordLabel => usesOAuth ? 'App Password' : setup.passwordLabel(provider);
 
-  /// What account setup needs. [password] replaces the included one;
-  /// [trustedCertificates] pins self-signed certificates by host.
-  AccountSetup toSetup({String? password, Map<String, String> trustedCertificates = const {}}) {
+  /// What account setup needs. [credentials] (from signing in) or
+  /// [password] replace the included password; [trustedCertificates] pins
+  /// self-signed certificates by host.
+  AccountSetup toSetup({
+    String? password,
+    Credentials? credentials,
+    Map<String, String> trustedCertificates = const {},
+  }) {
     final secret = password ?? includedPassword;
-    if (secret == null || secret.isEmpty) throw StateError('No password for the account');
+    if (credentials == null && (secret == null || secret.isEmpty)) throw StateError('No password for the account');
     ServerConfig pinned(ServerConfig c) => switch (trustedCertificates[c.host]) {
       final fp? => ServerConfig(
         protocol: c.protocol,
@@ -155,7 +169,7 @@ final class ImportCandidate {
       provider: provider,
       incoming: pinned(incoming),
       outgoing: pinned(outgoing),
-      credentials: PasswordCredentials(secret),
+      credentials: credentials ?? PasswordCredentials(secret!),
       senderName: senderName,
     );
   }

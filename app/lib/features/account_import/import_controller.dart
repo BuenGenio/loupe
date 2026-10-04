@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:mail_model/mail_model.dart';
+import 'package:mail_platform/mail_platform.dart';
 
+import '../account_setup/oauth_accounts.dart';
 import '../account_setup/setup_text.dart';
 import 'import_mapping.dart';
 import 'qr_sequence.dart';
@@ -46,8 +48,14 @@ final class ImportRow {
   /// The password the user typed; it replaces the one from the code.
   final password = TextEditingController();
 
+  /// Gmail added with an app password although Loupe could sign in with Google.
+  bool useAppPassword = false;
+
+  /// Signs in with Google or Microsoft in the browser when added.
+  bool get signsIn => candidate.canSignIn && !useAppPassword;
+
   /// Ask for a password: none came with the code, or the server refused it.
-  bool get asksPassword => candidate.canImport && (candidate.needsPassword || _passwordRejected);
+  bool get asksPassword => candidate.canImport && !signsIn && (candidate.needsPassword || _passwordRejected);
   bool _passwordRejected = false;
 
   bool get canToggle => candidate.canImport && status != ImportStatus.added;
@@ -59,9 +67,13 @@ final class ImportRow {
 /// It holds the scanned settings and passwords only while the flow is
 /// open: [clear] (also called by [dispose]) drops them.
 class AccountImportController extends ChangeNotifier {
-  AccountImportController({required this.repository});
+  AccountImportController({required this.repository, this.oauth});
 
   final Future<MailRepository> Function() repository;
+
+  /// Signs in OAuth accounts (Gmail, Microsoft) whose provider this build is
+  /// configured for; null signs in none.
+  final OAuthSignIn? oauth;
 
   final sequence = QrSequence();
 
@@ -125,9 +137,16 @@ class AccountImportController extends ChangeNotifier {
   void review({Set<String> existing = const {}}) {
     _disposeRows();
     final known = {for (final e in existing) e.toLowerCase()};
+    final signInProviders = {
+      for (final p in const [ProviderKind.gmail, ProviderKind.microsoft])
+        if (oauth?.isConfigured(p) ?? false) p,
+    };
     _rows = [
       for (final account in sequence.accounts)
-        ImportRow(ImportCandidate.fromThunderbird(account), alreadyAdded: known.contains(account.email.toLowerCase())),
+        ImportRow(
+          ImportCandidate.fromThunderbird(account, signInProviders: signInProviders),
+          alreadyAdded: known.contains(account.email.toLowerCase()),
+        ),
     ];
     notifyListeners();
   }
@@ -150,11 +169,22 @@ class AccountImportController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Adds a Gmail account with an app password instead of signing in.
+  void useAppPassword(ImportRow row) {
+    if (_busy || !row.candidate.canSignIn) return;
+    row
+      ..useAppPassword = true
+      ..status = ImportStatus.pending
+      ..error = null;
+    notifyListeners();
+  }
+
   // Adding --------------------------------------------------------------------
 
-  /// Adds every selected account that isn't added yet, one at a time. When
-  /// a selected account still needs a password, nothing is added and that
-  /// row says so.
+  /// Adds every selected account that isn't added yet, one at a time;
+  /// Gmail and Microsoft accounts sign in in the browser when their turn
+  /// comes. When a selected account still needs a password, nothing is added
+  /// and that row says so.
   Future<void> importSelected() async {
     if (_busy) return;
     final todo = selected;
@@ -222,10 +252,16 @@ class AccountImportController extends ChangeNotifier {
       ..fingerprint = null;
     notifyListeners();
     final candidate = row.candidate;
+    final signsIn = row.signsIn;
     try {
       final typed = row.password.text;
+      final credentials = signsIn ? await oauth!.signIn(candidate.provider, loginHint: candidate.email) : null;
       final account = await repo.addAccount(
-        candidate.toSetup(password: typed.isEmpty ? null : typed, trustedCertificates: row.trusted),
+        candidate.toSetup(
+          password: typed.isEmpty ? null : typed,
+          credentials: credentials,
+          trustedCertificates: row.trusted,
+        ),
       );
       row.status = ImportStatus.added;
       if (candidate.otherIdentities.isNotEmpty) {
@@ -251,9 +287,9 @@ class AccountImportController extends ChangeNotifier {
     } on MailException catch (e) {
       row
         ..status = ImportStatus.failed
-        ..error = describeSetupError(e, candidate.provider)
+        ..error = signsIn ? describeOAuthError(e, candidate.provider) : describeSetupError(e, candidate.provider)
         ..fingerprint = e.kind == MailErrorKind.certificate ? fingerprintIn(e.message) : null
-        .._passwordRejected = row._passwordRejected || e.kind == MailErrorKind.authentication;
+        .._passwordRejected = row._passwordRejected || (!signsIn && e.kind == MailErrorKind.authentication);
     } on Object {
       // Not a mail error: say little, since details could include settings.
       row
