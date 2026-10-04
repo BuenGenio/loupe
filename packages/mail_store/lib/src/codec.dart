@@ -62,6 +62,7 @@ Mailbox mailboxFromRow(MailboxRow r) => Mailbox(
   unreadCount: r.unreadCount,
   totalCount: r.totalCount,
   isSelectable: r.isSelectable,
+  isSubscribed: r.isSubscribed,
   sortOrder: r.sortOrder,
 );
 
