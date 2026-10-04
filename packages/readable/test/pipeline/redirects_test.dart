@@ -105,6 +105,12 @@ final cases = <Case>[
   opaque('HubSpot', 'https://d2v8tf04.na1.hubspotlinks.com/Ctc/RG+113/d2v8tf04/VW1Kxl3Xg8dCW8Q0', ['HubSpot']),
   opaque('HubSpot Sales', 'https://t.sidekickopen06.com/s1t/c/5/f18dQhb0S7lC8dDMPbW2n0x6l2B9nMJW7t5XZs', ['HubSpot']),
   opaque('HubSpot CTA', 'https://cta-redirect.hubspot.com/cta/redirect/2252258/aa9fbd7c-1b2b', ['HubSpot']),
+  opaque('Substack', 'https://substack.com/redirect/2/eyJlIjoiaHR0cHM6Ly9leGFtcGxlLmNvbSJ9.AbCd', ['Substack']),
+  opaque('Constant Contact', 'https://r20.rs6.net/tn.jsp?f=001AbC&c=XyZ&ch=QwE', ['Constant Contact']),
+  opaque('Campaign Monitor', 'https://brand.createsend1.com/t/r-l-abc-def-g/', ['Campaign Monitor']),
+  opaque('ActiveCampaign', 'https://brand.lt.acemlna.com/Prod/link-tracker?redirectUrl=aHR0cHM&sig=1', [
+    'ActiveCampaign',
+  ]),
   resolved(
     'Amazon SES (path encoding)',
     'https://8q6v2v7r.r.us-east-1.awstrack.me/L0/https:%2F%2Fwww.example.com%2Fissue%2F42%3Futm_source=ses/1/'
@@ -208,6 +214,8 @@ void main() {
         'mailto:someone@example.com',
         'javascript:alert(1)',
         'https://www.linkedin.com/in/someone',
+        'https://substack.com/p/a-post',
+        'https://createsend1.com/',
       ]) {
         expect(unwrapRedirect(url), isNull, reason: url);
       }

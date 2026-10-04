@@ -89,6 +89,22 @@ const _symantec = 'Symantec Click-time Protection';
 const _trendMicro = 'Trend Micro Click-time Protection';
 
 const _trackingServices = {
+  'ActiveCampaign',
+  'Campaign Monitor',
+  'Constant Contact',
+  'AWeber',
+  'ConvertKit',
+  'Substack',
+  'Mailjet',
+  'Brevo',
+  'Emma',
+  'Salesforce Marketing Cloud',
+  'Postmark',
+  'MailerLite',
+  'Iterable',
+  'beehiiv',
+  'Zoho Campaigns',
+  'Mailgun',
   _mailchimp,
   _sendgrid,
   _hubspot,
@@ -189,6 +205,14 @@ _Step? _step(String url) {
     return _found(_mandrill, _fromBase64(params['p']), hint: _domainHint(last));
   }
 
+  // Other mailing services' click tracking: the destination stays on their
+  // servers.
+  if (path.length > 1) {
+    for (final (domain, service, prefix) in _opaqueTrackers) {
+      if (_isUnder(host, domain) && lowerPath.startsWith(prefix)) return _found(service, null);
+    }
+  }
+
   // Redirects of big platforms.
   if (_isGoogle(host)) {
     if (lowerPath == '/url') return _found(_google, _absolute(params['q'] ?? params['url']));
@@ -225,6 +249,35 @@ _Step? _step(String url) {
   }
   return null;
 }
+
+/// Click-tracking domains of mailing services that don't carry the
+/// destination: (domain, service, path prefix).
+const _opaqueTrackers = [
+  ('acemlna.com', 'ActiveCampaign', '/'),
+  ('acemlnb.com', 'ActiveCampaign', '/'),
+  ('acemlnc.com', 'ActiveCampaign', '/'),
+  ('acemlnd.com', 'ActiveCampaign', '/'),
+  ('createsend1.com', 'Campaign Monitor', '/t/'),
+  ('cmail19.com', 'Campaign Monitor', '/t/'),
+  ('cmail20.com', 'Campaign Monitor', '/t/'),
+  ('rs6.net', 'Constant Contact', '/tn.jsp'),
+  ('clicks.aweber.com', 'AWeber', '/'),
+  ('convertkit-mail.com', 'ConvertKit', '/'),
+  ('convertkit-mail2.com', 'ConvertKit', '/'),
+  ('substack.com', 'Substack', '/redirect/'),
+  ('mjt.lu', 'Mailjet', '/lnk/'),
+  ('sendibt3.com', 'Brevo', '/'),
+  ('sendibt2.com', 'Brevo', '/'),
+  ('r.sp1-brevo.net', 'Brevo', '/'),
+  ('t.e2ma.net', 'Emma', '/click/'),
+  ('cl.exct.net', 'Salesforce Marketing Cloud', '/'),
+  ('click.pstmrk.it', 'Postmark', '/'),
+  ('click.mlsend.com', 'MailerLite', '/'),
+  ('links.iterable.com', 'Iterable', '/'),
+  ('link.mail.beehiiv.com', 'beehiiv', '/'),
+  ('maillist-manage.com', 'Zoho Campaigns', '/click'),
+  ('email.mg.mailgun.net', 'Mailgun', '/c/'),
+];
 
 /// Parameter names that usually carry a redirect's destination.
 const _genericParameters = [
