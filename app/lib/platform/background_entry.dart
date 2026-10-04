@@ -75,13 +75,17 @@ void onNotificationAction(NotificationResponse response) {
 
 Future<void> _actions = Future.value();
 
-/// Hands the action to the app if it runs; otherwise opens the database
-/// here, applies it, sends it to the server and tidies the notifications.
+/// Hands the action to the app or the Instant Delivery service if one runs;
+/// otherwise opens the database here, applies it, sends it to the server and
+/// tidies the notifications.
 Future<void> handleNotificationAction(NotificationResponse response) async {
   final action = MailAction.byId(response.actionId);
   final target = NotificationTarget.decode(response.payload);
   if (action == null || action == MailAction.reply || target is! MessageTarget) return;
-  if (await ForegroundBridge.forward(encodeMailActionRequest(action, target))) return;
+  // Whoever syncs right now does it: the app, or the Instant Delivery service.
+  final request = encodeMailActionRequest(action, target);
+  if (await ForegroundBridge.forward(request)) return;
+  if (await ForegroundBridge.forward(request, name: ForegroundBridge.instantPortName)) return;
 
   DartPluginRegistrant.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();

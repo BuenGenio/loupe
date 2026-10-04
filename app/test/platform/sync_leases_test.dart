@@ -132,18 +132,19 @@ void main() {
         pause: () async => log.add('pause'),
         resume: () async => log.add('resume'),
         onBackground: () async => log.add('check'),
+        onClaimed: () => log.add('claimed'),
         maxWait: const Duration(seconds: 2),
       );
     });
 
     test('syncs in the foreground, pauses and checks in the background, holding the lease meanwhile', () async {
       await sync.enterForeground();
-      expect(log, ['resume']);
+      expect(log, ['claimed', 'resume']);
       expect(await real.isHeld(SyncHolder.foreground), isTrue);
       expect(sync.inForeground, isTrue);
 
       await sync.enterBackground();
-      expect(log, ['resume', 'pause', 'check']);
+      expect(log, ['claimed', 'resume', 'pause', 'check']);
       expect(await real.isHeld(SyncHolder.foreground), isFalse);
       expect(sync.inForeground, isFalse);
       await sync.dispose();
@@ -154,10 +155,10 @@ void main() {
       await background.renew(SyncHolder.background);
       final entered = sync.enterForeground();
       await Future<void>.delayed(const Duration(milliseconds: 400));
-      expect(log, isEmpty);
+      expect(log, ['claimed'], reason: 'told Instant Delivery to let go, waiting');
       await background.release(SyncHolder.background);
       await entered;
-      expect(log, ['resume']);
+      expect(log, ['claimed', 'resume']);
       await sync.dispose();
     });
 

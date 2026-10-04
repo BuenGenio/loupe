@@ -19,6 +19,7 @@ final class ForegroundSync {
     required this.pause,
     required this.resume,
     this.onBackground,
+    this.onClaimed,
     this.maxWait = const Duration(seconds: 20),
   });
 
@@ -26,6 +27,10 @@ final class ForegroundSync {
   final Future<void> Function() pause;
   final Future<void> Function() resume;
   final Future<void> Function()? onBackground;
+
+  /// Right after the app claimed the database, before it waits for
+  /// background work to give way (to hurry that along).
+  final void Function()? onClaimed;
 
   /// How long the app waits for a background sync before syncing anyway.
   final Duration maxWait;
@@ -45,6 +50,8 @@ final class ForegroundSync {
       final leases = await this.leases;
       _renew?.cancel();
       _renew = Timer.periodic(SyncLeases.renewEvery, (_) => unawaited(_renewQuietly(leases)));
+      await leases.renew(SyncHolder.foreground);
+      onClaimed?.call();
       await leases.acquireForeground(maxWait: maxWait, cancelled: () => generation != _generation);
       if (generation != _generation) return;
       await resume();
