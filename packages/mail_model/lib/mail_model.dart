@@ -18,4 +18,5 @@ export 'src/rules.dart';
 export 'src/search.dart';
 export 'src/server_documents.dart';
 export 'src/snooze.dart';
+export 'src/subscriptions.dart';
 export 'src/transport.dart';
