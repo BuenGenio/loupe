@@ -1,6 +1,7 @@
 // What every block widget needs from the reader: the document, the styles,
 // the colour adapter, image resolution and the link/image actions.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../color/color_adapter.dart';
@@ -76,6 +77,23 @@ final class ReaderStyles {
   final List<TextStyle> headings;
 
   Color quoteBar(int depth) => quoteBars[depth % quoteBars.length];
+
+  // Value equality, so the scope only notifies its blocks when the theme
+  // really changed.
+  @override
+  bool operator ==(Object other) =>
+      other is ReaderStyles &&
+      other.body == body &&
+      other.mono == mono &&
+      other.link == link &&
+      other.muted == muted &&
+      other.codeBackground == codeBackground &&
+      other.divider == divider &&
+      listEquals(other.quoteBars, quoteBars) &&
+      listEquals(other.headings, headings);
+
+  @override
+  int get hashCode => Object.hash(body, mono, link, muted, codeBackground, divider);
 }
 
 /// Provides the reader's state to the block widgets below it.

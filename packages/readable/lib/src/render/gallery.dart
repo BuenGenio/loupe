@@ -187,7 +187,9 @@ class _ZoomableImageState extends State<_ZoomableImage> with SingleTickerProvide
         maxScale: 6,
         child: SizedBox.expand(
           child: Image(
-            image: widget.image,
+            // Enough pixels to zoom into, without decoding a 50-megapixel
+            // photo at full size.
+            image: ResizeImage(widget.image, width: 4096, height: 4096, policy: ResizeImagePolicy.fit),
             fit: BoxFit.contain,
             semanticLabel: widget.semanticLabel,
             loadingBuilder: (context, child, progress) => progress == null

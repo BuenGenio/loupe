@@ -92,6 +92,10 @@ class DocumentBlocks extends StatefulWidget {
 class _DocumentBlocksState extends State<DocumentBlocks> {
   late int _chunks;
 
+  /// Built chunks, reused across rebuilds: an identical widget lets Flutter
+  /// skip the whole subtree when the host rebuilds for unrelated reasons.
+  final _built = <Widget>[];
+
   int get _total => (widget.blocks.length + DocumentBlocks.chunkSize - 1) ~/ DocumentBlocks.chunkSize;
 
   @override
@@ -105,6 +109,7 @@ class _DocumentBlocksState extends State<DocumentBlocks> {
   void didUpdateWidget(DocumentBlocks old) {
     super.didUpdateWidget(old);
     if (!identical(old.blocks, widget.blocks)) {
+      _built.clear();
       _chunks = DocumentBlocks.initialChunks;
       _scheduleMore();
     }
@@ -131,22 +136,24 @@ class _DocumentBlocksState extends State<DocumentBlocks> {
         children: blockWidgets(blocks),
       );
     }
+    for (var start = _built.length * size; start < shown; start += size) {
+      _built.add(
+        RepaintBoundary(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: blockWidgets(
+              blocks.sublist(start, (start + size).clamp(0, blocks.length)),
+              before: start == 0 ? null : blocks[start - 1],
+            ),
+          ),
+        ),
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
-      children: [
-        for (var start = 0; start < shown; start += size)
-          RepaintBoundary(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: blockWidgets(
-                blocks.sublist(start, (start + size).clamp(0, shown)),
-                before: start == 0 ? null : blocks[start - 1],
-              ),
-            ),
-          ),
-      ],
+      children: List.of(_built),
     );
   }
 }
@@ -301,12 +308,18 @@ class _ButtonChip extends StatelessWidget {
       BlockAlign.center => AlignmentDirectional.center,
       BlockAlign.right => AlignmentDirectional.centerEnd,
     };
+    final page = Theme.of(context).colorScheme.surface;
+    final faint = contrastRatio(fill.toARGB32(), page.toARGB32()) < 1.3;
     final chip = Semantics(
       link: true,
       button: true,
       child: Material(
         color: fill,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(22),
+          // A white button on a white page still needs an edge.
+          side: faint ? BorderSide(color: scheme.outline) : BorderSide.none,
+        ),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: () => scope.onLinkTap(button.link),
