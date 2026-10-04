@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:readable/readable.dart';
 import 'package:readable/src/cache.dart';
+import 'package:readable/src/color/color_adapter.dart';
 import 'package:readable/src/render/banner.dart';
 import 'package:readable/src/render/blocks.dart';
 import 'package:readable/src/render/gallery.dart';
@@ -452,6 +453,26 @@ void main() {
     // Links in fine print stay links.
     expect(fine.last.style!.color, scheme.primary);
     expect(fine.last.style!.fontSize, closeTo(body.fontSize! * 0.8, 0.01));
+  });
+
+  testWidgets('dark mode: a red label on a pink highlight is drawn as a readable pair', (tester) async {
+    await pumpReader(
+      tester,
+      email(
+        html:
+            '<p>Task: renew the lease <span style="background-color:#f9dedc;color:#b3261e;border-radius:4px;'
+            'padding:2px 6px">Overdue · Jul 12</span></p>',
+      ),
+      theme: ThemeData(brightness: Brightness.dark),
+    );
+    final text = tester.widget<Text>(find.ancestor(of: richText('Overdue'), matching: find.byType(Text)).first);
+    final span = (text.textSpan! as TextSpan).children!.whereType<TextSpan>().firstWhere(
+      (s) => s.text!.contains('Overdue'),
+    );
+    final fg = span.style!.color!.toARGB32();
+    final bg = span.style!.backgroundColor!.toARGB32();
+    expect(contrastRatio(fg, bg), greaterThanOrEqualTo(minTextContrast));
+    expect(luminance(fg), lessThan(luminance(bg))); // Dark text on a light highlight.
   });
 
   testWidgets('dark mode adapts dark text colours; keepOriginalColors does not', (tester) async {

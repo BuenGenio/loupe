@@ -131,6 +131,48 @@ void main() {
     test('dark highlights are kept', () {
       expect(adapter.background(0xFF003366), 0xFF003366);
     });
+
+    test('dark-red text on a light-pink highlight is checked as a pair', () {
+      // The "Overdue · Jul 12" chips of a task reminder.
+      const red = 0xFFB3261E;
+      const pink = 0xFFF9DEDC;
+      final bg = adapter.background(pink);
+      // The highlight is toned down but stays a light pink…
+      expect(toOklch(bg).l, greaterThan(0.7));
+      expect(hueDistance(bg, pink), lessThan(0.15));
+      // …so the text is held against that pink, not the dark page: it stays
+      // dark, red, and readable as body text.
+      final fg = adapter.foreground(red, bg: pink);
+      expect(luminance(fg), lessThan(luminance(bg)));
+      expect(contrastRatio(fg, bg), greaterThanOrEqualTo(minTextContrast));
+      expect(hueDistance(fg, red), lessThan(0.2));
+      expect(contrastRatio(fg, darkPage), lessThan(minTextContrast)); // It would fail on the page itself.
+    });
+
+    test('a highlight kept as sent keeps its text dark', () {
+      const red = 0xFF8C1D18;
+      const rose = 0xFFE07A72; // Mid lightness: kept in dark mode.
+      expect(adapter.background(rose), rose);
+      final fg = adapter.foreground(red, bg: rose);
+      expect(luminance(fg), lessThan(luminance(rose)));
+      expect(contrastRatio(fg, rose), greaterThanOrEqualTo(minLargeTextContrast));
+    });
+
+    test('our own colours on a sender highlight need the body-text minimum', () {
+      // Theme text (light in dark mode) and the link colour are ours, not a
+      // pair the sender chose with the highlight: on these mid reds they
+      // used to stop at 3:1.
+      for (final highlight in [0xFFC0504D, 0xFFD9534F]) {
+        expect(adapter.background(highlight), highlight);
+        for (final ours in [lightText, 0xFFA8C7FA]) {
+          final fg = adapter.foreground(null, bg: highlight, fallback: ours);
+          expect(contrastRatio(fg, highlight), greaterThanOrEqualTo(minTextContrast), reason: ours.toRadixString(16));
+        }
+      }
+      // Without a highlight the fallback is checked against the page.
+      expect(adapter.foreground(null, fallback: 0xFFA8C7FA), 0xFFA8C7FA);
+      expect(adapter.foreground(null, fallback: 0xFF1A0DAB), isNot(0xFF1A0DAB));
+    });
   });
 
   test('ensureContrast falls back to black or white when no lightness works', () {

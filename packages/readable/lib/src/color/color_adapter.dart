@@ -126,14 +126,18 @@ final class ColorAdapter {
 
   static const _maxDarkHighlightLightness = 0.78;
 
-  /// The text colour to use for [fg] (null: the theme text colour) over
-  /// [bg] (null: the page), adjusted until it reaches the WCAG minimum.
-  int foreground(int? fg, {int? bg, bool large = false}) {
-    final color = fg ?? text;
+  /// The text colour to use for the sender's [fg] (null: the reader's own
+  /// [fallback], such as the link or secondary colour, or else the theme text
+  /// colour) over the highlight [bg] (null: the page), adjusted until it
+  /// reaches the WCAG minimum against the background actually drawn behind
+  /// it ([background] of [bg]).
+  int foreground(int? fg, {int? bg, bool large = false, int? fallback}) {
+    final color = fg ?? fallback ?? text;
     final behind = bg == null ? page : background(bg);
-    if (fg == null && bg == null) return text;
-    // A pair the sender chose together (white on a red label) is a design
-    // decision: hold it to the large-text minimum only.
+    if (fg == null && fallback == null && bg == null) return text;
+    // A pair the sender chose together and that is drawn as sent (white on
+    // a red label) is a design decision: hold it to the large-text minimum
+    // only. Our own colours on a sender's highlight are not such a pair.
     final chosenPair = fg != null && bg != null && behind == bg;
     return _fg.putIfAbsent((color, behind, large || chosenPair), () {
       final min = large || chosenPair ? minLargeTextContrast : minTextContrast;
