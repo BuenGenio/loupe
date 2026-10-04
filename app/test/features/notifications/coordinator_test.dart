@@ -7,6 +7,8 @@ import 'package:loupe/features/message_list/message_list_screen.dart';
 import 'package:loupe/features/notifications/mail_notifier.dart';
 import 'package:loupe/features/notifications/new_mail.dart';
 import 'package:loupe/features/notifications/notification_content.dart';
+import 'package:loupe/features/notifications/notification_settings.dart';
+import 'package:loupe/providers.dart';
 import 'package:loupe/features/notifications/notification_actions.dart';
 import 'package:loupe/platform/foreground_bridge.dart';
 import 'package:loupe/settings/app_mode.dart';
@@ -179,5 +181,47 @@ void main() {
       action: MailAction.markRead,
       target: const MessageTarget('e', 'a'),
     ));
+  });
+
+  testWidgets('Instant Delivery runs while it is on, in live mode, for accounts that notify', (tester) async {
+    final instant = FakeInstantService();
+    await pumpWithNotifications(tester, notifier: notifier, instant: instant, mode: AppMode.live);
+    expect(instant.running, isFalse, reason: 'off by default');
+
+    final container = containerOf(tester);
+    await container.read(notificationSettingsProvider.notifier).update((s) => s.copyWith(instant: true));
+    await tester.pumpAndSettle();
+    expect(instant.running, isTrue);
+
+    final accounts = await container.read(repositoryProvider).watchAccounts().first;
+    await container
+        .read(notificationSettingsProvider.notifier)
+        .update((s) => s.copyWith(mutedAccounts: {for (final a in accounts) a.id}));
+    await tester.pumpAndSettle();
+    expect(instant.running, isFalse, reason: 'nothing to deliver');
+
+    await container.read(notificationSettingsProvider.notifier).update((s) => s.copyWith(mutedAccounts: {}));
+    await tester.pumpAndSettle();
+    expect(instant.running, isTrue);
+    await container.read(appModeProvider.notifier).set(AppMode.demo);
+    await tester.pumpAndSettle();
+    expect(instant.running, isFalse);
+  });
+
+  testWidgets('opening the app restarts an Instant Delivery service Android stopped', (tester) async {
+    final instant = FakeInstantService();
+    await pumpWithNotifications(
+      tester,
+      notifier: notifier,
+      instant: instant,
+      mode: AppMode.live,
+      prefs: {'notifications.instant': true},
+    );
+    expect(instant.starts, 1);
+    expect(instant.running, isTrue);
+
+    final demo = FakeInstantService();
+    await pumpWithNotifications(tester, notifier: notifier, instant: demo, prefs: {'notifications.instant': true});
+    expect(demo.starts, 0, reason: 'demo mail never syncs in the background');
   });
 }

@@ -32,6 +32,8 @@ dependencies:
   workmanager: ^0.10.10
   # BSD-3-Clause; new-mail notifications with Archive, Mark as Read and Reply buttons.
   flutter_local_notifications: ^22.3.1
+  # MIT; Instant Delivery (experimental): the specialUse foreground service holding IMAP IDLE.
+  flutter_foreground_task: ^11.0.3
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:

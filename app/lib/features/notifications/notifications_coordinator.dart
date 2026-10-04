@@ -6,6 +6,7 @@ import 'package:mail_model/mail_model.dart';
 import 'package:mail_sync/mail_sync.dart';
 
 import '../../platform/foreground_bridge.dart';
+import '../../platform/instant_delivery.dart';
 import '../../platform/work_scheduler.dart';
 import '../../providers.dart';
 import '../../router.dart';
@@ -26,6 +27,7 @@ final servesNotificationActionsProvider = Provider<bool>((ref) => false);
 /// - opens what a notification tap asks for (also the tap that launched it);
 /// - runs Archive and Mark as Read handed over from the background isolate;
 /// - turns the periodic background sync on in live mode, off otherwise;
+/// - runs the Instant Delivery service while it is switched on;
 /// - keeps one notification channel per account;
 /// - asks for POST_NOTIFICATIONS once, right after the first account is
 ///   added (never on first launch).
@@ -58,6 +60,7 @@ class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordina
       (_, next) => _safely(() => _accountsChanged(next.value)),
       fireImmediately: true,
     );
+    ref.listenManual<NotificationSettings>(notificationSettingsProvider, (_, _) => _safely(_applyInstant));
   }
 
   /// Notifications are a side show: a failure here never reaches the user.
@@ -85,7 +88,32 @@ class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordina
       await ref.read(mailNotifierProvider).cancelAll();
     }
     if (live) await _accountsChanged(ref.read(accountsProvider).value);
+    await _applyInstant();
   }
+
+  Future<void> _instant = Future.value();
+
+  /// Runs the Instant Delivery service while it is switched on, in live mode
+  /// with an account that notifies; stops it otherwise. Starting needs the
+  /// app in the foreground, so opening the app also restarts a service that
+  /// Android stopped.
+  Future<void> _applyInstant() => _instant = _instant
+      .then((_) async {
+        if (!mounted) return;
+        final settings = ref.read(notificationSettingsProvider);
+        final accounts = ref.read(accountsProvider).value;
+        final live = ref.read(appModeProvider) == AppMode.live;
+        if (live && settings.instant && accounts == null) return; // Still loading.
+        final wanted = live && settings.instant && accounts!.any((a) => settings.notifiesFor(a.id));
+        final service = ref.read(instantServiceProvider);
+        final running = await service.isRunning();
+        if (wanted && !running) {
+          await service.start();
+        } else if (!wanted && running) {
+          await service.stop();
+        }
+      })
+      .catchError((Object e) => debugPrint('Instant Delivery: $e'));
 
   Future<void> _accountsChanged(List<MailAccount>? accounts) async {
     if (accounts == null || !mounted || ref.read(appModeProvider) != AppMode.live) return;
@@ -95,6 +123,7 @@ class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordina
       _channelsFor = key;
       await notifier.syncChannels(accounts);
     }
+    await _applyInstant();
     final settings = ref.read(notificationSettingsProvider);
     if (accounts.isEmpty || settings.permissionRequested || !accounts.any((a) => settings.notifiesFor(a.id))) return;
     await ref.read(notificationSettingsProvider.notifier).update((s) => s.copyWith(permissionRequested: true));

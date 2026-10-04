@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../platform/instant_delivery.dart';
 import '../../providers.dart';
 import '../../settings/app_mode.dart';
 import '../../settings/app_settings.dart';
@@ -24,9 +25,10 @@ final notificationPermissionProvider = FutureProvider.autoDispose<bool>(
   (ref) => ref.watch(mailNotifierProvider).permissionGranted(),
 );
 
-/// Whether this build can deliver mail instantly (an IMAP IDLE foreground
-/// service). Not yet: the row explains what is coming.
-final instantDeliveryAvailableProvider = Provider<bool>((ref) => false);
+/// Whether Android's battery optimisation may stop Instant Delivery.
+final instantBatteryRestrictedProvider = FutureProvider.autoDispose<bool>(
+  (ref) => ref.watch(instantServiceProvider).isBatteryRestricted(),
+);
 
 /// Settings › Notifications: new-mail alerts per account, VIP only, hidden
 /// content, a test notification, and the app icon badge.
@@ -45,7 +47,12 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
   @override
   void initState() {
     super.initState();
-    _lifecycle = AppLifecycleListener(onResume: () => ref.invalidate(notificationPermissionProvider));
+    _lifecycle = AppLifecycleListener(
+      onResume: () {
+        ref.invalidate(notificationPermissionProvider);
+        ref.invalidate(instantBatteryRestrictedProvider);
+      },
+    );
   }
 
   @override
@@ -69,6 +76,12 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
   Future<void> _setAccount(MailAccount account, bool notify) async {
     await _controller.update((s) => s.withAccount(account.id, notify: notify));
     if (notify) await _ensurePermission();
+  }
+
+  Future<void> _setInstant(bool on) async {
+    await _controller.update((s) => s.copyWith(instant: on));
+    // Its "Watching for new mail" notification needs the permission too.
+    if (on) await _ensurePermission();
   }
 
   Future<void> _sendTest() async {
@@ -95,6 +108,9 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
     final badge = ref.watch(appSettingsProvider.select((s) => s.appIconBadge));
     final badgeSupported = ref.watch(appIconBadgeSupportedProvider).value;
     final instantAvailable = ref.watch(instantDeliveryAvailableProvider);
+    final batteryRestricted = instantAvailable && settings.instant
+        ? ref.watch(instantBatteryRestrictedProvider).value ?? false
+        : false;
 
     return GroupedPage(
       title: 'Notifications',
@@ -151,18 +167,26 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
         ),
         InsetGroup(
           separatorIndent: 16,
-          footer:
-              'Instant Delivery (experimental) keeps a connection to your inboxes open, so new mail arrives within '
-              'seconds. It shows a quiet “Watching for new mail” notification and uses more battery.',
+          footer: batteryRestricted
+              ? 'Android may stop Instant Delivery to save battery. Let Loupe use the battery without '
+                    'restrictions to keep it running.'
+              : 'Instant Delivery (experimental) keeps a connection to your inboxes open, so new mail arrives '
+                    'within seconds. It shows a quiet “Watching for new mail” notification and uses more battery.',
           children: [
             if (instantAvailable)
               SwitchRow(
                 title: 'Instant Delivery',
+                subtitle: 'Experimental',
                 value: settings.instant,
-                onChanged: (v) => unawaited(_controller.update((s) => s.copyWith(instant: v))),
+                onChanged: (v) => unawaited(_setInstant(v)),
               )
             else
               const GroupedRow(title: 'Instant Delivery', detail: 'Coming Soon', enabled: false, chevron: false),
+            if (batteryRestricted)
+              GroupedRow(
+                title: 'Allow Unrestricted Battery Use',
+                onTap: () => unawaited(ref.read(instantServiceProvider).openBatterySettings()),
+              ),
           ],
         ),
         InsetGroup(

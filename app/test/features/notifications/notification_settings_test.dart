@@ -136,11 +136,36 @@ void main() {
     await drainTimers(tester);
   });
 
-  testWidgets('Instant Delivery is announced, not offered yet', (tester) async {
+  testWidgets('Instant Delivery is announced where it isn’t available', (tester) async {
     await pumpWithNotifications(tester, notifier: FakeNotifier());
     await goTo(tester, Routes.notificationSettings);
     await tester.scrollTo(find.text('Instant Delivery'));
     expect(find.text('Coming Soon'), findsOneWidget);
     expect(textContaining('Watching for new mail'), findsOneWidget);
+  });
+
+  testWidgets('Instant Delivery: off by default, asks for permission, offers unrestricted battery', (tester) async {
+    final notifier = FakeNotifier(granted: false);
+    final instant = FakeInstantService(batteryRestricted: true);
+    await pumpWithNotifications(tester, notifier: notifier, instant: instant, mode: AppMode.live);
+    await goTo(tester, Routes.notificationSettings);
+    await tester.scrollTo(find.text('Instant Delivery'));
+    expect(find.text('Experimental'), findsOneWidget);
+    expect(switchOf(tester, 'Instant Delivery').value, isFalse);
+    expect(find.text('Allow Unrestricted Battery Use'), findsNothing);
+
+    await toggle(tester, 'Instant Delivery');
+    expect(switchOf(tester, 'Instant Delivery').value, isTrue);
+    expect(NotificationSettings.read(await SharedPreferences.getInstance()).instant, isTrue);
+    expect(instant.running, isTrue);
+    expect(notifier.permissionRequests, greaterThanOrEqualTo(1));
+
+    await toggle(tester, 'Allow Unrestricted Battery Use');
+    expect(instant.batterySettingsOpened, 1);
+    expect(textContaining('Android may stop Instant Delivery'), findsOneWidget);
+
+    await toggle(tester, 'Instant Delivery');
+    expect(instant.running, isFalse);
+    expect(find.text('Allow Unrestricted Battery Use'), findsNothing);
   });
 }

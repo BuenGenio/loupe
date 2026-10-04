@@ -6,6 +6,7 @@ import 'package:loupe/data/repositories.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/features/notifications/mail_notifier.dart';
 import 'package:loupe/features/notifications/notifications_coordinator.dart';
+import 'package:loupe/platform/instant_delivery.dart';
 import 'package:loupe/platform/work_scheduler.dart';
 import 'package:loupe/providers.dart';
 import 'package:loupe/settings/app_mode.dart';
@@ -14,6 +15,41 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helpers.dart' show testNow;
 import 'fakes.dart';
+
+class FakeInstantService implements InstantService {
+  FakeInstantService({this.batteryRestricted = false});
+
+  bool running = false;
+  bool batteryRestricted;
+  int starts = 0;
+  int stops = 0;
+  int nudges = 0;
+  int batterySettingsOpened = 0;
+
+  @override
+  Future<bool> isRunning() async => running;
+
+  @override
+  Future<bool> start() async {
+    starts++;
+    return running = true;
+  }
+
+  @override
+  Future<void> stop() async {
+    stops++;
+    running = false;
+  }
+
+  @override
+  void nudge() => nudges++;
+
+  @override
+  Future<bool> isBatteryRestricted() async => batteryRestricted;
+
+  @override
+  Future<void> openBatterySettings() async => batterySettingsOpened++;
+}
 
 class RecordingPeriodicSync implements PeriodicSync {
   final calls = <bool>[];
@@ -25,7 +61,8 @@ class RecordingPeriodicSync implements PeriodicSync {
 }
 
 /// Like `pumpLoupe`, with the notification seams replaced: [notifier],
-/// [periodic] and [taps]. Live mode runs on the demo repository too.
+/// [periodic], [taps] and [instant] (which also makes Instant Delivery
+/// available). Live mode runs on the demo repository too.
 Future<DemoMailRepository> pumpWithNotifications(
   WidgetTester tester, {
   AppMode mode = AppMode.demo,
@@ -35,6 +72,7 @@ Future<DemoMailRepository> pumpWithNotifications(
   NotificationTaps? taps,
   DemoMailRepository? repository,
   bool servesActions = false,
+  InstantService? instant,
 }) async {
   tester.view
     ..physicalSize = const Size(390, 844) * 3
@@ -57,6 +95,8 @@ Future<DemoMailRepository> pumpWithNotifications(
         if (periodic != null) periodicSyncProvider.overrideWithValue(periodic),
         if (taps != null) notificationTapsProvider.overrideWithValue(taps),
         servesNotificationActionsProvider.overrideWithValue(servesActions),
+        instantServiceProvider.overrideWithValue(instant ?? const NoopInstantService()),
+        instantDeliveryAvailableProvider.overrideWithValue(instant != null),
       ],
       child: const LoupeApp(),
     ),

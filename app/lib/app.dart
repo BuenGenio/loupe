@@ -14,6 +14,7 @@ import 'features/notifications/notifications_coordinator.dart';
 import 'platform/background.dart';
 import 'platform/background_entry.dart';
 import 'platform/foreground_sync.dart';
+import 'platform/instant_delivery.dart';
 import 'platform/support_directory.dart';
 import 'platform/sync_leases.dart';
 import 'router.dart';
@@ -158,6 +159,8 @@ class _SyncLifecycleState extends ConsumerState<_SyncLifecycle> {
       pause: repository.pause,
       resume: repository.resume,
       onBackground: () => _wentToBackground(container, repository),
+      // Instant Delivery holds the database in the background: let go now.
+      onClaimed: container.read(instantServiceProvider).nudge,
     );
     _listener = AppLifecycleListener(
       onHide: () => unawaited(_sync.enterBackground()),

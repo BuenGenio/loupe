@@ -11,6 +11,7 @@ import 'features/notifications/mail_notifier.dart';
 import 'features/notifications/notifications_coordinator.dart';
 import 'platform/background.dart';
 import 'platform/background_entry.dart';
+import 'platform/instant_delivery.dart';
 import 'platform/local_notifications.dart';
 import 'platform/work_scheduler.dart';
 import 'providers.dart';
@@ -39,6 +40,14 @@ Future<void> main() async {
       ]);
     } on Object catch (e) {
       debugPrint('Background sync unavailable: $e');
+    }
+    try {
+      overrides.addAll([
+        instantServiceProvider.overrideWithValue(ForegroundTaskInstantService()),
+        instantDeliveryAvailableProvider.overrideWithValue(true),
+      ]);
+    } on Object catch (e) {
+      debugPrint('Instant Delivery unavailable: $e');
     }
     try {
       final (notifier, launch) = await LocalMailNotifier.initialize(
