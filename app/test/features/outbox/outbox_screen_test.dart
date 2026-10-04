@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/features/outbox/outbox_screen.dart';
+import 'package:loupe/platform/background.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../helpers.dart';
@@ -124,4 +125,28 @@ void main() {
     repo.dispose();
     await drainTimers(tester);
   });
+
+  testWidgets('scheduled messages ask for their wake-up again at launch, once per time', (tester) async {
+    final repo = DemoMailRepository.instant(clock: () => testNow);
+    const message = OutgoingMessage(
+      accountId: DemoAccounts.personal,
+      identityId: 'personal/default',
+      to: [EmailAddress('jordan.lee@example.com')],
+      subject: 'Tomorrow',
+    );
+    final tomorrow = DateTime.now().add(const Duration(days: 1));
+    await repo.send(message, sendAt: tomorrow);
+    await repo.send(message, sendAt: tomorrow);
+    final scheduler = _RecordingScheduler();
+    await pumpLoupe(tester, repository: repo, overrides: [backgroundSchedulerProvider.overrideWithValue(scheduler)]);
+    expect(scheduler.times, [tomorrow]);
+    repo.dispose();
+  });
+}
+
+class _RecordingScheduler implements BackgroundScheduler {
+  final times = <DateTime>[];
+
+  @override
+  Future<void> scheduleWakeUp(DateTime time) async => times.add(time);
 }

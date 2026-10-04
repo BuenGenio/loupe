@@ -19,6 +19,7 @@ import '../../shared/tags.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
 import '../compose/compose_recovery.dart';
+import '../compose/send_later.dart';
 import '../outbox/outbox_screen.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
@@ -51,6 +52,14 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
     _focus.addListener(() {
       if (_focus.hasFocus && !_searching) _setSearching(true);
     });
+    // Scheduled messages ask for their wake-up again on every launch, in
+    // case the system dropped it (this screen lives as long as the app).
+    ref.listenManual(outboxProvider, (_, next) {
+      final now = DateTime.now();
+      for (final item in next.value ?? const <OutboxItem>[]) {
+        if (item.status == OutboxStatus.scheduled && item.sendAt.isAfter(now)) wakeUpAt(ref, item.sendAt);
+      }
+    }, fireImmediately: true);
     // A message left unsent when Loupe last closed: offer to continue it.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) unawaited(offerComposeRecovery(context, ref));

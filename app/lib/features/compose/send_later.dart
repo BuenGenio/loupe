@@ -104,11 +104,16 @@ String formatSendTimeFor(BuildContext context, DateTime at, {required DateTime n
       compact: compact,
     );
 
+/// Times a wake-up was asked for in this run of the app, so each is asked for once.
+final _wakeUpTimesProvider = Provider<Set<int>>((ref) => <int>{});
+
 /// Asks for a background wake-up at [at], so a scheduled message goes out
 /// even when Loupe isn't running. Best effort: in the foreground the
-/// repository's own timer sends it anyway.
-void wakeUpAt(WidgetRef ref, DateTime at) =>
-    unawaited(ref.read(backgroundSchedulerProvider).scheduleWakeUp(at).catchError((Object _) {}));
+/// repository's own timer sends it anyway. Once per time and run.
+void wakeUpAt(WidgetRef ref, DateTime at) {
+  if (!ref.read(_wakeUpTimesProvider).add(at.millisecondsSinceEpoch)) return;
+  unawaited(ref.read(backgroundSchedulerProvider).scheduleWakeUp(at).catchError((Object _) {}));
+}
 
 /// What the Send Later sheet chose: a time, or (with [at] null) to send
 /// right away after all.
