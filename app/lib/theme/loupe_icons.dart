@@ -39,6 +39,12 @@ abstract final class LoupeIcons {
   static const IconData mute = FluentIcons.alert_off_24_regular;
   static const IconData patch = FluentIcons.branch_24_regular;
 
+  // Subscriptions (the unsubscribe centre) ------------------------------------
+
+  static const IconData subscriptions = FluentIcons.news_24_regular;
+  static const IconData unsubscribe = FluentIcons.mail_dismiss_24_regular;
+  static const IconData block = FluentIcons.person_prohibited_24_regular;
+
   // Message actions ---------------------------------------------------------
 
   static const IconData compose = FluentIcons.compose_24_regular;

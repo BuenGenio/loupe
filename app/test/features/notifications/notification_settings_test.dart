@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:loupe/features/account_import/qr_scanner.dart' show openAppSettingsProvider;
 import 'package:loupe/features/notifications/notification_content.dart';
 import 'package:loupe/features/notifications/notification_settings.dart';
 import 'package:loupe/router.dart';
@@ -142,6 +144,44 @@ void main() {
     await tester.scrollTo(find.text('Instant Delivery'));
     expect(find.text('Coming Soon'), findsOneWidget);
     expect(textContaining('Watching for new mail'), findsOneWidget);
+  });
+
+  testWidgets('Android and iOS each show only their own background settings', (tester) async {
+    // Android (the test default): Instant Delivery, no Background App Refresh.
+    final instant = FakeInstantService(batteryRestricted: true);
+    await pumpWithNotifications(tester, notifier: FakeNotifier(), instant: instant, mode: AppMode.live);
+    await goTo(tester, Routes.notificationSettings);
+    await tester.scrollTo(find.text('Instant Delivery'));
+    expect(find.text('Background App Refresh'), findsNothing);
+    expect(textContaining('checks for new mail about every 15 minutes'), findsOneWidget);
+    await drainTimers(tester);
+
+    // iOS: no lasting connection, so no Instant Delivery (even if it were
+    // available) and no battery advice; Background App Refresh instead.
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    try {
+      var settingsOpened = 0;
+      await pumpWithNotifications(
+        tester,
+        notifier: FakeNotifier(granted: false, grants: false),
+        instant: FakeInstantService(batteryRestricted: true),
+        mode: AppMode.live,
+        prefs: {'notifications.instant': true},
+        overrides: [openAppSettingsProvider.overrideWithValue(() async => settingsOpened++)],
+      );
+      await goTo(tester, Routes.notificationSettings);
+      expect(textContaining('iOS doesn’t let Loupe show notifications'), findsOneWidget);
+      expect(find.text('Open Settings'), findsOneWidget);
+      expect(textContaining('when iOS lets it'), findsOneWidget);
+      await toggle(tester, 'Background App Refresh');
+      expect(settingsOpened, 1);
+      expect(find.text('Instant Delivery'), findsNothing);
+      expect(find.text('Allow Unrestricted Battery Use'), findsNothing);
+      expect(textContaining('Android'), findsNothing);
+      await drainTimers(tester);
+    } finally {
+      debugDefaultTargetPlatformOverride = null;
+    }
   });
 
   testWidgets('Instant Delivery: off by default, asks for permission, offers unrestricted battery', (tester) async {

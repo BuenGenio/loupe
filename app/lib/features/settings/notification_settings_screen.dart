@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
@@ -11,6 +12,7 @@ import '../../settings/app_settings.dart';
 import '../../shared/grouped_list.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
+import '../account_import/qr_scanner.dart' show openAppSettingsProvider;
 import '../notifications/app_icon_badge.dart';
 import '../notifications/mail_notifier.dart';
 import '../notifications/new_mail.dart';
@@ -19,8 +21,8 @@ import '../notifications/notification_content.dart';
 import '../notifications/notification_settings.dart';
 import 'settings_widgets.dart';
 
-/// Whether Android lets Loupe notify; refreshed when the page shows again
-/// (the user may have come back from Android Settings).
+/// Whether the system lets Loupe notify; refreshed when the page shows again
+/// (the user may have come back from the system settings).
 final notificationPermissionProvider = FutureProvider.autoDispose<bool>(
   (ref) => ref.watch(mailNotifierProvider).permissionGranted(),
 );
@@ -31,7 +33,9 @@ final instantBatteryRestrictedProvider = FutureProvider.autoDispose<bool>(
 );
 
 /// Settings › Notifications: new-mail alerts per account, VIP only, hidden
-/// content, a test notification, and the app icon badge.
+/// content, a test notification, and the app icon badge. Android adds
+/// Instant Delivery; iOS, which can't hold a connection open, points to
+/// Background App Refresh instead.
 class NotificationSettingsScreen extends ConsumerStatefulWidget {
   const NotificationSettingsScreen({super.key});
 
@@ -63,7 +67,7 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
 
   NotificationSettingsController get _controller => ref.read(notificationSettingsProvider.notifier);
 
-  /// Asks Android when notifications are switched on and aren't allowed.
+  /// Asks the system when notifications are switched on and aren't allowed.
   Future<bool> _ensurePermission() async {
     final notifier = ref.read(mailNotifierProvider);
     if (await notifier.permissionGranted()) return true;
@@ -87,8 +91,11 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
   Future<void> _sendTest() async {
     final messenger = ScaffoldMessenger.of(context);
     void say(String text) => messenger.showSnackBar(SnackBar(content: Text(text)));
+    final ios = defaultTargetPlatform == TargetPlatform.iOS;
     if (!await _ensurePermission()) {
-      say('Notifications are off for Loupe in Android Settings.');
+      say(
+        ios ? 'Notifications are off for Loupe in Settings.' : 'Notifications are off for Loupe in Android Settings.',
+      );
       return;
     }
     final repository = ref.read(repositoryProvider);
@@ -99,6 +106,9 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
 
   @override
   Widget build(BuildContext context) {
+    // The system, not the look: Instant Delivery is Android's, Background
+    // App Refresh iOS's.
+    final ios = defaultTargetPlatform == TargetPlatform.iOS;
     final colors = LoupeColors.of(context);
     final mode = ref.watch(appModeProvider);
     final settings = ref.watch(notificationSettingsProvider);
@@ -118,11 +128,11 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
         if (granted == false && anyOn)
           InsetGroup(
             separatorIndent: 58,
-            footer: 'Android doesn’t let Loupe show notifications. Allow them in Settings.',
+            footer: '${ios ? 'iOS' : 'Android'} doesn’t let Loupe show notifications. Allow them in Settings.',
             children: [
               GroupedRow(
                 leading: Icon(LoupeIcons.warning, color: colors.flag),
-                title: 'Open Android Settings',
+                title: ios ? 'Open Settings' : 'Open Android Settings',
                 onTap: () => unawaited(ref.read(mailNotifierProvider).openSystemSettings()),
               ),
             ],
@@ -132,6 +142,9 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
           separatorIndent: 16,
           footer: mode == AppMode.demo
               ? 'Demo mail doesn’t arrive in the background. Send a test notification to see how new mail looks.'
+              : ios
+              ? 'Loupe checks for new mail in the background when iOS lets it, which can be hours apart for apps '
+                    'you don’t open often. You’re told about new messages in your inboxes, and from VIPs in any folder.'
               : 'Loupe checks for new mail about every 15 minutes, when Android allows. You’re told about new '
                     'messages in your inboxes, and from VIPs in any folder.',
           children: [
@@ -165,30 +178,41 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
             ),
           ],
         ),
-        InsetGroup(
-          separatorIndent: 16,
-          footer: batteryRestricted
-              ? 'Android may stop Instant Delivery to save battery. Let Loupe use the battery without '
-                    'restrictions to keep it running.'
-              : 'Instant Delivery (experimental) keeps a connection to your inboxes open, so new mail arrives '
-                    'within seconds. It shows a quiet “Watching for new mail” notification and uses more battery.',
-          children: [
-            if (instantAvailable)
-              SwitchRow(
-                title: 'Instant Delivery',
-                subtitle: 'Experimental',
-                value: settings.instant,
-                onChanged: (v) => unawaited(_setInstant(v)),
-              )
-            else
-              const GroupedRow(title: 'Instant Delivery', detail: 'Coming Soon', enabled: false, chevron: false),
-            if (batteryRestricted)
-              GroupedRow(
-                title: 'Allow Unrestricted Battery Use',
-                onTap: () => unawaited(ref.read(instantServiceProvider).openBatterySettings()),
-              ),
-          ],
-        ),
+        if (ios)
+          InsetGroup(
+            separatorIndent: 16,
+            footer:
+                'New mail only arrives in the background while Background App Refresh is on for Loupe in Settings. '
+                'iOS can’t keep a connection to your inboxes open, so there’s no Instant Delivery.',
+            children: [
+              GroupedRow(title: 'Background App Refresh', onTap: () => unawaited(ref.read(openAppSettingsProvider)())),
+            ],
+          )
+        else
+          InsetGroup(
+            separatorIndent: 16,
+            footer: batteryRestricted
+                ? 'Android may stop Instant Delivery to save battery. Let Loupe use the battery without '
+                      'restrictions to keep it running.'
+                : 'Instant Delivery (experimental) keeps a connection to your inboxes open, so new mail arrives '
+                      'within seconds. It shows a quiet “Watching for new mail” notification and uses more battery.',
+            children: [
+              if (instantAvailable)
+                SwitchRow(
+                  title: 'Instant Delivery',
+                  subtitle: 'Experimental',
+                  value: settings.instant,
+                  onChanged: (v) => unawaited(_setInstant(v)),
+                )
+              else
+                const GroupedRow(title: 'Instant Delivery', detail: 'Coming Soon', enabled: false, chevron: false),
+              if (batteryRestricted)
+                GroupedRow(
+                  title: 'Allow Unrestricted Battery Use',
+                  onTap: () => unawaited(ref.read(instantServiceProvider).openBatterySettings()),
+                ),
+            ],
+          ),
         InsetGroup(
           separatorIndent: 16,
           children: [

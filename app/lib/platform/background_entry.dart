@@ -18,19 +18,21 @@ import '../features/notifications/notification_actions.dart';
 import '../features/notifications/notification_content.dart';
 import '../features/notifications/notification_settings.dart';
 import '../settings/app_mode.dart';
+import 'background.dart';
 import 'background_sync.dart';
 import 'foreground_bridge.dart';
 import 'local_notifications.dart';
 import 'sync_leases.dart';
 import 'work_scheduler.dart';
 
-/// The WorkManager jobs' entry point: every job is a background sync.
+/// The background jobs' entry point (WorkManager on Android, the
+/// BGAppRefreshTask on iOS): every job is a background sync.
 @pragma('vm:entry-point')
 void backgroundTaskDispatcher() {
   Workmanager().executeTask((task, input) async {
-    if (task == backgroundSyncTask) {
+    if (isBackgroundSyncTask(task)) {
       try {
-        await runBackgroundSync();
+        await runBackgroundSync(budget: task == iosRefreshTask ? iosRefreshBudget : null);
       } on Object catch (e) {
         // The next periodic run tries again; retrying at once rarely helps.
         debugPrint('Background sync failed: $e');
@@ -42,9 +44,15 @@ void backgroundTaskDispatcher() {
 
 BackgroundSync? _running;
 
-/// Syncs, notifies about new mail and updates the badge (one WorkManager
-/// job), unless the app syncs in the foreground.
-Future<BackgroundSyncResult> runBackgroundSync() async {
+/// How long an iOS background refresh may sync. iOS gives the job about 30
+/// seconds in all (starting the engine included) and ends the app if it
+/// isn't done by then; the next refresh carries on.
+const iosRefreshBudget = Duration(seconds: 20);
+
+/// Syncs, notifies about new mail and updates the badge (one background
+/// job), unless the app syncs in the foreground. With a [budget], stops
+/// syncing when it runs out.
+Future<BackgroundSyncResult> runBackgroundSync({Duration? budget}) async {
   DartPluginRegistrant.ensureInitialized();
   final directory = await getApplicationSupportDirectory();
   final prefs = await SharedPreferences.getInstance();
@@ -55,11 +63,13 @@ Future<BackgroundSyncResult> runBackgroundSync() async {
     open: LiveBackgroundMail.open,
     check: NewMailCheck(notifier: notifier, state: FileNewMailStateStore(Future.value(directory))),
     badge: const PlatformAppIconBadge(),
-    scheduler: WorkmanagerBackgroundScheduler(WorkmanagerWorkScheduler()),
+    scheduler: platformSyncScheduler() ?? const NoopBackgroundScheduler(),
   );
+  final deadline = budget == null ? null : Timer(budget, () => unawaited(sync.stop()));
   try {
     return await sync.run();
   } finally {
+    deadline?.cancel();
     _running = null;
   }
 }
@@ -108,7 +118,8 @@ Future<void> handleNotificationAction(NotificationResponse response) async {
       await updateAppIconBadge(prefs, mail.repository, const PlatformAppIconBadge());
       // Android may freeze this process before the server has it, or there
       // is no network: a sync shortly after sends what is left either way.
-      await WorkmanagerBackgroundScheduler(WorkmanagerWorkScheduler()).scheduleWakeUp(afterAction());
+      // (iOS has no such wake-up; its next refresh does it.)
+      await platformSyncScheduler()?.scheduleWakeUp(afterAction());
       await mail.flushOps().timeout(const Duration(seconds: 40), onTimeout: () {});
     } finally {
       await mail.close();
