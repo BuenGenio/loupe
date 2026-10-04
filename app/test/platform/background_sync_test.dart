@@ -123,8 +123,16 @@ void main() {
   test('skips while the app syncs in the foreground', () async {
     await leases.renew(SyncHolder.foreground);
     final background = FakeBackgroundMail(mail);
-    expect(await (await backgroundSync(background)).run(), BackgroundSyncResult.appActive);
+    expect(await (await backgroundSync(background)).run(), BackgroundSyncResult.busy);
     expect(background.syncs, 0);
+  });
+
+  test('skips while other background work (Instant Delivery) has the database', () async {
+    await SyncLeases(dir).renew(SyncHolder.background);
+    final background = FakeBackgroundMail(mail);
+    expect(await (await backgroundSync(background)).run(), BackgroundSyncResult.busy);
+    expect(background.syncs, 0);
+    expect(await leases.isHeld(SyncHolder.background), isTrue, reason: 'left the other lease alone');
   });
 
   test('does nothing in demo mode', () async {

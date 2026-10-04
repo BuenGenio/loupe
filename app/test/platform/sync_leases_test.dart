@@ -63,7 +63,8 @@ void main() {
 
     test('the app waits for running background work, but not forever', () async {
       final real = SyncLeases(dir);
-      await real.renew(SyncHolder.background);
+      final background = SyncLeases(dir);
+      await background.renew(SyncHolder.background);
       var waited = false;
       final acquired = real
           .acquireForeground(maxWait: const Duration(seconds: 5), poll: const Duration(milliseconds: 20))
@@ -71,11 +72,11 @@ void main() {
       await Future<void>.delayed(const Duration(milliseconds: 100));
       expect(await real.isHeld(SyncHolder.foreground), isTrue, reason: 'claimed at once, so the background stops');
       expect(waited, isFalse);
-      await real.release(SyncHolder.background);
+      await background.release(SyncHolder.background);
       await acquired;
       expect(waited, isTrue);
 
-      await real.renew(SyncHolder.background);
+      await background.renew(SyncHolder.background);
       expect(
         await real.acquireForeground(
           maxWait: const Duration(milliseconds: 100),
@@ -86,15 +87,35 @@ void main() {
     });
 
     test('a notification action waits for a background sync, then goes ahead', () async {
-      final real = SyncLeases(dir);
-      await real.renew(SyncHolder.background);
+      final sync = SyncLeases(dir);
+      final action = SyncLeases(dir);
+      await sync.renew(SyncHolder.background);
       final started = DateTime.now();
-      await real.acquireBackgroundWaiting(
+      await action.acquireBackgroundWaiting(
         maxWait: const Duration(milliseconds: 150),
         poll: const Duration(milliseconds: 20),
       );
       expect(DateTime.now().difference(started), greaterThanOrEqualTo(const Duration(milliseconds: 150)));
-      expect(await real.isHeld(SyncHolder.background), isTrue);
+      expect(await action.isHeldByOther(SyncHolder.background), isFalse, reason: 'its own now');
+      expect(await sync.isHeldByOther(SyncHolder.background), isTrue);
+    });
+
+    test('only one background syncer at a time; each releases only its own lease', () async {
+      final periodic = SyncLeases(dir, clock: () => now);
+      final instant = SyncLeases(dir, clock: () => now);
+      expect(await instant.tryAcquireBackground(), isTrue);
+      expect(await instant.tryAcquireBackground(), isTrue, reason: 'its own lease');
+      expect(await periodic.tryAcquireBackground(), isFalse);
+      await periodic.release(SyncHolder.background);
+      expect(await periodic.isHeld(SyncHolder.background), isTrue, reason: 'not periodic’s to release');
+      await instant.release(SyncHolder.background);
+      expect(await periodic.tryAcquireBackground(), isTrue);
+    });
+
+    test('a lease written before owners counts, as nobody’s', () async {
+      File('${dir.path}/sync-background.lease').writeAsStringSync('${now.millisecondsSinceEpoch}');
+      expect(await leases.isHeld(SyncHolder.background), isTrue);
+      expect(await leases.tryAcquireBackground(), isFalse);
     });
   });
 
@@ -129,11 +150,12 @@ void main() {
     });
 
     test('waits for a background sync to give way before syncing', () async {
-      await real.renew(SyncHolder.background);
+      final background = SyncLeases(dir);
+      await background.renew(SyncHolder.background);
       final entered = sync.enterForeground();
       await Future<void>.delayed(const Duration(milliseconds: 400));
       expect(log, isEmpty);
-      await real.release(SyncHolder.background);
+      await background.release(SyncHolder.background);
       await entered;
       expect(log, ['resume']);
       await sync.dispose();

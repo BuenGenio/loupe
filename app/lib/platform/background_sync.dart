@@ -34,8 +34,9 @@ enum BackgroundSyncResult {
   /// Demo mode or no account: nothing to do.
   notLive,
 
-  /// The app is in the foreground and syncs itself.
-  appActive,
+  /// The app syncs in the foreground, or Instant Delivery or a notification
+  /// button has the database.
+  busy,
 
   /// The app came to the foreground during the sync.
   interrupted,
@@ -82,7 +83,7 @@ final class BackgroundSync {
   Future<BackgroundSyncResult> run() async {
     await prefs.reload();
     if (prefs.getString(AppModeController.key) != AppMode.live.name) return BackgroundSyncResult.notLive;
-    if (!await leases.tryAcquireBackground()) return BackgroundSyncResult.appActive;
+    if (!await leases.tryAcquireBackground()) return BackgroundSyncResult.busy;
     var lastRenew = _clock();
     final watch = Timer.periodic(watchEvery, (_) async {
       if (await leases.isHeld(SyncHolder.foreground)) {
