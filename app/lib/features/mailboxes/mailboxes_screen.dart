@@ -19,6 +19,7 @@ import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
+import 'vip_screen.dart';
 
 /// The first screen: unified mailboxes, each account's folder tree, smart
 /// mailboxes and tags. Pull down for search; Edit hides items.
@@ -38,7 +39,10 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
   /// Replaced to reset the navigation bar's own search state (it can only be
   /// closed by tapping Cancel otherwise), e.g. on Android Back.
   Key _navBarKey = UniqueKey();
-  late final SearchSession _search = SearchSession(repository: ref.read(repositoryProvider));
+  late final SearchSession _search = SearchSession(
+    repository: ref.read(repositoryProvider),
+    onCommit: (q) => ref.read(recentSearchesProvider.notifier).add(q),
+  );
 
   @override
   void didChangeDependencies() {
@@ -312,6 +316,15 @@ class _VirtualSection extends ConsumerWidget {
             visible: v.visible('v.${kind.name}'),
             onToggleVisible: () => v.toggle('v.${kind.name}'),
             onTap: () => onOpen(VirtualMailboxRef(kind)),
+            trailing: kind == VirtualMailbox.vip && !editing
+                ? CupertinoButton(
+                    padding: const EdgeInsets.only(left: 8),
+                    minimumSize: const Size(36, 36),
+                    onPressed: () =>
+                        Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const VipScreen())),
+                    child: const Icon(CupertinoIcons.info_circle, size: 22, semanticLabel: 'Manage VIPs'),
+                  )
+                : null,
           ),
     ];
     if (rows.isEmpty) return const SizedBox.shrink();

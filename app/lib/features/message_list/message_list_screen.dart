@@ -85,6 +85,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
   late final SearchSession _search = SearchSession(
     repository: ref.read(repositoryProvider),
     scope: MailboxScope(widget.mailboxRef),
+    onCommit: (q) => ref.read(recentSearchesProvider.notifier).add(q),
   );
 
   @override

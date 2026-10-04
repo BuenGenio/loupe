@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -58,8 +60,6 @@ Future<void> goTo(WidgetTester tester, String location, {bool settle = true}) as
     await tester.pump(const Duration(milliseconds: 450));
   }
 }
-
-void unawaited(Future<void>? future) {}
 
 /// Lets SnackBars and other timers run out before the test ends.
 Future<void> drainTimers(WidgetTester tester) async {

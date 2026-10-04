@@ -94,6 +94,7 @@ class SearchSession extends ChangeNotifier {
     String initialQuery = '',
     this.localDelay = const Duration(milliseconds: 150),
     this.fullDelay = const Duration(milliseconds: 350),
+    this.onCommit,
   }) : controller = QueryTextController(text: initialQuery) {
     if (initialQuery.trim().isNotEmpty) _run(includeServer: true);
   }
@@ -102,6 +103,9 @@ class SearchSession extends ChangeNotifier {
   final QueryTextController controller;
   final Duration localDelay;
   final Duration fullDelay;
+
+  /// The user settled on a query (pressed Return): remember it.
+  final void Function(String query)? onCommit;
   SearchScope scope;
 
   SearchResults? results;
@@ -135,7 +139,9 @@ class SearchSession extends ChangeNotifier {
   /// Return pressed: search everywhere now.
   void submit() {
     _cancelTimers();
-    if (hasQuery) _run(includeServer: true);
+    if (!hasQuery) return;
+    _run(includeServer: true);
+    onCommit?.call(query.trim());
   }
 
   /// Replaces the query (suggestions, chips) and searches at once.

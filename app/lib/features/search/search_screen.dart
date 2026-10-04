@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../providers.dart';
+import '../../settings/ui_state.dart';
 import '../../shared/bars.dart';
 import '../../theme/theme.dart';
 import 'search_session.dart';
@@ -26,6 +27,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     repository: ref.read(repositoryProvider),
     scope: widget.scope,
     initialQuery: widget.initialQuery.isEmpty ? '' : '${widget.initialQuery.trimRight()} ',
+    onCommit: (q) => ref.read(recentSearchesProvider.notifier).add(q),
   );
   final _focus = FocusNode();
 

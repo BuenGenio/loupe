@@ -59,4 +59,16 @@ void main() {
     expect(find.text('No Mail'), findsNothing);
     expect(textContaining('[open-garden]'), findsWidgets);
   });
+
+  testWidgets('the VIP list shows and removes VIPs', (tester) async {
+    final repo = await pumpLoupe(tester);
+    await tester.tap(find.bySemanticsLabel('Manage VIPs'));
+    await tester.pumpAndSettle();
+    expect(find.text('Jordan Lee'), findsOneWidget);
+    final row = find.ancestor(of: find.text('Jordan Lee'), matching: find.byType(Row)).first;
+    await tester.tap(find.descendant(of: row, matching: find.byIcon(CupertinoIcons.minus_circle_fill)));
+    await tester.pumpAndSettle();
+    expect(find.text('Jordan Lee'), findsNothing);
+    expect(await repo.watchVipAddresses().first, isNot(contains('jordan.lee@example.com')));
+  });
 }
