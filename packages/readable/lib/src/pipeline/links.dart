@@ -99,8 +99,10 @@ String? linkMismatch(String text, String url) {
 /// A URL or email address found in plain text.
 typedef LinkMatch = ({int start, int end, String url});
 
+// Bounded repetitions: hostile text ("a@b.b.b.b…" without a TLD) can't make
+// the matcher backtrack for long.
 final _urlOrEmail = RegExp(
-  r'''(?:\b(?:https?://|www\.)[^\s<>"'\u00a0]+)|(?:\b[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}\b)''',
+  r'''(?:\b(?:https?://|www\.)[^\s<>"'\u00a0]{1,2000})|(?:\b[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,24}\b)''',
   caseSensitive: false,
 );
 

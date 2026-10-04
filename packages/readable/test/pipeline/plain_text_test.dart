@@ -76,6 +76,13 @@ void main() {
       ]);
     });
 
+    test('hostile almost-addresses stay fast', () {
+      final watch = Stopwatch()..start();
+      findLinks('a@${'b.' * 50000}');
+      findLinks('${'x' * 100000}@${'y-' * 50000}');
+      expect(watch.elapsed, lessThan(const Duration(seconds: 2)));
+    });
+
     test('trailing punctuation and angle brackets are not part of the URL', () {
       final found = findLinks('<https://example.org/x>, (https://example.org/y).');
       expect(found.map((m) => m.url), ['https://example.org/x', 'https://example.org/y']);
