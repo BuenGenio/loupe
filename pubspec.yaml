@@ -14,3 +14,11 @@ workspace:
   - packages/mail_platform
 dev_dependencies:
   flutter_lints: ^6.0.0
+
+# Build hook options. package:sqlite3 bundles SQLite3MultipleCiphers (MIT) so
+# mail_store can encrypt the database; it includes FTS5. Hook user-defines
+# are only read from the workspace root.
+hooks:
+  user_defines:
+    sqlite3:
+      source: sqlite3mc

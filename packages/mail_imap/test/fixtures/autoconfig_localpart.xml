@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<clientConfig version="1.1">
+  <emailProvider id="%EMAILDOMAIN%">
+    <domain>%EMAILDOMAIN%</domain>
+    <incomingServer type="imap">
+      <hostname>mail.%EMAILDOMAIN%</hostname>
+      <port>143</port>
+      <socketType>plain</socketType>
+      <username>%EMAILLOCALPART%</username>
+      <authentication>password-cleartext</authentication>
+    </incomingServer>
+    <incomingServer type="imap">
+      <hostname>mail.%EMAILDOMAIN%</hostname>
+      <port>143</port>
+      <socketType>STARTTLS</socketType>
+      <username>%EMAILLOCALPART%</username>
+      <authentication>password-cleartext</authentication>
+    </incomingServer>
+    <outgoingServer type="smtp">
+      <hostname>mail.%EMAILDOMAIN%</hostname>
+      <port>465</port>
+      <socketType>SSL</socketType>
+      <username>%EMAILLOCALPART%</username>
+      <authentication>password-cleartext</authentication>
+    </outgoingServer>
+  </emailProvider>
+  <enable visiturl="https://example.org/settings">
+    <instruction>Enable IMAP access in your account settings first.</instruction>
+  </enable>
+</clientConfig>

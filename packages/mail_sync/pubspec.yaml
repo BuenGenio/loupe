@@ -9,5 +9,8 @@ dependencies:
   mail_model: {path: ../mail_model}
   mail_store: {path: ../mail_store}
   expr_search: {path: ../expr_search}
+  clock: ^1.1.2
 dev_dependencies:
   test: any
+  fake_async: ^1.3.3
+  drift: ^2.35.1

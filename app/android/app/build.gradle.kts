@@ -36,6 +36,8 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // flutter_appauth (mail_platform): OAuth redirect io.github.buengenio.loupe:/oauth2redirect
+        manifestPlaceholders["appAuthRedirectScheme"] = "io.github.buengenio.loupe"
     }
 
     signingConfigs {

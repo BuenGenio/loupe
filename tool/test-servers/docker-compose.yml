@@ -1,0 +1,34 @@
+# Test mail servers for mail_imap's integration tests (see README.md).
+# Both images are multi-arch (linux/amd64 and linux/arm64). Ports bind to
+# localhost only; mail lives inside the containers and is gone after `down`.
+services:
+  # IMAP with CONDSTORE, QRESYNC, IDLE, SPECIAL-USE, MOVE, ESEARCH.
+  dovecot:
+    image: dovecot/dovecot:2.4.5
+    environment:
+      USER_PASSWORD: "{PLAIN}secret"
+    ports:
+      - "127.0.0.1:31143:31143" # IMAP (STARTTLS or cleartext login for tests)
+      - "127.0.0.1:31993:31993" # IMAPS, self-signed (make-cert.sh)
+    volumes:
+      - ./dovecot/loupe.conf:/etc/dovecot/conf.d/loupe.conf:ro
+      - ./data/dovecot-ssl:/etc/dovecot/ssl:ro
+    mem_limit: 128m
+
+  # SMTP plus simple IMAP; delivers SMTP mail to its own IMAP mailboxes.
+  greenmail:
+    image: greenmail/standalone:2.1.14
+    environment:
+      JAVA_OPTS: -Xmx128m
+      GREENMAIL_OPTS: >-
+        -Dgreenmail.setup.test.smtp -Dgreenmail.setup.test.smtps
+        -Dgreenmail.setup.test.imap -Dgreenmail.setup.test.imaps
+        -Dgreenmail.hostname=0.0.0.0
+        -Dgreenmail.users=alice:secret@example.test,bob:secret@example.test
+        -Dgreenmail.users.login=email
+    ports:
+      - "127.0.0.1:3025:3025" # SMTP
+      - "127.0.0.1:3465:3465" # SMTPS, self-signed
+      - "127.0.0.1:3143:3143" # IMAP
+      - "127.0.0.1:3993:3993" # IMAPS, self-signed
+    mem_limit: 256m
