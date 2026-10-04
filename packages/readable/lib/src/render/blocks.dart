@@ -27,34 +27,121 @@ class BlockList extends StatelessWidget {
   final int depth;
 
   @override
-  Widget build(BuildContext context) {
-    final children = <Widget>[];
-    Block? previous;
-    for (var i = 0; i < blocks.length; i++) {
-      final b = blocks[i];
-      final gap = _gap(previous, b);
-      if (gap > 0) children.add(SizedBox(height: gap));
-      // Consecutive buttons (Yes / Maybe / No) share a row.
-      if (b is ButtonBlock && i + 1 < blocks.length && blocks[i + 1] is ButtonBlock) {
-        final row = <ButtonBlock>[b];
-        while (i + 1 < blocks.length && blocks[i + 1] is ButtonBlock) {
-          row.add(blocks[++i] as ButtonBlock);
-        }
-        children.add(
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            alignment: b.align == BlockAlign.start ? WrapAlignment.start : WrapAlignment.center,
-            children: [for (final button in row) _ButtonChip(button, aligned: false)],
-          ),
-        );
-        previous = row.last;
-        continue;
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    mainAxisSize: MainAxisSize.min,
+    children: blockWidgets(blocks, depth: depth),
+  );
+}
+
+/// Widgets for [blocks] with our spacing between them.
+List<Widget> blockWidgets(List<Block> blocks, {int depth = 0, Block? before}) {
+  final children = <Widget>[];
+  Block? previous = before;
+  for (var i = 0; i < blocks.length; i++) {
+    final b = blocks[i];
+    final gap = _gap(previous, b);
+    if (gap > 0) children.add(SizedBox(height: gap));
+    // Consecutive buttons (Yes / Maybe / No) share a row.
+    if (b is ButtonBlock && i + 1 < blocks.length && blocks[i + 1] is ButtonBlock) {
+      final row = <ButtonBlock>[b];
+      while (i + 1 < blocks.length && blocks[i + 1] is ButtonBlock) {
+        row.add(blocks[++i] as ButtonBlock);
       }
-      children.add(BlockView(b, depth: depth));
-      previous = b;
+      children.add(
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          alignment: b.align == BlockAlign.start ? WrapAlignment.start : WrapAlignment.center,
+          children: [for (final button in row) _ButtonChip(button, aligned: false)],
+        ),
+      );
+      previous = row.last;
+      continue;
     }
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: children);
+    children.add(BlockView(b, depth: depth));
+    previous = b;
+  }
+  return children;
+}
+
+/// The top-level blocks of a message. Long messages are built in chunks over
+/// several frames, so the first screen appears at once, and each chunk is a
+/// repaint boundary, so scrolling doesn't repaint text that didn't change.
+class DocumentBlocks extends StatefulWidget {
+  const DocumentBlocks(this.blocks, {super.key});
+
+  final List<Block> blocks;
+
+  /// Blocks per chunk.
+  static const chunkSize = 40;
+
+  /// Chunks built in the first frame.
+  static const initialChunks = 2;
+
+  @override
+  State<DocumentBlocks> createState() => _DocumentBlocksState();
+}
+
+class _DocumentBlocksState extends State<DocumentBlocks> {
+  late int _chunks;
+
+  int get _total => (widget.blocks.length + DocumentBlocks.chunkSize - 1) ~/ DocumentBlocks.chunkSize;
+
+  @override
+  void initState() {
+    super.initState();
+    _chunks = DocumentBlocks.initialChunks;
+    _scheduleMore();
+  }
+
+  @override
+  void didUpdateWidget(DocumentBlocks old) {
+    super.didUpdateWidget(old);
+    if (!identical(old.blocks, widget.blocks)) {
+      _chunks = DocumentBlocks.initialChunks;
+      _scheduleMore();
+    }
+  }
+
+  void _scheduleMore() {
+    if (_chunks >= _total) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || _chunks >= _total) return;
+      setState(() => _chunks += 2);
+      _scheduleMore();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final blocks = widget.blocks;
+    const size = DocumentBlocks.chunkSize;
+    final shown = (_chunks * size).clamp(0, blocks.length);
+    if (blocks.length <= size) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: blockWidgets(blocks),
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (var start = 0; start < shown; start += size)
+          RepaintBoundary(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: blockWidgets(
+                blocks.sublist(start, (start + size).clamp(0, shown)),
+                before: start == 0 ? null : blocks[start - 1],
+              ),
+            ),
+          ),
+      ],
+    );
   }
 }
 

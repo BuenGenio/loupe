@@ -3,9 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:readable/readable.dart';
 import 'package:readable/src/cache.dart';
 import 'package:readable/src/render/banner.dart';
+import 'package:readable/src/render/blocks.dart';
 import 'package:readable/src/render/gallery.dart';
 import 'package:readable/src/render/images.dart';
 import 'package:readable/src/render/link_actions.dart';
+import 'package:readable/src/render/reader_view.dart';
 
 import 'helpers.dart';
 
@@ -299,6 +301,21 @@ void main() {
     await pumpReader(tester, content, onSuggest: () => suggested++);
     await tester.pump();
     expect(suggested, 1);
+  });
+
+  testWidgets('long messages build in chunks, each a repaint boundary', (tester) async {
+    ReaderView.debugSynchronous = true;
+    addTearDown(() => ReaderView.debugSynchronous = false);
+    final html = List.generate(400, (i) => '<p>Paragraph number $i of a very long newsletter.</p>').join();
+    await pumpReader(tester, email(html: html));
+    expect(richText('Paragraph number 0 of'), findsOneWidget);
+    expect(richText('Paragraph number 399 of'), findsNothing);
+    await tester.pumpAndSettle();
+    expect(richText('Paragraph number 399 of'), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(DocumentBlocks), matching: find.byType(RepaintBoundary)),
+      findsAtLeastNWidgets(10),
+    );
   });
 
   testWidgets('settings.textScale multiplies the platform text scale', (tester) async {

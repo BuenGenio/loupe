@@ -444,7 +444,7 @@ class _ReaderViewState extends State<ReaderView> {
       onLinkTap: _onLinkTap,
       onLinkLongPress: _onLinkLongPress,
       remoteAllowed: _remoteAllowed,
-      child: SelectionArea(child: BlockList(doc.blocks)),
+      child: SelectionArea(child: DocumentBlocks(doc.blocks)),
     );
   }
 }
