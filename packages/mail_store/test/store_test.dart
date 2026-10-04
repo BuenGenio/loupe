@@ -534,12 +534,14 @@ void main() {
         references: const ['a@x'],
         mode: ComposeMode.reply,
         sourceEmailId: eid('INBOX', 1),
+        security: const OutgoingSecurity(encrypt: true, sign: true),
       );
       await store.putOutbox(
         OutboxEntry(id: 'o1', accountId: accountId, message: msg, sendAfter: base, createdAt: base),
       );
       final got = (await store.getOutbox('o1'))!;
       expect(got.message.attachments.single.data, [0, 255]);
+      expect(got.message.security, const OutgoingSecurity(encrypt: true, sign: true));
       expect(got.message.to.single.name, 'Bob');
       expect(got.message.mode, ComposeMode.reply);
       expect((await store.claimOutbox('o1'))!.status, OutboxStatus.sending);

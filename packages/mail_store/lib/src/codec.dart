@@ -154,6 +154,7 @@ String encodeOutgoing(OutgoingMessage m) => jsonEncode({
   'mode': m.mode.name,
   'sourceEmailId': m.sourceEmailId,
   'draftId': m.draftId,
+  if (!m.security.isPlain || m.security.draft) 'security': m.security.toJson(),
 });
 
 OutgoingMessage decodeOutgoing(String json) {
@@ -181,6 +182,7 @@ OutgoingMessage decodeOutgoing(String json) {
     mode: ComposeMode.values.byName(j['mode']! as String),
     sourceEmailId: j['sourceEmailId'] as String?,
     draftId: j['draftId'] as String?,
+    security: OutgoingSecurity.fromJson((j['security'] as Map?)?.cast()),
   );
 }
 

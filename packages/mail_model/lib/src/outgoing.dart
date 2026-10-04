@@ -12,6 +12,62 @@ final class OutgoingAttachment {
 
 enum ComposeMode { newMessage, reply, replyAll, forward, editDraft }
 
+/// End-to-end protection chosen for an outgoing message (OpenPGP today).
+/// The composer applies it; without a key it fails rather than sending in
+/// the clear.
+final class OutgoingSecurity {
+  const OutgoingSecurity({this.encrypt = false, this.sign = false, this.attachPublicKey = false, this.draft = false});
+
+  /// Nothing: a plain message.
+  static const none = OutgoingSecurity();
+
+  /// Encrypt to every recipient and to the sender.
+  final bool encrypt;
+
+  /// Sign with the sender's key.
+  final bool sign;
+
+  /// Attach the sender's public key.
+  final bool attachPublicKey;
+
+  /// Saving a draft: encrypted (when [encrypt]) only to the sender, never
+  /// signed, and the choices are kept in the draft so they come back.
+  final bool draft;
+
+  bool get isPlain => !encrypt && !sign && !attachPublicKey;
+
+  /// The same choices for saving as a draft.
+  OutgoingSecurity forDraft() =>
+      OutgoingSecurity(encrypt: encrypt, sign: sign, attachPublicKey: attachPublicKey, draft: true);
+
+  Map<String, Object?> toJson() => {
+    if (encrypt) 'encrypt': true,
+    if (sign) 'sign': true,
+    if (attachPublicKey) 'attachPublicKey': true,
+    if (draft) 'draft': true,
+  };
+
+  factory OutgoingSecurity.fromJson(Map<String, Object?>? json) => json == null
+      ? none
+      : OutgoingSecurity(
+          encrypt: json['encrypt'] == true,
+          sign: json['sign'] == true,
+          attachPublicKey: json['attachPublicKey'] == true,
+          draft: json['draft'] == true,
+        );
+
+  @override
+  bool operator ==(Object other) =>
+      other is OutgoingSecurity &&
+      other.encrypt == encrypt &&
+      other.sign == sign &&
+      other.attachPublicKey == attachPublicKey &&
+      other.draft == draft;
+
+  @override
+  int get hashCode => Object.hash(encrypt, sign, attachPublicKey, draft);
+}
+
 /// A message being composed or queued for sending.
 final class OutgoingMessage {
   const OutgoingMessage({
@@ -29,6 +85,7 @@ final class OutgoingMessage {
     this.mode = ComposeMode.newMessage,
     this.sourceEmailId,
     this.draftId,
+    this.security = OutgoingSecurity.none,
   });
 
   final String accountId;
@@ -56,6 +113,9 @@ final class OutgoingMessage {
   /// Local id of the draft this replaces, if any.
   final String? draftId;
 
+  /// Encrypt, sign, attach the public key.
+  final OutgoingSecurity security;
+
   OutgoingMessage copyWith({
     String? identityId,
     List<EmailAddress>? to,
@@ -65,6 +125,7 @@ final class OutgoingMessage {
     String? text,
     List<OutgoingAttachment>? attachments,
     String? draftId,
+    OutgoingSecurity? security,
   }) => OutgoingMessage(
     accountId: accountId,
     identityId: identityId ?? this.identityId,
@@ -80,6 +141,7 @@ final class OutgoingMessage {
     mode: mode,
     sourceEmailId: sourceEmailId,
     draftId: draftId ?? this.draftId,
+    security: security ?? this.security,
   );
 
   /// The same message without [draftId] (once its draft is gone).
@@ -97,5 +159,6 @@ final class OutgoingMessage {
     references: references,
     mode: mode,
     sourceEmailId: sourceEmailId,
+    security: security,
   );
 }
