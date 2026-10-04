@@ -54,6 +54,11 @@ Future<MailStore> openLiveStore({bool createKey = true}) async {
 /// The live repository over [store], not yet started. Its composer writes
 /// OpenPGP mail (and Autocrypt headers) with [keys]; a message that asks
 /// for encryption it can't do stays in the Outbox, never goes out in the clear.
+///
+/// The background isolates (WorkManager, Instant Delivery, iOS background
+/// refresh) build theirs here too: OAuth tokens are refreshed with a plain
+/// HTTPS POST (mail_platform's TokenEndpointClient), which needs no plugin,
+/// activity or browser. Only signing in uses flutter_appauth.
 LiveMailRepository buildLiveRepository(
   MailStore store, {
   required PgpSendKeys keys,

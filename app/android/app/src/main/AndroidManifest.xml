@@ -55,6 +55,21 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!-- OAuth redirects (docs/oauth-setup.md). AppAuth's own filter takes the appAuthRedirectScheme placeholder
+             (build.gradle.kts), Google's io.github.buengenio.loupe:/oauth2redirect. This one adds Microsoft's
+             msauth.io.github.buengenio.loupe://auth: Entra only accepts custom schemes with "//", and this form is
+             the one it generates for the bundle id. The manifest merger keeps both filters. -->
+        <activity
+            android:name="net.openid.appauth.RedirectUriReceiverActivity"
+            android:exported="true"
+            tools:node="merge">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="msauth.io.github.buengenio.loupe" android:host="auth" />
+            </intent-filter>
+        </activity>
         <!-- flutter_local_notifications: the Archive and Mark as Read buttons of new-mail notifications. -->
         <receiver
             android:exported="false"

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../data/oauth.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/ui_state.dart';
@@ -12,6 +13,8 @@ import '../../shared/grouped_list.dart';
 import '../../shared/sheets.dart';
 import '../../theme/theme.dart';
 import '../../theme/loupe_icons.dart';
+import '../account_setup/oauth_accounts.dart' show oauthProviderName;
+import '../account_setup/sign_in_again.dart';
 import '../compose/identity_selection.dart';
 
 String _security(ConnectionSecurity s) => switch (s) {
@@ -37,6 +40,7 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
   final _name = TextEditingController();
   final _nameFocus = FocusNode();
   MailAccount? _account;
+  bool _signingIn = false;
 
   @override
   void initState() {
@@ -63,6 +67,12 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
     final next = account.copyWith(displayName: name);
     _account = next;
     await _repo.updateAccount(next);
+  }
+
+  Future<void> _signInAgain(MailAccount account) async {
+    setState(() => _signingIn = true);
+    await signInAgain(context, ref, account);
+    if (mounted) setState(() => _signingIn = false);
   }
 
   Future<void> _remove(MailAccount account) async {
@@ -93,10 +103,27 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
     }
     if (_account?.id != account.id) _name.text = account.displayName;
     _account = account;
+    final needsSignIn = ref.watch(signInRequiredProvider).value?.contains(account.id) ?? false;
+    final signInAgainRow = canSignInAgain(ref, account)
+        ? GroupedRow(
+            key: const Key('account-sign-in-again'),
+            title: _signingIn ? 'Signing In…' : 'Sign In Again',
+            onTap: _signingIn ? null : () => _signInAgain(account),
+          )
+        : null;
 
     return GroupedPage(
       title: account.displayName,
       children: [
+        if (needsSignIn)
+          InsetGroup(
+            key: const Key('account-sign-in-required'),
+            header: 'Sign-in',
+            footer:
+                '${oauthProviderName(account.provider)} no longer accepts Loupe’s sign-in for this account, so its '
+                'mail isn’t syncing. Sign in again to fix it.',
+            children: [?signInAgainRow],
+          ),
         InsetGroup(
           header: 'Account',
           separatorIndent: 16,
@@ -177,9 +204,12 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
               GroupedRow(title: 'Outgoing', subtitle: _server(account.outgoing!), chevron: false),
             GroupedRow(
               title: 'Sign-in',
-              detail: account.authKind == AuthKind.oauth2 ? 'OAuth' : 'Password',
+              detail: account.authKind == AuthKind.oauth2
+                  ? (needsSignIn ? 'Expired' : oauthProviderName(account.provider))
+                  : 'Password',
               chevron: false,
             ),
+            if (!needsSignIn) ?signInAgainRow,
           ],
         ),
         InsetGroup(

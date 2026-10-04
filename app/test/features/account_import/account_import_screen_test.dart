@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loupe/app.dart';
@@ -52,6 +53,7 @@ Future<(GoRouter, ProviderContainer)> pumpImport(
   FakeMailRepository repo,
   FakeScanner scanner, {
   Future<void> Function()? openSettings,
+  List<Override> overrides = const [],
 }) async {
   tester.view
     ..physicalSize = const Size(390, 844) * 3
@@ -77,6 +79,7 @@ Future<(GoRouter, ProviderContainer)> pumpImport(
       sharedPreferencesProvider.overrideWithValue(prefs),
       qrScannerProvider.overrideWithValue(scanner.build),
       openAppSettingsProvider.overrideWithValue(openSettings ?? () async {}),
+      ...overrides,
     ],
   );
   addTearDown(container.dispose);

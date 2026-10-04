@@ -16,6 +16,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>io.github.buengenio.loupe</string>
+				<string>msauth.io.github.buengenio.loupe</string>
 			</array>
 		</dict>
 	</array>

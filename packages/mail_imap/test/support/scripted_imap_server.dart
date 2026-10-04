@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 /// A tiny IMAP server on the loopback interface for transport unit tests: it
-/// greets, accepts any AUTHENTICATE PLAIN, answers LIST with [listLines] and
+/// greets, accepts any AUTHENTICATE unless [authReply] refuses it, answers LIST with [listLines] and
 /// every other command with `OK` unless [script] or [reply] say otherwise. It
 /// records each command (without its tag) in [commands] and the literals
 /// clients send (APPEND, SETMETADATA) in [literals].
@@ -37,6 +37,13 @@ final class ScriptedImapServer {
   /// The tagged reply (after the tag) for a command; null means `OK done`.
   String? Function(String command)? reply;
 
+  /// The tagged reply to an AUTHENTICATE command (with its SASL-IR
+  /// argument); null, or no callback, logs in.
+  String? Function(String command)? authReply;
+
+  /// AUTHENTICATE commands received, with their arguments.
+  final authentications = <String>[];
+
   /// A full answer to a command: raw untagged responses (each with `* ` and
   /// CRLF; literals as `{n}\r\n<data>`) and the tagged reply after the tag.
   /// Null falls back to the built-in answers and [reply].
@@ -56,7 +63,9 @@ final class ScriptedImapServer {
     }
     switch (verb) {
       case 'AUTHENTICATE':
-        client.write('$tag OK [CAPABILITY $capabilities] Logged in\r\n');
+        authentications.add(command);
+        final refused = authReply?.call(command);
+        client.write(refused == null ? '$tag OK [CAPABILITY $capabilities] Logged in\r\n' : '$tag $refused\r\n');
       case 'LIST':
         for (final l in listLines) {
           client.write('* $l\r\n');

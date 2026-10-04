@@ -147,6 +147,13 @@ final class FakeServer {
   /// Error thrown by SMTP until cleared.
   MailException? smtpFailure;
 
+  /// The OAuth access token the server takes; null takes any. Like IMAP
+  /// with XOAUTH2, a rejected token is retried once with a forced refresh.
+  String? accessToken;
+
+  /// Access tokens of every OAuth login attempt, in order.
+  final oauthLogins = <String>[];
+
   /// Overrides server search results (ids).
   List<String> Function(SearchExpr expr, String? path)? onSearch;
 
@@ -166,6 +173,11 @@ final class FakeServer {
   int connects = 0;
   final _watchers = <String, List<StreamController<void>>>{};
   int _clock = 0;
+
+  bool _takes(OAuthCredentials c) {
+    oauthLogins.add(c.accessToken);
+    return accessToken == null || c.accessToken == accessToken;
+  }
 
   FakeMailbox addMailbox(String path, {MailboxRole role = MailboxRole.none}) =>
       mailboxes[path] = FakeMailbox(path, role);
@@ -350,9 +362,13 @@ final class FakeTransport implements MailTransport {
   Future<void> connect() async {
     await _delay();
     if (server.offline) throw const MailException(MailErrorKind.connection, 'Server unreachable');
-    final c = await credentials();
+    var c = await credentials();
     if (c is PasswordCredentials && c.password != server.password) {
       throw const MailException(MailErrorKind.authentication, 'Password rejected');
+    }
+    if (c is OAuthCredentials && !server._takes(c)) c = await credentials(forceRefresh: true);
+    if (c is OAuthCredentials && !server._takes(c)) {
+      throw const MailException(MailErrorKind.authentication, 'AUTHENTICATIONFAILED Invalid credentials');
     }
     final f = server.failOnce.remove('connect') ?? server.failAlways['connect'];
     if (f != null) throw f;

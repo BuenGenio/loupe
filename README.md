@@ -8,6 +8,7 @@ Status: **early development** (Phase 1). Android builds first.
 - Plan: [docs/plan/PLAN.md](docs/plan/PLAN.md) (background research in [docs/plan/research/](docs/plan/research/))
 - Architecture and package contracts: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - iOS: what is set up and the checklist to TestFlight: [docs/ios.md](docs/ios.md)
+- Sign in with Google and Microsoft: registering the OAuth clients, and testing: [docs/oauth-setup.md](docs/oauth-setup.md)
 
 ## Try it on Android
 
