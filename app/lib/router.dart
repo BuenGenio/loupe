@@ -11,6 +11,7 @@ import 'features/conversation/raw_source_screen.dart';
 import 'features/mailboxes/mailboxes_screen.dart';
 import 'features/message_list/message_list_screen.dart';
 import 'features/onboarding/welcome_screen.dart';
+import 'features/search/search_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'shared/mailbox_ref_codec.dart';
 
@@ -25,6 +26,12 @@ abstract final class Routes {
   static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
   static String message(String emailId) => '/message/${Uri.encodeComponent(emailId)}';
   static String source(String emailId) => '/source/${Uri.encodeComponent(emailId)}';
+
+  /// Search with [query] already entered; [scope] null means all mailboxes.
+  static String search(String query, {MailboxRef? scope}) => Uri(
+    path: '/search',
+    queryParameters: {'q': query, 'scope': ?(scope == null ? null : MailboxRefCodec.encode(scope))},
+  ).toString();
 }
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -45,6 +52,16 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/source/:id',
         builder: (context, state) => RawSourceScreen(emailId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/search',
+        builder: (context, state) {
+          final scope = state.uri.queryParameters['scope'];
+          return SearchScreen(
+            initialQuery: state.uri.queryParameters['q'] ?? '',
+            scope: scope == null ? const AllMailboxesScope() : MailboxScope(MailboxRefCodec.decode(scope)),
+          );
+        },
       ),
       GoRoute(path: Routes.settings, builder: (context, state) => const SettingsScreen()),
       GoRoute(path: Routes.addAccount, builder: (context, state) => const AccountSetupScreen()),
