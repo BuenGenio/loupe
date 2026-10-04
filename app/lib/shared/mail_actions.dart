@@ -31,7 +31,8 @@ import '../settings/ui_state.dart';
 /// asks first instead: the server expunges at once, and an expunge delayed
 /// until the snack bar is gone would be lost if the app were closed meanwhile.
 class MailActions {
-  MailActions(this.context, this.ref, {required this.scope, required this.threaded, this._mailboxes});
+  MailActions(this.context, this.ref, {required this.scope, required this.threaded, this._mailboxes})
+    : _repository = ref.read(repositoryProvider);
 
   final BuildContext context;
   final WidgetRef ref;
@@ -41,7 +42,11 @@ class MailActions {
   final MailboxRef? scope;
   final bool threaded;
 
-  MailRepository get _repo => ref.read(repositoryProvider);
+  /// Read when the actions are made: `ref` throws once the screen is gone,
+  /// and actions continue after awaits (Back during a long multi-select).
+  final MailRepository _repository;
+
+  MailRepository get _repo => _repository;
 
   /// The mailboxes the messages acted on are in, when the caller has them
   /// at hand; otherwise every account's.
@@ -54,10 +59,12 @@ class MailActions {
   /// The messages an action on [row] applies to: in a real mailbox, the
   /// conversation's messages in that mailbox; elsewhere, those outside Sent,
   /// Drafts, Trash and Junk.
-  Future<List<EmailSummary>> members(ThreadSummary row) async {
+  Future<List<EmailSummary>> members(ThreadSummary row) => _members(row, _repo, _boxes);
+
+  // The mailboxes are read before any await (see [_repository]).
+  Future<List<EmailSummary>> _members(ThreadSummary row, MailRepository repo, Map<String, Mailbox> boxes) async {
     if (!threaded || row.messageCount <= 1) return [row.latest];
-    final all = await _repo.watchConversation(row.latest.id).first;
-    final boxes = _boxes;
+    final all = await repo.watchConversation(row.latest.id).first;
     final kept = all.where((e) {
       if (scope case RealMailboxRef(:final mailboxId)) return e.mailboxId == mailboxId;
       final role = boxes[e.mailboxId]?.role;
@@ -69,23 +76,26 @@ class MailActions {
     return kept.isEmpty ? [row.latest] : kept;
   }
 
-  Future<List<EmailSummary>> _membersOf(Iterable<ThreadSummary> rows) async => [
-    for (final r in rows) ...await members(r),
-  ];
+  Future<List<EmailSummary>> _membersOf(Iterable<ThreadSummary> rows) async {
+    final repo = _repo;
+    final boxes = _boxes;
+    return [for (final r in rows) ...await _members(r, repo, boxes)];
+  }
 
   Future<void> setRead(Iterable<ThreadSummary> rows, {required bool read}) async {
+    final repo = _repo;
     // Reading state covers the whole conversation, including your replies.
     final emails = <EmailSummary>[];
     for (final r in rows) {
       if (threaded && r.messageCount > 1) {
-        emails.addAll(await _repo.watchConversation(r.latest.id).first);
+        emails.addAll(await repo.watchConversation(r.latest.id).first);
       } else {
         emails.add(r.latest);
       }
     }
     // Read, a message that woke from snooze is ordinary again.
     final woken = read && emails.any((e) => e.keywords.contains(Keywords.newAgain));
-    await _repo.setKeywords(
+    await repo.setKeywords(
       [for (final e in emails) e.id],
       add: read ? const {Keywords.seen} : const {},
       remove: read ? (woken ? const {Keywords.newAgain} : const {}) : const {Keywords.seen},
