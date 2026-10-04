@@ -76,7 +76,7 @@ Uint8List seedMessage({required String subject, String from = 'seed@example.test
     utf8.encode(
       'From: Seeder <$from>\r\n'
       'To: alice@example.test\r\n'
-      'Subject: $subject\r\n'
+      'Subject: ${_encodeSubject(subject)}\r\n'
       'Date: Mon, 6 Oct 2025 10:00:00 +0000\r\n'
       'Message-ID: <$id>\r\n'
       'MIME-Version: 1.0\r\n'
@@ -87,3 +87,6 @@ Uint8List seedMessage({required String subject, String from = 'seed@example.test
     ),
   );
 }
+
+String _encodeSubject(String s) =>
+    s.codeUnits.every((c) => c < 0x80) ? s : '=?UTF-8?B?${base64.encode(utf8.encode(s))}?=';

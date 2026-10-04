@@ -238,13 +238,5 @@ void main() {
       expect(gmailRawSearchCommand('from:ann "big deal"'), r'UID SEARCH X-GM-RAW "from:ann \"big deal\""');
       expect(gmailRawSearchCommand('ü'), 'UID SEARCH CHARSET UTF-8 X-GM-RAW "ü"');
     });
-
-    test('what the server can evaluate', () {
-      expect(imapCanEvaluate(const TextTerm(TextField.from, 'a')), isTrue);
-      expect(imapCanEvaluate(const RegexTerm(TextField.subject, 'a+')), isFalse);
-      expect(imapCanEvaluate(const HasAttachmentTerm()), isFalse);
-      expect(gmailCanEvaluate(const HasAttachmentTerm()), isTrue);
-      expect(gmailCanEvaluate(const AccountTerm('x')), isFalse);
-    });
   });
 }

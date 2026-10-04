@@ -4,24 +4,11 @@ library;
 import 'dart:convert';
 
 import 'package:expr_search/expr_search.dart';
-import 'package:mail_model/mail_model.dart';
 
 import 'values.dart';
 
-/// Terms plain IMAP SEARCH can evaluate (structural nodes count as yes).
-bool imapCanEvaluate(SearchExpr term) => switch (term) {
-  TextTerm(field: TextField.attachment) => false,
-  RegexTerm() || HasAttachmentTerm() || AccountTerm() => false,
-  _ => true,
-};
-
-/// Terms Gmail's X-GM-RAW can evaluate.
-bool gmailCanEvaluate(SearchExpr term) => switch (term) {
-  RegexTerm() || AccountTerm() => false,
-  _ => true,
-};
-
-/// The UID SEARCH command text for a compiled query.
+/// The UID SEARCH command text for a compiled query. `CHARSET UTF-8` is
+/// added for non-ASCII criteria (Loupe never enables UTF8=ACCEPT).
 String uidSearchCommand(ImapSearchQuery query) =>
     'UID SEARCH ${query.useUtf8 || _hasNonAscii(query.criteria) ? 'CHARSET UTF-8 ' : ''}${query.criteria}';
 

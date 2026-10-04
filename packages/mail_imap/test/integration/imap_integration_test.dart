@@ -4,7 +4,6 @@ library;
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:expr_search/expr_search.dart';
 import 'package:mail_imap/mail_imap.dart';
 import 'package:mail_imap/src/imap/connection.dart';
 import 'package:mail_imap/src/imap/parsers.dart';
@@ -157,16 +156,18 @@ void main() {
 
   test('search', () async {
     const expr = TextTerm(TextField.subject, 'Seed 5');
-    if (compileImap(expr).criteria.trim().toUpperCase() == 'ALL') {
-      markTestSkipped('compileImap is still a stub');
-      return;
-    }
     final ids = await transport.search(expr, mailbox: box);
     expect(ids, hasLength(1));
     final hit = (await transport.fetchSummaries(ids)).single;
     expect(hit.subject, 'Seed 5');
     final everywhere = await transport.search(expr);
     expect(everywhere, contains(ids.single));
+
+    await transport.append(box, seedMessage(subject: 'Grüße aus Köln'));
+    final utf8Hits = await transport.search(const TextTerm(TextField.subject, 'grüße'), mailbox: box);
+    expect((await transport.fetchSummaries(utf8Hits)).map((e) => e.subject), ['Grüße aus Köln']);
+
+    expect(await transport.search(const SearchNot(MatchAll()), mailbox: box), isEmpty);
   });
 
   test('watch reports new mail via IDLE', () async {

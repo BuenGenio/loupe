@@ -608,18 +608,20 @@ final class ImapTransport implements MailTransport {
 
   @override
   Future<List<String>> search(SearchExpr expr, {RemoteMailbox? mailbox, int limit = 200}) => _run((c) async {
+    final bound = bindAccountTerms(expr, _accountLabel);
+    if (matchesNothing(bound)) return const <String>[];
     if (c.has('X-GM-EXT-1')) {
-      final raw = compileGmailRaw(expr) ?? compileGmailRaw(widenForServer(expr, gmailCanEvaluate));
-      if (raw != null && raw.trim().isNotEmpty) {
-        final box = mailbox ?? _withRole(await _knownMailboxes(), MailboxRole.all);
-        if (box != null) return _searchIn(c, box.path, gmailRawSearchCommand(raw), limit);
+      final raw = compileGmailRaw(bound) ?? compileGmailRaw(widenForServer(bound, gmailSupports));
+      final box = mailbox ?? _withRole(await _knownMailboxes(), MailboxRole.all);
+      if (raw != null && box != null) {
+        // An empty Gmail query means everything.
+        final command = raw.trim().isEmpty ? 'UID SEARCH ALL' : gmailRawSearchCommand(raw);
+        return _searchIn(c, box.path, command, limit);
       }
     }
-    final widened = widenForServer(expr, imapCanEvaluate);
-    if (widened is MatchAll) return const <String>[];
-    final query = compileImap(widened);
-    if (query.criteria.trim().toUpperCase() == 'ALL') return const <String>[];
-    final command = uidSearchCommand(query);
+    // compileImap widens what IMAP can't express itself; the caller
+    // post-filters whenever the result isn't exact.
+    final command = uidSearchCommand(compileImap(bound));
     final boxes = mailbox != null ? [mailbox] : _searchOrder(await _knownMailboxes());
     final result = <String>[];
     for (final box in boxes.take(maxSearchMailboxes)) {
@@ -632,6 +634,10 @@ final class ImapTransport implements MailTransport {
     }
     return result;
   });
+
+  /// The account's name and addresses, for [bindAccountTerms].
+  String get _accountLabel =>
+      {account.displayName, account.email, for (final i in account.identities) i.email}.join(' ');
 
   Future<List<String>> _searchIn(ImapConnection c, String path, String command, int limit) async {
     final sel = await c.ensureSelected(path);
