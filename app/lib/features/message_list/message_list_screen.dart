@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,8 @@ import '../../shared/swipe_row.dart';
 import '../../shared/sync_status.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
+import '../conversation/sheets.dart' show showSnack;
+import '../keyboard/mail_commands.dart';
 import '../panes/mail_selection.dart';
 import '../panes/pane_layout.dart';
 import '../search/search_session.dart';
@@ -61,7 +64,9 @@ class MessageListScreen extends ConsumerStatefulWidget {
   ConsumerState<MessageListScreen> createState() => _MessageListScreenState();
 }
 
-class _MessageListScreenState extends ConsumerState<MessageListScreen> {
+class _MessageListScreenState extends ConsumerState<MessageListScreen>
+    with CommandScopeState<MessageListScreen>
+    implements MessageListNeighbors {
   bool _filterOn = false;
   bool _editing = false;
   final _selected = <String>{};
@@ -80,6 +85,18 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     onCommit: (q) => ref.read(recentSearchesProvider.notifier).add(q),
   );
 
+  /// The rows last shown.
+  List<ThreadSummary> _rows = const [];
+
+  /// The row the keyboard is on (J, K, Enter) on a phone; in the list pane
+  /// it is the conversation shown.
+  String? _cursor;
+
+  /// Where the conversation shown in the pane was listed, to show the one
+  /// that takes its place when it goes away.
+  int? _shownIndex;
+  final _rowKeys = <String, GlobalKey>{};
+
   @override
   void initState() {
     super.initState();
@@ -87,6 +104,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     _focus.addListener(() {
       if (_focus.hasFocus && !_searching) _setSearching(true);
     });
+    registerCommands(ref.read(mailCommandsProvider));
   }
 
   @override
@@ -156,6 +174,182 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
       ref.read(mailSelectionProvider.notifier).showMessage(email.id, threadId: row.threadId);
     } else {
       await context.push(Routes.message(email.id));
+    }
+  }
+
+  // Keyboard and command palette ------------------------------------------------------
+
+  @override
+  int get priority => 20;
+
+  MailboxRole? _roleOf(ThreadSummary row) => (ref.read(mailboxesProvider).value ?? const <Mailbox>[])
+      .where((m) => m.id == row.latest.mailboxId)
+      .firstOrNull
+      ?.role;
+
+  int _cursorIndex() {
+    if (_inPane) return _rows.indexWhere(ref.read(mailSelectionProvider).shows);
+    return _rows.indexWhere((r) => r.threadId == _cursor);
+  }
+
+  ThreadSummary? get _cursorRow {
+    final i = _cursorIndex();
+    return i < 0 ? null : _rows[i];
+  }
+
+  /// What row actions apply to: the selection while editing, else the
+  /// keyboard's row (phones).
+  List<ThreadSummary> get _rowsForAction => _editing
+      ? [
+          for (final r in _rows)
+            if (_selected.contains(r.threadId)) r,
+        ]
+      : [if (!_inPane) ?_cursorRow];
+
+  @override
+  ThreadSummary? neighborOf(EmailSummary email, int delta) {
+    final i = _rows.indexWhere(
+      (r) =>
+          r.latest.id == email.id || r.threadId == email.id || (email.threadId != null && r.threadId == email.threadId),
+    );
+    final j = i + delta;
+    return i < 0 || j < 0 || j >= _rows.length ? null : _rows[j];
+  }
+
+  @override
+  ThreadSummary? replacementFor(MailSelection selection) {
+    if (_rows.isEmpty) return null;
+    final i = _rows.indexWhere(selection.shows);
+    if (i >= 0) return i + 1 < _rows.length ? _rows[i + 1] : (i > 0 ? _rows[i - 1] : null);
+    final was = _shownIndex;
+    return was == null ? null : _rows[math.min(was, _rows.length - 1)];
+  }
+
+  @override
+  bool canRun(MailCommand command) => switch (command) {
+    MailCommand.nextMessage || MailCommand.previousMessage => _rows.isNotEmpty && !_searching && !_editing,
+    MailCommand.open => !_inPane && !_editing && _cursorRow != null,
+    MailCommand.search || MailCommand.refresh => true,
+    MailCommand.back => _searching || _editing,
+    MailCommand.markAllRead => !_searching,
+    MailCommand.reply || MailCommand.replyAll || MailCommand.forward => !_inPane && !_editing && _cursorRow != null,
+    MailCommand.archive ||
+    MailCommand.trash ||
+    MailCommand.toggleRead ||
+    MailCommand.toggleFlag ||
+    MailCommand.snooze ||
+    MailCommand.move => _rowsForAction.isNotEmpty,
+    _ => false,
+  };
+
+  @override
+  void run(MailCommand command) {
+    final actions = _actions(ref.read(appSettingsProvider));
+    final rows = _rowsForAction;
+    Future<void> act(Future<void> Function() action) async {
+      await action();
+      if (mounted && _editing) _toggleEditing();
+    }
+
+    void compose(ComposeMode mode) {
+      final row = _cursorRow;
+      if (row != null) unawaited(openCompose(context, ComposeArgs(mode: mode, sourceEmailId: row.latest.id)));
+    }
+
+    switch (command) {
+      case MailCommand.nextMessage:
+        _moveCursor(1, actions);
+      case MailCommand.previousMessage:
+        _moveCursor(-1, actions);
+      case MailCommand.open:
+        if (_cursorRow case final row?) unawaited(_openRow(row, role: _roleOf(row), actions: actions));
+      case MailCommand.search:
+        _focus.requestFocus();
+      case MailCommand.back:
+        _searching ? _setSearching(false) : _toggleEditing();
+      case MailCommand.markAllRead:
+        unawaited(_markAllRead());
+      case MailCommand.refresh:
+        unawaited(ref.read(repositoryProvider).refresh(ref: widget.mailboxRef));
+      case MailCommand.reply:
+        compose(ComposeMode.reply);
+      case MailCommand.replyAll:
+        compose(ComposeMode.replyAll);
+      case MailCommand.forward:
+        compose(ComposeMode.forward);
+      case MailCommand.archive:
+        unawaited(act(() => actions.archive(rows)));
+      case MailCommand.trash:
+        unawaited(act(() => actions.trash(rows)));
+      case MailCommand.toggleRead:
+        unawaited(act(() => actions.setRead(rows, read: rows.any((r) => r.unreadCount > 0))));
+      case MailCommand.toggleFlag:
+        unawaited(act(() => actions.setFlag(rows, flagged: rows.any((r) => !r.latest.isFlagged))));
+      case MailCommand.snooze:
+        unawaited(act(() => actions.snooze(rows)));
+      case MailCommand.move:
+        unawaited(act(() => actions.moveWithPicker(rows)));
+      default:
+    }
+  }
+
+  /// J and K: in the pane the next conversation opens beside the list (a
+  /// draft shows there too, rather than opening the editor); on a phone the
+  /// highlight moves and Enter opens.
+  void _moveCursor(int delta, MailActions actions) {
+    if (_rows.isEmpty) return;
+    final i = _cursorIndex();
+    final j = i < 0 ? 0 : (i + delta).clamp(0, _rows.length - 1);
+    if (i == j) return;
+    final row = _rows[j];
+    if (_inPane) {
+      if (row.unreadCount > 0) unawaited(actions.setRead([row], read: true));
+      ref.read(mailSelectionProvider.notifier).showMessage(row.latest.id, threadId: row.threadId);
+    } else {
+      setState(() => _cursor = row.threadId);
+    }
+    _reveal(row, j);
+  }
+
+  /// Scrolls [row] (at [index]) into view, jumping near it first when it
+  /// isn't built yet.
+  void _reveal(ThreadSummary row, int index) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final ctx = _rowKeys[row.threadId]?.currentContext;
+      if (ctx != null) {
+        unawaited(Scrollable.ensureVisible(ctx, duration: const Duration(milliseconds: 120), alignment: 0.5));
+        return;
+      }
+      final scroll = _scroll;
+      if (scroll == null || !scroll.hasClients) return;
+      final built = _rowKeys.values.map((k) => k.currentContext?.size?.height).nonNulls.firstOrNull ?? 90;
+      final estimate = searchBarExtent(context) + index * built;
+      scroll.jumpTo(estimate.clamp(0, scroll.position.maxScrollExtent));
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final ctx = _rowKeys[row.threadId]?.currentContext;
+        if (mounted && ctx != null) unawaited(Scrollable.ensureVisible(ctx, alignment: 0.5));
+      });
+    });
+  }
+
+  /// Marks every unread message of this mailbox read (those on the phone).
+  Future<void> _markAllRead() async {
+    final messenger = ScaffoldMessenger.of(context);
+    final repo = ref.read(repositoryProvider);
+    final actions = MailActions(context, ref, scope: widget.mailboxRef, threaded: false);
+    try {
+      final unread = await repo
+          .watchList(widget.mailboxRef, filters: const {QuickFilter.unread}, threaded: false, limit: 100000)
+          .first;
+      if (unread.isEmpty) return;
+      await actions.setRead(unread, read: true);
+      showSnack(
+        messenger,
+        unread.length == 1 ? 'Marked 1 message as read' : 'Marked ${unread.length} messages as read',
+      );
+    } on MailException catch (e) {
+      showSnack(messenger, e.message);
     }
   }
 
@@ -249,6 +443,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
         if (position.pixels == 0 && position.maxScrollExtent >= extent) scroll.jumpTo(extent);
       });
     }
+    _rows = rows;
     final actions = _actions(settings);
     final selectedRows = [
       for (final r in rows)
@@ -403,6 +598,10 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     final vips = ref.watch(vipAddressesProvider).value ?? const <String>{};
     final unified = widget.mailboxRef is VirtualMailboxRef && accounts.length > 1;
     final selection = _inPane ? ref.watch(mailSelectionProvider) : null;
+    if (selection != null) {
+      final shown = rows.indexWhere(selection.shows);
+      if (shown >= 0) _shownIndex = shown;
+    }
     return [
       SliverList.builder(
         itemCount: rows.length,
@@ -418,12 +617,13 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
             leading: actions.leadingSwipes(row, settings),
             trailing: actions.trailingSwipes(row, settings),
             child: MessageRow(
+              key: _rowKeys.putIfAbsent(row.threadId, GlobalKey.new),
               email: email,
               messageCount: row.messageCount,
               unread: row.unreadCount > 0,
               isVip: email.from.any((f) => vips.contains(f.email.toLowerCase())),
               accountColor: unified && account != null ? colors.accountColor(account.colorIndex) : null,
-              selected: selection?.shows(row) ?? false,
+              selected: selection?.shows(row) ?? _cursor == row.threadId,
               editing: _editing,
               checked: checked,
               showRecipients: role == MailboxRole.sent || role == MailboxRole.drafts,

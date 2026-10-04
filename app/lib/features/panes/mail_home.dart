@@ -11,6 +11,7 @@ import '../../shared/bars.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../conversation/conversation_screen.dart';
+import '../keyboard/mail_commands.dart';
 import '../mailboxes/mailboxes_screen.dart';
 import '../mailing_lists/mailing_list_screen.dart';
 import '../message_list/message_list_screen.dart';
@@ -45,7 +46,7 @@ class MailHome extends ConsumerStatefulWidget {
   ConsumerState<MailHome> createState() => _MailHomeState();
 }
 
-class _MailHomeState extends ConsumerState<MailHome> {
+class _MailHomeState extends ConsumerState<MailHome> with CommandScopeState<MailHome> {
   // The screens keep their state when the layout changes.
   final _mailboxesKey = GlobalKey(debugLabel: 'Mailboxes pane');
   final _listKey = GlobalKey(debugLabel: 'List pane');
@@ -69,6 +70,27 @@ class _MailHomeState extends ConsumerState<MailHome> {
     ref.listenManual(mailSelectionProvider.select((s) => s.list), (previous, next) {
       if (previous != next && _sidebarOpen && mounted) setState(() => _sidebarOpen = false);
     });
+    registerCommands(ref.read(mailCommandsProvider));
+  }
+
+  // Keyboard: Esc closes the sidebar, then the conversation.
+
+  @override
+  int get priority => 0;
+
+  @override
+  bool canRun(MailCommand command) =>
+      command == MailCommand.back &&
+      (_layout?.wide ?? false) &&
+      (_sidebarOpen || ref.read(mailSelectionProvider).messageId != null);
+
+  @override
+  void run(MailCommand command) {
+    if (_sidebarOpen) {
+      setState(() => _sidebarOpen = false);
+    } else {
+      ref.read(mailSelectionProvider.notifier).closeMessage();
+    }
   }
 
   @override
@@ -157,8 +179,17 @@ class _MailHomeState extends ConsumerState<MailHome> {
     if (s.messageId case final id?) unawaited(router.push<void>(Routes.message(id)));
   }
 
-  /// After the conversation was archived, deleted or moved away.
-  void _conversationClosed() => ref.read(mailSelectionProvider.notifier).closeMessage();
+  /// After the conversation was archived, deleted or moved away: the next
+  /// one in the list takes its place, as in Apple Mail and Thunderbird.
+  void _conversationClosed() {
+    final selection = ref.read(mailSelectionProvider);
+    final list = ref.read(mailCommandsProvider).latest<MessageListNeighbors>();
+    final next = list is CommandScope && (list as CommandScope).acceptsCommands
+        ? list?.replacementFor(selection)
+        : null;
+    final notifier = ref.read(mailSelectionProvider.notifier);
+    next == null ? notifier.closeMessage() : notifier.showMessage(next.latest.id, threadId: next.threadId);
+  }
 
   void _toggleSidebar() {
     if (_layout == PaneLayout.threePane) {

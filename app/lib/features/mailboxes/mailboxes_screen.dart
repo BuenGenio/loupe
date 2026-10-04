@@ -20,6 +20,7 @@ import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
 import '../compose/compose_recovery.dart';
 import '../compose/send_later.dart';
+import '../keyboard/mail_commands.dart';
 import '../mailing_lists/list_providers.dart';
 import '../outbox/outbox_screen.dart';
 import '../search/search_session.dart';
@@ -37,7 +38,7 @@ class MailboxesScreen extends ConsumerStatefulWidget {
   ConsumerState<MailboxesScreen> createState() => _MailboxesScreenState();
 }
 
-class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
+class _MailboxesScreenState extends ConsumerState<MailboxesScreen> with CommandScopeState<MailboxesScreen> {
   bool _editing = false;
   bool _searching = false;
   final _scroll = ScrollController();
@@ -74,6 +75,32 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) unawaited(offerComposeRecovery(context, ref));
     });
+    registerCommands(ref.read(mailCommandsProvider));
+  }
+
+  // Keyboard: / searches every mailbox, Esc leaves search or Edit.
+
+  @override
+  int get priority => 10;
+
+  @override
+  bool canRun(MailCommand command) => switch (command) {
+    MailCommand.search || MailCommand.refresh => true,
+    MailCommand.back => _searching || _editing,
+    _ => false,
+  };
+
+  @override
+  void run(MailCommand command) {
+    switch (command) {
+      case MailCommand.search:
+        _focus.requestFocus();
+      case MailCommand.refresh:
+        unawaited(ref.read(repositoryProvider).refresh());
+      case MailCommand.back:
+        _searching ? _setSearching(false) : setState(() => _editing = false);
+      default:
+    }
   }
 
   @override
