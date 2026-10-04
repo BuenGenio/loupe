@@ -46,6 +46,9 @@ Each IMAP account holds one document.
    merged into it. They never delete copies they haven't read: two devices writing at the same moment leave two
    messages, and the next reader merges them.
 
+Gmail can't keep the document: it has no METADATA, and deleting a message from a Gmail label leaves it in All Mail,
+so every folder copy would pile up there. Gmail accounts keep their Smart Mailboxes on the device.
+
 Readers read both places. A server may hold a METADATA value and folder copies at the same time, for example copies
 written before an administrator enabled METADATA. Readers merge every copy they find. After a write, writers remove
 the copies they merged. If a value is too large for METADATA (`NO [METADATA MAXSIZE n]`), the writer stores it in the
@@ -103,8 +106,8 @@ Entries a reader can't parse (no `id`, no valid `modifiedAt`) are kept as they a
 - A Smart Mailbox of one folder (`{"mailbox": …}`) lives in the document of the account that owns the folder. Folder
   paths are only meaningful on their own server, which keeps them portable.
 - Smart Mailboxes of every account (no scope, or a virtual scope) live in the **home account's** document. In Loupe
-  the home account is the first account, and the user can change it under Settings › Smart Mailboxes › Sync via. Pick
-  the same account on every device. Unified entries found in another account's document, such as one left on a
+  the home account is the first account that isn't Gmail, and the user can change it under Settings › Smart Mailboxes
+  › Sync via. Pick the same account on every device. Unified entries found in another account's document, such as one left on a
   former home, are left untouched.
 - Sync via › Off keeps every Smart Mailbox on the device only.
 

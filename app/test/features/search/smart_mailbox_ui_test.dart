@@ -31,8 +31,8 @@ void main() {
     final repo = await pumpLoupe(tester, prefs: _saved([_unified]));
     await goTo(tester, Routes.smartMailbox('lq3k2x1a9b'));
     await _syncRound(tester);
-    expect(find.text('Synced to Personal'), findsOneWidget);
-    expect(repo.serverDocuments['personal']?[ServerDocuments.smartMailboxes], contains('Invoices'));
+    expect(find.text('Synced to Work'), findsOneWidget);
+    expect(repo.serverDocuments['work']?[ServerDocuments.smartMailboxes], contains('Invoices'));
   });
 
   testWidgets('Settings › Smart Mailboxes › Sync via Off keeps them on this device', (tester) async {
@@ -42,7 +42,7 @@ void main() {
     await tester.tap(find.text('Smart Mailboxes'));
     await tester.pumpAndSettle();
     expect(find.text('Sync via'), findsOneWidget);
-    expect(find.text('Personal'), findsWidgets);
+    expect(find.text('Work'), findsWidgets);
 
     await tester.tap(find.text('Sync via'));
     await tester.pumpAndSettle();

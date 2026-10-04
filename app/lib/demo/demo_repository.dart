@@ -132,7 +132,8 @@ class DemoMailRepository implements MailRepository {
   final serverDocuments = <String, Map<String, String>>{};
 
   /// Demo accounts whose server has no METADATA: their documents live in a
-  /// Loupe Settings folder, created on the first write.
+  /// Loupe Settings folder, created on the first write. Gmail accounts
+  /// can't keep documents at all, like the real one.
   static const _withoutMetadata = {DemoAccounts.work};
   final _sync = <String, AccountSyncStatus>{};
   final _outbox = <String, _Queued>{};
@@ -1238,8 +1239,10 @@ class DemoMailRepository implements MailRepository {
   // Documents on the server ---------------------------------------------------------
 
   void _requireAccount(String accountId) {
-    if (_account(accountId) == null) {
-      throw const MailException(MailErrorKind.notFound, 'This account no longer exists.');
+    final account = _account(accountId);
+    if (account == null) throw const MailException(MailErrorKind.notFound, 'This account no longer exists.');
+    if (account.provider == ProviderKind.gmail) {
+      throw const MailException(MailErrorKind.unsupported, 'Gmail can’t keep Loupe settings on the server.');
     }
   }
 

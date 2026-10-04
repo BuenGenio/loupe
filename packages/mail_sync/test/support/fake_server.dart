@@ -599,6 +599,7 @@ final class FakeTransport implements MailTransport {
   @override
   Future<List<ServerDocument>> readDocuments(String name) async {
     await _op('readDocuments');
+    if (server.gmail) throw const MailException(MailErrorKind.unsupported, 'Gmail can’t keep Loupe settings');
     final value = server.metadata ? server.annotations[ServerDocuments.metadataEntry(name)] : null;
     final folder = server.mailboxes[ServerDocuments.folderName];
     return [
@@ -612,6 +613,7 @@ final class FakeTransport implements MailTransport {
   @override
   Future<ServerStorage> writeDocument(String name, String content, {List<ServerDocument> replaces = const []}) async {
     await _op('writeDocument');
+    if (server.gmail) throw const MailException(MailErrorKind.unsupported, 'Gmail can’t keep Loupe settings');
     final entry = ServerDocuments.metadataEntry(name);
     final ServerStorage where;
     if (server.metadata && content.length <= server.metadataMaxSize) {

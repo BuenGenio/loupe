@@ -697,8 +697,17 @@ final class ImapTransport implements MailTransport {
 
   bool _metadataUsable(ImapConnection c) => c.supportsServerMetadata && !_metadataRefused;
 
+  /// Gmail has no METADATA, and a folder wouldn't do: every copy would stay
+  /// in All Mail (deleting from a label only removes the label).
+  static void _checkDocumentsSupported(ImapConnection c) {
+    if (c.has('X-GM-EXT-1')) {
+      throw const MailException(MailErrorKind.unsupported, 'Gmail can’t keep Loupe settings on the server.');
+    }
+  }
+
   @override
   Future<List<ServerDocument>> readDocuments(String name) => _run((c) async {
+    _checkDocumentsSupported(c);
     final docs = <ServerDocument>[];
     if (_metadataUsable(c)) {
       final value = await _getMetadata(c, ServerDocuments.metadataEntry(name));
@@ -715,6 +724,7 @@ final class ImapTransport implements MailTransport {
   @override
   Future<ServerStorage> writeDocument(String name, String content, {List<ServerDocument> replaces = const []}) =>
       _run((c) async {
+        _checkDocumentsSupported(c);
         final entry = ServerDocuments.metadataEntry(name);
         final folderCopies = [
           for (final d in replaces)

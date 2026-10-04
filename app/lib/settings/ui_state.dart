@@ -145,14 +145,16 @@ class SmartMailboxSyncVia extends Notifier<String?> {
 }
 
 /// The home account, which keeps the Smart Mailboxes that search every
-/// account: the one chosen under Sync via, else the first account. Null
-/// when syncing is off or there is no account.
+/// account: the one chosen under Sync via, else the first account (the
+/// first but Gmail, which can't keep them). Null when syncing is off or
+/// there is no account.
 final smartMailboxHomeProvider = Provider<String?>((ref) {
   final choice = ref.watch(smartMailboxSyncViaProvider);
   if (choice == SmartMailboxSyncVia.off) return null;
   final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];
   if (accounts.isEmpty) return null;
-  return accounts.any((a) => a.id == choice) ? choice : accounts.first.id;
+  if (accounts.any((a) => a.id == choice)) return choice;
+  return (accounts.where((a) => a.provider != ProviderKind.gmail).firstOrNull ?? accounts.first).id;
 });
 
 /// How the Smart Mailboxes stand with the servers.
@@ -163,6 +165,7 @@ final class SmartMailboxSyncStatus {
     this.running = false,
     this.synced = const {},
     this.failed = const {},
+    this.unsupported = const {},
     this.newerFormat = const {},
     this.lastRound,
   });
@@ -178,6 +181,9 @@ final class SmartMailboxSyncStatus {
   /// Accounts the last round couldn't reach, with the reason.
   final Map<String, String> failed;
 
+  /// Accounts whose server can't keep Smart Mailboxes (Gmail).
+  final Set<String> unsupported;
+
   /// Accounts whose Smart Mailboxes a newer Loupe wrote (left alone).
   final Set<String> newerFormat;
   final DateTime? lastRound;
@@ -187,6 +193,7 @@ final class SmartMailboxSyncStatus {
     running: running ?? this.running,
     synced: synced,
     failed: failed,
+    unsupported: unsupported,
     newerFormat: newerFormat,
     lastRound: lastRound,
   );
@@ -336,7 +343,14 @@ class SmartMailboxes extends Notifier<List<SmartMailbox>> {
             pending: meanwhile,
             running: _again,
             synced: report.synced,
-            failed: {for (final MapEntry(:key, :value) in report.failed.entries) key: value.message},
+            failed: {
+              for (final MapEntry(:key, :value) in report.failed.entries)
+                if (value.kind != MailErrorKind.unsupported) key: value.message,
+            },
+            unsupported: {
+              for (final MapEntry(:key, :value) in report.failed.entries)
+                if (value.kind == MailErrorKind.unsupported) key,
+            },
             newerFormat: report.newerFormat,
             lastRound: DateTime.now(),
           ),

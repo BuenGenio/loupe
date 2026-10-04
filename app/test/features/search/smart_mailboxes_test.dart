@@ -51,29 +51,36 @@ void main() {
   });
 
   test('first sync migrates the Smart Mailboxes saved before syncing existed', () async {
-    // Ids are creation times; one searches a folder of the work account.
+    // Ids are creation times; one searches a folder of the Fastmail account.
     final legacy = [
       {'id': 'lq3k2x1a9b', 'name': 'Invoices', 'query': 'subject:invoice', 'scope': null},
-      {'id': 'lq3m0c7f2d', 'name': 'Receipts', 'query': 'has:attachment', 'scope': _legacyScope('work', 'Receipts')},
+      {
+        'id': 'lq3m0c7f2d',
+        'name': 'Receipts',
+        'query': 'has:attachment',
+        'scope': _legacyScope('fastmail', 'Receipts'),
+      },
       {'id': 'lq3m0c7f2e', 'name': 'Flagged VIPs', 'query': 'is:vip', 'scope': 'v.flagged'},
     ];
     final c = await _container(demo, prefs: {SmartMailboxes.legacyKey: jsonEncode(legacy)});
     final boxes = c.read(smartMailboxesProvider);
     expect(boxes.map((b) => b.name), ['Invoices', 'Receipts', 'Flagged VIPs']);
-    expect(boxes[1].scope, _legacyScope('work', 'Receipts'));
-    expect(boxes[1].accountId, 'work');
+    expect(boxes[1].scope, _legacyScope('fastmail', 'Receipts'));
+    expect(boxes[1].accountId, 'fastmail');
     expect(boxes[2].scope, 'v.flagged');
 
     await c.read(smartMailboxesProvider.notifier).sync();
-    // Unified ones on the home account (the first), the folder search on its own.
-    expect(c.read(smartMailboxHomeProvider), 'personal');
-    expect(_names(_stored(demo.serverDocuments, 'personal')), ['Invoices', 'Flagged VIPs']);
-    final work = _stored(demo.serverDocuments, 'work')!;
-    expect(_names(work), ['Receipts']);
-    expect(work.entries.single.scope, {'mailbox': 'Receipts'});
-    expect(work.entries.single.modifiedAt.year, greaterThanOrEqualTo(2020));
+    // Unified ones on the home account (the first, Personal, is Gmail, so
+    // Work), the folder search on its own account.
+    expect(c.read(smartMailboxHomeProvider), 'work');
+    expect(_names(_stored(demo.serverDocuments, 'work')), ['Invoices', 'Flagged VIPs']);
+    final fastmail = _stored(demo.serverDocuments, 'fastmail')!;
+    expect(_names(fastmail), ['Receipts']);
+    expect(fastmail.entries.single.scope, {'mailbox': 'Receipts'});
+    expect(fastmail.entries.single.modifiedAt.year, greaterThanOrEqualTo(2020));
     final status = c.read(smartMailboxSyncStatusProvider);
-    expect(status.synced, {'personal': ServerStorage.metadata, 'work': ServerStorage.folder, 'fastmail': null});
+    expect(status.synced, {'work': ServerStorage.folder, 'fastmail': ServerStorage.metadata});
+    expect(status.unsupported, {'personal'});
     expect(status.pending, isFalse);
     // The new storage is written; the old key stays as it was.
     final prefs = c.read(sharedPreferencesProvider);
@@ -86,12 +93,12 @@ void main() {
     final notifier = c.read(smartMailboxesProvider.notifier);
     final mine = await notifier.add('Unread from Ana', 'from:ana is:unread');
     await notifier.sync();
-    expect(_names(_stored(demo.serverDocuments, 'personal')), ['Unread from Ana']);
+    expect(_names(_stored(demo.serverDocuments, 'work')), ['Unread from Ana']);
 
     // Another device renames ours and adds one.
-    final doc = _stored(demo.serverDocuments, 'personal')!;
+    final doc = _stored(demo.serverDocuments, 'work')!;
     final later = DateTime.now().toUtc().add(const Duration(minutes: 1));
-    demo.serverDocuments['personal']![_name] = SmartMailboxDocument(
+    demo.serverDocuments['work']![_name] = SmartMailboxDocument(
       entries: [
         doc.entries.single.copyWith(name: 'Ana', modifiedAt: later),
         SmartMailboxEntry(id: 'tablet1', name: 'From the tablet', query: 'is:flagged', modifiedAt: later),
@@ -104,7 +111,7 @@ void main() {
     await notifier.remove(mine.id);
     await notifier.sync();
     expect(c.read(smartMailboxesProvider).map((b) => b.name), ['From the tablet']);
-    expect(_names(_stored(demo.serverDocuments, 'personal')), ['${mine.id}†', 'From the tablet']);
+    expect(_names(_stored(demo.serverDocuments, 'work')), ['${mine.id}†', 'From the tablet']);
   });
 
   test('the folder fallback shows up as a hidden-ish folder of that account', () async {
@@ -138,7 +145,7 @@ void main() {
     await c.read(smartMailboxesProvider.notifier).add('Everything unread', 'is:unread');
     await c.read(smartMailboxesProvider.notifier).sync();
     expect(_names(_stored(demo.serverDocuments, 'fastmail')), ['Everything unread']);
-    expect(_stored(demo.serverDocuments, 'personal'), isNull);
+    expect(_stored(demo.serverDocuments, 'work'), isNull);
   });
 
   test('offline: changes wait on this device and go out once the server answers', () async {
@@ -162,6 +169,31 @@ void main() {
     expect(_names(_stored(fake.serverDocuments, 'acc')), ['Later']);
   });
 
+  test('Gmail can’t keep them: not the default home, and its own say so', () async {
+    const gmail = MailAccount(
+      id: 'gm',
+      email: 'me@gmail.com',
+      displayName: 'Gmail',
+      provider: ProviderKind.gmail,
+      authKind: AuthKind.oauth2,
+      incoming: ServerConfig(protocol: ServerProtocol.imap, host: 'imap.gmail.com', port: 993),
+    );
+    final fake = FakeMailRepository(accounts: [gmail, testAccount]);
+    final c = await _container(fake);
+    expect(c.read(smartMailboxHomeProvider), 'acc');
+
+    fake.serverDocumentsError = const MailException(MailErrorKind.unsupported, 'Gmail can’t keep Loupe settings');
+    final box = await c.read(smartMailboxesProvider.notifier).add('Everything', 'is:unread');
+    await c.read(smartMailboxesProvider.notifier).sync();
+    final status = c.read(smartMailboxSyncStatusProvider);
+    expect(status.unsupported, {'gm', 'acc'});
+    expect(status.failed, isEmpty);
+    expect(
+      smartMailboxSyncLabel(box, home: 'acc', accounts: [gmail, testAccount], status: status).$2,
+      'On this device only: Work can’t keep it',
+    );
+  });
+
   test('a rename keeps the entry and wins over the copy it replaces', () async {
     final c = await _container(demo);
     final notifier = c.read(smartMailboxesProvider.notifier);
@@ -170,6 +202,6 @@ void main() {
     await notifier.rename(box.id, 'New');
     await notifier.sync();
     expect(c.read(smartMailboxesProvider).single.name, 'New');
-    expect(_names(_stored(demo.serverDocuments, 'personal')), ['New']);
+    expect(_names(_stored(demo.serverDocuments, 'work')), ['New']);
   });
 }

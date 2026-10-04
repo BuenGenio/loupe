@@ -283,6 +283,14 @@ void main() {
       expect(server.commands.last, startsWith(r'APPEND "INBOX.Loupe Settings" (\Seen) {'));
     });
 
+    test('Gmail: not supported (no METADATA, and copies would pile up in All Mail)', () async {
+      await connect('X-GM-EXT-1');
+      final unsupported = throwsA(isA<MailException>().having((e) => e.kind, 'kind', MailErrorKind.unsupported));
+      await expectLater(transport.readDocuments(_name), unsupported);
+      await expectLater(transport.writeDocument(_name, _json), unsupported);
+      expect(server.commands, isEmpty);
+    });
+
     test('a value over MAXSIZE goes to the folder and clears the METADATA copy', () async {
       await connect(
         'METADATA',

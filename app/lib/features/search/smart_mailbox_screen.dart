@@ -28,6 +28,7 @@ import '../../theme/loupe_icons.dart';
   final owner = accounts.where((a) => a.id == ownerId).firstOrNull;
   if (home == null || owner == null) return (LoupeIcons.thisDevice, 'On this device only');
   final name = owner.displayName;
+  if (status.unsupported.contains(owner.id)) return (LoupeIcons.thisDevice, 'On this device only: $name can’t keep it');
   if (status.newerFormat.contains(owner.id)) return (LoupeIcons.warning, 'Not synced: $name has a newer format');
   if (status.pending || status.failed.containsKey(owner.id) || !status.synced.containsKey(owner.id)) {
     return (LoupeIcons.syncPending, 'Waiting to sync to $name');

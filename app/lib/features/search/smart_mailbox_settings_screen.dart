@@ -21,6 +21,7 @@ class SmartMailboxSettingsScreen extends ConsumerWidget {
       accounts.where((a) => a.id == home).firstOrNull?.displayName ?? 'Off';
 
   static String _accountState(String accountId, SmartMailboxSyncStatus status) {
+    if (status.unsupported.contains(accountId)) return 'Not supported';
     if (status.newerFormat.contains(accountId)) return 'Newer format';
     if (status.failed.containsKey(accountId)) return 'Couldn’t sync';
     if (!status.synced.containsKey(accountId)) return status.running ? 'Syncing…' : 'Waiting';
