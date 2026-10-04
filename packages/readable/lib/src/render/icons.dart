@@ -12,4 +12,6 @@ abstract final class ReadableIcons {
   static const IconData warning = FluentIcons.warning_24_regular;
   static const IconData copy = FluentIcons.copy_24_regular;
   static const IconData open = FluentIcons.open_24_regular;
+  static const IconData redirect = FluentIcons.arrow_routing_24_regular;
+  static const IconData linkOff = FluentIcons.link_dismiss_24_regular;
 }

@@ -48,7 +48,7 @@ void main() {
   testWidgets('account detail edits the name and the colour', (tester) async {
     final repo = await pumpLoupe(tester);
     await goTo(tester, Routes.accountSettings('work'));
-    expect(find.text('Identities'.toUpperCase()), findsOneWidget);
+    expect(find.text('Identities'), findsOneWidget);
     await tester.enterText(find.widgetWithText(Row, 'Description').last, 'Northwind');
     await tester.testTextInput.receiveAction(TextInputAction.done);
     await tester.tap(find.bySemanticsLabel('Colour 4'));

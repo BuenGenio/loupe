@@ -2,6 +2,7 @@
 // to unstyled paragraphs, with links as numbered footnotes.
 
 import '../model/document.dart';
+import 'redirects.dart';
 
 /// Converts [doc] to a plain document. Quotes stay quotes (bars); lists get
 /// text markers; tables become `a | b | c` lines; each distinct link URL gets
@@ -31,7 +32,8 @@ final class _Plainer {
   final _linkIndex = <String, int>{};
 
   int linkFor(String url) => _linkIndex.putIfAbsent(url, () {
-    links.add(LinkRef(url, text: url));
+    // The footnote shows the URL itself, so there's no text to mismatch.
+    links.add(LinkRef(url, text: url, redirect: unwrapRedirect(url)));
     return links.length - 1;
   });
 

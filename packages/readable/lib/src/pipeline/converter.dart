@@ -19,9 +19,16 @@ import 'sanitizer.dart' show flatText, imageDimension, visibleTextLength;
 /// null if no part has it.
 typedef CidResolver = String? Function(String contentId);
 
-/// Converts a sanitised `<body>` into a [ReaderDocument].
-ReaderDocument convertBody(Element body, {required Budget budget, CidResolver? resolveCid}) {
-  final c = _Converter(budget, resolveCid);
+/// Converts a sanitised `<body>` into a [ReaderDocument]. The schemes of
+/// links that can't open (`javascript:`, `data:`…) are added to
+/// [removedLinks].
+ReaderDocument convertBody(
+  Element body, {
+  required Budget budget,
+  CidResolver? resolveCid,
+  List<String>? removedLinks,
+}) {
+  final c = _Converter(budget, resolveCid)..removedLinks = removedLinks;
   final root = _Sink(c);
   final ctx = c.derive(body, const _Ctx(), 'body');
   root.visitChildren(body, ctx);
@@ -165,6 +172,9 @@ final class _Converter {
 
   /// Background colour of links that render as buttons.
   final buttonBackgrounds = <int, int>{};
+
+  /// Collects the schemes of unsafe links that were made plain text.
+  List<String>? removedLinks;
   int blockCount = 0;
   int dataImageBytes = 0;
 
@@ -327,7 +337,7 @@ final class _Converter {
 
   int addLink(String url, String text) {
     final clean = text.replaceAll(RegExp(r'\s+'), ' ').trim();
-    links.add(LinkRef(url, text: clean, namedDomain: linkMismatch(clean, url)));
+    links.add(makeLink(url, clean));
     return links.length - 1;
   }
 
@@ -602,6 +612,7 @@ final class _Sink {
   void _anchor(Element a, Map<String, String> style, _Ctx parent, _Ctx ctx, bool displayBlock) {
     final url = safeHref(a.attributes['href']);
     if (url == null) {
+      if (unsafeScheme(a.attributes['href']) case final scheme?) c.removedLinks?.add(scheme);
       // Not openable (javascript:, relative, a bare name): plain text.
       visitChildren(a, c.derive(a, parent, 'span', style));
       return;

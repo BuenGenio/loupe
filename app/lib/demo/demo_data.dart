@@ -6,6 +6,7 @@ import 'package:mail_model/mail_model.dart';
 import 'demo_attachments.dart';
 import 'demo_bodies.dart';
 import 'demo_mime.dart';
+import 'demo_security.dart';
 
 /// An attachment of a demo message and where its bytes come from.
 final class DemoAttachment {
@@ -141,6 +142,7 @@ final class DemoSeed {
     _filler();
     _olderMail();
     _serverMail();
+    securityCases();
   }
 
   void _accounts() {
@@ -190,9 +192,22 @@ final class DemoSeed {
         authKind: AuthKind.password,
         incoming: const ServerConfig(protocol: ServerProtocol.imap, host: 'imap.fastmail.com', port: 993),
         outgoing: const ServerConfig(protocol: ServerProtocol.smtp, host: 'smtp.fastmail.com', port: 465),
+        // A custom domain with a catch-all: replies to bookclub@ offer to go out from it.
         identities: const [
           Identity(id: 'fastmail/default', email: 'sam@rivera.example', name: 'Sam Rivera', signature: '— Sam'),
-          Identity(id: 'fastmail/lists', email: 'lists@rivera.example', name: 'Sam Rivera'),
+          Identity(
+            id: 'fastmail/shop',
+            email: 'sam+shop@rivera.example',
+            name: 'Sam Rivera',
+            signature: '— Sam',
+            replyTo: 'sam@rivera.example',
+          ),
+          Identity(
+            id: 'fastmail/lists',
+            email: 'lists@rivera.example',
+            name: 'Sam Rivera',
+            replyPatterns: ['*@lists.opengarden.example'],
+          ),
         ],
         colorIndex: 4,
       ),
@@ -294,6 +309,7 @@ final class DemoSeed {
     required String subject,
     List<EmailAddress>? to,
     List<EmailAddress> cc = const [],
+    List<EmailAddress> replyTo = const [],
     String? text,
     String? html,
     bool isFlowed = false,
@@ -338,6 +354,7 @@ final class DemoSeed {
       from: [from],
       to: to ?? [_me(account)],
       cc: cc,
+      replyTo: replyTo,
       subject: subject,
       preview: makePreview(body),
       size: (html?.length ?? 0) + (text?.length ?? 0) + 1800 + attachments.fold(0, (s, a) => s + a.attachment.size),
@@ -965,6 +982,7 @@ final class DemoSeed {
       box: inbox,
       at: at(1, 18, 30),
       from: DemoPeople.bookshop,
+      to: [const EmailAddress('sam+shop@rivera.example', 'Sam Rivera')],
       subject: 'Order #10482 confirmed — ready for pickup Thursday',
       html: bookshopReceiptHtml,
       attachments: [
@@ -977,9 +995,11 @@ final class DemoSeed {
       box: inbox,
       at: at(2, 7, 0),
       from: DemoPeople.bookClub,
+      to: [const EmailAddress('bookclub@rivera.example')],
       subject: 'November pick: The Lantern Keepers',
       html: bookClubHtml,
       unread: true,
+      headers: const [('Delivered-To', 'sam+catchall@rivera.example'), ('X-Original-To', 'bookclub@rivera.example')],
     );
 
     const manifest = 'manifest';

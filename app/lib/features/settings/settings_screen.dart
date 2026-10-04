@@ -11,6 +11,7 @@ import '../../settings/app_settings.dart';
 import '../../settings/ui_state.dart';
 import '../../shared/grouped_list.dart';
 import '../../theme/theme.dart';
+import '../conversation/security/security_provider.dart';
 import '../search/smart_mailbox_settings_screen.dart';
 import 'settings_widgets.dart';
 import '../../theme/loupe_icons.dart';
@@ -184,6 +185,19 @@ class SettingsScreen extends ConsumerWidget {
                 value: settings.loadRemoteImages,
                 activeTrackColor: colors.success,
                 onChanged: (v) => controller.update((s) => s.copyWith(loadRemoteImages: v)),
+              ),
+            ),
+            GroupedRow(
+              key: const Key('open-links-directly'),
+              leading: SettingsIcon(LoupeIcons.openDirectly, colors.swipeArchive),
+              title: 'Open Links Directly',
+              subtitle: 'Skip click trackers when the destination is known',
+              chevron: false,
+              onTap: () => ref.read(openLinksDirectlyProvider.notifier).set(!ref.read(openLinksDirectlyProvider)),
+              trailing: CupertinoSwitch(
+                value: ref.watch(openLinksDirectlyProvider),
+                activeTrackColor: colors.success,
+                onChanged: (v) => ref.read(openLinksDirectlyProvider.notifier).set(v),
               ),
             ),
           ],
