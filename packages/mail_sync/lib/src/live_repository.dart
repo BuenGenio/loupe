@@ -673,14 +673,30 @@ final class LiveMailRepository implements MailRepository {
   /// sync, so the Snoozed folder is up to date and a time another device
   /// changed counts.
   Future<void> _wakeDue(AccountSyncer syncer) async {
-    final folder = await _snoozeFolder(syncer.account.id);
+    final accountId = syncer.account.id;
+    final folder = await _snoozeFolder(accountId);
     if (folder == null) return;
+    final waiting = await store.emailIdsIn(folder.id);
+    await _pruneLocalSnoozes(accountId, waiting.toSet());
     final now = _now();
     final due = [
-      for (final e in await store.getEmails(await store.emailIdsIn(folder.id)))
+      for (final e in await store.getEmails(waiting))
         if (e.snoozedUntil case final t? when !t.isAfter(now)) e,
     ];
     if (due.isNotEmpty) await _wake(syncer, due);
+  }
+
+  /// Drops device-only snoozes of messages that left the Snoozed folder
+  /// (moved or deleted by hand, or woken by another device).
+  Future<void> _pruneLocalSnoozes(String accountId, Set<String> waiting) async {
+    final gone = <String>[];
+    for (final op in await store.pendingOps(accountId: accountId)) {
+      if (op.type != OpType.localSnooze) continue;
+      for (final id in (op.payload['ids'] as List<Object?>? ?? const []).cast<String>()) {
+        if (!waiting.contains(await store.resolveId(id))) gone.add(id);
+      }
+    }
+    if (gone.isNotEmpty) await _forgetLocalSnoozes(accountId, gone);
   }
 
   @override

@@ -263,6 +263,25 @@ void main() {
     }, limit: _hours12);
   });
 
+  test('a device-only snooze is forgotten when the message leaves Snoozed', () {
+    fakeTime((async) async {
+      final h = Harness(config: _quietConfig);
+      final server = FakeServer()
+        ..storesKeywords = false
+        ..deliver('INBOX', subject: 'Outlook');
+      final a = await h.add(server);
+      await h.repo.snooze([(await h.email(a, 'INBOX', 'Outlook')).id], evening);
+      await settle();
+      expect((await h.store.pendingOps()).map((o) => o.type), ['localSnooze']);
+      await h.repo.move([(await h.email(a, 'Snoozed', 'Outlook')).id], h.mailbox(a, 'Work'));
+      await settle();
+      await h.repo.refresh();
+      expect(await h.store.pendingOps(), isEmpty);
+      expect((await h.email(a, 'Work', 'Outlook')).snoozedUntil, isNull);
+      await h.dispose();
+    });
+  });
+
   test('a background sync wakes due messages and reaches the server', () {
     fakeTime((async) async {
       final h = Harness(config: _quietConfig);
