@@ -32,6 +32,10 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> with SingleTicker
   /// once the first account is added, so backing out returns here.
   void _addAccount() => context.push(Routes.addAccount);
 
+  /// Thunderbird desktop's "Export for Mobile" codes; like setup, live mode
+  /// switches on once an account is added.
+  void _importAccounts() => context.push(Routes.importAccounts);
+
   Widget _stagger(double start, Widget child) {
     final animation = CurvedAnimation(
       parent: _intro,
@@ -138,6 +142,18 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> with SingleTicker
                               child: const Text('Add Account'),
                             ),
                             const SizedBox(height: 6),
+                            CupertinoButton(
+                              key: const Key('welcome-import'),
+                              onPressed: _importAccounts,
+                              child: const Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(LoupeIcons.qrCode, size: 20),
+                                  SizedBox(width: 8),
+                                  Flexible(child: Text('Import from Thunderbird', overflow: TextOverflow.ellipsis)),
+                                ],
+                              ),
+                            ),
                             CupertinoButton(onPressed: _tryDemo, child: const Text('Try with demo mail')),
                           ],
                         ),

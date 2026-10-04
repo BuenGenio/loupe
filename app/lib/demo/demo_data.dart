@@ -3,8 +3,10 @@ import 'dart:typed_data';
 
 import 'package:mail_model/mail_model.dart';
 
+import 'demo_attachments.dart';
 import 'demo_bodies.dart';
 import 'demo_mime.dart';
+import 'demo_security.dart';
 
 /// An attachment of a demo message and where its bytes come from.
 final class DemoAttachment {
@@ -140,6 +142,7 @@ final class DemoSeed {
     _filler();
     _olderMail();
     _serverMail();
+    securityCases();
   }
 
   void _accounts() {
@@ -293,6 +296,7 @@ final class DemoSeed {
     required String subject,
     List<EmailAddress>? to,
     List<EmailAddress> cc = const [],
+    List<EmailAddress> replyTo = const [],
     String? text,
     String? html,
     bool isFlowed = false,
@@ -337,6 +341,7 @@ final class DemoSeed {
       from: [from],
       to: to ?? [_me(account)],
       cc: cc,
+      replyTo: replyTo,
       subject: subject,
       preview: makePreview(body),
       size: (html?.length ?? 0) + (text?.length ?? 0) + 1800 + attachments.fold(0, (s, a) => s + a.attachment.size),
@@ -922,6 +927,21 @@ final class DemoSeed {
       subject: 'You have been selected!!!',
       text: 'Congratulations, you have been selected for an exclusive offer. Click now.',
       tags: {Keywords.junk},
+    );
+
+    // One of every attachment type the viewer handles.
+    add(
+      account: a,
+      box: inbox,
+      at: at(1, 11, 5),
+      from: DemoPeople.hana,
+      to: [me, DemoPeople.ben, DemoPeople.leo, DemoPeople.aisha],
+      subject: 'Offsite pack: plan, budget, invite and photos',
+      text:
+          'Hi all,\n\nEverything for the offsite in one place: the plan, the budget, my notes, the calendar '
+          'invite, a photo of the Old Mill, the venue photos, the venue’s confirmation and the check-in log from '
+          'the booking system.\n\nHana',
+      attachments: DemoAttachments.offsitePack(DateTime(now.year, now.month, now.day + 6, 9, 30)),
     );
   }
 

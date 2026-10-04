@@ -6,8 +6,15 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:mail_model/mail_model.dart';
 
+import 'model/analysis.dart';
 import 'render/gallery.dart';
 import 'render/reader_view.dart';
+
+export 'model/analysis.dart';
+export 'pipeline/analysis.dart' show isUrlShortener;
+export 'pipeline/hosts.dart' show HostInfo, inspectHost, isIpLiteral, decodePunycode, latinSkeleton;
+export 'pipeline/links.dart' show registrableDomain;
+export 'pipeline/redirects.dart' show Redirect, unwrapRedirect, stripTrackingParameters;
 
 enum ReaderMode { readable, original, plain }
 
@@ -74,6 +81,8 @@ class ReadableMessageView extends StatelessWidget {
     this.onSuggestOriginal,
     this.senderDomain,
     this.backgroundColor,
+    this.openLinksDirectly = false,
+    this.inert = false,
   });
 
   final EmailContent content;
@@ -101,6 +110,16 @@ class ReadableMessageView extends StatelessWidget {
   /// theme's surface colour.
   final Color? backgroundColor;
 
+  /// A tapped link that goes through a known click tracker (and not through
+  /// the recipient's link protection) opens its destination directly,
+  /// without tracking parameters. The long-press sheet always offers both.
+  final bool openLinksDirectly;
+
+  /// Suspected phishing: links don't open (tapping one shows where it
+  /// leads), remote content stays blocked and the "Load images" banner is
+  /// hidden.
+  final bool inert;
+
   /// Widget tests: process every message synchronously. Messages over ~24 KB
   /// normally go to a background isolate, whose result a fake-async test
   /// never sees.
@@ -119,8 +138,16 @@ class ReadableMessageView extends StatelessWidget {
     onSuggestOriginal: onSuggestOriginal,
     senderDomain: senderDomain,
     backgroundColor: backgroundColor,
+    openLinksDirectly: openLinksDirectly,
+    inert: inert,
   );
 }
+
+/// Link and privacy findings for [content] (Readable mode's pipeline run,
+/// in a background isolate for big messages). The result is cached and
+/// shared with [ReadableMessageView], so analysing a message before showing
+/// it costs nothing extra. Never throws: on failure the analysis is empty.
+Future<ReadableAnalysis> analyzeContent(EmailContent content) => ReaderView.analyze(content);
 
 /// One image of the full-screen gallery.
 final class GalleryImage {

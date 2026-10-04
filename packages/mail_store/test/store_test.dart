@@ -247,6 +247,21 @@ void main() {
       expect(await store.suggestAddresses('spam'), isEmpty);
       expect(await store.suggestAddresses('%'), isEmpty);
     });
+
+    test('knows how often an address wrote and was written to', () async {
+      final store = await seededStore();
+      await addMails(store, [
+        mail(1, from: 'alice@example.com'),
+        mail(2, from: 'Alice@Example.com'),
+        mail(3, path: 'Sent', from: 'me@example.com', to: ['alice@example.com', 'bob@example.org']),
+        mail(4, path: 'Junk', from: 'spam@spam.test'),
+      ]);
+      expect(await store.senderHistory('ALICE@example.com'), const SenderHistory(received: 2, sent: 1));
+      expect(await store.senderHistory('bob@example.org'), const SenderHistory(sent: 1));
+      expect(await store.senderHistory('spam@spam.test'), SenderHistory.none);
+      expect(await store.senderHistory('nobody@example.net'), SenderHistory.none);
+      expect((await store.senderHistory('alice@example.com')).isKnown, isTrue);
+    });
   });
 
   group('threading', () {
@@ -554,6 +569,39 @@ void main() {
       expect((await store.outboxEntries()).single.lastError, 'boom');
       expect((await store.takeOutbox('o1'))!.id, 'o1');
       expect(await store.outboxEntries(), isEmpty);
+    });
+
+    test('scheduled entries keep their status and can be rescheduled unless being sent', () async {
+      final store = await seededStore();
+      final msg = OutgoingMessage(accountId: accountId, identityId: 'acc1/default', subject: 'Later');
+      final later = base.add(const Duration(days: 1));
+      await store.putOutbox(
+        OutboxEntry(
+          id: 'o2',
+          accountId: accountId,
+          message: msg,
+          sendAfter: later,
+          createdAt: base,
+          status: OutboxStatus.scheduled,
+        ),
+      );
+      final updates = <List<OutboxStatus>>[];
+      final sub = store.watchOutbox().listen((e) => updates.add([for (final x in e) x.status]));
+      expect((await store.getOutbox('o2'))!.status, OutboxStatus.scheduled);
+      await store.updateOutbox('o2', status: OutboxStatus.failed, attempts: 1, lastError: 'boom');
+      final evening = base.add(const Duration(hours: 6));
+      expect(await store.rescheduleOutbox('o2', sendAfter: evening, status: OutboxStatus.scheduled), isTrue);
+      final moved = (await store.getOutbox('o2'))!;
+      expect(moved.sendAfter, evening);
+      expect(moved.status, OutboxStatus.scheduled);
+      expect(moved.lastError, isNull);
+      expect(moved.attempts, 1);
+      await store.claimOutbox('o2');
+      expect(await store.rescheduleOutbox('o2', sendAfter: base, status: OutboxStatus.queued), isFalse);
+      expect(await store.rescheduleOutbox('nope', sendAfter: base, status: OutboxStatus.queued), isFalse);
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      expect(updates.last, [OutboxStatus.sending]);
+      await sub.cancel();
     });
 
     test('pending ops keep order and update', () async {

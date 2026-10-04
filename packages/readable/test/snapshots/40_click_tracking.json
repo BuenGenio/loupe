@@ -1,0 +1,386 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 290,
+      "keptText": 256,
+      "hiddenText": 34,
+      "hiddenElements": 1,
+      "trackers": 2,
+      "contentImages": 1,
+      "remoteImages": 1,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://shop.us5.list-manage.com/track/click?u=1a2b3c4d5e&id=4d5e6f7a8b&e=7a8b9c0d1e",
+        "via": "Mailchimp"
+      },
+      {
+        "url": "https://x1y2z3a4.r.us-east-1.awstrack.me/L0/https:%2F%2Fshop.example%2Fsale%3Futm_source=newsletter%26utm_medium=email%26id=12/1/0100018f2b3c4d5e-6f7a8b9c-1d2e-4f5a-8b9c-0d1e2f3a4b5c-000000/Xy4Z=383",
+        "via": "Amazon SES",
+        "opens": "https://shop.example/sale?utm_source=newsletter&utm_medium=email&id=12"
+      },
+      {
+        "url": "https://shop.us5.list-manage.com/track/click?u=1a2b3c4d5e&id=9f8e7d6c5b&e=7a8b9c0d1e",
+        "mismatch": "www.shop.example",
+        "via": "Mailchimp"
+      },
+      {
+        "url": "https://www.google.com/url?q=https://docs.example.com/d/lookbook&sa=D&source=editors&usg=AOvVaw0",
+        "via": "Google",
+        "opens": "https://docs.example.com/d/lookbook"
+      },
+      {
+        "url": "https://nam12.safelinks.protection.outlook.com/?url=https%3A%2F%2Fshop.example%2Ffaq&data=05%7C02%7Creader%40example.com%7C0&sdata=abc%3D&reserved=0",
+        "via": "Outlook Safe Links",
+        "opens": "https://shop.example/faq"
+      },
+      {
+        "url": "https://shop.us5.list-manage.com/unsubscribe?u=1a2b3c4d5e&id=4d5e6f7a8b"
+      }
+    ],
+    "images": [
+      {
+        "src": "https://cdn.shop.example/hero.jpg",
+        "width": 552.0,
+        "height": 300.0,
+        "alt": "Autumn collection"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "h1",
+        "inlines": [
+          {
+            "text": "The Weekly Picks",
+            "color": "#222222"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Hello reader, here are this week's finds from the shop.",
+            "color": "#222222"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Read the full story",
+            "u": true,
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Shop the sale",
+            "u": true,
+            "link": 1
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Visit us at ",
+            "color": "#222222"
+          },
+          {
+            "text": "www.shop.example",
+            "u": true,
+            "link": 2
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The lookbook is in our shared folder: ",
+            "color": "#222222"
+          },
+          {
+            "text": "docs.example.com/d/lookbook",
+            "u": true,
+            "link": 3
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Questions? Read the ",
+            "color": "#222222"
+          },
+          {
+            "text": "FAQ",
+            "u": true,
+            "link": 4
+          },
+          {
+            "text": ".",
+            "color": "#222222"
+          }
+        ]
+      },
+      {
+        "type": "img",
+        "image": 0
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "You are receiving this because you subscribed at shop.example. ",
+            "scale": 0.8
+          },
+          {
+            "text": "Unsubscribe",
+            "u": true,
+            "scale": 0.8,
+            "link": 5
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 290,
+      "keptText": 256,
+      "hiddenText": 34,
+      "hiddenElements": 1,
+      "trackers": 2,
+      "contentImages": 1,
+      "remoteImages": 1,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://shop.us5.list-manage.com/track/click?u=1a2b3c4d5e&id=4d5e6f7a8b&e=7a8b9c0d1e",
+        "via": "Mailchimp"
+      },
+      {
+        "url": "https://x1y2z3a4.r.us-east-1.awstrack.me/L0/https:%2F%2Fshop.example%2Fsale%3Futm_source=newsletter%26utm_medium=email%26id=12/1/0100018f2b3c4d5e-6f7a8b9c-1d2e-4f5a-8b9c-0d1e2f3a4b5c-000000/Xy4Z=383",
+        "via": "Amazon SES",
+        "opens": "https://shop.example/sale?utm_source=newsletter&utm_medium=email&id=12"
+      },
+      {
+        "url": "https://shop.us5.list-manage.com/track/click?u=1a2b3c4d5e&id=9f8e7d6c5b&e=7a8b9c0d1e",
+        "via": "Mailchimp"
+      },
+      {
+        "url": "https://www.google.com/url?q=https://docs.example.com/d/lookbook&sa=D&source=editors&usg=AOvVaw0",
+        "via": "Google",
+        "opens": "https://docs.example.com/d/lookbook"
+      },
+      {
+        "url": "https://nam12.safelinks.protection.outlook.com/?url=https%3A%2F%2Fshop.example%2Ffaq&data=05%7C02%7Creader%40example.com%7C0&sdata=abc%3D&reserved=0",
+        "via": "Outlook Safe Links",
+        "opens": "https://shop.example/faq"
+      },
+      {
+        "url": "https://shop.us5.list-manage.com/unsubscribe?u=1a2b3c4d5e&id=4d5e6f7a8b"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The Weekly Picks"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Hello reader, here are this week's finds from the shop."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Read the full story"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Shop the sale"
+          },
+          {
+            "text": " [2]",
+            "link": 1
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Visit us at "
+          },
+          {
+            "text": "www.shop.example"
+          },
+          {
+            "text": " [3]",
+            "link": 2
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The lookbook is in our shared folder: "
+          },
+          {
+            "text": "docs.example.com/d/lookbook"
+          },
+          {
+            "text": " [4]",
+            "link": 3
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Questions? Read the "
+          },
+          {
+            "text": "FAQ"
+          },
+          {
+            "text": " [5]",
+            "link": 4
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[Autumn collection]"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "You are receiving this because you subscribed at shop.example. "
+          },
+          {
+            "text": "Unsubscribe"
+          },
+          {
+            "text": " [6]",
+            "link": 5
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://shop.us5.list-manage.com/track/click?u=1a2b3c4d5e&id=4d5e6f7a8b&e=7a8b9c0d1e",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[2] "
+          },
+          {
+            "text": "https://x1y2z3a4.r.us-east-1.awstrack.me/L0/https:%2F%2Fshop.example%2Fsale%3Futm_source=newsletter%26utm_medium=email%26id=12/1/0100018f2b3c4d5e-6f7a8b9c-1d2e-4f5a-8b9c-0d1e2f3a4b5c-000000/Xy4Z=383",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[3] "
+          },
+          {
+            "text": "https://shop.us5.list-manage.com/track/click?u=1a2b3c4d5e&id=9f8e7d6c5b&e=7a8b9c0d1e",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[4] "
+          },
+          {
+            "text": "https://www.google.com/url?q=https://docs.example.com/d/lookbook&sa=D&source=editors&usg=AOvVaw0",
+            "u": true,
+            "link": 3
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[5] "
+          },
+          {
+            "text": "https://nam12.safelinks.protection.outlook.com/?url=https%3A%2F%2Fshop.example%2Ffaq&data=05%7C02%7Creader%40example.com%7C0&sdata=abc%3D&reserved=0",
+            "u": true,
+            "link": 4
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[6] "
+          },
+          {
+            "text": "https://shop.us5.list-manage.com/unsubscribe?u=1a2b3c4d5e&id=4d5e6f7a8b",
+            "u": true,
+            "link": 5
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 3,
+    "contentIds": []
+  }
+}

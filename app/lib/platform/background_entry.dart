@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mail_model/mail_model.dart';
 import 'package:mail_store/mail_store.dart';
 import 'package:mail_sync/mail_sync.dart';
 import 'package:path_provider/path_provider.dart';
@@ -157,9 +158,9 @@ final class LiveBackgroundMail implements BackgroundMail {
 /// asks for a wake-up then, in case it isn't running.
 Future<DateTime?> nextOutboxDue(LiveMailRepository repository) async {
   DateTime? next;
-  for (final e in await repository.watchOutbox().first) {
-    if (e.status == OutboxStatus.sending) continue;
-    if (next == null || e.sendAfter.isBefore(next)) next = e.sendAfter;
+  for (final item in await repository.watchOutbox().first) {
+    if (item.status == OutboxStatus.sending) continue;
+    if (next == null || item.sendAt.isBefore(next)) next = item.sendAt;
   }
   return next;
 }

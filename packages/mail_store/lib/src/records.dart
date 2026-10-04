@@ -10,9 +10,8 @@ final class MailStoreException implements Exception {
   String toString() => 'MailStoreException: $message';
 }
 
-enum OutboxStatus { queued, sending, failed }
-
-/// A message waiting in the outbox.
+/// A message waiting in the outbox. Its status is mail_model's
+/// [OutboxStatus], stored by name.
 final class OutboxEntry {
   const OutboxEntry({
     required this.id,
@@ -29,7 +28,7 @@ final class OutboxEntry {
   final String accountId;
   final OutgoingMessage message;
 
-  /// Not sent before this time (undo window, retry backoff).
+  /// Not sent before this time (undo window, scheduled time, retry backoff).
   final DateTime sendAfter;
   final DateTime createdAt;
   final OutboxStatus status;

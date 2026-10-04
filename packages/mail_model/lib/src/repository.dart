@@ -4,6 +4,7 @@ import 'account.dart';
 import 'address.dart';
 import 'email.dart';
 import 'mailbox.dart';
+import 'outbox.dart';
 import 'outgoing.dart';
 import 'search.dart';
 
@@ -17,6 +18,36 @@ final class AccountSyncStatus {
 
   /// Human-readable error for the status line, e.g. "Password rejected".
   final String? error;
+}
+
+/// What the local address book knows about one address: how often it wrote
+/// to the user and the user to it. Feeds the phishing check ("first message
+/// from this sender", look-alikes of known contacts).
+final class SenderHistory {
+  const SenderHistory({this.received = 0, this.sent = 0});
+
+  /// Nothing known about the address.
+  static const none = SenderHistory();
+
+  /// Messages received from the address outside Junk and Trash, including
+  /// the one being read once it is synced.
+  final int received;
+
+  /// Messages the user sent to the address.
+  final int sent;
+
+  /// The user wrote to the address, or has had mail from it before the
+  /// message being read.
+  bool get isKnown => sent > 0 || received > 1;
+
+  @override
+  bool operator ==(Object other) => other is SenderHistory && other.received == received && other.sent == sent;
+
+  @override
+  int get hashCode => Object.hash(received, sent);
+
+  @override
+  String toString() => 'SenderHistory(received: $received, sent: $sent)';
 }
 
 /// The app-facing API. The UI depends only on this.
@@ -104,11 +135,29 @@ abstract interface class MailRepository {
   // Compose ------------------------------------------------------------------
 
   /// Queues [message] for sending after [undoDelay]. Returns an outbox id.
-  Future<String> send(OutgoingMessage message, {Duration undoDelay = const Duration(seconds: 10)});
+  ///
+  /// With [sendAt] ("Send Later"), it waits in the outbox until then instead
+  /// ([OutboxStatus.scheduled]; [undoDelay] doesn't apply), surviving
+  /// restarts, and its draft ([OutgoingMessage.draftId]) is deleted at once:
+  /// the outbox holds the message now.
+  Future<String> send(OutgoingMessage message, {Duration undoDelay = const Duration(seconds: 10), DateTime? sendAt});
 
-  /// Cancels a queued message if it hasn't been sent yet. Returns the message
-  /// so compose can reopen it, or null if it was already sent.
+  /// Messages waiting to be sent (queued, scheduled, being sent or failed),
+  /// soonest first.
+  Stream<List<OutboxItem>> watchOutbox();
+
+  /// Cancels a queued, scheduled or failed message if it isn't being sent.
+  /// Returns the message so compose can reopen it, or null if it was already
+  /// sent (or is being sent).
   Future<OutgoingMessage?> cancelSend(String outboxId);
+
+  /// Sends a waiting message now (also "Retry" of a failed one). Does nothing
+  /// if it is being sent; throws [MailException] (notFound) if it is gone.
+  Future<void> sendNow(String outboxId);
+
+  /// Moves a waiting message to [sendAt] (status scheduled, error cleared).
+  /// Throws [MailException] if it is gone or being sent.
+  Future<void> rescheduleSend(String outboxId, DateTime sendAt);
 
   /// Saves (or replaces) a draft on the server. Returns the draft's email id.
   Future<String> saveDraft(OutgoingMessage message);
@@ -121,6 +170,11 @@ abstract interface class MailRepository {
 
   Stream<Set<String>> watchVipAddresses();
   Future<void> setVip(String email, {required bool vip});
+
+  /// How often [email] wrote to the user and the user to it, from the local
+  /// address book (case-insensitive). Unknown addresses give
+  /// [SenderHistory.none].
+  Future<SenderHistory> senderHistory(String email);
 }
 
 /// Errors surfaced to the UI. [message] is shown as is.
