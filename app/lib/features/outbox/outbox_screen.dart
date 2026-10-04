@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -103,7 +104,7 @@ class OutboxActions {
     final scheduled = item.status == OutboxStatus.scheduled;
     final choice = await showSendLaterSheet(
       context,
-      now: DateTime.now(),
+      now: clock.now(),
       current: scheduled ? item.sendAt : null,
       title: 'Reschedule',
     );

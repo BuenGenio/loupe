@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -161,7 +162,7 @@ class MailActions {
   /// The Snooze sheet; [current] is the time of a snoozed message.
   Future<DateTime?> askSnoozeTime({DateTime? current}) => showSnoozeSheet(
     context,
-    now: DateTime.now(),
+    now: clock.now(),
     current: current,
     title: current == null ? 'Snooze' : 'Change Snooze Time',
   );

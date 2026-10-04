@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
@@ -79,4 +81,14 @@ Finder textContaining(String text) => find.textContaining(text, findRichText: tr
 
 extension ScrollUntil on WidgetTester {
   Future<void> scrollTo(Finder finder) => scrollUntilVisible(finder, 200, scrollable: find.byType(Scrollable).first);
+}
+
+/// Runs [body] with `clock.now()` at [testNow] (advancing with the test's
+/// fake time), the time the demo repository lives in: logic that reads the
+/// clock (relative dates, previews of the last days) then agrees with the
+/// demo mail whatever the real date is.
+Future<T> atTestNow<T>(Future<T> Function() body) {
+  final outer = clock;
+  final offset = testNow.difference(outer.now());
+  return withClock(Clock(() => outer.now().add(offset)), body);
 }

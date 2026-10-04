@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:clock/clock.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -211,7 +212,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       return;
     }
     unawaited(
-      _recovery.write(ComposeRecord(session: _session, message: message, savedAt: DateTime.now(), sendAt: _sendAt)),
+      _recovery.write(ComposeRecord(session: _session, message: message, savedAt: clock.now(), sendAt: _sendAt)),
     );
   }
 
@@ -674,7 +675,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
   // Sending and closing -----------------------------------------------------------
 
   Future<void> _pickSendLater() async {
-    final choice = await showSendLaterSheet(context, now: DateTime.now(), current: _sendAt);
+    final choice = await showSendLaterSheet(context, now: clock.now(), current: _sendAt);
     if (choice == null || !mounted) return;
     _sendAt = choice.at;
     _changed();
@@ -702,7 +703,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     final repo = _repo;
     final undoSeconds = ref.read(appSettingsProvider).undoSendSeconds;
     // A time that has passed meanwhile sends now, with the usual undo delay.
-    final now = DateTime.now();
+    final now = clock.now();
     final at = _sendAt != null && _sendAt!.isAfter(now) ? _sendAt : null;
     final when = at == null ? null : formatSendTimeFor(context, at, now: now);
     // Captured before popping: the snack bar and Undo outlive this screen.

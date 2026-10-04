@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -57,14 +58,14 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
     // Scheduled messages ask for their wake-up again on every launch, in
     // case the system dropped it (this screen lives as long as the app).
     ref.listenManual(outboxProvider, (_, next) {
-      final now = DateTime.now();
+      final now = clock.now();
       for (final item in next.value ?? const <OutboxItem>[]) {
         if (item.status == OutboxStatus.scheduled && item.sendAt.isAfter(now)) wakeUpAt(ref, item.sendAt);
       }
     }, fireImmediately: true);
     // So do snoozed messages, from this device or another one.
     ref.listenManual(snoozedProvider, (_, next) {
-      final now = DateTime.now();
+      final now = clock.now();
       for (final e in next.value ?? const <EmailSummary>[]) {
         final at = e.snoozedUntil;
         if (at != null && at.isAfter(now)) wakeUpAt(ref, at.toLocal());

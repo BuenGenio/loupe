@@ -7,5 +7,6 @@ environment:
   sdk: ^3.13.0
 dependencies:
   mail_model: {path: ../mail_model}
+  clock: ^1.1.2
 dev_dependencies:
   test: any

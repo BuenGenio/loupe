@@ -599,8 +599,8 @@ void main() {
       expect(got.message.attachments.single.data, [0, 255]);
       expect(got.message.to.single.name, 'Bob');
       expect(got.message.mode, ComposeMode.reply);
-      expect((await store.claimOutbox('o1'))!.status, OutboxStatus.sending);
-      expect(await store.claimOutbox('o1'), isNull);
+      expect((await store.claimOutbox('o1', now: base))!.status, OutboxStatus.sending);
+      expect(await store.claimOutbox('o1', now: base), isNull);
       expect(await store.takeOutbox('o1'), isNull, reason: 'being sent');
       await store.updateOutbox('o1', status: OutboxStatus.failed, attempts: 1, lastError: 'boom');
       expect((await store.outboxEntries()).single.lastError, 'boom');
@@ -633,7 +633,7 @@ void main() {
       expect(moved.status, OutboxStatus.scheduled);
       expect(moved.lastError, isNull);
       expect(moved.attempts, 1);
-      await store.claimOutbox('o2');
+      await store.claimOutbox('o2', now: evening);
       expect(await store.rescheduleOutbox('o2', sendAfter: base, status: OutboxStatus.queued), isFalse);
       expect(await store.rescheduleOutbox('nope', sendAfter: base, status: OutboxStatus.queued), isFalse);
       await Future<void>.delayed(const Duration(milliseconds: 50));

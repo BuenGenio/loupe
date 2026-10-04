@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:expr_search/expr_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -138,7 +139,7 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
       setState(() => _preview = null);
       return;
     }
-    final since = DateTime.now().subtract(const Duration(days: 30));
+    final since = clock.now().subtract(const Duration(days: 30));
     final expr = SearchAnd([parsed.expr, DateTerm(DateComparison.onOrAfter, since)]);
     _previewSub = ref
         .read(repositoryProvider)
