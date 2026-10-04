@@ -125,6 +125,7 @@ final class LocalMailNotifier implements MailNotifier {
     showWhen: n.when != null,
     subText: n.subText,
     visibility: NotificationVisibility.private,
+    tag: n.tag,
     styleInformation: n.isSummary
         ? InboxStyleInformation(n.lines, contentTitle: n.title, summaryText: n.subText)
         : n.expandedBody == null
@@ -158,12 +159,11 @@ final class LocalMailNotifier implements MailNotifier {
   @override
   Future<List<ShownNotification>> shown() async => [
     for (final n in await _plugin.getActiveNotifications())
-      if (n.id case final int id)
-        ShownNotification(id: id, title: n.title, body: n.body, target: NotificationTarget.decode(n.payload)),
+      if (n.id case final int id) ShownNotification(id: id, tag: n.tag, title: n.title, body: n.body),
   ];
 
   @override
-  Future<void> cancel(int id) => _plugin.cancel(id: id);
+  Future<void> cancel(int id, {String? tag}) => _plugin.cancel(id: id, tag: tag);
 
   @override
   Future<void> cancelAll() => _plugin.cancelAll();

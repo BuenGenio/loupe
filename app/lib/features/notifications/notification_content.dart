@@ -144,26 +144,34 @@ final class MailNotification {
   final DateTime? when;
   final NotificationTarget? target;
   final List<MailAction> actions;
+
+  /// The platform tag: the target again. Android reports a showing
+  /// notification's tag but not its payload, and cancels by id and tag.
+  String? get tag => target?.encode();
 }
 
-/// A notification that is showing, as the system reports it.
+/// A notification that is showing, as the system reports it: its id and
+/// tag, and the text it shows.
 @immutable
 final class ShownNotification {
-  const ShownNotification({required this.id, this.title, this.body, this.target});
+  const ShownNotification({required this.id, this.tag, this.title, this.body});
 
   final int id;
+  final String? tag;
   final String? title;
   final String? body;
-  final NotificationTarget? target;
+
+  NotificationTarget? get target => NotificationTarget.decode(tag);
 }
 
-/// A stable notification id for [key] (31-bit FNV-1a).
+/// A stable notification id for [key] (FNV-1a, 27 bits: the plugin numbers
+/// a notification's buttons from id × 16, which must not overflow).
 int notificationIdFor(String key) {
   var hash = 0x811c9dc5;
   for (final unit in utf8.encode(key)) {
     hash = ((hash ^ unit) * 0x01000193) & 0xffffffff;
   }
-  final id = hash & 0x7fffffff;
+  final id = (hash ^ (hash >> 27)) & 0x07ffffff;
   return id == 0 ? 1 : id;
 }
 

@@ -115,6 +115,15 @@ void main() {
       ShownNotification(id: 3, title: 'Alice', body: 'Re: Lunch'),
     ];
 
+    test('a showing notification knows its target from its tag alone', () {
+      final n = messageNotification(newMail('work', 'Tagged'), work, hideContent: false);
+      expect(n.tag, n.target!.encode());
+      final shown = ShownNotification(id: n.id, tag: n.tag);
+      expect(shown.target, n.target);
+      expect(const ShownNotification(id: 9).target, isNull, reason: 'someone else’s notification');
+      expect(summaryNotification(work, children, hideContent: false).tag, const AccountTarget('work').encode());
+    });
+
     test('counts and lists the messages of its group', () {
       final s = summaryNotification(work, children, hideContent: false);
       expect(s.isSummary, isTrue);
@@ -140,7 +149,7 @@ void main() {
     final a = messageNotificationId('work|INBOX|1|1');
     expect(messageNotificationId('work|INBOX|1|1'), a);
     expect(a, isPositive);
-    expect(a, lessThan(1 << 31));
+    expect(a * 16, lessThan(1 << 31), reason: 'button request codes fit an int');
     final ids = {for (var i = 0; i < 2000; i++) messageNotificationId('work|INBOX|1|$i')};
     expect(ids, hasLength(2000));
     expect(summaryNotificationId('work'), isNot(summaryNotificationId('home')));

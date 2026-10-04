@@ -92,13 +92,15 @@ void main() {
   });
 
   testWidgets('starting outside live mode clears notifications left from live mode', (tester) async {
-    notifier.showing[1] = const MailNotification(
-      id: 1,
-      channel: MailChannel.vip,
-      groupKey: 'g',
-      title: 'Left over',
-      target: MessageTarget('work|INBOX|1|1', 'work'),
-    );
+    await notifier.show([
+      const MailNotification(
+        id: 1,
+        channel: MailChannel.vip,
+        groupKey: 'g',
+        title: 'Left over',
+        target: MessageTarget('work|INBOX|1|1', 'work'),
+      ),
+    ]);
     await pumpWithNotifications(tester, notifier: notifier);
     expect(notifier.showing, isEmpty);
   });
@@ -168,7 +170,7 @@ void main() {
 
     await tapButton(MailAction.markRead, first);
     expect((await repo.getEmail(first.id))!.isSeen, isTrue);
-    expect(notifier.showing.containsKey(messageNotificationId(first.id)), isFalse);
+    expect(notifier.isShowing(messageNotificationId(first.id)), isFalse);
 
     await tapButton(MailAction.archive, second);
     final archived = await repo.getEmail(second.id);

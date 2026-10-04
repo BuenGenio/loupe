@@ -67,7 +67,7 @@ final class NewMailCheck {
               !accounts.containsKey(accountId) ||
               !settings.notifiesFor(accountId);
           if (stale) {
-            await notifier.cancel(n.id);
+            await notifier.cancel(n.id, tag: n.tag);
           } else {
             (children[accountId] ??= []).add(n);
           }
@@ -81,7 +81,7 @@ final class NewMailCheck {
       final account = accounts[accountId];
       final list = children[accountId] ?? const <ShownNotification>[];
       if (account == null || list.isEmpty) {
-        await notifier.cancel(summaryNotificationId(accountId));
+        await notifier.cancel(summaryNotificationId(accountId), tag: AccountTarget(accountId).encode());
       } else {
         await notifier.show([summaryNotification(account, list, hideContent: settings.hideContent)]);
       }

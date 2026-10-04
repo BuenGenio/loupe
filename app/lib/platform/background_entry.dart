@@ -99,7 +99,7 @@ Future<void> handleNotificationAction(NotificationResponse response) async {
     try {
       await runMailAction(mail.repository, action, target.emailId);
       final notifier = await LocalMailNotifier.initializeInBackground(onBackgroundAction: onNotificationAction);
-      await notifier.cancel(response.id ?? messageNotificationId(target.emailId));
+      await notifier.cancel(response.id ?? messageNotificationId(target.emailId), tag: target.encode());
       await NewMailCheck(
         notifier: notifier,
         state: FileNewMailStateStore(Future.value(directory)),

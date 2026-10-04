@@ -154,7 +154,8 @@ class FakeMail implements MailRepository {
   dynamic noSuchMethod(Invocation invocation) => throw UnimplementedError('${invocation.memberName}');
 }
 
-/// Records what would be shown; "shows" it so [shown] reports it back.
+/// Records what would be shown, and like Android reports back only each
+/// notification's id, tag and text (not its payload); cancels by id and tag.
 class FakeNotifier implements MailNotifier {
   FakeNotifier({this.granted = true, this.grants = true});
 
@@ -164,7 +165,9 @@ class FakeNotifier implements MailNotifier {
   bool grants;
   int permissionRequests = 0;
   int settingsOpened = 0;
-  final showing = <int, MailNotification>{};
+
+  /// What shows, by id and tag.
+  final showing = <(int, String?), MailNotification>{};
   final posted = <MailNotification>[];
   final cancelled = <int>[];
   List<MailAccount>? channels;
@@ -189,23 +192,25 @@ class FakeNotifier implements MailNotifier {
   Future<void> show(List<MailNotification> notifications) async {
     for (final n in notifications) {
       posted.add(n);
-      showing[n.id] = n;
+      showing[(n.id, n.tag)] = n;
     }
   }
 
   @override
   Future<List<ShownNotification>> shown() async => [
-    for (final n in showing.values) ShownNotification(id: n.id, title: n.title, body: n.body, target: n.target),
+    for (final n in showing.values) ShownNotification(id: n.id, tag: n.tag, title: n.title, body: n.body),
   ];
 
   @override
-  Future<void> cancel(int id) async {
+  Future<void> cancel(int id, {String? tag}) async {
     cancelled.add(id);
-    showing.remove(id);
+    showing.remove((id, tag));
   }
 
   @override
   Future<void> cancelAll() async => showing.clear();
+
+  bool isShowing(int id) => showing.keys.any((k) => k.$1 == id);
 
   /// Message notifications showing, by subject (their body).
   List<String?> get messageBodies => [
@@ -213,7 +218,8 @@ class FakeNotifier implements MailNotifier {
       if (!n.isSummary) n.body,
   ];
 
-  MailNotification? summaryOf(String accountId) => showing[summaryNotificationId(accountId)];
+  MailNotification? summaryOf(String accountId) =>
+      showing.values.where((n) => n.isSummary && n.id == summaryNotificationId(accountId)).firstOrNull;
 }
 
 /// Completes once the microtasks and timers queued so far have run.

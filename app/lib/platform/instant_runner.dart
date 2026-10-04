@@ -152,7 +152,7 @@ final class InstantRunner {
     final mail = _mail ??= await open();
     if (r == null) return;
     await runMailAction(mail.repository, r.action, r.target.emailId);
-    await notifier.cancel(messageNotificationId(r.target.emailId));
+    await notifier.cancel(messageNotificationId(r.target.emailId), tag: r.target.encode());
     await check.tidy(mail.repository, NotificationSettings.read(prefs));
     await updateAppIconBadge(prefs, mail.repository, badge);
     if (!_active) await mail.flushOps();

@@ -84,7 +84,7 @@ void main() {
     expect(notifier.summaryOf('work'), isNull);
     expect(notifier.summaryOf('home')!.title, '1 new message');
     expect(notifier.cancelled, containsAll([messageNotificationId(read.id), messageNotificationId(moved.id)]));
-    expect(notifier.showing.containsKey(messageNotificationId(kept.id)), isTrue);
+    expect(notifier.isShowing(messageNotificationId(kept.id)), isTrue);
 
     // Muting an account clears what it shows.
     await check.tidy(mail, const NotificationSettings(mutedAccounts: {'home'}));

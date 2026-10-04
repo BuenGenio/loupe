@@ -168,7 +168,7 @@ class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordina
     final check = ref.read(newMailCheckProvider);
     final settings = ref.read(notificationSettingsProvider);
     await runMailAction(repository, r.action, r.target.emailId);
-    await notifier.cancel(messageNotificationId(r.target.emailId));
+    await notifier.cancel(messageNotificationId(r.target.emailId), tag: r.target.encode());
     await check.tidy(repository, settings);
     // In the background the repository is paused: send it now, then
     // disconnect again.

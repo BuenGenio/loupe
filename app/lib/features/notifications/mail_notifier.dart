@@ -28,7 +28,8 @@ abstract interface class MailNotifier {
   /// The notifications Loupe shows right now.
   Future<List<ShownNotification>> shown();
 
-  Future<void> cancel(int id);
+  /// Removes the notification [id] with [tag] (see [MailNotification.tag]).
+  Future<void> cancel(int id, {String? tag});
 
   Future<void> cancelAll();
 }
@@ -57,7 +58,7 @@ class NoopMailNotifier implements MailNotifier {
   Future<List<ShownNotification>> shown() async => const [];
 
   @override
-  Future<void> cancel(int id) async {}
+  Future<void> cancel(int id, {String? tag}) async {}
 
   @override
   Future<void> cancelAll() async {}
