@@ -161,7 +161,7 @@ The pipeline runs in a background isolate, with limits on size, nesting depth an
    - Remove hidden content: `display:none`, `visibility:hidden`, `opacity:0`, `font-size:0`, `max-height:0`, `mso-hide:all`.
      This catches preheaders and spam padding.
    - Remove **tracking pixels**: images of 1–2 px, invisible images, and images from known tracker hosts.
-   - Before step 4, inline simple `<style>` rules (tag, class and id selectors only), so that class-based colours and bold text survive. (Phase 2)
+   - Before step 4, inline simple `<style>` rules (tag, class and id selectors only), so that class-based colours, sizes and bold text survive.
 4. **Rebuild layout.**
    - **Layout tables** (a `role="presentation"` attribute, nesting, cells containing blocks, no `th`) are linearised into blocks in reading order.
    - **Data tables** (`th` cells, a regular grid, short cells) stay tables and scroll horizontally on their own.
@@ -174,7 +174,8 @@ The pipeline runs in a background isolate, with limits on size, nesting depth an
      - `font-weight`, `font-style` and `text-decoration`;
      - `text-align` (centre and right, for short blocks only);
      - monospace detection (Courier, Consolas, Menlo, `monospace`) → code style;
-     - `font-size` mapped to a few relative steps between 0.85× and 1.5×, so large text becomes a heading.
+     - `font-size` (px, pt, em, %, keywords, `<font size>`, `<small>`) compared with the message's own body size: large text becomes a heading, clearly smaller text becomes **fine print** (0.8×, secondary colour), so footers stay footers.
+     - Unmarked legal, registration, privacy and unsubscribe paragraphs at the end of a message also become fine print; a paragraph with a call to action never does.
    - Dropped: widths and heights (images keep their aspect ratio), positioning, floats, margins and padding (our own spacing is used), font families, line height, letter spacing and background images.
 6. **Links.**
    - Long-press shows the real target.
@@ -457,7 +458,7 @@ Estimates assume **1–2 full-time Flutter developers** plus part-time design he
 - **Tags** (TB-compatible), rules and Sieve, multiple identities.
 - **Message tools:** raw source and headers, "Search from this message", the DKIM/SPF/DMARC display.
 - **Tablets:** 3-pane layout, keyboard shortcuts, command palette.
-- **Sending and reading:** scheduled send, `<style>` inlining in Readable mode.
+- **Sending:** scheduled send.
 
 ### Phase 3: JMAP and push (about 2–3 months)
 
