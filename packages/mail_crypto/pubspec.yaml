@@ -1,0 +1,14 @@
+name: mail_crypto
+description: "OpenPGP for Loupe: keys, PGP/MIME (RFC 3156) reading and writing, Autocrypt."
+publish_to: none
+version: 0.1.0
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  # BSD-3-Clause, pure Dart (RFC 9580 / 4880), vendored with interop fixes
+  # (third_party/dart_pg/CHANGELOG.md). The backend uses its src/ types.
+  dart_pg: {path: ../../third_party/dart_pg}
+  mail_model: {path: ../mail_model}
+dev_dependencies:
+  test: any
