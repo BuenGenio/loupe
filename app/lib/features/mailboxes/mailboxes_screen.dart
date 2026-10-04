@@ -345,8 +345,14 @@ class _AccountSection extends ConsumerWidget {
         .where((m) => m.accountId == account.id)
         .toList();
     final v = _visibility(ref);
-    final tree = mailboxTree(mailboxes, expanded: expanded);
+    final showAll = ref.watch(showAllFoldersProvider).contains(account.id);
+    final tree = mailboxTree(showAll ? mailboxes : subscribedFolders(mailboxes), expanded: expanded);
     final nested = tree.any((n) => n.hasChildren);
+    void toggleExpanded(String mailboxId) {
+      unawaited(HapticFeedback.selectionClick());
+      unawaited(ref.read(expandedFoldersProvider.notifier).toggle(mailboxId));
+    }
+
     final rows = <Widget>[
       if (!collapsed)
         for (final node in tree)
@@ -363,14 +369,16 @@ class _AccountSection extends ConsumerWidget {
               },
               expanded: node.hasChildren ? expanded.contains(node.mailbox.id) : null,
               reserveDisclosure: nested,
-              onToggleExpanded: () {
-                unawaited(HapticFeedback.selectionClick());
-                unawaited(ref.read(expandedFoldersProvider.notifier).toggle(node.mailbox.id));
-              },
+              onToggleExpanded: () => toggleExpanded(node.mailbox.id),
               editing: editing,
               visible: v.visible('m.${node.mailbox.id}'),
               onToggleVisible: () => v.toggle('m.${node.mailbox.id}'),
-              onTap: node.mailbox.isSelectable ? () => onOpen(RealMailboxRef(node.mailbox.id)) : null,
+              // A container opens and closes like its disclosure arrow.
+              onTap: node.mailbox.isSelectable
+                  ? () => onOpen(RealMailboxRef(node.mailbox.id))
+                  : node.hasChildren
+                  ? () => toggleExpanded(node.mailbox.id)
+                  : null,
             ),
     ];
     return InsetGroup(

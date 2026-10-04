@@ -15,6 +15,7 @@ import 'features/search/search_screen.dart';
 import 'features/search/smart_mailbox_screen.dart';
 import 'features/settings/account_settings_screen.dart';
 import 'features/settings/advanced_settings_screen.dart';
+import 'features/settings/manage_folders_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/settings/swipe_settings_screen.dart';
 import 'settings/app_mode.dart';
@@ -44,6 +45,9 @@ abstract final class Routes {
   static String smartMailbox(String id) => '/smart/${Uri.encodeComponent(id)}';
 
   static String accountSettings(String accountId) => '/settings/account/${Uri.encodeComponent(accountId)}';
+
+  /// Every server folder of an account, with subscribe switches.
+  static String manageFolders(String accountId) => '${accountSettings(accountId)}/folders';
 }
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -100,6 +104,12 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: 'account/:id',
             builder: (context, state) => AccountSettingsScreen(accountId: state.pathParameters['id']!),
+            routes: [
+              GoRoute(
+                path: 'folders',
+                builder: (context, state) => ManageFoldersScreen(accountId: state.pathParameters['id']!),
+              ),
+            ],
           ),
         ],
       ),

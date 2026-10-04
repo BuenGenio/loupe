@@ -100,6 +100,33 @@ String mailboxRefTitle(MailboxRef ref, Iterable<Mailbox> mailboxes) => switch (r
     mailboxes.where((m) => m.id == mailboxId).map(mailboxDisplayName).firstOrNull ?? 'Mailbox',
 };
 
+/// The folders the Mailboxes screen shows, like Thunderbird: subscribed
+/// ones and those holding a role (Inbox, Sent…). An unsubscribed folder on
+/// the way to a subscribed one stays as a container (not selectable), so
+/// the subfolder can be reached.
+List<Mailbox> subscribedFolders(List<Mailbox> mailboxes) {
+  final byId = {for (final m in mailboxes) m.id: m};
+  final shown = {
+    for (final m in mailboxes)
+      if (m.isSubscribed || m.role != MailboxRole.none) m.id,
+  };
+  final containers = <String>{};
+  for (final m in mailboxes) {
+    // Role mailboxes are pulled to the top of the tree; they need no parents.
+    if (!m.isSubscribed || m.role != MailboxRole.none) continue;
+    var parent = byId[m.parentId];
+    // Stops at a shown parent or one another subfolder already walked from.
+    while (parent != null && !shown.contains(parent.id) && containers.add(parent.id)) {
+      parent = byId[parent.parentId];
+    }
+  }
+  if (shown.length == mailboxes.length) return mailboxes;
+  return [
+    for (final m in mailboxes)
+      if (shown.contains(m.id)) m else if (containers.contains(m.id)) m.copyWith(isSelectable: false),
+  ];
+}
+
 /// Leading indentation of a folder at [depth] in a tree. Deep trees stop
 /// indenting after a few levels, so names keep room on a phone.
 double folderIndent(int depth) => 18.0 * math.min(depth, 5);
