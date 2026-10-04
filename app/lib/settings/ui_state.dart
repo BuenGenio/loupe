@@ -205,7 +205,10 @@ final smartMailboxSyncStatusProvider = NotifierProvider<SmartMailboxSyncStatusNo
 
 class SmartMailboxSyncStatusNotifier extends Notifier<SmartMailboxSyncStatus> {
   @override
-  SmartMailboxSyncStatus build() => const SmartMailboxSyncStatus();
+  SmartMailboxSyncStatus build() {
+    ref.watch(prefsEpochProvider);
+    return const SmartMailboxSyncStatus();
+  }
 
   void set(SmartMailboxSyncStatus status) => state = status;
 }
@@ -367,6 +370,12 @@ class SmartMailboxes extends Notifier<List<SmartMailbox>> {
   }
 
   Future<void> _store(Ref r, List<SmartMailboxRecord> records) async {
+    // Deletions are remembered as long as other devices may need them.
+    final horizon = DateTime.now().toUtc().subtract(tombstoneLifetime);
+    records = [
+      for (final x in records)
+        if (!x.entry.deleted || x.entry.modifiedAt.isAfter(horizon)) x,
+    ];
     _records = records;
     state = _visible(records);
     await r

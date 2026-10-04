@@ -680,7 +680,8 @@ final class ImapTransport implements MailTransport {
   }
 
   /// Mailboxes to search when none is given: an \All mailbox alone if the
-  /// server has one; otherwise Inbox first, Trash and Junk last.
+  /// server has one; otherwise Inbox first, Trash and Junk last (never the
+  /// Loupe Settings folder).
   static List<RemoteMailbox> _searchOrder(List<RemoteMailbox> boxes) {
     final all = _withRole(boxes, MailboxRole.all);
     if (all != null) return [all];
@@ -690,7 +691,8 @@ final class ImapTransport implements MailTransport {
       MailboxRole.trash || MailboxRole.junk => 3,
       _ => 2,
     };
-    return boxes.where((b) => b.isSelectable).toList()..sort((a, b) => rank(a).compareTo(rank(b)));
+    return boxes.where((b) => b.isSelectable && !ServerDocuments.isFolderName(b.name, b.parentPath)).toList()
+      ..sort((a, b) => rank(a).compareTo(rank(b)));
   }
 
   // Documents ----------------------------------------------------------------
