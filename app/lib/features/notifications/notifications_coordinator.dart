@@ -136,7 +136,7 @@ class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordina
     if (!mounted) return;
     final router = ref.read(routerProvider);
     switch (tap.target) {
-      case MessageTarget(:final emailId):
+      case MessageTarget(:final emailId) && final target:
         unawaited(router.push<void>(Routes.message(emailId)));
         if (tap.action == MailAction.reply) {
           unawaited(
@@ -145,6 +145,15 @@ class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordina
               extra: ComposeArgs(mode: ComposeMode.reply, sourceEmailId: emailId),
             ),
           );
+        }
+        // A tap removes its notification itself, but Reply (which opens the
+        // app) doesn't; either way the account's summary changes.
+        final notifier = ref.read(mailNotifierProvider);
+        await notifier.cancel(messageNotificationId(emailId), tag: target.encode());
+        if (mounted) {
+          await ref
+              .read(newMailCheckProvider)
+              .tidy(ref.read(repositoryProvider), ref.read(notificationSettingsProvider));
         }
       case AccountTarget(:final accountId):
         final mailboxes = await ref.read(repositoryProvider).watchMailboxes(accountId: accountId).first;

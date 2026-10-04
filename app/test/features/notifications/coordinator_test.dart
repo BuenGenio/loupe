@@ -40,9 +40,12 @@ void main() {
     expect(find.byType(ConversationScreen), findsOneWidget);
     expect(tester.widget<ConversationScreen>(find.byType(ConversationScreen)).emailId, email.id);
 
+    final account = (await repo.watchAccounts().first).firstWhere((a) => a.id == email.accountId);
+    await notifier.show([messageNotification(NewMail(email, fromVip: false), account, hideContent: false)]);
     taps.add(NotificationTap(MessageTarget(email.id, email.accountId), action: MailAction.reply));
     await tester.pumpAndSettle();
     expect(find.byType(ComposeScreen), findsOneWidget);
+    expect(notifier.isShowing(messageNotificationId(email.id)), isFalse, reason: 'Reply doesn’t remove it itself');
   });
 
   testWidgets('the tap that launched the app opens its message once the app is up', (tester) async {
