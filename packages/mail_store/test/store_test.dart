@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:mail_model/mail_model.dart';
 import 'package:mail_store/mail_store.dart';
+import 'package:sqlite3/sqlite3.dart';
 import 'package:test/test.dart';
 
 import 'fixtures.dart';
@@ -36,6 +37,45 @@ void main() {
       await expectLater(MailStore.open(path, encryptionKey: 'wrong'), throwsA(isA<MailStoreException>()));
       await expectLater(MailStore.open(path, encryptionKey: ''), throwsA(isA<MailStoreException>()));
     });
+  });
+
+  test('schema: tables, FTS index and triggers', () async {
+    final dir = Directory.systemTemp.createTempSync('mail_store_schema');
+    addTearDown(() => dir.deleteSync(recursive: true));
+    final path = '${dir.path}/mail.db';
+    final store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
+    await store.saveAccount(account());
+    await store.close();
+    final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
+    addTearDown(db.close);
+    final names = {for (final r in db.select('SELECT name FROM sqlite_master')) r['name'] as String};
+    expect(
+      names,
+      containsAll([
+        'accounts',
+        'mailboxes',
+        'sync_states',
+        'emails',
+        'email_keywords',
+        'contents',
+        'inline_parts',
+        'outbox_items',
+        'pending_ops',
+        'vip_addresses',
+        'address_book',
+        'thread_refs',
+        'id_aliases',
+        'email_fts',
+        'emails_after_insert',
+        'emails_after_update_text',
+        'emails_after_update_keywords',
+        'emails_after_delete',
+        'contents_after_insert',
+        'contents_after_update',
+        'contents_after_delete',
+      ]),
+    );
+    expect(db.select('PRAGMA user_version').single.values.single, 1);
   });
 
   group('accounts and mailboxes', () {
