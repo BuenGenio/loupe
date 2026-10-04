@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  html: ^0.15.7
   mail_model: {path: ../mail_model}
 dev_dependencies:
   flutter_test:
