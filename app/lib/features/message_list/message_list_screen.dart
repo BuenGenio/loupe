@@ -24,6 +24,7 @@ import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
 import '../conversation/sheets.dart' show showSnack;
 import '../keyboard/mail_commands.dart';
+import '../palette/command_palette.dart';
 import '../panes/mail_selection.dart';
 import '../panes/pane_layout.dart';
 import '../search/search_session.dart';
@@ -541,6 +542,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
         focusNode: _focus,
         onChanged: _search.onChanged,
         onSubmitted: (_) => _search.submit(),
+        onLongPress: () => showCommandPalette(context),
       ),
     );
   }

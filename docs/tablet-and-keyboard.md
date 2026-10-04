@@ -37,6 +37,7 @@ cheat sheet shows ⌘ on Apple platforms and Ctrl elsewhere.
 | Keys | Does |
 |---|---|
 | Ctrl/⌘+N | New message |
+| Ctrl/⌘+K | Command palette |
 | / or Ctrl/⌘+F | Search: the list's field, else the Mailboxes field, else the search screen |
 | Ctrl/⌘+/ or ? | This list |
 | Esc | Back: leaves search or Edit, closes the sidebar, the conversation (wide) or the page; in Compose, Cancel |
@@ -66,7 +67,22 @@ modified forms add Apple Mail's and Thunderbird's where they don't clash:
 - **Shift+U** toggles read, as in Gmail, and so does Apple Mail's ⇧⌘U. Thunderbird's M isn't mapped: it is Mute in
   Gmail.
 - **S** flags, as in Thunderbird and Gmail (star). Apple Mail's ⇧⌘L works too.
+- **Ctrl/⌘+K** opens the command palette. Thunderbird uses it for its search field; / and Ctrl/⌘+F search here.
 - **Ctrl/⌘+F** searches the list. In Thunderbird and Apple Mail it finds text in the message; Loupe has no
   find-in-message yet.
 - **Ctrl/⌘+Enter** sends, as in Thunderbird; Apple Mail's ⇧⌘D works too.
 - **Esc** in Compose asks Save or Delete Draft, like Cancel, rather than discarding anything.
+
+## Command palette
+
+`app/lib/features/palette/`. Ctrl/⌘+K anywhere; on a phone, a long press on the search field of Mailboxes or a list.
+
+- **Entries:** actions on what is on screen (Reply, Archive, Snooze…, Move to Mailbox…, Mark All as Read, Get New
+  Mail; only those the screen can do), New Message and Keyboard Shortcuts; every mailbox (nested folders say where
+  they are: Work › Projects), the unified mailboxes, Snoozed, Outbox, Smart Mailboxes, mailing lists and tags; the
+  settings pages and each account's; recent searches; and "Search mail for '…'" for what was typed.
+- **Matching** (`fuzzyScore`): the typed letters in order, ignoring case, accents and spaces. Word starts and runs of
+  letters score more, so initials work ("mar" finds Mark All as Read); a prefix beats a word inside, which beats
+  scattered letters. Keywords ("compose") and the subtitle ("work inbox") count a little less.
+- **Recently used** entries (`palette.recent`, the last 12) come first without a query and get a boost with one.
+- **Keys:** ↑ and ↓ choose, Enter runs, Esc closes. Shortcuts are shown beside the actions.

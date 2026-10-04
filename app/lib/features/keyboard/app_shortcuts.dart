@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../router.dart';
+import '../../settings/app_mode.dart';
 import '../compose/compose_args.dart';
+import '../palette/command_palette.dart';
 import 'mail_commands.dart';
 import 'shortcut_sheet.dart';
 import 'shortcuts.dart';
@@ -13,7 +15,8 @@ import 'shortcuts.dart';
 ///
 /// The screen on top acts on them through [MailCommands]: the conversation,
 /// the list, the compose screen. What none of them takes is handled here:
-/// New Message, the cheat sheet, the search screen and Back. Plain keys never fire while a text field has focus, and Enter and
+/// New Message, the command palette, the cheat sheet, the search screen and
+/// Back. Plain keys never fire while a text field has focus, and Enter and
 /// the arrows leave a focused button alone; Ctrl/⌘ combinations always work.
 /// Nothing fires under a dialog or sheet (its route is on top), except Esc,
 /// which goes to it.
@@ -77,9 +80,12 @@ class _AppShortcutsState extends ConsumerState<AppShortcuts> {
     final arrowOrEnter =
         command == MailCommand.open || command == MailCommand.nextMessage || command == MailCommand.previousMessage;
     if (!intent.modified && arrowOrEnter && _controlFocused && !_commands.canRun(command)) return false;
+    // Before the first account (the welcome screen) there is no mail.
+    final hasMail = ref.read(appModeProvider) != AppMode.none;
     return switch (command) {
-      MailCommand.newMessage => !_composing,
-      MailCommand.palette || MailCommand.shortcuts || MailCommand.search => true,
+      MailCommand.newMessage => hasMail && !_composing,
+      MailCommand.palette || MailCommand.search => hasMail,
+      MailCommand.shortcuts => true,
       _ => _commands.canRun(command),
     };
   }
@@ -94,6 +100,8 @@ class _AppShortcutsState extends ConsumerState<AppShortcuts> {
         unawaited(router.push<void>(Routes.compose, extra: const ComposeArgs()));
       case MailCommand.search:
         unawaited(router.push<void>(Routes.search('')));
+      case MailCommand.palette:
+        if (navigator != null) unawaited(showCommandPalette(navigator.context));
       case MailCommand.shortcuts:
         if (navigator != null) unawaited(showShortcutSheet(navigator.context));
       case MailCommand.back:

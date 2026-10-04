@@ -78,6 +78,7 @@ const _r = LogicalKeyboardKey.keyR;
 /// wins and the other app's key is noted in docs/tablet-and-keyboard.md.
 const shortcutTable = [
   ShortcutEntry('General', 'New Message', MailCommand.newMessage, [KeyCombo(LogicalKeyboardKey.keyN, primary: true)]),
+  ShortcutEntry('General', 'Command Palette', MailCommand.palette, [KeyCombo(LogicalKeyboardKey.keyK, primary: true)]),
   ShortcutEntry('General', 'Search', MailCommand.search, [
     KeyCombo(LogicalKeyboardKey.slash),
     KeyCombo(LogicalKeyboardKey.keyF, primary: true),
@@ -140,14 +141,11 @@ bool get appleKeyboard => switch (defaultTargetPlatform) {
   _ => false,
 };
 
-/// The first key combination of [command], as shown on this platform
-/// ("E", "⌘N"), for hints in menus and the palette.
-String? shortcutHint(MailCommand command) {
+/// The keys of [command]'s first combination, as shown on this platform
+/// (["E"], ["⌘", "N"]), for hints in the palette.
+List<String>? shortcutKeys(MailCommand command) {
   for (final entry in shortcutTable) {
-    if (entry.command != command) continue;
-    final combo = entry.combos.first;
-    final apple = appleKeyboard;
-    return combo.keyLabels(apple: apple).join(apple ? '' : '+');
+    if (entry.command == command) return entry.combos.first.keyLabels(apple: appleKeyboard);
   }
   return null;
 }

@@ -21,6 +21,7 @@ import '../compose/compose_args.dart';
 import '../compose/compose_recovery.dart';
 import '../compose/send_later.dart';
 import '../keyboard/mail_commands.dart';
+import '../palette/command_palette.dart';
 import '../mailing_lists/list_providers.dart';
 import '../outbox/outbox_screen.dart';
 import '../search/search_session.dart';
@@ -186,6 +187,7 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> with CommandS
                 focusNode: _focus,
                 onChanged: _search.onChanged,
                 onSubmitted: (_) => _search.submit(),
+                onLongPress: () => showCommandPalette(context),
               ),
             ),
             if (_searching)
