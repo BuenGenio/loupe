@@ -85,6 +85,10 @@ void main() {
         'address_book',
         'thread_refs',
         'id_aliases',
+        'rules',
+        'rule_watermarks',
+        'muted_threads',
+        'emails_list',
         'email_fts',
         'emails_after_insert',
         'emails_after_update_text',
@@ -95,7 +99,7 @@ void main() {
         'contents_after_delete',
       ]),
     );
-    expect(db.select('PRAGMA user_version').single.values.single, 1);
+    expect(db.select('PRAGMA user_version').single.values.single, 3);
   });
 
   group('accounts and mailboxes', () {
@@ -424,6 +428,39 @@ void main() {
       await store.applySync(mbox('Work'), added([mail(21, path: 'Work', subject: 'Memo')]));
       counts = await store.watchVirtualCounts().first;
       expect(counts[VirtualMailbox.unread], 35722 + 1);
+    });
+
+    test('snoozed messages stay out of Unread, Flagged and VIP until they wake', () async {
+      await store.replaceMailboxes(accountId, [
+        ...standardMailboxes,
+        const RemoteMailbox(path: 'Snoozed', name: 'Snoozed'),
+      ]);
+      final wake = Snooze.keyword(DateTime.utc(2026, 9, 2, 8));
+      await store.applySync(
+        mbox('Snoozed'),
+        added([
+          mail(1, path: 'Snoozed', messageId: 's1@x', subject: 'Later', minutes: 9, keywords: {wake}),
+          mail(2, path: 'Snoozed', subject: 'VIP later', from: 'vip@example.com', keywords: {Keywords.flagged}),
+        ], unread: 2),
+      );
+      Future<List<String>> run(VirtualMailbox v) async =>
+          subjects(await store.watchList(VirtualMailboxRef(v), threaded: false).first);
+      expect(await run(VirtualMailbox.unread), ['VIP note', 'Lunch', 'Re: Plan']);
+      expect(await run(VirtualMailbox.flagged), ['Flag']);
+      expect(await run(VirtualMailbox.vip), ['VIP note']);
+      final counts = await store.watchVirtualCounts().first;
+      expect(counts[VirtualMailbox.unread], 3);
+      expect(counts[VirtualMailbox.flagged], 1);
+      expect(counts[VirtualMailbox.vip], 1);
+
+      final snoozed = await store.watchSnoozed().first;
+      expect({for (final e in snoozed) e.subject}, {'Later', 'VIP later'});
+      expect(snoozed.firstWhere((e) => e.subject == 'Later').snoozedUntil, DateTime.utc(2026, 9, 2, 8));
+
+      // Back in the Inbox, it counts again.
+      await store.moveLocally([eid('Snoozed', 1)], mbox('INBOX'));
+      expect(await run(VirtualMailbox.unread), contains('Later'));
+      expect((await store.watchSnoozed().first).map((e) => e.subject), ['VIP later']);
     });
 
     test('streams update on changes and stay quiet otherwise', () async {

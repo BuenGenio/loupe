@@ -222,6 +222,71 @@ void main() {
       expect(s.preview, 'Hello');
     });
 
+    test('mailing-list headers: List-Id, List-Post, List-Unsubscribe(-Post)', () {
+      expect(summaryFetchItems(gmail: false), contains('LIST-ID LIST-POST LIST-UNSUBSCRIBE LIST-UNSUBSCRIBE-POST'));
+      final header = crlf(
+        'In-Reply-To: <p1@x>\n'
+        'List-Id: =?UTF-8?Q?D=C3=A9veloppeurs?= <Dev.Lists.Example.org>\n'
+        'List-Post: <mailto:dev@lists.example.org>\n'
+        'List-Unsubscribe: <https://lists.example.org/u?id=1>,\n <mailto:dev-leave@lists.example.org>\n'
+        'List-Unsubscribe-Post: List-Unsubscribe=One-Click\n\n',
+      );
+      final m = runParser(
+        FetchParser(),
+        crlf(
+          '* 3 FETCH (UID 43 FLAGS () ENVELOPE (NIL "[PATCH 1/2] x" NIL NIL NIL NIL NIL NIL NIL NIL) '
+          'BODY[HEADER.FIELDS (${summaryHeaderFields.join(' ')})] ${literal(header)})\n',
+        ),
+      ).messages.single;
+      final s = summaryFromFetch(m, accountId: 'acc', path: 'INBOX', uidValidity: 7)!;
+      expect(s.listId, 'dev.lists.example.org');
+      expect(s.listName, 'Développeurs');
+      expect(s.listPost, '<mailto:dev@lists.example.org>');
+      expect(parseListUris(s.listUnsubscribe).map((u) => u.scheme), ['https', 'mailto']);
+      expect(isOneClickUnsubscribe(s.listUnsubscribePost), isTrue);
+      expect(s.inReplyTo, 'p1@x');
+
+      final plain = runParser(
+        FetchParser(),
+        crlf('* 4 FETCH (UID 44 BODY[HEADER.FIELDS (REFERENCES)] ${literal(crlf('\n'))})\n'),
+      ).messages.single;
+      final t = summaryFromFetch(plain, accountId: 'acc', path: 'INBOX', uidValidity: 7)!;
+      expect([t.listId, t.listName, t.listPost, t.listUnsubscribe, t.listUnsubscribePost], everyElement(isNull));
+    });
+
+    test('a quoted-printable patch decodes to an intact diff', () {
+      // git send-email falls back to quoted-printable for long or non-ASCII
+      // lines: soft breaks, "=3D" and the "=20" of blank context lines.
+      final part = BodyNode(
+        type: 'text',
+        subtype: 'plain',
+        section: '1',
+        encoding: 'quoted-printable',
+        params: const {'charset': 'utf-8'},
+      );
+      final raw = ascii.encode(
+        crlf(
+          'Signed-off-by: J=C3=B6rg <j@example.org>\n'
+          '---\n'
+          '@@ -1,3 +1,3 @@\n'
+          ' int a =3D 1;\n'
+          '=20\n'
+          '-int b =3D 2; /* a very long line that git send-email had to wrap with a s=\n'
+          'oft break */\n'
+          '+int b =3D 3;\n',
+        ),
+      );
+      final text = decodeTextPart(part, raw).replaceAll('\r\n', '\n');
+      expect(text, contains('Jörg'));
+      expect(text.split('\n').sublist(2, 7), [
+        '@@ -1,3 +1,3 @@',
+        ' int a = 1;',
+        ' ',
+        '-int b = 2; /* a very long line that git send-email had to wrap with a soft break */',
+        '+int b = 3;',
+      ]);
+    });
+
     test('previews from truncated base64 and quoted-printable parts', () {
       final html = BodyNode(type: 'text', subtype: 'html', section: '1', encoding: 'base64');
       final encoded = base64.encode(utf8.encode('<p>Grüße <b>aus</b> Berlin</p>'));

@@ -21,6 +21,7 @@ final class FakeMessage {
     this.text = '',
     this.gmailThreadId,
     this.size = 1000,
+    this.listId,
   }) : keywords = {...keywords};
 
   int uid;
@@ -36,6 +37,9 @@ final class FakeMessage {
   final DateTime receivedAt;
   final String? gmailThreadId;
   final int size;
+
+  /// The List-Id identifier (List-Post is `<mailto:` + the first label + `@` the rest).
+  final String? listId;
   int modseq = 0;
 
   FakeMessage copy(int newUid) => FakeMessage(
@@ -52,6 +56,7 @@ final class FakeMessage {
     text: text,
     gmailThreadId: gmailThreadId,
     size: size,
+    listId: listId,
   );
 }
 
@@ -112,8 +117,16 @@ final class FakeServer {
 
   String password;
   final bool gmail;
+
+  /// False: summaries come without the List-* headers (an older client's
+  /// fetch), except from fetchSummaries.
+  bool listHeadersInSync = true;
   bool idle;
   bool uidPlus;
+
+  /// Stores keywords other than the system flags (PERMANENTFLAGS has `\*`).
+  /// When false, like Outlook.com, they are accepted but not kept.
+  bool storesKeywords = true;
 
   /// While true every operation fails with a connection error.
   bool offline = false;
@@ -174,6 +187,7 @@ final class FakeServer {
     Set<String> keywords = const {},
     String text = '',
     DateTime? at,
+    String? listId,
   }) {
     final mb = box(path);
     final m = FakeMessage(
@@ -190,6 +204,7 @@ final class FakeServer {
       gmailThreadId: gmail
           ? 'thr-${references.isNotEmpty ? references.first : (inReplyTo ?? messageId ?? _clock)}'
           : null,
+      listId: listId,
     );
     _add(mb, m);
     if (gmail && path != allMailPath && mailboxes.containsKey(allMailPath)) {
@@ -282,6 +297,9 @@ final class FakeServer {
   List<String> subjects(String path) => [for (final m in box(path).messages.values) m.subject];
 }
 
+/// What a server without `\*` in PERMANENTFLAGS still stores (Outlook.com's list).
+const _systemKeywords = {Keywords.seen, Keywords.answered, Keywords.flagged, Keywords.draft, r'$mdnsent'};
+
 /// A [MailTransport] over a [FakeServer].
 final class FakeTransport implements MailTransport {
   FakeTransport(this.server, this.account, this.credentials);
@@ -351,7 +369,7 @@ final class FakeTransport implements MailTransport {
   String _mailboxId(FakeMailbox mb) => MailIds.mailbox(account.id, mb.path);
   String _id(FakeMailbox mb, int uid) => MailIds.imapEmail(account.id, mb.path, mb.uidValidity, uid);
 
-  EmailSummary _summary(FakeMailbox mb, FakeMessage m) => EmailSummary(
+  EmailSummary _summary(FakeMailbox mb, FakeMessage m, {bool listHeaders = true}) => EmailSummary(
     id: _id(mb, m.uid),
     accountId: account.id,
     mailboxId: _mailboxId(mb),
@@ -368,6 +386,8 @@ final class FakeTransport implements MailTransport {
     preview: m.text.length > 256 ? m.text.substring(0, 256) : m.text,
     size: m.size,
     keywords: {...m.keywords},
+    listId: listHeaders ? m.listId : null,
+    listPost: listHeaders && m.listId != null ? '<mailto:${m.listId!.replaceFirst('.', '@')}>' : null,
   );
 
   (FakeMailbox, FakeMessage)? _find(String emailId) {
@@ -403,6 +423,12 @@ final class FakeTransport implements MailTransport {
     _box(mailbox).subscribed = subscribed;
   }
 
+  @override
+  Future<void> createMailbox(String path) async {
+    await _op('create:$path');
+    if (!server.mailboxes.containsKey(path)) server.addMailbox(path);
+  }
+
   MailboxSyncState _state(FakeMailbox mb, int oldest) =>
       MailboxSyncState({'uv': mb.uidValidity, 'next': mb.uidNext, 'oldest': oldest, 'modseq': mb.modseq});
 
@@ -421,11 +447,12 @@ final class FakeTransport implements MailTransport {
       final oldest = window.isEmpty ? mb.uidNext : window.first;
       return MailboxSyncResult(
         state: _state(mb, oldest),
-        added: [for (final u in window) _summary(mb, mb.messages[u]!)],
+        added: [for (final u in window) _summary(mb, mb.messages[u]!, listHeaders: server.listHeadersInSync)],
         resetAll: prev != null,
         totalCount: uids.length,
         unreadCount: mb.unread,
         hasOlder: uids.any((u) => u < oldest),
+        canStoreKeywords: server.storesKeywords,
       );
     }
     final next = prev['next']! as int;
@@ -435,7 +462,7 @@ final class FakeTransport implements MailTransport {
       state: _state(mb, oldest),
       added: [
         for (final m in mb.messages.values)
-          if (m.uid >= next) _summary(mb, m),
+          if (m.uid >= next) _summary(mb, m, listHeaders: server.listHeadersInSync),
       ],
       keywordUpdates: {
         for (final m in mb.messages.values)
@@ -448,6 +475,7 @@ final class FakeTransport implements MailTransport {
       totalCount: uids.length,
       unreadCount: mb.unread,
       hasOlder: uids.any((u) => u < oldest),
+      canStoreKeywords: server.storesKeywords,
     );
   }
 
@@ -461,7 +489,7 @@ final class FakeTransport implements MailTransport {
     final newOldest = page.isEmpty ? oldest : page.first;
     return MailboxSyncResult(
       state: MailboxSyncState({...state.data, 'oldest': newOldest}),
-      added: [for (final u in page) _summary(mb, mb.messages[u]!)],
+      added: [for (final u in page) _summary(mb, mb.messages[u]!, listHeaders: server.listHeadersInSync)],
       totalCount: mb.messages.length,
       unreadCount: mb.unread,
       hasOlder: mb.messages.keys.any((u) => u < newOldest),
@@ -505,7 +533,8 @@ final class FakeTransport implements MailTransport {
       final found = _find(id);
       if (found == null) continue;
       final (mb, m) = found;
-      m.keywords = {...m.keywords.difference(remove), ...add};
+      final kept = server.storesKeywords ? add : add.where(_systemKeywords.contains);
+      m.keywords = {...m.keywords.difference(remove), ...kept};
       m.modseq = ++mb.modseq;
     }
   }

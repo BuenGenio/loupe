@@ -1,0 +1,180 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 324,
+      "keptText": 324,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:alice@example.org"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Convert the Windows build script to the new layout."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Signed-off-by: Alice Example <"
+          },
+          {
+            "text": "alice@example.org",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "diffstat",
+        "summary": "1 file changed, 2 insertions(+), 2 deletions(-)",
+        "files": [
+          [
+            "build.bat",
+            4,
+            "++--"
+          ]
+        ]
+      },
+      {
+        "type": "diff",
+        "old": "build.bat",
+        "new": "build.bat",
+        "headers": [
+          "diff --git a/build.bat b/build.bat",
+          "index 1234567..89abcde 100644"
+        ],
+        "hunks": [
+          {
+            "header": "@@ -1,4 +1,4 @@",
+            "lines": [
+              "1:1  @echo off",
+              "2: -set OUT=build\\old",
+              ":2 +set OUT=out\\release",
+              "3:3  cd %OUT%",
+              "4: -make all",
+              ":4 +make release"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\n2.43.0"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 324,
+      "keptText": 324,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:alice@example.org"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Convert the Windows build script to the new layout."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Signed-off-by: Alice Example <"
+          },
+          {
+            "text": "alice@example.org",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "diffstat",
+        "summary": "1 file changed, 2 insertions(+), 2 deletions(-)",
+        "files": [
+          [
+            "build.bat",
+            4,
+            "++--"
+          ]
+        ]
+      },
+      {
+        "type": "diff",
+        "old": "build.bat",
+        "new": "build.bat",
+        "headers": [
+          "diff --git a/build.bat b/build.bat",
+          "index 1234567..89abcde 100644"
+        ],
+        "hunks": [
+          {
+            "header": "@@ -1,4 +1,4 @@",
+            "lines": [
+              "1:1  @echo off",
+              "2: -set OUT=build\\old",
+              ":2 +set OUT=out\\release",
+              "3:3  cd %OUT%",
+              "4: -make all",
+              ":4 +make release"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\n2.43.0"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -31,6 +31,14 @@ abstract final class LoupeIcons {
   static const IconData tag = FluentIcons.tag_24_regular;
   static const IconData tagFilled = FluentIcons.tag_24_filled;
 
+  // Mailing lists -------------------------------------------------------------
+
+  static const IconData mailingList = FluentIcons.people_community_24_regular;
+  static const IconData replyToList = FluentIcons.people_team_24_regular;
+  static const IconData replies = FluentIcons.comment_multiple_24_regular;
+  static const IconData mute = FluentIcons.alert_off_24_regular;
+  static const IconData patch = FluentIcons.branch_24_regular;
+
   // Message actions ---------------------------------------------------------
 
   static const IconData compose = FluentIcons.compose_24_regular;
@@ -66,6 +74,25 @@ abstract final class LoupeIcons {
   static const IconData swipeSendNow = FluentIcons.send_24_filled;
   static const IconData swipeReschedule = FluentIcons.calendar_clock_24_filled;
   static const IconData swipeCancelSend = FluentIcons.dismiss_circle_24_filled;
+
+  // Snooze --------------------------------------------------------------------
+
+  /// The Snoozed mailbox.
+  static const IconData snoozed = FluentIcons.mail_clock_24_regular;
+
+  /// The Snooze action, and the "Snoozed" mark on a message that woke up.
+  static const IconData snooze = FluentIcons.clock_alarm_24_regular;
+  static const IconData snoozeFilled = FluentIcons.clock_alarm_24_filled;
+  static const IconData snoozeLaterToday = FluentIcons.hourglass_half_24_regular;
+  static const IconData snoozeEvening = FluentIcons.weather_moon_24_regular;
+  static const IconData snoozeTomorrow = FluentIcons.weather_sunny_low_24_regular;
+  static const IconData snoozeWeekend = FluentIcons.beach_24_regular;
+  static const IconData snoozeNextWeek = FluentIcons.calendar_week_start_24_regular;
+
+  /// Wake a snoozed message now.
+  static const IconData wakeNow = FluentIcons.weather_sunny_24_regular;
+  static const IconData swipeSnooze = FluentIcons.clock_alarm_24_filled;
+  static const IconData swipeWakeNow = FluentIcons.weather_sunny_24_filled;
 
   // Swipe actions: white on solid colour.
 
@@ -169,6 +196,18 @@ abstract final class LoupeIcons {
   static const IconData font = FluentIcons.text_font_24_regular;
   static const IconData images = FluentIcons.image_24_regular;
   static const IconData notifications = FluentIcons.alert_24_regular;
+
+  // Rules -------------------------------------------------------------------
+
+  static const IconData rules = FluentIcons.flash_flow_24_regular;
+  static const IconData makeRule = FluentIcons.flash_24_regular;
+
+  /// Where a rule runs: on this phone, or on the mail server (Sieve).
+  static const IconData ruleDevice = FluentIcons.phone_24_regular;
+  static const IconData ruleServer = FluentIcons.server_24_regular;
+  static const IconData keepInInbox = FluentIcons.mail_inbox_checkmark_24_regular;
+  static const IconData stopRules = FluentIcons.hand_right_24_regular;
+  static const IconData applyRule = FluentIcons.wand_24_regular;
 
   // Attachments by type -----------------------------------------------------
 

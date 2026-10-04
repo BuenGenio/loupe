@@ -1,0 +1,20 @@
+Convert the Windows build script to the new layout.
+
+Signed-off-by: Alice Example <alice@example.org>
+---
+ build.bat | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/build.bat b/build.bat
+index 1234567..89abcde 100644
+--- a/build.bat
++++ b/build.bat
+@@ -1,4 +1,4 @@
+ @echo off
+-set OUT=build\old
++set OUT=out\release
+ cd %OUT%
+-make all
++make release
+-- 
+2.43.0

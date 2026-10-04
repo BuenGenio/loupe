@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:fake_async/fake_async.dart';
 import 'package:mail_model/mail_model.dart';
+import 'package:mail_sieve/mail_sieve.dart' show SimulatedSieveServers;
 import 'package:mail_store/mail_store.dart';
 import 'package:mail_sync/mail_sync.dart';
 
@@ -53,12 +54,22 @@ const fastConfig = SyncConfig(
 final class Harness {
   Harness({SyncConfig config = fastConfig, OAuthRefresher? refreshOAuth, MailStore? store})
     : store = store ?? MailStore.memory() {
-    repo = LiveMailRepository(this.store, factory, credentials, config: config, refreshOAuth: refreshOAuth);
+    repo = LiveMailRepository(
+      this.store,
+      factory,
+      credentials,
+      config: config,
+      refreshOAuth: refreshOAuth,
+      sieve: sieve,
+    );
   }
 
   final MailStore store;
   final factory = FakeTransportFactory();
   final credentials = FakeCredentialStore();
+
+  /// The accounts' ManageSieve servers.
+  final sieve = SimulatedSieveServers();
   late final LiveMailRepository repo;
   final errors = <MailException>[];
   StreamSubscription<MailException>? _errorsSub;

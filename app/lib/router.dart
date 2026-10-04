@@ -11,9 +11,12 @@ import 'features/compose/compose_screen.dart';
 import 'features/conversation/conversation_screen.dart';
 import 'features/conversation/raw_source_screen.dart';
 import 'features/mailboxes/mailboxes_screen.dart';
+import 'features/mailing_lists/mailing_list_screen.dart';
 import 'features/message_list/message_list_screen.dart';
 import 'features/onboarding/welcome_screen.dart';
 import 'features/outbox/outbox_screen.dart';
+import 'features/rules/rule_editor_screen.dart';
+import 'features/rules/rules_screen.dart';
 import 'features/search/search_screen.dart';
 import 'features/search/smart_mailbox_screen.dart';
 import 'features/settings/account_settings_screen.dart';
@@ -23,6 +26,7 @@ import 'features/settings/manage_folders_screen.dart';
 import 'features/settings/notification_settings_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/settings/swipe_settings_screen.dart';
+import 'features/snooze/snoozed_screen.dart';
 import 'settings/app_mode.dart';
 import 'shared/mailbox_ref_codec.dart';
 
@@ -43,7 +47,21 @@ abstract final class Routes {
   /// Messages waiting to be sent (scheduled, queued, failed).
   static const outbox = '/outbox';
 
+  /// Settings › Rules, and the rule editor.
+  static const rules = '/settings/rules';
+  static String editRule(String id) => '$rules/edit/${Uri.encodeComponent(id)}';
+
+  /// A new rule, with [condition] filled in ("Make This a Rule").
+  static String newRule({String condition = ''}) =>
+      Uri(path: '$rules/new', queryParameters: condition.isEmpty ? null : {'q': condition}).toString();
+
+  /// Snoozed messages of every account, with their wake times.
+  static const snoozed = '/snoozed';
+
   static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
+
+  /// A mailing list's threads, by List-Id.
+  static String mailingList(String listId) => '/mailing-list/${Uri.encodeComponent(listId)}';
   static String message(String emailId) => '/message/${Uri.encodeComponent(emailId)}';
   static String source(String emailId) => '/source/${Uri.encodeComponent(emailId)}';
 
@@ -89,10 +107,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.mailboxes, builder: (context, state) => const MailboxesScreen()),
       GoRoute(path: Routes.welcome, builder: (context, state) => const WelcomeScreen()),
       GoRoute(path: Routes.outbox, builder: (context, state) => const OutboxScreen()),
+      GoRoute(path: Routes.snoozed, builder: (context, state) => const SnoozedScreen()),
       GoRoute(
         path: '/list/:ref',
         builder: (context, state) =>
             MessageListScreen(mailboxRef: MailboxRefCodec.decode(state.pathParameters['ref']!)),
+      ),
+      GoRoute(
+        path: '/mailing-list/:id',
+        builder: (context, state) => MailingListScreen(listId: state.pathParameters['id']!),
       ),
       GoRoute(
         path: '/message/:id',
@@ -128,6 +151,24 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: 'swipes', builder: (context, state) => const SwipeSettingsScreen()),
           GoRoute(path: 'advanced', builder: (context, state) => const AdvancedSettingsScreen()),
           GoRoute(path: 'notifications', builder: (context, state) => const NotificationSettingsScreen()),
+          GoRoute(
+            path: 'rules',
+            builder: (context, state) => const RulesScreen(),
+            routes: [
+              GoRoute(
+                path: 'new',
+                pageBuilder: (context, state) => MaterialPage(
+                  fullscreenDialog: true,
+                  child: RuleEditorScreen(initialCondition: state.uri.queryParameters['q'] ?? ''),
+                ),
+              ),
+              GoRoute(
+                path: 'edit/:id',
+                pageBuilder: (context, state) =>
+                    MaterialPage(fullscreenDialog: true, child: RuleEditorScreen(ruleId: state.pathParameters['id']!)),
+              ),
+            ],
+          ),
           GoRoute(
             path: 'account/:id',
             builder: (context, state) => AccountSettingsScreen(accountId: state.pathParameters['id']!),

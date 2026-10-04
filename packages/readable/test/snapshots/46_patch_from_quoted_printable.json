@@ -1,0 +1,248 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 705,
+      "keptText": 705,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:joerg@example.org"
+      },
+      {
+        "url": "mailto:joerg@example.org"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "From: Jörg Müller <"
+          },
+          {
+            "text": "joerg@example.org",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "frob: make the cache size configurable"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "A long line that git send-email sent as quoted-printable with a soft line break in the middle of it, which the transport decoding joined again before the reader saw it."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Signed-off-by: Jörg Müller <"
+          },
+          {
+            "text": "joerg@example.org",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "diffstat",
+        "summary": "1 file changed, 7 insertions(+)",
+        "files": [
+          [
+            "drivers/frob/Kconfig",
+            7,
+            "+++++++"
+          ]
+        ]
+      },
+      {
+        "type": "diff",
+        "old": "drivers/frob/Kconfig",
+        "new": "drivers/frob/Kconfig",
+        "headers": [
+          "diff --git a/drivers/frob/Kconfig b/drivers/frob/Kconfig",
+          "index 0a1b2c3..4d5e6f7 100644"
+        ],
+        "hunks": [
+          {
+            "header": "@@ -8,6 +8,13 @@ config FROB",
+            "lines": [
+              "8:8           To compile this driver as a module, choose M here: the",
+              "9:9           module will be called frob.",
+              "10:10  ",
+              ":11 +config FROB_CACHE_SIZE",
+              ":12 +       int \"Entries in the frob cache (≥ 1)\"",
+              ":13 +       depends on FROB",
+              ":14 +       default 64",
+              ":15 +       help",
+              ":16 +         Size of the per-context cache; = 0 disables it.",
+              ":17 +",
+              "11:18  config FROB_DEBUG",
+              "12:19         bool \"Debug output\"",
+              "13:20         depends on FROB"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\n2.43.0"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 705,
+      "keptText": 705,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:joerg@example.org"
+      },
+      {
+        "url": "mailto:joerg@example.org"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "From: Jörg Müller <"
+          },
+          {
+            "text": "joerg@example.org",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "frob: make the cache size configurable"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "A long line that git send-email sent as quoted-printable with a soft line break in the middle of it, which the transport decoding joined again before the reader saw it."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Signed-off-by: Jörg Müller <"
+          },
+          {
+            "text": "joerg@example.org",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "diffstat",
+        "summary": "1 file changed, 7 insertions(+)",
+        "files": [
+          [
+            "drivers/frob/Kconfig",
+            7,
+            "+++++++"
+          ]
+        ]
+      },
+      {
+        "type": "diff",
+        "old": "drivers/frob/Kconfig",
+        "new": "drivers/frob/Kconfig",
+        "headers": [
+          "diff --git a/drivers/frob/Kconfig b/drivers/frob/Kconfig",
+          "index 0a1b2c3..4d5e6f7 100644"
+        ],
+        "hunks": [
+          {
+            "header": "@@ -8,6 +8,13 @@ config FROB",
+            "lines": [
+              "8:8           To compile this driver as a module, choose M here: the",
+              "9:9           module will be called frob.",
+              "10:10  ",
+              ":11 +config FROB_CACHE_SIZE",
+              ":12 +       int \"Entries in the frob cache (≥ 1)\"",
+              ":13 +       depends on FROB",
+              ":14 +       default 64",
+              ":15 +       help",
+              ":16 +         Size of the per-context cache; = 0 disables it.",
+              ":17 +",
+              "11:18  config FROB_DEBUG",
+              "12:19         bool \"Debug output\"",
+              "13:20         depends on FROB"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\n2.43.0"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -221,6 +221,33 @@ class FakeMailRepository implements MailRepository {
   @override
   Future<void> archive(List<String> emailIds) async => log.add('archive $emailIds');
 
+  /// What [snooze] answers.
+  SnoozeStorage snoozeStorage = SnoozeStorage.server;
+
+  @override
+  Future<SnoozeStorage> snooze(List<String> emailIds, DateTime until) async {
+    log.add('snooze $emailIds ${until.toUtc().toIso8601String()}');
+    _update(
+      emailIds,
+      (e) => e.copyWith(keywords: {...e.keywords.difference(Snooze.keywordsIn(e.keywords)), Snooze.keyword(until)}),
+    );
+    return snoozeStorage;
+  }
+
+  @override
+  Future<void> unsnooze(List<String> emailIds) async {
+    log.add('unsnooze $emailIds');
+    _update(emailIds, (e) => e.copyWith(keywords: e.keywords.difference(Snooze.keywordsIn(e.keywords))));
+  }
+
+  @override
+  Stream<List<EmailSummary>> watchSnoozed() => _watch(
+    () => [
+      for (final e in emails)
+        if (e.snoozedUntil != null) e,
+    ]..sort(Snooze.compare),
+  );
+
   @override
   Future<void> trash(List<String> emailIds) async => log.add('trash $emailIds');
 
@@ -353,6 +380,11 @@ class FakeMailRepository implements MailRepository {
     _changed();
   }
 
+  // Rules --------------------------------------------------------------------
+
+  @override
+  MailRules get rules => throw UnimplementedError('FakeMailRepository has no rules');
+
   @override
   Future<SenderHistory> senderHistory(String email) async => senderHistories[email.toLowerCase()] ?? SenderHistory.none;
 }
@@ -390,6 +422,8 @@ EmailSummary testEmail(
   Set<String> keywords = const {},
   int minutesAgo = 0,
   String mailboxId = 'acc|INBOX',
+  String? listId,
+  String? listPost,
 }) => EmailSummary(
   id: id,
   accountId: 'acc',
@@ -403,4 +437,6 @@ EmailSummary testEmail(
   subject: subject,
   preview: 'Preview of $id',
   keywords: keywords,
+  listId: listId,
+  listPost: listPost,
 );

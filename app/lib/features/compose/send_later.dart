@@ -182,7 +182,12 @@ DateTime roundUpToMinutes(DateTime t, int minutes) {
 
 /// A date and time wheel for "Pick Date & Time…", from a few minutes from
 /// now up to a year ahead, in 5-minute steps. Null when cancelled.
-Future<DateTime?> showSendTimePicker(BuildContext context, {required DateTime now, DateTime? initial}) {
+Future<DateTime?> showSendTimePicker(
+  BuildContext context, {
+  required DateTime now,
+  DateTime? initial,
+  String title = 'Send Later',
+}) {
   final earliest = roundUpToMinutes(now.toLocal().add(const Duration(minutes: 1)), 5);
   var picked = initial != null && !initial.isBefore(earliest)
       ? roundUpToMinutes(initial.toLocal(), 5)
@@ -204,7 +209,7 @@ Future<DateTime?> showSendTimePicker(BuildContext context, {required DateTime no
                 children: [
                   CupertinoButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
                   Expanded(
-                    child: Text('Send Later', style: styles.navTitle, textAlign: TextAlign.center),
+                    child: Text(title, style: styles.navTitle, textAlign: TextAlign.center),
                   ),
                   CupertinoButton(
                     key: const ValueKey('send-later-done'),

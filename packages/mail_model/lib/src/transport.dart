@@ -45,6 +45,7 @@ final class MailboxSyncResult {
     this.totalCount,
     this.unreadCount,
     this.hasOlder = false,
+    this.canStoreKeywords,
   });
 
   final MailboxSyncState state;
@@ -66,6 +67,11 @@ final class MailboxSyncResult {
 
   /// More, older messages exist on the server.
   final bool hasOlder;
+
+  /// Whether the mailbox keeps new keywords permanently (IMAP: PERMANENTFLAGS
+  /// lists `\*`). Null when the server didn't say, which means yes (RFC 9051).
+  /// Snooze needs it for its wake-time keyword.
+  final bool? canStoreKeywords;
 }
 
 final class TransportCapabilities {
@@ -119,6 +125,11 @@ abstract interface class MailTransport {
   /// UNSUBSCRIBE). Throws [MailException] of kind [MailErrorKind.notFound]
   /// when the server no longer has the mailbox.
   Future<void> setSubscribed(RemoteMailbox mailbox, bool subscribed);
+
+  /// Creates the mailbox [path] (IMAP CREATE) and subscribes to it. Succeeds
+  /// when it exists already (another client may have been faster). Used for
+  /// the Snoozed folder.
+  Future<void> createMailbox(String path);
 
   /// Brings a mailbox up to date. With [previous] null, fetches the newest
   /// [initialWindow] messages. Uses CONDSTORE/QRESYNC when available.

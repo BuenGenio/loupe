@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../color/color_adapter.dart';
 import '../model/document.dart';
 import '../pipeline/html_to_plain.dart' show alphaMarker, romanMarker;
+import 'diff.dart';
 import 'images.dart';
 import 'inline_text.dart';
 import 'scope.dart';
@@ -224,6 +225,10 @@ class BlockView extends StatelessWidget {
         return _ButtonChip(block as ButtonBlock);
       case TableBlock():
         return _DataTableView(block as TableBlock);
+      case DiffBlock():
+        return DiffView(block as DiffBlock);
+      case DiffStatBlock():
+        return DiffStatView(block as DiffStatBlock);
     }
   }
 }

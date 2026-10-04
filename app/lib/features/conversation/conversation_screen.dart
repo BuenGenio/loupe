@@ -13,6 +13,7 @@ import '../../settings/app_settings.dart';
 import '../../shared/mail_actions.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
+import '../mailing_lists/list_providers.dart';
 import 'mail_streams.dart';
 import 'mailbox_picker.dart';
 import 'message_actions.dart';
@@ -136,8 +137,10 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
         if (!m.isSeen && _expanded.contains(m.id)) m.id,
     ];
     if (ids.isEmpty) return;
+    // Read, a message that woke from snooze is ordinary again.
+    final woken = messages.any((m) => ids.contains(m.id) && m.keywords.contains(Keywords.newAgain));
     try {
-      await _repo.setKeywords(ids, add: {Keywords.seen});
+      await _repo.setKeywords(ids, add: {Keywords.seen}, remove: woken ? {Keywords.newAgain} : const {});
     } on MailException {
       // Not worth interrupting reading; the list still shows it unread.
     }
@@ -166,6 +169,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
     var s =
         _session ??
         prefs.settingsFor(m.sender?.email) ??
+        prefs.listSettings(m.listId) ??
         ReaderSettings(mode: app.defaultReaderMode, plainFont: app.plainFont);
     if (_forceOriginal.contains(m.id)) s = s.copyWith(mode: ReaderMode.original);
     return s;
@@ -250,19 +254,29 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
     await _moveAway((a) => a.moveEmails(emails, target.id), close: close);
   }
 
-  void _reply(EmailSummary m, ComposeMode mode) =>
-      openCompose(context, ComposeArgs(mode: mode, sourceEmailId: m.id, accountId: m.accountId));
+  void _reply(EmailSummary m, ComposeMode mode, {bool toList = false}) =>
+      openCompose(context, ComposeArgs(mode: mode, sourceEmailId: m.id, accountId: m.accountId, toList: toList));
 
   Future<void> _replyMenu(EmailSummary m) async {
-    final mode = await showActionSheet<ComposeMode>(
+    final choice = await showActionSheet<(ComposeMode, bool)>(
       context,
-      actions: const [
-        SheetAction('Reply', ComposeMode.reply),
-        SheetAction('Reply All', ComposeMode.replyAll),
-        SheetAction('Forward', ComposeMode.forward),
+      actions: [
+        const SheetAction('Reply', (ComposeMode.reply, false)),
+        const SheetAction('Reply All', (ComposeMode.replyAll, false)),
+        if (listPostAddress(m.listPost) != null) const SheetAction('Reply to List', (ComposeMode.reply, true)),
+        const SheetAction('Forward', (ComposeMode.forward, false)),
       ],
     );
-    if (mode != null && mounted) _reply(m, mode);
+    if (choice != null && mounted) _reply(m, choice.$1, toList: choice.$2);
+  }
+
+  Future<void> _setMuted(EmailSummary m, bool muted) async {
+    final lists = mailingListsOf(_repo);
+    if (lists == null) return;
+    await _act(
+      () => lists.setThreadMuted(m.id, muted: muted),
+      done: muted ? 'Thread muted. New messages in it arrive read.' : 'Thread unmuted.',
+    );
   }
 
   Future<void> _openLink(Uri uri) async {
@@ -316,8 +330,28 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
     );
   }
 
+  /// Snoozes the conversation's messages in [m]'s mailbox (or gives them a
+  /// new time) and closes the conversation.
+  Future<void> _snooze(EmailSummary m) async {
+    final actions = _mailActions;
+    final emails = _thread(m);
+    final at = await actions.askSnoozeTime(current: m.snoozedUntil);
+    if (at == null || !mounted) return;
+    if (await actions.snoozeEmails(emails, at)) _close();
+  }
+
   Future<void> _showMenu(EmailSummary m, {required bool canArchive, required MailboxRole role}) async {
-    final action = await showMessageMenu(context, message: m, canArchive: canArchive, mailboxRole: role);
+    final muted = mailingListsOf(_repo) == null
+        ? null
+        : (ref.read(mutedThreadsProvider).value ?? const <String>{}).contains(m.threadId);
+    final action = await showMessageMenu(
+      context,
+      message: m,
+      canArchive: canArchive,
+      mailboxRole: role,
+      snoozed: _mailActions.isSnoozed(m),
+      muted: muted,
+    );
     if (action == null || !mounted) return;
     final single = (_messages?.length ?? 0) <= 1;
     switch (action) {
@@ -325,6 +359,10 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
         _reply(m, ComposeMode.reply);
       case MessageAction.replyAll:
         _reply(m, ComposeMode.replyAll);
+      case MessageAction.replyList:
+        _reply(m, ComposeMode.reply, toList: true);
+      case MessageAction.mute || MessageAction.unmute:
+        await _setMuted(m, action == MessageAction.mute);
       case MessageAction.forward:
         _reply(m, ComposeMode.forward);
       case MessageAction.toggleSeen:
@@ -338,6 +376,10 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
           onToggle: (k, on) =>
               _act(() => _repo.setKeywords([m.id], add: on ? {k} : const {}, remove: on ? const {} : {k})),
         );
+      case MessageAction.snooze:
+        await _snooze(m);
+      case MessageAction.wakeNow:
+        await _mailActions.wakeEmails(_thread(m));
       case MessageAction.move:
         await _move(m, [m], close: single);
       case MessageAction.archive:
@@ -455,8 +497,20 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-            child: Text(
-              target.subject.trim().isEmpty ? '(no subject)' : target.subject,
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(text: target.subject.trim().isEmpty ? '(no subject)' : target.subject),
+                  if ((ref.watch(mutedThreadsProvider).value ?? const <String>{}).contains(target.threadId))
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Icon(LoupeIcons.mute, size: 18, color: colors.secondaryText, semanticLabel: 'Muted'),
+                      ),
+                    ),
+                ],
+              ),
               style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, fontSize: 22),
             ),
           ),

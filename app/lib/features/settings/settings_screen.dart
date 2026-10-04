@@ -11,7 +11,9 @@ import '../../settings/app_settings.dart';
 import '../../settings/ui_state.dart';
 import '../../shared/grouped_list.dart';
 import '../../theme/theme.dart';
+import '../conversation/reader_prefs.dart';
 import '../conversation/security/security_provider.dart';
+import '../mailing_lists/technical_lists_screen.dart';
 import '../search/smart_mailbox_settings_screen.dart';
 import 'settings_widgets.dart';
 import '../../theme/loupe_icons.dart';
@@ -23,6 +25,7 @@ String swipeActionLabel(SwipeAction a) => switch (a) {
   SwipeAction.archive => 'Archive',
   SwipeAction.trash => 'Trash',
   SwipeAction.move => 'Move Message',
+  SwipeAction.snooze => 'Snooze',
   SwipeAction.more => 'More',
 };
 
@@ -177,6 +180,16 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
             GroupedRow(
+              key: const Key('technical-lists'),
+              leading: SettingsIcon(LoupeIcons.mailingList, colors.swipeTrash),
+              title: 'Technical Lists',
+              detail: switch (ref.watch(readerPrefsProvider).technicalLists.length) {
+                0 => 'None',
+                final n => '$n',
+              },
+              onTap: () => TechnicalListsScreen.push(context),
+            ),
+            GroupedRow(
               leading: SettingsIcon(LoupeIcons.images, colors.unreadDot),
               title: 'Load Remote Images',
               chevron: false,
@@ -209,6 +222,11 @@ class SettingsScreen extends ConsumerWidget {
               leading: SettingsIcon(LoupeIcons.notifications, colors.swipeTrash),
               title: 'Notifications',
               onTap: () => context.push(Routes.notificationSettings),
+            ),
+            GroupedRow(
+              leading: SettingsIcon(LoupeIcons.rules, colors.vip),
+              title: 'Rules',
+              onTap: () => context.push(Routes.rules),
             ),
             GroupedRow(
               leading: SettingsIcon(LoupeIcons.settings, colors.swipeMore),

@@ -8,6 +8,7 @@ import 'package:mail_model/mail_model.dart';
 
 import 'demo_data.dart';
 import 'demo_mime.dart';
+import 'demo_rules.dart';
 
 export 'demo_data.dart' show DemoAccounts, DemoPeople;
 
@@ -71,7 +72,7 @@ final class _Queued {
 ///   [SearchResults.fromServerIds]); acting on such a message syncs it.
 /// - Sending to an address at a `.invalid` domain fails, so the Outbox
 ///   shows a failed message with an error and Retry.
-class DemoMailRepository implements MailRepository {
+class DemoMailRepository implements MailRepository, MailingLists {
   DemoMailRepository({
     this.latency = const DemoLatency(),
     DateTime Function()? clock,
@@ -127,6 +128,9 @@ class DemoMailRepository implements MailRepository {
   final _remote = <String, DemoMessage>{};
   final _vips = <String>{};
 
+  /// Muted thread ids (local, like the live repository's).
+  final _muted = <String>{};
+
   /// Documents "on the server": account id → document name → content.
   /// Tests write here to play another device.
   final serverDocuments = <String, Map<String, String>>{};
@@ -140,21 +144,37 @@ class DemoMailRepository implements MailRepository {
   final _contentCache = <String, EmailContent>{};
   final _changes = StreamController<void>.broadcast();
   final _timers = <Timer>{};
+
+  /// Wakes the next message snoozed in this session on time. Seeded
+  /// snoozes wake on refresh (no timer pending in tests).
+  Timer? _snoozeTimer;
   int _incomingIndex = 0;
   int _nextId = 100000;
   bool _disposed = false;
 
   static Future<Uint8List> _loadFromBundle(String path) async => (await rootBundle.load(path)).buffer.asUint8List();
 
+  /// Rules, with simulated ManageSieve servers (see [DemoRules]).
+  @override
+  late final DemoRules rules = DemoRules(
+    this,
+    accounts: _accounts,
+    mailboxes: [..._mailboxes.values],
+    clock: _clock,
+    latency: latency.content,
+  );
+
   /// Stops timers and closes streams.
   void dispose() {
     _disposed = true;
+    rules.dispose();
     for (final t in _timers) {
       t.cancel();
     }
     for (final q in _outbox.values) {
       q.timer?.cancel();
     }
+    _snoozeTimer?.cancel();
     _timers.clear();
     _outbox.clear();
     unawaited(_changes.close());
@@ -205,7 +225,11 @@ class DemoMailRepository implements MailRepository {
 
   static bool _isBin(Mailbox box) => box.role == MailboxRole.trash || box.role == MailboxRole.junk;
 
-  static bool _isRegular(Mailbox box) => !_isBin(box) && box.role != MailboxRole.sent && box.role != MailboxRole.drafts;
+  /// Bins and the Snoozed folder stay out of Flagged.
+  static bool _isAside(Mailbox box) => _isBin(box) || Snooze.isFolder(box);
+
+  static bool _isRegular(Mailbox box) =>
+      !_isAside(box) && box.role != MailboxRole.sent && box.role != MailboxRole.drafts;
 
   Set<String> _myAddresses(String accountId) {
     final a = _account(accountId);
@@ -441,7 +465,7 @@ class DemoMailRepository implements MailRepository {
       if (box == null) continue;
       final s = m.summary;
       if (box.role == MailboxRole.drafts) drafts++;
-      if (s.isFlagged && !_isBin(box)) flagged++;
+      if (s.isFlagged && !_isAside(box)) flagged++;
       if (s.isSeen) continue;
       if (box.role == MailboxRole.inbox) inboxes++;
       if (_isRegular(box)) {
@@ -469,7 +493,7 @@ class DemoMailRepository implements MailRepository {
       VirtualMailboxRef(:final kind) => switch (kind) {
         VirtualMailbox.allInboxes => box.role == MailboxRole.inbox,
         VirtualMailbox.unread => !s.isSeen && _isRegular(box),
-        VirtualMailbox.flagged => s.isFlagged && !_isBin(box),
+        VirtualMailbox.flagged => s.isFlagged && !_isAside(box),
         VirtualMailbox.vip => _isVip(s) && _isRegular(box),
         VirtualMailbox.allDrafts => box.role == MailboxRole.drafts,
         VirtualMailbox.allSent => box.role == MailboxRole.sent,
@@ -599,14 +623,16 @@ class DemoMailRepository implements MailRepository {
     }
     _notify();
     await _wait(_jitter(latency.network));
+    _wakeDue();
     final roll = _random.nextDouble();
     final count = roll < 0.35 ? 0 : (roll < 0.8 ? 1 : 2);
     final candidates = DemoSeed.incoming.where((t) => accounts.contains(t.$1)).toList();
+    final arrived = <EmailSummary>[];
     for (var i = 0; i < count && candidates.isNotEmpty; i++) {
       final (accountId, from, subject, text) = candidates[(_incomingIndex++) % candidates.length];
       final inbox = _roleBox(accountId, MailboxRole.inbox);
       if (inbox == null) continue;
-      _addLocal(
+      final message = _addLocal(
         accountId: accountId,
         mailboxId: inbox.id,
         from: from,
@@ -616,7 +642,9 @@ class DemoMailRepository implements MailRepository {
         at: _clock().subtract(Duration(seconds: 30 * i)),
         seen: false,
       );
+      arrived.add(message.summary);
     }
+    await rules.runOnArrivals(arrived);
     final now = _clock();
     for (final id in accounts) {
       if (_account(id) == null) continue;
@@ -627,6 +655,99 @@ class DemoMailRepository implements MailRepository {
 
   @override
   Stream<List<AccountSyncStatus>> watchSyncStatus() => _watch(() => [for (final a in _accounts) ?_sync[a.id]]);
+
+  // Mailing lists --------------------------------------------------------------------
+
+  /// Synced list mail outside Trash and Junk, by List-Id.
+  Map<String, List<DemoMessage>> _listMail() {
+    final out = <String, List<DemoMessage>>{};
+    for (final m in _messages.values) {
+      final id = m.summary.listId;
+      final box = _mailboxes[m.summary.mailboxId];
+      if (id == null || box == null || _isBin(box)) continue;
+      (out[id] ??= []).add(m);
+    }
+    return out;
+  }
+
+  bool _isMuted(EmailSummary s) => _muted.contains(s.threadId ?? s.id);
+
+  @override
+  Stream<List<MailingList>> watchMailingLists() => _watch(() {
+    final lists = <MailingList>[];
+    for (final MapEntry(key: id, value: mail) in _listMail().entries) {
+      mail.sort(_newestFirst);
+      final summaries = [for (final m in mail) m.summary];
+      lists.add(
+        MailingList(
+          id: id,
+          name: summaries.map((s) => s.listName).nonNulls.firstOrNull ?? id,
+          postAddress: summaries.map((s) => listPostAddress(s.listPost)).nonNulls.firstOrNull,
+          messageCount: mail.length,
+          unreadCount: summaries.where((s) => !s.isSeen && !_isMuted(s)).length,
+          lastActivity: summaries.first.receivedAt,
+          accountIds: {for (final s in summaries) s.accountId}.toList()..sort(),
+        ),
+      );
+    }
+    return lists..sort((a, b) => b.lastActivity!.compareTo(a.lastActivity!));
+  });
+
+  @override
+  Stream<List<ListThread>> watchListThreads(String listId, {bool includeMuted = false, int limit = 200}) => _watch(() {
+    final byThread = <String, List<EmailSummary>>{};
+    for (final m in _listMail()[listId.toLowerCase()] ?? const <DemoMessage>[]) {
+      if (!includeMuted && _isMuted(m.summary)) continue;
+      (byThread[m.summary.threadId ?? m.id] ??= []).add(m.summary);
+    }
+    final threads = <ListThread>[];
+    for (final MapEntry(key: threadId, value: mail) in byThread.entries) {
+      mail.sort((a, b) => a.receivedAt.compareTo(b.receivedAt));
+      final participants = <EmailAddress>[];
+      for (final s in mail) {
+        for (final f in s.from) {
+          if (!participants.any((p) => p.email.toLowerCase() == f.email.toLowerCase())) participants.add(f);
+        }
+      }
+      threads.add(
+        ListThread(
+          threadId: threadId,
+          first: mail.first,
+          latest: mail.last,
+          messageCount: mail.length,
+          unreadCount: mail.where((s) => !s.isSeen).length,
+          participants: participants,
+          patchCount: ListThread.countPatches(mail.map((s) => s.subject), series: PatchTag.parse(mail.first.subject)),
+          isMuted: _muted.contains(threadId),
+        ),
+      );
+    }
+    threads.sort((a, b) => b.lastActivity.compareTo(a.lastActivity));
+    return threads.take(limit).toList();
+  });
+
+  @override
+  Stream<Set<String>> watchMutedThreads() => _watch(() => Set.unmodifiable(_muted));
+
+  @override
+  Future<void> setThreadMuted(String emailId, {required bool muted}) async {
+    final m = _local(emailId);
+    if (m == null) throw const MailException(MailErrorKind.notFound, 'This message no longer exists.');
+    final threadId = m.summary.threadId ?? m.id;
+    if (!muted) {
+      _muted.remove(threadId);
+      _notify();
+      return;
+    }
+    _muted.add(threadId);
+    // Muting marks the conversation read, as the live repository does.
+    for (final o in _messages.values) {
+      if ((o.summary.threadId ?? o.id) == threadId && !o.summary.isSeen) {
+        o.summary = o.summary.copyWith(keywords: {...o.summary.keywords, Keywords.seen});
+      }
+    }
+    _notify();
+  }
 
   // Messages ------------------------------------------------------------------------
 
@@ -870,6 +991,99 @@ class DemoMailRepository implements MailRepository {
     }
     _notify();
   }
+
+  // Snooze --------------------------------------------------------------------------------
+
+  /// The account's Snoozed folder, added when it has none yet.
+  Mailbox _snoozeBox(String accountId) {
+    final existing = _mailboxes.values.where((m) => m.accountId == accountId && Snooze.isFolder(m)).firstOrNull;
+    if (existing != null) return existing;
+    final id = MailIds.mailbox(accountId, Snooze.folderName);
+    return _mailboxes[id] = Mailbox(
+      id: id,
+      accountId: accountId,
+      name: Snooze.folderName,
+      path: Snooze.folderName,
+      sortOrder: _mailboxes.length,
+    );
+  }
+
+  @override
+  Future<SnoozeStorage> snooze(List<String> emailIds, DateTime until) async {
+    final keyword = Snooze.keyword(until);
+    for (final id in emailIds) {
+      final m = _local(id);
+      if (m == null) continue;
+      final k = m.summary.keywords;
+      m.summary = m.summary.copyWith(
+        mailboxId: _snoozeBox(m.summary.accountId).id,
+        keywords: {...k.difference(Snooze.keywordsIn(k)), keyword},
+      );
+    }
+    _armSnoozeTimer();
+    _notify();
+    return SnoozeStorage.server;
+  }
+
+  @override
+  Future<void> unsnooze(List<String> emailIds) async {
+    for (final id in emailIds) {
+      final m = _local(id);
+      if (m != null) _wake(m);
+    }
+    _armSnoozeTimer();
+    _notify();
+  }
+
+  /// Back to the Inbox, unread, `$new`, without its snooze keywords.
+  void _wake(DemoMessage m) {
+    final k = m.summary.keywords;
+    m.summary = m.summary.copyWith(
+      mailboxId: _roleBox(m.summary.accountId, MailboxRole.inbox)?.id,
+      keywords: {
+        ...k.difference({...Snooze.keywordsIn(k), Keywords.seen}),
+        Keywords.newAgain,
+      },
+    );
+  }
+
+  bool _isSnoozed(DemoMessage m) => _mailboxes[m.summary.mailboxId]?.let(Snooze.isFolder) ?? false;
+
+  /// Wakes the messages whose time has come.
+  void _wakeDue() {
+    final now = _clock();
+    for (final m in _messages.values) {
+      final t = m.summary.snoozedUntil;
+      if (t != null && !t.isAfter(now) && _isSnoozed(m)) _wake(m);
+    }
+  }
+
+  void _armSnoozeTimer() {
+    _snoozeTimer?.cancel();
+    _snoozeTimer = null;
+    if (_disposed) return;
+    DateTime? next;
+    for (final m in _messages.values) {
+      final t = m.summary.snoozedUntil;
+      if (t != null && _isSnoozed(m) && (next == null || t.isBefore(next))) next = t;
+    }
+    if (next == null) return;
+    final delay = next.difference(_clock());
+    _snoozeTimer = Timer(delay.isNegative ? Duration.zero : delay, () {
+      _snoozeTimer = null;
+      if (_disposed) return;
+      _wakeDue();
+      _notify();
+    });
+  }
+
+  @override
+  Stream<List<EmailSummary>> watchSnoozed() => _watch(
+    () => [
+      for (final m in _messages.values)
+        if (_isSnoozed(m)) m.summary,
+    ]..sort(Snooze.compare),
+  );
 
   // Search ------------------------------------------------------------------------------
 

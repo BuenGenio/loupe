@@ -1,0 +1,31 @@
+From: Jörg Müller <joerg@example.org>
+
+frob: make the cache size configurable
+
+A long line that git send-email sent as quoted-printable with a soft line break in the middle of it, which the transport decoding joined again before the reader saw it.
+
+Signed-off-by: Jörg Müller <joerg@example.org>
+---
+ drivers/frob/Kconfig | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/frob/Kconfig b/drivers/frob/Kconfig
+index 0a1b2c3..4d5e6f7 100644
+--- a/drivers/frob/Kconfig
++++ b/drivers/frob/Kconfig
+@@ -8,6 +8,13 @@ config FROB
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called frob.
+
++config FROB_CACHE_SIZE
++	int "Entries in the frob cache (≥ 1)"
++	depends on FROB
++	default 64
++	help
++	  Size of the per-context cache; = 0 disables it.
++
+ config FROB_DEBUG
+ 	bool "Debug output"
+ 	depends on FROB
+-- 
+2.43.0
