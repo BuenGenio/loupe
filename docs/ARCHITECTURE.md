@@ -12,6 +12,9 @@ app (UI, Riverpod, go_router)
               └─ TransportFactory ◄── mail_imap (enough_mail; IMAP, SMTP, MIME, discovery)
                                   ◄── mail_jmap (Phase 3)
 mail_platform: CredentialStore (keychain), OAuth sign-in
+mail_crypto: OpenPGP (dart_pg, vendored in third_party/): keys, keyring,
+             PGP/MIME reading and writing, Autocrypt; the app wraps loadContent
+             with it and hands its composer to mail_imap
 mail_model: every type and interface above; no I/O, no dependencies
 ```
 
@@ -31,6 +34,7 @@ The packages are developed in parallel. These are the seams:
 | `ReadableMessageView`, `ReaderSettings`, `showImageGallery`, `analyzeContent` (link and privacy findings), `unwrapRedirect`, `inspectHost` | readable `lib/src/api.dart` | readable | app |
 | `Rule`, `RuleAction`, `MailRules` (`MailRepository.rules`) | mail_model `src/rules.dart` | app `DemoRules`; mail_sync `LiveRules` | app |
 | `compileSieve`, `generateLoupeScript`, `parseLoupeScript`, `planInclude`, `SieveConnector`, `ServerRules`, `RuleRunner` | mail_sieve `lib/mail_sieve.dart` | mail_sieve | mail_sync, app demo |
+| `PgpBackend` (swappable OpenPGP engine), `Keyring`, `PgpMimeReader`, `PgpMessageComposer` (a `MessageComposer` around another), `OutgoingMessage.security` | mail_crypto `lib/mail_crypto.dart`, mail_model `src/outgoing.dart` | mail_crypto (`DartPgBackend`) | app (reader, compose, settings, live composer) |
 
 Rules:
 
@@ -47,6 +51,9 @@ Rules:
 - **Settings on the server:** `MailTransport.readDocuments`/`writeDocument` keep small app documents on the user's
   mail server (an IMAP METADATA annotation, else a message in the `Loupe Settings` folder). Smart Mailboxes use them;
   see [smart-mailboxes-format.md](smart-mailboxes-format.md).
+- **Message bodies in the app** come from `contentLoaderProvider` (`ContentLoader.loadContent` and
+  `loadAttachment`), not the repository directly: it decrypts and verifies OpenPGP mail and learns
+  Autocrypt keys. Decrypted attachments have `pgp:` part ids.
 - **Changing a contract:** edit mail_model (or the API file) in its own commit, run `dart analyze` on the whole workspace, and fix every user in the same change.
 
 ## Background work (Android)

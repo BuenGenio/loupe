@@ -1,0 +1,8 @@
+# Vendored third-party code (BSD-3-Clause): kept as upstream wrote it, so
+# Loupe's lints don't apply. Only compiler errors would be reported.
+analyzer:
+  errors:
+    unused_import: ignore
+    unused_element: ignore
+    unused_local_variable: ignore
+    unnecessary_import: ignore

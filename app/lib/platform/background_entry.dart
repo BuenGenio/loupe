@@ -135,7 +135,7 @@ final class LiveBackgroundMail implements BackgroundMail {
 
   static Future<LiveBackgroundMail> open() async {
     final store = await openLiveStore(createKey: false);
-    return LiveBackgroundMail(store, buildLiveRepository(store));
+    return LiveBackgroundMail(store, buildLiveRepository(store, keys: await backgroundSendKeys()));
   }
 
   final MailStore _store;

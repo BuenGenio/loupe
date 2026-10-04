@@ -15,6 +15,8 @@ import 'features/conversation/raw_source_screen.dart';
 import 'features/mailing_lists/mailing_list_screen.dart';
 import 'features/message_list/message_list_screen.dart';
 import 'features/onboarding/welcome_screen.dart';
+import 'features/openpgp/address_settings_screens.dart';
+import 'features/openpgp/encryption_settings_screen.dart';
 import 'features/outbox/outbox_screen.dart';
 import 'features/panes/mail_home.dart';
 import 'features/rules/rule_editor_screen.dart';
@@ -47,6 +49,12 @@ abstract final class Routes {
   static const swipeSettings = '/settings/swipes';
   static const advancedSettings = '/settings/advanced';
   static const notificationSettings = '/settings/notifications';
+
+  /// OpenPGP keys and settings.
+  static const encryption = '/settings/encryption';
+  static const generateKey = '/settings/encryption/generate';
+  static String encryptionKey(String fingerprint) => '/settings/encryption/key/$fingerprint';
+  static String encryptionAddress(String email) => '/settings/encryption/address/${Uri.encodeComponent(email)}';
 
   /// Messages waiting to be sent (scheduled, queued, failed).
   static const outbox = '/outbox';
@@ -213,6 +221,25 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: 'edit/:id',
                 pageBuilder: (context, state) =>
                     MaterialPage(fullscreenDialog: true, child: RuleEditorScreen(ruleId: state.pathParameters['id']!)),
+              ),
+            ],
+          ),
+          GoRoute(
+            path: 'encryption',
+            builder: (context, state) => const EncryptionSettingsScreen(),
+            routes: [
+              GoRoute(
+                path: 'generate',
+                builder: (context, state) =>
+                    GenerateKeyScreen(email: state.extra is String ? state.extra! as String : null),
+              ),
+              GoRoute(
+                path: 'key/:fingerprint',
+                builder: (context, state) => KeyDetailsScreen(fingerprint: state.pathParameters['fingerprint']!),
+              ),
+              GoRoute(
+                path: 'address/:email',
+                builder: (context, state) => AddressEncryptionScreen(email: state.pathParameters['email']!),
               ),
             ],
           ),

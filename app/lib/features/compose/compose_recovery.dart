@@ -69,6 +69,7 @@ final class ComposeRecord {
         'mode': message.mode.name,
         'sourceEmailId': message.sourceEmailId,
         'draftId': message.draftId,
+        if (!message.security.isPlain) 'security': message.security.toJson(),
       },
     });
   }
@@ -110,6 +111,7 @@ final class ComposeRecord {
           mode: ComposeMode.values.byName(m['mode']! as String),
           sourceEmailId: m['sourceEmailId'] as String?,
           draftId: m['draftId'] as String?,
+          security: OutgoingSecurity.fromJson((m['security'] as Map?)?.cast()),
         ),
       );
     } on Object {
