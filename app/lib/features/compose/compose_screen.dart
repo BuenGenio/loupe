@@ -15,6 +15,12 @@ import '../../shared/format.dart';
 import '../../theme/theme.dart';
 import '../conversation/attachments.dart';
 import '../conversation/sheets.dart';
+import '../openpgp/compose_security.dart';
+import '../openpgp/content_loader.dart';
+import '../openpgp/openpgp_providers.dart';
+
+import 'package:mail_crypto/mail_crypto.dart' show draftSecurityFrom;
+
 import 'compose_args.dart';
 import 'compose_recovery.dart';
 import 'compose_text.dart';
@@ -69,6 +75,12 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
   final _bodyFocus = FocusNode();
 
   final _attachments = <OutgoingAttachment>[];
+
+  /// Encrypt and Sign (OpenPGP).
+  final _security = ComposeSecurityController();
+
+  /// Replying to an encrypted message: encryption is suggested.
+  bool _sourceEncrypted = false;
   List<MailAccount> _accounts = const [];
   MailAccount? _account;
   Identity? _identity;
@@ -130,6 +142,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     }
     // Swiped away from the app switcher comes after this: save what's there.
     _lifecycle = AppLifecycleListener(onHide: _saveNow, onPause: _saveNow);
+    ref.listenManual(keyringStateProvider, (_, _) => _updateSecurity());
     unawaited(_prepare());
   }
 
@@ -147,14 +160,34 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     _toFocus.dispose();
     _ccFocus.dispose();
     _bodyFocus.dispose();
+    _security.dispose();
     super.dispose();
   }
 
   void _changed() {
     if (!mounted) return;
+    _updateSecurity();
     setState(() {});
     _scheduleAutosave();
   }
+
+  /// Follows the sender and the recipients with the Encrypt and Sign toggles.
+  void _updateSecurity() {
+    final state = ref.read(keyringStateProvider).value;
+    if (state == null) return;
+    _security.update(
+      state: state,
+      from: _identity?.email,
+      recipients: [
+        for (final c in [_to, _cc, _bcc]) ...c.withPending.map((a) => a.email),
+      ],
+      replyToEncrypted: _sourceEncrypted,
+    );
+  }
+
+  /// [message] as a draft: encrypted only to the sender, choices kept.
+  OutgoingMessage _asDraft(OutgoingMessage message) =>
+      message.security.isPlain ? message : message.copyWith(security: message.security.forDraft());
 
   String _snapshot() => [
     for (final c in [_to, _cc, _bcc]) c.withPending.map((a) => a.email).join(','),
@@ -163,6 +196,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     for (final a in _attachments) '${a.filename}:${a.data.length}',
     _identity?.id,
     _sendAt?.millisecondsSinceEpoch,
+    _security.manualSnapshot,
   ].join('\u0000');
 
   bool get _dirty => _initial == null || _snapshot() != _initial;
@@ -236,7 +270,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       if (message == null || snapshot == _lastSaved) return;
       final generation = _saveGeneration;
       try {
-        final id = await repo.saveDraft(message);
+        final id = await repo.saveDraft(_asDraft(message));
         if (generation != _saveGeneration) {
           unawaited(repo.deleteDraft(id).catchError((Object _) {}));
           return;
@@ -367,6 +401,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     _draftId = m.draftId;
     _inReplyTo = m.inReplyTo;
     _references = m.references;
+    _security.restore(m.security);
   }
 
   Future<String?> _prepareFromSource(ComposeArgs args) async {
@@ -382,7 +417,8 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     String? warning;
     EmailContent? content;
     try {
-      content = await _repo.loadContent(source.id);
+      content = await ref.read(contentLoaderProvider).loadContent(source.id);
+      _sourceEncrypted = pgpStatusOf(content)?.encrypted ?? false;
     } on MailException catch (e) {
       warning = e.message;
     }
@@ -431,8 +467,13 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     _inReplyTo = draft.inReplyTo;
     _references = draft.references;
     try {
-      final content = await _repo.loadContent(draft.id);
+      final content = await ref.read(contentLoaderProvider).loadContent(draft.id);
       if (!mounted) return null;
+      // An encrypted draft comes back with its choices.
+      final security =
+          draftSecurityFrom(content.headers) ??
+          ((pgpStatusOf(content)?.encrypted ?? false) ? const OutgoingSecurity(encrypt: true, sign: true) : null);
+      if (security != null) _security.restore(security);
       _body.text = ComposeText.plainTextOf(content);
       return await _loadAttachments(draft.id, content);
     } on MailException catch (e) {
@@ -446,7 +487,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     const lost = 'The attachments couldn’t be recovered. Add them again.';
     if (draftId == null) return lost;
     try {
-      final content = await _repo.loadContent(draftId);
+      final content = await ref.read(contentLoaderProvider).loadContent(draftId);
       if (!mounted) return null;
       return await _loadAttachments(draftId, content);
     } on MailException {
@@ -457,7 +498,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
   Future<String?> _loadAttachments(String emailId, EmailContent content) async {
     try {
       for (final a in content.visibleAttachments) {
-        final data = await _repo.loadAttachment(emailId, a.partId);
+        final data = await ref.read(contentLoaderProvider).loadAttachment(emailId, a.partId);
         if (!mounted) return null;
         _attachments.add(OutgoingAttachment(filename: a.filename ?? 'attachment', mimeType: a.mimeType, data: data));
       }
@@ -663,6 +704,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       mode: _mode,
       sourceEmailId: _sourceEmailId,
       draftId: _draftId,
+      security: _security.value,
     );
   }
 
@@ -687,11 +729,15 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       final send = await _confirm('No Subject', 'This message has no subject. Send it anyway?', confirm: 'Send');
       if (!send) return;
     }
+    // OpenPGP: unlock the signing key, settle recipients without a key.
+    if (!mounted) return;
+    final security = await _security.prepareToSend(context, ref);
+    if (security == null || !mounted) return;
     // The message goes out with the draft's final id; sending deletes the draft.
     setState(() => _busy = true);
     await _stopAutosave();
     if (!mounted) return;
-    final message = _message();
+    final message = _message()?.copyWith(security: security);
     if (message == null) {
       setState(() => _busy = false);
       return;
@@ -709,7 +755,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       if (_outboxId case final id?) {
         if (await repo.cancelSend(id) == null) {
           // It went out while being edited: keep the edits.
-          await repo.saveDraft(message);
+          await repo.saveDraft(_asDraft(message));
           _closeNow();
           showSnack(messenger, 'It was sent before your changes, which are saved in Drafts.');
           return;
@@ -804,7 +850,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
           // Usually autosave has already done it.
           await _stopAutosave();
           final message = _message();
-          if (message != null && _snapshot() != _lastSaved) await _repo.saveDraft(message);
+          if (message != null && _snapshot() != _lastSaved) await _repo.saveDraft(_asDraft(message));
           _forgetLocal();
           _closeNow();
           showSnack(messenger, 'Draft saved');
@@ -828,7 +874,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
         if (_originalDraftId == null) {
           await _repo.deleteDraft(saved);
         } else if (_message() case final message?) {
-          await _repo.saveDraft(message);
+          await _repo.saveDraft(_asDraft(message));
         }
       } on MailException {
         // Not worth keeping the screen open for.
@@ -1046,6 +1092,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
                   ),
                 ),
               ),
+              ComposeSecurityBar(controller: _security),
               if (_attachments.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),

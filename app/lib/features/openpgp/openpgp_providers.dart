@@ -135,6 +135,21 @@ final openPgpServiceProvider = FutureProvider<OpenPgpService>((ref) async {
   );
 });
 
+/// What the composer reads at send time: [keyring]'s state and the
+/// session's unlocked keys (the session of the moment: it changes with the mode).
+final class SessionSendKeys implements PgpSendKeys {
+  SessionSendKeys(this.keyring, this.session);
+
+  final Keyring keyring;
+  final KeySession Function() session;
+
+  @override
+  KeyringState get state => keyring.state;
+
+  @override
+  PgpKey? unlockedKey(String fingerprint) => session()[fingerprint];
+}
+
 /// Builds [builder] once the OpenPGP service is ready; [fallback] until then.
 class WithOpenPgp extends ConsumerWidget {
   const WithOpenPgp({super.key, required this.builder, this.fallback = const SizedBox.shrink()});

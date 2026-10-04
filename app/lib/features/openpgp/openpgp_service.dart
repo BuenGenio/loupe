@@ -35,8 +35,11 @@ final class OpenPgpService implements PgpSendKeys {
     required this.prompt,
     DateTime Function()? clock,
   }) : _clock = clock ?? DateTime.now {
-    unawaited(_pinUnprotectedKeys());
+    ready = _pinUnprotectedKeys();
   }
+
+  /// Completes once keys stored without a passphrase are unlocked.
+  late final Future<void> ready;
 
   final Keyring keyring;
   final KeySession session;

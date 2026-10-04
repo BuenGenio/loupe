@@ -2,12 +2,15 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_imap/mail_imap.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:mail_platform/mail_platform.dart';
 import 'package:mail_store/mail_store.dart';
 import 'package:mail_sync/mail_sync.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../features/openpgp/openpgp_providers.dart';
 
 /// Keychain entry holding the database encryption key.
 const _databaseKeyName = 'loupe.database.key';
@@ -22,9 +25,18 @@ Future<MailRepository> createLiveRepository(Ref ref) async {
   // the live gate, and the user decides.
   final store = await MailStore.open('${directory.path}/loupe.db', encryptionKey: key);
   final credentials = CredentialsService(store: SecureCredentialStore(secrets));
+  // Before the first send: the composer signs, encrypts and adds Autocrypt
+  // headers synchronously from the keyring and the unlocked keys.
+  final keyring = await ref.watch(liveKeyringProvider.future);
+  await (await ref.read(openPgpServiceProvider.future)).ready;
+  final composer = PgpMessageComposer(
+    MimeMessageComposer(),
+    SessionSendKeys(keyring, () => ref.read(keySessionProvider)),
+    backend: ref.read(pgpBackendProvider),
+  );
   final repository = LiveMailRepository(
     store,
-    ImapTransportFactory(),
+    ImapTransportFactory(composer: composer),
     credentials.store,
     refreshOAuth: (account, current) => credentials.oauth.refresh(account.provider, current),
   );
