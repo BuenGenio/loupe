@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +16,24 @@ import '../../theme/theme.dart';
 import 'search_session.dart';
 import 'search_view.dart';
 import '../../theme/loupe_icons.dart';
+
+/// Where a Smart Mailbox is kept, for its detail view: its icon and text.
+(IconData, String) smartMailboxSyncLabel(
+  SmartMailbox box, {
+  required String? home,
+  required List<MailAccount> accounts,
+  required SmartMailboxSyncStatus status,
+}) {
+  final ownerId = box.accountId ?? home;
+  final owner = accounts.where((a) => a.id == ownerId).firstOrNull;
+  if (home == null || owner == null) return (LoupeIcons.thisDevice, 'On this device only');
+  final name = owner.displayName;
+  if (status.newerFormat.contains(owner.id)) return (LoupeIcons.warning, 'Not synced: $name has a newer format');
+  if (status.pending || status.failed.containsKey(owner.id) || !status.synced.containsKey(owner.id)) {
+    return (LoupeIcons.syncPending, 'Waiting to sync to $name');
+  }
+  return (LoupeIcons.synced, 'Synced to $name');
+}
 
 /// A saved search, shown like a mailbox.
 class SmartMailboxScreen extends ConsumerStatefulWidget {
@@ -74,6 +94,13 @@ class _SmartMailboxScreenState extends ConsumerState<SmartMailboxScreen> {
       );
     }
     final session = _sessionFor(box);
+    final colors = LoupeColors.of(context);
+    final (syncIcon, syncText) = smartMailboxSyncLabel(
+      box,
+      home: ref.watch(smartMailboxHomeProvider),
+      accounts: ref.watch(accountsProvider).value ?? const <MailAccount>[],
+      status: ref.watch(smartMailboxSyncStatusProvider),
+    );
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -81,7 +108,31 @@ class _SmartMailboxScreenState extends ConsumerState<SmartMailboxScreen> {
             title: box.name,
             trailing: [BarIconButton(icon: LoupeIcons.moreCircle, tooltip: 'More', onPressed: () => _menu(box))],
           ),
-          CupertinoSliverRefreshControl(onRefresh: session.rerun),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+              child: Row(
+                children: [
+                  Icon(syncIcon, size: 14, color: colors.secondaryText),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      syncText,
+                      style: LoupeTextStyles.of(context).footnote,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          CupertinoSliverRefreshControl(
+            onRefresh: () async {
+              unawaited(ref.read(smartMailboxesProvider.notifier).sync());
+              await session.rerun();
+            },
+          ),
           SearchSlivers(session: session, showSuggestions: false),
         ],
       ),

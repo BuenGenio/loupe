@@ -25,6 +25,9 @@ class FakeMailRepository implements MailRepository {
   /// Server documents: account id → name → content.
   final serverDocuments = <String, Map<String, String>>{};
 
+  /// Thrown by the server document calls while set (e.g. offline).
+  MailException? serverDocumentsError;
+
   /// Every call, as "method args" strings, in order.
   final log = <String>[];
   final keywordCalls = <({List<String> ids, Set<String> add, Set<String> remove})>[];
@@ -317,6 +320,7 @@ class FakeMailRepository implements MailRepository {
   @override
   Future<List<ServerDocument>> readServerDocuments(String accountId, String name) async {
     log.add('readServerDocuments $accountId $name');
+    if (serverDocumentsError case final e?) throw e;
     final content = serverDocuments[accountId]?[name];
     return [if (content != null) ServerDocument(content: content, storage: ServerStorage.metadata)];
   }
@@ -329,6 +333,7 @@ class FakeMailRepository implements MailRepository {
     List<ServerDocument> replaces = const [],
   }) async {
     log.add('writeServerDocument $accountId $name');
+    if (serverDocumentsError case final e?) throw e;
     (serverDocuments[accountId] ??= {})[name] = content;
     return ServerStorage.metadata;
   }

@@ -130,6 +130,9 @@ abstract final class LoupeIcons {
   static const IconData emailAddress = FluentIcons.mention_24_regular;
   static const IconData onServer = FluentIcons.cloud_24_regular;
   static const IconData offline = FluentIcons.cloud_off_24_regular;
+  static const IconData synced = FluentIcons.cloud_checkmark_24_regular;
+  static const IconData syncPending = FluentIcons.cloud_arrow_up_24_regular;
+  static const IconData thisDevice = FluentIcons.phone_24_regular;
   static const IconData privacy = FluentIcons.shield_lock_24_regular;
   static const IconData password = FluentIcons.key_24_regular;
   static const IconData serverSettings = FluentIcons.options_24_regular;

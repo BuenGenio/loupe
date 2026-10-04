@@ -127,9 +127,13 @@ class DemoMailRepository implements MailRepository {
   final _remote = <String, DemoMessage>{};
   final _vips = <String>{};
 
-  /// Documents "on the server" (simulated IMAP METADATA): account id →
-  /// document name → content. Tests write here to play another device.
+  /// Documents "on the server": account id → document name → content.
+  /// Tests write here to play another device.
   final serverDocuments = <String, Map<String, String>>{};
+
+  /// Demo accounts whose server has no METADATA: their documents live in a
+  /// Loupe Settings folder, created on the first write.
+  static const _withoutMetadata = {DemoAccounts.work};
   final _sync = <String, AccountSyncStatus>{};
   final _outbox = <String, _Queued>{};
   final _contentCache = <String, EmailContent>{};
@@ -1244,7 +1248,12 @@ class DemoMailRepository implements MailRepository {
     _requireAccount(accountId);
     await _wait(_jitter(latency.content));
     final content = serverDocuments[accountId]?[name];
-    return [if (content != null) ServerDocument(content: content, storage: ServerStorage.metadata)];
+    return [
+      if (content != null)
+        _withoutMetadata.contains(accountId)
+            ? ServerDocument(content: content, storage: ServerStorage.folder, ref: '$accountId/$name')
+            : ServerDocument(content: content, storage: ServerStorage.metadata),
+    ];
   }
 
   @override
@@ -1257,7 +1266,20 @@ class DemoMailRepository implements MailRepository {
     _requireAccount(accountId);
     await _wait(_jitter(latency.content));
     (serverDocuments[accountId] ??= {})[name] = content;
-    return ServerStorage.metadata;
+    if (!_withoutMetadata.contains(accountId)) return ServerStorage.metadata;
+    final folder = MailIds.mailbox(accountId, ServerDocuments.folderName);
+    if (!_mailboxes.containsKey(folder)) {
+      _mailboxes[folder] = Mailbox(
+        id: folder,
+        accountId: accountId,
+        name: ServerDocuments.folderName,
+        path: ServerDocuments.folderName,
+        isSubscribed: false,
+        sortOrder: _mailboxes.length,
+      );
+      _notify();
+    }
+    return ServerStorage.folder;
   }
 
   // People -----------------------------------------------------------------------------
