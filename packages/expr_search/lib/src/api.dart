@@ -1,6 +1,7 @@
 // PUBLIC API OF expr_search. The signatures in this file are a contract used
 // by the app, mail_imap, mail_store and mail_sync; change them only in
-// agreement with those packages. The bodies are temporary stubs.
+// agreement with those packages. The implementations live in syntax/, eval/
+// and compile/.
 
 import 'package:mail_model/mail_model.dart';
 

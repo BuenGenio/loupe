@@ -83,7 +83,7 @@ Parsed<DaySpan> parseDaySpan(String input, DateTime today) {
   }
   for (final (re, dayGroup, monthGroup) in [(_dayMonYear, 1, 2), (_monDayYear, 2, 1)]) {
     final m = re.firstMatch(v);
-    if (m == null) continue;
+    if (m == null || (m[4] != null && !_clock.hasMatch(m[4]!))) continue;
     final mon = _monthNumber(m[monthGroup]!);
     if (mon == null) continue;
     final d = _validDay(int.parse(m[3]!), mon, int.parse(m[dayGroup]!));

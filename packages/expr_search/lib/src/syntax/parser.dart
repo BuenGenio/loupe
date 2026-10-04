@@ -176,9 +176,13 @@ final class QueryParser {
     final first = _next();
     final toks = [first];
     if (first.type == TokType.word) {
-      while (_at(TokType.word)) {
-        toks.add(_next());
+      final words = [first];
+      for (var k = _i; k < _toks.length && _toks[k].type == TokType.word; k++) {
+        words.add(_toks[k]);
       }
+      final n = _phraseLength(ctx, words);
+      toks.addAll(words.sublist(1, n));
+      _i += n - 1;
     }
     final start = first.start;
     final end = toks.last.end;
@@ -202,6 +206,42 @@ final class QueryParser {
     final e = _term(ctx, atom);
     if (e == null && _errors.length > before) _badTokens.addAll(toks);
     return e;
+  }
+
+  /// How many of the consecutive [words] form the value. Text values take
+  /// the whole phrase (`s:electric bill`); single-word values (statuses,
+  /// sizes, ages) take one, so `is:unread invoice` is two terms; dates and
+  /// tag labels take the longest prefix that is a date or a label;
+  /// `only:` continues after commas.
+  int _phraseLength(OpSpec? op, List<Tok> words) {
+    if (op == null || words.length == 1) return words.length;
+    String joined(int n) => words.take(n).map((t) => t.text).join(' ');
+    switch (op.kind) {
+      case OpKind.status || OpKind.has || OpKind.keyword:
+      case OpKind.larger || OpKind.smaller || OpKind.olderThan || OpKind.newerThan:
+        return 1;
+      case OpKind.attachment:
+        return const {'yes', 'y', '1', 'no', 'n', '0'}.contains(words.first.text.toLowerCase()) ? 1 : words.length;
+      case OpKind.before || OpKind.after || OpKind.date:
+        for (var n = words.length < 6 ? words.length : 6; n > 1; n--) {
+          if (parseDaySpan(joined(n), today) is Ok) return n;
+        }
+        return 1;
+      case OpKind.tag:
+        for (var n = words.length; n > 1; n--) {
+          final label = joined(n).toLowerCase();
+          if (tags.any((t) => t.label.toLowerCase() == label)) return n;
+        }
+        return 1;
+      case OpKind.only:
+        var n = 1;
+        while (n < words.length && words[n - 1].text.endsWith(',')) {
+          n++;
+        }
+        return n;
+      default:
+        return words.length;
+    }
   }
 
   // ------------------------------------------------------------ terms

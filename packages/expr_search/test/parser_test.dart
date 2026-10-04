@@ -197,6 +197,27 @@ void main() {
       ('(re:a(b)c) f:x', and([re(TextField.subject, 'a(b)c'), from('x')])),
       ('re:/x/ f:y', and([re(TextField.subject, 'x', cs: true), from('y')])),
       ('re: x y', re(TextField.subject, 'x y')),
+      // Values that are not free text end where their value does.
+      ('is:unread invoice', and([unread, any('invoice')])),
+      ('is:(unread flagged)', and([unread, flagged])),
+      ('has:attachment report', and([hasAttachment, any('report')])),
+      ('larger:2M invoice', and([larger(2 * mb), any('invoice')])),
+      ('n:7 weekly report', and([since(2026, 9, 28), any('weekly report')])),
+      ('before:2026-03-01 invoice', and([before(2026, 3, 1), any('invoice')])),
+      ('before:1 Mar 2026 invoice', and([before(2026, 3, 1), any('invoice')])),
+      ('tag:to do invoice', and([kw(Keywords.label4), any('invoice')])),
+      ('tag:work invoice', and([kw(Keywords.label2), any('invoice')])),
+      ('a:yes invoice', and([hasAttachment, any('invoice')])),
+      ('a:my file', attachment('my file')),
+      ('kw:x y', and([kw('x'), any('y')])),
+      (
+        'only:tom, jerry invoice',
+        and([
+          and([toOnly('tom'), toOnly('jerry'), not(re(TextField.to, '^(?!.*(?:tom|jerry))'))]),
+          any('invoice'),
+        ]),
+      ),
+      ('acc:work mail', const AccountTerm('work mail')),
     ];
     for (final (input, expected) in cases) {
       test(input, () {
