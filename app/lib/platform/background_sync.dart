@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../features/notifications/app_icon_badge.dart';
 import '../features/notifications/new_mail_check.dart';
 import '../features/notifications/notification_settings.dart';
+import '../features/snooze/snooze_wakeups.dart';
 import '../providers.dart';
 import '../settings/app_mode.dart';
 import '../settings/app_settings.dart';
@@ -113,6 +114,8 @@ final class BackgroundSync {
       await updateAppIconBadge(prefs, repository, badge);
       final due = await mail.nextSendDue();
       if (due != null) await scheduler.scheduleWakeUp(due);
+      final wake = await nextSnoozeWake(repository, now: _clock());
+      if (wake != null) await scheduler.scheduleWakeUp(wake);
       return BackgroundSyncResult.synced;
     } finally {
       _mail = null;

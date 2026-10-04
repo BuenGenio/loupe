@@ -115,6 +115,10 @@ final class FakeServer {
   bool idle;
   bool uidPlus;
 
+  /// Stores keywords other than the system flags (PERMANENTFLAGS has `\*`).
+  /// When false, like Outlook.com, they are accepted but not kept.
+  bool storesKeywords = true;
+
   /// While true every operation fails with a connection error.
   bool offline = false;
   Duration latency = Duration.zero;
@@ -276,6 +280,9 @@ final class FakeServer {
   List<String> subjects(String path) => [for (final m in box(path).messages.values) m.subject];
 }
 
+/// What a server without `\*` in PERMANENTFLAGS still stores (Outlook.com's list).
+const _systemKeywords = {Keywords.seen, Keywords.answered, Keywords.flagged, Keywords.draft, r'$mdnsent'};
+
 /// A [MailTransport] over a [FakeServer].
 final class FakeTransport implements MailTransport {
   FakeTransport(this.server, this.account, this.credentials);
@@ -397,6 +404,12 @@ final class FakeTransport implements MailTransport {
     _box(mailbox).subscribed = subscribed;
   }
 
+  @override
+  Future<void> createMailbox(String path) async {
+    await _op('create:$path');
+    if (!server.mailboxes.containsKey(path)) server.addMailbox(path);
+  }
+
   MailboxSyncState _state(FakeMailbox mb, int oldest) =>
       MailboxSyncState({'uv': mb.uidValidity, 'next': mb.uidNext, 'oldest': oldest, 'modseq': mb.modseq});
 
@@ -420,6 +433,7 @@ final class FakeTransport implements MailTransport {
         totalCount: uids.length,
         unreadCount: mb.unread,
         hasOlder: uids.any((u) => u < oldest),
+        canStoreKeywords: server.storesKeywords,
       );
     }
     final next = prev['next']! as int;
@@ -442,6 +456,7 @@ final class FakeTransport implements MailTransport {
       totalCount: uids.length,
       unreadCount: mb.unread,
       hasOlder: uids.any((u) => u < oldest),
+      canStoreKeywords: server.storesKeywords,
     );
   }
 
@@ -499,7 +514,8 @@ final class FakeTransport implements MailTransport {
       final found = _find(id);
       if (found == null) continue;
       final (mb, m) = found;
-      m.keywords = {...m.keywords.difference(remove), ...add};
+      final kept = server.storesKeywords ? add : add.where(_systemKeywords.contains);
+      m.keywords = {...m.keywords.difference(remove), ...kept};
       m.modseq = ++mb.modseq;
     }
   }

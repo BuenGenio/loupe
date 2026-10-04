@@ -151,6 +151,12 @@ class FakeMail implements MailRepository {
   }
 
   @override
+  Stream<List<EmailSummary>> watchSnoozed() => Stream.value([
+    for (final e in emails.values)
+      if (e.snoozedUntil != null) e,
+  ]);
+
+  @override
   dynamic noSuchMethod(Invocation invocation) => throw UnimplementedError('${invocation.memberName}');
 }
 

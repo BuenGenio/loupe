@@ -29,6 +29,11 @@ const maxInlineBytesPerMessage = 4 * 1024 * 1024;
 /// mailboxes, and Trash/Junk are not wanted there.
 const _virtualExcludedRoles = "'trash', 'junk', 'all', 'flagged', 'important'";
 
+/// SQL true for `mailboxes m` that are their account's snooze folder (see
+/// `Snooze.isFolderPath`). Snoozed messages stay out of Unread, Flagged and
+/// VIP until they wake.
+const _snoozeFolderSql = "(m.is_selectable = 1 AND lower(m.path) IN ('snoozed', 'inbox.snoozed', 'inbox/snoozed'))";
+
 /// SQL listing the user's own addresses (account and identity addresses).
 const _meSql =
     "SELECT lower(a.email) AS addr FROM accounts a UNION SELECT lower(json_extract(i.value, '\$.email')) "
@@ -708,11 +713,13 @@ final class MailStore {
       case VirtualMailboxRef(:final kind):
         return switch (kind) {
           VirtualMailbox.allInboxes => "m.role = 'inbox'",
-          VirtualMailbox.unread => "e.is_seen = 0 AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')",
-          VirtualMailbox.flagged => 'e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles)',
+          VirtualMailbox.unread =>
+            "e.is_seen = 0 AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $_snoozeFolderSql",
+          VirtualMailbox.flagged =>
+            'e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles) AND NOT $_snoozeFolderSql',
           VirtualMailbox.vip =>
             'e.from_email IN (SELECT email FROM vip_addresses) '
-                "AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')",
+                "AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $_snoozeFolderSql",
           VirtualMailbox.allDrafts => "m.role = 'drafts'",
           VirtualMailbox.allSent => "m.role = 'sent'",
         };
@@ -851,7 +858,7 @@ SELECT * FROM members WHERE copy_rank = 1 ORDER BY received_at ASC, seq ASC''';
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts() {
     const distinctKey = "count(DISTINCT e.account_id || '|' || coalesce(e.message_id_header, e.id))";
     const from = 'FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id';
-    const unreadRoles = "m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')";
+    const unreadRoles = "m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $_snoozeFolderSql";
     const sql =
         '''
 SELECT
@@ -861,9 +868,10 @@ SELECT
     LEFT JOIN (SELECT mailbox_id, count(*) AS n FROM emails WHERE is_seen = 0 GROUP BY mailbox_id) l
       ON l.mailbox_id = m.id
     WHERE $unreadRoles) AS unread,
-  (SELECT $distinctKey $from WHERE e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles)) AS flagged,
+  (SELECT $distinctKey $from WHERE e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles)
+    AND NOT $_snoozeFolderSql) AS flagged,
   (SELECT $distinctKey $from WHERE e.is_seen = 0 AND e.from_email IN (SELECT email FROM vip_addresses)
-    AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')) AS vip,
+    AND $unreadRoles) AS vip,
   (SELECT coalesce(sum(total_count), 0) FROM mailboxes WHERE role = 'drafts') AS drafts''';
     return _select(sql, [], {_db.emails, _db.mailboxes, _db.vipAddresses}).watch().distinct(_rowsEqual).map((rows) {
       final r = rows.single;
@@ -877,6 +885,14 @@ SELECT
       };
     });
   }
+
+  /// Messages in every account's snooze folder (see `Snooze`), in no
+  /// particular order.
+  Stream<List<EmailSummary>> watchSnoozed() => _select(
+    'SELECT e.* FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id WHERE $_snoozeFolderSql',
+    [],
+    {_db.emails, _db.mailboxes, _db.emailKeywords},
+  ).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) summaryFromRow(_emailRow(r))]);
 
   // Search ------------------------------------------------------------------
 

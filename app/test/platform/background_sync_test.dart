@@ -8,6 +8,7 @@ import 'package:loupe/platform/background.dart';
 import 'package:loupe/platform/background_sync.dart';
 import 'package:loupe/platform/sync_leases.dart';
 import 'package:loupe/settings/app_mode.dart';
+import 'package:mail_model/mail_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app_icon_badge_test.dart' show RecordingBadge;
@@ -88,6 +89,22 @@ void main() {
       watchEvery: const Duration(milliseconds: 20),
     );
   }
+
+  test('asks for a wake-up when the next snoozed message comes back', () async {
+    final later = DateTime(2026, 10, 4, 18);
+    mail
+      ..deliver('work', now.subtract(const Duration(days: 1)), path: 'Snoozed', keywords: {Snooze.keyword(later)})
+      ..deliver(
+        'work',
+        now.subtract(const Duration(days: 2)),
+        path: 'Snoozed',
+        keywords: {Snooze.keyword(DateTime(2026, 10, 5, 8))},
+      )
+      // Overdue: this sync woke it already (or will next time).
+      ..deliver('work', now.subtract(const Duration(days: 3)), path: 'Snoozed', keywords: {Snooze.keyword(now)});
+    expect(await (await backgroundSync(FakeBackgroundMail(mail))).run(), BackgroundSyncResult.synced);
+    expect(scheduler.times, [later]);
+  });
 
   test('syncs, notifies about what arrived, updates the badge and lets go', () async {
     // The first run only sets the watermarks.

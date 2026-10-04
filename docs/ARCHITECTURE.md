@@ -32,6 +32,9 @@ Rules:
 - **Ids are deterministic** (`MailIds`): transports produce final local ids, so the store needs no mapping table.
   - IMAP email ids include the mailbox path, UIDVALIDITY and UID.
 - **Keywords are lower-case JMAP keywords** (`$seen`, `$flagged`, …). The IMAP adapter maps `\Seen` and the other system flags to them.
+- **Snooze lives on the server** ([snooze-convention.md](snooze-convention.md)): a top-level `Snoozed` folder and a
+  `$snoozed-<UTC minutes>` keyword; mail_sync wakes due messages after every sync, so any client following the
+  convention can wake them.
 - **Search:** the app parses the query (expr_search) and passes a `SearchExpr` in a `SearchRequest`.
   - The store translates it to SQL/FTS5.
   - The transport compiles it for the server via expr_search and widens what the server can't do.

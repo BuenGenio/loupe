@@ -140,6 +140,10 @@ class DemoMailRepository implements MailRepository {
   final _contentCache = <String, EmailContent>{};
   final _changes = StreamController<void>.broadcast();
   final _timers = <Timer>{};
+
+  /// Wakes the next message snoozed in this session on time. Seeded
+  /// snoozes wake on refresh (no timer pending in tests).
+  Timer? _snoozeTimer;
   int _incomingIndex = 0;
   int _nextId = 100000;
   bool _disposed = false;
@@ -155,6 +159,7 @@ class DemoMailRepository implements MailRepository {
     for (final q in _outbox.values) {
       q.timer?.cancel();
     }
+    _snoozeTimer?.cancel();
     _timers.clear();
     _outbox.clear();
     unawaited(_changes.close());
@@ -205,7 +210,11 @@ class DemoMailRepository implements MailRepository {
 
   static bool _isBin(Mailbox box) => box.role == MailboxRole.trash || box.role == MailboxRole.junk;
 
-  static bool _isRegular(Mailbox box) => !_isBin(box) && box.role != MailboxRole.sent && box.role != MailboxRole.drafts;
+  /// Bins and the Snoozed folder stay out of Flagged.
+  static bool _isAside(Mailbox box) => _isBin(box) || Snooze.isFolder(box);
+
+  static bool _isRegular(Mailbox box) =>
+      !_isAside(box) && box.role != MailboxRole.sent && box.role != MailboxRole.drafts;
 
   Set<String> _myAddresses(String accountId) {
     final a = _account(accountId);
@@ -441,7 +450,7 @@ class DemoMailRepository implements MailRepository {
       if (box == null) continue;
       final s = m.summary;
       if (box.role == MailboxRole.drafts) drafts++;
-      if (s.isFlagged && !_isBin(box)) flagged++;
+      if (s.isFlagged && !_isAside(box)) flagged++;
       if (s.isSeen) continue;
       if (box.role == MailboxRole.inbox) inboxes++;
       if (_isRegular(box)) {
@@ -469,7 +478,7 @@ class DemoMailRepository implements MailRepository {
       VirtualMailboxRef(:final kind) => switch (kind) {
         VirtualMailbox.allInboxes => box.role == MailboxRole.inbox,
         VirtualMailbox.unread => !s.isSeen && _isRegular(box),
-        VirtualMailbox.flagged => s.isFlagged && !_isBin(box),
+        VirtualMailbox.flagged => s.isFlagged && !_isAside(box),
         VirtualMailbox.vip => _isVip(s) && _isRegular(box),
         VirtualMailbox.allDrafts => box.role == MailboxRole.drafts,
         VirtualMailbox.allSent => box.role == MailboxRole.sent,
@@ -599,6 +608,7 @@ class DemoMailRepository implements MailRepository {
     }
     _notify();
     await _wait(_jitter(latency.network));
+    _wakeDue();
     final roll = _random.nextDouble();
     final count = roll < 0.35 ? 0 : (roll < 0.8 ? 1 : 2);
     final candidates = DemoSeed.incoming.where((t) => accounts.contains(t.$1)).toList();
@@ -870,6 +880,99 @@ class DemoMailRepository implements MailRepository {
     }
     _notify();
   }
+
+  // Snooze --------------------------------------------------------------------------------
+
+  /// The account's Snoozed folder, added when it has none yet.
+  Mailbox _snoozeBox(String accountId) {
+    final existing = _mailboxes.values.where((m) => m.accountId == accountId && Snooze.isFolder(m)).firstOrNull;
+    if (existing != null) return existing;
+    final id = MailIds.mailbox(accountId, Snooze.folderName);
+    return _mailboxes[id] = Mailbox(
+      id: id,
+      accountId: accountId,
+      name: Snooze.folderName,
+      path: Snooze.folderName,
+      sortOrder: _mailboxes.length,
+    );
+  }
+
+  @override
+  Future<SnoozeStorage> snooze(List<String> emailIds, DateTime until) async {
+    final keyword = Snooze.keyword(until);
+    for (final id in emailIds) {
+      final m = _local(id);
+      if (m == null) continue;
+      final k = m.summary.keywords;
+      m.summary = m.summary.copyWith(
+        mailboxId: _snoozeBox(m.summary.accountId).id,
+        keywords: {...k.difference(Snooze.keywordsIn(k)), keyword},
+      );
+    }
+    _armSnoozeTimer();
+    _notify();
+    return SnoozeStorage.server;
+  }
+
+  @override
+  Future<void> unsnooze(List<String> emailIds) async {
+    for (final id in emailIds) {
+      final m = _local(id);
+      if (m != null) _wake(m);
+    }
+    _armSnoozeTimer();
+    _notify();
+  }
+
+  /// Back to the Inbox, unread, `$new`, without its snooze keywords.
+  void _wake(DemoMessage m) {
+    final k = m.summary.keywords;
+    m.summary = m.summary.copyWith(
+      mailboxId: _roleBox(m.summary.accountId, MailboxRole.inbox)?.id,
+      keywords: {
+        ...k.difference({...Snooze.keywordsIn(k), Keywords.seen}),
+        Keywords.newAgain,
+      },
+    );
+  }
+
+  bool _isSnoozed(DemoMessage m) => _mailboxes[m.summary.mailboxId]?.let(Snooze.isFolder) ?? false;
+
+  /// Wakes the messages whose time has come.
+  void _wakeDue() {
+    final now = _clock();
+    for (final m in _messages.values) {
+      final t = m.summary.snoozedUntil;
+      if (t != null && !t.isAfter(now) && _isSnoozed(m)) _wake(m);
+    }
+  }
+
+  void _armSnoozeTimer() {
+    _snoozeTimer?.cancel();
+    _snoozeTimer = null;
+    if (_disposed) return;
+    DateTime? next;
+    for (final m in _messages.values) {
+      final t = m.summary.snoozedUntil;
+      if (t != null && _isSnoozed(m) && (next == null || t.isBefore(next))) next = t;
+    }
+    if (next == null) return;
+    final delay = next.difference(_clock());
+    _snoozeTimer = Timer(delay.isNegative ? Duration.zero : delay, () {
+      _snoozeTimer = null;
+      if (_disposed) return;
+      _wakeDue();
+      _notify();
+    });
+  }
+
+  @override
+  Stream<List<EmailSummary>> watchSnoozed() => _watch(
+    () => [
+      for (final m in _messages.values)
+        if (_isSnoozed(m)) m.summary,
+    ]..sort(Snooze.compare),
+  );
 
   // Search ------------------------------------------------------------------------------
 

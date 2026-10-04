@@ -8,6 +8,7 @@ import 'outbox.dart';
 import 'outgoing.dart';
 import 'search.dart';
 import 'server_documents.dart';
+import 'snooze.dart';
 
 enum SyncPhase { idle, syncing, error, offline }
 
@@ -128,6 +129,27 @@ abstract interface class MailRepository {
 
   /// Moves to Junk (or back to Inbox) and sets $junk / $notjunk.
   Future<void> markJunk(List<String> emailIds, {required bool junk});
+
+  // Snooze -------------------------------------------------------------------
+
+  /// Snoozes [emailIds] until [until] (see `Snooze` and
+  /// docs/snooze-convention.md): they move to their account's Snoozed folder,
+  /// created when missing, with a `$snoozed-…` keyword, and come back to the
+  /// Inbox, unread, at that time on whichever device syncs first. Messages
+  /// already snoozed get the new time. Optimistic and offline-capable like
+  /// the actions above.
+  ///
+  /// Returns [SnoozeStorage.device] when a server can't store keywords: the
+  /// time then lives on this device only.
+  Future<SnoozeStorage> snooze(List<String> emailIds, DateTime until);
+
+  /// Wakes snoozed messages now ("Wake Now"): back to the Inbox, unread and
+  /// marked `$new`, like when their time comes.
+  Future<void> unsnooze(List<String> emailIds);
+
+  /// Messages waiting in every account's Snoozed folder, the soonest to wake
+  /// first; those without a (valid) time come last.
+  Stream<List<EmailSummary>> watchSnoozed();
 
   // Search -------------------------------------------------------------------
 
