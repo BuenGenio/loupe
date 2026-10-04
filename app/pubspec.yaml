@@ -38,6 +38,13 @@ dependencies:
   connectivity_plus: ^7.3.2
   # MPL-2.0 (also used by mail_imap); parses attached .eml messages.
   enough_mail: ^2.1.7
+  # MIT; scans Thunderbird's "Export for Mobile" QR codes with zxing-cpp (Apache-2.0). Chosen over
+  # ML Kit based scanners, which bring Google Play services and usage telemetry.
+  flutter_zxing: ^3.1.0
+  # BSD-3; flutter_zxing's camera, used directly for its permission errors.
+  camera: ^0.12.1
+  # MIT; opens Loupe's page in the system settings when the camera is off.
+  app_settings: ^9.0.0
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:
