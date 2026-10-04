@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:mail_model/mail_model.dart';
 import 'package:mail_store/mail_store.dart';
+import 'package:mail_store/src/schema.dart' show subscriptionDomainsInSchema;
 import 'package:test/test.dart';
 
 import 'fixtures.dart';
@@ -162,6 +163,16 @@ Future<void> insertAll(MailStore store, List<EmailSummary> emails) async {
 void main() {
   setUpAll(() => driftRuntimeOptions.dontWarnAboutMultipleDatabases = true);
 
+  test('the schema has the bulk-mail domains of mail_model', () {
+    expect(
+      subscriptionDomainsInSchema,
+      bulkMessageIdDomains,
+      reason:
+          'emails.sub_key has the list schema version 5 made: changing bulkMessageIdDomains needs a schema '
+          'version that recreates the column, its index and triggers',
+    );
+  });
+
   test('the query agrees with summarizeSubscriptions', () async {
     final store = await seededStore(
       accounts: [
@@ -183,6 +194,98 @@ void main() {
     expect(actual.length, greaterThan(300));
     for (var i = 0; i < expected.length; i++) {
       expect(actual[i], expected[i], reason: 'rank $i');
+    }
+    await store.close();
+  });
+
+  test('kept up to date through every kind of change', () async {
+    final store = await seededStore(
+      accounts: [
+        account(),
+        account(id: 'acc2', email: 'other@example.com'),
+      ],
+    );
+    final random = Random(11);
+    await insertAll(store, synthetic(1500, seed: 3, accounts: [accountId, 'acc2']));
+
+    /// What summarizeSubscriptions makes of the store's messages now.
+    Future<List<Subscription>> expected() async {
+      final boxes = await store.getMailboxes();
+      final roles = {for (final m in boxes) m.id: m.role};
+      final emails = [for (final m in boxes) ...await store.getEmails(await store.emailIdsIn(m.id))];
+      final me = {
+        for (final a in await store.getAccounts()) ...[a.email, for (final i in a.identities) i.email.toLowerCase()],
+      };
+      return summarizeSubscriptions(emails, roleOf: (e) => roles[e.mailboxId], now: now, me: me);
+    }
+
+    Future<List<String>> someIds(int n) async {
+      final all = [for (final m in await store.getMailboxes()) ...await store.emailIdsIn(m.id)]..shuffle(random);
+      return all.take(n).toList();
+    }
+
+    expect(await store.watchSubscriptions(now: now).first, await expected());
+    var next = 5000000;
+    for (var round = 0; round < 10; round++) {
+      final boxes = [for (final m in await store.getMailboxes()) m.id];
+      // Read and unread.
+      final flips = await someIds(40);
+      await store.updateKeywords(flips.take(20).toList(), add: {Keywords.seen});
+      await store.updateKeywords(flips.skip(20).toList(), remove: {Keywords.seen});
+      // Moves, into Junk and Sent too.
+      for (final id in await someIds(15)) {
+        await store.moveLocally([id], boxes[random.nextInt(boxes.length)]);
+      }
+      await store.deleteEmails(await someIds(10));
+      // New mail, and copies of stored messages arriving elsewhere.
+      final fresh = synthetic(60, seed: 100 + round, accounts: [accountId, 'acc2']);
+      await store.insertEmails([
+        for (final e in fresh)
+          // Later by a few seconds: no ties with stored copies, where the
+          // newest name would be either one's.
+          _as(
+            e,
+            id: eid(MailIds.parseMailbox(e.mailboxId).$2, next, account: e.accountId),
+            receivedAt: e.receivedAt.add(Duration(seconds: next++ % 3000 + 1)),
+          ),
+      ]);
+      // List headers filled in later: messages change subscriptions.
+      final filled = await store.getEmails(await someIds(10));
+      await store.fillHeaders([
+        for (final e in filled) _as(e, listId: 'late${random.nextInt(3)}.lists.example.org', listName: 'Late'),
+      ]);
+      // A sync's keyword refresh.
+      final inbox = mbox('INBOX');
+      final inInbox = (await store.emailIdsIn(inbox)).take(30);
+      await store.applySync(
+        inbox,
+        MailboxSyncResult(
+          state: MailboxSyncState({'round': round}),
+          keywordUpdates: {
+            for (final id in inInbox) id: {if (random.nextBool()) Keywords.seen},
+          },
+        ),
+      );
+      if (round == 4) {
+        // Work becomes the Junk folder: its mail stops counting.
+        await store.replaceMailboxes(accountId, [
+          for (final m in standardMailboxes)
+            m.path == 'Work' ? const RemoteMailbox(path: 'Work', name: 'Work', role: MailboxRole.junk) : m,
+        ]);
+      }
+      if (round == 7) {
+        // A newsletter address turns out to be one of the user's own.
+        final a = (await store.getAccount(accountId))!;
+        await store.saveAccount(
+          a.copyWith(
+            identities: [
+              ...a.identities,
+              const Identity(id: 'acc1/news', email: 'News7@Brand7.example'),
+            ],
+          ),
+        );
+      }
+      expect(await store.watchSubscriptions(now: now).first, await expected(), reason: 'round $round');
     }
     await store.close();
   });
@@ -258,28 +361,63 @@ void main() {
     });
   });
 
-  test('40,000 messages are summarised in under 200 ms', () async {
+  test('40,000 messages: Subscriptions open in under 30 ms, then redo only what changed', () async {
     final store = await seededStore();
     final emails = synthetic(40000, seed: 7);
     await insertAll(store, emails);
-    final times = <int>[];
     late List<Subscription> subs;
-    for (var i = 0; i < 3; i++) {
+    var minute = 0;
+    Future<int> open() async {
       final watch = Stopwatch()..start();
-      // A different time each run, so drift can't answer from its cache.
-      subs = await store.watchSubscriptions(now: now.add(Duration(minutes: i))).first;
-      times.add(watch.elapsedMilliseconds);
+      // Another time each run, so drift can't answer from its cache.
+      subs = await store.watchSubscriptions(now: now.add(Duration(minutes: minute++))).first;
+      return watch.elapsedMilliseconds;
     }
+
+    // The first time after the upgrade (or after all of it arrived at once)
+    // groups every message; later opens read what is kept.
+    final first = await open();
+    final opens = [await open(), await open(), await open()];
+    // Changes since the screen was last open.
+    await store.updateKeywords([for (final e in emails.take(200)) e.id], add: {Keywords.seen});
+    final afterReading = await open();
+    final fresh = synthetic(2000, seed: 8);
+    await insertAll(store, [
+      for (final (i, e) in fresh.indexed) _as(e, id: eid(MailIds.parseMailbox(e.mailboxId).$2, 30000000 + i)),
+    ]);
+    final afterNewMail = await open();
     final emailsOf = Stopwatch()..start();
     await store.watchSubscriptionEmails(subs.first.key).first;
     final detail = emailsOf.elapsedMilliseconds;
     // ignore: avoid_print
-    print('subscriptions over 40k messages: $times ms (${subs.length} groups); one sender: $detail ms');
-    expect(times.reduce(min), lessThan(200));
+    print(
+      'subscriptions over 40k messages (${subs.length} groups): first $first ms, then $opens ms; '
+      'after 200 read $afterReading ms, after 2000 new $afterNewMail ms; one sender: $detail ms',
+    );
+    expect(opens.reduce(min), lessThan(30));
+    expect(first, lessThan(300));
+    expect(afterReading, lessThan(100));
     expect(detail, lessThan(100));
     await store.close();
   }, timeout: const Timeout(Duration(minutes: 5)));
 }
+
+/// [e] with another id, arrival or List-Id.
+EmailSummary _as(EmailSummary e, {String? id, DateTime? receivedAt, String? listId, String? listName}) => EmailSummary(
+  id: id ?? e.id,
+  accountId: e.accountId,
+  mailboxId: e.mailboxId,
+  receivedAt: receivedAt ?? e.receivedAt,
+  messageIdHeader: e.messageIdHeader,
+  from: e.from,
+  to: e.to,
+  subject: e.subject,
+  keywords: e.keywords,
+  listId: listId ?? e.listId,
+  listName: listName ?? e.listName,
+  listUnsubscribe: e.listUnsubscribe,
+  listUnsubscribePost: e.listUnsubscribePost,
+);
 
 MailboxRole? _roleOfId(String mailboxId) {
   for (final path in _boxes) {

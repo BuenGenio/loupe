@@ -157,6 +157,13 @@ final class FakeServer {
   /// The previews argument of every fetchSummaries call.
   final summaryPreviews = <bool>[];
 
+  /// The ids of every fetchSummaries call that got an answer.
+  final summaryRequests = <List<String>>[];
+
+  /// Runs before fetchSummaries answers; may throw (a connection lost
+  /// in the middle of a refetch).
+  void Function(List<String> ids)? onFetchSummaries;
+
   /// How long an SMTP send takes.
   Duration smtpLatency = Duration.zero;
 
@@ -542,6 +549,8 @@ final class FakeTransport implements MailTransport {
   Future<List<EmailSummary>> fetchSummaries(List<String> emailIds, {bool previews = true}) async {
     await _op('fetchSummaries');
     server.summaryPreviews.add(previews);
+    server.onFetchSummaries?.call(emailIds);
+    server.summaryRequests.add(emailIds);
     return [
       for (final id in emailIds)
         if (_find(id) case (final mb, final m)) _summary(mb, m),

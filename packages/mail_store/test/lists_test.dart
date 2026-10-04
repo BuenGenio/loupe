@@ -208,6 +208,49 @@ void main() {
       expect((await store.getEmail(eid('INBOX', 2)))!.listUnsubscribe, '<https://news.example/u>');
     });
 
+    test('the refetch goes newest first in batches and keeps its progress across restarts', () async {
+      final dir = Directory.systemTemp.createTempSync('mail_store_refetch');
+      addTearDown(() => dir.deleteSync(recursive: true));
+      final path = '${dir.path}/mail.db';
+      var store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
+      await store.saveAccount(account());
+      await store.replaceMailboxes(accountId, standardMailboxes);
+      // Five arrived in the same minute: their order comes from the store.
+      await addMails(store, [
+        for (final (uid, minutes) in const [(1, 0), (2, 5), (3, 5), (4, 5), (5, 5), (6, 5), (7, 9)])
+          mail(uid, minutes: minutes),
+      ]);
+      final inbox = mbox('INBOX');
+      expect(await store.nextStaleHeaders(inbox), isNull, reason: 'not marked');
+      await store.markHeadersStale(inbox);
+
+      final done = <String>[];
+      final times = <int>[];
+      for (var i = 0; ; i++) {
+        final batch = await store.nextStaleHeaders(inbox, limit: 2);
+        if (batch == null) break;
+        expect(batch.emailIds, hasLength(lessThanOrEqualTo(2)));
+        done.addAll(batch.emailIds);
+        final at = {for (final e in await store.getEmails(batch.emailIds)) e.id: e.receivedAt.millisecondsSinceEpoch};
+        times.addAll([for (final id in batch.emailIds) at[id]!]);
+        await store.fillHeaders(const [], progress: batch);
+        // The app is killed and started again between batches.
+        await store.close();
+        store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
+      }
+      expect(done.toSet(), {for (var uid = 1; uid <= 7; uid++) eid('INBOX', uid)});
+      expect(done, hasLength(7), reason: 'each once');
+      expect(done.first, eid('INBOX', 7));
+      expect(done.last, eid('INBOX', 1));
+      expect(times, orderedEquals(List<int>.of(times)..sort((a, b) => b.compareTo(a))), reason: 'newest first');
+
+      await store.markHeadersFresh(inbox);
+      expect(await store.nextStaleHeaders(inbox), isNull);
+      await store.markHeadersStale(inbox);
+      expect((await store.nextStaleHeaders(inbox, limit: 1))!.emailIds, [eid('INBOX', 7)], reason: 'from the start');
+      await store.close();
+    });
+
     test('mailboxes synced after the upgrade start with fresh headers', () async {
       final store = await seededStore();
       await store.applySync(mbox('INBOX'), added([mail(1)]));

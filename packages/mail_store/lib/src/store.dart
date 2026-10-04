@@ -366,9 +366,11 @@ final class MailStore {
   }
 
   /// Asks the sync engine to fetch the stored summaries of [mailboxId]
-  /// again for their header fields (see [MailboxSyncInfo.staleHeaders]).
+  /// again for their header fields (see [MailboxSyncInfo.staleHeaders]),
+  /// from the newest.
   Future<void> markHeadersStale(String mailboxId) => _write(
-    'UPDATE sync_states SET stale_headers = 1 WHERE mailbox_id = ? AND stale_headers = 0',
+    'UPDATE sync_states SET stale_headers = 1, headers_done_at = NULL, headers_done_seq = NULL '
+    'WHERE mailbox_id = ? AND stale_headers = 0',
     [mailboxId],
     {_db.syncStates},
     kind: UpdateKind.update,
@@ -377,16 +379,54 @@ final class MailStore {
   /// The summaries of [mailboxId] have their header fields again (see
   /// [MailboxSyncInfo.staleHeaders]).
   Future<void> markHeadersFresh(String mailboxId) => _write(
-    'UPDATE sync_states SET stale_headers = 0 WHERE mailbox_id = ? AND stale_headers = 1',
+    'UPDATE sync_states SET stale_headers = 0, headers_done_at = NULL, headers_done_seq = NULL '
+    'WHERE mailbox_id = ? AND stale_headers = 1',
     [mailboxId],
     {_db.syncStates},
     kind: UpdateKind.update,
   );
 
+  /// The next [limit] messages of [mailboxId] whose header fields are to be
+  /// fetched again (see [MailboxSyncInfo.staleHeaders]), newest first, after
+  /// the progress [fillHeaders] saved; null when there are no more (or the
+  /// mailbox isn't marked). Messages stored meanwhile are newer, and came
+  /// with every field.
+  Future<StaleHeadersBatch?> nextStaleHeaders(String mailboxId, {int limit = 200}) async {
+    final state = await _select(
+      'SELECT headers_done_at AS at, headers_done_seq AS seq FROM sync_states WHERE mailbox_id = ? AND stale_headers = 1',
+      [mailboxId],
+      {_db.syncStates},
+    ).getSingleOrNull();
+    if (state == null) return null;
+    final at = state.read<int?>('at');
+    final seq = state.read<int?>('seq');
+    // A range of the mailbox's index: each batch starts where the last ended.
+    final rows = await _select(
+      'SELECT id, received_at, seq FROM emails WHERE mailbox_id = ?1 '
+      '${at == null ? '' : 'AND (received_at, seq) < (?3, ?4) '}ORDER BY received_at DESC, seq DESC LIMIT ?2',
+      [
+        mailboxId,
+        limit,
+        if (at != null) ...[at, seq],
+      ],
+      {_db.emails},
+    ).get();
+    if (rows.isEmpty) return null;
+    return StaleHeadersBatch(
+      mailboxId: mailboxId,
+      emailIds: [for (final r in rows) r.read<String>('id')],
+      receivedAt: rows.last.read<int>('received_at'),
+      seq: rows.last.read<int>('seq'),
+    );
+  }
+
   /// Fills header fields that stored summaries lack from [fetched] copies
   /// of them; nothing else changes (keywords and mailboxes stay as the
   /// store has them). Unknown ids are ignored. Watchers hear of it once.
-  Future<void> fillHeaders(List<EmailSummary> fetched) async {
+  ///
+  /// With [progress], the batch they were fetched for, saves how far the
+  /// refetch got in the same transaction (see [nextStaleHeaders]).
+  Future<void> fillHeaders(List<EmailSummary> fetched, {StaleHeadersBatch? progress}) async {
     const sql =
         'UPDATE emails SET list_id = coalesce(list_id, ?1), list_name = coalesce(list_name, ?2), '
         'list_post = coalesce(list_post, ?3), list_unsubscribe = coalesce(list_unsubscribe, ?4), '
@@ -404,6 +444,12 @@ final class MailStore {
           variables: [
             for (final v in [...values, e.id]) _var(v),
           ],
+        );
+      }
+      if (progress != null) {
+        await _db.customUpdate(
+          'UPDATE sync_states SET headers_done_at = ?, headers_done_seq = ? WHERE mailbox_id = ? AND stale_headers = 1',
+          variables: [_var(progress.receivedAt), _var(progress.seq), _var(progress.mailboxId)],
         );
       }
     });
@@ -1229,18 +1275,6 @@ ORDER BY r.last_at DESC, r.account_id, r.thread_id, r.rn_new''';
 
   // Subscriptions -----------------------------------------------------------
 
-  /// SQL true for bulk mail of `emails e`; see `subscriptionKeyOf`. LIKE is
-  /// case-insensitive for ASCII, as domains are.
-  static final String _bulkSql = [
-    "(e.list_id IS NOT NULL AND e.list_id <> '')",
-    'e.list_unsubscribe IS NOT NULL',
-    for (final d in bulkMessageIdDomains) ...["e.message_id_header LIKE '%@$d'", "e.message_id_header LIKE '%.$d'"],
-  ].join(' OR ');
-
-  /// The subscription key of `emails e`; see `Subscription.key`.
-  static const _subscriptionKeySql =
-      "CASE WHEN e.list_id IS NOT NULL AND e.list_id <> '' THEN 'list:' || e.list_id ELSE 'from:' || e.from_email END";
-
   /// Messages counted for subscriptions (see `summarizeSubscriptions`):
   /// `emails e` joined with `mailboxes m`, after a `me` CTE.
   static const _subscriptionScopeSql =
@@ -1256,47 +1290,142 @@ ORDER BY r.last_at DESC, r.account_id, r.thread_id, r.rn_new''';
     return at < 0 ? null : packed.substring(at + 1);
   }
 
+  /// The copies counted for subscriptions (bulk mail in scope) among
+  /// `emails e` as [from] joins it, after a `me` CTE; with [key] as `mkey`,
+  /// the key of each copy's message.
+  static String _subscriptionCopiesSql(String from, {String where = 'TRUE', String key = 'NULL'}) =>
+      '''
+SELECT e.account_id, coalesce(e.message_id_header, e.id) AS mid, e.mailbox_id, m.role, e.received_at, e.is_seen,
+  e.from_email, e.list_name, e.list_unsubscribe, e.list_unsubscribe_post,
+  trim(coalesce(json_extract(e.from_json, '\$[0].n'), '')) AS from_name, e.sub_key AS gkey, $key AS mkey,
+  (e.list_id IS NOT NULL OR e.list_unsubscribe IS NOT NULL) AS has_headers
+FROM $from JOIN mailboxes m ON m.id = e.mailbox_id
+WHERE e.sub_key IS NOT NULL AND $_subscriptionScopeSql AND $where''';
+
+  /// `subscription_messages` rows of the messages in `copies`: one per
+  /// message, under the first of its copies' keys.
+  static const _subscriptionMessagesSql =
+      "SELECT account_id, mid, min(gkey), max(received_at), max(is_seen), max(role = 'inbox') "
+      'FROM copies GROUP BY account_id, mid';
+
+  /// `subscription_details` rows of the keys in `copies` (by `mkey`): what
+  /// all copies of the key's messages say, as `summarizeSubscriptions` has it.
+  static final _subscriptionDetailsSql =
+      '''
+SELECT mkey, group_concat(DISTINCT mailbox_id), group_concat(DISTINCT account_id), count(DISTINCT from_email),
+  max(has_headers), max(${_newest('from_email')}),
+  max(CASE WHEN trim(coalesce(list_name, '')) <> '' THEN ${_newest('trim(list_name)')} END),
+  max(CASE WHEN from_name <> '' THEN ${_newest('from_name')} END),
+  max(CASE WHEN list_unsubscribe IS NOT NULL THEN ${_newest("list_unsubscribe || char(31) || coalesce(list_unsubscribe_post, '')")} END)
+FROM copies GROUP BY mkey''';
+
+  /// The copies of the messages that [from] joins as `s` (rows with
+  /// `account_id` and `mid`), copies found by Message-ID or else by id, with
+  /// [key] as `mkey`. The joined rows come first (CROSS JOIN): they are few.
+  static String _copiesOfMessagesSql(String from, {String key = 's.key'}) => [
+    _subscriptionCopiesSql(
+      '$from CROSS JOIN emails e ON e.account_id = s.account_id AND e.message_id_header = s.mid',
+      key: key,
+    ),
+    _subscriptionCopiesSql('$from CROSS JOIN emails e ON e.id = s.mid', where: 'e.message_id_header IS NULL', key: key),
+  ].join(' UNION ALL ');
+
+  /// Brings the Subscriptions screen's data up to date (see
+  /// `_subscriptionSchema`): the messages the triggers marked since the last
+  /// time, and the keys they were and are under; or everything after a `*`
+  /// or when more than half the messages are marked.
+  /// One transaction, so another process's changes wait for it and are
+  /// marked for the next time.
+  Future<void> _refreshSubscriptions() => _db.transaction(() async {
+    Future<void> run(String sql) => _db.customStatement(sql);
+    final state = await _select(
+      "SELECT EXISTS (SELECT 1 FROM subscription_dirty_keys WHERE key = '*') AS r, "
+      '(SELECT count(*) FROM subscription_dirty) AS d, (SELECT count(*) FROM subscription_messages) AS m',
+      const [],
+      const {},
+    ).getSingle();
+    // After long enough without a look, redoing everything is quicker.
+    if (state.read<int>('r') == 1 || state.read<int>('d') * 2 > state.read<int>('m')) {
+      await run('DELETE FROM subscription_messages');
+      await run('DELETE FROM subscription_details');
+      await run(
+        'WITH me(addr) AS ($_meSql), copies AS (${_subscriptionCopiesSql('emails e')}) '
+        'INSERT INTO subscription_messages $_subscriptionMessagesSql',
+      );
+      final all = _subscriptionCopiesSql(
+        'emails e JOIN subscription_messages s ON s.account_id = e.account_id '
+        'AND s.mid = coalesce(e.message_id_header, e.id)',
+        key: 's.key',
+      );
+      await run(
+        'WITH me(addr) AS ($_meSql), copies AS ($all) INSERT INTO subscription_details $_subscriptionDetailsSql',
+      );
+    } else {
+      // The keys of the marked messages, before and after they are redone.
+      const keysOfDirty =
+          'INSERT OR IGNORE INTO subscription_dirty_keys SELECT s.key FROM subscription_dirty d '
+          'CROSS JOIN subscription_messages s ON s.account_id = d.account_id AND s.mid = d.mid';
+      await run(keysOfDirty);
+      await run(
+        'DELETE FROM subscription_messages WHERE (account_id, mid) IN (SELECT account_id, mid FROM subscription_dirty)',
+      );
+      final dirty = _copiesOfMessagesSql('subscription_dirty s', key: 'NULL');
+      await run(
+        'WITH me(addr) AS ($_meSql), copies AS ($dirty) INSERT INTO subscription_messages $_subscriptionMessagesSql',
+      );
+      await run(keysOfDirty);
+      await run('DELETE FROM subscription_details WHERE key IN (SELECT key FROM subscription_dirty_keys)');
+      final keys = _copiesOfMessagesSql(
+        'subscription_dirty_keys k CROSS JOIN subscription_messages s ON s.key = k.key',
+      );
+      await run(
+        'WITH me(addr) AS ($_meSql), copies AS ($keys) INSERT INTO subscription_details $_subscriptionDetailsSql',
+      );
+    }
+    await run('DELETE FROM subscription_dirty');
+    await run('DELETE FROM subscription_dirty_keys');
+  });
+
+  /// The subscriptions as [watchSubscriptions] lists them, counting recent
+  /// mail from [cutoff] (epoch milliseconds), after bringing the data up to
+  /// date if anything changed.
+  Future<List<QueryRow>> _subscriptionRows(int cutoff) async {
+    const sql = '''
+WITH stats AS (
+  SELECT key AS gkey, count(*) AS total, sum(seen) AS seen, sum(received_at >= ?1) AS recent,
+    sum(CASE WHEN received_at >= ?1 THEN seen ELSE 0 END) AS recent_seen, sum(inbox) AS inbox,
+    max(received_at) AS last_at
+  FROM subscription_messages GROUP BY key
+)
+SELECT s.*, d.boxes, d.accounts, d.senders, d.sender, d.list_name, d.from_name, d.unsubscribe
+FROM stats s JOIN subscription_details d ON d.key = s.gkey
+WHERE d.has_headers = 1 OR s.total >= 2''';
+    final read = _select(sql, [cutoff], const {});
+    final dirty = await _select(
+      'SELECT EXISTS (SELECT 1 FROM subscription_dirty_keys) OR EXISTS (SELECT 1 FROM subscription_dirty) AS d',
+      const [],
+      const {},
+    ).getSingle();
+    if (dirty.read<int>('d') == 0) return read.get();
+    return _db.transaction(() async {
+      await _refreshSubscriptions();
+      return read.get();
+    });
+  }
+
   /// Bulk mail grouped into subscriptions, ranked by
   /// `Subscription.compareByNeglect`; see `MailSubscriptions`. Counts read
   /// and recent mail relative to [now].
+  ///
+  /// The groups are kept in tables that triggers mark out of date as mail
+  /// changes (see `_subscriptionSchema`): opening the screen redoes only
+  /// what changed since it was last open, not every message.
   Stream<List<Subscription>> watchSubscriptions({DateTime? now}) {
-    final sql =
-        '''
-WITH me(addr) AS ($_meSql),
-copies AS (
-  SELECT e.account_id, coalesce(e.message_id_header, e.id) AS mid, e.mailbox_id, m.role, e.received_at, e.is_seen,
-    e.from_email, e.list_name, e.list_unsubscribe, e.list_unsubscribe_post,
-    trim(coalesce(json_extract(e.from_json, '\$[0].n'), '')) AS from_name,
-    $_subscriptionKeySql AS gkey,
-    (e.list_id IS NOT NULL OR e.list_unsubscribe IS NOT NULL) AS has_headers
-  FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id
-  WHERE $_subscriptionScopeSql AND ($_bulkSql)
-),
-messages AS (
-  SELECT min(gkey) AS gkey, max(received_at) AS received_at, max(is_seen) AS seen, max(role = 'inbox') AS inbox
-  FROM copies GROUP BY account_id, mid
-),
-stats AS (
-  SELECT gkey, count(*) AS total, sum(seen) AS seen, sum(received_at >= ?1) AS recent,
-    sum(CASE WHEN received_at >= ?1 THEN seen ELSE 0 END) AS recent_seen, sum(inbox) AS inbox,
-    max(received_at) AS last_at
-  FROM messages GROUP BY gkey
-),
-details AS (
-  SELECT gkey, group_concat(DISTINCT mailbox_id) AS boxes, group_concat(DISTINCT account_id) AS accounts,
-    count(DISTINCT from_email) AS senders, max(has_headers) AS has_headers,
-    max(${_newest('from_email')}) AS sender,
-    max(CASE WHEN trim(coalesce(list_name, '')) <> '' THEN ${_newest('trim(list_name)')} END) AS list_name,
-    max(CASE WHEN from_name <> '' THEN ${_newest('from_name')} END) AS from_name,
-    max(CASE WHEN list_unsubscribe IS NOT NULL THEN ${_newest("list_unsubscribe || char(31) || coalesce(list_unsubscribe_post, '')")} END) AS unsubscribe
-  FROM copies GROUP BY gkey
-)
-SELECT s.*, d.boxes, d.accounts, d.senders, d.sender, d.list_name, d.from_name, d.unsubscribe
-FROM stats s JOIN details d ON d.gkey = s.gkey
-WHERE d.has_headers = 1 OR s.total >= 2''';
     final cutoff = (now ?? DateTime.now()).subtract(Subscription.window).millisecondsSinceEpoch;
-    return _select(sql, [cutoff], {_db.emails, _db.mailboxes, _db.accounts})
+    // Emits at once and after every change of these tables.
+    return _select('SELECT 1', const [], {_db.emails, _db.mailboxes, _db.accounts})
         .watch()
+        .asyncMap((_) => _subscriptionRows(cutoff))
         .distinct(_rowsEqual)
         .map((rows) => [for (final r in rows) _subscriptionFromRow(r)]..sort(Subscription.compareByNeglect));
   }
@@ -1334,30 +1463,18 @@ WHERE d.has_headers = 1 OR s.total >= 2''';
   /// The messages of subscription [key], newest first; see
   /// `MailSubscriptions.watchSubscriptionEmails`.
   Stream<List<EmailSummary>> watchSubscriptionEmails(String key, {bool inboxOnly = false, int limit = 200}) {
-    final args = <Object?>[];
-    final String match;
-    if (key.startsWith('list:')) {
-      match = 'e.list_id = ?';
-      args.add(key.substring(5));
-    } else if (key.startsWith('from:')) {
-      match = "(e.list_id IS NULL OR e.list_id = '') AND e.from_email = ? AND ($_bulkSql)";
-      args.add(key.substring(5));
-    } else {
-      return Stream.value(const []);
-    }
-    args.add(limit);
+    if (!key.startsWith('list:') && !key.startsWith('from:')) return Stream.value(const []);
     final sql =
         '''
 WITH me(addr) AS ($_meSql)
 SELECT e.* FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id
-WHERE $match AND $_subscriptionScopeSql${inboxOnly ? " AND m.role = 'inbox'" : ''}
+WHERE e.sub_key = ? AND $_subscriptionScopeSql${inboxOnly ? " AND m.role = 'inbox'" : ''}
 ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
-    return _select(sql, args, {
-      _db.emails,
-      _db.mailboxes,
-      _db.accounts,
-      _db.emailKeywords,
-    }).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) summaryFromRow(_emailRow(r))]);
+    return _select(
+      sql,
+      [key, limit],
+      {_db.emails, _db.mailboxes, _db.accounts, _db.emailKeywords},
+    ).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) summaryFromRow(_emailRow(r))]);
   }
 
   // Search ------------------------------------------------------------------

@@ -353,7 +353,21 @@ void main() {
     }
     await first('watchMailingLists', store.watchMailingLists);
     await first('watchListThreads', () => store.watchListThreads(lists.first.id));
+    // The first read groups every message (once, after the upgrade); later
+    // ones read what is kept, redoing only what changed.
+    final build = Stopwatch()..start();
+    await store.watchSubscriptions(now: base.add(const Duration(days: 999))).first;
+    _report(
+      '${'watchSubscriptions (first: groups all)'.padRight(48)} ${build.elapsedMilliseconds.toString().padLeft(6)} ms',
+    );
     await first('watchSubscriptions', () => store.watchSubscriptions(now: base.add(const Duration(days: 1000))));
+    final inbox = await store.watchList(RealMailboxRef(mbox('INBOX')), threaded: false, limit: 100).first;
+    await measure('watchSubscriptions: read 100, reopen, twice', () async {
+      await store.updateKeywords([for (final t in inbox) t.latest.id], add: {Keywords.seen});
+      await store.watchSubscriptions(now: base.add(const Duration(days: 1001))).first;
+      await store.updateKeywords([for (final t in inbox) t.latest.id], remove: {Keywords.seen});
+      await store.watchSubscriptions(now: base.add(const Duration(days: 1001))).first;
+    });
   });
 
   test('virtual counts', () async {

@@ -924,8 +924,34 @@ class $SyncStatesTable extends SyncStates with TableInfo<$SyncStatesTable, SyncS
     defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("stale_headers" IN (0, 1))'),
     defaultValue: const Constant(false),
   );
+  static const VerificationMeta _headersDoneAtMeta = const VerificationMeta('headersDoneAt');
   @override
-  List<GeneratedColumn> get $columns => [mailboxId, state, hasOlder, syncedAt, staleHeaders];
+  late final GeneratedColumn<int> headersDoneAt = GeneratedColumn<int>(
+    'headers_done_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _headersDoneSeqMeta = const VerificationMeta('headersDoneSeq');
+  @override
+  late final GeneratedColumn<int> headersDoneSeq = GeneratedColumn<int>(
+    'headers_done_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    mailboxId,
+    state,
+    hasOlder,
+    syncedAt,
+    staleHeaders,
+    headersDoneAt,
+    headersDoneSeq,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -956,6 +982,18 @@ class $SyncStatesTable extends SyncStates with TableInfo<$SyncStatesTable, SyncS
     if (data.containsKey('stale_headers')) {
       context.handle(_staleHeadersMeta, staleHeaders.isAcceptableOrUnknown(data['stale_headers']!, _staleHeadersMeta));
     }
+    if (data.containsKey('headers_done_at')) {
+      context.handle(
+        _headersDoneAtMeta,
+        headersDoneAt.isAcceptableOrUnknown(data['headers_done_at']!, _headersDoneAtMeta),
+      );
+    }
+    if (data.containsKey('headers_done_seq')) {
+      context.handle(
+        _headersDoneSeqMeta,
+        headersDoneSeq.isAcceptableOrUnknown(data['headers_done_seq']!, _headersDoneSeqMeta),
+      );
+    }
     return context;
   }
 
@@ -970,6 +1008,8 @@ class $SyncStatesTable extends SyncStates with TableInfo<$SyncStatesTable, SyncS
       hasOlder: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}has_older'])!,
       syncedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}synced_at'])!,
       staleHeaders: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}stale_headers'])!,
+      headersDoneAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}headers_done_at']),
+      headersDoneSeq: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}headers_done_seq']),
     );
   }
 
@@ -989,12 +1029,21 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
   /// (schema version 3: the List-* headers); the sync engine fetches them
   /// again once and clears this.
   final bool staleHeaders;
+
+  /// How far that refetch got, newest first: the `received_at` and `seq` of
+  /// the oldest message done, so a refetch cut short (the app killed, the
+  /// connection lost) goes on from there. Null before its first batch.
+  /// Schema version 5.
+  final int? headersDoneAt;
+  final int? headersDoneSeq;
   const SyncStateRow({
     required this.mailboxId,
     required this.state,
     required this.hasOlder,
     required this.syncedAt,
     required this.staleHeaders,
+    this.headersDoneAt,
+    this.headersDoneSeq,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1004,6 +1053,12 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
     map['has_older'] = Variable<bool>(hasOlder);
     map['synced_at'] = Variable<int>(syncedAt);
     map['stale_headers'] = Variable<bool>(staleHeaders);
+    if (!nullToAbsent || headersDoneAt != null) {
+      map['headers_done_at'] = Variable<int>(headersDoneAt);
+    }
+    if (!nullToAbsent || headersDoneSeq != null) {
+      map['headers_done_seq'] = Variable<int>(headersDoneSeq);
+    }
     return map;
   }
 
@@ -1014,6 +1069,8 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
       hasOlder: Value(hasOlder),
       syncedAt: Value(syncedAt),
       staleHeaders: Value(staleHeaders),
+      headersDoneAt: headersDoneAt == null && nullToAbsent ? const Value.absent() : Value(headersDoneAt),
+      headersDoneSeq: headersDoneSeq == null && nullToAbsent ? const Value.absent() : Value(headersDoneSeq),
     );
   }
 
@@ -1025,6 +1082,8 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
       hasOlder: serializer.fromJson<bool>(json['hasOlder']),
       syncedAt: serializer.fromJson<int>(json['syncedAt']),
       staleHeaders: serializer.fromJson<bool>(json['staleHeaders']),
+      headersDoneAt: serializer.fromJson<int?>(json['headersDoneAt']),
+      headersDoneSeq: serializer.fromJson<int?>(json['headersDoneSeq']),
     );
   }
   @override
@@ -1036,17 +1095,28 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
       'hasOlder': serializer.toJson<bool>(hasOlder),
       'syncedAt': serializer.toJson<int>(syncedAt),
       'staleHeaders': serializer.toJson<bool>(staleHeaders),
+      'headersDoneAt': serializer.toJson<int?>(headersDoneAt),
+      'headersDoneSeq': serializer.toJson<int?>(headersDoneSeq),
     };
   }
 
-  SyncStateRow copyWith({String? mailboxId, String? state, bool? hasOlder, int? syncedAt, bool? staleHeaders}) =>
-      SyncStateRow(
-        mailboxId: mailboxId ?? this.mailboxId,
-        state: state ?? this.state,
-        hasOlder: hasOlder ?? this.hasOlder,
-        syncedAt: syncedAt ?? this.syncedAt,
-        staleHeaders: staleHeaders ?? this.staleHeaders,
-      );
+  SyncStateRow copyWith({
+    String? mailboxId,
+    String? state,
+    bool? hasOlder,
+    int? syncedAt,
+    bool? staleHeaders,
+    Value<int?> headersDoneAt = const Value.absent(),
+    Value<int?> headersDoneSeq = const Value.absent(),
+  }) => SyncStateRow(
+    mailboxId: mailboxId ?? this.mailboxId,
+    state: state ?? this.state,
+    hasOlder: hasOlder ?? this.hasOlder,
+    syncedAt: syncedAt ?? this.syncedAt,
+    staleHeaders: staleHeaders ?? this.staleHeaders,
+    headersDoneAt: headersDoneAt.present ? headersDoneAt.value : this.headersDoneAt,
+    headersDoneSeq: headersDoneSeq.present ? headersDoneSeq.value : this.headersDoneSeq,
+  );
   SyncStateRow copyWithCompanion(SyncStatesCompanion data) {
     return SyncStateRow(
       mailboxId: data.mailboxId.present ? data.mailboxId.value : this.mailboxId,
@@ -1054,6 +1124,8 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
       hasOlder: data.hasOlder.present ? data.hasOlder.value : this.hasOlder,
       syncedAt: data.syncedAt.present ? data.syncedAt.value : this.syncedAt,
       staleHeaders: data.staleHeaders.present ? data.staleHeaders.value : this.staleHeaders,
+      headersDoneAt: data.headersDoneAt.present ? data.headersDoneAt.value : this.headersDoneAt,
+      headersDoneSeq: data.headersDoneSeq.present ? data.headersDoneSeq.value : this.headersDoneSeq,
     );
   }
 
@@ -1064,13 +1136,15 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
           ..write('state: $state, ')
           ..write('hasOlder: $hasOlder, ')
           ..write('syncedAt: $syncedAt, ')
-          ..write('staleHeaders: $staleHeaders')
+          ..write('staleHeaders: $staleHeaders, ')
+          ..write('headersDoneAt: $headersDoneAt, ')
+          ..write('headersDoneSeq: $headersDoneSeq')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(mailboxId, state, hasOlder, syncedAt, staleHeaders);
+  int get hashCode => Object.hash(mailboxId, state, hasOlder, syncedAt, staleHeaders, headersDoneAt, headersDoneSeq);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1079,7 +1153,9 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
           other.state == this.state &&
           other.hasOlder == this.hasOlder &&
           other.syncedAt == this.syncedAt &&
-          other.staleHeaders == this.staleHeaders);
+          other.staleHeaders == this.staleHeaders &&
+          other.headersDoneAt == this.headersDoneAt &&
+          other.headersDoneSeq == this.headersDoneSeq);
 }
 
 class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
@@ -1088,6 +1164,8 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
   final Value<bool> hasOlder;
   final Value<int> syncedAt;
   final Value<bool> staleHeaders;
+  final Value<int?> headersDoneAt;
+  final Value<int?> headersDoneSeq;
   final Value<int> rowid;
   const SyncStatesCompanion({
     this.mailboxId = const Value.absent(),
@@ -1095,6 +1173,8 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
     this.hasOlder = const Value.absent(),
     this.syncedAt = const Value.absent(),
     this.staleHeaders = const Value.absent(),
+    this.headersDoneAt = const Value.absent(),
+    this.headersDoneSeq = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   SyncStatesCompanion.insert({
@@ -1103,6 +1183,8 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
     this.hasOlder = const Value.absent(),
     required int syncedAt,
     this.staleHeaders = const Value.absent(),
+    this.headersDoneAt = const Value.absent(),
+    this.headersDoneSeq = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : mailboxId = Value(mailboxId),
        state = Value(state),
@@ -1113,6 +1195,8 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
     Expression<bool>? hasOlder,
     Expression<int>? syncedAt,
     Expression<bool>? staleHeaders,
+    Expression<int>? headersDoneAt,
+    Expression<int>? headersDoneSeq,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1121,6 +1205,8 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
       if (hasOlder != null) 'has_older': hasOlder,
       if (syncedAt != null) 'synced_at': syncedAt,
       if (staleHeaders != null) 'stale_headers': staleHeaders,
+      if (headersDoneAt != null) 'headers_done_at': headersDoneAt,
+      if (headersDoneSeq != null) 'headers_done_seq': headersDoneSeq,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1131,6 +1217,8 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
     Value<bool>? hasOlder,
     Value<int>? syncedAt,
     Value<bool>? staleHeaders,
+    Value<int?>? headersDoneAt,
+    Value<int?>? headersDoneSeq,
     Value<int>? rowid,
   }) {
     return SyncStatesCompanion(
@@ -1139,6 +1227,8 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
       hasOlder: hasOlder ?? this.hasOlder,
       syncedAt: syncedAt ?? this.syncedAt,
       staleHeaders: staleHeaders ?? this.staleHeaders,
+      headersDoneAt: headersDoneAt ?? this.headersDoneAt,
+      headersDoneSeq: headersDoneSeq ?? this.headersDoneSeq,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1161,6 +1251,12 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
     if (staleHeaders.present) {
       map['stale_headers'] = Variable<bool>(staleHeaders.value);
     }
+    if (headersDoneAt.present) {
+      map['headers_done_at'] = Variable<int>(headersDoneAt.value);
+    }
+    if (headersDoneSeq.present) {
+      map['headers_done_seq'] = Variable<int>(headersDoneSeq.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1175,6 +1271,8 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
           ..write('hasOlder: $hasOlder, ')
           ..write('syncedAt: $syncedAt, ')
           ..write('staleHeaders: $staleHeaders, ')
+          ..write('headersDoneAt: $headersDoneAt, ')
+          ..write('headersDoneSeq: $headersDoneSeq, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -6893,6 +6991,8 @@ typedef $$SyncStatesTableCreateCompanionBuilder = SyncStatesCompanion Function({
   Value<bool> hasOlder,
   required int syncedAt,
   Value<bool> staleHeaders,
+  Value<int?> headersDoneAt,
+  Value<int?> headersDoneSeq,
   Value<int> rowid,
 });
 typedef $$SyncStatesTableUpdateCompanionBuilder = SyncStatesCompanion Function({
@@ -6901,6 +7001,8 @@ typedef $$SyncStatesTableUpdateCompanionBuilder = SyncStatesCompanion Function({
   Value<bool> hasOlder,
   Value<int> syncedAt,
   Value<bool> staleHeaders,
+  Value<int?> headersDoneAt,
+  Value<int?> headersDoneSeq,
   Value<int> rowid,
 });
 
@@ -6939,6 +7041,12 @@ class $$SyncStatesTableFilterComposer extends Composer<_$StoreDatabase, $SyncSta
 
   ColumnFilters<bool> get staleHeaders =>
       $composableBuilder(column: $table.staleHeaders, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get headersDoneAt =>
+      $composableBuilder(column: $table.headersDoneAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get headersDoneSeq =>
+      $composableBuilder(column: $table.headersDoneSeq, builder: (column) => ColumnFilters(column));
 
   $$MailboxesTableFilterComposer get mailboxId {
     final $$MailboxesTableFilterComposer composer = $composerBuilder(
@@ -6979,6 +7087,12 @@ class $$SyncStatesTableOrderingComposer extends Composer<_$StoreDatabase, $SyncS
   ColumnOrderings<bool> get staleHeaders =>
       $composableBuilder(column: $table.staleHeaders, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<int> get headersDoneAt =>
+      $composableBuilder(column: $table.headersDoneAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get headersDoneSeq =>
+      $composableBuilder(column: $table.headersDoneSeq, builder: (column) => ColumnOrderings(column));
+
   $$MailboxesTableOrderingComposer get mailboxId {
     final $$MailboxesTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -7014,6 +7128,12 @@ class $$SyncStatesTableAnnotationComposer extends Composer<_$StoreDatabase, $Syn
 
   GeneratedColumn<bool> get staleHeaders =>
       $composableBuilder(column: $table.staleHeaders, builder: (column) => column);
+
+  GeneratedColumn<int> get headersDoneAt =>
+      $composableBuilder(column: $table.headersDoneAt, builder: (column) => column);
+
+  GeneratedColumn<int> get headersDoneSeq =>
+      $composableBuilder(column: $table.headersDoneSeq, builder: (column) => column);
 
   $$MailboxesTableAnnotationComposer get mailboxId {
     final $$MailboxesTableAnnotationComposer composer = $composerBuilder(
@@ -7064,6 +7184,8 @@ class $$SyncStatesTableTableManager
                 Value<bool> hasOlder = const Value.absent(),
                 Value<int> syncedAt = const Value.absent(),
                 Value<bool> staleHeaders = const Value.absent(),
+                Value<int?> headersDoneAt = const Value.absent(),
+                Value<int?> headersDoneSeq = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SyncStatesCompanion(
                 mailboxId: mailboxId,
@@ -7071,6 +7193,8 @@ class $$SyncStatesTableTableManager
                 hasOlder: hasOlder,
                 syncedAt: syncedAt,
                 staleHeaders: staleHeaders,
+                headersDoneAt: headersDoneAt,
+                headersDoneSeq: headersDoneSeq,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -7080,6 +7204,8 @@ class $$SyncStatesTableTableManager
                 Value<bool> hasOlder = const Value.absent(),
                 required int syncedAt,
                 Value<bool> staleHeaders = const Value.absent(),
+                Value<int?> headersDoneAt = const Value.absent(),
+                Value<int?> headersDoneSeq = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SyncStatesCompanion.insert(
                 mailboxId: mailboxId,
@@ -7087,6 +7213,8 @@ class $$SyncStatesTableTableManager
                 hasOlder: hasOlder,
                 syncedAt: syncedAt,
                 staleHeaders: staleHeaders,
+                headersDoneAt: headersDoneAt,
+                headersDoneSeq: headersDoneSeq,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

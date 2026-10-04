@@ -89,7 +89,8 @@ Rules (`app/lib/platform/`):
   mail_model parses them (`parseListId`, `parseListUris`, `listPostAddress`, `isOneClickUnsubscribe`).
 - **Store:** schema version 3 added the columns (index on `list_id`), `muted_threads`, and `stale_headers` on sync
   states. The upgrade marks every synced mailbox, and the sync engine fetches its stored summaries once more to fill
-  the new fields.
+  the new fields. It goes newest first in batches of 200 and saves how far it got with each one
+  (`headers_done_at`/`_seq`, schema version 5), so a refetch cut short goes on where it stopped.
 - **Mute is local to the device** (the `muted_threads` table), not a `$muted` keyword: custom keywords are lost on
   servers without `\*` in PERMANENTFLAGS, no other client honours one, and a per-thread state would still need every
   new message tagged. Muting marks the conversation read; later mail of a muted thread is marked read (locally and on
@@ -111,8 +112,12 @@ counted on the device; services that do this elsewhere read the mail on their se
   and the user's own addresses are left out (Trash counts: deleting unread is not reading). Messages a month and the
   read rate use the last 90 days (the read rate over all mail when fewer than three came then). The ranking is unread
   mail a month.
-- **Store:** one query over `emails` (`MailStore.watchSubscriptions`), no new table or index: 40,000 messages take
-  about 110 ms on a laptop, on the store's isolate, and only while a Subscriptions screen is open.
+- **Store** (schema version 5): `emails.sub_key` is each message's key (a generated column, indexed where set);
+  `subscription_messages` (one row per bulk message, copies merged) and `subscription_details` (per key) hold the
+  groups. Triggers on `emails`, `mailboxes` and `accounts` mark the messages a change touches (any process's), and
+  `MailStore.watchSubscriptions` redoes only those, and their keys, before it reads; the counts of the last 90 days
+  are summed at read time. At 40,000 messages (420 groups) opening the screen takes about 5 ms, after 200 messages
+  were read about 20 ms; the first time after the upgrade groups everything once (about 120 ms).
 - **Unsubscribing** (`unsubscribeMethods`), in this order:
   1. RFC 8058 one-click (List-Unsubscribe-Post and an `https` URI): a POST of exactly `List-Unsubscribe=One-Click`
      (`application/x-www-form-urlencoded`) without cookies, user agent, referrer or languages; 2xx or 303 means done;

@@ -80,9 +80,33 @@ final class MailboxSyncInfo {
   final DateTime syncedAt;
 
   /// The stored summaries predate header fields added to the store since
-  /// (the List-* headers): fetch them again, pass them to
-  /// `MailStore.fillHeaders` and call `MailStore.markHeadersFresh`.
+  /// (the List-* headers): fetch them again batch by batch
+  /// (`MailStore.nextStaleHeaders`, `MailStore.fillHeaders`), then call
+  /// `MailStore.markHeadersFresh`.
   final bool staleHeaders;
+}
+
+/// The next messages of a mailbox whose header fields are to be fetched
+/// again (`MailStore.nextStaleHeaders`), newest first. Passing it to
+/// `MailStore.fillHeaders` saves the progress: the next batch starts after
+/// it, even after a restart.
+final class StaleHeadersBatch {
+  const StaleHeadersBatch({
+    required this.mailboxId,
+    required this.emailIds,
+    required this.receivedAt,
+    required this.seq,
+  });
+
+  final String mailboxId;
+
+  /// Every stored message of the batch, local placeholders included.
+  final List<String> emailIds;
+
+  /// The oldest message of the batch: its `received_at` (epoch ms) and the
+  /// store's `seq`, which orders messages that arrived at the same moment.
+  final int receivedAt;
+  final int seq;
 }
 
 /// How far device rules have run in a mailbox: messages stored after [seq]

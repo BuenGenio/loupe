@@ -49,6 +49,13 @@ class SyncStates extends Table {
   /// again once and clears this.
   BoolColumn get staleHeaders => boolean().withDefault(const Constant(false))();
 
+  /// How far that refetch got, newest first: the `received_at` and `seq` of
+  /// the oldest message done, so a refetch cut short (the app killed, the
+  /// connection lost) goes on from there. Null before its first batch.
+  /// Schema version 5.
+  IntColumn get headersDoneAt => integer().nullable()();
+  IntColumn get headersDoneSeq => integer().nullable()();
+
   @override
   Set<Column> get primaryKey => {mailboxId};
 }
@@ -335,6 +342,106 @@ const _countIndexes = [
       'WHERE is_flagged = 1',
 ];
 
+/// Message-ID domains of bulk-mail services as schema version 5 has them in
+/// `emails.sub_key`: mail_model's `bulkMessageIdDomains` when it was made.
+/// A test checks they still agree; changing the list needs a schema version
+/// that recreates the column (with its index and triggers).
+const subscriptionDomainsInSchema = [
+  'mcsv.net',
+  'mcdlv.net',
+  'rsgsv.net',
+  'mandrillapp.com',
+  'sendgrid.net',
+  'amazonses.com',
+  'sparkpostmail.com',
+  'mailgun.org',
+  'mailgun.net',
+  'createsend.com',
+  'exacttarget.com',
+];
+
+/// SQL of the subscription key (`Subscription.key`, see `subscriptionKeyOf`)
+/// of an emails row; null when it isn't bulk mail or has no sender. A List-Id
+/// groups by list; else List-Unsubscribe or a bulk-mail service's Message-ID
+/// groups by sender. LIKE is case-insensitive for ASCII, as domains are.
+final String _subscriptionKeySql = () {
+  final bulk = [
+    "(list_id IS NOT NULL AND list_id <> '')",
+    'list_unsubscribe IS NOT NULL',
+    for (final d in subscriptionDomainsInSchema) ...["message_id_header LIKE '%@$d'", "message_id_header LIKE '%.$d'"],
+  ].join(' OR ');
+  return "CASE WHEN from_email <> '' AND ($bulk) THEN "
+      "CASE WHEN list_id IS NOT NULL AND list_id <> '' THEN 'list:' || list_id ELSE 'from:' || from_email END END";
+}();
+
+/// Marks every subscription out of date: the next read rebuilds them all.
+const subscriptionsRebuildSql = "INSERT OR IGNORE INTO subscription_dirty_keys (key) VALUES ('*')";
+
+/// The Subscriptions screen's data, kept up to date incrementally (schema
+/// version 5); `MailStore.watchSubscriptions` reads it.
+///
+/// - `emails.sub_key`: each message's subscription key (generated), indexed
+///   where there is one.
+/// - `subscription_messages`: one row per bulk message, its copies merged
+///   (the first of their keys, newest arrival, read, in an Inbox), for the
+///   counts.
+/// - `subscription_details`: per key, what the copies of its messages say
+///   (mailboxes, accounts, senders, the newest name and List-Unsubscribe).
+/// - `subscription_dirty`: messages whose rows are out of date, marked by
+///   triggers on every change (by any process). `subscription_dirty_keys`
+///   holds `*` when everything is (the user's own addresses, which don't
+///   count, changed), and the keys a refresh redoes while it runs.
+///
+/// The store brings the rows up to date before it reads them, with work in
+/// proportion to what changed.
+final List<String> _subscriptionSchema = [
+  'ALTER TABLE emails ADD COLUMN sub_key TEXT GENERATED ALWAYS AS ($_subscriptionKeySql) VIRTUAL',
+  'CREATE INDEX emails_subscription ON emails (sub_key) WHERE sub_key IS NOT NULL',
+  'CREATE TABLE subscription_messages (account_id TEXT NOT NULL, mid TEXT NOT NULL, key TEXT NOT NULL, '
+      'received_at INTEGER NOT NULL, seen INTEGER NOT NULL, inbox INTEGER NOT NULL, '
+      'PRIMARY KEY (account_id, mid)) WITHOUT ROWID',
+  'CREATE INDEX subscription_messages_key ON subscription_messages (key, received_at, seen, inbox)',
+  'CREATE TABLE subscription_details (key TEXT NOT NULL PRIMARY KEY, boxes TEXT, accounts TEXT, '
+      'senders INTEGER NOT NULL, has_headers INTEGER NOT NULL, sender TEXT, list_name TEXT, from_name TEXT, '
+      'unsubscribe TEXT) WITHOUT ROWID',
+  'CREATE TABLE subscription_dirty (account_id TEXT NOT NULL, mid TEXT NOT NULL, PRIMARY KEY (account_id, mid)) '
+      'WITHOUT ROWID',
+  'CREATE TABLE subscription_dirty_keys (key TEXT NOT NULL PRIMARY KEY) WITHOUT ROWID',
+  for (final (name, event, row) in const [
+    ('emails_subscription_insert', 'INSERT', 'new'),
+    ('emails_subscription_delete', 'DELETE', 'old'),
+  ])
+    'CREATE TRIGGER $name AFTER $event ON emails WHEN $row.sub_key IS NOT NULL BEGIN '
+        'INSERT OR IGNORE INTO subscription_dirty VALUES ($row.account_id, coalesce($row.message_id_header, $row.id)); '
+        'END;',
+  // Every column the key, the scope and the counts read.
+  '''
+CREATE TRIGGER emails_subscription_update AFTER UPDATE OF id, account_id, mailbox_id, message_id_header, from_json,
+  from_email, received_at, is_seen, list_id, list_name, list_unsubscribe, list_unsubscribe_post ON emails
+WHEN old.sub_key IS NOT NULL OR new.sub_key IS NOT NULL BEGIN
+  INSERT OR IGNORE INTO subscription_dirty
+    SELECT old.account_id, coalesce(old.message_id_header, old.id) WHERE old.sub_key IS NOT NULL;
+  INSERT OR IGNORE INTO subscription_dirty
+    SELECT new.account_id, coalesce(new.message_id_header, new.id) WHERE new.sub_key IS NOT NULL;
+END;''',
+  // Junk, Sent and Drafts don't count, and Inbox copies are counted.
+  '''
+CREATE TRIGGER mailboxes_subscription_role AFTER UPDATE OF role ON mailboxes WHEN old.role IS NOT new.role BEGIN
+  INSERT OR IGNORE INTO subscription_dirty SELECT account_id, coalesce(message_id_header, id) FROM emails
+    WHERE mailbox_id = new.id AND sub_key IS NOT NULL;
+END;''',
+  // The user's own addresses don't count.
+  'CREATE TRIGGER accounts_subscription_insert AFTER INSERT ON accounts BEGIN $subscriptionsRebuildSql; END;',
+  'CREATE TRIGGER accounts_subscription_delete AFTER DELETE ON accounts BEGIN $subscriptionsRebuildSql; END;',
+  '''
+CREATE TRIGGER accounts_subscription_update AFTER UPDATE OF email, json ON accounts
+WHEN lower(old.email) IS NOT lower(new.email)
+  OR (SELECT group_concat(lower(json_extract(value, '\$.email'))) FROM json_each(old.json, '\$.identities'))
+  IS NOT (SELECT group_concat(lower(json_extract(value, '\$.email'))) FROM json_each(new.json, '\$.identities'))
+BEGIN $subscriptionsRebuildSql; END;''',
+  subscriptionsRebuildSql,
+];
+
 @DriftDatabase(
   tables: [
     Accounts,
@@ -361,7 +468,9 @@ class StoreDatabase extends _$StoreDatabase {
   /// 1: the first release. 2: rules and their watermarks. 3: mailing-list
   /// headers on emails (with the `emails_list` index), muted threads, and
   /// `stale_headers` on sync states. 4: the partial indexes of unread and
-  /// flagged messages ([_countIndexes]). 5: `held` on outbox items.
+  /// flagged messages ([_countIndexes]). 5: `held` on outbox items, the
+  /// Subscriptions screen's data ([_subscriptionSchema]), and the progress of
+  /// the header refetch on sync states.
   @override
   int get schemaVersion => 5;
 
@@ -385,7 +494,7 @@ class StoreDatabase extends _$StoreDatabase {
 
   Future<void> _create(Migrator m) async {
     await m.createAll();
-    for (final sql in [..._ftsAndTriggers, ..._countIndexes]) {
+    for (final sql in [..._ftsAndTriggers, ..._countIndexes, ..._subscriptionSchema]) {
       await customStatement(sql);
     }
   }
@@ -418,6 +527,11 @@ class StoreDatabase extends _$StoreDatabase {
     }
     if (from < 5) {
       await m.addColumn(outboxItems, outboxItems.held);
+      await m.addColumn(syncStates, syncStates.headersDoneAt);
+      await m.addColumn(syncStates, syncStates.headersDoneSeq);
+      for (final sql in _subscriptionSchema) {
+        await customStatement(sql);
+      }
     }
   }
 
