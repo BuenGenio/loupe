@@ -185,6 +185,8 @@ final class AccountSyncer {
   }
 
   Future<T> _withConnection<T>(MailTransport t, Future<T> Function(MailTransport t) op) async {
+    // A disposed syncer never connects again; what was queued fails instead.
+    if (_disposed) throw const MailException(MailErrorKind.cancelled, 'Sync stopped');
     try {
       if (!t.isConnected) await t.connect();
       return await op(t);
@@ -249,12 +251,14 @@ final class AccountSyncer {
       await _replayOps();
       _dirty.clear();
       for (final m in await _mailboxesForFullSync()) {
+        if (_disposed) return;
         await onMain((t) => _syncMailbox(t, m));
       }
       // Later syncs also fill in a few never-opened mailboxes.
       if (!firstSync) {
         final pending = await _store.unsyncedMailboxIds(_account.id);
         for (final id in pending.take(_config.backgroundMailboxesPerSync)) {
+          if (_disposed) return;
           final m = await _store.getMailbox(id);
           if (m != null) await onMain((t) => _syncMailbox(t, m));
         }
@@ -555,7 +559,12 @@ final class AccountSyncer {
         await _store.deleteOp(op.id);
       } catch (error) {
         final e = asMailException(error, 'Unexpected error');
-        if (e.kind == MailErrorKind.connection || e.kind == MailErrorKind.authentication) rethrow;
+        // Offline, signed out or stopped: the operation waits, it didn't fail.
+        if (e.kind == MailErrorKind.connection ||
+            e.kind == MailErrorKind.authentication ||
+            e.kind == MailErrorKind.cancelled) {
+          rethrow;
+        }
         if (!await _opFailed(op, e)) return;
       }
     }

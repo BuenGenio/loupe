@@ -85,6 +85,30 @@ void main() {
       });
     });
 
+    test('an unsaved alias identity sends as its address, also from a scheduled send', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer();
+        final a = await h.add(server);
+        final alias = a.aliasIdentity('shop-xyz@example.com');
+        final message = OutgoingMessage(
+          accountId: a.id,
+          identityId: alias.id,
+          to: const [EmailAddress('bob@example.org')],
+          subject: 'Order',
+        );
+        final draft = await h.repo.saveDraft(message);
+        expect((await h.repo.getEmail(draft))!.from.single.email, 'shop-xyz@example.com');
+        // fakeTime starts at 12:00.
+        await h.repo.send(message.copyWith(draftId: draft), sendAt: DateTime(2026, 9, 1, 13));
+        await settle(const Duration(hours: 2));
+        final mail = server.sent.single;
+        expect(mail.envelopeFrom, 'shop-xyz@example.com');
+        expect(mail.json['from'], 'shop-xyz@example.com');
+        await h.dispose();
+      }, step: _step);
+    });
+
     test('failures stay in the outbox with an error and are retried', () {
       fakeTime((async) async {
         final h = Harness();

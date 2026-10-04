@@ -109,6 +109,10 @@ abstract final class LoupeIcons {
 
   /// The chevron at the end of a row that opens something.
   static const IconData disclosure = FluentIcons.chevron_right_24_regular;
+
+  /// The drag handle of a reorderable row.
+  static const IconData reorder = FluentIcons.re_order_dots_vertical_24_regular;
+
   static const IconData expand = FluentIcons.chevron_down_24_regular;
   static const IconData collapse = FluentIcons.chevron_up_24_regular;
   static const IconData close = FluentIcons.dismiss_24_regular;
@@ -149,12 +153,24 @@ abstract final class LoupeIcons {
   static const IconData emailAddress = FluentIcons.mention_24_regular;
   static const IconData onServer = FluentIcons.cloud_24_regular;
   static const IconData offline = FluentIcons.cloud_off_24_regular;
+  static const IconData synced = FluentIcons.cloud_checkmark_24_regular;
+  static const IconData syncPending = FluentIcons.cloud_arrow_up_24_regular;
+  static const IconData thisDevice = FluentIcons.phone_24_regular;
   static const IconData privacy = FluentIcons.shield_lock_24_regular;
   static const IconData password = FluentIcons.key_24_regular;
   static const IconData serverSettings = FluentIcons.options_24_regular;
   static const IconData verified = FluentIcons.shield_checkmark_24_filled;
   static const IconData unverified = FluentIcons.shield_error_24_filled;
   static const IconData readable = FluentIcons.sparkle_24_regular;
+
+  // Security (the phishing check and privacy report) --------------------------
+
+  static const IconData phishing = FluentIcons.shield_dismiss_24_filled;
+  static const IconData caution = FluentIcons.shield_error_24_filled;
+  static const IconData shield = FluentIcons.shield_24_regular;
+  static const IconData trackers = FluentIcons.eye_tracking_off_24_regular;
+  static const IconData redirect = FluentIcons.arrow_routing_24_regular;
+  static const IconData openDirectly = FluentIcons.link_24_regular;
 
   // Importing accounts ------------------------------------------------------
 

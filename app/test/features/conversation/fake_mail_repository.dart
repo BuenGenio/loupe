@@ -22,6 +22,15 @@ class FakeMailRepository implements MailRepository {
   final Map<String, EmailContent> contents;
   final vips = <String>{};
 
+  /// Address-book histories by lower-cased address; others are unknown.
+  final senderHistories = <String, SenderHistory>{};
+
+  /// Server documents: account id → name → content.
+  final serverDocuments = <String, Map<String, String>>{};
+
+  /// Thrown by the server document calls while set (e.g. offline).
+  MailException? serverDocumentsError;
+
   /// Every call, as "method args" strings, in order.
   final log = <String>[];
   final keywordCalls = <({List<String> ids, Set<String> add, Set<String> remove})>[];
@@ -336,6 +345,29 @@ class FakeMailRepository implements MailRepository {
     ].take(limit).toList();
   }
 
+  // Documents on the server -------------------------------------------------
+
+  @override
+  Future<List<ServerDocument>> readServerDocuments(String accountId, String name) async {
+    log.add('readServerDocuments $accountId $name');
+    if (serverDocumentsError case final e?) throw e;
+    final content = serverDocuments[accountId]?[name];
+    return [if (content != null) ServerDocument(content: content, storage: ServerStorage.metadata)];
+  }
+
+  @override
+  Future<ServerStorage> writeServerDocument(
+    String accountId,
+    String name,
+    String content, {
+    List<ServerDocument> replaces = const [],
+  }) async {
+    log.add('writeServerDocument $accountId $name');
+    if (serverDocumentsError case final e?) throw e;
+    (serverDocuments[accountId] ??= {})[name] = content;
+    return ServerStorage.metadata;
+  }
+
   // People -------------------------------------------------------------------
 
   @override
@@ -347,6 +379,9 @@ class FakeMailRepository implements MailRepository {
     vip ? vips.add(email.toLowerCase()) : vips.remove(email.toLowerCase());
     _changed();
   }
+
+  @override
+  Future<SenderHistory> senderHistory(String email) async => senderHistories[email.toLowerCase()] ?? SenderHistory.none;
 }
 
 const testAccount = MailAccount(

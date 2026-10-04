@@ -393,9 +393,10 @@ class _AccountSection extends ConsumerWidget {
     final colors = LoupeColors.of(context);
     final collapsed = ref.watch(collapsedAccountsProvider).contains(account.id);
     final expanded = ref.watch(expandedFoldersProvider);
-    // The Snoozed folder shows as the Snoozed mailbox at the top instead.
+    // The Loupe Settings folder holds Smart Mailboxes, not mail; the Snoozed
+    // folder shows as the Snoozed mailbox at the top.
     final mailboxes = (ref.watch(mailboxesProvider).value ?? const <Mailbox>[])
-        .where((m) => m.accountId == account.id && !Snooze.isFolder(m))
+        .where((m) => m.accountId == account.id && !ServerDocuments.isFolder(m) && !Snooze.isFolder(m))
         .toList();
     final v = _visibility(ref);
     final showAll = ref.watch(showAllFoldersProvider).contains(account.id);

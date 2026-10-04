@@ -7,6 +7,7 @@ import 'mailbox.dart';
 import 'outbox.dart';
 import 'outgoing.dart';
 import 'search.dart';
+import 'server_documents.dart';
 import 'snooze.dart';
 
 enum SyncPhase { idle, syncing, error, offline }
@@ -19,6 +20,36 @@ final class AccountSyncStatus {
 
   /// Human-readable error for the status line, e.g. "Password rejected".
   final String? error;
+}
+
+/// What the local address book knows about one address: how often it wrote
+/// to the user and the user to it. Feeds the phishing check ("first message
+/// from this sender", look-alikes of known contacts).
+final class SenderHistory {
+  const SenderHistory({this.received = 0, this.sent = 0});
+
+  /// Nothing known about the address.
+  static const none = SenderHistory();
+
+  /// Messages received from the address outside Junk and Trash, including
+  /// the one being read once it is synced.
+  final int received;
+
+  /// Messages the user sent to the address.
+  final int sent;
+
+  /// The user wrote to the address, or has had mail from it before the
+  /// message being read.
+  bool get isKnown => sent > 0 || received > 1;
+
+  @override
+  bool operator ==(Object other) => other is SenderHistory && other.received == received && other.sent == sent;
+
+  @override
+  int get hashCode => Object.hash(received, sent);
+
+  @override
+  String toString() => 'SenderHistory(received: $received, sent: $sent)';
 }
 
 /// The app-facing API. The UI depends only on this.
@@ -158,10 +189,33 @@ abstract interface class MailRepository {
   /// Recipient autocomplete from previously seen addresses.
   Future<List<EmailAddress>> suggestAddresses(String prefix, {int limit = 8});
 
+  // Documents on the server -------------------------------------------------
+
+  /// Every stored copy of Loupe's document [name] (e.g.
+  /// [ServerDocuments.smartMailboxes]) on [accountId]'s server; see
+  /// [MailTransport.readDocuments]. Throws [MailException] (kind connection
+  /// while offline).
+  Future<List<ServerDocument>> readServerDocuments(String accountId, String name);
+
+  /// Stores [content] as document [name] on [accountId]'s server, replacing
+  /// the copies in [replaces] (from [readServerDocuments]). Returns where it
+  /// went. Throws [MailException] (kind connection while offline).
+  Future<ServerStorage> writeServerDocument(
+    String accountId,
+    String name,
+    String content, {
+    List<ServerDocument> replaces = const [],
+  });
+
   // People -------------------------------------------------------------------
 
   Stream<Set<String>> watchVipAddresses();
   Future<void> setVip(String email, {required bool vip});
+
+  /// How often [email] wrote to the user and the user to it, from the local
+  /// address book (case-insensitive). Unknown addresses give
+  /// [SenderHistory.none].
+  Future<SenderHistory> senderHistory(String email);
 }
 
 /// Errors surfaced to the UI. [message] is shown as is.

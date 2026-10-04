@@ -46,6 +46,7 @@ final class LiveMailRepository implements MailRepository {
   bool _started = false;
   bool _paused = false;
   bool _disposed = false;
+  Future<void>? _disposing;
 
   Timer? _outboxTimer;
   int _outboxGeneration = 0;
@@ -120,8 +121,22 @@ final class LiveMailRepository implements MailRepository {
     if (!_started || _paused) await Future.wait([for (final s in _syncers.values) s.pause()]);
   }
 
-  /// Stops all syncing. The store stays open (the app owns it).
-  Future<void> dispose() async {
+  /// Replays queued operations of every account now, e.g. after a
+  /// notification action changed a message from a background isolate. Works
+  /// without [start]; closes connections afterwards unless the repository is
+  /// running. Never throws; failures go to the sync status.
+  Future<void> flushOps() async {
+    if (_disposed) return;
+    await _loadAccounts();
+    await Future.wait([for (final s in _syncers.values) s.flushOps()]);
+    if (!_started || _paused) await Future.wait([for (final s in _syncers.values) s.pause()]);
+  }
+
+  /// Stops all syncing, including a running [syncOnce] (after the command in
+  /// flight). The store stays open (the app owns it).
+  Future<void> dispose() => _disposing ??= _dispose();
+
+  Future<void> _dispose() async {
     _disposed = true;
     _outboxTimer?.cancel();
     _snoozeTimer?.cancel();
@@ -1007,7 +1022,7 @@ final class LiveMailRepository implements MailRepository {
       final account =
           await store.getAccount(entry.accountId) ??
           (throw const MailException(MailErrorKind.notFound, 'This account no longer exists'));
-      final identity = account.identities.where((i) => i.id == m.identityId).firstOrNull ?? account.defaultIdentity;
+      final identity = account.identityById(m.identityId);
       final bytes = transports.composer.compose(m, identity, messageId: newMessageId(identity.email), date: _now());
       final recipients = {
         for (final a in [...m.to, ...m.cc, ...m.bcc]) a.email,
@@ -1084,7 +1099,7 @@ final class LiveMailRepository implements MailRepository {
     final drafts =
         await store.mailboxByRole(account.id, MailboxRole.drafts) ??
         (throw const MailException(MailErrorKind.notFound, 'This account has no Drafts folder.'));
-    final identity = account.identities.where((i) => i.id == message.identityId).firstOrNull ?? account.defaultIdentity;
+    final identity = account.identityById(message.identityId);
     final messageId = newMessageId(identity.email);
     final now = _now();
     final bytes = transports.composer.compose(message, identity, messageId: messageId, date: now);
@@ -1179,6 +1194,20 @@ final class LiveMailRepository implements MailRepository {
     await _deletePermanently(accountId, [id]);
   }
 
+  // Documents on the server -------------------------------------------------
+
+  @override
+  Future<List<ServerDocument>> readServerDocuments(String accountId, String name) =>
+      _syncerFor(accountId).onMain((t) => t.readDocuments(name));
+
+  @override
+  Future<ServerStorage> writeServerDocument(
+    String accountId,
+    String name,
+    String content, {
+    List<ServerDocument> replaces = const [],
+  }) => _syncerFor(accountId).onMain((t) => t.writeDocument(name, content, replaces: replaces));
+
   // People ------------------------------------------------------------------
 
   @override
@@ -1190,6 +1219,9 @@ final class LiveMailRepository implements MailRepository {
 
   @override
   Future<void> setVip(String email, {required bool vip}) => store.setVip(email, vip: vip);
+
+  @override
+  Future<SenderHistory> senderHistory(String email) => store.senderHistory(email);
 }
 
 final class _SearchTarget {

@@ -5,6 +5,7 @@ import 'email.dart';
 import 'mailbox.dart';
 import 'outgoing.dart';
 import 'search.dart';
+import 'server_documents.dart';
 
 /// A mailbox as the server lists it.
 final class RemoteMailbox {
@@ -164,6 +165,18 @@ abstract interface class MailTransport {
   /// Emits whenever the server reports a change in [mailbox] (IMAP IDLE).
   /// The stream ends when the connection drops.
   Stream<void> watch(RemoteMailbox mailbox);
+
+  /// Every stored copy of Loupe's document [name] on this server (empty when
+  /// there is none): the METADATA entry [ServerDocuments.metadataEntry] where
+  /// the server supports it, and messages in the [ServerDocuments.folderName]
+  /// folder.
+  Future<List<ServerDocument>> readDocuments(String name);
+
+  /// Stores [content] as document [name], as METADATA when the server
+  /// accepts it and otherwise as a message in the documents folder (created
+  /// when missing), then removes the copies in [replaces]. Returns where it
+  /// went.
+  Future<ServerStorage> writeDocument(String name, String content, {List<ServerDocument> replaces = const []});
 }
 
 /// Sends a ready-made message (SMTP).

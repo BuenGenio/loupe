@@ -27,6 +27,44 @@ import 'scope.dart';
 /// isolate costs more than parsing them, and the first frame is complete.
 const _syncThreshold = 24 * 1024;
 
+/// Background runs in progress, so the view and [ReaderView.analyze] share
+/// one run of a big message.
+final _running = <PipelineKey, Future<PipelineOutput>>{};
+
+String _normalizeCid(String id) => id.trim().replaceAll(RegExp(r'^<|>$'), '');
+
+PipelineInput _inputFor(EmailContent c, PipelineMode mode) => PipelineInput(
+  mode: mode,
+  html: c.html,
+  text: c.text,
+  isFlowed: c.isFlowed,
+  contentIds: {
+    for (final id in c.inlineData.keys) _normalizeCid(id),
+    for (final a in c.attachments)
+      if (a.contentId != null) _normalizeCid(a.contentId!),
+  },
+);
+
+PipelineKey _keyFor(EmailContent c, PipelineMode mode) => (
+  c.emailId,
+  mode,
+  c.html?.length ?? -1,
+  c.text?.length ?? -1,
+  Object.hash(sampleHash(c.html), sampleHash(c.text)),
+  c.isFlowed,
+);
+
+/// Runs [input] in a background isolate (once per [key]) and caches the result.
+Future<PipelineOutput> _inBackground(PipelineKey key, PipelineInput input) => _running.putIfAbsent(
+  key,
+  () => runPipelineInIsolate(input)
+      .then((out) => PipelineCache.instance[key] = out)
+      // A block body: returning the removed future would wait for itself.
+      .whenComplete(() {
+        _running.remove(key);
+      }),
+);
+
 class ReaderView extends StatefulWidget {
   const ReaderView({
     super.key,
@@ -39,6 +77,8 @@ class ReaderView extends StatefulWidget {
     this.onSuggestOriginal,
     this.senderDomain,
     this.backgroundColor,
+    this.openLinksDirectly = false,
+    this.inert = false,
   });
 
   final EmailContent content;
@@ -50,10 +90,31 @@ class ReaderView extends StatefulWidget {
   final VoidCallback? onSuggestOriginal;
   final String? senderDomain;
   final Color? backgroundColor;
+  final bool openLinksDirectly;
+  final bool inert;
 
   /// Tests: run every message synchronously (no isolate). Public through
   /// `ReadableMessageView.debugSynchronous`.
   static bool debugSynchronous = false;
+
+  /// The analysis of [content] from a Readable-mode run, shared with (and
+  /// cached for) the Readable view.
+  static Future<ReadableAnalysis> analyze(EmailContent content) async {
+    final key = _keyFor(content, PipelineMode.readable);
+    final cached = PipelineCache.instance[key];
+    if (cached != null) return cached.analysis ?? ReadableAnalysis.empty;
+    final input = _inputFor(content, PipelineMode.readable);
+    try {
+      if (input.size <= _syncThreshold || debugSynchronous) {
+        final out = PipelineCache.instance[key] = runPipeline(input);
+        return out.analysis ?? ReadableAnalysis.empty;
+      }
+      return (await _inBackground(key, input)).analysis ?? ReadableAnalysis.empty;
+    } catch (error, stack) {
+      FlutterError.reportError(FlutterErrorDetails(exception: error, stack: stack, library: 'readable'));
+      return ReadableAnalysis.empty;
+    }
+  }
 
   @override
   State<ReaderView> createState() => _ReaderViewState();
@@ -75,7 +136,7 @@ class _ReaderViewState extends State<ReaderView> {
   String _page = '';
 
   EmailContent get _content => widget.content;
-  bool get _remoteAllowed => widget.remoteContent == RemoteContentPolicy.allow || _allowedHere;
+  bool get _remoteAllowed => !widget.inert && (widget.remoteContent == RemoteContentPolicy.allow || _allowedHere);
   ReaderDocument get _doc => _output?.document ?? ReaderDocument.empty;
 
   PipelineMode get _mode => switch (widget.settings.mode) {
@@ -101,7 +162,9 @@ class _ReaderViewState extends State<ReaderView> {
     }
     if (!sameMessage || !_sameBody(old.content, widget.content) || old.settings.mode != widget.settings.mode) {
       _load();
-    } else if (old.remoteContent != widget.remoteContent || old.loadAttachment != widget.loadAttachment) {
+    } else if (old.remoteContent != widget.remoteContent ||
+        old.loadAttachment != widget.loadAttachment ||
+        old.inert != widget.inert) {
       _providers.clear();
     }
   }
@@ -125,25 +188,8 @@ class _ReaderViewState extends State<ReaderView> {
     final generation = ++_generation;
     final c = _content;
     final mode = _mode;
-    final input = PipelineInput(
-      mode: mode,
-      html: c.html,
-      text: c.text,
-      isFlowed: c.isFlowed,
-      contentIds: {
-        for (final id in c.inlineData.keys) _normalizeCid(id),
-        for (final a in c.attachments)
-          if (a.contentId != null) _normalizeCid(a.contentId!),
-      },
-    );
-    final PipelineKey key = (
-      c.emailId,
-      mode,
-      c.html?.length ?? -1,
-      c.text?.length ?? -1,
-      Object.hash(sampleHash(c.html), sampleHash(c.text)),
-      c.isFlowed,
-    );
+    final input = _inputFor(c, mode);
+    final key = _keyFor(c, mode);
     _providers.clear();
     _cidUris.clear();
     _pageKey = null;
@@ -159,9 +205,8 @@ class _ReaderViewState extends State<ReaderView> {
       return;
     }
     _output = null;
-    runPipelineInIsolate(input).then<void>(
+    _inBackground(key, input).then<void>(
       (out) {
-        PipelineCache.instance[key] = out;
         if (!mounted || generation != _generation) return;
         setState(() => _output = out);
         _afterLoad();
@@ -272,9 +317,23 @@ class _ReaderViewState extends State<ReaderView> {
     }
     final view = buildOriginalView(
       context,
-      OriginalViewRequest(html: _page, onOpenLink: widget.onOpenLink, textScale: scale),
+      OriginalViewRequest(
+        html: _page,
+        onOpenLink: widget.inert || widget.onOpenLink == null ? null : _openFromOriginal,
+        textScale: scale,
+      ),
     );
-    return _withBanner(show: !_remoteAllowed && original.remoteImages > 0, body: view);
+    return _withBanner(show: !widget.inert && !_remoteAllowed && original.remoteImages > 0, body: view);
+  }
+
+  /// A link tapped in the Original view (no mismatch check there): skips a
+  /// click tracker when the host asks to.
+  void _openFromOriginal(Uri uri) {
+    final open = widget.onOpenLink;
+    if (open == null) return;
+    final redirect = widget.openLinksDirectly ? unwrapRedirect(uri.toString()) : null;
+    final direct = redirect != null && redirect.skippable ? Uri.tryParse(redirect.direct!) : null;
+    open(direct ?? uri);
   }
 
   /// The body under an optional banner. The body is keyed so that dismissing
@@ -295,8 +354,6 @@ class _ReaderViewState extends State<ReaderView> {
   );
 
   // -- Images ----------------------------------------------------------------
-
-  static String _normalizeCid(String id) => id.trim().replaceAll(RegExp(r'^<|>$'), '');
 
   ImageProvider? _imageFor(int index) => _providers.putIfAbsent(index, () {
     final images = _doc.images;
@@ -374,7 +431,9 @@ class _ReaderViewState extends State<ReaderView> {
   void _onLinkTap(int link) {
     final links = _doc.links;
     if (link < 0 || link >= links.length) return;
-    unawaited(openLink(context, links[link], widget.onOpenLink));
+    // Inert links show where they lead instead of opening.
+    if (widget.inert) return _onLinkLongPress(link);
+    unawaited(openLink(context, links[link], widget.onOpenLink, direct: widget.openLinksDirectly));
   }
 
   void _onLinkLongPress(int link, {int? image}) {
@@ -384,7 +443,8 @@ class _ReaderViewState extends State<ReaderView> {
       showLinkSheet(
         context,
         links[link],
-        onOpen: widget.onOpenLink,
+        onOpen: widget.inert ? null : widget.onOpenLink,
+        inert: widget.inert,
         onViewImage: image == null ? null : () => _openGallery(image),
       ),
     );
@@ -435,7 +495,7 @@ class _ReaderViewState extends State<ReaderView> {
     if (original != null && widget.settings.mode == ReaderMode.original) return _original(context, original);
     final plain = widget.settings.mode == ReaderMode.plain;
     final doc = out.document;
-    final showBanner = !plain && !_remoteAllowed && doc.stats.remoteImages > 0;
+    final showBanner = !plain && !widget.inert && !_remoteAllowed && doc.stats.remoteImages > 0;
     final body = _document(context, doc, plain: plain, mono: plain && widget.settings.plainFont == PlainTextFont.mono);
     return _withBanner(show: showBanner, body: body);
   }

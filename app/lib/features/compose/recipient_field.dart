@@ -51,6 +51,13 @@ class RecipientController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Removes the chip of [email], whatever its name.
+  void removeEmail(String email) {
+    final before = _items.length;
+    _items.removeWhere((a) => a.email.toLowerCase() == email.trim().toLowerCase());
+    if (_items.length != before) notifyListeners();
+  }
+
   void removeLast() {
     if (_items.isEmpty) return;
     _items.removeLast();

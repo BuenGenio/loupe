@@ -126,6 +126,15 @@ class DemoMailRepository implements MailRepository {
   /// Every message in [_older] and [_serverOnly], by id.
   final _remote = <String, DemoMessage>{};
   final _vips = <String>{};
+
+  /// Documents "on the server": account id → document name → content.
+  /// Tests write here to play another device.
+  final serverDocuments = <String, Map<String, String>>{};
+
+  /// Demo accounts whose server has no METADATA: their documents live in a
+  /// Loupe Settings folder, created on the first write. Gmail accounts
+  /// can't keep documents at all, like the real one.
+  static const _withoutMetadata = {DemoAccounts.work};
   final _sync = <String, AccountSyncStatus>{};
   final _outbox = <String, _Queued>{};
   final _contentCache = <String, EmailContent>{};
@@ -403,6 +412,7 @@ class DemoMailRepository implements MailRepository {
     _older.removeWhere((id, _) => MailIds.accountOf(id) == accountId);
     _serverOnly.remove(accountId);
     _sync.remove(accountId);
+    serverDocuments.remove(accountId);
     _notify();
   }
 
@@ -733,6 +743,7 @@ class DemoMailRepository implements MailRepository {
       ('From', addresses(s.from)),
       if (s.to.isNotEmpty) ('To', addresses(s.to)),
       if (s.cc.isNotEmpty) ('Cc', addresses(s.cc)),
+      if (s.replyTo.isNotEmpty) ('Reply-To', addresses(s.replyTo)),
       ('Subject', enc(s.subject)),
       ...m.extraHeaders,
       ('MIME-Version', '1.0'),
@@ -1069,7 +1080,7 @@ class DemoMailRepository implements MailRepository {
   Identity _identity(OutgoingMessage message) {
     final account = _account(message.accountId);
     if (account == null) throw const MailException(MailErrorKind.notFound, 'This account no longer exists.');
-    return account.identities.where((i) => i.id == message.identityId).firstOrNull ?? account.defaultIdentity;
+    return account.identityById(message.identityId);
   }
 
   DemoMessage _addLocal({
@@ -1329,6 +1340,55 @@ class DemoMailRepository implements MailRepository {
     return hits.take(limit).toList();
   }
 
+  // Documents on the server ---------------------------------------------------------
+
+  void _requireAccount(String accountId) {
+    final account = _account(accountId);
+    if (account == null) throw const MailException(MailErrorKind.notFound, 'This account no longer exists.');
+    if (account.provider == ProviderKind.gmail) {
+      throw const MailException(MailErrorKind.unsupported, 'Gmail can’t keep Loupe settings on the server.');
+    }
+  }
+
+  @override
+  Future<List<ServerDocument>> readServerDocuments(String accountId, String name) async {
+    _requireAccount(accountId);
+    await _wait(_jitter(latency.content));
+    final content = serverDocuments[accountId]?[name];
+    return [
+      if (content != null)
+        _withoutMetadata.contains(accountId)
+            ? ServerDocument(content: content, storage: ServerStorage.folder, ref: '$accountId/$name')
+            : ServerDocument(content: content, storage: ServerStorage.metadata),
+    ];
+  }
+
+  @override
+  Future<ServerStorage> writeServerDocument(
+    String accountId,
+    String name,
+    String content, {
+    List<ServerDocument> replaces = const [],
+  }) async {
+    _requireAccount(accountId);
+    await _wait(_jitter(latency.content));
+    (serverDocuments[accountId] ??= {})[name] = content;
+    if (!_withoutMetadata.contains(accountId)) return ServerStorage.metadata;
+    final folder = MailIds.mailbox(accountId, ServerDocuments.folderName);
+    if (!_mailboxes.containsKey(folder)) {
+      _mailboxes[folder] = Mailbox(
+        id: folder,
+        accountId: accountId,
+        name: ServerDocuments.folderName,
+        path: ServerDocuments.folderName,
+        isSubscribed: false,
+        sortOrder: _mailboxes.length,
+      );
+      _notify();
+    }
+    return ServerStorage.folder;
+  }
+
   // People -----------------------------------------------------------------------------
 
   @override
@@ -1339,6 +1399,26 @@ class DemoMailRepository implements MailRepository {
     final key = email.toLowerCase();
     vip ? _vips.add(key) : _vips.remove(key);
     _notify();
+  }
+
+  /// Like the store's address book: senders outside Junk, Trash and Drafts,
+  /// and recipients of the user's own messages.
+  @override
+  Future<SenderHistory> senderHistory(String email) async {
+    final e = email.trim().toLowerCase();
+    var received = 0;
+    var sent = 0;
+    for (final m in _messages.values) {
+      final s = m.summary;
+      final box = _mailboxes[s.mailboxId];
+      if (box == null || _isBin(box) || box.role == MailboxRole.drafts) continue;
+      if (_isFromMe(s)) {
+        if ([...s.to, ...s.cc, ...s.bcc].any((a) => a.email.toLowerCase() == e)) sent++;
+      } else if (s.from.any((a) => a.email.toLowerCase() == e)) {
+        received++;
+      }
+    }
+    return SenderHistory(received: received, sent: sent);
   }
 }
 

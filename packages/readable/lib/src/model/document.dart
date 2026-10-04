@@ -6,6 +6,8 @@
 
 import 'dart:typed_data';
 
+import '../pipeline/redirects.dart' show Redirect;
+
 /// Paragraph alignment. Only short blocks keep a centre/right alignment.
 enum BlockAlign { start, center, right }
 
@@ -406,19 +408,32 @@ final class ImageRef {
 }
 
 final class LinkRef {
-  const LinkRef(this.url, {this.text = '', this.namedDomain});
+  const LinkRef(this.url, {this.text = '', this.namedDomain, this.redirect});
   final String url;
 
   /// The visible text of the link (plain).
   final String text;
 
-  /// Set when the text names a domain other than the one the link opens; the
-  /// reader warns before opening it.
+  /// Set when the text names a domain other than the one the link opens (the
+  /// destination of a known redirect); the reader warns before opening it.
   final String? namedDomain;
+
+  /// Set when the link goes through a click tracker, a link filter or another
+  /// redirect.
+  final Redirect? redirect;
 
   bool get isMismatch => namedDomain != null;
 
-  Map<String, Object?> toJson() => {'url': url, if (namedDomain != null) 'mismatch': namedDomain};
+  /// Where the link really ends up when a known redirect carries it: the
+  /// destination without tracking parameters. Null otherwise.
+  String? get direct => redirect != null && redirect!.known ? redirect!.direct : null;
+
+  Map<String, Object?> toJson() => {
+    'url': url,
+    if (namedDomain != null) 'mismatch': namedDomain,
+    if (redirect != null) 'via': redirect!.services.join(' > '),
+    if (redirect?.resolved ?? false) 'opens': redirect!.target,
+  };
 }
 
 /// What the pipeline removed or found; drives the "Suggest Original" hint.

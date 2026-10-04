@@ -235,6 +235,17 @@ void main() {
     expect(boxes.map((b) => b.role), contains(MailboxRole.inbox));
   });
 
+  test('senderHistory counts mail from and to an address', () async {
+    final jordan = await repo.senderHistory('Jordan.Lee@example.com');
+    expect(jordan.received, greaterThan(1));
+    expect(jordan.sent, greaterThan(0));
+    expect(jordan.isKnown, isTrue);
+    final phish = await repo.senderHistory('service@parcelpost-notice.example.net');
+    expect(phish, const SenderHistory(received: 1));
+    expect(phish.isKnown, isFalse);
+    expect(await repo.senderHistory('nobody@nowhere.example'), SenderHistory.none);
+  });
+
   test('suggestAddresses ranks frequent correspondents', () async {
     final people = await repo.suggestAddresses('jo');
     expect(people.first.email, 'jordan.lee@example.com');

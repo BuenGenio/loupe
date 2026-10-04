@@ -15,6 +15,13 @@ workspace:
 dev_dependencies:
   flutter_lints: ^6.0.0
 
+# connectivity_plus needs dbus 0.8; flutter_local_notifications 22's Linux
+# side still pins ^0.7.8, though its code works unchanged with 0.8 (its
+# 9.0.0-dev.2 only widens the range to <0.9.0). Drop this once
+# flutter_local_notifications 23 is stable.
+dependency_overrides:
+  dbus: ^0.8.0
+
 # Build hook options. package:sqlite3 bundles SQLite3MultipleCiphers (MIT) so
 # mail_store can encrypt the database; it includes FTS5. Hook user-defines
 # are only read from the workspace root.

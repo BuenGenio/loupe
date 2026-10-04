@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -36,6 +37,25 @@ void main() {
       );
       await expectLater(MailStore.open(path, encryptionKey: 'wrong'), throwsA(isA<MailStoreException>()));
       await expectLater(MailStore.open(path, encryptionKey: ''), throwsA(isA<MailStoreException>()));
+    });
+
+    test('a second connection waits for the first one to finish writing', () async {
+      // The app and a background sync each open the file.
+      final path = '${dir.path}/mail.db';
+      final app = await MailStore.open(path, encryptionKey: 'k');
+      final background = await MailStore.open(path, encryptionKey: 'k');
+      final holding = Completer<void>();
+      final first = app.transaction(() async {
+        await app.setVip('a@example.com', vip: true);
+        holding.complete();
+        await Future<void>.delayed(const Duration(milliseconds: 300));
+      });
+      await holding.future;
+      await background.setVip('b@example.com', vip: true);
+      await first;
+      expect(await app.watchVipAddresses().first, {'a@example.com', 'b@example.com'});
+      await app.close();
+      await background.close();
     });
   });
 
@@ -226,6 +246,21 @@ void main() {
       expect((await store.suggestAddresses('bob')).single.email, 'bob@example.org');
       expect(await store.suggestAddresses('spam'), isEmpty);
       expect(await store.suggestAddresses('%'), isEmpty);
+    });
+
+    test('knows how often an address wrote and was written to', () async {
+      final store = await seededStore();
+      await addMails(store, [
+        mail(1, from: 'alice@example.com'),
+        mail(2, from: 'Alice@Example.com'),
+        mail(3, path: 'Sent', from: 'me@example.com', to: ['alice@example.com', 'bob@example.org']),
+        mail(4, path: 'Junk', from: 'spam@spam.test'),
+      ]);
+      expect(await store.senderHistory('ALICE@example.com'), const SenderHistory(received: 2, sent: 1));
+      expect(await store.senderHistory('bob@example.org'), const SenderHistory(sent: 1));
+      expect(await store.senderHistory('spam@spam.test'), SenderHistory.none);
+      expect(await store.senderHistory('nobody@example.net'), SenderHistory.none);
+      expect((await store.senderHistory('alice@example.com')).isKnown, isTrue);
     });
   });
 
