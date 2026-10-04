@@ -3,20 +3,21 @@ import 'package:mail_model/mail_model.dart';
 
 import '../../theme/theme.dart';
 import 'sheets.dart';
+import '../../theme/loupe_icons.dart';
 
 /// Icon for a mailbox role.
 IconData mailboxIcon(MailboxRole role) => switch (role) {
-  MailboxRole.inbox => Icons.inbox_outlined,
-  MailboxRole.drafts => Icons.drafts_outlined,
-  MailboxRole.sent => Icons.send_outlined,
-  MailboxRole.junk => Icons.report_gmailerrorred_outlined,
-  MailboxRole.trash => Icons.delete_outline,
-  MailboxRole.archive => Icons.archive_outlined,
-  MailboxRole.all => Icons.all_inbox_outlined,
-  MailboxRole.flagged => Icons.flag_outlined,
-  MailboxRole.important => Icons.label_important_outline,
-  MailboxRole.outbox => Icons.outbox_outlined,
-  MailboxRole.none => Icons.folder_outlined,
+  MailboxRole.inbox => LoupeIcons.inbox,
+  MailboxRole.drafts => LoupeIcons.drafts,
+  MailboxRole.sent => LoupeIcons.sent,
+  MailboxRole.junk => LoupeIcons.junk,
+  MailboxRole.trash => LoupeIcons.trash,
+  MailboxRole.archive => LoupeIcons.archive,
+  MailboxRole.all => LoupeIcons.allMail,
+  MailboxRole.flagged => LoupeIcons.flagged,
+  MailboxRole.important => LoupeIcons.important,
+  MailboxRole.outbox => LoupeIcons.outbox,
+  MailboxRole.none => LoupeIcons.folder,
 };
 
 const _roleOrder = [
@@ -112,7 +113,7 @@ class _MailboxPicker extends StatelessWidget {
                 contentPadding: EdgeInsetsDirectional.only(start: 20.0 + depth * 20, end: 20),
                 leading: Icon(mailboxIcon(m.role), color: enabled ? theme.colorScheme.primary : colors.secondaryText),
                 title: Text(m.name),
-                trailing: current ? Icon(Icons.check, color: colors.secondaryText) : null,
+                trailing: current ? Icon(LoupeIcons.check, color: colors.secondaryText) : null,
                 enabled: enabled,
                 onTap: () => Navigator.of(context).pop(m),
               );

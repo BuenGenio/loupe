@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../model/document.dart';
+import 'icons.dart';
 
 /// Opens [link] through [onOpen], after a warning if its text names another
 /// domain. Does nothing when [onOpen] is null (inert links).
@@ -32,7 +33,7 @@ class LinkMismatchDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return AlertDialog(
-      icon: Icon(Icons.warning_amber_rounded, color: theme.colorScheme.error),
+      icon: Icon(ReadableIcons.warning, color: theme.colorScheme.error),
       title: const Text('Check this link'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -104,7 +105,7 @@ Future<void> showLinkSheet(
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(Icons.warning_amber_rounded, size: 18, color: theme.colorScheme.error),
+                    Icon(ReadableIcons.warning, size: 18, color: theme.colorScheme.error),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
@@ -127,7 +128,7 @@ Future<void> showLinkSheet(
                         Navigator.of(sheetContext).pop();
                         onViewImage();
                       },
-                      icon: const Icon(Icons.image_outlined),
+                      icon: const Icon(ReadableIcons.image),
                       label: const Text('View image'),
                     ),
                   TextButton.icon(
@@ -135,7 +136,7 @@ Future<void> showLinkSheet(
                       Clipboard.setData(ClipboardData(text: link.url));
                       Navigator.of(sheetContext).pop();
                     },
-                    icon: const Icon(Icons.copy_rounded),
+                    icon: const Icon(ReadableIcons.copy),
                     label: const Text('Copy'),
                   ),
                   if (onOpen != null && uri != null)
@@ -144,7 +145,7 @@ Future<void> showLinkSheet(
                         Navigator.of(sheetContext).pop();
                         onOpen(uri);
                       },
-                      icon: const Icon(Icons.open_in_new_rounded),
+                      icon: const Icon(ReadableIcons.open),
                       label: const Text('Open'),
                     ),
                 ],

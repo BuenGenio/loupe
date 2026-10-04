@@ -5,6 +5,7 @@ import 'package:mail_model/mail_model.dart';
 import '../theme/theme.dart';
 import 'mailbox_display.dart';
 import 'tags.dart';
+import '../theme/loupe_icons.dart';
 
 /// One button of an action sheet.
 class SheetAction<T> {
@@ -170,9 +171,14 @@ Future<String?> showMailboxPicker(
                               ListTile(
                                 dense: true,
                                 enabled: !disabled.contains(node.mailbox.id),
-                                contentPadding: EdgeInsets.only(left: 16 + node.depth * 18.0, right: 16),
+                                contentPadding: EdgeInsets.only(left: 16 + folderIndent(node.depth), right: 16),
                                 leading: Icon(mailboxIcon(node.mailbox.role), color: colors.unreadDot),
-                                title: Text(mailboxDisplayName(node.mailbox), style: styles.body),
+                                title: Text(
+                                  mailboxDisplayName(node.mailbox),
+                                  style: styles.body,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                                 onTap: () => Navigator.of(context).pop(node.mailbox.id),
                               ),
                         ],
@@ -228,10 +234,10 @@ Future<Set<String>?> showTagPicker(BuildContext context, {required Set<String> c
                           for (final tag in TagDefinition.thunderbirdDefaults)
                             ListTile(
                               dense: true,
-                              leading: Icon(CupertinoIcons.circle_fill, color: tagColor(tag.keyword), size: 16),
+                              leading: Icon(LoupeIcons.dot, color: tagColor(tag.keyword), size: 16),
                               title: Text(tag.label, style: styles.body),
                               trailing: selected.contains(tag.keyword)
-                                  ? Icon(CupertinoIcons.checkmark_alt, color: colors.unreadDot)
+                                  ? Icon(LoupeIcons.check, color: colors.unreadDot)
                                   : null,
                               onTap: () => setState(
                                 () => selected.contains(tag.keyword)

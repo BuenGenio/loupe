@@ -11,6 +11,7 @@ import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/ui_state.dart';
 import '../../shared/bars.dart';
+import '../../shared/format.dart';
 import '../../shared/grouped_list.dart';
 import '../../shared/mailbox_display.dart';
 import '../../shared/sync_status.dart';
@@ -20,6 +21,7 @@ import '../compose/compose_args.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
 import 'vip_screen.dart';
+import '../../theme/loupe_icons.dart';
 
 /// The first screen: unified mailboxes, each account's folder tree, smart
 /// mailboxes and tags. Pull down for search; Edit hides items.
@@ -33,51 +35,43 @@ class MailboxesScreen extends ConsumerStatefulWidget {
 class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
   bool _editing = false;
   bool _searching = false;
-  ScrollController? _scroll;
+  final _scroll = ScrollController();
   final _focus = FocusNode();
-
-  /// Replaced to reset the navigation bar's own search state (it can only be
-  /// closed by tapping Cancel otherwise), e.g. on Android Back.
-  Key _navBarKey = UniqueKey();
   late final SearchSession _search = SearchSession(
     repository: ref.read(repositoryProvider),
     onCommit: (q) => ref.read(recentSearchesProvider.notifier).add(q),
   );
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Start scrolled past the search field: it appears when pulled down.
-    _scroll ??= ScrollController(initialScrollOffset: searchBarExtent(context));
+  void initState() {
+    super.initState();
+    // Focusing the field (a tap, the keyboard) enters search.
+    _focus.addListener(() {
+      if (_focus.hasFocus && !_searching) _setSearching(true);
+    });
   }
 
   @override
   void dispose() {
-    _scroll?.dispose();
+    _scroll.dispose();
     _focus.dispose();
     _search.dispose();
     super.dispose();
   }
 
-  void _onSearchActive(bool active) {
+  void _setSearching(bool active) {
     setState(() {
       _searching = active;
       if (active) _editing = false;
     });
-    if (active) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) _focus.requestFocus();
-      });
-    } else {
+    if (!active) {
       _focus.unfocus();
       _search.clear();
     }
-  }
-
-  /// Closes search from outside the bar (Android Back).
-  void _closeSearch() {
-    setState(() => _navBarKey = UniqueKey());
-    _onSearchActive(false);
+    // Results start at the top; Mailboxes come back with the field showing.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && _scroll.hasClients) _scroll.jumpTo(0);
+    });
   }
 
   void _open(MailboxRef target) => context.push(Routes.list(target));
@@ -94,7 +88,7 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
     return PopScope(
       canPop: !_searching,
       onPopInvokedWithResult: (didPop, _) {
-        if (!didPop && _searching) _closeSearch();
+        if (!didPop && _searching) _setSearching(false);
       },
       child: Scaffold(
         // Search results are a plain list, like the message list.
@@ -102,9 +96,16 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
         bottomNavigationBar: _searching
             ? null
             : LoupeBottomBar(
+                leading: _editing
+                    ? null
+                    : BarIconButton(
+                        icon: LoupeIcons.settings,
+                        tooltip: 'Settings',
+                        onPressed: () => context.push(Routes.settings),
+                      ),
                 center: const SyncStatusLine(),
                 trailing: BarIconButton(
-                  icon: CupertinoIcons.square_pencil,
+                  icon: LoupeIcons.compose,
                   tooltip: 'New Message',
                   onPressed: () => openCompose(context),
                 ),
@@ -113,34 +114,27 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
           controller: _scroll,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           slivers: [
-            CupertinoSliverNavigationBar.search(
-              key: _navBarKey,
-              largeTitle: const Text('Mailboxes'),
-              backgroundColor: colors.barBackground,
-              border: Border(bottom: BorderSide(color: colors.separator, width: 0.5)),
-              leading: _editing
-                  ? null
-                  : CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      minimumSize: const Size(44, 44),
-                      onPressed: () => context.push(Routes.settings),
-                      child: const Icon(CupertinoIcons.gear, semanticLabel: 'Settings'),
-                    ),
-              trailing: BarTextButton(
-                label: _editing ? 'Done' : 'Edit',
-                bold: _editing,
-                onPressed: () {
-                  unawaited(HapticFeedback.selectionClick());
-                  setState(() => _editing = !_editing);
-                },
-              ),
+            LoupeTitleBar(
+              title: 'Mailboxes',
+              large: true,
+              trailing: [
+                BarTextButton(
+                  label: _editing ? 'Done' : 'Edit',
+                  bold: _editing,
+                  onPressed: () {
+                    unawaited(HapticFeedback.selectionClick());
+                    setState(() => _editing = !_editing);
+                  },
+                ),
+              ],
+              searching: _searching,
+              onCancelSearch: () => _setSearching(false),
               searchField: LoupeSearchField(
                 controller: _search.controller,
                 focusNode: _focus,
                 onChanged: _search.onChanged,
                 onSubmitted: (_) => _search.submit(),
               ),
-              onSearchableBottomTap: _onSearchActive,
             ),
             if (_searching)
               SearchSlivers(session: _search)
@@ -212,7 +206,7 @@ class _MailboxTile extends StatelessWidget {
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: metrics.groupedRowHeight),
         child: Padding(
-          padding: EdgeInsetsDirectional.only(start: (reserveDisclosure ? 12 : 16) + depth * 18.0, end: 12),
+          padding: EdgeInsetsDirectional.only(start: (reserveDisclosure ? 12 : 16) + folderIndent(depth), end: 12),
           child: Row(
             children: [
               AnimatedSize(
@@ -222,9 +216,9 @@ class _MailboxTile extends StatelessWidget {
                     ? Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: Icon(
-                          visible ? CupertinoIcons.checkmark_circle_fill : CupertinoIcons.circle,
+                          visible ? LoupeIcons.selected : LoupeIcons.unselected,
                           color: visible ? colors.unreadDot : colors.tertiaryText,
-                          size: 23,
+                          size: 24,
                           semanticLabel: visible ? 'Shown' : 'Hidden',
                         ),
                       )
@@ -244,12 +238,12 @@ class _MailboxTile extends StatelessWidget {
                             child: AnimatedRotation(
                               turns: expanded! ? 0.25 : 0,
                               duration: const Duration(milliseconds: 180),
-                              child: Icon(CupertinoIcons.chevron_forward, size: 14, color: colors.secondaryText),
+                              child: Icon(LoupeIcons.disclosure, size: 14, color: colors.secondaryText),
                             ),
                           ),
                         ),
                 ),
-              Icon(icon, color: iconColor ?? colors.unreadDot, size: 23),
+              Icon(icon, color: iconColor ?? colors.unreadDot, size: 24),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -260,12 +254,15 @@ class _MailboxTile extends StatelessWidget {
                 ),
               ),
               if (count != null && count! > 0 && !editing)
-                Text('$count', style: styles.body.copyWith(color: colors.secondaryText)),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 8),
+                  child: Text(formatCount(count!), style: styles.body.copyWith(color: colors.secondaryText)),
+                ),
               ?trailing,
               if (!editing && trailing == null)
                 Padding(
                   padding: const EdgeInsetsDirectional.only(start: 8),
-                  child: Icon(CupertinoIcons.chevron_forward, size: 16, color: colors.tertiaryText),
+                  child: Icon(LoupeIcons.disclosure, size: 16, color: colors.tertiaryText),
                 ),
             ],
           ),
@@ -322,7 +319,7 @@ class _VirtualSection extends ConsumerWidget {
                     minimumSize: const Size(36, 36),
                     onPressed: () =>
                         Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const VipScreen())),
-                    child: const Icon(CupertinoIcons.info_circle, size: 22, semanticLabel: 'Manage VIPs'),
+                    child: const Icon(LoupeIcons.info, size: 22, semanticLabel: 'Manage VIPs'),
                   )
                 : null,
           ),
@@ -394,7 +391,7 @@ class _AccountSection extends ConsumerWidget {
           duration: const Duration(milliseconds: 200),
           child: Padding(
             padding: const EdgeInsets.all(8),
-            child: Icon(CupertinoIcons.chevron_forward, size: 18, color: colors.unreadDot),
+            child: Icon(LoupeIcons.disclosure, size: 18, color: colors.unreadDot),
           ),
         ),
       ),
@@ -428,7 +425,7 @@ class _SmartSection extends ConsumerWidget {
             _MailboxTile(
               key: ValueKey(s.id),
               title: s.name,
-              icon: CupertinoIcons.gear_alt,
+              icon: LoupeIcons.smartMailbox,
               editing: editing,
               visible: v.visible('smart.${s.id}'),
               onToggleVisible: () => v.toggle('smart.${s.id}'),
@@ -438,7 +435,7 @@ class _SmartSection extends ConsumerWidget {
                       padding: EdgeInsets.zero,
                       minimumSize: const Size(36, 36),
                       onPressed: () => ref.read(smartMailboxesProvider.notifier).remove(s.id),
-                      child: Icon(CupertinoIcons.minus_circle_fill, color: colors.destructive, semanticLabel: 'Delete'),
+                      child: Icon(LoupeIcons.remove, color: colors.destructive, semanticLabel: 'Delete'),
                     )
                   : null,
             ),
@@ -461,7 +458,7 @@ class _TagSection extends ConsumerWidget {
           _MailboxTile(
             key: ValueKey(tag.keyword),
             title: tag.label,
-            icon: CupertinoIcons.tag_fill,
+            icon: LoupeIcons.tagFilled,
             iconColor: tagColor(tag.keyword),
             editing: editing,
             visible: v.visible('tag.${tag.keyword}'),

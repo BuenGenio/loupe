@@ -5,6 +5,7 @@ import '../../settings/app_settings.dart';
 import '../../shared/grouped_list.dart';
 import '../../theme/theme.dart';
 import 'settings_screen.dart';
+import '../../theme/loupe_icons.dart';
 
 /// Which actions sit behind a message when it is swiped.
 class SwipeSettingsScreen extends ConsumerWidget {
@@ -37,7 +38,7 @@ class SwipeSettingsScreen extends ConsumerWidget {
               title: option == SwipeAction.toggleRead ? 'Mark as Read / Unread' : swipeActionLabel(option),
               chevron: false,
               trailing: option == current
-                  ? Icon(CupertinoIcons.checkmark_alt, color: colors.unreadDot, size: 22)
+                  ? Icon(LoupeIcons.check, color: colors.unreadDot, size: 22)
                   : const SizedBox(width: 22),
               onTap: () => controller.update((_) => apply(option)),
             ),
@@ -47,7 +48,6 @@ class SwipeSettingsScreen extends ConsumerWidget {
 
     return GroupedPage(
       title: 'Swipe Actions',
-      previousPageTitle: 'Settings',
       children: [
         group(
           'Swipe Left',

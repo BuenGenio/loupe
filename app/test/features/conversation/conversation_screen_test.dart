@@ -6,6 +6,7 @@ import 'package:loupe/features/conversation/conversation_screen.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:readable/readable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:loupe/theme/loupe_icons.dart';
 
 import 'fake_mail_repository.dart';
 import 'test_app.dart';
@@ -73,7 +74,7 @@ void main() {
   testWidgets('shows the recipient line, its details and the verified badge', (tester) async {
     await openThread(tester);
     expect(find.text('to me, Bob Builder'), findsOneWidget);
-    expect(find.byIcon(Icons.verified), findsOneWidget);
+    expect(find.byIcon(LoupeIcons.verified), findsOneWidget);
 
     await tester.tap(find.byKey(const ValueKey('recipients-m3')));
     await tester.pumpAndSettle();
@@ -117,7 +118,7 @@ void main() {
     await tester.tap(find.byKey(const Key('toolbar-flag')));
     await tester.pumpAndSettle();
     expect(repo.log, contains('setKeywords [m3] +{\$flagged} -{}'));
-    expect(find.byIcon(Icons.flag), findsWidgets);
+    expect(find.byIcon(LoupeIcons.flaggedFilled), findsWidgets);
 
     await tester.tap(find.byKey(const Key('toolbar-reply')));
     await tester.pumpAndSettle();

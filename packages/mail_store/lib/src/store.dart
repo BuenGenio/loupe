@@ -818,14 +818,27 @@ SELECT * FROM members WHERE copy_rank = 1 ORDER BY received_at ASC, seq ASC''';
   /// Badge counts of the virtual mailboxes: unread messages for All Inboxes,
   /// Unread and VIP; the number of flagged messages for Flagged and of drafts
   /// for Drafts (as Apple Mail shows them); zero for Sent.
+  ///
+  /// All Inboxes and Unread agree with the mailboxes' own (server) counts,
+  /// although only the newest messages are stored: All Inboxes sums the
+  /// inboxes' unread counts; Unread counts the stored unread messages once
+  /// each (copies in several mailboxes are one message) and adds, per
+  /// mailbox it covers, the unread messages the server has beyond the
+  /// stored ones. A mailbox whose server count is unknown stores the local
+  /// count (see [applySync]), so it adds nothing.
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts() {
     const distinctKey = "count(DISTINCT e.account_id || '|' || coalesce(e.message_id_header, e.id))";
     const from = 'FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id';
+    const unreadRoles = "m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')";
     const sql =
         '''
 SELECT
   (SELECT coalesce(sum(unread_count), 0) FROM mailboxes WHERE role = 'inbox') AS all_inboxes,
-  (SELECT $distinctKey $from WHERE e.is_seen = 0 AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')) AS unread,
+  (SELECT $distinctKey $from WHERE e.is_seen = 0 AND $unreadRoles) +
+  (SELECT coalesce(sum(max(0, m.unread_count - coalesce(l.n, 0))), 0) FROM mailboxes m
+    LEFT JOIN (SELECT mailbox_id, count(*) AS n FROM emails WHERE is_seen = 0 GROUP BY mailbox_id) l
+      ON l.mailbox_id = m.id
+    WHERE $unreadRoles) AS unread,
   (SELECT $distinctKey $from WHERE e.is_flagged = 1 AND m.role NOT IN ($_virtualExcludedRoles)) AS flagged,
   (SELECT $distinctKey $from WHERE e.is_seen = 0 AND e.from_email IN (SELECT email FROM vip_addresses)
     AND m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts')) AS vip,

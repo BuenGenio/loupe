@@ -19,6 +19,7 @@ import 'message_card.dart';
 import 'reader_options_sheet.dart';
 import 'reader_prefs.dart';
 import 'sheets.dart';
+import '../../theme/loupe_icons.dart';
 
 /// A conversation: its messages stacked oldest to newest, the "Aa" view
 /// options and an Apple-Mail-style toolbar.
@@ -424,7 +425,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
     }
     if (messages.isEmpty) {
       return const _StateMessage(
-        icon: Icons.mail_outline,
+        icon: LoupeIcons.email,
         title: 'No Message',
         message: 'This message was moved or deleted.',
       );
@@ -535,33 +536,28 @@ class _Toolbar extends StatelessWidget {
             children: [
               _ToolbarButton(
                 key: const Key('toolbar-flag'),
-                icon: flagged ? Icons.flag : Icons.outlined_flag,
+                icon: flagged ? LoupeIcons.flaggedFilled : LoupeIcons.flagged,
                 color: flagged ? colors.flag : null,
                 label: flagged ? 'Unflag' : 'Flag',
                 onTap: onFlag,
               ),
-              _ToolbarButton(
-                key: const Key('toolbar-move'),
-                icon: Icons.drive_file_move_outline,
-                label: 'Move',
-                onTap: onMove,
-              ),
+              _ToolbarButton(key: const Key('toolbar-move'), icon: LoupeIcons.move, label: 'Move', onTap: onMove),
               archive
                   ? _ToolbarButton(
                       key: const Key('toolbar-archive'),
-                      icon: Icons.archive_outlined,
+                      icon: LoupeIcons.archive,
                       label: 'Archive',
                       onTap: onArchiveOrTrash,
                     )
                   : _ToolbarButton(
                       key: const Key('toolbar-trash'),
-                      icon: inTrash ? Icons.delete_forever_outlined : Icons.delete_outline,
+                      icon: inTrash ? LoupeIcons.deleteForever : LoupeIcons.trash,
                       label: inTrash ? 'Delete' : 'Trash',
                       onTap: onArchiveOrTrash,
                     ),
               _ToolbarButton(
                 key: const Key('toolbar-reply'),
-                icon: Icons.reply,
+                icon: LoupeIcons.reply,
                 label: 'Reply',
                 hint: 'Long-press for Reply All and Forward',
                 onTap: onReply,
@@ -569,7 +565,7 @@ class _Toolbar extends StatelessWidget {
               ),
               _ToolbarButton(
                 key: const Key('toolbar-compose'),
-                icon: Icons.edit_square,
+                icon: LoupeIcons.compose,
                 label: 'New Message',
                 onTap: onCompose,
               ),
@@ -611,7 +607,7 @@ class _ToolbarButton extends StatelessWidget {
       radius: 24,
       child: Padding(
         padding: const EdgeInsets.all(10),
-        child: Icon(icon, size: 25, color: color ?? Theme.of(context).colorScheme.primary),
+        child: Icon(icon, size: 24, color: color ?? Theme.of(context).colorScheme.primary),
       ),
     ),
   );
@@ -637,14 +633,14 @@ class _StateMessage extends StatelessWidget {
   factory _StateMessage.error(Object error, {required VoidCallback onRetry}) {
     if (error case MailException(kind: MailErrorKind.connection)) {
       return _StateMessage(
-        icon: Icons.cloud_off_outlined,
+        icon: LoupeIcons.offline,
         title: "You're Offline",
         message: 'This conversation isn\'t downloaded yet. It will load when you\'re back online.',
         onRetry: onRetry,
       );
     }
     return _StateMessage(
-      icon: Icons.error_outline,
+      icon: LoupeIcons.error,
       title: "Can't Show This Message",
       message: error is MailException ? error.message : 'Something went wrong.',
       onRetry: onRetry,
@@ -696,7 +692,7 @@ class _OfflineBanner extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          Icon(offline ? Icons.cloud_off_outlined : Icons.error_outline, size: 16, color: colors.secondaryText),
+          Icon(offline ? LoupeIcons.offline : LoupeIcons.error, size: 16, color: colors.secondaryText),
           const SizedBox(width: 8),
           Expanded(
             child: Text(

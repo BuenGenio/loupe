@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import 'shared/mailbox_display.dart';
+
 /// The active repository: demo data or real accounts. Every screen reads mail
 /// only through this. Overridden at startup (with `repositoryForMode`) and in tests.
 final repositoryProvider = Provider<MailRepository>(
@@ -10,8 +12,11 @@ final repositoryProvider = Provider<MailRepository>(
 
 final accountsProvider = StreamProvider<List<MailAccount>>((ref) => ref.watch(repositoryProvider).watchAccounts());
 
-/// Mailboxes of every account, with unread and total counts.
-final mailboxesProvider = StreamProvider<List<Mailbox>>((ref) => ref.watch(repositoryProvider).watchMailboxes());
+/// Mailboxes of every account, with unread and total counts; each role is
+/// held by one mailbox per account.
+final mailboxesProvider = StreamProvider<List<Mailbox>>(
+  (ref) => ref.watch(repositoryProvider).watchMailboxes().map(withUniqueRoles),
+);
 
 final virtualCountsProvider = StreamProvider<Map<VirtualMailbox, int>>(
   (ref) => ref.watch(repositoryProvider).watchVirtualCounts(),

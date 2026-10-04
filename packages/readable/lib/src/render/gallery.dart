@@ -4,6 +4,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'icons.dart';
+
 /// One gallery page (mirrors the public `GalleryImage`, kept separate so the
 /// render code doesn't import the API file).
 typedef GalleryItem = ({ImageProvider image, String? caption});
@@ -88,7 +90,7 @@ class _ImageGalleryPageState extends State<ImageGalleryPage> {
                           IconButton(
                             tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
                             color: Colors.white,
-                            icon: const Icon(Icons.close_rounded),
+                            icon: const Icon(ReadableIcons.close),
                             onPressed: () => Navigator.of(context).maybePop(),
                           ),
                           Expanded(
@@ -196,7 +198,7 @@ class _ZoomableImageState extends State<_ZoomableImage> with SingleTickerProvide
                 ? child
                 : const Center(child: CircularProgressIndicator(color: Colors.white54, strokeWidth: 2)),
             errorBuilder: (context, error, stack) =>
-                const Center(child: Icon(Icons.broken_image_outlined, color: Colors.white54, size: 48)),
+                const Center(child: Icon(ReadableIcons.imageBroken, color: Colors.white54, size: 48)),
           ),
         ),
       ),

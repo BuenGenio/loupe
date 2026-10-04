@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../shared/grouped_list.dart';
 import '../../theme/theme.dart';
+import '../../theme/loupe_icons.dart';
 
 /// The coloured rounded-square icon of iOS Settings rows.
 class SettingsIcon extends StatelessWidget {
@@ -35,7 +36,6 @@ class ChoicePage<T> extends StatefulWidget {
     required this.selected,
     required this.onSelected,
     this.footer,
-    this.previousPageTitle = 'Settings',
   });
 
   final String title;
@@ -43,7 +43,6 @@ class ChoicePage<T> extends StatefulWidget {
   final T selected;
   final ValueChanged<T> onSelected;
   final String? footer;
-  final String previousPageTitle;
 
   static Future<void> push<T>(
     BuildContext context, {
@@ -71,7 +70,6 @@ class _ChoicePageState<T> extends State<ChoicePage<T>> {
     final colors = LoupeColors.of(context);
     return GroupedPage(
       title: widget.title,
-      previousPageTitle: widget.previousPageTitle,
       children: [
         InsetGroup(
           separatorIndent: 16,
@@ -83,7 +81,7 @@ class _ChoicePageState<T> extends State<ChoicePage<T>> {
                 subtitle: c.detail,
                 chevron: false,
                 trailing: c.value == _selected
-                    ? Icon(CupertinoIcons.checkmark_alt, color: colors.unreadDot, size: 22)
+                    ? Icon(LoupeIcons.check, color: colors.unreadDot, size: 22)
                     : const SizedBox(width: 22),
                 onTap: () {
                   setState(() => _selected = c.value);

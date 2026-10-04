@@ -13,6 +13,7 @@ import '../../router.dart';
 import '../../settings/app_settings.dart';
 import '../../settings/ui_state.dart';
 import '../../shared/bars.dart';
+import '../../shared/format.dart';
 import '../../shared/mail_actions.dart';
 import '../../shared/mailbox_display.dart';
 import '../../shared/message_row.dart';
@@ -24,6 +25,7 @@ import '../compose/compose_args.dart';
 import '../conversation/conversation_screen.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
+import '../../theme/loupe_icons.dart';
 
 /// Label of a quick filter in the Filter sheet and the toolbar.
 String quickFilterLabel(QuickFilter f) => switch (f) {
@@ -37,13 +39,13 @@ String quickFilterLabel(QuickFilter f) => switch (f) {
 };
 
 IconData quickFilterIcon(QuickFilter f) => switch (f) {
-  QuickFilter.unread => CupertinoIcons.envelope_badge,
-  QuickFilter.flagged => CupertinoIcons.flag,
-  QuickFilter.toMe => CupertinoIcons.person,
-  QuickFilter.ccMe => CupertinoIcons.person_2,
-  QuickFilter.hasAttachment => CupertinoIcons.paperclip,
-  QuickFilter.unreplied => CupertinoIcons.arrowshape_turn_up_left,
-  QuickFilter.fromVip => CupertinoIcons.star,
+  QuickFilter.unread => LoupeIcons.unread,
+  QuickFilter.flagged => LoupeIcons.flagged,
+  QuickFilter.toMe => LoupeIcons.person,
+  QuickFilter.ccMe => LoupeIcons.people,
+  QuickFilter.hasAttachment => LoupeIcons.attachment,
+  QuickFilter.unreplied => LoupeIcons.reply,
+  QuickFilter.fromVip => LoupeIcons.vip,
 };
 
 /// A mailbox's messages: large collapsing title with the search field hidden
@@ -78,10 +80,6 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
   bool _searchHidden = false;
   ScrollController? _scroll;
   final _focus = FocusNode();
-
-  /// Replaced to reset the navigation bar's own search state (it can only be
-  /// closed by tapping Cancel otherwise), e.g. on Android Back.
-  Key _navBarKey = UniqueKey();
   late final SearchSession _search = SearchSession(
     repository: ref.read(repositoryProvider),
     scope: MailboxScope(widget.mailboxRef),
@@ -89,8 +87,18 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
   );
 
   @override
+  void initState() {
+    super.initState();
+    // Focusing the field (a tap, the keyboard) enters search.
+    _focus.addListener(() {
+      if (_focus.hasFocus && !_searching) _setSearching(true);
+    });
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    // Start scrolled past the search field: it appears when pulled down.
     _scroll ??= ScrollController(initialScrollOffset: searchBarExtent(context));
   }
 
@@ -111,7 +119,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
   MailActions _actions(AppSettings settings) =>
       MailActions(context, ref, scope: widget.mailboxRef, threaded: settings.threaded);
 
-  void _onSearchActive(bool active) {
+  void _setSearching(bool active) {
     setState(() {
       _searching = active;
       if (active) {
@@ -119,22 +127,17 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
         _selected.clear();
       }
     });
-    if (active) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) _focus.requestFocus();
-      });
-    } else {
+    if (!active) {
       _focus.unfocus();
       _search
         ..clear()
         ..setScope(MailboxScope(widget.mailboxRef));
     }
-  }
-
-  /// Closes search from outside the bar (Android Back).
-  void _closeSearch() {
-    setState(() => _navBarKey = UniqueKey());
-    _onSearchActive(false);
+    // Results start at the top; the list comes back with the field showing.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final scroll = _scroll;
+      if (mounted && scroll != null && scroll.hasClients) scroll.jumpTo(0);
+    });
   }
 
   void _toggleEditing() {
@@ -216,10 +219,10 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
         SheetAction(
           anyUnread ? 'Mark as Read' : 'Mark as Unread',
           'read',
-          icon: anyUnread ? CupertinoIcons.envelope_open : CupertinoIcons.envelope_badge,
+          icon: anyUnread ? LoupeIcons.markRead : LoupeIcons.markUnread,
         ),
-        SheetAction(anyUnflagged ? 'Flag' : 'Unflag', 'flag', icon: CupertinoIcons.flag),
-        const SheetAction('Move to Junk', 'junk', icon: CupertinoIcons.bin_xmark),
+        SheetAction(anyUnflagged ? 'Flag' : 'Unflag', 'flag', icon: LoupeIcons.flagged),
+        const SheetAction('Move to Junk', 'junk', icon: LoupeIcons.junk),
       ],
     );
     switch (choice) {
@@ -299,52 +302,21 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     return PopScope(
       canPop: !_searching,
       onPopInvokedWithResult: (didPop, _) {
-        if (!didPop && _searching) _closeSearch();
+        if (!didPop && _searching) _setSearching(false);
       },
       child: Scaffold(
         bottomNavigationBar: _searching
             ? null
             : _editing
             ? _editBar(selectedRows, actions, mailboxes)
-            : _toolbar(rows),
+            : _toolbar(rows, mailboxes),
         body: NotificationListener<ScrollNotification>(
           onNotification: _onScroll,
           child: CustomScrollView(
             controller: _scroll,
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             slivers: [
-              CupertinoSliverNavigationBar.search(
-                key: _navBarKey,
-                largeTitle: Text(
-                  _editing ? (_selected.isEmpty ? 'Select Messages' : '${_selected.length} Selected') : title,
-                ),
-                previousPageTitle: 'Mailboxes',
-                automaticallyImplyLeading: !_editing,
-                backgroundColor: colors.barBackground,
-                border: Border(bottom: BorderSide(color: colors.separator, width: 0.5)),
-                leading: _editing
-                    ? BarTextButton(
-                        label: _selected.length == rows.length && rows.isNotEmpty ? 'Deselect All' : 'Select All',
-                        onPressed: () => setState(() {
-                          if (_selected.length == rows.length) {
-                            _selected.clear();
-                          } else {
-                            _selected
-                              ..clear()
-                              ..addAll(rows.map((r) => r.threadId));
-                          }
-                        }),
-                      )
-                    : null,
-                trailing: BarTextButton(label: _editing ? 'Done' : 'Edit', bold: _editing, onPressed: _toggleEditing),
-                searchField: LoupeSearchField(
-                  controller: _search.controller,
-                  focusNode: _focus,
-                  onChanged: _search.onChanged,
-                  onSubmitted: (_) => _search.submit(),
-                ),
-                onSearchableBottomTap: _onSearchActive,
-              ),
+              _titleBar(context, title, rows, mailboxes),
               if (_searching)
                 SearchSlivers(session: _search, thisMailbox: widget.mailboxRef)
               else ...[
@@ -359,6 +331,60 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  /// Back, the mailbox name (with its account below when there are
+  /// several) and Edit, then the search field; in edit mode Select All, the
+  /// selection and Done.
+  Widget _titleBar(BuildContext context, String title, List<ThreadSummary> rows, List<Mailbox> mailboxes) {
+    final colors = LoupeColors.of(context);
+    final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];
+    final account = switch (widget.mailboxRef) {
+      RealMailboxRef(:final mailboxId) when accounts.length > 1 =>
+        accounts.where((a) => a.id == MailIds.accountOf(mailboxId)).firstOrNull,
+      _ => null,
+    };
+    final allSelected = _selected.length == rows.length && rows.isNotEmpty;
+    return LoupeTitleBar(
+      title: _editing ? (_selected.isEmpty ? 'Select Messages' : '${_selected.length} Selected') : title,
+      subtitle: _editing || account == null
+          ? null
+          : Row(
+              children: [
+                Container(
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(color: colors.accountColor(account.colorIndex), shape: BoxShape.circle),
+                ),
+                const SizedBox(width: 5),
+                Flexible(child: Text(account.displayName)),
+              ],
+            ),
+      automaticallyImplyLeading: !_editing,
+      leading: _editing
+          ? BarTextButton(
+              label: allSelected ? 'Deselect All' : 'Select All',
+              onPressed: () => setState(() {
+                if (allSelected) {
+                  _selected.clear();
+                } else {
+                  _selected
+                    ..clear()
+                    ..addAll(rows.map((r) => r.threadId));
+                }
+              }),
+            )
+          : null,
+      trailing: [BarTextButton(label: _editing ? 'Done' : 'Edit', bold: _editing, onPressed: _toggleEditing)],
+      searching: _searching,
+      onCancelSearch: () => _setSearching(false),
+      searchField: LoupeSearchField(
+        controller: _search.controller,
+        focusNode: _focus,
+        onChanged: _search.onChanged,
+        onSubmitted: (_) => _search.submit(),
       ),
     );
   }
@@ -388,11 +414,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
       return [
         SliverFillRemaining(
           hasScrollBody: false,
-          child: _EmptyState(
-            icon: CupertinoIcons.exclamationmark_triangle,
-            title: 'Couldn’t Load Mail',
-            detail: '${async.error}',
-          ),
+          child: _EmptyState(icon: LoupeIcons.warning, title: 'Couldn’t Load Mail', detail: '${async.error}'),
         ),
       ];
     }
@@ -403,7 +425,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
           hasScrollBody: false,
           child: _filterOn
               ? _EmptyState(
-                  icon: CupertinoIcons.line_horizontal_3_decrease_circle,
+                  icon: LoupeIcons.filter,
                   title: criteria.length == 1 && criteria.single == QuickFilter.unread
                       ? 'No Unread Mail'
                       : 'No Matching Mail',
@@ -411,7 +433,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
                   action: 'Turn Off Filter',
                   onAction: () => setState(() => _filterOn = false),
                 )
-              : const _EmptyState(icon: CupertinoIcons.tray, title: 'No Mail'),
+              : const _EmptyState(icon: LoupeIcons.inbox, title: 'No Mail'),
         ),
       ];
     }
@@ -466,16 +488,27 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     ];
   }
 
-  Widget _toolbar(List<ThreadSummary> rows) {
+  /// Unread messages of this mailbox: the server's count where there is
+  /// one (only the newest messages are on the phone), else the rows'.
+  int _unreadCount(List<ThreadSummary> rows, List<Mailbox> mailboxes) {
+    final local = rows.fold(0, (sum, r) => sum + r.unreadCount);
+    return switch (widget.mailboxRef) {
+      RealMailboxRef(:final mailboxId) => mailboxes.where((m) => m.id == mailboxId).firstOrNull?.unreadCount ?? local,
+      VirtualMailboxRef(:final kind)
+          when kind == VirtualMailbox.allInboxes || kind == VirtualMailbox.unread || kind == VirtualMailbox.vip =>
+        ref.watch(virtualCountsProvider).value?[kind] ?? local,
+      VirtualMailboxRef() => local,
+    };
+  }
+
+  Widget _toolbar(List<ThreadSummary> rows, List<Mailbox> mailboxes) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
     final criteria = ref.watch(filterCriteriaProvider);
-    final unread = rows.fold(0, (sum, r) => sum + r.unreadCount);
+    final unread = _unreadCount(rows, mailboxes);
     return LoupeBottomBar(
       leading: BarIconButton(
-        icon: _filterOn
-            ? CupertinoIcons.line_horizontal_3_decrease_circle_fill
-            : CupertinoIcons.line_horizontal_3_decrease_circle,
+        icon: _filterOn ? LoupeIcons.filterFilled : LoupeIcons.filter,
         tooltip: _filterOn ? 'Turn Off Filter' : 'Filter',
         onPressed: () {
           unawaited(HapticFeedback.selectionClick());
@@ -508,9 +541,9 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
                 ),
               ),
             )
-          : SyncStatusLine(detail: unread > 0 ? '$unread Unread' : null),
+          : SyncStatusLine(detail: unread > 0 ? '${formatCount(unread)} Unread' : null),
       trailing: BarIconButton(
-        icon: CupertinoIcons.square_pencil,
+        icon: LoupeIcons.compose,
         tooltip: 'New Message',
         onPressed: () => openCompose(context, ComposeArgs(accountId: _accountOfRef())),
       ),
@@ -613,9 +646,7 @@ class _FilterSheetState extends State<_FilterSheet> {
                           dense: true,
                           leading: Icon(quickFilterIcon(f), color: colors.unreadDot),
                           title: Text(quickFilterLabel(f), style: styles.body),
-                          trailing: _selected.contains(f)
-                              ? Icon(CupertinoIcons.checkmark_alt, color: colors.unreadDot)
-                              : null,
+                          trailing: _selected.contains(f) ? Icon(LoupeIcons.check, color: colors.unreadDot) : null,
                           onTap: () {
                             unawaited(HapticFeedback.selectionClick());
                             setState(() => _selected.contains(f) ? _selected.remove(f) : _selected.add(f));
@@ -683,7 +714,7 @@ class _NoSelection extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(CupertinoIcons.envelope_open, size: 56, color: colors.tertiaryText),
+            Icon(LoupeIcons.email, size: 56, color: colors.tertiaryText),
             const SizedBox(height: 12),
             Text('No Message Selected', style: LoupeTextStyles.of(context).body.copyWith(color: colors.secondaryText)),
           ],

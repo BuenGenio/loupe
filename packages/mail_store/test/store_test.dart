@@ -327,6 +327,30 @@ void main() {
       expect((await store.watchVirtualCounts().first)[VirtualMailbox.unread], 3);
     });
 
+    test('All Inboxes and Unread counts follow the server counts', () async {
+      // The server has many more unread messages than are stored: 3 of
+      // 35,722 in the inbox, 1 of 40 in Work; Trash's 900 don't count.
+      await store.applySync(mbox('INBOX'), added(const [], total: 90000, unread: 35722));
+      await store.applySync(mbox('Work'), added([mail(20, path: 'Work', subject: 'Report')], total: 100, unread: 40));
+      await store.applySync(mbox('Trash'), added(const [], total: 1000, unread: 900));
+      var counts = await store.watchVirtualCounts().first;
+      expect(counts[VirtualMailbox.allInboxes], 35722);
+      expect(counts[VirtualMailbox.unread], 35722 + 40);
+      // The Unread list itself shows what is stored.
+      final list = await store.watchList(const VirtualMailboxRef(VirtualMailbox.unread), threaded: false).first;
+      expect(list, hasLength(4));
+
+      // Reading a stored message lowers both.
+      await store.updateKeywords([eid('Work', 20)], add: {Keywords.seen});
+      counts = await store.watchVirtualCounts().first;
+      expect(counts[VirtualMailbox.unread], 35722 + 39);
+
+      // Without a server count, the stored messages are counted.
+      await store.applySync(mbox('Work'), added([mail(21, path: 'Work', subject: 'Memo')]));
+      counts = await store.watchVirtualCounts().first;
+      expect(counts[VirtualMailbox.unread], 35722 + 1);
+    });
+
     test('streams update on changes and stay quiet otherwise', () async {
       final emissions = <List<ThreadSummary>>[];
       final sub = store.watchList(RealMailboxRef(mbox('INBOX'))).listen(emissions.add);

@@ -26,3 +26,6 @@ String formatBytes(int bytes) {
   if (bytes < 1024 * 1024) return '${(bytes / 1024).round()} KB';
   return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
 }
+
+/// A count with grouping separators for the current locale: "35,722".
+String formatCount(int count) => NumberFormat.decimalPattern().format(count);

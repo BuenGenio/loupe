@@ -10,6 +10,7 @@ import '../../providers.dart';
 import '../../shared/grouped_list.dart';
 import '../../shared/sheets.dart';
 import '../../theme/theme.dart';
+import '../../theme/loupe_icons.dart';
 
 String _security(ConnectionSecurity s) => switch (s) {
   ConnectionSecurity.tls => 'TLS',
@@ -140,7 +141,6 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
 
     return GroupedPage(
       title: account.displayName,
-      previousPageTitle: 'Settings',
       children: [
         InsetGroup(
           header: 'Account',
@@ -176,7 +176,7 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                             border: account.colorIndex == i ? Border.all(color: colors.label, width: 2.5) : null,
                           ),
                           child: account.colorIndex == i
-                              ? const Icon(CupertinoIcons.checkmark_alt, color: Colors.white, size: 20)
+                              ? const Icon(LoupeIcons.check, color: Colors.white, size: 20)
                               : null,
                         ),
                       ),
@@ -340,7 +340,6 @@ class _IdentityPageState extends State<_IdentityPage> {
     final canDelete = widget.identity != null && widget.account.identities.length > 1;
     return GroupedPage(
       title: widget.identity == null ? 'New Identity' : 'Identity',
-      previousPageTitle: widget.account.displayName,
       trailing: CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: _done,

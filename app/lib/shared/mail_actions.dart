@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,6 +11,7 @@ import '../settings/app_settings.dart';
 import '../theme/theme.dart';
 import 'sheets.dart';
 import 'swipe_row.dart';
+import '../theme/loupe_icons.dart';
 
 /// Message actions shared by lists, search results and smart mailboxes:
 /// they work on whole conversations, are optimistic, and offer Undo.
@@ -192,46 +192,46 @@ class MailActions {
     return switch (action) {
       SwipeAction.none => null,
       SwipeAction.toggleRead => SwipeActionSpec(
-        icon: unread ? CupertinoIcons.envelope_open_fill : CupertinoIcons.envelope_badge_fill,
+        icon: unread ? LoupeIcons.swipeMarkRead : LoupeIcons.swipeMarkUnread,
         label: unread ? 'Read' : 'Unread',
         color: colors.swipeRead,
         onTriggered: () => setRead([row], read: unread),
       ),
       SwipeAction.toggleFlag => SwipeActionSpec(
-        icon: CupertinoIcons.flag_fill,
+        icon: LoupeIcons.swipeFlag,
         label: row.latest.isFlagged ? 'Unflag' : 'Flag',
         color: colors.swipeFlag,
         onTriggered: () => setFlag([row], flagged: !row.latest.isFlagged),
       ),
       SwipeAction.archive when role == MailboxRole.archive || role == MailboxRole.all => SwipeActionSpec(
-        icon: CupertinoIcons.tray_arrow_down_fill,
+        icon: LoupeIcons.swipeMoveToInbox,
         label: 'Inbox',
         color: colors.swipeArchive,
         removesRow: true,
         onTriggered: () => toInbox([row]),
       ),
       SwipeAction.archive => SwipeActionSpec(
-        icon: CupertinoIcons.archivebox_fill,
+        icon: LoupeIcons.swipeArchive,
         label: 'Archive',
         color: colors.swipeArchive,
         removesRow: true,
         onTriggered: () => archive([row]),
       ),
       SwipeAction.trash => SwipeActionSpec(
-        icon: CupertinoIcons.trash_fill,
+        icon: LoupeIcons.swipeTrash,
         label: role == MailboxRole.trash ? 'Delete' : 'Trash',
         color: colors.swipeTrash,
         removesRow: true,
         onTriggered: () => trash([row]),
       ),
       SwipeAction.move => SwipeActionSpec(
-        icon: CupertinoIcons.folder_fill,
+        icon: LoupeIcons.swipeMove,
         label: 'Move',
         color: colors.swipeArchive,
         onTriggered: () => moveWithPicker([row]),
       ),
       SwipeAction.more => SwipeActionSpec(
-        icon: CupertinoIcons.ellipsis_circle_fill,
+        icon: LoupeIcons.swipeMore,
         label: 'More',
         color: colors.swipeMore,
         onTriggered: () => showMore(row),
@@ -268,27 +268,27 @@ class MailActions {
       context,
       title: latest.subject.isEmpty ? null : latest.subject,
       actions: [
-        const SheetAction('Reply', 'reply', icon: CupertinoIcons.arrowshape_turn_up_left),
-        if (recipients > 1) const SheetAction('Reply All', 'replyAll', icon: CupertinoIcons.arrowshape_turn_up_left_2),
-        const SheetAction('Forward', 'forward', icon: CupertinoIcons.arrowshape_turn_up_right),
-        SheetAction(latest.isFlagged ? 'Unflag' : 'Flag', 'flag', icon: CupertinoIcons.flag),
+        const SheetAction('Reply', 'reply', icon: LoupeIcons.reply),
+        if (recipients > 1) const SheetAction('Reply All', 'replyAll', icon: LoupeIcons.replyAll),
+        const SheetAction('Forward', 'forward', icon: LoupeIcons.forward),
+        SheetAction(latest.isFlagged ? 'Unflag' : 'Flag', 'flag', icon: LoupeIcons.flagged),
         SheetAction(
           unread ? 'Mark as Read' : 'Mark as Unread',
           'read',
-          icon: unread ? CupertinoIcons.envelope_open : CupertinoIcons.envelope_badge,
+          icon: unread ? LoupeIcons.markRead : LoupeIcons.markUnread,
         ),
-        const SheetAction('Tag…', 'tag', icon: CupertinoIcons.tag),
-        const SheetAction('Move Message…', 'move', icon: CupertinoIcons.folder),
+        const SheetAction('Tag…', 'tag', icon: LoupeIcons.tag),
+        const SheetAction('Move Message…', 'move', icon: LoupeIcons.move),
         if (role == MailboxRole.junk)
-          const SheetAction('Not Junk', 'notJunk', icon: CupertinoIcons.tray_arrow_up)
+          const SheetAction('Not Junk', 'notJunk', icon: LoupeIcons.notJunk)
         else
-          const SheetAction('Move to Junk', 'junk', icon: CupertinoIcons.bin_xmark),
+          const SheetAction('Move to Junk', 'junk', icon: LoupeIcons.junk),
         if (role != MailboxRole.archive && role != MailboxRole.all)
-          const SheetAction('Archive', 'archive', icon: CupertinoIcons.archivebox),
+          const SheetAction('Archive', 'archive', icon: LoupeIcons.archive),
         SheetAction(
           role == MailboxRole.trash ? 'Delete Permanently' : 'Trash',
           'trash',
-          icon: CupertinoIcons.trash,
+          icon: LoupeIcons.trash,
           destructive: true,
         ),
       ],

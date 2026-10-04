@@ -48,6 +48,82 @@ void main() {
       expect(boxes.firstWhere((b) => b.path == 'INBOX').name, 'Inbox');
     });
 
+    test('one mailbox per role: "Archive" and "Archives" by name', () {
+      final boxes = buildRemoteMailboxes([entry('INBOX'), entry('Archives'), entry('Archive'), entry('Sent')]);
+      MailboxRole role(String path) => boxes.firstWhere((b) => b.path == path).role;
+      expect(role('Archive'), MailboxRole.archive);
+      expect(role('Archives'), MailboxRole.none);
+      expect(role('Sent'), MailboxRole.sent);
+    });
+
+    test('one mailbox per role: several SPECIAL-USE flags (mailcow)', () {
+      final boxes = buildRemoteMailboxes([
+        entry('INBOX'),
+        entry('Archives', flags: {r'\archive'}),
+        entry('Archive', flags: {r'\archive'}),
+        entry('Archiv', flags: {r'\archive'}),
+        entry('Sent Messages', flags: {r'\sent'}),
+        entry('Sent', flags: {r'\sent'}),
+        entry('Other', flags: {r'\inbox'}),
+      ]);
+      final byRole = <MailboxRole, List<String>>{};
+      for (final b in boxes) {
+        byRole.putIfAbsent(b.role, () => []).add(b.path);
+      }
+      expect(byRole[MailboxRole.archive], ['Archive']);
+      expect(byRole[MailboxRole.sent], ['Sent']);
+      expect(byRole[MailboxRole.inbox], ['INBOX']);
+      expect(byRole[MailboxRole.none], unorderedEquals(['Archives', 'Archiv', 'Sent Messages', 'Other']));
+    });
+
+    test('SPECIAL-USE beats a name match; the shortest path breaks ties', () {
+      final boxes = buildRemoteMailboxes([
+        entry('INBOX'),
+        entry('Archive'),
+        entry('Saved/Old', flags: {r'\archive'}),
+        entry('Trash'),
+        entry('INBOX/Trash'),
+      ]);
+      MailboxRole role(String path) => boxes.firstWhere((b) => b.path == path).role;
+      expect(role('Saved/Old'), MailboxRole.archive);
+      expect(role('Archive'), MailboxRole.none);
+      expect(role('Trash'), MailboxRole.trash);
+      expect(role('INBOX/Trash'), MailboxRole.none);
+    });
+
+    test('Gmail: each role once, labels named like roles stay folders', () {
+      final boxes = buildRemoteMailboxes([
+        entry('INBOX', flags: {r'\haschildren'}),
+        entry('[Gmail]', flags: {r'\noselect', r'\haschildren'}),
+        entry('[Gmail]/All Mail', flags: {r'\all', r'\hasnochildren'}),
+        entry('[Gmail]/Drafts', flags: {r'\drafts', r'\hasnochildren'}),
+        entry('[Gmail]/Important', flags: {r'\important', r'\hasnochildren'}),
+        entry('[Gmail]/Sent Mail', flags: {r'\sent', r'\hasnochildren'}),
+        entry('[Gmail]/Spam', flags: {r'\junk', r'\hasnochildren'}),
+        entry('[Gmail]/Starred', flags: {r'\flagged', r'\hasnochildren'}),
+        entry('[Gmail]/Trash', flags: {r'\trash', r'\hasnochildren'}),
+        entry('Drafts'),
+        entry('Sent'),
+        entry('Trash'),
+        entry('Receipts'),
+      ]);
+      final byRole = <MailboxRole, List<String>>{};
+      for (final b in boxes) {
+        byRole.putIfAbsent(b.role, () => []).add(b.path);
+      }
+      for (final MapEntry(key: role, value: paths) in byRole.entries) {
+        if (role != MailboxRole.none) expect(paths, hasLength(1), reason: '$role');
+      }
+      expect(byRole[MailboxRole.all], ['[Gmail]/All Mail']);
+      expect(byRole[MailboxRole.drafts], ['[Gmail]/Drafts']);
+      expect(byRole[MailboxRole.sent], ['[Gmail]/Sent Mail']);
+      expect(byRole[MailboxRole.junk], ['[Gmail]/Spam']);
+      expect(byRole[MailboxRole.trash], ['[Gmail]/Trash']);
+      expect(byRole[MailboxRole.flagged], ['[Gmail]/Starred']);
+      expect(byRole[MailboxRole.important], ['[Gmail]/Important']);
+      expect(byRole[MailboxRole.none], unorderedEquals(['[Gmail]', 'Drafts', 'Sent', 'Trash', 'Receipts']));
+    });
+
     test('dot delimiter, INBOX children, missing parents', () {
       final boxes = buildRemoteMailboxes([
         entry('INBOX', delimiter: '.'),

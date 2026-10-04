@@ -7,6 +7,7 @@ import '../../shared/tags.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_text.dart';
 import 'sheets.dart';
+import '../../theme/loupe_icons.dart';
 
 /// What the "…" menu of a message can do.
 enum MessageAction {
@@ -48,9 +49,9 @@ Future<MessageAction?> showMessageMenu(
               child: Row(
                 children: [
                   for (final (action, icon, label) in const [
-                    (MessageAction.reply, Icons.reply, 'Reply'),
-                    (MessageAction.replyAll, Icons.reply_all, 'Reply All'),
-                    (MessageAction.forward, Icons.forward, 'Forward'),
+                    (MessageAction.reply, LoupeIcons.reply, 'Reply'),
+                    (MessageAction.replyAll, LoupeIcons.replyAll, 'Reply All'),
+                    (MessageAction.forward, LoupeIcons.forward, 'Forward'),
                   ])
                     Expanded(
                       child: Padding(
@@ -65,48 +66,40 @@ Future<MessageAction?> showMessageMenu(
               children: [
                 SheetRow(
                   label: message.isSeen ? 'Mark as Unread' : 'Mark as Read',
-                  icon: message.isSeen ? Icons.mark_email_unread_outlined : Icons.mark_email_read_outlined,
+                  icon: message.isSeen ? LoupeIcons.markUnread : LoupeIcons.markRead,
                   onTap: () => pick(MessageAction.toggleSeen),
                 ),
                 SheetRow(
                   label: message.isFlagged ? 'Unflag' : 'Flag',
-                  icon: message.isFlagged ? Icons.outlined_flag : Icons.flag_outlined,
+                  icon: LoupeIcons.flagged,
                   onTap: () => pick(MessageAction.toggleFlag),
                 ),
-                SheetRow(label: 'Tags…', icon: Icons.sell_outlined, onTap: () => pick(MessageAction.tags)),
+                SheetRow(label: 'Tags…', icon: LoupeIcons.tag, onTap: () => pick(MessageAction.tags)),
               ],
             ),
             SheetGroup(
               children: [
-                SheetRow(label: 'Move…', icon: Icons.drive_file_move_outline, onTap: () => pick(MessageAction.move)),
+                SheetRow(label: 'Move…', icon: LoupeIcons.move, onTap: () => pick(MessageAction.move)),
                 if (canArchive)
-                  SheetRow(label: 'Archive', icon: Icons.archive_outlined, onTap: () => pick(MessageAction.archive)),
+                  SheetRow(label: 'Archive', icon: LoupeIcons.archive, onTap: () => pick(MessageAction.archive)),
                 SheetRow(
                   label: mailboxRole == MailboxRole.trash ? 'Delete Permanently' : 'Move to Trash',
-                  icon: Icons.delete_outline,
+                  icon: LoupeIcons.trash,
                   destructive: true,
                   onTap: () => pick(MessageAction.trash),
                 ),
                 junk
-                    ? SheetRow(
-                        label: 'Not Junk',
-                        icon: Icons.thumb_up_alt_outlined,
-                        onTap: () => pick(MessageAction.notJunk),
-                      )
-                    : SheetRow(
-                        label: 'Move to Junk',
-                        icon: Icons.report_gmailerrorred_outlined,
-                        onTap: () => pick(MessageAction.junk),
-                      ),
+                    ? SheetRow(label: 'Not Junk', icon: LoupeIcons.notJunk, onTap: () => pick(MessageAction.notJunk))
+                    : SheetRow(label: 'Move to Junk', icon: LoupeIcons.junk, onTap: () => pick(MessageAction.junk)),
               ],
             ),
             SheetGroup(
               children: [
-                SheetRow(label: 'Show All Headers', icon: Icons.notes, onTap: () => pick(MessageAction.headers)),
-                SheetRow(label: 'View Source', icon: Icons.code, onTap: () => pick(MessageAction.source)),
+                SheetRow(label: 'Show All Headers', icon: LoupeIcons.headers, onTap: () => pick(MessageAction.headers)),
+                SheetRow(label: 'View Source', icon: LoupeIcons.source, onTap: () => pick(MessageAction.source)),
                 SheetRow(
                   label: 'Search from This Message…',
-                  icon: Icons.manage_search,
+                  icon: LoupeIcons.searchSender,
                   onTap: () => pick(MessageAction.search),
                 ),
               ],
@@ -182,7 +175,7 @@ Future<void> showAddressSheet(
                     return SwitchListTile.adaptive(
                       key: const Key('vip-switch'),
                       dense: true,
-                      secondary: Icon(vip ? Icons.star : Icons.star_border, color: colors.vip),
+                      secondary: Icon(vip ? LoupeIcons.vipFilled : LoupeIcons.vip, color: colors.vip),
                       title: const Text('VIP', style: TextStyle(fontSize: 16)),
                       value: vip,
                       onChanged: snapshot.hasData
@@ -199,7 +192,7 @@ Future<void> showAddressSheet(
                 ),
                 SheetRow(
                   label: 'New Message',
-                  icon: Icons.edit_outlined,
+                  icon: LoupeIcons.edit,
                   onTap: () {
                     Navigator.of(context).pop();
                     onCompose();
@@ -207,7 +200,7 @@ Future<void> showAddressSheet(
                 ),
                 SheetRow(
                   label: 'Copy Address',
-                  icon: Icons.copy,
+                  icon: LoupeIcons.copy,
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: address.email));
                     Navigator.of(context).pop();
@@ -216,7 +209,7 @@ Future<void> showAddressSheet(
                 ),
                 SheetRow(
                   label: 'Search Messages from ${address.displayName}',
-                  icon: Icons.search,
+                  icon: LoupeIcons.search,
                   onTap: () {
                     Navigator.of(context).pop();
                     onSearch();
@@ -253,10 +246,10 @@ Future<void> showTagsSheet(
                 ListTile(
                   key: ValueKey('tag-$k'),
                   dense: true,
-                  leading: Icon(Icons.circle, size: 14, color: tagColor(k)),
+                  leading: Icon(LoupeIcons.dot, size: 14, color: tagColor(k)),
                   title: Text(tagLabel(k), style: const TextStyle(fontSize: 16)),
                   trailing: selected.contains(k)
-                      ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary)
+                      ? Icon(LoupeIcons.check, color: Theme.of(context).colorScheme.primary)
                       : null,
                   onTap: () {
                     final on = !selected.contains(k);
@@ -295,7 +288,7 @@ Future<void> showHeadersSheet(BuildContext context, List<(String, String)> heade
               ),
               IconButton(
                 tooltip: 'Copy All',
-                icon: const Icon(Icons.copy),
+                icon: const Icon(LoupeIcons.copy),
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: headers.map((h) => '${h.$1}: ${h.$2}').join('\n')));
                   showSnack(messenger, 'Headers copied');

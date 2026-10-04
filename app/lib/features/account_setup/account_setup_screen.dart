@@ -13,6 +13,7 @@ import '../compose/compose_text.dart';
 import '../conversation/mail_streams.dart';
 import '../conversation/sheets.dart';
 import 'server_settings.dart';
+import '../../theme/loupe_icons.dart';
 
 enum _Step { address, signIn, done }
 
@@ -282,7 +283,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       padding: const EdgeInsets.fromLTRB(32, 8, 32, 24),
       child: Column(
         children: [
-          Icon(Icons.alternate_email, size: 48, color: theme.colorScheme.primary),
+          Icon(LoupeIcons.emailAddress, size: 48, color: theme.colorScheme.primary),
           const SizedBox(height: 12),
           Text(
             title,
@@ -304,7 +305,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       ? const SizedBox.shrink()
       : NoteCard(
           key: const Key('setup-error'),
-          icon: Icons.error_outline,
+          icon: LoupeIcons.error,
           color: CupertinoColors.systemRed.resolveFrom(context),
           actions: [
             if (_fingerprint != null)
@@ -406,7 +407,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
         _title(context, title, email),
         ..._providerNotes(context),
         if (discovery.notes case final notes? when notes.trim().isNotEmpty)
-          NoteCard(icon: Icons.info_outline, child: Text(notes)),
+          NoteCard(icon: LoupeIcons.info, child: Text(notes)),
         if (!_needsOAuth)
           SheetGroup(
             children: [
@@ -425,7 +426,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
                   decoration: InputDecoration.collapsed(hintText: 'Required').copyWith(
                     suffixIcon: IconButton(
                       tooltip: _obscure ? 'Show password' : 'Hide password',
-                      icon: Icon(_obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined, size: 20),
+                      icon: Icon(_obscure ? LoupeIcons.showPassword : LoupeIcons.hidePassword, size: 20),
                       onPressed: () => setState(() => _obscure = !_obscure),
                     ),
                     suffixIconConstraints: const BoxConstraints(minHeight: 24, minWidth: 40),
@@ -470,7 +471,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     return switch (_provider) {
       ProviderKind.gmail when !_appPassword => [
         NoteCard(
-          icon: Icons.info_outline,
+          icon: LoupeIcons.info,
           actions: [
             TextButton(
               key: const Key('use-app-password'),
@@ -486,7 +487,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       ],
       ProviderKind.gmail => [
         NoteCard(
-          icon: Icons.key_outlined,
+          icon: LoupeIcons.password,
           actions: [link('How to Create an App Password', 'https://support.google.com/accounts/answer/185833')],
           child: const Text('Create an app password in your Google account and paste it below.'),
         ),
@@ -494,7 +495,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       ProviderKind.microsoft => [
         const NoteCard(
           key: Key('microsoft-note'),
-          icon: Icons.info_outline,
+          icon: LoupeIcons.info,
           child: Text(
             'Microsoft sign-in arrives in a later build. Outlook, Hotmail and Microsoft 365 accounts need it: '
             'they no longer accept passwords from mail apps.',
@@ -503,21 +504,21 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       ],
       ProviderKind.icloud => [
         NoteCard(
-          icon: Icons.key_outlined,
+          icon: LoupeIcons.password,
           actions: [link('How to Create One', 'https://support.apple.com/en-us/102654')],
           child: const Text('iCloud Mail needs an app-specific password, not your Apple Account password.'),
         ),
       ],
       ProviderKind.yahoo => [
         NoteCard(
-          icon: Icons.key_outlined,
+          icon: LoupeIcons.password,
           actions: [link('How to Create One', 'https://help.yahoo.com/kb/SLN15241.html')],
           child: const Text('Yahoo Mail needs an app password, not your account password.'),
         ),
       ],
       ProviderKind.fastmail => [
         NoteCard(
-          icon: Icons.key_outlined,
+          icon: LoupeIcons.password,
           actions: [link('How to Create One', 'https://www.fastmail.help/hc/en-us/articles/360058752854')],
           child: const Text('Fastmail needs an app password for mail apps.'),
         ),
@@ -540,27 +541,27 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
             discovery.source == null ? 'Not found automatically' : 'Found via ${discovery.source}',
             style: TextStyle(color: colors.secondaryText),
           ),
-          trailing: Icon(_showSettings ? Icons.expand_less : Icons.expand_more, color: colors.secondaryText),
+          trailing: Icon(_showSettings ? LoupeIcons.collapse : LoupeIcons.expand, color: colors.secondaryText),
           onTap: () => setState(() => _showSettings = !_showSettings),
         ),
         if (_showSettings && !_editSettings) ...[
           ListTile(
             dense: true,
-            leading: const Icon(Icons.download_outlined, size: 20),
+            leading: const Icon(LoupeIcons.download, size: 20),
             title: Text(incoming == null ? '—' : describeServer(incoming)),
             subtitle: Text('Incoming · ${_incoming!.protocol.name.toUpperCase()}'),
           ),
           if (outgoing != null && _incoming!.protocol != ServerProtocol.jmap)
             ListTile(
               dense: true,
-              leading: const Icon(Icons.upload_outlined, size: 20),
+              leading: const Icon(LoupeIcons.upload, size: 20),
               title: Text(describeServer(outgoing)),
               subtitle: const Text('Outgoing · SMTP'),
             ),
           SheetRow(
             key: const Key('setup-edit-settings'),
             label: 'Edit Settings',
-            icon: Icons.tune,
+            icon: LoupeIcons.serverSettings,
             onTap: _busy ? null : () => setState(() => _editSettings = true),
           ),
         ],
@@ -576,7 +577,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
           padding: const EdgeInsets.fromLTRB(32, 16, 32, 24),
           child: Column(
             children: [
-              Icon(Icons.check_circle, size: 56, color: CupertinoColors.systemGreen.resolveFrom(context)),
+              Icon(LoupeIcons.selected, size: 56, color: CupertinoColors.systemGreen.resolveFrom(context)),
               const SizedBox(height: 12),
               Text(
                 _account?.email ?? '',

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../router.dart';
 import '../../settings/app_mode.dart';
 import '../../theme/theme.dart';
+import '../../theme/loupe_icons.dart';
 
 /// First launch: the app name, a one-line pitch, and two ways in.
 class WelcomeScreen extends ConsumerStatefulWidget {
@@ -104,17 +105,17 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> with SingleTicker
                         Column(
                           children: const [
                             _Feature(
-                              icon: CupertinoIcons.tray_2,
+                              icon: LoupeIcons.allInboxes,
                               title: 'Every account, one calm inbox',
                               text: 'Gmail, Outlook, iCloud, Fastmail and any IMAP server.',
                             ),
                             _Feature(
-                              icon: CupertinoIcons.search,
+                              icon: LoupeIcons.search,
                               title: 'Search that finds it',
                               text: 'Instant results on your phone, then the server’s.',
                             ),
                             _Feature(
-                              icon: CupertinoIcons.lock_shield,
+                              icon: LoupeIcons.privacy,
                               title: 'Private by design',
                               text: 'No tracking. Remote images stay blocked until you say so.',
                             ),

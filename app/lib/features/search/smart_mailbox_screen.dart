@@ -7,11 +7,13 @@ import 'package:mail_model/mail_model.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/ui_state.dart';
+import '../../shared/bars.dart';
 import '../../shared/mailbox_ref_codec.dart';
 import '../../shared/sheets.dart';
 import '../../theme/theme.dart';
 import 'search_session.dart';
 import 'search_view.dart';
+import '../../theme/loupe_icons.dart';
 
 /// A saved search, shown like a mailbox.
 class SmartMailboxScreen extends ConsumerStatefulWidget {
@@ -44,9 +46,9 @@ class _SmartMailboxScreenState extends ConsumerState<SmartMailboxScreen> {
       title: box.name,
       message: box.query,
       actions: const [
-        SheetAction('Rename', 'rename', icon: CupertinoIcons.pencil),
-        SheetAction('Edit Search', 'edit', icon: CupertinoIcons.search),
-        SheetAction('Delete Smart Mailbox', 'delete', icon: CupertinoIcons.trash, destructive: true),
+        SheetAction('Rename', 'rename', icon: LoupeIcons.rename),
+        SheetAction('Edit Search', 'edit', icon: LoupeIcons.search),
+        SheetAction('Delete Smart Mailbox', 'delete', icon: LoupeIcons.trash, destructive: true),
       ],
     );
     if (!mounted) return;
@@ -72,20 +74,12 @@ class _SmartMailboxScreenState extends ConsumerState<SmartMailboxScreen> {
       );
     }
     final session = _sessionFor(box);
-    final colors = LoupeColors.of(context);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          CupertinoSliverNavigationBar(
-            largeTitle: Text(box.name),
-            previousPageTitle: 'Mailboxes',
-            backgroundColor: colors.barBackground,
-            border: Border(bottom: BorderSide(color: colors.separator, width: 0.5)),
-            trailing: CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: () => _menu(box),
-              child: const Icon(CupertinoIcons.ellipsis_circle, semanticLabel: 'More'),
-            ),
+          LoupeTitleBar(
+            title: box.name,
+            trailing: [BarIconButton(icon: LoupeIcons.moreCircle, tooltip: 'More', onPressed: () => _menu(box))],
           ),
           CupertinoSliverRefreshControl(onRefresh: session.rerun),
           SearchSlivers(session: session, showSuggestions: false),

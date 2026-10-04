@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/router.dart';
 import 'package:mail_model/mail_model.dart';
+import 'package:loupe/theme/loupe_icons.dart';
 
 import 'helpers.dart';
 
@@ -23,13 +24,13 @@ void main() {
     // Local results are in; every account is still asking its server.
     expect(find.text('Photos from Sunday’s hike'), findsOneWidget);
     expect(textContaining('on the server…'), findsWidgets);
-    expect(find.byIcon(CupertinoIcons.cloud), findsNothing);
+    expect(find.byIcon(LoupeIcons.onServer), findsNothing);
 
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
 
     expect(textContaining('on the server…'), findsNothing);
-    expect(find.byIcon(CupertinoIcons.cloud), findsWidgets);
+    expect(find.byIcon(LoupeIcons.onServer), findsWidgets);
     await tester.scrollTo(find.text('Photos from the lake'));
     expect(find.text('Photos from the lake'), findsOneWidget);
   });
@@ -64,7 +65,7 @@ void main() {
     await tester.tap(find.byType(CupertinoSearchTextField));
     await tester.pumpAndSettle();
     expect(find.text('All Mailboxes'), findsOneWidget);
-    expect(find.byIcon(CupertinoIcons.square_pencil), findsNothing);
+    expect(find.byIcon(LoupeIcons.compose), findsNothing);
 
     await tester.enterText(find.byType(CupertinoSearchTextField), 'roadmap');
     await tester.pump(const Duration(milliseconds: 400));
@@ -75,7 +76,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(popped, isTrue);
     expect(find.text('All Mailboxes'), findsNothing);
-    expect(find.byIcon(CupertinoIcons.square_pencil), findsOneWidget);
+    expect(find.byIcon(LoupeIcons.compose), findsOneWidget);
   });
 
   testWidgets('typing an operator offers completions from the search language', (tester) async {

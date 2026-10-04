@@ -9,6 +9,7 @@ import '../../shared/avatar.dart';
 import '../../shared/grouped_list.dart';
 import '../../shared/sheets.dart';
 import '../../theme/theme.dart';
+import '../../theme/loupe_icons.dart';
 
 /// The VIP list: people whose mail gets a star and its own mailbox.
 class VipScreen extends ConsumerStatefulWidget {
@@ -59,7 +60,6 @@ class _VipScreenState extends ConsumerState<VipScreen> {
     final vips = (ref.watch(vipAddressesProvider).value ?? const <String>{}).toList()..sort();
     return GroupedPage(
       title: 'VIP',
-      previousPageTitle: 'Mailboxes',
       children: [
         InsetGroup(
           footer: 'You can also tap a sender’s name in a message and turn on VIP.',
@@ -76,11 +76,11 @@ class _VipScreenState extends ConsumerState<VipScreen> {
                   padding: EdgeInsets.zero,
                   minimumSize: const Size(36, 36),
                   onPressed: () => ref.read(repositoryProvider).setVip(email, vip: false),
-                  child: Icon(CupertinoIcons.minus_circle_fill, color: colors.destructive, semanticLabel: 'Remove'),
+                  child: Icon(LoupeIcons.remove, color: colors.destructive, semanticLabel: 'Remove'),
                 ),
               ),
             GroupedRow(
-              leading: Icon(CupertinoIcons.plus_circle_fill, color: colors.unreadDot, size: 26),
+              leading: Icon(LoupeIcons.add, color: colors.unreadDot, size: 26),
               title: 'Add VIP…',
               titleStyle: LoupeTextStyles.of(context).body.copyWith(color: colors.unreadDot),
               chevron: false,

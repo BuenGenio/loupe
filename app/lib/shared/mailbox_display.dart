@@ -1,19 +1,23 @@
+import 'dart:math' as math;
+
 import 'package:flutter/cupertino.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../theme/loupe_icons.dart';
+
 /// Icon of a mailbox by role, as Apple Mail draws them.
 IconData mailboxIcon(MailboxRole role) => switch (role) {
-  MailboxRole.inbox => CupertinoIcons.tray,
-  MailboxRole.drafts => CupertinoIcons.doc,
-  MailboxRole.sent => CupertinoIcons.paperplane,
-  MailboxRole.junk => CupertinoIcons.bin_xmark,
-  MailboxRole.trash => CupertinoIcons.trash,
-  MailboxRole.archive => CupertinoIcons.archivebox,
-  MailboxRole.all => CupertinoIcons.tray_full,
-  MailboxRole.flagged => CupertinoIcons.flag,
-  MailboxRole.important => CupertinoIcons.exclamationmark_circle,
-  MailboxRole.outbox => CupertinoIcons.tray_arrow_up,
-  MailboxRole.none => CupertinoIcons.folder,
+  MailboxRole.inbox => LoupeIcons.inbox,
+  MailboxRole.drafts => LoupeIcons.drafts,
+  MailboxRole.sent => LoupeIcons.sent,
+  MailboxRole.junk => LoupeIcons.junk,
+  MailboxRole.trash => LoupeIcons.trash,
+  MailboxRole.archive => LoupeIcons.archive,
+  MailboxRole.all => LoupeIcons.allMail,
+  MailboxRole.flagged => LoupeIcons.flagged,
+  MailboxRole.important => LoupeIcons.important,
+  MailboxRole.outbox => LoupeIcons.outbox,
+  MailboxRole.none => LoupeIcons.folder,
 };
 
 String virtualMailboxTitle(VirtualMailbox kind) => switch (kind) {
@@ -26,12 +30,12 @@ String virtualMailboxTitle(VirtualMailbox kind) => switch (kind) {
 };
 
 IconData virtualMailboxIcon(VirtualMailbox kind) => switch (kind) {
-  VirtualMailbox.allInboxes => CupertinoIcons.tray_2,
-  VirtualMailbox.unread => CupertinoIcons.envelope_badge,
-  VirtualMailbox.flagged => CupertinoIcons.flag,
-  VirtualMailbox.vip => CupertinoIcons.star,
-  VirtualMailbox.allDrafts => CupertinoIcons.doc_on_doc,
-  VirtualMailbox.allSent => CupertinoIcons.paperplane,
+  VirtualMailbox.allInboxes => LoupeIcons.allInboxes,
+  VirtualMailbox.unread => LoupeIcons.unread,
+  VirtualMailbox.flagged => LoupeIcons.flagged,
+  VirtualMailbox.vip => LoupeIcons.vip,
+  VirtualMailbox.allDrafts => LoupeIcons.drafts,
+  VirtualMailbox.allSent => LoupeIcons.sent,
 };
 
 /// Sort key that puts special mailboxes first, in Apple Mail's order.
@@ -49,8 +53,35 @@ int mailboxRoleOrder(MailboxRole role) => switch (role) {
   MailboxRole.none => 10,
 };
 
-/// Display name of a mailbox: role mailboxes get their familiar names
-/// ("Sent Mail" and "Sent Items" are both "Sent").
+/// [mailboxes] with each role held by at most one mailbox per account; the
+/// others become plain folders ([MailboxRole.none]) and show their real
+/// names. The transports already assign roles that way; this keeps a stale
+/// or odd mailbox list from showing two "Archive" folders. The holder is the
+/// mailbox named like the role, else the one with the shortest path.
+List<Mailbox> withUniqueRoles(List<Mailbox> mailboxes) {
+  final holders = <(String, MailboxRole), Mailbox>{};
+  int rank(Mailbox m) => mailboxDisplayName(m).toLowerCase() == m.name.toLowerCase() ? 0 : 1;
+  for (final m in mailboxes) {
+    if (m.role == MailboxRole.none) continue;
+    final key = (m.accountId, m.role);
+    final held = holders[key];
+    if (held == null || rank(m) < rank(held) || (rank(m) == rank(held) && m.path.length < held.path.length)) {
+      holders[key] = m;
+    }
+  }
+  if (holders.length == mailboxes.where((m) => m.role != MailboxRole.none).length) return mailboxes;
+  return [
+    for (final m in mailboxes)
+      if (m.role == MailboxRole.none || identical(holders[(m.accountId, m.role)], m))
+        m
+      else
+        m.copyWith(role: MailboxRole.none),
+  ];
+}
+
+/// Display name of a mailbox: the mailbox holding a role gets its familiar
+/// name ("Sent Mail" and "Sent Items" are both "Sent"); see
+/// [withUniqueRoles] for why only one per account does.
 String mailboxDisplayName(Mailbox box) => switch (box.role) {
   MailboxRole.inbox => 'Inbox',
   MailboxRole.drafts => 'Drafts',
@@ -68,6 +99,10 @@ String mailboxRefTitle(MailboxRef ref, Iterable<Mailbox> mailboxes) => switch (r
   RealMailboxRef(:final mailboxId) =>
     mailboxes.where((m) => m.id == mailboxId).map(mailboxDisplayName).firstOrNull ?? 'Mailbox',
 };
+
+/// Leading indentation of a folder at [depth] in a tree. Deep trees stop
+/// indenting after a few levels, so names keep room on a phone.
+double folderIndent(int depth) => 18.0 * math.min(depth, 5);
 
 /// A mailbox with its depth in the account's folder tree.
 typedef MailboxNode = ({Mailbox mailbox, int depth, bool hasChildren});
