@@ -24,8 +24,26 @@ dependencies:
   share_plus: ^13.3.1
   file_picker: ^13.1.0
   path_provider: ^2.1.6
+  cupertino_icons: ^2.0.0
+  package_info_plus: ^10.2.2
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.4
   flutter_test:
     sdk: flutter
 flutter:
   uses-material-design: true
+  assets:
+    - assets/demo/
+    - assets/icon/icon_rounded.png
+
+# `dart run flutter_launcher_icons` regenerates the launcher icons from these
+# sources (made by a small PIL script; see assets/icon/).
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: assets/icon/icon.png
+  adaptive_icon_background: assets/icon/icon_background.png
+  adaptive_icon_foreground: assets/icon/icon_foreground.png
+  adaptive_icon_monochrome: assets/icon/icon_foreground.png
+  min_sdk_android: 21
