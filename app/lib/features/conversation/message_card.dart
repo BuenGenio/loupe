@@ -9,6 +9,8 @@ import '../../shared/avatar.dart';
 import '../../shared/format.dart';
 import '../../shared/tags.dart';
 import '../../theme/theme.dart';
+import '../openpgp/key_import.dart';
+import '../openpgp/pgp_status.dart';
 import 'attachments.dart';
 import 'auth_results.dart';
 import 'security/security_badge.dart';
@@ -192,6 +194,7 @@ class _MessageCardState extends State<MessageCard> {
                       ),
                     ),
                     SecurityBadge(message: _m, content: content),
+                    PgpHeaderMark(message: _m, content: content, onRetry: widget.onRetry),
                   ],
                 ),
                 InkWell(
@@ -218,6 +221,7 @@ class _MessageCardState extends State<MessageCard> {
                     ),
                   ),
                 ),
+                PgpStatusLine(message: _m, content: content, onRetry: widget.onRetry),
                 if (tags.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
@@ -363,6 +367,7 @@ class _MessageCardState extends State<MessageCard> {
           ),
         ),
         AttachmentList(content: content, load: widget.loadAttachment),
+        PgpKeyAttachments(content: content, load: widget.loadAttachment),
       ],
     );
   }

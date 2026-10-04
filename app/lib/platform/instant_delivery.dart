@@ -195,7 +195,11 @@ final class LiveInstantMail implements InstantMail {
 
   static Future<LiveInstantMail> open() async {
     final store = await openLiveStore(createKey: false);
-    final repository = buildLiveRepository(store, config: const SyncConfig(pollInterval: Duration(minutes: 15)));
+    final repository = buildLiveRepository(
+      store,
+      keys: await backgroundSendKeys(),
+      config: const SyncConfig(pollInterval: Duration(minutes: 15)),
+    );
     await repository.pause();
     await repository.start();
     return LiveInstantMail._(store, repository);

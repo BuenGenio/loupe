@@ -22,7 +22,12 @@ import '../../shared/swipe_row.dart';
 import '../../shared/sync_status.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
-import '../conversation/conversation_screen.dart';
+import '../conversation/sheets.dart' show showSnack;
+import '../keyboard/mail_commands.dart';
+import '../palette/command_palette.dart';
+import '../panes/mail_selection.dart';
+import '../panes/message_drag.dart';
+import '../panes/pane_layout.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
 import '../../theme/loupe_icons.dart';
@@ -49,8 +54,9 @@ IconData quickFilterIcon(QuickFilter f) => switch (f) {
 };
 
 /// A mailbox's messages: large collapsing title with the search field hidden
-/// above the list, swipe actions, Filter button, multi-select, and a
-/// two-pane layout on wide screens.
+/// above the list, swipe actions, Filter button and multi-select. In the
+/// list pane of the wide layout ([MailHome]) rows open in the conversation
+/// pane.
 class MessageListScreen extends ConsumerStatefulWidget {
   const MessageListScreen({super.key, required this.mailboxRef});
 
@@ -60,20 +66,15 @@ class MessageListScreen extends ConsumerStatefulWidget {
   ConsumerState<MessageListScreen> createState() => _MessageListScreenState();
 }
 
-class _MessageListScreenState extends ConsumerState<MessageListScreen> {
-  /// Width from which the list and the message sit side by side.
-  static const twoPaneWidth = 840.0;
-
+class _MessageListScreenState extends ConsumerState<MessageListScreen>
+    with CommandScopeState<MessageListScreen>
+    implements MessageListNeighbors {
   bool _filterOn = false;
   bool _editing = false;
   final _selected = <String>{};
   bool _searching = false;
   bool _loadingOlder = false;
   bool _hasOlder = true;
-
-  /// The message shown in the detail pane (wide layout).
-  String? _detailId;
-  String? _detailThread;
 
   /// Whether the list has been scrolled past the search field after the
   /// first rows arrived (while loading, the offset can't stick).
@@ -86,6 +87,18 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     onCommit: (q) => ref.read(recentSearchesProvider.notifier).add(q),
   );
 
+  /// The rows last shown.
+  List<ThreadSummary> _rows = const [];
+
+  /// The row the keyboard is on (J, K, Enter) on a phone; in the list pane
+  /// it is the conversation shown.
+  String? _cursor;
+
+  /// Where the conversation shown in the pane was listed, to show the one
+  /// that takes its place when it goes away.
+  int? _shownIndex;
+  final _rowKeys = <String, GlobalKey>{};
+
   @override
   void initState() {
     super.initState();
@@ -93,6 +106,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     _focus.addListener(() {
       if (_focus.hasFocus && !_searching) _setSearching(true);
     });
+    registerCommands(ref.read(mailCommandsProvider));
   }
 
   @override
@@ -148,25 +162,208 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     });
   }
 
-  Future<void> _openRow(
-    ThreadSummary row, {
-    required bool wide,
-    required MailboxRole? role,
-    required MailActions actions,
-  }) async {
+  /// Whether this is the list pane of the wide layout.
+  bool get _inPane => MailPaneScope.paneOf(context) == MailPane.list;
+
+  Future<void> _openRow(ThreadSummary row, {required MailboxRole? role, required MailActions actions}) async {
     final email = row.latest;
     if (role == MailboxRole.drafts || email.isDraft) {
       await openCompose(context, ComposeArgs(mode: ComposeMode.editDraft, sourceEmailId: email.id));
       return;
     }
     if (row.unreadCount > 0) unawaited(actions.setRead([row], read: true));
-    if (wide) {
-      setState(() {
-        _detailId = email.id;
-        _detailThread = row.threadId;
-      });
+    if (_inPane) {
+      ref.read(mailSelectionProvider.notifier).showMessage(email.id, threadId: row.threadId);
     } else {
       await context.push(Routes.message(email.id));
+    }
+  }
+
+  // Keyboard and command palette ------------------------------------------------------
+
+  @override
+  int get priority => 20;
+
+  MailboxRole? _roleOf(ThreadSummary row) => (ref.read(mailboxesProvider).value ?? const <Mailbox>[])
+      .where((m) => m.id == row.latest.mailboxId)
+      .firstOrNull
+      ?.role;
+
+  int _cursorIndex() {
+    if (_inPane) return _rows.indexWhere(ref.read(mailSelectionProvider).shows);
+    return _rows.indexWhere((r) => r.threadId == _cursor);
+  }
+
+  ThreadSummary? get _cursorRow {
+    final i = _cursorIndex();
+    return i < 0 ? null : _rows[i];
+  }
+
+  /// What row actions apply to: the selection while editing, else the
+  /// keyboard's row (phones).
+  List<ThreadSummary> get _rowsForAction => _editing
+      ? [
+          for (final r in _rows)
+            if (_selected.contains(r.threadId)) r,
+        ]
+      : [if (!_inPane) ?_cursorRow];
+
+  @override
+  ThreadSummary? neighborOf(EmailSummary email, int delta) {
+    final i = _rows.indexWhere(
+      (r) =>
+          r.latest.id == email.id || r.threadId == email.id || (email.threadId != null && r.threadId == email.threadId),
+    );
+    final j = i + delta;
+    return i < 0 || j < 0 || j >= _rows.length ? null : _rows[j];
+  }
+
+  @override
+  ThreadSummary? replacementFor(MailSelection selection) {
+    if (_rows.isEmpty) return null;
+    final i = _rows.indexWhere(selection.shows);
+    if (i >= 0) return i + 1 < _rows.length ? _rows[i + 1] : (i > 0 ? _rows[i - 1] : null);
+    final was = _shownIndex;
+    return was == null ? null : _rows[math.min(was, _rows.length - 1)];
+  }
+
+  @override
+  bool canRun(MailCommand command) => switch (command) {
+    MailCommand.nextMessage || MailCommand.previousMessage => _rows.isNotEmpty && !_searching && !_editing,
+    MailCommand.open => !_inPane && !_editing && _cursorRow != null,
+    MailCommand.search || MailCommand.refresh => true,
+    MailCommand.back => _searching || _editing,
+    MailCommand.markAllRead => !_searching,
+    MailCommand.reply || MailCommand.replyAll || MailCommand.forward => !_inPane && !_editing && _cursorRow != null,
+    MailCommand.archive ||
+    MailCommand.trash ||
+    MailCommand.toggleRead ||
+    MailCommand.toggleFlag ||
+    MailCommand.snooze ||
+    MailCommand.move => _rowsForAction.isNotEmpty,
+    _ => false,
+  };
+
+  @override
+  void run(MailCommand command) {
+    final actions = _actions(ref.read(appSettingsProvider));
+    final rows = _rowsForAction;
+    Future<void> act(Future<void> Function() action) async {
+      await action();
+      if (mounted && _editing) _toggleEditing();
+    }
+
+    void compose(ComposeMode mode) {
+      final row = _cursorRow;
+      if (row != null) unawaited(openCompose(context, ComposeArgs(mode: mode, sourceEmailId: row.latest.id)));
+    }
+
+    switch (command) {
+      case MailCommand.nextMessage:
+        _moveCursor(1, actions);
+      case MailCommand.previousMessage:
+        _moveCursor(-1, actions);
+      case MailCommand.open:
+        if (_cursorRow case final row?) unawaited(_openRow(row, role: _roleOf(row), actions: actions));
+      case MailCommand.search:
+        _focus.requestFocus();
+      case MailCommand.back:
+        _searching ? _setSearching(false) : _toggleEditing();
+      case MailCommand.markAllRead:
+        unawaited(_markAllRead());
+      case MailCommand.refresh:
+        unawaited(ref.read(repositoryProvider).refresh(ref: widget.mailboxRef));
+      case MailCommand.reply:
+        compose(ComposeMode.reply);
+      case MailCommand.replyAll:
+        compose(ComposeMode.replyAll);
+      case MailCommand.forward:
+        compose(ComposeMode.forward);
+      case MailCommand.archive:
+        unawaited(act(() => actions.archive(rows)));
+      case MailCommand.trash:
+        unawaited(act(() => actions.trash(rows)));
+      case MailCommand.toggleRead:
+        unawaited(act(() => actions.setRead(rows, read: rows.any((r) => r.unreadCount > 0))));
+      case MailCommand.toggleFlag:
+        unawaited(act(() => actions.setFlag(rows, flagged: rows.any((r) => !r.latest.isFlagged))));
+      case MailCommand.snooze:
+        unawaited(act(() => actions.snooze(rows)));
+      case MailCommand.move:
+        unawaited(act(() => actions.moveWithPicker(rows)));
+      default:
+    }
+  }
+
+  /// J and K: in the pane the next conversation opens beside the list (a
+  /// draft shows there too, rather than opening the editor); on a phone the
+  /// highlight moves and Enter opens.
+  void _moveCursor(int delta, MailActions actions) {
+    if (_rows.isEmpty) return;
+    final i = _cursorIndex();
+    final j = i < 0 ? 0 : (i + delta).clamp(0, _rows.length - 1);
+    if (i == j) return;
+    final row = _rows[j];
+    if (_inPane) {
+      if (row.unreadCount > 0) unawaited(actions.setRead([row], read: true));
+      ref.read(mailSelectionProvider.notifier).showMessage(row.latest.id, threadId: row.threadId);
+    } else {
+      setState(() => _cursor = row.threadId);
+    }
+    _reveal(row, j);
+  }
+
+  /// Scrolls [row] (at [index]) into view, jumping near it first when it
+  /// isn't built yet; a row already in view stays put.
+  void _reveal(ThreadSummary row, int index) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final ctx = _rowKeys[row.threadId]?.currentContext;
+      if (ctx != null) {
+        if (!_inView(ctx)) {
+          unawaited(Scrollable.ensureVisible(ctx, duration: const Duration(milliseconds: 120), alignment: 0.5));
+        }
+        return;
+      }
+      final scroll = _scroll;
+      if (scroll == null || !scroll.hasClients) return;
+      final built = _rowKeys.values.map((k) => k.currentContext?.size?.height).nonNulls.firstOrNull ?? 90;
+      final estimate = searchBarExtent(context) + index * built;
+      scroll.jumpTo(estimate.clamp(0, scroll.position.maxScrollExtent));
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final ctx = _rowKeys[row.threadId]?.currentContext;
+        if (mounted && ctx != null) unawaited(Scrollable.ensureVisible(ctx, alignment: 0.5));
+      });
+    });
+  }
+
+  /// Whether the row at [ctx] is clear of the title bar and the toolbar.
+  bool _inView(BuildContext ctx) {
+    final row = ctx.findRenderObject();
+    final view = Scrollable.maybeOf(ctx)?.context.findRenderObject();
+    if (row is! RenderBox || view is! RenderBox || !row.hasSize || !view.hasSize) return false;
+    final top = row.localToGlobal(Offset.zero, ancestor: view).dy;
+    final bar = MediaQuery.paddingOf(context).top + LoupeTitleBar.heightOf(context) + searchBarExtent(context);
+    return top >= bar && top + row.size.height <= view.size.height;
+  }
+
+  /// Marks every unread message of this mailbox read (those on the phone).
+  Future<void> _markAllRead() async {
+    final messenger = ScaffoldMessenger.of(context);
+    final repo = ref.read(repositoryProvider);
+    final actions = MailActions(context, ref, scope: widget.mailboxRef, threaded: false);
+    try {
+      final unread = await repo
+          .watchList(widget.mailboxRef, filters: const {QuickFilter.unread}, threaded: false, limit: 100000)
+          .first;
+      if (unread.isEmpty) return;
+      await actions.setRead(unread, read: true);
+      showSnack(
+        messenger,
+        unread.length == 1 ? 'Marked 1 message as read' : 'Marked ${unread.length} messages as read',
+      );
+    } on MailException catch (e) {
+      showSnack(messenger, e.message);
     }
   }
 
@@ -251,38 +448,6 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final wide = constraints.maxWidth >= twoPaneWidth;
-        final list = _buildList(context, wide);
-        if (!wide) return list;
-        final colors = LoupeColors.of(context);
-        return Row(
-          children: [
-            SizedBox(width: math.min(420, constraints.maxWidth * 0.42), child: list),
-            VerticalDivider(width: 0.5, thickness: 0.5, color: colors.separator),
-            Expanded(
-              child: _detailId == null
-                  ? const _NoSelection()
-                  : HeroMode(
-                      enabled: false,
-                      // onClose hides Back and keeps the list after archiving.
-                      child: ConversationScreen(
-                        emailId: _detailId!,
-                        onClose: () => setState(() {
-                          _detailId = null;
-                          _detailThread = null;
-                        }),
-                      ),
-                    ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildList(BuildContext context, bool wide) {
     final colors = LoupeColors.of(context);
     final settings = ref.watch(appSettingsProvider);
     final mailboxes = ref.watch(mailboxesProvider).value ?? const <Mailbox>[];
@@ -299,6 +464,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
         if (position.pixels == 0 && position.maxScrollExtent >= extent) scroll.jumpTo(extent);
       });
     }
+    _rows = rows;
     final actions = _actions(settings);
     final selectedRows = [
       for (final r in rows)
@@ -337,7 +503,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
                     unawaited(HapticFeedback.lightImpact());
                   },
                 ),
-                ..._rowsSlivers(context, async, rows, settings, actions, mailboxes, wide),
+                ..._rowsSlivers(context, async, rows, settings, actions, mailboxes),
               ],
             ],
           ),
@@ -396,6 +562,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
         focusNode: _focus,
         onChanged: _search.onChanged,
         onSubmitted: (_) => _search.submit(),
+        onLongPress: () => showCommandPalette(context),
       ),
     );
   }
@@ -407,7 +574,6 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     AppSettings settings,
     MailActions actions,
     List<Mailbox> mailboxes,
-    bool wide,
   ) {
     if (async.isLoading && !async.hasValue) {
       // Taller than the screen, so the initial offset that hides the search
@@ -453,6 +619,11 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     final boxes = {for (final m in mailboxes) m.id: m};
     final vips = ref.watch(vipAddressesProvider).value ?? const <String>{};
     final unified = widget.mailboxRef is VirtualMailboxRef && accounts.length > 1;
+    final selection = _inPane ? ref.watch(mailSelectionProvider) : null;
+    if (selection != null) {
+      final shown = rows.indexWhere(selection.shows);
+      if (shown >= 0) _shownIndex = shown;
+    }
     // Rows keep their state (a swipe under way) when sync adds or removes
     // others above them.
     final indexOf = {for (final (i, r) in rows.indexed) r.threadId: i};
@@ -466,31 +637,55 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
           final role = boxes[email.mailboxId]?.role;
           final account = accounts[email.accountId];
           final checked = _selected.contains(row.threadId);
+          final longPress = _editing
+              ? null
+              : () {
+                  unawaited(HapticFeedback.mediumImpact());
+                  unawaited(actions.showMore(row));
+                };
+          final messageRow = MessageRow(
+            key: _rowKeys.putIfAbsent(row.threadId, GlobalKey.new),
+            email: email,
+            messageCount: row.messageCount,
+            unread: row.unreadCount > 0,
+            isVip: email.from.any((f) => vips.contains(f.email.toLowerCase())),
+            accountColor: unified && account != null ? colors.accountColor(account.colorIndex) : null,
+            selected: selection?.shows(row) ?? _cursor == row.threadId,
+            editing: _editing,
+            checked: checked,
+            showRecipients: role == MailboxRole.sent || role == MailboxRole.drafts,
+            onTap: _editing
+                ? () => setState(() => checked ? _selected.remove(row.threadId) : _selected.add(row.threadId))
+                : () => _openRow(row, role: role, actions: actions),
+            // In the panes a long press lifts the row to drop on a mailbox,
+            // and opens More when put back.
+            onLongPress: _inPane ? null : longPress,
+          );
           return SwipeActionRow(
             key: ValueKey(row.threadId),
             enabled: !_editing,
             leading: actions.leadingSwipes(row, settings),
             trailing: actions.trailingSwipes(row, settings),
-            child: MessageRow(
-              email: email,
-              messageCount: row.messageCount,
-              unread: row.unreadCount > 0,
-              isVip: email.from.any((f) => vips.contains(f.email.toLowerCase())),
-              accountColor: unified && account != null ? colors.accountColor(account.colorIndex) : null,
-              selected: wide && _detailThread == row.threadId,
-              editing: _editing,
-              checked: checked,
-              showRecipients: role == MailboxRole.sent || role == MailboxRole.drafts,
-              onTap: _editing
-                  ? () => setState(() => checked ? _selected.remove(row.threadId) : _selected.add(row.threadId))
-                  : () => _openRow(row, wide: wide, role: role, actions: actions),
-              onLongPress: _editing
-                  ? null
-                  : () {
-                      unawaited(HapticFeedback.mediumImpact());
-                      unawaited(actions.showMore(row));
-                    },
-            ),
+            child: !_inPane
+                ? messageRow
+                : DraggableMessageRow(
+                    // A selected row carries the whole selection.
+                    drag: () => MessageDrag(
+                      rows: _editing && checked
+                          ? [
+                              for (final r in _rows)
+                                if (_selected.contains(r.threadId)) r,
+                            ]
+                          : [row],
+                      scope: widget.mailboxRef,
+                      threaded: settings.threaded,
+                      onMoved: () {
+                        if (mounted && _editing) _toggleEditing();
+                      },
+                    ),
+                    onLongPress: longPress,
+                    child: messageRow,
+                  ),
           );
         },
       ),
@@ -713,27 +908,6 @@ class _EmptyState extends StatelessWidget {
             CupertinoButton(onPressed: onAction, child: Text(action!)),
           ],
         ],
-      ),
-    );
-  }
-}
-
-class _NoSelection extends StatelessWidget {
-  const _NoSelection();
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = LoupeColors.of(context);
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(LoupeIcons.email, size: 56, color: colors.tertiaryText),
-            const SizedBox(height: 12),
-            Text('No Message Selected', style: LoupeTextStyles.of(context).body.copyWith(color: colors.secondaryText)),
-          ],
-        ),
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:mail_model/mail_model.dart';
 import 'demo_attachments.dart';
 import 'demo_bodies.dart';
 import 'demo_mime.dart';
+import 'demo_openpgp.dart';
 import 'demo_patches.dart';
 import 'demo_security.dart';
 
@@ -33,6 +34,7 @@ final class DemoMessage {
     this.attachments = const [],
     this.extraHeaders = const [],
     this.authenticationFails = false,
+    this.raw,
   });
 
   EmailSummary summary;
@@ -46,6 +48,10 @@ final class DemoMessage {
 
   /// Fails DKIM/SPF/DMARC in Authentication-Results (the phishing message).
   final bool authenticationFails;
+
+  /// The whole RFC 822 message, for messages whose structure matters
+  /// (OpenPGP): content, parts and source come from it.
+  final Uint8List Function()? raw;
 
   String get id => summary.id;
 }
@@ -153,6 +159,7 @@ final class DemoSeed {
     securityCases();
     _snoozed();
     _deals();
+    openPgpCases();
   }
 
   void _accounts() {
@@ -304,6 +311,11 @@ final class DemoSeed {
 
   DateTime minutesAgo(int minutes) => now.subtract(Duration(minutes: minutes));
 
+  static Uint8List Function() _once(Uint8List Function() make) {
+    Uint8List? made;
+    return () => made ??= make();
+  }
+
   EmailAddress _me(String account) => switch (account) {
     DemoAccounts.work => DemoPeople.work,
     DemoAccounts.fastmail => DemoPeople.fastmail,
@@ -334,6 +346,7 @@ final class DemoSeed {
     List<(String, String)> headers = const [],
     bool authenticationFails = false,
     List<DemoMessage>? into,
+    Uint8List Function(EmailSummary summary)? raw,
   }) {
     final n = _next++;
     final domain = from.domain.isEmpty ? 'example.com' : from.domain;
@@ -388,6 +401,7 @@ final class DemoSeed {
       attachments: attachments,
       extraHeaders: headers,
       authenticationFails: authenticationFails,
+      raw: raw == null ? null : _once(() => raw(summary)),
     );
     (into ?? messages).add(message);
     return message;

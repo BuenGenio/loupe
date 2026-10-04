@@ -12,6 +12,9 @@ app (UI, Riverpod, go_router)
               └─ TransportFactory ◄── mail_imap (enough_mail; IMAP, SMTP, MIME, discovery)
                                   ◄── mail_jmap (Phase 3)
 mail_platform: CredentialStore (keychain), OAuth sign-in
+mail_crypto: OpenPGP (dart_pg, vendored in third_party/): keys, keyring,
+             PGP/MIME reading and writing, Autocrypt; the app wraps loadContent
+             with it and hands its composer to mail_imap
 mail_model: every type and interface above; no I/O, no dependencies
 ```
 
@@ -31,6 +34,7 @@ The packages are developed in parallel. These are the seams:
 | `ReadableMessageView`, `ReaderSettings`, `showImageGallery`, `analyzeContent` (link and privacy findings), `unwrapRedirect`, `inspectHost` | readable `lib/src/api.dart` | readable | app |
 | `Rule`, `RuleAction`, `MailRules` (`MailRepository.rules`) | mail_model `src/rules.dart` | app `DemoRules`; mail_sync `LiveRules` | app |
 | `compileSieve`, `generateLoupeScript`, `parseLoupeScript`, `planInclude`, `SieveConnector`, `ServerRules`, `RuleRunner` | mail_sieve `lib/mail_sieve.dart` | mail_sieve | mail_sync, app demo |
+| `PgpBackend` (swappable OpenPGP engine), `Keyring`, `PgpMimeReader`, `PgpMessageComposer` (a `MessageComposer` around another), `OutgoingMessage.security` | mail_crypto `lib/mail_crypto.dart`, mail_model `src/outgoing.dart` | mail_crypto (`DartPgBackend`) | app (reader, compose, settings, live composer) |
 
 Rules:
 
@@ -47,6 +51,9 @@ Rules:
 - **Settings on the server:** `MailTransport.readDocuments`/`writeDocument` keep small app documents on the user's
   mail server (an IMAP METADATA annotation, else a message in the `Loupe Settings` folder). Smart Mailboxes use them;
   see [smart-mailboxes-format.md](smart-mailboxes-format.md).
+- **Message bodies in the app** come from `contentLoaderProvider` (`ContentLoader.loadContent` and
+  `loadAttachment`), not the repository directly: it decrypts and verifies OpenPGP mail and learns
+  Autocrypt keys. Decrypted attachments have `pgp:` part ids.
 - **Changing a contract:** edit mail_model (or the API file) in its own commit, run `dart analyze` on the whole workspace, and fix every user in the same change.
 
 ## Background work (Android)
@@ -113,6 +120,13 @@ counted on the device; services that do this elsewhere read the mail on their se
 - **Follow-ups** reuse what exists: Archive All moves the Inbox copies through `MailActions` (with Undo); Create Rule
   opens the rule editor with the condition (`from:` the sender, or the List-Id of a list with several senders), the
   name and Move to Archive filled in; Block Sender saves a device rule that moves to Junk.
+
+## Wide screens and keyboards
+
+The `/` route is `MailHome`: Mailboxes on a phone, mail panes from 840 dp. In the panes `mailSelectionProvider` says
+what is shown and the route stack stays at `/`; crossing the breakpoint converts one into the other. Keyboard
+shortcuts and the command palette act on the screen on top through `MailCommands`. See
+[tablet-and-keyboard.md](tablet-and-keyboard.md).
 
 ## Conventions
 

@@ -13,6 +13,9 @@ import '../../settings/app_settings.dart';
 import '../../shared/mail_actions.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
+import '../keyboard/mail_commands.dart';
+import '../openpgp/content_loader.dart';
+import '../openpgp/pgp_status.dart';
 import '../mailing_lists/list_providers.dart';
 import 'mail_streams.dart';
 import 'mailbox_picker.dart';
@@ -43,7 +46,7 @@ class ConversationScreen extends ConsumerStatefulWidget {
   ConsumerState<ConversationScreen> createState() => _ConversationScreenState();
 }
 
-class _ConversationScreenState extends ConsumerState<ConversationScreen> {
+class _ConversationScreenState extends ConsumerState<ConversationScreen> with CommandScopeState<ConversationScreen> {
   StreamSubscription<List<EmailSummary>>? _sub;
   List<EmailSummary>? _messages;
   Object? _error;
@@ -72,6 +75,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
   void initState() {
     super.initState();
     _subscribe();
+    registerCommands(ref.read(mailCommandsProvider));
   }
 
   @override
@@ -163,7 +167,8 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
     return m.where((e) => e.id == widget.emailId).firstOrNull ?? m.last;
   }
 
-  Future<EmailContent> _contentFor(EmailSummary m) => _content.putIfAbsent(m.id, () => _repo.loadContent(m.id));
+  Future<EmailContent> _contentFor(EmailSummary m) =>
+      _content.putIfAbsent(m.id, () => ref.read(contentLoaderProvider).loadContent(m.id));
 
   ReaderSettings _settingsFor(EmailSummary m, AppSettings app, ReaderPrefs prefs) {
     var s =
@@ -196,9 +201,9 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
     }
   }
 
-  /// True inside another screen's Scaffold (the tablet split view): no back
-  /// button, and archiving doesn't pop the enclosing route.
-  bool get _embedded => Scaffold.maybeOf(context) != null;
+  /// True in a pane of the wide layout (or inside another screen's
+  /// Scaffold): no back button, and archiving doesn't pop the enclosing route.
+  bool get _embedded => widget.onClose != null || Scaffold.maybeOf(context) != null;
 
   void _close() {
     if (!mounted) return;
@@ -404,6 +409,78 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
     }
   }
 
+  // Keyboard and command palette -----------------------------------------------
+
+  @override
+  int get priority => 30;
+
+  /// Whether the target can be archived (there is an archive, and it isn't there).
+  bool _canArchive(EmailSummary m) {
+    final accounts = ref.read(accountsStreamProvider).value ?? const <MailAccount>[];
+    final mailboxes = ref.read(accountMailboxesProvider(m.accountId)).value ?? const <Mailbox>[];
+    final gmail = accounts.any((a) => a.id == m.accountId && a.provider == ProviderKind.gmail);
+    final role = mailboxes.where((b) => b.id == m.mailboxId).firstOrNull?.role;
+    return (gmail || mailboxes.any((b) => b.role == MailboxRole.archive)) && role != MailboxRole.archive;
+  }
+
+  /// The conversation [delta] rows away in the list this one was opened
+  /// from, on a phone (in the panes the list moves its selection itself).
+  ThreadSummary? _neighbor(int delta) {
+    final t = _target;
+    if (t == null || _embedded) return null;
+    return ref.read(mailCommandsProvider).latest<MessageListNeighbors>()?.neighborOf(t, delta);
+  }
+
+  @override
+  bool canRun(MailCommand command) {
+    final t = _target;
+    if (t == null) return false;
+    return switch (command) {
+      MailCommand.reply ||
+      MailCommand.replyAll ||
+      MailCommand.forward ||
+      MailCommand.trash ||
+      MailCommand.toggleRead ||
+      MailCommand.toggleFlag ||
+      MailCommand.snooze ||
+      MailCommand.move => true,
+      MailCommand.archive => _canArchive(t),
+      MailCommand.nextMessage => _neighbor(1) != null,
+      MailCommand.previousMessage => _neighbor(-1) != null,
+      _ => false,
+    };
+  }
+
+  @override
+  void run(MailCommand command) {
+    final t = _target;
+    if (t == null) return;
+    switch (command) {
+      case MailCommand.reply:
+        _reply(t, ComposeMode.reply);
+      case MailCommand.replyAll:
+        _reply(t, ComposeMode.replyAll);
+      case MailCommand.forward:
+        _reply(t, ComposeMode.forward);
+      case MailCommand.archive:
+        _archive(_thread(t), close: true);
+      case MailCommand.trash:
+        _trash(_thread(t), close: true);
+      case MailCommand.toggleRead:
+        _setSeen(t, !t.isSeen);
+      case MailCommand.toggleFlag:
+        _setFlag(t, !t.isFlagged);
+      case MailCommand.snooze:
+        unawaited(_snooze(t));
+      case MailCommand.move:
+        unawaited(_move(t, _thread(t), close: true));
+      case MailCommand.nextMessage || MailCommand.previousMessage:
+        final next = _neighbor(command == MailCommand.nextMessage ? 1 : -1);
+        if (next != null) context.pushReplacement(Routes.message(next.latest.id));
+      default:
+    }
+  }
+
   // Build ---------------------------------------------------------------------
 
   @override
@@ -497,20 +574,19 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-            child: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(text: target.subject.trim().isEmpty ? '(no subject)' : target.subject),
-                  if ((ref.watch(mutedThreadsProvider).value ?? const <String>{}).contains(target.threadId))
-                    WidgetSpan(
-                      alignment: PlaceholderAlignment.middle,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Icon(LoupeIcons.mute, size: 18, color: colors.secondaryText, semanticLabel: 'Muted'),
-                      ),
+            child: ProtectedSubject(
+              subject: target.subject,
+              content: _expanded.contains(target.id) ? _contentFor(target) : null,
+              trailing: [
+                if ((ref.watch(mutedThreadsProvider).value ?? const <String>{}).contains(target.threadId))
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Icon(LoupeIcons.mute, size: 18, color: colors.secondaryText, semanticLabel: 'Muted'),
                     ),
-                ],
-              ),
+                  ),
+              ],
               style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, fontSize: 22),
             ),
           ),
@@ -550,8 +626,11 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
                     });
                   },
                   onUseOriginal: () => setState(() => _forceOriginal.add(m.id)),
-                  onRetry: () => setState(() => _content.remove(m.id)),
-                  loadAttachment: (a) => _repo.loadAttachment(m.id, a.partId),
+                  // A block body: setState must not get the removed Future back.
+                  onRetry: () => setState(() {
+                    _content.remove(m.id);
+                  }),
+                  loadAttachment: (a) => ref.read(contentLoaderProvider).loadAttachment(m.id, a.partId),
                 ),
                 Divider(color: colors.separator),
               ],

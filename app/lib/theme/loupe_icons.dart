@@ -56,6 +56,7 @@ abstract final class LoupeIcons {
   static const IconData repliedFilled = FluentIcons.arrow_reply_24_filled;
   static const IconData markRead = FluentIcons.mail_read_24_regular;
   static const IconData markUnread = FluentIcons.mail_unread_24_regular;
+  static const IconData markAllRead = FluentIcons.mail_all_read_24_regular;
   static const IconData move = FluentIcons.folder_arrow_right_24_regular;
   static const IconData notJunk = FluentIcons.thumb_like_24_regular;
   static const IconData deleteForever = FluentIcons.delete_dismiss_24_regular;
@@ -76,6 +77,9 @@ abstract final class LoupeIcons {
   static const IconData sendNow = FluentIcons.send_24_regular;
   static const IconData reschedule = FluentIcons.calendar_clock_24_regular;
   static const IconData retry = FluentIcons.arrow_clockwise_24_regular;
+
+  /// Get New Mail.
+  static const IconData refresh = FluentIcons.arrow_sync_24_regular;
   static const IconData cancelSend = FluentIcons.dismiss_circle_24_regular;
   static const IconData swipeSendNow = FluentIcons.send_24_filled;
   static const IconData swipeReschedule = FluentIcons.calendar_clock_24_filled;
@@ -120,6 +124,12 @@ abstract final class LoupeIcons {
   static const IconData more = FluentIcons.more_horizontal_24_regular;
   static const IconData moreCircle = FluentIcons.more_circle_24_regular;
   static const IconData back = FluentIcons.chevron_left_24_regular;
+
+  /// Keyboard shortcuts.
+  static const IconData keyboard = FluentIcons.keyboard_24_regular;
+
+  /// Shows or hides the Mailboxes sidebar on wide screens.
+  static const IconData sidebar = FluentIcons.panel_left_24_regular;
 
   /// The chevron at the end of a row that opens something.
   static const IconData disclosure = FluentIcons.chevron_right_24_regular;
@@ -185,6 +195,24 @@ abstract final class LoupeIcons {
   static const IconData trackers = FluentIcons.eye_tracking_off_24_regular;
   static const IconData redirect = FluentIcons.arrow_routing_24_regular;
   static const IconData openDirectly = FluentIcons.link_24_regular;
+
+  // End-to-end encryption (OpenPGP) -------------------------------------------
+
+  static const IconData encrypted = FluentIcons.lock_closed_24_filled;
+  static const IconData encryptOff = FluentIcons.lock_open_24_regular;
+  static const IconData encryptOn = FluentIcons.lock_closed_24_regular;
+
+  /// A good signature: Apple Mail's seal.
+  static const IconData signed = FluentIcons.checkmark_starburst_24_filled;
+  static const IconData signOff = FluentIcons.checkmark_starburst_24_regular;
+  static const IconData signatureInvalid = FluentIcons.shield_error_24_filled;
+  static const IconData unknownKey = FluentIcons.question_circle_24_regular;
+  static const IconData e2ee = FluentIcons.lock_shield_24_regular;
+  static const IconData pgpKey = FluentIcons.key_24_regular;
+  static const IconData pgpKeys = FluentIcons.key_multiple_24_regular;
+  static const IconData importKey = FluentIcons.arrow_import_24_regular;
+  static const IconData exportKey = FluentIcons.arrow_export_24_regular;
+  static const IconData fingerprint = FluentIcons.fingerprint_24_regular;
 
   // Importing accounts ------------------------------------------------------
 

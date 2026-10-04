@@ -8,6 +8,7 @@ import 'package:mail_model/mail_model.dart';
 
 import 'demo_data.dart';
 import 'demo_mime.dart';
+import 'demo_openpgp.dart';
 import 'demo_rules.dart';
 
 export 'demo_data.dart' show DemoAccounts, DemoPeople;
@@ -808,6 +809,13 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
     if (cached != null) return cached;
     final m = _require(emailId);
     await _wait(_jitter(latency.content));
+    if (m.raw != null) {
+      const transport = {'return-path', 'received', 'authentication-results', 'dkim-signature'};
+      return _contentCache[emailId] = demoRawContent(m, [
+        for (final h in _headers(m, encoded: false))
+          if (transport.contains(h.$1.toLowerCase())) h,
+      ]);
+    }
     final inline = <String, Uint8List>{};
     for (final a in m.attachments) {
       final cid = a.attachment.contentId;
@@ -835,6 +843,11 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
   @override
   Future<Uint8List> loadAttachment(String emailId, String partId) async {
     final m = _require(emailId);
+    if (m.raw != null) {
+      await _wait(_jitter(latency.content));
+      return demoRawPart(m, partId) ??
+          (throw const MailException(MailErrorKind.notFound, 'This attachment no longer exists.'));
+    }
     final a = m.attachments.where((a) => a.attachment.partId == partId).firstOrNull;
     if (a == null) throw const MailException(MailErrorKind.notFound, 'This attachment no longer exists.');
     await _wait(_jitter(latency.content));
@@ -896,6 +909,7 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
   Future<Uint8List> loadRawSource(String emailId) async {
     final m = _require(emailId);
     await _wait(_jitter(latency.content));
+    if (m.raw case final raw?) return raw();
     final n = m.id.hashCode.abs();
     final text = m.text ?? (m.html == null ? '' : htmlToPreviewText(m.html!));
     var top = _MimePart(
