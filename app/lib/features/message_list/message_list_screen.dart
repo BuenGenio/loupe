@@ -1,11 +1,694 @@
+import 'dart:async';
+import 'dart:math' as math;
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
-/// Placeholder; replaced by the real screen.
-class MessageListScreen extends StatelessWidget {
+import '../../providers.dart';
+import '../../router.dart';
+import '../../settings/app_settings.dart';
+import '../../settings/ui_state.dart';
+import '../../shared/bars.dart';
+import '../../shared/mail_actions.dart';
+import '../../shared/mailbox_display.dart';
+import '../../shared/message_row.dart';
+import '../../shared/sheets.dart';
+import '../../shared/swipe_row.dart';
+import '../../shared/sync_status.dart';
+import '../../theme/theme.dart';
+import '../compose/compose_args.dart';
+import '../conversation/conversation_screen.dart';
+import '../search/search_session.dart';
+import '../search/search_view.dart';
+
+/// Label of a quick filter in the Filter sheet and the toolbar.
+String quickFilterLabel(QuickFilter f) => switch (f) {
+  QuickFilter.unread => 'Unread',
+  QuickFilter.flagged => 'Flagged',
+  QuickFilter.toMe => 'To: Me',
+  QuickFilter.ccMe => 'CC: Me',
+  QuickFilter.hasAttachment => 'With Attachments',
+  QuickFilter.unreplied => 'Unreplied',
+  QuickFilter.fromVip => 'From VIPs',
+};
+
+IconData quickFilterIcon(QuickFilter f) => switch (f) {
+  QuickFilter.unread => CupertinoIcons.envelope_badge,
+  QuickFilter.flagged => CupertinoIcons.flag,
+  QuickFilter.toMe => CupertinoIcons.person,
+  QuickFilter.ccMe => CupertinoIcons.person_2,
+  QuickFilter.hasAttachment => CupertinoIcons.paperclip,
+  QuickFilter.unreplied => CupertinoIcons.arrowshape_turn_up_left,
+  QuickFilter.fromVip => CupertinoIcons.star,
+};
+
+/// A mailbox's messages: large collapsing title with the search field hidden
+/// above the list, swipe actions, Filter button, multi-select, and a
+/// two-pane layout on wide screens.
+class MessageListScreen extends ConsumerStatefulWidget {
   const MessageListScreen({super.key, required this.mailboxRef});
 
   final MailboxRef mailboxRef;
+
   @override
-  Widget build(BuildContext context) => Scaffold(appBar: AppBar(title: const Text('Inbox')));
+  ConsumerState<MessageListScreen> createState() => _MessageListScreenState();
+}
+
+class _MessageListScreenState extends ConsumerState<MessageListScreen> {
+  /// Width from which the list and the message sit side by side.
+  static const twoPaneWidth = 840.0;
+
+  bool _filterOn = false;
+  bool _editing = false;
+  final _selected = <String>{};
+  bool _searching = false;
+  bool _loadingOlder = false;
+  bool _hasOlder = true;
+
+  /// The message shown in the detail pane (wide layout).
+  String? _detailId;
+  String? _detailThread;
+
+  /// Whether the list has been scrolled past the search field after the
+  /// first rows arrived (while loading, the offset can't stick).
+  bool _searchHidden = false;
+  ScrollController? _scroll;
+  final _focus = FocusNode();
+
+  /// Replaced to reset the navigation bar's own search state (it can only be
+  /// closed by tapping Cancel otherwise), e.g. on Android Back.
+  Key _navBarKey = UniqueKey();
+  late final SearchSession _search = SearchSession(
+    repository: ref.read(repositoryProvider),
+    scope: MailboxScope(widget.mailboxRef),
+    onCommit: (q) => ref.read(recentSearchesProvider.notifier).add(q),
+  );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _scroll ??= ScrollController(initialScrollOffset: searchBarExtent(context));
+  }
+
+  @override
+  void dispose() {
+    _scroll?.dispose();
+    _focus.dispose();
+    _search.dispose();
+    super.dispose();
+  }
+
+  ListQuery _query(AppSettings settings) => ListQuery(
+    widget.mailboxRef,
+    filters: _filterOn ? ref.watch(filterCriteriaProvider) : const {},
+    threaded: settings.threaded,
+  );
+
+  MailActions _actions(AppSettings settings) =>
+      MailActions(context, ref, scope: widget.mailboxRef, threaded: settings.threaded);
+
+  void _onSearchActive(bool active) {
+    setState(() {
+      _searching = active;
+      if (active) {
+        _editing = false;
+        _selected.clear();
+      }
+    });
+    if (active) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _focus.requestFocus();
+      });
+    } else {
+      _focus.unfocus();
+      _search
+        ..clear()
+        ..setScope(MailboxScope(widget.mailboxRef));
+    }
+  }
+
+  /// Closes search from outside the bar (Android Back).
+  void _closeSearch() {
+    setState(() => _navBarKey = UniqueKey());
+    _onSearchActive(false);
+  }
+
+  void _toggleEditing() {
+    unawaited(HapticFeedback.selectionClick());
+    setState(() {
+      _editing = !_editing;
+      _selected.clear();
+    });
+  }
+
+  Future<void> _openRow(
+    ThreadSummary row, {
+    required bool wide,
+    required MailboxRole? role,
+    required MailActions actions,
+  }) async {
+    final email = row.latest;
+    if (role == MailboxRole.drafts || email.isDraft) {
+      await openCompose(context, ComposeArgs(mode: ComposeMode.editDraft, sourceEmailId: email.id));
+      return;
+    }
+    if (row.unreadCount > 0) unawaited(actions.setRead([row], read: true));
+    if (wide) {
+      setState(() {
+        _detailId = email.id;
+        _detailThread = row.threadId;
+      });
+    } else {
+      await context.push(Routes.message(email.id));
+    }
+  }
+
+  Future<void> _loadOlder() async {
+    if (_loadingOlder || !_hasOlder) return;
+    setState(() => _loadingOlder = true);
+    var more = false;
+    try {
+      more = await ref.read(repositoryProvider).loadOlder(widget.mailboxRef);
+    } on MailException catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+    }
+    if (!mounted) return;
+    setState(() {
+      _loadingOlder = false;
+      _hasOlder = more;
+    });
+  }
+
+  bool _onScroll(ScrollNotification n) {
+    if (_searching || _loadingOlder || !_hasOlder) return false;
+    if (n.metrics.axis == Axis.vertical && n.metrics.extentAfter < 600) {
+      // Notifications can arrive during layout; load after the frame.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) unawaited(_loadOlder());
+      });
+    }
+    return false;
+  }
+
+  Future<void> _openCriteria() async {
+    final current = ref.read(filterCriteriaProvider);
+    final next = await showModalBottomSheet<Set<QuickFilter>>(
+      context: context,
+      useSafeArea: true,
+      isScrollControlled: true,
+      builder: (context) => _FilterSheet(initial: current),
+    );
+    if (next == null || !mounted) return;
+    await ref.read(filterCriteriaProvider.notifier).set(next);
+    setState(() => _filterOn = next.isNotEmpty);
+  }
+
+  Future<void> _markSelected(List<ThreadSummary> rows, MailActions actions) async {
+    final anyUnread = rows.any((r) => r.unreadCount > 0);
+    final anyUnflagged = rows.any((r) => !r.latest.isFlagged);
+    final choice = await showActionSheet<String>(
+      context,
+      actions: [
+        SheetAction(
+          anyUnread ? 'Mark as Read' : 'Mark as Unread',
+          'read',
+          icon: anyUnread ? CupertinoIcons.envelope_open : CupertinoIcons.envelope_badge,
+        ),
+        SheetAction(anyUnflagged ? 'Flag' : 'Unflag', 'flag', icon: CupertinoIcons.flag),
+        const SheetAction('Move to Junk', 'junk', icon: CupertinoIcons.bin_xmark),
+      ],
+    );
+    switch (choice) {
+      case 'read':
+        await actions.setRead(rows, read: anyUnread);
+      case 'flag':
+        await actions.setFlag(rows, flagged: anyUnflagged);
+      case 'junk':
+        await actions.junk(rows, junk: true);
+      default:
+        return;
+    }
+    if (mounted) _toggleEditing();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final wide = constraints.maxWidth >= twoPaneWidth;
+        final list = _buildList(context, wide);
+        if (!wide) return list;
+        final colors = LoupeColors.of(context);
+        return Row(
+          children: [
+            SizedBox(width: math.min(420, constraints.maxWidth * 0.42), child: list),
+            VerticalDivider(width: 0.5, thickness: 0.5, color: colors.separator),
+            Expanded(
+              child: _detailId == null
+                  ? const _NoSelection()
+                  : HeroMode(
+                      enabled: false,
+                      // onClose hides Back and keeps the list after archiving.
+                      child: ConversationScreen(
+                        emailId: _detailId!,
+                        onClose: () => setState(() {
+                          _detailId = null;
+                          _detailThread = null;
+                        }),
+                      ),
+                    ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildList(BuildContext context, bool wide) {
+    final colors = LoupeColors.of(context);
+    final settings = ref.watch(appSettingsProvider);
+    final mailboxes = ref.watch(mailboxesProvider).value ?? const <Mailbox>[];
+    final title = mailboxRefTitle(widget.mailboxRef, mailboxes);
+    final async = ref.watch(messageListProvider(_query(settings)));
+    final rows = async.value ?? const <ThreadSummary>[];
+    if (!_searchHidden && rows.isNotEmpty) {
+      _searchHidden = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final scroll = _scroll;
+        if (!mounted || scroll == null || !scroll.hasClients) return;
+        final extent = searchBarExtent(context);
+        final position = scroll.position;
+        if (position.pixels == 0 && position.maxScrollExtent >= extent) scroll.jumpTo(extent);
+      });
+    }
+    final actions = _actions(settings);
+    final selectedRows = [
+      for (final r in rows)
+        if (_selected.contains(r.threadId)) r,
+    ];
+    _search.controller
+      ..operatorColor = colors.unreadDot
+      ..keywordColor = colors.swipeArchive
+      ..quotedColor = colors.success
+      ..errorColor = colors.destructive;
+
+    return PopScope(
+      canPop: !_searching,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && _searching) _closeSearch();
+      },
+      child: Scaffold(
+        bottomNavigationBar: _searching
+            ? null
+            : _editing
+            ? _editBar(selectedRows, actions, mailboxes)
+            : _toolbar(rows),
+        body: NotificationListener<ScrollNotification>(
+          onNotification: _onScroll,
+          child: CustomScrollView(
+            controller: _scroll,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            slivers: [
+              CupertinoSliverNavigationBar.search(
+                key: _navBarKey,
+                largeTitle: Text(
+                  _editing ? (_selected.isEmpty ? 'Select Messages' : '${_selected.length} Selected') : title,
+                ),
+                previousPageTitle: 'Mailboxes',
+                automaticallyImplyLeading: !_editing,
+                backgroundColor: colors.barBackground,
+                border: Border(bottom: BorderSide(color: colors.separator, width: 0.5)),
+                leading: _editing
+                    ? BarTextButton(
+                        label: _selected.length == rows.length && rows.isNotEmpty ? 'Deselect All' : 'Select All',
+                        onPressed: () => setState(() {
+                          if (_selected.length == rows.length) {
+                            _selected.clear();
+                          } else {
+                            _selected
+                              ..clear()
+                              ..addAll(rows.map((r) => r.threadId));
+                          }
+                        }),
+                      )
+                    : null,
+                trailing: BarTextButton(label: _editing ? 'Done' : 'Edit', bold: _editing, onPressed: _toggleEditing),
+                searchField: LoupeSearchField(
+                  controller: _search.controller,
+                  focusNode: _focus,
+                  onChanged: _search.onChanged,
+                  onSubmitted: (_) => _search.submit(),
+                ),
+                onSearchableBottomTap: _onSearchActive,
+              ),
+              if (_searching)
+                SearchSlivers(session: _search, thisMailbox: widget.mailboxRef)
+              else ...[
+                CupertinoSliverRefreshControl(
+                  onRefresh: () async {
+                    await ref.read(repositoryProvider).refresh(ref: widget.mailboxRef);
+                    unawaited(HapticFeedback.lightImpact());
+                  },
+                ),
+                ..._rowsSlivers(context, async, rows, settings, actions, mailboxes, wide),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _rowsSlivers(
+    BuildContext context,
+    AsyncValue<List<ThreadSummary>> async,
+    List<ThreadSummary> rows,
+    AppSettings settings,
+    MailActions actions,
+    List<Mailbox> mailboxes,
+    bool wide,
+  ) {
+    if (async.isLoading && !async.hasValue) {
+      // Taller than the screen, so the initial offset that hides the search
+      // field stays in range until the rows arrive.
+      return [
+        SliverToBoxAdapter(
+          child: SizedBox(
+            height: MediaQuery.sizeOf(context).height,
+            child: const Align(alignment: Alignment(0, -0.5), child: CupertinoActivityIndicator()),
+          ),
+        ),
+      ];
+    }
+    if (async.hasError && !async.hasValue) {
+      return [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: _EmptyState(
+            icon: CupertinoIcons.exclamationmark_triangle,
+            title: 'Couldn’t Load Mail',
+            detail: '${async.error}',
+          ),
+        ),
+      ];
+    }
+    if (rows.isEmpty) {
+      final criteria = ref.watch(filterCriteriaProvider);
+      return [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: _filterOn
+              ? _EmptyState(
+                  icon: CupertinoIcons.line_horizontal_3_decrease_circle,
+                  title: criteria.length == 1 && criteria.single == QuickFilter.unread
+                      ? 'No Unread Mail'
+                      : 'No Matching Mail',
+                  detail: 'Filtered by: ${criteria.map(quickFilterLabel).join(', ')}',
+                  action: 'Turn Off Filter',
+                  onAction: () => setState(() => _filterOn = false),
+                )
+              : const _EmptyState(icon: CupertinoIcons.tray, title: 'No Mail'),
+        ),
+      ];
+    }
+    final colors = LoupeColors.of(context);
+    final accounts = {for (final a in ref.watch(accountsProvider).value ?? const <MailAccount>[]) a.id: a};
+    final boxes = {for (final m in mailboxes) m.id: m};
+    final vips = ref.watch(vipAddressesProvider).value ?? const <String>{};
+    final unified = widget.mailboxRef is VirtualMailboxRef && accounts.length > 1;
+    return [
+      SliverList.builder(
+        itemCount: rows.length,
+        itemBuilder: (context, i) {
+          final row = rows[i];
+          final email = row.latest;
+          final role = boxes[email.mailboxId]?.role;
+          final account = accounts[email.accountId];
+          final checked = _selected.contains(row.threadId);
+          return SwipeActionRow(
+            key: ValueKey(row.threadId),
+            enabled: !_editing,
+            leading: actions.leadingSwipes(row, settings),
+            trailing: actions.trailingSwipes(row, settings),
+            child: MessageRow(
+              email: email,
+              messageCount: row.messageCount,
+              unread: row.unreadCount > 0,
+              isVip: email.from.any((f) => vips.contains(f.email.toLowerCase())),
+              accountColor: unified && account != null ? colors.accountColor(account.colorIndex) : null,
+              selected: wide && _detailThread == row.threadId,
+              editing: _editing,
+              checked: checked,
+              showRecipients: role == MailboxRole.sent || role == MailboxRole.drafts,
+              onTap: _editing
+                  ? () => setState(() => checked ? _selected.remove(row.threadId) : _selected.add(row.threadId))
+                  : () => _openRow(row, wide: wide, role: role, actions: actions),
+              onLongPress: _editing
+                  ? null
+                  : () {
+                      unawaited(HapticFeedback.mediumImpact());
+                      unawaited(actions.showMore(row));
+                    },
+            ),
+          );
+        },
+      ),
+      SliverToBoxAdapter(
+        child: SizedBox(
+          height: 64,
+          child: Center(child: _loadingOlder ? const CupertinoActivityIndicator() : const SizedBox.shrink()),
+        ),
+      ),
+    ];
+  }
+
+  Widget _toolbar(List<ThreadSummary> rows) {
+    final colors = LoupeColors.of(context);
+    final styles = LoupeTextStyles.of(context);
+    final criteria = ref.watch(filterCriteriaProvider);
+    final unread = rows.fold(0, (sum, r) => sum + r.unreadCount);
+    return LoupeBottomBar(
+      leading: BarIconButton(
+        icon: _filterOn
+            ? CupertinoIcons.line_horizontal_3_decrease_circle_fill
+            : CupertinoIcons.line_horizontal_3_decrease_circle,
+        tooltip: _filterOn ? 'Turn Off Filter' : 'Filter',
+        onPressed: () {
+          unawaited(HapticFeedback.selectionClick());
+          if (!_filterOn && criteria.isEmpty) {
+            unawaited(_openCriteria());
+            return;
+          }
+          setState(() => _filterOn = !_filterOn);
+        },
+      ),
+      center: _filterOn
+          ? Semantics(
+              button: true,
+              label: 'Filter criteria: ${criteria.map(quickFilterLabel).join(', ')}',
+              excludeSemantics: true,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: _openCriteria,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Filtered by:', style: styles.caption.copyWith(color: colors.label)),
+                    Text(
+                      criteria.map(quickFilterLabel).join(', '),
+                      style: styles.caption.copyWith(color: colors.unreadDot, fontWeight: FontWeight.w600),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : SyncStatusLine(detail: unread > 0 ? '$unread Unread' : null),
+      trailing: BarIconButton(
+        icon: CupertinoIcons.square_pencil,
+        tooltip: 'New Message',
+        onPressed: () => openCompose(context, ComposeArgs(accountId: _accountOfRef())),
+      ),
+    );
+  }
+
+  String? _accountOfRef() => switch (widget.mailboxRef) {
+    RealMailboxRef(:final mailboxId) => MailIds.accountOf(mailboxId),
+    VirtualMailboxRef() => null,
+  };
+
+  Widget _editBar(List<ThreadSummary> selected, MailActions actions, List<Mailbox> mailboxes) {
+    final settings = ref.read(appSettingsProvider);
+    final role = switch (widget.mailboxRef) {
+      RealMailboxRef(:final mailboxId) => mailboxes.where((m) => m.id == mailboxId).firstOrNull?.role,
+      VirtualMailboxRef() => null,
+    };
+    final useTrash =
+        settings.swipeTrailing == SwipeAction.trash ||
+        role == MailboxRole.archive ||
+        role == MailboxRole.all ||
+        role == MailboxRole.trash;
+    final enabled = selected.isNotEmpty;
+    Future<void> run(Future<void> Function() action) async {
+      await action();
+      if (mounted) _toggleEditing();
+    }
+
+    return LoupeBottomBar(
+      leading: BarTextButton(label: 'Mark', onPressed: enabled ? () => _markSelected(selected, actions) : null),
+      center: BarTextButton(
+        label: 'Move',
+        onPressed: enabled ? () => run(() => actions.moveWithPicker(selected)) : null,
+      ),
+      trailing: BarTextButton(
+        label: useTrash ? (role == MailboxRole.trash ? 'Delete' : 'Trash') : 'Archive',
+        onPressed: enabled ? () => run(() => useTrash ? actions.trash(selected) : actions.archive(selected)) : null,
+      ),
+    );
+  }
+}
+
+class _FilterSheet extends StatefulWidget {
+  const _FilterSheet({required this.initial});
+
+  final Set<QuickFilter> initial;
+
+  @override
+  State<_FilterSheet> createState() => _FilterSheetState();
+}
+
+class _FilterSheetState extends State<_FilterSheet> {
+  late final Set<QuickFilter> _selected = {...widget.initial};
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = LoupeColors.of(context);
+    final styles = LoupeTextStyles.of(context);
+    const order = [
+      QuickFilter.unread,
+      QuickFilter.flagged,
+      QuickFilter.toMe,
+      QuickFilter.ccMe,
+      QuickFilter.hasAttachment,
+      QuickFilter.unreplied,
+      QuickFilter.fromVip,
+    ];
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 8, 4),
+              child: Row(
+                children: [
+                  Expanded(child: Text('Filter', style: styles.navTitle)),
+                  CupertinoButton(
+                    onPressed: () => Navigator.of(context).pop(_selected),
+                    child: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(32, 4, 16, 6),
+              child: Text('INCLUDE', style: styles.footnote),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Material(
+                  color: colors.cellBackground,
+                  child: Column(
+                    children: [
+                      for (final f in order)
+                        ListTile(
+                          dense: true,
+                          leading: Icon(quickFilterIcon(f), color: colors.unreadDot),
+                          title: Text(quickFilterLabel(f), style: styles.body),
+                          trailing: _selected.contains(f)
+                              ? Icon(CupertinoIcons.checkmark_alt, color: colors.unreadDot)
+                              : null,
+                          onTap: () {
+                            unawaited(HapticFeedback.selectionClick());
+                            setState(() => _selected.contains(f) ? _selected.remove(f) : _selected.add(f));
+                          },
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  const _EmptyState({required this.icon, required this.title, this.detail, this.action, this.onAction});
+
+  final IconData icon;
+  final String title;
+  final String? detail;
+  final String? action;
+  final VoidCallback? onAction;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = LoupeColors.of(context);
+    final styles = LoupeTextStyles.of(context);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(32, 0, 32, 80),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 52, color: colors.tertiaryText),
+          const SizedBox(height: 14),
+          Text(
+            title,
+            style: styles.sectionHeader.copyWith(color: colors.secondaryText),
+            textAlign: TextAlign.center,
+          ),
+          if (detail != null) ...[
+            const SizedBox(height: 6),
+            Text(detail!, style: styles.footnote, textAlign: TextAlign.center),
+          ],
+          if (action != null) ...[
+            const SizedBox(height: 10),
+            CupertinoButton(onPressed: onAction, child: Text(action!)),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _NoSelection extends StatelessWidget {
+  const _NoSelection();
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = LoupeColors.of(context);
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(CupertinoIcons.envelope_open, size: 56, color: colors.tertiaryText),
+            const SizedBox(height: 12),
+            Text('No Message Selected', style: LoupeTextStyles.of(context).body.copyWith(color: colors.secondaryText)),
+          ],
+        ),
+      ),
+    );
+  }
 }
