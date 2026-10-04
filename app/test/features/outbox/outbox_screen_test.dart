@@ -1,0 +1,127 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:loupe/demo/demo_repository.dart';
+import 'package:loupe/features/outbox/outbox_screen.dart';
+import 'package:mail_model/mail_model.dart';
+
+import '../../helpers.dart';
+import '../conversation/fake_mail_repository.dart';
+import '../conversation/test_app.dart';
+
+OutgoingMessage _message(String subject, {List<EmailAddress> to = const [bob]}) =>
+    OutgoingMessage(accountId: 'acc', identityId: 'acc/me', to: to, subject: subject, text: 'Text of $subject');
+
+DateTime _tomorrowAt8() {
+  final now = DateTime.now();
+  return DateTime(now.year, now.month, now.day + 1, 8);
+}
+
+void main() {
+  final scheduledAt = DateTime(2030, 1, 7, 8);
+
+  FakeMailRepository repoWithOutbox() => FakeMailRepository()
+    ..outbox.addAll([
+      OutboxItem(
+        id: 'o1',
+        message: _message('Invoice', to: const [alice]),
+        sendAt: DateTime(2026, 10, 4, 12),
+        status: OutboxStatus.failed,
+        error: '550 Mailbox unavailable',
+      ),
+      OutboxItem(id: 'o2', message: _message('Report'), sendAt: scheduledAt, status: OutboxStatus.scheduled),
+    ]);
+
+  Future<void> pumpOutbox(WidgetTester tester, FakeMailRepository repo) => pumpTestApp(
+    tester,
+    repository: repo,
+    home: const OutboxScreen(),
+    composeBuilder: (args) => Scaffold(body: Text('edit ${args.outboxId} ${args.sendAt} ${args.message?.subject}')),
+  );
+
+  testWidgets('lists failed and scheduled messages; Retry and swipes send now', (tester) async {
+    final repo = repoWithOutbox();
+    await pumpOutbox(tester, repo);
+    expect(find.text('Outbox'), findsOneWidget);
+    expect(find.text('NOT SENT'), findsOneWidget);
+    expect(find.text('SCHEDULED'), findsOneWidget);
+    expect(find.text('Alice Example'), findsOneWidget);
+    expect(find.text('550 Mailbox unavailable'), findsOneWidget);
+    expect(find.textContaining('Jan 7, 2030'), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('outbox-retry-o1')));
+    await tester.pumpAndSettle();
+    expect(repo.log, contains('sendNow o1'));
+    expect(find.text('NOT SENT'), findsNothing);
+
+    await tester.drag(find.text('Report'), const Offset(600, 0));
+    await tester.pumpAndSettle();
+    expect(repo.log, contains('sendNow o2'));
+    expect(find.text('Nothing to Send'), findsOneWidget);
+  });
+
+  testWidgets('Reschedule, and Cancel back to Drafts, from the menu', (tester) async {
+    final repo = repoWithOutbox();
+    await pumpOutbox(tester, repo);
+
+    await tester.longPress(find.text('Report'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Reschedule…'));
+    await tester.pumpAndSettle();
+    expect(find.text('RESCHEDULE'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('send-later-tomorrowMorning')));
+    await tester.pumpAndSettle();
+    expect(repo.log, contains('rescheduleSend o2 ${_tomorrowAt8().toIso8601String()}'));
+    expect(find.textContaining('Rescheduled for Tomorrow at'), findsOneWidget);
+
+    await tester.longPress(find.text('Report'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Cancel Sending…'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Move to Drafts'));
+    await tester.pumpAndSettle();
+    expect(repo.log, containsAllInOrder(['cancelSend o2', 'saveDraft Report']));
+    expect(find.text('Moved to Drafts'), findsOneWidget);
+    expect(find.text('Report'), findsNothing);
+  });
+
+  testWidgets('tapping a message reopens it in compose with its time', (tester) async {
+    final repo = repoWithOutbox();
+    await pumpOutbox(tester, repo);
+    await tester.tap(find.text('Report'));
+    await tester.pumpAndSettle();
+    expect(find.text('edit o2 $scheduledAt Report'), findsOneWidget);
+  });
+
+  testWidgets('Mailboxes shows an Outbox row while something waits; Discard has Undo (demo)', (tester) async {
+    final repo = await pumpLoupe(tester);
+    expect(find.text('Outbox'), findsNothing);
+    const message = OutgoingMessage(
+      accountId: DemoAccounts.personal,
+      identityId: 'personal/default',
+      to: [EmailAddress('jordan.lee@example.com', 'Jordan Lee')],
+      subject: 'See you Monday',
+      text: 'Hi!',
+    );
+    await repo.send(message, sendAt: testNow.add(const Duration(days: 1)));
+    await tester.pumpAndSettle();
+    final row = find.byKey(const ValueKey('outbox'));
+    expect(find.descendant(of: row, matching: find.text('Outbox')), findsOneWidget);
+    expect(find.descendant(of: row, matching: find.text('1')), findsOneWidget);
+
+    await tester.tap(row);
+    await tester.pumpAndSettle();
+    expect(find.text('See you Monday'), findsOneWidget);
+    await tester.drag(find.text('See you Monday'), const Offset(-320, 0));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Discard Message'));
+    await tester.pumpAndSettle();
+    expect(find.text('Nothing to Send'), findsOneWidget);
+    await tester.tap(find.text('Undo'));
+    await tester.pumpAndSettle();
+    expect(find.text('See you Monday'), findsOneWidget);
+    expect((await repo.watchOutbox().first).single.status, OutboxStatus.scheduled);
+
+    repo.dispose();
+    await drainTimers(tester);
+  });
+}

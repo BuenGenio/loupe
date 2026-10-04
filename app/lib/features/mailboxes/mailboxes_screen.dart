@@ -18,6 +18,7 @@ import '../../shared/sync_status.dart';
 import '../../shared/tags.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
+import '../outbox/outbox_screen.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
 import 'vip_screen.dart';
@@ -300,6 +301,8 @@ class _VirtualSection extends ConsumerWidget {
       VirtualMailbox.allDrafts,
       VirtualMailbox.allSent,
     ];
+    final outbox = ref.watch(outboxProvider).value ?? const <OutboxItem>[];
+    final colors = LoupeColors.of(context);
     final rows = [
       for (final kind in order)
         if (editing || v.visible('v.${kind.name}'))
@@ -323,6 +326,19 @@ class _VirtualSection extends ConsumerWidget {
                   )
                 : null,
           ),
+      // Only while something waits to be sent; it can't be hidden.
+      if (outbox.isNotEmpty && !editing)
+        _MailboxTile(
+          key: const ValueKey('outbox'),
+          title: 'Outbox',
+          icon: LoupeIcons.outbox,
+          iconColor: outbox.any((o) => o.status == OutboxStatus.failed) ? colors.destructive : null,
+          count: outbox.length,
+          editing: false,
+          visible: true,
+          onToggleVisible: () {},
+          onTap: () => context.push(Routes.outbox),
+        ),
     ];
     if (rows.isEmpty) return const SizedBox.shrink();
     return InsetGroup(separatorIndent: 51, children: rows);
