@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:loupe/shared/format.dart';
 import 'package:loupe/shared/mailbox_display.dart';
 import 'package:mail_model/mail_model.dart';
 
@@ -28,5 +29,12 @@ void main() {
     final boxes = [box('INBOX', role: MailboxRole.inbox), box('Sent Items', role: MailboxRole.sent)];
     expect(identical(withUniqueRoles(boxes), boxes), isTrue);
     expect(boxes.map(mailboxDisplayName), ['Inbox', 'Sent']);
+  });
+
+  test('counts have grouping separators; deep folders stop indenting', () {
+    expect(formatCount(35722), '35,722');
+    expect(formatCount(300), '300');
+    expect(folderIndent(2), 36);
+    expect(folderIndent(12), folderIndent(5));
   });
 }

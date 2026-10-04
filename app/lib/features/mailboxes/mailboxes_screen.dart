@@ -11,6 +11,7 @@ import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/ui_state.dart';
 import '../../shared/bars.dart';
+import '../../shared/format.dart';
 import '../../shared/grouped_list.dart';
 import '../../shared/mailbox_display.dart';
 import '../../shared/sync_status.dart';
@@ -204,7 +205,7 @@ class _MailboxTile extends StatelessWidget {
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: metrics.groupedRowHeight),
         child: Padding(
-          padding: EdgeInsetsDirectional.only(start: (reserveDisclosure ? 12 : 16) + depth * 18.0, end: 12),
+          padding: EdgeInsetsDirectional.only(start: (reserveDisclosure ? 12 : 16) + folderIndent(depth), end: 12),
           child: Row(
             children: [
               AnimatedSize(
@@ -252,7 +253,10 @@ class _MailboxTile extends StatelessWidget {
                 ),
               ),
               if (count != null && count! > 0 && !editing)
-                Text('$count', style: styles.body.copyWith(color: colors.secondaryText)),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 8),
+                  child: Text(formatCount(count!), style: styles.body.copyWith(color: colors.secondaryText)),
+                ),
               ?trailing,
               if (!editing && trailing == null)
                 Padding(

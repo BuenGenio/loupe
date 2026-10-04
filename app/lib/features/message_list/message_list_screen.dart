@@ -13,6 +13,7 @@ import '../../router.dart';
 import '../../settings/app_settings.dart';
 import '../../settings/ui_state.dart';
 import '../../shared/bars.dart';
+import '../../shared/format.dart';
 import '../../shared/mail_actions.dart';
 import '../../shared/mailbox_display.dart';
 import '../../shared/message_row.dart';
@@ -490,11 +491,24 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     ];
   }
 
+  /// Unread messages of this mailbox: the server's count where there is
+  /// one (only the newest messages are on the phone), else the rows'.
+  int _unreadCount(List<ThreadSummary> rows, List<Mailbox> mailboxes) {
+    final local = rows.fold(0, (sum, r) => sum + r.unreadCount);
+    return switch (widget.mailboxRef) {
+      RealMailboxRef(:final mailboxId) => mailboxes.where((m) => m.id == mailboxId).firstOrNull?.unreadCount ?? local,
+      VirtualMailboxRef(:final kind)
+          when kind == VirtualMailbox.allInboxes || kind == VirtualMailbox.unread || kind == VirtualMailbox.vip =>
+        ref.watch(virtualCountsProvider).value?[kind] ?? local,
+      VirtualMailboxRef() => local,
+    };
+  }
+
   Widget _toolbar(List<ThreadSummary> rows, List<Mailbox> mailboxes) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
     final criteria = ref.watch(filterCriteriaProvider);
-    final unread = rows.fold(0, (sum, r) => sum + r.unreadCount);
+    final unread = _unreadCount(rows, mailboxes);
     return LoupeBottomBar(
       leading: BarIconButton(
         icon: _filterOn
@@ -532,7 +546,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
                 ),
               ),
             )
-          : SyncStatusLine(detail: unread > 0 ? '$unread Unread' : null),
+          : SyncStatusLine(detail: unread > 0 ? '${formatCount(unread)} Unread' : null),
       trailing: BarIconButton(
         icon: CupertinoIcons.square_pencil,
         tooltip: 'New Message',

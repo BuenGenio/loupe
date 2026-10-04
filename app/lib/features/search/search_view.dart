@@ -12,6 +12,7 @@ import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/app_settings.dart';
 import '../../settings/ui_state.dart';
+import '../../shared/format.dart';
 import '../../shared/mail_actions.dart';
 import '../../shared/mailbox_display.dart';
 import '../../shared/mailbox_ref_codec.dart';
@@ -338,7 +339,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
                     ? 'Searching…'
                     : results.items.isEmpty && results.isComplete
                     ? 'No Results'
-                    : '${results.items.length} ${results.items.length == 1 ? 'Result' : 'Results'}',
+                    : '${formatCount(results.items.length)} ${results.items.length == 1 ? 'Result' : 'Results'}',
                 style: styles.sectionHeader.copyWith(fontSize: 17),
               ),
               if (widget.showSuggestions && _session.hasQuery) ...[

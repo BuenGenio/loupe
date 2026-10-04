@@ -170,9 +170,14 @@ Future<String?> showMailboxPicker(
                               ListTile(
                                 dense: true,
                                 enabled: !disabled.contains(node.mailbox.id),
-                                contentPadding: EdgeInsets.only(left: 16 + node.depth * 18.0, right: 16),
+                                contentPadding: EdgeInsets.only(left: 16 + folderIndent(node.depth), right: 16),
                                 leading: Icon(mailboxIcon(node.mailbox.role), color: colors.unreadDot),
-                                title: Text(mailboxDisplayName(node.mailbox), style: styles.body),
+                                title: Text(
+                                  mailboxDisplayName(node.mailbox),
+                                  style: styles.body,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                                 onTap: () => Navigator.of(context).pop(node.mailbox.id),
                               ),
                         ],

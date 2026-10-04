@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/cupertino.dart';
 import 'package:mail_model/mail_model.dart';
 
@@ -95,6 +97,10 @@ String mailboxRefTitle(MailboxRef ref, Iterable<Mailbox> mailboxes) => switch (r
   RealMailboxRef(:final mailboxId) =>
     mailboxes.where((m) => m.id == mailboxId).map(mailboxDisplayName).firstOrNull ?? 'Mailbox',
 };
+
+/// Leading indentation of a folder at [depth] in a tree. Deep trees stop
+/// indenting after a few levels, so names keep room on a phone.
+double folderIndent(int depth) => 18.0 * math.min(depth, 5);
 
 /// A mailbox with its depth in the account's folder tree.
 typedef MailboxNode = ({Mailbox mailbox, int depth, bool hasChildren});
