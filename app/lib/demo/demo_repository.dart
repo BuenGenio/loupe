@@ -407,6 +407,14 @@ class DemoMailRepository implements MailRepository {
   });
 
   @override
+  Future<void> setMailboxSubscribed(String mailboxId, {required bool subscribed}) async {
+    final box = _mailboxes[mailboxId];
+    if (box == null) throw const MailException(MailErrorKind.notFound, 'That mailbox no longer exists.');
+    _mailboxes[mailboxId] = box.copyWith(isSubscribed: subscribed);
+    _notify();
+  }
+
+  @override
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts() => _watch(() {
     var inboxes = 0, unread = 0, flagged = 0, vip = 0, drafts = 0;
     for (final m in _messages.values) {

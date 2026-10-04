@@ -217,6 +217,11 @@ List<RemoteMailbox> buildRemoteMailboxes(List<ListEntry> entries, {Set<String>? 
   return byPath.values.toList();
 }
 
+/// The SUBSCRIBE or UNSUBSCRIBE command for [mailboxArg], an encoded and
+/// quoted mailbox name (`ImapConnection.mailboxArg`).
+String subscriptionCommand(String mailboxArg, {required bool subscribe}) =>
+    '${subscribe ? 'SUBSCRIBE' : 'UNSUBSCRIBE'} $mailboxArg';
+
 /// Gives each role to at most one mailbox. Servers can flag several
 /// mailboxes with one SPECIAL-USE attribute (mailcow marks "Archive",
 /// "Archiv" and "Archives" `\Archive`), and folders named like a role may

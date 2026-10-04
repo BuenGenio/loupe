@@ -267,6 +267,24 @@ final class LiveMailRepository implements MailRepository {
   Stream<List<Mailbox>> watchMailboxes({String? accountId}) => store.watchMailboxes(accountId: accountId);
 
   @override
+  Future<void> setMailboxSubscribed(String mailboxId, {required bool subscribed}) async {
+    final mailbox =
+        await store.getMailbox(mailboxId) ??
+        (throw const MailException(MailErrorKind.notFound, 'That folder no longer exists'));
+    await store.transaction(() async {
+      final previous = await store.setMailboxSubscribed(mailboxId, subscribed: subscribed);
+      if (previous == null || previous == subscribed) return;
+      await store.enqueueOp(mailbox.accountId, OpType.subscribe, {
+        'mailboxId': mailboxId,
+        'name': mailbox.name,
+        'subscribed': subscribed,
+        'previous': previous,
+      }, now: _now());
+    });
+    _kick(mailbox.accountId);
+  }
+
+  @override
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts() => store.watchVirtualCounts();
 
   @override

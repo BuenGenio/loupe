@@ -12,7 +12,7 @@ class FakeMailRepository implements MailRepository {
     List<EmailSummary>? emails,
     Map<String, EmailContent>? contents,
   }) : accounts = accounts ?? [testAccount],
-       mailboxes = mailboxes ?? testMailboxes,
+       mailboxes = [...mailboxes ?? testMailboxes],
        emails = [...?emails],
        contents = {...?contents};
 
@@ -128,6 +128,15 @@ class FakeMailRepository implements MailRepository {
         if (accountId == null || m.accountId == accountId) m,
     ],
   );
+
+  @override
+  Future<void> setMailboxSubscribed(String mailboxId, {required bool subscribed}) async {
+    log.add('setMailboxSubscribed $mailboxId $subscribed');
+    final i = mailboxes.indexWhere((m) => m.id == mailboxId);
+    if (i < 0) throw const MailException(MailErrorKind.notFound, 'No such mailbox');
+    mailboxes[i] = mailboxes[i].copyWith(isSubscribed: subscribed);
+    _changed();
+  }
 
   @override
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts() => _watch(() => const {});
