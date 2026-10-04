@@ -4,6 +4,8 @@
 
 import 'package:mail_model/mail_model.dart';
 
+import 'syntax/parser.dart';
+
 /// A parse problem, with the character range it refers to.
 final class QueryError {
   const QueryError(this.message, this.start, this.end);
@@ -66,46 +68,15 @@ final class QuerySuggestion {
 
 /// Parses [input]. Never throws; problems are reported in [ParsedQuery.errors]
 /// with a best-effort [ParsedQuery.expr]. [now] anchors relative dates
-/// ("today", "7d").
-ParsedQuery parseQuery(String input, {DateTime? now}) {
-  final words = input.trim().split(RegExp(r'\s+')).where((w) => w.isNotEmpty).toList();
-  if (words.isEmpty) return const ParsedQuery(expr: MatchAll());
-  final terms = <SearchExpr>[];
-  for (final w in words) {
-    final i = w.indexOf(':');
-    if (i > 0 && i < w.length - 1) {
-      final op = w.substring(0, i).toLowerCase();
-      final v = w.substring(i + 1);
-      final field = switch (op) {
-        'f' || 'from' => TextField.from,
-        't' || 'to' => TextField.to,
-        's' || 'subject' => TextField.subject,
-        'b' || 'body' => TextField.body,
-        _ => null,
-      };
-      if (field != null) {
-        terms.add(TextTerm(field, v));
-        continue;
-      }
-      if (op == 'is' || op == 'i') {
-        switch (v.toLowerCase()) {
-          case 'unread':
-            terms.add(const SearchNot(KeywordTerm(Keywords.seen)));
-          case 'read':
-            terms.add(const KeywordTerm(Keywords.seen));
-          case 'flagged' || 'starred':
-            terms.add(const KeywordTerm(Keywords.flagged));
-          case 'unreplied':
-            terms.add(const SearchNot(KeywordTerm(Keywords.answered)));
-          default:
-            terms.add(TextTerm(TextField.any, w));
-        }
-        continue;
-      }
-    }
-    terms.add(TextTerm(TextField.any, w));
+/// ("today", "7d"). [tags] resolves `tag:` labels (Thunderbird's defaults
+/// unless the account defines its own).
+ParsedQuery parseQuery(String input, {DateTime? now, List<TagDefinition> tags = TagDefinition.thunderbirdDefaults}) {
+  try {
+    return QueryParser(input, now: now ?? DateTime.now(), tags: tags).parse();
+  } on Object {
+    // Only absurd nesting (stack overflow) gets here.
+    return ParsedQuery(expr: const MatchAll(), errors: [QueryError('Query too complex', 0, input.length)]);
   }
-  return ParsedQuery(expr: terms.length == 1 ? terms.single : SearchAnd(terms));
 }
 
 /// Canonical text for [expr]; `parseQuery(formatQuery(e)).expr == e`.
