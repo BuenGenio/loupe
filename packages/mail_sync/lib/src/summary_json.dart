@@ -21,6 +21,11 @@ Map<String, Object?> summaryToJson(EmailSummary e) => {
   'size': e.size,
   'keywords': e.keywords.toList(),
   'hasAttachment': e.hasAttachment,
+  if (e.listId != null) 'listId': e.listId,
+  if (e.listName != null) 'listName': e.listName,
+  if (e.listPost != null) 'listPost': e.listPost,
+  if (e.listUnsubscribe != null) 'listUnsubscribe': e.listUnsubscribe,
+  if (e.listUnsubscribePost != null) 'listUnsubscribePost': e.listUnsubscribePost,
 };
 
 EmailSummary summaryFromJson(Map<String, Object?> j) => EmailSummary(
@@ -43,6 +48,11 @@ EmailSummary summaryFromJson(Map<String, Object?> j) => EmailSummary(
   size: j['size'] as int? ?? 0,
   keywords: _strings(j['keywords']).toSet(),
   hasAttachment: j['hasAttachment'] as bool? ?? false,
+  listId: j['listId'] as String?,
+  listName: j['listName'] as String?,
+  listPost: j['listPost'] as String?,
+  listUnsubscribe: j['listUnsubscribe'] as String?,
+  listUnsubscribePost: j['listUnsubscribePost'] as String?,
 );
 
 List<Map<String, Object?>> _addrs(List<EmailAddress> list) => [

@@ -9,6 +9,7 @@ export 'src/address.dart';
 export 'src/email.dart';
 export 'src/ids.dart';
 export 'src/keywords.dart';
+export 'src/lists.dart';
 export 'src/mailbox.dart';
 export 'src/outbox.dart';
 export 'src/outgoing.dart';
