@@ -48,6 +48,12 @@ void main() {
     await gesture.up();
     await tester.pumpAndSettle();
     expect([for (final r in await _rules(repo)) r.name], ['Receipts', 'Issue tracker', 'Open Garden list']);
+    expect(tester.getTopLeft(find.text('Receipts')).dy, lessThan(tester.getTopLeft(find.text('Issue tracker')).dy));
+
+    // A rule added afterwards shows up too.
+    await repo.rules.saveRule(const Rule(id: 'n', name: 'Newcomer', condition: 'f:x', actions: [FlagAction()]));
+    await tester.pumpAndSettle();
+    expect(find.text('Newcomer'), findsOneWidget);
   });
 
   testWidgets('turning server rules on shows the exact lines added to the active script', (tester) async {

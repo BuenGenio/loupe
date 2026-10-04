@@ -372,10 +372,10 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
     List<EmailSummary> matches;
     try {
       matches = await rules.findMatches(rule, scope);
-    } on MailException catch (e) {
+    } catch (e) {
       if (!mounted) return;
       Navigator.of(context).pop();
-      await _alert('Couldn’t Search', e.message);
+      await _alert('Couldn’t Search', e is MailException ? e.message : 'Something went wrong.');
       return;
     }
     if (!mounted) return;

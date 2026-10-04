@@ -119,12 +119,21 @@ class _RuleListState extends ConsumerState<_RuleList> {
   List<Rule> get _rules {
     final pending = _pending;
     if (pending == null) return widget.rules;
-    final ids = [for (final r in pending) r.id];
-    if (ids.length == widget.rules.length && [for (final r in widget.rules) r.id].join('|') == ids.join('|')) {
-      return widget.rules;
-    }
     final byId = {for (final r in widget.rules) r.id: r};
-    return [for (final id in ids) ?byId[id]];
+    return [for (final r in pending) ?byId[r.id]];
+  }
+
+  @override
+  void didUpdateWidget(_RuleList old) {
+    super.didUpdateWidget(old);
+    final pending = _pending;
+    if (pending == null) return;
+    final now = [for (final r in widget.rules) r.id];
+    final shown = [for (final r in pending) r.id];
+    // Caught up, or rules came or went: show the repository's order.
+    if (now.join('|') == shown.join('|') || now.length != shown.length || !now.toSet().containsAll(shown)) {
+      _pending = null;
+    }
   }
 
   Future<void> _reorder(int from, int to) async {
