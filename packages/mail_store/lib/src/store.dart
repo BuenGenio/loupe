@@ -296,6 +296,19 @@ final class MailStore {
     }
   });
 
+  /// Selectable, subscribed mailboxes of [accountId] that never synced, in
+  /// display order; Trash and Junk are left for when they are opened.
+  Future<List<String>> unsyncedMailboxIds(String accountId) async {
+    final rows = await _select(
+      'SELECT m.id FROM mailboxes m LEFT JOIN sync_states s ON s.mailbox_id = m.id '
+      "WHERE m.account_id = ? AND m.is_selectable = 1 AND m.is_subscribed = 1 AND m.role NOT IN ('trash', 'junk') "
+      'AND s.mailbox_id IS NULL ORDER BY m.sort_order',
+      [accountId],
+      {_db.mailboxes, _db.syncStates},
+    ).get();
+    return [for (final r in rows) r.read<String>('id')];
+  }
+
   // Sync state --------------------------------------------------------------
 
   Future<MailboxSyncInfo?> getSyncInfo(String mailboxId) async {
