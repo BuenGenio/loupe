@@ -2,8 +2,10 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../features/panes/pane_layout.dart';
 import '../theme/theme.dart';
 import '../theme/loupe_icons.dart';
 
@@ -177,6 +179,8 @@ class LoupeTitleBar extends StatelessWidget {
     final canPop = ModalRoute.of(context)?.impliesAppBarDismissal ?? false;
     final lead =
         leading ??
+        // In the wide layout's list pane: the sidebar button.
+        (automaticallyImplyLeading && !canPop ? MailPaneScope.maybeOf(context)?.titleLeading : null) ??
         (automaticallyImplyLeading && canPop
             ? Semantics(
                 button: true,
@@ -430,6 +434,7 @@ class LoupeSearchField extends StatelessWidget {
     this.onSubmitted,
     this.placeholder = 'Search',
     this.autofocus = false,
+    this.onLongPress,
   });
 
   final TextEditingController controller;
@@ -439,8 +444,36 @@ class LoupeSearchField extends StatelessWidget {
   final String placeholder;
   final bool autofocus;
 
+  /// A long press while the field isn't being typed in (the command
+  /// palette). Needs [focusNode].
+  final VoidCallback? onLongPress;
+
   @override
   Widget build(BuildContext context) {
+    final field = _field(context);
+    final focus = focusNode;
+    final longPress = onLongPress;
+    if (focus == null || longPress == null) return field;
+    return ListenableBuilder(
+      listenable: focus,
+      builder: (context, child) => RawGestureDetector(
+        // Shorter than the field's own long press, so it wins; off while
+        // typing, where a long press selects text.
+        gestures: focus.hasFocus
+            ? const {}
+            : {
+                LongPressGestureRecognizer: GestureRecognizerFactoryWithHandlers<LongPressGestureRecognizer>(
+                  () => LongPressGestureRecognizer(duration: const Duration(milliseconds: 400), debugOwner: this),
+                  (r) => r.onLongPress = longPress,
+                ),
+              },
+        child: child,
+      ),
+      child: field,
+    );
+  }
+
+  Widget _field(BuildContext context) {
     final colors = LoupeColors.of(context);
     return CupertinoSearchTextField(
       controller: controller,

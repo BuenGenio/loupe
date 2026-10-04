@@ -20,8 +20,13 @@ import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
 import '../compose/compose_recovery.dart';
 import '../compose/send_later.dart';
+import '../keyboard/mail_commands.dart';
 import '../mailing_lists/list_providers.dart';
 import '../outbox/outbox_screen.dart';
+import '../palette/command_palette.dart';
+import '../panes/mail_selection.dart';
+import '../panes/message_drag.dart';
+import '../panes/pane_layout.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
 import '../snooze/snoozed_screen.dart';
@@ -37,7 +42,7 @@ class MailboxesScreen extends ConsumerStatefulWidget {
   ConsumerState<MailboxesScreen> createState() => _MailboxesScreenState();
 }
 
-class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
+class _MailboxesScreenState extends ConsumerState<MailboxesScreen> with CommandScopeState<MailboxesScreen> {
   bool _editing = false;
   bool _searching = false;
   final _scroll = ScrollController();
@@ -74,6 +79,32 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) unawaited(offerComposeRecovery(context, ref));
     });
+    registerCommands(ref.read(mailCommandsProvider));
+  }
+
+  // Keyboard: / searches every mailbox, Esc leaves search or Edit.
+
+  @override
+  int get priority => 10;
+
+  @override
+  bool canRun(MailCommand command) => switch (command) {
+    MailCommand.search || MailCommand.refresh => true,
+    MailCommand.back => _searching || _editing,
+    _ => false,
+  };
+
+  @override
+  void run(MailCommand command) {
+    switch (command) {
+      case MailCommand.search:
+        _focus.requestFocus();
+      case MailCommand.refresh:
+        unawaited(ref.read(repositoryProvider).refresh());
+      case MailCommand.back:
+        _searching ? _setSearching(false) : setState(() => _editing = false);
+      default:
+    }
   }
 
   @override
@@ -159,6 +190,7 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
                 focusNode: _focus,
                 onChanged: _search.onChanged,
                 onSubmitted: (_) => _search.submit(),
+                onLongPress: () => showCommandPalette(context),
               ),
             ),
             if (_searching)
@@ -186,8 +218,10 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
   }
 }
 
-/// A row of the Mailboxes screen, with Edit-mode visibility toggles.
-class _MailboxTile extends StatelessWidget {
+/// A row of the Mailboxes screen, with Edit-mode visibility toggles. In the
+/// Mailboxes pane it shows whether [target] is the list beside it, and
+/// [dropMailbox] takes messages dragged onto it.
+class _MailboxTile extends ConsumerWidget {
   const _MailboxTile({
     super.key,
     required this.title,
@@ -203,6 +237,8 @@ class _MailboxTile extends StatelessWidget {
     this.onToggleExpanded,
     this.trailing,
     this.reserveDisclosure = false,
+    this.target,
+    this.dropMailbox,
   });
 
   final String title;
@@ -223,8 +259,30 @@ class _MailboxTile extends StatelessWidget {
   /// Keeps the disclosure column so icons line up in sections with subfolders.
   final bool reserveDisclosure;
 
+  /// What it opens in the list pane.
+  final ListTarget? target;
+  final Mailbox? dropMailbox;
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final inPane = !editing && MailPaneScope.maybeOf(context)?.pane == MailPane.mailboxes;
+    if (!inPane) return _row(context);
+    final colors = LoupeColors.of(context);
+    final selected = target != null && ref.watch(mailSelectionProvider.select((s) => s.listOrDefault)) == target;
+    Widget tile(bool hovering) => Ink(
+      color: hovering
+          ? colors.unreadDot.withValues(alpha: 0.18)
+          : selected
+          ? colors.selectedRow
+          : null,
+      child: _row(context),
+    );
+    final drop = dropMailbox;
+    if (drop == null) return tile(false);
+    return MailboxDropTarget(mailbox: drop, builder: (context, hovering) => tile(hovering));
+  }
+
+  Widget _row(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
     final metrics = LoupeMetrics.of(context);
@@ -343,6 +401,7 @@ class _VirtualSection extends ConsumerWidget {
             visible: v.visible('v.${kind.name}'),
             onToggleVisible: () => v.toggle('v.${kind.name}'),
             onTap: () => onOpen(VirtualMailboxRef(kind)),
+            target: MailboxTarget(VirtualMailboxRef(kind)),
             trailing: kind == VirtualMailbox.vip && !editing
                 ? CupertinoButton(
                     padding: const EdgeInsets.only(left: 8),
@@ -364,6 +423,7 @@ class _VirtualSection extends ConsumerWidget {
           visible: v.visible('v.snoozed'),
           onToggleVisible: () => v.toggle('v.snoozed'),
           onTap: () => context.push(Routes.snoozed),
+          target: const SnoozedTarget(),
         ),
       // Only while something waits to be sent; it can't be hidden.
       if (outbox.isNotEmpty && !editing)
@@ -377,6 +437,7 @@ class _VirtualSection extends ConsumerWidget {
           visible: true,
           onToggleVisible: () {},
           onTap: () => context.push(Routes.outbox),
+          target: const OutboxTarget(),
         ),
     ];
     if (rows.isEmpty) return const SizedBox.shrink();
@@ -436,6 +497,8 @@ class _AccountSection extends ConsumerWidget {
                   : node.hasChildren
                   ? () => toggleExpanded(node.mailbox.id)
                   : null,
+              target: MailboxTarget(RealMailboxRef(node.mailbox.id)),
+              dropMailbox: node.mailbox,
             ),
     ];
     return InsetGroup(
@@ -491,6 +554,7 @@ class _ListsSection extends ConsumerWidget {
             visible: v.visible('list.${l.id}'),
             onToggleVisible: () => v.toggle('list.${l.id}'),
             onTap: () => context.push(Routes.mailingList(l.id)),
+            target: MailingListTarget(l.id),
           ),
     ];
     if (rows.isEmpty) return const SizedBox.shrink();
@@ -524,6 +588,7 @@ class _SmartSection extends ConsumerWidget {
               visible: v.visible('smart.${s.id}'),
               onToggleVisible: () => v.toggle('smart.${s.id}'),
               onTap: () => context.push(Routes.smartMailbox(s.id)),
+              target: SmartMailboxTarget(s.id),
               trailing: editing
                   ? CupertinoButton(
                       padding: EdgeInsets.zero,

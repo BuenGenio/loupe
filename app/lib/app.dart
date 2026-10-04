@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_sync/mail_sync.dart';
 
 import 'data/repositories.dart';
+import 'features/keyboard/app_shortcuts.dart';
 import 'features/notifications/app_icon_badge.dart';
 import 'features/notifications/new_mail_check.dart';
 import 'features/notifications/notification_settings.dart';
@@ -42,7 +43,9 @@ class LoupeApp extends ConsumerWidget {
         // The badge and notification taps need the repository, so they wait
         // behind the live gate.
         child: _LiveGate(
-          child: AppIconBadgeUpdater(child: NotificationsCoordinator(child: child ?? const SizedBox.shrink())),
+          child: AppIconBadgeUpdater(
+            child: NotificationsCoordinator(child: AppShortcuts(child: child ?? const SizedBox.shrink())),
+          ),
         ),
       ),
     );

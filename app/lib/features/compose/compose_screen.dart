@@ -15,6 +15,7 @@ import '../../shared/format.dart';
 import '../../theme/theme.dart';
 import '../conversation/attachments.dart';
 import '../conversation/sheets.dart';
+import '../keyboard/mail_commands.dart';
 import '../openpgp/compose_security.dart';
 import '../openpgp/content_loader.dart';
 import '../openpgp/openpgp_providers.dart';
@@ -64,7 +65,7 @@ class ComposeScreen extends ConsumerStatefulWidget {
 
 enum _CloseChoice { delete, save, discardChanges }
 
-class _ComposeScreenState extends ConsumerState<ComposeScreen> {
+class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScopeState<ComposeScreen> {
   final _to = RecipientController();
   final _cc = RecipientController();
   final _bcc = RecipientController();
@@ -144,6 +145,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     _lifecycle = AppLifecycleListener(onHide: _saveNow, onPause: _saveNow);
     ref.listenManual(keyringStateProvider, (_, _) => _updateSecurity());
     unawaited(_prepare());
+    registerCommands(ref.read(mailCommandsProvider));
   }
 
   @override
@@ -162,6 +164,23 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     _bodyFocus.dispose();
     _security.dispose();
     super.dispose();
+  }
+
+  // Keyboard: Ctrl/⌘+Enter sends, Esc closes like Cancel (even from a field).
+
+  @override
+  int get priority => 40;
+
+  @override
+  bool canRun(MailCommand command) => command == MailCommand.send || command == MailCommand.back;
+
+  @override
+  void run(MailCommand command) {
+    if (command == MailCommand.back) {
+      unawaited(_cancel());
+    } else if (_canSend) {
+      unawaited(_send());
+    }
   }
 
   void _changed() {
