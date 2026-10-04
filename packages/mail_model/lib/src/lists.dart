@@ -271,6 +271,20 @@ final class ListThread {
     return tag == null || tag.isReply ? null : tag;
   }
 
+  /// How many patches of a series arrived among [subjects]: distinct
+  /// positions of `[PATCH …]` subjects that aren't replies (cover letters
+  /// don't count), of [series]'s version when it is given.
+  static int countPatches(Iterable<String> subjects, {PatchTag? series}) {
+    final positions = <int>{};
+    for (final s in subjects) {
+      final tag = PatchTag.parse(s);
+      if (tag == null || tag.isReply || tag.isCoverLetter) continue;
+      if (series != null && !series.isReply && tag.version != series.version) continue;
+      positions.add(tag.index ?? 1);
+    }
+    return positions.length;
+  }
+
   /// "PATCH v2 3/3" for a series (patches arrived / announced), else the
   /// tag's own label ("PATCH", "RFC PATCH 2/5"); null for a discussion.
   String? get patchBadge {

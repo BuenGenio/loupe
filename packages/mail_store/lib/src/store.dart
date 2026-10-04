@@ -1057,26 +1057,12 @@ ORDER BY r.last_at DESC, r.account_id, r.thread_id, r.rn_new''';
           messageCount: newest.read<int>('thread_count'),
           unreadCount: newest.read<int>('thread_unread'),
           participants: participants,
-          patchCount: patchCount(subjects, PatchTag.parse(first.subject)),
+          patchCount: ListThread.countPatches(subjects, series: PatchTag.parse(first.subject)),
           isMuted: newest.read<int>('muted') != 0,
         ),
       );
     }
     return out;
-  }
-
-  /// How many patches of a series arrived: distinct positions of non-reply
-  /// `[PATCH …]` subjects (cover letters don't count), of the version
-  /// [series] names when it is the thread's own patch tag.
-  static int patchCount(Iterable<String> subjects, PatchTag? series) {
-    final positions = <int>{};
-    for (final s in subjects) {
-      final tag = PatchTag.parse(s);
-      if (tag == null || tag.isReply || tag.isCoverLetter) continue;
-      if (series != null && !series.isReply && tag.version != series.version) continue;
-      positions.add(tag.index ?? 1);
-    }
-    return positions.length;
   }
 
   /// Ids of the muted conversations of all accounts.

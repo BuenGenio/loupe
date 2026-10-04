@@ -113,5 +113,22 @@ void main() {
       expect(thread('Release planning', messages: 4).patchBadge, isNull);
       expect(thread('Release planning', messages: 4).replyCount, 3);
     });
+
+    test('patch counts follow the series version and skip replies and cover letters', () {
+      final v2 = PatchTag.parse('[PATCH v2 0/3] x');
+      expect(
+        ListThread.countPatches([
+          '[PATCH v2 0/3] x',
+          '[PATCH v2 1/3] a',
+          '[PATCH 1/3] old a',
+          'Re: [PATCH v2 1/3] a',
+          '[PATCH v2 3/3] c',
+          '[PATCH v2 3/3] c (resent)',
+        ], series: v2),
+        2,
+      );
+      expect(ListThread.countPatches(['[PATCH] one'], series: PatchTag.parse('[PATCH] one')), 1);
+      expect(ListThread.countPatches(['[PATCH 1/2] a', '[PATCH 2/2] b']), 2);
+    });
   });
 }

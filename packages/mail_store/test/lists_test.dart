@@ -182,23 +182,6 @@ void main() {
       expect(await store.threadOf(eid('INBOX', 20)), after);
       expect(await store.watchMutedThreads().first, {after!.threadId});
     });
-
-    test('patch counts follow the series version and skip replies and cover letters', () {
-      final v2 = PatchTag.parse('[PATCH v2 0/3] x');
-      expect(
-        MailStore.patchCount([
-          '[PATCH v2 0/3] x',
-          '[PATCH v2 1/3] a',
-          '[PATCH 1/3] old a',
-          'Re: [PATCH v2 1/3] a',
-          '[PATCH v2 3/3] c',
-          '[PATCH v2 3/3] c (resent)',
-        ], v2),
-        2,
-      );
-      expect(MailStore.patchCount(['[PATCH] one'], PatchTag.parse('[PATCH] one')), 1);
-      expect(MailStore.patchCount(['[PATCH 1/2] a', '[PATCH 2/2] b'], null), 2);
-    });
   });
 
   group('header backfill', () {
