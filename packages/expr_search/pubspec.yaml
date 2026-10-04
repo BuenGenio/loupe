@@ -1,0 +1,11 @@
+name: expr_search
+description: "The Loupe search language: parser, formatter, local matcher and compilers for IMAP, Gmail and JMAP."
+publish_to: none
+version: 0.1.0
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  mail_model: {path: ../mail_model}
+dev_dependencies:
+  test: any

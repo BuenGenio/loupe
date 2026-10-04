@@ -1,0 +1,13 @@
+name: mail_sync
+description: "Sync engine and the live MailRepository of Loupe."
+publish_to: none
+version: 0.1.0
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  mail_model: {path: ../mail_model}
+  mail_store: {path: ../mail_store}
+  expr_search: {path: ../expr_search}
+dev_dependencies:
+  test: any

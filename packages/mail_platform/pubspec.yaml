@@ -1,0 +1,15 @@
+name: mail_platform
+description: "Platform services for Loupe: keychain credential store, OAuth sign-in."
+publish_to: none
+version: 0.1.0
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  mail_model: {path: ../mail_model}
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

@@ -1,0 +1,9 @@
+name: mail_model
+description: "Shared types and interfaces of the Loupe mail app."
+publish_to: none
+version: 0.1.0
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dev_dependencies:
+  test: any

@@ -1,0 +1,12 @@
+name: mail_store
+description: "Local encrypted mail store (drift, SQLite FTS5) for Loupe."
+publish_to: none
+version: 0.1.0
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  mail_model: {path: ../mail_model}
+  expr_search: {path: ../expr_search}
+dev_dependencies:
+  test: any

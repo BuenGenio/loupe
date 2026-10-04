@@ -1,0 +1,23 @@
+name: loupe
+description: "Loupe: a mail app, simple on the surface, powerful underneath."
+publish_to: none
+version: 0.1.0+1
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  mail_model: {path: ../packages/mail_model}
+  expr_search: {path: ../packages/expr_search}
+  readable: {path: ../packages/readable}
+  mail_imap: {path: ../packages/mail_imap}
+  mail_store: {path: ../packages/mail_store}
+  mail_sync: {path: ../packages/mail_sync}
+  mail_platform: {path: ../packages/mail_platform}
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+flutter:
+  uses-material-design: true

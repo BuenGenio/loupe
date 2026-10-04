@@ -1,0 +1,19 @@
+# Dart / Flutter
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec_overrides.yaml
+*.iml
+.idea/
+.DS_Store
+
+# Secrets (signing keys live in ~/.config/loupe, never in the repo)
+key.properties
+*.jks
+*.keystore
+.env
+
+# Test servers
+tool/test-servers/data/
