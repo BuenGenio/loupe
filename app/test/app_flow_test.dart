@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:loupe/router.dart';
 import 'package:loupe/settings/app_mode.dart';
 import 'package:mail_model/mail_model.dart' hide TextField;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,5 +50,13 @@ void main() {
     expect(find.text('All Inboxes'), findsWidgets);
     expect(find.text('Quick question about the export API'), findsOneWidget);
     expect(find.byIcon(CupertinoIcons.square_pencil), findsOneWidget);
+  });
+
+  testWidgets('a nested folder opens with its mail', (tester) async {
+    await pumpLoupe(tester);
+    await goTo(tester, Routes.list(RealMailboxRef(MailIds.mailbox('fastmail', 'Lists/Open Garden'))));
+    expect(find.text('Open Garden'), findsWidgets);
+    expect(find.text('No Mail'), findsNothing);
+    expect(textContaining('[open-garden]'), findsWidgets);
   });
 }

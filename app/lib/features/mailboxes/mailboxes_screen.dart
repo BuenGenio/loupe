@@ -93,7 +93,8 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
         if (!didPop && _searching) _closeSearch();
       },
       child: Scaffold(
-        backgroundColor: colors.groupedBackground,
+        // Search results are a plain list, like the message list.
+        backgroundColor: _searching ? null : colors.groupedBackground,
         bottomNavigationBar: _searching
             ? null
             : LoupeBottomBar(
