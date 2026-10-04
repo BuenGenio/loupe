@@ -93,6 +93,10 @@ String makePreview(String text, {int maxLength = 200}) {
   var s = lines.join(' ').replaceAll(' ', ' ').replaceAll(_whitespace, ' ').trim();
   if (s.length <= maxLength) return s;
   final cut = s.lastIndexOf(' ', maxLength);
-  s = s.substring(0, cut > maxLength * 0.6 ? cut : maxLength);
+  var end = cut > maxLength * 0.6 ? cut : maxLength;
+  // Not between the halves of a surrogate pair (an emoji).
+  final unit = s.codeUnitAt(end - 1);
+  if (unit >= 0xD800 && unit <= 0xDBFF) end--;
+  s = s.substring(0, end);
   return '${s.trimRight()}…';
 }

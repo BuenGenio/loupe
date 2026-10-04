@@ -41,7 +41,10 @@ final class SourceLines {
       if (end > start && text.codeUnitAt(end - 1) == 0x0d) end--;
       var from = start;
       do {
-        final to = math.min(end, from + maxLineLength);
+        var to = math.min(end, from + maxLineLength);
+        // Never between the halves of a surrogate pair (an emoji): the text
+        // engine refuses a lone half.
+        if (to < end && to - from > 1 && _isHighSurrogate(text.codeUnitAt(to - 1))) to--;
         final row = text.substring(from, to);
         var width = row.length;
         for (var i = 0; i < row.length; i++) {
@@ -290,3 +293,5 @@ class _RawSourceScreenState extends ConsumerState<RawSourceScreen> {
     );
   }
 }
+
+bool _isHighSurrogate(int unit) => unit >= 0xD800 && unit <= 0xDBFF;
