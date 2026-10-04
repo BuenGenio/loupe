@@ -1,5 +1,17 @@
+import 'email.dart';
 import 'keywords.dart';
 import 'mailbox.dart';
+
+/// Where a snooze's wake time is kept (`MailRepository.snooze`).
+enum SnoozeStorage {
+  /// On the server, as a keyword: any device or client following the
+  /// convention wakes the message.
+  server,
+
+  /// On this device only: the server doesn't store keywords (PERMANENTFLAGS
+  /// without `\*`, e.g. Outlook.com). The message still waits in Snoozed.
+  device,
+}
 
 /// The snooze convention shared with other clients (see
 /// `docs/snooze-convention.md`): a snoozed message waits in a top-level
@@ -71,4 +83,15 @@ abstract final class Snooze {
 
   /// Whether [mailbox] is its account's snooze folder.
   static bool isFolder(Mailbox mailbox) => mailbox.isSelectable && isFolderPath(mailbox.path);
+
+  /// Orders snoozed messages by wake time, soonest first; messages without
+  /// a valid time last, newest first.
+  static int compare(EmailSummary a, EmailSummary b) {
+    final ta = a.snoozedUntil;
+    final tb = b.snoozedUntil;
+    if (ta != null && tb != null) return ta.compareTo(tb);
+    if (ta != null) return -1;
+    if (tb != null) return 1;
+    return b.receivedAt.compareTo(a.receivedAt);
+  }
 }
