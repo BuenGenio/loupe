@@ -88,16 +88,15 @@ final class ThreadAssigner {
     return threadId;
   }
 
-  /// A new thread is named after its root: the first reference, the parent,
-  /// or the message itself.
-  static String _newThreadId(EmailSummary e) {
+  /// A new thread is named after the account and its root: the first
+  /// reference, the parent, or the message itself.
+  String _newThreadId(EmailSummary e) {
     String norm(String? s) => s == null ? '' : normalizeMessageId(s);
     final root = e.references.map(norm).firstWhere((r) => r.isNotEmpty, orElse: () => '');
-    if (root.isNotEmpty) return 't:$root';
     final parent = norm(e.inReplyTo);
-    if (parent.isNotEmpty) return 't:$parent';
     final own = norm(e.messageIdHeader);
-    return own.isNotEmpty ? 't:$own' : 't:${e.id}';
+    final name = root.isNotEmpty ? root : (parent.isNotEmpty ? parent : (own.isNotEmpty ? own : e.id));
+    return '$accountId|t:$name';
   }
 
   Future<String?> _bySubject(EmailSummary e) async {
