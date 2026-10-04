@@ -259,10 +259,11 @@ final class ServerRules {
     final draft = rule.copyWith(location: RuleLocation.server);
     final next = withRule(await rules(), draft);
     final boxes = await mailboxes();
-    return [
+    // Each server answers on its own; a slow one doesn't hold up the rest.
+    return Future.wait([
       for (final account in await accounts())
-        if (draft.appliesTo(account.id)) await _preview(account, draft, next, boxes),
-    ];
+        if (draft.appliesTo(account.id)) _preview(account, draft, next, boxes),
+    ]);
   }
 
   Future<ServerRulePreview> _preview(MailAccount account, Rule rule, List<Rule> list, List<Mailbox> boxes) async {
