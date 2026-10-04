@@ -196,50 +196,53 @@ class MessageRow extends StatelessWidget {
       ],
     );
 
-    return Semantics(
-      button: true,
-      selected: selected || checked,
-      label: [
-        if (isUnread) 'Unread',
-        if (isVip) 'VIP',
-        if (email.isFlagged) 'Flagged',
-        if (messageCount > 1) '$messageCount messages',
-      ].join(', '),
-      child: Material(
-        color: selected ? colors.selectedRow : Theme.of(context).scaffoldBackgroundColor,
-        child: InkWell(
-          onTap: onTap,
-          onLongPress: onLongPress,
-          child: Stack(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  top: metrics.rowVerticalPadding,
-                  bottom: metrics.rowVerticalPadding,
-                  right: 14,
+    // One node per row, so screen readers read sender, subject and state together.
+    return MergeSemantics(
+      child: Semantics(
+        button: true,
+        selected: selected || checked,
+        label: [
+          if (isUnread) 'Unread',
+          if (isVip) 'VIP',
+          if (email.isFlagged) 'Flagged',
+          if (messageCount > 1) '$messageCount messages',
+        ].join(', '),
+        child: Material(
+          color: selected ? colors.selectedRow : Theme.of(context).scaffoldBackgroundColor,
+          child: InkWell(
+            onTap: onTap,
+            onLongPress: onLongPress,
+            child: Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: metrics.rowVerticalPadding,
+                    bottom: metrics.rowVerticalPadding,
+                    right: 14,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeOut,
+                        width: editing ? 44 : metrics.rowGutter,
+                        child: gutter(),
+                      ),
+                      Expanded(child: content),
+                    ],
+                  ),
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      curve: Curves.easeOut,
-                      width: editing ? 44 : metrics.rowGutter,
-                      child: gutter(),
-                    ),
-                    Expanded(child: content),
-                  ],
+                if (accountColor != null)
+                  Positioned(left: 0, top: 0, bottom: 0, child: Container(width: 3.5, color: accountColor)),
+                Positioned(
+                  left: editing ? 44 : metrics.rowGutter,
+                  right: 0,
+                  bottom: 0,
+                  child: Divider(height: 0.5, thickness: 0.5, color: colors.separator),
                 ),
-              ),
-              if (accountColor != null)
-                Positioned(left: 0, top: 0, bottom: 0, child: Container(width: 3.5, color: accountColor)),
-              Positioned(
-                left: editing ? 44 : metrics.rowGutter,
-                right: 0,
-                bottom: 0,
-                child: Divider(height: 0.5, thickness: 0.5, color: colors.separator),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
