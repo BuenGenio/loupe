@@ -6,6 +6,7 @@ import 'package:loupe/router.dart';
 import 'package:loupe/theme/loupe_icons.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:readable/readable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helpers.dart';
 
@@ -127,6 +128,34 @@ void main() {
     final to = find.ancestor(of: find.byKey(const ValueKey('recipients-To:')), matching: find.byType(Wrap));
     expect(find.descendant(of: to, matching: find.text('dev')), findsOneWidget);
     expect(find.text('Ines Duarte'), findsNothing);
+    await drainTimers(tester);
+  });
+
+  testWidgets('Settings › Technical Lists opens a list in plain text, Mono', (tester) async {
+    final repo = await pumpLoupe(tester);
+    await goTo(tester, Routes.settings);
+    await reveal(tester, find.byKey(const Key('technical-lists')));
+    expect(find.descendant(of: find.byKey(const Key('technical-lists')), matching: find.text('None')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('technical-lists')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Kestrel developers'));
+    await tester.pumpAndSettle();
+    final prefs = await SharedPreferences.getInstance();
+    expect(prefs.getStringList('reader.technicalLists'), [kestrel]);
+
+    final docs = (await repo.watchListThreads(kestrel).first).firstWhere((t) => t.patchBadge == 'PATCH');
+    await goTo(tester, Routes.message(docs.latest.id));
+    final view = tester.widget<ReadableMessageView>(find.byType(ReadableMessageView).first);
+    expect(view.settings.mode, ReaderMode.plain);
+    expect(view.settings.plainFont, PlainTextFont.mono);
+
+    // Other mail keeps the default view.
+    final garden = (await repo.watchListThreads('open-garden.lists.opengarden.example').first).first;
+    await goTo(tester, Routes.message(garden.latest.id));
+    expect(
+      tester.widget<ReadableMessageView>(find.byType(ReadableMessageView).last).settings.mode,
+      ReaderMode.readable,
+    );
     await drainTimers(tester);
   });
 }

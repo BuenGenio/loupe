@@ -16,6 +16,7 @@ import '../../shared/sync_status.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
+import '../conversation/reader_prefs.dart';
 import '../conversation/sheets.dart' show showSnack;
 import 'list_providers.dart';
 
@@ -88,13 +89,27 @@ class _MailingListScreenState extends ConsumerState<MailingListScreen> {
   }
 
   Future<void> _listMenu(MailingList? list) async {
+    final prefs = ref.read(readerPrefsProvider);
+    final technical = prefs.technicalLists.contains(widget.listId);
     final choice = await showActionSheet<String>(
       context,
       title: list?.name ?? widget.listId,
-      actions: [SheetAction(_showMuted ? 'Hide Muted Threads' : 'Show Muted Threads', 'muted', icon: LoupeIcons.mute)],
+      actions: [
+        SheetAction(
+          technical ? 'Open in Default View' : 'Open as Plain Text (Mono)',
+          'technical',
+          icon: LoupeIcons.font,
+        ),
+        SheetAction(_showMuted ? 'Hide Muted Threads' : 'Show Muted Threads', 'muted', icon: LoupeIcons.mute),
+      ],
     );
     if (!mounted) return;
-    if (choice == 'muted') setState(() => _showMuted = !_showMuted);
+    switch (choice) {
+      case 'technical':
+        await ref.read(readerPrefsProvider.notifier).setTechnicalList(widget.listId, technical: !technical);
+      case 'muted':
+        setState(() => _showMuted = !_showMuted);
+    }
   }
 
   void _compose(MailingList list) => openCompose(

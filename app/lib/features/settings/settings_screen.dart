@@ -10,7 +10,9 @@ import '../../router.dart';
 import '../../settings/app_settings.dart';
 import '../../shared/grouped_list.dart';
 import '../../theme/theme.dart';
+import '../conversation/reader_prefs.dart';
 import '../conversation/security/security_provider.dart';
+import '../mailing_lists/technical_lists_screen.dart';
 import 'settings_widgets.dart';
 import '../../theme/loupe_icons.dart';
 
@@ -167,6 +169,16 @@ class SettingsScreen extends ConsumerWidget {
                 ],
                 onSelected: (v) => controller.update((s) => s.copyWith(plainFont: v)),
               ),
+            ),
+            GroupedRow(
+              key: const Key('technical-lists'),
+              leading: SettingsIcon(LoupeIcons.mailingList, colors.swipeTrash),
+              title: 'Technical Lists',
+              detail: switch (ref.watch(readerPrefsProvider).technicalLists.length) {
+                0 => 'None',
+                final n => '$n',
+              },
+              onTap: () => TechnicalListsScreen.push(context),
             ),
             GroupedRow(
               leading: SettingsIcon(LoupeIcons.images, colors.unreadDot),

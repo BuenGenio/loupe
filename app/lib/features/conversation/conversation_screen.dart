@@ -167,6 +167,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
     var s =
         _session ??
         prefs.settingsFor(m.sender?.email) ??
+        prefs.listSettings(m.listId) ??
         ReaderSettings(mode: app.defaultReaderMode, plainFont: app.plainFont);
     if (_forceOriginal.contains(m.id)) s = s.copyWith(mode: ReaderMode.original);
     return s;
