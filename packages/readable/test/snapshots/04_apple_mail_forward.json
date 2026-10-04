@@ -10,7 +10,11 @@
       "remoteImages": 0,
       "suggestOriginal": false
     },
-    "links": [],
+    "links": [
+      {
+        "url": "mailto:avery@example.net"
+      }
+    ],
     "images": [],
     "blocks": [
       {
@@ -42,7 +46,15 @@
                 "color": "#000000"
               },
               {
-                "text": "Avery Sample <avery@example.net>"
+                "text": "Avery Sample <"
+              },
+              {
+                "text": "avery@example.net",
+                "u": true,
+                "link": 0
+              },
+              {
+                "text": ">"
               }
             ]
           },
@@ -158,7 +170,13 @@
                 "text": "From: "
               },
               {
-                "text": "Avery Sample <avery@example.net>"
+                "text": "Avery Sample <"
+              },
+              {
+                "text": "avery@example.net"
+              },
+              {
+                "text": ">"
               }
             ]
           },

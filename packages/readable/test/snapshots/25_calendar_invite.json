@@ -15,6 +15,9 @@
         "url": "https://meet.example.com/abc-defg-hij"
       },
       {
+        "url": "mailto:quinn@example.com"
+      },
+      {
         "url": "https://calendar.example.com/rsvp?r=yes"
       },
       {
@@ -108,7 +111,9 @@
             {
               "inlines": [
                 {
-                  "text": "quinn@example.com"
+                  "text": "quinn@example.com",
+                  "u": true,
+                  "link": 1
                 }
               ]
             }
@@ -135,21 +140,21 @@
       {
         "type": "button",
         "text": "Yes",
-        "link": 1,
+        "link": 2,
         "bg": "#1a73e8",
         "color": "#ffffff"
       },
       {
         "type": "button",
         "text": "Maybe",
-        "link": 2,
+        "link": 3,
         "bg": "#e8eaed",
         "color": "#3c4043"
       },
       {
         "type": "button",
         "text": "No",
-        "link": 3,
+        "link": 4,
         "bg": "#e8eaed",
         "color": "#3c4043"
       },

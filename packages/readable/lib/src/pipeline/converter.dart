@@ -11,7 +11,7 @@ import '../model/document.dart';
 import 'css.dart';
 import 'limits.dart';
 import 'links.dart';
-import 'plain_text.dart' show expandTabs;
+import 'plain_text.dart' show expandTabs, linkify;
 import 'sanitizer.dart' show flatText, imageDimension, visibleTextLength;
 
 /// Maps a `cid:` reference to the Content-ID key the host can resolve, or
@@ -849,7 +849,7 @@ final class _Sink {
 
   void flush() {
     if (_inlines.isEmpty) return;
-    final inlines = normalizeInlines(_inlines, keepWhitespace: _attrs.pre);
+    final inlines = _linkifyBareUrls(normalizeInlines(_inlines, keepWhitespace: _attrs.pre));
     _inlines.clear();
     if (!_hasContent(inlines)) return;
     final attrs = _attrs;
@@ -922,6 +922,21 @@ final class _Sink {
     addBlock(ParagraphBlock(inlines, align: align, dir: attrs.dir, tight: tight, muted: attrs.muted));
     if (attrs.line) _lastLine = element;
   }
+
+  /// Bare URLs and addresses in text become links, as other mail apps do
+  /// ("copy and paste this URL into your browser").
+  List<Inline> _linkifyBareUrls(List<Inline> inlines) {
+    if (!inlines.any((i) => i is TextRun && i.style.link == null && _maybeLink.hasMatch(i.text))) return inlines;
+    return [
+      for (final i in inlines)
+        if (i is TextRun && i.style.link == null && _maybeLink.hasMatch(i.text))
+          ...linkify(i.text, c.links, i.style)
+        else
+          i,
+    ];
+  }
+
+  static final _maybeLink = RegExp(r'https?://|www\.|@', caseSensitive: false);
 
   static bool _hasContent(List<Inline> inlines) =>
       inlines.any((i) => i is InlineImage || (i is TextRun && i.text.replaceAll(_blank, '').isNotEmpty));

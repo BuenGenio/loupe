@@ -10,7 +10,14 @@
       "remoteImages": 0,
       "suggestOriginal": false
     },
-    "links": [],
+    "links": [
+      {
+        "url": "mailto:jordan@example.org"
+      },
+      {
+        "url": "mailto:riley@example.com"
+      }
+    ],
     "images": [
       {
         "src": "cid:image001.png@01DA0000.00000000",
@@ -122,7 +129,15 @@
             "b": true
           },
           {
-            "text": " Jordan Sample <jordan@example.org>\n"
+            "text": " Jordan Sample <"
+          },
+          {
+            "text": "jordan@example.org",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": ">\n"
           },
           {
             "text": "Sent:",
@@ -136,7 +151,15 @@
             "b": true
           },
           {
-            "text": " Riley Example <riley@example.com>\n"
+            "text": " Riley Example <"
+          },
+          {
+            "text": "riley@example.com",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": ">\n"
           },
           {
             "text": "Subject:",
@@ -285,7 +308,13 @@
             "text": "From:"
           },
           {
-            "text": " Jordan Sample <jordan@example.org>\n"
+            "text": " Jordan Sample <"
+          },
+          {
+            "text": "jordan@example.org"
+          },
+          {
+            "text": ">\n"
           },
           {
             "text": "Sent:"
@@ -297,7 +326,13 @@
             "text": "To:"
           },
           {
-            "text": " Riley Example <riley@example.com>\n"
+            "text": " Riley Example <"
+          },
+          {
+            "text": "riley@example.com"
+          },
+          {
+            "text": ">\n"
           },
           {
             "text": "Subject:"

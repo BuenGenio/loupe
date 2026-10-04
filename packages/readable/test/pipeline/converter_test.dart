@@ -201,6 +201,12 @@ void main() {
       expect(doc.links.map((l) => l.url), ['https://ok.example', 'mailto:a@b.example']);
     });
 
+    test('bare URLs and addresses in text become links', () {
+      final doc = readable('<p>Paste https://x.example/reset?t=1 into your browser or write to help@x.example.</p>');
+      expect(doc.links.map((l) => l.url), ['https://x.example/reset?t=1', 'mailto:help@x.example']);
+      expect(doc.links.every((l) => !l.isMismatch), isTrue);
+    });
+
     test('link text naming another domain is flagged', () {
       final doc = readable('<a href="https://login.evil.example/x">https://www.mybank.example/login</a>');
       expect(doc.links.single.namedDomain, 'www.mybank.example');

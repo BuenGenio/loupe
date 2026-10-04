@@ -53,6 +53,15 @@ void main() {
     expect((doc.blocks.first as ParagraphBlock).muted, isFalse);
   });
 
+  test('ASCII tables become unwrapped monospace blocks; separator lines become rules', () {
+    final doc = parsePlainText(
+      'Results:\n\n+-----+-----+\n| a   | b   |\n+-----+-----+\n\n------------------------------\n\nBye',
+    );
+    expect(doc.blocks.map((b) => b.toJson()['type']), ['p', 'pre', 'hr', 'p']);
+    expect(inlineText((doc.blocks[1] as PreBlock).inlines), startsWith('+-----+'));
+    expect(looksTabular(['just', 'some', 'prose | with one pipe']), isFalse);
+  });
+
   test('tabs expand to 8 columns', () {
     expect(paragraphText(parsePlainText('a\tb\nabcdefgh\tc').blocks.single), 'a       b\nabcdefgh        c');
   });

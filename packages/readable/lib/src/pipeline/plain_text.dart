@@ -183,10 +183,34 @@ final class _TreeBuilder {
       _para.clear();
       return;
     }
-    final text = _para.join('\n');
+    final lines = List.of(_para);
     _para.clear();
-    _stack.last.add(ParagraphBlock(linkify(text, links), muted: _paraSig));
+    final text = lines.join('\n');
+    if (lines.length == 1 && _separator.hasMatch(text)) {
+      // "--------" between sections: a rule, not a line that wraps.
+      _stack.last.add(const RuleBlock());
+    } else if (!_paraSig && looksTabular(lines)) {
+      // ASCII tables and diagrams keep their columns: monospace, no wrapping.
+      _stack.last.add(PreBlock(linkify(text, links, const RunStyle(mono: true))));
+    } else {
+      _stack.last.add(ParagraphBlock(linkify(text, links), muted: _paraSig));
+    }
   }
+}
+
+final _separator = RegExp(r'^\s*([-=_*~#+]\s*){10,}$');
+final _boxDrawing = RegExp('[\u2500-\u257f]');
+final _ruleLine = RegExp(r'^\s*[-=+|_:.\u2500-\u257f ]{5,}\s*$');
+
+/// True for an ASCII table or box drawing: most lines are column rules
+/// (`+----+----+`) or have two or more `|` separators.
+bool looksTabular(List<String> lines) {
+  if (lines.length < 3) return false;
+  var tabular = 0;
+  for (final line in lines) {
+    if (_ruleLine.hasMatch(line) || '|'.allMatches(line).length >= 2 || _boxDrawing.hasMatch(line)) tabular++;
+  }
+  return tabular * 2 >= lines.length;
 }
 
 /// Splits [text] into runs, turning URLs and addresses into links (added to
