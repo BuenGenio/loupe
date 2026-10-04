@@ -40,7 +40,9 @@ android {
         versionName = flutter.versionName
         // As flutter_local_notifications' setup asks, with desugaring.
         multiDexEnabled = true
-        // flutter_appauth (mail_platform): OAuth redirect io.github.buengenio.loupe:/oauth2redirect
+        // flutter_appauth (mail_platform): Google's OAuth redirect io.github.buengenio.loupe:/oauth2redirect.
+        // Google's Android client takes the package name as scheme once "Custom URI scheme" is on
+        // (docs/oauth-setup.md). Microsoft's redirect has its own intent filter in AndroidManifest.xml.
         manifestPlaceholders["appAuthRedirectScheme"] = "io.github.buengenio.loupe"
     }
 

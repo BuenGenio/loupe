@@ -5,3 +5,4 @@ library;
 export 'src/credentials_service.dart';
 export 'src/oauth.dart';
 export 'src/secure_credential_store.dart';
+export 'src/token_endpoint.dart';
