@@ -734,7 +734,9 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
         undoDelay: Duration(seconds: undoSeconds),
         sendAt: at,
       );
-      if (at != null) wakeUpAt(ref, at);
+      // Queued: nothing below may end in the failure path (a retry would
+      // queue it twice).
+      if (at != null && mounted) wakeUpAt(ref, at);
       _forgetLocal();
       _closeNow();
       final undo = at != null || undoSeconds > 0;

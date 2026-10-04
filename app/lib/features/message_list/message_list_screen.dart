@@ -214,7 +214,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     );
     if (next == null || !mounted) return;
     await ref.read(filterCriteriaProvider.notifier).set(next);
-    setState(() => _filterOn = next.isNotEmpty);
+    if (mounted) setState(() => _filterOn = next.isNotEmpty);
   }
 
   Future<void> _markSelected(List<ThreadSummary> rows, MailActions actions) async {

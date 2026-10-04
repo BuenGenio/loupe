@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:loupe/features/compose/send_later.dart';
@@ -5,6 +7,23 @@ import 'package:loupe/features/compose/send_later.dart';
 // Times are wall-clock times in the device's zone. Run this file with, e.g.,
 // TZ=Europe/Berlin or TZ=America/New_York to exercise daylight-saving days.
 void main() {
+  testWidgets('asking for a wake-up after the screen is gone does nothing, quietly', (tester) async {
+    late WidgetRef captured;
+    await tester.pumpWidget(
+      ProviderScope(
+        child: Consumer(
+          builder: (context, ref, _) {
+            captured = ref;
+            return const SizedBox();
+          },
+        ),
+      ),
+    );
+    await tester.pumpWidget(const SizedBox());
+    // A scheduled send queued after an await, from a compose screen that closed.
+    expect(() => wakeUpAt(captured, DateTime(2026, 10, 5, 8)), returnsNormally);
+  });
+
   setUpAll(() async => initializeDateFormatting());
 
   Map<SendLaterPreset, DateTime> presets(DateTime now) => {for (final (p, at) in sendLaterPresets(now)) p: at};

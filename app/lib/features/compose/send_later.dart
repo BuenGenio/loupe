@@ -110,9 +110,17 @@ final _wakeUpTimesProvider = Provider<Set<int>>((ref) => <int>{});
 /// Asks for a background wake-up at [at], so a scheduled message goes out
 /// even when Loupe isn't running. Best effort: in the foreground the
 /// repository's own timer sends it anyway. Once per time and run.
+///
+/// Never throws: it runs after the message is queued, often after an await,
+/// when the screen whose [ref] it is may be gone (`ref` throws then; the
+/// Mailboxes screen asks again on the next launch).
 void wakeUpAt(WidgetRef ref, DateTime at) {
-  if (!ref.read(_wakeUpTimesProvider).add(at.millisecondsSinceEpoch)) return;
-  unawaited(ref.read(backgroundSchedulerProvider).scheduleWakeUp(at).catchError((Object _) {}));
+  try {
+    if (!ref.read(_wakeUpTimesProvider).add(at.millisecondsSinceEpoch)) return;
+    unawaited(ref.read(backgroundSchedulerProvider).scheduleWakeUp(at).catchError((Object _) {}));
+  } on StateError catch (e) {
+    debugPrint('No wake-up asked for: ${e.runtimeType}');
+  }
 }
 
 /// What the Send Later sheet chose: a time, or (with [at] null) to send
