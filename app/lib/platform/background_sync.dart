@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,6 +58,7 @@ final class BackgroundSync {
     required this.scheduler,
     DateTime Function()? clock,
     this.watchEvery = const Duration(seconds: 2),
+    this.budget = const Duration(minutes: 8),
   }) : _clock = clock ?? DateTime.now;
 
   final SharedPreferences prefs;
@@ -71,6 +73,12 @@ final class BackgroundSync {
 
   /// How often the app's lease is checked while syncing.
   final Duration watchEvery;
+
+  /// The longest a sync may take. Android gives a job about ten minutes and
+  /// then kills it (onTaskStopped isn't always delivered first); a sync
+  /// still running by now stops, so the database closes and the lease goes
+  /// cleanly. The next run continues.
+  final Duration budget;
 
   bool _stopped = false;
   BackgroundMail? _mail;
@@ -107,7 +115,12 @@ final class BackgroundSync {
     try {
       if (_stopped) return BackgroundSyncResult.interrupted;
       final started = _clock();
-      await mail.syncOnce();
+      final finished = await mail.syncOnce().then((_) => true).timeout(budget, onTimeout: () => false);
+      if (!finished) {
+        debugPrint('Background sync ran out of time');
+        _stopped = true;
+        await mail.interrupt();
+      }
       if (_stopped) return BackgroundSyncResult.interrupted;
       final repository = mail.repository;
       await check.run(repository, NotificationSettings.read(prefs), since: started);
