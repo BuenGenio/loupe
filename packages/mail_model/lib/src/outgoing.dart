@@ -12,11 +12,26 @@ final class OutgoingAttachment {
 
 enum ComposeMode { newMessage, reply, replyAll, forward, editDraft }
 
-/// End-to-end protection chosen for an outgoing message (OpenPGP today).
-/// The composer applies it; without a key it fails rather than sending in
-/// the clear.
+/// The end-to-end encryption standard a message is protected with.
+enum SecurityTechnology {
+  /// PGP/MIME (RFC 3156), as Thunderbird, Proton and K-9 Mail write it.
+  openPgp,
+
+  /// S/MIME (RFC 8551) with X.509 certificates, as Outlook and Apple Mail write it.
+  smime,
+}
+
+/// End-to-end protection chosen for an outgoing message, with OpenPGP or
+/// S/MIME ([technology]). The composer applies it; without a key or
+/// certificate it fails rather than sending in the clear.
 final class OutgoingSecurity {
-  const OutgoingSecurity({this.encrypt = false, this.sign = false, this.attachPublicKey = false, this.draft = false});
+  const OutgoingSecurity({
+    this.encrypt = false,
+    this.sign = false,
+    this.attachPublicKey = false,
+    this.draft = false,
+    this.technology = SecurityTechnology.openPgp,
+  });
 
   /// Nothing: a plain message.
   static const none = OutgoingSecurity();
@@ -24,27 +39,37 @@ final class OutgoingSecurity {
   /// Encrypt to every recipient and to the sender.
   final bool encrypt;
 
-  /// Sign with the sender's key.
+  /// Sign with the sender's key (S/MIME: certificate).
   final bool sign;
 
-  /// Attach the sender's public key.
+  /// Attach the sender's public key (OpenPGP only; S/MIME signatures carry the certificate).
   final bool attachPublicKey;
 
   /// Saving a draft: encrypted (when [encrypt]) only to the sender, never
   /// signed, and the choices are kept in the draft so they come back.
   final bool draft;
 
+  final SecurityTechnology technology;
+
   bool get isPlain => !encrypt && !sign && !attachPublicKey;
 
+  bool get isSmime => technology == SecurityTechnology.smime;
+
   /// The same choices for saving as a draft.
-  OutgoingSecurity forDraft() =>
-      OutgoingSecurity(encrypt: encrypt, sign: sign, attachPublicKey: attachPublicKey, draft: true);
+  OutgoingSecurity forDraft() => OutgoingSecurity(
+    encrypt: encrypt,
+    sign: sign,
+    attachPublicKey: attachPublicKey,
+    draft: true,
+    technology: technology,
+  );
 
   Map<String, Object?> toJson() => {
     if (encrypt) 'encrypt': true,
     if (sign) 'sign': true,
     if (attachPublicKey) 'attachPublicKey': true,
     if (draft) 'draft': true,
+    if (technology != SecurityTechnology.openPgp) 'technology': technology.name,
   };
 
   factory OutgoingSecurity.fromJson(Map<String, Object?>? json) => json == null
@@ -54,6 +79,7 @@ final class OutgoingSecurity {
           sign: json['sign'] == true,
           attachPublicKey: json['attachPublicKey'] == true,
           draft: json['draft'] == true,
+          technology: SecurityTechnology.values.asNameMap()[json['technology']] ?? SecurityTechnology.openPgp,
         );
 
   @override
@@ -62,10 +88,11 @@ final class OutgoingSecurity {
       other.encrypt == encrypt &&
       other.sign == sign &&
       other.attachPublicKey == attachPublicKey &&
-      other.draft == draft;
+      other.draft == draft &&
+      other.technology == technology;
 
   @override
-  int get hashCode => Object.hash(encrypt, sign, attachPublicKey, draft);
+  int get hashCode => Object.hash(encrypt, sign, attachPublicKey, draft, technology);
 }
 
 /// A message being composed or queued for sending.
