@@ -29,6 +29,8 @@ import 'features/settings/notification_settings_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/settings/swipe_settings_screen.dart';
 import 'features/snooze/snoozed_screen.dart';
+import 'features/subscriptions/subscription_screen.dart';
+import 'features/subscriptions/subscriptions_screen.dart';
 import 'settings/app_mode.dart';
 import 'shared/mailbox_ref_codec.dart';
 
@@ -83,6 +85,11 @@ abstract final class Routes {
   /// Snoozed messages of every account, with their wake times.
   static const snoozed = '/snoozed';
 
+  /// Mailboxes › Subscriptions (the unsubscribe centre), and one of them by
+  /// `Subscription.key`.
+  static const subscriptions = '/subscriptions';
+  static String subscription(String key) => '$subscriptions/${Uri.encodeComponent(key)}';
+
   static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
 
   /// A mailing list's threads, by List-Id.
@@ -133,6 +140,16 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.welcome, builder: (context, state) => const WelcomeScreen()),
       GoRoute(path: Routes.outbox, builder: (context, state) => const OutboxScreen()),
       GoRoute(path: Routes.snoozed, builder: (context, state) => const SnoozedScreen()),
+      GoRoute(
+        path: Routes.subscriptions,
+        builder: (context, state) => const SubscriptionsScreen(),
+        routes: [
+          GoRoute(
+            path: ':key',
+            builder: (context, state) => SubscriptionScreen(subscriptionKey: state.pathParameters['key']!),
+          ),
+        ],
+      ),
       GoRoute(
         path: '/list/:ref',
         builder: (context, state) =>
