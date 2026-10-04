@@ -222,6 +222,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
           icon: anyUnread ? LoupeIcons.markRead : LoupeIcons.markUnread,
         ),
         SheetAction(anyUnflagged ? 'Flag' : 'Unflag', 'flag', icon: LoupeIcons.flagged),
+        const SheetAction('Snooze…', 'snooze', icon: LoupeIcons.snooze),
         const SheetAction('Move to Junk', 'junk', icon: LoupeIcons.junk),
       ],
     );
@@ -230,6 +231,9 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
         await actions.setRead(rows, read: anyUnread);
       case 'flag':
         await actions.setFlag(rows, flagged: anyUnflagged);
+      case 'snooze':
+        // Cancelling the time keeps the selection.
+        if (!await actions.snooze(rows)) return;
       case 'junk':
         await actions.junk(rows, junk: true);
       default:

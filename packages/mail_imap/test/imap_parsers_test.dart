@@ -179,10 +179,25 @@ void main() {
     expect(select.uidNext, 4392);
     expect(select.highestModSeq, 715194045007);
     expect(select.permanentFlags, contains(r'\*'));
+    expect(select.canStoreKeywords, isTrue);
     expect(select.readOnly, isFalse);
 
     final status = runParser(StatusParser(), crlf('* STATUS "Sent Items" (MESSAGES 231 UIDNEXT 44292 UNSEEN 3)\n'));
     expect(status, {'MESSAGES': 231, 'UIDNEXT': 44292, 'UNSEEN': 3});
+  });
+
+  test('PERMANENTFLAGS decides whether keywords can be stored', () {
+    SelectData select(String lines) => runParser(SelectParser(), crlf(lines), tagged: 'OK SELECT completed');
+    // Outlook.com and Exchange: no \*, so snooze times can't live on the server.
+    expect(
+      select('* OK [PERMANENTFLAGS (\\Seen \\Answered \\Flagged \\Deleted \\Draft \$MDNSent)] Permanent flags\n')
+          .canStoreKeywords,
+      isFalse,
+    );
+    expect(select('* OK [PERMANENTFLAGS ()] No permanent flags permitted\n').canStoreKeywords, isFalse);
+    expect(select('* OK [PERMANENTFLAGS (\\Seen \\*)] Ok\n').canStoreKeywords, isTrue);
+    // Not sent at all: RFC 9051 says every flag is permanent.
+    expect(select('* 3 EXISTS\n').canStoreKeywords, isNull);
   });
 
   test('capabilities and response codes', () {

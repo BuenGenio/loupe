@@ -24,6 +24,7 @@ import '../mailing_lists/list_providers.dart';
 import '../outbox/outbox_screen.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
+import '../snooze/snoozed_screen.dart';
 import 'vip_screen.dart';
 import '../../theme/loupe_icons.dart';
 
@@ -59,6 +60,14 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
       final now = DateTime.now();
       for (final item in next.value ?? const <OutboxItem>[]) {
         if (item.status == OutboxStatus.scheduled && item.sendAt.isAfter(now)) wakeUpAt(ref, item.sendAt);
+      }
+    }, fireImmediately: true);
+    // So do snoozed messages, from this device or another one.
+    ref.listenManual(snoozedProvider, (_, next) {
+      final now = DateTime.now();
+      for (final e in next.value ?? const <EmailSummary>[]) {
+        final at = e.snoozedUntil;
+        if (at != null && at.isAfter(now)) wakeUpAt(ref, at.toLocal());
       }
     }, fireImmediately: true);
     // A message left unsent when Loupe last closed: offer to continue it.
@@ -318,6 +327,7 @@ class _VirtualSection extends ConsumerWidget {
       VirtualMailbox.allSent,
     ];
     final outbox = ref.watch(outboxProvider).value ?? const <OutboxItem>[];
+    final snoozed = ref.watch(snoozedProvider).value ?? const <EmailSummary>[];
     final colors = LoupeColors.of(context);
     final rows = [
       for (final kind in order)
@@ -342,6 +352,18 @@ class _VirtualSection extends ConsumerWidget {
                   )
                 : null,
           ),
+      // While something is snoozed; Edit can hide it.
+      if (editing || (snoozed.isNotEmpty && v.visible('v.snoozed')))
+        _MailboxTile(
+          key: const ValueKey('snoozed'),
+          title: 'Snoozed',
+          icon: LoupeIcons.snoozed,
+          count: snoozed.length,
+          editing: editing,
+          visible: v.visible('v.snoozed'),
+          onToggleVisible: () => v.toggle('v.snoozed'),
+          onTap: () => context.push(Routes.snoozed),
+        ),
       // Only while something waits to be sent; it can't be hidden.
       if (outbox.isNotEmpty && !editing)
         _MailboxTile(
@@ -373,8 +395,10 @@ class _AccountSection extends ConsumerWidget {
     final colors = LoupeColors.of(context);
     final collapsed = ref.watch(collapsedAccountsProvider).contains(account.id);
     final expanded = ref.watch(expandedFoldersProvider);
+    // The Loupe Settings folder holds Smart Mailboxes, not mail; the Snoozed
+    // folder shows as the Snoozed mailbox at the top.
     final mailboxes = (ref.watch(mailboxesProvider).value ?? const <Mailbox>[])
-        .where((m) => m.accountId == account.id)
+        .where((m) => m.accountId == account.id && !ServerDocuments.isFolder(m) && !Snooze.isFolder(m))
         .toList();
     final v = _visibility(ref);
     final showAll = ref.watch(showAllFoldersProvider).contains(account.id);

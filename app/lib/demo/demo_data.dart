@@ -150,6 +150,7 @@ final class DemoSeed {
     _olderMail();
     _serverMail();
     securityCases();
+    _snoozed();
   }
 
   void _accounts() {
@@ -199,9 +200,22 @@ final class DemoSeed {
         authKind: AuthKind.password,
         incoming: const ServerConfig(protocol: ServerProtocol.imap, host: 'imap.fastmail.com', port: 993),
         outgoing: const ServerConfig(protocol: ServerProtocol.smtp, host: 'smtp.fastmail.com', port: 465),
+        // A custom domain with a catch-all: replies to bookclub@ offer to go out from it.
         identities: const [
           Identity(id: 'fastmail/default', email: 'sam@rivera.example', name: 'Sam Rivera', signature: '— Sam'),
-          Identity(id: 'fastmail/lists', email: 'lists@rivera.example', name: 'Sam Rivera'),
+          Identity(
+            id: 'fastmail/shop',
+            email: 'sam+shop@rivera.example',
+            name: 'Sam Rivera',
+            signature: '— Sam',
+            replyTo: 'sam@rivera.example',
+          ),
+          Identity(
+            id: 'fastmail/lists',
+            email: 'lists@rivera.example',
+            name: 'Sam Rivera',
+            replyPatterns: ['*@lists.opengarden.example'],
+          ),
         ],
         colorIndex: 4,
       ),
@@ -538,7 +552,8 @@ final class DemoSeed {
           '15:00 Quinta da Regaleira\n18:30 back to Lisbon\n\nTom',
       thread: lisbon,
       unread: true,
-      tags: {Keywords.label3},
+      // Snoozed until this morning: back in the Inbox, marked "Snoozed".
+      tags: {Keywords.label3, Keywords.newAgain},
     );
 
     // Dinner thread with a VIP.
@@ -984,6 +999,7 @@ final class DemoSeed {
       box: inbox,
       at: at(1, 18, 30),
       from: DemoPeople.bookshop,
+      to: [const EmailAddress('sam+shop@rivera.example', 'Sam Rivera')],
       subject: 'Order #10482 confirmed — ready for pickup Thursday',
       html: bookshopReceiptHtml,
       attachments: [
@@ -996,9 +1012,11 @@ final class DemoSeed {
       box: inbox,
       at: at(2, 7, 0),
       from: DemoPeople.bookClub,
+      to: [const EmailAddress('bookclub@rivera.example')],
       subject: 'November pick: The Lantern Keepers',
       html: bookClubHtml,
       unread: true,
+      headers: const [('Delivered-To', 'sam+catchall@rivera.example'), ('X-Original-To', 'bookclub@rivera.example')],
     );
 
     const manifest = 'manifest';
@@ -1604,6 +1622,56 @@ final class DemoSeed {
   String _monthName(int daysAgo) {
     const names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return names[now.subtract(Duration(days: daysAgo)).month - 1];
+  }
+
+  /// Snoozed messages (the Snoozed mailbox). The Lisbon reply from Tom woke
+  /// up this morning.
+  void _snoozed() {
+    const p = DemoAccounts.personal;
+    const f = DemoAccounts.fastmail;
+    for (final account in const [p, f]) {
+      mailboxes.add(
+        Mailbox(
+          id: MailIds.mailbox(account, Snooze.folderName),
+          accountId: account,
+          name: Snooze.folderName,
+          path: Snooze.folderName,
+          sortOrder: mailboxes.length,
+        ),
+      );
+    }
+    DateTime day(int days, int hour) => DateTime(now.year, now.month, now.day + days, hour);
+    final toMonday = (DateTime.monday - now.weekday) % 7;
+    add(
+      account: p,
+      box: Snooze.folderName,
+      at: at(2, 18, 40),
+      from: DemoPeople.rail,
+      subject: 'Your tickets: Lisbon Oriente, Friday 07:42',
+      text:
+          'Your e-tickets are ready. Show the QR code at the gate; no need to print it.\n\n'
+          'Coach 4, seats 41 and 42. Have a good trip!',
+      tags: {Snooze.keyword(day(1, 8))},
+    );
+    add(
+      account: f,
+      box: Snooze.folderName,
+      at: at(1, 11, 5),
+      from: DemoPeople.registrar,
+      subject: 'Your card on file expires this month',
+      text: 'The card ending 4410 expires at the end of the month. Update it before your domains renew in November.',
+      tags: {Snooze.keyword(day(toMonday == 0 ? 7 : toMonday, 8))},
+    );
+    add(
+      account: f,
+      box: Snooze.folderName,
+      at: at(3, 20, 15),
+      from: DemoPeople.backup,
+      subject: 'Weekly backup report: 2 warnings',
+      text: 'Backups finished with 2 warnings: the photo library was busy twice. Everything else is up to date.',
+      unread: true,
+      tags: {Snooze.keyword(day(3, 9))},
+    );
   }
 
   void _serverMail() {

@@ -23,6 +23,7 @@ class MessageRow extends StatelessWidget {
     this.fromServer = false,
     this.location,
     this.showRecipients = false,
+    this.wakeTime,
     this.onTap,
     this.onLongPress,
   });
@@ -54,6 +55,10 @@ class MessageRow extends StatelessWidget {
 
   /// Sent and draft mailboxes show who the message went to.
   final bool showRecipients;
+
+  /// When a snoozed message comes back ("Tomorrow 08:00"), shown with a
+  /// clock instead of the date (the Snoozed mailbox).
+  final String? wakeTime;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
 
@@ -130,8 +135,23 @@ class MessageRow extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 6),
                 child: Icon(LoupeIcons.attachment, size: 14, color: colors.secondaryText, semanticLabel: 'Attachment'),
               ),
+            // Woke from snooze and still unread: a small mark, as Apple Mail does.
+            if (wakeTime == null && email.isNewAgain) ...[
+              const SizedBox(width: 6),
+              Icon(LoupeIcons.snoozeFilled, size: 12, color: colors.snooze),
+              const SizedBox(width: 2),
+              Text(
+                'Snoozed',
+                style: styles.caption.copyWith(color: colors.snooze, fontWeight: FontWeight.w600),
+              ),
+            ],
             const SizedBox(width: 6),
-            Text(formatListDate(email.receivedAt), style: styles.date),
+            if (wakeTime case final wake?) ...[
+              Icon(LoupeIcons.snooze, size: 13, color: colors.snooze),
+              const SizedBox(width: 3),
+              Text(wake, style: styles.date.copyWith(color: colors.snooze)),
+            ] else
+              Text(formatListDate(email.receivedAt), style: styles.date),
             if (messageCount > 1)
               Container(
                 margin: const EdgeInsets.only(left: 6),
@@ -198,6 +218,7 @@ class MessageRow extends StatelessWidget {
         selected: selected || checked,
         label: [
           if (isUnread) 'Unread',
+          if (wakeTime == null && email.isNewAgain) 'Back from snooze',
           if (isVip) 'VIP',
           if (email.isFlagged) 'Flagged',
           if (messageCount > 1) '$messageCount messages',

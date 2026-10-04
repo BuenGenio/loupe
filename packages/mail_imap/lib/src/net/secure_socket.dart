@@ -116,6 +116,51 @@ Future<Socket> openMailSocket({
   }
 }
 
+/// Upgrades [plain] to TLS for a protocol whose STARTTLS exchange the caller
+/// did itself (ManageSieve), with the certificate check of [openMailSocket].
+/// As for [SecureSocket.secure], pause the caller's subscription to [plain]
+/// first and cancel it afterwards.
+Future<SecureSocket> secureMailSocket(
+  Socket plain, {
+  required String host,
+  String? trustedSha256,
+  Duration timeout = const Duration(seconds: 20),
+}) async {
+  UntrustedCertificate? rejected;
+  bool onBadCertificate(X509Certificate cert) {
+    final fp = certificateFingerprint(cert);
+    if (trustedSha256 != null && normalizeFingerprint(trustedSha256) == fp) return true;
+    rejected = UntrustedCertificate(
+      host: host,
+      sha256: fp,
+      subject: cert.subject,
+      issuer: cert.issuer,
+      validUntil: cert.endValidity,
+    );
+    return false;
+  }
+
+  try {
+    return await SecureSocket.secure(plain, host: host, onBadCertificate: onBadCertificate).timeout(timeout);
+  } on HandshakeException catch (e) {
+    final cert = rejected;
+    if (cert != null) {
+      throw MailException(
+        MailErrorKind.certificate,
+        'The security certificate of $host is not trusted (SHA-256 ${cert.sha256}).',
+        cert,
+      );
+    }
+    throw MailException(MailErrorKind.connection, 'Secure connection to $host failed.', e);
+  } on TlsException catch (e) {
+    throw MailException(MailErrorKind.connection, 'Secure connection to $host failed.', e);
+  } on SocketException catch (e) {
+    throw MailException(MailErrorKind.connection, 'Lost the connection to $host.', e);
+  } on TimeoutException catch (e) {
+    throw MailException(MailErrorKind.connection, 'The secure connection to $host timed out.', e);
+  }
+}
+
 String _socketMessage(String host, int port, SocketException e) {
   final os = e.osError?.message;
   if (e.message.contains('Failed host lookup') || (os ?? '').contains('No address associated')) {

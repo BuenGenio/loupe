@@ -24,6 +24,7 @@ class RecordingBadge implements AppIconBadge {
 
 Future<void> _choose(WidgetTester tester, String option) async {
   await goTo(tester, Routes.notificationSettings);
+  await tester.scrollTo(find.text('App Icon Badge'));
   await tester.tap(find.text('App Icon Badge'));
   await tester.pumpAndSettle();
   await tester.tap(find.text(option));
@@ -62,8 +63,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Notifications'));
     await tester.pumpAndSettle();
+    await tester.scrollTo(find.text('Unread in Inboxes'));
     expect(find.text('Unread in Inboxes'), findsOneWidget);
-    expect(textContaining('The badge updates when Loupe syncs.'), findsOneWidget);
+    expect(textContaining('The badge updates whenever Loupe checks for mail'), findsOneWidget);
     for (var i = 0; i < 2; i++) {
       await tester.tap(find.bySemanticsLabel('Back'));
       await tester.pumpAndSettle();
@@ -83,6 +85,7 @@ void main() {
     await pumpLoupe(tester, badge: unsupported);
     expect(unsupported.shown, isEmpty);
     await goTo(tester, Routes.notificationSettings);
+    await tester.scrollTo(textContaining('doesn’t show numbers on app icons'));
     expect(textContaining('doesn’t show numbers on app icons'), findsOneWidget);
 
     final badge = RecordingBadge();

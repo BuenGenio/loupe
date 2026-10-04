@@ -22,6 +22,8 @@ enum MessageAction {
   toggleSeen,
   toggleFlag,
   tags,
+  snooze,
+  wakeNow,
   move,
   archive,
   trash,
@@ -34,12 +36,14 @@ enum MessageAction {
 
 /// The "…" menu of [message]. [canArchive]: the account has an archive
 /// mailbox and the message isn't in it. [mailboxRole]: where it lives now.
+/// [snoozed]: it waits in the Snoozed folder (Wake Now, Change Time).
 /// [muted]: whether its thread is muted; null when muting isn't available.
 Future<MessageAction?> showMessageMenu(
   BuildContext context, {
   required EmailSummary message,
   required bool canArchive,
   required MailboxRole mailboxRole,
+  bool snoozed = false,
   bool? muted,
 }) {
   final toList = listPostAddress(message.listPost) != null;
@@ -94,6 +98,15 @@ Future<MessageAction?> showMessageMenu(
             ),
             SheetGroup(
               children: [
+                if (snoozed) ...[
+                  SheetRow(label: 'Wake Now', icon: LoupeIcons.wakeNow, onTap: () => pick(MessageAction.wakeNow)),
+                  SheetRow(
+                    label: 'Change Snooze Time…',
+                    icon: LoupeIcons.snooze,
+                    onTap: () => pick(MessageAction.snooze),
+                  ),
+                ] else
+                  SheetRow(label: 'Snooze…', icon: LoupeIcons.snooze, onTap: () => pick(MessageAction.snooze)),
                 SheetRow(label: 'Move…', icon: LoupeIcons.move, onTap: () => pick(MessageAction.move)),
                 if (canArchive)
                   SheetRow(label: 'Archive', icon: LoupeIcons.archive, onTap: () => pick(MessageAction.archive)),

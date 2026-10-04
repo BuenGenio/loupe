@@ -19,6 +19,13 @@ abstract interface class SyncHost {
   CredentialsCallback credentialsFor(MailAccount account);
   void reportStatus(AccountSyncStatus status);
   void reportError(MailException error);
+
+  /// The Inbox [inboxId] of [account] was just synced (device rules run).
+  Future<void> inboxSynced(MailAccount account, String inboxId);
+
+  /// Called after each full sync of [syncer]'s account (its Snoozed folder
+  /// is fresh then): wakes the messages whose snooze is over.
+  Future<void> wakeSnoozed(AccountSyncer syncer);
 }
 
 /// Types of queued server operations.
@@ -37,6 +44,15 @@ abstract final class OpType {
 
   /// `{mailboxId, name, subscribed, previous}`
   static const subscribe = 'subscribe';
+
+  /// `{mailboxId, path, name}`: creates a folder (the Snoozed folder).
+  static const createMailbox = 'createMailbox';
+
+  /// `{ids, until}`: a snooze kept on this device only, because the server
+  /// doesn't store keywords. Never sent; it waits here until the message
+  /// wakes, its ids follow moves like any later operation's, and syncs keep
+  /// its `$snoozed-…` keyword on the local copy.
+  static const localSnooze = 'localSnooze';
 }
 
 /// One server search's hits (post-filtered) and the ids that were not
@@ -71,6 +87,11 @@ final class AccountSyncer {
   /// Mailboxes to sync after operations changed them.
   final _dirty = <String>{};
 
+  /// What the Inbox and the Snoozed folder said about keywords when last
+  /// synced (PERMANENTFLAGS); see [storesKeywords].
+  bool? _inboxKeywords;
+  bool? _snoozeKeywords;
+
   bool _running = false;
   bool _disposed = false;
   int _failures = 0;
@@ -91,6 +112,10 @@ final class AccountSyncer {
 
   MailAccount get account => _account;
   AccountSyncStatus get status => _status;
+
+  /// Whether the server keeps snooze keywords: what the Snoozed folder, or
+  /// else the Inbox, last said. Assumed until a sync says otherwise.
+  bool get storesKeywords => _snoozeKeywords ?? _inboxKeywords ?? true;
   MailStore get _store => _host.store;
   SyncConfig get _config => _host.config;
 
@@ -163,6 +188,8 @@ final class AccountSyncer {
   }
 
   Future<T> _withConnection<T>(MailTransport t, Future<T> Function(MailTransport t) op) async {
+    // A disposed syncer never connects again; what was queued fails instead.
+    if (_disposed) throw const MailException(MailErrorKind.cancelled, 'Sync stopped');
     try {
       if (!t.isConnected) await t.connect();
       return await op(t);
@@ -227,16 +254,20 @@ final class AccountSyncer {
       await _replayOps();
       _dirty.clear();
       for (final m in await _mailboxesForFullSync()) {
+        if (_disposed) return;
         await onMain((t) => _syncMailbox(t, m));
+        if (m.role == MailboxRole.inbox) await _inboxSynced(m);
       }
       // Later syncs also fill in a few never-opened mailboxes.
       if (!firstSync) {
         final pending = await _store.unsyncedMailboxIds(_account.id);
         for (final id in pending.take(_config.backgroundMailboxesPerSync)) {
+          if (_disposed) return;
           final m = await _store.getMailbox(id);
           if (m != null) await onMain((t) => _syncMailbox(t, m));
         }
       }
+      await _host.wakeSnoozed(this);
       _failures = 0;
       _lastSuccess = _host.now();
       _setStatus(SyncPhase.idle);
@@ -247,12 +278,21 @@ final class AccountSyncer {
   }
 
   /// The server's mailbox list with still-queued subscription changes
-  /// applied, so a sync doesn't undo them before they reach the server.
-  Future<List<RemoteMailbox>> _withPendingSubscriptions(List<RemoteMailbox> remote) async {
+  /// applied and folders still to be created added, so a sync doesn't undo
+  /// them (or drop what was moved into them) before they reach the server.
+  Future<List<RemoteMailbox>> _withPendingSubscriptions(List<RemoteMailbox> listedRemote) async {
+    final ops = await _store.pendingOps(accountId: _account.id);
     final pending = <String, bool>{
-      for (final op in await _store.pendingOps(accountId: _account.id))
+      for (final op in ops)
         if (op.type == OpType.subscribe) op.payload['mailboxId']! as String: op.payload['subscribed']! as bool,
     };
+    final listed = {for (final m in listedRemote) m.path};
+    final remote = [
+      ...listedRemote,
+      for (final op in ops)
+        if (op.type == OpType.createMailbox && !listed.contains(op.payload['path']))
+          RemoteMailbox(path: op.payload['path']! as String, name: op.payload['name']! as String),
+    ];
     if (pending.isEmpty) return remote;
     return [
       for (final m in remote)
@@ -288,6 +328,8 @@ final class AccountSyncer {
     add(byRole(MailboxRole.sent));
     add(byRole(MailboxRole.drafts));
     add(byRole(MailboxRole.archive) ?? (_account.provider == ProviderKind.gmail ? byRole(MailboxRole.all) : null));
+    // Snoozed messages must wake on time, subscribed or not.
+    add(all.where(Snooze.isFolder).firstOrNull);
     for (final m in all) {
       final background = m.isSubscribed || m.role != MailboxRole.none;
       if (_active.contains(m.id) || (background && await _store.getSyncInfo(m.id) != null)) add(m);
@@ -306,6 +348,7 @@ final class AccountSyncer {
         final m = await _store.getMailbox(id);
         if (m == null || !m.isSelectable) continue;
         await onMain((t) => _syncMailbox(t, m));
+        if (m.role == MailboxRole.inbox) await _inboxSynced(m);
       }
       _failures = 0;
       _lastSuccess = _host.now();
@@ -326,9 +369,9 @@ final class AccountSyncer {
 
   Future<void> _syncMailbox(MailTransport t, Mailbox m) async {
     final info = await _store.getSyncInfo(m.id);
-    final result = await _overlay(
-      await t.syncMailbox(_remoteFor(m), info?.state, initialWindow: _config.initialWindow),
-    );
+    final fetched = await t.syncMailbox(_remoteFor(m), info?.state, initialWindow: _config.initialWindow);
+    _noteKeywordSupport(m, fetched.canStoreKeywords);
+    final result = await _overlay(fetched);
     // One transaction: lists never show a muted thread's new mail unread.
     final readMuted = await _store.transaction(() async {
       await _store.applySync(m.id, result, now: _host.now());
@@ -389,6 +432,33 @@ final class AccountSyncer {
   /// Summaries per request when refetching headers.
   static const _headerBatch = 200;
 
+  /// Lets device rules handle new Inbox mail (outside the main queue, so
+  /// they can load content). Their failures never fail the sync.
+  Future<void> _inboxSynced(Mailbox inbox) async {
+    try {
+      await _host.inboxSynced(_account, inbox.id);
+    } catch (e) {
+      _host.reportError(asMailException(e, 'Rules couldn’t run on new mail'));
+    }
+  }
+
+  void _noteKeywordSupport(Mailbox m, bool? stores) {
+    if (stores == null) return;
+    if (Snooze.isFolder(m)) {
+      _snoozeKeywords = stores;
+    } else if (m.role == MailboxRole.inbox) {
+      _inboxKeywords = stores;
+    }
+  }
+
+  /// Adds [mailbox] to the local list before the server has it (a folder
+  /// whose creation is queued).
+  Future<void> addLocalMailbox(RemoteMailbox mailbox) async {
+    final current = [for (final m in await _store.getMailboxes(accountId: _account.id)) _remoteFor(m)];
+    if (current.any((m) => m.path == mailbox.path)) return;
+    await _store.replaceMailboxes(_account.id, [...current, mailbox]);
+  }
+
   /// Fetches the next page of older messages; returns whether more exist.
   Future<bool> loadOlder(String mailboxId) async {
     _active.add(mailboxId);
@@ -426,6 +496,12 @@ final class AccountSyncer {
           for (final id in ids) {
             adds[id] = {...(adds[id] ?? {}).difference(remove), ...add};
             removes[id] = {...(removes[id] ?? {}).difference(add), ...remove};
+          }
+        case OpType.localSnooze:
+          final keyword = Snooze.keyword(DateTime.parse(op.payload['until']! as String));
+          for (final id in ids) {
+            adds[id] = {...?adds[id], keyword};
+            removes[id] ??= {};
           }
       }
     }
@@ -535,9 +611,15 @@ final class AccountSyncer {
   /// retry; rethrows connection and authentication errors (offline).
   Future<void> _replayOps() => _replay ??= _doReplay().whenComplete(() => _replay = null);
 
+  /// Queued operations for the server, oldest first.
+  Future<List<PendingOp>> _serverOps() async => [
+    for (final op in await _store.pendingOps(accountId: _account.id))
+      if (op.type != OpType.localSnooze) op,
+  ];
+
   Future<void> _doReplay() async {
     while (true) {
-      final ops = await _store.pendingOps(accountId: _account.id);
+      final ops = await _serverOps();
       if (ops.isEmpty) return;
       final op = ops.first;
       final now = _host.now();
@@ -550,7 +632,12 @@ final class AccountSyncer {
         await _store.deleteOp(op.id);
       } catch (error) {
         final e = asMailException(error, 'Unexpected error');
-        if (e.kind == MailErrorKind.connection || e.kind == MailErrorKind.authentication) rethrow;
+        // Offline, signed out or stopped: the operation waits, it didn't fail.
+        if (e.kind == MailErrorKind.connection ||
+            e.kind == MailErrorKind.authentication ||
+            e.kind == MailErrorKind.cancelled) {
+          rethrow;
+        }
         if (!await _opFailed(op, e)) return;
       }
     }
@@ -589,12 +676,13 @@ final class AccountSyncer {
       nextAttemptAt: _host.now().add(backoff(_config.opRetryBase, _config.opRetryMax, attempts - 1)),
       lastError: e.message,
     );
-    final next = await _store.pendingOps(accountId: _account.id);
+    final next = await _serverOps();
     _scheduleOps(next.first.nextAttemptAt.difference(_host.now()));
     return false;
   }
 
   static String _describe(PendingOp op) {
+    if (op.type == OpType.createMailbox) return 'Couldn’t create the folder “${op.payload['name']}”';
     if (op.type == OpType.subscribe) {
       final name = op.payload['name'] as String? ?? 'a folder';
       return op.payload['subscribed'] == true ? 'Couldn’t subscribe to “$name”' : 'Couldn’t unsubscribe from “$name”';
@@ -671,6 +759,8 @@ final class AccountSyncer {
         final remote = await remoteForId(mailboxId);
         if (remote == null) throw const MailException(MailErrorKind.notFound, 'The folder no longer exists');
         await t.setSubscribed(remote, op.payload['subscribed']! as bool);
+      case OpType.createMailbox:
+        await t.createMailbox(op.payload['path']! as String);
     }
   }
 

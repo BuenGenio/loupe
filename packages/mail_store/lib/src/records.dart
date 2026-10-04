@@ -78,3 +78,24 @@ final class MailboxSyncInfo {
   /// `MailStore.fillHeaders` and call `MailStore.markHeadersFresh`.
   final bool staleHeaders;
 }
+
+/// How far device rules have run in a mailbox: messages stored after [seq]
+/// (the store's insertion order) are candidates, and of those with IMAP ids
+/// only the ones with a UID above [uid] under the same [uidValidity] are
+/// new mail (not older mail loaded later, search hits or moves).
+final class RuleWatermark {
+  const RuleWatermark({required this.seq, this.uidValidity, this.uid});
+  final int seq;
+  final int? uidValidity;
+  final int? uid;
+
+  @override
+  bool operator ==(Object other) =>
+      other is RuleWatermark && other.seq == seq && other.uidValidity == uidValidity && other.uid == uid;
+
+  @override
+  int get hashCode => Object.hash(seq, uidValidity, uid);
+
+  @override
+  String toString() => 'RuleWatermark($seq, $uidValidity:$uid)';
+}

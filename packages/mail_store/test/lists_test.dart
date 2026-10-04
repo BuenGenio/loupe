@@ -221,11 +221,12 @@ void main() {
     setUp(() => dir = Directory.systemTemp.createTempSync('mail_store_migration'));
     tearDown(() => dir.deleteSync(recursive: true));
 
-    /// A version 1 database at [path], as the first release created it, with
-    /// an account, a mailbox, a synced message and its content.
-    void createV1(String path) {
+    /// A database of schema [version] at [path], as that release created it,
+    /// with an account, a mailbox, a synced message and its content (and a
+    /// rule from version 2 on).
+    void create(String path, int version) {
       final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
-      final ddl = File('test/schemas/v1.sql').readAsStringSync().split(RegExp(r'^--$', multiLine: true));
+      final ddl = File('test/schemas/v$version.sql').readAsStringSync().split(RegExp(r'^--$', multiLine: true));
       for (final statement in ddl) {
         final sql = statement.split('\n').where((l) => !l.startsWith('-- ')).join('\n').trim();
         if (sql.isNotEmpty) db.execute(sql);
@@ -250,43 +251,51 @@ void main() {
         ..execute(
           "INSERT INTO contents (email_id, plain_text, body_text, fetched_at) VALUES (?, 'kumquat', 'kumquat', 1)",
           [eid('INBOX', 1)],
-        )
-        ..execute('PRAGMA user_version = 1');
-      db.close();
+        );
+      if (version >= 2) db.execute("INSERT INTO rules (id, json, sort_order) VALUES ('r1', '{}', 0)");
+      db
+        ..execute('PRAGMA user_version = $version')
+        ..close();
     }
 
-    test('version 1 upgrades to 2: list columns, index, muted threads, stale headers', () async {
-      final path = '${dir.path}/mail.db';
-      createV1(path);
-      final store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
-      final old = (await store.getEmail(eid('INBOX', 1)))!;
-      expect(old.subject, 'Before the upgrade');
-      expect(old.listId, isNull);
-      expect((await store.getSyncInfo(mbox('INBOX')))!.staleHeaders, isTrue);
+    for (final version in [1, 2]) {
+      test('version $version upgrades to 3: list columns, index, muted threads, stale headers', () async {
+        final path = '${dir.path}/mail.db';
+        create(path, version);
+        final store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
+        final old = (await store.getEmail(eid('INBOX', 1)))!;
+        expect(old.subject, 'Before the upgrade');
+        expect(old.listId, isNull);
+        expect((await store.getSyncInfo(mbox('INBOX')))!.staleHeaders, isTrue);
 
-      // The full-text index and its triggers still work.
-      final hits = await store.search(const TextTerm(SearchField.body, 'kumquat'));
-      expect(hits.map((e) => e.id), [eid('INBOX', 1)]);
+        // The full-text index and its triggers still work.
+        final hits = await store.search(const TextTerm(SearchField.body, 'kumquat'));
+        expect(hits.map((e) => e.id), [eid('INBOX', 1)]);
 
-      // New list mail, mutes and the backfill work on the upgraded file.
-      await store.applySync(mbox('INBOX'), added([listMail(2, subject: '[PATCH] new')]));
-      expect((await store.getSyncInfo(mbox('INBOX')))!.staleHeaders, isTrue, reason: 'a sync keeps the flag');
-      await store.fillHeaders([listMail(1, subject: 'Before the upgrade')]);
-      await store.markHeadersFresh(mbox('INBOX'));
-      expect((await store.getSyncInfo(mbox('INBOX')))!.staleHeaders, isFalse);
-      expect((await store.watchMailingLists().first).single.messageCount, 2);
-      final thread = (await store.threadOf(eid('INBOX', 2)))!;
-      await store.setThreadMuted(thread.accountId, thread.threadId, muted: true);
-      expect(await store.watchMutedThreads().first, {thread.threadId});
-      await store.close();
+        // New list mail, mutes and the backfill work on the upgraded file.
+        await store.applySync(mbox('INBOX'), added([listMail(2, subject: '[PATCH] new')]));
+        expect((await store.getSyncInfo(mbox('INBOX')))!.staleHeaders, isTrue, reason: 'a sync keeps the flag');
+        await store.fillHeaders([listMail(1, subject: 'Before the upgrade')]);
+        await store.markHeadersFresh(mbox('INBOX'));
+        expect((await store.getSyncInfo(mbox('INBOX')))!.staleHeaders, isFalse);
+        expect((await store.watchMailingLists().first).single.messageCount, 2);
+        final thread = (await store.threadOf(eid('INBOX', 2)))!;
+        await store.setThreadMuted(thread.accountId, thread.threadId, muted: true);
+        expect(await store.watchMutedThreads().first, {thread.threadId});
+        await store.close();
 
-      final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
-      addTearDown(db.close);
-      expect(db.select('PRAGMA user_version').single.values.single, 2);
-      final columns = {for (final r in db.select('PRAGMA table_info(emails)')) r['name'] as String};
-      expect(columns, containsAll(['list_id', 'list_name', 'list_post', 'list_unsubscribe', 'list_unsubscribe_post']));
-      final plan = db.select("EXPLAIN QUERY PLAN SELECT id FROM emails WHERE list_id = 'x'").map((r) => r['detail']);
-      expect(plan.join(' '), contains('emails_list'));
-    });
+        final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
+        addTearDown(db.close);
+        expect(db.select('PRAGMA user_version').single.values.single, 3);
+        final columns = {for (final r in db.select('PRAGMA table_info(emails)')) r['name'] as String};
+        expect(
+          columns,
+          containsAll(['list_id', 'list_name', 'list_post', 'list_unsubscribe', 'list_unsubscribe_post']),
+        );
+        final plan = db.select("EXPLAIN QUERY PLAN SELECT id FROM emails WHERE list_id = 'x'").map((r) => r['detail']);
+        expect(plan.join(' '), contains('emails_list'));
+        expect(db.select('SELECT count(*) AS n FROM rules').single['n'], version >= 2 ? 1 : 0);
+      });
+    }
   });
 }

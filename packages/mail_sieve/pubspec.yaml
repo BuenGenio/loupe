@@ -1,0 +1,14 @@
+name: mail_sieve
+description: "Mail rules for Loupe: the device rule runner, Sieve generation and the ManageSieve client."
+publish_to: none
+version: 0.1.0
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  expr_search: {path: ../expr_search}
+  mail_model: {path: ../mail_model}
+  # The TLS socket code (STARTTLS, trusted self-signed certificates).
+  mail_imap: {path: ../mail_imap}
+dev_dependencies:
+  test: any
