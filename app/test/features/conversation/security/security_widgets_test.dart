@@ -101,6 +101,25 @@ void main() {
       expect(find.byIcon(LoupeIcons.phishing), findsOneWidget);
     });
 
+    testWidgets('very large text keeps only the icon, and the label for screen readers', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: LoupeTheme.light(),
+          home: MediaQuery(
+            data: const MediaQueryData(textScaler: TextScaler.linear(2)),
+            child: Scaffold(
+              body: Center(
+                child: SecurityBadgeView(report: report(Verdict.likelyPhishing), onTap: () {}),
+              ),
+            ),
+          ),
+        ),
+      );
+      expect(find.text('Possible phishing'), findsNothing);
+      expect(find.byIcon(LoupeIcons.phishing), findsOneWidget);
+      expect(find.bySemanticsLabel('Possible phishing'), findsOneWidget);
+    });
+
     testWidgets('a privacy shield counts trackers; tapping explains', (tester) async {
       var taps = 0;
       await pumpBadge(tester, report(Verdict.noIssues, trackers: 3), onTap: () => taps++);

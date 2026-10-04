@@ -66,6 +66,8 @@ class SecurityBadgeView extends StatelessWidget {
     final style = verdictStyle(context, report);
     final colors = LoupeColors.of(context);
     final trackers = report.privacy.total;
+    // With very large text the label would crowd out the sender's name.
+    final iconOnly = MediaQuery.textScalerOf(context).scale(12) > 16;
     final mark = switch (report.verdict) {
       Verdict.likelyPhishing || Verdict.beCareful => Container(
         key: const ValueKey('security-pill'),
@@ -75,11 +77,13 @@ class SecurityBadgeView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(style.icon, size: 14, color: style.color),
-            const SizedBox(width: 3),
-            Text(
-              style.label,
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: style.color),
-            ),
+            if (!iconOnly) ...[
+              const SizedBox(width: 3),
+              Text(
+                style.label,
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: style.color),
+              ),
+            ],
           ],
         ),
       ),
