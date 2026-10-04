@@ -4,6 +4,9 @@
 
 import 'package:mail_model/mail_model.dart';
 
+import 'compile/gmail.dart';
+import 'compile/imap.dart';
+import 'compile/jmap.dart';
 import 'eval/matcher.dart';
 import 'eval/normal_form.dart';
 import 'syntax/format.dart';
@@ -177,11 +180,34 @@ final class ImapSearchQuery {
 }
 
 /// Compiles for IMAP SEARCH (RFC 3501 keys; nested OR/NOT/parentheses).
-ImapSearchQuery compileImap(SearchExpr expr) => const ImapSearchQuery(criteria: 'ALL', exact: false);
+///
+/// Works on the negation normal form and widens what IMAP can't express
+/// (patterns, attachment presence and names, accounts) to ALL, setting
+/// [ImapSearchQuery.exact] to false; there is no need to call
+/// [widenForServer] first. Terms for which [supported] returns false are
+/// widened too (e.g. BODY on servers without a full-text index). A query
+/// that widens to everything compiles to `ALL`.
+ImapSearchQuery compileImap(SearchExpr expr, {bool Function(SearchExpr term)? supported}) =>
+    ImapCompiler(supported: supported).compile(expr);
 
 /// Gmail search syntax for `X-GM-RAW`, or null if the query can't be expressed
 /// (the caller then widens it first).
-String? compileGmailRaw(SearchExpr expr) => null;
+///
+/// Use `compileGmailRaw(e) ?? compileGmailRaw(widenForServer(e, gmailSupports))!`.
+/// Gmail matches whole words rather than substrings and has no body-only
+/// operator (body terms become plain text), so post-filter the results with
+/// [matchesEmail]. An empty string means "everything".
+String? compileGmailRaw(SearchExpr expr) => compileGmail(expr);
+
+/// Whether [compileGmailRaw] can express [term]; for [widenForServer].
+bool gmailSupports(SearchExpr term) => gmailCanExpress(term);
 
 /// A JMAP `Email/query` filter (FilterOperator / FilterCondition, RFC 8621).
-Map<String, Object?> compileJmapFilter(SearchExpr expr) => const {};
+///
+/// Patterns, attachment names and accounts are widened first (see
+/// [jmapSupports]); post-filter with [matchesEmail] when the query has any.
+/// [MatchAll] compiles to an empty condition.
+Map<String, Object?> compileJmapFilter(SearchExpr expr) => compileJmap(expr);
+
+/// Whether [compileJmapFilter] keeps [term] (rather than widening it).
+bool jmapSupports(SearchExpr term) => jmapCanExpress(term);

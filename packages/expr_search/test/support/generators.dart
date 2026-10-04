@@ -112,6 +112,26 @@ final class ExprGen {
   }
 }
 
+/// Literals built from the words [EmailGen] uses, so they hit and miss
+/// generated messages often, in every field.
+List<SearchExpr> vocabularyLiterals() {
+  const words = ['alice', 'bob', 'invoice', 'tom', 'example.org', 'x.y', 'team-x', 'jerry smith', 'é', 'pdf'];
+  return [
+    for (final f in TextField.values)
+      for (final w in words) TextTerm(f, w),
+    for (final h in ['List-Id', 'X-Mailer', 'X-Absent'])
+      for (final w in ['', ...words]) HeaderTerm(h, w),
+    for (final k in [r'$seen', r'$flagged', r'$answered', r'$draft', r'$label2', 'work', r'$forwarded']) KeywordTerm(k),
+    for (final c in DateComparison.values)
+      for (final y in [2000, 2020, 2039]) DateTerm(c, DateTime(y, 6, 15)),
+    for (final c in SizeComparison.values)
+      for (final b in [100, 1024, 1536, 600 * 1024]) SizeTerm(c, b),
+    const HasAttachmentTerm(),
+    const AccountTerm('work'),
+    const RegexTerm(TextField.subject, '^a'),
+  ];
+}
+
 /// Random messages with optional content, for matcher properties.
 final class EmailGen {
   EmailGen(int seed) : r = Random(seed);
@@ -131,7 +151,11 @@ final class EmailGen {
       ),
   ];
 
-  ({EmailSummary email, EmailContent? content, String? account, Map<String, String> headers}) next() {
+  /// A random message. With [complete], everything a query can ask about is
+  /// known: content with headers, a size and an account label.
+  ({EmailSummary email, EmailContent? content, String? account, Map<String, String> headers}) next({
+    bool complete = false,
+  }) {
     final email = EmailSummary(
       id: 'm${r.nextInt(1000)}',
       accountId: 'a1',
@@ -143,14 +167,14 @@ final class EmailGen {
       bcc: addresses(),
       subject: text(),
       preview: text(),
-      size: pick([0, 100, 1024, 1536, 600 * 1024, 3 << 20]),
+      size: pick([if (!complete) 0, 100, 1024, 1536, 600 * 1024, 3 << 20]),
       keywords: {
         for (final k in [r'$seen', r'$flagged', r'$answered', r'$label2', 'work', r'$forwarded'])
           if (r.nextBool()) k,
       },
       hasAttachment: r.nextBool(),
     );
-    final content = r.nextBool()
+    final content = complete || r.nextBool()
         ? EmailContent(
             emailId: email.id,
             text: r.nextBool() ? text() : null,
@@ -159,14 +183,14 @@ final class EmailGen {
               if (email.hasAttachment)
                 Attachment(partId: '2', mimeType: pick(['application/pdf', 'image/png']), filename: '${text()}.pdf'),
             ],
-            headers: r.nextBool() ? [('List-Id', text()), ('X-Mailer', text())] : const [],
+            headers: complete || r.nextBool() ? [('List-Id', text()), ('X-Mailer', text())] : const [],
           )
         : null;
     return (
       email: email,
       content: content,
-      account: r.nextBool() ? pick(['Work <tom@example.com>', 'Home']) : null,
-      headers: r.nextBool() ? {'received': text()} : const {},
+      account: complete || r.nextBool() ? pick(['Work <tom@example.com>', 'Home']) : null,
+      headers: !complete && r.nextBool() ? {'received': text()} : const {},
     );
   }
 }
