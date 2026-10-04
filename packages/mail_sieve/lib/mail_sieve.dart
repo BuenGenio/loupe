@@ -11,6 +11,7 @@ export 'src/managesieve/client.dart' show ManageSieveClient;
 export 'src/managesieve/connector.dart' show ManageSieveConnector, manageSievePort;
 export 'src/managesieve/session.dart'
     show SieveCapabilities, SieveConnector, SieveException, SieveScriptInfo, SieveSession;
+export 'src/runner.dart' show RuleOutcome, RuleRunner, applyOutcomes, applyRuleTo, decideMatch, findRuleMatches;
 export 'src/script.dart'
     show
         CompiledRule,
