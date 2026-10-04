@@ -161,7 +161,7 @@ class _AttachmentTileState extends State<AttachmentTile> {
               if (_busy)
                 const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2))
               else
-                Icon(Icons.ios_share, size: 20, color: colors.secondaryText),
+                Icon(Icons.adaptive.share, size: 20, color: colors.secondaryText),
             ],
           ),
         ),

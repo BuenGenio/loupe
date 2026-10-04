@@ -92,7 +92,7 @@ class _RawSourceScreenState extends ConsumerState<RawSourceScreen> {
               ),
               IconButton(
                 tooltip: 'Share',
-                icon: const Icon(Icons.ios_share),
+                icon: Icon(Icons.adaptive.share),
                 onPressed: bytes == null ? null : () => _share(bytes),
               ),
             ],
