@@ -190,9 +190,22 @@ final class DemoSeed {
         authKind: AuthKind.password,
         incoming: const ServerConfig(protocol: ServerProtocol.imap, host: 'imap.fastmail.com', port: 993),
         outgoing: const ServerConfig(protocol: ServerProtocol.smtp, host: 'smtp.fastmail.com', port: 465),
+        // A custom domain with a catch-all: replies to bookclub@ offer to go out from it.
         identities: const [
           Identity(id: 'fastmail/default', email: 'sam@rivera.example', name: 'Sam Rivera', signature: '— Sam'),
-          Identity(id: 'fastmail/lists', email: 'lists@rivera.example', name: 'Sam Rivera'),
+          Identity(
+            id: 'fastmail/shop',
+            email: 'sam+shop@rivera.example',
+            name: 'Sam Rivera',
+            signature: '— Sam',
+            replyTo: 'sam@rivera.example',
+          ),
+          Identity(
+            id: 'fastmail/lists',
+            email: 'lists@rivera.example',
+            name: 'Sam Rivera',
+            replyPatterns: ['*@lists.opengarden.example'],
+          ),
         ],
         colorIndex: 4,
       ),
@@ -965,6 +978,7 @@ final class DemoSeed {
       box: inbox,
       at: at(1, 18, 30),
       from: DemoPeople.bookshop,
+      to: [const EmailAddress('sam+shop@rivera.example', 'Sam Rivera')],
       subject: 'Order #10482 confirmed — ready for pickup Thursday',
       html: bookshopReceiptHtml,
       attachments: [
@@ -977,9 +991,11 @@ final class DemoSeed {
       box: inbox,
       at: at(2, 7, 0),
       from: DemoPeople.bookClub,
+      to: [const EmailAddress('bookclub@rivera.example')],
       subject: 'November pick: The Lantern Keepers',
       html: bookClubHtml,
       unread: true,
+      headers: const [('Delivered-To', 'sam+catchall@rivera.example'), ('X-Original-To', 'bookclub@rivera.example')],
     );
 
     const manifest = 'manifest';
