@@ -8,8 +8,10 @@ import 'package:readable/readable.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/app_settings.dart';
+import '../../settings/ui_state.dart';
 import '../../shared/grouped_list.dart';
 import '../../theme/theme.dart';
+import '../search/smart_mailbox_settings_screen.dart';
 import 'settings_widgets.dart';
 import '../../theme/loupe_icons.dart';
 
@@ -109,6 +111,12 @@ class SettingsScreen extends ConsumerWidget {
                 ],
                 onSelected: (v) => controller.update((s) => s.copyWith(undoSendSeconds: v)),
               ),
+            ),
+            GroupedRow(
+              leading: SettingsIcon(LoupeIcons.smartMailbox, colors.swipeArchive),
+              title: 'Smart Mailboxes',
+              detail: SmartMailboxSettingsScreen.syncViaLabel(ref.watch(smartMailboxHomeProvider), accounts),
+              onTap: () => SmartMailboxSettingsScreen.push(context),
             ),
           ],
         ),
