@@ -145,8 +145,10 @@ final class LiveRules implements MailRules {
 
   /// New mail: an IMAP id above the watermark's UID under the same
   /// UIDVALIDITY (a reset mailbox brings renumbered old mail, not new mail).
-  /// Other ids count by insertion order alone.
+  /// Other ids count by insertion order alone. A message back from snooze
+  /// (marked `$new`) isn't new mail.
   static bool _isNew(EmailSummary e, RuleWatermark mark) {
+    if (e.keywords.contains(Keywords.newAgain)) return false;
     final p = MailIds.parseImapEmail(e.id);
     if (p == null) return true;
     if (mark.uidValidity != null && p.uidValidity != mark.uidValidity) return false;

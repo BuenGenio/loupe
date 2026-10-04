@@ -39,6 +39,12 @@ void main() {
         // Mail from before the rules existed is left alone.
         expect(server.find('INBOX', 'Old newsletter')!.keywords, isEmpty);
 
+        // So is mail back from snooze.
+        server.deliver('INBOX', subject: 'Woke up', from: 'news@lists.example', keywords: {Keywords.newAgain});
+        await h.repo.refresh();
+        await settle();
+        expect(server.find('INBOX', 'Woke up')!.keywords, {Keywords.newAgain});
+
         // Another sync doesn't run the rules again on the same mail.
         await h.repo.rules.saveRule(_rule('again', '', [const AddTagAction('again')]));
         server.log.clear();
