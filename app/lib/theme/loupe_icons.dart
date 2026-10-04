@@ -145,4 +145,18 @@ abstract final class LoupeIcons {
   static const IconData zip = FluentIcons.folder_zip_24_regular;
   static const IconData calendar = FluentIcons.calendar_ltr_24_regular;
   static const IconData email = FluentIcons.mail_24_regular;
+
+  // Attachment viewer -------------------------------------------------------
+
+  /// "Open in…": hand the file to another app.
+  static const IconData openIn = FluentIcons.open_24_regular;
+  static const IconData save = FluentIcons.arrow_download_24_regular;
+  static const IconData wrapFilled = FluentIcons.text_wrap_24_filled;
+  static const IconData table = FluentIcons.table_24_regular;
+  static const IconData tableFilled = FluentIcons.table_24_filled;
+  static const IconData sourceFilled = FluentIcons.code_24_filled;
+  static const IconData time = FluentIcons.clock_24_regular;
+  static const IconData location = FluentIcons.location_24_regular;
+  static const IconData mobileData = FluentIcons.cellular_data_1_24_regular;
+  static const IconData fileError = FluentIcons.document_error_24_regular;
 }
