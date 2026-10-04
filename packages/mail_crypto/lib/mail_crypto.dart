@@ -24,5 +24,7 @@ export 'src/smime/backend.dart';
 export 'src/smime/certificate.dart';
 export 'src/smime/cms.dart'
     show SmimeContentCipher, SmimeDecrypted, SmimeRecipientId, SmimeSignedData, SmimeSignerCheck, smimeCapabilities;
+export 'src/smime/mozilla_roots.dart' show mozillaEmailRootsDate;
 export 'src/smime/pkcs12.dart' show SmimeBundle, SmimeKeyEntry;
 export 'src/smime/primitives.dart' show SmimePrivateKey;
+export 'src/smime/trust.dart';

@@ -16,6 +16,9 @@ final testRoot = cert('root.crt');
 final testCa = cert('intermediate.crt');
 final evilRoot = cert('evil.crt');
 
+/// The test root as the only trusted one (no Mozilla roots).
+final testAnchors = SmimeTrustAnchors([testRoot]);
+
 final aliceBundle = smime.readPkcs12(smimeFixture('alice.p12'), 'alice-pass');
 final bobBundle = smime.readPkcs12(smimeFixture('bob-3des.p12'), 'bob-pass');
 

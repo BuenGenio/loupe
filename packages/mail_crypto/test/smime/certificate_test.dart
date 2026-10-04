@@ -85,6 +85,11 @@ void main() {
       );
       expect(() => readCertificates(Uint8List.fromList(utf8.encode('nothing'))), throwsA(isA<SmimeException>()));
     });
+
+    test('Mozilla’s email roots all parse', () {
+      expect(mozillaRoots.length, greaterThan(50));
+      expect(mozillaRoots.every((c) => c.isCa && c.isSelfIssued), isTrue);
+    });
   });
 
   group('PKCS #12', () {
