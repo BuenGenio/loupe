@@ -61,7 +61,7 @@ _Line _quoted(String line, {required bool flowed}) {
   var rest = line.substring(i);
   // One leading space is quote padding / space-stuffing (RFC 3676 4.4).
   if (rest.startsWith(' ') && (depth > 0 || flowed)) rest = rest.substring(1);
-  return _Line(depth, _expandTabs(rest));
+  return _Line(depth, expandTabs(rest));
 }
 
 /// Joins soft-broken lines (ending in a space) of the same quote depth.
@@ -101,18 +101,19 @@ List<_Line> _reflow(List<String> raw) {
   return out;
 }
 
-String _expandTabs(String s) {
+/// Expands tabs to 8-column stops, per line.
+String expandTabs(String s) {
   if (!s.contains('\t')) return s;
   final sb = StringBuffer();
   var col = 0;
-  for (final ch in s.split('')) {
-    if (ch == '\t') {
+  for (final rune in s.runes) {
+    if (rune == 0x09) {
       final n = 8 - col % 8;
       sb.write(' ' * n);
       col += n;
     } else {
-      sb.write(ch);
-      col++;
+      sb.writeCharCode(rune);
+      col = rune == 0x0A ? 0 : col + 1;
     }
   }
   return sb.toString();

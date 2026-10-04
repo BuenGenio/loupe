@@ -117,8 +117,7 @@ final class _Plainer {
 
     for (final i in inlines) {
       if (i is! TextRun) {
-        final ref = doc.images[(i as InlineImage).image];
-        if (ref.alt != null && ref.alt!.isNotEmpty) out.add(TextRun(ref.alt!));
+        // Inline images are icons: decorative in plain text.
         continue;
       }
       final link = i.style.link;

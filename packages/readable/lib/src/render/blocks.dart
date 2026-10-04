@@ -30,9 +30,27 @@ class BlockList extends StatelessWidget {
   Widget build(BuildContext context) {
     final children = <Widget>[];
     Block? previous;
-    for (final b in blocks) {
+    for (var i = 0; i < blocks.length; i++) {
+      final b = blocks[i];
       final gap = _gap(previous, b);
       if (gap > 0) children.add(SizedBox(height: gap));
+      // Consecutive buttons (Yes / Maybe / No) share a row.
+      if (b is ButtonBlock && i + 1 < blocks.length && blocks[i + 1] is ButtonBlock) {
+        final row = <ButtonBlock>[b];
+        while (i + 1 < blocks.length && blocks[i + 1] is ButtonBlock) {
+          row.add(blocks[++i] as ButtonBlock);
+        }
+        children.add(
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            alignment: b.align == BlockAlign.start ? WrapAlignment.start : WrapAlignment.center,
+            children: [for (final button in row) _ButtonChip(button, aligned: false)],
+          ),
+        );
+        previous = row.last;
+        continue;
+      }
       children.add(BlockView(b, depth: depth));
       previous = b;
     }
@@ -154,8 +172,11 @@ class _ListView extends StatelessWidget {
 }
 
 class _ButtonChip extends StatelessWidget {
-  const _ButtonChip(this.button);
+  const _ButtonChip(this.button, {this.aligned = true});
   final ButtonBlock button;
+
+  /// False inside a row of buttons (the row aligns them).
+  final bool aligned;
 
   @override
   Widget build(BuildContext context) {
@@ -175,33 +196,31 @@ class _ButtonChip extends StatelessWidget {
       BlockAlign.center => AlignmentDirectional.center,
       BlockAlign.right => AlignmentDirectional.centerEnd,
     };
-    return Align(
-      alignment: alignment,
-      child: Semantics(
-        link: true,
-        button: true,
-        child: Material(
-          color: fill,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            onTap: () => scope.onLinkTap(button.link),
-            onLongPress: () => scope.onLinkLongPress(button.link),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 44),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 11),
-                child: Text(
-                  button.text,
-                  textAlign: TextAlign.center,
-                  style: scope.styles.body.copyWith(color: label, fontWeight: FontWeight.w600, height: 1.25),
-                ),
+    final chip = Semantics(
+      link: true,
+      button: true,
+      child: Material(
+        color: fill,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () => scope.onLinkTap(button.link),
+          onLongPress: () => scope.onLinkLongPress(button.link),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 44),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 11),
+              child: Text(
+                button.text,
+                textAlign: TextAlign.center,
+                style: scope.styles.body.copyWith(color: label, fontWeight: FontWeight.w600, height: 1.25),
               ),
             ),
           ),
         ),
       ),
     );
+    return aligned ? Align(alignment: alignment, child: chip) : chip;
   }
 
   int _onFill(ReaderScope scope, int? fg, Color fill, Color fallback) {

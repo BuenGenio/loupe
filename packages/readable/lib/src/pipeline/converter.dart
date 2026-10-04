@@ -11,6 +11,7 @@ import '../model/document.dart';
 import 'css.dart';
 import 'limits.dart';
 import 'links.dart';
+import 'plain_text.dart' show expandTabs;
 import 'sanitizer.dart' show flatText, imageDimension, visibleTextLength;
 
 /// Maps a `cid:` reference to the Content-ID key the host can resolve, or
@@ -114,6 +115,7 @@ final class _Ctx {
     this.align = BlockAlign.start,
     this.dir = TextDir.auto,
     this.pre = false,
+    this.muted = false,
     this.buttonAnchor,
     this.buttonBg,
   });
@@ -126,6 +128,9 @@ final class _Ctx {
   /// Whitespace is preserved (`pre`, `white-space: pre*`).
   final bool pre;
 
+  /// Inside a signature: paragraphs are dimmed.
+  final bool muted;
+
   /// An anchor that is the only content of an ancestor with a background
   /// colour: it renders as a button in that colour.
   final Element? buttonAnchor;
@@ -137,6 +142,7 @@ final class _Ctx {
     BlockAlign? align,
     TextDir? dir,
     bool? pre,
+    bool? muted,
     Element? buttonAnchor,
     int? buttonBg,
   }) => _Ctx(
@@ -145,6 +151,7 @@ final class _Ctx {
     align: align ?? this.align,
     dir: dir ?? this.dir,
     pre: pre ?? this.pre,
+    muted: muted ?? this.muted,
     buttonAnchor: buttonAnchor ?? this.buttonAnchor,
     buttonBg: buttonBg ?? this.buttonBg,
   );
@@ -299,9 +306,18 @@ final class _Converter {
       align: align,
       dir: dir,
       pre: pre,
+      muted: ctx.muted || _isSignature(e),
       buttonAnchor: ctx.buttonAnchor,
       buttonBg: ctx.buttonBg,
     );
+  }
+
+  /// Signature containers of common mail clients.
+  static bool _isSignature(Element e) {
+    final cls = e.attributes['class'];
+    if (cls != null && (cls.contains('gmail_signature') || cls.contains('moz-signature'))) return true;
+    final id = e.attributes['id'];
+    return id == 'Signature' || id == 'signature' || id == 'AppleMailSignature';
   }
 
   static BlockAlign? _alignFrom(String v) => switch (v) {
@@ -376,6 +392,7 @@ final class _ParaAttrs {
     this.line = false,
     this.heading,
     this.pre = false,
+    this.muted = false,
   });
   final Element? element;
   final BlockAlign align;
@@ -385,6 +402,7 @@ final class _ParaAttrs {
   final bool line;
   final int? heading;
   final bool pre;
+  final bool muted;
 }
 
 /// Collects blocks for one container (the body, a quote, a list item, a cell).
@@ -480,7 +498,12 @@ final class _Sink {
       case 'table':
         _table(n, inner);
       case 'pre' || 'xmp' || 'listing' || 'plaintext':
-        _block(n, inner, pre: true);
+        if (inner.muted) {
+          // A signature in <pre> (Thunderbird) is lines of text, not code.
+          _block(n, inner.copyWith(run: inner.run.copyWith(mono: false)));
+        } else {
+          _block(n, inner, pre: true);
+        }
       default:
         final heading = _headingTags[tag];
         if (heading != null) {
@@ -543,7 +566,15 @@ final class _Sink {
     flush();
     final saved = _attrs;
     final before = blocks.length;
-    _attrs = _ParaAttrs(element: e, align: ctx.align, dir: ctx.dir, line: line, heading: heading, pre: pre);
+    _attrs = _ParaAttrs(
+      element: e,
+      align: ctx.align,
+      dir: ctx.dir,
+      line: line,
+      heading: heading,
+      pre: pre,
+      muted: ctx.muted,
+    );
     visitChildren(e, pre ? ctx.copyWith(pre: true) : ctx);
     flush();
     _attrs = saved;
@@ -557,7 +588,9 @@ final class _Sink {
   void _addText(String data, _Ctx ctx) {
     if (data.isEmpty) return;
     if (ctx.px <= 0.5) return; // font-size:0 whitespace tricks.
-    final text = ctx.pre ? data.replaceAll('\r\n', '\n').replaceAll('\r', '\n') : data.replaceAll(_collapsible, ' ');
+    final text = ctx.pre
+        ? expandTabs(data.replaceAll('\r\n', '\n').replaceAll('\r', '\n'))
+        : data.replaceAll(_collapsible, ' ');
     _inlines.add(TextRun(text, ctx.run));
   }
 
@@ -584,6 +617,7 @@ final class _Sink {
   }
 
   void _image(Element img, Map<String, String> style, _Ctx ctx) {
+    if (c.blockCount >= c.budget.limits.maxBlocks) return;
     final source = c.imageSource(img.attributes['src'] ?? '');
     if (source == null) return;
     final w = imageDimension(img, 'width', style);
@@ -622,7 +656,7 @@ final class _Sink {
         final sub = _Sink(c);
         final liStyle = parseStyle(n.attributes['style']);
         final liCtx = c.derive(n, ctx, 'li', liStyle);
-        sub._attrs = _ParaAttrs(element: n, align: liCtx.align, dir: liCtx.dir);
+        sub._attrs = _ParaAttrs(element: n, align: liCtx.align, dir: liCtx.dir, muted: liCtx.muted);
         sub.visitChildren(n, liCtx);
         final blocks = sub.finish();
         if (blocks.isNotEmpty) items.add(blocks);
@@ -666,8 +700,11 @@ final class _Sink {
 
   // -- Tables ----------------------------------------------------------------
 
-  void _table(Element table, _Ctx ctx) {
+  void _table(Element table, _Ctx outer) {
     flush();
+    // Tables don't inherit text alignment (quirks mode, and what email CSS
+    // assumes): a centred outer cell shouldn't centre every paragraph.
+    final ctx = outer.copyWith(align: BlockAlign.start);
     final rows = tableRows(table);
     if (isDataTable(table, rows)) {
       _dataTable(rows, ctx);
@@ -717,7 +754,7 @@ final class _Sink {
     final saved = _attrs;
     final first = cells.firstWhere((c) => visibleTextLength(c) > 0 || c.querySelector('img') != null);
     final firstCtx = c.derive(first, ctx, 'td');
-    _attrs = _ParaAttrs(element: row, align: firstCtx.align, dir: firstCtx.dir);
+    _attrs = _ParaAttrs(element: row, align: firstCtx.align, dir: firstCtx.dir, muted: firstCtx.muted);
     String? previous;
     for (final cell in cells) {
       final text = flatText(cell, 100).trim();
@@ -824,21 +861,33 @@ final class _Sink {
       return;
     }
 
-    // A paragraph that is only a button-coloured link is a button.
+    // A paragraph made only of button-coloured links is a row of buttons.
     final runs = inlines.whereType<TextRun>().where((r) => r.text.trim().isNotEmpty).toList();
-    final link = runs.isEmpty ? null : runs.first.style.link;
-    if (link != null &&
-        c.buttonBackgrounds.containsKey(link) &&
-        inlines.every((i) => i is TextRun && (i.style.link == link || i.text.trim().isEmpty))) {
-      addBlock(
-        ButtonBlock(
-          text: text.replaceAll(RegExp(r'\s+'), ' ').trim(),
-          link: link,
-          background: c.buttonBackgrounds[link],
-          color: runs.first.style.color,
-          align: attrs.align == BlockAlign.start ? BlockAlign.center : attrs.align,
-        ),
-      );
+    if (runs.isNotEmpty &&
+        inlines.every((i) => i is TextRun) &&
+        runs.every((r) => r.style.link != null && c.buttonBackgrounds.containsKey(r.style.link))) {
+      final order = <int>[];
+      final labels = <int, StringBuffer>{};
+      final colors = <int, int?>{};
+      for (final r in runs) {
+        final link = r.style.link!;
+        if (!labels.containsKey(link)) {
+          order.add(link);
+          colors[link] = r.style.color;
+        }
+        (labels[link] ??= StringBuffer()).write(r.text);
+      }
+      for (final link in order) {
+        addBlock(
+          ButtonBlock(
+            text: labels[link].toString().replaceAll(RegExp(r'\s+'), ' ').trim(),
+            link: link,
+            background: c.buttonBackgrounds[link],
+            color: colors[link],
+            align: attrs.align == BlockAlign.start ? BlockAlign.center : attrs.align,
+          ),
+        );
+      }
       return;
     }
 
@@ -870,7 +919,7 @@ final class _Sink {
             identical(last.parent, element.parent) ||
             identical(element.parent, last) ||
             identical(last.parent, element));
-    addBlock(ParagraphBlock(inlines, align: align, dir: attrs.dir, tight: tight));
+    addBlock(ParagraphBlock(inlines, align: align, dir: attrs.dir, tight: tight, muted: attrs.muted));
     if (attrs.line) _lastLine = element;
   }
 
@@ -891,9 +940,10 @@ List<Inline> normalizeInlines(List<Inline> inlines, {bool keepWhitespace = false
   final buf = StringBuffer();
   RunStyle? style;
   var atLineStart = true;
-  var pendingSpace = false;
-  // A collapsed space keeps the style of the run it was typed in, so a link's
-  // underline doesn't extend over the gap before it.
+  // Whitespace waiting for the next visible character: '' (none), ' ', or a
+  // lone nbsp (which binds and is kept). It keeps the style of the run it was
+  // typed in, so a link's underline doesn't extend over the gap before it.
+  var pending = '';
   var pendingStyle = RunStyle.plain;
 
   void emit() {
@@ -910,10 +960,14 @@ List<Inline> normalizeInlines(List<Inline> inlines, {bool keepWhitespace = false
     buf.write(s);
   }
 
+  void flushPending() {
+    if (pending.isNotEmpty && !atLineStart) write(pending, pendingStyle);
+    pending = '';
+  }
+
   for (final inline in inlines) {
     if (inline is! TextRun) {
-      if (pendingSpace && !atLineStart) write(' ', pendingStyle);
-      pendingSpace = false;
+      flushPending();
       emit();
       out.add(inline);
       atLineStart = false;
@@ -931,34 +985,28 @@ List<Inline> normalizeInlines(List<Inline> inlines, {bool keepWhitespace = false
     while (i < text.length) {
       final ch = text[i];
       if (ch == '\n') {
-        pendingSpace = false;
+        pending = '';
         write('\n', st);
         atLineStart = true;
         i++;
         continue;
       }
       if (ch == ' ' || ch == '\u00a0') {
-        // A run of spaces/nbsp: a lone nbsp stays (it's meant to bind),
-        // anything longer collapses to one space.
         var j = i;
         while (j < text.length && (text[j] == ' ' || text[j] == '\u00a0')) {
           j++;
         }
         if (!atLineStart) {
-          if (j - i == 1 && ch == '\u00a0' && !pendingSpace) {
-            write('\u00a0', st);
-          } else if (!pendingSpace) {
-            pendingSpace = true;
-            pendingStyle = st;
-          }
+          // A lone nbsp stays; anything else (or next to other spaces)
+          // collapses to one plain space.
+          final loneNbsp = j - i == 1 && ch == '\u00a0' && pending.isEmpty;
+          if (pending.isEmpty) pendingStyle = st;
+          pending = loneNbsp ? '\u00a0' : ' ';
         }
         i = j;
         continue;
       }
-      if (pendingSpace) {
-        write(' ', pendingStyle);
-        pendingSpace = false;
-      }
+      flushPending();
       write(ch, st);
       atLineStart = false;
       i++;
