@@ -13,7 +13,10 @@ import '../compose/compose_text.dart';
 import '../conversation/mail_streams.dart';
 import '../conversation/sheets.dart';
 import 'server_settings.dart';
+import 'setup_text.dart';
 import '../../theme/loupe_icons.dart';
+
+export 'setup_text.dart' show fingerprintIn;
 
 enum _Step { address, signIn, done }
 
@@ -74,15 +77,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
   }
 
   /// "Gmail", "iCloud", … or the domain's first label ("Example").
-  String get _defaultDescription => switch (_provider) {
-    ProviderKind.gmail => 'Gmail',
-    ProviderKind.microsoft => 'Outlook',
-    ProviderKind.icloud => 'iCloud',
-    ProviderKind.yahoo => 'Yahoo',
-    ProviderKind.fastmail => 'Fastmail',
-    ProviderKind.generic =>
-      _domain.isEmpty ? 'Mail' : '${_domain[0].toUpperCase()}${_domain.split('.').first.substring(1)}',
-  };
+  String get _defaultDescription => defaultAccountDescription(_provider, _email.text);
 
   // Step 1: discovery -------------------------------------------------------------
 
@@ -186,18 +181,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     }
   }
 
-  String _describe(MailException e) => switch (e.kind) {
-    MailErrorKind.authentication => switch (_provider) {
-      ProviderKind.gmail ||
-      ProviderKind.icloud ||
-      ProviderKind.yahoo ||
-      ProviderKind.fastmail => 'Password rejected. Use an app password, not your account password.',
-      _ => 'Password rejected. Check it and try again.',
-    },
-    MailErrorKind.connection => "Can't reach server. Check the server settings and your connection.",
-    MailErrorKind.certificate => "The server's certificate isn't trusted. ${e.message}",
-    _ => e.message,
-  };
+  String _describe(MailException e) => describeSetupError(e, _provider);
 
   /// Pins the offered certificate on the servers it belongs to and retries.
   Future<void> _trustCertificate() async {
@@ -460,11 +444,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     );
   }
 
-  String get _passwordLabel => switch (_provider) {
-    ProviderKind.gmail || ProviderKind.yahoo || ProviderKind.fastmail => 'App Password',
-    ProviderKind.icloud => 'App Password',
-    _ => 'Password',
-  };
+  String get _passwordLabel => passwordLabel(_provider);
 
   List<Widget> _providerNotes(BuildContext context) {
     Widget link(String label, String url) => TextButton(onPressed: () => _open(url), child: Text(label));
@@ -488,7 +468,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       ProviderKind.gmail => [
         NoteCard(
           icon: LoupeIcons.password,
-          actions: [link('How to Create an App Password', 'https://support.google.com/accounts/answer/185833')],
+          actions: [link('How to Create an App Password', gmailAppPasswordHelp)],
           child: const Text('Create an app password in your Google account and paste it below.'),
         ),
       ],
@@ -642,11 +622,4 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       ],
     );
   }
-}
-
-/// A SHA-256 certificate fingerprint in [message] (64 hex digits, with or
-/// without colons), as lower-case hex without colons.
-String? fingerprintIn(String message) {
-  final m = RegExp(r'([0-9A-Fa-f]{2}(?::[0-9A-Fa-f]{2}){31}|[0-9A-Fa-f]{64})').firstMatch(message);
-  return m?.group(1)!.replaceAll(':', '').toLowerCase();
 }
