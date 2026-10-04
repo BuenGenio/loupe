@@ -337,6 +337,15 @@ final class MailStore {
     );
   }
 
+  /// Asks the sync engine to fetch the stored summaries of [mailboxId]
+  /// again for their header fields (see [MailboxSyncInfo.staleHeaders]).
+  Future<void> markHeadersStale(String mailboxId) => _write(
+    'UPDATE sync_states SET stale_headers = 1 WHERE mailbox_id = ? AND stale_headers = 0',
+    [mailboxId],
+    {_db.syncStates},
+    kind: UpdateKind.update,
+  );
+
   /// The summaries of [mailboxId] have their header fields again (see
   /// [MailboxSyncInfo.staleHeaders]).
   Future<void> markHeadersFresh(String mailboxId) => _write(

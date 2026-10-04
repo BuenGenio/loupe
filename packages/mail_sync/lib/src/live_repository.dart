@@ -17,7 +17,7 @@ import 'util.dart';
 /// sends overdue outbox messages). Call [pause] when the app goes to the
 /// background and [resume] when it returns; [syncOnce] serves background
 /// fetch tasks. [dispose] stops everything but leaves the store open.
-final class LiveMailRepository implements MailRepository {
+final class LiveMailRepository implements MailRepository, MailingLists {
   LiveMailRepository(
     this.store,
     this.transports,
@@ -340,6 +340,30 @@ final class LiveMailRepository implements MailRepository {
 
   @override
   Stream<List<AccountSyncStatus>> watchSyncStatus() => _statuses.stream;
+
+  // Mailing lists -----------------------------------------------------------
+
+  @override
+  Stream<List<MailingList>> watchMailingLists() => store.watchMailingLists();
+
+  @override
+  Stream<List<ListThread>> watchListThreads(String listId, {bool includeMuted = false, int limit = 200}) =>
+      store.watchListThreads(listId, includeMuted: includeMuted, limit: limit);
+
+  @override
+  Stream<Set<String>> watchMutedThreads() => store.watchMutedThreads();
+
+  /// Muting also marks the conversation read; its later mail arrives read
+  /// (see `AccountSyncer`). Unmuting leaves the messages as they are.
+  @override
+  Future<void> setThreadMuted(String emailId, {required bool muted}) async {
+    final thread = await store.threadOf(emailId);
+    if (thread == null) throw const MailException(MailErrorKind.notFound, 'This message no longer exists.');
+    await store.setThreadMuted(thread.accountId, thread.threadId, muted: muted, now: _now());
+    if (!muted) return;
+    final unread = await store.unreadInThread(thread.accountId, thread.threadId);
+    if (unread.isNotEmpty) await setKeywords(unread, add: {Keywords.seen});
+  }
 
   // Messages ----------------------------------------------------------------
 
