@@ -64,7 +64,12 @@ final class PgpMessageComposer implements MessageComposer {
 
   @override
   Uint8List compose(OutgoingMessage message, Identity from, {required String messageId, DateTime? date}) {
-    final plain = inner.compose(message, from, messageId: messageId, date: date);
+    final plain = inner.compose(
+      message.copyWith(security: OutgoingSecurity.none),
+      from,
+      messageId: messageId,
+      date: date,
+    );
     final security = message.security;
     final state = keys.state;
     final settings = state.identity(from.email);

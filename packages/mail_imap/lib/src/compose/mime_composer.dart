@@ -16,7 +16,9 @@ import 'package:mail_model/mail_model.dart';
 ///
 /// Bcc recipients are never written into the message; they only go into the
 /// SMTP envelope. The signature is not appended here: the compose screen puts
-/// it into the body so the user can edit it.
+/// it into the body so the user can edit it. A message whose
+/// [OutgoingMessage.security] asks for encryption or a signature is refused:
+/// mail_crypto's composer does those, around this one.
 final class MimeMessageComposer implements MessageComposer {
   MimeMessageComposer({Random? random}) : _random = random ?? Random.secure();
 
@@ -26,6 +28,14 @@ final class MimeMessageComposer implements MessageComposer {
 
   @override
   Uint8List compose(OutgoingMessage message, Identity from, {required String messageId, DateTime? date}) {
+    // Encrypting and signing is another composer's job (mail_crypto wraps
+    // this one): never let such a message out in the clear.
+    if (message.security.encrypt || message.security.sign) {
+      throw const MailException(
+        MailErrorKind.unsupported,
+        'This message is to be encrypted or signed, but OpenPGP isn’t available.',
+      );
+    }
     final out = StringBuffer();
     void header(String line) => out.write('$line\r\n');
 

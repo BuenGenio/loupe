@@ -64,6 +64,16 @@ void main() {
     expect(m.decodeTextPlainPart(), 'Hallo Ann,\r\nschöne Grüße.\r\n.\r\nFrom here on = fine \r\n-- \r\nJo');
   });
 
+  test('refuses a message that asks for encryption or a signature, never sending it in the clear', () {
+    for (final security in const [OutgoingSecurity(encrypt: true), OutgoingSecurity(sign: true)]) {
+      expect(
+        () => compose(OutgoingMessage(accountId: 'a', identityId: 'i1', subject: 'x', security: security)),
+        throwsA(isA<MailException>().having((e) => e.kind, 'kind', MailErrorKind.unsupported)),
+      );
+    }
+    expect(compose(const OutgoingMessage(accountId: 'a', identityId: 'i1', subject: 'x')), isNotEmpty);
+  });
+
   test('HTML alternative and attachments', () {
     final pdf = Uint8List.fromList(List.generate(1000, (i) => i % 256));
     final bytes = compose(
