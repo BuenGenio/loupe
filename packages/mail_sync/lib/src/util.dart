@@ -90,6 +90,14 @@ String newMessageId(String fromEmail) {
   return '${newId().replaceAll('-', '')}@$domain';
 }
 
+/// The Message-ID of the outbox entry [outboxId], the same for every
+/// attempt to send it.
+String outboxMessageId(String outboxId, String fromEmail) {
+  final at = fromEmail.lastIndexOf('@');
+  final domain = at >= 0 && at < fromEmail.length - 1 ? fromEmail.substring(at + 1) : 'loupe.invalid';
+  return '${outboxId.replaceAll('-', '')}@$domain';
+}
+
 /// Exponential backoff: [base] × 2^[attempt], capped at [max].
 Duration backoff(Duration base, Duration max, int attempt) {
   final ms = base.inMilliseconds * pow(2, attempt.clamp(0, 20));

@@ -1,4 +1,8 @@
+import 'package:clock/clock.dart';
+import 'package:drift/drift.dart' show QueryExecutor, QueryInterceptor, ApplyInterceptor;
+import 'package:drift/native.dart';
 import 'package:mail_model/mail_model.dart';
+import 'package:mail_store/mail_store.dart';
 import 'package:mail_sync/mail_sync.dart';
 import 'package:test/test.dart';
 
@@ -144,6 +148,93 @@ void main() {
         expect(server.sent, hasLength(1));
         await repo2.dispose();
         await h.store.close();
+      });
+    });
+  });
+
+  group('sending once', () {
+    test('a message being sent by background work is not sent again when the app starts', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer()..smtpLatency = const Duration(seconds: 30);
+        final a = await h.add(server);
+        await h.repo.send(outgoing(a), undoDelay: const Duration(seconds: 1));
+        await settle(const Duration(seconds: 5));
+        expect((await h.store.outboxEntries()).single.status, OutboxStatus.sending);
+
+        // The app opens the same database while the send is under way.
+        final app = LiveMailRepository(h.store, h.factory, h.credentials, config: fastConfig);
+        await app.start();
+        await settle(const Duration(minutes: 2));
+        expect(server.sent, hasLength(1));
+        expect(await h.store.outboxEntries(), isEmpty);
+        await app.dispose();
+        await h.dispose();
+      });
+    });
+
+    test('a send left claimed by a process that died goes out once the claim is stale', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer();
+        final a = await h.add(server);
+        await h.store.putOutbox(
+          OutboxEntry(
+            id: 'stuck',
+            accountId: a.id,
+            message: outgoing(a),
+            sendAfter: clock.now(),
+            createdAt: clock.now(),
+            status: OutboxStatus.sending,
+          ),
+        );
+        await h.repo.sendNow('stuck').catchError((_) {});
+        await settle(const Duration(minutes: 5));
+        expect(server.sent, isEmpty, reason: 'may still be sending elsewhere');
+        await settle(fastConfig.sendClaimTimeout);
+        expect(server.sent, hasLength(1));
+        expect(await h.store.outboxEntries(), isEmpty);
+        await h.dispose();
+      });
+    });
+
+    test('a failure after the server took the message does not send it again', () {
+      fakeTime((async) async {
+        // The outbox row can't be deleted once (a busy or failing database).
+        var failDelete = true;
+        final executor = NativeDatabase.memory(setup: (db) => db.execute('PRAGMA foreign_keys = ON')).interceptWith(
+          _FailOnce((sql) {
+            if (!failDelete || !sql.startsWith('DELETE FROM "outbox_items"')) return false;
+            failDelete = false;
+            return true;
+          }),
+        );
+        final h = Harness(store: MailStore.forExecutor(executor));
+        final server = FakeServer();
+        final a = await h.add(server);
+        await h.repo.send(outgoing(a), undoDelay: const Duration(seconds: 1));
+        await settle(const Duration(minutes: 10));
+        expect(failDelete, isFalse);
+        expect(server.sent, hasLength(1));
+        expect(await h.store.outboxEntries(), isEmpty);
+        expect(h.errors.single.message, isNot(contains('stays in the Outbox')));
+        await h.dispose();
+      });
+    });
+
+    test('every attempt sends the same Message-ID', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer()..smtpLoseReply = true;
+        final a = await h.add(server);
+        await h.repo.send(outgoing(a), undoDelay: const Duration(seconds: 1));
+        await settle(const Duration(minutes: 2));
+        // The reply to the first attempt was lost, so it went out twice; the
+        // copies can be recognised as one message.
+        expect(server.sent, hasLength(2));
+        expect(server.sent[1].json['messageId'], server.sent[0].json['messageId']);
+        expect(await h.store.outboxEntries(), isEmpty);
+        await h.dispose();
       });
     });
   });
@@ -390,4 +481,17 @@ void main() {
       });
     });
   });
+}
+
+/// Fails the statements [fails] picks.
+final class _FailOnce extends QueryInterceptor {
+  _FailOnce(this.fails);
+
+  final bool Function(String sql) fails;
+
+  @override
+  Future<int> runDelete(QueryExecutor executor, String statement, List<Object?> args) {
+    if (fails(statement)) throw StateError('database is locked');
+    return executor.runDelete(statement, args);
+  }
 }

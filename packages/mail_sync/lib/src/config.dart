@@ -20,6 +20,7 @@ final class SyncConfig {
     this.maxOpAttempts = 5,
     this.sendRetryBase = const Duration(seconds: 30),
     this.sendRetryMax = const Duration(minutes: 30),
+    this.sendClaimTimeout = const Duration(minutes: 15),
     this.searchTimeout = const Duration(seconds: 60),
     this.backgroundMailboxesPerSync = 2,
   });
@@ -55,6 +56,12 @@ final class SyncConfig {
   /// Retry backoff of failed sends; sends are retried until cancelled.
   final Duration sendRetryBase;
   final Duration sendRetryMax;
+
+  /// A message still marked as being sent this long after it was claimed
+  /// was left by a process that died, and is queued again. Much longer than
+  /// any send takes, so a send in progress elsewhere (the app and background
+  /// work share the outbox) never goes out twice.
+  final Duration sendClaimTimeout;
 
   /// Server searches taking longer count as failed for that account.
   final Duration searchTimeout;

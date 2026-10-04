@@ -604,6 +604,31 @@ void main() {
       await sub.cancel();
     });
 
+    test('a claim needs the entry due, records when, and goes stale', () async {
+      final store = await seededStore();
+      final msg = OutgoingMessage(accountId: accountId, identityId: 'acc1/default', subject: 'Later');
+      await store.putOutbox(
+        OutboxEntry(
+          id: 'o3',
+          accountId: accountId,
+          message: msg,
+          sendAfter: base.add(const Duration(hours: 1)),
+          createdAt: base,
+          status: OutboxStatus.scheduled,
+        ),
+      );
+      expect(await store.claimOutbox('o3', now: base), isNull, reason: 'rescheduled to later meanwhile');
+      final at = base.add(const Duration(hours: 2));
+      final claimed = (await store.claimOutbox('o3', now: at))!;
+      expect(claimed.status, OutboxStatus.sending);
+      expect(claimed.sendAfter, at, reason: 'the claim time');
+
+      expect(await store.releaseStaleOutboxClaims(at.subtract(const Duration(minutes: 1))), 0, reason: 'in progress');
+      expect((await store.getOutbox('o3'))!.status, OutboxStatus.sending);
+      expect(await store.releaseStaleOutboxClaims(at), 1);
+      expect((await store.getOutbox('o3'))!.status, OutboxStatus.queued);
+    });
+
     test('pending ops keep order and update', () async {
       final store = await seededStore();
       final a = await store.enqueueOp(accountId, 'setKeywords', {

@@ -45,6 +45,11 @@ final class MailStore {
   /// An unencrypted in-memory store, for tests. Runs on the calling isolate.
   factory MailStore.memory() => MailStore._(StoreDatabase(NativeDatabase.memory(setup: _configure)));
 
+  /// A store on [executor], for benchmarks and tests that observe the
+  /// statements it runs (drift's `interceptWith`). The executor must enable
+  /// foreign keys itself.
+  factory MailStore.forExecutor(QueryExecutor executor) => MailStore._(StoreDatabase(executor));
+
   final StoreDatabase _db;
 
   /// Opens (or creates) the encrypted database at [path].
@@ -1031,17 +1036,32 @@ SELECT
     _db.outboxItems,
   }).watch().map((rows) => [for (final r in rows) _outboxFromRow(_db.outboxItems.map(r.data))]);
 
-  /// Atomically marks a queued (or failed) entry as sending. Returns it, or
-  /// null if it is gone or already being sent.
-  Future<OutboxEntry?> claimOutbox(String id) => _db.transaction(() async {
+  /// Atomically marks a queued (or failed) entry that is due at [now] as
+  /// sending. Returns it, or null if it is gone, being sent, or was moved to
+  /// later meanwhile.
+  ///
+  /// While an entry is sending, its `sendAfter` holds the time of the claim,
+  /// so a claim left by a process that died can be told from one in
+  /// progress (see [releaseStaleOutboxClaims]).
+  Future<OutboxEntry?> claimOutbox(String id, {DateTime? now}) => _db.transaction(() async {
+    final at = (now ?? DateTime.now()).millisecondsSinceEpoch;
     final n = await _write(
-      'UPDATE outbox_items SET status = ? WHERE id = ? AND status != ?',
-      [OutboxStatus.sending.name, id, OutboxStatus.sending.name],
+      'UPDATE outbox_items SET status = ?, send_after = ? WHERE id = ? AND status != ? AND send_after <= ?',
+      [OutboxStatus.sending.name, at, id, OutboxStatus.sending.name, at],
       {_db.outboxItems},
       kind: UpdateKind.update,
     );
     return n == 0 ? null : getOutbox(id);
   });
+
+  /// Queues again the entries claimed for sending at or before
+  /// [claimedBy]: the process sending them died. Returns how many.
+  Future<int> releaseStaleOutboxClaims(DateTime claimedBy) => _write(
+    'UPDATE outbox_items SET status = ? WHERE status = ? AND send_after <= ?',
+    [OutboxStatus.queued.name, OutboxStatus.sending.name, claimedBy.millisecondsSinceEpoch],
+    {_db.outboxItems},
+    kind: UpdateKind.update,
+  );
 
   /// Removes an entry unless it is being sent. Returns it if removed.
   Future<OutboxEntry?> takeOutbox(String id) => _db.transaction(() async {

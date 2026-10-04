@@ -128,6 +128,12 @@ final class FakeServer {
   /// Error thrown by SMTP until cleared.
   MailException? smtpFailure;
 
+  /// How long an SMTP send takes.
+  Duration smtpLatency = Duration.zero;
+
+  /// The next SMTP send is accepted, but its reply never arrives.
+  bool smtpLoseReply = false;
+
   /// Overrides server search results (ids).
   List<String> Function(SearchExpr expr, String? path)? onSearch;
 
@@ -682,7 +688,12 @@ final class FakeSender implements MailSender {
     if (server.offline) throw const MailException(MailErrorKind.connection, 'Server unreachable');
     final f = server.smtpFailure;
     if (f != null) throw f;
+    if (server.smtpLatency > Duration.zero) await Future<void>.delayed(server.smtpLatency);
     server.sent.add(SentMail(rfc822, envelopeFrom, recipients));
+    if (server.smtpLoseReply) {
+      server.smtpLoseReply = false;
+      throw const MailException(MailErrorKind.connection, 'Lost the connection');
+    }
   }
 
   @override
