@@ -252,16 +252,18 @@ int footerScore(String text) {
 }
 
 final _footerLinkText = RegExp(
-  r'unsubscribe|opt[ -]?out|preferences|subscription|privacy|cookie|terms|legal|disclaimer|policy|notice|imprint|'
-  r'impressum|contact|view (it |this (e-?mail|message) )?(online|in (your |a |the )?(web ?)?browser)|web ?version|'
-  r'online version|forward to a friend|profile|manage|mailing list|why did i get|data protection|gdpr|accessibility|'
-  r'about us|home ?page|website|sitemap|faq|feedback|complaints',
+  r'unsubscribe|opt[ -]?out|preferences|privacy|cookie|terms|legal|disclaimer|policy|notice|imprint|impressum|'
+  r'contact|view (it |this (e-?mail|message) )?(online|in (your |a |the )?(web ?)?browser)|web ?version|'
+  r'online version|forward to a friend|mailing list|why did i get|data protection|gdpr|accessibility|about us|'
+  r'home ?page|website|sitemap|faq|complaints|'
+  r'(manage|update|change) (your )?(e-?mail |subscription |communication |notification |mailing )?'
+  r'(preferences|subscriptions?|settings)',
   caseSensitive: false,
 );
 final _genericLinkText = RegExp(r'^(click )?(here|this link|link)$', caseSensitive: false);
 final _footerLinkUrl = RegExp(
-  r'unsub|opt-?out|preferen|privacy|legal|terms|manage|profile|subscription|webversion|browser|cookie|policy|notice|'
-  r'gdpr|data-?protection|imprint|disclaimer',
+  r'unsub|opt-?out|preferen|privacy|legal|terms|subscription|webversion|browser|cookie|policy|notice|gdpr|'
+  r'data-?protection|imprint|disclaimer',
   caseSensitive: false,
 );
 

@@ -69,6 +69,11 @@ void main() {
     expect(footer('https://x.example/confirm?u=1', 'here'), isFalse);
     expect(footer('https://x.example/reset?t=1', 'Reset your password'), isFalse);
     expect(footer('https://x.example/rsvp', 'Reserve your seat'), isFalse);
+    expect(footer('https://x.example/b/1', 'Manage your booking'), isFalse);
+    expect(footer('https://x.example/s', 'Renew your subscription'), isFalse);
+    expect(footer('https://x.example/u/9', 'View profile'), isFalse);
+    expect(footer('https://x.example/manage/booking', 'here'), isFalse);
+    expect(footer('https://x.example/s', 'Manage subscriptions'), isTrue);
   });
 
   group('trailingStart', () {

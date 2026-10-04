@@ -708,7 +708,7 @@ final class _Sink {
   void _table(Element table, _Ctx outer) {
     if (_isInlineIconTable(table)) {
       // Floated icon tables side by side (social icons): one line.
-      if (_endsWithImage()) _inlines.add(TextRun(' ', outer.run));
+      if (_endsWithImage()) _inlines.add(TextRun('\u2003', outer.run));
       final saved = _flat;
       _flat = true;
       visitChildren(table, outer);
@@ -788,7 +788,7 @@ final class _Sink {
       if (previous != null) {
         final String sep;
         if (previous.isEmpty || text.isEmpty) {
-          sep = separated ? ' · ' : ' '; // icons
+          sep = separated ? ' · ' : '\u2003'; // icons
         } else {
           sep = previous.endsWith(':') ? ' ' : ' · ';
         }
@@ -1219,8 +1219,10 @@ const _maxInlineRowChars = 240;
 /// Text of a cell that only separates its neighbours.
 final _separator = RegExp(r'^[|¦‖•·\-–—/]$');
 
+/// A cell holding only a separator. Its text is read first: that stops after
+/// a few characters, while looking for an image walks the whole cell.
 bool _isSeparatorCell(Element cell) =>
-    cell.querySelector('img') == null && _separator.hasMatch(flatText(cell, 20).replaceAll(_blank, ' ').trim());
+    _separator.hasMatch(flatText(cell, 20).replaceAll(_blank, ' ').trim()) && cell.querySelector('img') == null;
 
 /// The visible characters and icons of a cell holding one short line of
 /// inline content (text, links, icons, whatever wrappers around them), or

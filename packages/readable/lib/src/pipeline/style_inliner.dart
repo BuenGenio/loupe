@@ -30,6 +30,9 @@ const maxStyleSheetChars = 200000;
 /// Rules kept from all sheets.
 const maxStyleRules = 2000;
 
+/// Rule checks against elements, in all; inlining stops after that.
+const maxStyleMatches = 2000000;
+
 final _simpleSelector = RegExp(r'^([a-z][a-z0-9]*)?((?:\.[a-z0-9_-]+)+|#[a-z0-9_-]+)?$', caseSensitive: false);
 final _comments = RegExp(r'/\*.*?\*/', dotAll: true);
 final _whitespace = RegExp(r'\s+');
@@ -75,6 +78,7 @@ int inlineStyleSheets(Document document, Budget budget) {
   if (root == null) return 0;
   var styled = 0;
   var seen = 0;
+  var checks = 0;
   final stack = <Element>[root];
   while (stack.isNotEmpty) {
     if (++seen > budget.limits.maxNodes || ((seen & 255) == 0 && budget.timeUp)) break;
@@ -88,11 +92,10 @@ int inlineStyleSheets(Document document, Budget budget) {
     final rawId = e.attributes['id']?.trim().toLowerCase();
     final id = rawId == null || rawId.isEmpty ? null : rawId;
 
-    final matched = <_Rule>[
-      ...?byTag[tag],
-      for (final c in classes) ...?byClass[c],
-      if (id != null) ...?byId[id],
-    ].where((r) => r.matches(tag, classes, id)).toList();
+    final candidates = <_Rule>[...?byTag[tag], for (final c in classes) ...?byClass[c], if (id != null) ...?byId[id]];
+    checks += candidates.length;
+    if (checks > maxStyleMatches) break;
+    final matched = candidates.where((r) => r.matches(tag, classes, id)).toList();
     if (matched.isEmpty) continue;
     matched.sort((a, b) {
       final s = a.specificity.compareTo(b.specificity);

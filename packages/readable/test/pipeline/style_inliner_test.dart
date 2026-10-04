@@ -96,5 +96,12 @@ void main() {
     final many = List.generate(500, (i) => '<p class="a">$i</p>').join();
     final capped = html_parser.parse('<style>.a{color:red}</style>$many');
     expect(inlineStyleSheets(capped, Budget(const PipelineLimits(maxNodes: 100))), lessThan(100));
+
+    // Many rules for one class on many elements: the rule checks are capped.
+    final sheet = List.generate(maxStyleRules, (i) => '.a{color:#${(i % 9) * 111111}}').join(' ');
+    final paragraphs = List.generate(3000, (i) => '<p class="a">$i</p>').join();
+    final heavy = html_parser.parse('<style>$sheet</style>$paragraphs');
+    final styled = inlineStyleSheets(heavy, Budget(const PipelineLimits()));
+    expect(styled, lessThanOrEqualTo(maxStyleMatches ~/ maxStyleRules));
   });
 }
