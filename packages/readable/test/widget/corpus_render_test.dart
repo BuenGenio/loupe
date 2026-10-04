@@ -7,14 +7,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:readable/readable.dart';
 import 'package:readable/src/cache.dart';
-import 'package:readable/src/render/reader_view.dart';
 
 import '../corpus_loader.dart';
 import 'helpers.dart' show pngBytes;
 
 void main() {
-  setUpAll(() => ReaderView.debugSynchronous = true);
-  tearDownAll(() => ReaderView.debugSynchronous = false);
+  setUpAll(() => ReadableMessageView.debugSynchronous = true);
+  tearDownAll(() => ReadableMessageView.debugSynchronous = false);
   setUp(PipelineCache.instance.clear);
 
   for (final entry in loadCorpus().where((e) => e.smoke)) {

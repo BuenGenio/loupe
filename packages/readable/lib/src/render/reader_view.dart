@@ -51,8 +51,8 @@ class ReaderView extends StatefulWidget {
   final String? senderDomain;
   final Color? backgroundColor;
 
-  /// Tests: run every message synchronously (no isolate).
-  @visibleForTesting
+  /// Tests: run every message synchronously (no isolate). Public through
+  /// `ReadableMessageView.debugSynchronous`.
   static bool debugSynchronous = false;
 
   @override

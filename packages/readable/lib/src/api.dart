@@ -101,6 +101,13 @@ class ReadableMessageView extends StatelessWidget {
   /// theme's surface colour.
   final Color? backgroundColor;
 
+  /// Widget tests: process every message synchronously. Messages over ~24 KB
+  /// normally go to a background isolate, whose result a fake-async test
+  /// never sees.
+  @visibleForTesting
+  static bool get debugSynchronous => ReaderView.debugSynchronous;
+  static set debugSynchronous(bool value) => ReaderView.debugSynchronous = value;
+
   @override
   Widget build(BuildContext context) => ReaderView(
     content: content,
