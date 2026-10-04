@@ -919,7 +919,15 @@ final class _Sink {
             identical(last.parent, element.parent) ||
             identical(element.parent, last) ||
             identical(last.parent, element));
-    addBlock(ParagraphBlock(inlines, align: align, dir: attrs.dir, tight: tight, muted: attrs.muted));
+    // Long text styled big is body copy, not a heading: keep it near body
+    // size so a phone line still holds a few words.
+    final body = text.length > 150
+        ? [
+            for (final i in inlines)
+              i is TextRun && i.style.scale > 1.15 ? TextRun(i.text, i.style.copyWith(scale: 1.15)) : i,
+          ]
+        : inlines;
+    addBlock(ParagraphBlock(body, align: align, dir: attrs.dir, tight: tight, muted: attrs.muted));
     if (attrs.line) _lastLine = element;
   }
 

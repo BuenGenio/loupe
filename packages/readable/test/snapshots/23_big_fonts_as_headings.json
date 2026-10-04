@@ -48,7 +48,7 @@
         "inlines": [
           {
             "text": "Long text in a large font is not a heading when it goes on and on for more than a couple of lines, because then it is clearly body copy that someone styled large for emphasis or by accident, and the reader should keep it as a paragraph.",
-            "scale": 1.5
+            "scale": 1.15
           }
         ]
       },
