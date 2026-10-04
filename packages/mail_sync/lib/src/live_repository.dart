@@ -730,9 +730,13 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     final accountId = syncer.account.id;
     final existing = await _snoozeFolder(accountId);
     if (existing != null) return existing;
-    final path = _snoozePath(await store.getMailboxes(accountId: accountId));
-    final id = MailIds.mailbox(accountId, path);
-    await store.transaction(() async {
+    // Looked for again with the write lock held: another process (the app,
+    // a notification action) may have added it meanwhile.
+    final id = await store.transaction(() async {
+      final added = await _snoozeFolder(accountId);
+      if (added != null) return added.id;
+      final path = _snoozePath(await store.getMailboxes(accountId: accountId));
+      final id = MailIds.mailbox(accountId, path);
       await syncer.addLocalMailbox(
         RemoteMailbox(path: path, name: Snooze.folderName, parentPath: path == Snooze.folderName ? null : 'INBOX'),
       );
@@ -741,6 +745,7 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
         'path': path,
         'name': Snooze.folderName,
       }, now: _now());
+      return id;
     });
     return await store.getMailbox(id) ??
         (throw const MailException(MailErrorKind.unknown, 'Couldn’t add the Snoozed folder'));
@@ -822,8 +827,10 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     if (away.isNotEmpty) await _moveWithin(accountId, away, inbox.id);
   }
 
-  /// Drops [ids] from the account's device-only snoozes.
-  Future<void> _forgetLocalSnoozes(String accountId, List<String> ids) async {
+  /// Drops [ids] from the account's device-only snoozes. One transaction:
+  /// another process may change the same operations (snooze, wake), and an
+  /// edit made from a stale read would bring back what it removed.
+  Future<void> _forgetLocalSnoozes(String accountId, List<String> ids) => store.transaction(() async {
     final gone = ids.toSet();
     for (final op in await store.pendingOps(accountId: accountId)) {
       if (op.type != OpType.localSnooze) continue;
@@ -836,7 +843,7 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
         await store.updateOp(op.id, payload: {...op.payload, 'ids': kept}, attempts: op.attempts);
       }
     }
-  }
+  });
 
   /// Wakes the account's messages whose time has come; after every full
   /// sync, so the Snoozed folder is up to date and a time another device

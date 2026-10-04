@@ -73,6 +73,12 @@ Rules (`app/lib/platform/`):
 - **Hand work to whoever syncs.** A notification button goes to the app's main isolate, then to Instant Delivery (`ForegroundBridge`), and only otherwise opens the database itself.
 - **A message is sent by whoever claimed it.** Any process may send the outbox; `claimOutbox` marks a due entry as sending with the time of the claim, and the others leave it alone until the claim is older than `SyncConfig.sendClaimTimeout` (15 min, much longer than a send), when it counts as left by a process that died and is queued again. Every attempt uses the same Message-ID.
 - **A refusal for good waits for Retry.** The SMTP sender throws `PermanentMailException` for 5xx replies (and a login refused after an OAuth refresh); the entry is marked failed and *held* (`outbox_items.held`), which no process claims until the user's Retry (`sendNow`). 4xx replies, network errors and timeouts back off and retry. When the server refuses some recipients but takes others, the others get the message and the refused ones stay in the Outbox as a message of their own (held unless a refusal was temporary).
+- **Read, then write, in one transaction.** Every connection waits up to 10 s for another one's lock (busy timeout),
+  and store transactions take the write lock when they begin (`BEGIN IMMEDIATE`), so a transaction that reads and then
+  writes never fails with `SQLITE_BUSY_SNAPSHOT` because another process wrote in between. Decisions made from a read
+  belong in the same transaction as their write: outbox claims, the rules watermark (`advanceRuleWatermark` moves it
+  only from where it was read), device-only snoozes, the Snoozed folder, and schema upgrades (two processes opening
+  the file after an update migrate it once). Never wait for the network inside one.
 - **The database key is never replaced.** A new key is made only when there is no database file; a keychain that can't give the key back shows the recovery screen (`DatabaseKeyUnavailable`), and only the user's explicit reset deletes the database.
 - **New mail is what passed a watermark.** `detectNewMail` remembers the newest arrival per inbox (and VIP mail elsewhere) in `new_mail.json`; a list seen for the first time only sets its watermark. The app moves the watermarks silently when it goes to the background.
 

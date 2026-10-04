@@ -72,12 +72,13 @@ final class MailStore {
         throw StateError('SQLite3MultipleCiphers is not bundled; refusing to open an unencrypted store');
       }
       db.execute("PRAGMA key = '${key.replaceAll("'", "''")}'");
+      // Background work (sync, notification actions) opens its own
+      // connection; a writer waits for another one instead of failing. First,
+      // so that the statements below wait too (switching to WAL takes a lock).
+      db.execute('PRAGMA busy_timeout = $_busyTimeoutMs');
       // Fails with SQLITE_NOTADB if the key is wrong.
       db.select('SELECT count(*) FROM sqlite_master');
       db.execute('PRAGMA journal_mode = WAL');
-      // Background work (sync, notification actions) opens its own
-      // connection; a writer waits for another one instead of failing.
-      db.execute('PRAGMA busy_timeout = $_busyTimeoutMs');
       _configure(db);
     }
 
@@ -102,6 +103,16 @@ final class MailStore {
   Future<void> close() => _db.close();
 
   /// Runs [action] in a transaction; nested calls join the outer one.
+  ///
+  /// Transactions take the write lock when they begin (`BEGIN IMMEDIATE`,
+  /// as drift's sqlite3 executor starts them; the store's tests check it).
+  /// The app and background isolates open the file on connections of their
+  /// own, and a transaction that reads and then writes would otherwise fail
+  /// with SQLITE_BUSY_SNAPSHOT when another connection wrote in between:
+  /// the busy timeout can't help a snapshot that is already stale. With the
+  /// lock taken up front, the other connection waits instead, so put a read
+  /// and the write that depends on it in one transaction. Never wait for the
+  /// network inside one: other processes would wait as long.
   Future<T> transaction<T>(Future<T> Function() action) => _db.transaction(action);
 
   // Helpers -----------------------------------------------------------------
@@ -1677,16 +1688,24 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
     return row == null ? null : RuleWatermark(seq: row.seq, uidValidity: row.uidValidity, uid: row.uid);
   }
 
-  Future<void> setRuleWatermark(String mailboxId, RuleWatermark watermark) => _db
-      .into(_db.ruleWatermarks)
-      .insertOnConflictUpdate(
-        RuleWatermarksCompanion.insert(
-          mailboxId: mailboxId,
-          seq: watermark.seq,
-          uidValidity: Value(watermark.uidValidity),
-          uid: Value(watermark.uid),
-        ),
-      );
+  /// Moves the watermark of [mailboxId] from [from] (null: none yet) to
+  /// [to], unless another process moved it meanwhile. Returns whether it
+  /// moved: whoever moves it handles the mail in between, once.
+  Future<bool> advanceRuleWatermark(String mailboxId, {required RuleWatermark? from, required RuleWatermark to}) =>
+      _db.transaction(() async {
+        if (await ruleWatermark(mailboxId) != from) return false;
+        await _db
+            .into(_db.ruleWatermarks)
+            .insertOnConflictUpdate(
+              RuleWatermarksCompanion.insert(
+                mailboxId: mailboxId,
+                seq: to.seq,
+                uidValidity: Value(to.uidValidity),
+                uid: Value(to.uid),
+              ),
+            );
+        return true;
+      });
 
   /// Messages stored in [mailboxId] after [seq] (insertion order), oldest
   /// insertion first, with their seq.

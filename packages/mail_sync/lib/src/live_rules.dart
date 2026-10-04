@@ -101,9 +101,10 @@ final class LiveRules implements MailRules {
 
   /// Runs device rules on the messages that arrived in [inboxId] since the
   /// last run (its watermark), oldest first, and moves the watermark past
-  /// them before acting, so no message is handled twice. The first run only
-  /// sets the watermark: mail that was there before isn't new. Also retries
-  /// a server-script upload that failed.
+  /// them before acting, so no message is handled twice: if another process
+  /// (the app, background sync) moved it meanwhile, that one handles them.
+  /// The first run only sets the watermark: mail that was there before isn't
+  /// new. Also retries a server-script upload that failed.
   Future<void> inboxSynced(MailAccount account, String inboxId) =>
       _queues.putIfAbsent(account.id, SerialQueue.new).run(() async {
         await _server.retry(account);
@@ -111,7 +112,7 @@ final class LiveRules implements MailRules {
         final stored = await _store.emailsStoredAfter(inboxId, mark?.seq ?? 0);
         final next = _advance(mark, stored);
         if (mark == null || stored.isEmpty) {
-          if (next != mark) await _store.setRuleWatermark(inboxId, next);
+          if (next != mark) await _store.advanceRuleWatermark(inboxId, from: mark, to: next);
           return;
         }
         final fresh = [
@@ -120,7 +121,7 @@ final class LiveRules implements MailRules {
         ]..sort((a, b) => _uid(a).compareTo(_uid(b)));
         final runner = RuleRunner(await _store.getRules(), mailboxes: await _store.getMailboxes(), now: _host.now());
         if (fresh.isEmpty || runner.isEmpty) {
-          await _store.setRuleWatermark(inboxId, next);
+          await _store.advanceRuleWatermark(inboxId, from: mark, to: next);
           return;
         }
         final label = '${account.displayName} ${account.email}';
@@ -136,8 +137,9 @@ final class LiveRules implements MailRules {
 
           outcomes.add((e, await runner.run(e, accountLabel: label, loadContent: load)));
         }
-        // At most once: the watermark moves before anything is done.
-        await _store.setRuleWatermark(inboxId, next);
+        // At most once: the watermark moves before anything is done, by
+        // this process or another one, never both.
+        if (!await _store.advanceRuleWatermark(inboxId, from: mark, to: next)) return;
         await applyOutcomes(_host.repository, outcomes);
       });
 

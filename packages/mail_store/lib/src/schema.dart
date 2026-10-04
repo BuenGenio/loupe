@@ -365,44 +365,66 @@ class StoreDatabase extends _$StoreDatabase {
   @override
   int get schemaVersion => 5;
 
-  @override
-  MigrationStrategy get migration => MigrationStrategy(
-    onCreate: (m) async {
-      await m.createAll();
-      for (final sql in [..._ftsAndTriggers, ..._countIndexes]) {
+  /// Creates or upgrades the file in one write transaction, from the
+  /// version it has then. The app and a background isolate can open it at
+  /// the same moment after an update, both reading the old version before
+  /// either migrated: the second waits for the first's transaction (busy
+  /// timeout), then finds the new version and does nothing, instead of
+  /// failing on a table or column that already exists. The version is set
+  /// in the same transaction.
+  Future<void> _migrate(Migrator m) => transaction(() async {
+    final current = (await customSelect('PRAGMA user_version').getSingle()).read<int>('user_version');
+    if (current >= schemaVersion) return;
+    if (current == 0) {
+      await _create(m);
+    } else {
+      await _upgrade(m, current);
+    }
+    await customStatement('PRAGMA user_version = $schemaVersion');
+  });
+
+  Future<void> _create(Migrator m) async {
+    await m.createAll();
+    for (final sql in [..._ftsAndTriggers, ..._countIndexes]) {
+      await customStatement(sql);
+    }
+  }
+
+  Future<void> _upgrade(Migrator m, int from) async {
+    if (from < 2) {
+      await m.createTable(rules);
+      await m.createTable(ruleWatermarks);
+    }
+    if (from < 3) {
+      for (final column in [
+        emails.listId,
+        emails.listName,
+        emails.listPost,
+        emails.listUnsubscribe,
+        emails.listUnsubscribePost,
+      ]) {
+        await m.addColumn(emails, column);
+      }
+      await m.createIndex(emailsList);
+      await m.createTable(mutedThreads);
+      // Summaries stored so far were fetched without the List-* headers.
+      await m.addColumn(syncStates, syncStates.staleHeaders);
+      await customStatement('UPDATE sync_states SET stale_headers = 1');
+    }
+    if (from < 4) {
+      for (final sql in _countIndexes) {
         await customStatement(sql);
       }
-    },
-    onUpgrade: (m, from, to) async {
-      if (from < 2) {
-        await m.createTable(rules);
-        await m.createTable(ruleWatermarks);
-      }
-      if (from < 3) {
-        for (final column in [
-          emails.listId,
-          emails.listName,
-          emails.listPost,
-          emails.listUnsubscribe,
-          emails.listUnsubscribePost,
-        ]) {
-          await m.addColumn(emails, column);
-        }
-        await m.createIndex(emailsList);
-        await m.createTable(mutedThreads);
-        // Summaries stored so far were fetched without the List-* headers.
-        await m.addColumn(syncStates, syncStates.staleHeaders);
-        await customStatement('UPDATE sync_states SET stale_headers = 1');
-      }
-      if (from < 4) {
-        for (final sql in _countIndexes) {
-          await customStatement(sql);
-        }
-      }
-      if (from < 5) {
-        await m.addColumn(outboxItems, outboxItems.held);
-      }
-    },
+    }
+    if (from < 5) {
+      await m.addColumn(outboxItems, outboxItems.held);
+    }
+  }
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onCreate: _migrate,
+    onUpgrade: (m, from, to) => _migrate(m),
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
     },
