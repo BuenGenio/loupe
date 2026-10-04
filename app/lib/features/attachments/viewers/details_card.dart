@@ -18,6 +18,7 @@ class AttachmentDetailsCard extends StatelessWidget {
     this.size,
     this.note,
     this.busy = false,
+    this.action,
   });
 
   final Attachment attachment;
@@ -32,6 +33,9 @@ class AttachmentDetailsCard extends StatelessWidget {
 
   /// An action is downloading the file.
   final bool busy;
+
+  /// What the app can do with this kind of file itself (import a certificate), above "Open in…".
+  final Widget? action;
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +84,7 @@ class AttachmentDetailsCard extends StatelessWidget {
               ),
             ],
             const SizedBox(height: 28),
+            if (action != null) ...[action!, const SizedBox(height: 8)],
             SizedBox(
               width: 240,
               child: FilledButton.tonalIcon(

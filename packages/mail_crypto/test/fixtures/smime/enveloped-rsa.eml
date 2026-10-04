@@ -1,0 +1,22 @@
+To: Bob Example <bob@example.net>
+From: Alice Example <alice@example.org>
+Subject: Encrypted to Alice
+MIME-Version: 1.0
+Content-Disposition: attachment; filename="smime.p7m"
+Content-Type: application/pkcs7-mime; smime-type=enveloped-data; name="smime.p7m"
+Content-Transfer-Encoding: base64
+
+MIICTQYJKoZIhvcNAQcDoIICPjCCAjoCAQAxggFTMIIBTwIBADA3MDIxEzARBgNV
+BAoMCkxvdXBlIFRlc3QxGzAZBgNVBAMMEkxvdXBlIFRlc3QgTWFpbCBDQQIBZDAN
+BgkqhkiG9w0BAQEFAASCAQAE7oPrsMTnzIIFB3poGkLqtId4oPDIlx9vYbWF8H2w
+uUneoyvR8S32QOuQ4rF7hJbx98AgY4YvK0rHNEHXqsB47BoewsYBsJZoy4B35Qcb
++1+cHRS4Hl9X2KAj29F2VCnOEZ3JODPcfH9xDJUFsMpBSk4k46tzXryeps7Tee7b
+xVWmd5OgBvhBXw/eQYvuv/+RtoxGsWYukxgqZCyIU1mbx0YVwaUYc9sNTmfYXDhf
+3zn93fAc8Mt8vNF0WiYIX3qOjhX5PlWKhh9J10gQlCg2W/+1C45p67y81plTPxI8
+ft635QHwWDVbCsAgGbYdiSrygDs5lOroyEiAsMwuKAXRMIHdBgkqhkiG9w0BBwEw
+HQYJYIZIAWUDBAEqBBCTDRNpOGzdgbpBckBeHbXRgIGwjdnzQM8224KHqUeuuZbf
+AXFpnTy0HJw3mEB4t4qILWwqsnRMHZ+jy2cmp0CIDry/Zph+enOCI18ZDoH6dRdf
+FshuBRXdaFhDyoGiyb4syCv7052jAOKzOrjgLt8VZAgXJE4Mcr+kK4XkK10kDhrm
+UHco/kb9fq7SPHiVlGas9eYXrDKOVf7saFZQtKmz9Le2Kc1XJX7HmbreVdlP3VzC
+r9dUxEI2Y15uegOly7kouwU=
+

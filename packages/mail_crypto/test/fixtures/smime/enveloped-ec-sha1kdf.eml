@@ -1,0 +1,19 @@
+To: Bob Example <bob@example.net>
+From: Alice Example <alice@example.org>
+Subject: Encrypted to Bob (SHA-1 KDF)
+MIME-Version: 1.0
+Content-Disposition: attachment; filename="smime.p7m"
+Content-Type: application/pkcs7-mime; smime-type=enveloped-data; name="smime.p7m"
+Content-Transfer-Encoding: base64
+
+MIIB0wYJKoZIhvcNAQcDoIIBxDCCAcACAQIxgdqhgdcCAQOgUaFPMAkGByqGSM49
+AgEDQgAEBX/Dox5jWVENb89yeAtXuJJmGEWY77cZW6YaFiNnKOKuZMpYxEYjY4fD
+Xnwvh2cNGWuqsK2tNeWbUhKXxoYyUjAYBgkrgQUQhkg/AAIwCwYJYIZIAWUDBAEt
+MGUwYzA3MDIxEzARBgNVBAoMCkxvdXBlIFRlc3QxGzAZBgNVBAMMEkxvdXBlIFRl
+c3QgTWFpbCBDQQIBZQQoiO1gXCJbY75h2QrvFwpkO2uowKBX5vKbL9oon2ue7d1c
+4WmG5Oit3TCB3QYJKoZIhvcNAQcBMB0GCWCGSAFlAwQBKgQQCkLdYaH6kOxk+6vm
+b5JVjICBsN+mChEbspJwSonE5FX81hLCTnFK2eiQmugWF4nQl6+MP2NDbgqwXfjQ
+VXcRszmxzCxRPdX1OjXHolh17r1MHE8a2+gEfHYWE2ahigFZrHW6ZsHWGtV422pF
+yOz0bIYee7QSGJvzJvXjm8/w87ZFIjIcQjo2DCnQTIYav3My7Sw48dnXBLCJlcLu
+sSVcjN9rlam16Y51S41WN54/tNo4rfnCfhBweaKa2M8vOFwEkjnt
+

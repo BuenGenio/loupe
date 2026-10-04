@@ -469,7 +469,9 @@ Estimates assume **1–2 full-time Flutter developers** plus part-time design he
 
 - **OpenPGP:** compatible with Thunderbird, plus Autocrypt.
   - Implementation: `dart_pg` (pure Dart), or RNP/Sequoia over FFI. RNP is what TB desktop uses.
-- **S/MIME** through the platform keychains.
+- **S/MIME:** compatible with Outlook and Thunderbird; pure Dart on pointycastle, keys in the platform keychain
+  (see [ARCHITECTURE.md](../ARCHITECTURE.md#smime)). Certificates installed in Android's KeyChain by an MDM
+  aren't used yet: a platform `SmimeBackend` can add them.
 
 ### Phase 5: plugins (only if justified)
 

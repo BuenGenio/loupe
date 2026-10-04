@@ -17,6 +17,7 @@ import 'features/message_list/message_list_screen.dart';
 import 'features/onboarding/welcome_screen.dart';
 import 'features/openpgp/address_settings_screens.dart';
 import 'features/openpgp/encryption_settings_screen.dart';
+import 'features/smime/smime_settings.dart';
 import 'features/outbox/outbox_screen.dart';
 import 'features/panes/mail_home.dart';
 import 'features/rules/rule_editor_screen.dart';
@@ -55,6 +56,9 @@ abstract final class Routes {
   static const generateKey = '/settings/encryption/generate';
   static String encryptionKey(String fingerprint) => '/settings/encryption/key/$fingerprint';
   static String encryptionAddress(String email) => '/settings/encryption/address/${Uri.encodeComponent(email)}';
+
+  /// An S/MIME certificate (own, a correspondent's, or a trusted authority), by SHA-256 fingerprint.
+  static String smimeCertificate(String fingerprint) => '/settings/encryption/certificate/$fingerprint';
 
   /// Messages waiting to be sent (scheduled, queued, failed).
   static const outbox = '/outbox';
@@ -240,6 +244,10 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: 'address/:email',
                 builder: (context, state) => AddressEncryptionScreen(email: state.pathParameters['email']!),
+              ),
+              GoRoute(
+                path: 'certificate/:fingerprint',
+                builder: (context, state) => SmimeCertificateScreen(fingerprint: state.pathParameters['fingerprint']!),
               ),
             ],
           ),

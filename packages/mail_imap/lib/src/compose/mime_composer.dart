@@ -33,7 +33,7 @@ final class MimeMessageComposer implements MessageComposer {
     if (message.security.encrypt || message.security.sign) {
       throw const MailException(
         MailErrorKind.unsupported,
-        'This message is to be encrypted or signed, but OpenPGP isn’t available.',
+        'This message is to be encrypted or signed, but end-to-end encryption isn’t available.',
       );
     }
     final out = StringBuffer();

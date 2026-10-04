@@ -12,6 +12,7 @@ import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../conversation/sheets.dart' show showSnack;
 import '../openpgp/content_loader.dart';
+import '../smime/smime_import.dart';
 import 'attachment_actions.dart';
 import 'attachment_cache.dart';
 import 'attachment_gallery.dart';
@@ -303,6 +304,9 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
     busy: _busy > 0,
     onOpenIn: _openIn,
     onShare: _share,
+    action: isCertificateAttachment(_attachment!)
+        ? SmimeImportButton(load: () => ref.read(attachmentCacheProvider).bytes(widget.emailId, _attachment!))
+        : null,
   );
 
   Widget _viewer(BuildContext context) {

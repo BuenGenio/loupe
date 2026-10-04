@@ -20,6 +20,7 @@ import '../keyboard/mail_commands.dart';
 import '../openpgp/compose_security.dart';
 import '../openpgp/content_loader.dart';
 import '../openpgp/openpgp_providers.dart';
+import '../smime/smime_providers.dart';
 
 import 'package:mail_crypto/mail_crypto.dart' show draftSecurityFrom;
 
@@ -81,8 +82,9 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
   /// Encrypt and Sign (OpenPGP).
   final _security = ComposeSecurityController();
 
-  /// Replying to an encrypted message: encryption is suggested.
+  /// Replying to an encrypted message: encryption is suggested, with the same standard.
   bool _sourceEncrypted = false;
+  SecurityTechnology? _sourceTechnology;
   List<MailAccount> _accounts = const [];
   MailAccount? _account;
   Identity? _identity;
@@ -145,6 +147,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     // Swiped away from the app switcher comes after this: save what's there.
     _lifecycle = AppLifecycleListener(onHide: _saveNow, onPause: _saveNow);
     ref.listenManual(keyringStateProvider, (_, _) => _updateSecurity());
+    ref.listenManual(smimeStateProvider, (_, _) => _updateSecurity());
     unawaited(
       _prepare().catchError((Object e) {
         // A source message that can't be quoted must not leave compose
@@ -204,11 +207,13 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     if (state == null) return;
     _security.update(
       state: state,
+      smime: ref.read(smimeStateProvider).value,
       from: _identity?.email,
       recipients: [
         for (final c in [_to, _cc, _bcc]) ...c.withPending.map((a) => a.email),
       ],
       replyToEncrypted: _sourceEncrypted,
+      replyTechnology: _sourceTechnology,
     );
   }
 
@@ -446,7 +451,8 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     EmailContent? content;
     try {
       content = await ref.read(contentLoaderProvider).loadContent(source.id);
-      _sourceEncrypted = pgpStatusOf(content)?.encrypted ?? false;
+      _sourceTechnology = encryptedWith(content);
+      _sourceEncrypted = _sourceTechnology != null;
     } on MailException catch (e) {
       warning = e.message;
     }
@@ -501,9 +507,10 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
       final content = await ref.read(contentLoaderProvider).loadContent(draft.id);
       if (!mounted) return null;
       // An encrypted draft comes back with its choices.
+      final encrypted = encryptedWith(content);
       final security =
           draftSecurityFrom(content.headers) ??
-          ((pgpStatusOf(content)?.encrypted ?? false) ? const OutgoingSecurity(encrypt: true, sign: true) : null);
+          (encrypted == null ? null : OutgoingSecurity(encrypt: true, sign: true, technology: encrypted));
       if (security != null) _security.restore(security);
       _body.text = ComposeText.plainTextOf(content);
       return await _loadAttachments(draft.id, content);

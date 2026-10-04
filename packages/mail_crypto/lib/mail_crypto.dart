@@ -1,5 +1,10 @@
-/// OpenPGP for Loupe: keys, PGP/MIME (RFC 3156) reading and writing, and
-/// Autocrypt, on a swappable [PgpBackend] (dart_pg by default).
+/// End-to-end encryption for Loupe.
+///
+/// - OpenPGP: keys, PGP/MIME (RFC 3156) reading and writing, and Autocrypt,
+///   on a swappable [PgpBackend] (dart_pg by default).
+/// - S/MIME (RFC 8551): certificates and PKCS #12, CMS signing and
+///   encryption, chain validation against Mozilla's email roots, on a
+///   swappable [SmimeBackend] (pure Dart on pointycastle by default).
 library;
 
 export 'src/autocrypt.dart';
@@ -15,3 +20,16 @@ export 'src/pgp/types.dart';
 export 'src/pgp_mime/reader.dart' show PgpMimeReader, PgpReadResult, detectProtection, headerIn;
 export 'src/pgp_mime/status.dart';
 export 'src/pgp_mime/writer.dart';
+export 'src/smime/backend.dart';
+export 'src/smime/certificate.dart';
+export 'src/smime/cms.dart'
+    show SmimeContentCipher, SmimeDecrypted, SmimeRecipientId, SmimeSignedData, SmimeSignerCheck, smimeCapabilities;
+export 'src/smime/mozilla_roots.dart' show mozillaEmailRootsDate;
+export 'src/smime/pkcs12.dart' show SmimeBundle, SmimeKeyEntry;
+export 'src/smime/plan.dart';
+export 'src/smime/primitives.dart' show SmimePrivateKey;
+export 'src/smime/reader.dart';
+export 'src/smime/status.dart';
+export 'src/smime/store.dart';
+export 'src/smime/trust.dart';
+export 'src/smime/writer.dart';

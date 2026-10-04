@@ -196,7 +196,7 @@ abstract final class LoupeIcons {
   static const IconData redirect = FluentIcons.arrow_routing_24_regular;
   static const IconData openDirectly = FluentIcons.link_24_regular;
 
-  // End-to-end encryption (OpenPGP) -------------------------------------------
+  // End-to-end encryption (OpenPGP, S/MIME) ------------------------------------
 
   static const IconData encrypted = FluentIcons.lock_closed_24_filled;
   static const IconData encryptOff = FluentIcons.lock_open_24_regular;
@@ -213,6 +213,9 @@ abstract final class LoupeIcons {
   static const IconData importKey = FluentIcons.arrow_import_24_regular;
   static const IconData exportKey = FluentIcons.arrow_export_24_regular;
   static const IconData fingerprint = FluentIcons.fingerprint_24_regular;
+
+  /// An S/MIME certificate (X.509).
+  static const IconData certificate = FluentIcons.certificate_24_regular;
 
   // Importing accounts ------------------------------------------------------
 

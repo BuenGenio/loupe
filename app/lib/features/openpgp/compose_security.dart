@@ -7,19 +7,29 @@ import 'package:mail_model/mail_model.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../conversation/sheets.dart';
+import '../smime/smime_providers.dart';
 import 'openpgp_providers.dart';
 
-/// The Encrypt and Sign choices of the message being written.
+/// The Encrypt and Sign choices of the message being written, and the
+/// standard that protects it: OpenPGP or S/MIME.
 ///
 /// Until the user touches a toggle, they follow the sender's settings and
 /// the recipients (Thunderbird's automatic encryption, Autocrypt): adding
 /// a recipient without a key turns automatic encryption off again. A
-/// toggle the user touched stays as they set it.
+/// toggle the user touched stays as they set it. The standard is the
+/// address's preference, unless only the other one has a key or
+/// certificate for every recipient (or the message replies to mail
+/// encrypted with the other); the user can switch when both are set up.
 class ComposeSecurityController extends ChangeNotifier {
+  ComposeSecurityController({this._smimeBackend = const DartSmimeBackend()});
+
+  final SmimeBackend _smimeBackend;
   KeyringState _state = KeyringState.empty;
+  SmimeState _smime = SmimeState.empty;
   String? _from;
   List<String> _recipients = const [];
   bool _replyToEncrypted = false;
+  SecurityTechnology? _replyTechnology;
 
   bool _encrypt = false;
   bool _sign = false;
@@ -27,42 +37,105 @@ class ComposeSecurityController extends ChangeNotifier {
   bool _encryptTouched = false;
   bool _signTouched = false;
 
-  /// The plan for the current recipients; null without a sender.
+  /// The standard the user picked (or a draft brought back); null follows the automatic choice.
+  SecurityTechnology? _chosen;
+
+  /// The OpenPGP plan for the current recipients; null without a sender.
   EncryptionPlan? plan;
 
-  /// The sender has a key: the toggles are offered.
-  bool get available => plan?.ownKey != null;
+  /// The S/MIME plan for the current recipients; null without a sender.
+  SmimePlan? smimePlan;
+
+  /// The standard the message is protected with.
+  SecurityTechnology technology = SecurityTechnology.openPgp;
+
+  /// The sender has an OpenPGP key.
+  bool get pgpAvailable => plan?.ownKey != null;
+
+  /// The sender has a valid S/MIME certificate.
+  bool get smimeAvailable => smimePlan?.canSign ?? false;
+
+  /// The sender has a key or a certificate: the toggles are offered.
+  bool get available => pgpAvailable || smimeAvailable;
+
+  /// Both are set up: the user can switch.
+  bool get canSwitch => pgpAvailable && smimeAvailable;
+
+  bool get isSmime => technology == SecurityTechnology.smime;
 
   bool get encrypt => available && _encrypt;
   bool get sign => available && (_sign || _encrypt);
-  bool get attachKey => available && _attachKey;
+  bool get attachKey => available && !isSmime && _attachKey;
+
+  /// Recipients without a key (OpenPGP) or a usable certificate (S/MIME).
+  List<String> get missing => (isSmime ? smimePlan?.missing : plan?.missing) ?? const [];
+
+  /// Every recipient has a key or certificate for the chosen standard.
+  bool get possible => (isSmime ? smimePlan?.possible : plan?.possible) ?? false;
 
   /// Choices the user made (for "is this message changed?"), not automatic ones.
-  String get manualSnapshot => '${_encryptTouched ? _encrypt : '-'}${_signTouched ? _sign : '-'}';
+  String get manualSnapshot =>
+      '${_encryptTouched ? _encrypt : '-'}${_signTouched ? _sign : '-'}${_chosen?.name ?? '-'}';
 
   /// What goes into the [OutgoingMessage].
-  OutgoingSecurity get value => OutgoingSecurity(encrypt: encrypt, sign: sign, attachPublicKey: attachKey);
+  OutgoingSecurity get value =>
+      OutgoingSecurity(encrypt: encrypt, sign: sign, attachPublicKey: attachKey, technology: technology);
 
-  /// Recomputes the plan after the keyring, the sender or the recipients changed.
+  /// Recomputes the plans after the keyring, the certificates, the sender
+  /// or the recipients changed.
   void update({
     required KeyringState state,
+    SmimeState? smime,
     required String? from,
     required Iterable<String> recipients,
     bool? replyToEncrypted,
+    SecurityTechnology? replyTechnology,
   }) {
     _state = state;
+    if (smime != null) _smime = smime;
     _from = from;
     _recipients = [for (final r in recipients) r.trim().toLowerCase()];
     if (replyToEncrypted != null) _replyToEncrypted = replyToEncrypted;
+    if (replyTechnology != null) _replyTechnology = replyTechnology;
     final sender = _from;
     plan = sender == null
         ? null
         : planEncryption(_state, from: sender, recipients: _recipients, replyToEncrypted: _replyToEncrypted);
+    smimePlan = sender == null
+        ? null
+        : planSmime(_smime, from: sender, recipients: _recipients, signedBy: _smimeBackend.certificateSignedBy);
+    technology = _technology(sender);
     final settings = sender == null ? IdentityPgp.defaults : _state.identity(sender);
-    if (!_encryptTouched) _encrypt = plan?.suggested ?? false;
+    if (!_encryptTouched) _encrypt = _suggested(settings);
     if (!_signTouched) _sign = settings.signByDefault;
     _attachKey = settings.attachPublicKey;
     notifyListeners();
+  }
+
+  SecurityTechnology _technology(String? sender) {
+    final chosen = _chosen;
+    if (chosen == SecurityTechnology.smime && smimeAvailable) return chosen!;
+    if (chosen == SecurityTechnology.openPgp && pgpAvailable) return chosen!;
+    final preferSmime =
+        _replyTechnology == SecurityTechnology.smime ||
+        (_replyTechnology == null && sender != null && _smime.identity(sender).preferSmime);
+    return chooseTechnology(
+      pgp: pgpAvailable,
+      smime: smimeAvailable,
+      preferSmime: preferSmime,
+      pgpCanEncrypt: plan?.possible ?? false,
+      smimeCanEncrypt: smimePlan?.possible ?? false,
+    );
+  }
+
+  /// Encrypt by default: OpenPGP's plan says so; for S/MIME, the address
+  /// always encrypts, or every recipient has a certificate and the address
+  /// encrypts automatically (or this replies to encrypted mail).
+  bool _suggested(IdentityPgp settings) {
+    if (!isSmime) return plan?.suggested ?? false;
+    final p = smimePlan;
+    if (p == null || !p.canSign) return false;
+    return settings.encryptByDefault || (p.possible && (settings.autoEncrypt || _replyToEncrypted));
   }
 
   /// Choices brought back from a draft, the Outbox or crash recovery.
@@ -72,6 +145,19 @@ class ComposeSecurityController extends ChangeNotifier {
     _sign = security.sign;
     _encryptTouched = true;
     _signTouched = true;
+    _chosen = security.technology;
+    technology = _technology(_from);
+    notifyListeners();
+  }
+
+  /// OpenPGP ⇄ S/MIME, when both are set up. Encryption that followed the
+  /// recipients follows them for the other standard.
+  void switchTechnology() {
+    if (!canSwitch) return;
+    _chosen = isSmime ? SecurityTechnology.openPgp : SecurityTechnology.smime;
+    technology = _chosen!;
+    final sender = _from;
+    if (!_encryptTouched && sender != null) _encrypt = _suggested(_state.identity(sender));
     notifyListeners();
   }
 
@@ -93,28 +179,54 @@ class ComposeSecurityController extends ChangeNotifier {
   }
 
   /// Just before sending: unlocks the signing key (asking for its
-  /// passphrase) and settles recipients without a key. Returns the
-  /// security to send with, or null to stay in compose.
+  /// passphrase) and settles recipients without a key or certificate.
+  /// Returns the security to send with, or null to stay in compose.
   Future<OutgoingSecurity?> prepareToSend(BuildContext context, WidgetRef ref) async {
     var security = value;
     final plan = this.plan;
-    if (security.isPlain || plan == null) return security;
-    if (security.encrypt && plan.missing.isNotEmpty) {
+    if (security.isPlain || (plan == null && smimePlan == null)) return security;
+    if (security.encrypt && missing.isNotEmpty) {
       final required = _from != null && _state.identity(_from!).encryptByDefault;
-      final missing = plan.missing.join(', ');
+      final names = missing.join(', ');
+      final what = isSmime ? 'valid S/MIME certificate' : 'OpenPGP key';
       final choice = await showActionSheet<bool>(
         context,
         title: 'Can’t Encrypt',
         message: required
-            ? 'There is no OpenPGP key for $missing, and this address always encrypts. Remove the recipient, or '
-                  'import their key in Settings › End-to-End Encryption.'
-            : 'There is no OpenPGP key for $missing.',
+            ? 'There is no $what for $names, and this address always encrypts. Remove the recipient, or '
+                  'import their ${isSmime ? 'certificate' : 'key'} in Settings › End-to-End Encryption.'
+            : 'There is no $what for $names.',
         actions: [if (!required) const SheetAction('Send Unencrypted', false, destructive: true)],
       );
       if (choice == null) return null;
-      security = OutgoingSecurity(sign: security.sign, attachPublicKey: security.attachPublicKey);
+      security = OutgoingSecurity(
+        sign: security.sign,
+        attachPublicKey: security.attachPublicKey,
+        technology: security.technology,
+      );
     }
-    final own = plan.ownKey;
+    if (isSmime) {
+      // S/MIME keys need no passphrase; only check the key is here.
+      final own = smimePlan?.own;
+      if (security.sign && own != null) {
+        final service = await ref.read(smimeServiceProvider.future);
+        if (service.keys.smimeKey(own.fingerprint) == null) {
+          if (context.mounted) {
+            await showActionSheet<bool>(
+              context,
+              title: 'Can’t Sign',
+              message:
+                  'The private key of your S/MIME certificate isn’t on this device. Import the certificate '
+                  'again (a .p12 or .pfx file) in Settings › End-to-End Encryption.',
+              actions: const [],
+            );
+          }
+          return null;
+        }
+      }
+      return security;
+    }
+    final own = plan?.ownKey;
     if (security.sign && own != null) {
       final service = await ref.read(openPgpServiceProvider.future);
       if (await service.unlock(own.fingerprint) == null) return null;
@@ -137,17 +249,18 @@ class ComposeSecurityBar extends StatelessWidget {
       builder: (context, _) {
         if (!controller.available) return const SizedBox.shrink();
         final colors = LoupeColors.of(context);
-        final plan = controller.plan!;
-        final missing = plan.missing;
+        final smime = controller.isSmime;
+        final missing = controller.missing;
         final String? hint;
         Color hintColor = colors.secondaryText;
         if (controller.encrypt && missing.isNotEmpty) {
-          hint = 'No key for ${missing.join(', ')}';
+          hint = '${smime ? 'No certificate' : 'No key'} for ${missing.join(', ')}';
           hintColor = CupertinoColors.systemOrange.resolveFrom(context);
         } else if (controller.encrypt) {
-          hint = plan.keys.values.any((k) => k?.viaAutocrypt ?? false) ? 'Keys from Autocrypt' : null;
-        } else if (plan.possible && plan.keys.isNotEmpty) {
-          hint = 'Everyone has a key';
+          final autocrypt = !smime && (controller.plan?.keys.values.any((k) => k?.viaAutocrypt ?? false) ?? false);
+          hint = autocrypt ? 'Keys from Autocrypt' : null;
+        } else if (controller.possible) {
+          hint = smime ? 'Everyone has a certificate' : 'Everyone has a key';
         } else {
           hint = null;
         }
@@ -173,6 +286,14 @@ class ComposeSecurityBar extends StatelessWidget {
                     icon: controller.sign ? LoupeIcons.signed : LoupeIcons.signOff,
                     onTap: controller.toggleSign,
                   ),
+                  if (controller.canSwitch || smime) ...[
+                    const SizedBox(width: 8),
+                    _Technology(
+                      key: const Key('compose-technology'),
+                      smime: smime,
+                      onTap: controller.canSwitch ? controller.switchTechnology : null,
+                    ),
+                  ],
                   const SizedBox(width: 10),
                   if (hint != null)
                     Expanded(
@@ -191,6 +312,43 @@ class ComposeSecurityBar extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+/// "OpenPGP" or "S/MIME": which standard protects the message. A tap
+/// switches when both are set up.
+class _Technology extends StatelessWidget {
+  const _Technology({super.key, required this.smime, this.onTap});
+
+  final bool smime;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = LoupeColors.of(context);
+    final label = smime ? 'S/MIME' : 'OpenPGP';
+    return Semantics(
+      button: onTap != null,
+      label: onTap == null ? label : '$label, switch',
+      excludeSemantics: true,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(14),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                label,
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: colors.secondaryText),
+              ),
+              if (onTap != null) Icon(LoupeIcons.disclosure, size: 14, color: colors.secondaryText),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

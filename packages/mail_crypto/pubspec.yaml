@@ -1,5 +1,5 @@
 name: mail_crypto
-description: "OpenPGP for Loupe: keys, PGP/MIME (RFC 3156) reading and writing, Autocrypt."
+description: "End-to-end encryption for Loupe: OpenPGP (PGP/MIME, Autocrypt) and S/MIME."
 publish_to: none
 version: 0.1.0
 resolution: workspace
@@ -10,6 +10,11 @@ dependencies:
   # (third_party/dart_pg/CHANGELOG.md). The backend uses its src/ types.
   dart_pg: {path: ../../third_party/dart_pg}
   mail_model: {path: ../mail_model}
+  # MIT (the Bouncy Castle port), pure Dart; already under dart_pg. S/MIME's
+  # primitives: RSA, ECDSA, ECDH, AES (CBC, GCM, key wrap), 3DES, RC2, the
+  # PKCS #12 and PBKDF2 key derivations. CMS, X.509 and PKCS #12 structures
+  # are mail_crypto's own (lib/src/smime).
+  pointycastle: ^4.0.0
 dev_dependencies:
   # The real MIME composer the PGP/MIME composer wraps, in tests.
   mail_imap: {path: ../mail_imap}
