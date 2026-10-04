@@ -36,6 +36,11 @@ final class TestServer {
   /// Whether SMTP tests should run (LOUPE_TEST_SMTP_PORT set).
   bool get hasSmtp => (env['LOUPE_TEST_SMTP_PORT'] ?? '').isNotEmpty;
 
+  /// Implicit-TLS ports with an untrusted (self-signed) certificate, for the
+  /// trust-on-first-use tests; null to skip them.
+  int? get imapsPort => int.tryParse(env['LOUPE_TEST_IMAPS_PORT'] ?? '');
+  int? get smtpsPort => int.tryParse(env['LOUPE_TEST_SMTPS_PORT'] ?? '');
+
   MailAccount account(String id, {String? email}) {
     final address = email ?? user;
     return MailAccount(

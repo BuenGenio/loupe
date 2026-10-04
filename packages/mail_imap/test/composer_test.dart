@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:enough_mail/enough_mail.dart' as em;
+import 'package:mail_imap/mail_imap.dart';
 import 'package:mail_imap/src/compose/mime_composer.dart';
 import 'package:mail_imap/src/mime/headers.dart';
 import 'package:mail_imap/src/mime/transfer_encoding.dart';
@@ -127,5 +128,22 @@ void main() {
     expect(stuff('.a\r\nb\r\n..c\r\n.\r\n'), '..a\r\nb\r\n...c\r\n..\r\n');
     expect(stuff('a\nb'), 'a\r\nb\r\n');
     expect(stuff('x\r\n'), 'x\r\n');
+  });
+
+  test('factory wires the composer and refuses non-IMAP accounts', () {
+    final factory = ImapTransportFactory();
+    expect(factory.composer, isA<MimeMessageComposer>());
+    const account = MailAccount(
+      id: 'j',
+      email: 'a@b.c',
+      displayName: 'J',
+      provider: ProviderKind.fastmail,
+      authKind: AuthKind.password,
+      incoming: ServerConfig(protocol: ServerProtocol.jmap, host: 'api.fastmail.com', port: 443),
+    );
+    expect(
+      () => factory.createTransport(account, ({forceRefresh = false}) async => const PasswordCredentials('x')),
+      throwsA(isA<MailException>().having((e) => e.kind, 'kind', MailErrorKind.unsupported)),
+    );
   });
 }
