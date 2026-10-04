@@ -19,7 +19,7 @@ import 'util.dart';
 /// sends overdue outbox messages). Call [pause] when the app goes to the
 /// background and [resume] when it returns; [syncOnce] serves background
 /// fetch tasks. [dispose] stops everything but leaves the store open.
-final class LiveMailRepository implements MailRepository, MailingLists {
+final class LiveMailRepository implements MailRepository, MailingLists, SignInRenewal {
   LiveMailRepository(
     this.store,
     this.transports,
@@ -51,6 +51,7 @@ final class LiveMailRepository implements MailRepository, MailingLists {
   final _statuses = ValueStream<List<AccountSyncStatus>>(const []);
   final _errors = StreamController<MailException>.broadcast();
   final _refreshing = <String, Future<OAuthCredentials>>{};
+  final _signInRequired = ValueStream<Set<String>>(const {});
 
   bool _started = false;
   bool _paused = false;
@@ -75,6 +76,7 @@ final class LiveMailRepository implements MailRepository, MailingLists {
     if (_started || _disposed) return;
     _started = true;
     await _loadAccounts();
+    await _loadSignInState();
     // A send interrupted by the app being killed is retried.
     for (final e in await store.outboxEntries()) {
       if (e.status == OutboxStatus.sending) {
@@ -153,6 +155,7 @@ final class LiveMailRepository implements MailRepository, MailingLists {
     _syncers.clear();
     await _statuses.close();
     await _errors.close();
+    await _signInRequired.close();
   }
 
   /// Failures of background work the user started: operations reverted
@@ -197,16 +200,102 @@ final class LiveMailRepository implements MailRepository, MailingLists {
     if (c is! OAuthCredentials || refresh == null) return Future.value(c);
     final expiring = !c.expiresAt.isAfter(_now().add(const Duration(minutes: 1)));
     if (!forceRefresh && !expiring) return Future.value(c);
-    return _refreshing[account.id] ??= () async {
+    final pending = _refreshing[account.id];
+    if (pending != null) return pending;
+    final done = Completer<OAuthCredentials>();
+    _refreshing[account.id] = done.future;
+    unawaited(() async {
       try {
-        final fresh = await refresh(account, c);
-        if (persist) await credentials.write(account.id, fresh);
-        return fresh;
+        done.complete(await _refresh(account, c, refresh, persist: persist));
+      } catch (e, st) {
+        done.completeError(e, st);
       } finally {
         // ignore: unawaited_futures
         _refreshing.remove(account.id);
       }
-    }();
+    }());
+    return done.future;
+  }
+
+  Future<OAuthCredentials> _refresh(
+    MailAccount account,
+    OAuthCredentials c,
+    OAuthRefresher refresh, {
+    required bool persist,
+  }) async {
+    try {
+      final token = c.refreshToken;
+      // A grant forgotten after the provider refused it: no request until
+      // the user signs in again.
+      if (token == null || token.isEmpty) throw const SignInRequiredException();
+      final fresh = await refresh(account, c);
+      if (persist) await credentials.write(account.id, fresh);
+      return fresh;
+    } on SignInRequiredException {
+      if (persist) {
+        // Forget the dead grant: later syncs fail at once instead of asking
+        // the provider again every time.
+        if (c.refreshToken != null) await credentials.write(account.id, withoutSignIn(c, _now()));
+        _setSignInRequired(account.id, true);
+      }
+      rethrow;
+    }
+  }
+
+  // Sign-in renewal ---------------------------------------------------------
+
+  @override
+  Stream<Set<String>> watchSignInRequired() => _signInRequired.stream;
+
+  void _setSignInRequired(String accountId, bool required) {
+    if (_disposed) return;
+    final current = _signInRequired.value;
+    if (current.contains(accountId) == required) return;
+    _signInRequired.value = {
+      for (final id in current)
+        if (id != accountId) id,
+      if (required) accountId,
+    };
+  }
+
+  /// Marks the OAuth accounts whose stored sign-in is already known to be
+  /// dead (from an earlier run or a background sync).
+  Future<void> _loadSignInState() async {
+    final now = _now();
+    for (final s in [..._syncers.values]) {
+      if (s.account.authKind != AuthKind.oauth2) continue;
+      if (needsSignIn(await credentials.read(s.account.id), now)) _setSignInRequired(s.account.id, true);
+    }
+  }
+
+  @override
+  Future<void> renewSignIn(String accountId, Credentials credentials) async {
+    final account =
+        await store.getAccount(accountId) ??
+        (throw const MailException(MailErrorKind.notFound, 'This account no longer exists'));
+    // Check them on a connection of their own: tokens of another account,
+    // picked by mistake in the browser, must not replace working ones.
+    final check = transports.createTransport(account, ({bool forceRefresh = false}) async => credentials);
+    try {
+      await check.connect();
+    } finally {
+      try {
+        await check.disconnect();
+      } catch (_) {
+        // Never connected, or already gone.
+      }
+    }
+    await this.credentials.write(accountId, credentials);
+    _setSignInRequired(accountId, false);
+    if (_disposed) return;
+    if (!_paused) unawaited(_syncers[accountId]?.syncAll());
+    // Sends that failed for want of a sign-in go out now, not after their backoff.
+    for (final e in await store.outboxEntries()) {
+      if (e.accountId == accountId && e.status == OutboxStatus.failed) {
+        await store.rescheduleOutbox(e.id, sendAfter: _now(), status: OutboxStatus.queued);
+      }
+    }
+    await _scheduleOutbox();
   }
 
   // Accounts ----------------------------------------------------------------
@@ -286,6 +375,7 @@ final class LiveMailRepository implements MailRepository, MailingLists {
     final syncer = _syncers.remove(accountId);
     _statusById.remove(accountId);
     _publishStatuses();
+    _setSignInRequired(accountId, false);
     await syncer?.dispose();
     await store.deleteAccount(accountId);
     await credentials.delete(accountId);
