@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:loupe/features/notifications/mail_notifier.dart';
+import 'package:loupe/features/notifications/notification_content.dart';
 import 'package:mail_model/mail_model.dart';
 
 /// A repository with exactly the mail a test puts in: accounts, mailboxes,
@@ -150,6 +152,68 @@ class FakeMail implements MailRepository {
 
   @override
   dynamic noSuchMethod(Invocation invocation) => throw UnimplementedError('${invocation.memberName}');
+}
+
+/// Records what would be shown; "shows" it so [shown] reports it back.
+class FakeNotifier implements MailNotifier {
+  FakeNotifier({this.granted = true, this.grants = true});
+
+  bool granted;
+
+  /// What the permission dialog answers.
+  bool grants;
+  int permissionRequests = 0;
+  int settingsOpened = 0;
+  final showing = <int, MailNotification>{};
+  final posted = <MailNotification>[];
+  final cancelled = <int>[];
+  List<MailAccount>? channels;
+
+  @override
+  Future<bool> permissionGranted() async => granted;
+
+  @override
+  Future<bool> requestPermission() async {
+    permissionRequests++;
+    granted = grants;
+    return granted;
+  }
+
+  @override
+  Future<void> openSystemSettings() async => settingsOpened++;
+
+  @override
+  Future<void> syncChannels(List<MailAccount> accounts) async => channels = accounts;
+
+  @override
+  Future<void> show(List<MailNotification> notifications) async {
+    for (final n in notifications) {
+      posted.add(n);
+      showing[n.id] = n;
+    }
+  }
+
+  @override
+  Future<List<ShownNotification>> shown() async => [
+    for (final n in showing.values) ShownNotification(id: n.id, title: n.title, body: n.body, target: n.target),
+  ];
+
+  @override
+  Future<void> cancel(int id) async {
+    cancelled.add(id);
+    showing.remove(id);
+  }
+
+  @override
+  Future<void> cancelAll() async => showing.clear();
+
+  /// Message notifications showing, by subject (their body).
+  List<String?> get messageBodies => [
+    for (final n in showing.values)
+      if (!n.isSummary) n.body,
+  ];
+
+  MailNotification? summaryOf(String accountId) => showing[summaryNotificationId(accountId)];
 }
 
 /// Completes once the microtasks and timers queued so far have run.
