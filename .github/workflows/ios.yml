@@ -1,0 +1,192 @@
+name: iOS
+
+# Compiles the iOS app without signing, to show it builds. Run by hand only
+# (Actions › iOS › Run workflow): macOS minutes cost ten times as much as
+# Linux ones on a private repository. docs/ios.md has the whole iOS story.
+on:
+  workflow_dispatch:
+    inputs:
+      dependency_manager:
+        description: >-
+          How the iOS plugins are built. Flutter 3.47 uses Swift Package Manager
+          (every plugin here has a Package.swift); CocoaPods is the fallback.
+        type: choice
+        options: [swiftpm, cocoapods]
+        default: swiftpm
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: "3.47.6"
+
+jobs:
+  build:
+    name: Build (no signing)
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - name: Toolchain
+        run: |
+          xcodebuild -version
+          flutter --version
+      - name: Use CocoaPods instead of Swift Package Manager
+        if: inputs.dependency_manager == 'cocoapods'
+        run: flutter config --no-enable-swift-package-manager
+      - run: flutter pub get
+      - name: Podfile (CocoaPods only)
+        if: inputs.dependency_manager == 'cocoapods'
+        working-directory: app
+        run: |
+          # Generates ios/Podfile from Flutter's template, whose platform
+          # line is commented out; the minimum is iOS 15 (as in the project).
+          flutter build ios --config-only --release --no-codesign
+          sed -i '' "s/^# platform :ios, .*/platform :ios, '15.0'/" ios/Podfile
+          grep -n "^platform :ios" ios/Podfile
+      # Resolves the plugins (Swift packages, or `pod install` with
+      # CocoaPods), builds the native assets (SQLite3MultipleCiphers) and
+      # compiles Runner.app for devices.
+      - name: Build Runner.app
+        working-directory: app
+        run: |
+          flutter build ios --release --no-codesign \
+            --build-number=${{ github.run_number }} \
+            --build-name=0.1.${{ github.run_number }}
+      - name: Check the bundle
+        working-directory: app/build/ios/iphoneos/Runner.app
+        run: |
+          for key in CFBundleIdentifier CFBundleDisplayName MinimumOSVersion; do
+            echo "$key: $(plutil -extract "$key" raw Info.plist)"
+          done
+          plutil -extract BGTaskSchedulerPermittedIdentifiers json -o - Info.plist; echo
+          plutil -extract UIBackgroundModes json -o - Info.plist; echo
+          test -f PrivacyInfo.xcprivacy
+          ls Frameworks
+      - name: Zip Runner.app
+        working-directory: app/build/ios/iphoneos
+        run: ditto -c -k --sequesterRsrc --keepParent Runner.app "$GITHUB_WORKSPACE/loupe-ios-0.1.${{ github.run_number }}-unsigned.zip"
+      - uses: actions/upload-artifact@v5
+        with:
+          name: loupe-ios-${{ github.run_number }}-unsigned
+          path: loupe-ios-*-unsigned.zip
+          retention-days: 14
+
+  # ---------------------------------------------------------------------------
+  # TestFlight: TO ENABLE ONCE THE APPLE ACCOUNT EXISTS (docs/ios.md, step 5).
+  # Uncomment the job and add these repository secrets:
+  #
+  #   APP_STORE_CONNECT_API_KEY_ID   the key's Key ID (App Store Connect ›
+  #                                  Users and Access › Integrations)
+  #   APP_STORE_CONNECT_ISSUER_ID    the Issuer ID shown above the keys
+  #   APP_STORE_CONNECT_API_KEY      the AuthKey_<id>.p8 file, base64
+  #   IOS_DISTRIBUTION_CERTIFICATE   the Apple Distribution certificate with
+  #                                  its private key (.p12), base64
+  #   IOS_DISTRIBUTION_CERTIFICATE_PASSWORD   the .p12's password
+  #   IOS_PROVISIONING_PROFILE       the App Store profile for
+  #                                  io.github.buengenio.loupe, base64
+  #   APPLE_TEAM_ID                  the 10-character Team ID
+  #   LOUPE_GOOGLE_IOS_CLIENT_ID     optional: Google sign-in (an iOS client)
+  #   LOUPE_MICROSOFT_CLIENT_ID      optional: Microsoft sign-in
+  #
+  # (base64 -i file | pbcopy, then paste as the secret.)
+  # ---------------------------------------------------------------------------
+  # testflight:
+  #   name: TestFlight
+  #   needs: build
+  #   runs-on: macos-latest
+  #   timeout-minutes: 60
+  #   steps:
+  #     - uses: actions/checkout@v5
+  #     - uses: subosito/flutter-action@v2
+  #       with:
+  #         flutter-version: ${{ env.FLUTTER_VERSION }}
+  #         channel: stable
+  #         cache: true
+  #     - run: flutter pub get
+  #     - name: Signing keychain and profile
+  #       env:
+  #         CERTIFICATE: ${{ secrets.IOS_DISTRIBUTION_CERTIFICATE }}
+  #         CERTIFICATE_PASSWORD: ${{ secrets.IOS_DISTRIBUTION_CERTIFICATE_PASSWORD }}
+  #         PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
+  #         TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+  #       run: |
+  #         keychain="$RUNNER_TEMP/signing.keychain-db"
+  #         security create-keychain -p "" "$keychain"
+  #         security set-keychain-settings -lut 21600 "$keychain"
+  #         security unlock-keychain -p "" "$keychain"
+  #         echo "$CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/distribution.p12"
+  #         security import "$RUNNER_TEMP/distribution.p12" -P "$CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$keychain"
+  #         security set-key-partition-list -S apple-tool:,apple: -k "" "$keychain"
+  #         security list-keychains -d user -s "$keychain" $(security list-keychains -d user | tr -d '"')
+  #
+  #         echo "$PROFILE" | base64 --decode > "$RUNNER_TEMP/loupe.mobileprovision"
+  #         security cms -D -i "$RUNNER_TEMP/loupe.mobileprovision" > "$RUNNER_TEMP/profile.plist"
+  #         uuid=$(plutil -extract UUID raw "$RUNNER_TEMP/profile.plist")
+  #         name=$(plutil -extract Name raw "$RUNNER_TEMP/profile.plist")
+  #         # Xcode 16 and later look here; older ones in ~/Library/MobileDevice.
+  #         for dir in "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles" "$HOME/Library/MobileDevice/Provisioning Profiles"; do
+  #           mkdir -p "$dir" && cp "$RUNNER_TEMP/loupe.mobileprovision" "$dir/$uuid.mobileprovision"
+  #         done
+  #
+  #         # Manual signing for the Runner target only (Release.xcconfig is
+  #         # its base configuration), so the plugins' Swift packages stay
+  #         # unsigned frameworks that Xcode signs when it embeds them.
+  #         cat > app/ios/Flutter/Signing.xcconfig <<EOF
+  #         CODE_SIGN_STYLE = Manual
+  #         DEVELOPMENT_TEAM = $TEAM_ID
+  #         CODE_SIGN_IDENTITY = Apple Distribution
+  #         CODE_SIGN_IDENTITY[sdk=iphoneos*] = Apple Distribution
+  #         PROVISIONING_PROFILE_SPECIFIER = $name
+  #         EOF
+  #         echo '#include "Signing.xcconfig"' >> app/ios/Flutter/Release.xcconfig
+  #
+  #         cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+  #         <?xml version="1.0" encoding="UTF-8"?>
+  #         <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+  #         <plist version="1.0">
+  #         <dict>
+  #           <key>method</key><string>app-store-connect</string>
+  #           <key>teamID</key><string>$TEAM_ID</string>
+  #           <key>signingStyle</key><string>manual</string>
+  #           <key>provisioningProfiles</key>
+  #           <dict><key>io.github.buengenio.loupe</key><string>$name</string></dict>
+  #           <key>uploadSymbols</key><true/>
+  #         </dict>
+  #         </plist>
+  #         EOF
+  #     - name: Build the IPA
+  #       working-directory: app
+  #       env:
+  #         GOOGLE_CLIENT_ID: ${{ secrets.LOUPE_GOOGLE_IOS_CLIENT_ID }}
+  #         MICROSOFT_CLIENT_ID: ${{ secrets.LOUPE_MICROSOFT_CLIENT_ID }}
+  #       run: |
+  #         flutter build ipa --release \
+  #           --export-options-plist="$RUNNER_TEMP/ExportOptions.plist" \
+  #           --dart-define=LOUPE_GOOGLE_CLIENT_ID="$GOOGLE_CLIENT_ID" \
+  #           --dart-define=LOUPE_MICROSOFT_CLIENT_ID="$MICROSOFT_CLIENT_ID" \
+  #           --build-number=${{ github.run_number }} \
+  #           --build-name=0.1.${{ github.run_number }}
+  #     - name: Upload to TestFlight
+  #       env:
+  #         KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+  #         ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+  #         KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+  #       run: |
+  #         # altool finds the key by its file name in ~/.appstoreconnect/private_keys.
+  #         mkdir -p ~/.appstoreconnect/private_keys
+  #         echo "$KEY" | base64 --decode > ~/.appstoreconnect/private_keys/AuthKey_$KEY_ID.p8
+  #         xcrun altool --upload-app --type ios --file app/build/ios/ipa/*.ipa \
+  #           --apiKey "$KEY_ID" --apiIssuer "$ISSUER_ID"
+  #         # If altool refuses --upload-app, fastlane does the same:
+  #         #   fastlane run upload_to_testflight ipa:app/build/ios/ipa/<name>.ipa \
+  #         #     api_key_path:<json with key_id, issuer_id, key> skip_waiting_for_build_processing:true
+  #     - name: Remove the signing keychain
+  #       if: always()
+  #       run: security delete-keychain "$RUNNER_TEMP/signing.keychain-db" || true
