@@ -90,6 +90,10 @@ abstract final class LoupeIcons {
 
   /// The chevron at the end of a row that opens something.
   static const IconData disclosure = FluentIcons.chevron_right_24_regular;
+
+  /// The drag handle of a reorderable row.
+  static const IconData reorder = FluentIcons.re_order_dots_vertical_24_regular;
+
   static const IconData expand = FluentIcons.chevron_down_24_regular;
   static const IconData collapse = FluentIcons.chevron_up_24_regular;
   static const IconData close = FluentIcons.dismiss_24_regular;
