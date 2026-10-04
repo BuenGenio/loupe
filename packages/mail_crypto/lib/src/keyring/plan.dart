@@ -85,7 +85,9 @@ EncryptionPlan planEncryption(
 }) {
   final at = now ?? DateTime.now();
   final settings = state.identity(from);
-  final own = state.ownKeyFor(from, now: at);
+  // An expired or revoked own key can't encrypt to the sender nor sign.
+  final chosen = state.ownKeyFor(from, now: at);
+  final own = chosen != null && chosen.isValidAt(at) ? chosen : null;
   final keys = <String, RecipientKey?>{
     for (final r in recipients)
       if (r.trim().isNotEmpty) r.trim().toLowerCase(): state.encryptionKeyFor(r, now: at),

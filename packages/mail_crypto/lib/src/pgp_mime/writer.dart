@@ -74,7 +74,8 @@ final class PgpMessageComposer implements MessageComposer {
     final state = keys.state;
     final settings = state.identity(from.email);
     final now = _clock();
-    final own = state.ownKeyFor(from.email, now: now);
+    final chosen = state.ownKeyFor(from.email, now: now);
+    final own = chosen != null && chosen.isValidAt(now) ? chosen : null;
     final split = _SplitMessage.parse(plain);
 
     if (security.draft) return _draft(split, security, own);

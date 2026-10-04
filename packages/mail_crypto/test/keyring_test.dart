@@ -194,6 +194,18 @@ void main() {
       );
     });
 
+    test('an expired own key offers nothing', () async {
+      final old = pgp.generate(
+        userId: 'Old <old@example.org>',
+        validity: const Duration(days: 1),
+        now: DateTime.utc(2020),
+      );
+      await keyring.addOwnKey(secret: old, public: pgp.publicKey(old));
+      await keyring.setIdentity('old@example.org', IdentityPgp(keyFingerprint: old.fingerprint));
+      final plan = planEncryption(keyring.state, from: 'old@example.org', recipients: ['alice@openpgp.example']);
+      expect((plan.ownKey, plan.possible), (null, false));
+    });
+
     test('no own key: nothing is possible', () async {
       final empty = Keyring(MemoryKeyringStorage());
       await empty.load();
