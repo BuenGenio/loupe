@@ -1,6 +1,9 @@
 // Links: which hrefs are allowed, link-text/href mismatch detection, and
 // linkifying plain text.
 
+import '../model/document.dart' show LinkRef;
+import 'redirects.dart';
+
 /// Normalises an href to an openable URL, or null for anything that isn't
 /// http(s), mailto or tel (javascript:, data:, file:, relative paths, …).
 String? safeHref(String? href) {
@@ -18,6 +21,19 @@ String? safeHref(String? href) {
       return uri.path.isEmpty && uri.query.isEmpty ? null : h;
   }
   return null;
+}
+
+/// The scheme of an href that runs or embeds something (`javascript`,
+/// `vbscript`, `data`, `file`), or null. No-op links (`javascript:void(0)`,
+/// `javascript:;`) give null too: templates are full of them.
+String? unsafeScheme(String? href) {
+  if (href == null) return null;
+  final h = href.trim().replaceAll(RegExp(r'[\u0000-\u0020]'), '').toLowerCase();
+  final m = RegExp(r'^(javascript|vbscript|data|file):').firstMatch(h);
+  if (m == null) return null;
+  final scheme = m[1]!;
+  if (scheme == 'javascript' && RegExp(r'^javascript:(void\(0\);?|;|return false;?|)$').hasMatch(h)) return null;
+  return scheme;
 }
 
 /// Common file extensions that look like TLDs in link text ("report.pdf").
@@ -94,6 +110,15 @@ String? linkMismatch(String text, String url) {
   if (scheme != 'http' && scheme != 'https') return null;
   if (uri.host.isEmpty) return null;
   return registrableDomain(named) == registrableDomain(uri.host) ? null : named;
+}
+
+/// A [LinkRef] for [url] with visible [text]: unwraps redirects and checks
+/// the text against the destination (the real one for known redirects; a
+/// generic `?url=` could be a decoy, so it is checked against the link).
+LinkRef makeLink(String url, String text) {
+  final redirect = unwrapRedirect(url);
+  final opens = redirect != null && redirect.known && redirect.resolved ? redirect.target! : url;
+  return LinkRef(url, text: text, namedDomain: linkMismatch(text, opens), redirect: redirect);
 }
 
 /// A URL or email address found in plain text.

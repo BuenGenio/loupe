@@ -35,6 +35,8 @@ Future<void> pumpReader(
   void Function(Uri)? onOpen,
   VoidCallback? onSuggest,
   ThemeData? theme,
+  bool openLinksDirectly = false,
+  bool inert = false,
 }) async {
   await tester.pumpWidget(
     MaterialApp(
@@ -49,6 +51,8 @@ Future<void> pumpReader(
             onAllowRemoteContent: onAllow,
             onOpenLink: onOpen,
             onSuggestOriginal: onSuggest,
+            openLinksDirectly: openLinksDirectly,
+            inert: inert,
           ),
         ),
       ),
