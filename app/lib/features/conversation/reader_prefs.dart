@@ -7,10 +7,11 @@ import 'package:readable/readable.dart';
 import '../../settings/app_settings.dart';
 
 /// Per-sender reader preferences: the remembered "Aa" settings and the
-/// remote-image allowlist. Addresses are stored lower-cased.
+/// remote-image allowlist; and the technical mailing lists, read as plain
+/// text in Mono by default. Addresses and list ids are stored lower-cased.
 @immutable
 class ReaderPrefs {
-  const ReaderPrefs({this.senderSettings = const {}, this.remoteAllowlist = const {}});
+  const ReaderPrefs({this.senderSettings = const {}, this.remoteAllowlist = const {}, this.technicalLists = const {}});
 
   /// Settings remembered with "Remember for this sender".
   final Map<String, ReaderSettings> senderSettings;
@@ -23,6 +24,25 @@ class ReaderPrefs {
 
   /// Whether remote content from [address] is always allowed.
   bool allowsRemote(String? address) => address != null && remoteAllowlist.contains(address.toLowerCase());
+
+  /// List-Ids of the lists marked technical (Settings › Reading).
+  final Set<String> technicalLists;
+
+  /// The default view of a message of list [listId]: Plain text in Mono
+  /// for a technical list, else null (the app's default view applies).
+  ReaderSettings? listSettings(String? listId) => listId != null && technicalLists.contains(listId.toLowerCase())
+      ? const ReaderSettings(mode: ReaderMode.plain, plainFont: PlainTextFont.mono)
+      : null;
+
+  ReaderPrefs _with({
+    Map<String, ReaderSettings>? senderSettings,
+    Set<String>? remoteAllowlist,
+    Set<String>? technicalLists,
+  }) => ReaderPrefs(
+    senderSettings: senderSettings ?? this.senderSettings,
+    remoteAllowlist: remoteAllowlist ?? this.remoteAllowlist,
+    technicalLists: technicalLists ?? this.technicalLists,
+  );
 }
 
 final readerPrefsProvider = NotifierProvider<ReaderPrefsController, ReaderPrefs>(ReaderPrefsController.new);
@@ -31,6 +51,7 @@ final readerPrefsProvider = NotifierProvider<ReaderPrefsController, ReaderPrefs>
 class ReaderPrefsController extends Notifier<ReaderPrefs> {
   static const _sendersKey = 'reader.senders';
   static const _remoteKey = 'reader.remoteAllow';
+  static const _technicalKey = 'reader.technicalLists';
 
   @override
   ReaderPrefs build() {
@@ -47,7 +68,11 @@ class ReaderPrefsController extends Notifier<ReaderPrefs> {
         // Corrupt value: start over rather than crash the reader.
       }
     }
-    return ReaderPrefs(senderSettings: senders, remoteAllowlist: {...?p.getStringList(_remoteKey)});
+    return ReaderPrefs(
+      senderSettings: senders,
+      remoteAllowlist: {...?p.getStringList(_remoteKey)},
+      technicalLists: {...?p.getStringList(_technicalKey)},
+    );
   }
 
   /// Remembers [settings] for [address]; null forgets it.
@@ -59,7 +84,7 @@ class ReaderPrefsController extends Notifier<ReaderPrefs> {
     } else {
       next[key] = settings;
     }
-    state = ReaderPrefs(senderSettings: next, remoteAllowlist: state.remoteAllowlist);
+    state = state._with(senderSettings: next);
     await ref
         .read(sharedPreferencesProvider)
         .setString(_sendersKey, jsonEncode({for (final e in next.entries) e.key: _encode(e.value)}));
@@ -70,8 +95,17 @@ class ReaderPrefsController extends Notifier<ReaderPrefs> {
     final key = address.toLowerCase();
     final next = {...state.remoteAllowlist};
     allowed ? next.add(key) : next.remove(key);
-    state = ReaderPrefs(senderSettings: state.senderSettings, remoteAllowlist: next);
+    state = state._with(remoteAllowlist: next);
     await ref.read(sharedPreferencesProvider).setStringList(_remoteKey, next.toList()..sort());
+  }
+
+  /// Marks list [listId] technical (Plain text in Mono by default) or not.
+  Future<void> setTechnicalList(String listId, {required bool technical}) async {
+    final key = listId.toLowerCase();
+    final next = {...state.technicalLists};
+    technical ? next.add(key) : next.remove(key);
+    state = state._with(technicalLists: next);
+    await ref.read(sharedPreferencesProvider).setStringList(_technicalKey, next.toList()..sort());
   }
 
   static Map<String, Object?> _encode(ReaderSettings s) => {

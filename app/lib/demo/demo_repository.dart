@@ -72,7 +72,7 @@ final class _Queued {
 ///   [SearchResults.fromServerIds]); acting on such a message syncs it.
 /// - Sending to an address at a `.invalid` domain fails, so the Outbox
 ///   shows a failed message with an error and Retry.
-class DemoMailRepository implements MailRepository {
+class DemoMailRepository implements MailRepository, MailingLists {
   DemoMailRepository({
     this.latency = const DemoLatency(),
     DateTime Function()? clock,
@@ -127,6 +127,9 @@ class DemoMailRepository implements MailRepository {
   /// Every message in [_older] and [_serverOnly], by id.
   final _remote = <String, DemoMessage>{};
   final _vips = <String>{};
+
+  /// Muted thread ids (local, like the live repository's).
+  final _muted = <String>{};
 
   /// Documents "on the server": account id → document name → content.
   /// Tests write here to play another device.
@@ -652,6 +655,99 @@ class DemoMailRepository implements MailRepository {
 
   @override
   Stream<List<AccountSyncStatus>> watchSyncStatus() => _watch(() => [for (final a in _accounts) ?_sync[a.id]]);
+
+  // Mailing lists --------------------------------------------------------------------
+
+  /// Synced list mail outside Trash and Junk, by List-Id.
+  Map<String, List<DemoMessage>> _listMail() {
+    final out = <String, List<DemoMessage>>{};
+    for (final m in _messages.values) {
+      final id = m.summary.listId;
+      final box = _mailboxes[m.summary.mailboxId];
+      if (id == null || box == null || _isBin(box)) continue;
+      (out[id] ??= []).add(m);
+    }
+    return out;
+  }
+
+  bool _isMuted(EmailSummary s) => _muted.contains(s.threadId ?? s.id);
+
+  @override
+  Stream<List<MailingList>> watchMailingLists() => _watch(() {
+    final lists = <MailingList>[];
+    for (final MapEntry(key: id, value: mail) in _listMail().entries) {
+      mail.sort(_newestFirst);
+      final summaries = [for (final m in mail) m.summary];
+      lists.add(
+        MailingList(
+          id: id,
+          name: summaries.map((s) => s.listName).nonNulls.firstOrNull ?? id,
+          postAddress: summaries.map((s) => listPostAddress(s.listPost)).nonNulls.firstOrNull,
+          messageCount: mail.length,
+          unreadCount: summaries.where((s) => !s.isSeen && !_isMuted(s)).length,
+          lastActivity: summaries.first.receivedAt,
+          accountIds: {for (final s in summaries) s.accountId}.toList()..sort(),
+        ),
+      );
+    }
+    return lists..sort((a, b) => b.lastActivity!.compareTo(a.lastActivity!));
+  });
+
+  @override
+  Stream<List<ListThread>> watchListThreads(String listId, {bool includeMuted = false, int limit = 200}) => _watch(() {
+    final byThread = <String, List<EmailSummary>>{};
+    for (final m in _listMail()[listId.toLowerCase()] ?? const <DemoMessage>[]) {
+      if (!includeMuted && _isMuted(m.summary)) continue;
+      (byThread[m.summary.threadId ?? m.id] ??= []).add(m.summary);
+    }
+    final threads = <ListThread>[];
+    for (final MapEntry(key: threadId, value: mail) in byThread.entries) {
+      mail.sort((a, b) => a.receivedAt.compareTo(b.receivedAt));
+      final participants = <EmailAddress>[];
+      for (final s in mail) {
+        for (final f in s.from) {
+          if (!participants.any((p) => p.email.toLowerCase() == f.email.toLowerCase())) participants.add(f);
+        }
+      }
+      threads.add(
+        ListThread(
+          threadId: threadId,
+          first: mail.first,
+          latest: mail.last,
+          messageCount: mail.length,
+          unreadCount: mail.where((s) => !s.isSeen).length,
+          participants: participants,
+          patchCount: ListThread.countPatches(mail.map((s) => s.subject), series: PatchTag.parse(mail.first.subject)),
+          isMuted: _muted.contains(threadId),
+        ),
+      );
+    }
+    threads.sort((a, b) => b.lastActivity.compareTo(a.lastActivity));
+    return threads.take(limit).toList();
+  });
+
+  @override
+  Stream<Set<String>> watchMutedThreads() => _watch(() => Set.unmodifiable(_muted));
+
+  @override
+  Future<void> setThreadMuted(String emailId, {required bool muted}) async {
+    final m = _local(emailId);
+    if (m == null) throw const MailException(MailErrorKind.notFound, 'This message no longer exists.');
+    final threadId = m.summary.threadId ?? m.id;
+    if (!muted) {
+      _muted.remove(threadId);
+      _notify();
+      return;
+    }
+    _muted.add(threadId);
+    // Muting marks the conversation read, as the live repository does.
+    for (final o in _messages.values) {
+      if ((o.summary.threadId ?? o.id) == threadId && !o.summary.isSeen) {
+        o.summary = o.summary.copyWith(keywords: {...o.summary.keywords, Keywords.seen});
+      }
+    }
+    _notify();
+  }
 
   // Messages ------------------------------------------------------------------------
 

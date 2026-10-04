@@ -139,6 +139,19 @@ final class ThreadAssigner {
         updates: {_db.threadRefs},
         updateKind: UpdateKind.update,
       );
+      // A muted conversation stays muted when it joins another one.
+      await _db.customUpdate(
+        'UPDATE OR IGNORE muted_threads SET thread_id = ? WHERE account_id = ? AND thread_id = ?',
+        variables: [Variable.withString(into), Variable.withString(accountId), Variable.withString(old)],
+        updates: {_db.mutedThreads},
+        updateKind: UpdateKind.update,
+      );
+      await _db.customUpdate(
+        'DELETE FROM muted_threads WHERE account_id = ? AND thread_id = ?',
+        variables: [Variable.withString(accountId), Variable.withString(old)],
+        updates: {_db.mutedThreads},
+        updateKind: UpdateKind.delete,
+      );
       _refs.updateAll((_, t) => t == old ? into : t);
       for (final list in _batchSubjects.values) {
         for (var i = 0; i < list.length; i++) {

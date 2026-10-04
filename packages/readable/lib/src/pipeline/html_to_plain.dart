@@ -73,7 +73,7 @@ final class _Plainer {
               first = false;
             }
           }
-        case RuleBlock():
+        case RuleBlock() || DiffBlock() || DiffStatBlock():
           out.add(b);
         case ImageBlock(:final image):
           final alt = doc.images[image].alt;

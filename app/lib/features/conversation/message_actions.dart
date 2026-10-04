@@ -13,7 +13,12 @@ import '../../theme/loupe_icons.dart';
 enum MessageAction {
   reply,
   replyAll,
+
+  /// To the list's List-Post address.
+  replyList,
   forward,
+  mute,
+  unmute,
   toggleSeen,
   toggleFlag,
   tags,
@@ -32,13 +37,16 @@ enum MessageAction {
 /// The "…" menu of [message]. [canArchive]: the account has an archive
 /// mailbox and the message isn't in it. [mailboxRole]: where it lives now.
 /// [snoozed]: it waits in the Snoozed folder (Wake Now, Change Time).
+/// [muted]: whether its thread is muted; null when muting isn't available.
 Future<MessageAction?> showMessageMenu(
   BuildContext context, {
   required EmailSummary message,
   required bool canArchive,
   required MailboxRole mailboxRole,
   bool snoozed = false,
+  bool? muted,
 }) {
+  final toList = listPostAddress(message.listPost) != null;
   final junk = mailboxRole == MailboxRole.junk || message.keywords.contains(Keywords.junk);
   return showLoupeSheet<MessageAction>(
     context,
@@ -52,9 +60,10 @@ Future<MessageAction?> showMessageMenu(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               child: Row(
                 children: [
-                  for (final (action, icon, label) in const [
+                  for (final (action, icon, label) in [
                     (MessageAction.reply, LoupeIcons.reply, 'Reply'),
                     (MessageAction.replyAll, LoupeIcons.replyAll, 'Reply All'),
+                    if (toList) (MessageAction.replyList, LoupeIcons.replyToList, 'Reply List'),
                     (MessageAction.forward, LoupeIcons.forward, 'Forward'),
                   ])
                     Expanded(
@@ -79,6 +88,12 @@ Future<MessageAction?> showMessageMenu(
                   onTap: () => pick(MessageAction.toggleFlag),
                 ),
                 SheetRow(label: 'Tags…', icon: LoupeIcons.tag, onTap: () => pick(MessageAction.tags)),
+                if (muted != null)
+                  SheetRow(
+                    label: muted ? 'Unmute Thread' : 'Mute Thread',
+                    icon: muted ? LoupeIcons.notifications : LoupeIcons.mute,
+                    onTap: () => pick(muted ? MessageAction.unmute : MessageAction.mute),
+                  ),
               ],
             ),
             SheetGroup(

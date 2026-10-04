@@ -50,6 +50,11 @@ EmailSummary summaryFromRow(EmailRow r) => EmailSummary(
   size: r.size,
   keywords: decodeStrings(r.keywords).toSet(),
   hasAttachment: r.hasAttachment,
+  listId: r.listId,
+  listName: r.listName,
+  listPost: r.listPost,
+  listUnsubscribe: r.listUnsubscribe,
+  listUnsubscribePost: r.listUnsubscribePost,
 );
 
 Mailbox mailboxFromRow(MailboxRow r) => Mailbox(

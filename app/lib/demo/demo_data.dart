@@ -6,6 +6,7 @@ import 'package:mail_model/mail_model.dart';
 import 'demo_attachments.dart';
 import 'demo_bodies.dart';
 import 'demo_mime.dart';
+import 'demo_patches.dart';
 import 'demo_security.dart';
 
 /// An attachment of a demo message and where its bytes come from.
@@ -79,6 +80,11 @@ abstract final class DemoPeople {
   static const kai = EmailAddress('kai.lindqvist@example.org', 'Kai Lindqvist');
   static const noor = EmailAddress('noor@haddad.example', 'Noor Haddad');
   static const gardenList = EmailAddress('open-garden@lists.opengarden.example', 'Open Garden');
+  static const kestrelList = EmailAddress('dev@lists.example.org', 'Kestrel developers');
+  static const ines = EmailAddress('ines@kestrel.example', 'Ines Duarte');
+  static const oskar = EmailAddress('oskar@kestrel.example', 'Oskar Lind');
+  static const malik = EmailAddress('malik@kestrel.example', 'Malik Osei');
+  static const yuki = EmailAddress('yuki.tanabe@example.net', 'Yuki Tanabe');
 
   static const trailhead = EmailAddress('news@trailhead.example', 'Trailhead Outfitters');
   static const bank = EmailAddress('alerts@lumenbank.example', 'Lumen Bank');
@@ -139,6 +145,7 @@ final class DemoSeed {
     _personal();
     _work();
     _fastmail();
+    _kestrel();
     _filler();
     _olderMail();
     _serverMail();
@@ -274,6 +281,7 @@ final class DemoSeed {
     box(f, 'Trash', role: MailboxRole.trash);
     box(f, 'Lists');
     box(f, 'Lists/Open Garden');
+    box(f, 'Lists/Kestrel');
     // Not subscribed: hidden unless Show All Folders is on (Settings › account).
     box(f, 'Lists/Retired', subscribed: false);
     box(f, 'Newsletters');
@@ -342,6 +350,8 @@ final class DemoSeed {
     if (role == MailboxRole.sent) keywords.add(Keywords.seen);
     // Like real clients, preview the HTML part when there is one (preheaders included).
     final body = html != null ? htmlToPreviewText(html) : text ?? '';
+    String? header(String name) => headers.where((h) => h.$1.toLowerCase() == name.toLowerCase()).firstOrNull?.$2;
+    final list = parseListId(header('List-Id'));
     final summary = EmailSummary(
       id: MailIds.jmapEmail(account, 'M$n'),
       accountId: account,
@@ -361,6 +371,11 @@ final class DemoSeed {
       size: (html?.length ?? 0) + (text?.length ?? 0) + 1800 + attachments.fold(0, (s, a) => s + a.attachment.size),
       keywords: keywords,
       hasAttachment: attachments.any((a) => !a.attachment.isInline),
+      listId: list?.id,
+      listName: list?.name,
+      listPost: header('List-Post'),
+      listUnsubscribe: header('List-Unsubscribe'),
+      listUnsubscribePost: header('List-Unsubscribe-Post'),
     );
     if (thread != null) refs.add(messageId);
     final message = DemoMessage(
@@ -1102,6 +1117,161 @@ final class DemoSeed {
     final days = [for (var i = 0; i < count; i++) _random.nextInt(maxDays)];
     days.sort();
     return days;
+  }
+
+  // The Kestrel developers' list: a patch series with reviews -----------------
+
+  static const _kestrelHeaders = [
+    ('List-Id', 'Kestrel developers <dev.lists.example.org>'),
+    ('List-Post', '<mailto:dev@lists.example.org>'),
+    ('List-Help', '<mailto:dev-request@lists.example.org?subject=help>'),
+    ('List-Unsubscribe', '<mailto:dev-leave@lists.example.org>, <https://lists.example.org/postorius/lists/dev/>'),
+    ('List-Archive', '<https://lists.example.org/archives/list/dev@lists.example.org/>'),
+    ('Precedence', 'list'),
+  ];
+
+  void _kestrel() {
+    const a = DemoAccounts.fastmail;
+    const box = 'Lists/Kestrel';
+    const series = 'kestrel-cache-v2';
+    const list = DemoPeople.kestrelList;
+    final headers = [..._kestrelHeaders, ('X-Mailer', 'git-send-email 2.47.0')];
+    add(
+      account: a,
+      box: box,
+      at: at(2, 9, 0),
+      from: DemoPeople.ines,
+      to: [list],
+      subject: '[PATCH v2 0/3] Cache parsed headers on keep-alive connections',
+      text: kestrelCoverLetter,
+      thread: series,
+      headers: headers,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(2, 9, 1),
+      from: DemoPeople.ines,
+      to: [list],
+      subject: '[PATCH v2 1/3] cache: add a small LRU for parsed headers',
+      text: kestrelPatch1,
+      thread: series,
+      headers: headers,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(2, 9, 1),
+      from: DemoPeople.ines,
+      to: [list],
+      subject: '[PATCH v2 2/3] http: reuse cached headers on keep-alive connections',
+      text: kestrelPatch2,
+      thread: series,
+      headers: headers,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(2, 9, 2),
+      from: DemoPeople.ines,
+      to: [list],
+      subject: '[PATCH v2 3/3] tests: cover the header cache',
+      text: kestrelPatch3,
+      thread: series,
+      headers: headers,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(1, 16, 40),
+      from: DemoPeople.oskar,
+      to: [list],
+      cc: [DemoPeople.ines],
+      subject: 'Re: [PATCH v2 2/3] http: reuse cached headers on keep-alive connections',
+      text: kestrelReview,
+      thread: series,
+      headers: _kestrelHeaders,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(1, 19, 5),
+      from: DemoPeople.ines,
+      to: [list],
+      cc: [DemoPeople.oskar],
+      subject: 'Re: [PATCH v2 2/3] http: reuse cached headers on keep-alive connections',
+      text: kestrelReviewAnswer,
+      thread: series,
+      unread: true,
+      headers: _kestrelHeaders,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(0, 8, 20),
+      from: DemoPeople.malik,
+      to: [list],
+      subject: 'Re: [PATCH v2 0/3] Cache parsed headers on keep-alive connections',
+      text:
+          'On Thu, Ines Duarte wrote:\n> This series caches the parsed request headers per connection, so\n'
+          '> keep-alive requests that repeat them skip the parser.\n\nRan the series on the staging proxies '
+          'overnight: p99 down from 4.1 ms to 3.2 ms, no leaks under valgrind.\n\n'
+          'Tested-by: Malik Osei <malik@kestrel.example>\n\n-- \nMalik',
+      thread: series,
+      unread: true,
+      headers: _kestrelHeaders,
+    );
+
+    const release = 'kestrel-release';
+    add(
+      account: a,
+      box: box,
+      at: at(4, 11, 0),
+      from: DemoPeople.oskar,
+      to: [list],
+      subject: 'Planning 2.4: freeze on the 20th?',
+      text:
+          'Hi all,\n\nI would like to freeze 2.4 on the 20th and tag a week later. Open items:\n\n'
+          '- the header cache series (Ines)\n- HTTP/2 priorities cleanup\n- dropping OpenSSL 1.1\n\n'
+          'Shout if something else must go in.\n\nOskar',
+      thread: release,
+      headers: _kestrelHeaders,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(3, 8, 45),
+      from: DemoPeople.malik,
+      to: [list],
+      subject: 'Re: Planning 2.4: freeze on the 20th?',
+      text:
+          '> - dropping OpenSSL 1.1\n\nPlease, yes. Debian oldstable is the last one shipping it and they '
+          'carry their own patches anyway.\n\nMalik',
+      thread: release,
+      headers: _kestrelHeaders,
+    );
+    add(
+      account: a,
+      box: 'Sent',
+      at: at(3, 10, 0),
+      from: const EmailAddress('lists@rivera.example', 'Sam Rivera'),
+      to: [list],
+      subject: 'Re: Planning 2.4: freeze on the 20th?',
+      text: 'The 20th works for me. I can take the release notes again.\n\nSam',
+      thread: release,
+      headers: _kestrelHeaders,
+    );
+    add(
+      account: a,
+      box: box,
+      at: at(0, 7, 55),
+      from: DemoPeople.yuki,
+      to: [list],
+      subject: '[PATCH] docs: fix the keepalive_timeout example',
+      text: kestrelDocsPatch,
+      unread: true,
+      headers: headers,
+    );
   }
 
   void _filler() {

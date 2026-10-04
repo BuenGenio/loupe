@@ -285,6 +285,69 @@ void main() {
       expect(legal, contains('Property · Legal · Financial'));
     });
 
+    test('patches: format-patch mail, renames and binaries, CRLF, quoted-printable, review replies', () {
+      List<DiffBlock> diffsOf(String name) => flatten(readable(name).blocks).whereType<DiffBlock>().toList();
+      DiffStatBlock statOf(String name) => flatten(readable(name).blocks).whereType<DiffStatBlock>().single;
+
+      // The cover letter: just the diffstat.
+      expect(diffsOf('42_'), isEmpty);
+      expect(statOf('42_').files, hasLength(3));
+      expect(statOf('42_').extra, ['create mode 100644 tools/testing/frob/run.c']);
+
+      final multi = diffsOf('43_');
+      expect(multi.map((d) => d.file.path), ['drivers/frob/core.c', 'drivers/frob/core.h']);
+      // The second hunk announces a line more than it has: it ends at the next file.
+      expect(multi.first.file.hunks.map((h) => h.lines.length), [8, 18]);
+      expect(multi.last.file.hunks.single.lines.last.kind, DiffLineKind.note);
+
+      final files = diffsOf('44_').map((d) => d.file).toList();
+      expect(files.map((f) => f.path), [
+        'assets/logo.svg',
+        'assets/icon.png',
+        'docs/guide.md',
+        'scripts/old-helper.sh',
+        'tools/new-tool.py',
+        'tools/run.sh',
+        'web/banner.jpg',
+      ]);
+      expect(files.map((f) => (f.isRename, f.isNew, f.isDeleted, f.binary)), [
+        (true, false, false, false),
+        (false, true, false, true),
+        (true, false, false, false),
+        (false, false, true, false),
+        (false, true, false, false),
+        (false, false, false, false),
+        (false, false, false, true),
+      ]);
+
+      final crlf = diffsOf('45_').single.file.hunks.single.lines;
+      expect(crlf.map((l) => l.text), [
+        '@echo off',
+        r'set OUT=build\old',
+        r'set OUT=out\release',
+        'cd %OUT%',
+        'make all',
+        'make release',
+      ]);
+
+      final qp = diffsOf('46_').single.file.hunks.single;
+      expect(qp.lines.where((l) => l.kind == DiffLineKind.added), hasLength(7));
+      expect(qp.lines.last.newLine, 20);
+
+      final review = readable('47_');
+      expect(review.blocks.whereType<DiffBlock>(), isEmpty, reason: 'only quoted diffs');
+      expect(diffsOf('47_'), hasLength(3));
+      expect(diffsOf('47_').every((d) => d.fragment), isTrue);
+
+      final flowed = diffsOf('48_').single.file.hunks.single.lines;
+      expect(flowed.map((l) => l.kind), [
+        DiffLineKind.context,
+        DiffLineKind.removed,
+        DiffLineKind.added,
+        DiffLineKind.context,
+      ]);
+    });
+
     test('social icons and footer links become single lines', () {
       final d = readable('33_');
       final lines = d.blocks.whereType<ParagraphBlock>().map((p) => inlineText(p.inlines)).toList();

@@ -913,8 +913,19 @@ class $SyncStatesTable extends SyncStates with TableInfo<$SyncStatesTable, SyncS
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _staleHeadersMeta = const VerificationMeta('staleHeaders');
   @override
-  List<GeneratedColumn> get $columns => [mailboxId, state, hasOlder, syncedAt];
+  late final GeneratedColumn<bool> staleHeaders = GeneratedColumn<bool>(
+    'stale_headers',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("stale_headers" IN (0, 1))'),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [mailboxId, state, hasOlder, syncedAt, staleHeaders];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -942,6 +953,9 @@ class $SyncStatesTable extends SyncStates with TableInfo<$SyncStatesTable, SyncS
     } else if (isInserting) {
       context.missing(_syncedAtMeta);
     }
+    if (data.containsKey('stale_headers')) {
+      context.handle(_staleHeadersMeta, staleHeaders.isAcceptableOrUnknown(data['stale_headers']!, _staleHeadersMeta));
+    }
     return context;
   }
 
@@ -955,6 +969,7 @@ class $SyncStatesTable extends SyncStates with TableInfo<$SyncStatesTable, SyncS
       state: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}state'])!,
       hasOlder: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}has_older'])!,
       syncedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}synced_at'])!,
+      staleHeaders: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}stale_headers'])!,
     );
   }
 
@@ -969,7 +984,18 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
   final String state;
   final bool hasOlder;
   final int syncedAt;
-  const SyncStateRow({required this.mailboxId, required this.state, required this.hasOlder, required this.syncedAt});
+
+  /// The stored summaries lack header fields added since they were fetched
+  /// (schema version 3: the List-* headers); the sync engine fetches them
+  /// again once and clears this.
+  final bool staleHeaders;
+  const SyncStateRow({
+    required this.mailboxId,
+    required this.state,
+    required this.hasOlder,
+    required this.syncedAt,
+    required this.staleHeaders,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -977,6 +1003,7 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
     map['state'] = Variable<String>(state);
     map['has_older'] = Variable<bool>(hasOlder);
     map['synced_at'] = Variable<int>(syncedAt);
+    map['stale_headers'] = Variable<bool>(staleHeaders);
     return map;
   }
 
@@ -986,6 +1013,7 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
       state: Value(state),
       hasOlder: Value(hasOlder),
       syncedAt: Value(syncedAt),
+      staleHeaders: Value(staleHeaders),
     );
   }
 
@@ -996,6 +1024,7 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
       state: serializer.fromJson<String>(json['state']),
       hasOlder: serializer.fromJson<bool>(json['hasOlder']),
       syncedAt: serializer.fromJson<int>(json['syncedAt']),
+      staleHeaders: serializer.fromJson<bool>(json['staleHeaders']),
     );
   }
   @override
@@ -1006,21 +1035,25 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
       'state': serializer.toJson<String>(state),
       'hasOlder': serializer.toJson<bool>(hasOlder),
       'syncedAt': serializer.toJson<int>(syncedAt),
+      'staleHeaders': serializer.toJson<bool>(staleHeaders),
     };
   }
 
-  SyncStateRow copyWith({String? mailboxId, String? state, bool? hasOlder, int? syncedAt}) => SyncStateRow(
-    mailboxId: mailboxId ?? this.mailboxId,
-    state: state ?? this.state,
-    hasOlder: hasOlder ?? this.hasOlder,
-    syncedAt: syncedAt ?? this.syncedAt,
-  );
+  SyncStateRow copyWith({String? mailboxId, String? state, bool? hasOlder, int? syncedAt, bool? staleHeaders}) =>
+      SyncStateRow(
+        mailboxId: mailboxId ?? this.mailboxId,
+        state: state ?? this.state,
+        hasOlder: hasOlder ?? this.hasOlder,
+        syncedAt: syncedAt ?? this.syncedAt,
+        staleHeaders: staleHeaders ?? this.staleHeaders,
+      );
   SyncStateRow copyWithCompanion(SyncStatesCompanion data) {
     return SyncStateRow(
       mailboxId: data.mailboxId.present ? data.mailboxId.value : this.mailboxId,
       state: data.state.present ? data.state.value : this.state,
       hasOlder: data.hasOlder.present ? data.hasOlder.value : this.hasOlder,
       syncedAt: data.syncedAt.present ? data.syncedAt.value : this.syncedAt,
+      staleHeaders: data.staleHeaders.present ? data.staleHeaders.value : this.staleHeaders,
     );
   }
 
@@ -1030,13 +1063,14 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
           ..write('mailboxId: $mailboxId, ')
           ..write('state: $state, ')
           ..write('hasOlder: $hasOlder, ')
-          ..write('syncedAt: $syncedAt')
+          ..write('syncedAt: $syncedAt, ')
+          ..write('staleHeaders: $staleHeaders')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(mailboxId, state, hasOlder, syncedAt);
+  int get hashCode => Object.hash(mailboxId, state, hasOlder, syncedAt, staleHeaders);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1044,7 +1078,8 @@ class SyncStateRow extends DataClass implements Insertable<SyncStateRow> {
           other.mailboxId == this.mailboxId &&
           other.state == this.state &&
           other.hasOlder == this.hasOlder &&
-          other.syncedAt == this.syncedAt);
+          other.syncedAt == this.syncedAt &&
+          other.staleHeaders == this.staleHeaders);
 }
 
 class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
@@ -1052,12 +1087,14 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
   final Value<String> state;
   final Value<bool> hasOlder;
   final Value<int> syncedAt;
+  final Value<bool> staleHeaders;
   final Value<int> rowid;
   const SyncStatesCompanion({
     this.mailboxId = const Value.absent(),
     this.state = const Value.absent(),
     this.hasOlder = const Value.absent(),
     this.syncedAt = const Value.absent(),
+    this.staleHeaders = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   SyncStatesCompanion.insert({
@@ -1065,6 +1102,7 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
     required String state,
     this.hasOlder = const Value.absent(),
     required int syncedAt,
+    this.staleHeaders = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : mailboxId = Value(mailboxId),
        state = Value(state),
@@ -1074,6 +1112,7 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
     Expression<String>? state,
     Expression<bool>? hasOlder,
     Expression<int>? syncedAt,
+    Expression<bool>? staleHeaders,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1081,6 +1120,7 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
       if (state != null) 'state': state,
       if (hasOlder != null) 'has_older': hasOlder,
       if (syncedAt != null) 'synced_at': syncedAt,
+      if (staleHeaders != null) 'stale_headers': staleHeaders,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1090,6 +1130,7 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
     Value<String>? state,
     Value<bool>? hasOlder,
     Value<int>? syncedAt,
+    Value<bool>? staleHeaders,
     Value<int>? rowid,
   }) {
     return SyncStatesCompanion(
@@ -1097,6 +1138,7 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
       state: state ?? this.state,
       hasOlder: hasOlder ?? this.hasOlder,
       syncedAt: syncedAt ?? this.syncedAt,
+      staleHeaders: staleHeaders ?? this.staleHeaders,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1116,6 +1158,9 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
     if (syncedAt.present) {
       map['synced_at'] = Variable<int>(syncedAt.value);
     }
+    if (staleHeaders.present) {
+      map['stale_headers'] = Variable<bool>(staleHeaders.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1129,6 +1174,7 @@ class SyncStatesCompanion extends UpdateCompanion<SyncStateRow> {
           ..write('state: $state, ')
           ..write('hasOlder: $hasOlder, ')
           ..write('syncedAt: $syncedAt, ')
+          ..write('staleHeaders: $staleHeaders, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1378,6 +1424,51 @@ class $EmailsTable extends Emails with TableInfo<$EmailsTable, EmailRow> {
     defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("has_attachment" IN (0, 1))'),
     defaultValue: const Constant(false),
   );
+  static const VerificationMeta _listIdMeta = const VerificationMeta('listId');
+  @override
+  late final GeneratedColumn<String> listId = GeneratedColumn<String>(
+    'list_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _listNameMeta = const VerificationMeta('listName');
+  @override
+  late final GeneratedColumn<String> listName = GeneratedColumn<String>(
+    'list_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _listPostMeta = const VerificationMeta('listPost');
+  @override
+  late final GeneratedColumn<String> listPost = GeneratedColumn<String>(
+    'list_post',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _listUnsubscribeMeta = const VerificationMeta('listUnsubscribe');
+  @override
+  late final GeneratedColumn<String> listUnsubscribe = GeneratedColumn<String>(
+    'list_unsubscribe',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _listUnsubscribePostMeta = const VerificationMeta('listUnsubscribePost');
+  @override
+  late final GeneratedColumn<String> listUnsubscribePost = GeneratedColumn<String>(
+    'list_unsubscribe_post',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     seq,
@@ -1404,6 +1495,11 @@ class $EmailsTable extends Emails with TableInfo<$EmailsTable, EmailRow> {
     isSeen,
     isFlagged,
     hasAttachment,
+    listId,
+    listName,
+    listPost,
+    listUnsubscribe,
+    listUnsubscribePost,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1505,6 +1601,27 @@ class $EmailsTable extends Emails with TableInfo<$EmailsTable, EmailRow> {
         hasAttachment.isAcceptableOrUnknown(data['has_attachment']!, _hasAttachmentMeta),
       );
     }
+    if (data.containsKey('list_id')) {
+      context.handle(_listIdMeta, listId.isAcceptableOrUnknown(data['list_id']!, _listIdMeta));
+    }
+    if (data.containsKey('list_name')) {
+      context.handle(_listNameMeta, listName.isAcceptableOrUnknown(data['list_name']!, _listNameMeta));
+    }
+    if (data.containsKey('list_post')) {
+      context.handle(_listPostMeta, listPost.isAcceptableOrUnknown(data['list_post']!, _listPostMeta));
+    }
+    if (data.containsKey('list_unsubscribe')) {
+      context.handle(
+        _listUnsubscribeMeta,
+        listUnsubscribe.isAcceptableOrUnknown(data['list_unsubscribe']!, _listUnsubscribeMeta),
+      );
+    }
+    if (data.containsKey('list_unsubscribe_post')) {
+      context.handle(
+        _listUnsubscribePostMeta,
+        listUnsubscribePost.isAcceptableOrUnknown(data['list_unsubscribe_post']!, _listUnsubscribePostMeta),
+      );
+    }
     return context;
   }
 
@@ -1544,6 +1661,17 @@ class $EmailsTable extends Emails with TableInfo<$EmailsTable, EmailRow> {
       isSeen: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}is_seen'])!,
       isFlagged: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}is_flagged'])!,
       hasAttachment: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}has_attachment'])!,
+      listId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}list_id']),
+      listName: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}list_name']),
+      listPost: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}list_post']),
+      listUnsubscribe: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}list_unsubscribe'],
+      ),
+      listUnsubscribePost: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}list_unsubscribe_post'],
+      ),
     );
   }
 
@@ -1584,6 +1712,14 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
   final bool isSeen;
   final bool isFlagged;
   final bool hasAttachment;
+
+  /// The List-Id identifier (lower-cased, no brackets) and phrase; the
+  /// other List-* headers as sent. Schema version 3.
+  final String? listId;
+  final String? listName;
+  final String? listPost;
+  final String? listUnsubscribe;
+  final String? listUnsubscribePost;
   const EmailRow({
     required this.seq,
     required this.id,
@@ -1609,6 +1745,11 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     required this.isSeen,
     required this.isFlagged,
     required this.hasAttachment,
+    this.listId,
+    this.listName,
+    this.listPost,
+    this.listUnsubscribe,
+    this.listUnsubscribePost,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1643,6 +1784,21 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     map['is_seen'] = Variable<bool>(isSeen);
     map['is_flagged'] = Variable<bool>(isFlagged);
     map['has_attachment'] = Variable<bool>(hasAttachment);
+    if (!nullToAbsent || listId != null) {
+      map['list_id'] = Variable<String>(listId);
+    }
+    if (!nullToAbsent || listName != null) {
+      map['list_name'] = Variable<String>(listName);
+    }
+    if (!nullToAbsent || listPost != null) {
+      map['list_post'] = Variable<String>(listPost);
+    }
+    if (!nullToAbsent || listUnsubscribe != null) {
+      map['list_unsubscribe'] = Variable<String>(listUnsubscribe);
+    }
+    if (!nullToAbsent || listUnsubscribePost != null) {
+      map['list_unsubscribe_post'] = Variable<String>(listUnsubscribePost);
+    }
     return map;
   }
 
@@ -1672,6 +1828,13 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
       isSeen: Value(isSeen),
       isFlagged: Value(isFlagged),
       hasAttachment: Value(hasAttachment),
+      listId: listId == null && nullToAbsent ? const Value.absent() : Value(listId),
+      listName: listName == null && nullToAbsent ? const Value.absent() : Value(listName),
+      listPost: listPost == null && nullToAbsent ? const Value.absent() : Value(listPost),
+      listUnsubscribe: listUnsubscribe == null && nullToAbsent ? const Value.absent() : Value(listUnsubscribe),
+      listUnsubscribePost: listUnsubscribePost == null && nullToAbsent
+          ? const Value.absent()
+          : Value(listUnsubscribePost),
     );
   }
 
@@ -1702,6 +1865,11 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
       isSeen: serializer.fromJson<bool>(json['isSeen']),
       isFlagged: serializer.fromJson<bool>(json['isFlagged']),
       hasAttachment: serializer.fromJson<bool>(json['hasAttachment']),
+      listId: serializer.fromJson<String?>(json['listId']),
+      listName: serializer.fromJson<String?>(json['listName']),
+      listPost: serializer.fromJson<String?>(json['listPost']),
+      listUnsubscribe: serializer.fromJson<String?>(json['listUnsubscribe']),
+      listUnsubscribePost: serializer.fromJson<String?>(json['listUnsubscribePost']),
     );
   }
   @override
@@ -1732,6 +1900,11 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
       'isSeen': serializer.toJson<bool>(isSeen),
       'isFlagged': serializer.toJson<bool>(isFlagged),
       'hasAttachment': serializer.toJson<bool>(hasAttachment),
+      'listId': serializer.toJson<String?>(listId),
+      'listName': serializer.toJson<String?>(listName),
+      'listPost': serializer.toJson<String?>(listPost),
+      'listUnsubscribe': serializer.toJson<String?>(listUnsubscribe),
+      'listUnsubscribePost': serializer.toJson<String?>(listUnsubscribePost),
     };
   }
 
@@ -1760,6 +1933,11 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     bool? isSeen,
     bool? isFlagged,
     bool? hasAttachment,
+    Value<String?> listId = const Value.absent(),
+    Value<String?> listName = const Value.absent(),
+    Value<String?> listPost = const Value.absent(),
+    Value<String?> listUnsubscribe = const Value.absent(),
+    Value<String?> listUnsubscribePost = const Value.absent(),
   }) => EmailRow(
     seq: seq ?? this.seq,
     id: id ?? this.id,
@@ -1785,6 +1963,11 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     isSeen: isSeen ?? this.isSeen,
     isFlagged: isFlagged ?? this.isFlagged,
     hasAttachment: hasAttachment ?? this.hasAttachment,
+    listId: listId.present ? listId.value : this.listId,
+    listName: listName.present ? listName.value : this.listName,
+    listPost: listPost.present ? listPost.value : this.listPost,
+    listUnsubscribe: listUnsubscribe.present ? listUnsubscribe.value : this.listUnsubscribe,
+    listUnsubscribePost: listUnsubscribePost.present ? listUnsubscribePost.value : this.listUnsubscribePost,
   );
   EmailRow copyWithCompanion(EmailsCompanion data) {
     return EmailRow(
@@ -1812,6 +1995,11 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
       isSeen: data.isSeen.present ? data.isSeen.value : this.isSeen,
       isFlagged: data.isFlagged.present ? data.isFlagged.value : this.isFlagged,
       hasAttachment: data.hasAttachment.present ? data.hasAttachment.value : this.hasAttachment,
+      listId: data.listId.present ? data.listId.value : this.listId,
+      listName: data.listName.present ? data.listName.value : this.listName,
+      listPost: data.listPost.present ? data.listPost.value : this.listPost,
+      listUnsubscribe: data.listUnsubscribe.present ? data.listUnsubscribe.value : this.listUnsubscribe,
+      listUnsubscribePost: data.listUnsubscribePost.present ? data.listUnsubscribePost.value : this.listUnsubscribePost,
     );
   }
 
@@ -1841,7 +2029,12 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
           ..write('keywords: $keywords, ')
           ..write('isSeen: $isSeen, ')
           ..write('isFlagged: $isFlagged, ')
-          ..write('hasAttachment: $hasAttachment')
+          ..write('hasAttachment: $hasAttachment, ')
+          ..write('listId: $listId, ')
+          ..write('listName: $listName, ')
+          ..write('listPost: $listPost, ')
+          ..write('listUnsubscribe: $listUnsubscribe, ')
+          ..write('listUnsubscribePost: $listUnsubscribePost')
           ..write(')'))
         .toString();
   }
@@ -1872,6 +2065,11 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     isSeen,
     isFlagged,
     hasAttachment,
+    listId,
+    listName,
+    listPost,
+    listUnsubscribe,
+    listUnsubscribePost,
   ]);
   @override
   bool operator ==(Object other) =>
@@ -1900,7 +2098,12 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
           other.keywords == this.keywords &&
           other.isSeen == this.isSeen &&
           other.isFlagged == this.isFlagged &&
-          other.hasAttachment == this.hasAttachment);
+          other.hasAttachment == this.hasAttachment &&
+          other.listId == this.listId &&
+          other.listName == this.listName &&
+          other.listPost == this.listPost &&
+          other.listUnsubscribe == this.listUnsubscribe &&
+          other.listUnsubscribePost == this.listUnsubscribePost);
 }
 
 class EmailsCompanion extends UpdateCompanion<EmailRow> {
@@ -1928,6 +2131,11 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
   final Value<bool> isSeen;
   final Value<bool> isFlagged;
   final Value<bool> hasAttachment;
+  final Value<String?> listId;
+  final Value<String?> listName;
+  final Value<String?> listPost;
+  final Value<String?> listUnsubscribe;
+  final Value<String?> listUnsubscribePost;
   const EmailsCompanion({
     this.seq = const Value.absent(),
     this.id = const Value.absent(),
@@ -1953,6 +2161,11 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     this.isSeen = const Value.absent(),
     this.isFlagged = const Value.absent(),
     this.hasAttachment = const Value.absent(),
+    this.listId = const Value.absent(),
+    this.listName = const Value.absent(),
+    this.listPost = const Value.absent(),
+    this.listUnsubscribe = const Value.absent(),
+    this.listUnsubscribePost = const Value.absent(),
   });
   EmailsCompanion.insert({
     this.seq = const Value.absent(),
@@ -1979,6 +2192,11 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     this.isSeen = const Value.absent(),
     this.isFlagged = const Value.absent(),
     this.hasAttachment = const Value.absent(),
+    this.listId = const Value.absent(),
+    this.listName = const Value.absent(),
+    this.listPost = const Value.absent(),
+    this.listUnsubscribe = const Value.absent(),
+    this.listUnsubscribePost = const Value.absent(),
   }) : id = Value(id),
        accountId = Value(accountId),
        mailboxId = Value(mailboxId),
@@ -2009,6 +2227,11 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     Expression<bool>? isSeen,
     Expression<bool>? isFlagged,
     Expression<bool>? hasAttachment,
+    Expression<String>? listId,
+    Expression<String>? listName,
+    Expression<String>? listPost,
+    Expression<String>? listUnsubscribe,
+    Expression<String>? listUnsubscribePost,
   }) {
     return RawValuesInsertable({
       if (seq != null) 'seq': seq,
@@ -2035,6 +2258,11 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
       if (isSeen != null) 'is_seen': isSeen,
       if (isFlagged != null) 'is_flagged': isFlagged,
       if (hasAttachment != null) 'has_attachment': hasAttachment,
+      if (listId != null) 'list_id': listId,
+      if (listName != null) 'list_name': listName,
+      if (listPost != null) 'list_post': listPost,
+      if (listUnsubscribe != null) 'list_unsubscribe': listUnsubscribe,
+      if (listUnsubscribePost != null) 'list_unsubscribe_post': listUnsubscribePost,
     });
   }
 
@@ -2063,6 +2291,11 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     Value<bool>? isSeen,
     Value<bool>? isFlagged,
     Value<bool>? hasAttachment,
+    Value<String?>? listId,
+    Value<String?>? listName,
+    Value<String?>? listPost,
+    Value<String?>? listUnsubscribe,
+    Value<String?>? listUnsubscribePost,
   }) {
     return EmailsCompanion(
       seq: seq ?? this.seq,
@@ -2089,6 +2322,11 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
       isSeen: isSeen ?? this.isSeen,
       isFlagged: isFlagged ?? this.isFlagged,
       hasAttachment: hasAttachment ?? this.hasAttachment,
+      listId: listId ?? this.listId,
+      listName: listName ?? this.listName,
+      listPost: listPost ?? this.listPost,
+      listUnsubscribe: listUnsubscribe ?? this.listUnsubscribe,
+      listUnsubscribePost: listUnsubscribePost ?? this.listUnsubscribePost,
     );
   }
 
@@ -2167,6 +2405,21 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     if (hasAttachment.present) {
       map['has_attachment'] = Variable<bool>(hasAttachment.value);
     }
+    if (listId.present) {
+      map['list_id'] = Variable<String>(listId.value);
+    }
+    if (listName.present) {
+      map['list_name'] = Variable<String>(listName.value);
+    }
+    if (listPost.present) {
+      map['list_post'] = Variable<String>(listPost.value);
+    }
+    if (listUnsubscribe.present) {
+      map['list_unsubscribe'] = Variable<String>(listUnsubscribe.value);
+    }
+    if (listUnsubscribePost.present) {
+      map['list_unsubscribe_post'] = Variable<String>(listUnsubscribePost.value);
+    }
     return map;
   }
 
@@ -2196,7 +2449,12 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
           ..write('keywords: $keywords, ')
           ..write('isSeen: $isSeen, ')
           ..write('isFlagged: $isFlagged, ')
-          ..write('hasAttachment: $hasAttachment')
+          ..write('hasAttachment: $hasAttachment, ')
+          ..write('listId: $listId, ')
+          ..write('listName: $listName, ')
+          ..write('listPost: $listPost, ')
+          ..write('listUnsubscribe: $listUnsubscribe, ')
+          ..write('listUnsubscribePost: $listUnsubscribePost')
           ..write(')'))
         .toString();
   }
@@ -5210,6 +5468,233 @@ class RuleWatermarksCompanion extends UpdateCompanion<RuleWatermarkRow> {
   }
 }
 
+class $MutedThreadsTable extends MutedThreads with TableInfo<$MutedThreadsTable, MutedThreadRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MutedThreadsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _accountIdMeta = const VerificationMeta('accountId');
+  @override
+  late final GeneratedColumn<String> accountId = GeneratedColumn<String>(
+    'account_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('REFERENCES accounts (id) ON DELETE CASCADE'),
+  );
+  static const VerificationMeta _threadIdMeta = const VerificationMeta('threadId');
+  @override
+  late final GeneratedColumn<String> threadId = GeneratedColumn<String>(
+    'thread_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _mutedAtMeta = const VerificationMeta('mutedAt');
+  @override
+  late final GeneratedColumn<int> mutedAt = GeneratedColumn<int>(
+    'muted_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [accountId, threadId, mutedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'muted_threads';
+  @override
+  VerificationContext validateIntegrity(Insertable<MutedThreadRow> instance, {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('account_id')) {
+      context.handle(_accountIdMeta, accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta));
+    } else if (isInserting) {
+      context.missing(_accountIdMeta);
+    }
+    if (data.containsKey('thread_id')) {
+      context.handle(_threadIdMeta, threadId.isAcceptableOrUnknown(data['thread_id']!, _threadIdMeta));
+    } else if (isInserting) {
+      context.missing(_threadIdMeta);
+    }
+    if (data.containsKey('muted_at')) {
+      context.handle(_mutedAtMeta, mutedAt.isAcceptableOrUnknown(data['muted_at']!, _mutedAtMeta));
+    } else if (isInserting) {
+      context.missing(_mutedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {accountId, threadId};
+  @override
+  MutedThreadRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MutedThreadRow(
+      accountId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}account_id'])!,
+      threadId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}thread_id'])!,
+      mutedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}muted_at'])!,
+    );
+  }
+
+  @override
+  $MutedThreadsTable createAlias(String alias) {
+    return $MutedThreadsTable(attachedDatabase, alias);
+  }
+}
+
+class MutedThreadRow extends DataClass implements Insertable<MutedThreadRow> {
+  final String accountId;
+  final String threadId;
+  final int mutedAt;
+  const MutedThreadRow({required this.accountId, required this.threadId, required this.mutedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['account_id'] = Variable<String>(accountId);
+    map['thread_id'] = Variable<String>(threadId);
+    map['muted_at'] = Variable<int>(mutedAt);
+    return map;
+  }
+
+  MutedThreadsCompanion toCompanion(bool nullToAbsent) {
+    return MutedThreadsCompanion(accountId: Value(accountId), threadId: Value(threadId), mutedAt: Value(mutedAt));
+  }
+
+  factory MutedThreadRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MutedThreadRow(
+      accountId: serializer.fromJson<String>(json['accountId']),
+      threadId: serializer.fromJson<String>(json['threadId']),
+      mutedAt: serializer.fromJson<int>(json['mutedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'accountId': serializer.toJson<String>(accountId),
+      'threadId': serializer.toJson<String>(threadId),
+      'mutedAt': serializer.toJson<int>(mutedAt),
+    };
+  }
+
+  MutedThreadRow copyWith({String? accountId, String? threadId, int? mutedAt}) => MutedThreadRow(
+    accountId: accountId ?? this.accountId,
+    threadId: threadId ?? this.threadId,
+    mutedAt: mutedAt ?? this.mutedAt,
+  );
+  MutedThreadRow copyWithCompanion(MutedThreadsCompanion data) {
+    return MutedThreadRow(
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      threadId: data.threadId.present ? data.threadId.value : this.threadId,
+      mutedAt: data.mutedAt.present ? data.mutedAt.value : this.mutedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MutedThreadRow(')
+          ..write('accountId: $accountId, ')
+          ..write('threadId: $threadId, ')
+          ..write('mutedAt: $mutedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(accountId, threadId, mutedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MutedThreadRow &&
+          other.accountId == this.accountId &&
+          other.threadId == this.threadId &&
+          other.mutedAt == this.mutedAt);
+}
+
+class MutedThreadsCompanion extends UpdateCompanion<MutedThreadRow> {
+  final Value<String> accountId;
+  final Value<String> threadId;
+  final Value<int> mutedAt;
+  final Value<int> rowid;
+  const MutedThreadsCompanion({
+    this.accountId = const Value.absent(),
+    this.threadId = const Value.absent(),
+    this.mutedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MutedThreadsCompanion.insert({
+    required String accountId,
+    required String threadId,
+    required int mutedAt,
+    this.rowid = const Value.absent(),
+  }) : accountId = Value(accountId),
+       threadId = Value(threadId),
+       mutedAt = Value(mutedAt);
+  static Insertable<MutedThreadRow> custom({
+    Expression<String>? accountId,
+    Expression<String>? threadId,
+    Expression<int>? mutedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (accountId != null) 'account_id': accountId,
+      if (threadId != null) 'thread_id': threadId,
+      if (mutedAt != null) 'muted_at': mutedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MutedThreadsCompanion copyWith({
+    Value<String>? accountId,
+    Value<String>? threadId,
+    Value<int>? mutedAt,
+    Value<int>? rowid,
+  }) {
+    return MutedThreadsCompanion(
+      accountId: accountId ?? this.accountId,
+      threadId: threadId ?? this.threadId,
+      mutedAt: mutedAt ?? this.mutedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(accountId.value);
+    }
+    if (threadId.present) {
+      map['thread_id'] = Variable<String>(threadId.value);
+    }
+    if (mutedAt.present) {
+      map['muted_at'] = Variable<int>(mutedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MutedThreadsCompanion(')
+          ..write('accountId: $accountId, ')
+          ..write('threadId: $threadId, ')
+          ..write('mutedAt: $mutedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$StoreDatabase extends GeneratedDatabase {
   _$StoreDatabase(QueryExecutor e) : super(e);
   $StoreDatabaseManager get managers => $StoreDatabaseManager(this);
@@ -5228,6 +5713,7 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
   late final $IdAliasesTable idAliases = $IdAliasesTable(this);
   late final $RulesTable rules = $RulesTable(this);
   late final $RuleWatermarksTable ruleWatermarks = $RuleWatermarksTable(this);
+  late final $MutedThreadsTable mutedThreads = $MutedThreadsTable(this);
   late final Index emailsMailboxReceived = Index(
     'emails_mailbox_received',
     'CREATE INDEX emails_mailbox_received ON emails (mailbox_id, received_at)',
@@ -5246,6 +5732,7 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     'CREATE INDEX emails_base_subject ON emails (account_id, base_subject, received_at)',
   );
   late final Index emailsFrom = Index('emails_from', 'CREATE INDEX emails_from ON emails (from_email)');
+  late final Index emailsList = Index('emails_list', 'CREATE INDEX emails_list ON emails (list_id, received_at)');
   late final Index emailKeywordsKeyword = Index(
     'email_keywords_keyword',
     'CREATE INDEX email_keywords_keyword ON email_keywords (keyword)',
@@ -5269,12 +5756,14 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     idAliases,
     rules,
     ruleWatermarks,
+    mutedThreads,
     emailsMailboxReceived,
     emailsReceived,
     emailsThread,
     emailsMessageId,
     emailsBaseSubject,
     emailsFrom,
+    emailsList,
     emailKeywordsKeyword,
   ];
   @override
@@ -5330,6 +5819,10 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     WritePropagation(
       on: TableUpdateQuery.onTableName('mailboxes', limitUpdateKind: UpdateKind.delete),
       result: [TableUpdate('rule_watermarks', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('accounts', limitUpdateKind: UpdateKind.delete),
+      result: [TableUpdate('muted_threads', kind: UpdateKind.delete)],
     ),
   ]);
 }
@@ -5403,6 +5896,19 @@ final class $$AccountsTableReferences extends BaseReferences<_$StoreDatabase, $A
     ).filter((f) => f.accountId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_threadRefsRefsTable($_db));
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$MutedThreadsTable, List<MutedThreadRow>> _mutedThreadsRefsTable(_$StoreDatabase db) =>
+      MultiTypedResultKey.fromTable(db.mutedThreads, aliasName: 'accounts__id__muted_threads__account_id');
+
+  $$MutedThreadsTableProcessedTableManager get mutedThreadsRefs {
+    final manager = $$MutedThreadsTableTableManager(
+      $_db,
+      $_db.mutedThreads,
+    ).filter((f) => f.accountId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_mutedThreadsRefsTable($_db));
     return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
   }
 }
@@ -5492,6 +5998,24 @@ class $$AccountsTableFilterComposer extends Composer<_$StoreDatabase, $AccountsT
           $$ThreadRefsTableFilterComposer(
             $db: $db,
             $table: $db.threadRefs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> mutedThreadsRefs(Expression<bool> Function($$MutedThreadsTableFilterComposer f) f) {
+    final $$MutedThreadsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.mutedThreads,
+      getReferencedColumn: (t) => t.accountId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MutedThreadsTableFilterComposer(
+            $db: $db,
+            $table: $db.mutedThreads,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
@@ -5614,6 +6138,24 @@ class $$AccountsTableAnnotationComposer extends Composer<_$StoreDatabase, $Accou
     );
     return f(composer);
   }
+
+  Expression<T> mutedThreadsRefs<T extends Object>(Expression<T> Function($$MutedThreadsTableAnnotationComposer a) f) {
+    final $$MutedThreadsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.mutedThreads,
+      getReferencedColumn: (t) => t.accountId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MutedThreadsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.mutedThreads,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$AccountsTableTableManager
@@ -5629,7 +6171,13 @@ class $$AccountsTableTableManager
           $$AccountsTableUpdateCompanionBuilder,
           (AccountRow, $$AccountsTableReferences),
           AccountRow,
-          PrefetchHooks Function({bool mailboxesRefs, bool outboxItemsRefs, bool pendingOpsRefs, bool threadRefsRefs})
+          PrefetchHooks Function({
+            bool mailboxesRefs,
+            bool outboxItemsRefs,
+            bool pendingOpsRefs,
+            bool threadRefsRefs,
+            bool mutedThreadsRefs,
+          })
         > {
   $$AccountsTableTableManager(_$StoreDatabase db, $AccountsTable table)
     : super(
@@ -5675,7 +6223,13 @@ class $$AccountsTableTableManager
               .map((e) => (e.readTable<$AccountsTable, AccountRow>(table), $$AccountsTableReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback:
-              ({mailboxesRefs = false, outboxItemsRefs = false, pendingOpsRefs = false, threadRefsRefs = false}) {
+              ({
+                mailboxesRefs = false,
+                outboxItemsRefs = false,
+                pendingOpsRefs = false,
+                threadRefsRefs = false,
+                mutedThreadsRefs = false,
+              }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
@@ -5683,6 +6237,7 @@ class $$AccountsTableTableManager
                     if (outboxItemsRefs) db.outboxItems,
                     if (pendingOpsRefs) db.pendingOps,
                     if (threadRefsRefs) db.threadRefs,
+                    if (mutedThreadsRefs) db.mutedThreads,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -5723,6 +6278,15 @@ class $$AccountsTableTableManager
                               referencedItems.where((e) => e.accountId == item.id),
                           typedResults: items,
                         ),
+                      if (mutedThreadsRefs)
+                        await $_getPrefetchedData<AccountRow, $AccountsTable, MutedThreadRow>(
+                          currentTable: table,
+                          referencedTable: $$AccountsTableReferences._mutedThreadsRefsTable(db),
+                          managerFromTypedResult: (p0) => $$AccountsTableReferences(db, table, p0).mutedThreadsRefs,
+                          referencedItemsForCurrentItem: (item, referencedItems) =>
+                              referencedItems.where((e) => e.accountId == item.id),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -5743,7 +6307,13 @@ typedef $$AccountsTableProcessedTableManager =
       $$AccountsTableUpdateCompanionBuilder,
       (AccountRow, $$AccountsTableReferences),
       AccountRow,
-      PrefetchHooks Function({bool mailboxesRefs, bool outboxItemsRefs, bool pendingOpsRefs, bool threadRefsRefs})
+      PrefetchHooks Function({
+        bool mailboxesRefs,
+        bool outboxItemsRefs,
+        bool pendingOpsRefs,
+        bool threadRefsRefs,
+        bool mutedThreadsRefs,
+      })
     >;
 typedef $$MailboxesTableCreateCompanionBuilder = MailboxesCompanion Function({
   required String id,
@@ -6272,6 +6842,7 @@ typedef $$SyncStatesTableCreateCompanionBuilder = SyncStatesCompanion Function({
   required String state,
   Value<bool> hasOlder,
   required int syncedAt,
+  Value<bool> staleHeaders,
   Value<int> rowid,
 });
 typedef $$SyncStatesTableUpdateCompanionBuilder = SyncStatesCompanion Function({
@@ -6279,6 +6850,7 @@ typedef $$SyncStatesTableUpdateCompanionBuilder = SyncStatesCompanion Function({
   Value<String> state,
   Value<bool> hasOlder,
   Value<int> syncedAt,
+  Value<bool> staleHeaders,
   Value<int> rowid,
 });
 
@@ -6314,6 +6886,9 @@ class $$SyncStatesTableFilterComposer extends Composer<_$StoreDatabase, $SyncSta
 
   ColumnFilters<int> get syncedAt =>
       $composableBuilder(column: $table.syncedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get staleHeaders =>
+      $composableBuilder(column: $table.staleHeaders, builder: (column) => ColumnFilters(column));
 
   $$MailboxesTableFilterComposer get mailboxId {
     final $$MailboxesTableFilterComposer composer = $composerBuilder(
@@ -6351,6 +6926,9 @@ class $$SyncStatesTableOrderingComposer extends Composer<_$StoreDatabase, $SyncS
   ColumnOrderings<int> get syncedAt =>
       $composableBuilder(column: $table.syncedAt, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<bool> get staleHeaders =>
+      $composableBuilder(column: $table.staleHeaders, builder: (column) => ColumnOrderings(column));
+
   $$MailboxesTableOrderingComposer get mailboxId {
     final $$MailboxesTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -6383,6 +6961,9 @@ class $$SyncStatesTableAnnotationComposer extends Composer<_$StoreDatabase, $Syn
   GeneratedColumn<bool> get hasOlder => $composableBuilder(column: $table.hasOlder, builder: (column) => column);
 
   GeneratedColumn<int> get syncedAt => $composableBuilder(column: $table.syncedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get staleHeaders =>
+      $composableBuilder(column: $table.staleHeaders, builder: (column) => column);
 
   $$MailboxesTableAnnotationComposer get mailboxId {
     final $$MailboxesTableAnnotationComposer composer = $composerBuilder(
@@ -6432,12 +7013,14 @@ class $$SyncStatesTableTableManager
                 Value<String> state = const Value.absent(),
                 Value<bool> hasOlder = const Value.absent(),
                 Value<int> syncedAt = const Value.absent(),
+                Value<bool> staleHeaders = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SyncStatesCompanion(
                 mailboxId: mailboxId,
                 state: state,
                 hasOlder: hasOlder,
                 syncedAt: syncedAt,
+                staleHeaders: staleHeaders,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -6446,12 +7029,14 @@ class $$SyncStatesTableTableManager
                 required String state,
                 Value<bool> hasOlder = const Value.absent(),
                 required int syncedAt,
+                Value<bool> staleHeaders = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SyncStatesCompanion.insert(
                 mailboxId: mailboxId,
                 state: state,
                 hasOlder: hasOlder,
                 syncedAt: syncedAt,
+                staleHeaders: staleHeaders,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -6538,6 +7123,11 @@ typedef $$EmailsTableCreateCompanionBuilder = EmailsCompanion Function({
   Value<bool> isSeen,
   Value<bool> isFlagged,
   Value<bool> hasAttachment,
+  Value<String?> listId,
+  Value<String?> listName,
+  Value<String?> listPost,
+  Value<String?> listUnsubscribe,
+  Value<String?> listUnsubscribePost,
 });
 typedef $$EmailsTableUpdateCompanionBuilder = EmailsCompanion Function({
   Value<int> seq,
@@ -6564,6 +7154,11 @@ typedef $$EmailsTableUpdateCompanionBuilder = EmailsCompanion Function({
   Value<bool> isSeen,
   Value<bool> isFlagged,
   Value<bool> hasAttachment,
+  Value<String?> listId,
+  Value<String?> listName,
+  Value<String?> listPost,
+  Value<String?> listUnsubscribe,
+  Value<String?> listUnsubscribePost,
 });
 
 final class $$EmailsTableReferences extends BaseReferences<_$StoreDatabase, $EmailsTable, EmailRow> {
@@ -6694,6 +7289,21 @@ class $$EmailsTableFilterComposer extends Composer<_$StoreDatabase, $EmailsTable
 
   ColumnFilters<bool> get hasAttachment =>
       $composableBuilder(column: $table.hasAttachment, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get listId =>
+      $composableBuilder(column: $table.listId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get listName =>
+      $composableBuilder(column: $table.listName, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get listPost =>
+      $composableBuilder(column: $table.listPost, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get listUnsubscribe =>
+      $composableBuilder(column: $table.listUnsubscribe, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get listUnsubscribePost =>
+      $composableBuilder(column: $table.listUnsubscribePost, builder: (column) => ColumnFilters(column));
 
   $$MailboxesTableFilterComposer get mailboxId {
     final $$MailboxesTableFilterComposer composer = $composerBuilder(
@@ -6843,6 +7453,21 @@ class $$EmailsTableOrderingComposer extends Composer<_$StoreDatabase, $EmailsTab
   ColumnOrderings<bool> get hasAttachment =>
       $composableBuilder(column: $table.hasAttachment, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get listId =>
+      $composableBuilder(column: $table.listId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get listName =>
+      $composableBuilder(column: $table.listName, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get listPost =>
+      $composableBuilder(column: $table.listPost, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get listUnsubscribe =>
+      $composableBuilder(column: $table.listUnsubscribe, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get listUnsubscribePost =>
+      $composableBuilder(column: $table.listUnsubscribePost, builder: (column) => ColumnOrderings(column));
+
   $$MailboxesTableOrderingComposer get mailboxId {
     final $$MailboxesTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -6920,6 +7545,18 @@ class $$EmailsTableAnnotationComposer extends Composer<_$StoreDatabase, $EmailsT
 
   GeneratedColumn<bool> get hasAttachment =>
       $composableBuilder(column: $table.hasAttachment, builder: (column) => column);
+
+  GeneratedColumn<String> get listId => $composableBuilder(column: $table.listId, builder: (column) => column);
+
+  GeneratedColumn<String> get listName => $composableBuilder(column: $table.listName, builder: (column) => column);
+
+  GeneratedColumn<String> get listPost => $composableBuilder(column: $table.listPost, builder: (column) => column);
+
+  GeneratedColumn<String> get listUnsubscribe =>
+      $composableBuilder(column: $table.listUnsubscribe, builder: (column) => column);
+
+  GeneratedColumn<String> get listUnsubscribePost =>
+      $composableBuilder(column: $table.listUnsubscribePost, builder: (column) => column);
 
   $$MailboxesTableAnnotationComposer get mailboxId {
     final $$MailboxesTableAnnotationComposer composer = $composerBuilder(
@@ -7045,6 +7682,11 @@ class $$EmailsTableTableManager
                 Value<bool> isSeen = const Value.absent(),
                 Value<bool> isFlagged = const Value.absent(),
                 Value<bool> hasAttachment = const Value.absent(),
+                Value<String?> listId = const Value.absent(),
+                Value<String?> listName = const Value.absent(),
+                Value<String?> listPost = const Value.absent(),
+                Value<String?> listUnsubscribe = const Value.absent(),
+                Value<String?> listUnsubscribePost = const Value.absent(),
               }) => EmailsCompanion(
                 seq: seq,
                 id: id,
@@ -7070,6 +7712,11 @@ class $$EmailsTableTableManager
                 isSeen: isSeen,
                 isFlagged: isFlagged,
                 hasAttachment: hasAttachment,
+                listId: listId,
+                listName: listName,
+                listPost: listPost,
+                listUnsubscribe: listUnsubscribe,
+                listUnsubscribePost: listUnsubscribePost,
               ),
           createCompanionCallback:
               ({
@@ -7097,6 +7744,11 @@ class $$EmailsTableTableManager
                 Value<bool> isSeen = const Value.absent(),
                 Value<bool> isFlagged = const Value.absent(),
                 Value<bool> hasAttachment = const Value.absent(),
+                Value<String?> listId = const Value.absent(),
+                Value<String?> listName = const Value.absent(),
+                Value<String?> listPost = const Value.absent(),
+                Value<String?> listUnsubscribe = const Value.absent(),
+                Value<String?> listUnsubscribePost = const Value.absent(),
               }) => EmailsCompanion.insert(
                 seq: seq,
                 id: id,
@@ -7122,6 +7774,11 @@ class $$EmailsTableTableManager
                 isSeen: isSeen,
                 isFlagged: isFlagged,
                 hasAttachment: hasAttachment,
+                listId: listId,
+                listName: listName,
+                listPost: listPost,
+                listUnsubscribe: listUnsubscribe,
+                listUnsubscribePost: listUnsubscribePost,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable<$EmailsTable, EmailRow>(table), $$EmailsTableReferences(db, table, e)))
@@ -9513,6 +10170,229 @@ typedef $$RuleWatermarksTableProcessedTableManager =
       RuleWatermarkRow,
       PrefetchHooks Function({bool mailboxId})
     >;
+typedef $$MutedThreadsTableCreateCompanionBuilder = MutedThreadsCompanion Function({
+  required String accountId,
+  required String threadId,
+  required int mutedAt,
+  Value<int> rowid,
+});
+typedef $$MutedThreadsTableUpdateCompanionBuilder = MutedThreadsCompanion Function({
+  Value<String> accountId,
+  Value<String> threadId,
+  Value<int> mutedAt,
+  Value<int> rowid,
+});
+
+final class $$MutedThreadsTableReferences extends BaseReferences<_$StoreDatabase, $MutedThreadsTable, MutedThreadRow> {
+  $$MutedThreadsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $AccountsTable _accountIdTable(_$StoreDatabase db) =>
+      db.accounts.createAlias('muted_threads__account_id__accounts__id');
+
+  $$AccountsTableProcessedTableManager get accountId {
+    final $_column = $_itemColumn<String>('account_id')!;
+
+    final manager = $$AccountsTableTableManager($_db, $_db.accounts).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_accountIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$MutedThreadsTableFilterComposer extends Composer<_$StoreDatabase, $MutedThreadsTable> {
+  $$MutedThreadsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get threadId =>
+      $composableBuilder(column: $table.threadId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get mutedAt =>
+      $composableBuilder(column: $table.mutedAt, builder: (column) => ColumnFilters(column));
+
+  $$AccountsTableFilterComposer get accountId {
+    final $$AccountsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableFilterComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MutedThreadsTableOrderingComposer extends Composer<_$StoreDatabase, $MutedThreadsTable> {
+  $$MutedThreadsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get threadId =>
+      $composableBuilder(column: $table.threadId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get mutedAt =>
+      $composableBuilder(column: $table.mutedAt, builder: (column) => ColumnOrderings(column));
+
+  $$AccountsTableOrderingComposer get accountId {
+    final $$AccountsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableOrderingComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MutedThreadsTableAnnotationComposer extends Composer<_$StoreDatabase, $MutedThreadsTable> {
+  $$MutedThreadsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get threadId => $composableBuilder(column: $table.threadId, builder: (column) => column);
+
+  GeneratedColumn<int> get mutedAt => $composableBuilder(column: $table.mutedAt, builder: (column) => column);
+
+  $$AccountsTableAnnotationComposer get accountId {
+    final $$AccountsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MutedThreadsTableTableManager
+    extends
+        RootTableManager<
+          _$StoreDatabase,
+          $MutedThreadsTable,
+          MutedThreadRow,
+          $$MutedThreadsTableFilterComposer,
+          $$MutedThreadsTableOrderingComposer,
+          $$MutedThreadsTableAnnotationComposer,
+          $$MutedThreadsTableCreateCompanionBuilder,
+          $$MutedThreadsTableUpdateCompanionBuilder,
+          (MutedThreadRow, $$MutedThreadsTableReferences),
+          MutedThreadRow,
+          PrefetchHooks Function({bool accountId})
+        > {
+  $$MutedThreadsTableTableManager(_$StoreDatabase db, $MutedThreadsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () => $$MutedThreadsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$MutedThreadsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$MutedThreadsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> accountId = const Value.absent(),
+            Value<String> threadId = const Value.absent(),
+            Value<int> mutedAt = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) => MutedThreadsCompanion(accountId: accountId, threadId: threadId, mutedAt: mutedAt, rowid: rowid),
+          createCompanionCallback: ({
+            required String accountId,
+            required String threadId,
+            required int mutedAt,
+            Value<int> rowid = const Value.absent(),
+          }) => MutedThreadsCompanion.insert(accountId: accountId, threadId: threadId, mutedAt: mutedAt, rowid: rowid),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$MutedThreadsTable, MutedThreadRow>(table),
+                  $$MutedThreadsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({accountId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (accountId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.accountId,
+                        referencedTable: $$MutedThreadsTableReferences._accountIdTable(db),
+                        referencedColumn: $$MutedThreadsTableReferences._accountIdTable(db).id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$MutedThreadsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$StoreDatabase,
+      $MutedThreadsTable,
+      MutedThreadRow,
+      $$MutedThreadsTableFilterComposer,
+      $$MutedThreadsTableOrderingComposer,
+      $$MutedThreadsTableAnnotationComposer,
+      $$MutedThreadsTableCreateCompanionBuilder,
+      $$MutedThreadsTableUpdateCompanionBuilder,
+      (MutedThreadRow, $$MutedThreadsTableReferences),
+      MutedThreadRow,
+      PrefetchHooks Function({bool accountId})
+    >;
 
 class $StoreDatabaseManager {
   final _$StoreDatabase _db;
@@ -9532,4 +10412,5 @@ class $StoreDatabaseManager {
   $$IdAliasesTableTableManager get idAliases => $$IdAliasesTableTableManager(_db, _db.idAliases);
   $$RulesTableTableManager get rules => $$RulesTableTableManager(_db, _db.rules);
   $$RuleWatermarksTableTableManager get ruleWatermarks => $$RuleWatermarksTableTableManager(_db, _db.ruleWatermarks);
+  $$MutedThreadsTableTableManager get mutedThreads => $$MutedThreadsTableTableManager(_db, _db.mutedThreads);
 }

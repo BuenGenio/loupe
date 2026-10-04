@@ -336,6 +336,154 @@ final class TableBlock extends Block {
 }
 
 // ---------------------------------------------------------------------------
+// Patches: `git format-patch` diffs and their diffstat
+
+/// What a line of a diff does.
+enum DiffLineKind {
+  /// Unchanged (` foo`).
+  context,
+
+  /// Added (`+foo`).
+  added,
+
+  /// Removed (`-foo`).
+  removed,
+
+  /// `\ No newline at end of file`.
+  note,
+}
+
+/// One line of a hunk: its text without the `+`/`-`/space marker, and its
+/// line numbers in the old and new file when the hunk header gave them.
+final class DiffLine {
+  const DiffLine(this.kind, this.text, {this.oldLine, this.newLine});
+
+  final DiffLineKind kind;
+  final String text;
+  final int? oldLine;
+  final int? newLine;
+
+  /// The marker git puts in front of the line.
+  String get marker => switch (kind) {
+    DiffLineKind.context => ' ',
+    DiffLineKind.added => '+',
+    DiffLineKind.removed => '-',
+    DiffLineKind.note => '',
+  };
+
+  /// `12:13 +text`, compact for snapshots.
+  String toJson() => '${oldLine ?? ''}:${newLine ?? ''} $marker$text';
+}
+
+/// A hunk: the `@@ -10,7 +10,8 @@ section` header and its lines.
+final class DiffHunk {
+  const DiffHunk({required this.header, required this.lines});
+
+  /// The hunk header as sent; empty for a quoted excerpt without one.
+  final String header;
+  final List<DiffLine> lines;
+
+  Map<String, Object?> toJson() => {
+    'header': header,
+    'lines': [for (final l in lines) l.toJson()],
+  };
+}
+
+/// One file of a diff.
+final class DiffFile {
+  const DiffFile({this.oldPath, this.newPath, this.headers = const [], this.hunks = const [], this.binary = false});
+
+  /// Paths without the `a/` and `b/` prefixes; null for `/dev/null` (an
+  /// added or deleted file) or when an excerpt doesn't name the file.
+  final String? oldPath;
+  final String? newPath;
+
+  /// The extended header lines as sent: `diff --git …`, `index …`, modes,
+  /// similarity, `rename from` / `rename to`, `Binary files … differ`.
+  final List<String> headers;
+  final List<DiffHunk> hunks;
+
+  /// A binary change: no hunks to show.
+  final bool binary;
+
+  bool get isNew => oldPath == null && newPath != null && headers.any((h) => h.startsWith('new file'));
+  bool get isDeleted => newPath == null && oldPath != null && headers.any((h) => h.startsWith('deleted file'));
+  bool get isRename => oldPath != null && newPath != null && oldPath != newPath;
+
+  /// The path to show: the new one, else the old one; empty when unknown.
+  String get path => newPath ?? oldPath ?? '';
+
+  int get added => hunks.fold(0, (n, h) => n + h.lines.where((l) => l.kind == DiffLineKind.added).length);
+  int get removed => hunks.fold(0, (n, h) => n + h.lines.where((l) => l.kind == DiffLineKind.removed).length);
+
+  Map<String, Object?> toJson() => {
+    if (oldPath != null) 'old': oldPath,
+    if (newPath != null) 'new': newPath,
+    if (headers.isNotEmpty) 'headers': headers,
+    if (binary) 'binary': true,
+    'hunks': [for (final h in hunks) h.toJson()],
+  };
+}
+
+/// A diff of one file in a patch, or (with [fragment]) the part of one a
+/// review reply quotes. Monospace, coloured, each hunk scrolling sideways.
+final class DiffBlock extends Block {
+  const DiffBlock(this.file, {this.fragment = false});
+
+  final DiffFile file;
+
+  /// A quoted excerpt: it may lack the file header and hunk headers.
+  final bool fragment;
+
+  @override
+  Map<String, Object?> toJson() => {'type': 'diff', if (fragment) 'fragment': true, ...file.toJson()};
+}
+
+/// One file line of a diffstat: ` path/to/file.c | 12 +++++-------`.
+final class DiffStatEntry {
+  const DiffStatEntry(this.path, {this.changes = 0, this.graph = '', this.binary});
+
+  /// As git printed it (long paths start with `.../`).
+  final String path;
+  final int changes;
+
+  /// The `+++--` bar.
+  final String graph;
+
+  /// `Bin 0 -> 1234 bytes` for binary files.
+  final String? binary;
+
+  Object toJson() => [path, binary ?? changes, if (graph.isNotEmpty) graph];
+}
+
+/// The `git diff --stat` block of a patch or cover letter: shown collapsed,
+/// as its summary line.
+final class DiffStatBlock extends Block {
+  const DiffStatBlock({required this.files, required this.summary, this.extra = const []});
+
+  final List<DiffStatEntry> files;
+
+  /// ` 3 files changed, 10 insertions(+), 2 deletions(-)`, trimmed.
+  final String summary;
+
+  /// `--summary` lines after it: `create mode 100644 foo.c`, `rename …`.
+  final List<String> extra;
+
+  int _count(String pattern) => int.tryParse(RegExp(pattern).firstMatch(summary)?[1] ?? '') ?? 0;
+  int get filesChanged => _count(r'(\d+) files? changed');
+  int get insertions => _count(r'(\d+) insertions?\(\+\)');
+  int get deletions => _count(r'(\d+) deletions?\(-\)');
+
+  @override
+  Map<String, Object?> toJson() => {
+    'type': 'diffstat',
+    'summary': summary,
+    'files': [for (final f in files) f.toJson()],
+    if (extra.isNotEmpty) 'extra': extra,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Images and links
 
 sealed class ImageSource {

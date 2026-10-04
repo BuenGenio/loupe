@@ -1,0 +1,148 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 482,
+      "keptText": 482,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "This series speeds up the frobnicator by caching lookups and dropping\nthe global lock on the read path."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Changes since v1:\n- rebased on v6.12-rc1\n- patch 2: use READ_ONCE() as suggested by Bob"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Alice Example (3):\n  frob: cache lookups per context\n  frob: drop the global lock on reads\n  frob: add tests for the cache"
+          }
+        ]
+      },
+      {
+        "type": "diffstat",
+        "summary": "3 files changed, 73 insertions(+), 12 deletions(-)",
+        "files": [
+          [
+            "drivers/frob/core.c",
+            48,
+            "+++++++++++++++++++++++++++++--------"
+          ],
+          [
+            "drivers/frob/core.h",
+            6,
+            "+++++"
+          ],
+          [
+            "tools/testing/frob/run.c",
+            31,
+            "++++++++++++++++++++++++"
+          ]
+        ],
+        "extra": [
+          "create mode 100644 tools/testing/frob/run.c"
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\n2.43.0"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 482,
+      "keptText": 482,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "This series speeds up the frobnicator by caching lookups and dropping\nthe global lock on the read path."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Changes since v1:\n- rebased on v6.12-rc1\n- patch 2: use READ_ONCE() as suggested by Bob"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Alice Example (3):\n  frob: cache lookups per context\n  frob: drop the global lock on reads\n  frob: add tests for the cache"
+          }
+        ]
+      },
+      {
+        "type": "diffstat",
+        "summary": "3 files changed, 73 insertions(+), 12 deletions(-)",
+        "files": [
+          [
+            "drivers/frob/core.c",
+            48,
+            "+++++++++++++++++++++++++++++--------"
+          ],
+          [
+            "drivers/frob/core.h",
+            6,
+            "+++++"
+          ],
+          [
+            "tools/testing/frob/run.c",
+            31,
+            "++++++++++++++++++++++++"
+          ]
+        ],
+        "extra": [
+          "create mode 100644 tools/testing/frob/run.c"
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\n2.43.0"
+          }
+        ]
+      }
+    ]
+  }
+}

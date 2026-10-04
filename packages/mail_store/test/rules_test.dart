@@ -5,6 +5,7 @@ import 'package:drift/native.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:mail_store/mail_store.dart';
 import 'package:mail_store/src/schema.dart';
+import 'package:sqlite3/sqlite3.dart' show sqlite3;
 import 'package:test/test.dart';
 
 import 'fixtures.dart';
@@ -61,19 +62,22 @@ void main() {
     final dir = Directory.systemTemp.createTempSync('mail_store_migration');
     addTearDown(() => dir.deleteSync(recursive: true));
     final file = File('${dir.path}/v1.db');
-    // Today's schema, minus what version 2 added, marked as version 1.
-    var db = StoreDatabase(NativeDatabase(file));
-    await db.customStatement('DROP TABLE rules');
-    await db.customStatement('DROP TABLE rule_watermarks');
-    await db.customStatement('PRAGMA user_version = 1');
-    await db.close();
+    // The schema of version 1, as the first release created it.
+    final raw = sqlite3.open(file.path);
+    for (final statement in File('test/schemas/v1.sql').readAsStringSync().split(RegExp(r'^--$', multiLine: true))) {
+      final sql = statement.split('\n').where((l) => !l.startsWith('-- ')).join('\n').trim();
+      if (sql.isNotEmpty) raw.execute(sql);
+    }
+    raw
+      ..execute('PRAGMA user_version = 1')
+      ..close();
 
-    db = StoreDatabase(NativeDatabase(file));
+    final db = StoreDatabase(NativeDatabase(file));
     final tables = await db
         .customSelect("SELECT name FROM sqlite_master WHERE type = 'table' AND name LIKE 'rule%' ORDER BY name")
         .get();
     expect([for (final t in tables) t.read<String>('name')], ['rule_watermarks', 'rules']);
-    expect((await db.customSelect('PRAGMA user_version').getSingle()).read<int>('user_version'), 2);
+    expect((await db.customSelect('PRAGMA user_version').getSingle()).read<int>('user_version'), 3);
     await db.close();
   });
 }

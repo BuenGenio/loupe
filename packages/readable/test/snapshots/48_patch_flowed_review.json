@@ -1,0 +1,122 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 243,
+      "keptText": 243,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Thanks, two nits below. This reply is format=flowed, which is why its lines end in spaces."
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "diff",
+            "fragment": true,
+            "hunks": [
+              {
+                "header": "@@ -10,3 +10,3 @@ static int frob_init(void)",
+                "lines": [
+                  "10:10         int ret;",
+                  "11: -       ret = frob_setup();",
+                  ":11 +       ret = frob_setup(FROB_DEFAULT);",
+                  "12:12         if (ret) "
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Please name the flag, a bare constant reads poorly in the call."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Cheers,\nDana"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 243,
+      "keptText": 243,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Thanks, two nits below. This reply is format=flowed, which is why its lines end in spaces."
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "diff",
+            "fragment": true,
+            "hunks": [
+              {
+                "header": "@@ -10,3 +10,3 @@ static int frob_init(void)",
+                "lines": [
+                  "10:10         int ret;",
+                  "11: -       ret = frob_setup();",
+                  ":11 +       ret = frob_setup(FROB_DEFAULT);",
+                  "12:12         if (ret) "
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Please name the flag, a bare constant reads poorly in the call."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Cheers,\nDana"
+          }
+        ]
+      }
+    ]
+  }
+}
