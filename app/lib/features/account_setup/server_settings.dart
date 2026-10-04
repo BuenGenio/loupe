@@ -172,7 +172,14 @@ class FormRow extends StatelessWidget {
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
     child: Row(
       children: [
-        SizedBox(width: 96, child: Text(label, style: _labelStyle(context))),
+        // Labels line up at 96 points; a longer one ("App Password") pushes the field over rather than wrapping.
+        ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: 96),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(end: 8),
+            child: Text(label, style: _labelStyle(context)),
+          ),
+        ),
         Expanded(
           child: DefaultTextStyle.merge(style: const TextStyle(fontSize: 16), child: child),
         ),

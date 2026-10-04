@@ -1044,6 +1044,18 @@ SELECT
     return entry;
   });
 
+  /// Moves an entry that isn't being sent to [sendAfter] with [status],
+  /// clearing its last error. Returns false if it is gone or being sent.
+  Future<bool> rescheduleOutbox(String id, {required DateTime sendAfter, required OutboxStatus status}) async {
+    final n = await _write(
+      'UPDATE outbox_items SET send_after = ?, status = ?, last_error = NULL WHERE id = ? AND status != ?',
+      [sendAfter.millisecondsSinceEpoch, status.name, id, OutboxStatus.sending.name],
+      {_db.outboxItems},
+      kind: UpdateKind.update,
+    );
+    return n > 0;
+  }
+
   Future<void> deleteOutbox(String id) => (_db.delete(_db.outboxItems)..where((o) => o.id.equals(id))).go();
 
   Future<void> updateOutbox(

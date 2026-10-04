@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loupe/app.dart';
@@ -26,6 +27,7 @@ Future<DemoMailRepository> pumpLoupe(
   DemoMailRepository? repository,
   Size size = const Size(390, 844),
   AppIconBadge? badge,
+  List<Override> overrides = const [],
 }) async {
   tester.view
     ..physicalSize = size * 3
@@ -44,6 +46,7 @@ Future<DemoMailRepository> pumpLoupe(
         liveRepositoryProvider.overrideWith((ref) async => repo),
         repositoryProvider.overrideWith(repositoryForMode),
         if (badge != null) appIconBadgeProvider.overrideWithValue(badge),
+        ...overrides,
       ],
       child: const LoupeApp(),
     ),

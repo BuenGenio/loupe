@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../features/compose/compose_args.dart';
+import '../features/conversation/sheets.dart' show showSnack;
 import '../providers.dart';
 import '../settings/app_settings.dart';
 import '../theme/theme.dart';
@@ -14,10 +15,19 @@ import 'swipe_row.dart';
 import '../theme/loupe_icons.dart';
 import '../settings/ui_state.dart';
 
-/// Message actions shared by lists, search results and smart mailboxes:
-/// they work on whole conversations, are optimistic, and offer Undo.
+/// Message actions shared by lists, search results, smart mailboxes and the
+/// conversation view: optimistic, and with Undo.
+///
+/// Archive, Trash, Move and Junk / Not Junk show a snack bar whose Undo puts
+/// every message back in the mailbox it came from (and, for junk, restores
+/// its junk keywords). The row methods work on whole conversations; the
+/// `…Emails` methods on the given messages (the conversation view).
+///
+/// Deleting permanently (Trash in the Trash mailbox) can't be undone, so it
+/// asks first instead: the server expunges at once, and an expunge delayed
+/// until the snack bar is gone would be lost if the app were closed meanwhile.
 class MailActions {
-  MailActions(this.context, this.ref, {required this.scope, required this.threaded});
+  MailActions(this.context, this.ref, {required this.scope, required this.threaded, this._mailboxes});
 
   final BuildContext context;
   final WidgetRef ref;
@@ -29,7 +39,13 @@ class MailActions {
 
   MailRepository get _repo => ref.read(repositoryProvider);
 
-  Map<String, Mailbox> get _boxes => {for (final m in ref.read(mailboxesProvider).value ?? const <Mailbox>[]) m.id: m};
+  /// The mailboxes the messages acted on are in, when the caller has them
+  /// at hand; otherwise every account's.
+  final List<Mailbox>? _mailboxes;
+
+  Map<String, Mailbox> get _boxes => {
+    for (final m in _mailboxes ?? ref.read(mailboxesProvider).value ?? const <Mailbox>[]) m.id: m,
+  };
 
   /// The messages an action on [row] applies to: in a real mailbox, the
   /// conversation's messages in that mailbox; elsewhere, those outside Sent,
@@ -82,32 +98,18 @@ class MailActions {
     await _repo.setKeywords([row.latest.id], add: tags.difference(current), remove: current.difference(tags));
   }
 
-  Future<void> archive(Iterable<ThreadSummary> rows) async {
-    final emails = await _membersOf(rows);
-    await _withUndo(emails, 'Archived', () => _repo.archive(_ids(emails)));
-  }
+  Future<void> archive(Iterable<ThreadSummary> rows) async => archiveEmails(await _membersOf(rows));
 
-  Future<void> trash(Iterable<ThreadSummary> rows) async {
-    final emails = await _membersOf(rows);
-    final permanent = emails.every((e) => _boxes[e.mailboxId]?.role == MailboxRole.trash);
-    await _withUndo(
-      emails,
-      permanent ? 'Deleted' : 'Moved to Trash',
-      () => _repo.trash(_ids(emails)),
-      undo: !permanent,
-    );
-  }
+  Future<void> trash(Iterable<ThreadSummary> rows) async => trashEmails(await _membersOf(rows));
 
-  Future<void> junk(Iterable<ThreadSummary> rows, {required bool junk}) async {
-    final emails = await _membersOf(rows);
-    await _withUndo(emails, junk ? 'Moved to Junk' : 'Moved to Inbox', () => _repo.markJunk(_ids(emails), junk: junk));
-  }
+  Future<void> junk(Iterable<ThreadSummary> rows, {required bool junk}) async =>
+      junkEmails(await _membersOf(rows), junk: junk);
 
   /// Moves archived conversations back to their account's inbox.
   Future<void> toInbox(Iterable<ThreadSummary> rows) async {
     final emails = await _membersOf(rows);
     final boxes = _boxes.values;
-    await _withUndo(emails, 'Moved to Inbox', () async {
+    await _withUndo(emails, _label(emails.length, (n) => 'Moved $n to Inbox'), () async {
       final byAccount = <String, List<String>>{};
       for (final e in emails) {
         byAccount.putIfAbsent(e.accountId, () => []).add(e.id);
@@ -126,7 +128,7 @@ class MailActions {
     final accounts = {for (final r in list) r.latest.accountId};
     final messenger = ScaffoldMessenger.of(context);
     if (accounts.length > 1) {
-      messenger.showSnackBar(const SnackBar(content: Text('Select messages from one account to move them.')));
+      showSnack(messenger, 'Select messages from one account to move them.');
       return;
     }
     final accountId = accounts.single;
@@ -142,48 +144,137 @@ class MailActions {
       showAllFolders: ref.read(showAllFoldersProvider).contains(accountId),
     );
     if (target == null) return;
-    final emails = await _membersOf(list);
-    final name = _boxes[target]?.name ?? 'mailbox';
-    await _withUndo(emails, 'Moved to $name', () => _repo.move(_ids(emails), target));
+    await moveEmails(await _membersOf(list), target);
+  }
+
+  // Messages ----------------------------------------------------------------------------
+
+  /// Archives [emails]. Returns whether it happened.
+  Future<bool> archiveEmails(List<EmailSummary> emails) =>
+      _withUndo(emails, _label(emails.length, (n) => 'Archived $n'), () => _repo.archive(_ids(emails)));
+
+  /// Moves [emails] to Trash; those already there are deleted permanently,
+  /// after asking. Returns whether it happened (false if not confirmed).
+  Future<bool> trashEmails(List<EmailSummary> emails) async {
+    if (emails.isEmpty) return false;
+    final boxes = _boxes;
+    final inTrash = [
+      for (final e in emails)
+        if (boxes[e.mailboxId]?.role == MailboxRole.trash) e,
+    ];
+    final others = [
+      for (final e in emails)
+        if (boxes[e.mailboxId]?.role != MailboxRole.trash) e,
+    ];
+    if (inTrash.isNotEmpty) {
+      final n = inTrash.length;
+      final ok = await confirmDestructive(
+        context,
+        title: n == 1 ? 'Delete this message permanently?' : 'Delete $n messages permanently?',
+        message: 'This can’t be undone.',
+        action: 'Delete Permanently',
+      );
+      if (!ok || !context.mounted) return false;
+    }
+    return _withUndo(
+      emails,
+      others.isEmpty ? _label(emails.length, (n) => 'Deleted $n') : _label(others.length, (n) => 'Moved $n to Trash'),
+      () => _repo.trash(_ids(emails)),
+      undoable: others,
+    );
+  }
+
+  /// Moves [emails] to Junk (or, with [junk] false, back to the inbox).
+  Future<bool> junkEmails(List<EmailSummary> emails, {required bool junk}) => _withUndo(
+    emails,
+    _label(emails.length, (n) => junk ? 'Moved $n to Junk' : 'Moved $n to Inbox'),
+    () => _repo.markJunk(_ids(emails), junk: junk),
+    restoreKeywords: const {Keywords.junk, Keywords.notJunk},
+  );
+
+  /// Moves [emails] to [targetMailboxId].
+  Future<bool> moveEmails(List<EmailSummary> emails, String targetMailboxId) {
+    final name = _boxes[targetMailboxId]?.name ?? 'mailbox';
+    return _withUndo(
+      emails,
+      _label(emails.length, (n) => 'Moved $n to $name'),
+      () => _repo.move(_ids(emails), targetMailboxId),
+    );
   }
 
   static List<String> _ids(List<EmailSummary> emails) => [for (final e in emails) e.id];
 
-  Future<void> _withUndo(
+  /// "Archived 1 message", "Moved 3 messages to Junk".
+  static String _label(int count, String Function(String messages) text) =>
+      text(count == 1 ? '1 message' : '$count messages');
+
+  /// Runs [action] and shows [label] with Undo for [undoable] (default: all
+  /// of [emails]). Errors are shown instead. Returns whether it ran.
+  Future<bool> _withUndo(
     List<EmailSummary> emails,
-    String verb,
+    String label,
     Future<void> Function() action, {
-    bool undo = true,
+    List<EmailSummary>? undoable,
+    Set<String> restoreKeywords = const {},
   }) async {
-    if (emails.isEmpty) return;
+    if (emails.isEmpty) return false;
     final messenger = ScaffoldMessenger.maybeOf(context);
     final repo = _repo;
-    final origins = {for (final e in emails) e.id: e.mailboxId};
+    final restore = undoable ?? emails;
     unawaited(HapticFeedback.lightImpact());
-    await action();
-    final count = emails.length;
-    messenger
-      ?..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text('$verb ${count == 1 ? '1 message' : '$count messages'}'),
-          duration: const Duration(seconds: 4),
-          action: undo
-              ? SnackBarAction(
-                  label: 'Undo',
-                  onPressed: () async {
-                    final byBox = <String, List<String>>{};
-                    for (final MapEntry(key: id, value: box) in origins.entries) {
-                      byBox.putIfAbsent(box, () => []).add(id);
-                    }
-                    for (final MapEntry(key: box, value: ids) in byBox.entries) {
-                      await repo.move(ids, box);
-                    }
-                  },
-                )
-              : null,
-        ),
+    try {
+      await action();
+    } on MailException catch (e) {
+      if (messenger != null) showSnack(messenger, e.message);
+      return false;
+    }
+    if (messenger != null) {
+      showSnack(
+        messenger,
+        label,
+        action: restore.isEmpty
+            ? null
+            : SnackBarAction(
+                label: 'Undo',
+                onPressed: () async {
+                  try {
+                    await restoreMailboxes(repo, restore, keywords: restoreKeywords);
+                  } on MailException catch (e) {
+                    showSnack(messenger, e.message);
+                  }
+                },
+              ),
       );
+    }
+    return true;
+  }
+
+  /// Undo: moves each of [emails] back to the mailbox it was in when the
+  /// summary was taken, and sets or clears each of [keywords] as it was.
+  static Future<void> restoreMailboxes(
+    MailRepository repo,
+    List<EmailSummary> emails, {
+    Set<String> keywords = const {},
+  }) async {
+    final byBox = <String, List<String>>{};
+    for (final e in emails) {
+      byBox.putIfAbsent(e.mailboxId, () => []).add(e.id);
+    }
+    for (final MapEntry(key: box, value: ids) in byBox.entries) {
+      await repo.move(ids, box);
+    }
+    for (final k in keywords) {
+      final had = [
+        for (final e in emails)
+          if (e.keywords.contains(k)) e.id,
+      ];
+      final hadNot = [
+        for (final e in emails)
+          if (!e.keywords.contains(k)) e.id,
+      ];
+      if (had.isNotEmpty) await repo.setKeywords(had, add: {k});
+      if (hadNot.isNotEmpty) await repo.setKeywords(hadNot, remove: {k});
+    }
   }
 
   // Swipes ----------------------------------------------------------------------------
@@ -223,7 +314,8 @@ class MailActions {
         icon: LoupeIcons.swipeTrash,
         label: role == MailboxRole.trash ? 'Delete' : 'Trash',
         color: colors.swipeTrash,
-        removesRow: true,
+        // Deleting permanently asks first, so the row stays until confirmed.
+        removesRow: role != MailboxRole.trash,
         onTriggered: () => trash([row]),
       ),
       SwipeAction.move => SwipeActionSpec(

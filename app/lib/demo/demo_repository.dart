@@ -43,10 +43,17 @@ final class DemoLatency {
   final Duration serverSearchMax;
 }
 
+/// A message in the demo outbox.
 final class _Queued {
-  _Queued(this.message, this.timer);
+  _Queued(this.id, this.message, this.sendAt, this.status);
+  final String id;
   final OutgoingMessage message;
-  final Timer timer;
+  DateTime sendAt;
+  OutboxStatus status;
+  String? error;
+  Timer? timer;
+
+  OutboxItem get item => OutboxItem(id: id, message: message, sendAt: sendAt, status: status, error: error);
 }
 
 /// A complete, in-memory [MailRepository] with a realistic fictional mailbox,
@@ -62,6 +69,8 @@ final class _Queued {
 /// - `discover` finds nothing for `.invalid` and `.test` domains (manual setup).
 /// - Server search finds older mail that isn't synced locally (marked in
 ///   [SearchResults.fromServerIds]); acting on such a message syncs it.
+/// - Sending to an address at a `.invalid` domain fails, so the Outbox
+///   shows a failed message with an error and Retry.
 class DemoMailRepository implements MailRepository {
   DemoMailRepository({
     this.latency = const DemoLatency(),
@@ -135,7 +144,7 @@ class DemoMailRepository implements MailRepository {
       t.cancel();
     }
     for (final q in _outbox.values) {
-      q.timer.cancel();
+      q.timer?.cancel();
     }
     _timers.clear();
     _outbox.clear();
@@ -1046,18 +1055,65 @@ class DemoMailRepository implements MailRepository {
   }
 
   @override
-  Future<String> send(OutgoingMessage message, {Duration undoDelay = const Duration(seconds: 10)}) async {
+  Future<String> send(
+    OutgoingMessage message, {
+    Duration undoDelay = const Duration(seconds: 10),
+    DateTime? sendAt,
+  }) async {
     _identity(message);
     final outboxId = 'outbox-${_nextId++}';
-    final timer = Timer(undoDelay, () => _deliver(outboxId));
-    _outbox[outboxId] = _Queued(message, timer);
+    var queued = message;
+    if (sendAt != null && message.draftId != null) {
+      // A scheduled message lives in the Outbox, not in Drafts.
+      _messages.remove(message.draftId);
+      _contentCache.remove(message.draftId);
+      queued = message.withoutDraft();
+    }
+    final entry = _Queued(
+      outboxId,
+      queued,
+      sendAt ?? _clock().add(undoDelay),
+      sendAt == null ? OutboxStatus.queued : OutboxStatus.scheduled,
+    );
+    _outbox[outboxId] = entry;
+    _arm(entry);
+    _notify();
     return outboxId;
   }
 
+  /// Starts the timer that sends [entry] at its time.
+  void _arm(_Queued entry) {
+    entry.timer?.cancel();
+    final delay = entry.sendAt.difference(_clock());
+    entry.timer = Timer(delay.isNegative ? Duration.zero : delay, () => _startSending(entry.id));
+  }
+
+  void _startSending(String outboxId) {
+    final entry = _outbox[outboxId];
+    if (entry == null || _disposed) return;
+    entry
+      ..timer = null
+      ..status = OutboxStatus.sending;
+    _notify();
+    _schedule(_jitter(latency.network ~/ 2), () => _deliver(outboxId));
+  }
+
+  static bool _rejected(EmailAddress a) => a.domain.toLowerCase().endsWith('.invalid');
+
   void _deliver(String outboxId) {
-    final queued = _outbox.remove(outboxId);
+    final queued = _outbox[outboxId];
     if (queued == null || _disposed) return;
     final message = queued.message;
+    final rejected = [...message.to, ...message.cc, ...message.bcc].where(_rejected).firstOrNull;
+    if (rejected != null) {
+      queued
+        ..status = OutboxStatus.failed
+        ..error = '550 Recipient address rejected: ${rejected.email}: Domain not found'
+        ..sendAt = _clock();
+      _notify();
+      return;
+    }
+    _outbox.remove(outboxId);
     final sent = _roleBox(message.accountId, MailboxRole.sent);
     if (sent != null) _file(message, sent.id);
     final source = message.sourceEmailId == null ? null : _messages[message.sourceEmailId];
@@ -1073,11 +1129,46 @@ class DemoMailRepository implements MailRepository {
   }
 
   @override
+  Stream<List<OutboxItem>> watchOutbox() =>
+      _watch(() => [for (final q in _outbox.values) q.item]..sort((a, b) => a.sendAt.compareTo(b.sendAt)));
+
+  @override
   Future<OutgoingMessage?> cancelSend(String outboxId) async {
-    final queued = _outbox.remove(outboxId);
-    if (queued == null) return null;
-    queued.timer.cancel();
+    final queued = _outbox[outboxId];
+    if (queued == null || queued.status == OutboxStatus.sending) return null;
+    _outbox.remove(outboxId);
+    queued.timer?.cancel();
+    _notify();
     return queued.message;
+  }
+
+  _Queued _waiting(String outboxId) =>
+      _outbox[outboxId] ?? (throw const MailException(MailErrorKind.notFound, 'This message was already sent.'));
+
+  @override
+  Future<void> sendNow(String outboxId) async {
+    final entry = _waiting(outboxId);
+    if (entry.status == OutboxStatus.sending) return;
+    entry
+      ..status = OutboxStatus.queued
+      ..sendAt = _clock()
+      ..error = null;
+    _arm(entry);
+    _notify();
+  }
+
+  @override
+  Future<void> rescheduleSend(String outboxId, DateTime sendAt) async {
+    final entry = _waiting(outboxId);
+    if (entry.status == OutboxStatus.sending) {
+      throw const MailException(MailErrorKind.unsupported, 'This message is being sent right now.');
+    }
+    entry
+      ..status = OutboxStatus.scheduled
+      ..sendAt = sendAt
+      ..error = null;
+    _arm(entry);
+    _notify();
   }
 
   @override

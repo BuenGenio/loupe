@@ -51,6 +51,22 @@ abstract final class LoupeIcons {
   static const IconData source = FluentIcons.code_24_regular;
   static const IconData searchSender = FluentIcons.person_search_24_regular;
 
+  // Send Later and the Outbox ------------------------------------------------
+
+  static const IconData sendLater = FluentIcons.clock_24_regular;
+  static const IconData sendLaterFilled = FluentIcons.clock_24_filled;
+  static const IconData laterToday = FluentIcons.weather_moon_24_regular;
+  static const IconData tomorrowMorning = FluentIcons.weather_sunny_low_24_regular;
+  static const IconData mondayMorning = FluentIcons.calendar_week_start_24_regular;
+  static const IconData pickDateTime = FluentIcons.calendar_edit_24_regular;
+  static const IconData sendNow = FluentIcons.send_24_regular;
+  static const IconData reschedule = FluentIcons.calendar_clock_24_regular;
+  static const IconData retry = FluentIcons.arrow_clockwise_24_regular;
+  static const IconData cancelSend = FluentIcons.dismiss_circle_24_regular;
+  static const IconData swipeSendNow = FluentIcons.send_24_filled;
+  static const IconData swipeReschedule = FluentIcons.calendar_clock_24_filled;
+  static const IconData swipeCancelSend = FluentIcons.dismiss_circle_24_filled;
+
   // Swipe actions: white on solid colour.
 
   static const IconData swipeMarkRead = FluentIcons.mail_read_24_filled;
@@ -130,6 +146,13 @@ abstract final class LoupeIcons {
   static const IconData redirect = FluentIcons.arrow_routing_24_regular;
   static const IconData openDirectly = FluentIcons.link_24_regular;
 
+  // Importing accounts ------------------------------------------------------
+
+  static const IconData qrCode = FluentIcons.qr_code_24_regular;
+  static const IconData scanQrCode = FluentIcons.scan_qr_code_24_regular;
+  static const IconData paste = FluentIcons.clipboard_paste_24_regular;
+  static const IconData cameraOff = FluentIcons.camera_off_24_regular;
+
   // Settings ----------------------------------------------------------------
 
   static const IconData swipeActions = FluentIcons.swipe_right_24_regular;
@@ -154,4 +177,18 @@ abstract final class LoupeIcons {
   static const IconData zip = FluentIcons.folder_zip_24_regular;
   static const IconData calendar = FluentIcons.calendar_ltr_24_regular;
   static const IconData email = FluentIcons.mail_24_regular;
+
+  // Attachment viewer -------------------------------------------------------
+
+  /// "Open in…": hand the file to another app.
+  static const IconData openIn = FluentIcons.open_24_regular;
+  static const IconData save = FluentIcons.arrow_download_24_regular;
+  static const IconData wrapFilled = FluentIcons.text_wrap_24_filled;
+  static const IconData table = FluentIcons.table_24_regular;
+  static const IconData tableFilled = FluentIcons.table_24_filled;
+  static const IconData sourceFilled = FluentIcons.code_24_filled;
+  static const IconData time = FluentIcons.clock_24_regular;
+  static const IconData location = FluentIcons.location_24_regular;
+  static const IconData mobileData = FluentIcons.cellular_data_1_24_regular;
+  static const IconData fileError = FluentIcons.document_error_24_regular;
 }

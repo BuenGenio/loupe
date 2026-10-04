@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loupe/features/compose/compose_args.dart';
 import 'package:loupe/features/compose/compose_screen.dart';
+import 'package:loupe/platform/background.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../conversation/fake_mail_repository.dart';
@@ -15,16 +17,26 @@ final sendButton = find.byKey(const Key('compose-send'));
 
 bool sendEnabled(WidgetTester tester) => tester.widget<IconButton>(sendButton).onPressed != null;
 
+/// Records the wake-ups compose asks for.
+class RecordingScheduler implements BackgroundScheduler {
+  final times = <DateTime>[];
+
+  @override
+  Future<void> scheduleWakeUp(DateTime time) async => times.add(time);
+}
+
 Future<GoRouter> openCompose(
   WidgetTester tester,
   FakeMailRepository repo, [
   ComposeArgs args = const ComposeArgs(),
   Map<String, Object> prefs = const {},
+  List<Override> overrides = const [],
 ]) async {
   final router = await pumpTestApp(
     tester,
     repository: repo,
     prefs: prefs,
+    overrides: overrides,
     composeBuilder: (args) => ComposeScreen(args: args),
   );
   unawaited(router.push('/compose', extra: args));
@@ -202,5 +214,119 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('From: Me <me@home.test>', findRichText: true), findsOneWidget);
     expect(fieldText(tester, find.byKey(const Key('compose-body'))), '\n\n-- \nFrom home');
+  });
+
+  group('Send Later', () {
+    final sendLater = find.byKey(const Key('compose-send-later'));
+    Finder onSend(String text) => find.descendant(of: sendButton, matching: find.textContaining(text));
+    DateTime tomorrowAt8() {
+      final now = DateTime.now();
+      return DateTime(now.year, now.month, now.day + 1, 8);
+    }
+
+    testWidgets('a preset sets the time; Send shows it, schedules and wakes up; Undo reopens it', (tester) async {
+      final repo = FakeMailRepository();
+      final scheduler = RecordingScheduler();
+      await openCompose(tester, repo, const ComposeArgs(to: [bob]), const {}, [
+        backgroundSchedulerProvider.overrideWithValue(scheduler),
+      ]);
+      await tester.enterText(find.byKey(const Key('compose-subject')), 'Later');
+      await tester.tap(sendLater);
+      await tester.pumpAndSettle();
+      expect(find.text('Tomorrow Morning'), findsOneWidget);
+      expect(find.text('Pick Date & Time…'), findsOneWidget);
+      expect(find.text('Send Without Delay'), findsNothing);
+      await tester.tap(find.byKey(const ValueKey('send-later-tomorrowMorning')));
+      await tester.pumpAndSettle();
+      expect(onSend('Tomorrow'), findsOneWidget);
+
+      await tester.tap(sendButton);
+      await tester.pumpAndSettle();
+      final at = tomorrowAt8();
+      expect(repo.log, contains('send Later at=${at.toIso8601String()}'));
+      expect(scheduler.times, [at]);
+      expect(find.textContaining('Scheduled for Tomorrow at'), findsOneWidget);
+      expect(find.text('home'), findsOneWidget);
+
+      await tester.tap(find.text('Undo'));
+      await tester.pumpAndSettle();
+      expect(repo.cancelled, ['outbox-1']);
+      expect(find.byType(ComposeScreen), findsOneWidget);
+      expect(onSend('Tomorrow'), findsOneWidget);
+    });
+
+    testWidgets('a long-press on Send opens it; a picked time can be cleared again', (tester) async {
+      final repo = FakeMailRepository();
+      await openCompose(tester, repo, const ComposeArgs(to: [bob], subject: 'Hi'));
+      await tester.longPress(sendButton);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('send-later-pick')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('send-later-wheel')), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('send-later-done')));
+      await tester.pumpAndSettle();
+      expect(find.byType(FilledButton), findsOneWidget, reason: 'Send shows the picked time');
+
+      await tester.tap(sendLater);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Send Without Delay'));
+      await tester.pumpAndSettle();
+      expect(sendEnabled(tester), isTrue);
+      await tester.tap(sendButton);
+      await tester.pumpAndSettle();
+      expect(repo.log, contains('send Hi undo=10'));
+    });
+
+    testWidgets('the time on Send fits a narrow phone with large text', (tester) async {
+      tester.view
+        ..physicalSize = const Size(320, 700) * 3
+        ..devicePixelRatio = 3;
+      tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+      addTearDown(tester.view.reset);
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      const message = OutgoingMessage(accountId: 'acc', identityId: 'acc/me', to: [bob], subject: 'A long subject');
+      for (final at in [tomorrowAt8(), DateTime(2031, 12, 24, 23, 55)]) {
+        await openCompose(tester, FakeMailRepository(), ComposeArgs.restore(message, sendAt: at));
+        expect(tester.takeException(), isNull);
+        expect(find.byType(FilledButton), findsOneWidget);
+      }
+    });
+
+    testWidgets('from the Outbox: unchanged closes quietly; Send replaces the waiting message', (tester) async {
+      final repo = FakeMailRepository();
+      final at = DateTime(2030, 1, 7, 8);
+      final message = OutgoingMessage(
+        accountId: 'acc',
+        identityId: 'acc/me',
+        to: const [bob],
+        subject: 'Report',
+        text: 'Numbers',
+      );
+      repo.outbox.add(OutboxItem(id: 'outbox-9', message: message, sendAt: at, status: OutboxStatus.scheduled));
+      final router = await openCompose(tester, repo, ComposeArgs.restore(message, sendAt: at, outboxId: 'outbox-9'));
+      expect(onSend('Jan 7'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('compose-cancel')));
+      await tester.pumpAndSettle();
+      expect(find.text('home'), findsOneWidget);
+      expect(repo.log, isNot(contains(startsWith('cancelSend'))));
+
+      unawaited(
+        router.push(
+          '/compose',
+          extra: ComposeArgs.restore(message, sendAt: at, outboxId: 'outbox-9'),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byKey(const Key('compose-subject')), 'Report, final');
+      await tester.pump();
+      await tester.tap(find.byKey(const Key('compose-cancel')));
+      await tester.pumpAndSettle();
+      expect(find.text('Delete Draft'), findsNothing);
+      await tester.tap(find.text('Save Changes'));
+      await tester.pumpAndSettle();
+      expect(repo.log, containsAllInOrder(['cancelSend outbox-9', 'send Report, final at=${at.toIso8601String()}']));
+      expect(repo.drafts, isEmpty, reason: 'nothing goes to Drafts');
+      expect(repo.outbox.single.message.subject, 'Report, final');
+    });
   });
 }

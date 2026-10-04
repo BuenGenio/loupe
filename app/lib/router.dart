@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import 'features/account_import/account_import_screen.dart';
 import 'features/account_setup/account_setup_screen.dart';
+import 'features/attachments/attachment_viewer_screen.dart';
 import 'features/compose/compose_args.dart';
 import 'features/compose/compose_screen.dart';
 import 'features/conversation/conversation_screen.dart';
@@ -11,6 +13,7 @@ import 'features/conversation/raw_source_screen.dart';
 import 'features/mailboxes/mailboxes_screen.dart';
 import 'features/message_list/message_list_screen.dart';
 import 'features/onboarding/welcome_screen.dart';
+import 'features/outbox/outbox_screen.dart';
 import 'features/search/search_screen.dart';
 import 'features/search/smart_mailbox_screen.dart';
 import 'features/settings/account_settings_screen.dart';
@@ -28,14 +31,24 @@ abstract final class Routes {
   static const welcome = '/welcome';
   static const settings = '/settings';
   static const addAccount = '/add-account';
+
+  /// Accounts from Thunderbird desktop's "Export for Mobile" QR codes.
+  static const importAccounts = '/import-accounts';
   static const compose = '/compose';
   static const swipeSettings = '/settings/swipes';
   static const advancedSettings = '/settings/advanced';
   static const notificationSettings = '/settings/notifications';
 
+  /// Messages waiting to be sent (scheduled, queued, failed).
+  static const outbox = '/outbox';
+
   static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
   static String message(String emailId) => '/message/${Uri.encodeComponent(emailId)}';
   static String source(String emailId) => '/source/${Uri.encodeComponent(emailId)}';
+
+  /// The attachment viewer for one part of a message.
+  static String attachment(String emailId, String partId) =>
+      '/attachment/${Uri.encodeComponent(emailId)}/${Uri.encodeComponent(partId)}';
 
   /// Search with [query] already entered; [scope] null means all mailboxes.
   static String search(String query, {MailboxRef? scope}) => Uri(
@@ -63,13 +76,15 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final location = state.matchedLocation;
       if (mode.value == AppMode.none) {
-        return location == Routes.welcome || location == Routes.addAccount ? null : Routes.welcome;
+        const open = {Routes.welcome, Routes.addAccount, Routes.importAccounts};
+        return open.contains(location) ? null : Routes.welcome;
       }
       return location == Routes.welcome ? Routes.mailboxes : null;
     },
     routes: [
       GoRoute(path: Routes.mailboxes, builder: (context, state) => const MailboxesScreen()),
       GoRoute(path: Routes.welcome, builder: (context, state) => const WelcomeScreen()),
+      GoRoute(path: Routes.outbox, builder: (context, state) => const OutboxScreen()),
       GoRoute(
         path: '/list/:ref',
         builder: (context, state) =>
@@ -82,6 +97,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/source/:id',
         builder: (context, state) => RawSourceScreen(emailId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/attachment/:id/:part',
+        builder: (context, state) =>
+            AttachmentViewerScreen(emailId: state.pathParameters['id']!, partId: state.pathParameters['part']!),
       ),
       GoRoute(
         path: '/search',
@@ -117,6 +137,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
       GoRoute(path: Routes.addAccount, builder: (context, state) => const AccountSetupScreen()),
+      GoRoute(path: Routes.importAccounts, builder: (context, state) => const AccountImportScreen()),
       GoRoute(
         path: Routes.compose,
         pageBuilder: (context, state) => MaterialPage(

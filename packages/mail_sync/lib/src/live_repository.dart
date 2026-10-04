@@ -126,9 +126,6 @@ final class LiveMailRepository implements MailRepository {
   /// after repeated failures, sends that failed (and will be retried).
   Stream<MailException> get errors => _errors.stream;
 
-  /// Messages waiting to be sent, with their status and last error.
-  Stream<List<OutboxEntry>> watchOutbox() => store.watchOutbox();
-
   void _reportError(MailException e) {
     if (!_errors.isClosed) _errors.add(e);
   }
@@ -652,19 +649,35 @@ final class LiveMailRepository implements MailRepository {
   // Sending -----------------------------------------------------------------
 
   @override
-  Future<String> send(OutgoingMessage message, {Duration undoDelay = const Duration(seconds: 10)}) async {
+  Future<String> send(
+    OutgoingMessage message, {
+    Duration undoDelay = const Duration(seconds: 10),
+    DateTime? sendAt,
+  }) async {
     if (await store.getAccount(message.accountId) == null) {
       throw const MailException(MailErrorKind.notFound, 'This account no longer exists');
     }
     final id = newId();
     final now = _now();
+    var queued = message;
+    final draft = message.draftId;
+    if (sendAt != null && draft != null) {
+      // A scheduled message lives in the outbox, not in Drafts.
+      queued = message.withoutDraft();
+      try {
+        await deleteDraft(draft);
+      } on MailException {
+        // Gone already.
+      }
+    }
     await store.putOutbox(
       OutboxEntry(
         id: id,
         accountId: message.accountId,
-        message: message,
-        sendAfter: now.add(undoDelay),
+        message: queued,
+        sendAfter: sendAt ?? now.add(undoDelay),
         createdAt: now,
+        status: sendAt == null ? OutboxStatus.queued : OutboxStatus.scheduled,
       ),
     );
     await _scheduleOutbox();
@@ -672,10 +685,37 @@ final class LiveMailRepository implements MailRepository {
   }
 
   @override
+  Stream<List<OutboxItem>> watchOutbox() => store.watchOutbox().map(
+    (entries) => [
+      for (final e in entries)
+        OutboxItem(id: e.id, message: e.message, sendAt: e.sendAfter, status: e.status, error: e.lastError),
+    ],
+  );
+
+  @override
   Future<OutgoingMessage?> cancelSend(String outboxId) async {
     final entry = await store.takeOutbox(outboxId);
     if (entry != null) await _scheduleOutbox();
     return entry?.message;
+  }
+
+  @override
+  Future<void> sendNow(String outboxId) async {
+    final moved = await store.rescheduleOutbox(outboxId, sendAfter: _now(), status: OutboxStatus.queued);
+    if (!moved && await store.getOutbox(outboxId) == null) {
+      throw const MailException(MailErrorKind.notFound, 'This message was already sent.');
+    }
+    await _scheduleOutbox();
+  }
+
+  @override
+  Future<void> rescheduleSend(String outboxId, DateTime sendAt) async {
+    if (!await store.rescheduleOutbox(outboxId, sendAfter: sendAt, status: OutboxStatus.scheduled)) {
+      throw await store.getOutbox(outboxId) == null
+          ? const MailException(MailErrorKind.notFound, 'This message was already sent.')
+          : const MailException(MailErrorKind.unsupported, 'This message is being sent right now.');
+    }
+    await _scheduleOutbox();
   }
 
   Future<void> _scheduleOutbox() async {

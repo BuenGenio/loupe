@@ -4,6 +4,7 @@ import 'account.dart';
 import 'address.dart';
 import 'email.dart';
 import 'mailbox.dart';
+import 'outbox.dart';
 import 'outgoing.dart';
 import 'search.dart';
 
@@ -134,11 +135,29 @@ abstract interface class MailRepository {
   // Compose ------------------------------------------------------------------
 
   /// Queues [message] for sending after [undoDelay]. Returns an outbox id.
-  Future<String> send(OutgoingMessage message, {Duration undoDelay = const Duration(seconds: 10)});
+  ///
+  /// With [sendAt] ("Send Later"), it waits in the outbox until then instead
+  /// ([OutboxStatus.scheduled]; [undoDelay] doesn't apply), surviving
+  /// restarts, and its draft ([OutgoingMessage.draftId]) is deleted at once:
+  /// the outbox holds the message now.
+  Future<String> send(OutgoingMessage message, {Duration undoDelay = const Duration(seconds: 10), DateTime? sendAt});
 
-  /// Cancels a queued message if it hasn't been sent yet. Returns the message
-  /// so compose can reopen it, or null if it was already sent.
+  /// Messages waiting to be sent (queued, scheduled, being sent or failed),
+  /// soonest first.
+  Stream<List<OutboxItem>> watchOutbox();
+
+  /// Cancels a queued, scheduled or failed message if it isn't being sent.
+  /// Returns the message so compose can reopen it, or null if it was already
+  /// sent (or is being sent).
   Future<OutgoingMessage?> cancelSend(String outboxId);
+
+  /// Sends a waiting message now (also "Retry" of a failed one). Does nothing
+  /// if it is being sent; throws [MailException] (notFound) if it is gone.
+  Future<void> sendNow(String outboxId);
+
+  /// Moves a waiting message to [sendAt] (status scheduled, error cleared).
+  /// Throws [MailException] if it is gone or being sent.
+  Future<void> rescheduleSend(String outboxId, DateTime sendAt);
 
   /// Saves (or replaces) a draft on the server. Returns the draft's email id.
   Future<String> saveDraft(OutgoingMessage message);

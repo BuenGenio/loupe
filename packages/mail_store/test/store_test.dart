@@ -551,6 +551,39 @@ void main() {
       expect(await store.outboxEntries(), isEmpty);
     });
 
+    test('scheduled entries keep their status and can be rescheduled unless being sent', () async {
+      final store = await seededStore();
+      final msg = OutgoingMessage(accountId: accountId, identityId: 'acc1/default', subject: 'Later');
+      final later = base.add(const Duration(days: 1));
+      await store.putOutbox(
+        OutboxEntry(
+          id: 'o2',
+          accountId: accountId,
+          message: msg,
+          sendAfter: later,
+          createdAt: base,
+          status: OutboxStatus.scheduled,
+        ),
+      );
+      final updates = <List<OutboxStatus>>[];
+      final sub = store.watchOutbox().listen((e) => updates.add([for (final x in e) x.status]));
+      expect((await store.getOutbox('o2'))!.status, OutboxStatus.scheduled);
+      await store.updateOutbox('o2', status: OutboxStatus.failed, attempts: 1, lastError: 'boom');
+      final evening = base.add(const Duration(hours: 6));
+      expect(await store.rescheduleOutbox('o2', sendAfter: evening, status: OutboxStatus.scheduled), isTrue);
+      final moved = (await store.getOutbox('o2'))!;
+      expect(moved.sendAfter, evening);
+      expect(moved.status, OutboxStatus.scheduled);
+      expect(moved.lastError, isNull);
+      expect(moved.attempts, 1);
+      await store.claimOutbox('o2');
+      expect(await store.rescheduleOutbox('o2', sendAfter: base, status: OutboxStatus.queued), isFalse);
+      expect(await store.rescheduleOutbox('nope', sendAfter: base, status: OutboxStatus.queued), isFalse);
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      expect(updates.last, [OutboxStatus.sending]);
+      await sub.cancel();
+    });
+
     test('pending ops keep order and update', () async {
       final store = await seededStore();
       final a = await store.enqueueOp(accountId, 'setKeywords', {

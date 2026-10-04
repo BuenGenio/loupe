@@ -8,12 +8,16 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../data/repositories.dart';
 import '../../settings/app_mode.dart';
 import '../../router.dart';
+import '../../shared/bars.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_text.dart';
 import '../conversation/mail_streams.dart';
 import '../conversation/sheets.dart';
 import 'server_settings.dart';
+import 'setup_text.dart';
 import '../../theme/loupe_icons.dart';
+
+export 'setup_text.dart' show fingerprintIn;
 
 enum _Step { address, signIn, done }
 
@@ -74,15 +78,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
   }
 
   /// "Gmail", "iCloud", … or the domain's first label ("Example").
-  String get _defaultDescription => switch (_provider) {
-    ProviderKind.gmail => 'Gmail',
-    ProviderKind.microsoft => 'Outlook',
-    ProviderKind.icloud => 'iCloud',
-    ProviderKind.yahoo => 'Yahoo',
-    ProviderKind.fastmail => 'Fastmail',
-    ProviderKind.generic =>
-      _domain.isEmpty ? 'Mail' : '${_domain[0].toUpperCase()}${_domain.split('.').first.substring(1)}',
-  };
+  String get _defaultDescription => defaultAccountDescription(_provider, _email.text);
 
   // Step 1: discovery -------------------------------------------------------------
 
@@ -186,18 +182,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     }
   }
 
-  String _describe(MailException e) => switch (e.kind) {
-    MailErrorKind.authentication => switch (_provider) {
-      ProviderKind.gmail ||
-      ProviderKind.icloud ||
-      ProviderKind.yahoo ||
-      ProviderKind.fastmail => 'Password rejected. Use an app password, not your account password.',
-      _ => 'Password rejected. Check it and try again.',
-    },
-    MailErrorKind.connection => "Can't reach server. Check the server settings and your connection.",
-    MailErrorKind.certificate => "The server's certificate isn't trusted. ${e.message}",
-    _ => e.message,
-  };
+  String _describe(MailException e) => describeSetupError(e, _provider);
 
   /// Pins the offered certificate on the servers it belongs to and retries.
   Future<void> _trustCertificate() async {
@@ -255,27 +240,31 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       },
       child: Scaffold(
         backgroundColor: colors.groupedBackground,
-        appBar: AppBar(
-          backgroundColor: colors.groupedBackground,
-          title: Text(_step == _Step.done ? 'Account Added' : 'Add Account'),
-          automaticallyImplyLeading: _step != _Step.done,
-        ),
-        body: SafeArea(
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 220),
-            child: KeyedSubtree(
-              key: ValueKey(_step),
-              child: switch (_step) {
-                _Step.address => _addressStep(context),
-                _Step.signIn => _signInStep(context),
-                _Step.done => _doneStep(context),
-              },
-            ),
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 220),
+          child: KeyedSubtree(
+            key: ValueKey(_step),
+            child: switch (_step) {
+              _Step.address => _addressStep(context),
+              _Step.signIn => _signInStep(context),
+              _Step.done => _doneStep(context),
+            },
           ),
         ),
       ),
     );
   }
+
+  /// One step: the title on the top line, then [children].
+  Widget _page(BuildContext context, {required List<Widget> children}) => CustomScrollView(
+    slivers: [
+      LoupeTitleBar(
+        title: _step == _Step.done ? 'Account Added' : 'Add Account',
+        automaticallyImplyLeading: _step != _Step.done,
+      ),
+      SliverSafeArea(top: false, sliver: SliverList.list(children: children)),
+    ],
+  );
 
   Widget _title(BuildContext context, String title, String subtitle) {
     final theme = Theme.of(context);
@@ -354,7 +343,8 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
         ),
       );
 
-  Widget _addressStep(BuildContext context) => ListView(
+  Widget _addressStep(BuildContext context) => _page(
+    context,
     children: [
       _title(context, 'Add a Mail Account', 'Loupe finds the settings for most providers.'),
       SheetGroup(
@@ -392,6 +382,15 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
         busyLabel: 'Looking up settings…',
         onTap: _discover,
       ),
+      Center(
+        child: TextButton.icon(
+          key: const Key('setup-import-thunderbird'),
+          onPressed: _busy ? null : () => context.push(Routes.importAccounts),
+          icon: const Icon(LoupeIcons.qrCode, size: 20),
+          label: const Text('Import from Thunderbird'),
+        ),
+      ),
+      const SizedBox(height: 16),
     ],
   );
 
@@ -402,7 +401,8 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       ProviderKind.generic => _domain,
       _ => _defaultDescription,
     };
-    return ListView(
+    return _page(
+      context,
       children: [
         _title(context, title, email),
         ..._providerNotes(context),
@@ -460,11 +460,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     );
   }
 
-  String get _passwordLabel => switch (_provider) {
-    ProviderKind.gmail || ProviderKind.yahoo || ProviderKind.fastmail => 'App Password',
-    ProviderKind.icloud => 'App Password',
-    _ => 'Password',
-  };
+  String get _passwordLabel => passwordLabel(_provider);
 
   List<Widget> _providerNotes(BuildContext context) {
     Widget link(String label, String url) => TextButton(onPressed: () => _open(url), child: Text(label));
@@ -488,7 +484,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       ProviderKind.gmail => [
         NoteCard(
           icon: LoupeIcons.password,
-          actions: [link('How to Create an App Password', 'https://support.google.com/accounts/answer/185833')],
+          actions: [link('How to Create an App Password', gmailAppPasswordHelp)],
           child: const Text('Create an app password in your Google account and paste it below.'),
         ),
       ],
@@ -571,7 +567,8 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
 
   Widget _doneStep(BuildContext context) {
     final colors = LoupeColors.of(context);
-    return ListView(
+    return _page(
+      context,
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(32, 16, 32, 24),
@@ -642,11 +639,4 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       ],
     );
   }
-}
-
-/// A SHA-256 certificate fingerprint in [message] (64 hex digits, with or
-/// without colons), as lower-case hex without colons.
-String? fingerprintIn(String message) {
-  final m = RegExp(r'([0-9A-Fa-f]{2}(?::[0-9A-Fa-f]{2}){31}|[0-9A-Fa-f]{64})').firstMatch(message);
-  return m?.group(1)!.replaceAll(':', '').toLowerCase();
 }
