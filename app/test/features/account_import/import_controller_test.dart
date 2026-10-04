@@ -172,6 +172,15 @@ void main() {
     expect(two.status, ImportStatus.added);
   });
 
+  test('disposing (leaving the screen) forgets everything too', () {
+    final own = AccountImportController(repository: () async => repo)
+      ..addPayload(code())
+      ..review();
+    own.dispose();
+    expect(own.sequence.isEmpty, isTrue);
+    expect(own.rows, isEmpty);
+  });
+
   test('clear forgets the codes, the accounts and typed passwords', () {
     controller
       ..addPayload(code(password: ''))

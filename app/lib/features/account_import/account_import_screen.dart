@@ -165,9 +165,9 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
   }
 
   /// Like account setup's last step: the first real account switches the app
-  /// from the welcome screen to live mode.
+  /// from the welcome screen to live mode. Leaving disposes the screen, which
+  /// drops everything scanned.
   Future<void> _finish() async {
-    _import.clear();
     if (ref.read(appModeProvider) == AppMode.none) await ref.read(appModeProvider.notifier).set(AppMode.live);
     if (mounted) context.go(Routes.mailboxes);
   }
