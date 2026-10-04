@@ -160,6 +160,10 @@ class OutboxItems extends Table {
   TextColumn get lastError => text().nullable()();
   IntColumn get createdAt => integer()();
 
+  /// A failed message the server refused for good: never claimed again
+  /// until it is rescheduled (Retry). Schema version 5.
+  BoolColumn get held => boolean().withDefault(const Constant(false))();
+
   @override
   Set<Column> get primaryKey => {id};
 }
@@ -357,9 +361,9 @@ class StoreDatabase extends _$StoreDatabase {
   /// 1: the first release. 2: rules and their watermarks. 3: mailing-list
   /// headers on emails (with the `emails_list` index), muted threads, and
   /// `stale_headers` on sync states. 4: the partial indexes of unread and
-  /// flagged messages ([_countIndexes]).
+  /// flagged messages ([_countIndexes]). 5: `held` on outbox items.
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -394,6 +398,9 @@ class StoreDatabase extends _$StoreDatabase {
         for (final sql in _countIndexes) {
           await customStatement(sql);
         }
+      }
+      if (from < 5) {
+        await m.addColumn(outboxItems, outboxItems.held);
       }
     },
     beforeOpen: (details) async {

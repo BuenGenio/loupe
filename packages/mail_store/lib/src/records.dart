@@ -22,6 +22,7 @@ final class OutboxEntry {
     this.status = OutboxStatus.queued,
     this.attempts = 0,
     this.lastError,
+    this.held = false,
   });
 
   final String id;
@@ -36,6 +37,11 @@ final class OutboxEntry {
 
   /// Human-readable reason of the last failure.
   final String? lastError;
+
+  /// A [OutboxStatus.failed] entry the server refused for good (a
+  /// `PermanentMailException`): it is never claimed for sending again until
+  /// rescheduled (`MailStore.rescheduleOutbox`, the user's Retry).
+  final bool held;
 }
 
 /// One queued server operation.

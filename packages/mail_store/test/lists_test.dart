@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:drift/drift.dart' show driftRuntimeOptions;
@@ -221,42 +220,7 @@ void main() {
     setUp(() => dir = Directory.systemTemp.createTempSync('mail_store_migration'));
     tearDown(() => dir.deleteSync(recursive: true));
 
-    /// A database of schema [version] at [path], as that release created it,
-    /// with an account, a mailbox, a synced message and its content (and a
-    /// rule from version 2 on).
-    void create(String path, int version) {
-      final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
-      final ddl = File('test/schemas/v$version.sql').readAsStringSync().split(RegExp(r'^--$', multiLine: true));
-      for (final statement in ddl) {
-        final sql = statement.split('\n').where((l) => !l.startsWith('-- ')).join('\n').trim();
-        if (sql.isNotEmpty) db.execute(sql);
-      }
-      db
-        ..execute('INSERT INTO accounts (id, email, display_name, json) VALUES (?, ?, ?, ?)', [
-          accountId,
-          'me@example.com',
-          'Work',
-          jsonEncode(account().toJson()),
-        ])
-        ..execute("INSERT INTO mailboxes (id, account_id, name, path, role) VALUES (?, ?, 'Inbox', 'INBOX', 'inbox')", [
-          mbox('INBOX'),
-          accountId,
-        ])
-        ..execute("INSERT INTO sync_states (mailbox_id, state, synced_at) VALUES (?, '{\"v\":1}', 1)", [mbox('INBOX')])
-        ..execute(
-          'INSERT INTO emails (id, account_id, mailbox_id, thread_id, subject, received_at, keywords) '
-          "VALUES (?, ?, ?, 'acc1|t:x', 'Before the upgrade', 1000, ?)",
-          [eid('INBOX', 1), accountId, mbox('INBOX'), '["\$seen"]'],
-        )
-        ..execute(
-          "INSERT INTO contents (email_id, plain_text, body_text, fetched_at) VALUES (?, 'kumquat', 'kumquat', 1)",
-          [eid('INBOX', 1)],
-        );
-      if (version >= 2) db.execute("INSERT INTO rules (id, json, sort_order) VALUES ('r1', '{}', 0)");
-      db
-        ..execute('PRAGMA user_version = $version')
-        ..close();
-    }
+    void create(String path, int version) => createOldDatabase(path, version);
 
     for (final version in [1, 2]) {
       test('version $version upgrades past 3: list columns, index, muted threads, stale headers', () async {
@@ -286,7 +250,7 @@ void main() {
 
         final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
         addTearDown(db.close);
-        expect(db.select('PRAGMA user_version').single.values.single, 4);
+        expect(db.select('PRAGMA user_version').single.values.single, latestSchemaVersion);
         final columns = {for (final r in db.select('PRAGMA table_info(emails)')) r['name'] as String};
         expect(
           columns,
@@ -319,7 +283,7 @@ void main() {
 
         final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
         addTearDown(db.close);
-        expect(db.select('PRAGMA user_version').single.values.single, 4);
+        expect(db.select('PRAGMA user_version').single.values.single, latestSchemaVersion);
         final indexes = {for (final r in db.select("SELECT name FROM sqlite_master WHERE type = 'index'")) r['name']};
         expect(indexes, containsAll(['emails_unread', 'emails_flagged', 'emails_list', 'emails_thread']));
         final plan = db

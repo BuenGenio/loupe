@@ -147,6 +147,13 @@ final class FakeServer {
   /// Error thrown by SMTP until cleared.
   MailException? smtpFailure;
 
+  /// Recipients SMTP refuses (address → why) while it takes the message for
+  /// the others; with none left it throws, like a server.
+  final refusedRecipients = <String, MailException>{};
+
+  /// Every SMTP send attempt, failed ones included.
+  int smtpAttempts = 0;
+
   /// The previews argument of every fetchSummaries call.
   final summaryPreviews = <bool>[];
 
@@ -748,17 +755,33 @@ final class FakeSender implements MailSender {
   final FakeServer server;
 
   @override
-  Future<void> send(Uint8List rfc822, {required String envelopeFrom, required List<String> recipients}) async {
+  Future<SendReceipt> send(Uint8List rfc822, {required String envelopeFrom, required List<String> recipients}) async {
+    server.smtpAttempts++;
     if (server.latency > Duration.zero) await Future<void>.delayed(server.latency);
     if (server.offline) throw const MailException(MailErrorKind.connection, 'Server unreachable');
     final f = server.smtpFailure;
     if (f != null) throw f;
+    final refused = {for (final r in recipients) r: ?server.refusedRecipients[r]};
+    if (refused.isNotEmpty && refused.length == recipients.length) {
+      final all = refused.values.toList();
+      throw all.length == 1
+          ? all.single
+          : all.every((e) => e is PermanentMailException)
+          ? PermanentMailException(MailErrorKind.server, all.map((e) => e.message).join('; '))
+          : MailException(MailErrorKind.server, all.map((e) => e.message).join('; '));
+    }
     if (server.smtpLatency > Duration.zero) await Future<void>.delayed(server.smtpLatency);
-    server.sent.add(SentMail(rfc822, envelopeFrom, recipients));
+    server.sent.add(
+      SentMail(rfc822, envelopeFrom, [
+        for (final r in recipients)
+          if (!refused.containsKey(r)) r,
+      ]),
+    );
     if (server.smtpLoseReply) {
       server.smtpLoseReply = false;
       throw const MailException(MailErrorKind.connection, 'Lost the connection');
     }
+    return SendReceipt(refused: refused);
   }
 
   @override

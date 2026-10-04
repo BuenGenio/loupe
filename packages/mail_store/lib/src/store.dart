@@ -1477,6 +1477,7 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
           attempts: Value(entry.attempts),
           lastError: Value(entry.lastError),
           createdAt: entry.createdAt.millisecondsSinceEpoch,
+          held: Value(entry.held),
         ),
       );
 
@@ -1489,6 +1490,7 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
     status: OutboxStatus.values.byName(r.status),
     attempts: r.attempts,
     lastError: r.lastError,
+    held: r.held,
   );
 
   Future<OutboxEntry?> getOutbox(String id) async {
@@ -1507,8 +1509,8 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
   }).watch().map((rows) => [for (final r in rows) _outboxFromRow(_db.outboxItems.map(r.data))]);
 
   /// Atomically marks a queued (or failed) entry that is due at [now] as
-  /// sending. Returns it, or null if it is gone, being sent, or was moved to
-  /// later meanwhile.
+  /// sending. Returns it, or null if it is gone, being sent, held (see
+  /// [OutboxEntry.held]), or was moved to later meanwhile.
   ///
   /// While an entry is sending, its `sendAfter` holds the time of the claim,
   /// so a claim left by a process that died can be told from one in
@@ -1516,7 +1518,7 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
   Future<OutboxEntry?> claimOutbox(String id, {DateTime? now}) => _db.transaction(() async {
     final at = (now ?? DateTime.now()).millisecondsSinceEpoch;
     final n = await _write(
-      'UPDATE outbox_items SET status = ?, send_after = ? WHERE id = ? AND status != ? AND send_after <= ?',
+      'UPDATE outbox_items SET status = ?, send_after = ? WHERE id = ? AND status != ? AND held = 0 AND send_after <= ?',
       [OutboxStatus.sending.name, at, id, OutboxStatus.sending.name, at],
       {_db.outboxItems},
       kind: UpdateKind.update,
@@ -1542,10 +1544,11 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
   });
 
   /// Moves an entry that isn't being sent to [sendAfter] with [status],
-  /// clearing its last error. Returns false if it is gone or being sent.
+  /// clearing its last error and releasing it if it was held. Returns false
+  /// if it is gone or being sent.
   Future<bool> rescheduleOutbox(String id, {required DateTime sendAfter, required OutboxStatus status}) async {
     final n = await _write(
-      'UPDATE outbox_items SET send_after = ?, status = ?, last_error = NULL WHERE id = ? AND status != ?',
+      'UPDATE outbox_items SET send_after = ?, status = ?, last_error = NULL, held = 0 WHERE id = ? AND status != ?',
       [sendAfter.millisecondsSinceEpoch, status.name, id, OutboxStatus.sending.name],
       {_db.outboxItems},
       kind: UpdateKind.update,
@@ -1555,18 +1558,23 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
 
   Future<void> deleteOutbox(String id) => (_db.delete(_db.outboxItems)..where((o) => o.id.equals(id))).go();
 
+  /// Sets an entry's [status] and [lastError], and what else is given.
+  /// [held] true keeps a failed entry from being claimed until it is
+  /// rescheduled (see [OutboxEntry.held]).
   Future<void> updateOutbox(
     String id, {
     required OutboxStatus status,
     int? attempts,
     String? lastError,
     DateTime? sendAfter,
+    bool? held,
   }) => (_db.update(_db.outboxItems)..where((o) => o.id.equals(id))).write(
     OutboxItemsCompanion(
       status: Value(status.name),
       attempts: attempts == null ? const Value.absent() : Value(attempts),
       lastError: Value(lastError),
       sendAfter: sendAfter == null ? const Value.absent() : Value(sendAfter.millisecondsSinceEpoch),
+      held: held == null ? const Value.absent() : Value(held),
     ),
   );
 

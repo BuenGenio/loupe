@@ -191,15 +191,27 @@ void main() {
       expect(server.messages, 1);
     });
 
-    test('a token still refused after the refresh fails without another try', () async {
+    test('a token still refused after the refresh fails for good, without another try', () async {
       final tokens = _Tokens();
       final sender = ImapSmtpSender(_account(smtpPort: server.port), tokens.call);
       await expectLater(
         sender.send(message, envelopeFrom: 'me@gmail.com', recipients: ['you@example.com']),
-        throwsA(isA<MailException>().having((e) => e.kind, 'kind', MailErrorKind.authentication)),
+        throwsA(isA<PermanentMailException>().having((e) => e.kind, 'kind', MailErrorKind.authentication)),
       );
       expect(tokens.calls, [false, true]);
       expect(server.tokens, hasLength(2));
+      expect(server.messages, 0);
+    });
+
+    test('a refresh that fails is not a refusal for good', () async {
+      final sender = ImapSmtpSender(_account(smtpPort: server.port), ({forceRefresh = false}) async {
+        if (forceRefresh) throw const MailException(MailErrorKind.connection, 'The token endpoint is unreachable');
+        return OAuthCredentials(accessToken: 'stale', refreshToken: 'r', expiresAt: DateTime.now());
+      });
+      await expectLater(
+        sender.send(message, envelopeFrom: 'me@gmail.com', recipients: ['you@example.com']),
+        throwsA(allOf(isA<MailException>(), isNot(isA<PermanentMailException>()))),
+      );
       expect(server.messages, 0);
     });
   });

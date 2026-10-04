@@ -3388,8 +3388,29 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _heldMeta = const VerificationMeta('held');
   @override
-  List<GeneratedColumn> get $columns => [id, accountId, message, sendAfter, status, attempts, lastError, createdAt];
+  late final GeneratedColumn<bool> held = GeneratedColumn<bool>(
+    'held',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("held" IN (0, 1))'),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    accountId,
+    message,
+    sendAfter,
+    status,
+    attempts,
+    lastError,
+    createdAt,
+    held,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -3435,6 +3456,9 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
+    if (data.containsKey('held')) {
+      context.handle(_heldMeta, held.isAcceptableOrUnknown(data['held']!, _heldMeta));
+    }
     return context;
   }
 
@@ -3452,6 +3476,7 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
       attempts: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}attempts'])!,
       lastError: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}last_error']),
       createdAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
+      held: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}held'])!,
     );
   }
 
@@ -3472,6 +3497,10 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
   final int attempts;
   final String? lastError;
   final int createdAt;
+
+  /// A failed message the server refused for good: never claimed again
+  /// until it is rescheduled (Retry). Schema version 5.
+  final bool held;
   const OutboxRow({
     required this.id,
     required this.accountId,
@@ -3481,6 +3510,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
     required this.attempts,
     this.lastError,
     required this.createdAt,
+    required this.held,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -3495,6 +3525,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
       map['last_error'] = Variable<String>(lastError);
     }
     map['created_at'] = Variable<int>(createdAt);
+    map['held'] = Variable<bool>(held);
     return map;
   }
 
@@ -3508,6 +3539,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
       attempts: Value(attempts),
       lastError: lastError == null && nullToAbsent ? const Value.absent() : Value(lastError),
       createdAt: Value(createdAt),
+      held: Value(held),
     );
   }
 
@@ -3522,6 +3554,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
       attempts: serializer.fromJson<int>(json['attempts']),
       lastError: serializer.fromJson<String?>(json['lastError']),
       createdAt: serializer.fromJson<int>(json['createdAt']),
+      held: serializer.fromJson<bool>(json['held']),
     );
   }
   @override
@@ -3536,6 +3569,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
       'attempts': serializer.toJson<int>(attempts),
       'lastError': serializer.toJson<String?>(lastError),
       'createdAt': serializer.toJson<int>(createdAt),
+      'held': serializer.toJson<bool>(held),
     };
   }
 
@@ -3548,6 +3582,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
     int? attempts,
     Value<String?> lastError = const Value.absent(),
     int? createdAt,
+    bool? held,
   }) => OutboxRow(
     id: id ?? this.id,
     accountId: accountId ?? this.accountId,
@@ -3557,6 +3592,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
     attempts: attempts ?? this.attempts,
     lastError: lastError.present ? lastError.value : this.lastError,
     createdAt: createdAt ?? this.createdAt,
+    held: held ?? this.held,
   );
   OutboxRow copyWithCompanion(OutboxItemsCompanion data) {
     return OutboxRow(
@@ -3568,6 +3604,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
       attempts: data.attempts.present ? data.attempts.value : this.attempts,
       lastError: data.lastError.present ? data.lastError.value : this.lastError,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      held: data.held.present ? data.held.value : this.held,
     );
   }
 
@@ -3581,13 +3618,14 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
           ..write('status: $status, ')
           ..write('attempts: $attempts, ')
           ..write('lastError: $lastError, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('held: $held')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, accountId, message, sendAfter, status, attempts, lastError, createdAt);
+  int get hashCode => Object.hash(id, accountId, message, sendAfter, status, attempts, lastError, createdAt, held);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3599,7 +3637,8 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
           other.status == this.status &&
           other.attempts == this.attempts &&
           other.lastError == this.lastError &&
-          other.createdAt == this.createdAt);
+          other.createdAt == this.createdAt &&
+          other.held == this.held);
 }
 
 class OutboxItemsCompanion extends UpdateCompanion<OutboxRow> {
@@ -3611,6 +3650,7 @@ class OutboxItemsCompanion extends UpdateCompanion<OutboxRow> {
   final Value<int> attempts;
   final Value<String?> lastError;
   final Value<int> createdAt;
+  final Value<bool> held;
   final Value<int> rowid;
   const OutboxItemsCompanion({
     this.id = const Value.absent(),
@@ -3621,6 +3661,7 @@ class OutboxItemsCompanion extends UpdateCompanion<OutboxRow> {
     this.attempts = const Value.absent(),
     this.lastError = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.held = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   OutboxItemsCompanion.insert({
@@ -3632,6 +3673,7 @@ class OutboxItemsCompanion extends UpdateCompanion<OutboxRow> {
     this.attempts = const Value.absent(),
     this.lastError = const Value.absent(),
     required int createdAt,
+    this.held = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        accountId = Value(accountId),
@@ -3648,6 +3690,7 @@ class OutboxItemsCompanion extends UpdateCompanion<OutboxRow> {
     Expression<int>? attempts,
     Expression<String>? lastError,
     Expression<int>? createdAt,
+    Expression<bool>? held,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -3659,6 +3702,7 @@ class OutboxItemsCompanion extends UpdateCompanion<OutboxRow> {
       if (attempts != null) 'attempts': attempts,
       if (lastError != null) 'last_error': lastError,
       if (createdAt != null) 'created_at': createdAt,
+      if (held != null) 'held': held,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -3672,6 +3716,7 @@ class OutboxItemsCompanion extends UpdateCompanion<OutboxRow> {
     Value<int>? attempts,
     Value<String?>? lastError,
     Value<int>? createdAt,
+    Value<bool>? held,
     Value<int>? rowid,
   }) {
     return OutboxItemsCompanion(
@@ -3683,6 +3728,7 @@ class OutboxItemsCompanion extends UpdateCompanion<OutboxRow> {
       attempts: attempts ?? this.attempts,
       lastError: lastError ?? this.lastError,
       createdAt: createdAt ?? this.createdAt,
+      held: held ?? this.held,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -3714,6 +3760,9 @@ class OutboxItemsCompanion extends UpdateCompanion<OutboxRow> {
     if (createdAt.present) {
       map['created_at'] = Variable<int>(createdAt.value);
     }
+    if (held.present) {
+      map['held'] = Variable<bool>(held.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -3731,6 +3780,7 @@ class OutboxItemsCompanion extends UpdateCompanion<OutboxRow> {
           ..write('attempts: $attempts, ')
           ..write('lastError: $lastError, ')
           ..write('createdAt: $createdAt, ')
+          ..write('held: $held, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -8611,6 +8661,7 @@ typedef $$OutboxItemsTableCreateCompanionBuilder = OutboxItemsCompanion Function
   Value<int> attempts,
   Value<String?> lastError,
   required int createdAt,
+  Value<bool> held,
   Value<int> rowid,
 });
 typedef $$OutboxItemsTableUpdateCompanionBuilder = OutboxItemsCompanion Function({
@@ -8622,6 +8673,7 @@ typedef $$OutboxItemsTableUpdateCompanionBuilder = OutboxItemsCompanion Function
   Value<int> attempts,
   Value<String?> lastError,
   Value<int> createdAt,
+  Value<bool> held,
   Value<int> rowid,
 });
 
@@ -8668,6 +8720,8 @@ class $$OutboxItemsTableFilterComposer extends Composer<_$StoreDatabase, $Outbox
 
   ColumnFilters<int> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get held => $composableBuilder(column: $table.held, builder: (column) => ColumnFilters(column));
 
   $$AccountsTableFilterComposer get accountId {
     final $$AccountsTableFilterComposer composer = $composerBuilder(
@@ -8716,6 +8770,9 @@ class $$OutboxItemsTableOrderingComposer extends Composer<_$StoreDatabase, $Outb
   ColumnOrderings<int> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<bool> get held =>
+      $composableBuilder(column: $table.held, builder: (column) => ColumnOrderings(column));
+
   $$AccountsTableOrderingComposer get accountId {
     final $$AccountsTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -8756,6 +8813,8 @@ class $$OutboxItemsTableAnnotationComposer extends Composer<_$StoreDatabase, $Ou
   GeneratedColumn<String> get lastError => $composableBuilder(column: $table.lastError, builder: (column) => column);
 
   GeneratedColumn<int> get createdAt => $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get held => $composableBuilder(column: $table.held, builder: (column) => column);
 
   $$AccountsTableAnnotationComposer get accountId {
     final $$AccountsTableAnnotationComposer composer = $composerBuilder(
@@ -8809,6 +8868,7 @@ class $$OutboxItemsTableTableManager
                 Value<int> attempts = const Value.absent(),
                 Value<String?> lastError = const Value.absent(),
                 Value<int> createdAt = const Value.absent(),
+                Value<bool> held = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => OutboxItemsCompanion(
                 id: id,
@@ -8819,6 +8879,7 @@ class $$OutboxItemsTableTableManager
                 attempts: attempts,
                 lastError: lastError,
                 createdAt: createdAt,
+                held: held,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -8831,6 +8892,7 @@ class $$OutboxItemsTableTableManager
                 Value<int> attempts = const Value.absent(),
                 Value<String?> lastError = const Value.absent(),
                 required int createdAt,
+                Value<bool> held = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => OutboxItemsCompanion.insert(
                 id: id,
@@ -8841,6 +8903,7 @@ class $$OutboxItemsTableTableManager
                 attempts: attempts,
                 lastError: lastError,
                 createdAt: createdAt,
+                held: held,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

@@ -16,6 +16,53 @@ import 'package:mail_model/mail_model.dart';
 import '../net/line_reader.dart';
 import '../net/secure_socket.dart';
 
+/// Whether a failed SMTP reply [code] refuses for good. 5yz replies are
+/// permanent negative completions (RFC 5321 4.2.1): the same command fails
+/// the same way again (an unknown mailbox, rejected content, credentials
+/// refused). 4yz are transient (greylisting, a full mailbox, a busy server),
+/// and so is a reply that can't be read: it says nothing about the message.
+bool isPermanentSmtpReply(int code) => code >= 500 && code <= 599;
+
+/// Reply codes that are about logging in: authentication required (530),
+/// a mechanism too weak or an app password needed (534), credentials refused
+/// (535), encryption required for it (538), and a temporary authentication
+/// failure (454).
+const _authCodes = {454, 530, 534, 535, 538};
+
+/// The exception for an SMTP reply [code] that failed, saying [message]:
+/// a [PermanentMailException] for 5yz replies.
+MailException smtpFailure(int code, String message, {MailErrorKind? kind}) {
+  final k = kind ?? (_authCodes.contains(code) ? MailErrorKind.authentication : MailErrorKind.server);
+  return isPermanentSmtpReply(code) ? PermanentMailException(k, message) : MailException(k, message);
+}
+
+/// Server reply text as shown to the user (and kept with a failed message):
+/// one line without control characters, without [secrets] (some servers
+/// quote a command they refuse, AUTH included) or anything that looks like
+/// a token, and at most [maxLength] characters.
+String sanitizeSmtpText(String text, {Iterable<String> secrets = const [], int maxLength = 300}) {
+  var out = text;
+  for (final s in secrets) {
+    if (s.length >= 4) out = out.replaceAll(s, '[hidden]');
+  }
+  out = out
+      .replaceAll(RegExp(r'[\x00-\x1f\x7f]'), ' ')
+      // Base64 blobs and bearer tokens (AUTH payloads, OAuth access tokens):
+      // long runs mixing cases and digits, unlike help links and queue ids.
+      .replaceAllMapped(RegExp(r'[A-Za-z0-9+/=_.\-]{32,}'), (m) {
+        final run = m[0]!;
+        final opaque = run.contains(_upper) && run.contains(_lower) && run.contains(_digit);
+        return opaque ? '[hidden]' : run;
+      })
+      .replaceAll(RegExp(r'\s+'), ' ')
+      .trim();
+  return out.length <= maxLength ? out : '${out.substring(0, maxLength - 1)}…';
+}
+
+final _upper = RegExp('[A-Z]');
+final _lower = RegExp('[a-z]');
+final _digit = RegExp('[0-9]');
+
 /// One SMTP session.
 final class SmtpConnection {
   SmtpConnection._(this._socket, this._reader, this.host);
@@ -23,6 +70,10 @@ final class SmtpConnection {
   final Socket _socket;
   final LineReader _reader;
   final String host;
+
+  /// What was sent while logging in (the password, tokens, AUTH payloads):
+  /// never repeated in an error, even when the server quotes it.
+  final _secrets = <String>[];
 
   /// EHLO keywords, upper-cased (`SIZE 35882577`, `AUTH PLAIN LOGIN`, …).
   final extensions = <String>[];
@@ -40,7 +91,7 @@ final class SmtpConnection {
     final conn = SmtpConnection._(socket, LineReader(socket, const Duration(seconds: 60)), server.host);
     try {
       final (code, text) = await conn._reply();
-      if (code != 220) throw MailException(MailErrorKind.server, '${server.host}: ${text.join(' ')}');
+      if (code != 220) throw smtpFailure(code, '${server.host}: ${conn._text(text)}');
       await conn._ehlo();
       return conn;
     } catch (_) {
@@ -75,7 +126,7 @@ final class SmtpConnection {
     var (code, lines) = await command('EHLO [127.0.0.1]');
     if (code != 250) {
       (code, lines) = await command('HELO [127.0.0.1]');
-      if (code != 250) throw MailException(MailErrorKind.server, '$host: ${lines.join(' ')}');
+      if (code != 250) throw smtpFailure(code, '$host: ${_text(lines)}');
     }
     extensions
       ..clear()
@@ -103,45 +154,64 @@ final class SmtpConnection {
     final mechanisms = authMechanisms;
     if (mechanisms.isEmpty) return;
     (int, List<String>) reply;
+    String secret(String value) {
+      _secrets.add(value);
+      return value;
+    }
+
     switch (credentials) {
       case PasswordCredentials(:final password):
+        secret(password);
         if (mechanisms.contains('PLAIN') || !mechanisms.contains('LOGIN')) {
-          reply = await command('AUTH PLAIN ${base64.encode(utf8.encode('\u0000$username\u0000$password'))}');
+          reply = await command('AUTH PLAIN ${secret(base64.encode(utf8.encode('\u0000$username\u0000$password')))}');
         } else {
           reply = await command('AUTH LOGIN');
           if (reply.$1 == 334) reply = await command(base64.encode(utf8.encode(username)));
-          if (reply.$1 == 334) reply = await command(base64.encode(utf8.encode(password)));
+          if (reply.$1 == 334) reply = await command(secret(base64.encode(utf8.encode(password))));
         }
       case OAuthCredentials(:final accessToken):
+        secret(accessToken);
         final String initial;
         if (mechanisms.contains('XOAUTH2') || !mechanisms.contains('OAUTHBEARER')) {
-          initial = 'XOAUTH2 ${base64.encode(utf8.encode('user=$username\u0001auth=Bearer $accessToken\u0001\u0001'))}';
+          initial =
+              'XOAUTH2 ${secret(base64.encode(utf8.encode('user=$username\u0001auth=Bearer $accessToken\u0001\u0001')))}';
         } else {
           initial =
-              'OAUTHBEARER ${base64.encode(utf8.encode('n,a=$username,\u0001auth=Bearer $accessToken\u0001\u0001'))}';
+              'OAUTHBEARER '
+              '${secret(base64.encode(utf8.encode('n,a=$username,\u0001auth=Bearer $accessToken\u0001\u0001')))}';
         }
         reply = await command('AUTH $initial');
         // An error challenge carries JSON details; answer it to get the final reply.
         if (reply.$1 == 334) reply = await command('');
     }
     if (reply.$1 != 235) {
-      throw MailException(MailErrorKind.authentication, _authMessage(reply));
+      // A 5yz refusal is final: the sender has already refreshed OAuth tokens once.
+      throw smtpFailure(reply.$1, _authMessage(reply), kind: MailErrorKind.authentication);
     }
   }
 
   String _authMessage((int, List<String>) reply) {
-    final text = reply.$2.join(' ').replaceFirst(RegExp(r'^\d\.\d\.\d+\s*'), '').trim();
+    final text = _text(reply.$2).replaceFirst(RegExp(r'^\d\.\d\.\d+\s*'), '').trim();
     return text.isEmpty ? 'The server rejected the user name or password.' : text;
   }
 
+  /// A reply's text lines, fit to show (see [sanitizeSmtpText]).
+  String _text(List<String> lines) => sanitizeSmtpText(lines.join(' '), secrets: _secrets);
+
   /// Sends [data] (RFC 822 bytes) to [recipients]. Dot-stuffs every line
   /// that starts with a dot and normalises bare LF to CRLF.
-  Future<void> sendMail(String from, List<String> recipients, Uint8List data) async {
+  ///
+  /// Recipients the server refuses are left out while it takes the message
+  /// for the others; they are returned (address → why). Throws when nothing
+  /// was sent: a [PermanentMailException] when the server refused for good
+  /// (see [isPermanentSmtpReply]).
+  Future<Map<String, MailException>> sendMail(String from, List<String> recipients, Uint8List data) async {
     final eightBit = data.any((b) => b > 0x7f);
     final utf8Addresses = [from, ...recipients].any((a) => a.codeUnits.any((c) => c > 0x7f));
     final size = maxSize;
     if (size != null && size > 0 && data.length > size) {
-      throw MailException(
+      // The same message is always too large: no use trying again.
+      throw PermanentMailException(
         MailErrorKind.server,
         'The message is too large for $host (${(data.length / 1e6).toStringAsFixed(1)} MB, limit '
         '${(size / 1e6).toStringAsFixed(1)} MB).',
@@ -152,9 +222,15 @@ final class SmtpConnection {
     if (eightBit && supports('8BITMIME')) params.write(' BODY=8BITMIME');
     if (utf8Addresses && supports('SMTPUTF8')) params.write(' SMTPUTF8');
     _expect(await command('MAIL FROM:<$from>$params'), 250, 'Sender $from');
+    final refused = <String, MailException>{};
     for (final r in recipients) {
-      _expect(await command('RCPT TO:<$r>'), 250, 'Recipient $r', alsoOk: 251);
+      final reply = await command('RCPT TO:<$r>');
+      if (reply.$1 == 250 || reply.$1 == 251) continue;
+      // 421: the server is closing the session; nothing more goes through.
+      if (reply.$1 == 421) throw _failure(reply, 'Recipient $r');
+      refused[r] = _failure(reply, 'Recipient $r');
     }
+    if (refused.length == recipients.length) throw _noRecipient(refused);
     _expect(await command('DATA'), 354, 'Message');
     try {
       _socket.add(dotStuff(data));
@@ -164,13 +240,24 @@ final class SmtpConnection {
       throw MailException(MailErrorKind.connection, 'Lost the connection to $host.', e);
     }
     _expect(await _reply(), 250, 'Message');
+    return refused;
   }
 
-  void _expect((int, List<String>) reply, int code, String what, {int? alsoOk}) {
-    if (reply.$1 == code || reply.$1 == alsoOk) return;
-    final text = reply.$2.join(' ').trim();
-    final kind = reply.$1 == 530 || reply.$1 == 535 ? MailErrorKind.authentication : MailErrorKind.server;
-    throw MailException(kind, '$what rejected by $host: $text');
+  void _expect((int, List<String>) reply, int code, String what) {
+    if (reply.$1 != code) throw _failure(reply, what);
+  }
+
+  MailException _failure((int, List<String>) reply, String what) =>
+      smtpFailure(reply.$1, '$what rejected by $host: ${_text(reply.$2)}');
+
+  /// Every recipient was refused: for good only if each of them was.
+  static MailException _noRecipient(Map<String, MailException> refused) {
+    final reasons = refused.values.toList();
+    if (reasons.length == 1) return reasons.single;
+    final message = sanitizeSmtpText(reasons.map((e) => e.message).join('; '), maxLength: 600);
+    return reasons.every((e) => e is PermanentMailException)
+        ? PermanentMailException(MailErrorKind.server, message)
+        : MailException(MailErrorKind.server, message);
   }
 
   /// Says QUIT (best effort) and closes the socket.

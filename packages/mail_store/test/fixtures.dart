@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:mail_model/mail_model.dart';
 import 'package:mail_store/mail_store.dart';
+import 'package:sqlite3/sqlite3.dart';
 
 const accountId = 'acc1';
 
@@ -109,4 +113,45 @@ Future<void> addMails(MailStore store, List<EmailSummary> emails) async {
   for (final MapEntry(:key, :value) in byBox.entries) {
     await store.applySync(key, added(value));
   }
+}
+
+/// The schema version a store has after opening (`StoreDatabase.schemaVersion`).
+const latestSchemaVersion = 5;
+
+/// Creates a database of schema [version] at [path], as that release created
+/// it (`test/schemas/v<version>.sql`, encrypted with the key `k`), with an
+/// account, an Inbox, a synced message and its content (and a rule from
+/// version 2 on).
+void createOldDatabase(String path, int version) {
+  final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
+  final ddl = File('test/schemas/v$version.sql').readAsStringSync().split(RegExp(r'^--$', multiLine: true));
+  for (final statement in ddl) {
+    final sql = statement.split('\n').where((l) => !l.startsWith('-- ')).join('\n').trim();
+    if (sql.isNotEmpty) db.execute(sql);
+  }
+  db
+    ..execute('INSERT INTO accounts (id, email, display_name, json) VALUES (?, ?, ?, ?)', [
+      accountId,
+      'me@example.com',
+      'Work',
+      jsonEncode(account().toJson()),
+    ])
+    ..execute("INSERT INTO mailboxes (id, account_id, name, path, role) VALUES (?, ?, 'Inbox', 'INBOX', 'inbox')", [
+      mbox('INBOX'),
+      accountId,
+    ])
+    ..execute("INSERT INTO sync_states (mailbox_id, state, synced_at) VALUES (?, '{\"v\":1}', 1)", [mbox('INBOX')])
+    ..execute(
+      'INSERT INTO emails (id, account_id, mailbox_id, thread_id, subject, received_at, keywords) '
+      "VALUES (?, ?, ?, 'acc1|t:x', 'Before the upgrade', 1000, ?)",
+      [eid('INBOX', 1), accountId, mbox('INBOX'), '["\$seen"]'],
+    )
+    ..execute(
+      "INSERT INTO contents (email_id, plain_text, body_text, fetched_at) VALUES (?, 'kumquat', 'kumquat', 1)",
+      [eid('INBOX', 1)],
+    );
+  if (version >= 2) db.execute("INSERT INTO rules (id, json, sort_order) VALUES ('r1', '{}', 0)");
+  db
+    ..execute('PRAGMA user_version = $version')
+    ..close();
 }
