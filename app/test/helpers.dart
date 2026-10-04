@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:loupe/app.dart';
 import 'package:loupe/data/repositories.dart';
 import 'package:loupe/demo/demo_repository.dart';
+import 'package:loupe/features/notifications/app_icon_badge.dart';
 import 'package:loupe/providers.dart';
 import 'package:loupe/router.dart';
 import 'package:loupe/settings/app_mode.dart';
@@ -24,6 +25,7 @@ Future<DemoMailRepository> pumpLoupe(
   Map<String, Object> prefs = const {},
   DemoMailRepository? repository,
   Size size = const Size(390, 844),
+  AppIconBadge? badge,
 }) async {
   tester.view
     ..physicalSize = size * 3
@@ -41,6 +43,7 @@ Future<DemoMailRepository> pumpLoupe(
         // Stands in for the real repository: live mode needs a device.
         liveRepositoryProvider.overrideWith((ref) async => repo),
         repositoryProvider.overrideWith(repositoryForMode),
+        if (badge != null) appIconBadgeProvider.overrideWithValue(badge),
       ],
       child: const LoupeApp(),
     ),

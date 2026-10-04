@@ -9,6 +9,9 @@ enum Density { comfortable, compact }
 
 enum SwipeAction { none, toggleRead, toggleFlag, archive, trash, move, more }
 
+/// What the number on the app icon counts (Settings › Notifications).
+enum BadgeCount { off, inboxes, vip }
+
 /// User preferences. Persisted in SharedPreferences under `settings.*`.
 @immutable
 class AppSettings {
@@ -22,6 +25,7 @@ class AppSettings {
     this.swipeTrailing = SwipeAction.archive,
     this.undoSendSeconds = 10,
     this.threaded = true,
+    this.appIconBadge = BadgeCount.inboxes,
   });
 
   final ThemeMode themeMode;
@@ -40,6 +44,9 @@ class AppSettings {
   /// Group the message list by conversation.
   final bool threaded;
 
+  /// The count on the app icon, like Apple Mail's Badge App Icon.
+  final BadgeCount appIconBadge;
+
   AppSettings copyWith({
     ThemeMode? themeMode,
     Density? density,
@@ -50,6 +57,7 @@ class AppSettings {
     SwipeAction? swipeTrailing,
     int? undoSendSeconds,
     bool? threaded,
+    BadgeCount? appIconBadge,
   }) => AppSettings(
     themeMode: themeMode ?? this.themeMode,
     density: density ?? this.density,
@@ -60,6 +68,7 @@ class AppSettings {
     swipeTrailing: swipeTrailing ?? this.swipeTrailing,
     undoSendSeconds: undoSendSeconds ?? this.undoSendSeconds,
     threaded: threaded ?? this.threaded,
+    appIconBadge: appIconBadge ?? this.appIconBadge,
   );
 }
 
@@ -95,6 +104,7 @@ class AppSettingsController extends Notifier<AppSettings> {
       swipeTrailing: pick(SwipeAction.values, 'swipeTrailing', d.swipeTrailing),
       undoSendSeconds: p.getInt('${_prefix}undoSendSeconds') ?? d.undoSendSeconds,
       threaded: p.getBool('${_prefix}threaded') ?? d.threaded,
+      appIconBadge: pick(BadgeCount.values, 'appIconBadge', d.appIconBadge),
     );
   }
 
@@ -111,6 +121,7 @@ class AppSettingsController extends Notifier<AppSettings> {
       _prefs.setString('${_prefix}swipeTrailing', next.swipeTrailing.name),
       _prefs.setInt('${_prefix}undoSendSeconds', next.undoSendSeconds),
       _prefs.setBool('${_prefix}threaded', next.threaded),
+      _prefs.setString('${_prefix}appIconBadge', next.appIconBadge.name),
     ]);
   }
 }

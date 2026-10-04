@@ -186,9 +186,7 @@ class SettingsScreen extends ConsumerWidget {
             GroupedRow(
               leading: SettingsIcon(LoupeIcons.notifications, colors.swipeTrash),
               title: 'Notifications',
-              detail: 'Coming Soon',
-              enabled: false,
-              chevron: false,
+              onTap: () => context.push(Routes.notificationSettings),
             ),
             GroupedRow(
               leading: SettingsIcon(LoupeIcons.settings, colors.swipeMore),
