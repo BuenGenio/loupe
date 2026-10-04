@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loupe/app.dart';
 import 'package:loupe/data/repositories.dart';
+import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/features/account_import/account_import_screen.dart';
 import 'package:loupe/features/account_import/qr_scanner.dart';
 import 'package:loupe/providers.dart';
@@ -16,6 +18,7 @@ import 'package:loupe/theme/theme.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../helpers.dart' show testNow;
 import '../conversation/fake_mail_repository.dart';
 import 'tb_payloads.dart';
 
@@ -469,5 +472,59 @@ void main() {
     await goBack(tester);
     expect(find.text('home'), findsOneWidget);
     expect(container.read(appModeProvider), AppMode.live);
+  });
+
+  group('in the app', () {
+    Future<DemoMailRepository> pumpApp(WidgetTester tester, FakeScanner scanner, {required AppMode mode}) async {
+      tester.view
+        ..physicalSize = const Size(390, 844) * 3
+        ..devicePixelRatio = 3;
+      addTearDown(tester.view.reset);
+      SharedPreferences.setMockInitialValues({if (mode != AppMode.none) AppModeController.key: mode.name});
+      final prefs = await SharedPreferences.getInstance();
+      final repo = DemoMailRepository.instant(clock: () => testNow);
+      addTearDown(repo.dispose);
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            sharedPreferencesProvider.overrideWithValue(prefs),
+            demoRepositoryProvider.overrideWithValue(repo),
+            liveRepositoryProvider.overrideWith((ref) async => repo),
+            repositoryProvider.overrideWith(repositoryForMode),
+            qrScannerProvider.overrideWithValue(scanner.build),
+          ],
+          child: const LoupeApp(),
+        ),
+      );
+      await tester.pumpAndSettle();
+      return repo;
+    }
+
+    testWidgets('demo mode: Add Account › Import from Thunderbird adds a demo account', (tester) async {
+      final scanner = FakeScanner();
+      final repo = await pumpApp(tester, scanner, mode: AppMode.demo);
+      final router = ProviderScope.containerOf(tester.element(find.byType(LoupeApp))).read(routerProvider);
+      unawaited(router.push(Routes.addAccount));
+      await tester.pumpAndSettle();
+      await tapKey(tester, 'setup-import-thunderbird');
+      await scan(tester, scanner, account(email: 'imported@example.com'));
+      await tapKey(tester, 'import-add');
+      expect((await repo.watchAccounts().first).map((a) => a.email), contains('imported@example.com'));
+      await tapKey(tester, 'import-done');
+      expect(find.text('Import from Thunderbird'), findsNothing);
+    });
+
+    testWidgets('first launch: the welcome screen imports and switches to live mode', (tester) async {
+      final scanner = FakeScanner();
+      final repo = await pumpApp(tester, scanner, mode: AppMode.none);
+      await tapKey(tester, 'welcome-import');
+      expect(find.text('Import from Thunderbird'), findsOneWidget);
+      await scan(tester, scanner, account(email: 'first@example.com'));
+      await tapKey(tester, 'import-add');
+      await tapKey(tester, 'import-done');
+      final container = ProviderScope.containerOf(tester.element(find.byType(LoupeApp)));
+      expect(container.read(appModeProvider), AppMode.live);
+      expect((await repo.watchAccounts().first).map((a) => a.email), contains('first@example.com'));
+    });
   });
 }

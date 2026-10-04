@@ -376,6 +376,15 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
         busyLabel: 'Looking up settings…',
         onTap: _discover,
       ),
+      Center(
+        child: TextButton.icon(
+          key: const Key('setup-import-thunderbird'),
+          onPressed: _busy ? null : () => context.push(Routes.importAccounts),
+          icon: const Icon(LoupeIcons.qrCode, size: 20),
+          label: const Text('Import from Thunderbird'),
+        ),
+      ),
+      const SizedBox(height: 16),
     ],
   );
 
