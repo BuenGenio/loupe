@@ -4,6 +4,8 @@
 
 import 'package:mail_model/mail_model.dart';
 
+import 'eval/matcher.dart';
+import 'eval/normal_form.dart';
 import 'syntax/format.dart';
 import 'syntax/parser.dart';
 import 'syntax/suggest.dart';
@@ -118,50 +120,46 @@ List<QuerySuggestion> suggest(
   List<TagDefinition> tags = TagDefinition.thunderbirdDefaults,
 }) => suggestAt(input, cursor, now: now ?? DateTime.now(), tags: tags);
 
-/// Pushes negations down to the terms (negation normal form).
-SearchExpr toNnf(SearchExpr expr) => expr;
+/// Pushes negations down to the terms (negation normal form). Nested AND/OR
+/// of the same kind are flattened; `Not` remains only directly above terms.
+SearchExpr toNnf(SearchExpr expr) => negationNormalForm(expr);
 
 /// Replaces terms for which [supported] is false by [MatchAll] (in negation
 /// normal form, so the result matches a superset) and simplifies.
-SearchExpr widenForServer(SearchExpr expr, bool Function(SearchExpr term) supported) => expr;
+///
+/// [supported] receives the bare term, also for a negated one. AND drops
+/// [MatchAll]; OR containing it becomes [MatchAll]; a result of [MatchAll]
+/// means the server can't narrow the search at all.
+SearchExpr widenForServer(SearchExpr expr, bool Function(SearchExpr term) supported) => widen(expr, supported);
+
+/// Simplifies [expr] without changing what it matches: [MatchAll] and
+/// `Not(MatchAll)` (nothing) are folded away, single children unwrapped,
+/// nesting flattened and double negations cancelled.
+SearchExpr simplifyQuery(SearchExpr expr) => simplify(expr);
+
+/// Resolves [AccountTerm]s for the account labelled [accountLabel] (its name
+/// and addresses), so each account's server gets only what concerns it. The
+/// result is `Not(MatchAll)` when the query can't match in this account,
+/// which callers can check with [matchesNothing] to skip the server.
+SearchExpr bindAccountTerms(SearchExpr expr, String accountLabel) => bindAccount(expr, accountLabel);
+
+/// Whether [expr] (after [simplifyQuery]) matches no message at all.
+bool matchesNothing(SearchExpr expr) => simplify(expr) == matchNone;
 
 /// Evaluates [expr] against one message. Body and attachment terms need
 /// [content]; without it they match (superset semantics). [accountLabel] is the
 /// account's name and address, for [AccountTerm]. [headers] are extra header
 /// fields (lower-cased names) for [HeaderTerm].
+///
+/// Terms that lack data are unknown rather than true, and unknown counts as
+/// a match only at the end, so negated terms keep the superset property too.
 bool matchesEmail(
   SearchExpr expr,
   EmailSummary email, {
   EmailContent? content,
   String? accountLabel,
   Map<String, String> headers = const {},
-}) {
-  bool contains(String hay, String needle) => hay.toLowerCase().contains(needle.toLowerCase());
-  return switch (expr) {
-    MatchAll() => true,
-    SearchAnd(:final children) => children.every(
-      (c) => matchesEmail(c, email, content: content, accountLabel: accountLabel, headers: headers),
-    ),
-    SearchOr(:final children) => children.any(
-      (c) => matchesEmail(c, email, content: content, accountLabel: accountLabel, headers: headers),
-    ),
-    SearchNot(:final child) => !matchesEmail(
-      child,
-      email,
-      content: content,
-      accountLabel: accountLabel,
-      headers: headers,
-    ),
-    KeywordTerm(:final keyword) => email.keywords.contains(keyword),
-    TextTerm(field: TextField.subject, :final value) => contains(email.subject, value),
-    TextTerm(field: TextField.from, :final value) => email.from.any((a) => contains(a.toString(), value)),
-    TextTerm(:final value) => contains(
-      '${email.subject} ${email.from.join(' ')} ${email.to.join(' ')} ${email.preview}',
-      value,
-    ),
-    _ => true,
-  };
-}
+}) => EmailMatcher(email, content: content, accountLabel: accountLabel, headers: headers).matches(expr);
 
 /// IMAP SEARCH criteria for a query.
 final class ImapSearchQuery {
