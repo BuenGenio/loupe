@@ -6,6 +6,11 @@ library;
 export 'src/check.dart' show checkSieveScript;
 export 'src/compile.dart' show SieveProblem, SieveTest, compileSieve, loupeSieveExtensions, posixIssue;
 export 'src/include.dart' show IncludeEdit, includeComment, includesScript, planInclude;
+export 'src/managesieve/channel.dart' show SieveChannel, SocketSieveChannel;
+export 'src/managesieve/client.dart' show ManageSieveClient;
+export 'src/managesieve/connector.dart' show ManageSieveConnector, manageSievePort;
+export 'src/managesieve/session.dart'
+    show SieveCapabilities, SieveConnector, SieveException, SieveScriptInfo, SieveSession;
 export 'src/script.dart'
     show
         CompiledRule,
@@ -17,3 +22,4 @@ export 'src/script.dart'
         loupeScriptName,
         parseLoupeScript;
 export 'src/sieve_text.dart' show sieveFlag, sieveString;
+export 'src/simulated.dart' show SimulatedSieveAccount, SimulatedSieveServers;
