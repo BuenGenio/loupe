@@ -8,5 +8,9 @@ environment:
 dependencies:
   mail_model: {path: ../mail_model}
   expr_search: {path: ../expr_search}
+  drift: ^2.35.1
+  sqlite3: ^3.7.0
 dev_dependencies:
   test: any
+  build_runner: ^2.16.1
+  drift_dev: ^2.35.1
