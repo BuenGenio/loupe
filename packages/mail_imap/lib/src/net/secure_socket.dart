@@ -10,6 +10,8 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:mail_model/mail_model.dart';
 
+import 'line_reader.dart';
+
 /// Which protocol speaks on the socket (for the STARTTLS exchange).
 enum WireProtocol { imap, smtp }
 
@@ -129,7 +131,7 @@ Future<Socket> _startTls(
   bool Function(X509Certificate) onBadCertificate,
   Duration timeout,
 ) async {
-  final reader = _LineReader(plain, timeout);
+  final reader = LineReader(plain, timeout);
   final String greeting;
   switch (protocol) {
     case WireProtocol.imap:
@@ -149,16 +151,16 @@ Future<Socket> _startTls(
       greeting = '* OK [Loupe] TLS established\r\n';
     case WireProtocol.smtp:
       final hello = await reader.smtpReply();
-      if (hello.$1 != 220) throw MailException(MailErrorKind.server, '$host: ${hello.$2}');
+      if (hello.$1 != 220) throw MailException(MailErrorKind.server, '$host: ${hello.$2.join(' ')}');
       plain.write('EHLO [127.0.0.1]\r\n');
       final ehlo = await reader.smtpReply();
-      if (ehlo.$1 != 250 || !ehlo.$2.toUpperCase().contains('STARTTLS')) {
+      if (ehlo.$1 != 250 || !ehlo.$2.any((l) => l.toUpperCase().startsWith('STARTTLS'))) {
         throw MailException(MailErrorKind.unsupported, '$host doesn’t support STARTTLS. Use SSL/TLS instead.');
       }
       plain.write('STARTTLS\r\n');
       final ready = await reader.smtpReply();
       if (ready.$1 != 220) {
-        throw MailException(MailErrorKind.unsupported, '$host refused STARTTLS: ${ready.$2}');
+        throw MailException(MailErrorKind.unsupported, '$host refused STARTTLS: ${ready.$2.join(' ')}');
       }
       greeting = '220 [Loupe] TLS established\r\n';
   }
@@ -166,70 +168,6 @@ Future<Socket> _startTls(
   final secure = await SecureSocket.secure(plain, host: host, onBadCertificate: onBadCertificate).timeout(timeout);
   await reader.cancel();
   return _PrefixedSocket(secure, Uint8List.fromList(ascii.encode(greeting)));
-}
-
-/// Reads CRLF lines from a plain socket during the STARTTLS exchange.
-final class _LineReader {
-  _LineReader(Socket socket, this._timeout) {
-    _sub = socket.listen(
-      (data) {
-        _buffer.addAll(data);
-        _drain();
-      },
-      onError: (Object e) => _fail(e),
-      onDone: () => _fail(const SocketException('Connection closed')),
-    );
-  }
-
-  final Duration _timeout;
-  late final StreamSubscription<Uint8List> _sub;
-  final _buffer = <int>[];
-  final _lines = <String>[];
-  Completer<String>? _waiting;
-  Object? _error;
-
-  void _drain() {
-    while (true) {
-      final i = _buffer.indexOf(0x0a);
-      if (i < 0) break;
-      final line = latin1.decode(_buffer.sublist(0, i)).trimRight();
-      _buffer.removeRange(0, i + 1);
-      _lines.add(line);
-    }
-    final w = _waiting;
-    if (w != null && _lines.isNotEmpty) {
-      _waiting = null;
-      w.complete(_lines.removeAt(0));
-    }
-  }
-
-  void _fail(Object e) {
-    _error = e;
-    final w = _waiting;
-    _waiting = null;
-    w?.completeError(e);
-  }
-
-  Future<String> next() {
-    if (_lines.isNotEmpty) return Future.value(_lines.removeAt(0));
-    if (_error != null) return Future.error(_error!);
-    final c = _waiting = Completer<String>();
-    return c.future.timeout(_timeout);
-  }
-
-  /// A complete (possibly multi-line) SMTP reply: (code, text).
-  Future<(int, String)> smtpReply() async {
-    final text = StringBuffer();
-    while (true) {
-      final line = await next();
-      final code = int.tryParse(line.length >= 3 ? line.substring(0, 3) : '') ?? 0;
-      text.writeln(line.length > 4 ? line.substring(4) : '');
-      if (line.length < 4 || line[3] != '-') return (code, text.toString().trim());
-    }
-  }
-
-  void pause() => _sub.pause();
-  Future<void> cancel() => _sub.cancel();
 }
 
 /// A socket whose stream starts with [_first], then continues with the
