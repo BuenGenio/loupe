@@ -281,9 +281,13 @@ class FakeMailRepository implements MailRepository {
     _changed();
   }
 
+  /// While set, saveDraft waits for it (a slow connection).
+  Completer<void>? holdSaves;
+
   @override
   Future<String> saveDraft(OutgoingMessage message) async {
     log.add('saveDraft ${message.subject}');
+    await holdSaves?.future;
     drafts.add(message);
     return 'draft-${drafts.length}';
   }

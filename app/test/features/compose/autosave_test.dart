@@ -129,6 +129,23 @@ void main() {
       expect(await _localCopy(), isNull);
     });
 
+    testWidgets('a hanging save doesn\'t hold up Send; the draft it makes is deleted', (tester) async {
+      final repo = FakeMailRepository()..holdSaves = Completer<void>();
+      await _openCompose(tester, repo, const ComposeArgs(to: [bob]));
+      await tester.enterText(_subject, 'Bad signal');
+      await tester.pump(ComposeScreen.autosaveDelay);
+      expect(repo.log, contains('saveDraft Bad signal'));
+      await tester.tap(find.byKey(const Key('compose-send')));
+      await tester.pump(const Duration(seconds: 6));
+      await tester.pumpAndSettle();
+      expect(repo.sent.single.subject, 'Bad signal');
+      expect(repo.sent.single.draftId, isNull);
+      repo.holdSaves!.complete();
+      await tester.pumpAndSettle();
+      expect(repo.log, contains('deleteDraft draft-1'));
+      await drainTimers(tester);
+    });
+
     testWidgets('editing an Outbox message autosaves nothing', (tester) async {
       final repo = FakeMailRepository();
       const message = OutgoingMessage(accountId: 'acc', identityId: 'acc/me', to: [bob], subject: 'Later');

@@ -107,6 +107,10 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
   Future<void>? _saving;
   bool _saveAgain = false;
 
+  /// Bumped when a slow save is given up on (Send, Delete or Save went
+  /// ahead without it): the draft that save creates is deleted again.
+  int _saveGeneration = 0;
+
   MailRepository get _repo => ref.read(repositoryProvider);
 
   @override
@@ -223,8 +227,14 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
       final snapshot = _snapshot();
       final message = _message();
       if (message == null || snapshot == _lastSaved) return;
+      final generation = _saveGeneration;
       try {
-        _draftId = await repo.saveDraft(message);
+        final id = await repo.saveDraft(message);
+        if (generation != _saveGeneration) {
+          unawaited(repo.deleteDraft(id).catchError((Object _) {}));
+          return;
+        }
+        _draftId = id;
         _lastSaved = snapshot;
       } on MailException {
         return;
@@ -235,13 +245,21 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     } while (_saveAgain && mounted);
   }
 
-  /// Stops autosaving and waits for a save in progress, so [_draftId] is final.
+  /// Stops autosaving and waits for a save in progress, so [_draftId] is
+  /// final. A save still hanging after [_saveWait] (a bad connection) is
+  /// abandoned rather than holding up Send.
   Future<void> _stopAutosave() async {
     _serverTimer?.cancel();
     _localTimer?.cancel();
     _saveAgain = false;
-    await _saving;
+    try {
+      await _saving?.timeout(_saveWait);
+    } on TimeoutException {
+      _saveGeneration++;
+    }
   }
+
+  static const _saveWait = Duration(seconds: 5);
 
   /// Forgets the local copy (the message was sent, saved or deleted).
   void _forgetLocal() => unawaited(_recovery.clear(session: _session));
