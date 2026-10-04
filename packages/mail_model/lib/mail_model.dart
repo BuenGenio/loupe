@@ -13,5 +13,6 @@ export 'src/mailbox.dart';
 export 'src/outbox.dart';
 export 'src/outgoing.dart';
 export 'src/repository.dart';
+export 'src/rules.dart';
 export 'src/search.dart';
 export 'src/transport.dart';
