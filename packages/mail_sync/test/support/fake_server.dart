@@ -131,6 +131,15 @@ final class FakeServer {
   /// Overrides server search results (ids).
   List<String> Function(SearchExpr expr, String? path)? onSearch;
 
+  /// IMAP METADATA support; without it, documents go to the folder.
+  bool metadata = true;
+
+  /// The largest METADATA value the server accepts (MAXSIZE).
+  int metadataMaxSize = 1 << 20;
+
+  /// Server annotations: entry → value.
+  final annotations = <String, String>{};
+
   final mailboxes = <String, FakeMailbox>{};
   final log = <String>[];
   final sent = <SentMail>[];
@@ -233,6 +242,32 @@ final class FakeServer {
       await t.disconnect();
     }
   }
+
+  /// The subject of folder copies of document [name].
+  static String documentSubject(String name) => 'Loupe settings: $name';
+
+  /// Stores a folder copy of document [name] (another device writing).
+  void putFolderDocument(String name, String content) {
+    final folder =
+        mailboxes[ServerDocuments.folderName] ?? (addMailbox(ServerDocuments.folderName)..subscribed = false);
+    _add(
+      folder,
+      FakeMessage(
+        uid: folder.uidNext++,
+        subject: documentSubject(name),
+        from: const EmailAddress('me@example.com'),
+        receivedAt: DateTime(2026, 9, 1),
+        text: content,
+        keywords: const {Keywords.seen},
+      ),
+    );
+  }
+
+  /// Contents of the folder copies of document [name], oldest first.
+  List<String> folderDocuments(String name) => [
+    for (final m in mailboxes[ServerDocuments.folderName]?.messages.values ?? const <FakeMessage>[])
+      if (m.subject == documentSubject(name)) m.text,
+  ];
 
   /// Finds a message by subject in [path].
   FakeMessage? find(String path, String subject) =>
@@ -559,6 +594,45 @@ final class FakeTransport implements MailTransport {
     );
     server._add(mb, m);
     return server.uidPlus ? _id(mb, m.uid) : null;
+  }
+
+  @override
+  Future<List<ServerDocument>> readDocuments(String name) async {
+    await _op('readDocuments');
+    if (server.gmail) throw const MailException(MailErrorKind.unsupported, 'Gmail can’t keep Loupe settings');
+    final value = server.metadata ? server.annotations[ServerDocuments.metadataEntry(name)] : null;
+    final folder = server.mailboxes[ServerDocuments.folderName];
+    return [
+      if (value != null) ServerDocument(content: value, storage: ServerStorage.metadata),
+      for (final m in folder?.messages.values ?? const <FakeMessage>[])
+        if (m.subject == FakeServer.documentSubject(name))
+          ServerDocument(content: m.text, storage: ServerStorage.folder, ref: _id(folder!, m.uid)),
+    ];
+  }
+
+  @override
+  Future<ServerStorage> writeDocument(String name, String content, {List<ServerDocument> replaces = const []}) async {
+    await _op('writeDocument');
+    if (server.gmail) throw const MailException(MailErrorKind.unsupported, 'Gmail can’t keep Loupe settings');
+    final entry = ServerDocuments.metadataEntry(name);
+    final ServerStorage where;
+    if (server.metadata && content.length <= server.metadataMaxSize) {
+      server.annotations[entry] = content;
+      where = ServerStorage.metadata;
+    } else {
+      server.putFolderDocument(name, content);
+      if (replaces.any((d) => d.storage == ServerStorage.metadata)) server.annotations.remove(entry);
+      where = ServerStorage.folder;
+    }
+    for (final d in replaces) {
+      if (d.storage != ServerStorage.folder) continue;
+      final found = _find(d.ref!);
+      if (found == null) continue;
+      final (mb, m) = found;
+      mb.messages.remove(m.uid);
+      mb.expunged[m.uid] = ++mb.modseq;
+    }
+    return where;
   }
 
   @override

@@ -7,6 +7,7 @@ import 'mailbox.dart';
 import 'outbox.dart';
 import 'outgoing.dart';
 import 'search.dart';
+import 'server_documents.dart';
 
 enum SyncPhase { idle, syncing, error, offline }
 
@@ -165,6 +166,24 @@ abstract interface class MailRepository {
 
   /// Recipient autocomplete from previously seen addresses.
   Future<List<EmailAddress>> suggestAddresses(String prefix, {int limit = 8});
+
+  // Documents on the server -------------------------------------------------
+
+  /// Every stored copy of Loupe's document [name] (e.g.
+  /// [ServerDocuments.smartMailboxes]) on [accountId]'s server; see
+  /// [MailTransport.readDocuments]. Throws [MailException] (kind connection
+  /// while offline).
+  Future<List<ServerDocument>> readServerDocuments(String accountId, String name);
+
+  /// Stores [content] as document [name] on [accountId]'s server, replacing
+  /// the copies in [replaces] (from [readServerDocuments]). Returns where it
+  /// went. Throws [MailException] (kind connection while offline).
+  Future<ServerStorage> writeServerDocument(
+    String accountId,
+    String name,
+    String content, {
+    List<ServerDocument> replaces = const [],
+  });
 
   // People -------------------------------------------------------------------
 

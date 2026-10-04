@@ -16,6 +16,7 @@ import 'package:enough_mail/enough_mail.dart'
 import 'package:expr_search/expr_search.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../mime/headers.dart';
 import '../mime/transfer_encoding.dart';
 import '../util/uid_set.dart';
 import 'body_structure.dart';
@@ -23,9 +24,11 @@ import 'connection.dart';
 import 'keyword_mapping.dart';
 import 'mailbox_list.dart';
 import 'message_mapping.dart';
+import 'metadata.dart';
 import 'parsers.dart';
 import 'protocol.dart';
 import 'search_commands.dart';
+import 'server_documents.dart';
 import 'sync_state.dart';
 
 /// UIDs per FETCH of list rows.
@@ -67,6 +70,11 @@ final class ImapTransport implements MailTransport {
 
   ImapConnection? _conn;
   bool _wanted = false;
+
+  /// The server announced METADATA but refused to use it (Dovecot without
+  /// `mail_attribute_dict`, no private entries…); documents go to the
+  /// folder until the next connection.
+  bool _metadataRefused = false;
   TransportCapabilities _capabilities = const TransportCapabilities();
   List<RemoteMailbox>? _mailboxes;
 
@@ -91,6 +99,7 @@ final class ImapTransport implements MailTransport {
     final conn = await _open();
     _conn = conn;
     _capabilities = _capabilitiesOf(conn);
+    _metadataRefused = false;
   }
 
   /// Opens and authenticates a new connection; with OAuth, retries once with
@@ -671,7 +680,8 @@ final class ImapTransport implements MailTransport {
   }
 
   /// Mailboxes to search when none is given: an \All mailbox alone if the
-  /// server has one; otherwise Inbox first, Trash and Junk last.
+  /// server has one; otherwise Inbox first, Trash and Junk last (never the
+  /// Loupe Settings folder).
   static List<RemoteMailbox> _searchOrder(List<RemoteMailbox> boxes) {
     final all = _withRole(boxes, MailboxRole.all);
     if (all != null) return [all];
@@ -681,7 +691,193 @@ final class ImapTransport implements MailTransport {
       MailboxRole.trash || MailboxRole.junk => 3,
       _ => 2,
     };
-    return boxes.where((b) => b.isSelectable).toList()..sort((a, b) => rank(a).compareTo(rank(b)));
+    return boxes.where((b) => b.isSelectable && !ServerDocuments.isFolderName(b.name, b.parentPath)).toList()
+      ..sort((a, b) => rank(a).compareTo(rank(b)));
+  }
+
+  // Documents ----------------------------------------------------------------
+
+  bool _metadataUsable(ImapConnection c) => c.supportsServerMetadata && !_metadataRefused;
+
+  /// Gmail has no METADATA, and a folder wouldn't do: every copy would stay
+  /// in All Mail (deleting from a label only removes the label).
+  static void _checkDocumentsSupported(ImapConnection c) {
+    if (c.has('X-GM-EXT-1')) {
+      throw const MailException(MailErrorKind.unsupported, 'Gmail can’t keep Loupe settings on the server.');
+    }
+  }
+
+  @override
+  Future<List<ServerDocument>> readDocuments(String name) => _run((c) async {
+    _checkDocumentsSupported(c);
+    final docs = <ServerDocument>[];
+    if (_metadataUsable(c)) {
+      final value = await _getMetadata(c, ServerDocuments.metadataEntry(name));
+      if (value != null && value.trim().isNotEmpty) {
+        docs.add(ServerDocument(content: value, storage: ServerStorage.metadata));
+      }
+    }
+    // Also where METADATA works: copies written before it was enabled.
+    final folder = findDocumentsFolder(await _knownMailboxes());
+    if (folder != null) docs.addAll(await _folderDocuments(c, folder, name));
+    return docs;
+  });
+
+  @override
+  Future<ServerStorage> writeDocument(String name, String content, {List<ServerDocument> replaces = const []}) =>
+      _run((c) async {
+        _checkDocumentsSupported(c);
+        final entry = ServerDocuments.metadataEntry(name);
+        final folderCopies = [
+          for (final d in replaces)
+            if (d.storage == ServerStorage.folder && d.ref != null) d.ref!,
+        ];
+        if (_metadataUsable(c) && await _setMetadata(c, entry, content)) {
+          await _deleteCopies(c, folderCopies);
+          return ServerStorage.metadata;
+        }
+        final folder = await _documentsFolder(c);
+        final message = buildDocumentMessage(
+          name,
+          content,
+          address: account.email,
+          date: DateTime.now(),
+          messageId:
+              '${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}.'
+              '${math.Random.secure().nextInt(1 << 32).toRadixString(36)}@loupe.invalid',
+        );
+        await c.append(folder.path, message, const [r'\Seen']);
+        await _deleteCopies(c, folderCopies);
+        // A METADATA copy merged into this one (too large for METADATA now)
+        // must go, or its entries would come back.
+        if (c.supportsServerMetadata && replaces.any((d) => d.storage == ServerStorage.metadata)) {
+          await _setMetadata(c, entry, null);
+        }
+        return ServerStorage.folder;
+      });
+
+  /// The value of a server annotation; null when unset or when the server
+  /// refuses METADATA after all (then documents use the folder).
+  Future<String?> _getMetadata(ImapConnection c, String entry) async {
+    try {
+      var r = await c.send(Command(getMetadataCommand('""', [entry])), MetadataParser());
+      final long = r.longEntries;
+      if (r[entry] == null && long != null) {
+        if (long > maxDocumentSize) {
+          throw MailException(MailErrorKind.server, 'The stored document is too large ($long bytes).');
+        }
+        r = await c.send(Command(getMetadataCommand('""', [entry], maxSize: long)), MetadataParser());
+      }
+      return r[entry];
+    } on MailException catch (e) {
+      if (e.kind != MailErrorKind.server || e.message.startsWith('The stored document')) rethrow;
+      _metadataRefused = true;
+      return null;
+    }
+  }
+
+  /// Sets (or with null, removes) a server annotation. Returns false when
+  /// the server refuses; unless the value was just too large, METADATA is
+  /// then given up for this connection.
+  Future<bool> _setMetadata(ImapConnection c, String entry, String? value) async {
+    final command = setMetadataCommand('""', entry, value);
+    try {
+      final literal = command.literal;
+      if (literal == null) {
+        await c.send(Command(command.head), GenericParser());
+      } else {
+        await c.sendLiteral(command.head, literal, command.tail, GenericParser());
+      }
+      return true;
+    } on MailException catch (e) {
+      if (e.kind != MailErrorKind.server) rethrow;
+      if (metadataRefusal(e.message).$1 != MetadataRefusal.maxSize) _metadataRefused = true;
+      return false;
+    }
+  }
+
+  /// Copies of document [name] in the documents folder, oldest first.
+  Future<List<ServerDocument>> _folderDocuments(ImapConnection c, RemoteMailbox folder, String name) async {
+    final sel = await c.select(folder.path);
+    if (sel.exists == 0) return const [];
+    final validity = sel.uidValidity ?? 0;
+    final lo = math.max(1, sel.exists - maxDocumentMessages + 1);
+    final heads = await c.send(
+      Command('FETCH $lo:${sel.exists} (UID BODY.PEEK[HEADER.FIELDS (${ServerDocuments.header.toUpperCase()})])'),
+      FetchParser(),
+    );
+    final uids = [
+      for (final m in heads.messages)
+        if (m.uid != null &&
+            headerValue(
+                  parseHeaderBlock(m.sections['HEADER.FIELDS'] ?? Uint8List(0)),
+                  ServerDocuments.header,
+                )?.trim() ==
+                name)
+          m.uid!,
+    ]..sort();
+    if (uids.isEmpty) return const [];
+    final bodies = await c.send(
+      Command('UID FETCH ${formatSequenceSet(uids)} (UID BODY.PEEK[HEADER] BODY.PEEK[TEXT])'),
+      FetchParser(),
+      timeout: _longTimeout,
+    );
+    final byUid = {for (final m in bodies.messages) m.uid: m};
+    return [
+      for (final uid in uids)
+        if (byUid[uid] case final m?)
+          if (readDocumentMessage(name, m.sections['HEADER'] ?? Uint8List(0), m.sections['TEXT'] ?? Uint8List(0))
+              case final content? when content.isNotEmpty)
+            ServerDocument(content: content, storage: ServerStorage.folder, ref: _id(folder.path, validity, uid)),
+    ];
+  }
+
+  /// The documents folder, created (unsubscribed) when missing: at the top
+  /// level, or under INBOX on servers that keep every folder there.
+  Future<RemoteMailbox> _documentsFolder(ImapConnection c) async {
+    final known = findDocumentsFolder(await _knownMailboxes()) ?? findDocumentsFolder(await listMailboxes());
+    if (known != null) return known;
+    final delimiter = (await c.send(Command('LIST "" ""'), ListParser())).firstOrNull?.delimiter;
+    const name = ServerDocuments.folderName;
+    MailException? refused;
+    for (final path in [name, if (delimiter != null && delimiter.isNotEmpty) 'INBOX$delimiter$name']) {
+      try {
+        await c.send(Command('CREATE ${c.mailboxArg(path)}'), GenericParser());
+      } on MailException catch (e) {
+        if (e.kind != MailErrorKind.server) rethrow;
+        if (!e.message.contains('[ALREADYEXISTS]')) {
+          refused = e;
+          continue;
+        }
+      }
+      final created = findDocumentsFolder(await listMailboxes());
+      if (created != null) return created;
+    }
+    throw MailException(
+      MailErrorKind.server,
+      'Couldn’t create the “$name” folder${refused == null ? '' : ': ${refused.message}'}',
+      refused,
+    );
+  }
+
+  /// Deletes folder copies of a document; copies already gone (or from an
+  /// earlier UIDVALIDITY) are skipped.
+  Future<void> _deleteCopies(ImapConnection c, List<String> emailIds) async {
+    final ours = [
+      for (final id in emailIds)
+        if (MailIds.parseImapEmail(id)?.accountId == accountId) id,
+    ];
+    for (final refs in _group(ours).values) {
+      try {
+        await _selectChecked(c, refs.first.id);
+      } on MailException catch (e) {
+        if (e.kind == MailErrorKind.notFound) continue;
+        rethrow;
+      }
+      final set = formatSequenceSet(_uids(refs));
+      await c.send(Command('UID STORE $set +FLAGS.SILENT (\\Deleted)'), GenericParser());
+      await _expunge(c, set);
+    }
   }
 
   // Watch --------------------------------------------------------------------

@@ -372,7 +372,8 @@ class _AccountSection extends ConsumerWidget {
     final collapsed = ref.watch(collapsedAccountsProvider).contains(account.id);
     final expanded = ref.watch(expandedFoldersProvider);
     final mailboxes = (ref.watch(mailboxesProvider).value ?? const <Mailbox>[])
-        .where((m) => m.accountId == account.id)
+        // The Loupe Settings folder holds Smart Mailboxes, not mail.
+        .where((m) => m.accountId == account.id && !ServerDocuments.isFolder(m))
         .toList();
     final v = _visibility(ref);
     final showAll = ref.watch(showAllFoldersProvider).contains(account.id);
