@@ -124,6 +124,15 @@ void main() {
       expect(find.byType(NoMessageSelected), findsOneWidget);
     });
 
+    testWidgets('Back closes the conversation before leaving the app', (tester) async {
+      await pumpAppOn(tester, threeConversations(), size: wide);
+      await openRow(tester, 'Lunch plans');
+      final handled = await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      expect(handled, isTrue);
+      expect(shownMessage(tester), isNull);
+    });
+
     testWidgets('/ focuses the list’s search field, letters then type, and Esc leaves search', (tester) async {
       final repo = threeConversations();
       await pumpAppOn(tester, repo, size: wide);

@@ -314,13 +314,15 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
   }
 
   /// Scrolls [row] (at [index]) into view, jumping near it first when it
-  /// isn't built yet.
+  /// isn't built yet; a row already in view stays put.
   void _reveal(ThreadSummary row, int index) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       final ctx = _rowKeys[row.threadId]?.currentContext;
       if (ctx != null) {
-        unawaited(Scrollable.ensureVisible(ctx, duration: const Duration(milliseconds: 120), alignment: 0.5));
+        if (!_inView(ctx)) {
+          unawaited(Scrollable.ensureVisible(ctx, duration: const Duration(milliseconds: 120), alignment: 0.5));
+        }
         return;
       }
       final scroll = _scroll;
@@ -333,6 +335,16 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
         if (mounted && ctx != null) unawaited(Scrollable.ensureVisible(ctx, alignment: 0.5));
       });
     });
+  }
+
+  /// Whether the row at [ctx] is clear of the title bar and the toolbar.
+  bool _inView(BuildContext ctx) {
+    final row = ctx.findRenderObject();
+    final view = Scrollable.maybeOf(ctx)?.context.findRenderObject();
+    if (row is! RenderBox || view is! RenderBox || !row.hasSize || !view.hasSize) return false;
+    final top = row.localToGlobal(Offset.zero, ancestor: view).dy;
+    final bar = MediaQuery.paddingOf(context).top + LoupeTitleBar.heightOf(context) + searchBarExtent(context);
+    return top >= bar && top + row.size.height <= view.size.height;
   }
 
   /// Marks every unread message of this mailbox read (those on the phone).

@@ -80,7 +80,7 @@ const shortcutTable = [
   ShortcutEntry('General', 'New Message', MailCommand.newMessage, [KeyCombo(LogicalKeyboardKey.keyN, primary: true)]),
   ShortcutEntry('General', 'Command Palette', MailCommand.palette, [KeyCombo(LogicalKeyboardKey.keyK, primary: true)]),
   ShortcutEntry('General', 'Search', MailCommand.search, [
-    KeyCombo(LogicalKeyboardKey.slash),
+    KeyCombo.char('/'),
     KeyCombo(LogicalKeyboardKey.keyF, primary: true),
   ]),
   ShortcutEntry('General', 'Keyboard Shortcuts', MailCommand.shortcuts, [

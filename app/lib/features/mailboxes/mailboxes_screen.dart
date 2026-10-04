@@ -264,10 +264,10 @@ class _MailboxTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final colors = LoupeColors.of(context);
     final inPane = !editing && MailPaneScope.maybeOf(context)?.pane == MailPane.mailboxes;
-    final selected =
-        inPane && target != null && ref.watch(mailSelectionProvider.select((s) => s.listOrDefault)) == target;
+    if (!inPane) return _row(context);
+    final colors = LoupeColors.of(context);
+    final selected = target != null && ref.watch(mailSelectionProvider.select((s) => s.listOrDefault)) == target;
     Widget tile(bool hovering) => Ink(
       color: hovering
           ? colors.unreadDot.withValues(alpha: 0.18)
@@ -277,7 +277,7 @@ class _MailboxTile extends ConsumerWidget {
       child: _row(context),
     );
     final drop = dropMailbox;
-    if (!inPane || drop == null) return tile(false);
+    if (drop == null) return tile(false);
     return MailboxDropTarget(mailbox: drop, builder: (context, hovering) => tile(hovering));
   }
 

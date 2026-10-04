@@ -255,9 +255,10 @@ class _MailHomeState extends ConsumerState<MailHome> with CommandScopeState<Mail
     final notifier = ref.read(paneWidthsProvider.notifier);
 
     return PopScope(
-      canPop: !_sidebarOpen,
+      // Back closes the sidebar, then the conversation, as Esc does.
+      canPop: !_sidebarOpen && messageId == null,
       onPopInvokedWithResult: (didPop, _) {
-        if (!didPop && _sidebarOpen) setState(() => _sidebarOpen = false);
+        if (!didPop) run(MailCommand.back);
       },
       child: Scaffold(
         // Each pane is a Scaffold of its own; this one holds the snack bars

@@ -115,6 +115,20 @@ void main() {
       await tester.pumpAndSettle();
     });
 
+    testWidgets('Mark All as Read marks the list’s unread messages', (tester) async {
+      final repo = threeConversations();
+      await pumpAppOn(tester, repo, size: wide);
+      await openPalette(tester);
+      await type(tester, 'mark all');
+      await press(tester, LogicalKeyboardKey.enter);
+      final call = repo.keywordCalls.last;
+      expect(call.ids, unorderedEquals(['m1', 'm2']));
+      expect(call.add, {Keywords.seen});
+      expect(find.text('Marked 2 messages as read'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 5));
+      await tester.pumpAndSettle();
+    });
+
     testWidgets('jumps to a mailbox, which is then first next time', (tester) async {
       await pumpAppOn(tester, threeConversations(), size: wide);
       await openPalette(tester);

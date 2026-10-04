@@ -77,9 +77,13 @@ class _CommandPaletteState extends ConsumerState<CommandPalette> {
     }
   }
 
+  bool _picked = false;
+
   void _pick([int? index]) {
     final i = index ?? _highlight;
-    if (i < 0 || i >= _shown.length) return;
+    // Enter can arrive as a key and as the keyboard's Search action.
+    if (_picked || i < 0 || i >= _shown.length) return;
+    _picked = true;
     unawaited(HapticFeedback.selectionClick());
     Navigator.of(context).pop(_shown[i]);
   }
