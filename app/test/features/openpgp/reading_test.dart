@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,6 +16,14 @@ import '../../helpers.dart';
 import '../conversation/fake_mail_repository.dart';
 import '../conversation/test_app.dart';
 import 'openpgp_test_support.dart';
+
+final class _KeyAttachmentRepository extends FakeMailRepository {
+  _KeyAttachmentRepository(this.key, {super.emails, super.contents});
+  final Uint8List key;
+
+  @override
+  Future<Uint8List> loadAttachment(String emailId, String partId) async => key;
+}
 
 Future<String> demoId(DemoMailRepository repo, bool Function(EmailSummary) test) async {
   final rows = await repo
@@ -133,5 +143,36 @@ void main() {
       await tester.pumpAndSettle();
       expect(textContaining('Only for you.'), findsWidgets);
     });
+  });
+
+  testWidgets('an attached public key can be imported from the message', (tester) async {
+    final bob = testKey('Bob Builder <bob@example.org>');
+    final storage = await keychainWith();
+    final repo = _KeyAttachmentRepository(
+      Uint8List.fromList(utf8.encode(pgp.armor(pgp.publicKey(bob)))),
+      emails: [testEmail('k1', subject: 'My key')],
+      contents: {
+        'k1': const EmailContent(
+          emailId: 'k1',
+          text: 'Here is my key.',
+          attachments: [
+            Attachment(partId: '2', mimeType: 'application/pgp-keys', filename: 'OpenPGP_0xFBFCC82A015E7330.asc'),
+          ],
+        ),
+      },
+    );
+    final router = await pumpTestApp(tester, repository: repo, overrides: [inlinePgp, keychain(storage)]);
+    unawaited(router.push('/message/k1'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('An OpenPGP key is attached.'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('import-attached-key')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Import and Accept'));
+    await tester.pumpAndSettle();
+    final keyring = Keyring(storage, prefix: 'loupe.openpgp');
+    final entry = (await keyring.load()).publicEntry(bob.fingerprint)!;
+    expect((entry.acceptance, entry.source), (KeyAcceptance.unverified, KeySource.attachment));
+    await tester.pump(const Duration(seconds: 5));
   });
 }

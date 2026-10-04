@@ -9,6 +9,7 @@ import '../../shared/avatar.dart';
 import '../../shared/format.dart';
 import '../../shared/tags.dart';
 import '../../theme/theme.dart';
+import '../openpgp/key_import.dart';
 import '../openpgp/pgp_status.dart';
 import 'attachments.dart';
 import 'auth_results.dart';
@@ -366,6 +367,7 @@ class _MessageCardState extends State<MessageCard> {
           ),
         ),
         AttachmentList(content: content, load: widget.loadAttachment),
+        PgpKeyAttachments(content: content, load: widget.loadAttachment),
       ],
     );
   }
