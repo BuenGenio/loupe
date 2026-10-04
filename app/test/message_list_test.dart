@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/router.dart';
@@ -6,8 +7,35 @@ import 'package:loupe/theme/loupe_icons.dart';
 
 import 'helpers.dart';
 
+/// Demo mail whose older pages fail to load with a database error.
+class _OlderFails extends DemoMailRepository {
+  _OlderFails() : super(latency: DemoLatency.zero, clock: () => testNow);
+
+  var calls = 0;
+
+  @override
+  Future<bool> loadOlder(MailboxRef ref) async {
+    calls++;
+    throw StateError('database is locked');
+  }
+}
+
 void main() {
   const allInboxes = VirtualMailboxRef(VirtualMailbox.allInboxes);
+
+  testWidgets('a failure loading older mail ends the spinner with a message', (tester) async {
+    final repo = _OlderFails();
+    await pumpLoupe(tester, repository: repo);
+    await goTo(tester, Routes.list(allInboxes));
+    await tester.fling(find.byType(Scrollable).first, const Offset(0, -5000), 3000);
+    await tester.pumpAndSettle();
+    expect(repo.calls, 1);
+    expect(find.text('Couldn’t load older mail.'), findsOneWidget);
+    await tester.fling(find.byType(Scrollable).first, const Offset(0, -2000), 3000);
+    await tester.pumpAndSettle();
+    expect(repo.calls, 1, reason: 'no retry loop at the bottom');
+    await drainTimers(tester);
+  });
 
   testWidgets('a full swipe left archives the conversation and removes the row', (tester) async {
     final repo = await pumpLoupe(tester);

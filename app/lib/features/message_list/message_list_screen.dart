@@ -178,6 +178,13 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
       more = await ref.read(repositoryProvider).loadOlder(widget.mailboxRef);
     } on MailException catch (e) {
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+    } on Object catch (e) {
+      // Not the server's (the database): the spinner must still go, as after
+      // a server error.
+      debugPrint('Loading older mail failed: ${e.runtimeType}');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Couldn’t load older mail.')));
+      }
     }
     if (!mounted) return;
     setState(() {

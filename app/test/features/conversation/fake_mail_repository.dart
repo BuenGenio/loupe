@@ -46,6 +46,9 @@ class FakeMailRepository implements MailRepository {
   /// Thrown by loadContent when set.
   Object? contentError;
 
+  /// Fails search and loadOlder with this when set.
+  Object? searchError;
+
   /// Raw sources by email id; others get a small generated message.
   final rawSources = <String, String>{};
 
@@ -162,7 +165,7 @@ class FakeMailRepository implements MailRepository {
   }) => _watch(() => const []);
 
   @override
-  Future<bool> loadOlder(MailboxRef ref) async => false;
+  Future<bool> loadOlder(MailboxRef ref) async => searchError == null ? false : throw searchError!;
 
   @override
   Future<void> refresh({MailboxRef? ref}) async {}
@@ -257,7 +260,8 @@ class FakeMailRepository implements MailRepository {
   // Search -------------------------------------------------------------------
 
   @override
-  Stream<SearchResults> search(SearchRequest request) => _watch(() => const SearchResults(items: []));
+  Stream<SearchResults> search(SearchRequest request) =>
+      searchError == null ? _watch(() => const SearchResults(items: [])) : Stream.error(searchError!);
 
   // Compose ------------------------------------------------------------------
 
