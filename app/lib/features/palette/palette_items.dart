@@ -299,6 +299,15 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
     ..add(setting('swipes', 'Swipe Actions', Routes.swipeSettings, icon: LoupeIcons.swipeActions))
     ..add(setting('notifications', 'Notifications', Routes.notificationSettings, icon: LoupeIcons.notifications))
     ..add(setting('rules', 'Rules', Routes.rules, icon: LoupeIcons.rules))
+    ..add(
+      setting(
+        'encryption',
+        'End-to-End Encryption',
+        Routes.encryption,
+        icon: LoupeIcons.e2ee,
+        keywords: const ['openpgp', 'pgp', 'keys'],
+      ),
+    )
     ..add(setting('advanced', 'Advanced', Routes.advancedSettings, icon: LoupeIcons.serverSettings))
     ..add(setting('addAccount', 'Add Account', Routes.addAccount, icon: LoupeIcons.add));
   for (final a in accounts) {
