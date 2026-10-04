@@ -51,7 +51,10 @@ class FakeMailRepository implements MailRepository {
         controller.add(read());
         sub = _changes.stream.listen((_) => controller.add(read()));
       },
-      onCancel: () => sub?.cancel(),
+      // Returns nothing: a cancel future would complete outside fake async.
+      onCancel: () {
+        sub?.cancel();
+      },
     );
     return controller.stream;
   }
