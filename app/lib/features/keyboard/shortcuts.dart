@@ -33,11 +33,15 @@ final class KeyCombo {
 
   bool get modified => primary;
 
-  List<ShortcutActivator> get activators {
+  /// The activators; held down, they fire again only with [repeats].
+  List<ShortcutActivator> activators({bool repeats = false}) {
     final key = this.key;
-    if (key == null) return [CharacterActivator(character!)];
-    if (!primary) return [SingleActivator(key, shift: shift)];
-    return [SingleActivator(key, control: true, shift: shift), SingleActivator(key, meta: true, shift: shift)];
+    if (key == null) return [CharacterActivator(character!, includeRepeats: repeats)];
+    if (!primary) return [SingleActivator(key, shift: shift, includeRepeats: repeats)];
+    return [
+      SingleActivator(key, control: true, shift: shift, includeRepeats: repeats),
+      SingleActivator(key, meta: true, shift: shift, includeRepeats: repeats),
+    ];
   }
 
   /// The keys as shown on this platform: "⇧⌘R" on Apple, "Ctrl+Shift+R" elsewhere.
@@ -128,11 +132,16 @@ const shortcutTable = [
   ShortcutEntry('Compose', 'Close (Save or Delete Draft)', MailCommand.back, [KeyCombo(LogicalKeyboardKey.escape)]),
 ];
 
-/// The key bindings of [shortcutTable].
+/// The key bindings of [shortcutTable]. Only moving through the list
+/// repeats while a key is held: holding E mustn't archive one conversation
+/// after another.
 Map<ShortcutActivator, Intent> mailShortcuts() => {
   for (final entry in shortcutTable)
     for (final combo in entry.combos)
-      for (final activator in combo.activators) activator: MailIntent(entry.command, modified: combo.modified),
+      for (final activator in combo.activators(
+        repeats: entry.command == MailCommand.nextMessage || entry.command == MailCommand.previousMessage,
+      ))
+        activator: MailIntent(entry.command, modified: combo.modified),
 };
 
 /// Whether keys are shown the Apple way (⌘, ⇧).

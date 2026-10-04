@@ -45,6 +45,29 @@ void main() {
       await drain(tester);
     });
 
+    testWidgets('holding E archives once; holding J keeps moving', (tester) async {
+      final repo = threeConversations();
+      await pumpAppOn(tester, repo, size: wide);
+      await openRow(tester, 'Lunch plans');
+      await tester.sendKeyDownEvent(LogicalKeyboardKey.keyE);
+      await tester.sendKeyRepeatEvent(LogicalKeyboardKey.keyE);
+      await tester.sendKeyRepeatEvent(LogicalKeyboardKey.keyE);
+      await tester.sendKeyUpEvent(LogicalKeyboardKey.keyE);
+      await tester.pumpAndSettle();
+      expect(repo.log.where((l) => l.startsWith('archive')), ['archive [m1]']);
+
+      await press(tester, LogicalKeyboardKey.keyK);
+      expect(shownMessage(tester), 'm1');
+      await tester.sendKeyDownEvent(LogicalKeyboardKey.keyJ);
+      await tester.pumpAndSettle();
+      await tester.sendKeyRepeatEvent(LogicalKeyboardKey.keyJ);
+      await tester.pumpAndSettle();
+      await tester.sendKeyUpEvent(LogicalKeyboardKey.keyJ);
+      await tester.pumpAndSettle();
+      expect(shownMessage(tester), 'm3');
+      await drain(tester);
+    });
+
     testWidgets('Delete and Backspace move to Trash', (tester) async {
       final repo = threeConversations();
       await pumpAppOn(tester, repo, size: wide);
