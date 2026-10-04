@@ -25,6 +25,7 @@ Future<GoRouter> pumpTestApp(
   Widget Function(ComposeArgs args)? composeBuilder,
   Widget home = const Scaffold(body: Center(child: Text('home'))),
   List<RouteBase> extraRoutes = const [],
+  ScrollBehavior? scrollBehavior,
 }) async {
   SharedPreferences.setMockInitialValues(prefs);
   final sharedPrefs = await SharedPreferences.getInstance();
@@ -66,7 +67,7 @@ Future<GoRouter> pumpTestApp(
         setupRepositoryProvider.overrideWith((ref) async => repository),
         sharedPreferencesProvider.overrideWithValue(sharedPrefs),
       ],
-      child: MaterialApp.router(theme: LoupeTheme.light(), routerConfig: router),
+      child: MaterialApp.router(theme: LoupeTheme.light(), scrollBehavior: scrollBehavior, routerConfig: router),
     ),
   );
   await tester.pumpAndSettle();

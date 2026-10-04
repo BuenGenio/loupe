@@ -37,6 +37,9 @@ class FakeMailRepository implements MailRepository {
   /// Thrown by loadContent when set.
   Object? contentError;
 
+  /// Raw sources by email id; others get a small generated message.
+  final rawSources = <String, String>{};
+
   final _changes = StreamController<void>.broadcast();
 
   void _changed() => _changes.add(null);
@@ -187,7 +190,8 @@ class FakeMailRepository implements MailRepository {
   @override
   Future<Uint8List> loadRawSource(String emailId) async {
     log.add('loadRawSource $emailId');
-    return Uint8List.fromList(utf8.encode('From: alice@example.com\r\nSubject: Hello\r\n\r\nRaw body of $emailId\r\n'));
+    final raw = rawSources[emailId] ?? 'From: alice@example.com\r\nSubject: Hello\r\n\r\nRaw body of $emailId\r\n';
+    return Uint8List.fromList(utf8.encode(raw));
   }
 
   // Actions ------------------------------------------------------------------
