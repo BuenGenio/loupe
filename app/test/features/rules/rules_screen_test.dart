@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/router.dart';
@@ -177,5 +179,18 @@ void main() {
     await tester.pumpAndSettle();
     expect([for (final r in await _rules(repo)) r.id], isNot(contains('demo-receipts')));
     await drainTimers(tester);
+  });
+
+  testWidgets('Make This a Rule from the search menu fills in the query', (tester) async {
+    await pumpLoupe(tester);
+    await goTo(tester, Routes.search('lisbon'));
+    await tester.tap(find.bySemanticsLabel('Search Menu'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Make This a Rule'));
+    await tester.pumpAndSettle();
+    expect(find.text('New Rule'), findsOneWidget);
+    final field = tester.widget<TextField>(find.byKey(const ValueKey('rule-condition')));
+    expect(field.controller!.text, 'lisbon');
+    expect(find.byType(CupertinoSlidingSegmentedControl<RuleLocation>), findsOneWidget);
   });
 }
