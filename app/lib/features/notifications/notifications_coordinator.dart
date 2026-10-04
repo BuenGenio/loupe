@@ -66,9 +66,10 @@ class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordina
   }
 
   /// Notifications are a side show: a failure here never reaches the user.
+  /// (A microtask, not a timer: nothing is left pending when the app goes.)
   static void _safely(Future<void> Function() work) {
     unawaited(
-      Future(work).catchError((Object e) {
+      Future.microtask(work).catchError((Object e) {
         debugPrint('Notifications: $e');
       }),
     );

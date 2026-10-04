@@ -781,7 +781,7 @@ final class LiveMailRepository implements MailRepository {
       final account =
           await store.getAccount(entry.accountId) ??
           (throw const MailException(MailErrorKind.notFound, 'This account no longer exists'));
-      final identity = account.identities.where((i) => i.id == m.identityId).firstOrNull ?? account.defaultIdentity;
+      final identity = account.identityById(m.identityId);
       final bytes = transports.composer.compose(m, identity, messageId: newMessageId(identity.email), date: _now());
       final recipients = {
         for (final a in [...m.to, ...m.cc, ...m.bcc]) a.email,
@@ -858,7 +858,7 @@ final class LiveMailRepository implements MailRepository {
     final drafts =
         await store.mailboxByRole(account.id, MailboxRole.drafts) ??
         (throw const MailException(MailErrorKind.notFound, 'This account has no Drafts folder.'));
-    final identity = account.identities.where((i) => i.id == message.identityId).firstOrNull ?? account.defaultIdentity;
+    final identity = account.identityById(message.identityId);
     final messageId = newMessageId(identity.email);
     final now = _now();
     final bytes = transports.composer.compose(message, identity, messageId: messageId, date: now);
