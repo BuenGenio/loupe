@@ -7,12 +7,17 @@ import 'package:mail_model/mail_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../providers.dart';
+import '../openpgp/content_loader.dart';
 import 'attachment_type.dart';
 
 /// The cache of the active repository. A new repository (demo ↔ live)
 /// starts a new, empty cache.
 final attachmentCacheProvider = Provider<AttachmentCache>(
-  (ref) => AttachmentCache(repository: ref.watch(repositoryProvider)),
+  (ref) => AttachmentCache(
+    repository: ref.watch(repositoryProvider),
+    // Decrypted OpenPGP messages serve their attachments themselves.
+    loadAttachment: ref.watch(contentLoaderProvider).loadAttachment,
+  ),
 );
 
 /// A file name that is safe on disk and keeps its extension: no path
@@ -59,9 +64,12 @@ class AttachmentCache {
     Future<Directory?> Function()? directory,
     this.memoryLimit = 64 << 20,
     this.diskLimit = 512 << 20,
-  }) : _directory = directory ?? _defaultDirectory;
+    Future<Uint8List> Function(String emailId, String partId)? loadAttachment,
+  }) : _directory = directory ?? _defaultDirectory,
+       _load = loadAttachment ?? repository.loadAttachment;
 
   final MailRepository repository;
+  final Future<Uint8List> Function(String emailId, String partId) _load;
   final int memoryLimit;
   final int diskLimit;
   final Future<Directory?> Function() _directory;
@@ -116,7 +124,7 @@ class AttachmentCache {
     }
     final pending = _pending[key];
     if (pending != null) return pending;
-    final load = _download(key, attachment, download ?? () => repository.loadAttachment(emailId, attachment.partId));
+    final load = _download(key, attachment, download ?? () => _load(emailId, attachment.partId));
     _pending[key] = load;
     try {
       return await load;

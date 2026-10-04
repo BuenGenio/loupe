@@ -150,6 +150,24 @@ abstract final class LoupeIcons {
   static const IconData redirect = FluentIcons.arrow_routing_24_regular;
   static const IconData openDirectly = FluentIcons.link_24_regular;
 
+  // End-to-end encryption (OpenPGP) -------------------------------------------
+
+  static const IconData encrypted = FluentIcons.lock_closed_24_filled;
+  static const IconData encryptOff = FluentIcons.lock_open_24_regular;
+  static const IconData encryptOn = FluentIcons.lock_closed_24_regular;
+
+  /// A good signature: Apple Mail's seal.
+  static const IconData signed = FluentIcons.checkmark_starburst_24_filled;
+  static const IconData signOff = FluentIcons.checkmark_starburst_24_regular;
+  static const IconData signatureInvalid = FluentIcons.shield_error_24_filled;
+  static const IconData unknownKey = FluentIcons.question_circle_24_regular;
+  static const IconData e2ee = FluentIcons.lock_shield_24_regular;
+  static const IconData pgpKey = FluentIcons.key_24_regular;
+  static const IconData pgpKeys = FluentIcons.key_multiple_24_regular;
+  static const IconData importKey = FluentIcons.arrow_import_24_regular;
+  static const IconData exportKey = FluentIcons.arrow_export_24_regular;
+  static const IconData fingerprint = FluentIcons.fingerprint_24_regular;
+
   // Importing accounts ------------------------------------------------------
 
   static const IconData qrCode = FluentIcons.qr_code_24_regular;

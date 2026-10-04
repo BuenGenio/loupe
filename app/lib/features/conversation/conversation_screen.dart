@@ -13,6 +13,8 @@ import '../../settings/app_settings.dart';
 import '../../shared/mail_actions.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
+import '../openpgp/content_loader.dart';
+import '../openpgp/pgp_status.dart';
 import 'mail_streams.dart';
 import 'mailbox_picker.dart';
 import 'message_actions.dart';
@@ -160,7 +162,8 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
     return m.where((e) => e.id == widget.emailId).firstOrNull ?? m.last;
   }
 
-  Future<EmailContent> _contentFor(EmailSummary m) => _content.putIfAbsent(m.id, () => _repo.loadContent(m.id));
+  Future<EmailContent> _contentFor(EmailSummary m) =>
+      _content.putIfAbsent(m.id, () => ref.read(contentLoaderProvider).loadContent(m.id));
 
   ReaderSettings _settingsFor(EmailSummary m, AppSettings app, ReaderPrefs prefs) {
     var s =
@@ -455,8 +458,9 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-            child: Text(
-              target.subject.trim().isEmpty ? '(no subject)' : target.subject,
+            child: ProtectedSubject(
+              subject: target.subject,
+              content: _expanded.contains(target.id) ? _contentFor(target) : null,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, fontSize: 22),
             ),
           ),
@@ -496,8 +500,11 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
                     });
                   },
                   onUseOriginal: () => setState(() => _forceOriginal.add(m.id)),
-                  onRetry: () => setState(() => _content.remove(m.id)),
-                  loadAttachment: (a) => _repo.loadAttachment(m.id, a.partId),
+                  // A block body: setState must not get the removed Future back.
+                  onRetry: () => setState(() {
+                    _content.remove(m.id);
+                  }),
+                  loadAttachment: (a) => ref.read(contentLoaderProvider).loadAttachment(m.id, a.partId),
                 ),
                 Divider(color: colors.separator),
               ],
