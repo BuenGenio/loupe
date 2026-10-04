@@ -177,6 +177,17 @@ final class ImapTransport implements MailTransport {
 
   Future<List<RemoteMailbox>> _knownMailboxes() async => _mailboxes ?? await listMailboxes();
 
+  @override
+  Future<void> setSubscribed(RemoteMailbox mailbox, bool subscribed) => _run((c) async {
+    try {
+      await c.send(Command(subscriptionCommand(c.mailboxArg(mailbox.path), subscribe: subscribed)), GenericParser());
+    } on MailException catch (e) {
+      if (e.kind != MailErrorKind.server || !e.message.contains('[NONEXISTENT]')) rethrow;
+      // A mailbox that is gone needs no unsubscribing.
+      if (subscribed) throw MailException(MailErrorKind.notFound, 'Folder “${mailbox.name}” no longer exists.', e);
+    }
+  });
+
   // Sync ---------------------------------------------------------------------
 
   @override

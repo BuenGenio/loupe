@@ -59,6 +59,7 @@ final class FakeMailbox {
   FakeMailbox(this.path, this.role);
   final String path;
   final MailboxRole role;
+  bool subscribed = true;
   int uidValidity = 1;
   int uidNext = 1;
   int modseq = 1;
@@ -350,8 +351,15 @@ final class FakeTransport implements MailTransport {
           name: mb.path.split('/').last,
           role: mb.role,
           parentPath: mb.path.contains('/') ? mb.path.substring(0, mb.path.lastIndexOf('/')) : null,
+          isSubscribed: mb.subscribed,
         ),
     ];
+  }
+
+  @override
+  Future<void> setSubscribed(RemoteMailbox mailbox, bool subscribed) async {
+    await _op('${subscribed ? 'subscribe' : 'unsubscribe'}:${mailbox.path}');
+    _box(mailbox).subscribed = subscribed;
   }
 
   MailboxSyncState _state(FakeMailbox mb, int oldest) =>

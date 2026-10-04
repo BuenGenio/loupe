@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_sync/mail_sync.dart';
 
 import 'data/repositories.dart';
+import 'features/notifications/app_icon_badge.dart';
 import 'router.dart';
 import 'settings/app_mode.dart';
 import 'settings/app_settings.dart';
@@ -27,7 +28,10 @@ class LoupeApp extends ConsumerWidget {
       themeMode: settings.themeMode,
       scrollBehavior: const LoupeScrollBehavior(),
       routerConfig: ref.watch(routerProvider),
-      builder: (context, child) => _SystemBars(child: _LiveGate(child: child ?? const SizedBox.shrink())),
+      builder: (context, child) => _SystemBars(
+        // The badge reads mail counts, so it waits behind the live gate.
+        child: _LiveGate(child: AppIconBadgeUpdater(child: child ?? const SizedBox.shrink())),
+      ),
     );
   }
 }

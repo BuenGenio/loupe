@@ -12,7 +12,7 @@ class FakeMailRepository implements MailRepository {
     List<EmailSummary>? emails,
     Map<String, EmailContent>? contents,
   }) : accounts = accounts ?? [testAccount],
-       mailboxes = mailboxes ?? testMailboxes,
+       mailboxes = [...mailboxes ?? testMailboxes],
        emails = [...?emails],
        contents = {...?contents};
 
@@ -36,6 +36,9 @@ class FakeMailRepository implements MailRepository {
 
   /// Thrown by loadContent when set.
   Object? contentError;
+
+  /// Raw sources by email id; others get a small generated message.
+  final rawSources = <String, String>{};
 
   final _changes = StreamController<void>.broadcast();
 
@@ -130,6 +133,15 @@ class FakeMailRepository implements MailRepository {
   );
 
   @override
+  Future<void> setMailboxSubscribed(String mailboxId, {required bool subscribed}) async {
+    log.add('setMailboxSubscribed $mailboxId $subscribed');
+    final i = mailboxes.indexWhere((m) => m.id == mailboxId);
+    if (i < 0) throw const MailException(MailErrorKind.notFound, 'No such mailbox');
+    mailboxes[i] = mailboxes[i].copyWith(isSubscribed: subscribed);
+    _changed();
+  }
+
+  @override
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts() => _watch(() => const {});
 
   @override
@@ -178,7 +190,8 @@ class FakeMailRepository implements MailRepository {
   @override
   Future<Uint8List> loadRawSource(String emailId) async {
     log.add('loadRawSource $emailId');
-    return Uint8List.fromList(utf8.encode('From: alice@example.com\r\nSubject: Hello\r\n\r\nRaw body of $emailId\r\n'));
+    final raw = rawSources[emailId] ?? 'From: alice@example.com\r\nSubject: Hello\r\n\r\nRaw body of $emailId\r\n';
+    return Uint8List.fromList(utf8.encode(raw));
   }
 
   // Actions ------------------------------------------------------------------

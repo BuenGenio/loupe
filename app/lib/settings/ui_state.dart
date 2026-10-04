@@ -48,6 +48,12 @@ final expandedFoldersProvider = NotifierProvider<PrefsStringSet, Set<String>>(
   () => PrefsStringSet('mailboxes.expandedFolders'),
 );
 
+/// Accounts whose unsubscribed folders show on the Mailboxes screen too
+/// (Show All Folders, in the account's settings). Off by default.
+final showAllFoldersProvider = NotifierProvider<PrefsStringSet, Set<String>>(
+  () => PrefsStringSet('mailboxes.showAllFolders'),
+);
+
 /// The criteria behind the Filter button (Unread by default).
 final filterCriteriaProvider = NotifierProvider<FilterCriteria, Set<QuickFilter>>(FilterCriteria.new);
 

@@ -114,6 +114,11 @@ abstract interface class MailTransport {
 
   Future<List<RemoteMailbox>> listMailboxes();
 
+  /// Subscribes to [mailbox] or unsubscribes from it (IMAP SUBSCRIBE /
+  /// UNSUBSCRIBE). Throws [MailException] of kind [MailErrorKind.notFound]
+  /// when the server no longer has the mailbox.
+  Future<void> setSubscribed(RemoteMailbox mailbox, bool subscribed);
+
   /// Brings a mailbox up to date. With [previous] null, fetches the newest
   /// [initialWindow] messages. Uses CONDSTORE/QRESYNC when available.
   Future<MailboxSyncResult> syncMailbox(RemoteMailbox mailbox, MailboxSyncState? previous, {int initialWindow = 200});

@@ -109,6 +109,46 @@ void main() {
       expect((await store.mailboxByRole(accountId, MailboxRole.sent))!.path, 'Sent');
       expect(await store.mailboxByRole(accountId, MailboxRole.trash), isNull);
     });
+
+    test('the subscription flag round-trips through the server list and the setter', () async {
+      final store = await seededStore();
+      await store.replaceMailboxes(accountId, [
+        ...standardMailboxes,
+        const RemoteMailbox(path: 'Lists', name: 'Lists', isSubscribed: false),
+        const RemoteMailbox(path: 'Lists/Dev', name: 'Dev', parentPath: 'Lists'),
+      ]);
+      Future<Map<String, bool>> flags() async => {
+        for (final m in await store.watchMailboxes(accountId: accountId).first) m.path: m.isSubscribed,
+      };
+      expect(await flags(), containsPair('Lists', false));
+      expect(await flags(), containsPair('Lists/Dev', true));
+      expect((await store.getMailbox(mbox('Work')))!.isSubscribed, isTrue);
+
+      final watched = store.watchMailboxes(accountId: accountId).skip(1).first;
+      expect(await store.setMailboxSubscribed(mbox('Work'), subscribed: false), isTrue);
+      expect((await watched).firstWhere((m) => m.path == 'Work').isSubscribed, isFalse);
+      // Unchanged and unknown mailboxes.
+      expect(await store.setMailboxSubscribed(mbox('Work'), subscribed: false), isFalse);
+      expect(await store.setMailboxSubscribed(mbox('Nope'), subscribed: true), isNull);
+
+      // The server's list wins again on the next sync.
+      await store.replaceMailboxes(accountId, standardMailboxes);
+      expect((await store.getMailbox(mbox('Work')))!.isSubscribed, isTrue);
+    });
+
+    test('unsynced mailboxes: subscribed ones and role holders, not Trash or Junk', () async {
+      final store = MailStore.memory();
+      await store.saveAccount(account());
+      await store.replaceMailboxes(accountId, [
+        for (final m in standardMailboxes)
+          RemoteMailbox(path: m.path, name: m.name, role: m.role, isSubscribed: m.role == MailboxRole.inbox),
+        const RemoteMailbox(path: 'Lists', name: 'Lists'),
+        const RemoteMailbox(path: 'Old', name: 'Old', isSubscribed: false),
+        const RemoteMailbox(path: 'Box', name: 'Box', isSelectable: false),
+      ]);
+      await store.applySync(mbox('INBOX'), added([]));
+      expect(await store.unsyncedMailboxIds(accountId), [mbox('Drafts'), mbox('Sent'), mbox('Archive'), mbox('Lists')]);
+    });
   });
 
   group('applySync', () {

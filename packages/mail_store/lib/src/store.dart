@@ -296,13 +296,28 @@ final class MailStore {
     }
   });
 
-  /// Selectable, subscribed mailboxes of [accountId] that never synced, in
-  /// display order; Trash and Junk are left for when they are opened.
+  /// Sets the subscription flag of [mailboxId] (optimistic: the server
+  /// catches up). Returns the previous value, or null if there is no such
+  /// mailbox.
+  Future<bool?> setMailboxSubscribed(String mailboxId, {required bool subscribed}) => _db.transaction(() async {
+    final row = await (_db.select(_db.mailboxes)..where((m) => m.id.equals(mailboxId))).getSingleOrNull();
+    if (row == null) return null;
+    if (row.isSubscribed != subscribed) {
+      await (_db.update(
+        _db.mailboxes,
+      )..where((m) => m.id.equals(mailboxId))).write(MailboxesCompanion(isSubscribed: Value(subscribed)));
+    }
+    return row.isSubscribed;
+  });
+
+  /// Selectable mailboxes of [accountId] that never synced, in display
+  /// order: subscribed ones and those holding a role. Trash and Junk are
+  /// left for when they are opened.
   Future<List<String>> unsyncedMailboxIds(String accountId) async {
     final rows = await _select(
       'SELECT m.id FROM mailboxes m LEFT JOIN sync_states s ON s.mailbox_id = m.id '
-      "WHERE m.account_id = ? AND m.is_selectable = 1 AND m.is_subscribed = 1 AND m.role NOT IN ('trash', 'junk') "
-      'AND s.mailbox_id IS NULL ORDER BY m.sort_order',
+      "WHERE m.account_id = ? AND m.is_selectable = 1 AND (m.is_subscribed = 1 OR m.role != 'none') "
+      "AND m.role NOT IN ('trash', 'junk') AND s.mailbox_id IS NULL ORDER BY m.sort_order",
       [accountId],
       {_db.mailboxes, _db.syncStates},
     ).get();

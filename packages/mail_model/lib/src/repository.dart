@@ -43,6 +43,11 @@ abstract interface class MailRepository {
   /// Mailboxes of one account, or of all accounts when [accountId] is null.
   Stream<List<Mailbox>> watchMailboxes({String? accountId});
 
+  /// Subscribes to a folder or unsubscribes from it on the server
+  /// (optimistic, like the actions below: [Mailbox.isSubscribed] changes at
+  /// once and the server catches up).
+  Future<void> setMailboxSubscribed(String mailboxId, {required bool subscribed});
+
   /// Unread counts of the virtual mailboxes.
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts();
 

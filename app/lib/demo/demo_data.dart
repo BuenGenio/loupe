@@ -197,7 +197,13 @@ final class DemoSeed {
       ),
     ]);
 
-    void box(String account, String path, {MailboxRole role = MailboxRole.none, bool selectable = true}) {
+    void box(
+      String account,
+      String path, {
+      MailboxRole role = MailboxRole.none,
+      bool selectable = true,
+      bool subscribed = true,
+    }) {
       final slash = path.lastIndexOf('/');
       mailboxes.add(
         Mailbox(
@@ -208,6 +214,7 @@ final class DemoSeed {
           role: role,
           parentId: slash < 0 ? null : MailIds.mailbox(account, path.substring(0, slash)),
           isSelectable: selectable,
+          isSubscribed: subscribed,
           sortOrder: mailboxes.length,
         ),
       );
@@ -250,8 +257,12 @@ final class DemoSeed {
     box(f, 'Trash', role: MailboxRole.trash);
     box(f, 'Lists');
     box(f, 'Lists/Open Garden');
+    // Not subscribed: hidden unless Show All Folders is on (Settings › account).
+    box(f, 'Lists/Retired', subscribed: false);
     box(f, 'Newsletters');
     box(f, 'Receipts');
+    box(f, 'Old Mail', subscribed: false);
+    box(f, 'Old Mail/Taxes');
   }
 
   // Helpers ---------------------------------------------------------------------

@@ -34,6 +34,9 @@ abstract final class OpType {
 
   /// `{mailboxId, data (base64), keywords, placeholderId?, kind}`
   static const append = 'append';
+
+  /// `{mailboxId, name, subscribed, previous}`
+  static const subscribe = 'subscribe';
 }
 
 /// One server search's hits (post-filtered) and the ids that were not
@@ -181,6 +184,7 @@ final class AccountSyncer {
         role: m.role,
         parentPath: m.parentId == null ? null : MailIds.parseMailbox(m.parentId!).$2,
         isSelectable: m.isSelectable,
+        isSubscribed: m.isSubscribed,
       );
 
   Future<RemoteMailbox?> remoteForId(String mailboxId) async {
@@ -215,7 +219,7 @@ final class AccountSyncer {
     final firstSync = _lastSuccess == null;
     _setStatus(SyncPhase.syncing);
     try {
-      final remote = await onMain((t) => t.listMailboxes());
+      final remote = await _withPendingSubscriptions(await onMain((t) => t.listMailboxes()));
       await _store.replaceMailboxes(_account.id, remote);
       _remote
         ..clear()
@@ -242,7 +246,33 @@ final class AccountSyncer {
     }
   }
 
-  /// Inbox first, then Sent, Drafts and Archive, then mailboxes opened before.
+  /// The server's mailbox list with still-queued subscription changes
+  /// applied, so a sync doesn't undo them before they reach the server.
+  Future<List<RemoteMailbox>> _withPendingSubscriptions(List<RemoteMailbox> remote) async {
+    final pending = <String, bool>{
+      for (final op in await _store.pendingOps(accountId: _account.id))
+        if (op.type == OpType.subscribe) op.payload['mailboxId']! as String: op.payload['subscribed']! as bool,
+    };
+    if (pending.isEmpty) return remote;
+    return [
+      for (final m in remote)
+        switch (pending[MailIds.mailbox(_account.id, m.path)]) {
+          final subscribed? when subscribed != m.isSubscribed => RemoteMailbox(
+            path: m.path,
+            name: m.name,
+            role: m.role,
+            parentPath: m.parentPath,
+            isSelectable: m.isSelectable,
+            isSubscribed: subscribed,
+          ),
+          _ => m,
+        },
+    ];
+  }
+
+  /// Inbox first, then Sent, Drafts and Archive, then mailboxes opened in
+  /// this session and those synced before that are still subscribed (or
+  /// hold a role). Unsubscribed folders sync only while the user opens them.
   Future<List<Mailbox>> _mailboxesForFullSync() async {
     final all = [
       for (final m in await _store.getMailboxes(accountId: _account.id))
@@ -259,7 +289,8 @@ final class AccountSyncer {
     add(byRole(MailboxRole.drafts));
     add(byRole(MailboxRole.archive) ?? (_account.provider == ProviderKind.gmail ? byRole(MailboxRole.all) : null));
     for (final m in all) {
-      if (_active.contains(m.id) || await _store.getSyncInfo(m.id) != null) add(m);
+      final background = m.isSubscribed || m.role != MailboxRole.none;
+      if (_active.contains(m.id) || (background && await _store.getSyncInfo(m.id) != null)) add(m);
     }
     return ordered;
   }
@@ -505,6 +536,10 @@ final class AccountSyncer {
   }
 
   static String _describe(PendingOp op) {
+    if (op.type == OpType.subscribe) {
+      final name = op.payload['name'] as String? ?? 'a folder';
+      return op.payload['subscribed'] == true ? 'Couldn’t subscribe to “$name”' : 'Couldn’t unsubscribe from “$name”';
+    }
     final n = _ids(op).length;
     final what = n == 1 ? 'a message' : '$n messages';
     return switch (op.type) {
@@ -519,11 +554,15 @@ final class AccountSyncer {
 
   static Set<String> _strings(Object? json) => {for (final s in json as List<Object?>? ?? const []) s! as String};
 
-  Set<String> _affectedMailboxes(PendingOp op) => {
-    for (final id in _ids(op)) ?MailIds.mailboxOfImapEmail(id),
-    if (op.payload['target'] case final String t) t,
-    if (op.payload['mailboxId'] case final String m) m,
-  };
+  /// Mailboxes to sync after [op] failed or was reverted (none for
+  /// subscription changes: the next mailbox list settles those).
+  Set<String> _affectedMailboxes(PendingOp op) => op.type == OpType.subscribe
+      ? const {}
+      : {
+          for (final id in _ids(op)) ?MailIds.mailboxOfImapEmail(id),
+          if (op.payload['target'] case final String t) t,
+          if (op.payload['mailboxId'] case final String m) m,
+        };
 
   Future<void> _execute(MailTransport t, PendingOp op) async {
     final ids = [
@@ -568,6 +607,11 @@ final class AccountSyncer {
           await _remapLaterOps(op.id, {placeholder: newId});
         }
         _dirty.add(mailboxId);
+      case OpType.subscribe:
+        final mailboxId = op.payload['mailboxId']! as String;
+        final remote = await remoteForId(mailboxId);
+        if (remote == null) throw const MailException(MailErrorKind.notFound, 'The folder no longer exists');
+        await t.setSubscribed(remote, op.payload['subscribed']! as bool);
     }
   }
 
@@ -610,6 +654,8 @@ final class AccountSyncer {
         await _store.restoreMailboxes(previous.cast<String, String>());
       case OpType.delete when previous is List:
         await _store.restoreEmails([for (final j in previous.cast<Map<String, Object?>>()) summaryFromJson(j)]);
+      case OpType.subscribe when previous is bool:
+        await _store.setMailboxSubscribed(op.payload['mailboxId']! as String, subscribed: previous);
     }
     _dirty.addAll(_affectedMailboxes(op));
   }

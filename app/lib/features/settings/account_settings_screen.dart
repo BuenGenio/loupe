@@ -7,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../providers.dart';
+import '../../router.dart';
+import '../../settings/ui_state.dart';
 import '../../shared/grouped_list.dart';
 import '../../shared/sheets.dart';
 import '../../theme/theme.dart';
@@ -219,6 +221,21 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                 style: styles.body,
                 decoration: const InputDecoration.collapsed(hintText: 'No signature'),
               ),
+            ),
+          ],
+        ),
+        InsetGroup(
+          header: 'Folders',
+          separatorIndent: 16,
+          footer:
+              'Loupe shows and syncs the folders you subscribe to, as Thunderbird does. '
+              'Inbox, Drafts, Sent, Junk, Trash and Archive always show.',
+          children: [
+            GroupedRow(title: 'Manage Folders', onTap: () => context.push(Routes.manageFolders(account.id))),
+            SwitchRow(
+              title: 'Show All Folders',
+              value: ref.watch(showAllFoldersProvider).contains(account.id),
+              onChanged: (_) => ref.read(showAllFoldersProvider.notifier).toggle(account.id),
             ),
           ],
         ),

@@ -13,6 +13,7 @@ final class Mailbox {
     this.unreadCount = 0,
     this.totalCount = 0,
     this.isSelectable = true,
+    this.isSubscribed = true,
     this.sortOrder = 0,
   });
 
@@ -32,9 +33,21 @@ final class Mailbox {
 
   /// False for IMAP \Noselect containers.
   final bool isSelectable;
+
+  /// Subscribed on the server (IMAP LSUB / `\Subscribed`). Like Thunderbird,
+  /// the app shows and syncs subscribed folders; mailboxes holding a role
+  /// show regardless.
+  final bool isSubscribed;
   final int sortOrder;
 
-  Mailbox copyWith({int? unreadCount, int? totalCount, String? name, MailboxRole? role}) => Mailbox(
+  Mailbox copyWith({
+    int? unreadCount,
+    int? totalCount,
+    String? name,
+    MailboxRole? role,
+    bool? isSelectable,
+    bool? isSubscribed,
+  }) => Mailbox(
     id: id,
     accountId: accountId,
     name: name ?? this.name,
@@ -43,7 +56,8 @@ final class Mailbox {
     parentId: parentId,
     unreadCount: unreadCount ?? this.unreadCount,
     totalCount: totalCount ?? this.totalCount,
-    isSelectable: isSelectable,
+    isSelectable: isSelectable ?? this.isSelectable,
+    isSubscribed: isSubscribed ?? this.isSubscribed,
     sortOrder: sortOrder,
   );
 
