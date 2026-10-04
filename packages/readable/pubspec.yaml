@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   html: ^0.15.7
   mail_model: {path: ../mail_model}
+  webview_flutter: ^4.14.1
+  webview_flutter_android: ^4.14.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -2,6 +2,7 @@
 // for big messages, cached), then renders Readable, Plain or Original.
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import '../api.dart';
 import '../cache.dart';
 import '../color/color_adapter.dart';
 import '../model/document.dart';
+import '../pipeline/original_html.dart';
 import '../pipeline/pipeline.dart';
 import '../pipeline/plain_text.dart';
 import 'banner.dart';
@@ -18,6 +20,7 @@ import 'blocks.dart';
 import 'gallery.dart';
 import 'images.dart';
 import 'link_actions.dart';
+import 'original_view.dart';
 import 'scope.dart';
 
 /// Messages smaller than this are processed synchronously: spawning an
@@ -66,6 +69,11 @@ class _ReaderViewState extends State<ReaderView> {
   final _providers = <int, ImageProvider?>{};
   ColorAdapter? _adapter;
 
+  /// Original view: `data:` URIs for the `cid:` images of the page.
+  final _cidUris = <String, String>{};
+  (OriginalHtml, bool, int, String)? _pageKey;
+  String _page = '';
+
   EmailContent get _content => widget.content;
   bool get _remoteAllowed => widget.remoteContent == RemoteContentPolicy.allow || _allowedHere;
   ReaderDocument get _doc => _output?.document ?? ReaderDocument.empty;
@@ -73,8 +81,8 @@ class _ReaderViewState extends State<ReaderView> {
   PipelineMode get _mode => switch (widget.settings.mode) {
     ReaderMode.readable => PipelineMode.readable,
     ReaderMode.plain => PipelineMode.plain,
-    // The Original view (WebView) is not wired yet: show Readable.
-    ReaderMode.original => PipelineMode.readable,
+    // Without a WebView (tests, desktop) Original shows the Readable view.
+    ReaderMode.original => originalViewAvailable ? PipelineMode.original : PipelineMode.readable,
   };
 
   @override
@@ -124,6 +132,8 @@ class _ReaderViewState extends State<ReaderView> {
       c.isFlowed,
     );
     _providers.clear();
+    _cidUris.clear();
+    _pageKey = null;
     final cached = PipelineCache.instance[key];
     if (cached != null) {
       _output = cached;
@@ -174,6 +184,7 @@ class _ReaderViewState extends State<ReaderView> {
 
   void _afterLoad() {
     final out = _output;
+    if (out?.original != null) _resolveOriginalCids(out!.original!);
     if (out == null || _suggested || widget.settings.mode != ReaderMode.readable) return;
     if (!out.document.stats.suggestOriginal || widget.onSuggestOriginal == null) return;
     _suggested = true;
@@ -181,6 +192,86 @@ class _ReaderViewState extends State<ReaderView> {
       if (mounted) widget.onSuggestOriginal?.call();
     });
   }
+
+  // -- Original view -----------------------------------------------------------
+
+  /// A WebView can't resolve `cid:`; inline parts become `data:` URIs, and
+  /// parts that must be downloaded are added when they arrive.
+  void _resolveOriginalCids(OriginalHtml original) {
+    final generation = _generation;
+    for (final cid in original.contentIds) {
+      final bytes = _inlineBytes(cid);
+      if (bytes != null) {
+        _cidUris[cid] = _dataUri(bytes, _attachmentFor(cid)?.mimeType);
+        continue;
+      }
+      final attachment = _attachmentFor(cid);
+      final load = widget.loadAttachment;
+      if (attachment == null || load == null) continue;
+      unawaited(
+        load(attachment).then((bytes) {
+          if (!mounted || generation != _generation) return;
+          setState(() => _cidUris[cid] = _dataUri(bytes, attachment.mimeType));
+        }, onError: (Object _) {}),
+      );
+    }
+  }
+
+  Uint8List? _inlineBytes(String cid) {
+    final data = _content.inlineData;
+    final direct = data[cid] ?? data['<$cid>'];
+    if (direct != null) return direct;
+    for (final e in data.entries) {
+      if (_normalizeCid(e.key).toLowerCase() == cid.toLowerCase()) return e.value;
+    }
+    return null;
+  }
+
+  Attachment? _attachmentFor(String cid) => _content.attachments
+      .where((a) => a.contentId != null && _normalizeCid(a.contentId!).toLowerCase() == cid.toLowerCase())
+      .firstOrNull;
+
+  static String _dataUri(Uint8List bytes, String? mimeType) {
+    var mime = mimeType?.toLowerCase();
+    if (mime == null || !mime.startsWith('image/')) {
+      mime = switch (bytes) {
+        [0x89, 0x50, 0x4E, 0x47, ...] => 'image/png',
+        [0xFF, 0xD8, ...] => 'image/jpeg',
+        [0x47, 0x49, 0x46, ...] => 'image/gif',
+        [0x52, 0x49, 0x46, 0x46, ...] => 'image/webp',
+        _ => 'application/octet-stream',
+      };
+    }
+    return 'data:$mime;base64,${base64Encode(bytes)}';
+  }
+
+  Widget _original(BuildContext context, OriginalHtml original) {
+    final scale = MediaQuery.textScalerOf(context).scale(16) / 16;
+    final ios = Theme.of(context).platform == TargetPlatform.iOS;
+    // Android scales text with setTextZoom; iOS through CSS.
+    final css = ios && (scale - 1).abs() > 0.01 ? 'html{-webkit-text-size-adjust:${(scale * 100).round()}%}' : '';
+    final key = (original, _remoteAllowed, _cidUris.length, css);
+    if (_pageKey != key) {
+      _pageKey = key;
+      _page = buildOriginalPage(original, allowRemote: _remoteAllowed, cidDataUris: Map.of(_cidUris), extraCss: css);
+    }
+    final view = buildOriginalView(
+      context,
+      OriginalViewRequest(html: _page, onOpenLink: widget.onOpenLink, textScale: scale),
+    );
+    if (_remoteAllowed || original.remoteImages == 0) return view;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [_banner(), const SizedBox(height: 16), view],
+    );
+  }
+
+  Widget _banner() => RemoteContentBanner(
+    senderDomain: _senderDomain,
+    onLoad: () => _allow(always: false),
+    onAlways: widget.onAllowRemoteContent == null ? null : () => _allow(always: true),
+  );
 
   // -- Images ----------------------------------------------------------------
 
@@ -319,6 +410,8 @@ class _ReaderViewState extends State<ReaderView> {
         child: Center(child: SizedBox.square(dimension: 24, child: CircularProgressIndicator(strokeWidth: 2.5))),
       );
     }
+    final original = out.original;
+    if (original != null && widget.settings.mode == ReaderMode.original) return _original(context, original);
     final plain = widget.settings.mode == ReaderMode.plain;
     final doc = out.document;
     final showBanner = !plain && !_remoteAllowed && doc.stats.remoteImages > 0;
@@ -327,15 +420,7 @@ class _ReaderViewState extends State<ReaderView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
-      children: [
-        RemoteContentBanner(
-          senderDomain: _senderDomain,
-          onLoad: () => _allow(always: false),
-          onAlways: widget.onAllowRemoteContent == null ? null : () => _allow(always: true),
-        ),
-        const SizedBox(height: 16),
-        body,
-      ],
+      children: [_banner(), const SizedBox(height: 16), body],
     );
   }
 

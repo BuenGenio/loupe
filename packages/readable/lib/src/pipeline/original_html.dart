@@ -11,7 +11,13 @@ import 'sanitizer.dart' show flatText;
 
 /// The sender's HTML, stripped of active content, ready to wrap in a page.
 final class OriginalHtml {
-  const OriginalHtml({required this.head, required this.body, this.remoteImages = 0, this.truncated = false});
+  const OriginalHtml({
+    required this.head,
+    required this.body,
+    this.remoteImages = 0,
+    this.contentIds = const {},
+    this.truncated = false,
+  });
 
   /// Inner HTML of `<head>` (the sender's `<style>` blocks only).
   final String head;
@@ -21,6 +27,9 @@ final class OriginalHtml {
 
   /// Remote images (`<img>`, `background=`, CSS `url()`), blocked by default.
   final int remoteImages;
+
+  /// Content-IDs referenced by `cid:` URLs; the host supplies their bytes.
+  final Set<String> contentIds;
   final bool truncated;
 }
 
@@ -52,6 +61,7 @@ OriginalHtml prepareOriginalHtml(String html, {PipelineLimits limits = const Pip
   final doc = html_parser.parse(input);
   final budget = Budget(limits);
   var remote = 0;
+  final cids = <String>{};
 
   // Event handlers and javascript: URLs can't run (JavaScript is off), but
   // there is no reason to keep them.
@@ -93,6 +103,10 @@ OriginalHtml prepareOriginalHtml(String html, {PipelineLimits limits = const Pip
         continue;
       }
       if (_isRemote(n.attributes['src']) || _isRemote(n.attributes['background'])) remote++;
+      for (final attr in const ['src', 'background']) {
+        final v = n.attributes[attr]?.trim();
+        if (v != null && v.toLowerCase().startsWith('cid:')) cids.add(_decodeCid(v.substring(4)));
+      }
       final style = n.attributes['style'];
       if (style != null && style.contains(_remoteUrl)) remote++;
       if (tag == 'style') {
@@ -111,7 +125,17 @@ OriginalHtml prepareOriginalHtml(String html, {PipelineLimits limits = const Pip
   clean(head, 0);
   clean(body, 0);
   final styles = head.children.where((e) => e.localName == 'style').map((e) => e.outerHtml).join('\n');
-  return OriginalHtml(head: styles, body: body.outerHtml, remoteImages: remote, truncated: truncated);
+  return OriginalHtml(head: styles, body: body.outerHtml, remoteImages: remote, contentIds: cids, truncated: truncated);
+}
+
+String _decodeCid(String id) {
+  var out = id;
+  try {
+    out = Uri.decodeComponent(id);
+  } on ArgumentError {
+    // Keep it as written.
+  }
+  return out.replaceAll(RegExp(r'^<|>$'), '');
 }
 
 final _remoteUrl = RegExp(r'''url\(\s*['"]?\s*(https?:)?//''', caseSensitive: false);
@@ -133,19 +157,15 @@ String buildOriginalPage(
   OriginalHtml original, {
   required bool allowRemote,
   Map<String, String> cidDataUris = const {},
+  String extraCss = '',
 }) {
   var body = original.body;
   var head = original.head;
   if (cidDataUris.isNotEmpty) {
-    String resolve(String s) => s.replaceAllMapped(RegExp(r'cid:([^"\x27\s)>]+)', caseSensitive: false), (m) {
-      var id = m[1]!;
-      try {
-        id = Uri.decodeComponent(id);
-      } on ArgumentError {
-        // Keep it as written.
-      }
-      return cidDataUris[id] ?? m[0]!;
-    });
+    String resolve(String s) => s.replaceAllMapped(
+      RegExp(r'cid:([^"\x27\s)>]+)', caseSensitive: false),
+      (m) => cidDataUris[_decodeCid(m[1]!)] ?? m[0]!,
+    );
     body = resolve(body);
     head = resolve(head);
   }
@@ -154,7 +174,8 @@ String buildOriginalPage(
       '<meta http-equiv="Content-Security-Policy" content="$csp">'
       '<meta charset="utf-8">'
       '<meta name="viewport" content="width=device-width, initial-scale=1">'
+      '<meta name="color-scheme" content="light">'
       '<style>html,body{margin:0;padding:0}body{padding:8px;overflow-wrap:break-word}'
-      'img{max-width:100% !important;height:auto !important}</style>'
+      'img{max-width:100% !important;height:auto !important}$extraCss</style>'
       '$head</head>$body</html>';
 }
