@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clock/clock.dart';
 import 'package:expr_search/expr_search.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -117,7 +118,7 @@ class UnsubscribeRecords extends Notifier<Map<String, UnsubscribeRecord>> {
   }
 
   Future<void> record(String subscriptionKey, UnsubscribeVia via, {DateTime? at}) =>
-      _save({...state, subscriptionKey: UnsubscribeRecord(at: at ?? DateTime.now(), via: via)});
+      _save({...state, subscriptionKey: UnsubscribeRecord(at: at ?? clock.now(), via: via)});
 
   Future<void> forget(String subscriptionKey) => _save({...state}..remove(subscriptionKey));
 
