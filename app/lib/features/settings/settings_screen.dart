@@ -43,7 +43,6 @@ class SettingsScreen extends ConsumerWidget {
 
     return GroupedPage(
       title: 'Settings',
-      previousPageTitle: 'Mailboxes',
       children: [
         InsetGroup(
           header: 'Accounts',

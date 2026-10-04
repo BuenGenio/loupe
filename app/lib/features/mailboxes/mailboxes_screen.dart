@@ -33,51 +33,43 @@ class MailboxesScreen extends ConsumerStatefulWidget {
 class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
   bool _editing = false;
   bool _searching = false;
-  ScrollController? _scroll;
+  final _scroll = ScrollController();
   final _focus = FocusNode();
-
-  /// Replaced to reset the navigation bar's own search state (it can only be
-  /// closed by tapping Cancel otherwise), e.g. on Android Back.
-  Key _navBarKey = UniqueKey();
   late final SearchSession _search = SearchSession(
     repository: ref.read(repositoryProvider),
     onCommit: (q) => ref.read(recentSearchesProvider.notifier).add(q),
   );
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Start scrolled past the search field: it appears when pulled down.
-    _scroll ??= ScrollController(initialScrollOffset: searchBarExtent(context));
+  void initState() {
+    super.initState();
+    // Focusing the field (a tap, the keyboard) enters search.
+    _focus.addListener(() {
+      if (_focus.hasFocus && !_searching) _setSearching(true);
+    });
   }
 
   @override
   void dispose() {
-    _scroll?.dispose();
+    _scroll.dispose();
     _focus.dispose();
     _search.dispose();
     super.dispose();
   }
 
-  void _onSearchActive(bool active) {
+  void _setSearching(bool active) {
     setState(() {
       _searching = active;
       if (active) _editing = false;
     });
-    if (active) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) _focus.requestFocus();
-      });
-    } else {
+    if (!active) {
       _focus.unfocus();
       _search.clear();
     }
-  }
-
-  /// Closes search from outside the bar (Android Back).
-  void _closeSearch() {
-    setState(() => _navBarKey = UniqueKey());
-    _onSearchActive(false);
+    // Results start at the top; Mailboxes come back with the field showing.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && _scroll.hasClients) _scroll.jumpTo(0);
+    });
   }
 
   void _open(MailboxRef target) => context.push(Routes.list(target));
@@ -94,7 +86,7 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
     return PopScope(
       canPop: !_searching,
       onPopInvokedWithResult: (didPop, _) {
-        if (!didPop && _searching) _closeSearch();
+        if (!didPop && _searching) _setSearching(false);
       },
       child: Scaffold(
         // Search results are a plain list, like the message list.
@@ -102,6 +94,13 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
         bottomNavigationBar: _searching
             ? null
             : LoupeBottomBar(
+                leading: _editing
+                    ? null
+                    : BarIconButton(
+                        icon: CupertinoIcons.gear,
+                        tooltip: 'Settings',
+                        onPressed: () => context.push(Routes.settings),
+                      ),
                 center: const SyncStatusLine(),
                 trailing: BarIconButton(
                   icon: CupertinoIcons.square_pencil,
@@ -113,34 +112,27 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
           controller: _scroll,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           slivers: [
-            CupertinoSliverNavigationBar.search(
-              key: _navBarKey,
-              largeTitle: const Text('Mailboxes'),
-              backgroundColor: colors.barBackground,
-              border: Border(bottom: BorderSide(color: colors.separator, width: 0.5)),
-              leading: _editing
-                  ? null
-                  : CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      minimumSize: const Size(44, 44),
-                      onPressed: () => context.push(Routes.settings),
-                      child: const Icon(CupertinoIcons.gear, semanticLabel: 'Settings'),
-                    ),
-              trailing: BarTextButton(
-                label: _editing ? 'Done' : 'Edit',
-                bold: _editing,
-                onPressed: () {
-                  unawaited(HapticFeedback.selectionClick());
-                  setState(() => _editing = !_editing);
-                },
-              ),
+            LoupeTitleBar(
+              title: 'Mailboxes',
+              large: true,
+              trailing: [
+                BarTextButton(
+                  label: _editing ? 'Done' : 'Edit',
+                  bold: _editing,
+                  onPressed: () {
+                    unawaited(HapticFeedback.selectionClick());
+                    setState(() => _editing = !_editing);
+                  },
+                ),
+              ],
+              searching: _searching,
+              onCancelSearch: () => _setSearching(false),
               searchField: LoupeSearchField(
                 controller: _search.controller,
                 focusNode: _focus,
                 onChanged: _search.onChanged,
                 onSubmitted: (_) => _search.submit(),
               ),
-              onSearchableBottomTap: _onSearchActive,
             ),
             if (_searching)
               SearchSlivers(session: _search)

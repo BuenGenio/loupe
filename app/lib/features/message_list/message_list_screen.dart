@@ -78,10 +78,6 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
   bool _searchHidden = false;
   ScrollController? _scroll;
   final _focus = FocusNode();
-
-  /// Replaced to reset the navigation bar's own search state (it can only be
-  /// closed by tapping Cancel otherwise), e.g. on Android Back.
-  Key _navBarKey = UniqueKey();
   late final SearchSession _search = SearchSession(
     repository: ref.read(repositoryProvider),
     scope: MailboxScope(widget.mailboxRef),
@@ -89,8 +85,18 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
   );
 
   @override
+  void initState() {
+    super.initState();
+    // Focusing the field (a tap, the keyboard) enters search.
+    _focus.addListener(() {
+      if (_focus.hasFocus && !_searching) _setSearching(true);
+    });
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    // Start scrolled past the search field: it appears when pulled down.
     _scroll ??= ScrollController(initialScrollOffset: searchBarExtent(context));
   }
 
@@ -111,7 +117,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
   MailActions _actions(AppSettings settings) =>
       MailActions(context, ref, scope: widget.mailboxRef, threaded: settings.threaded);
 
-  void _onSearchActive(bool active) {
+  void _setSearching(bool active) {
     setState(() {
       _searching = active;
       if (active) {
@@ -119,22 +125,17 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
         _selected.clear();
       }
     });
-    if (active) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) _focus.requestFocus();
-      });
-    } else {
+    if (!active) {
       _focus.unfocus();
       _search
         ..clear()
         ..setScope(MailboxScope(widget.mailboxRef));
     }
-  }
-
-  /// Closes search from outside the bar (Android Back).
-  void _closeSearch() {
-    setState(() => _navBarKey = UniqueKey());
-    _onSearchActive(false);
+    // Results start at the top; the list comes back with the field showing.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final scroll = _scroll;
+      if (mounted && scroll != null && scroll.hasClients) scroll.jumpTo(0);
+    });
   }
 
   void _toggleEditing() {
@@ -299,52 +300,21 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     return PopScope(
       canPop: !_searching,
       onPopInvokedWithResult: (didPop, _) {
-        if (!didPop && _searching) _closeSearch();
+        if (!didPop && _searching) _setSearching(false);
       },
       child: Scaffold(
         bottomNavigationBar: _searching
             ? null
             : _editing
             ? _editBar(selectedRows, actions, mailboxes)
-            : _toolbar(rows),
+            : _toolbar(rows, mailboxes),
         body: NotificationListener<ScrollNotification>(
           onNotification: _onScroll,
           child: CustomScrollView(
             controller: _scroll,
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             slivers: [
-              CupertinoSliverNavigationBar.search(
-                key: _navBarKey,
-                largeTitle: Text(
-                  _editing ? (_selected.isEmpty ? 'Select Messages' : '${_selected.length} Selected') : title,
-                ),
-                previousPageTitle: 'Mailboxes',
-                automaticallyImplyLeading: !_editing,
-                backgroundColor: colors.barBackground,
-                border: Border(bottom: BorderSide(color: colors.separator, width: 0.5)),
-                leading: _editing
-                    ? BarTextButton(
-                        label: _selected.length == rows.length && rows.isNotEmpty ? 'Deselect All' : 'Select All',
-                        onPressed: () => setState(() {
-                          if (_selected.length == rows.length) {
-                            _selected.clear();
-                          } else {
-                            _selected
-                              ..clear()
-                              ..addAll(rows.map((r) => r.threadId));
-                          }
-                        }),
-                      )
-                    : null,
-                trailing: BarTextButton(label: _editing ? 'Done' : 'Edit', bold: _editing, onPressed: _toggleEditing),
-                searchField: LoupeSearchField(
-                  controller: _search.controller,
-                  focusNode: _focus,
-                  onChanged: _search.onChanged,
-                  onSubmitted: (_) => _search.submit(),
-                ),
-                onSearchableBottomTap: _onSearchActive,
-              ),
+              _titleBar(context, title, rows, mailboxes),
               if (_searching)
                 SearchSlivers(session: _search, thisMailbox: widget.mailboxRef)
               else ...[
@@ -359,6 +329,60 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  /// Back, the mailbox name (with its account below when there are
+  /// several) and Edit, then the search field; in edit mode Select All, the
+  /// selection and Done.
+  Widget _titleBar(BuildContext context, String title, List<ThreadSummary> rows, List<Mailbox> mailboxes) {
+    final colors = LoupeColors.of(context);
+    final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];
+    final account = switch (widget.mailboxRef) {
+      RealMailboxRef(:final mailboxId) when accounts.length > 1 =>
+        accounts.where((a) => a.id == MailIds.accountOf(mailboxId)).firstOrNull,
+      _ => null,
+    };
+    final allSelected = _selected.length == rows.length && rows.isNotEmpty;
+    return LoupeTitleBar(
+      title: _editing ? (_selected.isEmpty ? 'Select Messages' : '${_selected.length} Selected') : title,
+      subtitle: _editing || account == null
+          ? null
+          : Row(
+              children: [
+                Container(
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(color: colors.accountColor(account.colorIndex), shape: BoxShape.circle),
+                ),
+                const SizedBox(width: 5),
+                Flexible(child: Text(account.displayName)),
+              ],
+            ),
+      automaticallyImplyLeading: !_editing,
+      leading: _editing
+          ? BarTextButton(
+              label: allSelected ? 'Deselect All' : 'Select All',
+              onPressed: () => setState(() {
+                if (allSelected) {
+                  _selected.clear();
+                } else {
+                  _selected
+                    ..clear()
+                    ..addAll(rows.map((r) => r.threadId));
+                }
+              }),
+            )
+          : null,
+      trailing: [BarTextButton(label: _editing ? 'Done' : 'Edit', bold: _editing, onPressed: _toggleEditing)],
+      searching: _searching,
+      onCancelSearch: () => _setSearching(false),
+      searchField: LoupeSearchField(
+        controller: _search.controller,
+        focusNode: _focus,
+        onChanged: _search.onChanged,
+        onSubmitted: (_) => _search.submit(),
       ),
     );
   }
@@ -466,7 +490,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     ];
   }
 
-  Widget _toolbar(List<ThreadSummary> rows) {
+  Widget _toolbar(List<ThreadSummary> rows, List<Mailbox> mailboxes) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
     final criteria = ref.watch(filterCriteriaProvider);

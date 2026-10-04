@@ -34,7 +34,6 @@ class _AdvancedSettingsScreenState extends ConsumerState<AdvancedSettingsScreen>
     final mode = ref.watch(appModeProvider);
     return GroupedPage(
       title: 'Advanced',
-      previousPageTitle: 'Settings',
       children: [
         InsetGroup(
           header: 'Demo',

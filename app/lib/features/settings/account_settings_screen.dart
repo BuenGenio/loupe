@@ -140,7 +140,6 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
 
     return GroupedPage(
       title: account.displayName,
-      previousPageTitle: 'Settings',
       children: [
         InsetGroup(
           header: 'Account',
@@ -340,7 +339,6 @@ class _IdentityPageState extends State<_IdentityPage> {
     final canDelete = widget.identity != null && widget.account.identities.length > 1;
     return GroupedPage(
       title: widget.identity == null ? 'New Identity' : 'Identity',
-      previousPageTitle: widget.account.displayName,
       trailing: CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: _done,

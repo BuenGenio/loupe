@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/theme.dart';
+import 'bars.dart';
 
 /// An iOS inset-grouped section: rounded card, hairline separators inset past
 /// the leading icon, optional header and footer.
@@ -225,19 +226,11 @@ class SwitchRow extends StatelessWidget {
   }
 }
 
-/// A grouped page: grouped background, a large collapsing title and slivers.
+/// A grouped page: grouped background, a [LoupeTitleBar] and slivers.
 class GroupedPage extends StatelessWidget {
-  const GroupedPage({
-    super.key,
-    required this.title,
-    required this.children,
-    this.previousPageTitle,
-    this.trailing,
-    this.bottomBar,
-  });
+  const GroupedPage({super.key, required this.title, required this.children, this.trailing, this.bottomBar});
 
   final String title;
-  final String? previousPageTitle;
   final Widget? trailing;
   final List<Widget> children;
   final Widget? bottomBar;
@@ -250,13 +243,7 @@ class GroupedPage extends StatelessWidget {
       bottomNavigationBar: bottomBar,
       body: CustomScrollView(
         slivers: [
-          CupertinoSliverNavigationBar(
-            largeTitle: Text(title),
-            previousPageTitle: previousPageTitle,
-            trailing: trailing,
-            backgroundColor: colors.barBackground,
-            border: Border(bottom: BorderSide(color: colors.separator, width: 0.5)),
-          ),
+          LoupeTitleBar(title: title, trailing: [?trailing]),
           const SliverToBoxAdapter(child: SizedBox(height: 8)),
           ...children.map((c) => SliverToBoxAdapter(child: c)),
           SliverToBoxAdapter(child: SizedBox(height: 24 + MediaQuery.paddingOf(context).bottom)),

@@ -35,7 +35,6 @@ class ChoicePage<T> extends StatefulWidget {
     required this.selected,
     required this.onSelected,
     this.footer,
-    this.previousPageTitle = 'Settings',
   });
 
   final String title;
@@ -43,7 +42,6 @@ class ChoicePage<T> extends StatefulWidget {
   final T selected;
   final ValueChanged<T> onSelected;
   final String? footer;
-  final String previousPageTitle;
 
   static Future<void> push<T>(
     BuildContext context, {
@@ -71,7 +69,6 @@ class _ChoicePageState<T> extends State<ChoicePage<T>> {
     final colors = LoupeColors.of(context);
     return GroupedPage(
       title: widget.title,
-      previousPageTitle: widget.previousPageTitle,
       children: [
         InsetGroup(
           separatorIndent: 16,

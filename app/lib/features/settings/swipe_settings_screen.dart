@@ -47,7 +47,6 @@ class SwipeSettingsScreen extends ConsumerWidget {
 
     return GroupedPage(
       title: 'Swipe Actions',
-      previousPageTitle: 'Settings',
       children: [
         group(
           'Swipe Left',

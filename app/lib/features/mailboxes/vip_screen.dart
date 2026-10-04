@@ -59,7 +59,6 @@ class _VipScreenState extends ConsumerState<VipScreen> {
     final vips = (ref.watch(vipAddressesProvider).value ?? const <String>{}).toList()..sort();
     return GroupedPage(
       title: 'VIP',
-      previousPageTitle: 'Mailboxes',
       children: [
         InsetGroup(
           footer: 'You can also tap a sender’s name in a message and turn on VIP.',
