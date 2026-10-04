@@ -48,6 +48,9 @@ final class _Recorder extends QueryInterceptor {
 final int _scale = int.tryParse(Platform.environment['LOUPE_SCALE'] ?? '') ?? 1500;
 final bool _benchmark = _scale >= 10000;
 
+/// Mailing lists (List-Id) in the inbox; newsletters carry one too.
+final int _lists = int.tryParse(Platform.environment['LOUPE_LISTS'] ?? '') ?? 5;
+
 void _report(String line) {
   if (_benchmark) stdout.writeln(line);
 }
@@ -91,7 +94,7 @@ _bigStore() async {
     }
     final sender = random.nextInt(2000);
     // A tenth of the inbox comes from five mailing lists.
-    final list = path == 'INBOX' && uid % 10 == 3 ? 'list${uid ~/ 10 % 5}.lists.example.org' : null;
+    final list = path == 'INBOX' && uid % 10 == 3 ? 'list${uid ~/ 10 % _lists}.lists.example.org' : null;
     return mail(
       uid,
       path: path,
@@ -113,7 +116,7 @@ _bigStore() async {
       },
       hasAttachment: random.nextInt(12) == 0,
       listId: list,
-      listName: list == null ? null : 'List ${uid ~/ 10 % 5}',
+      listName: list == null ? null : 'List ${uid ~/ 10 % _lists}',
     );
   }
 
@@ -344,7 +347,10 @@ void main() {
 
   test('mailing lists', () async {
     final lists = await store.watchMailingLists().first;
-    expect(lists, hasLength(5));
+    expect(lists, hasLength(_lists));
+    for (final l in lists) {
+      expect(l.name, 'List ${l.id.substring(4, l.id.indexOf('.'))}');
+    }
     await first('watchMailingLists', store.watchMailingLists);
     await first('watchListThreads', () => store.watchListThreads(lists.first.id));
   });
