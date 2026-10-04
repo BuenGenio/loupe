@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../data/repositories.dart';
 import '../../settings/app_mode.dart';
 import '../../router.dart';
+import '../../shared/bars.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_text.dart';
 import '../conversation/mail_streams.dart';
@@ -239,27 +240,31 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       },
       child: Scaffold(
         backgroundColor: colors.groupedBackground,
-        appBar: AppBar(
-          backgroundColor: colors.groupedBackground,
-          title: Text(_step == _Step.done ? 'Account Added' : 'Add Account'),
-          automaticallyImplyLeading: _step != _Step.done,
-        ),
-        body: SafeArea(
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 220),
-            child: KeyedSubtree(
-              key: ValueKey(_step),
-              child: switch (_step) {
-                _Step.address => _addressStep(context),
-                _Step.signIn => _signInStep(context),
-                _Step.done => _doneStep(context),
-              },
-            ),
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 220),
+          child: KeyedSubtree(
+            key: ValueKey(_step),
+            child: switch (_step) {
+              _Step.address => _addressStep(context),
+              _Step.signIn => _signInStep(context),
+              _Step.done => _doneStep(context),
+            },
           ),
         ),
       ),
     );
   }
+
+  /// One step: the title on the top line, then [children].
+  Widget _page(BuildContext context, {required List<Widget> children}) => CustomScrollView(
+    slivers: [
+      LoupeTitleBar(
+        title: _step == _Step.done ? 'Account Added' : 'Add Account',
+        automaticallyImplyLeading: _step != _Step.done,
+      ),
+      SliverSafeArea(top: false, sliver: SliverList.list(children: children)),
+    ],
+  );
 
   Widget _title(BuildContext context, String title, String subtitle) {
     final theme = Theme.of(context);
@@ -338,7 +343,8 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
         ),
       );
 
-  Widget _addressStep(BuildContext context) => ListView(
+  Widget _addressStep(BuildContext context) => _page(
+    context,
     children: [
       _title(context, 'Add a Mail Account', 'Loupe finds the settings for most providers.'),
       SheetGroup(
@@ -395,7 +401,8 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       ProviderKind.generic => _domain,
       _ => _defaultDescription,
     };
-    return ListView(
+    return _page(
+      context,
       children: [
         _title(context, title, email),
         ..._providerNotes(context),
@@ -560,7 +567,8 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
 
   Widget _doneStep(BuildContext context) {
     final colors = LoupeColors.of(context);
-    return ListView(
+    return _page(
+      context,
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(32, 16, 32, 24),
