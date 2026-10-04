@@ -16,7 +16,7 @@ void fakeTime(Future<void> Function(FakeAsync async) body) {
     var done = false;
     Object? error;
     StackTrace? trace;
-    body(async).then(
+    body(async).then<void>(
       (_) => done = true,
       onError: (Object e, StackTrace st) {
         error = e;
