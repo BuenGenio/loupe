@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -133,6 +134,31 @@ void main() {
       expect(stackOf(tester), [Routes.mailboxes]);
       expect(conversationTitle, findsOneWidget);
     });
+  });
+
+  testWidgets('on a phone a message link still opens as a page over Mailboxes', (tester) async {
+    final repo = await pumpLoupe(tester, size: phone);
+    final rows = await repo.watchList(allInboxes, threaded: false).first;
+    final email = rows.firstWhere((r) => r.latest.subject == hike).latest;
+    await goTo(tester, Routes.message(email.id));
+    expect(stackOf(tester), [Routes.mailboxes, Routes.message(email.id)]);
+    expect(conversationTitle, findsOneWidget);
+    expect(containerOf(tester).read(mailSelectionProvider).messageId, email.id);
+  });
+
+  testWidgets('Esc and Back close the sidebar of the split layout', (tester) async {
+    await pumpLoupe(tester, size: split);
+    await tester.tap(find.byKey(const Key('sidebar-toggle')));
+    await tester.pumpAndSettle();
+    expect(find.text('Mailboxes').hitTestable(), findsOneWidget);
+    await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+    await tester.pumpAndSettle();
+    expect(find.text('Mailboxes').hitTestable(), findsNothing);
+    await tester.tap(find.byKey(const Key('sidebar-toggle')));
+    await tester.pumpAndSettle();
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.text('Mailboxes').hitTestable(), findsNothing);
   });
 
   group('resizing keeps the message', () {
