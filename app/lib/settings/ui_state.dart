@@ -244,24 +244,17 @@ class SmartMailboxes extends Notifier<List<SmartMailbox>> {
     ref.watch(prefsEpochProvider);
     _records = _load(ref.watch(sharedPreferencesProvider));
     ref.onDispose(() => _timer?.cancel());
-    ref.listen(accountsProvider.select((a) => [for (final x in a.value ?? const <MailAccount>[]) x.id].join(',')), (
-      _,
-      _,
-    ) {
-      _schedule();
-    });
-    ref.listen(smartMailboxHomeProvider, (_, _) => _schedule());
+    String accountIds(AsyncValue<List<MailAccount>> accounts) =>
+        [for (final a in accounts.value ?? const <MailAccount>[]) a.id].join(',');
     // Every finished mail sync (pull to refresh, polling, IDLE) brings the
     // Smart Mailboxes up to date too.
-    ref.listen(
-      syncStatusProvider.select(
-        (s) => [
-          for (final x in s.value ?? const <AccountSyncStatus>[])
-            '${x.accountId}@${x.lastSuccess?.millisecondsSinceEpoch}',
-        ].join(','),
-      ),
-      (_, _) => _schedule(),
-    );
+    String syncs(AsyncValue<List<AccountSyncStatus>> statuses) => [
+      for (final s in statuses.value ?? const <AccountSyncStatus>[])
+        '${s.accountId}@${s.lastSuccess?.millisecondsSinceEpoch}',
+    ].join(',');
+    ref.listen(accountsProvider.select(accountIds), (_, _) => _schedule());
+    ref.listen(smartMailboxHomeProvider, (_, _) => _schedule());
+    ref.listen(syncStatusProvider.select(syncs), (_, _) => _schedule());
     return _visible(_records);
   }
 
