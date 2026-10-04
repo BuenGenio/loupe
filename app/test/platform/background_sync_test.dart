@@ -76,9 +76,11 @@ void main() {
     FakeBackgroundMail background, {
     AppMode mode = AppMode.live,
     Map<String, Object> prefs = const {},
+    Duration budget = const Duration(minutes: 8),
   }) async {
     SharedPreferences.setMockInitialValues({AppModeController.key: mode.name, ...prefs});
     return BackgroundSync(
+      budget: budget,
       prefs: await SharedPreferences.getInstance(),
       leases: leases,
       open: () async => background,
@@ -179,6 +181,17 @@ void main() {
     expect(appBack.isCompleted, isTrue);
     expect(notifier.posted, isEmpty, reason: 'the app shows that mail itself');
     expect(background.closed, isTrue);
+    expect(await leases.isHeld(SyncHolder.background), isFalse);
+  });
+
+  test('a sync that outlasts the budget stops and lets go of the lease', () async {
+    final hung = Completer<void>();
+    final background = FakeBackgroundMail(mail, onSync: () => hung.future);
+    final sync = await backgroundSync(background, budget: const Duration(milliseconds: 100));
+    expect(await sync.run(), BackgroundSyncResult.interrupted);
+    expect(background.interrupted, isTrue);
+    expect(background.closed, isTrue);
+    expect(notifier.posted, isEmpty);
     expect(await leases.isHeld(SyncHolder.background), isFalse);
   });
 

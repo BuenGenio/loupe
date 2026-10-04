@@ -77,7 +77,7 @@ void main() {
         .customSelect("SELECT name FROM sqlite_master WHERE type = 'table' AND name LIKE 'rule%' ORDER BY name")
         .get();
     expect([for (final t in tables) t.read<String>('name')], ['rule_watermarks', 'rules']);
-    expect((await db.customSelect('PRAGMA user_version').getSingle()).read<int>('user_version'), 3);
+    expect((await db.customSelect('PRAGMA user_version').getSingle()).read<int>('user_version'), 4);
     await db.close();
   });
 }

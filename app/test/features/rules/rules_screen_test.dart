@@ -78,129 +78,144 @@ void main() {
   });
 
   testWidgets('a new rule from a query: accounts, actions, preview, save', (tester) async {
-    final repo = await pumpLoupe(tester);
-    await goTo(tester, Routes.newRule(condition: 'from:jordan.lee@example.com'));
+    // The rule preview covers the last 30 days of the demo mail.
+    await atTestNow(() async {
+      final repo = await pumpLoupe(tester);
+      await goTo(tester, Routes.newRule(condition: 'from:jordan.lee@example.com'));
 
-    expect(find.text('New Rule'), findsOneWidget);
-    expect(find.text('From: jordan.lee@example.com'), findsWidgets);
+      expect(find.text('New Rule'), findsOneWidget);
+      expect(find.text('From: jordan.lee@example.com'), findsWidgets);
 
-    await tester.tap(find.text('Accounts'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Personal'));
-    await tester.tap(find.bySemanticsLabel('Back').last);
-    await tester.pumpAndSettle();
-    expect(find.text('Personal'), findsOneWidget);
+      await tester.tap(find.text('Accounts'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Personal'));
+      await tester.tap(find.bySemanticsLabel('Back').last);
+      await tester.pumpAndSettle();
+      expect(find.text('Personal'), findsOneWidget);
 
-    await tester.scrollTo(find.text('Add Action'));
-    await tester.tap(find.text('Add Action'));
-    await tester.pumpAndSettle();
-    // Forwarding is for server rules only.
-    expect(find.text('Forward To…'), findsNothing);
-    await tester.tap(find.text('Flag'));
-    await tester.pumpAndSettle();
-    expect(find.text('Flag'), findsOneWidget);
+      await tester.scrollTo(find.text('Add Action'));
+      await tester.tap(find.text('Add Action'));
+      await tester.pumpAndSettle();
+      // Forwarding is for server rules only.
+      expect(find.text('Forward To…'), findsNothing);
+      await tester.tap(find.text('Flag'));
+      await tester.pumpAndSettle();
+      expect(find.text('Flag'), findsOneWidget);
 
-    // The preview: Jordan's mail of the last 30 days.
-    await tester.scrollTo(textContaining('MATCHING MESSAGE'));
-    expect(textContaining('MATCHING MESSAGE'), findsOneWidget);
-    expect(find.text('Jordan Lee'), findsWidgets);
+      // The preview: Jordan's mail of the last 30 days.
+      await tester.scrollTo(textContaining('MATCHING MESSAGE'));
+      expect(textContaining('MATCHING MESSAGE'), findsOneWidget);
+      expect(find.text('Jordan Lee'), findsWidgets);
 
-    await tester.tap(find.text('Save'));
-    await tester.pumpAndSettle();
-    final saved = (await _rules(repo)).last;
-    expect(saved.name, 'From: jordan.lee@example.com');
-    expect(saved.condition, 'from:jordan.lee@example.com');
-    expect(saved.actions, [const FlagAction()]);
-    expect(saved.accountIds, {DemoAccounts.personal});
-    expect(saved.location, RuleLocation.device);
-    expect(find.text('New Rule'), findsNothing);
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+      final saved = (await _rules(repo)).last;
+      expect(saved.name, 'From: jordan.lee@example.com');
+      expect(saved.condition, 'from:jordan.lee@example.com');
+      expect(saved.actions, [const FlagAction()]);
+      expect(saved.accountIds, {DemoAccounts.personal});
+      expect(saved.location, RuleLocation.device);
+      expect(find.text('New Rule'), findsNothing);
+    });
   });
 
   testWidgets('a server rule that can’t run there says why and offers the device instead', (tester) async {
-    await pumpLoupe(tester);
-    await goTo(tester, Routes.newRule(condition: 'is:unread'));
-    await tester.scrollTo(find.text('Server'));
-    await tester.tap(find.text('Server'));
-    await tester.pumpAndSettle();
-    await tester.scrollTo(find.text('Run on This Device Instead'));
-    expect(textContaining('Can’t run on the server of Personal: Gmail doesn’t offer server rules'), findsOneWidget);
-    expect(textContaining('Can’t run on the server of Fastmail: “Unread”: new mail has no read'), findsOneWidget);
-    await tester.tap(find.text('Run on This Device Instead'));
-    await tester.pumpAndSettle();
-    expect(find.text('Run on This Device Instead'), findsNothing);
+    // The rule preview covers the last 30 days of the demo mail.
+    await atTestNow(() async {
+      await pumpLoupe(tester);
+      await goTo(tester, Routes.newRule(condition: 'is:unread'));
+      await tester.scrollTo(find.text('Server'));
+      await tester.tap(find.text('Server'));
+      await tester.pumpAndSettle();
+      await tester.scrollTo(find.text('Run on This Device Instead'));
+      expect(textContaining('Can’t run on the server of Personal: Gmail doesn’t offer server rules'), findsOneWidget);
+      expect(textContaining('Can’t run on the server of Fastmail: “Unread”: new mail has no read'), findsOneWidget);
+      await tester.tap(find.text('Run on This Device Instead'));
+      await tester.pumpAndSettle();
+      expect(find.text('Run on This Device Instead'), findsNothing);
+    });
   });
 
   testWidgets('a server rule shows its Sieve script and is installed on save', (tester) async {
-    final repo = await pumpLoupe(tester);
-    await goTo(tester, Routes.newRule(condition: 'from:@brandt.example'));
-    await tester.tap(find.text('Accounts'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Fastmail'));
-    await tester.tap(find.bySemanticsLabel('Back').last);
-    await tester.pumpAndSettle();
-    await tester.scrollTo(find.text('Add Action'));
-    await tester.tap(find.text('Add Action'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Mark as Read'));
-    await tester.pumpAndSettle();
-    await tester.scrollTo(find.text('Server'));
-    await tester.tap(find.text('Server'));
-    await tester.pumpAndSettle();
-    await tester.scrollTo(find.text('Show Script'));
-    await tester.tap(find.text('Show Script'));
-    await tester.pumpAndSettle();
-    expect(textContaining('if address :domain :is "from" "brandt.example"'), findsOneWidget);
-    expect(textContaining(r'addflag "\\Seen";'), findsOneWidget);
+    // The rule preview covers the last 30 days of the demo mail.
+    await atTestNow(() async {
+      final repo = await pumpLoupe(tester);
+      await goTo(tester, Routes.newRule(condition: 'from:@brandt.example'));
+      await tester.tap(find.text('Accounts'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Fastmail'));
+      await tester.tap(find.bySemanticsLabel('Back').last);
+      await tester.pumpAndSettle();
+      await tester.scrollTo(find.text('Add Action'));
+      await tester.tap(find.text('Add Action'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Mark as Read'));
+      await tester.pumpAndSettle();
+      await tester.scrollTo(find.text('Server'));
+      await tester.tap(find.text('Server'));
+      await tester.pumpAndSettle();
+      await tester.scrollTo(find.text('Show Script'));
+      await tester.tap(find.text('Show Script'));
+      await tester.pumpAndSettle();
+      expect(textContaining('if address :domain :is "from" "brandt.example"'), findsOneWidget);
+      expect(textContaining(r'addflag "\\Seen";'), findsOneWidget);
 
-    await tester.tap(find.text('Save'));
-    await tester.pumpAndSettle();
-    // Fastmail's own script is active: Loupe offers the include, never replaces it.
-    expect(find.text('Turn On Server Rules'), findsOneWidget);
-    await tester.tap(find.text('Leave Off'));
-    await tester.pumpAndSettle();
-    final script = repo.rules.servers[DemoAccounts.fastmail].scripts[loupeScriptName]!;
-    expect(script, contains('address :domain :is "from" "brandt.example"'));
-    expect(repo.rules.servers[DemoAccounts.fastmail].active, 'filters');
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+      // Fastmail's own script is active: Loupe offers the include, never replaces it.
+      expect(find.text('Turn On Server Rules'), findsOneWidget);
+      await tester.tap(find.text('Leave Off'));
+      await tester.pumpAndSettle();
+      final script = repo.rules.servers[DemoAccounts.fastmail].scripts[loupeScriptName]!;
+      expect(script, contains('address :domain :is "from" "brandt.example"'));
+      expect(repo.rules.servers[DemoAccounts.fastmail].active, 'filters');
+    });
   });
 
   testWidgets('editing: apply to existing messages after confirming the count, and delete', (tester) async {
-    final repo = await pumpLoupe(tester);
-    await goTo(tester, Routes.editRule('demo-receipts'));
-    expect(find.text('Edit Rule'), findsOneWidget);
-    await tester.scrollTo(find.text('Apply to Existing Messages…'));
-    await tester.tap(find.text('Apply to Existing Messages…'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('All Mailboxes'));
-    await tester.pumpAndSettle();
-    expect(textContaining('Apply “Receipts” to'), findsOneWidget);
-    await tester.tap(find.textContaining(RegExp(r'^Apply to \d+ Messages?$')));
-    await tester.pumpAndSettle();
-    expect(textContaining('Applied “Receipts” to'), findsOneWidget);
-    final receipts = await repo
-        .watchList(RealMailboxRef(MailIds.mailbox(DemoAccounts.personal, 'Receipts')), threaded: false)
-        .first;
-    expect(receipts.where((t) => t.latest.from.first.email.endsWith('harborcoffee.example')), isNotEmpty);
+    // The rule preview covers the last 30 days of the demo mail.
+    await atTestNow(() async {
+      final repo = await pumpLoupe(tester);
+      await goTo(tester, Routes.editRule('demo-receipts'));
+      expect(find.text('Edit Rule'), findsOneWidget);
+      await tester.scrollTo(find.text('Apply to Existing Messages…'));
+      await tester.tap(find.text('Apply to Existing Messages…'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('All Mailboxes'));
+      await tester.pumpAndSettle();
+      expect(textContaining('Apply “Receipts” to'), findsOneWidget);
+      await tester.tap(find.textContaining(RegExp(r'^Apply to \d+ Messages?$')));
+      await tester.pumpAndSettle();
+      expect(textContaining('Applied “Receipts” to'), findsOneWidget);
+      final receipts = await repo
+          .watchList(RealMailboxRef(MailIds.mailbox(DemoAccounts.personal, 'Receipts')), threaded: false)
+          .first;
+      expect(receipts.where((t) => t.latest.from.first.email.endsWith('harborcoffee.example')), isNotEmpty);
 
-    await tester.scrollTo(find.text('Delete Rule'));
-    await tester.tap(find.text('Delete Rule'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Delete Rule').last);
-    await tester.pumpAndSettle();
-    expect([for (final r in await _rules(repo)) r.id], isNot(contains('demo-receipts')));
-    await drainTimers(tester);
+      await tester.scrollTo(find.text('Delete Rule'));
+      await tester.tap(find.text('Delete Rule'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete Rule').last);
+      await tester.pumpAndSettle();
+      expect([for (final r in await _rules(repo)) r.id], isNot(contains('demo-receipts')));
+      await drainTimers(tester);
+    });
   });
 
   testWidgets('Make This a Rule from the search menu fills in the query', (tester) async {
-    await pumpLoupe(tester);
-    await goTo(tester, Routes.search('lisbon'));
-    await tester.tap(find.bySemanticsLabel('Search Menu'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Make This a Rule'));
-    await tester.pumpAndSettle();
-    expect(find.text('New Rule'), findsOneWidget);
-    final field = tester.widget<TextField>(find.byKey(const ValueKey('rule-condition')));
-    expect(field.controller!.text, 'lisbon');
-    expect(find.byType(CupertinoSlidingSegmentedControl<RuleLocation>), findsOneWidget);
+    // The rule preview covers the last 30 days of the demo mail.
+    await atTestNow(() async {
+      await pumpLoupe(tester);
+      await goTo(tester, Routes.search('lisbon'));
+      await tester.tap(find.bySemanticsLabel('Search Menu'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Make This a Rule'));
+      await tester.pumpAndSettle();
+      expect(find.text('New Rule'), findsOneWidget);
+      final field = tester.widget<TextField>(find.byKey(const ValueKey('rule-condition')));
+      expect(field.controller!.text, 'lisbon');
+      expect(find.byType(CupertinoSlidingSegmentedControl<RuleLocation>), findsOneWidget);
+    });
   });
 
   testWidgets('a new rule can start with a name and actions (Subscriptions › Create Rule)', (tester) async {

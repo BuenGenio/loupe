@@ -62,6 +62,7 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
   int _outboxGeneration = 0;
   bool _outboxBusy = false;
   bool _outboxAgain = false;
+  Future<void>? _outboxRun;
 
   Timer? _snoozeTimer;
   int _snoozeGeneration = 0;
@@ -77,12 +78,9 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     _started = true;
     await _loadAccounts();
     await _loadSignInState();
-    // A send interrupted by the app being killed is retried.
-    for (final e in await store.outboxEntries()) {
-      if (e.status == OutboxStatus.sending) {
-        await store.updateOutbox(e.id, status: OutboxStatus.queued, attempts: e.attempts, lastError: e.lastError);
-      }
-    }
+    // A send interrupted by the app being killed is retried once its claim
+    // is stale (_processOutbox); a fresh one may be in progress in
+    // background work.
     if (!_paused) {
       for (final s in _syncers.values) {
         s.start();
@@ -151,6 +149,9 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     _disposed = true;
     _outboxTimer?.cancel();
     _snoozeTimer?.cancel();
+    // A send in flight finishes its bookkeeping before the store closes;
+    // otherwise its row stays claimed and goes out again later.
+    await _outboxRun?.timeout(const Duration(seconds: 90), onTimeout: () {});
     await Future.wait([for (final s in _syncers.values) s.dispose()]);
     _syncers.clear();
     await _statuses.close();
@@ -1049,17 +1050,10 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     }
     final id = newId();
     final now = _now();
-    var queued = message;
     final draft = message.draftId;
-    if (sendAt != null && draft != null) {
-      // A scheduled message lives in the outbox, not in Drafts.
-      queued = message.withoutDraft();
-      try {
-        await deleteDraft(draft);
-      } on MailException {
-        // Gone already.
-      }
-    }
+    // A scheduled message lives in the outbox, not in Drafts.
+    final moveDraft = sendAt != null && draft != null;
+    final queued = moveDraft ? message.withoutDraft() : message;
     await store.putOutbox(
       OutboxEntry(
         id: id,
@@ -1070,6 +1064,14 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
         status: sendAt == null ? OutboxStatus.queued : OutboxStatus.scheduled,
       ),
     );
+    // Only once the outbox has it: a failure above leaves the draft.
+    if (moveDraft) {
+      try {
+        await deleteDraft(draft);
+      } on Object {
+        // Gone already, or left in Drafts (harmless next to the scheduled copy).
+      }
+    }
     await _scheduleOutbox();
     return id;
   }
@@ -1113,7 +1115,8 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     final generation = ++_outboxGeneration;
     final due = [
       for (final e in await store.outboxEntries())
-        if (e.status != OutboxStatus.sending) e.sendAfter,
+        // A claim is looked at again once it may be stale.
+        e.status == OutboxStatus.sending ? e.sendAfter.add(config.sendClaimTimeout) : e.sendAfter,
     ];
     if (generation != _outboxGeneration || _disposed) return;
     _outboxTimer?.cancel();
@@ -1127,37 +1130,63 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     });
   }
 
+  /// Sends what is due. Never throws: a store error leaves the rest for the
+  /// next run, which is always scheduled.
   Future<void> _processOutbox() async {
     if (_disposed) return;
     if (_outboxBusy) {
       _outboxAgain = true;
-      return;
+      return _outboxRun;
     }
     _outboxBusy = true;
+    final run = _outboxRun = _sendDue();
+    try {
+      await run;
+    } finally {
+      _outboxBusy = false;
+    }
+    try {
+      await _scheduleOutbox();
+    } on Object catch (e) {
+      _reportError(asMailException(e, 'The Outbox couldn’t be read'));
+    }
+  }
+
+  Future<void> _sendDue() async {
     try {
       do {
         _outboxAgain = false;
         final now = _now();
+        await store.releaseStaleOutboxClaims(now.subtract(config.sendClaimTimeout));
         for (final e in await store.outboxEntries()) {
+          if (_disposed) return;
           if (e.status == OutboxStatus.sending || e.sendAfter.isAfter(now)) continue;
-          final claimed = await store.claimOutbox(e.id);
+          final claimed = await store.claimOutbox(e.id, now: _now());
           if (claimed != null) await _sendOne(claimed);
         }
       } while (_outboxAgain && !_disposed);
-    } finally {
-      _outboxBusy = false;
+    } on Object catch (e) {
+      _reportError(asMailException(e, 'The Outbox couldn’t be read'));
     }
-    await _scheduleOutbox();
   }
 
   Future<void> _sendOne(OutboxEntry entry) async {
     final m = entry.message;
+    final MailAccount account;
+    final Uint8List bytes;
     try {
-      final account =
+      account =
           await store.getAccount(entry.accountId) ??
           (throw const MailException(MailErrorKind.notFound, 'This account no longer exists'));
       final identity = account.identityById(m.identityId);
-      final bytes = transports.composer.compose(m, identity, messageId: newMessageId(identity.email), date: _now());
+      // One Message-ID for every attempt: if a send whose reply got lost
+      // did go out, the copies are recognisably the same message.
+      bytes = transports.composer.compose(
+        m,
+        identity,
+        messageId: outboxMessageId(entry.id, identity.email),
+        date: _now(),
+      );
       final recipients = {
         for (final a in [...m.to, ...m.cc, ...m.bcc]) a.email,
       }.toList();
@@ -1171,7 +1200,6 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
           // The message went out; a failed QUIT doesn't matter.
         }
       }
-      await _afterSend(account, entry, bytes);
     } catch (error) {
       final e = asMailException(error, 'Sending failed');
       final attempts = entry.attempts + 1;
@@ -1183,6 +1211,18 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
         sendAfter: _now().add(backoff(config.sendRetryBase, config.sendRetryMax, attempts - 1)),
       );
       _reportError(MailException(e.kind, 'Couldn’t send a message: ${e.message}. It stays in the Outbox.', e));
+      return;
+    }
+    // Sent: whatever fails from here on must not send it again.
+    try {
+      await _afterSend(account, entry, bytes);
+    } on Object catch (error) {
+      try {
+        await store.deleteOutbox(entry.id);
+      } on Object {
+        // Left claimed; the store is gone (released only when stale).
+      }
+      _reportError(asMailException(error, 'A message was sent, but not filed in Sent'));
     }
   }
 
@@ -1331,8 +1371,10 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
   // Documents on the server -------------------------------------------------
 
   @override
-  Future<List<ServerDocument>> readServerDocuments(String accountId, String name) =>
-      _syncerFor(accountId).onMain((t) => t.readDocuments(name));
+  Future<List<ServerDocument>> readServerDocuments(String accountId, String name) async {
+    final syncer = _syncerFor(accountId)..throwIfRejected();
+    return syncer.onMain((t) => t.readDocuments(name));
+  }
 
   @override
   Future<ServerStorage> writeServerDocument(
@@ -1340,7 +1382,10 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     String name,
     String content, {
     List<ServerDocument> replaces = const [],
-  }) => _syncerFor(accountId).onMain((t) => t.writeDocument(name, content, replaces: replaces));
+  }) async {
+    final syncer = _syncerFor(accountId)..throwIfRejected();
+    return syncer.onMain((t) => t.writeDocument(name, content, replaces: replaces));
+  }
 
   // People ------------------------------------------------------------------
 

@@ -147,6 +147,15 @@ final class FakeServer {
   /// Error thrown by SMTP until cleared.
   MailException? smtpFailure;
 
+  /// The previews argument of every fetchSummaries call.
+  final summaryPreviews = <bool>[];
+
+  /// How long an SMTP send takes.
+  Duration smtpLatency = Duration.zero;
+
+  /// The next SMTP send is accepted, but its reply never arrives.
+  bool smtpLoseReply = false;
+
   /// The OAuth access token the server takes; null takes any. Like IMAP
   /// with XOAUTH2, a rejected token is retried once with a forced refresh.
   String? accessToken;
@@ -171,6 +180,9 @@ final class FakeServer {
   final sent = <SentMail>[];
   final transports = <FakeTransport>[];
   int connects = 0;
+
+  /// LOGIN attempts, refused ones included.
+  int logins = 0;
   final _watchers = <String, List<StreamController<void>>>{};
   int _clock = 0;
 
@@ -362,6 +374,7 @@ final class FakeTransport implements MailTransport {
   Future<void> connect() async {
     await _delay();
     if (server.offline) throw const MailException(MailErrorKind.connection, 'Server unreachable');
+    server.logins++;
     var c = await credentials();
     if (c is PasswordCredentials && c.password != server.password) {
       throw const MailException(MailErrorKind.authentication, 'Password rejected');
@@ -519,8 +532,9 @@ final class FakeTransport implements MailTransport {
   }
 
   @override
-  Future<List<EmailSummary>> fetchSummaries(List<String> emailIds) async {
+  Future<List<EmailSummary>> fetchSummaries(List<String> emailIds, {bool previews = true}) async {
     await _op('fetchSummaries');
+    server.summaryPreviews.add(previews);
     return [
       for (final id in emailIds)
         if (_find(id) case (final mb, final m)) _summary(mb, m),
@@ -739,7 +753,12 @@ final class FakeSender implements MailSender {
     if (server.offline) throw const MailException(MailErrorKind.connection, 'Server unreachable');
     final f = server.smtpFailure;
     if (f != null) throw f;
+    if (server.smtpLatency > Duration.zero) await Future<void>.delayed(server.smtpLatency);
     server.sent.add(SentMail(rfc822, envelopeFrom, recipients));
+    if (server.smtpLoseReply) {
+      server.smtpLoseReply = false;
+      throw const MailException(MailErrorKind.connection, 'Lost the connection');
+    }
   }
 
   @override

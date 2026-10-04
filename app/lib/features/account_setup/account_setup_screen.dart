@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
+import 'package:mail_store/mail_store.dart' show MailStoreException;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../data/live.dart' show DatabaseKeyUnavailable;
 import '../../data/oauth.dart';
 import '../../data/repositories.dart';
 import '../../settings/app_mode.dart';
@@ -109,6 +111,11 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     } on MailException catch (e) {
       discovery = AccountDiscovery(email: email, provider: ProviderKind.generic, authKind: AuthKind.password);
       note = e.message;
+    } on Object catch (e) {
+      // The mail database couldn't be opened, or something unexpected:
+      // say so instead of spinning forever.
+      if (mounted) _failed(e);
+      return;
     }
     if (!mounted) return;
     _incoming?.dispose();
@@ -184,7 +191,18 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
         _fingerprint = e.kind == MailErrorKind.certificate ? fingerprintIn(e.message) : null;
         if (e.kind == MailErrorKind.connection) _showSettings = true;
       });
+    } on Object catch (e) {
+      if (mounted) _failed(e);
     }
+  }
+
+  /// An error that isn't the server's: the busy state ends with a message.
+  void _failed(Object e) {
+    debugPrint('Account setup failed: ${e.runtimeType}');
+    setState(() {
+      _busy = false;
+      _error = setupFailureMessage(e);
+    });
   }
 
   String _describe(MailException e) => describeSetupError(e, _provider);
@@ -225,6 +243,8 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
         _busy = false;
         _error = describeOAuthError(e, provider);
       });
+    } on Object catch (e) {
+      if (mounted) _failed(e);
     }
   }
 
@@ -273,8 +293,9 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       await (await _repo).updateAccount(
         account.copyWith(displayName: description.isEmpty ? account.displayName : description, colorIndex: _colorIndex),
       );
-    } on MailException catch (e) {
-      if (mounted) showSnack(ScaffoldMessenger.of(context), e.message);
+    } on Object catch (e) {
+      // The account is added; only its name or colour didn't stick.
+      if (mounted) showSnack(ScaffoldMessenger.of(context), e is MailException ? e.message : 'Couldn’t save the name.');
     }
     // The first real account switches the app from the welcome screen to live mode.
     if (ref.read(appModeProvider) == AppMode.none) await ref.read(appModeProvider.notifier).set(AppMode.live);
@@ -750,3 +771,10 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     );
   }
 }
+
+/// What account setup says about a failure that isn't the server's.
+String setupFailureMessage(Object e) => switch (e) {
+  DatabaseKeyUnavailable() ||
+  MailStoreException() => 'Loupe couldn’t open its mail database on this phone. Close Loupe, open it again and retry.',
+  _ => 'Something went wrong (${e.runtimeType}). Try again.',
+};

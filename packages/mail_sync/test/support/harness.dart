@@ -52,11 +52,19 @@ const fastConfig = SyncConfig(
 );
 
 final class Harness {
-  Harness({SyncConfig config = fastConfig, OAuthRefresher? refreshOAuth}) {
-    repo = LiveMailRepository(store, factory, credentials, config: config, refreshOAuth: refreshOAuth, sieve: sieve);
+  Harness({SyncConfig config = fastConfig, OAuthRefresher? refreshOAuth, MailStore? store})
+    : store = store ?? MailStore.memory() {
+    repo = LiveMailRepository(
+      this.store,
+      factory,
+      credentials,
+      config: config,
+      refreshOAuth: refreshOAuth,
+      sieve: sieve,
+    );
   }
 
-  final store = MailStore.memory();
+  final MailStore store;
   final factory = FakeTransportFactory();
   final credentials = FakeCredentialStore();
 

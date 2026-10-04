@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:clock/clock.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -144,7 +145,14 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     // Swiped away from the app switcher comes after this: save what's there.
     _lifecycle = AppLifecycleListener(onHide: _saveNow, onPause: _saveNow);
     ref.listenManual(keyringStateProvider, (_, _) => _updateSecurity());
-    unawaited(_prepare());
+    unawaited(
+      _prepare().catchError((Object e) {
+        // A source message that can't be quoted must not leave compose
+        // preparing forever (Send disabled): start from what is there.
+        debugPrint('Preparing compose failed: ${e.runtimeType}');
+        if (mounted && _preparing) setState(() => _preparing = false);
+      }),
+    );
     registerCommands(ref.read(mailCommandsProvider));
   }
 
@@ -264,7 +272,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
       return;
     }
     unawaited(
-      _recovery.write(ComposeRecord(session: _session, message: message, savedAt: DateTime.now(), sendAt: _sendAt)),
+      _recovery.write(ComposeRecord(session: _session, message: message, savedAt: clock.now(), sendAt: _sendAt)),
     );
   }
 
@@ -736,7 +744,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
   // Sending and closing -----------------------------------------------------------
 
   Future<void> _pickSendLater() async {
-    final choice = await showSendLaterSheet(context, now: DateTime.now(), current: _sendAt);
+    final choice = await showSendLaterSheet(context, now: clock.now(), current: _sendAt);
     if (choice == null || !mounted) return;
     _sendAt = choice.at;
     _changed();
@@ -768,7 +776,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     final repo = _repo;
     final undoSeconds = ref.read(appSettingsProvider).undoSendSeconds;
     // A time that has passed meanwhile sends now, with the usual undo delay.
-    final now = DateTime.now();
+    final now = clock.now();
     final at = _sendAt != null && _sendAt!.isAfter(now) ? _sendAt : null;
     final when = at == null ? null : formatSendTimeFor(context, at, now: now);
     // Captured before popping: the snack bar and Undo outlive this screen.
@@ -783,13 +791,18 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
           showSnack(messenger, 'It was sent before your changes, which are saved in Drafts.');
           return;
         }
+        // Taken out of the Outbox: this screen holds the only copy now, and
+        // a retry after a failure below simply sends it.
+        _outboxId = null;
       }
       final outboxId = await repo.send(
         message,
         undoDelay: Duration(seconds: undoSeconds),
         sendAt: at,
       );
-      if (at != null) wakeUpAt(ref, at);
+      // Queued: nothing below may end in the failure path (a retry would
+      // queue it twice).
+      if (at != null && mounted) wakeUpAt(ref, at);
       _forgetLocal();
       _closeNow();
       final undo = at != null || undoSeconds > 0;
@@ -808,9 +821,10 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
               )
             : null,
       );
-    } on MailException catch (e) {
+    } on Object catch (e) {
+      // The message stays here; Send can be tried again.
       if (mounted) setState(() => _busy = false);
-      showSnack(messenger, e.message);
+      showSnack(messenger, e is MailException ? e.message : 'Couldn’t send. Try again.');
     }
   }
 

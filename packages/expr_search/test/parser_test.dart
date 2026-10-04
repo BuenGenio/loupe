@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:expr_search/expr_search.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:test/test.dart';
@@ -383,6 +384,13 @@ void main() {
       expect(parseQuery('date:today', now: DateTime(2025, 1, 1, 0, 1)).expr, on(2025, 1, 1));
       expect(parseQuery('older_than:1m', now: DateTime(2026, 3, 31)).expr, before(2026, 2, 28));
       expect(parseQuery('older_than:1y', now: DateTime(2024, 2, 29)).expr, before(2023, 2, 28));
+    });
+
+    test('without now, relative dates follow package:clock', () {
+      withClock(Clock.fixed(DateTime(2025, 1, 1, 9)), () {
+        expect(parseQuery('date:today').expr, on(2025, 1, 1));
+        expect(suggest('date:', 5), isNotEmpty);
+      });
     });
   });
 }

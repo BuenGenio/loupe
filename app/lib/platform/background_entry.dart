@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mail_model/mail_model.dart';
@@ -164,7 +165,7 @@ final class LiveBackgroundMail implements BackgroundMail {
 
 /// When to sync again after a notification button ran in the background,
 /// in case its change didn't reach the server.
-DateTime afterAction() => DateTime.now().add(const Duration(minutes: 1));
+DateTime afterAction() => clock.now().add(const Duration(minutes: 1));
 
 /// When the next queued message of [repository] is due, if any; the app
 /// asks for a wake-up then, in case it isn't running.

@@ -80,8 +80,32 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Move to Drafts'));
     await tester.pumpAndSettle();
-    expect(repo.log, containsAllInOrder(['cancelSend o2', 'saveDraft Report']));
+    expect(repo.log, containsAllInOrder(['saveDraft Report', 'cancelSend o2']));
     expect(find.text('Moved to Drafts'), findsOneWidget);
+    expect(find.text('Report'), findsNothing);
+  });
+
+  testWidgets('Move to Drafts that can’t save keeps the message in the Outbox', (tester) async {
+    final repo = repoWithOutbox()..draftError = const MailException(MailErrorKind.server, 'APPEND: quota exceeded');
+    await pumpOutbox(tester, repo);
+    await tester.longPress(find.text('Report'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Cancel Sending…'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Move to Drafts'));
+    await tester.pumpAndSettle();
+    expect(repo.log, isNot(contains('cancelSend o2')));
+    expect(find.textContaining('quota exceeded'), findsOneWidget);
+    expect(find.text('Report'), findsOneWidget);
+
+    repo.draftError = null;
+    await tester.longPress(find.text('Report'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Cancel Sending…'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Move to Drafts'));
+    await tester.pumpAndSettle();
+    expect(repo.log, containsAllInOrder(['saveDraft Report', 'cancelSend o2']));
     expect(find.text('Report'), findsNothing);
   });
 

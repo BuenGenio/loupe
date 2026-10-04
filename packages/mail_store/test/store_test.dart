@@ -99,7 +99,7 @@ void main() {
         'contents_after_delete',
       ]),
     );
-    expect(db.select('PRAGMA user_version').single.values.single, 3);
+    expect(db.select('PRAGMA user_version').single.values.single, 4);
   });
 
   group('accounts and mailboxes', () {
@@ -601,8 +601,8 @@ void main() {
       expect(got.message.security, const OutgoingSecurity(encrypt: true, sign: true));
       expect(got.message.to.single.name, 'Bob');
       expect(got.message.mode, ComposeMode.reply);
-      expect((await store.claimOutbox('o1'))!.status, OutboxStatus.sending);
-      expect(await store.claimOutbox('o1'), isNull);
+      expect((await store.claimOutbox('o1', now: base))!.status, OutboxStatus.sending);
+      expect(await store.claimOutbox('o1', now: base), isNull);
       expect(await store.takeOutbox('o1'), isNull, reason: 'being sent');
       await store.updateOutbox('o1', status: OutboxStatus.failed, attempts: 1, lastError: 'boom');
       expect((await store.outboxEntries()).single.lastError, 'boom');
@@ -635,12 +635,37 @@ void main() {
       expect(moved.status, OutboxStatus.scheduled);
       expect(moved.lastError, isNull);
       expect(moved.attempts, 1);
-      await store.claimOutbox('o2');
+      await store.claimOutbox('o2', now: evening);
       expect(await store.rescheduleOutbox('o2', sendAfter: base, status: OutboxStatus.queued), isFalse);
       expect(await store.rescheduleOutbox('nope', sendAfter: base, status: OutboxStatus.queued), isFalse);
       await Future<void>.delayed(const Duration(milliseconds: 50));
       expect(updates.last, [OutboxStatus.sending]);
       await sub.cancel();
+    });
+
+    test('a claim needs the entry due, records when, and goes stale', () async {
+      final store = await seededStore();
+      final msg = OutgoingMessage(accountId: accountId, identityId: 'acc1/default', subject: 'Later');
+      await store.putOutbox(
+        OutboxEntry(
+          id: 'o3',
+          accountId: accountId,
+          message: msg,
+          sendAfter: base.add(const Duration(hours: 1)),
+          createdAt: base,
+          status: OutboxStatus.scheduled,
+        ),
+      );
+      expect(await store.claimOutbox('o3', now: base), isNull, reason: 'rescheduled to later meanwhile');
+      final at = base.add(const Duration(hours: 2));
+      final claimed = (await store.claimOutbox('o3', now: at))!;
+      expect(claimed.status, OutboxStatus.sending);
+      expect(claimed.sendAfter, at, reason: 'the claim time');
+
+      expect(await store.releaseStaleOutboxClaims(at.subtract(const Duration(minutes: 1))), 0, reason: 'in progress');
+      expect((await store.getOutbox('o3'))!.status, OutboxStatus.sending);
+      expect(await store.releaseStaleOutboxClaims(at), 1);
+      expect((await store.getOutbox('o3'))!.status, OutboxStatus.queued);
     });
 
     test('pending ops keep order and update', () async {

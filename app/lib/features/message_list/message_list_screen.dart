@@ -375,6 +375,13 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
       more = await ref.read(repositoryProvider).loadOlder(widget.mailboxRef);
     } on MailException catch (e) {
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+    } on Object catch (e) {
+      // Not the server's (the database): the spinner must still go, as after
+      // a server error.
+      debugPrint('Loading older mail failed: ${e.runtimeType}');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Couldn’t load older mail.')));
+      }
     }
     if (!mounted) return;
     setState(() {
@@ -404,7 +411,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
     );
     if (next == null || !mounted) return;
     await ref.read(filterCriteriaProvider.notifier).set(next);
-    setState(() => _filterOn = next.isNotEmpty);
+    if (mounted) setState(() => _filterOn = next.isNotEmpty);
   }
 
   Future<void> _markSelected(List<ThreadSummary> rows, MailActions actions) async {
@@ -617,9 +624,13 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
       final shown = rows.indexWhere(selection.shows);
       if (shown >= 0) _shownIndex = shown;
     }
+    // Rows keep their state (a swipe under way) when sync adds or removes
+    // others above them.
+    final indexOf = {for (final (i, r) in rows.indexed) r.threadId: i};
     return [
       SliverList.builder(
         itemCount: rows.length,
+        findChildIndexCallback: (key) => key is ValueKey<String> ? indexOf[key.value] : null,
         itemBuilder: (context, i) {
           final row = rows[i];
           final email = row.latest;

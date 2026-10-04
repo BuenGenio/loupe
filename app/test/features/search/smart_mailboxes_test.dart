@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -138,6 +139,20 @@ void main() {
       status: c.read(smartMailboxSyncStatusProvider),
     );
     expect((icon, text), (LoupeIcons.thisDevice, 'On this device only'));
+  });
+
+  test('turning sync off during a round doesn’t leave it running', () async {
+    final fake = FakeMailRepository()..holdDocuments = Completer<void>();
+    final c = await _container(fake);
+    final round = c.read(smartMailboxesProvider.notifier).sync();
+    await pumpEventQueue();
+    expect(c.read(smartMailboxSyncStatusProvider).running, isTrue);
+    // An edit during the round asks for another one; then sync goes off.
+    await c.read(smartMailboxesProvider.notifier).add('Later', 'is:flagged');
+    await c.read(smartMailboxSyncViaProvider.notifier).set(SmartMailboxSyncVia.off);
+    fake.holdDocuments!.complete();
+    await round;
+    expect(c.read(smartMailboxSyncStatusProvider).running, isFalse);
   });
 
   test('a chosen home account keeps the unified ones', () async {

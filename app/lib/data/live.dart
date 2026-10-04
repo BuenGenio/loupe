@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,18 +23,21 @@ const _databaseKeyName = 'loupe.database.key';
 /// work), but syncing waits until the app is in the foreground and no
 /// background sync holds the database (`ForegroundSync` resumes it).
 Future<MailRepository> createLiveRepository(Ref ref) async {
-  // Never delete the database on failure: a MailStoreException surfaces in
-  // the live gate, and the user decides.
+  // Never delete the database on failure: a MailStoreException or
+  // DatabaseKeyUnavailable surfaces in the live gate, and the user decides.
   final store = await openLiveStore();
+  // Closed with the provider even if a step below fails (Try Again on the
+  // recovery screen would open a second connection otherwise).
+  LiveMailRepository? repository;
+  ref.onDispose(() async {
+    await repository?.dispose();
+    await store.close();
+  });
   // Before the first send: the composer signs, encrypts and adds Autocrypt
   // headers synchronously from the keyring and the unlocked keys.
   final keyring = await ref.watch(liveKeyringProvider.future);
   await (await ref.read(openPgpServiceProvider.future)).ready;
-  final repository = buildLiveRepository(store, keys: SessionSendKeys(keyring, () => ref.read(keySessionProvider)));
-  ref.onDispose(() async {
-    await repository.dispose();
-    await store.close();
-  });
+  repository = buildLiveRepository(store, keys: SessionSendKeys(keyring, () => ref.read(keySessionProvider)));
   await repository.pause();
   await repository.start();
   return repository;
@@ -43,12 +47,78 @@ Future<MailRepository> createLiveRepository(Ref ref) async {
 /// and the background isolates (sync, notification actions) all open it
 /// through here.
 ///
-/// Without [createKey], a missing key throws a [MailStoreException] instead
-/// of starting a new, empty database (background work never creates one).
-Future<MailStore> openLiveStore({bool createKey = true}) async {
-  final key = await _databaseKey(KeychainSecretStorage(), create: createKey);
-  final directory = await getApplicationSupportDirectory();
-  return MailStore.open('${directory.path}/loupe.db', encryptionKey: key);
+/// A new key is only made when there is no database yet ([createKey] and no
+/// file): a key the keychain can't give back for an existing database throws
+/// [DatabaseKeyUnavailable], never a fresh key (which would lock that
+/// database for good). Background work passes `createKey: false`.
+Future<MailStore> openLiveStore({bool createKey = true}) async =>
+    openStoreIn(await getApplicationSupportDirectory(), KeychainSecretStorage(), createKey: createKey);
+
+/// [openLiveStore] on [directory] with the key in [secrets].
+Future<MailStore> openStoreIn(Directory directory, SecretStorage secrets, {bool createKey = true}) async {
+  final path = databasePath(directory);
+  final key = await databaseKey(secrets, create: createKey && !File(path).existsSync());
+  return MailStore.open(path, encryptionKey: key);
+}
+
+/// Where the mail database lives in the app support [directory].
+String databasePath(Directory directory) => '${directory.path}/loupe.db';
+
+/// The keychain doesn't give the database key: it failed to read it
+/// ([cause]; often temporary, e.g. the Keystore after a reboot or an update),
+/// or it has none although the database exists ([missing]; e.g. after a
+/// backup was restored without the Keystore).
+final class DatabaseKeyUnavailable implements Exception {
+  const DatabaseKeyUnavailable({this.missing = false, this.cause});
+
+  final bool missing;
+  final Object? cause;
+
+  @override
+  String toString() => missing
+      ? 'DatabaseKeyUnavailable: the keychain has no key for the database'
+      : 'DatabaseKeyUnavailable: the keychain could not be read (${cause.runtimeType})';
+}
+
+/// Reads the database key from [secrets]; with [create], makes a random
+/// 256-bit one if there is none. Never replaces a key: a failed read throws
+/// [DatabaseKeyUnavailable].
+Future<String> databaseKey(SecretStorage secrets, {required bool create}) async {
+  final String? existing;
+  try {
+    existing = await secrets.read(_databaseKeyName);
+  } on Object catch (e) {
+    throw DatabaseKeyUnavailable(cause: e);
+  }
+  if (existing != null && existing.isNotEmpty) return existing;
+  if (!create) throw const DatabaseKeyUnavailable(missing: true);
+  final random = Random.secure();
+  final key = base64.encode([for (var i = 0; i < 32; i++) random.nextInt(256)]);
+  await secrets.write(_databaseKeyName, key);
+  return key;
+}
+
+/// Deletes the mail database and its key, after the user agreed (the
+/// recovery screen): accounts and cached mail on this device, and messages
+/// still in the Outbox. Mail on the servers is untouched. The next
+/// [openLiveStore] starts an empty database with a new key.
+Future<void> deleteLocalMailData({Directory? directory, SecretStorage? secrets}) async {
+  final dir = directory ?? await getApplicationSupportDirectory();
+  final path = databasePath(dir);
+  for (final suffix in ['', '-wal', '-shm', '-journal']) {
+    final file = File('$path$suffix');
+    if (file.existsSync()) await file.delete();
+  }
+  if (secrets != null) {
+    await secrets.delete(_databaseKeyName);
+    return;
+  }
+  try {
+    await KeychainSecretStorage().delete(_databaseKeyName);
+  } on Object {
+    // The Keystore can't be used at all (its key is gone): start it over.
+    await KeychainSecretStorage.discardingUnreadable().delete(_databaseKeyName);
+  }
 }
 
 /// The live repository over [store], not yet started. Its composer writes
@@ -91,15 +161,4 @@ Future<PgpSendKeys> backgroundSendKeys() async {
     // A keychain that can't be read: encrypted mail waits for the app.
   }
   return SessionSendKeys(keyring, () => session);
-}
-
-/// Reads the database key, creating a random 256-bit one on first use.
-Future<String> _databaseKey(SecretStorage secrets, {required bool create}) async {
-  final existing = await secrets.read(_databaseKeyName);
-  if (existing != null) return existing;
-  if (!create) throw const MailStoreException('The database key is missing');
-  final random = Random.secure();
-  final key = base64.encode([for (var i = 0; i < 32; i++) random.nextInt(256)]);
-  await secrets.write(_databaseKeyName, key);
-  return key;
 }

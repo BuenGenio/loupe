@@ -130,6 +130,12 @@ void main() {
       expect(makePreview('Hi!\n> quoted\nThanks\n-- \nSignature'), 'Hi! Thanks');
     });
 
+    test('never cuts an emoji in half', () {
+      final p = makePreview('${'a' * 199}😀😀😀');
+      expect(p, '${'a' * 199}…');
+      expect(p.runes.any((r) => r >= 0xD800 && r <= 0xDFFF), isFalse, reason: 'no lone surrogate');
+    });
+
     test('cut at a word boundary', () {
       final p = makePreview(List.filled(100, 'word').join(' '), maxLength: 50);
       expect(p.length, lessThanOrEqualTo(51));

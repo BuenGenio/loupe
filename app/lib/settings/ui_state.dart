@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
@@ -259,7 +260,7 @@ class SmartMailboxes extends Notifier<List<SmartMailbox>> {
   }
 
   Future<SmartMailbox> add(String name, String query, {String? scope}) async {
-    final now = DateTime.now();
+    final now = clock.now();
     final (portable, accountId) = _portableScope(scope);
     final record = SmartMailboxRecord(
       SmartMailboxEntry(
@@ -280,7 +281,7 @@ class SmartMailboxes extends Notifier<List<SmartMailbox>> {
   Future<void> remove(String id) => _edit(id, (e, at) => e.tombstone(at));
 
   Future<void> _edit(String id, SmartMailboxEntry Function(SmartMailboxEntry e, DateTime at) change) {
-    final now = DateTime.now();
+    final now = clock.now();
     return _change([
       for (final r in _records)
         r.id == id && !r.entry.deleted
@@ -318,7 +319,11 @@ class SmartMailboxes extends Notifier<List<SmartMailbox>> {
         _again = false;
         final home = r.read(smartMailboxHomeProvider);
         final accounts = r.read(accountsProvider).value ?? const <MailAccount>[];
-        if (home == null || accounts.isEmpty) return;
+        if (home == null || accounts.isEmpty) {
+          // Sync turned off, or the last account removed, during a round.
+          status.set(r.read(smartMailboxSyncStatusProvider).copyWith(running: false));
+          return;
+        }
         status.set(r.read(smartMailboxSyncStatusProvider).copyWith(running: true));
         final before = _records;
         final report = await syncSmartMailboxes(
@@ -326,7 +331,7 @@ class SmartMailboxes extends Notifier<List<SmartMailbox>> {
           before,
           accountIds: [for (final a in accounts) a.id],
           homeAccountId: home,
-          now: DateTime.now(),
+          now: clock.now(),
         );
         if (!r.mounted) return;
         // Changed here while the round ran: keep those changes, send them next.
@@ -348,7 +353,7 @@ class SmartMailboxes extends Notifier<List<SmartMailbox>> {
                 if (value.kind == MailErrorKind.unsupported) key,
             },
             newerFormat: report.newerFormat,
-            lastRound: DateTime.now(),
+            lastRound: clock.now(),
           ),
         );
       } while (_again);
@@ -364,7 +369,7 @@ class SmartMailboxes extends Notifier<List<SmartMailbox>> {
 
   Future<void> _store(Ref r, List<SmartMailboxRecord> records) async {
     // Deletions are remembered as long as other devices may need them.
-    final horizon = DateTime.now().toUtc().subtract(tombstoneLifetime);
+    final horizon = clock.now().toUtc().subtract(tombstoneLifetime);
     records = [
       for (final x in records)
         if (!x.entry.deleted || x.entry.modifiedAt.isAfter(horizon)) x,
@@ -395,7 +400,7 @@ class SmartMailboxes extends Notifier<List<SmartMailbox>> {
           : mergeSmartMailboxes([
               [c.entry],
               [s.entry],
-            ], now: DateTime.now()).firstOrNull;
+            ], now: clock.now()).firstOrNull;
       out.add(winner != null && identical(winner, s?.entry) ? s! : c);
     }
     return [

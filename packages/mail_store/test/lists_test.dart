@@ -259,7 +259,7 @@ void main() {
     }
 
     for (final version in [1, 2]) {
-      test('version $version upgrades to 3: list columns, index, muted threads, stale headers', () async {
+      test('version $version upgrades past 3: list columns, index, muted threads, stale headers', () async {
         final path = '${dir.path}/mail.db';
         create(path, version);
         final store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
@@ -286,7 +286,7 @@ void main() {
 
         final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
         addTearDown(db.close);
-        expect(db.select('PRAGMA user_version').single.values.single, 3);
+        expect(db.select('PRAGMA user_version').single.values.single, 4);
         final columns = {for (final r in db.select('PRAGMA table_info(emails)')) r['name'] as String};
         expect(
           columns,
@@ -295,6 +295,37 @@ void main() {
         final plan = db.select("EXPLAIN QUERY PLAN SELECT id FROM emails WHERE list_id = 'x'").map((r) => r['detail']);
         expect(plan.join(' '), contains('emails_list'));
         expect(db.select('SELECT count(*) AS n FROM rules').single['n'], version >= 2 ? 1 : 0);
+      });
+    }
+
+    for (final version in [1, 2, 3]) {
+      test('version $version upgrades to 4: the partial indexes of unread and flagged mail', () async {
+        final path = '${dir.path}/mail.db';
+        create(path, version);
+        final store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
+        await store.applySync(
+          mbox('INBOX'),
+          added([
+            mail(2, keywords: {Keywords.flagged}),
+            mail(3),
+          ]),
+        );
+        final counts = await store.watchVirtualCounts().first;
+        // The old message's row has is_seen 0 (the fixture sets keywords only).
+        expect(counts[VirtualMailbox.unread], 3);
+        expect(counts[VirtualMailbox.flagged], 1);
+        expect((await store.getEmail(eid('INBOX', 1)))!.subject, 'Before the upgrade');
+        await store.close();
+
+        final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
+        addTearDown(db.close);
+        expect(db.select('PRAGMA user_version').single.values.single, 4);
+        final indexes = {for (final r in db.select("SELECT name FROM sqlite_master WHERE type = 'index'")) r['name']};
+        expect(indexes, containsAll(['emails_unread', 'emails_flagged', 'emails_list', 'emails_thread']));
+        final plan = db
+            .select('EXPLAIN QUERY PLAN SELECT mailbox_id, count(*) FROM emails WHERE is_seen = 0 GROUP BY mailbox_id')
+            .map((r) => r['detail']);
+        expect(plan.join(' '), contains('emails_unread'));
       });
     }
   });

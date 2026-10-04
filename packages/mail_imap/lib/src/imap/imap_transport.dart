@@ -415,18 +415,27 @@ final class ImapTransport implements MailTransport {
   }
 
   @override
-  Future<List<EmailSummary>> fetchSummaries(List<String> emailIds) => _run((c) async {
+  Future<List<EmailSummary>> fetchSummaries(List<String> emailIds, {bool previews = true}) => _run((c) async {
     final result = <EmailSummary>[];
     for (final MapEntry(key: path, value: refs) in _group(emailIds).entries) {
       final sel = await c.ensureSelected(path);
       final valid = refs.where((r) => r.uidValidity == sel.uidValidity).map((r) => r.uid).toList();
-      result.addAll([for (final (_, s) in await _summariesByUid(c, path, sel.uidValidity ?? 0, valid)) s]);
+      result.addAll([
+        for (final (_, s) in await _summariesByUid(c, path, sel.uidValidity ?? 0, valid, previews: previews)) s,
+      ]);
     }
     return result;
   });
 
-  /// List rows for [uids] (any order), with previews.
-  Future<List<(int, EmailSummary)>> _summariesByUid(ImapConnection c, String path, int validity, List<int> uids) async {
+  /// List rows for [uids] (any order), with previews unless [previews] is
+  /// false.
+  Future<List<(int, EmailSummary)>> _summariesByUid(
+    ImapConnection c,
+    String path,
+    int validity,
+    List<int> uids, {
+    bool previews = true,
+  }) async {
     final sorted = uids.toSet().toList()..sort();
     final result = <(int, EmailSummary)>[];
     for (final chunk in chunked(sorted, _summaryBatch).toList().reversed) {
@@ -435,7 +444,8 @@ final class ImapTransport implements MailTransport {
         Command('UID FETCH ${formatSequenceSet(chunk)} ${summaryFetchItems(gmail: c.has('X-GM-EXT-1'))}'),
         FetchParser(),
       );
-      result.addAll(await _rows(c, path, validity, r.messages.where((m) => wanted.contains(m.uid)).toList()));
+      final fetched = r.messages.where((m) => wanted.contains(m.uid)).toList();
+      result.addAll(await _rows(c, path, validity, fetched, previews: previews));
     }
     return result;
   }
@@ -454,11 +464,17 @@ final class ImapTransport implements MailTransport {
     return result;
   }
 
-  Future<List<(int, EmailSummary)>> _rows(ImapConnection c, String path, int validity, List<FetchedMessage> ms) async {
-    final previews = await _previews(c, ms);
+  Future<List<(int, EmailSummary)>> _rows(
+    ImapConnection c,
+    String path,
+    int validity,
+    List<FetchedMessage> ms, {
+    bool previews = true,
+  }) async {
+    final texts = previews ? await _previews(c, ms) : const <int, String>{};
     return [
       for (final m in ms)
-        if (summaryFromFetch(m, accountId: accountId, path: path, uidValidity: validity, preview: previews[m.uid] ?? '')
+        if (summaryFromFetch(m, accountId: accountId, path: path, uidValidity: validity, preview: texts[m.uid] ?? '')
             case final s?)
           (m.uid!, s),
     ];

@@ -73,6 +73,9 @@ class _SwipeActionRowState extends State<SwipeActionRow> with TickerProviderStat
 
   double _width = 0;
   bool _armed = false;
+
+  /// A full swipe is sliding the row away; nothing may bring it back.
+  bool _removing = false;
   ScrollPosition? _scroll;
   Timer? _restore;
 
@@ -120,6 +123,7 @@ class _SwipeActionRowState extends State<SwipeActionRow> with TickerProviderStat
   }
 
   void _settle(double target) {
+    if (_removing) return;
     if (target == 0) {
       _setArmedQuietly(false);
       if (_openRow.value == this) _openRow.value = null;
@@ -135,11 +139,13 @@ class _SwipeActionRowState extends State<SwipeActionRow> with TickerProviderStat
   }
 
   void _onDragStart(DragStartDetails details) {
+    if (_removing) return;
     _offset.stop();
     if (_openRow.value != this) _openRow.value = this;
   }
 
   void _onDragUpdate(DragUpdateDetails details) {
+    if (_removing) return;
     var next = _offset.value + (details.primaryDelta ?? 0);
     if (next > 0 && widget.leading.isEmpty) next = 0;
     if (next < 0 && widget.trailing.isEmpty) next = 0;
@@ -148,6 +154,7 @@ class _SwipeActionRowState extends State<SwipeActionRow> with TickerProviderStat
   }
 
   void _onDragEnd(DragEndDetails details) {
+    if (_removing) return;
     final x = _offset.value;
     final velocity = details.primaryVelocity ?? 0;
     final actions = x > 0 ? widget.leading : widget.trailing;
@@ -168,11 +175,23 @@ class _SwipeActionRowState extends State<SwipeActionRow> with TickerProviderStat
       _settle(0);
       return;
     }
+    if (_removing) return;
+    _removing = true;
     if (_openRow.value == this) _openRow.value = null;
     _setArmedQuietly(true);
-    await _offset.animateTo(direction * _width, duration: const Duration(milliseconds: 180), curve: Curves.easeOut);
-    await _size.animateTo(0, curve: Curves.easeInOut);
+    try {
+      await _offset
+          .animateTo(direction * _width, duration: const Duration(milliseconds: 180), curve: Curves.easeOut)
+          .orCancel;
+      await _size.animateTo(0, curve: Curves.easeInOut).orCancel;
+    } on TickerCanceled {
+      // The row went away mid-slide (the list changed under it) or another
+      // animation took over: the swipe still counts.
+    } finally {
+      _removing = false;
+    }
     action.onTriggered();
+    if (!mounted) return;
     // The list normally drops this row now; bring it back if it doesn't.
     _restore = Timer(const Duration(milliseconds: 900), () {
       if (!mounted) return;

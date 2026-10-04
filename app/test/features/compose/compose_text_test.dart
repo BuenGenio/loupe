@@ -166,4 +166,11 @@ void main() {
       'Hi there & you\nLine\ntwo',
     );
   });
+
+  test('html to text survives numeric entities that are no characters', () {
+    expect(ComposeText.htmlToText('a&#65;b'), 'aAb');
+    expect(ComposeText.htmlToText('&#1114112;'), '\uFFFD', reason: 'beyond U+10FFFF');
+    expect(ComposeText.htmlToText('&#55357;'), '\uFFFD', reason: 'a lone surrogate half');
+    expect(ComposeText.htmlToText('&#123456789012345678901234;'), '\uFFFD', reason: 'too big for an int');
+  });
 }
