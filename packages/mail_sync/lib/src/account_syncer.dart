@@ -212,6 +212,7 @@ final class AccountSyncer {
   }
 
   Future<void> _doFullSync() async {
+    final firstSync = _lastSuccess == null;
     _setStatus(SyncPhase.syncing);
     try {
       final remote = await onMain((t) => t.listMailboxes());
@@ -223,6 +224,14 @@ final class AccountSyncer {
       _dirty.clear();
       for (final m in await _mailboxesForFullSync()) {
         await onMain((t) => _syncMailbox(t, m));
+      }
+      // Later syncs also fill in a few never-opened mailboxes.
+      if (!firstSync) {
+        final pending = await _store.unsyncedMailboxIds(_account.id);
+        for (final id in pending.take(_config.backgroundMailboxesPerSync)) {
+          final m = await _store.getMailbox(id);
+          if (m != null) await onMain((t) => _syncMailbox(t, m));
+        }
       }
       _failures = 0;
       _lastSuccess = _host.now();

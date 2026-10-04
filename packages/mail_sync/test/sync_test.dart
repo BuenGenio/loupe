@@ -31,9 +31,16 @@ void main() {
         expect(syncs.take(4), ['sync:INBOX', 'sync:Sent', 'sync:Drafts', 'sync:Archive']);
         expect(syncs, isNot(contains('sync:Work')));
 
+        // Later periodic syncs fill in never-opened mailboxes.
+        await settle(fastConfig.pollInterval);
+        expect(await h.subjects(account, 'Work'), ['Later']);
+        expect(server.log, isNot(contains('sync:Trash')));
+
+        server.deliver('Work', subject: 'Newer');
         final work = h.repo.watchList(RealMailboxRef(h.mailbox(account, 'Work')));
         await settle();
-        expect([for (final t in await work.first) t.latest.subject], ['Later']);
+        await h.repo.refresh(ref: RealMailboxRef(h.mailbox(account, 'Work')));
+        expect([for (final t in await work.first) t.latest.subject], ['Newer', 'Later']);
 
         final status = await h.status(account);
         expect(status.phase, SyncPhase.idle);

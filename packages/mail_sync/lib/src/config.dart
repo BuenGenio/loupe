@@ -21,6 +21,7 @@ final class SyncConfig {
     this.sendRetryBase = const Duration(seconds: 30),
     this.sendRetryMax = const Duration(minutes: 30),
     this.searchTimeout = const Duration(seconds: 60),
+    this.backgroundMailboxesPerSync = 2,
   });
 
   /// How often each account syncs while running (the app pauses this in the
@@ -57,4 +58,8 @@ final class SyncConfig {
 
   /// Server searches taking longer count as failed for that account.
   final Duration searchTimeout;
+
+  /// Never-opened mailboxes synced per periodic sync (after the first one),
+  /// so every folder fills in over time. 0 syncs them only when opened.
+  final int backgroundMailboxesPerSync;
 }
