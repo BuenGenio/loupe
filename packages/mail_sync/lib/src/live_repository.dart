@@ -557,20 +557,38 @@ final class LiveMailRepository implements MailRepository {
     return folders.firstOrNull;
   }
 
+  /// Where to create the snooze folder: `Snoozed` at the top level, unless
+  /// every folder lives under the Inbox (servers with an `INBOX.` namespace,
+  /// such as Courier), where it becomes `INBOX.Snoozed`.
+  static String _snoozePath(List<Mailbox> mailboxes) {
+    final others = [
+      for (final m in mailboxes)
+        if (m.role != MailboxRole.inbox && m.path.toUpperCase() != 'INBOX') m.path,
+    ];
+    for (final delimiter in const ['.', '/']) {
+      if (others.isNotEmpty && others.every((p) => p.toUpperCase().startsWith('INBOX$delimiter'))) {
+        return 'INBOX$delimiter${Snooze.folderName}';
+      }
+    }
+    return Snooze.folderName;
+  }
+
   /// The account's snooze folder; one is added locally, its creation queued
   /// for the server, when there is none yet.
   Future<Mailbox> _ensureSnoozeFolder(AccountSyncer syncer) async {
     final accountId = syncer.account.id;
     final existing = await _snoozeFolder(accountId);
     if (existing != null) return existing;
-    const path = Snooze.folderName;
+    final path = _snoozePath(await store.getMailboxes(accountId: accountId));
     final id = MailIds.mailbox(accountId, path);
     await store.transaction(() async {
-      await syncer.addLocalMailbox(const RemoteMailbox(path: path, name: path));
+      await syncer.addLocalMailbox(
+        RemoteMailbox(path: path, name: Snooze.folderName, parentPath: path == Snooze.folderName ? null : 'INBOX'),
+      );
       await store.enqueueOp(accountId, OpType.createMailbox, {
         'mailboxId': id,
         'path': path,
-        'name': path,
+        'name': Snooze.folderName,
       }, now: _now());
     });
     return await store.getMailbox(id) ??

@@ -57,6 +57,26 @@ void main() {
     });
   });
 
+  test('where every folder lives under the Inbox, Snoozed does too', () {
+    fakeTime((async) async {
+      final h = Harness();
+      final server = FakeServer();
+      server.mailboxes.removeWhere((path, _) => path != 'INBOX');
+      server
+        ..addMailbox('INBOX.Sent', role: MailboxRole.sent)
+        ..addMailbox('INBOX.Trash', role: MailboxRole.trash)
+        ..addMailbox('INBOX.Lists')
+        ..deliver('INBOX', subject: 'Courier');
+      final a = await h.add(server);
+      await h.repo.snooze([(await h.email(a, 'INBOX', 'Courier')).id], evening);
+      await settle();
+      expect(server.subjects('INBOX.Snoozed'), ['Courier']);
+      expect(server.mailboxes.containsKey('Snoozed'), isFalse);
+      expect((await h.repo.watchSnoozed().first).single.subject, 'Courier');
+      await h.dispose();
+    });
+  });
+
   test('snoozing again changes the time in place', () {
     fakeTime((async) async {
       final h = Harness();

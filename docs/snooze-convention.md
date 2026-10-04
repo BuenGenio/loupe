@@ -23,7 +23,8 @@ Example: a message to wake on 23 May 2025 at 18:00 UTC carries `$snoozed-2913372
 - Clients find it by name, ignoring case. On servers whose personal namespace is `INBOX.` or `INBOX/`, the
   mailbox `INBOX.Snoozed` (or `INBOX/Snoozed`) counts too.
 - A client that snoozes a message and finds no such mailbox creates it with `CREATE Snoozed` and then
-  `SUBSCRIBE`s to it. A `NO [ALREADYEXISTS]` reply means another client was faster; that is success.
+  `SUBSCRIBE`s to it (where every folder lives under the Inbox, it creates `INBOX.Snoozed` or `INBOX/Snoozed`
+  instead). A `NO [ALREADYEXISTS]` reply means another client was faster; that is success.
 - No special-use attribute is required. RFC 9979 registers `\Snoozed` for a mailbox like this one; a client MAY
   set it (`CREATE Snoozed (USE (\Snoozed))` where CREATE-SPECIAL-USE is offered) but MUST NOT depend on it.
   Loupe creates the mailbox without it.
