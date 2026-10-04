@@ -229,6 +229,42 @@ void main() {
       expect(calendar.blocks.whereType<TableBlock>(), hasLength(1));
     });
 
+    bool isFine(ReaderDocument d, String text) =>
+        flatten(d.blocks)
+            .whereType<ParagraphBlock>()
+            .firstWhere((p) => inlineText(p.inlines).contains(text))
+            .inlines
+            .whereType<TextRun>()
+            .every((r) => r.style.fine);
+
+    test('legal footer: class sizes, a Mimecast stamp and an unmarked notice are fine print', () {
+      final d = readable('36_');
+      expect(isFine(d, 'Thank you for your instructions'), isFalse);
+      expect(isFine(d, 'Kind regards'), isFalse);
+      expect(isFine(d, 'Associate | Real Estate'), isTrue); // 9 pt under an 11 pt body
+      expect(isFine(d, 'Important Notice'), isTrue); // p.Disclaimer {font-size:7.5pt}
+      expect(isFine(d, 'limited liability partnership'), isTrue); // .mc-disclaimer {font-size:8pt}
+      expect(isFine(d, 'how we handle and process'), isTrue); // body size, but reads as a footer
+    });
+
+    test('newsletter footer: fine print by its wording, but not the call to action', () {
+      final d = readable('37_');
+      expect(isFine(d, 'You received this email because'), isTrue);
+      expect(isFine(d, 'Manage preferences'), isTrue);
+      expect(isFine(d, 'Confirm your membership'), isFalse);
+      expect(isFine(d, 'View in browser'), isFalse); // not in the trailing part
+      expect(isFine(d, 'Spring is here'), isFalse);
+    });
+
+    test('a newsletter set in 13 px keeps its body size; its 11 px footer is fine print', () {
+      final d = readable('38_');
+      expect(isFine(d, 'three short novels'), isFalse);
+      expect(isFine(d, 'We turn to essays'), isFalse);
+      expect(isFine(d, 'before the heating was fixed'), isFalse); // 12 px caption
+      expect(isFine(d, 'The Reading Room'), isTrue);
+      expect(isFine(d, 'You are receiving this'), isTrue);
+    });
+
     test('social icons and footer links become single lines', () {
       final d = readable('33_');
       final lines = d.blocks.whereType<ParagraphBlock>().map((p) => inlineText(p.inlines)).toList();

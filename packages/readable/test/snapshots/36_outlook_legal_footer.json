@@ -1,0 +1,441 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 813,
+      "keptText": 813,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://www.examplesample.example/"
+      },
+      {
+        "url": "https://www.examplesample.example/property"
+      },
+      {
+        "url": "https://www.examplesample.example/legal"
+      },
+      {
+        "url": "https://www.examplesample.example/financial"
+      },
+      {
+        "url": "https://www.examplesample.example/privacy"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Dear Eugene,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Thank you for your instructions. I attach our engagement letter and the draft lease for your review. Please sign and return the letter at your convenience, and let me know if you have any questions about the lease."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Kind regards,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Morgan Sample",
+            "b": true,
+            "color": "#1f3864"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "Associate | Real Estate",
+            "scale": 0.8,
+            "color": "#1f3864"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "Example Sample LLP, 1 Example Square, Edinburgh EH1 1AA",
+            "scale": 0.8,
+            "color": "#1f3864"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "T: +44 131 496 0000 | ",
+            "scale": 0.8,
+            "color": "#1f3864"
+          },
+          {
+            "text": "www.examplesample.example",
+            "u": true,
+            "scale": 0.8,
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Property",
+            "scale": 0.8,
+            "color": "#1f3864",
+            "link": 1
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "|",
+            "scale": 0.8
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Legal",
+            "scale": 0.8,
+            "color": "#1f3864",
+            "link": 2
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "|",
+            "scale": 0.8
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Financial",
+            "scale": 0.8,
+            "color": "#1f3864",
+            "link": 3
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Important Notice: This email (including any attachments) is confidential and may be legally privileged. If you are not the intended recipient, please notify the sender immediately and delete it; do not copy, use or disclose its contents.",
+            "scale": 0.8
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "To understand how we handle and process your personal data, please see our ",
+            "scale": 0.8
+          },
+          {
+            "text": "privacy notice",
+            "u": true,
+            "scale": 0.8,
+            "link": 4
+          },
+          {
+            "text": ".",
+            "scale": 0.8
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Example Sample LLP is a limited liability partnership, registered in Scotland (number SO300000), with its registered office at 1 Example Square, Edinburgh EH1 1AA. It is authorised and regulated by the Law Society of Scotland.",
+            "scale": 0.8
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 813,
+      "keptText": 813,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://www.examplesample.example/"
+      },
+      {
+        "url": "https://www.examplesample.example/property"
+      },
+      {
+        "url": "https://www.examplesample.example/legal"
+      },
+      {
+        "url": "https://www.examplesample.example/financial"
+      },
+      {
+        "url": "https://www.examplesample.example/privacy"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Dear Eugene,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Thank you for your instructions. I attach our engagement letter and the draft lease for your review. Please sign and return the letter at your convenience, and let me know if you have any questions about the lease."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Kind regards,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Morgan Sample"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Associate | Real Estate"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Example Sample LLP, 1 Example Square, Edinburgh EH1 1AA"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "T: +44 131 496 0000 | "
+          },
+          {
+            "text": "www.examplesample.example"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Property"
+          },
+          {
+            "text": " [2]",
+            "link": 1
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "|"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Legal"
+          },
+          {
+            "text": " [3]",
+            "link": 2
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "|"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Financial"
+          },
+          {
+            "text": " [4]",
+            "link": 3
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Important Notice: This email (including any attachments) is confidential and may be legally privileged. If you are not the intended recipient, please notify the sender immediately and delete it; do not copy, use or disclose its contents."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "To understand how we handle and process your personal data, please see our "
+          },
+          {
+            "text": "privacy notice"
+          },
+          {
+            "text": " [5]",
+            "link": 4
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Example Sample LLP is a limited liability partnership, registered in Scotland (number SO300000), with its registered office at 1 Example Square, Edinburgh EH1 1AA. It is authorised and regulated by the Law Society of Scotland."
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://www.examplesample.example/",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[2] "
+          },
+          {
+            "text": "https://www.examplesample.example/property",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[3] "
+          },
+          {
+            "text": "https://www.examplesample.example/legal",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[4] "
+          },
+          {
+            "text": "https://www.examplesample.example/financial",
+            "u": true,
+            "link": 3
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[5] "
+          },
+          {
+            "text": "https://www.examplesample.example/privacy",
+            "u": true,
+            "link": 4
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

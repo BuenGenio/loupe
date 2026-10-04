@@ -169,7 +169,7 @@ final class _Converter {
   int dataImageBytes = 0;
 
   ReaderDocument document(List<Block> blocks) {
-    final grouped = resolveTextSizes(groupImages(blocks, images));
+    final grouped = resolveTextSizes(groupImages(blocks, images), links);
     var contentImages = 0;
     void countImages(List<Block> bs) {
       for (final b in bs) {
