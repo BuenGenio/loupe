@@ -77,7 +77,10 @@ void main() {
 
       await real.renew(SyncHolder.background);
       expect(
-        await real.acquireForeground(maxWait: const Duration(milliseconds: 100), poll: const Duration(milliseconds: 20)),
+        await real.acquireForeground(
+          maxWait: const Duration(milliseconds: 100),
+          poll: const Duration(milliseconds: 20),
+        ),
         isFalse,
       );
     });

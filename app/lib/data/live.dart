@@ -13,7 +13,11 @@ import 'package:path_provider/path_provider.dart';
 const _databaseKeyName = 'loupe.database.key';
 
 /// Builds the real repository: the encrypted store, the IMAP transports and
-/// the keychain, then starts syncing. Disposed with the provider.
+/// the keychain. Disposed with the provider.
+///
+/// It starts paused: accounts are loaded (so messages open and actions
+/// work), but syncing waits until the app is in the foreground and no
+/// background sync holds the database (`ForegroundSync` resumes it).
 Future<MailRepository> createLiveRepository(Ref ref) async {
   // Never delete the database on failure: a MailStoreException surfaces in
   // the live gate, and the user decides.
@@ -23,6 +27,7 @@ Future<MailRepository> createLiveRepository(Ref ref) async {
     await repository.dispose();
     await store.close();
   });
+  await repository.pause();
   await repository.start();
   return repository;
 }
