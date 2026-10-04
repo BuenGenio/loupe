@@ -143,7 +143,7 @@ abstract final class ComposeText {
     for (final MapEntry(:key, :value) in entities.entries) {
       s = s.replaceAll(key, value);
     }
-    s = s.replaceAllMapped(RegExp(r'&#(\d+);'), (m) => String.fromCharCode(int.parse(m.group(1)!)));
+    s = s.replaceAllMapped(RegExp(r'&#(\d+);'), (m) => _charFromCode(int.tryParse(m.group(1)!)));
     s = s.replaceAll('&amp;', '&');
     return s
         .split('\n')
@@ -230,3 +230,8 @@ abstract final class ComposeText {
     ?source.messageIdHeader,
   ];
 }
+
+/// The character of a numeric entity; U+FFFD for what isn't one (too big,
+/// a lone surrogate half), which would throw or break the text engine.
+String _charFromCode(int? code) =>
+    code == null || code > 0x10FFFF || (code >= 0xD800 && code <= 0xDFFF) ? '\uFFFD' : String.fromCharCode(code);

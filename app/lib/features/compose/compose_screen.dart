@@ -131,7 +131,14 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     }
     // Swiped away from the app switcher comes after this: save what's there.
     _lifecycle = AppLifecycleListener(onHide: _saveNow, onPause: _saveNow);
-    unawaited(_prepare());
+    unawaited(
+      _prepare().catchError((Object e) {
+        // A source message that can't be quoted must not leave compose
+        // preparing forever (Send disabled): start from what is there.
+        debugPrint('Preparing compose failed: ${e.runtimeType}');
+        if (mounted && _preparing) setState(() => _preparing = false);
+      }),
+    );
   }
 
   @override
