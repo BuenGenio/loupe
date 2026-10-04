@@ -960,17 +960,10 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     }
     final id = newId();
     final now = _now();
-    var queued = message;
     final draft = message.draftId;
-    if (sendAt != null && draft != null) {
-      // A scheduled message lives in the outbox, not in Drafts.
-      queued = message.withoutDraft();
-      try {
-        await deleteDraft(draft);
-      } on MailException {
-        // Gone already.
-      }
-    }
+    // A scheduled message lives in the outbox, not in Drafts.
+    final moveDraft = sendAt != null && draft != null;
+    final queued = moveDraft ? message.withoutDraft() : message;
     await store.putOutbox(
       OutboxEntry(
         id: id,
@@ -981,6 +974,14 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
         status: sendAt == null ? OutboxStatus.queued : OutboxStatus.scheduled,
       ),
     );
+    // Only once the outbox has it: a failure above leaves the draft.
+    if (moveDraft) {
+      try {
+        await deleteDraft(draft);
+      } on Object {
+        // Gone already, or left in Drafts (harmless next to the scheduled copy).
+      }
+    }
     await _scheduleOutbox();
     return id;
   }

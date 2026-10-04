@@ -718,6 +718,9 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
           showSnack(messenger, 'It was sent before your changes, which are saved in Drafts.');
           return;
         }
+        // Taken out of the Outbox: this screen holds the only copy now, and
+        // a retry after a failure below simply sends it.
+        _outboxId = null;
       }
       final outboxId = await repo.send(
         message,
@@ -743,9 +746,10 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
               )
             : null,
       );
-    } on MailException catch (e) {
+    } on Object catch (e) {
+      // The message stays here; Send can be tried again.
       if (mounted) setState(() => _busy = false);
-      showSnack(messenger, e.message);
+      showSnack(messenger, e is MailException ? e.message : 'Couldn’t send. Try again.');
     }
   }
 

@@ -49,6 +49,9 @@ class FakeMailRepository implements MailRepository {
   /// Fails search and loadOlder with this when set.
   Object? searchError;
 
+  /// Fails saveDraft with this when set.
+  Object? draftError;
+
   /// Raw sources by email id; others get a small generated message.
   final rawSources = <String, String>{};
 
@@ -328,6 +331,7 @@ class FakeMailRepository implements MailRepository {
   Future<String> saveDraft(OutgoingMessage message) async {
     log.add('saveDraft ${message.subject}');
     await holdSaves?.future;
+    if (draftError case final e?) throw e;
     drafts.add(message);
     return 'draft-${drafts.length}';
   }

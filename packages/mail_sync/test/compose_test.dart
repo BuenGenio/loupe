@@ -222,6 +222,33 @@ void main() {
       });
     });
 
+    test('a scheduled send keeps its draft until the outbox holds it', () {
+      fakeTime((async) async {
+        var failInsert = false;
+        final executor = NativeDatabase.memory(
+          setup: (db) => db.execute('PRAGMA foreign_keys = ON'),
+        ).interceptWith(_FailOnce((sql) => failInsert && sql.contains('"outbox_items"') && sql.startsWith('INSERT')));
+        final h = Harness(store: MailStore.forExecutor(executor));
+        final server = FakeServer();
+        final a = await h.add(server);
+        final draft = await h.repo.saveDraft(outgoing(a, subject: 'Later'));
+        await settle();
+        failInsert = true;
+        await expectLater(
+          h.repo.send(
+            outgoing(a, subject: 'Later', draftId: draft),
+            sendAt: clock.now().add(const Duration(hours: 1)),
+          ),
+          throwsA(anything),
+        );
+        failInsert = false;
+        await settle();
+        expect(await h.subjects(a, 'Drafts'), ['Later'], reason: 'the draft survives');
+        expect(await h.store.outboxEntries(), isEmpty);
+        await h.dispose();
+      });
+    });
+
     test('every attempt sends the same Message-ID', () {
       fakeTime((async) async {
         final h = Harness();
@@ -493,5 +520,11 @@ final class _FailOnce extends QueryInterceptor {
   Future<int> runDelete(QueryExecutor executor, String statement, List<Object?> args) {
     if (fails(statement)) throw StateError('database is locked');
     return executor.runDelete(statement, args);
+  }
+
+  @override
+  Future<int> runInsert(QueryExecutor executor, String statement, List<Object?> args) {
+    if (fails(statement)) throw StateError('database is locked');
+    return executor.runInsert(statement, args);
   }
 }
