@@ -4,6 +4,7 @@
 
 import 'package:mail_model/mail_model.dart';
 
+import 'syntax/format.dart';
 import 'syntax/parser.dart';
 
 /// A parse problem, with the character range it refers to.
@@ -80,24 +81,17 @@ ParsedQuery parseQuery(String input, {DateTime? now, List<TagDefinition> tags = 
 }
 
 /// Canonical text for [expr]; `parseQuery(formatQuery(e)).expr == e`.
-String formatQuery(SearchExpr expr) => switch (expr) {
-  MatchAll() => '',
-  TextTerm(field: TextField.any, :final value) => value,
-  TextTerm(:final field, :final value) => '${field.name}:$value',
-  SearchAnd(:final children) => children.map(formatQuery).join(' and '),
-  SearchOr(:final children) => '(${children.map(formatQuery).join(' or ')})',
-  SearchNot(:final child) => 'not ${formatQuery(child)}',
-  _ => expr.toString(),
-};
+///
+/// Holds for expressions the parser can produce: compound nodes with at least
+/// two children and no [MatchAll] below the root (others are simplified
+/// first), lower-case keywords, and regex patterns without `\/`.
+String formatQuery(SearchExpr expr, {List<TagDefinition> tags = TagDefinition.thunderbirdDefaults}) =>
+    QueryFormatter(tags).format(expr);
 
-/// A short human description of one term, for chips ("From: alice").
-String describeTerm(SearchExpr expr) => switch (expr) {
-  TextTerm(field: TextField.any, :final value) => value,
-  TextTerm(:final field, :final value) => '${field.name[0].toUpperCase()}${field.name.substring(1)}: $value',
-  SearchNot(child: KeywordTerm(keyword: Keywords.seen)) => 'Unread',
-  KeywordTerm(keyword: Keywords.flagged) => 'Flagged',
-  _ => formatQuery(expr),
-};
+/// A short human description of one term, for chips ("From: alice",
+/// "Unread", "Not tagged Work", "Before 1 Mar 2026").
+String describeTerm(SearchExpr expr, {List<TagDefinition> tags = TagDefinition.thunderbirdDefaults}) =>
+    TermDescriber(tags).describe(expr);
 
 /// Completions for the word at [cursor] in [input].
 List<QuerySuggestion> suggest(String input, int cursor) => const [];
