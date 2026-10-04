@@ -217,6 +217,14 @@ void main() {
       expect(session.keys, hasLength(1));
       session.lockAll();
       expect(session.isUnlocked(aliceSecret.fingerprint), isFalse);
+      session
+        ..remember = false
+        ..put(aliceSecret, pin: true);
+      now = now.add(const Duration(days: 2));
+      session.lockAll();
+      expect(session.isUnlocked(aliceSecret.fingerprint), isTrue, reason: 'pinned');
+      session.clear();
+      expect(session.keys, isEmpty);
     });
   });
 }
