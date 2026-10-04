@@ -277,6 +277,21 @@ void main() {
       expect(repo.log, contains('send Hi undo=10'));
     });
 
+    testWidgets('the time on Send fits a narrow phone with large text', (tester) async {
+      tester.view
+        ..physicalSize = const Size(320, 700) * 3
+        ..devicePixelRatio = 3;
+      tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+      addTearDown(tester.view.reset);
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      const message = OutgoingMessage(accountId: 'acc', identityId: 'acc/me', to: [bob], subject: 'A long subject');
+      for (final at in [tomorrowAt8(), DateTime(2031, 12, 24, 23, 55)]) {
+        await openCompose(tester, FakeMailRepository(), ComposeArgs.restore(message, sendAt: at));
+        expect(tester.takeException(), isNull);
+        expect(find.byType(FilledButton), findsOneWidget);
+      }
+    });
+
     testWidgets('from the Outbox: unchanged closes quietly; Send replaces the waiting message', (tester) async {
       final repo = FakeMailRepository();
       final at = DateTime(2030, 1, 7, 8);

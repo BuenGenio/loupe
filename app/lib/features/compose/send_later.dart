@@ -63,7 +63,8 @@ String deviceDateLocale() {
 /// When a waiting message goes out: "Today at 18:00", "Tomorrow at 08:00",
 /// "Monday at 08:00", "Tue, Oct 13 at 08:00" in [locale]'s formats, with a
 /// 24-hour clock when [use24h] (the device setting) or the locale wants one.
-/// [compact] is for the Send button: "Tomorrow 08:00", "Mon 08:00", "Oct 13 08:00".
+/// [compact] is for the Send button: "Tomorrow 08:00", "Mon 08:00", "Oct 13 08:00",
+/// and just "Jan 4, 2027" in another year.
 String formatSendTime(
   DateTime at, {
   required DateTime now,
@@ -86,7 +87,9 @@ String formatSendTime(
   } else if (a.year == n.year) {
     day = (compact ? DateFormat.MMMd(locale) : DateFormat.MMMEd(locale)).format(a);
   } else {
-    day = (compact ? DateFormat.yMMMd(locale) : DateFormat.yMMMEd(locale)).format(a);
+    // Another year: on the Send button the date alone is long enough.
+    if (compact) return DateFormat.yMMMd(locale).format(a);
+    day = DateFormat.yMMMEd(locale).format(a);
   }
   return compact ? '$day $time' : '$day at $time';
 }

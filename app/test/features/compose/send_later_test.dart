@@ -81,6 +81,7 @@ void main() {
       expect(f(DateTime(2026, 10, 8, 8), compact: true), 'Tomorrow 08:00');
       expect(f(DateTime(2026, 10, 12, 8), compact: true), 'Mon 08:00');
       expect(f(DateTime(2026, 10, 20, 8), compact: true), 'Oct 20 08:00');
+      expect(f(DateTime(2027, 1, 4, 8), compact: true), 'Jan 4, 2027');
     });
 
     test("12-hour clock and other locales' formats", () {

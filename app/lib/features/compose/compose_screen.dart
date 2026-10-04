@@ -926,16 +926,22 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
                 icon: _busy ? spinner : const Icon(LoupeIcons.send),
                 onPressed: onPressed,
               )
-            : FilledButton.icon(
+            // The filled clock beside it says it's scheduled; the time gets the room.
+            : FilledButton(
                 key: const Key('compose-send'),
                 onPressed: onPressed,
-                icon: _busy ? spinner : const Icon(LoupeIcons.send, size: 18),
-                label: Text(when, maxLines: 1),
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
+                  minimumSize: const Size(40, 36),
                   visualDensity: VisualDensity.compact,
                   textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
+                child: _busy
+                    ? spinner
+                    : ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: MediaQuery.sizeOf(context).width * 0.3),
+                        child: Text(when, maxLines: 1, overflow: TextOverflow.ellipsis),
+                      ),
               ),
       ),
     );
