@@ -10,3 +10,18 @@
 - `gpg/leading-zero-*.sig`: Ed25519 signatures by gpg Alice whose R (or S)
   has a leading zero octet, so its MPI is 31 octets: upstream dart_pg 2.1.0
   rejected these (see third_party/dart_pg/CHANGELOG.md).
+- `smime/`: made with OpenSSL 3.5 by `make_smime_vectors.sh`: a test root
+  and intermediate CA ("Loupe Test Mail CA"), user certificates (Alice RSA,
+  Bob EC P-256, Carol expired, Dave signing only, Erin a TLS certificate,
+  Frank issued by a non-CA, Gina and Hank under a name-constrained CA,
+  Mallory from an untrusted CA), PKCS #12 files (`alice.p12` and
+  `alice-legacy.p12`: password `alice-pass`; `bob-*.p12`: `bob-pass`;
+  `dave-nopass.p12`: empty) and messages signed and encrypted by
+  `openssl cms`. Test keys only.
+- `thunderbird-smime/`: a subset of Thunderbird's S/MIME test data
+  (comm-central `mailnews/test/data/smime`, MPL-2.0, at 829a39b523f0),
+  made by NSS's test suite: the NSS test CA, Alice, Bob and Dave (`.p12`
+  password `nss`, valid until 2031-07-08) and messages signed, encrypted
+  and nested the ways Thunderbird writes and reads them.
+  `thunderbird_test.dart` checks Thunderbird's expectations for them
+  (`mailnews/mime/test/unit/test_smime_decrypt.js`).

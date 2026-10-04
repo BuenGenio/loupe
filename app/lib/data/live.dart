@@ -12,6 +12,7 @@ import 'package:mail_sync/mail_sync.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../features/openpgp/openpgp_providers.dart';
+import '../features/smime/smime_providers.dart';
 
 /// Keychain entry holding the database encryption key.
 const _databaseKeyName = 'loupe.database.key';
@@ -34,10 +35,15 @@ Future<MailRepository> createLiveRepository(Ref ref) async {
     await store.close();
   });
   // Before the first send: the composer signs, encrypts and adds Autocrypt
-  // headers synchronously from the keyring and the unlocked keys.
+  // headers synchronously from the keyring, the unlocked keys and the
+  // S/MIME certificates.
   final keyring = await ref.watch(liveKeyringProvider.future);
   await (await ref.read(openPgpServiceProvider.future)).ready;
-  repository = buildLiveRepository(store, keys: SessionSendKeys(keyring, () => ref.read(keySessionProvider)));
+  final smime = await ref.watch(liveSmimeKeysProvider.future);
+  repository = buildLiveRepository(
+    store,
+    keys: SecureSendKeys(SessionSendKeys(keyring, () => ref.read(keySessionProvider)), smime),
+  );
   await repository.pause();
   await repository.start();
   return repository;
@@ -122,8 +128,9 @@ Future<void> deleteLocalMailData({Directory? directory, SecretStorage? secrets})
 }
 
 /// The live repository over [store], not yet started. Its composer writes
-/// OpenPGP mail (and Autocrypt headers) with [keys]; a message that asks
-/// for encryption it can't do stays in the Outbox, never goes out in the clear.
+/// OpenPGP mail (and Autocrypt headers) and S/MIME mail with [keys]; a
+/// message that asks for encryption it can't do stays in the Outbox, never
+/// goes out in the clear.
 ///
 /// The background isolates (WorkManager, Instant Delivery, iOS background
 /// refresh) build theirs here too: OAuth tokens are refreshed with a plain
@@ -131,23 +138,30 @@ Future<void> deleteLocalMailData({Directory? directory, SecretStorage? secrets})
 /// activity or browser. Only signing in uses flutter_appauth.
 LiveMailRepository buildLiveRepository(
   MailStore store, {
-  required PgpSendKeys keys,
+  required SecureSendKeys keys,
   SyncConfig config = const SyncConfig(),
 }) {
   final credentials = CredentialsService(store: SecureCredentialStore(KeychainSecretStorage()));
   return LiveMailRepository(
     store,
-    ImapTransportFactory(composer: PgpMessageComposer(MimeMessageComposer(), keys, backend: const DartPgBackend())),
+    ImapTransportFactory(
+      composer: SmimeMessageComposer(
+        PgpMessageComposer(MimeMessageComposer(), keys, backend: const DartPgBackend()),
+        keys,
+        backend: const DartSmimeBackend(),
+      ),
+    ),
     credentials.store,
     config: config,
     refreshOAuth: (account, current) => credentials.oauth.refresh(account.provider, current),
   );
 }
 
-/// OpenPGP keys for a background isolate (sync, notification actions): the
-/// keyring from the keychain and the keys stored without a passphrase.
-/// Mail that needs a passphrase waits in the Outbox for the app.
-Future<PgpSendKeys> backgroundSendKeys() async {
+/// Keys for a background isolate (sync, notification actions): the
+/// keyring from the keychain and the keys stored without a passphrase, and
+/// the S/MIME certificates. Mail that needs a passphrase waits in the
+/// Outbox for the app.
+Future<SecureSendKeys> backgroundSendKeys() async {
   final keyring = Keyring(SecretStorageKeyring(KeychainSecretStorage()), prefix: liveKeyringPrefix);
   final session = KeySession();
   try {
@@ -160,5 +174,5 @@ Future<PgpSendKeys> backgroundSendKeys() async {
   } on Object {
     // A keychain that can't be read: encrypted mail waits for the app.
   }
-  return SessionSendKeys(keyring, () => session);
+  return SecureSendKeys(SessionSendKeys(keyring, () => session), await backgroundSmimeKeys());
 }

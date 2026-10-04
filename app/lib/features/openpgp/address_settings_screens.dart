@@ -11,10 +11,13 @@ import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../compose/identity_selection.dart';
 import '../conversation/sheets.dart';
+import '../smime/smime_providers.dart';
+import '../smime/smime_settings.dart';
 import 'openpgp_providers.dart';
 
-/// The OpenPGP settings of one sending address: its key, and when mail
-/// from it is encrypted and signed (Thunderbird's per-identity settings).
+/// The end-to-end settings of one sending address: its OpenPGP key, its
+/// S/MIME certificate, and when mail from it is encrypted and signed
+/// (Thunderbird's per-identity settings).
 class AddressEncryptionScreen extends ConsumerWidget {
   const AddressEncryptionScreen({super.key, required this.email});
 
@@ -26,6 +29,7 @@ class AddressEncryptionScreen extends ConsumerWidget {
     if (state == null) return GroupedPage(title: email, children: const [SizedBox(height: 200)]);
     final settings = state.identity(email);
     final key = state.ownKeyFor(email);
+    final certificate = ref.watch(smimeStateProvider).value?.ownCertificateFor(email);
     final colors = LoupeColors.of(context);
     Future<void> update(IdentityPgp next) async => (await ref.read(keyringProvider.future)).setIdentity(email, next);
     final choices = [
@@ -38,7 +42,7 @@ class AddressEncryptionScreen extends ConsumerWidget {
       title: email,
       children: [
         InsetGroup(
-          header: 'Key',
+          header: 'OpenPGP Key',
           separatorIndent: 16,
           footer: key == null ? 'Add a key in End-to-End Encryption to encrypt and sign mail from this address.' : null,
           children: [
@@ -62,13 +66,14 @@ class AddressEncryptionScreen extends ConsumerWidget {
             ),
           ],
         ),
-        if (key != null) ...[
+        SmimeAddressGroup(email: email, hasPgpKey: key != null),
+        if (key != null || certificate != null)
           InsetGroup(
             header: 'Sending',
             separatorIndent: 16,
             footer:
-                'Automatic encryption turns on when every recipient has an accepted key, or when Autocrypt '
-                'says both sides want it. Encrypted mail is always signed.',
+                'Automatic encryption turns on when every recipient has an accepted key or a trusted certificate, '
+                'or when Autocrypt says both sides want it. Encrypted mail is always signed.',
             children: [
               SwitchRow(
                 title: 'Encrypt Automatically',
@@ -86,13 +91,15 @@ class AddressEncryptionScreen extends ConsumerWidget {
                 value: settings.signByDefault,
                 onChanged: (v) => update(settings.copyWith(signByDefault: v)),
               ),
-              SwitchRow(
-                title: 'Attach My Public Key',
-                value: settings.attachPublicKey,
-                onChanged: (v) => update(settings.copyWith(attachPublicKey: v)),
-              ),
+              if (key != null)
+                SwitchRow(
+                  title: 'Attach My Public Key',
+                  value: settings.attachPublicKey,
+                  onChanged: (v) => update(settings.copyWith(attachPublicKey: v)),
+                ),
             ],
           ),
+        if (key != null)
           InsetGroup(
             header: 'Autocrypt',
             separatorIndent: 16,
@@ -113,7 +120,6 @@ class AddressEncryptionScreen extends ConsumerWidget {
               ),
             ],
           ),
-        ],
       ],
     );
   }

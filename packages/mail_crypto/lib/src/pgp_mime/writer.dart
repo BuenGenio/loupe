@@ -12,6 +12,7 @@ import 'package:mail_model/mail_model.dart';
 import '../autocrypt.dart';
 import '../keyring/keyring.dart';
 import '../keyring/plan.dart';
+import '../mime/split.dart';
 import '../pgp/types.dart';
 
 /// What the composer needs at send time, synchronously: the keyring and
@@ -23,7 +24,8 @@ abstract interface class PgpSendKeys {
   PgpKey? unlockedKey(String fingerprint);
 }
 
-/// The header that keeps a draft's choices: `encrypt; sign; attach-key`.
+/// The header that keeps a draft's choices: `encrypt; sign; attach-key`,
+/// and `smime` for S/MIME.
 const draftSecurityHeader = 'X-Loupe-Security';
 
 /// The choices stored in a draft's [draftSecurityHeader], or null.
@@ -35,6 +37,7 @@ OutgoingSecurity? draftSecurityFrom(List<(String, String)> headers) {
       encrypt: words.contains('encrypt'),
       sign: words.contains('sign'),
       attachPublicKey: words.contains('attach-key'),
+      technology: words.contains('smime') ? SecurityTechnology.smime : SecurityTechnology.openPgp,
     );
   }
   return null;
@@ -64,6 +67,13 @@ final class PgpMessageComposer implements MessageComposer {
 
   @override
   Uint8List compose(OutgoingMessage message, Identity from, {required String messageId, DateTime? date}) {
+    // S/MIME is another composer's job (SmimeMessageComposer, around this one).
+    if (message.security.isSmime && !message.security.isPlain) {
+      throw const MailException(
+        MailErrorKind.unsupported,
+        'This message is to be protected with S/MIME, which isn’t available.',
+      );
+    }
     final plain = inner.compose(
       message.copyWith(security: OutgoingSecurity.none),
       from,
@@ -76,7 +86,7 @@ final class PgpMessageComposer implements MessageComposer {
     final now = _clock();
     final chosen = state.ownKeyFor(from.email, now: now);
     final own = chosen != null && chosen.isValidAt(now) ? chosen : null;
-    final split = _SplitMessage.parse(plain);
+    final split = SplitMessage.parse(plain);
 
     if (security.draft) return _draft(split, security, own);
 
@@ -157,7 +167,7 @@ final class PgpMessageComposer implements MessageComposer {
   }
 
   /// A draft: encrypted to the sender only, never signed, choices kept in a header.
-  Uint8List _draft(_SplitMessage split, OutgoingSecurity security, PgpKey? own) {
+  Uint8List _draft(SplitMessage split, OutgoingSecurity security, PgpKey? own) {
     final choices = [
       if (security.encrypt) 'encrypt',
       if (security.sign) 'sign',
@@ -181,8 +191,8 @@ final class PgpMessageComposer implements MessageComposer {
 
   /// The content entity with the protected headers (RFC draft
   /// "protected headers", as Thunderbird) and any gossip.
-  Uint8List _protect(Uint8List content, _SplitMessage split, List<String> gossip) {
-    final entity = _SplitMessage.parse(content);
+  Uint8List _protect(Uint8List content, SplitMessage split, List<String> gossip) {
+    final entity = SplitMessage.parse(content);
     final lines = <String>[];
     var marked = false;
     for (final h in entity.headers) {
@@ -196,16 +206,16 @@ final class PgpMessageComposer implements MessageComposer {
     if (!marked) lines.insert(0, 'Content-Type: text/plain; charset=us-ascii;\r\n protected-headers="v1"');
     const names = {'from', 'to', 'cc', 'reply-to', 'subject', 'date', 'message-id', 'in-reply-to', 'references'};
     for (final h in split.headers) {
-      if (names.contains(_name(h))) lines.add(h);
+      if (names.contains(headerName(h))) lines.add(h);
     }
     lines.addAll(gossip);
-    return _assemble(lines, entity.body);
+    return assembleEntity(lines, entity.body);
   }
 
   Uint8List _withKey(Uint8List content, PgpKey own) {
     final armored = backend.armor(backend.publicKey(own)).replaceAll('\r\n', '\n').replaceAll('\n', '\r\n');
     final name = 'OpenPGP_0x${own.keyId}.asc';
-    final keyPart = _assemble([
+    final keyPart = assembleEntity([
       'Content-Type: application/pgp-keys; name="$name"',
       'Content-Disposition: attachment; filename="$name"',
       'Content-Description: OpenPGP public key',
@@ -214,7 +224,7 @@ final class PgpMessageComposer implements MessageComposer {
     return _multipart('mixed', [content, keyPart]);
   }
 
-  Uint8List _encrypted(_SplitMessage split, String armored, List<String> extra) {
+  Uint8List _encrypted(SplitMessage split, String armored, List<String> extra) {
     final boundary = _boundary();
     final body = StringBuffer()
       ..write('This is an OpenPGP/MIME encrypted message (RFC 4880 and 3156)\r\n')
@@ -229,15 +239,15 @@ final class PgpMessageComposer implements MessageComposer {
       ..write(armored.replaceAll('\r\n', '\n').replaceAll('\n', '\r\n'))
       ..write('\r\n--$boundary--\r\n');
     final headers = [
-      for (final h in split.outer) _name(h) == 'subject' ? 'Subject: $hiddenSubject' : h,
+      for (final h in split.outer) headerName(h) == 'subject' ? 'Subject: $hiddenSubject' : h,
       'MIME-Version: 1.0',
       ...extra,
       'Content-Type: multipart/encrypted;\r\n protocol="application/pgp-encrypted";\r\n boundary="$boundary"',
     ];
-    return _assemble(headers, ascii.encode(body.toString()));
+    return assembleEntity(headers, ascii.encode(body.toString()));
   }
 
-  Uint8List _signed(_SplitMessage split, Uint8List content, PgpDetachedSignature signature, List<String> extra) {
+  Uint8List _signed(SplitMessage split, Uint8List content, PgpDetachedSignature signature, List<String> extra) {
     final boundary = _boundary();
     final out = BytesBuilder(copy: false)
       ..add(ascii.encode('This is an OpenPGP/MIME signed message (RFC 4880 and 3156)\r\n--$boundary\r\n'))
@@ -259,7 +269,7 @@ final class PgpMessageComposer implements MessageComposer {
       'Content-Type: multipart/signed; micalg=pgp-${signature.hashAlgorithm};\r\n'
           ' protocol="application/pgp-signature";\r\n boundary="$boundary"',
     ];
-    return _assemble(headers, out.takeBytes());
+    return assembleEntity(headers, out.takeBytes());
   }
 
   Uint8List _multipart(String subtype, List<Uint8List> parts) {
@@ -272,85 +282,9 @@ final class PgpMessageComposer implements MessageComposer {
         ..add(ascii.encode('\r\n'));
     }
     out.add(ascii.encode('--$boundary--\r\n'));
-    return _assemble(['Content-Type: multipart/$subtype;\r\n boundary="$boundary"'], out.takeBytes());
+    return assembleEntity(['Content-Type: multipart/$subtype;\r\n boundary="$boundary"'], out.takeBytes());
   }
 
   String _boundary() =>
       '------------${List.generate(24, (_) => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'[_random.nextInt(62)]).join()}';
-}
-
-String _name(String headerLine) {
-  final colon = headerLine.indexOf(':');
-  return colon < 0 ? '' : headerLine.substring(0, colon).trim().toLowerCase();
-}
-
-Uint8List _assemble(List<String> headers, List<int> body) {
-  final out = BytesBuilder(copy: false);
-  for (final h in headers) {
-    out.add(utf8.encode('$h\r\n'));
-  }
-  out
-    ..add(const [13, 10])
-    ..add(body);
-  return out.takeBytes();
-}
-
-/// An RFC 822 message as header lines (folds kept) and body.
-final class _SplitMessage {
-  _SplitMessage(this.headers, this.body);
-
-  final List<String> headers;
-  final Uint8List body;
-
-  static _SplitMessage parse(Uint8List bytes) {
-    var end = -1;
-    for (var i = 0; i + 3 < bytes.length; i++) {
-      if (bytes[i] == 13 && bytes[i + 1] == 10 && bytes[i + 2] == 13 && bytes[i + 3] == 10) {
-        end = i;
-        break;
-      }
-    }
-    final head = end < 0
-        ? utf8.decode(bytes, allowMalformed: true)
-        : utf8.decode(bytes.sublist(0, end), allowMalformed: true);
-    final body = end < 0 ? Uint8List(0) : Uint8List.sublistView(bytes, end + 4);
-    final headers = <String>[];
-    for (final line in head.split('\r\n')) {
-      if (line.isEmpty) continue;
-      if ((line.startsWith(' ') || line.startsWith('\t')) && headers.isNotEmpty) {
-        headers.add('${headers.removeLast()}\r\n$line');
-      } else {
-        headers.add(line);
-      }
-    }
-    return _SplitMessage(headers, body);
-  }
-
-  bool _isContent(String h) => _name(h).startsWith('content-');
-
-  /// The headers that stay outside: everything but Content-* and MIME-Version.
-  List<String> get outer => [
-    for (final h in headers)
-      if (!_isContent(h) && _name(h) != 'mime-version') h,
-  ];
-
-  /// The body as a MIME entity of its own (its Content-* headers and body).
-  Uint8List get content => _assemble([
-    for (final h in headers)
-      if (_isContent(h)) h,
-  ], body);
-
-  /// The message with [extra] header lines before its Content-Type.
-  Uint8List withHeaders(List<String> extra) {
-    if (extra.isEmpty) return _assemble(headers, body);
-    final at = headers.indexWhere((h) => _name(h) == 'mime-version');
-    final lines = [...headers]..insertAll(at < 0 ? headers.length : at + 1, extra);
-    return _assemble(lines, body);
-  }
-
-  /// The message with [content] (an entity) as its body.
-  Uint8List withContent(Uint8List content, List<String> extra) {
-    final entity = _SplitMessage.parse(content);
-    return _assemble([...outer, 'MIME-Version: 1.0', ...extra, ...entity.headers], entity.body);
-  }
 }

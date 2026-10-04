@@ -239,4 +239,38 @@ void main() {
       expect(session.keys, isEmpty);
     });
   });
+
+  test('a keychain that can’t be read is never overwritten (Autocrypt writes by itself)', () async {
+    final flaky = _FlakyStorage()..values['openpgp.keyring'] = '{"version":1}';
+    final keyring = Keyring(flaky);
+    await expectLater(keyring.load(), throwsStateError);
+    expect(keyring.isUnreadable, isTrue);
+    await expectLater(keyring.addPublicKeys([bobPublic], source: KeySource.autocrypt), throwsA(isA<PgpException>()));
+    expect(flaky.values, {'openpgp.keyring': '{"version":1}'});
+    flaky.broken = false;
+    await keyring.load();
+    expect(await keyring.addPublicKeys([bobPublic]), [bobPublic]);
+    // An explicit reset still works.
+    flaky.broken = true;
+    await expectLater(keyring.load(), throwsStateError);
+    await keyring.clear();
+    expect(flaky.values, isEmpty);
+  });
+}
+
+final class _FlakyStorage implements KeyringStorage {
+  final values = <String, String>{};
+  bool broken = true;
+
+  @override
+  Future<String?> read(String key) async {
+    if (broken) throw StateError('Keystore unavailable');
+    return values[key];
+  }
+
+  @override
+  Future<void> write(String key, String value) async => values[key] = value;
+
+  @override
+  Future<void> delete(String key) async => values.remove(key);
 }

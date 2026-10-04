@@ -12,14 +12,16 @@ import '../../theme/theme.dart';
 import '../compose/identity_selection.dart';
 import '../conversation/sheets.dart';
 import '../settings/settings_widgets.dart';
+import '../smime/smime_providers.dart';
+import '../smime/smime_settings.dart';
 import 'key_import.dart';
 import 'openpgp_providers.dart';
 import 'pgp_status.dart';
 
 /// Settings › End-to-End Encryption: the user's OpenPGP keys, the
-/// settings of each address, correspondents' keys and passphrases.
-/// Thunderbird's Account Settings › End-To-End Encryption plus its key
-/// manager, in one place.
+/// settings of each address, correspondents' keys, S/MIME certificates
+/// and passphrases. Thunderbird's Account Settings › End-To-End
+/// Encryption plus its key and certificate managers, in one place.
 class EncryptionSettingsScreen extends ConsumerWidget {
   const EncryptionSettingsScreen({super.key});
 
@@ -27,6 +29,7 @@ class EncryptionSettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = LoupeColors.of(context);
     final state = ref.watch(keyringStateProvider).value;
+    final smime = ref.watch(smimeStateProvider).value ?? SmimeState.empty;
     final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];
     final addresses = <String>{
       for (final a in accounts)
@@ -48,7 +51,7 @@ class EncryptionSettingsScreen extends ConsumerWidget {
       title: 'End-to-End Encryption',
       children: [
         InsetGroup(
-          header: 'My Keys',
+          header: 'My OpenPGP Keys',
           separatorIndent: 58,
           footer: state.ownKeys.isEmpty
               ? 'With a key, you can read encrypted mail and sign and encrypt your own. Using Thunderbird? '
@@ -84,13 +87,13 @@ class EncryptionSettingsScreen extends ConsumerWidget {
                 GroupedRow(
                   key: ValueKey('address-$email'),
                   title: email,
-                  detail: _addressDetail(state, email),
+                  detail: _addressDetail(state, smime, email),
                   onTap: () => context.push(Routes.encryptionAddress(email)),
                 ),
             ],
           ),
         InsetGroup(
-          header: 'Correspondents’ Keys',
+          header: 'Correspondents’ OpenPGP Keys',
           separatorIndent: 58,
           footer:
               'Accept a key once you trust it belongs to its owner; compare the fingerprint with them to '
@@ -114,6 +117,7 @@ class EncryptionSettingsScreen extends ConsumerWidget {
             footer: 'Keys that arrived with messages. Loupe can encrypt to them when both sides ask for it.',
             children: [for (final e in collected) _publicRow(context, e)],
           ),
+        const SmimeSettingsSection(),
         InsetGroup(
           header: 'Passphrases',
           separatorIndent: 16,
@@ -171,12 +175,16 @@ class EncryptionSettingsScreen extends ConsumerWidget {
     return '${k.algorithm} · ${formatFingerprint(k.keyId)} · $state';
   }
 
-  static String _addressDetail(KeyringState state, String email) {
+  static String _addressDetail(KeyringState state, SmimeState smime, String email) {
     final key = state.ownKeyFor(email);
-    if (key == null) return 'No Key';
+    final certificate = smime.ownCertificateFor(email);
+    if (key == null && certificate == null) return 'No Key';
     final s = state.identity(email);
     if (s.encryptByDefault) return 'Always Encrypt';
-    return formatFingerprint(key.keyId).split(' ').last;
+    return [
+      if (key != null) formatFingerprint(key.keyId).split(' ').last,
+      if (certificate != null) 'S/MIME',
+    ].join(' · ');
   }
 
   Future<void> _addKey(BuildContext context, WidgetRef ref) async {
