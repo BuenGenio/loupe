@@ -319,7 +319,11 @@ class SmartMailboxes extends Notifier<List<SmartMailbox>> {
         _again = false;
         final home = r.read(smartMailboxHomeProvider);
         final accounts = r.read(accountsProvider).value ?? const <MailAccount>[];
-        if (home == null || accounts.isEmpty) return;
+        if (home == null || accounts.isEmpty) {
+          // Sync turned off, or the last account removed, during a round.
+          status.set(r.read(smartMailboxSyncStatusProvider).copyWith(running: false));
+          return;
+        }
         status.set(r.read(smartMailboxSyncStatusProvider).copyWith(running: true));
         final before = _records;
         final report = await syncSmartMailboxes(

@@ -55,6 +55,9 @@ class FakeMailRepository implements MailRepository {
   /// Fails updateAccount with this when set.
   Object? updateAccountError;
 
+  /// Holds reads of server documents until completed.
+  Completer<void>? holdDocuments;
+
   /// Raw sources by email id; others get a small generated message.
   final rawSources = <String, String>{};
 
@@ -362,6 +365,7 @@ class FakeMailRepository implements MailRepository {
   @override
   Future<List<ServerDocument>> readServerDocuments(String accountId, String name) async {
     log.add('readServerDocuments $accountId $name');
+    await holdDocuments?.future;
     if (serverDocumentsError case final e?) throw e;
     final content = serverDocuments[accountId]?[name];
     return [if (content != null) ServerDocument(content: content, storage: ServerStorage.metadata)];
