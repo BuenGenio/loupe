@@ -303,6 +303,19 @@ void main() {
     expect(suggested, 1);
   });
 
+  testWidgets('large messages are processed in a background isolate', (tester) async {
+    final html = List.generate(900, (i) => '<p>Isolate paragraph $i, padded with some words.</p>').join();
+    expect(html.length, greaterThan(24 * 1024));
+    await pumpReader(tester, email(html: html));
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    for (var i = 0; i < 100 && richText('Isolate paragraph 0,').evaluate().isEmpty; i++) {
+      await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 50)));
+      await tester.pump();
+    }
+    expect(richText('Isolate paragraph 0,'), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+  });
+
   testWidgets('long messages build in chunks, each a repaint boundary', (tester) async {
     ReaderView.debugSynchronous = true;
     addTearDown(() => ReaderView.debugSynchronous = false);
