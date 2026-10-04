@@ -1,0 +1,326 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 1022,
+      "keptText": 240,
+      "hiddenText": 782,
+      "hiddenElements": 1,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": true
+    },
+    "links": [
+      {
+        "url": "https://xn--pple-43d.com/verify?id=88213",
+        "mismatch": "www.apple.com"
+      },
+      {
+        "url": "http://192.0.2.44/secure/login.php"
+      },
+      {
+        "url": "https://bit.ly/3xYz12q"
+      },
+      {
+        "url": "https://www.paypal.com@account-review.example/login",
+        "mismatch": "www.paypal.com"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Dear customer,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Your Apple ID has been locked. Verify it at "
+          },
+          {
+            "text": "https://www.apple.com/verify",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": " within 24 hours."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "You can also sign in at "
+          },
+          {
+            "text": "our secure portal",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": " or "
+          },
+          {
+            "text": "track your refund",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "PayPal users: "
+          },
+          {
+            "text": "https://www.paypal.com/signin",
+            "u": true,
+            "link": 3
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Unlock now · Help"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Open the secure message"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Apple ID:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Password:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Confirm"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 1022,
+      "keptText": 240,
+      "hiddenText": 782,
+      "hiddenElements": 1,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": true
+    },
+    "links": [
+      {
+        "url": "https://xn--pple-43d.com/verify?id=88213"
+      },
+      {
+        "url": "http://192.0.2.44/secure/login.php"
+      },
+      {
+        "url": "https://bit.ly/3xYz12q"
+      },
+      {
+        "url": "https://www.paypal.com@account-review.example/login"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Dear customer,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Your Apple ID has been locked. Verify it at "
+          },
+          {
+            "text": "https://www.apple.com/verify"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          },
+          {
+            "text": " within 24 hours."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "You can also sign in at "
+          },
+          {
+            "text": "our secure portal"
+          },
+          {
+            "text": " [2]",
+            "link": 1
+          },
+          {
+            "text": " or "
+          },
+          {
+            "text": "track your refund"
+          },
+          {
+            "text": " [3]",
+            "link": 2
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "PayPal users: "
+          },
+          {
+            "text": "https://www.paypal.com/signin"
+          },
+          {
+            "text": " [4]",
+            "link": 3
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Unlock now · Help"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Open the secure message"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Apple ID:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Password:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Confirm"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://xn--pple-43d.com/verify?id=88213",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[2] "
+          },
+          {
+            "text": "http://192.0.2.44/secure/login.php",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[3] "
+          },
+          {
+            "text": "https://bit.ly/3xYz12q",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[4] "
+          },
+          {
+            "text": "https://www.paypal.com@account-review.example/login",
+            "u": true,
+            "link": 3
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

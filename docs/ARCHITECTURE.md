@@ -25,7 +25,7 @@ The packages are developed in parallel. These are the seams:
 | `CredentialStore` | mail_model `src/transport.dart` | mail_platform | mail_sync (through the app) |
 | `SearchExpr` (search syntax tree) | mail_model `src/search.dart` | expr_search (parser) | app, mail_store (SQL), mail_imap (IMAP), mail_sync |
 | `parseQuery`, `formatQuery`, `describeTerm`, `suggest`, `matchesEmail`, `widenForServer`, `compileImap`, `compileGmailRaw`, `compileJmapFilter` | expr_search `lib/src/api.dart` | expr_search | app, mail_imap, mail_sync |
-| `ReadableMessageView`, `ReaderSettings`, `showImageGallery` | readable `lib/src/api.dart` | readable | app |
+| `ReadableMessageView`, `ReaderSettings`, `showImageGallery`, `analyzeContent` (link and privacy findings), `unwrapRedirect`, `inspectHost` | readable `lib/src/api.dart` | readable | app |
 
 Rules:
 
