@@ -519,7 +519,8 @@ final class AccountSyncer {
         final target = op.payload['target']! as String;
         if (ids.isEmpty) return;
         final remote = await remoteForId(target);
-        if (remote == null) throw const MailException(MailErrorKind.notFound, 'The folder no longer exists');
+        // Permanent: the messages are still where they were, so revert.
+        if (remote == null) throw const MailException(MailErrorKind.unsupported, 'The folder no longer exists');
         final mapping = await t.move(ids, remote);
         await _store.renameEmails(mapping);
         final unmapped = [
