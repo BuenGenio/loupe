@@ -11,4 +11,6 @@ dependencies:
   dart_pg: {path: ../../third_party/dart_pg}
   mail_model: {path: ../mail_model}
 dev_dependencies:
+  # The real MIME composer the PGP/MIME composer wraps, in tests.
+  mail_imap: {path: ../mail_imap}
   test: any

@@ -107,7 +107,10 @@ void main() {
       final k = pgp.generate(userId: 'Zed <zed@example.net>');
       for (var i = 0; i < 300; i++) {
         final data = bytes('message $i');
-        expect(pgp.verifyDetached(data, bytes(pgp.signDetached(data, k)), [k]).single.status, PgpSignatureStatus.good);
+        expect(
+          pgp.verifyDetached(data, bytes(pgp.signDetached(data, k).armored), [k]).single.status,
+          PgpSignatureStatus.good,
+        );
       }
     });
 
@@ -151,7 +154,7 @@ void main() {
       final d = pgp.decrypt(bytes(armored), keys: [aliceSecret], verifiers: [carol]);
       expect(d.data, message);
       expect(d.signatures.single.status, PgpSignatureStatus.good);
-      final sig = pgp.signDetached(message, carol);
+      final sig = pgp.signDetached(message, carol).armored;
       expect(pgp.verifyDetached(message, bytes(sig), [pgp.publicKey(carol)]).single.status, PgpSignatureStatus.good);
     });
 
@@ -178,7 +181,7 @@ void main() {
       final public = tbKey('sign-subkey-only-pub.asc');
       expect(public.canSign, isTrue);
       if (unlocked == null) return;
-      final sig = pgp.signDetached(bytes('x'), unlocked);
+      final sig = pgp.signDetached(bytes('x'), unlocked).armored;
       expect(pgp.verifyDetached(bytes('x'), bytes(sig), [public]).single.status, PgpSignatureStatus.good);
     });
 
@@ -220,7 +223,7 @@ void main() {
 
       final sigDir = gpg.home.createTempSync('sig-');
       final dataFile = File('${sigDir.path}/data')..writeAsBytesSync(message);
-      final sigFile = File('${sigDir.path}/data.asc')..writeAsStringSync(pgp.signDetached(message, carol));
+      final sigFile = File('${sigDir.path}/data.asc')..writeAsStringSync(pgp.signDetached(message, carol).armored);
       final verify = Process.runSync(
         'gpg',
         ['--batch', '--status-fd', '1', '--verify', sigFile.path, dataFile.path],

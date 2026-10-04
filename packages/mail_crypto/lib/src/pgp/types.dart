@@ -224,6 +224,15 @@ final class PgpDecryption {
   final String filename;
 }
 
+/// A detached signature and its hash algorithm (for PGP/MIME's `micalg`).
+final class PgpDetachedSignature {
+  const PgpDetachedSignature(this.armored, this.hashAlgorithm);
+  final String armored;
+
+  /// Lower-case, e.g. `sha512`.
+  final String hashAlgorithm;
+}
+
 /// A cleartext-signed message (`-----BEGIN PGP SIGNED MESSAGE-----`).
 final class PgpCleartext {
   const PgpCleartext({required this.text, required this.signatures});
@@ -271,7 +280,7 @@ abstract interface class PgpBackend {
   String encrypt(Uint8List data, {required List<PgpKey> recipients, PgpKey? signer, DateTime? now});
 
   /// A detached, ASCII-armored binary signature of [data].
-  String signDetached(Uint8List data, PgpKey signer, {DateTime? now});
+  PgpDetachedSignature signDetached(Uint8List data, PgpKey signer, {DateTime? now});
 
   /// Checks the detached [signature] (armored or binary) of [data].
   List<PgpSignatureCheck> verifyDetached(Uint8List data, Uint8List signature, List<PgpKey> verifiers);

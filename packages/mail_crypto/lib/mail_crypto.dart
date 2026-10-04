@@ -14,3 +14,4 @@ export 'src/pgp/dart_pg_backend.dart' show DartPgBackend;
 export 'src/pgp/types.dart';
 export 'src/pgp_mime/reader.dart' show PgpMimeReader, PgpReadResult, detectProtection, headerIn;
 export 'src/pgp_mime/status.dart';
+export 'src/pgp_mime/writer.dart';

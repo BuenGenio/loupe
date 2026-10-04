@@ -295,11 +295,12 @@ final class DartPgBackend implements PgpBackend {
   }
 
   @override
-  String signDetached(Uint8List data, PgpKey signer, {DateTime? now}) {
+  PgpDetachedSignature signDetached(Uint8List data, PgpKey signer, {DateTime? now}) {
     try {
       final time = now ?? DateTime.now();
       final signature = LiteralMessage.fromLiteralData(data, time: time).signDetached([_unlocked(signer)], time: time);
-      return encodeArmor('PGP SIGNATURE', signature.packetList.encode());
+      final hash = signature.packets.first.hashAlgorithm.name.toLowerCase().replaceAll('_', '-');
+      return PgpDetachedSignature(encodeArmor('PGP SIGNATURE', signature.packetList.encode()), hash);
     } on PgpException {
       rethrow;
     } on Object catch (e) {
