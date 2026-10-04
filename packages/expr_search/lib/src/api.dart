@@ -1,8 +1,18 @@
 // PUBLIC API OF expr_search. The signatures in this file are a contract used
 // by the app, mail_imap, mail_store and mail_sync; change them only in
-// agreement with those packages. The bodies are temporary stubs.
+// agreement with those packages. The implementations live in syntax/, eval/
+// and compile/.
 
 import 'package:mail_model/mail_model.dart';
+
+import 'compile/gmail.dart';
+import 'compile/imap.dart';
+import 'compile/jmap.dart';
+import 'eval/matcher.dart';
+import 'eval/normal_form.dart';
+import 'syntax/format.dart';
+import 'syntax/parser.dart';
+import 'syntax/suggest.dart';
 
 /// A parse problem, with the character range it refers to.
 final class QueryError {
@@ -54,7 +64,13 @@ final class ParsedQuery {
 
 /// A completion offered while typing, e.g. `from:` or `is:unread`.
 final class QuerySuggestion {
-  const QuerySuggestion({required this.label, required this.insertText, this.detail});
+  const QuerySuggestion({
+    required this.label,
+    required this.insertText,
+    this.detail,
+    this.replaceStart,
+    this.replaceEnd,
+  });
 
   /// Shown in the list, e.g. "from: — sender contains".
   final String label;
@@ -62,119 +78,92 @@ final class QuerySuggestion {
   /// Replaces the word at the cursor.
   final String insertText;
   final String? detail;
+
+  /// The range of the word at the cursor that [insertText] replaces (set by
+  /// [suggest]).
+  final int? replaceStart;
+  final int? replaceEnd;
+
+  @override
+  String toString() => 'QuerySuggestion($insertText)';
 }
 
 /// Parses [input]. Never throws; problems are reported in [ParsedQuery.errors]
 /// with a best-effort [ParsedQuery.expr]. [now] anchors relative dates
-/// ("today", "7d").
-ParsedQuery parseQuery(String input, {DateTime? now}) {
-  final words = input.trim().split(RegExp(r'\s+')).where((w) => w.isNotEmpty).toList();
-  if (words.isEmpty) return const ParsedQuery(expr: MatchAll());
-  final terms = <SearchExpr>[];
-  for (final w in words) {
-    final i = w.indexOf(':');
-    if (i > 0 && i < w.length - 1) {
-      final op = w.substring(0, i).toLowerCase();
-      final v = w.substring(i + 1);
-      final field = switch (op) {
-        'f' || 'from' => TextField.from,
-        't' || 'to' => TextField.to,
-        's' || 'subject' => TextField.subject,
-        'b' || 'body' => TextField.body,
-        _ => null,
-      };
-      if (field != null) {
-        terms.add(TextTerm(field, v));
-        continue;
-      }
-      if (op == 'is' || op == 'i') {
-        switch (v.toLowerCase()) {
-          case 'unread':
-            terms.add(const SearchNot(KeywordTerm(Keywords.seen)));
-          case 'read':
-            terms.add(const KeywordTerm(Keywords.seen));
-          case 'flagged' || 'starred':
-            terms.add(const KeywordTerm(Keywords.flagged));
-          case 'unreplied':
-            terms.add(const SearchNot(KeywordTerm(Keywords.answered)));
-          default:
-            terms.add(TextTerm(TextField.any, w));
-        }
-        continue;
-      }
-    }
-    terms.add(TextTerm(TextField.any, w));
+/// ("today", "7d"). [tags] resolves `tag:` labels (Thunderbird's defaults
+/// unless the account defines its own).
+ParsedQuery parseQuery(String input, {DateTime? now, List<TagDefinition> tags = TagDefinition.thunderbirdDefaults}) {
+  try {
+    return QueryParser(input, now: now ?? DateTime.now(), tags: tags).parse();
+  } on Object {
+    // Only absurd nesting (stack overflow) gets here.
+    return ParsedQuery(expr: const MatchAll(), errors: [QueryError('Query too complex', 0, input.length)]);
   }
-  return ParsedQuery(expr: terms.length == 1 ? terms.single : SearchAnd(terms));
 }
 
 /// Canonical text for [expr]; `parseQuery(formatQuery(e)).expr == e`.
-String formatQuery(SearchExpr expr) => switch (expr) {
-  MatchAll() => '',
-  TextTerm(field: TextField.any, :final value) => value,
-  TextTerm(:final field, :final value) => '${field.name}:$value',
-  SearchAnd(:final children) => children.map(formatQuery).join(' and '),
-  SearchOr(:final children) => '(${children.map(formatQuery).join(' or ')})',
-  SearchNot(:final child) => 'not ${formatQuery(child)}',
-  _ => expr.toString(),
-};
+///
+/// Holds for expressions the parser can produce: compound nodes with at least
+/// two children and no [MatchAll] below the root (others are simplified
+/// first), lower-case keywords, and regex patterns without `\/`.
+String formatQuery(SearchExpr expr, {List<TagDefinition> tags = TagDefinition.thunderbirdDefaults}) =>
+    QueryFormatter(tags).format(expr);
 
-/// A short human description of one term, for chips ("From: alice").
-String describeTerm(SearchExpr expr) => switch (expr) {
-  TextTerm(field: TextField.any, :final value) => value,
-  TextTerm(:final field, :final value) => '${field.name[0].toUpperCase()}${field.name.substring(1)}: $value',
-  SearchNot(child: KeywordTerm(keyword: Keywords.seen)) => 'Unread',
-  KeywordTerm(keyword: Keywords.flagged) => 'Flagged',
-  _ => formatQuery(expr),
-};
+/// A short human description of one term, for chips ("From: alice",
+/// "Unread", "Not tagged Work", "Before 1 Mar 2026").
+String describeTerm(SearchExpr expr, {List<TagDefinition> tags = TagDefinition.thunderbirdDefaults}) =>
+    TermDescriber(tags).describe(expr);
 
-/// Completions for the word at [cursor] in [input].
-List<QuerySuggestion> suggest(String input, int cursor) => const [];
+/// Completions for the word at [cursor] in [input]: operators with a one-line
+/// description, `is:` values, tag names, date and size shortcuts. [now]
+/// dates the shortcuts; [tags] lists the tag names.
+List<QuerySuggestion> suggest(
+  String input,
+  int cursor, {
+  DateTime? now,
+  List<TagDefinition> tags = TagDefinition.thunderbirdDefaults,
+}) => suggestAt(input, cursor, now: now ?? DateTime.now(), tags: tags);
 
-/// Pushes negations down to the terms (negation normal form).
-SearchExpr toNnf(SearchExpr expr) => expr;
+/// Pushes negations down to the terms (negation normal form). Nested AND/OR
+/// of the same kind are flattened; `Not` remains only directly above terms.
+SearchExpr toNnf(SearchExpr expr) => negationNormalForm(expr);
 
 /// Replaces terms for which [supported] is false by [MatchAll] (in negation
 /// normal form, so the result matches a superset) and simplifies.
-SearchExpr widenForServer(SearchExpr expr, bool Function(SearchExpr term) supported) => expr;
+///
+/// [supported] receives the bare term, also for a negated one. AND drops
+/// [MatchAll]; OR containing it becomes [MatchAll]; a result of [MatchAll]
+/// means the server can't narrow the search at all.
+SearchExpr widenForServer(SearchExpr expr, bool Function(SearchExpr term) supported) => widen(expr, supported);
+
+/// Simplifies [expr] without changing what it matches: [MatchAll] and
+/// `Not(MatchAll)` (nothing) are folded away, single children unwrapped,
+/// nesting flattened and double negations cancelled.
+SearchExpr simplifyQuery(SearchExpr expr) => simplify(expr);
+
+/// Resolves [AccountTerm]s for the account labelled [accountLabel] (its name
+/// and addresses), so each account's server gets only what concerns it. The
+/// result is `Not(MatchAll)` when the query can't match in this account,
+/// which callers can check with [matchesNothing] to skip the server.
+SearchExpr bindAccountTerms(SearchExpr expr, String accountLabel) => bindAccount(expr, accountLabel);
+
+/// Whether [expr] (after [simplifyQuery]) matches no message at all.
+bool matchesNothing(SearchExpr expr) => simplify(expr) == matchNone;
 
 /// Evaluates [expr] against one message. Body and attachment terms need
 /// [content]; without it they match (superset semantics). [accountLabel] is the
 /// account's name and address, for [AccountTerm]. [headers] are extra header
 /// fields (lower-cased names) for [HeaderTerm].
+///
+/// Terms that lack data are unknown rather than true, and unknown counts as
+/// a match only at the end, so negated terms keep the superset property too.
 bool matchesEmail(
   SearchExpr expr,
   EmailSummary email, {
   EmailContent? content,
   String? accountLabel,
   Map<String, String> headers = const {},
-}) {
-  bool contains(String hay, String needle) => hay.toLowerCase().contains(needle.toLowerCase());
-  return switch (expr) {
-    MatchAll() => true,
-    SearchAnd(:final children) => children.every(
-      (c) => matchesEmail(c, email, content: content, accountLabel: accountLabel, headers: headers),
-    ),
-    SearchOr(:final children) => children.any(
-      (c) => matchesEmail(c, email, content: content, accountLabel: accountLabel, headers: headers),
-    ),
-    SearchNot(:final child) => !matchesEmail(
-      child,
-      email,
-      content: content,
-      accountLabel: accountLabel,
-      headers: headers,
-    ),
-    KeywordTerm(:final keyword) => email.keywords.contains(keyword),
-    TextTerm(field: TextField.subject, :final value) => contains(email.subject, value),
-    TextTerm(field: TextField.from, :final value) => email.from.any((a) => contains(a.toString(), value)),
-    TextTerm(:final value) => contains(
-      '${email.subject} ${email.from.join(' ')} ${email.to.join(' ')} ${email.preview}',
-      value,
-    ),
-    _ => true,
-  };
-}
+}) => EmailMatcher(email, content: content, accountLabel: accountLabel, headers: headers).matches(expr);
 
 /// IMAP SEARCH criteria for a query.
 final class ImapSearchQuery {
@@ -192,11 +181,34 @@ final class ImapSearchQuery {
 }
 
 /// Compiles for IMAP SEARCH (RFC 3501 keys; nested OR/NOT/parentheses).
-ImapSearchQuery compileImap(SearchExpr expr) => const ImapSearchQuery(criteria: 'ALL', exact: false);
+///
+/// Works on the negation normal form and widens what IMAP can't express
+/// (patterns, attachment presence and names, accounts) to ALL, setting
+/// [ImapSearchQuery.exact] to false; there is no need to call
+/// [widenForServer] first. Terms for which [supported] returns false are
+/// widened too (e.g. BODY on servers without a full-text index). A query
+/// that widens to everything compiles to `ALL`.
+ImapSearchQuery compileImap(SearchExpr expr, {bool Function(SearchExpr term)? supported}) =>
+    ImapCompiler(supported: supported).compile(expr);
 
 /// Gmail search syntax for `X-GM-RAW`, or null if the query can't be expressed
 /// (the caller then widens it first).
-String? compileGmailRaw(SearchExpr expr) => null;
+///
+/// Use `compileGmailRaw(e) ?? compileGmailRaw(widenForServer(e, gmailSupports))!`.
+/// Gmail matches whole words rather than substrings and has no body-only
+/// operator (body terms become plain text), so post-filter the results with
+/// [matchesEmail]. An empty string means "everything".
+String? compileGmailRaw(SearchExpr expr) => compileGmail(expr);
+
+/// Whether [compileGmailRaw] can express [term]; for [widenForServer].
+bool gmailSupports(SearchExpr term) => gmailCanExpress(term);
 
 /// A JMAP `Email/query` filter (FilterOperator / FilterCondition, RFC 8621).
-Map<String, Object?> compileJmapFilter(SearchExpr expr) => const {};
+///
+/// Patterns, attachment names and accounts are widened first (see
+/// [jmapSupports]); post-filter with [matchesEmail] when the query has any.
+/// [MatchAll] compiles to an empty condition.
+Map<String, Object?> compileJmapFilter(SearchExpr expr) => compileJmap(expr);
+
+/// Whether [compileJmapFilter] keeps [term] (rather than widening it).
+bool jmapSupports(SearchExpr term) => jmapCanExpress(term);
