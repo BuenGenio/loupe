@@ -2,6 +2,10 @@
 /// Autocrypt, on a swappable [PgpBackend] (dart_pg by default).
 library;
 
+export 'src/autocrypt.dart';
+export 'src/keyring/keyring.dart';
+export 'src/keyring/plan.dart';
+export 'src/keyring/session.dart';
 export 'src/mime/codecs.dart' show HeaderValue, decodeEncodedWords, decodeCharset, decodeTransfer, canonicalLineEnds;
 export 'src/mime/content.dart' show contentFromEntity, partOf;
 export 'src/mime/entity.dart' show MimeEntity, splitMultipart;

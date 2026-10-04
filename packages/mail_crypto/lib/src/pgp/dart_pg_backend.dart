@@ -335,8 +335,11 @@ final class DartPgBackend implements PgpBackend {
     Uint8List data,
     List<PgpKey> verifiers,
   ) {
+    // Parse only the keys a signature names (the keyring may hold many).
+    final issuers = {for (final s in signatures) _issuerOf(s)};
     final keys = <BaseKey>[];
     for (final v in verifiers) {
+      if (!v.keyIds.any(issuers.contains)) continue;
       try {
         keys.add(_public(v));
       } on Object {
@@ -346,12 +349,17 @@ final class DartPgBackend implements PgpBackend {
     return [for (final s in signatures) _verifyOne(s, data, keys)];
   }
 
-  PgpSignatureCheck _verifyOne(SignaturePacketInterface sig, Uint8List data, List<BaseKey> keys) {
-    var issuer = _hex(sig.issuerKeyID);
-    final issuerFpr = sig.issuerFingerprint;
-    if (issuer.isEmpty || issuer == '0000000000000000') {
-      if (issuerFpr.isNotEmpty) issuer = _hex(issuerFpr.sublist(issuerFpr.length - 8));
+  String _issuerOf(SignaturePacketInterface sig) {
+    final issuer = _hex(sig.issuerKeyID);
+    final fpr = sig.issuerFingerprint;
+    if ((issuer.isEmpty || issuer == '0000000000000000') && fpr.isNotEmpty) {
+      return _hex(sig.version == 6 ? fpr.sublist(0, 8) : fpr.sublist(fpr.length - 8));
     }
+    return issuer;
+  }
+
+  PgpSignatureCheck _verifyOne(SignaturePacketInterface sig, Uint8List data, List<BaseKey> keys) {
+    final issuer = _issuerOf(sig);
     for (final key in keys) {
       for (final kp in [key.keyPacket, for (final s in key.subkeys) s.keyPacket]) {
         if (_hex(kp.keyID) != issuer) continue;
