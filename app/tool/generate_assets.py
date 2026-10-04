@@ -141,74 +141,64 @@ d.text((16, 16), 'CB', font=font(22, True), fill=(255, 255, 255))
 d.text((62, 18), 'Corner Bookshop', font=font(20, True), fill=(60, 40, 20))
 shop.save(os.path.join(OUT, 'bookshop_logo.png'), optimize=True)
 
-# Launcher icon: a loupe over a subtle envelope on a blue gradient. Shapes are
-# drawn on separate supersampled layers and alpha-composited.
-def layer(size, draw_fn, ss=4):
-    big = Image.new('RGBA', (size * ss, size * ss), (0, 0, 0, 0))
-    draw_fn(ImageDraw.Draw(big), size * ss)
-    return big.resize((size, size), Image.LANCZOS)
+# Launcher icon: the logo shared with Expression Search Reloaded
+# (docs/branding/loupe-logo.png, transparent background) on a navy gradient.
+LOGO_PATH = os.path.join(os.path.dirname(ROOT), 'docs/branding/loupe-logo.png')
+NAVY_TOP, NAVY_BOTTOM = (12, 34, 56), (19, 75, 110)
 
 
-def gradient(size):
-    bg = Image.new('RGBA', (size, size))
-    d = ImageDraw.Draw(bg)
+def navy(size):
+    g = Image.new('RGBA', (size, size))
+    d = ImageDraw.Draw(g)
     for y in range(size):
-        d.line([(0, y), (size, y)], fill=lerp((90, 176, 255), (20, 84, 214), y / (size - 1)) + (255,))
-    return bg
+        d.line([(0, y), (size, y)], fill=lerp(NAVY_TOP, NAVY_BOTTOM, y / (size - 1)) + (255,))
+    return g
 
 
-def icon(size, with_bg=True, inset=0.0):
-    base = gradient(size) if with_bg else Image.new('RGBA', (size, size), (0, 0, 0, 0))
-
-    def P(s, x, y):
-        sc = s * (1 - inset)
-        o = (s - sc) / 2
-        return (o + x * sc, o + y * sc)
-
-    def W(s, v):
-        return max(1, int(v * s * (1 - inset)))
-
-    def env(d, s):
-        x0, y0, x1, y1 = 0.16, 0.27, 0.72, 0.63
-        d.rounded_rectangle([P(s, x0, y0), P(s, x1, y1)], radius=W(s, 0.045), fill=(255, 255, 255, 46),
-                            outline=(255, 255, 255, 120), width=W(s, 0.014))
-        d.line([P(s, x0 + 0.025, y0 + 0.035), P(s, (x0 + x1) / 2, 0.47), P(s, x1 - 0.025, y0 + 0.035)],
-               fill=(255, 255, 255, 120), width=W(s, 0.014), joint='curve')
-
-    base = Image.alpha_composite(base, layer(size, env))
-    cx, cy, r = 0.52, 0.47, 0.205
-    ang = math.radians(45)
-
-    def handle(dx, dy):
-        return (cx + (r + 0.02) * math.cos(ang) + dx, cy + (r + 0.02) * math.sin(ang) + dy,
-                cx + (r + 0.22) * math.cos(ang) + dx, cy + (r + 0.22) * math.sin(ang) + dy)
-
-    def shadow(d, s):
-        d.ellipse([P(s, cx - r + 0.015, cy - r + 0.025), P(s, cx + r + 0.015, cy + r + 0.025)],
-                  outline=(0, 30, 90, 70), width=W(s, 0.055))
-        x0, y0, x1, y1 = handle(0.015, 0.025)
-        d.line([P(s, x0, y0), P(s, x1, y1)], fill=(0, 30, 90, 70), width=W(s, 0.075))
-
-    base = Image.alpha_composite(base, layer(size, shadow).filter(ImageFilter.GaussianBlur(size * 0.012)))
-
-    def lens(d, s):
-        d.ellipse([P(s, cx - r, cy - r), P(s, cx + r, cy + r)], fill=(255, 255, 255, 40))
-        x0, y0, x1, y1 = handle(0, 0)
-        d.line([P(s, x0, y0), P(s, x1, y1)], fill=(255, 255, 255, 255), width=W(s, 0.075))
-        hw = 0.075 / 2
-        d.ellipse([P(s, x1 - hw, y1 - hw), P(s, x1 + hw, y1 + hw)], fill=(255, 255, 255, 255))
-        d.ellipse([P(s, cx - r, cy - r), P(s, cx + r, cy + r)], outline=(255, 255, 255, 255), width=W(s, 0.052))
-        g = r * 0.62
-        d.arc([P(s, cx - g, cy - g), P(s, cx + g, cy + g)], 195, 255, fill=(255, 255, 255, 230), width=W(s, 0.028))
-
-    return Image.alpha_composite(base, layer(size, lens))
+def logo_layer(size, scale, shadow=True):
+    """The logo, cropped to its content and centred at [scale] of [size]."""
+    logo = Image.open(LOGO_PATH).convert('RGBA')
+    logo = logo.crop(logo.getbbox())
+    k = size * scale / max(logo.size)
+    logo = logo.resize((round(logo.width * k), round(logo.height * k)), Image.LANCZOS)
+    out = Image.new('RGBA', (size, size), (0, 0, 0, 0))
+    x, y = (size - logo.width) // 2, (size - logo.height) // 2
+    if shadow:
+        alpha = logo.split()[3].point(lambda v: int(v * 0.35))
+        sh = Image.new('RGBA', (size, size), (0, 0, 0, 0))
+        sh.paste((4, 14, 26, 255), (x, y + round(size * 0.02)), alpha)
+        out = Image.alpha_composite(out, sh.filter(ImageFilter.GaussianBlur(size * 0.02)))
+    out.alpha_composite(logo, (x, y))
+    return out
 
 
-icon(1024).convert('RGB').save(os.path.join(ICON, 'icon.png'))
-gradient(1024).convert('RGB').save(os.path.join(ICON, 'icon_background.png'))
-# Adaptive foreground: flutter_launcher_icons adds a 16% inset, so keep this one small.
-icon(1024, with_bg=False, inset=0.10).save(os.path.join(ICON, 'icon_foreground.png'))
-small = icon(240)
+def monochrome(size, scale):
+    """Android 13 themed icon: only the loupe's ring and handle (the darker
+    teal parts); the white envelope and the pale lens drop out."""
+    glyph = logo_layer(size, scale, shadow=False)
+    px = glyph.load()
+    for yy in range(size):
+        for xx in range(size):
+            r, g, b, a = px[xx, yy]
+            if a:
+                light = (max(r, g, b) + min(r, g, b)) / 510
+                keep = min(1.0, max(0.0, (0.80 - light) / 0.45))
+                px[xx, yy] = (255, 255, 255, int(a * keep))
+    return glyph
+
+
+# Legacy and iOS icon: full bleed, no alpha. Visible logo ≈ 62% of the icon.
+icon = navy(1024)
+icon.alpha_composite(logo_layer(1024, 0.62))
+icon.convert('RGB').save(os.path.join(ICON, 'icon.png'))
+# Adaptive icon: flutter_launcher_icons insets the foreground by 16% per side
+# (to 68%), and masks show the middle 72/108 of the canvas, so 0.61 here gives
+# the same visible size as above and keeps the handle inside a circle mask.
+navy(1024).convert('RGB').save(os.path.join(ICON, 'icon_background.png'))
+logo_layer(1024, 0.61).save(os.path.join(ICON, 'icon_foreground.png'))
+monochrome(1024, 0.61).save(os.path.join(ICON, 'icon_monochrome.png'))
+# In-app (welcome screen, About): rounded square.
+small = icon.resize((240, 240), Image.LANCZOS)
 mask = Image.new('L', (960, 960), 0)
 ImageDraw.Draw(mask).rounded_rectangle((0, 0, 959, 959), 216, fill=255)
 small.putalpha(mask.resize((240, 240), Image.LANCZOS))
