@@ -1369,8 +1369,12 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
     final labels = cond.needsPostFilter
         ? {for (final a in await getAccounts()) a.id: '${a.displayName} ${a.email}'}
         : const <String, String>{};
+    // Outside one mailbox, walk the messages newest first and stop at the
+    // page: SQLite would otherwise fetch every full-text match and sort
+    // them (a one-letter prefix while typing matches most of the mail).
+    final newestFirst = scope is MailboxScope && scope.ref is RealMailboxRef ? '' : ' INDEXED BY emails_received';
     final sql =
-        'SELECT e.*, $_copyRank AS copy_pref FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id '
+        'SELECT e.*, $_copyRank AS copy_pref FROM emails e$newestFirst JOIN mailboxes m ON m.id = e.mailbox_id '
         'WHERE $scopeSql AND ${cond.sql} ORDER BY e.received_at DESC, e.seq DESC LIMIT ? OFFSET ?';
     final byKey = <String, (EmailSummary, int)>{};
     final order = <String>[];

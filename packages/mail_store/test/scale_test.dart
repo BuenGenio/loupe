@@ -382,9 +382,16 @@ SELECT
   });
 
   test('search while typing', () async {
-    for (final text in ['i', 'in', 'inv', 'invo', 'invoice', 'invoice bud', 'f:sender42', 'sender42 invoice']) {
+    for (final text in [
+      'i', 'in', 'inv', 'invo', 'invoice', 'invoice bud', 'f:sender42', 'sender42 invoice', 'zqxj', //
+      r'is:$label1',
+    ]) {
       final expr = parseQuery(text).expr;
-      await measure('search "$text" everywhere', () => store.search(expr));
+      final everywhere = await measure('search "$text" everywhere', () => store.search(expr));
+      // Newest first through the index, never every match sorted.
+      final q = everywhere.first;
+      final p = await plan(q.sql, q.args);
+      expect(p, isNot(contains('TEMP B-TREE FOR ORDER BY')), reason: 'search "$text":\n$p');
       final statements = await measure('search "$text" in INBOX', () => store.search(expr, scope: MailboxScope(inbox)));
       expect(statements, isNotEmpty);
     }
