@@ -100,7 +100,8 @@ counted on the device; services that do this elsewhere read the mail on their se
   1. RFC 8058 one-click (List-Unsubscribe-Post and an `https` URI): a POST of exactly `List-Unsubscribe=One-Click`
      (`application/x-www-form-urlencoded`) without cookies, user agent, referrer or languages; 2xx or 303 means done;
      other redirects are followed with the same POST on the same host only (three at most); 20 s timeout; the answer's
-     page isn't read. IP addresses and local names (`.local`, `localhost`…) are refused. It is the only request Loupe makes outside the mail protocols, made only when the user taps
+     page isn't read. IP addresses and local names (`.local`, `localhost`…) are refused. Besides account setup
+     (autoconfig, OAuth), it is the only request Loupe makes outside the mail protocols, and only when the user taps
      Unsubscribe; the first time, the confirmation explains it. The demo pretends.
   2. `mailto:` through the normal send path (`unsubscribeMessage`): from the identity the mail was addressed to, to
      the URI's recipients only (its `cc=`/`bcc=` are ignored), with its subject and body (RFC 6068: `+` is a plus).
@@ -117,5 +118,5 @@ counted on the device; services that do this elsewhere read the mail on their se
 - Pure Dart packages test with `dart test`, Flutter packages with `flutter test`; `tool/ci/test.sh` runs them all.
 - Generated code (drift) is committed, so CI needs no build_runner step.
 - No network access in unit tests. Integration tests against real IMAP servers are tagged `integration` and need `LOUPE_TEST_IMAP_HOST`; see `tool/test-servers/`.
-- No analytics or tracking code, ever. Remote content stays blocked by default. The only network request outside the
-  mail protocols is the one-click unsubscribe the user taps (see Subscriptions).
+- No analytics or tracking code, ever. Remote content stays blocked by default. Besides account setup, the only
+  network request outside the mail protocols is the one-click unsubscribe the user taps (see Subscriptions).

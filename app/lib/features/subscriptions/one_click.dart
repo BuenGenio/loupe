@@ -5,8 +5,9 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:readable/readable.dart' show isIpLiteral;
 
-// RFC 8058 one-click unsubscribe: the only request Loupe makes outside the
-// mail protocols, and only when the user taps Unsubscribe.
+// RFC 8058 one-click unsubscribe: besides account setup, the only request
+// Loupe makes outside the mail protocols, and only when the user taps
+// Unsubscribe.
 
 /// The POST that unsubscribes: `List-Unsubscribe=One-Click` to the sender's
 /// URI and nothing else. No cookies, credentials, referrer, user agent or

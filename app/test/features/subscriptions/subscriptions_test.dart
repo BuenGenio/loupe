@@ -190,7 +190,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Unsubscribe from Stride Run Club?'), findsOneWidget);
     expect(textContaining('Loupe will contact striderun.example to unsubscribe.'), findsOneWidget);
-    expect(textContaining('the only time Loupe connects to a website by itself'), findsOneWidget);
+    expect(textContaining('the only time Loupe contacts a sender’s website'), findsOneWidget);
 
     await _tapDialog(tester, 'Cancel');
     expect(t.http.requests, isEmpty);

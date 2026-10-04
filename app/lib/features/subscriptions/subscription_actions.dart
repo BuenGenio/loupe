@@ -111,7 +111,7 @@ class SubscriptionActions {
       message: [
         'Loupe will contact ${host.display} to unsubscribe.',
         if (!explained)
-          'This is the only time Loupe connects to a website by itself. It sends just '
+          'This is the only time Loupe contacts a sender’s website. It sends just '
               '“List-Unsubscribe=One-Click” to the address ${s.name} gave, without cookies or anything else '
               'about you, and doesn’t load the page.',
         if (host.homograph) _homographWarning(host.looksLike),
