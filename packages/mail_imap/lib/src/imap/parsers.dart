@@ -33,11 +33,11 @@ final class CapabilityParser extends ResponseParser<Set<String>> {
   Set<String>? _caps;
 
   @override
-  Set<String> parse(ImapResponse imapResponse, Response<Set<String>> response) =>
+  Set<String> parse(ImapResponse imapResponse, Response<Object?> response) =>
       _capabilitiesIn(imapResponse.parseText) ?? _caps ?? <String>{};
 
   @override
-  bool parseUntagged(ImapResponse imapResponse, Response<Set<String>>? response) {
+  bool parseUntagged(ImapResponse imapResponse, Response<Object?>? response) {
     final caps = _capabilitiesIn(imapResponse.parseText);
     if (caps != null) _caps = caps;
     return true;
@@ -73,14 +73,14 @@ final class GenericParser extends ResponseParser<GenericResult> {
   final _codes = <String>[];
 
   @override
-  GenericResult parse(ImapResponse imapResponse, Response<GenericResult> response) {
+  GenericResult parse(ImapResponse imapResponse, Response<Object?> response) {
     final text = imapResponse.parseText;
     final code = _responseCode(text);
     return GenericResult([?code, ..._codes], text);
   }
 
   @override
-  bool parseUntagged(ImapResponse imapResponse, Response<GenericResult>? response) {
+  bool parseUntagged(ImapResponse imapResponse, Response<Object?>? response) {
     final text = imapResponse.parseText;
     if (text.startsWith('OK [')) {
       final code = _responseCode(text);
@@ -123,7 +123,7 @@ final class SelectParser extends ResponseParser<SelectData> {
   final _data = SelectData();
 
   @override
-  SelectData parse(ImapResponse imapResponse, Response<SelectData> response) {
+  SelectData parse(ImapResponse imapResponse, Response<Object?> response) {
     final text = imapResponse.parseText;
     if (text.contains('[READ-ONLY]')) _data.readOnly = true;
     final hms = RegExp(r'\[HIGHESTMODSEQ (\d+)\]').firstMatch(text);
@@ -132,7 +132,7 @@ final class SelectParser extends ResponseParser<SelectData> {
   }
 
   @override
-  bool parseUntagged(ImapResponse imapResponse, Response<SelectData>? response) {
+  bool parseUntagged(ImapResponse imapResponse, Response<Object?>? response) {
     final text = imapResponse.parseText;
     final exists = RegExp(r'^(\d+) EXISTS').firstMatch(text);
     if (exists != null) {
@@ -169,10 +169,10 @@ final class StatusParser extends ResponseParser<Map<String, int>> {
   final _items = <String, int>{};
 
   @override
-  Map<String, int> parse(ImapResponse imapResponse, Response<Map<String, int>> response) => _items;
+  Map<String, int> parse(ImapResponse imapResponse, Response<Object?> response) => _items;
 
   @override
-  bool parseUntagged(ImapResponse imapResponse, Response<Map<String, int>>? response) {
+  bool parseUntagged(ImapResponse imapResponse, Response<Object?>? response) {
     if (!imapResponse.parseText.startsWith('STATUS ')) return true;
     final values = imapResponse.iterate().values;
     for (final v in values) {
@@ -205,10 +205,10 @@ final class ListParser extends ResponseParser<List<ListEntry>> {
   final _entries = <ListEntry>[];
 
   @override
-  List<ListEntry> parse(ImapResponse imapResponse, Response<List<ListEntry>> response) => _entries;
+  List<ListEntry> parse(ImapResponse imapResponse, Response<Object?> response) => _entries;
 
   @override
-  bool parseUntagged(ImapResponse imapResponse, Response<List<ListEntry>>? response) {
+  bool parseUntagged(ImapResponse imapResponse, Response<Object?>? response) {
     final text = imapResponse.parseText;
     if (!text.startsWith('LIST ') && !text.startsWith('LSUB ') && !text.startsWith('XLIST ')) return true;
     final values = imapResponse.iterate().values;
@@ -238,10 +238,10 @@ final class SearchParser extends ResponseParser<SearchData> {
   final _data = SearchData();
 
   @override
-  SearchData parse(ImapResponse imapResponse, Response<SearchData> response) => _data;
+  SearchData parse(ImapResponse imapResponse, Response<Object?> response) => _data;
 
   @override
-  bool parseUntagged(ImapResponse imapResponse, Response<SearchData>? response) {
+  bool parseUntagged(ImapResponse imapResponse, Response<Object?>? response) {
     final text = imapResponse.parseText;
     if (text == 'SEARCH' || text.startsWith('SEARCH ')) {
       final body = text.length > 7 ? text.substring(7).replaceAll(RegExp(r'\(MODSEQ \d+\)'), '') : '';
@@ -313,11 +313,11 @@ final class FetchParser extends ResponseParser<FetchResult> {
   final _vanished = <int>[];
 
   @override
-  FetchResult parse(ImapResponse imapResponse, Response<FetchResult> response) =>
+  FetchResult parse(ImapResponse imapResponse, Response<Object?> response) =>
       FetchResult(_bySeq.values.toList(), _vanished);
 
   @override
-  bool parseUntagged(ImapResponse imapResponse, Response<FetchResult>? response) {
+  bool parseUntagged(ImapResponse imapResponse, Response<Object?>? response) {
     final text = imapResponse.parseText;
     if (text.startsWith('VANISHED (EARLIER) ')) {
       try {

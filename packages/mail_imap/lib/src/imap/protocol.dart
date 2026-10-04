@@ -11,3 +11,4 @@ export 'package:enough_mail/src/private/imap/imap_response.dart' show ImapRespon
 export 'package:enough_mail/src/private/imap/imap_response_line.dart' show ImapResponseLine;
 export 'package:enough_mail/src/private/imap/response_parser.dart' show ResponseParser;
 export 'package:enough_mail/src/private/imap/imap_response_reader.dart' show ImapResponseReader;
+export 'package:enough_mail/src/private/util/client_base.dart' show ConnectionInfo;
