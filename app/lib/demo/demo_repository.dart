@@ -126,6 +126,10 @@ class DemoMailRepository implements MailRepository {
   /// Every message in [_older] and [_serverOnly], by id.
   final _remote = <String, DemoMessage>{};
   final _vips = <String>{};
+
+  /// Documents "on the server" (simulated IMAP METADATA): account id →
+  /// document name → content. Tests write here to play another device.
+  final serverDocuments = <String, Map<String, String>>{};
   final _sync = <String, AccountSyncStatus>{};
   final _outbox = <String, _Queued>{};
   final _contentCache = <String, EmailContent>{};
@@ -394,6 +398,7 @@ class DemoMailRepository implements MailRepository {
     _older.removeWhere((id, _) => MailIds.accountOf(id) == accountId);
     _serverOnly.remove(accountId);
     _sync.remove(accountId);
+    serverDocuments.remove(accountId);
     _notify();
   }
 
@@ -1224,6 +1229,35 @@ class DemoMailRepository implements MailRepository {
         if (p.isEmpty ? sentTo.contains(key) : matches(a)) a,
     ]..sort((a, b) => scores[b.email.toLowerCase()]!.compareTo(scores[a.email.toLowerCase()]!));
     return hits.take(limit).toList();
+  }
+
+  // Documents on the server ---------------------------------------------------------
+
+  void _requireAccount(String accountId) {
+    if (_account(accountId) == null) {
+      throw const MailException(MailErrorKind.notFound, 'This account no longer exists.');
+    }
+  }
+
+  @override
+  Future<List<ServerDocument>> readServerDocuments(String accountId, String name) async {
+    _requireAccount(accountId);
+    await _wait(_jitter(latency.content));
+    final content = serverDocuments[accountId]?[name];
+    return [if (content != null) ServerDocument(content: content, storage: ServerStorage.metadata)];
+  }
+
+  @override
+  Future<ServerStorage> writeServerDocument(
+    String accountId,
+    String name,
+    String content, {
+    List<ServerDocument> replaces = const [],
+  }) async {
+    _requireAccount(accountId);
+    await _wait(_jitter(latency.content));
+    (serverDocuments[accountId] ??= {})[name] = content;
+    return ServerStorage.metadata;
   }
 
   // People -----------------------------------------------------------------------------

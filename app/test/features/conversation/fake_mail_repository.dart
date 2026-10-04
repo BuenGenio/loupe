@@ -22,6 +22,9 @@ class FakeMailRepository implements MailRepository {
   final Map<String, EmailContent> contents;
   final vips = <String>{};
 
+  /// Server documents: account id → name → content.
+  final serverDocuments = <String, Map<String, String>>{};
+
   /// Every call, as "method args" strings, in order.
   final log = <String>[];
   final keywordCalls = <({List<String> ids, Set<String> add, Set<String> remove})>[];
@@ -307,6 +310,27 @@ class FakeMailRepository implements MailRepository {
       for (final a in known)
         if (a.email.startsWith(p) || (a.name?.toLowerCase().startsWith(p) ?? false)) a,
     ].take(limit).toList();
+  }
+
+  // Documents on the server -------------------------------------------------
+
+  @override
+  Future<List<ServerDocument>> readServerDocuments(String accountId, String name) async {
+    log.add('readServerDocuments $accountId $name');
+    final content = serverDocuments[accountId]?[name];
+    return [if (content != null) ServerDocument(content: content, storage: ServerStorage.metadata)];
+  }
+
+  @override
+  Future<ServerStorage> writeServerDocument(
+    String accountId,
+    String name,
+    String content, {
+    List<ServerDocument> replaces = const [],
+  }) async {
+    log.add('writeServerDocument $accountId $name');
+    (serverDocuments[accountId] ??= {})[name] = content;
+    return ServerStorage.metadata;
   }
 
   // People -------------------------------------------------------------------

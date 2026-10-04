@@ -938,6 +938,20 @@ final class LiveMailRepository implements MailRepository {
     await _deletePermanently(accountId, [id]);
   }
 
+  // Documents on the server -------------------------------------------------
+
+  @override
+  Future<List<ServerDocument>> readServerDocuments(String accountId, String name) =>
+      _syncerFor(accountId).onMain((t) => t.readDocuments(name));
+
+  @override
+  Future<ServerStorage> writeServerDocument(
+    String accountId,
+    String name,
+    String content, {
+    List<ServerDocument> replaces = const [],
+  }) => _syncerFor(accountId).onMain((t) => t.writeDocument(name, content, replaces: replaces));
+
   // People ------------------------------------------------------------------
 
   @override
