@@ -267,18 +267,24 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
   }
 
   // Settings.
-  PaletteItem setting(String id, String title, String location, {IconData icon = LoupeIcons.settings, String? sub}) =>
-      PaletteItem(
-        id: 'settings.$id',
-        title: title,
-        subtitle: sub ?? 'Settings',
-        kind: PaletteKind.setting,
-        icon: icon,
-        keywords: const ['settings', 'preferences'],
-        run: () => router.push<void>(location),
-      );
+  PaletteItem setting(
+    String id,
+    String title,
+    String location, {
+    IconData icon = LoupeIcons.settings,
+    String? sub = 'Settings',
+    List<String> keywords = const [],
+  }) => PaletteItem(
+    id: 'settings.$id',
+    title: title,
+    subtitle: sub,
+    kind: PaletteKind.setting,
+    icon: icon,
+    keywords: keywords,
+    run: () => router.push<void>(location),
+  );
   items
-    ..add(setting('main', 'Settings', Routes.settings))
+    ..add(setting('main', 'Settings', Routes.settings, sub: null, keywords: const ['preferences']))
     ..add(setting('swipes', 'Swipe Actions', Routes.swipeSettings, icon: LoupeIcons.swipeActions))
     ..add(setting('notifications', 'Notifications', Routes.notificationSettings, icon: LoupeIcons.notifications))
     ..add(setting('rules', 'Rules', Routes.rules, icon: LoupeIcons.rules))

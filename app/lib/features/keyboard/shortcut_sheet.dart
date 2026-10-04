@@ -66,9 +66,15 @@ class ShortcutSheet extends StatelessWidget {
                             Flexible(
                               child: Wrap(
                                 alignment: WrapAlignment.end,
+                                crossAxisAlignment: WrapCrossAlignment.center,
                                 spacing: 6,
                                 runSpacing: 4,
-                                children: [for (final c in e.combos) KeyCaps(c.keyLabels(apple: apple))],
+                                children: [
+                                  for (final (i, c) in e.combos.indexed) ...[
+                                    if (i > 0) Text('or', style: styles.footnote),
+                                    KeyCaps(c.keyLabels(apple: apple)),
+                                  ],
+                                ],
                               ),
                             ),
                           ],
