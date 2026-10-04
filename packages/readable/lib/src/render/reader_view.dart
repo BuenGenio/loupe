@@ -99,11 +99,24 @@ class _ReaderViewState extends State<ReaderView> {
       _allowedHere = false;
       _suggested = false;
     }
-    if (!sameMessage || !identical(old.content, widget.content) || old.settings.mode != widget.settings.mode) {
+    if (!sameMessage || !_sameBody(old.content, widget.content) || old.settings.mode != widget.settings.mode) {
       _load();
     } else if (old.remoteContent != widget.remoteContent || old.loadAttachment != widget.loadAttachment) {
       _providers.clear();
     }
+  }
+
+  /// Hosts often rebuild with a new EmailContent for the same message; only
+  /// a different body (or different inline parts) needs a new pipeline run.
+  static bool _sameBody(EmailContent a, EmailContent b) {
+    if (identical(a, b)) return true;
+    bool same(String? x, String? y) => identical(x, y) || x == y;
+    return same(a.html, b.html) &&
+        same(a.text, b.text) &&
+        a.isFlowed == b.isFlowed &&
+        a.inlineData.length == b.inlineData.length &&
+        a.inlineData.keys.every(b.inlineData.containsKey) &&
+        a.attachments.length == b.attachments.length;
   }
 
   // -- Pipeline --------------------------------------------------------------
@@ -171,9 +184,11 @@ class _ReaderViewState extends State<ReaderView> {
 
   /// Last resort: the text part, or the HTML with tags crudely removed.
   PipelineOutput _fallback(PipelineInput input) {
+    var html = input.html ?? '';
+    if (html.length > 500000) html = html.substring(0, 500000);
     final text = input.hasText
         ? input.text!
-        : (input.html ?? '')
+        : html
               .replaceAll(RegExp(r'<(style|script|head)[^>]*>.*?</\1>', caseSensitive: false, dotAll: true), '')
               .replaceAll(RegExp(r'<br\s*/?>|</p>|</div>|</tr>', caseSensitive: false), '\n')
               .replaceAll(RegExp(r'<[^>]{0,2000}>'), '')

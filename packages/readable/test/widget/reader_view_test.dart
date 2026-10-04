@@ -318,6 +318,27 @@ void main() {
     );
   });
 
+  testWidgets('hostile nesting depth keeps a readable width', (tester) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    final html =
+        '${'<blockquote>' * 60}deep quote text${'</blockquote>' * 60}'
+        '${'<ul><li>' * 40}deep list text${'</li></ul>' * 40}';
+    await pumpReader(tester, email(html: html));
+    final text = '> ' * 80;
+    await pumpReader(
+      tester,
+      email(text: '${text}deep plain quote'),
+      settings: const ReaderSettings(mode: ReaderMode.plain),
+    );
+    expect(tester.takeException(), isNull);
+    expect(tester.getSize(richText('deep plain quote')).width, greaterThan(150));
+    await pumpReader(tester, email(html: html));
+    expect(tester.getSize(richText('deep quote text')).width, greaterThan(150));
+    expect(tester.getSize(richText('deep list text')).width, greaterThan(150));
+  });
+
   testWidgets('settings.textScale multiplies the platform text scale', (tester) async {
     await pumpReader(tester, email(text: 'Scaled'), settings: const ReaderSettings(textScale: 1.5));
     final context = tester.element(richText('Scaled'));

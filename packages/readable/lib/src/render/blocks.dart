@@ -19,23 +19,29 @@ double _gap(Block? previous, Block next) {
   return 12;
 }
 
-/// A column of blocks. [depth] is the quote nesting (for bar colours).
+/// Quotes and lists nested deeper than this stop indenting further, so
+/// hostile nesting can't squeeze the text to nothing.
+const maxIndent = 6;
+
+/// A column of blocks. [depth] is the quote nesting (for bar colours);
+/// [indent] counts every indenting container (quotes and lists).
 class BlockList extends StatelessWidget {
-  const BlockList(this.blocks, {super.key, this.depth = 0});
+  const BlockList(this.blocks, {super.key, this.depth = 0, this.indent = 0});
 
   final List<Block> blocks;
   final int depth;
+  final int indent;
 
   @override
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     mainAxisSize: MainAxisSize.min,
-    children: blockWidgets(blocks, depth: depth),
+    children: blockWidgets(blocks, depth: depth, indent: indent),
   );
 }
 
 /// Widgets for [blocks] with our spacing between them.
-List<Widget> blockWidgets(List<Block> blocks, {int depth = 0, Block? before}) {
+List<Widget> blockWidgets(List<Block> blocks, {int depth = 0, int indent = 0, Block? before}) {
   final children = <Widget>[];
   Block? previous = before;
   for (var i = 0; i < blocks.length; i++) {
@@ -59,7 +65,7 @@ List<Widget> blockWidgets(List<Block> blocks, {int depth = 0, Block? before}) {
       previous = row.last;
       continue;
     }
-    children.add(BlockView(b, depth: depth));
+    children.add(BlockView(b, depth: depth, indent: indent));
     previous = b;
   }
   return children;
@@ -147,10 +153,11 @@ class _DocumentBlocksState extends State<DocumentBlocks> {
 
 /// One block.
 class BlockView extends StatelessWidget {
-  const BlockView(this.block, {super.key, this.depth = 0});
+  const BlockView(this.block, {super.key, this.depth = 0, this.indent = 0});
 
   final Block block;
   final int depth;
+  final int indent;
 
   @override
   Widget build(BuildContext context) {
@@ -172,10 +179,11 @@ class BlockView extends StatelessWidget {
           ),
         );
       case QuoteBlock(:final children, :final bar):
+        if (indent >= maxIndent) return BlockList(children, depth: depth + (bar ? 1 : 0), indent: indent);
         if (!bar) {
           return Padding(
             padding: const EdgeInsetsDirectional.only(start: 20),
-            child: BlockList(children, depth: depth),
+            child: BlockList(children, depth: depth, indent: indent + 1),
           );
         }
         return Container(
@@ -183,10 +191,10 @@ class BlockView extends StatelessWidget {
             border: BorderDirectional(start: BorderSide(color: styles.quoteBar(depth), width: 3)),
           ),
           padding: const EdgeInsetsDirectional.only(start: 12),
-          child: BlockList(children, depth: depth + 1),
+          child: BlockList(children, depth: depth + 1, indent: indent + 1),
         );
       case ListBlock(:final items, :final marker, :final start):
-        return _ListView(items: items, marker: marker, start: start, depth: depth);
+        return _ListView(items: items, marker: marker, start: start, depth: depth, indent: indent);
       case PreBlock(:final inlines):
         return Container(
           decoration: BoxDecoration(color: styles.codeBackground, borderRadius: BorderRadius.circular(8)),
@@ -211,12 +219,19 @@ class BlockView extends StatelessWidget {
 }
 
 class _ListView extends StatelessWidget {
-  const _ListView({required this.items, required this.marker, required this.start, required this.depth});
+  const _ListView({
+    required this.items,
+    required this.marker,
+    required this.start,
+    required this.depth,
+    required this.indent,
+  });
 
   final List<List<Block>> items;
   final ListMarker marker;
   final int start;
   final int depth;
+  final int indent;
 
   String _label(int n) => switch (marker) {
     ListMarker.disc => '•',
@@ -231,7 +246,8 @@ class _ListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final styles = ReaderScope.of(context).styles;
-    final markerWidth = marker == ListMarker.none ? 0.0 : (marker == ListMarker.disc ? 18.0 : 28.0);
+    final flat = indent >= maxIndent;
+    final markerWidth = marker == ListMarker.none || flat ? 0.0 : (marker == ListMarker.disc ? 18.0 : 28.0);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -249,7 +265,9 @@ class _ListView extends StatelessWidget {
                     child: Text(_label(start + i), style: styles.body, textAlign: TextAlign.end),
                   ),
                 if (markerWidth > 0) const SizedBox(width: 8),
-                Expanded(child: BlockList(item, depth: depth)),
+                Expanded(
+                  child: BlockList(item, depth: depth, indent: flat ? indent : indent + 1),
+                ),
               ],
             ),
           ),
