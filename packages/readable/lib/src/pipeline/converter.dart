@@ -291,7 +291,7 @@ final class _Converter {
       final direction = style['direction']?.toLowerCase();
       if (direction == 'rtl') dir = TextDir.rtl;
       if (direction == 'ltr') dir = TextDir.ltr;
-      final fontSize = style['font-size'];
+      final fontSize = fontSizeOf(style);
       if (fontSize != null) px = parseFontSize(fontSize, px) ?? px;
       final family = style['font-family'];
       if (family != null) run = run.copyWith(mono: isMonospaceFamily(family));

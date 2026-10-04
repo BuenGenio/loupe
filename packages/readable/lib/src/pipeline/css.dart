@@ -191,6 +191,23 @@ double? parseFontSize(String value, double parentPx) {
   return parseLength(v, fontPx: parentPx);
 }
 
+final _fontShorthandSize = RegExp(
+  r'(?:^|\s)((?:[0-9]*\.)?[0-9]+(?:px|pt|em|rem|%)|xx-small|x-small|small|medium|large|x-large|xx-large|smaller|larger)'
+  r'(?:\s*/\s*\S+)?(?=\s|$)',
+  caseSensitive: false,
+);
+
+/// The size in a `font` shorthand (`bold 10px/1.2 Arial`, `8pt Verdana`).
+String? fontShorthandSize(String value) => _fontShorthandSize.firstMatch(value)?[1];
+
+/// The `font-size` of a parsed style, or the size of its `font` shorthand.
+String? fontSizeOf(Map<String, String> style) {
+  final size = style['font-size'];
+  if (size != null) return size;
+  final font = style['font'];
+  return font == null ? null : fontShorthandSize(font);
+}
+
 /// `<font size="…">`: 1–7, or relative (+1, -2) to 3.
 double? legacyFontSize(String value) {
   final v = value.trim();
