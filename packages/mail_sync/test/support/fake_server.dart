@@ -173,6 +173,9 @@ final class FakeServer {
   final sent = <SentMail>[];
   final transports = <FakeTransport>[];
   int connects = 0;
+
+  /// LOGIN attempts, refused ones included.
+  int logins = 0;
   final _watchers = <String, List<StreamController<void>>>{};
   int _clock = 0;
 
@@ -359,6 +362,7 @@ final class FakeTransport implements MailTransport {
   Future<void> connect() async {
     await _delay();
     if (server.offline) throw const MailException(MailErrorKind.connection, 'Server unreachable');
+    server.logins++;
     final c = await credentials();
     if (c is PasswordCredentials && c.password != server.password) {
       throw const MailException(MailErrorKind.authentication, 'Password rejected');

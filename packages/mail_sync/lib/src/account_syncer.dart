@@ -95,6 +95,18 @@ final class AccountSyncer {
   bool _running = false;
   bool _disposed = false;
   int _failures = 0;
+
+  /// The server's refusal of the credentials, until a sync logs in again.
+  MailException? _rejected;
+
+  /// Fails at once while the server refuses the credentials (only syncs
+  /// try them again, on the poll timer): extra logins with a wrong password,
+  /// e.g. for Smart Mailbox documents on every other account's sync, get
+  /// the device's address banned by fail2ban-style protection (mailcow).
+  void throwIfRejected() {
+    if (_rejected case final e?) throw e;
+  }
+
   DateTime? _lastSuccess;
   late AccountSyncStatus _status = AccountSyncStatus(accountId: _account.id, phase: SyncPhase.idle);
 
@@ -165,7 +177,11 @@ final class AccountSyncer {
       _setStatus(SyncPhase.error, error: e.message);
     }
     // A rejected password won't fix itself; the poll timer retries it.
-    if (e.kind != MailErrorKind.authentication) _scheduleReconnect();
+    if (e.kind == MailErrorKind.authentication) {
+      _rejected = e;
+    } else {
+      _scheduleReconnect();
+    }
   }
 
   void _scheduleReconnect() {
@@ -269,6 +285,7 @@ final class AccountSyncer {
       }
       await _host.wakeSnoozed(this);
       _failures = 0;
+      _rejected = null;
       _lastSuccess = _host.now();
       _setStatus(SyncPhase.idle);
       _ensureIdle();
@@ -351,6 +368,7 @@ final class AccountSyncer {
         if (m.role == MailboxRole.inbox) await _inboxSynced(m);
       }
       _failures = 0;
+      _rejected = null;
       _lastSuccess = _host.now();
       if (_fullSync == null) _setStatus(SyncPhase.idle);
     } catch (e) {

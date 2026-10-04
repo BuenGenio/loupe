@@ -1281,8 +1281,10 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
   // Documents on the server -------------------------------------------------
 
   @override
-  Future<List<ServerDocument>> readServerDocuments(String accountId, String name) =>
-      _syncerFor(accountId).onMain((t) => t.readDocuments(name));
+  Future<List<ServerDocument>> readServerDocuments(String accountId, String name) async {
+    final syncer = _syncerFor(accountId)..throwIfRejected();
+    return syncer.onMain((t) => t.readDocuments(name));
+  }
 
   @override
   Future<ServerStorage> writeServerDocument(
@@ -1290,7 +1292,10 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     String name,
     String content, {
     List<ServerDocument> replaces = const [],
-  }) => _syncerFor(accountId).onMain((t) => t.writeDocument(name, content, replaces: replaces));
+  }) async {
+    final syncer = _syncerFor(accountId)..throwIfRejected();
+    return syncer.onMain((t) => t.writeDocument(name, content, replaces: replaces));
+  }
 
   // People ------------------------------------------------------------------
 
