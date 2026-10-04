@@ -41,7 +41,6 @@ const _roleNames = <MailboxRole, List<String>>{
     'elementos enviados',
     'posta inviata',
     'inviati',
-    'posta inviata',
     'verzonden',
     'verzonden items',
     'skickat',
@@ -159,10 +158,14 @@ const _roleNames = <MailboxRole, List<String>>{
 /// result when the server lacks LIST-EXTENDED (then `\Subscribed` flags are
 /// absent); null means "use the `\Subscribed` flags if any entry has them,
 /// else treat everything as subscribed".
+///
+/// Each role goes to at most one mailbox (see [_assignRoles]); the other
+/// candidates keep [MailboxRole.none].
 List<RemoteMailbox> buildRemoteMailboxes(List<ListEntry> entries, {Set<String>? subscribedRawNames}) {
   final flagsKnown = entries.any((e) => e.flags.contains(r'\subscribed'));
   final byPath = <String, RemoteMailbox>{};
   final delimiters = <String, String?>{};
+  final specialUse = <String, MailboxRole>{};
   for (final e in entries) {
     final isInbox = e.rawName.toUpperCase() == 'INBOX';
     final path = isInbox ? 'INBOX' : decodeModifiedUtf7(e.rawName);
@@ -171,15 +174,13 @@ List<RemoteMailbox> buildRemoteMailboxes(List<ListEntry> entries, {Set<String>? 
     final cut = d == null || d.isEmpty ? -1 : path.lastIndexOf(d);
     final parent = cut > 0 ? path.substring(0, cut) : null;
     final leaf = cut > 0 ? path.substring(cut + d!.length) : path;
-    var role = MailboxRole.none;
     for (final f in e.flags) {
       final r = _specialUse[f];
       if (r != null) {
-        role = r;
+        specialUse[path] = r;
         break;
       }
     }
-    if (isInbox) role = MailboxRole.inbox;
     final subscribed =
         isInbox ||
         switch (subscribedRawNames) {
@@ -189,7 +190,7 @@ List<RemoteMailbox> buildRemoteMailboxes(List<ListEntry> entries, {Set<String>? 
     byPath[path] = RemoteMailbox(
       path: path,
       name: isInbox ? 'Inbox' : leaf,
-      role: role,
+      role: isInbox ? MailboxRole.inbox : MailboxRole.none,
       parentPath: parent,
       isSelectable: !e.flags.contains(r'\noselect') && !e.flags.contains(r'\nonexistent'),
       isSubscribed: subscribed,
@@ -212,32 +213,68 @@ List<RemoteMailbox> buildRemoteMailboxes(List<ListEntry> entries, {Set<String>? 
       parent = grand;
     }
   }
-  _assignRolesByName(byPath);
+  _assignRoles(byPath, specialUse);
   return byPath.values.toList();
 }
 
-void _assignRolesByName(Map<String, RemoteMailbox> byPath) {
-  final taken = {for (final b in byPath.values) b.role};
-  for (final entry in _roleNames.entries) {
-    if (taken.contains(entry.key)) continue;
+/// Gives each role to at most one mailbox. Servers can flag several
+/// mailboxes with one SPECIAL-USE attribute (mailcow marks "Archive",
+/// "Archiv" and "Archives" `\Archive`), and folders named like a role may
+/// exist next to the flagged one. The preference: the SPECIAL-USE flag, then
+/// the role's usual name ("Archive" before "Archives"), then the shortest
+/// path. Folders without SPECIAL-USE only qualify by name, at the top level
+/// or directly under INBOX (Courier/Cyrus style). INBOX is the only inbox.
+void _assignRoles(Map<String, RemoteMailbox> byPath, Map<String, MailboxRole> specialUse) {
+  int nameRank(RemoteMailbox box, MailboxRole role) {
+    final names = _roleNames[role] ?? const <String>[];
+    final i = names.indexOf(box.name.toLowerCase());
+    return i < 0 ? 2 : (i == 0 ? 0 : 1);
+  }
+
+  int compare(RemoteMailbox a, RemoteMailbox b, MailboxRole role) {
+    var c = nameRank(a, role).compareTo(nameRank(b, role));
+    if (c != 0) return c;
+    c = a.path.length.compareTo(b.path.length);
+    return c != 0 ? c : a.path.compareTo(b.path);
+  }
+
+  final holders = <MailboxRole, RemoteMailbox>{};
+  void pick(MailboxRole role, Iterable<RemoteMailbox> candidates) {
     RemoteMailbox? best;
-    for (final box in byPath.values) {
-      if (box.role != MailboxRole.none || !box.isSelectable) continue;
-      if (!entry.value.contains(box.name.toLowerCase())) continue;
-      // Top-level or directly under INBOX (Courier/Cyrus style) only.
-      final parent = box.parentPath;
-      if (parent != null && parent != 'INBOX' && !parent.startsWith('[')) continue;
-      if (best == null || box.path.length < best.path.length) best = box;
+    for (final box in candidates) {
+      if (best == null || compare(box, best, role) < 0) best = box;
     }
-    if (best != null) {
-      byPath[best.path] = RemoteMailbox(
-        path: best.path,
-        name: best.name,
-        role: entry.key,
-        parentPath: best.parentPath,
-        isSelectable: best.isSelectable,
-        isSubscribed: best.isSubscribed,
-      );
-    }
+    if (best != null) holders[role] = best;
+  }
+
+  final assignable = byPath.values.where((b) => b.isSelectable && b.role != MailboxRole.inbox).toList();
+  for (final role in MailboxRole.values) {
+    if (role == MailboxRole.none || role == MailboxRole.inbox) continue;
+    pick(role, assignable.where((b) => specialUse[b.path] == role));
+  }
+  final taken = {for (final b in holders.values) b.path};
+  for (final MapEntry(key: role, value: names) in _roleNames.entries) {
+    if (holders.containsKey(role)) continue;
+    pick(
+      role,
+      assignable.where((b) {
+        // Flagged for another role, or already holding one.
+        if (specialUse.containsKey(b.path) || taken.contains(b.path)) return false;
+        if (!names.contains(b.name.toLowerCase())) return false;
+        final parent = b.parentPath;
+        return parent == null || parent == 'INBOX' || parent.startsWith('[');
+      }),
+    );
+    if (holders[role] case final box?) taken.add(box.path);
+  }
+  for (final MapEntry(key: role, value: box) in holders.entries) {
+    byPath[box.path] = RemoteMailbox(
+      path: box.path,
+      name: box.name,
+      role: role,
+      parentPath: box.parentPath,
+      isSelectable: box.isSelectable,
+      isSubscribed: box.isSubscribed,
+    );
   }
 }
