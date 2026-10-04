@@ -235,3 +235,6 @@ final class OwnAddresses {
         _patterns.any((p) => IdentitySelection.matchesPattern(p, e));
   }
 }
+
+/// A new id for an identity of [account].
+String newIdentityId(MailAccount account) => '${account.id}/${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}';
