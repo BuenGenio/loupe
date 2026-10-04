@@ -22,5 +22,6 @@ export 'src/script.dart'
         isLoupeScript,
         loupeScriptName,
         parseLoupeScript;
+export 'src/server_rules.dart' show ServerRules, validateRule, withRule;
 export 'src/sieve_text.dart' show sieveFlag, sieveString;
 export 'src/simulated.dart' show SimulatedSieveAccount, SimulatedSieveServers;

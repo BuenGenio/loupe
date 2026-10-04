@@ -2,6 +2,8 @@
 /// doing it through the repository's normal actions.
 library;
 
+import 'dart:async';
+
 import 'package:expr_search/expr_search.dart';
 import 'package:mail_model/mail_model.dart';
 
@@ -179,11 +181,7 @@ Future<List<EmailSummary>> findRuleMatches(
   final accounts = await repository.watchAccounts().first;
   final labels = {for (final a in accounts) a.id: '${a.displayName} ${a.email}'};
   final request = SearchRequest(expr: parsed.expr, scope: scope, text: rule.condition, limit: limit);
-  SearchResults? results;
-  await for (final r in repository.search(request)) {
-    results = r;
-    if (r.isComplete) break;
-  }
+  final results = await _complete(repository.search(request));
   final out = <EmailSummary>[];
   for (final e in results?.items ?? const <EmailSummary>[]) {
     if (!rule.appliesTo(e.accountId)) continue;
@@ -200,6 +198,30 @@ Future<List<EmailSummary>> findRuleMatches(
     if (verdict == true) out.add(e);
   }
   return out;
+}
+
+/// The first complete emission of a search (or the last one, if the stream
+/// ends first). The subscription is cancelled without waiting for it.
+Future<SearchResults?> _complete(Stream<SearchResults> stream) {
+  final done = Completer<SearchResults?>();
+  SearchResults? last;
+  late final StreamSubscription<SearchResults> sub;
+  sub = stream.listen(
+    (r) {
+      last = r;
+      if (r.isComplete && !done.isCompleted) {
+        done.complete(r);
+        unawaited(sub.cancel());
+      }
+    },
+    onError: (Object e, StackTrace st) {
+      if (!done.isCompleted) done.completeError(e, st);
+    },
+    onDone: () {
+      if (!done.isCompleted) done.complete(last);
+    },
+  );
+  return done.future;
 }
 
 /// Runs [rule]'s actions on [emailIds] (no condition check: the user picked
