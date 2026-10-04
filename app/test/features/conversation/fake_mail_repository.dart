@@ -52,6 +52,9 @@ class FakeMailRepository implements MailRepository {
   /// Fails saveDraft with this when set.
   Object? draftError;
 
+  /// Fails updateAccount with this when set.
+  Object? updateAccountError;
+
   /// Raw sources by email id; others get a small generated message.
   final rawSources = <String, String>{};
 
@@ -129,6 +132,7 @@ class FakeMailRepository implements MailRepository {
   @override
   Future<void> updateAccount(MailAccount account) async {
     log.add('updateAccount ${account.id} ${account.displayName} ${account.colorIndex}');
+    if (updateAccountError case final e?) throw e;
     final i = accounts.indexWhere((a) => a.id == account.id);
     if (i >= 0) accounts[i] = account;
     _changed();

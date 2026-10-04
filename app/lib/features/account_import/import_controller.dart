@@ -243,8 +243,9 @@ class AccountImportController extends ChangeNotifier {
               ],
             ),
           );
-        } on MailException {
-          // The account works; the extra addresses can be added in its settings.
+        } on Object {
+          // The account works (and is added: a retry would add it twice); the
+          // extra addresses can be added in its settings.
         }
       }
       row.password.clear();
