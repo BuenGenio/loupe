@@ -81,4 +81,21 @@ final class OutgoingMessage {
     sourceEmailId: sourceEmailId,
     draftId: draftId ?? this.draftId,
   );
+
+  /// The same message without [draftId] (once its draft is gone).
+  OutgoingMessage withoutDraft() => OutgoingMessage(
+    accountId: accountId,
+    identityId: identityId,
+    to: to,
+    cc: cc,
+    bcc: bcc,
+    subject: subject,
+    text: text,
+    html: html,
+    attachments: attachments,
+    inReplyTo: inReplyTo,
+    references: references,
+    mode: mode,
+    sourceEmailId: sourceEmailId,
+  );
 }
