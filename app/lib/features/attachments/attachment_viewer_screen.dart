@@ -6,12 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
-import '../../providers.dart';
 import '../../shared/bars.dart';
 import '../../shared/format.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../conversation/sheets.dart' show showSnack;
+import '../openpgp/content_loader.dart';
 import 'attachment_actions.dart';
 import 'attachment_cache.dart';
 import 'attachment_gallery.dart';
@@ -85,11 +85,10 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
 
   Future<void> _start() async {
     final generation = ++_generation;
-    final repository = ref.read(repositoryProvider);
     final cache = ref.read(attachmentCacheProvider);
     final platform = ref.read(attachmentPlatformProvider);
     try {
-      final content = _content ?? await repository.loadContent(widget.emailId);
+      final content = _content ?? await ref.read(contentLoaderProvider).loadContent(widget.emailId);
       final attachment = content.attachments.where((a) => a.partId == widget.partId).firstOrNull;
       if (attachment == null) {
         throw const MailException(MailErrorKind.notFound, 'This attachment is no longer available.');

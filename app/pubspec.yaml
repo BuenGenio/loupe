@@ -17,6 +17,7 @@ dependencies:
   mail_sync: {path: ../packages/mail_sync}
   mail_sieve: {path: ../packages/mail_sieve}
   mail_platform: {path: ../packages/mail_platform}
+  mail_crypto: {path: ../packages/mail_crypto}
   flutter_riverpod: ^3.4.3
   go_router: ^18.0.2
   shared_preferences: ^2.5.5

@@ -12,6 +12,9 @@ app (UI, Riverpod, go_router)
               └─ TransportFactory ◄── mail_imap (enough_mail; IMAP, SMTP, MIME, discovery)
                                   ◄── mail_jmap (Phase 3)
 mail_platform: CredentialStore (keychain), OAuth sign-in (AppAuth) and token refresh (HTTPS)
+mail_crypto: OpenPGP (dart_pg, vendored in third_party/): keys, keyring,
+             PGP/MIME reading and writing, Autocrypt; the app wraps loadContent
+             with it and hands its composer to mail_imap
 mail_model: every type and interface above; no I/O, no dependencies
 ```
 
@@ -23,6 +26,7 @@ The packages are developed in parallel. These are the seams:
 |---|---|---|---|
 | `MailRepository` | mail_model `src/repository.dart` | app demo repository; mail_sync `LiveMailRepository` | app |
 | `MailingLists` (lists by List-Id, forum threads, muted threads) | mail_model `src/lists.dart` | app demo repository; mail_sync `LiveMailRepository` | app (`repository is MailingLists`) |
+| `MailSubscriptions` (bulk mail by List-Id or sender, read rates), `unsubscribeMethods`, `unsubscribeMessage` | mail_model `src/subscriptions.dart` | app demo repository; mail_sync `LiveMailRepository` | app (`repository is MailSubscriptions`) |
 | `MailTransport`, `MailSender`, `MessageComposer`, `TransportFactory` | mail_model `src/transport.dart` | mail_imap | mail_sync |
 | `CredentialStore` | mail_model `src/transport.dart` | mail_platform | mail_sync (through the app) |
 | `SignInRenewal` ("Sign in again" after a revoked OAuth grant), `SignInRequiredException` | mail_model `src/sign_in.dart` | mail_sync `LiveMailRepository` | app (`repository is SignInRenewal`); mail_platform throws the exception |
@@ -31,6 +35,7 @@ The packages are developed in parallel. These are the seams:
 | `ReadableMessageView`, `ReaderSettings`, `showImageGallery`, `analyzeContent` (link and privacy findings), `unwrapRedirect`, `inspectHost` | readable `lib/src/api.dart` | readable | app |
 | `Rule`, `RuleAction`, `MailRules` (`MailRepository.rules`) | mail_model `src/rules.dart` | app `DemoRules`; mail_sync `LiveRules` | app |
 | `compileSieve`, `generateLoupeScript`, `parseLoupeScript`, `planInclude`, `SieveConnector`, `ServerRules`, `RuleRunner` | mail_sieve `lib/mail_sieve.dart` | mail_sieve | mail_sync, app demo |
+| `PgpBackend` (swappable OpenPGP engine), `Keyring`, `PgpMimeReader`, `PgpMessageComposer` (a `MessageComposer` around another), `OutgoingMessage.security` | mail_crypto `lib/mail_crypto.dart`, mail_model `src/outgoing.dart` | mail_crypto (`DartPgBackend`) | app (reader, compose, settings, live composer) |
 
 Rules:
 
@@ -47,6 +52,9 @@ Rules:
 - **Settings on the server:** `MailTransport.readDocuments`/`writeDocument` keep small app documents on the user's
   mail server (an IMAP METADATA annotation, else a message in the `Loupe Settings` folder). Smart Mailboxes use them;
   see [smart-mailboxes-format.md](smart-mailboxes-format.md).
+- **Message bodies in the app** come from `contentLoaderProvider` (`ContentLoader.loadContent` and
+  `loadAttachment`), not the repository directly: it decrypts and verifies OpenPGP mail and learns
+  Autocrypt keys. Decrypted attachments have `pgp:` part ids.
 - **Changing a contract:** edit mail_model (or the API file) in its own commit, run `dart analyze` on the whole workspace, and fix every user in the same change.
 
 ## Background work (Android)
@@ -81,10 +89,49 @@ Rules (`app/lib/platform/`):
 - **Patches:** readable recognises `git format-patch` diffs, diffstats and quoted hunks in text bodies
   (`pipeline/patch.dart`) and renders them as diffs (`render/diff.dart`).
 
+## Subscriptions (the unsubscribe centre)
+
+Mailboxes › Tools › Subscriptions ranks newsletters and other bulk mail by how much of it goes unread. Everything is
+counted on the device; services that do this elsewhere read the mail on their servers.
+
+- **Bulk mail** (`subscriptionKeyOf`): a List-Id, a List-Unsubscribe header, or a Message-ID of a bulk-mail service
+  (`bulkMessageIdDomains`: Mailchimp, SendGrid, Amazon SES…). It groups by List-Id, else by sender address. A sender
+  found only by its Message-ID needs two messages. `Precedence: bulk` isn't fetched (such mail nearly always has
+  List-Unsubscribe too), and when a message was opened isn't known: the read rate (`$seen`) stands in for it.
+- **Counting** (`summarizeSubscriptions` is the reference): copies in several mailboxes count once; Junk, Sent, Drafts
+  and the user's own addresses are left out (Trash counts: deleting unread is not reading). Messages a month and the
+  read rate use the last 90 days (the read rate over all mail when fewer than three came then). The ranking is unread
+  mail a month.
+- **Store:** one query over `emails` (`MailStore.watchSubscriptions`), no new table or index: 40,000 messages take
+  about 110 ms on a laptop, on the store's isolate, and only while a Subscriptions screen is open.
+- **Unsubscribing** (`unsubscribeMethods`), in this order:
+  1. RFC 8058 one-click (List-Unsubscribe-Post and an `https` URI): a POST of exactly `List-Unsubscribe=One-Click`
+     (`application/x-www-form-urlencoded`) without cookies, user agent, referrer or languages; 2xx or 303 means done;
+     other redirects are followed with the same POST on the same host only (three at most); 20 s timeout; the answer's
+     page isn't read. IP addresses and local names (`.local`, `localhost`…) are refused. Besides account setup
+     (autoconfig, OAuth), it is the only request Loupe makes outside the mail protocols, and only when the user taps
+     Unsubscribe; the first time, the confirmation explains it. The demo pretends.
+  2. `mailto:` through the normal send path (`unsubscribeMessage`): from the identity the mail was addressed to, to
+     the URI's recipients only (its `cc=`/`bcc=` are ignored), with its subject and body (RFC 6068: `+` is a plus).
+  3. The web page, in the in-app browser, after showing its host (homographs flagged).
+- **Records** stay on the device (SharedPreferences `subscriptions.unsubscribed`: date and method). Mail arriving more
+  than seven days later marks the row "Still sending".
+- **Follow-ups** reuse what exists: Archive All moves the Inbox copies through `MailActions` (with Undo); Create Rule
+  opens the rule editor with the condition (`from:` the sender, or the List-Id of a list with several senders), the
+  name and Move to Archive filled in; Block Sender saves a device rule that moves to Junk.
+
+## Wide screens and keyboards
+
+The `/` route is `MailHome`: Mailboxes on a phone, mail panes from 840 dp. In the panes `mailSelectionProvider` says
+what is shown and the route stack stays at `/`; crossing the breakpoint converts one into the other. Keyboard
+shortcuts and the command palette act on the screen on top through `MailCommands`. See
+[tablet-and-keyboard.md](tablet-and-keyboard.md).
+
 ## Conventions
 
 - Dart 3.13, `dart analyze` clean with the root `analysis_options.yaml`; 120-column lines.
 - Pure Dart packages test with `dart test`, Flutter packages with `flutter test`; `tool/ci/test.sh` runs them all.
 - Generated code (drift) is committed, so CI needs no build_runner step.
 - No network access in unit tests. Integration tests against real IMAP servers are tagged `integration` and need `LOUPE_TEST_IMAP_HOST`; see `tool/test-servers/`.
-- No analytics or tracking code, ever. Remote content stays blocked by default.
+- No analytics or tracking code, ever. Remote content stays blocked by default. Besides account setup, the only
+  network request outside the mail protocols is the one-click unsubscribe the user taps (see Subscriptions).

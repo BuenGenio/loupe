@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,11 +12,13 @@ import 'features/compose/compose_args.dart';
 import 'features/compose/compose_screen.dart';
 import 'features/conversation/conversation_screen.dart';
 import 'features/conversation/raw_source_screen.dart';
-import 'features/mailboxes/mailboxes_screen.dart';
 import 'features/mailing_lists/mailing_list_screen.dart';
 import 'features/message_list/message_list_screen.dart';
 import 'features/onboarding/welcome_screen.dart';
+import 'features/openpgp/address_settings_screens.dart';
+import 'features/openpgp/encryption_settings_screen.dart';
 import 'features/outbox/outbox_screen.dart';
+import 'features/panes/mail_home.dart';
 import 'features/rules/rule_editor_screen.dart';
 import 'features/rules/rules_screen.dart';
 import 'features/search/search_screen.dart';
@@ -27,6 +31,8 @@ import 'features/settings/notification_settings_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/settings/swipe_settings_screen.dart';
 import 'features/snooze/snoozed_screen.dart';
+import 'features/subscriptions/subscription_screen.dart';
+import 'features/subscriptions/subscriptions_screen.dart';
 import 'settings/app_mode.dart';
 import 'shared/mailbox_ref_codec.dart';
 
@@ -44,6 +50,12 @@ abstract final class Routes {
   static const advancedSettings = '/settings/advanced';
   static const notificationSettings = '/settings/notifications';
 
+  /// OpenPGP keys and settings.
+  static const encryption = '/settings/encryption';
+  static const generateKey = '/settings/encryption/generate';
+  static String encryptionKey(String fingerprint) => '/settings/encryption/key/$fingerprint';
+  static String encryptionAddress(String email) => '/settings/encryption/address/${Uri.encodeComponent(email)}';
+
   /// Messages waiting to be sent (scheduled, queued, failed).
   static const outbox = '/outbox';
 
@@ -51,12 +63,40 @@ abstract final class Routes {
   static const rules = '/settings/rules';
   static String editRule(String id) => '$rules/edit/${Uri.encodeComponent(id)}';
 
-  /// A new rule, with [condition] filled in ("Make This a Rule").
-  static String newRule({String condition = ''}) =>
-      Uri(path: '$rules/new', queryParameters: condition.isEmpty ? null : {'q': condition}).toString();
+  /// A new rule, with [condition], [name] and [actions] filled in ("Make
+  /// This a Rule", Subscriptions › Create Rule).
+  static String newRule({String condition = '', String name = '', List<RuleAction> actions = const []}) {
+    final query = {
+      if (condition.isNotEmpty) 'q': condition,
+      if (name.isNotEmpty) 'name': name,
+      if (actions.isNotEmpty) 'actions': jsonEncode([for (final a in actions) a.toJson()]),
+    };
+    return Uri(path: '$rules/new', queryParameters: query.isEmpty ? null : query).toString();
+  }
+
+  /// The actions [newRule] put in a location's query.
+  static List<RuleAction> ruleActionsFrom(String? encoded) {
+    if (encoded == null) return const [];
+    final Object? decoded;
+    try {
+      decoded = jsonDecode(encoded);
+    } on FormatException {
+      return const [];
+    }
+    return [
+      if (decoded is List)
+        for (final a in decoded)
+          if (a is Map) ?RuleAction.fromJson(a.cast()),
+    ];
+  }
 
   /// Snoozed messages of every account, with their wake times.
   static const snoozed = '/snoozed';
+
+  /// Mailboxes › Subscriptions (the unsubscribe centre), and one of them by
+  /// `Subscription.key`.
+  static const subscriptions = '/subscriptions';
+  static String subscription(String key) => '$subscriptions/${Uri.encodeComponent(key)}';
 
   static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
 
@@ -104,10 +144,21 @@ final routerProvider = Provider<GoRouter>((ref) {
       return location == Routes.welcome ? Routes.mailboxes : null;
     },
     routes: [
-      GoRoute(path: Routes.mailboxes, builder: (context, state) => const MailboxesScreen()),
+      // Mailboxes on a phone; the mail panes on wider screens.
+      GoRoute(path: Routes.mailboxes, builder: (context, state) => const MailHome()),
       GoRoute(path: Routes.welcome, builder: (context, state) => const WelcomeScreen()),
       GoRoute(path: Routes.outbox, builder: (context, state) => const OutboxScreen()),
       GoRoute(path: Routes.snoozed, builder: (context, state) => const SnoozedScreen()),
+      GoRoute(
+        path: Routes.subscriptions,
+        builder: (context, state) => const SubscriptionsScreen(),
+        routes: [
+          GoRoute(
+            path: ':key',
+            builder: (context, state) => SubscriptionScreen(subscriptionKey: state.pathParameters['key']!),
+          ),
+        ],
+      ),
       GoRoute(
         path: '/list/:ref',
         builder: (context, state) =>
@@ -159,13 +210,36 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: 'new',
                 pageBuilder: (context, state) => MaterialPage(
                   fullscreenDialog: true,
-                  child: RuleEditorScreen(initialCondition: state.uri.queryParameters['q'] ?? ''),
+                  child: RuleEditorScreen(
+                    initialCondition: state.uri.queryParameters['q'] ?? '',
+                    initialName: state.uri.queryParameters['name'] ?? '',
+                    initialActions: Routes.ruleActionsFrom(state.uri.queryParameters['actions']),
+                  ),
                 ),
               ),
               GoRoute(
                 path: 'edit/:id',
                 pageBuilder: (context, state) =>
                     MaterialPage(fullscreenDialog: true, child: RuleEditorScreen(ruleId: state.pathParameters['id']!)),
+              ),
+            ],
+          ),
+          GoRoute(
+            path: 'encryption',
+            builder: (context, state) => const EncryptionSettingsScreen(),
+            routes: [
+              GoRoute(
+                path: 'generate',
+                builder: (context, state) =>
+                    GenerateKeyScreen(email: state.extra is String ? state.extra! as String : null),
+              ),
+              GoRoute(
+                path: 'key/:fingerprint',
+                builder: (context, state) => KeyDetailsScreen(fingerprint: state.pathParameters['fingerprint']!),
+              ),
+              GoRoute(
+                path: 'address/:email',
+                builder: (context, state) => AddressEncryptionScreen(email: state.pathParameters['email']!),
               ),
             ],
           ),

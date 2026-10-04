@@ -6,6 +6,7 @@ import 'package:mail_model/mail_model.dart';
 import 'demo_attachments.dart';
 import 'demo_bodies.dart';
 import 'demo_mime.dart';
+import 'demo_openpgp.dart';
 import 'demo_patches.dart';
 import 'demo_security.dart';
 
@@ -33,6 +34,7 @@ final class DemoMessage {
     this.attachments = const [],
     this.extraHeaders = const [],
     this.authenticationFails = false,
+    this.raw,
   });
 
   EmailSummary summary;
@@ -46,6 +48,10 @@ final class DemoMessage {
 
   /// Fails DKIM/SPF/DMARC in Authentication-Results (the phishing message).
   final bool authenticationFails;
+
+  /// The whole RFC 822 message, for messages whose structure matters
+  /// (OpenPGP): content, parts and source come from it.
+  final Uint8List Function()? raw;
 
   String get id => summary.id;
 }
@@ -96,6 +102,7 @@ abstract final class DemoPeople {
   static const security = EmailAddress('no-reply@accounts.gmail.example', 'Account Security');
   static const bookshop = EmailAddress('orders@cornerbookshop.example', 'Corner Bookshop');
   static const fieldNotes = EmailAddress('hello@fieldnotes.example', 'Field Notes Weekly');
+  static const deals = EmailAddress('deals@megamart.example', 'MegaMart Deals');
   static const bookClub = EmailAddress('club@riversidebooks.example', 'Riverside Book Club');
   static const coffee = EmailAddress('receipts@harborcoffee.example', 'Harbor Coffee');
   static const registrar = EmailAddress('billing@namewell.example', 'Namewell Domains');
@@ -151,6 +158,8 @@ final class DemoSeed {
     _serverMail();
     securityCases();
     _snoozed();
+    _deals();
+    openPgpCases();
   }
 
   void _accounts() {
@@ -302,6 +311,11 @@ final class DemoSeed {
 
   DateTime minutesAgo(int minutes) => now.subtract(Duration(minutes: minutes));
 
+  static Uint8List Function() _once(Uint8List Function() make) {
+    Uint8List? made;
+    return () => made ??= make();
+  }
+
   EmailAddress _me(String account) => switch (account) {
     DemoAccounts.work => DemoPeople.work,
     DemoAccounts.fastmail => DemoPeople.fastmail,
@@ -332,6 +346,7 @@ final class DemoSeed {
     List<(String, String)> headers = const [],
     bool authenticationFails = false,
     List<DemoMessage>? into,
+    Uint8List Function(EmailSummary summary)? raw,
   }) {
     final n = _next++;
     final domain = from.domain.isEmpty ? 'example.com' : from.domain;
@@ -386,6 +401,7 @@ final class DemoSeed {
       attachments: attachments,
       extraHeaders: headers,
       authenticationFails: authenticationFails,
+      raw: raw == null ? null : _once(() => raw(summary)),
     );
     (into ?? messages).add(message);
     return message;
@@ -1108,6 +1124,33 @@ final class DemoSeed {
     );
   }
 
+  // A daily deals mail nobody reads ---------------------------------------------
+
+  /// Unsubscribe by mail only (mailto: with a subject); never opened, so
+  /// it heads Mailboxes › Subscriptions. Added last, without the random
+  /// generator, so the rest of the demo stays as it was.
+  void _deals() {
+    const offers = ['Flash sale: 40% off kitchen', 'Weekend deals inside', 'Your picks are back in stock'];
+    for (var d = 2; d <= 42; d += 5) {
+      add(
+        account: DemoAccounts.personal,
+        box: '[Gmail]/All Mail',
+        at: at(d, 5, 40),
+        from: DemoPeople.deals,
+        subject: offers[d % offers.length],
+        html:
+            '<div style="font-family:Arial,sans-serif;max-width:560px">'
+            '<h1 style="color:#c8102e">Today only</h1><p>Deals picked for you. Prices valid while stocks last.</p>'
+            '<img src="https://t.megamart.example/open/$d.gif" width="1" height="1" alt=""></div>',
+        unread: true,
+        headers: const [
+          ('List-Unsubscribe', '<mailto:unsubscribe@megamart.example?subject=Unsubscribe%20daily%20deals>'),
+          ('Precedence', 'bulk'),
+        ],
+      );
+    }
+  }
+
   // Bulk mail (notifications, newsletters, small talk) -----------------------------------
 
   T _pick<T>(List<T> list) => list[_random.nextInt(list.length)];
@@ -1404,6 +1447,7 @@ final class DemoSeed {
         at: at(d, 9 + _random.nextInt(9), _random.nextInt(60)),
         from: DemoPeople.tracker,
         subject: '[$key] $title',
+        headers: const [('List-Unsubscribe', '<https://tracker.northwind.example/settings/notifications>')],
         text:
             '${dev.displayName} $event.\n\n'
             '${event == 'commented' ? '"Repro is reliable on the staging account with 40k messages. Looking at the batching now."\n\n' : ''}'
@@ -1421,6 +1465,9 @@ final class DemoSeed {
         at: at(d, 11 + _random.nextInt(7), _random.nextInt(60)),
         from: DemoPeople.ci,
         subject: failed ? 'Build failed: atlas-app #$build' : 'Build fixed: atlas-app #$build',
+        headers: const [
+          ('List-Unsubscribe', '<mailto:builds-off@ci.northwind.example?subject=unsubscribe%20atlas-app>'),
+        ],
         text: failed
             ? 'Build #$build failed on main.\n\nFailing step: integration-tests (3 failures)\nCommit: 7f3a2c1 by Leo Martins'
             : 'Build #$build is green again on main.',
