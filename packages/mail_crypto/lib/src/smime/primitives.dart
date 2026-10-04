@@ -136,9 +136,9 @@ sealed class PrivateKeyMaterial {
         return EcKeyMaterial(ECPrivateKey(bigIntFromBytes(inner[1].content), domain), curve!);
       }
       throw const SmimeException(SmimeErrorKind.unsupported, 'Only RSA and EC keys are supported.');
-    } on Asn1Exception catch (e) {
-      throw SmimeException(SmimeErrorKind.malformed, 'The private key is damaged.', e);
-    } on ArgumentError catch (e) {
+    } on SmimeException {
+      rethrow;
+    } on Object catch (e) {
       throw SmimeException(SmimeErrorKind.malformed, 'The private key is damaged.', e);
     }
   }

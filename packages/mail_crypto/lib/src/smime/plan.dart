@@ -91,9 +91,11 @@ SmimePlan planSmime(
   final at = now ?? DateTime.now();
   final chosen = state.ownCertificateFor(from, now: at);
   final own = chosen != null && chosen.certificate.isValidAt(at) && chosen.certificate.canSign ? chosen : null;
+  // Without a certificate of the sender's, S/MIME isn't offered: no need to look recipients up.
   final certificates = <String, SmimeCertificate?>{
     for (final r in recipients)
-      if (r.trim().isNotEmpty) r.trim().toLowerCase(): state.encryptionCertificateFor(r, now: at, signedBy: signedBy),
+      if (r.trim().isNotEmpty)
+        r.trim().toLowerCase(): own == null ? null : state.encryptionCertificateFor(r, now: at, signedBy: signedBy),
   };
   final gcm =
       certificates.isNotEmpty &&

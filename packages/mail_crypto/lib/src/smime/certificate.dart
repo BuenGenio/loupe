@@ -160,11 +160,8 @@ final class SmimeCertificate {
     final der = Uint8List.fromList(bytes);
     try {
       return _parse(der);
-    } on Asn1Exception catch (e) {
-      throw SmimeException(SmimeErrorKind.malformed, 'This certificate is damaged.', e);
-    } on FormatException catch (e) {
-      throw SmimeException(SmimeErrorKind.malformed, 'This certificate is damaged.', e);
-    } on RangeError catch (e) {
+    } on Object catch (e) {
+      // Hostile input can trip anything in the parser: it is a damaged certificate, never a crash.
       throw SmimeException(SmimeErrorKind.malformed, 'This certificate is damaged.', e);
     }
   }
@@ -462,19 +459,19 @@ List<SmimeCertificate> readCertificates(Uint8List input) {
       : [
           for (final m in blocks)
             if (const {'CERTIFICATE', 'X509 CERTIFICATE', 'TRUSTED CERTIFICATE', 'PKCS7', 'CMS'}.contains(m.group(1)))
-              base64.decode(m.group(2)!.replaceAll(RegExp(r'\s'), '')),
+              m.group(2)!.replaceAll(RegExp(r'\s'), ''),
         ];
-  for (final der in ders) {
+  for (final block in ders) {
     try {
+      final der = block is String ? base64.decode(block) : block as Uint8List;
       final root = Asn1.parse(der);
       if (root.length >= 2 && root[0].tag == Tag.oid && root[0].oid == Oid.signedData) {
         found.addAll(certificatesOfSignedData(root));
       } else {
         found.add(SmimeCertificate.fromDer(root.encoded));
       }
-    } on Asn1Exception {
-      continue;
-    } on SmimeException {
+    } on Object {
+      // Not a certificate (or a damaged one): the others still count.
       continue;
     }
   }

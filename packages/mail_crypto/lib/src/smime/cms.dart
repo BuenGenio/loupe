@@ -195,9 +195,11 @@ SmimeSignedData verifySignedData(Uint8List der, {Uint8List? detached, List<Smime
       ];
     }
     return SmimeSignedData(contentType: contentType, content: content, certificates: certificates, signers: signers);
-  } on Asn1Exception catch (e) {
-    _malformed(e);
-  } on RangeError catch (e) {
+  } on SmimeException {
+    rethrow;
+  } on Object catch (e) {
+    // Hostile input can trip anything in the parsers (a missing element, a
+    // bad curve point): it is damaged data, never a crash.
     _malformed(e);
   }
 }
@@ -275,6 +277,8 @@ SmimeSignerCheck _checkSigner(Asn1 si, Uint8List? content, String contentType, L
     return ok ? result(true) : result(false, 'The message was changed after it was signed.', true);
   } on SmimeException catch (e) {
     return result(false, e.message);
+  } on Object {
+    return result(false, 'The signature is damaged.');
   }
 }
 
@@ -337,11 +341,8 @@ bool certificateSignedBy(SmimeCertificate cert, SmimeCertificate issuer) {
   try {
     final params = cert.signatureParameters == null ? null : Asn1.parse(cert.signatureParameters!);
     return verifySignature(issuer, cert.signatureAlgorithm, params, Oid.sha256, cert.tbs, cert.signature);
-  } on SmimeException {
-    return false;
-  } on Asn1Exception {
-    return false;
-  } on ArgumentError {
+  } on Object {
+    // A key or signature that can't even be parsed didn't sign it.
     return false;
   }
 }
@@ -440,7 +441,9 @@ List<SmimeRecipientId> recipientsOf(Uint8List der) {
   try {
     final (_, envelope) = contentInfo(der);
     return [for (final ri in _recipientInfos(envelope).children) ..._ridsOf(ri)];
-  } on Asn1Exception catch (e) {
+  } on SmimeException {
+    rethrow;
+  } on Object catch (e) {
     _malformed(e);
   }
 }
@@ -543,9 +546,11 @@ SmimeDecrypted decryptEnveloped(Uint8List der, List<(SmimeCertificate, SmimePriv
       }
     }
     return SmimeDecrypted(content: plain, cipher: cipher, recipients: recipients, authenticated: authenticated);
-  } on Asn1Exception catch (e) {
-    _malformed(e);
-  } on RangeError catch (e) {
+  } on SmimeException {
+    rethrow;
+  } on Object catch (e) {
+    // Hostile input can trip anything in the parsers (a missing element, a
+    // bad curve point): it is damaged data, never a crash.
     _malformed(e);
   }
 }

@@ -45,9 +45,11 @@ final class SmimeBundle {
 SmimeBundle readPkcs12(Uint8List data, String password) {
   try {
     return _Pkcs12(password).read(data);
-  } on Asn1Exception catch (e) {
-    throw SmimeException(SmimeErrorKind.malformed, 'This file isn’t a PKCS #12 certificate file, or it is damaged.', e);
-  } on RangeError catch (e) {
+  } on SmimeException {
+    rethrow;
+  } on Object catch (e) {
+    // Hostile input can trip anything in the parsers (a missing element, a
+    // bad curve point): it is damaged data, never a crash.
     throw SmimeException(SmimeErrorKind.malformed, 'This file isn’t a PKCS #12 certificate file, or it is damaged.', e);
   }
 }
