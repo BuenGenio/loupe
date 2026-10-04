@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:readable/readable.dart' show isIpLiteral;
 
 // RFC 8058 one-click unsubscribe: the only request Loupe makes outside the
 // mail protocols, and only when the user taps Unsubscribe.
@@ -26,8 +27,17 @@ final class OneClickRequest {
 
   List<int> get bodyBytes => utf8.encode(body);
 
-  /// RFC 8058 needs HTTPS; user names and passwords in the URI are refused.
-  static bool isAllowed(Uri uri) => uri.scheme.toLowerCase() == 'https' && uri.host.isNotEmpty && uri.userInfo.isEmpty;
+  /// RFC 8058 needs HTTPS. User names and passwords in the URI are refused,
+  /// and so are IP addresses and local names, so a message can't make the
+  /// phone post to a device on its own network.
+  static bool isAllowed(Uri uri) {
+    final host = uri.host.toLowerCase();
+    return uri.scheme.toLowerCase() == 'https' &&
+        host.contains('.') &&
+        uri.userInfo.isEmpty &&
+        !isIpLiteral(host) &&
+        !const ['.local', '.localhost', '.internal', '.home.arpa', '.lan'].any(host.endsWith);
+  }
 }
 
 /// What came back: the status, and where a redirect points.
@@ -86,7 +96,10 @@ final class OneClickUnsubscriber {
   Future<OneClickResult> unsubscribe(Uri uri) async {
     final host = uri.host;
     if (!OneClickRequest.isAllowed(uri)) {
-      return const OneClickResult(OneClickOutcome.failed, message: 'The unsubscribe link isn’t a secure web address.');
+      return const OneClickResult(
+        OneClickOutcome.failed,
+        message: 'The unsubscribe link isn’t a secure address on the internet.',
+      );
     }
     var request = OneClickRequest(uri);
     for (var hop = 0; ; hop++) {

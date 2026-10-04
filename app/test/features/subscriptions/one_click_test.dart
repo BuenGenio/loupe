@@ -49,7 +49,16 @@ void main() {
 
     test('only https URIs without credentials', () async {
       final fake = FakeTransport();
-      for (final uri in ['http://news.example/u', 'https://me:pw@news.example/u', 'mailto:x@news.example']) {
+      for (final uri in [
+        'http://news.example/u',
+        'https://me:pw@news.example/u',
+        'mailto:x@news.example',
+        'https://192.168.1.1/u',
+        'https://[::1]/u',
+        'https://localhost/u',
+        'https://printer.local/u',
+        'https://router.home.arpa/u',
+      ]) {
         final result = await OneClickUnsubscriber(fake).unsubscribe(Uri.parse(uri));
         expect(result.outcome, OneClickOutcome.failed, reason: uri);
       }
