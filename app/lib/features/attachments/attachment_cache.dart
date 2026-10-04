@@ -51,13 +51,19 @@ String safeFileName(String? name, String mimeType) {
 /// cache directory any time).
 ///
 /// Without a directory (tests, or when it can't be created) the bytes stay
-/// in memory instead, up to [memoryLimit].
+/// in memory instead, up to [memoryLimit]. On disk, the oldest files go
+/// once the session's files pass [diskLimit].
 class AttachmentCache {
-  AttachmentCache({required this.repository, Future<Directory?> Function()? directory, this.memoryLimit = 64 << 20})
-    : _directory = directory ?? _defaultDirectory;
+  AttachmentCache({
+    required this.repository,
+    Future<Directory?> Function()? directory,
+    this.memoryLimit = 64 << 20,
+    this.diskLimit = 512 << 20,
+  }) : _directory = directory ?? _defaultDirectory;
 
   final MailRepository repository;
   final int memoryLimit;
+  final int diskLimit;
   final Future<Directory?> Function() _directory;
 
   static Future<Directory?> _defaultDirectory() async {
@@ -67,6 +73,7 @@ class AttachmentCache {
 
   Future<Directory?>? _sessionDir;
   final _files = <String, File>{};
+  final _fileSizes = <String, int>{};
   final _memory = <String, Uint8List>{};
   final _pending = <String, Future<Uint8List>>{};
   var _next = 0;
@@ -104,6 +111,7 @@ class AttachmentCache {
         return await file.readAsBytes();
       } on FileSystemException {
         _files.remove(key); // The system cleared the cache: download again.
+        _fileSizes.remove(key);
       }
     }
     final pending = _pending[key];
@@ -130,6 +138,8 @@ class AttachmentCache {
         );
         await file.writeAsBytes(data, flush: true);
         _files[key] = file;
+        _fileSizes[key] = data.length;
+        _trimDisk(keep: key);
         return data;
       } on FileSystemException {
         // Fall through to memory.
@@ -137,6 +147,22 @@ class AttachmentCache {
     }
     _remember(key, data);
     return data;
+  }
+
+  /// Deletes the oldest files (never [keep]) while the total is over [diskLimit].
+  void _trimDisk({required String keep}) {
+    var total = _fileSizes.values.fold(0, (s, n) => s + n);
+    for (final key in _files.keys.toList()) {
+      if (total <= diskLimit) break;
+      if (key == keep) continue;
+      final file = _files.remove(key)!;
+      total -= _fileSizes.remove(key) ?? 0;
+      try {
+        file.parent.deleteSync(recursive: true);
+      } on FileSystemException {
+        // Already gone.
+      }
+    }
   }
 
   void _remember(String key, Uint8List data) {

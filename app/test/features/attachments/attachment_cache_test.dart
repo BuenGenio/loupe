@@ -80,6 +80,21 @@ void main() {
     expect(repo.downloads, ['m1/2', 'm1/2']);
   });
 
+  test('drops the oldest files once the session passes the disk limit', () async {
+    final repo = _Repo();
+    final cache = AttachmentCache(repository: repo, directory: () async => Directory('${temp.path}/a'), diskLimit: 8);
+    final first = await cache.file('m1', _pdf); // 4 bytes each
+    await cache.file('m2', _pdf);
+    expect(first!.existsSync(), isTrue);
+    await cache.file('m3', _pdf);
+    expect(first.existsSync(), isFalse);
+    expect(cache.contains('m1', '2'), isFalse);
+    expect(cache.contains('m3', '2'), isTrue);
+    // One file over the limit on its own is still kept.
+    final big = AttachmentCache(repository: repo, directory: () async => Directory('${temp.path}/b'), diskLimit: 1);
+    expect(await big.file('m4', _pdf), isNotNull);
+  });
+
   test('a custom download replaces the repository', () async {
     final repo = _Repo();
     final cache = AttachmentCache(repository: repo, directory: () async => null);
