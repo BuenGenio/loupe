@@ -14,4 +14,5 @@ export 'src/outbox.dart';
 export 'src/outgoing.dart';
 export 'src/repository.dart';
 export 'src/search.dart';
+export 'src/snooze.dart';
 export 'src/transport.dart';

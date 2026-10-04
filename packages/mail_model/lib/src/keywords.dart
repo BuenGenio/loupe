@@ -20,8 +20,13 @@ abstract final class Keywords {
   static const label4 = r'$label4';
   static const label5 = r'$label5';
 
-  /// Keywords that are state rather than user-visible tags.
-  static const system = {seen, flagged, answered, draft, forwarded, junk, notJunk, r'$mdnsent', r'$phishing'};
+  /// RFC 9979 `$new`: show the message as new although it isn't, e.g. after
+  /// it woke from snooze (see `Snooze`).
+  static const newAgain = r'$new';
+
+  /// Keywords that are state rather than user-visible tags. Snooze
+  /// keywords (`$snoozed-…`) are state too; see `EmailSummary.tags`.
+  static const system = {seen, flagged, answered, draft, forwarded, junk, notJunk, newAgain, r'$mdnsent', r'$phishing'};
 
   /// Lower-cases a keyword; JMAP keywords are case-insensitive.
   static String normalize(String keyword) => keyword.toLowerCase();
