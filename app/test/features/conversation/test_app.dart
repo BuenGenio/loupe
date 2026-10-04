@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loupe/features/compose/compose_args.dart';
@@ -26,6 +27,7 @@ Future<GoRouter> pumpTestApp(
   Widget home = const Scaffold(body: Center(child: Text('home'))),
   List<RouteBase> extraRoutes = const [],
   ScrollBehavior? scrollBehavior,
+  List<Override> overrides = const [],
 }) async {
   SharedPreferences.setMockInitialValues(prefs);
   final sharedPrefs = await SharedPreferences.getInstance();
@@ -66,6 +68,7 @@ Future<GoRouter> pumpTestApp(
         repositoryProvider.overrideWithValue(repository),
         setupRepositoryProvider.overrideWith((ref) async => repository),
         sharedPreferencesProvider.overrideWithValue(sharedPrefs),
+        ...overrides,
       ],
       child: MaterialApp.router(theme: LoupeTheme.light(), scrollBehavior: scrollBehavior, routerConfig: router),
     ),

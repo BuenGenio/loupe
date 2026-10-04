@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/app_settings.dart';
+import '../../shared/mail_actions.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
 import 'mail_streams.dart';
@@ -210,19 +211,34 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
     () => _repo.setKeywords([m.id], add: seen ? {Keywords.seen} : const {}, remove: seen ? const {} : {Keywords.seen}),
   );
 
-  void _archive(List<String> ids, {required bool close}) =>
-      _act(() => _repo.archive(ids), done: 'Archived', close: close);
-
-  void _trash(List<String> ids, {required bool inTrash, required bool close}) =>
-      _act(() => _repo.trash(ids), done: inTrash ? 'Deleted' : 'Moved to Trash', close: close);
-
-  void _junk(List<String> ids, {required bool junk, required bool close}) => _act(
-    () => _repo.markJunk(ids, junk: junk),
-    done: junk ? 'Moved to Junk' : 'Moved to Inbox',
-    close: close,
+  /// Archive, Trash, Move and Junk go through [MailActions], like the list:
+  /// a snack bar with Undo, which also outlives this screen.
+  MailActions get _mailActions => MailActions(
+    context,
+    ref,
+    scope: null,
+    threaded: false,
+    mailboxes: switch (_target) {
+      final t? => ref.read(accountMailboxesProvider(t.accountId)).value,
+      null => null,
+    },
   );
 
-  Future<void> _move(EmailSummary from, List<String> ids, {required bool close}) async {
+  /// Runs a [MailActions] action and closes the screen if asked and it ran.
+  Future<void> _moveAway(Future<bool> Function(MailActions actions) action, {required bool close}) async {
+    if (await action(_mailActions) && close) _close();
+  }
+
+  void _archive(List<EmailSummary> emails, {required bool close}) =>
+      _moveAway((a) => a.archiveEmails(emails), close: close);
+
+  void _trash(List<EmailSummary> emails, {required bool close}) =>
+      _moveAway((a) => a.trashEmails(emails), close: close);
+
+  void _junk(List<EmailSummary> emails, {required bool junk, required bool close}) =>
+      _moveAway((a) => a.junkEmails(emails, junk: junk), close: close);
+
+  Future<void> _move(EmailSummary from, List<EmailSummary> emails, {required bool close}) async {
     final target = await showMailboxPicker(
       context,
       repository: _repo,
@@ -231,7 +247,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
       showAllFolders: ref.read(showAllFoldersProvider).contains(from.accountId),
     );
     if (target == null || !mounted) return;
-    await _act(() => _repo.move(ids, target.id), done: 'Moved to ${target.name}', close: close);
+    await _moveAway((a) => a.moveEmails(emails, target.id), close: close);
   }
 
   void _reply(EmailSummary m, ComposeMode mode) =>
@@ -323,13 +339,13 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
               _act(() => _repo.setKeywords([m.id], add: on ? {k} : const {}, remove: on ? const {} : {k})),
         );
       case MessageAction.move:
-        await _move(m, [m.id], close: single);
+        await _move(m, [m], close: single);
       case MessageAction.archive:
-        _archive([m.id], close: single);
+        _archive([m], close: single);
       case MessageAction.trash:
-        _trash([m.id], inTrash: role == MailboxRole.trash, close: single);
+        _trash([m], close: single);
       case MessageAction.junk || MessageAction.notJunk:
-        _junk([m.id], junk: action == MessageAction.junk, close: single);
+        _junk([m], junk: action == MessageAction.junk, close: single);
       case MessageAction.headers:
         final messenger = ScaffoldMessenger.of(context);
         try {
@@ -385,10 +401,9 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
               archive: canArchive(target),
               inTrash: roleOf(target) == MailboxRole.trash,
               onFlag: () => _setFlag(target, !target.isFlagged),
-              onMove: () => _move(target, _threadIds(target), close: true),
-              onArchiveOrTrash: () => canArchive(target)
-                  ? _archive(_threadIds(target), close: true)
-                  : _trash(_threadIds(target), inTrash: roleOf(target) == MailboxRole.trash, close: true),
+              onMove: () => _move(target, _thread(target), close: true),
+              onArchiveOrTrash: () =>
+                  canArchive(target) ? _archive(_thread(target), close: true) : _trash(_thread(target), close: true),
               onReply: () => _reply(target, ComposeMode.reply),
               onReplyMenu: () => _replyMenu(target),
               onCompose: () => openCompose(context, ComposeArgs(accountId: target.accountId)),
@@ -398,9 +413,9 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
 
   /// The conversation's messages in the target's mailbox: what the toolbar
   /// archives, deletes or moves (copies in Sent stay where they are).
-  List<String> _threadIds(EmailSummary target) => [
+  List<EmailSummary> _thread(EmailSummary target) => [
     for (final m in _messages ?? const <EmailSummary>[])
-      if (m.mailboxId == target.mailboxId) m.id,
+      if (m.mailboxId == target.mailboxId) m,
   ];
 
   Widget _buildBody(

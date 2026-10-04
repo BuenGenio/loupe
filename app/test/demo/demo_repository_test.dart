@@ -143,6 +143,43 @@ void main() {
     expect(sent.any((t) => t.latest.subject == 'Hello from the test'), isTrue);
   });
 
+  test('Send Later waits in the outbox; sendNow, reschedule, cancel; .invalid recipients fail', () async {
+    const message = OutgoingMessage(
+      accountId: DemoAccounts.personal,
+      identityId: 'personal/default',
+      to: [EmailAddress('jordan.lee@example.com', 'Jordan Lee')],
+      subject: 'Later, please',
+      text: 'Hi!',
+    );
+    final draft = await repo.saveDraft(message);
+    final id = await repo.send(message.copyWith(draftId: draft), sendAt: now.add(const Duration(hours: 1)));
+    final scheduled = (await repo.watchOutbox().first).single;
+    expect(scheduled.status, OutboxStatus.scheduled);
+    expect(scheduled.sendAt, now.add(const Duration(hours: 1)));
+    expect(scheduled.message.draftId, isNull);
+    expect(await repo.getEmail(draft), isNull, reason: 'the outbox holds it now');
+
+    await repo.rescheduleSend(id, now.add(const Duration(days: 1)));
+    expect((await repo.watchOutbox().first).single.sendAt, now.add(const Duration(days: 1)));
+    await repo.sendNow(id);
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    expect(await repo.watchOutbox().first, isEmpty);
+    final sent = await repo.watchList(const VirtualMailboxRef(VirtualMailbox.allSent), threaded: false).first;
+    expect(sent.any((t) => t.latest.subject == 'Later, please'), isTrue);
+    await expectLater(repo.sendNow(id), throwsA(isA<MailException>()));
+
+    final bad = await repo.send(
+      message.copyWith(to: const [EmailAddress('someone@nowhere.invalid')]),
+      undoDelay: Duration.zero,
+    );
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    final failed = (await repo.watchOutbox().first).single;
+    expect(failed.status, OutboxStatus.failed);
+    expect(failed.error, contains('someone@nowhere.invalid'));
+    expect((await repo.cancelSend(bad))!.subject, 'Later, please');
+    expect(await repo.watchOutbox().first, isEmpty);
+  });
+
   test('drafts save, replace and delete', () async {
     const draft = OutgoingMessage(accountId: DemoAccounts.work, identityId: 'work/default', subject: 'Draft one');
     final id = await repo.saveDraft(draft);

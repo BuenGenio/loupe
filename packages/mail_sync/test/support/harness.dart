@@ -9,8 +9,13 @@ import 'package:mail_sync/mail_sync.dart';
 import 'fake_server.dart';
 
 /// Runs [body] in fake time: timers fire as fake time advances, so polling,
-/// backoff and undo delays take no real time.
-void fakeTime(Future<void> Function(FakeAsync async) body) {
+/// backoff and undo delays take no real time. Fails if [body] needs more
+/// than [limit] of fake time; [step] is how often it checks.
+void fakeTime(
+  Future<void> Function(FakeAsync async) body, {
+  Duration limit = const Duration(hours: 5),
+  Duration step = const Duration(milliseconds: 100),
+}) {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
   fakeAsync((async) {
     var done = false;
@@ -24,9 +29,10 @@ void fakeTime(Future<void> Function(FakeAsync async) body) {
         done = true;
       },
     );
-    for (var i = 0; !done; i++) {
-      if (i > 200000) throw StateError('The test did not finish in fake time');
-      async.elapse(const Duration(milliseconds: 100));
+    final start = async.elapsed;
+    while (!done) {
+      if (async.elapsed - start > limit) throw StateError('The test did not finish in fake time');
+      async.elapse(step);
     }
     if (error != null) Error.throwWithStackTrace(error!, trace!);
   }, initialTime: DateTime(2026, 9, 1, 12));

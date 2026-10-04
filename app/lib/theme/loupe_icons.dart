@@ -51,6 +51,22 @@ abstract final class LoupeIcons {
   static const IconData source = FluentIcons.code_24_regular;
   static const IconData searchSender = FluentIcons.person_search_24_regular;
 
+  // Send Later and the Outbox ------------------------------------------------
+
+  static const IconData sendLater = FluentIcons.clock_24_regular;
+  static const IconData sendLaterFilled = FluentIcons.clock_24_filled;
+  static const IconData laterToday = FluentIcons.weather_moon_24_regular;
+  static const IconData tomorrowMorning = FluentIcons.weather_sunny_low_24_regular;
+  static const IconData mondayMorning = FluentIcons.calendar_week_start_24_regular;
+  static const IconData pickDateTime = FluentIcons.calendar_edit_24_regular;
+  static const IconData sendNow = FluentIcons.send_24_regular;
+  static const IconData reschedule = FluentIcons.calendar_clock_24_regular;
+  static const IconData retry = FluentIcons.arrow_clockwise_24_regular;
+  static const IconData cancelSend = FluentIcons.dismiss_circle_24_regular;
+  static const IconData swipeSendNow = FluentIcons.send_24_filled;
+  static const IconData swipeReschedule = FluentIcons.calendar_clock_24_filled;
+  static const IconData swipeCancelSend = FluentIcons.dismiss_circle_24_filled;
+
   // Swipe actions: white on solid colour.
 
   static const IconData swipeMarkRead = FluentIcons.mail_read_24_filled;
