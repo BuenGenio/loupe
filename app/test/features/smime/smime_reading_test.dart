@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:loupe/features/smime/smime_import.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_model/mail_model.dart';
 
@@ -10,6 +12,14 @@ import '../conversation/fake_mail_repository.dart';
 import '../conversation/test_app.dart';
 import '../openpgp/openpgp_test_support.dart';
 import 'smime_test_support.dart';
+
+final class _FileRepository extends FakeMailRepository {
+  _FileRepository(this.file, {super.emails, super.contents});
+  final Uint8List file;
+
+  @override
+  Future<Uint8List> loadAttachment(String emailId, String partId) async => file;
+}
 
 void main() {
   /// Opens [file] as message m1 from [from] to Bob, with [storage] as the keychain.
@@ -116,5 +126,48 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('smime-status-m1')));
     await tester.pumpAndSettle();
     expect(textContaining('AES-256-GCM · authenticated'), findsOneWidget);
+  });
+
+  testWidgets('a .p12 mailed to oneself is imported only after a warning and its password', (tester) async {
+    final storage = await smimeKeychain();
+    final repo = _FileRepository(
+      smimeFixture('alice.p12'),
+      emails: [
+        testEmail('c1', from: aliceAddress, to: const [aliceAddress], subject: 'My certificate'),
+      ],
+      contents: {
+        'c1': const EmailContent(
+          emailId: 'c1',
+          text: 'For the phone.',
+          attachments: [Attachment(partId: '2', mimeType: 'application/x-pkcs12', filename: 'alice.p12', size: 4000)],
+        ),
+      },
+    );
+    final router = await pumpTestApp(tester, repository: repo, overrides: [inlinePgp, keychain(storage)]);
+    unawaited(router.push('/message/c1'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('A certificate is attached.'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('import-attached-certificate')));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const ValueKey('smime-password-field')), 'alice-pass');
+    await tester.tap(find.byKey(const ValueKey('smime-password-import')));
+    await tester.pumpAndSettle();
+    expect(find.text('Import as Your Certificate?'), findsOneWidget);
+    await tester.tap(find.text('Import as My Certificate'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+
+    final state = await smimeStateIn(storage);
+    expect(state.own.single.certificate.displayName, 'Alice Example');
+    expect(state.authorities, isEmpty, reason: 'the CA was not trusted');
+    expect(
+      isCertificateAttachment(
+        const Attachment(partId: '9', mimeType: 'application/pkcs7-signature', filename: 'smime.p7s'),
+      ),
+      isFalse,
+    );
+    await tester.pump(const Duration(seconds: 5));
   });
 }

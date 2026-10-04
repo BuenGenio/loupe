@@ -11,6 +11,7 @@ import '../../shared/tags.dart';
 import '../../theme/theme.dart';
 import '../openpgp/key_import.dart';
 import '../openpgp/pgp_status.dart';
+import '../smime/smime_import.dart';
 import '../smime/smime_status.dart';
 import 'attachments.dart';
 import 'auth_results.dart';
@@ -371,6 +372,7 @@ class _MessageCardState extends State<MessageCard> {
         ),
         AttachmentList(content: content, load: widget.loadAttachment),
         PgpKeyAttachments(content: content, load: widget.loadAttachment),
+        SmimeCertificateAttachments(content: content, load: widget.loadAttachment),
       ],
     );
   }
