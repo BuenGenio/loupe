@@ -75,23 +75,22 @@ final class EmailMatcher {
 
   bool? _text(TextField field, String value) {
     final needle = _norm(value);
-    return _field(field, (hay) => _norm(hay).contains(needle), regex: false);
+    return _field(field, (hay) => _norm(hay).contains(needle));
   }
 
   bool? _regex(TextField field, String pattern, bool caseSensitive) {
     final re = _compile(pattern, caseSensitive);
     if (re == null) return false;
-    return _field(field, re.hasMatch, regex: true);
+    return _field(field, re.hasMatch);
   }
 
-  /// Applies [test] to the texts of [field]. Address fields try each
-  /// address as `Name <address>`, and for patterns also the address and the
-  /// name alone.
-  bool? _field(TextField field, bool Function(String) test, {required bool regex}) {
+  /// Applies [test] to the texts of [field]. Each address is one text,
+  /// `Name <address>` (or just the address without a name), so a pattern
+  /// sees the whole address; `only:` relies on that.
+  bool? _field(TextField field, bool Function(String) test) {
     bool addresses(Iterable<EmailAddress> list) => list.any((a) {
       final name = a.name?.trim() ?? '';
-      if (test(name.isEmpty ? a.email : '$name <${a.email}>')) return true;
-      return regex && (test(a.email) || (name.isNotEmpty && test(name)));
+      return test(name.isEmpty ? a.email : '$name <${a.email}>');
     });
     return switch (field) {
       TextField.from => addresses(email.from),

@@ -139,7 +139,10 @@ void main() {
       ('t:bob is:read tag:work', true),
       ('t:(bob -carol)', false),
       ('only:bob', true),
+      ('only:bob@example.org', true),
+      ('only:"Bob <bob@"', true),
       ('only:(bob,carol)', false),
+      ('only:alice', false),
       ('simple:Invoice', true),
       ('simple:invoice', false),
       ('larger:500 smaller:1M', true),
@@ -151,6 +154,23 @@ void main() {
     ];
     for (final (input, expected) in cases) {
       test(input, () => expect(m(parseQuery(input, now: testNow).expr, c: content), expected));
+    }
+  });
+
+  group('only:', () {
+    EmailSummary to(List<EmailAddress> to) =>
+        EmailSummary(id: 'x', accountId: 'a', mailboxId: 'i', receivedAt: DateTime(2026), to: to);
+    final cases = <(String, List<EmailAddress>, bool)>[
+      ('only:tom@x.com', const [EmailAddress('tom@x.com', 'Tom')], true),
+      ('only:Jerry Smith', const [EmailAddress('js@x.com', 'Jerry Smith')], true),
+      ('only:tom', const [EmailAddress('tom@x.com'), EmailAddress('ann@x.com')], false),
+      ('only:tom,ann', const [EmailAddress('tom@x.com'), EmailAddress('ann@x.com')], true),
+      ('only:tom,ann', const [EmailAddress('tom@x.com')], false),
+      ('only:tom', const [], false),
+      ('only:a.b', const [EmailAddress('axb@x.com')], false),
+    ];
+    for (final (input, recipients, expected) in cases) {
+      test('$input with $recipients', () => expect(m(parseQuery(input).expr, on: to(recipients)), expected));
     }
   });
 
