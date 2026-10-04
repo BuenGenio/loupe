@@ -45,8 +45,8 @@ const fastConfig = SyncConfig(
 );
 
 final class Harness {
-  Harness({SyncConfig config = fastConfig}) {
-    repo = LiveMailRepository(store, factory, credentials, config: config);
+  Harness({SyncConfig config = fastConfig, OAuthRefresher? refreshOAuth}) {
+    repo = LiveMailRepository(store, factory, credentials, config: config, refreshOAuth: refreshOAuth);
   }
 
   final store = MailStore.memory();
@@ -56,16 +56,20 @@ final class Harness {
   final errors = <MailException>[];
   StreamSubscription<MailException>? _errorsSub;
 
-  AccountSetup setup(String email, {String password = 'secret', ProviderKind provider = ProviderKind.generic}) =>
-      AccountSetup(
-        email: email,
-        displayName: provider == ProviderKind.gmail ? 'Gmail' : 'Work',
-        provider: provider,
-        incoming: const ServerConfig(protocol: ServerProtocol.imap, host: 'imap.example.com', port: 993),
-        outgoing: const ServerConfig(protocol: ServerProtocol.smtp, host: 'smtp.example.com', port: 465),
-        credentials: PasswordCredentials(password),
-        senderName: 'Me',
-      );
+  AccountSetup setup(
+    String email, {
+    String password = 'secret',
+    ProviderKind provider = ProviderKind.generic,
+    Credentials? credentials,
+  }) => AccountSetup(
+    email: email,
+    displayName: provider == ProviderKind.gmail ? 'Gmail' : 'Work',
+    provider: provider,
+    incoming: const ServerConfig(protocol: ServerProtocol.imap, host: 'imap.example.com', port: 993),
+    outgoing: const ServerConfig(protocol: ServerProtocol.smtp, host: 'smtp.example.com', port: 465),
+    credentials: credentials ?? PasswordCredentials(password),
+    senderName: 'Me',
+  );
 
   /// Adds an account served by [server] and waits for the initial sync.
   Future<MailAccount> add(

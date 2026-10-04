@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:mail_sync/mail_sync.dart';
 import 'package:test/test.dart';
@@ -87,6 +88,34 @@ void main() {
         await repo2.dispose();
         await h.store.close();
       });
+    });
+  });
+
+  test('OAuth tokens are refreshed through the injected refresher and persisted', () {
+    fakeTime((async) async {
+      var refreshes = 0;
+      final h = Harness(
+        refreshOAuth: (account, current) async => OAuthCredentials(
+          accessToken: 'fresh${++refreshes}',
+          refreshToken: current.refreshToken,
+          expiresAt: clock.now().add(const Duration(hours: 1)),
+        ),
+      );
+      final server = FakeServer()..deliver('INBOX', subject: 'Hi');
+      h.factory.serve('me@gmail.com', server);
+      final expired = OAuthCredentials(accessToken: 'old', refreshToken: 'r', expiresAt: DateTime(2026, 9, 1, 11));
+      final a = await h.repo.addAccount(h.setup('me@gmail.com', provider: ProviderKind.gmail, credentials: expired));
+      await settle();
+      expect(a.authKind, AuthKind.oauth2);
+      expect(refreshes, 1);
+      expect((h.credentials.values[a.id]! as OAuthCredentials).accessToken, 'fresh1');
+
+      await settle(const Duration(hours: 2));
+      await server.dropConnections();
+      await h.repo.refresh();
+      expect(refreshes, 2);
+      expect((h.credentials.values[a.id]! as OAuthCredentials).accessToken, 'fresh2');
+      await h.dispose();
     });
   });
 

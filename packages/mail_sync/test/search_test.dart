@@ -76,7 +76,7 @@ void main() {
       final last = (await collect(h.repo.search(request(_subjectInvoice)))).last;
       expect(last.failedAccountIds, {b.id});
       expect(last.pendingAccountIds, isEmpty);
-      expect([for (final e in last.items) e.accountId].toSet(), {a.id, b.id}, reason: 'local results stay');
+      expect({for (final e in last.items) e.accountId}, {a.id, b.id}, reason: 'local results stay');
       await h.dispose();
     });
   });
