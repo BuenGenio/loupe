@@ -1,0 +1,133 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 169,
+      "keptText": 80,
+      "hiddenText": 89,
+      "hiddenElements": 2,
+      "trackers": 4,
+      "contentImages": 1,
+      "remoteImages": 1,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://parcels.example/track/EX123456789"
+      }
+    ],
+    "images": [
+      {
+        "src": "https://parcels.example/images/van.png",
+        "width": 300.0,
+        "height": 150.0,
+        "alt": "Delivery van"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Your parcel "
+          },
+          {
+            "text": "EX123456789",
+            "b": true
+          },
+          {
+            "text": " has left our warehouse and should arrive on Tuesday."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Track your parcel",
+            "u": true,
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "img",
+        "image": 0
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 169,
+      "keptText": 80,
+      "hiddenText": 89,
+      "hiddenElements": 2,
+      "trackers": 4,
+      "contentImages": 1,
+      "remoteImages": 1,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://parcels.example/track/EX123456789"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Your parcel "
+          },
+          {
+            "text": "EX123456789"
+          },
+          {
+            "text": " has left our warehouse and should arrive on Tuesday."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Track your parcel"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[Delivery van]"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://parcels.example/track/EX123456789",
+            "u": true,
+            "link": 0
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 6,
+    "contentIds": []
+  }
+}

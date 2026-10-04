@@ -1,0 +1,130 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 200,
+      "keptText": 200,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Thanks, applied in r4521."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "On 02/10/2026 21:14, Noa Example wrote:"
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Small patch for the parser, see below."
+              }
+            ]
+          },
+          {
+            "type": "pre",
+            "inlines": [
+              {
+                "text": "--- a/parser.c\n+++ b/parser.c\n@@ -10,7 +10,7 @@\n-  if (len > MAX) return -1;\n+  if (len >= MAX) return -1;",
+                "mono": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\nEli Sample\nRelease engineering"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 200,
+      "keptText": 200,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Thanks, applied in r4521."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "On 02/10/2026 21:14, Noa Example wrote:"
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Small patch for the parser, see below."
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "--- a/parser.c\n+++ b/parser.c\n@@ -10,7 +10,7 @@\n-  if (len > MAX) return -1;\n+  if (len >= MAX) return -1;"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "--\nEli Sample\nRelease engineering"
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

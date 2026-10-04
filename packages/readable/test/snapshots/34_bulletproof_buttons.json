@@ -1,0 +1,185 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 86,
+      "keptText": 86,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://events.example/register"
+      },
+      {
+        "url": "https://events.example/agenda"
+      },
+      {
+        "url": "https://events.example/faq"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Three ways senders build buttons:"
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "text": "Register now",
+        "link": 0,
+        "bg": "#556270",
+        "color": "#ffffff"
+      },
+      {
+        "type": "button",
+        "text": "See the agenda",
+        "link": 1,
+        "bg": "#f97316",
+        "color": "#ffffff"
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "And a plain link that is not a button: "
+          },
+          {
+            "text": "FAQ",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 86,
+      "keptText": 86,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://events.example/register"
+      },
+      {
+        "url": "https://events.example/agenda"
+      },
+      {
+        "url": "https://events.example/faq"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Three ways senders build buttons:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Register now"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "See the agenda"
+          },
+          {
+            "text": " [2]",
+            "link": 1
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "And a plain link that is not a button: "
+          },
+          {
+            "text": "FAQ"
+          },
+          {
+            "text": " [3]",
+            "link": 2
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://events.example/register",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[2] "
+          },
+          {
+            "text": "https://events.example/agenda",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[3] "
+          },
+          {
+            "text": "https://events.example/faq",
+            "u": true,
+            "link": 2
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

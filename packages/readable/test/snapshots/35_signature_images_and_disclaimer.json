@@ -1,0 +1,166 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 297,
+      "keptText": 297,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 1,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://legal.example.com"
+      }
+    ],
+    "images": [
+      {
+        "src": "cid:sig-logo@example",
+        "width": 80.0,
+        "height": 80.0,
+        "alt": "Example Legal"
+      },
+      {
+        "src": "cid:sig-linkedin@example",
+        "width": 16.0,
+        "height": 16.0,
+        "alt": "in",
+        "icon": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Please find the signed contract attached."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Regards,"
+          }
+        ]
+      },
+      {
+        "type": "img",
+        "image": 0
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Jamie Doe",
+            "b": true,
+            "color": "#0b5394"
+          },
+          {
+            "text": "\nSenior Counsel\nT: +1 555 0100 · ",
+            "scale": 0.85
+          },
+          {
+            "text": "legal.example.com",
+            "u": true,
+            "scale": 0.85,
+            "link": 0
+          },
+          {
+            "text": "\n",
+            "scale": 0.85
+          },
+          {
+            "img": 1
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "CONFIDENTIALITY NOTICE: This email and any attachments are for the exclusive and confidential use of the intended recipient. If you are not the intended recipient, please do not read, distribute or take action in reliance upon this message.",
+            "scale": 0.85,
+            "color": "#999999"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 297,
+      "keptText": 297,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 1,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Please find the signed contract attached."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Regards,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[Example Legal]"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Jamie Doe"
+          },
+          {
+            "text": "\nSenior Counsel\nT: +1 555 0100 · "
+          },
+          {
+            "text": "legal.example.com"
+          },
+          {
+            "text": "\n"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "CONFIDENTIALITY NOTICE: This email and any attachments are for the exclusive and confidential use of the intended recipient. If you are not the intended recipient, please do not read, distribute or take action in reliance upon this message."
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": [
+      "sig-linkedin@example",
+      "sig-logo@example",
+      "sig-x@example"
+    ]
+  }
+}

@@ -1,0 +1,364 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 902,
+      "keptText": 902,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:kim@example.org"
+      },
+      {
+        "url": "https://wiki.example.org/release/2.4"
+      },
+      {
+        "url": "mailto:ari@example.net"
+      },
+      {
+        "url": "https://bench.example.net/runs/2026-10-03.csv"
+      },
+      {
+        "url": "mailto:dev@lists.example.org"
+      },
+      {
+        "url": "https://lists.example.org/mailman/listinfo/dev"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Today's Topics:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "   1. Re: Release 2.4 schedule (Kim Example)\n   2. Benchmark results (Ari Sample)"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "----------------------------------------------------------------------"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Message: 1\nDate: Sat, 3 Oct 2026 11:20:04 +0200\nFrom: Kim Example <"
+          },
+          {
+            "text": "kim@example.org",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": ">\nSubject: Re: Release 2.4 schedule"
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "When is the code freeze?"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Monday. See "
+          },
+          {
+            "text": "https://wiki.example.org/release/2.4",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": " for the full plan."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "------------------------------"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Message: 2\nDate: Sat, 3 Oct 2026 14:02:51 +0200\nFrom: Ari Sample <"
+          },
+          {
+            "text": "ari@example.net",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": ">\nSubject: Benchmark results"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "+------------+---------+---------+--------+\n| benchmark  |   2.3   |   2.4   | change |\n+------------+---------+---------+--------+\n| startup    |  412 ms |  388 ms |  -5.8% |\n| sync 10k   | 9.10 s  | 7.42 s  | -18.5% |\n| search     |  35 ms  |  31 ms  | -11.4% |\n+------------+---------+---------+--------+"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Raw data: <"
+          },
+          {
+            "text": "https://bench.example.net/runs/2026-10-03.csv",
+            "u": true,
+            "link": 3
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "------------------------------"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "_______________________________________________\ndev mailing list\n"
+          },
+          {
+            "text": "dev@lists.example.org",
+            "u": true,
+            "link": 4
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "https://lists.example.org/mailman/listinfo/dev",
+            "u": true,
+            "link": 5
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 902,
+      "keptText": 902,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:kim@example.org"
+      },
+      {
+        "url": "https://wiki.example.org/release/2.4"
+      },
+      {
+        "url": "mailto:ari@example.net"
+      },
+      {
+        "url": "https://bench.example.net/runs/2026-10-03.csv"
+      },
+      {
+        "url": "mailto:dev@lists.example.org"
+      },
+      {
+        "url": "https://lists.example.org/mailman/listinfo/dev"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Today's Topics:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "   1. Re: Release 2.4 schedule (Kim Example)\n   2. Benchmark results (Ari Sample)"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "----------------------------------------------------------------------"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Message: 1\nDate: Sat, 3 Oct 2026 11:20:04 +0200\nFrom: Kim Example <"
+          },
+          {
+            "text": "kim@example.org",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": ">\nSubject: Re: Release 2.4 schedule"
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "When is the code freeze?"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Monday. See "
+          },
+          {
+            "text": "https://wiki.example.org/release/2.4",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": " for the full plan."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "------------------------------"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Message: 2\nDate: Sat, 3 Oct 2026 14:02:51 +0200\nFrom: Ari Sample <"
+          },
+          {
+            "text": "ari@example.net",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": ">\nSubject: Benchmark results"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "+------------+---------+---------+--------+\n| benchmark  |   2.3   |   2.4   | change |\n+------------+---------+---------+--------+\n| startup    |  412 ms |  388 ms |  -5.8% |\n| sync 10k   | 9.10 s  | 7.42 s  | -18.5% |\n| search     |  35 ms  |  31 ms  | -11.4% |\n+------------+---------+---------+--------+"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Raw data: <"
+          },
+          {
+            "text": "https://bench.example.net/runs/2026-10-03.csv",
+            "u": true,
+            "link": 3
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "------------------------------"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "_______________________________________________\ndev mailing list\n"
+          },
+          {
+            "text": "dev@lists.example.org",
+            "u": true,
+            "link": 4
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "https://lists.example.org/mailman/listinfo/dev",
+            "u": true,
+            "link": 5
+          }
+        ]
+      }
+    ]
+  }
+}

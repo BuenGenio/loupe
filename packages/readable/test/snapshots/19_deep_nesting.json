@@ -1,0 +1,55 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 4,
+      "keptText": 4,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "truncated": true,
+      "suggestOriginal": true
+    },
+    "blockCount": 1,
+    "firstBlocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Deep"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 4,
+      "keptText": 4,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "truncated": true,
+      "suggestOriginal": true
+    },
+    "blockCount": 1,
+    "firstBlocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Deep"
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": [],
+    "truncated": true
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 164,
+      "keptText": 164,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://night.example/one"
+      },
+      {
+        "url": "https://night.example/two"
+      },
+      {
+        "url": "https://night.example/subscribe"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "h1",
+        "inlines": [
+          {
+            "text": "Night Mode Weekly",
+            "color": "#ffffff"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Everything in this newsletter is light text on a black background. The body tag sets ",
+            "color": "#eeeeee"
+          },
+          {
+            "text": "text=\"#eeeeee\"",
+            "mono": true,
+            "color": "#eeeeee"
+          },
+          {
+            "text": ".",
+            "color": "#eeeeee"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Muted grey text.",
+            "color": "#888888"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Links: ",
+            "color": "#eeeeee"
+          },
+          {
+            "text": "one",
+            "u": true,
+            "color": "#66ccff",
+            "link": 0
+          },
+          {
+            "text": ", ",
+            "color": "#eeeeee"
+          },
+          {
+            "text": "two (body link colour)",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": ".",
+            "color": "#eeeeee"
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "text": "Subscribe for €2/month",
+        "link": 2,
+        "bg": "#ff5a5f",
+        "color": "#000000"
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 164,
+      "keptText": 164,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://night.example/one"
+      },
+      {
+        "url": "https://night.example/two"
+      },
+      {
+        "url": "https://night.example/subscribe"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Night Mode Weekly"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Everything in this newsletter is light text on a black background. The body tag sets "
+          },
+          {
+            "text": "text=\"#eeeeee\""
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Muted grey text."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Links: "
+          },
+          {
+            "text": "one"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "two (body link colour)"
+          },
+          {
+            "text": " [2]",
+            "link": 1
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Subscribe for €2/month"
+          },
+          {
+            "text": " [3]",
+            "link": 2
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://night.example/one",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[2] "
+          },
+          {
+            "text": "https://night.example/two",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[3] "
+          },
+          {
+            "text": "https://night.example/subscribe",
+            "u": true,
+            "link": 2
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

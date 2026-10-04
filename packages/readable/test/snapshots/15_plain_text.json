@@ -1,0 +1,176 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 307,
+      "keptText": 307,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://post.example/redirect"
+      },
+      {
+        "url": "https://www.agent.example/keys"
+      },
+      {
+        "url": "mailto:jamie@example.net"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Hi Alex,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Quick update on the move: the van is booked for Saturday 10 October,\n8am. We need to be out of the old flat by noon."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Things still to do:\n- cancel the internet contract (call 0800 000 000)\n- forward post: "
+          },
+          {
+            "text": "https://post.example/redirect",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n- return the keys to the agent, details at "
+          },
+          {
+            "text": "www.agent.example/keys",
+            "u": true,
+            "link": 1
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Shout if you can help, or email me at "
+          },
+          {
+            "text": "jamie@example.net",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Jamie"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 307,
+      "keptText": 307,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://post.example/redirect"
+      },
+      {
+        "url": "https://www.agent.example/keys"
+      },
+      {
+        "url": "mailto:jamie@example.net"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Hi Alex,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Quick update on the move: the van is booked for Saturday 10 October,\n8am. We need to be out of the old flat by noon."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Things still to do:\n- cancel the internet contract (call 0800 000 000)\n- forward post: "
+          },
+          {
+            "text": "https://post.example/redirect",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n- return the keys to the agent, details at "
+          },
+          {
+            "text": "www.agent.example/keys",
+            "u": true,
+            "link": 1
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Shout if you can help, or email me at "
+          },
+          {
+            "text": "jamie@example.net",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Jamie"
+          }
+        ]
+      }
+    ]
+  }
+}

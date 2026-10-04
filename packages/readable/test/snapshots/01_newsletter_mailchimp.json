@@ -1,0 +1,504 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 680,
+      "keptText": 602,
+      "hiddenText": 78,
+      "hiddenElements": 2,
+      "trackers": 1,
+      "contentImages": 2,
+      "remoteImages": 5,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://bakery.example.com/view?id=42"
+      },
+      {
+        "url": "https://bakery.example.com/rye?utm_source=newsletter&utm_medium=email"
+      },
+      {
+        "url": "https://bakery.example.com/shop/baskets"
+      },
+      {
+        "url": "https://social.example/bakery"
+      },
+      {
+        "url": "https://photos.example/bakery"
+      },
+      {
+        "url": "https://bakery.example.com"
+      },
+      {
+        "url": "https://bakery.example.com/profile?u=1"
+      },
+      {
+        "url": "https://bakery.example.com/unsubscribe?u=1"
+      }
+    ],
+    "images": [
+      {
+        "src": "https://mcusercontent.example.com/abc/images/header.png",
+        "width": 564.0,
+        "alt": "The Weekly Loaf"
+      },
+      {
+        "src": "https://mcusercontent.example.com/abc/images/rye.jpg",
+        "width": 264.0,
+        "height": 198.0,
+        "alt": "Rye loaf"
+      },
+      {
+        "src": "https://cdn-images.example.com/icons/color-facebook-48.png",
+        "width": 24.0,
+        "height": 24.0,
+        "alt": "Facebook",
+        "link": 3,
+        "icon": true
+      },
+      {
+        "src": "https://cdn-images.example.com/icons/color-instagram-48.png",
+        "width": 24.0,
+        "height": 24.0,
+        "alt": "Instagram",
+        "link": 4,
+        "icon": true
+      },
+      {
+        "src": "https://cdn-images.example.com/icons/color-link-48.png",
+        "width": 24.0,
+        "height": 24.0,
+        "alt": "Website",
+        "link": 5,
+        "icon": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "p",
+        "align": "center",
+        "inlines": [
+          {
+            "text": "View this email in your browser",
+            "u": true,
+            "scale": 0.85,
+            "color": "#656565",
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "img",
+        "image": 0
+      },
+      {
+        "type": "h1",
+        "inlines": [
+          {
+            "text": "Issue 42: Rye, at last",
+            "color": "#202020"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Hi there,",
+            "color": "#202020"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "This week we finally tackle ",
+            "color": "#202020"
+          },
+          {
+            "text": "100% rye",
+            "b": true,
+            "color": "#202020"
+          },
+          {
+            "text": ". It is sticky, it is sour, and it is ",
+            "color": "#202020"
+          },
+          {
+            "text": "absolutely",
+            "i": true,
+            "color": "#202020"
+          },
+          {
+            "text": " worth it. Below you will find the recipe, a short video and our favourite mistakes.",
+            "color": "#202020"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Read the ",
+            "color": "#202020"
+          },
+          {
+            "text": "full recipe on our blog",
+            "u": true,
+            "color": "#007c89",
+            "link": 1
+          },
+          {
+            "text": ".",
+            "color": "#202020"
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "text": "Shop proofing baskets",
+        "link": 2,
+        "bg": "#2baadf",
+        "color": "#ffffff"
+      },
+      {
+        "type": "img",
+        "image": 1
+      },
+      {
+        "type": "h3",
+        "inlines": [
+          {
+            "text": "Mistake #1: too much water",
+            "color": "#202020"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Rye flour holds more water than wheat, but not infinitely more. Start at 80% hydration and adjust next time.",
+            "color": "#202020"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "img": 2
+          },
+          {
+            "text": " "
+          },
+          {
+            "img": 3
+          },
+          {
+            "text": " "
+          },
+          {
+            "img": 4
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Copyright © 2026 The Weekly Loaf, All rights reserved.",
+            "i": true,
+            "scale": 0.85,
+            "color": "#656565"
+          },
+          {
+            "text": "\nYou are receiving this email because you opted in via our website.\n\n",
+            "scale": 0.85,
+            "color": "#656565"
+          },
+          {
+            "text": "Our mailing address is:",
+            "b": true,
+            "scale": 0.85,
+            "color": "#656565"
+          },
+          {
+            "text": "\nThe Weekly Loaf · 1 Example Street · Sampletown 12345\n\nWant to change how you receive these emails?\nYou can ",
+            "scale": 0.85,
+            "color": "#656565"
+          },
+          {
+            "text": "update your preferences",
+            "u": true,
+            "scale": 0.85,
+            "color": "#656565",
+            "link": 6
+          },
+          {
+            "text": " or ",
+            "scale": 0.85,
+            "color": "#656565"
+          },
+          {
+            "text": "unsubscribe from this list",
+            "u": true,
+            "scale": 0.85,
+            "color": "#656565",
+            "link": 7
+          },
+          {
+            "text": ".",
+            "scale": 0.85,
+            "color": "#656565"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 680,
+      "keptText": 602,
+      "hiddenText": 78,
+      "hiddenElements": 2,
+      "trackers": 1,
+      "contentImages": 2,
+      "remoteImages": 5,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://bakery.example.com/view?id=42"
+      },
+      {
+        "url": "https://bakery.example.com/rye?utm_source=newsletter&utm_medium=email"
+      },
+      {
+        "url": "https://bakery.example.com/shop/baskets"
+      },
+      {
+        "url": "https://bakery.example.com/profile?u=1"
+      },
+      {
+        "url": "https://bakery.example.com/unsubscribe?u=1"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "View this email in your browser"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[The Weekly Loaf]"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Issue 42: Rye, at last"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Hi there,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "This week we finally tackle "
+          },
+          {
+            "text": "100% rye"
+          },
+          {
+            "text": ". It is sticky, it is sour, and it is "
+          },
+          {
+            "text": "absolutely"
+          },
+          {
+            "text": " worth it. Below you will find the recipe, a short video and our favourite mistakes."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Read the "
+          },
+          {
+            "text": "full recipe on our blog"
+          },
+          {
+            "text": " [2]",
+            "link": 1
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Shop proofing baskets"
+          },
+          {
+            "text": " [3]",
+            "link": 2
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[Rye loaf]"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Mistake #1: too much water"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Rye flour holds more water than wheat, but not infinitely more. Start at 80% hydration and adjust next time."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Copyright © 2026 The Weekly Loaf, All rights reserved."
+          },
+          {
+            "text": "\nYou are receiving this email because you opted in via our website.\n\n"
+          },
+          {
+            "text": "Our mailing address is:"
+          },
+          {
+            "text": "\nThe Weekly Loaf · 1 Example Street · Sampletown 12345\n\nWant to change how you receive these emails?\nYou can "
+          },
+          {
+            "text": "update your preferences"
+          },
+          {
+            "text": " [4]",
+            "link": 3
+          },
+          {
+            "text": " or "
+          },
+          {
+            "text": "unsubscribe from this list"
+          },
+          {
+            "text": " [5]",
+            "link": 4
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://bakery.example.com/view?id=42",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[2] "
+          },
+          {
+            "text": "https://bakery.example.com/rye?utm_source=newsletter&utm_medium=email",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[3] "
+          },
+          {
+            "text": "https://bakery.example.com/shop/baskets",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[4] "
+          },
+          {
+            "text": "https://bakery.example.com/profile?u=1",
+            "u": true,
+            "link": 3
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[5] "
+          },
+          {
+            "text": "https://bakery.example.com/unsubscribe?u=1",
+            "u": true,
+            "link": 4
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 6,
+    "contentIds": []
+  }
+}

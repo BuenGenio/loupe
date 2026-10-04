@@ -1,0 +1,300 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 404,
+      "keptText": 404,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:pat@example.com"
+      },
+      {
+        "url": "mailto:chris@example.org"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Agreed, let's go with option B."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "On Tue, 29 Sep 2026 at 10:02, Pat <"
+          },
+          {
+            "text": "pat@example.com",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "> wrote:"
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "I'd lean towards option B as well, it is cheaper."
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "On Mon, 28 Sep 2026 at 17:45, Chris <"
+              },
+              {
+                "text": "chris@example.org",
+                "u": true,
+                "link": 1
+              },
+              {
+                "text": "> wrote:"
+              }
+            ]
+          },
+          {
+            "type": "quote",
+            "children": [
+              {
+                "type": "p",
+                "inlines": [
+                  {
+                    "text": "Here are the two options:\nA) rent the bigger room\nB) split into two sessions"
+                  }
+                ]
+              },
+              {
+                "type": "quote",
+                "children": [
+                  {
+                    "type": "p",
+                    "inlines": [
+                      {
+                        "text": "On Mon, 28 Sep 2026, Dana wrote:"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "quote",
+                    "children": [
+                      {
+                        "type": "p",
+                        "inlines": [
+                          {
+                            "text": "Can we find a room for 40 people?\nIt needs a projector."
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "p",
+                    "inlines": [
+                      {
+                        "text": "Checking with facilities."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "muted": true,
+                "inlines": [
+                  {
+                    "text": "--\nChris Example\nFacilities team"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Pat"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\nLee Example"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 404,
+      "keptText": 404,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:pat@example.com"
+      },
+      {
+        "url": "mailto:chris@example.org"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Agreed, let's go with option B."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "On Tue, 29 Sep 2026 at 10:02, Pat <"
+          },
+          {
+            "text": "pat@example.com",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "> wrote:"
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "I'd lean towards option B as well, it is cheaper."
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "On Mon, 28 Sep 2026 at 17:45, Chris <"
+              },
+              {
+                "text": "chris@example.org",
+                "u": true,
+                "link": 1
+              },
+              {
+                "text": "> wrote:"
+              }
+            ]
+          },
+          {
+            "type": "quote",
+            "children": [
+              {
+                "type": "p",
+                "inlines": [
+                  {
+                    "text": "Here are the two options:\nA) rent the bigger room\nB) split into two sessions"
+                  }
+                ]
+              },
+              {
+                "type": "quote",
+                "children": [
+                  {
+                    "type": "p",
+                    "inlines": [
+                      {
+                        "text": "On Mon, 28 Sep 2026, Dana wrote:"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "quote",
+                    "children": [
+                      {
+                        "type": "p",
+                        "inlines": [
+                          {
+                            "text": "Can we find a room for 40 people?\nIt needs a projector."
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "p",
+                    "inlines": [
+                      {
+                        "text": "Checking with facilities."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "muted": true,
+                "inlines": [
+                  {
+                    "text": "--\nChris Example\nFacilities team"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Pat"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\nLee Example"
+          }
+        ]
+      }
+    ]
+  }
+}

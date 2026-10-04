@@ -1,0 +1,354 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 305,
+      "keptText": 305,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://meet.example.com/abc-defg-hij"
+      },
+      {
+        "url": "https://calendar.example.com/rsvp?r=yes"
+      },
+      {
+        "url": "https://calendar.example.com/rsvp?r=maybe"
+      },
+      {
+        "url": "https://calendar.example.com/rsvp?r=no"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "h2",
+        "inlines": [
+          {
+            "text": "Invitation: Design review",
+            "color": "#1a73e8"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "columns": 2,
+        "rows": [
+          [
+            {
+              "inlines": [
+                {
+                  "text": "When",
+                  "color": "#70757a"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Thursday 8 October 2026 · 15:00 – 16:00",
+                  "b": true
+                },
+                {
+                  "text": " (Central European Time)"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "inlines": [
+                {
+                  "text": "Where",
+                  "color": "#70757a"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Room Aurora, 3rd floor"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "inlines": [
+                {
+                  "text": "Video call",
+                  "color": "#70757a"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "meet.example.com/abc-defg-hij",
+                  "u": true,
+                  "link": 0
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "inlines": [
+                {
+                  "text": "Organiser",
+                  "color": "#70757a"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "quinn@example.com"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "inlines": [
+                {
+                  "text": "Guests",
+                  "color": "#70757a"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "Taylor Example, Sky Sample, Jesse Test"
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      {
+        "type": "button",
+        "text": "Yes",
+        "link": 1,
+        "bg": "#1a73e8",
+        "color": "#ffffff"
+      },
+      {
+        "type": "button",
+        "text": "Maybe",
+        "link": 2,
+        "bg": "#e8eaed",
+        "color": "#3c4043"
+      },
+      {
+        "type": "button",
+        "text": "No",
+        "link": 3,
+        "bg": "#e8eaed",
+        "color": "#3c4043"
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Invitation from Example Calendar. You are receiving this email because you are an attendee of the event.",
+            "scale": 0.85,
+            "color": "#70757a"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 305,
+      "keptText": 305,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://calendar.example.com/rsvp?r=yes"
+      },
+      {
+        "url": "https://calendar.example.com/rsvp?r=maybe"
+      },
+      {
+        "url": "https://calendar.example.com/rsvp?r=no"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Invitation: Design review"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "When"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "Thursday 8 October 2026 · 15:00 – 16:00"
+          },
+          {
+            "text": " (Central European Time)"
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "Where"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "Room Aurora, 3rd floor"
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "Video call"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "meet.example.com/abc-defg-hij"
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "Organiser"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "quinn@example.com"
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "Guests"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "Taylor Example, Sky Sample, Jesse Test"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Yes"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Maybe"
+          },
+          {
+            "text": " [2]",
+            "link": 1
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "No"
+          },
+          {
+            "text": " [3]",
+            "link": 2
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Invitation from Example Calendar. You are receiving this email because you are an attendee of the event."
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://calendar.example.com/rsvp?r=yes",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[2] "
+          },
+          {
+            "text": "https://calendar.example.com/rsvp?r=maybe",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[3] "
+          },
+          {
+            "text": "https://calendar.example.com/rsvp?r=no",
+            "u": true,
+            "link": 2
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

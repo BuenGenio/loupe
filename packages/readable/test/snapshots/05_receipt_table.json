@@ -1,0 +1,429 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 214,
+      "keptText": 214,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 1,
+      "remoteImages": 1,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://coffee.example/help"
+      }
+    ],
+    "images": [
+      {
+        "src": "https://static.coffee.example/logo.png",
+        "width": 140.0,
+        "height": 40.0,
+        "alt": "Example Coffee"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "img",
+        "image": 0
+      },
+      {
+        "type": "h2",
+        "inlines": [
+          {
+            "text": "Thanks for your order!"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Order "
+          },
+          {
+            "text": "#A-10442",
+            "b": true
+          },
+          {
+            "text": " · placed 3 October 2026"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "columns": 3,
+        "rows": [
+          [
+            {
+              "th": true,
+              "inlines": [
+                {
+                  "text": "Item",
+                  "b": true
+                }
+              ]
+            },
+            {
+              "th": true,
+              "align": "center",
+              "inlines": [
+                {
+                  "text": "Qty",
+                  "b": true
+                }
+              ]
+            },
+            {
+              "th": true,
+              "align": "right",
+              "inlines": [
+                {
+                  "text": "Price",
+                  "b": true
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "inlines": [
+                {
+                  "text": "House blend, 250 g"
+                }
+              ]
+            },
+            {
+              "align": "center",
+              "inlines": [
+                {
+                  "text": "2"
+                }
+              ]
+            },
+            {
+              "align": "right",
+              "inlines": [
+                {
+                  "text": "€18.00"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "inlines": [
+                {
+                  "text": "Oat milk, 1 l"
+                }
+              ]
+            },
+            {
+              "align": "center",
+              "inlines": [
+                {
+                  "text": "1"
+                }
+              ]
+            },
+            {
+              "align": "right",
+              "inlines": [
+                {
+                  "text": "€2.40"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "inlines": [
+                {
+                  "text": "Ceramic cup "
+                },
+                {
+                  "text": "(gift)",
+                  "color": "#888888"
+                }
+              ]
+            },
+            {
+              "align": "center",
+              "inlines": [
+                {
+                  "text": "1"
+                }
+              ]
+            },
+            {
+              "align": "right",
+              "inlines": [
+                {
+                  "text": "€0.00"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "colspan": 2,
+              "align": "right",
+              "inlines": [
+                {
+                  "text": "Subtotal"
+                }
+              ]
+            },
+            {
+              "align": "right",
+              "inlines": [
+                {
+                  "text": "€20.40"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "colspan": 2,
+              "align": "right",
+              "inlines": [
+                {
+                  "text": "Shipping"
+                }
+              ]
+            },
+            {
+              "align": "right",
+              "inlines": [
+                {
+                  "text": "€4.90"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "colspan": 2,
+              "align": "right",
+              "inlines": [
+                {
+                  "text": "Total",
+                  "b": true
+                }
+              ]
+            },
+            {
+              "align": "right",
+              "inlines": [
+                {
+                  "text": "€25.30",
+                  "b": true
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Questions? Reply to this email or visit ",
+            "scale": 0.85,
+            "color": "#777777"
+          },
+          {
+            "text": "coffee.example/help",
+            "u": true,
+            "scale": 0.85,
+            "link": 0
+          },
+          {
+            "text": ".",
+            "scale": 0.85,
+            "color": "#777777"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 214,
+      "keptText": 214,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 1,
+      "remoteImages": 1,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[Example Coffee]"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Thanks for your order!"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Order "
+          },
+          {
+            "text": "#A-10442"
+          },
+          {
+            "text": " · placed 3 October 2026"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Item"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "Qty"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "Price"
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "House blend, 250 g"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "2"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "€18.00"
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "Oat milk, 1 l"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "1"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "€2.40"
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "Ceramic cup "
+          },
+          {
+            "text": "(gift)"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "1"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "€0.00"
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "Subtotal"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "€20.40"
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "Shipping"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "€4.90"
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "Total"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "€25.30"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Questions? Reply to this email or visit "
+          },
+          {
+            "text": "coffee.example/help"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 1,
+    "contentIds": []
+  }
+}

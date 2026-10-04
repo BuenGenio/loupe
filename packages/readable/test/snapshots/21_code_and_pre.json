@@ -1,0 +1,216 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 372,
+      "keptText": 372,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The build fails with this error:"
+          }
+        ]
+      },
+      {
+        "type": "pre",
+        "inlines": [
+          {
+            "text": "$ flutter build apk\nFAILURE: Build failed with an exception.\n* What went wrong:\nExecution failed for task ':app:compileReleaseKotlin'.\n>   Could not resolve all files for configuration ':app:releaseRuntimeClasspath'.",
+            "mono": true,
+            "scale": 0.85
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "I think the fix is to bump "
+          },
+          {
+            "text": "compileSdk",
+            "mono": true
+          },
+          {
+            "text": " to "
+          },
+          {
+            "text": "36",
+            "mono": true
+          },
+          {
+            "text": " in "
+          },
+          {
+            "text": "android/app/build.gradle.kts",
+            "mono": true
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Consolas text should be monospace too.",
+            "mono": true
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Keyboard shortcut: "
+          },
+          {
+            "text": "Ctrl",
+            "mono": true
+          },
+          {
+            "text": " + "
+          },
+          {
+            "text": "Shift",
+            "mono": true
+          },
+          {
+            "text": " + "
+          },
+          {
+            "text": "P",
+            "mono": true
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "pre",
+        "inlines": [
+          {
+            "text": "  indented\n    more indented\n        tabbed line",
+            "mono": true
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 372,
+      "keptText": 372,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The build fails with this error:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "$ flutter build apk\nFAILURE: Build failed with an exception.\n* What went wrong:\nExecution failed for task ':app:compileReleaseKotlin'.\n>   Could not resolve all files for configuration ':app:releaseRuntimeClasspath'."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "I think the fix is to bump "
+          },
+          {
+            "text": "compileSdk"
+          },
+          {
+            "text": " to "
+          },
+          {
+            "text": "36"
+          },
+          {
+            "text": " in "
+          },
+          {
+            "text": "android/app/build.gradle.kts"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Consolas text should be monospace too."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Keyboard shortcut: "
+          },
+          {
+            "text": "Ctrl"
+          },
+          {
+            "text": " + "
+          },
+          {
+            "text": "Shift"
+          },
+          {
+            "text": " + "
+          },
+          {
+            "text": "P"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "  indented\n    more indented\n        tabbed line"
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 273,
+      "keptText": 273,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Sending this on — the venue details are at the bottom."
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Begin forwarded message:"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "tight": true,
+            "inlines": [
+              {
+                "text": "From: ",
+                "b": true,
+                "color": "#000000"
+              },
+              {
+                "text": "Avery Sample <avery@example.net>"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "tight": true,
+            "inlines": [
+              {
+                "text": "Subject: ",
+                "b": true,
+                "color": "#000000"
+              },
+              {
+                "text": "Team dinner",
+                "b": true
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "tight": true,
+            "inlines": [
+              {
+                "text": "Date: ",
+                "b": true,
+                "color": "#000000"
+              },
+              {
+                "text": "1 October 2026 at 18:03:11 CEST"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Hi all,"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Dinner is booked for "
+              },
+              {
+                "text": "Thursday at 7pm",
+                "b": true
+              },
+              {
+                "text": " at The Example Kitchen, 12 Sample Road."
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Please reply by Tuesday if you have dietary requirements."
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Avery"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 273,
+      "keptText": 273,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Sending this on — the venue details are at the bottom."
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Begin forwarded message:"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "From: "
+              },
+              {
+                "text": "Avery Sample <avery@example.net>"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Subject: "
+              },
+              {
+                "text": "Team dinner"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Date: "
+              },
+              {
+                "text": "1 October 2026 at 18:03:11 CEST"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Hi all,"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Dinner is booked for "
+              },
+              {
+                "text": "Thursday at 7pm"
+              },
+              {
+                "text": " at The Example Kitchen, 12 Sample Road."
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Please reply by Tuesday if you have dietary requirements."
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Avery"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

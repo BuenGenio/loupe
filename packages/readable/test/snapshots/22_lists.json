@@ -1,0 +1,561 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 167,
+      "keptText": 167,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://example.com/about"
+      },
+      {
+        "url": "https://example.com/blog"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "h2",
+        "inlines": [
+          {
+            "text": "Agenda"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "marker": "decimal",
+        "items": [
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "Welcome"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "Updates"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "marker": "disc",
+              "items": [
+                [
+                  {
+                    "type": "p",
+                    "inlines": [
+                      {
+                        "text": "Engineering"
+                      }
+                    ]
+                  }
+                ],
+                [
+                  {
+                    "type": "p",
+                    "inlines": [
+                      {
+                        "text": "Design"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "list",
+                    "marker": "disc",
+                    "items": [
+                      [
+                        {
+                          "type": "p",
+                          "inlines": [
+                            {
+                              "text": "New icons"
+                            }
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "type": "p",
+                          "inlines": [
+                            {
+                              "text": "Dark theme"
+                            }
+                          ]
+                        }
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            }
+          ],
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "Questions"
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      {
+        "type": "list",
+        "marker": "lowerAlpha",
+        "start": 5,
+        "items": [
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "fifth (e)"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "sixth (f)"
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      {
+        "type": "list",
+        "marker": "upperRoman",
+        "items": [
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "Roman one"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "Roman two"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "Roman three"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "Roman four"
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      {
+        "type": "list",
+        "marker": "none",
+        "items": [
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "About",
+                  "u": true,
+                  "link": 0
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "Blog",
+                  "u": true,
+                  "link": 1
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Venue",
+            "b": true
+          }
+        ]
+      },
+      {
+        "type": "indent",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Room 4.12, Example Building"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Time",
+            "b": true
+          }
+        ]
+      },
+      {
+        "type": "indent",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "14:00 – 15:30"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 167,
+      "keptText": 167,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://example.com/about"
+      },
+      {
+        "url": "https://example.com/blog"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Agenda"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "1. "
+          },
+          {
+            "text": "Welcome"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "2. "
+          },
+          {
+            "text": "Updates"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "   •  "
+          },
+          {
+            "text": "Engineering"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "   •  "
+          },
+          {
+            "text": "Design"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "      •  "
+          },
+          {
+            "text": "New icons"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "      •  "
+          },
+          {
+            "text": "Dark theme"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "3. "
+          },
+          {
+            "text": "Questions"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "e. "
+          },
+          {
+            "text": "fifth (e)"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "f. "
+          },
+          {
+            "text": "sixth (f)"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "I. "
+          },
+          {
+            "text": "Roman one"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "II. "
+          },
+          {
+            "text": "Roman two"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "III. "
+          },
+          {
+            "text": "Roman three"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "IV. "
+          },
+          {
+            "text": "Roman four"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": ""
+          },
+          {
+            "text": "About"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": ""
+          },
+          {
+            "text": "Blog"
+          },
+          {
+            "text": " [2]",
+            "link": 1
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Venue"
+          }
+        ]
+      },
+      {
+        "type": "indent",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Room 4.12, Example Building"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Time"
+          }
+        ]
+      },
+      {
+        "type": "indent",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "14:00 – 15:30"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://example.com/about",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[2] "
+          },
+          {
+            "text": "https://example.com/blog",
+            "u": true,
+            "link": 1
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

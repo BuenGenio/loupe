@@ -1,0 +1,196 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 229,
+      "keptText": 229,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:help@store.example"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "dir": "rtl",
+        "inlines": [
+          {
+            "text": "שלום רב,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "rtl",
+        "inlines": [
+          {
+            "text": "תודה על ההזמנה שלך. המשלוח יגיע תוך "
+          },
+          {
+            "text": "3 ימי עסקים",
+            "b": true
+          },
+          {
+            "text": ". מספר ההזמנה: 55821."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "rtl",
+        "inlines": [
+          {
+            "text": "לשאלות ניתן לפנות אלינו בכתובת "
+          },
+          {
+            "text": "help@store.example",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "dir": "rtl",
+        "inlines": [
+          {
+            "text": "مرحباً،"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "rtl",
+        "inlines": [
+          {
+            "text": "شكراً لتسجيلك في النشرة الإخبارية. ستصلك الرسالة الأولى يوم "
+          },
+          {
+            "text": "الأحد",
+            "b": true
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "English summary: thanks for your order, it ships in 3 business days."
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 229,
+      "keptText": 229,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "dir": "rtl",
+        "inlines": [
+          {
+            "text": "שלום רב,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "rtl",
+        "inlines": [
+          {
+            "text": "תודה על ההזמנה שלך. המשלוח יגיע תוך "
+          },
+          {
+            "text": "3 ימי עסקים"
+          },
+          {
+            "text": ". מספר ההזמנה: 55821."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "rtl",
+        "inlines": [
+          {
+            "text": "לשאלות ניתן לפנות אלינו בכתובת "
+          },
+          {
+            "text": "help@store.example"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "dir": "rtl",
+        "inlines": [
+          {
+            "text": "مرحباً،"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "rtl",
+        "inlines": [
+          {
+            "text": "شكراً لتسجيلك في النشرة الإخبارية. ستصلك الرسالة الأولى يوم "
+          },
+          {
+            "text": "الأحد"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "English summary: thanks for your order, it ships in 3 business days."
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

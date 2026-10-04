@@ -1,0 +1,101 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 529,
+      "keptText": 21,
+      "hiddenText": 508,
+      "hiddenElements": 4,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": true
+    },
+    "links": [
+      {
+        "url": "https://watches.test/buy"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Cheap watches!!!"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Buy now",
+            "u": true,
+            "link": 0
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 529,
+      "keptText": 21,
+      "hiddenText": 508,
+      "hiddenElements": 4,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": true
+    },
+    "links": [
+      {
+        "url": "https://watches.test/buy"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Cheap watches!!!"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Buy now"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://watches.test/buy",
+            "u": true,
+            "link": 0
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

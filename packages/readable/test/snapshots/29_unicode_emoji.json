@@ -1,0 +1,145 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 249,
+      "keptText": 249,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 1,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [
+      {
+        "src": "https://fonts.gstatic.example/s/e/notoemoji/15.0/1f389/32.png",
+        "width": 20.0,
+        "height": 20.0,
+        "alt": "🎉",
+        "icon": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Happy birthday! 🎂🎉 Hope you have a wonderful day 😊"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "日本語のテキストも正しく表示されるはずです。改行なしの長い文章でも画面の幅に合わせて折り返されます。"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "한국어 문장도 확인합니다. Ελληνικά και Русский текст."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Zero​width​spaces and soft­hyphens should not break anything."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Combining: é vs é, and flags 🇳🇱🇯🇵, and a family 👨‍👩‍👧."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Gmail emoji image: "
+          },
+          {
+            "img": 0
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 249,
+      "keptText": 249,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 1,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Happy birthday! 🎂🎉 Hope you have a wonderful day 😊"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "日本語のテキストも正しく表示されるはずです。改行なしの長い文章でも画面の幅に合わせて折り返されます。"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "한국어 문장도 확인합니다. Ελληνικά και Русский текст."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Zero​width​spaces and soft­hyphens should not break anything."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Combining: é vs é, and flags 🇳🇱🇯🇵, and a family 👨‍👩‍👧."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Gmail emoji image: "
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 1,
+    "contentIds": []
+  }
+}

@@ -1,0 +1,399 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 229,
+      "keptText": 229,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 1,
+      "remoteImages": 1,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://bank.example/statements"
+      },
+      {
+        "url": "https://bank.example/help"
+      }
+    ],
+    "images": [
+      {
+        "src": "https://bank.example/footer.png",
+        "width": 600.0,
+        "height": 80.0,
+        "alt": "Example Bank"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Dear customer,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Your "
+          },
+          {
+            "text": "account statement for ",
+            "b": true
+          },
+          {
+            "text": "September",
+            "b": true,
+            "i": true
+          },
+          {
+            "text": " is ready",
+            "i": true
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Balance: "
+          },
+          {
+            "text": "$1,204.33",
+            "scale": 1.15,
+            "color": "#008000"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "columns": 2,
+        "rows": [
+          [
+            {
+              "inlines": [
+                {
+                  "text": "Opening",
+                  "scale": 1.15,
+                  "color": "#008000"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "$980.00",
+                  "scale": 1.15,
+                  "color": "#008000"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "inlines": [
+                {
+                  "text": "Closing",
+                  "scale": 1.15,
+                  "color": "#008000"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "text": "$1,204.33",
+                  "scale": 1.15,
+                  "color": "#008000"
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      {
+        "type": "list",
+        "marker": "disc",
+        "items": [
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "Deposits: 3",
+                  "scale": 1.15,
+                  "color": "#008000"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "Withdrawals: 2",
+                  "scale": 1.15,
+                  "color": "#008000"
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "Unclosed paragraph inside a list item",
+                  "scale": 1.15,
+                  "color": "#008000"
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "View statement",
+            "u": true,
+            "scale": 1.15,
+            "link": 0
+          },
+          {
+            "text": "Help",
+            "u": true,
+            "scale": 1.15,
+            "link": 1
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Trailing text with a stray",
+            "scale": 1.15,
+            "color": "#008000"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "and an &unknown; entity & a real one <tag>.",
+            "scale": 1.15,
+            "color": "#008000"
+          }
+        ]
+      },
+      {
+        "type": "img",
+        "image": 0
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 229,
+      "keptText": 229,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 1,
+      "remoteImages": 1,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://bank.example/statements"
+      },
+      {
+        "url": "https://bank.example/help"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Dear customer,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Your "
+          },
+          {
+            "text": "account statement for "
+          },
+          {
+            "text": "September"
+          },
+          {
+            "text": " is ready"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Balance: "
+          },
+          {
+            "text": "$1,204.33"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Opening"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "$980.00"
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "Closing"
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "$1,204.33"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "•  "
+          },
+          {
+            "text": "Deposits: 3"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "•  "
+          },
+          {
+            "text": "Withdrawals: 2"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Unclosed paragraph inside a list item"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "View statement"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          },
+          {
+            "text": "Help"
+          },
+          {
+            "text": " [2]",
+            "link": 1
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Trailing text with a stray"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "and an &unknown; entity & a real one <tag>."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[Example Bank]"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://bank.example/statements",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[2] "
+          },
+          {
+            "text": "https://bank.example/help",
+            "u": true,
+            "link": 1
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 1,
+    "contentIds": []
+  }
+}

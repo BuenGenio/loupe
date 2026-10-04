@@ -1,0 +1,244 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 251,
+      "keptText": 251,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://wiki.example.com/budget"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Please review the following before Friday:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The deadline moved to 14 October.",
+            "bg": "#ffff00"
+          },
+          {
+            "text": " Everything else stays the same."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Budget: "
+          },
+          {
+            "text": "approved",
+            "color": "#000000",
+            "bg": "#00ff00"
+          },
+          {
+            "text": "; travel: "
+          },
+          {
+            "text": "rejected",
+            "color": "#ffffff",
+            "bg": "#ff0000"
+          },
+          {
+            "text": "; equipment: "
+          },
+          {
+            "text": "pending",
+            "bg": "#ffeb3b"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Outlook-style orange highlight",
+            "bg": "#ffc000"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "a soft blue one",
+            "bg": "#cfe2f3"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "bold highlight",
+            "b": true,
+            "bg": "#ffff00"
+          },
+          {
+            "text": " inside a sentence, and a "
+          },
+          {
+            "text": "highlighted link",
+            "u": true,
+            "bg": "#fff2cc",
+            "link": 0
+          },
+          {
+            "text": " inside a sentence."
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 251,
+      "keptText": 251,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://wiki.example.com/budget"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Please review the following before Friday:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The deadline moved to 14 October."
+          },
+          {
+            "text": " Everything else stays the same."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Budget: "
+          },
+          {
+            "text": "approved"
+          },
+          {
+            "text": "; travel: "
+          },
+          {
+            "text": "rejected"
+          },
+          {
+            "text": "; equipment: "
+          },
+          {
+            "text": "pending"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Outlook-style orange highlight"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "a soft blue one"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "bold highlight"
+          },
+          {
+            "text": " inside a sentence, and a "
+          },
+          {
+            "text": "highlighted link"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          },
+          {
+            "text": " inside a sentence."
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://wiki.example.com/budget",
+            "u": true,
+            "link": 0
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

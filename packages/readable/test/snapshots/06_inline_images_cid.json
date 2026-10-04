@@ -1,0 +1,132 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 52,
+      "keptText": 52,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 3,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [
+      {
+        "src": "cid:ii_m1abc001",
+        "width": 562.0,
+        "height": 421.0,
+        "alt": "IMG_2041.jpg"
+      },
+      {
+        "src": "cid:ii_m1abc002",
+        "width": 562.0,
+        "height": 421.0,
+        "alt": "IMG_2042.jpg"
+      },
+      {
+        "src": "cid:ii_m1abc003",
+        "width": 421.0,
+        "height": 562.0,
+        "alt": "The lake at sunset"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Some photos from the weekend!"
+          }
+        ]
+      },
+      {
+        "type": "carousel",
+        "images": [
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "The last one is my favourite."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "Sam"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 52,
+      "keptText": 52,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 3,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Some photos from the weekend!"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[IMG_2041.jpg] [IMG_2042.jpg] [The lake at sunset]"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "The last one is my favourite."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Sam"
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": [
+      "ii_m1abc001",
+      "ii_m1abc002",
+      "ii_m1abc003"
+    ]
+  }
+}

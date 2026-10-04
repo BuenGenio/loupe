@@ -1,0 +1,293 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 238,
+      "keptText": 238,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:jo@example.com"
+      },
+      {
+        "url": "mailto:max@example.org"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Hi Jo,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Sounds good, Thursday works for me."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "I'll bring the printed slides."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Cheers,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "Max"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "On Thu, 1 Oct 2026 at 09:15, Jo Example <"
+          },
+          {
+            "text": "jo@example.com",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "> wrote:"
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "p",
+            "dir": "ltr",
+            "inlines": [
+              {
+                "text": "Hey Max,"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "dir": "ltr",
+            "inlines": [
+              {
+                "text": "Can we move the review to Thursday?"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "dir": "ltr",
+            "inlines": [
+              {
+                "text": "Jo"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "dir": "ltr",
+            "inlines": [
+              {
+                "text": "On Wed, 30 Sep 2026 at 18:00, Max Sample <"
+              },
+              {
+                "text": "max@example.org",
+                "u": true,
+                "link": 1
+              },
+              {
+                "text": "> wrote:"
+              }
+            ]
+          },
+          {
+            "type": "quote",
+            "children": [
+              {
+                "type": "p",
+                "dir": "ltr",
+                "inlines": [
+                  {
+                    "text": "Review is Wednesday at 2."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 238,
+      "keptText": 238,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Hi Jo,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Sounds good, Thursday works for me."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "I'll bring the printed slides."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Cheers,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Max"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "On Thu, 1 Oct 2026 at 09:15, Jo Example <"
+          },
+          {
+            "text": "jo@example.com"
+          },
+          {
+            "text": "> wrote:"
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "p",
+            "dir": "ltr",
+            "inlines": [
+              {
+                "text": "Hey Max,"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "dir": "ltr",
+            "inlines": [
+              {
+                "text": "Can we move the review to Thursday?"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "dir": "ltr",
+            "inlines": [
+              {
+                "text": "Jo"
+              }
+            ]
+          },
+          {
+            "type": "p",
+            "dir": "ltr",
+            "inlines": [
+              {
+                "text": "On Wed, 30 Sep 2026 at 18:00, Max Sample <"
+              },
+              {
+                "text": "max@example.org"
+              },
+              {
+                "text": "> wrote:"
+              }
+            ]
+          },
+          {
+            "type": "quote",
+            "children": [
+              {
+                "type": "p",
+                "dir": "ltr",
+                "inlines": [
+                  {
+                    "text": "Review is Wednesday at 2."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}
