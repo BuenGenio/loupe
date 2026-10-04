@@ -195,13 +195,16 @@ SecurityReport assessMessage({
             const {'dkim', 'spf', 'dmarc'}.contains(m.method))
           '${m.method.toUpperCase()} ${m.result}',
     ];
+    final from = domain.isEmpty ? 'its sender' : domain;
     findings.add(
       Finding(
         FindingKind.authFailed,
-        Severity.warning,
+        // Mailing lists change messages on the way and often break the checks.
+        mailingList ? Severity.info : Severity.warning,
         title: 'Sender not verified',
-        explanation:
-            "Your mail server couldn't confirm that this message really comes from ${domain.isEmpty ? 'its sender' : domain}.",
+        explanation: mailingList
+            ? "Your mail server couldn't confirm that this message comes from $from. Common for mailing lists."
+            : "Your mail server couldn't confirm that this message really comes from $from.",
         advice: "Don't act on it unless you expected it. If in doubt, contact the sender another way.",
         details: failed,
       ),
@@ -241,7 +244,7 @@ SecurityReport assessMessage({
     final rEmail = r.email.toLowerCase();
     if (domain.isEmpty || mailingList || facts.ownAddresses.contains(rEmail)) break;
     if (registrableDomain(r.domain) == registrableDomain(domain)) continue;
-    final severity = !verified || (firstTime && !bulk) ? Severity.warning : Severity.info;
+    final severity = auth.verdict == AuthVerdict.failed || (firstTime && !bulk) ? Severity.warning : Severity.info;
     replyTo = Finding(
       FindingKind.replyToDiffers,
       severity,
@@ -255,10 +258,14 @@ SecurityReport assessMessage({
   }
 
   if (sender != null && !own && !facts.senderIsVip && (history == null || !history.isKnown)) {
+    // Brands write from many addresses of one domain ("Amazon" from
+    // shipment-tracking@ and order-update@): only another domain counts.
+    final others = [
+      for (final n in facts.namesakes)
+        if (n.you || registrableDomain(n.address.domain) != registrableDomain(domain)) n,
+    ];
     final namesake =
-        facts.namesakes.where((n) => n.you).firstOrNull ??
-        facts.namesakes.where((n) => n.vip).firstOrNull ??
-        facts.namesakes.firstOrNull;
+        others.where((n) => n.you).firstOrNull ?? others.where((n) => n.vip).firstOrNull ?? others.firstOrNull;
     if (namesake != null) {
       final who = namesake.you
           ? 'your own name'
@@ -331,8 +338,11 @@ SecurityReport assessMessage({
   String hosts(List<LinkFinding> ls) => {for (final l in ls) l.host ?? l.url}.join(', ');
 
   final mismatches = links(LinkIssue.textMismatch);
-  final hidden = mismatches.where((l) => !l.viaTracker).toList();
-  final tracked = mismatches.where((l) => l.viaTracker).toList();
+  // Verified bulk mail goes through its mailing service's click tracking,
+  // known to Loupe or not: a domain in the text can't be checked there.
+  final uncheckable = verified && bulk;
+  final hidden = mismatches.where((l) => !l.viaTracker && !uncheckable).toList();
+  final tracked = mismatches.where((l) => l.viaTracker || uncheckable).toList();
   if (hidden.isNotEmpty) {
     final first = hidden.first;
     findings.add(
@@ -353,7 +363,8 @@ SecurityReport assessMessage({
         Severity.info,
         title: "A link's destination can't be checked",
         explanation:
-            'A link shows ${tracked.first.detail}, but goes through a click tracker that hides where it leads.',
+            'A link shows ${tracked.first.detail}, but goes through ${tracked.first.host}, which records the click '
+            'before passing it on.',
         details: [for (final l in tracked) '“${l.text}” → ${l.url}'],
       ),
     );
@@ -457,7 +468,9 @@ SecurityReport assessMessage({
     );
   }
   final hiddenText = analysis.hiddenTextLength;
-  if (hiddenText >= 500 && hiddenText > analysis.keptTextLength) {
+  // Responsive newsletters hide a whole second layout; only an unverified
+  // sender hiding far more than it shows is suspicious.
+  if (!verified && hiddenText >= 500 && hiddenText > 2 * analysis.keptTextLength) {
     findings.add(
       Finding(
         FindingKind.hiddenText,

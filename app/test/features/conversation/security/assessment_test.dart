@@ -222,6 +222,48 @@ void main() {
       expect(r.findings.single.kind, FindingKind.authUnaligned);
     });
 
+    test('a brand writing from another address of its own domain is not impersonating', () {
+      final r = assessMessage(
+        message: summary(from: const EmailAddress('order-update@shop.example', 'Shop News')),
+        headers: const [pass],
+        facts: const SenderFacts(history: SenderHistory(received: 1), namesakes: [Namesake(shop)]),
+      );
+      expect(kinds(r), {FindingKind.firstTimeSender});
+      expect(r.verdict, Verdict.noIssues);
+    });
+
+    test('mailing lists often fail authentication: noted, not alarming', () {
+      final r = assessMessage(
+        message: summary(),
+        headers: const [fail, ('List-Id', '<hikers.lists.example>')],
+        facts: known,
+        analysis: ReadableAnalysis(links: [mismatch()]),
+      );
+      expect(r.findings.firstWhere((f) => f.kind == FindingKind.authFailed).severity, Severity.info);
+      expect(r.verdict, Verdict.beCareful);
+    });
+
+    test("a verified newsletter's links through an unknown mailing service can't be checked", () {
+      final r = assessMessage(
+        message: summary(),
+        headers: const [pass, ('List-Unsubscribe', '<https://shop.example/u>')],
+        facts: known,
+        analysis: ReadableAnalysis(links: [mismatch()]),
+      );
+      expect(kinds(r), {FindingKind.linkUncheckable});
+      expect(r.verdict, Verdict.noIssues);
+    });
+
+    test('without authentication results, a different Reply-To of a known sender is only noted', () {
+      final r = assessMessage(
+        message: summary(replyTo: const [EmailAddress('help@desk.example')]),
+        headers: const [],
+        facts: known,
+      );
+      expect(r.findings.single.severity, Severity.info);
+      expect(r.verdict, Verdict.noIssues);
+    });
+
     test('mailing lists may set Reply-To', () {
       final r = assessMessage(
         message: summary(replyTo: const [EmailAddress('hikers@lists.example')]),
