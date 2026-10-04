@@ -256,6 +256,11 @@ void main() {
       expect(src.bytes.length, 8);
     });
 
+    test('http images are upgraded to https', () {
+      final doc = readable('<img src="http://cdn.x.example/a.jpg" width="300" height="200">');
+      expect((doc.images.single.source as RemoteImageSource).url, 'https://cdn.x.example/a.jpg');
+    });
+
     test('small images stay inline as icons', () {
       final doc = readable('<p>Follow <img src="https://x.example/fb.png" width="24" height="24"> us</p>');
       expect((doc.blocks.single as ParagraphBlock).inlines.whereType<InlineImage>(), hasLength(1));

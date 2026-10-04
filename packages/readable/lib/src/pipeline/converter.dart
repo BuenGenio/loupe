@@ -336,7 +336,10 @@ final class _Converter {
   ImageSource? imageSource(String src) {
     final s = src.trim();
     final lower = s.toLowerCase();
-    if (lower.startsWith('http://') || lower.startsWith('https://')) return RemoteImageSource(s);
+    if (lower.startsWith('https://')) return RemoteImageSource(s);
+    // Plain http is upgraded: Android blocks cleartext, the Original view's
+    // CSP only allows https:, and it leaks less on the way.
+    if (lower.startsWith('http://')) return RemoteImageSource('https://${s.substring(7)}');
     if (lower.startsWith('//')) return RemoteImageSource('https:$s');
     if (lower.startsWith('cid:')) {
       var id = s.substring(4);
