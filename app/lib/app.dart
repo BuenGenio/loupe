@@ -11,6 +11,7 @@ import 'router.dart';
 import 'settings/app_mode.dart';
 import 'settings/app_settings.dart';
 import 'theme/theme.dart';
+import 'theme/loupe_icons.dart';
 
 class LoupeApp extends ConsumerWidget {
   const LoupeApp({super.key});
@@ -90,7 +91,7 @@ class _LiveUnavailable extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(CupertinoIcons.exclamationmark_triangle, size: 44, color: LoupeColors.of(context).flag),
+              Icon(LoupeIcons.warning, size: 44, color: LoupeColors.of(context).flag),
               const SizedBox(height: 16),
               Text('Your accounts couldn’t be opened', style: styles.navTitle, textAlign: TextAlign.center),
               const SizedBox(height: 8),

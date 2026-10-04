@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../settings/app_settings.dart';
+import 'loupe_icons.dart';
 
 /// App-specific colours, available as `LoupeColors.of(context)`.
 ///
@@ -272,6 +273,11 @@ abstract final class LoupeTheme {
       visualDensity: density == Density.compact ? VisualDensity.compact : VisualDensity.standard,
       dividerTheme: DividerThemeData(color: separator, thickness: 0.5, space: 0.5),
       iconTheme: IconThemeData(color: accent, size: 24),
+      // Material's own back and close buttons (app bars) use the app's icons.
+      actionIconTheme: ActionIconThemeData(
+        backButtonIconBuilder: (_) => const Icon(LoupeIcons.back),
+        closeButtonIconBuilder: (_) => const Icon(LoupeIcons.close),
+      ),
       appBarTheme: AppBarTheme(
         backgroundColor: surface,
         foregroundColor: label,

@@ -11,6 +11,7 @@ import '../../shared/tags.dart';
 import '../../theme/theme.dart';
 import 'attachments.dart';
 import 'auth_results.dart';
+import '../../theme/loupe_icons.dart';
 
 /// One message of a conversation: a one-line summary when collapsed, the
 /// header, body and attachments when expanded.
@@ -100,7 +101,7 @@ class _MessageCardState extends State<MessageCard> {
                           style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
                         ),
                       ),
-                      if (_m.isFlagged) Icon(Icons.flag, size: 14, color: colors.flag),
+                      if (_m.isFlagged) Icon(LoupeIcons.flaggedFilled, size: 14, color: colors.flag),
                       const SizedBox(width: 4),
                       Text(
                         formatListDate(_m.receivedAt),
@@ -206,7 +207,11 @@ class _MessageCardState extends State<MessageCard> {
                             style: theme.textTheme.bodySmall?.copyWith(color: colors.secondaryText, fontSize: 14),
                           ),
                         ),
-                        Icon(_details ? Icons.expand_less : Icons.chevron_right, size: 16, color: colors.secondaryText),
+                        Icon(
+                          _details ? LoupeIcons.collapse : LoupeIcons.disclosure,
+                          size: 16,
+                          color: colors.secondaryText,
+                        ),
                       ],
                     ),
                   ),
@@ -231,7 +236,7 @@ class _MessageCardState extends State<MessageCard> {
                 if (_m.isFlagged)
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
-                    child: Icon(Icons.flag, size: 16, color: colors.flag),
+                    child: Icon(LoupeIcons.flaggedFilled, size: 16, color: colors.flag),
                   ),
               ],
             ),
@@ -240,7 +245,7 @@ class _MessageCardState extends State<MessageCard> {
             key: ValueKey('more-${_m.id}'),
             tooltip: 'More',
             visualDensity: VisualDensity.compact,
-            icon: Icon(Icons.more_horiz, color: theme.colorScheme.primary),
+            icon: Icon(LoupeIcons.more, color: theme.colorScheme.primary),
             onPressed: widget.onMore,
           ),
         ],
@@ -371,8 +376,16 @@ class AuthBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (icon, color, label) = switch (verdict) {
-      AuthVerdict.verified => (Icons.verified, CupertinoColors.systemGreen.resolveFrom(context), 'Verified sender'),
-      AuthVerdict.failed => (Icons.gpp_maybe, CupertinoColors.systemOrange.resolveFrom(context), 'Unverified sender'),
+      AuthVerdict.verified => (
+        LoupeIcons.verified,
+        CupertinoColors.systemGreen.resolveFrom(context),
+        'Verified sender',
+      ),
+      AuthVerdict.failed => (
+        LoupeIcons.unverified,
+        CupertinoColors.systemOrange.resolveFrom(context),
+        'Unverified sender',
+      ),
       AuthVerdict.unknown => (null, null, null),
     };
     if (icon == null) return const SizedBox.shrink();
@@ -450,7 +463,7 @@ class _BodyError extends StatelessWidget {
     };
     return Column(
       children: [
-        Icon(offline ? Icons.cloud_off_outlined : Icons.error_outline, color: colors.secondaryText),
+        Icon(offline ? LoupeIcons.offline : LoupeIcons.error, color: colors.secondaryText),
         const SizedBox(height: 8),
         Text(
           offline ? "You're offline. The message will load when you're back online." : message,
@@ -474,7 +487,7 @@ class _OriginalHint extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         children: [
-          Icon(Icons.auto_awesome_outlined, size: 16, color: colors.secondaryText),
+          Icon(LoupeIcons.readable, size: 16, color: colors.secondaryText),
           const SizedBox(width: 6),
           Expanded(
             child: Text(

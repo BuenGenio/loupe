@@ -6,6 +6,7 @@ import 'package:loupe/router.dart';
 import 'package:loupe/settings/app_mode.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:loupe/theme/loupe_icons.dart';
 
 import 'helpers.dart';
 
@@ -72,7 +73,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('All Inboxes'), findsWidgets);
     expect(find.text('Quick question about the export API'), findsOneWidget);
-    expect(find.byIcon(CupertinoIcons.square_pencil), findsOneWidget);
+    expect(find.byIcon(LoupeIcons.compose), findsOneWidget);
   });
 
   testWidgets('a nested folder opens with its mail', (tester) async {
@@ -89,7 +90,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Jordan Lee'), findsOneWidget);
     final row = find.ancestor(of: find.text('Jordan Lee'), matching: find.byType(Row)).first;
-    await tester.tap(find.descendant(of: row, matching: find.byIcon(CupertinoIcons.minus_circle_fill)));
+    await tester.tap(find.descendant(of: row, matching: find.byIcon(LoupeIcons.remove)));
     await tester.pumpAndSettle();
     expect(find.text('Jordan Lee'), findsNothing);
     expect(await repo.watchVipAddresses().first, isNot(contains('jordan.lee@example.com')));

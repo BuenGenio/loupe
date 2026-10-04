@@ -25,6 +25,7 @@ import '../compose/compose_args.dart';
 import '../conversation/conversation_screen.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
+import '../../theme/loupe_icons.dart';
 
 /// Label of a quick filter in the Filter sheet and the toolbar.
 String quickFilterLabel(QuickFilter f) => switch (f) {
@@ -38,13 +39,13 @@ String quickFilterLabel(QuickFilter f) => switch (f) {
 };
 
 IconData quickFilterIcon(QuickFilter f) => switch (f) {
-  QuickFilter.unread => CupertinoIcons.envelope_badge,
-  QuickFilter.flagged => CupertinoIcons.flag,
-  QuickFilter.toMe => CupertinoIcons.person,
-  QuickFilter.ccMe => CupertinoIcons.person_2,
-  QuickFilter.hasAttachment => CupertinoIcons.paperclip,
-  QuickFilter.unreplied => CupertinoIcons.arrowshape_turn_up_left,
-  QuickFilter.fromVip => CupertinoIcons.star,
+  QuickFilter.unread => LoupeIcons.unread,
+  QuickFilter.flagged => LoupeIcons.flagged,
+  QuickFilter.toMe => LoupeIcons.person,
+  QuickFilter.ccMe => LoupeIcons.people,
+  QuickFilter.hasAttachment => LoupeIcons.attachment,
+  QuickFilter.unreplied => LoupeIcons.reply,
+  QuickFilter.fromVip => LoupeIcons.vip,
 };
 
 /// A mailbox's messages: large collapsing title with the search field hidden
@@ -218,10 +219,10 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
         SheetAction(
           anyUnread ? 'Mark as Read' : 'Mark as Unread',
           'read',
-          icon: anyUnread ? CupertinoIcons.envelope_open : CupertinoIcons.envelope_badge,
+          icon: anyUnread ? LoupeIcons.markRead : LoupeIcons.markUnread,
         ),
-        SheetAction(anyUnflagged ? 'Flag' : 'Unflag', 'flag', icon: CupertinoIcons.flag),
-        const SheetAction('Move to Junk', 'junk', icon: CupertinoIcons.bin_xmark),
+        SheetAction(anyUnflagged ? 'Flag' : 'Unflag', 'flag', icon: LoupeIcons.flagged),
+        const SheetAction('Move to Junk', 'junk', icon: LoupeIcons.junk),
       ],
     );
     switch (choice) {
@@ -413,11 +414,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
       return [
         SliverFillRemaining(
           hasScrollBody: false,
-          child: _EmptyState(
-            icon: CupertinoIcons.exclamationmark_triangle,
-            title: 'Couldn’t Load Mail',
-            detail: '${async.error}',
-          ),
+          child: _EmptyState(icon: LoupeIcons.warning, title: 'Couldn’t Load Mail', detail: '${async.error}'),
         ),
       ];
     }
@@ -428,7 +425,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
           hasScrollBody: false,
           child: _filterOn
               ? _EmptyState(
-                  icon: CupertinoIcons.line_horizontal_3_decrease_circle,
+                  icon: LoupeIcons.filter,
                   title: criteria.length == 1 && criteria.single == QuickFilter.unread
                       ? 'No Unread Mail'
                       : 'No Matching Mail',
@@ -436,7 +433,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
                   action: 'Turn Off Filter',
                   onAction: () => setState(() => _filterOn = false),
                 )
-              : const _EmptyState(icon: CupertinoIcons.tray, title: 'No Mail'),
+              : const _EmptyState(icon: LoupeIcons.inbox, title: 'No Mail'),
         ),
       ];
     }
@@ -511,9 +508,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     final unread = _unreadCount(rows, mailboxes);
     return LoupeBottomBar(
       leading: BarIconButton(
-        icon: _filterOn
-            ? CupertinoIcons.line_horizontal_3_decrease_circle_fill
-            : CupertinoIcons.line_horizontal_3_decrease_circle,
+        icon: _filterOn ? LoupeIcons.filterFilled : LoupeIcons.filter,
         tooltip: _filterOn ? 'Turn Off Filter' : 'Filter',
         onPressed: () {
           unawaited(HapticFeedback.selectionClick());
@@ -548,7 +543,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
             )
           : SyncStatusLine(detail: unread > 0 ? '${formatCount(unread)} Unread' : null),
       trailing: BarIconButton(
-        icon: CupertinoIcons.square_pencil,
+        icon: LoupeIcons.compose,
         tooltip: 'New Message',
         onPressed: () => openCompose(context, ComposeArgs(accountId: _accountOfRef())),
       ),
@@ -651,9 +646,7 @@ class _FilterSheetState extends State<_FilterSheet> {
                           dense: true,
                           leading: Icon(quickFilterIcon(f), color: colors.unreadDot),
                           title: Text(quickFilterLabel(f), style: styles.body),
-                          trailing: _selected.contains(f)
-                              ? Icon(CupertinoIcons.checkmark_alt, color: colors.unreadDot)
-                              : null,
+                          trailing: _selected.contains(f) ? Icon(LoupeIcons.check, color: colors.unreadDot) : null,
                           onTap: () {
                             unawaited(HapticFeedback.selectionClick());
                             setState(() => _selected.contains(f) ? _selected.remove(f) : _selected.add(f));
@@ -721,7 +714,7 @@ class _NoSelection extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(CupertinoIcons.envelope_open, size: 56, color: colors.tertiaryText),
+            Icon(LoupeIcons.email, size: 56, color: colors.tertiaryText),
             const SizedBox(height: 12),
             Text('No Message Selected', style: LoupeTextStyles.of(context).body.copyWith(color: colors.secondaryText)),
           ],

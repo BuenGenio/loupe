@@ -10,27 +10,28 @@ import 'package:share_plus/share_plus.dart';
 import '../../shared/format.dart';
 import '../../theme/theme.dart';
 import 'sheets.dart';
+import '../../theme/loupe_icons.dart';
 
 /// Icon for an attachment's MIME type.
 IconData attachmentIcon(String mimeType, [String? filename]) {
   final mime = mimeType.toLowerCase();
   final ext = (filename ?? '').split('.').last.toLowerCase();
-  if (mime.startsWith('image/')) return Icons.image_outlined;
-  if (mime.startsWith('video/')) return Icons.movie_outlined;
-  if (mime.startsWith('audio/')) return Icons.audiotrack_outlined;
-  if (mime == 'application/pdf' || ext == 'pdf') return Icons.picture_as_pdf_outlined;
-  if (mime == 'text/calendar' || ext == 'ics') return Icons.event_outlined;
+  if (mime.startsWith('image/')) return LoupeIcons.image;
+  if (mime.startsWith('video/')) return LoupeIcons.video;
+  if (mime.startsWith('audio/')) return LoupeIcons.audio;
+  if (mime == 'application/pdf' || ext == 'pdf') return LoupeIcons.pdf;
+  if (mime == 'text/calendar' || ext == 'ics') return LoupeIcons.calendar;
   if (mime.contains('zip') || mime.contains('compressed') || mime.contains('x-tar') || mime.contains('x-7z')) {
-    return Icons.folder_zip_outlined;
+    return LoupeIcons.zip;
   }
-  if (mime.contains('spreadsheet') || mime.contains('excel') || mime == 'text/csv') return Icons.table_chart_outlined;
-  if (mime.contains('presentation') || mime.contains('powerpoint')) return Icons.slideshow_outlined;
+  if (mime.contains('spreadsheet') || mime.contains('excel') || mime == 'text/csv') return LoupeIcons.spreadsheet;
+  if (mime.contains('presentation') || mime.contains('powerpoint')) return LoupeIcons.presentation;
   if (mime.contains('word') || mime.contains('opendocument.text') || mime == 'application/rtf') {
-    return Icons.description_outlined;
+    return LoupeIcons.wordDocument;
   }
-  if (mime == 'message/rfc822') return Icons.mail_outline;
-  if (mime.startsWith('text/')) return Icons.article_outlined;
-  return Icons.insert_drive_file_outlined;
+  if (mime == 'message/rfc822') return LoupeIcons.email;
+  if (mime.startsWith('text/')) return LoupeIcons.textDocument;
+  return LoupeIcons.file;
 }
 
 /// The attachment list under a message body.
@@ -161,7 +162,7 @@ class _AttachmentTileState extends State<AttachmentTile> {
               if (_busy)
                 const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2))
               else
-                Icon(Icons.adaptive.share, size: 20, color: colors.secondaryText),
+                Icon(LoupeIcons.share, size: 20, color: colors.secondaryText),
             ],
           ),
         ),

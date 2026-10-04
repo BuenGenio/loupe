@@ -13,6 +13,7 @@ import '../../shared/sheets.dart';
 import '../../theme/theme.dart';
 import 'search_session.dart';
 import 'search_view.dart';
+import '../../theme/loupe_icons.dart';
 
 /// A saved search, shown like a mailbox.
 class SmartMailboxScreen extends ConsumerStatefulWidget {
@@ -45,9 +46,9 @@ class _SmartMailboxScreenState extends ConsumerState<SmartMailboxScreen> {
       title: box.name,
       message: box.query,
       actions: const [
-        SheetAction('Rename', 'rename', icon: CupertinoIcons.pencil),
-        SheetAction('Edit Search', 'edit', icon: CupertinoIcons.search),
-        SheetAction('Delete Smart Mailbox', 'delete', icon: CupertinoIcons.trash, destructive: true),
+        SheetAction('Rename', 'rename', icon: LoupeIcons.rename),
+        SheetAction('Edit Search', 'edit', icon: LoupeIcons.search),
+        SheetAction('Delete Smart Mailbox', 'delete', icon: LoupeIcons.trash, destructive: true),
       ],
     );
     if (!mounted) return;
@@ -78,9 +79,7 @@ class _SmartMailboxScreenState extends ConsumerState<SmartMailboxScreen> {
         slivers: [
           LoupeTitleBar(
             title: box.name,
-            trailing: [
-              BarIconButton(icon: CupertinoIcons.ellipsis_circle, tooltip: 'More', onPressed: () => _menu(box)),
-            ],
+            trailing: [BarIconButton(icon: LoupeIcons.moreCircle, tooltip: 'More', onPressed: () => _menu(box))],
           ),
           CupertinoSliverRefreshControl(onRefresh: session.rerun),
           SearchSlivers(session: session, showSuggestions: false),

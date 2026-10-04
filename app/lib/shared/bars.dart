@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/theme.dart';
+import '../theme/loupe_icons.dart';
 
 /// A translucent bottom toolbar with a hairline on top, like iOS toolbars.
 class LoupeBottomBar extends StatelessWidget {
@@ -56,7 +57,7 @@ class LoupeBottomBar extends StatelessWidget {
 
 /// An icon button in a bar, tinted with the accent colour.
 class BarIconButton extends StatelessWidget {
-  const BarIconButton({super.key, required this.icon, required this.onPressed, required this.tooltip, this.size = 25});
+  const BarIconButton({super.key, required this.icon, required this.onPressed, required this.tooltip, this.size = 24});
 
   final IconData icon;
   final VoidCallback? onPressed;
@@ -185,7 +186,7 @@ class LoupeTitleBar extends StatelessWidget {
                   padding: const EdgeInsetsDirectional.only(start: 4, end: 2),
                   minimumSize: const Size(36, 44),
                   onPressed: () => Navigator.maybePop(context),
-                  child: const Icon(CupertinoIcons.back, size: 30),
+                  child: const Icon(LoupeIcons.back, size: 28),
                 ),
               )
             : null);
@@ -452,6 +453,8 @@ class LoupeSearchField extends StatelessWidget {
       backgroundColor: colors.fill,
       style: LoupeTextStyles.of(context).body,
       placeholderStyle: LoupeTextStyles.of(context).body.copyWith(color: colors.secondaryText),
+      prefixIcon: const Icon(LoupeIcons.search),
+      suffixIcon: const Icon(LoupeIcons.clear),
     );
   }
 }

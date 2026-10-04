@@ -21,6 +21,7 @@ import '../compose/compose_args.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
 import 'vip_screen.dart';
+import '../../theme/loupe_icons.dart';
 
 /// The first screen: unified mailboxes, each account's folder tree, smart
 /// mailboxes and tags. Pull down for search; Edit hides items.
@@ -98,13 +99,13 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
                 leading: _editing
                     ? null
                     : BarIconButton(
-                        icon: CupertinoIcons.gear,
+                        icon: LoupeIcons.settings,
                         tooltip: 'Settings',
                         onPressed: () => context.push(Routes.settings),
                       ),
                 center: const SyncStatusLine(),
                 trailing: BarIconButton(
-                  icon: CupertinoIcons.square_pencil,
+                  icon: LoupeIcons.compose,
                   tooltip: 'New Message',
                   onPressed: () => openCompose(context),
                 ),
@@ -215,9 +216,9 @@ class _MailboxTile extends StatelessWidget {
                     ? Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: Icon(
-                          visible ? CupertinoIcons.checkmark_circle_fill : CupertinoIcons.circle,
+                          visible ? LoupeIcons.selected : LoupeIcons.unselected,
                           color: visible ? colors.unreadDot : colors.tertiaryText,
-                          size: 23,
+                          size: 24,
                           semanticLabel: visible ? 'Shown' : 'Hidden',
                         ),
                       )
@@ -237,12 +238,12 @@ class _MailboxTile extends StatelessWidget {
                             child: AnimatedRotation(
                               turns: expanded! ? 0.25 : 0,
                               duration: const Duration(milliseconds: 180),
-                              child: Icon(CupertinoIcons.chevron_forward, size: 14, color: colors.secondaryText),
+                              child: Icon(LoupeIcons.disclosure, size: 14, color: colors.secondaryText),
                             ),
                           ),
                         ),
                 ),
-              Icon(icon, color: iconColor ?? colors.unreadDot, size: 23),
+              Icon(icon, color: iconColor ?? colors.unreadDot, size: 24),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -261,7 +262,7 @@ class _MailboxTile extends StatelessWidget {
               if (!editing && trailing == null)
                 Padding(
                   padding: const EdgeInsetsDirectional.only(start: 8),
-                  child: Icon(CupertinoIcons.chevron_forward, size: 16, color: colors.tertiaryText),
+                  child: Icon(LoupeIcons.disclosure, size: 16, color: colors.tertiaryText),
                 ),
             ],
           ),
@@ -318,7 +319,7 @@ class _VirtualSection extends ConsumerWidget {
                     minimumSize: const Size(36, 36),
                     onPressed: () =>
                         Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const VipScreen())),
-                    child: const Icon(CupertinoIcons.info_circle, size: 22, semanticLabel: 'Manage VIPs'),
+                    child: const Icon(LoupeIcons.info, size: 22, semanticLabel: 'Manage VIPs'),
                   )
                 : null,
           ),
@@ -390,7 +391,7 @@ class _AccountSection extends ConsumerWidget {
           duration: const Duration(milliseconds: 200),
           child: Padding(
             padding: const EdgeInsets.all(8),
-            child: Icon(CupertinoIcons.chevron_forward, size: 18, color: colors.unreadDot),
+            child: Icon(LoupeIcons.disclosure, size: 18, color: colors.unreadDot),
           ),
         ),
       ),
@@ -424,7 +425,7 @@ class _SmartSection extends ConsumerWidget {
             _MailboxTile(
               key: ValueKey(s.id),
               title: s.name,
-              icon: CupertinoIcons.gear_alt,
+              icon: LoupeIcons.smartMailbox,
               editing: editing,
               visible: v.visible('smart.${s.id}'),
               onToggleVisible: () => v.toggle('smart.${s.id}'),
@@ -434,7 +435,7 @@ class _SmartSection extends ConsumerWidget {
                       padding: EdgeInsets.zero,
                       minimumSize: const Size(36, 36),
                       onPressed: () => ref.read(smartMailboxesProvider.notifier).remove(s.id),
-                      child: Icon(CupertinoIcons.minus_circle_fill, color: colors.destructive, semanticLabel: 'Delete'),
+                      child: Icon(LoupeIcons.remove, color: colors.destructive, semanticLabel: 'Delete'),
                     )
                   : null,
             ),
@@ -457,7 +458,7 @@ class _TagSection extends ConsumerWidget {
           _MailboxTile(
             key: ValueKey(tag.keyword),
             title: tag.label,
-            icon: CupertinoIcons.tag_fill,
+            icon: LoupeIcons.tagFilled,
             iconColor: tagColor(tag.keyword),
             editing: editing,
             visible: v.visible('tag.${tag.keyword}'),

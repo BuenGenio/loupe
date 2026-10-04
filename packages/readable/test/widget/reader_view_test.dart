@@ -5,6 +5,7 @@ import 'package:readable/src/cache.dart';
 import 'package:readable/src/render/banner.dart';
 import 'package:readable/src/render/blocks.dart';
 import 'package:readable/src/render/gallery.dart';
+import 'package:readable/src/render/icons.dart';
 import 'package:readable/src/render/images.dart';
 import 'package:readable/src/render/link_actions.dart';
 import 'package:readable/src/render/reader_view.dart';
@@ -75,7 +76,7 @@ void main() {
       expect(find.byKey(const ValueKey('readable-gallery')), findsOneWidget);
       expect(find.text('1 / 2'), findsOneWidget);
       expect(find.text('Beach'), findsWidgets);
-      await tester.tap(find.byIcon(Icons.close_rounded));
+      await tester.tap(find.byIcon(ReadableIcons.close));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 300));
       expect(find.byType(ImageGalleryPage), findsNothing);

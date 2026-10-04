@@ -5,6 +5,7 @@ import 'package:mail_model/mail_model.dart';
 import '../theme/theme.dart';
 import 'mailbox_display.dart';
 import 'tags.dart';
+import '../theme/loupe_icons.dart';
 
 /// One button of an action sheet.
 class SheetAction<T> {
@@ -233,10 +234,10 @@ Future<Set<String>?> showTagPicker(BuildContext context, {required Set<String> c
                           for (final tag in TagDefinition.thunderbirdDefaults)
                             ListTile(
                               dense: true,
-                              leading: Icon(CupertinoIcons.circle_fill, color: tagColor(tag.keyword), size: 16),
+                              leading: Icon(LoupeIcons.dot, color: tagColor(tag.keyword), size: 16),
                               title: Text(tag.label, style: styles.body),
                               trailing: selected.contains(tag.keyword)
-                                  ? Icon(CupertinoIcons.checkmark_alt, color: colors.unreadDot)
+                                  ? Icon(LoupeIcons.check, color: colors.unreadDot)
                                   : null,
                               onTap: () => setState(
                                 () => selected.contains(tag.keyword)

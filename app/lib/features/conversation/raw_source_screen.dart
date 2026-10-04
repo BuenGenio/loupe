@@ -10,6 +10,7 @@ import '../../providers.dart';
 import '../../shared/format.dart';
 import '../../theme/theme.dart';
 import 'sheets.dart';
+import '../../theme/loupe_icons.dart';
 
 /// Decodes a raw message: UTF-8 if valid, otherwise Latin-1 (8-bit parts in
 /// legacy charsets).
@@ -82,17 +83,17 @@ class _RawSourceScreenState extends ConsumerState<RawSourceScreen> {
                 key: const Key('source-wrap'),
                 tooltip: _wrap ? "Don't Wrap Lines" : 'Wrap Lines',
                 isSelected: _wrap,
-                icon: const Icon(Icons.wrap_text),
+                icon: const Icon(LoupeIcons.wrap),
                 onPressed: () => setState(() => _wrap = !_wrap),
               ),
               IconButton(
                 tooltip: 'Copy',
-                icon: const Icon(Icons.copy),
+                icon: const Icon(LoupeIcons.copy),
                 onPressed: bytes == null ? null : () => _copy(bytes),
               ),
               IconButton(
                 tooltip: 'Share',
-                icon: Icon(Icons.adaptive.share),
+                icon: Icon(LoupeIcons.share),
                 onPressed: bytes == null ? null : () => _share(bytes),
               ),
             ],

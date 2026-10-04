@@ -22,6 +22,7 @@ import '../../shared/swipe_row.dart';
 import '../../shared/tags.dart';
 import '../../theme/theme.dart';
 import 'search_session.dart';
+import '../../theme/loupe_icons.dart';
 
 /// The search UI below a search field: scope control, suggestions while the
 /// field is empty, then chips, people and streamed results.
@@ -99,8 +100,8 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
       context,
       title: describeTerm(term),
       actions: [
-        SheetAction(negated ? 'Don’t Negate' : 'Negate', 'negate', icon: CupertinoIcons.minus_circle),
-        const SheetAction('Remove', 'remove', icon: CupertinoIcons.delete_left, destructive: true),
+        SheetAction(negated ? 'Don’t Negate' : 'Negate', 'negate', icon: LoupeIcons.negate),
+        const SheetAction('Remove', 'remove', icon: LoupeIcons.backspace, destructive: true),
       ],
     );
     if (choice == null) return;
@@ -167,31 +168,29 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
           ),
         ),
         SliverList.list(
-          children: [
-            for (final q in recents) _SuggestionRow(icon: CupertinoIcons.clock, label: q, onTap: () => _pick(q)),
-          ],
+          children: [for (final q in recents) _SuggestionRow(icon: LoupeIcons.recent, label: q, onTap: () => _pick(q))],
         ),
       ],
       const SliverToBoxAdapter(child: _SectionHeader('Suggestions')),
       SliverList.list(
         children: [
           _SuggestionRow(
-            icon: CupertinoIcons.envelope_badge,
+            icon: LoupeIcons.unread,
             label: 'Unread Messages',
             onTap: () => _session.addToken(SearchTokens.unread),
           ),
           _SuggestionRow(
-            icon: CupertinoIcons.flag,
+            icon: LoupeIcons.flagged,
             label: 'Flagged Messages',
             onTap: () => _session.addToken(SearchTokens.flagged),
           ),
           _SuggestionRow(
-            icon: CupertinoIcons.paperclip,
+            icon: LoupeIcons.attachment,
             label: 'Messages with Attachments',
             onTap: () => _session.addToken(SearchTokens.attachments),
           ),
           _SuggestionRow(
-            icon: CupertinoIcons.arrowshape_turn_up_left,
+            icon: LoupeIcons.reply,
             label: 'Unreplied Messages',
             onTap: () => _session.addToken(SearchTokens.unreplied),
           ),
@@ -202,7 +201,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
         children: [
           for (final t in TagDefinition.thunderbirdDefaults)
             _SuggestionRow(
-              leading: Icon(CupertinoIcons.tag_fill, size: 18, color: tagColor(t.keyword)),
+              leading: Icon(LoupeIcons.tagFilled, size: 18, color: tagColor(t.keyword)),
               label: t.label,
               onTap: () => _session.addToken(SearchTokens.tag(t.keyword)),
             ),
@@ -219,7 +218,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
                 const _SectionHeader('People'),
                 for (final p in people)
                   _SuggestionRow(
-                    icon: CupertinoIcons.person_crop_circle,
+                    icon: LoupeIcons.contact,
                     label: p.displayName,
                     detail: p.email,
                     onTap: () => _session.addToken(SearchTokens.from(p)),
@@ -235,7 +234,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
           children: [
             for (final s in smart)
               _SuggestionRow(
-                icon: CupertinoIcons.gear_alt,
+                icon: LoupeIcons.smartMailbox,
                 label: s.name,
                 detail: s.query,
                 onTap: () => context.push(Routes.smartMailbox(s.id)),
@@ -297,7 +296,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
           children: [
             for (final c in completions)
               _SuggestionRow(
-                icon: CupertinoIcons.text_cursor,
+                icon: LoupeIcons.completion,
                 label: c.insertText,
                 detail: c.detail,
                 onTap: () => _session.completeWord(c.insertText),
@@ -315,7 +314,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
                 children: [
                   for (final p in people)
                     _SuggestionRow(
-                      icon: CupertinoIcons.person_crop_circle,
+                      icon: LoupeIcons.contact,
                       label: 'From: ${p.displayName}',
                       detail: p.email,
                       onTap: () {
@@ -356,7 +355,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(CupertinoIcons.plus_rectangle_on_rectangle, size: 18),
+                          Icon(LoupeIcons.saveSearch, size: 18),
                           SizedBox(width: 4),
                           Flexible(
                             child: Text(
@@ -404,7 +403,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
               padding: const EdgeInsets.fromLTRB(16, 2, 16, 4),
               child: Row(
                 children: [
-                  Icon(CupertinoIcons.exclamationmark_circle, size: 15, color: colors.secondaryText),
+                  Icon(LoupeIcons.error, size: 15, color: colors.secondaryText),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -560,13 +559,13 @@ class _Chip extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (negated) ...[Icon(CupertinoIcons.minus_circle_fill, size: 14, color: tint), const SizedBox(width: 4)],
+              if (negated) ...[Icon(LoupeIcons.remove, size: 14, color: tint), const SizedBox(width: 4)],
               Text(
                 label,
                 style: TextStyle(color: tint, fontSize: 15, fontWeight: FontWeight.w500),
               ),
               const SizedBox(width: 4),
-              Icon(CupertinoIcons.chevron_down, size: 11, color: tint),
+              Icon(LoupeIcons.expand, size: 11, color: tint),
             ],
           ),
         ),

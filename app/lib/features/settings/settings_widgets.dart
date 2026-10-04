@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../shared/grouped_list.dart';
 import '../../theme/theme.dart';
+import '../../theme/loupe_icons.dart';
 
 /// The coloured rounded-square icon of iOS Settings rows.
 class SettingsIcon extends StatelessWidget {
@@ -80,7 +81,7 @@ class _ChoicePageState<T> extends State<ChoicePage<T>> {
                 subtitle: c.detail,
                 chevron: false,
                 trailing: c.value == _selected
-                    ? Icon(CupertinoIcons.checkmark_alt, color: colors.unreadDot, size: 22)
+                    ? Icon(LoupeIcons.check, color: colors.unreadDot, size: 22)
                     : const SizedBox(width: 22),
                 onTap: () {
                   setState(() => _selected = c.value);

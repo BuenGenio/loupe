@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -7,6 +6,7 @@ import '../../settings/app_mode.dart';
 import '../../shared/grouped_list.dart';
 import '../../shared/sheets.dart';
 import '../../theme/theme.dart';
+import '../../theme/loupe_icons.dart';
 
 /// Demo mode, reset and About.
 class AdvancedSettingsScreen extends ConsumerStatefulWidget {
@@ -86,7 +86,7 @@ class _AdvancedSettingsScreenState extends ConsumerState<AdvancedSettingsScreen>
             GroupedRow(
               title: 'Privacy',
               subtitle: 'Loupe has no analytics and no tracking. Your mail goes only to your mail servers.',
-              leading: Icon(CupertinoIcons.lock_shield, color: LoupeColors.of(context).success),
+              leading: Icon(LoupeIcons.privacy, color: LoupeColors.of(context).success),
               chevron: false,
             ),
           ],

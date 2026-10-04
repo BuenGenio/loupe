@@ -3,19 +3,21 @@ import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../theme/loupe_icons.dart';
+
 /// Icon of a mailbox by role, as Apple Mail draws them.
 IconData mailboxIcon(MailboxRole role) => switch (role) {
-  MailboxRole.inbox => CupertinoIcons.tray,
-  MailboxRole.drafts => CupertinoIcons.doc,
-  MailboxRole.sent => CupertinoIcons.paperplane,
-  MailboxRole.junk => CupertinoIcons.bin_xmark,
-  MailboxRole.trash => CupertinoIcons.trash,
-  MailboxRole.archive => CupertinoIcons.archivebox,
-  MailboxRole.all => CupertinoIcons.tray_full,
-  MailboxRole.flagged => CupertinoIcons.flag,
-  MailboxRole.important => CupertinoIcons.exclamationmark_circle,
-  MailboxRole.outbox => CupertinoIcons.tray_arrow_up,
-  MailboxRole.none => CupertinoIcons.folder,
+  MailboxRole.inbox => LoupeIcons.inbox,
+  MailboxRole.drafts => LoupeIcons.drafts,
+  MailboxRole.sent => LoupeIcons.sent,
+  MailboxRole.junk => LoupeIcons.junk,
+  MailboxRole.trash => LoupeIcons.trash,
+  MailboxRole.archive => LoupeIcons.archive,
+  MailboxRole.all => LoupeIcons.allMail,
+  MailboxRole.flagged => LoupeIcons.flagged,
+  MailboxRole.important => LoupeIcons.important,
+  MailboxRole.outbox => LoupeIcons.outbox,
+  MailboxRole.none => LoupeIcons.folder,
 };
 
 String virtualMailboxTitle(VirtualMailbox kind) => switch (kind) {
@@ -28,12 +30,12 @@ String virtualMailboxTitle(VirtualMailbox kind) => switch (kind) {
 };
 
 IconData virtualMailboxIcon(VirtualMailbox kind) => switch (kind) {
-  VirtualMailbox.allInboxes => CupertinoIcons.tray_2,
-  VirtualMailbox.unread => CupertinoIcons.envelope_badge,
-  VirtualMailbox.flagged => CupertinoIcons.flag,
-  VirtualMailbox.vip => CupertinoIcons.star,
-  VirtualMailbox.allDrafts => CupertinoIcons.doc_on_doc,
-  VirtualMailbox.allSent => CupertinoIcons.paperplane,
+  VirtualMailbox.allInboxes => LoupeIcons.allInboxes,
+  VirtualMailbox.unread => LoupeIcons.unread,
+  VirtualMailbox.flagged => LoupeIcons.flagged,
+  VirtualMailbox.vip => LoupeIcons.vip,
+  VirtualMailbox.allDrafts => LoupeIcons.drafts,
+  VirtualMailbox.allSent => LoupeIcons.sent,
 };
 
 /// Sort key that puts special mailboxes first, in Apple Mail's order.

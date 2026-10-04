@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../theme/theme.dart';
 import 'format.dart';
 import 'tags.dart';
+import '../theme/loupe_icons.dart';
 
 /// One row of a message list, Apple Mail style: sender, date and chevron on
 /// top, subject below, then a two-line preview. The left gutter carries the
@@ -75,8 +75,8 @@ class MessageRow extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.only(top: 18),
           child: Icon(
-            checked ? CupertinoIcons.checkmark_circle_fill : CupertinoIcons.circle,
-            size: 23,
+            checked ? LoupeIcons.selected : LoupeIcons.unselected,
+            size: 24,
             color: checked ? colors.unreadDot : colors.tertiaryText,
           ),
         );
@@ -88,7 +88,7 @@ class MessageRow extends StatelessWidget {
             height: 22,
             child: Center(
               child: isVip
-                  ? Icon(CupertinoIcons.star_fill, size: 13, color: isUnread ? colors.unreadDot : colors.tertiaryText)
+                  ? Icon(LoupeIcons.vipFilled, size: 13, color: isUnread ? colors.unreadDot : colors.tertiaryText)
                   : isUnread
                   ? Container(
                       width: 10,
@@ -98,9 +98,9 @@ class MessageRow extends StatelessWidget {
                   : null,
             ),
           ),
-          if (email.isFlagged) Icon(CupertinoIcons.flag_fill, size: 12, color: colors.flag),
+          if (email.isFlagged) Icon(LoupeIcons.flaggedFilled, size: 12, color: colors.flag),
           if (email.isAnswered && !email.isFlagged)
-            Icon(CupertinoIcons.arrowshape_turn_up_left_fill, size: 11, color: colors.tertiaryText),
+            Icon(LoupeIcons.repliedFilled, size: 11, color: colors.tertiaryText),
         ],
       );
     }
@@ -123,17 +123,12 @@ class MessageRow extends StatelessWidget {
             if (fromServer)
               Padding(
                 padding: const EdgeInsets.only(left: 6),
-                child: Icon(CupertinoIcons.cloud, size: 15, color: colors.secondaryText, semanticLabel: 'On server'),
+                child: Icon(LoupeIcons.onServer, size: 15, color: colors.secondaryText, semanticLabel: 'On server'),
               ),
             if (email.hasAttachment)
               Padding(
                 padding: const EdgeInsets.only(left: 6),
-                child: Icon(
-                  CupertinoIcons.paperclip,
-                  size: 14,
-                  color: colors.secondaryText,
-                  semanticLabel: 'Attachment',
-                ),
+                child: Icon(LoupeIcons.attachment, size: 14, color: colors.secondaryText, semanticLabel: 'Attachment'),
               ),
             const SizedBox(width: 6),
             Text(formatListDate(email.receivedAt), style: styles.date),
@@ -149,7 +144,7 @@ class MessageRow extends StatelessWidget {
               ),
             Padding(
               padding: const EdgeInsets.only(left: 4),
-              child: Icon(CupertinoIcons.chevron_forward, size: 14, color: colors.tertiaryText),
+              child: Icon(LoupeIcons.disclosure, size: 14, color: colors.tertiaryText),
             ),
           ],
         ),

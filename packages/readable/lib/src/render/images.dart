@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../model/document.dart';
+import 'icons.dart';
 import 'scope.dart';
 
 /// Decodes at most this many physical pixels across, whatever the source.
@@ -125,7 +126,7 @@ class InlineIcon extends StatelessWidget {
         // Blocked: the alt text says more than a broken-image glyph.
         ? (alt.isNotEmpty
               ? Text(alt, style: scope.styles.body.copyWith(color: scope.styles.muted, fontSize: 13))
-              : Icon(Icons.image_not_supported_outlined, size: h.clamp(10, 20), color: scope.styles.muted))
+              : Icon(ReadableIcons.imageBroken, size: h.clamp(10, 20), color: scope.styles.muted))
         : Image(
             image: sizedProvider(provider, w, MediaQuery.devicePixelRatioOf(context)),
             width: w,
@@ -178,7 +179,7 @@ class ImagePlaceholder extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(failed ? Icons.broken_image_outlined : Icons.image_outlined, size: 18, color: scheme.outline),
+              Icon(failed ? ReadableIcons.imageBroken : ReadableIcons.image, size: 18, color: scheme.outline),
               if (alt.isNotEmpty) ...[
                 const SizedBox(width: 6),
                 Flexible(

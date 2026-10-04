@@ -11,6 +11,7 @@ import '../../settings/app_settings.dart';
 import '../../shared/grouped_list.dart';
 import '../../theme/theme.dart';
 import 'settings_widgets.dart';
+import '../../theme/loupe_icons.dart';
 
 String swipeActionLabel(SwipeAction a) => switch (a) {
   SwipeAction.none => 'None',
@@ -66,7 +67,7 @@ class SettingsScreen extends ConsumerWidget {
                 onTap: () => context.push(Routes.accountSettings(a.id)),
               ),
             GroupedRow(
-              leading: Icon(CupertinoIcons.plus_circle_fill, color: colors.unreadDot, size: 26),
+              leading: Icon(LoupeIcons.add, color: colors.unreadDot, size: 26),
               title: 'Add Account',
               titleStyle: LoupeTextStyles.of(context).body.copyWith(color: colors.unreadDot),
               chevron: false,
@@ -79,12 +80,12 @@ class SettingsScreen extends ConsumerWidget {
           separatorIndent: 58,
           children: [
             GroupedRow(
-              leading: SettingsIcon(CupertinoIcons.hand_draw, colors.swipeArchive),
+              leading: SettingsIcon(LoupeIcons.swipeActions, colors.swipeArchive),
               title: 'Swipe Actions',
               onTap: () => context.push(Routes.swipeSettings),
             ),
             GroupedRow(
-              leading: SettingsIcon(CupertinoIcons.text_bubble, colors.unreadDot),
+              leading: SettingsIcon(LoupeIcons.conversations, colors.unreadDot),
               title: 'Organize by Conversation',
               chevron: false,
               onTap: () => controller.update((s) => s.copyWith(threaded: !s.threaded)),
@@ -95,7 +96,7 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
             GroupedRow(
-              leading: SettingsIcon(CupertinoIcons.arrow_uturn_left, colors.flag),
+              leading: SettingsIcon(LoupeIcons.undoSend, colors.flag),
               title: 'Undo Send Delay',
               detail: undoDelayLabel(settings.undoSendSeconds),
               onTap: () => ChoicePage.push<int>(
@@ -135,7 +136,7 @@ class SettingsScreen extends ConsumerWidget {
           footer: 'Remote images can tell senders when and where you opened a message.',
           children: [
             GroupedRow(
-              leading: SettingsIcon(CupertinoIcons.doc_richtext, colors.success),
+              leading: SettingsIcon(LoupeIcons.readerView, colors.success),
               title: 'Default View',
               detail: readerModeLabel(settings.defaultReaderMode),
               onTap: () => ChoicePage.push<ReaderMode>(
@@ -152,7 +153,7 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
             GroupedRow(
-              leading: SettingsIcon(CupertinoIcons.textformat, colors.swipeMore),
+              leading: SettingsIcon(LoupeIcons.font, colors.swipeMore),
               title: 'Plain Text Font',
               detail: settings.plainFont == PlainTextFont.mono ? 'Monospaced' : 'Sans Serif',
               onTap: () => ChoicePage.push<PlainTextFont>(
@@ -167,7 +168,7 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
             GroupedRow(
-              leading: SettingsIcon(CupertinoIcons.photo, colors.unreadDot),
+              leading: SettingsIcon(LoupeIcons.images, colors.unreadDot),
               title: 'Load Remote Images',
               chevron: false,
               onTap: () => controller.update((s) => s.copyWith(loadRemoteImages: !s.loadRemoteImages)),
@@ -183,14 +184,14 @@ class SettingsScreen extends ConsumerWidget {
           separatorIndent: 58,
           children: [
             GroupedRow(
-              leading: SettingsIcon(CupertinoIcons.bell_fill, colors.swipeTrash),
+              leading: SettingsIcon(LoupeIcons.notifications, colors.swipeTrash),
               title: 'Notifications',
               detail: 'Coming Soon',
               enabled: false,
               chevron: false,
             ),
             GroupedRow(
-              leading: SettingsIcon(CupertinoIcons.gear_alt_fill, colors.swipeMore),
+              leading: SettingsIcon(LoupeIcons.settings, colors.swipeMore),
               title: 'Advanced',
               onTap: () => context.push(Routes.advancedSettings),
             ),

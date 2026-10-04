@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/theme.dart';
 import 'bars.dart';
+import '../theme/loupe_icons.dart';
 
 /// An iOS inset-grouped section: rounded card, hairline separators inset past
 /// the leading icon, optional header and footer.
@@ -192,7 +193,7 @@ class GroupedRow extends StatelessWidget {
               if (showChevron)
                 Padding(
                   padding: const EdgeInsetsDirectional.only(start: 6),
-                  child: Icon(CupertinoIcons.chevron_forward, size: 17, color: colors.tertiaryText),
+                  child: Icon(LoupeIcons.disclosure, size: 17, color: colors.tertiaryText),
                 ),
             ],
           ),

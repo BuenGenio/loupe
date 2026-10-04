@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/router.dart';
 import 'package:mail_model/mail_model.dart';
+import 'package:loupe/theme/loupe_icons.dart';
 
 import 'helpers.dart';
 
@@ -44,14 +44,14 @@ void main() {
     await tester.scrollTo(find.text(read));
     expect(find.text(read), findsOneWidget);
 
-    await tester.tap(find.byIcon(CupertinoIcons.line_horizontal_3_decrease_circle));
+    await tester.tap(find.byIcon(LoupeIcons.filter));
     await tester.pumpAndSettle();
 
     expect(find.text('Filtered by:'), findsOneWidget);
     expect(find.text(read), findsNothing);
     await tester.scrollTo(find.text(unread));
     expect(find.text(unread), findsOneWidget);
-    expect(find.byIcon(CupertinoIcons.line_horizontal_3_decrease_circle_fill), findsOneWidget);
+    expect(find.byIcon(LoupeIcons.filterFilled), findsOneWidget);
   });
 
   testWidgets('edit mode selects rows and archives them', (tester) async {

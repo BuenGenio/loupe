@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'icons.dart';
+
 /// "Images from example.com are blocked to protect your privacy", with
 /// Load images and Always for this sender.
 class RemoteContentBanner extends StatelessWidget {
@@ -33,7 +35,7 @@ class RemoteContentBanner extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 2),
-                  child: Icon(Icons.shield_outlined, size: 20, color: scheme.onSurfaceVariant),
+                  child: Icon(ReadableIcons.remoteContent, size: 20, color: scheme.onSurfaceVariant),
                 ),
                 const SizedBox(width: 10),
                 Expanded(

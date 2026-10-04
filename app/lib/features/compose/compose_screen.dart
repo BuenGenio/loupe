@@ -18,6 +18,7 @@ import '../conversation/sheets.dart';
 import 'compose_args.dart';
 import 'compose_text.dart';
 import 'recipient_field.dart';
+import '../../theme/loupe_icons.dart';
 
 /// Writes a new message, reply, forward or draft. Apple-Mail-clean: Cancel,
 /// the subject as title and Send; To, a collapsed "Cc/Bcc, From" row,
@@ -279,7 +280,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
                   title: Text(EmailAddress(i.email, i.name).toString(), style: const TextStyle(fontSize: 15)),
                   subtitle: Text(a.displayName),
                   trailing: i.id == _identity?.id
-                      ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary)
+                      ? Icon(LoupeIcons.check, color: Theme.of(context).colorScheme.primary)
                       : null,
                   onTap: () => Navigator.of(context).pop((a, i)),
                 ),
@@ -489,7 +490,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
           actions: [
             IconButton(
               tooltip: 'Attach',
-              icon: const Icon(Icons.attach_file),
+              icon: const Icon(LoupeIcons.attachment),
               onPressed: _preparing || _busy ? null : _attach,
             ),
             Padding(
@@ -502,7 +503,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
                         dimension: 18,
                         child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                       )
-                    : const Icon(Icons.arrow_upward),
+                    : const Icon(LoupeIcons.send),
                 onPressed: _canSend ? _send : null,
               ),
             ),
@@ -602,6 +603,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
                           avatar: Icon(attachmentIcon(a.mimeType, a.filename), size: 18),
                           label: Text('${a.filename} · ${formatBytes(a.data.length)}'),
                           onDeleted: () => setState(() => _attachments.remove(a)),
+                          deleteIcon: const Icon(LoupeIcons.clear, size: 18),
                           deleteButtonTooltipMessage: 'Remove',
                         ),
                     ],
