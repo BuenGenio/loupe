@@ -108,6 +108,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     } on MailException {
       _accounts = const [];
     }
+    if (!mounted) return;
     String? warning;
     if (args.message case final m?) {
       _restore(m);
@@ -125,9 +126,9 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
         case ComposeMode.editDraft:
           warning = await _prepareDraft(args);
       }
+      if (!mounted) return;
       _initial = _snapshot();
     }
-    if (!mounted) return;
     _showCcBcc = _cc.items.isNotEmpty || _bcc.items.isNotEmpty;
     setState(() => _preparing = false);
     if (warning != null) showSnack(ScaffoldMessenger.of(context), warning);
@@ -178,6 +179,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
   Future<String?> _prepareFromSource(ComposeArgs args) async {
     final id = args.sourceEmailId;
     final source = id == null ? null : await _repo.getEmail(id);
+    if (!mounted) return null;
     if (source == null) {
       _setIdentity(_accountById(args.accountId), null);
       _body.text = _withSignature('');
@@ -192,6 +194,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     } on MailException catch (e) {
       warning = e.message;
     }
+    if (!mounted) return null;
     final text = content == null ? source.preview : ComposeText.plainTextOf(content);
     if (args.mode == ComposeMode.forward) {
       _subject.text = ComposeText.forwardSubject(source.subject);
@@ -216,6 +219,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
   Future<String?> _prepareDraft(ComposeArgs args) async {
     final id = args.sourceEmailId;
     final draft = id == null ? null : await _repo.getEmail(id);
+    if (!mounted) return null;
     if (draft == null) {
       _setIdentity(_accountById(args.accountId), null);
       return "Couldn't find the draft.";
@@ -230,6 +234,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     _references = draft.references;
     try {
       final content = await _repo.loadContent(draft.id);
+      if (!mounted) return null;
       _body.text = ComposeText.plainTextOf(content);
       return await _loadAttachments(draft.id, content);
     } on MailException catch (e) {
@@ -242,6 +247,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     try {
       for (final a in content.visibleAttachments) {
         final data = await _repo.loadAttachment(emailId, a.partId);
+        if (!mounted) return null;
         _attachments.add(OutgoingAttachment(filename: a.filename ?? 'attachment', mimeType: a.mimeType, data: data));
       }
       return null;

@@ -184,6 +184,8 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
       if (done != null) showSnack(messenger, done);
     } on MailException catch (e) {
       showSnack(messenger, e.message);
+    } on Exception {
+      showSnack(messenger, 'Something went wrong. Try again.');
     }
   }
 
@@ -442,43 +444,47 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
           ),
         ),
         SliverToBoxAdapter(child: Divider(color: colors.separator)),
-        SliverList.list(
-          children: [
-            for (final m in messages) ...[
-              MessageCard(
-                key: _keys.putIfAbsent(m.id, GlobalKey.new),
-                message: m,
-                expanded: _expanded.contains(m.id),
-                ownAddresses: own,
-                content: _expanded.contains(m.id) ? _contentFor(m) : null,
-                settings: _settingsFor(m, app, prefs),
-                remoteContent: _remoteFor(m, app, prefs),
-                showOriginalHint: _originalHint.contains(m.id),
-                onToggle: messages.length < 2 ? null : () => setState(() => _toggle(m.id)),
-                onMore: () => _showMenu(m, canArchive: canArchive(m), role: roleOf(m)),
-                onAddressTap: (a) => _onAddressTap(a, m.accountId),
-                onAllowRemoteContent: ({required bool always}) {
-                  setState(() => _remoteAllowed.add(m.id));
-                  final sender = m.sender?.email;
-                  if (always && sender != null) {
-                    unawaited(ref.read(readerPrefsProvider.notifier).setRemoteAllowed(sender, allowed: true));
-                  }
-                },
-                onOpenLink: _openLink,
-                onSuggestOriginal: () {
-                  if (_originalHint.contains(m.id)) return;
-                  // May be called while the body builds.
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    if (mounted) setState(() => _originalHint.add(m.id));
-                  });
-                },
-                onUseOriginal: () => setState(() => _forceOriginal.add(m.id)),
-                onRetry: () => setState(() => _content.remove(m.id)),
-                loadAttachment: (a) => _repo.loadAttachment(m.id, a.partId),
-              ),
-              Divider(color: colors.separator),
+        // Built eagerly (threads are short) so the target can be scrolled to.
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              for (final m in messages) ...[
+                MessageCard(
+                  key: _keys.putIfAbsent(m.id, GlobalKey.new),
+                  message: m,
+                  expanded: _expanded.contains(m.id),
+                  ownAddresses: own,
+                  content: _expanded.contains(m.id) ? _contentFor(m) : null,
+                  settings: _settingsFor(m, app, prefs),
+                  remoteContent: _remoteFor(m, app, prefs),
+                  showOriginalHint: _originalHint.contains(m.id),
+                  onToggle: messages.length < 2 ? null : () => setState(() => _toggle(m.id)),
+                  onMore: () => _showMenu(m, canArchive: canArchive(m), role: roleOf(m)),
+                  onAddressTap: (a) => _onAddressTap(a, m.accountId),
+                  onAllowRemoteContent: ({required bool always}) {
+                    setState(() => _remoteAllowed.add(m.id));
+                    final sender = m.sender?.email;
+                    if (always && sender != null) {
+                      unawaited(ref.read(readerPrefsProvider.notifier).setRemoteAllowed(sender, allowed: true));
+                    }
+                  },
+                  onOpenLink: _openLink,
+                  onSuggestOriginal: () {
+                    if (_originalHint.contains(m.id)) return;
+                    // May be called while the body builds.
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (mounted) setState(() => _originalHint.add(m.id));
+                    });
+                  },
+                  onUseOriginal: () => setState(() => _forceOriginal.add(m.id)),
+                  onRetry: () => setState(() => _content.remove(m.id)),
+                  loadAttachment: (a) => _repo.loadAttachment(m.id, a.partId),
+                ),
+                Divider(color: colors.separator),
+              ],
             ],
-          ],
+          ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 32)),
       ],
