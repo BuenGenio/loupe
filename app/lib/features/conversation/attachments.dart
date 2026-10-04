@@ -1,50 +1,40 @@
 import 'dart:async';
-import 'dart:ui' as ui;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
-import 'package:readable/readable.dart';
-import 'package:share_plus/share_plus.dart';
 
+import '../../router.dart';
 import '../../shared/format.dart';
-import '../../theme/theme.dart';
-import 'sheets.dart';
 import '../../theme/loupe_icons.dart';
+import '../../theme/theme.dart';
+import '../attachments/attachment_actions.dart';
+import '../attachments/attachment_cache.dart';
+import '../attachments/attachment_gallery.dart';
+import '../attachments/attachment_icon.dart';
+import '../attachments/attachment_type.dart';
+import 'sheets.dart';
 
-/// Icon for an attachment's MIME type.
-IconData attachmentIcon(String mimeType, [String? filename]) {
-  final mime = mimeType.toLowerCase();
-  final ext = (filename ?? '').split('.').last.toLowerCase();
-  if (mime.startsWith('image/')) return LoupeIcons.image;
-  if (mime.startsWith('video/')) return LoupeIcons.video;
-  if (mime.startsWith('audio/')) return LoupeIcons.audio;
-  if (mime == 'application/pdf' || ext == 'pdf') return LoupeIcons.pdf;
-  if (mime == 'text/calendar' || ext == 'ics') return LoupeIcons.calendar;
-  if (mime.contains('zip') || mime.contains('compressed') || mime.contains('x-tar') || mime.contains('x-7z')) {
-    return LoupeIcons.zip;
-  }
-  if (mime.contains('spreadsheet') || mime.contains('excel') || mime == 'text/csv') return LoupeIcons.spreadsheet;
-  if (mime.contains('presentation') || mime.contains('powerpoint')) return LoupeIcons.presentation;
-  if (mime.contains('word') || mime.contains('opendocument.text') || mime == 'application/rtf') {
-    return LoupeIcons.wordDocument;
-  }
-  if (mime == 'message/rfc822') return LoupeIcons.email;
-  if (mime.startsWith('text/')) return LoupeIcons.textDocument;
-  return LoupeIcons.file;
-}
+export '../attachments/attachment_gallery.dart' show AttachmentImage;
+export '../attachments/attachment_icon.dart' show attachmentIcon;
 
-/// The attachment list under a message body.
-class AttachmentList extends StatelessWidget {
+/// The attachment list under a message body. A tap opens an attachment:
+/// images in the gallery (over all images of the message), everything else
+/// in the attachment viewer. The ⋯ button (or a long press) offers Open in…,
+/// Save and Share.
+class AttachmentList extends ConsumerWidget {
   const AttachmentList({super.key, required this.content, required this.load});
 
   final EmailContent content;
 
-  /// Downloads an attachment's bytes.
+  /// Downloads an attachment's bytes; the session's attachment cache keeps them.
   final Future<Uint8List> Function(Attachment attachment) load;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final items = content.visibleAttachments.toList();
     if (items.isEmpty) return const SizedBox.shrink();
     return Padding(
@@ -54,70 +44,71 @@ class AttachmentList extends StatelessWidget {
           for (final a in items)
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
-              child: AttachmentTile(attachment: a, load: () => load(a), onOpen: () => _open(context, a, items)),
+              child: AttachmentTile(
+                emailId: content.emailId,
+                attachment: a,
+                load: () => load(a),
+                onOpen: () => _open(context, ref, a),
+              ),
             ),
         ],
       ),
     );
   }
 
-  Future<void> _open(BuildContext context, Attachment a, List<Attachment> items) async {
-    if (a.isImage) {
-      final images = items.where((i) => i.isImage).toList();
-      await showImageGallery(
+  Future<void> _open(BuildContext context, WidgetRef ref, Attachment a) async {
+    if (attachmentKindOf(a.mimeType, a.filename) == AttachmentKind.image) {
+      await openAttachmentGallery(
         context,
-        images: [for (final i in images) GalleryImage(image: _imageOf(i), caption: i.filename)],
-        initialIndex: images.indexOf(a),
+        content: content,
+        current: a,
+        cache: ref.read(attachmentCacheProvider),
+        download: load,
       );
+    } else {
+      await context.push(Routes.attachment(content.emailId, a.partId));
     }
-  }
-
-  ImageProvider _imageOf(Attachment a) {
-    final inline = a.contentId == null ? null : content.inlineData[a.contentId];
-    if (inline != null) return MemoryImage(inline);
-    return AttachmentImage(emailId: content.emailId, partId: a.partId, load: () => load(a));
   }
 }
 
-/// One attachment: icon, name and size. Images open the gallery; other files
-/// download and open the share sheet (which offers "Open with").
-class AttachmentTile extends StatefulWidget {
-  const AttachmentTile({super.key, required this.attachment, required this.load, required this.onOpen});
+/// One attachment: icon, name and size, and a ⋯ button for its actions.
+class AttachmentTile extends ConsumerStatefulWidget {
+  const AttachmentTile({
+    super.key,
+    required this.emailId,
+    required this.attachment,
+    required this.load,
+    required this.onOpen,
+  });
 
+  final String emailId;
   final Attachment attachment;
   final Future<Uint8List> Function() load;
 
-  /// Opens an image attachment in the gallery.
+  /// Opens the attachment (gallery or viewer).
   final Future<void> Function() onOpen;
 
   @override
-  State<AttachmentTile> createState() => _AttachmentTileState();
+  ConsumerState<AttachmentTile> createState() => _AttachmentTileState();
 }
 
-class _AttachmentTileState extends State<AttachmentTile> {
+class _AttachmentTileState extends ConsumerState<AttachmentTile> {
+  final _moreKey = GlobalKey();
   bool _busy = false;
 
   Attachment get _a => widget.attachment;
 
-  Future<void> _share() async {
-    final messenger = ScaffoldMessenger.of(context);
-    setState(() => _busy = true);
-    try {
-      final bytes = await widget.load();
-      final name = _a.filename ?? 'attachment';
-      await SharePlus.instance.share(
-        ShareParams(
-          files: [XFile.fromData(bytes, name: name, mimeType: _a.mimeType)],
-          fileNameOverrides: [name],
-        ),
-      );
-    } on MailException catch (e) {
-      showSnack(messenger, e.message);
-    } catch (e) {
-      showSnack(messenger, "Couldn't open the attachment.");
-    } finally {
-      if (mounted) setState(() => _busy = false);
-    }
+  Future<void> _actions() async {
+    final box = _moreKey.currentContext?.findRenderObject();
+    final origin = box is RenderBox && box.hasSize ? box.localToGlobal(Offset.zero) & box.size : null;
+    await showAttachmentActions(
+      context,
+      AttachmentActions.of(ref, widget.emailId, _a, download: widget.load),
+      origin: origin,
+      onBusy: (busy) {
+        if (mounted) setState(() => _busy = busy);
+      },
+    );
   }
 
   @override
@@ -130,10 +121,10 @@ class _AttachmentTileState extends State<AttachmentTile> {
       borderRadius: BorderRadius.circular(12),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: _busy ? null : (_a.isImage ? widget.onOpen : _share),
-        onLongPress: _busy ? null : _share,
+        onTap: _busy ? null : widget.onOpen,
+        onLongPress: _busy ? null : _actions,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          padding: const EdgeInsets.fromLTRB(12, 10, 4, 10),
           child: Row(
             children: [
               Container(
@@ -160,41 +151,33 @@ class _AttachmentTileState extends State<AttachmentTile> {
                 ),
               ),
               if (_busy)
-                const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                const SizedBox(
+                  width: 44,
+                  height: 44,
+                  child: Center(
+                    child: SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2)),
+                  ),
+                )
               else
-                Icon(LoupeIcons.share, size: 20, color: colors.secondaryText),
+                Tooltip(
+                  message: 'More',
+                  excludeFromSemantics: true,
+                  child: Semantics(
+                    container: true,
+                    label: 'More actions for $name',
+                    child: CupertinoButton(
+                      key: _moreKey,
+                      padding: EdgeInsets.zero,
+                      minimumSize: const Size(44, 44),
+                      onPressed: _actions,
+                      child: Icon(LoupeIcons.more, size: 22, color: colors.secondaryText),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
       ),
     );
   }
-}
-
-/// An image attachment, downloaded when first displayed.
-@immutable
-class AttachmentImage extends ImageProvider<AttachmentImage> {
-  const AttachmentImage({required this.emailId, required this.partId, required this.load});
-
-  final String emailId;
-  final String partId;
-  final Future<Uint8List> Function() load;
-
-  @override
-  Future<AttachmentImage> obtainKey(ImageConfiguration configuration) => SynchronousFuture(this);
-
-  @override
-  ImageStreamCompleter loadImage(AttachmentImage key, ImageDecoderCallback decode) =>
-      MultiFrameImageStreamCompleter(codec: _decode(decode), scale: 1, debugLabel: '$emailId#$partId');
-
-  Future<ui.Codec> _decode(ImageDecoderCallback decode) async {
-    final bytes = await load();
-    return decode(await ui.ImmutableBuffer.fromUint8List(bytes));
-  }
-
-  @override
-  bool operator ==(Object other) => other is AttachmentImage && other.emailId == emailId && other.partId == partId;
-
-  @override
-  int get hashCode => Object.hash(emailId, partId);
 }

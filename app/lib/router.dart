@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
 import 'features/account_setup/account_setup_screen.dart';
+import 'features/attachments/attachment_viewer_screen.dart';
 import 'features/compose/compose_args.dart';
 import 'features/compose/compose_screen.dart';
 import 'features/conversation/conversation_screen.dart';
@@ -40,6 +41,10 @@ abstract final class Routes {
   static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
   static String message(String emailId) => '/message/${Uri.encodeComponent(emailId)}';
   static String source(String emailId) => '/source/${Uri.encodeComponent(emailId)}';
+
+  /// The attachment viewer for one part of a message.
+  static String attachment(String emailId, String partId) =>
+      '/attachment/${Uri.encodeComponent(emailId)}/${Uri.encodeComponent(partId)}';
 
   /// Search with [query] already entered; [scope] null means all mailboxes.
   static String search(String query, {MailboxRef? scope}) => Uri(
@@ -87,6 +92,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/source/:id',
         builder: (context, state) => RawSourceScreen(emailId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/attachment/:id/:part',
+        builder: (context, state) =>
+            AttachmentViewerScreen(emailId: state.pathParameters['id']!, partId: state.pathParameters['part']!),
       ),
       GoRoute(
         path: '/search',
