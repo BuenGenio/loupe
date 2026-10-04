@@ -106,11 +106,10 @@ Future<void> handleNotificationAction(NotificationResponse response) async {
         state: FileNewMailStateStore(Future.value(directory)),
       ).tidy(mail.repository, NotificationSettings.read(prefs));
       await updateAppIconBadge(prefs, mail.repository, const PlatformAppIconBadge());
+      // Android may freeze this process before the server has it, or there
+      // is no network: a sync shortly after sends what is left either way.
+      await WorkmanagerBackgroundScheduler(WorkmanagerWorkScheduler()).scheduleWakeUp(afterAction());
       await mail.flushOps().timeout(const Duration(seconds: 40), onTimeout: () {});
-      // Offline: a network-bound job sends it as soon as it can.
-      if (await mail.hasPendingOps()) {
-        await WorkmanagerBackgroundScheduler(WorkmanagerWorkScheduler()).scheduleWakeUp(DateTime.now());
-      }
     } finally {
       await mail.close();
     }
@@ -139,8 +138,6 @@ final class LiveBackgroundMail implements BackgroundMail {
 
   Future<void> flushOps() => _repository.flushOps();
 
-  Future<bool> hasPendingOps() async => (await _store.pendingOps()).isNotEmpty;
-
   @override
   Future<void> interrupt() => _repository.dispose();
 
@@ -153,6 +150,10 @@ final class LiveBackgroundMail implements BackgroundMail {
     await _store.close();
   }
 }
+
+/// When to sync again after a notification button ran in the background,
+/// in case its change didn't reach the server.
+DateTime afterAction() => DateTime.now().add(const Duration(minutes: 1));
 
 /// When the next queued message of [repository] is due, if any; the app
 /// asks for a wake-up then, in case it isn't running.

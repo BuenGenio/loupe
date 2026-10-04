@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:mail_sync/mail_sync.dart';
 
+import '../../platform/background.dart';
+import '../../platform/background_entry.dart' show afterAction;
 import '../../platform/foreground_bridge.dart';
 import '../../platform/instant_delivery.dart';
 import '../../platform/work_scheduler.dart';
@@ -176,13 +178,18 @@ class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordina
     final notifier = ref.read(mailNotifierProvider);
     final check = ref.read(newMailCheckProvider);
     final settings = ref.read(notificationSettingsProvider);
+    final scheduler = ref.read(backgroundSchedulerProvider);
     await runMailAction(repository, r.action, r.target.emailId);
     await notifier.cancel(messageNotificationId(r.target.emailId), tag: r.target.encode());
     await check.tidy(repository, settings);
     // In the background the repository is paused: send it now, then
-    // disconnect again.
+    // disconnect again. Android may freeze the app meanwhile, so a sync
+    // shortly after sends what is left.
     final state = WidgetsBinding.instance.lifecycleState;
-    if (repository is LiveMailRepository && state != AppLifecycleState.resumed) await repository.flushOps();
+    if (repository is LiveMailRepository && state != AppLifecycleState.resumed) {
+      await scheduler.scheduleWakeUp(afterAction());
+      await repository.flushOps();
+    }
   }
 
   @override
