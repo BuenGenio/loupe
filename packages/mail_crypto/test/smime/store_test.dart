@@ -6,6 +6,24 @@ import 'smime_support.dart';
 SmimeSignatureStatus signatureOf(String name, {String? sender}) =>
     const SmimeReader(smime).read(smimeMail(name), anchors: testAnchors, now: today, sender: sender).status.signature!;
 
+/// A keychain whose reads fail until [broken] is cleared (Android's Keystore hiccups).
+final class FlakyStorage implements KeyringStorage {
+  final values = <String, String>{};
+  bool broken = true;
+
+  @override
+  Future<String?> read(String key) async {
+    if (broken) throw StateError('Keystore unavailable');
+    return values[key];
+  }
+
+  @override
+  Future<void> write(String key, String value) async => values[key] = value;
+
+  @override
+  Future<void> delete(String key) async => values.remove(key);
+}
+
 void main() {
   late MemoryKeyringStorage storage;
   late SmimeStore store;
@@ -84,5 +102,21 @@ void main() {
     expect((await SmimeStore(storage, prefix: 'test.smime').load()).own, isEmpty);
     await store.clear();
     expect(storage.values, isEmpty);
+  });
+
+  test('a keychain that can’t be read is never overwritten (collected certificates write by themselves)', () async {
+    final flaky = FlakyStorage();
+    flaky.values['test.smime.store'] = '{"version":1,"own":[],"authorities":[]}';
+    final s = SmimeStore(flaky, prefix: 'test.smime');
+    await expectLater(s.load(), throwsStateError);
+    expect(s.isUnreadable, isTrue);
+    await expectLater(
+      s.collect(signatureOf('signed-detached.eml'), sender: 'alice@example.org', now: today),
+      throwsA(isA<SmimeException>()),
+    );
+    expect(flaky.values['test.smime.store'], '{"version":1,"own":[],"authorities":[]}');
+    flaky.broken = false;
+    await s.load();
+    expect(await s.collect(signatureOf('signed-detached.eml'), sender: 'alice@example.org', now: today), isTrue);
   });
 }

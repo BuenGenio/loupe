@@ -323,9 +323,25 @@ final class Keyring {
   String get _stateKey => '$prefix.keyring';
   String _secretKey(String fingerprint) => '$prefix.secret.$fingerprint';
 
-  /// Reads the stored state; a damaged entry starts empty rather than failing.
+  /// The stored state couldn't be read (the keychain failed, as Android's
+  /// Keystore sometimes does): nothing is written until a [load] succeeds,
+  /// so a hiccup never replaces what is stored with an empty state (things
+  /// are written without the user asking: collected certificates,
+  /// Autocrypt keys).
+  bool get isUnreadable => _unreadable;
+  bool _unreadable = false;
+
+  /// Reads the stored state; a damaged entry starts empty rather than
+  /// failing. A keychain that can't be read throws, and blocks writes.
   Future<KeyringState> load() async {
-    final raw = await storage.read(_stateKey);
+    final String? raw;
+    try {
+      raw = await storage.read(_stateKey);
+    } on Object {
+      _unreadable = true;
+      rethrow;
+    }
+    _unreadable = false;
     if (raw != null) {
       try {
         _state = KeyringState.fromJson((jsonDecode(raw) as Map).cast());
@@ -338,7 +354,15 @@ final class Keyring {
     return _state;
   }
 
-  Future<T> _write<T>(Future<T> Function() change) {
+  Future<T> _write<T>(Future<T> Function() change, {bool evenUnreadable = false}) {
+    if (_unreadable && !evenUnreadable) {
+      return Future.error(
+        const PgpException(
+          PgpErrorKind.failed,
+          'The keychain couldn’t be read, so nothing was changed. Restart Loupe and try again.',
+        ),
+      );
+    }
     final result = _queue.then((_) => change());
     _queue = result.then((_) {}, onError: (Object _) {});
     return result;
@@ -469,7 +493,7 @@ final class Keyring {
     await storage.delete(_stateKey);
     _state = KeyringState.empty;
     _changes.add(_state);
-  });
+  }, evenUnreadable: true);
 
   Future<void> dispose() => _changes.close();
 }

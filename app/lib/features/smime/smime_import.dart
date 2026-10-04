@@ -115,6 +115,16 @@ class _SmimePasswordDialogState extends State<SmimePasswordDialog> {
 /// a warning. Tells the outcome in a snack bar.
 Future<void> importSmimeFile(BuildContext context, WidgetRef ref, Uint8List data, {bool fromMessage = false}) async {
   final messenger = ScaffoldMessenger.of(context);
+  try {
+    await _import(context, ref, data, fromMessage: fromMessage);
+  } on SmimeException catch (e) {
+    // The keychain refused the change (it couldn't be read): say so.
+    showSnack(messenger, e.message);
+  }
+}
+
+Future<void> _import(BuildContext context, WidgetRef ref, Uint8List data, {required bool fromMessage}) async {
+  final messenger = ScaffoldMessenger.of(context);
   final service = await ref.read(smimeServiceProvider.future);
   if (SmimeService.isPkcs12(data)) {
     if (context.mounted) await _importPkcs12(context, service, data, fromMessage: fromMessage);
