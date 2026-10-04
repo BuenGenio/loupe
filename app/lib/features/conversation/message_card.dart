@@ -135,7 +135,7 @@ class _MessageCardState extends State<MessageCard> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _header(context, auth, content),
+          _header(context, content),
           AnimatedSize(
             duration: const Duration(milliseconds: 180),
             alignment: Alignment.topCenter,
@@ -154,7 +154,7 @@ class _MessageCardState extends State<MessageCard> {
     },
   );
 
-  Widget _header(BuildContext context, AuthResults auth, EmailContent? content) {
+  Widget _header(BuildContext context, EmailContent? content) {
     final theme = Theme.of(context);
     final colors = LoupeColors.of(context);
     final sender = _m.sender;
