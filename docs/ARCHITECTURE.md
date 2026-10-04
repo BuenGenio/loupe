@@ -63,6 +63,8 @@ Rules (`app/lib/platform/`):
 
 - **One syncer at a time.** Whoever syncs keeps a lease file fresh (`SyncLeases`). The app always wins: background work starts only without the app's lease and stops when the app comes back; the app waits briefly for it. A lease goes stale after 45 s, so a dead process never blocks the others.
 - **Hand work to whoever syncs.** A notification button goes to the app's main isolate, then to Instant Delivery (`ForegroundBridge`), and only otherwise opens the database itself.
+- **A message is sent by whoever claimed it.** Any process may send the outbox; `claimOutbox` marks a due entry as sending with the time of the claim, and the others leave it alone until the claim is older than `SyncConfig.sendClaimTimeout` (15 min, much longer than a send), when it counts as left by a process that died and is queued again. Every attempt uses the same Message-ID.
+- **The database key is never replaced.** A new key is made only when there is no database file; a keychain that can't give the key back shows the recovery screen (`DatabaseKeyUnavailable`), and only the user's explicit reset deletes the database.
 - **New mail is what passed a watermark.** `detectNewMail` remembers the newest arrival per inbox (and VIP mail elsewhere) in `new_mail.json`; a list seen for the first time only sets its watermark. The app moves the watermarks silently when it goes to the background.
 
 ## Mailing lists
