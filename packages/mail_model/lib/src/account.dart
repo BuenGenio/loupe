@@ -103,6 +103,7 @@ final class Identity {
   /// is sent from this identity.
   final List<String> replyPatterns;
 
+  /// A copy with the given fields replaced (null keeps a field).
   Identity copyWith({
     String? id,
     String? email,
