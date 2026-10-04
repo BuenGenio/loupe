@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/app.dart';
 import 'package:loupe/data/repositories.dart';
@@ -62,7 +63,8 @@ class RecordingPeriodicSync implements PeriodicSync {
 
 /// Like `pumpLoupe`, with the notification seams replaced: [notifier],
 /// [periodic], [taps] and [instant] (which also makes Instant Delivery
-/// available). Live mode runs on the demo repository too.
+/// available), plus any other [overrides]. Live mode runs on the demo
+/// repository too.
 Future<DemoMailRepository> pumpWithNotifications(
   WidgetTester tester, {
   AppMode mode = AppMode.demo,
@@ -73,6 +75,7 @@ Future<DemoMailRepository> pumpWithNotifications(
   DemoMailRepository? repository,
   bool servesActions = false,
   InstantService? instant,
+  List<Override> overrides = const [],
 }) async {
   tester.view
     ..physicalSize = const Size(390, 844) * 3
@@ -97,6 +100,7 @@ Future<DemoMailRepository> pumpWithNotifications(
         servesNotificationActionsProvider.overrideWithValue(servesActions),
         instantServiceProvider.overrideWithValue(instant ?? const NoopInstantService()),
         instantDeliveryAvailableProvider.overrideWithValue(instant != null),
+        ...overrides,
       ],
       child: const LoupeApp(),
     ),
