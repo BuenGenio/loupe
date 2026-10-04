@@ -60,7 +60,12 @@ class SmartMailboxSettingsScreen extends ConsumerWidget {
                       footer: 'Choose the same account on every device.',
                       selected: home ?? SmartMailboxSyncVia.off,
                       choices: [
-                        for (final a in accounts) (value: a.id, label: a.displayName, detail: a.email),
+                        for (final a in accounts)
+                          (
+                            value: a.id,
+                            label: a.displayName,
+                            detail: a.provider == ProviderKind.gmail ? 'Gmail can’t keep Smart Mailboxes' : a.email,
+                          ),
                         (
                           value: SmartMailboxSyncVia.off,
                           label: 'Off',
