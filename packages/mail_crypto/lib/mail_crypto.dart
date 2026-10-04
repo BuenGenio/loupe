@@ -29,4 +29,5 @@ export 'src/smime/pkcs12.dart' show SmimeBundle, SmimeKeyEntry;
 export 'src/smime/primitives.dart' show SmimePrivateKey;
 export 'src/smime/reader.dart';
 export 'src/smime/status.dart';
+export 'src/smime/store.dart';
 export 'src/smime/trust.dart';
