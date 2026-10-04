@@ -2,10 +2,12 @@
 // is read, for the unsubscribe centre; and the ways List-Unsubscribe
 // (RFC 2369, RFC 8058) offers to leave.
 
+import 'account.dart';
 import 'address.dart';
 import 'email.dart';
 import 'lists.dart';
 import 'mailbox.dart';
+import 'outgoing.dart';
 
 // ---------------------------------------------------------------------------
 // mailto: URIs (RFC 6068)
@@ -116,6 +118,31 @@ final class MailtoUnsubscribe extends UnsubscribeMethod {
   int get hashCode => Object.hash('mailto', uri);
   @override
   String toString() => 'Mailto($uri)';
+}
+
+/// The message that unsubscribes through [method], sent from [account].
+///
+/// It goes from the identity the newsletter was addressed to (one of
+/// [receivedAs], usually the newest message's recipients), so list managers
+/// that check the sender find the subscribed address; else from the default
+/// identity. Only the URI's recipients get it: `cc=` and `bcc=` are ignored,
+/// so a header can't copy the request to anyone else.
+OutgoingMessage unsubscribeMessage(
+  MailtoUnsubscribe method,
+  MailAccount account, {
+  Iterable<EmailAddress> receivedAs = const [],
+}) {
+  final addressed = {for (final a in receivedAs) a.email.trim().toLowerCase()};
+  final identity =
+      account.identities.where((i) => addressed.contains(i.email.trim().toLowerCase())).firstOrNull ??
+      account.defaultIdentity;
+  return OutgoingMessage(
+    accountId: account.id,
+    identityId: identity.id,
+    to: method.to,
+    subject: method.subject,
+    text: method.body,
+  );
 }
 
 /// A web page where the user unsubscribes themselves (`https`, or `http`).

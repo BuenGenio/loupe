@@ -131,6 +131,40 @@ void main() {
       expect(m.subject, 'unsubscribe');
     });
 
+    test('the unsubscribe message goes from the subscribed identity', () {
+      const account = MailAccount(
+        id: 'acc',
+        email: 'sam@example.org',
+        displayName: 'Sam',
+        provider: ProviderKind.generic,
+        authKind: AuthKind.password,
+        incoming: ServerConfig(protocol: ServerProtocol.imap, host: 'imap.example.org', port: 993),
+        identities: [
+          Identity(id: 'acc/default', email: 'sam@example.org', name: 'Sam'),
+          Identity(id: 'acc/news', email: 'Sam+News@example.org'),
+        ],
+      );
+      final method =
+          unsubscribeMethods(
+                '<mailto:leave@news.example?subject=Unsubscribe%20me&body=list%3Dweekly&cc=spy@else.example>',
+                null,
+              ).single
+              as MailtoUnsubscribe;
+      final message = unsubscribeMessage(
+        method,
+        account,
+        receivedAs: const [EmailAddress('sam+news@example.org'), EmailAddress('weekly@news.example')],
+      );
+      expect(message.accountId, 'acc');
+      expect(message.identityId, 'acc/news');
+      expect(message.to.single.email, 'leave@news.example');
+      expect(message.cc, isEmpty);
+      expect(message.bcc, isEmpty);
+      expect(message.subject, 'Unsubscribe me');
+      expect(message.text, 'list=weekly');
+      expect(unsubscribeMessage(method, account).identityId, 'acc/default');
+    });
+
     test('nothing usable', () {
       expect(unsubscribeMethods(null, null), isEmpty);
       expect(unsubscribeMethods('<ftp://x.example>, <mailto:>', 'List-Unsubscribe=One-Click'), isEmpty);
