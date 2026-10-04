@@ -14,7 +14,14 @@ final demoRepositoryProvider = Provider<DemoMailRepository>((ref) {
 });
 
 /// The real repository, built once live mode is chosen.
-final liveRepositoryProvider = FutureProvider<MailRepository>(createLiveRepository);
+final liveRepositoryProvider = FutureProvider<MailRepository>(createLiveRepository, retry: retryLiveRepository);
+
+/// Riverpod retries failed providers ten times over about 40 seconds, all
+/// behind a spinner. Opening the database is retried briefly only when the
+/// keychain failed to read (often a passing Keystore hiccup); otherwise the
+/// recovery screen shows at once.
+Duration? retryLiveRepository(int retryCount, Object error) =>
+    error is DatabaseKeyUnavailable && !error.missing && retryCount < 2 ? const Duration(milliseconds: 500) : null;
 
 /// The repository for the current [AppMode]; main() overrides
 /// `repositoryProvider` with this. Live mode is only reached once
