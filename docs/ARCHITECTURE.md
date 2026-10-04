@@ -13,8 +13,10 @@ app (UI, Riverpod, go_router)
                                   ◄── mail_jmap (Phase 3)
 mail_platform: CredentialStore (keychain), OAuth sign-in
 mail_crypto: OpenPGP (dart_pg, vendored in third_party/): keys, keyring,
-             PGP/MIME reading and writing, Autocrypt; the app wraps loadContent
-             with it and hands its composer to mail_imap
+             PGP/MIME reading and writing, Autocrypt; S/MIME (pure Dart on
+             pointycastle): certificates, PKCS #12, CMS, chain validation;
+             the app wraps loadContent with both and hands their composers
+             to mail_imap
 mail_model: every type and interface above; no I/O, no dependencies
 ```
 
@@ -35,6 +37,7 @@ The packages are developed in parallel. These are the seams:
 | `Rule`, `RuleAction`, `MailRules` (`MailRepository.rules`) | mail_model `src/rules.dart` | app `DemoRules`; mail_sync `LiveRules` | app |
 | `compileSieve`, `generateLoupeScript`, `parseLoupeScript`, `planInclude`, `SieveConnector`, `ServerRules`, `RuleRunner` | mail_sieve `lib/mail_sieve.dart` | mail_sieve | mail_sync, app demo |
 | `PgpBackend` (swappable OpenPGP engine), `Keyring`, `PgpMimeReader`, `PgpMessageComposer` (a `MessageComposer` around another), `OutgoingMessage.security` | mail_crypto `lib/mail_crypto.dart`, mail_model `src/outgoing.dart` | mail_crypto (`DartPgBackend`) | app (reader, compose, settings, live composer) |
+| `SmimeBackend` (swappable S/MIME engine), `SmimeStore`, `SmimeReader`, `checkTrust`, `planSmime`, `chooseTechnology`, `SmimeMessageComposer` (around the OpenPGP one), `OutgoingSecurity.technology` | mail_crypto `lib/mail_crypto.dart`, mail_model `src/outgoing.dart` | mail_crypto (`DartSmimeBackend`) | app (reader, compose, settings, live composer) |
 
 Rules:
 
@@ -52,9 +55,62 @@ Rules:
   mail server (an IMAP METADATA annotation, else a message in the `Loupe Settings` folder). Smart Mailboxes use them;
   see [smart-mailboxes-format.md](smart-mailboxes-format.md).
 - **Message bodies in the app** come from `contentLoaderProvider` (`ContentLoader.loadContent` and
-  `loadAttachment`), not the repository directly: it decrypts and verifies OpenPGP mail and learns
-  Autocrypt keys. Decrypted attachments have `pgp:` part ids.
+  `loadAttachment`), not the repository directly: it decrypts and verifies OpenPGP and S/MIME mail,
+  learns Autocrypt keys and collects S/MIME certificates. Decrypted attachments (both standards) have
+  `pgp:` part ids.
 - **Changing a contract:** edit mail_model (or the API file) in its own commit, run `dart analyze` on the whole workspace, and fix every user in the same change.
+
+## S/MIME
+
+Issue #21. Reading, certificates, signing and encrypting, next to OpenPGP and in the same places (content
+loading, the header, compose, Settings › End-to-End Encryption).
+
+- **Engine** (`DartSmimeBackend`, swappable through `SmimeBackend` like `PgpBackend`): pure Dart, so it runs in
+  isolates and background work, and tests run without a device. Primitives come from pointycastle (MIT, the
+  Bouncy Castle port, already in the tree under dart_pg): RSA, ECDSA, ECDH, AES (CBC, GCM), 3DES, RC2, the
+  PKCS #12 and PBKDF2 key derivations. The ASN.1 (BER in, DER out), X.509, CMS and PKCS #12 structures are
+  mail_crypto's own (`lib/src/smime`, about 2,400 lines): no maintained Dart package does CMS enveloping
+  (`pkcs7` only signs, for PDFs; `basic_utils` only writes PKCS #12; `pkcs12_parser` had one release). A
+  platform engine (Android KeyChain with MDM-installed certificates, iOS `CMSDecoder`) can come later behind the
+  same interface; certificates and keys cross it as DER.
+- **Keys and certificates** (`SmimeStore`, keychain entries `loupe.smime.*` next to the OpenPGP keyring): the
+  user's certificates with their CA chain, each private key in an entry of its own (PKCS #8, protected by the
+  keychain only: the PKCS #12 password just unlocks the import, as on Android and in Thunderbird without a
+  primary password); correspondents' certificates, collected from good signatures by the sender (not from
+  drafts or junk) or imported; the authorities the user trusts; per-address settings (the certificate,
+  "Prefer S/MIME"). PKCS #12 import reads OpenSSL 3's defaults (PBES2 with AES), the legacy algorithms of
+  older Windows exports (3DES, RC2-40, SHA-1 MAC) and PBMAC1.
+- **Trust** (`checkTrust`): a chain through the message's and known certificates to a trusted root, every
+  signature checked, then validity (at the signing time for signatures), CA flags, path length, rfc822 name
+  constraints, unknown critical extensions, key usage (digitalSignature for signing; keyEncipherment for RSA or
+  keyAgreement for EC recipients; emailProtection) and the address in the SAN or the subject.
+  - Roots: Mozilla's, with the email trust bit, as Thunderbird uses them (`mozilla_roots.dart`, generated from
+    NSS's certdata.txt by `tool/update_mozilla_roots.dart`), plus certificates the user trusts (a company CA,
+    offered when importing a .p12 that came with one, or a single certificate). Not the platform store:
+    Android's holds TLS roots without email trust bits, and isn't readable from Dart without a plugin.
+  - No revocation checks (OCSP, CRLs): they would be network requests outside the mail protocols, telling a CA
+    who reads whose mail. Policies aren't processed (as most mail clients); SHA-1 certificates aren't accepted.
+- **Reading** (`SmimeReader`): `application/pkcs7-mime` (enveloped, authEnveloped, opaque signed; also without
+  `smime-type` or as an octet-stream `.p7m`) and `multipart/signed` with `application/(x-)pkcs7-signature`,
+  nested as Thunderbird (multipart/signed inside) and Outlook (opaque inside) send them. Decryption: RSA
+  (PKCS #1 v1.5, OAEP) and ECDH (X9.63 KDF with SHA-1 to SHA-512, AES key wrap); AES-CBC, AES-GCM, 3DES, RC2.
+  Thunderbird's rules, checked against its NSS-made test messages: SHA-1 signatures aren't accepted; a
+  signature around encrypted data doesn't count; a signature's embedded content must be the signed part; a
+  signing time more than an hour from the Date header isn't good. The header says "Encrypted (S/MIME)" and
+  "Signed by Alice ✓ (Issuer)", or what is wrong; the sheet can trust the issuing CA after showing its
+  fingerprint.
+- **Sending** (`SmimeMessageComposer` around `PgpMessageComposer` around `MimeMessageComposer`): signed as
+  multipart/signed (SHA-256, RSA PKCS #1 v1.5 or ECDSA) carrying the certificate, its intermediates, the
+  SMIMECapabilities and which certificate to encrypt to (RFC 8551's attribute and Outlook's). Encrypted: signed
+  first, then EnvelopedData to every recipient and the sender with AES-256-CBC, which Outlook, Apple Mail and
+  Thunderbird all read; AuthEnvelopedData (AES-256-GCM) only when every recipient's signed mail announced
+  AES-GCM. RSA recipients get the key with PKCS #1 v1.5 (OAEP isn't read everywhere), EC recipients by
+  ephemeral-static ECDH (SHA-256 KDF, AES-256 wrap). Like OpenPGP mail, the outer Subject isn't hidden and Bcc
+  recipients appear (as certificate serials) to everyone; drafts are encrypted to the sender only.
+- **Choosing the standard** (`chooseTechnology`): the address's preference (OpenPGP unless "Prefer S/MIME"),
+  unless only the other one has a key or trusted certificate for every recipient, or the message replies to
+  mail encrypted with the other. Compose shows which, and switches when both are set up. The sending settings
+  (Encrypt Automatically, Always Encrypt, Sign Unencrypted Mail) apply to both.
 
 ## Background work (Android)
 
