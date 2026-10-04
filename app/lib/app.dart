@@ -11,6 +11,7 @@ import 'features/notifications/app_icon_badge.dart';
 import 'features/notifications/new_mail_check.dart';
 import 'features/notifications/notification_settings.dart';
 import 'features/notifications/notifications_coordinator.dart';
+import 'features/snooze/snooze_wakeups.dart';
 import 'platform/background.dart';
 import 'platform/background_entry.dart';
 import 'platform/foreground_sync.dart';
@@ -177,8 +178,11 @@ class _SyncLifecycleState extends ConsumerState<_SyncLifecycle> {
       await container
           .read(newMailCheckProvider)
           .run(repository, container.read(notificationSettingsProvider), silent: true);
+      final scheduler = container.read(backgroundSchedulerProvider);
       final due = await nextOutboxDue(repository);
-      if (due != null) await container.read(backgroundSchedulerProvider).scheduleWakeUp(due);
+      if (due != null) await scheduler.scheduleWakeUp(due);
+      final wake = await nextSnoozeWake(repository);
+      if (wake != null) await scheduler.scheduleWakeUp(wake);
     } on Object catch (e) {
       debugPrint('Going to the background: $e');
     }
