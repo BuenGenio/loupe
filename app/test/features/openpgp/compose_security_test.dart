@@ -66,6 +66,15 @@ void main() {
     expect(isOn(tester, encryptToggle), isFalse, reason: 'Carol has no key');
   });
 
+  testWidgets('a new message without recipients shows the toggles, off', (tester) async {
+    await open(tester, args: const ComposeArgs());
+    expect(encryptToggle, findsOneWidget);
+    expect(isOn(tester, encryptToggle), isFalse);
+    await tester.enterText(toField, 'alice@example.com,');
+    await tester.pumpAndSettle();
+    expect(isOn(tester, encryptToggle), isTrue);
+  });
+
   testWidgets('a toggled Encrypt stays; sending asks about recipients without a key', (tester) async {
     final repo = await open(tester, args: const ComposeArgs(to: [alice, EmailAddress('carol@example.com')]));
     expect(isOn(tester, encryptToggle), isFalse);

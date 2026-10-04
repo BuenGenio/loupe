@@ -347,6 +347,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
     _originalDraftId = _draftId;
     _lastSaved = _initial;
     _lastLocal = _initial;
+    _updateSecurity();
     setState(() => _preparing = false);
     // A message brought back (Undo, crash recovery) is saved again soon.
     if (args.message != null) _scheduleAutosave();

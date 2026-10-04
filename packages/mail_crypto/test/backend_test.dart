@@ -52,6 +52,17 @@ void main() {
       expect(v6.fingerprint, hasLength(64));
     });
 
+    test('v6 keys (RFC 9580): encrypt, decrypt, sign, verify', () {
+      final secret = tbKey('pgp-v6-sec.asc');
+      final public = tbKey('pgp-v6-pub.asc');
+      expect(secret.isProtected, isFalse);
+      final message = bytes('v6 works');
+      final armored = pgp.encrypt(message, recipients: [public], signer: secret);
+      final d = pgp.decrypt(bytes(armored), keys: [secret], verifiers: [public]);
+      expect(d.data, message);
+      expect(d.signatures.single.status, PgpSignatureStatus.good);
+    });
+
     test('a key whose encryption subkey expired cannot encrypt', () {
       expect(tbKey('expired-enc-subkey.pub.asc').canEncrypt, isFalse);
     });
