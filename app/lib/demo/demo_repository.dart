@@ -72,7 +72,7 @@ final class _Queued {
 ///   [SearchResults.fromServerIds]); acting on such a message syncs it.
 /// - Sending to an address at a `.invalid` domain fails, so the Outbox
 ///   shows a failed message with an error and Retry.
-class DemoMailRepository implements MailRepository, MailingLists {
+class DemoMailRepository implements MailRepository, MailingLists, MailSubscriptions {
   DemoMailRepository({
     this.latency = const DemoLatency(),
     DateTime Function()? clock,
@@ -728,6 +728,37 @@ class DemoMailRepository implements MailRepository, MailingLists {
 
   @override
   Stream<Set<String>> watchMutedThreads() => _watch(() => Set.unmodifiable(_muted));
+
+  // Subscriptions --------------------------------------------------------------------
+
+  Set<String> get _allMyAddresses => {for (final a in _accounts) ..._myAddresses(a.id)};
+
+  MailboxRole? _roleOf(EmailSummary s) => _mailboxes[s.mailboxId]?.role;
+
+  @override
+  Stream<List<Subscription>> watchSubscriptions() => _watch(
+    () => summarizeSubscriptions(
+      [for (final m in _messages.values) m.summary],
+      roleOf: _roleOf,
+      now: _clock(),
+      me: _allMyAddresses,
+    ),
+  );
+
+  @override
+  Stream<List<EmailSummary>> watchSubscriptionEmails(String key, {bool inboxOnly = false, int limit = 200}) =>
+      _watch(() {
+        final me = _allMyAddresses;
+        final out = [
+          for (final m in _messages.values)
+            if (subscriptionKeyOf(m.summary) == key &&
+                !subscriptionExcludedRoles.contains(_roleOf(m.summary)) &&
+                !me.contains(m.summary.sender?.email.toLowerCase()) &&
+                (!inboxOnly || _roleOf(m.summary) == MailboxRole.inbox))
+              m.summary,
+        ]..sort((a, b) => b.receivedAt.compareTo(a.receivedAt));
+        return out.take(limit).toList();
+      });
 
   @override
   Future<void> setThreadMuted(String emailId, {required bool muted}) async {
