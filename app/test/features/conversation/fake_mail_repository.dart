@@ -226,22 +226,68 @@ class FakeMailRepository implements MailRepository {
   // Compose ------------------------------------------------------------------
 
   @override
-  Future<String> send(OutgoingMessage message, {Duration undoDelay = const Duration(seconds: 10)}) async {
-    log.add('send ${message.subject} undo=${undoDelay.inSeconds}');
+  Future<String> send(
+    OutgoingMessage message, {
+    Duration undoDelay = const Duration(seconds: 10),
+    DateTime? sendAt,
+  }) async {
+    log.add(
+      'send ${message.subject} ${sendAt == null ? 'undo=${undoDelay.inSeconds}' : 'at=${sendAt.toIso8601String()}'}',
+    );
     sent.add(message);
-    return 'outbox-${sent.length}';
+    final id = 'outbox-${sent.length}';
+    outbox.add(
+      OutboxItem(
+        id: id,
+        message: message,
+        sendAt: sendAt ?? DateTime(2026, 10, 4, 12).add(undoDelay),
+        status: sendAt == null ? OutboxStatus.queued : OutboxStatus.scheduled,
+      ),
+    );
+    _changed();
+    return id;
   }
+
+  /// What [watchOutbox] shows; tests may add items directly.
+  final outbox = <OutboxItem>[];
+
+  @override
+  Stream<List<OutboxItem>> watchOutbox() => _watch(() => List.of(outbox));
 
   @override
   Future<OutgoingMessage?> cancelSend(String outboxId) async {
     log.add('cancelSend $outboxId');
     cancelled.add(outboxId);
-    return sent.last;
+    final item = outbox.where((o) => o.id == outboxId).firstOrNull;
+    outbox.remove(item);
+    _changed();
+    return item?.message ?? sent.lastOrNull;
   }
+
+  @override
+  Future<void> sendNow(String outboxId) async {
+    log.add('sendNow $outboxId');
+    outbox.removeWhere((o) => o.id == outboxId);
+    _changed();
+  }
+
+  @override
+  Future<void> rescheduleSend(String outboxId, DateTime sendAt) async {
+    log.add('rescheduleSend $outboxId ${sendAt.toIso8601String()}');
+    final i = outbox.indexWhere((o) => o.id == outboxId);
+    if (i < 0) throw const MailException(MailErrorKind.notFound, 'This message was already sent.');
+    final o = outbox[i];
+    outbox[i] = OutboxItem(id: o.id, message: o.message, sendAt: sendAt, status: OutboxStatus.scheduled);
+    _changed();
+  }
+
+  /// While set, saveDraft waits for it (a slow connection).
+  Completer<void>? holdSaves;
 
   @override
   Future<String> saveDraft(OutgoingMessage message) async {
     log.add('saveDraft ${message.subject}');
+    await holdSaves?.future;
     drafts.add(message);
     return 'draft-${drafts.length}';
   }

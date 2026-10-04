@@ -137,7 +137,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(repo.log, contains('archive [m1, m3]'));
     expect(find.text('home'), findsOneWidget);
-    expect(find.text('Archived'), findsOneWidget);
+    expect(find.text('Archived 2 messages'), findsOneWidget);
   });
 
   testWidgets('toolbar move picks a mailbox', (tester) async {
@@ -148,7 +148,90 @@ void main() {
     await tester.tap(find.text('Receipts'));
     await tester.pumpAndSettle();
     expect(repo.log, contains('move [m1, m3] acc|Receipts'));
-    expect(find.text('Moved to Receipts'), findsOneWidget);
+    expect(find.text('Moved 2 messages to Receipts'), findsOneWidget);
+  });
+
+  group('Undo', () {
+    testWidgets('after Archive puts the messages back where they were', (tester) async {
+      final repo = await openThread(tester);
+      await tester.tap(find.byKey(const Key('toolbar-archive')));
+      await tester.pumpAndSettle();
+      expect(find.text('home'), findsOneWidget);
+      await tester.tap(find.text('Undo'));
+      await tester.pumpAndSettle();
+      expect(repo.log, containsAllInOrder(['archive [m1, m3]', 'move [m1, m3] acc|INBOX']));
+    });
+
+    testWidgets('after Move to Junk restores the mailbox and the junk keywords', (tester) async {
+      final repo = await openThread(tester);
+      await tester.tap(find.byKey(const ValueKey('more-m3')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Move to Junk'));
+      await tester.pumpAndSettle();
+      expect(repo.log, contains('markJunk [m3] true'));
+      expect(find.text('Moved 1 message to Junk'), findsOneWidget);
+      await tester.tap(find.text('Undo'));
+      await tester.pumpAndSettle();
+      expect(
+        repo.log,
+        containsAllInOrder([
+          'move [m3] acc|INBOX',
+          'setKeywords [m3] +{} -{\$junk}',
+          'setKeywords [m3] +{} -{\$notjunk}',
+        ]),
+      );
+    });
+
+    testWidgets('after Move puts the messages back; a mailbox of each message is kept', (tester) async {
+      final repo = FakeMailRepository(
+        emails: [
+          testEmail('a1', minutesAgo: 30, keywords: {Keywords.seen}),
+          testEmail('a2', minutesAgo: 10, keywords: {Keywords.seen}),
+        ],
+      );
+      final router = await pumpTestApp(tester, repository: repo);
+      unawaited(router.push('/message/a2'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('toolbar-move')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Receipts'));
+      await tester.pumpAndSettle();
+      expect(repo.emails.map((e) => e.mailboxId), everyElement('acc|Receipts'));
+      await tester.tap(find.text('Undo'));
+      await tester.pumpAndSettle();
+      expect(repo.emails.map((e) => e.mailboxId), everyElement('acc|INBOX'));
+    });
+
+    testWidgets('deleting permanently from Trash asks first and offers no Undo', (tester) async {
+      final repo = FakeMailRepository(
+        emails: [
+          testEmail('t1', mailboxId: 'acc|Trash', keywords: {Keywords.seen}),
+        ],
+      );
+      final router = await pumpTestApp(tester, repository: repo);
+      unawaited(router.push('/message/t1'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('more-t1')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete Permanently'));
+      await tester.pumpAndSettle();
+      expect(find.text('Delete this message permanently?'), findsOneWidget);
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+      expect(repo.log.where((l) => l.startsWith('trash')), isEmpty);
+      expect(bodyOf('t1'), findsOneWidget, reason: 'still open');
+
+      await tester.tap(find.byKey(const ValueKey('more-t1')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete Permanently'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete Permanently').last);
+      await tester.pumpAndSettle();
+      expect(repo.log, contains('trash [t1]'));
+      expect(find.text('Deleted 1 message'), findsOneWidget);
+      expect(find.text('Undo'), findsNothing);
+      expect(find.text('home'), findsOneWidget);
+    });
   });
 
   testWidgets('the … menu marks unread, tags and shows headers', (tester) async {

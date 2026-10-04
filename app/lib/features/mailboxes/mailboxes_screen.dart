@@ -18,6 +18,9 @@ import '../../shared/sync_status.dart';
 import '../../shared/tags.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
+import '../compose/compose_recovery.dart';
+import '../compose/send_later.dart';
+import '../outbox/outbox_screen.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
 import 'vip_screen.dart';
@@ -48,6 +51,18 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> {
     // Focusing the field (a tap, the keyboard) enters search.
     _focus.addListener(() {
       if (_focus.hasFocus && !_searching) _setSearching(true);
+    });
+    // Scheduled messages ask for their wake-up again on every launch, in
+    // case the system dropped it (this screen lives as long as the app).
+    ref.listenManual(outboxProvider, (_, next) {
+      final now = DateTime.now();
+      for (final item in next.value ?? const <OutboxItem>[]) {
+        if (item.status == OutboxStatus.scheduled && item.sendAt.isAfter(now)) wakeUpAt(ref, item.sendAt);
+      }
+    }, fireImmediately: true);
+    // A message left unsent when Loupe last closed: offer to continue it.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) unawaited(offerComposeRecovery(context, ref));
     });
   }
 
@@ -300,6 +315,8 @@ class _VirtualSection extends ConsumerWidget {
       VirtualMailbox.allDrafts,
       VirtualMailbox.allSent,
     ];
+    final outbox = ref.watch(outboxProvider).value ?? const <OutboxItem>[];
+    final colors = LoupeColors.of(context);
     final rows = [
       for (final kind in order)
         if (editing || v.visible('v.${kind.name}'))
@@ -323,6 +340,19 @@ class _VirtualSection extends ConsumerWidget {
                   )
                 : null,
           ),
+      // Only while something waits to be sent; it can't be hidden.
+      if (outbox.isNotEmpty && !editing)
+        _MailboxTile(
+          key: const ValueKey('outbox'),
+          title: 'Outbox',
+          icon: LoupeIcons.outbox,
+          iconColor: outbox.any((o) => o.status == OutboxStatus.failed) ? colors.destructive : null,
+          count: outbox.length,
+          editing: false,
+          visible: true,
+          onToggleVisible: () {},
+          onTap: () => context.push(Routes.outbox),
+        ),
     ];
     if (rows.isEmpty) return const SizedBox.shrink();
     return InsetGroup(separatorIndent: 51, children: rows);

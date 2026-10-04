@@ -1,5 +1,4 @@
 import 'package:mail_model/mail_model.dart';
-import 'package:mail_store/mail_store.dart';
 import 'package:mail_sync/mail_sync.dart';
 import 'package:test/test.dart';
 
@@ -23,6 +22,10 @@ OutgoingMessage outgoing(
   sourceEmailId: sourceEmailId,
   draftId: draftId,
 );
+
+/// Room for scheduled sends a day ahead.
+const _days = Duration(days: 2);
+const _step = Duration(seconds: 1);
 
 void main() {
   group('send', () {
@@ -118,6 +121,172 @@ void main() {
         await repo2.dispose();
         await h.store.close();
       });
+    });
+  });
+
+  group('scheduled send', () {
+    // fakeTime starts at 2026-09-01 12:00.
+    final tomorrow8 = DateTime(2026, 9, 2, 8);
+
+    test('waits until the chosen time, shows as scheduled and deletes the draft at once', () {
+      fakeTime(
+        (async) async {
+          final h = Harness();
+          final server = FakeServer();
+          final a = await h.add(server);
+          final draft = await h.repo.saveDraft(outgoing(a, subject: 'Later'));
+          await settle();
+          expect(server.subjects('Drafts'), ['Later']);
+          final id = await h.repo.send(
+            outgoing(a, subject: 'Later', draftId: draft),
+            sendAt: tomorrow8,
+          );
+          final item = (await h.repo.watchOutbox().first).single;
+          expect(item.id, id);
+          expect(item.status, OutboxStatus.scheduled);
+          expect(item.sendAt, tomorrow8);
+          expect(item.message.draftId, isNull);
+          await settle();
+          expect(server.subjects('Drafts'), isEmpty);
+          await settle(const Duration(hours: 19, minutes: 59));
+          expect(server.sent, isEmpty);
+          await settle(const Duration(minutes: 1));
+          expect(server.sent.single.json['subject'], 'Later');
+          expect(await h.repo.watchOutbox().first, isEmpty);
+          expect(server.subjects('Sent'), ['Later']);
+          await h.dispose();
+        },
+        limit: _days,
+        step: _step,
+      );
+    });
+
+    test('survives a restart and goes out at its time', () {
+      fakeTime(
+        (async) async {
+          final h = Harness();
+          final server = FakeServer();
+          final a = await h.add(server);
+          await h.repo.send(outgoing(a), sendAt: tomorrow8);
+          await h.repo.dispose();
+          final repo2 = LiveMailRepository(h.store, h.factory, h.credentials, config: fastConfig);
+          await repo2.start();
+          expect((await repo2.watchOutbox().first).single.status, OutboxStatus.scheduled);
+          await settle(const Duration(hours: 19));
+          expect(server.sent, isEmpty);
+          await settle(const Duration(hours: 1));
+          expect(server.sent, hasLength(1));
+          await repo2.dispose();
+          await h.store.close();
+        },
+        limit: _days,
+        step: _step,
+      );
+    });
+
+    test('syncOnce sends what is due without start', () {
+      fakeTime(
+        (async) async {
+          final h = Harness();
+          final server = FakeServer();
+          final a = await h.add(server);
+          await h.repo.send(outgoing(a), sendAt: DateTime(2026, 9, 1, 13));
+          await h.repo.dispose();
+          await settle(const Duration(minutes: 30));
+          // Each background task gets a fresh repository that is disposed after it.
+          final early = LiveMailRepository(h.store, h.factory, h.credentials, config: fastConfig);
+          await early.syncOnce();
+          await early.dispose();
+          expect(server.sent, isEmpty, reason: 'not due yet');
+          await settle(const Duration(minutes: 31));
+          expect(server.sent, isEmpty);
+          final due = LiveMailRepository(h.store, h.factory, h.credentials, config: fastConfig);
+          await due.syncOnce();
+          expect(server.sent, hasLength(1));
+          expect(await h.store.outboxEntries(), isEmpty);
+          await due.dispose();
+          await h.store.close();
+        },
+        limit: _days,
+        step: _step,
+      );
+    });
+
+    test('sendNow sends a scheduled message at once; rescheduleSend moves it', () {
+      fakeTime(
+        (async) async {
+          final h = Harness();
+          final server = FakeServer();
+          final a = await h.add(server);
+          final first = await h.repo.send(outgoing(a, subject: 'One'), sendAt: tomorrow8);
+          final second = await h.repo.send(outgoing(a, subject: 'Two'), sendAt: tomorrow8);
+          await h.repo.sendNow(first);
+          await settle();
+          expect([for (final m in server.sent) m.json['subject']], ['One']);
+
+          final evening = DateTime(2026, 9, 1, 18);
+          await h.repo.rescheduleSend(second, evening);
+          final item = (await h.repo.watchOutbox().first).single;
+          expect((item.status, item.sendAt), (OutboxStatus.scheduled, evening));
+          await settle(const Duration(hours: 5, minutes: 59));
+          expect(server.sent, hasLength(1));
+          await settle(const Duration(minutes: 2));
+          expect([for (final m in server.sent) m.json['subject']], ['One', 'Two']);
+
+          await expectLater(
+            h.repo.sendNow(first),
+            throwsA(isA<MailException>().having((e) => e.kind, 'kind', MailErrorKind.notFound)),
+          );
+          await expectLater(h.repo.rescheduleSend(second, tomorrow8), throwsA(isA<MailException>()));
+          await h.dispose();
+        },
+        limit: _days,
+        step: _step,
+      );
+    });
+
+    test('cancelSend takes a scheduled message back', () {
+      fakeTime(
+        (async) async {
+          final h = Harness();
+          final server = FakeServer();
+          final a = await h.add(server);
+          final id = await h.repo.send(outgoing(a, subject: 'Maybe'), sendAt: tomorrow8);
+          final back = await h.repo.cancelSend(id);
+          expect(back!.subject, 'Maybe');
+          expect(await h.repo.watchOutbox().first, isEmpty);
+          await settle(const Duration(days: 1));
+          expect(server.sent, isEmpty);
+          await h.dispose();
+        },
+        limit: _days,
+        step: _step,
+      );
+    });
+
+    test('a failed scheduled send shows its error, retries later, and Retry sends at once', () {
+      fakeTime(
+        (async) async {
+          final h = Harness();
+          final server = FakeServer();
+          final a = await h.add(server);
+          server.smtpFailure = const MailException(MailErrorKind.server, '554 Relay access denied');
+          final id = await h.repo.send(outgoing(a), sendAt: DateTime(2026, 9, 1, 13));
+          await settle(const Duration(hours: 1, seconds: 1));
+          final failed = (await h.repo.watchOutbox().first).single;
+          expect(failed.status, OutboxStatus.failed);
+          expect(failed.error, '554 Relay access denied');
+          expect(failed.sendAt.isAfter(DateTime(2026, 9, 1, 13)), isTrue, reason: 'retried after a backoff');
+          server.smtpFailure = null;
+          await h.repo.sendNow(id);
+          await settle(const Duration(milliseconds: 500));
+          expect(server.sent, hasLength(1));
+          expect(await h.repo.watchOutbox().first, isEmpty);
+          await h.dispose();
+        },
+        limit: _days,
+        step: _step,
+      );
     });
   });
 

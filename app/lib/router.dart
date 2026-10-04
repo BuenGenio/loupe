@@ -13,6 +13,7 @@ import 'features/conversation/raw_source_screen.dart';
 import 'features/mailboxes/mailboxes_screen.dart';
 import 'features/message_list/message_list_screen.dart';
 import 'features/onboarding/welcome_screen.dart';
+import 'features/outbox/outbox_screen.dart';
 import 'features/search/search_screen.dart';
 import 'features/search/smart_mailbox_screen.dart';
 import 'features/settings/account_settings_screen.dart';
@@ -37,6 +38,9 @@ abstract final class Routes {
   static const swipeSettings = '/settings/swipes';
   static const advancedSettings = '/settings/advanced';
   static const notificationSettings = '/settings/notifications';
+
+  /// Messages waiting to be sent (scheduled, queued, failed).
+  static const outbox = '/outbox';
 
   static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
   static String message(String emailId) => '/message/${Uri.encodeComponent(emailId)}';
@@ -80,6 +84,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(path: Routes.mailboxes, builder: (context, state) => const MailboxesScreen()),
       GoRoute(path: Routes.welcome, builder: (context, state) => const WelcomeScreen()),
+      GoRoute(path: Routes.outbox, builder: (context, state) => const OutboxScreen()),
       GoRoute(
         path: '/list/:ref',
         builder: (context, state) =>
