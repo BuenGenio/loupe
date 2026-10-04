@@ -63,10 +63,20 @@ final class PendingOp {
 
 /// Persisted sync position of a mailbox.
 final class MailboxSyncInfo {
-  const MailboxSyncInfo({required this.state, required this.hasOlder, required this.syncedAt});
+  const MailboxSyncInfo({
+    required this.state,
+    required this.hasOlder,
+    required this.syncedAt,
+    this.staleHeaders = false,
+  });
   final MailboxSyncState state;
   final bool hasOlder;
   final DateTime syncedAt;
+
+  /// The stored summaries predate header fields added to the store since
+  /// (the List-* headers): fetch them again, pass them to
+  /// `MailStore.fillHeaders` and call `MailStore.markHeadersFresh`.
+  final bool staleHeaders;
 }
 
 /// How far device rules have run in a mailbox: messages stored after [seq]

@@ -1,0 +1,13 @@
+Thanks, two nits below. This reply is format=flowed, which is why its 
+lines end in spaces.
+
+> @@ -10,3 +10,3 @@ static int frob_init(void)
+>  	int ret;
+> -	ret = frob_setup();
+> +	ret = frob_setup(FROB_DEFAULT);
+>  	if (ret) 
+
+Please name the flag, a bare constant reads poorly in the call.
+
+Cheers,
+Dana

@@ -87,6 +87,8 @@ void main() {
         'id_aliases',
         'rules',
         'rule_watermarks',
+        'muted_threads',
+        'emails_list',
         'email_fts',
         'emails_after_insert',
         'emails_after_update_text',
@@ -97,7 +99,7 @@ void main() {
         'contents_after_delete',
       ]),
     );
-    expect(db.select('PRAGMA user_version').single.values.single, 2);
+    expect(db.select('PRAGMA user_version').single.values.single, 3);
   });
 
   group('accounts and mailboxes', () {

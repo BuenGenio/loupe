@@ -17,6 +17,7 @@ class ComposeArgs {
     this.message,
     this.sendAt,
     this.outboxId,
+    this.toList = false,
   }) : recoverySession = null,
        attachmentsFromDraft = false;
 
@@ -29,6 +30,7 @@ class ComposeArgs {
     this.recoverySession,
     this.attachmentsFromDraft = false,
   }) : mode = ComposeMode.newMessage,
+       toList = false,
        sourceEmailId = null,
        accountId = null,
        to = const [],
@@ -38,6 +40,9 @@ class ComposeArgs {
        body = null;
 
   final ComposeMode mode;
+
+  /// A reply goes to the mailing list (List-Post) instead of the sender.
+  final bool toList;
 
   /// The message replied to, forwarded, or the draft being edited.
   final String? sourceEmailId;

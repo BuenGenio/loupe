@@ -14,10 +14,22 @@ import 'envelope.dart';
 import 'keyword_mapping.dart';
 import 'parsers.dart';
 
+/// Header fields fetched with every list row, besides the ENVELOPE:
+/// threading, and the mailing-list headers (List-Id grouping, Reply to
+/// List, unsubscribing).
+const summaryHeaderFields = [
+  'REFERENCES',
+  'IN-REPLY-TO',
+  'LIST-ID',
+  'LIST-POST',
+  'LIST-UNSUBSCRIBE',
+  'LIST-UNSUBSCRIBE-POST',
+];
+
 /// FETCH items for a list row. `X-GM-THRID` is added for Gmail.
 String summaryFetchItems({required bool gmail}) =>
     '(UID FLAGS INTERNALDATE RFC822.SIZE ENVELOPE BODYSTRUCTURE '
-    'BODY.PEEK[HEADER.FIELDS (REFERENCES IN-REPLY-TO LIST-ID)]${gmail ? ' X-GM-THRID' : ''})';
+    'BODY.PEEK[HEADER.FIELDS (${summaryHeaderFields.join(' ')})]${gmail ? ' X-GM-THRID' : ''})';
 
 /// How many bytes of a part a preview needs.
 int previewBytes(BodyNode part) => part.subtype == 'html' ? 4096 : 2048;
@@ -39,6 +51,12 @@ EmailSummary? summaryFromFetch(
   final headers = parseHeaderBlock(m.sections['HEADER.FIELDS'] ?? Uint8List(0));
   final structure = m.structure;
   final thrid = m.gmailThreadId;
+  final list = parseListId(headerValue(headers, 'List-Id'));
+  String? raw(String name) {
+    final v = headerValue(headers, name)?.trim();
+    return v == null || v.isEmpty ? null : v;
+  }
+
   return EmailSummary(
     id: MailIds.imapEmail(accountId, path, uidValidity, uid),
     accountId: accountId,
@@ -59,6 +77,11 @@ EmailSummary? summaryFromFetch(
     size: m.size ?? 0,
     keywords: keywordsFromFlags(m.flags ?? const []),
     hasAttachment: structure != null && hasVisibleAttachment(structure),
+    listId: list?.id,
+    listName: list?.name,
+    listPost: raw('List-Post'),
+    listUnsubscribe: raw('List-Unsubscribe'),
+    listUnsubscribePost: raw('List-Unsubscribe-Post'),
   );
 }
 

@@ -369,10 +369,68 @@ final class AccountSyncer {
 
   Future<void> _syncMailbox(MailTransport t, Mailbox m) async {
     final info = await _store.getSyncInfo(m.id);
-    final result = await t.syncMailbox(_remoteFor(m), info?.state, initialWindow: _config.initialWindow);
-    _noteKeywordSupport(m, result.canStoreKeywords);
-    await _store.applySync(m.id, await _overlay(result), now: _host.now());
+    final fetched = await t.syncMailbox(_remoteFor(m), info?.state, initialWindow: _config.initialWindow);
+    _noteKeywordSupport(m, fetched.canStoreKeywords);
+    final result = await _overlay(fetched);
+    // One transaction: lists never show a muted thread's new mail unread.
+    final readMuted = await _store.transaction(() async {
+      await _store.applySync(m.id, result, now: _host.now());
+      return _readMutedArrivals(result.added);
+    });
+    if (readMuted) kickOps();
+    if (info != null && info.staleHeaders) unawaited(_refetchHeaders(m));
   }
+
+  /// New mail of a muted conversation arrives read (like Thunderbird's
+  /// ignored threads), here and on the server, so it never notifies.
+  /// Returns whether an operation was queued.
+  Future<bool> _readMutedArrivals(List<EmailSummary> added) async {
+    if (added.isEmpty) return false;
+    final ids = await _store.unreadInMutedThreads([for (final e in added) e.id]);
+    if (ids.isEmpty) return false;
+    final previous = await _store.updateKeywords(ids, add: {Keywords.seen});
+    final changed = [
+      for (final id in previous.keys)
+        if (!isLocalEmailId(id)) id,
+    ];
+    if (changed.isEmpty) return false;
+    await _store.enqueueOp(_account.id, OpType.setKeywords, {
+      'ids': changed,
+      'add': [Keywords.seen],
+      'remove': <String>[],
+      'previous': {for (final id in changed) id: previous[id]!.toList()},
+    }, now: _host.now());
+    return true;
+  }
+
+  /// Mailboxes whose headers are being fetched again.
+  final _refetching = <String>{};
+
+  /// Fetches the stored summaries of [m] again for the header fields they
+  /// predate (see `MailboxSyncInfo.staleHeaders`), once per mailbox. Each
+  /// batch is its own main-queue task, so user actions don't wait for all
+  /// of them; a failure leaves the mailbox marked for the next sync.
+  Future<void> _refetchHeaders(Mailbox m) async {
+    if (!_refetching.add(m.id)) return;
+    try {
+      final ids = [
+        for (final id in await _store.emailIdsIn(m.id))
+          if (!isLocalEmailId(id)) id,
+      ];
+      for (var i = 0; i < ids.length; i += _headerBatch) {
+        final chunk = ids.sublist(i, i + _headerBatch > ids.length ? ids.length : i + _headerBatch);
+        await onMain((t) async => _store.fillHeaders(await t.fetchSummaries(chunk)));
+      }
+      await _store.markHeadersFresh(m.id);
+    } catch (_) {
+      // Offline or the mailbox is gone: the next sync tries again.
+    } finally {
+      _refetching.remove(m.id);
+    }
+  }
+
+  /// Summaries per request when refetching headers.
+  static const _headerBatch = 200;
 
   /// Lets device rules handle new Inbox mail (outside the main queue, so
   /// they can load content). Their failures never fail the sync.

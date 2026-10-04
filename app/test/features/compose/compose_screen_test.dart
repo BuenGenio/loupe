@@ -188,6 +188,35 @@ void main() {
     expect(sent.cc.single.email, 'carol@example.org');
   });
 
+  testWidgets('Reply to List goes to the List-Post address only', (tester) async {
+    final repo = FakeMailRepository(
+      emails: [
+        testEmail(
+          'm3',
+          to: [const EmailAddress('dev@lists.example.org', 'Kestrel developers')],
+          cc: [bob],
+          subject: '[PATCH 1/2] frob: cache lookups',
+          listId: 'dev.lists.example.org',
+          listPost: '<mailto:dev@lists.example.org>',
+        ),
+      ],
+      contents: {'m3': const EmailContent(emailId: 'm3', text: '+int frob;')},
+    );
+    await openCompose(tester, repo, const ComposeArgs(mode: ComposeMode.reply, sourceEmailId: 'm3', toList: true));
+    expect(fieldText(tester, find.byKey(const Key('compose-subject'))), 'Re: [PATCH 1/2] frob: cache lookups');
+    expect(find.text('Alice Example'), findsNothing);
+    expect(find.text('Bob Builder'), findsNothing);
+    expect(fieldText(tester, find.byKey(const Key('compose-body'))), endsWith('wrote:\n> +int frob;'));
+
+    await tester.tap(sendButton);
+    await tester.pumpAndSettle();
+    final sent = repo.sent.single;
+    expect(sent.to.map((a) => a.email), ['dev@lists.example.org']);
+    expect(sent.cc, isEmpty);
+    expect(sent.mode, ComposeMode.reply);
+    expect(sent.inReplyTo, 'm3@example.com');
+  });
+
   testWidgets('Forward prefixes the subject once and adds the header block', (tester) async {
     final repo = FakeMailRepository(emails: [testEmail('m3', subject: 'Fwd: Lunch plans')]);
     await openCompose(tester, repo, const ComposeArgs(mode: ComposeMode.forward, sourceEmailId: 'm3'));

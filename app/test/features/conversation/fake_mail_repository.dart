@@ -422,6 +422,8 @@ EmailSummary testEmail(
   Set<String> keywords = const {},
   int minutesAgo = 0,
   String mailboxId = 'acc|INBOX',
+  String? listId,
+  String? listPost,
 }) => EmailSummary(
   id: id,
   accountId: 'acc',
@@ -435,4 +437,6 @@ EmailSummary testEmail(
   subject: subject,
   preview: 'Preview of $id',
   keywords: keywords,
+  listId: listId,
+  listPost: listPost,
 );

@@ -1,0 +1,364 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 1339,
+      "keptText": 1339,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:alice@example.org"
+      },
+      {
+        "url": "mailto:carol@example.org"
+      },
+      {
+        "url": "mailto:alice@example.org"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "From: Alice Example <"
+          },
+          {
+            "text": "alice@example.org",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The read path took frob_lock only to look the context up. Cache the\nlookup per context and read it with READ_ONCE(), so readers no longer\ncontend with writers."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Reported-by: Carol Example <"
+          },
+          {
+            "text": "carol@example.org",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": ">\nSigned-off-by: Alice Example <"
+          },
+          {
+            "text": "alice@example.org",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "v2: use READ_ONCE() (Bob)"
+          }
+        ]
+      },
+      {
+        "type": "diffstat",
+        "summary": "2 files changed, 11 insertions(+), 6 deletions(-)",
+        "files": [
+          [
+            "drivers/frob/core.c",
+            14,
+            "++++++++------"
+          ],
+          [
+            "drivers/frob/core.h",
+            3,
+            "+++"
+          ]
+        ]
+      },
+      {
+        "type": "diff",
+        "old": "drivers/frob/core.c",
+        "new": "drivers/frob/core.c",
+        "headers": [
+          "diff --git a/drivers/frob/core.c b/drivers/frob/core.c",
+          "index 3b18e51..a1d2c4f 100644"
+        ],
+        "hunks": [
+          {
+            "header": "@@ -10,7 +10,7 @@",
+            "lines": [
+              "10:10  #include <linux/spinlock.h>",
+              "11:11  #include \"core.h\"",
+              "12:12  ",
+              "13: -static DEFINE_SPINLOCK(frob_lock);",
+              ":13 +static DEFINE_SPINLOCK(frob_lock); /* writers only */",
+              "14:14  ",
+              "15:15  struct frob_ctx *frob_find(int id)",
+              "16:16  {"
+            ]
+          },
+          {
+            "header": "@@ -42,13 +42,15 @@ int frob_read(struct frob_ctx *ctx, char *buf, size_t len)",
+            "lines": [
+              "42:42  {",
+              "43:43         struct frob_entry *e;",
+              "44:44  ",
+              "45: -       spin_lock(&frob_lock);",
+              "46: -       e = frob_lookup(ctx);",
+              "47: -       spin_unlock(&frob_lock);",
+              ":45 +       e = READ_ONCE(ctx->cached);",
+              ":46 +       if (!e) {",
+              ":47 +               e = frob_lookup(ctx);",
+              ":48 +               WRITE_ONCE(ctx->cached, e);",
+              ":49 +       }",
+              "48:50         if (!e)",
+              "49:51                 return -ENOENT;",
+              "50: -       return frob_copy(e, buf, len);",
+              ":52 +       return frob_copy(e, buf, min(len, e->size));",
+              "51:53  }",
+              "52:54  ",
+              "53:55  EXPORT_SYMBOL_GPL(frob_read);"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "diff",
+        "old": "drivers/frob/core.h",
+        "new": "drivers/frob/core.h",
+        "headers": [
+          "diff --git a/drivers/frob/core.h b/drivers/frob/core.h",
+          "index 77c0a2b..0e9d1f3 100644"
+        ],
+        "hunks": [
+          {
+            "header": "@@ -5,4 +5,7 @@ struct frob_ctx {",
+            "lines": [
+              "5:5         int id;",
+              "6:6         struct list_head node;",
+              "7:7         unsigned long flags;",
+              ":8 +",
+              ":9 +       /* Last entry found by frob_read(); NULL until then. */",
+              ":10 +       struct frob_entry *cached;",
+              "8:11  };",
+              ": \\ No newline at end of file"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\n2.43.0"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 1339,
+      "keptText": 1339,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:alice@example.org"
+      },
+      {
+        "url": "mailto:carol@example.org"
+      },
+      {
+        "url": "mailto:alice@example.org"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "From: Alice Example <"
+          },
+          {
+            "text": "alice@example.org",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "The read path took frob_lock only to look the context up. Cache the\nlookup per context and read it with READ_ONCE(), so readers no longer\ncontend with writers."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Reported-by: Carol Example <"
+          },
+          {
+            "text": "carol@example.org",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": ">\nSigned-off-by: Alice Example <"
+          },
+          {
+            "text": "alice@example.org",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "v2: use READ_ONCE() (Bob)"
+          }
+        ]
+      },
+      {
+        "type": "diffstat",
+        "summary": "2 files changed, 11 insertions(+), 6 deletions(-)",
+        "files": [
+          [
+            "drivers/frob/core.c",
+            14,
+            "++++++++------"
+          ],
+          [
+            "drivers/frob/core.h",
+            3,
+            "+++"
+          ]
+        ]
+      },
+      {
+        "type": "diff",
+        "old": "drivers/frob/core.c",
+        "new": "drivers/frob/core.c",
+        "headers": [
+          "diff --git a/drivers/frob/core.c b/drivers/frob/core.c",
+          "index 3b18e51..a1d2c4f 100644"
+        ],
+        "hunks": [
+          {
+            "header": "@@ -10,7 +10,7 @@",
+            "lines": [
+              "10:10  #include <linux/spinlock.h>",
+              "11:11  #include \"core.h\"",
+              "12:12  ",
+              "13: -static DEFINE_SPINLOCK(frob_lock);",
+              ":13 +static DEFINE_SPINLOCK(frob_lock); /* writers only */",
+              "14:14  ",
+              "15:15  struct frob_ctx *frob_find(int id)",
+              "16:16  {"
+            ]
+          },
+          {
+            "header": "@@ -42,13 +42,15 @@ int frob_read(struct frob_ctx *ctx, char *buf, size_t len)",
+            "lines": [
+              "42:42  {",
+              "43:43         struct frob_entry *e;",
+              "44:44  ",
+              "45: -       spin_lock(&frob_lock);",
+              "46: -       e = frob_lookup(ctx);",
+              "47: -       spin_unlock(&frob_lock);",
+              ":45 +       e = READ_ONCE(ctx->cached);",
+              ":46 +       if (!e) {",
+              ":47 +               e = frob_lookup(ctx);",
+              ":48 +               WRITE_ONCE(ctx->cached, e);",
+              ":49 +       }",
+              "48:50         if (!e)",
+              "49:51                 return -ENOENT;",
+              "50: -       return frob_copy(e, buf, len);",
+              ":52 +       return frob_copy(e, buf, min(len, e->size));",
+              "51:53  }",
+              "52:54  ",
+              "53:55  EXPORT_SYMBOL_GPL(frob_read);"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "diff",
+        "old": "drivers/frob/core.h",
+        "new": "drivers/frob/core.h",
+        "headers": [
+          "diff --git a/drivers/frob/core.h b/drivers/frob/core.h",
+          "index 77c0a2b..0e9d1f3 100644"
+        ],
+        "hunks": [
+          {
+            "header": "@@ -5,4 +5,7 @@ struct frob_ctx {",
+            "lines": [
+              "5:5         int id;",
+              "6:6         struct list_head node;",
+              "7:7         unsigned long flags;",
+              ":8 +",
+              ":9 +       /* Last entry found by frob_read(); NULL until then. */",
+              ":10 +       struct frob_entry *cached;",
+              "8:11  };",
+              ": \\ No newline at end of file"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\n2.43.0"
+          }
+        ]
+      }
+    ]
+  }
+}

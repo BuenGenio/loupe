@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'address.dart';
 import 'keywords.dart';
+import 'lists.dart';
 import 'snooze.dart';
 
 /// What the message list needs for one row. Cheap to load in bulk.
@@ -26,6 +27,11 @@ final class EmailSummary {
     this.size = 0,
     this.keywords = const {},
     this.hasAttachment = false,
+    this.listId,
+    this.listName,
+    this.listPost,
+    this.listUnsubscribe,
+    this.listUnsubscribePost,
   });
 
   /// Stable local id, unique across accounts.
@@ -65,6 +71,29 @@ final class EmailSummary {
   final Set<String> keywords;
   final bool hasAttachment;
 
+  /// The list identifier of the List-Id header (RFC 2919), lower-cased and
+  /// without angle brackets (`dev.lists.example.org`); null for mail that
+  /// didn't come through a mailing list. See [parseListId].
+  final String? listId;
+
+  /// The phrase of the List-Id header ("Example developers"), if it has one.
+  final String? listName;
+
+  /// The List-Post header (RFC 2369) as sent, e.g. `<mailto:dev@lists.example.org>`
+  /// or `NO`. See [listPostAddress].
+  final String? listPost;
+
+  /// The List-Unsubscribe header (RFC 2369) as sent: comma-separated URIs in
+  /// angle brackets. See [parseListUris].
+  final String? listUnsubscribe;
+
+  /// The List-Unsubscribe-Post header (RFC 8058) as sent; see
+  /// [isOneClickUnsubscribe].
+  final String? listUnsubscribePost;
+
+  /// Came through a mailing list (has a List-Id).
+  bool get isListMail => listId != null;
+
   bool get isSeen => keywords.contains(Keywords.seen);
   bool get isFlagged => keywords.contains(Keywords.flagged);
   bool get isAnswered => keywords.contains(Keywords.answered);
@@ -103,6 +132,11 @@ final class EmailSummary {
     size: size,
     keywords: keywords ?? this.keywords,
     hasAttachment: hasAttachment,
+    listId: listId,
+    listName: listName,
+    listPost: listPost,
+    listUnsubscribe: listUnsubscribe,
+    listUnsubscribePost: listUnsubscribePost,
   );
 
   @override
