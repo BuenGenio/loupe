@@ -6,6 +6,7 @@ import 'email.dart';
 import 'mailbox.dart';
 import 'outbox.dart';
 import 'outgoing.dart';
+import 'rules.dart';
 import 'search.dart';
 
 enum SyncPhase { idle, syncing, error, offline }
@@ -140,6 +141,12 @@ abstract interface class MailRepository {
 
   Stream<Set<String>> watchVipAddresses();
   Future<void> setVip(String email, {required bool vip});
+
+  // Rules ----------------------------------------------------------------------
+
+  /// Mail rules: the list, Apply to Existing Messages, and server rules
+  /// (Sieve through ManageSieve).
+  MailRules get rules;
 }
 
 /// Errors surfaced to the UI. [message] is shown as is.

@@ -19,6 +19,9 @@ abstract interface class SyncHost {
   CredentialsCallback credentialsFor(MailAccount account);
   void reportStatus(AccountSyncStatus status);
   void reportError(MailException error);
+
+  /// The Inbox [inboxId] of [account] was just synced (device rules run).
+  Future<void> inboxSynced(MailAccount account, String inboxId);
 }
 
 /// Types of queued server operations.
@@ -228,6 +231,7 @@ final class AccountSyncer {
       _dirty.clear();
       for (final m in await _mailboxesForFullSync()) {
         await onMain((t) => _syncMailbox(t, m));
+        if (m.role == MailboxRole.inbox) await _inboxSynced(m);
       }
       // Later syncs also fill in a few never-opened mailboxes.
       if (!firstSync) {
@@ -306,6 +310,7 @@ final class AccountSyncer {
         final m = await _store.getMailbox(id);
         if (m == null || !m.isSelectable) continue;
         await onMain((t) => _syncMailbox(t, m));
+        if (m.role == MailboxRole.inbox) await _inboxSynced(m);
       }
       _failures = 0;
       _lastSuccess = _host.now();
@@ -328,6 +333,16 @@ final class AccountSyncer {
     final info = await _store.getSyncInfo(m.id);
     final result = await t.syncMailbox(_remoteFor(m), info?.state, initialWindow: _config.initialWindow);
     await _store.applySync(m.id, await _overlay(result), now: _host.now());
+  }
+
+  /// Lets device rules handle new Inbox mail (outside the main queue, so
+  /// they can load content). Their failures never fail the sync.
+  Future<void> _inboxSynced(Mailbox inbox) async {
+    try {
+      await _host.inboxSynced(_account, inbox.id);
+    } catch (e) {
+      _host.reportError(asMailException(e, 'Rules couldn’t run on new mail'));
+    }
   }
 
   /// Fetches the next page of older messages; returns whether more exist.

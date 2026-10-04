@@ -1,4 +1,5 @@
 import 'email.dart';
+import 'repository.dart';
 import 'search.dart';
 
 /// Where a rule runs.
@@ -378,7 +379,7 @@ final class SieveIncludeProposal {
 /// Mail rules: the list, running rules on existing mail, and server rules.
 ///
 /// Implemented by the demo repository and mail_sync's live repository and
-/// reached through `MailRepository.rules`. Device rules run on new Inbox messages after
+/// reached through [MailRepository.rules]. Device rules run on new Inbox messages after
 /// each sync, never twice on the same message.
 abstract interface class MailRules {
   /// Every rule, in order.

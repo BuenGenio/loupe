@@ -320,6 +320,11 @@ class FakeMailRepository implements MailRepository {
     vip ? vips.add(email.toLowerCase()) : vips.remove(email.toLowerCase());
     _changed();
   }
+
+  // Rules --------------------------------------------------------------------
+
+  @override
+  MailRules get rules => throw UnimplementedError('FakeMailRepository has no rules');
 }
 
 const testAccount = MailAccount(
