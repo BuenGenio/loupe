@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:readable/readable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'app_mode.dart';
+
 enum Density { comfortable, compact }
 
 enum SwipeAction { none, toggleRead, toggleFlag, archive, trash, move, more }
@@ -75,6 +77,7 @@ class AppSettingsController extends Notifier<AppSettings> {
 
   @override
   AppSettings build() {
+    ref.watch(prefsEpochProvider);
     final p = ref.watch(sharedPreferencesProvider);
     T pick<T extends Enum>(List<T> values, String key, T fallback) {
       final name = p.getString('$_prefix$key');
