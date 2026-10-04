@@ -71,6 +71,24 @@ void main() {
       );
     });
 
+    test('inline PGP with text around it is signed and encrypted only in part', () {
+      final status = PgpMessageStatus(
+        protection: PgpProtection.inlineEncrypted,
+        encrypted: true,
+        partial: true,
+        signature: PgpSignatureCheck(
+          status: PgpSignatureStatus.good,
+          issuerKeyId: dana.keyId,
+          signerFingerprint: dana.fingerprint,
+        ),
+      );
+      final v = PgpStatusView.of(status, keyring(KeyAcceptance.verified), sender: 'dana@example.com');
+      expect(
+        (v.encryptionLabel, v.signatureLabel, v.check),
+        ('Encrypted in part', 'Signed in part by Dana Okafor', false),
+      );
+    });
+
     test('"Signature invalid" and "Unknown key"', () {
       final bad = PgpStatusView.of(
         signed(PgpSignatureStatus.bad, by: dana.fingerprint),

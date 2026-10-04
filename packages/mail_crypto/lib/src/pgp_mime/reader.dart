@@ -230,14 +230,16 @@ final class PgpMimeReader {
         } on FormatException {
           plain = decodeCharset(decryption.data, part.charset);
         }
-        final text = show(byteText.substring(0, encStart)) + plain + show(byteText.substring(end));
+        final before = show(byteText.substring(0, encStart));
+        final after = show(byteText.substring(end));
         return PgpReadResult(
-          text: text.replaceAll('\r\n', '\n'),
+          text: (before + plain + after).replaceAll('\r\n', '\n'),
           status: PgpMessageStatus(
             protection: PgpProtection.inlineEncrypted,
             encrypted: true,
             signature: _best(decryption.signatures),
             recipientKeyIds: recipients,
+            partial: (before + after).trim().isNotEmpty,
           ),
         );
       } on PgpException catch (e) {
@@ -271,10 +273,15 @@ final class PgpMimeReader {
       } on PgpException catch (e) {
         check = PgpSignatureCheck(status: PgpSignatureStatus.bad, issuerKeyId: '', detail: e.message);
       }
-      final text = show(byteText.substring(0, signStart)) + show(parts.text) + show(byteText.substring(end));
+      final before = show(byteText.substring(0, signStart));
+      final after = show(byteText.substring(end));
       return PgpReadResult(
-        text: text.replaceAll('\r\n', '\n'),
-        status: PgpMessageStatus(protection: PgpProtection.inlineSigned, signature: check),
+        text: (before + show(parts.text) + after).replaceAll('\r\n', '\n'),
+        status: PgpMessageStatus(
+          protection: PgpProtection.inlineSigned,
+          signature: check,
+          partial: (before + after).trim().isNotEmpty,
+        ),
       );
     }
     return const PgpReadResult(status: PgpMessageStatus.none);

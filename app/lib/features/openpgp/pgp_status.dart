@@ -50,6 +50,7 @@ final class PgpStatusView {
     String? encryption;
     if (status.encrypted) {
       encryption = switch (status.failure) {
+        null when status.partial => 'Encrypted in part',
         null => 'Encrypted',
         PgpDecryptFailure.locked => 'Encrypted · locked',
         PgpDecryptFailure.noSecretKey => 'Encrypted · no key',
@@ -84,6 +85,7 @@ final class PgpStatusView {
         final mismatch = sender != null && signer != null && !signer.hasEmail(sender);
         final (label, tone, check) = switch (acceptance) {
           _ when mismatch => ('Signed by $name, not the sender', PgpTone.caution, false),
+          _ when status.partial => ('Signed in part by $name', PgpTone.caution, false),
           KeyAcceptance.verified => ('Signed by $name', PgpTone.good, true),
           KeyAcceptance.unverified => ('Signed by $name', PgpTone.neutral, true),
           KeyAcceptance.rejected => ('Signed with a rejected key', PgpTone.bad, false),
@@ -391,6 +393,8 @@ class PgpStatusSheet extends ConsumerWidget {
           PgpSignatureStatus.bad => 'The signature doesn’t match: the message may have been changed.',
           PgpSignatureStatus.good when view.mismatch =>
             'The signature is valid, but the key belongs to another address than the sender’s.',
+          PgpSignatureStatus.good when status.partial =>
+            'Only part of the message is signed: the text around it (a mailing list footer, for example) isn’t.',
           PgpSignatureStatus.good when own => 'Signed with your own key.',
           PgpSignatureStatus.good => switch (acceptance) {
             KeyAcceptance.verified => 'The signature is valid, and you verified the key’s fingerprint.',

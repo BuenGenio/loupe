@@ -47,6 +47,7 @@ final class PgpMessageStatus {
     this.recipientKeyIds = const [],
     this.protectedHeaders = const [],
     this.gossip = const [],
+    this.partial = false,
   });
 
   static const none = PgpMessageStatus();
@@ -73,6 +74,10 @@ final class PgpMessageStatus {
   /// `Autocrypt-Gossip` header values found inside the encrypted part.
   final List<String> gossip;
 
+  /// Inline PGP with other text around the block (a mailing list footer,
+  /// a forwarded fragment): only part of what is shown is protected.
+  final bool partial;
+
   bool get decrypted => encrypted && failure == null;
   bool get isSigned => signature != null;
   bool get isInline => protection == PgpProtection.inlineEncrypted || protection == PgpProtection.inlineSigned;
@@ -97,6 +102,7 @@ final class PgpMessageStatus {
     recipientKeyIds: recipientKeyIds,
     protectedHeaders: protectedHeaders,
     gossip: gossip,
+    partial: partial,
   );
 
   @override

@@ -119,6 +119,7 @@ void main() {
       expect(r.status.protection, PgpProtection.inlineEncrypted);
       expect(r.status.decrypted, isTrue, reason: r.status.failureMessage);
       expect(r.text, isNot(contains('BEGIN PGP MESSAGE')));
+      expect(r.status.partial, isTrue, reason: 'plain text around the block');
     });
 
     test('gpg inline messages: encrypted+signed and clear-signed', () {
@@ -133,6 +134,7 @@ void main() {
       expect(enc.status.decrypted, isTrue);
       expect(enc.status.signature!.status, PgpSignatureStatus.good);
       expect(enc.text, contains('Grüße'));
+      expect(enc.status.partial, isFalse);
       final clear = reader.read(bytes(message(utf8.decode(fixture('gpg/clear.asc')))), verifiers: [bob]);
       expect(clear.status.signature!.status, PgpSignatureStatus.good);
     });
