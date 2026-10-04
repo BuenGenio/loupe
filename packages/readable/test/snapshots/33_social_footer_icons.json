@@ -1,0 +1,230 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 92,
+      "keptText": 92,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 3,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://social.example/community"
+      },
+      {
+        "url": "https://video.example/community"
+      },
+      {
+        "url": "https://code.example/community"
+      },
+      {
+        "url": "https://community.example/prefs"
+      },
+      {
+        "url": "https://community.example/unsub"
+      },
+      {
+        "url": "https://community.example/archive"
+      }
+    ],
+    "images": [
+      {
+        "src": "https://cdn.community.example/i/mastodon.png",
+        "width": 32.0,
+        "height": 32.0,
+        "alt": "Mastodon",
+        "link": 0,
+        "icon": true
+      },
+      {
+        "src": "https://cdn.community.example/i/video.png",
+        "width": 32.0,
+        "height": 32.0,
+        "alt": "Video",
+        "link": 1,
+        "icon": true
+      },
+      {
+        "src": "https://cdn.community.example/i/code.png",
+        "width": 32.0,
+        "height": 32.0,
+        "alt": "Code",
+        "link": 2,
+        "icon": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Thanks for reading this month's community update. See you at the meetup!"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "img": 0
+          },
+          {
+            "text": " "
+          },
+          {
+            "img": 1
+          },
+          {
+            "text": " "
+          },
+          {
+            "img": 2
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Preferences",
+            "u": true,
+            "scale": 0.85,
+            "link": 3
+          },
+          {
+            "text": " | ",
+            "scale": 0.85
+          },
+          {
+            "text": "Unsubscribe",
+            "u": true,
+            "scale": 0.85,
+            "link": 4
+          },
+          {
+            "text": " | ",
+            "scale": 0.85
+          },
+          {
+            "text": "Archive",
+            "u": true,
+            "scale": 0.85,
+            "link": 5
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 92,
+      "keptText": 92,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 3,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://community.example/prefs"
+      },
+      {
+        "url": "https://community.example/unsub"
+      },
+      {
+        "url": "https://community.example/archive"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Thanks for reading this month's community update. See you at the meetup!"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Preferences"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "Unsubscribe"
+          },
+          {
+            "text": " [2]",
+            "link": 1
+          },
+          {
+            "text": " | "
+          },
+          {
+            "text": "Archive"
+          },
+          {
+            "text": " [3]",
+            "link": 2
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://community.example/prefs",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[2] "
+          },
+          {
+            "text": "https://community.example/unsub",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[3] "
+          },
+          {
+            "text": "https://community.example/archive",
+            "u": true,
+            "link": 2
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 3,
+    "contentIds": []
+  }
+}

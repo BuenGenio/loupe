@@ -1,0 +1,168 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 11,
+      "keptText": 11,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 4,
+      "remoteImages": 4,
+      "suggestOriginal": true
+    },
+    "links": [
+      {
+        "url": "https://fashion.example/sale?s=1"
+      },
+      {
+        "url": "https://fashion.example/sale?s=2"
+      },
+      {
+        "url": "https://fashion.example/sale?s=3"
+      },
+      {
+        "url": "https://fashion.example/sale?s=4"
+      },
+      {
+        "url": "https://fashion.example/u"
+      }
+    ],
+    "images": [
+      {
+        "src": "https://img.fashion.example/promo/slice1.jpg",
+        "width": 600.0,
+        "height": 320.0,
+        "alt": "AUTUMN SALE",
+        "link": 0
+      },
+      {
+        "src": "https://img.fashion.example/promo/slice2.jpg",
+        "width": 600.0,
+        "height": 280.0,
+        "alt": "Up to 50% off coats",
+        "link": 1
+      },
+      {
+        "src": "https://img.fashion.example/promo/slice3.jpg",
+        "width": 600.0,
+        "height": 300.0,
+        "link": 2
+      },
+      {
+        "src": "https://img.fashion.example/promo/slice4.jpg",
+        "width": 600.0,
+        "height": 120.0,
+        "alt": "Shop now",
+        "link": 3
+      }
+    ],
+    "blocks": [
+      {
+        "type": "img",
+        "image": 0
+      },
+      {
+        "type": "img",
+        "image": 1
+      },
+      {
+        "type": "img",
+        "image": 2
+      },
+      {
+        "type": "img",
+        "image": 3
+      },
+      {
+        "type": "p",
+        "align": "center",
+        "inlines": [
+          {
+            "text": "Unsubscribe",
+            "u": true,
+            "scale": 0.85,
+            "color": "#999999",
+            "link": 4
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 11,
+      "keptText": 11,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 4,
+      "remoteImages": 4,
+      "suggestOriginal": true
+    },
+    "links": [
+      {
+        "url": "https://fashion.example/u"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[AUTUMN SALE]"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[Up to 50% off coats]"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[Shop now]"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Unsubscribe"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://fashion.example/u",
+            "u": true,
+            "link": 0
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 4,
+    "contentIds": []
+  }
+}

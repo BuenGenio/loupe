@@ -1,0 +1,206 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 275,
+      "keptText": 275,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://shop.example/sale"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "h2",
+        "inlines": [
+          {
+            "text": "Midnight sale",
+            "color": "#ffffff"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "This newsletter uses a navy background with white text. Without the background, white text would vanish on a white reader.",
+            "color": "#ffffff"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Light grey body text that is barely readable on white.",
+            "color": "#c8c8c8"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Yellow accent text",
+            "color": "#ffff66"
+          },
+          {
+            "text": " and ",
+            "color": "#ffffff"
+          },
+          {
+            "text": "light blue links",
+            "color": "#7fdbff"
+          },
+          {
+            "text": " with ",
+            "color": "#ffffff"
+          },
+          {
+            "text": "a pale link",
+            "u": true,
+            "color": "#f9e79f",
+            "link": 0
+          },
+          {
+            "text": ".",
+            "color": "#ffffff"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Dark navy text: fine on white, invisible in dark mode.",
+            "color": "#202040"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "White on white, on purpose.",
+            "color": "#ffffff"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 275,
+      "keptText": 275,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://shop.example/sale"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Midnight sale"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "This newsletter uses a navy background with white text. Without the background, white text would vanish on a white reader."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Light grey body text that is barely readable on white."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Yellow accent text"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "light blue links"
+          },
+          {
+            "text": " with "
+          },
+          {
+            "text": "a pale link"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Dark navy text: fine on white, invisible in dark mode."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "White on white, on purpose."
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://shop.example/sale",
+            "u": true,
+            "link": 0
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

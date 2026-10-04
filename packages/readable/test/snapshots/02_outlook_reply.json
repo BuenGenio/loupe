@@ -1,0 +1,377 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 379,
+      "keptText": 379,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 1,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:jordan@example.org"
+      },
+      {
+        "url": "mailto:riley@example.com"
+      }
+    ],
+    "images": [
+      {
+        "src": "cid:image001.png@01DA0000.00000000",
+        "width": 160.0,
+        "height": 53.0,
+        "alt": "Example Corp logo"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Hi Jordan,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Thanks for the draft. Two small things:"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "marker": "decimal",
+        "items": [
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "The budget table on page 3 still shows last quarter’s numbers."
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "type": "p",
+              "inlines": [
+                {
+                  "text": "Could you "
+                },
+                {
+                  "text": "bold",
+                  "b": true
+                },
+                {
+                  "text": " the totals?"
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Otherwise it looks great."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Best regards,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "Riley Example",
+            "b": true,
+            "color": "#1f3864"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "Project Lead | Example Corp",
+            "scale": 0.85,
+            "color": "#808080"
+          }
+        ]
+      },
+      {
+        "type": "img",
+        "image": 0
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "From:",
+            "b": true
+          },
+          {
+            "text": " Jordan Sample <"
+          },
+          {
+            "text": "jordan@example.org",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": ">\n"
+          },
+          {
+            "text": "Sent:",
+            "b": true
+          },
+          {
+            "text": " Monday, 5 October 2026 09:12\n"
+          },
+          {
+            "text": "To:",
+            "b": true
+          },
+          {
+            "text": " Riley Example <"
+          },
+          {
+            "text": "riley@example.com",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": ">\n"
+          },
+          {
+            "text": "Subject:",
+            "b": true
+          },
+          {
+            "text": " Q3 report draft"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Hi Riley,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "Attached is the first draft of the Q3 report. Let me know what you think."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "Jordan"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 379,
+      "keptText": 379,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 1,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Hi Jordan,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Thanks for the draft. Two small things:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "1. "
+          },
+          {
+            "text": "The budget table on page 3 still shows last quarter’s numbers."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "tight": true,
+        "inlines": [
+          {
+            "text": "2. "
+          },
+          {
+            "text": "Could you "
+          },
+          {
+            "text": "bold"
+          },
+          {
+            "text": " the totals?"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Otherwise it looks great."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Best regards,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Riley Example"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Project Lead | Example Corp"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[Example Corp logo]"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "From:"
+          },
+          {
+            "text": " Jordan Sample <"
+          },
+          {
+            "text": "jordan@example.org"
+          },
+          {
+            "text": ">\n"
+          },
+          {
+            "text": "Sent:"
+          },
+          {
+            "text": " Monday, 5 October 2026 09:12\n"
+          },
+          {
+            "text": "To:"
+          },
+          {
+            "text": " Riley Example <"
+          },
+          {
+            "text": "riley@example.com"
+          },
+          {
+            "text": ">\n"
+          },
+          {
+            "text": "Subject:"
+          },
+          {
+            "text": " Q3 report draft"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Hi Riley,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Attached is the first draft of the Q3 report. Let me know what you think."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Jordan"
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": [
+      "image001.png@01DA0000.00000000"
+    ]
+  }
+}

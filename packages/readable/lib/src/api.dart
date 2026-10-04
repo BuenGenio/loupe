@@ -1,10 +1,13 @@
 // PUBLIC API OF readable. The app depends on these signatures; change them
-// only in agreement with the app. The bodies are temporary stubs.
+// only in agreement with the app.
 
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:mail_model/mail_model.dart';
+
+import 'render/gallery.dart';
+import 'render/reader_view.dart';
 
 enum ReaderMode { readable, original, plain }
 
@@ -54,6 +57,11 @@ enum RemoteContentPolicy { block, allow }
 /// Shows one message body. Does not scroll by itself: it sizes to its content
 /// so the host can stack several messages (conversation view) in one scroll
 /// view. It shows its own "Load images" banner when remote content is blocked.
+///
+/// Readable mode rebuilds the HTML into native widgets (no WebView, nothing
+/// executes); Plain shows the text part (or text generated from the HTML);
+/// Original shows the sender's HTML in a locked-down WebView. Large messages
+/// are processed in a background isolate; results are cached per message.
 class ReadableMessageView extends StatelessWidget {
   const ReadableMessageView({
     super.key,
@@ -64,6 +72,8 @@ class ReadableMessageView extends StatelessWidget {
     this.onOpenLink,
     this.loadAttachment,
     this.onSuggestOriginal,
+    this.senderDomain,
+    this.backgroundColor,
   });
 
   final EmailContent content;
@@ -82,26 +92,34 @@ class ReadableMessageView extends StatelessWidget {
   /// Readable mode thinks the Original view would do better (the host shows a hint).
   final VoidCallback? onSuggestOriginal;
 
-  @override
-  Widget build(BuildContext context) {
-    final text = content.text ?? _stripTags(content.html ?? '');
-    final mono = settings.mode == ReaderMode.plain && settings.plainFont == PlainTextFont.mono;
-    return SelectableText(
-      text.trim(),
-      style: (mono ? const TextStyle(fontFamily: 'monospace') : DefaultTextStyle.of(context).style).copyWith(
-        fontSize: 16 * settings.textScale,
-        height: 1.4,
-      ),
-    );
-  }
+  /// Shown in the remote-images banner ("Images from example.com are
+  /// blocked"). Defaults to the domain of the From header in
+  /// [EmailContent.headers].
+  final String? senderDomain;
 
-  static String _stripTags(String html) => html
-      .replaceAll(RegExp(r'<(style|script)[^>]*>.*?</\1>', caseSensitive: false, dotAll: true), '')
-      .replaceAll(RegExp(r'<br\s*/?>|</p>|</div>|</tr>', caseSensitive: false), '\n')
-      .replaceAll(RegExp(r'<[^>]+>'), '')
-      .replaceAll('&nbsp;', ' ')
-      .replaceAll('&amp;', '&')
-      .replaceAll(RegExp(r'\n\s*\n\s*\n+'), '\n\n');
+  /// The colour behind the message, for the contrast checks. Defaults to the
+  /// theme's surface colour.
+  final Color? backgroundColor;
+
+  /// Widget tests: process every message synchronously. Messages over ~24 KB
+  /// normally go to a background isolate, whose result a fake-async test
+  /// never sees.
+  @visibleForTesting
+  static bool get debugSynchronous => ReaderView.debugSynchronous;
+  static set debugSynchronous(bool value) => ReaderView.debugSynchronous = value;
+
+  @override
+  Widget build(BuildContext context) => ReaderView(
+    content: content,
+    settings: settings,
+    remoteContent: remoteContent,
+    onAllowRemoteContent: onAllowRemoteContent,
+    onOpenLink: onOpenLink,
+    loadAttachment: loadAttachment,
+    onSuggestOriginal: onSuggestOriginal,
+    senderDomain: senderDomain,
+    backgroundColor: backgroundColor,
+  );
 }
 
 /// One image of the full-screen gallery.
@@ -111,24 +129,7 @@ final class GalleryImage {
   final String? caption;
 }
 
-/// Opens the full-screen image gallery (swipe between images, pinch to zoom).
-Future<void> showImageGallery(BuildContext context, {required List<GalleryImage> images, int initialIndex = 0}) {
-  return Navigator.of(context).push(
-    MaterialPageRoute<void>(
-      fullscreenDialog: true,
-      builder: (context) => Scaffold(
-        backgroundColor: Colors.black,
-        appBar: AppBar(backgroundColor: Colors.black, foregroundColor: Colors.white),
-        body: PageView(
-          controller: PageController(initialPage: initialIndex),
-          children: [
-            for (final i in images)
-              InteractiveViewer(
-                child: Center(child: Image(image: i.image)),
-              ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
+/// Opens the full-screen image gallery (swipe between images, pinch or
+/// double-tap to zoom, close button, counter).
+Future<void> showImageGallery(BuildContext context, {required List<GalleryImage> images, int initialIndex = 0}) =>
+    pushGallery(context, [for (final i in images) (image: i.image, caption: i.caption)], initialIndex);

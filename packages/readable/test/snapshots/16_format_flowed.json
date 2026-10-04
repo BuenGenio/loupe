@@ -1,0 +1,186 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 457,
+      "keptText": 457,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://robin.example.org"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Hello list,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "This paragraph was written in a mail client that wraps lines at 72 characters and marks every soft break with a trailing space, as RFC 3676 describes. A reader should join these lines back into one paragraph so it fits any screen."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "But this line has a hard break.\nAnd so does this one."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "From the start of a line, a space-stuffed \"From\" must lose its stuffing."
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Quoted text can be flowed too, like this sentence that continues on the next quoted line."
+              }
+            ]
+          },
+          {
+            "type": "quote",
+            "children": [
+              {
+                "type": "p",
+                "inlines": [
+                  {
+                    "text": "And a deeper quote that also continues here."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\nRobin Example\n"
+          },
+          {
+            "text": "https://robin.example.org",
+            "u": true,
+            "link": 0
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 457,
+      "keptText": 457,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://robin.example.org"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Hello list,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "This paragraph was written in a mail client that wraps lines at 72 characters and marks every soft break with a trailing space, as RFC 3676 describes. A reader should join these lines back into one paragraph so it fits any screen."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "But this line has a hard break.\nAnd so does this one."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "From the start of a line, a space-stuffed \"From\" must lose its stuffing."
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "p",
+            "inlines": [
+              {
+                "text": "Quoted text can be flowed too, like this sentence that continues on the next quoted line."
+              }
+            ]
+          },
+          {
+            "type": "quote",
+            "children": [
+              {
+                "type": "p",
+                "inlines": [
+                  {
+                    "text": "And a deeper quote that also continues here."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "--\nRobin Example\n"
+          },
+          {
+            "text": "https://robin.example.org",
+            "u": true,
+            "link": 0
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 79,
+      "keptText": 79,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 2,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [
+      {
+        "src": "data:image/png (70 bytes)",
+        "width": 320.0,
+        "height": 200.0,
+        "alt": "Revenue chart"
+      },
+      {
+        "src": "data:image/png (70 bytes)",
+        "width": 320.0,
+        "height": 200.0,
+        "alt": "Costs chart"
+      },
+      {
+        "src": "data:image/gif (43 bytes)",
+        "width": 16.0,
+        "height": 16.0,
+        "alt": "star",
+        "icon": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Two embedded charts:"
+          }
+        ]
+      },
+      {
+        "type": "carousel",
+        "images": [
+          0,
+          1
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "An SVG that must not render:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "A broken one:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "A tiny inline icon "
+          },
+          {
+            "img": 2
+          },
+          {
+            "text": " in a sentence."
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 79,
+      "keptText": 79,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 2,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Two embedded charts:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[Revenue chart] [Costs chart]"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "An SVG that must not render:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "A broken one:"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "A tiny inline icon "
+          },
+          {
+            "text": " in a sentence."
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

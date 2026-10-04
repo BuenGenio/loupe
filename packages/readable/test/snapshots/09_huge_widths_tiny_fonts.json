@@ -1,0 +1,109 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 417,
+      "keptText": 417,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 1,
+      "remoteImages": 1,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [
+      {
+        "src": "https://conf.example.org/banner-wide.jpg",
+        "width": 1400.0,
+        "height": 350.0,
+        "alt": "Conference banner"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "This conference programme was designed for a very wide screen. The text is tiny, at nine pixels, and every column is seven hundred pixels wide. On a phone none of this should matter: the reader ignores widths and floors the font size.",
+            "scale": 0.85
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Second column, even smaller at eight pixels. Session times: 09:00 keynote, 10:30 workshops, 12:00 lunch, 13:30 panels and 16:00 closing remarks.",
+            "scale": 0.85
+          }
+        ]
+      },
+      {
+        "type": "img",
+        "image": 0
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Fine print in six points that never wraps in the original: registration fees are non-refundable after 1 November 2026.",
+            "scale": 0.85,
+            "color": "#999999"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 417,
+      "keptText": 417,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 1,
+      "remoteImages": 1,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "This conference programme was designed for a very wide screen. The text is tiny, at nine pixels, and every column is seven hundred pixels wide. On a phone none of this should matter: the reader ignores widths and floors the font size."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Second column, even smaller at eight pixels. Session times: 09:00 keynote, 10:30 workshops, 12:00 lunch, 13:30 panels and 16:00 closing remarks."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[Conference banner]"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Fine print in six points that never wraps in the original: registration fees are non-refundable after 1 November 2026."
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 1,
+    "contentIds": []
+  }
+}

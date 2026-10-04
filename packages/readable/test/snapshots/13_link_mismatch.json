@@ -1,0 +1,320 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 279,
+      "keptText": 279,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://secure-login.attacker.test/verify?u=1",
+        "mismatch": "www.mybank.example"
+      },
+      {
+        "url": "http://198.51.100.7/login",
+        "mismatch": "www.mybank.example"
+      },
+      {
+        "url": "https://www.mybank.example/help"
+      },
+      {
+        "url": "https://news.mybank.example/october"
+      },
+      {
+        "url": "https://click.mail-provider.test/c/abc123",
+        "mismatch": "shop.example.com"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Dear customer,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "We noticed unusual activity on your account. Please confirm your details at "
+          },
+          {
+            "text": "https://www.mybank.example/verify",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": " within 24 hours."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Alternatively visit "
+          },
+          {
+            "text": "www.mybank.example",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "These links are fine: "
+          },
+          {
+            "text": "mybank.example/help",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "Read the October update",
+            "u": true,
+            "link": 3
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Tracking redirect: "
+          },
+          {
+            "text": "shop.example.com",
+            "u": true,
+            "link": 4
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Click here to win · Free gift"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 279,
+      "keptText": 279,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://secure-login.attacker.test/verify?u=1"
+      },
+      {
+        "url": "http://198.51.100.7/login"
+      },
+      {
+        "url": "https://www.mybank.example/help"
+      },
+      {
+        "url": "https://news.mybank.example/october"
+      },
+      {
+        "url": "https://click.mail-provider.test/c/abc123"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Dear customer,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "We noticed unusual activity on your account. Please confirm your details at "
+          },
+          {
+            "text": "https://www.mybank.example/verify"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          },
+          {
+            "text": " within 24 hours."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Alternatively visit "
+          },
+          {
+            "text": "www.mybank.example"
+          },
+          {
+            "text": " [2]",
+            "link": 1
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "These links are fine: "
+          },
+          {
+            "text": "mybank.example/help"
+          },
+          {
+            "text": " [3]",
+            "link": 2
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "Read the October update"
+          },
+          {
+            "text": " [4]",
+            "link": 3
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Tracking redirect: "
+          },
+          {
+            "text": "shop.example.com"
+          },
+          {
+            "text": " [5]",
+            "link": 4
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Click here to win · Free gift"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://secure-login.attacker.test/verify?u=1",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[2] "
+          },
+          {
+            "text": "http://198.51.100.7/login",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[3] "
+          },
+          {
+            "text": "https://www.mybank.example/help",
+            "u": true,
+            "link": 2
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[4] "
+          },
+          {
+            "text": "https://news.mybank.example/october",
+            "u": true,
+            "link": 3
+          },
+          {
+            "text": "\n"
+          },
+          {
+            "text": "[5] "
+          },
+          {
+            "text": "https://click.mail-provider.test/c/abc123",
+            "u": true,
+            "link": 4
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

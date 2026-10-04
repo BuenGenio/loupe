@@ -1,0 +1,343 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 429,
+      "keptText": 429,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "mailto:support@vendor.example"
+      },
+      {
+        "url": "mailto:casey@example.com"
+      },
+      {
+        "url": "https://support.vendor.example/t/8812"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "FYI, see below. Can you handle this one?"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "---------- Forwarded message ---------\nFrom: "
+          },
+          {
+            "text": "Support Team",
+            "b": true
+          },
+          {
+            "text": " <"
+          },
+          {
+            "text": "support@vendor.example",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": ">\nDate: Fri, 2 Oct 2026 at 16:40\nSubject: Your ticket #8812 has been updated\nTo: <"
+          },
+          {
+            "text": "casey@example.com",
+            "u": true,
+            "link": 1
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Hello Casey,",
+            "color": "#333333"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Our engineers looked into the sync issue you reported. The fix will ship in version ",
+            "color": "#333333"
+          },
+          {
+            "text": "4.2.1",
+            "b": true,
+            "color": "#333333"
+          },
+          {
+            "text": " next week.",
+            "color": "#333333"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "In the meantime you can work around it by turning ",
+            "color": "#333333"
+          },
+          {
+            "text": "Background refresh",
+            "i": true,
+            "color": "#333333"
+          },
+          {
+            "text": " off and on again.",
+            "color": "#333333"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Kind regards,\nThe Support Team",
+            "color": "#333333"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Ticket #8812 · ",
+            "scale": 0.85,
+            "color": "#999999"
+          },
+          {
+            "text": "View online",
+            "u": true,
+            "scale": 0.85,
+            "color": "#999999",
+            "link": 2
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "--"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "Morgan Example"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "tight": true,
+        "muted": true,
+        "inlines": [
+          {
+            "text": "Operations"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 429,
+      "keptText": 429,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [
+      {
+        "url": "https://support.vendor.example/t/8812"
+      }
+    ],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "FYI, see below. Can you handle this one?"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "---------- Forwarded message ---------\nFrom: "
+          },
+          {
+            "text": "Support Team"
+          },
+          {
+            "text": " <"
+          },
+          {
+            "text": "support@vendor.example"
+          },
+          {
+            "text": ">\nDate: Fri, 2 Oct 2026 at 16:40\nSubject: Your ticket #8812 has been updated\nTo: <"
+          },
+          {
+            "text": "casey@example.com"
+          },
+          {
+            "text": ">"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Hello Casey,"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Our engineers looked into the sync issue you reported. The fix will ship in version "
+          },
+          {
+            "text": "4.2.1"
+          },
+          {
+            "text": " next week."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "In the meantime you can work around it by turning "
+          },
+          {
+            "text": "Background refresh"
+          },
+          {
+            "text": " off and on again."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Kind regards,\nThe Support Team"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Ticket #8812 · "
+          },
+          {
+            "text": "View online"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "--"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Morgan Example"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "dir": "ltr",
+        "inlines": [
+          {
+            "text": "Operations"
+          }
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p",
+        "muted": true,
+        "inlines": [
+          {
+            "text": "[1] "
+          },
+          {
+            "text": "https://support.vendor.example/t/8812",
+            "u": true,
+            "link": 0
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

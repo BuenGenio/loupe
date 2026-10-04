@@ -1,0 +1,20 @@
+Hello list,
+
+This paragraph was written in a mail client that wraps lines at 72 
+characters and marks every soft break with a trailing space, as RFC 3676 
+describes. A reader should join these lines back into one paragraph so it 
+fits any screen.
+
+But this line has a hard break.
+And so does this one.
+
+ From the start of a line, a space-stuffed "From" must lose its stuffing.
+
+> Quoted text can be flowed too, like this sentence that continues on the 
+> next quoted line.
+>> And a deeper quote that also 
+>> continues here.
+
+-- 
+Robin Example
+https://robin.example.org

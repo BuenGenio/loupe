@@ -1,0 +1,14 @@
+<div>
+<p>The build fails with this error:</p>
+<pre style="background:#f6f8fa;padding:12px;font-size:12px">$ flutter build apk
+FAILURE: Build failed with an exception.
+* What went wrong:
+Execution failed for task ':app:compileReleaseKotlin'.
+&gt;   Could not resolve all files for configuration ':app:releaseRuntimeClasspath'.</pre>
+<p>I think the fix is to bump <code>compileSdk</code> to <code>36</code> in <span style="font-family:'Courier New',monospace">android/app/build.gradle.kts</span>.</p>
+<p><font face="Consolas">Consolas text should be monospace too.</font></p>
+<p>Keyboard shortcut: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>.</p>
+<pre>  indented
+    more indented
+	tabbed line</pre>
+</div>

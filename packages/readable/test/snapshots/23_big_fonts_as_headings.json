@@ -1,0 +1,176 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 364,
+      "keptText": 364,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "h1",
+        "align": "center",
+        "inlines": [
+          {
+            "text": "BIG ANNOUNCEMENT",
+            "b": true,
+            "color": "#e4572e"
+          }
+        ]
+      },
+      {
+        "type": "h2",
+        "align": "center",
+        "inlines": [
+          {
+            "text": "We are opening a new store",
+            "color": "#29335c"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "align": "center",
+        "inlines": [
+          {
+            "text": "Join us on Saturday for the opening. There will be coffee, cake and a small surprise for the first fifty visitors."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Long text in a large font is not a heading when it goes on and on for more than a couple of lines, because then it is clearly body copy that someone styled large for emphasis or by accident, and the reader should keep it as a paragraph.",
+            "scale": 1.15
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "align": "center",
+        "inlines": [
+          {
+            "text": "x-large keyword",
+            "scale": 1.5
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "150 percent",
+            "scale": 1.5
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "small em",
+            "scale": 0.85
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "h4",
+        "align": "center",
+        "inlines": [
+          {
+            "text": "A real h4"
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 364,
+      "keptText": 364,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 0,
+      "remoteImages": 0,
+      "suggestOriginal": false
+    },
+    "links": [],
+    "images": [],
+    "blocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "BIG ANNOUNCEMENT"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "We are opening a new store"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Join us on Saturday for the opening. There will be coffee, cake and a small surprise for the first fifty visitors."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Long text in a large font is not a heading when it goes on and on for more than a couple of lines, because then it is clearly body copy that someone styled large for emphasis or by accident, and the reader should keep it as a paragraph."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "x-large keyword"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "150 percent"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "small em"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "A real h4"
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 0,
+    "contentIds": []
+  }
+}

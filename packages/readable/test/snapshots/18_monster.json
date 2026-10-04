@@ -1,0 +1,164 @@
+{
+  "readable": {
+    "stats": {
+      "sourceText": 138340,
+      "keptText": 138340,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 572,
+      "remoteImages": 572,
+      "truncated": true,
+      "suggestOriginal": true
+    },
+    "blockCount": 2858,
+    "firstBlocks": [
+      {
+        "type": "h3",
+        "inlines": [
+          {
+            "text": "Section heading"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. ",
+            "color": "#333333"
+          },
+          {
+            "text": "A link",
+            "u": true,
+            "link": 0
+          },
+          {
+            "text": " and ",
+            "color": "#333333"
+          },
+          {
+            "text": "bold",
+            "b": true,
+            "color": "#333333"
+          },
+          {
+            "text": ", ",
+            "color": "#333333"
+          },
+          {
+            "text": "italic",
+            "i": true,
+            "color": "#333333"
+          },
+          {
+            "text": ", ",
+            "color": "#333333"
+          },
+          {
+            "text": "highlighted",
+            "color": "#333333",
+            "bg": "#ffff00"
+          },
+          {
+            "text": " text.",
+            "color": "#333333"
+          }
+        ]
+      },
+      {
+        "type": "img",
+        "image": 0
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Side text in a layout cell that is long enough not to be an inline row, really quite long indeed."
+          }
+        ]
+      }
+    ]
+  },
+  "plain": {
+    "stats": {
+      "sourceText": 138340,
+      "keptText": 138340,
+      "hiddenText": 0,
+      "hiddenElements": 0,
+      "trackers": 0,
+      "contentImages": 572,
+      "remoteImages": 572,
+      "truncated": true,
+      "suggestOriginal": true
+    },
+    "blockCount": 3431,
+    "firstBlocks": [
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Section heading"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. "
+          },
+          {
+            "text": "A link"
+          },
+          {
+            "text": " [1]",
+            "link": 0
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "bold"
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "italic"
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "highlighted"
+          },
+          {
+            "text": " text."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "[pic]"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "inlines": [
+          {
+            "text": "Side text in a layout cell that is long enough not to be an inline row, really quite long indeed."
+          }
+        ]
+      }
+    ]
+  },
+  "original": {
+    "remoteImages": 1536,
+    "contentIds": [],
+    "truncated": true
+  }
+}

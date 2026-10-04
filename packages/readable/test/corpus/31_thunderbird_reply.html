@@ -1,0 +1,16 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body>
+<p>Thanks, applied in r4521.<br></p>
+<div class="moz-cite-prefix">On 02/10/2026 21:14, Noa Example wrote:<br></div>
+<blockquote type="cite" cite="mid:abc@example.org">
+<p>Small patch for the parser, see below.</p>
+<pre class="moz-quote-pre" wrap="">--- a/parser.c
++++ b/parser.c
+@@ -10,7 +10,7 @@
+-  if (len &gt; MAX) return -1;
++  if (len &gt;= MAX) return -1;</pre>
+</blockquote>
+<pre class="moz-signature" cols="72">-- 
+Eli Sample
+Release engineering</pre>
+</body></html>
