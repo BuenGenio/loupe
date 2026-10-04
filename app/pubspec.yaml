@@ -28,6 +28,13 @@ dependencies:
   package_info_plus: ^10.2.2
   # MIT; the number on the app icon (iOS, Samsung One UI and other Android launchers).
   app_badge_plus: ^1.3.5
+  # MIT; scans Thunderbird's "Export for Mobile" QR codes with zxing-cpp (Apache-2.0). Chosen over
+  # ML Kit based scanners, which bring Google Play services and usage telemetry.
+  flutter_zxing: ^3.1.0
+  # BSD-3; flutter_zxing's camera, used directly for its permission errors.
+  camera: ^0.12.1
+  # MIT; opens Loupe's page in the system settings when the camera is off.
+  app_settings: ^9.0.0
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:

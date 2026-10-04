@@ -121,6 +121,13 @@ abstract final class LoupeIcons {
   static const IconData unverified = FluentIcons.shield_error_24_filled;
   static const IconData readable = FluentIcons.sparkle_24_regular;
 
+  // Importing accounts ------------------------------------------------------
+
+  static const IconData qrCode = FluentIcons.qr_code_24_regular;
+  static const IconData scanQrCode = FluentIcons.scan_qr_code_24_regular;
+  static const IconData paste = FluentIcons.clipboard_paste_24_regular;
+  static const IconData cameraOff = FluentIcons.camera_off_24_regular;
+
   // Settings ----------------------------------------------------------------
 
   static const IconData swipeActions = FluentIcons.swipe_right_24_regular;

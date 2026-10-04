@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import 'features/account_import/account_import_screen.dart';
 import 'features/account_setup/account_setup_screen.dart';
 import 'features/compose/compose_args.dart';
 import 'features/compose/compose_screen.dart';
@@ -28,6 +29,9 @@ abstract final class Routes {
   static const welcome = '/welcome';
   static const settings = '/settings';
   static const addAccount = '/add-account';
+
+  /// Accounts from Thunderbird desktop's "Export for Mobile" QR codes.
+  static const importAccounts = '/import-accounts';
   static const compose = '/compose';
   static const swipeSettings = '/settings/swipes';
   static const advancedSettings = '/settings/advanced';
@@ -63,7 +67,8 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final location = state.matchedLocation;
       if (mode.value == AppMode.none) {
-        return location == Routes.welcome || location == Routes.addAccount ? null : Routes.welcome;
+        const open = {Routes.welcome, Routes.addAccount, Routes.importAccounts};
+        return open.contains(location) ? null : Routes.welcome;
       }
       return location == Routes.welcome ? Routes.mailboxes : null;
     },
@@ -117,6 +122,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
       GoRoute(path: Routes.addAccount, builder: (context, state) => const AccountSetupScreen()),
+      GoRoute(path: Routes.importAccounts, builder: (context, state) => const AccountImportScreen()),
       GoRoute(
         path: Routes.compose,
         pageBuilder: (context, state) => MaterialPage(
