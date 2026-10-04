@@ -252,6 +252,30 @@ void main() {
       expect(fieldNotes.privacy.trackers, 1);
     });
 
+    test('the redirect-wrapped newsletter is privacy, not suspicion', () async {
+      final r = await assessDemo(repo, (m) => m.subject.startsWith('Race recap'));
+      expect(r.verdict, Verdict.noIssues);
+      expect(r.verified, isTrue);
+      expect(r.privacy.trackers, 1);
+      expect(r.privacy.trackedLinks, 3);
+      expect(r.privacy.trackingServices, containsAll(['Amazon SES', 'Google']));
+    });
+
+    test("an impostor using a VIP's name: be careful", () async {
+      final r = await assessDemo(repo, (m) => m.subject == 'Quick favour');
+      expect(r.verdict, Verdict.beCareful);
+      final impersonation = r.findings.firstWhere((f) => f.kind == FindingKind.impersonation);
+      expect(impersonation.explanation, contains('your VIP Dana Okafor'));
+    });
+
+    test('a look-alike of the work domain is likely phishing', () async {
+      final r = await assessDemo(repo, (m) => m.sender?.email == 'it-help@northwlnd.example');
+      expect(r.verdict, Verdict.likelyPhishing);
+      expect(r.findings.first.kind, FindingKind.lookalikeSender);
+      expect(r.findings.first.explanation, contains('your own domain, northwind.example'));
+      expect(kinds(r), containsAll({FindingKind.replyToDiffers, FindingKind.impersonation}));
+    });
+
     test('a message from a friend has no findings at all', () async {
       final r = await assessDemo(repo, (m) => m.sender?.email == 'jordan.lee@example.com');
       expect(r.findings, isEmpty);

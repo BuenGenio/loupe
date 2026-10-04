@@ -23,26 +23,27 @@ enum Verdict {
   likelyPhishing,
 }
 
+/// Kinds of findings, the most telling first (the order within a severity).
 enum FindingKind {
-  authFailed,
-  authUnaligned,
-  replyToDiffers,
-  impersonation,
-  nameShowsOtherAddress,
-  firstTimeSender,
-  lookalikeSender,
   homographSender,
-  linkMismatch,
-  linkUncheckable,
+  lookalikeSender,
   linkHomograph,
-  linkInternational,
-  linkIpAddress,
-  linkShortener,
+  impersonation,
+  authFailed,
+  linkMismatch,
+  nameShowsOtherAddress,
+  replyToDiffers,
   linkUserInfo,
-  scriptLink,
+  linkIpAddress,
   dataLink,
   passwordField,
   hiddenText,
+  authUnaligned,
+  firstTimeSender,
+  linkUncheckable,
+  linkShortener,
+  linkInternational,
+  scriptLink,
 }
 
 /// One reason, in plain language.

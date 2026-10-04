@@ -714,6 +714,7 @@ class DemoMailRepository implements MailRepository {
       ('From', addresses(s.from)),
       if (s.to.isNotEmpty) ('To', addresses(s.to)),
       if (s.cc.isNotEmpty) ('Cc', addresses(s.cc)),
+      if (s.replyTo.isNotEmpty) ('Reply-To', addresses(s.replyTo)),
       ('Subject', enc(s.subject)),
       ...m.extraHeaders,
       ('MIME-Version', '1.0'),
