@@ -244,6 +244,30 @@ void main() {
       });
     });
 
+    test('syncOnce works on a repository that was never started', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer();
+        final a = await h.add(server);
+        await h.repo.send(
+          OutgoingMessage(accountId: a.id, identityId: a.defaultIdentity.id, subject: 'Queued', text: 'x'),
+          undoDelay: const Duration(minutes: 10),
+        );
+        await h.repo.dispose();
+        server.deliver('INBOX', subject: 'Overnight');
+        await settle(const Duration(minutes: 11));
+
+        final background = LiveMailRepository(h.store, h.factory, h.credentials, config: fastConfig);
+        await background.syncOnce();
+        expect(await h.subjects(a, 'INBOX'), ['Overnight']);
+        expect(server.sent, hasLength(1));
+        expect(server.subjects('Sent'), ['Queued']);
+        expect(server.transports.where((t) => t.isConnected), isEmpty);
+        await background.dispose();
+        await h.store.close();
+      });
+    });
+
     test('loadOlder pages back until the start of the mailbox', () {
       fakeTime((async) async {
         final h = Harness(

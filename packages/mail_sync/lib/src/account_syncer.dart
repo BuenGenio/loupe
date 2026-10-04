@@ -431,6 +431,16 @@ final class AccountSyncer {
     }());
   }
 
+  /// Replays due operations now (e.g. the Sent copy after a background
+  /// send). Never throws; failures go to the status.
+  Future<void> flushOps() async {
+    try {
+      await _replayOps();
+    } catch (e) {
+      _handleFailure(e);
+    }
+  }
+
   /// Replays due operations in order. Stops at the first one waiting for a
   /// retry; rethrows connection and authentication errors (offline).
   Future<void> _replayOps() => _replay ??= _doReplay().whenComplete(() => _replay = null);

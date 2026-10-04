@@ -61,10 +61,7 @@ final class LiveMailRepository implements MailRepository {
   Future<void> start() async {
     if (_started || _disposed) return;
     _started = true;
-    for (final a in await store.getAccounts()) {
-      _syncers[a.id] ??= AccountSyncer(_host, a);
-    }
-    _publishStatuses();
+    await _loadAccounts();
     // A send interrupted by the app being killed is retried.
     for (final e in await store.outboxEntries()) {
       if (e.status == OutboxStatus.sending) {
@@ -77,6 +74,13 @@ final class LiveMailRepository implements MailRepository {
       }
     }
     await _scheduleOutbox();
+  }
+
+  Future<void> _loadAccounts() async {
+    for (final a in await store.getAccounts()) {
+      _syncers[a.id] ??= AccountSyncer(_host, a);
+    }
+    _publishStatuses();
   }
 
   /// Stops polling and IDLE and closes connections (app in background).
@@ -96,14 +100,16 @@ final class LiveMailRepository implements MailRepository {
     await _scheduleOutbox();
   }
 
-  /// One full sync of every account plus due sends, for background fetch
-  /// (WorkManager, BGAppRefreshTask). Closes connections afterwards when
-  /// paused.
+  /// One full sync of every account plus due sends and queued operations,
+  /// for background fetch (WorkManager, BGAppRefreshTask). Works without
+  /// [start]; closes connections afterwards unless the repository is running.
   Future<void> syncOnce() async {
     if (_disposed) return;
+    await _loadAccounts();
     await Future.wait([for (final s in _syncers.values) s.syncAll()]);
     await _processOutbox();
-    if (_paused) await Future.wait([for (final s in _syncers.values) s.pause()]);
+    await Future.wait([for (final s in _syncers.values) s.flushOps()]);
+    if (!_started || _paused) await Future.wait([for (final s in _syncers.values) s.pause()]);
   }
 
   /// Stops all syncing. The store stays open (the app owns it).
