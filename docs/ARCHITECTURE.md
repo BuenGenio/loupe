@@ -11,7 +11,7 @@ app (UI, Riverpod, go_router)
               ├─ mail_store (drift + FTS5 + sqlite3mc)
               └─ TransportFactory ◄── mail_imap (enough_mail; IMAP, SMTP, MIME, discovery)
                                   ◄── mail_jmap (Phase 3)
-mail_platform: CredentialStore (keychain), OAuth sign-in
+mail_platform: CredentialStore (keychain), OAuth sign-in (AppAuth) and token refresh (HTTPS)
 mail_crypto: OpenPGP (dart_pg, vendored in third_party/): keys, keyring,
              PGP/MIME reading and writing, Autocrypt; the app wraps loadContent
              with it and hands its composer to mail_imap
@@ -29,6 +29,7 @@ The packages are developed in parallel. These are the seams:
 | `MailSubscriptions` (bulk mail by List-Id or sender, read rates), `unsubscribeMethods`, `unsubscribeMessage` | mail_model `src/subscriptions.dart` | app demo repository; mail_sync `LiveMailRepository` | app (`repository is MailSubscriptions`) |
 | `MailTransport`, `MailSender`, `MessageComposer`, `TransportFactory` | mail_model `src/transport.dart` | mail_imap | mail_sync |
 | `CredentialStore` | mail_model `src/transport.dart` | mail_platform | mail_sync (through the app) |
+| `SignInRenewal` ("Sign in again" after a revoked OAuth grant), `SignInRequiredException` | mail_model `src/sign_in.dart` | mail_sync `LiveMailRepository` | app (`repository is SignInRenewal`); mail_platform throws the exception |
 | `SearchExpr` (search syntax tree) | mail_model `src/search.dart` | expr_search (parser) | app, mail_store (SQL), mail_imap (IMAP), mail_sync |
 | `parseQuery`, `formatQuery`, `describeTerm`, `suggest`, `matchesEmail`, `widenForServer`, `compileImap`, `compileGmailRaw`, `compileJmapFilter` | expr_search `lib/src/api.dart` | expr_search | app, mail_imap, mail_sync |
 | `ReadableMessageView`, `ReaderSettings`, `showImageGallery`, `analyzeContent` (link and privacy findings), `unwrapRedirect`, `inspectHost` | readable `lib/src/api.dart` | readable | app |

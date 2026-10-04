@@ -47,6 +47,10 @@ final class CredentialsService {
       final fresh = await oauth.refresh(provider, current);
       await store.write(accountId, fresh);
       return fresh;
+    } on SignInRequiredException {
+      // Forget the dead grant, so later calls fail without a request.
+      if (current.refreshToken != null) await store.write(accountId, withoutSignIn(current, _clock()));
+      rethrow;
     } finally {
       _refreshing.removeWhere((id, _) => id == accountId);
     }
