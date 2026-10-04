@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:loupe/features/openpgp/key_import.dart';
 import 'package:loupe/features/openpgp/openpgp_providers.dart';
 import 'package:loupe/features/openpgp/pgp_status.dart';
 import 'package:loupe/theme/loupe_icons.dart';
 import 'package:loupe/theme/theme.dart';
 import 'package:mail_crypto/mail_crypto.dart';
+import 'package:mail_model/mail_model.dart';
 
 import 'openpgp_test_support.dart';
 
@@ -129,5 +131,16 @@ void main() {
     expect(find.text(dana.formattedFingerprint), findsOneWidget);
     expect(find.byIcon(LoupeIcons.signatureInvalid), findsOneWidget);
     expect(find.text('Accepted and verified'), findsOneWidget);
+  });
+
+  test('attached keys: pgp-keys parts and key files, not signatures or encrypted parts', () {
+    Attachment a(String type, String name) => Attachment(partId: '2', mimeType: type, filename: name, size: 3000);
+    expect(PgpKeyAttachments.isKey(a('application/pgp-keys', 'OpenPGP_0x1234.asc')), isTrue);
+    expect(PgpKeyAttachments.isKey(a('application/octet-stream', 'Sam Rivera (0x1234) – Secret.asc')), isTrue);
+    expect(PgpKeyAttachments.isKey(a('text/plain', 'bob.key')), isTrue);
+    expect(PgpKeyAttachments.isKey(a('application/pgp-signature', 'OpenPGP_signature.asc')), isFalse);
+    expect(PgpKeyAttachments.isKey(a('application/octet-stream', 'signature.asc')), isFalse);
+    expect(PgpKeyAttachments.isKey(a('application/octet-stream', 'encrypted.asc')), isFalse);
+    expect(PgpKeyAttachments.isKey(a('application/pdf', 'report.pdf')), isFalse);
   });
 }

@@ -57,6 +57,19 @@ Future<void> importKeys(
       if (!k.hasSecret && service.state.ownKey(k.fingerprint) == null) k,
   ];
   final added = <String>[];
+  // A secret key that arrived in a message: only with explicit consent (a
+  // stranger's key would otherwise become "your" key for its address).
+  if (secrets.isNotEmpty && source == KeySource.attachment && context.mounted) {
+    final ok = await showActionSheet<bool>(
+      context,
+      title: 'Import a Secret Key?',
+      message:
+          'This attachment holds a secret key (${secrets.map((k) => k.displayName).join(', ')}). Import it as your '
+          'own key only if you exported it yourself, from Thunderbird for example.',
+      actions: const [SheetAction('Import as My Key', true, destructive: true)],
+    );
+    if (ok != true) secrets.clear();
+  }
   for (final k in secrets) {
     final imported = await service.importSecretKey(k);
     if (imported != null) added.add('your key ${imported.displayName}');
@@ -89,9 +102,17 @@ class PgpKeyAttachments extends ConsumerWidget {
   final EmailContent content;
   final Future<Uint8List> Function(Attachment attachment) load;
 
-  static bool isKey(Attachment a) =>
-      a.mimeType.toLowerCase() == 'application/pgp-keys' ||
-      ((a.filename ?? '').toLowerCase().endsWith('.asc') && (a.filename ?? '').toLowerCase().contains('openpgp_0x'));
+  /// `application/pgp-keys`, or an `.asc`/`.key`/`.pgp`/`.gpg` file that
+  /// isn't a signature or an encrypted message (a key mailed to oneself
+  /// from Thunderbird's export).
+  static bool isKey(Attachment a) {
+    final type = a.mimeType.toLowerCase();
+    if (type == 'application/pgp-keys') return true;
+    if (type == 'application/pgp-signature' || type == 'application/pgp-encrypted') return false;
+    final name = (a.filename ?? '').toLowerCase();
+    if (name.contains('signature') || name == 'encrypted.asc') return false;
+    return a.size < 256 * 1024 && ['.asc', '.key', '.pgp', '.gpg'].any(name.endsWith);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

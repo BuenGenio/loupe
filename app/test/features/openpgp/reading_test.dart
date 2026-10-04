@@ -175,4 +175,30 @@ void main() {
     expect((entry.acceptance, entry.source), (KeyAcceptance.unverified, KeySource.attachment));
     await tester.pump(const Duration(seconds: 5));
   });
+
+  testWidgets('a secret key in a message is imported as one’s own only after a warning', (tester) async {
+    final stranger = testKey('Me Myself <me@example.com>');
+    final storage = await keychainWith();
+    final repo = _KeyAttachmentRepository(
+      Uint8List.fromList(utf8.encode(pgp.armor(stranger))),
+      emails: [testEmail('k2', subject: 'Your new key')],
+      contents: {
+        'k2': const EmailContent(
+          emailId: 'k2',
+          text: 'Use this key.',
+          attachments: [Attachment(partId: '2', mimeType: 'application/pgp-keys', filename: 'key.asc')],
+        ),
+      },
+    );
+    final router = await pumpTestApp(tester, repository: repo, overrides: [inlinePgp, keychain(storage)]);
+    unawaited(router.push('/message/k2'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('import-attached-key')));
+    await tester.pumpAndSettle();
+    expect(find.text('Import a Secret Key?'), findsOneWidget);
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    final keyring = Keyring(storage, prefix: 'loupe.openpgp');
+    expect((await keyring.load()).ownKeys, isEmpty);
+  });
 }
