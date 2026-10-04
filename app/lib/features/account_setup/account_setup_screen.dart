@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../data/oauth.dart';
 import '../../data/repositories.dart';
 import '../../settings/app_mode.dart';
 import '../../router.dart';
@@ -13,6 +14,7 @@ import '../../theme/theme.dart';
 import '../compose/compose_text.dart';
 import '../conversation/mail_streams.dart';
 import '../conversation/sheets.dart';
+import 'oauth_accounts.dart';
 import 'server_settings.dart';
 import 'setup_text.dart';
 import '../../theme/loupe_icons.dart';
@@ -23,6 +25,10 @@ enum _Step { address, signIn, done }
 
 /// Adds an account: email and name, then provider-specific sign-in with the
 /// discovered (or manual) server settings, then a name and colour.
+///
+/// Gmail and Microsoft addresses sign in with Google or Microsoft in the
+/// browser when this build has their client ids; Gmail can still use an
+/// app password instead.
 ///
 /// Works with any [MailRepository]: it only uses discover, addAccount and
 /// updateAccount.
@@ -49,6 +55,9 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
   bool _obscure = true;
 
   bool _busy = false;
+
+  /// What the primary button says while [_busy].
+  String _busyLabel = 'Connecting…';
   String? _error;
 
   /// A certificate fingerprint from a certificate error, offered for trust.
@@ -129,6 +138,9 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
 
   bool get _needsOAuth => _provider == ProviderKind.microsoft || (_provider == ProviderKind.gmail && !_appPassword);
 
+  /// Whether this build can sign in with the provider's OAuth.
+  bool get _oauthAvailable => ref.read(oauthSignInProvider).isConfigured(_provider);
+
   Future<void> _signIn() async {
     final incoming = _incoming?.config;
     final outgoing = _outgoing?.config;
@@ -146,6 +158,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     FocusScope.of(context).unfocus();
     setState(() {
       _busy = true;
+      _busyLabel = 'Connecting…';
       _error = null;
       _fingerprint = null;
     });
@@ -162,15 +175,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
           senderName: name.isEmpty ? null : name,
         ),
       );
-      if (!mounted) return;
-      final others = (ref.read(accountsStreamProvider).value ?? const <MailAccount>[]).where((a) => a.id != account.id);
-      setState(() {
-        _account = account;
-        _busy = false;
-        _step = _Step.done;
-        _description.text = _defaultDescription;
-        _colorIndex = others.length % LoupeColors.of(context).accountColors.length;
-      });
+      if (mounted) _added(account);
     } on MailException catch (e) {
       if (!mounted) return;
       setState(() {
@@ -183,6 +188,56 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
   }
 
   String _describe(MailException e) => describeSetupError(e, _provider);
+
+  /// Signs in with Google or Microsoft in the browser, then adds the account
+  /// with the provider's servers.
+  Future<void> _signInWithOAuth() async {
+    final provider = _provider;
+    final email = _email.text.trim();
+    final name = _name.text.trim();
+    FocusScope.of(context).unfocus();
+    setState(() {
+      _busy = true;
+      _busyLabel = 'Waiting for ${oauthProviderName(provider)}…';
+      _error = null;
+      _fingerprint = null;
+    });
+    try {
+      final credentials = await ref.read(oauthSignInProvider).signIn(provider, loginHint: email);
+      if (!mounted) return;
+      setState(() => _busyLabel = 'Connecting…');
+      final servers = oauthServers(provider);
+      final account = await (await _repo).addAccount(
+        AccountSetup(
+          email: email,
+          displayName: _defaultDescription,
+          provider: provider,
+          incoming: servers.incoming,
+          outgoing: servers.outgoing,
+          credentials: credentials,
+          senderName: name.isEmpty ? null : name,
+        ),
+      );
+      if (mounted) _added(account);
+    } on MailException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _busy = false;
+        _error = describeOAuthError(e, provider);
+      });
+    }
+  }
+
+  void _added(MailAccount account) {
+    final others = (ref.read(accountsStreamProvider).value ?? const <MailAccount>[]).where((a) => a.id != account.id);
+    setState(() {
+      _account = account;
+      _busy = false;
+      _step = _Step.done;
+      _description.text = _defaultDescription;
+      _colorIndex = others.length % LoupeColors.of(context).accountColors.length;
+    });
+  }
 
   /// Pins the offered certificate on the servers it belongs to and retries.
   Future<void> _trustCertificate() async {
@@ -406,7 +461,9 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       children: [
         _title(context, title, email),
         ..._providerNotes(context),
-        if (discovery.notes case final notes? when notes.trim().isNotEmpty)
+        // Gmail's and Microsoft's notes above say it better than discovery's.
+        if (discovery.notes case final notes?
+            when notes.trim().isNotEmpty && _provider != ProviderKind.gmail && _provider != ProviderKind.microsoft)
           NoteCard(icon: LoupeIcons.info, child: Text(notes)),
         if (!_needsOAuth)
           SheetGroup(
@@ -447,7 +504,27 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
             if (_incoming!.protocol != ServerProtocol.jmap)
               ServerSettingsForm(title: 'Outgoing · SMTP', controller: _outgoing!, enabled: !_busy),
           ],
-          _primaryButton(key: const Key('setup-sign-in'), label: 'Sign In', busyLabel: 'Connecting…', onTap: _signIn),
+          _primaryButton(key: const Key('setup-sign-in'), label: 'Sign In', busyLabel: _busyLabel, onTap: _signIn),
+        ] else if (_oauthAvailable) ...[
+          _primaryButton(
+            key: const Key('setup-oauth'),
+            label: oauthButtonLabel(_provider),
+            busyLabel: _busyLabel,
+            onTap: _signInWithOAuth,
+          ),
+          if (_provider == ProviderKind.gmail)
+            Center(
+              child: TextButton(
+                key: const Key('use-app-password'),
+                onPressed: _busy
+                    ? null
+                    : () => setState(() {
+                        _appPassword = true;
+                        _error = null;
+                      }),
+                child: const Text('Use an App Password Instead'),
+              ),
+            ),
         ] else
           Padding(
             padding: const EdgeInsets.all(16),
@@ -465,6 +542,16 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
   List<Widget> _providerNotes(BuildContext context) {
     Widget link(String label, String url) => TextButton(onPressed: () => _open(url), child: Text(label));
     return switch (_provider) {
+      ProviderKind.gmail when !_appPassword && _oauthAvailable => [
+        const NoteCard(
+          key: Key('oauth-note'),
+          icon: LoupeIcons.info,
+          child: Text(
+            'You sign in on Google’s page, and Loupe never sees your password. Allow Loupe to read, '
+            'send and organise your mail.',
+          ),
+        ),
+      ],
       ProviderKind.gmail when !_appPassword => [
         NoteCard(
           icon: LoupeIcons.info,
@@ -484,8 +571,31 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       ProviderKind.gmail => [
         NoteCard(
           icon: LoupeIcons.password,
-          actions: [link('How to Create an App Password', gmailAppPasswordHelp)],
+          actions: [
+            link('How to Create an App Password', gmailAppPasswordHelp),
+            if (_oauthAvailable)
+              TextButton(
+                key: const Key('use-oauth'),
+                onPressed: _busy
+                    ? null
+                    : () => setState(() {
+                        _appPassword = false;
+                        _error = null;
+                      }),
+                child: Text(oauthButtonLabel(_provider)),
+              ),
+          ],
           child: const Text('Create an app password in your Google account and paste it below.'),
+        ),
+      ],
+      ProviderKind.microsoft when _oauthAvailable => [
+        const NoteCard(
+          key: Key('oauth-note'),
+          icon: LoupeIcons.info,
+          child: Text(
+            'You sign in on Microsoft’s page, and Loupe never sees your password. This works for Outlook.com '
+            'and Hotmail, and for work or school accounts on Microsoft 365.',
+          ),
         ),
       ],
       ProviderKind.microsoft => [
