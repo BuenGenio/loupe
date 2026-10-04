@@ -18,7 +18,7 @@ const manageSievePort = 4190;
 /// style setups). A self-signed certificate trusted for IMAP is trusted
 /// here too.
 final class ManageSieveConnector implements SieveConnector {
-  const ManageSieveConnector({this.port = manageSievePort, this.timeout = const Duration(seconds: 20)});
+  const ManageSieveConnector({this.port = manageSievePort, this.timeout = const Duration(seconds: 12)});
 
   final int port;
   final Duration timeout;
