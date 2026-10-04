@@ -3,6 +3,17 @@ import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
 
+/// Background of a row in a grouped list: white, or #1C1C1E in dark mode
+/// (iOS secondarySystemGroupedBackground).
+Color groupFill(BuildContext context) =>
+    Theme.of(context).brightness == Brightness.dark ? const Color(0xFF1C1C1E) : Theme.of(context).colorScheme.surface;
+
+/// A subtle fill for tiles and banners on the plain background: #F2F2F7, or
+/// #1C1C1E in dark mode.
+Color subtleFill(BuildContext context) => Theme.of(context).brightness == Brightness.dark
+    ? const Color(0xFF1C1C1E)
+    : LoupeColors.of(context).groupedBackground;
+
 /// One choice of [showActionSheet].
 final class SheetAction<T> {
   const SheetAction(this.label, this.value, {this.destructive = false, this.isDefault = false});
@@ -95,7 +106,7 @@ class SheetGroup extends StatelessWidget {
               ),
             ),
           Material(
-            color: theme.colorScheme.surface,
+            color: groupFill(context),
             borderRadius: BorderRadius.circular(12),
             clipBehavior: Clip.antiAlias,
             child: Column(mainAxisSize: MainAxisSize.min, children: rows),

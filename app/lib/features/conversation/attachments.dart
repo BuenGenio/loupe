@@ -125,7 +125,7 @@ class _AttachmentTileState extends State<AttachmentTile> {
     final colors = LoupeColors.of(context);
     final name = _a.filename?.isNotEmpty == true ? _a.filename! : 'Untitled';
     return Material(
-      color: colors.groupedBackground,
+      color: subtleFill(context),
       borderRadius: BorderRadius.circular(12),
       clipBehavior: Clip.antiAlias,
       child: InkWell(

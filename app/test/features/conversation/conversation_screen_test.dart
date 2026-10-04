@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:loupe/features/conversation/conversation_screen.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:readable/readable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -187,6 +188,30 @@ void main() {
     await tester.tap(find.text('Search Messages from Alice Example'));
     await tester.pumpAndSettle();
     expect(find.text('search f:"alice@example.com"'), findsOneWidget);
+  });
+
+  testWidgets('embedded in a split view it shows no Back button and calls onClose', (tester) async {
+    var closed = 0;
+    await pumpTestApp(
+      tester,
+      repository: threadRepository(),
+      home: Scaffold(
+        body: Row(
+          children: [
+            const Expanded(child: Text('list')),
+            Expanded(
+              child: ConversationScreen(emailId: 'm3', onClose: () => closed++),
+            ),
+          ],
+        ),
+      ),
+    );
+    expect(bodyOf('m3'), findsOneWidget);
+    expect(find.byType(BackButton), findsNothing);
+    await tester.tap(find.byKey(const Key('toolbar-archive')));
+    await tester.pumpAndSettle();
+    expect(closed, 1);
+    expect(find.text('list'), findsOneWidget);
   });
 
   testWidgets('shows the empty state when the message is gone', (tester) async {

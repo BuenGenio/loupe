@@ -275,7 +275,7 @@ class _RecipientFieldState extends State<RecipientField> {
           ),
           if (_focus.hasFocus && _suggestions.isNotEmpty)
             Material(
-              color: colors.groupedBackground,
+              color: subtleFill(context),
               child: Column(
                 children: [
                   for (final s in _suggestions)

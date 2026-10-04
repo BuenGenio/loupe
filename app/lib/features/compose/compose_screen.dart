@@ -512,7 +512,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> {
             children: [
               if (noAccount)
                 Container(
-                  color: colors.groupedBackground,
+                  color: subtleFill(context),
                   padding: const EdgeInsets.all(16),
                   child: Text('Add an account to send mail.', style: TextStyle(color: colors.secondaryText)),
                 ),

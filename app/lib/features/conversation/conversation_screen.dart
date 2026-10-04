@@ -31,8 +31,8 @@ class ConversationScreen extends ConsumerStatefulWidget {
   final String emailId;
 
   /// Called after the conversation was archived, deleted or moved away. By
-  /// default the screen pops itself when it is the `/message/:id` route and
-  /// does nothing when embedded.
+  /// default the screen pops its route, unless it is embedded in another
+  /// screen's Scaffold (split view), where it does nothing.
   final VoidCallback? onClose;
 
   @override
@@ -187,16 +187,14 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
     }
   }
 
+  /// True inside another screen's Scaffold (the tablet split view): no back
+  /// button, and archiving doesn't pop the enclosing route.
+  bool get _embedded => Scaffold.maybeOf(context) != null;
+
   void _close() {
     if (!mounted) return;
     if (widget.onClose case final onClose?) return onClose();
-    bool ownRoute;
-    try {
-      ownRoute = GoRouterState.of(context).matchedLocation.startsWith('/message/');
-    } on GoError {
-      ownRoute = Scaffold.maybeOf(context) == null;
-    }
-    if (ownRoute) Navigator.of(context).maybePop();
+    if (!_embedded) Navigator.of(context).maybePop();
   }
 
   void _setFlag(EmailSummary m, bool on) => _act(
@@ -363,6 +361,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: !_embedded,
         actions: [
           if (target != null)
             TextButton(
@@ -687,7 +686,7 @@ class _OfflineBanner extends StatelessWidget {
     final colors = LoupeColors.of(context);
     final offline = error is MailException && (error as MailException).kind == MailErrorKind.connection;
     return Container(
-      color: colors.groupedBackground,
+      color: subtleFill(context),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
