@@ -446,9 +446,13 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen> {
     final boxes = {for (final m in mailboxes) m.id: m};
     final vips = ref.watch(vipAddressesProvider).value ?? const <String>{};
     final unified = widget.mailboxRef is VirtualMailboxRef && accounts.length > 1;
+    // Rows keep their state (a swipe under way) when sync adds or removes
+    // others above them.
+    final indexOf = {for (final (i, r) in rows.indexed) r.threadId: i};
     return [
       SliverList.builder(
         itemCount: rows.length,
+        findChildIndexCallback: (key) => key is ValueKey<String> ? indexOf[key.value] : null,
         itemBuilder: (context, i) {
           final row = rows[i];
           final email = row.latest;
