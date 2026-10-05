@@ -3,12 +3,26 @@
 A mail app for Android and iOS: as simple as Apple Mail on the surface, with Thunderbird-desktop power underneath.
 "Loupe" is a working name.
 
-Status: **early development** (Phase 1). Android builds first.
+Status: **early development**, used daily by its owner on Android. iOS is prepared and waits on an Apple Developer account.
 
 - Plan: [docs/plan/PLAN.md](docs/plan/PLAN.md) (background research in [docs/plan/research/](docs/plan/research/))
 - Architecture and package contracts: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - iOS: what is set up and the checklist to TestFlight: [docs/ios.md](docs/ios.md)
 - Sign in with Google and Microsoft: registering the OAuth clients, and testing: [docs/oauth-setup.md](docs/oauth-setup.md)
+
+## What it does
+
+- **Reading:** Readable mode rebuilds HTML mail to fit the screen, with footers as fine print, image carousel and gallery, and dark-mode colour fixes. Original and Plain (Sans/Mono) views are one tap away. Developer mode shows patches with diff highlighting, and mailing lists as forum-style threads.
+- **Search:** pull-down search with chips or typed expressions (`f:alice and (s:invoice or b:"PO 123")`). Results from the phone appear at once and the server's stream in after. Smart Mailboxes are stored on your mail server (IMAP METADATA or a folder), so they follow you to other devices.
+- **Organising:** swipes with Undo, Filter button, tags compatible with Thunderbird, folder subscriptions, snooze that works across clients (a `Snoozed` folder plus a keyword), and an on-device unsubscribe centre.
+- **Rules:** device rules, and server rules as Sieve over ManageSieve; any search can become a rule.
+- **Writing:** identities with reply-from-recipient and catch-all aliases, draft autosave, undo send, scheduled send with an Outbox.
+- **Notifications:** background sync every 15 minutes, notification actions (Archive, Mark as Read, Reply), app icon badge, and optional instant delivery (experimental).
+- **Security and privacy:** encrypted local database; no telemetry or servers of our own; remote images blocked; tracking-redirect unwrapping; an explainable phishing check; OpenPGP (compatible with Thunderbird, with Autocrypt) and S/MIME.
+- **Accounts:** IMAP/SMTP with autoconfig, import from Thunderbird's "Export for Mobile" QR codes, and Google/Microsoft sign-in once client IDs are configured ([docs/oauth-setup.md](docs/oauth-setup.md)).
+- **Tablets and keyboards:** three-pane layout, keyboard shortcuts, command palette (Ctrl/⌘+K), drag and drop.
+
+Manual test plan for a device: [docs/device-test-checklist.md](docs/device-test-checklist.md).
 
 ## Try it on Android
 
