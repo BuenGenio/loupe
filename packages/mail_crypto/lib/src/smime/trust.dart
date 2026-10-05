@@ -76,7 +76,22 @@ final class SmimeTrustAnchors {
 
   final List<SmimeCertificate> anchors;
 
-  bool isAnchor(SmimeCertificate c) => anchors.any((a) => a == c || (a.subject.matches(c.subject) && a.sameKey(c)));
+  /// The anchor [c] stands for: itself, or the anchor with its subject and
+  /// its whole public key (algorithm and curve too), a CA re-issued with its
+  /// key. Null when it is none.
+  SmimeCertificate? anchorFor(SmimeCertificate c) =>
+      anchors.where((a) => a == c).firstOrNull ??
+      anchors.where((a) => a.subject.matches(c.subject) && _sameBytes(a.publicKeyInfo, c.publicKeyInfo)).firstOrNull;
+
+  bool isAnchor(SmimeCertificate c) => anchorFor(c) != null;
+}
+
+bool _sameBytes(List<int> a, List<int> b) {
+  if (a.length != b.length) return false;
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] != b[i]) return false;
+  }
+  return true;
 }
 
 /// Mozilla's email roots, parsed once per isolate.
@@ -166,7 +181,10 @@ List<SmimeCertificate>? _buildPath(
   List<SmimeCertificate> pool,
   bool Function(SmimeCertificate, SmimeCertificate) signedBy,
 ) {
-  if (anchors.isAnchor(leaf)) return [leaf];
+  // A certificate the user trusts on its own: exactly that one. Another one
+  // with its subject and key could claim other addresses; it goes through
+  // the search like any other (and its "issuer" must be a CA).
+  if (anchors.anchors.contains(leaf)) return [leaf];
   var checks = 0;
   List<SmimeCertificate>? walk(List<SmimeCertificate> path) {
     final cert = path.last;
@@ -178,9 +196,12 @@ List<SmimeCertificate>? _buildPath(
     for (final (issuer, isAnchor) in candidates) {
       if (++checks > maxPathChecks) return null;
       if (!signedBy(cert, issuer)) continue;
-      final next = [...path, issuer];
-      if (isAnchor || anchors.isAnchor(issuer)) return next;
-      final found = walk(next);
+      if (isAnchor) return [...path, issuer];
+      // A copy of an anchor (same subject and key) in the message: the chain
+      // ends at the anchor as the user has it, with its validity and constraints.
+      final anchor = anchors.anchorFor(issuer);
+      if (anchor != null) return [...path, anchor];
+      final found = walk([...path, issuer]);
       if (found != null) return found;
     }
     return null;
