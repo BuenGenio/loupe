@@ -142,6 +142,9 @@ enum SmimeContentCipher {
 /// Certificates of a SignedData that are read; the rest are left out.
 const maxMessageCertificates = 32;
 
+/// SignerInfos of a SignedData that are checked; the rest are left out.
+const maxSigners = 16;
+
 Never _malformed(Object e) => throw SmimeException(SmimeErrorKind.malformed, 'The S/MIME data is damaged.', e);
 
 // Verifying -------------------------------------------------------------------
@@ -178,9 +181,11 @@ SmimeSignedData verifySignedData(Uint8List der, {Uint8List? detached, List<Smime
       }
     }
     final data = detached ?? content;
+    // The content is hashed once per digest algorithm, whatever the number of signers.
+    final digests = <String, Uint8List>{};
     var signers = [
-      for (final si in signerInfos?.children ?? const <Asn1>[])
-        _checkSigner(si, data, contentType, [...certificates, ...known]),
+      for (final si in (signerInfos?.children ?? const <Asn1>[]).take(maxSigners))
+        _checkSigner(si, data, contentType, [...certificates, ...known], digests),
     ];
     // A multipart/signed whose signature carries other content than the
     // signed part (Thunderbird's "mismatch-econtent"): what is shown isn't what was signed.
@@ -209,7 +214,13 @@ SmimeSignedData verifySignedData(Uint8List der, {Uint8List? detached, List<Smime
   }
 }
 
-SmimeSignerCheck _checkSigner(Asn1 si, Uint8List? content, String contentType, List<SmimeCertificate> certs) {
+SmimeSignerCheck _checkSigner(
+  Asn1 si,
+  Uint8List? content,
+  String contentType,
+  List<SmimeCertificate> certs,
+  Map<String, Uint8List> digests,
+) {
   final sid = SmimeRecipientId.parse(si[1]);
   final cert = certs.where(sid.matches).firstOrNull;
   final digestOid = si[2][0].oid;
@@ -257,9 +268,12 @@ SmimeSignerCheck _checkSigner(Asn1 si, Uint8List? content, String contentType, L
     return result(false, 'It is signed with ${digestName(digestOid)}, which isn’t safe anymore.', false, true);
   }
   if (cert == null) return result(false, 'The signer’s certificate isn’t in the message.');
+  if (cert.keyType == SmimeKeyType.rsa && cert.keyBits < minRsaBits) {
+    return result(false, 'It is signed with a ${cert.keyBits}-bit RSA key, which isn’t safe anymore.', false, true);
+  }
   final d = digestFor(digestOid);
   if (d == null) return result(false, 'The digest ${digestName(digestOid)} isn’t supported.');
-  final contentHash = d.process(content);
+  final contentHash = digests[digestOid] ??= d.process(content);
   Uint8List signedBytes;
   if (signedAttrs != null) {
     if (messageDigest == null || !constantEquals(messageDigest, contentHash)) {
@@ -341,8 +355,10 @@ bool verifySignature(
 
 /// Whether [issuer]'s key signed [cert].
 bool certificateSignedBy(SmimeCertificate cert, SmimeCertificate issuer) {
-  // SHA-1 certificates aren't trusted anymore (as Mozilla decided in 2017).
+  // SHA-1 certificates aren't trusted anymore (as Mozilla decided in 2017),
+  // nor small RSA keys.
   if (_weak.contains(cert.signatureAlgorithm)) return false;
+  if (issuer.keyType == SmimeKeyType.rsa && issuer.keyBits < minRsaBits) return false;
   try {
     final params = cert.signatureParameters == null ? null : Asn1.parse(cert.signatureParameters!);
     return verifySignature(issuer, cert.signatureAlgorithm, params, Oid.sha256, cert.tbs, cert.signature);

@@ -1,12 +1,14 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:mail_crypto/mail_crypto.dart';
-import 'package:mail_crypto/src/smime/cms.dart' show contentInfo, maxMessageCertificates;
+import 'package:mail_crypto/src/smime/cms.dart' show contentInfo, maxMessageCertificates, maxSigners, verifySignature;
 import 'package:mail_crypto/src/smime/der.dart';
 import 'package:mail_crypto/src/smime/oids.dart';
 import 'package:test/test.dart';
 
+import 'cert_builder.dart';
 import 'smime_support.dart';
 
 /// The CMS blob of an S/MIME message: the p7m body, or the p7s part and
@@ -72,6 +74,75 @@ void main() {
     final checked = smime.verify(stuffed, content: signed);
     expect(checked.certificates.length, maxMessageCertificates);
     expect(checked.signers.single.valid, isTrue);
+  });
+
+  /// The p7s of signed-detached.eml with its certificates and SignerInfos replaced.
+  Uint8List rebuilt({List<Uint8List>? certificates, int signerCopies = 1}) {
+    final (p7s, _) = cmsOf('signed-detached.eml');
+    final (_, sd) = contentInfo(p7s);
+    return derSequence([
+      derOid(Oid.signedData),
+      derContext(0, derSequence([
+        for (final c in sd.children)
+          if (c.isContext(0) && certificates != null)
+            derContext(0, [for (final x in certificates) ...x])
+          else if (c.isSet)
+            der(Tag.set, [for (var i = 0; i < signerCopies; i++) ...c[0].encoded])
+          else
+            c.encoded,
+      ])),
+    ]);
+  }
+
+  test('a thousand SignerInfos: a few are checked, and the content is hashed once', () {
+    final stuffed = rebuilt(signerCopies: 1000);
+    final big = Uint8List(4 << 20);
+    final watch = Stopwatch()..start();
+    final checked = smime.verify(stuffed, content: big);
+    expect(checked.signers, hasLength(maxSigners));
+    expect(checked.signers.every((s) => s.modified), isTrue);
+    expect(watch.elapsed, lessThan(const Duration(seconds: 3)));
+  });
+
+  group('RSA keys', () {
+    final caKey = TestKey('rsa-test-ca');
+    final r = Random(1024);
+    BigInt modulus(int bits) => bigIntFromBytes([0xc0, for (var i = 1; i < bits ~/ 8; i++) r.nextInt(256)]) | BigInt.one;
+    SmimeCertificate withKey(BigInt n, BigInt e, {Uint8List? issuer, int serial = 1}) => makeCertificate(
+      key: caKey,
+      subject: name('RSA key'),
+      issuer: issuer ?? name('RSA test CA'),
+      issuerKey: caKey,
+      serial: serial,
+      spki: rsaSpki(n, e),
+    );
+
+    test('a huge public exponent, an even one, or a modulus past 16384 bits isn’t used', () {
+      final f4 = BigInt.from(65537);
+      for (final cert in [
+        withKey(modulus(2048), modulus(2048)),
+        withKey(modulus(2048), BigInt.from(65536)),
+        withKey(modulus(2048), BigInt.one),
+      ]) {
+        final watch = Stopwatch()..start();
+        expect(
+          () => verifySignature(cert, Oid.sha256WithRsa, null, Oid.sha256, content, Uint8List(256)),
+          throwsA(isA<SmimeException>()),
+        );
+        expect(watch.elapsed, lessThan(const Duration(milliseconds: 200)));
+      }
+      expect(verifySignature(withKey(modulus(2048), f4), Oid.sha256WithRsa, null, Oid.sha256, content, Uint8List(256)), isFalse);
+      // Past 16384 bits, the certificate itself doesn't parse.
+      expect(() => withKey(modulus(16392), f4), throwsA(isA<SmimeException>()));
+    });
+
+    test('a signer’s RSA key under 2048 bits is weak; such a CA signs nothing', () {
+      // Alice's issuer and serial number, with a 1024-bit key: the SignerInfo finds it.
+      final weak = withKey(modulus(1024), BigInt.from(65537), issuer: alice.certificate.issuer.der, serial: 100);
+      final s = smime.verify(rebuilt(certificates: [weak.der]), content: cmsOf('signed-detached.eml').$2).signers.single;
+      expect((s.valid, s.weak, s.certificate), (false, true, weak));
+      expect(smime.certificateSignedBy(alice.certificate, withKey(modulus(1024), BigInt.from(65537))), isFalse);
+    });
   });
 
   group('decrypting what OpenSSL encrypted', () {

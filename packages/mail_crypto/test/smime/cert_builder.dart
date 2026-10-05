@@ -38,6 +38,12 @@ final class TestKey {
   Uint8List sign(List<int> data) => ecdsaSign(material, Oid.sha256, digest(Oid.sha256, data));
 }
 
+/// An RSA SubjectPublicKeyInfo with modulus [n] and exponent [e].
+Uint8List rsaSpki(BigInt n, BigInt e) => derSequence([
+  derAlgorithm(Oid.rsaEncryption, derNull),
+  derBitString(derSequence([derInteger(n), derInteger(e)])),
+]);
+
 Uint8List name(String cn, {String? org}) => derSequence([
   if (org != null) derSet([derSequence([derOid(Oid.organization), derUtf8(org)])]),
   derSet([derSequence([derOid(Oid.commonName), derUtf8(cn)])]),
@@ -90,6 +96,7 @@ SmimeCertificate makeCertificate({
   DateTime? notAfter,
   List<Uint8List> extensions = const [],
   String? outerAlgorithm,
+  Uint8List? spki,
 }) {
   final alg = derAlgorithm(Oid.ecdsaWithSha256);
   final tbs = derSequence([
@@ -99,7 +106,7 @@ SmimeCertificate makeCertificate({
     issuer,
     derSequence([derTime(notBefore ?? DateTime.utc(2025)), derTime(notAfter ?? DateTime.utc(2040))]),
     subject,
-    key.spki,
+    spki ?? key.spki,
     if (version >= 3 && extensions.isNotEmpty) derContext(3, derSequence(extensions)),
   ]);
   final cert = derSequence([

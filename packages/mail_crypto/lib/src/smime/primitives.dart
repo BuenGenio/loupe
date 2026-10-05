@@ -100,9 +100,24 @@ ECDomainParameters _domain(String? curve) => switch (curve) {
   _ => throw SmimeException(SmimeErrorKind.unsupported, 'The elliptic curve ${curveName(curve)} isn’t supported.'),
 };
 
+/// RSA keys smaller than this don't count for signatures (they can be
+/// factored, and a signing time can be backdated to when they were valid).
+const minRsaBits = 2048;
+
+/// RSA keys larger than this are refused, as OpenSSL does.
+const maxRsaBits = 16384;
+
+/// [cert]'s RSA key: an odd modulus of at most [maxRsaBits], an odd public
+/// exponent of at least 3 and at most 64 bits (a huge one makes every
+/// signature check with the key take seconds).
 RSAPublicKey rsaPublicKey(SmimeCertificate cert) {
   final key = Asn1.parse(cert.publicKey);
-  return RSAPublicKey(key[0].integer, key[1].integer);
+  final n = key[0].integer;
+  final e = key[1].integer;
+  if (n.isNegative || n.isEven || n.bitLength > maxRsaBits || e < BigInt.from(3) || e.isEven || e.bitLength > 64) {
+    throw const SmimeException(SmimeErrorKind.unsupported, 'This RSA key isn’t supported.');
+  }
+  return RSAPublicKey(n, e);
 }
 
 /// A public key on [curve]: an uncompressed or compressed point that is on
