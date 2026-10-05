@@ -54,9 +54,29 @@ SmimeBundle readPkcs12(Uint8List data, String password) {
   }
 }
 
+/// Iterations one key derivation of a PKCS #12 file may ask for (about 3 s
+/// here; exporters use 2,000 to 600,000), and all of a file's together.
+/// Without a bound, a file is a denial of service: the count is read before
+/// the password is known.
+const maxPkcs12Iterations = 1000000;
+const maxPkcs12TotalIterations = 3000000;
+
 final class _Pkcs12 {
   _Pkcs12(this.password);
   final String password;
+
+  var _iterationsLeft = maxPkcs12TotalIterations;
+
+  static const _tooMuchWork = SmimeException(SmimeErrorKind.unsupported, 'This file asks for too much work to open.');
+
+  /// An iteration count, within the bounds.
+  int _iterations(Asn1 count) {
+    final n = count.intValue;
+    if (n < 1) throw const SmimeException(SmimeErrorKind.malformed, 'The iteration count is damaged.');
+    if (n > maxPkcs12Iterations || n > _iterationsLeft) throw _tooMuchWork;
+    _iterationsLeft -= n;
+    return n;
+  }
 
   /// PKCS #12 passwords are BMPStrings with a terminating zero (RFC 7292 B.1).
   /// An empty password is tried both as two zero octets and as nothing.
@@ -169,8 +189,8 @@ final class _Pkcs12 {
       throw SmimeException(SmimeErrorKind.unsupported, 'The integrity check ${digestName(algorithm)} isn’t supported.');
     }
     final salt = macData[1].octets;
-    final iterations = macData.length > 2 ? macData[2].intValue : 1;
     for (final bmp in _bmpPasswords) {
+      final iterations = macData.length > 2 ? _iterations(macData[2]) : 1;
       final gen = PKCS12ParametersGenerator(digestFor(algorithm)!)..init(bmp, salt, iterations);
       final key = gen.generateDerivedMacParameters(digest.digestSize);
       final mac = HMac(digestFor(algorithm)!, digest.byteLength)..init(key);
@@ -196,17 +216,26 @@ final class _Pkcs12 {
     return HMac(digestFor(digest)!, blockLength);
   }
 
-  /// PBKDF2-params: salt, iterations, key length, PRF (HMAC-SHA1 by default).
+  /// PBKDF2-params: salt, iterations, key length, PRF (HMAC-SHA1 by
+  /// default). A key length given must be [keyLength] (the cipher's) when
+  /// that is known, and at most 64 octets.
   Uint8List _pbkdf2(Asn1 params, List<int> secret, {int? keyLength}) {
     final salt = params[0].octets;
-    final iterations = params[1].intValue;
+    final iterations = _iterations(params[1]);
     var length = keyLength;
     var prf = Oid.hmacSha1;
     for (final p in params.children.skip(2)) {
-      if (p.tag == Tag.integer) length = p.intValue;
+      if (p.tag == Tag.integer) {
+        final declared = p.intValue;
+        if (keyLength != null && declared != keyLength) {
+          throw const SmimeException(SmimeErrorKind.malformed, 'The key length doesn’t match the cipher.');
+        }
+        length = declared;
+      }
       if (p.isSequence) prf = p[0].oid;
     }
     if (length == null) throw const SmimeException(SmimeErrorKind.malformed, 'The key length is missing.');
+    if (length < 1 || length > 64) throw const SmimeException(SmimeErrorKind.malformed, 'The key length is damaged.');
     final kdf = PBKDF2KeyDerivator(_hmacFor(prf))..init(Pbkdf2Parameters(salt, iterations, length));
     return kdf.process(Uint8List.fromList(secret));
   }
@@ -244,7 +273,7 @@ final class _Pkcs12 {
     };
     final params = algorithm[1];
     final salt = params[0].octets;
-    final iterations = params[1].intValue;
+    final iterations = _iterations(params[1]);
     final gen = PKCS12ParametersGenerator(SHA1Digest())..init(_bmp, salt, iterations);
     final derived = gen.generateDerivedParametersWithIV(keyLength, 8);
     var key = (derived.parameters! as KeyParameter).key;
