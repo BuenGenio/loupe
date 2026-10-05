@@ -103,7 +103,7 @@ class OutboxActions {
 
   /// Send Now, and Retry of a failed message.
   Future<void> sendNow(OutboxItem item) async {
-    if (!await _unlockToSign(item)) return;
+    if (!await _unlockToSign(item) || !context.mounted) return;
     await _run((_) => _repo.sendNow(item.id));
   }
 
@@ -120,6 +120,7 @@ class OutboxActions {
     try {
       final account = (await _repo.watchAccounts().first).where((a) => a.id == m.accountId).firstOrNull;
       if (account == null) return true;
+      if (!context.mounted) return false;
       final service = await ref.read(openPgpServiceProvider.future);
       final key = service.state.ownKeyFor(account.identityById(m.identityId).email);
       if (key == null) return true;

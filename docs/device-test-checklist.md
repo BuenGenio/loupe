@@ -1,7 +1,7 @@
 # Device test checklist
 
-A morning on the phone with the build that has everything merged up to the hardening follow-ups (#25): OpenPGP,
-S/MIME, the unsubscribe centre, tablet panes, rules, snooze, Smart Mailbox sync, notifications, OAuth readiness, the
+A morning on the phone with the build that has everything merged up to the hardening follow-ups (#25) and the
+OpenPGP follow-ups (#24, section 11a): OpenPGP, S/MIME, the unsubscribe centre, tablet panes, rules, snooze, Smart Mailbox sync, notifications, OAuth readiness, the
 hardening pass and its follow-ups. The steps are ordered so that the slow ones (scheduled send, snooze, background
 sync) wait while you do the rest. The steps that lose data come last.
 
@@ -26,11 +26,13 @@ Each step gives what to **do**, what to **expect**, and **if not** where to look
 
 ## 1. Upgrade over the build on the phone (5 min)
 
-The database moves to schema version 5:
+The database moves to schema version 5, then 6 (with the OpenPGP follow-ups):
 
 - outbox entries can be held;
 - the Subscriptions screen keeps its groups;
-- the list-header refetch saves its progress.
+- the list-header refetch saves its progress;
+- encrypted messages keep their decrypted subject, and (opted in) their text for search;
+- signed and encrypted mail is composed when it is queued.
 
 1. **Do:**
    - Leave Instant Delivery as it is.
@@ -251,6 +253,48 @@ Keep this device for step 10 (Smart Mailbox sync).
    - A message that couldn't be signed when queued shows "Not Sent" with "Your OpenPGP key is locked. Tap Retry…". Retry asks for the passphrase and sends it. It never goes out in the clear.
    - A key kept without a passphrase ("Keychain only") sends from the background either way.
 8. **If not:** tap the status line. Its sheet says what is wrong: no key, "Signature invalid", "Unknown key". Compare with Thunderbird's OpenPGP Key Manager.
+
+## 11a. Encrypted mail follow-ups with Thunderbird (20 min, #24)
+
+You need a second address with a key in Thunderbird (a second Thunderbird identity, or Thunderbird on another
+account), and Loupe having both keys (Autocrypt from a signed message of each, or Import Public Key).
+
+1. **Bcc.**
+   - **Do:** from Loupe, write an encrypted message To your first Thunderbird address and Bcc the second (Encrypt on).
+   - **Expect:**
+     - Each address gets the message once; Loupe's Sent has one copy, without a Bcc header.
+     - The To copy names no second key: in Thunderbird, the message's OpenPGP security panel (or save it as `.eml`
+       and run `gpg --list-packets` on its `encrypted.asc` part) lists your key and the To key only, and the
+       decrypted message has no Autocrypt-Gossip for the Bcc address.
+     - The Bcc copy shows the same To, and lists only the Bcc key and yours. Both copies have the same Message-ID.
+     - With S/MIME (certificates for both), the same: save each copy as `.eml`; `openssl cms -cmsout -print -in
+       copy.eml` lists two `recipientInfos`, yours and that copy's recipient's.
+   - **If not:** the Outbox shows a copy that failed; `adb logcat` around "Couldn’t send".
+2. **Protected subjects.**
+   - **Do:** with Loupe in the background (Instant Delivery or a background sync), send Loupe an encrypted message
+     from Thunderbird.
+   - **Expect:** the notification says "Encrypted message", not "...". The list shows "..." until you open it; then
+     the list, search (type a word of the subject) and a reply ("Re: <subject>") show the real subject, also after
+     a sync and in its copy in another folder.
+   - **Do:** Settings › End-to-End Encryption › On This Device › **Decrypt Subjects in the Background** on, with a key
+     kept without a passphrase. Send another one.
+   - **Expect:** its notification shows the real subject (nothing with Hide Content), and the list shows it before
+     you open it. With a passphrase-protected key: still "Encrypted message", and no passphrase is asked.
+3. **Search.**
+   - **Do:** search a word that is only in the body of an encrypted message you opened.
+   - **Expect:** not found. Turn on **Index Decrypted Messages for Search**, open the message again, search: found.
+     Turn it off: not found again.
+4. **Speed.**
+   - **Do:** from Thunderbird, send an encrypted message with a 5 MB photo; open it. Send one from Loupe with a 5 MB
+     attachment, encrypted.
+   - **Expect:** it opens within a few seconds while the spinner keeps turning (the UI never freezes); compose
+     closes right after Send. Unlocking a key exported from Thunderbird takes about a second (or a few on an older phone).
+5. **Signed in part.**
+   - **Do:** if a mailing list adds a footer to mail, send it an inline-signed message (Thunderbird can't; `gpg
+     --clearsign` and paste), or let a list add a footer to a PGP/MIME signed one.
+   - **Expect:** inline: the signed text, then a "━━━━ Unsigned content: …" line and the footer below it, and
+     "Signed in part by …" without ✓. PGP/MIME: "Signature invalid" with the added part not shown (the list added a
+     part), or no signature line at all (the list wrapped the message); never "Signed by … ✓" over the footer.
 
 ## 12. S/MIME (10 min; merged into main with these follow-ups)
 

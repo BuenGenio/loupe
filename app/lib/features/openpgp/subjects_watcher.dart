@@ -81,6 +81,7 @@ class _ProtectedSubjectsWatcherState extends ConsumerState<ProtectedSubjectsWatc
   Future<SubjectDecryptor?> _decryptor() async {
     final service = await ref.read(openPgpServiceProvider.future);
     await service.ready;
+    if (!mounted) return null;
     final keys = [
       for (final k in service.state.ownKeys)
         if (!k.isProtected) ?service.unlockedKey(k.fingerprint),
