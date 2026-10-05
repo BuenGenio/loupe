@@ -1183,30 +1183,45 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
   /// backoff, or held for Retry when the server refused for good
   /// ([PermanentMailException]). Recipients the server refused while taking
   /// the message for the others stay in the Outbox (see [_refusedPart]).
+  ///
+  /// Encrypted mail with Bcc recipients goes out as several copies
+  /// ([OutgoingMessage.deliveries]); a copy that fails after another went
+  /// out leaves its recipients in the Outbox the same way.
   Future<void> _sendOne(OutboxEntry entry) async {
     final m = entry.message;
     final MailAccount account;
-    final Uint8List bytes;
-    final SendReceipt receipt;
+    final Uint8List filed;
+    final refused = <String, MailException>{};
     try {
       account =
           await store.getAccount(entry.accountId) ??
           (throw const MailException(MailErrorKind.notFound, 'This account no longer exists'));
       final identity = account.identityById(m.identityId);
-      // One Message-ID for every attempt: if a send whose reply got lost
-      // did go out, the copies are recognisably the same message.
-      bytes = transports.composer.compose(
-        m,
-        identity,
-        messageId: outboxMessageId(entry.id, identity.email),
-        date: _now(),
-      );
-      final recipients = {
-        for (final a in [...m.to, ...m.cc, ...m.bcc]) a.email,
-      }.toList();
+      // Every copy is made before any goes out: one that can't be made (a
+      // key missing) sends none.
+      final copies = _composeCopies(entry, identity, date: _now());
+      filed = copies.firstWhere((c) => c.filed).rfc822;
       final sender = transports.createSender(account, _credentialsFor(account));
       try {
-        receipt = await sender.send(bytes, envelopeFrom: identity.email, recipients: recipients);
+        var delivered = false;
+        for (final copy in copies) {
+          // The Sent copy of encrypted mail only to Bcc recipients goes to
+          // nobody; a message without any recipient goes to the server,
+          // which refuses it.
+          if (copy.recipients.isEmpty && copies.length > 1) continue;
+          try {
+            final receipt = await sender.send(copy.rfc822, envelopeFrom: identity.email, recipients: copy.recipients);
+            refused.addAll(receipt.refused);
+            delivered = true;
+          } on Object catch (error) {
+            // Before anything went out, the message failed as a whole.
+            if (!delivered) rethrow;
+            final e = asMailException(error, 'Sending failed');
+            for (final r in copy.recipients) {
+              refused[r] = e;
+            }
+          }
+        }
       } finally {
         try {
           await sender.close();
@@ -1233,24 +1248,39 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
       return;
     }
     // Sent: whatever fails from here on must not send it again.
-    final refused = _refusedPart(entry, receipt.refused);
+    final rest = _refusedPart(entry, refused);
     try {
-      await _afterSend(account, entry, bytes, refused: refused);
+      await _afterSend(account, entry, filed, refused: rest);
     } on Object catch (error) {
       try {
         await store.transaction(() async {
           await store.deleteOutbox(entry.id);
-          if (refused != null) await store.putOutbox(refused);
+          if (rest != null) await store.putOutbox(rest);
         });
       } on Object {
         // Left claimed; the store is gone (released only when stale).
       }
       _reportError(asMailException(error, 'A message was sent, but not filed in Sent'));
     }
-    if (receipt.refused.isNotEmpty) {
-      final reasons = [for (final e in receipt.refused.values) e.message].join('; ');
+    if (refused.isNotEmpty) {
+      final reasons = {for (final e in refused.values) e.message}.join('; ');
       _reportError(MailException(MailErrorKind.server, 'A message was sent, but not to everyone: $reasons'));
     }
+  }
+
+  /// The copies [entry] goes out as, composed with one Message-ID for every
+  /// copy and every attempt: if a send whose reply got lost did go out, the
+  /// copies are recognisably the same message.
+  List<_Copy> _composeCopies(OutboxEntry entry, Identity identity, {required DateTime date}) {
+    final messageId = outboxMessageId(entry.id, identity.email);
+    return [
+      for (final d in entry.message.deliveries(sender: identity.email))
+        _Copy(
+          d.recipients,
+          transports.composer.compose(d.message, identity, messageId: messageId, date: date),
+          filed: d.filed,
+        ),
+    ];
   }
 
   /// What the server refused of [entry] while taking it for the others: a
@@ -1495,4 +1525,14 @@ final class _Host implements SyncHost, RulesHost {
   void reportError(MailException error) => _repo._reportError(error);
   @override
   Future<void> wakeSnoozed(AccountSyncer syncer) => _repo._afterFullSync(syncer);
+}
+
+/// One message as handed to the server: [rfc822] for [recipients].
+final class _Copy {
+  const _Copy(this.recipients, this.rfc822, {this.filed = false});
+  final List<String> recipients;
+  final Uint8List rfc822;
+
+  /// The copy kept in Sent.
+  final bool filed;
 }

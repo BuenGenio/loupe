@@ -24,9 +24,13 @@ final class FakeMessage {
     this.listId,
     this.listUnsubscribe,
     this.listUnsubscribePost,
+    this.raw,
   }) : keywords = {...keywords};
 
   int uid;
+
+  /// The message as appended (Sent copies, drafts).
+  final Uint8List? raw;
   final String subject;
   final EmailAddress from;
   final List<EmailAddress> to;
@@ -678,6 +682,7 @@ final class FakeTransport implements MailTransport {
       text: j['text']! as String,
       keywords: keywords,
       receivedAt: DateTime.fromMillisecondsSinceEpoch(j['date']! as int),
+      raw: rfc822,
     );
     server._add(mb, m);
     return server.uidPlus ? _id(mb, m.uid) : null;
@@ -742,21 +747,36 @@ final class FakeTransport implements MailTransport {
 /// Builds messages as JSON so the fake server can read them back.
 final class FakeComposer implements MessageComposer {
   @override
-  Uint8List compose(OutgoingMessage message, Identity from, {required String messageId, DateTime? date}) =>
-      Uint8List.fromList(
-        utf8.encode(
-          jsonEncode({
-            'messageId': messageId,
-            'from': from.email,
-            'to': [for (final a in message.to) a.email],
-            'cc': [for (final a in message.cc) a.email],
-            'subject': message.subject,
-            'text': message.text,
-            'inReplyTo': message.inReplyTo,
-            'date': (date ?? DateTime(2026)).millisecondsSinceEpoch,
-          }),
-        ),
+  Uint8List compose(OutgoingMessage message, Identity from, {required String messageId, DateTime? date}) {
+    // As the real composer: encrypted mail never goes out without a key for everyone.
+    final missing = [
+      if (message.security.encrypt)
+        for (final a in message.encryptionRecipients)
+          if (a.email.startsWith('nokey@')) a.email,
+    ];
+    if (missing.isNotEmpty) {
+      throw MailException(
+        MailErrorKind.unsupported,
+        'Can’t encrypt: there is no OpenPGP key for ${missing.join(', ')}.',
       );
+    }
+    return Uint8List.fromList(
+      utf8.encode(
+        jsonEncode({
+          'messageId': messageId,
+          'from': from.email,
+          'to': [for (final a in message.to) a.email],
+          'cc': [for (final a in message.cc) a.email],
+          // Never Bcc, as the real composer; whom an encrypted copy is for.
+          if (message.security.encrypt) 'encryptedTo': [for (final a in message.encryptionRecipients) a.email],
+          'subject': message.subject,
+          'text': message.text,
+          'inReplyTo': message.inReplyTo,
+          'date': (date ?? DateTime(2026)).millisecondsSinceEpoch,
+        }),
+      ),
+    );
+  }
 }
 
 final class FakeSender implements MailSender {

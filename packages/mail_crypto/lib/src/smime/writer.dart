@@ -56,9 +56,8 @@ final class SmimeMessageComposer implements MessageComposer {
     );
     final split = SplitMessage.parse(plain);
     final now = _clock();
-    final recipients = {
-      for (final a in [...message.to, ...message.cc, ...message.bcc]) a.email.trim().toLowerCase(),
-    };
+    // A Bcc recipient's copy is encrypted to them alone (OutgoingMessage.deliveries).
+    final recipients = {for (final a in message.encryptionRecipients) a.email.trim().toLowerCase()};
     final plan = planSmime(
       keys.smimeState,
       from: from.email,

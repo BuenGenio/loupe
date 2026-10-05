@@ -113,6 +113,7 @@ final class OutgoingMessage {
     this.sourceEmailId,
     this.draftId,
     this.security = OutgoingSecurity.none,
+    this.bccCopy = false,
   });
 
   final String accountId;
@@ -143,6 +144,57 @@ final class OutgoingMessage {
   /// Encrypt, sign, attach the public key.
   final OutgoingSecurity security;
 
+  /// The copy of an encrypted message made for its one Bcc recipient
+  /// ([bcc]; see [deliveries]): encrypted to them and the sender only,
+  /// while its headers show To and Cc like everyone else's copy.
+  final bool bccCopy;
+
+  /// Whom the message is encrypted to besides the sender: the Bcc
+  /// recipient of a [bccCopy], else everyone in To, Cc and Bcc.
+  List<EmailAddress> get encryptionRecipients => bccCopy ? bcc : [...to, ...cc, ...bcc];
+
+  /// How the message goes out: the messages to compose and whom each one
+  /// goes to.
+  ///
+  /// Usually one, to every recipient and filed in Sent. Encrypted with Bcc
+  /// recipients, as KMail does (an encrypted message names the keys it is
+  /// encrypted to, so one copy for everyone would show every recipient who
+  /// was in Bcc): one encrypted to To and Cc and the sender, sent to To and
+  /// Cc and filed in Sent; and for each Bcc recipient a [bccCopy] encrypted
+  /// to them and the sender, sent to them alone. A Bcc recipient who is in
+  /// To or Cc too, or is the [sender], gets the first one: it names their
+  /// key already. Without To and Cc, the first is only filed. Like plain
+  /// mail, no copy has a Bcc header.
+  List<OutgoingDelivery> deliveries({required String sender}) {
+    List<String> envelope(Iterable<EmailAddress> list) => {for (final a in list) a.email}.toList();
+    if (!security.encrypt || security.draft || bcc.isEmpty) {
+      return [
+        OutgoingDelivery(this, envelope([...to, ...cc, ...bcc]), filed: true),
+      ];
+    }
+    String key(EmailAddress a) => a.email.trim().toLowerCase();
+    final visible = {
+      for (final a in [...to, ...cc]) key(a),
+    };
+    final self = sender.trim().toLowerCase();
+    final hidden = <String, EmailAddress>{};
+    final toSelf = <EmailAddress>[];
+    for (final a in bcc) {
+      final k = key(a);
+      // Already in the envelope of the first copy.
+      if (k.isEmpty || visible.contains(k)) continue;
+      if (k == self) {
+        if (toSelf.isEmpty) toSelf.add(a);
+      } else {
+        hidden.putIfAbsent(k, () => a);
+      }
+    }
+    return [
+      OutgoingDelivery(copyWith(bcc: const []), envelope([...to, ...cc, ...toSelf]), filed: true),
+      for (final a in hidden.values) OutgoingDelivery(copyWith(bcc: [a], bccCopy: true), [a.email]),
+    ];
+  }
+
   OutgoingMessage copyWith({
     String? identityId,
     List<EmailAddress>? to,
@@ -153,6 +205,7 @@ final class OutgoingMessage {
     List<OutgoingAttachment>? attachments,
     String? draftId,
     OutgoingSecurity? security,
+    bool? bccCopy,
   }) => OutgoingMessage(
     accountId: accountId,
     identityId: identityId ?? this.identityId,
@@ -169,6 +222,7 @@ final class OutgoingMessage {
     sourceEmailId: sourceEmailId,
     draftId: draftId ?? this.draftId,
     security: security ?? this.security,
+    bccCopy: bccCopy ?? this.bccCopy,
   );
 
   /// The same message without [draftId] (once its draft is gone).
@@ -187,5 +241,21 @@ final class OutgoingMessage {
     mode: mode,
     sourceEmailId: sourceEmailId,
     security: security,
+    bccCopy: bccCopy,
   );
+}
+
+/// One message to hand to the server ([OutgoingMessage.deliveries]).
+final class OutgoingDelivery {
+  const OutgoingDelivery(this.message, this.recipients, {this.filed = false});
+
+  /// What to compose.
+  final OutgoingMessage message;
+
+  /// The addresses it goes to (the SMTP envelope); empty for the Sent copy
+  /// of an encrypted message that has only Bcc recipients.
+  final List<String> recipients;
+
+  /// This one is filed in Sent: one per message.
+  final bool filed;
 }

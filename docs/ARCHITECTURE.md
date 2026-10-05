@@ -106,12 +106,25 @@ loading, the header, compose, Settings › End-to-End Encryption).
   first, then EnvelopedData to every recipient and the sender with AES-256-CBC, which Outlook, Apple Mail and
   Thunderbird all read; AuthEnvelopedData (AES-256-GCM) only when every recipient's signed mail announced
   AES-GCM. RSA recipients get the key with PKCS #1 v1.5 (OAEP isn't read everywhere), EC recipients by
-  ephemeral-static ECDH (SHA-256 KDF, AES-256 wrap). Like OpenPGP mail, the outer Subject isn't hidden and Bcc
-  recipients appear (as certificate serials) to everyone; drafts are encrypted to the sender only.
+  ephemeral-static ECDH (SHA-256 KDF, AES-256 wrap). Unlike OpenPGP mail, the outer Subject isn't hidden. Bcc
+  recipients get copies of their own (see below); drafts are encrypted to the sender only.
 - **Choosing the standard** (`chooseTechnology`): the address's preference (OpenPGP unless "Prefer S/MIME"),
   unless only the other one has a key or trusted certificate for every recipient, or the message replies to
   mail encrypted with the other. Compose shows which, and switches when both are set up. The sending settings
   (Encrypt Automatically, Always Encrypt, Sign Unencrypted Mail) apply to both.
+
+## Encrypted mail (both standards)
+
+Issue #24, after OpenPGP (#20) and S/MIME (#21).
+
+- **Bcc** (`OutgoingMessage.deliveries`): an encrypted message names the keys it is encrypted to (OpenPGP's PKESK
+  key ids, S/MIME's RecipientInfos), and its Autocrypt-Gossip names addresses, so one message for everyone would
+  show every recipient who was in Bcc. Encrypted mail with Bcc recipients goes out as one copy encrypted to To, Cc
+  and the sender, sent to To and Cc and filed in Sent, and for each Bcc recipient a copy encrypted to them and the
+  sender only (`OutgoingMessage.bccCopy`, `encryptionRecipients`), sent to them alone. Every copy has the same
+  headers (To, Cc, Message-ID; no Bcc header, as plain mail), and the copies are all made before any goes out.
+  A copy that fails after another went out leaves its recipient in the Outbox like a refused recipient. KMail
+  does the same; Thunderbird instead warns that Bcc recipients aren't hidden. Signed-only mail stays one message.
 
 ## Background work (Android)
 

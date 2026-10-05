@@ -113,9 +113,8 @@ final class PgpMessageComposer implements MessageComposer {
     if (security.attachPublicKey) content = _withKey(content, own);
 
     if (security.encrypt) {
-      final recipients = {
-        for (final a in [...message.to, ...message.cc, ...message.bcc]) a.email.trim().toLowerCase(),
-      };
+      // A Bcc recipient's copy names only their key (OutgoingMessage.deliveries).
+      final recipients = {for (final a in message.encryptionRecipients) a.email.trim().toLowerCase()};
       final plan = planEncryption(state, from: from.email, recipients: recipients, now: now);
       if (plan.missing.isNotEmpty) {
         throw MailException(

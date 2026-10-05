@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:clock/clock.dart';
 import 'package:drift/drift.dart' show QueryExecutor, QueryInterceptor, ApplyInterceptor;
 import 'package:drift/native.dart';
@@ -73,6 +75,95 @@ void main() {
         expect(await h.subjects(a, 'Sent'), ['Re: Question']);
         expect((await h.repo.suggestAddresses('secret')).single.email, 'secret@example.org');
         await h.dispose();
+      });
+    });
+
+    group('encrypted with Bcc', () {
+      OutgoingMessage secret(MailAccount a) => OutgoingMessage(
+        accountId: a.id,
+        identityId: a.defaultIdentity.id,
+        to: const [EmailAddress('bob@example.org', 'Bob')],
+        cc: const [EmailAddress('carol@example.org')],
+        bcc: const [EmailAddress('dave@example.org'), EmailAddress('erin@example.org'), EmailAddress('me@example.com')],
+        subject: 'Plans',
+        text: 'Secret',
+        security: const OutgoingSecurity(encrypt: true, sign: true),
+      );
+
+      test('one copy to To and Cc, one for each Bcc recipient alone; Sent keeps the first', () {
+        fakeTime((async) async {
+          final h = Harness();
+          final server = FakeServer();
+          final a = await h.add(server);
+          await h.repo.send(secret(a), undoDelay: const Duration(seconds: 1));
+          await settle();
+          // Envelope | encrypted to.
+          expect(
+            [for (final m in server.sent) '${m.recipients.join(',')} | ${(m.json['encryptedTo'] as List).join(',')}'],
+            [
+              'bob@example.org,carol@example.org,me@example.com | bob@example.org,carol@example.org',
+              'dave@example.org | dave@example.org',
+              'erin@example.org | erin@example.org',
+            ],
+          );
+          for (final m in server.sent) {
+            expect(m.json['to'], ['bob@example.org']);
+            expect(m.json['cc'], ['carol@example.org']);
+            expect(m.json['messageId'], server.sent.first.json['messageId'], reason: 'one message, several copies');
+          }
+          final filed = server.find('Sent', 'Plans')!;
+          expect((jsonDecode(utf8.decode(filed.raw!)) as Map)['encryptedTo'], ['bob@example.org', 'carol@example.org']);
+          expect(await h.subjects(a, 'Sent'), ['Plans'], reason: 'one Sent copy');
+          expect(await h.store.outboxEntries(), isEmpty);
+          expect(h.errors, isEmpty);
+          await h.dispose();
+        }, step: _step);
+      });
+
+      test('a copy that fails after another went out leaves just its recipient in the Outbox', () {
+        fakeTime((async) async {
+          final h = Harness();
+          final server = FakeServer();
+          server.refusedRecipients['erin@example.org'] = const PermanentMailException(
+            MailErrorKind.server,
+            'Recipient erin@example.org rejected: 5.1.1 User unknown',
+          );
+          final a = await h.add(server);
+          await h.repo.send(secret(a), undoDelay: const Duration(seconds: 1));
+          await settle();
+          expect([for (final m in server.sent) m.recipients.last], ['me@example.com', 'dave@example.org']);
+          expect(h.errors.single.message, contains('not to everyone'));
+          final left = (await h.store.outboxEntries()).single;
+          expect(left.held, isTrue);
+          expect([...left.message.to, ...left.message.cc], isEmpty);
+          expect([for (final r in left.message.bcc) r.email], ['erin@example.org']);
+
+          // Retry: Erin gets her own copy; nobody else gets one again.
+          server.refusedRecipients.clear();
+          await h.repo.sendNow(left.id);
+          await settle();
+          expect(server.sent.last.recipients, ['erin@example.org']);
+          expect(server.sent.last.json['encryptedTo'], ['erin@example.org']);
+          expect(server.sent, hasLength(3));
+          expect(await h.store.outboxEntries(), isEmpty);
+          await h.dispose();
+        }, step: _step);
+      });
+
+      test('a copy that can’t be made sends none', () {
+        fakeTime((async) async {
+          final h = Harness();
+          final server = FakeServer();
+          final a = await h.add(server);
+          await h.repo.send(
+            secret(a).copyWith(bcc: const [EmailAddress('nokey@example.org')]),
+            undoDelay: const Duration(seconds: 1),
+          );
+          await settle();
+          expect(server.sent, isEmpty);
+          expect((await h.store.outboxEntries()).single.lastError, contains('nokey@example.org'));
+          await h.dispose();
+        }, step: _step);
       });
     });
 
