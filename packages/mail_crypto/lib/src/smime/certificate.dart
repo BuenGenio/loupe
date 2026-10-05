@@ -499,15 +499,30 @@ bool _sameAlgorithm(Asn1 a, Asn1 b) {
 List<SmimeCertificate> readCertificates(Uint8List input) {
   final found = <SmimeCertificate>[];
   final text = latin1.decode(input);
-  final pem = RegExp(r'-----BEGIN ([A-Z0-9 ]+)-----([\s\S]*?)-----END \1-----');
-  final blocks = pem.allMatches(text).toList();
-  final ders = blocks.isEmpty
-      ? [input]
-      : [
-          for (final m in blocks)
-            if (const {'CERTIFICATE', 'X509 CERTIFICATE', 'TRUSTED CERTIFICATE', 'PKCS7', 'CMS'}.contains(m.group(1)))
-              m.group(2)!.replaceAll(RegExp(r'\s'), ''),
-        ];
+  // PEM blocks of the labels that hold certificates, found with indexOf: a
+  // backtracking pattern over the whole text was quadratic on a file of
+  // unterminated BEGIN lines.
+  final List<Object> ders;
+  if (!text.contains('-----BEGIN ')) {
+    ders = [input];
+  } else {
+    final blocks = <(int, String)>[];
+    for (final label in const ['CERTIFICATE', 'X509 CERTIFICATE', 'TRUSTED CERTIFICATE', 'PKCS7', 'CMS']) {
+      final begin = '-----BEGIN $label-----';
+      final end = '-----END $label-----';
+      var at = 0;
+      while (true) {
+        final b = text.indexOf(begin, at);
+        if (b < 0) break;
+        final e = text.indexOf(end, b + begin.length);
+        if (e < 0) break;
+        blocks.add((b, text.substring(b + begin.length, e).replaceAll(RegExp(r'\s'), '')));
+        at = e + end.length;
+      }
+    }
+    blocks.sort((x, y) => x.$1.compareTo(y.$1));
+    ders = [for (final (_, b64) in blocks) b64];
+  }
   for (final block in ders) {
     try {
       final der = block is String ? base64.decode(block) : block as Uint8List;

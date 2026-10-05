@@ -126,4 +126,16 @@ void main() {
       );
     });
   });
+
+  test('PEM: many BEGIN lines without an END are read in linear time (a regex took 43 s for 1 MB)', () {
+    for (final line in ['-----BEGIN CERTIFICATE-----\n', '-----BEGIN A-----\n']) {
+      final input = Uint8List.fromList(utf8.encode(line * 40000));
+      final watch = Stopwatch()..start();
+      expect(() => readCertificates(input), throwsA(isA<SmimeException>()));
+      expect(watch.elapsed, lessThan(const Duration(seconds: 2)));
+    }
+    // Blocks of other labels around certificates, in their order.
+    final pem = '-----BEGIN PRIVATE KEY-----\nAAAA\n-----END PRIVATE KEY-----\n${testCa.pem}${testRoot.pem}';
+    expect(readCertificates(Uint8List.fromList(utf8.encode(pem))), [testCa, testRoot]);
+  });
 }
