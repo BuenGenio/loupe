@@ -394,7 +394,9 @@ class PgpStatusSheet extends ConsumerWidget {
           PgpSignatureStatus.good when view.mismatch =>
             'The signature is valid, but the key belongs to another address than the sender’s.',
           PgpSignatureStatus.good when status.partial =>
-            'Only part of the message is signed: the text around it (a mailing list footer, for example) isn’t.',
+            'Only part of the message is signed. Text outside the signature (a mailing list footer, for example) '
+                'is shown below the “Unsigned content” line, and other parts of the message, such as attachments, '
+                'aren’t covered either.',
           PgpSignatureStatus.good when own => 'Signed with your own key.',
           PgpSignatureStatus.good => switch (acceptance) {
             KeyAcceptance.verified => 'The signature is valid, and you verified the key’s fingerprint.',

@@ -133,6 +133,14 @@ Issue #24, after OpenPGP (#20) and S/MIME (#21).
   headers (To, Cc, Message-ID; no Bcc header, as plain mail), and the copies are all made before any goes out.
   A copy that fails after another went out leaves its recipient in the Outbox like a refused recipient. KMail
   does the same; Thunderbird instead warns that Bcc recipients aren't hidden. Signed-only mail stays one message.
+- **What shows as signed** is exactly what the signature covers, for both standards. A PGP/MIME `multipart/signed`
+  shows its signed first part as `PgpMimeReader` parsed it from the raw message, never the server's view of the
+  whole message; RFC 3156 allows the signed part and the signature and nothing else, so another part next to them
+  makes the signature bad ("parts the signature doesn't cover"), at the top or inside decrypted content. A
+  `multipart/signed` wrapped in other content isn't verified, so nothing shows as signed. Inline PGP shows the
+  signed (or decrypted) text first and every other text of its part below an "Unsigned content" line
+  (`outsideMarker`), so nothing outside the block can pass for part of it; that text, or other parts of the message
+  (an HTML alternative, attachments), make it "Signed in part" (no ✓).
 - **Protected subjects** (OpenPGP sends the real subject inside, `...` outside): summaries say whether a message is
   encrypted (`EmailSummary.isEncrypted`, from its BODYSTRUCTURE; schema version 6, `emails.is_encrypted`). Once
   `ContentLoader` decrypted a message, its protected subject is kept in the encrypted store

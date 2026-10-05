@@ -13,13 +13,15 @@ final class PgpReadOutcome {
 
   final PgpMessageStatus status;
 
-  /// The decrypted message as reader content (part ids `pgp:…`).
+  /// The decrypted message, or the signed part of a multipart/signed, as
+  /// reader content (part ids `pgp:…`).
   final EmailContent? content;
 
-  /// The decrypted MIME tree, to serve attachments from.
+  /// Its MIME tree, to serve attachments from.
   final MimeEntity? entity;
 
-  /// Inline PGP: the text with the armored block replaced.
+  /// Inline PGP: the protected text, then the text around the block below
+  /// an `outsideMarker`.
   final String? text;
 }
 
@@ -155,11 +157,14 @@ final class OpenPgpService implements PgpSendKeys {
     return run(() {
       final r = PgpMimeReader(b).read(raw, keys: unlocked, verifiers: verifiers);
       final entity = r.entity;
-      final content = r.status.decrypted && entity != null ? contentFromEntity(entity, emailId: emailId) : null;
+      // What is shown is what was decrypted or verified: for a
+      // multipart/signed, its signed part from these very bytes, never the
+      // server's view of the whole message (parts outside the signature, or a
+      // MIME parser that splits the message differently, would show as signed).
       return PgpReadOutcome(
         status: r.status,
-        content: content,
-        entity: r.status.decrypted ? entity : null,
+        content: entity == null ? null : contentFromEntity(entity, emailId: emailId),
+        entity: entity,
         text: r.text,
       );
     });

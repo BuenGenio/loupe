@@ -74,8 +74,10 @@ final class PgpMessageStatus {
   /// `Autocrypt-Gossip` header values found inside the encrypted part.
   final List<String> gossip;
 
-  /// Inline PGP with other text around the block (a mailing list footer,
-  /// a forwarded fragment): only part of what is shown is protected.
+  /// Inline PGP with other content than its block: text around it in its
+  /// part (a mailing list footer, a forwarded fragment; shown below an
+  /// `outsideMarker`) or other parts of the message (an HTML alternative,
+  /// attachments). Only part of what is shown is protected.
   final bool partial;
 
   bool get decrypted => encrypted && failure == null;

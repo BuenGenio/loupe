@@ -17,7 +17,7 @@ export 'src/mime/entity.dart' show MimeEntity, splitMultipart;
 export 'src/pgp/armor.dart' show hasArmor, dearmorAll, encodeArmor, ArmorBlock, splitCleartext, CleartextParts;
 export 'src/pgp/dart_pg_backend.dart' show DartPgBackend;
 export 'src/pgp/types.dart';
-export 'src/pgp_mime/reader.dart' show PgpMimeReader, PgpReadResult, detectProtection, headerIn;
+export 'src/pgp_mime/reader.dart' show PgpMimeReader, PgpReadResult, detectProtection, headerIn, outsideMarker;
 export 'src/pgp_mime/status.dart';
 export 'src/pgp_mime/writer.dart';
 export 'src/smime/backend.dart';

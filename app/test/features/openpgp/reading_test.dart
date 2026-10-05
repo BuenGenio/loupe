@@ -95,6 +95,119 @@ void main() {
     });
   });
 
+  group('signed mail with content added around it: only what the signature covers shows as signed', () {
+    final mine = testKey('Me Myself <me@example.com>');
+    final aliceKey = testKey('Alice Example <alice@example.com>');
+    const evilHtml = 'Content-Type: text/html; charset=utf-8\r\n\r\n<p>Please pay the new account: EVIL</p>\r\n';
+    const evilPdf =
+        'Content-Type: application/pdf; name="invoice.pdf"\r\n'
+        'Content-Disposition: attachment; filename="invoice.pdf"\r\n\r\n%PDF-1.4\r\n';
+    // How a server would show such a message: every part, as if it were one.
+    const serverView = EmailContent(
+      emailId: 'm1',
+      text: 'See you at noon.\nPlease pay the new account: EVIL',
+      html: '<p>Please pay the new account: EVIL</p>',
+      attachments: [
+        Attachment(partId: '2', mimeType: 'application/pgp-signature', filename: 'OpenPGP_signature.asc', size: 300),
+        Attachment(partId: '3', mimeType: 'application/pdf', filename: 'invoice.pdf', size: 300),
+      ],
+    );
+
+    String signedByAlice({bool encrypt = false}) => pgpMessage(
+      from: alice,
+      fromKey: aliceKey,
+      to: me,
+      toKey: mine,
+      subject: 'Lunch',
+      text: 'See you at noon.',
+      security: OutgoingSecurity(sign: true, encrypt: encrypt),
+    );
+
+    /// [raw] with [part] put before its closing delimiter.
+    String withPart(String raw, String part) {
+      final boundary = MimeEntity.parse(Uint8List.fromList(latin1.encode(raw))).contentType['boundary']!;
+      final end = raw.lastIndexOf('--$boundary--');
+      return '${raw.substring(0, end)}--$boundary\r\n$part\r\n${raw.substring(end)}';
+    }
+
+    Future<void> openWith(WidgetTester tester, String raw, {EmailContent? server}) async {
+      final storage = await keychainWith(own: [mine], others: [(aliceKey, KeyAcceptance.verified)]);
+      final root = MimeEntity.parse(Uint8List.fromList(latin1.encode(raw)));
+      final view = server ?? serverView;
+      final repo = FakeMailRepository(
+        emails: [testEmail('m1', subject: 'Lunch')],
+        contents: {
+          'm1': EmailContent(
+            emailId: 'm1',
+            headers: root.headers,
+            text: view.text,
+            html: view.html,
+            attachments: view.attachments,
+          ),
+        },
+      )..rawSources['m1'] = raw;
+      final router = await pumpTestApp(tester, repository: repo, overrides: [inlinePgp, keychain(storage)]);
+      unawaited(router.push('/message/m1'));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('PGP/MIME: an HTML part and an attachment added after the signature', (tester) async {
+      await openWith(tester, withPart(withPart(signedByAlice(), evilHtml), evilPdf));
+      expect(textContaining('Signature invalid'), findsOneWidget);
+      expect(textContaining('✓'), findsNothing);
+      expect(textContaining('EVIL'), findsNothing);
+      expect(textContaining('invoice.pdf'), findsNothing);
+      expect(textContaining('See you at noon.'), findsWidgets);
+    });
+
+    testWidgets('PGP/MIME: a good signature, though the server splits the message otherwise', (tester) async {
+      await openWith(tester, signedByAlice());
+      expect(textContaining('Signed by Alice Example ✓'), findsOneWidget);
+      expect(textContaining('EVIL'), findsNothing);
+      expect(textContaining('invoice.pdf'), findsNothing);
+      expect(textContaining('See you at noon.'), findsWidgets);
+    });
+
+    testWidgets('encrypted: a part added inside, next to the signed one, encrypted anew', (tester) async {
+      // Alice's signed message, a part added, encrypted to me by anyone.
+      final signed = withPart(signedByAlice(), evilHtml);
+      final inner = signed.substring(signed.indexOf('Content-Type: multipart/signed'));
+      final armored = pgp.encrypt(Uint8List.fromList(latin1.encode(inner)), recipients: [pgp.publicKey(mine)]);
+      final raw =
+          'From: alice@example.com\r\nTo: me@example.com\r\nSubject: ...\r\nMIME-Version: 1.0\r\n'
+          'Content-Type: multipart/encrypted; protocol="application/pgp-encrypted"; boundary="b1"\r\n\r\n'
+          '--b1\r\nContent-Type: application/pgp-encrypted\r\n\r\nVersion: 1\r\n\r\n'
+          '--b1\r\nContent-Type: application/octet-stream\r\n\r\n$armored\r\n--b1--\r\n';
+      await openWith(tester, raw, server: const EmailContent(emailId: 'm1'));
+      expect(textContaining('Encrypted'), findsWidgets);
+      expect(textContaining('Signature invalid'), findsOneWidget);
+      expect(textContaining('EVIL'), findsNothing);
+      expect(textContaining('See you at noon.'), findsWidgets);
+    });
+
+    testWidgets('inline: text after the signed block shows below the “Unsigned content” line', (tester) async {
+      final signature = pgp.signDetached(utf8.encode('See you at noon.'), aliceKey);
+      final body =
+          '-----BEGIN PGP SIGNED MESSAGE-----\r\nHash: ${signature.hashAlgorithm.toUpperCase()}\r\n\r\n'
+          'See you at noon.\r\n${signature.armored.replaceAll('\r\n', '\n').replaceAll('\n', '\r\n')}\r\n'
+          'PS: please pay the new account: EVIL\r\n';
+      final raw =
+          'From: alice@example.com\r\nTo: me@example.com\r\nSubject: Lunch\r\nMIME-Version: 1.0\r\n'
+          'Content-Type: text/plain; charset=utf-8\r\n\r\n$body';
+      await openWith(
+        tester,
+        raw,
+        server: EmailContent(emailId: 'm1', text: body.replaceAll('\r\n', '\n')),
+      );
+      expect(textContaining('Signed in part by Alice Example'), findsOneWidget);
+      expect(textContaining('✓'), findsNothing);
+      expect(textContaining('Unsigned content'), findsWidgets);
+      final shown = tester.widgetList<Text>(find.textContaining('EVIL', findRichText: true));
+      expect(shown, isNotEmpty);
+      expect(textContaining('BEGIN PGP'), findsNothing);
+    });
+  });
+
   group('a passphrase-protected key', () {
     final mine = testKey('Me Myself <me@example.com>', passphrase: 'correct horse');
     final aliceKey = testKey('Alice Example <alice@example.com>');

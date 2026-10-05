@@ -114,8 +114,10 @@ final class ContentLoader {
         headers: _withProtected(content.headers, status.protectedHeaders),
         attachments: decrypted.attachments,
       );
-      _rememberSubject(summary, status.protectedSubject);
-      _index(emailId, decrypted);
+      if (status.encrypted) {
+        _rememberSubject(summary, status.protectedSubject);
+        _index(emailId, decrypted);
+      }
       if (status.gossip.isNotEmpty && summary != null) {
         unawaited(
           pgp
