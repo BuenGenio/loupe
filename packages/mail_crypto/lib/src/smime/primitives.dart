@@ -192,7 +192,14 @@ final class RsaKeyMaterial extends PrivateKeyMaterial {
   final BigInt publicExponent;
 
   @override
-  bool matches(SmimeCertificate cert) => cert.keyType == SmimeKeyType.rsa && rsaPublicKey(cert).modulus == modulus;
+  bool matches(SmimeCertificate cert) {
+    if (cert.keyType != SmimeKeyType.rsa) return false;
+    try {
+      return rsaPublicKey(cert).modulus == modulus;
+    } on SmimeException {
+      return false;
+    }
+  }
 }
 
 final class EcKeyMaterial extends PrivateKeyMaterial {

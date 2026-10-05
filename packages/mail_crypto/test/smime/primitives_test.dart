@@ -11,6 +11,7 @@ import 'package:pointycastle/asymmetric/rsa.dart';
 import 'package:pointycastle/api.dart' show PrivateKeyParameter;
 import 'package:test/test.dart';
 
+import 'cert_builder.dart';
 import 'smime_support.dart';
 
 /// The integer cube root of [v], rounded down.
@@ -120,5 +121,19 @@ void main() {
         throwsA(isA<SmimeException>().having((e) => e.kind, 'kind', SmimeErrorKind.malformed)),
       );
     });
+  });
+
+  test('a private key doesn’t match (nor throw on) a certificate with an RSA key it can’t use', () {
+    final caKey = TestKey('odd-rsa');
+    final odd = makeCertificate(
+      key: caKey,
+      subject: name('Odd'),
+      issuer: name('Odd'),
+      issuerKey: caKey,
+      spki: rsaSpki((BigInt.one << 2047) + BigInt.one, BigInt.from(65536)),
+    );
+    final material = PrivateKeyMaterial.parse(alice.key);
+    expect(material.matches(odd), isFalse);
+    expect(material.matches(alice.certificate), isTrue);
   });
 }
