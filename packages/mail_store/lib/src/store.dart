@@ -617,6 +617,9 @@ final class MailStore {
       }
       final assigner = byAccount[e.accountId] ??= ThreadAssigner(_db, e.accountId);
       final threadId = await assigner.assign(e);
+      // A copy of an encrypted message decrypted before (in another
+      // mailbox) shows its subject at once.
+      final protectedSubject = e.hasDecryptedSubject ? e.subject : await _knownProtectedSubject(e);
       await _db
           .into(_db.emails)
           .insert(
@@ -649,9 +652,25 @@ final class MailStore {
               listPost: Value(e.listPost),
               listUnsubscribe: Value(e.listUnsubscribe),
               listUnsubscribePost: Value(e.listUnsubscribePost),
+              isEncrypted: Value(e.isEncrypted),
+              protectedSubject: Value(protectedSubject),
             ),
           );
     }
+  }
+
+  /// The protected subject of another copy of [e] (same account, Message-ID,
+  /// size and outer subject), if one was decrypted.
+  Future<String?> _knownProtectedSubject(EmailSummary e) async {
+    final messageId = e.messageIdHeader;
+    if (!e.isEncrypted || messageId == null) return null;
+    final row = await _select(
+      'SELECT protected_subject FROM emails WHERE account_id = ? AND message_id_header = ? AND size = ? '
+      'AND subject = ? AND protected_subject IS NOT NULL LIMIT 1',
+      [e.accountId, normalizeMessageId(messageId), e.size, e.subject],
+      {_db.emails},
+    ).getSingleOrNull();
+    return row?.read<String>('protected_subject');
   }
 
   static Value<String?> _fill(String? stored, String? fetched) =>
@@ -1538,6 +1557,25 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
         for (final (n, v) in content.headers) n.toLowerCase(): v,
     };
     return matchesEmail(expr, e, content: content, accountLabel: label, headers: headers);
+  }
+
+  // Encrypted mail ----------------------------------------------------------
+
+  /// Remembers [subject] as the protected subject of the encrypted message
+  /// [emailId] and of its copies (same account, Message-ID, size and outer
+  /// subject: the same message in other mailboxes). The summaries show it
+  /// as their subject from then on, and the full-text index has it.
+  Future<void> rememberProtectedSubject(String emailId, String subject) async {
+    final id = await resolveId(emailId);
+    await _write(
+      'UPDATE emails SET protected_subject = ?1 WHERE (id = ?2 OR (message_id_header IS NOT NULL AND '
+      '(account_id, message_id_header, size, subject) = '
+      '(SELECT account_id, message_id_header, size, subject FROM emails WHERE id = ?2))) '
+      'AND protected_subject IS NOT ?1',
+      [subject, id],
+      {_db.emails},
+      kind: UpdateKind.update,
+    );
   }
 
   // Content -----------------------------------------------------------------

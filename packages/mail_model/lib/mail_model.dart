@@ -6,6 +6,7 @@ library;
 
 export 'src/account.dart';
 export 'src/address.dart';
+export 'src/decrypted.dart';
 export 'src/email.dart';
 export 'src/ids.dart';
 export 'src/keywords.dart';

@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/notifications/new_mail.dart';
 import 'package:loupe/features/notifications/new_mail_check.dart';
 import 'package:loupe/features/notifications/notification_content.dart';
 import 'package:loupe/features/notifications/notification_settings.dart';
+import 'package:loupe/features/openpgp/decrypted_mail.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../openpgp/openpgp_test_support.dart';
 import 'fakes.dart';
 
 final t0 = DateTime(2026, 10, 4, 9);
@@ -47,6 +51,66 @@ void main() {
     final before = notifier.posted.where((n) => !n.isSummary).length;
     await check.run(mail, settings, since: at(30));
     expect(notifier.posted.where((n) => !n.isSummary), hasLength(before));
+  });
+
+  group('encrypted mail', () {
+    final workKey = testKey('Work <work@example.com>');
+    final aliceKey = testKey('Alice <alice@example.com>');
+    final raw = pgpMessage(
+      from: const EmailAddress('alice@example.com', 'Alice'),
+      fromKey: aliceKey,
+      to: const EmailAddress('work@example.com'),
+      toKey: workKey,
+      subject: 'Offsite venue',
+      text: 'Lighthouse Lodge',
+    );
+
+    EmailSummary deliverSecret(int minute) {
+      final e = mail.deliver('work', at(minute), subject: '...', preview: '', encrypted: true);
+      mail.rawSources[e.id] = latin1.encode(raw);
+      return e;
+    }
+
+    test('says "Encrypted message" without Decrypt Subjects in the Background', () async {
+      await check.run(mail, settings, since: at(0));
+      final e = deliverSecret(3);
+      await check.run(mail, settings, since: at(10));
+      expect(notifier.messageBodies, ['Encrypted message']);
+      expect(mail.emails[e.id]!.hasDecryptedSubject, isFalse);
+    });
+
+    test('with it, shows the protected subject, decrypted with a key without a passphrase', () async {
+      final withSubjects = NewMailCheck(
+        notifier: notifier,
+        state: state,
+        subjects: () async => SubjectDecryptor(keys: [workKey]),
+      );
+      await withSubjects.run(mail, settings, since: at(0));
+      final e = deliverSecret(3);
+      final other = mail.deliver('work', at(4), subject: '...', preview: '', encrypted: true); // offline
+      await withSubjects.run(mail, settings, since: at(10));
+      expect(notifier.messageBodies, unorderedEquals(['Offsite venue', 'Encrypted message']));
+      expect(mail.emails[e.id]!.subject, 'Offsite venue', reason: 'kept for the list and search');
+      expect(mail.emails[other.id]!.hasDecryptedSubject, isFalse);
+    });
+
+    test('no key without a passphrase, or Hide Content: nothing more is shown', () async {
+      final noKeys = NewMailCheck(notifier: notifier, state: state, subjects: () async => null);
+      await noKeys.run(mail, settings, since: at(0));
+      deliverSecret(3);
+      await noKeys.run(mail, settings, since: at(10));
+      expect(notifier.messageBodies, ['Encrypted message']);
+
+      final hiding = NewMailCheck(
+        notifier: notifier,
+        state: state,
+        subjects: () async => SubjectDecryptor(keys: [workKey]),
+      );
+      deliverSecret(13);
+      await hiding.run(mail, const NotificationSettings(hideContent: true), since: at(20));
+      expect(notifier.messageBodies, contains(isNull));
+      expect(notifier.messageBodies, isNot(contains('Offsite venue')));
+    });
   });
 
   test('a silent run only moves the watermarks (the app was open)', () async {

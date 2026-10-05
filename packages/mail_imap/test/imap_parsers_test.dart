@@ -67,6 +67,36 @@ void main() {
       expect(listAttachments(root), isEmpty);
     });
 
+    test('encrypted: PGP/MIME and S/MIME enveloped data, not signed mail', () {
+      const pgpVersion =
+          '("APPLICATION" "PGP-ENCRYPTED" NIL NIL "PGP/MIME version identification" "7BIT" 12 NIL NIL NIL)';
+      const pgpData =
+          '("APPLICATION" "OCTET-STREAM" ("NAME" "encrypted.asc") NIL "OpenPGP encrypted message" "7BIT" 3000 NIL '
+          '("INLINE" ("FILENAME" "encrypted.asc")) NIL)';
+      expect(
+        isEncryptedStructure(
+          structure('($pgpVersion$pgpData "ENCRYPTED" ("PROTOCOL" "application/pgp-encrypted") NIL NIL)'),
+        ),
+        isTrue,
+      );
+      for (final (type, params, encrypted) in [
+        ('"PKCS7-MIME"', '("SMIME-TYPE" "enveloped-data" "NAME" "smime.p7m")', true),
+        ('"PKCS7-MIME"', '("SMIME-TYPE" "authEnveloped-data")', true),
+        ('"X-PKCS7-MIME"', '("NAME" "smime.p7m")', true),
+        ('"PKCS7-MIME"', '("SMIME-TYPE" "signed-data")', false),
+        ('"OCTET-STREAM"', '("NAME" "smime.p7m")', true),
+        ('"OCTET-STREAM"', '("NAME" "report.pdf")', false),
+      ]) {
+        final root = structure('("APPLICATION" $type $params NIL NIL "BASE64" 4000 NIL NIL NIL)');
+        expect(isEncryptedStructure(root), encrypted, reason: '$type $params');
+      }
+      expect(isEncryptedStructure(structure(_plain)), isFalse);
+      expect(
+        isEncryptedStructure(structure('($_plain$_sig "SIGNED" ("PROTOCOL" "application/pgp-signature") NIL NIL)')),
+        isFalse,
+      );
+    });
+
     test('forwarded message is one attachment and its parts are numbered below it', () {
       const forwarded =
           '("MESSAGE" "RFC822" NIL NIL NIL "7BIT" 3000 ("Mon, 1 Jan 2024 10:00:00 +0000" "Inner" NIL NIL NIL NIL NIL NIL NIL NIL) ($_plain$_html "ALTERNATIVE") 60 NIL ("ATTACHMENT" NIL) NIL)';

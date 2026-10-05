@@ -155,7 +155,11 @@ class InstantTaskHandler extends TaskHandler {
       prefs: prefs,
       leases: SyncLeases(directory),
       open: LiveInstantMail.open,
-      check: NewMailCheck(notifier: notifier, state: FileNewMailStateStore(Future.value(directory))),
+      check: NewMailCheck(
+        notifier: notifier,
+        state: FileNewMailStateStore(Future.value(directory)),
+        subjects: () => backgroundSubjectDecryptor(prefs),
+      ),
       notifier: notifier,
       badge: const PlatformAppIconBadge(),
       stopService: () async {

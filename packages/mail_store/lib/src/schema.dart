@@ -110,6 +110,15 @@ class Emails extends Table {
   TextColumn get listPost => text().nullable()();
   TextColumn get listUnsubscribe => text().nullable()();
   TextColumn get listUnsubscribePost => text().nullable()();
+
+  /// The message is encrypted (PGP/MIME, S/MIME enveloped), as its MIME
+  /// structure says. Schema version 6; messages stored before say false.
+  BoolColumn get isEncrypted => boolean().withDefault(const Constant(false))();
+
+  /// The protected subject of an encrypted message ([subject] is then a
+  /// placeholder such as `...`), once it was decrypted on this device. The
+  /// list, search and notifications show it. Schema version 6.
+  TextColumn get protectedSubject => text().nullable()();
 }
 
 /// One row per (email, keyword), maintained by triggers on [Emails].
@@ -284,12 +293,20 @@ String _attachmentText(String column) =>
 String _ftsInsertFrom(String where) =>
     '''
 INSERT INTO email_fts(rowid, subject, from_addr, to_addr, cc_addr, bcc_addr, preview, body, attachments)
-SELECT e.seq, e.subject, ${_addrText('e.from_json')}, ${_addrText('e.to_json')}, ${_addrText('e.cc_json')},
+SELECT e.seq, coalesce(e.protected_subject, e.subject), ${_addrText('e.from_json')}, ${_addrText('e.to_json')}, ${_addrText('e.cc_json')},
   ${_addrText('e.bcc_json')}, e.preview, coalesce(c.body_text, ''), coalesce(${_attachmentText('c.attachments_json')}, '')
 FROM emails e LEFT JOIN contents c ON c.email_id = e.id WHERE $where;''';
 
 /// The FTS5 index and the triggers keeping it and `email_keywords` consistent.
 const ftsColumns = ['subject', 'from_addr', 'to_addr', 'cc_addr', 'bcc_addr', 'preview', 'body', 'attachments'];
+
+/// The triggers that write the full-text index, by name (they all use
+/// [_ftsInsertFrom]): recreated when what it indexes changes.
+final List<(String, String)> _ftsTriggers = [
+  for (final sql in _ftsAndTriggers.skip(1))
+    if (RegExp(r'^CREATE TRIGGER (\w+)').firstMatch(sql) case final m? when sql.contains('INSERT INTO email_fts'))
+      (m.group(1)!, sql),
+];
 
 final List<String> _ftsAndTriggers = [
   '''
@@ -301,8 +318,8 @@ CREATE TRIGGER emails_after_insert AFTER INSERT ON emails BEGIN
   INSERT OR IGNORE INTO email_keywords(email_id, keyword) SELECT new.id, value FROM json_each(new.keywords);
 END;''',
   '''
-CREATE TRIGGER emails_after_update_text AFTER UPDATE OF subject, from_json, to_json, cc_json, bcc_json, preview
-ON emails BEGIN
+CREATE TRIGGER emails_after_update_text AFTER UPDATE OF subject, from_json, to_json, cc_json, bcc_json, preview,
+  protected_subject ON emails BEGIN
   DELETE FROM email_fts WHERE rowid = old.seq;
   ${_ftsInsertFrom('e.seq = new.seq')}
 END;''',
@@ -470,9 +487,11 @@ class StoreDatabase extends _$StoreDatabase {
   /// `stale_headers` on sync states. 4: the partial indexes of unread and
   /// flagged messages ([_countIndexes]). 5: `held` on outbox items, the
   /// Subscriptions screen's data ([_subscriptionSchema]), and the progress of
-  /// the header refetch on sync states.
+  /// the header refetch on sync states. 6: encrypted messages
+  /// (`is_encrypted`) and their protected subjects once decrypted
+  /// (`protected_subject`, in the full-text index too).
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   /// Creates or upgrades the file in one write transaction, from the
   /// version it has then. The app and a background isolate can open it at
@@ -530,6 +549,14 @@ class StoreDatabase extends _$StoreDatabase {
       await m.addColumn(syncStates, syncStates.headersDoneAt);
       await m.addColumn(syncStates, syncStates.headersDoneSeq);
       for (final sql in _subscriptionSchema) {
+        await customStatement(sql);
+      }
+    }
+    if (from < 6) {
+      await m.addColumn(emails, emails.isEncrypted);
+      await m.addColumn(emails, emails.protectedSubject);
+      for (final (name, sql) in _ftsTriggers) {
+        await customStatement('DROP TRIGGER IF EXISTS $name');
         await customStatement(sql);
       }
     }

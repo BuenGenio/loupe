@@ -52,6 +52,27 @@ void main() {
       expect(find.text('Offsite venue (confidential)'), findsWidgets);
     });
 
+    testWidgets('once opened, its protected subject shows in the list and search', (tester) async {
+      final repo = await pumpLoupe(tester, overrides: [inlinePgp]);
+      final id = await demoId(repo, (e) => e.sender?.email == 'dana.okafor@northwind.example' && e.subject == '...');
+      expect((await repo.getEmail(id))!.isEncrypted, isTrue);
+      final inbox = Routes.list(RealMailboxRef((await repo.getEmail(id))!.mailboxId));
+      await goTo(tester, inbox);
+      await tester.scrollTo(find.text('...'));
+      expect(find.text('...'), findsOneWidget);
+      await goTo(tester, Routes.message(id));
+      expect(find.text('Offsite venue (confidential)'), findsOneWidget);
+
+      final remembered = (await repo.getEmail(id))!;
+      expect((remembered.subject, remembered.hasDecryptedSubject), ('Offsite venue (confidential)', true));
+      await goTo(tester, inbox);
+      await tester.scrollTo(find.text('Offsite venue (confidential)'));
+      expect(find.text('Offsite venue (confidential)'), findsOneWidget);
+      expect(find.text('...'), findsNothing);
+      await goTo(tester, Routes.search('offsite'));
+      expect(find.text('Offsite venue (confidential)'), findsWidgets);
+    });
+
     testWidgets('Leo’s signed message brings his key by Autocrypt; accepting it adds the ✓', (tester) async {
       final repo = await pumpLoupe(tester, overrides: [inlinePgp]);
       final id = await demoId(repo, (e) => e.subject == 'Sync phase 2 estimate');
@@ -86,9 +107,11 @@ void main() {
       text: 'Only for you.',
     );
 
+    late FakeMailRepository repo;
+
     Future<GoRouter> open(WidgetTester tester) async {
       final storage = await keychainWith(own: [mine], others: [(aliceKey, KeyAcceptance.unverified)]);
-      final repo = FakeMailRepository(
+      repo = FakeMailRepository(
         emails: [testEmail('p1', subject: '...')],
         contents: {'p1': outerContent('p1', raw)},
       )..rawSources['p1'] = raw;
@@ -126,6 +149,8 @@ void main() {
       expect(find.text('The real subject'), findsOneWidget);
       expect(textContaining('Only for you.'), findsWidgets);
       expect(textContaining('Signed by Alice Example ✓'), findsOneWidget);
+      // Kept for the list, search and notifications.
+      expect(repo.protectedSubjects, {'p1': 'The real subject'});
     });
 
     testWidgets('cancelled: the message says it is locked and Unlock asks again', (tester) async {
@@ -134,6 +159,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(textContaining('Unlock your OpenPGP key to read it'), findsWidgets);
       expect(textContaining('Encrypted · locked'), findsOneWidget);
+      expect(repo.protectedSubjects, isEmpty);
 
       await tester.tap(find.byKey(const ValueKey('pgp-unlock-p1')));
       await tester.pumpAndSettle();

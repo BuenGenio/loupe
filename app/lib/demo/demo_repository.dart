@@ -73,7 +73,7 @@ final class _Queued {
 ///   [SearchResults.fromServerIds]); acting on such a message syncs it.
 /// - Sending to an address at a `.invalid` domain fails, so the Outbox
 ///   shows a failed message with an error and Retry.
-class DemoMailRepository implements MailRepository, MailingLists, MailSubscriptions {
+class DemoMailRepository implements MailRepository, MailingLists, MailSubscriptions, DecryptedMail {
   DemoMailRepository({
     this.latency = const DemoLatency(),
     DateTime Function()? clock,
@@ -903,6 +903,14 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
       ...m.extraHeaders,
       ('MIME-Version', '1.0'),
     ];
+  }
+
+  @override
+  Future<void> rememberProtectedSubject(String emailId, String subject) async {
+    final m = _messages[emailId];
+    if (m == null || (m.summary.hasDecryptedSubject && m.summary.subject == subject)) return;
+    m.summary = m.summary.copyWith(subject: subject, hasDecryptedSubject: true);
+    _notify();
   }
 
   @override

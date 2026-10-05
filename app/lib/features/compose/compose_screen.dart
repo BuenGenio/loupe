@@ -463,8 +463,10 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     _account = _choice?.account;
     _identity = _choice?.identity;
     final text = content == null ? source.preview : ComposeText.plainTextOf(content);
+    // Encrypted mail's real subject is the protected one, not `...`.
+    final subject = (content == null ? null : pgpStatusOf(content)?.protectedSubject) ?? source.subject;
     if (args.mode == ComposeMode.forward) {
-      _subject.text = ComposeText.forwardSubject(source.subject);
+      _subject.text = ComposeText.forwardSubject(subject);
       _body.text = '${_withSignature('')}\n\n${ComposeText.forwardBlock(source, text)}';
       if (content != null) warning ??= await _loadAttachments(source.id, content);
     } else {
@@ -478,7 +480,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
             );
       r.to.forEach(_to.add);
       r.cc.forEach(_cc.add);
-      _subject.text = ComposeText.replySubject(source.subject);
+      _subject.text = ComposeText.replySubject(subject);
       _body.text = '${_withSignature('')}\n\n${ComposeText.replyBlock(source, text)}';
       _inReplyTo = source.messageIdHeader;
       _references = ComposeText.replyReferences(source);

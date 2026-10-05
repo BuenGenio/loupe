@@ -19,7 +19,8 @@ import 'util.dart';
 /// sends overdue outbox messages). Call [pause] when the app goes to the
 /// background and [resume] when it returns; [syncOnce] serves background
 /// fetch tasks. [dispose] stops everything but leaves the store open.
-final class LiveMailRepository implements MailRepository, MailingLists, MailSubscriptions, SignInRenewal {
+final class LiveMailRepository
+    implements MailRepository, MailingLists, MailSubscriptions, SignInRenewal, DecryptedMail {
   LiveMailRepository(
     this.store,
     this.transports,
@@ -535,6 +536,12 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     final email = await _requireEmail(emailId);
     return _syncerFor(email.accountId).fetchRaw(email.id);
   }
+
+  // Encrypted mail ----------------------------------------------------------
+
+  @override
+  Future<void> rememberProtectedSubject(String emailId, String subject) =>
+      store.rememberProtectedSubject(emailId, subject);
 
   // Actions -----------------------------------------------------------------
 

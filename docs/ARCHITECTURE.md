@@ -125,6 +125,19 @@ Issue #24, after OpenPGP (#20) and S/MIME (#21).
   headers (To, Cc, Message-ID; no Bcc header, as plain mail), and the copies are all made before any goes out.
   A copy that fails after another went out leaves its recipient in the Outbox like a refused recipient. KMail
   does the same; Thunderbird instead warns that Bcc recipients aren't hidden. Signed-only mail stays one message.
+- **Protected subjects** (OpenPGP sends the real subject inside, `...` outside): summaries say whether a message is
+  encrypted (`EmailSummary.isEncrypted`, from its BODYSTRUCTURE; schema version 6, `emails.is_encrypted`). Once
+  `ContentLoader` decrypted a message, its protected subject is kept in the encrypted store
+  (`DecryptedMail.rememberProtectedSubject`, `emails.protected_subject`), for the message and its copies (same
+  account, Message-ID, size and outer subject; copies synced later inherit it). Summaries then carry it as their
+  subject (`hasDecryptedSubject`), so the list, search (the full-text index has it) and replies show it; syncs
+  never overwrite it. Notifications say "Encrypted message" for encrypted mail unless its subject was decrypted
+  on the device, and nothing more with Hide Content.
+  - Settings › End-to-End Encryption › On This Device › Decrypt Subjects in the Background (off by default):
+    `SubjectDecryptor` decrypts the subjects of encrypted mail nobody opened yet, with keys stored without a
+    passphrase only (it never asks), OpenPGP only, messages up to 1 MB (the whole message is downloaded). Background
+    work does it for new mail before notifying (`NewMailCheck.subjects`, at most 15 s); the app, while it runs, for
+    the newest 100 messages of the inboxes (`ProtectedSubjectsWatcher`, off the UI isolate).
 
 ## Background work (Android)
 

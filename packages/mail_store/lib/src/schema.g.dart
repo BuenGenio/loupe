@@ -1567,6 +1567,26 @@ class $EmailsTable extends Emails with TableInfo<$EmailsTable, EmailRow> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _isEncryptedMeta = const VerificationMeta('isEncrypted');
+  @override
+  late final GeneratedColumn<bool> isEncrypted = GeneratedColumn<bool>(
+    'is_encrypted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("is_encrypted" IN (0, 1))'),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _protectedSubjectMeta = const VerificationMeta('protectedSubject');
+  @override
+  late final GeneratedColumn<String> protectedSubject = GeneratedColumn<String>(
+    'protected_subject',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     seq,
@@ -1598,6 +1618,8 @@ class $EmailsTable extends Emails with TableInfo<$EmailsTable, EmailRow> {
     listPost,
     listUnsubscribe,
     listUnsubscribePost,
+    isEncrypted,
+    protectedSubject,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1720,6 +1742,15 @@ class $EmailsTable extends Emails with TableInfo<$EmailsTable, EmailRow> {
         listUnsubscribePost.isAcceptableOrUnknown(data['list_unsubscribe_post']!, _listUnsubscribePostMeta),
       );
     }
+    if (data.containsKey('is_encrypted')) {
+      context.handle(_isEncryptedMeta, isEncrypted.isAcceptableOrUnknown(data['is_encrypted']!, _isEncryptedMeta));
+    }
+    if (data.containsKey('protected_subject')) {
+      context.handle(
+        _protectedSubjectMeta,
+        protectedSubject.isAcceptableOrUnknown(data['protected_subject']!, _protectedSubjectMeta),
+      );
+    }
     return context;
   }
 
@@ -1770,6 +1801,11 @@ class $EmailsTable extends Emails with TableInfo<$EmailsTable, EmailRow> {
         DriftSqlType.string,
         data['${effectivePrefix}list_unsubscribe_post'],
       ),
+      isEncrypted: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}is_encrypted'])!,
+      protectedSubject: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}protected_subject'],
+      ),
     );
   }
 
@@ -1818,6 +1854,15 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
   final String? listPost;
   final String? listUnsubscribe;
   final String? listUnsubscribePost;
+
+  /// The message is encrypted (PGP/MIME, S/MIME enveloped), as its MIME
+  /// structure says. Schema version 6; messages stored before say false.
+  final bool isEncrypted;
+
+  /// The protected subject of an encrypted message ([subject] is then a
+  /// placeholder such as `...`), once it was decrypted on this device. The
+  /// list, search and notifications show it. Schema version 6.
+  final String? protectedSubject;
   const EmailRow({
     required this.seq,
     required this.id,
@@ -1848,6 +1893,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     this.listPost,
     this.listUnsubscribe,
     this.listUnsubscribePost,
+    required this.isEncrypted,
+    this.protectedSubject,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1897,6 +1944,10 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     if (!nullToAbsent || listUnsubscribePost != null) {
       map['list_unsubscribe_post'] = Variable<String>(listUnsubscribePost);
     }
+    map['is_encrypted'] = Variable<bool>(isEncrypted);
+    if (!nullToAbsent || protectedSubject != null) {
+      map['protected_subject'] = Variable<String>(protectedSubject);
+    }
     return map;
   }
 
@@ -1933,6 +1984,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
       listUnsubscribePost: listUnsubscribePost == null && nullToAbsent
           ? const Value.absent()
           : Value(listUnsubscribePost),
+      isEncrypted: Value(isEncrypted),
+      protectedSubject: protectedSubject == null && nullToAbsent ? const Value.absent() : Value(protectedSubject),
     );
   }
 
@@ -1968,6 +2021,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
       listPost: serializer.fromJson<String?>(json['listPost']),
       listUnsubscribe: serializer.fromJson<String?>(json['listUnsubscribe']),
       listUnsubscribePost: serializer.fromJson<String?>(json['listUnsubscribePost']),
+      isEncrypted: serializer.fromJson<bool>(json['isEncrypted']),
+      protectedSubject: serializer.fromJson<String?>(json['protectedSubject']),
     );
   }
   @override
@@ -2003,6 +2058,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
       'listPost': serializer.toJson<String?>(listPost),
       'listUnsubscribe': serializer.toJson<String?>(listUnsubscribe),
       'listUnsubscribePost': serializer.toJson<String?>(listUnsubscribePost),
+      'isEncrypted': serializer.toJson<bool>(isEncrypted),
+      'protectedSubject': serializer.toJson<String?>(protectedSubject),
     };
   }
 
@@ -2036,6 +2093,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     Value<String?> listPost = const Value.absent(),
     Value<String?> listUnsubscribe = const Value.absent(),
     Value<String?> listUnsubscribePost = const Value.absent(),
+    bool? isEncrypted,
+    Value<String?> protectedSubject = const Value.absent(),
   }) => EmailRow(
     seq: seq ?? this.seq,
     id: id ?? this.id,
@@ -2066,6 +2125,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     listPost: listPost.present ? listPost.value : this.listPost,
     listUnsubscribe: listUnsubscribe.present ? listUnsubscribe.value : this.listUnsubscribe,
     listUnsubscribePost: listUnsubscribePost.present ? listUnsubscribePost.value : this.listUnsubscribePost,
+    isEncrypted: isEncrypted ?? this.isEncrypted,
+    protectedSubject: protectedSubject.present ? protectedSubject.value : this.protectedSubject,
   );
   EmailRow copyWithCompanion(EmailsCompanion data) {
     return EmailRow(
@@ -2098,6 +2159,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
       listPost: data.listPost.present ? data.listPost.value : this.listPost,
       listUnsubscribe: data.listUnsubscribe.present ? data.listUnsubscribe.value : this.listUnsubscribe,
       listUnsubscribePost: data.listUnsubscribePost.present ? data.listUnsubscribePost.value : this.listUnsubscribePost,
+      isEncrypted: data.isEncrypted.present ? data.isEncrypted.value : this.isEncrypted,
+      protectedSubject: data.protectedSubject.present ? data.protectedSubject.value : this.protectedSubject,
     );
   }
 
@@ -2132,7 +2195,9 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
           ..write('listName: $listName, ')
           ..write('listPost: $listPost, ')
           ..write('listUnsubscribe: $listUnsubscribe, ')
-          ..write('listUnsubscribePost: $listUnsubscribePost')
+          ..write('listUnsubscribePost: $listUnsubscribePost, ')
+          ..write('isEncrypted: $isEncrypted, ')
+          ..write('protectedSubject: $protectedSubject')
           ..write(')'))
         .toString();
   }
@@ -2168,6 +2233,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     listPost,
     listUnsubscribe,
     listUnsubscribePost,
+    isEncrypted,
+    protectedSubject,
   ]);
   @override
   bool operator ==(Object other) =>
@@ -2201,7 +2268,9 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
           other.listName == this.listName &&
           other.listPost == this.listPost &&
           other.listUnsubscribe == this.listUnsubscribe &&
-          other.listUnsubscribePost == this.listUnsubscribePost);
+          other.listUnsubscribePost == this.listUnsubscribePost &&
+          other.isEncrypted == this.isEncrypted &&
+          other.protectedSubject == this.protectedSubject);
 }
 
 class EmailsCompanion extends UpdateCompanion<EmailRow> {
@@ -2234,6 +2303,8 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
   final Value<String?> listPost;
   final Value<String?> listUnsubscribe;
   final Value<String?> listUnsubscribePost;
+  final Value<bool> isEncrypted;
+  final Value<String?> protectedSubject;
   const EmailsCompanion({
     this.seq = const Value.absent(),
     this.id = const Value.absent(),
@@ -2264,6 +2335,8 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     this.listPost = const Value.absent(),
     this.listUnsubscribe = const Value.absent(),
     this.listUnsubscribePost = const Value.absent(),
+    this.isEncrypted = const Value.absent(),
+    this.protectedSubject = const Value.absent(),
   });
   EmailsCompanion.insert({
     this.seq = const Value.absent(),
@@ -2295,6 +2368,8 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     this.listPost = const Value.absent(),
     this.listUnsubscribe = const Value.absent(),
     this.listUnsubscribePost = const Value.absent(),
+    this.isEncrypted = const Value.absent(),
+    this.protectedSubject = const Value.absent(),
   }) : id = Value(id),
        accountId = Value(accountId),
        mailboxId = Value(mailboxId),
@@ -2330,6 +2405,8 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     Expression<String>? listPost,
     Expression<String>? listUnsubscribe,
     Expression<String>? listUnsubscribePost,
+    Expression<bool>? isEncrypted,
+    Expression<String>? protectedSubject,
   }) {
     return RawValuesInsertable({
       if (seq != null) 'seq': seq,
@@ -2361,6 +2438,8 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
       if (listPost != null) 'list_post': listPost,
       if (listUnsubscribe != null) 'list_unsubscribe': listUnsubscribe,
       if (listUnsubscribePost != null) 'list_unsubscribe_post': listUnsubscribePost,
+      if (isEncrypted != null) 'is_encrypted': isEncrypted,
+      if (protectedSubject != null) 'protected_subject': protectedSubject,
     });
   }
 
@@ -2394,6 +2473,8 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     Value<String?>? listPost,
     Value<String?>? listUnsubscribe,
     Value<String?>? listUnsubscribePost,
+    Value<bool>? isEncrypted,
+    Value<String?>? protectedSubject,
   }) {
     return EmailsCompanion(
       seq: seq ?? this.seq,
@@ -2425,6 +2506,8 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
       listPost: listPost ?? this.listPost,
       listUnsubscribe: listUnsubscribe ?? this.listUnsubscribe,
       listUnsubscribePost: listUnsubscribePost ?? this.listUnsubscribePost,
+      isEncrypted: isEncrypted ?? this.isEncrypted,
+      protectedSubject: protectedSubject ?? this.protectedSubject,
     );
   }
 
@@ -2518,6 +2601,12 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     if (listUnsubscribePost.present) {
       map['list_unsubscribe_post'] = Variable<String>(listUnsubscribePost.value);
     }
+    if (isEncrypted.present) {
+      map['is_encrypted'] = Variable<bool>(isEncrypted.value);
+    }
+    if (protectedSubject.present) {
+      map['protected_subject'] = Variable<String>(protectedSubject.value);
+    }
     return map;
   }
 
@@ -2552,7 +2641,9 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
           ..write('listName: $listName, ')
           ..write('listPost: $listPost, ')
           ..write('listUnsubscribe: $listUnsubscribe, ')
-          ..write('listUnsubscribePost: $listUnsubscribePost')
+          ..write('listUnsubscribePost: $listUnsubscribePost, ')
+          ..write('isEncrypted: $isEncrypted, ')
+          ..write('protectedSubject: $protectedSubject')
           ..write(')'))
         .toString();
   }
@@ -7306,6 +7397,8 @@ typedef $$EmailsTableCreateCompanionBuilder = EmailsCompanion Function({
   Value<String?> listPost,
   Value<String?> listUnsubscribe,
   Value<String?> listUnsubscribePost,
+  Value<bool> isEncrypted,
+  Value<String?> protectedSubject,
 });
 typedef $$EmailsTableUpdateCompanionBuilder = EmailsCompanion Function({
   Value<int> seq,
@@ -7337,6 +7430,8 @@ typedef $$EmailsTableUpdateCompanionBuilder = EmailsCompanion Function({
   Value<String?> listPost,
   Value<String?> listUnsubscribe,
   Value<String?> listUnsubscribePost,
+  Value<bool> isEncrypted,
+  Value<String?> protectedSubject,
 });
 
 final class $$EmailsTableReferences extends BaseReferences<_$StoreDatabase, $EmailsTable, EmailRow> {
@@ -7482,6 +7577,12 @@ class $$EmailsTableFilterComposer extends Composer<_$StoreDatabase, $EmailsTable
 
   ColumnFilters<String> get listUnsubscribePost =>
       $composableBuilder(column: $table.listUnsubscribePost, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isEncrypted =>
+      $composableBuilder(column: $table.isEncrypted, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get protectedSubject =>
+      $composableBuilder(column: $table.protectedSubject, builder: (column) => ColumnFilters(column));
 
   $$MailboxesTableFilterComposer get mailboxId {
     final $$MailboxesTableFilterComposer composer = $composerBuilder(
@@ -7646,6 +7747,12 @@ class $$EmailsTableOrderingComposer extends Composer<_$StoreDatabase, $EmailsTab
   ColumnOrderings<String> get listUnsubscribePost =>
       $composableBuilder(column: $table.listUnsubscribePost, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<bool> get isEncrypted =>
+      $composableBuilder(column: $table.isEncrypted, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get protectedSubject =>
+      $composableBuilder(column: $table.protectedSubject, builder: (column) => ColumnOrderings(column));
+
   $$MailboxesTableOrderingComposer get mailboxId {
     final $$MailboxesTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -7735,6 +7842,11 @@ class $$EmailsTableAnnotationComposer extends Composer<_$StoreDatabase, $EmailsT
 
   GeneratedColumn<String> get listUnsubscribePost =>
       $composableBuilder(column: $table.listUnsubscribePost, builder: (column) => column);
+
+  GeneratedColumn<bool> get isEncrypted => $composableBuilder(column: $table.isEncrypted, builder: (column) => column);
+
+  GeneratedColumn<String> get protectedSubject =>
+      $composableBuilder(column: $table.protectedSubject, builder: (column) => column);
 
   $$MailboxesTableAnnotationComposer get mailboxId {
     final $$MailboxesTableAnnotationComposer composer = $composerBuilder(
@@ -7865,6 +7977,8 @@ class $$EmailsTableTableManager
                 Value<String?> listPost = const Value.absent(),
                 Value<String?> listUnsubscribe = const Value.absent(),
                 Value<String?> listUnsubscribePost = const Value.absent(),
+                Value<bool> isEncrypted = const Value.absent(),
+                Value<String?> protectedSubject = const Value.absent(),
               }) => EmailsCompanion(
                 seq: seq,
                 id: id,
@@ -7895,6 +8009,8 @@ class $$EmailsTableTableManager
                 listPost: listPost,
                 listUnsubscribe: listUnsubscribe,
                 listUnsubscribePost: listUnsubscribePost,
+                isEncrypted: isEncrypted,
+                protectedSubject: protectedSubject,
               ),
           createCompanionCallback:
               ({
@@ -7927,6 +8043,8 @@ class $$EmailsTableTableManager
                 Value<String?> listPost = const Value.absent(),
                 Value<String?> listUnsubscribe = const Value.absent(),
                 Value<String?> listUnsubscribePost = const Value.absent(),
+                Value<bool> isEncrypted = const Value.absent(),
+                Value<String?> protectedSubject = const Value.absent(),
               }) => EmailsCompanion.insert(
                 seq: seq,
                 id: id,
@@ -7957,6 +8075,8 @@ class $$EmailsTableTableManager
                 listPost: listPost,
                 listUnsubscribe: listUnsubscribe,
                 listUnsubscribePost: listUnsubscribePost,
+                isEncrypted: isEncrypted,
+                protectedSubject: protectedSubject,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable<$EmailsTable, EmailRow>(table), $$EmailsTableReferences(db, table, e)))

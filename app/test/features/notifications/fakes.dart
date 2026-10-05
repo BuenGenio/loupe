@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:loupe/features/notifications/mail_notifier.dart';
 import 'package:loupe/features/notifications/notification_content.dart';
@@ -7,8 +8,11 @@ import 'package:mail_model/mail_model.dart';
 /// A repository with exactly the mail a test puts in: accounts, mailboxes,
 /// messages and VIPs. Lists behave like the store's (newest first, VIP mail
 /// outside Trash and Junk).
-class FakeMail implements MailRepository {
+class FakeMail implements MailRepository, DecryptedMail {
   final accounts = <MailAccount>[];
+
+  /// Raw messages by email id (for decrypting subjects).
+  final rawSources = <String, Uint8List>{};
   final mailboxes = <Mailbox>[];
   final emails = <String, EmailSummary>{};
   final vips = <String>{};
@@ -50,6 +54,9 @@ class FakeMail implements MailRepository {
     String subject = 'Hello',
     String preview = 'How are you?',
     Set<String> keywords = const {},
+    bool encrypted = false,
+    bool decryptedSubject = false,
+    int size = 1000,
   }) {
     final e = EmailSummary(
       id: MailIds.imapEmail(accountId, path, 1, ++_seq),
@@ -60,6 +67,9 @@ class FakeMail implements MailRepository {
       subject: subject,
       preview: preview,
       keywords: keywords,
+      isEncrypted: encrypted,
+      hasDecryptedSubject: decryptedSubject,
+      size: size,
     );
     emails[e.id] = e;
     return e;
@@ -78,6 +88,16 @@ class FakeMail implements MailRepository {
 
   @override
   Stream<Set<String>> watchVipAddresses() => Stream.value({...vips});
+
+  @override
+  Future<Uint8List> loadRawSource(String emailId) async =>
+      rawSources[emailId] ?? (throw const MailException(MailErrorKind.connection, 'Offline'));
+
+  @override
+  Future<void> rememberProtectedSubject(String emailId, String subject) async {
+    final e = emails[emailId];
+    if (e != null) emails[emailId] = e.copyWith(subject: subject, hasDecryptedSubject: true);
+  }
 
   @override
   Stream<List<ThreadSummary>> watchList(

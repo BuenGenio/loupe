@@ -108,6 +108,7 @@ final class ContentLoader {
         headers: _withProtected(content.headers, status.protectedHeaders),
         attachments: decrypted.attachments,
       );
+      _rememberSubject(summary, status.protectedSubject);
       if (status.gossip.isNotEmpty && summary != null) {
         unawaited(
           pgp
@@ -171,6 +172,16 @@ final class ContentLoader {
       }
     }
     return shown;
+  }
+
+  /// Keeps the protected subject of a decrypted message on the device, so
+  /// the list, search and notifications show it instead of `...`.
+  void _rememberSubject(EmailSummary? summary, String? subject) {
+    final real = subject?.trim();
+    if (summary == null || real == null || real.isEmpty || real == summary.subject.trim()) return;
+    if (repository case final DecryptedMail cache) {
+      unawaited(cache.rememberProtectedSubject(summary.id, real).catchError((Object _) {}));
+    }
   }
 
   /// The bytes of an attachment, from the decrypted message for `pgp:` parts.

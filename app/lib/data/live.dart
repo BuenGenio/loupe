@@ -10,7 +10,9 @@ import 'package:mail_platform/mail_platform.dart';
 import 'package:mail_store/mail_store.dart';
 import 'package:mail_sync/mail_sync.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../features/openpgp/decrypted_mail.dart';
 import '../features/openpgp/openpgp_providers.dart';
 import '../features/smime/smime_providers.dart';
 
@@ -164,15 +166,18 @@ LiveMailRepository buildLiveRepository(
 Future<SecureSendKeys> backgroundSendKeys() async {
   final keyring = Keyring(SecretStorageKeyring(KeychainSecretStorage()), prefix: liveKeyringPrefix);
   final session = KeySession();
-  try {
-    await keyring.load();
-    for (final k in keyring.state.ownKeys) {
-      if (k.isProtected) continue;
-      final secret = await keyring.secretKey(k.fingerprint, const DartPgBackend());
-      if (secret != null && !secret.isProtected) session.put(secret, pin: true);
-    }
-  } on Object {
-    // A keychain that can't be read: encrypted mail waits for the app.
+  // A keychain that can't be read gives none: encrypted mail waits for the app.
+  for (final secret in await keysWithoutPassphrase(keyring, const DartPgBackend())) {
+    session.put(secret, pin: true);
   }
   return SecureSendKeys(SessionSendKeys(keyring, () => session), await backgroundSmimeKeys());
+}
+
+/// Decrypt Subjects in the Background, for a background isolate: null when
+/// the setting is off in [prefs] or no key needs no passphrase.
+Future<SubjectDecryptor?> backgroundSubjectDecryptor(SharedPreferences prefs) async {
+  if (!DecryptedMailSettings.read(prefs).subjectsInBackground) return null;
+  final keyring = Keyring(SecretStorageKeyring(KeychainSecretStorage()), prefix: liveKeyringPrefix);
+  final keys = await keysWithoutPassphrase(keyring, const DartPgBackend());
+  return keys.isEmpty ? null : SubjectDecryptor(keys: keys);
 }

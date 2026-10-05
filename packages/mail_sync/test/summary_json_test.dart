@@ -30,4 +30,22 @@ void main() {
       isNot(contains('listId')),
     );
   });
+
+  test('encrypted summaries keep their flags and decrypted subject', () {
+    final e = EmailSummary(
+      id: 'x',
+      accountId: 'a',
+      mailboxId: 'm',
+      receivedAt: DateTime(2026),
+      subject: 'Quarterly secrets',
+      isEncrypted: true,
+      hasDecryptedSubject: true,
+    );
+    final back = summaryFromJson(summaryToJson(e));
+    expect((back.subject, back.isEncrypted, back.hasDecryptedSubject), ('Quarterly secrets', true, true));
+    final plain = summaryFromJson(
+      summaryToJson(EmailSummary(id: 'x', accountId: 'a', mailboxId: 'm', receivedAt: DateTime(2026))),
+    );
+    expect((plain.isEncrypted, plain.hasDecryptedSubject), (false, false));
+  });
 }

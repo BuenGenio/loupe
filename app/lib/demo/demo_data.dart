@@ -347,6 +347,7 @@ final class DemoSeed {
     bool authenticationFails = false,
     List<DemoMessage>? into,
     Uint8List Function(EmailSummary summary)? raw,
+    bool encrypted = false,
   }) {
     final n = _next++;
     final domain = from.domain.isEmpty ? 'example.com' : from.domain;
@@ -391,6 +392,7 @@ final class DemoSeed {
       listPost: header('List-Post'),
       listUnsubscribe: header('List-Unsubscribe'),
       listUnsubscribePost: header('List-Unsubscribe-Post'),
+      isEncrypted: encrypted,
     );
     if (thread != null) refs.add(messageId);
     final message = DemoMessage(

@@ -14,6 +14,7 @@ import '../conversation/sheets.dart';
 import '../settings/settings_widgets.dart';
 import '../smime/smime_providers.dart';
 import '../smime/smime_settings.dart';
+import 'decrypted_mail.dart';
 import 'key_import.dart';
 import 'openpgp_providers.dart';
 import 'pgp_status.dart';
@@ -118,6 +119,24 @@ class EncryptionSettingsScreen extends ConsumerWidget {
             children: [for (final e in collected) _publicRow(context, e)],
           ),
         const SmimeSettingsSection(),
+        InsetGroup(
+          header: 'On This Device',
+          separatorIndent: 16,
+          footer:
+              'Encrypted messages hide their subject. Loupe keeps the subject of each message you open in its '
+              'encrypted database on this device, so the list, search and notifications show it. In the '
+              'background, Loupe can also decrypt the subjects of new messages with keys that have no '
+              'passphrase; it downloads each message (up to 1 MB) to do so.',
+          children: [
+            SwitchRow(
+              key: const ValueKey('subjects-in-background'),
+              title: 'Decrypt Subjects in the Background',
+              value: ref.watch(decryptedMailSettingsProvider).subjectsInBackground,
+              onChanged: (v) =>
+                  ref.read(decryptedMailSettingsProvider.notifier).update((s) => s.copyWith(subjectsInBackground: v)),
+            ),
+          ],
+        ),
         InsetGroup(
           header: 'Passphrases',
           separatorIndent: 16,
