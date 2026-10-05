@@ -20,6 +20,7 @@ import 'package:pointycastle/digests/sha256.dart';
 import 'package:pointycastle/digests/sha384.dart';
 import 'package:pointycastle/digests/sha512.dart';
 import 'package:pointycastle/ecc/api.dart';
+import 'package:pointycastle/ecc/ecc_fp.dart' as fp;
 import 'package:pointycastle/macs/hmac.dart';
 import 'package:pointycastle/signers/ecdsa_signer.dart';
 
@@ -99,16 +100,53 @@ ECDomainParameters _domain(String? curve) => switch (curve) {
   _ => throw SmimeException(SmimeErrorKind.unsupported, 'The elliptic curve ${curveName(curve)} isn’t supported.'),
 };
 
+/// RSA keys smaller than this don't count for signatures (they can be
+/// factored, and a signing time can be backdated to when they were valid).
+const minRsaBits = 2048;
+
+/// RSA keys larger than this are refused, as OpenSSL does.
+const maxRsaBits = 16384;
+
+/// [cert]'s RSA key: an odd modulus of at most [maxRsaBits], an odd public
+/// exponent of at least 3 and at most 64 bits (a huge one makes every
+/// signature check with the key take seconds).
 RSAPublicKey rsaPublicKey(SmimeCertificate cert) {
   final key = Asn1.parse(cert.publicKey);
-  return RSAPublicKey(key[0].integer, key[1].integer);
+  final n = key[0].integer;
+  final e = key[1].integer;
+  if (n.isNegative || n.isEven || n.bitLength > maxRsaBits || e < BigInt.from(3) || e.isEven || e.bitLength > 64) {
+    throw const SmimeException(SmimeErrorKind.unsupported, 'This RSA key isn’t supported.');
+  }
+  return RSAPublicKey(n, e);
 }
 
+/// A public key on [curve]: an uncompressed or compressed point that is on
+/// the curve. pointycastle doesn't check that, and ECDH with a point off the
+/// curve (from a message's originator key) is an invalid-curve attack on
+/// the private key. Every supported curve has cofactor 1: on the curve and
+/// not infinity is enough.
 ECPublicKey ecPublicKey(String? curve, Uint8List point) {
   final domain = _domain(curve);
-  final q = domain.curve.decodePoint(point);
-  if (q == null || q.isInfinity) throw const SmimeException(SmimeErrorKind.malformed, 'Bad EC public key.');
+  const bad = SmimeException(SmimeErrorKind.malformed, 'Bad EC public key.');
+  if (point.isEmpty || !const {2, 3, 4}.contains(point[0])) throw bad;
+  ECPoint? q;
+  try {
+    q = domain.curve.decodePoint(point);
+  } on ArgumentError {
+    throw bad;
+  }
+  if (q == null || q.isInfinity || !_onCurve(domain.curve as fp.ECCurve, q)) throw bad;
   return ECPublicKey(q, domain);
+}
+
+bool _onCurve(fp.ECCurve curve, ECPoint q) {
+  final p = curve.q!;
+  final x = q.x!.toBigInteger()!;
+  final y = q.y!.toBigInteger()!;
+  if (x.isNegative || y.isNegative || x >= p || y >= p) return false;
+  final a = curve.a!.toBigInteger()!;
+  final b = curve.b!.toBigInteger()!;
+  return (y * y - (x * x * x + a * x + b)) % p == BigInt.zero;
 }
 
 /// A parsed private key: RSA, or EC with its curve.
@@ -154,7 +192,14 @@ final class RsaKeyMaterial extends PrivateKeyMaterial {
   final BigInt publicExponent;
 
   @override
-  bool matches(SmimeCertificate cert) => cert.keyType == SmimeKeyType.rsa && rsaPublicKey(cert).modulus == modulus;
+  bool matches(SmimeCertificate cert) {
+    if (cert.keyType != SmimeKeyType.rsa) return false;
+    try {
+      return rsaPublicKey(cert).modulus == modulus;
+    } on SmimeException {
+      return false;
+    }
+  }
 }
 
 final class EcKeyMaterial extends PrivateKeyMaterial {
@@ -190,7 +235,11 @@ Uint8List _rsaPrivate(RSAPrivateKey key, Uint8List input) {
 Uint8List _digestInfo(String digestOid, Uint8List hash) =>
     derSequence([derAlgorithm(digestOid, derNull), derOctets(hash)]);
 
-/// RSASSA-PKCS1-v1_5 verification, accepting DigestInfo with or without NULL parameters.
+/// RSASSA-PKCS1-v1_5 verification (RFC 8017 §8.2.2): the recovered block
+/// must be exactly the one encoding [hash] would give, DigestInfo with NULL
+/// parameters or without them. Nothing in it is parsed: a parser that lets
+/// anything through (extra elements, a NULL with content, long-form
+/// lengths) leaves room for a forgery under small exponents (Bleichenbacher 2006).
 bool rsaPkcs1Verify(RSAPublicKey key, String digestOid, Uint8List hash, Uint8List signature) {
   final n = key.modulus!;
   final k = _byteLength(n);
@@ -198,29 +247,17 @@ bool rsaPkcs1Verify(RSAPublicKey key, String digestOid, Uint8List hash, Uint8Lis
   final s = bigIntFromBytes(signature);
   if (s >= n) return false;
   final em = unsignedBytes(_modPow(s, key.exponent!, n), k);
-  if (em[0] != 0 || em[1] != 1) return false;
-  var i = 2;
-  while (i < em.length && em[i] == 0xff) {
-    i++;
+  var ok = false;
+  for (final t in [_digestInfo(digestOid, hash), derSequence([derAlgorithm(digestOid), derOctets(hash)])]) {
+    final expected = _pkcs1Block(t, k);
+    if (expected != null && _constantEquals(em, expected)) ok = true;
   }
-  if (i < 10 || i >= em.length || em[i] != 0) return false;
-  final info = Uint8List.sublistView(em, i + 1);
-  try {
-    final parsed = Asn1.parse(info);
-    if (parsed.encoded.length != info.length) return false;
-    final alg = parsed[0];
-    if (alg[0].oid != digestOid) return false;
-    if (alg.length > 1 && alg[1].tag != Tag.nul) return false;
-    return _constantEquals(parsed[1].content, hash);
-  } on Asn1Exception {
-    return false;
-  }
+  return ok;
 }
 
-Uint8List rsaPkcs1Sign(RsaKeyMaterial key, String digestOid, Uint8List hash) {
-  final k = _byteLength(key.modulus);
-  final t = _digestInfo(digestOid, hash);
-  if (t.length + 11 > k) throw const SmimeException(SmimeErrorKind.unsupported, 'The RSA key is too small.');
+/// EMSA-PKCS1-v1_5: `00 01 FF… 00 T` in [k] octets; null when [t] doesn't fit.
+Uint8List? _pkcs1Block(Uint8List t, int k) {
+  if (t.length + 11 > k) return null;
   final em = Uint8List(k)
     ..[0] = 0
     ..[1] = 1;
@@ -229,6 +266,12 @@ Uint8List rsaPkcs1Sign(RsaKeyMaterial key, String digestOid, Uint8List hash) {
   }
   em[k - t.length - 1] = 0;
   em.setRange(k - t.length, k, t);
+  return em;
+}
+
+Uint8List rsaPkcs1Sign(RsaKeyMaterial key, String digestOid, Uint8List hash) {
+  final em = _pkcs1Block(_digestInfo(digestOid, hash), _byteLength(key.modulus));
+  if (em == null) throw const SmimeException(SmimeErrorKind.unsupported, 'The RSA key is too small.');
   return _rsaPrivate(key.key, em);
 }
 
@@ -475,7 +518,8 @@ Uint8List aesWrap(Uint8List kek, Uint8List key) {
 }
 
 Uint8List aesUnwrap(Uint8List kek, Uint8List wrapped) {
-  if (wrapped.length % 8 != 0 || wrapped.length < 24) {
+  // A content key of 16 to 64 octets: a wrapped one of megabytes is only work.
+  if (wrapped.length % 8 != 0 || wrapped.length < 24 || wrapped.length > 72) {
     throw const SmimeException(SmimeErrorKind.malformed, 'The wrapped key is damaged.');
   }
   final aes = AESEngine()..init(false, KeyParameter(kek));

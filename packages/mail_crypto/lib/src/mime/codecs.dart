@@ -143,6 +143,8 @@ final class HeaderValue {
 
   String? operator [](String name) => params[name.toLowerCase()];
 
+  static final _paramName = RegExp(r'^(.+?)(?:\*(\d+))?(\*)?$', dotAll: true);
+
   static HeaderValue parse(String? raw) {
     if (raw == null) return const HeaderValue('', {});
     final parts = _splitParams(raw);
@@ -157,7 +159,8 @@ final class HeaderValue {
       if (v.length >= 2 && v.startsWith('"') && v.endsWith('"')) {
         v = v.substring(1, v.length - 1).replaceAllMapped(RegExp(r'\\(.)'), (m) => m.group(1)!);
       }
-      final m = RegExp(r'^(.+?)(?:\*(\d+))?(\*)?$').firstMatch(name)!;
+      // dotAll: a name with a CR in it (a header line split oddly) must match too.
+      final m = _paramName.firstMatch(name)!;
       if (m.group(2) == null && m.group(3) == null) {
         plain[name] = v;
         continue;

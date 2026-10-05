@@ -69,11 +69,23 @@ final class DistinguishedName {
     return DistinguishedName(name.encoded, attributes);
   }
 
-  String? valueOf(String oid) => attributes.where((a) => a.$1 == oid).map((a) => a.$2).lastOrNull;
+  String? _raw(String oid) => attributes.where((a) => a.$1 == oid).map((a) => a.$2).lastOrNull;
+
+  /// The value of [oid], fit to show (see [shownText]).
+  String? valueOf(String oid) {
+    final v = _raw(oid);
+    return v == null ? null : shownText(v);
+  }
 
   String? get commonName => valueOf(Oid.commonName);
   String? get organization => valueOf(Oid.organization);
-  String? get email => valueOf(Oid.emailAddress)?.toLowerCase();
+
+  /// The emailAddress attribute, lower-cased; null unless it is printable
+  /// ASCII (an IA5String address can't match a real one otherwise).
+  String? get email {
+    final v = _raw(Oid.emailAddress)?.trim().toLowerCase();
+    return v == null || !_isAddress(v) ? null : v;
+  }
 
   /// The common name, else the organisation, else the address.
   String get displayName => commonName ?? organization ?? email ?? toString();
@@ -107,8 +119,21 @@ final class DistinguishedName {
 
   /// Most specific first, as mail clients show it: `CN=…, O=…, C=…`.
   @override
-  String toString() => [for (final (k, v) in attributes.reversed) '${_short[k] ?? k}=$v'].join(', ');
+  String toString() => [for (final (k, v) in attributes.reversed) '${_short[k] ?? k}=${shownText(v)}'].join(', ');
 }
+
+/// [s] as it may be shown next to a verdict: without control, bidi and
+/// zero-width characters (a name could reorder or hide " · not trusted"
+/// after it), runs of spaces collapsed, at most 100 characters.
+String shownText(String s) {
+  final cleaned = s
+      .replaceAll(RegExp('[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u206f\ufeff]'), ' ')
+      .replaceAll(RegExp(r'\s+'), ' ')
+      .trim();
+  return cleaned.length > 100 ? '${cleaned.substring(0, 99)}…' : cleaned;
+}
+
+bool _isAddress(String s) => s.isNotEmpty && s.codeUnits.every((c) => c > 0x20 && c < 0x7f);
 
 /// Key usage bits (RFC 5280 §4.2.1.3).
 abstract final class KeyUsage {
@@ -142,6 +167,7 @@ final class SmimeCertificate {
     required this.publicKey,
     required this.signatureAlgorithm,
     required this.signatureParameters,
+    required this.signatureAlgorithmsMatch,
     required this.signature,
     required this.isCa,
     required this.pathLength,
@@ -193,6 +219,10 @@ final class SmimeCertificate {
   /// The algorithm the issuer signed with (OID), and its parameters (DER) if any.
   final String signatureAlgorithm;
   final Uint8List? signatureParameters;
+
+  /// The signature algorithm outside the signed part is the one inside it
+  /// (RFC 5280 §4.1.1.2); a certificate where they differ isn't signed by anyone.
+  final bool signatureAlgorithmsMatch;
   final Uint8List signature;
 
   /// basicConstraints cA.
@@ -251,17 +281,18 @@ final class SmimeCertificate {
 
   bool _usage(int bits) => keyUsage == null || keyUsage! & bits != 0;
 
-  bool get _forEmail =>
+  /// No extended key usage, or one that allows mail (emailProtection or any).
+  bool get forEmail =>
       extendedKeyUsage == null ||
       extendedKeyUsage!.contains(Oid.emailProtection) ||
       extendedKeyUsage!.contains(Oid.anyExtendedKeyUsage);
 
   /// It may sign mail: digitalSignature (or nonRepudiation) and emailProtection.
-  bool get canSign => _forEmail && _usage(KeyUsage.digitalSignature | KeyUsage.nonRepudiation);
+  bool get canSign => forEmail && _usage(KeyUsage.digitalSignature | KeyUsage.nonRepudiation);
 
   /// Mail may be encrypted to it: keyEncipherment (RSA) or keyAgreement (EC), and emailProtection.
   bool get canEncrypt =>
-      _forEmail &&
+      forEmail &&
       switch (keyType) {
         SmimeKeyType.rsa => _usage(KeyUsage.keyEncipherment),
         SmimeKeyType.ec => _usage(KeyUsage.keyAgreement),
@@ -342,7 +373,7 @@ SmimeCertificate _parse(Uint8List der) {
     i++;
   }
   final serial = tbs[i++].integer;
-  i++; // signature algorithm, repeated outside
+  final innerAlgorithm = tbs[i++]; // repeated outside
   final issuer = DistinguishedName.parse(tbs[i++]);
   final validity = tbs[i++];
   final subject = DistinguishedName.parse(tbs[i++]);
@@ -374,8 +405,12 @@ SmimeCertificate _parse(Uint8List der) {
   final unknownCritical = <String>[];
   final extensions = tbs.context(3);
   if (extensions != null && version >= 3) {
+    final seen = <String>{};
     for (final ext in extensions[0].children) {
       final id = ext[0].oid;
+      // RFC 5280 §4.2: one of each. Two (a cA false, then true) would read
+      // differently from one implementation to the next.
+      if (!seen.add(id)) throw Asn1Exception('Extension $id twice');
       final critical = ext.length > 2 && ext[1].tag == Tag.boolean && ext[1].boolean;
       final value = Asn1.parse(ext[ext.length - 1].octets);
       switch (id) {
@@ -391,7 +426,10 @@ SmimeCertificate _parse(Uint8List der) {
         case Oid.subjectAltName:
           for (final name in value.children) {
             // rfc822Name [1] IMPLICIT IA5String.
-            if (name.isContext(1) && !name.constructed) emails.add(ascii.decode(name.content).trim().toLowerCase());
+            if (name.isContext(1) && !name.constructed) {
+              final email = ascii.decode(name.content).trim().toLowerCase();
+              if (_isAddress(email)) emails.add(email);
+            }
           }
         case Oid.subjectKeyIdentifier:
           ski = value.octets;
@@ -432,6 +470,7 @@ SmimeCertificate _parse(Uint8List der) {
     publicKey: keyBitsRaw,
     signatureAlgorithm: sigAlg[0].oid,
     signatureParameters: sigAlg.length > 1 && sigAlg[1].tag != Tag.nul ? sigAlg[1].encoded : null,
+    signatureAlgorithmsMatch: _sameAlgorithm(innerAlgorithm, sigAlg),
     signature: cert[2].bits,
     isCa: isCa,
     pathLength: pathLength,
@@ -446,21 +485,44 @@ SmimeCertificate _parse(Uint8List der) {
   );
 }
 
+/// The same AlgorithmIdentifier: the OID, and parameters alike (absent and NULL alike).
+bool _sameAlgorithm(Asn1 a, Asn1 b) {
+  if (!a.isSequence || !b.isSequence || a.length == 0 || b.length == 0 || a[0].oid != b[0].oid) return false;
+  Uint8List? params(Asn1 x) => x.length > 1 && x[1].tag != Tag.nul ? x[1].encoded : null;
+  final (pa, pb) = (params(a), params(b));
+  return pa == null ? pb == null : pb != null && _bytesEqual(pa, pb);
+}
+
 /// Every certificate in [input]: PEM (one or several), DER, or a PKCS#7
 /// "certs-only" bundle (`.p7c`, `.p7b`), PEM or DER. Throws
 /// [SmimeException] ([SmimeErrorKind.malformed]) when there is none.
 List<SmimeCertificate> readCertificates(Uint8List input) {
   final found = <SmimeCertificate>[];
   final text = latin1.decode(input);
-  final pem = RegExp(r'-----BEGIN ([A-Z0-9 ]+)-----([\s\S]*?)-----END \1-----');
-  final blocks = pem.allMatches(text).toList();
-  final ders = blocks.isEmpty
-      ? [input]
-      : [
-          for (final m in blocks)
-            if (const {'CERTIFICATE', 'X509 CERTIFICATE', 'TRUSTED CERTIFICATE', 'PKCS7', 'CMS'}.contains(m.group(1)))
-              m.group(2)!.replaceAll(RegExp(r'\s'), ''),
-        ];
+  // PEM blocks of the labels that hold certificates, found with indexOf: a
+  // backtracking pattern over the whole text was quadratic on a file of
+  // unterminated BEGIN lines.
+  final List<Object> ders;
+  if (!text.contains('-----BEGIN ')) {
+    ders = [input];
+  } else {
+    final blocks = <(int, String)>[];
+    for (final label in const ['CERTIFICATE', 'X509 CERTIFICATE', 'TRUSTED CERTIFICATE', 'PKCS7', 'CMS']) {
+      final begin = '-----BEGIN $label-----';
+      final end = '-----END $label-----';
+      var at = 0;
+      while (true) {
+        final b = text.indexOf(begin, at);
+        if (b < 0) break;
+        final e = text.indexOf(end, b + begin.length);
+        if (e < 0) break;
+        blocks.add((b, text.substring(b + begin.length, e).replaceAll(RegExp(r'\s'), '')));
+        at = e + end.length;
+      }
+    }
+    blocks.sort((x, y) => x.$1.compareTo(y.$1));
+    ders = [for (final (_, b64) in blocks) b64];
+  }
   for (final block in ders) {
     try {
       final der = block is String ? base64.decode(block) : block as Uint8List;

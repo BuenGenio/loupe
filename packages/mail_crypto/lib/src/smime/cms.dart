@@ -139,6 +139,12 @@ enum SmimeContentCipher {
   return (ci[0].oid, ci[1][0]);
 }
 
+/// Certificates of a SignedData that are read; the rest are left out.
+const maxMessageCertificates = 32;
+
+/// SignerInfos of a SignedData that are checked; the rest are left out.
+const maxSigners = 16;
+
 Never _malformed(Object e) => throw SmimeException(SmimeErrorKind.malformed, 'The S/MIME data is damaged.', e);
 
 // Verifying -------------------------------------------------------------------
@@ -162,6 +168,8 @@ SmimeSignedData verifySignedData(Uint8List der, {Uint8List? detached, List<Smime
       if (c.isContext(0)) {
         for (final cert in c.children) {
           if (!cert.isSequence) continue;
+          // A signer's chain is a few certificates; more only feed path searches.
+          if (certificates.length >= maxMessageCertificates) break;
           try {
             certificates.add(SmimeCertificate.fromDer(cert.encoded));
           } on SmimeException {
@@ -173,9 +181,11 @@ SmimeSignedData verifySignedData(Uint8List der, {Uint8List? detached, List<Smime
       }
     }
     final data = detached ?? content;
+    // The content is hashed once per digest algorithm, whatever the number of signers.
+    final digests = <String, Uint8List>{};
     var signers = [
-      for (final si in signerInfos?.children ?? const <Asn1>[])
-        _checkSigner(si, data, contentType, [...certificates, ...known]),
+      for (final si in (signerInfos?.children ?? const <Asn1>[]).take(maxSigners))
+        _checkSigner(si, data, contentType, [...certificates, ...known], digests),
     ];
     // A multipart/signed whose signature carries other content than the
     // signed part (Thunderbird's "mismatch-econtent"): what is shown isn't what was signed.
@@ -204,7 +214,13 @@ SmimeSignedData verifySignedData(Uint8List der, {Uint8List? detached, List<Smime
   }
 }
 
-SmimeSignerCheck _checkSigner(Asn1 si, Uint8List? content, String contentType, List<SmimeCertificate> certs) {
+SmimeSignerCheck _checkSigner(
+  Asn1 si,
+  Uint8List? content,
+  String contentType,
+  List<SmimeCertificate> certs,
+  Map<String, Uint8List> digests,
+) {
   final sid = SmimeRecipientId.parse(si[1]);
   final cert = certs.where(sid.matches).firstOrNull;
   final digestOid = si[2][0].oid;
@@ -216,11 +232,19 @@ SmimeSignerCheck _checkSigner(Asn1 si, Uint8List? content, String contentType, L
   var capabilities = const <String>[];
   Uint8List? messageDigest;
   String? attrContentType;
+  // RFC 5652 §5.3, §11: each attribute type once; content type and
+  // message digest with exactly one value.
+  var attributesOk = true;
   if (signedAttrs != null) {
+    final seen = <String>{};
     for (final attr in signedAttrs.children) {
+      final type = attr[0].oid;
       final values = attr[1].children;
+      if (!seen.add(type) || ((type == Oid.messageDigest || type == Oid.contentType) && values.length != 1)) {
+        attributesOk = false;
+      }
       if (values.isEmpty) continue;
-      switch (attr[0].oid) {
+      switch (type) {
         case Oid.messageDigest:
           messageDigest = values.first.octets;
         case Oid.contentType:
@@ -248,13 +272,18 @@ SmimeSignerCheck _checkSigner(Asn1 si, Uint8List? content, String contentType, L
     problem: problem,
   );
   if (content == null) return result(false, 'The signed content is missing.');
-  if (_weak.contains(digestOid) || _weak.contains(sigAlg[0].oid)) {
+  if (!attributesOk) return result(false, 'The signed attributes are damaged.');
+  final pssSha1 = sigAlg[0].oid == Oid.rsassaPss && _pssHash(sigAlg.length > 1 ? sigAlg[1] : null) == Oid.sha1;
+  if (_weak.contains(digestOid) || _weak.contains(sigAlg[0].oid) || pssSha1) {
     return result(false, 'It is signed with ${digestName(digestOid)}, which isn’t safe anymore.', false, true);
   }
   if (cert == null) return result(false, 'The signer’s certificate isn’t in the message.');
+  if (cert.keyType == SmimeKeyType.rsa && cert.keyBits < minRsaBits) {
+    return result(false, 'It is signed with a ${cert.keyBits}-bit RSA key, which isn’t safe anymore.', false, true);
+  }
   final d = digestFor(digestOid);
   if (d == null) return result(false, 'The digest ${digestName(digestOid)} isn’t supported.');
-  final contentHash = d.process(content);
+  final contentHash = digests[digestOid] ??= d.process(content);
   Uint8List signedBytes;
   if (signedAttrs != null) {
     if (messageDigest == null || !constantEquals(messageDigest, contentHash)) {
@@ -280,6 +309,12 @@ SmimeSignerCheck _checkSigner(Asn1 si, Uint8List? content, String contentType, L
   } on Object {
     return result(false, 'The signature is damaged.');
   }
+}
+
+/// The digest of RSASSA-PSS parameters (SHA-1 when absent, RFC 4055).
+String _pssHash(Asn1? params) {
+  final hash = params != null && params.isSequence ? params.context(0) : null;
+  return hash == null ? Oid.sha1 : hash[0][0].oid;
 }
 
 /// Digests and signature algorithms that aren't accepted anymore.
@@ -309,6 +344,7 @@ bool verifySignature(
       if (cert.keyType != SmimeKeyType.rsa) return false;
       final (hash, mgf, salt) = rsaParams(params);
       final saltLength = salt == null ? 20 : salt[0].intValue;
+      if (saltLength < 0) return false;
       hash.reset();
       return rsaPssVerify(rsaPublicKey(cert), hash, mgf, saltLength, hash.process(data), signature);
     case Oid.rsaEncryption ||
@@ -336,10 +372,13 @@ bool verifySignature(
 
 /// Whether [issuer]'s key signed [cert].
 bool certificateSignedBy(SmimeCertificate cert, SmimeCertificate issuer) {
-  // SHA-1 certificates aren't trusted anymore (as Mozilla decided in 2017).
-  if (_weak.contains(cert.signatureAlgorithm)) return false;
+  // SHA-1 certificates aren't trusted anymore (as Mozilla decided in 2017),
+  // nor small RSA keys.
+  if (_weak.contains(cert.signatureAlgorithm) || !cert.signatureAlgorithmsMatch) return false;
+  if (issuer.keyType == SmimeKeyType.rsa && issuer.keyBits < minRsaBits) return false;
   try {
     final params = cert.signatureParameters == null ? null : Asn1.parse(cert.signatureParameters!);
+    if (cert.signatureAlgorithm == Oid.rsassaPss && _pssHash(params) == Oid.sha1) return false;
     return verifySignature(issuer, cert.signatureAlgorithm, params, Oid.sha256, cert.tbs, cert.signature);
   } on Object {
     // A key or signature that can't even be parsed didn't sign it.
@@ -440,7 +479,7 @@ const smimeCapabilities = [Oid.aes256Gcm, Oid.aes128Gcm, Oid.aes256Cbc, Oid.aes1
 List<SmimeRecipientId> recipientsOf(Uint8List der) {
   try {
     final (_, envelope) = contentInfo(der);
-    return [for (final ri in _recipientInfos(envelope).children) ..._ridsOf(ri)];
+    return _recipientsIn(_recipientInfos(envelope));
   } on SmimeException {
     rethrow;
   } on Object catch (e) {
@@ -452,6 +491,21 @@ Asn1 _recipientInfos(Asn1 envelope) {
   var i = 1;
   if (envelope[i].isContext(0)) i++; // originatorInfo
   return envelope[i]..expect(Tag.set, 'RecipientInfos');
+}
+
+/// Recipients an envelope may name, RecipientInfos and the keys of key
+/// agreements together: a list for the status, not a hundred thousand.
+const maxRecipients = 1000;
+
+List<SmimeRecipientId> _recipientsIn(Asn1 infos) {
+  final out = <SmimeRecipientId>[];
+  for (final ri in infos.children) {
+    out.addAll(_ridsOf(ri));
+    if (out.length > maxRecipients) {
+      throw const SmimeException(SmimeErrorKind.malformed, 'The message names too many recipients.');
+    }
+  }
+  return out;
 }
 
 List<SmimeRecipientId> _ridsOf(Asn1 ri) {
@@ -473,7 +527,7 @@ SmimeDecrypted decryptEnveloped(Uint8List der, List<(SmimeCertificate, SmimePriv
       throw const SmimeException(SmimeErrorKind.malformed, 'Not an encrypted message.');
     }
     final infos = _recipientInfos(envelope);
-    final recipients = [for (final ri in infos.children) ..._ridsOf(ri)];
+    final recipients = _recipientsIn(infos);
     var i = 1;
     if (envelope[i].isContext(0)) i++;
     i++; // recipientInfos
@@ -526,7 +580,10 @@ SmimeDecrypted decryptEnveloped(Uint8List der, List<(SmimeCertificate, SmimePriv
         throw const SmimeException(SmimeErrorKind.malformed, 'The integrity check is damaged.');
       }
       final aad = authAttrs == null ? null : retag(authAttrs.encoded, Tag.set);
-      plain = aesGcm(false, cek, nonce, tagLength, Uint8List.fromList([...ciphertext, ...mac]), aad);
+      final sealed = Uint8List(ciphertext.length + mac.length)
+        ..setRange(0, ciphertext.length, ciphertext)
+        ..setRange(ciphertext.length, ciphertext.length + mac.length, mac);
+      plain = aesGcm(false, cek, nonce, tagLength, sealed, aad);
       cipher = 'AES-${cek.length * 8}-GCM';
     } else {
       switch (cipherOid) {
@@ -605,7 +662,11 @@ Uint8List? _unwrapKey(Asn1 ri, SmimeCertificate cert, SmimePrivateKey key, int? 
     final kek = x963Kdf(kdfDigest, z, eccCmsSharedInfo(wrapOid, ukm, wrapLength * 8), wrapLength);
     for (final rek in ri.children.last.children) {
       if (!SmimeRecipientId.parse(rek[0]).matches(cert)) continue;
-      return aesUnwrap(kek, rek[1].octets);
+      final cek = aesUnwrap(kek, rek[1].octets);
+      if (keyLength != null && cek.length != keyLength) {
+        throw const SmimeException(SmimeErrorKind.noKey, 'This message can’t be decrypted with your key.');
+      }
+      return cek;
     }
     return null;
   }
