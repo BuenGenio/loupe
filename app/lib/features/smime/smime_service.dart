@@ -120,4 +120,17 @@ final class SmimeService {
 
   /// Whether [certificate] is a root Loupe already trusts (Mozilla's or the user's).
   bool isTrustedRoot(SmimeCertificate certificate) => state.anchors.isAnchor(certificate);
+
+  /// Whether [certificate] chains to [root] through [chain], every signature
+  /// checked: the only CA worth offering to trust along with it.
+  bool chainsTo(SmimeCertificate certificate, SmimeCertificate root, {List<SmimeCertificate> chain = const []}) =>
+      checkTrust(
+        certificate,
+        anchors: SmimeTrustAnchors([root]),
+        intermediates: chain,
+        at: _clock(),
+        usage: SmimeUsage.signing,
+        signedBy: backend.certificateSignedBy,
+      ).anchor ==
+      root;
 }

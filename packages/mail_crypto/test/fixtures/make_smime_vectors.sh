@@ -126,6 +126,11 @@ openssl pkcs12 -export -inkey bob.key -in bob.crt -certfile intermediate.crt -na
 openssl pkcs12 -export -inkey bob.key -in bob.crt -name 'Bob Example' -pbmac1_pbkdf2 \
   -passout pass:bob-pass -out bob-pbmac1.p12
 openssl pkcs12 -export -inkey dave.key -in dave.crt -passout pass: -out dave-nopass.p12
+# Alice's file with a CA that didn't issue her certificate added: only the
+# root her certificate chains to may be offered for trust.
+cat intermediate.crt root.crt evil.crt > chain-evil.pem
+openssl pkcs12 -export -inkey alice.key -in alice.crt -certfile chain-evil.pem -name 'Alice Example' \
+  -passout pass:alice-pass -out alice-extra-ca.p12
 
 # Messages.
 printf 'Content-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nHello Bob,\r\n\r\nThis message is signed with S/MIME. Gr=C3=BC=C3=9Fe!\r\n\r\nAlice\r\n' > inner.mime

@@ -200,12 +200,15 @@ Future<void> _importPkcs12(
   for (final k in bundle.keys) {
     await service.addOwn(k, chain: bundle.chain);
   }
-  // The CA that issued it, when Loupe doesn't trust it yet (a company's own CA).
+  // The CA that issued it, when Loupe doesn't trust it yet (a company's own
+  // CA): only a root the certificate really chains to, not any other the
+  // file carries.
   for (final ca in bundle.chain) {
     if (!context.mounted) break;
     if (!ca.isCa || !ca.isSelfIssued || service.isTrustedRoot(ca)) continue;
     final mine = bundle.keys.first.certificate;
     if (service.check(mine).problem != SmimeProblem.untrusted) continue;
+    if (!service.chainsTo(mine, ca, chain: bundle.chain)) continue;
     await _askTrust(context, service, ca);
   }
   showSnack(messenger, 'Imported your certificate $names.');

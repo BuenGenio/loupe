@@ -14,8 +14,9 @@
   and intermediate CA ("Loupe Test Mail CA"), user certificates (Alice RSA,
   Bob EC P-256, Carol expired, Dave signing only, Erin a TLS certificate,
   Frank issued by a non-CA, Gina and Hank under a name-constrained CA,
-  Mallory from an untrusted CA), PKCS #12 files (`alice.p12` and
-  `alice-legacy.p12`: password `alice-pass`; `bob-*.p12`: `bob-pass`;
+  Mallory from an untrusted CA), PKCS #12 files (`alice.p12`,
+  `alice-legacy.p12` and `alice-extra-ca.p12`, which also carries the Evil
+  Root CA: password `alice-pass`; `bob-*.p12`: `bob-pass`;
   `dave-nopass.p12`: empty) and messages signed and encrypted by
   `openssl cms`. Test keys only.
 - `thunderbird-smime/`: a subset of Thunderbird's S/MIME test data

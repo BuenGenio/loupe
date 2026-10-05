@@ -109,7 +109,15 @@ final class _Pkcs12 {
       throw const SmimeException(SmimeErrorKind.unsupported, 'PKCS #12 files signed with a key aren’t supported.');
     }
     final content = authSafe[1][0].octets;
-    if (pfx.length > 2) _checkMac(pfx[2], content);
+    // The MAC is what makes the password vouch for everything in the file
+    // (the certificates too, and the CA Loupe then offers to trust).
+    // Exporters always write one; without it, anyone could have added a
+    // certificate to someone's own file. With an empty password it proves nothing.
+    if (pfx.length > 2) {
+      _checkMac(pfx[2], content);
+    } else if (password.isNotEmpty) {
+      throw const SmimeException(SmimeErrorKind.unsupported, 'This file has no integrity check, so it can’t be trusted.');
+    }
     final keys = <(Uint8List?, String?, SmimePrivateKey)>[];
     final certs = <(Uint8List?, SmimeCertificate)>[];
     for (final info in Asn1.parse(content).children) {

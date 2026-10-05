@@ -49,6 +49,16 @@ void main() {
     expect(smime.readPkcs12(withMacIterations(2048), 'alice-pass').keys, hasLength(1));
   });
 
+  test('a file whose MAC was taken away is refused, unless its password is empty', () {
+    Uint8List withoutMac(String file) {
+      final pfx = Asn1.parse(smimeFixture(file));
+      return derSequence([pfx[0].encoded, pfx[1].encoded]);
+    }
+
+    expect(() => smime.readPkcs12(withoutMac('alice.p12'), 'alice-pass'), throwsKind(SmimeErrorKind.unsupported));
+    expect(smime.readPkcs12(withoutMac('dave-nopass.p12'), '').keys, hasLength(1));
+  });
+
   test('PBKDF2: a key length other than the cipher’s, or a huge one, is refused (it allocated it)', () {
     final salt = derOctets(Uint8List(8));
     final iterations = derInt(2048);
@@ -58,7 +68,7 @@ void main() {
       derSequence([salt, derInt(0x7fffffff)]),
     ]) {
       final watch = Stopwatch()..start();
-      expect(() => smime.readPkcs12(shroudedKeyWith(params), 'pass'), throwsA(isA<SmimeException>()));
+      expect(() => smime.readPkcs12(shroudedKeyWith(params), ''), throwsA(isA<SmimeException>()));
       expect(watch.elapsed, lessThan(const Duration(seconds: 1)));
     }
   });

@@ -64,6 +64,30 @@ void main() {
     await drainTimers(tester);
   });
 
+  testWidgets('a .p12 carrying another root besides the one that issued it: only that one is offered', (tester) async {
+    await pumpLoupe(
+      tester,
+      overrides: [inlinePgp, pickKeyFileProvider.overrideWithValue(() async => smimeFixture('alice-extra-ca.p12'))],
+    );
+    await goTo(tester, Routes.encryption);
+    await tester.scrollTo(find.byKey(const ValueKey('smime-import-own')));
+    await tester.ensureVisible(find.byKey(const ValueKey('smime-import-own')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('smime-import-own')));
+    await tester.pumpAndSettle();
+    await password(tester, 'alice-pass');
+
+    // Declined: Alice's certificate stays untrusted, and the Evil Root CA
+    // (which didn't issue it) isn't offered next.
+    expect(find.text('Trust “Loupe Test Root CA” for Mail?'), findsOneWidget);
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    expect(find.text('Trust “Evil Root CA” for Mail?'), findsNothing);
+    expect(textContaining('Imported your certificate Alice Example (alice@example.org).'), findsOneWidget);
+    expect((await smimeOf(tester)).authorities, isEmpty);
+    await drainTimers(tester);
+  });
+
   testWidgets('a correspondent’s certificate from the clipboard; trusting its CA from the details', (tester) async {
     final pem = '${bobCert.pem}${fixtureCert('intermediate.crt').pem}';
     await pumpLoupe(
