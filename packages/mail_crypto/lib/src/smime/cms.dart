@@ -479,7 +479,7 @@ const smimeCapabilities = [Oid.aes256Gcm, Oid.aes128Gcm, Oid.aes256Cbc, Oid.aes1
 List<SmimeRecipientId> recipientsOf(Uint8List der) {
   try {
     final (_, envelope) = contentInfo(der);
-    return [for (final ri in _recipientInfos(envelope).children) ..._ridsOf(ri)];
+    return _recipientsIn(_recipientInfos(envelope));
   } on SmimeException {
     rethrow;
   } on Object catch (e) {
@@ -491,6 +491,21 @@ Asn1 _recipientInfos(Asn1 envelope) {
   var i = 1;
   if (envelope[i].isContext(0)) i++; // originatorInfo
   return envelope[i]..expect(Tag.set, 'RecipientInfos');
+}
+
+/// Recipients an envelope may name, RecipientInfos and the keys of key
+/// agreements together: a list for the status, not a hundred thousand.
+const maxRecipients = 1000;
+
+List<SmimeRecipientId> _recipientsIn(Asn1 infos) {
+  final out = <SmimeRecipientId>[];
+  for (final ri in infos.children) {
+    out.addAll(_ridsOf(ri));
+    if (out.length > maxRecipients) {
+      throw const SmimeException(SmimeErrorKind.malformed, 'The message names too many recipients.');
+    }
+  }
+  return out;
 }
 
 List<SmimeRecipientId> _ridsOf(Asn1 ri) {
@@ -512,7 +527,7 @@ SmimeDecrypted decryptEnveloped(Uint8List der, List<(SmimeCertificate, SmimePriv
       throw const SmimeException(SmimeErrorKind.malformed, 'Not an encrypted message.');
     }
     final infos = _recipientInfos(envelope);
-    final recipients = [for (final ri in infos.children) ..._ridsOf(ri)];
+    final recipients = _recipientsIn(infos);
     var i = 1;
     if (envelope[i].isContext(0)) i++;
     i++; // recipientInfos
@@ -565,7 +580,10 @@ SmimeDecrypted decryptEnveloped(Uint8List der, List<(SmimeCertificate, SmimePriv
         throw const SmimeException(SmimeErrorKind.malformed, 'The integrity check is damaged.');
       }
       final aad = authAttrs == null ? null : retag(authAttrs.encoded, Tag.set);
-      plain = aesGcm(false, cek, nonce, tagLength, Uint8List.fromList([...ciphertext, ...mac]), aad);
+      final sealed = Uint8List(ciphertext.length + mac.length)
+        ..setRange(0, ciphertext.length, ciphertext)
+        ..setRange(ciphertext.length, ciphertext.length + mac.length, mac);
+      plain = aesGcm(false, cek, nonce, tagLength, sealed, aad);
       cipher = 'AES-${cek.length * 8}-GCM';
     } else {
       switch (cipherOid) {
@@ -644,7 +662,11 @@ Uint8List? _unwrapKey(Asn1 ri, SmimeCertificate cert, SmimePrivateKey key, int? 
     final kek = x963Kdf(kdfDigest, z, eccCmsSharedInfo(wrapOid, ukm, wrapLength * 8), wrapLength);
     for (final rek in ri.children.last.children) {
       if (!SmimeRecipientId.parse(rek[0]).matches(cert)) continue;
-      return aesUnwrap(kek, rek[1].octets);
+      final cek = aesUnwrap(kek, rek[1].octets);
+      if (keyLength != null && cek.length != keyLength) {
+        throw const SmimeException(SmimeErrorKind.noKey, 'This message can’t be decrypted with your key.');
+      }
+      return cek;
     }
     return null;
   }

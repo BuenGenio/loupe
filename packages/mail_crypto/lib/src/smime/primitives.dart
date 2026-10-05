@@ -518,7 +518,8 @@ Uint8List aesWrap(Uint8List kek, Uint8List key) {
 }
 
 Uint8List aesUnwrap(Uint8List kek, Uint8List wrapped) {
-  if (wrapped.length % 8 != 0 || wrapped.length < 24) {
+  // A content key of 16 to 64 octets: a wrapped one of megabytes is only work.
+  if (wrapped.length % 8 != 0 || wrapped.length < 24 || wrapped.length > 72) {
     throw const SmimeException(SmimeErrorKind.malformed, 'The wrapped key is damaged.');
   }
   final aes = AESEngine()..init(false, KeyParameter(kek));

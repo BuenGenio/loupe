@@ -3,9 +3,11 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:mail_crypto/mail_crypto.dart';
-import 'package:mail_crypto/src/smime/cms.dart' show contentInfo, maxMessageCertificates, maxSigners, verifySignature;
+import 'package:mail_crypto/src/smime/cms.dart'
+    show contentInfo, maxMessageCertificates, maxRecipients, maxSigners, verifySignature;
 import 'package:mail_crypto/src/smime/der.dart';
-import 'package:mail_crypto/src/smime/primitives.dart' show PrivateKeyMaterial, RsaKeyMaterial, digest, rsaPkcs1Sign;
+import 'package:mail_crypto/src/smime/primitives.dart'
+    show PrivateKeyMaterial, RsaKeyMaterial, aesUnwrap, digest, rsaPkcs1Sign;
 import 'package:pointycastle/api.dart' show ParametersWithSalt, PrivateKeyParameter;
 import 'package:pointycastle/asymmetric/api.dart' show RSAPrivateKey;
 import 'package:pointycastle/asymmetric/rsa.dart';
@@ -290,6 +292,24 @@ void main() {
         () => smime.decrypt(cmsOf('enveloped-other.eml').$1, [alice, bob]),
         throwsA(isA<SmimeException>().having((e) => e.kind, 'kind', SmimeErrorKind.noKey)),
       );
+    });
+
+    test('an envelope naming thousands of recipients, or a wrapped key of megabytes, is damage', () {
+      final (p7m, _) = cmsOf('enveloped-rsa.eml');
+      final (_, env) = contentInfo(p7m);
+      final stuffed = derSequence([
+        derOid(Oid.envelopedData),
+        derContext(0, derSequence([
+          for (final c in env.children)
+            if (c.isSet) der(Tag.set, [for (var i = 0; i <= maxRecipients; i++) ...c[0].encoded]) else c.encoded,
+        ])),
+      ]);
+      for (final run in [() => smime.decrypt(stuffed, [alice]), () => smime.recipientsOf(stuffed)]) {
+        expect(run, throwsA(isA<SmimeException>().having((e) => e.kind, 'kind', SmimeErrorKind.malformed)));
+      }
+      final watch = Stopwatch()..start();
+      expect(() => aesUnwrap(Uint8List(32), Uint8List(1 << 20)), throwsA(isA<SmimeException>()));
+      expect(watch.elapsed, lessThan(const Duration(milliseconds: 100)));
     });
 
     test('a changed AES-GCM message is refused', () {
