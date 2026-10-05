@@ -1,6 +1,7 @@
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:test/test.dart';
 
+import 'cert_builder.dart';
 import 'smime_support.dart';
 
 SmimeTrustCheck check(
@@ -84,4 +85,28 @@ void main() {
     expect(smime.certificateSignedBy(bobCert, testCa), isTrue);
     expect(check(bobCert, intermediates: [evilRoot]).problems, {SmimeProblem.untrusted});
   });
+
+  test('a web of cross-signed CAs of one name: the path search stops after a bounded number of checks', () {
+    // Twelve CAs all called "Loop CA" (each could have signed each other):
+    // without a bound, searching every path up to eight deep is 12^8 checks.
+    final loopKey = TestKey('loop');
+    final cas = [for (var i = 0; i < 12; i++) makeCa('Loop CA', loopKey, serial: 1000 + i, extensions: [basicConstraints()])];
+    final leaf = makeUser('alice@example.org', TestKey('leaf'), issuerCn: 'Loop CA', issuerKey: loopKey);
+    var checks = 0;
+    final watch = Stopwatch()..start();
+    final c = checkTrust(
+      leaf,
+      anchors: testAnchors,
+      intermediates: cas,
+      at: today,
+      usage: SmimeUsage.signing,
+      signedBy: (cert, issuer) {
+        checks++;
+        return true;
+      },
+    );
+    expect(c.problems, contains(SmimeProblem.untrusted));
+    expect(checks, lessThanOrEqualTo(maxPathChecks));
+    expect(watch.elapsed, lessThan(const Duration(seconds: 2)));
+  }, timeout: const Timeout(Duration(seconds: 30)));
 }

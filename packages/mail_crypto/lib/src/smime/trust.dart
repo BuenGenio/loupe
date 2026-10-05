@@ -145,6 +145,15 @@ SmimeTrustCheck checkTrust(
   return SmimeTrustCheck(chain: chain, anchor: anchor, problems: problems, at: at);
 }
 
+/// Certificates a chain may have, the leaf and the anchor included.
+const maxChainLength = 9;
+
+/// Signature checks one path search may make. A real chain takes a few
+/// (candidates are matched by name and key identifier first); a message
+/// carrying many CAs of one name that cross-sign each other would make a
+/// depth-first search take exponentially many.
+const maxPathChecks = 64;
+
 /// A chain from [leaf] to an anchor, every signature checked; null when there is none.
 List<SmimeCertificate>? _buildPath(
   SmimeCertificate leaf,
@@ -153,14 +162,16 @@ List<SmimeCertificate>? _buildPath(
   bool Function(SmimeCertificate, SmimeCertificate) signedBy,
 ) {
   if (anchors.isAnchor(leaf)) return [leaf];
+  var checks = 0;
   List<SmimeCertificate>? walk(List<SmimeCertificate> path) {
     final cert = path.last;
-    if (path.length > 8) return null;
+    if (path.length >= maxChainLength) return null;
     final candidates = [
       for (final c in anchors.anchors) (c, true),
       for (final c in pool) (c, false),
     ].where((e) => _mayHaveIssued(e.$1, cert) && !path.contains(e.$1));
     for (final (issuer, isAnchor) in candidates) {
+      if (++checks > maxPathChecks) return null;
       if (!signedBy(cert, issuer)) continue;
       final next = [...path, issuer];
       if (isAnchor || anchors.isAnchor(issuer)) return next;
@@ -188,7 +199,7 @@ bool _mayHaveIssued(SmimeCertificate issuer, SmimeCertificate cert) {
 /// The issuers of [leaf] by name only (for showing an untrusted chain).
 List<SmimeCertificate> _byName(SmimeCertificate leaf, List<SmimeCertificate> pool) {
   final chain = [leaf];
-  while (chain.length < 8 && !chain.last.isSelfIssued) {
+  while (chain.length < maxChainLength && !chain.last.isSelfIssued) {
     final next = pool.where((c) => _mayHaveIssued(c, chain.last) && !chain.contains(c)).firstOrNull;
     if (next == null) break;
     chain.add(next);

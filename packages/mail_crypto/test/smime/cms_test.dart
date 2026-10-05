@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:mail_crypto/mail_crypto.dart';
-import 'package:mail_crypto/src/smime/cms.dart' show contentInfo;
+import 'package:mail_crypto/src/smime/cms.dart' show contentInfo, maxMessageCertificates;
+import 'package:mail_crypto/src/smime/der.dart';
 import 'package:mail_crypto/src/smime/oids.dart';
 import 'package:test/test.dart';
 
@@ -55,6 +56,22 @@ void main() {
       final (noCerts, original) = cmsOf('signed-noattr.eml');
       expect(smime.verify(noCerts, content: original, known: [cert('alice.crt')]).signers.single.valid, isTrue);
     });
+  });
+
+  test('at most a few dozen certificates of a message are read', () {
+    final (p7s, signed) = cmsOf('signed-detached.eml');
+    final (_, sd) = contentInfo(p7s);
+    final certs = sd.context(0)!.children;
+    final stuffed = derSequence([
+      derOid(Oid.signedData),
+      derContext(0, derSequence([
+        for (final c in sd.children)
+          if (c.isContext(0)) derContext(0, [for (var i = 0; i < 500; i++) ...certs[i % certs.length].encoded]) else c.encoded,
+      ])),
+    ]);
+    final checked = smime.verify(stuffed, content: signed);
+    expect(checked.certificates.length, maxMessageCertificates);
+    expect(checked.signers.single.valid, isTrue);
   });
 
   group('decrypting what OpenSSL encrypted', () {

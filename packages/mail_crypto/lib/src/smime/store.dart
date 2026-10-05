@@ -413,10 +413,16 @@ final class SmimeStore {
     if (!signature.valid || cert == null || !cert.hasEmail(sender) || !cert.canSign || cert.isExpiredAt(at)) {
       return false;
     }
+    // The issuers on the path found (at most a few): not every certificate
+    // a message carried, which could be thousands, kept forever.
+    final trust = signature.trust;
+    final path = trust == null
+        ? signature.certificates.take(maxChainLength)
+        : trust.chain.skip(1).where((c) => c != trust.anchor);
     return addContact(
       cert,
       chain: [
-        for (final c in signature.certificates)
+        for (final c in path)
           if (c != cert && c.isCa) c,
       ],
       capabilities: signature.capabilities,

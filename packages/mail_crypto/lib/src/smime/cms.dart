@@ -139,6 +139,9 @@ enum SmimeContentCipher {
   return (ci[0].oid, ci[1][0]);
 }
 
+/// Certificates of a SignedData that are read; the rest are left out.
+const maxMessageCertificates = 32;
+
 Never _malformed(Object e) => throw SmimeException(SmimeErrorKind.malformed, 'The S/MIME data is damaged.', e);
 
 // Verifying -------------------------------------------------------------------
@@ -162,6 +165,8 @@ SmimeSignedData verifySignedData(Uint8List der, {Uint8List? detached, List<Smime
       if (c.isContext(0)) {
         for (final cert in c.children) {
           if (!cert.isSequence) continue;
+          // A signer's chain is a few certificates; more only feed path searches.
+          if (certificates.length >= maxMessageCertificates) break;
           try {
             certificates.add(SmimeCertificate.fromDer(cert.encoded));
           } on SmimeException {

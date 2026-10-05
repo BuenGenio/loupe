@@ -69,6 +69,18 @@ void main() {
     expect(await store.collect(signatureOf('signed-detached.eml'), sender: 'alice@example.org', now: today), isFalse);
   });
 
+  test('keeps the issuers on the path, not every certificate the message carried', () async {
+    final good = signatureOf('signed-detached.eml');
+    final stuffed = SmimeSignatureStatus(
+      valid: true,
+      certificate: good.certificate,
+      trust: good.trust,
+      certificates: [...good.certificates, for (var i = 0; i < 200; i++) testRoot, evilRoot],
+    );
+    expect(await store.collect(stuffed, sender: 'alice@example.org', now: today), isTrue);
+    expect(store.state.contacts.single.chain, [testCa]);
+  });
+
   test('doesn’t collect from a modified message, another sender, an expired certificate', () async {
     expect(await store.collect(signatureOf('signed-modified.eml'), sender: 'alice@example.org', now: today), isFalse);
     expect(await store.collect(signatureOf('signed-detached.eml'), sender: 'ceo@example.org', now: today), isFalse);
