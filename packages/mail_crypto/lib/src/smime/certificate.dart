@@ -167,6 +167,7 @@ final class SmimeCertificate {
     required this.publicKey,
     required this.signatureAlgorithm,
     required this.signatureParameters,
+    required this.signatureAlgorithmsMatch,
     required this.signature,
     required this.isCa,
     required this.pathLength,
@@ -218,6 +219,10 @@ final class SmimeCertificate {
   /// The algorithm the issuer signed with (OID), and its parameters (DER) if any.
   final String signatureAlgorithm;
   final Uint8List? signatureParameters;
+
+  /// The signature algorithm outside the signed part is the one inside it
+  /// (RFC 5280 §4.1.1.2); a certificate where they differ isn't signed by anyone.
+  final bool signatureAlgorithmsMatch;
   final Uint8List signature;
 
   /// basicConstraints cA.
@@ -368,7 +373,7 @@ SmimeCertificate _parse(Uint8List der) {
     i++;
   }
   final serial = tbs[i++].integer;
-  i++; // signature algorithm, repeated outside
+  final innerAlgorithm = tbs[i++]; // repeated outside
   final issuer = DistinguishedName.parse(tbs[i++]);
   final validity = tbs[i++];
   final subject = DistinguishedName.parse(tbs[i++]);
@@ -400,8 +405,12 @@ SmimeCertificate _parse(Uint8List der) {
   final unknownCritical = <String>[];
   final extensions = tbs.context(3);
   if (extensions != null && version >= 3) {
+    final seen = <String>{};
     for (final ext in extensions[0].children) {
       final id = ext[0].oid;
+      // RFC 5280 §4.2: one of each. Two (a cA false, then true) would read
+      // differently from one implementation to the next.
+      if (!seen.add(id)) throw Asn1Exception('Extension $id twice');
       final critical = ext.length > 2 && ext[1].tag == Tag.boolean && ext[1].boolean;
       final value = Asn1.parse(ext[ext.length - 1].octets);
       switch (id) {
@@ -461,6 +470,7 @@ SmimeCertificate _parse(Uint8List der) {
     publicKey: keyBitsRaw,
     signatureAlgorithm: sigAlg[0].oid,
     signatureParameters: sigAlg.length > 1 && sigAlg[1].tag != Tag.nul ? sigAlg[1].encoded : null,
+    signatureAlgorithmsMatch: _sameAlgorithm(innerAlgorithm, sigAlg),
     signature: cert[2].bits,
     isCa: isCa,
     pathLength: pathLength,
@@ -473,6 +483,14 @@ SmimeCertificate _parse(Uint8List der) {
     excludedEmails: excluded,
     unknownCriticalExtensions: unknownCritical,
   );
+}
+
+/// The same AlgorithmIdentifier: the OID, and parameters alike (absent and NULL alike).
+bool _sameAlgorithm(Asn1 a, Asn1 b) {
+  if (!a.isSequence || !b.isSequence || a.length == 0 || b.length == 0 || a[0].oid != b[0].oid) return false;
+  Uint8List? params(Asn1 x) => x.length > 1 && x[1].tag != Tag.nul ? x[1].encoded : null;
+  final (pa, pb) = (params(a), params(b));
+  return pa == null ? pb == null : pb != null && _bytesEqual(pa, pb);
 }
 
 /// Every certificate in [input]: PEM (one or several), DER, or a PKCS#7

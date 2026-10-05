@@ -232,11 +232,19 @@ SmimeSignerCheck _checkSigner(
   var capabilities = const <String>[];
   Uint8List? messageDigest;
   String? attrContentType;
+  // RFC 5652 §5.3, §11: each attribute type once; content type and
+  // message digest with exactly one value.
+  var attributesOk = true;
   if (signedAttrs != null) {
+    final seen = <String>{};
     for (final attr in signedAttrs.children) {
+      final type = attr[0].oid;
       final values = attr[1].children;
+      if (!seen.add(type) || ((type == Oid.messageDigest || type == Oid.contentType) && values.length != 1)) {
+        attributesOk = false;
+      }
       if (values.isEmpty) continue;
-      switch (attr[0].oid) {
+      switch (type) {
         case Oid.messageDigest:
           messageDigest = values.first.octets;
         case Oid.contentType:
@@ -264,7 +272,9 @@ SmimeSignerCheck _checkSigner(
     problem: problem,
   );
   if (content == null) return result(false, 'The signed content is missing.');
-  if (_weak.contains(digestOid) || _weak.contains(sigAlg[0].oid)) {
+  if (!attributesOk) return result(false, 'The signed attributes are damaged.');
+  final pssSha1 = sigAlg[0].oid == Oid.rsassaPss && _pssHash(sigAlg.length > 1 ? sigAlg[1] : null) == Oid.sha1;
+  if (_weak.contains(digestOid) || _weak.contains(sigAlg[0].oid) || pssSha1) {
     return result(false, 'It is signed with ${digestName(digestOid)}, which isn’t safe anymore.', false, true);
   }
   if (cert == null) return result(false, 'The signer’s certificate isn’t in the message.');
@@ -301,6 +311,12 @@ SmimeSignerCheck _checkSigner(
   }
 }
 
+/// The digest of RSASSA-PSS parameters (SHA-1 when absent, RFC 4055).
+String _pssHash(Asn1? params) {
+  final hash = params != null && params.isSequence ? params.context(0) : null;
+  return hash == null ? Oid.sha1 : hash[0][0].oid;
+}
+
 /// Digests and signature algorithms that aren't accepted anymore.
 const _weak = {Oid.sha1, Oid.md5, Oid.sha1WithRsa, Oid.md5WithRsa, Oid.ecdsaWithSha1};
 
@@ -328,6 +344,7 @@ bool verifySignature(
       if (cert.keyType != SmimeKeyType.rsa) return false;
       final (hash, mgf, salt) = rsaParams(params);
       final saltLength = salt == null ? 20 : salt[0].intValue;
+      if (saltLength < 0) return false;
       hash.reset();
       return rsaPssVerify(rsaPublicKey(cert), hash, mgf, saltLength, hash.process(data), signature);
     case Oid.rsaEncryption ||
@@ -357,10 +374,11 @@ bool verifySignature(
 bool certificateSignedBy(SmimeCertificate cert, SmimeCertificate issuer) {
   // SHA-1 certificates aren't trusted anymore (as Mozilla decided in 2017),
   // nor small RSA keys.
-  if (_weak.contains(cert.signatureAlgorithm)) return false;
+  if (_weak.contains(cert.signatureAlgorithm) || !cert.signatureAlgorithmsMatch) return false;
   if (issuer.keyType == SmimeKeyType.rsa && issuer.keyBits < minRsaBits) return false;
   try {
     final params = cert.signatureParameters == null ? null : Asn1.parse(cert.signatureParameters!);
+    if (cert.signatureAlgorithm == Oid.rsassaPss && _pssHash(params) == Oid.sha1) return false;
     return verifySignature(issuer, cert.signatureAlgorithm, params, Oid.sha256, cert.tbs, cert.signature);
   } on Object {
     // A key or signature that can't even be parsed didn't sign it.

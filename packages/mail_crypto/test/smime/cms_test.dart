@@ -5,6 +5,13 @@ import 'dart:typed_data';
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_crypto/src/smime/cms.dart' show contentInfo, maxMessageCertificates, maxSigners, verifySignature;
 import 'package:mail_crypto/src/smime/der.dart';
+import 'package:mail_crypto/src/smime/primitives.dart' show PrivateKeyMaterial, RsaKeyMaterial, digest, rsaPkcs1Sign;
+import 'package:pointycastle/api.dart' show ParametersWithSalt, PrivateKeyParameter;
+import 'package:pointycastle/asymmetric/api.dart' show RSAPrivateKey;
+import 'package:pointycastle/asymmetric/rsa.dart';
+import 'package:pointycastle/digests/sha1.dart';
+import 'package:pointycastle/digests/sha256.dart';
+import 'package:pointycastle/signers/pss_signer.dart';
 import 'package:mail_crypto/src/smime/oids.dart';
 import 'package:test/test.dart';
 
@@ -143,6 +150,114 @@ void main() {
       expect((s.valid, s.weak, s.certificate), (false, true, weak));
       expect(smime.certificateSignedBy(alice.certificate, withKey(modulus(1024), BigInt.from(65537))), isFalse);
     });
+  });
+
+  group('signatures made here, of any shape', () {
+    final material = PrivateKeyMaterial.parse(alice.key) as RsaKeyMaterial;
+    Uint8List attr(String oid, List<int> value) => derSequence([derOid(oid), derSet([value])]);
+    final standardAttrs = [attr(Oid.contentType, derOid(Oid.data)), attr(Oid.messageDigest, derOctets(digest(Oid.sha256, content)))];
+
+    /// A detached SignedData over `content` by Alice with [attrs], signed by [sign] as [sigAlg].
+    Uint8List signedData(List<Uint8List> attrs, Uint8List sigAlg, Uint8List Function(Uint8List signedAttrs) sign) {
+      final signedAttrs = der(Tag.set, [for (final a in attrs) ...a]);
+      final signerInfo = derSequence([
+        derInt(1),
+        derSequence([alice.certificate.issuer.der, derInteger(alice.certificate.serialNumber)]),
+        derAlgorithm(Oid.sha256),
+        retag(signedAttrs, 0xa0),
+        sigAlg,
+        derOctets(sign(signedAttrs)),
+      ]);
+      return derSequence([
+        derOid(Oid.signedData),
+        derContext(0, derSequence([
+          derInt(1),
+          derSet([derAlgorithm(Oid.sha256)]),
+          derSequence([derOid(Oid.data)]),
+          derContext(0, alice.certificate.der),
+          derSet([signerInfo]),
+        ])),
+      ]);
+    }
+
+    Uint8List pkcs1(Uint8List data) => rsaPkcs1Sign(material, Oid.sha256, digest(Oid.sha256, data));
+    Uint8List pss(Uint8List data, {required bool sha1}) {
+      final signer = sha1
+          ? PSSSigner(RSAEngine(), SHA1Digest(), SHA1Digest())
+          : PSSSigner(RSAEngine(), SHA256Digest(), SHA256Digest());
+      signer.init(true, ParametersWithSalt(PrivateKeyParameter<RSAPrivateKey>(material.key), Uint8List(sha1 ? 20 : 32)));
+      return signer.generateSignature(data).bytes;
+    }
+
+    test('PKCS #1 v1.5 and RSASSA-PSS with SHA-256 verify', () {
+      final rsa = smime.verify(signedData(standardAttrs, derAlgorithm(Oid.rsaEncryption, derNull), pkcs1), content: content);
+      expect(rsa.signers.single.valid, isTrue);
+      final pssParams = derSequence([
+        derContext(0, derAlgorithm(Oid.sha256)),
+        derContext(1, derAlgorithm(Oid.mgf1, derAlgorithm(Oid.sha256))),
+        derContext(2, derInt(32)),
+      ]);
+      final checked = smime.verify(
+        signedData(standardAttrs, derAlgorithm(Oid.rsassaPss, pssParams), (d) => pss(d, sha1: false)),
+        content: content,
+      );
+      expect(checked.signers.single.valid, isTrue);
+    });
+
+    test('RSASSA-PSS with SHA-1 (its default parameters) is weak, like sha1WithRSA', () {
+      final s = smime
+          .verify(signedData(standardAttrs, derAlgorithm(Oid.rsassaPss), (d) => pss(d, sha1: true)), content: content)
+          .signers
+          .single;
+      expect((s.valid, s.weak), (false, true));
+    });
+
+    test('an attribute twice, or a message digest with two values, is damage', () {
+      final digestAttr = standardAttrs[1];
+      final twoValues = derSequence([
+        derOid(Oid.messageDigest),
+        derSet([derOctets(digest(Oid.sha256, content)), derOctets(Uint8List(32))]),
+      ]);
+      for (final attrs in [
+        [...standardAttrs, digestAttr],
+        [standardAttrs[0], twoValues],
+      ]) {
+        final s = smime.verify(signedData(attrs, derAlgorithm(Oid.rsaEncryption, derNull), pkcs1), content: content);
+        expect(s.signers.single.valid, isFalse);
+        expect(s.signers.single.problem, contains('attributes'));
+      }
+    });
+  });
+
+  test('a certificate whose outer signature algorithm isn’t the inner one is signed by nobody', () {
+    final caKey = TestKey('mismatch-ca');
+    final ca = makeCa('Mismatch CA', caKey);
+    SmimeCertificate user({String? outer}) => makeCertificate(
+      key: TestKey('mismatch-user'),
+      subject: name('alice@example.org'),
+      issuer: name('Mismatch CA'),
+      issuerKey: caKey,
+      outerAlgorithm: outer,
+    );
+    expect(smime.certificateSignedBy(user(), ca), isTrue);
+    // The same signature, labelled with the bare key algorithm outside.
+    final relabelled = user(outer: Oid.ecPublicKey);
+    expect(relabelled.signatureAlgorithmsMatch, isFalse);
+    expect(smime.certificateSignedBy(relabelled, ca), isFalse);
+  });
+
+  test('a certificate with an extension twice is damaged', () {
+    final key = TestKey('twice');
+    expect(
+      () => makeCertificate(
+        key: key,
+        subject: name('Twice'),
+        issuer: name('Twice'),
+        issuerKey: key,
+        extensions: [basicConstraints(ca: false), basicConstraints()],
+      ),
+      throwsA(isA<SmimeException>()),
+    );
   });
 
   group('decrypting what OpenSSL encrypted', () {
