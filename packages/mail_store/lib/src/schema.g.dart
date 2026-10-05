@@ -4155,6 +4155,358 @@ class OutboxItemsCompanion extends UpdateCompanion<OutboxRow> {
   }
 }
 
+class $OutboxCopiesTable extends OutboxCopies with TableInfo<$OutboxCopiesTable, OutboxCopyRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $OutboxCopiesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _outboxIdMeta = const VerificationMeta('outboxId');
+  @override
+  late final GeneratedColumn<String> outboxId = GeneratedColumn<String>(
+    'outbox_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('REFERENCES outbox_items (id) ON DELETE CASCADE'),
+  );
+  static const VerificationMeta _seqMeta = const VerificationMeta('seq');
+  @override
+  late final GeneratedColumn<int> seq = GeneratedColumn<int>(
+    'seq',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _recipientsMeta = const VerificationMeta('recipients');
+  @override
+  late final GeneratedColumn<String> recipients = GeneratedColumn<String>(
+    'recipients',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _filedMeta = const VerificationMeta('filed');
+  @override
+  late final GeneratedColumn<bool> filed = GeneratedColumn<bool>(
+    'filed',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("filed" IN (0, 1))'),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<int> date = GeneratedColumn<int>(
+    'date',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _dataMeta = const VerificationMeta('data');
+  @override
+  late final GeneratedColumn<Uint8List> data = GeneratedColumn<Uint8List>(
+    'data',
+    aliasedName,
+    false,
+    type: DriftSqlType.blob,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [outboxId, seq, recipients, filed, date, data];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'outbox_copies';
+  @override
+  VerificationContext validateIntegrity(Insertable<OutboxCopyRow> instance, {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('outbox_id')) {
+      context.handle(_outboxIdMeta, outboxId.isAcceptableOrUnknown(data['outbox_id']!, _outboxIdMeta));
+    } else if (isInserting) {
+      context.missing(_outboxIdMeta);
+    }
+    if (data.containsKey('seq')) {
+      context.handle(_seqMeta, seq.isAcceptableOrUnknown(data['seq']!, _seqMeta));
+    } else if (isInserting) {
+      context.missing(_seqMeta);
+    }
+    if (data.containsKey('recipients')) {
+      context.handle(_recipientsMeta, recipients.isAcceptableOrUnknown(data['recipients']!, _recipientsMeta));
+    } else if (isInserting) {
+      context.missing(_recipientsMeta);
+    }
+    if (data.containsKey('filed')) {
+      context.handle(_filedMeta, filed.isAcceptableOrUnknown(data['filed']!, _filedMeta));
+    }
+    if (data.containsKey('date')) {
+      context.handle(_dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+    } else if (isInserting) {
+      context.missing(_dateMeta);
+    }
+    if (data.containsKey('data')) {
+      context.handle(_dataMeta, this.data.isAcceptableOrUnknown(data['data']!, _dataMeta));
+    } else if (isInserting) {
+      context.missing(_dataMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {outboxId, seq};
+  @override
+  OutboxCopyRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return OutboxCopyRow(
+      outboxId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}outbox_id'])!,
+      seq: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}seq'])!,
+      recipients: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}recipients'])!,
+      filed: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}filed'])!,
+      date: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}date'])!,
+      data: attachedDatabase.typeMapping.read(DriftSqlType.blob, data['${effectivePrefix}data'])!,
+    );
+  }
+
+  @override
+  $OutboxCopiesTable createAlias(String alias) {
+    return $OutboxCopiesTable(attachedDatabase, alias);
+  }
+}
+
+class OutboxCopyRow extends DataClass implements Insertable<OutboxCopyRow> {
+  final String outboxId;
+  final int seq;
+
+  /// JSON array of the addresses it goes to (the SMTP envelope).
+  final String recipients;
+
+  /// The copy filed in Sent.
+  final bool filed;
+
+  /// The Date header the copies carry, epoch milliseconds.
+  final int date;
+  final Uint8List data;
+  const OutboxCopyRow({
+    required this.outboxId,
+    required this.seq,
+    required this.recipients,
+    required this.filed,
+    required this.date,
+    required this.data,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['outbox_id'] = Variable<String>(outboxId);
+    map['seq'] = Variable<int>(seq);
+    map['recipients'] = Variable<String>(recipients);
+    map['filed'] = Variable<bool>(filed);
+    map['date'] = Variable<int>(date);
+    map['data'] = Variable<Uint8List>(data);
+    return map;
+  }
+
+  OutboxCopiesCompanion toCompanion(bool nullToAbsent) {
+    return OutboxCopiesCompanion(
+      outboxId: Value(outboxId),
+      seq: Value(seq),
+      recipients: Value(recipients),
+      filed: Value(filed),
+      date: Value(date),
+      data: Value(data),
+    );
+  }
+
+  factory OutboxCopyRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return OutboxCopyRow(
+      outboxId: serializer.fromJson<String>(json['outboxId']),
+      seq: serializer.fromJson<int>(json['seq']),
+      recipients: serializer.fromJson<String>(json['recipients']),
+      filed: serializer.fromJson<bool>(json['filed']),
+      date: serializer.fromJson<int>(json['date']),
+      data: serializer.fromJson<Uint8List>(json['data']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'outboxId': serializer.toJson<String>(outboxId),
+      'seq': serializer.toJson<int>(seq),
+      'recipients': serializer.toJson<String>(recipients),
+      'filed': serializer.toJson<bool>(filed),
+      'date': serializer.toJson<int>(date),
+      'data': serializer.toJson<Uint8List>(data),
+    };
+  }
+
+  OutboxCopyRow copyWith({String? outboxId, int? seq, String? recipients, bool? filed, int? date, Uint8List? data}) =>
+      OutboxCopyRow(
+        outboxId: outboxId ?? this.outboxId,
+        seq: seq ?? this.seq,
+        recipients: recipients ?? this.recipients,
+        filed: filed ?? this.filed,
+        date: date ?? this.date,
+        data: data ?? this.data,
+      );
+  OutboxCopyRow copyWithCompanion(OutboxCopiesCompanion data) {
+    return OutboxCopyRow(
+      outboxId: data.outboxId.present ? data.outboxId.value : this.outboxId,
+      seq: data.seq.present ? data.seq.value : this.seq,
+      recipients: data.recipients.present ? data.recipients.value : this.recipients,
+      filed: data.filed.present ? data.filed.value : this.filed,
+      date: data.date.present ? data.date.value : this.date,
+      data: data.data.present ? data.data.value : this.data,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OutboxCopyRow(')
+          ..write('outboxId: $outboxId, ')
+          ..write('seq: $seq, ')
+          ..write('recipients: $recipients, ')
+          ..write('filed: $filed, ')
+          ..write('date: $date, ')
+          ..write('data: $data')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(outboxId, seq, recipients, filed, date, $driftBlobEquality.hash(data));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is OutboxCopyRow &&
+          other.outboxId == this.outboxId &&
+          other.seq == this.seq &&
+          other.recipients == this.recipients &&
+          other.filed == this.filed &&
+          other.date == this.date &&
+          $driftBlobEquality.equals(other.data, this.data));
+}
+
+class OutboxCopiesCompanion extends UpdateCompanion<OutboxCopyRow> {
+  final Value<String> outboxId;
+  final Value<int> seq;
+  final Value<String> recipients;
+  final Value<bool> filed;
+  final Value<int> date;
+  final Value<Uint8List> data;
+  final Value<int> rowid;
+  const OutboxCopiesCompanion({
+    this.outboxId = const Value.absent(),
+    this.seq = const Value.absent(),
+    this.recipients = const Value.absent(),
+    this.filed = const Value.absent(),
+    this.date = const Value.absent(),
+    this.data = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  OutboxCopiesCompanion.insert({
+    required String outboxId,
+    required int seq,
+    required String recipients,
+    this.filed = const Value.absent(),
+    required int date,
+    required Uint8List data,
+    this.rowid = const Value.absent(),
+  }) : outboxId = Value(outboxId),
+       seq = Value(seq),
+       recipients = Value(recipients),
+       date = Value(date),
+       data = Value(data);
+  static Insertable<OutboxCopyRow> custom({
+    Expression<String>? outboxId,
+    Expression<int>? seq,
+    Expression<String>? recipients,
+    Expression<bool>? filed,
+    Expression<int>? date,
+    Expression<Uint8List>? data,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (outboxId != null) 'outbox_id': outboxId,
+      if (seq != null) 'seq': seq,
+      if (recipients != null) 'recipients': recipients,
+      if (filed != null) 'filed': filed,
+      if (date != null) 'date': date,
+      if (data != null) 'data': data,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  OutboxCopiesCompanion copyWith({
+    Value<String>? outboxId,
+    Value<int>? seq,
+    Value<String>? recipients,
+    Value<bool>? filed,
+    Value<int>? date,
+    Value<Uint8List>? data,
+    Value<int>? rowid,
+  }) {
+    return OutboxCopiesCompanion(
+      outboxId: outboxId ?? this.outboxId,
+      seq: seq ?? this.seq,
+      recipients: recipients ?? this.recipients,
+      filed: filed ?? this.filed,
+      date: date ?? this.date,
+      data: data ?? this.data,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (outboxId.present) {
+      map['outbox_id'] = Variable<String>(outboxId.value);
+    }
+    if (seq.present) {
+      map['seq'] = Variable<int>(seq.value);
+    }
+    if (recipients.present) {
+      map['recipients'] = Variable<String>(recipients.value);
+    }
+    if (filed.present) {
+      map['filed'] = Variable<bool>(filed.value);
+    }
+    if (date.present) {
+      map['date'] = Variable<int>(date.value);
+    }
+    if (data.present) {
+      map['data'] = Variable<Uint8List>(data.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OutboxCopiesCompanion(')
+          ..write('outboxId: $outboxId, ')
+          ..write('seq: $seq, ')
+          ..write('recipients: $recipients, ')
+          ..write('filed: $filed, ')
+          ..write('date: $date, ')
+          ..write('data: $data, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $PendingOpsTable extends PendingOps with TableInfo<$PendingOpsTable, PendingOpRow> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -6125,6 +6477,7 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
   late final $DecryptedTextsTable decryptedTexts = $DecryptedTextsTable(this);
   late final $InlinePartsTable inlineParts = $InlinePartsTable(this);
   late final $OutboxItemsTable outboxItems = $OutboxItemsTable(this);
+  late final $OutboxCopiesTable outboxCopies = $OutboxCopiesTable(this);
   late final $PendingOpsTable pendingOps = $PendingOpsTable(this);
   late final $VipAddressesTable vipAddresses = $VipAddressesTable(this);
   late final $AddressBookTable addressBook = $AddressBookTable(this);
@@ -6169,6 +6522,7 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     decryptedTexts,
     inlineParts,
     outboxItems,
+    outboxCopies,
     pendingOps,
     vipAddresses,
     addressBook,
@@ -6235,6 +6589,10 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     WritePropagation(
       on: TableUpdateQuery.onTableName('accounts', limitUpdateKind: UpdateKind.delete),
       result: [TableUpdate('outbox_items', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('outbox_items', limitUpdateKind: UpdateKind.delete),
+      result: [TableUpdate('outbox_copies', kind: UpdateKind.delete)],
     ),
     WritePropagation(
       on: TableUpdateQuery.onTableName('accounts', limitUpdateKind: UpdateKind.delete),
@@ -9419,6 +9777,19 @@ final class $$OutboxItemsTableReferences extends BaseReferences<_$StoreDatabase,
     if (item == null) return manager;
     return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
   }
+
+  static MultiTypedResultKey<$OutboxCopiesTable, List<OutboxCopyRow>> _outboxCopiesRefsTable(_$StoreDatabase db) =>
+      MultiTypedResultKey.fromTable(db.outboxCopies, aliasName: 'outbox_items__id__outbox_copies__outbox_id');
+
+  $$OutboxCopiesTableProcessedTableManager get outboxCopiesRefs {
+    final manager = $$OutboxCopiesTableTableManager(
+      $_db,
+      $_db.outboxCopies,
+    ).filter((f) => f.outboxId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_outboxCopiesRefsTable($_db));
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$OutboxItemsTableFilterComposer extends Composer<_$StoreDatabase, $OutboxItemsTable> {
@@ -9467,6 +9838,24 @@ class $$OutboxItemsTableFilterComposer extends Composer<_$StoreDatabase, $Outbox
           ),
     );
     return composer;
+  }
+
+  Expression<bool> outboxCopiesRefs(Expression<bool> Function($$OutboxCopiesTableFilterComposer f) f) {
+    final $$OutboxCopiesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.outboxCopies,
+      getReferencedColumn: (t) => t.outboxId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$OutboxCopiesTableFilterComposer(
+            $db: $db,
+            $table: $db.outboxCopies,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
   }
 }
 
@@ -9561,6 +9950,24 @@ class $$OutboxItemsTableAnnotationComposer extends Composer<_$StoreDatabase, $Ou
     );
     return composer;
   }
+
+  Expression<T> outboxCopiesRefs<T extends Object>(Expression<T> Function($$OutboxCopiesTableAnnotationComposer a) f) {
+    final $$OutboxCopiesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.outboxCopies,
+      getReferencedColumn: (t) => t.outboxId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$OutboxCopiesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.outboxCopies,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$OutboxItemsTableTableManager
@@ -9576,7 +9983,7 @@ class $$OutboxItemsTableTableManager
           $$OutboxItemsTableUpdateCompanionBuilder,
           (OutboxRow, $$OutboxItemsTableReferences),
           OutboxRow,
-          PrefetchHooks Function({bool accountId})
+          PrefetchHooks Function({bool accountId, bool outboxCopiesRefs})
         > {
   $$OutboxItemsTableTableManager(_$StoreDatabase db, $OutboxItemsTable table)
     : super(
@@ -9639,10 +10046,10 @@ class $$OutboxItemsTableTableManager
                 (e) => (e.readTable<$OutboxItemsTable, OutboxRow>(table), $$OutboxItemsTableReferences(db, table, e)),
               )
               .toList(),
-          prefetchHooksCallback: ({accountId = false}) {
+          prefetchHooksCallback: ({accountId = false, outboxCopiesRefs = false}) {
             return PrefetchHooks(
               db: db,
-              explicitlyWatchedTables: [],
+              explicitlyWatchedTables: [if (outboxCopiesRefs) db.outboxCopies],
               addJoins:
                   <
                     T extends TableManagerState<
@@ -9671,7 +10078,17 @@ class $$OutboxItemsTableTableManager
                     return state;
                   },
               getPrefetchedDataCallback: (items) async {
-                return [];
+                return [
+                  if (outboxCopiesRefs)
+                    await $_getPrefetchedData<OutboxRow, $OutboxItemsTable, OutboxCopyRow>(
+                      currentTable: table,
+                      referencedTable: $$OutboxItemsTableReferences._outboxCopiesRefsTable(db),
+                      managerFromTypedResult: (p0) => $$OutboxItemsTableReferences(db, table, p0).outboxCopiesRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.outboxId == item.id),
+                      typedResults: items,
+                    ),
+                ];
               },
             );
           },
@@ -9691,7 +10108,280 @@ typedef $$OutboxItemsTableProcessedTableManager =
       $$OutboxItemsTableUpdateCompanionBuilder,
       (OutboxRow, $$OutboxItemsTableReferences),
       OutboxRow,
-      PrefetchHooks Function({bool accountId})
+      PrefetchHooks Function({bool accountId, bool outboxCopiesRefs})
+    >;
+typedef $$OutboxCopiesTableCreateCompanionBuilder = OutboxCopiesCompanion Function({
+  required String outboxId,
+  required int seq,
+  required String recipients,
+  Value<bool> filed,
+  required int date,
+  required Uint8List data,
+  Value<int> rowid,
+});
+typedef $$OutboxCopiesTableUpdateCompanionBuilder = OutboxCopiesCompanion Function({
+  Value<String> outboxId,
+  Value<int> seq,
+  Value<String> recipients,
+  Value<bool> filed,
+  Value<int> date,
+  Value<Uint8List> data,
+  Value<int> rowid,
+});
+
+final class $$OutboxCopiesTableReferences extends BaseReferences<_$StoreDatabase, $OutboxCopiesTable, OutboxCopyRow> {
+  $$OutboxCopiesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $OutboxItemsTable _outboxIdTable(_$StoreDatabase db) =>
+      db.outboxItems.createAlias('outbox_copies__outbox_id__outbox_items__id');
+
+  $$OutboxItemsTableProcessedTableManager get outboxId {
+    final $_column = $_itemColumn<String>('outbox_id')!;
+
+    final manager = $$OutboxItemsTableTableManager($_db, $_db.outboxItems).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_outboxIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$OutboxCopiesTableFilterComposer extends Composer<_$StoreDatabase, $OutboxCopiesTable> {
+  $$OutboxCopiesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get seq => $composableBuilder(column: $table.seq, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get recipients =>
+      $composableBuilder(column: $table.recipients, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get filed => $composableBuilder(column: $table.filed, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get date => $composableBuilder(column: $table.date, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<Uint8List> get data =>
+      $composableBuilder(column: $table.data, builder: (column) => ColumnFilters(column));
+
+  $$OutboxItemsTableFilterComposer get outboxId {
+    final $$OutboxItemsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.outboxId,
+      referencedTable: $db.outboxItems,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$OutboxItemsTableFilterComposer(
+            $db: $db,
+            $table: $db.outboxItems,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$OutboxCopiesTableOrderingComposer extends Composer<_$StoreDatabase, $OutboxCopiesTable> {
+  $$OutboxCopiesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get seq => $composableBuilder(column: $table.seq, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get recipients =>
+      $composableBuilder(column: $table.recipients, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get filed =>
+      $composableBuilder(column: $table.filed, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get date =>
+      $composableBuilder(column: $table.date, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<Uint8List> get data =>
+      $composableBuilder(column: $table.data, builder: (column) => ColumnOrderings(column));
+
+  $$OutboxItemsTableOrderingComposer get outboxId {
+    final $$OutboxItemsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.outboxId,
+      referencedTable: $db.outboxItems,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$OutboxItemsTableOrderingComposer(
+            $db: $db,
+            $table: $db.outboxItems,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$OutboxCopiesTableAnnotationComposer extends Composer<_$StoreDatabase, $OutboxCopiesTable> {
+  $$OutboxCopiesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get seq => $composableBuilder(column: $table.seq, builder: (column) => column);
+
+  GeneratedColumn<String> get recipients => $composableBuilder(column: $table.recipients, builder: (column) => column);
+
+  GeneratedColumn<bool> get filed => $composableBuilder(column: $table.filed, builder: (column) => column);
+
+  GeneratedColumn<int> get date => $composableBuilder(column: $table.date, builder: (column) => column);
+
+  GeneratedColumn<Uint8List> get data => $composableBuilder(column: $table.data, builder: (column) => column);
+
+  $$OutboxItemsTableAnnotationComposer get outboxId {
+    final $$OutboxItemsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.outboxId,
+      referencedTable: $db.outboxItems,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$OutboxItemsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.outboxItems,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$OutboxCopiesTableTableManager
+    extends
+        RootTableManager<
+          _$StoreDatabase,
+          $OutboxCopiesTable,
+          OutboxCopyRow,
+          $$OutboxCopiesTableFilterComposer,
+          $$OutboxCopiesTableOrderingComposer,
+          $$OutboxCopiesTableAnnotationComposer,
+          $$OutboxCopiesTableCreateCompanionBuilder,
+          $$OutboxCopiesTableUpdateCompanionBuilder,
+          (OutboxCopyRow, $$OutboxCopiesTableReferences),
+          OutboxCopyRow,
+          PrefetchHooks Function({bool outboxId})
+        > {
+  $$OutboxCopiesTableTableManager(_$StoreDatabase db, $OutboxCopiesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () => $$OutboxCopiesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$OutboxCopiesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$OutboxCopiesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> outboxId = const Value.absent(),
+                Value<int> seq = const Value.absent(),
+                Value<String> recipients = const Value.absent(),
+                Value<bool> filed = const Value.absent(),
+                Value<int> date = const Value.absent(),
+                Value<Uint8List> data = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => OutboxCopiesCompanion(
+                outboxId: outboxId,
+                seq: seq,
+                recipients: recipients,
+                filed: filed,
+                date: date,
+                data: data,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String outboxId,
+                required int seq,
+                required String recipients,
+                Value<bool> filed = const Value.absent(),
+                required int date,
+                required Uint8List data,
+                Value<int> rowid = const Value.absent(),
+              }) => OutboxCopiesCompanion.insert(
+                outboxId: outboxId,
+                seq: seq,
+                recipients: recipients,
+                filed: filed,
+                date: date,
+                data: data,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$OutboxCopiesTable, OutboxCopyRow>(table),
+                  $$OutboxCopiesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({outboxId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (outboxId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.outboxId,
+                        referencedTable: $$OutboxCopiesTableReferences._outboxIdTable(db),
+                        referencedColumn: $$OutboxCopiesTableReferences._outboxIdTable(db).id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$OutboxCopiesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$StoreDatabase,
+      $OutboxCopiesTable,
+      OutboxCopyRow,
+      $$OutboxCopiesTableFilterComposer,
+      $$OutboxCopiesTableOrderingComposer,
+      $$OutboxCopiesTableAnnotationComposer,
+      $$OutboxCopiesTableCreateCompanionBuilder,
+      $$OutboxCopiesTableUpdateCompanionBuilder,
+      (OutboxCopyRow, $$OutboxCopiesTableReferences),
+      OutboxCopyRow,
+      PrefetchHooks Function({bool outboxId})
     >;
 typedef $$PendingOpsTableCreateCompanionBuilder = PendingOpsCompanion Function({
   Value<int> id,
@@ -11197,6 +11887,7 @@ class $StoreDatabaseManager {
   $$DecryptedTextsTableTableManager get decryptedTexts => $$DecryptedTextsTableTableManager(_db, _db.decryptedTexts);
   $$InlinePartsTableTableManager get inlineParts => $$InlinePartsTableTableManager(_db, _db.inlineParts);
   $$OutboxItemsTableTableManager get outboxItems => $$OutboxItemsTableTableManager(_db, _db.outboxItems);
+  $$OutboxCopiesTableTableManager get outboxCopies => $$OutboxCopiesTableTableManager(_db, _db.outboxCopies);
   $$PendingOpsTableTableManager get pendingOps => $$PendingOpsTableTableManager(_db, _db.pendingOps);
   $$VipAddressesTableTableManager get vipAddresses => $$VipAddressesTableTableManager(_db, _db.vipAddresses);
   $$AddressBookTableTableManager get addressBook => $$AddressBookTableTableManager(_db, _db.addressBook);

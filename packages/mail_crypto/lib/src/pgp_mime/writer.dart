@@ -159,7 +159,7 @@ final class PgpMessageComposer implements MessageComposer {
     if (unlocked == null) {
       throw const MailException(
         MailErrorKind.unsupported,
-        'Your OpenPGP key is locked. Unlock it in Settings › End-to-End Encryption, then send again.',
+        'Your OpenPGP key is locked. Tap Retry in the Outbox to unlock it and send.',
       );
     }
     return unlocked;

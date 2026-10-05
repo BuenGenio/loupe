@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_repository.dart';
+import 'package:loupe/features/openpgp/openpgp_providers.dart';
+import 'package:loupe/features/openpgp/passphrase_dialog.dart';
 import 'package:loupe/features/outbox/outbox_screen.dart';
 import 'package:loupe/platform/background.dart';
 import 'package:mail_model/mail_model.dart';
@@ -8,6 +11,7 @@ import 'package:mail_model/mail_model.dart';
 import '../../helpers.dart';
 import '../conversation/fake_mail_repository.dart';
 import '../conversation/test_app.dart';
+import '../openpgp/openpgp_test_support.dart';
 
 OutgoingMessage _message(String subject, {List<EmailAddress> to = const [bob]}) =>
     OutgoingMessage(accountId: 'acc', identityId: 'acc/me', to: to, subject: subject, text: 'Text of $subject');
@@ -58,6 +62,64 @@ void main() {
     await tester.pumpAndSettle();
     expect(repo.log, contains('sendNow o2'));
     expect(find.text('Nothing to Send'), findsOneWidget);
+  });
+
+  group('signed mail', () {
+    final locked = testKey('Me Myself <me@example.com>', passphrase: 'pass');
+    const signed = OutgoingSecurity(encrypt: true, sign: true);
+
+    Future<FakeMailRepository> pumpSigned(WidgetTester tester, {DateTime? composedFor}) async {
+      final storage = await keychainWith(own: [locked]);
+      final repo = FakeMailRepository()
+        ..outbox.add(
+          OutboxItem(
+            id: 'o1',
+            message: _message('Signed').copyWith(security: signed),
+            sendAt: DateTime(2026, 10, 4, 12),
+            status: OutboxStatus.failed,
+            error: 'Your OpenPGP key is locked.',
+            composedFor: composedFor,
+          ),
+        );
+      await pumpTestApp(
+        tester,
+        repository: repo,
+        home: const OutboxScreen(),
+        overrides: [
+          inlinePgp,
+          keychain(storage),
+          passphrasePromptProvider.overrideWithValue(
+            (key, {error}) => showPassphraseDialog(tester.element(find.byType(OutboxScreen)), key: key, error: error),
+          ),
+        ],
+      );
+      return repo;
+    }
+
+    testWidgets('Retry asks for the passphrase of a locked key first; Cancel keeps it waiting', (tester) async {
+      final repo = await pumpSigned(tester);
+      await tester.tap(find.byKey(const ValueKey('outbox-retry-o1')));
+      await tester.pumpAndSettle();
+      expect(find.byType(PassphraseDialog), findsOneWidget);
+      await tester.tap(find.widgetWithText(CupertinoDialogAction, 'Cancel'));
+      await tester.pumpAndSettle();
+      expect(repo.log, isNot(contains('sendNow o1')));
+
+      await tester.tap(find.byKey(const ValueKey('outbox-retry-o1')));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byKey(const ValueKey('passphrase-field')), 'pass');
+      await tester.tap(find.byKey(const ValueKey('passphrase-unlock')));
+      await tester.pumpAndSettle();
+      expect(repo.log, contains('sendNow o1'));
+    });
+
+    testWidgets('composed when it was queued, it is retried without the key', (tester) async {
+      final repo = await pumpSigned(tester, composedFor: DateTime(2026, 10, 4, 11));
+      await tester.tap(find.byKey(const ValueKey('outbox-retry-o1')));
+      await tester.pumpAndSettle();
+      expect(find.byType(PassphraseDialog), findsNothing);
+      expect(repo.log, contains('sendNow o1'));
+    });
   });
 
   testWidgets('Reschedule, and Cancel back to Drafts, from the menu', (tester) async {

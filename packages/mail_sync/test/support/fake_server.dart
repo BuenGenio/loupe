@@ -746,8 +746,19 @@ final class FakeTransport implements MailTransport {
 
 /// Builds messages as JSON so the fake server can read them back.
 final class FakeComposer implements MessageComposer {
+  /// The signing key is locked (a passphrase nobody can give here, as in
+  /// background work): signed mail can't be composed.
+  bool locked = false;
+
+  /// How many messages were composed.
+  int composed = 0;
+
   @override
   Uint8List compose(OutgoingMessage message, Identity from, {required String messageId, DateTime? date}) {
+    if (locked && message.security.sign) {
+      throw const MailException(MailErrorKind.unsupported, 'Your OpenPGP key is locked.');
+    }
+    composed++;
     // As the real composer: encrypted mail never goes out without a key for everyone.
     final missing = [
       if (message.security.encrypt)
@@ -767,6 +778,7 @@ final class FakeComposer implements MessageComposer {
           'from': from.email,
           'to': [for (final a in message.to) a.email],
           'cc': [for (final a in message.cc) a.email],
+          if (message.security.sign) 'signed': true,
           // Never Bcc, as the real composer; whom an encrypted copy is for.
           if (message.security.encrypt) 'encryptedTo': [for (final a in message.encryptionRecipients) a.email],
           'subject': message.subject,

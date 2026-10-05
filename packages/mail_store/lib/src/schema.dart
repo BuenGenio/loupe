@@ -196,6 +196,30 @@ class OutboxItems extends Table {
   Set<Column> get primaryKey => {id};
 }
 
+/// Outbox messages composed when they were queued, as they go out: signed
+/// and encrypted while the user was there to unlock the key, so any process
+/// can send them later (a scheduled send, the end of the undo window). One
+/// row per copy (`OutgoingMessage.deliveries`), all carrying the Date
+/// [date]. Gone with their outbox item. Schema version 6.
+@DataClassName('OutboxCopyRow')
+class OutboxCopies extends Table {
+  TextColumn get outboxId => text().references(OutboxItems, #id, onDelete: KeyAction.cascade)();
+  IntColumn get seq => integer()();
+
+  /// JSON array of the addresses it goes to (the SMTP envelope).
+  TextColumn get recipients => text()();
+
+  /// The copy filed in Sent.
+  BoolColumn get filed => boolean().withDefault(const Constant(false))();
+
+  /// The Date header the copies carry, epoch milliseconds.
+  IntColumn get date => integer()();
+  BlobColumn get data => blob()();
+
+  @override
+  Set<Column> get primaryKey => {outboxId, seq};
+}
+
 /// The offline operation queue, replayed in [id] order per account.
 @DataClassName('PendingOpRow')
 class PendingOps extends Table {
@@ -507,6 +531,7 @@ BEGIN $subscriptionsRebuildSql; END;''',
     DecryptedTexts,
     InlineParts,
     OutboxItems,
+    OutboxCopies,
     PendingOps,
     VipAddresses,
     AddressBook,
@@ -528,7 +553,8 @@ class StoreDatabase extends _$StoreDatabase {
   /// the header refetch on sync states. 6: encrypted messages
   /// (`is_encrypted`), their protected subjects once decrypted
   /// (`protected_subject`) and, when the user opted in, their decrypted text
-  /// ([DecryptedTexts]); both in the full-text index.
+  /// ([DecryptedTexts]); both in the full-text index. Outbox messages
+  /// composed when queued ([OutboxCopies]).
   @override
   int get schemaVersion => 6;
 
@@ -595,6 +621,7 @@ class StoreDatabase extends _$StoreDatabase {
       await m.addColumn(emails, emails.isEncrypted);
       await m.addColumn(emails, emails.protectedSubject);
       await m.createTable(decryptedTexts);
+      await m.createTable(outboxCopies);
       for (final (name, sql) in _ftsTriggers) {
         await customStatement('DROP TRIGGER IF EXISTS $name');
         await customStatement(sql);

@@ -130,6 +130,7 @@ void main() {
         expect(entry.lastError, '554 5.7.1 Rejected');
         expect(entry.attempts, 3);
         expect(entry.held, isFalse);
+        expect(await store.outboxCopies('o1'), isNull, reason: 'queued before: composed when sent');
         expect(await store.claimOutbox('o1', now: DateTime.fromMillisecondsSinceEpoch(2000)), isNotNull);
       });
     });

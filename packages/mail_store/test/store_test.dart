@@ -80,6 +80,8 @@ void main() {
         'contents',
         'inline_parts',
         'outbox_items',
+        'outbox_copies',
+        'decrypted_texts',
         'pending_ops',
         'vip_addresses',
         'address_book',
@@ -608,6 +610,60 @@ void main() {
       expect((await store.outboxEntries()).single.lastError, 'boom');
       expect((await store.takeOutbox('o1'))!.id, 'o1');
       expect(await store.outboxEntries(), isEmpty);
+    });
+
+    test('copies composed when queued: kept, replaced, forgotten, and gone with their entry', () async {
+      final store = await seededStore();
+      const msg = OutgoingMessage(accountId: accountId, identityId: 'acc1/default', subject: 'Signed');
+      Future<void> put(String id) =>
+          store.putOutbox(OutboxEntry(id: id, accountId: accountId, message: msg, sendAfter: base, createdAt: base));
+      await put('o1');
+      expect(await store.outboxCopies('o1'), isNull);
+      final prepared = PreparedMessage(
+        date: base,
+        copies: [
+          PreparedCopy(const ['bob@x.test', 'carol@x.test'], Uint8List.fromList([1, 2, 3]), filed: true),
+          PreparedCopy(const ['dave@x.test'], Uint8List.fromList([4, 5])),
+        ],
+      );
+      expect((await store.getOutbox('o1'))!.composedFor, isNull);
+      await store.setOutboxCopies('o1', prepared);
+      final got = (await store.outboxCopies('o1'))!;
+      expect(got.date, base);
+      expect((await store.getOutbox('o1'))!.composedFor, base);
+      expect((await store.watchOutbox().first).single.composedFor, base);
+      expect(
+        [for (final c in got.copies) (c.recipients.join(','), c.rfc822.toList().join(','), c.filed)],
+        [('bob@x.test,carol@x.test', '1,2,3', true), ('dave@x.test', '4,5', false)],
+      );
+      // Claiming, failing and rescheduling keep them.
+      await store.claimOutbox('o1', now: base);
+      await store.updateOutbox('o1', status: OutboxStatus.failed, lastError: 'boom');
+      await store.rescheduleOutbox('o1', sendAfter: base, status: OutboxStatus.queued);
+      expect((await store.outboxCopies('o1'))!.copies, hasLength(2));
+
+      await store.setOutboxCopies(
+        'o1',
+        PreparedMessage(
+          date: base,
+          copies: [
+            PreparedCopy(const ['x@x.test'], Uint8List(1)),
+          ],
+        ),
+      );
+      expect((await store.outboxCopies('o1'))!.copies.single.recipients, ['x@x.test']);
+      await store.setOutboxCopies('o1', null);
+      expect(await store.outboxCopies('o1'), isNull);
+
+      await store.setOutboxCopies('o1', prepared);
+      await store.takeOutbox('o1');
+      expect(await store.outboxCopies('o1'), isNull, reason: 'taken back to compose: composed again when sent');
+      await put('o2');
+      await store.setOutboxCopies('o2', prepared);
+      await store.deleteOutbox('o2');
+      expect(await store.outboxCopies('o2'), isNull);
+      await store.setOutboxCopies('gone', prepared);
+      expect(await store.outboxCopies('gone'), isNull);
     });
 
     test('scheduled entries keep their status and can be rescheduled unless being sent', () async {

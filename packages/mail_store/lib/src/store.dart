@@ -1667,32 +1667,43 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
         ),
       );
 
-  static OutboxEntry _outboxFromRow(OutboxRow r) => OutboxEntry(
-    id: r.id,
-    accountId: r.accountId,
-    message: decodeOutgoing(r.message),
-    sendAfter: fromMillis(r.sendAfter),
-    createdAt: fromMillis(r.createdAt),
-    status: OutboxStatus.values.byName(r.status),
-    attempts: r.attempts,
-    lastError: r.lastError,
-    held: r.held,
+  OutboxEntry _outboxFromRow(QueryRow q) {
+    final r = _db.outboxItems.map(q.data);
+    final composedFor = q.readNullable<int>('composed_for');
+    return OutboxEntry(
+      id: r.id,
+      accountId: r.accountId,
+      message: decodeOutgoing(r.message),
+      sendAfter: fromMillis(r.sendAfter),
+      createdAt: fromMillis(r.createdAt),
+      status: OutboxStatus.values.byName(r.status),
+      attempts: r.attempts,
+      lastError: r.lastError,
+      held: r.held,
+      composedFor: composedFor == null ? null : fromMillis(composedFor),
+    );
+  }
+
+  /// Outbox entries [where], soonest first, with when their copies were composed for.
+  Selectable<QueryRow> _outbox(String where, List<Object?> args) => _select(
+    'SELECT o.*, (SELECT min(c.date) FROM outbox_copies c WHERE c.outbox_id = o.id) AS composed_for '
+    'FROM outbox_items o WHERE $where ORDER BY o.send_after',
+    args,
+    {_db.outboxItems, _db.outboxCopies},
   );
 
   Future<OutboxEntry?> getOutbox(String id) async {
-    final row = await (_db.select(_db.outboxItems)..where((o) => o.id.equals(id))).getSingleOrNull();
+    final row = await _outbox('o.id = ?', [id]).getSingleOrNull();
     return row == null ? null : _outboxFromRow(row);
   }
 
-  Future<List<OutboxEntry>> outboxEntries({String? accountId}) async {
-    final q = _db.select(_db.outboxItems)..orderBy([(o) => OrderingTerm.asc(o.sendAfter)]);
-    if (accountId != null) q.where((o) => o.accountId.equals(accountId));
-    return [for (final r in await q.get()) _outboxFromRow(r)];
-  }
+  Future<List<OutboxEntry>> outboxEntries({String? accountId}) async => [
+    for (final r in await (accountId == null ? _outbox('1', []) : _outbox('o.account_id = ?', [accountId])).get())
+      _outboxFromRow(r),
+  ];
 
-  Stream<List<OutboxEntry>> watchOutbox() => _select('SELECT * FROM outbox_items ORDER BY send_after', [], {
-    _db.outboxItems,
-  }).watch().map((rows) => [for (final r in rows) _outboxFromRow(_db.outboxItems.map(r.data))]);
+  Stream<List<OutboxEntry>> watchOutbox() =>
+      _outbox('1', []).watch().map((rows) => [for (final r in rows) _outboxFromRow(r)]);
 
   /// Atomically marks a queued (or failed) entry that is due at [now] as
   /// sending. Returns it, or null if it is gone, being sent, held (see
@@ -1743,6 +1754,47 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
   }
 
   Future<void> deleteOutbox(String id) => (_db.delete(_db.outboxItems)..where((o) => o.id.equals(id))).go();
+
+  /// Replaces what entry [id] was composed as when it was queued; null
+  /// forgets it (it is composed when it goes out). Ignored if the entry is
+  /// gone.
+  Future<void> setOutboxCopies(String id, PreparedMessage? prepared) => _db.transaction(() async {
+    await (_db.delete(_db.outboxCopies)..where((c) => c.outboxId.equals(id))).go();
+    final exists =
+        await (_db.selectOnly(_db.outboxItems)
+              ..addColumns([_db.outboxItems.id])
+              ..where(_db.outboxItems.id.equals(id)))
+            .getSingleOrNull();
+    if (prepared == null || exists == null) return;
+    for (final (i, copy) in prepared.copies.indexed) {
+      await _db
+          .into(_db.outboxCopies)
+          .insert(
+            OutboxCopiesCompanion.insert(
+              outboxId: id,
+              seq: i,
+              recipients: encodeStrings(copy.recipients),
+              filed: Value(copy.filed),
+              date: prepared.date.millisecondsSinceEpoch,
+              data: copy.rfc822,
+            ),
+          );
+    }
+  });
+
+  /// What entry [id] was composed as when it was queued, if it was.
+  Future<PreparedMessage?> outboxCopies(String id) async {
+    final rows =
+        await (_db.select(_db.outboxCopies)
+              ..where((c) => c.outboxId.equals(id))
+              ..orderBy([(c) => OrderingTerm.asc(c.seq)]))
+            .get();
+    if (rows.isEmpty) return null;
+    return PreparedMessage(
+      date: fromMillis(rows.first.date),
+      copies: [for (final r in rows) PreparedCopy(decodeStrings(r.recipients), r.data, filed: r.filed)],
+    );
+  }
 
   /// Sets an entry's [status] and [lastError], and what else is given.
   /// [held] true keeps a failed entry from being claimed until it is

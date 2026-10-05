@@ -138,6 +138,15 @@ Issue #24, after OpenPGP (#20) and S/MIME (#21).
     passphrase only (it never asks), OpenPGP only, messages up to 1 MB (the whole message is downloaded). Background
     work does it for new mail before notifying (`NewMailCheck.subjects`, at most 15 s); the app, while it runs, for
     the newest 100 messages of the inboxes (`ProtectedSubjectsWatcher`, off the UI isolate).
+- **Signed when queued**: signed or encrypted mail needs the key unlocked, and background work only has keys
+  stored without a passphrase. So `LiveMailRepository.send` composes it at once, while the user is there (compose
+  unlocked the key), dated for when it goes out (the end of the undo window, the scheduled time), and keeps the
+  copies in the Outbox (`outbox_copies`, schema version 6; `OutboxItem.composedFor`); whichever process sends it
+  sends them as they are, with the same Message-ID on every attempt. Rescheduling composes it again for the new
+  time, Send Now before that time for now (a Retry keeps them); when the key is locked then, the copies are
+  dropped and it is composed as it goes out. Taking it back to edit (or Undo) deletes them with the entry. The
+  Outbox asks for the passphrase before Send Now, Reschedule or the Retry of a message that waited for the key.
+  Plain mail is composed as it goes out, as before.
 - **Searching encrypted mail**: by default encrypted messages are found by their headers only (sender,
   recipients, the protected subject once known); the cached body of an encrypted message is its encrypted form.
   Settings › End-to-End Encryption › Index Decrypted Messages for Search (off by default) puts the text (and

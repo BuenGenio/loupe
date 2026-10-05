@@ -702,6 +702,151 @@ void main() {
     });
   });
 
+  group('signed when queued', () {
+    // fakeTime starts at 2026-09-01 12:00.
+    final tomorrow8 = DateTime(2026, 9, 2, 8);
+    OutgoingMessage signed(MailAccount a, {String subject = 'Signed'}) =>
+        outgoing(a, subject: subject).copyWith(security: const OutgoingSecurity(sign: true));
+
+    test('a scheduled message goes out as composed then, though the key is locked by its time', () {
+      fakeTime(
+        (async) async {
+          final h = Harness();
+          final server = FakeServer();
+          final a = await h.add(server);
+          final composer = h.factory.composer as FakeComposer;
+          final id = await h.repo.send(signed(a), sendAt: tomorrow8);
+          final copies = (await h.store.outboxCopies(id))!;
+          expect(copies.date, tomorrow8);
+          expect((await h.repo.watchOutbox().first).single.composedFor, tomorrow8);
+          expect(copies.copies.single.recipients, ['bob@example.org', 'secret@example.org']);
+          // Background work: the app is gone, and with it the passphrase.
+          await h.repo.dispose();
+          composer.locked = true;
+          await settle(const Duration(hours: 20));
+          final background = LiveMailRepository(h.store, h.factory, h.credentials, config: fastConfig);
+          await background.syncOnce();
+          final mail = server.sent.single;
+          expect(mail.json['signed'], isTrue);
+          expect(mail.json['date'], tomorrow8.millisecondsSinceEpoch);
+          expect(mail.json['messageId'], startsWith(id.replaceAll('-', '')));
+          expect(server.subjects('Sent'), ['Signed']);
+          expect(await h.store.outboxEntries(), isEmpty);
+          await background.dispose();
+          await h.store.close();
+        },
+        limit: _days,
+        step: _step,
+      );
+    });
+
+    test('the undo window too: the copy is made when Send is tapped', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer();
+        final a = await h.add(server);
+        await h.repo.send(signed(a), undoDelay: const Duration(seconds: 10));
+        (h.factory.composer as FakeComposer).locked = true;
+        await settle(const Duration(seconds: 12));
+        expect(server.sent.single.json['signed'], isTrue);
+        await h.dispose();
+      }, step: _step);
+    });
+
+    test('plain mail is composed when it goes out; a locked key at queue time leaves it to then', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer();
+        final a = await h.add(server);
+        final plain = await h.repo.send(outgoing(a), sendAt: tomorrow8);
+        expect(await h.store.outboxCopies(plain), isNull);
+        final composer = h.factory.composer as FakeComposer..locked = true;
+        final waiting = await h.repo.send(signed(a), sendAt: DateTime(2026, 9, 1, 13));
+        expect(await h.store.outboxCopies(waiting), isNull);
+        await settle(const Duration(hours: 1, minutes: 1));
+        final failed = (await h.store.getOutbox(waiting))!;
+        expect(failed.status, OutboxStatus.failed);
+        expect(failed.lastError, 'Your OpenPGP key is locked.');
+        expect(failed.held, isFalse, reason: 'retried, and Retry works once the key is unlocked');
+        // The app is back and the key unlocked: Retry sends it.
+        composer.locked = false;
+        await h.repo.sendNow(waiting);
+        await settle();
+        expect(server.sent.single.json['signed'], isTrue);
+        await h.dispose();
+      }, step: _step);
+    });
+
+    test('rescheduling composes it again for the new time, or leaves it to then', () {
+      fakeTime(
+        (async) async {
+          final h = Harness();
+          final server = FakeServer();
+          final a = await h.add(server);
+          final composer = h.factory.composer as FakeComposer;
+          final id = await h.repo.send(signed(a), sendAt: tomorrow8);
+          final evening = DateTime(2026, 9, 1, 18);
+          await h.repo.rescheduleSend(id, evening);
+          expect((await h.store.outboxCopies(id))!.date, evening, reason: 'the Date it carries');
+
+          // Locked now: the copies for the old time are dropped.
+          composer.locked = true;
+          await h.repo.rescheduleSend(id, tomorrow8);
+          expect(await h.store.outboxCopies(id), isNull);
+          composer.locked = false;
+          await settle(const Duration(hours: 20, minutes: 1));
+          expect(server.sent.single.json['date'], tomorrow8.millisecondsSinceEpoch);
+          await h.dispose();
+        },
+        limit: _days,
+        step: _step,
+      );
+    });
+
+    test('Send Now dates a scheduled message now; a retry keeps what was composed', () {
+      fakeTime(
+        (async) async {
+          final h = Harness();
+          final server = FakeServer();
+          final a = await h.add(server);
+          final composer = h.factory.composer as FakeComposer;
+          final early = await h.repo.send(signed(a, subject: 'Early'), sendAt: tomorrow8);
+          await h.repo.sendNow(early);
+          await settle();
+          final sentAt = DateTime.fromMillisecondsSinceEpoch(server.sent.single.json['date']! as int);
+          expect(sentAt.isBefore(DateTime(2026, 9, 1, 12, 1)), isTrue, reason: 'dated now, not tomorrow');
+
+          server.offline = true;
+          final retried = await h.repo.send(signed(a, subject: 'Retried'), undoDelay: const Duration(seconds: 1));
+          final date = (await h.store.outboxCopies(retried))!.date;
+          await settle(const Duration(seconds: 3));
+          expect((await h.store.getOutbox(retried))!.status, OutboxStatus.failed);
+          server.offline = false;
+          final before = composer.composed;
+          await h.repo.sendNow(retried);
+          await settle();
+          expect(server.sent.last.json['date'], date.millisecondsSinceEpoch);
+          expect(composer.composed, before, reason: 'sent as composed');
+          await h.dispose();
+        },
+        limit: _days,
+        step: _step,
+      );
+    });
+
+    test('taking it back to edit drops what was composed', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final a = await h.add(FakeServer());
+        final id = await h.repo.send(signed(a), sendAt: tomorrow8);
+        expect(await h.store.outboxCopies(id), isNotNull);
+        expect(await h.repo.cancelSend(id), isNotNull);
+        expect(await h.store.outboxCopies(id), isNull);
+        await h.dispose();
+      });
+    });
+  });
+
   group('drafts', () {
     test('saveDraft appends to Drafts and replaces the previous draft', () {
       fakeTime((async) async {

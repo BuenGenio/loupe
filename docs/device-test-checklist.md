@@ -244,12 +244,12 @@ Keep this device for step 10 (Smart Mailbox sync).
    - Attachments open.
 4. **Do:** reply from Loupe. The "Encrypt" and "Sign" toggles under Subject are on, and the hint says "Everyone has a key".
 5. **Expect:** Thunderbird shows the message as encrypted, with a valid OpenPGP signature.
-6. **Do:** with a passphrase-protected key, schedule an encrypted message for a few minutes ahead (Send Later), then close Loupe.
+6. **Do:** with a passphrase-protected key and Remember Passphrases off, schedule an encrypted message for a few minutes ahead (Send Later), then close Loupe (swipe it away).
 7. **Expect:**
-   - In the background it can't unlock the key. The Outbox shows "Not Sent" with "Your OpenPGP key is locked…", and it is retried (it isn't held).
-   - It never goes out in the clear.
-   - It goes once Loupe is open with the key unlocked.
-   - A key kept without a passphrase ("Keychain only") sends from the background.
+   - It goes out at its time from the background: Loupe signed and encrypted it when you scheduled it. Thunderbird shows a valid signature, and its Date is the scheduled time.
+   - Outbox › Reschedule (or Send Now) of a scheduled signed message asks for the passphrase again when the key is locked, since it is signed again for the new time; Cancel leaves it as it was.
+   - A message that couldn't be signed when queued shows "Not Sent" with "Your OpenPGP key is locked. Tap Retry…". Retry asks for the passphrase and sends it. It never goes out in the clear.
+   - A key kept without a passphrase ("Keychain only") sends from the background either way.
 8. **If not:** tap the status line. Its sheet says what is wrong: no key, "Signature invalid", "Unknown key". Compare with Thunderbird's OpenPGP Key Manager.
 
 ## 12. S/MIME (10 min; merged into main with these follow-ups)
