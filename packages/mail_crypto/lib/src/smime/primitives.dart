@@ -190,7 +190,11 @@ Uint8List _rsaPrivate(RSAPrivateKey key, Uint8List input) {
 Uint8List _digestInfo(String digestOid, Uint8List hash) =>
     derSequence([derAlgorithm(digestOid, derNull), derOctets(hash)]);
 
-/// RSASSA-PKCS1-v1_5 verification, accepting DigestInfo with or without NULL parameters.
+/// RSASSA-PKCS1-v1_5 verification (RFC 8017 §8.2.2): the recovered block
+/// must be exactly the one encoding [hash] would give, DigestInfo with NULL
+/// parameters or without them. Nothing in it is parsed: a parser that lets
+/// anything through (extra elements, a NULL with content, long-form
+/// lengths) leaves room for a forgery under small exponents (Bleichenbacher 2006).
 bool rsaPkcs1Verify(RSAPublicKey key, String digestOid, Uint8List hash, Uint8List signature) {
   final n = key.modulus!;
   final k = _byteLength(n);
@@ -198,29 +202,17 @@ bool rsaPkcs1Verify(RSAPublicKey key, String digestOid, Uint8List hash, Uint8Lis
   final s = bigIntFromBytes(signature);
   if (s >= n) return false;
   final em = unsignedBytes(_modPow(s, key.exponent!, n), k);
-  if (em[0] != 0 || em[1] != 1) return false;
-  var i = 2;
-  while (i < em.length && em[i] == 0xff) {
-    i++;
+  var ok = false;
+  for (final t in [_digestInfo(digestOid, hash), derSequence([derAlgorithm(digestOid), derOctets(hash)])]) {
+    final expected = _pkcs1Block(t, k);
+    if (expected != null && _constantEquals(em, expected)) ok = true;
   }
-  if (i < 10 || i >= em.length || em[i] != 0) return false;
-  final info = Uint8List.sublistView(em, i + 1);
-  try {
-    final parsed = Asn1.parse(info);
-    if (parsed.encoded.length != info.length) return false;
-    final alg = parsed[0];
-    if (alg[0].oid != digestOid) return false;
-    if (alg.length > 1 && alg[1].tag != Tag.nul) return false;
-    return _constantEquals(parsed[1].content, hash);
-  } on Asn1Exception {
-    return false;
-  }
+  return ok;
 }
 
-Uint8List rsaPkcs1Sign(RsaKeyMaterial key, String digestOid, Uint8List hash) {
-  final k = _byteLength(key.modulus);
-  final t = _digestInfo(digestOid, hash);
-  if (t.length + 11 > k) throw const SmimeException(SmimeErrorKind.unsupported, 'The RSA key is too small.');
+/// EMSA-PKCS1-v1_5: `00 01 FF… 00 T` in [k] octets; null when [t] doesn't fit.
+Uint8List? _pkcs1Block(Uint8List t, int k) {
+  if (t.length + 11 > k) return null;
   final em = Uint8List(k)
     ..[0] = 0
     ..[1] = 1;
@@ -229,6 +221,12 @@ Uint8List rsaPkcs1Sign(RsaKeyMaterial key, String digestOid, Uint8List hash) {
   }
   em[k - t.length - 1] = 0;
   em.setRange(k - t.length, k, t);
+  return em;
+}
+
+Uint8List rsaPkcs1Sign(RsaKeyMaterial key, String digestOid, Uint8List hash) {
+  final em = _pkcs1Block(_digestInfo(digestOid, hash), _byteLength(key.modulus));
+  if (em == null) throw const SmimeException(SmimeErrorKind.unsupported, 'The RSA key is too small.');
   return _rsaPrivate(key.key, em);
 }
 
