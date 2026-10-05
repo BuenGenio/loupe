@@ -69,11 +69,23 @@ final class DistinguishedName {
     return DistinguishedName(name.encoded, attributes);
   }
 
-  String? valueOf(String oid) => attributes.where((a) => a.$1 == oid).map((a) => a.$2).lastOrNull;
+  String? _raw(String oid) => attributes.where((a) => a.$1 == oid).map((a) => a.$2).lastOrNull;
+
+  /// The value of [oid], fit to show (see [shownText]).
+  String? valueOf(String oid) {
+    final v = _raw(oid);
+    return v == null ? null : shownText(v);
+  }
 
   String? get commonName => valueOf(Oid.commonName);
   String? get organization => valueOf(Oid.organization);
-  String? get email => valueOf(Oid.emailAddress)?.toLowerCase();
+
+  /// The emailAddress attribute, lower-cased; null unless it is printable
+  /// ASCII (an IA5String address can't match a real one otherwise).
+  String? get email {
+    final v = _raw(Oid.emailAddress)?.trim().toLowerCase();
+    return v == null || !_isAddress(v) ? null : v;
+  }
 
   /// The common name, else the organisation, else the address.
   String get displayName => commonName ?? organization ?? email ?? toString();
@@ -107,8 +119,21 @@ final class DistinguishedName {
 
   /// Most specific first, as mail clients show it: `CN=…, O=…, C=…`.
   @override
-  String toString() => [for (final (k, v) in attributes.reversed) '${_short[k] ?? k}=$v'].join(', ');
+  String toString() => [for (final (k, v) in attributes.reversed) '${_short[k] ?? k}=${shownText(v)}'].join(', ');
 }
+
+/// [s] as it may be shown next to a verdict: without control, bidi and
+/// zero-width characters (a name could reorder or hide " · not trusted"
+/// after it), runs of spaces collapsed, at most 100 characters.
+String shownText(String s) {
+  final cleaned = s
+      .replaceAll(RegExp('[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u206f\ufeff]'), ' ')
+      .replaceAll(RegExp(r'\s+'), ' ')
+      .trim();
+  return cleaned.length > 100 ? '${cleaned.substring(0, 99)}…' : cleaned;
+}
+
+bool _isAddress(String s) => s.isNotEmpty && s.codeUnits.every((c) => c > 0x20 && c < 0x7f);
 
 /// Key usage bits (RFC 5280 §4.2.1.3).
 abstract final class KeyUsage {
@@ -392,7 +417,10 @@ SmimeCertificate _parse(Uint8List der) {
         case Oid.subjectAltName:
           for (final name in value.children) {
             // rfc822Name [1] IMPLICIT IA5String.
-            if (name.isContext(1) && !name.constructed) emails.add(ascii.decode(name.content).trim().toLowerCase());
+            if (name.isContext(1) && !name.constructed) {
+              final email = ascii.decode(name.content).trim().toLowerCase();
+              if (_isAddress(email)) emails.add(email);
+            }
           }
         case Oid.subjectKeyIdentifier:
           ski = value.octets;
