@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:mail_model/mail_model.dart';
 
 /// Thrown when the database can't be opened (wrong key, corrupt file, or a
@@ -23,6 +25,7 @@ final class OutboxEntry {
     this.attempts = 0,
     this.lastError,
     this.held = false,
+    this.composedFor,
   });
 
   final String id;
@@ -42,6 +45,34 @@ final class OutboxEntry {
   /// `PermanentMailException`): it is never claimed for sending again until
   /// rescheduled (`MailStore.rescheduleOutbox`, the user's Retry).
   final bool held;
+
+  /// The Date of the copies composed when it was queued
+  /// (`MailStore.outboxCopies`); null when there are none. Read only:
+  /// `MailStore.setOutboxCopies` writes them.
+  final DateTime? composedFor;
+}
+
+/// An outbox message composed when it was queued, ready to go out as is
+/// from any process: its copies (`OutgoingMessage.deliveries`) and the Date
+/// they carry.
+final class PreparedMessage {
+  const PreparedMessage({required this.date, required this.copies});
+
+  /// The Date header of every copy.
+  final DateTime date;
+  final List<PreparedCopy> copies;
+}
+
+/// One message as it is handed to the server: [rfc822] for [recipients].
+final class PreparedCopy {
+  const PreparedCopy(this.recipients, this.rfc822, {this.filed = false});
+
+  /// The SMTP envelope.
+  final List<String> recipients;
+  final Uint8List rfc822;
+
+  /// The copy filed in Sent.
+  final bool filed;
 }
 
 /// One queued server operation.

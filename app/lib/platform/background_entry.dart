@@ -62,7 +62,11 @@ Future<BackgroundSyncResult> runBackgroundSync({Duration? budget}) async {
     prefs: prefs,
     leases: SyncLeases(directory),
     open: LiveBackgroundMail.open,
-    check: NewMailCheck(notifier: notifier, state: FileNewMailStateStore(Future.value(directory))),
+    check: NewMailCheck(
+      notifier: notifier,
+      state: FileNewMailStateStore(Future.value(directory)),
+      subjects: () => backgroundSubjectDecryptor(prefs),
+    ),
     badge: const PlatformAppIconBadge(),
     scheduler: platformSyncScheduler() ?? const NoopBackgroundScheduler(),
   );

@@ -8,6 +8,7 @@ import 'package:mail_model/mail_model.dart';
 import '../../providers.dart';
 import '../smime/smime_providers.dart';
 import '../smime/smime_service.dart';
+import 'decrypted_mail.dart';
 import 'openpgp_providers.dart';
 import 'openpgp_service.dart';
 
@@ -38,6 +39,7 @@ final contentLoaderProvider = Provider<ContentLoader>(
     repository: ref.watch(repositoryProvider),
     openPgp: () => ref.read(openPgpServiceProvider.future),
     smime: () => ref.read(smimeServiceProvider.future),
+    indexDecrypted: () => ref.read(decryptedMailSettingsProvider).indexForSearch,
   ),
 );
 
@@ -46,7 +48,7 @@ final contentLoaderProvider = Provider<ContentLoader>(
 const decryptedPartPrefix = 'pgp:';
 
 final class ContentLoader {
-  ContentLoader({required this.repository, required this.openPgp, this.smime});
+  ContentLoader({required this.repository, required this.openPgp, this.smime, this.indexDecrypted});
 
   final MailRepository repository;
 
@@ -55,6 +57,10 @@ final class ContentLoader {
 
   /// The S/MIME service, once the certificate store has loaded.
   final Future<SmimeService> Function()? smime;
+
+  /// Whether decrypted text goes into the search index on this device
+  /// (Index Decrypted Messages for Search).
+  final bool Function()? indexDecrypted;
 
   /// Decrypted messages, to serve their attachments (a few, newest last).
   final _entities = <String, MimeEntity>{};
@@ -108,6 +114,10 @@ final class ContentLoader {
         headers: _withProtected(content.headers, status.protectedHeaders),
         attachments: decrypted.attachments,
       );
+      if (status.encrypted) {
+        _rememberSubject(summary, status.protectedSubject);
+        _index(emailId, decrypted);
+      }
       if (status.gossip.isNotEmpty && summary != null) {
         unawaited(
           pgp
@@ -159,6 +169,7 @@ final class ContentLoader {
     } else if (outcome?.content case final inner?) {
       _remember(emailId, outcome!.entity!);
       shown = _copy(inner, headers: content.headers, attachments: inner.attachments);
+      if (status.encrypted) _index(emailId, inner);
     } else {
       shown = _copy(content, attachments: _withoutPlumbing(content));
     }
@@ -171,6 +182,25 @@ final class ContentLoader {
       }
     }
     return shown;
+  }
+
+  /// Keeps the protected subject of a decrypted message on the device, so
+  /// the list, search and notifications show it instead of `...`.
+  void _rememberSubject(EmailSummary? summary, String? subject) {
+    final real = subject?.trim();
+    if (summary == null || real == null || real.isEmpty || real == summary.subject.trim()) return;
+    if (repository case final DecryptedMail cache) {
+      unawaited(cache.rememberProtectedSubject(summary.id, real).catchError((Object _) {}));
+    }
+  }
+
+  /// Puts the text of a decrypted message into the search index, when the
+  /// user opted in.
+  void _index(String emailId, EmailContent decrypted) {
+    if (!(indexDecrypted?.call() ?? false)) return;
+    if (repository case final DecryptedMail cache) {
+      unawaited(cache.indexDecryptedText(emailId, searchableTextOf(decrypted)).catchError((Object _) {}));
+    }
   }
 
   /// The bytes of an attachment, from the decrypted message for `pgp:` parts.

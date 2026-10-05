@@ -22,7 +22,14 @@ enum OutboxStatus {
 
 /// A message waiting to be sent.
 final class OutboxItem {
-  const OutboxItem({required this.id, required this.message, required this.sendAt, required this.status, this.error});
+  const OutboxItem({
+    required this.id,
+    required this.message,
+    required this.sendAt,
+    required this.status,
+    this.error,
+    this.composedFor,
+  });
 
   /// The outbox id `MailRepository.send` returned.
   final String id;
@@ -35,4 +42,10 @@ final class OutboxItem {
 
   /// Human-readable reason of the last failure, shown as is.
   final String? error;
+
+  /// Signed or encrypted mail is composed when it is queued, while the user
+  /// is there to unlock the key, so it can go out from background work:
+  /// the Date it was composed for. Null when it is composed as it goes out.
+  /// Sending it earlier (Send Now) or at another time composes it again.
+  final DateTime? composedFor;
 }

@@ -109,6 +109,31 @@ void main() {
     });
   });
 
+  test('encrypted mail: its remembered subject, and its decrypted text while opted in, are found locally', () {
+    fakeTime((async) async {
+      final h = Harness();
+      final server = FakeServer()..deliver('INBOX', subject: '...');
+      final a = await h.add(server);
+      final e = await h.email(a, 'INBOX', '...');
+      Future<List<String>> find(SearchExpr expr) async => [
+        for (final r in (await collect(h.repo.search(request(expr, server: false)))).last.items) r.id,
+      ];
+      const body = TextTerm(SearchField.body, 'lighthouse');
+      const subject = TextTerm(SearchField.subject, 'offsite');
+      expect(await find(body), isEmpty);
+      await h.repo.rememberProtectedSubject(e.id, 'Offsite venue');
+      await h.repo.indexDecryptedText(e.id, 'The offsite is at Lighthouse Lodge.');
+      expect(await find(subject), [e.id]);
+      expect(await find(body), [e.id]);
+      expect((await h.repo.getEmail(e.id))!.subject, 'Offsite venue');
+
+      await h.repo.forgetDecryptedText();
+      expect(await find(body), isEmpty);
+      expect(await find(subject), [e.id]);
+      await h.dispose();
+    });
+  });
+
   test('cancelling drops the search connection; the next search works', () {
     fakeTime((async) async {
       final h = Harness(config: const SyncConfig(initialWindow: 1));

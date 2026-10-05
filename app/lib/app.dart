@@ -14,6 +14,7 @@ import 'features/notifications/app_icon_badge.dart';
 import 'features/notifications/new_mail_check.dart';
 import 'features/notifications/notification_settings.dart';
 import 'features/notifications/notifications_coordinator.dart';
+import 'features/openpgp/subjects_watcher.dart';
 import 'features/snooze/snooze_wakeups.dart';
 import 'platform/background.dart';
 import 'platform/background_entry.dart';
@@ -89,8 +90,12 @@ class _LiveGate extends ConsumerWidget {
         .when(
           // Try Again on the error screen shows the spinner, then the outcome.
           skipLoadingOnRefresh: false,
-          data: (repository) =>
-              repository is LiveMailRepository ? _SyncLifecycle(repository: repository, child: child) : child,
+          data: (repository) => repository is LiveMailRepository
+              ? _SyncLifecycle(
+                  repository: repository,
+                  child: ProtectedSubjectsWatcher(repository: repository, child: child),
+                )
+              : child,
           loading: () => const ColoredBox(
             color: Colors.black12,
             child: Center(child: CupertinoActivityIndicator(radius: 14)),

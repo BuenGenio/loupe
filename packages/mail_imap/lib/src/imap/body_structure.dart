@@ -326,6 +326,19 @@ List<Attachment> listAttachments(BodyNode root) {
   return result;
 }
 
+/// Whether the message is encrypted: PGP/MIME (`multipart/encrypted`), or
+/// S/MIME enveloped data (`application/pkcs7-mime` that isn't signed-data or
+/// certificates only, also as `x-pkcs7-mime` or an octet-stream `.p7m`).
+/// Inline PGP inside a text part can't be told from the structure.
+bool isEncryptedStructure(BodyNode root) {
+  if (root.isMultipart) return root.subtype == 'encrypted';
+  final smimeType = (root.params['smime-type'] ?? '').toLowerCase();
+  if (root.mimeType == 'application/pkcs7-mime' || root.mimeType == 'application/x-pkcs7-mime') {
+    return smimeType != 'signed-data' && smimeType != 'certs-only';
+  }
+  return root.mimeType == 'application/octet-stream' && (root.filename ?? '').toLowerCase().endsWith('.p7m');
+}
+
 /// Whether the list should show a paperclip: any attachment the user would
 /// see (inline images referenced from HTML don't count).
 bool hasVisibleAttachment(BodyNode root) => listAttachments(root).any((a) => !a.isInline || a.contentId == null);

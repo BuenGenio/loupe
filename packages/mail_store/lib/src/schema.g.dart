@@ -1567,6 +1567,26 @@ class $EmailsTable extends Emails with TableInfo<$EmailsTable, EmailRow> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _isEncryptedMeta = const VerificationMeta('isEncrypted');
+  @override
+  late final GeneratedColumn<bool> isEncrypted = GeneratedColumn<bool>(
+    'is_encrypted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("is_encrypted" IN (0, 1))'),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _protectedSubjectMeta = const VerificationMeta('protectedSubject');
+  @override
+  late final GeneratedColumn<String> protectedSubject = GeneratedColumn<String>(
+    'protected_subject',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     seq,
@@ -1598,6 +1618,8 @@ class $EmailsTable extends Emails with TableInfo<$EmailsTable, EmailRow> {
     listPost,
     listUnsubscribe,
     listUnsubscribePost,
+    isEncrypted,
+    protectedSubject,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1720,6 +1742,15 @@ class $EmailsTable extends Emails with TableInfo<$EmailsTable, EmailRow> {
         listUnsubscribePost.isAcceptableOrUnknown(data['list_unsubscribe_post']!, _listUnsubscribePostMeta),
       );
     }
+    if (data.containsKey('is_encrypted')) {
+      context.handle(_isEncryptedMeta, isEncrypted.isAcceptableOrUnknown(data['is_encrypted']!, _isEncryptedMeta));
+    }
+    if (data.containsKey('protected_subject')) {
+      context.handle(
+        _protectedSubjectMeta,
+        protectedSubject.isAcceptableOrUnknown(data['protected_subject']!, _protectedSubjectMeta),
+      );
+    }
     return context;
   }
 
@@ -1770,6 +1801,11 @@ class $EmailsTable extends Emails with TableInfo<$EmailsTable, EmailRow> {
         DriftSqlType.string,
         data['${effectivePrefix}list_unsubscribe_post'],
       ),
+      isEncrypted: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}is_encrypted'])!,
+      protectedSubject: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}protected_subject'],
+      ),
     );
   }
 
@@ -1818,6 +1854,15 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
   final String? listPost;
   final String? listUnsubscribe;
   final String? listUnsubscribePost;
+
+  /// The message is encrypted (PGP/MIME, S/MIME enveloped), as its MIME
+  /// structure says. Schema version 6; messages stored before say false.
+  final bool isEncrypted;
+
+  /// The protected subject of an encrypted message ([subject] is then a
+  /// placeholder such as `...`), once it was decrypted on this device. The
+  /// list, search and notifications show it. Schema version 6.
+  final String? protectedSubject;
   const EmailRow({
     required this.seq,
     required this.id,
@@ -1848,6 +1893,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     this.listPost,
     this.listUnsubscribe,
     this.listUnsubscribePost,
+    required this.isEncrypted,
+    this.protectedSubject,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1897,6 +1944,10 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     if (!nullToAbsent || listUnsubscribePost != null) {
       map['list_unsubscribe_post'] = Variable<String>(listUnsubscribePost);
     }
+    map['is_encrypted'] = Variable<bool>(isEncrypted);
+    if (!nullToAbsent || protectedSubject != null) {
+      map['protected_subject'] = Variable<String>(protectedSubject);
+    }
     return map;
   }
 
@@ -1933,6 +1984,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
       listUnsubscribePost: listUnsubscribePost == null && nullToAbsent
           ? const Value.absent()
           : Value(listUnsubscribePost),
+      isEncrypted: Value(isEncrypted),
+      protectedSubject: protectedSubject == null && nullToAbsent ? const Value.absent() : Value(protectedSubject),
     );
   }
 
@@ -1968,6 +2021,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
       listPost: serializer.fromJson<String?>(json['listPost']),
       listUnsubscribe: serializer.fromJson<String?>(json['listUnsubscribe']),
       listUnsubscribePost: serializer.fromJson<String?>(json['listUnsubscribePost']),
+      isEncrypted: serializer.fromJson<bool>(json['isEncrypted']),
+      protectedSubject: serializer.fromJson<String?>(json['protectedSubject']),
     );
   }
   @override
@@ -2003,6 +2058,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
       'listPost': serializer.toJson<String?>(listPost),
       'listUnsubscribe': serializer.toJson<String?>(listUnsubscribe),
       'listUnsubscribePost': serializer.toJson<String?>(listUnsubscribePost),
+      'isEncrypted': serializer.toJson<bool>(isEncrypted),
+      'protectedSubject': serializer.toJson<String?>(protectedSubject),
     };
   }
 
@@ -2036,6 +2093,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     Value<String?> listPost = const Value.absent(),
     Value<String?> listUnsubscribe = const Value.absent(),
     Value<String?> listUnsubscribePost = const Value.absent(),
+    bool? isEncrypted,
+    Value<String?> protectedSubject = const Value.absent(),
   }) => EmailRow(
     seq: seq ?? this.seq,
     id: id ?? this.id,
@@ -2066,6 +2125,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     listPost: listPost.present ? listPost.value : this.listPost,
     listUnsubscribe: listUnsubscribe.present ? listUnsubscribe.value : this.listUnsubscribe,
     listUnsubscribePost: listUnsubscribePost.present ? listUnsubscribePost.value : this.listUnsubscribePost,
+    isEncrypted: isEncrypted ?? this.isEncrypted,
+    protectedSubject: protectedSubject.present ? protectedSubject.value : this.protectedSubject,
   );
   EmailRow copyWithCompanion(EmailsCompanion data) {
     return EmailRow(
@@ -2098,6 +2159,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
       listPost: data.listPost.present ? data.listPost.value : this.listPost,
       listUnsubscribe: data.listUnsubscribe.present ? data.listUnsubscribe.value : this.listUnsubscribe,
       listUnsubscribePost: data.listUnsubscribePost.present ? data.listUnsubscribePost.value : this.listUnsubscribePost,
+      isEncrypted: data.isEncrypted.present ? data.isEncrypted.value : this.isEncrypted,
+      protectedSubject: data.protectedSubject.present ? data.protectedSubject.value : this.protectedSubject,
     );
   }
 
@@ -2132,7 +2195,9 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
           ..write('listName: $listName, ')
           ..write('listPost: $listPost, ')
           ..write('listUnsubscribe: $listUnsubscribe, ')
-          ..write('listUnsubscribePost: $listUnsubscribePost')
+          ..write('listUnsubscribePost: $listUnsubscribePost, ')
+          ..write('isEncrypted: $isEncrypted, ')
+          ..write('protectedSubject: $protectedSubject')
           ..write(')'))
         .toString();
   }
@@ -2168,6 +2233,8 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
     listPost,
     listUnsubscribe,
     listUnsubscribePost,
+    isEncrypted,
+    protectedSubject,
   ]);
   @override
   bool operator ==(Object other) =>
@@ -2201,7 +2268,9 @@ class EmailRow extends DataClass implements Insertable<EmailRow> {
           other.listName == this.listName &&
           other.listPost == this.listPost &&
           other.listUnsubscribe == this.listUnsubscribe &&
-          other.listUnsubscribePost == this.listUnsubscribePost);
+          other.listUnsubscribePost == this.listUnsubscribePost &&
+          other.isEncrypted == this.isEncrypted &&
+          other.protectedSubject == this.protectedSubject);
 }
 
 class EmailsCompanion extends UpdateCompanion<EmailRow> {
@@ -2234,6 +2303,8 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
   final Value<String?> listPost;
   final Value<String?> listUnsubscribe;
   final Value<String?> listUnsubscribePost;
+  final Value<bool> isEncrypted;
+  final Value<String?> protectedSubject;
   const EmailsCompanion({
     this.seq = const Value.absent(),
     this.id = const Value.absent(),
@@ -2264,6 +2335,8 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     this.listPost = const Value.absent(),
     this.listUnsubscribe = const Value.absent(),
     this.listUnsubscribePost = const Value.absent(),
+    this.isEncrypted = const Value.absent(),
+    this.protectedSubject = const Value.absent(),
   });
   EmailsCompanion.insert({
     this.seq = const Value.absent(),
@@ -2295,6 +2368,8 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     this.listPost = const Value.absent(),
     this.listUnsubscribe = const Value.absent(),
     this.listUnsubscribePost = const Value.absent(),
+    this.isEncrypted = const Value.absent(),
+    this.protectedSubject = const Value.absent(),
   }) : id = Value(id),
        accountId = Value(accountId),
        mailboxId = Value(mailboxId),
@@ -2330,6 +2405,8 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     Expression<String>? listPost,
     Expression<String>? listUnsubscribe,
     Expression<String>? listUnsubscribePost,
+    Expression<bool>? isEncrypted,
+    Expression<String>? protectedSubject,
   }) {
     return RawValuesInsertable({
       if (seq != null) 'seq': seq,
@@ -2361,6 +2438,8 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
       if (listPost != null) 'list_post': listPost,
       if (listUnsubscribe != null) 'list_unsubscribe': listUnsubscribe,
       if (listUnsubscribePost != null) 'list_unsubscribe_post': listUnsubscribePost,
+      if (isEncrypted != null) 'is_encrypted': isEncrypted,
+      if (protectedSubject != null) 'protected_subject': protectedSubject,
     });
   }
 
@@ -2394,6 +2473,8 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     Value<String?>? listPost,
     Value<String?>? listUnsubscribe,
     Value<String?>? listUnsubscribePost,
+    Value<bool>? isEncrypted,
+    Value<String?>? protectedSubject,
   }) {
     return EmailsCompanion(
       seq: seq ?? this.seq,
@@ -2425,6 +2506,8 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
       listPost: listPost ?? this.listPost,
       listUnsubscribe: listUnsubscribe ?? this.listUnsubscribe,
       listUnsubscribePost: listUnsubscribePost ?? this.listUnsubscribePost,
+      isEncrypted: isEncrypted ?? this.isEncrypted,
+      protectedSubject: protectedSubject ?? this.protectedSubject,
     );
   }
 
@@ -2518,6 +2601,12 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
     if (listUnsubscribePost.present) {
       map['list_unsubscribe_post'] = Variable<String>(listUnsubscribePost.value);
     }
+    if (isEncrypted.present) {
+      map['is_encrypted'] = Variable<bool>(isEncrypted.value);
+    }
+    if (protectedSubject.present) {
+      map['protected_subject'] = Variable<String>(protectedSubject.value);
+    }
     return map;
   }
 
@@ -2552,7 +2641,9 @@ class EmailsCompanion extends UpdateCompanion<EmailRow> {
           ..write('listName: $listName, ')
           ..write('listPost: $listPost, ')
           ..write('listUnsubscribe: $listUnsubscribe, ')
-          ..write('listUnsubscribePost: $listUnsubscribePost')
+          ..write('listUnsubscribePost: $listUnsubscribePost, ')
+          ..write('isEncrypted: $isEncrypted, ')
+          ..write('protectedSubject: $protectedSubject')
           ..write(')'))
         .toString();
   }
@@ -3175,6 +3266,185 @@ class ContentsCompanion extends UpdateCompanion<ContentRow> {
           ..write('attachmentsJson: $attachmentsJson, ')
           ..write('bodyText: $bodyText, ')
           ..write('fetchedAt: $fetchedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DecryptedTextsTable extends DecryptedTexts with TableInfo<$DecryptedTextsTable, DecryptedTextRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DecryptedTextsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _emailIdMeta = const VerificationMeta('emailId');
+  @override
+  late final GeneratedColumn<String> emailId = GeneratedColumn<String>(
+    'email_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES emails (id) ON UPDATE CASCADE ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _bodyMeta = const VerificationMeta('body');
+  @override
+  late final GeneratedColumn<String> body = GeneratedColumn<String>(
+    'body',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [emailId, body];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'decrypted_texts';
+  @override
+  VerificationContext validateIntegrity(Insertable<DecryptedTextRow> instance, {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('email_id')) {
+      context.handle(_emailIdMeta, emailId.isAcceptableOrUnknown(data['email_id']!, _emailIdMeta));
+    } else if (isInserting) {
+      context.missing(_emailIdMeta);
+    }
+    if (data.containsKey('body')) {
+      context.handle(_bodyMeta, body.isAcceptableOrUnknown(data['body']!, _bodyMeta));
+    } else if (isInserting) {
+      context.missing(_bodyMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {emailId};
+  @override
+  DecryptedTextRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DecryptedTextRow(
+      emailId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}email_id'])!,
+      body: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}body'])!,
+    );
+  }
+
+  @override
+  $DecryptedTextsTable createAlias(String alias) {
+    return $DecryptedTextsTable(attachedDatabase, alias);
+  }
+}
+
+class DecryptedTextRow extends DataClass implements Insertable<DecryptedTextRow> {
+  final String emailId;
+  final String body;
+  const DecryptedTextRow({required this.emailId, required this.body});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['email_id'] = Variable<String>(emailId);
+    map['body'] = Variable<String>(body);
+    return map;
+  }
+
+  DecryptedTextsCompanion toCompanion(bool nullToAbsent) {
+    return DecryptedTextsCompanion(emailId: Value(emailId), body: Value(body));
+  }
+
+  factory DecryptedTextRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DecryptedTextRow(
+      emailId: serializer.fromJson<String>(json['emailId']),
+      body: serializer.fromJson<String>(json['body']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{'emailId': serializer.toJson<String>(emailId), 'body': serializer.toJson<String>(body)};
+  }
+
+  DecryptedTextRow copyWith({String? emailId, String? body}) =>
+      DecryptedTextRow(emailId: emailId ?? this.emailId, body: body ?? this.body);
+  DecryptedTextRow copyWithCompanion(DecryptedTextsCompanion data) {
+    return DecryptedTextRow(
+      emailId: data.emailId.present ? data.emailId.value : this.emailId,
+      body: data.body.present ? data.body.value : this.body,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DecryptedTextRow(')
+          ..write('emailId: $emailId, ')
+          ..write('body: $body')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(emailId, body);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || (other is DecryptedTextRow && other.emailId == this.emailId && other.body == this.body);
+}
+
+class DecryptedTextsCompanion extends UpdateCompanion<DecryptedTextRow> {
+  final Value<String> emailId;
+  final Value<String> body;
+  final Value<int> rowid;
+  const DecryptedTextsCompanion({
+    this.emailId = const Value.absent(),
+    this.body = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DecryptedTextsCompanion.insert({required String emailId, required String body, this.rowid = const Value.absent()})
+    : emailId = Value(emailId),
+      body = Value(body);
+  static Insertable<DecryptedTextRow> custom({
+    Expression<String>? emailId,
+    Expression<String>? body,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (emailId != null) 'email_id': emailId,
+      if (body != null) 'body': body,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DecryptedTextsCompanion copyWith({Value<String>? emailId, Value<String>? body, Value<int>? rowid}) {
+    return DecryptedTextsCompanion(
+      emailId: emailId ?? this.emailId,
+      body: body ?? this.body,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (emailId.present) {
+      map['email_id'] = Variable<String>(emailId.value);
+    }
+    if (body.present) {
+      map['body'] = Variable<String>(body.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DecryptedTextsCompanion(')
+          ..write('emailId: $emailId, ')
+          ..write('body: $body, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3879,6 +4149,358 @@ class OutboxItemsCompanion extends UpdateCompanion<OutboxRow> {
           ..write('lastError: $lastError, ')
           ..write('createdAt: $createdAt, ')
           ..write('held: $held, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $OutboxCopiesTable extends OutboxCopies with TableInfo<$OutboxCopiesTable, OutboxCopyRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $OutboxCopiesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _outboxIdMeta = const VerificationMeta('outboxId');
+  @override
+  late final GeneratedColumn<String> outboxId = GeneratedColumn<String>(
+    'outbox_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('REFERENCES outbox_items (id) ON DELETE CASCADE'),
+  );
+  static const VerificationMeta _seqMeta = const VerificationMeta('seq');
+  @override
+  late final GeneratedColumn<int> seq = GeneratedColumn<int>(
+    'seq',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _recipientsMeta = const VerificationMeta('recipients');
+  @override
+  late final GeneratedColumn<String> recipients = GeneratedColumn<String>(
+    'recipients',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _filedMeta = const VerificationMeta('filed');
+  @override
+  late final GeneratedColumn<bool> filed = GeneratedColumn<bool>(
+    'filed',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("filed" IN (0, 1))'),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<int> date = GeneratedColumn<int>(
+    'date',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _dataMeta = const VerificationMeta('data');
+  @override
+  late final GeneratedColumn<Uint8List> data = GeneratedColumn<Uint8List>(
+    'data',
+    aliasedName,
+    false,
+    type: DriftSqlType.blob,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [outboxId, seq, recipients, filed, date, data];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'outbox_copies';
+  @override
+  VerificationContext validateIntegrity(Insertable<OutboxCopyRow> instance, {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('outbox_id')) {
+      context.handle(_outboxIdMeta, outboxId.isAcceptableOrUnknown(data['outbox_id']!, _outboxIdMeta));
+    } else if (isInserting) {
+      context.missing(_outboxIdMeta);
+    }
+    if (data.containsKey('seq')) {
+      context.handle(_seqMeta, seq.isAcceptableOrUnknown(data['seq']!, _seqMeta));
+    } else if (isInserting) {
+      context.missing(_seqMeta);
+    }
+    if (data.containsKey('recipients')) {
+      context.handle(_recipientsMeta, recipients.isAcceptableOrUnknown(data['recipients']!, _recipientsMeta));
+    } else if (isInserting) {
+      context.missing(_recipientsMeta);
+    }
+    if (data.containsKey('filed')) {
+      context.handle(_filedMeta, filed.isAcceptableOrUnknown(data['filed']!, _filedMeta));
+    }
+    if (data.containsKey('date')) {
+      context.handle(_dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+    } else if (isInserting) {
+      context.missing(_dateMeta);
+    }
+    if (data.containsKey('data')) {
+      context.handle(_dataMeta, this.data.isAcceptableOrUnknown(data['data']!, _dataMeta));
+    } else if (isInserting) {
+      context.missing(_dataMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {outboxId, seq};
+  @override
+  OutboxCopyRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return OutboxCopyRow(
+      outboxId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}outbox_id'])!,
+      seq: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}seq'])!,
+      recipients: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}recipients'])!,
+      filed: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}filed'])!,
+      date: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}date'])!,
+      data: attachedDatabase.typeMapping.read(DriftSqlType.blob, data['${effectivePrefix}data'])!,
+    );
+  }
+
+  @override
+  $OutboxCopiesTable createAlias(String alias) {
+    return $OutboxCopiesTable(attachedDatabase, alias);
+  }
+}
+
+class OutboxCopyRow extends DataClass implements Insertable<OutboxCopyRow> {
+  final String outboxId;
+  final int seq;
+
+  /// JSON array of the addresses it goes to (the SMTP envelope).
+  final String recipients;
+
+  /// The copy filed in Sent.
+  final bool filed;
+
+  /// The Date header the copies carry, epoch milliseconds.
+  final int date;
+  final Uint8List data;
+  const OutboxCopyRow({
+    required this.outboxId,
+    required this.seq,
+    required this.recipients,
+    required this.filed,
+    required this.date,
+    required this.data,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['outbox_id'] = Variable<String>(outboxId);
+    map['seq'] = Variable<int>(seq);
+    map['recipients'] = Variable<String>(recipients);
+    map['filed'] = Variable<bool>(filed);
+    map['date'] = Variable<int>(date);
+    map['data'] = Variable<Uint8List>(data);
+    return map;
+  }
+
+  OutboxCopiesCompanion toCompanion(bool nullToAbsent) {
+    return OutboxCopiesCompanion(
+      outboxId: Value(outboxId),
+      seq: Value(seq),
+      recipients: Value(recipients),
+      filed: Value(filed),
+      date: Value(date),
+      data: Value(data),
+    );
+  }
+
+  factory OutboxCopyRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return OutboxCopyRow(
+      outboxId: serializer.fromJson<String>(json['outboxId']),
+      seq: serializer.fromJson<int>(json['seq']),
+      recipients: serializer.fromJson<String>(json['recipients']),
+      filed: serializer.fromJson<bool>(json['filed']),
+      date: serializer.fromJson<int>(json['date']),
+      data: serializer.fromJson<Uint8List>(json['data']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'outboxId': serializer.toJson<String>(outboxId),
+      'seq': serializer.toJson<int>(seq),
+      'recipients': serializer.toJson<String>(recipients),
+      'filed': serializer.toJson<bool>(filed),
+      'date': serializer.toJson<int>(date),
+      'data': serializer.toJson<Uint8List>(data),
+    };
+  }
+
+  OutboxCopyRow copyWith({String? outboxId, int? seq, String? recipients, bool? filed, int? date, Uint8List? data}) =>
+      OutboxCopyRow(
+        outboxId: outboxId ?? this.outboxId,
+        seq: seq ?? this.seq,
+        recipients: recipients ?? this.recipients,
+        filed: filed ?? this.filed,
+        date: date ?? this.date,
+        data: data ?? this.data,
+      );
+  OutboxCopyRow copyWithCompanion(OutboxCopiesCompanion data) {
+    return OutboxCopyRow(
+      outboxId: data.outboxId.present ? data.outboxId.value : this.outboxId,
+      seq: data.seq.present ? data.seq.value : this.seq,
+      recipients: data.recipients.present ? data.recipients.value : this.recipients,
+      filed: data.filed.present ? data.filed.value : this.filed,
+      date: data.date.present ? data.date.value : this.date,
+      data: data.data.present ? data.data.value : this.data,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OutboxCopyRow(')
+          ..write('outboxId: $outboxId, ')
+          ..write('seq: $seq, ')
+          ..write('recipients: $recipients, ')
+          ..write('filed: $filed, ')
+          ..write('date: $date, ')
+          ..write('data: $data')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(outboxId, seq, recipients, filed, date, $driftBlobEquality.hash(data));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is OutboxCopyRow &&
+          other.outboxId == this.outboxId &&
+          other.seq == this.seq &&
+          other.recipients == this.recipients &&
+          other.filed == this.filed &&
+          other.date == this.date &&
+          $driftBlobEquality.equals(other.data, this.data));
+}
+
+class OutboxCopiesCompanion extends UpdateCompanion<OutboxCopyRow> {
+  final Value<String> outboxId;
+  final Value<int> seq;
+  final Value<String> recipients;
+  final Value<bool> filed;
+  final Value<int> date;
+  final Value<Uint8List> data;
+  final Value<int> rowid;
+  const OutboxCopiesCompanion({
+    this.outboxId = const Value.absent(),
+    this.seq = const Value.absent(),
+    this.recipients = const Value.absent(),
+    this.filed = const Value.absent(),
+    this.date = const Value.absent(),
+    this.data = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  OutboxCopiesCompanion.insert({
+    required String outboxId,
+    required int seq,
+    required String recipients,
+    this.filed = const Value.absent(),
+    required int date,
+    required Uint8List data,
+    this.rowid = const Value.absent(),
+  }) : outboxId = Value(outboxId),
+       seq = Value(seq),
+       recipients = Value(recipients),
+       date = Value(date),
+       data = Value(data);
+  static Insertable<OutboxCopyRow> custom({
+    Expression<String>? outboxId,
+    Expression<int>? seq,
+    Expression<String>? recipients,
+    Expression<bool>? filed,
+    Expression<int>? date,
+    Expression<Uint8List>? data,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (outboxId != null) 'outbox_id': outboxId,
+      if (seq != null) 'seq': seq,
+      if (recipients != null) 'recipients': recipients,
+      if (filed != null) 'filed': filed,
+      if (date != null) 'date': date,
+      if (data != null) 'data': data,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  OutboxCopiesCompanion copyWith({
+    Value<String>? outboxId,
+    Value<int>? seq,
+    Value<String>? recipients,
+    Value<bool>? filed,
+    Value<int>? date,
+    Value<Uint8List>? data,
+    Value<int>? rowid,
+  }) {
+    return OutboxCopiesCompanion(
+      outboxId: outboxId ?? this.outboxId,
+      seq: seq ?? this.seq,
+      recipients: recipients ?? this.recipients,
+      filed: filed ?? this.filed,
+      date: date ?? this.date,
+      data: data ?? this.data,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (outboxId.present) {
+      map['outbox_id'] = Variable<String>(outboxId.value);
+    }
+    if (seq.present) {
+      map['seq'] = Variable<int>(seq.value);
+    }
+    if (recipients.present) {
+      map['recipients'] = Variable<String>(recipients.value);
+    }
+    if (filed.present) {
+      map['filed'] = Variable<bool>(filed.value);
+    }
+    if (date.present) {
+      map['date'] = Variable<int>(date.value);
+    }
+    if (data.present) {
+      map['data'] = Variable<Uint8List>(data.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OutboxCopiesCompanion(')
+          ..write('outboxId: $outboxId, ')
+          ..write('seq: $seq, ')
+          ..write('recipients: $recipients, ')
+          ..write('filed: $filed, ')
+          ..write('date: $date, ')
+          ..write('data: $data, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -5852,8 +6474,10 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
   late final $EmailsTable emails = $EmailsTable(this);
   late final $EmailKeywordsTable emailKeywords = $EmailKeywordsTable(this);
   late final $ContentsTable contents = $ContentsTable(this);
+  late final $DecryptedTextsTable decryptedTexts = $DecryptedTextsTable(this);
   late final $InlinePartsTable inlineParts = $InlinePartsTable(this);
   late final $OutboxItemsTable outboxItems = $OutboxItemsTable(this);
+  late final $OutboxCopiesTable outboxCopies = $OutboxCopiesTable(this);
   late final $PendingOpsTable pendingOps = $PendingOpsTable(this);
   late final $VipAddressesTable vipAddresses = $VipAddressesTable(this);
   late final $AddressBookTable addressBook = $AddressBookTable(this);
@@ -5895,8 +6519,10 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     emails,
     emailKeywords,
     contents,
+    decryptedTexts,
     inlineParts,
     outboxItems,
+    outboxCopies,
     pendingOps,
     vipAddresses,
     addressBook,
@@ -5946,6 +6572,14 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     ),
     WritePropagation(
       on: TableUpdateQuery.onTableName('emails', limitUpdateKind: UpdateKind.delete),
+      result: [TableUpdate('decrypted_texts', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('emails', limitUpdateKind: UpdateKind.update),
+      result: [TableUpdate('decrypted_texts', kind: UpdateKind.update)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('emails', limitUpdateKind: UpdateKind.delete),
       result: [TableUpdate('inline_parts', kind: UpdateKind.delete)],
     ),
     WritePropagation(
@@ -5955,6 +6589,10 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     WritePropagation(
       on: TableUpdateQuery.onTableName('accounts', limitUpdateKind: UpdateKind.delete),
       result: [TableUpdate('outbox_items', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('outbox_items', limitUpdateKind: UpdateKind.delete),
+      result: [TableUpdate('outbox_copies', kind: UpdateKind.delete)],
     ),
     WritePropagation(
       on: TableUpdateQuery.onTableName('accounts', limitUpdateKind: UpdateKind.delete),
@@ -7306,6 +7944,8 @@ typedef $$EmailsTableCreateCompanionBuilder = EmailsCompanion Function({
   Value<String?> listPost,
   Value<String?> listUnsubscribe,
   Value<String?> listUnsubscribePost,
+  Value<bool> isEncrypted,
+  Value<String?> protectedSubject,
 });
 typedef $$EmailsTableUpdateCompanionBuilder = EmailsCompanion Function({
   Value<int> seq,
@@ -7337,6 +7977,8 @@ typedef $$EmailsTableUpdateCompanionBuilder = EmailsCompanion Function({
   Value<String?> listPost,
   Value<String?> listUnsubscribe,
   Value<String?> listUnsubscribePost,
+  Value<bool> isEncrypted,
+  Value<String?> protectedSubject,
 });
 
 final class $$EmailsTableReferences extends BaseReferences<_$StoreDatabase, $EmailsTable, EmailRow> {
@@ -7377,6 +8019,20 @@ final class $$EmailsTableReferences extends BaseReferences<_$StoreDatabase, $Ema
     ).filter((f) => f.emailId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_contentsRefsTable($_db));
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$DecryptedTextsTable, List<DecryptedTextRow>> _decryptedTextsRefsTable(
+    _$StoreDatabase db,
+  ) => MultiTypedResultKey.fromTable(db.decryptedTexts, aliasName: 'emails__id__decrypted_texts__email_id');
+
+  $$DecryptedTextsTableProcessedTableManager get decryptedTextsRefs {
+    final manager = $$DecryptedTextsTableTableManager(
+      $_db,
+      $_db.decryptedTexts,
+    ).filter((f) => f.emailId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_decryptedTextsRefsTable($_db));
     return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
   }
 
@@ -7483,6 +8139,12 @@ class $$EmailsTableFilterComposer extends Composer<_$StoreDatabase, $EmailsTable
   ColumnFilters<String> get listUnsubscribePost =>
       $composableBuilder(column: $table.listUnsubscribePost, builder: (column) => ColumnFilters(column));
 
+  ColumnFilters<bool> get isEncrypted =>
+      $composableBuilder(column: $table.isEncrypted, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get protectedSubject =>
+      $composableBuilder(column: $table.protectedSubject, builder: (column) => ColumnFilters(column));
+
   $$MailboxesTableFilterComposer get mailboxId {
     final $$MailboxesTableFilterComposer composer = $composerBuilder(
       composer: this,
@@ -7529,6 +8191,24 @@ class $$EmailsTableFilterComposer extends Composer<_$StoreDatabase, $EmailsTable
           $$ContentsTableFilterComposer(
             $db: $db,
             $table: $db.contents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> decryptedTextsRefs(Expression<bool> Function($$DecryptedTextsTableFilterComposer f) f) {
+    final $$DecryptedTextsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.decryptedTexts,
+      getReferencedColumn: (t) => t.emailId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$DecryptedTextsTableFilterComposer(
+            $db: $db,
+            $table: $db.decryptedTexts,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
@@ -7646,6 +8326,12 @@ class $$EmailsTableOrderingComposer extends Composer<_$StoreDatabase, $EmailsTab
   ColumnOrderings<String> get listUnsubscribePost =>
       $composableBuilder(column: $table.listUnsubscribePost, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<bool> get isEncrypted =>
+      $composableBuilder(column: $table.isEncrypted, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get protectedSubject =>
+      $composableBuilder(column: $table.protectedSubject, builder: (column) => ColumnOrderings(column));
+
   $$MailboxesTableOrderingComposer get mailboxId {
     final $$MailboxesTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -7736,6 +8422,11 @@ class $$EmailsTableAnnotationComposer extends Composer<_$StoreDatabase, $EmailsT
   GeneratedColumn<String> get listUnsubscribePost =>
       $composableBuilder(column: $table.listUnsubscribePost, builder: (column) => column);
 
+  GeneratedColumn<bool> get isEncrypted => $composableBuilder(column: $table.isEncrypted, builder: (column) => column);
+
+  GeneratedColumn<String> get protectedSubject =>
+      $composableBuilder(column: $table.protectedSubject, builder: (column) => column);
+
   $$MailboxesTableAnnotationComposer get mailboxId {
     final $$MailboxesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
@@ -7792,6 +8483,26 @@ class $$EmailsTableAnnotationComposer extends Composer<_$StoreDatabase, $EmailsT
     return f(composer);
   }
 
+  Expression<T> decryptedTextsRefs<T extends Object>(
+    Expression<T> Function($$DecryptedTextsTableAnnotationComposer a) f,
+  ) {
+    final $$DecryptedTextsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.decryptedTexts,
+      getReferencedColumn: (t) => t.emailId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$DecryptedTextsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.decryptedTexts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
   Expression<T> inlinePartsRefs<T extends Object>(Expression<T> Function($$InlinePartsTableAnnotationComposer a) f) {
     final $$InlinePartsTableAnnotationComposer composer = $composerBuilder(
       composer: this,
@@ -7824,7 +8535,13 @@ class $$EmailsTableTableManager
           $$EmailsTableUpdateCompanionBuilder,
           (EmailRow, $$EmailsTableReferences),
           EmailRow,
-          PrefetchHooks Function({bool mailboxId, bool emailKeywordsRefs, bool contentsRefs, bool inlinePartsRefs})
+          PrefetchHooks Function({
+            bool mailboxId,
+            bool emailKeywordsRefs,
+            bool contentsRefs,
+            bool decryptedTextsRefs,
+            bool inlinePartsRefs,
+          })
         > {
   $$EmailsTableTableManager(_$StoreDatabase db, $EmailsTable table)
     : super(
@@ -7865,6 +8582,8 @@ class $$EmailsTableTableManager
                 Value<String?> listPost = const Value.absent(),
                 Value<String?> listUnsubscribe = const Value.absent(),
                 Value<String?> listUnsubscribePost = const Value.absent(),
+                Value<bool> isEncrypted = const Value.absent(),
+                Value<String?> protectedSubject = const Value.absent(),
               }) => EmailsCompanion(
                 seq: seq,
                 id: id,
@@ -7895,6 +8614,8 @@ class $$EmailsTableTableManager
                 listPost: listPost,
                 listUnsubscribe: listUnsubscribe,
                 listUnsubscribePost: listUnsubscribePost,
+                isEncrypted: isEncrypted,
+                protectedSubject: protectedSubject,
               ),
           createCompanionCallback:
               ({
@@ -7927,6 +8648,8 @@ class $$EmailsTableTableManager
                 Value<String?> listPost = const Value.absent(),
                 Value<String?> listUnsubscribe = const Value.absent(),
                 Value<String?> listUnsubscribePost = const Value.absent(),
+                Value<bool> isEncrypted = const Value.absent(),
+                Value<String?> protectedSubject = const Value.absent(),
               }) => EmailsCompanion.insert(
                 seq: seq,
                 id: id,
@@ -7957,17 +8680,26 @@ class $$EmailsTableTableManager
                 listPost: listPost,
                 listUnsubscribe: listUnsubscribe,
                 listUnsubscribePost: listUnsubscribePost,
+                isEncrypted: isEncrypted,
+                protectedSubject: protectedSubject,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable<$EmailsTable, EmailRow>(table), $$EmailsTableReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback:
-              ({mailboxId = false, emailKeywordsRefs = false, contentsRefs = false, inlinePartsRefs = false}) {
+              ({
+                mailboxId = false,
+                emailKeywordsRefs = false,
+                contentsRefs = false,
+                decryptedTextsRefs = false,
+                inlinePartsRefs = false,
+              }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (emailKeywordsRefs) db.emailKeywords,
                     if (contentsRefs) db.contents,
+                    if (decryptedTextsRefs) db.decryptedTexts,
                     if (inlinePartsRefs) db.inlineParts,
                   ],
                   addJoins:
@@ -8017,6 +8749,15 @@ class $$EmailsTableTableManager
                               referencedItems.where((e) => e.emailId == item.id),
                           typedResults: items,
                         ),
+                      if (decryptedTextsRefs)
+                        await $_getPrefetchedData<EmailRow, $EmailsTable, DecryptedTextRow>(
+                          currentTable: table,
+                          referencedTable: $$EmailsTableReferences._decryptedTextsRefsTable(db),
+                          managerFromTypedResult: (p0) => $$EmailsTableReferences(db, table, p0).decryptedTextsRefs,
+                          referencedItemsForCurrentItem: (item, referencedItems) =>
+                              referencedItems.where((e) => e.emailId == item.id),
+                          typedResults: items,
+                        ),
                       if (inlinePartsRefs)
                         await $_getPrefetchedData<EmailRow, $EmailsTable, InlinePartRow>(
                           currentTable: table,
@@ -8046,7 +8787,13 @@ typedef $$EmailsTableProcessedTableManager =
       $$EmailsTableUpdateCompanionBuilder,
       (EmailRow, $$EmailsTableReferences),
       EmailRow,
-      PrefetchHooks Function({bool mailboxId, bool emailKeywordsRefs, bool contentsRefs, bool inlinePartsRefs})
+      PrefetchHooks Function({
+        bool mailboxId,
+        bool emailKeywordsRefs,
+        bool contentsRefs,
+        bool decryptedTextsRefs,
+        bool inlinePartsRefs,
+      })
     >;
 typedef $$EmailKeywordsTableCreateCompanionBuilder = EmailKeywordsCompanion Function({
   required String emailId,
@@ -8560,6 +9307,217 @@ typedef $$ContentsTableProcessedTableManager =
       ContentRow,
       PrefetchHooks Function({bool emailId})
     >;
+typedef $$DecryptedTextsTableCreateCompanionBuilder = DecryptedTextsCompanion Function({
+  required String emailId,
+  required String body,
+  Value<int> rowid,
+});
+typedef $$DecryptedTextsTableUpdateCompanionBuilder = DecryptedTextsCompanion Function({
+  Value<String> emailId,
+  Value<String> body,
+  Value<int> rowid,
+});
+
+final class $$DecryptedTextsTableReferences
+    extends BaseReferences<_$StoreDatabase, $DecryptedTextsTable, DecryptedTextRow> {
+  $$DecryptedTextsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $EmailsTable _emailIdTable(_$StoreDatabase db) =>
+      db.emails.createAlias('decrypted_texts__email_id__emails__id');
+
+  $$EmailsTableProcessedTableManager get emailId {
+    final $_column = $_itemColumn<String>('email_id')!;
+
+    final manager = $$EmailsTableTableManager($_db, $_db.emails).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_emailIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$DecryptedTextsTableFilterComposer extends Composer<_$StoreDatabase, $DecryptedTextsTable> {
+  $$DecryptedTextsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get body => $composableBuilder(column: $table.body, builder: (column) => ColumnFilters(column));
+
+  $$EmailsTableFilterComposer get emailId {
+    final $$EmailsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.emailId,
+      referencedTable: $db.emails,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$EmailsTableFilterComposer(
+            $db: $db,
+            $table: $db.emails,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DecryptedTextsTableOrderingComposer extends Composer<_$StoreDatabase, $DecryptedTextsTable> {
+  $$DecryptedTextsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get body =>
+      $composableBuilder(column: $table.body, builder: (column) => ColumnOrderings(column));
+
+  $$EmailsTableOrderingComposer get emailId {
+    final $$EmailsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.emailId,
+      referencedTable: $db.emails,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$EmailsTableOrderingComposer(
+            $db: $db,
+            $table: $db.emails,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DecryptedTextsTableAnnotationComposer extends Composer<_$StoreDatabase, $DecryptedTextsTable> {
+  $$DecryptedTextsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get body => $composableBuilder(column: $table.body, builder: (column) => column);
+
+  $$EmailsTableAnnotationComposer get emailId {
+    final $$EmailsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.emailId,
+      referencedTable: $db.emails,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$EmailsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.emails,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DecryptedTextsTableTableManager
+    extends
+        RootTableManager<
+          _$StoreDatabase,
+          $DecryptedTextsTable,
+          DecryptedTextRow,
+          $$DecryptedTextsTableFilterComposer,
+          $$DecryptedTextsTableOrderingComposer,
+          $$DecryptedTextsTableAnnotationComposer,
+          $$DecryptedTextsTableCreateCompanionBuilder,
+          $$DecryptedTextsTableUpdateCompanionBuilder,
+          (DecryptedTextRow, $$DecryptedTextsTableReferences),
+          DecryptedTextRow,
+          PrefetchHooks Function({bool emailId})
+        > {
+  $$DecryptedTextsTableTableManager(_$StoreDatabase db, $DecryptedTextsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () => $$DecryptedTextsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$DecryptedTextsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$DecryptedTextsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> emailId = const Value.absent(),
+            Value<String> body = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) => DecryptedTextsCompanion(emailId: emailId, body: body, rowid: rowid),
+          createCompanionCallback: ({
+            required String emailId,
+            required String body,
+            Value<int> rowid = const Value.absent(),
+          }) => DecryptedTextsCompanion.insert(emailId: emailId, body: body, rowid: rowid),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$DecryptedTextsTable, DecryptedTextRow>(table),
+                  $$DecryptedTextsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({emailId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (emailId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.emailId,
+                        referencedTable: $$DecryptedTextsTableReferences._emailIdTable(db),
+                        referencedColumn: $$DecryptedTextsTableReferences._emailIdTable(db).id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$DecryptedTextsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$StoreDatabase,
+      $DecryptedTextsTable,
+      DecryptedTextRow,
+      $$DecryptedTextsTableFilterComposer,
+      $$DecryptedTextsTableOrderingComposer,
+      $$DecryptedTextsTableAnnotationComposer,
+      $$DecryptedTextsTableCreateCompanionBuilder,
+      $$DecryptedTextsTableUpdateCompanionBuilder,
+      (DecryptedTextRow, $$DecryptedTextsTableReferences),
+      DecryptedTextRow,
+      PrefetchHooks Function({bool emailId})
+    >;
 typedef $$InlinePartsTableCreateCompanionBuilder = InlinePartsCompanion Function({
   required String emailId,
   required String contentId,
@@ -8819,6 +9777,19 @@ final class $$OutboxItemsTableReferences extends BaseReferences<_$StoreDatabase,
     if (item == null) return manager;
     return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
   }
+
+  static MultiTypedResultKey<$OutboxCopiesTable, List<OutboxCopyRow>> _outboxCopiesRefsTable(_$StoreDatabase db) =>
+      MultiTypedResultKey.fromTable(db.outboxCopies, aliasName: 'outbox_items__id__outbox_copies__outbox_id');
+
+  $$OutboxCopiesTableProcessedTableManager get outboxCopiesRefs {
+    final manager = $$OutboxCopiesTableTableManager(
+      $_db,
+      $_db.outboxCopies,
+    ).filter((f) => f.outboxId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_outboxCopiesRefsTable($_db));
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$OutboxItemsTableFilterComposer extends Composer<_$StoreDatabase, $OutboxItemsTable> {
@@ -8867,6 +9838,24 @@ class $$OutboxItemsTableFilterComposer extends Composer<_$StoreDatabase, $Outbox
           ),
     );
     return composer;
+  }
+
+  Expression<bool> outboxCopiesRefs(Expression<bool> Function($$OutboxCopiesTableFilterComposer f) f) {
+    final $$OutboxCopiesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.outboxCopies,
+      getReferencedColumn: (t) => t.outboxId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$OutboxCopiesTableFilterComposer(
+            $db: $db,
+            $table: $db.outboxCopies,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
   }
 }
 
@@ -8961,6 +9950,24 @@ class $$OutboxItemsTableAnnotationComposer extends Composer<_$StoreDatabase, $Ou
     );
     return composer;
   }
+
+  Expression<T> outboxCopiesRefs<T extends Object>(Expression<T> Function($$OutboxCopiesTableAnnotationComposer a) f) {
+    final $$OutboxCopiesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.outboxCopies,
+      getReferencedColumn: (t) => t.outboxId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$OutboxCopiesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.outboxCopies,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$OutboxItemsTableTableManager
@@ -8976,7 +9983,7 @@ class $$OutboxItemsTableTableManager
           $$OutboxItemsTableUpdateCompanionBuilder,
           (OutboxRow, $$OutboxItemsTableReferences),
           OutboxRow,
-          PrefetchHooks Function({bool accountId})
+          PrefetchHooks Function({bool accountId, bool outboxCopiesRefs})
         > {
   $$OutboxItemsTableTableManager(_$StoreDatabase db, $OutboxItemsTable table)
     : super(
@@ -9039,10 +10046,10 @@ class $$OutboxItemsTableTableManager
                 (e) => (e.readTable<$OutboxItemsTable, OutboxRow>(table), $$OutboxItemsTableReferences(db, table, e)),
               )
               .toList(),
-          prefetchHooksCallback: ({accountId = false}) {
+          prefetchHooksCallback: ({accountId = false, outboxCopiesRefs = false}) {
             return PrefetchHooks(
               db: db,
-              explicitlyWatchedTables: [],
+              explicitlyWatchedTables: [if (outboxCopiesRefs) db.outboxCopies],
               addJoins:
                   <
                     T extends TableManagerState<
@@ -9071,7 +10078,17 @@ class $$OutboxItemsTableTableManager
                     return state;
                   },
               getPrefetchedDataCallback: (items) async {
-                return [];
+                return [
+                  if (outboxCopiesRefs)
+                    await $_getPrefetchedData<OutboxRow, $OutboxItemsTable, OutboxCopyRow>(
+                      currentTable: table,
+                      referencedTable: $$OutboxItemsTableReferences._outboxCopiesRefsTable(db),
+                      managerFromTypedResult: (p0) => $$OutboxItemsTableReferences(db, table, p0).outboxCopiesRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.outboxId == item.id),
+                      typedResults: items,
+                    ),
+                ];
               },
             );
           },
@@ -9091,7 +10108,280 @@ typedef $$OutboxItemsTableProcessedTableManager =
       $$OutboxItemsTableUpdateCompanionBuilder,
       (OutboxRow, $$OutboxItemsTableReferences),
       OutboxRow,
-      PrefetchHooks Function({bool accountId})
+      PrefetchHooks Function({bool accountId, bool outboxCopiesRefs})
+    >;
+typedef $$OutboxCopiesTableCreateCompanionBuilder = OutboxCopiesCompanion Function({
+  required String outboxId,
+  required int seq,
+  required String recipients,
+  Value<bool> filed,
+  required int date,
+  required Uint8List data,
+  Value<int> rowid,
+});
+typedef $$OutboxCopiesTableUpdateCompanionBuilder = OutboxCopiesCompanion Function({
+  Value<String> outboxId,
+  Value<int> seq,
+  Value<String> recipients,
+  Value<bool> filed,
+  Value<int> date,
+  Value<Uint8List> data,
+  Value<int> rowid,
+});
+
+final class $$OutboxCopiesTableReferences extends BaseReferences<_$StoreDatabase, $OutboxCopiesTable, OutboxCopyRow> {
+  $$OutboxCopiesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $OutboxItemsTable _outboxIdTable(_$StoreDatabase db) =>
+      db.outboxItems.createAlias('outbox_copies__outbox_id__outbox_items__id');
+
+  $$OutboxItemsTableProcessedTableManager get outboxId {
+    final $_column = $_itemColumn<String>('outbox_id')!;
+
+    final manager = $$OutboxItemsTableTableManager($_db, $_db.outboxItems).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_outboxIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$OutboxCopiesTableFilterComposer extends Composer<_$StoreDatabase, $OutboxCopiesTable> {
+  $$OutboxCopiesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get seq => $composableBuilder(column: $table.seq, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get recipients =>
+      $composableBuilder(column: $table.recipients, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get filed => $composableBuilder(column: $table.filed, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get date => $composableBuilder(column: $table.date, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<Uint8List> get data =>
+      $composableBuilder(column: $table.data, builder: (column) => ColumnFilters(column));
+
+  $$OutboxItemsTableFilterComposer get outboxId {
+    final $$OutboxItemsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.outboxId,
+      referencedTable: $db.outboxItems,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$OutboxItemsTableFilterComposer(
+            $db: $db,
+            $table: $db.outboxItems,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$OutboxCopiesTableOrderingComposer extends Composer<_$StoreDatabase, $OutboxCopiesTable> {
+  $$OutboxCopiesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get seq => $composableBuilder(column: $table.seq, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get recipients =>
+      $composableBuilder(column: $table.recipients, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get filed =>
+      $composableBuilder(column: $table.filed, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get date =>
+      $composableBuilder(column: $table.date, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<Uint8List> get data =>
+      $composableBuilder(column: $table.data, builder: (column) => ColumnOrderings(column));
+
+  $$OutboxItemsTableOrderingComposer get outboxId {
+    final $$OutboxItemsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.outboxId,
+      referencedTable: $db.outboxItems,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$OutboxItemsTableOrderingComposer(
+            $db: $db,
+            $table: $db.outboxItems,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$OutboxCopiesTableAnnotationComposer extends Composer<_$StoreDatabase, $OutboxCopiesTable> {
+  $$OutboxCopiesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get seq => $composableBuilder(column: $table.seq, builder: (column) => column);
+
+  GeneratedColumn<String> get recipients => $composableBuilder(column: $table.recipients, builder: (column) => column);
+
+  GeneratedColumn<bool> get filed => $composableBuilder(column: $table.filed, builder: (column) => column);
+
+  GeneratedColumn<int> get date => $composableBuilder(column: $table.date, builder: (column) => column);
+
+  GeneratedColumn<Uint8List> get data => $composableBuilder(column: $table.data, builder: (column) => column);
+
+  $$OutboxItemsTableAnnotationComposer get outboxId {
+    final $$OutboxItemsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.outboxId,
+      referencedTable: $db.outboxItems,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$OutboxItemsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.outboxItems,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$OutboxCopiesTableTableManager
+    extends
+        RootTableManager<
+          _$StoreDatabase,
+          $OutboxCopiesTable,
+          OutboxCopyRow,
+          $$OutboxCopiesTableFilterComposer,
+          $$OutboxCopiesTableOrderingComposer,
+          $$OutboxCopiesTableAnnotationComposer,
+          $$OutboxCopiesTableCreateCompanionBuilder,
+          $$OutboxCopiesTableUpdateCompanionBuilder,
+          (OutboxCopyRow, $$OutboxCopiesTableReferences),
+          OutboxCopyRow,
+          PrefetchHooks Function({bool outboxId})
+        > {
+  $$OutboxCopiesTableTableManager(_$StoreDatabase db, $OutboxCopiesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () => $$OutboxCopiesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$OutboxCopiesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$OutboxCopiesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> outboxId = const Value.absent(),
+                Value<int> seq = const Value.absent(),
+                Value<String> recipients = const Value.absent(),
+                Value<bool> filed = const Value.absent(),
+                Value<int> date = const Value.absent(),
+                Value<Uint8List> data = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => OutboxCopiesCompanion(
+                outboxId: outboxId,
+                seq: seq,
+                recipients: recipients,
+                filed: filed,
+                date: date,
+                data: data,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String outboxId,
+                required int seq,
+                required String recipients,
+                Value<bool> filed = const Value.absent(),
+                required int date,
+                required Uint8List data,
+                Value<int> rowid = const Value.absent(),
+              }) => OutboxCopiesCompanion.insert(
+                outboxId: outboxId,
+                seq: seq,
+                recipients: recipients,
+                filed: filed,
+                date: date,
+                data: data,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$OutboxCopiesTable, OutboxCopyRow>(table),
+                  $$OutboxCopiesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({outboxId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (outboxId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.outboxId,
+                        referencedTable: $$OutboxCopiesTableReferences._outboxIdTable(db),
+                        referencedColumn: $$OutboxCopiesTableReferences._outboxIdTable(db).id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$OutboxCopiesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$StoreDatabase,
+      $OutboxCopiesTable,
+      OutboxCopyRow,
+      $$OutboxCopiesTableFilterComposer,
+      $$OutboxCopiesTableOrderingComposer,
+      $$OutboxCopiesTableAnnotationComposer,
+      $$OutboxCopiesTableCreateCompanionBuilder,
+      $$OutboxCopiesTableUpdateCompanionBuilder,
+      (OutboxCopyRow, $$OutboxCopiesTableReferences),
+      OutboxCopyRow,
+      PrefetchHooks Function({bool outboxId})
     >;
 typedef $$PendingOpsTableCreateCompanionBuilder = PendingOpsCompanion Function({
   Value<int> id,
@@ -10594,8 +11884,10 @@ class $StoreDatabaseManager {
   $$EmailsTableTableManager get emails => $$EmailsTableTableManager(_db, _db.emails);
   $$EmailKeywordsTableTableManager get emailKeywords => $$EmailKeywordsTableTableManager(_db, _db.emailKeywords);
   $$ContentsTableTableManager get contents => $$ContentsTableTableManager(_db, _db.contents);
+  $$DecryptedTextsTableTableManager get decryptedTexts => $$DecryptedTextsTableTableManager(_db, _db.decryptedTexts);
   $$InlinePartsTableTableManager get inlineParts => $$InlinePartsTableTableManager(_db, _db.inlineParts);
   $$OutboxItemsTableTableManager get outboxItems => $$OutboxItemsTableTableManager(_db, _db.outboxItems);
+  $$OutboxCopiesTableTableManager get outboxCopies => $$OutboxCopiesTableTableManager(_db, _db.outboxCopies);
   $$PendingOpsTableTableManager get pendingOps => $$PendingOpsTableTableManager(_db, _db.pendingOps);
   $$VipAddressesTableTableManager get vipAddresses => $$VipAddressesTableTableManager(_db, _db.vipAddresses);
   $$AddressBookTableTableManager get addressBook => $$AddressBookTableTableManager(_db, _db.addressBook);

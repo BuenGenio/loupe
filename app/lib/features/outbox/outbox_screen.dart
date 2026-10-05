@@ -17,6 +17,7 @@ import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
 import '../compose/send_later.dart';
 import '../conversation/sheets.dart' show showSnack;
+import '../openpgp/openpgp_providers.dart';
 
 /// Messages waiting to be sent: queued (undo window), scheduled, being sent
 /// and failed. The Mailboxes screen shows an Outbox row while there are any.
@@ -101,7 +102,35 @@ class OutboxActions {
   }
 
   /// Send Now, and Retry of a failed message.
-  Future<void> sendNow(OutboxItem item) => _run((_) => _repo.sendNow(item.id));
+  Future<void> sendNow(OutboxItem item) async {
+    if (!await _unlockToSign(item) || !context.mounted) return;
+    await _run((_) => _repo.sendNow(item.id));
+  }
+
+  /// Signed OpenPGP mail composed again needs its key: Send Now before the
+  /// time it was composed for, a new time ([recompose]), or a Retry of one
+  /// that waited for the key (composed when queued, it goes out without
+  /// one). Asks for the passphrase now, while the user is here, so it can
+  /// go out from the background later. False if they cancelled.
+  Future<bool> _unlockToSign(OutboxItem item, {bool recompose = false}) async {
+    final m = item.message;
+    if (!m.security.sign || m.security.isSmime) return true;
+    final composed = item.composedFor;
+    if (!recompose && composed != null && !composed.isAfter(clock.now())) return true;
+    try {
+      final account = (await _repo.watchAccounts().first).where((a) => a.id == m.accountId).firstOrNull;
+      if (account == null) return true;
+      if (!context.mounted) return false;
+      final service = await ref.read(openPgpServiceProvider.future);
+      final key = service.state.ownKeyFor(account.identityById(m.identityId).email);
+      if (key == null) return true;
+      return await service.unlock(key.fingerprint) != null;
+    } on Object catch (e) {
+      // Sending says what is wrong.
+      debugPrint('Unlocking to send failed: ${e.runtimeType}');
+      return true;
+    }
+  }
 
   Future<void> reschedule(OutboxItem item) async {
     final scheduled = item.status == OutboxStatus.scheduled;
@@ -114,6 +143,8 @@ class OutboxActions {
     if (choice == null || !context.mounted) return;
     final at = choice.at;
     if (at == null) return sendNow(item);
+    // Composed again for the new time.
+    if (!await _unlockToSign(item, recompose: true) || !context.mounted) return;
     await _run((messenger) async {
       await _repo.rescheduleSend(item.id, at);
       wakeUpAt(ref, at);

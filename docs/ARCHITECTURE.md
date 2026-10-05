@@ -114,12 +114,91 @@ loading, the header, compose, Settings › End-to-End Encryption).
   first, then EnvelopedData to every recipient and the sender with AES-256-CBC, which Outlook, Apple Mail and
   Thunderbird all read; AuthEnvelopedData (AES-256-GCM) only when every recipient's signed mail announced
   AES-GCM. RSA recipients get the key with PKCS #1 v1.5 (OAEP isn't read everywhere), EC recipients by
-  ephemeral-static ECDH (SHA-256 KDF, AES-256 wrap). Like OpenPGP mail, the outer Subject isn't hidden and Bcc
-  recipients appear (as certificate serials) to everyone; drafts are encrypted to the sender only.
+  ephemeral-static ECDH (SHA-256 KDF, AES-256 wrap). Unlike OpenPGP mail, the outer Subject isn't hidden. Bcc
+  recipients get copies of their own (see below); drafts are encrypted to the sender only.
 - **Choosing the standard** (`chooseTechnology`): the address's preference (OpenPGP unless "Prefer S/MIME"),
   unless only the other one has a key or trusted certificate for every recipient, or the message replies to
   mail encrypted with the other. Compose shows which, and switches when both are set up. The sending settings
   (Encrypt Automatically, Always Encrypt, Sign Unencrypted Mail) apply to both.
+
+## Encrypted mail (both standards)
+
+Issue #24, after OpenPGP (#20) and S/MIME (#21).
+
+- **Bcc** (`OutgoingMessage.deliveries`): an encrypted message names the keys it is encrypted to (OpenPGP's PKESK
+  key ids, S/MIME's RecipientInfos), and its Autocrypt-Gossip names addresses, so one message for everyone would
+  show every recipient who was in Bcc. Encrypted mail with Bcc recipients goes out as one copy encrypted to To, Cc
+  and the sender, sent to To and Cc and filed in Sent, and for each Bcc recipient a copy encrypted to them and the
+  sender only (`OutgoingMessage.bccCopy`, `encryptionRecipients`), sent to them alone. Every copy has the same
+  headers (To, Cc, Message-ID; no Bcc header, as plain mail), and the copies are all made before any goes out.
+  A copy that fails after another went out leaves its recipient in the Outbox like a refused recipient. KMail
+  does the same; Thunderbird instead warns that Bcc recipients aren't hidden. Signed-only mail stays one message.
+- **What shows as signed** is exactly what the signature covers, for both standards. A PGP/MIME `multipart/signed`
+  shows its signed first part as `PgpMimeReader` parsed it from the raw message, never the server's view of the
+  whole message; RFC 3156 allows the signed part and the signature and nothing else, so another part next to them
+  makes the signature bad ("parts the signature doesn't cover"), at the top or inside decrypted content. A
+  `multipart/signed` wrapped in other content isn't verified, so nothing shows as signed. Inline PGP shows the
+  signed (or decrypted) text first and every other text of its part below an "Unsigned content" line
+  (`outsideMarker`), so nothing outside the block can pass for part of it; that text, or other parts of the message
+  (an HTML alternative, attachments), make it "Signed in part" (no ✓).
+- **Protected subjects** (OpenPGP sends the real subject inside, `...` outside): summaries say whether a message is
+  encrypted (`EmailSummary.isEncrypted`, from its BODYSTRUCTURE; schema version 6, `emails.is_encrypted`). Once
+  `ContentLoader` decrypted a message, its protected subject is kept in the encrypted store
+  (`DecryptedMail.rememberProtectedSubject`, `emails.protected_subject`), for the message and its copies (same
+  account, Message-ID, size and outer subject; copies synced later inherit it). Summaries then carry it as their
+  subject (`hasDecryptedSubject`), so the list, search (the full-text index has it) and replies show it; syncs
+  never overwrite it. Notifications say "Encrypted message" for encrypted mail unless its subject was decrypted
+  on the device, and nothing more with Hide Content.
+  - Settings › End-to-End Encryption › On This Device › Decrypt Subjects in the Background (off by default):
+    `SubjectDecryptor` decrypts the subjects of encrypted mail nobody opened yet, with keys stored without a
+    passphrase only (it never asks), OpenPGP only, messages up to 1 MB (the whole message is downloaded). Background
+    work does it for new mail before notifying (`NewMailCheck.subjects`, at most 15 s); the app, while it runs, for
+    the newest 100 messages of the inboxes (`ProtectedSubjectsWatcher`, off the UI isolate).
+- **Signed when queued**: signed or encrypted mail needs the key unlocked, and background work only has keys
+  stored without a passphrase. So `LiveMailRepository.send` composes it at once, while the user is there (compose
+  unlocked the key), dated for when it goes out (the end of the undo window, the scheduled time), and keeps the
+  copies in the Outbox (`outbox_copies`, schema version 6; `OutboxItem.composedFor`); whichever process sends it
+  sends them as they are, with the same Message-ID on every attempt. Rescheduling composes it again for the new
+  time, Send Now before that time for now (a Retry keeps them); when the key is locked then, the copies are
+  dropped and it is composed as it goes out. Taking it back to edit (or Undo) deletes them with the entry. The
+  Outbox asks for the passphrase before Send Now, Reschedule or the Retry of a message that waited for the key.
+  Plain mail is composed as it goes out, as before.
+- **Searching encrypted mail**: by default encrypted messages are found by their headers only (sender,
+  recipients, the protected subject once known); the cached body of an encrypted message is its encrypted form.
+  Settings › End-to-End Encryption › Index Decrypted Messages for Search (off by default) puts the text (and
+  attachment names) of each message `ContentLoader` decrypts, OpenPGP or S/MIME, into the full-text index
+  (`DecryptedMail.indexDecryptedText`): the `decrypted_texts` table (schema version 6, up to 64 KB per message,
+  deleted with the message) stands in for the cached body in `email_fts`. Background subject decryption indexes
+  the text too while both are on. Turning the setting off deletes every row (`forgetDecryptedText`); the index
+  follows by triggers. The database is encrypted (SQLite3MultipleCiphers), so this keeps decrypted text only
+  where the protected subjects and every plain message already are.
+
+## Encrypted mail: speed
+
+OpenPGP and S/MIME are pure Dart (dart_pg and mail_crypto's CMS on pointycastle), so their work stays off the UI
+isolate: reading (`OpenPgpService.read`, `SmimeService.read`: decrypting, verifying, MIME) and unlocking keys run
+through `pgpRunnerProvider` (`Isolate.run`); composing goes through `IsolateComposer.composeAsync`
+(`AsyncMessageComposer`), which hands a snapshot of the keys to another isolate, when a message is queued, sent
+or saved as a draft; subjects decrypted in the background too. Background isolates (sync, Instant Delivery) do
+their own work inline.
+
+`packages/mail_crypto/tool/benchmark.dart` times it (`dart compile exe`, as the app's release build is AOT). On
+the development machine (an Apple M1 Max under Asahi Linux, AOT; a phone is several times slower), before → after the
+dart_pg fixes of 2.1.0+loupe.2:
+
+| | before | after |
+|---|---|---|
+| Unlock a key exported by Thunderbird (Ed25519, S2K SHA-256 × 62 MiB, two key packets) | 5.4 s | 1.2 s |
+| Unlock a GnuPG 2.4 key (S2K SHA-1 × 62 MiB) | 2.6 s | 0.8 s |
+| Unlock a key made by Loupe | 1.4 s | 0.3 s |
+| Read (decrypt + verify) an 8 KB message | 22 ms | 18 ms |
+| … with 100 KB attached | 154 ms | 66 ms |
+| … with 1 MB attached | 15.5 s | 0.5 s |
+| … with 5 MB attached | minutes | 2.4 s |
+| Compose signed + encrypted with 1 MB attached | 14.6 s | 0.4 s |
+| Verify a multipart/signed with 1 MB attached | 0.52 s | 0.08 s |
+
+Unlocking stays near a second: the iteration count Thunderbird and GnuPG choose is meant to take that long.
 
 ## Background work (Android)
 

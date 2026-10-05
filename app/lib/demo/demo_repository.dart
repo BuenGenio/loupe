@@ -73,7 +73,7 @@ final class _Queued {
 ///   [SearchResults.fromServerIds]); acting on such a message syncs it.
 /// - Sending to an address at a `.invalid` domain fails, so the Outbox
 ///   shows a failed message with an error and Retry.
-class DemoMailRepository implements MailRepository, MailingLists, MailSubscriptions {
+class DemoMailRepository implements MailRepository, MailingLists, MailSubscriptions, DecryptedMail {
   DemoMailRepository({
     this.latency = const DemoLatency(),
     DateTime Function()? clock,
@@ -906,6 +906,32 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
   }
 
   @override
+  Future<void> rememberProtectedSubject(String emailId, String subject) async {
+    final m = _messages[emailId];
+    if (m == null || (m.summary.hasDecryptedSubject && m.summary.subject == subject)) return;
+    m.summary = m.summary.copyWith(subject: subject, hasDecryptedSubject: true);
+    _notify();
+  }
+
+  /// Decrypted text that search finds, by email id (Index Decrypted
+  /// Messages for Search).
+  final _decryptedTexts = <String, String>{};
+
+  @override
+  Future<void> indexDecryptedText(String emailId, String text) async {
+    if (!_messages.containsKey(emailId) || _decryptedTexts[emailId] == text) return;
+    _decryptedTexts[emailId] = text;
+    _notify();
+  }
+
+  @override
+  Future<void> forgetDecryptedText() async {
+    if (_decryptedTexts.isEmpty) return;
+    _decryptedTexts.clear();
+    _notify();
+  }
+
+  @override
   Future<Uint8List> loadRawSource(String emailId) async {
     final m = _require(emailId);
     await _wait(_jitter(latency.content));
@@ -1147,12 +1173,15 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
     return matchesEmail(
       expr,
       m.summary,
-      content: EmailContent(
-        emailId: m.id,
-        html: m.html,
-        text: m.text,
-        attachments: [for (final a in m.attachments) a.attachment],
-      ),
+      content: switch (_decryptedTexts[m.id]) {
+        final decrypted? => EmailContent(emailId: m.id, text: decrypted),
+        null => EmailContent(
+          emailId: m.id,
+          html: m.html,
+          text: m.text,
+          attachments: [for (final a in m.attachments) a.attachment],
+        ),
+      },
       accountLabel: account == null ? null : '${account.displayName} ${account.email}',
       headers: {for (final (name, value) in m.extraHeaders) name.toLowerCase(): value},
     );

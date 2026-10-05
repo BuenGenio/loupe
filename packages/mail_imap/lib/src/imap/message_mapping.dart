@@ -77,6 +77,7 @@ EmailSummary? summaryFromFetch(
     size: m.size ?? 0,
     keywords: keywordsFromFlags(m.flags ?? const []),
     hasAttachment: structure != null && hasVisibleAttachment(structure),
+    isEncrypted: structure != null && isEncryptedStructure(structure),
     listId: list?.id,
     listName: list?.name,
     listPost: raw('List-Post'),

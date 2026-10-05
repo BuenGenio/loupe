@@ -26,6 +26,8 @@ Map<String, Object?> summaryToJson(EmailSummary e) => {
   if (e.listPost != null) 'listPost': e.listPost,
   if (e.listUnsubscribe != null) 'listUnsubscribe': e.listUnsubscribe,
   if (e.listUnsubscribePost != null) 'listUnsubscribePost': e.listUnsubscribePost,
+  if (e.isEncrypted) 'encrypted': true,
+  if (e.hasDecryptedSubject) 'decryptedSubject': true,
 };
 
 EmailSummary summaryFromJson(Map<String, Object?> j) => EmailSummary(
@@ -53,6 +55,8 @@ EmailSummary summaryFromJson(Map<String, Object?> j) => EmailSummary(
   listPost: j['listPost'] as String?,
   listUnsubscribe: j['listUnsubscribe'] as String?,
   listUnsubscribePost: j['listUnsubscribePost'] as String?,
+  isEncrypted: j['encrypted'] == true,
+  hasDecryptedSubject: j['decryptedSubject'] == true,
 );
 
 List<Map<String, Object?>> _addrs(List<EmailAddress> list) => [

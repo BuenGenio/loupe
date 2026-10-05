@@ -46,6 +46,7 @@ EmailSummary mail(
   String? threadId,
   int size = 1000,
   bool hasAttachment = false,
+  bool isEncrypted = false,
   String? listId,
   String? listName,
   String? listPost,
@@ -69,6 +70,7 @@ EmailSummary mail(
   keywords: keywords,
   size: size,
   hasAttachment: hasAttachment,
+  isEncrypted: isEncrypted,
   listId: listId,
   listName: listName,
   listPost: listPost,
@@ -116,7 +118,7 @@ Future<void> addMails(MailStore store, List<EmailSummary> emails) async {
 }
 
 /// The schema version a store has after opening (`StoreDatabase.schemaVersion`).
-const latestSchemaVersion = 5;
+const latestSchemaVersion = 6;
 
 /// Creates a database of schema [version] at [path], as that release created
 /// it (`test/schemas/v<version>.sql`, encrypted with the key `k`), with an

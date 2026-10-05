@@ -11,7 +11,9 @@ import 'fixtures.dart';
 
 /// The schema of the database at [path] as comparable data: the version,
 /// every table's columns (as `PRAGMA table_xinfo` reports them, so columns
-/// added later compare equal to created ones), and every index and trigger.
+/// added later compare equal to created ones, in any order: a column added
+/// by an upgrade comes after the generated `sub_key`, a created one before
+/// it), and every index and trigger.
 Map<String, Object?> schemaOf(String path) {
   final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
   try {
@@ -28,7 +30,7 @@ Map<String, Object?> schemaOf(String path) {
             for (final c in db.select('PRAGMA table_xinfo("${o['name']}")'))
               '${c['name']} ${c['type']} notnull=${c['notnull']} default=${c['dflt_value']} pk=${c['pk']} '
                   'hidden=${c['hidden']}',
-          ],
+          ]..sort(),
           _ => o['sql'] == null ? null : normalize(o['sql'] as String),
         },
     };
@@ -52,7 +54,7 @@ void main() {
     return schemaOf(path);
   }
 
-  for (final version in [1, 2, 3, 4]) {
+  for (final version in [1, 2, 3, 4, 5]) {
     group('version $version upgrades to $latestSchemaVersion', () {
       late String path;
       setUp(() {
@@ -100,6 +102,25 @@ void main() {
         expect((await store.watchSubscriptions(now: base).first).single.readCount, 1);
       });
 
+      test('with protected subjects that the list and search show', () async {
+        final store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
+        addTearDown(store.close);
+        final before = (await store.getEmail(eid('INBOX', 1)))!;
+        expect((before.isEncrypted, before.hasDecryptedSubject), (false, false));
+        await store.rememberProtectedSubject(eid('INBOX', 1), 'Quarterly secrets');
+        final after = (await store.getEmail(eid('INBOX', 1)))!;
+        expect((after.subject, after.hasDecryptedSubject), ('Quarterly secrets', true));
+        expect(
+          [for (final e in await store.search(const TextTerm(SearchField.subject, 'quarterly'))) e.id],
+          [eid('INBOX', 1)],
+        );
+        // The body cached before the upgrade is still found, and decrypted text can be.
+        expect(await store.search(const TextTerm(SearchField.body, 'kumquat')), hasLength(1));
+        await store.putDecryptedText(eid('INBOX', 1), 'Lighthouse Lodge');
+        expect(await store.search(const TextTerm(SearchField.body, 'lighthouse')), hasLength(1));
+        expect(await store.search(const TextTerm(SearchField.body, 'kumquat')), isEmpty);
+      });
+
       test('keeping the data; outbox entries are not held', () async {
         final store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
         addTearDown(store.close);
@@ -109,6 +130,7 @@ void main() {
         expect(entry.lastError, '554 5.7.1 Rejected');
         expect(entry.attempts, 3);
         expect(entry.held, isFalse);
+        expect(await store.outboxCopies('o1'), isNull, reason: 'queued before: composed when sent');
         expect(await store.claimOutbox('o1', now: DateTime.fromMillisecondsSinceEpoch(2000)), isNotNull);
       });
     });

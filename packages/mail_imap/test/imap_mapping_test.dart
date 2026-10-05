@@ -216,10 +216,25 @@ void main() {
       expect(s.references, ['a@x', 'b@x']);
       expect(s.keywords, {Keywords.seen, Keywords.flagged});
       expect(s.hasAttachment, isTrue);
+      expect(s.isEncrypted, isFalse);
       expect(s.size, 900);
       expect(s.receivedAt.toUtc(), DateTime.utc(2025, 10, 6, 10));
       expect(s.sentAt!.toUtc(), DateTime.utc(2025, 10, 6, 9, 59));
       expect(s.preview, 'Hello');
+    });
+
+    test('an encrypted message says so', () {
+      final m = runParser(
+        FetchParser(),
+        crlf(
+          '* 5 FETCH (UID 45 FLAGS () ENVELOPE (NIL "..." NIL NIL NIL NIL NIL NIL NIL NIL) BODYSTRUCTURE '
+          '(("APPLICATION" "PGP-ENCRYPTED" NIL NIL NIL "7BIT" 12 NIL NIL NIL)'
+          '("APPLICATION" "OCTET-STREAM" ("NAME" "encrypted.asc") NIL NIL "7BIT" 3000 NIL NIL NIL) '
+          '"ENCRYPTED" ("PROTOCOL" "application/pgp-encrypted") NIL NIL))\n',
+        ),
+      ).messages.single;
+      final s = summaryFromFetch(m, accountId: 'acc', path: 'INBOX', uidValidity: 7)!;
+      expect((s.isEncrypted, s.hasAttachment, s.subject), (true, false, '...'));
     });
 
     test('mailing-list headers: List-Id, List-Post, List-Unsubscribe(-Post)', () {

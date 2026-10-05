@@ -66,6 +66,20 @@ void main() {
       expect(n.actions, [MailAction.markRead, MailAction.reply]);
     });
 
+    test('encrypted mail: "Encrypted message" until its subject was decrypted on this device', () {
+      final sealed = mail.deliver('work', t0, subject: '...', preview: '', encrypted: true);
+      final n = messageNotification(NewMail(sealed, fromVip: false), work, hideContent: false);
+      expect((n.title, n.body, n.expandedBody), ('Alice', 'Encrypted message', null));
+      // A clear outer subject is not shown either: the message is encrypted.
+      final clear = mail.deliver('work', t0, subject: 'Visible outside', preview: '', encrypted: true);
+      expect(messageNotification(NewMail(clear, fromVip: false), work, hideContent: false).body, 'Encrypted message');
+
+      final known = mail.deliver('work', t0, subject: 'Offsite venue', encrypted: true, decryptedSubject: true);
+      expect(messageNotification(NewMail(known, fromVip: false), work, hideContent: false).body, 'Offsite venue');
+      final hidden = messageNotification(NewMail(known, fromVip: false), work, hideContent: true);
+      expect((hidden.title, hidden.body), ('New message from Work', null));
+    });
+
     test('names an unnamed sender and an empty subject', () {
       final e = mail.deliver('work', t0, fromName: null, subject: '  ', preview: '');
       final n = messageNotification(NewMail(e, fromVip: false), work, hideContent: false);

@@ -210,6 +210,14 @@ abstract interface class MessageComposer {
   Uint8List compose(OutgoingMessage message, Identity from, {required String messageId, DateTime? date});
 }
 
+/// A [MessageComposer] that can do its work away from the caller (in another
+/// isolate): signing and encrypting a message with large attachments takes
+/// seconds in pure Dart, too long for the app's UI isolate. mail_sync uses
+/// [composeAsync] when the composer has it.
+abstract interface class AsyncMessageComposer implements MessageComposer {
+  Future<Uint8List> composeAsync(OutgoingMessage message, Identity from, {required String messageId, DateTime? date});
+}
+
 /// Creates transports for accounts. Implemented by mail_imap.
 abstract interface class TransportFactory {
   MailTransport createTransport(MailAccount account, CredentialsCallback credentials);

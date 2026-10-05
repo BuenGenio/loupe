@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'address.dart';
+import 'decrypted.dart';
 import 'keywords.dart';
 import 'lists.dart';
 import 'snooze.dart';
@@ -32,6 +33,8 @@ final class EmailSummary {
     this.listPost,
     this.listUnsubscribe,
     this.listUnsubscribePost,
+    this.isEncrypted = false,
+    this.hasDecryptedSubject = false,
   });
 
   /// Stable local id, unique across accounts.
@@ -55,6 +58,10 @@ final class EmailSummary {
   final List<EmailAddress> cc;
   final List<EmailAddress> bcc;
   final List<EmailAddress> replyTo;
+
+  /// The subject; for encrypted mail whose real subject is protected (sent
+  /// as `...`), the real one once it was decrypted on this device
+  /// ([hasDecryptedSubject]).
   final String subject;
 
   /// Up to ~256 characters of body text, whitespace collapsed.
@@ -91,6 +98,15 @@ final class EmailSummary {
   /// [isOneClickUnsubscribe].
   final String? listUnsubscribePost;
 
+  /// Encrypted (PGP/MIME, or S/MIME enveloped data), as the MIME structure
+  /// says. False for mail stored before this was known.
+  final bool isEncrypted;
+
+  /// [subject] is the protected subject of this encrypted message,
+  /// decrypted on this device (see [DecryptedMail]), not the one it was
+  /// sent with.
+  final bool hasDecryptedSubject;
+
   /// Came through a mailing list (has a List-Id).
   bool get isListMail => listId != null;
 
@@ -112,7 +128,14 @@ final class EmailSummary {
 
   EmailAddress? get sender => from.isNotEmpty ? from.first : null;
 
-  EmailSummary copyWith({Set<String>? keywords, String? mailboxId, String? threadId, String? preview}) => EmailSummary(
+  EmailSummary copyWith({
+    Set<String>? keywords,
+    String? mailboxId,
+    String? threadId,
+    String? preview,
+    String? subject,
+    bool? hasDecryptedSubject,
+  }) => EmailSummary(
     id: id,
     accountId: accountId,
     mailboxId: mailboxId ?? this.mailboxId,
@@ -126,7 +149,7 @@ final class EmailSummary {
     cc: cc,
     bcc: bcc,
     replyTo: replyTo,
-    subject: subject,
+    subject: subject ?? this.subject,
     preview: preview ?? this.preview,
     sentAt: sentAt,
     size: size,
@@ -137,6 +160,8 @@ final class EmailSummary {
     listPost: listPost,
     listUnsubscribe: listUnsubscribe,
     listUnsubscribePost: listUnsubscribePost,
+    isEncrypted: isEncrypted,
+    hasDecryptedSubject: hasDecryptedSubject ?? this.hasDecryptedSubject,
   );
 
   @override

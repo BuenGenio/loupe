@@ -19,7 +19,8 @@ import 'util.dart';
 /// sends overdue outbox messages). Call [pause] when the app goes to the
 /// background and [resume] when it returns; [syncOnce] serves background
 /// fetch tasks. [dispose] stops everything but leaves the store open.
-final class LiveMailRepository implements MailRepository, MailingLists, MailSubscriptions, SignInRenewal {
+final class LiveMailRepository
+    implements MailRepository, MailingLists, MailSubscriptions, SignInRenewal, DecryptedMail {
   LiveMailRepository(
     this.store,
     this.transports,
@@ -535,6 +536,18 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     final email = await _requireEmail(emailId);
     return _syncerFor(email.accountId).fetchRaw(email.id);
   }
+
+  // Encrypted mail ----------------------------------------------------------
+
+  @override
+  Future<void> rememberProtectedSubject(String emailId, String subject) =>
+      store.rememberProtectedSubject(emailId, subject);
+
+  @override
+  Future<void> indexDecryptedText(String emailId, String text) => store.putDecryptedText(emailId, text);
+
+  @override
+  Future<void> forgetDecryptedText() => store.deleteDecryptedTexts();
 
   // Actions -----------------------------------------------------------------
 
@@ -1062,16 +1075,21 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     // A scheduled message lives in the outbox, not in Drafts.
     final moveDraft = sendAt != null && draft != null;
     final queued = moveDraft ? message.withoutDraft() : message;
-    await store.putOutbox(
-      OutboxEntry(
-        id: id,
-        accountId: message.accountId,
-        message: queued,
-        sendAfter: sendAt ?? now.add(undoDelay),
-        createdAt: now,
-        status: sendAt == null ? OutboxStatus.queued : OutboxStatus.scheduled,
-      ),
+    final entry = OutboxEntry(
+      id: id,
+      accountId: message.accountId,
+      message: queued,
+      sendAfter: sendAt ?? now.add(undoDelay),
+      createdAt: now,
+      status: sendAt == null ? OutboxStatus.queued : OutboxStatus.scheduled,
     );
+    // Signed and encrypted now, while the user is here to unlock the key,
+    // dated for when it goes out: background work can send it as it is.
+    final prepared = await _prepare(entry, date: entry.sendAfter);
+    await store.transaction(() async {
+      await store.putOutbox(entry);
+      if (prepared != null) await store.setOutboxCopies(id, prepared);
+    });
     // Only once the outbox has it: a failure above leaves the draft.
     if (moveDraft) {
       try {
@@ -1088,7 +1106,14 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
   Stream<List<OutboxItem>> watchOutbox() => store.watchOutbox().map(
     (entries) => [
       for (final e in entries)
-        OutboxItem(id: e.id, message: e.message, sendAt: e.sendAfter, status: e.status, error: e.lastError),
+        OutboxItem(
+          id: e.id,
+          message: e.message,
+          sendAt: e.sendAfter,
+          status: e.status,
+          error: e.lastError,
+          composedFor: e.composedFor,
+        ),
     ],
   );
 
@@ -1099,23 +1124,64 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     return entry?.message;
   }
 
+  /// Sends now; copies composed for a later time (a scheduled send) are
+  /// composed again for now, and those of a retry stay as they were.
   @override
   Future<void> sendNow(String outboxId) async {
-    final moved = await store.rescheduleOutbox(outboxId, sendAfter: _now(), status: OutboxStatus.queued);
+    final now = _now();
+    final entry = await store.getOutbox(outboxId);
+    final current = entry == null ? null : await store.outboxCopies(outboxId);
+    final early = current != null && current.date.isAfter(now);
+    final prepared = early ? await _prepare(entry!, date: now) : null;
+    final moved = await store.transaction(() async {
+      if (!await store.rescheduleOutbox(outboxId, sendAfter: now, status: OutboxStatus.queued)) return false;
+      if (early) await store.setOutboxCopies(outboxId, prepared);
+      return true;
+    });
     if (!moved && await store.getOutbox(outboxId) == null) {
       throw const MailException(MailErrorKind.notFound, 'This message was already sent.');
     }
     await _scheduleOutbox();
   }
 
+  /// Moves a waiting message to [sendAt], composing it again for then: the
+  /// copies made for the old time (their Date, the S/MIME signing time)
+  /// never go out at the new one. When it can't be composed now (the key
+  /// is locked), it is composed when it goes out.
   @override
   Future<void> rescheduleSend(String outboxId, DateTime sendAt) async {
-    if (!await store.rescheduleOutbox(outboxId, sendAfter: sendAt, status: OutboxStatus.scheduled)) {
+    final entry = await store.getOutbox(outboxId);
+    final prepared = entry == null ? null : await _prepare(entry, date: sendAt);
+    final moved = await store.transaction(() async {
+      if (!await store.rescheduleOutbox(outboxId, sendAfter: sendAt, status: OutboxStatus.scheduled)) return false;
+      await store.setOutboxCopies(outboxId, prepared);
+      return true;
+    });
+    if (!moved) {
       throw await store.getOutbox(outboxId) == null
           ? const MailException(MailErrorKind.notFound, 'This message was already sent.')
           : const MailException(MailErrorKind.unsupported, 'This message is being sent right now.');
     }
     await _scheduleOutbox();
+  }
+
+  /// [entry] composed for sending at [date], when it is signed or
+  /// encrypted (plain mail is composed when it goes out); null when it
+  /// can't be composed now (the key is locked, a recipient has no key):
+  /// sending then composes it, and fails with the reason.
+  Future<PreparedMessage?> _prepare(OutboxEntry entry, {required DateTime date}) async {
+    if (entry.message.security.isPlain) return null;
+    try {
+      final account = await store.getAccount(entry.accountId);
+      if (account == null) return null;
+      final identity = account.identityById(entry.message.identityId);
+      return PreparedMessage(
+        date: date,
+        copies: await _composeCopies(entry, identity, date: date),
+      );
+    } on Object {
+      return null;
+    }
   }
 
   Future<void> _scheduleOutbox() async {
@@ -1183,30 +1249,47 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
   /// backoff, or held for Retry when the server refused for good
   /// ([PermanentMailException]). Recipients the server refused while taking
   /// the message for the others stay in the Outbox (see [_refusedPart]).
+  ///
+  /// Encrypted mail with Bcc recipients goes out as several copies
+  /// ([OutgoingMessage.deliveries]); a copy that fails after another went
+  /// out leaves its recipients in the Outbox the same way.
   Future<void> _sendOne(OutboxEntry entry) async {
     final m = entry.message;
     final MailAccount account;
-    final Uint8List bytes;
-    final SendReceipt receipt;
+    final Uint8List filed;
+    final refused = <String, MailException>{};
     try {
       account =
           await store.getAccount(entry.accountId) ??
           (throw const MailException(MailErrorKind.notFound, 'This account no longer exists'));
       final identity = account.identityById(m.identityId);
-      // One Message-ID for every attempt: if a send whose reply got lost
-      // did go out, the copies are recognisably the same message.
-      bytes = transports.composer.compose(
-        m,
-        identity,
-        messageId: outboxMessageId(entry.id, identity.email),
-        date: _now(),
-      );
-      final recipients = {
-        for (final a in [...m.to, ...m.cc, ...m.bcc]) a.email,
-      }.toList();
+      // As composed when it was queued; else every copy is made before any
+      // goes out: one that can't be made (a key missing or locked) sends
+      // none.
+      final copies =
+          (await store.outboxCopies(entry.id))?.copies ?? await _composeCopies(entry, identity, date: _now());
+      filed = copies.firstWhere((c) => c.filed).rfc822;
       final sender = transports.createSender(account, _credentialsFor(account));
       try {
-        receipt = await sender.send(bytes, envelopeFrom: identity.email, recipients: recipients);
+        var delivered = false;
+        for (final copy in copies) {
+          // The Sent copy of encrypted mail only to Bcc recipients goes to
+          // nobody; a message without any recipient goes to the server,
+          // which refuses it.
+          if (copy.recipients.isEmpty && copies.length > 1) continue;
+          try {
+            final receipt = await sender.send(copy.rfc822, envelopeFrom: identity.email, recipients: copy.recipients);
+            refused.addAll(receipt.refused);
+            delivered = true;
+          } on Object catch (error) {
+            // Before anything went out, the message failed as a whole.
+            if (!delivered) rethrow;
+            final e = asMailException(error, 'Sending failed');
+            for (final r in copy.recipients) {
+              refused[r] = e;
+            }
+          }
+        }
       } finally {
         try {
           await sender.close();
@@ -1233,24 +1316,56 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
       return;
     }
     // Sent: whatever fails from here on must not send it again.
-    final refused = _refusedPart(entry, receipt.refused);
+    final rest = _refusedPart(entry, refused);
+    final restPrepared = rest == null ? null : await _prepare(rest, date: _now());
     try {
-      await _afterSend(account, entry, bytes, refused: refused);
+      await _afterSend(account, entry, filed, refused: rest, refusedPrepared: restPrepared);
     } on Object catch (error) {
       try {
         await store.transaction(() async {
           await store.deleteOutbox(entry.id);
-          if (refused != null) await store.putOutbox(refused);
+          if (rest != null) await store.putOutbox(rest);
+          if (rest != null && restPrepared != null) await store.setOutboxCopies(rest.id, restPrepared);
         });
       } on Object {
         // Left claimed; the store is gone (released only when stale).
       }
       _reportError(asMailException(error, 'A message was sent, but not filed in Sent'));
     }
-    if (receipt.refused.isNotEmpty) {
-      final reasons = [for (final e in receipt.refused.values) e.message].join('; ');
+    if (refused.isNotEmpty) {
+      final reasons = {for (final e in refused.values) e.message}.join('; ');
       _reportError(MailException(MailErrorKind.server, 'A message was sent, but not to everyone: $reasons'));
     }
+  }
+
+  /// The copies [entry] goes out as, composed with one Message-ID for every
+  /// copy and every attempt: if a send whose reply got lost did go out, the
+  /// copies are recognisably the same message.
+  Future<List<PreparedCopy>> _composeCopies(OutboxEntry entry, Identity identity, {required DateTime date}) async {
+    final messageId = outboxMessageId(entry.id, identity.email);
+    return [
+      for (final d in entry.message.deliveries(sender: identity.email))
+        PreparedCopy(
+          d.recipients,
+          await _compose(d.message, identity, messageId: messageId, date: date),
+          filed: d.filed,
+        ),
+    ];
+  }
+
+  /// Composes [message], away from this isolate when the composer can (an
+  /// [AsyncMessageComposer]).
+  Future<Uint8List> _compose(
+    OutgoingMessage message,
+    Identity from, {
+    required String messageId,
+    required DateTime date,
+  }) async {
+    final composer = transports.composer;
+    if (composer is AsyncMessageComposer) {
+      return composer.composeAsync(message, from, messageId: messageId, date: date);
+    }
+    return composer.compose(message, from, messageId: messageId, date: date);
   }
 
   /// What the server refused of [entry] while taking it for the others: a
@@ -1283,7 +1398,13 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     );
   }
 
-  Future<void> _afterSend(MailAccount account, OutboxEntry entry, Uint8List bytes, {OutboxEntry? refused}) async {
+  Future<void> _afterSend(
+    MailAccount account,
+    OutboxEntry entry,
+    Uint8List bytes, {
+    OutboxEntry? refused,
+    PreparedMessage? refusedPrepared,
+  }) async {
     final m = entry.message;
     final now = _now();
     final sent = await store.mailboxByRole(account.id, MailboxRole.sent);
@@ -1291,6 +1412,7 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
       await store.deleteOutbox(entry.id);
       // The refused recipients' part takes its place in the same step.
       if (refused != null) await store.putOutbox(refused);
+      if (refused != null && refusedPrepared != null) await store.setOutboxCopies(refused.id, refusedPrepared);
       // Gmail files sent mail itself.
       if (account.provider != ProviderKind.gmail && sent != null) {
         await store.enqueueOp(account.id, OpType.append, {
@@ -1335,7 +1457,7 @@ final class LiveMailRepository implements MailRepository, MailingLists, MailSubs
     final identity = account.identityById(message.identityId);
     final messageId = newMessageId(identity.email);
     final now = _now();
-    final bytes = transports.composer.compose(message, identity, messageId: messageId, date: now);
+    final bytes = await _compose(message, identity, messageId: messageId, date: now);
     final syncer = _syncerFor(account.id);
     const keywords = {Keywords.draft, Keywords.seen};
     String id;

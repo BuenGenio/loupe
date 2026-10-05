@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../platform/support_directory.dart';
+import '../openpgp/decrypted_mail.dart';
 import 'mail_notifier.dart';
 import 'new_mail.dart';
 import 'notification_content.dart';
@@ -11,11 +12,24 @@ import 'notification_settings.dart';
 /// is showing. Runs after each background sync, and silently when the app
 /// goes to the background (what arrived while it was open was seen there).
 final class NewMailCheck {
-  NewMailCheck({required this.notifier, required this.state, DateTime Function()? clock})
-    : _clock = clock ?? DateTime.now;
+  NewMailCheck({
+    required this.notifier,
+    required this.state,
+    this.subjects,
+    this.subjectBudget = const Duration(seconds: 15),
+    DateTime Function()? clock,
+  }) : _clock = clock ?? DateTime.now;
 
   final MailNotifier notifier;
   final NewMailStateStore state;
+
+  /// Decrypts the protected subjects of new encrypted mail before it is
+  /// notified (Decrypt Subjects in the Background); returns null when that
+  /// is off or no key can do it without a passphrase.
+  final Future<SubjectDecryptor?> Function()? subjects;
+
+  /// How long notifying may wait for [subjects].
+  final Duration subjectBudget;
   final DateTime Function() _clock;
 
   /// Finds mail that arrived since the last check and shows notifications
@@ -31,10 +45,11 @@ final class NewMailCheck {
   }) async {
     final detection = await detectNewMail(repository, await state.read(), now: since ?? _clock());
     if (!silent && detection.mail.isNotEmpty) {
+      final mail = await _withSubjects(repository, detection.mail);
       final accounts = await repository.watchAccounts().first;
       final mailboxes = await repository.watchMailboxes().first;
       final notifications = messageNotifications(
-        detection.mail,
+        mail,
         accounts: accounts,
         settings: settings,
         archivable: archivableAccounts(accounts, mailboxes),
@@ -46,6 +61,26 @@ final class NewMailCheck {
     await state.write(detection.state);
     await tidy(repository, settings);
     return detection.mail;
+  }
+
+  /// [mail] with the protected subjects [subjects] could decrypt.
+  Future<List<NewMail>> _withSubjects(MailRepository repository, List<NewMail> mail) async {
+    final factory = subjects;
+    if (factory == null || !mail.any((m) => m.email.isEncrypted && !m.email.hasDecryptedSubject)) return mail;
+    try {
+      final decryptor = await factory();
+      if (decryptor == null) return mail;
+      final found = await decryptor.decrypt(repository, [for (final m in mail) m.email], budget: subjectBudget);
+      return [
+        for (final m in mail)
+          if (found[m.email.id] case final subject?)
+            NewMail(m.email.copyWith(subject: subject, hasDecryptedSubject: true), fromVip: m.fromVip)
+          else
+            m,
+      ];
+    } on Object {
+      return mail;
+    }
   }
 
   /// Removes notifications of messages that were read, moved or deleted

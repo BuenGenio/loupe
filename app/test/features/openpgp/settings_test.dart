@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/app.dart';
+import 'package:loupe/features/openpgp/decrypted_mail.dart';
 import 'package:loupe/features/openpgp/key_import.dart';
 import 'package:loupe/features/openpgp/openpgp_providers.dart';
 import 'package:loupe/features/openpgp/passphrase_dialog.dart';
 import 'package:loupe/router.dart';
+import 'package:loupe/settings/app_settings.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 
 import '../../helpers.dart';
@@ -33,6 +35,20 @@ void main() {
     expect(find.text('Dana Okafor'), findsOneWidget);
     expect(textContaining('Accepted and verified'), findsOneWidget);
     expect(find.text('sam.rivera@northwind.example'), findsOneWidget);
+  });
+
+  testWidgets('On This Device: Decrypt Subjects in the Background is off until turned on', (tester) async {
+    await pumpLoupe(tester, overrides: [inlinePgp]);
+    await goTo(tester, Routes.encryption);
+    final row = find.byKey(const ValueKey('subjects-in-background'));
+    await tester.scrollTo(row);
+    final container = ProviderScope.containerOf(tester.element(find.byType(LoupeApp)));
+    expect(container.read(decryptedMailSettingsProvider).subjectsInBackground, isFalse);
+    await tester.tap(row);
+    await tester.pumpAndSettle();
+    expect(container.read(decryptedMailSettingsProvider).subjectsInBackground, isTrue);
+    expect(container.read(sharedPreferencesProvider).getBool('e2ee.subjectsInBackground'), isTrue);
+    expect(textContaining('keeps the subject of each message you open'), findsOneWidget);
   });
 
   testWidgets('generates a key for an address', (tester) async {

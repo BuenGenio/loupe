@@ -14,6 +14,7 @@ import '../conversation/sheets.dart';
 import '../settings/settings_widgets.dart';
 import '../smime/smime_providers.dart';
 import '../smime/smime_settings.dart';
+import 'decrypted_mail.dart';
 import 'key_import.dart';
 import 'openpgp_providers.dart';
 import 'pgp_status.dart';
@@ -39,6 +40,7 @@ class EncryptionSettingsScreen extends ConsumerWidget {
       return const GroupedPage(title: 'End-to-End Encryption', children: [SizedBox(height: 200)]);
     }
     final now = DateTime.now();
+    final decrypted = ref.watch(decryptedMailSettingsProvider);
     final accepted = [
       for (final e in state.publicKeys)
         if (e.source != KeySource.autocrypt || e.isAccepted) e,
@@ -119,6 +121,39 @@ class EncryptionSettingsScreen extends ConsumerWidget {
           ),
         const SmimeSettingsSection(),
         InsetGroup(
+          header: 'On This Device',
+          separatorIndent: 16,
+          footer:
+              'Encrypted messages hide their subject. Loupe keeps the subject of each message you open in its '
+              'encrypted database on this device, so the list, search and notifications show it. In the '
+              'background, Loupe can also decrypt the subjects of new messages with keys that have no '
+              'passphrase; it downloads each message (up to 1 MB) to do so.',
+          children: [
+            SwitchRow(
+              key: const ValueKey('subjects-in-background'),
+              title: 'Decrypt Subjects in the Background',
+              value: decrypted.subjectsInBackground,
+              onChanged: (v) =>
+                  ref.read(decryptedMailSettingsProvider.notifier).update((s) => s.copyWith(subjectsInBackground: v)),
+            ),
+          ],
+        ),
+        InsetGroup(
+          separatorIndent: 16,
+          footer:
+              'Search finds encrypted messages by their sender, recipients and subject. With this on, Loupe also '
+              'adds the text of each encrypted message it decrypts to the search index in its encrypted database on '
+              'this device, so search finds it by its text too. Turning it off removes that text from the index.',
+          children: [
+            SwitchRow(
+              key: const ValueKey('index-decrypted'),
+              title: 'Index Decrypted Messages for Search',
+              value: decrypted.indexForSearch,
+              onChanged: (v) => _setIndexing(ref, v),
+            ),
+          ],
+        ),
+        InsetGroup(
           header: 'Passphrases',
           separatorIndent: 16,
           footer:
@@ -145,6 +180,17 @@ class EncryptionSettingsScreen extends ConsumerWidget {
         ),
       ],
     );
+  }
+
+  /// Index Decrypted Messages for Search; off takes the text out of the index.
+  static Future<void> _setIndexing(WidgetRef ref, bool on) async {
+    await ref.read(decryptedMailSettingsProvider.notifier).update((s) => s.copyWith(indexForSearch: on));
+    if (on) return;
+    try {
+      if (ref.read(repositoryProvider) case final DecryptedMail cache) await cache.forgetDecryptedText();
+    } on Object catch (e) {
+      debugPrint('Removing decrypted text from the index failed: ${e.runtimeType}');
+    }
   }
 
   Widget _publicRow(BuildContext context, PublicKeyEntry e) {

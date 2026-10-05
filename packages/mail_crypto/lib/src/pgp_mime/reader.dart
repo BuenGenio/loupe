@@ -51,19 +51,42 @@ bool _lineStarts(String text, String marker) {
   return false;
 }
 
+/// The line that separates inline PGP's protected text from the rest of
+/// the text part ([PgpReadResult.text]): everything below it is outside the
+/// signed or encrypted block. All of that text goes below it, so nothing
+/// outside the block can pass for part of it.
+String outsideMarker({required bool signed, required bool encrypted}) {
+  final what = switch ((signed, encrypted)) {
+    (true, true) => 'Not encrypted or signed',
+    (true, false) => 'Unsigned content',
+    (false, true) => 'Not encrypted',
+    (false, false) => 'Unprotected content',
+  };
+  return '━━━━ $what: everything below this line is outside the '
+      '${signed ? 'signature' : 'encrypted part'} ━━━━';
+}
+
 /// What reading a message gave.
 final class PgpReadResult {
-  const PgpReadResult({required this.status, this.entity, this.text});
+  const PgpReadResult({required this.status, this.entity, this.text, this.protectedText, this.outsideText});
 
   final PgpMessageStatus status;
 
   /// The entity to show instead of the message: the decrypted content, or
-  /// the signed part of a `multipart/signed`. Null when there is none.
+  /// the signed part of a `multipart/signed` (from these very bytes, never
+  /// the server's view of the message). Null when there is none.
   final MimeEntity? entity;
 
-  /// For inline PGP: the message text with the armored block replaced by
-  /// its plain text.
+  /// For inline PGP, what to show: the text of the armored block, then any
+  /// text around it in its part ([outsideText]) below an [outsideMarker].
   final String? text;
+
+  /// For inline PGP: the signed or decrypted text alone.
+  final String? protectedText;
+
+  /// For inline PGP: the text before and after the block, which the
+  /// signature and encryption don't cover; empty when there is none.
+  final String? outsideText;
 }
 
 /// Reads protected messages with a [PgpBackend]. Synchronous and pure, so
@@ -184,18 +207,33 @@ final class PgpMimeReader {
   }
 
   /// Checks a `multipart/signed`: part 1's exact bytes (with CRLF line
-  /// ends) against part 2's detached signature.
+  /// ends) against part 2's detached signature. RFC 3156 allows these two
+  /// parts and nothing else: a part next to them isn't covered, so it makes
+  /// the signature bad, and only part 1 (the entity verified) is shown.
   (MimeEntity?, PgpSignatureCheck?) _verifySigned(MimeEntity signed, List<PgpKey> verifiers) {
     if (signed.parts.length < 2) return (signed.parts.firstOrNull, null);
     final part = signed.parts[0];
     final signature = signed.parts[1].decodedBody;
+    PgpSignatureCheck? check;
     try {
-      final checks = backend.verifyDetached(canonicalLineEnds(part.raw), signature, verifiers);
-      return (part, _best(checks));
+      check = _best(backend.verifyDetached(canonicalLineEnds(part.raw), signature, verifiers));
     } on PgpException catch (e) {
-      return (part, PgpSignatureCheck(status: PgpSignatureStatus.bad, issuerKeyId: '', detail: e.message));
+      check = PgpSignatureCheck(status: PgpSignatureStatus.bad, issuerKeyId: '', detail: e.message);
     }
+    if (signed.parts.length != 2) {
+      check = PgpSignatureCheck(
+        status: PgpSignatureStatus.bad,
+        issuerKeyId: check?.issuerKeyId ?? '',
+        signerFingerprint: check?.signerFingerprint,
+        created: check?.created,
+        detail: extraPartsProblem,
+      );
+    }
+    return (part, check);
   }
+
+  /// Why a `multipart/signed` with more than its two parts is bad.
+  static const extraPartsProblem = 'The message has parts the signature doesn’t cover.';
 
   /// The first text/plain part, where inline PGP lives.
   MimeEntity? _inlinePart(MimeEntity root) {
@@ -207,12 +245,42 @@ final class PgpMimeReader {
     return null;
   }
 
+  /// Whether [root] has content besides [part] (other text parts, an HTML
+  /// alternative, attachments): inline PGP covers only its block in [part].
+  static bool _hasOtherContent(MimeEntity root, MimeEntity part) {
+    if (identical(root, part)) return false;
+    if (!root.isMultipart) return root.decodedBody.isNotEmpty;
+    return root.parts.any((p) => _hasOtherContent(p, part));
+  }
+
+  /// Inline PGP's result: the [protected] text first, then the [before] and
+  /// [after] text of its part below an [outsideMarker].
+  static PgpReadResult _inlineResult(
+    String protected,
+    String before,
+    String after, {
+    required bool otherParts,
+    required PgpMessageStatus Function(bool partial) status,
+  }) {
+    final outside = [before.trim(), after.trim()].where((t) => t.isNotEmpty).join('\n\n').replaceAll('\r\n', '\n');
+    final shown = protected.replaceAll('\r\n', '\n');
+    final s = status(outside.isNotEmpty || otherParts);
+    final marker = outsideMarker(signed: s.isSigned, encrypted: s.encrypted);
+    return PgpReadResult(
+      text: outside.isEmpty ? shown : '${shown.trimRight()}\n\n$marker\n\n$outside',
+      protectedText: shown,
+      outsideText: outside,
+      status: s,
+    );
+  }
+
   PgpReadResult _readInline(MimeEntity root, List<PgpKey> keys, List<PgpKey> verifiers) {
     final part = _inlinePart(root);
     if (part == null) return const PgpReadResult(status: PgpMessageStatus.none);
     final bytes = part.decodedBody;
     final byteText = latin1.decode(bytes);
     String show(String byteString) => decodeCharset(latin1.encode(byteString), part.charset);
+    final otherParts = _hasOtherContent(root, part);
 
     final encStart = byteText.indexOf('-----BEGIN PGP MESSAGE-----');
     if (encStart >= 0) {
@@ -230,16 +298,17 @@ final class PgpMimeReader {
         } on FormatException {
           plain = decodeCharset(decryption.data, part.charset);
         }
-        final before = show(byteText.substring(0, encStart));
-        final after = show(byteText.substring(end));
-        return PgpReadResult(
-          text: (before + plain + after).replaceAll('\r\n', '\n'),
-          status: PgpMessageStatus(
+        return _inlineResult(
+          plain,
+          show(byteText.substring(0, encStart)),
+          show(byteText.substring(end)),
+          otherParts: otherParts,
+          status: (partial) => PgpMessageStatus(
             protection: PgpProtection.inlineEncrypted,
             encrypted: true,
             signature: _best(decryption.signatures),
             recipientKeyIds: recipients,
-            partial: (before + after).trim().isNotEmpty,
+            partial: partial,
           ),
         );
       } on PgpException catch (e) {
@@ -273,15 +342,13 @@ final class PgpMimeReader {
       } on PgpException catch (e) {
         check = PgpSignatureCheck(status: PgpSignatureStatus.bad, issuerKeyId: '', detail: e.message);
       }
-      final before = show(byteText.substring(0, signStart));
-      final after = show(byteText.substring(end));
-      return PgpReadResult(
-        text: (before + show(parts.text) + after).replaceAll('\r\n', '\n'),
-        status: PgpMessageStatus(
-          protection: PgpProtection.inlineSigned,
-          signature: check,
-          partial: (before + after).trim().isNotEmpty,
-        ),
+      return _inlineResult(
+        show(parts.text),
+        show(byteText.substring(0, signStart)),
+        show(byteText.substring(end)),
+        otherParts: otherParts,
+        status: (partial) =>
+            PgpMessageStatus(protection: PgpProtection.inlineSigned, signature: check, partial: partial),
       );
     }
     return const PgpReadResult(status: PgpMessageStatus.none);

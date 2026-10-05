@@ -5,6 +5,7 @@
 import 'package:pointycastle/export.dart';
 
 import '../cryptor/symmetric/cast5.dart';
+import '../cryptor/symmetric/cfb.dart';
 import '../cryptor/symmetric/idea.dart';
 
 /// Symmetric key algorithms enum
@@ -60,19 +61,12 @@ enum SymmetricAlgorithm {
           16,
       };
 
+  /// Loupe: CFB in linear time (see [CfbBlockCipher]); pointycastle's
+  /// CFBBlockCipher was quadratic.
   BlockCipher get cfbCipherEngine => switch (this) {
-        aes128 || aes192 || aes256 => BlockCipher('AES/CFB-${blockSize * 8}'),
-        blowfish => CFBBlockCipher(BlowfishEngine(), blockSize),
-        camellia128 ||
-        camellia192 ||
-        camellia256 =>
-          CFBBlockCipher(CamelliaEngine(), blockSize),
-        cast5 => CFBBlockCipher(CAST5Engine(), blockSize),
-        idea => CFBBlockCipher(IDEAEngine(), blockSize),
-        tripledes => BlockCipher('DESede/CFB-${blockSize * 8}'),
-        twofish => CFBBlockCipher(TwofishEngine(), blockSize),
-        _ =>
+        plaintext =>
           throw UnsupportedError('Unsupported symmetric algorithm encountered'),
+        _ => CfbBlockCipher(cipherEngine),
       };
 
   BlockCipher get cipherEngine => switch (this) {

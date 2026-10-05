@@ -73,14 +73,14 @@ final class PacketList extends ListBase<PacketInterface>
   }
 
   @override
-  encode() => Uint8List.fromList(
-        packets
-            .map(
-              (packet) => packet.encode(),
-            )
-            .expand((byte) => byte)
-            .toList(growable: false),
-      );
+  /// Loupe: concatenated as bytes, not byte by byte through a List<int>.
+  encode() {
+    final out = BytesBuilder(copy: false);
+    for (final packet in packets) {
+      out.add(packet.encode());
+    }
+    return out.takeBytes();
+  }
 
   PacketListInterface filterByTypes([
     final List<PacketType> tags = const [],

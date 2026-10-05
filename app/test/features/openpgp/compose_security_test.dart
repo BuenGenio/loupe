@@ -127,6 +127,37 @@ void main() {
     expect(draft.security, const OutgoingSecurity(encrypt: true, sign: true, draft: true));
   });
 
+  testWidgets('a reply to encrypted mail takes its protected subject, not "..."', (tester) async {
+    final storage = await keychainWith(own: [mine], others: [(aliceKey, KeyAcceptance.unverified)]);
+    final raw = pgpMessage(
+      from: alice,
+      fromKey: aliceKey,
+      to: me,
+      toKey: mine,
+      subject: 'The real subject',
+      text: 'Only for you.',
+    );
+    final repo = FakeMailRepository(
+      emails: [testEmail('p1', subject: '...')],
+      contents: {'p1': outerContent('p1', raw)},
+    )..rawSources['p1'] = raw;
+    final router = await pumpTestApp(
+      tester,
+      repository: repo,
+      composeBuilder: (args) => ComposeScreen(args: args),
+      overrides: [inlinePgp, keychain(storage)],
+    );
+    unawaited(
+      router.push(
+        '/compose',
+        extra: const ComposeArgs(mode: ComposeMode.reply, sourceEmailId: 'p1'),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(tester.widget<TextField>(find.byKey(const Key('compose-subject'))).controller!.text, 'Re: The real subject');
+    expect(isOn(tester, encryptToggle), isTrue, reason: 'and suggests encrypting the reply');
+  });
+
   testWidgets('without a key for the sender there are no toggles', (tester) async {
     final storage = await keychainWith(others: [(aliceKey, KeyAcceptance.verified)]);
     final router = await pumpTestApp(

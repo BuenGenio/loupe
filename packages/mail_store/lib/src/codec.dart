@@ -44,7 +44,7 @@ EmailSummary summaryFromRow(EmailRow r) => EmailSummary(
   cc: decodeAddresses(r.ccAddrs),
   bcc: decodeAddresses(r.bccAddrs),
   replyTo: decodeAddresses(r.replyToAddrs),
-  subject: r.subject,
+  subject: r.protectedSubject ?? r.subject,
   preview: r.preview,
   sentAt: r.sentAt == null ? null : fromMillis(r.sentAt!),
   size: r.size,
@@ -55,6 +55,8 @@ EmailSummary summaryFromRow(EmailRow r) => EmailSummary(
   listPost: r.listPost,
   listUnsubscribe: r.listUnsubscribe,
   listUnsubscribePost: r.listUnsubscribePost,
+  isEncrypted: r.isEncrypted,
+  hasDecryptedSubject: r.protectedSubject != null,
 );
 
 Mailbox mailboxFromRow(MailboxRow r) => Mailbox(

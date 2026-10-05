@@ -4,6 +4,8 @@
 
 library;
 
+import 'package:crypto/crypto.dart' as crypto;
+
 /// Hash algorithms enum
 /// Author Nguyen Van Nguyen <nguyennv1981@gmail.com>
 enum HashAlgorithm {
@@ -21,6 +23,17 @@ enum HashAlgorithm {
   final int value;
 
   const HashAlgorithm(this.value);
+
+  /// Loupe: package:crypto's implementation where it has one (SHA-1 and
+  /// SHA-2), faster than pointycastle's; null for the others.
+  crypto.Hash? get fastHash => switch (this) {
+        sha1 => crypto.sha1,
+        sha224 => crypto.sha224,
+        sha256 => crypto.sha256,
+        sha384 => crypto.sha384,
+        sha512 => crypto.sha512,
+        _ => null,
+      };
 
   /// pointy castle digest name
   String get digestName => switch (this) {

@@ -113,9 +113,8 @@ final class PgpMessageComposer implements MessageComposer {
     if (security.attachPublicKey) content = _withKey(content, own);
 
     if (security.encrypt) {
-      final recipients = {
-        for (final a in [...message.to, ...message.cc, ...message.bcc]) a.email.trim().toLowerCase(),
-      };
+      // A Bcc recipient's copy names only their key (OutgoingMessage.deliveries).
+      final recipients = {for (final a in message.encryptionRecipients) a.email.trim().toLowerCase()};
       final plan = planEncryption(state, from: from.email, recipients: recipients, now: now);
       if (plan.missing.isNotEmpty) {
         throw MailException(
@@ -160,7 +159,7 @@ final class PgpMessageComposer implements MessageComposer {
     if (unlocked == null) {
       throw const MailException(
         MailErrorKind.unsupported,
-        'Your OpenPGP key is locked. Unlock it in Settings › End-to-End Encryption, then send again.',
+        'Your OpenPGP key is locked. Tap Retry in the Outbox to unlock it and send.',
       );
     }
     return unlocked;

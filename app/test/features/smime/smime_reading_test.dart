@@ -29,6 +29,7 @@ void main() {
     String file, {
     required MemoryKeyringStorage storage,
     EmailAddress from = aliceAddress,
+    Map<String, Object> prefs = const {},
   }) async {
     final raw = smimeMessage(file);
     final repo = FakeMailRepository(
@@ -37,7 +38,7 @@ void main() {
       ],
       contents: {'m1': serverContent('m1', raw)},
     )..rawSources['m1'] = raw;
-    final router = await pumpTestApp(tester, repository: repo, overrides: [inlinePgp, keychain(storage)]);
+    final router = await pumpTestApp(tester, repository: repo, prefs: prefs, overrides: [inlinePgp, keychain(storage)]);
     unawaited(router.push('/message/m1'));
     await tester.pumpAndSettle();
     return repo;
@@ -57,6 +58,14 @@ void main() {
     final state = await smimeStateIn(storage);
     expect(state.contacts.single.certificate.displayName, 'Alice Example');
     expect(state.contacts.single.source, SmimeCertificateSource.collected);
+  });
+
+  testWidgets('encrypted: its text goes into the search index only when that is on', (tester) async {
+    final storage = await smimeKeychain(own: [bobBundle], trusted: [testRoot]);
+    final off = await open(tester, 'signed-enveloped.eml', storage: storage);
+    expect(off.decryptedTexts, isEmpty);
+    final on = await open(tester, 'signed-enveloped.eml', storage: storage, prefs: {'e2ee.indexForSearch': true});
+    expect(on.decryptedTexts['m1'], contains('This message is signed with S/MIME.'));
   });
 
   testWidgets('opaque-signed inside encrypted (as Outlook sends it), and opaque-signed alone', (tester) async {

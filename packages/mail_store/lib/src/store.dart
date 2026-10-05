@@ -617,6 +617,9 @@ final class MailStore {
       }
       final assigner = byAccount[e.accountId] ??= ThreadAssigner(_db, e.accountId);
       final threadId = await assigner.assign(e);
+      // A copy of an encrypted message decrypted before (in another
+      // mailbox) shows its subject at once.
+      final protectedSubject = e.hasDecryptedSubject ? e.subject : await _knownProtectedSubject(e);
       await _db
           .into(_db.emails)
           .insert(
@@ -649,9 +652,25 @@ final class MailStore {
               listPost: Value(e.listPost),
               listUnsubscribe: Value(e.listUnsubscribe),
               listUnsubscribePost: Value(e.listUnsubscribePost),
+              isEncrypted: Value(e.isEncrypted),
+              protectedSubject: Value(protectedSubject),
             ),
           );
     }
+  }
+
+  /// The protected subject of another copy of [e] (same account, Message-ID,
+  /// size and outer subject), if one was decrypted.
+  Future<String?> _knownProtectedSubject(EmailSummary e) async {
+    final messageId = e.messageIdHeader;
+    if (!e.isEncrypted || messageId == null) return null;
+    final row = await _select(
+      'SELECT protected_subject FROM emails WHERE account_id = ? AND message_id_header = ? AND size = ? '
+      'AND subject = ? AND protected_subject IS NOT NULL LIMIT 1',
+      [e.accountId, normalizeMessageId(messageId), e.size, e.subject],
+      {_db.emails},
+    ).getSingleOrNull();
+    return row?.read<String>('protected_subject');
   }
 
   static Value<String?> _fill(String? stored, String? fetched) =>
@@ -1540,6 +1559,45 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
     return matchesEmail(expr, e, content: content, accountLabel: label, headers: headers);
   }
 
+  // Encrypted mail ----------------------------------------------------------
+
+  /// Remembers [subject] as the protected subject of the encrypted message
+  /// [emailId] and of its copies (same account, Message-ID, size and outer
+  /// subject: the same message in other mailboxes). The summaries show it
+  /// as their subject from then on, and the full-text index has it.
+  Future<void> rememberProtectedSubject(String emailId, String subject) async {
+    final id = await resolveId(emailId);
+    await _write(
+      'UPDATE emails SET protected_subject = ?1 WHERE (id = ?2 OR (message_id_header IS NOT NULL AND '
+      '(account_id, message_id_header, size, subject) = '
+      '(SELECT account_id, message_id_header, size, subject FROM emails WHERE id = ?2))) '
+      'AND protected_subject IS NOT ?1',
+      [subject, id],
+      {_db.emails},
+      kind: UpdateKind.update,
+    );
+  }
+
+  /// The most of a decrypted text the search index keeps, in characters.
+  static const maxDecryptedTextChars = 64 * 1024;
+
+  /// Indexes [text], the decrypted text of the encrypted message [emailId]
+  /// (the first [maxDecryptedTextChars]), for full-text search: it stands in
+  /// for the message's cached body there. Ignored if the message isn't
+  /// stored.
+  Future<void> putDecryptedText(String emailId, String text) async {
+    final id = await resolveId(emailId);
+    final body = text.length > maxDecryptedTextChars ? text.substring(0, maxDecryptedTextChars) : text;
+    await _db.customStatement(
+      'INSERT INTO decrypted_texts (email_id, body) SELECT id, ?2 FROM emails WHERE id = ?1 '
+      'ON CONFLICT (email_id) DO UPDATE SET body = excluded.body WHERE body IS NOT excluded.body',
+      [id, body],
+    );
+  }
+
+  /// Takes every decrypted text out of the search index. Returns how many.
+  Future<int> deleteDecryptedTexts() => _db.customUpdate('DELETE FROM decrypted_texts');
+
   // Content -----------------------------------------------------------------
 
   Future<EmailContent?> getContent(String emailId) async {
@@ -1609,32 +1667,43 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
         ),
       );
 
-  static OutboxEntry _outboxFromRow(OutboxRow r) => OutboxEntry(
-    id: r.id,
-    accountId: r.accountId,
-    message: decodeOutgoing(r.message),
-    sendAfter: fromMillis(r.sendAfter),
-    createdAt: fromMillis(r.createdAt),
-    status: OutboxStatus.values.byName(r.status),
-    attempts: r.attempts,
-    lastError: r.lastError,
-    held: r.held,
+  OutboxEntry _outboxFromRow(QueryRow q) {
+    final r = _db.outboxItems.map(q.data);
+    final composedFor = q.readNullable<int>('composed_for');
+    return OutboxEntry(
+      id: r.id,
+      accountId: r.accountId,
+      message: decodeOutgoing(r.message),
+      sendAfter: fromMillis(r.sendAfter),
+      createdAt: fromMillis(r.createdAt),
+      status: OutboxStatus.values.byName(r.status),
+      attempts: r.attempts,
+      lastError: r.lastError,
+      held: r.held,
+      composedFor: composedFor == null ? null : fromMillis(composedFor),
+    );
+  }
+
+  /// Outbox entries [where], soonest first, with when their copies were composed for.
+  Selectable<QueryRow> _outbox(String where, List<Object?> args) => _select(
+    'SELECT o.*, (SELECT min(c.date) FROM outbox_copies c WHERE c.outbox_id = o.id) AS composed_for '
+    'FROM outbox_items o WHERE $where ORDER BY o.send_after',
+    args,
+    {_db.outboxItems, _db.outboxCopies},
   );
 
   Future<OutboxEntry?> getOutbox(String id) async {
-    final row = await (_db.select(_db.outboxItems)..where((o) => o.id.equals(id))).getSingleOrNull();
+    final row = await _outbox('o.id = ?', [id]).getSingleOrNull();
     return row == null ? null : _outboxFromRow(row);
   }
 
-  Future<List<OutboxEntry>> outboxEntries({String? accountId}) async {
-    final q = _db.select(_db.outboxItems)..orderBy([(o) => OrderingTerm.asc(o.sendAfter)]);
-    if (accountId != null) q.where((o) => o.accountId.equals(accountId));
-    return [for (final r in await q.get()) _outboxFromRow(r)];
-  }
+  Future<List<OutboxEntry>> outboxEntries({String? accountId}) async => [
+    for (final r in await (accountId == null ? _outbox('1', []) : _outbox('o.account_id = ?', [accountId])).get())
+      _outboxFromRow(r),
+  ];
 
-  Stream<List<OutboxEntry>> watchOutbox() => _select('SELECT * FROM outbox_items ORDER BY send_after', [], {
-    _db.outboxItems,
-  }).watch().map((rows) => [for (final r in rows) _outboxFromRow(_db.outboxItems.map(r.data))]);
+  Stream<List<OutboxEntry>> watchOutbox() =>
+      _outbox('1', []).watch().map((rows) => [for (final r in rows) _outboxFromRow(r)]);
 
   /// Atomically marks a queued (or failed) entry that is due at [now] as
   /// sending. Returns it, or null if it is gone, being sent, held (see
@@ -1685,6 +1754,47 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
   }
 
   Future<void> deleteOutbox(String id) => (_db.delete(_db.outboxItems)..where((o) => o.id.equals(id))).go();
+
+  /// Replaces what entry [id] was composed as when it was queued; null
+  /// forgets it (it is composed when it goes out). Ignored if the entry is
+  /// gone.
+  Future<void> setOutboxCopies(String id, PreparedMessage? prepared) => _db.transaction(() async {
+    await (_db.delete(_db.outboxCopies)..where((c) => c.outboxId.equals(id))).go();
+    final exists =
+        await (_db.selectOnly(_db.outboxItems)
+              ..addColumns([_db.outboxItems.id])
+              ..where(_db.outboxItems.id.equals(id)))
+            .getSingleOrNull();
+    if (prepared == null || exists == null) return;
+    for (final (i, copy) in prepared.copies.indexed) {
+      await _db
+          .into(_db.outboxCopies)
+          .insert(
+            OutboxCopiesCompanion.insert(
+              outboxId: id,
+              seq: i,
+              recipients: encodeStrings(copy.recipients),
+              filed: Value(copy.filed),
+              date: prepared.date.millisecondsSinceEpoch,
+              data: copy.rfc822,
+            ),
+          );
+    }
+  });
+
+  /// What entry [id] was composed as when it was queued, if it was.
+  Future<PreparedMessage?> outboxCopies(String id) async {
+    final rows =
+        await (_db.select(_db.outboxCopies)
+              ..where((c) => c.outboxId.equals(id))
+              ..orderBy([(c) => OrderingTerm.asc(c.seq)]))
+            .get();
+    if (rows.isEmpty) return null;
+    return PreparedMessage(
+      date: fromMillis(rows.first.date),
+      copies: [for (final r in rows) PreparedCopy(decodeStrings(r.recipients), r.data, filed: r.filed)],
+    );
+  }
 
   /// Sets an entry's [status] and [lastError], and what else is given.
   /// [held] true keeps a failed entry from being claimed until it is

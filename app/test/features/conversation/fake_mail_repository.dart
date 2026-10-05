@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:mail_model/mail_model.dart';
 
 /// A small in-memory [MailRepository] that records the calls it gets.
-class FakeMailRepository implements MailRepository {
+class FakeMailRepository implements MailRepository, DecryptedMail {
   FakeMailRepository({
     List<MailAccount>? accounts,
     List<Mailbox>? mailboxes,
@@ -198,6 +198,33 @@ class FakeMailRepository implements MailRepository {
 
   @override
   Future<EmailSummary?> getEmail(String emailId) async => _byId(emailId);
+
+  /// Protected subjects remembered (email id → subject).
+  final protectedSubjects = <String, String>{};
+
+  @override
+  Future<void> rememberProtectedSubject(String emailId, String subject) async {
+    log.add('rememberProtectedSubject $emailId');
+    protectedSubjects[emailId] = subject;
+    final i = emails.indexWhere((e) => e.id == emailId);
+    if (i >= 0) emails[i] = emails[i].copyWith(subject: subject, hasDecryptedSubject: true);
+    _changed();
+  }
+
+  /// Decrypted text in the search index (email id → text).
+  final decryptedTexts = <String, String>{};
+
+  @override
+  Future<void> indexDecryptedText(String emailId, String text) async {
+    log.add('indexDecryptedText $emailId');
+    decryptedTexts[emailId] = text;
+  }
+
+  @override
+  Future<void> forgetDecryptedText() async {
+    log.add('forgetDecryptedText');
+    decryptedTexts.clear();
+  }
 
   @override
   Future<EmailContent> loadContent(String emailId) async {

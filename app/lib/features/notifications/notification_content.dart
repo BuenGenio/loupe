@@ -218,7 +218,13 @@ List<MailNotification> messageNotifications(
   ];
 }
 
+/// What a notification says instead of the subject of encrypted mail.
+const encryptedMessageText = 'Encrypted message';
+
 /// The notification for one new message.
+///
+/// Encrypted mail says [encryptedMessageText] unless its protected subject
+/// was decrypted on this device already ([EmailSummary.hasDecryptedSubject]).
 MailNotification messageNotification(
   NewMail mail,
   MailAccount account, {
@@ -227,10 +233,15 @@ MailNotification messageNotification(
   bool showAccount = false,
 }) {
   final e = mail.email;
-  final subject = e.subject.trim().isEmpty ? '(No Subject)' : e.subject.trim();
+  final sealed = e.isEncrypted && !e.hasDecryptedSubject;
+  final subject = sealed
+      ? encryptedMessageText
+      : e.subject.trim().isEmpty
+      ? '(No Subject)'
+      : e.subject.trim();
   final sender = e.sender;
   final from = sender == null ? 'Unknown Sender' : _displayName(sender);
-  final preview = e.preview.trim();
+  final preview = sealed ? '' : e.preview.trim();
   return MailNotification(
     id: messageNotificationId(e.id),
     channel: mail.fromVip ? MailChannel.vip : MailChannel.account(account),

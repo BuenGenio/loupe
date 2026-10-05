@@ -26,6 +26,7 @@ extension DemoOpenPgpCases on DemoSeed {
       to: const [me],
       subject: '...',
       text: '',
+      encrypted: true,
       raw: (summary) => _write(
         from: _danaSecret,
         fromAddress: DemoPeople.dana,
