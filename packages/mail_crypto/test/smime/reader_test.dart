@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:test/test.dart';
 
@@ -86,6 +89,60 @@ void main() {
       expect(r.status.signature?.certificate?.displayName, 'Alice Example');
       expect(r.entity?.text, contains('Grüße!'), reason: name);
     }
+  });
+
+  group('multipart/signed wrapping: only the signed part is shown as signed', () {
+    const boundary = '------95CFF1AC2FFBA83C1C8428AEF42FE630';
+    const html =
+        'Content-Type: text/html; charset=utf-8\r\n\r\n<p>Please pay the new account: EVIL</p>\r\n';
+    const pdf =
+        'Content-Type: application/pdf; name="invoice.pdf"\r\n'
+        'Content-Disposition: attachment; filename="invoice.pdf"\r\n\r\n%PDF-1.4\r\n';
+
+    /// signed-detached.eml (CRLF) with [part] put before the part at [index] (1: the signature; 2: the end).
+    Uint8List withPart(String part, int index) {
+      final text = latin1.decode(smimeMail('signed-detached.eml')).replaceAll('\r\n', '\n').replaceAll('\n', '\r\n');
+      final delimiters = RegExp('^$boundary', multiLine: true).allMatches(text).toList();
+      final at = delimiters[index].start;
+      return latin1.encode('${text.substring(0, at)}$boundary\r\n$part\r\n${text.substring(at)}');
+    }
+
+    test('a part added after the signature (an attachment, an HTML body)', () {
+      for (final part in [pdf, html]) {
+        final r = const SmimeReader(smime).read(withPart(part, 2), anchors: testAnchors, now: today);
+        final s = r.status.signature!;
+        expect((s.valid, s.good, s.modified), (false, false, true));
+        expect(s.problem, contains('doesn’t cover'));
+        // What is shown is the signed part alone.
+        expect(r.entity?.mimeType, 'text/plain');
+        expect(r.entity?.text, contains('signed with S/MIME'));
+        expect(r.entity?.text, isNot(contains('EVIL')));
+      }
+    });
+
+    test('a part put between the signed part and the signature', () {
+      final r = const SmimeReader(smime).read(withPart(html, 1), anchors: testAnchors, now: today);
+      expect(r.status.signature!.valid, isFalse);
+      expect(r.status.signature!.good, isFalse);
+      expect(r.entity?.text, isNot(contains('EVIL')));
+    });
+  });
+
+  test('a boundary that isn’t ASCII: not split, never an exception', () {
+    final text = latin1.decode(smimeMail('signed-detached.eml'));
+    final raw = latin1.encode(text.replaceFirst('boundary="----95CFF1AC2FFBA83C1C8428AEF42FE630"', 'boundary="----95CFF1AC2FFBA83C1C8428AEF42FÉ630"'));
+    final r = const SmimeReader(smime).read(raw, anchors: testAnchors, now: today);
+    expect(r.status.signature, isNull);
+    expect(MimeEntity.parse(raw).parts, isEmpty);
+  });
+
+  test('a header parameter name with a CR in it: read, never an exception', () {
+    // Found by the fuzzer: HeaderValue.parse's name pattern didn't match it (a null check threw).
+    const ct = 'multipart/signed; protocol="application/pkcs7-signature"; a\rb=1; micalg=sha-256';
+    expect(HeaderValue.parse(ct)['a\rb'], '1');
+    expect(detectSmime(const [('Content-Type', ct)]), SmimeProtection.signedDetached);
+    final raw = latin1.encode(latin1.decode(smimeMail('signed-detached.eml')).replaceFirst('micalg="sha-256";', 'a\rb=1;'));
+    expect(const SmimeReader(smime).read(raw, anchors: testAnchors, now: today).status.signature?.good, isTrue);
   });
 
   test('recipients of an encrypted message', () {

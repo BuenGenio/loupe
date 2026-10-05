@@ -30,6 +30,7 @@ class MessageCard extends StatefulWidget {
     required this.content,
     required this.settings,
     required this.remoteContent,
+    this.remoteAllowedHere = false,
     required this.showOriginalHint,
     required this.onToggle,
     required this.onMore,
@@ -52,6 +53,11 @@ class MessageCard extends StatefulWidget {
   final Future<EmailContent>? content;
   final ReaderSettings settings;
   final RemoteContentPolicy remoteContent;
+
+  /// The user allowed remote content for this very message ("Load images"),
+  /// not by a setting: what decrypted mail without integrity protection
+  /// needs (see [remoteContentNeedsConsent]).
+  final bool remoteAllowedHere;
 
   /// Readable mode suggested the Original view for this message.
   final bool showOriginalHint;
@@ -361,7 +367,9 @@ class _MessageCardState extends State<MessageCard> {
             content: content,
             senderDomain: widget.message.sender?.domain,
             settings: widget.settings,
-            remoteContent: widget.remoteContent,
+            remoteContent: remoteContentNeedsConsent(content) && !widget.remoteAllowedHere
+                ? RemoteContentPolicy.block
+                : widget.remoteContent,
             onAllowRemoteContent: widget.onAllowRemoteContent,
             onOpenLink: widget.onOpenLink,
             loadAttachment: widget.loadAttachment,

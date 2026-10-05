@@ -122,17 +122,14 @@ final class SmimeReader {
       if (kind == SmimeProtection.signedDetached) {
         if (entity.parts.length < 2) break;
         protection ??= kind;
+        // RFC 1847: the signed part, then the signature, and nothing else.
+        // What is shown is exactly the signed part (the entity verified):
+        // parts next to it aren't covered, so they make the signature bad.
         final signed = entity.parts[0];
-        final p7s = entity.parts
-            .skip(1)
-            .firstWhere(
-              (p) => _signatureTypes.contains(p.mimeType) || (p.filename ?? '').toLowerCase().endsWith('.p7s'),
-              orElse: () => entity.parts[1],
-            );
-        signature = _combine(
-          signature,
-          _verify(p7s.decodedBody, canonicalLineEnds(signed.raw), known, trustAnchors, at, from),
-        );
+        final p7s = entity.parts[1];
+        var checked = _verify(p7s.decodedBody, canonicalLineEnds(signed.raw), known, trustAnchors, at, from);
+        if (entity.parts.length != 2) checked = checked.notCovering(_extraParts);
+        signature = _combine(signature, checked);
         entity = signed;
         unwrapped = true;
         continue;
@@ -180,6 +177,8 @@ final class SmimeReader {
 
   /// How far the signing time may be from the Date header.
   static const dateTolerance = Duration(hours: 1);
+
+  static const _extraParts = 'The message has parts the signature doesn’t cover.';
 
   /// The signature to report of nested ones: the outermost, unless an
   /// inner one is bad (a bad signature is never hidden by a good one).

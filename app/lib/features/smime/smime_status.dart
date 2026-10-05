@@ -11,6 +11,18 @@ import '../openpgp/content_loader.dart';
 import '../openpgp/pgp_status.dart' show PgpTone, pgpToneColor;
 import 'smime_providers.dart';
 
+/// Whether remote content in [content] loads only when the user asks for
+/// this message (never by the "load remote images" setting or a sender
+/// allowed always): S/MIME decrypted from EnvelopedData, whose CBC has no
+/// integrity protection. Whoever has the ciphertext can turn parts of it
+/// into HTML that loads a URL holding the rest of the plaintext (EFAIL's
+/// CBC gadgets). Not for AES-GCM (AuthEnvelopedData), nor for content a
+/// valid signature inside covers: a changed ciphertext can't keep it.
+bool remoteContentNeedsConsent(EmailContent content) {
+  final status = smimeStatusOf(content);
+  return status != null && status.decrypted && !status.authenticated && !(status.signature?.valid ?? false);
+}
+
 /// What the header says about a message's S/MIME status.
 final class SmimeStatusView {
   const SmimeStatusView({

@@ -76,7 +76,22 @@ final class SmimeTrustAnchors {
 
   final List<SmimeCertificate> anchors;
 
-  bool isAnchor(SmimeCertificate c) => anchors.any((a) => a == c || (a.subject.matches(c.subject) && a.sameKey(c)));
+  /// The anchor [c] stands for: itself, or the anchor with its subject and
+  /// its whole public key (algorithm and curve too), a CA re-issued with its
+  /// key. Null when it is none.
+  SmimeCertificate? anchorFor(SmimeCertificate c) =>
+      anchors.where((a) => a == c).firstOrNull ??
+      anchors.where((a) => a.subject.matches(c.subject) && _sameBytes(a.publicKeyInfo, c.publicKeyInfo)).firstOrNull;
+
+  bool isAnchor(SmimeCertificate c) => anchorFor(c) != null;
+}
+
+bool _sameBytes(List<int> a, List<int> b) {
+  if (a.length != b.length) return false;
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] != b[i]) return false;
+  }
+  return true;
 }
 
 /// Mozilla's email roots, parsed once per isolate.
@@ -128,10 +143,15 @@ SmimeTrustCheck checkTrust(
     if (at.isAfter(c.notAfter)) problems.add(SmimeProblem.expired);
     if (c.unknownCriticalExtensions.isNotEmpty) problems.add(SmimeProblem.invalidChain);
     if (i == 0 || path == null) continue;
-    // An issuer must be a CA (v1 roots predate the flag), may sign
-    // certificates, allows this many CAs below it, and permits the addresses.
-    if (c.version >= 3 && !c.isCa) problems.add(SmimeProblem.invalidChain);
+    // An issuer must be a CA (a v1 or v2 certificate predates the flag:
+    // only as the trust anchor, RFC 5280 §6.1.4 (k)), may sign
+    // certificates, may be used for mail (an extended key usage limited to
+    // TLS, say, limits what it issues, as NSS has it), allows this many CAs
+    // below it, and permits the addresses.
+    final isAnchor = i == chain.length - 1;
+    if (!c.isCa && (c.version >= 3 || !isAnchor)) problems.add(SmimeProblem.invalidChain);
     if (c.keyUsage != null && c.keyUsage! & KeyUsage.keyCertSign == 0) problems.add(SmimeProblem.invalidChain);
+    if (!c.forEmail) problems.add(SmimeProblem.invalidChain);
     final below = chain.sublist(1, i).where((x) => !x.isSelfIssued).length;
     if (c.pathLength != null && below > c.pathLength!) problems.add(SmimeProblem.invalidChain);
     if (!_withinConstraints(certificate.emails, c)) problems.add(SmimeProblem.invalidChain);
@@ -145,6 +165,15 @@ SmimeTrustCheck checkTrust(
   return SmimeTrustCheck(chain: chain, anchor: anchor, problems: problems, at: at);
 }
 
+/// Certificates a chain may have, the leaf and the anchor included.
+const maxChainLength = 9;
+
+/// Signature checks one path search may make. A real chain takes a few
+/// (candidates are matched by name and key identifier first); a message
+/// carrying many CAs of one name that cross-sign each other would make a
+/// depth-first search take exponentially many.
+const maxPathChecks = 64;
+
 /// A chain from [leaf] to an anchor, every signature checked; null when there is none.
 List<SmimeCertificate>? _buildPath(
   SmimeCertificate leaf,
@@ -152,19 +181,27 @@ List<SmimeCertificate>? _buildPath(
   List<SmimeCertificate> pool,
   bool Function(SmimeCertificate, SmimeCertificate) signedBy,
 ) {
-  if (anchors.isAnchor(leaf)) return [leaf];
+  // A certificate the user trusts on its own: exactly that one. Another one
+  // with its subject and key could claim other addresses; it goes through
+  // the search like any other (and its "issuer" must be a CA).
+  if (anchors.anchors.contains(leaf)) return [leaf];
+  var checks = 0;
   List<SmimeCertificate>? walk(List<SmimeCertificate> path) {
     final cert = path.last;
-    if (path.length > 8) return null;
+    if (path.length >= maxChainLength) return null;
     final candidates = [
       for (final c in anchors.anchors) (c, true),
       for (final c in pool) (c, false),
     ].where((e) => _mayHaveIssued(e.$1, cert) && !path.contains(e.$1));
     for (final (issuer, isAnchor) in candidates) {
+      if (++checks > maxPathChecks) return null;
       if (!signedBy(cert, issuer)) continue;
-      final next = [...path, issuer];
-      if (isAnchor || anchors.isAnchor(issuer)) return next;
-      final found = walk(next);
+      if (isAnchor) return [...path, issuer];
+      // A copy of an anchor (same subject and key) in the message: the chain
+      // ends at the anchor as the user has it, with its validity and constraints.
+      final anchor = anchors.anchorFor(issuer);
+      if (anchor != null) return [...path, anchor];
+      final found = walk([...path, issuer]);
       if (found != null) return found;
     }
     return null;
@@ -188,7 +225,7 @@ bool _mayHaveIssued(SmimeCertificate issuer, SmimeCertificate cert) {
 /// The issuers of [leaf] by name only (for showing an untrusted chain).
 List<SmimeCertificate> _byName(SmimeCertificate leaf, List<SmimeCertificate> pool) {
   final chain = [leaf];
-  while (chain.length < 8 && !chain.last.isSelfIssued) {
+  while (chain.length < maxChainLength && !chain.last.isSelfIssued) {
     final next = pool.where((c) => _mayHaveIssued(c, chain.last) && !chain.contains(c)).firstOrNull;
     if (next == null) break;
     chain.add(next);

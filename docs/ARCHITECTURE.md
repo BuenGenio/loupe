@@ -91,6 +91,14 @@ loading, the header, compose, Settings › End-to-End Encryption).
     Android's holds TLS roots without email trust bits, and isn't readable from Dart without a plugin.
   - No revocation checks (OCSP, CRLs): they would be network requests outside the mail protocols, telling a CA
     who reads whose mail. Policies aren't processed (as most mail clients); SHA-1 certificates aren't accepted.
+- **Hostile input** (reviewed in issue #26): every parse ends in `Asn1Exception` or `SmimeException`, never
+  another error, and bounded work: nesting 48 deep, INTEGERs of 2049 octets, 32 certificates and 16 signers
+  per SignedData, 1000 recipients per envelope, 64 signature checks per path search, RSA keys of 2048 to 16384
+  bits with exponents of at most 64 bits, PKCS #12 derivations of 1,000,000 iterations (3,000,000 per file).
+  Primitives are strict: one encoding per OID, times by their type's format, PKCS #1 v1.5 signatures compared
+  as whole encodings, EC points on their curve. A multipart/signed shows exactly its verified first part (two
+  parts, or the signature is bad); remote content of CBC-decrypted mail loads only when asked for (EFAIL). The
+  mutation fuzzer (`test/smime/fuzz_harness.dart`, long runs with `tool/fuzz_smime.dart`) covers each parser.
 - **Reading** (`SmimeReader`): `application/pkcs7-mime` (enveloped, authEnveloped, opaque signed; also without
   `smime-type` or as an octet-stream `.p7m`) and `multipart/signed` with `application/(x-)pkcs7-signature`,
   nested as Thunderbird (multipart/signed inside) and Outlook (opaque inside) send them. Decryption: RSA

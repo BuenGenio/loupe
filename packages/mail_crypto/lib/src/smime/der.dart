@@ -152,34 +152,52 @@ final class Asn1 {
     }
   }
 
+  /// Octets an INTEGER may have: RSA moduli of 16384 bits and a sign octet
+  /// fit. Longer ones are hostile (and slow to turn into numbers).
+  static const maxIntegerLength = 2049;
+
   BigInt get integer {
     final c = content;
     if (c.isEmpty) throw const Asn1Exception('Empty integer');
-    var v = BigInt.zero;
-    for (final x in c) {
-      v = (v << 8) | BigInt.from(x);
-    }
+    if (c.length > maxIntegerLength) throw const Asn1Exception('Integer too large');
+    var v = bigIntFromBytes(c);
     if (c[0] & 0x80 != 0) v -= BigInt.one << (c.length * 8);
     return v;
   }
 
-  int get intValue => integer.toInt();
+  /// A small INTEGER (a version, a count, a length): within ±2^31.
+  int get intValue {
+    final v = integer;
+    if (v.bitLength > 31) throw const Asn1Exception('Integer out of range');
+    return v.toInt();
+  }
 
-  bool get boolean => content.isNotEmpty && content[0] != 0;
+  bool get boolean {
+    final c = content;
+    if (c.length != 1) throw const Asn1Exception('Bad boolean');
+    return c[0] != 0;
+  }
 
+  /// An OBJECT IDENTIFIER, dotted. Each arc in the fewest octets, the last
+  /// one complete: one OID has one encoding, so no other bytes read as a known one.
   String get oid {
     final c = content;
     if (c.isEmpty) throw const Asn1Exception('Empty object identifier');
+    if (c.length > 64) throw const Asn1Exception('Object identifier too long');
     final parts = <int>[];
     var v = 0;
+    var arcStart = true;
     for (final x in c) {
+      if (arcStart && x == 0x80) throw const Asn1Exception('Non-minimal object identifier');
+      if (v >= 1 << 49) throw const Asn1Exception('Object identifier arc too large');
       v = (v << 7) | (x & 0x7f);
-      if (x & 0x80 == 0) {
+      arcStart = x & 0x80 == 0;
+      if (arcStart) {
         parts.add(v);
         v = 0;
       }
     }
-    if (parts.isEmpty) throw const Asn1Exception('Bad object identifier');
+    if (!arcStart) throw const Asn1Exception('Truncated object identifier');
     final first = parts[0];
     final head = first < 40
         ? [0, first]
@@ -218,37 +236,59 @@ final class Asn1 {
     return v;
   }
 
-  /// A character string in any of the X.509 string types.
+  /// A character string in any of the X.509 string types. BMPString is
+  /// UTF-16 and UniversalString UTF-32 (big-endian): an odd length or a
+  /// code point past Unicode is damage.
   String get string {
     final c = constructed ? octets : content;
-    return switch (tag & 0x1f) {
-      Tag.bmpString => String.fromCharCodes([for (var i = 0; i + 1 < c.length; i += 2) (c[i] << 8) | c[i + 1]]),
-      Tag.universalString => String.fromCharCodes([
-        for (var i = 0; i + 3 < c.length; i += 4) (c[i] << 24) | (c[i + 1] << 16) | (c[i + 2] << 8) | c[i + 3],
-      ]),
-      Tag.t61String => latin1.decode(c),
-      _ => utf8.decode(c, allowMalformed: true),
-    };
+    switch (tag & 0x1f) {
+      case Tag.bmpString:
+        if (c.length.isOdd) throw const Asn1Exception('Bad BMPString');
+        return String.fromCharCodes([for (var i = 0; i + 1 < c.length; i += 2) (c[i] << 8) | c[i + 1]]);
+      case Tag.universalString:
+        if (c.length % 4 != 0) throw const Asn1Exception('Bad UniversalString');
+        final runes = [
+          for (var i = 0; i + 3 < c.length; i += 4) (c[i] << 24) | (c[i + 1] << 16) | (c[i + 2] << 8) | c[i + 3],
+        ];
+        if (runes.any((r) => r > 0x10ffff || (r >= 0xd800 && r <= 0xdfff))) {
+          throw const Asn1Exception('Bad UniversalString');
+        }
+        return String.fromCharCodes(runes);
+      case Tag.t61String:
+        return latin1.decode(c);
+      default:
+        return utf8.decode(c, allowMalformed: true);
+    }
   }
 
-  /// UTCTime or GeneralizedTime, in UTC.
+  static final _utcTime = RegExp(r'^(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})?(Z|[+-]\d{4})$');
+  static final _generalizedTime = RegExp(r'^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(?:\.\d{1,9})?(Z|[+-]\d{4})$');
+
+  /// UTCTime (YYMMDDHHMM[SS], 1950–2049) or GeneralizedTime
+  /// (YYYYMMDDHHMMSS[.f]), each with its zone (Z or ±hhmm; a time without
+  /// one is local somewhere, so damage), in UTC. Fields out of range are
+  /// damage, not carried over; a leap second counts as :59.
   DateTime get time {
-    final s = ascii.decode(content, allowInvalid: true).trim();
-    final m = RegExp(r'^(\d{2}|\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})?(?:\.\d+)?(Z|[+-]\d{4})?$').firstMatch(s);
-    if (m == null) throw Asn1Exception('Bad time "$s"');
-    var year = int.parse(m.group(1)!);
-    if (m.group(1)!.length == 2) year += year < 50 ? 2000 : 1900;
-    var t = DateTime.utc(
-      year,
-      int.parse(m.group(2)!),
-      int.parse(m.group(3)!),
-      int.parse(m.group(4)!),
-      int.parse(m.group(5)!),
-      int.parse(m.group(6) ?? '0'),
-    );
-    final zone = m.group(7);
-    if (zone != null && zone != 'Z') {
-      final minutes = int.parse(zone.substring(1, 3)) * 60 + int.parse(zone.substring(3, 5));
+    final utc = tag == Tag.utcTime;
+    if (!utc && tag != Tag.generalizedTime) throw const Asn1Exception('Not a time');
+    final c = content;
+    if (c.length > 32 || c.any((b) => b > 0x7f)) throw const Asn1Exception('Bad time');
+    final m = (utc ? _utcTime : _generalizedTime).firstMatch(ascii.decode(c));
+    if (m == null) throw const Asn1Exception('Bad time');
+    int field(int i) => int.parse(m.group(i) ?? '0');
+    var year = field(1);
+    if (utc) year += year < 50 ? 2000 : 1900;
+    final (month, day, hour, minute, second) = (field(2), field(3), field(4), field(5), field(6));
+    final daysInMonth = DateTime.utc(year, month + 1, 0).day;
+    if (month < 1 || month > 12 || day < 1 || day > daysInMonth || hour > 23 || minute > 59 || second > 60) {
+      throw const Asn1Exception('Bad time');
+    }
+    var t = DateTime.utc(year, month, day, hour, minute, second == 60 ? 59 : second);
+    final zone = m.group(7)!;
+    if (zone != 'Z') {
+      final (h, mm) = (int.parse(zone.substring(1, 3)), int.parse(zone.substring(3, 5)));
+      if (h > 23 || mm > 59) throw const Asn1Exception('Bad time');
+      final minutes = h * 60 + mm;
       t = t.subtract(Duration(minutes: zone.startsWith('+') ? minutes : -minutes));
     }
     return t;
@@ -371,24 +411,19 @@ Uint8List retag(List<int> element, int tag) => Uint8List.fromList([tag, ...eleme
 
 /// Unsigned big-endian bytes of [v], left-padded to [length] when given.
 Uint8List unsignedBytes(BigInt v, [int? length]) {
-  final bytes = <int>[];
-  for (var x = v; x > BigInt.zero; x >>= 8) {
-    bytes.insert(0, (x & BigInt.from(0xff)).toInt());
+  if (v.isNegative) throw ArgumentError.value(v, 'v', 'Negative');
+  final h = v == BigInt.zero ? '' : v.toRadixString(16);
+  final n = (h.length + 1) >> 1;
+  final out = Uint8List(length != null && length > n ? length : n);
+  final digits = h.length.isOdd ? '0$h' : h;
+  for (var i = 0, at = out.length - n; i < n; i++, at++) {
+    out[at] = int.parse(digits.substring(2 * i, 2 * i + 2), radix: 16);
   }
-  if (length != null) {
-    while (bytes.length < length) {
-      bytes.insert(0, 0);
-    }
-  }
-  return Uint8List.fromList(bytes);
+  return out;
 }
 
-BigInt bigIntFromBytes(List<int> bytes) {
-  var v = BigInt.zero;
-  for (final x in bytes) {
-    v = (v << 8) | BigInt.from(x);
-  }
-  return v;
-}
+/// The unsigned big-endian number in [bytes] (linear time, unlike shifting
+/// in one octet at a time).
+BigInt bigIntFromBytes(List<int> bytes) => bytes.isEmpty ? BigInt.zero : BigInt.parse(hex(bytes), radix: 16);
 
 String hex(List<int> bytes) => [for (final b in bytes) b.toRadixString(16).padLeft(2, '0')].join().toUpperCase();
