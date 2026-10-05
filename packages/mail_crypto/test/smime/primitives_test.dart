@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_crypto/src/smime/der.dart';
 import 'package:mail_crypto/src/smime/oids.dart';
 import 'package:mail_crypto/src/smime/primitives.dart';
@@ -84,6 +85,40 @@ void main() {
       final cube = unsignedBytes(bigIntFromBytes(forged).pow(3), k);
       expect(cube.sublist(0, prefix.length), prefix);
       expect(rsaPkcs1Verify(key, Oid.sha256, hash, forged), isFalse);
+    });
+  });
+
+  group('EC public keys must be points on the curve', () {
+    final point = bob.certificate.publicKey;
+
+    test('Bob’s key is; the same with y changed, an x past the field or a hybrid encoding isn’t', () {
+      expect(ecPublicKey(Oid.secp256r1, point).Q, isNotNull);
+      final offCurve = Uint8List.fromList(point)..[64] ^= 1;
+      final hybrid = Uint8List.fromList(point)..[0] = 6 | (point[64] & 1);
+      final tooBig = Uint8List.fromList(point)..fillRange(1, 33, 0xff);
+      for (final p in [offCurve, hybrid, tooBig, Uint8List(0), Uint8List.fromList([0])]) {
+        expect(
+          () => ecPublicKey(Oid.secp256r1, p),
+          throwsA(isA<SmimeException>().having((e) => e.kind, 'kind', SmimeErrorKind.malformed)),
+        );
+      }
+    });
+
+    test('an ECDH message whose ephemeral key is off the curve is refused before any key agreement', () {
+      final der = Uint8List.fromList(MimeEntity.parse(smimeMail('enveloped-ec.eml')).decodedBody);
+      expect(smime.decrypt(der, [bob]).content, isNotEmpty);
+      // The originator's point: the one 65-octet uncompressed point in the message.
+      final at = () {
+        for (var i = 0; i + 66 < der.length; i++) {
+          if (der[i] == 0x03 && der[i + 1] == 0x42 && der[i + 2] == 0 && der[i + 3] == 4) return i + 3;
+        }
+        throw StateError('no point');
+      }();
+      der[at + 64] ^= 1;
+      expect(
+        () => smime.decrypt(der, [bob]),
+        throwsA(isA<SmimeException>().having((e) => e.kind, 'kind', SmimeErrorKind.malformed)),
+      );
     });
   });
 }

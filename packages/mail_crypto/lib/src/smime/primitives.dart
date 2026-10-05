@@ -20,6 +20,7 @@ import 'package:pointycastle/digests/sha256.dart';
 import 'package:pointycastle/digests/sha384.dart';
 import 'package:pointycastle/digests/sha512.dart';
 import 'package:pointycastle/ecc/api.dart';
+import 'package:pointycastle/ecc/ecc_fp.dart' as fp;
 import 'package:pointycastle/macs/hmac.dart';
 import 'package:pointycastle/signers/ecdsa_signer.dart';
 
@@ -104,11 +105,33 @@ RSAPublicKey rsaPublicKey(SmimeCertificate cert) {
   return RSAPublicKey(key[0].integer, key[1].integer);
 }
 
+/// A public key on [curve]: an uncompressed or compressed point that is on
+/// the curve. pointycastle doesn't check that, and ECDH with a point off the
+/// curve (from a message's originator key) is an invalid-curve attack on
+/// the private key. Every supported curve has cofactor 1: on the curve and
+/// not infinity is enough.
 ECPublicKey ecPublicKey(String? curve, Uint8List point) {
   final domain = _domain(curve);
-  final q = domain.curve.decodePoint(point);
-  if (q == null || q.isInfinity) throw const SmimeException(SmimeErrorKind.malformed, 'Bad EC public key.');
+  const bad = SmimeException(SmimeErrorKind.malformed, 'Bad EC public key.');
+  if (point.isEmpty || !const {2, 3, 4}.contains(point[0])) throw bad;
+  ECPoint? q;
+  try {
+    q = domain.curve.decodePoint(point);
+  } on ArgumentError {
+    throw bad;
+  }
+  if (q == null || q.isInfinity || !_onCurve(domain.curve as fp.ECCurve, q)) throw bad;
   return ECPublicKey(q, domain);
+}
+
+bool _onCurve(fp.ECCurve curve, ECPoint q) {
+  final p = curve.q!;
+  final x = q.x!.toBigInteger()!;
+  final y = q.y!.toBigInteger()!;
+  if (x.isNegative || y.isNegative || x >= p || y >= p) return false;
+  final a = curve.a!.toBigInteger()!;
+  final b = curve.b!.toBigInteger()!;
+  return (y * y - (x * x * x + a * x + b)) % p == BigInt.zero;
 }
 
 /// A parsed private key: RSA, or EC with its curve.
