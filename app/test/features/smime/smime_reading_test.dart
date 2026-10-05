@@ -152,6 +152,58 @@ void main() {
     });
   });
 
+  group('remote content in decrypted mail without integrity protection (EFAIL)', () {
+    /// HTML with a remote image, encrypted to Bob with [cipher], from Alice.
+    String encryptedHtml(SmimeContentCipher cipher) {
+      final inner = Uint8List.fromList(
+        utf8.encode(
+          'Content-Type: text/html; charset=utf-8\r\n\r\n'
+          '<p>The secret plan</p><p><img src="https://images.example/plan.jpg" width="600" height="400" alt="The map"></p>\r\n',
+        ),
+      );
+      final der = smime.encrypt(inner, [bobBundle.keys.single.certificate], cipher: cipher);
+      final b64 = base64.encode(der);
+      final lines = [for (var i = 0; i < b64.length; i += 64) b64.substring(i, i + 64 > b64.length ? b64.length : i + 64)];
+      final type = cipher == SmimeContentCipher.aes256Gcm ? 'authEnveloped-data' : 'enveloped-data';
+      return 'From: Alice Example <alice@example.org>\r\nTo: Bob Example <bob@example.net>\r\nSubject: S/MIME\r\n'
+          'MIME-Version: 1.0\r\nContent-Type: application/pkcs7-mime; smime-type=$type; name=smime.p7m\r\n'
+          'Content-Transfer-Encoding: base64\r\n\r\n${lines.join('\r\n')}\r\n';
+    }
+
+    Future<void> openWith(WidgetTester tester, String raw) async {
+      final storage = await smimeKeychain(own: [bobBundle], trusted: [testRoot]);
+      final repo = FakeMailRepository(
+        emails: [
+          testEmail('m1', from: aliceAddress, to: const [bobAddress], subject: 'S/MIME'),
+        ],
+        contents: {'m1': serverContent('m1', raw)},
+      )..rawSources['m1'] = raw;
+      final router = await pumpTestApp(
+        tester,
+        repository: repo,
+        prefs: {'settings.loadRemoteImages': true},
+        overrides: [inlinePgp, keychain(storage)],
+      );
+      unawaited(router.push('/message/m1'));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('AES-CBC: blocked even with remote images on, until the user loads them for this message', (tester) async {
+      await openWith(tester, encryptedHtml(SmimeContentCipher.aes256Cbc));
+      expect(textContaining('The secret plan'), findsWidgets);
+      expect(textContaining('are blocked to protect your privacy'), findsOneWidget);
+      await tester.tap(find.text('Load images'));
+      await tester.pumpAndSettle();
+      expect(textContaining('are blocked to protect your privacy'), findsNothing);
+    });
+
+    testWidgets('AES-GCM: the setting applies', (tester) async {
+      await openWith(tester, encryptedHtml(SmimeContentCipher.aes256Gcm));
+      expect(textContaining('The secret plan'), findsWidgets);
+      expect(textContaining('are blocked to protect your privacy'), findsNothing);
+    });
+  });
+
   testWidgets('a modified message', (tester) async {
     final storage = await smimeKeychain(trusted: [testRoot]);
     await open(tester, 'signed-modified.eml', storage: storage);

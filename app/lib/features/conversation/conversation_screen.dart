@@ -606,6 +606,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
                   content: _expanded.contains(m.id) ? _contentFor(m) : null,
                   settings: _settingsFor(m, app, prefs),
                   remoteContent: _remoteFor(m, app, prefs),
+                  remoteAllowedHere: _remoteAllowed.contains(m.id),
                   showOriginalHint: _originalHint.contains(m.id),
                   onToggle: messages.length < 2 ? null : () => setState(() => _toggle(m.id)),
                   onMore: () => _showMenu(m, canArchive: canArchive(m), role: roleOf(m)),
