@@ -7,6 +7,9 @@ library;
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:crypto/crypto.dart' as crypto;
+import 'package:pointycastle/api.dart' show Digest;
+
 import '../enum/hash_algorithm.dart';
 import '../enum/s2k_type.dart';
 import '../type/s2k.dart';
@@ -94,11 +97,11 @@ final class GenericS2k implements S2kInterface {
           length,
         );
       case S2kType.iterated:
-        return _hashDigest(
-          _iterate(Uint8List.fromList([
+        return _iteratedKey(
+          Uint8List.fromList([
             ...salt,
             ...passphrase.toBytes(),
-          ])),
+          ]),
           length,
         );
       default:
@@ -126,18 +129,47 @@ final class GenericS2k implements S2kInterface {
     }
   }
 
-  Uint8List _iterate(final Uint8List data) {
-    if (data.length > count) {
-      return data;
+  /// Loupe: the iterated and salted key, hashing the repeated salt and
+  /// passphrase as they stream past instead of building them in memory:
+  /// upstream allocated the whole count twice (up to 2 × 62 MiB, which
+  /// Thunderbird's and GnuPG's keys use) for every unlock. The same bytes
+  /// are hashed, so the same key comes out.
+  Uint8List _iteratedKey(final Uint8List data, final int length) {
+    // The whole salt and passphrase is hashed even when the count is smaller.
+    final total = data.length > count ? data.length : count;
+    // A chunk of whole repetitions, so every chunk starts with the salt.
+    final repeats = data.isEmpty ? 1 : (64 * 1024 ~/ data.length).clamp(1, 1 << 20);
+    final chunk = Uint8List(data.length * repeats);
+    for (var pos = 0; pos < chunk.length; pos += data.length) {
+      chunk.setAll(pos, data);
     }
-    final length = data.length;
-    final result = Uint8List((count / length).ceil() * length);
-    var pos = 0;
-    while (pos < result.length) {
-      result.setAll(pos, data);
-      pos += length;
+    final result = BytesBuilder(copy: false);
+    // Each further context is preloaded with one more zero octet (RFC 9580,
+    // 3.7.1.1); upstream's _hashDigest preloads one, the same for the two
+    // contexts any key length needs.
+    for (var round = 0; result.length < length; round++) {
+      final preload = Uint8List(round);
+      final fast = hash.fastHash;
+      if (fast != null) {
+        // package:crypto, several times faster (SHA-1: four times).
+        final digest = _DigestSink();
+        final input = fast.startChunkedConversion(digest)..add(preload);
+        for (var remaining = total; remaining > 0; remaining -= chunk.length) {
+          input.add(remaining < chunk.length ? Uint8List.sublistView(chunk, 0, remaining) : chunk);
+        }
+        input.close();
+        result.add(digest.value!.bytes);
+        continue;
+      }
+      final digest = Digest(hash.digestName)..update(preload, 0, preload.length);
+      for (var remaining = total; remaining > 0; remaining -= chunk.length) {
+        digest.update(chunk, 0, remaining < chunk.length ? remaining : chunk.length);
+      }
+      final out = Uint8List(digest.digestSize);
+      digest.doFinal(out, 0);
+      result.add(out);
     }
-    return result.sublist(0, count);
+    return result.takeBytes().sublist(0, length);
   }
 
   Uint8List _hashDigest(final Uint8List data, final int length) {
@@ -153,4 +185,15 @@ final class GenericS2k implements S2kInterface {
     }
     return result.sublist(0, length);
   }
+}
+
+/// Receives the digest of a chunked package:crypto hash.
+final class _DigestSink implements Sink<crypto.Digest> {
+  crypto.Digest? value;
+
+  @override
+  void add(crypto.Digest data) => value = data;
+
+  @override
+  void close() {}
 }

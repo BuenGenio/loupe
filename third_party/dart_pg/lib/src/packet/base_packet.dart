@@ -64,28 +64,28 @@ abstract class BasePacket implements PacketInterface {
   }
 
   /// Encode package to the openpgp partial body specifier
+  ///
+  /// Loupe: walks the body by offset; upstream copied the rest of it for
+  /// every 1 KiB chunk (quadratic: seconds for a few MB).
   Uint8List _partialEncode() {
-    final partialData = <int>[];
-    var bodyData = data;
+    final bodyData = data;
+    final out = BytesBuilder(copy: false)..addByte(type.value | 0xc0);
+    var offset = 0;
     var dataLengh = bodyData.length;
     while (dataLengh >= partialMinSize) {
       final maxSize = min(partialMaxSize, dataLengh);
       final powerOf2 = min((log(maxSize) / ln2).toInt(), 30);
       final chunkSize = 1 << powerOf2;
-      partialData.addAll(
-        [
-          224 + powerOf2,
-          ...bodyData.sublist(0, chunkSize),
-        ],
-      );
-      bodyData = bodyData.sublist(chunkSize);
-      dataLengh = bodyData.length;
+      out
+        ..addByte(224 + powerOf2)
+        ..add(Uint8List.sublistView(bodyData, offset, offset + chunkSize));
+      offset += chunkSize;
+      dataLengh -= chunkSize;
     }
-    partialData.addAll([
-      ..._simpleLength(dataLengh),
-      ...bodyData,
-    ]);
-    return Uint8List.fromList([type.value | 0xc0, ...partialData]);
+    out
+      ..add(_simpleLength(dataLengh))
+      ..add(Uint8List.sublistView(bodyData, offset));
+    return out.takeBytes();
   }
 
   Uint8List _simpleLength(int length) {

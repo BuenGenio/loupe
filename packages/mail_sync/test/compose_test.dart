@@ -834,6 +834,24 @@ void main() {
       );
     });
 
+    test('a composer that can work elsewhere does it all there: queuing, sending, drafts', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer();
+        final a = await h.add(server);
+        final composer = h.factory.composer as FakeComposer..asyncOnly = true;
+        await h.repo.send(signed(a), undoDelay: const Duration(seconds: 1));
+        await h.repo.send(outgoing(a, subject: 'Plain'), undoDelay: const Duration(seconds: 1));
+        await h.repo.saveDraft(outgoing(a, subject: 'Draft'));
+        await settle(const Duration(seconds: 3));
+        expect([for (final m in server.sent) m.json['subject']], unorderedEquals(['Signed', 'Plain']));
+        expect(server.subjects('Drafts'), ['Draft']);
+        expect(composer.composedAsync, 3);
+        expect(h.errors, isEmpty);
+        await h.dispose();
+      }, step: _step);
+    });
+
     test('taking it back to edit drops what was composed', () {
       fakeTime((async) async {
         final h = Harness();

@@ -311,7 +311,7 @@ packages:
       path: "third_party/dart_pg"
       relative: true
     source: path
-    version: "2.1.0+loupe.1"
+    version: "2.1.0+loupe.2"
   dart_style:
     dependency: transitive
     description:

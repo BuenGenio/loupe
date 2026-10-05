@@ -1177,7 +1177,7 @@ final class LiveMailRepository
       final identity = account.identityById(entry.message.identityId);
       return PreparedMessage(
         date: date,
-        copies: _composeCopies(entry, identity, date: date),
+        copies: await _composeCopies(entry, identity, date: date),
       );
     } on Object {
       return null;
@@ -1266,7 +1266,8 @@ final class LiveMailRepository
       // As composed when it was queued; else every copy is made before any
       // goes out: one that can't be made (a key missing or locked) sends
       // none.
-      final copies = (await store.outboxCopies(entry.id))?.copies ?? _composeCopies(entry, identity, date: _now());
+      final copies =
+          (await store.outboxCopies(entry.id))?.copies ?? await _composeCopies(entry, identity, date: _now());
       filed = copies.firstWhere((c) => c.filed).rfc822;
       final sender = transports.createSender(account, _credentialsFor(account));
       try {
@@ -1340,16 +1341,31 @@ final class LiveMailRepository
   /// The copies [entry] goes out as, composed with one Message-ID for every
   /// copy and every attempt: if a send whose reply got lost did go out, the
   /// copies are recognisably the same message.
-  List<PreparedCopy> _composeCopies(OutboxEntry entry, Identity identity, {required DateTime date}) {
+  Future<List<PreparedCopy>> _composeCopies(OutboxEntry entry, Identity identity, {required DateTime date}) async {
     final messageId = outboxMessageId(entry.id, identity.email);
     return [
       for (final d in entry.message.deliveries(sender: identity.email))
         PreparedCopy(
           d.recipients,
-          transports.composer.compose(d.message, identity, messageId: messageId, date: date),
+          await _compose(d.message, identity, messageId: messageId, date: date),
           filed: d.filed,
         ),
     ];
+  }
+
+  /// Composes [message], away from this isolate when the composer can (an
+  /// [AsyncMessageComposer]).
+  Future<Uint8List> _compose(
+    OutgoingMessage message,
+    Identity from, {
+    required String messageId,
+    required DateTime date,
+  }) async {
+    final composer = transports.composer;
+    if (composer is AsyncMessageComposer) {
+      return composer.composeAsync(message, from, messageId: messageId, date: date);
+    }
+    return composer.compose(message, from, messageId: messageId, date: date);
   }
 
   /// What the server refused of [entry] while taking it for the others: a
@@ -1441,7 +1457,7 @@ final class LiveMailRepository
     final identity = account.identityById(message.identityId);
     final messageId = newMessageId(identity.email);
     final now = _now();
-    final bytes = transports.composer.compose(message, identity, messageId: messageId, date: now);
+    final bytes = await _compose(message, identity, messageId: messageId, date: now);
     final syncer = _syncerFor(account.id);
     const keywords = {Keywords.draft, Keywords.seen};
     String id;

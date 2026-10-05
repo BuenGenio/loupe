@@ -173,6 +173,33 @@ Issue #24, after OpenPGP (#20) and S/MIME (#21).
   follows by triggers. The database is encrypted (SQLite3MultipleCiphers), so this keeps decrypted text only
   where the protected subjects and every plain message already are.
 
+## Encrypted mail: speed
+
+OpenPGP and S/MIME are pure Dart (dart_pg and mail_crypto's CMS on pointycastle), so their work stays off the UI
+isolate: reading (`OpenPgpService.read`, `SmimeService.read`: decrypting, verifying, MIME) and unlocking keys run
+through `pgpRunnerProvider` (`Isolate.run`); composing goes through `IsolateComposer.composeAsync`
+(`AsyncMessageComposer`), which hands a snapshot of the keys to another isolate, when a message is queued, sent
+or saved as a draft; subjects decrypted in the background too. Background isolates (sync, Instant Delivery) do
+their own work inline.
+
+`packages/mail_crypto/tool/benchmark.dart` times it (`dart compile exe`, as the app's release build is AOT). On
+the development machine (an Apple M1 Max under Asahi Linux, AOT; a phone is several times slower), before → after the
+dart_pg fixes of 2.1.0+loupe.2:
+
+| | before | after |
+|---|---|---|
+| Unlock a key exported by Thunderbird (Ed25519, S2K SHA-256 × 62 MiB, two key packets) | 5.4 s | 1.2 s |
+| Unlock a GnuPG 2.4 key (S2K SHA-1 × 62 MiB) | 2.6 s | 0.8 s |
+| Unlock a key made by Loupe | 1.4 s | 0.3 s |
+| Read (decrypt + verify) an 8 KB message | 22 ms | 18 ms |
+| … with 100 KB attached | 154 ms | 66 ms |
+| … with 1 MB attached | 15.5 s | 0.5 s |
+| … with 5 MB attached | minutes | 2.4 s |
+| Compose signed + encrypted with 1 MB attached | 14.6 s | 0.4 s |
+| Verify a multipart/signed with 1 MB attached | 0.52 s | 0.08 s |
+
+Unlocking stays near a second: the iteration count Thunderbird and GnuPG choose is meant to take that long.
+
 ## Background work (Android)
 
 Besides the app, three kinds of isolates open the database, each through `openLiveStore` (`app/lib/data/live.dart`):

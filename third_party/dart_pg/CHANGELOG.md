@@ -14,6 +14,22 @@ their keys) and one in 256 Ed25519 secret keys:
   in the future (clock skew) are accepted.
 Only lib/ is vendored (no tests or examples).
 
+## 2.1.0+loupe.2 (2026-10-05)
+Speed, without changing a byte of what is read or written (mail_crypto's
+test/dart_pg_speed_test.dart compares with upstream's and pointycastle's):
+- CFB mode is our own `CfbBlockCipher`: pointycastle's CFBBlockCipher copies
+  the rest of its input for every block, so encrypting and decrypting took
+  quadratic time (1 MB: 15 s; now 0.4 s).
+- Partial body lengths are written by offset; upstream copied the rest of the
+  body for every 1 KiB chunk (quadratic). `PacketList.encode` concatenates
+  bytes instead of going byte by byte through a `List<int>`.
+- The iterated and salted S2K hashes the repeated salt and passphrase as it
+  streams, instead of building them twice in memory (2 × 62 MiB for the
+  keys Thunderbird and GnuPG make).
+- SHA-1 and SHA-2 come from package:crypto (`Helper.hashDigest`, the S2K):
+  several times faster than pointycastle's (SHA-1 4×, SHA-512 20×), so a
+  GnuPG key unlocks in 0.8 s instead of 2.6 s.
+
 ## 1.0.0 (2023-03-21)
 - Allows to encrypt and sign data.
 - Support key management: key generation, key reading, key decryption.

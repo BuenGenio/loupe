@@ -745,16 +745,38 @@ final class FakeTransport implements MailTransport {
 }
 
 /// Builds messages as JSON so the fake server can read them back.
-final class FakeComposer implements MessageComposer {
+final class FakeComposer implements AsyncMessageComposer {
   /// The signing key is locked (a passphrase nobody can give here, as in
   /// background work): signed mail can't be composed.
   bool locked = false;
+
+  /// Only [composeAsync] may be used (as the app's composer should be).
+  bool asyncOnly = false;
+
+  /// How many messages were composed through [composeAsync].
+  int composedAsync = 0;
+
+  @override
+  Future<Uint8List> composeAsync(
+    OutgoingMessage message,
+    Identity from, {
+    required String messageId,
+    DateTime? date,
+  }) async {
+    composedAsync++;
+    return _compose(message, from, messageId: messageId, date: date);
+  }
 
   /// How many messages were composed.
   int composed = 0;
 
   @override
   Uint8List compose(OutgoingMessage message, Identity from, {required String messageId, DateTime? date}) {
+    if (asyncOnly) throw StateError('composed in the caller’s isolate');
+    return _compose(message, from, messageId: messageId, date: date);
+  }
+
+  Uint8List _compose(OutgoingMessage message, Identity from, {required String messageId, DateTime? date}) {
     if (locked && message.security.sign) {
       throw const MailException(MailErrorKind.unsupported, 'Your OpenPGP key is locked.');
     }
