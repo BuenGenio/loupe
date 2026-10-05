@@ -83,6 +83,21 @@ final class SmimeSignatureStatus {
   /// Valid, by a trusted certificate of the sender, at the message's date: "Signed by … ✓".
   bool get good => valid && !dateMismatch && (trust?.trusted ?? false);
 
+  /// This signature, made bad: the message holds content it doesn't cover
+  /// ([problem] says what), so it can't vouch for what is shown.
+  SmimeSignatureStatus notCovering(String problem) => SmimeSignatureStatus(
+    valid: false,
+    certificate: certificate,
+    signingTime: signingTime,
+    trust: trust,
+    problem: problem,
+    capabilities: capabilities,
+    certificates: certificates,
+    modified: true,
+    weak: weak,
+    dateMismatch: dateMismatch,
+  );
+
   SmimeSignatureStatus withDateMismatch() => SmimeSignatureStatus(
     valid: valid,
     certificate: certificate,

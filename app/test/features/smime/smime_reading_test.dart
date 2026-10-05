@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:async';
 import 'dart:typed_data';
 
@@ -91,6 +92,64 @@ void main() {
     await tester.pumpAndSettle();
     expect(textContaining('Signed by Alice Example ✓ (Loupe Test)'), findsOneWidget);
     expect((await smimeStateIn(storage)).authorities.single.displayName, 'Loupe Test Mail CA');
+  });
+
+  group('multipart/signed: what shows is the signed part of the raw message, never the server’s view', () {
+    const boundary = '------95CFF1AC2FFBA83C1C8428AEF42FE630';
+    const evil = EmailContent(
+      emailId: 'm1',
+      text: 'Hello Bob, please pay the new account: EVIL',
+      html: '<p>Please pay the new account: EVIL</p>',
+      attachments: [
+        Attachment(partId: '2', mimeType: 'application/pkcs7-signature', filename: 'smime.p7s', size: 3000),
+        Attachment(partId: '3', mimeType: 'application/pdf', filename: 'invoice.pdf', size: 300),
+      ],
+    );
+
+    Future<void> openWith(WidgetTester tester, String raw) async {
+      final storage = await smimeKeychain(trusted: [testRoot]);
+      final root = MimeEntity.parse(Uint8List.fromList(latin1.encode(raw)));
+      final repo = FakeMailRepository(
+        emails: [
+          testEmail('m1', from: aliceAddress, to: const [bobAddress], subject: 'S/MIME'),
+        ],
+        contents: {
+          'm1': EmailContent(
+            emailId: 'm1',
+            headers: root.headers,
+            text: evil.text,
+            html: evil.html,
+            attachments: evil.attachments,
+          ),
+        },
+      )..rawSources['m1'] = raw;
+      final router = await pumpTestApp(tester, repository: repo, overrides: [inlinePgp, keychain(storage)]);
+      unawaited(router.push('/message/m1'));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('an unsigned HTML part and an attachment added after the signature', (tester) async {
+      final signed = smimeMessage('signed-detached.eml');
+      final end = signed.lastIndexOf('$boundary--');
+      final raw =
+          '${signed.substring(0, end)}$boundary\nContent-Type: text/html\n\n<p>Please pay the new account: EVIL</p>\n'
+          '$boundary\nContent-Type: application/pdf\nContent-Disposition: attachment; filename="invoice.pdf"\n\n%PDF\n'
+          '${signed.substring(end)}';
+      await openWith(tester, raw);
+      expect(textContaining('Signature invalid: message modified'), findsOneWidget);
+      expect(textContaining('✓'), findsNothing);
+      expect(textContaining('EVIL'), findsNothing);
+      expect(textContaining('invoice.pdf'), findsNothing);
+      expect(textContaining('This message is signed with S/MIME. Grüße!'), findsWidgets);
+    });
+
+    testWidgets('a good signature: the server splitting the message otherwise changes nothing', (tester) async {
+      await openWith(tester, smimeMessage('signed-detached.eml'));
+      expect(textContaining('Signed by Alice Example ✓ (Loupe Test)'), findsOneWidget);
+      expect(textContaining('EVIL'), findsNothing);
+      expect(textContaining('invoice.pdf'), findsNothing);
+      expect(textContaining('This message is signed with S/MIME. Grüße!'), findsWidgets);
+    });
   });
 
   testWidgets('a modified message', (tester) async {

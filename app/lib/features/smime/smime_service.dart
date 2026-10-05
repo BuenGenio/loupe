@@ -48,12 +48,14 @@ final class SmimeService {
     return run(() {
       final r = SmimeReader(b).read(raw, keys: pairs, anchors: anchors, known: known, now: now, sender: sender);
       final entity = r.entity;
-      // A multipart/signed shows as the server gave it; anything wrapped shows what was inside.
-      final unwrapped = entity != null && r.status.protection != SmimeProtection.signedDetached;
+      // What is shown is what was verified or decrypted: for a
+      // multipart/signed, its signed part from these very bytes, never the
+      // server's view of the whole message (parts outside the signature, or
+      // a MIME parser that splits the message differently, would show as signed).
       return SmimeReadOutcome(
         status: r.status,
-        content: unwrapped ? contentFromEntity(entity, emailId: emailId) : null,
-        entity: unwrapped ? entity : null,
+        content: entity == null ? null : contentFromEntity(entity, emailId: emailId),
+        entity: entity,
       );
     });
   }
