@@ -164,6 +164,9 @@ List<(String, String)> _parseHeaders(Uint8List block) {
 /// The parts of a multipart body, each exactly as between its delimiter
 /// lines (the line end before a delimiter belongs to the delimiter).
 List<Uint8List> splitMultipart(Uint8List body, String boundary) {
+  // Boundaries are ASCII (RFC 2046): another one splits nothing (and
+  // mustn't throw out of a parser that never throws).
+  if (boundary.codeUnits.any((c) => c > 0x7f)) return const [];
   final delimiter = ascii.encode('--$boundary');
   final parts = <Uint8List>[];
   int? start;

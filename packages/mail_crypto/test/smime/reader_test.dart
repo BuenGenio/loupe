@@ -128,6 +128,14 @@ void main() {
     });
   });
 
+  test('a boundary that isn’t ASCII: not split, never an exception', () {
+    final text = latin1.decode(smimeMail('signed-detached.eml'));
+    final raw = latin1.encode(text.replaceFirst('boundary="----95CFF1AC2FFBA83C1C8428AEF42FE630"', 'boundary="----95CFF1AC2FFBA83C1C8428AEF42FÉ630"'));
+    final r = const SmimeReader(smime).read(raw, anchors: testAnchors, now: today);
+    expect(r.status.signature, isNull);
+    expect(MimeEntity.parse(raw).parts, isEmpty);
+  });
+
   test('recipients of an encrypted message', () {
     final ids = const SmimeReader(smime).recipientsOf(smimeMail('signed-enveloped.eml'));
     expect(ids.map((i) => i.serialNumber?.toInt()), unorderedEquals([101, 100]));
