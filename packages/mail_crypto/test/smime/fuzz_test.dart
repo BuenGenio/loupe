@@ -1,64 +1,27 @@
-import 'dart:math';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:test/test.dart';
 
+import 'fuzz_harness.dart';
 import 'smime_support.dart';
 
-/// Damaged input never throws out of the S/MIME readers: it reads as damaged.
+/// Damaged input never throws anything but a typed error out of the S/MIME
+/// parsers, and never takes long. A few iterations per target here (set
+/// LOUPE_FUZZ_ITERATIONS for more); tool/fuzz_smime.dart runs many.
 void main() {
-  final random = Random(21);
+  final iterations = int.tryParse(Platform.environment['LOUPE_FUZZ_ITERATIONS'] ?? '') ?? 400;
 
-  Uint8List mutate(Uint8List input) {
-    final out = Uint8List.fromList(input);
-    for (var n = 1 + random.nextInt(4); n > 0; n--) {
-      out[random.nextInt(out.length)] = random.nextInt(256);
-    }
-    return out;
+  for (final target in fuzzTargets()) {
+    test('${target.name}: $iterations mutated inputs', () {
+      final stats = fuzz(targets: [target], iterations: iterations, slow: const Duration(seconds: 5));
+      for (final f in stats.failures) {
+        saveFailure(f);
+      }
+      expect(stats.failures, isEmpty, reason: stats.failures.join('\n'));
+    }, timeout: const Timeout(Duration(minutes: 5)));
   }
-
-  test('CMS blobs with random bytes changed', () {
-    for (final name in ['enveloped-rsa.eml', 'enveloped-ec.eml', 'authenveloped.eml', 'signed-opaque.eml']) {
-      final der = MimeEntity.parse(smimeMail(name)).decodedBody;
-      for (var i = 0; i < 150; i++) {
-        final bad = mutate(der);
-        try {
-          smime.decrypt(bad, [alice, bob]);
-        } on SmimeException {
-          // Expected.
-        }
-        try {
-          smime.verify(bad);
-        } on SmimeException {
-          // Expected.
-        }
-      }
-    }
-  });
-
-  test('whole messages, certificates and PKCS #12 files with random bytes changed', () {
-    const reader = SmimeReader(smime);
-    for (final name in ['signed-detached.eml', 'signed-enveloped.eml', 'opaque-enveloped.eml']) {
-      for (var i = 0; i < 60; i++) {
-        reader.read(mutate(smimeMail(name)), keys: [alice, bob], anchors: testAnchors, now: today);
-      }
-    }
-    for (var i = 0; i < 200; i++) {
-      try {
-        readCertificates(mutate(testCa.der));
-      } on SmimeException {
-        // Expected.
-      }
-    }
-    for (var i = 0; i < 40; i++) {
-      try {
-        smime.readPkcs12(mutate(smimeFixture('alice.p12')), 'alice-pass');
-      } on SmimeException {
-        // Expected.
-      }
-    }
-  });
 
   test('truncated input', () {
     final der = MimeEntity.parse(smimeMail('signed-enveloped.eml')).decodedBody;
