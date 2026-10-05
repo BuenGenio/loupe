@@ -136,6 +136,15 @@ void main() {
     expect(MimeEntity.parse(raw).parts, isEmpty);
   });
 
+  test('a header parameter name with a CR in it: read, never an exception', () {
+    // Found by the fuzzer: HeaderValue.parse's name pattern didn't match it (a null check threw).
+    const ct = 'multipart/signed; protocol="application/pkcs7-signature"; a\rb=1; micalg=sha-256';
+    expect(HeaderValue.parse(ct)['a\rb'], '1');
+    expect(detectSmime(const [('Content-Type', ct)]), SmimeProtection.signedDetached);
+    final raw = latin1.encode(latin1.decode(smimeMail('signed-detached.eml')).replaceFirst('micalg="sha-256";', 'a\rb=1;'));
+    expect(const SmimeReader(smime).read(raw, anchors: testAnchors, now: today).status.signature?.good, isTrue);
+  });
+
   test('recipients of an encrypted message', () {
     final ids = const SmimeReader(smime).recipientsOf(smimeMail('signed-enveloped.eml'));
     expect(ids.map((i) => i.serialNumber?.toInt()), unorderedEquals([101, 100]));
