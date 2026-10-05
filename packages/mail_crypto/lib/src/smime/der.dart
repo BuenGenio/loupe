@@ -152,18 +152,25 @@ final class Asn1 {
     }
   }
 
+  /// Octets an INTEGER may have: RSA moduli of 16384 bits and a sign octet
+  /// fit. Longer ones are hostile (and slow to turn into numbers).
+  static const maxIntegerLength = 2049;
+
   BigInt get integer {
     final c = content;
     if (c.isEmpty) throw const Asn1Exception('Empty integer');
-    var v = BigInt.zero;
-    for (final x in c) {
-      v = (v << 8) | BigInt.from(x);
-    }
+    if (c.length > maxIntegerLength) throw const Asn1Exception('Integer too large');
+    var v = bigIntFromBytes(c);
     if (c[0] & 0x80 != 0) v -= BigInt.one << (c.length * 8);
     return v;
   }
 
-  int get intValue => integer.toInt();
+  /// A small INTEGER (a version, a count, a length): within ±2^31.
+  int get intValue {
+    final v = integer;
+    if (v.bitLength > 31) throw const Asn1Exception('Integer out of range');
+    return v.toInt();
+  }
 
   bool get boolean => content.isNotEmpty && content[0] != 0;
 
@@ -371,24 +378,19 @@ Uint8List retag(List<int> element, int tag) => Uint8List.fromList([tag, ...eleme
 
 /// Unsigned big-endian bytes of [v], left-padded to [length] when given.
 Uint8List unsignedBytes(BigInt v, [int? length]) {
-  final bytes = <int>[];
-  for (var x = v; x > BigInt.zero; x >>= 8) {
-    bytes.insert(0, (x & BigInt.from(0xff)).toInt());
+  if (v.isNegative) throw ArgumentError.value(v, 'v', 'Negative');
+  final h = v == BigInt.zero ? '' : v.toRadixString(16);
+  final n = (h.length + 1) >> 1;
+  final out = Uint8List(length != null && length > n ? length : n);
+  final digits = h.length.isOdd ? '0$h' : h;
+  for (var i = 0, at = out.length - n; i < n; i++, at++) {
+    out[at] = int.parse(digits.substring(2 * i, 2 * i + 2), radix: 16);
   }
-  if (length != null) {
-    while (bytes.length < length) {
-      bytes.insert(0, 0);
-    }
-  }
-  return Uint8List.fromList(bytes);
+  return out;
 }
 
-BigInt bigIntFromBytes(List<int> bytes) {
-  var v = BigInt.zero;
-  for (final x in bytes) {
-    v = (v << 8) | BigInt.from(x);
-  }
-  return v;
-}
+/// The unsigned big-endian number in [bytes] (linear time, unlike shifting
+/// in one octet at a time).
+BigInt bigIntFromBytes(List<int> bytes) => bytes.isEmpty ? BigInt.zero : BigInt.parse(hex(bytes), radix: 16);
 
 String hex(List<int> bytes) => [for (final b in bytes) b.toRadixString(16).padLeft(2, '0')].join().toUpperCase();
