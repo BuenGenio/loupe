@@ -543,6 +543,12 @@ final class LiveMailRepository
   Future<void> rememberProtectedSubject(String emailId, String subject) =>
       store.rememberProtectedSubject(emailId, subject);
 
+  @override
+  Future<void> indexDecryptedText(String emailId, String text) => store.putDecryptedText(emailId, text);
+
+  @override
+  Future<void> forgetDecryptedText() => store.deleteDecryptedTexts();
+
   // Actions -----------------------------------------------------------------
 
   Future<List<String>> _resolveAll(List<String> ids) async => [for (final id in ids) await store.resolveId(id)];

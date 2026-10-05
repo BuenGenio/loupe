@@ -176,8 +176,9 @@ Future<SecureSendKeys> backgroundSendKeys() async {
 /// Decrypt Subjects in the Background, for a background isolate: null when
 /// the setting is off in [prefs] or no key needs no passphrase.
 Future<SubjectDecryptor?> backgroundSubjectDecryptor(SharedPreferences prefs) async {
-  if (!DecryptedMailSettings.read(prefs).subjectsInBackground) return null;
+  final settings = DecryptedMailSettings.read(prefs);
+  if (!settings.subjectsInBackground) return null;
   final keyring = Keyring(SecretStorageKeyring(KeychainSecretStorage()), prefix: liveKeyringPrefix);
   final keys = await keysWithoutPassphrase(keyring, const DartPgBackend());
-  return keys.isEmpty ? null : SubjectDecryptor(keys: keys);
+  return keys.isEmpty ? null : SubjectDecryptor(keys: keys, indexText: settings.indexForSearch);
 }

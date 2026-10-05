@@ -211,6 +211,21 @@ class FakeMailRepository implements MailRepository, DecryptedMail {
     _changed();
   }
 
+  /// Decrypted text in the search index (email id → text).
+  final decryptedTexts = <String, String>{};
+
+  @override
+  Future<void> indexDecryptedText(String emailId, String text) async {
+    log.add('indexDecryptedText $emailId');
+    decryptedTexts[emailId] = text;
+  }
+
+  @override
+  Future<void> forgetDecryptedText() async {
+    log.add('forgetDecryptedText');
+    decryptedTexts.clear();
+  }
+
   @override
   Future<EmailContent> loadContent(String emailId) async {
     log.add('loadContent $emailId');

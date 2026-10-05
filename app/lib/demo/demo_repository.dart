@@ -913,6 +913,24 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
     _notify();
   }
 
+  /// Decrypted text that search finds, by email id (Index Decrypted
+  /// Messages for Search).
+  final _decryptedTexts = <String, String>{};
+
+  @override
+  Future<void> indexDecryptedText(String emailId, String text) async {
+    if (!_messages.containsKey(emailId) || _decryptedTexts[emailId] == text) return;
+    _decryptedTexts[emailId] = text;
+    _notify();
+  }
+
+  @override
+  Future<void> forgetDecryptedText() async {
+    if (_decryptedTexts.isEmpty) return;
+    _decryptedTexts.clear();
+    _notify();
+  }
+
   @override
   Future<Uint8List> loadRawSource(String emailId) async {
     final m = _require(emailId);
@@ -1155,12 +1173,15 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
     return matchesEmail(
       expr,
       m.summary,
-      content: EmailContent(
-        emailId: m.id,
-        html: m.html,
-        text: m.text,
-        attachments: [for (final a in m.attachments) a.attachment],
-      ),
+      content: switch (_decryptedTexts[m.id]) {
+        final decrypted? => EmailContent(emailId: m.id, text: decrypted),
+        null => EmailContent(
+          emailId: m.id,
+          html: m.html,
+          text: m.text,
+          attachments: [for (final a in m.attachments) a.attachment],
+        ),
+      },
       accountLabel: account == null ? null : '${account.displayName} ${account.email}',
       headers: {for (final (name, value) in m.extraHeaders) name.toLowerCase(): value},
     );

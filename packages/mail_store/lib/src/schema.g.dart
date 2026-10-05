@@ -3272,6 +3272,185 @@ class ContentsCompanion extends UpdateCompanion<ContentRow> {
   }
 }
 
+class $DecryptedTextsTable extends DecryptedTexts with TableInfo<$DecryptedTextsTable, DecryptedTextRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DecryptedTextsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _emailIdMeta = const VerificationMeta('emailId');
+  @override
+  late final GeneratedColumn<String> emailId = GeneratedColumn<String>(
+    'email_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES emails (id) ON UPDATE CASCADE ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _bodyMeta = const VerificationMeta('body');
+  @override
+  late final GeneratedColumn<String> body = GeneratedColumn<String>(
+    'body',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [emailId, body];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'decrypted_texts';
+  @override
+  VerificationContext validateIntegrity(Insertable<DecryptedTextRow> instance, {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('email_id')) {
+      context.handle(_emailIdMeta, emailId.isAcceptableOrUnknown(data['email_id']!, _emailIdMeta));
+    } else if (isInserting) {
+      context.missing(_emailIdMeta);
+    }
+    if (data.containsKey('body')) {
+      context.handle(_bodyMeta, body.isAcceptableOrUnknown(data['body']!, _bodyMeta));
+    } else if (isInserting) {
+      context.missing(_bodyMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {emailId};
+  @override
+  DecryptedTextRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DecryptedTextRow(
+      emailId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}email_id'])!,
+      body: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}body'])!,
+    );
+  }
+
+  @override
+  $DecryptedTextsTable createAlias(String alias) {
+    return $DecryptedTextsTable(attachedDatabase, alias);
+  }
+}
+
+class DecryptedTextRow extends DataClass implements Insertable<DecryptedTextRow> {
+  final String emailId;
+  final String body;
+  const DecryptedTextRow({required this.emailId, required this.body});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['email_id'] = Variable<String>(emailId);
+    map['body'] = Variable<String>(body);
+    return map;
+  }
+
+  DecryptedTextsCompanion toCompanion(bool nullToAbsent) {
+    return DecryptedTextsCompanion(emailId: Value(emailId), body: Value(body));
+  }
+
+  factory DecryptedTextRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DecryptedTextRow(
+      emailId: serializer.fromJson<String>(json['emailId']),
+      body: serializer.fromJson<String>(json['body']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{'emailId': serializer.toJson<String>(emailId), 'body': serializer.toJson<String>(body)};
+  }
+
+  DecryptedTextRow copyWith({String? emailId, String? body}) =>
+      DecryptedTextRow(emailId: emailId ?? this.emailId, body: body ?? this.body);
+  DecryptedTextRow copyWithCompanion(DecryptedTextsCompanion data) {
+    return DecryptedTextRow(
+      emailId: data.emailId.present ? data.emailId.value : this.emailId,
+      body: data.body.present ? data.body.value : this.body,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DecryptedTextRow(')
+          ..write('emailId: $emailId, ')
+          ..write('body: $body')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(emailId, body);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || (other is DecryptedTextRow && other.emailId == this.emailId && other.body == this.body);
+}
+
+class DecryptedTextsCompanion extends UpdateCompanion<DecryptedTextRow> {
+  final Value<String> emailId;
+  final Value<String> body;
+  final Value<int> rowid;
+  const DecryptedTextsCompanion({
+    this.emailId = const Value.absent(),
+    this.body = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DecryptedTextsCompanion.insert({required String emailId, required String body, this.rowid = const Value.absent()})
+    : emailId = Value(emailId),
+      body = Value(body);
+  static Insertable<DecryptedTextRow> custom({
+    Expression<String>? emailId,
+    Expression<String>? body,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (emailId != null) 'email_id': emailId,
+      if (body != null) 'body': body,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DecryptedTextsCompanion copyWith({Value<String>? emailId, Value<String>? body, Value<int>? rowid}) {
+    return DecryptedTextsCompanion(
+      emailId: emailId ?? this.emailId,
+      body: body ?? this.body,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (emailId.present) {
+      map['email_id'] = Variable<String>(emailId.value);
+    }
+    if (body.present) {
+      map['body'] = Variable<String>(body.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DecryptedTextsCompanion(')
+          ..write('emailId: $emailId, ')
+          ..write('body: $body, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $InlinePartsTable extends InlineParts with TableInfo<$InlinePartsTable, InlinePartRow> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -5943,6 +6122,7 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
   late final $EmailsTable emails = $EmailsTable(this);
   late final $EmailKeywordsTable emailKeywords = $EmailKeywordsTable(this);
   late final $ContentsTable contents = $ContentsTable(this);
+  late final $DecryptedTextsTable decryptedTexts = $DecryptedTextsTable(this);
   late final $InlinePartsTable inlineParts = $InlinePartsTable(this);
   late final $OutboxItemsTable outboxItems = $OutboxItemsTable(this);
   late final $PendingOpsTable pendingOps = $PendingOpsTable(this);
@@ -5986,6 +6166,7 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     emails,
     emailKeywords,
     contents,
+    decryptedTexts,
     inlineParts,
     outboxItems,
     pendingOps,
@@ -6034,6 +6215,14 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     WritePropagation(
       on: TableUpdateQuery.onTableName('emails', limitUpdateKind: UpdateKind.update),
       result: [TableUpdate('contents', kind: UpdateKind.update)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('emails', limitUpdateKind: UpdateKind.delete),
+      result: [TableUpdate('decrypted_texts', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('emails', limitUpdateKind: UpdateKind.update),
+      result: [TableUpdate('decrypted_texts', kind: UpdateKind.update)],
     ),
     WritePropagation(
       on: TableUpdateQuery.onTableName('emails', limitUpdateKind: UpdateKind.delete),
@@ -7475,6 +7664,20 @@ final class $$EmailsTableReferences extends BaseReferences<_$StoreDatabase, $Ema
     return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
   }
 
+  static MultiTypedResultKey<$DecryptedTextsTable, List<DecryptedTextRow>> _decryptedTextsRefsTable(
+    _$StoreDatabase db,
+  ) => MultiTypedResultKey.fromTable(db.decryptedTexts, aliasName: 'emails__id__decrypted_texts__email_id');
+
+  $$DecryptedTextsTableProcessedTableManager get decryptedTextsRefs {
+    final manager = $$DecryptedTextsTableTableManager(
+      $_db,
+      $_db.decryptedTexts,
+    ).filter((f) => f.emailId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_decryptedTextsRefsTable($_db));
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
+  }
+
   static MultiTypedResultKey<$InlinePartsTable, List<InlinePartRow>> _inlinePartsRefsTable(_$StoreDatabase db) =>
       MultiTypedResultKey.fromTable(db.inlineParts, aliasName: 'emails__id__inline_parts__email_id');
 
@@ -7630,6 +7833,24 @@ class $$EmailsTableFilterComposer extends Composer<_$StoreDatabase, $EmailsTable
           $$ContentsTableFilterComposer(
             $db: $db,
             $table: $db.contents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> decryptedTextsRefs(Expression<bool> Function($$DecryptedTextsTableFilterComposer f) f) {
+    final $$DecryptedTextsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.decryptedTexts,
+      getReferencedColumn: (t) => t.emailId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$DecryptedTextsTableFilterComposer(
+            $db: $db,
+            $table: $db.decryptedTexts,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
@@ -7904,6 +8125,26 @@ class $$EmailsTableAnnotationComposer extends Composer<_$StoreDatabase, $EmailsT
     return f(composer);
   }
 
+  Expression<T> decryptedTextsRefs<T extends Object>(
+    Expression<T> Function($$DecryptedTextsTableAnnotationComposer a) f,
+  ) {
+    final $$DecryptedTextsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.decryptedTexts,
+      getReferencedColumn: (t) => t.emailId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$DecryptedTextsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.decryptedTexts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
   Expression<T> inlinePartsRefs<T extends Object>(Expression<T> Function($$InlinePartsTableAnnotationComposer a) f) {
     final $$InlinePartsTableAnnotationComposer composer = $composerBuilder(
       composer: this,
@@ -7936,7 +8177,13 @@ class $$EmailsTableTableManager
           $$EmailsTableUpdateCompanionBuilder,
           (EmailRow, $$EmailsTableReferences),
           EmailRow,
-          PrefetchHooks Function({bool mailboxId, bool emailKeywordsRefs, bool contentsRefs, bool inlinePartsRefs})
+          PrefetchHooks Function({
+            bool mailboxId,
+            bool emailKeywordsRefs,
+            bool contentsRefs,
+            bool decryptedTextsRefs,
+            bool inlinePartsRefs,
+          })
         > {
   $$EmailsTableTableManager(_$StoreDatabase db, $EmailsTable table)
     : super(
@@ -8082,12 +8329,19 @@ class $$EmailsTableTableManager
               .map((e) => (e.readTable<$EmailsTable, EmailRow>(table), $$EmailsTableReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback:
-              ({mailboxId = false, emailKeywordsRefs = false, contentsRefs = false, inlinePartsRefs = false}) {
+              ({
+                mailboxId = false,
+                emailKeywordsRefs = false,
+                contentsRefs = false,
+                decryptedTextsRefs = false,
+                inlinePartsRefs = false,
+              }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (emailKeywordsRefs) db.emailKeywords,
                     if (contentsRefs) db.contents,
+                    if (decryptedTextsRefs) db.decryptedTexts,
                     if (inlinePartsRefs) db.inlineParts,
                   ],
                   addJoins:
@@ -8137,6 +8391,15 @@ class $$EmailsTableTableManager
                               referencedItems.where((e) => e.emailId == item.id),
                           typedResults: items,
                         ),
+                      if (decryptedTextsRefs)
+                        await $_getPrefetchedData<EmailRow, $EmailsTable, DecryptedTextRow>(
+                          currentTable: table,
+                          referencedTable: $$EmailsTableReferences._decryptedTextsRefsTable(db),
+                          managerFromTypedResult: (p0) => $$EmailsTableReferences(db, table, p0).decryptedTextsRefs,
+                          referencedItemsForCurrentItem: (item, referencedItems) =>
+                              referencedItems.where((e) => e.emailId == item.id),
+                          typedResults: items,
+                        ),
                       if (inlinePartsRefs)
                         await $_getPrefetchedData<EmailRow, $EmailsTable, InlinePartRow>(
                           currentTable: table,
@@ -8166,7 +8429,13 @@ typedef $$EmailsTableProcessedTableManager =
       $$EmailsTableUpdateCompanionBuilder,
       (EmailRow, $$EmailsTableReferences),
       EmailRow,
-      PrefetchHooks Function({bool mailboxId, bool emailKeywordsRefs, bool contentsRefs, bool inlinePartsRefs})
+      PrefetchHooks Function({
+        bool mailboxId,
+        bool emailKeywordsRefs,
+        bool contentsRefs,
+        bool decryptedTextsRefs,
+        bool inlinePartsRefs,
+      })
     >;
 typedef $$EmailKeywordsTableCreateCompanionBuilder = EmailKeywordsCompanion Function({
   required String emailId,
@@ -8678,6 +8947,217 @@ typedef $$ContentsTableProcessedTableManager =
       $$ContentsTableUpdateCompanionBuilder,
       (ContentRow, $$ContentsTableReferences),
       ContentRow,
+      PrefetchHooks Function({bool emailId})
+    >;
+typedef $$DecryptedTextsTableCreateCompanionBuilder = DecryptedTextsCompanion Function({
+  required String emailId,
+  required String body,
+  Value<int> rowid,
+});
+typedef $$DecryptedTextsTableUpdateCompanionBuilder = DecryptedTextsCompanion Function({
+  Value<String> emailId,
+  Value<String> body,
+  Value<int> rowid,
+});
+
+final class $$DecryptedTextsTableReferences
+    extends BaseReferences<_$StoreDatabase, $DecryptedTextsTable, DecryptedTextRow> {
+  $$DecryptedTextsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $EmailsTable _emailIdTable(_$StoreDatabase db) =>
+      db.emails.createAlias('decrypted_texts__email_id__emails__id');
+
+  $$EmailsTableProcessedTableManager get emailId {
+    final $_column = $_itemColumn<String>('email_id')!;
+
+    final manager = $$EmailsTableTableManager($_db, $_db.emails).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_emailIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$DecryptedTextsTableFilterComposer extends Composer<_$StoreDatabase, $DecryptedTextsTable> {
+  $$DecryptedTextsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get body => $composableBuilder(column: $table.body, builder: (column) => ColumnFilters(column));
+
+  $$EmailsTableFilterComposer get emailId {
+    final $$EmailsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.emailId,
+      referencedTable: $db.emails,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$EmailsTableFilterComposer(
+            $db: $db,
+            $table: $db.emails,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DecryptedTextsTableOrderingComposer extends Composer<_$StoreDatabase, $DecryptedTextsTable> {
+  $$DecryptedTextsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get body =>
+      $composableBuilder(column: $table.body, builder: (column) => ColumnOrderings(column));
+
+  $$EmailsTableOrderingComposer get emailId {
+    final $$EmailsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.emailId,
+      referencedTable: $db.emails,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$EmailsTableOrderingComposer(
+            $db: $db,
+            $table: $db.emails,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DecryptedTextsTableAnnotationComposer extends Composer<_$StoreDatabase, $DecryptedTextsTable> {
+  $$DecryptedTextsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get body => $composableBuilder(column: $table.body, builder: (column) => column);
+
+  $$EmailsTableAnnotationComposer get emailId {
+    final $$EmailsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.emailId,
+      referencedTable: $db.emails,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$EmailsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.emails,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DecryptedTextsTableTableManager
+    extends
+        RootTableManager<
+          _$StoreDatabase,
+          $DecryptedTextsTable,
+          DecryptedTextRow,
+          $$DecryptedTextsTableFilterComposer,
+          $$DecryptedTextsTableOrderingComposer,
+          $$DecryptedTextsTableAnnotationComposer,
+          $$DecryptedTextsTableCreateCompanionBuilder,
+          $$DecryptedTextsTableUpdateCompanionBuilder,
+          (DecryptedTextRow, $$DecryptedTextsTableReferences),
+          DecryptedTextRow,
+          PrefetchHooks Function({bool emailId})
+        > {
+  $$DecryptedTextsTableTableManager(_$StoreDatabase db, $DecryptedTextsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () => $$DecryptedTextsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$DecryptedTextsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$DecryptedTextsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> emailId = const Value.absent(),
+            Value<String> body = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) => DecryptedTextsCompanion(emailId: emailId, body: body, rowid: rowid),
+          createCompanionCallback: ({
+            required String emailId,
+            required String body,
+            Value<int> rowid = const Value.absent(),
+          }) => DecryptedTextsCompanion.insert(emailId: emailId, body: body, rowid: rowid),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$DecryptedTextsTable, DecryptedTextRow>(table),
+                  $$DecryptedTextsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({emailId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (emailId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.emailId,
+                        referencedTable: $$DecryptedTextsTableReferences._emailIdTable(db),
+                        referencedColumn: $$DecryptedTextsTableReferences._emailIdTable(db).id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$DecryptedTextsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$StoreDatabase,
+      $DecryptedTextsTable,
+      DecryptedTextRow,
+      $$DecryptedTextsTableFilterComposer,
+      $$DecryptedTextsTableOrderingComposer,
+      $$DecryptedTextsTableAnnotationComposer,
+      $$DecryptedTextsTableCreateCompanionBuilder,
+      $$DecryptedTextsTableUpdateCompanionBuilder,
+      (DecryptedTextRow, $$DecryptedTextsTableReferences),
+      DecryptedTextRow,
       PrefetchHooks Function({bool emailId})
     >;
 typedef $$InlinePartsTableCreateCompanionBuilder = InlinePartsCompanion Function({
@@ -10714,6 +11194,7 @@ class $StoreDatabaseManager {
   $$EmailsTableTableManager get emails => $$EmailsTableTableManager(_db, _db.emails);
   $$EmailKeywordsTableTableManager get emailKeywords => $$EmailKeywordsTableTableManager(_db, _db.emailKeywords);
   $$ContentsTableTableManager get contents => $$ContentsTableTableManager(_db, _db.contents);
+  $$DecryptedTextsTableTableManager get decryptedTexts => $$DecryptedTextsTableTableManager(_db, _db.decryptedTexts);
   $$InlinePartsTableTableManager get inlineParts => $$InlinePartsTableTableManager(_db, _db.inlineParts);
   $$OutboxItemsTableTableManager get outboxItems => $$OutboxItemsTableTableManager(_db, _db.outboxItems);
   $$PendingOpsTableTableManager get pendingOps => $$PendingOpsTableTableManager(_db, _db.pendingOps);

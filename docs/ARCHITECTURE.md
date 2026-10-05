@@ -138,6 +138,15 @@ Issue #24, after OpenPGP (#20) and S/MIME (#21).
     passphrase only (it never asks), OpenPGP only, messages up to 1 MB (the whole message is downloaded). Background
     work does it for new mail before notifying (`NewMailCheck.subjects`, at most 15 s); the app, while it runs, for
     the newest 100 messages of the inboxes (`ProtectedSubjectsWatcher`, off the UI isolate).
+- **Searching encrypted mail**: by default encrypted messages are found by their headers only (sender,
+  recipients, the protected subject once known); the cached body of an encrypted message is its encrypted form.
+  Settings › End-to-End Encryption › Index Decrypted Messages for Search (off by default) puts the text (and
+  attachment names) of each message `ContentLoader` decrypts, OpenPGP or S/MIME, into the full-text index
+  (`DecryptedMail.indexDecryptedText`): the `decrypted_texts` table (schema version 6, up to 64 KB per message,
+  deleted with the message) stands in for the cached body in `email_fts`. Background subject decryption indexes
+  the text too while both are on. Turning the setting off deletes every row (`forgetDecryptedText`); the index
+  follows by triggers. The database is encrypted (SQLite3MultipleCiphers), so this keeps decrypted text only
+  where the protected subjects and every plain message already are.
 
 ## Background work (Android)
 

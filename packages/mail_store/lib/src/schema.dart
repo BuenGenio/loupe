@@ -150,6 +150,18 @@ class Contents extends Table {
   Set<Column> get primaryKey => {emailId};
 }
 
+/// The decrypted text of encrypted messages, for the full-text index only:
+/// written when the user opted in (Index Decrypted Messages for Search),
+/// all deleted when they opt out. Schema version 6.
+@DataClassName('DecryptedTextRow')
+class DecryptedTexts extends Table {
+  TextColumn get emailId => text().references(Emails, #id, onDelete: KeyAction.cascade, onUpdate: KeyAction.cascade)();
+  TextColumn get body => text()();
+
+  @override
+  Set<Column> get primaryKey => {emailId};
+}
+
 /// Downloaded inline parts (`cid:` images), within a size cap.
 @DataClassName('InlinePartRow')
 class InlineParts extends Table {
@@ -290,21 +302,25 @@ String _attachmentText(String column) =>
     "json_extract(value, '\$.mimeType'), ' ') FROM json_each($column))";
 
 /// Re-indexes the email row aliased `e` (which must exist in the FROM clause).
+/// An encrypted message's protected subject and decrypted text (schema
+/// version 6) stand in for the placeholder subject and the cached body.
 String _ftsInsertFrom(String where) =>
     '''
 INSERT INTO email_fts(rowid, subject, from_addr, to_addr, cc_addr, bcc_addr, preview, body, attachments)
 SELECT e.seq, coalesce(e.protected_subject, e.subject), ${_addrText('e.from_json')}, ${_addrText('e.to_json')}, ${_addrText('e.cc_json')},
-  ${_addrText('e.bcc_json')}, e.preview, coalesce(c.body_text, ''), coalesce(${_attachmentText('c.attachments_json')}, '')
-FROM emails e LEFT JOIN contents c ON c.email_id = e.id WHERE $where;''';
+  ${_addrText('e.bcc_json')}, e.preview, coalesce(d.body, c.body_text, ''), coalesce(${_attachmentText('c.attachments_json')}, '')
+FROM emails e LEFT JOIN contents c ON c.email_id = e.id LEFT JOIN decrypted_texts d ON d.email_id = e.id WHERE $where;''';
 
 /// The FTS5 index and the triggers keeping it and `email_keywords` consistent.
 const ftsColumns = ['subject', 'from_addr', 'to_addr', 'cc_addr', 'bcc_addr', 'preview', 'body', 'attachments'];
 
 /// The triggers that write the full-text index, by name (they all use
-/// [_ftsInsertFrom]): recreated when what it indexes changes.
+/// [_ftsInsertFrom]), but those of [_decryptedTextTriggers]: recreated when
+/// what it indexes changes.
 final List<(String, String)> _ftsTriggers = [
   for (final sql in _ftsAndTriggers.skip(1))
-    if (RegExp(r'^CREATE TRIGGER (\w+)').firstMatch(sql) case final m? when sql.contains('INSERT INTO email_fts'))
+    if (RegExp(r'^CREATE TRIGGER (\w+)').firstMatch(sql) case final m?
+        when sql.contains('INSERT INTO email_fts') && !_decryptedTextTriggers.contains(sql))
       (m.group(1)!, sql),
 ];
 
@@ -344,6 +360,27 @@ CREATE TRIGGER contents_after_update AFTER UPDATE OF body_text, attachments_json
 END;''',
   '''
 CREATE TRIGGER contents_after_delete AFTER DELETE ON contents BEGIN
+  DELETE FROM email_fts WHERE rowid = (SELECT seq FROM emails WHERE id = old.email_id);
+  ${_ftsInsertFrom('e.id = old.email_id')}
+END;''',
+  ..._decryptedTextTriggers,
+];
+
+/// Keep the index of a message in step with its decrypted text (schema
+/// version 6).
+final List<String> _decryptedTextTriggers = [
+  '''
+CREATE TRIGGER decrypted_texts_after_insert AFTER INSERT ON decrypted_texts BEGIN
+  DELETE FROM email_fts WHERE rowid = (SELECT seq FROM emails WHERE id = new.email_id);
+  ${_ftsInsertFrom('e.id = new.email_id')}
+END;''',
+  '''
+CREATE TRIGGER decrypted_texts_after_update AFTER UPDATE OF body ON decrypted_texts BEGIN
+  DELETE FROM email_fts WHERE rowid = (SELECT seq FROM emails WHERE id = new.email_id);
+  ${_ftsInsertFrom('e.id = new.email_id')}
+END;''',
+  '''
+CREATE TRIGGER decrypted_texts_after_delete AFTER DELETE ON decrypted_texts BEGIN
   DELETE FROM email_fts WHERE rowid = (SELECT seq FROM emails WHERE id = old.email_id);
   ${_ftsInsertFrom('e.id = old.email_id')}
 END;''',
@@ -467,6 +504,7 @@ BEGIN $subscriptionsRebuildSql; END;''',
     Emails,
     EmailKeywords,
     Contents,
+    DecryptedTexts,
     InlineParts,
     OutboxItems,
     PendingOps,
@@ -488,8 +526,9 @@ class StoreDatabase extends _$StoreDatabase {
   /// flagged messages ([_countIndexes]). 5: `held` on outbox items, the
   /// Subscriptions screen's data ([_subscriptionSchema]), and the progress of
   /// the header refetch on sync states. 6: encrypted messages
-  /// (`is_encrypted`) and their protected subjects once decrypted
-  /// (`protected_subject`, in the full-text index too).
+  /// (`is_encrypted`), their protected subjects once decrypted
+  /// (`protected_subject`) and, when the user opted in, their decrypted text
+  /// ([DecryptedTexts]); both in the full-text index.
   @override
   int get schemaVersion => 6;
 
@@ -555,8 +594,12 @@ class StoreDatabase extends _$StoreDatabase {
     if (from < 6) {
       await m.addColumn(emails, emails.isEncrypted);
       await m.addColumn(emails, emails.protectedSubject);
+      await m.createTable(decryptedTexts);
       for (final (name, sql) in _ftsTriggers) {
         await customStatement('DROP TRIGGER IF EXISTS $name');
+        await customStatement(sql);
+      }
+      for (final sql in _decryptedTextTriggers) {
         await customStatement(sql);
       }
     }

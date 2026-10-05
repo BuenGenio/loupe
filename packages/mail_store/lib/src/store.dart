@@ -1578,6 +1578,26 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
     );
   }
 
+  /// The most of a decrypted text the search index keeps, in characters.
+  static const maxDecryptedTextChars = 64 * 1024;
+
+  /// Indexes [text], the decrypted text of the encrypted message [emailId]
+  /// (the first [maxDecryptedTextChars]), for full-text search: it stands in
+  /// for the message's cached body there. Ignored if the message isn't
+  /// stored.
+  Future<void> putDecryptedText(String emailId, String text) async {
+    final id = await resolveId(emailId);
+    final body = text.length > maxDecryptedTextChars ? text.substring(0, maxDecryptedTextChars) : text;
+    await _db.customStatement(
+      'INSERT INTO decrypted_texts (email_id, body) SELECT id, ?2 FROM emails WHERE id = ?1 '
+      'ON CONFLICT (email_id) DO UPDATE SET body = excluded.body WHERE body IS NOT excluded.body',
+      [id, body],
+    );
+  }
+
+  /// Takes every decrypted text out of the search index. Returns how many.
+  Future<int> deleteDecryptedTexts() => _db.customUpdate('DELETE FROM decrypted_texts');
+
   // Content -----------------------------------------------------------------
 
   Future<EmailContent?> getContent(String emailId) async {

@@ -114,8 +114,11 @@ void main() {
           [for (final e in await store.search(const TextTerm(SearchField.subject, 'quarterly'))) e.id],
           [eid('INBOX', 1)],
         );
-        // The body cached before the upgrade is still found.
+        // The body cached before the upgrade is still found, and decrypted text can be.
         expect(await store.search(const TextTerm(SearchField.body, 'kumquat')), hasLength(1));
+        await store.putDecryptedText(eid('INBOX', 1), 'Lighthouse Lodge');
+        expect(await store.search(const TextTerm(SearchField.body, 'lighthouse')), hasLength(1));
+        expect(await store.search(const TextTerm(SearchField.body, 'kumquat')), isEmpty);
       });
 
       test('keeping the data; outbox entries are not held', () async {

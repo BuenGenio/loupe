@@ -56,6 +56,16 @@ void main() {
     expect(repo.log.where((l) => l.startsWith('loadRawSource')), hasLength(2), reason: 'only what it wants');
   });
 
+  test('with Index Decrypted Messages for Search, their text goes into the index too', () async {
+    final emails = [add('mine', secretTo(mine))];
+    await SubjectDecryptor(keys: [mine]).decrypt(repo, emails);
+    expect(repo.decryptedTexts, isEmpty);
+    repo.emails.clear();
+    final again = [add('mine', secretTo(mine))];
+    await SubjectDecryptor(keys: [mine], indexText: true).decrypt(repo, again);
+    expect(repo.decryptedTexts['mine'], contains('Only for you.'));
+  });
+
   test('a message it already knows, or whose source isn’t PGP/MIME, is left alone', () async {
     final known = add('known', secretTo(mine)).copyWith(subject: 'Known', hasDecryptedSubject: true);
     final gone = add('gone', secretTo(mine));

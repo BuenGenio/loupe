@@ -40,6 +40,7 @@ class EncryptionSettingsScreen extends ConsumerWidget {
       return const GroupedPage(title: 'End-to-End Encryption', children: [SizedBox(height: 200)]);
     }
     final now = DateTime.now();
+    final decrypted = ref.watch(decryptedMailSettingsProvider);
     final accepted = [
       for (final e in state.publicKeys)
         if (e.source != KeySource.autocrypt || e.isAccepted) e,
@@ -131,9 +132,24 @@ class EncryptionSettingsScreen extends ConsumerWidget {
             SwitchRow(
               key: const ValueKey('subjects-in-background'),
               title: 'Decrypt Subjects in the Background',
-              value: ref.watch(decryptedMailSettingsProvider).subjectsInBackground,
+              value: decrypted.subjectsInBackground,
               onChanged: (v) =>
                   ref.read(decryptedMailSettingsProvider.notifier).update((s) => s.copyWith(subjectsInBackground: v)),
+            ),
+          ],
+        ),
+        InsetGroup(
+          separatorIndent: 16,
+          footer:
+              'Search finds encrypted messages by their sender, recipients and subject. With this on, Loupe also '
+              'adds the text of each encrypted message it decrypts to the search index in its encrypted database on '
+              'this device, so search finds it by its text too. Turning it off removes that text from the index.',
+          children: [
+            SwitchRow(
+              key: const ValueKey('index-decrypted'),
+              title: 'Index Decrypted Messages for Search',
+              value: decrypted.indexForSearch,
+              onChanged: (v) => _setIndexing(ref, v),
             ),
           ],
         ),
@@ -164,6 +180,17 @@ class EncryptionSettingsScreen extends ConsumerWidget {
         ),
       ],
     );
+  }
+
+  /// Index Decrypted Messages for Search; off takes the text out of the index.
+  static Future<void> _setIndexing(WidgetRef ref, bool on) async {
+    await ref.read(decryptedMailSettingsProvider.notifier).update((s) => s.copyWith(indexForSearch: on));
+    if (on) return;
+    try {
+      if (ref.read(repositoryProvider) case final DecryptedMail cache) await cache.forgetDecryptedText();
+    } on Object catch (e) {
+      debugPrint('Removing decrypted text from the index failed: ${e.runtimeType}');
+    }
   }
 
   Widget _publicRow(BuildContext context, PublicKeyEntry e) {

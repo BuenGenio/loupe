@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../settings/app_mode.dart';
 import '../../settings/app_settings.dart';
+import '../compose/compose_text.dart';
 
 /// Settings › End-to-End Encryption › On This Device. Persisted in
 /// SharedPreferences under `e2ee.*`, where background isolates read them
@@ -20,29 +21,44 @@ import '../../settings/app_settings.dart';
 /// encrypted database); these settings add more.
 @immutable
 final class DecryptedMailSettings {
-  const DecryptedMailSettings({this.subjectsInBackground = false});
+  const DecryptedMailSettings({this.subjectsInBackground = false, this.indexForSearch = false});
 
   /// Decrypt the protected subjects of new encrypted mail during sync, with
   /// keys stored without a passphrase, so the list and notifications show
   /// them before the message is opened. Off by default.
   final bool subjectsInBackground;
 
+  /// Put the text of encrypted messages, once decrypted, into the search
+  /// index on this device (the database is encrypted). Off by default:
+  /// encrypted mail is then found by its headers only. Turning it off takes
+  /// the text out again.
+  final bool indexForSearch;
+
   static const _prefix = 'e2ee.';
 
-  static DecryptedMailSettings read(SharedPreferences p) =>
-      DecryptedMailSettings(subjectsInBackground: p.getBool('${_prefix}subjectsInBackground') ?? false);
+  static DecryptedMailSettings read(SharedPreferences p) => DecryptedMailSettings(
+    subjectsInBackground: p.getBool('${_prefix}subjectsInBackground') ?? false,
+    indexForSearch: p.getBool('${_prefix}indexForSearch') ?? false,
+  );
 
-  Future<void> write(SharedPreferences p) => p.setBool('${_prefix}subjectsInBackground', subjectsInBackground);
+  Future<void> write(SharedPreferences p) async {
+    await p.setBool('${_prefix}subjectsInBackground', subjectsInBackground);
+    await p.setBool('${_prefix}indexForSearch', indexForSearch);
+  }
 
-  DecryptedMailSettings copyWith({bool? subjectsInBackground}) =>
-      DecryptedMailSettings(subjectsInBackground: subjectsInBackground ?? this.subjectsInBackground);
+  DecryptedMailSettings copyWith({bool? subjectsInBackground, bool? indexForSearch}) => DecryptedMailSettings(
+    subjectsInBackground: subjectsInBackground ?? this.subjectsInBackground,
+    indexForSearch: indexForSearch ?? this.indexForSearch,
+  );
 
   @override
   bool operator ==(Object other) =>
-      other is DecryptedMailSettings && other.subjectsInBackground == subjectsInBackground;
+      other is DecryptedMailSettings &&
+      other.subjectsInBackground == subjectsInBackground &&
+      other.indexForSearch == indexForSearch;
 
   @override
-  int get hashCode => subjectsInBackground.hashCode;
+  int get hashCode => Object.hash(subjectsInBackground, indexForSearch);
 }
 
 final decryptedMailSettingsProvider = NotifierProvider<DecryptedMailSettingsController, DecryptedMailSettings>(
@@ -81,20 +97,35 @@ Future<List<PgpKey>> keysWithoutPassphrase(Keyring keyring, PgpBackend backend) 
   return keys;
 }
 
+/// What background decryption keeps of a message: its protected subject,
+/// and its text for the search index.
+typedef DecryptedParts = ({String? subject, String? text});
+
 /// Runs decryption: in another isolate in the app, inline in background
 /// isolates.
-typedef DecryptRunner = Future<String?> Function(String? Function() work);
+typedef DecryptRunner = Future<DecryptedParts?> Function(DecryptedParts? Function() work);
 
-Future<String?> _inline(String? Function() work) async => work();
+Future<DecryptedParts?> _inline(DecryptedParts? Function() work) async => work();
+
+/// What the search index gets of a decrypted message: its text and the
+/// names of its attachments.
+String searchableTextOf(EmailContent content) => [
+  ComposeText.plainTextOf(content),
+  for (final a in content.attachments)
+    if (!a.isInline && a.filename != null) a.filename!,
+].join('\n');
 
 /// Decrypts the protected subjects of encrypted mail nobody opened yet
 /// (Decrypt Subjects in the Background), and remembers them on the device
 /// ([DecryptedMail]): only with [keys] (stored without a passphrase; it never
 /// asks for one), only OpenPGP (S/MIME doesn't hide subjects), and only
 /// messages up to [maxBytes], as the whole message has to be downloaded.
+/// With [indexText] (Index Decrypted Messages for Search), their text goes
+/// into the search index too.
 final class SubjectDecryptor {
   SubjectDecryptor({
     required this.keys,
+    this.indexText = false,
     this.backend = const DartPgBackend(),
     DecryptRunner? run,
     this.maxBytes = defaultMaxBytes,
@@ -106,6 +137,7 @@ final class SubjectDecryptor {
   static const defaultMaxBytes = 1024 * 1024;
 
   final List<PgpKey> keys;
+  final bool indexText;
   final PgpBackend backend;
   final int maxBytes;
   final DecryptRunner _run;
@@ -133,10 +165,15 @@ final class SubjectDecryptor {
       if (deadline != null && _clock().isAfter(deadline)) break;
       try {
         final raw = await repository.loadRawSource(e.id);
-        final (backend, keys) = (this.backend, this.keys);
-        final subject = (await _run(() => protectedSubjectOf(raw, backend: backend, keys: keys)))?.trim();
+        final (backend, keys, withText) = (this.backend, this.keys, indexText);
+        final parts = await _run(() => decryptedPartsOf(raw, backend: backend, keys: keys, withText: withText));
+        if (parts == null) continue;
+        final cache = repository as DecryptedMail;
+        final text = parts.text;
+        if (withText && text != null) await cache.indexDecryptedText(e.id, text);
+        final subject = parts.subject?.trim();
         if (subject == null || subject.isEmpty || subject == e.subject.trim()) continue;
-        await (repository as DecryptedMail).rememberProtectedSubject(e.id, subject);
+        await cache.rememberProtectedSubject(e.id, subject);
         found[e.id] = subject;
       } on Object {
         continue;
@@ -149,7 +186,18 @@ final class SubjectDecryptor {
 /// The protected subject of the PGP/MIME message [raw], decrypted with
 /// those of [keys] it is encrypted to; null when it isn't for them, can't
 /// be decrypted, or has none.
-String? protectedSubjectOf(Uint8List raw, {required PgpBackend backend, required List<PgpKey> keys}) {
+String? protectedSubjectOf(Uint8List raw, {required PgpBackend backend, required List<PgpKey> keys}) =>
+    decryptedPartsOf(raw, backend: backend, keys: keys)?.subject;
+
+/// The protected subject and, [withText], the searchable text of the
+/// PGP/MIME message [raw], decrypted with those of [keys] it is encrypted
+/// to; null when it isn't for them or can't be decrypted.
+DecryptedParts? decryptedPartsOf(
+  Uint8List raw, {
+  required PgpBackend backend,
+  required List<PgpKey> keys,
+  bool withText = false,
+}) {
   final reader = PgpMimeReader(backend);
   final ids = reader.recipientsOf(raw);
   if (ids.isEmpty) return null;
@@ -160,6 +208,11 @@ String? protectedSubjectOf(Uint8List raw, {required PgpBackend backend, required
       if (hidden || k.keyIds.any(ids.contains)) k,
   ];
   if (mine.isEmpty) return null;
-  final status = reader.read(raw, keys: mine).status;
-  return status.decrypted ? status.protectedSubject : null;
+  final result = reader.read(raw, keys: mine);
+  final entity = result.entity;
+  if (!result.status.decrypted || entity == null) return null;
+  return (
+    subject: result.status.protectedSubject,
+    text: withText ? searchableTextOf(contentFromEntity(entity, emailId: '')) : null,
+  );
 }

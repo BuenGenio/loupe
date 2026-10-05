@@ -87,4 +87,48 @@ void main() {
     expect((back.subject, back.hasDecryptedSubject), ('Quarterly secrets', true));
     expect(await search('quarterly'), [eid('INBOX', 1)]);
   });
+
+  group('decrypted text', () {
+    Future<List<String>> body(String text) async => [
+      for (final e in await store.search(TextTerm(SearchField.body, text))) e.id,
+    ];
+
+    test('is found by body and by any text, until it is all taken out again', () async {
+      await addMails(store, [secret(1), mail(2, subject: 'Plain', preview: 'nothing secret')]);
+      expect(await body('lighthouse'), isEmpty, reason: 'encrypted mail is found by its headers only');
+      await store.putDecryptedText(eid('INBOX', 1), 'The offsite is at Lighthouse Lodge.');
+      await store.rememberProtectedSubject(eid('INBOX', 1), 'Offsite venue');
+      expect(await body('lighthouse'), [eid('INBOX', 1)]);
+      expect([for (final e in await store.search(const TextTerm(SearchField.any, 'lodge'))) e.id], [eid('INBOX', 1)]);
+
+      expect(await store.deleteDecryptedTexts(), 1);
+      expect(await body('lighthouse'), isEmpty);
+      expect(await search('offsite'), [eid('INBOX', 1)], reason: 'the protected subject stays');
+    });
+
+    test('stays when the outer body is cached, and through a move; goes with the message', () async {
+      await addMails(store, [secret(1)]);
+      await store.putDecryptedText(eid('INBOX', 1), 'Lighthouse Lodge');
+      await store.putContent(EmailContent(emailId: eid('INBOX', 1), text: 'This is an OpenPGP/MIME encrypted message'));
+      expect(await body('lighthouse'), [eid('INBOX', 1)]);
+      expect(await body('openpgp'), isEmpty, reason: 'the decrypted text stands in for the encrypted body');
+      await store.moveLocally([eid('INBOX', 1)], mbox('Work'));
+      await store.renameEmails({eid('INBOX', 1): eid('Work', 7)});
+      expect(await body('lighthouse'), [eid('Work', 7)]);
+      await store.deleteEmails([eid('Work', 7)]);
+      expect(await body('lighthouse'), isEmpty);
+      expect(await store.deleteDecryptedTexts(), 0, reason: 'deleted with the message');
+    });
+
+    test('is capped, replaced when indexed again, and ignored for unknown messages', () async {
+      await addMails(store, [secret(1)]);
+      await store.putDecryptedText(eid('INBOX', 1), 'first');
+      await store.putDecryptedText(eid('INBOX', 1), 'second ${'x' * MailStore.maxDecryptedTextChars} tailword');
+      expect(await body('first'), isEmpty);
+      expect(await body('second'), [eid('INBOX', 1)]);
+      expect(await body('tailword'), isEmpty, reason: 'beyond the cap');
+      await store.putDecryptedText(eid('INBOX', 99), 'ghost');
+      expect(await body('ghost'), isEmpty);
+    });
+  });
 }

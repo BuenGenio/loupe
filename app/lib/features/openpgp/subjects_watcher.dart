@@ -86,7 +86,13 @@ class _ProtectedSubjectsWatcherState extends ConsumerState<ProtectedSubjectsWatc
         if (!k.isProtected) ?service.unlockedKey(k.fingerprint),
     ];
     final run = ref.read(pgpRunnerProvider);
-    return keys.isEmpty ? null : SubjectDecryptor(keys: keys, run: (work) => run(work));
+    return keys.isEmpty
+        ? null
+        : SubjectDecryptor(
+            keys: keys,
+            indexText: ref.read(decryptedMailSettingsProvider).indexForSearch,
+            run: (work) => run(work),
+          );
   }
 
   @override
