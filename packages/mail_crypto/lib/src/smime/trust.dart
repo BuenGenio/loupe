@@ -128,10 +128,15 @@ SmimeTrustCheck checkTrust(
     if (at.isAfter(c.notAfter)) problems.add(SmimeProblem.expired);
     if (c.unknownCriticalExtensions.isNotEmpty) problems.add(SmimeProblem.invalidChain);
     if (i == 0 || path == null) continue;
-    // An issuer must be a CA (v1 roots predate the flag), may sign
-    // certificates, allows this many CAs below it, and permits the addresses.
-    if (c.version >= 3 && !c.isCa) problems.add(SmimeProblem.invalidChain);
+    // An issuer must be a CA (a v1 or v2 certificate predates the flag:
+    // only as the trust anchor, RFC 5280 §6.1.4 (k)), may sign
+    // certificates, may be used for mail (an extended key usage limited to
+    // TLS, say, limits what it issues, as NSS has it), allows this many CAs
+    // below it, and permits the addresses.
+    final isAnchor = i == chain.length - 1;
+    if (!c.isCa && (c.version >= 3 || !isAnchor)) problems.add(SmimeProblem.invalidChain);
     if (c.keyUsage != null && c.keyUsage! & KeyUsage.keyCertSign == 0) problems.add(SmimeProblem.invalidChain);
+    if (!c.forEmail) problems.add(SmimeProblem.invalidChain);
     final below = chain.sublist(1, i).where((x) => !x.isSelfIssued).length;
     if (c.pathLength != null && below > c.pathLength!) problems.add(SmimeProblem.invalidChain);
     if (!_withinConstraints(certificate.emails, c)) problems.add(SmimeProblem.invalidChain);

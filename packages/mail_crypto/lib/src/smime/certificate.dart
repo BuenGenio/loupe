@@ -251,17 +251,18 @@ final class SmimeCertificate {
 
   bool _usage(int bits) => keyUsage == null || keyUsage! & bits != 0;
 
-  bool get _forEmail =>
+  /// No extended key usage, or one that allows mail (emailProtection or any).
+  bool get forEmail =>
       extendedKeyUsage == null ||
       extendedKeyUsage!.contains(Oid.emailProtection) ||
       extendedKeyUsage!.contains(Oid.anyExtendedKeyUsage);
 
   /// It may sign mail: digitalSignature (or nonRepudiation) and emailProtection.
-  bool get canSign => _forEmail && _usage(KeyUsage.digitalSignature | KeyUsage.nonRepudiation);
+  bool get canSign => forEmail && _usage(KeyUsage.digitalSignature | KeyUsage.nonRepudiation);
 
   /// Mail may be encrypted to it: keyEncipherment (RSA) or keyAgreement (EC), and emailProtection.
   bool get canEncrypt =>
-      _forEmail &&
+      forEmail &&
       switch (keyType) {
         SmimeKeyType.rsa => _usage(KeyUsage.keyEncipherment),
         SmimeKeyType.ec => _usage(KeyUsage.keyAgreement),

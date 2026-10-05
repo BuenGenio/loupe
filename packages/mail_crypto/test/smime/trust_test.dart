@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:mail_crypto/mail_crypto.dart';
+import 'package:mail_crypto/src/smime/oids.dart';
 import 'package:test/test.dart';
 
 import 'cert_builder.dart';
@@ -109,4 +112,49 @@ void main() {
     expect(checks, lessThanOrEqualTo(maxPathChecks));
     expect(watch.elapsed, lessThan(const Duration(seconds: 2)));
   }, timeout: const Timeout(Duration(seconds: 30)));
+
+  group('issuers', () {
+    final rootKey = TestKey('issuers-root');
+    final root = makeCa('Issuers Root', rootKey);
+    final anchors = SmimeTrustAnchors([root]);
+    final caKey = TestKey('issuers-ca');
+    final userKey = TestKey('issuers-user');
+    SmimeTrustCheck through(SmimeCertificate ca, {SmimeTrustAnchors? over}) => checkTrust(
+      makeUser('alice@example.org', userKey, issuerCn: 'Sub CA', issuerKey: caKey),
+      anchors: over ?? anchors,
+      intermediates: [ca],
+      at: today,
+      usage: SmimeUsage.signing,
+      email: 'alice@example.org',
+      signedBy: smime.certificateSignedBy,
+    );
+    SmimeCertificate subCa({int version = 3, List<Uint8List>? extensions}) => makeCa(
+      'Sub CA',
+      caKey,
+      issuerKey: rootKey,
+      issuer: name('Issuers Root'),
+      serial: 2,
+      version: version,
+      extensions: extensions,
+    );
+    final caExtensions = [basicConstraints(), keyUsage(KeyUsage.keyCertSign)];
+
+    test('an intermediate for mail, or for any purpose, vouches for a mail certificate', () {
+      expect(through(subCa(extensions: caExtensions)).trusted, isTrue);
+      for (final eku in [Oid.emailProtection, Oid.anyExtendedKeyUsage]) {
+        expect(through(subCa(extensions: [...caExtensions, extendedKeyUsage([eku])])).trusted, isTrue);
+      }
+    });
+
+    test('an intermediate limited to TLS doesn’t', () {
+      final tls = subCa(extensions: [...caExtensions, extendedKeyUsage(['1.3.6.1.5.5.7.3.1'])]);
+      expect(through(tls).problems, {SmimeProblem.invalidChain});
+    });
+
+    test('a v1 certificate is a CA only as a trust anchor', () {
+      expect(through(subCa(version: 1)).problems, {SmimeProblem.invalidChain});
+      final v1Root = makeCa('Sub CA', caKey, version: 1);
+      expect(through(v1Root, over: SmimeTrustAnchors([v1Root])).trusted, isTrue);
+    });
+  });
 }
