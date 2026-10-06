@@ -18,6 +18,7 @@ import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
 import '../conversation/reader_prefs.dart';
 import '../conversation/sheets.dart' show showSnack;
+import '../subscriptions/subscription_providers.dart';
 import 'list_providers.dart';
 
 /// One mailing list, forum style: a row per thread with its title, who
@@ -38,8 +39,12 @@ class _MailingListScreenState extends ConsumerState<MailingListScreen> {
 
   MailingLists? get _lists => mailingListsOf(ref.read(repositoryProvider));
 
-  MailingList? _list() =>
-      (ref.watch(mailingListsProvider).value ?? const <MailingList>[]).where((l) => l.id == widget.listId).firstOrNull;
+  /// The list's subscription (its name, address and unread count), when it
+  /// is a discussion.
+  Subscription? _list() {
+    final key = Subscription.listKey(widget.listId);
+    return ref.watch(discussionsProvider).where((s) => s.key == key).firstOrNull;
+  }
 
   Future<void> _act(Future<void> Function() action, {String? done}) async {
     final messenger = ScaffoldMessenger.of(context);
@@ -88,7 +93,7 @@ class _MailingListScreenState extends ConsumerState<MailingListScreen> {
     }
   }
 
-  Future<void> _listMenu(MailingList? list) async {
+  Future<void> _listMenu(Subscription? list) async {
     final prefs = ref.read(readerPrefsProvider);
     final technical = prefs.technicalLists.contains(widget.listId);
     final choice = await showActionSheet<String>(
@@ -112,7 +117,7 @@ class _MailingListScreenState extends ConsumerState<MailingListScreen> {
     }
   }
 
-  void _compose(MailingList list) => openCompose(
+  void _compose(Subscription list) => openCompose(
     context,
     ComposeArgs(to: [list.postAddress!], accountId: list.accountIds.isEmpty ? null : list.accountIds.first),
   );

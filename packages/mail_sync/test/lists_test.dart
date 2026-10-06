@@ -16,11 +16,30 @@ void main() {
         ..deliver('INBOX', subject: '[PATCH 1/2] one', inReplyTo: 'c@x', references: ['c@x'], listId: dev)
         ..deliver('INBOX', subject: 'Not a list');
       await h.add(server);
-      final lists = await h.repo.watchMailingLists().first;
-      expect(lists.single.id, dev);
-      expect(lists.single.postAddress?.email, 'dev@lists.example.org');
+      // Someone answered the list: a discussion.
+      final list = (await h.repo.watchSubscriptions().first).single;
+      expect(list.listId, dev);
+      expect(list.kind, SubscriptionKind.discussion);
+      expect(list.postAddress?.email, 'dev@lists.example.org');
       final threads = await h.repo.watchListThreads(dev).first;
       expect(threads.single.patchBadge, 'PATCH 1/2');
+      await h.dispose();
+    });
+  });
+
+  test('Treat as Newsletter: kept on the device, undone with null', () {
+    fakeTime((async) async {
+      final h = Harness();
+      final server = FakeServer()
+        ..deliver('INBOX', subject: 'Bikeshed', messageId: 'root@x', listId: dev)
+        ..deliver('INBOX', subject: 'Re: Bikeshed', inReplyTo: 'root@x', references: ['root@x'], listId: dev);
+      await h.add(server);
+      Future<SubscriptionKind> kind() async => (await h.repo.watchSubscriptions().first).single.kind;
+      expect(await kind(), SubscriptionKind.discussion);
+      await h.repo.setListKind([dev], SubscriptionKind.newsletter);
+      expect(await kind(), SubscriptionKind.newsletter);
+      await h.repo.setListKind([dev], null);
+      expect(await kind(), SubscriptionKind.discussion);
       await h.dispose();
     });
   });
@@ -82,7 +101,7 @@ void main() {
       final account = await h.add(server);
       final inbox = h.mailbox(account, 'INBOX');
       expect((await h.email(account, 'INBOX', 'Old list mail')).listId, isNull);
-      expect(await h.repo.watchMailingLists().first, isEmpty);
+      expect(await h.repo.watchSubscriptions().first, isEmpty);
 
       // What the store migration does for every synced mailbox.
       await h.store.markHeadersStale(inbox);
@@ -99,7 +118,9 @@ void main() {
       await h.repo.refresh(ref: RealMailboxRef(inbox));
       await settle();
       expect((await h.email(account, 'INBOX', 'Old list mail')).listId, dev);
-      expect((await h.repo.watchMailingLists().first).single.messageCount, 1);
+      final list = (await h.repo.watchSubscriptions().first).single;
+      expect(list.listIds, [dev]);
+      expect(list.messageCount, 1);
       expect((await h.store.getSyncInfo(inbox))!.staleHeaders, isFalse);
       expect(server.log.where((l) => l == 'fetchSummaries'), hasLength(1));
       expect(server.summaryPreviews, everyElement(isFalse), reason: 'header fields only');
@@ -148,7 +169,7 @@ void main() {
       expect(server.summaryRequests.expand((r) => r), newestFirst.skip(200));
       expect((await h.store.getSyncInfo(inbox))!.staleHeaders, isFalse);
       expect((await h.store.getEmails(newestFirst)).every((e) => e.listId == dev), isTrue);
-      expect((await again.watchMailingLists().first).single.messageCount, 450);
+      expect((await again.watchSubscriptions().first).single.messageCount, 450);
       await again.dispose();
       await h.store.close();
     });

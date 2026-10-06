@@ -19,12 +19,20 @@ MailSubscriptions? subscriptionsOf(MailRepository repository) => switch (reposit
   _ => null,
 };
 
-/// Bulk mail by sender, ranked (see `MailSubscriptions`). Counted only
-/// while a Subscriptions screen is open.
+/// Newsletters and discussion lists, ranked (see `MailSubscriptions`).
+/// Counted while something shows them (the Mailboxes screen's row does).
 final subscriptionsProvider = StreamProvider.autoDispose<List<Subscription>>((ref) {
   final subs = subscriptionsOf(ref.watch(repositoryProvider));
   return subs?.watchSubscriptions() ?? Stream.value(const <Subscription>[]);
 });
+
+/// The discussion lists, most recent activity first.
+final discussionsProvider = Provider.autoDispose<List<Subscription>>(
+  (ref) => [
+    for (final s in ref.watch(subscriptionsProvider).value ?? const <Subscription>[])
+      if (s.isDiscussion) s,
+  ]..sort(Subscription.compareByActivity),
+);
 
 /// The newest messages of one subscription, one copy each (the Inbox copy
 /// when there is one).

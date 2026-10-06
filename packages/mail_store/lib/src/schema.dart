@@ -315,6 +315,21 @@ class MutedThreads extends Table {
   Set<Column> get primaryKey => {accountId, threadId};
 }
 
+/// Mailing lists the user said are newsletters or discussions ("Treat as
+/// Newsletter"), overriding how they are classified (`groupSubscriptions`).
+/// Local to the device. Schema version 7.
+@DataClassName('ListKindRow')
+class ListKinds extends Table {
+  /// The List-Id identifier, lower-cased.
+  TextColumn get listId => text()();
+
+  /// `SubscriptionKind.name`.
+  TextColumn get kind => text()();
+
+  @override
+  Set<Column> get primaryKey => {listId};
+}
+
 /// SQL rendering an address JSON column as searchable text ("name email …").
 String _addrText(String column) =>
     "(SELECT group_concat(coalesce(json_extract(value, '\$.n'), '') || ' ' || json_extract(value, '\$.e'), ' ') "
@@ -456,32 +471,33 @@ final String _subscriptionKeySql = () {
 const subscriptionsRebuildSql = "INSERT OR IGNORE INTO subscription_dirty_keys (key) VALUES ('*')";
 
 /// The Subscriptions screen's data, kept up to date incrementally (schema
-/// version 5); `MailStore.watchSubscriptions` reads it.
+/// version 5, the classification's inputs since version 7);
+/// `MailStore.watchSubscriptions` reads it.
 ///
-/// - `emails.sub_key`: each message's subscription key (generated), indexed
-///   where there is one.
+/// - `emails.sub_key`: each message's source key (`subscriptionKeyOf`,
+///   generated), indexed where there is one.
 /// - `subscription_messages`: one row per bulk message, its copies merged
-///   (the first of their keys, newest arrival, read, in an Inbox), for the
-///   counts.
+///   (the first of their keys, newest arrival, read, in an Inbox, only in
+///   Trash), for the counts.
 /// - `subscription_details`: per key, what the copies of its messages say
-///   (mailboxes, accounts, senders, the newest name and List-Unsubscribe).
+///   (mailboxes, accounts, senders, the newest name, List-Post and
+///   List-Unsubscribe, the posters of the last year, replies within the
+///   list), and what Dart works out of that when it is written: whether a
+///   list is a discussion (`auto_kind`), the key it goes under as a
+///   newsletter (`nkey`), and its newest List-Id phrase and From name when
+///   they can name it (`human_phrase`, `human_name`).
 /// - `subscription_dirty`: messages whose rows are out of date, marked by
 ///   triggers on every change (by any process). `subscription_dirty_keys`
 ///   holds `*` when everything is (the user's own addresses, which don't
 ///   count, changed), and the keys a refresh redoes while it runs.
 ///
 /// The store brings the rows up to date before it reads them, with work in
-/// proportion to what changed.
+/// proportion to what changed; grouping the sources into newsletters and
+/// discussions is done as they are read.
 final List<String> _subscriptionSchema = [
   'ALTER TABLE emails ADD COLUMN sub_key TEXT GENERATED ALWAYS AS ($_subscriptionKeySql) VIRTUAL',
   'CREATE INDEX emails_subscription ON emails (sub_key) WHERE sub_key IS NOT NULL',
-  'CREATE TABLE subscription_messages (account_id TEXT NOT NULL, mid TEXT NOT NULL, key TEXT NOT NULL, '
-      'received_at INTEGER NOT NULL, seen INTEGER NOT NULL, inbox INTEGER NOT NULL, '
-      'PRIMARY KEY (account_id, mid)) WITHOUT ROWID',
-  'CREATE INDEX subscription_messages_key ON subscription_messages (key, received_at, seen, inbox)',
-  'CREATE TABLE subscription_details (key TEXT NOT NULL PRIMARY KEY, boxes TEXT, accounts TEXT, '
-      'senders INTEGER NOT NULL, has_headers INTEGER NOT NULL, sender TEXT, list_name TEXT, from_name TEXT, '
-      'unsubscribe TEXT) WITHOUT ROWID',
+  ..._subscriptionCache,
   'CREATE TABLE subscription_dirty (account_id TEXT NOT NULL, mid TEXT NOT NULL, PRIMARY KEY (account_id, mid)) '
       'WITHOUT ROWID',
   'CREATE TABLE subscription_dirty_keys (key TEXT NOT NULL PRIMARY KEY) WITHOUT ROWID',
@@ -492,16 +508,6 @@ final List<String> _subscriptionSchema = [
     'CREATE TRIGGER $name AFTER $event ON emails WHEN $row.sub_key IS NOT NULL BEGIN '
         'INSERT OR IGNORE INTO subscription_dirty VALUES ($row.account_id, coalesce($row.message_id_header, $row.id)); '
         'END;',
-  // Every column the key, the scope and the counts read.
-  '''
-CREATE TRIGGER emails_subscription_update AFTER UPDATE OF id, account_id, mailbox_id, message_id_header, from_json,
-  from_email, received_at, is_seen, list_id, list_name, list_unsubscribe, list_unsubscribe_post ON emails
-WHEN old.sub_key IS NOT NULL OR new.sub_key IS NOT NULL BEGIN
-  INSERT OR IGNORE INTO subscription_dirty
-    SELECT old.account_id, coalesce(old.message_id_header, old.id) WHERE old.sub_key IS NOT NULL;
-  INSERT OR IGNORE INTO subscription_dirty
-    SELECT new.account_id, coalesce(new.message_id_header, new.id) WHERE new.sub_key IS NOT NULL;
-END;''',
   // Junk, Sent and Drafts don't count, and Inbox copies are counted.
   '''
 CREATE TRIGGER mailboxes_subscription_role AFTER UPDATE OF role ON mailboxes WHEN old.role IS NOT new.role BEGIN
@@ -518,6 +524,31 @@ WHEN lower(old.email) IS NOT lower(new.email)
   IS NOT (SELECT group_concat(lower(json_extract(value, '\$.email'))) FROM json_each(new.json, '\$.identities'))
 BEGIN $subscriptionsRebuildSql; END;''',
   subscriptionsRebuildSql,
+];
+
+/// The kept rows of [_subscriptionSchema] and the trigger that marks a
+/// message's out of date when a column they read changes: what schema
+/// version 7 made again (a cache, rebuilt on the next read).
+const _subscriptionCache = [
+  'CREATE TABLE subscription_messages (account_id TEXT NOT NULL, mid TEXT NOT NULL, key TEXT NOT NULL, '
+      'received_at INTEGER NOT NULL, seen INTEGER NOT NULL, inbox INTEGER NOT NULL, trash INTEGER NOT NULL, '
+      'PRIMARY KEY (account_id, mid)) WITHOUT ROWID',
+  'CREATE INDEX subscription_messages_key ON subscription_messages (key, received_at, seen, inbox, trash)',
+  'CREATE TABLE subscription_details (key TEXT NOT NULL PRIMARY KEY, boxes TEXT, accounts TEXT, '
+      'senders INTEGER NOT NULL, posters INTEGER NOT NULL, replies INTEGER NOT NULL, has_headers INTEGER NOT NULL, '
+      'sender TEXT, list_name TEXT, from_name TEXT, post TEXT, unsubscribe TEXT, auto_kind TEXT, nkey TEXT, '
+      'human_phrase TEXT, human_name TEXT) WITHOUT ROWID',
+  // Every column the key, the scope, the counts and the classification read.
+  '''
+CREATE TRIGGER emails_subscription_update AFTER UPDATE OF id, account_id, mailbox_id, message_id_header, in_reply_to,
+  references_json, from_json, from_email, received_at, is_seen, list_id, list_name, list_post, list_unsubscribe,
+  list_unsubscribe_post ON emails
+WHEN old.sub_key IS NOT NULL OR new.sub_key IS NOT NULL BEGIN
+  INSERT OR IGNORE INTO subscription_dirty
+    SELECT old.account_id, coalesce(old.message_id_header, old.id) WHERE old.sub_key IS NOT NULL;
+  INSERT OR IGNORE INTO subscription_dirty
+    SELECT new.account_id, coalesce(new.message_id_header, new.id) WHERE new.sub_key IS NOT NULL;
+END;''',
 ];
 
 @DriftDatabase(
@@ -540,6 +571,7 @@ BEGIN $subscriptionsRebuildSql; END;''',
     Rules,
     RuleWatermarks,
     MutedThreads,
+    ListKinds,
   ],
 )
 class StoreDatabase extends _$StoreDatabase {
@@ -554,9 +586,12 @@ class StoreDatabase extends _$StoreDatabase {
   /// (`is_encrypted`), their protected subjects once decrypted
   /// (`protected_subject`) and, when the user opted in, their decrypted text
   /// ([DecryptedTexts]); both in the full-text index. Outbox messages
-  /// composed when queued ([OutboxCopies]).
+  /// composed when queued ([OutboxCopies]). 7: newsletters and discussions:
+  /// what classifying lists reads, kept with the Subscriptions screen's data
+  /// ([_subscriptionCache], made again), and the user's choices
+  /// ([ListKinds]).
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   /// Creates or upgrades the file in one write transaction, from the
   /// version it has then. The app and a background isolate can open it at
@@ -629,6 +664,19 @@ class StoreDatabase extends _$StoreDatabase {
       for (final sql in _decryptedTextTriggers) {
         await customStatement(sql);
       }
+    }
+    if (from < 7) {
+      // Before version 5 the cache was made above as it is now.
+      if (from >= 5) {
+        await customStatement('DROP TABLE subscription_messages');
+        await customStatement('DROP TABLE subscription_details');
+        await customStatement('DROP TRIGGER emails_subscription_update');
+        for (final sql in _subscriptionCache) {
+          await customStatement(sql);
+        }
+        await customStatement(subscriptionsRebuildSql);
+      }
+      await m.createTable(listKinds);
     }
   }
 

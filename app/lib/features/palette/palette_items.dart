@@ -16,7 +16,7 @@ import '../compose/compose_args.dart';
 import '../keyboard/mail_commands.dart';
 import '../keyboard/shortcut_sheet.dart';
 import '../keyboard/shortcuts.dart';
-import '../mailing_lists/list_providers.dart';
+import '../subscriptions/subscription_providers.dart';
 import '../search/search_session.dart';
 import 'fuzzy.dart';
 
@@ -259,9 +259,15 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
       place('smart.${s.id}', s.name, LoupeIcons.smartMailbox, Routes.smartMailbox(s.id), subtitle: 'Smart Mailbox'),
     );
   }
-  for (final l in container.read(mailingListsProvider).value ?? const <MailingList>[]) {
+  for (final l in container.read(discussionsProvider)) {
     items.add(
-      place('list.${l.id}', l.name, LoupeIcons.mailingList, Routes.mailingList(l.id), subtitle: 'Mailing List'),
+      place(
+        'list.${l.listId}',
+        l.name,
+        LoupeIcons.mailingList,
+        Routes.mailingList(l.listId!),
+        subtitle: 'Mailing List',
+      ),
     );
   }
   for (final tag in TagDefinition.thunderbirdDefaults) {

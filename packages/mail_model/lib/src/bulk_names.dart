@@ -44,7 +44,21 @@ final _longNumber = RegExp(r'^\d{5,}$');
 ///
 /// Phrases (`Kestrel developers`), brands (`HSBC`, `1Password`), and list
 /// addresses or host names people chose (`dev.lists.example.org`) aren't.
-bool looksMachineMade(String value) {
+bool looksMachineMade(String value) => _remembered(_machineMade, value, _looksMachineMade);
+
+/// Answers for the names and addresses seen lately: the same few hundred
+/// come back each time the subscriptions are grouped.
+final _machineMade = <String, bool>{};
+final _perCampaign = <String, bool>{};
+
+bool _remembered(Map<String, bool> answers, String value, bool Function(String) work) {
+  final known = answers[value];
+  if (known != null) return known;
+  if (answers.length >= 8192) answers.clear();
+  return answers[value] = work(value);
+}
+
+bool _looksMachineMade(String value) {
   final s = value.trim();
   if (s.isEmpty) return true;
   final lower = s.toLowerCase();
@@ -91,10 +105,15 @@ bool _isBase64(String s) {
 /// [value] trimmed, when it can name something: not empty, not an address,
 /// not [looksMachineMade]. Else null.
 String? humanName(String? value) {
-  final s = value?.replaceAll(RegExp(r'\s+'), ' ').trim();
-  if (s == null || s.isEmpty || s.contains('@') || looksMachineMade(s)) return null;
-  return s;
+  if (value == null) return null;
+  if (_humanNames.containsKey(value)) return _humanNames[value];
+  if (_humanNames.length >= 8192) _humanNames.clear();
+  final s = value.replaceAll(_spaces, ' ').trim();
+  return _humanNames[value] = s.isEmpty || s.contains('@') || looksMachineMade(s) ? null : s;
 }
+
+final _humanNames = <String, String?>{};
+final _spaces = RegExp(r'\s+');
 
 /// Public suffixes of two labels, under which a domain is registered with
 /// three (`hsbc.co.uk`). A short list of the common ones, not the whole
@@ -136,7 +155,9 @@ String normalizeSenderAddress(String address) {
 /// campaign: its local part, or a label of its host below the registered
 /// domain, looks machine-made (`5186308-24050-40@…`, `reply-fec01672766d…@…`,
 /// `news@em-123456.shop.example`), or carries a VERP `=`.
-bool isPerCampaignAddress(String address) {
+bool isPerCampaignAddress(String address) => _remembered(_perCampaign, address, _isPerCampaignAddress);
+
+bool _isPerCampaignAddress(String address) {
   final a = normalizeSenderAddress(address);
   final at = a.lastIndexOf('@');
   if (at <= 0) return false;

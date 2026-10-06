@@ -56,9 +56,15 @@ void main() {
     expect(kestrelReviewAnswer, contains('> > -\th = http_parse_headers'));
   });
 
-  test('list headers fill the summaries; lists group by List-Id', () async {
-    final lists = await repo.watchMailingLists().first;
-    expect(lists.map((l) => (l.id, l.name)), [
+  /// The discussion lists, most recent activity first.
+  Future<List<Subscription>> discussions() async => [
+    for (final s in await repo.watchSubscriptions().first)
+      if (s.isDiscussion) s,
+  ]..sort(Subscription.compareByActivity);
+
+  test('list headers fill the summaries; discussion lists group by List-Id', () async {
+    final lists = await discussions();
+    expect(lists.map((l) => (l.listId, l.name)), [
       (kestrel, 'Kestrel developers'),
       ('open-garden.lists.opengarden.example', 'Open Garden development'),
     ]);
@@ -102,7 +108,7 @@ void main() {
     final muted = all.firstWhere((t) => t.threadId == series.threadId);
     expect(muted.isMuted, isTrue);
     expect(muted.unreadCount, 0);
-    expect((await repo.watchMailingLists().first).first.unreadCount, 1);
+    expect((await discussions()).first.unreadCount, 1);
 
     await repo.setThreadMuted(series.first.id, muted: false);
     expect(await repo.watchMutedThreads().first, isEmpty);

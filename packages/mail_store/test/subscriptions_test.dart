@@ -28,28 +28,37 @@ EmailSummary bulk(
   String? listName,
   String? unsubscribe,
   String? post,
+  String? listPost,
+  String? inReplyTo,
 }) => EmailSummary(
   id: eid(path, uid, account: account),
   accountId: account,
   mailboxId: mbox(path, account: account),
   receivedAt: now.subtract(Duration(days: daysAgo, minutes: uid % 1000)),
   messageIdHeader: messageId,
+  inReplyTo: inReplyTo,
+  references: [?inReplyTo],
   from: [EmailAddress(from, fromName)],
   to: const [EmailAddress('me@example.com')],
   subject: 'Issue $uid',
   keywords: seen ? {Keywords.seen} : const {},
   listId: listId,
   listName: listName,
+  listPost: listPost,
   listUnsubscribe: unsubscribe,
   listUnsubscribePost: post,
 );
 
 /// A synthetic mailbox of [count] messages: newsletters (some with copies
-/// in two folders), mailing lists, ESP mail, the user's own mail and
-/// personal mail, over two years.
+/// in two folders, some with a List-Id per campaign or a sender address per
+/// campaign), mailing lists (discussions with replies, and lists nobody
+/// posts to), ESP mail, the user's own mail and personal mail, over two
+/// years.
 List<EmailSummary> synthetic(int count, {int seed = 42, List<String> accounts = const [accountId]}) {
   final random = Random(seed);
   final out = <EmailSummary>[];
+  // The Message-IDs of each list's mail so far, for replies.
+  final posted = <int, List<String>>{};
   for (var uid = 1; out.length < count; uid++) {
     final account = accounts[random.nextInt(accounts.length)];
     final kind = random.nextInt(10);
@@ -61,15 +70,20 @@ List<EmailSummary> synthetic(int count, {int seed = 42, List<String> accounts = 
       case 0 || 1 || 2:
         // Newsletters: 300 senders, one-click on some.
         final n = random.nextInt(300);
+        final campaign = random.nextInt(12);
         final message = bulk(
           uid,
           account: account,
           path: path,
-          from: 'news$n@brand$n.example',
-          fromName: n % 7 == 0 ? null : (random.nextInt(5) == 0 ? 'Brand $n Deals' : 'Brand $n'),
+          // Some send each campaign from an address of its own.
+          from: n % 10 == 2 ? '$n-$campaign-$uid@send$n.brand$n.example' : 'news$n@brand$n.example',
+          fromName: n % 7 == 0 ? null : (random.nextInt(5) == 0 && n % 10 != 2 ? 'Brand $n Deals' : 'Brand $n'),
           daysAgo: daysAgo,
           seen: seen,
           messageId: messageId,
+          // Some with a List-Id per campaign.
+          listId: n % 10 == 1 ? '$n$campaign.campaigns.broadcast' : null,
+          listName: n % 10 == 1 && campaign.isEven ? 'Brand $n weekly' : null,
           unsubscribe: n % 3 == 0 ? '<https://brand$n.example/u/$uid>' : '<mailto:leave@brand$n.example>',
           post: n % 6 == 0 && random.nextBool() ? 'List-Unsubscribe=One-Click' : null,
         );
@@ -86,29 +100,38 @@ List<EmailSummary> synthetic(int count, {int seed = 42, List<String> accounts = 
               daysAgo: daysAgo,
               seen: seen,
               messageId: messageId,
+              listId: message.listId,
+              listName: message.listName,
               unsubscribe: message.listUnsubscribe,
               post: message.listUnsubscribePost,
             ).copyWith(),
           );
         }
       case 3 || 4:
-        // Mailing lists: 40 lists, many posters.
+        // Mailing lists: 40 lists, many posters, half of the mail replies;
+        // one in eight lists takes no posts, one in ten has one poster.
         final l = random.nextInt(40);
+        final earlier = posted[l] ??= [];
         out.add(
           bulk(
             uid,
             account: account,
             path: path,
-            from: 'person${random.nextInt(60)}@people.example',
+            from: l % 10 == 5 ? 'announce@lists.example.org' : 'person${random.nextInt(60)}@people.example',
             fromName: random.nextBool() ? 'Person' : null,
             daysAgo: daysAgo,
             seen: seen,
             messageId: messageId,
+            inReplyTo: earlier.isNotEmpty && l % 10 != 5 && random.nextBool()
+                ? earlier[random.nextInt(earlier.length)]
+                : null,
             listId: 'list$l.lists.example.org',
             listName: l % 4 == 0 ? null : 'List $l',
+            listPost: l % 8 == 3 ? null : '<mailto:list$l@lists.example.org>',
             unsubscribe: l % 2 == 0 ? '<mailto:list$l-leave@lists.example.org>' : null,
           ),
         );
+        earlier.add(messageId);
       case 5:
         // ESP notifications without List-* headers.
         final s = random.nextInt(80);
@@ -361,6 +384,121 @@ void main() {
     });
   });
 
+  test('the user’s kinds: the query agrees with summarizeSubscriptions', () async {
+    final store = await seededStore();
+    final emails = synthetic(3000, seed: 5);
+    await insertAll(store, emails);
+    final me = {'me@example.com', 'alias@acc1.test'};
+    MailboxRole? roleOf(EmailSummary e) => _roleOfId(e.mailboxId);
+    final before = await store.watchSubscriptions(now: now).first;
+    // A discussion as a newsletter, a newsletter's campaigns as discussions.
+    final discussion = before.firstWhere((s) => s.isDiscussion);
+    final campaigns = before.firstWhere((s) => !s.isDiscussion && s.listIds.length > 1);
+    // Watchers hear of it.
+    final changed = expectLater(
+      store.watchSubscriptions(now: now),
+      emitsThrough(
+        predicate<List<Subscription>>((subs) => !subs.any((s) => s.key == discussion.key && s.isDiscussion)),
+      ),
+    );
+    await store.setListKind(discussion.listIds, SubscriptionKind.newsletter);
+    await changed;
+    await store.setListKind(campaigns.listIds, SubscriptionKind.discussion);
+    final kinds = {
+      for (final l in discussion.listIds) l: SubscriptionKind.newsletter,
+      for (final l in campaigns.listIds) l: SubscriptionKind.discussion,
+    };
+    final expected = summarizeSubscriptions(emails, roleOf: roleOf, now: now, me: me, kinds: kinds);
+    final actual = await store.watchSubscriptions(now: now).first;
+    expect(actual, expected);
+    expect(actual.where((s) => s.key == discussion.key && s.isDiscussion), isEmpty);
+    expect(
+      actual.where((s) => campaigns.listIds.contains(s.listId) && s.isDiscussion),
+      hasLength(campaigns.listIds.length),
+    );
+
+    // As classified again.
+    await store.setListKind([...discussion.listIds, ...campaigns.listIds], null);
+    expect(await store.watchSubscriptions(now: now).first, before);
+    await store.close();
+  });
+
+  group('newsletters and discussions', () {
+    late MailStore store;
+    setUp(() async => store = await seededStore());
+    tearDown(() => store.close());
+
+    test('per-campaign List-Ids from one sender: one newsletter, all its mail', () async {
+      await addMails(store, [
+        for (final (i, c) in ['40', '41'].indexed)
+          bulk(
+            i + 1,
+            from: 'news@example-sender.example',
+            fromName: 'Example Sender',
+            messageId: 'c$c@sendsay.example',
+            listId: 'nte4njmwoc0ynda1mc00${c == '40' ? 'ma' : 'mq'}==.sendsay',
+            listName: 'NTE4NjMwOC0yNDA1MC00${c == '40' ? 'MA' : 'MQ'}==',
+            daysAgo: i,
+          ),
+        bulk(3, from: '5186308-24050-7@send.other.example', fromName: 'Other Sender', listId: '111929.broadcast'),
+        bulk(4, from: '5186308-24050-8@send.other.example', fromName: 'Other Sender', listId: '111930.broadcast'),
+      ]);
+      final subs = await store.watchSubscriptions(now: now).first;
+      expect(
+        subs.map((s) => (s.key, s.name, s.messageCount)),
+        unorderedEquals([
+          ('from:news@example-sender.example', 'Example Sender', 2),
+          ('sender:other.example/other sender', 'Other Sender', 2),
+        ]),
+      );
+      final mail = await store.watchSubscriptionEmails('from:news@example-sender.example').first;
+      expect(mail.map((e) => e.id), [eid('INBOX', 1), eid('INBOX', 2)]);
+      final brand = await store.watchSubscriptionEmails('sender:other.example/other sender').first;
+      expect(brand, hasLength(2));
+      // A source's own key still finds its mail.
+      expect(await store.watchSubscriptionEmails('list:111929.broadcast').first, hasLength(1));
+    });
+
+    test('a reply makes a list a discussion, whichever arrives first', () async {
+      EmailSummary post(int uid, {String? replyTo, String from = 'ann@q.example', String path = 'INBOX'}) => bulk(
+        uid,
+        path: path,
+        from: from,
+        fromName: 'Ann',
+        messageId: 'q$uid@q.example',
+        inReplyTo: replyTo,
+        listId: 'q.lists.example',
+        listName: 'Q',
+        listPost: '<mailto:q@lists.example>',
+        daysAgo: 10 - uid,
+      );
+      Future<SubscriptionKind> kind() async => (await store.watchSubscriptions(now: now).first)
+          .firstWhere((s) => s.listIds.contains('q.lists.example'))
+          .kind;
+
+      await addMails(store, [post(2, replyTo: 'q1@q.example')]);
+      expect(await kind(), SubscriptionKind.newsletter, reason: 'one poster, the message it answers not here');
+      await addMails(store, [post(1)]);
+      expect(await kind(), SubscriptionKind.discussion);
+      await store.deleteEmails([eid('INBOX', 1)]);
+      expect(await kind(), SubscriptionKind.newsletter);
+      // The user's own post, which doesn't count, answered on the list.
+      await addMails(store, [post(5, replyTo: 'q4@q.example')]);
+      await addMails(store, [post(4, from: 'me@example.com', path: 'Sent')]);
+      expect(await kind(), SubscriptionKind.discussion);
+    });
+
+    test('unread: outside Trash', () async {
+      await addMails(store, [
+        bulk(1, unsubscribe: '<mailto:u@shop.example>'),
+        bulk(2, path: 'Trash', unsubscribe: '<mailto:u@shop.example>'),
+        bulk(3, seen: true, unsubscribe: '<mailto:u@shop.example>'),
+      ]);
+      final s = (await store.watchSubscriptions(now: now).first).single;
+      expect((s.messageCount, s.readCount, s.unreadCount), (3, 1, 1));
+    });
+  });
+
   test('40,000 messages: Subscriptions open in under 30 ms, then redo only what changed', () async {
     final store = await seededStore();
     final emails = synthetic(40000, seed: 7);
@@ -413,8 +551,11 @@ EmailSummary _as(EmailSummary e, {String? id, DateTime? receivedAt, String? list
   to: e.to,
   subject: e.subject,
   keywords: e.keywords,
+  inReplyTo: e.inReplyTo,
+  references: e.references,
   listId: listId ?? e.listId,
   listName: listName ?? e.listName,
+  listPost: e.listPost,
   listUnsubscribe: e.listUnsubscribe,
   listUnsubscribePost: e.listUnsubscribePost,
 );

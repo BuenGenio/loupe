@@ -185,60 +185,7 @@ final class PatchTag {
 }
 
 // ---------------------------------------------------------------------------
-// Mailing lists and muted threads
-
-/// A mailing list the user gets mail from: the messages that share a List-Id,
-/// across accounts, outside Trash and Junk.
-final class MailingList {
-  const MailingList({
-    required this.id,
-    required this.name,
-    this.postAddress,
-    this.messageCount = 0,
-    this.unreadCount = 0,
-    this.lastActivity,
-    this.accountIds = const [],
-  });
-
-  /// The List-Id identifier, lower-cased: `dev.lists.example.org`.
-  final String id;
-
-  /// The List-Id phrase of the newest message that has one, else [id].
-  final String name;
-
-  /// Where to post (List-Post), if the list allows posting.
-  final EmailAddress? postAddress;
-  final int messageCount;
-
-  /// Unread messages outside muted threads.
-  final int unreadCount;
-  final DateTime? lastActivity;
-
-  /// The accounts that receive the list.
-  final List<String> accountIds;
-
-  @override
-  bool operator ==(Object other) =>
-      other is MailingList &&
-      other.id == id &&
-      other.name == name &&
-      other.postAddress == postAddress &&
-      other.messageCount == messageCount &&
-      other.unreadCount == unreadCount &&
-      other.lastActivity == lastActivity &&
-      _listEquals(other.accountIds, accountIds);
-
-  @override
-  int get hashCode => Object.hash(id, name, messageCount, unreadCount, lastActivity);
-}
-
-bool _listEquals<T>(List<T> a, List<T> b) {
-  if (a.length != b.length) return false;
-  for (var i = 0; i < a.length; i++) {
-    if (a[i] != b[i]) return false;
-  }
-  return true;
-}
+// Forum threads and muted threads
 
 /// One conversation of a mailing list, as the forum-style list view shows
 /// it. Only the conversation's messages that came through the list count.
@@ -309,20 +256,18 @@ final class ListThread {
   }
 }
 
-/// Mailing lists (grouped by List-Id) and muted threads. The repositories
-/// implement it next to `MailRepository`; check with `repository is
-/// MailingLists`. All `watch*` streams emit the current value at once and
-/// again whenever it changes.
+/// The threads of a mailing list (by List-Id), and muted threads. The
+/// repositories implement it next to `MailRepository`; check with
+/// `repository is MailingLists`. Which lists there are, and which of them
+/// are discussions, is `MailSubscriptions`'. All `watch*` streams emit the
+/// current value at once and again whenever it changes.
 ///
 /// Muting is local to the device: a muted conversation leaves the list
 /// view, its unread messages are marked read, and later messages of it
 /// arrive read, so they never notify.
 abstract interface class MailingLists {
-  /// Lists with mail outside Trash and Junk, most recent activity first.
-  Stream<List<MailingList>> watchMailingLists();
-
-  /// The conversations of list [listId], most recent activity first. Muted
-  /// ones only with [includeMuted].
+  /// The conversations of list [listId], outside Trash and Junk, most recent
+  /// activity first. Muted ones only with [includeMuted].
   Stream<List<ListThread>> watchListThreads(String listId, {bool includeMuted = false, int limit = 200});
 
   /// Ids of the muted conversations, of all accounts.

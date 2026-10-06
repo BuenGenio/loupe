@@ -100,19 +100,23 @@ void main() {
       ]);
     });
 
-    test('grouped by List-Id, newest activity first, copies and Trash left out', () async {
-      final lists = await store.watchMailingLists().first;
-      expect(lists.map((l) => l.id), [dev, users]);
-      final d = lists.first;
+    test('a discussion by List-Id; a list without List-Post is its sender’s newsletter', () async {
+      final subs = await store.watchSubscriptions(now: base).first;
+      final d = subs.firstWhere((s) => s.key == 'list:$dev');
+      expect(d.kind, SubscriptionKind.discussion);
       expect(d.name, 'Example developers'); // the newest message has no phrase
       expect(d.postAddress?.email, 'dev@lists.example.org');
-      expect(d.messageCount, 7);
+      expect(d.messageCount, 7, reason: 'copies once');
       expect(d.unreadCount, 4);
+      expect(d.senderCount, 3);
       expect(d.accountIds, [accountId]);
-      expect(d.lastActivity, base.add(const Duration(minutes: 70)));
-      expect(lists.last.name, 'Example users');
-      expect(lists.last.messageCount, 1);
-      expect(lists.last.postAddress, isNull);
+      expect(d.lastReceived, base.add(const Duration(minutes: 70)));
+      final u = subs.firstWhere((s) => s.listIds.contains(users));
+      expect(u.kind, SubscriptionKind.newsletter);
+      expect(u.key, 'from:alice@example.org');
+      expect(u.messageCount, 2);
+      expect(u.unreadCount, 1, reason: 'not what waits in Trash');
+      expect(u.postAddress, isNull);
     });
 
     test('forum threads: first and latest message, participants, replies, patches', () async {
@@ -145,7 +149,6 @@ void main() {
       expect((await store.watchListThreads(dev).first).map((t) => t.first.subject), ['Release planning']);
       final all = await store.watchListThreads(dev, includeMuted: true).first;
       expect(all.last.isMuted, isTrue);
-      expect((await store.watchMailingLists().first).first.unreadCount, 1);
       expect(await store.threadOf(eid('INBOX', 4)), (accountId: accountId, threadId: series.threadId));
 
       // New mail of the thread is recognised as muted.
@@ -191,9 +194,9 @@ void main() {
       ]);
       await store.updateKeywords([eid('INBOX', 1)], add: {Keywords.flagged});
       final fetched = listMail(1, subject: 'Old');
-      final lists = store.watchMailingLists().skip(1).first;
+      final lists = store.watchSubscriptions(now: base).firstWhere((subs) => subs.isNotEmpty);
       await store.fillHeaders([fetched, listMail(99, subject: 'unknown id')]);
-      expect((await lists).single.id, dev);
+      expect((await lists).single.listIds, [dev]);
       final e = (await store.getEmail(eid('INBOX', 1)))!;
       expect(e.listId, dev);
       expect(e.listPost, devPost);
@@ -285,7 +288,7 @@ void main() {
         await store.fillHeaders([listMail(1, subject: 'Before the upgrade')]);
         await store.markHeadersFresh(mbox('INBOX'));
         expect((await store.getSyncInfo(mbox('INBOX')))!.staleHeaders, isFalse);
-        expect((await store.watchMailingLists().first).single.messageCount, 2);
+        expect((await store.watchListThreads(dev).first).fold(0, (n, t) => n + t.messageCount), 2);
         final thread = (await store.threadOf(eid('INBOX', 2)))!;
         await store.setThreadMuted(thread.accountId, thread.threadId, muted: true);
         expect(await store.watchMutedThreads().first, {thread.threadId});

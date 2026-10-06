@@ -23,7 +23,6 @@ import '../compose/compose_args.dart';
 import '../compose/compose_recovery.dart';
 import '../compose/send_later.dart';
 import '../keyboard/mail_commands.dart';
-import '../mailing_lists/list_providers.dart';
 import '../outbox/outbox_screen.dart';
 import '../palette/command_palette.dart';
 import '../panes/mail_selection.dart';
@@ -32,6 +31,7 @@ import '../panes/pane_layout.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
 import '../snooze/snoozed_screen.dart';
+import '../subscriptions/subscription_providers.dart';
 import 'vip_screen.dart';
 import '../../theme/loupe_icons.dart';
 
@@ -543,21 +543,21 @@ class _ListsSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lists = ref.watch(mailingListsProvider).value ?? const <MailingList>[];
+    final lists = ref.watch(discussionsProvider);
     final v = _visibility(ref);
     final rows = [
       for (final l in lists)
-        if (editing || v.visible('list.${l.id}'))
+        if (editing || v.visible('list.${l.listId}'))
           _MailboxTile(
-            key: ValueKey('list.${l.id}'),
+            key: ValueKey('list.${l.listId}'),
             title: l.name,
             icon: LoupeIcons.mailingList,
             count: l.unreadCount,
             editing: editing,
-            visible: v.visible('list.${l.id}'),
-            onToggleVisible: () => v.toggle('list.${l.id}'),
-            onTap: () => context.push(Routes.mailingList(l.id)),
-            target: MailingListTarget(l.id),
+            visible: v.visible('list.${l.listId}'),
+            onToggleVisible: () => v.toggle('list.${l.listId}'),
+            onTap: () => context.push(Routes.mailingList(l.listId!)),
+            target: MailingListTarget(l.listId!),
           ),
     ];
     if (rows.isEmpty) return const SizedBox.shrink();

@@ -470,9 +470,6 @@ final class LiveMailRepository
   // Mailing lists -----------------------------------------------------------
 
   @override
-  Stream<List<MailingList>> watchMailingLists() => store.watchMailingLists();
-
-  @override
   Stream<List<ListThread>> watchListThreads(String listId, {bool includeMuted = false, int limit = 200}) =>
       store.watchListThreads(listId, includeMuted: includeMuted, limit: limit);
 
@@ -500,7 +497,11 @@ final class LiveMailRepository
 
   @override
   Stream<List<EmailSummary>> watchSubscriptionEmails(String key, {bool inboxOnly = false, int limit = 200}) =>
-      store.watchSubscriptionEmails(key, inboxOnly: inboxOnly, limit: limit);
+      store.watchSubscriptionEmails(key, inboxOnly: inboxOnly, limit: limit, now: _now());
+
+  /// Kept in the store on this device.
+  @override
+  Future<void> setListKind(Iterable<String> listIds, SubscriptionKind? kind) => store.setListKind(listIds, kind);
 
   // Messages ----------------------------------------------------------------
 

@@ -54,7 +54,7 @@ void main() {
     return schemaOf(path);
   }
 
-  for (final version in [1, 2, 3, 4, 5]) {
+  for (final version in [1, 2, 3, 4, 5, 6]) {
     group('version $version upgrades to $latestSchemaVersion', () {
       late String path;
       setUp(() {
