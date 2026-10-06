@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/router.dart';
 import 'package:loupe/shared/bars.dart';
+import 'package:loupe/theme/loupe_icons.dart';
 import 'package:mail_model/mail_model.dart';
 
 import 'helpers.dart';
@@ -69,8 +71,28 @@ void main() {
     expect(find.text('All Inboxes'), findsOneWidget);
   });
 
-  testWidgets('a pushed list has back, a bold title and the account on one compact bar', (tester) async {
+  testWidgets('on Android a pushed list has no back button: the bold title starts at the gutter', (tester) async {
     await pumpLoupe(tester);
+    await goTo(tester, Routes.list(RealMailboxRef(MailIds.mailbox('fastmail', 'Lists/Open Garden'))));
+    expect(find.bySemanticsLabel('Back'), findsNothing);
+    expect(find.byIcon(LoupeIcons.back), findsNothing);
+    final title = tester.getRect(find.text('Open Garden'));
+    final account = tester.getRect(find.text('Fastmail'));
+    final edit = tester.getRect(find.text('Edit'));
+    expect(title.left, 16);
+    expect(account.top, greaterThanOrEqualTo(title.bottom - 1));
+    expect(account.bottom, lessThanOrEqualTo(52));
+    expect(title.right, lessThanOrEqualTo(edit.left));
+    // The search field starts hidden; rows begin right under the bar.
+    expect(find.byType(CupertinoSearchTextField).hitTestable(), findsNothing);
+    // The system back goes back.
+    await systemBack(tester);
+    expect(find.text('All Inboxes'), findsOneWidget);
+  });
+
+  testWidgets('on iOS a pushed list has back, a bold title and the account on one compact bar', (tester) async {
+    await pumpLoupe(tester);
+    expect(find.bySemanticsLabel('Back'), findsNothing, reason: 'the root screen has nothing to go back to');
     await goTo(tester, Routes.list(RealMailboxRef(MailIds.mailbox('fastmail', 'Lists/Open Garden'))));
     final back = tester.getRect(find.bySemanticsLabel('Back'));
     final title = tester.getRect(find.text('Open Garden'));
@@ -78,12 +100,19 @@ void main() {
     expect(back.right, lessThanOrEqualTo(title.left));
     expect(account.top, greaterThanOrEqualTo(title.bottom - 1));
     expect(account.bottom, lessThanOrEqualTo(52));
-    // The search field starts hidden; rows begin right under the bar.
-    expect(find.byType(CupertinoSearchTextField).hitTestable(), findsNothing);
     await tester.tap(find.bySemanticsLabel('Back'));
     await tester.pumpAndSettle();
     expect(find.text('All Inboxes'), findsOneWidget);
-  });
+  }, variant: TargetPlatformVariant.only(TargetPlatform.iOS));
+
+  testWidgets('settings pages: back on iOS only', (tester) async {
+    await pumpLoupe(tester);
+    await goTo(tester, Routes.settings);
+    expect(find.text('Settings'), findsWidgets);
+    final ios = debugDefaultTargetPlatformOverride == TargetPlatform.iOS;
+    expect(find.bySemanticsLabel('Back'), ios ? findsOneWidget : findsNothing);
+    if (!ios) expect(tester.getRect(find.text('Settings').first).left, 16);
+  }, variant: const TargetPlatformVariant({TargetPlatform.android, TargetPlatform.iOS}));
 
   testWidgets('pull to refresh works on Mailboxes and on a list', (tester) async {
     final repo = _CountingRepository();

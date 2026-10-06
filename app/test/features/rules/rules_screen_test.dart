@@ -89,8 +89,7 @@ void main() {
       await tester.tap(find.text('Accounts'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Personal'));
-      await tester.tap(find.bySemanticsLabel('Back').last);
-      await tester.pumpAndSettle();
+      await systemBack(tester);
       expect(find.text('Personal'), findsOneWidget);
 
       await tester.scrollTo(find.text('Add Action'));
@@ -144,8 +143,7 @@ void main() {
       await tester.tap(find.text('Accounts'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Fastmail'));
-      await tester.tap(find.bySemanticsLabel('Back').last);
-      await tester.pumpAndSettle();
+      await systemBack(tester);
       await tester.scrollTo(find.text('Add Action'));
       await tester.tap(find.text('Add Action'));
       await tester.pumpAndSettle();

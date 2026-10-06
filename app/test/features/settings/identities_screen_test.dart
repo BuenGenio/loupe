@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/router.dart';
-import 'package:loupe/theme/loupe_icons.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../helpers.dart';
@@ -103,8 +102,7 @@ void main() {
     await tester.enterText(find.byKey(const Key('identity-signature')), 'The Atlas team');
     await tester.pump();
 
-    await tester.tap(find.byIcon(LoupeIcons.back));
-    await tester.pumpAndSettle();
+    await systemBack(tester);
     expect(find.text('Discard Changes'), findsOneWidget);
     await tester.tap(find.text('Save Identity'));
     await tester.pumpAndSettle();
@@ -115,8 +113,7 @@ void main() {
     await _tap(tester, find.text('Atlas Team'));
     await tester.enterText(find.byKey(const Key('identity-signature')), 'Thrown away');
     await tester.pump();
-    await tester.tap(find.byIcon(LoupeIcons.back));
-    await tester.pumpAndSettle();
+    await systemBack(tester);
     await tester.tap(find.text('Discard Changes'));
     await tester.pumpAndSettle();
     expect((await _identities(repo, 'work')).firstWhere((i) => i.id == 'work/atlas').signature, 'The Atlas team');

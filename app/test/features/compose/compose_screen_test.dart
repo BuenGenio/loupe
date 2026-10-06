@@ -127,6 +127,19 @@ void main() {
     expect(repo.sent, hasLength(1));
   });
 
+  testWidgets('compose keeps Cancel, and no back button, on Android and iOS', (tester) async {
+    await openCompose(tester, FakeMailRepository());
+    expect(find.byKey(const Key('compose-cancel')), findsOneWidget);
+    expect(find.text('Cancel'), findsOneWidget);
+    expect(find.byType(BackButton), findsNothing);
+    expect(find.bySemanticsLabel('Back'), findsNothing);
+    await tester.enterText(find.byKey(const Key('compose-subject')), 'Plans');
+    await tester.pump();
+    await tester.tap(find.byKey(const Key('compose-cancel')));
+    await tester.pumpAndSettle();
+    expect(find.text('Save Draft'), findsOneWidget, reason: 'Cancel still goes through the draft sheet');
+  }, variant: const TargetPlatformVariant({TargetPlatform.android, TargetPlatform.iOS}));
+
   testWidgets('closing with content offers Save Draft', (tester) async {
     final repo = FakeMailRepository();
     await openCompose(tester, repo);

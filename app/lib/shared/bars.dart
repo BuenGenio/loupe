@@ -117,10 +117,47 @@ double searchBarExtent(BuildContext context) {
   return (16 + scaler.scale(17) * 1.2).roundToDouble() + 8;
 }
 
-/// The pinned header of a screen, as a sliver: a back chevron (when the
-/// route can pop) or [leading], the bold [title] on the same line, left-
-/// aligned, and [trailing] actions. It replaces iOS's large-title band,
-/// which spent a whole row on the title.
+/// Whether top bars show a back button. Android has a system back (the
+/// gesture or the navigation bar's button), so its bars leave the button out
+/// and give the space to the title. iOS has none, so its bars keep it, as do
+/// desktops. Follows [ThemeData.platform], so tests can switch it with
+/// `debugDefaultTargetPlatformOverride`.
+///
+/// Modal and full-screen surfaces keep their explicit Cancel or Close.
+bool showsBackButton(BuildContext context) => switch (Theme.of(context).platform) {
+  TargetPlatform.android || TargetPlatform.fuchsia => false,
+  TargetPlatform.iOS || TargetPlatform.macOS || TargetPlatform.linux || TargetPlatform.windows => true,
+};
+
+/// A back chevron for a top bar where [showsBackButton] and the route can
+/// pop; null otherwise.
+Widget? impliedBackButton(BuildContext context) {
+  final canPop = ModalRoute.of(context)?.impliesAppBarDismissal ?? false;
+  return canPop && showsBackButton(context) ? const LoupeBackButton() : null;
+}
+
+/// The back chevron of the top bars (see [showsBackButton]).
+class LoupeBackButton extends StatelessWidget {
+  const LoupeBackButton({super.key});
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    button: true,
+    label: 'Back',
+    excludeSemantics: true,
+    child: CupertinoButton(
+      padding: const EdgeInsetsDirectional.only(start: 4, end: 2),
+      minimumSize: const Size(36, 44),
+      onPressed: () => Navigator.maybePop(context),
+      child: const Icon(LoupeIcons.back, size: 28),
+    ),
+  );
+}
+
+/// The pinned header of a screen, as a sliver: a back chevron (on iOS, when
+/// the route can pop; see [showsBackButton]) or [leading], the bold [title]
+/// on the same line, left-aligned, and [trailing] actions. It replaces iOS's
+/// large-title band, which spent a whole row on the title.
 ///
 /// With a [searchField], a search row sits below the title. It collapses
 /// under the title as the list scrolls (lists start scrolled by
@@ -149,7 +186,7 @@ class LoupeTitleBar extends StatelessWidget {
   /// A smaller second line (the account of a mailbox).
   final Widget? subtitle;
 
-  /// Replaces the back chevron.
+  /// Replaces the back chevron (which only iOS shows).
   final Widget? leading;
   final List<Widget> trailing;
 
@@ -181,19 +218,7 @@ class LoupeTitleBar extends StatelessWidget {
         leading ??
         // In the wide layout's list pane: the sidebar button.
         (automaticallyImplyLeading && !canPop ? MailPaneScope.maybeOf(context)?.titleLeading : null) ??
-        (automaticallyImplyLeading && canPop
-            ? Semantics(
-                button: true,
-                label: 'Back',
-                excludeSemantics: true,
-                child: CupertinoButton(
-                  padding: const EdgeInsetsDirectional.only(start: 4, end: 2),
-                  minimumSize: const Size(36, 44),
-                  onPressed: () => Navigator.maybePop(context),
-                  child: const Icon(LoupeIcons.back, size: 28),
-                ),
-              )
-            : null);
+        (automaticallyImplyLeading ? impliedBackButton(context) : null);
     final titleStyle = styles.largeTitle.copyWith(
       fontSize: titleSize(large: large),
       height: subtitle == null ? 1.2 : 1.1,
