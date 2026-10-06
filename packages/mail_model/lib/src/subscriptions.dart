@@ -440,6 +440,7 @@ List<Subscription> groupSubscriptions(
           postAddress: postAddress,
           fromName: fromName?.value,
           address: newest,
+          senderCount: senders,
         ),
         address: newest,
         messageCount: messages,
@@ -468,7 +469,8 @@ List<Subscription> groupSubscriptions(
 /// What a subscription is called, never an identifier a machine made
 /// ([looksMachineMade]): the List-Id phrase; for a newsletter, else the
 /// sender's display name; for a discussion, else the List-Id or the list's
-/// address; else the sender's domain.
+/// address, or the display name of its one sender (not of whoever wrote
+/// last); else the sender's domain.
 String subscriptionName({
   required SubscriptionKind kind,
   required String address,
@@ -476,14 +478,16 @@ String subscriptionName({
   String? listId,
   EmailAddress? postAddress,
   String? fromName,
+  int senderCount = 1,
 }) {
   final named = humanName(phrase);
   if (named != null) return named;
   if (kind == SubscriptionKind.discussion) {
     if (listId != null && !looksMachineMade(listId)) return listId;
     if (postAddress != null) return postAddress.email.toLowerCase();
-  } else if (humanName(fromName) case final sender?) {
-    return sender;
+  }
+  if (kind == SubscriptionKind.newsletter || senderCount <= 1) {
+    if (humanName(fromName) case final sender?) return sender;
   }
   final at = address.lastIndexOf('@');
   final domain = registrableDomainOf(at < 0 ? '' : address.substring(at + 1));

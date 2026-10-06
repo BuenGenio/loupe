@@ -438,15 +438,23 @@ void main() {
   });
 
   group('names', () {
-    String name(SubscriptionKind kind, {String? phrase, String? listId, String? post, String? from, String? address}) =>
-        subscriptionName(
-          kind: kind,
-          phrase: phrase,
-          listId: listId,
-          postAddress: post == null ? null : EmailAddress(post),
-          fromName: from,
-          address: address ?? 'news@mail.example.com',
-        );
+    String name(
+      SubscriptionKind kind, {
+      String? phrase,
+      String? listId,
+      String? post,
+      String? from,
+      String? address,
+      int senders = 3,
+    }) => subscriptionName(
+      kind: kind,
+      phrase: phrase,
+      listId: listId,
+      postAddress: post == null ? null : EmailAddress(post),
+      fromName: from,
+      address: address ?? 'news@mail.example.com',
+      senderCount: senders,
+    );
     const n = SubscriptionKind.newsletter;
     const d = SubscriptionKind.discussion;
 
@@ -470,6 +478,8 @@ void main() {
         'team@lists.example.org',
       );
       expect(name(d, listId: '1175803732', from: 'Ines', address: 'ines@kestrel.example'), 'kestrel.example');
+      // A list treated as a discussion that one sender writes to.
+      expect(name(d, listId: '1175803732', from: 'Tidepool', senders: 1), 'Tidepool');
     });
   });
 
