@@ -104,6 +104,9 @@ abstract final class DemoPeople {
   static const fieldNotes = EmailAddress('hello@fieldnotes.example', 'Field Notes Weekly');
   static const deals = EmailAddress('deals@megamart.example', 'MegaMart Deals');
   static const bookClub = EmailAddress('club@riversidebooks.example', 'Riverside Book Club');
+  static const nordlicht = EmailAddress('news@nordlicht.example', 'Nordlicht Books');
+  static const tidepool = EmailAddress('hello@tidepool.example', 'Tidepool');
+  static const bankOffers = EmailAddress('offers@mail.lumenbank.example', 'Lumen Bank');
   static const coffee = EmailAddress('receipts@harborcoffee.example', 'Harbor Coffee');
   static const registrar = EmailAddress('billing@namewell.example', 'Namewell Domains');
   static const backup = EmailAddress('reports@vaultbox.example', 'Vaultbox Backup');
@@ -160,6 +163,7 @@ final class DemoSeed {
     _snoozed();
     _deals();
     openPgpCases();
+    _espNewsletters();
   }
 
   void _accounts() {
@@ -1147,6 +1151,90 @@ final class DemoSeed {
         unread: true,
         headers: const [
           ('List-Unsubscribe', '<mailto:unsubscribe@megamart.example?subject=Unsubscribe%20daily%20deals>'),
+          ('Precedence', 'bulk'),
+        ],
+      );
+    }
+  }
+
+  /// Newsletters sent through bulk-mail services, with the List-Ids they
+  /// make: base64 per campaign (Sendsay), Mailchimp's `<hex>mc list`,
+  /// SparkPost's host, and a sender address per campaign. Subscriptions
+  /// names them after their senders and shows each sender once. Added
+  /// last, without the random generator, so the rest of the demo stays as
+  /// it was.
+  void _espNewsletters() {
+    const f = DemoAccounts.fastmail;
+    // One sender, a List-Id per campaign.
+    for (final (i, campaign) in const ['MA', 'MQ', 'Mg'].indexed) {
+      add(
+        account: f,
+        box: i == 0 ? 'INBOX' : 'Newsletters',
+        at: at(3 + i * 7, 9, 15),
+        from: DemoPeople.nordlicht,
+        subject: const [
+          'Twelve books for the long evenings',
+          'Signed first editions are back',
+          'Our winter reading list',
+        ][i],
+        html:
+            '<div style="font-family:Georgia,serif;max-width:560px"><h1>Nordlicht Books</h1>'
+            '<p>New in the shop this week, picked by the people who shelve them.</p></div>',
+        unread: i != 1,
+        headers: [
+          ('List-Id', 'NTE4NjMwOC0yNDA1MC00$campaign== <5186308-24050-${40 + i}.nordlicht.sendsay>'),
+          ('List-Unsubscribe', '<https://nordlicht.example/u?c=${40 + i}>'),
+          ('List-Unsubscribe-Post', 'List-Unsubscribe=One-Click'),
+          ('Precedence', 'bulk'),
+        ],
+      );
+    }
+    // Mailchimp names its lists `<hex>mc list`.
+    for (final (i, d) in const [5, 19, 33].indexed) {
+      add(
+        account: f,
+        box: 'Newsletters',
+        at: at(d, 16, 5),
+        from: DemoPeople.tidepool,
+        subject: const ['What we shipped in November', 'Tidepool 4.0 is here', 'A quieter inbox, by design'][i],
+        html: '<div style="font-family:Helvetica,Arial,sans-serif;max-width:560px"><p>Product news from Tidepool.</p></div>',
+        unread: true,
+        headers: const [
+          ('List-Id', 'cac06e6fcbbfef544827181d7mc list <cac06e6fcbbfef544827181d7.265094.list-id.mcsv.net>'),
+          ('List-Unsubscribe', '<https://tidepool.us5.list-manage.com/unsubscribe?u=cac06e6f>'),
+          ('List-Unsubscribe-Post', 'List-Unsubscribe=One-Click'),
+          ('Precedence', 'bulk'),
+        ],
+      );
+    }
+    // SparkPost's List-Id has no phrase; the sender names it.
+    add(
+      account: DemoAccounts.personal,
+      box: '[Gmail]/All Mail',
+      at: at(8, 11, 40),
+      from: DemoPeople.bankOffers,
+      subject: 'A savings rate for the new year',
+      html: '<div style="font-family:Arial,sans-serif;max-width:560px"><p>Lumen Bank offers for you.</p></div>',
+      unread: true,
+      headers: const [
+        ('List-Id', '<spc.265094.4.sparkpostmail.com>'),
+        ('List-Unsubscribe', '<mailto:unsubscribe@mail.lumenbank.example>'),
+        ('Precedence', 'bulk'),
+      ],
+    );
+    // A new address for every campaign: grouped by the sender's name and domain.
+    for (final (i, local) in const ['0d93f1e2a7c4b85e6f10', '9a8b7c6d5e4f3a2b1c0d'].indexed) {
+      add(
+        account: DemoAccounts.personal,
+        box: '[Gmail]/All Mail',
+        at: at(4 + i * 12, 7, 30),
+        from: EmailAddress('$local@news.northline.example', 'Northline Rail'),
+        subject: const ['Winter fares from 19', 'Your weekend in the mountains'][i],
+        html: '<div style="font-family:Arial,sans-serif;max-width:560px"><p>Fares and trips from Northline.</p></div>',
+        unread: true,
+        headers: [
+          ('List-Id', '<${111929 + i}.broadcast>'),
+          ('List-Unsubscribe', '<https://news.northline.example/unsubscribe/$local>'),
           ('Precedence', 'bulk'),
         ],
       );

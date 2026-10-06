@@ -29,6 +29,40 @@ void main() {
     expect(byKey.keys.where((k) => k.contains('harborcoffee') || k.contains('jordan')), isEmpty);
   });
 
+  test('newsletters from bulk-mail services: one per sender, named after it', () async {
+    final subs = await repo.watchSubscriptions().first;
+    final byKey = {for (final s in subs) s.key: s};
+    // Three campaigns, three base64 List-Ids: one newsletter.
+    final nordlicht = byKey['from:news@nordlicht.example']!;
+    expect(nordlicht.name, 'Nordlicht Books');
+    expect(nordlicht.messageCount, 3);
+    expect(nordlicht.listIds, hasLength(3));
+    expect(nordlicht.kind, SubscriptionKind.newsletter);
+    expect(byKey['from:hello@tidepool.example']!.name, 'Tidepool');
+    expect(byKey['from:offers@mail.lumenbank.example']!.name, 'Lumen Bank');
+    // A new address for every campaign.
+    final northline = byKey['sender:northline.example/northline rail']!;
+    expect((northline.name, northline.messageCount), ('Northline Rail', 2));
+    expect([for (final s in subs) s.name].where(looksMachineMade), isEmpty);
+    // The discussion lists.
+    expect([
+      for (final s in subs)
+        if (s.isDiscussion) s.key,
+    ], unorderedEquals(['list:dev.lists.example.org', 'list:open-garden.lists.opengarden.example']));
+    final mail = await repo.watchSubscriptionEmails(nordlicht.key).first;
+    expect(mail, hasLength(3));
+  });
+
+  test('Treat as Newsletter, and back', () async {
+    const kestrel = 'list:dev.lists.example.org';
+    await repo.setListKind(['dev.lists.example.org'], SubscriptionKind.newsletter);
+    var subs = await repo.watchSubscriptions().first;
+    expect(subs.firstWhere((s) => s.key == kestrel).kind, SubscriptionKind.newsletter);
+    await repo.setListKind(['dev.lists.example.org'], null);
+    subs = await repo.watchSubscriptions().first;
+    expect(subs.firstWhere((s) => s.key == kestrel).kind, SubscriptionKind.discussion);
+  });
+
   test('archiving and reading change the counts', () async {
     const key = 'from:hello@striderun.example';
     final before = (await repo.watchSubscriptions().first).firstWhere((s) => s.key == key);
