@@ -30,8 +30,7 @@ Future<void> _choose(WidgetTester tester, String option) async {
   await tester.tap(find.text(option));
   await tester.pumpAndSettle();
   for (var i = 0; i < 2; i++) {
-    await tester.tap(find.bySemanticsLabel('Back'));
-    await tester.pumpAndSettle();
+    await systemBack(tester);
   }
 }
 
@@ -67,8 +66,7 @@ void main() {
     expect(find.text('Unread in Inboxes'), findsOneWidget);
     expect(textContaining('The badge updates whenever Loupe checks for mail'), findsOneWidget);
     for (var i = 0; i < 2; i++) {
-      await tester.tap(find.bySemanticsLabel('Back'));
-      await tester.pumpAndSettle();
+      await systemBack(tester);
     }
 
     await _choose(tester, 'Unread in VIP');

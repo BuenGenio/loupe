@@ -9,6 +9,7 @@ import '../../data/oauth.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/ui_state.dart';
+import '../../shared/bars.dart';
 import '../../shared/grouped_list.dart';
 import '../../shared/sheets.dart';
 import '../../theme/theme.dart';
@@ -97,7 +98,7 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
         .firstOrNull;
     if (account == null) {
       return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(automaticallyImplyLeading: showsBackButton(context)),
         body: Center(child: Text('This account was removed.', style: styles.footnote)),
       );
     }

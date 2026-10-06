@@ -90,7 +90,7 @@ class _SmartMailboxScreenState extends ConsumerState<SmartMailboxScreen> {
     final box = ref.watch(smartMailboxesProvider).where((s) => s.id == widget.id).firstOrNull;
     if (box == null) {
       return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(automaticallyImplyLeading: showsBackButton(context)),
         body: Center(child: Text('This smart mailbox was deleted.', style: LoupeTextStyles.of(context).footnote)),
       );
     }

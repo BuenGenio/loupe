@@ -117,6 +117,20 @@ void main() {
       expect(stackOf(tester), [Routes.mailboxes]);
     });
 
+    testWidgets('the conversation pane has its own toolbar with Aa, and no back button', (tester) async {
+      await pumpLoupe(tester, size: split);
+      await tester.tap(find.text(hike));
+      await tester.pumpAndSettle();
+      final pane = find.byType(ConversationScreen);
+      final aa = find.descendant(of: pane, matching: find.byKey(const Key('reader-options')));
+      expect(aa, findsOneWidget);
+      expect(tester.getCenter(aa).dx, greaterThan(tester.getTopLeft(pane).dx));
+      expect(find.descendant(of: pane, matching: find.bySemanticsLabel('Back')), findsNothing);
+      await tester.tap(aa);
+      await tester.pumpAndSettle();
+      expect(find.text('Readable'), findsOneWidget);
+    }, variant: const TargetPlatformVariant({TargetPlatform.android, TargetPlatform.iOS}));
+
     testWidgets('a mailbox tapped in the Mailboxes pane opens in the list pane, not as a page', (tester) async {
       await pumpLoupe(tester, size: wide);
       await tester.tap(find.text('Flagged'));

@@ -91,8 +91,7 @@ void main() {
 
     // Back on the Mailboxes screen, the folder is there.
     for (var i = 0; i < 2; i++) {
-      await tester.tap(find.bySemanticsLabel('Back'));
-      await tester.pumpAndSettle();
+      await systemBack(tester);
     }
     await _reveal(tester, find.text('Retired'));
     expect(find.text('Retired'), findsOneWidget);

@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/router.dart';
 import 'package:loupe/settings/ui_state.dart';
 import 'package:loupe/shared/mailbox_ref_codec.dart';
-import 'package:loupe/theme/loupe_icons.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../helpers.dart';
@@ -48,8 +47,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Off'));
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(LoupeIcons.back).last);
-    await tester.pumpAndSettle();
+    await systemBack(tester);
     expect(find.text('Smart Mailboxes stay on this device.'), findsOneWidget);
 
     await goTo(tester, Routes.smartMailbox('lq3k2x1a9b'));

@@ -8,6 +8,7 @@ import 'package:mail_model/mail_model.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../providers.dart';
+import '../../shared/bars.dart';
 import '../../shared/format.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
@@ -168,6 +169,9 @@ class _RawSourceScreenState extends ConsumerState<RawSourceScreen> {
         final bytes = snapshot.data?.bytes;
         return Scaffold(
           appBar: AppBar(
+            // Android goes back with its own gesture or button.
+            automaticallyImplyLeading: showsBackButton(context),
+            centerTitle: false,
             title: const Text('Source'),
             actions: [
               IconButton(

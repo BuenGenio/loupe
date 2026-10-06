@@ -85,8 +85,7 @@ void main() {
     // Reading it clears the mark.
     await tester.tap(find.text('Re: Lisbon in November?'));
     await tester.pumpAndSettle();
-    await tester.pageBack();
-    await tester.pumpAndSettle();
+    await systemBack(tester);
     expect(find.descendant(of: lisbon, matching: find.text('Snoozed')), findsNothing);
     expect((await _find(repo, 'Re: Lisbon in November?')).keywords, isNot(contains(Keywords.newAgain)));
     await drainTimers(tester);
