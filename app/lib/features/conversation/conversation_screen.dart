@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
@@ -18,6 +20,7 @@ import '../keyboard/mail_commands.dart';
 import '../openpgp/content_loader.dart';
 import '../openpgp/pgp_status.dart';
 import '../mailing_lists/list_providers.dart';
+import 'conversation_bar.dart';
 import 'mail_streams.dart';
 import 'mailbox_picker.dart';
 import 'message_actions.dart';
@@ -28,7 +31,8 @@ import 'sheets.dart';
 import '../../theme/loupe_icons.dart';
 import '../../settings/ui_state.dart';
 
-/// A conversation: its messages stacked oldest to newest, and an
+/// A conversation: its messages stacked oldest to newest under a frosted top
+/// bar that takes the sender and subject once they scroll away, and an
 /// Apple-Mail-style toolbar with the "Aa" view options.
 ///
 /// Works as its own route (`/message/:id`) and embedded in a split view.
@@ -70,6 +74,24 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
   /// "Aa" choices made on this screen; they apply to every message.
   ReaderSettings? _session;
 
+  final _scroll = ScrollController();
+
+  /// What the top bar shows; follows the scroll position.
+  final _bar = ValueNotifier(const ConversationBarState());
+
+  /// The large subject at the top of the content.
+  final _subjectKey = GlobalKey();
+
+  /// The top bar's height, status bar included: content above this line
+  /// is under the bar.
+  double _barExtent = 0;
+  bool _barUpdateScheduled = false;
+
+  /// The message the conversation opened at, further down: kept just under
+  /// the top bar while the messages above it load, until the user touches
+  /// the screen.
+  String? _anchorId;
+
   MailRepository get _repo => ref.read(repositoryProvider);
 
   @override
@@ -77,6 +99,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
     super.initState();
     _subscribe();
     registerCommands(ref.read(mailCommandsProvider));
+    _scroll.addListener(_updateBar);
   }
 
   @override
@@ -92,6 +115,8 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
       }
       _content.clear();
       _keys.clear();
+      _anchorId = null;
+      _bar.value = const ConversationBarState();
       _subscribe();
     }
   }
@@ -99,6 +124,8 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
   @override
   void dispose() {
     _sub?.cancel();
+    _scroll.dispose();
+    _bar.dispose();
     super.dispose();
   }
 
@@ -155,11 +182,78 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
     if (targetIndex <= 0) return;
     final expandedBefore = messages.take(targetIndex).any((m) => _expanded.contains(m.id));
     if (!expandedBefore) return;
-    final id = messages[targetIndex].id;
+    _anchorId = messages[targetIndex].id;
+    WidgetsBinding.instance.addPostFrameCallback((_) => _keepAnchor());
+  }
+
+  /// Scrolls the [_anchorId] message's header to just below the top bar.
+  void _keepAnchor() {
+    final card = _extentOf(_keys[_anchorId]);
+    if (card == null || !mounted || !_scroll.hasClients) return;
+    final p = _scroll.position;
+    final to = (card.top - _barExtent).clamp(p.minScrollExtent, p.maxScrollExtent);
+    if ((p.pixels - to).abs() > 0.5) _scroll.jumpTo(to);
+  }
+
+  // Top bar --------------------------------------------------------------------
+
+  /// Where [key]'s box starts and ends in the conversation's scrolling
+  /// content, whatever the scroll position.
+  ({double top, double bottom})? _extentOf(GlobalKey? key) {
+    final box = key?.currentContext?.findRenderObject();
+    if (box is! RenderBox || !box.attached || !box.hasSize) return null;
+    final viewport = RenderAbstractViewport.maybeOf(box);
+    if (viewport == null) return null;
+    final top = viewport.getOffsetToReveal(box, 0).offset;
+    return (top: top, bottom: top + box.size.height);
+  }
+
+  /// Once the subject has scrolled under the top bar, the bar shows the
+  /// sender of the last message whose card has reached it.
+  void _updateBar() {
+    if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+      // Mid-layout: positions are final after this frame.
+      return _scheduleBarUpdate();
+    }
+    final messages = _messages;
+    if (!mounted || messages == null || messages.isEmpty || !_scroll.hasClients) {
+      _bar.value = const ConversationBarState();
+      return;
+    }
+    final pixels = _scroll.position.pixels;
+    final underBar = pixels + _barExtent;
+    final subject = _extentOf(_subjectKey);
+    EmailSummary? reading;
+    if (subject != null && subject.bottom <= underBar + 0.5) {
+      for (final m in messages) {
+        final card = _extentOf(_keys[m.id]);
+        if (card == null) continue;
+        if (card.top > underBar + 0.5) break;
+        reading = m;
+      }
+      reading ??= messages.first;
+    }
+    _bar.value = ConversationBarState(scrolledUnder: pixels > 0.5, reading: reading);
+  }
+
+  void _scheduleBarUpdate() {
+    if (_barUpdateScheduled) return;
+    _barUpdateScheduled = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final ctx = _keys[id]?.currentContext;
-      if (ctx != null && ctx.mounted) Scrollable.ensureVisible(ctx);
+      _barUpdateScheduled = false;
+      _updateBar();
     });
+  }
+
+  /// Tapping the bar's title.
+  void _scrollToTop() {
+    _anchorId = null;
+    if (!_scroll.hasClients) return;
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _scroll.jumpTo(0);
+    } else {
+      unawaited(_scroll.animateTo(0, duration: const Duration(milliseconds: 350), curve: Curves.easeOutCubic));
+    }
   }
 
   EmailSummary? get _target {
@@ -500,26 +594,63 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
     final hasArchive = gmail || mailboxes.any((b) => b.role == MailboxRole.archive);
     bool canArchive(EmailSummary m) => hasArchive && roleOf(m) != MailboxRole.archive;
 
-    return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: !_embedded && showsBackButton(context)),
-      // Content scrolls under the toolbar's glass.
-      extendBody: true,
-      body: Builder(builder: (context) => _buildBody(context, app, prefs, own, canArchive, roleOf)),
-      bottomNavigationBar: target == null
-          ? null
-          : _Toolbar(
-              onReaderOptions: _showReaderOptions,
-              flagged: target.isFlagged,
-              archive: canArchive(target),
-              inTrash: roleOf(target) == MailboxRole.trash,
-              onFlag: () => _setFlag(target, !target.isFlagged),
-              onMove: () => _move(target, _thread(target), close: true),
-              onArchiveOrTrash: () =>
-                  canArchive(target) ? _archive(_thread(target), close: true) : _trash(_thread(target), close: true),
-              onReply: () => _reply(target, ComposeMode.reply),
-              onReplyMenu: () => _replyMenu(target),
-              onCompose: () => openCompose(context, ComposeArgs(accountId: target.accountId)),
-            ),
+    _scheduleBarUpdate();
+    // Its own primary controller: a tap on the iOS status bar scrolls to
+    // the top, and keyboard scrolling reaches the conversation.
+    return PrimaryScrollController(
+      controller: _scroll,
+      automaticallyInheritForPlatforms: const {},
+      child: Scaffold(
+        // Content scrolls under both bars' glass.
+        extendBody: true,
+        body: Builder(
+          builder: (context) {
+            _barExtent = ConversationBar.extentOf(context);
+            final stack = Stack(
+              children: [
+                Positioned.fill(child: _buildBody(context, app, prefs, own, canArchive, roleOf)),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: ConversationBar(
+                    state: _bar,
+                    leading: _embedded ? null : impliedBackButton(context),
+                    subject: target == null
+                        ? const SizedBox.shrink()
+                        : ProtectedSubject(
+                            subject: target.subject,
+                            content: _expanded.contains(target.id) ? _contentFor(target) : null,
+                          ),
+                    onTitleTap: _scrollToTop,
+                  ),
+                ),
+              ],
+            );
+            // Any touch or wheel ends keeping the opened message in place.
+            return Listener(
+              onPointerDown: (_) => _anchorId = null,
+              onPointerSignal: (_) => _anchorId = null,
+              child: stack,
+            );
+          },
+        ),
+        bottomNavigationBar: target == null
+            ? null
+            : _Toolbar(
+                onReaderOptions: _showReaderOptions,
+                flagged: target.isFlagged,
+                archive: canArchive(target),
+                inTrash: roleOf(target) == MailboxRole.trash,
+                onFlag: () => _setFlag(target, !target.isFlagged),
+                onMove: () => _move(target, _thread(target), close: true),
+                onArchiveOrTrash: () =>
+                    canArchive(target) ? _archive(_thread(target), close: true) : _trash(_thread(target), close: true),
+                onReply: () => _reply(target, ComposeMode.reply),
+                onReplyMenu: () => _replyMenu(target),
+                onCompose: () => openCompose(context, ComposeArgs(accountId: target.accountId)),
+              ),
+      ),
     );
   }
 
@@ -540,100 +671,119 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
   ) {
     final messages = _messages;
     final error = _error;
+    // Below the top bar.
+    Widget belowBar(Widget child) => Padding(
+      padding: EdgeInsets.only(top: _barExtent),
+      child: child,
+    );
     if (messages == null) {
       if (error != null) {
-        return _StateMessage.error(
-          error,
-          onRetry: () {
-            setState(() => _error = null);
-            _subscribe();
-          },
+        return belowBar(
+          _StateMessage.error(
+            error,
+            onRetry: () {
+              setState(() => _error = null);
+              _subscribe();
+            },
+          ),
         );
       }
-      return const _LoadingConversation();
+      return belowBar(const _LoadingConversation());
     }
     if (messages.isEmpty) {
-      return const _StateMessage(
-        icon: LoupeIcons.email,
-        title: 'No Message',
-        message: 'This message was moved or deleted.',
+      return belowBar(
+        const _StateMessage(icon: LoupeIcons.email, title: 'No Message', message: 'This message was moved or deleted.'),
       );
     }
     final target = _target!;
     final colors = LoupeColors.of(context);
-    return CustomScrollView(
-      slivers: [
-        if (error != null) SliverToBoxAdapter(child: _OfflineBanner(error: error)),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-            child: ProtectedSubject(
-              subject: target.subject,
-              content: _expanded.contains(target.id) ? _contentFor(target) : null,
-              trailing: [
-                if ((ref.watch(mutedThreadsProvider).value ?? const <String>{}).contains(target.threadId))
-                  WidgetSpan(
-                    alignment: PlaceholderAlignment.middle,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Icon(LoupeIcons.mute, size: 18, color: colors.secondaryText, semanticLabel: 'Muted'),
-                    ),
-                  ),
-              ],
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, fontSize: 22),
+    return NotificationListener<ScrollMetricsNotification>(
+      // Cards opening, closing or loading move the messages under the bar.
+      onNotification: (n) {
+        if (n.depth != 0) return false;
+        if (_anchorId != null) _keepAnchor();
+        _updateBar();
+        return false;
+      },
+      child: CustomScrollView(
+        controller: _scroll,
+        slivers: [
+          SliverToBoxAdapter(child: SizedBox(height: _barExtent)),
+          if (error != null) SliverToBoxAdapter(child: _OfflineBanner(error: error)),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+              child: KeyedSubtree(
+                key: _subjectKey,
+                child: ProtectedSubject(
+                  subject: target.subject,
+                  content: _expanded.contains(target.id) ? _contentFor(target) : null,
+                  trailing: [
+                    if ((ref.watch(mutedThreadsProvider).value ?? const <String>{}).contains(target.threadId))
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: Icon(LoupeIcons.mute, size: 18, color: colors.secondaryText, semanticLabel: 'Muted'),
+                        ),
+                      ),
+                  ],
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, fontSize: 22),
+                ),
+              ),
             ),
           ),
-        ),
-        SliverToBoxAdapter(child: Divider(color: colors.separator)),
-        // Built eagerly (threads are short) so the target can be scrolled to.
-        SliverToBoxAdapter(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              for (final m in messages) ...[
-                MessageCard(
-                  key: _keys.putIfAbsent(m.id, GlobalKey.new),
-                  message: m,
-                  expanded: _expanded.contains(m.id),
-                  ownAddresses: own,
-                  content: _expanded.contains(m.id) ? _contentFor(m) : null,
-                  settings: _settingsFor(m, app, prefs),
-                  remoteContent: _remoteFor(m, app, prefs),
-                  remoteAllowedHere: _remoteAllowed.contains(m.id),
-                  showOriginalHint: _originalHint.contains(m.id),
-                  onToggle: messages.length < 2 ? null : () => setState(() => _toggle(m.id)),
-                  onMore: () => _showMenu(m, canArchive: canArchive(m), role: roleOf(m)),
-                  onAddressTap: (a) => _onAddressTap(a, m.accountId),
-                  onAllowRemoteContent: ({required bool always}) {
-                    setState(() => _remoteAllowed.add(m.id));
-                    final sender = m.sender?.email;
-                    if (always && sender != null) {
-                      unawaited(ref.read(readerPrefsProvider.notifier).setRemoteAllowed(sender, allowed: true));
-                    }
-                  },
-                  onOpenLink: _openLink,
-                  onSuggestOriginal: () {
-                    if (_originalHint.contains(m.id)) return;
-                    // May be called while the body builds.
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (mounted) setState(() => _originalHint.add(m.id));
-                    });
-                  },
-                  onUseOriginal: () => setState(() => _forceOriginal.add(m.id)),
-                  // A block body: setState must not get the removed Future back.
-                  onRetry: () => setState(() {
-                    _content.remove(m.id);
-                  }),
-                  loadAttachment: (a) => ref.read(contentLoaderProvider).loadAttachment(m.id, a.partId),
-                ),
-                Divider(color: colors.separator),
+          SliverToBoxAdapter(child: Divider(color: colors.separator)),
+          // Built eagerly (threads are short) so the target can be scrolled to.
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (final m in messages) ...[
+                  MessageCard(
+                    key: _keys.putIfAbsent(m.id, GlobalKey.new),
+                    message: m,
+                    expanded: _expanded.contains(m.id),
+                    ownAddresses: own,
+                    content: _expanded.contains(m.id) ? _contentFor(m) : null,
+                    settings: _settingsFor(m, app, prefs),
+                    remoteContent: _remoteFor(m, app, prefs),
+                    remoteAllowedHere: _remoteAllowed.contains(m.id),
+                    showOriginalHint: _originalHint.contains(m.id),
+                    onToggle: messages.length < 2 ? null : () => setState(() => _toggle(m.id)),
+                    onMore: () => _showMenu(m, canArchive: canArchive(m), role: roleOf(m)),
+                    onAddressTap: (a) => _onAddressTap(a, m.accountId),
+                    onAllowRemoteContent: ({required bool always}) {
+                      setState(() => _remoteAllowed.add(m.id));
+                      final sender = m.sender?.email;
+                      if (always && sender != null) {
+                        unawaited(ref.read(readerPrefsProvider.notifier).setRemoteAllowed(sender, allowed: true));
+                      }
+                    },
+                    onOpenLink: _openLink,
+                    onSuggestOriginal: () {
+                      if (_originalHint.contains(m.id)) return;
+                      // May be called while the body builds.
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (mounted) setState(() => _originalHint.add(m.id));
+                      });
+                    },
+                    onUseOriginal: () => setState(() => _forceOriginal.add(m.id)),
+                    // A block body: setState must not get the removed Future back.
+                    onRetry: () => setState(() {
+                      _content.remove(m.id);
+                    }),
+                    loadAttachment: (a) => ref.read(contentLoaderProvider).loadAttachment(m.id, a.partId),
+                  ),
+                  Divider(color: colors.separator),
+                ],
               ],
-            ],
+            ),
           ),
-        ),
-        // Clear of the toolbar, which the content scrolls under.
-        SliverToBoxAdapter(child: SizedBox(height: 32 + MediaQuery.paddingOf(context).bottom)),
-      ],
+          // Clear of the toolbar, which the content scrolls under.
+          SliverToBoxAdapter(child: SizedBox(height: 32 + MediaQuery.paddingOf(context).bottom)),
+        ],
+      ),
     );
   }
 
