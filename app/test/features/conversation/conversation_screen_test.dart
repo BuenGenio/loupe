@@ -298,6 +298,59 @@ void main() {
     expect(find.text('list'), findsOneWidget);
   });
 
+  group('bottom bar', () {
+    testWidgets('Aa is in the bottom bar, first, and opens the reader options; none in the top bar', (tester) async {
+      await openThread(tester);
+      final aa = find.byKey(const Key('reader-options'));
+      expect(find.text('Aa'), findsOneWidget);
+      expect(find.descendant(of: find.byType(AppBar), matching: find.text('Aa')), findsNothing);
+      expect(find.descendant(of: aa, matching: find.text('Aa')), findsOneWidget);
+      final flag = tester.getCenter(find.byKey(const Key('toolbar-flag')));
+      expect(tester.getCenter(aa).dy, flag.dy);
+      expect(tester.getCenter(aa).dx, lessThan(flag.dx));
+      expect(tester.getCenter(aa).dy, greaterThan(tester.getCenter(find.text('See you at noon.')).dy));
+
+      await tester.tap(aa);
+      await tester.pumpAndSettle();
+      expect(find.text('Readable'), findsOneWidget);
+      expect(find.text('Original'), findsOneWidget);
+      expect(find.text('Plain'), findsOneWidget);
+    });
+
+    testWidgets('fits six evenly spaced buttons on a 360 dp phone with large text', (tester) async {
+      tester.view.physicalSize = const Size(360 * 3, 740 * 3);
+      tester.view.devicePixelRatio = 3;
+      tester.platformDispatcher.textScaleFactorTestValue = 2;
+      addTearDown(tester.view.reset);
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      await openThread(tester);
+      expect(tester.takeException(), isNull);
+      final keys = [
+        'reader-options',
+        'toolbar-flag',
+        'toolbar-move',
+        'toolbar-archive',
+        'toolbar-reply',
+        'toolbar-compose',
+      ];
+      final rects = [for (final k in keys) tester.getRect(find.byKey(Key(k)))];
+      final gaps = [for (var i = 1; i < rects.length; i++) rects[i].center.dx - rects[i - 1].center.dx];
+      for (final g in gaps) {
+        expect(g, closeTo(60, 0.5));
+      }
+      for (final r in rects) {
+        expect(r.left, greaterThanOrEqualTo(0));
+        expect(r.right, lessThanOrEqualTo(360));
+        expect(r.height, greaterThanOrEqualTo(44));
+        expect(r.center.dy, closeTo(rects.first.center.dy, 0.5));
+      }
+      // "Aa" keeps the icons' size and isn't clipped.
+      final aa = tester.getRect(find.text('Aa'));
+      expect(aa.height, lessThanOrEqualTo(24));
+      expect(aa.width, lessThan(rects.first.width));
+    });
+  });
+
   testWidgets('shows the empty state when the message is gone', (tester) async {
     final repo = FakeMailRepository();
     final router = await pumpTestApp(tester, repository: repo);

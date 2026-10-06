@@ -106,13 +106,26 @@ class BarTextButton extends StatelessWidget {
 
 /// Text scaling in the top bars stops here, so titles and buttons stay on
 /// one line (iOS limits navigation bars similarly).
-const _barMaxTextScale = 1.5;
+const barMaxTextScale = 1.5;
+
+/// The frosted glass of the reading bars: the surface colour, mostly
+/// opaque, over a strong blur of the content scrolling beneath.
+abstract final class FrostedGlass {
+  static const sigma = 24.0;
+  static const opacity = 0.78;
+
+  static ImageFilter get filter => ImageFilter.blur(sigmaX: sigma, sigmaY: sigma);
+
+  /// The glass's tint; clear at [visibility] 0.
+  static Color tint(BuildContext context, {double visibility = 1}) =>
+      Theme.of(context).colorScheme.surface.withValues(alpha: opacity * visibility);
+}
 
 /// Height of the search row of a [LoupeTitleBar]: the field plus its bottom
 /// padding. Lists start scrolled by this much to hide the field until it is
 /// pulled down.
 double searchBarExtent(BuildContext context) {
-  final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: _barMaxTextScale);
+  final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: barMaxTextScale);
   // CupertinoSearchTextField: 8 + 8 padding around a 17 pt line.
   return (16 + scaler.scale(17) * 1.2).roundToDouble() + 8;
 }
@@ -204,7 +217,7 @@ class LoupeTitleBar extends StatelessWidget {
 
   /// The title row's height (below the safe area).
   static double heightOf(BuildContext context, {bool large = false, bool subtitle = false}) {
-    final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: _barMaxTextScale);
+    final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: barMaxTextScale);
     final titleLine = scaler.scale(titleSize(large: large)) * (subtitle ? 1.1 : 1.2);
     final subtitleLine = subtitle ? scaler.scale(13) * 1.15 : 0;
     return math.max(44, (titleLine + subtitleLine + 8).ceilToDouble());
@@ -315,7 +328,7 @@ class _BarDelegate extends SliverPersistentHeaderDelegate {
       scrolledUnderOffset: searching ? 0 : searchHeight,
       colors: colors,
       child: MediaQuery.withClampedTextScaling(
-        maxScaleFactor: _barMaxTextScale,
+        maxScaleFactor: barMaxTextScale,
         child: Padding(
           padding: EdgeInsets.only(top: topPadding + (searching ? _searchingTop : 0)),
           child: Column(

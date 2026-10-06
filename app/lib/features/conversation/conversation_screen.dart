@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/app_settings.dart';
+import '../../shared/bars.dart';
 import '../../shared/mail_actions.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
@@ -27,8 +28,8 @@ import 'sheets.dart';
 import '../../theme/loupe_icons.dart';
 import '../../settings/ui_state.dart';
 
-/// A conversation: its messages stacked oldest to newest, the "Aa" view
-/// options and an Apple-Mail-style toolbar.
+/// A conversation: its messages stacked oldest to newest, and an
+/// Apple-Mail-style toolbar with the "Aa" view options.
 ///
 /// Works as its own route (`/message/:id`) and embedded in a split view.
 class ConversationScreen extends ConsumerStatefulWidget {
@@ -500,22 +501,14 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
     bool canArchive(EmailSummary m) => hasArchive && roleOf(m) != MailboxRole.archive;
 
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: !_embedded,
-        actions: [
-          if (target != null)
-            TextButton(
-              key: const Key('reader-options'),
-              onPressed: _showReaderOptions,
-              child: const Text('Aa', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-            ),
-          const SizedBox(width: 8),
-        ],
-      ),
-      body: _buildBody(context, app, prefs, own, canArchive, roleOf),
+      appBar: AppBar(automaticallyImplyLeading: !_embedded && showsBackButton(context)),
+      // Content scrolls under the toolbar's glass.
+      extendBody: true,
+      body: Builder(builder: (context) => _buildBody(context, app, prefs, own, canArchive, roleOf)),
       bottomNavigationBar: target == null
           ? null
           : _Toolbar(
+              onReaderOptions: _showReaderOptions,
               flagged: target.isFlagged,
               archive: canArchive(target),
               inTrash: roleOf(target) == MailboxRole.trash,
@@ -638,7 +631,8 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
             ],
           ),
         ),
-        const SliverToBoxAdapter(child: SizedBox(height: 32)),
+        // Clear of the toolbar, which the content scrolls under.
+        SliverToBoxAdapter(child: SizedBox(height: 32 + MediaQuery.paddingOf(context).bottom)),
       ],
     );
   }
@@ -646,9 +640,11 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
   void _toggle(String id) => _expanded.contains(id) ? _expanded.remove(id) : _expanded.add(id);
 }
 
-/// The bottom toolbar: Flag, Move, Archive or Trash, Reply, Compose.
+/// The bottom toolbar, in frosted glass: Aa, Flag, Move, Archive or Trash,
+/// Reply and Compose, evenly spaced.
 class _Toolbar extends StatelessWidget {
   const _Toolbar({
+    required this.onReaderOptions,
     required this.flagged,
     required this.archive,
     required this.inTrash,
@@ -660,6 +656,7 @@ class _Toolbar extends StatelessWidget {
     required this.onCompose,
   });
 
+  final VoidCallback onReaderOptions;
   final bool flagged;
   final bool archive;
   final bool inTrash;
@@ -673,54 +670,66 @@ class _Toolbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        border: Border(top: BorderSide(color: colors.separator, width: 0.5)),
+    final buttons = [
+      _ToolbarButton(
+        key: const Key('reader-options'),
+        glyph: const _AaGlyph(),
+        label: 'Reader Options',
+        hint: 'Text size and view',
+        onTap: onReaderOptions,
       ),
-      child: SafeArea(
-        top: false,
-        child: SizedBox(
-          height: 52,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _ToolbarButton(
-                key: const Key('toolbar-flag'),
-                icon: flagged ? LoupeIcons.flaggedFilled : LoupeIcons.flagged,
-                color: flagged ? colors.flag : null,
-                label: flagged ? 'Unflag' : 'Flag',
-                onTap: onFlag,
+      _ToolbarButton(
+        key: const Key('toolbar-flag'),
+        icon: flagged ? LoupeIcons.flaggedFilled : LoupeIcons.flagged,
+        color: flagged ? colors.flag : null,
+        label: flagged ? 'Unflag' : 'Flag',
+        onTap: onFlag,
+      ),
+      _ToolbarButton(key: const Key('toolbar-move'), icon: LoupeIcons.move, label: 'Move', onTap: onMove),
+      archive
+          ? _ToolbarButton(
+              key: const Key('toolbar-archive'),
+              icon: LoupeIcons.archive,
+              label: 'Archive',
+              onTap: onArchiveOrTrash,
+            )
+          : _ToolbarButton(
+              key: const Key('toolbar-trash'),
+              icon: inTrash ? LoupeIcons.deleteForever : LoupeIcons.trash,
+              label: inTrash ? 'Delete' : 'Trash',
+              onTap: onArchiveOrTrash,
+            ),
+      _ToolbarButton(
+        key: const Key('toolbar-reply'),
+        icon: LoupeIcons.reply,
+        label: 'Reply',
+        hint: 'Long-press for Reply All and Forward',
+        onTap: onReply,
+        onLongPress: onReplyMenu,
+      ),
+      _ToolbarButton(
+        key: const Key('toolbar-compose'),
+        icon: LoupeIcons.compose,
+        label: 'New Message',
+        onTap: onCompose,
+      ),
+    ];
+    return ClipRect(
+      child: BackdropFilter(
+        filter: FrostedGlass.filter,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: FrostedGlass.tint(context),
+            border: Border(top: BorderSide(color: colors.separator, width: 0.5)),
+          ),
+          child: SafeArea(
+            top: false,
+            child: SizedBox(
+              height: 52,
+              child: Row(
+                children: [for (final b in buttons) Expanded(child: Center(child: b))],
               ),
-              _ToolbarButton(key: const Key('toolbar-move'), icon: LoupeIcons.move, label: 'Move', onTap: onMove),
-              archive
-                  ? _ToolbarButton(
-                      key: const Key('toolbar-archive'),
-                      icon: LoupeIcons.archive,
-                      label: 'Archive',
-                      onTap: onArchiveOrTrash,
-                    )
-                  : _ToolbarButton(
-                      key: const Key('toolbar-trash'),
-                      icon: inTrash ? LoupeIcons.deleteForever : LoupeIcons.trash,
-                      label: inTrash ? 'Delete' : 'Trash',
-                      onTap: onArchiveOrTrash,
-                    ),
-              _ToolbarButton(
-                key: const Key('toolbar-reply'),
-                icon: LoupeIcons.reply,
-                label: 'Reply',
-                hint: 'Long-press for Reply All and Forward',
-                onTap: onReply,
-                onLongPress: onReplyMenu,
-              ),
-              _ToolbarButton(
-                key: const Key('toolbar-compose'),
-                icon: LoupeIcons.compose,
-                label: 'New Message',
-                onTap: onCompose,
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -731,15 +740,19 @@ class _Toolbar extends StatelessWidget {
 class _ToolbarButton extends StatelessWidget {
   const _ToolbarButton({
     super.key,
-    required this.icon,
+    this.icon,
+    this.glyph,
     required this.label,
     required this.onTap,
     this.onLongPress,
     this.color,
     this.hint,
-  });
+  }) : assert((icon == null) != (glyph == null));
 
-  final IconData icon;
+  final IconData? icon;
+
+  /// Drawn instead of an icon.
+  final Widget? glyph;
   final String label;
   final String? hint;
   final VoidCallback onTap;
@@ -758,7 +771,33 @@ class _ToolbarButton extends StatelessWidget {
       radius: 24,
       child: Padding(
         padding: const EdgeInsets.all(10),
-        child: Icon(icon, size: 24, color: color ?? Theme.of(context).colorScheme.primary),
+        child: glyph ?? Icon(icon, size: 24, color: color ?? Theme.of(context).colorScheme.primary),
+      ),
+    ),
+  );
+}
+
+/// "Aa", the reader options, the size of the toolbar's icons at any text
+/// size.
+class _AaGlyph extends StatelessWidget {
+  const _AaGlyph();
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    height: 24,
+    child: Align(
+      widthFactor: 1,
+      child: Text(
+        'Aa',
+        maxLines: 1,
+        softWrap: false,
+        textScaler: TextScaler.noScaling,
+        style: TextStyle(
+          fontSize: 18,
+          height: 1,
+          fontWeight: FontWeight.w500,
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
     ),
   );
