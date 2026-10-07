@@ -302,7 +302,7 @@ The add-on and the app share **one JSON file of test vectors**, so the language 
 | Need | Choice | Note |
 |---|---|---|
 | IMAP, SMTP, MIME | **enough_mail** (MPL-2.0) | Supports IDLE, CONDSTORE, QRESYNC, ESEARCH, MOVE, UIDPLUS, METADATA and more. **Effectively one maintainer.** Wrap it behind our own `MailTransport` interface, contribute fixes upstream, and budget for maintaining a fork. |
-| JMAP | **jmap-dart-client** (MIT, Linagora) | A git dependency pinned to a commit. JMAP is plain JSON over HTTPS, so our own small client is a cheap fallback. |
+| JMAP | Our own client in mail_jmap | Decided in #17: jmap-dart-client (MIT, Linagora) needs Flutter and pins Dart < 3; JMAP is plain JSON over HTTPS. See ARCHITECTURE.md › JMAP. |
 | OAuth | flutter_appauth (PKCE, system browser) | |
 | Secrets | flutter_secure_storage 11 | Keychain on iOS, Keystore on Android. |
 

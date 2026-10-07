@@ -9,8 +9,10 @@ app (UI, Riverpod, go_router)
         └── mail_sync (LiveMailRepository: sync engine, offline queue, device rules)
               ├─ mail_sieve (rules: Sieve generation, ManageSieve client, rule runner)
               ├─ mail_store (drift + FTS5 + sqlite3mc)
-              └─ TransportFactory ◄── mail_imap (enough_mail; IMAP, SMTP, MIME, discovery)
-                                  ◄── mail_jmap (Phase 3)
+              └─ TransportFactory ◄── mail_jmap CompositeTransportFactory (IMAP or JMAP by account)
+                                       ├─ mail_imap (enough_mail; IMAP, SMTP, MIME, discovery)
+                                       └─ mail_jmap (JMAP client and transport, EmailSubmission,
+                                                     JMAP discovery, Sieve over JMAP)
 mail_platform: CredentialStore (keychain), OAuth sign-in (AppAuth) and token refresh (HTTPS)
 mail_crypto: OpenPGP (dart_pg, vendored in third_party/): keys, keyring,
              PGP/MIME reading and writing, Autocrypt; S/MIME (pure Dart on
@@ -29,14 +31,14 @@ The packages are developed in parallel. These are the seams:
 | `MailRepository` | mail_model `src/repository.dart` | app demo repository; mail_sync `LiveMailRepository` | app |
 | `MailingLists` (a list's forum threads by List-Id, muted threads) | mail_model `src/lists.dart` | app demo repository; mail_sync `LiveMailRepository` | app (`repository is MailingLists`) |
 | `MailSubscriptions` (newsletters by sender and discussion lists by List-Id, read rates, the user's "Treat as…"), `groupSubscriptions`, `unsubscribeMethods`, `unsubscribeMessage`; `looksMachineMade` | mail_model `src/subscriptions.dart`, `src/bulk_names.dart` | app demo repository; mail_sync `LiveMailRepository` | app (`repository is MailSubscriptions`) |
-| `MailTransport`, `MailSender`, `MessageComposer`, `TransportFactory` | mail_model `src/transport.dart` | mail_imap | mail_sync |
+| `MailTransport`, `MailSender`, `MessageComposer`, `TransportFactory` | mail_model `src/transport.dart` | mail_imap (IMAP, SMTP, the MIME composer); mail_jmap (JMAP, and `CompositeTransportFactory` for both) | mail_sync |
 | `CredentialStore` | mail_model `src/transport.dart` | mail_platform | mail_sync (through the app) |
 | `SignInRenewal` ("Sign in again" after a revoked OAuth grant), `SignInRequiredException` | mail_model `src/sign_in.dart` | mail_sync `LiveMailRepository` | app (`repository is SignInRenewal`); mail_platform throws the exception |
 | `SearchExpr` (search syntax tree) | mail_model `src/search.dart` | expr_search (parser) | app, mail_store (SQL), mail_imap (IMAP), mail_sync |
 | `parseQuery`, `formatQuery`, `describeTerm`, `suggest`, `matchesEmail`, `widenForServer`, `compileImap`, `compileGmailRaw`, `compileJmapFilter` | expr_search `lib/src/api.dart` | expr_search | app, mail_imap, mail_sync |
 | `ReadableMessageView`, `ReaderSettings`, `showImageGallery`, `analyzeContent` (link and privacy findings), `unwrapRedirect`, `inspectHost` | readable `lib/src/api.dart` | readable | app |
 | `Rule`, `RuleAction`, `MailRules` (`MailRepository.rules`) | mail_model `src/rules.dart` | app `DemoRules`; mail_sync `LiveRules` | app |
-| `compileSieve`, `generateLoupeScript`, `parseLoupeScript`, `planInclude`, `SieveConnector`, `ServerRules`, `RuleRunner` | mail_sieve `lib/mail_sieve.dart` | mail_sieve | mail_sync, app demo |
+| `compileSieve`, `generateLoupeScript`, `parseLoupeScript`, `planInclude`, `SieveConnector`, `ServerRules`, `RuleRunner` | mail_sieve `lib/mail_sieve.dart` | mail_sieve (ManageSieve); mail_jmap `JmapSieveConnector` (RFC 9661) | mail_sync, app demo |
 | `PgpBackend` (swappable OpenPGP engine), `Keyring`, `PgpMimeReader`, `PgpMessageComposer` (a `MessageComposer` around another), `OutgoingMessage.security` | mail_crypto `lib/mail_crypto.dart`, mail_model `src/outgoing.dart` | mail_crypto (`DartPgBackend`) | app (reader, compose, settings, live composer) |
 | `SmimeBackend` (swappable S/MIME engine), `SmimeStore`, `SmimeReader`, `checkTrust`, `planSmime`, `chooseTechnology`, `SmimeMessageComposer` (around the OpenPGP one), `OutgoingSecurity.technology` | mail_crypto `lib/mail_crypto.dart`, mail_model `src/outgoing.dart` | mail_crypto (`DartSmimeBackend`) | app (reader, compose, settings, live composer) |
 
@@ -44,6 +46,7 @@ Rules:
 
 - **Ids are deterministic** (`MailIds`): transports produce final local ids, so the store needs no mapping table.
   - IMAP email ids include the mailbox path, UIDVALIDITY and UID.
+  - JMAP email ids include the mailbox path and the JMAP id (`jmapEmailIn`): one copy per mailbox (see JMAP below).
 - **Keywords are lower-case JMAP keywords** (`$seen`, `$flagged`, …). The IMAP adapter maps `\Seen` and the other system flags to them.
 - **Snooze lives on the server** ([snooze-convention.md](snooze-convention.md)): a top-level `Snoozed` folder and a
   `$snoozed-<UTC minutes>` keyword; mail_sync wakes due messages after every sync, so any client following the
@@ -200,6 +203,76 @@ dart_pg fixes of 2.1.0+loupe.2:
 
 Unlocking stays near a second: the iteration count Thunderbird and GnuPG choose is meant to take that long.
 
+## JMAP
+
+Issue #17. JMAP accounts (`ServerProtocol.jmap`; Stalwart first, then Fastmail and Cyrus) next to IMAP ones, in
+mail_jmap. `CompositeTransportFactory` picks the transport and sender by `account.incoming.protocol`; both protocols
+share the MIME composer (with OpenPGP and S/MIME around it in the app), the body and attachment selection on a
+`BodyNode` tree, the documents format and the snooze convention (mail_imap's `lib/mime.dart`).
+
+- **Client** (`JmapClient`, about 400 lines on package:http) instead of jmap-dart-client: that package needs Flutter,
+  pins Dart < 3, dio and a build_runner model layer, and has neither EventSource nor import helpers. The session comes
+  from `https://<host>[:port]/.well-known/jmap` (redirects followed, never to plain HTTP; `/jmap/session` when the
+  well-known URL is missing); `ServerConfig.host`/`port` name that host, `security: none` means plain HTTP (local
+  servers only). Passwords go as Basic credentials and, refused, once as a bearer token (Fastmail API tokens,
+  Stalwart API keys; `fmu1-…` tokens go as bearer at once); OAuth tokens as bearer, refreshed once when refused.
+  Certificates are pinned by SHA-256 like IMAP's. Errors keep their JMAP type (`JmapException`) and map to
+  `MailErrorKind`s.
+- **Copies, one per mailbox.** A JMAP email can be in several mailboxes (Fastmail labels, or an IMAP client's COPY on
+  Stalwart). The store keeps one row per (email, mailbox), as for IMAP folders and Gmail labels, with the id
+  `<account>|<path>|jmap|<id>`. So everything built on IMAP semantics holds: a mailbox's sync reports what is in it,
+  moving a copy takes the email out of that mailbox only (a `mailboxIds/<source>: null` patch) and gives it a new id,
+  deleting a copy for good destroys the email only when no other mailbox has it, a search hit in all mail shows its
+  Inbox copy (else a folder's, Archive, Sent, Drafts, then Junk and Trash). Keywords belong to the email, so a
+  change shows on every copy at its mailbox's next sync. Primary-mailbox semantics (one row per email) were
+  rejected: a mailbox's sync and another's would move or delete each other's row.
+- **Mailbox paths** are a mailbox's name and its parents' joined with `/` (`Inbox`, `Archive/2024`), the delimiter
+  Stalwart, Fastmail and Cyrus show over IMAP: the Snoozed and Loupe Settings folders, Smart Mailbox scopes and
+  Sieve's `fileinto` work with names. The transport maps paths to JMAP ids. Renaming a mailbox on the server makes it
+  a new one here, as over IMAP.
+- **Sync.** `Email/changes` is per account, so each mailbox's `MailboxSyncState` holds the account's `Email` state at
+  its last sync and the JMAP ids of its window. The first sync is `Email/query` (in the mailbox, newest `receivedAt`
+  first, the initial window) and `Email/get` of the list-row properties (threadId, keywords, mailboxIds, preview, the
+  body structure for attachments and encryption, the threading and list headers fetched raw), taking the state
+  before the query. Later syncs follow `Email/changes` (several rounds while `hasMoreChanges`) and fetch `mailboxIds`
+  and `keywords` of what changed: new in the mailbox → added, gone or moved out → vanished, the rest → keywords.
+  `cannotCalculateChanges` (or a state the server can't read) checks the window against the server instead, keeping
+  stored rows and cached bodies; no reset. `Mailbox/changes` spares listing mailboxes when only counts changed. Older
+  pages anchor on the oldest known email. JMAP threadIds are kept (`<account>|jmthread|<id>`).
+- **Content** comes from `Email/get` with body values; parts without one are downloaded (blob) and decoded, inline
+  `cid:` images are downloaded, and `Attachment.partId` is the part's blob id. The raw message is the email's blob.
+- **Sending** (`JmapSender`): the composed message is uploaded, imported into Drafts and submitted
+  (`EmailSubmission/set`) from the identity matching the envelope sender. `MailSender.send(fileInSent: true)` marks
+  the copy for Sent: it moves there as it goes out (`onSuccessUpdateEmail`: Sent, `$seen`, no `$draft`) and the
+  receipt says `filed`, so mail_sync appends no copy and syncs Sent instead (as for Gmail). Other copies (encrypted
+  Bcc copies) are destroyed once sent. `invalidRecipients` leaves those recipients in the Outbox while the others get
+  the message.
+- **Documents** (Smart Mailboxes): JMAP has no METADATA, so the documents are messages in the `Loupe Settings`
+  mailbox, in the IMAP format; an account used over both protocols shares them. (Stalwart's FileNode storage would be
+  JMAP-native, but Stalwart-only and invisible to IMAP clients.)
+- **Snooze** works unchanged: `$snoozed-…` keywords are JMAP keywords, and `createMailbox('Snoozed')` makes the
+  mailbox (an existing one is fine). `canStoreKeywords` is always true.
+- **Push.** `watch` opens the session's EventSource (`types=Email`, a ping every 60 s; silence for three pings ends
+  the stream, and the sync engine reconnects) and reports `Email` state changes; without an EventSource URL it polls
+  the state every minute. `supportsIdle` is true for JMAP, so the sync engine watches the Inbox as with IDLE.
+- **Discovery** (`JmapDiscoverer`) runs before IMAP's: Fastmail addresses (and custom domains IMAP discovery places
+  at Fastmail) get `api.fastmail.com` and a note asking for an API token; otherwise
+  `https://<domain>/.well-known/jmap`, probed while IMAP discovery runs, then the IMAP host IMAP discovery found
+  (Stalwart publishes IMAP in autoconfig and serves JMAP on the same host). No credentials, HTTPS only, no SRV lookup
+  (it would need a DNS client and tell resolvers which provider the user signs in to).
+- **Setup:** manual settings switch the incoming server between IMAP and JMAP (the server may be a URL; no SMTP
+  form for JMAP). Settings › account shows `JMAP · host:port`.
+- **Server rules** go over JMAP (`JmapSieveConnector`, RFC 9661 `SieveScript`) when the server offers it, as Stalwart
+  does; Roost's gateway forwards no ManageSieve port. Otherwise, and for IMAP accounts, ManageSieve on the account's
+  host.
+- **No schema change:** JMAP rows, states and documents fit the existing tables (the store is still at version 7).
+- **Tests:** unit tests against a scripted server answering with exchanges recorded from Stalwart 0.16
+  (`test/fixtures/stalwart/`); integration tests (tag `integration`) against a throwaway local Stalwart
+  (`tool/test-servers/stalwart/stalwart.dart`), for the transport and for the whole live repository.
+- **Not yet:** OAuth for Fastmail (the client takes bearer tokens; the sign-in flow is missing), JMAP identities in
+  Loupe's identity list (sending matches them by address), shared accounts and mailboxes, push while the app is in
+  the background (a push relay with JMAP PushSubscription, PLAN §7), WebSocket (RFC 8887).
+
 ## Background work (Android)
 
 Besides the app, three kinds of isolates open the database, each through `openLiveStore` (`app/lib/data/live.dart`):
@@ -321,6 +394,7 @@ shortcuts and the command palette act on the screen on top through `MailCommands
 - Dart 3.13, `dart analyze` clean with the root `analysis_options.yaml`; 120-column lines.
 - Pure Dart packages test with `dart test`, Flutter packages with `flutter test`; `tool/ci/test.sh` runs them all.
 - Generated code (drift) is committed, so CI needs no build_runner step.
-- No network access in unit tests. Integration tests against real IMAP servers are tagged `integration` and need `LOUPE_TEST_IMAP_HOST`; see `tool/test-servers/`.
+- No network access in unit tests. Integration tests against real servers are tagged `integration`: IMAP ones need
+  `LOUPE_TEST_IMAP_HOST`, JMAP ones a Stalwart binary (`LOUPE_TEST_STALWART`); see `tool/test-servers/`.
 - No analytics or tracking code, ever. Remote content stays blocked by default. Besides account setup, the only
   network request outside the mail protocols is the one-click unsubscribe the user taps (see Subscriptions).
