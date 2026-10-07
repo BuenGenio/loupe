@@ -112,7 +112,24 @@ final class MailboxDirectory {
     for (final m in ordered) {
       _byId[m.id] = m;
     }
+    // Stalwart makes no Archive mailbox; one the user made has no role.
+    // Over IMAP Loupe recognises it by name, so here too.
+    if (!_byId.values.any((m) => m.mailboxRole == MailboxRole.archive)) {
+      for (final name in const ['archive', 'archives', 'archiv']) {
+        final found = _byId.values
+            .where((m) => m.parentId == null && m.role == null && m.name.toLowerCase() == name)
+            .firstOrNull;
+        if (found != null) {
+          _archiveById = found.id;
+          break;
+        }
+      }
+    }
   }
+
+  /// A top-level mailbox named Archive that holds the archive role when no
+  /// mailbox has it.
+  String? _archiveById;
 
   /// The `Mailbox` state the list is at.
   final String? state;
@@ -129,10 +146,14 @@ final class MailboxDirectory {
   /// The first mailbox with [role].
   JmapMailbox? withRole(MailboxRole role) {
     for (final m in _byId.values) {
-      if (m.mailboxRole == role) return m;
+      if (roleFor(m) == role) return m;
     }
     return null;
   }
+
+  /// The role Loupe gives [m]: its JMAP role, or archive for a top-level
+  /// mailbox named Archive when no mailbox has that role.
+  MailboxRole roleFor(JmapMailbox m) => m.id == _archiveById ? MailboxRole.archive : m.mailboxRole;
 
   /// The list for the sync engine.
   List<RemoteMailbox> get remote => [
@@ -140,7 +161,7 @@ final class MailboxDirectory {
       RemoteMailbox(
         path: _pathById[m.id]!,
         name: m.name,
-        role: m.mailboxRole,
+        role: roleFor(m),
         parentPath: m.parentId == null ? null : _pathById[m.parentId!],
         isSelectable: m.mayReadItems,
         isSubscribed: m.isSubscribed,

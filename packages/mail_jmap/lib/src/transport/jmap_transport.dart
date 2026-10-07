@@ -925,7 +925,7 @@ final class JmapTransport implements MailTransport {
   /// folder's, Archive, Sent, Drafts, and Junk or Trash last (never the
   /// documents folder).
   static String? _bestPath(MailboxDirectory dir, Set<String> boxes) {
-    int rank(JmapMailbox m) => switch (m.mailboxRole) {
+    int rank(JmapMailbox m) => switch (dir.roleFor(m)) {
       MailboxRole.inbox => 0,
       MailboxRole.none || MailboxRole.flagged || MailboxRole.important => 1,
       MailboxRole.archive => 2,

@@ -59,6 +59,20 @@ void main() {
       expect(byPath[ServerDocuments.folderName]!.isSubscribed, isFalse);
     });
 
+    test('a top-level Archive without a role holds the archive role when no mailbox has it', () async {
+      final jmap = ScriptedJmap()..on('Mailbox/get', (_) => mailboxList([mailbox('k', 'Archive')]));
+      final t = JmapTransport(scriptedAccount(), passwordCallback(), httpClient: jmap.client);
+      await t.connect();
+      expect(_remote(await t.listMailboxes(), 'Archive').role, MailboxRole.archive);
+      final withRole = ScriptedJmap()
+        ..on('Mailbox/get', (_) => mailboxList([mailbox('k', 'Archive'), mailbox('l', 'Old', role: 'archive')]));
+      final u = JmapTransport(scriptedAccount(), passwordCallback(), httpClient: withRole.client);
+      await u.connect();
+      final boxes = await u.listMailboxes();
+      expect(_remote(boxes, 'Archive').role, MailboxRole.none);
+      expect(_remote(boxes, 'Old').role, MailboxRole.archive);
+    });
+
     test('are listed again only when Mailbox/changes says more than the counts changed', () async {
       final (t, jmap) = await _connected(
         script: (j) => j
