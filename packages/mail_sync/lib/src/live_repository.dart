@@ -20,7 +20,7 @@ import 'util.dart';
 /// background and [resume] when it returns; [syncOnce] serves background
 /// fetch tasks. [dispose] stops everything but leaves the store open.
 final class LiveMailRepository
-    implements MailRepository, MailingLists, MailSubscriptions, SignInRenewal, DecryptedMail {
+    implements MailRepository, MailingLists, MailSubscriptions, SignInRenewal, DecryptedMail, CalendarRecords {
   LiveMailRepository(
     this.store,
     this.transports,
@@ -549,6 +549,16 @@ final class LiveMailRepository
 
   @override
   Future<void> forgetDecryptedText() => store.deleteDecryptedTexts();
+
+  // Calendar invitations ----------------------------------------------------
+
+  @override
+  Future<String?> readCalendarRecord(String uid, {String recurrenceId = ''}) =>
+      store.calendarRecord(uid, recurrenceId: recurrenceId);
+
+  @override
+  Future<void> writeCalendarRecord(String uid, String? data, {String recurrenceId = ''}) =>
+      store.putCalendarRecord(uid, data, recurrenceId: recurrenceId, now: _now());
 
   // Actions -----------------------------------------------------------------
 
@@ -1258,6 +1268,8 @@ final class LiveMailRepository
     final m = entry.message;
     final MailAccount account;
     final Uint8List filed;
+    // The server put the Sent copy in Sent as it sent it (JMAP).
+    var filedByServer = false;
     final refused = <String, MailException>{};
     try {
       account =
@@ -1279,8 +1291,14 @@ final class LiveMailRepository
           // which refuses it.
           if (copy.recipients.isEmpty && copies.length > 1) continue;
           try {
-            final receipt = await sender.send(copy.rfc822, envelopeFrom: identity.email, recipients: copy.recipients);
+            final receipt = await sender.send(
+              copy.rfc822,
+              envelopeFrom: identity.email,
+              recipients: copy.recipients,
+              fileInSent: copy.filed,
+            );
             refused.addAll(receipt.refused);
+            if (copy.filed && receipt.filed) filedByServer = true;
             delivered = true;
           } on Object catch (error) {
             // Before anything went out, the message failed as a whole.
@@ -1320,7 +1338,14 @@ final class LiveMailRepository
     final rest = _refusedPart(entry, refused);
     final restPrepared = rest == null ? null : await _prepare(rest, date: _now());
     try {
-      await _afterSend(account, entry, filed, refused: rest, refusedPrepared: restPrepared);
+      await _afterSend(
+        account,
+        entry,
+        filed,
+        refused: rest,
+        refusedPrepared: restPrepared,
+        filedByServer: filedByServer,
+      );
     } on Object catch (error) {
       try {
         await store.transaction(() async {
@@ -1405,17 +1430,19 @@ final class LiveMailRepository
     Uint8List bytes, {
     OutboxEntry? refused,
     PreparedMessage? refusedPrepared,
+    bool filedByServer = false,
   }) async {
     final m = entry.message;
     final now = _now();
     final sent = await store.mailboxByRole(account.id, MailboxRole.sent);
+    // Gmail files sent mail itself; a JMAP server did as it sent it.
+    final serverFiles = account.provider == ProviderKind.gmail || filedByServer;
     await store.transaction(() async {
       await store.deleteOutbox(entry.id);
       // The refused recipients' part takes its place in the same step.
       if (refused != null) await store.putOutbox(refused);
       if (refused != null && refusedPrepared != null) await store.setOutboxCopies(refused.id, refusedPrepared);
-      // Gmail files sent mail itself.
-      if (account.provider != ProviderKind.gmail && sent != null) {
+      if (!serverFiles && sent != null) {
         await store.enqueueOp(account.id, OpType.append, {
           'mailboxId': sent.id,
           'data': base64Encode(bytes),
@@ -1442,7 +1469,7 @@ final class LiveMailRepository
     }
     final syncer = _syncers[account.id];
     syncer?.kickOps();
-    if (account.provider == ProviderKind.gmail && sent != null) unawaited(syncer?.syncMailboxes([sent.id]));
+    if (serverFiles && sent != null) unawaited(syncer?.syncMailboxes([sent.id]));
   }
 
   // Drafts ------------------------------------------------------------------

@@ -78,6 +78,9 @@ EmailContent contentFromEntity(
             htmlIndex = i;
           } else if (p.mimeType == 'text/plain') {
             text = p;
+          } else if (p.mimeType == 'text/calendar') {
+            // An invitation (iMIP): the app shows it as a card.
+            attach(p, child(i));
           }
         }
         if (text != null) texts.add(text);

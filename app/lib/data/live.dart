@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_imap/mail_imap.dart';
+import 'package:mail_jmap/mail_jmap.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:mail_platform/mail_platform.dart';
 import 'package:mail_store/mail_store.dart';
@@ -21,8 +22,8 @@ import 'isolate_composer.dart';
 /// Keychain entry holding the database encryption key.
 const _databaseKeyName = 'loupe.database.key';
 
-/// Builds the real repository: the encrypted store, the IMAP transports and
-/// the keychain. Disposed with the provider.
+/// Builds the real repository: the encrypted store, the IMAP and JMAP
+/// transports and the keychain. Disposed with the provider.
 ///
 /// It starts paused: accounts are loaded (so messages open and actions
 /// work), but syncing waits until the app is in the foreground and no
@@ -151,9 +152,13 @@ LiveMailRepository buildLiveRepository(
   final credentials = CredentialsService(store: SecureCredentialStore(KeychainSecretStorage()));
   return LiveMailRepository(
     store,
-    ImapTransportFactory(composer: IsolateComposer(keys, device: device)),
+    // IMAP or JMAP by each account's protocol, one composer for both.
+    CompositeTransportFactory.of(ImapTransportFactory(composer: IsolateComposer(keys, device: device))),
     credentials.store,
     config: config,
+    // Server rules: Sieve over JMAP where the server has it (Stalwart),
+    // else ManageSieve.
+    sieve: const JmapSieveConnector(),
     refreshOAuth: (account, current) => credentials.oauth.refresh(account.provider, current),
   );
 }

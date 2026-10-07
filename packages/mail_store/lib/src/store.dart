@@ -881,7 +881,7 @@ final class MailStore {
       if (exists != null) {
         await (_db.delete(_db.emails)..where((e) => e.id.equals(oldId))).go();
       } else {
-        final mailboxId = MailIds.mailboxOfImapEmail(newId);
+        final mailboxId = MailIds.mailboxOfEmail(newId);
         await (_db.update(_db.emails)..where((e) => e.id.equals(oldId))).write(
           EmailsCompanion(id: Value(newId), mailboxId: mailboxId == null ? const Value.absent() : Value(mailboxId)),
         );
@@ -1765,6 +1765,35 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
 
   /// Takes every decrypted text out of the search index. Returns how many.
   Future<int> deleteDecryptedTexts() => _db.customUpdate('DELETE FROM decrypted_texts');
+
+  // Calendar invitations ----------------------------------------------------
+
+  /// The record of the invitation [uid] (and [recurrenceId]), as the app
+  /// wrote it; see `CalendarRecords`.
+  Future<String?> calendarRecord(String uid, {String recurrenceId = ''}) async {
+    final rows = await _db
+        .customSelect(
+          'SELECT data FROM calendar_records WHERE uid = ?1 AND recurrence_id = ?2',
+          variables: [Variable.withString(uid), Variable.withString(recurrenceId)],
+        )
+        .get();
+    return rows.firstOrNull?.read<String>('data');
+  }
+
+  /// Saves [data] as the record of [uid] (and [recurrenceId]); null deletes it.
+  Future<void> putCalendarRecord(String uid, String? data, {String recurrenceId = '', DateTime? now}) {
+    if (data == null) {
+      return _db.customStatement('DELETE FROM calendar_records WHERE uid = ?1 AND recurrence_id = ?2', [
+        uid,
+        recurrenceId,
+      ]);
+    }
+    return _db.customStatement(
+      'INSERT INTO calendar_records (uid, recurrence_id, data, updated_at) VALUES (?1, ?2, ?3, ?4) '
+      'ON CONFLICT (uid, recurrence_id) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at',
+      [uid, recurrenceId, data, (now ?? DateTime.now()).millisecondsSinceEpoch],
+    );
+  }
 
   // Content -----------------------------------------------------------------
 

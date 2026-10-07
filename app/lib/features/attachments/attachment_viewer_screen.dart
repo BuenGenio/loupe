@@ -320,10 +320,10 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
       AttachmentKind.image => _ImageBody(bytes: bytes, onOpenGallery: _openGallery),
       AttachmentKind.pdf => _pdf(context, bytes),
       AttachmentKind.csv when text?.table != null && !_alternate => CsvTableView(data: text!.table!),
-      AttachmentKind.calendar when text != null && text.events.isNotEmpty => Column(
+      AttachmentKind.calendar when text != null && text.calendar?.primary != null => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          EventSummaryCard(events: text.events),
+          EventSummaryCard(calendar: text.calendar!),
           Expanded(child: _monospace(text)),
         ],
       ),

@@ -174,6 +174,10 @@ final class FakeServer {
   /// The next SMTP send is accepted, but its reply never arrives.
   bool smtpLoseReply = false;
 
+  /// Sending files the copy marked for Sent there itself, as JMAP's
+  /// EmailSubmission does (`SendReceipt.filed`).
+  bool filesSentCopies = false;
+
   /// The OAuth access token the server takes; null takes any. Like IMAP
   /// with XOAUTH2, a rejected token is retried once with a forced refresh.
   String? accessToken;
@@ -806,6 +810,7 @@ final class FakeComposer implements AsyncMessageComposer {
           'subject': message.subject,
           'text': message.text,
           'inReplyTo': message.inReplyTo,
+          if (message.calendar case final c?) 'calendar': {'method': c.method, 'data': c.data},
           'date': (date ?? DateTime(2026)).millisecondsSinceEpoch,
         }),
       ),
@@ -818,7 +823,12 @@ final class FakeSender implements MailSender {
   final FakeServer server;
 
   @override
-  Future<SendReceipt> send(Uint8List rfc822, {required String envelopeFrom, required List<String> recipients}) async {
+  Future<SendReceipt> send(
+    Uint8List rfc822, {
+    required String envelopeFrom,
+    required List<String> recipients,
+    bool fileInSent = false,
+  }) async {
     server.smtpAttempts++;
     if (server.latency > Duration.zero) await Future<void>.delayed(server.latency);
     if (server.offline) throw const MailException(MailErrorKind.connection, 'Server unreachable');
@@ -843,6 +853,25 @@ final class FakeSender implements MailSender {
     if (server.smtpLoseReply) {
       server.smtpLoseReply = false;
       throw const MailException(MailErrorKind.connection, 'Lost the connection');
+    }
+    final sent = server.mailboxes.values.where((b) => b.role == MailboxRole.sent).firstOrNull;
+    if (fileInSent && server.filesSentCopies && sent != null) {
+      final j = (jsonDecode(utf8.decode(rfc822)) as Map).cast<String, Object?>();
+      server._add(
+        sent,
+        FakeMessage(
+          uid: sent.uidNext++,
+          subject: j['subject']! as String,
+          from: EmailAddress(j['from']! as String),
+          to: [for (final t in j['to']! as List<Object?>) EmailAddress(t! as String)],
+          messageId: j['messageId'] as String?,
+          text: j['text']! as String,
+          keywords: const {Keywords.seen},
+          receivedAt: DateTime.fromMillisecondsSinceEpoch(j['date']! as int),
+          raw: rfc822,
+        ),
+      );
+      return SendReceipt(refused: refused, filed: true);
     }
     return SendReceipt(refused: refused);
   }

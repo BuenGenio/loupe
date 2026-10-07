@@ -20,8 +20,15 @@ final class ImapSmtpSender implements MailSender {
   final MailAccount account;
   final CredentialsCallback _credentials;
 
+  /// SMTP never files the message: [fileInSent] is ignored and the caller
+  /// appends the Sent copy.
   @override
-  Future<SendReceipt> send(Uint8List rfc822, {required String envelopeFrom, required List<String> recipients}) async {
+  Future<SendReceipt> send(
+    Uint8List rfc822, {
+    required String envelopeFrom,
+    required List<String> recipients,
+    bool fileInSent = false,
+  }) async {
     final server = account.outgoing;
     if (server == null || server.protocol != ServerProtocol.smtp) {
       throw const PermanentMailException(MailErrorKind.unsupported, 'This account has no outgoing (SMTP) server.');

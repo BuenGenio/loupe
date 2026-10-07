@@ -32,6 +32,13 @@ Example: a message to wake on 23 May 2025 at 18:00 UTC carries `$snoozed-2913372
   time first), and SHOULD keep its messages out of unified views such as Unread, Flagged and VIP. Loupe does
   both; its Snoozed mailbox spans all accounts.
 
+### Over JMAP
+
+The convention carries over to JMAP (RFC 8621) unchanged: `Snoozed` is a top-level mailbox of that name (created
+with `Mailbox/set`; `alreadyExists` means another client was faster), the wake time is the same keyword in the
+email's `keywords`, and moving is a `mailboxIds` patch (`mailboxIds/<Snoozed id>: true`, `mailboxIds/<source>: null`).
+An email that is in other mailboxes too keeps those. Loupe does it this way for JMAP accounts.
+
 ## The wake-time keyword
 
 ```

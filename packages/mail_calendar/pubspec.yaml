@@ -1,0 +1,12 @@
+name: mail_calendar
+description: "Calendar invitations for Loupe: iCalendar (RFC 5545) reading and writing, time zones, recurrences and iMIP replies."
+publish_to: none
+version: 0.1.0
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  # BSD-3 (the Dart team's labs); the IANA time zone database, compiled in.
+  timezone: ^0.11.1
+dev_dependencies:
+  test: any

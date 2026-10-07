@@ -9,11 +9,13 @@ workspace:
   - packages/expr_search
   - packages/readable
   - packages/mail_imap
+  - packages/mail_jmap
   - packages/mail_store
   - packages/mail_sync
   - packages/mail_sieve
   - packages/mail_platform
   - packages/mail_crypto
+  - packages/mail_calendar
 dev_dependencies:
   flutter_lints: ^6.0.0
 

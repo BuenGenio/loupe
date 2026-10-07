@@ -258,10 +258,12 @@ void main() {
         sourceEmailId: 'm1',
         draftId: 'd1',
         security: const OutgoingSecurity(encrypt: true, sign: true),
+        calendar: const OutgoingCalendar(method: 'REPLY', data: 'BEGIN:VCALENDAR\r\nEND:VCALENDAR\r\n'),
       );
       final back = ComposeRecord.decode(
         ComposeRecord(session: 's', message: message, savedAt: at, sendAt: at).encode(),
       )!;
+      expect(back.message.calendar, message.calendar);
       expect(back.message.to.single, bob);
       expect(back.message.cc.single.email, 'carol@example.org');
       expect(back.message.attachments.single.data, [1, 2, 3]);

@@ -70,6 +70,7 @@ final class ComposeRecord {
         'sourceEmailId': message.sourceEmailId,
         'draftId': message.draftId,
         if (!message.security.isPlain) 'security': message.security.toJson(),
+        if (message.calendar != null) 'calendar': message.calendar!.toJson(),
       },
     });
   }
@@ -112,6 +113,7 @@ final class ComposeRecord {
           sourceEmailId: m['sourceEmailId'] as String?,
           draftId: m['draftId'] as String?,
           security: OutgoingSecurity.fromJson((m['security'] as Map?)?.cast()),
+          calendar: OutgoingCalendar.fromJson(m['calendar']),
         ),
       );
     } on Object {

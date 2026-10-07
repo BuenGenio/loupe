@@ -206,6 +206,20 @@ void main() {
     expect(icloud.authKind, AuthKind.password);
     expect(icloud.notes, contains('app-specific password'));
     expect((await repo.discover('a@nowhere.invalid')).incoming, isNull);
+    final jmap = await repo.discover('a@stalwart.example');
+    expect(jmap.incoming!.protocol, ServerProtocol.jmap);
+    expect(jmap.outgoing, isNull);
+    final account = await repo.addAccount(
+      AccountSetup(
+        email: 'a@stalwart.example',
+        displayName: 'Home',
+        provider: ProviderKind.generic,
+        incoming: jmap.incoming!,
+        credentials: const PasswordCredentials('secret'),
+      ),
+    );
+    expect(account.incoming.protocol, ServerProtocol.jmap);
+    expect(account.outgoing, isNull);
   });
 
   test('addAccount adds folders; a wrong password fails', () async {

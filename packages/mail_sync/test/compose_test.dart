@@ -78,6 +78,49 @@ void main() {
       });
     });
 
+    test('an invitation reply goes out with its calendar part, also after the Outbox kept it', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer();
+        final a = await h.add(server);
+        const calendar = OutgoingCalendar(
+          method: 'REPLY',
+          data: 'BEGIN:VCALENDAR\r\nMETHOD:REPLY\r\nEND:VCALENDAR\r\n',
+        );
+        await h.repo.send(
+          OutgoingMessage(
+            accountId: a.id,
+            identityId: a.defaultIdentity.id,
+            to: const [EmailAddress('organizer@example.org')],
+            subject: 'Accepted: Planning',
+            text: 'Me has accepted: Planning',
+            calendar: calendar,
+          ),
+          undoDelay: const Duration(seconds: 10),
+        );
+        expect((await h.repo.watchOutbox().first).single.message.calendar, calendar);
+        await settle(const Duration(seconds: 12));
+        expect(server.sent.single.json['calendar'], {'method': 'REPLY', 'data': calendar.data});
+        expect(server.sent.single.recipients, ['organizer@example.org']);
+        await h.dispose();
+      });
+    });
+
+    test('calendar records are kept in the store', () {
+      fakeTime((async) async {
+        final h = Harness();
+        expect(h.repo, isA<CalendarRecords>());
+        expect(await h.repo.readCalendarRecord('u1'), isNull);
+        await h.repo.writeCalendarRecord('u1', '{"latest":{"seq":0}}');
+        await h.repo.writeCalendarRecord('u1', '{"x":1}', recurrenceId: '20261008');
+        expect(await h.repo.readCalendarRecord('u1'), '{"latest":{"seq":0}}');
+        expect(await h.repo.readCalendarRecord('u1', recurrenceId: '20261008'), '{"x":1}');
+        await h.repo.writeCalendarRecord('u1', null);
+        expect(await h.repo.readCalendarRecord('u1'), isNull);
+        await h.dispose();
+      });
+    });
+
     group('encrypted with Bcc', () {
       OutgoingMessage secret(MailAccount a) => OutgoingMessage(
         accountId: a.id,
@@ -176,6 +219,22 @@ void main() {
         await settle();
         expect(server.sent, hasLength(1));
         expect(server.log.where((l) => l.startsWith('append')), isEmpty);
+        await h.dispose();
+      });
+    });
+
+    test('a server that files the sent copy as it sends (JMAP) gets no second copy', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer()..filesSentCopies = true;
+        final a = await h.add(server);
+        await h.repo.send(outgoing(a), undoDelay: Duration.zero);
+        await settle();
+        expect(server.sent, hasLength(1));
+        expect(server.log.where((l) => l.startsWith('append')), isEmpty);
+        expect(server.box('Sent').messages, hasLength(1));
+        final sent = (await h.store.mailboxByRole(a.id, MailboxRole.sent))!;
+        expect(await h.store.emailIdsIn(sent.id), hasLength(1));
         await h.dispose();
       });
     });

@@ -6,7 +6,7 @@ add-on Expression Search Reloaded.
 
 ## Where the document lives
 
-Each IMAP account holds one document.
+Each IMAP or JMAP account holds one document.
 
 1. **IMAP METADATA (RFC 5464), preferred.** It is the private server annotation `/private/vendor/loupe/smart-mailboxes`
    on the empty mailbox name `""`:
@@ -45,6 +45,9 @@ Each IMAP account holds one document.
    read the body as UTF-8 JSON. Writers APPEND a new message (flagged `\Seen`) first, then delete the copies they
    merged into it. They never delete copies they haven't read: two devices writing at the same moment leave two
    messages, and the next reader merges them.
+
+JMAP accounts have no METADATA: they use the `Loupe Settings` mailbox (a top-level mailbox of that name, created
+unsubscribed), with the same messages. An account used over IMAP and JMAP sees one set of copies.
 
 Gmail can't keep the document: it has no METADATA, and deleting a message from a Gmail label leaves it in All Mail,
 so every folder copy would pile up there. Gmail accounts keep their Smart Mailboxes on the device.
@@ -96,7 +99,7 @@ folder and clears the annotation (`SETMETADATA "" (/private/vendor/loupe/smart-m
 | Scope | Searches |
 |---|---|
 | `null` or absent | Every mailbox of every account |
-| `{"mailbox": "<path>"}` | One folder of the account whose server holds this document. The path is the decoded server path with the server's hierarchy delimiter, such as `INBOX/Receipts` or `INBOX.Receipts`. |
+| `{"mailbox": "<path>"}` | One folder of the account whose server holds this document. The path is the decoded server path with the server's hierarchy delimiter, such as `INBOX/Receipts` or `INBOX.Receipts`; on JMAP accounts, the mailbox's name and its parents' names joined with `/`, such as `Inbox/Receipts`. |
 | `{"virtual": "<kind>"}` | A unified mailbox: `allInboxes`, `unread`, `flagged`, `vip`, `allDrafts` or `allSent` |
 
 Entries a reader can't parse (no `id`, no valid `modifiedAt`) are kept as they are when the document is rewritten.

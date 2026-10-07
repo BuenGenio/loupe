@@ -7,6 +7,7 @@ library;
 export 'src/account.dart';
 export 'src/address.dart';
 export 'src/bulk_names.dart';
+export 'src/calendar_records.dart';
 export 'src/decrypted.dart';
 export 'src/email.dart';
 export 'src/ids.dart';
