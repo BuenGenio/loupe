@@ -1,24 +1,44 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
+import 'package:mail_calendar/mail_calendar.dart';
 
 import '../../../theme/loupe_icons.dart';
 import '../../../theme/theme.dart';
+import '../../calendar/invitation_format.dart';
+import '../../compose/send_later.dart' show deviceDateLocale;
 import '../../conversation/sheets.dart' show subtleFill;
-import '../ics.dart';
 
-/// A calendar file's first event in plain words: title, when, where and
-/// who organizes it. Shown above the file's text.
+/// A calendar file's first event in plain words: title, when (in local
+/// time, and in the event's zone when it differs), how often, where and who
+/// organizes it. Shown above the file's text.
 class EventSummaryCard extends StatelessWidget {
-  const EventSummaryCard({super.key, required this.events});
+  const EventSummaryCard({super.key, required this.calendar, this.deviceZone});
 
-  final List<IcsEvent> events;
+  final Calendar calendar;
+
+  /// The device's zone; null is the system's.
+  final Zone? deviceZone;
 
   @override
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
     final theme = Theme.of(context);
-    final e = events.first;
-    final when = describeIcsTime(e);
+    final e = calendar.primary!;
+    final format = EventTimeFormat(
+      locale: deviceDateLocale(),
+      use24h: MediaQuery.alwaysUse24HourFormatOf(context),
+      deviceZone: deviceZone,
+      now: clock.now(),
+    );
+    final span = eventSpan(e, calendar.zones);
+    final when = span == null ? null : format.when(span);
+    final rule = e.rule;
+    final recurrence = rule == null || e.start == null
+        ? null
+        : describeRule(rule, start: e.start!, zones: calendar.zones, formatDate: format.date);
+    final cancelled = calendar.method == ItipMethod.cancel || e.status == EventStatus.cancelled;
+    final more = calendar.eventCount - 1;
 
     Widget line(IconData icon, String text) => Padding(
       padding: const EdgeInsets.only(top: 8),
@@ -53,19 +73,20 @@ class EventSummaryCard extends StatelessWidget {
                 ),
               ],
             ),
-            if (e.cancelled)
+            if (cancelled)
               Padding(
                 padding: const EdgeInsets.only(top: 6),
                 child: Text('Cancelled', style: styles.footnote.copyWith(color: colors.destructive)),
               ),
-            if (when.isNotEmpty) line(LoupeIcons.time, when),
+            if (when != null) line(LoupeIcons.time, when.time == null ? when.day : '${when.day}\n${when.time}'),
+            if (recurrence != null) line(LoupeIcons.recurring, recurrence),
             if (e.location != null) line(LoupeIcons.location, e.location!),
-            if (e.organizer != null) line(LoupeIcons.person, 'Organizer: ${e.organizer}'),
-            if (events.length > 1)
+            if (e.organizer case final organizer?) line(LoupeIcons.person, 'Organizer: ${organizer.displayName}'),
+            if (more > 0)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
-                  events.length == 2 ? 'And 1 more event' : 'And ${events.length - 1} more events',
+                  more == 1 ? 'And 1 more event' : 'And $more more events',
                   style: styles.footnote.copyWith(color: colors.secondaryText),
                 ),
               ),

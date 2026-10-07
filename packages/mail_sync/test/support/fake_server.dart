@@ -810,6 +810,7 @@ final class FakeComposer implements AsyncMessageComposer {
           'subject': message.subject,
           'text': message.text,
           'inReplyTo': message.inReplyTo,
+          if (message.calendar case final c?) 'calendar': {'method': c.method, 'data': c.data},
           'date': (date ?? DateTime(2026)).millisecondsSinceEpoch,
         }),
       ),

@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:loupe/features/attachments/attachment_type.dart';
 import 'package:loupe/features/attachments/csv.dart';
-import 'package:loupe/features/attachments/ics.dart';
+import 'package:loupe/features/attachments/prepared_text.dart';
 import 'package:loupe/features/attachments/text_decoding.dart';
+import 'package:loupe/features/calendar/invitation_format.dart';
+import 'package:mail_calendar/mail_calendar.dart';
 
 void main() {
   group('decodeAttachmentText', () {
@@ -87,71 +90,68 @@ void main() {
     });
   });
 
-  group('parseIcsEvents', () {
+  group('calendar files', () {
     test('reads title, place, organizer and times, unfolding and unescaping', () {
-      final events = parseIcsEvents(
-        'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nMETHOD:REQUEST\r\nBEGIN:VEVENT\r\n'
-        'SUMMARY:Design review\\, round 2\r\n'
-        'DTSTART;TZID=Europe/Berlin:20261006T140000\r\n'
-        'DTEND;TZID=Europe/Berlin:20261006T153000\r\n'
-        'LOCATION:Lighthouse\\; 3rd floor\\nBuilding A\r\n'
-        'ORGANIZER;CN="Okafor, Dana":mailto:dana@example.com\r\n'
-        'DESCRIPTION:A long description that is folded\r\n  over two lines\r\n'
-        'BEGIN:VALARM\r\nSUMMARY:Alarm summary\r\nLOCATION:Nowhere\r\nEND:VALARM\r\n'
-        'END:VEVENT\r\nEND:VCALENDAR\r\n',
+      final text = prepareText(
+        AttachmentKind.calendar,
+        Uint8List.fromList(
+          utf8.encode(
+            'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nMETHOD:REQUEST\r\nBEGIN:VEVENT\r\n'
+            'SUMMARY:Design review\\, round 2\r\n'
+            'DTSTART;TZID=Europe/Berlin:20261006T140000\r\n'
+            'DTEND;TZID=Europe/Berlin:20261006T153000\r\n'
+            'LOCATION:Lighthouse\\; 3rd floor\\nBuilding A\r\n'
+            'ORGANIZER;CN="Okafor, Dana":mailto:dana@example.com\r\n'
+            'DESCRIPTION:A long description that is folded\r\n  over two lines\r\n'
+            'BEGIN:VALARM\r\nSUMMARY:Alarm summary\r\nLOCATION:Nowhere\r\nEND:VALARM\r\n'
+            'END:VEVENT\r\nEND:VCALENDAR\r\n',
+          ),
+        ),
       );
-      expect(events, hasLength(1));
-      final e = events.single;
+      final calendar = text.calendar!;
+      final e = calendar.primary!;
+      expect(calendar.events, hasLength(1));
       expect(e.summary, 'Design review, round 2');
       expect(e.location, 'Lighthouse; 3rd floor\nBuilding A');
-      expect(e.organizer, 'Okafor, Dana');
-      expect(e.start, DateTime(2026, 10, 6, 14));
-      expect(e.end, DateTime(2026, 10, 6, 15, 30));
-      expect(e.timeZone, 'Europe/Berlin');
-      expect(e.utc, isFalse);
-      expect(e.allDay, isFalse);
-      expect(e.cancelled, isFalse);
+      expect(e.organizer!.displayName, 'Okafor, Dana');
+      expect(e.description, 'A long description that is folded over two lines');
+      final span = eventSpan(e, calendar.zones)!;
+      expect(span.start, DateTime.utc(2026, 10, 6, 12));
+      expect(span.end, DateTime.utc(2026, 10, 6, 13, 30));
+      expect(span.zone!.ianaName, 'Europe/Berlin');
+      expect(span.allDay, isFalse);
     });
 
-    test('UTC times, durations, all-day events and cancellations', () {
-      final events = parseIcsEvents(
-        'BEGIN:VCALENDAR\nMETHOD:CANCEL\n'
-        'BEGIN:VEVENT\nSUMMARY:Call\nDTSTART:20261006T120000Z\nDURATION:PT45M\n'
-        'ORGANIZER:mailto:ops@example.com\nEND:VEVENT\n'
-        'BEGIN:VEVENT\nSUMMARY:Offsite\nDTSTART;VALUE=DATE:20261012\nDTEND;VALUE=DATE:20261014\nEND:VEVENT\n'
-        'END:VCALENDAR\n',
+    test('not a calendar', () {
+      expect(prepareText(AttachmentKind.calendar, Uint8List.fromList(utf8.encode('not a calendar'))).calendar, isNull);
+      expect(
+        prepareText(AttachmentKind.text, Uint8List.fromList(utf8.encode('BEGIN:VEVENT\nEND:VEVENT'))).calendar,
+        isNull,
       );
-      expect(events, hasLength(2));
-      expect(events[0].start, DateTime.utc(2026, 10, 6, 12));
-      expect(events[0].utc, isTrue);
-      expect(events[0].end, DateTime.utc(2026, 10, 6, 12, 45));
-      expect(events[0].organizer, 'ops@example.com');
-      expect(events[0].cancelled, isTrue);
-      expect(events[1].allDay, isTrue);
-      expect(events[1].start, DateTime(2026, 10, 12));
-      expect(events[1].end, DateTime(2026, 10, 14));
     });
 
-    test('a cancelled event and nothing at all', () {
-      expect(parseIcsEvents('BEGIN:VEVENT\nSTATUS:CANCELLED\nEND:VEVENT').single.cancelled, isTrue);
-      expect(parseIcsEvents('not a calendar'), isEmpty);
-    });
-
-    test('describes the time in words', () {
+    test('describes the time in words, in the device zone and the event\'s', () {
       // intl puts a narrow no-break space before AM/PM.
-      String describe(IcsEvent e) => describeIcsTime(e).replaceAll(RegExp('[\u202F\u00A0]'), ' ');
-      final timed = parseIcsEvents(
-        'BEGIN:VEVENT\nDTSTART;TZID=Europe/Berlin:20261006T140000\nDTEND;TZID=Europe/Berlin:20261006T150000\n'
-        'END:VEVENT',
-      ).single;
-      expect(describe(timed), 'Tue, Oct 6, 2026, 2:00 PM – 3:00 PM (Europe/Berlin)');
-      final floating = parseIcsEvents('BEGIN:VEVENT\nDTSTART:20261006T090000\nEND:VEVENT').single;
-      expect(describe(floating), 'Tue, Oct 6, 2026, 9:00 AM');
-      final day = parseIcsEvents('BEGIN:VEVENT\nDTSTART;VALUE=DATE:20261006\nEND:VEVENT').single;
-      expect(describe(day), 'Tue, Oct 6, 2026 (all day)');
-      final days = parseIcsEvents('BEGIN:VEVENT\nDTSTART;VALUE=DATE:20261012\nDTEND;VALUE=DATE:20261014\nEND:VEVENT')
-          .single;
-      expect(describe(days), 'Mon, Oct 12, 2026 – Tue, Oct 13, 2026');
+      final london = IanaZone.named('Europe/London')!;
+      final format = EventTimeFormat(deviceZone: london, now: DateTime.utc(2026, 10, 1));
+      String describe(String props) {
+        final c = Calendar.parse('BEGIN:VEVENT\n$props\nEND:VEVENT')!;
+        final w = format.when(eventSpan(c.primary!, c.zones)!);
+        return '${w.day} | ${w.time}'.replaceAll(RegExp('[\u202F\u00A0]'), ' ');
+      }
+
+      expect(
+        describe('DTSTART;TZID=Europe/Berlin:20261006T140000\nDTEND;TZID=Europe/Berlin:20261006T150000'),
+        'Tuesday, October 6 | 2:00 PM–3:00 PM Berlin · 1:00 PM–2:00 PM your time',
+      );
+      expect(
+        describe('DTSTART;TZID=Europe/London:20261006T140000\nDTEND;TZID=Europe/London:20261006T150000'),
+        'Tuesday, October 6 | 2:00 PM–3:00 PM',
+      );
+      expect(describe('DTSTART:20261006T090000'), 'Tuesday, October 6 | 9:00 AM');
+      expect(describe('DTSTART;VALUE=DATE:20261006'), 'Tuesday, October 6 | All day');
+      expect(describe('DTSTART;VALUE=DATE:20261012\nDTEND;VALUE=DATE:20261014'), 'Mon, Oct 12 – Tue, Oct 13 | All day');
+      expect(describe('DTSTART;VALUE=DATE:20270105'), 'Tuesday, January 5, 2027 | All day');
     });
   });
 }

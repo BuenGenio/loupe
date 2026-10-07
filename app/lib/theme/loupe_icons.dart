@@ -282,4 +282,18 @@ abstract final class LoupeIcons {
   static const IconData location = FluentIcons.location_24_regular;
   static const IconData mobileData = FluentIcons.cellular_data_1_24_regular;
   static const IconData fileError = FluentIcons.document_error_24_regular;
+
+  // Calendar invitations ------------------------------------------------------
+
+  static const IconData recurring = FluentIcons.arrow_repeat_all_24_regular;
+  static const IconData meeting = FluentIcons.video_24_regular;
+  static const IconData map = FluentIcons.map_24_regular;
+  static const IconData addToCalendar = FluentIcons.calendar_add_24_regular;
+  static const IconData eventCancelled = FluentIcons.calendar_cancel_24_regular;
+  static const IconData eventUpdated = FluentIcons.calendar_arrow_counterclockwise_24_regular;
+  static const IconData comment = FluentIcons.comment_24_regular;
+  static const IconData accepted = FluentIcons.checkmark_circle_24_regular;
+  static const IconData declined = FluentIcons.dismiss_circle_24_regular;
+  static const IconData tentative = FluentIcons.question_circle_24_regular;
+  static const IconData awaitingReply = FluentIcons.circle_24_regular;
 }

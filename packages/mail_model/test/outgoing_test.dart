@@ -38,6 +38,26 @@ void main() {
     expect(const OutgoingMessage(accountId: 'a', identityId: 'a/me').security, OutgoingSecurity.none);
   });
 
+  test('OutgoingMessage keeps its calendar part through copyWith, withoutDraft and deliveries', () {
+    const calendar = OutgoingCalendar(method: 'REPLY', data: 'BEGIN:VCALENDAR\r\nEND:VCALENDAR\r\n');
+    const m = OutgoingMessage(
+      accountId: 'a',
+      identityId: 'a/me',
+      draftId: 'd',
+      to: [EmailAddress('organizer@example.com')],
+      bcc: [EmailAddress('me@example.com')],
+      calendar: calendar,
+      security: OutgoingSecurity(encrypt: true, sign: true),
+    );
+    expect(m.copyWith(security: OutgoingSecurity.none).calendar, calendar);
+    expect(m.withoutDraft().calendar, calendar);
+    expect(m.deliveries(sender: 'me@example.com').map((d) => d.message.calendar), everyElement(calendar));
+    expect(OutgoingCalendar.fromJson(calendar.toJson()), calendar);
+    expect(OutgoingCalendar.fromJson({'method': 'REPLY'}), isNull);
+    expect(OutgoingCalendar.fromJson(null), isNull);
+    expect(const OutgoingMessage(accountId: 'a', identityId: 'a/me').calendar, isNull);
+  });
+
   group('deliveries', () {
     const me = 'me@example.org';
     const to = EmailAddress('to@example.org');

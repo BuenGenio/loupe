@@ -198,8 +198,12 @@ bool _isPlumbing(BodyNode n) =>
     n.mimeType == 'application/pkcs7-signature' ||
     n.mimeType == 'application/x-pkcs7-signature' ||
     n.mimeType == 'application/pgp-keys' && n.filename == null ||
-    n.mimeType == 'application/ms-tnef' ||
-    n.mimeType == 'text/calendar' && n.filename == null && n.disposition != 'attachment';
+    n.mimeType == 'application/ms-tnef';
+
+/// An invitation's `text/calendar` alternative (iMIP): listed with the
+/// attachments, for the app's invitation card, but not a file anyone
+/// attached (no paperclip).
+bool isCalendarAlternative(Attachment a) => a.mimeType.toLowerCase() == 'text/calendar' && a.filename == null;
 
 /// Whether a leaf is a body text candidate (inline text without a file name).
 bool _isBodyText(BodyNode n) =>
@@ -341,4 +345,5 @@ bool isEncryptedStructure(BodyNode root) {
 
 /// Whether the list should show a paperclip: any attachment the user would
 /// see (inline images referenced from HTML don't count).
-bool hasVisibleAttachment(BodyNode root) => listAttachments(root).any((a) => !a.isInline || a.contentId == null);
+bool hasVisibleAttachment(BodyNode root) =>
+    listAttachments(root).any((a) => (!a.isInline || a.contentId == null) && !isCalendarAlternative(a));

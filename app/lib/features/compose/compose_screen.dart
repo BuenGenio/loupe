@@ -105,6 +105,10 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
   String? _inReplyTo;
   List<String> _references = const [];
 
+  /// The calendar part of a message brought back (an invitation reply taken
+  /// out of the Outbox): it goes out again with the text.
+  OutgoingCalendar? _calendar;
+
   /// When to send ("Send Later"); null sends now (after the undo delay).
   DateTime? _sendAt;
 
@@ -434,6 +438,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     _draftId = m.draftId;
     _inReplyTo = m.inReplyTo;
     _references = m.references;
+    _calendar = m.calendar;
     _security.restore(m.security);
   }
 
@@ -745,6 +750,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
       sourceEmailId: _sourceEmailId,
       draftId: _draftId,
       security: _security.value,
+      calendar: _calendar,
     );
   }
 

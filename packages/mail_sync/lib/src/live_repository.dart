@@ -20,7 +20,7 @@ import 'util.dart';
 /// background and [resume] when it returns; [syncOnce] serves background
 /// fetch tasks. [dispose] stops everything but leaves the store open.
 final class LiveMailRepository
-    implements MailRepository, MailingLists, MailSubscriptions, SignInRenewal, DecryptedMail {
+    implements MailRepository, MailingLists, MailSubscriptions, SignInRenewal, DecryptedMail, CalendarRecords {
   LiveMailRepository(
     this.store,
     this.transports,
@@ -549,6 +549,16 @@ final class LiveMailRepository
 
   @override
   Future<void> forgetDecryptedText() => store.deleteDecryptedTexts();
+
+  // Calendar invitations ----------------------------------------------------
+
+  @override
+  Future<String?> readCalendarRecord(String uid, {String recurrenceId = ''}) =>
+      store.calendarRecord(uid, recurrenceId: recurrenceId);
+
+  @override
+  Future<void> writeCalendarRecord(String uid, String? data, {String recurrenceId = ''}) =>
+      store.putCalendarRecord(uid, data, recurrenceId: recurrenceId, now: _now());
 
   // Actions -----------------------------------------------------------------
 

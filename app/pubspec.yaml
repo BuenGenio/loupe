@@ -19,6 +19,7 @@ dependencies:
   mail_sieve: {path: ../packages/mail_sieve}
   mail_platform: {path: ../packages/mail_platform}
   mail_crypto: {path: ../packages/mail_crypto}
+  mail_calendar: {path: ../packages/mail_calendar}
   flutter_riverpod: ^3.4.3
   go_router: ^18.0.2
   shared_preferences: ^2.5.5
@@ -56,6 +57,10 @@ dependencies:
   camera: ^0.12.1
   # MIT; opens Loupe's page in the system settings when the camera is off.
   app_settings: ^9.0.0
+  # MIT, maintained (3.1.1, June 2026); "Add to Calendar": Android's calendar insert intent
+  # (ACTION_INSERT with CalendarContract extras, no calendar permission) and iOS's EventKit
+  # add-event sheet (no access asked on iOS 17 and later).
+  add_2_calendar: ^3.1.1
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:

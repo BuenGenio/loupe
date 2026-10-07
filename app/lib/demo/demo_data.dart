@@ -5,6 +5,7 @@ import 'package:mail_model/mail_model.dart';
 
 import 'demo_attachments.dart';
 import 'demo_bodies.dart';
+import 'demo_calendar.dart';
 import 'demo_mime.dart';
 import 'demo_openpgp.dart';
 import 'demo_patches.dart';
@@ -164,6 +165,7 @@ final class DemoSeed {
     _deals();
     openPgpCases();
     _espNewsletters();
+    calendarCases();
   }
 
   void _accounts() {
@@ -428,11 +430,6 @@ final class DemoSeed {
       isInline: true,
     ),
     asset: asset,
-  );
-
-  static DemoAttachment calendarInvite(String partId, String summary, DateTime start) => DemoAttachment(
-    Attachment(partId: partId, mimeType: 'text/calendar', filename: 'invite.ics', size: 1240),
-    generate: () => calendarFile(summary, start),
   );
 
   static DemoAttachment document(String partId, String name, String mime, int size) => DemoAttachment(
@@ -891,18 +888,6 @@ final class DemoSeed {
       unread: true,
     );
 
-    add(
-      account: a,
-      box: inbox,
-      at: at(0, 9, 12),
-      from: DemoPeople.calendar,
-      subject: 'Invitation: Atlas design review @ Thursday 14:00 – 15:00',
-      text:
-          'Dana Okafor has invited you to Atlas design review.\n\nThursday 14:00 – 15:00\nRoom: Lighthouse (3rd floor) '
-          'and online\n\nAccept · Tentative · Decline',
-      unread: true,
-      attachments: [calendarInvite('2', 'Atlas design review', DateTime(now.year, now.month, now.day + 2, 14))],
-    );
     add(
       account: a,
       box: inbox,

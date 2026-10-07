@@ -126,7 +126,7 @@ void main() {
     expect(find.descendant(of: card, matching: find.text('Atlas design review')), findsOneWidget);
     expect(find.descendant(of: card, matching: find.text('Lighthouse (3rd floor)')), findsOneWidget);
     expect(find.descendant(of: card, matching: find.text('Organizer: Dana Okafor')), findsOneWidget);
-    expect(find.descendant(of: card, matching: find.textContaining('Oct 6, 2026')), findsOneWidget);
+    expect(find.descendant(of: card, matching: find.textContaining('October 6')), findsOneWidget);
     expect(find.text('SUMMARY:Atlas design review'), findsOneWidget);
     expect(_subtitle(tester), startsWith('Calendar Event'));
   });

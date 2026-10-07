@@ -162,6 +162,7 @@ String encodeOutgoing(OutgoingMessage m) => jsonEncode({
   'sourceEmailId': m.sourceEmailId,
   'draftId': m.draftId,
   if (!m.security.isPlain || m.security.draft) 'security': m.security.toJson(),
+  if (m.calendar != null) 'calendar': m.calendar!.toJson(),
 });
 
 OutgoingMessage decodeOutgoing(String json) {
@@ -190,6 +191,7 @@ OutgoingMessage decodeOutgoing(String json) {
     sourceEmailId: j['sourceEmailId'] as String?,
     draftId: j['draftId'] as String?,
     security: OutgoingSecurity.fromJson((j['security'] as Map?)?.cast()),
+    calendar: OutgoingCalendar.fromJson(j['calendar']),
   );
 }
 

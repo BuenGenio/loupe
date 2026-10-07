@@ -6,6 +6,7 @@ import 'package:expr_search/expr_search.dart';
 import 'package:flutter/services.dart';
 import 'package:mail_model/mail_model.dart';
 
+import 'demo_calendar.dart';
 import 'demo_data.dart';
 import 'demo_mime.dart';
 import 'demo_openpgp.dart';
@@ -73,7 +74,7 @@ final class _Queued {
 ///   [SearchResults.fromServerIds]); acting on such a message syncs it.
 /// - Sending to an address at a `.invalid` domain fails, so the Outbox
 ///   shows a failed message with an error and Retry.
-class DemoMailRepository implements MailRepository, MailingLists, MailSubscriptions, DecryptedMail {
+class DemoMailRepository implements MailRepository, MailingLists, MailSubscriptions, DecryptedMail, CalendarRecords {
   DemoMailRepository({
     this.latency = const DemoLatency(),
     DateTime Function()? clock,
@@ -103,6 +104,7 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
       }
     }
     _vips.addAll(DemoPeople.vips);
+    calendarRecords.addAll(data.seedCalendarRecords());
     _startupSync();
   }
 
@@ -131,6 +133,10 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
 
   /// Muted thread ids (local, like the live repository's).
   final _muted = <String>{};
+
+  /// What the device remembers about invitations ([CalendarRecords]), by
+  /// UID and RECURRENCE-ID.
+  final calendarRecords = <(String, String), String>{};
 
   /// Documents "on the server": account id → document name → content.
   /// Tests write here to play another device.
@@ -842,6 +848,21 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
     return content;
   }
 
+  // Calendar invitations ----------------------------------------------------
+
+  @override
+  Future<String?> readCalendarRecord(String uid, {String recurrenceId = ''}) async =>
+      calendarRecords[(uid, recurrenceId)];
+
+  @override
+  Future<void> writeCalendarRecord(String uid, String? data, {String recurrenceId = ''}) async {
+    if (data == null) {
+      calendarRecords.remove((uid, recurrenceId));
+    } else {
+      calendarRecords[(uid, recurrenceId)] = data;
+    }
+  }
+
   Future<Uint8List> _bytesOf(DemoAttachment a) async {
     if (a.generate != null) return a.generate!();
     if (a.asset != null) return _loadAsset(a.asset!);
@@ -1294,14 +1315,22 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
     String? inReplyTo,
     List<String> references = const [],
     List<OutgoingAttachment> attachments = const [],
+    OutgoingCalendar? calendar,
   }) {
     final n = _nextId++;
     final emailId = id ?? MailIds.jmapEmail(accountId, 'N$n');
+    final ics = calendar == null ? null : Uint8List.fromList(utf8.encode(calendar.data));
     final files = [
       for (final (i, a) in attachments.indexed)
         DemoAttachment(
           Attachment(partId: '${i + 2}', mimeType: a.mimeType, filename: a.filename, size: a.data.length),
           generate: () => a.data,
+        ),
+      // An invitation reply's text/calendar alternative.
+      if (ics != null)
+        DemoAttachment(
+          Attachment(partId: 'calendar', mimeType: 'text/calendar', size: ics.length),
+          generate: () => ics,
         ),
     ];
     final message = DemoMessage(
@@ -1323,7 +1352,7 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
         preview: makePreview(text),
         size: text.length + (html?.length ?? 0) + 1500 + attachments.fold(0, (s, a) => s + a.data.length),
         keywords: {if (seen) Keywords.seen, ...keywords},
-        hasAttachment: files.isNotEmpty,
+        hasAttachment: attachments.isNotEmpty,
       ),
       text: text,
       html: html,
@@ -1357,6 +1386,7 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
           ? message.references
           : [...?source?.summary.references, ?source?.summary.messageIdHeader],
       attachments: message.attachments,
+      calendar: message.calendar,
     );
   }
 

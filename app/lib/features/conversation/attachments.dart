@@ -16,6 +16,7 @@ import '../attachments/attachment_cache.dart';
 import '../attachments/attachment_gallery.dart';
 import '../attachments/attachment_icon.dart';
 import '../attachments/attachment_type.dart';
+import '../calendar/invitation.dart' show isCalendarAlternative;
 import 'sheets.dart';
 
 export '../attachments/attachment_gallery.dart' show AttachmentImage;
@@ -35,7 +36,8 @@ class AttachmentList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final items = content.visibleAttachments.toList();
+    // An invitation's text/calendar alternative is the card above the body.
+    final items = content.visibleAttachments.where((a) => !isCalendarAlternative(a)).toList();
     if (items.isEmpty) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.only(top: 12),

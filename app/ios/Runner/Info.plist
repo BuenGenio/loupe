@@ -46,6 +46,12 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Loupe adds invitations to your calendar when you tap Add to Calendar. It doesn’t read your calendar.</string>
+	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+	<string>Loupe adds invitations to your calendar when you tap Add to Calendar. It doesn’t read your calendar.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>The calendar’s new-event screen suggests places from your contacts.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Loupe uses the camera to scan the QR codes Thunderbird shows when you export accounts.</string>
 	<key>NSMicrophoneUsageDescription</key>

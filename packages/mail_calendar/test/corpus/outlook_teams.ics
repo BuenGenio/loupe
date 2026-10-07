@@ -1,0 +1,73 @@
+BEGIN:VCALENDAR
+METHOD:REQUEST
+PRODID:Microsoft Exchange Server 2010
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:Pacific Standard Time
+BEGIN:STANDARD
+DTSTART:16010101T020000
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0800
+RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=1SU;BYMONTH=11
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:16010101T020000
+TZOFFSETFROM:-0800
+TZOFFSETTO:-0700
+RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=2SU;BYMONTH=3
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VEVENT
+ORGANIZER;CN=Olivia Grant:mailto:olivia.grant@fabrikam.example
+ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=Sam Rivera:
+ mailto:sam.rivera@northwind.example
+ATTENDEE;ROLE=OPT-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN="Becker, Tom
+ ":mailto:tom.becker@example.org
+DESCRIPTION;LANGUAGE=en-US:Let's go through the phase 2 pricing.\n\n________
+ ________________________________________________________________________\n
+ Microsoft Teams meeting\nJoin on your computer\, mobile app or room device
+ \nClick here to join the meeting<https://teams.microsoft.com/l/meetup-join
+ /19%3ameeting_NjE3ZTc0@thread.v2/0?context=%7b%22Tid%22%3a%22abc%22%7d>\nM
+ eeting ID: 123 456 789 012\nPasscode: aBc123\n_______________________________
+ _________________________________________________\n
+UID:040000008200E00074C5B7101A82E00800000000A0B1C2D3E4F5A6010000000000000000
+ 1000000012345678901234567890ABCDEF
+SUMMARY;LANGUAGE=en-US:SOW phase 2 – pricing review
+DTSTART;TZID=Pacific Standard Time:20261013T090000
+DTEND;TZID=Pacific Standard Time:20261013T100000
+CLASS:PUBLIC
+PRIORITY:5
+DTSTAMP:20261005T161812Z
+TRANSP:OPAQUE
+STATUS:CONFIRMED
+SEQUENCE:0
+LOCATION;LANGUAGE=en-US:Microsoft Teams Meeting
+X-MICROSOFT-CDO-APPT-SEQUENCE:0
+X-MICROSOFT-CDO-OWNERAPPTID:-1234567890
+X-MICROSOFT-CDO-BUSYSTATUS:TENTATIVE
+X-MICROSOFT-CDO-INTENDEDSTATUS:BUSY
+X-MICROSOFT-CDO-ALLDAYEVENT:FALSE
+X-MICROSOFT-CDO-IMPORTANCE:1
+X-MICROSOFT-CDO-INSTTYPE:0
+X-MICROSOFT-SKYPETEAMSMEETINGURL:https://teams.microsoft.com/l/meetup-join/1
+ 9%3ameeting_NjE3ZTc0@thread.v2/0?context=%7b%22Tid%22%3a%22abc%22%7d
+X-MICROSOFT-SCHEDULINGSERVICEUPDATEURL:https://scheduler.teams.microsoft.com
+ /teams/abc
+X-MICROSOFT-ONLINEMEETINGCONFLINK:conf:sip:olivia.grant@fabrikam.example\;gr
+ uu\;opaque=app:conf:focus:id:teams:2:0!19:meeting_NjE3ZTc0-thread.v2
+X-MICROSOFT-DONOTFORWARDMEETING:FALSE
+X-MICROSOFT-DISALLOW-COUNTER:FALSE
+X-MICROSOFT-LOCATIONS:[ { "DisplayName" : "Microsoft Teams Meeting"\, "Locati
+ onAnnotation" : ""\, "LocationUri" : ""\, "LocationStreet" : ""\, "Locatio
+ nCity" : ""\, "LocationState" : ""\, "LocationCountry" : ""\, "LocationPos
+ talCode" : ""\, "LocationFullAddress" : "" } ]
+X-ALT-DESC;FMTTYPE=text/html:<html><body><p>Let's go through the phase 2 pri
+ cing.</p><a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_x">
+ Join</a></body></html>
+BEGIN:VALARM
+DESCRIPTION:REMINDER
+TRIGGER;RELATED=START:-PT15M
+ACTION:DISPLAY
+END:VALARM
+END:VEVENT
+END:VCALENDAR
