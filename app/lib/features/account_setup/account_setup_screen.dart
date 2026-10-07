@@ -51,6 +51,10 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
   AccountDiscovery? _discovery;
   ServerSettingsController? _incoming;
   ServerSettingsController? _outgoing;
+
+  /// The incoming settings of the other protocol (IMAP or JMAP), kept while
+  /// the user switches between them.
+  ServerSettingsController? _otherIncoming;
   bool _showSettings = false;
   bool _editSettings = false;
   bool _appPassword = false;
@@ -78,6 +82,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     }
     _incoming?.dispose();
     _outgoing?.dispose();
+    _otherIncoming?.dispose();
     super.dispose();
   }
 
@@ -120,6 +125,8 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     if (!mounted) return;
     _incoming?.dispose();
     _outgoing?.dispose();
+    _otherIncoming?.dispose();
+    _otherIncoming = null;
     final domain = _domain;
     _incoming = ServerSettingsController(
       discovery.incoming ?? ServerConfig(protocol: ServerProtocol.imap, host: 'imap.$domain', port: 993),
@@ -205,7 +212,35 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     });
   }
 
-  String _describe(MailException e) => describeSetupError(e, _provider);
+  String _describe(MailException e) => describeSetupError(e, _provider, protocol: _protocol);
+
+  ServerProtocol get _protocol => _incoming?.protocol ?? ServerProtocol.imap;
+
+  /// Switches the incoming server between IMAP and JMAP (manual settings).
+  /// JMAP starts on the IMAP server's host: Stalwart and Cyrus serve both.
+  void _switchProtocol(ServerProtocol protocol) {
+    final current = _incoming;
+    if (current == null || current.protocol == protocol) return;
+    final other = _otherIncoming;
+    final host = current.host.text.trim();
+    final next = other != null && other.protocol == protocol
+        ? other
+        : ServerSettingsController(
+            protocol == ServerProtocol.jmap
+                ? ServerConfig(
+                    protocol: ServerProtocol.jmap,
+                    host: host.isEmpty ? 'mail.$_domain' : host,
+                    port: 443,
+                    username: current.config?.username,
+                  )
+                : ServerConfig(protocol: ServerProtocol.imap, host: 'imap.$_domain', port: 993),
+          );
+    setState(() {
+      _otherIncoming = current;
+      _incoming = next;
+      _error = null;
+    });
+  }
 
   /// Signs in with Google or Microsoft in the browser, then adds the account
   /// with the provider's servers.
@@ -264,7 +299,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     final fp = _fingerprint;
     if (fp == null) return;
     final message = _error ?? '';
-    final servers = [_incoming!, _outgoing!];
+    final servers = [_incoming!, if (_protocol != ServerProtocol.jmap) _outgoing!];
     final named = servers.where((s) => s.host.text.trim().isNotEmpty && message.contains(s.host.text.trim()));
     for (final s in named.isEmpty ? servers : named) {
       s.trustedCertificate = fp;
@@ -482,9 +517,12 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       children: [
         _title(context, title, email),
         ..._providerNotes(context),
-        // Gmail's and Microsoft's notes above say it better than discovery's.
+        // Gmail's, Microsoft's and Fastmail's notes above say it better than discovery's.
         if (discovery.notes case final notes?
-            when notes.trim().isNotEmpty && _provider != ProviderKind.gmail && _provider != ProviderKind.microsoft)
+            when notes.trim().isNotEmpty &&
+                _provider != ProviderKind.gmail &&
+                _provider != ProviderKind.microsoft &&
+                _provider != ProviderKind.fastmail)
           NoteCard(icon: LoupeIcons.info, child: Text(notes)),
         if (!_needsOAuth)
           SheetGroup(
@@ -518,9 +556,11 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
           _settingsSummary(context, discovery),
           if (_editSettings) ...[
             ServerSettingsForm(
+              key: ValueKey('incoming-${_incoming!.protocol.name}'),
               title: 'Incoming · ${_incoming!.protocol.name.toUpperCase()}',
               controller: _incoming!,
               enabled: !_busy,
+              onProtocol: _switchProtocol,
             ),
             if (_incoming!.protocol != ServerProtocol.jmap)
               ServerSettingsForm(title: 'Outgoing · SMTP', controller: _outgoing!, enabled: !_busy),
@@ -558,7 +598,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     );
   }
 
-  String get _passwordLabel => passwordLabel(_provider);
+  String get _passwordLabel => passwordLabel(_provider, protocol: _protocol);
 
   List<Widget> _providerNotes(BuildContext context) {
     Widget link(String label, String url) => TextButton(onPressed: () => _open(url), child: Text(label));
@@ -641,6 +681,17 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
           icon: LoupeIcons.password,
           actions: [link('How to Create One', 'https://help.yahoo.com/kb/SLN15241.html')],
           child: const Text('Yahoo Mail needs an app password, not your account password.'),
+        ),
+      ],
+      ProviderKind.fastmail when _protocol == ServerProtocol.jmap => [
+        NoteCard(
+          key: const Key('fastmail-jmap-note'),
+          icon: LoupeIcons.password,
+          actions: [link('How to Create One', fastmailApiTokenHelp)],
+          child: const Text(
+            'Loupe connects to Fastmail over JMAP with an API token: Settings › Privacy & Security › Manage API '
+            'tokens, for JMAP, with access to email and sending.',
+          ),
         ),
       ],
       ProviderKind.fastmail => [

@@ -1,0 +1,47 @@
+From: "Carol Example" <carol@example.org>
+To: Alice <alice@example.test>, bob@example.test
+Cc: =?UTF-8?Q?J=C3=BCrgen?= <juergen@example.org>
+Subject: =?UTF-8?Q?Quarterly_report_=E2=80=93_draft?=
+Date: Mon, 5 Oct 2026 10:00:00 +0200
+Message-ID: <report-1@example.org>
+In-Reply-To: <earlier@example.org>
+References: <first@example.org> <earlier@example.org>
+List-Id: Example developers <dev.lists.example.org>
+List-Post: <mailto:dev@lists.example.org>
+List-Unsubscribe: <https://lists.example.org/u?x=1>, <mailto:dev-leave@lists.example.org>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="mix"
+
+--mix
+Content-Type: multipart/alternative; boundary="alt"
+
+--alt
+Content-Type: text/plain; charset=utf-8; format=flowed
+
+Hello Alice,
+here is the draft.
+--alt
+Content-Type: multipart/related; boundary="rel"
+
+--rel
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<p>Hello Alice, here is the draft <img src=3D"cid:chart@example.org"> Gr=FC=DFe</p>
+--rel
+Content-Type: image/png
+Content-ID: <chart@example.org>
+Content-Disposition: inline
+Content-Transfer-Encoding: base64
+
+iVBORw0KGgo=
+--rel--
+--alt--
+--mix
+Content-Type: application/pdf; name="report.pdf"
+Content-Disposition: attachment; filename="report.pdf"
+Content-Transfer-Encoding: base64
+
+JVBERi0xLjQgZmFrZQ==
+--mix--

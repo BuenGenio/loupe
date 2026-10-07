@@ -180,6 +180,22 @@ void main() {
       });
     });
 
+    test('a server that files the sent copy as it sends (JMAP) gets no second copy', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer()..filesSentCopies = true;
+        final a = await h.add(server);
+        await h.repo.send(outgoing(a), undoDelay: Duration.zero);
+        await settle();
+        expect(server.sent, hasLength(1));
+        expect(server.log.where((l) => l.startsWith('append')), isEmpty);
+        expect(server.box('Sent').messages, hasLength(1));
+        final sent = (await h.store.mailboxByRole(a.id, MailboxRole.sent))!;
+        expect(await h.store.emailIdsIn(sent.id), hasLength(1));
+        await h.dispose();
+      });
+    });
+
     test('an unsaved alias identity sends as its address, also from a scheduled send', () {
       fakeTime((async) async {
         final h = Harness();

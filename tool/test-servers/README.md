@@ -56,6 +56,31 @@ fingerprint `make-cert.sh` printed.
 Note: the compose file couldn't be run on the machine it was written on (no
 Docker access there); the GreenMail tests were run with `greenmail.sh`.
 
+## JMAP: Stalwart
+
+mail_jmap's integration tests (`packages/mail_jmap/test/integration/`, tag `integration`) start their own
+throwaway Stalwart 0.16 (a single binary, no Docker) when it is there: at `~/development/roost-deps/stalwart`, or
+wherever `LOUPE_TEST_STALWART` points (`LOUPE_TEST_STALWART=off` skips them). Each test file gets a fresh server in
+a temporary directory, deleted afterwards (kept with `LOUPE_TEST_STALWART_KEEP=1`, for its logs).
+
+```sh
+cd packages/mail_jmap && dart test test/integration
+```
+
+`stalwart/stalwart.dart` does the setup, the way Roost does it: bootstrap mode writes the configuration and the
+admin login; recovery mode turns off outside fetching (ASN and geo data, spam rules, the web admin) and creates the
+listeners, all on 127.0.0.1 and free ports (HTTP for JMAP, IMAP, SMTP, submission and ManageSieve, none with TLS),
+so Stalwart never binds its defaults; normal mode then creates `alice@example.test` and `bob@example.test` with
+random passwords. Plain-text logins are allowed on IMAP and submission, and the SMTP listener takes local mail
+without one. Run it on its own to try the app or curl against it; it prints the environment and stops on Ctrl-C:
+
+```sh
+dart tool/test-servers/stalwart/stalwart.dart --seed 20   # 20 sample messages for alice
+```
+
+The session resource names `https://mail.example.test/…` URLs (Stalwart builds them from its host name, which
+can't carry a port); the tests' HTTP client sends those to the local listener (`StalwartHttpClient`).
+
 ## Sample data
 
 `seed.sh [imap-url] [user] [password] [count]` appends sample messages with

@@ -740,7 +740,7 @@ final class AccountSyncer {
   Set<String> _affectedMailboxes(PendingOp op) => op.type == OpType.subscribe
       ? const {}
       : {
-          for (final id in _ids(op)) ?MailIds.mailboxOfImapEmail(id),
+          for (final id in _ids(op)) ?MailIds.mailboxOfEmail(id),
           if (op.payload['target'] case final String t) t,
           if (op.payload['mailboxId'] case final String m) m,
         };

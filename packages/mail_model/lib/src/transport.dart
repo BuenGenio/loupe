@@ -182,7 +182,7 @@ abstract interface class MailTransport {
   Future<ServerStorage> writeDocument(String name, String content, {List<ServerDocument> replaces = const []});
 }
 
-/// Sends a ready-made message (SMTP).
+/// Sends a ready-made message (SMTP, JMAP EmailSubmission).
 abstract interface class MailSender {
   /// Hands [rfc822] to the server for [recipients].
   ///
@@ -191,18 +191,32 @@ abstract interface class MailSender {
   /// [MailException] when it may work later. When the server refuses only
   /// some recipients, the message goes to the others and the receipt names
   /// the refused ones.
-  Future<SendReceipt> send(Uint8List rfc822, {required String envelopeFrom, required List<String> recipients});
+  ///
+  /// [fileInSent] marks the copy that belongs in Sent. A sender whose server
+  /// files it as part of sending (JMAP moves the submitted message into
+  /// Sent) does so and says [SendReceipt.filed]; otherwise the caller
+  /// appends the copy itself.
+  Future<SendReceipt> send(
+    Uint8List rfc822, {
+    required String envelopeFrom,
+    required List<String> recipients,
+    bool fileInSent = false,
+  });
   Future<void> close();
 }
 
 /// What [MailSender.send] did with a message the server took.
 final class SendReceipt {
-  const SendReceipt({this.refused = const {}});
+  const SendReceipt({this.refused = const {}, this.filed = false});
 
   /// Recipients the server refused while it took the message for the
   /// others: address → why (a [PermanentMailException] when for good).
   /// Empty when it took every recipient.
   final Map<String, MailException> refused;
+
+  /// The message is in the Sent mailbox now (see [MailSender.send]'s
+  /// `fileInSent`): the caller mustn't append another copy.
+  final bool filed;
 }
 
 /// Builds RFC 822 bytes from an [OutgoingMessage].
@@ -218,7 +232,8 @@ abstract interface class AsyncMessageComposer implements MessageComposer {
   Future<Uint8List> composeAsync(OutgoingMessage message, Identity from, {required String messageId, DateTime? date});
 }
 
-/// Creates transports for accounts. Implemented by mail_imap.
+/// Creates transports for accounts. Implemented by mail_imap (IMAP and
+/// SMTP) and mail_jmap (JMAP, and both by the account's protocol).
 abstract interface class TransportFactory {
   MailTransport createTransport(MailAccount account, CredentialsCallback credentials);
   MailSender createSender(MailAccount account, CredentialsCallback credentials);

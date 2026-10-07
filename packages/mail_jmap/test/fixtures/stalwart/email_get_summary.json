@@ -1,0 +1,153 @@
+{
+  "methodResponses": [
+    [
+      "Email/get",
+      {
+        "accountId": "c",
+        "state": "sai",
+        "list": [
+          {
+            "id": "eaaaaab",
+            "blobId": "ca1aea2ckiahbwosfalytuownbu3zg1dqgwiyqfs9c9xfluk2tq1waqaae",
+            "threadId": "b",
+            "mailboxIds": {
+              "a": true
+            },
+            "keywords": {
+              "$seen": true
+            },
+            "size": 1417,
+            "receivedAt": "2026-10-05T08:00:05Z",
+            "sentAt": "2026-10-05T10:00:00+02:00",
+            "messageId": [
+              "report-1@example.org"
+            ],
+            "inReplyTo": [
+              "earlier@example.org"
+            ],
+            "references": [
+              "first@example.org",
+              "earlier@example.org"
+            ],
+            "from": [
+              {
+                "name": "Carol Example",
+                "email": "carol@example.org"
+              }
+            ],
+            "to": [
+              {
+                "name": "Alice",
+                "email": "alice@example.test"
+              },
+              {
+                "name": null,
+                "email": "bob@example.test"
+              }
+            ],
+            "cc": [
+              {
+                "name": "Jürgen",
+                "email": "juergen@example.org"
+              }
+            ],
+            "bcc": null,
+            "replyTo": null,
+            "subject": "Quarterly report – draft",
+            "preview": "Hello Alice,\nhere is the draft.",
+            "bodyStructure": {
+              "partId": null,
+              "blobId": null,
+              "size": null,
+              "name": null,
+              "type": "multipart/mixed",
+              "charset": null,
+              "disposition": null,
+              "cid": null,
+              "header:Content-Type": " multipart/mixed; boundary=\"mix\"",
+              "subParts": [
+                {
+                  "partId": null,
+                  "blobId": null,
+                  "size": null,
+                  "name": null,
+                  "type": "multipart/alternative",
+                  "charset": null,
+                  "disposition": null,
+                  "cid": null,
+                  "header:Content-Type": " multipart/alternative; boundary=\"alt\"",
+                  "subParts": [
+                    {
+                      "partId": "2",
+                      "blobId": "ce1aea2ckiahbwosfalytuownbu3zg1dqgwiyqfs9c9xfluk2tq1waqaagoqmia",
+                      "size": 32,
+                      "name": null,
+                      "type": "text/plain",
+                      "charset": "utf-8",
+                      "disposition": null,
+                      "cid": null,
+                      "header:Content-Type": " text/plain; charset=utf-8; format=flowed"
+                    },
+                    {
+                      "partId": null,
+                      "blobId": null,
+                      "size": null,
+                      "name": null,
+                      "type": "multipart/related",
+                      "charset": null,
+                      "disposition": null,
+                      "cid": null,
+                      "header:Content-Type": " multipart/related; boundary=\"rel\"",
+                      "subParts": [
+                        {
+                          "partId": "4",
+                          "blobId": "ci1aea2ckiahbwosfalytuownbu3zg1dqgwiyqfs9c9xfluk2tq1waqaahoaouy",
+                          "size": 79,
+                          "name": null,
+                          "type": "text/html",
+                          "charset": "iso-8859-1",
+                          "disposition": null,
+                          "cid": null,
+                          "header:Content-Type": " text/html; charset=iso-8859-1"
+                        },
+                        {
+                          "partId": "5",
+                          "blobId": "cm1aea2ckiahbwosfalytuownbu3zg1dqgwiyqfs9c9xfluk2tq1waqaag7asda",
+                          "size": 8,
+                          "name": null,
+                          "type": "image/png",
+                          "charset": null,
+                          "disposition": "inline",
+                          "cid": "chart@example.org",
+                          "header:Content-Type": " image/png"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "partId": "6",
+                  "blobId": "cm1aea2ckiahbwosfalytuownbu3zg1dqgwiyqfs9c9xfluk2tq1waqaahvaufa",
+                  "size": 13,
+                  "name": "report.pdf",
+                  "type": "application/pdf",
+                  "charset": null,
+                  "disposition": "attachment",
+                  "cid": null,
+                  "header:Content-Type": " application/pdf; name=\"report.pdf\""
+                }
+              ]
+            },
+            "header:List-Id": " Example developers <dev.lists.example.org>",
+            "header:List-Post": " <mailto:dev@lists.example.org>",
+            "header:List-Unsubscribe": " <https://lists.example.org/u?x=1>, <mailto:dev-leave@lists.example.org>",
+            "header:List-Unsubscribe-Post": " List-Unsubscribe=One-Click"
+          }
+        ],
+        "notFound": []
+      },
+      "c2"
+    ]
+  ],
+  "sessionState": "2e762b75"
+}

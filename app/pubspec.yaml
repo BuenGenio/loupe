@@ -13,6 +13,7 @@ dependencies:
   expr_search: {path: ../packages/expr_search}
   readable: {path: ../packages/readable}
   mail_imap: {path: ../packages/mail_imap}
+  mail_jmap: {path: ../packages/mail_jmap}
   mail_store: {path: ../packages/mail_store}
   mail_sync: {path: ../packages/mail_sync}
   mail_sieve: {path: ../packages/mail_sieve}

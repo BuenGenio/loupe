@@ -172,6 +172,87 @@ void main() {
     expect(incoming.port, 143);
   });
 
+  testWidgets('manual settings: JMAP takes a server URL and needs no SMTP', (tester) async {
+    final repo = FakeMailRepository()
+      ..onDiscover = (email) async =>
+          AccountDiscovery(email: email, provider: ProviderKind.generic, authKind: AuthKind.password);
+    await openSetup(tester, repo);
+    await enterAddress(tester, 'jane@home.example');
+    await tester.enterText(find.byKey(const Key('setup-password')), 'secret');
+    await tester.enterText(find.byKey(const ValueKey('imap-host')), 'mail.home.example');
+    await tester.ensureVisible(find.byKey(const ValueKey('setup-protocol')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.descendant(of: find.byKey(const ValueKey('setup-protocol')), matching: find.text('JMAP')));
+    await tester.pumpAndSettle();
+    expect(find.text('Outgoing · SMTP', skipOffstage: false), findsNothing);
+    // It starts on the IMAP server's host; STARTTLS isn't offered over HTTP.
+    expect(tester.widget<TextField>(find.byKey(const ValueKey('jmap-host'))).controller!.text, 'mail.home.example');
+    expect(
+      find.descendant(of: find.byKey(const ValueKey('jmap-security')), matching: find.text('STARTTLS')),
+      findsNothing,
+    );
+    await tester.enterText(find.byKey(const ValueKey('jmap-host')), 'https://jmap.home.example:8443/');
+
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('setup-sign-in')),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(find.byKey(const Key('setup-sign-in')));
+    await tester.pumpAndSettle();
+    final setup = repo.setups.single;
+    expect(setup.incoming.protocol, ServerProtocol.jmap);
+    expect(setup.incoming.host, 'jmap.home.example');
+    expect(setup.incoming.port, 8443);
+    expect(setup.incoming.security, ConnectionSecurity.tls);
+    expect(setup.outgoing, isNull);
+  });
+
+  testWidgets('switching back to IMAP keeps what was entered', (tester) async {
+    final repo = FakeMailRepository()
+      ..onDiscover = (email) async =>
+          AccountDiscovery(email: email, provider: ProviderKind.generic, authKind: AuthKind.password);
+    await openSetup(tester, repo);
+    await enterAddress(tester, 'jane@home.example');
+    await tester.enterText(find.byKey(const ValueKey('imap-host')), 'imap.home.example');
+    for (final protocol in ['JMAP', 'IMAP']) {
+      await tester.ensureVisible(find.byKey(const ValueKey('setup-protocol')));
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.descendant(of: find.byKey(const ValueKey('setup-protocol')), matching: find.text(protocol)),
+      );
+      await tester.pumpAndSettle();
+    }
+    expect(tester.widget<TextField>(find.byKey(const ValueKey('imap-host'))).controller!.text, 'imap.home.example');
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('smtp-host')),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.byKey(const ValueKey('smtp-host')), findsOneWidget);
+  });
+
+  testWidgets('Fastmail over JMAP asks for an API token', (tester) async {
+    final repo = FakeMailRepository()
+      ..onAddAccount = ((_) async => throw const MailException(MailErrorKind.authentication, 'refused'))
+      ..onDiscover = (email) async => AccountDiscovery(
+        email: email,
+        provider: ProviderKind.fastmail,
+        authKind: AuthKind.password,
+        incoming: const ServerConfig(protocol: ServerProtocol.jmap, host: 'api.fastmail.com', port: 443),
+        source: 'provider',
+        notes: 'Discovery’s own note',
+      );
+    await openSetup(tester, repo);
+    await enterAddress(tester, 'jane@fastmail.com');
+    expect(find.byKey(const Key('fastmail-jmap-note')), findsOneWidget);
+    expect(find.text('API Token'), findsOneWidget);
+    expect(find.text('Discovery’s own note'), findsNothing);
+    await signIn(tester, 'fmu1-token');
+    expect(find.textContaining('API token rejected'), findsOneWidget);
+    expect(repo.setups.single.outgoing, isNull);
+  });
+
   test('fingerprints are found with or without colons', () {
     expect(fingerprintIn('bad cert ${'AB:' * 31}AB'), 'ab' * 32);
     expect(fingerprintIn('sha256=${'0f' * 32}.'), '0f' * 32);

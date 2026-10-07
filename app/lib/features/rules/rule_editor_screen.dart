@@ -564,8 +564,8 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
         header: 'Run On',
         footer: _location == RuleLocation.device
             ? 'This device runs the rule on new Inbox mail each time Loupe checks for mail.'
-            : 'The mail server runs the rule as mail arrives, also while this phone is off. Needs ManageSieve, '
-                  'as Dovecot, mailcow and Fastmail-style servers offer.',
+            : 'The mail server runs the rule as mail arrives, also while this phone is off. Needs Sieve, '
+                  'over ManageSieve (Dovecot, mailcow) or JMAP (Stalwart).',
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),

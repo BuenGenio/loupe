@@ -9,6 +9,7 @@ workspace:
   - packages/expr_search
   - packages/readable
   - packages/mail_imap
+  - packages/mail_jmap
   - packages/mail_store
   - packages/mail_sync
   - packages/mail_sieve

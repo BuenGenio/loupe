@@ -16,7 +16,8 @@ const manageSievePort = 4190;
 /// Opens ManageSieve sessions on the account's IMAP host, port 4190, with
 /// STARTTLS and the account's own credentials (mailcow, Dovecot, Fastmail
 /// style setups). A self-signed certificate trusted for IMAP is trusted
-/// here too.
+/// here too. JMAP accounts use their JMAP host the same way (Stalwart
+/// serves ManageSieve next to JMAP).
 final class ManageSieveConnector implements SieveConnector {
   const ManageSieveConnector({this.port = manageSievePort, this.timeout = const Duration(seconds: 12)});
 
@@ -26,8 +27,11 @@ final class ManageSieveConnector implements SieveConnector {
   @override
   Future<SieveSession> connect(MailAccount account, CredentialsCallback credentials) async {
     final server = account.incoming;
-    if (server.protocol != ServerProtocol.imap) {
-      throw const MailException(MailErrorKind.unsupported, 'Server rules need an IMAP account with ManageSieve.');
+    if (server.protocol != ServerProtocol.imap && server.protocol != ServerProtocol.jmap) {
+      throw const MailException(
+        MailErrorKind.unsupported,
+        'Server rules need an IMAP or JMAP account with ManageSieve.',
+      );
     }
     if (account.provider == ProviderKind.gmail || account.provider == ProviderKind.microsoft) {
       throw MailException(
