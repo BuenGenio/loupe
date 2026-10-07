@@ -11,6 +11,7 @@ import '../keyring/keyring.dart' show KeyringStorage;
 import 'backend.dart';
 import 'certificate.dart';
 import 'key_handle.dart';
+import 'key_protection.dart';
 import 'status.dart';
 import 'trust.dart';
 
@@ -29,9 +30,16 @@ SmimeCertificate? _tryCert(String b64) {
 DateTime _date(Object? v) => DateTime.tryParse(v as String? ?? '') ?? DateTime.fromMillisecondsSinceEpoch(0);
 
 /// One of the user's certificates and its CA chain. Its private key is in
-/// the keychain, or stays on the device ([deviceAlias]: Android KeyChain).
+/// the keychain (protected by a passphrase too, when the user chose one),
+/// or stays on the device ([deviceAlias]: Android KeyChain).
 final class SmimeOwnCertificate {
-  const SmimeOwnCertificate({required this.certificate, this.chain = const [], required this.added, this.deviceAlias});
+  const SmimeOwnCertificate({
+    required this.certificate,
+    this.chain = const [],
+    required this.added,
+    this.deviceAlias,
+    this.hasPassphrase = false,
+  });
 
   final SmimeCertificate certificate;
   final List<SmimeCertificate> chain;
@@ -42,7 +50,19 @@ final class SmimeOwnCertificate {
   /// keeps itself.
   final String? deviceAlias;
 
+  /// The key is encrypted with a passphrase ([SmimeProtectedKey]): it is
+  /// usable once unlocked, never in the background.
+  final bool hasPassphrase;
+
   bool get onDevice => deviceAlias != null;
+
+  SmimeOwnCertificate withPassphrase(bool on) => SmimeOwnCertificate(
+    certificate: certificate,
+    chain: chain,
+    added: added,
+    deviceAlias: deviceAlias,
+    hasPassphrase: on,
+  );
 
   String get fingerprint => certificate.fingerprint;
 
@@ -51,6 +71,7 @@ final class SmimeOwnCertificate {
     'chain': _ders(chain),
     'added': added.toUtc().toIso8601String(),
     'alias': ?deviceAlias,
+    if (hasPassphrase) 'pass': true,
   };
 
   static SmimeOwnCertificate? fromJson(Map<String, Object?> j) {
@@ -61,6 +82,7 @@ final class SmimeOwnCertificate {
       chain: _certs(j['chain']),
       added: _date(j['added']),
       deviceAlias: j['alias'] as String?,
+      hasPassphrase: j['pass'] == true,
     );
   }
 }
@@ -318,14 +340,20 @@ final class SmimeStore {
   }
 
   /// Adds (or replaces) one of the user's certificates with its private
-  /// key: kept in the keychain ([SmimePrivateKey]), or left on the device
-  /// with its alias ([SmimePlatformKey]).
-  Future<void> addOwn(SmimeKeyPair pair, {List<SmimeCertificate> chain = const [], DateTime? now}) => _write(() async {
+  /// key: kept in the keychain ([SmimePrivateKey], encrypted when
+  /// [protectedKey] is given), or left on the device with its alias
+  /// ([SmimePlatformKey]).
+  Future<void> addOwn(
+    SmimeKeyPair pair, {
+    List<SmimeCertificate> chain = const [],
+    DateTime? now,
+    SmimeProtectedKey? protectedKey,
+  }) => _write(() async {
     final fingerprint = pair.certificate.fingerprint;
     final key = pair.key;
     switch (key) {
       case SmimePrivateKey():
-        await storage.write(_keyKey(fingerprint), base64.encode(key.pkcs8));
+        await storage.write(_keyKey(fingerprint), protectedKey?.encode() ?? base64.encode(key.pkcs8));
       case SmimePlatformKey():
         await storage.delete(_keyKey(fingerprint));
     }
@@ -334,6 +362,7 @@ final class SmimeStore {
       chain: chain,
       added: now ?? DateTime.now(),
       deviceAlias: key is SmimePlatformKey ? key.alias : null,
+      hasPassphrase: key is SmimePrivateKey && protectedKey != null,
     );
     final own = [
       entry,
@@ -352,13 +381,41 @@ final class SmimeStore {
   });
 
   /// The private key of the user's certificate [fingerprint]: from the
-  /// keychain, or the handle of the one on the device. Null when there is none.
+  /// keychain, or the handle of the one on the device. Null when there is
+  /// none, or it has a passphrase ([protectedKey]).
   Future<SmimeKeyHandle?> privateKey(String fingerprint) async {
     final alias = _state.ownCertificate(fingerprint)?.deviceAlias;
     if (alias != null) return SmimePlatformKey(alias);
     final raw = await storage.read(_keyKey(fingerprint));
-    return raw == null ? null : SmimePrivateKey(Uint8List.fromList(base64.decode(raw)));
+    if (raw == null || SmimeProtectedKey.isProtected(raw)) return null;
+    return SmimePrivateKey(Uint8List.fromList(base64.decode(raw)));
   }
+
+  /// The passphrase-protected private key of [fingerprint]; null when it has
+  /// no passphrase (or there is none).
+  Future<SmimeProtectedKey?> protectedKey(String fingerprint) async {
+    final raw = await storage.read(_keyKey(fingerprint));
+    if (raw == null || !SmimeProtectedKey.isProtected(raw)) return null;
+    return SmimeProtectedKey.decode(raw);
+  }
+
+  /// Stores the key of the user's certificate [fingerprint] again: encrypted
+  /// ([protectedKey], a passphrase set or changed), or bare ([key], the
+  /// passphrase removed).
+  Future<void> setKeyProtection(String fingerprint, {SmimePrivateKey? key, SmimeProtectedKey? protectedKey}) => _write(
+    () async {
+      final own = _state.ownCertificate(fingerprint);
+      if (own == null || own.onDevice || (key == null) == (protectedKey == null)) {
+        throw ArgumentError('A key of the app, bare or protected');
+      }
+      await storage.write(_keyKey(fingerprint), protectedKey?.encode() ?? base64.encode(key!.pkcs8));
+      await _save(
+        _state.copyWith(
+          own: [for (final o in _state.own) o.fingerprint == fingerprint ? o.withPassphrase(protectedKey != null) : o],
+        ),
+      );
+    },
+  );
 
   /// Every own certificate with its private key (for decrypting and signing).
   Future<List<SmimeKeyPair>> keyPairs() async => [

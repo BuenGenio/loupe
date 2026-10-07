@@ -28,6 +28,7 @@ export 'src/smime/mozilla_roots.dart' show mozillaEmailRootsDate;
 export 'src/smime/pkcs12.dart' show SmimeBundle, SmimeKeyEntry;
 export 'src/smime/plan.dart';
 export 'src/smime/key_handle.dart';
+export 'src/smime/key_protection.dart';
 export 'src/smime/reader.dart';
 export 'src/smime/software_keystore.dart';
 export 'src/smime/status.dart';

@@ -21,12 +21,22 @@ final class SmimeReadOutcome {
   final MimeEntity? entity;
 }
 
+/// Asks for the passphrase of the user's [certificate]; null when they cancel.
+/// [error] explains why it is asked again.
+typedef SmimePassphrasePrompt = Future<String?> Function(SmimeCertificate certificate, {String? error});
+
 /// S/MIME for the screens: reading protected mail, collecting
 /// correspondents' certificates, importing PKCS #12 files and
-/// certificates, certificates on the device, trust.
+/// certificates, certificates on the device, passphrases, trust.
 final class SmimeService {
-  SmimeService({required this.keys, required this.backend, required this.run, this.device, DateTime Function()? clock})
-    : _clock = clock ?? DateTime.now;
+  SmimeService({
+    required this.keys,
+    required this.backend,
+    required this.run,
+    this.device,
+    this.prompt,
+    DateTime Function()? clock,
+  }) : _clock = clock ?? DateTime.now;
 
   final StoreSmimeKeys keys;
   final SmimeBackend backend;
@@ -34,7 +44,11 @@ final class SmimeService {
 
   /// Certificates whose keys stay on the device (Android KeyChain).
   final DeviceCertificates? device;
+
+  /// Asks for a key's passphrase; null where nobody can be asked.
+  final SmimePassphrasePrompt? prompt;
   final DateTime Function() _clock;
+  final _unlocking = <String, Future<SmimeKeyHandle?>>{};
 
   SmimeStore get store => keys.store;
   SmimeState get state => store.state;
@@ -47,6 +61,21 @@ final class SmimeService {
   /// read again with its answer.
   Future<SmimeReadOutcome> read(String emailId, Uint8List raw, {String? sender}) async {
     final b = backend;
+    // Keys with a passphrase the message is encrypted to are unlocked first (asking once each).
+    var locked = [
+      for (final o in state.own)
+        if (o.hasPassphrase && !keys.isAvailable(o.fingerprint)) o,
+    ];
+    if (locked.isNotEmpty) {
+      final recipients = await run(() => SmimeReader(b).recipientsOf(raw));
+      locked = [
+        for (final o in locked)
+          if (recipients.any((r) => r.matches(o.certificate))) o,
+      ];
+      for (final o in locked) {
+        await unlock(o.fingerprint);
+      }
+    }
     var pairs = keys.keyPairs;
     final anchors = state.anchors;
     final known = state.knownCertificates;
@@ -68,6 +97,11 @@ final class SmimeService {
       });
       final request = outcome.status.keyRequest;
       final device = this.device;
+      if (outcome.status.failure == SmimeDecryptFailure.noKey && locked.any((o) => !keys.isAvailable(o.fingerprint))) {
+        return SmimeReadOutcome(
+          status: _failed(outcome.status, 'Your S/MIME certificate is locked. Open the message again to unlock it.'),
+        );
+      }
       // A layer each round: a message encrypted twice asks twice.
       if (request == null || device == null || round >= SmimeReader.maxLayers) return outcome;
       Uint8List answer;
@@ -140,6 +174,70 @@ final class SmimeService {
     await store.addOwn(SmimeKeyPair(entry.certificate, entry.key), chain: chain, now: _clock());
     keys.put(entry.certificate.fingerprint, entry.key);
   }
+
+  // Passphrases ------------------------------------------------------------------
+
+  /// The key of the user's certificate [fingerprint], asking for its
+  /// passphrase when it has one and is locked (once, however many callers
+  /// wait). Null when they cancel, or there is no key.
+  Future<SmimeKeyHandle?> unlock(String fingerprint) {
+    final ready = keys.smimeKey(fingerprint);
+    if (ready != null) return Future.value(ready);
+    // The callback returns nothing: returning the removed future would make it wait for itself.
+    return _unlocking[fingerprint] ??= _unlock(fingerprint).whenComplete(() {
+      _unlocking.remove(fingerprint);
+    });
+  }
+
+  Future<SmimeKeyHandle?> _unlock(String fingerprint) async {
+    final own = state.ownCertificate(fingerprint);
+    if (own == null) return null;
+    final protected = await store.protectedKey(fingerprint);
+    if (protected == null) {
+      final key = await store.privateKey(fingerprint);
+      if (key != null) keys.put(fingerprint, key);
+      return key;
+    }
+    final prompt = this.prompt;
+    if (prompt == null) return null;
+    String? error;
+    while (true) {
+      final passphrase = await prompt(own.certificate, error: error);
+      if (passphrase == null) return null;
+      try {
+        final key = await run(() => unprotectKey(protected, passphrase, fingerprint: fingerprint));
+        keys.putUnlocked(fingerprint, key);
+        return key;
+      } on SmimeException catch (e) {
+        if (e.kind != SmimeErrorKind.wrongPassword) rethrow;
+        error = 'That passphrase is wrong. Try again.';
+      }
+    }
+  }
+
+  /// Protects the key of [fingerprint] with [passphrase] (a new one, or
+  /// another), unlocking it first. False when the user cancelled.
+  Future<bool> setPassphrase(String fingerprint, String passphrase) async {
+    final key = await unlock(fingerprint);
+    if (key is! SmimePrivateKey) return false;
+    final protected = await run(() => protectKey(key, passphrase, fingerprint: fingerprint));
+    await store.setKeyProtection(fingerprint, protectedKey: protected);
+    keys.putUnlocked(fingerprint, key);
+    return true;
+  }
+
+  /// Stores the key of [fingerprint] without a passphrase again (the
+  /// keychain protects it), unlocking it first. False when the user cancelled.
+  Future<bool> removePassphrase(String fingerprint) async {
+    final key = await unlock(fingerprint);
+    if (key is! SmimePrivateKey) return false;
+    await store.setKeyProtection(fingerprint, key: key);
+    keys.put(fingerprint, key);
+    return true;
+  }
+
+  /// Locks every key unlocked with its passphrase (Lock Keys Now).
+  void lockAll() => keys.lockAll();
 
   /// Adds the certificate the user picked from the device ([alias]), its
   /// key staying there. Returns it, or throws [SmimeException] when it

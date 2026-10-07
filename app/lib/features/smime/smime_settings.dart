@@ -13,6 +13,7 @@ import '../openpgp/key_import.dart' show copyToClipboard, pasteKeyProvider, pick
 import '../settings/settings_widgets.dart';
 import 'device_certificates.dart';
 import 'smime_import.dart';
+import 'smime_passphrase.dart';
 import 'smime_providers.dart';
 import 'smime_service.dart';
 import 'smime_status.dart' show problemText;
@@ -219,7 +220,11 @@ class SmimeCertificateScreen extends ConsumerWidget {
               GroupedRow(
                 key: const ValueKey('smime-key-location'),
                 title: 'Private key',
-                detail: own.onDevice ? 'On this device' : 'In Loupe',
+                detail: own.onDevice
+                    ? 'On this device'
+                    : own.hasPassphrase
+                    ? 'In Loupe, with a passphrase'
+                    : 'In Loupe',
                 chevron: false,
               ),
             if (contact != null)
@@ -271,6 +276,32 @@ class SmimeCertificateScreen extends ConsumerWidget {
               ),
           ],
         ),
+        if (own != null && !own.onDevice)
+          InsetGroup(
+            header: 'Passphrase',
+            separatorIndent: 16,
+            footer:
+                'Optional. With a passphrase, the private key is also encrypted on this device (Argon2id and '
+                'AES-256), and Loupe asks for it to sign and decrypt; Remember Passphrases says for how long. '
+                'Mail you send is signed as you send it; background work can’t use the key.',
+            children: [
+              GroupedRow(
+                key: const ValueKey('smime-set-passphrase-row'),
+                title: own.hasPassphrase ? 'Change Passphrase…' : 'Set Passphrase…',
+                titleStyle: LoupeTextStyles.of(context).body.copyWith(color: link),
+                chevron: false,
+                onTap: () => _setPassphrase(context, service, own),
+              ),
+              if (own.hasPassphrase)
+                GroupedRow(
+                  key: const ValueKey('smime-remove-passphrase'),
+                  title: 'Remove Passphrase',
+                  titleStyle: LoupeTextStyles.of(context).body.copyWith(color: link),
+                  chevron: false,
+                  onTap: () => _removePassphrase(context, service, own),
+                ),
+            ],
+          ),
         InsetGroup(
           separatorIndent: 16,
           children: [
@@ -297,6 +328,39 @@ class SmimeCertificateScreen extends ConsumerWidget {
           ),
       ],
     );
+  }
+
+  Future<void> _setPassphrase(BuildContext context, SmimeService service, SmimeOwnCertificate own) async {
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      // The current passphrase first, when there is one.
+      if (await service.unlock(own.fingerprint) == null || !context.mounted) return;
+      final passphrase = await showNewSmimePassphraseDialog(context);
+      if (passphrase == null) return;
+      if (await service.setPassphrase(own.fingerprint, passphrase)) {
+        showSnack(messenger, own.hasPassphrase ? 'Passphrase changed.' : 'Passphrase set.');
+      }
+    } on SmimeException catch (e) {
+      showSnack(messenger, e.message);
+    }
+  }
+
+  Future<void> _removePassphrase(BuildContext context, SmimeService service, SmimeOwnCertificate own) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final ok = await showActionSheet<bool>(
+      context,
+      title: 'Remove the Passphrase?',
+      message:
+          'The private key is then protected by the keychain only, as without a passphrase: Loupe no longer asks '
+          'for it, and background work can use it.',
+      actions: const [SheetAction('Remove Passphrase', true, destructive: true)],
+    );
+    if (ok != true) return;
+    try {
+      if (await service.removePassphrase(own.fingerprint)) showSnack(messenger, 'Passphrase removed.');
+    } on SmimeException catch (e) {
+      showSnack(messenger, e.message);
+    }
   }
 
   static String _fileName(SmimeCertificate c) => c.displayName.replaceAll(RegExp(r'[^A-Za-z0-9._@-]+'), '_');

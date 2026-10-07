@@ -100,11 +100,23 @@ loading, the header, compose, Settings › End-to-End Encryption).
   them into a keychain access group shared with Loupe, see [ios.md](ios.md)).
 - **Keys and certificates** (`SmimeStore`, keychain entries `loupe.smime.*` next to the OpenPGP keyring): the
   user's certificates with their CA chain, each private key in an entry of its own (PKCS #8, protected by the
-  keychain only: the PKCS #12 password just unlocks the import, as on Android and in Thunderbird without a
-  primary password); correspondents' certificates, collected from good signatures by the sender (not from
+  keychain: the PKCS #12 password just unlocks the import, as on Android and in Thunderbird without a primary
+  password); correspondents' certificates, collected from good signatures by the sender (not from
   drafts or junk) or imported; the authorities the user trusts; per-address settings (the certificate,
   "Prefer S/MIME"). PKCS #12 import reads OpenSSL 3's defaults (PBES2 with AES), the legacy algorithms of
   older Windows exports (3DES, RC2-40, SHA-1 MAC) and PBMAC1.
+- **Passphrases** (optional, off by default; #26): the certificate's screen sets, changes or removes one. The key
+  entry then holds the PKCS #8 key encrypted with AES-256-GCM (bound to the certificate's fingerprint as
+  associated data) under a key from Argon2id (`key_protection.dart`, a JSON entry carrying its cost; on top of
+  the keychain). Argon2id comes from pointycastle (maintained, pure Dart, checked against RFC 9106's test
+  vector) with RFC 9106's choice for devices with little memory: 64 MiB, 3 passes, 4 lanes, about a second
+  here and a few on a phone, off the UI isolate. PBKDF2-SHA256 was the fallback; it resists GPUs less, and
+  pointycastle's takes six seconds for 600,000 iterations. Unlocked keys follow OpenPGP's rules
+  (`StoreSmimeKeys`): Remember Passphrases keeps them until Loupe closes, otherwise each is locked two minutes
+  after its last use; Lock Keys Now locks both. Reading mail encrypted to a locked key asks for the passphrase
+  (`SmimeService.unlock`, once however many wait; cancelled, the message says the certificate is locked);
+  Send asks before the message is queued, so it is signed then (see "Signed when queued"); the Outbox asks
+  before Send Now, Reschedule or the Retry of mail that waited. Background work never has these keys.
 - **Trust** (`checkTrust`): a chain through the message's and known certificates to a trusted root, every
   signature checked, then validity (at the signing time for signatures), CA flags, path length, rfc822 name
   constraints, unknown critical extensions, key usage (digitalSignature for signing; keyEncipherment for RSA or

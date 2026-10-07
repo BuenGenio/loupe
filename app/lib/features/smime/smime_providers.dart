@@ -4,10 +4,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 
+import '../../router.dart';
 import '../../settings/app_mode.dart';
 import '../openpgp/openpgp_providers.dart';
 import 'device_certificates.dart';
 import 'smime_keys.dart';
+import 'smime_passphrase.dart';
 import 'smime_service.dart';
 
 export 'smime_keys.dart';
@@ -17,7 +19,9 @@ final smimeBackendProvider = Provider<SmimeBackend>((ref) => const DartSmimeBack
 
 Future<StoreSmimeKeys> _open(Ref ref, SmimeStore store) async {
   ref.onDispose(store.dispose);
-  final keys = StoreSmimeKeys(store);
+  // Keys unlocked with a passphrase follow Remember Passphrases, as OpenPGP's.
+  final keys = StoreSmimeKeys(store, remember: ref.read(rememberPassphrasesProvider));
+  ref.listen(rememberPassphrasesProvider, (_, remember) => keys.remember = remember);
   try {
     await store.load();
     await keys.loadKeys();
@@ -54,6 +58,15 @@ final smimeStateProvider = StreamProvider<SmimeState>((ref) async* {
   yield* keys.store.changes;
 });
 
+/// Shows the S/MIME passphrase dialog over whatever screen is open.
+final smimePassphrasePromptProvider = Provider<SmimePassphrasePrompt>((ref) {
+  return (SmimeCertificate certificate, {String? error}) async {
+    final context = ref.read(routerProvider).routerDelegate.navigatorKey.currentContext;
+    if (context == null || !context.mounted) return null;
+    return showSmimeUnlockDialog(context, certificate: certificate, error: error);
+  };
+});
+
 /// Everything S/MIME the screens need. Work runs off the UI isolate like OpenPGP's.
 final smimeServiceProvider = FutureProvider<SmimeService>(
   (ref) async => SmimeService(
@@ -61,6 +74,7 @@ final smimeServiceProvider = FutureProvider<SmimeService>(
     backend: ref.watch(smimeBackendProvider),
     run: ref.watch(pgpRunnerProvider),
     device: ref.watch(deviceCertificatesProvider),
+    prompt: (certificate, {error}) => ref.read(smimePassphrasePromptProvider)(certificate, error: error),
   ),
 );
 

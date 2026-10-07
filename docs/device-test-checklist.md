@@ -332,6 +332,13 @@ account), and Loupe having both keys (Autocrypt from a signed message of each, o
    - **If not:** "Encrypted (S/MIME) · locked" and the sheet give the platform's reason. ECDH needs Android 12 or
      later and a key allowed to agree; an EC certificate that can't decrypt says "can’t do this". A message queued
      while the app was closed waits in the Outbox with "open Loupe".
+6. **A passphrase on a certificate (#26).**
+   - **Do:** open your imported certificate (Settings › End-to-End Encryption › My S/MIME Certificates) ›
+     **Set Passphrase…**. Turn Remember Passphrases off, Lock Keys Now, then open an S/MIME encrypted message
+     and send a signed one; schedule a signed one for in 10 minutes and close Loupe.
+   - **Expect:** "Unlock S/MIME Certificate" when reading and on Send (about a second or a few after the
+     passphrase); the scheduled message goes out from the background, signed at queue time. Two minutes
+     after the last use it asks again. Remove Passphrase asks for it once more.
 
 ## 13. Attachments (10 min)
 
