@@ -39,11 +39,19 @@ abstract final class LoupeIcons {
   static const IconData mute = FluentIcons.alert_off_24_regular;
   static const IconData patch = FluentIcons.branch_24_regular;
 
-  // Subscriptions (the unsubscribe centre) ------------------------------------
+  // Subscriptions: newsletters and discussion lists ----------------------------
 
   static const IconData subscriptions = FluentIcons.news_24_regular;
   static const IconData unsubscribe = FluentIcons.mail_dismiss_24_regular;
   static const IconData block = FluentIcons.person_prohibited_24_regular;
+
+  /// "Treat as Newsletter"; a discussion list is [mailingList].
+  static const IconData newsletter = FluentIcons.megaphone_24_regular;
+
+  /// Pin a discussion list to the Mailboxes screen, and unpin it.
+  static const IconData pin = FluentIcons.pin_24_regular;
+  static const IconData pinFilled = FluentIcons.pin_24_filled;
+  static const IconData unpin = FluentIcons.pin_off_24_regular;
 
   // Message actions ---------------------------------------------------------
 

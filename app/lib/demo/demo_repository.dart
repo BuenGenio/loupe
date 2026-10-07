@@ -674,27 +674,6 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
   bool _isMuted(EmailSummary s) => _muted.contains(s.threadId ?? s.id);
 
   @override
-  Stream<List<MailingList>> watchMailingLists() => _watch(() {
-    final lists = <MailingList>[];
-    for (final MapEntry(key: id, value: mail) in _listMail().entries) {
-      mail.sort(_newestFirst);
-      final summaries = [for (final m in mail) m.summary];
-      lists.add(
-        MailingList(
-          id: id,
-          name: summaries.map((s) => s.listName).nonNulls.firstOrNull ?? id,
-          postAddress: summaries.map((s) => listPostAddress(s.listPost)).nonNulls.firstOrNull,
-          messageCount: mail.length,
-          unreadCount: summaries.where((s) => !s.isSeen && !_isMuted(s)).length,
-          lastActivity: summaries.first.receivedAt,
-          accountIds: {for (final s in summaries) s.accountId}.toList()..sort(),
-        ),
-      );
-    }
-    return lists..sort((a, b) => b.lastActivity!.compareTo(a.lastActivity!));
-  });
-
-  @override
   Stream<List<ListThread>> watchListThreads(String listId, {bool includeMuted = false, int limit = 200}) => _watch(() {
     final byThread = <String, List<EmailSummary>>{};
     for (final m in _listMail()[listId.toLowerCase()] ?? const <DemoMessage>[]) {
@@ -736,23 +715,30 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
 
   MailboxRole? _roleOf(EmailSummary s) => _mailboxes[s.mailboxId]?.role;
 
-  @override
-  Stream<List<Subscription>> watchSubscriptions() => _watch(
-    () => summarizeSubscriptions(
-      [for (final m in _messages.values) m.summary],
-      roleOf: _roleOf,
-      now: _clock(),
-      me: _allMyAddresses,
-    ),
+  /// Lists the user said are newsletters or discussions, by List-Id (local,
+  /// like the live repository's).
+  final _listKinds = <String, SubscriptionKind>{};
+
+  List<Subscription> _subscriptions() => summarizeSubscriptions(
+    [for (final m in _messages.values) m.summary],
+    roleOf: _roleOf,
+    now: _clock(),
+    me: _allMyAddresses,
+    kinds: _listKinds,
   );
+
+  @override
+  Stream<List<Subscription>> watchSubscriptions() => _watch(_subscriptions);
 
   @override
   Stream<List<EmailSummary>> watchSubscriptionEmails(String key, {bool inboxOnly = false, int limit = 200}) =>
       _watch(() {
         final me = _allMyAddresses;
+        final group = _subscriptions().where((s) => s.key == key).firstOrNull;
+        final sources = {...?group?.sourceKeys, if (group == null) key};
         final out = [
           for (final m in _messages.values)
-            if (subscriptionKeyOf(m.summary) == key &&
+            if (sources.contains(subscriptionKeyOf(m.summary)) &&
                 !subscriptionExcludedRoles.contains(_roleOf(m.summary)) &&
                 !me.contains(m.summary.sender?.email.toLowerCase()) &&
                 (!inboxOnly || _roleOf(m.summary) == MailboxRole.inbox))
@@ -760,6 +746,19 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
         ]..sort((a, b) => b.receivedAt.compareTo(a.receivedAt));
         return out.take(limit).toList();
       });
+
+  @override
+  Future<void> setListKind(Iterable<String> listIds, SubscriptionKind? kind) async {
+    for (final id in listIds) {
+      final l = id.trim().toLowerCase();
+      if (kind == null) {
+        _listKinds.remove(l);
+      } else {
+        _listKinds[l] = kind;
+      }
+    }
+    _notify();
+  }
 
   @override
   Future<void> setThreadMuted(String emailId, {required bool muted}) async {

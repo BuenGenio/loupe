@@ -18,8 +18,8 @@ import 'subscription_actions.dart';
 import 'subscription_format.dart';
 import 'subscription_providers.dart';
 
-/// One subscription: how much it sends and how much of it is read, the
-/// ways to be rid of it, and its latest messages.
+/// One newsletter: how much it sends and how much of it is read, the ways
+/// to be rid of it, and its latest messages.
 class SubscriptionScreen extends ConsumerWidget {
   const SubscriptionScreen({super.key, required this.subscriptionKey});
 
@@ -33,7 +33,8 @@ class SubscriptionScreen extends ConsumerWidget {
     final async = ref.watch(subscriptionsProvider);
     final s = async.value?.where((x) => x.key == subscriptionKey).firstOrNull;
     final emails = ref.watch(subscriptionEmailsProvider(subscriptionKey)).value ?? const <EmailSummary>[];
-    final record = ref.watch(unsubscribeRecordsProvider)[subscriptionKey];
+    final records = ref.watch(unsubscribeRecordsProvider);
+    final record = s == null ? records[subscriptionKey] : unsubscribeRecordOf(records, s);
     final rules = ref.watch(rulesProvider).value ?? const <Rule>[];
     final boxes = {for (final m in ref.watch(mailboxesProvider).value ?? const <Mailbox>[]) m.id: m};
     final actions = SubscriptionActions(context, ref);
@@ -190,6 +191,18 @@ class _Actions extends StatelessWidget {
           subtitle: 'Move or archive its future mail',
           onTap: () => actions.createRule(s),
         ),
+        if (s.listIds.isNotEmpty)
+          GroupedRow(
+            key: const Key('subscription-kind'),
+            leading: Icon(LoupeIcons.mailingList, color: colors.unreadDot),
+            title: 'Treat as Discussion',
+            subtitle: 'A list people write to: read it forum style',
+            chevron: false,
+            onTap: () async {
+              await actions.setKind(s, SubscriptionKind.discussion);
+              if (context.mounted) context.pop();
+            },
+          ),
         if (blockRuleId != null)
           GroupedRow(
             key: const Key('subscription-blocked'),

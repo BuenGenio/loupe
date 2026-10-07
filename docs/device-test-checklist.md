@@ -26,13 +26,15 @@ Each step gives what to **do**, what to **expect**, and **if not** where to look
 
 ## 1. Upgrade over the build on the phone (5 min)
 
-The database moves to schema version 5, then 6 (with the OpenPGP follow-ups):
+The database moves to schema version 5, then 6 (with the OpenPGP follow-ups), then 7 (newsletters and discussions):
 
 - outbox entries can be held;
 - the Subscriptions screen keeps its groups;
 - the list-header refetch saves its progress;
 - encrypted messages keep their decrypted subject, and (opted in) their text for search;
-- signed and encrypted mail is composed when it is queued.
+- signed and encrypted mail is composed when it is queued;
+- Subscriptions groups everything once more on its first open (newsletters by sender, discussions by List-Id), and
+  keeps "Unsubscribed on" for newsletters unsubscribed from before.
 
 1. **Do:**
    - Leave Instant Delivery as it is.
@@ -189,13 +191,22 @@ Keep this device for step 10 (Smart Mailbox sync).
    - "Couldn’t Save the Server Rule" names the reason and offers "Run on This Device Instead". The Server Rules status says "Not Available" or "Couldn’t ask the server".
    - Loupe uses ManageSieve on port 4190. See mailcow › Logs › Dovecot.
 
-## 9. Unsubscribe centre (10 min)
+## 9. Subscriptions: newsletters and discussion lists (15 min)
 
-1. **Do:** Mailboxes › Tools › **Subscriptions**.
+1. **Do:** Mailboxes › **Subscriptions** (in the top group, after Unread, Snoozed and Outbox).
 2. **Expect:**
-   - Newsletters and mailing lists, most unread mail a month first. Rows read like "≈ 24 / month · read 3%".
-   - The chips "Never Read", "Rarely Read" and "All".
+   - No "Mailing Lists" section and no Tools on Mailboxes. The Subscriptions row counts unread mail in discussion lists,
+     or shows nothing.
+   - **Newsletters** first: most unread mail a month first. Rows read like "≈ 24 / month · read 3%".
+   - No row is named like `MTEyNzQxMzMtODAtNQ==`, `111929.broadcast`, `spc.265094.4.sparkpostmail.com` or
+     `<hex>mc list`: newsletters are named after their senders. A sender whose campaigns each had a List-Id of their own
+     (the two `NTE4…` ones) is one row.
+   - The chips "Never Read", "Rarely Read" and "All"; the Filter field narrows by name.
    - The first open after the upgrade groups everything once (well under a second). After that it opens at once, also on a large mailbox (#25).
+   - **Discussions:** the lists people write to, with their address, last activity and unread count. A tap opens the
+     forum view. A long press offers Pin to Mailboxes (a Lists section appears on Mailboxes), Unsubscribe, Open as
+     Plain Text (Mono) and Treat as Newsletter; a newsletter that came with a List-Id offers Treat as Discussion.
+   - Subscriptions opens again on the tab used last.
 3. **Do:** read one newsletter in the Inbox, then go back to Subscriptions.
 4. **Expect:** its read count and rate change.
 5. **Do:** unsubscribe from a real newsletter. Try one with a one-click link and one with only a `mailto:` link if you have them.

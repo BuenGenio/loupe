@@ -6465,6 +6465,181 @@ class MutedThreadsCompanion extends UpdateCompanion<MutedThreadRow> {
   }
 }
 
+class $ListKindsTable extends ListKinds with TableInfo<$ListKindsTable, ListKindRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ListKindsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _listIdMeta = const VerificationMeta('listId');
+  @override
+  late final GeneratedColumn<String> listId = GeneratedColumn<String>(
+    'list_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _kindMeta = const VerificationMeta('kind');
+  @override
+  late final GeneratedColumn<String> kind = GeneratedColumn<String>(
+    'kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [listId, kind];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'list_kinds';
+  @override
+  VerificationContext validateIntegrity(Insertable<ListKindRow> instance, {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('list_id')) {
+      context.handle(_listIdMeta, listId.isAcceptableOrUnknown(data['list_id']!, _listIdMeta));
+    } else if (isInserting) {
+      context.missing(_listIdMeta);
+    }
+    if (data.containsKey('kind')) {
+      context.handle(_kindMeta, kind.isAcceptableOrUnknown(data['kind']!, _kindMeta));
+    } else if (isInserting) {
+      context.missing(_kindMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {listId};
+  @override
+  ListKindRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ListKindRow(
+      listId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}list_id'])!,
+      kind: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}kind'])!,
+    );
+  }
+
+  @override
+  $ListKindsTable createAlias(String alias) {
+    return $ListKindsTable(attachedDatabase, alias);
+  }
+}
+
+class ListKindRow extends DataClass implements Insertable<ListKindRow> {
+  /// The List-Id identifier, lower-cased.
+  final String listId;
+
+  /// `SubscriptionKind.name`.
+  final String kind;
+  const ListKindRow({required this.listId, required this.kind});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['list_id'] = Variable<String>(listId);
+    map['kind'] = Variable<String>(kind);
+    return map;
+  }
+
+  ListKindsCompanion toCompanion(bool nullToAbsent) {
+    return ListKindsCompanion(listId: Value(listId), kind: Value(kind));
+  }
+
+  factory ListKindRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ListKindRow(
+      listId: serializer.fromJson<String>(json['listId']),
+      kind: serializer.fromJson<String>(json['kind']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{'listId': serializer.toJson<String>(listId), 'kind': serializer.toJson<String>(kind)};
+  }
+
+  ListKindRow copyWith({String? listId, String? kind}) =>
+      ListKindRow(listId: listId ?? this.listId, kind: kind ?? this.kind);
+  ListKindRow copyWithCompanion(ListKindsCompanion data) {
+    return ListKindRow(
+      listId: data.listId.present ? data.listId.value : this.listId,
+      kind: data.kind.present ? data.kind.value : this.kind,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ListKindRow(')
+          ..write('listId: $listId, ')
+          ..write('kind: $kind')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(listId, kind);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || (other is ListKindRow && other.listId == this.listId && other.kind == this.kind);
+}
+
+class ListKindsCompanion extends UpdateCompanion<ListKindRow> {
+  final Value<String> listId;
+  final Value<String> kind;
+  final Value<int> rowid;
+  const ListKindsCompanion({
+    this.listId = const Value.absent(),
+    this.kind = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ListKindsCompanion.insert({required String listId, required String kind, this.rowid = const Value.absent()})
+    : listId = Value(listId),
+      kind = Value(kind);
+  static Insertable<ListKindRow> custom({
+    Expression<String>? listId,
+    Expression<String>? kind,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (listId != null) 'list_id': listId,
+      if (kind != null) 'kind': kind,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ListKindsCompanion copyWith({Value<String>? listId, Value<String>? kind, Value<int>? rowid}) {
+    return ListKindsCompanion(listId: listId ?? this.listId, kind: kind ?? this.kind, rowid: rowid ?? this.rowid);
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (listId.present) {
+      map['list_id'] = Variable<String>(listId.value);
+    }
+    if (kind.present) {
+      map['kind'] = Variable<String>(kind.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ListKindsCompanion(')
+          ..write('listId: $listId, ')
+          ..write('kind: $kind, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$StoreDatabase extends GeneratedDatabase {
   _$StoreDatabase(QueryExecutor e) : super(e);
   $StoreDatabaseManager get managers => $StoreDatabaseManager(this);
@@ -6486,6 +6661,7 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
   late final $RulesTable rules = $RulesTable(this);
   late final $RuleWatermarksTable ruleWatermarks = $RuleWatermarksTable(this);
   late final $MutedThreadsTable mutedThreads = $MutedThreadsTable(this);
+  late final $ListKindsTable listKinds = $ListKindsTable(this);
   late final Index emailsMailboxReceived = Index(
     'emails_mailbox_received',
     'CREATE INDEX emails_mailbox_received ON emails (mailbox_id, received_at)',
@@ -6531,6 +6707,7 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     rules,
     ruleWatermarks,
     mutedThreads,
+    listKinds,
     emailsMailboxReceived,
     emailsReceived,
     emailsThread,
@@ -11874,6 +12051,119 @@ typedef $$MutedThreadsTableProcessedTableManager =
       MutedThreadRow,
       PrefetchHooks Function({bool accountId})
     >;
+typedef $$ListKindsTableCreateCompanionBuilder = ListKindsCompanion Function({
+  required String listId,
+  required String kind,
+  Value<int> rowid,
+});
+typedef $$ListKindsTableUpdateCompanionBuilder = ListKindsCompanion Function({
+  Value<String> listId,
+  Value<String> kind,
+  Value<int> rowid,
+});
+
+class $$ListKindsTableFilterComposer extends Composer<_$StoreDatabase, $ListKindsTable> {
+  $$ListKindsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get listId =>
+      $composableBuilder(column: $table.listId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get kind => $composableBuilder(column: $table.kind, builder: (column) => ColumnFilters(column));
+}
+
+class $$ListKindsTableOrderingComposer extends Composer<_$StoreDatabase, $ListKindsTable> {
+  $$ListKindsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get listId =>
+      $composableBuilder(column: $table.listId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => ColumnOrderings(column));
+}
+
+class $$ListKindsTableAnnotationComposer extends Composer<_$StoreDatabase, $ListKindsTable> {
+  $$ListKindsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get listId => $composableBuilder(column: $table.listId, builder: (column) => column);
+
+  GeneratedColumn<String> get kind => $composableBuilder(column: $table.kind, builder: (column) => column);
+}
+
+class $$ListKindsTableTableManager
+    extends
+        RootTableManager<
+          _$StoreDatabase,
+          $ListKindsTable,
+          ListKindRow,
+          $$ListKindsTableFilterComposer,
+          $$ListKindsTableOrderingComposer,
+          $$ListKindsTableAnnotationComposer,
+          $$ListKindsTableCreateCompanionBuilder,
+          $$ListKindsTableUpdateCompanionBuilder,
+          (ListKindRow, BaseReferences<_$StoreDatabase, $ListKindsTable, ListKindRow>),
+          ListKindRow,
+          PrefetchHooks Function()
+        > {
+  $$ListKindsTableTableManager(_$StoreDatabase db, $ListKindsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () => $$ListKindsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$ListKindsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$ListKindsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> listId = const Value.absent(),
+            Value<String> kind = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) => ListKindsCompanion(listId: listId, kind: kind, rowid: rowid),
+          createCompanionCallback: ({
+            required String listId,
+            required String kind,
+            Value<int> rowid = const Value.absent(),
+          }) => ListKindsCompanion.insert(listId: listId, kind: kind, rowid: rowid),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ListKindsTable, ListKindRow>(table),
+                  BaseReferences<_$StoreDatabase, $ListKindsTable, ListKindRow>(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ListKindsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$StoreDatabase,
+      $ListKindsTable,
+      ListKindRow,
+      $$ListKindsTableFilterComposer,
+      $$ListKindsTableOrderingComposer,
+      $$ListKindsTableAnnotationComposer,
+      $$ListKindsTableCreateCompanionBuilder,
+      $$ListKindsTableUpdateCompanionBuilder,
+      (ListKindRow, BaseReferences<_$StoreDatabase, $ListKindsTable, ListKindRow>),
+      ListKindRow,
+      PrefetchHooks Function()
+    >;
 
 class $StoreDatabaseManager {
   final _$StoreDatabase _db;
@@ -11896,4 +12186,5 @@ class $StoreDatabaseManager {
   $$RulesTableTableManager get rules => $$RulesTableTableManager(_db, _db.rules);
   $$RuleWatermarksTableTableManager get ruleWatermarks => $$RuleWatermarksTableTableManager(_db, _db.ruleWatermarks);
   $$MutedThreadsTableTableManager get mutedThreads => $$MutedThreadsTableTableManager(_db, _db.mutedThreads);
+  $$ListKindsTableTableManager get listKinds => $$ListKindsTableTableManager(_db, _db.listKinds);
 }

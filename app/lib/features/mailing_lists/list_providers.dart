@@ -10,13 +10,6 @@ MailingLists? mailingListsOf(MailRepository repository) => switch (repository) {
   _ => null,
 };
 
-/// Mailing lists with mail, most recent activity first (none when the
-/// repository doesn't group lists).
-final mailingListsProvider = StreamProvider<List<MailingList>>((ref) {
-  final lists = mailingListsOf(ref.watch(repositoryProvider));
-  return lists?.watchMailingLists() ?? Stream.value(const <MailingList>[]);
-});
-
 /// Ids of the muted conversations.
 final mutedThreadsProvider = StreamProvider<Set<String>>((ref) {
   final lists = mailingListsOf(ref.watch(repositoryProvider));

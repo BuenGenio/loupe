@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mail_model/mail_model.dart';
 
 import '../../shared/grouped_list.dart';
 import '../../theme/theme.dart';
 import '../conversation/reader_prefs.dart';
-import 'list_providers.dart';
+import '../subscriptions/subscription_providers.dart';
 
 /// Settings › Reading › Technical Lists: mailing lists whose messages open
 /// as plain text in Mono (with patches shown as diffs) unless the sender
@@ -20,12 +19,12 @@ class TechnicalListsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = LoupeColors.of(context);
-    final lists = ref.watch(mailingListsProvider).value ?? const <MailingList>[];
+    final lists = ref.watch(discussionsProvider);
     final technical = ref.watch(readerPrefsProvider.select((p) => p.technicalLists));
     // Lists marked before but without mail on the phone now stay listed.
-    final known = {for (final l in lists) l.id};
+    final known = {for (final l in lists) l.listId!};
     final rows = [
-      for (final l in lists) (id: l.id, name: l.name),
+      for (final l in lists) (id: l.listId!, name: l.name),
       for (final id in technical.toList()..sort())
         if (!known.contains(id)) (id: id, name: id),
     ];

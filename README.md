@@ -12,9 +12,9 @@ Status: **early development**, used daily by its owner on Android. iOS is prepar
 
 ## What it does
 
-- **Reading:** Readable mode rebuilds HTML mail to fit the screen, with footers as fine print, image carousel and gallery, and dark-mode colour fixes. Original and Plain (Sans/Mono) views are one tap away. Developer mode shows patches with diff highlighting, and mailing lists as forum-style threads.
+- **Reading:** Readable mode rebuilds HTML mail to fit the screen, with footers as fine print, image carousel and gallery, and dark-mode colour fixes. Original and Plain (Sans/Mono) views are one tap away. Developer mode shows patches with diff highlighting, and discussion lists as forum-style threads.
 - **Search:** pull-down search with chips or typed expressions (`f:alice and (s:invoice or b:"PO 123")`). Results from the phone appear at once and the server's stream in after. Smart Mailboxes are stored on your mail server (IMAP METADATA or a folder), so they follow you to other devices.
-- **Organising:** swipes with Undo, Filter button, tags compatible with Thunderbird, folder subscriptions, snooze that works across clients (a `Snoozed` folder plus a keyword), and an on-device unsubscribe centre.
+- **Organising:** swipes with Undo, Filter button, tags compatible with Thunderbird, folder subscriptions, snooze that works across clients (a `Snoozed` folder plus a keyword), and Subscriptions: newsletters by sender with an on-device unsubscribe centre, and the discussion lists you write to.
 - **Rules:** device rules, and server rules as Sieve over ManageSieve; any search can become a rule.
 - **Writing:** identities with reply-from-recipient and catch-all aliases, draft autosave, undo send, scheduled send with an Outbox.
 - **Notifications:** background sync every 15 minutes, notification actions (Archive, Mark as Read, Reply), app icon badge, and optional instant delivery (experimental).

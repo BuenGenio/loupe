@@ -12,6 +12,7 @@ import '../../providers.dart';
 import '../../router.dart';
 import '../../shared/mail_actions.dart';
 import '../../shared/sheets.dart';
+import '../conversation/reader_prefs.dart';
 import '../conversation/sheets.dart' show showSnack;
 import 'subscription_providers.dart';
 
@@ -237,6 +238,41 @@ class SubscriptionActions {
       duration: const Duration(seconds: 6),
     );
     return true;
+  }
+
+  // Newsletters and discussions --------------------------------------------------------
+
+  /// "Treat as Newsletter" / "Treat as Discussion": every List-Id of [s]
+  /// becomes [kind] on this device, with Undo.
+  Future<void> setKind(Subscription s, SubscriptionKind kind) async {
+    final subs = _subs;
+    final lists = s.listIds;
+    if (subs == null || lists.isEmpty) return;
+    unawaited(HapticFeedback.selectionClick());
+    final messenger = ScaffoldMessenger.of(context);
+    await subs.setListKind(lists, kind);
+    showSnack(
+      messenger,
+      kind == SubscriptionKind.newsletter ? '${s.name} is in Newsletters now.' : '${s.name} is in Discussions now.',
+      action: SnackBarAction(label: 'Undo', onPressed: () => unawaited(subs.setListKind(lists, s.kind))),
+    );
+  }
+
+  /// Pins the discussion [s] to the Mailboxes screen, or unpins it.
+  Future<void> togglePin(Subscription s) async {
+    final listId = s.listId;
+    if (listId == null) return;
+    unawaited(HapticFeedback.selectionClick());
+    await ref.read(pinnedListsProvider.notifier).toggle(listId);
+  }
+
+  /// Opens the messages of the discussion [s] as plain text in Mono (Settings
+  /// › Technical Lists), or in the default view again.
+  Future<void> toggleTechnical(Subscription s) async {
+    final listId = s.listId;
+    if (listId == null) return;
+    final technical = ref.read(readerPrefsProvider).technicalLists.contains(listId);
+    await ref.read(readerPrefsProvider.notifier).setTechnicalList(listId, technical: !technical);
   }
 
   Future<void> _junkInbox(Subscription s) async {

@@ -53,10 +53,16 @@ void main() {
     });
   });
 
-  testWidgets('Mailboxes lists the mailing lists; a list shows its threads forum style', (tester) async {
+  testWidgets('Subscriptions › Discussions lists the mailing lists; a list shows its threads forum style', (
+    tester,
+  ) async {
     await pumpLoupe(tester);
-    await reveal(tester, find.text('Kestrel developers'));
-    expect(find.text('Mailing Lists'), findsOneWidget);
+    // Mailboxes doesn't list every list; Subscriptions does.
+    expect(find.text('Mailing Lists'), findsNothing);
+    await tester.tap(find.text('Subscriptions'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Discussions'));
+    await tester.pumpAndSettle();
     expect(find.text('Open Garden development'), findsOneWidget);
     await tester.tap(find.text('Kestrel developers'));
     await tester.pumpAndSettle();
@@ -73,6 +79,26 @@ void main() {
     expect(find.text('PATCH v2 3/3'), findsOneWidget);
     expect(find.text('Ines Duarte, Oskar Lind, Malik Osei'), findsOneWidget);
     expect(find.text('6'), findsOneWidget);
+    await drainTimers(tester);
+  });
+
+  testWidgets('the list’s menu pins it to Mailboxes and treats it as a newsletter', (tester) async {
+    final repo = await pumpLoupe(tester);
+    await goTo(tester, Routes.mailingList(kestrel));
+    await tester.tap(find.byTooltip('List Options'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Pin to Mailboxes'));
+    await tester.pumpAndSettle();
+    final prefs = await SharedPreferences.getInstance();
+    expect(prefs.getStringList('subscriptions.pinnedLists'), [kestrel]);
+
+    await tester.tap(find.byTooltip('List Options'));
+    await tester.pumpAndSettle();
+    expect(find.text('Unpin from Mailboxes'), findsOneWidget);
+    await tester.tap(find.text('Treat as Newsletter'));
+    await tester.pumpAndSettle();
+    final kestrelSub = (await repo.watchSubscriptions().first).firstWhere((s) => s.listId == kestrel);
+    expect(kestrelSub.kind, SubscriptionKind.newsletter);
     await drainTimers(tester);
   });
 

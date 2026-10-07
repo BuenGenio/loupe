@@ -118,7 +118,7 @@ Future<void> addMails(MailStore store, List<EmailSummary> emails) async {
 }
 
 /// The schema version a store has after opening (`StoreDatabase.schemaVersion`).
-const latestSchemaVersion = 6;
+const latestSchemaVersion = 7;
 
 /// Creates a database of schema [version] at [path], as that release created
 /// it (`test/schemas/v<version>.sql`, encrypted with the key `k`), with an

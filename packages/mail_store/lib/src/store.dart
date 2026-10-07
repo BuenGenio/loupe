@@ -134,6 +134,56 @@ final class MailStore {
     _ => throw ArgumentError.value(v, 'v', 'Unsupported SQL argument'),
   };
 
+  /// [read]'s result at once and again after every change of [tables], for
+  /// what one query can't say. One read at a time; a change during a read
+  /// reads again after it. Nothing is emitted once the store is closed.
+  Stream<T> _recomputed<T>(
+    String name,
+    Set<ResultSetImplementation<dynamic, dynamic>> tables,
+    Future<T> Function() read,
+  ) {
+    // A statement of its own: drift shares streams of the same SQL, whatever
+    // tables they watch.
+    final changes = _select('SELECT 1 AS $name', const [], tables).watch();
+    StreamSubscription<List<QueryRow>>? subscription;
+    late final StreamController<T> controller;
+    var reading = false;
+    var again = false;
+    Future<void> run() async {
+      if (reading) {
+        again = true;
+        return;
+      }
+      reading = true;
+      try {
+        do {
+          again = false;
+          final value = await read();
+          if (controller.isClosed || subscription == null) return;
+          controller.add(value);
+        } while (again);
+      } catch (e, s) {
+        if (!controller.isClosed && subscription != null) controller.addError(e, s);
+      } finally {
+        reading = false;
+      }
+    }
+
+    controller = StreamController<T>.broadcast(
+      onListen: () => subscription = changes.listen(
+        (_) => unawaited(run()),
+        onError: controller.addError,
+        onDone: () => unawaited(controller.close()),
+      ),
+      onCancel: () async {
+        final s = subscription;
+        subscription = null;
+        await s?.cancel();
+      },
+    );
+    return controller.stream;
+  }
+
   Selectable<QueryRow> _select(
     String sql,
     List<Object?> args,
@@ -1117,44 +1167,6 @@ candidates AS (
   WHERE $where AND m.role NOT IN ('trash', 'junk')
 )''';
 
-  /// The mailing lists with mail, newest activity first; see
-  /// `MailingLists.watchMailingLists`. One pass over the list mail: the
-  /// newest name and post address are packed into max() ([_newest]), where
-  /// a subquery per list re-ran the whole scan for each one (200 lists in a
-  /// 40,000 message inbox took 140 ms per emission here).
-  Stream<List<MailingList>> watchMailingLists() {
-    final sql =
-        '''
-WITH ${_listCandidates('e.list_id IS NOT NULL')},
-scoped AS (
-  SELECT c.*, (t.thread_id IS NOT NULL) AS muted FROM candidates c
-  LEFT JOIN muted_threads t ON t.account_id = c.account_id AND t.thread_id = c.thread_id
-  WHERE c.copy_rank = 1
-)
-SELECT s.list_id, count(*) AS messages, sum(CASE WHEN s.is_seen = 0 AND s.muted = 0 THEN 1 ELSE 0 END) AS unread,
-  max(s.received_at) AS last_at, group_concat(DISTINCT s.account_id) AS accounts,
-  max(CASE WHEN s.list_name IS NOT NULL THEN ${_newest('s.list_name')} END) AS name,
-  max(CASE WHEN s.list_post IS NOT NULL THEN ${_newest('s.list_post')} END) AS post
-FROM scoped s GROUP BY s.list_id ORDER BY last_at DESC, s.list_id''';
-    return _select(sql, [], {_db.emails, _db.mailboxes, _db.mutedThreads})
-        .watch()
-        .distinct(_rowsEqual)
-        .map(
-          (rows) => [
-            for (final r in rows)
-              MailingList(
-                id: r.read<String>('list_id'),
-                name: _newestValue(r.read<String?>('name')) ?? r.read<String>('list_id'),
-                postAddress: listPostAddress(_newestValue(r.read<String?>('post'))),
-                messageCount: r.read<int>('messages'),
-                unreadCount: r.read<int>('unread'),
-                lastActivity: fromMillis(r.read<int>('last_at')),
-                accountIds: (r.read<String?>('accounts') ?? '').split(',').where((a) => a.isNotEmpty).toList()..sort(),
-              ),
-          ],
-        );
-  }
-
   /// The conversations of list [listId], newest activity first; see
   /// `MailingLists.watchListThreads`.
   Stream<List<ListThread>> watchListThreads(String listId, {bool includeMuted = false, int limit = 200}) {
@@ -1311,42 +1323,118 @@ ORDER BY r.last_at DESC, r.account_id, r.thread_id, r.rn_new''';
 
   /// The copies counted for subscriptions (bulk mail in scope) among
   /// `emails e` as [from] joins it, after a `me` CTE; with [key] as `mkey`,
-  /// the key of each copy's message.
-  static String _subscriptionCopiesSql(String from, {String where = 'TRUE', String key = 'NULL'}) =>
+  /// the key of each copy's message. With [details], what classifying a
+  /// list reads too: its List-Post, and whether the copy replies to mail of
+  /// its list (`SubscriptionSource.hasReplies`).
+  static String _subscriptionCopiesSql(
+    String from, {
+    String where = 'TRUE',
+    String key = 'NULL',
+    bool details = false,
+  }) =>
       '''
 SELECT e.account_id, coalesce(e.message_id_header, e.id) AS mid, e.mailbox_id, m.role, e.received_at, e.is_seen,
   e.from_email, e.list_name, e.list_unsubscribe, e.list_unsubscribe_post,
   trim(coalesce(json_extract(e.from_json, '\$[0].n'), '')) AS from_name, e.sub_key AS gkey, $key AS mkey,
-  (e.list_id IS NOT NULL OR e.list_unsubscribe IS NOT NULL) AS has_headers
+  (e.list_id IS NOT NULL OR e.list_unsubscribe IS NOT NULL) AS has_headers${details ? ', $_replySql AS is_reply, e.list_post' : ''}
 FROM $from JOIN mailboxes m ON m.id = e.mailbox_id
 WHERE e.sub_key IS NOT NULL AND $_subscriptionScopeSql AND $where''';
+
+  /// SQL true when the copy `e` answers mail of its own list: its
+  /// In-Reply-To (else its last References entry) is the Message-ID of a
+  /// stored message of the account with the same List-Id.
+  static const _replySql = '''
+(e.list_id IS NOT NULL AND (e.in_reply_to IS NOT NULL OR e.references_json <> '[]')
+  AND EXISTS (SELECT 1 FROM emails p INDEXED BY emails_message_id WHERE p.account_id = e.account_id
+    AND p.message_id_header = coalesce(e.in_reply_to, json_extract(e.references_json, '\$[#-1]'))
+    AND p.list_id = e.list_id))''';
 
   /// `subscription_messages` rows of the messages in `copies`: one per
   /// message, under the first of its copies' keys.
   static const _subscriptionMessagesSql =
-      "SELECT account_id, mid, min(gkey), max(received_at), max(is_seen), max(role = 'inbox') "
+      "SELECT account_id, mid, min(gkey), max(received_at), max(is_seen), max(role = 'inbox'), min(role = 'trash') "
       'FROM copies GROUP BY account_id, mid';
 
-  /// `subscription_details` rows of the keys in `copies` (by `mkey`): what
-  /// all copies of the key's messages say, as `summarizeSubscriptions` has it.
+  /// `subscription_details` rows of the keys in `copies` (made with
+  /// `details`, by `mkey`): what all copies of the key's messages say, as
+  /// `subscriptionSources` has it.
   static final _subscriptionDetailsSql =
       '''
 SELECT mkey, group_concat(DISTINCT mailbox_id), group_concat(DISTINCT account_id), count(DISTINCT from_email),
-  max(has_headers), max(${_newest('from_email')}),
+  count(DISTINCT CASE WHEN received_at >= key_last - ${listPostersWindow.inMilliseconds} THEN from_email END),
+  max(is_reply), max(has_headers), max(${_newest('from_email')}),
   max(CASE WHEN trim(coalesce(list_name, '')) <> '' THEN ${_newest('trim(list_name)')} END),
   max(CASE WHEN from_name <> '' THEN ${_newest('from_name')} END),
-  max(CASE WHEN list_unsubscribe IS NOT NULL THEN ${_newest("list_unsubscribe || char(31) || coalesce(list_unsubscribe_post, '')")} END)
-FROM copies GROUP BY mkey''';
+  max(CASE WHEN list_post IS NOT NULL THEN ${_newest('list_post')} END),
+  max(CASE WHEN list_unsubscribe IS NOT NULL THEN ${_newest("list_unsubscribe || char(31) || coalesce(list_unsubscribe_post, '')")} END),
+  NULL, NULL, NULL, NULL
+FROM (SELECT *, max(received_at) OVER (PARTITION BY mkey) AS key_last FROM copies) GROUP BY mkey''';
+
+  /// Fills in what SQL can't work out for the `subscription_details` rows
+  /// of [where]: whether a list is a discussion
+  /// (`SubscriptionSource.autoKind`), the key a source goes under as a
+  /// newsletter (`SubscriptionSource.newsletterKey`), and its newest List-Id
+  /// phrase and From name when they can name it (`humanName`). With them,
+  /// the sources of one newsletter are added up before they are read.
+  Future<void> _nameSources(String where) async {
+    final rows = await _select(
+      'SELECT key, senders, posters, replies, sender, list_name, from_name, post FROM subscription_details '
+      'WHERE $where',
+      const [],
+      const {},
+    ).get();
+    if (rows.isEmpty) return;
+    final values = [
+      for (final r in rows)
+        if ((
+              _newestOf(r.read<String?>('list_name')),
+              _newestOf(r.read<String?>('from_name')),
+              _newestOf(r.read<String?>('post')),
+            )
+            case (final phrase, final name, final post))
+          if (SubscriptionSource(
+                key: r.read<String>('key'),
+                address: _newestValue(r.read<String?>('sender')) ?? '',
+                senderCount: r.read<int>('senders'),
+                posters: r.read<int>('posters'),
+                hasReplies: (r.read<int?>('replies') ?? 0) != 0,
+                fromName: name,
+                listPost: post,
+              )
+              case final source)
+            [
+              source.key,
+              source.autoKind.name,
+              source.newsletterKey,
+              humanName(phrase?.value) == null ? 0 : 1,
+              humanName(name?.value) == null ? 0 : 1,
+            ],
+    ];
+    await _db.customStatement(
+      "UPDATE subscription_details SET auto_kind = json_extract(j.value, '\$[1]'), "
+      "nkey = json_extract(j.value, '\$[2]'), "
+      "human_phrase = CASE WHEN json_extract(j.value, '\$[3]') = 1 THEN list_name END, "
+      "human_name = CASE WHEN json_extract(j.value, '\$[4]') = 1 THEN from_name END "
+      "FROM json_each(?) j WHERE subscription_details.key = json_extract(j.value, '\$[0]')",
+      [jsonEncode(values)],
+    );
+  }
 
   /// The copies of the messages that [from] joins as `s` (rows with
   /// `account_id` and `mid`), copies found by Message-ID or else by id, with
   /// [key] as `mkey`. The joined rows come first (CROSS JOIN): they are few.
-  static String _copiesOfMessagesSql(String from, {String key = 's.key'}) => [
+  static String _copiesOfMessagesSql(String from, {String key = 's.key', bool details = false}) => [
     _subscriptionCopiesSql(
       '$from CROSS JOIN emails e ON e.account_id = s.account_id AND e.message_id_header = s.mid',
       key: key,
+      details: details,
     ),
-    _subscriptionCopiesSql('$from CROSS JOIN emails e ON e.id = s.mid', where: 'e.message_id_header IS NULL', key: key),
+    _subscriptionCopiesSql(
+      '$from CROSS JOIN emails e ON e.id = s.mid',
+      where: 'e.message_id_header IS NULL',
+      key: key,
+      details: details,
+    ),
   ].join(' UNION ALL ');
 
   /// Brings the Subscriptions screen's data up to date (see
@@ -1375,16 +1463,27 @@ FROM copies GROUP BY mkey''';
         'emails e JOIN subscription_messages s ON s.account_id = e.account_id '
         'AND s.mid = coalesce(e.message_id_header, e.id)',
         key: 's.key',
+        details: true,
       );
       await run(
         'WITH me(addr) AS ($_meSql), copies AS ($all) INSERT INTO subscription_details $_subscriptionDetailsSql',
       );
+      await _nameSources('TRUE');
     } else {
       // The keys of the marked messages, before and after they are redone.
       const keysOfDirty =
           'INSERT OR IGNORE INTO subscription_dirty_keys SELECT s.key FROM subscription_dirty d '
           'CROSS JOIN subscription_messages s ON s.account_id = d.account_id AND s.mid = d.mid';
       await run(keysOfDirty);
+      // And the lists of marked messages that don't count (the user's own
+      // posts): what answers them makes a list a discussion.
+      await run(
+        'INSERT OR IGNORE INTO subscription_dirty_keys SELECT e.sub_key FROM subscription_dirty d '
+        'CROSS JOIN emails e ON e.account_id = d.account_id AND e.message_id_header = d.mid '
+        'WHERE e.list_id IS NOT NULL AND e.sub_key IS NOT NULL '
+        'UNION SELECT e.sub_key FROM subscription_dirty d CROSS JOIN emails e ON e.id = d.mid '
+        'WHERE e.message_id_header IS NULL AND e.list_id IS NOT NULL AND e.sub_key IS NOT NULL',
+      );
       await run(
         'DELETE FROM subscription_messages WHERE (account_id, mid) IN (SELECT account_id, mid FROM subscription_dirty)',
       );
@@ -1396,105 +1495,176 @@ FROM copies GROUP BY mkey''';
       await run('DELETE FROM subscription_details WHERE key IN (SELECT key FROM subscription_dirty_keys)');
       final keys = _copiesOfMessagesSql(
         'subscription_dirty_keys k CROSS JOIN subscription_messages s ON s.key = k.key',
+        details: true,
       );
       await run(
         'WITH me(addr) AS ($_meSql), copies AS ($keys) INSERT INTO subscription_details $_subscriptionDetailsSql',
       );
+      await _nameSources('key IN (SELECT key FROM subscription_dirty_keys)');
     }
     await run('DELETE FROM subscription_dirty');
     await run('DELETE FROM subscription_dirty_keys');
   });
 
-  /// The subscriptions as [watchSubscriptions] lists them, counting recent
-  /// mail from [cutoff] (epoch milliseconds), after bringing the data up to
-  /// date if anything changed.
-  Future<List<QueryRow>> _subscriptionRows(int cutoff) async {
+  /// The sources of bulk mail (see `SubscriptionSource`), counting recent
+  /// mail from [cutoff] (epoch milliseconds), and the kinds the user chose
+  /// for lists; after bringing the data up to date if anything changed.
+  Future<(List<QueryRow>, List<QueryRow>)> _subscriptionRows(int cutoff) async {
+    // Discussions, and lists that stay one newsletter, are sources of their
+    // own; the other sources that go under one newsletter (a sender's
+    // campaigns, its addresses) are added up here, so about as many rows
+    // come back as there are subscriptions, and `groupSubscriptions` has
+    // little left to do.
     const sql = '''
 WITH stats AS (
-  SELECT key AS gkey, count(*) AS total, sum(seen) AS seen, sum(received_at >= ?1) AS recent,
-    sum(CASE WHEN received_at >= ?1 THEN seen ELSE 0 END) AS recent_seen, sum(inbox) AS inbox,
-    max(received_at) AS last_at
+  SELECT key AS gkey, count(*) AS total, sum(seen) AS seen, sum(seen = 0 AND trash = 0) AS unread,
+    sum(received_at >= ?1) AS recent, sum(CASE WHEN received_at >= ?1 THEN seen ELSE 0 END) AS recent_seen,
+    sum(inbox) AS inbox, max(received_at) AS last_at
   FROM subscription_messages GROUP BY key
+),
+sources AS (
+  SELECT s.*, d.*, CASE WHEN d.key LIKE 'list:%' AND coalesce(k.kind, d.auto_kind) = 'discussion' THEN d.key
+    ELSE coalesce(d.nkey, d.key) END AS skey
+  FROM stats s JOIN subscription_details d ON d.key = s.gkey LEFT JOIN list_kinds k ON k.list_id = substr(d.key, 6)
+  WHERE d.has_headers = 1 OR s.total >= 2
 )
-SELECT s.*, d.boxes, d.accounts, d.senders, d.sender, d.list_name, d.from_name, d.unsubscribe
-FROM stats s JOIN subscription_details d ON d.key = s.gkey
-WHERE d.has_headers = 1 OR s.total >= 2''';
-    final read = _select(sql, [cutoff], const {});
+SELECT gkey, NULL AS keys, total, seen, unread, recent, recent_seen, inbox, last_at, boxes, accounts, senders,
+  posters, replies, sender, list_name, from_name, post, unsubscribe
+FROM sources WHERE skey = gkey AND gkey LIKE 'list:%'
+UNION ALL
+SELECT skey, group_concat(gkey, char(30)), sum(total), sum(seen), sum(unread), sum(recent), sum(recent_seen),
+  sum(inbox), max(last_at), group_concat(boxes), group_concat(accounts), max(senders), max(posters), max(replies),
+  max(sender), max(human_phrase), max(human_name), max(post), max(unsubscribe)
+FROM sources WHERE NOT (skey = gkey AND gkey LIKE 'list:%') GROUP BY skey''';
+    Future<(List<QueryRow>, List<QueryRow>)> read() async => (
+      await _select(sql, [cutoff], const {}).get(),
+      await _select('SELECT list_id, kind FROM list_kinds', const [], const {}).get(),
+    );
     final dirty = await _select(
       'SELECT EXISTS (SELECT 1 FROM subscription_dirty_keys) OR EXISTS (SELECT 1 FROM subscription_dirty) AS d',
       const [],
       const {},
     ).getSingle();
-    if (dirty.read<int>('d') == 0) return read.get();
+    if (dirty.read<int>('d') == 0) return read();
     return _db.transaction(() async {
       await _refreshSubscriptions();
-      return read.get();
+      return read();
     });
   }
 
-  /// Bulk mail grouped into subscriptions, ranked by
+  /// The subscriptions, counting recent mail from [cutoff].
+  Future<List<Subscription>> _subscriptions(int cutoff) async {
+    final (rows, kindRows) = await _subscriptionRows(cutoff);
+    final kinds = {
+      for (final r in kindRows)
+        if (SubscriptionKind.values.asNameMap()[r.read<String>('kind')] case final kind?)
+          r.read<String>('list_id'): kind,
+    };
+    return groupSubscriptions([for (final r in rows) _sourceFromRow(r)], kinds: kinds);
+  }
+
+  /// Bulk mail grouped into newsletters and discussions, ranked by
   /// `Subscription.compareByNeglect`; see `MailSubscriptions`. Counts read
   /// and recent mail relative to [now].
   ///
-  /// The groups are kept in tables that triggers mark out of date as mail
+  /// The sources are kept in tables that triggers mark out of date as mail
   /// changes (see `_subscriptionSchema`): opening the screen redoes only
-  /// what changed since it was last open, not every message.
+  /// what changed since it was last open, not every message. Grouping the
+  /// few hundred sources (`groupSubscriptions`) is done as they are read.
   Stream<List<Subscription>> watchSubscriptions({DateTime? now}) {
     final cutoff = (now ?? DateTime.now()).subtract(Subscription.window).millisecondsSinceEpoch;
-    // Emits at once and after every change of these tables.
-    return _select('SELECT 1', const [], {_db.emails, _db.mailboxes, _db.accounts})
-        .watch()
-        .asyncMap((_) => _subscriptionRows(cutoff))
-        .distinct(_rowsEqual)
-        .map((rows) => [for (final r in rows) _subscriptionFromRow(r)]..sort(Subscription.compareByNeglect));
+    return _recomputed('subscriptions', {
+      _db.emails,
+      _db.mailboxes,
+      _db.accounts,
+      _db.listKinds,
+    }, () => _subscriptions(cutoff)).distinct(_listEquals);
   }
 
-  static Subscription _subscriptionFromRow(QueryRow r) {
-    final key = r.read<String>('gkey');
-    final address = _newestValue(r.read<String?>('sender')) ?? '';
-    final isList = key.startsWith('list:');
-    final name =
-        (isList ? _newestValue(r.read<String?>('list_name')) : null) ?? _newestValue(r.read<String?>('from_name'));
-    final unsubscribe = _newestValue(r.read<String?>('unsubscribe'))?.split('\u001f');
+  /// A packed "newest value" ([_newest]) with its time.
+  static NewestValue? _newestOf(String? packed) {
+    if (packed == null) return null;
+    final at = packed.indexOf('\u001f');
+    final millis = at < 0 ? null : int.tryParse(packed.substring(0, at));
+    return millis == null ? null : (at: fromMillis(millis), value: packed.substring(at + 1));
+  }
+
+  static SubscriptionSource _sourceFromRow(QueryRow r) {
     List<String> split(String column) =>
         (r.read<String?>(column) ?? '').split(',').where((s) => s.isNotEmpty).toList()..sort();
-    return Subscription(
-      key: key,
-      name: name ?? (isList ? key.substring(5) : address),
-      address: address,
+    return SubscriptionSource(
+      key: r.read<String>('gkey'),
+      keys: r.read<String?>('keys')?.split('\u001e') ?? const [],
+      address: _newestValue(r.read<String?>('sender')) ?? '',
       messageCount: r.read<int>('total'),
       readCount: r.read<int>('seen'),
+      unreadCount: r.read<int>('unread'),
       recentCount: r.read<int>('recent'),
       recentReadCount: r.read<int>('recent_seen'),
       inboxCount: r.read<int>('inbox'),
       senderCount: r.read<int>('senders'),
+      posters: r.read<int>('posters'),
+      hasReplies: (r.read<int?>('replies') ?? 0) != 0,
       lastReceived: fromMillis(r.read<int>('last_at')),
       mailboxIds: split('boxes'),
       accountIds: split('accounts'),
-      listUnsubscribe: unsubscribe?.first,
-      listUnsubscribePost: switch (unsubscribe) {
-        [_, final post] when post.isNotEmpty => post,
-        _ => null,
-      },
+      fromName: _newestOf(r.read<String?>('from_name')),
+      listName: _newestOf(r.read<String?>('list_name')),
+      listPost: _newestOf(r.read<String?>('post')),
+      unsubscribe: _newestOf(r.read<String?>('unsubscribe')),
     );
   }
 
   /// The messages of subscription [key], newest first; see
-  /// `MailSubscriptions.watchSubscriptionEmails`.
-  Stream<List<EmailSummary>> watchSubscriptionEmails(String key, {bool inboxOnly = false, int limit = 200}) {
-    if (!key.startsWith('list:') && !key.startsWith('from:')) return Stream.value(const []);
-    final sql =
-        '''
+  /// `MailSubscriptions.watchSubscriptionEmails`. Which sources it has is
+  /// worked out again as mail changes.
+  Stream<List<EmailSummary>> watchSubscriptionEmails(
+    String key, {
+    bool inboxOnly = false,
+    int limit = 200,
+    DateTime? now,
+  }) {
+    if (!key.startsWith('list:') && !key.startsWith('from:') && !key.startsWith('sender:')) {
+      return Stream.value(const []);
+    }
+    final cutoff = (now ?? DateTime.now()).subtract(Subscription.window).millisecondsSinceEpoch;
+    Future<List<EmailSummary>> read() async {
+      final subs = await _subscriptions(cutoff);
+      final group = subs.where((s) => s.key == key).firstOrNull;
+      // Else the key of a source (a list, a sender): its own mail.
+      final sources = group?.sourceKeys ?? [if (!key.startsWith('sender:')) key];
+      if (sources.isEmpty) return const <EmailSummary>[];
+      final sql =
+          '''
 WITH me(addr) AS ($_meSql)
 SELECT e.* FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id
-WHERE e.sub_key = ? AND $_subscriptionScopeSql${inboxOnly ? " AND m.role = 'inbox'" : ''}
+WHERE e.sub_key IN (${List.filled(sources.length, '?').join(', ')}) AND $_subscriptionScopeSql${inboxOnly ? " AND m.role = 'inbox'" : ''}
 ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
-    return _select(
-      sql,
-      [key, limit],
-      {_db.emails, _db.mailboxes, _db.accounts, _db.emailKeywords},
-    ).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) summaryFromRow(_emailRow(r))]);
+      final rows = await _select(sql, [...sources, limit], const {}).get();
+      return [for (final r in rows) summaryFromRow(_emailRow(r))];
+    }
+
+    return _recomputed('subscription_emails', {
+      _db.emails,
+      _db.mailboxes,
+      _db.accounts,
+      _db.emailKeywords,
+      _db.listKinds,
+    }, read).distinct(_summariesEqual);
   }
+
+  /// Treats the lists [listIds] as [kind] ("Treat as Newsletter"), or as
+  /// they are classified with null; see `MailSubscriptions.setListKind`.
+  Future<void> setListKind(Iterable<String> listIds, SubscriptionKind? kind) => _db.transaction(() async {
+    for (final id in {for (final l in listIds) l.trim().toLowerCase()}) {
+      if (id.isEmpty) continue;
+      if (kind == null) {
+        await (_db.delete(_db.listKinds)..where((k) => k.listId.equals(id))).go();
+      } else {
+        await _db.into(_db.listKinds).insertOnConflictUpdate(ListKindsCompanion.insert(listId: id, kind: kind.name));
+      }
+    }
+  });
 
   // Search ------------------------------------------------------------------
 
@@ -2042,6 +2212,24 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
     ).get();
     return [for (final r in rows) EmailAddress(r.read<String>('email'), r.readNullable<String>('name'))];
   }
+}
+
+bool _listEquals<T>(List<T> a, List<T> b) {
+  if (a.length != b.length) return false;
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] != b[i]) return false;
+  }
+  return true;
+}
+
+/// Summaries that show the same: equal ids, keywords and mailboxes are not
+/// enough (`EmailSummary ==`), a subject decrypted since is a change too.
+bool _summariesEqual(List<EmailSummary> a, List<EmailSummary> b) {
+  if (a.length != b.length) return false;
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] != b[i] || a[i].subject != b[i].subject) return false;
+  }
+  return true;
 }
 
 bool _rowsEqual(List<QueryRow> a, List<QueryRow> b) {

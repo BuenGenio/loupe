@@ -117,6 +117,7 @@ _bigStore() async {
       hasAttachment: random.nextInt(12) == 0,
       listId: list,
       listName: list == null ? null : 'List ${uid ~/ 10 % _lists}',
+      listPost: list == null ? null : '<mailto:${list.replaceFirst('.', '@')}>',
     );
   }
 
@@ -345,21 +346,23 @@ void main() {
     }
   });
 
-  test('mailing lists', () async {
-    final lists = await store.watchMailingLists().first;
-    expect(lists, hasLength(_lists));
-    for (final l in lists) {
-      expect(l.name, 'List ${l.id.substring(4, l.id.indexOf('.'))}');
-    }
-    await first('watchMailingLists', store.watchMailingLists);
-    await first('watchListThreads', () => store.watchListThreads(lists.first.id));
+  test('subscriptions and mailing lists', () async {
     // The first read groups every message (once, after the upgrade); later
     // ones read what is kept, redoing only what changed.
     final build = Stopwatch()..start();
-    await store.watchSubscriptions(now: base.add(const Duration(days: 999))).first;
+    final subs = await store.watchSubscriptions(now: base.add(const Duration(days: 999))).first;
     _report(
       '${'watchSubscriptions (first: groups all)'.padRight(48)} ${build.elapsedMilliseconds.toString().padLeft(6)} ms',
     );
+    final lists = [
+      for (final s in subs)
+        if (s.isDiscussion) s,
+    ];
+    expect(lists, hasLength(_lists));
+    for (final l in lists) {
+      expect(l.name, 'List ${l.listId!.substring(4, l.listId!.indexOf('.'))}');
+    }
+    await first('watchListThreads', () => store.watchListThreads(lists.first.listId!));
     await first('watchSubscriptions', () => store.watchSubscriptions(now: base.add(const Duration(days: 1000))));
     final inbox = await store.watchList(RealMailboxRef(mbox('INBOX')), threaded: false, limit: 100).first;
     await measure('watchSubscriptions: read 100, reopen, twice', () async {

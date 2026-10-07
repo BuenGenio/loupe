@@ -16,16 +16,23 @@ EmailSummary mail(
   String? listName,
   String? unsubscribe,
   String? post,
+  String? listPost,
+  String? inReplyTo,
+  List<String> references = const [],
+  int minutes = 0,
 }) => EmailSummary(
   id: id,
   accountId: account,
   mailboxId: '$account/$box',
-  receivedAt: now.subtract(Duration(days: daysAgo)),
+  receivedAt: now.subtract(Duration(days: daysAgo, minutes: minutes)),
   messageIdHeader: messageId,
+  inReplyTo: inReplyTo,
+  references: references,
   from: [EmailAddress(from, name)],
   keywords: seen ? {Keywords.seen} : const {},
   listId: listId,
   listName: listName,
+  listPost: listPost,
   listUnsubscribe: unsubscribe,
   listUnsubscribePost: post,
 );
@@ -301,8 +308,320 @@ void main() {
         roleOf: role,
         now: now,
       );
-      expect(subs.single.name, 'ping@app.example');
+      expect(subs.single.name, 'app.example', reason: 'no name: the domain');
       expect(subs.single.unsubscribe, isEmpty);
     });
+  });
+
+  group('classification', () {
+    const post = '<mailto:dev@lists.example.org>';
+    final cases = <(String, SubscriptionSource, SubscriptionKind)>[
+      (
+        'posting allowed, two posters',
+        const SubscriptionSource(key: 'list:dev.example.org', address: 'a@x', posters: 2),
+        SubscriptionKind.discussion,
+      ),
+      (
+        'posting allowed, one poster answering the list',
+        const SubscriptionSource(key: 'list:dev.example.org', address: 'a@x', hasReplies: true),
+        SubscriptionKind.discussion,
+      ),
+      (
+        'an announcement list: one poster, no replies',
+        const SubscriptionSource(key: 'list:news.example.org', address: 'a@x'),
+        SubscriptionKind.newsletter,
+      ),
+      (
+        'List-Post: NO',
+        const SubscriptionSource(key: 'list:dev.example.org', address: 'a@x', posters: 5, hasReplies: true),
+        SubscriptionKind.newsletter,
+      ),
+      (
+        'no List-Post (a newsletter with a List-Id)',
+        const SubscriptionSource(key: 'list:123.broadcast', address: 'a@x', posters: 3, hasReplies: true),
+        SubscriptionKind.newsletter,
+      ),
+      (
+        'List-Post without mailto:',
+        const SubscriptionSource(key: 'list:dev.example.org', address: 'a@x', posters: 3),
+        SubscriptionKind.newsletter,
+      ),
+      (
+        'not a list',
+        const SubscriptionSource(key: 'from:a@x', address: 'a@x', posters: 3, hasReplies: true),
+        SubscriptionKind.newsletter,
+      ),
+    ];
+    final posts = {
+      'posting allowed, two posters': post,
+      'posting allowed, one poster answering the list': post,
+      'an announcement list: one poster, no replies': post,
+      'List-Post: NO': 'NO',
+      'no List-Post (a newsletter with a List-Id)': null,
+      'List-Post without mailto:': '<https://groups.example.org/post>',
+      'not a list': post,
+    };
+    for (final (name, source, kind) in cases) {
+      test(name, () {
+        final withPost = SubscriptionSource(
+          key: source.key,
+          address: source.address,
+          posters: source.posters,
+          hasReplies: source.hasReplies,
+          listPost: posts[name] == null ? null : (at: now, value: posts[name]!),
+        );
+        expect(withPost.autoKind, kind);
+      });
+    }
+
+    test('from the mail: posters within a year of the newest message, replies within the list', () {
+      final subs = summarizeSubscriptions(
+        [
+          // Three people write to the Kestrel list.
+          for (final (i, who) in ['ines', 'oskar', 'malik'].indexed)
+            mail(
+              'k$i',
+              from: '$who@kestrel.example',
+              name: who,
+              messageId: 'k$i@kestrel.example',
+              listId: 'dev.lists.example.org',
+              listName: 'Kestrel developers',
+              listPost: post,
+              daysAgo: i,
+            ),
+          // One person and their own follow-up: a reply within the list.
+          mail('q1', from: 'ann@q.example', messageId: 'q1@q', listId: 'q.example.org', listPost: '<mailto:q@q>'),
+          mail(
+            'q2',
+            from: 'ann@q.example',
+            messageId: 'q2@q',
+            inReplyTo: 'q1@q',
+            listId: 'q.example.org',
+            listPost: '<mailto:q@q>',
+          ),
+          // A reply to mail of another list doesn't count.
+          mail(
+            'o1',
+            from: 'bo@o.example',
+            messageId: 'o1@o',
+            references: ['q1@q'],
+            listId: 'o.example.org',
+            listPost: '<mailto:o@o>',
+          ),
+          // A newsletter whose sender changed address two years ago.
+          mail(
+            'n1',
+            from: 'old@news.example',
+            messageId: 'n1@n',
+            listId: 'n.example.org',
+            listPost: '<mailto:n@n>',
+            daysAgo: 800,
+          ),
+          mail('n2', from: 'news@news.example', messageId: 'n2@n', listId: 'n.example.org', listPost: '<mailto:n@n>'),
+        ],
+        roleOf: role,
+        now: now,
+      );
+      final byKey = {for (final s in subs) s.key: s};
+      final kestrel = byKey['list:dev.lists.example.org']!;
+      expect(kestrel.kind, SubscriptionKind.discussion);
+      expect(kestrel.name, 'Kestrel developers');
+      expect(kestrel.postAddress?.email, 'dev@lists.example.org');
+      expect(kestrel.senderCount, 3);
+      expect(byKey['list:q.example.org']!.kind, SubscriptionKind.discussion);
+      expect(byKey['from:bo@o.example']!.kind, SubscriptionKind.newsletter);
+      expect(byKey['from:bo@o.example']!.listIds, ['o.example.org']);
+      final n = byKey['list:n.example.org']!;
+      expect(n.kind, SubscriptionKind.newsletter, reason: 'one poster in the last year');
+      expect(n.senderCount, 2);
+    });
+  });
+
+  group('names', () {
+    String name(
+      SubscriptionKind kind, {
+      String? phrase,
+      String? listId,
+      String? post,
+      String? from,
+      String? address,
+      int senders = 3,
+    }) => subscriptionName(
+      kind: kind,
+      phrase: phrase,
+      listId: listId,
+      postAddress: post == null ? null : EmailAddress(post),
+      fromName: from,
+      address: address ?? 'news@mail.example.com',
+      senderCount: senders,
+    );
+    const n = SubscriptionKind.newsletter;
+    const d = SubscriptionKind.discussion;
+
+    test('newsletters: a human List-Id phrase, else the sender’s name, else its domain', () {
+      expect(name(n, phrase: 'Field Notes Weekly', from: 'Field Notes'), 'Field Notes Weekly');
+      expect(name(n, phrase: 'NTE4NjMwOC0yNDA1MC00MA==', from: 'Example Sender'), 'Example Sender');
+      expect(name(n, phrase: 'cac06e6fcbbfef544827181d7mc list', from: 'Linear'), 'Linear');
+      expect(name(n, listId: 'spc.265094.4.sparkpostmail.com', from: 'HSBC'), 'HSBC');
+      expect(name(n, listId: '1175803732', from: 'news@mail.example.com'), 'example.com');
+      expect(name(n, phrase: '111929.broadcast', address: 'noreply@news.hsbc.co.uk'), 'hsbc.co.uk');
+    });
+
+    test('discussions: the phrase, the List-Id, the list address; never a poster', () {
+      expect(
+        name(d, phrase: 'Kestrel developers', listId: 'dev.lists.example.org', from: 'Ines'),
+        'Kestrel developers',
+      );
+      expect(name(d, listId: 'dev.lists.example.org', from: 'Ines'), 'dev.lists.example.org');
+      expect(
+        name(d, listId: 'MTEyNzQxMzMtODAtNQ==', post: 'Team@Lists.Example.org', from: 'Ines'),
+        'team@lists.example.org',
+      );
+      expect(name(d, listId: '1175803732', from: 'Ines', address: 'ines@kestrel.example'), 'kestrel.example');
+      // A list treated as a discussion that one sender writes to.
+      expect(name(d, listId: '1175803732', from: 'Tidepool', senders: 1), 'Tidepool');
+    });
+  });
+
+  group('newsletters by sender', () {
+    test('per-campaign List-Ids from one sender are one newsletter', () {
+      final subs = summarizeSubscriptions(
+        [
+          mail(
+            '1',
+            from: 'news@example-sender.example',
+            name: 'Example Sender',
+            listId: 'nte4njmwoc0ynda1mc00ma==.sendsay.example',
+            listName: 'NTE4NjMwOC0yNDA1MC00MA==',
+            unsubscribe: '<https://example-sender.example/u/40>',
+            daysAgo: 9,
+          ),
+          mail(
+            '2',
+            from: 'News@Example-Sender.example',
+            name: 'Example Sender',
+            listId: 'nte4njmwoc0ynda1mc00mq==.sendsay.example',
+            listName: 'NTE4NjMwOC0yNDA1MC00MQ==',
+            unsubscribe: '<https://example-sender.example/u/41>',
+            daysAgo: 2,
+            seen: true,
+          ),
+          // Its mail without a List-Id, and with a +tag.
+          mail('3', from: 'news+promo@example-sender.example', name: 'Example Sender', unsubscribe: '<mailto:u@x>'),
+        ],
+        roleOf: role,
+        now: now,
+      );
+      final s = subs.single;
+      expect(s.key, 'from:news@example-sender.example');
+      expect(s.kind, SubscriptionKind.newsletter);
+      expect(s.name, 'Example Sender');
+      expect(s.messageCount, 3);
+      expect(s.readCount, 1);
+      expect(s.sourceKeys, [
+        'from:news+promo@example-sender.example',
+        'list:nte4njmwoc0ynda1mc00ma==.sendsay.example',
+        'list:nte4njmwoc0ynda1mc00mq==.sendsay.example',
+      ]);
+      expect(s.listIds, hasLength(2));
+      expect(s.listUnsubscribe, '<mailto:u@x>', reason: 'the newest');
+    });
+
+    test('per-campaign sender addresses group by name and domain', () {
+      final subs = summarizeSubscriptions(
+        [
+          for (final (i, c) in ['40', '41', '42'].indexed)
+            mail(
+              '$i',
+              from: '5186308-24050-$c@send.example-sender.example',
+              name: 'Example Sender',
+              listId: '5186308-24050-$c.sendsay',
+              daysAgo: i,
+            ),
+          // Another sender of the same service stays apart.
+          mail('9', from: '777-1@send.example-sender.example', name: 'Other Brand', listId: '777-1.sendsay'),
+        ],
+        roleOf: role,
+        now: now,
+      );
+      expect(
+        subs.map((s) => (s.key, s.name, s.messageCount)),
+        unorderedEquals([
+          ('sender:example-sender.example/example sender', 'Example Sender', 3),
+          ('sender:example-sender.example/other brand', 'Other Brand', 1),
+        ]),
+      );
+      expect(subs.firstWhere((s) => s.messageCount == 3).isBrand, isTrue);
+      expect(subs.firstWhere((s) => s.messageCount == 3).brandDomain, 'example-sender.example');
+    });
+  });
+
+  group('the user’s choice', () {
+    final emails = [
+      for (final (i, who) in ['ines', 'oskar'].indexed)
+        mail(
+          'k$i',
+          from: '$who@kestrel.example',
+          messageId: 'k$i@k',
+          listId: 'dev.lists.example.org',
+          listName: 'Kestrel developers',
+          listPost: '<mailto:dev@lists.example.org>',
+          daysAgo: i,
+        ),
+      mail(
+        'a1',
+        from: 'team@shop.example',
+        name: 'Shop',
+        listId: 'announce.shop.example',
+        listPost: '<mailto:a@shop.example>',
+      ),
+      mail('a2', from: 'team@shop.example', name: 'Shop', unsubscribe: '<mailto:u@shop.example>', daysAgo: 3),
+    ];
+
+    test('as classified', () {
+      final subs = summarizeSubscriptions(emails, roleOf: role, now: now);
+      expect(
+        {for (final s in subs) s.key: s.kind},
+        {
+          'list:dev.lists.example.org': SubscriptionKind.discussion,
+          'from:team@shop.example': SubscriptionKind.newsletter,
+        },
+      );
+    });
+
+    test('Treat as Newsletter, Treat as Discussion', () {
+      final subs = summarizeSubscriptions(
+        emails,
+        roleOf: role,
+        now: now,
+        kinds: {
+          'dev.lists.example.org': SubscriptionKind.newsletter,
+          'announce.shop.example': SubscriptionKind.discussion,
+        },
+      );
+      expect(
+        {for (final s in subs) s.key: (s.kind, s.messageCount)},
+        {
+          // Two senders: a newsletter list of its own.
+          'list:dev.lists.example.org': (SubscriptionKind.newsletter, 2),
+          'list:announce.shop.example': (SubscriptionKind.discussion, 1),
+          'from:team@shop.example': (SubscriptionKind.newsletter, 1),
+        },
+      );
+    });
+  });
+
+  test('unread: not what waits in Trash', () {
+    final subs = summarizeSubscriptions(
+      [
+        mail('1', listId: 'l.example', unsubscribe: '<mailto:u@x>'),
+        mail('2', listId: 'l.example', box: 'Trash', daysAgo: 2),
+        mail('3', listId: 'l.example', seen: true, daysAgo: 3),
+      ],
+      roleOf: role,
+      now: now,
+    );
+    expect(subs.single.messageCount, 3);
+    expect(subs.single.unreadCount, 1);
   });
 }

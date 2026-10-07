@@ -16,7 +16,7 @@ import '../compose/compose_args.dart';
 import '../keyboard/mail_commands.dart';
 import '../keyboard/shortcut_sheet.dart';
 import '../keyboard/shortcuts.dart';
-import '../mailing_lists/list_providers.dart';
+import '../subscriptions/subscription_providers.dart';
 import '../search/search_session.dart';
 import 'fuzzy.dart';
 
@@ -227,7 +227,23 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
     ..add(place('mailbox.snoozed', 'Snoozed', LoupeIcons.snoozed, Routes.snoozed))
     ..add(place('mailbox.outbox', 'Outbox', LoupeIcons.outbox, Routes.outbox))
     ..add(
-      place('tool.subscriptions', 'Subscriptions', LoupeIcons.subscriptions, Routes.subscriptions, subtitle: 'Tools'),
+      place(
+        'mailbox.subscriptions',
+        'Subscriptions',
+        LoupeIcons.subscriptions,
+        Routes.subscriptions,
+        keywords: const ['newsletters', 'unsubscribe', 'mailing lists', 'discussions'],
+      ),
+    )
+    ..add(
+      place(
+        'mailbox.subscriptions.discussions',
+        'Discussions',
+        LoupeIcons.mailingList,
+        Routes.subscriptionsTab(SubscriptionKind.discussion),
+        subtitle: 'Subscriptions',
+        keywords: const ['mailing lists'],
+      ),
     );
   final mailboxes = container.read(mailboxesProvider).value ?? const <Mailbox>[];
   final showAll = container.read(showAllFoldersProvider);
@@ -259,9 +275,15 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
       place('smart.${s.id}', s.name, LoupeIcons.smartMailbox, Routes.smartMailbox(s.id), subtitle: 'Smart Mailbox'),
     );
   }
-  for (final l in container.read(mailingListsProvider).value ?? const <MailingList>[]) {
+  for (final l in container.read(discussionsProvider)) {
     items.add(
-      place('list.${l.id}', l.name, LoupeIcons.mailingList, Routes.mailingList(l.id), subtitle: 'Mailing List'),
+      place(
+        'list.${l.listId}',
+        l.name,
+        LoupeIcons.mailingList,
+        Routes.mailingList(l.listId!),
+        subtitle: 'Mailing List',
+      ),
     );
   }
   for (final tag in TagDefinition.thunderbirdDefaults) {
