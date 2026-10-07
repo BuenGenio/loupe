@@ -94,6 +94,14 @@ final class StoreSmimeKeys implements SmimeSendKeys {
   void lockAll() => _unlocked.clear();
 }
 
+/// The user's certificates whose keys are in the app without a passphrase:
+/// what background work may use without asking anyone.
+List<SmimeKeyPair> smimeKeysWithoutPassphrase(StoreSmimeKeys keys) => [
+  for (final o in keys.store.state.own)
+    if (!o.hasPassphrase && !o.onDevice)
+      if (keys.smimeKey(o.fingerprint) case final SmimePrivateKey key) SmimeKeyPair(o.certificate, key),
+];
+
 /// What the composer chain reads at send time: OpenPGP's keys and S/MIME's.
 final class SecureSendKeys implements PgpSendKeys, SmimeSendKeys {
   SecureSendKeys(this.pgp, this.smime);

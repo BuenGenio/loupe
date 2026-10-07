@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../smime/smime_providers.dart';
 import 'decrypted_mail.dart';
 import 'openpgp_providers.dart';
 
@@ -77,20 +78,24 @@ class _ProtectedSubjectsWatcherState extends ConsumerState<ProtectedSubjectsWatc
   }
 
   /// Keys stored without a passphrase are unlocked from the start (and
-  /// pinned); protected ones are never used here, even when unlocked.
+  /// pinned); protected ones are never used here, even when unlocked, nor
+  /// S/MIME keys on the device.
   Future<SubjectDecryptor?> _decryptor() async {
     final service = await ref.read(openPgpServiceProvider.future);
     await service.ready;
+    final smime = await ref.read(smimeServiceProvider.future);
     if (!mounted) return null;
     final keys = [
       for (final k in service.state.ownKeys)
         if (!k.isProtected) ?service.unlockedKey(k.fingerprint),
     ];
+    final smimeKeys = smimeKeysWithoutPassphrase(smime.keys);
     final run = ref.read(pgpRunnerProvider);
-    return keys.isEmpty
+    return keys.isEmpty && smimeKeys.isEmpty
         ? null
         : SubjectDecryptor(
             keys: keys,
+            smimeKeys: smimeKeys,
             indexText: ref.read(decryptedMailSettingsProvider).indexForSearch,
             run: (work) => run(work),
           );

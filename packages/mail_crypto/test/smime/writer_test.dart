@@ -169,7 +169,11 @@ void main() {
           '-CAfile', 'test/fixtures/smime/root.crt',
         ]);
         expect(verified.exitCode, 0, reason: '${verified.stderr}');
-        expect(latin1.decode(verified.stdout as List<int>), contains('The numbers are in.'));
+        // The text part carries the legacy display, base64-encoded (RFC 9788).
+        final inner = MimeEntity.parse(Uint8List.fromList(verified.stdout as List<int>));
+        expect(inner.contentType['hp'], 'cipher');
+        expect(inner.parts.first.text, startsWith('Subject: Quarterly numbers\r\n\r\nHi Bob,'));
+        expect(inner.parts.first.text, contains('The numbers are in.'));
       }
     }, skip: openssl == null ? 'openssl is not installed' : null);
   });

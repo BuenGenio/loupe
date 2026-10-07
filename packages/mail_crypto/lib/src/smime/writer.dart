@@ -1,7 +1,8 @@
 /// Writing S/MIME mail (RFC 8551) around any [MessageComposer]: signed
 /// as `multipart/signed` with a detached signature carrying the signer's
 /// certificates, encrypted as `application/pkcs7-mime` (signed first,
-/// then encrypted, as Thunderbird does).
+/// then encrypted, as Thunderbird does), with protected headers (RFC 9788:
+/// the header fields inside, the Subject of encrypted mail `...` outside).
 library;
 
 import 'dart:convert';
@@ -10,6 +11,7 @@ import 'dart:typed_data';
 
 import 'package:mail_model/mail_model.dart';
 
+import '../mime/header_protection.dart';
 import '../mime/split.dart';
 import '../pgp_mime/writer.dart' show draftSecurityHeader;
 import 'backend.dart';
@@ -156,7 +158,9 @@ final class SmimeMessageComposer implements MessageComposer {
       );
     }
 
-    var content = split.content;
+    // Header protection (RFC 9788): the header fields go inside, where the
+    // signature covers them and encryption hides the Subject.
+    var content = protectHeaders(split.content, split.outer, encrypted: security.encrypt);
     if (security.sign) {
       var key = keys.smimeKey(own.fingerprint);
       if (key == null) {
@@ -216,7 +220,8 @@ final class SmimeMessageComposer implements MessageComposer {
     final choices = ['smime', if (security.encrypt) 'encrypt', if (security.sign) 'sign'];
     final extra = ['$draftSecurityHeader: ${choices.join('; ')}'];
     if (!security.encrypt || own == null || !own.certificate.canEncrypt) return split.withHeaders(extra);
-    return _encrypted(split, split.content, [own.certificate], SmimeContentCipher.aes256Cbc, extra: extra);
+    final content = protectHeaders(split.content, split.outer, encrypted: true);
+    return _encrypted(split, content, [own.certificate], SmimeContentCipher.aes256Cbc, extra: extra);
   }
 
   /// `multipart/signed` around [content], the detached signature as `smime.p7s`.
@@ -257,7 +262,8 @@ final class SmimeMessageComposer implements MessageComposer {
     }
     final type = cipher == SmimeContentCipher.aes256Gcm ? 'authEnveloped-data' : 'enveloped-data';
     return assembleEntity([
-      ...split.outer,
+      // The Subject is inside; outside it is `...` (RFC 9788's HP-Outer has the same).
+      ...obscure(split.outer),
       'MIME-Version: 1.0',
       ...extra,
       'Content-Type: application/pkcs7-mime; smime-type=$type; name="smime.p7m"',

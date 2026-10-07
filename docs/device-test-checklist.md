@@ -321,6 +321,9 @@ account), and Loupe having both keys (Autocrypt from a signed message of each, o
    - Loupe's header says "Encrypted (S/MIME)" and "Signed by … ✓".
    - The sender's certificate is collected (Correspondents’ Certificates), so your next message to them can be encrypted.
    - With both standards set up, Compose shows an OpenPGP / S/MIME switch. "Prefer S/MIME" on your address picks S/MIME first.
+   - Hidden subject (#26): an S/MIME encrypted message from Loupe shows "..." as its subject in Thunderbird and
+     Outlook, and its text starts with "Subject: <the real one>" and a blank line. In Loupe (the Sent copy, or
+     another phone) the subject shows normally, without that line, in the list and search too once opened.
 4. **If not:** the header's sheet names the trust problem (unknown issuer, expired, SHA-1). It can trust the issuer after showing its fingerprint.
 5. **Certificates from the device (#26).**
    - **Do:** install a `.p12` in Android's Settings › Security › Encryption & credentials › Install a certificate ›

@@ -179,5 +179,8 @@ Future<SubjectDecryptor?> backgroundSubjectDecryptor(SharedPreferences prefs) as
   if (!settings.subjectsInBackground) return null;
   final keyring = Keyring(SecretStorageKeyring(KeychainSecretStorage()), prefix: liveKeyringPrefix);
   final keys = await keysWithoutPassphrase(keyring, const DartPgBackend());
-  return keys.isEmpty ? null : SubjectDecryptor(keys: keys, indexText: settings.indexForSearch);
+  final smimeKeys = smimeKeysWithoutPassphrase(await backgroundSmimeKeys());
+  return keys.isEmpty && smimeKeys.isEmpty
+      ? null
+      : SubjectDecryptor(keys: keys, smimeKeys: smimeKeys, indexText: settings.indexForSearch);
 }

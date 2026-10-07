@@ -91,7 +91,10 @@ final class SmimeService {
         // a MIME parser that splits the message differently, would show as signed).
         return SmimeReadOutcome(
           status: r.status,
-          content: entity == null ? null : contentFromEntity(entity, emailId: emailId),
+          // The legacy display of protected headers (RFC 9788) gives way to the header.
+          content: entity == null
+              ? null
+              : contentFromEntity(entity, emailId: emailId, hideLegacyDisplay: r.status.encrypted),
           entity: entity,
         );
       });

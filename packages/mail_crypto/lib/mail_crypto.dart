@@ -14,6 +14,7 @@ export 'src/keyring/session.dart';
 export 'src/mime/codecs.dart' show HeaderValue, decodeEncodedWords, decodeCharset, decodeTransfer, canonicalLineEnds;
 export 'src/mime/content.dart' show contentFromEntity, partOf;
 export 'src/mime/entity.dart' show MimeEntity, splitMultipart;
+export 'src/mime/header_protection.dart' show hiddenSubject, protectedHeadersOf, withoutLegacyDisplay;
 export 'src/pgp/armor.dart' show hasArmor, dearmorAll, encodeArmor, ArmorBlock, splitCleartext, CleartextParts;
 export 'src/pgp/dart_pg_backend.dart' show DartPgBackend;
 export 'src/pgp/types.dart';

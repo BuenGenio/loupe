@@ -23,6 +23,11 @@ PgpMessageStatus? pgpStatusOf(EmailContent content) => _statuses[content];
 /// message wasn't S/MIME.
 SmimeMessageStatus? smimeStatusOf(EmailContent content) => _smimeStatuses[content];
 
+/// The subject protected inside [content]'s encryption or signature
+/// (OpenPGP or S/MIME), when it has one: the real one behind `...`.
+String? protectedSubjectIn(EmailContent content) =>
+    pgpStatusOf(content)?.protectedSubject ?? smimeStatusOf(content)?.protectedSubject;
+
 /// Whether [content] came encrypted, and with which standard (null when it didn't).
 SecurityTechnology? encryptedWith(EmailContent content) {
   if (pgpStatusOf(content)?.encrypted ?? false) return SecurityTechnology.openPgp;
@@ -168,8 +173,15 @@ final class ContentLoader {
       shown = _copy(content, text: _explainSmime(status), html: null, attachments: _withoutPlumbing(content));
     } else if (outcome?.content case final inner?) {
       _remember(emailId, outcome!.entity!);
-      shown = _copy(inner, headers: content.headers, attachments: inner.attachments);
-      if (status.encrypted) _index(emailId, inner);
+      shown = _copy(
+        inner,
+        headers: _withProtected(content.headers, status.protectedHeaders),
+        attachments: inner.attachments,
+      );
+      if (status.encrypted) {
+        _rememberSubject(summary, status.protectedSubject);
+        _index(emailId, inner);
+      }
     } else {
       shown = _copy(content, attachments: _withoutPlumbing(content));
     }

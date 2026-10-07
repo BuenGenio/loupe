@@ -129,6 +129,7 @@ final class SmimeMessageStatus {
     this.recipients = const [],
     this.signature,
     this.keyRequest,
+    this.protectedHeaders = const [],
   });
 
   static const none = SmimeMessageStatus();
@@ -157,6 +158,22 @@ final class SmimeMessageStatus {
   /// do to decrypt the message ([SmimePlatformKeys.perform]); read the
   /// message again with the answer.
   final SmimeKeyRequest? keyRequest;
+
+  /// Header fields from inside the signed or encrypted content (RFC 9788,
+  /// or `protected-headers="v1"`): the real Subject when the outer one is
+  /// `...`, From, To, Cc (RFC 2047 decoded).
+  final List<(String, String)> protectedHeaders;
+
+  /// The protected Subject, if any.
+  String? get protectedSubject => protectedHeader('subject');
+
+  String? protectedHeader(String name) {
+    final n = name.toLowerCase();
+    for (final (k, v) in protectedHeaders) {
+      if (k.toLowerCase() == n) return v;
+    }
+    return null;
+  }
 
   bool get decrypted => encrypted && failure == null;
   bool get isSigned => signature != null;

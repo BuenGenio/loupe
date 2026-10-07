@@ -117,16 +117,18 @@ String searchableTextOf(EmailContent content) => [
 
 /// Decrypts the protected subjects of encrypted mail nobody opened yet
 /// (Decrypt Subjects in the Background), and remembers them on the device
-/// ([DecryptedMail]): only with [keys] (stored without a passphrase; it never
-/// asks for one), only OpenPGP (S/MIME doesn't hide subjects), and only
-/// messages up to [maxBytes], as the whole message has to be downloaded.
-/// With [indexText] (Index Decrypted Messages for Search), their text goes
-/// into the search index too.
+/// ([DecryptedMail]): only with [keys] and [smimeKeys] (stored without a
+/// passphrase, and S/MIME keys kept in the app, not on the device; it never
+/// asks for anything), and only messages up to [maxBytes], as the whole
+/// message has to be downloaded. With [indexText] (Index Decrypted Messages
+/// for Search), their text goes into the search index too.
 final class SubjectDecryptor {
   SubjectDecryptor({
     required this.keys,
+    this.smimeKeys = const [],
     this.indexText = false,
     this.backend = const DartPgBackend(),
+    this.smimeBackend = const DartSmimeBackend(),
     DecryptRunner? run,
     this.maxBytes = defaultMaxBytes,
     DateTime Function()? clock,
@@ -137,8 +139,12 @@ final class SubjectDecryptor {
   static const defaultMaxBytes = 1024 * 1024;
 
   final List<PgpKey> keys;
+
+  /// The user's S/MIME certificates with their keys (in the app, without a passphrase).
+  final List<SmimeKeyPair> smimeKeys;
   final bool indexText;
   final PgpBackend backend;
+  final SmimeBackend smimeBackend;
   final int maxBytes;
   final DecryptRunner _run;
   final DateTime Function() _clock;
@@ -158,7 +164,7 @@ final class SubjectDecryptor {
     Duration? budget,
   }) async {
     final found = <String, String>{};
-    if (keys.isEmpty || repository is! DecryptedMail) return found;
+    if ((keys.isEmpty && smimeKeys.isEmpty) || repository is! DecryptedMail) return found;
     final deadline = budget == null ? null : _clock().add(budget);
     for (final e in emails) {
       if (!wants(e)) continue;
@@ -166,7 +172,17 @@ final class SubjectDecryptor {
       try {
         final raw = await repository.loadRawSource(e.id);
         final (backend, keys, withText) = (this.backend, this.keys, indexText);
-        final parts = await _run(() => decryptedPartsOf(raw, backend: backend, keys: keys, withText: withText));
+        final (smimeBackend, smimeKeys) = (this.smimeBackend, this.smimeKeys);
+        final parts = await _run(
+          () => decryptedPartsOf(
+            raw,
+            backend: backend,
+            keys: keys,
+            smimeBackend: smimeBackend,
+            smimeKeys: smimeKeys,
+            withText: withText,
+          ),
+        );
         if (parts == null) continue;
         final cache = repository as DecryptedMail;
         final text = parts.text;
@@ -190,14 +206,20 @@ String? protectedSubjectOf(Uint8List raw, {required PgpBackend backend, required
     decryptedPartsOf(raw, backend: backend, keys: keys)?.subject;
 
 /// The protected subject and, [withText], the searchable text of the
-/// PGP/MIME message [raw], decrypted with those of [keys] it is encrypted
-/// to; null when it isn't for them or can't be decrypted.
+/// PGP/MIME or S/MIME message [raw], decrypted with those of [keys] or
+/// [smimeKeys] it is encrypted to; null when it isn't for them or can't be
+/// decrypted.
 DecryptedParts? decryptedPartsOf(
   Uint8List raw, {
   required PgpBackend backend,
   required List<PgpKey> keys,
+  SmimeBackend smimeBackend = const DartSmimeBackend(),
+  List<SmimeKeyPair> smimeKeys = const [],
   bool withText = false,
 }) {
+  if (detectSmime(MimeEntity.parse(raw).headers) != SmimeProtection.none) {
+    return _smimePartsOf(raw, smimeBackend, smimeKeys, withText);
+  }
   final reader = PgpMimeReader(backend);
   final ids = reader.recipientsOf(raw);
   if (ids.isEmpty) return null;
@@ -214,5 +236,23 @@ DecryptedParts? decryptedPartsOf(
   return (
     subject: result.status.protectedSubject,
     text: withText ? searchableTextOf(contentFromEntity(entity, emailId: '')) : null,
+  );
+}
+
+DecryptedParts? _smimePartsOf(Uint8List raw, SmimeBackend backend, List<SmimeKeyPair> keys, bool withText) {
+  if (keys.isEmpty) return null;
+  final reader = SmimeReader(backend);
+  final recipients = reader.recipientsOf(raw);
+  final mine = [
+    for (final k in keys)
+      if (recipients.any((r) => r.matches(k.certificate))) k,
+  ];
+  if (mine.isEmpty) return null;
+  final result = reader.read(raw, keys: mine);
+  final entity = result.entity;
+  if (!result.status.decrypted || entity == null) return null;
+  return (
+    subject: result.status.protectedSubject,
+    text: withText ? searchableTextOf(contentFromEntity(entity, emailId: '', hideLegacyDisplay: true)) : null,
   );
 }

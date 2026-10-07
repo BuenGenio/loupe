@@ -150,8 +150,19 @@ loading, the header, compose, Settings › End-to-End Encryption).
   first, then EnvelopedData to every recipient and the sender with AES-256-CBC, which Outlook, Apple Mail and
   Thunderbird all read; AuthEnvelopedData (AES-256-GCM) only when every recipient's signed mail announced
   AES-GCM. RSA recipients get the key with PKCS #1 v1.5 (OAEP isn't read everywhere), EC recipients by
-  ephemeral-static ECDH (SHA-256 KDF, AES-256 wrap). Unlike OpenPGP mail, the outer Subject isn't hidden. Bcc
-  recipients get copies of their own (see below); drafts are encrypted to the sender only.
+  ephemeral-static ECDH (SHA-256 KDF, AES-256 wrap). Bcc recipients get copies of their own (see below); drafts
+  are encrypted to the sender only.
+- **Protected headers** (#26; `mime/header_protection.dart`): RFC 9788 (the published
+  draft-ietf-lamps-header-protection), not RFC 7508's signed attribute, which no client reads. The message's
+  header fields are copied into the cryptographic payload (signed, and encrypted), marked `hp="cipher"` (or
+  `hp="clear"` for signed-only mail, whose Subject and From the signature then covers) and also
+  `protected-headers="v1"`, the OpenPGP scheme Thunderbird and Loupe's OpenPGP use. Encrypted mail goes out with
+  `Subject: ...`, the outer fields recorded inside as `HP-Outer`. Thunderbird reads protected headers only for
+  OpenPGP (its RFC 9788 support is bug 1991625) and Outlook not at all, so for them the main body parts begin with a
+  legacy display, `Subject: …` and a blank line (an HTML `div.header-protection-legacy-display`), marked
+  `hp-legacy-display="1"` (base64 UTF-8 text); Loupe hides it in decrypted mail (`contentFromEntity`
+  `hideLegacyDisplay`, OpenPGP mail too) and shows the inner Subject (`SmimeMessageStatus.protectedHeaders`).
+  Messages from other clients without protected headers read as before.
 - **Choosing the standard** (`chooseTechnology`): the address's preference (OpenPGP unless "Prefer S/MIME"),
   unless only the other one has a key or trusted certificate for every recipient, or the message replies to
   mail encrypted with the other. Compose shows which, and switches when both are set up. The sending settings
@@ -177,7 +188,7 @@ Issue #24, after OpenPGP (#20) and S/MIME (#21).
   signed (or decrypted) text first and every other text of its part below an "Unsigned content" line
   (`outsideMarker`), so nothing outside the block can pass for part of it; that text, or other parts of the message
   (an HTML alternative, attachments), make it "Signed in part" (no ✓).
-- **Protected subjects** (OpenPGP sends the real subject inside, `...` outside): summaries say whether a message is
+- **Protected subjects** (OpenPGP and S/MIME send the real subject inside, `...` outside): summaries say whether a message is
   encrypted (`EmailSummary.isEncrypted`, from its BODYSTRUCTURE; schema version 6, `emails.is_encrypted`). Once
   `ContentLoader` decrypted a message, its protected subject is kept in the encrypted store
   (`DecryptedMail.rememberProtectedSubject`, `emails.protected_subject`), for the message and its copies (same
@@ -187,7 +198,8 @@ Issue #24, after OpenPGP (#20) and S/MIME (#21).
   on the device, and nothing more with Hide Content.
   - Settings › End-to-End Encryption › On This Device › Decrypt Subjects in the Background (off by default):
     `SubjectDecryptor` decrypts the subjects of encrypted mail nobody opened yet, with keys stored without a
-    passphrase only (it never asks), OpenPGP only, messages up to 1 MB (the whole message is downloaded). Background
+    passphrase only (it never asks; S/MIME keys kept in the app, not on the device), messages up to 1 MB (the whole
+    message is downloaded). Background
     work does it for new mail before notifying (`NewMailCheck.subjects`, at most 15 s); the app, while it runs, for
     the newest 100 messages of the inboxes (`ProtectedSubjectsWatcher`, off the UI isolate).
 - **Signed when queued**: signed or encrypted mail needs the key unlocked, and background work only has keys

@@ -17,7 +17,6 @@ import 'package:pointycastle/key_derivators/api.dart' show Argon2Parameters;
 import 'package:pointycastle/key_derivators/argon2.dart';
 
 import 'certificate.dart';
-import 'key_handle.dart';
 import 'primitives.dart';
 
 /// The Argon2id cost of a protected key.

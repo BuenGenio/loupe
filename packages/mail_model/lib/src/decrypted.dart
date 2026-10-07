@@ -21,7 +21,8 @@ abstract interface class DecryptedMail {
 }
 
 /// Placeholders that encrypted mail is sent with instead of its subject
-/// (Thunderbird, K-9 Mail and Delta Chat write `...`, Enigmail
-/// `Encrypted Message`); the real subject is inside.
+/// (Thunderbird, K-9 Mail, Delta Chat and Loupe write `...`, Enigmail
+/// `Encrypted Message`, RFC 9788's baseline policy `[...]`); the real
+/// subject is inside.
 bool isProtectedSubjectPlaceholder(String subject) =>
-    const {'...', '…', 'encrypted message', ''}.contains(subject.trim().toLowerCase());
+    const {'...', '…', '[...]', 'encrypted message', ''}.contains(subject.trim().toLowerCase());

@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:mail_model/mail_model.dart';
 
 import 'entity.dart';
+import 'header_protection.dart';
 
 /// Builds what the reader shows from [root]: the text and HTML bodies,
 /// attachments and inline images. Part ids are [partPrefix] plus the IMAP
@@ -14,12 +15,16 @@ import 'entity.dart';
 ///
 /// Skips legacy-display parts of protected headers (`text/rfc822-headers`)
 /// and, unless [keepPgpParts], PGP/MIME plumbing (signatures, the version part).
+/// With [hideLegacyDisplay] (decrypted mail), the legacy display RFC 9788
+/// puts at the top of body parts marked `hp-legacy-display="1"` is left out:
+/// the header shows the protected Subject instead.
 EmailContent contentFromEntity(
   MimeEntity root, {
   required String emailId,
   String partPrefix = 'pgp:',
   List<(String, String)> headers = const [],
   bool keepPgpParts = false,
+  bool hideLegacyDisplay = false,
 }) {
   final texts = <MimeEntity>[];
   final htmls = <MimeEntity>[];
@@ -110,8 +115,12 @@ EmailContent contentFromEntity(
 
   walk(root, root.isMultipart ? '' : '1');
 
+  String shown(MimeEntity p) => hideLegacyDisplay && p.contentType['hp-legacy-display'] == '1'
+      ? withoutLegacyDisplay(p.text, html: p.mimeType == 'text/html')
+      : p.text;
+
   String? join(List<MimeEntity> parts, String separator) =>
-      parts.isEmpty ? null : parts.map((p) => p.text).join(separator);
+      parts.isEmpty ? null : parts.map(shown).join(separator);
 
   var text = join(texts, '\n\n');
   var flowed = false;

@@ -163,7 +163,9 @@ final class OpenPgpService implements PgpSendKeys {
       // MIME parser that splits the message differently, would show as signed).
       return PgpReadOutcome(
         status: r.status,
-        content: entity == null ? null : contentFromEntity(entity, emailId: emailId),
+        content: entity == null
+            ? null
+            : contentFromEntity(entity, emailId: emailId, hideLegacyDisplay: r.status.encrypted),
         entity: entity,
         text: r.text,
       );
