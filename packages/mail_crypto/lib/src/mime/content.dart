@@ -122,8 +122,7 @@ EmailContent contentFromEntity(
       ? withoutLegacyDisplay(p.text, html: p.mimeType == 'text/html')
       : p.text;
 
-  String? join(List<MimeEntity> parts, String separator) =>
-      parts.isEmpty ? null : parts.map(shown).join(separator);
+  String? join(List<MimeEntity> parts, String separator) => parts.isEmpty ? null : parts.map(shown).join(separator);
 
   var text = join(texts, '\n\n');
   var flowed = false;

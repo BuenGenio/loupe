@@ -113,17 +113,17 @@ final class SmimeReader {
       SmimeKeyRequest? request,
       List<(String, String)> protectedHeaders = const [],
     }) => SmimeMessageStatus(
-          protection: protection ?? SmimeProtection.none,
-          encrypted: encrypted,
-          failure: failure,
-          failureMessage: message,
-          cipher: cipher,
-          authenticated: authenticated,
-          recipients: recipients,
-          signature: signature,
-          keyRequest: request,
-          protectedHeaders: protectedHeaders,
-        );
+      protection: protection ?? SmimeProtection.none,
+      encrypted: encrypted,
+      failure: failure,
+      failureMessage: message,
+      cipher: cipher,
+      authenticated: authenticated,
+      recipients: recipients,
+      signature: signature,
+      keyRequest: request,
+      protectedHeaders: protectedHeaders,
+    );
 
     for (var layer = 0; layer < maxLayers; layer++) {
       var kind = _kind(entity);
@@ -189,7 +189,10 @@ final class SmimeReader {
     }
     // The cryptographic payload's own header fields (RFC 9788).
     final protectedHeaders = unwrapped ? protectedHeadersOf(entity) : const <(String, String)>[];
-    return SmimeReadResult(status: status(protectedHeaders: protectedHeaders), entity: unwrapped ? entity : null);
+    return SmimeReadResult(
+      status: status(protectedHeaders: protectedHeaders),
+      entity: unwrapped ? entity : null,
+    );
   }
 
   /// How far the signing time may be from the Date header.
