@@ -361,12 +361,6 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    /// Back, as Android's back gesture goes.
-    Future<void> back(WidgetTester tester) async {
-      await tester.binding.handlePopRoute();
-      await tester.pumpAndSettle();
-    }
-
     Future<void> menu(WidgetTester tester, String key, String action) async {
       await _show(tester, _row(key));
       await tester.longPress(_row(key));
@@ -477,7 +471,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(MailingListScreen), findsOneWidget);
       expect(find.text('Cache parsed headers on keep-alive connections'), findsOneWidget);
-      await back(tester);
+      await systemBack(tester);
 
       await menu(tester, kestrel, 'Pin to Mailboxes');
       final prefs = await SharedPreferences.getInstance();
@@ -539,7 +533,7 @@ void main() {
       await tester.tap(row);
       await tester.pumpAndSettle();
       expect(find.byType(MailingListScreen), findsOneWidget);
-      await back(tester);
+      await systemBack(tester);
 
       await tester.tap(find.text('Edit'));
       await tester.pumpAndSettle();
