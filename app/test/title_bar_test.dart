@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/router.dart';
 import 'package:loupe/shared/bars.dart';
-import 'package:loupe/theme/loupe_icons.dart';
 import 'package:mail_model/mail_model.dart';
 
 import 'helpers.dart';
@@ -71,24 +69,28 @@ void main() {
     expect(find.text('All Inboxes'), findsOneWidget);
   });
 
-  testWidgets('on Android a pushed list has no back button: the bold title starts at the gutter', (tester) async {
+  testWidgets('a pushed list has back and a centred title, on Android too', (tester) async {
     await pumpLoupe(tester);
     await goTo(tester, Routes.list(RealMailboxRef(MailIds.mailbox('fastmail', 'Lists/Open Garden'))));
-    expect(find.bySemanticsLabel('Back'), findsNothing);
-    expect(find.byIcon(LoupeIcons.back), findsNothing);
+    final back = tester.getRect(find.bySemanticsLabel('Back'));
     final title = tester.getRect(find.text('Open Garden'));
     final account = tester.getRect(find.text('Fastmail'));
     final edit = tester.getRect(find.text('Edit'));
-    expect(title.left, 16);
+    final screen = tester.view.physicalSize / tester.view.devicePixelRatio;
+    expect(title.center.dx, moreOrLessEquals(screen.width / 2, epsilon: 1));
+    // The account line (colour dot and name) is centred as a whole.
+    final accountLine = tester.getRect(find.ancestor(of: find.text('Fastmail'), matching: find.byType(Row)).first);
+    expect(accountLine.center.dx, moreOrLessEquals(screen.width / 2, epsilon: 1));
+    expect(back.right, lessThanOrEqualTo(title.left));
+    expect(title.right, lessThanOrEqualTo(edit.left));
     expect(account.top, greaterThanOrEqualTo(title.bottom - 1));
     expect(account.bottom, lessThanOrEqualTo(52));
-    expect(title.right, lessThanOrEqualTo(edit.left));
     // The search field starts hidden; rows begin right under the bar.
     expect(find.byType(CupertinoSearchTextField).hitTestable(), findsNothing);
-    // The system back goes back.
+    // The system back goes back too.
     await systemBack(tester);
     expect(find.text('All Inboxes'), findsOneWidget);
-  });
+  }, variant: TargetPlatformVariant.only(TargetPlatform.android));
 
   testWidgets('on iOS a pushed list has back, a bold title and the account on one compact bar', (tester) async {
     await pumpLoupe(tester);
@@ -105,13 +107,13 @@ void main() {
     expect(find.text('All Inboxes'), findsOneWidget);
   }, variant: TargetPlatformVariant.only(TargetPlatform.iOS));
 
-  testWidgets('settings pages: back on iOS only', (tester) async {
+  testWidgets('settings pages: back and a centred title on every platform', (tester) async {
     await pumpLoupe(tester);
     await goTo(tester, Routes.settings);
     expect(find.text('Settings'), findsWidgets);
-    final ios = debugDefaultTargetPlatformOverride == TargetPlatform.iOS;
-    expect(find.bySemanticsLabel('Back'), ios ? findsOneWidget : findsNothing);
-    if (!ios) expect(tester.getRect(find.text('Settings').first).left, 16);
+    expect(find.bySemanticsLabel('Back'), findsOneWidget);
+    final screen = tester.view.physicalSize / tester.view.devicePixelRatio;
+    expect(tester.getRect(find.text('Settings').first).center.dx, moreOrLessEquals(screen.width / 2, epsilon: 1));
   }, variant: const TargetPlatformVariant({TargetPlatform.android, TargetPlatform.iOS}));
 
   testWidgets('pull to refresh works on Mailboxes and on a list', (tester) async {

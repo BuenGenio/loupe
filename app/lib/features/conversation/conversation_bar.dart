@@ -103,36 +103,36 @@ class ConversationBar extends StatelessWidget {
             ),
             child: MediaQuery.withClampedTextScaling(
               maxScaleFactor: barMaxTextScale,
-              child: Row(
-                children: [
-                  if (lead == null) const SizedBox(width: 16) else ...[const SizedBox(width: 4), lead],
-                  Expanded(
-                    child: AnimatedSwitcher(
-                      duration: motion,
-                      switchInCurve: Curves.easeOutCubic,
-                      switchOutCurve: Curves.easeInCubic,
-                      layoutBuilder: _startAligned,
-                      transitionBuilder: (child, animation) => FadeTransition(
-                        opacity: animation,
-                        child: SlideTransition(
-                          position: Tween(begin: const Offset(0, 0.3), end: Offset.zero).animate(animation),
-                          child: child,
-                        ),
+              child: Padding(
+                // Symmetric, so the compact title sits on the bar's true centre.
+                padding: EdgeInsets.symmetric(horizontal: lead == null ? 16 : 4),
+                // The compact title is centred on the bar, like the other screens' titles.
+                child: NavigationToolbar(
+                  leading: lead,
+                  middleSpacing: 8,
+                  middle: AnimatedSwitcher(
+                    duration: motion,
+                    switchInCurve: Curves.easeOutCubic,
+                    switchOutCurve: Curves.easeInCubic,
+                    transitionBuilder: (child, animation) => FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(
+                        position: Tween(begin: const Offset(0, 0.3), end: Offset.zero).animate(animation),
+                        child: child,
                       ),
-                      child: switch (s.reading) {
-                        final m? => _CompactTitle(
-                          key: compactTitleKey,
-                          message: m,
-                          subject: subject,
-                          motion: motion,
-                          onTap: onTitleTap,
-                        ),
-                        null => const SizedBox.shrink(),
-                      },
                     ),
+                    child: switch (s.reading) {
+                      final m? => _CompactTitle(
+                        key: compactTitleKey,
+                        message: m,
+                        subject: subject,
+                        motion: motion,
+                        onTap: onTitleTap,
+                      ),
+                      null => const SizedBox.shrink(),
+                    },
                   ),
-                  const SizedBox(width: 16),
-                ],
+                ),
               ),
             ),
           ),
@@ -175,6 +175,7 @@ class _CompactTitle extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             ExcludeSemantics(
               child: AnimatedSwitcher(
@@ -183,8 +184,9 @@ class _CompactTitle extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            Expanded(
+            Flexible(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

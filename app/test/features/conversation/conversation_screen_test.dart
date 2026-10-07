@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/conversation/conversation_bar.dart';
@@ -347,7 +346,7 @@ void main() {
       await openLongThread(tester);
       expect(compactTitle, findsNothing);
       expect(find.byType(BackButton), findsNothing);
-      expect(find.bySemanticsLabel('Back'), findsNothing, reason: 'Android goes back with its own gesture');
+      expect(find.bySemanticsLabel('Back'), findsOneWidget, reason: 'pushed screens keep a back button');
       // The large subject and the sender row start below the bar.
       expect(tester.getTopLeft(find.text('Your statement is ready')).dy, greaterThanOrEqualTo(barBottom(tester)));
       expect(tester.getTopLeft(find.byKey(const ValueKey('sender-a1'))).dy, greaterThan(barBottom(tester)));
@@ -365,8 +364,13 @@ void main() {
       expect(compactTitle, findsOneWidget);
       expect(inCompactTitle(find.text('Alice Example')), findsOneWidget);
       expect(inCompactTitle(find.text('Your statement is ready')), findsOneWidget);
-      // At the left gutter, on the top line.
-      expect(tester.getTopLeft(compactTitle).dx, 16);
+      // Centred on the bar, after the back chevron, on the top line.
+      final bar = tester.getRect(find.byType(ConversationBar));
+      expect(tester.getCenter(compactTitle).dx, moreOrLessEquals(bar.center.dx, epsilon: 1));
+      expect(
+        tester.getTopLeft(compactTitle).dx,
+        greaterThanOrEqualTo(tester.getRect(find.bySemanticsLabel('Back')).right),
+      );
       expect(tester.getRect(compactTitle).bottom, lessThanOrEqualTo(barBottom(tester)));
       // The content scrolls on under the bar.
       expect(tester.getBottomLeft(find.text('Your statement is ready')).dy, lessThanOrEqualTo(barBottom(tester)));
@@ -432,22 +436,17 @@ void main() {
       expect(fade.opacity.value, 1);
     });
 
-    testWidgets('has a back button on iOS only, and none embedded in a pane', (tester) async {
-      final ios = debugDefaultTargetPlatformOverride == TargetPlatform.iOS;
+    testWidgets('has a back button on every platform, and none embedded in a pane', (tester) async {
       await openLongThread(tester);
-      expect(find.bySemanticsLabel('Back'), ios ? findsOneWidget : findsNothing);
+      expect(find.bySemanticsLabel('Back'), findsOneWidget);
       expect(find.byType(BackButton), findsNothing);
-      if (ios) {
-        await scrollCardUnderBar(tester, 'a2');
-        // The compact title sits after the chevron.
-        expect(
-          tester.getTopLeft(compactTitle).dx,
-          greaterThanOrEqualTo(tester.getRect(find.bySemanticsLabel('Back')).right),
-        );
-        await tester.tap(find.bySemanticsLabel('Back'));
-      } else {
-        await tester.binding.handlePopRoute();
-      }
+      await scrollCardUnderBar(tester, 'a2');
+      // The compact title sits after the chevron.
+      expect(
+        tester.getTopLeft(compactTitle).dx,
+        greaterThanOrEqualTo(tester.getRect(find.bySemanticsLabel('Back')).right),
+      );
+      await tester.tap(find.bySemanticsLabel('Back'));
       await tester.pumpAndSettle();
       expect(find.text('home'), findsOneWidget);
 

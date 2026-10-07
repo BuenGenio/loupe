@@ -130,17 +130,12 @@ double searchBarExtent(BuildContext context) {
   return (16 + scaler.scale(17) * 1.2).roundToDouble() + 8;
 }
 
-/// Whether top bars show a back button. Android has a system back (the
-/// gesture or the navigation bar's button), so its bars leave the button out
-/// and give the space to the title. iOS has none, so its bars keep it, as do
-/// desktops. Follows [ThemeData.platform], so tests can switch it with
-/// `debugDefaultTargetPlatformOverride`.
+/// Whether top bars show a back button: on every platform. Pushed screens
+/// pair it with a centred title (see [LoupeTitleBar]). Kept as a function so
+/// a platform can opt out again in one place.
 ///
 /// Modal and full-screen surfaces keep their explicit Cancel or Close.
-bool showsBackButton(BuildContext context) => switch (Theme.of(context).platform) {
-  TargetPlatform.android || TargetPlatform.fuchsia => false,
-  TargetPlatform.iOS || TargetPlatform.macOS || TargetPlatform.linux || TargetPlatform.windows => true,
-};
+bool showsBackButton(BuildContext context) => true;
 
 /// A back chevron for a top bar where [showsBackButton] and the route can
 /// pop; null otherwise.
@@ -167,10 +162,12 @@ class LoupeBackButton extends StatelessWidget {
   );
 }
 
-/// The pinned header of a screen, as a sliver: a back chevron (on iOS, when
-/// the route can pop; see [showsBackButton]) or [leading], the bold [title]
-/// on the same line, left-aligned, and [trailing] actions. It replaces iOS's
-/// large-title band, which spent a whole row on the title.
+/// The pinned header of a screen, as a sliver: a back chevron (when the route
+/// can pop) or [leading], the bold [title] on the same line, and [trailing]
+/// actions. Pushed screens centre the title between the back chevron and the
+/// actions; the root screen ([large]) keeps it left-aligned, with nothing to
+/// its left. It replaces iOS's large-title band, which spent a whole row on
+/// the title.
 ///
 /// With a [searchField], a search row sits below the title. It collapses
 /// under the title as the list scrolls (lists start scrolled by
@@ -199,7 +196,7 @@ class LoupeTitleBar extends StatelessWidget {
   /// A smaller second line (the account of a mailbox).
   final Widget? subtitle;
 
-  /// Replaces the back chevron (which only iOS shows).
+  /// Replaces the back chevron.
   final Widget? leading;
   final List<Widget> trailing;
 
@@ -237,38 +234,60 @@ class LoupeTitleBar extends StatelessWidget {
       height: subtitle == null ? 1.2 : 1.1,
       letterSpacing: large ? 0.2 : 0,
     );
-    final titleRow = Row(
-      children: [
-        if (lead == null)
-          const SizedBox(width: 16)
-        else ...[
-          SizedBox(width: leading == null ? 4 : 8),
-          lead,
-          const SizedBox(width: 2),
-        ],
-        Expanded(
-          child: Semantics(
-            header: true,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: titleStyle, maxLines: 1, overflow: TextOverflow.ellipsis),
-                if (subtitle != null)
-                  DefaultTextStyle.merge(
-                    style: styles.footnote.copyWith(height: 1.15),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    child: subtitle!,
-                  ),
-              ],
-            ),
+    final centred = !large;
+    final titleColumn = Semantics(
+      header: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: centred ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: titleStyle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: centred ? TextAlign.center : TextAlign.start,
           ),
-        ),
-        ...trailing,
-        const SizedBox(width: 8),
-      ],
+          if (subtitle != null)
+            DefaultTextStyle.merge(
+              style: styles.footnote.copyWith(height: 1.15),
+              textAlign: centred ? TextAlign.center : TextAlign.start,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              child: subtitle!,
+            ),
+        ],
+      ),
     );
+    final Widget titleRow = centred
+        // Centred on the bar, whatever the widths of the back chevron and the actions.
+        ? Padding(
+            // Symmetric, so the title sits on the bar's true centre.
+            padding: EdgeInsets.symmetric(horizontal: lead == null ? 16 : (leading == null ? 4 : 8)),
+            child: NavigationToolbar(
+              leading: lead,
+              // Sized to its content (a subtitle Row would otherwise take the
+              // whole width), so the toolbar can centre it on the bar.
+              middle: IntrinsicWidth(child: titleColumn),
+              trailing: trailing.isEmpty ? null : Row(mainAxisSize: MainAxisSize.min, children: trailing),
+              middleSpacing: 8,
+            ),
+          )
+        : Row(
+            children: [
+              if (lead == null)
+                const SizedBox(width: 16)
+              else ...[
+                SizedBox(width: leading == null ? 4 : 8),
+                lead,
+                const SizedBox(width: 2),
+              ],
+              Expanded(child: titleColumn),
+              ...trailing,
+              const SizedBox(width: 8),
+            ],
+          );
     return SliverPersistentHeader(
       pinned: true,
       delegate: _BarDelegate(

@@ -529,6 +529,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
       subtitle: _editing || account == null
           ? null
           : Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   width: 8,
