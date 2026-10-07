@@ -18,6 +18,7 @@ import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
 import '../conversation/reader_prefs.dart';
 import '../conversation/sheets.dart' show showSnack;
+import '../subscriptions/subscription_actions.dart';
 import '../subscriptions/subscription_providers.dart';
 import 'list_providers.dart';
 
@@ -96,24 +97,35 @@ class _MailingListScreenState extends ConsumerState<MailingListScreen> {
   Future<void> _listMenu(Subscription? list) async {
     final prefs = ref.read(readerPrefsProvider);
     final technical = prefs.technicalLists.contains(widget.listId);
+    final pinned = ref.read(pinnedListsProvider).contains(widget.listId);
     final choice = await showActionSheet<String>(
       context,
       title: list?.name ?? widget.listId,
       actions: [
+        if (list != null)
+          pinned
+              ? const SheetAction('Unpin from Mailboxes', 'pin', icon: LoupeIcons.unpin)
+              : const SheetAction('Pin to Mailboxes', 'pin', icon: LoupeIcons.pin),
         SheetAction(
           technical ? 'Open in Default View' : 'Open as Plain Text (Mono)',
           'technical',
           icon: LoupeIcons.font,
         ),
         SheetAction(_showMuted ? 'Hide Muted Threads' : 'Show Muted Threads', 'muted', icon: LoupeIcons.mute),
+        if (list != null) const SheetAction('Treat as Newsletter', 'kind', icon: LoupeIcons.newsletter),
       ],
     );
     if (!mounted) return;
+    final actions = SubscriptionActions(context, ref);
     switch (choice) {
+      case 'pin':
+        await actions.togglePin(list!);
       case 'technical':
         await ref.read(readerPrefsProvider.notifier).setTechnicalList(widget.listId, technical: !technical);
       case 'muted':
         setState(() => _showMuted = !_showMuted);
+      case 'kind':
+        await actions.setKind(list!, SubscriptionKind.newsletter);
     }
   }
 

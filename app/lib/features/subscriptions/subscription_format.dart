@@ -51,9 +51,14 @@ String methodLabel(UnsubscribeMethod method) => switch (method) {
   WebUnsubscribe(:final uri) => 'On the website ${uri.host}',
 };
 
-/// The second line of a row: the sender's address, or the List-Id of a list
-/// with several senders.
-String senderLine(Subscription s) => s.isList && s.senderCount > 1 ? s.listId! : s.address;
+/// The second line of a row: a discussion's address (else its List-Id);
+/// the sender's address, its domain when the address changes with every
+/// campaign, or the List-Id of a newsletter list with several senders.
+String senderLine(Subscription s) {
+  if (s.isDiscussion) return s.postAddress?.email.toLowerCase() ?? s.listId!;
+  if (s.brandDomain case final domain?) return domain;
+  return s.isList && s.senderCount > 1 ? s.listId! : s.address;
+}
 
 /// The privacy footnote of the Subscriptions screens.
 const subscriptionsPrivacyNote =

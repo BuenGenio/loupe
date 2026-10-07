@@ -227,7 +227,23 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
     ..add(place('mailbox.snoozed', 'Snoozed', LoupeIcons.snoozed, Routes.snoozed))
     ..add(place('mailbox.outbox', 'Outbox', LoupeIcons.outbox, Routes.outbox))
     ..add(
-      place('tool.subscriptions', 'Subscriptions', LoupeIcons.subscriptions, Routes.subscriptions, subtitle: 'Tools'),
+      place(
+        'mailbox.subscriptions',
+        'Subscriptions',
+        LoupeIcons.subscriptions,
+        Routes.subscriptions,
+        keywords: const ['newsletters', 'unsubscribe', 'mailing lists', 'discussions'],
+      ),
+    )
+    ..add(
+      place(
+        'mailbox.subscriptions.discussions',
+        'Discussions',
+        LoupeIcons.mailingList,
+        Routes.subscriptionsTab(SubscriptionKind.discussion),
+        subtitle: 'Subscriptions',
+        keywords: const ['mailing lists'],
+      ),
     );
   final mailboxes = container.read(mailboxesProvider).value ?? const <Mailbox>[];
   final showAll = container.read(showAllFoldersProvider);

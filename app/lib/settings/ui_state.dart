@@ -38,7 +38,8 @@ class PrefsStringSet extends Notifier<Set<String>> {
 }
 
 /// Mailboxes-screen items hidden in Edit mode: `v.<virtual>`, `m.<mailbox id>`,
-/// `tag.<keyword>`, `smart.<id>`, `tool.<name>`. All Drafts and All Sent start hidden.
+/// `tag.<keyword>`, `smart.<id>`, `list.<List-Id>` (pinned lists),
+/// `tool.subscriptions` (the Subscriptions row). All Drafts and All Sent start hidden.
 final hiddenMailboxItemsProvider = NotifierProvider<PrefsStringSet, Set<String>>(
   () => PrefsStringSet('mailboxes.hidden', defaults: {'v.allDrafts', 'v.allSent'}),
 );

@@ -35,8 +35,9 @@ import '../subscriptions/subscription_providers.dart';
 import 'vip_screen.dart';
 import '../../theme/loupe_icons.dart';
 
-/// The first screen: unified mailboxes, each account's folder tree, smart
-/// mailboxes and tags. Pull down for search; Edit hides items.
+/// The first screen: unified mailboxes and Subscriptions, each account's
+/// folder tree, pinned mailing lists, smart mailboxes and tags. Pull down
+/// for search; Edit hides items.
 class MailboxesScreen extends ConsumerStatefulWidget {
   const MailboxesScreen({super.key});
 
@@ -208,10 +209,9 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> with CommandS
                 SliverToBoxAdapter(
                   child: _AccountSection(key: ValueKey(account.id), account: account, editing: _editing, onOpen: _open),
                 ),
-              SliverToBoxAdapter(child: _ListsSection(editing: _editing)),
+              SliverToBoxAdapter(child: _PinnedListsSection(editing: _editing)),
               SliverToBoxAdapter(child: _SmartSection(editing: _editing)),
               SliverToBoxAdapter(child: _TagSection(editing: _editing)),
-              SliverToBoxAdapter(child: _ToolsSection(editing: _editing)),
               const SliverToBoxAdapter(child: SizedBox(height: 24)),
             ],
           ],
@@ -390,6 +390,7 @@ class _VirtualSection extends ConsumerWidget {
     ];
     final outbox = ref.watch(outboxProvider).value ?? const <OutboxItem>[];
     final snoozed = ref.watch(snoozedProvider).value ?? const <EmailSummary>[];
+    final discussionsUnread = ref.watch(discussionsProvider).fold(0, (n, s) => n + s.unreadCount);
     final colors = LoupeColors.of(context);
     final rows = [
       for (final kind in order)
@@ -441,6 +442,19 @@ class _VirtualSection extends ConsumerWidget {
           onToggleVisible: () {},
           onTap: () => context.push(Routes.outbox),
           target: const OutboxTarget(),
+        ),
+      // Newsletters and discussion lists; the count is unread discussion
+      // mail. (The key is from when it was under Tools.)
+      if (editing || v.visible('tool.subscriptions'))
+        _MailboxTile(
+          key: const ValueKey('subscriptions'),
+          title: 'Subscriptions',
+          icon: LoupeIcons.subscriptions,
+          count: discussionsUnread,
+          editing: editing,
+          visible: v.visible('tool.subscriptions'),
+          onToggleVisible: () => v.toggle('tool.subscriptions'),
+          onTap: () => context.push(Routes.subscriptions),
         ),
     ];
     if (rows.isEmpty) return const SizedBox.shrink();
@@ -535,15 +549,16 @@ class _AccountSection extends ConsumerWidget {
   }
 }
 
-/// Mailing lists by List-Id, once there is list mail.
-class _ListsSection extends ConsumerWidget {
-  const _ListsSection({required this.editing});
+/// Discussion lists pinned in Subscriptions, once there is one.
+class _PinnedListsSection extends ConsumerWidget {
+  const _PinnedListsSection({required this.editing});
 
   final bool editing;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lists = ref.watch(discussionsProvider);
+    final lists = ref.watch(pinnedDiscussionsProvider);
+    final colors = LoupeColors.of(context);
     final v = _visibility(ref);
     final rows = [
       for (final l in lists)
@@ -558,10 +573,18 @@ class _ListsSection extends ConsumerWidget {
             onToggleVisible: () => v.toggle('list.${l.listId}'),
             onTap: () => context.push(Routes.mailingList(l.listId!)),
             target: MailingListTarget(l.listId!),
+            trailing: editing
+                ? CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    minimumSize: const Size(36, 36),
+                    onPressed: () => ref.read(pinnedListsProvider.notifier).toggle(l.listId!),
+                    child: Icon(LoupeIcons.remove, color: colors.destructive, semanticLabel: 'Unpin'),
+                  )
+                : null,
           ),
     ];
     if (rows.isEmpty) return const SizedBox.shrink();
-    return InsetGroup(header: 'Mailing Lists', largeHeader: true, separatorIndent: 51, children: rows);
+    return InsetGroup(header: 'Lists', largeHeader: true, separatorIndent: 51, children: rows);
   }
 }
 
@@ -630,34 +653,5 @@ class _TagSection extends ConsumerWidget {
     ];
     if (rows.isEmpty) return const SizedBox.shrink();
     return InsetGroup(header: 'Tags', largeHeader: true, separatorIndent: 51, children: rows);
-  }
-}
-
-/// Tools: Subscriptions (the unsubscribe centre).
-class _ToolsSection extends ConsumerWidget {
-  const _ToolsSection({required this.editing});
-
-  final bool editing;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final v = _visibility(ref);
-    if (!editing && !v.visible('tool.subscriptions')) return const SizedBox.shrink();
-    return InsetGroup(
-      header: 'Tools',
-      largeHeader: true,
-      separatorIndent: 51,
-      children: [
-        _MailboxTile(
-          key: const ValueKey('tool.subscriptions'),
-          title: 'Subscriptions',
-          icon: LoupeIcons.subscriptions,
-          editing: editing,
-          visible: v.visible('tool.subscriptions'),
-          onToggleVisible: () => v.toggle('tool.subscriptions'),
-          onTap: () => context.push(Routes.subscriptions),
-        ),
-      ],
-    );
   }
 }

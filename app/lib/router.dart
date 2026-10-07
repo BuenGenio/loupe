@@ -32,8 +32,10 @@ import 'features/settings/notification_settings_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/settings/swipe_settings_screen.dart';
 import 'features/snooze/snoozed_screen.dart';
+import 'features/subscriptions/subscription_providers.dart';
 import 'features/subscriptions/subscription_screen.dart';
 import 'features/subscriptions/subscriptions_screen.dart';
+import 'providers.dart';
 import 'settings/app_mode.dart';
 import 'shared/mailbox_ref_codec.dart';
 
@@ -97,10 +99,18 @@ abstract final class Routes {
   /// Snoozed messages of every account, with their wake times.
   static const snoozed = '/snoozed';
 
-  /// Mailboxes › Subscriptions (the unsubscribe centre), and one of them by
-  /// `Subscription.key`.
+  /// Mailboxes › Subscriptions: newsletters and discussion lists, on the
+  /// last tab, or on [tab]'s.
   static const subscriptions = '/subscriptions';
+  static String subscriptionsTab(SubscriptionKind tab) => '$subscriptions?tab=${tab.name}';
+
+  /// One newsletter, by `Subscription.key`. Keys from before mail was
+  /// grouped by sender (a list's, an address with a +tag) lead to the
+  /// subscription that took them in, a discussion's to its list.
   static String subscription(String key) => '$subscriptions/${Uri.encodeComponent(key)}';
+
+  /// The discussion lists, as the Mailboxes screen used to list them.
+  static const mailingLists = '/mailing-lists';
 
   static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
 
@@ -131,6 +141,26 @@ abstract final class Routes {
   static String identities(String accountId) => '${accountSettings(accountId)}/identities';
 }
 
+/// Where `/subscriptions/<key>` goes when [key] is no newsletter's: to the
+/// forum view of a discussion, or to the subscription that took in a key
+/// from before mail was grouped by sender. Null to stay.
+Future<String?> _subscriptionRedirect(Ref ref, String key) async {
+  List<Subscription>? all = ref.read(subscriptionsProvider).value;
+  if (all == null || !all.any((s) => s.key == key || s.sourceKeys.contains(key))) {
+    final subs = subscriptionsOf(ref.read(repositoryProvider));
+    if (subs == null) return null;
+    try {
+      all = await subs.watchSubscriptions().first.timeout(const Duration(seconds: 5));
+    } on Object {
+      return null;
+    }
+  }
+  final group = all.where((s) => s.key == key).firstOrNull ?? all.where((s) => s.sourceKeys.contains(key)).firstOrNull;
+  if (group == null) return null;
+  if (group.isDiscussion) return Routes.mailingList(group.listId!);
+  return group.key == key ? null : Routes.subscription(group.key);
+}
+
 final routerProvider = Provider<GoRouter>((ref) {
   // The router lives as long as the app; mode changes only re-run redirects.
   final mode = ValueNotifier<AppMode>(ref.read(appModeProvider));
@@ -155,13 +185,19 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.snoozed, builder: (context, state) => const SnoozedScreen()),
       GoRoute(
         path: Routes.subscriptions,
-        builder: (context, state) => const SubscriptionsScreen(),
+        builder: (context, state) =>
+            SubscriptionsScreen(initialTab: SubscriptionKind.values.asNameMap()[state.uri.queryParameters['tab']]),
         routes: [
           GoRoute(
             path: ':key',
+            redirect: (context, state) => _subscriptionRedirect(ref, state.pathParameters['key']!),
             builder: (context, state) => SubscriptionScreen(subscriptionKey: state.pathParameters['key']!),
           ),
         ],
+      ),
+      GoRoute(
+        path: Routes.mailingLists,
+        redirect: (context, state) => Routes.subscriptionsTab(SubscriptionKind.discussion),
       ),
       GoRoute(
         path: '/list/:ref',
