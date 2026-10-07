@@ -102,10 +102,7 @@ final class RecurrenceRule {
       bySecond: ints('BYSECOND', 0, 60),
       byMinute: ints('BYMINUTE', 0, 59),
       byHour: ints('BYHOUR', 0, 23),
-      byDay: [
-        for (final s in (parts['BYDAY'] ?? '').split(','))
-          if (WeekdayNum.parse(s) case final d?) d,
-      ],
+      byDay: [for (final s in (parts['BYDAY'] ?? '').split(',')) ?WeekdayNum.parse(s)],
       byMonthDay: ints('BYMONTHDAY', 1, 31, negative: true),
       byYearDay: ints('BYYEARDAY', 1, 366, negative: true),
       byWeekNo: ints('BYWEEKNO', 1, 53, negative: true),

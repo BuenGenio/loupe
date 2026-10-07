@@ -157,7 +157,7 @@ final class CalDuration {
 
   String get value {
     final out = StringBuffer(negative ? '-P' : 'P');
-    if (days > 0 && days % 7 == 0 && seconds == 0) return '${out}${days ~/ 7}W';
+    if (days > 0 && days % 7 == 0 && seconds == 0) return '$out${days ~/ 7}W';
     if (days > 0) out.write('${days}D');
     if (seconds > 0 || days == 0) {
       out.write('T');

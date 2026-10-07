@@ -273,8 +273,7 @@ final class CalendarEvent {
   List<CalDateTime> _times(String name) => [
     for (final p in component.all(name))
       if ((p.param('VALUE')?.toUpperCase() ?? '') != 'PERIOD')
-        for (final v in p.value.split(','))
-          if (CalDateTime.parse(v, tzid: p.param('TZID')) case final t?) t,
+        for (final v in p.value.split(',')) ?CalDateTime.parse(v, tzid: p.param('TZID')),
   ];
 
   List<CalDateTime> get exceptionDates => _times('EXDATE');

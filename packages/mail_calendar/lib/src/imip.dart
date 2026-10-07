@@ -70,10 +70,7 @@ String buildReply({
     ?source.property('SUMMARY'),
     if (comment != null && comment.trim().isNotEmpty) Property('COMMENT', escapeText(comment.trim())),
   ];
-  final zones = <String>{
-    for (final p in properties)
-      if (p.param('TZID') case final tzid?) tzid,
-  };
+  final zones = <String>{for (final p in properties) ?p.param('TZID')};
   final root = Component(
     'VCALENDAR',
     properties: [Property('PRODID', productId), Property('VERSION', '2.0'), Property('METHOD', 'REPLY')],

@@ -687,10 +687,7 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
     final geo = place.geo;
     final Uri uri;
     if (defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.macOS) {
-      uri = Uri.https('maps.apple.com', '/', {
-        if (query != null) 'q': query,
-        if (geo != null) 'll': '${geo.$1},${geo.$2}',
-      });
+      uri = Uri.https('maps.apple.com', '/', {'q': ?query, if (geo != null) 'll': '${geo.$1},${geo.$2}'});
     } else {
       // The map app the user picked (geo: intent), with the place searched for.
       final at = geo == null ? '0,0' : '${geo.$1},${geo.$2}';
