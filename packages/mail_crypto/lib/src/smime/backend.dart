@@ -7,14 +7,15 @@ import 'certificate.dart';
 import 'cms.dart' as cms;
 import 'cms.dart' show SmimeContentCipher, SmimeDecrypted, SmimeRecipientId, SmimeSignedData;
 import 'pkcs12.dart' as pkcs12;
+import 'key_handle.dart';
 import 'pkcs12.dart' show SmimeBundle;
-import 'primitives.dart' show SmimePrivateKey;
 
-/// The user's certificate with its private key.
+/// The user's certificate with its private key: in the app
+/// ([SmimePrivateKey]) or on the device ([SmimePlatformKey]).
 final class SmimeKeyPair {
   const SmimeKeyPair(this.certificate, this.key);
   final SmimeCertificate certificate;
-  final SmimePrivateKey key;
+  final SmimeKeyHandle key;
 }
 
 /// A detached or opaque SignedData, and its digest for `micalg`.
@@ -30,8 +31,11 @@ final class SmimeSignature {
 
 /// The S/MIME engine: PKCS #12, CMS and certificate signatures. Everything
 /// is synchronous and pure, so a caller can run it in another isolate. A
-/// platform engine (Android KeyChain, iOS Security.framework) could take
-/// its place; certificates and keys are plain DER values.
+/// platform engine (iOS Security.framework) could take its place;
+/// certificates and keys are plain DER values. Keys the platform keeps
+/// ([SmimePlatformKey], Android KeyChain) sign and decrypt through
+/// [SmimeKeyRequest]s: [sign] and [decrypt] throw [SmimeKeyRequired] until
+/// the key's answers are given.
 abstract interface class SmimeBackend {
   /// The keys and certificates of a PKCS #12 file. Throws [SmimeException]
   /// ([SmimeErrorKind.wrongPassword] for a wrong [password]).
@@ -45,7 +49,8 @@ abstract interface class SmimeBackend {
   SmimeSignedData verify(Uint8List signedData, {Uint8List? content, List<SmimeCertificate> known = const []});
 
   /// Signs [content] (a MIME entity with CRLF line ends) as [signer],
-  /// carrying [chain]; detached unless [detached] is false.
+  /// carrying [chain]; detached unless [detached] is false. A
+  /// [SmimePlatformKey] without the signature throws [SmimeKeyRequired].
   SmimeSignature sign(
     Uint8List content,
     SmimeKeyPair signer, {
@@ -62,7 +67,9 @@ abstract interface class SmimeBackend {
     SmimeContentCipher cipher = SmimeContentCipher.aes256Cbc,
   });
 
-  /// Decrypts an EnvelopedData or AuthEnvelopedData with one of [keys].
+  /// Decrypts an EnvelopedData or AuthEnvelopedData with one of [keys]
+  /// (keys in the app first). A [SmimePlatformKey] that must decrypt the
+  /// content key throws [SmimeKeyRequired] until it is given the answer.
   SmimeDecrypted decrypt(Uint8List envelope, List<SmimeKeyPair> keys);
 
   /// Who an EnvelopedData or AuthEnvelopedData is encrypted to.

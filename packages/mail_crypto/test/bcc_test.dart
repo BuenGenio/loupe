@@ -28,9 +28,9 @@ final class _SmimeKeys implements SmimeSendKeys {
   _SmimeKeys(this.smimeState, this.keys);
   @override
   final SmimeState smimeState;
-  final Map<String, SmimePrivateKey> keys;
+  final Map<String, SmimeKeyHandle> keys;
   @override
-  SmimePrivateKey? smimeKey(String fingerprint) => keys[fingerprint];
+  SmimeKeyHandle? smimeKey(String fingerprint) => keys[fingerprint];
 }
 
 /// One composed copy: the envelope, the bytes, and the parsed message.

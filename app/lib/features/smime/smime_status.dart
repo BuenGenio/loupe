@@ -57,6 +57,7 @@ final class SmimeStatusView {
         SmimeDecryptFailure.noKey => 'Encrypted (S/MIME) · no certificate',
         SmimeDecryptFailure.damaged => 'Encrypted (S/MIME) · damaged',
         SmimeDecryptFailure.unsupported => 'Encrypted (S/MIME) · unsupported',
+        SmimeDecryptFailure.locked => 'Encrypted (S/MIME) · locked',
       };
     }
     final sig = status.signature;
@@ -358,6 +359,7 @@ class SmimeStatusSheet extends ConsumerWidget {
         SmimeDecryptFailure.noKey => 'It was encrypted to a certificate that isn’t on this device.',
         SmimeDecryptFailure.damaged => 'The encrypted data is damaged or was changed on the way.',
         SmimeDecryptFailure.unsupported => 'It uses an algorithm Loupe doesn’t support.',
+        SmimeDecryptFailure.locked => status.failureMessage ?? 'Your S/MIME certificate is locked.',
       };
     }
     final sig = status.signature;

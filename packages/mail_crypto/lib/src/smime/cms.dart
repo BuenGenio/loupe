@@ -9,6 +9,7 @@ import 'package:pointycastle/api.dart' show Digest;
 
 import 'certificate.dart';
 import 'der.dart';
+import 'key_handle.dart';
 import 'oids.dart';
 import 'primitives.dart';
 
@@ -395,22 +396,36 @@ const smimeCapabilities = [Oid.aes256Gcm, Oid.aes128Gcm, Oid.aes256Cbc, Oid.aes1
 /// carrying [chain] (the CA certificates, roots left out). Detached unless
 /// [detached] is false. [encryptionCertificate] is announced as the one
 /// to encrypt to (RFC 8551 §2.5.3, and Outlook's attribute).
+///
+/// A [SmimePlatformKey] signs on the platform: without the answer, this
+/// throws [SmimeKeyRequired] for the signed attributes, which are the same
+/// again for the same [content] and [signingTime]; with it, the signature
+/// is checked against the certificate before it goes out.
 (Uint8List, String) createSignedData(
   Uint8List content, {
   required SmimeCertificate certificate,
-  required SmimePrivateKey key,
+  required SmimeKeyHandle key,
   List<SmimeCertificate> chain = const [],
   bool detached = true,
   DateTime? signingTime,
   SmimeCertificate? encryptionCertificate,
 }) {
-  final material = PrivateKeyMaterial.parse(key);
-  if (!material.matches(certificate)) {
+  final material = switch (key) {
+    SmimePrivateKey() => PrivateKeyMaterial.parse(key),
+    SmimePlatformKey() => null,
+  };
+  if (material != null && !material.matches(certificate)) {
     throw const SmimeException(SmimeErrorKind.failed, 'The private key doesn’t belong to the certificate.');
   }
-  final (digestOid, sigAlg) = switch (material) {
-    RsaKeyMaterial() => (Oid.sha256, derAlgorithm(Oid.rsaEncryption, derNull)),
-    EcKeyMaterial(:final curve) => (
+  final keyType = switch (material) {
+    RsaKeyMaterial() => SmimeKeyType.rsa,
+    EcKeyMaterial() => SmimeKeyType.ec,
+    null => certificate.keyType,
+  };
+  final curve = material is EcKeyMaterial ? material.curve : certificate.curve;
+  final (digestOid, sigAlg) = switch (keyType) {
+    SmimeKeyType.rsa => (Oid.sha256, derAlgorithm(Oid.rsaEncryption, derNull)),
+    SmimeKeyType.ec => (
       digestForCurve(curve),
       derAlgorithm(switch (digestForCurve(curve)) {
         Oid.sha384 => Oid.ecdsaWithSha384,
@@ -418,6 +433,7 @@ const smimeCapabilities = [Oid.aes256Gcm, Oid.aes128Gcm, Oid.aes256Cbc, Oid.aes1
         _ => Oid.ecdsaWithSha256,
       }),
     ),
+    SmimeKeyType.other => throw const SmimeException(SmimeErrorKind.unsupported, 'Only RSA and EC keys can sign.'),
   };
   final issuerAndSerial = derSequence([certificate.issuer.der, derInteger(certificate.serialNumber)]);
   Uint8List attr(String oid, List<int> value) => derSequence([
@@ -445,11 +461,38 @@ const smimeCapabilities = [Oid.aes256Gcm, Oid.aes128Gcm, Oid.aes256Cbc, Oid.aes1
     ],
   ];
   final signedAttrs = derSet(attrs);
-  final hash = digest(digestOid, signedAttrs);
-  final signature = switch (material) {
-    RsaKeyMaterial() => rsaPkcs1Sign(material, digestOid, hash),
-    EcKeyMaterial() => ecdsaSign(material, digestOid, hash),
-  };
+  final Uint8List signature;
+  switch (material) {
+    case RsaKeyMaterial():
+      signature = rsaPkcs1Sign(material, digestOid, digest(digestOid, signedAttrs));
+    case EcKeyMaterial():
+      signature = ecdsaSign(material, digestOid, digest(digestOid, signedAttrs));
+    case null:
+      final platform = key as SmimePlatformKey;
+      signature = platform.answer(
+        SmimeKeyRequest(
+          alias: platform.alias,
+          operation: SmimeKeyOperation.sign,
+          input: signedAttrs,
+          keyType: keyType,
+          digest: platformDigestName(digestOid),
+        ),
+      );
+      // A key that isn't the certificate's (the alias now holds another
+      // one), or a platform that signed something else: never sent.
+      bool good;
+      try {
+        good = verifySignature(certificate, Asn1.parse(sigAlg)[0].oid, null, digestOid, signedAttrs, signature);
+      } on Object {
+        good = false;
+      }
+      if (!good) {
+        throw const SmimeException(
+          SmimeErrorKind.failed,
+          'The certificate on this device didn’t sign correctly: its key may have changed.',
+        );
+      }
+  }
   final signerInfo = derSequence([
     derInt(1),
     issuerAndSerial,
@@ -472,6 +515,16 @@ const smimeCapabilities = [Oid.aes256Gcm, Oid.aes128Gcm, Oid.aes256Cbc, Oid.aes1
   ]);
   return (derSequence([derOid(Oid.signedData), derContext(0, signedData)]), micalgOf(digestOid));
 }
+
+/// The platform's name of a digest (Java's): `SHA-256`.
+String platformDigestName(String digestOid) => switch (digestOid) {
+  Oid.sha1 => 'SHA-1',
+  Oid.sha224 => 'SHA-224',
+  Oid.sha256 => 'SHA-256',
+  Oid.sha384 => 'SHA-384',
+  Oid.sha512 => 'SHA-512',
+  _ => throw SmimeException(SmimeErrorKind.unsupported, 'The digest ${digestName(digestOid)} isn’t supported.'),
+};
 
 // Decrypting ------------------------------------------------------------------
 
@@ -518,8 +571,9 @@ List<SmimeRecipientId> _ridsOf(Asn1 ri) {
 }
 
 /// Decrypts an EnvelopedData or AuthEnvelopedData ContentInfo with one of
-/// [keys] (the user's certificates with their private keys).
-SmimeDecrypted decryptEnveloped(Uint8List der, List<(SmimeCertificate, SmimePrivateKey)> keys) {
+/// [keys] (the user's certificates with their private keys). A
+/// [SmimePlatformKey] without the answer it needs throws [SmimeKeyRequired].
+SmimeDecrypted decryptEnveloped(Uint8List der, List<(SmimeCertificate, SmimeKeyHandle)> keys) {
   try {
     final (type, envelope) = contentInfo(der);
     final authenticated = type == Oid.authEnvelopedData;
@@ -550,14 +604,21 @@ SmimeDecrypted decryptEnveloped(Uint8List der, List<(SmimeCertificate, SmimePriv
     };
     Uint8List? cek;
     var matched = false;
-    for (final ri in infos.children) {
-      for (final (cert, key) in keys) {
+    // Keys in the app first: a key on the device is asked for only when none of them is a recipient.
+    final ordered = [
+      for (final k in keys)
+        if (k.$2 is SmimePrivateKey) k,
+      for (final k in keys)
+        if (k.$2 is SmimePlatformKey) k,
+    ];
+    search:
+    for (final (cert, key) in ordered) {
+      for (final ri in infos.children) {
         if (!_ridsOf(ri).any((r) => r.matches(cert))) continue;
         matched = true;
         cek = _unwrapKey(ri, cert, key, keyLength);
-        if (cek != null) break;
+        if (cek != null) break search;
       }
-      if (cek != null) break;
     }
     if (!matched || cek == null) {
       throw const SmimeException(SmimeErrorKind.noKey, 'This message isn’t encrypted to any of your certificates.');
@@ -620,27 +681,61 @@ int _rc2Bits(int version) => switch (version) {
 };
 
 /// The content-encryption key from one RecipientInfo; null when it isn't ours.
-Uint8List? _unwrapKey(Asn1 ri, SmimeCertificate cert, SmimePrivateKey key, int? keyLength) {
-  final material = PrivateKeyMaterial.parse(key);
+Uint8List? _unwrapKey(Asn1 ri, SmimeCertificate cert, SmimeKeyHandle key, int? keyLength) {
+  final material = switch (key) {
+    SmimePrivateKey() => PrivateKeyMaterial.parse(key),
+    SmimePlatformKey() => null,
+  };
+  final platform = key is SmimePlatformKey ? key : null;
+  final keyType = switch (material) {
+    RsaKeyMaterial() => SmimeKeyType.rsa,
+    EcKeyMaterial() => SmimeKeyType.ec,
+    null => cert.keyType,
+  };
   if (ri.isSequence) {
     // KeyTransRecipientInfo.
-    if (material is! RsaKeyMaterial) return null;
+    if (keyType != SmimeKeyType.rsa) return null;
     final alg = ri[2];
     final encryptedKey = ri[3].octets;
     if (alg[0].oid == Oid.rsaesOaep) {
       final params = alg.length > 1 ? alg[1] : null;
       final (hash, mgf, source) = rsaParams(params);
       final label = source == null ? Uint8List(0) : source[0][1].octets;
-      return rsaOaepDecrypt(material, hash, mgf, label, encryptedKey);
+      if (material is RsaKeyMaterial) return rsaOaepDecrypt(material, hash, mgf, label, encryptedKey);
+      if (label.isNotEmpty) {
+        throw const SmimeException(SmimeErrorKind.unsupported, 'OAEP with a label isn’t supported for this key.');
+      }
+      return platform!.answer(
+        SmimeKeyRequest(
+          alias: platform.alias,
+          operation: SmimeKeyOperation.decryptOaep,
+          input: encryptedKey,
+          keyType: keyType,
+          digest: _javaDigest(hash.algorithmName),
+          mgfDigest: _javaDigest(mgf.algorithmName),
+        ),
+      );
     }
     if (alg[0].oid != Oid.rsaEncryption) {
       throw SmimeException(SmimeErrorKind.unsupported, 'The key transport ${alg[0].oid} isn’t supported.');
     }
-    return rsaPkcs1DecryptKey(material, encryptedKey, keyLength);
+    if (material is RsaKeyMaterial) return rsaPkcs1DecryptKey(material, encryptedKey, keyLength);
+    final cek = platform!.answer(
+      SmimeKeyRequest(
+        alias: platform.alias,
+        operation: SmimeKeyOperation.decryptPkcs1,
+        input: encryptedKey,
+        keyType: keyType,
+      ),
+    );
+    // As for keys in the app: a key of the wrong length (or the random one
+    // that stands for a bad padding) fails like any wrong key, later.
+    return keyLength != null && cek.length != keyLength ? randomBytes(keyLength) : cek;
   }
   if (ri.isContext(1)) {
     // KeyAgreeRecipientInfo (ECDH).
-    if (material is! EcKeyMaterial) return null;
+    if (keyType != SmimeKeyType.ec) return null;
+    final curve = material is EcKeyMaterial ? material.curve : cert.curve;
     final originator = ri[1][0];
     if (!originator.isContext(1)) {
       throw const SmimeException(SmimeErrorKind.unsupported, 'Static-static ECDH isn’t supported.');
@@ -657,8 +752,24 @@ Uint8List? _unwrapKey(Asn1 ri, SmimeCertificate cert, SmimePrivateKey key, int? 
       Oid.aes256Wrap => 32,
       _ => throw SmimeException(SmimeErrorKind.unsupported, 'The key wrap $wrapOid isn’t supported.'),
     };
-    final peer = ecPublicKey(material.curve, originator[1].bits);
-    final z = ecdhSecret(material.key, peer);
+    // On the curve (an invalid-curve attack on the key otherwise), whoever does the agreement.
+    final peer = ecPublicKey(curve, originator[1].bits);
+    final Uint8List z;
+    if (material is EcKeyMaterial) {
+      z = ecdhSecret(material.key, peer);
+    } else {
+      z = platform!.answer(
+        SmimeKeyRequest(
+          alias: platform.alias,
+          operation: SmimeKeyOperation.agree,
+          input: derSequence([derAlgorithm(Oid.ecPublicKey, derOid(curve!)), derBitString(peer.Q!.getEncoded(false))]),
+          keyType: keyType,
+        ),
+      );
+      if (z.length != ecFieldBytes(curve)) {
+        throw const SmimeException(SmimeErrorKind.noKey, 'This message can’t be decrypted with your key.');
+      }
+    }
     final kek = x963Kdf(kdfDigest, z, eccCmsSharedInfo(wrapOid, ukm, wrapLength * 8), wrapLength);
     for (final rek in ri.children.last.children) {
       if (!SmimeRecipientId.parse(rek[0]).matches(cert)) continue;
@@ -672,6 +783,12 @@ Uint8List? _unwrapKey(Asn1 ri, SmimeCertificate cert, SmimePrivateKey key, int? 
   }
   return null;
 }
+
+/// Java's name of a pointycastle digest (`SHA-256` either way; `SHA-1` for `SHA-1`).
+String _javaDigest(String algorithmName) => switch (algorithmName) {
+  'SHA-1' || 'SHA-224' || 'SHA-256' || 'SHA-384' || 'SHA-512' => algorithmName,
+  _ => throw SmimeException(SmimeErrorKind.unsupported, 'The digest $algorithmName isn’t supported.'),
+};
 
 Digest _kdfDigest(String scheme) {
   final oid = switch (scheme) {

@@ -142,6 +142,10 @@ List<FuzzTarget> fuzzTargets([FuzzCorpus? corpus]) {
   final c = corpus ?? FuzzCorpus.instance;
   bool smimeError(Object e) => e is SmimeException;
   final keys = [alice, bob];
+  final onDevice = [
+    SmimeKeyPair(alice.certificate, const SmimePlatformKey('alice')),
+    SmimeKeyPair(bob.certificate, const SmimePlatformKey('bob')),
+  ];
   const reader = SmimeReader(smime);
   return [
     FuzzTarget('asn1', c.allDer, (input) {
@@ -180,6 +184,12 @@ List<FuzzTarget> fuzzTargets([FuzzCorpus? corpus]) {
     }, allowed: smimeError),
     FuzzTarget('cms-enveloped', c.enveloped, (input) {
       smime.recipientsOf(input);
+      try {
+        // Keys on the device: a request (or a typed error), never anything else.
+        smime.decrypt(input, onDevice);
+      } on SmimeException {
+        // Typed.
+      }
       smime.decrypt(input, keys);
     }, allowed: smimeError),
     FuzzTarget('pkcs12', [for (final (d, _) in c.pkcs12) d], (input) {
@@ -193,6 +203,8 @@ List<FuzzTarget> fuzzTargets([FuzzCorpus? corpus]) {
     }, allowed: smimeError),
     FuzzTarget('message', c.messages, (input) {
       reader.read(input, keys: keys, anchors: testAnchors, now: today);
+      // Keys on the device: asked for, never a crash.
+      reader.read(input, keys: onDevice, anchors: testAnchors, now: today);
       reader.recipientsOf(input);
     }, allowed: (_) => false),
   ];

@@ -13,6 +13,7 @@ import 'backend.dart';
 import 'certificate.dart';
 import 'cms.dart';
 import 'der.dart';
+import 'key_handle.dart';
 import 'oids.dart';
 import 'status.dart';
 import 'trust.dart';
@@ -105,16 +106,18 @@ final class SmimeReader {
     var entity = root;
     var unwrapped = false;
 
-    SmimeMessageStatus status({SmimeDecryptFailure? failure, String? message}) => SmimeMessageStatus(
-      protection: protection ?? SmimeProtection.none,
-      encrypted: encrypted,
-      failure: failure,
-      failureMessage: message,
-      cipher: cipher,
-      authenticated: authenticated,
-      recipients: recipients,
-      signature: signature,
-    );
+    SmimeMessageStatus status({SmimeDecryptFailure? failure, String? message, SmimeKeyRequest? request}) =>
+        SmimeMessageStatus(
+          protection: protection ?? SmimeProtection.none,
+          encrypted: encrypted,
+          failure: failure,
+          failureMessage: message,
+          cipher: cipher,
+          authenticated: authenticated,
+          recipients: recipients,
+          signature: signature,
+          keyRequest: request,
+        );
 
     for (var layer = 0; layer < maxLayers; layer++) {
       var kind = _kind(entity);
@@ -158,6 +161,12 @@ final class SmimeReader {
         authenticated = decrypted.authenticated;
         entity = MimeEntity.parse(decrypted.content);
         unwrapped = true;
+      } on SmimeKeyRequired catch (e) {
+        // A key on the device must decrypt the content key: the caller asks
+        // it and reads again with the answer.
+        return SmimeReadResult(
+          status: status(failure: SmimeDecryptFailure.locked, message: e.message, request: e.request),
+        );
       } on SmimeException catch (e) {
         return SmimeReadResult(
           status: status(failure: _failure(e), message: e.message),
@@ -279,6 +288,7 @@ final class SmimeReader {
   static SmimeDecryptFailure _failure(SmimeException e) => switch (e.kind) {
     SmimeErrorKind.noKey => SmimeDecryptFailure.noKey,
     SmimeErrorKind.unsupported => SmimeDecryptFailure.unsupported,
+    SmimeErrorKind.locked => SmimeDecryptFailure.locked,
     _ => SmimeDecryptFailure.damaged,
   };
 }

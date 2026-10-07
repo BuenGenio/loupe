@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../features/openpgp/decrypted_mail.dart';
 import '../features/openpgp/openpgp_providers.dart';
+import '../features/smime/device_certificates.dart';
 import '../features/smime/smime_providers.dart';
 import 'isolate_composer.dart';
 
@@ -46,6 +47,7 @@ Future<MailRepository> createLiveRepository(Ref ref) async {
   repository = buildLiveRepository(
     store,
     keys: SecureSendKeys(SessionSendKeys(keyring, () => ref.read(keySessionProvider)), smime),
+    device: ref.read(deviceCertificatesProvider),
   );
   await repository.pause();
   await repository.start();
@@ -132,7 +134,8 @@ Future<void> deleteLocalMailData({Directory? directory, SecretStorage? secrets})
 
 /// The live repository over [store], not yet started. Its composer writes
 /// OpenPGP mail (and Autocrypt headers) and S/MIME mail with [keys], in
-/// another isolate ([IsolateComposer]); a message that asks for encryption
+/// another isolate ([IsolateComposer]), certificates on the device signing
+/// through [device] (the app's only); a message that asks for encryption
 /// it can't do stays in the Outbox, never goes out in the clear.
 ///
 /// The background isolates (WorkManager, Instant Delivery, iOS background
@@ -142,12 +145,13 @@ Future<void> deleteLocalMailData({Directory? directory, SecretStorage? secrets})
 LiveMailRepository buildLiveRepository(
   MailStore store, {
   required SecureSendKeys keys,
+  SmimePlatformKeys? device,
   SyncConfig config = const SyncConfig(),
 }) {
   final credentials = CredentialsService(store: SecureCredentialStore(KeychainSecretStorage()));
   return LiveMailRepository(
     store,
-    ImapTransportFactory(composer: IsolateComposer(keys)),
+    ImapTransportFactory(composer: IsolateComposer(keys, device: device)),
     credentials.store,
     config: config,
     refreshOAuth: (account, current) => credentials.oauth.refresh(account.provider, current),

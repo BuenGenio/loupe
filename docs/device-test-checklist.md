@@ -322,6 +322,16 @@ account), and Loupe having both keys (Autocrypt from a signed message of each, o
    - The sender's certificate is collected (Correspondents’ Certificates), so your next message to them can be encrypted.
    - With both standards set up, Compose shows an OpenPGP / S/MIME switch. "Prefer S/MIME" on your address picks S/MIME first.
 4. **If not:** the header's sheet names the trust problem (unknown issuer, expired, SHA-1). It can trust the issuer after showing its fingerprint.
+5. **Certificates from the device (#26).**
+   - **Do:** install a `.p12` in Android's Settings › Security › Encryption & credentials › Install a certificate ›
+     VPN & app user certificate (or have device management install one). In Loupe: Settings › End-to-End
+     Encryption › **Use a Certificate from This Device…**, pick it.
+   - **Expect:** Android's own picker; then "Added your certificate … from this device" (and the CA offered for
+     trust). Its details say "Private key: On this device". Send a signed and an encrypted message to Thunderbird:
+     both verify there. Mail encrypted to it (from Thunderbird) decrypts in Loupe, RSA and EC certificates alike.
+   - **If not:** "Encrypted (S/MIME) · locked" and the sheet give the platform's reason. ECDH needs Android 12 or
+     later and a key allowed to agree; an EC certificate that can't decrypt says "can’t do this". A message queued
+     while the app was closed waits in the Outbox with "open Loupe".
 
 ## 13. Attachments (10 min)
 

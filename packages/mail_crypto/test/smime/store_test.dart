@@ -47,7 +47,7 @@ void main() {
     expect(state.own.single.chain, unorderedEquals(aliceBundle.chain));
     expect(state.identity('alice@example.org').preferSmime, isTrue);
     expect(state.ownCertificateFor('alice@example.org', now: today)?.certificate, alice.certificate);
-    expect((await again.privateKey(fp))?.pkcs8, alice.key.pkcs8);
+    expect((await again.privateKey(fp) as SmimePrivateKey?)?.pkcs8, aliceKey.pkcs8);
     expect((await again.keyPairs()).single.certificate, alice.certificate);
 
     await again.setIdentity('alice@example.org', IdentitySmime(certificateFingerprint: fp, preferSmime: true));

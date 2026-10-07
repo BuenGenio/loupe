@@ -11,6 +11,7 @@ import '../../theme/theme.dart';
 import '../conversation/sheets.dart';
 import '../openpgp/key_import.dart' show copyToClipboard, pasteKeyProvider, pickKeyFileProvider;
 import '../settings/settings_widgets.dart';
+import 'device_certificates.dart';
 import 'smime_import.dart';
 import 'smime_providers.dart';
 import 'smime_service.dart';
@@ -76,6 +77,7 @@ class SmimeSettingsSection extends ConsumerWidget {
 
     final contacts = [...state.contacts]
       ..sort((a, b) => a.certificate.displayName.compareTo(b.certificate.displayName));
+    final device = ref.watch(deviceCertificatesProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -84,7 +86,8 @@ class SmimeSettingsSection extends ConsumerWidget {
           separatorIndent: 58,
           footer: state.own.isEmpty
               ? 'For S/MIME, as Outlook and many companies use it. Import your certificate with its private key '
-                    '(a .p12 or .pfx file), exported from Outlook, Windows, macOS or Thunderbird.'
+                    '(a .p12 or .pfx file), exported from Outlook, Windows, macOS or Thunderbird'
+                    '${device.supported ? ', or use one your company or you installed on this device' : ''}.'
               : null,
           children: [
             for (final o in state.own)
@@ -94,10 +97,13 @@ class SmimeSettingsSection extends ConsumerWidget {
                 title: o.certificate.displayName,
                 subtitle:
                     '${o.certificate.emails.join(', ')} · '
-                    '${o.certificate.isExpiredAt(now) ? 'expired' : 'until ${_day(o.certificate.notAfter)}'}',
+                    '${o.certificate.isExpiredAt(now) ? 'expired' : 'until ${_day(o.certificate.notAfter)}'}'
+                    '${o.onDevice ? ' · on this device' : ''}',
                 onTap: () => context.push(Routes.smimeCertificate(o.fingerprint)),
               ),
             add('smime-import-own', 'Import Certificate…', () => _importFile(context, ref)),
+            if (device.supported)
+              add('smime-use-device', 'Use a Certificate from This Device…', () => useDeviceCertificate(context, ref)),
           ],
         ),
         InsetGroup(
@@ -186,6 +192,10 @@ class SmimeCertificateScreen extends ConsumerWidget {
         InsetGroup(
           header: 'Certificate',
           separatorIndent: 16,
+          footer: own?.onDevice ?? false
+              ? 'Its private key stays in Android’s credential storage, where your company or you installed it: '
+                    'Loupe asks Android to sign and decrypt with it. Signed mail is signed when you send it.'
+              : null,
           children: [
             GroupedRow(title: cert.subject.toString(), chevron: false),
             if (cert.emails.isNotEmpty) GroupedRow(title: 'Addresses', detail: cert.emails.join(', '), chevron: false),
@@ -205,6 +215,13 @@ class SmimeCertificateScreen extends ConsumerWidget {
               },
             ),
             GroupedRow(title: 'SHA-1 thumbprint', subtitle: _grouped(cert.sha1Fingerprint), chevron: false),
+            if (own != null)
+              GroupedRow(
+                key: const ValueKey('smime-key-location'),
+                title: 'Private key',
+                detail: own.onDevice ? 'On this device' : 'In Loupe',
+                chevron: false,
+              ),
             if (contact != null)
               GroupedRow(
                 title: 'From',
@@ -301,8 +318,11 @@ class SmimeCertificateScreen extends ConsumerWidget {
       context,
       title: own ? 'Delete your certificate ${cert.displayName}?' : 'Remove ${cert.displayName}’s certificate?',
       message: own
-          ? 'Its private key is deleted from this device: mail encrypted to it can’t be read here anymore, '
-                'unless you import it again.'
+          ? (service.state.ownCertificate(cert.fingerprint)?.onDevice ?? false)
+                ? 'Loupe stops using it: mail encrypted to it can’t be read in Loupe anymore. The certificate stays '
+                      'on this device (Settings › Security › Encryption & credentials).'
+                : 'Its private key is deleted from this device: mail encrypted to it can’t be read here anymore, '
+                      'unless you import it again.'
           : 'It comes back with their next signed message.',
       actions: [SheetAction(own ? 'Delete Certificate' : 'Remove Certificate', true, destructive: true)],
     );

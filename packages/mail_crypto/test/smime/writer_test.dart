@@ -13,9 +13,9 @@ final class Keys implements SmimeSendKeys {
   Keys(this.smimeState, [this.keys = const {}]);
   @override
   final SmimeState smimeState;
-  final Map<String, SmimePrivateKey> keys;
+  final Map<String, SmimeKeyHandle> keys;
   @override
-  SmimePrivateKey? smimeKey(String fingerprint) => keys[fingerprint];
+  SmimeKeyHandle? smimeKey(String fingerprint) => keys[fingerprint];
 }
 
 /// Alice's side: her certificate and key, Bob's certificate (collected

@@ -165,7 +165,7 @@ final class ContentLoader {
     }
     final EmailContent shown;
     if (status.encrypted && status.failure != null) {
-      shown = _copy(content, text: _explainSmime(status.failure!), html: null, attachments: _withoutPlumbing(content));
+      shown = _copy(content, text: _explainSmime(status), html: null, attachments: _withoutPlumbing(content));
     } else if (outcome?.content case final inner?) {
       _remember(emailId, outcome!.entity!);
       shown = _copy(inner, headers: content.headers, attachments: inner.attachments);
@@ -253,12 +253,14 @@ final class ContentLoader {
   static const _plumbing = {'application/pgp-encrypted', 'application/pgp-signature', ...smimePlumbingTypes};
   static const _plumbingNames = {'encrypted.asc', 'smime.p7s', 'smime.p7m'};
 
-  static String _explainSmime(SmimeDecryptFailure failure) => switch (failure) {
+  static String _explainSmime(SmimeMessageStatus status) => switch (status.failure!) {
     SmimeDecryptFailure.noKey =>
       'This message is encrypted with S/MIME, but not to any certificate on this device. Import your certificate '
           '(a .p12 or .pfx file) in Settings › End-to-End Encryption.',
     SmimeDecryptFailure.damaged => 'This encrypted message is damaged, so it can’t be decrypted safely.',
     SmimeDecryptFailure.unsupported => 'This message uses encryption that Loupe can’t read yet.',
+    SmimeDecryptFailure.locked =>
+      'This message is encrypted. ${status.failureMessage ?? 'Unlock your S/MIME certificate to read it.'}',
   };
 
   static String _explain(PgpDecryptFailure failure) => switch (failure) {

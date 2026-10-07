@@ -31,7 +31,7 @@ BigInt cubeRoot(BigInt v) {
 void main() {
   group('RSASSA-PKCS1-v1_5 verification takes only the exact encoding', () {
     final hash = digest(Oid.sha256, utf8.encode('Pay the new account'));
-    final material = PrivateKeyMaterial.parse(alice.key) as RsaKeyMaterial;
+    final material = PrivateKeyMaterial.parse(aliceKey) as RsaKeyMaterial;
     final public = RSAPublicKey(material.modulus, material.publicExponent);
     const k = 256;
 
@@ -132,7 +132,7 @@ void main() {
       issuerKey: caKey,
       spki: rsaSpki((BigInt.one << 2047) + BigInt.one, BigInt.from(65536)),
     );
-    final material = PrivateKeyMaterial.parse(alice.key);
+    final material = PrivateKeyMaterial.parse(aliceKey);
     expect(material.matches(odd), isFalse);
     expect(material.matches(alice.certificate), isTrue);
   });

@@ -39,6 +39,7 @@ The packages are developed in parallel. These are the seams:
 | `compileSieve`, `generateLoupeScript`, `parseLoupeScript`, `planInclude`, `SieveConnector`, `ServerRules`, `RuleRunner` | mail_sieve `lib/mail_sieve.dart` | mail_sieve | mail_sync, app demo |
 | `PgpBackend` (swappable OpenPGP engine), `Keyring`, `PgpMimeReader`, `PgpMessageComposer` (a `MessageComposer` around another), `OutgoingMessage.security` | mail_crypto `lib/mail_crypto.dart`, mail_model `src/outgoing.dart` | mail_crypto (`DartPgBackend`) | app (reader, compose, settings, live composer) |
 | `SmimeBackend` (swappable S/MIME engine), `SmimeStore`, `SmimeReader`, `checkTrust`, `planSmime`, `chooseTechnology`, `SmimeMessageComposer` (around the OpenPGP one), `OutgoingSecurity.technology` | mail_crypto `lib/mail_crypto.dart`, mail_model `src/outgoing.dart` | mail_crypto (`DartSmimeBackend`) | app (reader, compose, settings, live composer) |
+| `SmimeKeyHandle`, `SmimePlatformKeys` (keys that stay in the platform's keystore) | mail_crypto `src/smime/key_handle.dart` | app (`KeyChainCertificates`, Android); mail_crypto (`SoftwareSmimeKeystore`, tests) | mail_crypto (CMS), app (reader, live composer) |
 
 Rules:
 
@@ -72,8 +73,31 @@ loading, the header, compose, Settings › End-to-End Encryption).
   PKCS #12 and PBKDF2 key derivations. The ASN.1 (BER in, DER out), X.509, CMS and PKCS #12 structures are
   mail_crypto's own (`lib/src/smime`, about 2,400 lines): no maintained Dart package does CMS enveloping
   (`pkcs7` only signs, for PDFs; `basic_utils` only writes PKCS #12; `pkcs12_parser` had one release). A
-  platform engine (Android KeyChain with MDM-installed certificates, iOS `CMSDecoder`) can come later behind the
-  same interface; certificates and keys cross it as DER.
+  platform engine (iOS `CMSDecoder`) can come later behind the same interface; certificates and keys cross it as
+  DER. Keys in Android's KeyChain are used through key handles (below), the CMS work staying in Dart.
+- **Key handles** (`SmimeKeyHandle`, issue #26): a private key is in the app (`SmimePrivateKey`, PKCS #8) or stays
+  in the platform's keystore (`SmimePlatformKey`, an alias). The backend does everything in Dart except what only
+  the key can do: signing the signed attributes, decrypting a content key (RSA PKCS #1 v1.5 or OAEP), ECDH's
+  shared secret. For a platform key it throws `SmimeKeyRequired` with a `SmimeKeyRequest` (plain data), the
+  caller has the platform answer (`SmimePlatformKeys.perform`), and runs the same work again with the answer
+  (`SmimePlatformKey.answers`, by request id). Keys in the app are tried first. Reading: `SmimeReader` reports
+  the request (`SmimeMessageStatus.keyRequest`) and `SmimeService.read` answers and reads again (a round per
+  layer). Sending: `SmimeMessageComposer.begin` composes up to the signature (`SmimeSignaturePending`, the inner
+  composer's bytes kept, so the signed attributes are the same again), `finish` puts the signature in;
+  `IsolateComposer.composeAsync` runs both steps in another isolate and the platform call in between. A
+  signature from the platform is checked against the certificate before anything goes out; ECDH peers are
+  checked on the curve before the platform sees them; a padding the platform refuses fails like a wrong key.
+  `SoftwareSmimeKeystore` does the platform's part in Dart (the reference, and the tests' stand-in).
+- **Certificates on the device** (Android): Settings › End-to-End Encryption › Use a Certificate from This
+  Device… opens `KeyChain.choosePrivateKeyAlias` (certificates installed by device management or in Android's
+  settings; picking grants Loupe the key). The store keeps the certificate, its chain and the alias
+  (`SmimeOwnCertificate.deviceAlias`), never the key. `KeyChainChannel.kt` (the app's own channel
+  `io.github.buengenio.loupe/keychain`, no plugin) does `getCertificateChain` and, with `getPrivateKey`,
+  `Signature` (SHA-xxxwithRSA/ECDSA), `Cipher` (RSA/ECB/PKCS1Padding, OAEPPadding) and `KeyAgreement` (ECDH) on a
+  worker thread. Only the app's engine has the channel: background work can't use these keys, so such mail is
+  signed when it is queued (see "Signed when queued" below), and composing it in the background fails into the
+  Outbox ("open Loupe"). iOS: not yet (`NoDeviceCertificates`; managed identities need an MDM profile installing
+  them into a keychain access group shared with Loupe, see [ios.md](ios.md)).
 - **Keys and certificates** (`SmimeStore`, keychain entries `loupe.smime.*` next to the OpenPGP keyring): the
   user's certificates with their CA chain, each private key in an entry of its own (PKCS #8, protected by the
   keychain only: the PKCS #12 password just unlocks the import, as on Android and in Thunderbird without a
@@ -107,7 +131,7 @@ loading, the header, compose, Settings › End-to-End Encryption).
   signature around encrypted data doesn't count; a signature's embedded content must be the signed part; a
   signing time more than an hour from the Date header isn't good. The header says "Encrypted (S/MIME)" and
   "Signed by Alice ✓ (Issuer)", or what is wrong; the sheet can trust the issuing CA after showing its
-  fingerprint.
+  fingerprint. A key that is locked, or on the device and unavailable, says "Encrypted (S/MIME) · locked" and why.
 - **Sending** (`SmimeMessageComposer` around `PgpMessageComposer` around `MimeMessageComposer`): signed as
   multipart/signed (SHA-256, RSA PKCS #1 v1.5 or ECDSA) carrying the certificate, its intermediates, the
   SMIMECapabilities and which certificate to encrypt to (RFC 8551's attribute and Outlook's). Encrypted: signed

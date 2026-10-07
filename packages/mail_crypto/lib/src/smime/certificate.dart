@@ -27,12 +27,16 @@ enum SmimeErrorKind {
   /// A recipient's certificate can't be used (expired, untrusted, wrong usage).
   certificateUnusable,
 
+  /// The private key is locked (its passphrase wasn't given), or it is on
+  /// the device (Android KeyChain) and wasn't available.
+  locked,
+
   /// Anything else.
   failed,
 }
 
 /// An S/MIME failure; [message] is fit for the UI.
-final class SmimeException implements Exception {
+class SmimeException implements Exception {
   const SmimeException(this.kind, this.message, [this.cause]);
   final SmimeErrorKind kind;
   final String message;

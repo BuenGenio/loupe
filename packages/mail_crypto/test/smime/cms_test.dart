@@ -155,7 +155,7 @@ void main() {
   });
 
   group('signatures made here, of any shape', () {
-    final material = PrivateKeyMaterial.parse(alice.key) as RsaKeyMaterial;
+    final material = PrivateKeyMaterial.parse(aliceKey) as RsaKeyMaterial;
     Uint8List attr(String oid, List<int> value) => derSequence([derOid(oid), derSet([value])]);
     final standardAttrs = [attr(Oid.contentType, derOid(Oid.data)), attr(Oid.messageDigest, derOctets(digest(Oid.sha256, content)))];
 

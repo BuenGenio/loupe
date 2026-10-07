@@ -6,6 +6,7 @@ import 'package:mail_crypto/mail_crypto.dart';
 
 import '../../settings/app_mode.dart';
 import '../openpgp/openpgp_providers.dart';
+import 'device_certificates.dart';
 import 'smime_keys.dart';
 import 'smime_service.dart';
 
@@ -59,6 +60,7 @@ final smimeServiceProvider = FutureProvider<SmimeService>(
     keys: await ref.watch(smimeKeysProvider.future),
     backend: ref.watch(smimeBackendProvider),
     run: ref.watch(pgpRunnerProvider),
+    device: ref.watch(deviceCertificatesProvider),
   ),
 );
 

@@ -10,14 +10,14 @@ import '../openpgp/openpgp_keys.dart';
 /// Keychain entries of the real S/MIME store start with this.
 const liveSmimePrefix = 'loupe.smime';
 
-/// The store with the private keys in memory: the composer works
-/// synchronously, and S/MIME keys have no passphrase of their own (the
-/// keychain protects them, as Android KeyChain does).
+/// The store with the private keys in memory (the composer works
+/// synchronously): keys in the keychain, and handles of keys that stay on
+/// the device (Android KeyChain).
 final class StoreSmimeKeys implements SmimeSendKeys {
   StoreSmimeKeys(this.store);
 
   final SmimeStore store;
-  final _keys = <String, SmimePrivateKey>{};
+  final _keys = <String, SmimeKeyHandle>{};
 
   /// Reads the private key of every own certificate from the store.
   Future<void> loadKeys() async {
@@ -35,7 +35,7 @@ final class StoreSmimeKeys implements SmimeSendKeys {
   SmimeState get smimeState => store.state;
 
   @override
-  SmimePrivateKey? smimeKey(String fingerprint) => _keys[fingerprint];
+  SmimeKeyHandle? smimeKey(String fingerprint) => _keys[fingerprint];
 
   /// The own certificates whose keys are here: what decrypts.
   List<SmimeKeyPair> get keyPairs => [
@@ -43,7 +43,7 @@ final class StoreSmimeKeys implements SmimeSendKeys {
       if (_keys[o.fingerprint] case final key?) SmimeKeyPair(o.certificate, key),
   ];
 
-  void put(String fingerprint, SmimePrivateKey key) => _keys[fingerprint] = key;
+  void put(String fingerprint, SmimeKeyHandle key) => _keys[fingerprint] = key;
 
   void forget(String fingerprint) => _keys.remove(fingerprint);
 }
@@ -65,7 +65,7 @@ final class SecureSendKeys implements PgpSendKeys, SmimeSendKeys {
   SmimeState get smimeState => smime.smimeState;
 
   @override
-  SmimePrivateKey? smimeKey(String fingerprint) => smime.smimeKey(fingerprint);
+  SmimeKeyHandle? smimeKey(String fingerprint) => smime.smimeKey(fingerprint);
 }
 
 /// The S/MIME store of a background isolate, from the keychain.

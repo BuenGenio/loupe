@@ -8,9 +8,9 @@ import 'package:mail_model/mail_model.dart';
 import '../features/smime/smime_keys.dart';
 
 /// Runs composing work somewhere: another isolate in the app, inline in tests.
-typedef ComposeRunner = Future<Uint8List> Function(Uint8List Function() work);
+typedef ComposeRunner = Future<T> Function<T>(T Function() work);
 
-Future<Uint8List> _isolate(Uint8List Function() work) => Isolate.run(work);
+Future<T> _isolate<T>(T Function() work) => Isolate.run(work);
 
 /// The live composer: S/MIME around OpenPGP around MIME, writing signed and
 /// encrypted mail and Autocrypt headers with [keys].
@@ -19,15 +19,20 @@ Future<Uint8List> _isolate(Uint8List Function() work) => Isolate.run(work);
 /// message with attachments takes seconds in pure Dart (about 0.4 s a
 /// megabyte), which would freeze the UI when Send is tapped. It hands over
 /// a snapshot of the keys ([SnapshotSendKeys]), as the session's own can't
-/// cross isolates.
+/// cross isolates. A certificate whose key stays on the device (Android
+/// KeyChain) signs in between, here, through [device]: composing stops at
+/// the signature, the device signs, and composing goes on.
 final class IsolateComposer implements AsyncMessageComposer {
-  IsolateComposer(this.keys, {ComposeRunner? run}) : _run = run ?? _isolate;
+  IsolateComposer(this.keys, {this.device, ComposeRunner? run}) : _run = run ?? _isolate;
 
   final SecureSendKeys keys;
+
+  /// Keys on the device; null where the platform can't be reached (background isolates).
+  final SmimePlatformKeys? device;
   final ComposeRunner _run;
 
   /// The composers with these keys, made where they run.
-  static MessageComposer chain(PgpSendKeys pgp, SmimeSendKeys smime) => SmimeMessageComposer(
+  static SmimeMessageComposer chain(PgpSendKeys pgp, SmimeSendKeys smime) => SmimeMessageComposer(
     PgpMessageComposer(MimeMessageComposer(), pgp, backend: const DartPgBackend()),
     smime,
     backend: const DartSmimeBackend(),
@@ -38,9 +43,33 @@ final class IsolateComposer implements AsyncMessageComposer {
       chain(keys, keys).compose(message, from, messageId: messageId, date: date);
 
   @override
-  Future<Uint8List> composeAsync(OutgoingMessage message, Identity from, {required String messageId, DateTime? date}) {
+  Future<Uint8List> composeAsync(
+    OutgoingMessage message,
+    Identity from, {
+    required String messageId,
+    DateTime? date,
+  }) async {
     final snapshot = SnapshotSendKeys.of(keys, keys);
-    return _run(() => chain(snapshot, snapshot).compose(message, from, messageId: messageId, date: date));
+    final step = await _run(() => chain(snapshot, snapshot).begin(message, from, messageId: messageId, date: date));
+    switch (step) {
+      case SmimeComposed(:final bytes):
+        return bytes;
+      case SmimeSignaturePending(:final request):
+        final device = this.device;
+        if (device == null) {
+          throw const MailException(
+            MailErrorKind.unsupported,
+            'Your S/MIME certificate is on this device: open Loupe to sign and send this message.',
+          );
+        }
+        final Uint8List signature;
+        try {
+          signature = await device.perform(request);
+        } on SmimeException catch (e) {
+          throw MailException(MailErrorKind.unsupported, 'Signing failed: ${e.message}', e);
+        }
+        return _run(() => chain(snapshot, snapshot).finish(step, signature));
+    }
   }
 }
 
@@ -74,11 +103,13 @@ final class SnapshotSendKeys implements PgpSendKeys, SmimeSendKeys {
 
   /// Unlocked secret keys by fingerprint.
   final Map<String, PgpKey> unlocked;
-  final Map<String, SmimePrivateKey> smimeKeys;
+
+  /// Private keys of the user's certificates (or handles of keys on the device).
+  final Map<String, SmimeKeyHandle> smimeKeys;
 
   @override
   PgpKey? unlockedKey(String fingerprint) => unlocked[fingerprint];
 
   @override
-  SmimePrivateKey? smimeKey(String fingerprint) => smimeKeys[fingerprint];
+  SmimeKeyHandle? smimeKey(String fingerprint) => smimeKeys[fingerprint];
 }
