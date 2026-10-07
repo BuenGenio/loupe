@@ -148,7 +148,7 @@ String normalizeSenderAddress(String address) {
   final at = a.lastIndexOf('@');
   if (at <= 0) return a;
   final plus = a.indexOf('+');
-  return plus > 0 && plus < at ? a.substring(0, plus) + a.substring(at) : a;
+  return plus > 0 && plus < at ? '${a.substring(0, plus)}${a.substring(at)}' : a;
 }
 
 /// Whether bulk mail from [address] comes from a new address with every
