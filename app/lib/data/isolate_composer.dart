@@ -63,11 +63,11 @@ final class SnapshotSendKeys implements PgpSendKeys, SmimeSendKeys {
       smimeState: smimeState,
       unlocked: {
         for (final k in state.ownKeys)
-          if (pgp.unlockedKey(k.fingerprint) case final key?) k.fingerprint: key,
+          k.fingerprint: ?pgp.unlockedKey(k.fingerprint),
       },
       smimeKeys: {
         for (final o in smimeState.own)
-          if (smime.smimeKey(o.fingerprint) case final key?) o.fingerprint: key,
+          o.fingerprint: ?smime.smimeKey(o.fingerprint),
       },
     );
   }

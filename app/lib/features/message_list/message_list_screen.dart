@@ -512,9 +512,9 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
     );
   }
 
-  /// Back, the mailbox name (with its account below when there are
-  /// several) and Edit, then the search field; in edit mode Select All, the
-  /// selection and Done.
+  /// Back (on iOS), the mailbox name (with its account below when there
+  /// are several) and Edit, then the search field; in edit mode Select All,
+  /// the selection and Done.
   Widget _titleBar(BuildContext context, String title, List<ThreadSummary> rows, List<Mailbox> mailboxes) {
     final colors = LoupeColors.of(context);
     final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];

@@ -71,6 +71,12 @@ Future<void> goTo(WidgetTester tester, String location, {bool settle = true}) as
   }
 }
 
+/// Android's back gesture or button (title bars have no back button there).
+Future<void> systemBack(WidgetTester tester) async {
+  await tester.binding.handlePopRoute();
+  await tester.pumpAndSettle();
+}
+
 /// Lets SnackBars and other timers run out before the test ends.
 Future<void> drainTimers(WidgetTester tester) async {
   await tester.pump(const Duration(seconds: 5));

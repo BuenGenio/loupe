@@ -106,21 +106,71 @@ class BarTextButton extends StatelessWidget {
 
 /// Text scaling in the top bars stops here, so titles and buttons stay on
 /// one line (iOS limits navigation bars similarly).
-const _barMaxTextScale = 1.5;
+const barMaxTextScale = 1.5;
+
+/// The frosted glass of the reading bars: the surface colour, mostly
+/// opaque, over a strong blur of the content scrolling beneath.
+abstract final class FrostedGlass {
+  static const sigma = 24.0;
+  static const opacity = 0.78;
+
+  static ImageFilter get filter => ImageFilter.blur(sigmaX: sigma, sigmaY: sigma);
+
+  /// The glass's tint; clear at [visibility] 0.
+  static Color tint(BuildContext context, {double visibility = 1}) =>
+      Theme.of(context).colorScheme.surface.withValues(alpha: opacity * visibility);
+}
 
 /// Height of the search row of a [LoupeTitleBar]: the field plus its bottom
 /// padding. Lists start scrolled by this much to hide the field until it is
 /// pulled down.
 double searchBarExtent(BuildContext context) {
-  final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: _barMaxTextScale);
+  final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: barMaxTextScale);
   // CupertinoSearchTextField: 8 + 8 padding around a 17 pt line.
   return (16 + scaler.scale(17) * 1.2).roundToDouble() + 8;
 }
 
-/// The pinned header of a screen, as a sliver: a back chevron (when the
-/// route can pop) or [leading], the bold [title] on the same line, left-
-/// aligned, and [trailing] actions. It replaces iOS's large-title band,
-/// which spent a whole row on the title.
+/// Whether top bars show a back button. Android has a system back (the
+/// gesture or the navigation bar's button), so its bars leave the button out
+/// and give the space to the title. iOS has none, so its bars keep it, as do
+/// desktops. Follows [ThemeData.platform], so tests can switch it with
+/// `debugDefaultTargetPlatformOverride`.
+///
+/// Modal and full-screen surfaces keep their explicit Cancel or Close.
+bool showsBackButton(BuildContext context) => switch (Theme.of(context).platform) {
+  TargetPlatform.android || TargetPlatform.fuchsia => false,
+  TargetPlatform.iOS || TargetPlatform.macOS || TargetPlatform.linux || TargetPlatform.windows => true,
+};
+
+/// A back chevron for a top bar where [showsBackButton] and the route can
+/// pop; null otherwise.
+Widget? impliedBackButton(BuildContext context) {
+  final canPop = ModalRoute.of(context)?.impliesAppBarDismissal ?? false;
+  return canPop && showsBackButton(context) ? const LoupeBackButton() : null;
+}
+
+/// The back chevron of the top bars (see [showsBackButton]).
+class LoupeBackButton extends StatelessWidget {
+  const LoupeBackButton({super.key});
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    button: true,
+    label: 'Back',
+    excludeSemantics: true,
+    child: CupertinoButton(
+      padding: const EdgeInsetsDirectional.only(start: 4, end: 2),
+      minimumSize: const Size(36, 44),
+      onPressed: () => Navigator.maybePop(context),
+      child: const Icon(LoupeIcons.back, size: 28),
+    ),
+  );
+}
+
+/// The pinned header of a screen, as a sliver: a back chevron (on iOS, when
+/// the route can pop; see [showsBackButton]) or [leading], the bold [title]
+/// on the same line, left-aligned, and [trailing] actions. It replaces iOS's
+/// large-title band, which spent a whole row on the title.
 ///
 /// With a [searchField], a search row sits below the title. It collapses
 /// under the title as the list scrolls (lists start scrolled by
@@ -149,7 +199,7 @@ class LoupeTitleBar extends StatelessWidget {
   /// A smaller second line (the account of a mailbox).
   final Widget? subtitle;
 
-  /// Replaces the back chevron.
+  /// Replaces the back chevron (which only iOS shows).
   final Widget? leading;
   final List<Widget> trailing;
 
@@ -167,7 +217,7 @@ class LoupeTitleBar extends StatelessWidget {
 
   /// The title row's height (below the safe area).
   static double heightOf(BuildContext context, {bool large = false, bool subtitle = false}) {
-    final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: _barMaxTextScale);
+    final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: barMaxTextScale);
     final titleLine = scaler.scale(titleSize(large: large)) * (subtitle ? 1.1 : 1.2);
     final subtitleLine = subtitle ? scaler.scale(13) * 1.15 : 0;
     return math.max(44, (titleLine + subtitleLine + 8).ceilToDouble());
@@ -181,19 +231,7 @@ class LoupeTitleBar extends StatelessWidget {
         leading ??
         // In the wide layout's list pane: the sidebar button.
         (automaticallyImplyLeading && !canPop ? MailPaneScope.maybeOf(context)?.titleLeading : null) ??
-        (automaticallyImplyLeading && canPop
-            ? Semantics(
-                button: true,
-                label: 'Back',
-                excludeSemantics: true,
-                child: CupertinoButton(
-                  padding: const EdgeInsetsDirectional.only(start: 4, end: 2),
-                  minimumSize: const Size(36, 44),
-                  onPressed: () => Navigator.maybePop(context),
-                  child: const Icon(LoupeIcons.back, size: 28),
-                ),
-              )
-            : null);
+        (automaticallyImplyLeading ? impliedBackButton(context) : null);
     final titleStyle = styles.largeTitle.copyWith(
       fontSize: titleSize(large: large),
       height: subtitle == null ? 1.2 : 1.1,
@@ -290,7 +328,7 @@ class _BarDelegate extends SliverPersistentHeaderDelegate {
       scrolledUnderOffset: searching ? 0 : searchHeight,
       colors: colors,
       child: MediaQuery.withClampedTextScaling(
-        maxScaleFactor: _barMaxTextScale,
+        maxScaleFactor: barMaxTextScale,
         child: Padding(
           padding: EdgeInsets.only(top: topPadding + (searching ? _searchingTop : 0)),
           child: Column(
