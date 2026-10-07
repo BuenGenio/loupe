@@ -82,7 +82,8 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
     if (part == null) return null;
     try {
       final bytes = await widget.load(part);
-      final accounts = ref.read(accountsProvider).value ?? const <MailAccount>[];
+      final List<MailAccount> accounts =
+          ref.read(accountsProvider).value ?? await ref.read(accountsProvider.future) ?? const [];
       final repo = ref.read(repositoryProvider);
       final invitation = await readInvitation(
         bytes: bytes,
@@ -107,14 +108,18 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
   );
 
   @override
-  Widget build(BuildContext context) => FutureBuilder<Invitation?>(
-    future: _loading,
-    builder: (context, snapshot) {
-      final invitation = _invitation ?? snapshot.data;
-      if (invitation == null) return const SizedBox.shrink();
-      return _card(context, invitation);
-    },
-  );
+  Widget build(BuildContext context) {
+    // Keeps the accounts coming: the user's addresses are who "you" are.
+    ref.watch(accountsProvider);
+    return FutureBuilder<Invitation?>(
+      future: _loading,
+      builder: (context, snapshot) {
+        final invitation = _invitation ?? snapshot.data;
+        if (invitation == null) return const SizedBox.shrink();
+        return _card(context, invitation);
+      },
+    );
+  }
 
   Widget _card(BuildContext context, Invitation inv) {
     final colors = LoupeColors.of(context);
@@ -325,8 +330,7 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
       );
     } else if (inv.changes case final changes?) {
       final lines = <String>[
-        if (changes.time case (final before, final after))
-          'Time changed from ${_describe(format, before)} to ${_describe(format, after)}',
+        if (changes.time case (final before, final after)) _timeChange(format, before, after),
         if (changes.location case (final before, final after))
           after == null ? 'Location removed (was ${before ?? 'none'})' : 'Location changed to $after',
         if (changes.title) 'New title',
@@ -342,9 +346,19 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
     return out;
   }
 
+  /// "Time changed from 17:00–18:00 to 18:00–19:00" (with the days when they differ).
+  String _timeChange(EventTimeFormat format, TimeSpan before, TimeSpan after) {
+    final a = format.when(before);
+    final b = format.when(after);
+    if (a.day == b.day && a.time != null && b.time != null && !before.allDay && !after.allDay) {
+      return 'Time changed from ${a.time} to ${b.time}';
+    }
+    return 'Time changed from ${_describe(format, before)} to ${_describe(format, after)}';
+  }
+
   String _describe(EventTimeFormat format, TimeSpan span) {
     final w = format.when(span);
-    return w.time == null ? w.day : '${w.day}, ${w.time}';
+    return w.time == null || span.allDay ? w.day : '${w.day}, ${w.time}';
   }
 
   (IconData, Color) _statusLook(BuildContext context, PartStat status) => switch (status) {
