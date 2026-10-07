@@ -27,8 +27,8 @@ The packages are developed in parallel. These are the seams:
 | Contract | Defined in | Implemented by | Used by |
 |---|---|---|---|
 | `MailRepository` | mail_model `src/repository.dart` | app demo repository; mail_sync `LiveMailRepository` | app |
-| `MailingLists` (lists by List-Id, forum threads, muted threads) | mail_model `src/lists.dart` | app demo repository; mail_sync `LiveMailRepository` | app (`repository is MailingLists`) |
-| `MailSubscriptions` (bulk mail by List-Id or sender, read rates), `unsubscribeMethods`, `unsubscribeMessage` | mail_model `src/subscriptions.dart` | app demo repository; mail_sync `LiveMailRepository` | app (`repository is MailSubscriptions`) |
+| `MailingLists` (a list's forum threads by List-Id, muted threads) | mail_model `src/lists.dart` | app demo repository; mail_sync `LiveMailRepository` | app (`repository is MailingLists`) |
+| `MailSubscriptions` (newsletters by sender and discussion lists by List-Id, read rates, the user's "Treat as…"), `groupSubscriptions`, `unsubscribeMethods`, `unsubscribeMessage`; `looksMachineMade` | mail_model `src/subscriptions.dart`, `src/bulk_names.dart` | app demo repository; mail_sync `LiveMailRepository` | app (`repository is MailSubscriptions`) |
 | `MailTransport`, `MailSender`, `MessageComposer`, `TransportFactory` | mail_model `src/transport.dart` | mail_imap | mail_sync |
 | `CredentialStore` | mail_model `src/transport.dart` | mail_platform | mail_sync (through the app) |
 | `SignInRenewal` ("Sign in again" after a revoked OAuth grant), `SignInRequiredException` | mail_model `src/sign_in.dart` | mail_sync `LiveMailRepository` | app (`repository is SignInRenewal`); mail_platform throws the exception |
@@ -239,28 +239,61 @@ Rules (`app/lib/platform/`):
   new message tagged. Muting marks the conversation read; later mail of a muted thread is marked read (locally and on
   the server) in the transaction that stores it, so it never shows unread or notifies (notifications skip read mail),
   like Thunderbird's ignored threads. Muted threads leave the mailing-list view; mailboxes still show them.
+- **Which lists there are** is Subscriptions' business: a list people write to is a discussion there (see below),
+  opening the forum-style view (`watchListThreads`, by List-Id); a newsletter that comes with a List-Id is a
+  newsletter.
 - **Patches:** readable recognises `git format-patch` diffs, diffstats and quoted hunks in text bodies
   (`pipeline/patch.dart`) and renders them as diffs (`render/diff.dart`).
 
-## Subscriptions (the unsubscribe centre)
+## Subscriptions: newsletters and discussion lists
 
-Mailboxes › Tools › Subscriptions ranks newsletters and other bulk mail by how much of it goes unread. Everything is
-counted on the device; services that do this elsewhere read the mail on their servers.
+Mailboxes › Subscriptions (a row next to Unread, Snoozed and Outbox, counting unread discussion mail) has two tabs.
+Newsletters ranks newsletters and other bulk mail by how much of it goes unread: the unsubscribe centre. Discussions
+lists the mailing lists people write to, most recent activity first; each opens forum style, and the user can pin
+it to Mailboxes (a Lists section, while one is pinned) or open its mail as plain text in Mono (Technical Lists).
+Everything is counted on the device; services that do this elsewhere read the mail on their servers.
 
-- **Bulk mail** (`subscriptionKeyOf`): a List-Id, a List-Unsubscribe header, or a Message-ID of a bulk-mail service
-  (`bulkMessageIdDomains`: Mailchimp, SendGrid, Amazon SES…). It groups by List-Id, else by sender address. A sender
-  found only by its Message-ID needs two messages. `Precedence: bulk` isn't fetched (such mail nearly always has
-  List-Unsubscribe too), and when a message was opened isn't known: the read rate (`$seen`) stands in for it.
-- **Counting** (`summarizeSubscriptions` is the reference): copies in several mailboxes count once; Junk, Sent, Drafts
-  and the user's own addresses are left out (Trash counts: deleting unread is not reading). Messages a month and the
-  read rate use the last 90 days (the read rate over all mail when fewer than three came then). The ranking is unread
-  mail a month.
-- **Store** (schema version 5): `emails.sub_key` is each message's key (a generated column, indexed where set);
-  `subscription_messages` (one row per bulk message, copies merged) and `subscription_details` (per key) hold the
-  groups. Triggers on `emails`, `mailboxes` and `accounts` mark the messages a change touches (any process's), and
-  `MailStore.watchSubscriptions` redoes only those, and their keys, before it reads; the counts of the last 90 days
-  are summed at read time. At 40,000 messages (420 groups) opening the screen takes about 5 ms, after 200 messages
-  were read about 20 ms; the first time after the upgrade groups everything once (about 120 ms).
+- **Bulk mail** (`subscriptionKeyOf`, a message's *source*): a List-Id, a List-Unsubscribe header, or a Message-ID of
+  a bulk-mail service (`bulkMessageIdDomains`: Mailchimp, SendGrid, Amazon SES…). Sources are `list:<List-Id>`, else
+  `from:<address>`. A sender found only by its Message-ID needs two messages. `Precedence: bulk` isn't fetched (such
+  mail nearly always has List-Unsubscribe too), and when a message was opened isn't known: the read rate (`$seen`)
+  stands in for it.
+- **Kinds** (`SubscriptionSource.autoKind`, `isDiscussionList`): a list is a *discussion* when it takes posts
+  (List-Post has a `mailto:`, not `NO`) and two addresses wrote to it in the year before its newest message, or its
+  mail answers its own (In-Reply-To, else the last References entry, is the Message-ID of a stored message with the
+  same List-Id). Everything else is a *newsletter*. The user overrides it per List-Id ("Treat as Newsletter",
+  "Treat as Discussion": `MailSubscriptions.setListKind`, the store's `list_kinds`, local to the device).
+- **Grouping** (`groupSubscriptions`): a discussion is one subscription, `list:<List-Id>`. Newsletters go under their
+  sender (`newsletterKeyOf`): `from:` the address, lower-cased without a `+tag`; or, when the address changes with
+  every campaign (`isPerCampaignAddress`: a machine-made local part or subdomain, a VERP `=`), `sender:` the
+  registrable domain and display name. So a sender's per-campaign List-Ids and its mail without one are one
+  newsletter; a newsletter list with several senders stays one of its own. `Subscription.sourceKeys` lists the sources.
+- **Names** (`subscriptionName`) are never machine-made (`looksMachineMade`: bulk-mail services' hosts such as
+  `*.sparkpostmail.com`, `*.mcsv.net`, `*.list-manage.com`, `*.ct.sendgrid.net`, `*.broadcast`, `*.sendsay`,
+  Mailchimp's `<hex>mc list`; base64; 12 or more hex digits; no letters; long numbers): the List-Id phrase; for a
+  newsletter, else the newest From display name; for a discussion, else the List-Id or the list's address (or its one
+  sender's name); else the sender's registrable domain. The second line is the sender's address (its domain when the
+  address changes), or a discussion's address.
+- **Counting** (`subscriptionSources` is the reference): copies in several mailboxes count once; Junk, Sent, Drafts
+  and the user's own addresses are left out (Trash counts: deleting unread is not reading; but unread mail that is
+  only in Trash isn't "unread" for a discussion). Messages a month and the read rate use the last 90 days (the read
+  rate over all mail when fewer than three came then). The ranking is unread mail a month.
+- **Store** (schema version 5; the classification's inputs since version 7): `emails.sub_key` is each message's source
+  (a generated column, indexed where set); `subscription_messages` (one row per bulk message, copies merged) and
+  `subscription_details` (per source: mailboxes, senders, the newest name, List-Post and List-Unsubscribe, the posters
+  of the last year, replies within the list) hold them. Triggers on `emails`, `mailboxes` and `accounts` mark the
+  messages a change touches (any process's), and `MailStore.watchSubscriptions` redoes only those, and their sources,
+  before it reads; Dart then fills in what SQL can't (`auto_kind`, the newsletter key, whether names are human), so the
+  sources of one newsletter are added up in SQL, and `groupSubscriptions` gets about one row per subscription. The
+  counts of the last 90 days are summed at read time. At 40,000 messages (450 subscriptions, a sender with an address
+  per campaign among them) opening the screen takes about 12 ms here, after 200 messages were read about 45 ms; the
+  first time after the upgrade groups everything once (about 200 ms). Version 7 made the cache's tables again and
+  rebuilds them on the next read.
+- **Records** stay on the device (SharedPreferences `subscriptions.unsubscribed`: date and method, by subscription
+  key; records under a source's key from before move to its subscription). Mail arriving more than seven days later
+  marks the row "Still sending". Pins are `subscriptions.pinnedLists` (List-Ids), the last tab `subscriptions.tab`.
+- **Links:** `/subscriptions?tab=`; `/subscriptions/<key>` of a source leads to its subscription, a discussion's to its
+  forum view (`/mailing-list/<List-Id>`); `/mailing-lists` to the Discussions tab.
 - **Unsubscribing** (`unsubscribeMethods`), in this order:
   1. RFC 8058 one-click (List-Unsubscribe-Post and an `https` URI): a POST of exactly `List-Unsubscribe=One-Click`
      (`application/x-www-form-urlencoded`) without cookies, user agent, referrer or languages; 2xx or 303 means done;
@@ -271,11 +304,10 @@ counted on the device; services that do this elsewhere read the mail on their se
   2. `mailto:` through the normal send path (`unsubscribeMessage`): from the identity the mail was addressed to, to
      the URI's recipients only (its `cc=`/`bcc=` are ignored), with its subject and body (RFC 6068: `+` is a plus).
   3. The web page, in the in-app browser, after showing its host (homographs flagged).
-- **Records** stay on the device (SharedPreferences `subscriptions.unsubscribed`: date and method). Mail arriving more
-  than seven days later marks the row "Still sending".
 - **Follow-ups** reuse what exists: Archive All moves the Inbox copies through `MailActions` (with Undo); Create Rule
-  opens the rule editor with the condition (`from:` the sender, or the List-Id of a list with several senders), the
-  name and Move to Archive filled in; Block Sender saves a device rule that moves to Junk.
+  opens the rule editor with the condition (`from:` the sender, its name and domain when the address changes, or the
+  List-Id of a list with several senders), the name and Move to Archive filled in; Block Sender saves a device rule
+  that moves to Junk (rules made for one of its List-Ids before count as blocking it).
 
 ## Wide screens and keyboards
 

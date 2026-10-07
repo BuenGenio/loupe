@@ -89,7 +89,8 @@ modified forms add Apple Mail's and Thunderbird's where they don't clash:
 
 - **Entries:** actions on what is on screen (Reply, Archive, Snooze…, Move to Mailbox…, Mark All as Read, Get New
   Mail; only those the screen can do), New Message and Keyboard Shortcuts; every mailbox (nested folders say where
-  they are: Work › Projects), the unified mailboxes, Snoozed, Outbox, Smart Mailboxes, mailing lists and tags; the
+  they are: Work › Projects), the unified mailboxes, Snoozed, Outbox, Subscriptions (and its Discussions), Smart Mailboxes, discussion lists and
+  tags; the
   settings pages and each account's; recent searches; and "Search mail for '…'" for what was typed.
 - **Matching** (`fuzzyScore`): the typed letters in order, ignoring case, accents and spaces. Word starts and runs of
   letters score more, so initials work ("mar" finds Mark All as Read); a prefix beats a word inside, which beats
