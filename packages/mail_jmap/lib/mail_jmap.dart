@@ -6,3 +6,4 @@ export 'src/client/errors.dart' show JmapException;
 export 'src/client/event_source.dart' show ServerEvent, parseServerEvents, stateChangesOf;
 export 'src/client/request.dart' show JmapCall, JmapRequest, JmapResponse;
 export 'src/client/session.dart' show JmapAccount, JmapCapabilities, JmapSession;
+export 'src/transport/jmap_transport.dart' show JmapTransport;
