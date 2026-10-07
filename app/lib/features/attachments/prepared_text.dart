@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:mail_calendar/mail_calendar.dart';
 
 import '../conversation/raw_source_screen.dart' show SourceLines;
 import 'attachment_type.dart';
 import 'csv.dart';
 import 'eml.dart';
-import 'ics.dart';
 import 'text_decoding.dart';
 
 /// A text-like attachment (text, CSV, calendar, message), decoded and split
@@ -15,7 +15,7 @@ final class PreparedText {
     required this.lines,
     required this.cut,
     this.table,
-    this.events = const [],
+    this.calendar,
     this.message,
   });
 
@@ -29,8 +29,8 @@ final class PreparedText {
   /// CSV small enough for the table view.
   final CsvData? table;
 
-  /// Calendar events.
-  final List<IcsEvent> events;
+  /// A calendar file's events (mail_calendar), when it has any.
+  final Calendar? calendar;
 
   /// The parsed message (null if it couldn't be parsed: the source still shows).
   final EmlMessage? message;
@@ -63,7 +63,7 @@ PreparedText prepareText(AttachmentKind kind, Uint8List bytes) {
     lines: SourceLines.parse(decoded.text),
     cut: cut,
     table: table,
-    events: kind == AttachmentKind.calendar ? parseIcsEvents(decoded.text) : const [],
+    calendar: kind == AttachmentKind.calendar ? Calendar.parse(decoded.text) : null,
     message: message,
   );
 }

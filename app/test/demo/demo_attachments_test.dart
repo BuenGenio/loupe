@@ -7,8 +7,8 @@ import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/features/attachments/attachment_type.dart';
 import 'package:loupe/features/attachments/csv.dart';
 import 'package:loupe/features/attachments/eml.dart';
-import 'package:loupe/features/attachments/ics.dart';
 import 'package:loupe/features/attachments/text_decoding.dart';
+import 'package:mail_calendar/mail_calendar.dart';
 import 'package:mail_model/mail_model.dart';
 
 void main() {
@@ -41,7 +41,7 @@ void main() {
 
     expect(parseCsv(utf8.decode(await bytesOf('Offsite_budget.csv'))).fitsTable, isTrue);
     expect(decodeAttachmentText(await bytesOf('Notes from Hana.txt')).charset, 'UTF-8');
-    expect(parseIcsEvents(utf8.decode(await bytesOf('offsite.ics'))).single.summary, 'Team offsite at the Old Mill');
+    expect(Calendar.parse(utf8.decode(await bytesOf('offsite.ics')))!.primary!.summary, 'Team offsite at the Old Mill');
     expect(parseEml(await bytesOf('Venue confirmation.eml')).subject, 'Booking confirmed: Northwind offsite');
     final log = decodeAttachmentText(await bytesOf('booking_checkin.log'));
     expect(log.charset, 'Latin-1');

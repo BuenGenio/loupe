@@ -9,6 +9,7 @@ import '../../shared/avatar.dart';
 import '../../shared/format.dart';
 import '../../shared/tags.dart';
 import '../../theme/theme.dart';
+import '../calendar/invitation_card.dart';
 import '../openpgp/key_import.dart';
 import '../openpgp/pgp_status.dart';
 import '../smime/smime_import.dart';
@@ -363,19 +364,25 @@ class _MessageCardState extends State<MessageCard> {
           message: _m,
           content: content,
           placeholder: const BodySkeleton(),
-          builder: (context, {required inert, required openLinksDirectly}) => ReadableMessageView(
-            content: content,
-            senderDomain: widget.message.sender?.domain,
-            settings: widget.settings,
-            remoteContent: remoteContentNeedsConsent(content) && !widget.remoteAllowedHere
-                ? RemoteContentPolicy.block
-                : widget.remoteContent,
-            onAllowRemoteContent: widget.onAllowRemoteContent,
-            onOpenLink: widget.onOpenLink,
-            loadAttachment: widget.loadAttachment,
-            onSuggestOriginal: widget.onSuggestOriginal,
-            openLinksDirectly: openLinksDirectly,
-            inert: inert,
+          builder: (context, {required inert, required openLinksDirectly}) => Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InvitationCard(message: _m, content: content, load: widget.loadAttachment, inert: inert),
+              ReadableMessageView(
+                content: content,
+                senderDomain: widget.message.sender?.domain,
+                settings: widget.settings,
+                remoteContent: remoteContentNeedsConsent(content) && !widget.remoteAllowedHere
+                    ? RemoteContentPolicy.block
+                    : widget.remoteContent,
+                onAllowRemoteContent: widget.onAllowRemoteContent,
+                onOpenLink: widget.onOpenLink,
+                loadAttachment: widget.loadAttachment,
+                onSuggestOriginal: widget.onSuggestOriginal,
+                openLinksDirectly: openLinksDirectly,
+                inert: inert,
+              ),
+            ],
           ),
         ),
         AttachmentList(content: content, load: widget.loadAttachment),
