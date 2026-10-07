@@ -111,7 +111,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> with SingleTicker
                             _Feature(
                               icon: LoupeIcons.allInboxes,
                               title: 'Every account, one calm inbox',
-                              text: 'Gmail, Outlook, iCloud, Fastmail and any IMAP server.',
+                              text: 'Gmail, Outlook, iCloud, Fastmail and any IMAP or JMAP server.',
                             ),
                             _Feature(
                               icon: LoupeIcons.search,

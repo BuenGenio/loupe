@@ -315,15 +315,24 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
             'account.apple.com › Sign-In and Security › App-Specific Passwords.',
       );
     }
+    // Fastmail and self-hosted Stalwart servers speak JMAP (no SMTP).
     if (const {'fastmail.com', 'fastmail.fm', 'rivera.example'}.contains(domain)) {
       return AccountDiscovery(
         email: email,
         provider: ProviderKind.fastmail,
         authKind: AuthKind.password,
-        incoming: imap('imap.fastmail.com'),
-        outgoing: smtp('smtp.fastmail.com'),
-        source: 'ISPDB',
-        notes: 'Use an app password from Fastmail › Settings › Privacy & Security.',
+        incoming: const ServerConfig(protocol: ServerProtocol.jmap, host: 'api.fastmail.com', port: 443),
+        source: 'provider',
+        notes: 'Use an API token from Fastmail › Settings › Privacy & Security › Manage API tokens.',
+      );
+    }
+    if (const {'jmap.example', 'stalwart.example'}.contains(domain)) {
+      return AccountDiscovery(
+        email: email,
+        provider: ProviderKind.generic,
+        authKind: AuthKind.password,
+        incoming: ServerConfig(protocol: ServerProtocol.jmap, host: 'mail.$domain', port: 443),
+        source: 'JMAP at mail.$domain',
       );
     }
     if (const {'yahoo.com', 'ymail.com'}.contains(domain)) {

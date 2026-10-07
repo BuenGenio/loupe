@@ -28,6 +28,7 @@ class ServerSettingsController {
   static int defaultPort(ServerProtocol protocol, ConnectionSecurity security) => switch ((protocol, security)) {
     (ServerProtocol.smtp, ConnectionSecurity.tls) => 465,
     (ServerProtocol.smtp, _) => 587,
+    (ServerProtocol.jmap, ConnectionSecurity.none) => 80,
     (ServerProtocol.jmap, _) => 443,
     (ServerProtocol.imap, ConnectionSecurity.tls) => 993,
     (ServerProtocol.imap, _) => 143,
@@ -41,17 +42,29 @@ class ServerSettingsController {
     security = next;
   }
 
-  /// Null when host or port is missing or invalid.
+  /// Null when host or port is missing or invalid. The server may be given
+  /// as a URL (`https://mail.example.com`, as JMAP servers are often
+  /// written): its host and port count, and `http://` only with no
+  /// encryption chosen.
   ServerConfig? get config {
-    final h = host.text.trim();
-    final p = int.tryParse(port.text.trim());
-    if (h.isEmpty || h.contains(' ') || p == null || p <= 0 || p > 65535) return null;
+    var h = host.text.trim();
+    var p = int.tryParse(port.text.trim());
+    var chosen = security;
+    if (h.contains('://')) {
+      final url = Uri.tryParse(h);
+      if (url == null || url.host.isEmpty || (url.scheme != 'https' && url.scheme != 'http')) return null;
+      if (url.scheme == 'http' && security != ConnectionSecurity.none) return null;
+      if (url.scheme == 'https' && security == ConnectionSecurity.none) chosen = ConnectionSecurity.tls;
+      h = url.host;
+      if (url.hasPort) p = url.port;
+    }
+    if (h.isEmpty || h.contains(' ') || h.contains('/') || p == null || p <= 0 || p > 65535) return null;
     final user = username.text.trim();
     return ServerConfig(
       protocol: protocol,
       host: h,
       port: p,
-      security: security,
+      security: chosen,
       username: user.isEmpty ? null : user,
       trustedCertificateSha256: trustedCertificate,
     );
@@ -73,13 +86,23 @@ String securityLabel(ConnectionSecurity s) => switch (s) {
   ConnectionSecurity.none => 'None',
 };
 
-/// The manual form for one server: host, port, security and username.
+/// The manual form for one server: host, port, security and username;
+/// with [onProtocol], first a choice of IMAP or JMAP.
 class ServerSettingsForm extends StatefulWidget {
-  const ServerSettingsForm({super.key, required this.title, required this.controller, this.enabled = true});
+  const ServerSettingsForm({
+    super.key,
+    required this.title,
+    required this.controller,
+    this.enabled = true,
+    this.onProtocol,
+  });
 
   final String title;
   final ServerSettingsController controller;
   final bool enabled;
+
+  /// Switches the incoming server between IMAP and JMAP.
+  final ValueChanged<ServerProtocol>? onProtocol;
 
   @override
   State<ServerSettingsForm> createState() => _ServerSettingsFormState();
@@ -97,9 +120,39 @@ class _ServerSettingsFormState extends State<ServerSettingsForm> {
   @override
   Widget build(BuildContext context) {
     final key = _c.protocol.name;
+    final jmap = _c.protocol == ServerProtocol.jmap;
+    final onProtocol = widget.onProtocol;
     return SheetGroup(
       header: widget.title,
       children: [
+        if (onProtocol != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: Row(
+              children: [
+                SizedBox(width: 96, child: Text('Protocol', style: _labelStyle(context))),
+                Expanded(
+                  child: CupertinoSlidingSegmentedControl<ServerProtocol>(
+                    key: const ValueKey('setup-protocol'),
+                    groupValue: _c.protocol,
+                    onValueChanged: (p) {
+                      if (p != null && widget.enabled) onProtocol(p);
+                    },
+                    children: const {
+                      ServerProtocol.imap: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 6),
+                        child: Text('IMAP', style: TextStyle(fontSize: 13)),
+                      ),
+                      ServerProtocol.jmap: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 6),
+                        child: Text('JMAP', style: TextStyle(fontSize: 13)),
+                      ),
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
         FormRow(
           label: 'Server',
           child: TextField(
@@ -108,7 +161,7 @@ class _ServerSettingsFormState extends State<ServerSettingsForm> {
             enabled: widget.enabled,
             keyboardType: TextInputType.url,
             autocorrect: false,
-            decoration: const InputDecoration.collapsed(hintText: 'mail.example.com'),
+            decoration: InputDecoration.collapsed(hintText: jmap ? 'https://mail.example.com' : 'mail.example.com'),
           ),
         ),
         FormRow(
@@ -118,7 +171,9 @@ class _ServerSettingsFormState extends State<ServerSettingsForm> {
             controller: _c.port,
             enabled: widget.enabled,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration.collapsed(hintText: '993'),
+            decoration: InputDecoration.collapsed(
+              hintText: '${ServerSettingsController.defaultPort(_c.protocol, _c.security)}',
+            ),
           ),
         ),
         Padding(
@@ -132,11 +187,13 @@ class _ServerSettingsFormState extends State<ServerSettingsForm> {
                   groupValue: _c.security,
                   onValueChanged: widget.enabled ? _pickSecurity : (_) {},
                   children: {
+                    // HTTP has no STARTTLS.
                     for (final s in ConnectionSecurity.values)
-                      s: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 6),
-                        child: Text(securityLabel(s), style: const TextStyle(fontSize: 13)),
-                      ),
+                      if (!jmap || s != ConnectionSecurity.startTls)
+                        s: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          child: Text(securityLabel(s), style: const TextStyle(fontSize: 13)),
+                        ),
                   },
                 ),
               ),
