@@ -511,7 +511,7 @@ final class Subscription {
     this.kind = SubscriptionKind.newsletter,
     this.messageCount = 0,
     this.readCount = 0,
-    int? unreadCount,
+    this._unreadCount,
     this.recentCount = 0,
     this.recentReadCount = 0,
     this.inboxCount = 0,
@@ -523,7 +523,7 @@ final class Subscription {
     this.postAddress,
     this.listUnsubscribe,
     this.listUnsubscribePost,
-  }) : _unreadCount = unreadCount;
+  });
 
   /// How far back [recentCount] and [perMonth] look.
   static const window = Duration(days: 90);
@@ -768,10 +768,12 @@ List<SubscriptionSource> subscriptionSources(
       if (c.listId != null || c.listUnsubscribe != null) listHeaders = true;
       if (isReply(c)) replies = true;
       address = newerOf(address, (at: c.receivedAt, value: from));
-      if (c.listName?.trim() case final n? when n.isNotEmpty)
+      if (c.listName?.trim() case final n? when n.isNotEmpty) {
         listName = newerOf(listName, (at: c.receivedAt, value: n));
-      if (c.sender?.name?.trim() case final n? when n.isNotEmpty)
+      }
+      if (c.sender?.name?.trim() case final n? when n.isNotEmpty) {
         fromName = newerOf(fromName, (at: c.receivedAt, value: n));
+      }
       if (c.listPost case final p?) listPost = newerOf(listPost, (at: c.receivedAt, value: p));
       if (c.listUnsubscribe case final u?) {
         unsubscribe = newerOf(unsubscribe, (at: c.receivedAt, value: '$u\u001f${c.listUnsubscribePost ?? ''}'));

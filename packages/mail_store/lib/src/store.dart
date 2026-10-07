@@ -1556,9 +1556,7 @@ FROM sources WHERE NOT (skey = gkey AND gkey LIKE 'list:%') GROUP BY skey''';
   Future<List<Subscription>> _subscriptions(int cutoff) async {
     final (rows, kindRows) = await _subscriptionRows(cutoff);
     final kinds = {
-      for (final r in kindRows)
-        if (SubscriptionKind.values.asNameMap()[r.read<String>('kind')] case final kind?)
-          r.read<String>('list_id'): kind,
+      for (final r in kindRows) r.read<String>('list_id'): ?SubscriptionKind.values.asNameMap()[r.read<String>('kind')],
     };
     return groupSubscriptions([for (final r in rows) _sourceFromRow(r)], kinds: kinds);
   }
