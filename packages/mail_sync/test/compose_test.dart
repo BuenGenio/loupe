@@ -78,6 +78,34 @@ void main() {
       });
     });
 
+    test('an invitation reply goes out with its calendar part, also after the Outbox kept it', () {
+      fakeTime((async) async {
+        final h = Harness();
+        final server = FakeServer();
+        final a = await h.add(server);
+        const calendar = OutgoingCalendar(
+          method: 'REPLY',
+          data: 'BEGIN:VCALENDAR\r\nMETHOD:REPLY\r\nEND:VCALENDAR\r\n',
+        );
+        await h.repo.send(
+          OutgoingMessage(
+            accountId: a.id,
+            identityId: a.defaultIdentity.id,
+            to: const [EmailAddress('organizer@example.org')],
+            subject: 'Accepted: Planning',
+            text: 'Me has accepted: Planning',
+            calendar: calendar,
+          ),
+          undoDelay: const Duration(seconds: 10),
+        );
+        expect((await h.repo.watchOutbox().first).single.message.calendar, calendar);
+        await settle(const Duration(seconds: 12));
+        expect(server.sent.single.json['calendar'], {'method': 'REPLY', 'data': calendar.data});
+        expect(server.sent.single.recipients, ['organizer@example.org']);
+        await h.dispose();
+      });
+    });
+
     group('encrypted with Bcc', () {
       OutgoingMessage secret(MailAccount a) => OutgoingMessage(
         accountId: a.id,

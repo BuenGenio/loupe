@@ -10,6 +10,36 @@ final class OutgoingAttachment {
   final Uint8List data;
 }
 
+/// An iCalendar object sent next to the text, as the message's
+/// `text/calendar` alternative (iMIP, RFC 6047): a reply to an invitation.
+/// The composer writes `multipart/alternative` with the text first and
+/// `text/calendar; method=…; charset=UTF-8` last, as Outlook and Gmail
+/// expect it.
+final class OutgoingCalendar {
+  const OutgoingCalendar({required this.method, required this.data});
+
+  /// The iTIP method (`REPLY`), as in the object's METHOD.
+  final String method;
+
+  /// The iCalendar text (CRLF line ends).
+  final String data;
+
+  Map<String, Object?> toJson() => {'method': method, 'data': data};
+
+  static OutgoingCalendar? fromJson(Object? json) {
+    if (json is! Map) return null;
+    final method = json['method'];
+    final data = json['data'];
+    return method is String && data is String ? OutgoingCalendar(method: method, data: data) : null;
+  }
+
+  @override
+  bool operator ==(Object other) => other is OutgoingCalendar && other.method == method && other.data == data;
+
+  @override
+  int get hashCode => Object.hash(method, data);
+}
+
 enum ComposeMode { newMessage, reply, replyAll, forward, editDraft }
 
 /// The end-to-end encryption standard a message is protected with.
@@ -114,6 +144,7 @@ final class OutgoingMessage {
     this.draftId,
     this.security = OutgoingSecurity.none,
     this.bccCopy = false,
+    this.calendar,
   });
 
   final String accountId;
@@ -148,6 +179,10 @@ final class OutgoingMessage {
   /// ([bcc]; see [deliveries]): encrypted to them and the sender only,
   /// while its headers show To and Cc like everyone else's copy.
   final bool bccCopy;
+
+  /// An iCalendar object sent as the text's alternative (a reply to an
+  /// invitation); null for ordinary mail.
+  final OutgoingCalendar? calendar;
 
   /// Whom the message is encrypted to besides the sender: the Bcc
   /// recipient of a [bccCopy], else everyone in To, Cc and Bcc.
@@ -223,6 +258,7 @@ final class OutgoingMessage {
     draftId: draftId ?? this.draftId,
     security: security ?? this.security,
     bccCopy: bccCopy ?? this.bccCopy,
+    calendar: calendar,
   );
 
   /// The same message without [draftId] (once its draft is gone).
@@ -242,6 +278,7 @@ final class OutgoingMessage {
     sourceEmailId: sourceEmailId,
     security: security,
     bccCopy: bccCopy,
+    calendar: calendar,
   );
 }
 
