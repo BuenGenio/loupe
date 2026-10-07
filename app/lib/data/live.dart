@@ -152,6 +152,9 @@ LiveMailRepository buildLiveRepository(
     CompositeTransportFactory.of(ImapTransportFactory(composer: IsolateComposer(keys))),
     credentials.store,
     config: config,
+    // Server rules: Sieve over JMAP where the server has it (Stalwart),
+    // else ManageSieve.
+    sieve: const JmapSieveConnector(),
     refreshOAuth: (account, current) => credentials.oauth.refresh(account.provider, current),
   );
 }

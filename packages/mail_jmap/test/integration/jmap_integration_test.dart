@@ -9,6 +9,7 @@ import 'package:expr_search/expr_search.dart';
 import 'package:mail_imap/mail_imap.dart';
 import 'package:mail_jmap/mail_jmap.dart';
 import 'package:mail_model/mail_model.dart';
+import 'package:mail_sieve/mail_sieve.dart';
 import 'package:test/test.dart';
 
 import 'stalwart_env.dart';
@@ -459,6 +460,30 @@ void main() {
       expect(await next.timeout(const Duration(seconds: 20)), isTrue);
       await events.cancel();
       await t.disconnect();
+    });
+
+    test('server rules over JMAP (SieveScript), no ManageSieve port needed', () async {
+      final connector = JmapSieveConnector(fallback: ManageSieveConnector(port: 1), httpClient: http);
+      final s = await connector.connect(stalwartAccount(server, alice), credentialsOf(alice));
+      expect(s, isA<JmapSieveSession>());
+      expect(s.capabilities.extensions, containsAll(['fileinto', 'imap4flags']));
+      expect(s.capabilities.implementation, contains('Stalwart'));
+      const script = 'require ["fileinto"];\nif header :contains "subject" "invoice" { fileinto "Projects"; }\n';
+      expect(await s.checkScript(script), isNull);
+      await expectLater(s.checkScript('if broken {'), throwsA(isA<SieveException>()));
+      expect(await s.haveSpace('loupe', script.length), isTrue);
+      await s.putScript('loupe', script);
+      await s.putScript('loupe', '$script# updated\n');
+      expect(await s.getScript('loupe'), '$script# updated\n');
+      await s.setActive('loupe');
+      expect(await s.listScripts(), contains(const SieveScriptInfo('loupe', active: true)));
+      await s.putScript('spare', 'keep;\n');
+      await s.deleteScript('spare');
+      expect([for (final i in await s.listScripts()) i.name], isNot(contains('spare')));
+      await expectLater(s.getScript('spare'), throwsA(isA<SieveException>()));
+      await s.setActive('');
+      expect((await s.listScripts()).any((i) => i.active), isFalse);
+      await s.logout();
     });
 
     test('flags set over JMAP show over IMAP', () async {

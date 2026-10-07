@@ -13,4 +13,5 @@ export 'src/client/session.dart' show JmapAccount, JmapCapabilities, JmapSession
 export 'src/discovery.dart' show JmapDiscoverer, JmapNotes, fastmailJmapDiscovery;
 export 'src/factory.dart' show CompositeTransportFactory, JmapTransportFactory;
 export 'src/sender.dart' show JmapSender, identityFor;
+export 'src/sieve.dart' show JmapSieveConnector, JmapSieveSession;
 export 'src/transport/jmap_transport.dart' show JmapTransport;

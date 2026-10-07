@@ -67,7 +67,11 @@ void main() {
       store,
       CompositeTransportFactory.of(ImapTransportFactory(composer: MimeMessageComposer()), httpClient: http),
       _Credentials(),
-      sieve: ManageSieveConnector(port: server.ports['sieve']!),
+      // Sieve over JMAP; ManageSieve stays the fallback.
+      sieve: JmapSieveConnector(
+        fallback: ManageSieveConnector(port: server.ports['sieve']!),
+        httpClient: http,
+      ),
     );
     repo.errors.listen(errors.add);
     await repo.start();
@@ -293,6 +297,33 @@ void main() {
       expect(where, ServerStorage.folder);
       final docs = await repo.readServerDocuments(account.id, ServerDocuments.smartMailboxes);
       expect(docs.single.content, '{"mailboxes":[]}');
+    });
+
+    test('server rules go to the server over JMAP and file mail as it arrives', () async {
+      final t = JmapTransport(stalwartAccount(server, alice, id: 'other'), credentialsOf(alice), httpClient: http);
+      await t.connect();
+      await t.createMailbox('Invoices');
+      await t.disconnect();
+      await repo.refresh();
+      final invoices = (await store.getMailboxes(accountId: account.id)).firstWhere((m) => m.path == 'Invoices');
+      await repo.rules.saveRule(
+        Rule(
+          id: 'invoices',
+          name: 'Invoices',
+          condition: 'subject:invoice',
+          actions: [MoveToMailboxAction(invoices.id)],
+          location: RuleLocation.server,
+          accountIds: {account.id},
+        ),
+      );
+      final status = await repo.rules.serverStatus(account.id, refresh: true);
+      expect(status.state, ServerRulesState.active);
+      await server.deliverSmtp('shop@example.org', [alice.email], testMessage(subject: 'Your invoice 42'));
+      final ids = await roles(alice);
+      await eventually(() async {
+        final e = await onServer(alice, 'Your invoice 42');
+        return (e?['mailboxIds'] as Map?)?.containsKey(ids['Invoices']) == true ? true : null;
+      });
     });
 
     test('server rules use ManageSieve on the JMAP host', () async {

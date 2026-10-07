@@ -11,12 +11,22 @@ abstract final class JmapCapabilities {
 
 /// One account the session gives access to.
 final class JmapAccount {
-  const JmapAccount({required this.id, required this.name, this.isPersonal = true, this.isReadOnly = false});
+  const JmapAccount({
+    required this.id,
+    required this.name,
+    this.isPersonal = true,
+    this.isReadOnly = false,
+    this.capabilities = const {},
+  });
 
   final String id;
   final String name;
   final bool isPersonal;
   final bool isReadOnly;
+
+  /// `accountCapabilities`: per capability, this account's limits (Sieve
+  /// extensions and script sizes, for example).
+  final Map<String, Object?> capabilities;
 }
 
 /// What the server said about itself and the user: capabilities, accounts,
@@ -52,6 +62,11 @@ final class JmapSession {
           name: value['name'] as String? ?? key,
           isPersonal: value['isPersonal'] as bool? ?? true,
           isReadOnly: value['isReadOnly'] as bool? ?? false,
+          capabilities: {
+            if (value['accountCapabilities'] case final Map<Object?, Object?> caps)
+              for (final MapEntry(:key, :value) in caps.entries)
+                if (key is String) key: value,
+          },
         );
       }
     }

@@ -13,9 +13,10 @@ dependencies:
   # are shared with the IMAP transport.
   mail_imap: {path: ../mail_imap}
   mail_model: {path: ../mail_model}
+  # Server rules over JMAP (RFC 9661) speak its SieveSession.
+  mail_sieve: {path: ../mail_sieve}
 dev_dependencies:
   test: any
   # The whole stack in the Stalwart integration tests.
-  mail_sieve: {path: ../mail_sieve}
   mail_store: {path: ../mail_store}
   mail_sync: {path: ../mail_sync}
