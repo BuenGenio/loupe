@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_data.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/features/calendar/invitation.dart';
+import 'package:loupe/features/calendar/invitation_card.dart';
 import 'package:loupe/features/compose/identity_selection.dart';
 import 'package:mail_calendar/mail_calendar.dart';
 import 'package:mail_model/mail_model.dart';
@@ -77,14 +78,19 @@ void main() {
 
   testWidgets('in the app: the Outlook invitation, accepted, goes out with its calendar part', (tester) async {
     await atTestNow(() async {
-      final repo = await pumpLoupe(tester, size: const Size(390, 1400));
+      final repo = await pumpLoupe(
+        tester,
+        size: const Size(390, 1400),
+        overrides: [invitationZoneProvider.overrideWithValue(IanaZone.named('Europe/London'))],
+      );
       final message = await _find(repo, 'SOW phase 2 – pricing review');
       await goTo(tester, '/message/${message.id}');
       // The calendar part loads after the body (the demo's timers).
       await tester.pump(const Duration(seconds: 1));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('invitation-card')), findsOneWidget);
-      expect(find.textContaining('Los Angeles · '), findsOneWidget);
+      expect(find.textContaining(RegExp(r'Los Angeles$')), findsOneWidget);
+      expect(find.textContaining(RegExp(r'your time$')), findsOneWidget);
       await tester.tap(find.byKey(const Key('invitation-accept')));
       await tester.pumpAndSettle();
       final queued = (await repo.watchOutbox().first).single.message;
