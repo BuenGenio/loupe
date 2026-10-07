@@ -881,7 +881,7 @@ final class MailStore {
       if (exists != null) {
         await (_db.delete(_db.emails)..where((e) => e.id.equals(oldId))).go();
       } else {
-        final mailboxId = MailIds.mailboxOfImapEmail(newId);
+        final mailboxId = MailIds.mailboxOfEmail(newId);
         await (_db.update(_db.emails)..where((e) => e.id.equals(oldId))).write(
           EmailsCompanion(id: Value(newId), mailboxId: mailboxId == null ? const Value.absent() : Value(mailboxId)),
         );
