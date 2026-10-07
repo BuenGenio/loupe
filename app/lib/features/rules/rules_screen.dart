@@ -332,7 +332,7 @@ class _ServerStatusRow extends ConsumerWidget {
         LoupeIcons.error,
         colors.destructive,
         'Not Available',
-        message ?? 'This account’s server has no ManageSieve.',
+        message ?? 'This account’s server offers no Sieve (ManageSieve or JMAP).',
       ),
     };
     final canInclude = s != null && s.state == ServerRulesState.inactive && s.activeScript != null;
