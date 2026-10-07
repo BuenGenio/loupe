@@ -13,19 +13,19 @@ MailAccount _account(String id, String email, List<Identity> identities) => Mail
 );
 
 /// The owner's setup: a custom domain with a catch-all, and a Gmail account.
-final anthill = _account('anthill', 'eugene@anthill.example', const [
-  Identity(id: 'anthill/eugene', email: 'eugene@anthill.example', name: 'Eugene', signature: 'E.'),
-  Identity(id: 'anthill/shop', email: 'shop@anthill.example', name: 'Anthill Shop'),
-  Identity(id: 'anthill/lists', email: 'lists@anthill.example', replyPatterns: ['*@lists.anthill.example']),
+final acme = _account('acme', 'alex@acme.example', const [
+  Identity(id: 'acme/alex', email: 'alex@acme.example', name: 'Alex', signature: 'E.'),
+  Identity(id: 'acme/shop', email: 'shop@acme.example', name: 'Acme Shop'),
+  Identity(id: 'acme/lists', email: 'lists@acme.example', replyPatterns: ['*@lists.acme.example']),
 ]);
-final gmail = _account('gmail', 'eugene@gmail.com', const [
-  Identity(id: 'gmail/me', email: 'eugene@gmail.com', name: 'Eugene T'),
-  Identity(id: 'gmail/work', email: 'eugene@work.example', replyPatterns: ['*@team.example']),
+final gmail = _account('gmail', 'loupe.test.user@gmail.com', const [
+  Identity(id: 'gmail/me', email: 'loupe.test.user@gmail.com', name: 'Alex D'),
+  Identity(id: 'gmail/work', email: 'alex@work.example', replyPatterns: ['*@team.example']),
 ]);
-final accounts = [anthill, gmail];
+final accounts = [acme, gmail];
 
 EmailSummary _message({
-  String account = 'anthill',
+  String account = 'acme',
   String from = 'shop@store.example',
   List<String> to = const [],
   List<String> cc = const [],
@@ -52,143 +52,143 @@ void main() {
   final cases = <_Case>[
     (
       name: 'exact To',
-      message: _message(to: ['bob@example.org', 'Shop@Anthill.example']),
-      headers: const [('Delivered-To', 'eugene@anthill.example')],
-      identity: 'anthill/shop',
+      message: _message(to: ['bob@example.org', 'Shop@Acme.example']),
+      headers: const [('Delivered-To', 'alex@acme.example')],
+      identity: 'acme/shop',
       match: IdentityMatch.recipient,
       alias: null,
     ),
     (
       name: 'exact Cc beats the envelope',
-      message: _message(to: ['team@other.example'], cc: ['shop@anthill.example']),
-      headers: const [('X-Original-To', 'eugene@anthill.example')],
-      identity: 'anthill/shop',
+      message: _message(to: ['team@other.example'], cc: ['shop@acme.example']),
+      headers: const [('X-Original-To', 'alex@acme.example')],
+      identity: 'acme/shop',
       match: IdentityMatch.recipient,
       alias: null,
     ),
     (
       name: 'my own message keeps its sender',
-      message: _message(from: 'shop@anthill.example', to: ['bob@example.org']),
+      message: _message(from: 'shop@acme.example', to: ['bob@example.org']),
       headers: const [],
-      identity: 'anthill/shop',
+      identity: 'acme/shop',
       match: IdentityMatch.recipient,
       alias: null,
     ),
     (
       name: 'Delivered-To (Bcc, list)',
       message: _message(to: ['announce@news.example']),
-      headers: const [('Delivered-To', '<shop@anthill.example>')],
-      identity: 'anthill/shop',
+      headers: const [('Delivered-To', '<shop@acme.example>')],
+      identity: 'acme/shop',
       match: IdentityMatch.envelope,
       alias: null,
     ),
     (
       name: 'X-Original-To',
       message: _message(to: ['undisclosed-recipients:;']),
-      headers: const [('X-Original-To', 'eugene@anthill.example')],
-      identity: 'anthill/eugene',
+      headers: const [('X-Original-To', 'alex@acme.example')],
+      identity: 'acme/alex',
       match: IdentityMatch.envelope,
       alias: null,
     ),
     (
       name: 'Envelope-To',
       message: _message(to: ['announce@news.example']),
-      headers: const [('Envelope-To', 'lists@anthill.example')],
-      identity: 'anthill/lists',
+      headers: const [('Envelope-To', 'lists@acme.example')],
+      identity: 'acme/lists',
       match: IdentityMatch.envelope,
       alias: null,
     ),
     (
       name: 'plus-address in To, offered as an alias',
-      message: _message(to: ['eugene+store@anthill.example']),
+      message: _message(to: ['alex+store@acme.example']),
       headers: const [],
-      identity: 'anthill/eugene',
+      identity: 'acme/alex',
       match: IdentityMatch.plusAddress,
-      alias: 'eugene+store@anthill.example',
+      alias: 'alex+store@acme.example',
     ),
     (
       name: 'plus-address on a public domain is still mine',
-      message: _message(account: 'gmail', to: ['Eugene+Receipts@gmail.com']),
+      message: _message(account: 'gmail', to: ['loupe.test.user+Receipts@gmail.com']),
       headers: const [],
       identity: 'gmail/me',
       match: IdentityMatch.plusAddress,
-      alias: 'eugene+receipts@gmail.com',
+      alias: 'loupe.test.user+receipts@gmail.com',
     ),
     (
       name: 'plus-address in Delivered-To is the server\'s tag, not an alias',
       message: _message(to: ['announce@news.example']),
-      headers: const [('Delivered-To', 'eugene+catchall@anthill.example')],
-      identity: 'anthill/eugene',
+      headers: const [('Delivered-To', 'alex+catchall@acme.example')],
+      identity: 'acme/alex',
       match: IdentityMatch.plusAddress,
       alias: null,
     ),
     (
       name: 'pattern',
-      message: _message(to: ['garden@lists.anthill.example']),
+      message: _message(to: ['garden@lists.acme.example']),
       headers: const [],
-      identity: 'anthill/lists',
+      identity: 'acme/lists',
       match: IdentityMatch.pattern,
       alias: null,
     ),
     (
       name: 'catch-all: unknown alias at my domain, delivered to a plus-address',
-      message: _message(to: ['store-17@anthill.example']),
-      headers: const [('Delivered-To', 'eugene+catchall@anthill.example'), ('X-Original-To', 'eugene@anthill.example')],
-      identity: 'anthill/eugene',
+      message: _message(to: ['store-17@acme.example']),
+      headers: const [('Delivered-To', 'alex+catchall@acme.example'), ('X-Original-To', 'alex@acme.example')],
+      identity: 'acme/alex',
       match: IdentityMatch.envelope,
-      alias: 'store-17@anthill.example',
+      alias: 'store-17@acme.example',
     ),
     (
       name: 'catch-all without headers: the default, offering the alias',
-      message: _message(to: ['store-17@anthill.example']),
+      message: _message(to: ['store-17@acme.example']),
       headers: const [],
-      identity: 'anthill/eugene',
+      identity: 'acme/alex',
       match: IdentityMatch.fallback,
-      alias: 'store-17@anthill.example',
+      alias: 'store-17@acme.example',
     ),
     (
       name: 'catch-all alias only in X-Original-To',
       message: _message(to: ['announce@news.example']),
-      headers: const [('X-Original-To', 'newsletters@anthill.example')],
-      identity: 'anthill/eugene',
+      headers: const [('X-Original-To', 'newsletters@acme.example')],
+      identity: 'acme/alex',
       match: IdentityMatch.fallback,
-      alias: 'newsletters@anthill.example',
+      alias: 'newsletters@acme.example',
     ),
     (
       name: 'a colleague at the sender\'s domain is no alias',
-      message: _message(from: 'dana@anthill.example', to: ['ben@anthill.example']),
-      headers: const [('Delivered-To', 'eugene@anthill.example')],
-      identity: 'anthill/eugene',
+      message: _message(from: 'dana@acme.example', to: ['ben@acme.example']),
+      headers: const [('Delivered-To', 'alex@acme.example')],
+      identity: 'acme/alex',
       match: IdentityMatch.envelope,
       alias: null,
     ),
     (
       name: 'someone else at a public domain is no alias',
       message: _message(account: 'gmail', to: ['friend@gmail.com']),
-      headers: const [('Delivered-To', 'eugene@gmail.com')],
+      headers: const [('Delivered-To', 'loupe.test.user@gmail.com')],
       identity: 'gmail/me',
       match: IdentityMatch.envelope,
       alias: null,
     ),
     (
       name: 'multiple accounts: an identity of another account',
-      message: _message(account: 'anthill', to: ['eugene@gmail.com']),
-      headers: const [('Delivered-To', 'eugene@anthill.example')],
+      message: _message(account: 'acme', to: ['loupe.test.user@gmail.com']),
+      headers: const [('Delivered-To', 'alex@acme.example')],
       identity: 'gmail/me',
       match: IdentityMatch.recipient,
       alias: null,
     ),
     (
       name: 'multiple accounts: the message\'s own account first',
-      message: _message(account: 'gmail', to: ['eugene+x@anthill.example', 'eugene+y@gmail.com']),
+      message: _message(account: 'gmail', to: ['alex+x@acme.example', 'loupe.test.user+y@gmail.com']),
       headers: const [],
       identity: 'gmail/me',
       match: IdentityMatch.plusAddress,
-      alias: 'eugene+x@anthill.example',
+      alias: 'alex+x@acme.example',
     ),
     (
       name: 'multiple accounts: a pattern of another account',
-      message: _message(account: 'anthill', to: ['ops@team.example']),
+      message: _message(account: 'acme', to: ['ops@team.example']),
       headers: const [],
       identity: 'gmail/work',
       match: IdentityMatch.pattern,
@@ -219,21 +219,21 @@ void main() {
   test('an alias takes the default identity\'s name and signature of its account', () {
     final choice = IdentitySelection.choose(
       accounts: accounts,
-      source: _message(to: ['store-17@anthill.example']),
+      source: _message(to: ['store-17@acme.example']),
     )!;
-    expect(choice.aliasAccount, anthill);
-    expect(choice.alias!.name, 'Eugene');
+    expect(choice.aliasAccount, acme);
+    expect(choice.alias!.name, 'Alex');
     expect(choice.alias!.signature, 'E.');
-    expect(anthill.isAliasIdentity(choice.alias!), isTrue);
+    expect(acme.isAliasIdentity(choice.alias!), isTrue);
     expect(choice.suggestsAlias, isTrue);
   });
 
   test('the multiple-accounts alias belongs to the account owning its address', () {
     final choice = IdentitySelection.choose(
       accounts: accounts,
-      source: _message(account: 'gmail', to: ['eugene+x@anthill.example', 'eugene+y@gmail.com']),
+      source: _message(account: 'gmail', to: ['alex+x@acme.example', 'loupe.test.user+y@gmail.com']),
     )!;
-    expect(choice.aliasAccount, anthill);
+    expect(choice.aliasAccount, acme);
   });
 
   test('a pattern match offers the alias only in the picker', () {
@@ -261,28 +261,28 @@ void main() {
   });
 
   test('patterns', () {
-    expect(IdentitySelection.normalizePattern(' *@Anthill.example '), '*@anthill.example');
-    expect(IdentitySelection.normalizePattern('@anthill.example'), '*@anthill.example');
-    expect(IdentitySelection.normalizePattern('anthill.example'), '*@anthill.example');
-    expect(IdentitySelection.normalizePattern('eugene+*@anthill.example'), 'eugene+*@anthill.example');
+    expect(IdentitySelection.normalizePattern(' *@Acme.example '), '*@acme.example');
+    expect(IdentitySelection.normalizePattern('@acme.example'), '*@acme.example');
+    expect(IdentitySelection.normalizePattern('acme.example'), '*@acme.example');
+    expect(IdentitySelection.normalizePattern('alex+*@acme.example'), 'alex+*@acme.example');
     expect(IdentitySelection.normalizePattern(''), isNull);
     expect(IdentitySelection.normalizePattern('not a pattern'), isNull);
     expect(IdentitySelection.normalizePattern('me@localhost'), isNull);
-    expect(IdentitySelection.matchesPattern('*@anthill.example', 'X@ANTHILL.example'), isTrue);
-    expect(IdentitySelection.matchesPattern('*@anthill.example', 'x@sub.anthill.example'), isFalse);
-    expect(IdentitySelection.matchesPattern('eugene+*@anthill.example', 'eugene+shop@anthill.example'), isTrue);
-    expect(IdentitySelection.matchesPattern('eugene+*@anthill.example', 'eugene@anthill.example'), isFalse);
+    expect(IdentitySelection.matchesPattern('*@acme.example', 'X@ACME.example'), isTrue);
+    expect(IdentitySelection.matchesPattern('*@acme.example', 'x@sub.acme.example'), isFalse);
+    expect(IdentitySelection.matchesPattern('alex+*@acme.example', 'alex+shop@acme.example'), isTrue);
+    expect(IdentitySelection.matchesPattern('alex+*@acme.example', 'alex@acme.example'), isFalse);
     expect(IdentitySelection.matchesPattern('a.b@x.example', 'axb@x.example'), isFalse, reason: 'dots are literal');
   });
 
   test('envelope addresses and plus-addresses', () {
     expect(
       IdentitySelection.envelopeAddresses(const [
-        ('Received', 'from x by y for <nope@anthill.example>'),
-        ('Delivered-To', 'Eugene+Catchall@anthill.example'),
-        ('x-original-to', '<shop@anthill.example>'),
+        ('Received', 'from x by y for <nope@acme.example>'),
+        ('Delivered-To', 'Alex+Catchall@acme.example'),
+        ('x-original-to', '<shop@acme.example>'),
       ]),
-      ['eugene+catchall@anthill.example', 'shop@anthill.example'],
+      ['alex+catchall@acme.example', 'shop@acme.example'],
     );
     expect(IdentitySelection.stripPlus('A+b+c@X.example'), 'a@x.example');
     expect(IdentitySelection.stripPlus('+a@x.example'), '+a@x.example');
@@ -291,7 +291,7 @@ void main() {
   });
 
   test('owned domains leave out public ones and pattern domains', () {
-    expect(IdentitySelection.ownedDomains(anthill), {'anthill.example'});
+    expect(IdentitySelection.ownedDomains(acme), {'acme.example'});
     expect(IdentitySelection.ownedDomains(gmail), {'work.example'});
   });
 }

@@ -1,8 +1,8 @@
 {
   "readable": {
     "stats": {
-      "sourceText": 813,
-      "keptText": 813,
+      "sourceText": 811,
+      "keptText": 811,
       "hiddenText": 0,
       "hiddenElements": 0,
       "trackers": 0,
@@ -33,7 +33,7 @@
         "type": "p",
         "inlines": [
           {
-            "text": "Dear Eugene,"
+            "text": "Dear Alex,"
           }
         ]
       },
@@ -174,8 +174,8 @@
   },
   "plain": {
     "stats": {
-      "sourceText": 813,
-      "keptText": 813,
+      "sourceText": 811,
+      "keptText": 811,
       "hiddenText": 0,
       "hiddenElements": 0,
       "trackers": 0,
@@ -206,7 +206,7 @@
         "type": "p",
         "inlines": [
           {
-            "text": "Dear Eugene,"
+            "text": "Dear Alex,"
           }
         ]
       },

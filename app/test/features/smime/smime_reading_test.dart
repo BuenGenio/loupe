@@ -172,7 +172,9 @@ void main() {
       );
       final der = smime.encrypt(inner, [bobBundle.keys.single.certificate], cipher: cipher);
       final b64 = base64.encode(der);
-      final lines = [for (var i = 0; i < b64.length; i += 64) b64.substring(i, i + 64 > b64.length ? b64.length : i + 64)];
+      final lines = [
+        for (var i = 0; i < b64.length; i += 64) b64.substring(i, i + 64 > b64.length ? b64.length : i + 64),
+      ];
       final type = cipher == SmimeContentCipher.aes256Gcm ? 'authEnveloped-data' : 'enveloped-data';
       return 'From: Alice Example <alice@example.org>\r\nTo: Bob Example <bob@example.net>\r\nSubject: S/MIME\r\n'
           'MIME-Version: 1.0\r\nContent-Type: application/pkcs7-mime; smime-type=$type; name=smime.p7m\r\n'
@@ -197,7 +199,9 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('AES-CBC: blocked even with remote images on, until the user loads them for this message', (tester) async {
+    testWidgets('AES-CBC: blocked even with remote images on, until the user loads them for this message', (
+      tester,
+    ) async {
       await openWith(tester, encryptedHtml(SmimeContentCipher.aes256Cbc));
       expect(textContaining('The secret plan'), findsWidgets);
       expect(textContaining('are blocked to protect your privacy'), findsOneWidget);

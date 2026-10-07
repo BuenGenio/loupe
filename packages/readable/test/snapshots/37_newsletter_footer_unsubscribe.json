@@ -1,8 +1,8 @@
 {
   "readable": {
     "stats": {
-      "sourceText": 582,
-      "keptText": 582,
+      "sourceText": 580,
+      "keptText": 580,
       "hiddenText": 0,
       "hiddenElements": 0,
       "trackers": 0,
@@ -53,7 +53,7 @@
         "type": "p",
         "inlines": [
           {
-            "text": "Hello Eugene,"
+            "text": "Hello Alex,"
           }
         ]
       },
@@ -168,8 +168,8 @@
   },
   "plain": {
     "stats": {
-      "sourceText": 582,
-      "keptText": 582,
+      "sourceText": 580,
+      "keptText": 580,
       "hiddenText": 0,
       "hiddenElements": 0,
       "trackers": 0,
@@ -220,7 +220,7 @@
         "type": "p",
         "inlines": [
           {
-            "text": "Hello Eugene,"
+            "text": "Hello Alex,"
           }
         ]
       },

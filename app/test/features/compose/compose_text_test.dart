@@ -47,23 +47,23 @@ void main() {
       testAccount.copyWith(
         identities: const [
           Identity(id: 'acc/me', email: 'me@example.com'),
-          Identity(id: 'acc/shop', email: 'shop@anthill.example', replyPatterns: ['*@anthill.example']),
+          Identity(id: 'acc/shop', email: 'shop@acme.example', replyPatterns: ['*@acme.example']),
         ],
       ),
       testAccount.copyWith(
         identities: const [Identity(id: 'home/me', email: 'me@home.example')],
       ),
     ];
-    final own = OwnAddresses(accounts, extra: const ['eugene+catchall@relay.example']);
+    final own = OwnAddresses(accounts, extra: const ['alex+catchall@relay.example']);
     final source = testEmail(
       'm1',
       to: const [
         EmailAddress('ME+lists@example.com'),
-        EmailAddress('orders-17@anthill.example'),
+        EmailAddress('orders-17@acme.example'),
         alice,
         EmailAddress('me@home.example'),
       ],
-      cc: const [EmailAddress('eugene+catchall@relay.example'), bob, EmailAddress('shop@anthill.example')],
+      cc: const [EmailAddress('alex+catchall@relay.example'), bob, EmailAddress('shop@acme.example')],
     );
     final r = ComposeText.replyRecipients(source, all: true, isOwn: own.contains);
     expect(r.to.map((a) => a.email), ['alice@example.com']);
