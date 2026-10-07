@@ -108,6 +108,61 @@ void main() {
     expect(attachments[1].mediaType?.text, 'application/octet-stream');
   });
 
+  group('an invitation reply (iMIP)', () {
+    const ics =
+        'BEGIN:VCALENDAR\r\nPRODID:-//Loupe//Loupe Mail//EN\r\nVERSION:2.0\r\nMETHOD:REPLY\r\nBEGIN:VEVENT\r\n'
+        'ATTENDEE;PARTSTAT=ACCEPTED:mailto:jo@example.org\r\nORGANIZER:mailto:ann@example.com\r\n'
+        'UID:abc@example.com\r\nSEQUENCE:0\r\nDTSTAMP:20251006T083000Z\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n';
+
+    test('multipart/alternative: the text, then text/calendar with its method', () {
+      final bytes = compose(
+        const OutgoingMessage(
+          accountId: 'a',
+          identityId: 'i1',
+          to: [EmailAddress('ann@example.com')],
+          subject: 'Accepted: Planning',
+          text: 'Jö Schmidt has accepted: Planning, Mon 6 Oct 10:00',
+          calendar: OutgoingCalendar(method: 'REPLY', data: ics),
+        ),
+      );
+      final raw = ascii.decode(bytes);
+      expect(raw, contains('Content-Type: text/calendar; method=REPLY; charset=UTF-8\r\n'));
+      expect(raw, contains('Content-Transfer-Encoding: 7bit\r\n'));
+      expect(raw, contains('\r\nMETHOD:REPLY\r\n'));
+      final m = parseBack(bytes);
+      expect(m.mediaType.sub, em.MediaSubtype.multipartAlternative);
+      expect(m.parts!.map((p) => p.mediaType.text), ['text/plain', 'text/calendar']);
+      expect(m.parts![1].getHeaderContentType()!.parameters['method'], 'REPLY');
+      expect(m.parts![1].decodeContentText(), ics);
+      expect(m.decodeTextPlainPart()?.trimRight(), 'Jö Schmidt has accepted: Planning, Mon 6 Oct 10:00');
+      expect(m.findContentInfo(disposition: em.ContentDisposition.attachment), isEmpty);
+    });
+
+    test('non-ASCII calendars go as base64; with HTML and attachments the calendar stays an alternative', () {
+      final unicode = ics.replaceFirst('ATTENDEE;', 'ATTENDEE;CN=Jö Schmidt;');
+      final bytes = compose(
+        OutgoingMessage(
+          accountId: 'a',
+          identityId: 'i1',
+          to: const [EmailAddress('ann@example.com')],
+          subject: 'Accepted',
+          text: 'Accepted',
+          html: '<p>Accepted</p>',
+          attachments: [OutgoingAttachment(filename: 'a.txt', mimeType: 'text/plain', data: Uint8List(3))],
+          calendar: OutgoingCalendar(method: 'reply', data: unicode.replaceAll('\r\n', '\n')),
+        ),
+      );
+      final m = parseBack(bytes);
+      expect(m.mediaType.sub, em.MediaSubtype.multipartMixed);
+      final alternative = m.parts![0];
+      expect(alternative.parts!.map((p) => p.mediaType.text), ['text/plain', 'text/html', 'text/calendar']);
+      final calendar = alternative.parts![2];
+      expect(calendar.getHeaderValue('Content-Transfer-Encoding'), 'base64');
+      expect(calendar.getHeaderContentType()!.parameters['method'], 'REPLY');
+      expect(utf8.decode(calendar.decodeContentBinary()!), unicode);
+    });
+  });
+
   test('quoted-printable keeps lines short and round-trips', () {
     final text = '${'x' * 200} trailing \r\n.dot\r\nFrom me\r\n€uro = sign\t';
     final encoded = encodeQuotedPrintable(utf8.encode(text));

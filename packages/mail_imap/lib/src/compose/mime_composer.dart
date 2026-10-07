@@ -9,7 +9,9 @@ import 'package:mail_model/mail_model.dart';
 
 /// Builds outgoing messages:
 /// - `text/plain; charset=utf-8`, quoted-printable;
-/// - `multipart/alternative` with an HTML part when [OutgoingMessage.html] is set;
+/// - `multipart/alternative` with an HTML part when [OutgoingMessage.html] is set,
+///   and with the `text/calendar` part of an invitation reply
+///   ([OutgoingMessage.calendar], last: iMIP, RFC 6047);
 /// - `multipart/mixed` around it when there are attachments (base64);
 /// - RFC 2047 encoded headers, RFC 2231 file names;
 /// - Date, Message-ID, In-Reply-To, References, MIME-Version, User-Agent.
@@ -61,15 +63,18 @@ final class MimeMessageComposer implements MessageComposer {
       'Content-Type: text/plain; charset=utf-8',
       'Content-Transfer-Encoding: quoted-printable',
     ], encodeQuotedPrintable(utf8.encode(_crlf(message.text))));
-    var body = text;
+    final alternatives = [text];
     final html = message.html;
     if (html != null && html.trim().isNotEmpty) {
-      final htmlPart = _MimePart([
-        'Content-Type: text/html; charset=utf-8',
-        'Content-Transfer-Encoding: quoted-printable',
-      ], encodeQuotedPrintable(utf8.encode(_crlf(html))));
-      body = _multipart('alternative', [text, htmlPart]);
+      alternatives.add(
+        _MimePart([
+          'Content-Type: text/html; charset=utf-8',
+          'Content-Transfer-Encoding: quoted-printable',
+        ], encodeQuotedPrintable(utf8.encode(_crlf(html)))),
+      );
     }
+    if (message.calendar case final calendar?) alternatives.add(_calendar(calendar));
+    var body = alternatives.length == 1 ? text : _multipart('alternative', alternatives);
     if (message.attachments.isNotEmpty) {
       body = _multipart('mixed', [body, for (final a in message.attachments) _attachment(a)]);
     }
@@ -98,6 +103,27 @@ final class MimeMessageComposer implements MessageComposer {
     }
     body.write('--$boundary--\r\n');
     return _MimePart(['Content-Type: multipart/$subtype;\r\n boundary="$boundary"'], body.toString());
+  }
+
+  /// `text/calendar; method=REPLY; charset=UTF-8`, as Outlook and Gmail
+  /// write it: 7bit when it is ASCII (its lines are at most 75 octets),
+  /// else base64.
+  _MimePart _calendar(OutgoingCalendar c) {
+    final method = c.method.trim().toUpperCase();
+    final type = [
+      'text/calendar',
+      if (RegExp(r'^[A-Z-]+$').hasMatch(method)) 'method=$method',
+      'charset=UTF-8',
+    ].join('; ');
+    final data = _crlf(c.data);
+    final text = data.endsWith('\r\n') ? data : '$data\r\n';
+    if (_isAscii(text.replaceAll('\r\n', ''))) {
+      return _MimePart(['Content-Type: $type', 'Content-Transfer-Encoding: 7bit'], text);
+    }
+    return _MimePart([
+      'Content-Type: $type',
+      'Content-Transfer-Encoding: base64',
+    ], _base64Lines(Uint8List.fromList(utf8.encode(text))));
   }
 
   _MimePart _attachment(OutgoingAttachment a) {

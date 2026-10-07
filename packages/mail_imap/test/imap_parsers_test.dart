@@ -109,6 +109,22 @@ void main() {
       expect(selectDisplayParts(root).text.map((n) => n.section), ['1']);
     });
 
+    test("an invitation's text/calendar alternative is listed, without a paperclip", () {
+      const calendar =
+          '("TEXT" "CALENDAR" ("CHARSET" "utf-8" "METHOD" "REQUEST") NIL NIL "BASE64" 3000 40 NIL NIL NIL)';
+      const ics =
+          '("APPLICATION" "ICS" ("NAME" "invite.ics") NIL NIL "BASE64" 3000 NIL ("ATTACHMENT" ("FILENAME" "invite.ics")) NIL)';
+      // Outlook: alternative(plain, html, calendar).
+      final outlook = structure('($_plain$_html$calendar "ALTERNATIVE")');
+      expect(selectDisplayParts(outlook).html.single.section, '2');
+      expect(listAttachments(outlook).map((a) => (a.partId, a.mimeType, a.filename)), [('3', 'text/calendar', null)]);
+      expect(hasVisibleAttachment(outlook), isFalse);
+      // Google: mixed(alternative(plain, html, calendar), invite.ics).
+      final google = structure('(($_plain$_html$calendar "ALTERNATIVE")$ics "MIXED")');
+      expect(listAttachments(google).map((a) => a.partId), ['1.3', '2']);
+      expect(hasVisibleAttachment(google), isTrue);
+    });
+
     test('mixed with footer appends inline text parts', () {
       final root = structure(
         '($_plain("TEXT" "PLAIN" ("CHARSET" "us-ascii") NIL NIL "7BIT" 100 3 NIL ("INLINE" NIL) NIL) "MIXED")',

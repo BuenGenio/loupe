@@ -170,6 +170,45 @@ void main() {
     });
   });
 
+  group('an invitation reply', () {
+    const ics =
+        'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nMETHOD:REPLY\r\nBEGIN:VEVENT\r\n'
+        'ATTENDEE;PARTSTAT=ACCEPTED:mailto:alice@openpgp.example\r\nORGANIZER:mailto:bob@openpgp.example\r\n'
+        'UID:plans@openpgp.example\r\nSEQUENCE:0\r\nDTSTAMP:20261004T120000Z\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n';
+
+    Uint8List reply(OutgoingSecurity security) => composer.compose(
+      OutgoingMessage(
+        accountId: 'a',
+        identityId: 'a/me',
+        to: const [bob],
+        subject: 'Accepted: Secret plans',
+        text: 'Alice Lovelace has accepted: Secret plans',
+        security: security,
+        calendar: const OutgoingCalendar(method: 'REPLY', data: ics),
+      ),
+      alice,
+      messageId: 'm2@openpgp.example',
+      date: DateTime.utc(2026, 10, 4, 12),
+    );
+
+    test('keeps its text/calendar alternative, plain, signed and encrypted', () {
+      final plain = MimeEntity.parse(reply(OutgoingSecurity.none));
+      expect(plain.mimeType, 'multipart/alternative');
+      expect(plain.parts.map((p) => p.mimeType), ['text/plain', 'text/calendar']);
+      expect(plain.parts.last.contentType['method'], 'REPLY');
+
+      for (final security in const [OutgoingSecurity(sign: true), OutgoingSecurity(encrypt: true, sign: true)]) {
+        final r = reader.read(reply(security), keys: [bobSecret], verifiers: [alicePublic]);
+        expect(r.status.signature!.status, PgpSignatureStatus.good, reason: '$security');
+        final content = contentFromEntity(r.entity!, emailId: 'x');
+        expect(content.text, contains('has accepted'));
+        final calendar = content.attachments.single;
+        expect(calendar.mimeType, 'text/calendar');
+        expect(utf8.decode(partOf(r.entity!, calendar.partId)!.decodedBody).trimRight(), ics.trimRight());
+      }
+    });
+  });
+
   test('gpg reads what we send: decrypts, verifies the signature inside and the PGP/MIME signature', () async {
     final gpg = Gpg.create();
     if (gpg == null) {
