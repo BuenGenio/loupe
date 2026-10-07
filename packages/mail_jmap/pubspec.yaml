@@ -1,0 +1,21 @@
+name: mail_jmap
+description: "JMAP transport for Loupe (Stalwart, Fastmail, Cyrus): sync, search, sending and push."
+publish_to: none
+version: 0.1.0
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  crypto: ^3.0.6
+  expr_search: {path: ../expr_search}
+  http: ^1.6.0
+  # The MIME composer, account discovery and the MIME helpers (lib/mime.dart)
+  # are shared with the IMAP transport.
+  mail_imap: {path: ../mail_imap}
+  mail_model: {path: ../mail_model}
+dev_dependencies:
+  test: any
+  # The whole stack in the Stalwart integration tests.
+  mail_sieve: {path: ../mail_sieve}
+  mail_store: {path: ../mail_store}
+  mail_sync: {path: ../mail_sync}

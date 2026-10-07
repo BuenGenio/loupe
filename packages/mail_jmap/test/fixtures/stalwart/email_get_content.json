@@ -1,0 +1,172 @@
+{
+  "methodResponses": [
+    [
+      "Email/get",
+      {
+        "accountId": "c",
+        "state": "sai",
+        "list": [
+          {
+            "id": "eaaaaab",
+            "headers": [
+              {
+                "name": "From",
+                "value": " \"Carol Example\" <carol@example.org>"
+              },
+              {
+                "name": "To",
+                "value": " Alice <alice@example.test>, bob@example.test"
+              },
+              {
+                "name": "Cc",
+                "value": " =?UTF-8?Q?J=C3=BCrgen?= <juergen@example.org>"
+              },
+              {
+                "name": "Subject",
+                "value": " =?UTF-8?Q?Quarterly_report_=E2=80=93_draft?="
+              },
+              {
+                "name": "Date",
+                "value": " Mon, 5 Oct 2026 10:00:00 +0200"
+              },
+              {
+                "name": "Message-ID",
+                "value": " <report-1@example.org>"
+              },
+              {
+                "name": "In-Reply-To",
+                "value": " <earlier@example.org>"
+              },
+              {
+                "name": "References",
+                "value": " <first@example.org> <earlier@example.org>"
+              },
+              {
+                "name": "List-ID",
+                "value": " Example developers <dev.lists.example.org>"
+              },
+              {
+                "name": "List-Post",
+                "value": " <mailto:dev@lists.example.org>"
+              },
+              {
+                "name": "List-Unsubscribe",
+                "value": " <https://lists.example.org/u?x=1>, <mailto:dev-leave@lists.example.org>"
+              },
+              {
+                "name": "List-Unsubscribe-Post",
+                "value": " List-Unsubscribe=One-Click"
+              },
+              {
+                "name": "MIME-Version",
+                "value": " 1.0"
+              },
+              {
+                "name": "Content-Type",
+                "value": " multipart/mixed; boundary=\"mix\""
+              }
+            ],
+            "bodyStructure": {
+              "partId": null,
+              "blobId": null,
+              "size": null,
+              "name": null,
+              "type": "multipart/mixed",
+              "charset": null,
+              "disposition": null,
+              "cid": null,
+              "header:Content-Type": " multipart/mixed; boundary=\"mix\"",
+              "subParts": [
+                {
+                  "partId": null,
+                  "blobId": null,
+                  "size": null,
+                  "name": null,
+                  "type": "multipart/alternative",
+                  "charset": null,
+                  "disposition": null,
+                  "cid": null,
+                  "header:Content-Type": " multipart/alternative; boundary=\"alt\"",
+                  "subParts": [
+                    {
+                      "partId": "2",
+                      "blobId": "ce1aea2ckiahbwosfalytuownbu3zg1dqgwiyqfs9c9xfluk2tq1waqaagoqmia",
+                      "size": 32,
+                      "name": null,
+                      "type": "text/plain",
+                      "charset": "utf-8",
+                      "disposition": null,
+                      "cid": null,
+                      "header:Content-Type": " text/plain; charset=utf-8; format=flowed"
+                    },
+                    {
+                      "partId": null,
+                      "blobId": null,
+                      "size": null,
+                      "name": null,
+                      "type": "multipart/related",
+                      "charset": null,
+                      "disposition": null,
+                      "cid": null,
+                      "header:Content-Type": " multipart/related; boundary=\"rel\"",
+                      "subParts": [
+                        {
+                          "partId": "4",
+                          "blobId": "ci1aea2ckiahbwosfalytuownbu3zg1dqgwiyqfs9c9xfluk2tq1waqaahoaouy",
+                          "size": 79,
+                          "name": null,
+                          "type": "text/html",
+                          "charset": "iso-8859-1",
+                          "disposition": null,
+                          "cid": null,
+                          "header:Content-Type": " text/html; charset=iso-8859-1"
+                        },
+                        {
+                          "partId": "5",
+                          "blobId": "cm1aea2ckiahbwosfalytuownbu3zg1dqgwiyqfs9c9xfluk2tq1waqaag7asda",
+                          "size": 8,
+                          "name": null,
+                          "type": "image/png",
+                          "charset": null,
+                          "disposition": "inline",
+                          "cid": "chart@example.org",
+                          "header:Content-Type": " image/png"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "partId": "6",
+                  "blobId": "cm1aea2ckiahbwosfalytuownbu3zg1dqgwiyqfs9c9xfluk2tq1waqaahvaufa",
+                  "size": 13,
+                  "name": "report.pdf",
+                  "type": "application/pdf",
+                  "charset": null,
+                  "disposition": "attachment",
+                  "cid": null,
+                  "header:Content-Type": " application/pdf; name=\"report.pdf\""
+                }
+              ]
+            },
+            "bodyValues": {
+              "2": {
+                "isEncodingProblem": false,
+                "isTruncated": false,
+                "value": "Hello Alice,\nhere is the draft."
+              },
+              "4": {
+                "isEncodingProblem": false,
+                "isTruncated": false,
+                "value": "<p>Hello Alice, here is the draft <img src=\"cid:chart@example.org\"> Grüße</p>"
+              }
+            }
+          }
+        ],
+        "notFound": []
+      },
+      "c0"
+    ]
+  ],
+  "sessionState": "2e762b75"
+}
