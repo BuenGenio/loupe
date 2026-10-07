@@ -260,6 +260,36 @@ void main() {
     });
   });
 
+  testWidgets('a published event (Zoom): no answers, the meeting and the calendar', (tester) async {
+    await at(() async {
+      final ics = outlookInvite(method: 'PUBLISH')
+          .replaceFirst('LOCATION:Room 4', 'LOCATION:https://us02web.zoom.us/j/81234567890')
+          .replaceFirst(RegExp('X-MICROSOFT-SKYPETEAMSMEETINGURL[^\r]*\r\n'), '');
+      await open(tester, (r) => r.invite('i1', ics));
+      expect(card, findsOneWidget);
+      expect(find.byKey(const Key('invitation-accept')), findsNothing);
+      expect(find.byKey(const Key('invitation-add-comment')), findsNothing);
+      expect(find.byKey(const Key('invitation-add-to-calendar')), findsOneWidget);
+      expect(inCard(find.text('Zoom meeting')), findsOneWidget);
+      expect(find.byKey(const Key('invitation-location')), findsNothing, reason: 'the link is the meeting row');
+    });
+  });
+
+  testWidgets('a proposal for another time', (tester) async {
+    await at(() async {
+      await open(
+        tester,
+        (r) => r.invite(
+          'i1',
+          outlookInvite(method: 'COUNTER', hour: 11).replaceFirst(RegExp('ATTENDEE;ROLE=OPT[^\r]*\r\n'), ''),
+        ),
+      );
+      expect(find.byKey(const Key('invitation-counter')), findsOneWidget);
+      expect(text('Me Myself proposes a new time'), findsOneWidget);
+      expect(find.byKey(const Key('invitation-accept')), findsNothing);
+    });
+  });
+
   testWidgets('Join shows where the link goes first', (tester) async {
     await at(() async {
       await open(tester, (r) => r.invite('i1', outlookInvite()));
