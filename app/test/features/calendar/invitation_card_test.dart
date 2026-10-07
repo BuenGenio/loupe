@@ -106,11 +106,14 @@ void main() {
       expect(card, findsOneWidget);
       expect(inCard(find.text('Pricing review')), findsOneWidget);
       expect(text('Tuesday, October 13'), findsOneWidget);
-      expect(text(r'9:00.AM–10:00.AM Los Angeles · 5:00.PM–6:00.PM your time'), findsOneWidget);
+      expect(text(r'^9:00.AM–10:00.AM Los Angeles$'), findsOneWidget);
+      expect(text(r'^5:00.PM–6:00.PM your time$'), findsOneWidget);
       expect(inCard(find.text('Room 4')), findsOneWidget);
       expect(find.byKey(const Key('invitation-map')), findsOneWidget);
-      expect(text('Teams meeting · teams.microsoft.com'), findsOneWidget);
-      expect(text('Olivia Grant'), findsOneWidget);
+      expect(inCard(find.text('Teams meeting')), findsOneWidget);
+      expect(inCard(find.text('teams.microsoft.com')), findsOneWidget);
+      expect(find.byKey(const Key('invitation-organizer')), findsOneWidget);
+      expect(text(r'^Olivia Grant · organizer$'), findsOneWidget);
       expect(text('2 guests · 1 accepted'), findsOneWidget);
       expect(find.text('Bob Builder · optional'), findsNothing);
       await tester.tap(find.byKey(const Key('invitation-attendees')));
@@ -118,7 +121,7 @@ void main() {
       expect(find.text('Bob Builder · optional'), findsOneWidget);
       expect(find.text('Me Myself (you)'), findsOneWidget);
       expect(find.byKey(const Key('invitation-accept')), findsOneWidget);
-      expect(text('Replies from me@example.com'), findsOneWidget);
+      expect(text('Your reply goes to Olivia Grant from me@example.com.'), findsOneWidget);
       expect(find.byKey(const Key('invitation-response')), findsNothing);
       // The calendar part isn't listed as an attachment.
       expect(find.textContaining('attachment'), findsNothing);

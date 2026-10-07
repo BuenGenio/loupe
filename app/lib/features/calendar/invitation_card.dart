@@ -154,7 +154,7 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
               context,
               LoupeIcons.location,
               Text(event.location!, key: const Key('invitation-location')),
-              trailing: place == null
+              trailing: place == null || inv.cancelled
                   ? null
                   : _SmallButton(
                       key: const Key('invitation-map'),
@@ -162,13 +162,17 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
                       onPressed: widget.inert ? null : () => _openMap(place),
                     ),
             ),
-          if (link != null)
+          if (link != null && !inv.cancelled)
             _row(
               context,
               LoupeIcons.meeting,
-              Text(
-                '${link.provider ?? 'Online'} meeting · ${inspectHost(link.uri.host).display}',
+              Column(
                 key: const Key('invitation-meeting'),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(_meetingName(link)),
+                  Text(inspectHost(link.uri.host).display, style: TextStyle(color: colors.secondaryText, fontSize: 14)),
+                ],
               ),
               trailing: _SmallButton(
                 key: const Key('invitation-join'),
@@ -195,10 +199,17 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
             ),
           if (attendees.isNotEmpty && !isReply) ..._attendeeRows(context, inv, attendees),
           if (inv.canRespond) _answers(context, inv),
-          if (inv.canAddToCalendar) _footer(context, inv),
+          if (inv.canRespond || inv.canAddToCalendar) _footer(context, inv),
         ],
       ),
     );
+  }
+
+  /// "Teams meeting", "Google Meet", "Online meeting".
+  static String _meetingName(MeetingLink link) {
+    final provider = link.provider;
+    if (provider == null) return 'Online meeting';
+    return provider.endsWith('Meet') || provider.endsWith('Meeting') ? provider : '$provider meeting';
   }
 
   Widget _title(BuildContext context, Invitation inv) {
@@ -380,7 +391,9 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(w.day),
-          if (w.time != null) Text(w.time!, style: TextStyle(color: colors.secondaryText, fontSize: 14)),
+          // The event's own times, then "… your time", on lines of their own.
+          for (final line in (w.time ?? '').split(' · '))
+            if (line.isNotEmpty) Text(line, style: TextStyle(color: colors.secondaryText, fontSize: 14)),
           if (span.unknownZone)
             Text(
               'Time zone “${tzid ?? ''}” unknown: times as written',
@@ -514,30 +527,17 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
                 ),
               ),
             ),
-          Row(
-            children: [
-              if (!_commenting)
-                TextButton.icon(
-                  key: const Key('invitation-add-comment'),
-                  onPressed: enabled ? () => setState(() => _commenting = true) : null,
-                  icon: const Icon(LoupeIcons.comment, size: 18),
-                  label: const Text('Add a Comment'),
-                ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(left: _commenting ? 3 : 0, top: _commenting ? 6 : 0),
-                  child: Text(
-                    from == null ? '' : 'Replies from $from',
-                    key: const Key('invitation-reply-from'),
-                    textAlign: _commenting ? TextAlign.start : TextAlign.end,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: colors.secondaryText, fontSize: 13),
-                  ),
-                ),
+          if (from != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(3, 8, 3, 0),
+              child: Text(
+                'Your reply goes to ${inv.event.organizer!.displayName} from $from.',
+                key: const Key('invitation-reply-from'),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: colors.secondaryText, fontSize: 13),
               ),
-            ],
-          ),
+            ),
         ],
       ),
     );
@@ -554,27 +554,46 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
     return from?.identity.email;
   }
 
+  /// Add a Comment (while answering is possible) and Add to Calendar.
   Widget _footer(BuildContext context, Invitation inv) {
     final colors = LoupeColors.of(context);
+    final style = TextButton.styleFrom(
+      visualDensity: VisualDensity.compact,
+      padding: const EdgeInsets.symmetric(horizontal: 6),
+      textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 15),
+    );
+    final enabled = !widget.inert && !_sending;
     return Padding(
-      padding: const EdgeInsets.only(top: 4),
-      child: Row(
+      padding: const EdgeInsets.only(top: 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TextButton.icon(
-            key: const Key('invitation-add-to-calendar'),
-            onPressed: widget.inert ? null : () => _addToCalendar(inv),
-            icon: const Icon(LoupeIcons.addToCalendar, size: 18),
-            label: const Text('Add to Calendar'),
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            children: [
+              if (inv.canRespond && !_commenting)
+                TextButton.icon(
+                  key: const Key('invitation-add-comment'),
+                  style: style,
+                  onPressed: enabled ? () => setState(() => _commenting = true) : null,
+                  icon: const Icon(LoupeIcons.comment, size: 18),
+                  label: const Text('Add a Comment'),
+                ),
+              if (inv.canAddToCalendar)
+                TextButton.icon(
+                  key: const Key('invitation-add-to-calendar'),
+                  style: style,
+                  onPressed: widget.inert ? null : () => _addToCalendar(inv),
+                  icon: const Icon(LoupeIcons.addToCalendar, size: 18),
+                  label: const Text('Add to Calendar'),
+                ),
+            ],
           ),
           if (inv.otherEvents > 0)
-            Expanded(
-              child: Text(
-                inv.otherEvents == 1
-                    ? 'And 1 more event in the file'
-                    : 'And ${inv.otherEvents} more events in the file',
-                textAlign: TextAlign.end,
-                style: TextStyle(color: colors.secondaryText, fontSize: 13),
-              ),
+            Text(
+              inv.otherEvents == 1 ? 'And 1 more event in the file' : 'And ${inv.otherEvents} more events in the file',
+              textAlign: TextAlign.end,
+              style: TextStyle(color: colors.secondaryText, fontSize: 13),
             ),
         ],
       ),
