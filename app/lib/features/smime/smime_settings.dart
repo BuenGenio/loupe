@@ -15,6 +15,7 @@ import 'device_certificates.dart';
 import 'smime_import.dart';
 import 'smime_passphrase.dart';
 import 'smime_providers.dart';
+import 'smime_revocation.dart';
 import 'smime_service.dart';
 import 'smime_status.dart' show problemText;
 
@@ -116,6 +117,23 @@ class SmimeSettingsSection extends ConsumerWidget {
           children: [
             for (final c in contacts) row(c.certificate, SmimeUsage.encryption, prefix: 'smime-contact'),
             add('smime-import-contact', 'Import Certificate…', () => _importContact(context, ref)),
+          ],
+        ),
+        InsetGroup(
+          header: 'Revocation',
+          separatorIndent: 16,
+          footer:
+              'When you open signed mail, Loupe asks the authority that issued the signer’s certificate whether it '
+              'was revoked (its OCSP responder, or its revocation list). The authority can then see when someone '
+              'at your internet address reads mail signed with that certificate. Answers are kept on this device '
+              'until they expire. A revoked certificate shows as "Revoked" in the message header.',
+          children: [
+            SwitchRow(
+              key: const ValueKey('smime-check-revocation'),
+              title: 'Check Certificate Revocation Online',
+              value: ref.watch(checkRevocationProvider),
+              onChanged: (v) => ref.read(checkRevocationProvider.notifier).set(v),
+            ),
           ],
         ),
         if (state.authorities.isNotEmpty)

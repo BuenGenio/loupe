@@ -335,7 +335,14 @@ account), and Loupe having both keys (Autocrypt from a signed message of each, o
    - **If not:** "Encrypted (S/MIME) · locked" and the sheet give the platform's reason. ECDH needs Android 12 or
      later and a key allowed to agree; an EC certificate that can't decrypt says "can’t do this". A message queued
      while the app was closed waits in the Outbox with "open Loupe".
-6. **A passphrase on a certificate (#26).**
+6. **Revocation (#26).**
+   - **Do:** Settings › End-to-End Encryption › **Check Certificate Revocation Online** (read the footer), then
+     open signed mail from a public CA's certificate (or ask a colleague whose company certificate names an OCSP
+     responder).
+   - **Expect:** the message opens at once; a moment later the sheet says "Not revoked · Asked the authority
+     (OCSP)". Offline: "Revocation unknown" with the reason, never a wait. A revoked certificate (the CA's test
+     pages, e.g. a "revoked" demo certificate) shows "Signed by … · certificate revoked" in red, no ✓.
+7. **A passphrase on a certificate (#26).**
    - **Do:** open your imported certificate (Settings › End-to-End Encryption › My S/MIME Certificates) ›
      **Set Passphrase…**. Turn Remember Passphrases off, Lock Keys Now, then open an S/MIME encrypted message
      and send a signed one; schedule a signed one for in 10 minutes and close Loupe.

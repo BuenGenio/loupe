@@ -1,7 +1,8 @@
 /// Whether a certificate can be trusted for mail: a chain to a trusted
 /// root (Mozilla's email roots, or one the user trusts), validity, key
 /// usage and the address (RFC 5280 path validation, simplified as mail
-/// clients do it: no policy processing, no revocation).
+/// clients do it: no policy processing; revocation is checked apart, when
+/// the user asks for it, see revocation.dart).
 library;
 
 import 'dart:convert';

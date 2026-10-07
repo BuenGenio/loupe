@@ -26,3 +26,12 @@
   and nested the ways Thunderbird writes and reads them.
   `thunderbird_test.dart` checks Thunderbird's expectations for them
   (`mailnews/mime/test/unit/test_smime_decrypt.js`).
+- `smime/revocation/`: made with OpenSSL 3.5 by `make_revocation_vectors.sh`
+  on 2026-10-07: the Loupe Revocation Test CA, its delegated OCSP responder
+  and a certificate without the OCSP signing purpose, users whose
+  certificates name an OCSP responder and a CRL (Gail, good; Rex, revoked
+  for key compromise; Nell, unknown to the CA) or only a CRL (Cleo,
+  revoked), OCSP responses (good from the CA, revoked from the responder,
+  unknown, and a forged "good" from the unauthorised certificate), the CA's
+  CRL, and messages signed by Gail and Rex. The responses are valid for ten
+  years from when they were made. Test keys only, thrown away.

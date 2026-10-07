@@ -10,6 +10,7 @@ import '../conversation/sheets.dart';
 import '../openpgp/content_loader.dart';
 import '../openpgp/pgp_status.dart' show PgpTone, pgpToneColor;
 import 'smime_providers.dart';
+import 'smime_revocation.dart';
 
 /// Whether remote content in [content] loads only when the user asks for
 /// this message (never by the "load remote images" setting or a sender
@@ -32,9 +33,13 @@ final class SmimeStatusView {
     this.issuer,
     this.signatureTone = PgpTone.neutral,
     this.check = false,
+    this.revocation,
   });
 
   final SmimeMessageStatus status;
+
+  /// What the signer's authority said about the certificate, when revocation is checked.
+  final SmimeRevocationStatus? revocation;
 
   /// "Encrypted (S/MIME)", "Encrypted (S/MIME) · no certificate", … Null when not encrypted.
   final String? encryptionLabel;
@@ -49,7 +54,7 @@ final class SmimeStatusView {
   /// Show ✓: a valid signature by a trusted certificate of the sender.
   final bool check;
 
-  static SmimeStatusView of(SmimeMessageStatus status) {
+  static SmimeStatusView of(SmimeMessageStatus status, {SmimeRevocationStatus? revocation}) {
     String? encryption;
     if (status.encrypted) {
       encryption = switch (status.failure) {
@@ -69,6 +74,7 @@ final class SmimeStatusView {
       SmimeSignatureStatus(weak: true) => ('Signature insecure: outdated algorithm', PgpTone.bad, false),
       SmimeSignatureStatus(valid: false) => ('Signature can’t be checked', PgpTone.caution, false),
       _ when trust == null => ('Signed · certificate missing', PgpTone.caution, false),
+      _ when revocation?.revoked ?? false => ('Signed by $name · certificate revoked', PgpTone.bad, false),
       SmimeSignatureStatus(dateMismatch: true) when trust.trusted => (
         'Signed by $name · at another date',
         PgpTone.caution,
@@ -91,6 +97,7 @@ final class SmimeStatusView {
       signatureTone: tone,
       check: check,
       issuer: check ? trust?.issuerName : null,
+      revocation: revocation,
     );
   }
 
@@ -108,15 +115,20 @@ IconData _signatureIcon(SmimeStatusView v) => switch (v.signatureTone) {
   PgpTone.caution => v.status.signature?.certificate == null ? LoupeIcons.unknownKey : LoupeIcons.certificate,
 };
 
-SmimeStatusView? _viewOf(EmailContent? content) {
+/// The header's view of [content]'s S/MIME status, with the signer's
+/// revocation status as it comes in (when it is checked).
+SmimeStatusView? _viewOf(WidgetRef ref, EmailContent? content) {
   if (content == null) return null;
   final status = smimeStatusOf(content);
-  return status == null ? null : SmimeStatusView.of(status);
+  if (status == null) return null;
+  final signature = status.signature;
+  final revocation = signature == null ? null : ref.watch(signerRevocationProvider(signature)).value;
+  return SmimeStatusView.of(status, revocation: revocation);
 }
 
 /// Next to the sender: a lock for encrypted mail and a seal for a good
 /// signature (or a warning). Tapping explains.
-class SmimeHeaderMark extends StatelessWidget {
+class SmimeHeaderMark extends ConsumerWidget {
   const SmimeHeaderMark({super.key, required this.message, required this.content, this.onRetry});
 
   final EmailSummary message;
@@ -124,8 +136,8 @@ class SmimeHeaderMark extends StatelessWidget {
   final VoidCallback? onRetry;
 
   @override
-  Widget build(BuildContext context) {
-    final view = _viewOf(content);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final view = _viewOf(ref, content);
     if (view == null) return const SizedBox.shrink();
     final colors = LoupeColors.of(context);
     final encrypted = view.encryptionLabel != null;
@@ -161,7 +173,7 @@ class SmimeHeaderMark extends StatelessWidget {
 
 /// Under the recipients: "Encrypted (S/MIME) · Signed by Alice Example ✓
 /// (Example CA)" in words. Tapping explains.
-class SmimeStatusLine extends StatelessWidget {
+class SmimeStatusLine extends ConsumerWidget {
   const SmimeStatusLine({super.key, required this.message, required this.content, this.onRetry});
 
   final EmailSummary message;
@@ -171,8 +183,8 @@ class SmimeStatusLine extends StatelessWidget {
   final VoidCallback? onRetry;
 
   @override
-  Widget build(BuildContext context) {
-    final view = _viewOf(content);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final view = _viewOf(ref, content);
     if (view == null) return const SizedBox.shrink();
     final colors = LoupeColors.of(context);
     final style = Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 13, color: colors.secondaryText);
@@ -232,8 +244,13 @@ class SmimeStatusSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colors = LoupeColors.of(context);
-    final status = view.status;
+    final status = this.view.status;
     final sig = status.signature;
+    // The revocation answer may come while the sheet is open.
+    final checking = ref.watch(checkRevocationProvider) && sig?.certificate != null;
+    final revocationAsync = sig == null || !checking ? null : ref.watch(signerRevocationProvider(sig));
+    final revocation = revocationAsync?.value ?? this.view.revocation;
+    final view = SmimeStatusView.of(status, revocation: revocation);
     final cert = sig?.certificate;
     final trust = sig?.trust;
     final (icon, color, title) = switch (status.failure) {
@@ -306,6 +323,27 @@ class SmimeStatusSheet extends ConsumerWidget {
                     _Row(label: 'Problem', value: problemText(p)),
                   if (sig.dateMismatch) const _Row(label: 'Problem', value: _dateMismatch),
                   if (!sig.valid && sig.problem != null) _Row(label: 'Problem', value: sig.problem),
+                  if (checking)
+                    _Row(
+                      key: const ValueKey('smime-revocation'),
+                      label: switch (revocation?.state) {
+                        null => 'Checking revocation…',
+                        SmimeRevocationState.good => 'Not revoked',
+                        SmimeRevocationState.revoked => 'Revoked',
+                        SmimeRevocationState.unknown => 'Revocation unknown',
+                      },
+                      value: switch (revocation) {
+                        null => null,
+                        SmimeRevocationStatus(state: SmimeRevocationState.revoked, :final revokedAt, :final reason) => [
+                          if (revokedAt != null) 'Since ${_date(revokedAt)}',
+                          ?reason,
+                        ].join(' · '),
+                        SmimeRevocationStatus(state: SmimeRevocationState.unknown, :final problem) => problem,
+                        SmimeRevocationStatus(:final source, :final checkedAt) =>
+                          'Asked the authority (${source == SmimeRevocationSource.crl ? 'its revocation list' : 'OCSP'}), '
+                              '${_date(checkedAt)}',
+                      },
+                    ),
                   if (canTrust && top != null && top != cert && top.isCa)
                     SheetRow(
                       key: const ValueKey('smime-trust-issuer'),
@@ -325,7 +363,11 @@ class SmimeStatusSheet extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
               child: Text(
-                'Checked on this device with S/MIME, compatible with Outlook and Thunderbird. Revocation isn’t checked.',
+                checking
+                    ? 'Checked on this device with S/MIME, compatible with Outlook and Thunderbird; revocation with the '
+                          'certificate authority.'
+                    : 'Checked on this device with S/MIME, compatible with Outlook and Thunderbird. Revocation isn’t '
+                          'checked (Settings › End-to-End Encryption).',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodySmall?.copyWith(color: colors.secondaryText),
               ),
@@ -369,6 +411,10 @@ class SmimeStatusSheet extends ConsumerWidget {
     if (!sig.valid) return '$encrypted${sig.problem ?? 'The signature can’t be checked.'}';
     final trust = sig.trust;
     if (trust == null) return '${encrypted}The signer’s certificate isn’t in the message, so it can’t be checked.';
+    if (view.revocation case SmimeRevocationStatus(revoked: true, :final reason)) {
+      return '${encrypted}The certificate authority revoked the signer’s certificate'
+          '${reason == null ? '' : ' ($reason)'}: the signature can’t be trusted.';
+    }
     if (sig.dateMismatch && trust.trusted) return '$encrypted$_dateMismatch';
     return encrypted +
         switch (trust.problem) {
@@ -407,7 +453,7 @@ String _grouped(String hex) =>
     [for (var i = 0; i < hex.length; i += 4) hex.substring(i, i + 4 > hex.length ? hex.length : i + 4)].join(' ');
 
 class _Row extends StatelessWidget {
-  const _Row({required this.label, required this.value, this.copy});
+  const _Row({super.key, required this.label, required this.value, this.copy});
 
   final String label;
   final String? value;

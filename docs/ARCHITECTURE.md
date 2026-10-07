@@ -125,8 +125,28 @@ loading, the header, compose, Settings › End-to-End Encryption).
     NSS's certdata.txt by `tool/update_mozilla_roots.dart`), plus certificates the user trusts (a company CA,
     offered when importing a .p12 that came with one, or a single certificate). Not the platform store:
     Android's holds TLS roots without email trust bits, and isn't readable from Dart without a plugin.
-  - No revocation checks (OCSP, CRLs): they would be network requests outside the mail protocols, telling a CA
-    who reads whose mail. Policies aren't processed (as most mail clients); SHA-1 certificates aren't accepted.
+  - Revocation isn't part of the trust check (see Revocation below: opt-in, asynchronous). Policies aren't
+    processed (as most mail clients); SHA-1 certificates aren't accepted.
+- **Revocation** (opt-in, off by default; #26; `revocation.dart`, the app's `smime_revocation.dart`): Settings ›
+  End-to-End Encryption › Check Certificate Revocation Online. It is a network request outside the mail protocols
+  when signed mail is read, telling the CA who reads whose mail and when; the footer says so. The signer's
+  certificate is checked with OCSP (RFC 6960 as RFC 5019 profiles it: a SHA-1 CertID, no nonce, POST) at its
+  authorityInfoAccess responder, or, when it names none, with its issuer's complete CRL (cRLDistributionPoints
+  without reasons or another issuer); the issuer is the one the trust check found. Only valid signatures by
+  certificates that chain to a trusted root are checked: any other certificate (spam's) could name a server of its
+  own, which would learn when the message is opened. `SmimeRevocationChecker` runs
+  one check per certificate however many ask, after the message is shown (`signerRevocationProvider`): the header
+  turns to "Signed by … · certificate revoked" (no ✓) when the answer comes, and the sheet says what was asked,
+  when, and why there is no answer. Answers are kept until their nextUpdate (an hour without one, ten minutes for
+  no answer) in the keychain (`loupe.smime.revocation`). Strict limits: 5 s to connect, 10 s per request, 15 s per
+  check, 64 KB per OCSP response and 16 MB per CRL (parsed off the UI isolate), redirects for CRLs only.
+  Responses are hostile input, read by the bounded ASN.1 reader: the responder must be the issuer or a
+  certificate the issuer made for OCSP signing (extendedKeyUsage, valid, signed by it), every signature checked
+  (SHA-1 accepted for responses, which leave no room for a collision; not MD5 or RSA under 2048 bits), the answer
+  about exactly this CertID, within thisUpdate and nextUpdate (5 minutes of skew), no unknown critical extension;
+  a CRL must be the issuer's (name, cRLSign, signature), complete (no delta, no partition), and current. The
+  fuzzer covers both parsers (`ocsp`, `crl` targets). The revocation time isn't compared with the backdatable
+  signing time: a revoked certificate is shown as revoked.
 - **Hostile input** (reviewed in issue #26): every parse ends in `Asn1Exception` or `SmimeException`, never
   another error, and bounded work: nesting 48 deep, INTEGERs of 2049 octets, 32 certificates and 16 signers
   per SignedData, 1000 recipients per envelope, 64 signature checks per path search, RSA keys of 2048 to 16384
