@@ -19,7 +19,10 @@ Future<String> danaId(DemoMailRepository repo) async {
   final rows = await repo
       .watchList(const VirtualMailboxRef(VirtualMailbox.allInboxes), threaded: false, limit: 1000)
       .first;
-  return rows.map((t) => t.latest).firstWhere((e) => e.isEncrypted).id;
+  return rows
+      .map((t) => t.latest)
+      .firstWhere((e) => e.isEncrypted && e.sender?.email == 'dana.okafor@northwind.example')
+      .id;
 }
 
 void main() {

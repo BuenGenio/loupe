@@ -226,7 +226,7 @@ void main() {
       tester,
     ) async {
       final fake = FakeKeyChain()..install();
-      await pumpLoupe(tester, overrides: [inlinePgp]);
+      await pumpLoupe(tester, overrides: [inlinePgp, noDemoSmime]);
       await goTo(tester, Routes.encryption);
       await tester.scrollTo(find.byKey(const ValueKey('smime-use-device')));
       await tester.ensureVisible(find.byKey(const ValueKey('smime-use-device')));
@@ -255,7 +255,7 @@ void main() {
     testWidgets('a certificate that isn’t for mail is refused', (tester) async {
       final fake = FakeKeyChain(chosen: 'tls')..install();
       fake.chains['tls'] = [fixtureCert('erin.crt').der];
-      await pumpLoupe(tester, overrides: [inlinePgp]);
+      await pumpLoupe(tester, overrides: [inlinePgp, noDemoSmime]);
       await goTo(tester, Routes.encryption);
       await tester.scrollTo(find.byKey(const ValueKey('smime-use-device')));
       await tester.ensureVisible(find.byKey(const ValueKey('smime-use-device')));
@@ -284,7 +284,11 @@ void main() {
         ],
         contents: {'m1': serverContent('m1', raw)},
       )..rawSources['m1'] = raw;
-      final router = await pumpTestApp(tester, repository: repo, overrides: [inlinePgp, keychain(storage)]);
+      final router = await pumpTestApp(
+        tester,
+        repository: repo,
+        overrides: [inlinePgp, noDemoSmime, keychain(storage)],
+      );
       unawaited(router.push('/message/m1'));
       await tester.pumpAndSettle();
 
@@ -309,7 +313,11 @@ void main() {
         ],
         contents: {'m1': serverContent('m1', raw)},
       )..rawSources['m1'] = raw;
-      final router = await pumpTestApp(tester, repository: repo, overrides: [inlinePgp, keychain(storage)]);
+      final router = await pumpTestApp(
+        tester,
+        repository: repo,
+        overrides: [inlinePgp, noDemoSmime, keychain(storage)],
+      );
       unawaited(router.push('/message/m1'));
       await tester.pumpAndSettle();
 

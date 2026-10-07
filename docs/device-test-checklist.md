@@ -341,7 +341,15 @@ account), and Loupe having both keys (Autocrypt from a signed message of each, o
      responder).
    - **Expect:** the message opens at once; a moment later the sheet says "Not revoked · Asked the authority
      (OCSP)". Offline: "Revocation unknown" with the reason, never a wait. A revoked certificate (the CA's test
-     pages, e.g. a "revoked" demo certificate) shows "Signed by … · certificate revoked" in red, no ✓.
+     pages) shows "Signed by … · certificate revoked" in red, no ✓. In demo mode, Hana Sato's "New bank details"
+     message shows it without going online.
+8. **S/MIME in demo mode (#26).**
+   - **Do:** in the demo, open the Work inbox: Aisha Karimi's "Q4 budget, signed off", her encrypted message
+     (listed as "..." until opened) and Hana Sato's "New bank details for the Fabrikam invoice".
+   - **Expect:** "Signed by Aisha Karimi ✓ (Northwind Traders (demo))"; "Encrypted (S/MIME)" with the subject
+     "Salary review dates (confidential)", which then replaces "..." in the list; Hana's "✓" turns into
+     "certificate revoked" with Check Certificate Revocation Online on. Settings › End-to-End Encryption lists
+     Sam's demo certificate and the Northwind demo CA.
 7. **A passphrase on a certificate (#26).**
    - **Do:** open your imported certificate (Settings › End-to-End Encryption › My S/MIME Certificates) ›
      **Set Passphrase…**. Turn Remember Passphrases off, Lock Keys Now, then open an S/MIME encrypted message

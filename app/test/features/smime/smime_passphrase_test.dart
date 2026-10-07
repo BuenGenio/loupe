@@ -233,7 +233,7 @@ void main() {
 
   group('settings', () {
     testWidgets('Set Passphrase…, then Remove Passphrase', (tester) async {
-      await pumpLoupe(tester, overrides: [inlinePgp]);
+      await pumpLoupe(tester, overrides: [inlinePgp, noDemoSmime]);
       final container = ProviderScope.containerOf(tester.element(find.byType(LoupeApp)));
       final keys = await container.read(smimeKeysProvider.future);
       await keys.store.addOwn(SmimeKeyPair(bob.certificate, bob.key), chain: bobBundle.chain);

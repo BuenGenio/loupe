@@ -36,7 +36,7 @@ void main() {
   testWidgets('imports a .p12: asks its password, then whether to trust the company CA', (tester) async {
     await pumpLoupe(
       tester,
-      overrides: [inlinePgp, pickKeyFileProvider.overrideWithValue(() async => smimeFixture('alice.p12'))],
+      overrides: [inlinePgp, noDemoSmime, pickKeyFileProvider.overrideWithValue(() async => smimeFixture('alice.p12'))],
     );
     await goTo(tester, Routes.encryption);
     await tester.scrollTo(find.byKey(const ValueKey('smime-import-own')));
@@ -67,7 +67,11 @@ void main() {
   testWidgets('a .p12 carrying another root besides the one that issued it: only that one is offered', (tester) async {
     await pumpLoupe(
       tester,
-      overrides: [inlinePgp, pickKeyFileProvider.overrideWithValue(() async => smimeFixture('alice-extra-ca.p12'))],
+      overrides: [
+        inlinePgp,
+        noDemoSmime,
+        pickKeyFileProvider.overrideWithValue(() async => smimeFixture('alice-extra-ca.p12')),
+      ],
     );
     await goTo(tester, Routes.encryption);
     await tester.scrollTo(find.byKey(const ValueKey('smime-import-own')));
@@ -92,7 +96,11 @@ void main() {
     final pem = '${bobCert.pem}${fixtureCert('intermediate.crt').pem}';
     await pumpLoupe(
       tester,
-      overrides: [inlinePgp, pasteKeyProvider.overrideWithValue(() async => Uint8List.fromList(utf8.encode(pem)))],
+      overrides: [
+        inlinePgp,
+        noDemoSmime,
+        pasteKeyProvider.overrideWithValue(() async => Uint8List.fromList(utf8.encode(pem))),
+      ],
     );
     await goTo(tester, Routes.encryption);
     await tester.scrollTo(find.byKey(const ValueKey('smime-import-contact')));
@@ -126,6 +134,7 @@ void main() {
       tester,
       overrides: [
         inlinePgp,
+        noDemoSmime,
         certificateExportProvider.overrideWithValue((name, pem) async => shared.add('$name ${pem.split('\n').first}')),
       ],
     );
@@ -155,7 +164,7 @@ void main() {
   });
 
   testWidgets('address settings: the certificate, and Prefer S/MIME when there is an OpenPGP key too', (tester) async {
-    await pumpLoupe(tester, overrides: [inlinePgp]);
+    await pumpLoupe(tester, overrides: [inlinePgp, noDemoSmime]);
     final keys = await keysOf(tester);
     final alice = aliceBundle.keys.single;
     await keys.store.addOwn(SmimeKeyPair(alice.certificate, alice.key), chain: aliceBundle.chain);

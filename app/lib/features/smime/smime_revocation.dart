@@ -12,6 +12,7 @@ import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 
+import '../../demo/demo_smime.dart';
 import '../../settings/app_mode.dart';
 import '../../settings/app_settings.dart';
 import '../openpgp/openpgp_providers.dart';
@@ -127,8 +128,11 @@ final class HttpRevocationFetcher implements SmimeRevocationFetcher {
   }
 }
 
-/// The network side; tests replace it.
-final revocationFetcherProvider = Provider<SmimeRevocationFetcher>((ref) => const HttpRevocationFetcher());
+/// The network side: HTTP, or the demo's answers made in advance (the demo
+/// never goes online). Tests replace it.
+final revocationFetcherProvider = Provider<SmimeRevocationFetcher>(
+  (ref) => ref.watch(appModeProvider) == AppMode.demo ? const DemoRevocationFetcher() : const HttpRevocationFetcher(),
+);
 
 /// The checker while the setting is on (null when off). Its answers are
 /// kept in the keychain until they expire, next to the certificates.

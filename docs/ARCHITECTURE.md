@@ -147,6 +147,11 @@ loading, the header, compose, Settings › End-to-End Encryption).
   a CRL must be the issuer's (name, cRLSign, signature), complete (no delta, no partition), and current. The
   fuzzer covers both parsers (`ocsp`, `crl` targets). The revocation time isn't compared with the backdatable
   signing time: a revoked certificate is shown as revoked.
+- **Demo mode** (`demo/demo_smime.dart`): the Northwind demo CA (trusted), Sam's certificate with its key, and in
+  the Work inbox a signed message, a signed and encrypted one with a protected subject, and one signed with a
+  certificate the CA revoked, all written by `SmimeMessageComposer` when first opened. Revocation answers come from
+  OCSP responses made with the demo CA in advance (`DemoRevocationFetcher`); the demo never goes online. Keys and
+  certificates were made with OpenSSL for the demo (EC P-256).
 - **Hostile input** (reviewed in issue #26): every parse ends in `Asn1Exception` or `SmimeException`, never
   another error, and bounded work: nesting 48 deep, INTEGERs of 2049 octets, 32 certificates and 16 signers
   per SignedData, 1000 recipients per envelope, 64 signature checks per path search, RSA keys of 2048 to 16384

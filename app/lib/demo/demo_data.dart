@@ -9,6 +9,7 @@ import 'demo_mime.dart';
 import 'demo_openpgp.dart';
 import 'demo_patches.dart';
 import 'demo_security.dart';
+import 'demo_smime.dart';
 
 /// An attachment of a demo message and where its bytes come from.
 final class DemoAttachment {
@@ -163,6 +164,7 @@ final class DemoSeed {
     _snoozed();
     _deals();
     openPgpCases();
+    smimeCases();
     _espNewsletters();
   }
 

@@ -162,6 +162,8 @@ void main() {
     await tester.tap(find.text('Always Encrypt'));
     await tester.pumpAndSettle();
     await tester.scrollTo(find.text('Prefer Encryption'));
+    await tester.ensureVisible(find.text('Prefer Encryption'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Prefer Encryption'));
     await tester.pumpAndSettle();
     final settings = (await keyringOf(tester)).identity('sam.rivera@northwind.example');
