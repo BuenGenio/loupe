@@ -106,6 +106,21 @@ void main() {
       });
     });
 
+    test('calendar records are kept in the store', () {
+      fakeTime((async) async {
+        final h = Harness();
+        expect(h.repo, isA<CalendarRecords>());
+        expect(await h.repo.readCalendarRecord('u1'), isNull);
+        await h.repo.writeCalendarRecord('u1', '{"latest":{"seq":0}}');
+        await h.repo.writeCalendarRecord('u1', '{"x":1}', recurrenceId: '20261008');
+        expect(await h.repo.readCalendarRecord('u1'), '{"latest":{"seq":0}}');
+        expect(await h.repo.readCalendarRecord('u1', recurrenceId: '20261008'), '{"x":1}');
+        await h.repo.writeCalendarRecord('u1', null);
+        expect(await h.repo.readCalendarRecord('u1'), isNull);
+        await h.dispose();
+      });
+    });
+
     group('encrypted with Bcc', () {
       OutgoingMessage secret(MailAccount a) => OutgoingMessage(
         accountId: a.id,

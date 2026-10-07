@@ -54,7 +54,7 @@ void main() {
     return schemaOf(path);
   }
 
-  for (final version in [1, 2, 3, 4, 5, 6]) {
+  for (final version in [1, 2, 3, 4, 5, 6, 7]) {
     group('version $version upgrades to $latestSchemaVersion', () {
       late String path;
       setUp(() {
@@ -119,6 +119,46 @@ void main() {
         await store.putDecryptedText(eid('INBOX', 1), 'Lighthouse Lodge');
         expect(await store.search(const TextTerm(SearchField.body, 'lighthouse')), hasLength(1));
         expect(await store.search(const TextTerm(SearchField.body, 'kumquat')), isEmpty);
+      });
+
+      test('with calendar records, and invitations cached before fetched again', () async {
+        final db = sqlite3.open(path)..execute("PRAGMA key = 'k'");
+        for (final (uid, headers, attachments) in [
+          (4, '[["Content-Class","urn:content-classes:calendarmessage"]]', '[]'),
+          (5, '[["Content-Type","text/calendar; method=REQUEST"]]', '[]'),
+          (
+            6,
+            '[["Content-Class","urn:content-classes:calendarmessage"]]',
+            '[{"partId":"3","mimeType":"text/calendar"}]',
+          ),
+        ]) {
+          db
+            ..execute(
+              'INSERT INTO emails (id, account_id, mailbox_id, thread_id, subject, received_at) '
+              "VALUES (?, ?, ?, 'acc1|t:i', 'Invitation', 1000)",
+              [eid('INBOX', uid), accountId, mbox('INBOX')],
+            )
+            ..execute(
+              'INSERT INTO contents (email_id, plain_text, headers_json, attachments_json, body_text, fetched_at) '
+              "VALUES (?, 'Join', ?, ?, 'Join', 1)",
+              [eid('INBOX', uid), headers, attachments],
+            );
+        }
+        db.close();
+        final store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
+        addTearDown(store.close);
+        expect(await store.getContent(eid('INBOX', 4)), isNull);
+        expect(await store.getContent(eid('INBOX', 5)), isNull);
+        expect(await store.getContent(eid('INBOX', 6)), isNotNull, reason: 'its calendar part was listed');
+        expect((await store.getContent(eid('INBOX', 1)))!.text, 'kumquat');
+        expect(await store.calendarRecord('uid-1'), isNull);
+        await store.putCalendarRecord('uid-1', '{"latest":{"seq":1}}');
+        await store.putCalendarRecord('uid-1', '{"latest":{"seq":2}}');
+        await store.putCalendarRecord('uid-1', '{"one":true}', recurrenceId: '20261008T090000Z');
+        expect(await store.calendarRecord('uid-1'), '{"latest":{"seq":2}}');
+        expect(await store.calendarRecord('uid-1', recurrenceId: '20261008T090000Z'), '{"one":true}');
+        await store.putCalendarRecord('uid-1', null);
+        expect(await store.calendarRecord('uid-1'), isNull);
       });
 
       test('keeping the data; outbox entries are not held', () async {

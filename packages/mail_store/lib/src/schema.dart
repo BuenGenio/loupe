@@ -330,6 +330,14 @@ class ListKinds extends Table {
   Set<Column> get primaryKey => {listId};
 }
 
+/// What the device remembers about calendar invitations (`CalendarRecords`):
+/// by UID and RECURRENCE-ID, the JSON the app writes. Schema version 8; plain
+/// SQL, read and written by [MailStore.calendarRecord] and
+/// [MailStore.putCalendarRecord].
+const _calendarRecords =
+    'CREATE TABLE calendar_records (uid TEXT NOT NULL, recurrence_id TEXT NOT NULL, data TEXT NOT NULL, '
+    'updated_at INTEGER NOT NULL, PRIMARY KEY (uid, recurrence_id)) WITHOUT ROWID';
+
 /// SQL rendering an address JSON column as searchable text ("name email …").
 String _addrText(String column) =>
     "(SELECT group_concat(coalesce(json_extract(value, '\$.n'), '') || ' ' || json_extract(value, '\$.e'), ' ') "
@@ -589,9 +597,11 @@ class StoreDatabase extends _$StoreDatabase {
   /// composed when queued ([OutboxCopies]). 7: newsletters and discussions:
   /// what classifying lists reads, kept with the Subscriptions screen's data
   /// ([_subscriptionCache], made again), and the user's choices
-  /// ([ListKinds]).
+  /// ([ListKinds]). 8: calendar invitations: what the device remembers about
+  /// them ([_calendarRecords]); cached contents of invitations from before,
+  /// whose `text/calendar` part wasn't listed, are fetched again.
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   /// Creates or upgrades the file in one write transaction, from the
   /// version it has then. The app and a background isolate can open it at
@@ -613,7 +623,7 @@ class StoreDatabase extends _$StoreDatabase {
 
   Future<void> _create(Migrator m) async {
     await m.createAll();
-    for (final sql in [..._ftsAndTriggers, ..._countIndexes, ..._subscriptionSchema]) {
+    for (final sql in [..._ftsAndTriggers, ..._countIndexes, ..._subscriptionSchema, _calendarRecords]) {
       await customStatement(sql);
     }
   }
@@ -677,6 +687,16 @@ class StoreDatabase extends _$StoreDatabase {
         await customStatement(subscriptionsRebuildSql);
       }
       await m.createTable(listKinds);
+    }
+    if (from < 8) {
+      await customStatement(_calendarRecords);
+      // Invitations whose text/calendar alternative wasn't listed as a part
+      // (Outlook's, marked with Content-Class: …calendarmessage, or a bare
+      // text/calendar message): fetched again when opened, to show the card.
+      await customStatement(
+        "DELETE FROM contents WHERE attachments_json NOT LIKE '%text/calendar%' "
+        "AND (headers_json LIKE '%calendarmessage%' OR headers_json LIKE '%text/calendar%')",
+      );
     }
   }
 
