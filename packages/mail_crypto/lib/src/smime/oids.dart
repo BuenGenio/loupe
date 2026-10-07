@@ -124,4 +124,19 @@ abstract final class Oid {
   static const authorityInfoAccess = '1.3.6.1.5.5.7.1.1';
   static const anyExtendedKeyUsage = '2.5.29.37.0';
   static const emailProtection = '1.3.6.1.5.5.7.3.4';
+
+  // Revocation (RFC 6960 OCSP, RFC 5280 CRLs).
+  static const ocspSigning = '1.3.6.1.5.5.7.3.9';
+  static const accessOcsp = '1.3.6.1.5.5.7.48.1';
+  static const accessCaIssuers = '1.3.6.1.5.5.7.48.2';
+  static const ocspBasic = '1.3.6.1.5.5.7.48.1.1';
+  static const ocspNonce = '1.3.6.1.5.5.7.48.1.2';
+  static const ocspNoCheck = '1.3.6.1.5.5.7.48.1.5';
+  static const crlNumber = '2.5.29.20';
+  static const crlReason = '2.5.29.21';
+  static const invalidityDate = '2.5.29.24';
+  static const deltaCrlIndicator = '2.5.29.27';
+  static const issuingDistributionPoint = '2.5.29.28';
+  static const certificateIssuer = '2.5.29.29';
+  static const freshestCrl = '2.5.29.46';
 }

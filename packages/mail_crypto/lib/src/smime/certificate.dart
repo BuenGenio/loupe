@@ -27,12 +27,16 @@ enum SmimeErrorKind {
   /// A recipient's certificate can't be used (expired, untrusted, wrong usage).
   certificateUnusable,
 
+  /// The private key is locked (its passphrase wasn't given), or it is on
+  /// the device (Android KeyChain) and wasn't available.
+  locked,
+
   /// Anything else.
   failed,
 }
 
 /// An S/MIME failure; [message] is fit for the UI.
-final class SmimeException implements Exception {
+class SmimeException implements Exception {
   const SmimeException(this.kind, this.message, [this.cause]);
   final SmimeErrorKind kind;
   final String message;
@@ -179,6 +183,8 @@ final class SmimeCertificate {
     required this.permittedEmails,
     required this.excludedEmails,
     required this.unknownCriticalExtensions,
+    required this.ocspUrls,
+    required this.crlUrls,
   });
 
   /// Parses a DER certificate. Throws [SmimeException] ([SmimeErrorKind.malformed]).
@@ -247,6 +253,14 @@ final class SmimeCertificate {
   /// Critical extensions this parser doesn't know; such a certificate is
   /// not valid (RFC 5280 §4.2).
   final List<String> unknownCriticalExtensions;
+
+  /// Where its issuer answers OCSP requests about it (authorityInfoAccess):
+  /// http(s) URLs, at most a few.
+  final List<String> ocspUrls;
+
+  /// Where its issuer publishes revocation lists (cRLDistributionPoints,
+  /// complete ones from the issuer only): http(s) URLs, at most a few.
+  final List<String> crlUrls;
 
   /// SHA-256 of [der], upper-case hex.
   late final String fingerprint = hex(SHA256Digest().process(der));
@@ -361,6 +375,7 @@ const _knownExtensions = {
   Oid.inhibitAnyPolicy,
   Oid.crlDistributionPoints,
   Oid.authorityInfoAccess,
+  Oid.ocspNoCheck,
 };
 
 SmimeCertificate _parse(Uint8List der) {
@@ -403,6 +418,8 @@ SmimeCertificate _parse(Uint8List der) {
   final permitted = <String>[];
   final excluded = <String>[];
   final unknownCritical = <String>[];
+  final ocsp = <String>[];
+  final crls = <String>[];
   final extensions = tbs.context(3);
   if (extensions != null && version >= 3) {
     final seen = <String>{};
@@ -445,6 +462,24 @@ SmimeCertificate _parse(Uint8List der) {
               if (base.isContext(1) && !base.constructed) into.add(ascii.decode(base.content).trim().toLowerCase());
             }
           }
+        case Oid.authorityInfoAccess:
+          // Where revocation can be asked: a damaged value only means it can't be.
+          _lenient(() {
+            for (final ad in value.children) {
+              if (ad[0].oid == Oid.accessOcsp) _addUrl(ocsp, ad[1]);
+            }
+          });
+        case Oid.crlDistributionPoints:
+          _lenient(() {
+            for (final dp in value.children) {
+              // Only complete lists from the issuer: no reasons, no other CRL issuer.
+              if (dp.context(1) != null || dp.context(2) != null) continue;
+              final fullName = dp.context(0)?.context(0);
+              for (final name in fullName?.children ?? const <Asn1>[]) {
+                _addUrl(crls, name);
+              }
+            }
+          });
         default:
           if (critical && !_knownExtensions.contains(id)) unknownCritical.add(id);
       }
@@ -482,7 +517,27 @@ SmimeCertificate _parse(Uint8List der) {
     permittedEmails: permitted,
     excludedEmails: excluded,
     unknownCriticalExtensions: unknownCritical,
+    ocspUrls: ocsp,
+    crlUrls: crls,
   );
+}
+
+void _lenient(void Function() parse) {
+  try {
+    parse();
+  } on Object {
+    // Left out.
+  }
+}
+
+/// A uniformResourceIdentifier GeneralName ([6] IA5String) that is an
+/// http(s) URL, added to [into] (at most four).
+void _addUrl(List<String> into, Asn1 name) {
+  if (!name.isContext(6) || name.constructed || into.length >= 4 || name.content.length > 1024) return;
+  final url = ascii.decode(name.content, allowInvalid: true).trim();
+  final uri = Uri.tryParse(url);
+  if (uri == null || (uri.scheme != 'http' && uri.scheme != 'https') || uri.host.isEmpty) return;
+  into.add(url);
 }
 
 /// The same AlgorithmIdentifier: the OID, and parameters alike (absent and NULL alike).

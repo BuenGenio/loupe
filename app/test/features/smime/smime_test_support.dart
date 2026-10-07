@@ -2,9 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:loupe/features/smime/smime_keys.dart';
+import 'package:loupe/features/smime/smime_providers.dart' show demoSmimeSeedProvider;
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_model/mail_model.dart';
+
+/// The demo's S/MIME store starting empty (no Sam's certificate, no demo CA), for tests of importing.
+final Override noDemoSmime = demoSmimeSeedProvider.overrideWithValue(false);
 
 /// mail_crypto's OpenSSL-made vectors (test CA, users, PKCS #12, messages).
 const smimeFixtures = '../packages/mail_crypto/test/fixtures/smime';

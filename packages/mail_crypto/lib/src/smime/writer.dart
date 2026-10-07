@@ -1,7 +1,8 @@
 /// Writing S/MIME mail (RFC 8551) around any [MessageComposer]: signed
 /// as `multipart/signed` with a detached signature carrying the signer's
 /// certificates, encrypted as `application/pkcs7-mime` (signed first,
-/// then encrypted, as Thunderbird does).
+/// then encrypted, as Thunderbird does), with protected headers (RFC 9788:
+/// the header fields inside, the Subject of encrypted mail `...` outside).
 library;
 
 import 'dart:convert';
@@ -10,13 +11,14 @@ import 'dart:typed_data';
 
 import 'package:mail_model/mail_model.dart';
 
+import '../mime/header_protection.dart';
 import '../mime/split.dart';
 import '../pgp_mime/writer.dart' show draftSecurityHeader;
 import 'backend.dart';
 import 'certificate.dart';
 import 'cms.dart' show SmimeContentCipher;
+import 'key_handle.dart';
 import 'plan.dart';
-import 'primitives.dart' show SmimePrivateKey;
 import 'store.dart';
 
 /// What the composer needs at send time, synchronously: the certificate
@@ -24,8 +26,47 @@ import 'store.dart';
 abstract interface class SmimeSendKeys {
   SmimeState get smimeState;
 
-  /// The private key of the user's certificate [fingerprint], or null when it isn't loaded.
-  SmimePrivateKey? smimeKey(String fingerprint);
+  /// The private key of the user's certificate [fingerprint] (in the app,
+  /// or a handle to one on the device), or null when it isn't available
+  /// (not loaded, or locked by its passphrase).
+  SmimeKeyHandle? smimeKey(String fingerprint);
+}
+
+/// How far composing got: done ([SmimeComposed]), or waiting for a key on
+/// the device to sign ([SmimeSignaturePending]).
+sealed class SmimeComposeStep {
+  const SmimeComposeStep();
+}
+
+final class SmimeComposed extends SmimeComposeStep {
+  const SmimeComposed(this.bytes);
+  final Uint8List bytes;
+}
+
+/// The message up to its signature, which a [SmimePlatformKey] must make
+/// ([request]): give [SmimeMessageComposer.finish] the platform's answer.
+/// Plain data, so it can go from one isolate to another.
+final class SmimeSignaturePending extends SmimeComposeStep {
+  const SmimeSignaturePending({
+    required this.request,
+    required this.message,
+    required this.from,
+    required this.messageId,
+    required this.date,
+    required this.now,
+    required this.plain,
+  });
+
+  final SmimeKeyRequest request;
+  final OutgoingMessage message;
+  final Identity from;
+  final String messageId;
+  final DateTime? date;
+  final DateTime now;
+
+  /// What the inner composer made: the signature is over it, so it is
+  /// reused as is.
+  final Uint8List plain;
 }
 
 /// Wraps [inner]'s output in S/MIME when [OutgoingSecurity.technology] is
@@ -33,6 +74,11 @@ abstract interface class SmimeSendKeys {
 ///
 /// Throws [MailException] when it can't do what is asked (no certificate,
 /// a recipient without a usable one): it never sends in the clear instead.
+///
+/// A certificate whose key is on the device ([SmimePlatformKey]) signs in
+/// two steps, as the platform answers asynchronously: [begin] composes up
+/// to the signature, the caller has the platform sign, and [finish] puts it
+/// in. [compose] does both steps at once, so it throws for such a key.
 final class SmimeMessageComposer implements MessageComposer {
   SmimeMessageComposer(this.inner, this.keys, {required this.backend, Random? random, DateTime Function()? clock})
     : _random = random ?? Random.secure(),
@@ -45,17 +91,54 @@ final class SmimeMessageComposer implements MessageComposer {
   final DateTime Function() _clock;
 
   @override
-  Uint8List compose(OutgoingMessage message, Identity from, {required String messageId, DateTime? date}) {
-    final security = message.security;
-    if (!security.isSmime) return inner.compose(message, from, messageId: messageId, date: date);
+  Uint8List compose(OutgoingMessage message, Identity from, {required String messageId, DateTime? date}) =>
+      switch (begin(message, from, messageId: messageId, date: date)) {
+        SmimeComposed(:final bytes) => bytes,
+        SmimeSignaturePending() => throw const MailException(
+          MailErrorKind.unsupported,
+          'Your S/MIME certificate is on this device: open Loupe to sign and send this message.',
+        ),
+      };
+
+  /// Composes [message], or as far as a key on the device must sign.
+  SmimeComposeStep begin(OutgoingMessage message, Identity from, {required String messageId, DateTime? date}) {
+    if (!message.security.isSmime) {
+      return SmimeComposed(inner.compose(message, from, messageId: messageId, date: date));
+    }
     final plain = inner.compose(
       message.copyWith(security: OutgoingSecurity.none),
       from,
       messageId: messageId,
       date: date,
     );
+    return _wrap(message, from, messageId, date, _clock(), plain, const {});
+  }
+
+  /// [pending] with the platform's [signature].
+  Uint8List finish(SmimeSignaturePending pending, Uint8List signature) {
+    final step = _wrap(pending.message, pending.from, pending.messageId, pending.date, pending.now, pending.plain, {
+      pending.request.id: signature,
+    });
+    return switch (step) {
+      SmimeComposed(:final bytes) => bytes,
+      SmimeSignaturePending() => throw const MailException(
+        MailErrorKind.unsupported,
+        'Signing failed: the certificate on this device was asked twice.',
+      ),
+    };
+  }
+
+  SmimeComposeStep _wrap(
+    OutgoingMessage message,
+    Identity from,
+    String messageId,
+    DateTime? date,
+    DateTime now,
+    Uint8List plain,
+    Map<String, Uint8List> answers,
+  ) {
+    final security = message.security;
     final split = SplitMessage.parse(plain);
-    final now = _clock();
     // A Bcc recipient's copy is encrypted to them alone (OutgoingMessage.deliveries).
     final recipients = {for (final a in message.encryptionRecipients) a.email.trim().toLowerCase()};
     final plan = planSmime(
@@ -66,8 +149,8 @@ final class SmimeMessageComposer implements MessageComposer {
       signedBy: backend.certificateSignedBy,
     );
     final own = plan.own;
-    if (security.draft) return _draft(split, security, own);
-    if (security.isPlain) return plain;
+    if (security.draft) return SmimeComposed(_draft(split, security, own));
+    if (security.isPlain) return SmimeComposed(plain);
     if (own == null) {
       throw MailException(
         MailErrorKind.unsupported,
@@ -75,15 +158,19 @@ final class SmimeMessageComposer implements MessageComposer {
       );
     }
 
-    var content = split.content;
+    // Header protection (RFC 9788): the header fields go inside, where the
+    // signature covers them and encryption hides the Subject.
+    var content = protectHeaders(split.content, split.outer, encrypted: security.encrypt);
     if (security.sign) {
-      final key = keys.smimeKey(own.fingerprint);
+      var key = keys.smimeKey(own.fingerprint);
       if (key == null) {
         throw const MailException(
           MailErrorKind.unsupported,
-          'The private key of your S/MIME certificate isn’t available.',
+          'The private key of your S/MIME certificate isn’t available. If it has a passphrase, tap Retry in the '
+          'Outbox to unlock it and send.',
         );
       }
+      if (key is SmimePlatformKey) key = key.withAnswers(answers);
       final SmimeSignature signature;
       try {
         signature = backend.sign(
@@ -93,6 +180,16 @@ final class SmimeMessageComposer implements MessageComposer {
           // The signing time is the message's date, as readers compare them.
           now: date ?? now,
           encryptionCertificate: own.certificate.canEncrypt ? own.certificate : null,
+        );
+      } on SmimeKeyRequired catch (e) {
+        return SmimeSignaturePending(
+          request: e.request,
+          message: message,
+          from: from,
+          messageId: messageId,
+          date: date,
+          now: now,
+          plain: plain,
         );
       } on SmimeException catch (e) {
         throw MailException(MailErrorKind.unsupported, 'Signing failed: ${e.message}', e);
@@ -113,9 +210,9 @@ final class SmimeMessageComposer implements MessageComposer {
           'Can’t encrypt: your S/MIME certificate is for signing only, so you couldn’t read the message yourself.',
         );
       }
-      return _encrypted(split, content, plan.recipientCertificates, plan.cipher);
+      return SmimeComposed(_encrypted(split, content, plan.recipientCertificates, plan.cipher));
     }
-    return split.withContent(content, const []);
+    return SmimeComposed(split.withContent(content, const []));
   }
 
   /// A draft: encrypted (when asked) to the sender only, never signed, the choices kept in a header.
@@ -123,7 +220,8 @@ final class SmimeMessageComposer implements MessageComposer {
     final choices = ['smime', if (security.encrypt) 'encrypt', if (security.sign) 'sign'];
     final extra = ['$draftSecurityHeader: ${choices.join('; ')}'];
     if (!security.encrypt || own == null || !own.certificate.canEncrypt) return split.withHeaders(extra);
-    return _encrypted(split, split.content, [own.certificate], SmimeContentCipher.aes256Cbc, extra: extra);
+    final content = protectHeaders(split.content, split.outer, encrypted: true);
+    return _encrypted(split, content, [own.certificate], SmimeContentCipher.aes256Cbc, extra: extra);
   }
 
   /// `multipart/signed` around [content], the detached signature as `smime.p7s`.
@@ -164,7 +262,8 @@ final class SmimeMessageComposer implements MessageComposer {
     }
     final type = cipher == SmimeContentCipher.aes256Gcm ? 'authEnveloped-data' : 'enveloped-data';
     return assembleEntity([
-      ...split.outer,
+      // The Subject is inside; outside it is `...` (RFC 9788's HP-Outer has the same).
+      ...obscure(split.outer),
       'MIME-Version: 1.0',
       ...extra,
       'Content-Type: application/pkcs7-mime; smime-type=$type; name="smime.p7m"',

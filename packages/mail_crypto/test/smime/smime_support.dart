@@ -27,6 +27,9 @@ SmimeKeyPair pair(SmimeBundle b) => SmimeKeyPair(b.keys.single.certificate, b.ke
 final alice = pair(aliceBundle);
 final bob = pair(bobBundle);
 
+/// Alice's private key, in the app.
+final aliceKey = aliceBundle.keys.single.key;
+
 /// A test message (`.eml`).
 Uint8List smimeMail(String name) => smimeFixture(name);
 

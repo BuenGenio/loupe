@@ -10,16 +10,31 @@ import '../openpgp/openpgp_keys.dart';
 /// Keychain entries of the real S/MIME store start with this.
 const liveSmimePrefix = 'loupe.smime';
 
-/// The store with the private keys in memory: the composer works
-/// synchronously, and S/MIME keys have no passphrase of their own (the
-/// keychain protects them, as Android KeyChain does).
+/// The store with the private keys in memory (the composer works
+/// synchronously): keys in the keychain, handles of keys that stay on the
+/// device (Android KeyChain), and keys unlocked with their passphrase.
+///
+/// Keys without a passphrase and on the device are pinned. Unlocked ones
+/// follow Remember Passphrases, as OpenPGP's ([KeySession]): with
+/// [remember] they stay until [lockAll] (or the app quits); without, each
+/// lasts [grace] after its last use.
 final class StoreSmimeKeys implements SmimeSendKeys {
-  StoreSmimeKeys(this.store);
+  StoreSmimeKeys(
+    this.store, {
+    this.remember = true,
+    this.grace = const Duration(minutes: 2),
+    DateTime Function()? clock,
+  }) : _clock = clock ?? DateTime.now;
 
   final SmimeStore store;
-  final _keys = <String, SmimePrivateKey>{};
+  bool remember;
+  final Duration grace;
+  final DateTime Function() _clock;
+  final _keys = <String, SmimeKeyHandle>{};
+  final _unlocked = <String, (SmimePrivateKey, DateTime)>{};
 
-  /// Reads the private key of every own certificate from the store.
+  /// Reads the private key of every own certificate from the store; keys
+  /// with a passphrase stay locked.
   Future<void> loadKeys() async {
     for (final o in store.state.own) {
       try {
@@ -35,18 +50,57 @@ final class StoreSmimeKeys implements SmimeSendKeys {
   SmimeState get smimeState => store.state;
 
   @override
-  SmimePrivateKey? smimeKey(String fingerprint) => _keys[fingerprint];
+  SmimeKeyHandle? smimeKey(String fingerprint) {
+    final pinned = _keys[fingerprint];
+    if (pinned != null) return pinned;
+    final entry = _unlocked[fingerprint];
+    if (entry == null) return null;
+    final now = _clock();
+    if (!remember && now.difference(entry.$2) > grace) {
+      _unlocked.remove(fingerprint);
+      return null;
+    }
+    _unlocked[fingerprint] = (entry.$1, now);
+    return entry.$1;
+  }
+
+  /// Whether [fingerprint]'s key can be used now (no passphrase, on the device, or unlocked).
+  bool isAvailable(String fingerprint) => smimeKey(fingerprint) != null;
 
   /// The own certificates whose keys are here: what decrypts.
   List<SmimeKeyPair> get keyPairs => [
     for (final o in store.state.own)
-      if (_keys[o.fingerprint] case final key?) SmimeKeyPair(o.certificate, key),
+      if (smimeKey(o.fingerprint) case final key?) SmimeKeyPair(o.certificate, key),
   ];
 
-  void put(String fingerprint, SmimePrivateKey key) => _keys[fingerprint] = key;
+  /// A key without a passphrase, or on the device: kept until it is forgotten.
+  void put(String fingerprint, SmimeKeyHandle key) {
+    _unlocked.remove(fingerprint);
+    _keys[fingerprint] = key;
+  }
 
-  void forget(String fingerprint) => _keys.remove(fingerprint);
+  /// A key unlocked with its passphrase: kept as Remember Passphrases says.
+  void putUnlocked(String fingerprint, SmimePrivateKey key) {
+    _keys.remove(fingerprint);
+    _unlocked[fingerprint] = (key, _clock());
+  }
+
+  void forget(String fingerprint) {
+    _keys.remove(fingerprint);
+    _unlocked.remove(fingerprint);
+  }
+
+  /// Locks every key unlocked with its passphrase (Lock Keys Now).
+  void lockAll() => _unlocked.clear();
 }
+
+/// The user's certificates whose keys are in the app without a passphrase:
+/// what background work may use without asking anyone.
+List<SmimeKeyPair> smimeKeysWithoutPassphrase(StoreSmimeKeys keys) => [
+  for (final o in keys.store.state.own)
+    if (!o.hasPassphrase && !o.onDevice)
+      if (keys.smimeKey(o.fingerprint) case final SmimePrivateKey key) SmimeKeyPair(o.certificate, key),
+];
 
 /// What the composer chain reads at send time: OpenPGP's keys and S/MIME's.
 final class SecureSendKeys implements PgpSendKeys, SmimeSendKeys {
@@ -65,7 +119,7 @@ final class SecureSendKeys implements PgpSendKeys, SmimeSendKeys {
   SmimeState get smimeState => smime.smimeState;
 
   @override
-  SmimePrivateKey? smimeKey(String fingerprint) => smime.smimeKey(fingerprint);
+  SmimeKeyHandle? smimeKey(String fingerprint) => smime.smimeKey(fingerprint);
 }
 
 /// The S/MIME store of a background isolate, from the keychain.

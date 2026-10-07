@@ -157,8 +157,8 @@ class EncryptionSettingsScreen extends ConsumerWidget {
           header: 'Passphrases',
           separatorIndent: 16,
           footer:
-              'Keys you protect with a passphrase are unlocked when needed. Without "Remember", they are '
-              'locked again two minutes after each use.',
+              'OpenPGP keys and S/MIME certificates you protect with a passphrase are unlocked when needed. '
+              'Without "Remember", they are locked again two minutes after each use.',
           children: [
             SwitchRow(
               title: 'Remember Passphrases',
@@ -173,6 +173,7 @@ class EncryptionSettingsScreen extends ConsumerWidget {
               onTap: () async {
                 final messenger = ScaffoldMessenger.of(context);
                 (await ref.read(openPgpServiceProvider.future)).lockAll();
+                (await ref.read(smimeServiceProvider.future)).lockAll();
                 showSnack(messenger, 'Keys locked.');
               },
             ),

@@ -42,6 +42,8 @@ void main() {
     await goTo(tester, Routes.encryption);
     final row = find.byKey(const ValueKey('subjects-in-background'));
     await tester.scrollTo(row);
+    await tester.ensureVisible(row);
+    await tester.pumpAndSettle();
     final container = ProviderScope.containerOf(tester.element(find.byType(LoupeApp)));
     expect(container.read(decryptedMailSettingsProvider).subjectsInBackground, isFalse);
     await tester.tap(row);
@@ -160,6 +162,8 @@ void main() {
     await tester.tap(find.text('Always Encrypt'));
     await tester.pumpAndSettle();
     await tester.scrollTo(find.text('Prefer Encryption'));
+    await tester.ensureVisible(find.text('Prefer Encryption'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Prefer Encryption'));
     await tester.pumpAndSettle();
     final settings = (await keyringOf(tester)).identity('sam.rivera@northwind.example');

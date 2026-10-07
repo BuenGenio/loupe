@@ -46,6 +46,7 @@ The packages are developed in parallel. These are the seams:
 | `OutgoingMessage.calendar` (`OutgoingCalendar`: an iCalendar object sent as the text's `text/calendar` alternative), `CalendarRecords` (what the device remembers about invitations) | mail_model `src/outgoing.dart`, `src/calendar_records.dart` | mail_imap `MimeMessageComposer`; mail_store + mail_sync `LiveMailRepository`, app demo repository | app (invitation card) |
 | `Calendar`, `CalendarEvent`, `ZoneResolver`, `eventSpan`, `eventOccurrences`, `describeRule`, `buildReply`, `InvitationRecord` | mail_calendar `lib/mail_calendar.dart` | mail_calendar | app |
 | `SmimeBackend` (swappable S/MIME engine), `SmimeStore`, `SmimeReader`, `checkTrust`, `planSmime`, `chooseTechnology`, `SmimeMessageComposer` (around the OpenPGP one), `OutgoingSecurity.technology` | mail_crypto `lib/mail_crypto.dart`, mail_model `src/outgoing.dart` | mail_crypto (`DartSmimeBackend`) | app (reader, compose, settings, live composer) |
+| `SmimeKeyHandle`, `SmimePlatformKeys` (keys that stay in the platform's keystore) | mail_crypto `src/smime/key_handle.dart` | app (`KeyChainCertificates`, Android); mail_crypto (`SoftwareSmimeKeystore`, tests) | mail_crypto (CMS), app (reader, live composer) |
 
 Rules:
 
@@ -80,15 +81,50 @@ loading, the header, compose, Settings › End-to-End Encryption).
   PKCS #12 and PBKDF2 key derivations. The ASN.1 (BER in, DER out), X.509, CMS and PKCS #12 structures are
   mail_crypto's own (`lib/src/smime`, about 2,400 lines): no maintained Dart package does CMS enveloping
   (`pkcs7` only signs, for PDFs; `basic_utils` only writes PKCS #12; `pkcs12_parser` had one release). A
-  platform engine (Android KeyChain with MDM-installed certificates, iOS `CMSDecoder`) can come later behind the
-  same interface; certificates and keys cross it as DER.
+  platform engine (iOS `CMSDecoder`) can come later behind the same interface; certificates and keys cross it as
+  DER. Keys in Android's KeyChain are used through key handles (below), the CMS work staying in Dart.
+- **Key handles** (`SmimeKeyHandle`, issue #26): a private key is in the app (`SmimePrivateKey`, PKCS #8) or stays
+  in the platform's keystore (`SmimePlatformKey`, an alias). The backend does everything in Dart except what only
+  the key can do: signing the signed attributes, decrypting a content key (RSA PKCS #1 v1.5 or OAEP), ECDH's
+  shared secret. For a platform key it throws `SmimeKeyRequired` with a `SmimeKeyRequest` (plain data), the
+  caller has the platform answer (`SmimePlatformKeys.perform`), and runs the same work again with the answer
+  (`SmimePlatformKey.answers`, by request id). Keys in the app are tried first. Reading: `SmimeReader` reports
+  the request (`SmimeMessageStatus.keyRequest`) and `SmimeService.read` answers and reads again (a round per
+  layer). Sending: `SmimeMessageComposer.begin` composes up to the signature (`SmimeSignaturePending`, the inner
+  composer's bytes kept, so the signed attributes are the same again), `finish` puts the signature in;
+  `IsolateComposer.composeAsync` runs both steps in another isolate and the platform call in between. A
+  signature from the platform is checked against the certificate before anything goes out; ECDH peers are
+  checked on the curve before the platform sees them; a padding the platform refuses fails like a wrong key.
+  `SoftwareSmimeKeystore` does the platform's part in Dart (the reference, and the tests' stand-in).
+- **Certificates on the device** (Android): Settings › End-to-End Encryption › Use a Certificate from This
+  Device… opens `KeyChain.choosePrivateKeyAlias` (certificates installed by device management or in Android's
+  settings; picking grants Loupe the key). The store keeps the certificate, its chain and the alias
+  (`SmimeOwnCertificate.deviceAlias`), never the key. `KeyChainChannel.kt` (the app's own channel
+  `io.github.buengenio.loupe/keychain`, no plugin) does `getCertificateChain` and, with `getPrivateKey`,
+  `Signature` (SHA-xxxwithRSA/ECDSA), `Cipher` (RSA/ECB/PKCS1Padding, OAEPPadding) and `KeyAgreement` (ECDH) on a
+  worker thread. Only the app's engine has the channel: background work can't use these keys, so such mail is
+  signed when it is queued (see "Signed when queued" below), and composing it in the background fails into the
+  Outbox ("open Loupe"). iOS: not yet (`NoDeviceCertificates`; managed identities need an MDM profile installing
+  them into a keychain access group shared with Loupe, see [ios.md](ios.md)).
 - **Keys and certificates** (`SmimeStore`, keychain entries `loupe.smime.*` next to the OpenPGP keyring): the
   user's certificates with their CA chain, each private key in an entry of its own (PKCS #8, protected by the
-  keychain only: the PKCS #12 password just unlocks the import, as on Android and in Thunderbird without a
-  primary password); correspondents' certificates, collected from good signatures by the sender (not from
+  keychain: the PKCS #12 password just unlocks the import, as on Android and in Thunderbird without a primary
+  password); correspondents' certificates, collected from good signatures by the sender (not from
   drafts or junk) or imported; the authorities the user trusts; per-address settings (the certificate,
   "Prefer S/MIME"). PKCS #12 import reads OpenSSL 3's defaults (PBES2 with AES), the legacy algorithms of
   older Windows exports (3DES, RC2-40, SHA-1 MAC) and PBMAC1.
+- **Passphrases** (optional, off by default; #26): the certificate's screen sets, changes or removes one. The key
+  entry then holds the PKCS #8 key encrypted with AES-256-GCM (bound to the certificate's fingerprint as
+  associated data) under a key from Argon2id (`key_protection.dart`, a JSON entry carrying its cost; on top of
+  the keychain). Argon2id comes from pointycastle (maintained, pure Dart, checked against RFC 9106's test
+  vector) with RFC 9106's choice for devices with little memory: 64 MiB, 3 passes, 4 lanes, about a second
+  here and a few on a phone, off the UI isolate. PBKDF2-SHA256 was the fallback; it resists GPUs less, and
+  pointycastle's takes six seconds for 600,000 iterations. Unlocked keys follow OpenPGP's rules
+  (`StoreSmimeKeys`): Remember Passphrases keeps them until Loupe closes, otherwise each is locked two minutes
+  after its last use; Lock Keys Now locks both. Reading mail encrypted to a locked key asks for the passphrase
+  (`SmimeService.unlock`, once however many wait; cancelled, the message says the certificate is locked);
+  Send asks before the message is queued, so it is signed then (see "Signed when queued"); the Outbox asks
+  before Send Now, Reschedule or the Retry of mail that waited. Background work never has these keys.
 - **Trust** (`checkTrust`): a chain through the message's and known certificates to a trusted root, every
   signature checked, then validity (at the signing time for signatures), CA flags, path length, rfc822 name
   constraints, unknown critical extensions, key usage (digitalSignature for signing; keyEncipherment for RSA or
@@ -97,8 +133,33 @@ loading, the header, compose, Settings › End-to-End Encryption).
     NSS's certdata.txt by `tool/update_mozilla_roots.dart`), plus certificates the user trusts (a company CA,
     offered when importing a .p12 that came with one, or a single certificate). Not the platform store:
     Android's holds TLS roots without email trust bits, and isn't readable from Dart without a plugin.
-  - No revocation checks (OCSP, CRLs): they would be network requests outside the mail protocols, telling a CA
-    who reads whose mail. Policies aren't processed (as most mail clients); SHA-1 certificates aren't accepted.
+  - Revocation isn't part of the trust check (see Revocation below: opt-in, asynchronous). Policies aren't
+    processed (as most mail clients); SHA-1 certificates aren't accepted.
+- **Revocation** (opt-in, off by default; #26; `revocation.dart`, the app's `smime_revocation.dart`): Settings ›
+  End-to-End Encryption › Check Certificate Revocation Online. It is a network request outside the mail protocols
+  when signed mail is read, telling the CA who reads whose mail and when; the footer says so. The signer's
+  certificate is checked with OCSP (RFC 6960 as RFC 5019 profiles it: a SHA-1 CertID, no nonce, POST) at its
+  authorityInfoAccess responder, or, when it names none, with its issuer's complete CRL (cRLDistributionPoints
+  without reasons or another issuer); the issuer is the one the trust check found. Only valid signatures by
+  certificates that chain to a trusted root are checked: any other certificate (spam's) could name a server of its
+  own, which would learn when the message is opened. `SmimeRevocationChecker` runs
+  one check per certificate however many ask, after the message is shown (`signerRevocationProvider`): the header
+  turns to "Signed by … · certificate revoked" (no ✓) when the answer comes, and the sheet says what was asked,
+  when, and why there is no answer. Answers are kept until their nextUpdate (an hour without one, ten minutes for
+  no answer) in the keychain (`loupe.smime.revocation`). Strict limits: 5 s to connect, 10 s per request, 15 s per
+  check, 64 KB per OCSP response and 16 MB per CRL (parsed off the UI isolate), redirects for CRLs only.
+  Responses are hostile input, read by the bounded ASN.1 reader: the responder must be the issuer or a
+  certificate the issuer made for OCSP signing (extendedKeyUsage, valid, signed by it), every signature checked
+  (SHA-1 accepted for responses, which leave no room for a collision; not MD5 or RSA under 2048 bits), the answer
+  about exactly this CertID, within thisUpdate and nextUpdate (5 minutes of skew), no unknown critical extension;
+  a CRL must be the issuer's (name, cRLSign, signature), complete (no delta, no partition), and current. The
+  fuzzer covers both parsers (`ocsp`, `crl` targets). The revocation time isn't compared with the backdatable
+  signing time: a revoked certificate is shown as revoked.
+- **Demo mode** (`demo/demo_smime.dart`): the Northwind demo CA (trusted), Sam's certificate with its key, and in
+  the Work inbox a signed message, a signed and encrypted one with a protected subject, and one signed with a
+  certificate the CA revoked, all written by `SmimeMessageComposer` when first opened. Revocation answers come from
+  OCSP responses made with the demo CA in advance (`DemoRevocationFetcher`); the demo never goes online. Keys and
+  certificates were made with OpenSSL for the demo (EC P-256).
 - **Hostile input** (reviewed in issue #26): every parse ends in `Asn1Exception` or `SmimeException`, never
   another error, and bounded work: nesting 48 deep, INTEGERs of 2049 octets, 32 certificates and 16 signers
   per SignedData, 1000 recipients per envelope, 64 signature checks per path search, RSA keys of 2048 to 16384
@@ -115,15 +176,26 @@ loading, the header, compose, Settings › End-to-End Encryption).
   signature around encrypted data doesn't count; a signature's embedded content must be the signed part; a
   signing time more than an hour from the Date header isn't good. The header says "Encrypted (S/MIME)" and
   "Signed by Alice ✓ (Issuer)", or what is wrong; the sheet can trust the issuing CA after showing its
-  fingerprint.
+  fingerprint. A key that is locked, or on the device and unavailable, says "Encrypted (S/MIME) · locked" and why.
 - **Sending** (`SmimeMessageComposer` around `PgpMessageComposer` around `MimeMessageComposer`): signed as
   multipart/signed (SHA-256, RSA PKCS #1 v1.5 or ECDSA) carrying the certificate, its intermediates, the
   SMIMECapabilities and which certificate to encrypt to (RFC 8551's attribute and Outlook's). Encrypted: signed
   first, then EnvelopedData to every recipient and the sender with AES-256-CBC, which Outlook, Apple Mail and
   Thunderbird all read; AuthEnvelopedData (AES-256-GCM) only when every recipient's signed mail announced
   AES-GCM. RSA recipients get the key with PKCS #1 v1.5 (OAEP isn't read everywhere), EC recipients by
-  ephemeral-static ECDH (SHA-256 KDF, AES-256 wrap). Unlike OpenPGP mail, the outer Subject isn't hidden. Bcc
-  recipients get copies of their own (see below); drafts are encrypted to the sender only.
+  ephemeral-static ECDH (SHA-256 KDF, AES-256 wrap). Bcc recipients get copies of their own (see below); drafts
+  are encrypted to the sender only.
+- **Protected headers** (#26; `mime/header_protection.dart`): RFC 9788 (the published
+  draft-ietf-lamps-header-protection), not RFC 7508's signed attribute, which no client reads. The message's
+  header fields are copied into the cryptographic payload (signed, and encrypted), marked `hp="cipher"` (or
+  `hp="clear"` for signed-only mail, whose Subject and From the signature then covers) and also
+  `protected-headers="v1"`, the OpenPGP scheme Thunderbird and Loupe's OpenPGP use. Encrypted mail goes out with
+  `Subject: ...`, the outer fields recorded inside as `HP-Outer`. Thunderbird reads protected headers only for
+  OpenPGP (its RFC 9788 support is bug 1991625) and Outlook not at all, so for them the main body parts begin with a
+  legacy display, `Subject: …` and a blank line (an HTML `div.header-protection-legacy-display`), marked
+  `hp-legacy-display="1"` (base64 UTF-8 text); Loupe hides it in decrypted mail (`contentFromEntity`
+  `hideLegacyDisplay`, OpenPGP mail too) and shows the inner Subject (`SmimeMessageStatus.protectedHeaders`).
+  Messages from other clients without protected headers read as before.
 - **Choosing the standard** (`chooseTechnology`): the address's preference (OpenPGP unless "Prefer S/MIME"),
   unless only the other one has a key or trusted certificate for every recipient, or the message replies to
   mail encrypted with the other. Compose shows which, and switches when both are set up. The sending settings
@@ -149,7 +221,7 @@ Issue #24, after OpenPGP (#20) and S/MIME (#21).
   signed (or decrypted) text first and every other text of its part below an "Unsigned content" line
   (`outsideMarker`), so nothing outside the block can pass for part of it; that text, or other parts of the message
   (an HTML alternative, attachments), make it "Signed in part" (no ✓).
-- **Protected subjects** (OpenPGP sends the real subject inside, `...` outside): summaries say whether a message is
+- **Protected subjects** (OpenPGP and S/MIME send the real subject inside, `...` outside): summaries say whether a message is
   encrypted (`EmailSummary.isEncrypted`, from its BODYSTRUCTURE; schema version 6, `emails.is_encrypted`). Once
   `ContentLoader` decrypted a message, its protected subject is kept in the encrypted store
   (`DecryptedMail.rememberProtectedSubject`, `emails.protected_subject`), for the message and its copies (same
@@ -159,7 +231,8 @@ Issue #24, after OpenPGP (#20) and S/MIME (#21).
   on the device, and nothing more with Hide Content.
   - Settings › End-to-End Encryption › On This Device › Decrypt Subjects in the Background (off by default):
     `SubjectDecryptor` decrypts the subjects of encrypted mail nobody opened yet, with keys stored without a
-    passphrase only (it never asks), OpenPGP only, messages up to 1 MB (the whole message is downloaded). Background
+    passphrase only (it never asks; S/MIME keys kept in the app, not on the device), messages up to 1 MB (the whole
+    message is downloaded). Background
     work does it for new mail before notifying (`NewMailCheck.subjects`, at most 15 s); the app, while it runs, for
     the newest 100 messages of the inboxes (`ProtectedSubjectsWatcher`, off the UI isolate).
 - **Signed when queued**: signed or encrypted mail needs the key unlocked, and background work only has keys

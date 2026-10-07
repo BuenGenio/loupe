@@ -11,6 +11,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../conversation/sheets.dart';
+import 'device_certificates.dart';
 import 'smime_providers.dart';
 import 'smime_service.dart';
 
@@ -200,18 +201,48 @@ Future<void> _importPkcs12(
   for (final k in bundle.keys) {
     await service.addOwn(k, chain: bundle.chain);
   }
-  // The CA that issued it, when Loupe doesn't trust it yet (a company's own
-  // CA): only a root the certificate really chains to, not any other the
-  // file carries.
-  for (final ca in bundle.chain) {
+  if (context.mounted) await offerToTrustIssuer(context, service, bundle.keys.first.certificate, bundle.chain);
+  showSnack(messenger, 'Imported your certificate $names.');
+}
+
+/// Offers to trust the CA that issued the user's [certificate], when Loupe
+/// doesn't trust it yet (a company's own CA): only a root the certificate
+/// really chains to through [chain], not any other the file carries.
+Future<void> offerToTrustIssuer(
+  BuildContext context,
+  SmimeService service,
+  SmimeCertificate certificate,
+  List<SmimeCertificate> chain,
+) async {
+  for (final ca in chain) {
     if (!context.mounted) break;
     if (!ca.isCa || !ca.isSelfIssued || service.isTrustedRoot(ca)) continue;
-    final mine = bundle.keys.first.certificate;
-    if (service.check(mine).problem != SmimeProblem.untrusted) continue;
-    if (!service.chainsTo(mine, ca, chain: bundle.chain)) continue;
+    if (service.check(certificate).problem != SmimeProblem.untrusted) continue;
+    if (!service.chainsTo(certificate, ca, chain: chain)) continue;
     await _askTrust(context, service, ca);
   }
-  showSnack(messenger, 'Imported your certificate $names.');
+}
+
+/// Settings › End-to-End Encryption › Use a Certificate from This Device:
+/// the system's picker (certificates installed by device management or in
+/// Android's settings), then the certificate is added with its key staying
+/// on the device, and its CA offered for trust.
+Future<void> useDeviceCertificate(BuildContext context, WidgetRef ref) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final device = ref.read(deviceCertificatesProvider);
+  try {
+    final alias = await device.choose();
+    if (alias == null) return;
+    final service = await ref.read(smimeServiceProvider.future);
+    final own = await service.addDeviceCertificate(alias);
+    if (context.mounted) await offerToTrustIssuer(context, service, own.certificate, own.chain);
+    showSnack(
+      messenger,
+      'Added your certificate ${own.certificate.displayName} (${own.certificate.emails.join(', ')}) from this device.',
+    );
+  } on SmimeException catch (e) {
+    showSnack(messenger, e.message);
+  }
 }
 
 Future<bool> _askTrust(BuildContext context, SmimeService service, SmimeCertificate ca) async {

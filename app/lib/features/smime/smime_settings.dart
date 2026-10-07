@@ -11,8 +11,11 @@ import '../../theme/theme.dart';
 import '../conversation/sheets.dart';
 import '../openpgp/key_import.dart' show copyToClipboard, pasteKeyProvider, pickKeyFileProvider;
 import '../settings/settings_widgets.dart';
+import 'device_certificates.dart';
 import 'smime_import.dart';
+import 'smime_passphrase.dart';
 import 'smime_providers.dart';
+import 'smime_revocation.dart';
 import 'smime_service.dart';
 import 'smime_status.dart' show problemText;
 
@@ -76,6 +79,7 @@ class SmimeSettingsSection extends ConsumerWidget {
 
     final contacts = [...state.contacts]
       ..sort((a, b) => a.certificate.displayName.compareTo(b.certificate.displayName));
+    final device = ref.watch(deviceCertificatesProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -84,7 +88,8 @@ class SmimeSettingsSection extends ConsumerWidget {
           separatorIndent: 58,
           footer: state.own.isEmpty
               ? 'For S/MIME, as Outlook and many companies use it. Import your certificate with its private key '
-                    '(a .p12 or .pfx file), exported from Outlook, Windows, macOS or Thunderbird.'
+                    '(a .p12 or .pfx file), exported from Outlook, Windows, macOS or Thunderbird'
+                    '${device.supported ? ', or use one your company or you installed on this device' : ''}.'
               : null,
           children: [
             for (final o in state.own)
@@ -94,10 +99,13 @@ class SmimeSettingsSection extends ConsumerWidget {
                 title: o.certificate.displayName,
                 subtitle:
                     '${o.certificate.emails.join(', ')} · '
-                    '${o.certificate.isExpiredAt(now) ? 'expired' : 'until ${_day(o.certificate.notAfter)}'}',
+                    '${o.certificate.isExpiredAt(now) ? 'expired' : 'until ${_day(o.certificate.notAfter)}'}'
+                    '${o.onDevice ? ' · on this device' : ''}',
                 onTap: () => context.push(Routes.smimeCertificate(o.fingerprint)),
               ),
             add('smime-import-own', 'Import Certificate…', () => _importFile(context, ref)),
+            if (device.supported)
+              add('smime-use-device', 'Use a Certificate from This Device…', () => useDeviceCertificate(context, ref)),
           ],
         ),
         InsetGroup(
@@ -109,6 +117,23 @@ class SmimeSettingsSection extends ConsumerWidget {
           children: [
             for (final c in contacts) row(c.certificate, SmimeUsage.encryption, prefix: 'smime-contact'),
             add('smime-import-contact', 'Import Certificate…', () => _importContact(context, ref)),
+          ],
+        ),
+        InsetGroup(
+          header: 'Revocation',
+          separatorIndent: 16,
+          footer:
+              'When you open signed mail, Loupe asks the authority that issued the signer’s certificate whether it '
+              'was revoked (its OCSP responder, or its revocation list). The authority can then see when someone '
+              'at your internet address reads mail signed with that certificate. Answers are kept on this device '
+              'until they expire. A revoked certificate shows as "Revoked" in the message header.',
+          children: [
+            SwitchRow(
+              key: const ValueKey('smime-check-revocation'),
+              title: 'Check Certificate Revocation Online',
+              value: ref.watch(checkRevocationProvider),
+              onChanged: (v) => ref.read(checkRevocationProvider.notifier).set(v),
+            ),
           ],
         ),
         if (state.authorities.isNotEmpty)
@@ -186,6 +211,10 @@ class SmimeCertificateScreen extends ConsumerWidget {
         InsetGroup(
           header: 'Certificate',
           separatorIndent: 16,
+          footer: own?.onDevice ?? false
+              ? 'Its private key stays in Android’s credential storage, where your company or you installed it: '
+                    'Loupe asks Android to sign and decrypt with it. Signed mail is signed when you send it.'
+              : null,
           children: [
             GroupedRow(title: cert.subject.toString(), chevron: false),
             if (cert.emails.isNotEmpty) GroupedRow(title: 'Addresses', detail: cert.emails.join(', '), chevron: false),
@@ -205,6 +234,17 @@ class SmimeCertificateScreen extends ConsumerWidget {
               },
             ),
             GroupedRow(title: 'SHA-1 thumbprint', subtitle: _grouped(cert.sha1Fingerprint), chevron: false),
+            if (own != null)
+              GroupedRow(
+                key: const ValueKey('smime-key-location'),
+                title: 'Private key',
+                detail: own.onDevice
+                    ? 'On this device'
+                    : own.hasPassphrase
+                    ? 'In Loupe, with a passphrase'
+                    : 'In Loupe',
+                chevron: false,
+              ),
             if (contact != null)
               GroupedRow(
                 title: 'From',
@@ -254,6 +294,32 @@ class SmimeCertificateScreen extends ConsumerWidget {
               ),
           ],
         ),
+        if (own != null && !own.onDevice)
+          InsetGroup(
+            header: 'Passphrase',
+            separatorIndent: 16,
+            footer:
+                'Optional. With a passphrase, the private key is also encrypted on this device (Argon2id and '
+                'AES-256), and Loupe asks for it to sign and decrypt; Remember Passphrases says for how long. '
+                'Mail you send is signed as you send it; background work can’t use the key.',
+            children: [
+              GroupedRow(
+                key: const ValueKey('smime-set-passphrase-row'),
+                title: own.hasPassphrase ? 'Change Passphrase…' : 'Set Passphrase…',
+                titleStyle: LoupeTextStyles.of(context).body.copyWith(color: link),
+                chevron: false,
+                onTap: () => _setPassphrase(context, service, own),
+              ),
+              if (own.hasPassphrase)
+                GroupedRow(
+                  key: const ValueKey('smime-remove-passphrase'),
+                  title: 'Remove Passphrase',
+                  titleStyle: LoupeTextStyles.of(context).body.copyWith(color: link),
+                  chevron: false,
+                  onTap: () => _removePassphrase(context, service, own),
+                ),
+            ],
+          ),
         InsetGroup(
           separatorIndent: 16,
           children: [
@@ -282,6 +348,39 @@ class SmimeCertificateScreen extends ConsumerWidget {
     );
   }
 
+  Future<void> _setPassphrase(BuildContext context, SmimeService service, SmimeOwnCertificate own) async {
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      // The current passphrase first, when there is one.
+      if (await service.unlock(own.fingerprint) == null || !context.mounted) return;
+      final passphrase = await showNewSmimePassphraseDialog(context);
+      if (passphrase == null) return;
+      if (await service.setPassphrase(own.fingerprint, passphrase)) {
+        showSnack(messenger, own.hasPassphrase ? 'Passphrase changed.' : 'Passphrase set.');
+      }
+    } on SmimeException catch (e) {
+      showSnack(messenger, e.message);
+    }
+  }
+
+  Future<void> _removePassphrase(BuildContext context, SmimeService service, SmimeOwnCertificate own) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final ok = await showActionSheet<bool>(
+      context,
+      title: 'Remove the Passphrase?',
+      message:
+          'The private key is then protected by the keychain only, as without a passphrase: Loupe no longer asks '
+          'for it, and background work can use it.',
+      actions: const [SheetAction('Remove Passphrase', true, destructive: true)],
+    );
+    if (ok != true) return;
+    try {
+      if (await service.removePassphrase(own.fingerprint)) showSnack(messenger, 'Passphrase removed.');
+    } on SmimeException catch (e) {
+      showSnack(messenger, e.message);
+    }
+  }
+
   static String _fileName(SmimeCertificate c) => c.displayName.replaceAll(RegExp(r'[^A-Za-z0-9._@-]+'), '_');
 
   Future<void> _trust(BuildContext context, SmimeService service, SmimeCertificate cert) async {
@@ -301,8 +400,11 @@ class SmimeCertificateScreen extends ConsumerWidget {
       context,
       title: own ? 'Delete your certificate ${cert.displayName}?' : 'Remove ${cert.displayName}’s certificate?',
       message: own
-          ? 'Its private key is deleted from this device: mail encrypted to it can’t be read here anymore, '
-                'unless you import it again.'
+          ? (service.state.ownCertificate(cert.fingerprint)?.onDevice ?? false)
+                ? 'Loupe stops using it: mail encrypted to it can’t be read in Loupe anymore. The certificate stays '
+                      'on this device (Settings › Security › Encryption & credentials).'
+                : 'Its private key is deleted from this device: mail encrypted to it can’t be read here anymore, '
+                      'unless you import it again.'
           : 'It comes back with their next signed message.',
       actions: [SheetAction(own ? 'Delete Certificate' : 'Remove Certificate', true, destructive: true)],
     );

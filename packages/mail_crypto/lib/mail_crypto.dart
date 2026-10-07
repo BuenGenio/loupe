@@ -14,6 +14,7 @@ export 'src/keyring/session.dart';
 export 'src/mime/codecs.dart' show HeaderValue, decodeEncodedWords, decodeCharset, decodeTransfer, canonicalLineEnds;
 export 'src/mime/content.dart' show contentFromEntity, partOf;
 export 'src/mime/entity.dart' show MimeEntity, splitMultipart;
+export 'src/mime/header_protection.dart' show hiddenSubject, protectedHeadersOf, withoutLegacyDisplay;
 export 'src/pgp/armor.dart' show hasArmor, dearmorAll, encodeArmor, ArmorBlock, splitCleartext, CleartextParts;
 export 'src/pgp/dart_pg_backend.dart' show DartPgBackend;
 export 'src/pgp/types.dart';
@@ -27,8 +28,24 @@ export 'src/smime/cms.dart'
 export 'src/smime/mozilla_roots.dart' show mozillaEmailRootsDate;
 export 'src/smime/pkcs12.dart' show SmimeBundle, SmimeKeyEntry;
 export 'src/smime/plan.dart';
-export 'src/smime/primitives.dart' show SmimePrivateKey;
+export 'src/smime/key_handle.dart';
+export 'src/smime/key_protection.dart';
 export 'src/smime/reader.dart';
+export 'src/smime/revocation.dart'
+    show
+        SmimeRevocationCache,
+        SmimeRevocationChecker,
+        SmimeRevocationFetcher,
+        SmimeRevocationSource,
+        SmimeRevocationState,
+        SmimeRevocationStatus,
+        RevocationRunner,
+        ocspRequest,
+        readCrl,
+        readOcspResponse,
+        maxCrlBytes,
+        maxOcspResponseBytes;
+export 'src/smime/software_keystore.dart';
 export 'src/smime/status.dart';
 export 'src/smime/store.dart';
 export 'src/smime/trust.dart';

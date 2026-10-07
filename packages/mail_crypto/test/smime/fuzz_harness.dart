@@ -17,6 +17,7 @@ import 'dart:typed_data';
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_crypto/src/smime/der.dart';
 
+import 'revocation_test.dart' show cleo, gail, nell, revocationCa, revocationFixture, revocationNow, rex;
 import 'smime_support.dart';
 
 /// One parser under test: seeds, how to run an input, which exceptions are fine.
@@ -129,11 +130,20 @@ final class FuzzCorpus {
       smimeMail(f),
   ];
 
+  /// OCSP responses (revocation_test.dart's vectors): good, revoked, unknown, forged.
+  late final ocsp = <Uint8List>[
+    for (final f in ['ocsp-good.der', 'ocsp-revoked.der', 'ocsp-unknown.der', 'ocsp-forged.der']) revocationFixture(f),
+  ];
+
+  late final crls = <Uint8List>[revocationFixture('ca.crl')];
+
   List<Uint8List> get allDer => [
     ...certificates,
     for (final (d, _) in signed) d,
     ...enveloped,
     for (final (d, _) in pkcs12) d,
+    ...ocsp,
+    ...crls,
   ];
 }
 
@@ -142,6 +152,10 @@ List<FuzzTarget> fuzzTargets([FuzzCorpus? corpus]) {
   final c = corpus ?? FuzzCorpus.instance;
   bool smimeError(Object e) => e is SmimeException;
   final keys = [alice, bob];
+  final onDevice = [
+    SmimeKeyPair(alice.certificate, const SmimePlatformKey('alice')),
+    SmimeKeyPair(bob.certificate, const SmimePlatformKey('bob')),
+  ];
   const reader = SmimeReader(smime);
   return [
     FuzzTarget('asn1', c.allDer, (input) {
@@ -180,6 +194,12 @@ List<FuzzTarget> fuzzTargets([FuzzCorpus? corpus]) {
     }, allowed: smimeError),
     FuzzTarget('cms-enveloped', c.enveloped, (input) {
       smime.recipientsOf(input);
+      try {
+        // Keys on the device: a request (or a typed error), never anything else.
+        smime.decrypt(input, onDevice);
+      } on SmimeException {
+        // Typed.
+      }
       smime.decrypt(input, keys);
     }, allowed: smimeError),
     FuzzTarget('pkcs12', [for (final (d, _) in c.pkcs12) d], (input) {
@@ -191,8 +211,29 @@ List<FuzzTarget> fuzzTargets([FuzzCorpus? corpus]) {
         }
       }
     }, allowed: smimeError),
+    // Revocation answers are untrusted input from the network.
+    FuzzTarget('ocsp', c.ocsp, (input) {
+      for (final cert in [gail, rex, nell]) {
+        try {
+          readOcspResponse(input, cert: cert, issuer: revocationCa, now: revocationNow);
+        } on SmimeException {
+          // Typed.
+        }
+      }
+    }, allowed: smimeError),
+    FuzzTarget('crl', c.crls, (input) {
+      for (final cert in [gail, rex, cleo]) {
+        try {
+          readCrl(input, cert: cert, issuer: revocationCa, now: revocationNow);
+        } on SmimeException {
+          // Typed.
+        }
+      }
+    }, allowed: smimeError),
     FuzzTarget('message', c.messages, (input) {
       reader.read(input, keys: keys, anchors: testAnchors, now: today);
+      // Keys on the device: asked for, never a crash.
+      reader.read(input, keys: onDevice, anchors: testAnchors, now: today);
       reader.recipientsOf(input);
     }, allowed: (_) => false),
   ];

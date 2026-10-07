@@ -321,7 +321,42 @@ account), and Loupe having both keys (Autocrypt from a signed message of each, o
    - Loupe's header says "Encrypted (S/MIME)" and "Signed by … ✓".
    - The sender's certificate is collected (Correspondents’ Certificates), so your next message to them can be encrypted.
    - With both standards set up, Compose shows an OpenPGP / S/MIME switch. "Prefer S/MIME" on your address picks S/MIME first.
+   - Hidden subject (#26): an S/MIME encrypted message from Loupe shows "..." as its subject in Thunderbird and
+     Outlook, and its text starts with "Subject: <the real one>" and a blank line. In Loupe (the Sent copy, or
+     another phone) the subject shows normally, without that line, in the list and search too once opened.
 4. **If not:** the header's sheet names the trust problem (unknown issuer, expired, SHA-1). It can trust the issuer after showing its fingerprint.
+5. **Certificates from the device (#26).**
+   - **Do:** install a `.p12` in Android's Settings › Security › Encryption & credentials › Install a certificate ›
+     VPN & app user certificate (or have device management install one). In Loupe: Settings › End-to-End
+     Encryption › **Use a Certificate from This Device…**, pick it.
+   - **Expect:** Android's own picker; then "Added your certificate … from this device" (and the CA offered for
+     trust). Its details say "Private key: On this device". Send a signed and an encrypted message to Thunderbird:
+     both verify there. Mail encrypted to it (from Thunderbird) decrypts in Loupe, RSA and EC certificates alike.
+   - **If not:** "Encrypted (S/MIME) · locked" and the sheet give the platform's reason. ECDH needs Android 12 or
+     later and a key allowed to agree; an EC certificate that can't decrypt says "can’t do this". A message queued
+     while the app was closed waits in the Outbox with "open Loupe".
+6. **Revocation (#26).**
+   - **Do:** Settings › End-to-End Encryption › **Check Certificate Revocation Online** (read the footer), then
+     open signed mail from a public CA's certificate (or ask a colleague whose company certificate names an OCSP
+     responder).
+   - **Expect:** the message opens at once; a moment later the sheet says "Not revoked · Asked the authority
+     (OCSP)". Offline: "Revocation unknown" with the reason, never a wait. A revoked certificate (the CA's test
+     pages) shows "Signed by … · certificate revoked" in red, no ✓. In demo mode, Hana Sato's "New bank details"
+     message shows it without going online.
+8. **S/MIME in demo mode (#26).**
+   - **Do:** in the demo, open the Work inbox: Aisha Karimi's "Q4 budget, signed off", her encrypted message
+     (listed as "..." until opened) and Hana Sato's "New bank details for the Fabrikam invoice".
+   - **Expect:** "Signed by Aisha Karimi ✓ (Northwind Traders (demo))"; "Encrypted (S/MIME)" with the subject
+     "Salary review dates (confidential)", which then replaces "..." in the list; Hana's "✓" turns into
+     "certificate revoked" with Check Certificate Revocation Online on. Settings › End-to-End Encryption lists
+     Sam's demo certificate and the Northwind demo CA.
+7. **A passphrase on a certificate (#26).**
+   - **Do:** open your imported certificate (Settings › End-to-End Encryption › My S/MIME Certificates) ›
+     **Set Passphrase…**. Turn Remember Passphrases off, Lock Keys Now, then open an S/MIME encrypted message
+     and send a signed one; schedule a signed one for in 10 minutes and close Loupe.
+   - **Expect:** "Unlock S/MIME Certificate" when reading and on Send (about a second or a few after the
+     passphrase); the scheduled message goes out from the background, signed at queue time. Two minutes
+     after the last use it asks again. Remove Passphrase asks for it once more.
 
 ## 13. Attachments (10 min)
 

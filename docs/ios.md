@@ -86,6 +86,13 @@ The plugin's iOS service is never started.
 - **Keychain:** credentials and the database key use `KeychainAccessibility.first_unlock_this_device`. They can be read in the background once the phone has been unlocked after a restart. They never move to another device, either through iCloud Keychain or through a backup restored elsewhere.
   - A single app needs no access-group entitlement.
   - Keychain items outlive an uninstall on iOS. After a reinstall, the new database reuses the old key, and the old accounts' passwords stay in the Keychain, unused, until they are cleared.
+- **S/MIME certificates from device management** (not yet, #26): on Android, Loupe uses certificates from the
+  system's KeyChain (`KeyChainChannel.kt`). iOS apps can't use the identities a configuration profile installs for
+  Mail. It needs an MDM profile that installs the identity into a keychain access group Loupe shares (the
+  `keychain-access-groups` entitlement, which also needs Keychain Sharing on the App ID). Loupe would then find it with
+  `SecItemCopyMatching` (`kSecClassIdentity`) and use it with `SecKeyCreateSignature`, `SecKeyCreateDecryptedData` and
+  `SecKeyCopyKeyExchangeResult`, behind the same `DeviceCertificates` interface
+  (`app/lib/features/smime/device_certificates.dart`, `NoDeviceCertificates` until then).
 - **Files:** they keep iOS's default data protection (complete until first user authentication). That is what background refresh needs. PLAN §8 wants complete protection for the attachment cache; that needs native code and isn't done.
 
 ### Plugins with iOS caveats

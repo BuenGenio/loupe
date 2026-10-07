@@ -206,10 +206,12 @@ class ComposeSecurityController extends ChangeNotifier {
       );
     }
     if (isSmime) {
-      // S/MIME keys need no passphrase; only check the key is here.
+      // A key with a passphrase is unlocked now, while the user is here: the
+      // message is signed when it is queued.
       final own = smimePlan?.own;
       if (security.sign && own != null) {
         final service = await ref.read(smimeServiceProvider.future);
+        if (own.hasPassphrase) return await service.unlock(own.fingerprint) == null ? null : security;
         if (service.keys.smimeKey(own.fingerprint) == null) {
           if (context.mounted) {
             await showActionSheet<bool>(

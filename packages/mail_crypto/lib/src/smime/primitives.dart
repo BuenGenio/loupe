@@ -26,7 +26,10 @@ import 'package:pointycastle/signers/ecdsa_signer.dart';
 
 import 'certificate.dart';
 import 'der.dart';
+import 'key_handle.dart';
 import 'oids.dart';
+
+export 'key_handle.dart' show SmimePrivateKey;
 
 // pointycastle registers curves by name.
 import 'package:pointycastle/ecc/curves/brainpoolp256r1.dart';
@@ -83,12 +86,6 @@ Uint8List _hash(Digest d, List<int> data) {
 }
 
 // Keys ------------------------------------------------------------------------
-
-/// A private key as PKCS #8 (unencrypted PrivateKeyInfo), backend-neutral.
-final class SmimePrivateKey {
-  const SmimePrivateKey(this.pkcs8);
-  final Uint8List pkcs8;
-}
 
 ECDomainParameters _domain(String? curve) => switch (curve) {
   Oid.secp256r1 => ECCurve_secp256r1(),
@@ -248,7 +245,10 @@ bool rsaPkcs1Verify(RSAPublicKey key, String digestOid, Uint8List hash, Uint8Lis
   if (s >= n) return false;
   final em = unsignedBytes(_modPow(s, key.exponent!, n), k);
   var ok = false;
-  for (final t in [_digestInfo(digestOid, hash), derSequence([derAlgorithm(digestOid), derOctets(hash)])]) {
+  for (final t in [
+    _digestInfo(digestOid, hash),
+    derSequence([derAlgorithm(digestOid), derOctets(hash)]),
+  ]) {
     final expected = _pkcs1Block(t, k);
     if (expected != null && _constantEquals(em, expected)) ok = true;
   }
@@ -451,6 +451,9 @@ Uint8List ecdsaSign(EcKeyMaterial key, String digestOid, Uint8List hash) {
 // ECDH (RFC 5753) -------------------------------------------------------------
 
 int _fieldBytes(ECDomainParameters d) => (d.curve.fieldSize + 7) >> 3;
+
+/// The length of an ECDH shared secret on [curve].
+int ecFieldBytes(String? curve) => _fieldBytes(_domain(curve));
 
 /// The shared secret Z: the x coordinate, left-padded to the field size.
 Uint8List ecdhSecret(ECPrivateKey key, ECPublicKey peer) {

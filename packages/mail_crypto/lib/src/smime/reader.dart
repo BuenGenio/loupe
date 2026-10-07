@@ -7,12 +7,14 @@ import 'dart:typed_data';
 
 import '../mime/codecs.dart';
 import '../mime/entity.dart';
+import '../mime/header_protection.dart';
 import '../pgp/types.dart' show emailOfUserId;
 import '../pgp_mime/reader.dart' show headerIn;
 import 'backend.dart';
 import 'certificate.dart';
 import 'cms.dart';
 import 'der.dart';
+import 'key_handle.dart';
 import 'oids.dart';
 import 'status.dart';
 import 'trust.dart';
@@ -105,7 +107,12 @@ final class SmimeReader {
     var entity = root;
     var unwrapped = false;
 
-    SmimeMessageStatus status({SmimeDecryptFailure? failure, String? message}) => SmimeMessageStatus(
+    SmimeMessageStatus status({
+      SmimeDecryptFailure? failure,
+      String? message,
+      SmimeKeyRequest? request,
+      List<(String, String)> protectedHeaders = const [],
+    }) => SmimeMessageStatus(
       protection: protection ?? SmimeProtection.none,
       encrypted: encrypted,
       failure: failure,
@@ -114,6 +121,8 @@ final class SmimeReader {
       authenticated: authenticated,
       recipients: recipients,
       signature: signature,
+      keyRequest: request,
+      protectedHeaders: protectedHeaders,
     );
 
     for (var layer = 0; layer < maxLayers; layer++) {
@@ -158,6 +167,12 @@ final class SmimeReader {
         authenticated = decrypted.authenticated;
         entity = MimeEntity.parse(decrypted.content);
         unwrapped = true;
+      } on SmimeKeyRequired catch (e) {
+        // A key on the device must decrypt the content key: the caller asks
+        // it and reads again with the answer.
+        return SmimeReadResult(
+          status: status(failure: SmimeDecryptFailure.locked, message: e.message, request: e.request),
+        );
       } on SmimeException catch (e) {
         return SmimeReadResult(
           status: status(failure: _failure(e), message: e.message),
@@ -172,7 +187,12 @@ final class SmimeReader {
     if (signature != null && signedAt != null && date != null && date.difference(signedAt).abs() > dateTolerance) {
       signature = signature.withDateMismatch();
     }
-    return SmimeReadResult(status: status(), entity: unwrapped ? entity : null);
+    // The cryptographic payload's own header fields (RFC 9788).
+    final protectedHeaders = unwrapped ? protectedHeadersOf(entity) : const <(String, String)>[];
+    return SmimeReadResult(
+      status: status(protectedHeaders: protectedHeaders),
+      entity: unwrapped ? entity : null,
+    );
   }
 
   /// How far the signing time may be from the Date header.
@@ -279,6 +299,7 @@ final class SmimeReader {
   static SmimeDecryptFailure _failure(SmimeException e) => switch (e.kind) {
     SmimeErrorKind.noKey => SmimeDecryptFailure.noKey,
     SmimeErrorKind.unsupported => SmimeDecryptFailure.unsupported,
+    SmimeErrorKind.locked => SmimeDecryptFailure.locked,
     _ => SmimeDecryptFailure.damaged,
   };
 }

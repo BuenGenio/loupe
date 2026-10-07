@@ -4,6 +4,7 @@ library;
 
 import 'certificate.dart';
 import 'cms.dart';
+import 'key_handle.dart';
 import 'trust.dart';
 
 /// How a message is protected, judged from its outer structure.
@@ -33,6 +34,10 @@ enum SmimeDecryptFailure {
 
   /// An algorithm Loupe doesn't support.
   unsupported,
+
+  /// The key is locked (its passphrase wasn't given), or it is on the
+  /// device (Android KeyChain) and couldn't be used.
+  locked,
 }
 
 /// The signature of a message, and its signer's certificate.
@@ -123,6 +128,8 @@ final class SmimeMessageStatus {
     this.authenticated = false,
     this.recipients = const [],
     this.signature,
+    this.keyRequest,
+    this.protectedHeaders = const [],
   });
 
   static const none = SmimeMessageStatus();
@@ -146,6 +153,27 @@ final class SmimeMessageStatus {
 
   /// The (first) signature; null when the message isn't signed.
   final SmimeSignatureStatus? signature;
+
+  /// With [SmimeDecryptFailure.locked] for a key on the device: what it must
+  /// do to decrypt the message ([SmimePlatformKeys.perform]); read the
+  /// message again with the answer.
+  final SmimeKeyRequest? keyRequest;
+
+  /// Header fields from inside the signed or encrypted content (RFC 9788,
+  /// or `protected-headers="v1"`): the real Subject when the outer one is
+  /// `...`, From, To, Cc (RFC 2047 decoded).
+  final List<(String, String)> protectedHeaders;
+
+  /// The protected Subject, if any.
+  String? get protectedSubject => protectedHeader('subject');
+
+  String? protectedHeader(String name) {
+    final n = name.toLowerCase();
+    for (final (k, v) in protectedHeaders) {
+      if (k.toLowerCase() == n) return v;
+    }
+    return null;
+  }
 
   bool get decrypted => encrypted && failure == null;
   bool get isSigned => signature != null;
