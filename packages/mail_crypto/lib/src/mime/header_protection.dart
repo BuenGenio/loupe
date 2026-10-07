@@ -32,11 +32,13 @@ const legacyDisplayClass = 'header-protection-legacy-display';
 /// then encrypted) with the message's header fields ([outer], RFC 5322 lines
 /// with their folds) in its header section, and `hp` and `protected-headers`
 /// on its Content-Type (RFC 9788 §5.2.1). When [encrypted], the header
-/// fields as they go outside ([obscure]) are recorded as `HP-Outer`, and a
-/// legacy display of the obscured Subject leads the main body parts.
-Uint8List protectHeaders(Uint8List content, List<String> outer, {required bool encrypted}) {
+/// fields as they go outside are recorded as `HP-Outer`: [obscure]d when
+/// [hideSubject], and then a legacy display of the Subject leads the main
+/// body parts. Without [hideSubject] the Subject stays readable outside (and
+/// protected inside), so no legacy display is needed.
+Uint8List protectHeaders(Uint8List content, List<String> outer, {required bool encrypted, bool hideSubject = true}) {
   final subject = _subjectOf(outer);
-  final hidden = encrypted && subject != null && subject.trim().isNotEmpty;
+  final hidden = encrypted && hideSubject && subject != null && subject.trim().isNotEmpty;
   var payload = hidden ? _withLegacyDisplay(content, 'Subject: ${subject.trim()}', main: true) : content;
   final entity = SplitMessage.parse(payload);
   final lines = <String>[];
@@ -53,7 +55,7 @@ Uint8List protectHeaders(Uint8List content, List<String> outer, {required bool e
   if (!marked) lines.insert(0, 'Content-Type: text/plain; charset=us-ascii;\r\n $mark');
   lines.addAll(outer);
   if (encrypted) {
-    for (final h in obscure(outer)) {
+    for (final h in hideSubject ? obscure(outer) : outer) {
       lines.add('HP-Outer: $h');
     }
   }

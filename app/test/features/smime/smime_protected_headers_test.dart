@@ -39,7 +39,12 @@ String fromAlice({String subject = 'Offsite venue', String text = 'Lighthouse Lo
       to: const [bobAddress],
       subject: subject,
       text: text,
-      security: const OutgoingSecurity(encrypt: true, sign: true, technology: SecurityTechnology.smime),
+      security: const OutgoingSecurity(
+        encrypt: true,
+        sign: true,
+        technology: SecurityTechnology.smime,
+        hideSubject: true,
+      ),
     ),
     const Identity(id: 'a', email: 'alice@example.org', name: 'Alice Example'),
     messageId: 'venue@example.org',

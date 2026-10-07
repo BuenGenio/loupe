@@ -116,7 +116,10 @@ final class _Pkcs12 {
     if (pfx.length > 2) {
       _checkMac(pfx[2], content);
     } else if (password.isNotEmpty) {
-      throw const SmimeException(SmimeErrorKind.unsupported, 'This file has no integrity check, so it can’t be trusted.');
+      throw const SmimeException(
+        SmimeErrorKind.unsupported,
+        'This file has no integrity check, so it can’t be trusted.',
+      );
     }
     final keys = <(Uint8List?, String?, SmimePrivateKey)>[];
     final certs = <(Uint8List?, SmimeCertificate)>[];

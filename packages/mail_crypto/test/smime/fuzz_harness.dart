@@ -373,7 +373,12 @@ Uint8List _mutateOnce(Uint8List b, Random r, List<Uint8List> pool) {
       if (other.isEmpty) return b;
       final p = pos();
       final q = r.nextInt(other.length);
-      return _replace(b, p, min(b.length, p + r.nextInt(64)), Uint8List.sublistView(other, q, min(other.length, q + 1 + r.nextInt(256))));
+      return _replace(
+        b,
+        p,
+        min(b.length, p + r.nextInt(64)),
+        Uint8List.sublistView(other, q, min(other.length, q + 1 + r.nextInt(256))),
+      );
   }
   final n = nodes[r.nextInt(nodes.length)];
   final content = Uint8List.sublistView(b, n.contentStart, n.end);
@@ -396,7 +401,13 @@ Uint8List _mutateOnce(Uint8List b, Random r, List<Uint8List> pool) {
       return _replace(b, n.lengthAt, n.contentStart, _lengthBytes(max(0, n.end - n.contentStart + delta)));
     case 11: // non-minimal length
       final len = n.end - n.contentStart;
-      return _replace(b, n.lengthAt, n.contentStart, [0x84, (len >> 24) & 0xff, (len >> 16) & 0xff, (len >> 8) & 0xff, len & 0xff]);
+      return _replace(b, n.lengthAt, n.contentStart, [
+        0x84,
+        (len >> 24) & 0xff,
+        (len >> 16) & 0xff,
+        (len >> 8) & 0xff,
+        len & 0xff,
+      ]);
     case 12: // another tag
       return Uint8List.fromList(b)..[n.start] = _tags[r.nextInt(_tags.length)];
     case 13: // random content, same length

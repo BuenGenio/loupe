@@ -26,10 +26,7 @@ final class TestKey {
 
   Uint8List get point => material.publicPoint.getEncoded(false);
 
-  Uint8List get spki => derSequence([
-    derAlgorithm(Oid.ecPublicKey, derOid(Oid.secp256r1)),
-    derBitString(point),
-  ]);
+  Uint8List get spki => derSequence([derAlgorithm(Oid.ecPublicKey, derOid(Oid.secp256r1)), derBitString(point)]);
 
   /// SHA-256 of the point, as a subject key identifier.
   Uint8List get keyId => Uint8List.sublistView(SHA256Digest().process(point), 0, 20);
@@ -45,8 +42,13 @@ Uint8List rsaSpki(BigInt n, BigInt e) => derSequence([
 ]);
 
 Uint8List name(String cn, {String? org}) => derSequence([
-  if (org != null) derSet([derSequence([derOid(Oid.organization), derUtf8(org)])]),
-  derSet([derSequence([derOid(Oid.commonName), derUtf8(cn)])]),
+  if (org != null)
+    derSet([
+      derSequence([derOid(Oid.organization), derUtf8(org)]),
+    ]),
+  derSet([
+    derSequence([derOid(Oid.commonName), derUtf8(cn)]),
+  ]),
 ]);
 
 Uint8List extension(String oid, List<int> value, {bool critical = false}) =>
@@ -75,8 +77,10 @@ Uint8List keyUsage(int bits) {
 Uint8List extendedKeyUsage(List<String> oids) =>
     extension(Oid.extKeyUsage, derSequence([for (final o in oids) derOid(o)]));
 
-Uint8List subjectAltEmails(List<String> emails) =>
-    extension(Oid.subjectAltName, derSequence([for (final e in emails) derContext(1, ascii.encode(e), constructed: false)]));
+Uint8List subjectAltEmails(List<String> emails) => extension(
+  Oid.subjectAltName,
+  derSequence([for (final e in emails) derContext(1, ascii.encode(e), constructed: false)]),
+);
 
 Uint8List subjectKeyId(TestKey key) => extension(Oid.subjectKeyIdentifier, derOctets(key.keyId));
 
@@ -133,8 +137,7 @@ SmimeCertificate makeCa(
   issuerKey: issuerKey ?? key,
   serial: serial,
   version: version,
-  extensions:
-      extensions ?? [basicConstraints(), keyUsage(KeyUsage.keyCertSign | KeyUsage.crlSign), subjectKeyId(key)],
+  extensions: extensions ?? [basicConstraints(), keyUsage(KeyUsage.keyCertSign | KeyUsage.crlSign), subjectKeyId(key)],
 );
 
 /// A mail user's certificate for [email], issued by [issuerCn] with [issuerKey].

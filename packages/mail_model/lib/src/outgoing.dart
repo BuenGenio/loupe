@@ -61,6 +61,7 @@ final class OutgoingSecurity {
     this.attachPublicKey = false,
     this.draft = false,
     this.technology = SecurityTechnology.openPgp,
+    this.hideSubject,
   });
 
   /// Nothing: a plain message.
@@ -81,6 +82,15 @@ final class OutgoingSecurity {
 
   final SecurityTechnology technology;
 
+  /// Whether encrypted mail shows `...` as its Subject outside, with the real
+  /// one protected inside. Null: the technology's default ([hidesSubject]).
+  final bool? hideSubject;
+
+  /// OpenPGP hides the Subject by default, as Thunderbird does and reads
+  /// back. S/MIME doesn't: Outlook and Thunderbird don't read protected
+  /// S/MIME headers, so their users would see `...` as the Subject.
+  bool get hidesSubject => hideSubject ?? !isSmime;
+
   bool get isPlain => !encrypt && !sign && !attachPublicKey;
 
   bool get isSmime => technology == SecurityTechnology.smime;
@@ -92,6 +102,7 @@ final class OutgoingSecurity {
     attachPublicKey: attachPublicKey,
     draft: true,
     technology: technology,
+    hideSubject: hideSubject,
   );
 
   Map<String, Object?> toJson() => {
@@ -100,6 +111,7 @@ final class OutgoingSecurity {
     if (attachPublicKey) 'attachPublicKey': true,
     if (draft) 'draft': true,
     if (technology != SecurityTechnology.openPgp) 'technology': technology.name,
+    'hideSubject': ?hideSubject,
   };
 
   factory OutgoingSecurity.fromJson(Map<String, Object?>? json) => json == null
@@ -110,6 +122,7 @@ final class OutgoingSecurity {
           attachPublicKey: json['attachPublicKey'] == true,
           draft: json['draft'] == true,
           technology: SecurityTechnology.values.asNameMap()[json['technology']] ?? SecurityTechnology.openPgp,
+          hideSubject: json['hideSubject'] as bool?,
         );
 
   @override
@@ -119,10 +132,11 @@ final class OutgoingSecurity {
       other.sign == sign &&
       other.attachPublicKey == attachPublicKey &&
       other.draft == draft &&
-      other.technology == technology;
+      other.technology == technology &&
+      other.hideSubject == hideSubject;
 
   @override
-  int get hashCode => Object.hash(encrypt, sign, attachPublicKey, draft, technology);
+  int get hashCode => Object.hash(encrypt, sign, attachPublicKey, draft, technology, hideSubject);
 }
 
 /// A message being composed or queued for sending.

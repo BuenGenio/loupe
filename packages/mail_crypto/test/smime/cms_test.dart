@@ -75,10 +75,16 @@ void main() {
     final certs = sd.context(0)!.children;
     final stuffed = derSequence([
       derOid(Oid.signedData),
-      derContext(0, derSequence([
-        for (final c in sd.children)
-          if (c.isContext(0)) derContext(0, [for (var i = 0; i < 500; i++) ...certs[i % certs.length].encoded]) else c.encoded,
-      ])),
+      derContext(
+        0,
+        derSequence([
+          for (final c in sd.children)
+            if (c.isContext(0))
+              derContext(0, [for (var i = 0; i < 500; i++) ...certs[i % certs.length].encoded])
+            else
+              c.encoded,
+        ]),
+      ),
     ]);
     final checked = smime.verify(stuffed, content: signed);
     expect(checked.certificates.length, maxMessageCertificates);
@@ -91,15 +97,18 @@ void main() {
     final (_, sd) = contentInfo(p7s);
     return derSequence([
       derOid(Oid.signedData),
-      derContext(0, derSequence([
-        for (final c in sd.children)
-          if (c.isContext(0) && certificates != null)
-            derContext(0, [for (final x in certificates) ...x])
-          else if (c.isSet)
-            der(Tag.set, [for (var i = 0; i < signerCopies; i++) ...c[0].encoded])
-          else
-            c.encoded,
-      ])),
+      derContext(
+        0,
+        derSequence([
+          for (final c in sd.children)
+            if (c.isContext(0) && certificates != null)
+              derContext(0, [for (final x in certificates) ...x])
+            else if (c.isSet)
+              der(Tag.set, [for (var i = 0; i < signerCopies; i++) ...c[0].encoded])
+            else
+              c.encoded,
+        ]),
+      ),
     ]);
   }
 
@@ -116,7 +125,8 @@ void main() {
   group('RSA keys', () {
     final caKey = TestKey('rsa-test-ca');
     final r = Random(1024);
-    BigInt modulus(int bits) => bigIntFromBytes([0xc0, for (var i = 1; i < bits ~/ 8; i++) r.nextInt(256)]) | BigInt.one;
+    BigInt modulus(int bits) =>
+        bigIntFromBytes([0xc0, for (var i = 1; i < bits ~/ 8; i++) r.nextInt(256)]) | BigInt.one;
     SmimeCertificate withKey(BigInt n, BigInt e, {Uint8List? issuer, int serial = 1}) => makeCertificate(
       key: caKey,
       subject: name('RSA key'),
@@ -140,7 +150,10 @@ void main() {
         );
         expect(watch.elapsed, lessThan(const Duration(milliseconds: 200)));
       }
-      expect(verifySignature(withKey(modulus(2048), f4), Oid.sha256WithRsa, null, Oid.sha256, content, Uint8List(256)), isFalse);
+      expect(
+        verifySignature(withKey(modulus(2048), f4), Oid.sha256WithRsa, null, Oid.sha256, content, Uint8List(256)),
+        isFalse,
+      );
       // Past 16384 bits, the certificate itself doesn't parse.
       expect(() => withKey(modulus(16392), f4), throwsA(isA<SmimeException>()));
     });
@@ -148,7 +161,10 @@ void main() {
     test('a signer’s RSA key under 2048 bits is weak; such a CA signs nothing', () {
       // Alice's issuer and serial number, with a 1024-bit key: the SignerInfo finds it.
       final weak = withKey(modulus(1024), BigInt.from(65537), issuer: alice.certificate.issuer.der, serial: 100);
-      final s = smime.verify(rebuilt(certificates: [weak.der]), content: cmsOf('signed-detached.eml').$2).signers.single;
+      final s = smime
+          .verify(rebuilt(certificates: [weak.der]), content: cmsOf('signed-detached.eml').$2)
+          .signers
+          .single;
       expect((s.valid, s.weak, s.certificate), (false, true, weak));
       expect(smime.certificateSignedBy(alice.certificate, withKey(modulus(1024), BigInt.from(65537))), isFalse);
     });
@@ -156,8 +172,14 @@ void main() {
 
   group('signatures made here, of any shape', () {
     final material = PrivateKeyMaterial.parse(aliceKey) as RsaKeyMaterial;
-    Uint8List attr(String oid, List<int> value) => derSequence([derOid(oid), derSet([value])]);
-    final standardAttrs = [attr(Oid.contentType, derOid(Oid.data)), attr(Oid.messageDigest, derOctets(digest(Oid.sha256, content)))];
+    Uint8List attr(String oid, List<int> value) => derSequence([
+      derOid(oid),
+      derSet([value]),
+    ]);
+    final standardAttrs = [
+      attr(Oid.contentType, derOid(Oid.data)),
+      attr(Oid.messageDigest, derOctets(digest(Oid.sha256, content))),
+    ];
 
     /// A detached SignedData over `content` by Alice with [attrs], signed by [sign] as [sigAlg].
     Uint8List signedData(List<Uint8List> attrs, Uint8List sigAlg, Uint8List Function(Uint8List signedAttrs) sign) {
@@ -172,13 +194,16 @@ void main() {
       ]);
       return derSequence([
         derOid(Oid.signedData),
-        derContext(0, derSequence([
-          derInt(1),
-          derSet([derAlgorithm(Oid.sha256)]),
-          derSequence([derOid(Oid.data)]),
-          derContext(0, alice.certificate.der),
-          derSet([signerInfo]),
-        ])),
+        derContext(
+          0,
+          derSequence([
+            derInt(1),
+            derSet([derAlgorithm(Oid.sha256)]),
+            derSequence([derOid(Oid.data)]),
+            derContext(0, alice.certificate.der),
+            derSet([signerInfo]),
+          ]),
+        ),
       ]);
     }
 
@@ -187,12 +212,18 @@ void main() {
       final signer = sha1
           ? PSSSigner(RSAEngine(), SHA1Digest(), SHA1Digest())
           : PSSSigner(RSAEngine(), SHA256Digest(), SHA256Digest());
-      signer.init(true, ParametersWithSalt(PrivateKeyParameter<RSAPrivateKey>(material.key), Uint8List(sha1 ? 20 : 32)));
+      signer.init(
+        true,
+        ParametersWithSalt(PrivateKeyParameter<RSAPrivateKey>(material.key), Uint8List(sha1 ? 20 : 32)),
+      );
       return signer.generateSignature(data).bytes;
     }
 
     test('PKCS #1 v1.5 and RSASSA-PSS with SHA-256 verify', () {
-      final rsa = smime.verify(signedData(standardAttrs, derAlgorithm(Oid.rsaEncryption, derNull), pkcs1), content: content);
+      final rsa = smime.verify(
+        signedData(standardAttrs, derAlgorithm(Oid.rsaEncryption, derNull), pkcs1),
+        content: content,
+      );
       expect(rsa.signers.single.valid, isTrue);
       final pssParams = derSequence([
         derContext(0, derAlgorithm(Oid.sha256)),
@@ -299,12 +330,18 @@ void main() {
       final (_, env) = contentInfo(p7m);
       final stuffed = derSequence([
         derOid(Oid.envelopedData),
-        derContext(0, derSequence([
-          for (final c in env.children)
-            if (c.isSet) der(Tag.set, [for (var i = 0; i <= maxRecipients; i++) ...c[0].encoded]) else c.encoded,
-        ])),
+        derContext(
+          0,
+          derSequence([
+            for (final c in env.children)
+              if (c.isSet) der(Tag.set, [for (var i = 0; i <= maxRecipients; i++) ...c[0].encoded]) else c.encoded,
+          ]),
+        ),
       ]);
-      for (final run in [() => smime.decrypt(stuffed, [alice]), () => smime.recipientsOf(stuffed)]) {
+      for (final run in [
+        () => smime.decrypt(stuffed, [alice]),
+        () => smime.recipientsOf(stuffed),
+      ]) {
         expect(run, throwsA(isA<SmimeException>().having((e) => e.kind, 'kind', SmimeErrorKind.malformed)));
       }
       final watch = Stopwatch()..start();

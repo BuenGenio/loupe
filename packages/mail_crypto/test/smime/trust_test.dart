@@ -94,7 +94,9 @@ void main() {
     // Twelve CAs all called "Loop CA" (each could have signed each other):
     // without a bound, searching every path up to eight deep is 12^8 checks.
     final loopKey = TestKey('loop');
-    final cas = [for (var i = 0; i < 12; i++) makeCa('Loop CA', loopKey, serial: 1000 + i, extensions: [basicConstraints()])];
+    final cas = [
+      for (var i = 0; i < 12; i++) makeCa('Loop CA', loopKey, serial: 1000 + i, extensions: [basicConstraints()]),
+    ];
     final leaf = makeUser('alice@example.org', TestKey('leaf'), issuerCn: 'Loop CA', issuerKey: loopKey);
     var checks = 0;
     final watch = Stopwatch()..start();
@@ -143,12 +145,27 @@ void main() {
     test('an intermediate for mail, or for any purpose, vouches for a mail certificate', () {
       expect(through(subCa(extensions: caExtensions)).trusted, isTrue);
       for (final eku in [Oid.emailProtection, Oid.anyExtendedKeyUsage]) {
-        expect(through(subCa(extensions: [...caExtensions, extendedKeyUsage([eku])])).trusted, isTrue);
+        expect(
+          through(
+            subCa(
+              extensions: [
+                ...caExtensions,
+                extendedKeyUsage([eku]),
+              ],
+            ),
+          ).trusted,
+          isTrue,
+        );
       }
     });
 
     test('an intermediate limited to TLS doesn’t', () {
-      final tls = subCa(extensions: [...caExtensions, extendedKeyUsage(['1.3.6.1.5.5.7.3.1'])]);
+      final tls = subCa(
+        extensions: [
+          ...caExtensions,
+          extendedKeyUsage(['1.3.6.1.5.5.7.3.1']),
+        ],
+      );
       expect(through(tls).problems, {SmimeProblem.invalidChain});
     });
 

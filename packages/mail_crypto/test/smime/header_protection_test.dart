@@ -9,6 +9,9 @@ import 'package:test/test.dart';
 import 'smime_support.dart';
 import 'writer_test.dart' show Keys, aliceId, aliceState, readAs, sign, signEncrypt, toBob;
 
+/// Encrypted with the Subject hidden outside (S/MIME's default keeps it readable).
+const hiding = OutgoingSecurity(sign: true, encrypt: true, technology: SecurityTechnology.smime, hideSubject: true);
+
 /// Header protection (RFC 9788) of S/MIME mail Loupe sends, and reading it.
 void main() {
   Uint8List write(
@@ -41,7 +44,7 @@ void main() {
 
   group('encrypted', () {
     test('the Subject is "..." outside and the real one inside, with HP-Outer', () {
-      final raw = write(signEncrypt);
+      final raw = write(hiding);
       final root = MimeEntity.parse(raw);
       expect(root.header('subject'), '...');
       expect(latin1.decode(raw), isNot(contains('Quarterly')));
@@ -60,7 +63,7 @@ void main() {
     });
 
     test('the legacy display leads the text for other clients; Loupe hides it', () {
-      final r = readAs(write(signEncrypt), bob);
+      final r = readAs(write(hiding), bob);
       final legacy = contentFromEntity(r.entity!, emailId: 'x').text!;
       expect(legacy, startsWith('Subject: Quarterly numbers\r\n\r\nHi Bob,'));
       final shown = contentFromEntity(r.entity!, emailId: 'x', hideLegacyDisplay: true).text!;
@@ -69,7 +72,7 @@ void main() {
     });
 
     test('HTML: a header-protection-legacy-display element after <body>, hidden when read', () {
-      final r = readAs(write(signEncrypt, html: '<html><body><p>The <b>numbers</b> are in.</p></body></html>'), bob);
+      final r = readAs(write(hiding, html: '<html><body><p>The <b>numbers</b> are in.</p></body></html>'), bob);
       final html = contentFromEntity(r.entity!, emailId: 'x').html!;
       expect(html, contains('<body>\r\n<div class="header-protection-legacy-display"><pre>Subject: Quarterly numbers'));
       final shown = contentFromEntity(r.entity!, emailId: 'x', hideLegacyDisplay: true);
@@ -81,7 +84,7 @@ void main() {
     test('attachments are left alone: only main body parts get the display', () {
       final r = readAs(
         write(
-          signEncrypt,
+          hiding,
           attachments: [
             OutgoingAttachment(
               filename: 'notes.txt',
@@ -99,13 +102,27 @@ void main() {
     });
 
     test('a non-ASCII subject: encoded outside the payload, decoded when read', () {
-      final r = readAs(write(signEncrypt, subject: 'Grüße zum Quartal'), bob);
+      final r = readAs(write(hiding, subject: 'Grüße zum Quartal'), bob);
       expect(r.status.protectedSubject, 'Grüße zum Quartal');
       expect(contentFromEntity(r.entity!, emailId: 'x').text, startsWith('Subject: Grüße zum Quartal\r\n'));
     });
 
+    test('by default S/MIME keeps the Subject readable outside, protected inside, with no legacy display', () {
+      final raw = write(signEncrypt);
+      final root = MimeEntity.parse(raw);
+      expect(root.header('subject'), 'Quarterly numbers');
+      final r = readAs(raw, bob);
+      expect(r.status.signature?.good, isTrue);
+      final payload = r.entity!;
+      expect(payload.contentType['hp'], 'cipher');
+      expect(payload.header('subject'), 'Quarterly numbers');
+      expect(payload.rawHeaders('hp-outer'), contains('Subject: Quarterly numbers'));
+      // No legacy display: other clients already show the real Subject.
+      expect(contentFromEntity(payload, emailId: 'x').text!, startsWith('Hi Bob,'));
+    });
+
     test('an encrypted draft hides its subject too', () {
-      final raw = write(signEncrypt.forDraft());
+      final raw = write(hiding.forDraft());
       expect(MimeEntity.parse(raw).header('subject'), '...');
       expect(readAs(raw, alice).status.protectedSubject, 'Quarterly numbers');
     });

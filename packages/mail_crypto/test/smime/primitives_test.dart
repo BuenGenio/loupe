@@ -52,7 +52,10 @@ void main() {
     test('the DigestInfo with NULL parameters, and without', () {
       expect(rsaPkcs1Verify(public, Oid.sha256, hash, rsaPkcs1Sign(material, Oid.sha256, hash)), isTrue);
       expect(rsaPkcs1Verify(public, Oid.sha256, hash, signRaw(derSequence([alg, octets]))), isTrue);
-      expect(rsaPkcs1Verify(public, Oid.sha256, hash, signRaw(derSequence([derAlgorithm(Oid.sha256), octets]))), isTrue);
+      expect(
+        rsaPkcs1Verify(public, Oid.sha256, hash, signRaw(derSequence([derAlgorithm(Oid.sha256), octets]))),
+        isTrue,
+      );
       expect(rsaPkcs1Verify(public, Oid.sha384, hash, signRaw(derSequence([alg, octets]))), isFalse);
     });
 
@@ -60,10 +63,34 @@ void main() {
       final garbage = derOctets(List.filled(40, 0x41));
       for (final (what, t) in [
         ('trailing element', derSequence([alg, octets, garbage])),
-        ('element after NULL', derSequence([derSequence([derOid(Oid.sha256), derNull, garbage]), octets])),
-        ('NULL with content', derSequence([derSequence([derOid(Oid.sha256), const [0x05, 0x02, 0x41, 0x41]]), octets])),
+        (
+          'element after NULL',
+          derSequence([
+            derSequence([derOid(Oid.sha256), derNull, garbage]),
+            octets,
+          ]),
+        ),
+        (
+          'NULL with content',
+          derSequence([
+            derSequence([
+              derOid(Oid.sha256),
+              const [0x05, 0x02, 0x41, 0x41],
+            ]),
+            octets,
+          ]),
+        ),
         ('long-form length', [0x30, 0x81, 0x31, ...alg, ...octets]),
-        ('non-minimal OID', derSequence([derSequence([const [0x06, 0x0a, 0x80, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01], derNull]), octets])),
+        (
+          'non-minimal OID',
+          derSequence([
+            derSequence([
+              const [0x06, 0x0a, 0x80, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01],
+              derNull,
+            ]),
+            octets,
+          ]),
+        ),
       ]) {
         expect(rsaPkcs1Verify(public, Oid.sha256, hash, signRaw(t)), isFalse, reason: what);
       }
@@ -72,7 +99,11 @@ void main() {
     test('Bleichenbacher’s forgery (e = 3): no private key, garbage after the digest', () {
       // Any 2048-bit modulus with exponent 3: the forger needs only the public key.
       final r = Random(2006);
-      final n = bigIntFromBytes([0xc0 | r.nextInt(64), for (var i = 1; i < k - 1; i++) r.nextInt(256), 1 | r.nextInt(256)]);
+      final n = bigIntFromBytes([
+        0xc0 | r.nextInt(64),
+        for (var i = 1; i < k - 1; i++) r.nextInt(256),
+        1 | r.nextInt(256),
+      ]);
       final key = RSAPublicKey(n, BigInt.from(3));
       // 00 01 FF×8 00, then a DigestInfo whose SEQUENCE also holds a 190-octet OCTET STRING.
       final prefix = [
@@ -97,7 +128,13 @@ void main() {
       final offCurve = Uint8List.fromList(point)..[64] ^= 1;
       final hybrid = Uint8List.fromList(point)..[0] = 6 | (point[64] & 1);
       final tooBig = Uint8List.fromList(point)..fillRange(1, 33, 0xff);
-      for (final p in [offCurve, hybrid, tooBig, Uint8List(0), Uint8List.fromList([0])]) {
+      for (final p in [
+        offCurve,
+        hybrid,
+        tooBig,
+        Uint8List(0),
+        Uint8List.fromList([0]),
+      ]) {
         expect(
           () => ecPublicKey(Oid.secp256r1, p),
           throwsA(isA<SmimeException>().having((e) => e.kind, 'kind', SmimeErrorKind.malformed)),

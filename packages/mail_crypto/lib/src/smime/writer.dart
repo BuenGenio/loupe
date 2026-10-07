@@ -160,7 +160,12 @@ final class SmimeMessageComposer implements MessageComposer {
 
     // Header protection (RFC 9788): the header fields go inside, where the
     // signature covers them and encryption hides the Subject.
-    var content = protectHeaders(split.content, split.outer, encrypted: security.encrypt);
+    var content = protectHeaders(
+      split.content,
+      split.outer,
+      encrypted: security.encrypt,
+      hideSubject: security.hidesSubject,
+    );
     if (security.sign) {
       var key = keys.smimeKey(own.fingerprint);
       if (key == null) {
@@ -210,7 +215,9 @@ final class SmimeMessageComposer implements MessageComposer {
           'Can’t encrypt: your S/MIME certificate is for signing only, so you couldn’t read the message yourself.',
         );
       }
-      return SmimeComposed(_encrypted(split, content, plan.recipientCertificates, plan.cipher));
+      return SmimeComposed(
+        _encrypted(split, content, plan.recipientCertificates, plan.cipher, hideSubject: security.hidesSubject),
+      );
     }
     return SmimeComposed(split.withContent(content, const []));
   }
@@ -220,8 +227,15 @@ final class SmimeMessageComposer implements MessageComposer {
     final choices = ['smime', if (security.encrypt) 'encrypt', if (security.sign) 'sign'];
     final extra = ['$draftSecurityHeader: ${choices.join('; ')}'];
     if (!security.encrypt || own == null || !own.certificate.canEncrypt) return split.withHeaders(extra);
-    final content = protectHeaders(split.content, split.outer, encrypted: true);
-    return _encrypted(split, content, [own.certificate], SmimeContentCipher.aes256Cbc, extra: extra);
+    final content = protectHeaders(split.content, split.outer, encrypted: true, hideSubject: security.hidesSubject);
+    return _encrypted(
+      split,
+      content,
+      [own.certificate],
+      SmimeContentCipher.aes256Cbc,
+      extra: extra,
+      hideSubject: security.hidesSubject,
+    );
   }
 
   /// `multipart/signed` around [content], the detached signature as `smime.p7s`.
@@ -253,6 +267,7 @@ final class SmimeMessageComposer implements MessageComposer {
     List<SmimeCertificate> recipients,
     SmimeContentCipher cipher, {
     List<String> extra = const [],
+    bool hideSubject = true,
   }) {
     final Uint8List envelope;
     try {
@@ -262,8 +277,8 @@ final class SmimeMessageComposer implements MessageComposer {
     }
     final type = cipher == SmimeContentCipher.aes256Gcm ? 'authEnveloped-data' : 'enveloped-data';
     return assembleEntity([
-      // The Subject is inside; outside it is `...` (RFC 9788's HP-Outer has the same).
-      ...obscure(split.outer),
+      // The Subject is inside; outside it is `...` when hidden (RFC 9788's HP-Outer has the same).
+      ...(hideSubject ? obscure(split.outer) : split.outer),
       'MIME-Version: 1.0',
       ...extra,
       'Content-Type: application/pkcs7-mime; smime-type=$type; name="smime.p7m"',

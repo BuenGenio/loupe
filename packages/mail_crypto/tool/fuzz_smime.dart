@@ -38,11 +38,7 @@ Future<void> main(List<String> args) async {
     while (from < end) {
       final port = ReceivePort();
       final exit = ReceivePort();
-      final isolate = await Isolate.spawn(
-        _worker,
-        (port.sendPort, targets, seed, from, end),
-        onExit: exit.sendPort,
-      );
+      final isolate = await Isolate.spawn(_worker, (port.sendPort, targets, seed, from, end), onExit: exit.sendPort);
       var current = (targets.first, from);
       var lastProgress = DateTime.now();
       var finished = false;
@@ -65,7 +61,10 @@ Future<void> main(List<String> args) async {
       while (!finished) {
         final rss = ProcessInfo.currentRss;
         if (rss > maxRss) maxRss = rss;
-        final stopped = await Future.any([exited.then((_) => true), Future.delayed(const Duration(seconds: 1), () => false)]);
+        final stopped = await Future.any([
+          exited.then((_) => true),
+          Future.delayed(const Duration(seconds: 1), () => false),
+        ]);
         if (stopped) break;
         if (DateTime.now().difference(lastProgress) > hang) {
           final (t, i) = current;
@@ -89,14 +88,18 @@ Future<void> main(List<String> args) async {
   }
 
   final ticker = Timer.periodic(const Duration(seconds: 30), (_) {
-    stdout.writeln('${watch.elapsed.inSeconds} s: $done inputs, ${failures.length} failures, '
-        'max RSS ${maxRss >> 20} MB');
+    stdout.writeln(
+      '${watch.elapsed.inSeconds} s: $done inputs, ${failures.length} failures, '
+      'max RSS ${maxRss >> 20} MB',
+    );
   });
   await Future.wait([for (var w = 0; w < workers; w++) runWorker(w)]);
   ticker.cancel();
   stdout
-    ..writeln('Done: $done inputs (${targets.join(', ')}) in ${watch.elapsed.inSeconds} s, '
-        'max RSS ${maxRss >> 20} MB')
+    ..writeln(
+      'Done: $done inputs (${targets.join(', ')}) in ${watch.elapsed.inSeconds} s, '
+      'max RSS ${maxRss >> 20} MB',
+    )
     ..writeln('Slowest input per target (ms): $slowest')
     ..writeln('${failures.length} failures');
   for (final f in failures) {

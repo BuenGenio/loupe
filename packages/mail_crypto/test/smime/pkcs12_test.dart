@@ -12,7 +12,11 @@ import 'smime_support.dart';
 Uint8List withMacIterations(int n) {
   final pfx = Asn1.parse(smimeFixture('alice.p12'));
   final mac = pfx[2];
-  return derSequence([pfx[0].encoded, pfx[1].encoded, derSequence([mac[0].encoded, mac[1].encoded, derInt(n)])]);
+  return derSequence([
+    pfx[0].encoded,
+    pfx[1].encoded,
+    derSequence([mac[0].encoded, mac[1].encoded, derInt(n)]),
+  ]);
 }
 
 /// A PFX without a MAC holding one shrouded key bag (PBES2, AES-256-CBC)
@@ -20,19 +24,22 @@ Uint8List withMacIterations(int n) {
 Uint8List shroudedKeyWith(Uint8List kdfParams) {
   final pbes2 = derAlgorithm(
     Oid.pbes2,
-    derSequence([
-      derAlgorithm(Oid.pbkdf2, kdfParams),
-      derAlgorithm(Oid.aes256Cbc, derOctets(Uint8List(16))),
-    ]),
+    derSequence([derAlgorithm(Oid.pbkdf2, kdfParams), derAlgorithm(Oid.aes256Cbc, derOctets(Uint8List(16)))]),
   );
   final bag = derSequence([
     derOid(Oid.pkcs8ShroudedKeyBag),
     derContext(0, derSequence([pbes2, derOctets(Uint8List(48))])),
   ]);
-  final safe = derSequence([derOid(Oid.data), derContext(0, derOctets(derSequence([bag])))]);
+  final safe = derSequence([
+    derOid(Oid.data),
+    derContext(0, derOctets(derSequence([bag]))),
+  ]);
   return derSequence([
     derInt(3),
-    derSequence([derOid(Oid.data), derContext(0, derOctets(derSequence([safe])))]),
+    derSequence([
+      derOid(Oid.data),
+      derContext(0, derOctets(derSequence([safe]))),
+    ]),
   ]);
 }
 
@@ -42,7 +49,10 @@ void main() {
   test('a MAC asking for billions of iterations is refused at once (it hung before the password was checked)', () {
     final watch = Stopwatch()..start();
     expect(() => smime.readPkcs12(withMacIterations(0x7fffffff), 'alice-pass'), throwsKind(SmimeErrorKind.unsupported));
-    expect(() => smime.readPkcs12(withMacIterations(maxPkcs12Iterations + 1), 'x'), throwsKind(SmimeErrorKind.unsupported));
+    expect(
+      () => smime.readPkcs12(withMacIterations(maxPkcs12Iterations + 1), 'x'),
+      throwsKind(SmimeErrorKind.unsupported),
+    );
     expect(() => smime.readPkcs12(withMacIterations(0), 'alice-pass'), throwsKind(SmimeErrorKind.malformed));
     expect(watch.elapsed, lessThan(const Duration(seconds: 1)));
     // The file's own count still opens it.

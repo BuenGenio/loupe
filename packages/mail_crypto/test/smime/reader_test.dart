@@ -93,8 +93,7 @@ void main() {
 
   group('multipart/signed wrapping: only the signed part is shown as signed', () {
     const boundary = '------95CFF1AC2FFBA83C1C8428AEF42FE630';
-    const html =
-        'Content-Type: text/html; charset=utf-8\r\n\r\n<p>Please pay the new account: EVIL</p>\r\n';
+    const html = 'Content-Type: text/html; charset=utf-8\r\n\r\n<p>Please pay the new account: EVIL</p>\r\n';
     const pdf =
         'Content-Type: application/pdf; name="invoice.pdf"\r\n'
         'Content-Disposition: attachment; filename="invoice.pdf"\r\n\r\n%PDF-1.4\r\n';
@@ -130,7 +129,12 @@ void main() {
 
   test('a boundary that isn’t ASCII: not split, never an exception', () {
     final text = latin1.decode(smimeMail('signed-detached.eml'));
-    final raw = latin1.encode(text.replaceFirst('boundary="----95CFF1AC2FFBA83C1C8428AEF42FE630"', 'boundary="----95CFF1AC2FFBA83C1C8428AEF42FÉ630"'));
+    final raw = latin1.encode(
+      text.replaceFirst(
+        'boundary="----95CFF1AC2FFBA83C1C8428AEF42FE630"',
+        'boundary="----95CFF1AC2FFBA83C1C8428AEF42FÉ630"',
+      ),
+    );
     final r = const SmimeReader(smime).read(raw, anchors: testAnchors, now: today);
     expect(r.status.signature, isNull);
     expect(MimeEntity.parse(raw).parts, isEmpty);
@@ -141,7 +145,9 @@ void main() {
     const ct = 'multipart/signed; protocol="application/pkcs7-signature"; a\rb=1; micalg=sha-256';
     expect(HeaderValue.parse(ct)['a\rb'], '1');
     expect(detectSmime(const [('Content-Type', ct)]), SmimeProtection.signedDetached);
-    final raw = latin1.encode(latin1.decode(smimeMail('signed-detached.eml')).replaceFirst('micalg="sha-256";', 'a\rb=1;'));
+    final raw = latin1.encode(
+      latin1.decode(smimeMail('signed-detached.eml')).replaceFirst('micalg="sha-256";', 'a\rb=1;'),
+    );
     expect(const SmimeReader(smime).read(raw, anchors: testAnchors, now: today).status.signature?.good, isTrue);
   });
 

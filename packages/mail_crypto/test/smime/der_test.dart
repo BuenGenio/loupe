@@ -28,7 +28,10 @@ void main() {
       expect(element(Tag.integer, [0xff]).integer, BigInt.from(-1));
       expect(element(Tag.integer, [0x80, 0x00]).integer, BigInt.from(-32768));
       expect(element(Tag.integer, [0x00, ...List.filled(2048, 0xff)]).integer.bitLength, 16384);
-      expect(() => element(Tag.integer, List.filled(Asn1.maxIntegerLength + 1, 1)).integer, throwsA(isA<Asn1Exception>()));
+      expect(
+        () => element(Tag.integer, List.filled(Asn1.maxIntegerLength + 1, 1)).integer,
+        throwsA(isA<Asn1Exception>()),
+      );
       expect(() => element(Tag.integer, const []).integer, throwsA(isA<Asn1Exception>()));
     });
 
@@ -46,7 +49,13 @@ void main() {
     });
 
     test('octets to numbers and back', () {
-      for (final bytes in [<int>[], [0], [1], [0x80, 0], List.filled(600, 0xee)]) {
+      for (final bytes in [
+        <int>[],
+        [0],
+        [1],
+        [0x80, 0],
+        List.filled(600, 0xee),
+      ]) {
         final v = bigIntFromBytes(bytes);
         final back = unsignedBytes(v, bytes.length);
         expect(back, bytes);
@@ -146,12 +155,18 @@ void main() {
       final cert = makeCertificate(
         key: key,
         subject: derSequence([
-          derSet([derSequence([derOid('2.5.4.3'), derUtf8('Alice\u202e\u200b Example\n · trusted')])]),
-          derSet([derSequence([derOid('1.2.840.113549.1.9.1'), derIa5('bob@example.org\u0000.evil')])]),
+          derSet([
+            derSequence([derOid('2.5.4.3'), derUtf8('Alice\u202e\u200b Example\n · trusted')]),
+          ]),
+          derSet([
+            derSequence([derOid('1.2.840.113549.1.9.1'), derIa5('bob@example.org\u0000.evil')]),
+          ]),
         ]),
         issuer: name('Names CA'),
         issuerKey: key,
-        extensions: [subjectAltEmails(['alice@example.org', 'carol@exa mple.org'])],
+        extensions: [
+          subjectAltEmails(['alice@example.org', 'carol@exa mple.org']),
+        ],
       );
       expect(cert.displayName, 'Alice Example · trusted');
       expect(cert.subject.toString(), isNot(contains('\u202e')));
