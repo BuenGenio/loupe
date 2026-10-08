@@ -1,0 +1,24 @@
+Loupe er rólegt og hraðvirkt póstforrit með verkfærum á borð við tölvuforrit undir niðri: leit með segðum, reglur á netþjóni, OpenPGP og S/MIME. Það talar við póstþjóninn þinn og engan annan.
+
+Einfalt á yfirborðinu. Öflugt undir niðri.
+• Readable-hamur: HTML-póstur endursmíðaður fyrir skjáinn þinn: eðlilegar leturstærðir, síðufætur í smáu letri og myndir í hringekju sem þú flettir með fingrinum.
+• Leit með segðum: Merkimiðar eða innslegnar fyrirspurnir á borð við from:alice og is:unread. Niðurstöður úr símanum birtast strax og netþjónninn streymir restinni inn á eftir.
+• Smart Mailboxes sem fylgja þér: Vistaðar leitir sem eru geymdar á þínum eigin póstþjóni, svo þær fylgja þér í hvert tæki.
+• Reglur, í tækinu eða á netþjóninum: Breyttu hvaða leit sem er í reglu. Keyrðu hana í símanum eða sem Sieve á netþjóninum þínum, svo hún virki meðan þú sefur.
+• Áskriftir: Öll fréttabréf eftir sendanda, með lestrarhlutfalli og afskráningarmiðstöð með einni snertingu sem keyrir í símanum þínum.
+• Blundur sem samstillist: Póstur í blundi er geymdur í möppu á netþjóninum þínum, svo önnur póstforrit sem fylgja sömu venju sjá hann líka.
+• Afturkalla og tímasetja sendingu: Dragðu skilaboð til baka fyrstu sekúndurnar, eða skrifaðu núna og sendu á morgun klukkan níu.
+• OpenPGP og S/MIME: Dulkóðaðu og undirritaðu með hvorum staðlinum sem er. OpenPGP virkar með Thunderbird og Autocrypt.
+• Vefveiðavörn sem útskýrir: Grunsamlegir tenglar og lén sem líkja eftir öðrum eru merkt, og ástæðan útskýrð á mannamáli.
+• Dagatalsboð: Accept, Maybe eða Decline beint fyrir ofan skilaboðin, með báðum tímabeltum þegar þau eru ólík.
+• IMAP og JMAP: Hvaða IMAP-þjónusta sem er með sjálfvirkri uppsetningu, auk innbyggðs JMAP fyrir Fastmail og Stalwart.
+• Spjaldtölvur og lyklaborð: Þrjú svæði, flýtilyklar, draga og sleppa og skipanaspjald með Ctrl+K.
+
+Það er ekkert Loupe-ský. Það er einmitt málið.
+Síminn þinn talar beint við póstþjóninn þinn. Loupe hefur engan bakenda sem hægt er að brjótast inn í, enga greiningu sem þú þarft að afþakka og ekkert að selja.
+
+Opinn grunnkóði, alveg niður í síðustu prófun.
+Hver einasta lína er öllum opin samkvæmt MPL-2.0-leyfinu. Nightly-útgáfur koma beint frá GitHub Actions, svo það sem þú setur upp er það sem þú getur lesið.
+
+Loupe-forritið er á ensku í bili; fleiri tungumál bætast við.
+https://loupe.mx

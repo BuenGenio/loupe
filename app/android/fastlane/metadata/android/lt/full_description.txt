@@ -1,0 +1,24 @@
+Loupe – rami, greita pašto programėlė su kompiuterinės klasės įrankiais po paviršiumi: paieška išraiškomis, taisyklėmis serveryje, OpenPGP ir S/MIME. Ji bendrauja su jūsų pašto serveriu ir su niekuo kitu.
+
+Paprasta iš išorės. Galinga viduje.
+• Režimas Readable: HTML laiškai perkurti jūsų ekranui: tikri teksto dydžiai, poraštės smulkiu šriftu, nuotraukos braukiamame karuselyje.
+• Paieška išraiškomis: Žetonai arba įvestos užklausos, pvz., from:alice ir is:unread. Rezultatai iš telefono pasirodo iškart, serverio – netrukus po jų.
+• Smart Mailboxes, keliaujančios kartu: Išsaugotos paieškos laikomos jūsų pačių pašto serveryje, todėl lydi jus kiekviename įrenginyje.
+• Taisyklės įrenginyje arba serveryje: Bet kurią paiešką paverskite taisykle. Vykdykite ją telefone arba kaip Sieve savo serveryje, kad ji veiktų jums miegant.
+• Prenumeratos: Visi naujienlaiškiai pagal siuntėją, su skaitymo rodikliais ir prenumeratų atsisakymo centru vienu bakstelėjimu, kuris veikia jūsų telefone.
+• Atidėjimas, kuris sinchronizuojasi: Atidėti laiškai laikomi aplanke jūsų serveryje, todėl juos mato ir kitos pašto programos, kurios laikosi šio susitarimo.
+• Siuntimo atšaukimas ir planavimas: Atšaukite laišką per pirmąsias sekundes arba parašykite dabar ir išsiųskite rytoj devintą.
+• OpenPGP ir S/MIME: Šifruokite ir pasirašykite bet kuriuo iš dviejų standartų. OpenPGP veikia su Thunderbird ir Autocrypt.
+• Paaiškinama sukčiavimo patikra: Įtartinos nuorodos ir panašiai atrodantys domenai pažymimi, o priežastis paaiškinama paprastais žodžiais.
+• Kalendoriaus kvietimai: Accept, Maybe arba Decline tiesiai virš laiško, su abiem laiko juostomis, kai jos skiriasi.
+• IMAP ir JMAP: Bet kuris IMAP paslaugų teikėjas su automatine konfigūracija, taip pat integruotas JMAP palaikymas Fastmail ir Stalwart.
+• Planšetės ir klaviatūros: Trys skydeliai, spartieji klavišai, vilkimas ir numetimas bei komandų paletė su Ctrl+K.
+
+Loupe debesies nėra. Būtent tai ir yra esmė.
+Jūsų telefonas bendrauja su jūsų pašto serveriu tiesiogiai. Loupe neturi serverinės dalies, į kurią būtų galima įsilaužti, analitikos, kurios reikėtų atsisakyti, ir nieko, ką galėtų parduoti.
+
+Atvirasis kodas – iki paskutinio testo.
+Kiekviena eilutė vieša pagal MPL-2.0 licenciją. Nightly versijos kuriamos tiesiai per GitHub Actions, todėl tai, ką įdiegiate, galite ir perskaityti.
+
+Loupe programėlė kol kas yra anglų kalba; vėliau atsiras daugiau kalbų.
+https://loupe.mx

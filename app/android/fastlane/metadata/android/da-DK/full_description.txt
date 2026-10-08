@@ -1,0 +1,24 @@
+Loupe er en rolig, hurtig mailapp med værktøjer i desktopklasse under overfladen: søgning med udtryk, regler på serveren, OpenPGP og S/MIME. Den taler med din mailserver og ingen andre.
+
+Enkel på overfladen. Kraftfuld nedenunder.
+• Readable-tilstand: HTML-mail bygget om til din skærm: rigtige tekststørrelser, sidefødder med småt og billeder i en karrusel, du kan swipe igennem.
+• Søgning med udtryk: Brikker eller indtastede forespørgsler som from:alice og is:unread. Resultater fra telefonen vises med det samme, og serverens strømmer ind bagefter.
+• Smart Mailboxes, der rejser med dig: Gemte søgninger på din egen mailserver, så de følger dig til alle dine enheder.
+• Regler på enheden eller serveren: Gør enhver søgning til en regel. Kør den på telefonen eller som Sieve på din server, så den virker, mens du sover.
+• Abonnementer: Alle nyhedsbreve efter afsender, med læseprocenter og et afmeldingscenter med ét tryk, der kører på din telefon.
+• Udsæt, der synkroniserer: Udsat mail ligger i en mappe på din server, så andre klienter, der følger konventionen, også kan se den.
+• Fortryd og planlæg afsendelse: Tag en besked tilbage i de første sekunder, eller skriv nu og send i morgen klokken ni.
+• OpenPGP og S/MIME: Kryptér og signér med begge standarder. OpenPGP fungerer med Thunderbird og Autocrypt.
+• Phishingtjek, der forklarer sig: Mistænkelige links og domæner, der efterligner andre, bliver markeret, med årsagen forklaret i almindelige ord.
+• Kalenderinvitationer: Svar Accept, Maybe eller Decline lige over beskeden, med begge tidszoner, når de er forskellige.
+• IMAP og JMAP: Enhver IMAP-udbyder med automatisk opsætning, plus indbygget JMAP til Fastmail og Stalwart.
+• Tablets og tastaturer: Tre ruder, tastaturgenveje, træk og slip og en kommandopalet på Ctrl+K.
+
+Der er ingen Loupe-sky. Det er hele pointen.
+Din telefon taler direkte med din mailserver. Loupe har ingen backend, der kan blive hacket, ingen statistik, du skal fravælge, og intet at sælge.
+
+Åben kildekode, helt ned til den sidste test.
+Hver eneste linje er offentlig under MPL-2.0. Nightly-builds kommer direkte fra GitHub Actions, så det, du installerer, er det, du kan læse.
+
+Loupe-appen er på engelsk indtil videre; flere sprog følger.
+https://loupe.mx

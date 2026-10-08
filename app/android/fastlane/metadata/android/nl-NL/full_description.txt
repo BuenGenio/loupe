@@ -1,0 +1,24 @@
+Loupe is een rustige, snelle mailapp met gereedschap op desktopniveau onder de motorkap: zoeken met expressies, regels op de server, OpenPGP en S/MIME. De app praat met je mailserver en met niemand anders.
+
+Eenvoudig aan de buitenkant. Krachtig vanbinnen.
+• Readable-modus: HTML-mail omgebouwd voor je scherm: echte tekstgroottes, voetteksten in kleine letters, foto's in een carrousel waar je doorheen veegt.
+• Zoeken met expressies: Chips of getypte zoekopdrachten zoals from:alice en is:unread. Resultaten van je telefoon verschijnen meteen, die van de server volgen daarna.
+• Smart Mailboxes die met je meereizen: Bewaarde zoekopdrachten op je eigen mailserver, zodat ze je naar elk apparaat volgen.
+• Regels, op het apparaat of op de server: Maak van elke zoekopdracht een regel. Laat hem op je telefoon draaien, of als Sieve op je server, zodat hij werkt terwijl jij slaapt.
+• Abonnementen: Elke nieuwsbrief per afzender, met leespercentages en een afmeldcentrum dat met één tik werkt en op je telefoon draait.
+• Snoozen dat synchroniseert: Gesnoozede mail staat in een map op je server, zodat andere clients die dezelfde conventie volgen hem ook zien.
+• Verzenden ongedaan maken en inplannen: Haal een bericht in de eerste seconden terug, of schrijf het nu en verstuur het morgen om negen uur.
+• OpenPGP en S/MIME: Versleutel en onderteken met de standaard van je keuze. OpenPGP werkt samen met Thunderbird en Autocrypt.
+• Phishingcontrole met uitleg: Verdachte links en nagebootste domeinen worden gemarkeerd, met de reden in gewone taal.
+• Agenda-uitnodigingen: Kies Accept, Maybe of Decline direct boven het bericht, met beide tijdzones als die verschillen.
+• IMAP en JMAP: Elke IMAP-provider met automatische configuratie, plus native JMAP voor Fastmail en Stalwart.
+• Tablets en toetsenborden: Drie panelen, sneltoetsen, slepen en neerzetten, en een opdrachtenpalet onder Ctrl+K.
+
+Er is geen Loupe-cloud. Daar gaat het juist om.
+Je telefoon praat rechtstreeks met je mailserver. Loupe heeft geen backend die gehackt kan worden, geen analytics om je voor af te melden en niets te verkopen.
+
+Opensource, tot de laatste test.
+Elke regel code is openbaar onder de MPL-2.0. Nightly builds komen rechtstreeks uit GitHub Actions, dus wat je installeert, kun je ook lezen.
+
+De Loupe-app is voorlopig in het Engels; meer talen volgen.
+https://loupe.mx

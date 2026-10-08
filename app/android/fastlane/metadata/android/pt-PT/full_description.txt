@@ -1,0 +1,24 @@
+O Loupe é uma aplicação de e-mail tranquila e rápida, com ferramentas de computador por baixo: pesquisa por expressões, regras no servidor, OpenPGP e S/MIME. Fala com o seu servidor de e-mail e com mais ninguém.
+
+Simples por fora. Poderoso por dentro.
+• Modo Readable: E-mail em HTML refeito à medida do seu ecrã: tamanhos de texto reais, rodapés em letra pequena e fotos num carrossel para deslizar.
+• Pesquisa por expressões: Chips ou consultas escritas como from:alice e is:unread. Os resultados do telemóvel aparecem de imediato e os do servidor chegam a seguir.
+• Smart Mailboxes que viajam consigo: Pesquisas guardadas no seu próprio servidor de e-mail, para o acompanharem em todos os dispositivos.
+• Regras no dispositivo ou no servidor: Transforme qualquer pesquisa numa regra. Execute-a no telemóvel ou como Sieve no seu servidor, para funcionar enquanto dorme.
+• Subscrições: Todas as newsletters por remetente, com taxas de leitura e um centro de cancelamento de subscrições com um toque, que funciona no seu telemóvel.
+• Adiamento sincronizado: O e-mail adiado fica numa pasta no seu servidor, por isso outros clientes que sigam a mesma convenção também o veem.
+• Anular e agendar o envio: Recupere uma mensagem nos primeiros segundos, ou escreva agora e envie amanhã às nove.
+• OpenPGP e S/MIME: Encripte e assine com qualquer uma das normas. O OpenPGP funciona com o Thunderbird e o Autocrypt.
+• Deteção de phishing que se explica: Ligações suspeitas e domínios que imitam outros são assinalados, com o motivo em palavras simples.
+• Convites de calendário: Escolha Accept, Maybe ou Decline logo acima da mensagem, com os dois fusos horários quando são diferentes.
+• IMAP e JMAP: Qualquer fornecedor IMAP com configuração automática, além de JMAP nativo para Fastmail e Stalwart.
+• Tablets e teclados: Três painéis, atalhos de teclado, arrastar e largar, e uma paleta de comandos em Ctrl+K.
+
+Não há nuvem Loupe. E é essa a ideia.
+O seu telemóvel fala diretamente com o seu servidor de e-mail. O Loupe não tem um backend que possa ser atacado, nem recolha de estatísticas que tenha de desativar, nem nada para vender.
+
+Código aberto, até ao último teste.
+Cada linha é pública, sob a licença MPL-2.0. As compilações Nightly saem diretamente do GitHub Actions, por isso o que instala é o que pode ler.
+
+Por agora, a aplicação Loupe está em inglês; outros idiomas virão a seguir.
+https://loupe.mx

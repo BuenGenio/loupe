@@ -1,0 +1,24 @@
+Loupe, altında masaüstü sınıfı araçlar barındıran sakin ve hızlı bir e-posta uygulamasıdır: ifade tabanlı arama, sunucu tarafı kurallar, OpenPGP ve S/MIME. Yalnızca e-posta sunucunuzla konuşur, başka kimseyle değil.
+
+Yüzeyde sade. Derinde güçlü.
+• Readable modu: HTML e-postalar ekranınıza göre yeniden düzenlenir: gerçek yazı boyutları, küçük puntolu alt bilgiler, kaydırılabilir bir karuselde fotoğraflar.
+• İfade tabanlı arama: Çipler ya da from:alice ve is:unread gibi yazılı sorgular. Telefondaki sonuçlar hemen görünür, sunucudakiler ardından akar.
+• Sizinle gelen Smart Mailboxes: Kendi e-posta sunucunuzda saklanan kayıtlı aramalar; böylece her cihazda sizinle olurlar.
+• Kurallar, cihazda ya da sunucuda: Herhangi bir aramayı kurala dönüştürün. Telefonda ya da Sieve olarak sunucunuzda çalıştırın; siz uyurken de işini yapsın.
+• Abonelikler: Gönderene göre tüm bültenler; okunma oranlarıyla ve telefonunuzda çalışan, tek dokunuşla abonelikten çıkma merkeziyle.
+• Eşitlenen erteleme: Ertelenen e-postalar sunucunuzdaki bir klasörde durur; aynı yöntemi izleyen diğer istemciler de onları görür.
+• Geri alma ve zamanlanmış gönderim: Bir iletiyi ilk saniyelerde geri alın ya da şimdi yazıp yarın saat dokuzda gönderin.
+• OpenPGP ve S/MIME: İki standarttan biriyle şifreleyin ve imzalayın. OpenPGP, Thunderbird ve Autocrypt ile çalışır.
+• Açıklamalı kimlik avı denetimi: Şüpheli bağlantılar ve gerçeğine benzeyen alan adları işaretlenir, nedeni de sade bir dille açıklanır.
+• Takvim davetleri: İletinin hemen üstünden Accept, Maybe veya Decline ile yanıtlayın; saat dilimleri farklıysa ikisi birden gösterilir.
+• IMAP ve JMAP: Otomatik yapılandırmalı her IMAP sağlayıcısı, ayrıca Fastmail ve Stalwart için yerel JMAP desteği.
+• Tabletler ve klavyeler: Üç bölme, klavye kısayolları, sürükle bırak ve Ctrl+K ile açılan bir komut paleti.
+
+Loupe bulutu yok. Bütün mesele de bu.
+Telefonunuz doğrudan e-posta sunucunuzla konuşur. Loupe'un saldırıya açık bir arka ucu, kapatmanız gereken bir analitiği ya da satacak bir şeyi yok.
+
+Son testine kadar açık kaynak.
+Her satır MPL-2.0 kapsamında herkese açıktır. Nightly derlemeler doğrudan GitHub Actions'tan gelir; yani yüklediğiniz şey, okuyabildiğiniz şeyin ta kendisidir.
+
+Loupe uygulaması şimdilik İngilizce; başka diller de gelecek.
+https://loupe.mx

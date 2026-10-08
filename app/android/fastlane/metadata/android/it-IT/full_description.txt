@@ -1,0 +1,24 @@
+Loupe è un'app di posta tranquilla e veloce, con strumenti da desktop sotto il cofano: ricerca per espressioni, regole lato server, OpenPGP e S/MIME. Parla con il tuo server di posta e con nessun altro.
+
+Semplice fuori. Potente dentro.
+• Modalità Readable: La posta HTML ricostruita per il tuo schermo: dimensioni del testo reali, piè di pagina in piccolo, foto in un carosello da scorrere.
+• Ricerca per espressioni: Chip o query digitate come from:alice e is:unread. I risultati dal telefono compaiono subito, quelli del server arrivano dopo.
+• Smart Mailboxes che viaggiano con te: Ricerche salvate sul tuo server di posta, così ti seguono su ogni dispositivo.
+• Regole, sul dispositivo o sul server: Trasforma qualsiasi ricerca in una regola. Eseguila sul telefono o come Sieve sul tuo server, così lavora mentre dormi.
+• Iscrizioni: Ogni newsletter per mittente, con i tassi di lettura e un centro disiscrizioni a un tocco, che funziona sul tuo telefono.
+• Posticipo sincronizzato: La posta posticipata vive in una cartella sul tuo server, così anche gli altri client che seguono la stessa convenzione la vedono.
+• Annulla e programma l'invio: Riprenditi un messaggio nei primi secondi, oppure scrivi ora e invia domani alle nove.
+• OpenPGP e S/MIME: Cifra e firma con l'uno o l'altro standard. OpenPGP funziona con Thunderbird e Autocrypt.
+• Controllo antiphishing che si spiega: Link sospetti e domini sosia vengono segnalati, con il motivo spiegato in parole semplici.
+• Inviti di calendario: Accept, Maybe o Decline proprio sopra il messaggio, con entrambi i fusi orari quando sono diversi.
+• IMAP e JMAP: Qualsiasi provider IMAP con configurazione automatica, più JMAP nativo per Fastmail e Stalwart.
+• Tablet e tastiere: Tre riquadri, scorciatoie da tastiera, trascinamento e una palette dei comandi con Ctrl+K.
+
+Non esiste un cloud di Loupe. Ed è proprio questo il punto.
+Il tuo telefono parla direttamente con il tuo server di posta. Loupe non ha un backend da violare, né statistiche da disattivare, né niente da vendere.
+
+Open source, fino all'ultimo test.
+Ogni riga è pubblica con licenza MPL-2.0. Le build Nightly arrivano direttamente da GitHub Actions, quindi ciò che installi è ciò che puoi leggere.
+
+Per ora l'app Loupe è in inglese; altre lingue arriveranno.
+https://loupe.mx

@@ -1,0 +1,24 @@
+Loupe est une application de messagerie sereine et rapide, avec des outils dignes d'un client de bureau sous le capot : recherche par expressions, règles côté serveur, OpenPGP et S/MIME. Elle communique avec votre serveur de messagerie, et personne d'autre.
+
+Simple en surface. Puissante en profondeur.
+• Mode Readable: Les e-mails HTML refaits pour votre écran : vraies tailles de texte, pieds de page en petits caractères, photos dans un carrousel à faire défiler.
+• Recherche par expressions: Des pastilles ou des requêtes tapées comme from:alice et is:unread. Les résultats du téléphone s'affichent aussitôt, ceux du serveur arrivent ensuite.
+• Des Smart Mailboxes qui voyagent: Des recherches enregistrées sur votre propre serveur de messagerie, qui vous suivent sur chaque appareil.
+• Des règles, sur l'appareil ou sur le serveur: Transformez n'importe quelle recherche en règle. Exécutez-la sur le téléphone, ou en Sieve sur votre serveur pour qu'elle fonctionne pendant que vous dormez.
+• Abonnements: Chaque newsletter par expéditeur, avec les taux de lecture et un centre de désabonnement en un geste, qui fonctionne sur votre téléphone.
+• Une mise en attente synchronisée: Les e-mails mis en attente sont rangés dans un dossier sur votre serveur, si bien que les autres clients qui suivent cette convention les voient aussi.
+• Annuler et programmer l'envoi: Rattrapez un message dans les premières secondes, ou écrivez maintenant et envoyez demain à neuf heures.
+• OpenPGP et S/MIME: Chiffrez et signez avec l'une ou l'autre norme. OpenPGP fonctionne avec Thunderbird et Autocrypt.
+• Une détection du phishing qui s'explique: Les liens suspects et les domaines sosies sont signalés, avec la raison en termes simples.
+• Invitations d'agenda: Accept, Maybe ou Decline juste au-dessus du message, avec les deux fuseaux horaires quand ils diffèrent.
+• IMAP et JMAP: N'importe quel fournisseur IMAP avec configuration automatique, plus JMAP natif pour Fastmail et Stalwart.
+• Tablettes et claviers: Trois volets, raccourcis clavier, glisser-déposer et une palette de commandes sur Ctrl+K.
+
+Il n'y a pas de cloud Loupe. C'est tout l'intérêt.
+Votre téléphone parle directement à votre serveur de messagerie. Loupe n'a pas de backend à pirater, pas de statistiques à refuser, et rien à vendre.
+
+Open source, jusqu'au dernier test.
+Chaque ligne est publique sous licence MPL-2.0. Les versions Nightly sortent directement de GitHub Actions : ce que vous installez, vous pouvez le lire.
+
+L'application Loupe est en anglais pour l'instant ; d'autres langues suivront.
+https://loupe.mx

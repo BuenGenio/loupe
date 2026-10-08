@@ -1,0 +1,24 @@
+Loupe posta-aplikazio lasai eta azkarra da, mahaigaineko mailako tresnak azpian dituena: adierazpen bidezko bilaketa, zerbitzariko arauak, OpenPGP eta S/MIME. Zure posta-zerbitzariarekin hitz egiten du, eta beste inorekin ez.
+
+Sinplea azalean. Indartsua barruan.
+• Readable modua: HTML posta zure pantailara egokituta: benetako testu-tamainak, orri-oinak letra xehean, argazkiak hatzarekin pasatzeko karrusel batean.
+• Adierazpen bidezko bilaketa: Txipak edo from:alice eta is:unread bezalako kontsulta idatziak. Telefonoko emaitzak berehala agertzen dira, eta zerbitzarikoak ondoren iristen dira.
+• Zurekin bidaiatzen duten Smart Mailboxes: Zure posta-zerbitzarian gordetako bilaketak; horrela, gailu guztietan izango dituzu.
+• Arauak, gailuan edo zerbitzarian: Bihurtu edozein bilaketa arau. Exekutatu telefonoan, edo Sieve gisa zure zerbitzarian, lo zauden bitartean ere lanean jarrai dezan.
+• Harpidetzak: Buletin guztiak igorlearen arabera, irakurketa-tasekin eta zure telefonoan dabilen harpidetzak ukitu batez kentzeko zentro batekin.
+• Sinkronizatzen den atzeratzea: Atzeratutako posta zure zerbitzariko karpeta batean gordetzen da; beraz, konbentzio bera jarraitzen duten beste bezeroek ere ikusten dute.
+• Desegin eta programatu bidalketa: Desegin bidalketa lehen segundoetan, edo idatzi orain eta bidali bihar goizeko bederatzietan.
+• OpenPGP eta S/MIME: Zifratu eta sinatu bi estandarretako edozeinekin. OpenPGP Thunderbird-ekin eta Autocrypt-ekin bateragarria da.
+• Phishing-egiaztapena, azalpenekin: Esteka susmagarriak eta benetakoen itxura duten domeinuak markatu egiten dira, arrazoia hitz argitan azalduta.
+• Egutegiko gonbidapenak: Erantzun Accept, Maybe edo Decline sakatuta mezuaren gainean bertan; ordu-zonak desberdinak badira, biak erakusten dira.
+• IMAP eta JMAP: Konfigurazio automatikoa duen edozein IMAP hornitzaile, gehi JMAP natiboa Fastmail eta Stalwart-entzat.
+• Tabletak eta teklatuak: Hiru panel, lasterbideak, arrastatu eta jaregin, eta komando-paleta bat Ctrl+K sakatuta.
+
+Ez dago Loupe hodeirik. Hori da kontua.
+Zure telefonoak zuzenean hitz egiten du zure posta-zerbitzariarekin. Loupe-k ez du erasotzeko moduko zerbitzaririk, ez du desaktibatu beharreko analitikarik, eta ez du ezer saltzeko.
+
+Kode irekia, azken probaraino.
+Lerro guztiak publikoak dira, MPL-2.0 lizentziapean. Nightly bertsioak zuzenean GitHub Actions-etik datoz; beraz, instalatzen duzuna irakur dezakezun bera da.
+
+Loupe aplikazioa ingelesez dago oraingoz; hizkuntza gehiago etorriko dira.
+https://loupe.mx

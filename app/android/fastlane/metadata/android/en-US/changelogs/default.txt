@@ -1,0 +1,1 @@
+Nightly build from the main branch. What changed: https://github.com/BuenGenio/loupe/blob/main/CHANGELOG.md

@@ -1,0 +1,50 @@
+# Google Play store listing: texts from app/android/fastlane/metadata/android
+# (generated from the website's translations by marketing/creative/play.mjs),
+# images regenerated from the app screenshots, pushed with fastlane supply.
+# Manual only. Needs the PLAY_SERVICE_ACCOUNT_JSON secret (docs/play-store.md).
+
+name: Play listing
+
+on:
+  workflow_dispatch:
+    inputs:
+      validate_only:
+        description: "Only validate with Google Play, change nothing"
+        type: boolean
+        default: true
+      images:
+        description: "Upload screenshots and graphics too"
+        type: boolean
+        default: true
+
+jobs:
+  listing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: marketing/creative/package-lock.json
+      - name: Render the store images
+        if: inputs.images
+        working-directory: marketing/creative
+        run: npm ci && node play.mjs --images-only
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+      - run: gem install fastlane --no-document
+      - name: fastlane supply
+        env:
+          PLAY_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          [ -n "$PLAY_JSON" ] || { echo "::error::No PLAY_SERVICE_ACCOUNT_JSON secret"; exit 1; }
+          fastlane supply \
+            --package_name io.github.buengenio.loupe \
+            --json_key_data "$PLAY_JSON" \
+            --metadata_path app/android/fastlane/metadata/android \
+            --skip_upload_apk true --skip_upload_aab true --skip_upload_changelogs true \
+            --skip_upload_images ${{ !inputs.images }} --skip_upload_screenshots ${{ !inputs.images }} \
+            --validate_only ${{ inputs.validate_only }}
