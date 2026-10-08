@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../shared/bars.dart';
@@ -35,6 +36,7 @@ class SnoozedScreen extends ConsumerWidget {
     final colors = LoupeColors.of(context);
     final actions = MailActions(context, ref, scope: null, threaded: false);
     final now = DateTime.now();
+    final l10n = context.l10n;
 
     Future<void> changeTime(EmailSummary e) async {
       final at = await actions.askSnoozeTime(current: e.snoozedUntil);
@@ -46,9 +48,9 @@ class SnoozedScreen extends ConsumerWidget {
       final choice = await showActionSheet<String>(
         context,
         title: e.subject.trim().isEmpty ? null : e.subject,
-        actions: const [
-          SheetAction('Wake Now', 'wake', icon: LoupeIcons.wakeNow),
-          SheetAction('Change Snooze Time…', 'change', icon: LoupeIcons.snooze),
+        actions: [
+          SheetAction(l10n.snoozeWakeNow, 'wake', icon: LoupeIcons.wakeNow),
+          SheetAction(l10n.snoozeChangeTimeMenu, 'change', icon: LoupeIcons.snooze),
         ],
       );
       if (!context.mounted) return;
@@ -62,13 +64,13 @@ class SnoozedScreen extends ConsumerWidget {
 
     String wakeLabel(EmailSummary e) => switch (e.snoozedUntil) {
       final t? => formatSendTimeFor(context, t, now: now, compact: true),
-      null => 'No time set',
+      null => l10n.snoozeNoTime,
     };
 
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const LoupeTitleBar(title: 'Snoozed'),
+          LoupeTitleBar(title: l10n.snoozeTitle),
           // A pull also wakes what is due.
           CupertinoSliverRefreshControl(onRefresh: () => ref.read(repositoryProvider).refresh()),
           if (items.isEmpty)
@@ -84,7 +86,7 @@ class SnoozedScreen extends ConsumerWidget {
                   leading: [
                     SwipeActionSpec(
                       icon: LoupeIcons.swipeWakeNow,
-                      label: 'Wake Now',
+                      label: l10n.snoozeWakeNow,
                       color: colors.swipeRead,
                       removesRow: true,
                       onTriggered: () => actions.wakeEmails([e]),
@@ -93,7 +95,7 @@ class SnoozedScreen extends ConsumerWidget {
                   trailing: [
                     SwipeActionSpec(
                       icon: LoupeIcons.swipeSnooze,
-                      label: 'Change Time',
+                      label: l10n.snoozeChangeTime,
                       color: colors.snooze,
                       onTriggered: () => changeTime(e),
                     ),
@@ -115,7 +117,7 @@ class SnoozedScreen extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(32, 14, 32, 0),
                 child: Text(
-                  'Snoozed messages come back to the Inbox, unread, at their time.',
+                  l10n.snoozeFooter,
                   style: LoupeTextStyles.of(context).footnote,
                   textAlign: TextAlign.center,
                 ),
@@ -143,13 +145,9 @@ class _Empty extends StatelessWidget {
         children: [
           Icon(LoupeIcons.snoozed, size: 52, color: colors.tertiaryText),
           const SizedBox(height: 14),
-          Text('Nothing Snoozed', style: styles.sectionHeader.copyWith(color: colors.secondaryText)),
+          Text(context.l10n.snoozeEmptyTitle, style: styles.sectionHeader.copyWith(color: colors.secondaryText)),
           const SizedBox(height: 6),
-          Text(
-            'Snooze a message to have it come back to the Inbox when you need it.',
-            style: styles.footnote,
-            textAlign: TextAlign.center,
-          ),
+          Text(context.l10n.snoozeEmptyText, style: styles.footnote, textAlign: TextAlign.center),
         ],
       ),
     );

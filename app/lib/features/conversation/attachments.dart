@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../router.dart';
 import '../../shared/format.dart';
 import '../../theme/loupe_icons.dart';
@@ -117,7 +118,7 @@ class _AttachmentTileState extends ConsumerState<AttachmentTile> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = LoupeColors.of(context);
-    final name = _a.filename?.isNotEmpty == true ? _a.filename! : 'Untitled';
+    final name = _a.filename?.isNotEmpty == true ? _a.filename! : context.l10n.conversationAttachmentUntitled;
     return Material(
       color: subtleFill(context),
       borderRadius: BorderRadius.circular(12),
@@ -162,11 +163,11 @@ class _AttachmentTileState extends ConsumerState<AttachmentTile> {
                 )
               else
                 Tooltip(
-                  message: 'More',
+                  message: context.l10n.commonMore,
                   excludeFromSemantics: true,
                   child: Semantics(
                     container: true,
-                    label: 'More actions for $name',
+                    label: context.l10n.conversationAttachmentMoreActions(name),
                     child: CupertinoButton(
                       key: _moreKey,
                       padding: EdgeInsets.zero,

@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:readable/readable.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/app_settings.dart';
@@ -24,34 +25,25 @@ import '../search/smart_mailbox_settings_screen.dart';
 import 'settings_widgets.dart';
 import '../../theme/loupe_icons.dart';
 
-String swipeActionLabel(SwipeAction a) => switch (a) {
-  SwipeAction.none => 'None',
-  SwipeAction.toggleRead => 'Mark as Read',
-  SwipeAction.toggleFlag => 'Flag',
-  SwipeAction.archive => 'Archive',
-  SwipeAction.trash => 'Trash',
-  SwipeAction.move => 'Move Message',
-  SwipeAction.snooze => 'Snooze',
-  SwipeAction.more => 'More',
+String _readerModeLabel(AppLocalizations l10n, ReaderMode m) => switch (m) {
+  ReaderMode.readable => l10n.settingsViewReadable,
+  ReaderMode.original => l10n.settingsViewOriginal,
+  ReaderMode.plain => l10n.settingsViewPlain,
 };
 
-String readerModeLabel(ReaderMode m) => switch (m) {
-  ReaderMode.readable => 'Readable',
-  ReaderMode.original => 'Original',
-  ReaderMode.plain => 'Plain Text',
-};
-
-String undoDelayLabel(int seconds) => seconds == 0 ? 'Off' : '$seconds seconds';
+String _undoDelayLabel(AppLocalizations l10n, int seconds) =>
+    seconds == 0 ? l10n.commonOff : l10n.settingsUndoSendSeconds(seconds);
 
 /// App Lock's switch. Turning it on asks the user to prove it's them first,
 /// and needs a screen lock to check against; the switch stays off until then.
 Future<void> _setAppLock(BuildContext context, WidgetRef ref, bool on) async {
   if (!on) return ref.read(appLockSettingsProvider.notifier).setEnabled(false);
+  final l10n = context.l10n;
   final result = await ref.read(appLockProvider.notifier).enable();
   if (!context.mounted) return;
   if (result == AuthResult.unavailable) return _explainScreenLock(context, ref);
   if (lockFailureText(result) case final reason?) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('App Lock is still off. $reason')));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.settingsAppLockStillOff(reason))));
   }
 }
 
@@ -59,17 +51,12 @@ Future<void> _setAppLock(BuildContext context, WidgetRef ref, bool on) async {
 Future<void> _explainScreenLock(BuildContext context, WidgetRef ref) {
   // The system, not the look: the wording and the way to fix it differ.
   final ios = defaultTargetPlatform == TargetPlatform.iOS;
+  final l10n = context.l10n;
   return showCupertinoDialog<void>(
     context: context,
     builder: (dialog) => CupertinoAlertDialog(
-      title: Text(ios ? 'Set Up a Passcode' : 'Set Up a Screen Lock'),
-      content: Text(
-        ios
-            ? 'App Lock uses Face ID, Touch ID or your passcode, and this iPhone has no passcode. Set one up in '
-                  'the Settings app, then turn on App Lock.'
-            : 'App Lock uses your phone’s screen lock, or a fingerprint or face added to it, and this phone has '
-                  'none. Set up a PIN, pattern or password in Android’s settings, then turn on App Lock.',
-      ),
+      title: Text(ios ? l10n.settingsScreenLockTitleIos : l10n.settingsScreenLockTitleAndroid),
+      content: Text(ios ? l10n.settingsScreenLockTextIos : l10n.settingsScreenLockTextAndroid),
       actions: [
         if (!ios)
           CupertinoDialogAction(
@@ -77,12 +64,12 @@ Future<void> _explainScreenLock(BuildContext context, WidgetRef ref) {
               Navigator.of(dialog).pop();
               unawaited(ref.read(openScreenLockSettingsProvider)());
             },
-            child: const Text('Open Settings'),
+            child: Text(l10n.settingsOpenSystemSettings),
           ),
         CupertinoDialogAction(
           isDefaultAction: true,
           onPressed: () => Navigator.of(dialog).pop(),
-          child: const Text('OK'),
+          child: Text(l10n.commonOk),
         ),
       ],
     ),
@@ -100,12 +87,13 @@ class SettingsScreen extends ConsumerWidget {
     final controller = ref.read(appSettingsProvider.notifier);
     final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];
     final appLock = ref.watch(appLockSettingsProvider);
+    final l10n = context.l10n;
 
     return GroupedPage(
-      title: 'Settings',
+      title: l10n.commonSettings,
       children: [
         InsetGroup(
-          header: 'Accounts',
+          header: l10n.settingsAccountsHeader,
           separatorIndent: 58,
           children: [
             for (final a in accounts)
@@ -127,7 +115,7 @@ class SettingsScreen extends ConsumerWidget {
               ),
             GroupedRow(
               leading: Icon(LoupeIcons.add, color: colors.unreadDot, size: 26),
-              title: 'Add Account',
+              title: l10n.settingsAddAccount,
               titleStyle: LoupeTextStyles.of(context).body.copyWith(color: colors.unreadDot),
               chevron: false,
               onTap: () => context.push(Routes.addAccount),
@@ -135,17 +123,17 @@ class SettingsScreen extends ConsumerWidget {
           ],
         ),
         InsetGroup(
-          header: 'Mail',
+          header: l10n.settingsMailHeader,
           separatorIndent: 58,
           children: [
             GroupedRow(
               leading: SettingsIcon(LoupeIcons.swipeActions, colors.swipeArchive),
-              title: 'Swipe Actions',
+              title: l10n.settingsSwipeActions,
               onTap: () => context.push(Routes.swipeSettings),
             ),
             GroupedRow(
               leading: SettingsIcon(LoupeIcons.conversations, colors.unreadDot),
-              title: 'Organize by Conversation',
+              title: l10n.settingsThreaded,
               chevron: false,
               onTap: () => controller.update((s) => s.copyWith(threaded: !s.threaded)),
               trailing: CupertinoSwitch(
@@ -156,78 +144,93 @@ class SettingsScreen extends ConsumerWidget {
             ),
             GroupedRow(
               leading: SettingsIcon(LoupeIcons.undoSend, colors.flag),
-              title: 'Undo Send Delay',
-              detail: undoDelayLabel(settings.undoSendSeconds),
+              title: l10n.settingsUndoSendDelay,
+              detail: _undoDelayLabel(l10n, settings.undoSendSeconds),
               onTap: () => ChoicePage.push<int>(
                 context,
-                title: 'Undo Send Delay',
-                footer: 'Sent messages wait this long, so you can take them back.',
+                title: l10n.settingsUndoSendDelay,
+                footer: l10n.settingsUndoSendDelayFooter,
                 selected: settings.undoSendSeconds,
                 choices: [
-                  for (final s in const [0, 5, 10, 20, 30]) (value: s, label: undoDelayLabel(s), detail: null),
+                  for (final s in const [0, 5, 10, 20, 30]) (value: s, label: _undoDelayLabel(l10n, s), detail: null),
                 ],
                 onSelected: (v) => controller.update((s) => s.copyWith(undoSendSeconds: v)),
               ),
             ),
             GroupedRow(
               leading: SettingsIcon(LoupeIcons.smartMailbox, colors.swipeArchive),
-              title: 'Smart Mailboxes',
+              title: l10n.settingsSmartMailboxes,
               detail: SmartMailboxSettingsScreen.syncViaLabel(ref.watch(smartMailboxHomeProvider), accounts),
               onTap: () => SmartMailboxSettingsScreen.push(context),
             ),
           ],
         ),
         InsetGroup(
-          header: 'Appearance',
+          header: l10n.settingsAppearanceHeader,
           separatorIndent: 16,
           children: [
             SegmentedRow<ThemeMode>(
-              title: 'Theme',
+              title: l10n.settingsTheme,
               value: settings.themeMode,
-              segments: const {ThemeMode.system: 'Automatic', ThemeMode.light: 'Light', ThemeMode.dark: 'Dark'},
+              segments: {
+                ThemeMode.system: l10n.settingsThemeSystem,
+                ThemeMode.light: l10n.settingsThemeLight,
+                ThemeMode.dark: l10n.settingsThemeDark,
+              },
               onChanged: (v) => controller.update((s) => s.copyWith(themeMode: v)),
             ),
             SegmentedRow<Density>(
-              title: 'Message List',
+              title: l10n.settingsDensity,
               value: settings.density,
-              segments: const {Density.comfortable: 'Comfortable', Density.compact: 'Compact'},
+              segments: {
+                Density.comfortable: l10n.settingsDensityComfortable,
+                Density.compact: l10n.settingsDensityCompact,
+              },
               onChanged: (v) => controller.update((s) => s.copyWith(density: v)),
             ),
           ],
         ),
         InsetGroup(
-          header: 'Reading',
+          header: l10n.settingsReadingHeader,
           separatorIndent: 58,
-          footer: 'Remote images can tell senders when and where you opened a message.',
+          footer: l10n.settingsReadingFooter,
           children: [
             GroupedRow(
               leading: SettingsIcon(LoupeIcons.readerView, colors.success),
-              title: 'Default View',
-              detail: readerModeLabel(settings.defaultReaderMode),
+              title: l10n.settingsDefaultView,
+              detail: _readerModeLabel(l10n, settings.defaultReaderMode),
               onTap: () => ChoicePage.push<ReaderMode>(
                 context,
-                title: 'Default View',
+                title: l10n.settingsDefaultView,
                 selected: settings.defaultReaderMode,
-                footer: 'You can switch any message with the Aa button.',
-                choices: const [
-                  (value: ReaderMode.readable, label: 'Readable', detail: 'Clean, legible, follows dark mode'),
-                  (value: ReaderMode.original, label: 'Original', detail: 'Exactly as the sender designed it'),
-                  (value: ReaderMode.plain, label: 'Plain Text', detail: 'Just the words'),
+                footer: l10n.settingsDefaultViewFooter,
+                choices: [
+                  (
+                    value: ReaderMode.readable,
+                    label: l10n.settingsViewReadable,
+                    detail: l10n.settingsViewReadableDetail,
+                  ),
+                  (
+                    value: ReaderMode.original,
+                    label: l10n.settingsViewOriginal,
+                    detail: l10n.settingsViewOriginalDetail,
+                  ),
+                  (value: ReaderMode.plain, label: l10n.settingsViewPlain, detail: l10n.settingsViewPlainDetail),
                 ],
                 onSelected: (v) => controller.update((s) => s.copyWith(defaultReaderMode: v)),
               ),
             ),
             GroupedRow(
               leading: SettingsIcon(LoupeIcons.font, colors.swipeMore),
-              title: 'Plain Text Font',
-              detail: settings.plainFont == PlainTextFont.mono ? 'Monospaced' : 'Sans Serif',
+              title: l10n.settingsPlainTextFont,
+              detail: settings.plainFont == PlainTextFont.mono ? l10n.settingsFontMono : l10n.settingsFontSans,
               onTap: () => ChoicePage.push<PlainTextFont>(
                 context,
-                title: 'Plain Text Font',
+                title: l10n.settingsPlainTextFont,
                 selected: settings.plainFont,
-                choices: const [
-                  (value: PlainTextFont.sans, label: 'Sans Serif', detail: null),
-                  (value: PlainTextFont.mono, label: 'Monospaced', detail: 'Keeps ASCII art and tables aligned'),
+                choices: [
+                  (value: PlainTextFont.sans, label: l10n.settingsFontSans, detail: null),
+                  (value: PlainTextFont.mono, label: l10n.settingsFontMono, detail: l10n.settingsFontMonoDetail),
                 ],
                 onSelected: (v) => controller.update((s) => s.copyWith(plainFont: v)),
               ),
@@ -235,16 +238,16 @@ class SettingsScreen extends ConsumerWidget {
             GroupedRow(
               key: const Key('technical-lists'),
               leading: SettingsIcon(LoupeIcons.mailingList, colors.swipeTrash),
-              title: 'Technical Lists',
+              title: l10n.settingsTechnicalLists,
               detail: switch (ref.watch(readerPrefsProvider).technicalLists.length) {
-                0 => 'None',
+                0 => l10n.commonNone,
                 final n => '$n',
               },
               onTap: () => TechnicalListsScreen.push(context),
             ),
             GroupedRow(
               leading: SettingsIcon(LoupeIcons.images, colors.unreadDot),
-              title: 'Load Remote Images',
+              title: l10n.settingsLoadRemoteImages,
               chevron: false,
               onTap: () => controller.update((s) => s.copyWith(loadRemoteImages: !s.loadRemoteImages)),
               trailing: CupertinoSwitch(
@@ -256,8 +259,8 @@ class SettingsScreen extends ConsumerWidget {
             GroupedRow(
               key: const Key('open-links-directly'),
               leading: SettingsIcon(LoupeIcons.openDirectly, colors.swipeArchive),
-              title: 'Open Links Directly',
-              subtitle: 'Skip click trackers when the destination is known',
+              title: l10n.settingsOpenLinksDirectly,
+              subtitle: l10n.settingsOpenLinksDirectlyDetail,
               chevron: false,
               onTap: () => ref.read(openLinksDirectlyProvider.notifier).set(!ref.read(openLinksDirectlyProvider)),
               trailing: CupertinoSwitch(
@@ -269,16 +272,14 @@ class SettingsScreen extends ConsumerWidget {
           ],
         ),
         InsetGroup(
-          header: 'Security',
+          header: l10n.settingsSecurityHeader,
           separatorIndent: 58,
-          footer: appLock.enabled
-              ? 'Loupe asks when it starts, and when you come back after being away for the Lock After time.'
-              : 'App Lock asks for your fingerprint, face or screen lock before your mail shows.',
+          footer: appLock.enabled ? l10n.settingsAppLockFooterOn : l10n.settingsAppLockFooterOff,
           children: [
             GroupedRow(
               key: const Key('app-lock'),
               leading: SettingsIcon(LoupeIcons.appLock, colors.unreadDot),
-              title: 'App Lock',
+              title: l10n.settingsAppLock,
               chevron: false,
               onTap: () => _setAppLock(context, ref, !appLock.enabled),
               trailing: CupertinoSwitch(
@@ -291,12 +292,12 @@ class SettingsScreen extends ConsumerWidget {
               GroupedRow(
                 key: const Key('lock-after'),
                 leading: SettingsIcon(LoupeIcons.lockAfter, colors.flag),
-                title: 'Lock After',
+                title: l10n.settingsLockAfter,
                 detail: appLock.lockAfter.label,
                 onTap: () => ChoicePage.push<LockAfter>(
                   context,
-                  title: 'Lock After',
-                  footer: 'How long Loupe can be in the background before it asks again.',
+                  title: l10n.settingsLockAfter,
+                  footer: l10n.settingsLockAfterFooter,
                   selected: appLock.lockAfter,
                   choices: [for (final a in LockAfter.values) (value: a, label: a.label, detail: null)],
                   onSelected: (v) => ref.read(appLockSettingsProvider.notifier).setLockAfter(v),
@@ -309,23 +310,23 @@ class SettingsScreen extends ConsumerWidget {
           children: [
             GroupedRow(
               leading: SettingsIcon(LoupeIcons.notifications, colors.swipeTrash),
-              title: 'Notifications',
+              title: l10n.settingsNotifications,
               onTap: () => context.push(Routes.notificationSettings),
             ),
             GroupedRow(
               leading: SettingsIcon(LoupeIcons.rules, colors.vip),
-              title: 'Rules',
+              title: l10n.rulesTitle,
               onTap: () => context.push(Routes.rules),
             ),
             GroupedRow(
               key: const Key('encryption-settings'),
               leading: SettingsIcon(LoupeIcons.e2ee, colors.success),
-              title: 'End-to-End Encryption',
+              title: l10n.settingsEncryption,
               onTap: () => context.push(Routes.encryption),
             ),
             GroupedRow(
               leading: SettingsIcon(LoupeIcons.settings, colors.swipeMore),
-              title: 'Advanced',
+              title: l10n.settingsAdvanced,
               onTap: () => context.push(Routes.advancedSettings),
             ),
           ],

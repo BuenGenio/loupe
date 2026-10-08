@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/theme.dart';
 import 'sheets.dart';
 import '../../theme/loupe_icons.dart';
@@ -63,13 +64,14 @@ List<(Mailbox, int)> mailboxTree(List<Mailbox> mailboxes) {
 }
 
 /// Lets the user pick a mailbox of [accountId] to move to. [currentMailboxId]
-/// is shown but disabled. Returns the chosen mailbox.
+/// is shown but disabled; [title] is "Move to…" unless given. Returns the
+/// chosen mailbox.
 Future<Mailbox?> showMailboxPicker(
   BuildContext context, {
   required MailRepository repository,
   required String accountId,
   String? currentMailboxId,
-  String title = 'Move to…',
+  String? title,
   bool showAllFolders = false,
 }) => showLoupeSheet<Mailbox>(
   context,
@@ -77,7 +79,7 @@ Future<Mailbox?> showMailboxPicker(
   builder: (context) => _MailboxPicker(
     stream: repository.watchMailboxes(accountId: accountId),
     currentMailboxId: currentMailboxId,
-    title: title,
+    title: title ?? context.l10n.conversationMoveTo,
     showAllFolders: showAllFolders,
   ),
 );
@@ -107,7 +109,7 @@ class _MailboxPicker extends StatelessWidget {
         final Widget body;
         if (snapshot.hasError) {
           final e = snapshot.error;
-          body = Center(child: Text(e is MailException ? e.message : "Couldn't load mailboxes."));
+          body = Center(child: Text(e is MailException ? e.message : context.l10n.conversationMailboxesError));
         } else if (!snapshot.hasData) {
           body = const Center(child: CircularProgressIndicator.adaptive());
         } else {

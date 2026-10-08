@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../shared/avatar.dart';
 import '../../shared/tags.dart';
 import '../../theme/theme.dart';
@@ -56,6 +57,7 @@ Future<MessageAction?> showMessageMenu(
   return showLoupeSheet<MessageAction>(
     context,
     builder: (context) {
+      final l10n = context.l10n;
       void pick(MessageAction a) => Navigator.of(context).pop(a);
       return SingleChildScrollView(
         child: Column(
@@ -66,10 +68,10 @@ Future<MessageAction?> showMessageMenu(
               child: Row(
                 children: [
                   for (final (action, icon, label) in [
-                    (MessageAction.reply, LoupeIcons.reply, 'Reply'),
-                    (MessageAction.replyAll, LoupeIcons.replyAll, 'Reply All'),
-                    if (toList) (MessageAction.replyList, LoupeIcons.replyToList, 'Reply List'),
-                    (MessageAction.forward, LoupeIcons.forward, 'Forward'),
+                    (MessageAction.reply, LoupeIcons.reply, l10n.mailReply),
+                    (MessageAction.replyAll, LoupeIcons.replyAll, l10n.mailReplyAll),
+                    if (toList) (MessageAction.replyList, LoupeIcons.replyToList, l10n.conversationReplyList),
+                    (MessageAction.forward, LoupeIcons.forward, l10n.mailForward),
                   ])
                     Expanded(
                       child: Padding(
@@ -83,19 +85,19 @@ Future<MessageAction?> showMessageMenu(
             SheetGroup(
               children: [
                 SheetRow(
-                  label: message.isSeen ? 'Mark as Unread' : 'Mark as Read',
+                  label: message.isSeen ? l10n.mailMarkAsUnread : l10n.mailMarkAsRead,
                   icon: message.isSeen ? LoupeIcons.markUnread : LoupeIcons.markRead,
                   onTap: () => pick(MessageAction.toggleSeen),
                 ),
                 SheetRow(
-                  label: message.isFlagged ? 'Unflag' : 'Flag',
+                  label: message.isFlagged ? l10n.mailUnflag : l10n.mailFlag,
                   icon: LoupeIcons.flagged,
                   onTap: () => pick(MessageAction.toggleFlag),
                 ),
-                SheetRow(label: 'Tags…', icon: LoupeIcons.tag, onTap: () => pick(MessageAction.tags)),
+                SheetRow(label: l10n.conversationTagsMenu, icon: LoupeIcons.tag, onTap: () => pick(MessageAction.tags)),
                 if (muted != null)
                   SheetRow(
-                    label: muted ? 'Unmute Thread' : 'Mute Thread',
+                    label: muted ? l10n.conversationUnmuteThread : l10n.conversationMuteThread,
                     icon: muted ? LoupeIcons.notifications : LoupeIcons.mute,
                     onTap: () => pick(muted ? MessageAction.unmute : MessageAction.mute),
                   ),
@@ -104,36 +106,70 @@ Future<MessageAction?> showMessageMenu(
             SheetGroup(
               children: [
                 if (snoozed) ...[
-                  SheetRow(label: 'Wake Now', icon: LoupeIcons.wakeNow, onTap: () => pick(MessageAction.wakeNow)),
                   SheetRow(
-                    label: 'Change Snooze Time…',
+                    label: l10n.snoozeWakeNow,
+                    icon: LoupeIcons.wakeNow,
+                    onTap: () => pick(MessageAction.wakeNow),
+                  ),
+                  SheetRow(
+                    label: l10n.snoozeChangeTimeMenu,
                     icon: LoupeIcons.snooze,
                     onTap: () => pick(MessageAction.snooze),
                   ),
                 ] else
-                  SheetRow(label: 'Snooze…', icon: LoupeIcons.snooze, onTap: () => pick(MessageAction.snooze)),
-                SheetRow(label: 'Move…', icon: LoupeIcons.move, onTap: () => pick(MessageAction.move)),
-                if (canArchive)
-                  SheetRow(label: 'Archive', icon: LoupeIcons.archive, onTap: () => pick(MessageAction.archive)),
+                  SheetRow(label: l10n.snoozeMenu, icon: LoupeIcons.snooze, onTap: () => pick(MessageAction.snooze)),
                 SheetRow(
-                  label: mailboxRole == MailboxRole.trash ? 'Delete Permanently' : 'Move to Trash',
+                  label: l10n.conversationMoveMenu,
+                  icon: LoupeIcons.move,
+                  onTap: () => pick(MessageAction.move),
+                ),
+                if (canArchive)
+                  SheetRow(label: l10n.mailArchive, icon: LoupeIcons.archive, onTap: () => pick(MessageAction.archive)),
+                SheetRow(
+                  label: mailboxRole == MailboxRole.trash
+                      ? l10n.conversationDeletePermanently
+                      : l10n.conversationMoveToTrash,
                   icon: LoupeIcons.trash,
                   destructive: true,
                   onTap: () => pick(MessageAction.trash),
                 ),
                 junk
-                    ? SheetRow(label: 'Not Junk', icon: LoupeIcons.notJunk, onTap: () => pick(MessageAction.notJunk))
-                    : SheetRow(label: 'Move to Junk', icon: LoupeIcons.junk, onTap: () => pick(MessageAction.junk)),
+                    ? SheetRow(
+                        label: l10n.conversationNotJunk,
+                        icon: LoupeIcons.notJunk,
+                        onTap: () => pick(MessageAction.notJunk),
+                      )
+                    : SheetRow(
+                        label: l10n.mailMoveToJunk,
+                        icon: LoupeIcons.junk,
+                        onTap: () => pick(MessageAction.junk),
+                      ),
               ],
             ),
             SheetGroup(
               children: [
-                SheetRow(label: 'Show All Headers', icon: LoupeIcons.headers, onTap: () => pick(MessageAction.headers)),
-                SheetRow(label: 'View Source', icon: LoupeIcons.source, onTap: () => pick(MessageAction.source)),
-                SheetRow(label: 'Save as File…', icon: LoupeIcons.save, onTap: () => pick(MessageAction.saveFile)),
-                SheetRow(label: 'Share as File…', icon: LoupeIcons.share, onTap: () => pick(MessageAction.shareFile)),
                 SheetRow(
-                  label: 'Search from This Message…',
+                  label: l10n.conversationShowAllHeaders,
+                  icon: LoupeIcons.headers,
+                  onTap: () => pick(MessageAction.headers),
+                ),
+                SheetRow(
+                  label: l10n.conversationViewSource,
+                  icon: LoupeIcons.source,
+                  onTap: () => pick(MessageAction.source),
+                ),
+                SheetRow(
+                  label: l10n.conversationSaveAsFile,
+                  icon: LoupeIcons.save,
+                  onTap: () => pick(MessageAction.saveFile),
+                ),
+                SheetRow(
+                  label: l10n.conversationShareAsFile,
+                  icon: LoupeIcons.share,
+                  onTap: () => pick(MessageAction.shareFile),
+                ),
+                SheetRow(
+                  label: l10n.conversationSearchFromMessageMenu,
                   icon: LoupeIcons.searchSender,
                   onTap: () => pick(MessageAction.search),
                 ),
@@ -190,6 +226,7 @@ Future<void> showAddressSheet(
     builder: (context) {
       final theme = Theme.of(context);
       final colors = LoupeColors.of(context);
+      final l10n = context.l10n;
       return SafeArea(
         top: false,
         child: Column(
@@ -211,7 +248,7 @@ Future<void> showAddressSheet(
                       key: const Key('vip-switch'),
                       dense: true,
                       secondary: Icon(vip ? LoupeIcons.vipFilled : LoupeIcons.vip, color: colors.vip),
-                      title: const Text('VIP', style: TextStyle(fontSize: 16)),
+                      title: Text(l10n.conversationVip, style: const TextStyle(fontSize: 16)),
                       value: vip,
                       onChanged: snapshot.hasData
                           ? (v) async {
@@ -226,7 +263,7 @@ Future<void> showAddressSheet(
                   },
                 ),
                 SheetRow(
-                  label: 'New Message',
+                  label: l10n.mailNewMessage,
                   icon: LoupeIcons.edit,
                   onTap: () {
                     Navigator.of(context).pop();
@@ -234,16 +271,16 @@ Future<void> showAddressSheet(
                   },
                 ),
                 SheetRow(
-                  label: 'Copy Address',
+                  label: l10n.conversationCopyAddress,
                   icon: LoupeIcons.copy,
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: address.email));
                     Navigator.of(context).pop();
-                    showSnack(messenger, 'Address copied');
+                    showSnack(messenger, l10n.conversationAddressCopied);
                   },
                 ),
                 SheetRow(
-                  label: 'Search Messages from ${address.displayName}',
+                  label: l10n.conversationSearchMessagesFrom(address.displayName),
                   icon: LoupeIcons.search,
                   onTap: () {
                     Navigator.of(context).pop();
@@ -275,7 +312,7 @@ Future<void> showTagsSheet(
         top: false,
         child: SingleChildScrollView(
           child: SheetGroup(
-            header: 'Tags',
+            header: context.l10n.conversationTags,
             children: [
               for (final k in keywords)
                 ListTile(
@@ -309,6 +346,7 @@ Future<void> showHeadersSheet(BuildContext context, List<(String, String)> heade
     builder: (context) {
       final theme = Theme.of(context);
       final colors = LoupeColors.of(context);
+      final l10n = context.l10n;
       return Column(
         children: [
           Row(
@@ -316,17 +354,17 @@ Future<void> showHeadersSheet(BuildContext context, List<(String, String)> heade
               const SizedBox(width: 56),
               Expanded(
                 child: Text(
-                  'All Headers',
+                  l10n.conversationAllHeaders,
                   textAlign: TextAlign.center,
                   style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
                 ),
               ),
               IconButton(
-                tooltip: 'Copy All',
+                tooltip: l10n.conversationCopyAll,
                 icon: const Icon(LoupeIcons.copy),
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: headers.map((h) => '${h.$1}: ${h.$2}').join('\n')));
-                  showSnack(messenger, 'Headers copied');
+                  showSnack(messenger, l10n.conversationHeadersCopied);
                 },
               ),
             ],
@@ -334,7 +372,7 @@ Future<void> showHeadersSheet(BuildContext context, List<(String, String)> heade
           Expanded(
             child: headers.isEmpty
                 ? Center(
-                    child: Text('No headers', style: TextStyle(color: colors.secondaryText)),
+                    child: Text(l10n.conversationNoHeaders, style: TextStyle(color: colors.secondaryText)),
                   )
                 : ListView.separated(
                     controller: PrimaryScrollController.maybeOf(context),
@@ -370,13 +408,14 @@ Future<String?> showSearchFromSheet(BuildContext context, EmailSummary message) 
   String q(String field, String value) => '$field:"${value.replaceAll('"', '')}"';
   final subject = ComposeText.baseSubject(message.subject);
   final to = message.to.firstOrNull;
+  final l10n = context.l10n;
   return showActionSheet<String>(
     context,
-    title: 'Search from This Message',
+    title: l10n.conversationSearchFromMessageTitle,
     actions: [
-      if (message.sender case final s?) SheetAction('From ${s.displayName}', q('f', s.email)),
-      if (to != null) SheetAction('To ${to.displayName}', q('t', to.email)),
-      if (subject.isNotEmpty) SheetAction('Subject “$subject”', q('s', subject)),
+      if (message.sender case final s?) SheetAction(l10n.conversationSearchFrom(s.displayName), q('f', s.email)),
+      if (to != null) SheetAction(l10n.conversationSearchTo(to.displayName), q('t', to.email)),
+      if (subject.isNotEmpty) SheetAction(l10n.conversationSearchSubject(subject), q('s', subject)),
     ],
   );
 }

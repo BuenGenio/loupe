@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../data/oauth.dart';
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/ui_state.dart';
@@ -18,13 +19,14 @@ import '../account_setup/oauth_accounts.dart' show oauthProviderName;
 import '../account_setup/sign_in_again.dart';
 import '../compose/identity_selection.dart';
 
-String _security(ConnectionSecurity s) => switch (s) {
+String _security(AppLocalizations l10n, ConnectionSecurity s) => switch (s) {
   ConnectionSecurity.tls => 'TLS',
   ConnectionSecurity.startTls => 'STARTTLS',
-  ConnectionSecurity.none => 'Not encrypted',
+  ConnectionSecurity.none => l10n.settingsConnectionNotEncrypted,
 };
 
-String _server(ServerConfig c) => '${c.protocol.name.toUpperCase()} · ${c.host}:${c.port} · ${_security(c.security)}';
+String _server(AppLocalizations l10n, ServerConfig c) =>
+    '${c.protocol.name.toUpperCase()} · ${c.host}:${c.port} · ${_security(l10n, c.security)}';
 
 /// One account: name, colour, identities, server details, and Remove.
 class AccountSettingsScreen extends ConsumerStatefulWidget {
@@ -77,11 +79,12 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
   }
 
   Future<void> _remove(MailAccount account) async {
+    final l10n = context.l10n;
     final ok = await confirmDestructive(
       context,
-      title: 'Remove “${account.displayName}”?',
-      message: 'Its mail and settings are removed from this phone. Nothing is deleted on the server.',
-      action: 'Remove Account',
+      title: l10n.settingsRemoveAccountTitle(account.displayName),
+      message: l10n.settingsRemoveAccountMessage,
+      action: l10n.settingsRemoveAccount,
     );
     if (!ok || !mounted) return;
     _account = null;
@@ -93,13 +96,14 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     final account = (ref.watch(accountsProvider).value ?? const <MailAccount>[])
         .where((a) => a.id == widget.accountId)
         .firstOrNull;
     if (account == null) {
       return Scaffold(
         appBar: AppBar(automaticallyImplyLeading: showsBackButton(context)),
-        body: Center(child: Text('This account was removed.', style: styles.footnote)),
+        body: Center(child: Text(l10n.settingsAccountRemoved, style: styles.footnote)),
       );
     }
     if (_account?.id != account.id) _name.text = account.displayName;
@@ -108,7 +112,7 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
     final signInAgainRow = canSignInAgain(ref, account)
         ? GroupedRow(
             key: const Key('account-sign-in-again'),
-            title: _signingIn ? 'Signing In…' : 'Sign In Again',
+            title: _signingIn ? l10n.settingsSigningIn : l10n.settingsSignInAgain,
             onTap: _signingIn ? null : () => _signInAgain(account),
           )
         : null;
@@ -119,23 +123,26 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
         if (needsSignIn)
           InsetGroup(
             key: const Key('account-sign-in-required'),
-            header: 'Sign-in',
-            footer:
-                '${oauthProviderName(account.provider)} no longer accepts Loupe’s sign-in for this account, so its '
-                'mail isn’t syncing. Sign in again to fix it.',
+            header: l10n.settingsSignIn,
+            footer: l10n.settingsSignInExpiredFooter(oauthProviderName(account.provider)),
             children: [?signInAgainRow],
           ),
         InsetGroup(
-          header: 'Account',
+          header: l10n.settingsAccountHeader,
           separatorIndent: 16,
           children: [
-            _FieldRow(label: 'Description', controller: _name, focusNode: _nameFocus, hint: 'Work, Personal…'),
-            GroupedRow(title: 'Email', detail: account.email, chevron: false),
+            _FieldRow(
+              label: l10n.settingsAccountDescription,
+              controller: _name,
+              focusNode: _nameFocus,
+              hint: l10n.settingsAccountDescriptionHint,
+            ),
+            GroupedRow(title: l10n.settingsEmail, detail: account.email, chevron: false),
           ],
         ),
         InsetGroup(
-          header: 'Colour',
-          footer: 'Marks this account’s messages in All Inboxes.',
+          header: l10n.settingsColour,
+          footer: l10n.settingsColourFooter,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -147,7 +154,7 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                     Semantics(
                       button: true,
                       selected: account.colorIndex == i,
-                      label: 'Colour ${i + 1}',
+                      label: l10n.settingsColourNumber(i + 1),
                       child: GestureDetector(
                         onTap: () => _repo.updateAccount(account.copyWith(colorIndex: i)),
                         child: Container(
@@ -170,51 +177,49 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
           ],
         ),
         InsetGroup(
-          header: 'Sending',
-          footer: 'Each identity has its own signature. Replies go out from the address a message was sent to.',
+          header: l10n.settingsSendingHeader,
+          footer: l10n.settingsSendingFooter,
           children: [
             GroupedRow(
               key: const Key('account-identities'),
-              title: 'Identities',
+              title: l10n.settingsIdentities,
               subtitle: [for (final i in IdentitySelection.identitiesOf(account)) i.email].join(', '),
               onTap: () => context.push(Routes.identities(account.id)),
             ),
           ],
         ),
         InsetGroup(
-          header: 'Folders',
+          header: l10n.settingsFoldersHeader,
           separatorIndent: 16,
-          footer:
-              'Loupe shows and syncs the folders you subscribe to, as Thunderbird does. '
-              'Inbox, Drafts, Sent, Junk, Trash and Archive always show.',
+          footer: l10n.settingsFoldersFooter,
           children: [
-            GroupedRow(title: 'Manage Folders', onTap: () => context.push(Routes.manageFolders(account.id))),
+            GroupedRow(title: l10n.settingsManageFolders, onTap: () => context.push(Routes.manageFolders(account.id))),
             SwitchRow(
-              title: 'Show All Folders',
+              title: l10n.settingsShowAllFolders,
               value: ref.watch(showAllFoldersProvider).contains(account.id),
               onChanged: (_) => ref.read(showAllFoldersProvider.notifier).toggle(account.id),
             ),
           ],
         ),
         InsetGroup(
-          header: 'Server',
+          header: l10n.commonServer,
           separatorIndent: 16,
           children: [
-            GroupedRow(title: 'Incoming', subtitle: _server(account.incoming), chevron: false),
+            GroupedRow(title: l10n.settingsIncoming, subtitle: _server(l10n, account.incoming), chevron: false),
             if (account.outgoing != null)
-              GroupedRow(title: 'Outgoing', subtitle: _server(account.outgoing!), chevron: false),
+              GroupedRow(title: l10n.settingsOutgoing, subtitle: _server(l10n, account.outgoing!), chevron: false),
             GroupedRow(
-              title: 'Sign-in',
+              title: l10n.settingsSignIn,
               detail: account.authKind == AuthKind.oauth2
-                  ? (needsSignIn ? 'Expired' : oauthProviderName(account.provider))
-                  : 'Password',
+                  ? (needsSignIn ? l10n.settingsSignInExpired : oauthProviderName(account.provider))
+                  : l10n.commonPassword,
               chevron: false,
             ),
             if (!needsSignIn) ?signInAgainRow,
           ],
         ),
         InsetGroup(
-          children: [GroupedRow(title: 'Remove Account', destructive: true, onTap: () => _remove(account))],
+          children: [GroupedRow(title: l10n.settingsRemoveAccount, destructive: true, onTap: () => _remove(account))],
         ),
       ],
     );
