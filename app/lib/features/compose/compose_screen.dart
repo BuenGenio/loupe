@@ -1213,6 +1213,8 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
         child: when == null
             ? IconButton.filled(
                 key: const Key('compose-send'),
+                // Else the app bar's action colour paints the icon in the fill colour.
+                color: Theme.of(context).colorScheme.onPrimary,
                 icon: _busy ? spinner : const Icon(LoupeIcons.send),
                 onPressed: onPressed,
               )
