@@ -30,29 +30,6 @@ const pending = <String>{
 
   // Settings
 
-  // More
-  'lib/app.dart',
-  'lib/features/attachments/attachment_actions.dart',
-  'lib/features/attachments/attachment_viewer_screen.dart',
-  'lib/features/attachments/viewers/details_card.dart',
-  'lib/features/attachments/viewers/eml_view.dart',
-  'lib/features/attachments/viewers/event_summary.dart',
-  'lib/features/calendar/invitation_card.dart',
-  'lib/features/calendar/invitation_reply.dart',
-  'lib/features/keyboard/shortcut_sheet.dart',
-  'lib/features/mailing_lists/mailing_list_screen.dart',
-  'lib/features/mailing_lists/technical_lists_screen.dart',
-  'lib/features/palette/command_palette.dart',
-  'lib/features/palette/palette_items.dart',
-  'lib/features/search/search_screen.dart',
-  'lib/features/search/search_view.dart',
-  'lib/features/search/smart_mailbox_screen.dart',
-  'lib/features/search/smart_mailbox_settings_screen.dart',
-  'lib/shared/bars.dart',
-  'lib/shared/mail_actions.dart',
-  'lib/shared/message_row.dart',
-  'lib/shared/sheets.dart',
-
   // Accounts and writing
   'lib/features/account_import/account_import_screen.dart',
   'lib/features/account_setup/account_setup_screen.dart',

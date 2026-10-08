@@ -6,6 +6,7 @@ import 'package:mail_imap/mail_imap.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../features/smime/smime_keys.dart';
+import '../l10n/l10n.dart';
 
 /// Runs composing work somewhere: another isolate in the app, inline in tests.
 typedef ComposeRunner = Future<T> Function<T>(T Function() work);
@@ -56,17 +57,14 @@ final class IsolateComposer implements AsyncMessageComposer {
         return bytes;
       case SmimeSignaturePending(:final request):
         final device = this.device;
-        if (device == null) {
-          throw const MailException(
-            MailErrorKind.unsupported,
-            'Your S/MIME certificate is on this device: open Loupe to sign and send this message.',
-          );
-        }
+        // Sending can run in the background, without the app's screens:
+        // the device's language.
+        if (device == null) throw MailException(MailErrorKind.unsupported, deviceL10n().dataSmimeNeedsDevice);
         final Uint8List signature;
         try {
           signature = await device.perform(request);
         } on SmimeException catch (e) {
-          throw MailException(MailErrorKind.unsupported, 'Signing failed: ${e.message}', e);
+          throw MailException(MailErrorKind.unsupported, deviceL10n().dataSigningFailed(e.message), e);
         }
         return _run(() => chain(snapshot, snapshot).finish(step, signature));
     }

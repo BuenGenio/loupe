@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../keyboard/shortcut_sheet.dart';
@@ -17,12 +18,13 @@ import 'palette_items.dart';
 /// letters of them. ↑ and ↓ choose, Enter runs, Esc closes.
 Future<void> showCommandPalette(BuildContext context) async {
   final container = ProviderScope.containerOf(context, listen: false);
+  final l10n = context.l10n;
   // Read now: once the palette is up, the screen below isn't on top.
-  final items = paletteItems(container);
+  final items = paletteItems(container, l10n);
   final picked = await showDialog<PaletteItem>(
     context: context,
     barrierColor: const Color(0x33000000),
-    builder: (context) => CommandPalette(items: items, searchItem: (text) => searchMailItem(text, container)),
+    builder: (context) => CommandPalette(items: items, searchItem: (text) => searchMailItem(text, container, l10n)),
   );
   if (picked == null) return;
   if (picked.kind != PaletteKind.search) await container.read(paletteRecentsProvider.notifier).add(picked.id);
@@ -122,7 +124,7 @@ class _CommandPaletteState extends ConsumerState<CommandPalette> {
                   controller: _query,
                   autofocus: true,
                   autocorrect: false,
-                  placeholder: 'Search actions, mailboxes, settings',
+                  placeholder: context.l10n.palettePlaceholder,
                   backgroundColor: colors.fill,
                   style: styles.body,
                   placeholderStyle: styles.body.copyWith(color: colors.secondaryText),
@@ -138,7 +140,11 @@ class _CommandPaletteState extends ConsumerState<CommandPalette> {
               child: _shown.isEmpty
                   ? Padding(
                       padding: const EdgeInsets.all(20),
-                      child: Text('Nothing found', style: styles.footnote, textAlign: TextAlign.center),
+                      child: Text(
+                        context.l10n.paletteNothingFound,
+                        style: styles.footnote,
+                        textAlign: TextAlign.center,
+                      ),
                     )
                   : ListView.builder(
                       controller: _scroll,

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../shared/bars.dart';
 import '../../shared/format.dart';
 import '../../theme/loupe_icons.dart';
@@ -36,6 +37,11 @@ const attachmentPreviewLimit = 100 * 1024 * 1024;
 const largeAttachmentSize = 25 * 1024 * 1024;
 
 enum _Phase { loading, confirm, downloading, ready, failed }
+
+/// The message no longer has the attachment.
+final class _AttachmentGone implements Exception {
+  const _AttachmentGone();
+}
 
 /// One attachment, full screen: the file name and size on top with Share,
 /// "Open in…" and Save, and a viewer for its type below: PDF pages, text
@@ -91,9 +97,7 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
     try {
       final content = _content ?? await ref.read(contentLoaderProvider).loadContent(widget.emailId);
       final attachment = content.attachments.where((a) => a.partId == widget.partId).firstOrNull;
-      if (attachment == null) {
-        throw const MailException(MailErrorKind.notFound, 'This attachment is no longer available.');
-      }
+      if (attachment == null) throw const _AttachmentGone();
       if (!mounted || generation != _generation) return;
       final kind = attachmentKindOf(attachment.mimeType, attachment.filename);
       setState(() {
@@ -166,14 +170,17 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
 
   // Actions -----------------------------------------------------------------
 
-  Future<void> _act(Future<void> Function(AttachmentActions actions, ScaffoldMessengerState messenger) run) async {
+  Future<void> _act(
+    Future<void> Function(AttachmentActions actions, ScaffoldMessengerState messenger, AppLocalizations l10n) run,
+  ) async {
     final a = _attachment;
     if (a == null) return;
     final actions = AttachmentActions.of(ref, widget.emailId, a);
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = context.l10n;
     setState(() => _busy++);
     try {
-      await run(actions, messenger);
+      await run(actions, messenger, l10n);
     } finally {
       if (mounted) setState(() => _busy--);
     }
@@ -184,16 +191,17 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
     return box is RenderBox && box.hasSize ? box.localToGlobal(Offset.zero) & box.size : null;
   }
 
-  void _share() => _act((a, m) => a.share(m, origin: _shareOrigin()));
-  void _openIn() => _act((a, m) => a.openIn(m));
-  void _save() => _act((a, m) => a.save(m));
+  void _share() => _act((a, m, l) => a.share(m, l, origin: _shareOrigin()));
+  void _openIn() => _act((a, m, l) => a.openIn(m, l));
+  void _save() => _act((a, m, l) => a.save(m, l));
 
   Future<void> _copy() async {
     final bytes = _bytes;
     if (bytes == null) return;
     final messenger = ScaffoldMessenger.of(context);
+    final copied = context.l10n.attachmentsCopied;
     await Clipboard.setData(ClipboardData(text: decodeAttachmentText(bytes).text));
-    showSnack(messenger, 'Copied');
+    showSnack(messenger, copied);
   }
 
   Future<void> _openGallery() async {
@@ -207,15 +215,16 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
   @override
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final a = _attachment;
     final size = _bytes?.length ?? a?.size ?? 0;
     final pages = _pages;
     final subtitle = a == null
         ? null
         : [
-            describeFileType(a.mimeType, a.filename),
-            if (size > 0) formatBytes(size),
-            if (pages != null) pages == 1 ? '1 page' : '$pages pages',
+            describeFileType(a.mimeType, a.filename, l10n: l10n),
+            if (size > 0) formatBytes(size, l10n: l10n),
+            if (pages != null) l10n.attachmentsPageCount(pages),
           ].join(' · ');
     final enabled = a != null && _busy == 0;
     return Scaffold(
@@ -225,17 +234,21 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
         physics: const NeverScrollableScrollPhysics(),
         slivers: [
           LoupeTitleBar(
-            title: a?.filename?.isNotEmpty == true ? a!.filename! : 'Attachment',
+            title: a?.filename?.isNotEmpty == true ? a!.filename! : l10n.attachmentsUntitled,
             subtitle: subtitle == null ? null : Text(subtitle, key: const Key('attachment-subtitle')),
             trailing: [
               BarIconButton(
                 key: _shareKey,
                 icon: LoupeIcons.share,
-                tooltip: 'Share',
+                tooltip: l10n.commonShare,
                 onPressed: enabled ? _share : null,
               ),
-              BarIconButton(icon: LoupeIcons.openIn, tooltip: 'Open in…', onPressed: enabled ? _openIn : null),
-              BarIconButton(icon: LoupeIcons.save, tooltip: 'Save', onPressed: enabled ? _save : null),
+              BarIconButton(
+                icon: LoupeIcons.openIn,
+                tooltip: l10n.attachmentsOpenIn,
+                onPressed: enabled ? _openIn : null,
+              ),
+              BarIconButton(icon: LoupeIcons.save, tooltip: l10n.commonSave, onPressed: enabled ? _save : null),
             ],
           ),
           SliverFillRemaining(
@@ -256,6 +269,7 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
   Widget _body(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     switch (_phase) {
       case _Phase.loading:
         return const Center(child: CircularProgressIndicator.adaptive());
@@ -263,16 +277,20 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
         final e = _error;
         return _Message(
           icon: LoupeIcons.fileError,
-          text: e is MailException ? e.message : "The attachment couldn't be downloaded.",
-          action: TextButton(onPressed: _retry, child: const Text('Try Again')),
+          text: switch (e) {
+            _AttachmentGone() => l10n.attachmentsGone,
+            MailException(:final message) => message,
+            _ => l10n.attachmentsDownloadFailed,
+          },
+          action: TextButton(onPressed: _retry, child: Text(l10n.commonTryAgain)),
         );
       case _Phase.confirm:
         final a = _attachment!;
         return _Message(
           icon: LoupeIcons.mobileData,
-          title: '${formatBytes(a.size)} on mobile data',
-          text: 'This attachment is large. Download it now, or later on Wi-Fi.',
-          action: FilledButton.tonal(onPressed: _downloadAnyway, child: const Text('Download')),
+          title: l10n.attachmentsOnMobileData(formatBytes(a.size, l10n: l10n)),
+          text: l10n.attachmentsLargeDownload,
+          action: FilledButton.tonal(onPressed: _downloadAnyway, child: Text(l10n.attachmentsDownload)),
         );
       case _Phase.downloading:
         final a = _attachment!;
@@ -286,7 +304,9 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
               const SizedBox(width: 180, child: LinearProgressIndicator()),
               const SizedBox(height: 10),
               Text(
-                a.size > 0 ? 'Downloading ${formatBytes(a.size)}…' : 'Downloading…',
+                a.size > 0
+                    ? l10n.attachmentsDownloadingSize(formatBytes(a.size, l10n: l10n))
+                    : l10n.attachmentsDownloading,
                 style: styles.footnote.copyWith(color: colors.secondaryText),
               ),
             ],
@@ -313,7 +333,7 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
     final a = _attachment!;
     final bytes = _bytes;
     if (_kind == AttachmentKind.other) return _details();
-    if (bytes == null) return _details(note: 'Too large to preview here.');
+    if (bytes == null) return _details(note: context.l10n.attachmentsTooLarge);
     final text = _text;
     final emailId = widget.emailId;
     return switch (_kind) {
@@ -338,6 +358,7 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
 
   Widget _monospace(PreparedText text) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     return MonospaceTextView(
       lines: text.lines,
       wrap: _wrap,
@@ -345,8 +366,10 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
           ? Padding(
               padding: const EdgeInsets.fromLTRB(12, 10, 12, 0),
               child: Text(
-                'Showing the first ${formatBytes(PreparedText.displayLimit)} of ${formatBytes(_bytes!.length)}. '
-                'Copy, share or save to get all of it.',
+                l10n.attachmentsTruncated(
+                  formatBytes(PreparedText.displayLimit, l10n: l10n),
+                  formatBytes(_bytes!.length, l10n: l10n),
+                ),
                 style: TextStyle(color: colors.secondaryText, fontSize: 13),
               ),
             )
@@ -369,7 +392,7 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
             onPageChanged: (p) {
               if (mounted && p != _page) setState(() => _page = p);
             },
-            error: _details(note: "This PDF can't be shown here (it may be protected with a password)."),
+            error: _details(note: context.l10n.attachmentsPdfUnavailable),
           ),
         ),
         if (pages != null && pages > 1)
@@ -387,7 +410,7 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Text(
-                    '${_page.clamp(1, pages)} of $pages',
+                    context.l10n.attachmentsPageOf(_page.clamp(1, pages), pages),
                     style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500),
                   ),
                 ),
@@ -405,9 +428,10 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
     if (_phase != _Phase.ready || text == null || _bytes == null) return null;
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     final modes = switch (_kind) {
-      AttachmentKind.csv when text.table != null => ('Table', 'Text'),
-      AttachmentKind.email when text.message != null => ('Message', 'Source'),
+      AttachmentKind.csv when text.table != null => (l10n.attachmentsModeTable, l10n.attachmentsModeText),
+      AttachmentKind.email when text.message != null => (l10n.attachmentsModeMessage, l10n.attachmentsModeSource),
       _ => null,
     };
     final monospace = modes == null || _alternate;
@@ -417,7 +441,7 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
           ? BarIconButton(
               key: const Key('attachment-wrap'),
               icon: _wrap ? LoupeIcons.wrapFilled : LoupeIcons.wrap,
-              tooltip: _wrap ? "Don't Wrap Lines" : 'Wrap Lines',
+              tooltip: _wrap ? l10n.attachmentsDontWrap : l10n.attachmentsWrap,
               onPressed: () => setState(() => _wrap = !_wrap),
             )
           : null,
@@ -432,11 +456,11 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
               },
             )
           : Text(
-              '${text.charset} · ${formatCount(lines)} ${lines == 1 ? 'line' : 'lines'}',
+              l10n.attachmentsTextInfo(text.charset, lines, formatCount(lines)),
               key: const Key('attachment-text-info'),
               style: styles.footnote.copyWith(color: colors.secondaryText),
             ),
-      trailing: BarIconButton(icon: LoupeIcons.copy, tooltip: 'Copy All', onPressed: _copy),
+      trailing: BarIconButton(icon: LoupeIcons.copy, tooltip: l10n.attachmentsCopyAll, onPressed: _copy),
     );
   }
 }
@@ -460,7 +484,7 @@ class _ImageBody extends StatelessWidget {
           fit: BoxFit.contain,
           gaplessPlayback: true,
           errorBuilder: (context, _, _) =>
-              const _Message(icon: LoupeIcons.fileError, text: "This image can't be shown here. Try Open in…."),
+              _Message(icon: LoupeIcons.fileError, text: context.l10n.attachmentsImageUnavailable),
         ),
       ),
     ),

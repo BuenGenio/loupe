@@ -1,5 +1,7 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/attachments/attachment_type.dart';
+import 'package:loupe/l10n/l10n.dart';
 
 void main() {
   group('attachmentKindOf', () {
@@ -71,18 +73,20 @@ void main() {
   });
 
   test('describeFileType', () {
-    expect(describeFileType('application/pdf'), 'PDF Document');
-    expect(describeFileType('image/jpeg', 'a.jpg'), 'JPEG Image');
-    expect(describeFileType('application/zip', 'a.zip'), 'ZIP Archive');
-    expect(describeFileType('application/octet-stream', 'a.csv'), 'CSV Spreadsheet');
-    expect(describeFileType('text/calendar'), 'Calendar Event');
-    expect(describeFileType('message/rfc822'), 'Email Message');
-    expect(describeFileType('text/vcard', 'a.vcf'), 'Contact Card');
+    final l10n = lookupAppLocalizations(const Locale('en'));
+    String describe(String mime, [String? name]) => describeFileType(mime, name, l10n: l10n);
+    expect(describe('application/pdf'), 'PDF Document');
+    expect(describe('image/jpeg', 'a.jpg'), 'JPEG Image');
+    expect(describe('application/zip', 'a.zip'), 'ZIP Archive');
+    expect(describe('application/octet-stream', 'a.csv'), 'CSV Spreadsheet');
+    expect(describe('text/calendar'), 'Calendar Event');
+    expect(describe('message/rfc822'), 'Email Message');
+    expect(describe('text/vcard', 'a.vcf'), 'Contact Card');
     expect(
-      describeFileType('application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'a.docx'),
+      describe('application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'a.docx'),
       'Word Document',
     );
-    expect(describeFileType('application/x-thing', 'a.dwg'), 'DWG File');
-    expect(describeFileType('application/octet-stream'), 'File');
+    expect(describe('application/x-thing', 'a.dwg'), 'DWG File');
+    expect(describe('application/octet-stream'), 'File');
   });
 }

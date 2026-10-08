@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../features/panes/pane_layout.dart';
+import '../l10n/l10n.dart';
 import '../theme/theme.dart';
 import '../theme/loupe_icons.dart';
 
@@ -151,7 +152,7 @@ class LoupeBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Semantics(
     button: true,
-    label: 'Back',
+    label: context.l10n.sharedBack,
     excludeSemantics: true,
     child: CupertinoButton(
       padding: const EdgeInsetsDirectional.only(start: 4, end: 2),
@@ -383,7 +384,7 @@ class _BarDelegate extends SliverPersistentHeaderDelegate {
                                     padding: const EdgeInsets.symmetric(horizontal: 12),
                                     minimumSize: const Size(44, 36),
                                     onPressed: onCancelSearch,
-                                    child: const Text('Cancel', maxLines: 1),
+                                    child: Text(context.l10n.commonCancel, maxLines: 1),
                                   ),
                               ],
                             ),
@@ -489,7 +490,7 @@ class LoupeSearchField extends StatelessWidget {
     this.focusNode,
     this.onChanged,
     this.onSubmitted,
-    this.placeholder = 'Search',
+    this.placeholder,
     this.autofocus = false,
     this.onLongPress,
   });
@@ -498,7 +499,9 @@ class LoupeSearchField extends StatelessWidget {
   final FocusNode? focusNode;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
-  final String placeholder;
+
+  /// Search, unless given.
+  final String? placeholder;
   final bool autofocus;
 
   /// A long press while the field isn't being typed in (the command
@@ -536,7 +539,7 @@ class LoupeSearchField extends StatelessWidget {
       controller: controller,
       focusNode: focusNode,
       autofocus: autofocus,
-      placeholder: placeholder,
+      placeholder: placeholder ?? context.l10n.commonSearch,
       onChanged: onChanged,
       onSubmitted: onSubmitted,
       autocorrect: false,

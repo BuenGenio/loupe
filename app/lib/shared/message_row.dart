@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../l10n/l10n.dart';
 import '../theme/theme.dart';
 import 'format.dart';
 import 'tags.dart';
@@ -67,13 +68,14 @@ class MessageRow extends StatelessWidget {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
     final metrics = LoupeMetrics.of(context);
+    final l10n = context.l10n;
     final isUnread = unread ?? !email.isSeen;
     final people = showRecipients ? [...email.to, ...email.cc] : email.from;
     final name = people.isEmpty
-        ? (showRecipients ? 'No Recipients' : 'Unknown Sender')
+        ? (showRecipients ? l10n.sharedNoRecipients : l10n.sharedUnknownSender)
         : people.map((a) => a.displayName).take(3).join(', ');
     final tags = email.tags.toList();
-    final subject = email.subject.trim().isEmpty ? 'No Subject' : email.subject;
+    final subject = email.subject.trim().isEmpty ? l10n.mailNoSubject : email.subject;
 
     Widget gutter() {
       if (editing) {
@@ -128,12 +130,22 @@ class MessageRow extends StatelessWidget {
             if (fromServer)
               Padding(
                 padding: const EdgeInsets.only(left: 6),
-                child: Icon(LoupeIcons.onServer, size: 15, color: colors.secondaryText, semanticLabel: 'On server'),
+                child: Icon(
+                  LoupeIcons.onServer,
+                  size: 15,
+                  color: colors.secondaryText,
+                  semanticLabel: l10n.sharedOnServer,
+                ),
               ),
             if (email.hasAttachment)
               Padding(
                 padding: const EdgeInsets.only(left: 6),
-                child: Icon(LoupeIcons.attachment, size: 14, color: colors.secondaryText, semanticLabel: 'Attachment'),
+                child: Icon(
+                  LoupeIcons.attachment,
+                  size: 14,
+                  color: colors.secondaryText,
+                  semanticLabel: l10n.sharedAttachment,
+                ),
               ),
             // Woke from snooze and still unread: a small mark, as Apple Mail does.
             if (wakeTime == null && email.isNewAgain) ...[
@@ -141,7 +153,7 @@ class MessageRow extends StatelessWidget {
               Icon(LoupeIcons.snoozeFilled, size: 12, color: colors.snooze),
               const SizedBox(width: 2),
               Text(
-                'Snoozed',
+                l10n.sharedSnoozedBadge,
                 style: styles.caption.copyWith(color: colors.snooze, fontWeight: FontWeight.w600),
               ),
             ],
@@ -151,7 +163,7 @@ class MessageRow extends StatelessWidget {
               const SizedBox(width: 3),
               Text(wake, style: styles.date.copyWith(color: colors.snooze)),
             ] else
-              Text(formatListDate(email.receivedAt), style: styles.date),
+              Text(formatListDate(email.receivedAt, l10n: l10n), style: styles.date),
             if (messageCount > 1)
               Container(
                 margin: const EdgeInsets.only(left: 6),
@@ -183,7 +195,7 @@ class MessageRow extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 5),
                 child: Tooltip(
-                  message: tagLabel(t),
+                  message: tagLabel(t, l10n: l10n),
                   child: Container(
                     width: 8,
                     height: 8,
@@ -217,11 +229,11 @@ class MessageRow extends StatelessWidget {
         button: true,
         selected: selected || checked,
         label: [
-          if (isUnread) 'Unread',
-          if (wakeTime == null && email.isNewAgain) 'Back from snooze',
-          if (isVip) 'VIP',
-          if (email.isFlagged) 'Flagged',
-          if (messageCount > 1) '$messageCount messages',
+          if (isUnread) l10n.sharedRowUnread,
+          if (wakeTime == null && email.isNewAgain) l10n.sharedRowBackFromSnooze,
+          if (isVip) l10n.sharedRowVip,
+          if (email.isFlagged) l10n.sharedRowFlagged,
+          if (messageCount > 1) l10n.commonMessageCount(messageCount),
         ].join(', '),
         child: Material(
           color: selected ? colors.selectedRow : Theme.of(context).scaffoldBackgroundColor,

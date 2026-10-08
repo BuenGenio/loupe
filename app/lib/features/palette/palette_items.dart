@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/app_mode.dart';
@@ -117,8 +118,10 @@ List<PaletteItem> rankPalette(List<PaletteItem> items, String query, {List<Strin
   return [for (final (item, _) in scored.take(40)) item];
 }
 
-/// The palette's entries for the screen on top, read now and run later.
-List<PaletteItem> paletteItems(ProviderContainer container) {
+/// The palette's entries for the screen on top, read now and run later,
+/// named in [l10n]'s words. Their keywords stay English, as extra words to
+/// find them by.
+List<PaletteItem> paletteItems(ProviderContainer container, AppLocalizations l10n) {
   final router = container.read(routerProvider);
   final commands = container.read(mailCommandsProvider);
   final navigator = router.routerDelegate.navigatorKey;
@@ -141,7 +144,7 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
         kind: PaletteKind.action,
         icon: icon,
         keywords: keywords,
-        shortcut: shortcutKeys(c),
+        shortcut: shortcutKeys(c, l10n),
         run: handler == null ? otherwise! : () => handler.run(c),
       ),
     );
@@ -149,30 +152,30 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
 
   command(
     MailCommand.newMessage,
-    'New Message',
+    l10n.mailNewMessage,
     LoupeIcons.compose,
     keywords: const ['compose', 'write'],
     otherwise: () => router.push<void>(Routes.compose, extra: const ComposeArgs()),
   );
-  command(MailCommand.reply, 'Reply', LoupeIcons.reply);
-  command(MailCommand.replyAll, 'Reply All', LoupeIcons.replyAll);
-  command(MailCommand.forward, 'Forward', LoupeIcons.forward);
-  command(MailCommand.archive, 'Archive', LoupeIcons.archive);
-  command(MailCommand.trash, 'Move to Trash', LoupeIcons.trash, keywords: const ['delete']);
-  command(MailCommand.toggleRead, 'Mark as Read or Unread', LoupeIcons.markRead, keywords: const ['seen']);
-  command(MailCommand.toggleFlag, 'Flag or Unflag', LoupeIcons.flagged, keywords: const ['star']);
-  command(MailCommand.snooze, 'Snooze…', LoupeIcons.snooze, keywords: const ['remind', 'later']);
-  command(MailCommand.move, 'Move to Mailbox…', LoupeIcons.move, keywords: const ['folder', 'file']);
-  command(MailCommand.markAllRead, 'Mark All as Read', LoupeIcons.markAllRead);
+  command(MailCommand.reply, l10n.mailReply, LoupeIcons.reply);
+  command(MailCommand.replyAll, l10n.mailReplyAll, LoupeIcons.replyAll);
+  command(MailCommand.forward, l10n.mailForward, LoupeIcons.forward);
+  command(MailCommand.archive, l10n.mailArchive, LoupeIcons.archive);
+  command(MailCommand.trash, l10n.keyboardMoveToTrash, LoupeIcons.trash, keywords: const ['delete']);
+  command(MailCommand.toggleRead, l10n.keyboardToggleRead, LoupeIcons.markRead, keywords: const ['seen']);
+  command(MailCommand.toggleFlag, l10n.keyboardToggleFlag, LoupeIcons.flagged, keywords: const ['star']);
+  command(MailCommand.snooze, l10n.sharedSnooze, LoupeIcons.snooze, keywords: const ['remind', 'later']);
+  command(MailCommand.move, l10n.paletteMoveToMailbox, LoupeIcons.move, keywords: const ['folder', 'file']);
+  command(MailCommand.markAllRead, l10n.paletteMarkAllRead, LoupeIcons.markAllRead);
   command(
     MailCommand.exportFolder,
-    'Export Folder…',
+    l10n.paletteExportFolder,
     LoupeIcons.exportFolder,
     keywords: const ['mbox', 'save', 'backup', 'download'],
   );
   command(
     MailCommand.refresh,
-    'Get New Mail',
+    l10n.paletteGetNewMail,
     LoupeIcons.refresh,
     keywords: const ['refresh', 'sync', 'check'],
     otherwise: () => container.read(repositoryProvider).refresh(),
@@ -180,11 +183,11 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
   items.add(
     PaletteItem(
       id: 'action.shortcuts',
-      title: 'Keyboard Shortcuts',
+      title: l10n.keyboardShortcuts,
       kind: PaletteKind.action,
       icon: LoupeIcons.keyboard,
       keywords: const ['help', 'keys'],
-      shortcut: shortcutKeys(MailCommand.shortcuts),
+      shortcut: shortcutKeys(MailCommand.shortcuts, l10n),
       run: () {
         final ctx = navigator.currentContext;
         if (ctx != null) return showShortcutSheet(ctx);
@@ -223,19 +226,19 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
     items.add(
       place(
         'mailbox.v.${kind.name}',
-        virtualMailboxTitle(kind),
+        virtualMailboxTitle(kind, l10n: l10n),
         virtualMailboxIcon(kind),
         Routes.list(VirtualMailboxRef(kind)),
       ),
     );
   }
   items
-    ..add(place('mailbox.snoozed', 'Snoozed', LoupeIcons.snoozed, Routes.snoozed))
-    ..add(place('mailbox.outbox', 'Outbox', LoupeIcons.outbox, Routes.outbox))
+    ..add(place('mailbox.snoozed', l10n.paletteSnoozed, LoupeIcons.snoozed, Routes.snoozed))
+    ..add(place('mailbox.outbox', l10n.mailboxOutbox, LoupeIcons.outbox, Routes.outbox))
     ..add(
       place(
         'mailbox.subscriptions',
-        'Subscriptions',
+        l10n.paletteSubscriptions,
         LoupeIcons.subscriptions,
         Routes.subscriptions,
         keywords: const ['newsletters', 'unsubscribe', 'mailing lists', 'discussions'],
@@ -244,10 +247,10 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
     ..add(
       place(
         'mailbox.subscriptions.discussions',
-        'Discussions',
+        l10n.paletteDiscussions,
         LoupeIcons.mailingList,
         Routes.subscriptionsTab(SubscriptionKind.discussion),
-        subtitle: 'Subscriptions',
+        subtitle: l10n.paletteSubscriptions,
         keywords: const ['mailing lists'],
       ),
     );
@@ -263,12 +266,12 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
       // Nested folders say where they are: Work › Projects.
       final parents = <String>[];
       for (var p = byId[m.parentId]; p != null; p = byId[p.parentId]) {
-        parents.insert(0, mailboxDisplayName(p));
+        parents.insert(0, mailboxDisplayName(p, l10n: l10n));
       }
       items.add(
         place(
           'mailbox.${m.id}',
-          mailboxDisplayName(m),
+          mailboxDisplayName(m, l10n: l10n),
           mailboxIcon(m.role),
           Routes.list(RealMailboxRef(m.id)),
           subtitle: [account.displayName, ...parents].join(' › '),
@@ -278,7 +281,13 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
   }
   for (final s in container.read(smartMailboxesProvider)) {
     items.add(
-      place('smart.${s.id}', s.name, LoupeIcons.smartMailbox, Routes.smartMailbox(s.id), subtitle: 'Smart Mailbox'),
+      place(
+        'smart.${s.id}',
+        s.name,
+        LoupeIcons.smartMailbox,
+        Routes.smartMailbox(s.id),
+        subtitle: l10n.paletteSmartMailbox,
+      ),
     );
   }
   for (final l in container.read(discussionsProvider)) {
@@ -288,7 +297,7 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
         l.name,
         LoupeIcons.mailingList,
         Routes.mailingList(l.listId!),
-        subtitle: 'Mailing List',
+        subtitle: l10n.paletteMailingList,
       ),
     );
   }
@@ -296,10 +305,10 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
     items.add(
       place(
         'tag.${tag.keyword}',
-        tag.label,
+        tagLabel(tag.keyword, l10n: l10n),
         LoupeIcons.tagFilled,
         Routes.search(SearchTokens.tag(tag.keyword)),
-        subtitle: 'Tag',
+        subtitle: l10n.paletteTag,
         color: tagColor(tag.keyword),
       ),
     );
@@ -311,33 +320,36 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
     String title,
     String location, {
     IconData icon = LoupeIcons.settings,
-    String? sub = 'Settings',
+    String? sub,
+    bool showSub = true,
     List<String> keywords = const [],
   }) => PaletteItem(
     id: 'settings.$id',
     title: title,
-    subtitle: sub,
+    subtitle: showSub ? sub ?? l10n.commonSettings : null,
     kind: PaletteKind.setting,
     icon: icon,
     keywords: keywords,
     run: () => router.push<void>(location),
   );
   items
-    ..add(setting('main', 'Settings', Routes.settings, sub: null, keywords: const ['preferences']))
-    ..add(setting('swipes', 'Swipe Actions', Routes.swipeSettings, icon: LoupeIcons.swipeActions))
-    ..add(setting('notifications', 'Notifications', Routes.notificationSettings, icon: LoupeIcons.notifications))
-    ..add(setting('rules', 'Rules', Routes.rules, icon: LoupeIcons.rules))
+    ..add(setting('main', l10n.commonSettings, Routes.settings, showSub: false, keywords: const ['preferences']))
+    ..add(setting('swipes', l10n.paletteSwipeActions, Routes.swipeSettings, icon: LoupeIcons.swipeActions))
+    ..add(
+      setting('notifications', l10n.paletteNotifications, Routes.notificationSettings, icon: LoupeIcons.notifications),
+    )
+    ..add(setting('rules', l10n.paletteRules, Routes.rules, icon: LoupeIcons.rules))
     ..add(
       setting(
         'encryption',
-        'End-to-End Encryption',
+        l10n.paletteEncryption,
         Routes.encryption,
         icon: LoupeIcons.e2ee,
         keywords: const ['openpgp', 'pgp', 'keys'],
       ),
     )
-    ..add(setting('advanced', 'Advanced', Routes.advancedSettings, icon: LoupeIcons.serverSettings))
-    ..add(setting('addAccount', 'Add Account', Routes.addAccount, icon: LoupeIcons.add));
+    ..add(setting('advanced', l10n.paletteAdvanced, Routes.advancedSettings, icon: LoupeIcons.serverSettings))
+    ..add(setting('addAccount', l10n.paletteAddAccount, Routes.addAccount, icon: LoupeIcons.add));
   for (final a in accounts) {
     items
       ..add(
@@ -346,16 +358,16 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
           a.displayName,
           Routes.accountSettings(a.id),
           icon: LoupeIcons.contact,
-          sub: 'Account',
+          sub: l10n.paletteAccount,
         ),
       )
       ..add(
         setting(
           'folders.${a.id}',
-          'Folders',
+          l10n.paletteFolders,
           Routes.manageFolders(a.id),
           icon: LoupeIcons.folder,
-          sub: '${a.displayName} › Folders',
+          sub: '${a.displayName} › ${l10n.paletteFolders}',
         ),
       );
   }
@@ -366,7 +378,7 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
       PaletteItem(
         id: 'search.$q',
         title: q,
-        subtitle: 'Recent Search',
+        subtitle: l10n.paletteRecentSearch,
         kind: PaletteKind.search,
         icon: LoupeIcons.recent,
         run: () => router.push<void>(Routes.search(q)),
@@ -377,11 +389,11 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
 }
 
 /// "Search mail for '[text]'": searches every mailbox (and remembers it).
-PaletteItem searchMailItem(String text, ProviderContainer container) {
+PaletteItem searchMailItem(String text, ProviderContainer container, AppLocalizations l10n) {
   final q = text.trim();
   return PaletteItem(
     id: 'search.$q',
-    title: 'Search mail for “$q”',
+    title: l10n.paletteSearchMail(q),
     kind: PaletteKind.search,
     icon: LoupeIcons.search,
     run: () {

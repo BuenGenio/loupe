@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../conversation/sheets.dart';
 import 'attachment_cache.dart';
 import 'attachment_platform.dart';
@@ -59,32 +60,32 @@ final class AttachmentActions {
     );
   }
 
-  static String _downloadError(Object e) =>
-      e is MailException ? e.message : "Couldn't download the attachment. Check the connection and try again.";
+  static String _downloadError(Object e, AppLocalizations l10n) =>
+      e is MailException ? e.message : l10n.attachmentsDownloadError;
 
   /// The share sheet; [origin] anchors it on tablets.
-  Future<void> share(ScaffoldMessengerState messenger, {Rect? origin}) async {
+  Future<void> share(ScaffoldMessengerState messenger, AppLocalizations l10n, {Rect? origin}) async {
     final AttachmentFile file;
     try {
       file = await _file();
     } on Object catch (e) {
-      showSnack(messenger, _downloadError(e));
+      showSnack(messenger, _downloadError(e, l10n));
       return;
     }
     try {
       await platform.share(file, origin: origin);
     } on Object {
-      showSnack(messenger, "Couldn't share the attachment.");
+      showSnack(messenger, l10n.attachmentsShareError);
     }
   }
 
   /// Hands the file to another app.
-  Future<void> openIn(ScaffoldMessengerState messenger) async {
+  Future<void> openIn(ScaffoldMessengerState messenger, AppLocalizations l10n) async {
     final AttachmentFile file;
     try {
       file = await _file();
     } on Object catch (e) {
-      showSnack(messenger, _downloadError(e));
+      showSnack(messenger, _downloadError(e, l10n));
       return;
     }
     try {
@@ -92,29 +93,29 @@ final class AttachmentActions {
         case OpenInResult.opened:
           break;
         case OpenInResult.noApp:
-          final type = describeFileType(attachment.mimeType, attachment.filename);
-          showSnack(messenger, 'No app on this device opens this file ($type). Try Share instead.');
+          final type = describeFileType(attachment.mimeType, attachment.filename, l10n: l10n);
+          showSnack(messenger, l10n.attachmentsNoApp(type));
         case OpenInResult.failed:
-          showSnack(messenger, "Couldn't open the attachment in another app.");
+          showSnack(messenger, l10n.attachmentsOpenInError);
       }
     } on Object {
-      showSnack(messenger, "Couldn't open the attachment in another app.");
+      showSnack(messenger, l10n.attachmentsOpenInError);
     }
   }
 
   /// Asks where to save (Downloads by default) and saves there.
-  Future<void> save(ScaffoldMessengerState messenger) async {
+  Future<void> save(ScaffoldMessengerState messenger, AppLocalizations l10n) async {
     final AttachmentFile file;
     try {
       file = await _file();
     } on Object catch (e) {
-      showSnack(messenger, _downloadError(e));
+      showSnack(messenger, _downloadError(e, l10n));
       return;
     }
     try {
-      if (await platform.save(file)) showSnack(messenger, 'Saved “${file.name}”');
+      if (await platform.save(file)) showSnack(messenger, l10n.attachmentsSaved(file.name));
     } on Object {
-      showSnack(messenger, "Couldn't save the attachment.");
+      showSnack(messenger, l10n.attachmentsSaveError);
     }
   }
 }
@@ -130,13 +131,14 @@ Future<void> showAttachmentActions(
   ValueChanged<bool>? onBusy,
 }) async {
   final messenger = ScaffoldMessenger.of(context);
+  final l10n = context.l10n;
   final choice = await showActionSheet<_Action>(
     context,
-    title: actions.attachment.filename ?? 'Attachment',
-    actions: const [
-      SheetAction('Open in…', _Action.openIn),
-      SheetAction('Save to Files', _Action.save),
-      SheetAction('Share…', _Action.share),
+    title: actions.attachment.filename ?? l10n.attachmentsUntitled,
+    actions: [
+      SheetAction(l10n.attachmentsOpenIn, _Action.openIn),
+      SheetAction(l10n.attachmentsSaveToFiles, _Action.save),
+      SheetAction(l10n.attachmentsShareMenu, _Action.share),
     ],
   );
   if (choice == null) return;
@@ -144,11 +146,11 @@ Future<void> showAttachmentActions(
   try {
     switch (choice) {
       case _Action.openIn:
-        await actions.openIn(messenger);
+        await actions.openIn(messenger, l10n);
       case _Action.save:
-        await actions.save(messenger);
+        await actions.save(messenger, l10n);
       case _Action.share:
-        await actions.share(messenger, origin: origin);
+        await actions.share(messenger, l10n, origin: origin);
     }
   } finally {
     onBusy?.call(false);

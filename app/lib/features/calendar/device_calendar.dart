@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_calendar/mail_calendar.dart';
 
+import '../../l10n/l10n.dart';
 import 'invitation.dart';
 
 /// An event for the phone's calendar app, which shows it for the user to
@@ -93,8 +94,8 @@ final deviceCalendarProvider = Provider<DeviceCalendar>((ref) => const Add2Calen
 
 /// What "Add to Calendar" hands the phone for [invitation]: its title,
 /// first occurrence, zone, place, recurrence and meeting link (in the notes
-/// too, as calendar apps show those).
-DeviceEvent? deviceEventFor(Invitation invitation) {
+/// too, as calendar apps show those), with [l10n]'s words.
+DeviceEvent? deviceEventFor(Invitation invitation, AppLocalizations l10n) {
   final span = invitation.span;
   if (span == null) return null;
   final event = invitation.event;
@@ -102,10 +103,10 @@ DeviceEvent? deviceEventFor(Invitation invitation) {
   final notes = event.description?.trim();
   final description = [
     if (notes != null && notes.isNotEmpty) notes,
-    if (link != null && !(notes?.contains(link.toString()) ?? false)) 'Join: $link',
+    if (link != null && !(notes?.contains(link.toString()) ?? false)) l10n.calendarJoinNote('$link'),
   ].join('\n\n');
   return DeviceEvent(
-    title: event.summary ?? 'Event',
+    title: event.summary ?? l10n.calendarUntitledEvent,
     start: span.start,
     end: span.end,
     allDay: span.allDay,

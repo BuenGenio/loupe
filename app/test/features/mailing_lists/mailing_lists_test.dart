@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/mailing_lists/list_providers.dart';
 import 'package:loupe/features/mailing_lists/mailing_list_screen.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:loupe/router.dart';
 import 'package:loupe/theme/loupe_icons.dart';
 import 'package:mail_model/mail_model.dart';
@@ -25,19 +26,20 @@ void main() {
 
   group('thread titles and participants', () {
     test('reply prefixes, the list tag and the patch tag go; other tags stay', () {
-      expect(listThreadTitle('[PATCH v2 0/3] Cache headers', listId: kestrel), 'Cache headers');
-      expect(listThreadTitle('Re: [dev] [PATCH] fix', listId: kestrel), 'fix');
+      final l10n = lookupAppLocalizations(const Locale('en'));
+      expect(listThreadTitle('[PATCH v2 0/3] Cache headers', listId: kestrel, l10n: l10n), 'Cache headers');
+      expect(listThreadTitle('Re: [dev] [PATCH] fix', listId: kestrel, l10n: l10n), 'fix');
       expect(
-        listThreadTitle('[open-garden] RFC: manifest v2', listId: 'open-garden.lists.opengarden.example'),
+        listThreadTitle('[open-garden] RFC: manifest v2', listId: 'open-garden.lists.opengarden.example', l10n: l10n),
         'RFC: manifest v2',
       );
       expect(
-        listThreadTitle('[RFC] [PATCH 1/2] keep the RFC tag', listId: kestrel),
+        listThreadTitle('[RFC] [PATCH 1/2] keep the RFC tag', listId: kestrel, l10n: l10n),
         '[RFC] [PATCH 1/2] keep the RFC tag',
       );
-      expect(listThreadTitle('[ANN] Kestrel 2.3', listId: kestrel), '[ANN] Kestrel 2.3');
-      expect(listThreadTitle('[PATCH]', listId: kestrel), '[PATCH]');
-      expect(listThreadTitle('  ', listId: kestrel), 'No Subject');
+      expect(listThreadTitle('[ANN] Kestrel 2.3', listId: kestrel, l10n: l10n), '[ANN] Kestrel 2.3');
+      expect(listThreadTitle('[PATCH]', listId: kestrel, l10n: l10n), '[PATCH]');
+      expect(listThreadTitle('  ', listId: kestrel, l10n: l10n), 'No Subject');
     });
 
     test('up to three names, then a count', () {
