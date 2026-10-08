@@ -1,0 +1,59 @@
+---
+// Everything search engines and link previews read: title, description,
+// canonical URL, hreflang alternates, Open Graph, Twitter/X cards and JSON-LD.
+import { site } from '../config';
+import { alternates } from '../i18n';
+import { locale } from '../i18n/locales';
+import { graph, organization, website } from '../lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: string;
+  path: string; // the page's path without a language prefix
+  image?: string;
+  imageAlt?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  published?: Date;
+  modified?: Date;
+  jsonLd?: object[];
+  isHome?: boolean;
+}
+
+const { title, description, lang, path, image = '/og/home.png', imageAlt, type = 'website', noindex = false, published, modified, jsonLd = [], isHome = false } =
+  Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const fullTitle = isHome ? `${site.name} — ${title}` : `${title} · ${site.name}`;
+const imageUrl = new URL(image, site.url).href;
+const links = noindex ? [] : alternates(path);
+const ld = graph([organization(), website(), ...jsonLd]);
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1'} />
+{links.map((l) => <link rel="alternate" hreflang={l.lang} href={new URL(l.href, site.url).href} />)}
+
+<meta property="og:site_name" content={site.name} />
+<meta property="og:type" content={type} />
+<meta property="og:title" content={isHome ? fullTitle : title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={locale(lang).og} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={imageAlt ?? `${title} — ${site.name}`} />
+{published && <meta property="article:published_time" content={published.toISOString()} />}
+{modified && <meta property="article:modified_time" content={modified.toISOString()} />}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={isHome ? fullTitle : title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+
+<script type="application/ld+json" set:html={JSON.stringify(ld)} />

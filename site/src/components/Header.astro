@@ -1,0 +1,271 @@
+---
+import { Image } from 'astro:assets';
+import { nav, site } from '../config';
+import { useT, localize } from '../i18n';
+import tile from '../assets/brand/icon-tile.png';
+import Icon from './Icon.astro';
+import BrandIcon from './BrandIcon.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+
+interface Props {
+  lang: string;
+  path: string; // without the language prefix
+}
+const { lang, path } = Astro.props;
+const t = useT(lang);
+const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href={localize(lang, '/')} aria-label={t('common.home')}>
+      <Image src={tile} alt="" width={34} height={34} densities={[1, 2, 3]} loading="eager" />
+      <span class="wordmark">Loupe</span>
+    </a>
+
+    <nav class="primary" aria-label={t('nav.main')}>
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={localize(lang, item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {t(item.label)}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <LanguageSwitcher lang={lang} path={path} />
+      <button class="icon-btn theme-toggle" type="button" aria-label={t('common.theme')}>
+        <span class="sun"><Icon name="weather-sunny" size={20} /></span>
+        <span class="moon"><Icon name="weather-moon" size={20} /></span>
+      </button>
+      <a class="icon-btn hide-s" href={site.repo} aria-label={t('common.github')} rel="noopener">
+        <BrandIcon name="github" size={20} />
+      </a>
+      <a class="btn btn-primary btn-small" href={localize(lang, '/download/')}>
+        <Icon name="arrow-download" size={18} />
+        <span>{t('common.download')}</span>
+      </a>
+      <details class="menu">
+        <summary class="icon-btn" aria-label={t('common.menu')}><Icon name="navigation" size={22} /></summary>
+        <nav class="menu-panel" aria-label={t('nav.main')}>
+          {
+            nav.map((item) => (
+              <a href={localize(lang, item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {t(item.label)}
+              </a>
+            ))
+          }
+          <a href={localize(lang, '/contact/')}>{t('nav.contact')}</a>
+          <a href={site.repo} rel="noopener">GitHub</a>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.theme-toggle');
+  button?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const current =
+      root.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {}
+  });
+
+  // Close the mobile menu after picking a link or tapping outside.
+  const menu = document.querySelector<HTMLDetailsElement>('.menu');
+  document.addEventListener('click', (e) => {
+    if (menu?.open && !menu.contains(e.target as Node)) menu.open = false;
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-h);
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter: saturate(1.6) blur(16px);
+    -webkit-backdrop-filter: saturate(1.6) blur(16px);
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 100%;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .brand img {
+    border-radius: 9px;
+    box-shadow: var(--shadow-s);
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .primary {
+    margin-right: auto;
+  }
+
+  .primary ul {
+    display: flex;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .primary a {
+    display: block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .primary a:hover {
+    color: var(--ink);
+    background: var(--bg-sunk);
+  }
+
+  .primary a[aria-current='page'] {
+    color: var(--brand-ink);
+    background: var(--brand-soft);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .icon-btn {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink-2);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .icon-btn:hover {
+    background: var(--bg-sunk);
+    color: var(--ink);
+  }
+
+  .icon-btn::-webkit-details-marker {
+    display: none;
+  }
+
+  .theme-toggle .moon {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .theme-toggle .sun {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .theme-toggle .moon {
+    display: block;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .theme-toggle .sun {
+      display: none;
+    }
+    :global(:root:not([data-theme='light'])) .theme-toggle .moon {
+      display: block;
+    }
+  }
+
+  .menu {
+    position: relative;
+    display: none;
+  }
+
+  .menu-panel {
+    position: absolute;
+    z-index: 60;
+    right: 0;
+    top: calc(100% + 10px);
+    display: grid;
+    min-width: 220px;
+    padding: 8px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-l);
+  }
+
+  .menu-panel a {
+    padding: 10px 14px;
+    border-radius: 10px;
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .menu-panel a:hover,
+  .menu-panel a[aria-current='page'] {
+    background: var(--brand-soft);
+    color: var(--brand-ink);
+  }
+
+  @media (max-width: 900px) {
+    .primary {
+      display: none;
+    }
+    .actions {
+      margin-left: auto;
+    }
+    .menu {
+      display: block;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hide-s {
+      display: none;
+    }
+    .bar {
+      gap: 12px;
+    }
+    .actions .btn span {
+      display: none;
+    }
+    .actions .btn {
+      width: 40px;
+      padding: 0;
+    }
+  }
+</style>

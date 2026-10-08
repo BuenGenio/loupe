@@ -1,0 +1,191 @@
+---
+// Search across the docs, in the browser, against /search-index.json (built
+// with the site). No third-party search service sees what you look for.
+import Icon from './Icon.astro';
+
+interface Props {
+  autofocus?: boolean;
+}
+const { autofocus = false } = Astro.props;
+---
+
+<div class="docs-search">
+  <label class="field">
+    <Icon name="search" size={18} />
+    <span class="visually-hidden">Search the docs</span>
+    <input type="search" placeholder="Search the docs" autocomplete="off" spellcheck="false" autofocus={autofocus} />
+    <kbd class="key" aria-hidden="true">/</kbd>
+  </label>
+  <ol class="hits" hidden></ol>
+</div>
+
+<script>
+  type Doc = { url: string; title: string; section: string; headings: { text: string; slug: string }[]; text: string };
+  let index: Promise<Doc[]> | null = null;
+  const load = () => (index ??= fetch('/search-index.json').then((r) => r.json()));
+
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+  function search(docs: Doc[], query: string) {
+    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    if (!terms.length) return [];
+    return docs
+      .map((d) => {
+        const title = d.title.toLowerCase();
+        const text = d.text.toLowerCase();
+        let score = 0;
+        let heading: Doc['headings'][number] | undefined;
+        for (const t of terms) {
+          const inTitle = title.includes(t);
+          const h = d.headings.find((h) => h.text.toLowerCase().includes(t));
+          const count = text.split(t).length - 1;
+          if (!inTitle && !h && !count) return null;
+          score += (inTitle ? 10 : 0) + (h ? 5 : 0) + Math.min(count, 5);
+          heading ??= h;
+        }
+        const at = text.indexOf(terms[0]);
+        const snippet = at >= 0 ? d.text.slice(Math.max(0, at - 50), at + 110) : d.text.slice(0, 140);
+        return { d, score, heading, snippet };
+      })
+      .filter((x): x is NonNullable<typeof x> => x !== null)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 8);
+  }
+
+  for (const box of document.querySelectorAll<HTMLElement>('.docs-search')) {
+    const input = box.querySelector('input')!;
+    const hits = box.querySelector<HTMLOListElement>('.hits')!;
+    input.addEventListener('focus', load, { once: true });
+    input.addEventListener('input', async () => {
+      const q = input.value.trim();
+      if (!q) {
+        hits.hidden = true;
+        return;
+      }
+      const results = search(await load(), q);
+      const mark = (s: string) =>
+        q.split(/\s+/).filter(Boolean).reduce((acc, t) => acc.replace(new RegExp(`(${t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'), '<mark>$1</mark>'), esc(s));
+      hits.innerHTML = results.length
+        ? results
+            .map(
+              (r) =>
+                `<li><a href="${r.d.url}${r.heading ? '#' + r.heading.slug : ''}"><span class="t">${esc(r.d.title)}${
+                  r.heading ? ` <span class="h">› ${esc(r.heading.text)}</span>` : ''
+                }</span><span class="s">…${mark(r.snippet)}…</span></a></li>`,
+            )
+            .join('')
+        : `<li class="none">No pages match “${esc(q)}”.</li>`;
+      hits.hidden = false;
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        input.value = '';
+        hits.hidden = true;
+      }
+      if (e.key === 'Enter') hits.querySelector('a')?.click();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)) {
+        e.preventDefault();
+        input.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .docs-search {
+    position: relative;
+  }
+
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 10px 0 14px;
+    border: 1px solid var(--line-2);
+    border-radius: 12px;
+    background: var(--bg-elev);
+    color: var(--ink-3);
+  }
+
+  .field:focus-within {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent);
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    height: 44px;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.9375rem;
+    outline: none;
+  }
+
+  .key {
+    font-size: 0.75rem;
+  }
+
+  .hits {
+    position: absolute;
+    z-index: 20;
+    left: 0;
+    right: 0;
+    top: calc(100% + 6px);
+    max-height: 60vh;
+    margin: 0;
+    padding: 6px;
+    overflow: auto;
+    list-style: none;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-elev);
+    box-shadow: var(--shadow-l);
+  }
+
+  .hits :global(a) {
+    display: grid;
+    gap: 2px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .hits :global(a:hover),
+  .hits :global(a:focus) {
+    background: var(--brand-soft);
+  }
+
+  .hits :global(.t) {
+    font-weight: 500;
+    font-size: 0.9375rem;
+  }
+
+  .hits :global(.h) {
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+
+  .hits :global(.s) {
+    color: var(--ink-2);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+  }
+
+  .hits :global(mark) {
+    background: color-mix(in srgb, var(--brand) 25%, transparent);
+    color: inherit;
+    border-radius: 3px;
+  }
+
+  .hits :global(.none) {
+    padding: 12px;
+    color: var(--ink-3);
+    font-size: 0.9375rem;
+  }
+</style>

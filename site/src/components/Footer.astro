@@ -1,0 +1,172 @@
+---
+import { Image } from 'astro:assets';
+import { footerNav, site, socials } from '../config';
+import { useT, localize } from '../i18n';
+import tile from '../assets/brand/icon-tile.png';
+import BrandIcon from './BrandIcon.astro';
+
+interface Props {
+  lang: string;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const live = socials.filter((s) => s.href);
+---
+
+<footer class="site-footer">
+  <div class="wrap grid">
+    <div class="about">
+      <a class="brand" href={localize(lang, '/')}>
+        <Image src={tile} alt="" width={30} height={30} densities={[1, 2]} />
+        <span>Loupe</span>
+      </a>
+      <p>{t('footer.about')}</p>
+      {
+        live.length > 0 && (
+          <ul class="socials" aria-label={t('footer.elsewhere')}>
+            {live.map((s) => (
+              <li>
+                <a href={s.href} rel="me noopener" aria-label={`${s.name}: ${s.handle}`}>
+                  <BrandIcon name={s.icon} size={18} />
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+    {
+      footerNav.map((group) => (
+        <nav aria-label={t(group.title)}>
+          <h2>{t(group.title)}</h2>
+          <ul>
+            {group.links.map((link) => (
+              <li>
+                <a href={localize(lang, link.href)}>{t(link.label)}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))
+    }
+  </div>
+  <div class="wrap legal">
+    <p set:html={t('footer.copyright_html', { year: new Date().getFullYear(), owner: site.owner.name, licenceUrl: site.licence.url, licence: site.licence.name })} />
+    <p>{t('footer.independent')}</p>
+    {lang !== 'en' && <p>{t('common.appEnglish')}</p>}
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: auto;
+    padding-top: 64px;
+    background: var(--bg-sunk);
+    border-top: 1px solid var(--line);
+    font-size: 0.9375rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1.6fr repeat(4, 1fr);
+    gap: 32px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .brand img {
+    border-radius: 8px;
+  }
+
+  .about p {
+    max-width: 34ch;
+    color: var(--ink-2);
+  }
+
+  h2 {
+    margin: 4px 0 14px;
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    margin: 0 0 10px;
+  }
+
+  nav a {
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    color: var(--brand-ink);
+    text-decoration: underline;
+  }
+
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .socials a {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    color: var(--ink-2);
+  }
+
+  .socials a:hover {
+    color: var(--brand-ink);
+    border-color: var(--brand);
+  }
+
+  .legal {
+    margin-top: 48px;
+    padding-block: 24px 32px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-3);
+    font-size: 0.8125rem;
+  }
+
+  .legal p {
+    margin: 0 0 6px;
+  }
+
+  .legal a {
+    color: inherit;
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .about {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

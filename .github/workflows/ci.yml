@@ -3,7 +3,19 @@ name: CI
 on:
   push:
     branches: [main]
+    # The website and social posts have workflows of their own (site.yml,
+    # social.yml); changing only them shouldn't build a new Nightly.
+    paths-ignore:
+      - "site/**"
+      - "marketing/**"
+      - ".github/workflows/site.yml"
+      - ".github/workflows/social.yml"
   pull_request:
+    paths-ignore:
+      - "site/**"
+      - "marketing/**"
+      - ".github/workflows/site.yml"
+      - ".github/workflows/social.yml"
   workflow_dispatch:
 
 concurrency:

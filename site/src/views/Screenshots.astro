@@ -1,0 +1,388 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { useT, localize } from '../i18n';
+import { screenshots } from '../lib/screenshots';
+import { breadcrumbs } from '../lib/schema';
+import { site } from '../config';
+
+interface Props {
+  lang: string;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const l = (path: string) => localize(lang, path);
+const s = (slug: string, field: 'title' | 'caption' | 'alt', fallback: string) => {
+  const v = t(`shots.${slug}.${field}`);
+  return v.startsWith('shots.') ? fallback : v;
+};
+
+const features = [...new Set(screenshots.map((x) => x.feature))];
+const full = (src: (typeof screenshots)[number]['image'], tablet: boolean) => getImage({ src, width: tablet ? 2000 : 1170, format: 'webp' });
+const fulls = await Promise.all(
+  screenshots.map(async (x) => ({
+    light: (await full(x.image, x.device === 'tablet')).src,
+    dark: x.dark ? (await full(x.dark, x.device === 'tablet')).src : null,
+  })),
+);
+
+const gallery = {
+  '@type': 'ImageGallery',
+  name: t('screenshots.title'),
+  url: new URL(l('/screenshots/'), site.url).href,
+  inLanguage: lang,
+  image: screenshots.map((x) => ({
+    '@type': 'ImageObject',
+    contentUrl: new URL(x.image.src, site.url).href,
+    name: s(x.slug, 'title', x.title),
+    caption: s(x.slug, 'caption', x.caption),
+    width: x.image.width,
+    height: x.image.height,
+  })),
+};
+---
+
+<Base
+  lang={lang}
+  title={t('screenshots.title')}
+  description={t('screenshots.description')}
+  image={lang === 'en' ? '/og/screenshots.png' : `/og/${lang}/screenshots.png`}
+  jsonLd={[gallery, breadcrumbs([{ name: 'Loupe', path: l('/') }, { name: t('screenshots.title'), path: l('/screenshots/') }])]}
+>
+  <section class="top">
+    <div class="wrap">
+      <p class="eyebrow">{t('screenshots.eyebrow')}</p>
+      <h1>{t('screenshots.h1')}</h1>
+      <p class="lead" set:html={t('screenshots.lead_html')} />
+      <p class="muted theme-note"><Icon name="weather-moon" size={16} /> {t('screenshots.themeNote')}</p>
+      {
+        features.length > 1 && (
+          <div class="filters" role="group" aria-label={t('screenshots.filter')}>
+            <button type="button" class="chip" aria-pressed="true" data-filter="all">
+              {t('screenshots.all')}
+            </button>
+            {features.map((f) => (
+              <button type="button" class="chip" aria-pressed="false" data-filter={f}>
+                {t(`screenshots.feature.${f}`)}
+              </button>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap">
+      {
+        screenshots.length === 0 ? (
+          <p class="muted">{t('screenshots.soon')}</p>
+        ) : (
+          <ul class="gallery">
+            {screenshots.map((x, i) => (
+              <li class:list={['item', x.device]} data-feature={x.feature}>
+                <button
+                  type="button"
+                  class="open"
+                  data-full={fulls[i].light}
+                  data-full-dark={fulls[i].dark ?? fulls[i].light}
+                  aria-label={t('screenshots.enlarge', { title: s(x.slug, 'title', x.title) })}
+                >
+                  <span class="frame">
+                    <Image
+                      class={x.dark ? 'only-light' : undefined}
+                      src={x.image}
+                      alt={s(x.slug, 'alt', x.alt)}
+                      widths={x.device === 'tablet' ? [640, 1000, 1400] : [300, 450, 600]}
+                      sizes={x.device === 'tablet' ? '(max-width: 700px) 92vw, 760px' : '(max-width: 700px) 45vw, 260px'}
+                      loading={i < 4 ? 'eager' : 'lazy'}
+                    />
+                    {x.dark && (
+                      <Image
+                        class="only-dark"
+                        src={x.dark}
+                        alt={s(x.slug, 'alt', x.alt)}
+                        widths={x.device === 'tablet' ? [640, 1000, 1400] : [300, 450, 600]}
+                        sizes={x.device === 'tablet' ? '(max-width: 700px) 92vw, 760px' : '(max-width: 700px) 45vw, 260px'}
+                        loading="lazy"
+                      />
+                    )}
+                  </span>
+                </button>
+                <h2>{s(x.slug, 'title', x.title)}</h2>
+                <p>{s(x.slug, 'caption', x.caption)}</p>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </section>
+
+  <dialog class="lightbox" aria-label={t('screenshots.title')}>
+    <form method="dialog"><button class="close" aria-label={t('screenshots.close')}><Icon name="dismiss" /></button></form>
+    <button type="button" class="nav prev" aria-label={t('screenshots.previous')}><Icon name="arrow-right" /></button>
+    <figure>
+      <img alt="" />
+      <figcaption></figcaption>
+    </figure>
+    <button type="button" class="nav next" aria-label={t('screenshots.next')}><Icon name="arrow-right" /></button>
+  </dialog>
+</Base>
+
+<script>
+  const items = [...document.querySelectorAll<HTMLElement>('.gallery .item')];
+
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filters button');
+  buttons.forEach((b) =>
+    b.addEventListener('click', () => {
+      buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      const f = b.dataset.filter!;
+      items.forEach((item) => (item.hidden = !(f === 'all' || item.dataset.feature === f)));
+    }),
+  );
+
+  const dark = () =>
+    document.documentElement.dataset.theme === 'dark' ||
+    (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+
+  const dialog = document.querySelector<HTMLDialogElement>('.lightbox')!;
+  const img = dialog.querySelector('img')!;
+  const caption = dialog.querySelector('figcaption')!;
+  let current = 0;
+  const visible = () => items.filter((i) => !i.hidden);
+  const show = (item: HTMLElement) => {
+    const button = item.querySelector<HTMLButtonElement>('.open')!;
+    const thumb = item.querySelector('img')!;
+    img.src = dark() ? button.dataset.fullDark! : button.dataset.full!;
+    img.alt = thumb.alt;
+    caption.textContent = `${item.querySelector('h2')!.textContent} — ${item.querySelector('p')!.textContent}`;
+    dialog.classList.toggle('wide', item.classList.contains('tablet'));
+    current = visible().indexOf(item);
+  };
+  const step = (d: number) => {
+    const v = visible();
+    show(v[(current + d + v.length) % v.length]);
+  };
+  items.forEach((item) =>
+    item.querySelector('.open')!.addEventListener('click', () => {
+      show(item);
+      dialog.showModal();
+    }),
+  );
+  dialog.querySelector('.prev')!.addEventListener('click', () => step(-1));
+  dialog.querySelector('.next')!.addEventListener('click', () => step(1));
+  dialog.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+</script>
+
+<style>
+  .top {
+    padding-block: clamp(48px, 7vw, 88px) 8px;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .theme-note {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: -4px 0 0;
+    font-size: 0.875rem;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  .filters button {
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.875rem;
+  }
+
+  .filters button[aria-pressed='true'] {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+    color: var(--brand-ink);
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 40px 28px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .item.tablet {
+    grid-column: 1 / -1;
+  }
+
+  .item[hidden] {
+    display: none;
+  }
+
+  .open {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+  }
+
+  .frame {
+    display: block;
+    padding: 7px;
+    border-radius: 34px;
+    background: linear-gradient(145deg, #2b3c4e, #0d1724 55%, #1c2a39);
+    box-shadow: var(--shadow);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .tablet .frame {
+    max-width: 900px;
+    margin-inline: auto;
+    border-radius: 26px;
+  }
+
+  .frame img {
+    width: 100%;
+    border-radius: 28px;
+  }
+
+  .tablet .frame img {
+    border-radius: 20px;
+  }
+
+  .open:hover .frame {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-l);
+  }
+
+  .item h2 {
+    margin: 18px 0 4px;
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  .tablet h2,
+  .tablet p {
+    max-width: 900px;
+    margin-inline: auto;
+  }
+
+  .item p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .lightbox {
+    width: min(96vw, 520px);
+    max-height: 96dvh;
+    padding: 0;
+    overflow: visible;
+    border: 0;
+    background: transparent;
+    color: #fff;
+  }
+
+  .lightbox.wide {
+    width: min(96vw, 1200px);
+  }
+
+  .lightbox::backdrop {
+    background: rgb(4 12 21 / 88%);
+    backdrop-filter: blur(6px);
+  }
+
+  .lightbox figure {
+    margin: 0;
+  }
+
+  .lightbox img {
+    width: auto;
+    max-width: 100%;
+    max-height: 84dvh;
+    margin-inline: auto;
+    border-radius: 24px;
+  }
+
+  .lightbox figcaption {
+    margin-top: 12px;
+    color: #c9d6e2;
+    font-size: 0.9375rem;
+    text-align: center;
+  }
+
+  .close,
+  .nav {
+    position: fixed;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 12%);
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .close {
+    top: 16px;
+    right: 16px;
+  }
+
+  .nav {
+    top: 50%;
+    translate: 0 -50%;
+  }
+
+  .prev {
+    left: 16px;
+    rotate: 180deg;
+  }
+
+  .next {
+    right: 16px;
+  }
+
+  @media (max-width: 560px) {
+    .gallery {
+      grid-template-columns: 1fr 1fr;
+      gap: 28px 14px;
+    }
+    .frame {
+      padding: 5px;
+      border-radius: 24px;
+    }
+    .frame img {
+      border-radius: 20px;
+    }
+    .nav {
+      top: auto;
+      bottom: 16px;
+      translate: none;
+    }
+  }
+</style>

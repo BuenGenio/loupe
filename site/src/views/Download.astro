@@ -1,0 +1,216 @@
+---
+import Base from '../layouts/Base.astro';
+import DonationWall from '../components/DonationWall.astro';
+import ReleaseInfo from '../components/ReleaseInfo.astro';
+import InstallSteps from '../components/InstallSteps.astro';
+import Icon from '../components/Icon.astro';
+import BrandIcon from '../components/BrandIcon.astro';
+import { downloads, site } from '../config';
+import { useT, localize } from '../i18n';
+import { breadcrumbs, softwareApplication } from '../lib/schema';
+
+interface Props {
+  lang: string;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const l = (path: string) => localize(lang, path);
+---
+
+<Base
+  lang={lang}
+  title={t('download.title')}
+  description={t('download.description')}
+  image={lang === 'en' ? '/og/download.png' : `/og/${lang}/download.png`}
+  jsonLd={[softwareApplication(), breadcrumbs([{ name: 'Loupe', path: l('/') }, { name: t('download.h1'), path: l('/download/') }])]}
+>
+  <section class="top">
+    <div class="wrap grid">
+      <div class="intro">
+        <p class="eyebrow"><Icon name="arrow-download" size={16} /> {t('download.eyebrow')}</p>
+        <h1>{t('download.h1')}</h1>
+        <p class="lead">{t('download.lead')}</p>
+        <ReleaseInfo lang={lang} />
+        <ul class="why">
+          <li>
+            <Icon name="heart" />
+            <div><strong>{t('download.why1')}</strong><span>{t('download.why1Text')}</span></div>
+          </li>
+          <li>
+            <Icon name="star" />
+            <div><strong>{t('download.why2')}</strong><span>{t('download.why2Text')}</span></div>
+          </li>
+          <li>
+            <Icon name="arrow-sync" />
+            <div><strong>{t('download.why3')}</strong><span>{t('download.why3Text')}</span></div>
+          </li>
+        </ul>
+        {lang !== 'en' && <p class="muted app-note">{t('common.appEnglish')}</p>}
+      </div>
+      <div class="wall-col">
+        <h2 class="visually-hidden">{t('download.choose')}</h2>
+        <DonationWall lang={lang} mode="download" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap two">
+      <div>
+        <h2>{t('download.installTitle')}</h2>
+        <InstallSteps lang={lang} />
+      </div>
+      <div>
+        <h2>{t('download.otherTitle')}</h2>
+        <ul class="ways">
+          <li class="card">
+            <BrandIcon name="obtainium" size={22} />
+            <div>
+              <h3>{t('download.obtainium')}</h3>
+              <p set:html={t('download.obtainiumText_html', { repo: site.repo })} />
+            </div>
+          </li>
+          <li class="card">
+            <BrandIcon name="github" size={22} />
+            <div>
+              <h3>{t('download.github')}</h3>
+              <p set:html={t('download.githubText_html', { release: downloads.release })} />
+            </div>
+          </li>
+          <li class="card">
+            <Icon name="code" size={22} />
+            <div>
+              <h3>{t('download.build')}</h3>
+              <p set:html={t('download.buildText_html')} />
+            </div>
+          </li>
+          <li class="card soon">
+            <Icon name="phone" size={22} />
+            <div>
+              <h3>{t('download.stores')}</h3>
+              <p set:html={t('download.storesText_html')} />
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .top {
+    padding-block: clamp(40px, 6vw, 80px);
+    background: radial-gradient(800px 400px at 100% 0%, color-mix(in srgb, var(--glass) 70%, transparent), transparent 70%);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: clamp(32px, 6vw, 72px);
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .why {
+    display: grid;
+    gap: 16px;
+    margin: 32px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .why li {
+    display: flex;
+    gap: 14px;
+  }
+
+  .why :global(svg) {
+    flex: none;
+    margin-top: 2px;
+    color: var(--brand);
+  }
+
+  .why strong {
+    display: block;
+  }
+
+  .why span {
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .app-note {
+    margin-top: 24px;
+    font-size: 0.9375rem;
+  }
+
+  .wall-col {
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+  }
+
+  .two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 6vw, 72px);
+  }
+
+  .two h2 {
+    font-size: 1.75rem;
+    margin-bottom: 20px;
+  }
+
+  .ways {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ways li {
+    display: flex;
+    gap: 16px;
+    padding: 18px 20px;
+    border-radius: var(--radius);
+  }
+
+  .ways li > :global(svg) {
+    flex: none;
+    margin-top: 3px;
+    color: var(--brand-ink);
+  }
+
+  .ways h3 {
+    margin: 0 0 4px;
+    font-size: 1.0625rem;
+  }
+
+  .ways p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    overflow-wrap: anywhere;
+  }
+
+  .soon {
+    border-style: dashed;
+  }
+
+  @media (max-width: 900px) {
+    .grid,
+    .two {
+      grid-template-columns: 1fr;
+    }
+    .wall-col {
+      position: static;
+      order: -1;
+    }
+    .intro {
+      order: -2;
+    }
+  }
+</style>

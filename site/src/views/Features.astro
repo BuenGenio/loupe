@@ -1,0 +1,267 @@
+---
+import Base from '../layouts/Base.astro';
+import Device from '../components/Device.astro';
+import Icon from '../components/Icon.astro';
+import SearchDemo from '../components/SearchDemo.astro';
+import { useT, localize } from '../i18n';
+import { extras, groups, highlights } from '../lib/features';
+import { shotFor } from '../lib/screenshots';
+import { breadcrumbs, softwareApplication } from '../lib/schema';
+
+interface Props {
+  lang: string;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const l = (path: string) => localize(lang, path);
+const more = highlights.filter((h) => extras.includes(h.key));
+---
+
+<Base
+  lang={lang}
+  title={t('features.title')}
+  description={t('features.description')}
+  image={lang === 'en' ? '/og/features.png' : `/og/${lang}/features.png`}
+  jsonLd={[softwareApplication(), breadcrumbs([{ name: 'Loupe', path: l('/') }, { name: t('features.title'), path: l('/features/') }])]}
+>
+  <section class="top">
+    <div class="wrap">
+      <p class="eyebrow">{t('features.eyebrow')}</p>
+      <h1 set:html={t('features.h1_html')} />
+      <p class="lead">{t('features.lead')}</p>
+      <nav class="jump" aria-label={t('features.jump')}>
+        {groups.map((g) => <a class="chip" href={`#${g.id}`}>{t(`groups.${g.id}.eyebrow`)}</a>)}
+        <a class="chip" href="#more">{t('features.andMore')}</a>
+      </nav>
+    </div>
+  </section>
+
+  {
+    groups.map((g, i) => (
+      <section id={g.id} class:list={['group', i % 2 ? 'alt' : '']} aria-labelledby={`${g.id}-title`}>
+        <div class:list={['wrap', 'group-grid', i % 2 ? 'reverse' : '']}>
+          <div class="copy">
+            <p class="eyebrow">{t(`groups.${g.id}.eyebrow`)}</p>
+            <h2 id={`${g.id}-title`}>{t(`groups.${g.id}.title`)}</h2>
+            <p class="lead">{t(`groups.${g.id}.lead`)}</p>
+            {g.id === 'search' && (
+              <div class="demo">
+                <SearchDemo lang={lang} />
+              </div>
+            )}
+            <ul class="points">
+              {g.icons.map((icon, n) => (
+                <li>
+                  <div class="icon-tile">
+                    <Icon name={icon} />
+                  </div>
+                  <div>
+                    <h3>{t(`groups.${g.id}.p${n + 1}.title`)}</h3>
+                    <p>{t(`groups.${g.id}.p${n + 1}.text`)}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="visual">
+            <Device shot={shotFor(g.shot)} placeholder={t('common.screenshotSoon')} />
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section id="more" class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">{t('features.andMore')}</p>
+        <h2>{t('features.moreTitle')}</h2>
+      </div>
+      <div class="more-grid">
+        {
+          more.map((f) => (
+            <a class="card more" href={f.docs}>
+              <div class="icon-tile">
+                <Icon name={f.icon} />
+              </div>
+              <h3>{t(`highlights.${f.key}.title`)}</h3>
+              <p>{t(`highlights.${f.key}.text`)}</p>
+              <span class="go">
+                {t('common.readGuide')} <Icon name="arrow-right" size={16} />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+      <div class="end">
+        <a class="btn btn-primary" href={l('/download/')}><Icon name="arrow-download" size={20} /> {t('common.downloadLoupe')}</a>
+        <a class="btn" href={l('/screenshots/')}>{t('common.seeAllScreenshots')}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .top {
+    padding-block: clamp(48px, 7vw, 96px) clamp(24px, 4vw, 48px);
+  }
+
+  h1 {
+    max-width: 14em;
+    font-size: clamp(2.5rem, 6vw, 4.2rem);
+  }
+
+  .top .lead {
+    max-width: 38em;
+  }
+
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+  }
+
+  .jump a {
+    text-decoration: none;
+  }
+
+  .jump a:hover {
+    border-color: var(--brand);
+    color: var(--brand-ink);
+  }
+
+  .group {
+    padding-block: clamp(56px, 8vw, 104px);
+    border-top: 1px solid var(--line);
+  }
+
+  .group.alt {
+    background: var(--bg-elev);
+  }
+
+  .group-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: center;
+    gap: clamp(32px, 6vw, 80px);
+  }
+
+  .group-grid.reverse .visual {
+    order: -1;
+  }
+
+  .group h2 {
+    font-size: clamp(2rem, 4vw, 2.9rem);
+  }
+
+  .demo {
+    margin: 24px 0 8px;
+  }
+
+  .points {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 28px;
+    margin: 32px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .points li {
+    display: flex;
+    gap: 14px;
+  }
+
+  .points .icon-tile {
+    flex: none;
+    width: 40px;
+    height: 40px;
+  }
+
+  .points h3 {
+    margin: 2px 0 4px;
+    font-size: 1rem;
+  }
+
+  .points p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .visual {
+    display: grid;
+    justify-items: center;
+  }
+
+  .visual :global(.device) {
+    max-width: 320px;
+  }
+
+  .more-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .more {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .more:hover {
+    border-color: var(--brand);
+  }
+
+  .more h3 {
+    margin: 16px 0 6px;
+    font-size: 1.0625rem;
+  }
+
+  .more p {
+    flex: 1;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .go {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--brand-ink);
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+
+  .end {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 48px;
+  }
+
+  @media (max-width: 960px) {
+    .group-grid {
+      grid-template-columns: 1fr;
+    }
+    .group-grid.reverse .visual {
+      order: 0;
+    }
+    .more-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .points,
+    .more-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

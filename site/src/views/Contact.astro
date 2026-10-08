@@ -1,0 +1,182 @@
+---
+// Loupe is a mail app, so the contact form is your mail app: each card opens
+// a message with the right address, subject and a short template.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import BrandIcon from '../components/BrandIcon.astro';
+import { contact, socials, site } from '../config';
+import { useT, localize } from '../i18n';
+import { breadcrumbs } from '../lib/schema';
+import type { IconName } from '../lib/icons';
+
+interface Props {
+  lang: string;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const l = (path: string) => localize(lang, path);
+
+const mailto = (to: string, subject: string, body: string) =>
+  `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+const cards: { icon: IconName; title: string; text: string; href: string; action: string; alt?: string }[] = [
+  { icon: 'alert', title: t('contact.bug'), text: t('contact.bugText'), href: `${contact.issues}/new`, action: t('contact.bugAction'), alt: mailto(contact.hello, t('contact.mailBug'), t('contact.mailBugBody')) },
+  { icon: 'sparkle', title: t('contact.idea'), text: t('contact.ideaText'), href: contact.discussions, action: t('contact.ideaAction') },
+  { icon: 'mail-edit', title: t('contact.other'), text: t('contact.otherText'), href: mailto(contact.hello, t('contact.mailHello'), ''), action: contact.hello },
+  { icon: 'shield-lock', title: t('contact.security'), text: t('contact.securityText'), href: mailto(contact.security, t('contact.mailSecurity'), t('contact.mailSecurityBody')), action: contact.security },
+  { icon: 'news', title: t('contact.press'), text: t('contact.pressText'), href: l('/press/'), action: t('contact.pressAction') },
+];
+const live = socials.filter((s) => s.href);
+---
+
+<Base
+  lang={lang}
+  title={t('contact.title')}
+  description={t('contact.description')}
+  image={lang === 'en' ? '/og/contact.png' : `/og/${lang}/contact.png`}
+  jsonLd={[
+    { '@type': 'ContactPage', name: t('contact.title'), url: new URL(l('/contact/'), site.url).href, inLanguage: lang },
+    breadcrumbs([{ name: 'Loupe', path: l('/') }, { name: t('contact.title'), path: l('/contact/') }]),
+  ]}
+>
+  <section class="top">
+    <div class="wrap">
+      <p class="eyebrow">{t('contact.eyebrow')}</p>
+      <h1>{t('contact.h1')}</h1>
+      <p class="lead">{t('contact.lead')}</p>
+      {lang !== 'en' && <p class="muted">{t('contact.replyNote')}</p>}
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap">
+      <ul class="cards">
+        {
+          cards.map((c) => (
+            <li class="card">
+              <div class="icon-tile">
+                <Icon name={c.icon} />
+              </div>
+              <h2>{c.title}</h2>
+              <p>{c.text}</p>
+              <a class="btn btn-small" href={c.href} rel={c.href.startsWith('http') ? 'noopener' : undefined}>
+                {c.action}
+              </a>
+              {c.alt && (
+                <a class="alt" href={c.alt}>
+                  {t('contact.bugMail')}
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+
+      {
+        live.length > 0 && (
+          <div class="social">
+            <h2>{t('contact.follow')}</h2>
+            <ul>
+              {live.map((s) => (
+                <li>
+                  <a href={s.href} rel="me noopener">
+                    <BrandIcon name={s.icon} size={18} /> {s.handle}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .top {
+    padding-block: clamp(48px, 7vw, 88px) 8px;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .top .lead {
+    max-width: 36em;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cards li {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 26px;
+  }
+
+  .cards h2 {
+    margin: 16px 0 6px;
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  .cards p {
+    flex: 1;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .alt {
+    margin-top: 10px;
+    font-size: 0.875rem;
+  }
+
+  .social {
+    margin-top: 48px;
+  }
+
+  .social h2 {
+    font-size: 1.5rem;
+  }
+
+  .social ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .social a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  @media (max-width: 900px) {
+    .cards {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .cards {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

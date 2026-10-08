@@ -1,0 +1,34 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Static site (Astro's dist/) plus a small Worker for download redirects.
+  "name": "loupe-site",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash",
+    // Only these paths run the Worker (download links, the release API, and the
+    // English pages that redirect first-time visitors to their language);
+    // everything else is served straight from assets.
+    "run_worker_first": [
+      "/get/*",
+      "/api/*",
+      "/",
+      "/features*",
+      "/screenshots*",
+      "/download*",
+      "/thanks*",
+      "/donate*",
+      "/contact*",
+      "/press*"
+    ]
+  },
+  "vars": {
+    "GITHUB_REPO": "BuenGenio/loupe",
+    "RELEASE_TAG": "nightly"
+  },
+  "routes": [{ "pattern": "loupe.mx", "custom_domain": true }],
+  "observability": { "enabled": true }
+}

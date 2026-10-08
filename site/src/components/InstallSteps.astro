@@ -1,0 +1,94 @@
+---
+import Icon from './Icon.astro';
+import { useT } from '../i18n';
+
+interface Props {
+  lang: string;
+}
+const t = useT(Astro.props.lang);
+---
+
+<ol class="steps">
+  <li>
+    <span class="n">1</span>
+    <div>
+      <h3>{t('install.step1')}</h3>
+      <p set:html={t('install.step1Text_html')} />
+    </div>
+  </li>
+  <li>
+    <span class="n">2</span>
+    <div>
+      <h3>{t('install.step2')}</h3>
+      <p set:html={t('install.step2Text_html')} />
+    </div>
+  </li>
+  <li>
+    <span class="n">3</span>
+    <div>
+      <h3>{t('install.step3')}</h3>
+      <p set:html={t('install.step3Text_html')} />
+    </div>
+  </li>
+</ol>
+<p class="safety">
+  <Icon name="shield-checkmark" size={16} /> <span>{t('install.safety')}</span>
+</p>
+
+<style>
+  .steps {
+    display: grid;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .steps li {
+    display: flex;
+    gap: 16px;
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-elev);
+  }
+
+  .n {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--brand-soft);
+    color: var(--brand-ink);
+    font-weight: 700;
+  }
+
+  h3 {
+    margin: 4px 0 4px;
+    font-size: 1.0625rem;
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .safety {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin-top: 16px;
+    color: var(--ink-3);
+    font-size: 0.8125rem;
+  }
+
+  .safety :global(svg) {
+    flex: none;
+    margin-top: 2px;
+    color: var(--ok);
+  }
+</style>

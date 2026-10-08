@@ -1,0 +1,610 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import BrandIcon from '../components/BrandIcon.astro';
+import { site, contact } from '../config';
+import { breadcrumbs, sourceCode } from '../lib/schema';
+import { stats, roughly } from '../lib/stats';
+
+const blob = (path: string) => `${site.repo}/blob/main/${path}`;
+
+const packages = [
+  { name: 'app', what: 'The Flutter app: screens, design system, demo mailbox, wiring (Riverpod, go_router).' },
+  { name: 'mail_model', what: 'Every shared type and interface. No I/O, no dependencies: the contract between packages.' },
+  { name: 'mail_sync', what: 'Sync engine, offline queue, device rules, and the live MailRepository.' },
+  { name: 'mail_store', what: 'Encrypted local store: drift, SQLite FTS5 for search, sqlite3mc for encryption.' },
+  { name: 'mail_imap', what: 'IMAP and SMTP on enough_mail, MIME composing, account discovery.' },
+  { name: 'mail_jmap', what: 'A JMAP client and transport: EmailSubmission, discovery, push, Sieve over JMAP.' },
+  { name: 'mail_sieve', what: 'Rules as Sieve: script generation, ManageSieve client, the rule runner.' },
+  { name: 'expr_search', what: 'The search language: parser, formatter, local matcher, IMAP/Gmail/JMAP compilers.' },
+  { name: 'readable', what: 'The Readable HTML reader, Original and Plain views, the image gallery, link analysis.' },
+  { name: 'mail_crypto', what: 'OpenPGP (dart_pg) with Autocrypt, and S/MIME in pure Dart on pointycastle.' },
+  { name: 'mail_calendar', what: 'iCalendar reading and writing, time zones, recurrences, iMIP replies.' },
+  { name: 'mail_platform', what: 'Keychain credential store, OAuth sign-in and token refresh.' },
+];
+
+const shipped = [
+  'IMAP and SMTP accounts with autoconfig, and Thunderbird QR import',
+  'Readable, Original and Plain views; image gallery; dark-mode colour fixes',
+  'Local + server search, the full expression language, Smart Mailboxes',
+  'Swipes with Undo, Filter button, tags, folders, cross-client snooze',
+  'Subscriptions and the unsubscribe centre; mailing lists as forums',
+  'Device rules and server rules (Sieve over ManageSieve and JMAP)',
+  'Identities and aliases, undo send, scheduled send, Outbox',
+  'Background sync, notification actions, app icon badge',
+  'Tablet three-pane layout, keyboard shortcuts, command palette',
+  'JMAP accounts (Fastmail, Stalwart) with push',
+  'OpenPGP with Autocrypt; S/MIME with Android KeyChain certificates',
+  'Calendar invitations with Accept / Maybe / Decline',
+];
+
+const next = [
+  'Sign in with Google (security review) and with Microsoft',
+  'A public beta on Google Play',
+  'iOS on TestFlight (prepared; waiting for an Apple Developer account)',
+];
+
+const later = [
+  'An optional push relay for instant notifications, if it can be run without seeing mail',
+  'A sandboxed plugin system, only if real needs justify it',
+];
+---
+
+<Base
+  title="Development"
+  description="How Loupe is built: Flutter and Dart, eleven packages, an encrypted SQLite store, IMAP and JMAP transports. Build it from source, contribute, see the roadmap."
+  image="/og/development.png"
+  jsonLd={[sourceCode(), breadcrumbs([{ name: 'Home', path: '/' }, { name: 'Development', path: '/development/' }])]}
+>
+  <section class="top">
+    <div class="wrap top-grid">
+      <div>
+        <p class="eyebrow"><Icon name="code" size={16} /> Development</p>
+        <h1>Built in the open, tested to the bone.</h1>
+        <p class="lead">
+          Loupe is written in Dart with Flutter, split into small packages with explicit contracts, and released under
+          the {site.licence.name}. Read it, build it, change it.
+        </p>
+        <div class="cta">
+          <a class="btn btn-primary" href={site.repo} rel="noopener"><BrandIcon name="github" /> Source on GitHub</a>
+          <a class="btn" href="#build">Build from source</a>
+        </div>
+      </div>
+      <dl class="stats">
+        <div><dt>Automated tests</dt><dd>{roughly(stats.tests)}</dd></div>
+        <div><dt>Packages</dt><dd>{stats.packages}</dd></div>
+        {stats.commits && <div><dt>Commits</dt><dd>{roughly(stats.commits)}</dd></div>}
+        <div><dt>Licence</dt><dd class="small">{site.licence.name}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="stack-title">
+    <div class="wrap">
+      <h2 id="stack-title">The stack</h2>
+      <ul class="stack">
+        <li><strong>Flutter 3.47</strong><span>Dart 3.13, one codebase for Android and iOS</span></li>
+        <li><strong>Riverpod + go_router</strong><span>State and navigation</span></li>
+        <li><strong>drift + SQLite FTS5</strong><span>Local store and full-text search</span></li>
+        <li><strong>sqlite3mc</strong><span>Encryption of the local database</span></li>
+        <li><strong>enough_mail</strong><span>IMAP, SMTP and MIME</span></li>
+        <li><strong>Own JMAP client</strong><span>RFC 8620/8621, Sieve over JMAP (RFC 9661)</span></li>
+        <li><strong>dart_pg + pointycastle</strong><span>OpenPGP and pure-Dart S/MIME</span></li>
+        <li><strong>GitHub Actions</strong><span>Analysis, tests and signed nightly APKs</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="arch-title">
+    <div class="wrap">
+      <h2 id="arch-title">Architecture</h2>
+      <p class="intro">
+        The app talks to one interface, <code>MailRepository</code>. Behind it, the sync engine keeps an encrypted local
+        store in step with your servers through IMAP or JMAP transports. Every package depends on
+        <code>mail_model</code>, which holds the contracts and nothing else.
+      </p>
+      <div class="arch" role="img" aria-label="Layers: the app on top; readable, expr_search, mail_crypto and mail_calendar beside it; mail_sync below it; then mail_store, mail_imap, mail_jmap, mail_sieve and mail_platform; your mail servers at the bottom. mail_model underpins every layer.">
+        <div class="layer ui"><b>app</b><span>Flutter UI · Riverpod · go_router · demo mailbox</span></div>
+        <div class="layer side">
+          <b>readable</b><b>expr_search</b><b>mail_crypto</b><b>mail_calendar</b>
+        </div>
+        <div class="arrow" aria-hidden="true">MailRepository</div>
+        <div class="layer sync"><b>mail_sync</b><span>sync engine · offline queue · device rules</span></div>
+        <div class="layer row">
+          <div><b>mail_store</b><span>drift · FTS5 · sqlite3mc</span></div>
+          <div><b>mail_imap</b><span>IMAP · SMTP · MIME</span></div>
+          <div><b>mail_jmap</b><span>JMAP · push</span></div>
+          <div><b>mail_sieve</b><span>Sieve · ManageSieve</span></div>
+          <div><b>mail_platform</b><span>keychain · OAuth</span></div>
+        </div>
+        <div class="layer servers"><span>Your mail servers: IMAP, SMTP, JMAP, ManageSieve</span></div>
+        <div class="model"><b>mail_model</b><span>types and interfaces under every layer</span></div>
+      </div>
+      <p class="more">
+        Details and every contract: <a href={blob('docs/ARCHITECTURE.md')} rel="noopener">docs/ARCHITECTURE.md</a> ·
+        the plan: <a href={blob('docs/plan/PLAN.md')} rel="noopener">docs/plan/PLAN.md</a>
+      </p>
+
+      <div class="table-wrap">
+        <table class="pkgs">
+          <thead><tr><th scope="col">Package</th><th scope="col">What it does</th></tr></thead>
+          <tbody>
+            {packages.map((p) => (
+              <tr>
+                <td><a href={`${site.repo}/tree/main/${p.name === 'app' ? 'app' : `packages/${p.name}`}`} rel="noopener"><code>{p.name}</code></a></td>
+                <td>{p.what}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="build" class="section-tight" aria-labelledby="build-title">
+    <div class="wrap two">
+      <div>
+        <h2 id="build-title">Build from source</h2>
+        <p>You need Flutter 3.47 (Dart 3.13). The repository is a pub workspace, so one command resolves every package.</p>
+        <pre class="code"><code><span class="c"># get the code</span>
+git clone {site.repo}.git
+cd loupe
+flutter pub get        <span class="c"># all packages at once</span>
+dart analyze           <span class="c"># must be clean</span>
+tool/ci/test.sh        <span class="c"># every package's tests</span>
+cd app && flutter run  <span class="c"># on a device or emulator</span></code></pre>
+        <p class="muted small">
+          Sign in with Google and Microsoft needs your own OAuth client IDs: see
+          <a href={blob('docs/oauth-setup.md')} rel="noopener">docs/oauth-setup.md</a>. Without them those buttons stay hidden.
+        </p>
+      </div>
+      <div>
+        <h2>From commit to your phone</h2>
+        <ol class="pipeline">
+          <li><Icon name="branch" /><div><strong>Push to main</strong><span>Every change is a commit on GitHub.</span></div></li>
+          <li><Icon name="checkmark" /><div><strong>Analyse and test</strong><span><code>dart analyze</code> and {roughly(stats.tests)} tests across the workspace.</span></div></li>
+          <li><Icon name="shield-checkmark" /><div><strong>Build and sign</strong><span>Release APKs for arm64 and x86_64, signed with Loupe's key.</span></div></li>
+          <li><Icon name="arrow-download" /><div><strong>Publish</strong><span>Attached to the rolling Nightly release, served at <a href="/download/">loupe.mx/download</a>.</span></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="contrib-title">
+    <div class="wrap">
+      <h2 id="contrib-title">Contributing</h2>
+      <div class="contrib">
+        <a class="card" href={contact.issues} rel="noopener">
+          <Icon name="alert" />
+          <h3>Report a bug</h3>
+          <p>Say what you did, what you expected and what happened, with your Android version and mail provider.</p>
+        </a>
+        <a class="card" href={contact.discussions} rel="noopener">
+          <Icon name="chat-multiple" />
+          <h3>Suggest a feature</h3>
+          <p>Start with the problem you want solved. The plan favours a few things done well.</p>
+        </a>
+        <a class="card" href={`${site.repo}/pulls`} rel="noopener">
+          <Icon name="branch" />
+          <h3>Send a pull request</h3>
+          <p>Keep <code>dart analyze</code> clean and add tests. Contract changes go in their own commit.</p>
+        </a>
+        <a class="card" href={`mailto:${contact.security}`}>
+          <Icon name="shield-lock" />
+          <h3>Report a vulnerability</h3>
+          <p>Privately, by mail to {contact.security}, rather than in a public issue.</p>
+        </a>
+      </div>
+      <p class="muted small">
+        Contributions are accepted under the {site.licence.name}, the project's licence. The OpenPGP library in
+        <code>third_party/</code> keeps its own licence.
+      </p>
+    </div>
+  </section>
+
+  <section id="roadmap" class="section-tight" aria-labelledby="roadmap-title">
+    <div class="wrap">
+      <h2 id="roadmap-title">Roadmap</h2>
+      <div class="roadmap">
+        <div class="col done">
+          <h3><Icon name="checkmark" size={18} /> Shipped</h3>
+          <ul>{shipped.map((s) => <li>{s}</li>)}</ul>
+        </div>
+        <div class="col now">
+          <h3><Icon name="arrow-sync" size={18} /> Next</h3>
+          <ul>{next.map((s) => <li>{s}</li>)}</ul>
+        </div>
+        <div class="col later">
+          <h3><Icon name="star" size={18} /> Later, maybe</h3>
+          <ul>{later.map((s) => <li>{s}</li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .top {
+    padding-block: clamp(48px, 7vw, 88px) 24px;
+  }
+
+  .top-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: clamp(32px, 6vw, 72px);
+    align-items: center;
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+  }
+
+  h2 {
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+  }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 0;
+  }
+
+  .stats div {
+    padding: 20px 22px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    background: var(--bg-elev);
+  }
+
+  .stats dt {
+    color: var(--ink-3);
+    font-size: 0.875rem;
+  }
+
+  .stats dd {
+    margin: 4px 0 0;
+    color: var(--brand-ink);
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .stats dd.small {
+    font-size: 1.6rem;
+    padding-top: 6px;
+  }
+
+  .stack {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stack li {
+    display: grid;
+    gap: 2px;
+    padding: 16px 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-elev);
+  }
+
+  .stack span {
+    color: var(--ink-2);
+    font-size: 0.875rem;
+  }
+
+  .intro {
+    max-width: 72ch;
+    color: var(--ink-2);
+  }
+
+  .arch {
+    display: grid;
+    gap: 10px;
+    margin: 28px 0 12px;
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    background: var(--bg-sunk);
+    font-size: 0.875rem;
+  }
+
+  .layer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+  }
+
+  .layer b,
+  .model b {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+  }
+
+  .layer span,
+  .model span {
+    color: var(--ink-3);
+  }
+
+  .ui {
+    background: linear-gradient(135deg, var(--brand-soft), var(--bg-elev));
+    border-color: color-mix(in srgb, var(--brand) 35%, var(--line));
+  }
+
+  .side {
+    justify-content: center;
+    gap: 8px;
+    background: transparent;
+    border-style: dashed;
+  }
+
+  .side b {
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+  }
+
+  .arrow {
+    justify-self: center;
+    padding: 2px 12px;
+    border-radius: 999px;
+    background: var(--brand);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .sync {
+    border-color: color-mix(in srgb, var(--brand-2) 40%, var(--line));
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+  }
+
+  .row > div {
+    display: grid;
+    gap: 2px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+  }
+
+  .servers {
+    justify-content: center;
+    background: var(--navy);
+    border-color: var(--navy);
+  }
+
+  .servers span {
+    color: #cfe0ee;
+  }
+
+  .model {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 12px;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1.5px dashed color-mix(in srgb, var(--brand) 50%, var(--line));
+  }
+
+  .more {
+    color: var(--ink-3);
+    font-size: 0.9375rem;
+  }
+
+  .table-wrap {
+    margin-top: 24px;
+    overflow-x: auto;
+  }
+
+  .pkgs {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+
+  .pkgs th,
+  .pkgs td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .pkgs td:first-child {
+    white-space: nowrap;
+  }
+
+  .two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 6vw, 72px);
+  }
+
+  .code {
+    margin: 16px 0;
+    padding: 18px 20px;
+    overflow-x: auto;
+    border-radius: var(--radius);
+    background: var(--navy-2);
+    color: #dfeaf3;
+    font-size: 0.875rem;
+    line-height: 1.7;
+  }
+
+  .code .c {
+    color: #7f97ad;
+  }
+
+  .small {
+    font-size: 0.875rem;
+  }
+
+  .pipeline {
+    display: grid;
+    gap: 0;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pipeline li {
+    position: relative;
+    display: flex;
+    gap: 14px;
+    padding: 0 0 22px;
+  }
+
+  .pipeline li:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 28px;
+    bottom: 2px;
+    width: 2px;
+    background: var(--line-2);
+  }
+
+  .pipeline :global(svg) {
+    flex: none;
+    color: var(--brand);
+  }
+
+  .pipeline strong {
+    display: block;
+  }
+
+  .pipeline span {
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .contrib {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 20px 0;
+  }
+
+  .contrib a {
+    padding: 22px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .contrib a:hover {
+    border-color: var(--brand);
+  }
+
+  .contrib :global(svg) {
+    color: var(--brand);
+  }
+
+  .contrib h3 {
+    margin: 12px 0 6px;
+    font-size: 1.0625rem;
+  }
+
+  .contrib p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .roadmap {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .col {
+    padding: 22px 24px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    background: var(--bg-elev);
+  }
+
+  .col h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px;
+  }
+
+  .done h3 {
+    color: var(--ok);
+  }
+
+  .now h3 {
+    color: var(--brand-ink);
+  }
+
+  .later h3 {
+    color: var(--ink-3);
+  }
+
+  .col ul {
+    margin: 0;
+    padding-left: 1.1em;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .col li {
+    margin: 6px 0;
+  }
+
+  @media (max-width: 1000px) {
+    .stack,
+    .contrib {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .row {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .roadmap,
+    .two,
+    .top-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .stack,
+    .contrib {
+      grid-template-columns: 1fr;
+    }
+    .row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

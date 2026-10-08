@@ -1,0 +1,181 @@
+---
+// The language menu: a flag and the language's own name for every locale.
+// Picking one stores a `lang` cookie, so the Worker stops redirecting by
+// browser language (worker/index.ts). On English-only pages (docs, blog…)
+// other languages lead to that language's home page.
+import { useT, localize, hasStrings } from '../i18n';
+import { locale, locales, popular, translatedPaths } from '../i18n/locales';
+
+interface Props {
+  lang: string;
+  path: string;
+}
+const { lang, path } = Astro.props;
+const t = useT(lang);
+const current = locale(lang);
+const translated = translatedPaths.includes(path);
+const available = locales.filter((l) => hasStrings(l.code));
+const top = popular.map((c) => available.find((l) => l.code === c)).filter((l) => l !== undefined);
+const rest = available.filter((l) => !popular.includes(l.code)).sort((a, b) => a.english.localeCompare(b.english));
+const href = (code: string) => (translated || code === 'en' ? localize(code, translated ? path : '/') : `/${code}/`);
+---
+
+<details class="lang-switch">
+  <summary aria-label={`${t('common.language')}: ${current.name}`}>
+    <img src={`/flags/${current.flag}.webp`} width="20" height="15" alt="" />
+    <span class="code">{current.code.toUpperCase()}</span>
+    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
+  </summary>
+  <div class="panel">
+    <p class="group">{t('common.popular')}</p>
+    <ul class="list">
+      {
+        top.map((l) => (
+          <li>
+            <a href={href(l.code)} hreflang={l.code} lang={l.code} data-lang={l.code} aria-current={l.code === lang ? 'true' : undefined}>
+              <img src={`/flags/${l.flag}.webp`} width="20" height="15" alt="" loading="lazy" />
+              <span>{l.name}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="group">{t('common.allLanguages')}</p>
+    <ul class="list cols">
+      {
+        rest.map((l) => (
+          <li>
+            <a href={href(l.code)} hreflang={l.code} lang={l.code} data-lang={l.code} aria-current={l.code === lang ? 'true' : undefined} title={l.english}>
+              <img src={`/flags/${l.flag}.webp`} width="20" height="15" alt="" loading="lazy" />
+              <span>{l.name}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    {!translated && <p class="note">{t('common.englishOnly')}</p>}
+  </div>
+</details>
+
+<script>
+  for (const a of document.querySelectorAll<HTMLAnchorElement>('.lang-switch a[data-lang]')) {
+    a.addEventListener('click', () => {
+      document.cookie = `lang=${a.dataset.lang}; path=/; max-age=31536000; SameSite=Lax; Secure`;
+    });
+  }
+  document.addEventListener('click', (e) => {
+    for (const d of document.querySelectorAll<HTMLDetailsElement>('.lang-switch[open]')) if (!d.contains(e.target as Node)) d.open = false;
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') for (const d of document.querySelectorAll<HTMLDetailsElement>('.lang-switch[open]')) d.open = false;
+  });
+</script>
+
+<style>
+  .lang-switch {
+    position: relative;
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 10px;
+    border-radius: 999px;
+    color: var(--ink-2);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:hover,
+  .lang-switch[open] summary {
+    background: var(--bg-sunk);
+    color: var(--ink);
+  }
+
+  summary img,
+  .list img {
+    flex: none;
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 10%);
+  }
+
+  .panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    z-index: 60;
+    width: min(440px, calc(100vw - 32px));
+    max-height: min(70vh, 560px);
+    padding: 10px;
+    overflow: auto;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-l);
+  }
+
+  .group {
+    margin: 8px 10px 4px;
+    color: var(--ink-3);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0 0 6px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .list a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    text-decoration: none;
+  }
+
+  .list a:hover {
+    background: var(--bg-sunk);
+  }
+
+  .list a[aria-current='true'] {
+    background: var(--brand-soft);
+    color: var(--brand-ink);
+    font-weight: 500;
+  }
+
+  .note {
+    margin: 6px 10px 4px;
+    color: var(--ink-3);
+    font-size: 0.8125rem;
+  }
+
+  @media (max-width: 480px) {
+    .code {
+      display: none;
+    }
+    .panel {
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      top: calc(var(--header-h) + 8px);
+      width: auto;
+    }
+  }
+</style>

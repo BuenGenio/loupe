@@ -1,0 +1,322 @@
+---
+// Pay what you want, then download. $0 is always the first choice and the
+// button always says what will happen, so it never feels like a trap.
+//
+// mode="download": $0 starts the download; paid amounts go to the payment
+//   link, which redirects to /thanks/ (which starts the download).
+// mode="donate": no download; paid amounts only.
+import { donate } from '../config';
+import { useT, localize } from '../i18n';
+import Icon from './Icon.astro';
+import BrandIcon from './BrandIcon.astro';
+
+interface Props {
+  lang: string;
+  mode?: 'download' | 'donate';
+}
+const { lang, mode = 'download' } = Astro.props;
+const t = useT(lang);
+
+const dev = import.meta.env.DEV;
+const tiers = donate.tiers.filter((t) => t.href || dev);
+const custom = donate.custom.href || dev ? donate.custom : null;
+const paidReady = donate.tiers.some((t) => t.href) || Boolean(donate.custom.href);
+if (!paidReady && !dev && lang === 'en') console.warn('[donate] No payment links in src/config.ts: the donation wall shows the free download only.');
+const suggested = tiers.find((t) => 'suggested' in t && t.suggested) ?? tiers[0];
+const initial = mode === 'download' && !paidReady && !dev ? 0 : (suggested?.amount ?? 0);
+const alternatives = donate.alternatives.filter((a) => a.href);
+const fmt = (n: number) => new Intl.NumberFormat(lang, { style: 'currency', currency: donate.currency, maximumFractionDigits: 0 }).format(n);
+const start = localize(lang, '/download/start/');
+---
+
+<div class="wall card" data-mode={mode} data-alert={t('wall.noLinkAlert')}>
+  {
+    (tiers.length > 0 || custom) && (
+      <fieldset class="amounts">
+        <legend class="visually-hidden">{t('wall.choose')}</legend>
+        {mode === 'download' && (
+          <label class="amount">
+            <input type="radio" name="amount" value="0" data-href={start} data-label={t('wall.downloadFree')} checked={initial === 0} />
+            <span class="value">{fmt(0)}</span>
+            <span class="note">{t('wall.free')}</span>
+          </label>
+        )}
+        {tiers.map((tier) => (
+          <label class="amount">
+            <input
+              type="radio"
+              name="amount"
+              value={tier.amount}
+              data-href={tier.href}
+              data-paid=""
+              data-label={mode === 'download' ? t('wall.payDownload', { amount: fmt(tier.amount) }) : t('wall.donateAmount', { amount: fmt(tier.amount) })}
+              checked={tier.amount === initial}
+            />
+            <span class="value">{fmt(tier.amount)}</span>
+            <span class="note">{t(tier.note)}</span>
+            {'suggested' in tier && tier.suggested && <span class="badge">{t('wall.suggested')}</span>}
+            {dev && !tier.href && <span class="badge warn">{t('wall.noLink')}</span>}
+          </label>
+        ))}
+        {custom && (
+          <label class="amount">
+            <input
+              type="radio"
+              name="amount"
+              value="custom"
+              data-href={custom.href}
+              data-paid=""
+              data-label={mode === 'download' ? t('wall.otherDownload') : t('wall.otherDonate')}
+            />
+            <span class="value">{t('wall.other')}</span>
+            <span class="note">{t('wall.otherNote')}</span>
+            {dev && !custom.href && <span class="badge warn">{t('wall.noLink')}</span>}
+          </label>
+        )}
+      </fieldset>
+    )
+  }
+
+  <a class="btn btn-primary go" href={mode === 'download' ? start : '#'}>
+    <Icon name={mode === 'download' ? 'arrow-download' : 'heart'} size={20} />
+    <span class="go-label">{mode === 'download' ? t('wall.downloadFree') : t('wall.donate')}</span>
+  </a>
+
+  <p class="fine">
+    {
+      paidReady || dev ? (
+        <>
+          <Icon name="lock-closed" size={14} /> {t('wall.stripe')}
+          {mode === 'download' && ` ${t('wall.optional')}`}
+        </>
+      ) : (
+        <>{t('wall.soon')}</>
+      )
+    }
+  </p>
+
+  {
+    mode === 'download' && (
+      <p class="arch">
+        {t('wall.arch')} <a href={`${start}?arch=x86_64`}>{t('wall.x86')}</a>
+      </p>
+    )
+  }
+
+  {
+    alternatives.length > 0 && (
+      <div class="alts">
+        <p>{t('wall.alternatives')}</p>
+        <ul>
+          {alternatives.map((a) => (
+            <li>
+              <a href={a.href} rel="noopener">
+                <BrandIcon name={a.name.toLowerCase().replace(/[^a-z]/g, '')} size={16} />
+                {a.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  <noscript>
+    <p class="fine" set:html={t('wall.noscript_html', { start })} />
+  </noscript>
+</div>
+
+<script>
+  for (const wall of document.querySelectorAll<HTMLElement>('.wall')) {
+    const go = wall.querySelector<HTMLAnchorElement>('.go')!;
+    const label = wall.querySelector<HTMLElement>('.go-label')!;
+    const utm = new URLSearchParams({
+      utm_source: 'loupe.mx',
+      utm_medium: 'site',
+      utm_content: wall.dataset.mode === 'download' ? 'download' : 'donate',
+    });
+
+    const update = () => {
+      const picked = wall.querySelector<HTMLInputElement>('input[name=amount]:checked');
+      if (!picked) return;
+      label.textContent = picked.dataset.label ?? '';
+      const href = picked.dataset.href;
+      if (href && picked.dataset.paid !== undefined) {
+        go.href = `${href}${href.includes('?') ? '&' : '?'}${utm}`;
+        go.removeAttribute('aria-disabled');
+      } else if (href) {
+        go.href = href;
+        go.removeAttribute('aria-disabled');
+      } else {
+        go.href = '#';
+        go.setAttribute('aria-disabled', 'true');
+      }
+    };
+
+    wall.addEventListener('change', update);
+    go.addEventListener('click', (e) => {
+      if (go.getAttribute('aria-disabled') === 'true') {
+        e.preventDefault();
+        alert(wall.dataset.alert);
+      }
+    });
+    update();
+  }
+</script>
+
+<style>
+  .wall {
+    padding: clamp(20px, 4vw, 32px);
+  }
+
+  .amounts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 0 0 20px;
+    padding: 0;
+    border: 0;
+  }
+
+  .amount {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: 2px;
+    padding: 14px 14px 12px;
+    border: 1.5px solid var(--line-2);
+    border-radius: var(--radius);
+    background: var(--bg);
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      background-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .amount:hover {
+    border-color: color-mix(in srgb, var(--brand) 50%, var(--line-2));
+  }
+
+  .amount input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .amount:has(input:checked) {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent);
+  }
+
+  .amount:has(input:focus-visible) {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .value {
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .note {
+    color: var(--ink-3);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.35;
+  }
+
+  .badge {
+    position: absolute;
+    top: -9px;
+    right: 10px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: var(--brand);
+    color: #fff;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .badge.warn {
+    top: auto;
+    bottom: -9px;
+    background: var(--warm);
+  }
+
+  .go {
+    width: 100%;
+    min-height: 56px;
+    font-size: 1.0625rem;
+  }
+
+  .go[aria-disabled='true'] {
+    opacity: 0.6;
+  }
+
+  .fine {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 6px;
+    margin: 14px 0 0;
+    color: var(--ink-3);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .arch {
+    margin: 10px 0 0;
+    color: var(--ink-3);
+    font-size: 0.8125rem;
+    font-weight: 400;
+  }
+
+  .alts {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 0.875rem;
+  }
+
+  .alts p {
+    margin: 0 0 8px;
+    color: var(--ink-2);
+  }
+
+  .alts ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .alts a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .alts a:hover {
+    border-color: var(--brand);
+  }
+
+  @media (max-width: 480px) {
+    .amounts {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,59 @@
+---
+import { execSync } from 'node:child_process';
+import { render } from 'astro:content';
+import Docs from '../../layouts/Docs.astro';
+import { allDocs, faqItems } from '../../lib/docs';
+import { breadcrumbs, faqPage, techArticle } from '../../lib/schema';
+import { site } from '../../config';
+
+export async function getStaticPaths() {
+  const docs = await allDocs();
+  return docs.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      prev: docs[i - 1] && { href: `/docs/${docs[i - 1].id}/`, title: docs[i - 1].data.title },
+      next: docs[i + 1] && { href: `/docs/${docs[i + 1].id}/`, title: docs[i + 1].data.title },
+    },
+  }));
+}
+
+const { entry, prev, next } = Astro.props;
+const { Content, headings } = await render(entry);
+const path = `/docs/${entry.id}/`;
+const source = `site/src/content/docs/${entry.id}.md`;
+
+let updated: Date | undefined;
+try {
+  const iso = execSync(`git log -1 --format=%cI -- ${source}`, { cwd: '..', stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim();
+  if (iso) updated = new Date(iso);
+} catch {}
+
+const jsonLd: object[] = [
+  techArticle({ title: entry.data.title, description: entry.data.description, path, modified: updated }),
+  breadcrumbs([
+    { name: 'Home', path: '/' },
+    { name: 'Docs', path: '/docs/' },
+    { name: entry.data.title, path },
+  ]),
+];
+if (entry.id === 'faq') {
+  const items = faqItems(entry.body ?? '');
+  if (items.length) jsonLd.push(faqPage(items));
+}
+---
+
+<Docs
+  title={entry.data.title}
+  description={entry.data.description}
+  section={entry.data.section}
+  headings={headings}
+  image={`/og/docs/${entry.id}.png`}
+  jsonLd={jsonLd}
+  editUrl={`${site.repo}/edit/main/${source}`}
+  prev={prev}
+  next={next}
+  updated={updated}
+>
+  <Content />
+</Docs>

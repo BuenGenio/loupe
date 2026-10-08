@@ -1,0 +1,45 @@
+---
+// Brand marks from Simple Icons (CC0). Decorative unless `label` is given.
+import { siBluesky, siGithub, siInstagram, siMastodon, siReddit, siTiktok, siYoutube, siObtainium, siFdroid, siStripe, siKofi, siLiberapay, siGithubsponsors } from 'simple-icons';
+
+const marks = {
+  github: siGithub,
+  bluesky: siBluesky,
+  mastodon: siMastodon,
+  instagram: siInstagram,
+  tiktok: siTiktok,
+  youtube: siYoutube,
+  reddit: siReddit,
+  obtainium: siObtainium,
+  fdroid: siFdroid,
+  stripe: siStripe,
+  kofi: siKofi,
+  liberapay: siLiberapay,
+  githubsponsors: siGithubsponsors,
+} as const;
+
+interface Props {
+  name: keyof typeof marks | string;
+  size?: number;
+  label?: string;
+}
+const { name, size = 20, label } = Astro.props;
+const mark = marks[name as keyof typeof marks];
+---
+
+{
+  mark && (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      role={label ? 'img' : undefined}
+      aria-label={label}
+      aria-hidden={label ? undefined : 'true'}
+      focusable="false"
+    >
+      <path d={mark.path} />
+    </svg>
+  )
+}

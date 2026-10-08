@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import StartDownload from '../components/StartDownload.astro';
+import { useT, localize } from '../i18n';
+
+interface Props {
+  lang: string;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+---
+
+<Base lang={lang} title={t('start.title')} description={t('start.description')} image={lang === 'en' ? '/og/download.png' : `/og/${lang}/download.png`} noindex>
+  <section class="section-tight">
+    <div class="wrap narrow">
+      <p class="eyebrow">{t('start.eyebrow')}</p>
+      <h1>{t('start.h1')}</h1>
+      <StartDownload lang={lang} auto="always" />
+      <p class="later" set:html={t('start.later_html', { donate: localize(lang, '/donate/') })} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .narrow {
+    max-width: 760px;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+  }
+
+  .later {
+    margin-top: 32px;
+    color: var(--ink-2);
+  }
+</style>

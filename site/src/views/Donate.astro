@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro';
+import DonationWall from '../components/DonationWall.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../config';
+import { useT, localize } from '../i18n';
+import { breadcrumbs } from '../lib/schema';
+
+interface Props {
+  lang: string;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const l = (path: string) => localize(lang, path);
+---
+
+<Base
+  lang={lang}
+  title={t('donate.title')}
+  description={t('donate.description')}
+  image={lang === 'en' ? '/og/donate.png' : `/og/${lang}/donate.png`}
+  jsonLd={[breadcrumbs([{ name: 'Loupe', path: l('/') }, { name: t('donate.title'), path: l('/donate/') }])]}
+>
+  <section class="section-tight">
+    <div class="wrap grid">
+      <div>
+        <p class="eyebrow"><Icon name="heart" size={16} /> {t('donate.eyebrow')}</p>
+        <h1>{t('donate.h1')}</h1>
+        <p class="lead">{t('donate.lead')}</p>
+        <h2>{t('donate.paysFor')}</h2>
+        <ul class="list">
+          <li><Icon name="code" /> {t('donate.pay1')}</li>
+          <li><Icon name="phone" /> {t('donate.pay2')}</li>
+          <li><Icon name="shield-checkmark" /> {t('donate.pay3')}</li>
+          <li><Icon name="globe" /> {t('donate.pay4')}</li>
+        </ul>
+        <p class="muted" set:html={t('donate.otherHelp_html', { repo: site.repo, contact: l('/contact/') })} />
+      </div>
+      <div class="wall-col">
+        <DonationWall lang={lang} mode="donate" />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 6vw, 72px);
+    align-items: start;
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+  }
+
+  h2 {
+    margin-top: 32px;
+    font-size: 1.5rem;
+  }
+
+  .list {
+    display: grid;
+    gap: 12px;
+    margin: 0 0 24px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .list li {
+    display: flex;
+    gap: 12px;
+    color: var(--ink-2);
+  }
+
+  .list :global(svg) {
+    flex: none;
+    color: var(--brand);
+  }
+
+  .wall-col {
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .wall-col {
+      position: static;
+    }
+  }
+</style>

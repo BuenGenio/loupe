@@ -1,0 +1,648 @@
+---
+import Base from '../layouts/Base.astro';
+import Device from '../components/Device.astro';
+import Icon from '../components/Icon.astro';
+import SearchDemo from '../components/SearchDemo.astro';
+import { site } from '../config';
+import { useT, localize } from '../i18n';
+import { highlights, providers } from '../lib/features';
+import { screenshots, shot, shotFor } from '../lib/screenshots';
+import { softwareApplication, sourceCode } from '../lib/schema';
+import { stats, roughly } from '../lib/stats';
+
+interface Props {
+  lang: string;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const l = (path: string) => localize(lang, path);
+const og = lang === 'en' ? '/og/home.png' : `/og/${lang}/home.png`;
+
+const hero = shot('search-hero', 'search', 'inbox') ?? screenshots.find((s) => s.device === 'phone');
+const reading = shotFor('reading');
+const final = shot('inbox');
+const shotUrls = screenshots.filter((s) => s.featured).map((s) => s.image.src);
+const num = (n: number) => roughly(n).replace(/[\d,]+/, (d) => Number(d.replace(/,/g, '')).toLocaleString(lang));
+// Where the magnifier rests, in % of the search screenshot: the typed
+// expression, the filter chips, the first suggestion, then the rest of the line.
+const heroPoints: [number, number][] = [
+  [36, 8.6],
+  [30, 14],
+  [33, 19.4],
+  [58, 8.6],
+  [56, 14],
+];
+---
+
+<Base
+  lang={lang}
+  isHome
+  title={t('site.tagline')}
+  description={t('site.description')}
+  image={og}
+  jsonLd={[softwareApplication(shotUrls), sourceCode()]}
+>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow"><Icon name="sparkle" size={16} /> {t('home.eyebrow')}</p>
+        <h1 set:html={t('home.h1_html')} />
+        <p class="lead">{t('home.lead')}</p>
+        <div class="cta">
+          <a class="btn btn-primary" href={l('/download/')}>
+            <Icon name="arrow-download" size={20} /> {t('common.downloadAndroid')}
+          </a>
+          <a class="btn" href={l('/features/')}>{t('home.seeWhat')} <Icon name="arrow-right" size={18} /></a>
+        </div>
+        <ul class="facts" aria-label={t('home.glance')}>
+          <li><Icon name="checkmark" size={16} /> {t('home.fact1')}</li>
+          <li><Icon name="checkmark" size={16} /> {t('home.fact2')}</li>
+          <li><Icon name="checkmark" size={16} /> {t('home.fact3', { licence: site.licence.name })}</li>
+        </ul>
+      </div>
+      <div class="hero-visual">
+        <div class="halo" aria-hidden="true"></div>
+        <Device shot={hero} lens points={heroPoints} loading="eager" sizes="(max-width: 960px) 300px, 360px" placeholder={t('common.screenshotSoon')} />
+        <p class="hint">{t('home.lensHint')}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pillars" aria-labelledby="pillars-title">
+    <div class="wrap">
+      <div class="section-head center">
+        <p class="eyebrow">{t('home.pillarsEyebrow')}</p>
+        <h2 id="pillars-title">{t('home.pillarsTitle')}</h2>
+        <p class="lead">{t('home.pillarsLead')}</p>
+      </div>
+      <div class="pillar-grid">
+        <article class="card pillar reveal">
+          <div class="icon-tile"><Icon name="reading-mode-mobile" /></div>
+          <h3>{t('home.calm')}</h3>
+          <p>{t('home.calmText')}</p>
+        </article>
+        <article class="card pillar reveal">
+          <div class="icon-tile"><Icon name="search-sparkle" /></div>
+          <h3>{t('home.sharp')}</h3>
+          <p>{t('home.sharpText')}</p>
+        </article>
+        <article class="card pillar reveal">
+          <div class="icon-tile"><Icon name="shield-lock" /></div>
+          <h3>{t('home.private')}</h3>
+          <p>{t('home.privateText')}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section split search" aria-labelledby="search-title">
+    <div class="wrap split-grid">
+      <div>
+        <p class="eyebrow">{t('home.searchEyebrow')}</p>
+        <h2 id="search-title">{t('home.searchTitle')}</h2>
+        <p class="lead">{t('home.searchLead')}</p>
+        <p set:html={t('home.searchMore_html')} />
+        <a class="btn btn-ghost" href="/docs/search-language/">{t('home.searchLanguage')} <Icon name="arrow-right" size={18} /></a>
+      </div>
+      <SearchDemo lang={lang} />
+    </div>
+  </section>
+
+  <section class="section split reading" aria-labelledby="reading-title">
+    <div class="wrap split-grid reverse">
+      <div class="device-col">
+        <Device shot={reading} placeholder={t('common.screenshotSoon')} />
+      </div>
+      <div>
+        <p class="eyebrow">{t('home.readingEyebrow')}</p>
+        <h2 id="reading-title">{t('home.readingTitle')}</h2>
+        <p class="lead">{t('home.readingLead')}</p>
+        <ul class="ticks">
+          <li><Icon name="checkmark" size={18} /> {t('home.readingTick1')}</li>
+          <li><Icon name="checkmark" size={18} /> {t('home.readingTick2')}</li>
+          <li><Icon name="checkmark" size={18} /> {t('home.readingTick3')}</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section features" aria-labelledby="features-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">{t('home.featuresEyebrow')}</p>
+        <h2 id="features-title">{t('home.featuresTitle')}</h2>
+      </div>
+      <div class="feature-grid">
+        {
+          highlights.map((f) => (
+            <a class="feature reveal" href={f.docs}>
+              <div class="icon-tile">
+                <Icon name={f.icon} />
+              </div>
+              <h3>{t(`highlights.${f.key}.title`)}</h3>
+              <p>{t(`highlights.${f.key}.text`)}</p>
+            </a>
+          ))
+        }
+      </div>
+      <p class="more"><a class="btn" href={l('/features/')}>{t('home.tourAll')} <Icon name="arrow-right" size={18} /></a></p>
+    </div>
+  </section>
+
+  <section class="privacy" aria-labelledby="privacy-title">
+    <div class="wrap privacy-grid">
+      <div>
+        <p class="eyebrow">{t('home.privacyEyebrow')}</p>
+        <h2 id="privacy-title">{t('home.privacyTitle')}</h2>
+        <p class="lead">{t('home.privacyLead')}</p>
+        <a class="btn" href="/privacy/">{t('home.privacyRead')}</a>
+      </div>
+      <ul class="privacy-list">
+        <li><Icon name="cloud-off" /><div><strong>{t('home.privacy1')}</strong><span>{t('home.privacy1Text')}</span></div></li>
+        <li><Icon name="data-usage" /><div><strong>{t('home.privacy2')}</strong><span>{t('home.privacy2Text')}</span></div></li>
+        <li><Icon name="lock-closed" /><div><strong>{t('home.privacy3')}</strong><span>{t('home.privacy3Text')}</span></div></li>
+        <li><Icon name="eye-off" /><div><strong>{t('home.privacy4')}</strong><span>{t('home.privacy4Text')}</span></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight providers" aria-labelledby="providers-title">
+    <div class="wrap">
+      <h2 id="providers-title" class="providers-title">{t('home.providersTitle')}</h2>
+      <ul class="provider-list">
+        {providers.map((p) => <li class="chip">{p}</li>)}
+        <li class="chip">{t('home.providerOwn')}</li>
+      </ul>
+      <p class="muted small" set:html={t('home.providersNote_html')} />
+    </div>
+  </section>
+
+  <section class="section open" aria-labelledby="open-title">
+    <div class="wrap open-grid">
+      <div>
+        <p class="eyebrow">{t('home.openEyebrow')}</p>
+        <h2 id="open-title">{t('home.openTitle')}</h2>
+        <p class="lead">{t('home.openLead', { licence: site.licence.name })}</p>
+        <div class="cta">
+          <a class="btn" href="/development/">{t('home.howBuilt')}</a>
+          <a class="btn btn-ghost" href={site.repo} rel="noopener">{t('home.sourceGithub')} <Icon name="open" size={18} /></a>
+        </div>
+      </div>
+      <dl class="stats">
+        <div><dt>{t('home.statTests')}</dt><dd>{num(stats.tests)}</dd></div>
+        <div><dt>{t('home.statPackages')}</dt><dd>{stats.packages}</dd></div>
+        {stats.commits && <div><dt>{t('home.statCommits')}</dt><dd>{num(stats.commits)}</dd></div>}
+        <div><dt>{t('home.statTrackers')}</dt><dd>0</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section-tight final">
+    <div class="wrap">
+      <div class="final-card">
+        {final && (
+          <div class="final-device" aria-hidden="true">
+            <Device shot={final} sizes="220px" />
+          </div>
+        )}
+        <div class="final-copy">
+          <h2>{t('home.finalTitle')}</h2>
+          <p>{t('home.finalText')}</p>
+          <div class="cta">
+            <a class="btn btn-primary" href={l('/download/')}><Icon name="arrow-download" size={20} /> {t('common.downloadLoupe')}</a>
+            <a class="btn" href={l('/screenshots/')}>{t('common.screenshots')}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(40px, 7vw, 96px) clamp(56px, 8vw, 112px);
+    background:
+      radial-gradient(900px 500px at 85% 10%, color-mix(in srgb, var(--glass) 70%, transparent), transparent 70%),
+      radial-gradient(700px 400px at 0% 100%, color-mix(in srgb, var(--brand-soft) 90%, transparent), transparent 70%);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: clamp(32px, 6vw, 80px);
+  }
+
+  .hero h1 {
+    font-size: clamp(2.75rem, 7.4vw, 5.4rem);
+    line-height: 1.02;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 500;
+    background: linear-gradient(100deg, var(--brand) 10%, var(--brand-2) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero .lead {
+    max-width: 34em;
+  }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 28px 0 0;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .facts li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .facts :global(svg) {
+    color: var(--ok);
+  }
+
+  .hero-visual {
+    position: relative;
+    display: grid;
+    justify-items: center;
+  }
+
+  .halo {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: min(620px, 120%);
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--brand) 14%, transparent) 0 45%, transparent 46%);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--brand) 16%, transparent),
+      0 0 0 60px color-mix(in srgb, var(--brand) 5%, transparent),
+      0 0 0 61px color-mix(in srgb, var(--brand) 12%, transparent);
+    pointer-events: none;
+  }
+
+  .hero-visual :global(.device) {
+    max-width: 330px;
+  }
+
+  .hint {
+    margin: 22px 0 0;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    font-weight: 400;
+    text-align: center;
+  }
+
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .pillar {
+    padding: 28px;
+  }
+
+  .pillar h3 {
+    margin-top: 18px;
+    font-size: 1.6rem;
+    font-weight: 500;
+  }
+
+  .pillar p {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .split {
+    background: var(--bg-elev);
+    border-block: 1px solid var(--line);
+  }
+
+  .split.reading {
+    background: transparent;
+    border: 0;
+  }
+
+  .split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(32px, 6vw, 80px);
+  }
+
+  .split h2 {
+    font-size: clamp(2rem, 4.2vw, 3rem);
+  }
+
+  .device-col {
+    display: grid;
+    justify-items: center;
+  }
+
+  .device-col :global(.device) {
+    max-width: 320px;
+  }
+
+  .ticks {
+    display: grid;
+    gap: 10px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ticks li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .ticks :global(svg) {
+    flex: none;
+    margin-top: 3px;
+    color: var(--brand);
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .feature {
+    display: block;
+    padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    background: var(--bg-elev);
+    color: inherit;
+    text-decoration: none;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .feature:hover {
+    border-color: color-mix(in srgb, var(--brand) 45%, var(--line));
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+
+  .feature h3 {
+    margin: 16px 0 8px;
+    font-size: 1.0625rem;
+  }
+
+  .feature p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .more {
+    margin: 32px 0 0;
+    text-align: center;
+  }
+
+  .privacy {
+    padding-block: clamp(64px, 9vw, 112px);
+    background:
+      radial-gradient(800px 400px at 100% 0%, rgb(67 195 205 / 18%), transparent 70%),
+      linear-gradient(160deg, var(--navy), var(--navy-2));
+    color: #e6eef5;
+  }
+
+  .privacy .eyebrow {
+    color: #74d8e0;
+  }
+
+  .privacy h2 {
+    font-size: clamp(2rem, 4.2vw, 3rem);
+    color: #fff;
+  }
+
+  .privacy .lead {
+    color: #b4c3d1;
+  }
+
+  .privacy .btn {
+    --btn-bg: rgb(255 255 255 / 8%);
+    --btn-ink: #fff;
+    --btn-line: rgb(255 255 255 / 20%);
+    margin-top: 12px;
+  }
+
+  .privacy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(32px, 6vw, 80px);
+  }
+
+  .privacy-list {
+    display: grid;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .privacy-list li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 18px 20px;
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: var(--radius);
+    background: rgb(255 255 255 / 4%);
+  }
+
+  .privacy-list :global(svg) {
+    flex: none;
+    color: #74d8e0;
+  }
+
+  .privacy-list strong {
+    display: block;
+    color: #fff;
+  }
+
+  .privacy-list span {
+    color: #b4c3d1;
+    font-size: 0.9375rem;
+  }
+
+  .providers {
+    text-align: center;
+  }
+
+  .providers-title {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .provider-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .small {
+    font-size: 0.875rem;
+  }
+
+  .open-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+    gap: clamp(32px, 6vw, 80px);
+  }
+
+  .open h2 {
+    font-size: clamp(2rem, 4.2vw, 3rem);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 0;
+  }
+
+  .stats div {
+    padding: 22px 24px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    background: var(--bg-elev);
+  }
+
+  .stats dt {
+    color: var(--ink-3);
+    font-size: 0.875rem;
+  }
+
+  .stats dd {
+    margin: 4px 0 0;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--brand-ink);
+  }
+
+  .final {
+    padding-bottom: clamp(64px, 9vw, 112px);
+  }
+
+  .final-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: clamp(24px, 5vw, 64px);
+    padding: clamp(28px, 5vw, 56px);
+    overflow: hidden;
+    border-radius: 32px;
+    background:
+      radial-gradient(600px 300px at 0% 0%, color-mix(in srgb, var(--brand) 22%, transparent), transparent 70%),
+      var(--bg-elev);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+
+  .final-device {
+    width: 200px;
+    margin-block: -110px -150px;
+    rotate: -6deg;
+  }
+
+  .final h2 {
+    font-size: clamp(1.9rem, 4vw, 2.75rem);
+  }
+
+  .final p {
+    max-width: 36em;
+    color: var(--ink-2);
+    font-size: 1.125rem;
+  }
+
+  @media (max-width: 1080px) {
+    .feature-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 960px) {
+    .hero-grid,
+    .split-grid,
+    .privacy-grid,
+    .open-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-copy {
+      text-align: left;
+    }
+    .hero-visual :global(.device) {
+      max-width: 290px;
+    }
+    .split-grid.reverse .device-col {
+      order: 2;
+    }
+    .pillar-grid {
+      grid-template-columns: 1fr;
+    }
+    .feature-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .final-card {
+      grid-template-columns: 1fr;
+    }
+    .final-device {
+      display: none;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .feature-grid {
+      grid-template-columns: 1fr;
+    }
+    .cta .btn {
+      flex: 1 1 auto;
+    }
+  }
+</style>

@@ -1,0 +1,8 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  // Redirects www.loupe.mx to the apex; deployed by .github/workflows/site.yml.
+  "name": "loupe-www-redirect",
+  "main": "index.ts",
+  "compatibility_date": "2026-10-01",
+  "routes": [{ "pattern": "www.loupe.mx", "custom_domain": true }]
+}

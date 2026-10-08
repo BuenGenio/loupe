@@ -1,0 +1,356 @@
+---
+// A phone or tablet drawn in CSS around a real screenshot, in the light or
+// dark rendering that matches the site's theme. With `lens`, the magnifying
+// glass from the Loupe logo hovers over the screen, enlarging what's under it:
+// it glides between points of interest, follows the mouse, and can be dragged.
+import { Image, getImage } from 'astro:assets';
+import type { Shot } from '../lib/screenshots';
+
+interface Props {
+  shot?: Shot;
+  lens?: boolean;
+  // Points of interest for the idle lens, as [x%, y%] of the screen.
+  points?: [number, number][];
+  loading?: 'eager' | 'lazy';
+  sizes?: string;
+  placeholder?: string;
+  class?: string;
+}
+
+const {
+  shot,
+  lens = false,
+  points = [
+    [50, 22],
+    [40, 50],
+    [60, 76],
+  ],
+  loading = 'lazy',
+  sizes = '(max-width: 700px) 78vw, 360px',
+  placeholder = 'Screenshot coming soon',
+  class: className,
+} = Astro.props;
+
+const tablet = shot?.device === 'tablet';
+const widths = tablet ? [640, 960, 1400, 2000] : [320, 480, 720, 1000];
+const zoom = async (src?: Shot['image']) => (src ? (await getImage({ src, width: 1170, format: 'webp' })).src : undefined);
+const lensLight = shot && lens ? await zoom(shot.image) : undefined;
+const lensDark = shot && lens ? ((await zoom(shot.dark)) ?? lensLight) : undefined;
+// Gradient ids must be unique on the page: several devices can carry a lens.
+const uid = `l${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<figure class:list={['device', tablet ? 'tablet' : 'phone', className]} data-lens={lens ? '' : undefined}>
+  <div class="screen">
+    {
+      shot ? (
+        <>
+          <Image
+            class={shot.dark ? 'only-light' : undefined}
+            src={shot.image}
+            alt={shot.alt}
+            widths={widths}
+            sizes={sizes}
+            loading={loading}
+            fetchpriority={loading === 'eager' ? 'high' : undefined}
+            decoding="async"
+          />
+          {shot.dark && (
+            <Image class="only-dark" src={shot.dark} alt={shot.alt} widths={widths} sizes={sizes} loading="lazy" decoding="async" />
+          )}
+        </>
+      ) : (
+        <div class="placeholder" role="img" aria-label={placeholder}>
+          <span>Loupe</span>
+        </div>
+      )
+    }
+  </div>
+  {
+    lensLight && (
+      <div class="loupe" aria-hidden="true" data-points={JSON.stringify(points)}>
+        <div class="glass" style={`--lens-light: url('${lensLight}'); --lens-dark: url('${lensDark}')`} />
+        <svg class="frame" viewBox="0 0 300 300" focusable="false">
+          <defs>
+            <linearGradient id={`${uid}-loupe-ring`} x1="30" y1="30" x2="190" y2="190" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#46ccd6" />
+              <stop offset=".32" stop-color="#139099" />
+              <stop offset=".7" stop-color="#0b6a7b" />
+              <stop offset="1" stop-color="#074556" />
+            </linearGradient>
+            <linearGradient id={`${uid}-loupe-rim`} x1="40" y1="40" x2="180" y2="180" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#ffffff" />
+              <stop offset=".5" stop-color="#c9d6de" />
+              <stop offset="1" stop-color="#8ea2ae" />
+            </linearGradient>
+            <linearGradient id={`${uid}-loupe-handle`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#053f4c" />
+              <stop offset=".22" stop-color="#11899a" />
+              <stop offset=".42" stop-color="#58d3dc" />
+              <stop offset=".6" stop-color="#1398a8" />
+              <stop offset="1" stop-color="#043542" />
+            </linearGradient>
+            <linearGradient id={`${uid}-loupe-metal`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#76888f" />
+              <stop offset=".3" stop-color="#f7fafc" />
+              <stop offset=".55" stop-color="#c4d0d7" />
+              <stop offset="1" stop-color="#5f7179" />
+            </linearGradient>
+            <radialGradient id={`${uid}-loupe-glass`} cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#ffffff" stop-opacity="0" />
+              <stop offset=".8" stop-color="#d6ecf8" stop-opacity=".05" />
+              <stop offset="1" stop-color="#0a3c55" stop-opacity=".28" />
+            </radialGradient>
+            <linearGradient id={`${uid}-loupe-glare`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#ffffff" stop-opacity=".7" />
+              <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <g transform="rotate(45 110 110)">
+            <rect x="205" y="92" width="32" height="36" rx="6" fill={`url(#${uid}-loupe-metal)`} />
+            <rect x="232" y="88" width="94" height="44" rx="10" fill={`url(#${uid}-loupe-handle)`} />
+            <rect x="318" y="87.5" width="12" height="45" rx="3" fill={`url(#${uid}-loupe-metal)`} />
+            <rect x="324" y="88" width="30" height="44" rx="22" fill={`url(#${uid}-loupe-handle)`} />
+            <rect x="240" y="96" width="84" height="6" rx="3" fill="#ffffff" opacity=".28" />
+          </g>
+          <circle cx="110" cy="110" r="80" fill={`url(#${uid}-loupe-glass)`} />
+          <circle cx="110" cy="110" r="90" fill="none" stroke={`url(#${uid}-loupe-ring)`} stroke-width="20" />
+          <circle cx="110" cy="110" r="100.5" fill="none" stroke="#063a48" stroke-width="1.5" opacity=".7" />
+          <circle cx="110" cy="110" r="95" fill="none" stroke="#ffffff" stroke-width="2.5" opacity=".38" stroke-dasharray="150 447" transform="rotate(180 110 110)" />
+          <circle cx="110" cy="110" r="84.5" fill="none" stroke="#064451" stroke-width="2" opacity=".45" />
+          <circle cx="110" cy="110" r="81.5" fill="none" stroke={`url(#${uid}-loupe-rim)`} stroke-width="3.5" />
+          <ellipse class="glare" cx="84" cy="76" rx="44" ry="22" fill={`url(#${uid}-loupe-glare)`} transform="rotate(-38 84 76)" opacity=".75" />
+          <circle cx="66" cy="66" r="4" fill="#ffffff" opacity=".8" />
+        </svg>
+      </div>
+    )
+  }
+</figure>
+
+<script>
+  const ZOOM = 1.85;
+  // The SVG frame is 300 units wide; the glass is a circle of radius 80 at (110, 110).
+  const BOX = 300 / 160;
+  const CENTER = 110 / 300;
+
+  for (const device of document.querySelectorAll<HTMLElement>('.device[data-lens]')) {
+    const screen = device.querySelector<HTMLElement>('.screen')!;
+    const loupe = device.querySelector<HTMLElement>('.loupe');
+    const glass = loupe?.querySelector<HTMLElement>('.glass');
+    if (!loupe || !glass) continue;
+    const points: [number, number][] = JSON.parse(loupe.dataset.points ?? '[]');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let d = 140;
+    let current = { x: 0, y: 0 };
+    let target = { x: 0, y: 0 };
+    let idleIndex = 0;
+    let lastPointer = -1e9;
+    let dragging = false;
+
+    const measure = () => {
+      d = Math.round(Math.max(104, Math.min(176, screen.clientWidth * 0.44)));
+      loupe.style.setProperty('--d', `${d}px`);
+    };
+
+    const place = (x: number, y: number) => {
+      const w = screen.clientWidth;
+      const h = screen.clientHeight;
+      const box = d * BOX;
+      loupe.style.transform = `translate(${screen.offsetLeft + x - box * CENTER}px, ${screen.offsetTop + y - box * CENTER}px)`;
+      glass.style.backgroundSize = `${w * ZOOM}px ${h * ZOOM}px`;
+      glass.style.backgroundPosition = `${-(x * ZOOM - d / 2)}px ${-(y * ZOOM - d / 2)}px`;
+    };
+
+    const toPoint = (i: number) => {
+      const [px, py] = points[i % points.length];
+      return { x: (px / 100) * screen.clientWidth, y: (py / 100) * screen.clientHeight };
+    };
+
+    const tick = (now: number) => {
+      const active = dragging || now - lastPointer < 1200;
+      const k = active ? 0.35 : 0.05;
+      current.x += (target.x - current.x) * k;
+      current.y += (target.y - current.y) * k;
+      // A gentle hover while nobody is holding it.
+      const bob = active ? 0 : Math.sin(now / 650) * 2.2;
+      place(current.x, current.y + bob);
+      requestAnimationFrame(tick);
+    };
+
+    const start = () => {
+      measure();
+      current = target = toPoint(0);
+      place(current.x, current.y);
+      device.classList.add('lens-ready');
+      if (reduced) return;
+      requestAnimationFrame(tick);
+      setInterval(() => {
+        if (dragging || performance.now() - lastPointer < 4000 || document.hidden) return;
+        idleIndex = (idleIndex + 1) % points.length;
+        target = toPoint(idleIndex);
+      }, 2800);
+    };
+
+    const fromEvent = (e: PointerEvent) => {
+      const r = screen.getBoundingClientRect();
+      return {
+        x: Math.max(0, Math.min(r.width, e.clientX - r.left)),
+        y: Math.max(0, Math.min(r.height, e.clientY - r.top)),
+      };
+    };
+
+    device.addEventListener('pointermove', (e) => {
+      if (reduced && !dragging) return;
+      if (e.pointerType === 'mouse' || dragging) {
+        lastPointer = performance.now();
+        target = fromEvent(e);
+        if (reduced) place(target.x, target.y);
+      }
+    });
+    loupe.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      loupe.setPointerCapture(e.pointerId);
+    });
+    loupe.addEventListener('pointerup', () => (dragging = false));
+    loupe.addEventListener('pointercancel', () => (dragging = false));
+    addEventListener('resize', () => {
+      measure();
+      target = current = toPoint(idleIndex);
+      place(current.x, current.y);
+    });
+
+    const img = [...screen.querySelectorAll('img')].find((i) => i.offsetParent !== null);
+    if (img && !img.complete) img.addEventListener('load', start, { once: true });
+    else start();
+  }
+</script>
+
+<style>
+  .device {
+    position: relative;
+    margin: 0;
+    padding: 10px;
+    border-radius: 54px;
+    background: linear-gradient(145deg, #2b3c4e, #0d1724 55%, #1c2a39);
+    box-shadow:
+      inset 0 0 0 1.5px rgb(255 255 255 / 12%),
+      inset 0 0 0 4px #05090f,
+      var(--shadow-l);
+  }
+
+  .device.phone {
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 1170 / 2532;
+    box-sizing: content-box;
+  }
+
+  .device.tablet {
+    padding: 14px;
+    border-radius: 36px;
+    width: 100%;
+  }
+
+  .screen {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 44px;
+    background: var(--bg-elev);
+    isolation: isolate;
+  }
+
+  .tablet .screen {
+    border-radius: 24px;
+  }
+
+  .screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .placeholder {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    min-height: 320px;
+    background:
+      radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--brand) 30%, transparent), transparent 60%),
+      linear-gradient(160deg, var(--glass), var(--bg-elev));
+    color: var(--brand-ink);
+    font-size: 2rem;
+  }
+
+  .loupe {
+    --d: 140px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+    width: calc(var(--d) * 300 / 160);
+    height: calc(var(--d) * 300 / 160);
+    opacity: 0;
+    cursor: grab;
+    touch-action: none;
+    transition: opacity 0.6s ease;
+    will-change: transform;
+  }
+
+  .loupe:active {
+    cursor: grabbing;
+  }
+
+  .lens-ready .loupe {
+    opacity: 1;
+  }
+
+  .glass {
+    position: absolute;
+    left: calc(var(--d) * 30 / 160);
+    top: calc(var(--d) * 30 / 160);
+    width: var(--d);
+    height: var(--d);
+    border-radius: 50%;
+    background-color: var(--bg-elev);
+    background-image: var(--lens-light);
+    background-repeat: no-repeat;
+  }
+
+  :global(:root[data-theme='dark']) .glass {
+    background-image: var(--lens-dark);
+  }
+
+  :global(:root[data-theme='dark']) .glare {
+    opacity: 0.3;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .glass {
+      background-image: var(--lens-dark);
+    }
+    :global(:root:not([data-theme='light'])) .glare {
+      opacity: 0.3;
+    }
+    :global(:root:not([data-theme='light'])) .device {
+      box-shadow:
+        inset 0 0 0 1.5px rgb(255 255 255 / 14%),
+        inset 0 0 0 4px #05090f,
+        0 0 0 1px #1d3044,
+        var(--shadow-l);
+    }
+  }
+
+  .frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    filter: drop-shadow(0 18px 22px rgb(4 20 34 / 45%)) drop-shadow(0 3px 4px rgb(4 20 34 / 25%));
+  }
+</style>

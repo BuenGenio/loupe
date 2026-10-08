@@ -1,0 +1,8 @@
+---
+import View from '../../views/Features.astro';
+import { localePaths } from '../../i18n/paths';
+
+export const getStaticPaths = localePaths;
+---
+
+<View lang={Astro.params.lang} />
