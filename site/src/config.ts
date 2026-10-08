@@ -36,6 +36,12 @@ export const socials: { name: string; handle: string; href: string; icon: string
   { name: 'Reddit', handle: 'r/LoupeMail', href: '', icon: 'reddit' },
 ];
 
+// Store listings: empty shows a "Coming soon" badge on the download page.
+export const stores = {
+  googlePlay: '',
+  appStore: '',
+};
+
 export const downloads = {
   release: `${site.repo}/releases/tag/nightly`,
   // Served by worker/index.ts: a 302 to the current Nightly asset on GitHub.

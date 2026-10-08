@@ -1,0 +1,593 @@
+---
+// Try Loupe's search language on a demo mailbox, in the browser: type or tap
+// operators, see the query as chips, watch the results filter. The parser
+// follows the app's rules (src/lib/search-lang.ts).
+import Icon from './Icon.astro';
+import { useT } from '../i18n';
+import { mailbox, tagColours } from '../lib/demo-mailbox';
+
+interface Props {
+  lang: string;
+  full?: boolean; // show the operator palette
+  initial?: string;
+}
+const { lang, full = false, initial = 'f:(dana or ben) -is:read' } = Astro.props;
+const t = useT(lang);
+const d = (k: string) => t(`searchDemo.${k}`);
+const p = (k: string) => t(`searchPlay.${k}`);
+
+const labels = {
+  lang,
+  from: d('from'), to: d('to'), subject: d('subject'), body: d('body'), all: d('all'), tag: d('tag'),
+  after: d('after'), before: d('before'), date: d('date'), newerThan: d('newerThan'), olderThan: d('olderThan'),
+  attachment: d('attachment'), status: d('status'), hasAttachment: d('hasAttachment'), noAttachment: d('noAttachment'),
+  tagNone: d('tagNone'), unread: d('unread'), read: d('read'), flagged: d('flagged'), unflagged: d('unflagged'),
+  replied: d('replied'), unreplied: d('unreplied'), not: d('not'), or: d('or'), and: d('and'),
+  today: d('today'), yesterday: d('yesterday'),
+};
+const text = {
+  results_one: p('results_one'), results_few: p('results_few'), results_many: p('results_many'), results_other: p('results_other'),
+  none: p('none'), empty: p('empty'), incomplete: p('incomplete'),
+  eggEnhance: t('egg.enhanceSearch'), eggZero: t('egg.zero'),
+  unreadMark: d('unread'), flaggedMark: d('flagged'), attachmentMark: d('hasAttachment'),
+};
+
+const examples = [
+  'f:(dana or ben) -is:read',
+  'from:alice and (subject:invoice or body:"PO 123")',
+  'is:unread newer_than:7d -tag:newsletter',
+  'attachment:yes older_than:1y',
+  'f:github.com s:"pull request" is:unreplied',
+  'tag:work is:flagged',
+];
+
+const operators: { insert: string; show: string; desc: string }[] = [
+  { insert: 'from:', show: 'from:  f:', desc: p('opFrom') },
+  { insert: 'to:', show: 'to:  t:', desc: p('opTo') },
+  { insert: 'subject:', show: 'subject:  s:', desc: p('opSubject') },
+  { insert: 'body:', show: 'body:  b:', desc: p('opBody') },
+  { insert: 'is:unread', show: 'is:unread', desc: p('opIs') },
+  { insert: 'is:flagged', show: 'is:flagged', desc: p('opIs') },
+  { insert: 'is:unreplied', show: 'is:unreplied', desc: p('opIs') },
+  { insert: 'has:attachment', show: 'has:attachment', desc: p('opHas') },
+  { insert: 'attachment:pdf', show: 'attachment:pdf  a:', desc: p('opAttachment') },
+  { insert: 'tag:work', show: 'tag:work  l:', desc: p('opTag') },
+  { insert: 'newer_than:7d', show: 'newer_than:7d  n:', desc: p('opNewer') },
+  { insert: 'older_than:1y', show: 'older_than:1y  ot:', desc: p('opOlder') },
+  { insert: 'after:yesterday', show: 'after:  af:', desc: p('opAfter') },
+  { insert: 'before:2026', show: 'before:  be:', desc: p('opBefore') },
+  { insert: 'date:today', show: 'date:  d:', desc: p('opDate') },
+  { insert: '-', show: '-  not', desc: p('opNot') },
+  { insert: 'or', show: 'or', desc: p('opOr') },
+  { insert: '( )', show: '( … )', desc: p('opGroup') },
+  { insert: '""', show: '"…"', desc: p('opQuote') },
+];
+---
+
+<div
+  class:list={['playground', { full }]}
+  data-labels={JSON.stringify(labels)}
+  data-text={JSON.stringify(text)}
+  data-mailbox={JSON.stringify(mailbox)}
+  data-tags={JSON.stringify(tagColours)}
+>
+  <label class="bar">
+    <Icon name="search" size={20} />
+    <span class="visually-hidden">{p('label')}</span>
+    <input type="search" value={initial} placeholder={p('placeholder')} spellcheck="false" autocomplete="off" autocapitalize="off" enterkeyhint="search" />
+    <button type="button" class="clear" aria-label={p('clear')}><Icon name="dismiss" size={16} /></button>
+  </label>
+
+  <ul class="chips" aria-live="polite"></ul>
+  <p class="warn" hidden></p>
+
+  <div class="results">
+    <div class="head">
+      <strong class="count"></strong>
+      <span class="where"><span class="dot local"></span> {d('local')}</span>
+    </div>
+    <ol class="list"></ol>
+    <p class="empty" hidden></p>
+  </div>
+
+  <div class="try">
+    <span class="try-label">{p('try')}</span>
+    {examples.map((q) => <button type="button" class="example" data-q={q}><code>{q}</code></button>)}
+  </div>
+
+  {
+    full && (
+      <details class="ops" open>
+        <summary>
+          {p('operators')} <span>{p('operatorsHint')}</span>
+        </summary>
+        <div class="op-grid">
+          {operators.map((o) => (
+            <button type="button" class="op" data-insert={o.insert}>
+              <code>{o.show}</code>
+              <span>{o.desc}</span>
+            </button>
+          ))}
+        </div>
+      </details>
+    )
+  }
+  <p class="note">{p('demoNote')}</p>
+</div>
+
+<script>
+  import { parse, matches, chips, received, type Message } from '../lib/search-lang';
+
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+  for (const root of document.querySelectorAll<HTMLElement>('.playground')) {
+    const L = JSON.parse(root.dataset.labels!);
+    const T = JSON.parse(root.dataset.text!);
+    const mail: Message[] = JSON.parse(root.dataset.mailbox!);
+    const tagColours: Record<string, string> = JSON.parse(root.dataset.tags!);
+    const input = root.querySelector('input')!;
+    const chipList = root.querySelector<HTMLUListElement>('.chips')!;
+    const warn = root.querySelector<HTMLElement>('.warn')!;
+    const list = root.querySelector<HTMLOListElement>('.list')!;
+    const count = root.querySelector<HTMLElement>('.count')!;
+    const empty = root.querySelector<HTMLElement>('.empty')!;
+    const lang: string = L.lang;
+    const now = new Date();
+    const plural = new Intl.PluralRules(lang);
+    const time = new Intl.DateTimeFormat(lang, { hour: 'numeric', minute: '2-digit' });
+    const weekday = new Intl.DateTimeFormat(lang, { weekday: 'long' });
+    const short = new Intl.DateTimeFormat(lang, { day: 'numeric', month: 'short', year: 'numeric' });
+    const rel = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' });
+    const cap = (s: string) => s.charAt(0).toLocaleUpperCase(lang) + s.slice(1);
+
+    const when = (m: Message) => {
+      const d = received(m, now);
+      const [h, min] = m.time.split(':').map(Number);
+      d.setHours(h, min);
+      if (m.daysAgo === 0) return time.format(d);
+      if (m.daysAgo === 1) return cap(rel.format(-1, 'day'));
+      if (m.daysAgo < 7) return cap(weekday.format(d));
+      return short.format(d);
+    };
+
+    const row = (m: Message) => `
+      <li class="${m.unread ? 'unread' : ''}">
+        <span class="mark">${m.unread ? `<span class="u" title="${esc(T.unreadMark)}"></span>` : ''}${m.flagged ? `<span class="fl" title="${esc(T.flaggedMark)}"></span>` : ''}</span>
+        <div class="msg">
+          <div class="top"><span class="who">${esc(m.from)}</span><span class="meta">${m.attachments.length ? `<span class="clip" title="${esc(T.attachmentMark)}">⎘</span>` : ''}${esc(when(m))}</span></div>
+          <div class="subj">${esc(m.subject)}${m.tags.map((t) => `<span class="tag" style="--c:${tagColours[t] ?? '#7a8a99'}" title="${esc(t)}"></span>`).join('')}</div>
+          <div class="body">${esc(m.body)}</div>
+        </div>
+      </li>`;
+
+    const render = () => {
+      const q = input.value.trim();
+      const egg = q.toLowerCase();
+      const { node, incomplete } = parse(q);
+      chipList.innerHTML = chips(node, L)
+        .map((c) =>
+          c.value
+            ? `<li class="chip">${c.field ? `<span class="f">${esc(cap(c.field))}</span>` : ''}<span class="v">${esc(c.value)}</span></li>`
+            : `<li class="chip"><span class="f solo">${esc(cap(c.field))}</span></li>`,
+        )
+        .join('');
+      warn.hidden = !(incomplete && q);
+      warn.textContent = T.incomplete;
+
+      // Easter eggs.
+      if (egg === 'enhance' || egg === 'enhance!' || egg === 'is:inbox-zero' || egg === 'is:zero') {
+        const enhance = egg.startsWith('enhance');
+        list.innerHTML = '';
+        count.textContent = '';
+        empty.hidden = false;
+        empty.textContent = enhance ? T.eggEnhance : T.eggZero;
+        empty.classList.add('egg');
+        if (enhance) window.dispatchEvent(new CustomEvent('loupe:enhance'));
+        return;
+      }
+      empty.classList.remove('egg');
+
+      const hits = node ? mail.filter((m) => matches(node, m, now)) : mail;
+      count.textContent = (T[`results_${plural.select(hits.length)}`] ?? T.results_other).replace('{n}', String(hits.length));
+      list.innerHTML = hits.map(row).join('');
+      empty.hidden = hits.length > 0;
+      empty.textContent = q ? T.none : T.empty;
+    };
+
+    const insert = (token: string) => {
+      const v = input.value.replace(/\s+$/, '');
+      const sep = v && !v.endsWith('(') ? ' ' : '';
+      if (token === '( )') {
+        input.value = `${v}${sep}()`;
+        input.focus();
+        input.setSelectionRange(input.value.length - 1, input.value.length - 1);
+      } else if (token === '""') {
+        input.value = `${v}${sep}""`;
+        input.focus();
+        input.setSelectionRange(input.value.length - 1, input.value.length - 1);
+      } else {
+        input.value = `${v}${sep}${token}${token.endsWith(':') || token === '-' ? '' : ' '}`;
+        input.focus();
+        input.setSelectionRange(input.value.length, input.value.length);
+      }
+      render();
+    };
+
+    input.addEventListener('input', render);
+    root.querySelector('.clear')!.addEventListener('click', () => {
+      input.value = '';
+      input.focus();
+      render();
+    });
+    for (const b of root.querySelectorAll<HTMLButtonElement>('.example'))
+      b.addEventListener('click', () => {
+        input.value = b.dataset.q!;
+        render();
+      });
+    for (const b of root.querySelectorAll<HTMLButtonElement>('.op')) b.addEventListener('click', () => insert(b.dataset.insert!));
+    render();
+  }
+</script>
+
+<style>
+  .playground {
+    padding: clamp(16px, 3vw, 22px);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    background: var(--bg-elev);
+    box-shadow: var(--shadow);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 6px 8px 6px 16px;
+    border: 1.5px solid transparent;
+    border-radius: 14px;
+    background: var(--bg-sunk);
+    color: var(--ink-3);
+  }
+
+  .bar:focus-within {
+    border-color: var(--brand);
+    background: var(--bg-elev);
+  }
+
+  .bar :global(svg) {
+    flex: none;
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    height: 38px;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font: 400 1.0625rem/1.2 var(--font-mono);
+    outline: none;
+  }
+
+  input::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  .clear {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink-3);
+    cursor: pointer;
+  }
+
+  .clear:hover {
+    background: var(--line);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 34px;
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .chips :global(.chip) {
+    padding: 0;
+    overflow: hidden;
+    border-color: color-mix(in srgb, var(--brand) 35%, var(--line));
+    animation: pop 0.18s ease both;
+  }
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+
+  .chips :global(.f) {
+    padding: 4px 8px 4px 12px;
+    background: var(--brand-soft);
+    color: var(--brand-ink);
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
+  .chips :global(.f.solo) {
+    padding-right: 12px;
+  }
+
+  .chips :global(.v) {
+    padding: 4px 12px 4px 8px;
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+  }
+
+  .chips :global(.v:first-child) {
+    padding-left: 12px;
+  }
+
+  .warn {
+    margin: 8px 0 0;
+    color: var(--warm);
+    font-size: 0.8125rem;
+    font-weight: 400;
+  }
+
+  .results {
+    margin-top: 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 6px 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    font-size: 0.875rem;
+  }
+
+  .count {
+    font-weight: 500;
+  }
+
+  .where {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ink-3);
+    font-size: 0.8125rem;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ok);
+  }
+
+  .list {
+    max-height: 340px;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+  }
+
+  .list :global(li) {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 4px;
+    padding: 10px 14px 10px 8px;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    animation: pop 0.18s ease both;
+  }
+
+  .list :global(li:last-child) {
+    border-bottom: 0;
+  }
+
+  .list :global(.mark) {
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: 6px;
+    padding-top: 6px;
+  }
+
+  .list :global(.u) {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #1a73e8;
+  }
+
+  .list :global(.fl) {
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    background: #e8710a;
+  }
+
+  .list :global(.top) {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .list :global(.who) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  .list :global(.unread .who) {
+    font-weight: 700;
+  }
+
+  .list :global(.meta) {
+    flex: none;
+    display: inline-flex;
+    gap: 6px;
+    color: var(--ink-3);
+    font-size: 0.8125rem;
+  }
+
+  .list :global(.subj) {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    overflow: hidden;
+    color: var(--ink);
+    font-weight: 500;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .list :global(.tag) {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c);
+  }
+
+  .list :global(.body) {
+    overflow: hidden;
+    color: var(--ink-3);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .empty {
+    margin: 0;
+    padding: 28px 18px;
+    color: var(--ink-3);
+    text-align: center;
+  }
+
+  .empty.egg {
+    color: var(--brand-ink);
+    font-size: 1.0625rem;
+    font-weight: 400;
+  }
+
+  .try {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .try-label {
+    color: var(--ink-3);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .example {
+    max-width: 100%;
+    padding: 4px 10px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--ink-2);
+    cursor: pointer;
+  }
+
+  .example code {
+    display: block;
+    overflow: hidden;
+    font-size: 0.8125rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .example:hover,
+  .op:hover {
+    border-color: var(--brand);
+    color: var(--ink);
+  }
+
+  .ops {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+
+  .ops summary {
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .ops summary span {
+    margin-left: 6px;
+    color: var(--ink-3);
+    font-size: 0.875rem;
+    font-weight: 300;
+  }
+
+  .op-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .op {
+    display: grid;
+    gap: 2px;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+    color: var(--ink-2);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .op code {
+    color: var(--brand-ink);
+    font-size: 0.875rem;
+  }
+
+  .op span {
+    font-size: 0.8125rem;
+    line-height: 1.35;
+  }
+
+  .note {
+    margin: 14px 0 0;
+    color: var(--ink-3);
+    font-size: 0.8125rem;
+  }
+
+  .playground :global(:focus-visible) {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+</style>

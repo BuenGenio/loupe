@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Device from '../components/Device.astro';
 import Icon from '../components/Icon.astro';
-import SearchDemo from '../components/SearchDemo.astro';
+import SearchPlayground from '../components/SearchPlayground.astro';
 import { useT, localize } from '../i18n';
 import { extras, groups, highlights } from '../lib/features';
 import { shotFor } from '../lib/screenshots';
@@ -68,7 +68,7 @@ const more = highlights.filter((h) => extras.includes(h.key));
             <p class="lead">{t(`groups.${g.id}.lead`)}</p>
             {g.id === 'search' && (
               <div class="demo">
-                <SearchDemo lang={lang} />
+                <SearchPlayground lang={lang} full />
               </div>
             )}
             <ul class="points">

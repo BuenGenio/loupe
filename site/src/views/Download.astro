@@ -5,7 +5,7 @@ import ReleaseInfo from '../components/ReleaseInfo.astro';
 import InstallSteps from '../components/InstallSteps.astro';
 import Icon from '../components/Icon.astro';
 import BrandIcon from '../components/BrandIcon.astro';
-import { downloads, site } from '../config';
+import { downloads, site, stores } from '../config';
 import { useT, localize } from '../i18n';
 import { breadcrumbs, softwareApplication } from '../lib/schema';
 
@@ -50,6 +50,25 @@ const l = (path: string) => localize(lang, path);
       <div class="wall-col">
         <h2 class="visually-hidden">{t('download.choose')}</h2>
         <DonationWall lang={lang} mode="download" />
+        <div class="stores">
+          {[
+            { href: stores.googlePlay, icon: 'googleplay', pre: t('download.getItOn'), name: 'Google Play' },
+            { href: stores.appStore, icon: 'appstore', pre: t('download.downloadOnThe'), name: 'App Store' },
+          ].map((b) =>
+            b.href ? (
+              <a class="store" href={b.href} rel="noopener">
+                <BrandIcon name={b.icon} size={26} />
+                <span><small>{b.pre}</small><strong>{b.name}</strong></span>
+              </a>
+            ) : (
+              <span class="store soon" aria-label={`${b.name}: ${t('download.comingSoon')}`}>
+                <BrandIcon name={b.icon} size={26} />
+                <span><small>{b.pre}</small><strong>{b.name}</strong></span>
+                <em>{t('download.comingSoon')}</em>
+              </span>
+            ),
+          )}
+        </div>
       </div>
     </div>
   </section>
@@ -150,6 +169,62 @@ const l = (path: string) => localize(lang, path);
   .wall-col {
     position: sticky;
     top: calc(var(--header-h) + 24px);
+  }
+
+  .stores {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .store {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 60px;
+    padding: 10px 16px;
+    border-radius: 14px;
+    background: #0b1420;
+    color: #fff;
+    text-decoration: none;
+    border: 1px solid #2a3846;
+  }
+
+  .store small {
+    display: block;
+    font-size: 0.6875rem;
+    line-height: 1.1;
+    opacity: 0.8;
+  }
+
+  .store strong {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.15;
+  }
+
+  .store.soon {
+    opacity: 0.55;
+    filter: grayscale(1);
+    cursor: default;
+  }
+
+  .store em {
+    position: absolute;
+    top: -9px;
+    right: 10px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: var(--warm);
+    color: #fff;
+    font-size: 0.6875rem;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 
   .two {

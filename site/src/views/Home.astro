@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Device from '../components/Device.astro';
 import Icon from '../components/Icon.astro';
-import SearchDemo from '../components/SearchDemo.astro';
+import SearchPlayground from '../components/SearchPlayground.astro';
 import { site } from '../config';
 import { useT, localize } from '../i18n';
 import { highlights, providers } from '../lib/features';
@@ -62,7 +62,15 @@ const heroPoints: [number, number][] = [
       </div>
       <div class="hero-visual">
         <div class="halo" aria-hidden="true"></div>
-        <Device shot={hero} lens points={heroPoints} loading="eager" sizes="(max-width: 960px) 300px, 360px" placeholder={t('common.screenshotSoon')} />
+        <Device
+          shot={hero}
+          lens
+          points={heroPoints}
+          loading="eager"
+          sizes="(max-width: 960px) 300px, 360px"
+          placeholder={t('common.screenshotSoon')}
+          eggs={[t('egg.enhance1'), t('egg.enhance2'), t('egg.enhance3'), t('egg.enhanceReset')]}
+        />
         <p class="hint">{t('home.lensHint')}</p>
       </div>
     </div>
@@ -142,7 +150,7 @@ const heroPoints: [number, number][] = [
         <p set:html={t('home.searchMore_html')} />
         <a class="btn btn-ghost" href="/docs/search-language/">{t('home.searchLanguage')} <Icon name="arrow-right" size={18} /></a>
       </div>
-      <SearchDemo lang={lang} />
+      <SearchPlayground lang={lang} />
     </div>
   </section>
 

@@ -181,7 +181,24 @@
     "note2": "Status, relative dates and tags, negated with a minus.",
     "note3": "Short forms for fast typing; save it as a Smart Mailbox.",
     "local": "On this phone: instant",
-    "server": "From the server: streaming in"
+    "server": "From the server: streaming in",
+    "to": "To",
+    "all": "Anywhere",
+    "read": "read",
+    "flagged": "flagged",
+    "unflagged": "not flagged",
+    "replied": "replied",
+    "olderThan": "Older than",
+    "after": "After",
+    "before": "Before",
+    "date": "Date",
+    "attachment": "Attachment",
+    "hasAttachment": "Has attachment",
+    "noAttachment": "No attachment",
+    "tagNone": "No tag",
+    "not": "Not",
+    "today": "today",
+    "yesterday": "yesterday"
   },
   "highlights": {
     "readable": {
@@ -544,7 +561,10 @@
     "nightly": "Nightly {version}",
     "built": "built {ago}",
     "justNow": "just now",
-    "size": "{mb} MB"
+    "size": "{mb} MB",
+    "getItOn": "Get it on",
+    "downloadOnThe": "Download on the",
+    "comingSoon": "Coming soon"
   },
   "wall": {
     "choose": "Choose an amount",
@@ -773,5 +793,46 @@
     "howText": "Each phase has a finish line, and nothing from the next phase sneaks in early. Bugs come first, then what people ask for in Discussions. Donations buy the time for both.",
     "suggest": "Suggest a feature",
     "support": "Support Loupe"
+  },
+  "searchPlay": {
+    "label": "Search the demo mailbox",
+    "placeholder": "Type a search, for example is:unread",
+    "clear": "Clear the search",
+    "try": "Try",
+    "operators": "Every operator",
+    "operatorsHint": "Tap one to add it to the search.",
+    "results_one": "{n} result",
+    "results_few": "{n} results",
+    "results_many": "{n} results",
+    "results_other": "{n} results",
+    "none": "No messages match. Try another search.",
+    "empty": "Type to search the demo mailbox.",
+    "incomplete": "Not finished yet: Loupe searches with the parts that make sense.",
+    "demoNote": "A demo mailbox, searched in your browser the way Loupe reads the query.",
+    "opFrom": "Sender contains",
+    "opTo": "To or Cc contains",
+    "opSubject": "Subject contains",
+    "opBody": "Message text contains",
+    "opIs": "Unread, flagged, replied…",
+    "opHas": "Has attachments",
+    "opAttachment": "An attachment named or of type…",
+    "opTag": "Has a tag",
+    "opNewer": "Received within an age",
+    "opOlder": "Received before an age",
+    "opAfter": "Received after a day",
+    "opBefore": "Received before a day",
+    "opDate": "Received on a day, month or year",
+    "opNot": "Leave out what follows",
+    "opOr": "Either side may match",
+    "opGroup": "Group terms together",
+    "opQuote": "Keep words together"
+  },
+  "egg": {
+    "enhance1": "Enhance.",
+    "enhance2": "Enhance!",
+    "enhance3": "We're at the pixel level now.",
+    "enhanceReset": "Okay, back to normal.",
+    "enhanceSearch": "Loupe can enhance a newsletter. Grainy security footage, not so much.",
+    "zero": "Inbox zero. Nothing to see here: go outside."
   }
 }
