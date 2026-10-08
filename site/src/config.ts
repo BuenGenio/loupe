@@ -87,7 +87,7 @@ export const nav = [
   { href: '/docs/', label: 'nav.docs' },
   { href: '/roadmap/', label: 'nav.roadmap' },
   { href: '/development/', label: 'nav.development' },
-  { href: '/blog/', label: 'nav.blog' },
+  { href: '/news/', label: 'nav.news' },
 ];
 
 export const footerNav = [
@@ -106,7 +106,7 @@ export const footerNav = [
       { href: '/docs/', label: 'footer.documentation' },
       { href: '/docs/search-language/', label: 'footer.searchLanguage' },
       { href: '/docs/faq/', label: 'footer.faq' },
-      { href: '/blog/', label: 'footer.blog' },
+      { href: '/news/', label: 'footer.news' },
     ],
   },
   {

@@ -3,11 +3,12 @@
 import type { APIRoute } from 'astro';
 import { site, contact } from '../config';
 import { allDocs } from '../lib/docs';
-import { posts } from '../lib/blog';
+import { posts, releases, releaseTitle } from '../lib/news';
 
 export const GET: APIRoute = async () => {
   const docs = await allDocs();
-  const blog = await posts();
+  const articles = await posts();
+  const rels = await releases();
   const abs = (p: string) => new URL(p, site.url).href;
   const lines = [
     `# ${site.name}`,
@@ -26,6 +27,7 @@ export const GET: APIRoute = async () => {
     `- [Download](${abs('/download/')}): free nightly APK for Android 7+, pay what you want`,
     `- [Screenshots](${abs('/screenshots/')})`,
     `- [Roadmap](${abs('/roadmap/')}): what has shipped, what's next, and what is not planned`,
+    `- [News](${abs('/news/')}): every release and its notes, newest first, plus longer pieces`,
     `- [Development](${abs('/development/')}): architecture, build from source, testing`,
     `- [Privacy policy](${abs('/privacy/')})`,
     `- [Press kit](${abs('/press/')})`,
@@ -35,7 +37,8 @@ export const GET: APIRoute = async () => {
     '## Documentation',
     '',
     ...docs.map((d) => `- [${d.data.title}](${abs(`/docs/${d.id}/`)}): ${d.data.description}`),
-    ...(blog.length ? ['', '## Blog', '', ...blog.map((p) => `- [${p.data.title}](${abs(`/blog/${p.id}/`)}): ${p.data.description}`)] : []),
+    ...(articles.length ? ['', '## Articles', '', ...articles.map((p) => `- [${p.data.title}](${abs(`/news/${p.id}/`)}): ${p.data.description}`)] : []),
+    ...(rels.length ? ['', '## Releases', '', ...rels.map((r) => `- [${releaseTitle(r.data.date)}](${abs(`/news/#${r.id}`)})`)] : []),
     '',
   ];
   return new Response(lines.join('\n'), { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
