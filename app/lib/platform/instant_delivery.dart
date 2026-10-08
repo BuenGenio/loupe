@@ -14,6 +14,7 @@ import '../features/notifications/app_icon_badge.dart';
 import '../features/notifications/new_mail.dart';
 import '../features/notifications/new_mail_check.dart';
 import '../l10n/l10n.dart';
+import '../settings/app_settings.dart';
 import 'background_entry.dart';
 import 'foreground_bridge.dart';
 import 'instant_runner.dart';
@@ -153,6 +154,7 @@ class InstantTaskHandler extends TaskHandler {
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
     final directory = await getApplicationSupportDirectory();
     final prefs = await SharedPreferences.getInstance();
+    AppSettingsController.loadLanguage(prefs);
     final notifier = await LocalMailNotifier.initializeInBackground(onBackgroundAction: onNotificationAction);
     final runner = _runner = InstantRunner(
       prefs: prefs,
