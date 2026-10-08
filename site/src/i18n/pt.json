@@ -21,7 +21,6 @@
     "popular": "Populares",
     "allLanguages": "Todos os idiomas",
     "englishOnly": "Esta página está em inglês.",
-    "appEnglish": "Por agora, a aplicação Loupe está em inglês; outros idiomas virão a seguir.",
     "docsEnglish": "A documentação está em inglês."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Impressão digital ou PIN antes de o seu e-mail aparecer.",
     "later2": "Guardar e exportar e-mail",
     "later2Text": "Uma mensagem como ficheiro .eml, uma pasta como arquivo mbox.",
-    "later3": "A aplicação em mais idiomas",
-    "later3Text": "Por agora, a aplicação em si está em inglês.",
+    "later3": "A aplicação no seu idioma",
+    "later3Text": "O Loupe fala os mesmos idiomas que este site, segue o idioma do seu telemóvel e em Settings › Language escolhe outro.",
     "later4": "Notificações mais rápidas no iOS",
     "later4Text": "O iOS não deixa as aplicações manterem uma ligação aberta. Um retransmissor opcional poderia enviar notificações push sem conteúdo, do tipo «verifique agora», mas só se conseguir funcionar sem nunca ver o e-mail.",
     "notTitle": "Deliberadamente fora dos planos",

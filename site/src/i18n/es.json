@@ -21,7 +21,6 @@
     "popular": "Populares",
     "allLanguages": "Todos los idiomas",
     "englishOnly": "Esta página está en inglés.",
-    "appEnglish": "Por ahora, la app Loupe está en inglés; llegarán más idiomas.",
     "docsEnglish": "La documentación está en inglés."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Huella dactilar o PIN antes de que se muestre tu correo.",
     "later2": "Guardar y exportar correo",
     "later2Text": "Un mensaje como archivo .eml, una carpeta como archivo mbox.",
-    "later3": "La app en más idiomas",
-    "later3Text": "Hoy, la app en sí está en inglés.",
+    "later3": "La app en tu idioma",
+    "later3Text": "Loupe habla los mismos idiomas que este sitio web, sigue el idioma de tu teléfono y en Settings › Language eliges otro.",
     "later4": "Notificaciones más rápidas en iOS",
     "later4Text": "iOS no permite que las apps mantengan una conexión abierta. Un relé opcional podría enviar avisos push sin contenido, del tipo «comprueba ahora», pero solo si puede funcionar sin ver nunca el correo.",
     "notTitle": "No previsto, a propósito",

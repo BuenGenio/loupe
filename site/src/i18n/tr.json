@@ -21,7 +21,6 @@
     "popular": "Popüler",
     "allLanguages": "Tüm diller",
     "englishOnly": "Bu sayfa İngilizcedir.",
-    "appEnglish": "Loupe uygulaması şimdilik İngilizce; başka diller de gelecek.",
     "docsEnglish": "Belgeler İngilizcedir."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "E-postanız görünmeden önce parmak izi ya da PIN.",
     "later2": "E-postaları kaydetme ve dışa aktarma",
     "later2Text": "Bir ileti .eml dosyası, bir klasör mbox arşivi olarak.",
-    "later3": "Daha fazla dilde uygulama",
-    "later3Text": "Uygulamanın kendisi bugün İngilizce.",
+    "later3": "Uygulama kendi dilinizde",
+    "later3Text": "Loupe bu web sitesiyle aynı dilleri konuşur, telefonunuzun dilini izler, Settings › Language ile başka bir dil seçersiniz.",
     "later4": "iOS'ta daha hızlı bildirimler",
     "later4Text": "iOS, uygulamaların bir bağlantıyı açık tutmasına izin vermez. İsteğe bağlı bir aktarma sunucusu, içerik taşımayan “şimdi kontrol et” bildirimleri gönderebilir; ancak yalnızca e-postaları hiç görmeden çalışabilecekse.",
     "notTitle": "Bilerek planlanmayanlar",

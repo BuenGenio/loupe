@@ -21,7 +21,6 @@
     "popular": "Populārās",
     "allLanguages": "Visas valodas",
     "englishOnly": "Šī lapa ir angļu valodā.",
-    "appEnglish": "Loupe lietotne pagaidām ir angļu valodā; citas valodas sekos.",
     "docsEnglish": "Dokumentācija ir angļu valodā."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Pirksta nospiedums vai PIN, pirms tiek parādīts jūsu pasts.",
     "later2": "Pasta saglabāšana un eksportēšana",
     "later2Text": "Ziņojums kā .eml fails, mape kā mbox arhīvs.",
-    "later3": "Lietotne vairākās valodās",
-    "later3Text": "Pašlaik pati lietotne ir angļu valodā.",
+    "later3": "Lietotne jūsu valodā",
+    "later3Text": "Loupe runā tajās pašās valodās, kādās šī vietne, seko jūsu tālruņa valodai, un sadaļā Settings › Language varat izvēlēties citu.",
     "later4": "Ātrāki paziņojumi iOS ierīcēs",
     "later4Text": "iOS neļauj lietotnēm uzturēt atvērtu savienojumu. Neobligāts retranslators varētu sūtīt push paziņojumus „pārbaudi tagad“ bez satura, bet tikai tad, ja tas spēj darboties, nekad neredzot pastu.",
     "notTitle": "Apzināti netiek plānots",

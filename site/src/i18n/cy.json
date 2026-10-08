@@ -21,7 +21,6 @@
     "popular": "Poblogaidd",
     "allLanguages": "Pob iaith",
     "englishOnly": "Mae'r dudalen hon yn Saesneg.",
-    "appEnglish": "Mae ap Loupe yn Saesneg am y tro; bydd rhagor o ieithoedd yn dilyn.",
     "docsEnglish": "Mae'r ddogfennaeth yn Saesneg."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Ôl bys neu PIN cyn i'ch e-bost ymddangos.",
     "later2": "Cadw ac allforio e-bost",
     "later2Text": "Neges fel ffeil .eml, ffolder fel archif mbox.",
-    "later3": "Yr ap mewn rhagor o ieithoedd",
-    "later3Text": "Heddiw mae'r ap ei hun yn Saesneg.",
+    "later3": "Yr ap yn eich iaith",
+    "later3Text": "Mae Loupe'n siarad yr un ieithoedd â'r wefan hon, yn dilyn iaith eich ffôn, ac yn Settings › Language rydych yn dewis un arall.",
     "later4": "Hysbysiadau cyflymach ar iOS",
     "later4Text": "Dydy iOS ddim yn gadael i apiau gadw cysylltiad ar agor. Gallai gwasanaeth trosglwyddo dewisol anfon hysbysiadau gwthio “gwirio nawr” heb unrhyw gynnwys, ond dim ond os gall weithio heb weld e-bost byth.",
     "notTitle": "Yn fwriadol heb ei gynllunio",

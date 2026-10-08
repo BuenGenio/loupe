@@ -21,7 +21,6 @@
     "popular": "Vinsæl",
     "allLanguages": "Öll tungumál",
     "englishOnly": "Þessi síða er á ensku.",
-    "appEnglish": "Loupe-forritið er á ensku í bili; fleiri tungumál bætast við.",
     "docsEnglish": "Leiðbeiningarnar eru á ensku."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Fingrafar eða PIN áður en pósturinn þinn birtist.",
     "later2": "Vistun og útflutningur pósts",
     "later2Text": "Skilaboð sem .eml-skrá, mappa sem mbox-safn.",
-    "later3": "Forritið á fleiri tungumálum",
-    "later3Text": "Í dag er forritið sjálft á ensku.",
+    "later3": "Forritið á þínu tungumáli",
+    "later3Text": "Loupe talar sömu tungumál og þessi vefur, fylgir máli símans þíns, og í Settings › Language velur þú annað.",
     "later4": "Hraðari tilkynningar á iOS",
     "later4Text": "iOS leyfir forritum ekki að halda tengingu opinni. Valkvæður milliliður gæti sent efnislausar „athugaðu núna“-tilkynningar, en aðeins ef hann getur virkað án þess að sjá nokkurn tíma póst.",
     "notTitle": "Viljandi ekki á dagskrá",

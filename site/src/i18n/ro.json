@@ -21,7 +21,6 @@
     "popular": "Populare",
     "allLanguages": "Toate limbile",
     "englishOnly": "Această pagină este în engleză.",
-    "appEnglish": "Deocamdată, aplicația Loupe este în engleză; vor urma și alte limbi.",
     "docsEnglish": "Documentația este în engleză."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Amprentă sau PIN înainte să-ți apară e-mailurile.",
     "later2": "Salvarea și exportul e-mailurilor",
     "later2Text": "Un mesaj ca fișier .eml, un dosar ca arhivă mbox.",
-    "later3": "Aplicația în mai multe limbi",
-    "later3Text": "Deocamdată, aplicația propriu-zisă este în engleză.",
+    "later3": "Aplicația în limba ta",
+    "later3Text": "Loupe vorbește aceleași limbi ca acest site, urmează limba telefonului tău, iar din Settings › Language alegi alta.",
     "later4": "Notificări mai rapide pe iOS",
     "later4Text": "iOS nu permite aplicațiilor să țină o conexiune deschisă. Un releu opțional ar putea trimite notificări push fără conținut, de tipul „verifică acum”, dar numai dacă poate funcționa fără să vadă vreodată e-mailurile.",
     "notTitle": "Neplanificat, în mod intenționat",

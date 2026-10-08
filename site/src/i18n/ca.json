@@ -21,7 +21,6 @@
     "popular": "Populars",
     "allLanguages": "Tots els idiomes",
     "englishOnly": "Aquesta pàgina és en anglès.",
-    "appEnglish": "De moment, l'aplicació Loupe és en anglès; aviat n'hi haurà en més idiomes.",
     "docsEnglish": "La documentació és en anglès."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Empremta digital o PIN abans que es mostri el teu correu.",
     "later2": "Desar i exportar correu",
     "later2Text": "Un missatge com a fitxer .eml, una carpeta com a arxiu mbox.",
-    "later3": "L'aplicació en més idiomes",
-    "later3Text": "De moment, l'aplicació en si és en anglès.",
+    "later3": "L'aplicació en el teu idioma",
+    "later3Text": "Loupe parla els mateixos idiomes que aquest lloc web, segueix l'idioma del teu telèfon i a Settings › Language en tries un altre.",
     "later4": "Notificacions més ràpides a iOS",
     "later4Text": "iOS no deixa que les aplicacions mantinguin una connexió oberta. Un servei de retransmissió opcional podria enviar avisos push sense contingut del tipus «comprova-ho ara», però només si pot funcionar sense veure mai cap correu.",
     "notTitle": "Deliberadament no previst",

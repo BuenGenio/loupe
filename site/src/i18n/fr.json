@@ -21,7 +21,6 @@
     "popular": "Populaires",
     "allLanguages": "Toutes les langues",
     "englishOnly": "Cette page est en anglais.",
-    "appEnglish": "L'application Loupe est en anglais pour l'instant ; d'autres langues suivront.",
     "docsEnglish": "La documentation est en anglais."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Empreinte digitale ou code PIN avant l'affichage de vos e-mails.",
     "later2": "Enregistrer et exporter des e-mails",
     "later2Text": "Un message en fichier .eml, un dossier en archive mbox.",
-    "later3": "L'application dans d'autres langues",
-    "later3Text": "Pour l'instant, l'application elle-même est en anglais.",
+    "later3": "L'application dans votre langue",
+    "later3Text": "Loupe parle les mêmes langues que ce site, suit la langue de votre téléphone, et dans Settings › Language vous en choisissez une autre.",
     "later4": "Des notifications plus rapides sur iOS",
     "later4Text": "iOS ne permet pas aux applications de garder une connexion ouverte. Un relais facultatif pourrait envoyer des notifications push sans contenu, du type « vérifier maintenant », mais seulement s'il peut fonctionner sans jamais voir vos e-mails.",
     "notTitle": "Délibérément pas prévu",

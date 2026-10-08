@@ -22,7 +22,6 @@
     "popular": "Popular",
     "allLanguages": "All languages",
     "englishOnly": "This page is in English.",
-    "appEnglish": "The Loupe app is in English for now; more languages will follow.",
     "docsEnglish": "Documentation is in English."
   },
   "nav": {
@@ -771,8 +770,8 @@
     "later1Text": "Fingerprint or PIN before your mail shows.",
     "later2": "Saving and exporting mail",
     "later2Text": "A message as an .eml file, a folder as an mbox archive.",
-    "later3": "The app in more languages",
-    "later3Text": "Today the app itself is in English.",
+    "later3": "The app in your language",
+    "later3Text": "Loupe speaks the same languages as this site, follows your phone's language, and Settings › Language picks another.",
     "later4": "Faster notifications on iOS",
     "later4Text": "iOS doesn't let apps keep a connection open. An optional relay could send content-free \"check now\" pushes, but only if it can work without ever seeing mail.",
     "notTitle": "Deliberately not planned",

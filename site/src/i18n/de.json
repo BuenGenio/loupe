@@ -21,7 +21,6 @@
     "popular": "Beliebt",
     "allLanguages": "Alle Sprachen",
     "englishOnly": "Diese Seite ist auf Englisch.",
-    "appEnglish": "Die Loupe-App ist vorerst auf Englisch; weitere Sprachen folgen.",
     "docsEnglish": "Die Dokumentation ist auf Englisch."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Fingerabdruck oder PIN, bevor deine Mails angezeigt werden.",
     "later2": "Mails speichern und exportieren",
     "later2Text": "Eine Nachricht als .eml-Datei, ein Ordner als mbox-Archiv.",
-    "later3": "Die App in mehr Sprachen",
-    "later3Text": "Die App selbst ist derzeit auf Englisch.",
+    "later3": "Die App in deiner Sprache",
+    "later3Text": "Loupe spricht die gleichen Sprachen wie diese Website, folgt der Sprache deines Smartphones, und unter Settings › Language wählst du eine andere.",
     "later4": "Schnellere Benachrichtigungen unter iOS",
     "later4Text": "iOS lässt Apps keine Verbindung offen halten. Ein optionales Relay könnte inhaltsfreie „Jetzt nachsehen“-Pushes senden, aber nur, wenn es funktioniert, ohne jemals Mails zu sehen.",
     "notTitle": "Bewusst nicht geplant",

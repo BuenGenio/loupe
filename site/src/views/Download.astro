@@ -45,7 +45,6 @@ const l = (path: string) => localize(lang, path);
             <div><strong>{t('download.why3')}</strong><span>{t('download.why3Text')}</span></div>
           </li>
         </ul>
-        {lang !== 'en' && <p class="muted app-note">{t('common.appEnglish')}</p>}
       </div>
       <div class="wall-col">
         <h2 class="visually-hidden">{t('download.choose')}</h2>
@@ -158,11 +157,6 @@ const l = (path: string) => localize(lang, path);
 
   .why span {
     color: var(--ink-2);
-    font-size: 0.9375rem;
-  }
-
-  .app-note {
-    margin-top: 24px;
     font-size: 0.9375rem;
   }
 

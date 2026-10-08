@@ -21,7 +21,6 @@
     "popular": "Populära",
     "allLanguages": "Alla språk",
     "englishOnly": "Den här sidan är på engelska.",
-    "appEnglish": "Loupe-appen finns på engelska än så länge; fler språk kommer.",
     "docsEnglish": "Dokumentationen är på engelska."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Fingeravtryck eller PIN-kod innan din e-post visas.",
     "later2": "Spara och exportera e-post",
     "later2Text": "Ett meddelande som en .eml-fil, en mapp som ett mbox-arkiv.",
-    "later3": "Appen på fler språk",
-    "later3Text": "I dag är själva appen på engelska.",
+    "later3": "Appen på ditt språk",
+    "later3Text": "Loupe talar samma språk som den här webbplatsen, följer språket i din telefon, och i Settings › Language väljer du ett annat.",
     "later4": "Snabbare aviseringar på iOS",
     "later4Text": "iOS låter inte appar hålla en anslutning öppen. Ett valfritt relä skulle kunna skicka push-meddelanden utan innehåll, av typen ”kolla nu”, men bara om det kan fungera utan att någonsin se någon e-post.",
     "notTitle": "Medvetet inte planerat",

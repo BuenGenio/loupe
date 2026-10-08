@@ -21,7 +21,6 @@
     "popular": "Più diffuse",
     "allLanguages": "Tutte le lingue",
     "englishOnly": "Questa pagina è in inglese.",
-    "appEnglish": "Per ora l'app Loupe è in inglese; altre lingue arriveranno.",
     "docsEnglish": "La documentazione è in inglese."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Impronta digitale o PIN prima che compaia la tua posta.",
     "later2": "Salvare ed esportare la posta",
     "later2Text": "Un messaggio come file .eml, una cartella come archivio mbox.",
-    "later3": "L'app in altre lingue",
-    "later3Text": "Oggi l'app vera e propria è in inglese.",
+    "later3": "L'app nella tua lingua",
+    "later3Text": "Loupe parla le stesse lingue di questo sito, segue la lingua del tuo telefono e in Settings › Language ne scegli un'altra.",
     "later4": "Notifiche più rapide su iOS",
     "later4Text": "iOS non permette alle app di tenere aperta una connessione. Un relay facoltativo potrebbe inviare notifiche push senza contenuto, del tipo «controlla ora», ma solo se riesce a funzionare senza mai vedere la posta.",
     "notTitle": "Volutamente non previsto",

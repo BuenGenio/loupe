@@ -21,7 +21,6 @@
     "popular": "Më të përdorurat",
     "allLanguages": "Të gjitha gjuhët",
     "englishOnly": "Kjo faqe është në anglisht.",
-    "appEnglish": "Aplikacioni Loupe tani për tani është në anglisht; gjuhë të tjera do të vijnë më vonë.",
     "docsEnglish": "Dokumentacioni është në anglisht."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Gjurmë gishti ose PIN para se të shfaqet posta.",
     "later2": "Ruajtja dhe eksportimi i postës",
     "later2Text": "Një mesazh si skedar .eml, një dosje si arkiv mbox.",
-    "later3": "Aplikacioni në më shumë gjuhë",
-    "later3Text": "Sot vetë aplikacioni është në anglisht.",
+    "later3": "Aplikacioni në gjuhën tuaj",
+    "later3Text": "Loupe flet të njëjtat gjuhë si ky sajt, ndjek gjuhën e telefonit tuaj dhe nga Settings › Language zgjidhni një tjetër.",
     "later4": "Njoftime më të shpejta në iOS",
     "later4Text": "iOS nuk i lejon aplikacionet të mbajnë një lidhje të hapur. Një rele opsionale mund të dërgonte njoftime push pa përmbajtje, thjesht “kontrollo tani”, por vetëm nëse mund të funksionojë pa e parë kurrë postën.",
     "notTitle": "Qëllimisht jo në plan",

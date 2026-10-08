@@ -53,7 +53,6 @@ const live = socials.filter((s) => s.href);
   <div class="wrap legal">
     <p set:html={t('footer.copyright_html', { year: new Date().getFullYear(), owner: site.owner.name, licenceUrl: site.licence.url, licence: site.licence.name })} />
     <p>{t('footer.independent')}</p>
-    {lang !== 'en' && <p>{t('common.appEnglish')}</p>}
   </div>
 </footer>
 

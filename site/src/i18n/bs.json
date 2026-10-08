@@ -21,7 +21,6 @@
     "popular": "Popularni",
     "allLanguages": "Svi jezici",
     "englishOnly": "Ova stranica je na engleskom.",
-    "appEnglish": "Aplikacija Loupe je zasad na engleskom; uskoro stižu i drugi jezici.",
     "docsEnglish": "Dokumentacija je na engleskom."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Otisak prsta ili PIN prije nego što se pošta prikaže.",
     "later2": "Spremanje i izvoz pošte",
     "later2Text": "Poruka kao .eml datoteka, folder kao mbox arhiva.",
-    "later3": "Aplikacija na više jezika",
-    "later3Text": "Danas je sama aplikacija na engleskom.",
+    "later3": "Aplikacija na vašem jeziku",
+    "later3Text": "Loupe govori iste jezike kao i ova web stranica, prati jezik vašeg telefona, a u Settings › Language birate drugi.",
     "later4": "Brža obavještenja na iOS-u",
     "later4Text": "iOS ne dozvoljava aplikacijama da drže otvorenu vezu. Opcionalni relej mogao bi slati push obavještenja bez sadržaja, tipa „provjeri sada“, ali samo ako može raditi a da nikada ne vidi poštu.",
     "notTitle": "Namjerno nije planirano",

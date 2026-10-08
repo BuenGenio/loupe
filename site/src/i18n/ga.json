@@ -21,7 +21,6 @@
     "popular": "Coitianta",
     "allLanguages": "Gach teanga",
     "englishOnly": "Tá an leathanach seo i mBéarla.",
-    "appEnglish": "Tá aip Loupe i mBéarla faoi láthair; tiocfaidh tuilleadh teangacha ina dhiaidh seo.",
     "docsEnglish": "Tá an doiciméadú i mBéarla."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Méarlorg nó PIN sula dtaispeántar do ríomhphost.",
     "later2": "Ríomhphost a shábháil agus a easpórtáil",
     "later2Text": "Teachtaireacht mar chomhad .eml, fillteán mar chartlann mbox.",
-    "later3": "An aip i níos mó teangacha",
-    "later3Text": "Faoi láthair tá an aip féin i mBéarla.",
+    "later3": "An aip i do theanga",
+    "later3Text": "Labhraíonn Loupe na teangacha céanna leis an suíomh seo, leanann sé teanga d'fhóin, agus roghnaíonn tú ceann eile i Settings › Language.",
     "later4": "Fógraí níos tapúla ar iOS",
     "later4Text": "Ní ligeann iOS d'aipeanna nasc a choinneáil oscailte. D'fhéadfadh athsheachadán roghnach fógraí brú gan ábhar ar nós “seiceáil anois” a sheoladh, ach amháin más féidir leis oibriú gan ríomhphost a fheiceáil riamh.",
     "notTitle": "D'aon ghnó as an bplean",

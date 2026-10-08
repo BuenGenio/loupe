@@ -21,7 +21,6 @@
     "popular": "Populiarios",
     "allLanguages": "Visos kalbos",
     "englishOnly": "Šis puslapis yra anglų kalba.",
-    "appEnglish": "Loupe programėlė kol kas yra anglų kalba; vėliau atsiras daugiau kalbų.",
     "docsEnglish": "Dokumentacija yra anglų kalba."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Piršto atspaudas arba PIN kodas, prieš parodant jūsų paštą.",
     "later2": "Laiškų išsaugojimas ir eksportavimas",
     "later2Text": "Laiškas kaip .eml failas, aplankas kaip mbox archyvas.",
-    "later3": "Programėlė kitomis kalbomis",
-    "later3Text": "Šiuo metu pati programėlė yra anglų kalba.",
+    "later3": "Programėlė jūsų kalba",
+    "later3Text": "Loupe kalba tomis pačiomis kalbomis kaip ši svetainė, laikosi jūsų telefono kalbos, o Settings › Language galite pasirinkti kitą.",
     "later4": "Greitesni pranešimai iOS",
     "later4Text": "iOS neleidžia programėlėms palaikyti atviro ryšio. Pasirenkama retransliavimo paslauga galėtų siųsti „patikrink dabar“ push pranešimus be jokio turinio, bet tik jei ji galėtų veikti niekada nematydama laiškų.",
     "notTitle": "Sąmoningai neplanuojama",
