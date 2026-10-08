@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/loupe_icons.dart';
 import '../compose/send_later.dart';
 import '../conversation/sheets.dart';
 
 /// The quick choices of "Snooze".
 enum SnoozePreset {
-  laterToday('Later Today', LoupeIcons.snoozeLaterToday),
-  thisEvening('This Evening', LoupeIcons.snoozeEvening),
-  tomorrow('Tomorrow', LoupeIcons.snoozeTomorrow),
-  thisWeekend('This Weekend', LoupeIcons.snoozeWeekend),
-  nextWeek('Next Week', LoupeIcons.snoozeNextWeek);
+  laterToday(LoupeIcons.snoozeLaterToday),
+  thisEvening(LoupeIcons.snoozeEvening),
+  tomorrow(LoupeIcons.snoozeTomorrow),
+  thisWeekend(LoupeIcons.snoozeWeekend),
+  nextWeek(LoupeIcons.snoozeNextWeek);
 
-  const SnoozePreset(this.label, this.icon);
+  const SnoozePreset(this.icon);
 
-  final String label;
   final IconData icon;
+
+  String label(AppLocalizations l10n) => switch (this) {
+    laterToday => l10n.snoozeLaterToday,
+    thisEvening => l10n.snoozeThisEvening,
+    tomorrow => l10n.snoozeTomorrow,
+    thisWeekend => l10n.snoozeThisWeekend,
+    nextWeek => l10n.snoozeNextWeek,
+  };
 }
 
 /// When "This Evening" is: 18:00, offered until an hour before.
@@ -56,43 +64,44 @@ List<(SnoozePreset, DateTime)> snoozePresets(DateTime now) {
 }
 
 /// The Snooze sheet: the presets and "Pick Date & Time…". [current] (a
-/// snoozed message's time) gets a check mark and starts the wheel. Resolves
-/// to the chosen time, or null when dismissed.
-Future<DateTime?> showSnoozeSheet(
-  BuildContext context, {
-  required DateTime now,
-  DateTime? current,
-  String title = 'Snooze',
-}) => showLoupeSheet<DateTime>(
-  context,
-  builder: (context) => SafeArea(
-    top: false,
-    child: SingleChildScrollView(
-      child: SheetGroup(
-        header: title,
-        children: [
-          for (final (preset, at) in snoozePresets(now))
-            SheetRow(
-              key: ValueKey('snooze-${preset.name}'),
-              label: preset.label,
-              subtitle: formatSendTimeFor(context, at, now: now),
-              icon: preset.icon,
-              trailing: current != null && at.isAtSameMomentAs(current)
-                  ? Icon(LoupeIcons.check, color: Theme.of(context).colorScheme.primary)
-                  : null,
-              onTap: () => Navigator.of(context).pop(at),
-            ),
-          SheetRow(
-            key: const ValueKey('snooze-pick'),
-            label: 'Pick Date & Time…',
-            icon: LoupeIcons.pickDateTime,
-            onTap: () async {
-              final picked = await showSendTimePicker(context, now: now, initial: current?.toLocal(), title: title);
-              if (picked != null && context.mounted) Navigator.of(context).pop(picked);
-            },
+/// snoozed message's time) gets a check mark and starts the wheel. [title] is
+/// "Snooze" unless given. Resolves to the chosen time, or null when dismissed.
+Future<DateTime?> showSnoozeSheet(BuildContext context, {required DateTime now, DateTime? current, String? title}) =>
+    showLoupeSheet<DateTime>(
+      context,
+      builder: (context) => SafeArea(
+        top: false,
+        child: SingleChildScrollView(
+          child: SheetGroup(
+            header: title ?? context.l10n.snoozeSheetTitle,
+            children: [
+              for (final (preset, at) in snoozePresets(now))
+                SheetRow(
+                  key: ValueKey('snooze-${preset.name}'),
+                  label: preset.label(context.l10n),
+                  subtitle: formatSendTimeFor(context, at, now: now),
+                  icon: preset.icon,
+                  trailing: current != null && at.isAtSameMomentAs(current)
+                      ? Icon(LoupeIcons.check, color: Theme.of(context).colorScheme.primary)
+                      : null,
+                  onTap: () => Navigator.of(context).pop(at),
+                ),
+              SheetRow(
+                key: const ValueKey('snooze-pick'),
+                label: context.l10n.snoozePickDateTime,
+                icon: LoupeIcons.pickDateTime,
+                onTap: () async {
+                  final picked = await showSendTimePicker(
+                    context,
+                    now: now,
+                    initial: current?.toLocal(),
+                    title: title ?? context.l10n.snoozeSheetTitle,
+                  );
+                  if (picked != null && context.mounted) Navigator.of(context).pop(picked);
+                },
+              ),
+            ],
           ),
-        ],
+        ),
       ),
-    ),
-  ),
-);
+    );

@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../shared/bars.dart';
 import '../../shared/format.dart';
@@ -142,27 +143,31 @@ class _RawSourceScreenState extends ConsumerState<RawSourceScreen> {
 
   Future<void> _copy(Uint8List bytes) async {
     final messenger = ScaffoldMessenger.of(context);
+    final copied = context.l10n.conversationSourceCopied;
     await Clipboard.setData(ClipboardData(text: decodeRawSource(bytes)));
-    showSnack(messenger, 'Source copied');
+    showSnack(messenger, copied);
   }
 
   Future<void> _share(Uint8List bytes) async {
     final messenger = ScaffoldMessenger.of(context);
+    final failed = context.l10n.conversationShareFailed;
     try {
       await SharePlus.instance.share(
         ShareParams(
+          // A file name, kept plain and the same in every language.
           files: [XFile.fromData(bytes, name: 'message.eml', mimeType: 'message/rfc822')],
           fileNameOverrides: const ['message.eml'],
         ),
       );
     } on Exception {
-      showSnack(messenger, "Couldn't share the message.");
+      showSnack(messenger, failed);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     return FutureBuilder<_Source>(
       future: _source,
       builder: (context, snapshot) {
@@ -172,22 +177,22 @@ class _RawSourceScreenState extends ConsumerState<RawSourceScreen> {
             // Android goes back with its own gesture or button.
             automaticallyImplyLeading: showsBackButton(context),
             centerTitle: false,
-            title: const Text('Source'),
+            title: Text(l10n.conversationSourceTitle),
             actions: [
               IconButton(
                 key: const Key('source-wrap'),
-                tooltip: _wrap ? "Don't Wrap Lines" : 'Wrap Lines',
+                tooltip: _wrap ? l10n.conversationDontWrapLines : l10n.conversationWrapLines,
                 isSelected: _wrap,
                 icon: const Icon(LoupeIcons.wrap),
                 onPressed: _toggleWrap,
               ),
               IconButton(
-                tooltip: 'Copy All',
+                tooltip: l10n.conversationCopyAll,
                 icon: const Icon(LoupeIcons.copy),
                 onPressed: bytes == null ? null : () => _copy(bytes),
               ),
               IconButton(
-                tooltip: 'Share',
+                tooltip: l10n.commonShare,
                 icon: const Icon(LoupeIcons.share),
                 onPressed: bytes == null ? null : () => _share(bytes),
               ),
@@ -201,11 +206,11 @@ class _RawSourceScreenState extends ConsumerState<RawSourceScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      error is MailException ? error.message : "The source couldn't be loaded.",
+                      error is MailException ? error.message : l10n.conversationSourceError,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: colors.secondaryText),
                     ),
-                    TextButton(onPressed: () => setState(() => _source = _load()), child: const Text('Try Again')),
+                    TextButton(onPressed: () => setState(() => _source = _load()), child: Text(l10n.commonTryAgain)),
                   ],
                 ),
               ),
@@ -275,8 +280,7 @@ class _RawSourceScreenState extends ConsumerState<RawSourceScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
               child: Text(
-                'Showing the first ${formatBytes(_displayLimit)} of ${formatBytes(source.bytes.length)}. '
-                'Copy or share to get all of it.',
+                context.l10n.conversationSourceCut(formatBytes(_displayLimit), formatBytes(source.bytes.length)),
                 style: TextStyle(color: colors.secondaryText, fontSize: 13),
               ),
             ),

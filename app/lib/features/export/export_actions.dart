@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../shared/format.dart';
 import '../../shared/mailbox_display.dart';
@@ -22,6 +23,7 @@ const _mboxType = 'application/mbox';
 /// encrypted), as a file named after its subject; null after saying why not.
 Future<AttachmentFile?> _messageFile(
   ScaffoldMessengerState messenger,
+  AppLocalizations l10n,
   MailRepository repository,
   EmailSummary message,
 ) async {
@@ -29,10 +31,7 @@ Future<AttachmentFile?> _messageFile(
     final raw = await repository.loadRawSource(message.id);
     return AttachmentFile(name: messageFileName(message.subject), mimeType: _emlType, bytes: raw);
   } on Exception catch (e) {
-    showSnack(
-      messenger,
-      e is MailException ? e.message : "Couldn't download the message. Check the connection and try again.",
-    );
+    showSnack(messenger, e is MailException ? e.message : l10n.exportDownloadFailed);
     return null;
   }
 }
@@ -41,36 +40,37 @@ Future<AttachmentFile?> _messageFile(
 /// `<subject>.eml`, which other mail apps open.
 Future<void> saveMessageAsFile(BuildContext context, WidgetRef ref, EmailSummary message) async {
   final messenger = ScaffoldMessenger.of(context);
+  final l10n = context.l10n;
   final platform = ref.read(attachmentPlatformProvider);
-  final file = await _messageFile(messenger, ref.read(repositoryProvider), message);
+  final file = await _messageFile(messenger, l10n, ref.read(repositoryProvider), message);
   if (file == null) return;
   try {
-    if (await platform.save(file)) showSnack(messenger, 'Saved “${file.name}”');
+    if (await platform.save(file)) showSnack(messenger, l10n.exportSaved(file.name));
   } on Object {
-    showSnack(messenger, "Couldn't save the message.");
+    showSnack(messenger, l10n.exportSaveFailed);
   }
 }
 
 /// Share as File…: the same file, to another app.
 Future<void> shareMessageAsFile(BuildContext context, WidgetRef ref, EmailSummary message) async {
   final messenger = ScaffoldMessenger.of(context);
+  final l10n = context.l10n;
   final platform = ref.read(attachmentPlatformProvider);
-  final file = await _messageFile(messenger, ref.read(repositoryProvider), message);
+  final file = await _messageFile(messenger, l10n, ref.read(repositoryProvider), message);
   if (file == null) return;
   try {
     await platform.share(file);
   } on Object {
-    showSnack(messenger, "Couldn't share the message.");
+    showSnack(messenger, l10n.conversationShareFailed);
   }
 }
-
-String _messages(int n) => n == 1 ? '1 message' : '${formatCount(n)} messages';
 
 /// Export Folder…: every message of [mailbox], oldest first, as an mbox file
 /// (`<account> - <folder>.mbox`). A sheet shows the progress, with Cancel;
 /// then the system's save dialog asks where the file goes.
 Future<void> exportFolder(BuildContext context, WidgetRef ref, Mailbox mailbox) async {
   final messenger = ScaffoldMessenger.of(context);
+  final l10n = context.l10n;
   final files = ref.read(exportFilesProvider);
   final accounts = ref.read(accountsProvider).value ?? const <MailAccount>[];
   final account = accounts.where((a) => a.id == mailbox.accountId).firstOrNull;
@@ -96,34 +96,31 @@ Future<void> exportFolder(BuildContext context, WidgetRef ref, Mailbox mailbox) 
     showSnack(messenger, e.message);
     return;
   } on Object {
-    showSnack(messenger, "Couldn't export “$folder”.");
+    showSnack(messenger, l10n.exportFailed(folder));
     return;
   }
   if (result == null) return; // Cancelled.
   final file = result.file;
   if (file == null) {
-    showSnack(messenger, '“$folder” has no messages to export.');
+    showSnack(messenger, l10n.exportEmpty(folder));
     return;
   }
   try {
     if (result.exported == 0) {
-      showSnack(
-        messenger,
-        "Couldn't export “$folder”: no message could be downloaded. Check the connection and try again.",
-      );
+      showSnack(messenger, l10n.exportNothingDownloaded(folder));
       return;
     }
     if (await files.save(file, name: name, mimeType: _mboxType)) {
       showSnack(
         messenger,
         result.failed == 0
-            ? 'Saved “$name”'
-            : "Saved “$name” without ${_messages(result.failed)} that couldn't be downloaded.",
+            ? l10n.exportSaved(name)
+            : l10n.exportSavedWithout(result.failed, formatCount(result.failed), name),
         duration: result.failed == 0 ? null : const Duration(seconds: 8),
       );
     }
   } on Object {
-    showSnack(messenger, "Couldn't save “$name”.");
+    showSnack(messenger, l10n.exportSaveFileFailed(name));
   } finally {
     await file.delete();
   }
@@ -169,6 +166,7 @@ class _ExportSheetState extends State<_ExportSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     return PopScope(
       onPopInvokedWithResult: (didPop, _) {
         if (didPop && !_finished) widget.onCancel();
@@ -184,7 +182,7 @@ class _ExportSheetState extends State<_ExportSheet> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Exporting “${widget.folder}”',
+                  l10n.exportTitle(widget.folder),
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -197,7 +195,7 @@ class _ExportSheetState extends State<_ExportSheet> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  p.listing ? 'Finding messages…' : 'Exporting ${formatCount(p.current)} of ${formatCount(p.total)}…',
+                  p.listing ? l10n.exportListing : l10n.exportProgress(formatCount(p.current), formatCount(p.total)),
                   key: const Key('export-status'),
                   textAlign: TextAlign.center,
                   style: TextStyle(color: colors.secondaryText),
@@ -206,13 +204,13 @@ class _ExportSheetState extends State<_ExportSheet> {
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(
-                      "${_messages(p.failed)} couldn't be downloaded",
+                      l10n.exportFailedCount(p.failed, formatCount(p.failed)),
                       textAlign: TextAlign.center,
                       style: TextStyle(color: colors.destructive, fontSize: 13),
                     ),
                   ),
                 const SizedBox(height: 8),
-                TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+                TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.commonCancel)),
               ],
             ),
           ),

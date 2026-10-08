@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/ui_state.dart';
@@ -146,6 +147,7 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> with CommandS
       ..quotedColor = colors.success
       ..errorColor = colors.destructive;
     final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];
+    final l10n = context.l10n;
     return PopScope(
       canPop: !_searching,
       onPopInvokedWithResult: (didPop, _) {
@@ -161,13 +163,13 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> with CommandS
                     ? null
                     : BarIconButton(
                         icon: LoupeIcons.settings,
-                        tooltip: 'Settings',
+                        tooltip: l10n.commonSettings,
                         onPressed: () => context.push(Routes.settings),
                       ),
                 center: const SyncStatusLine(),
                 trailing: BarIconButton(
                   icon: LoupeIcons.compose,
-                  tooltip: 'New Message',
+                  tooltip: l10n.mailNewMessage,
                   onPressed: () => openCompose(context),
                 ),
               ),
@@ -176,11 +178,11 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> with CommandS
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           slivers: [
             LoupeTitleBar(
-              title: 'Mailboxes',
+              title: l10n.mailboxesTitle,
               large: true,
               trailing: [
                 BarTextButton(
-                  label: _editing ? 'Done' : 'Edit',
+                  label: _editing ? l10n.commonDone : l10n.commonEdit,
                   bold: _editing,
                   onPressed: () {
                     unawaited(HapticFeedback.selectionClick());
@@ -314,7 +316,7 @@ class _MailboxTile extends ConsumerWidget {
                           visible ? LoupeIcons.selected : LoupeIcons.unselected,
                           color: visible ? colors.unreadDot : colors.tertiaryText,
                           size: 24,
-                          semanticLabel: visible ? 'Shown' : 'Hidden',
+                          semanticLabel: visible ? context.l10n.mailboxesShown : context.l10n.mailboxesHidden,
                         ),
                       )
                     : const SizedBox.shrink(),
@@ -329,7 +331,7 @@ class _MailboxTile extends ConsumerWidget {
                           onTap: onToggleExpanded,
                           child: Semantics(
                             button: true,
-                            label: expanded! ? 'Collapse' : 'Expand',
+                            label: expanded! ? context.l10n.mailboxesCollapse : context.l10n.mailboxesExpand,
                             child: AnimatedRotation(
                               turns: expanded! ? 0.25 : 0,
                               duration: const Duration(milliseconds: 180),
@@ -399,6 +401,7 @@ class _VirtualSection extends ConsumerWidget {
     final snoozed = ref.watch(snoozedProvider).value ?? const <EmailSummary>[];
     final discussionsUnread = ref.watch(discussionsProvider).fold(0, (n, s) => n + s.unreadCount);
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final rows = [
       for (final kind in order)
         if (editing || v.visible('v.${kind.name}'))
@@ -419,7 +422,7 @@ class _VirtualSection extends ConsumerWidget {
                     minimumSize: const Size(36, 36),
                     onPressed: () =>
                         Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const VipScreen())),
-                    child: const Icon(LoupeIcons.info, size: 22, semanticLabel: 'Manage VIPs'),
+                    child: Icon(LoupeIcons.info, size: 22, semanticLabel: l10n.mailboxesManageVips),
                   )
                 : null,
           ),
@@ -427,7 +430,7 @@ class _VirtualSection extends ConsumerWidget {
       if (editing || (snoozed.isNotEmpty && v.visible('v.snoozed')))
         _MailboxTile(
           key: const ValueKey('snoozed'),
-          title: 'Snoozed',
+          title: l10n.snoozeTitle,
           icon: LoupeIcons.snoozed,
           count: snoozed.length,
           editing: editing,
@@ -440,7 +443,7 @@ class _VirtualSection extends ConsumerWidget {
       if (outbox.isNotEmpty && !editing)
         _MailboxTile(
           key: const ValueKey('outbox'),
-          title: 'Outbox',
+          title: l10n.mailboxOutbox,
           icon: LoupeIcons.outbox,
           iconColor: outbox.any((o) => o.status == OutboxStatus.failed) ? colors.destructive : null,
           count: outbox.length,
@@ -455,7 +458,7 @@ class _VirtualSection extends ConsumerWidget {
       if (editing || v.visible('tool.subscriptions'))
         _MailboxTile(
           key: const ValueKey('subscriptions'),
-          title: 'Subscriptions',
+          title: l10n.mailboxesSubscriptions,
           icon: LoupeIcons.subscriptions,
           count: discussionsUnread,
           editing: editing,
@@ -538,7 +541,9 @@ class _AccountSection extends ConsumerWidget {
       ),
       headerTrailing: Semantics(
         button: true,
-        label: collapsed ? 'Show ${account.displayName}' : 'Hide ${account.displayName}',
+        label: collapsed
+            ? context.l10n.mailboxesShowAccount(account.displayName)
+            : context.l10n.mailboxesHideAccount(account.displayName),
         child: AnimatedRotation(
           turns: collapsed ? 0 : 0.25,
           duration: const Duration(milliseconds: 200),
@@ -565,7 +570,7 @@ Future<void> _showFolderMenu(BuildContext context, WidgetRef ref, Mailbox mailbo
   final action = await showActionSheet<_FolderAction>(
     context,
     title: mailboxDisplayName(mailbox),
-    actions: const [SheetAction('Export Folder…', _FolderAction.export, icon: LoupeIcons.exportFolder)],
+    actions: [SheetAction(context.l10n.mailboxesExportFolder, _FolderAction.export, icon: LoupeIcons.exportFolder)],
   );
   if (action == null || !context.mounted) return;
   switch (action) {
@@ -603,13 +608,17 @@ class _PinnedListsSection extends ConsumerWidget {
                     padding: EdgeInsets.zero,
                     minimumSize: const Size(36, 36),
                     onPressed: () => ref.read(pinnedListsProvider.notifier).toggle(l.listId!),
-                    child: Icon(LoupeIcons.remove, color: colors.destructive, semanticLabel: 'Unpin'),
+                    child: Icon(
+                      LoupeIcons.remove,
+                      color: colors.destructive,
+                      semanticLabel: context.l10n.mailboxesUnpin,
+                    ),
                   )
                 : null,
           ),
     ];
     if (rows.isEmpty) return const SizedBox.shrink();
-    return InsetGroup(header: 'Lists', largeHeader: true, separatorIndent: 51, children: rows);
+    return InsetGroup(header: context.l10n.mailboxesLists, largeHeader: true, separatorIndent: 51, children: rows);
   }
 }
 
@@ -624,10 +633,10 @@ class _SmartSection extends ConsumerWidget {
     final colors = LoupeColors.of(context);
     final v = _visibility(ref);
     return InsetGroup(
-      header: 'Smart Mailboxes',
+      header: context.l10n.mailboxesSmartMailboxes,
       largeHeader: true,
       separatorIndent: 51,
-      footer: smart.isEmpty ? 'Save a search to keep it here.' : null,
+      footer: smart.isEmpty ? context.l10n.mailboxesSmartMailboxesEmpty : null,
       children: [
         for (final s in smart)
           if (editing || v.visible('smart.${s.id}'))
@@ -645,7 +654,11 @@ class _SmartSection extends ConsumerWidget {
                       padding: EdgeInsets.zero,
                       minimumSize: const Size(36, 36),
                       onPressed: () => ref.read(smartMailboxesProvider.notifier).remove(s.id),
-                      child: Icon(LoupeIcons.remove, color: colors.destructive, semanticLabel: 'Delete'),
+                      child: Icon(
+                        LoupeIcons.remove,
+                        color: colors.destructive,
+                        semanticLabel: context.l10n.commonDelete,
+                      ),
                     )
                   : null,
             ),
@@ -677,6 +690,6 @@ class _TagSection extends ConsumerWidget {
           ),
     ];
     if (rows.isEmpty) return const SizedBox.shrink();
-    return InsetGroup(header: 'Tags', largeHeader: true, separatorIndent: 51, children: rows);
+    return InsetGroup(header: context.l10n.mailboxesTags, largeHeader: true, separatorIndent: 51, children: rows);
   }
 }

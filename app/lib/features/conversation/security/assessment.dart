@@ -1,7 +1,8 @@
 // The explainable phishing check: findings from local signals only (the
 // receiving server's authentication results, the sender's history in the
 // address book, the reader's link and privacy analysis), each with a
-// severity and a plain-language explanation, and an overall verdict.
+// severity and what it is about, and an overall verdict. The plain-language
+// explanations are made from them where they show (finding_text.dart).
 // Pure Dart: no Flutter, no network.
 
 import 'package:mail_model/mail_model.dart';
@@ -46,43 +47,136 @@ enum FindingKind {
   scriptLink,
 }
 
-/// One reason, in plain language.
-final class Finding {
-  const Finding(
-    this.kind,
-    this.severity, {
-    required this.title,
-    required this.explanation,
-    this.advice,
-    this.details = const [],
-  });
+/// One reason. It holds what the reason is about; its words are made where
+/// it shows (`findingText`), in the app's language.
+sealed class Finding {
+  const Finding(this.kind, this.severity);
 
   final FindingKind kind;
   final Severity severity;
 
-  /// A few words: "Sender not verified".
-  final String title;
-
-  /// What it means, in a sentence.
-  final String explanation;
-
-  /// What to do, in a sentence.
-  final String? advice;
-
-  /// Technical specifics (hosts, addresses) for the collapsed details.
-  final List<String> details;
-
-  Finding escalate(Severity to, {String? because}) => Finding(
-    kind,
-    to,
-    title: title,
-    explanation: because == null ? explanation : '$explanation $because',
-    advice: advice,
-    details: details,
-  );
-
   @override
   String toString() => 'Finding(${kind.name}, ${severity.name})';
+}
+
+/// The receiving server couldn't confirm the sender ([FindingKind.authFailed]).
+final class AuthFailedFinding extends Finding {
+  const AuthFailedFinding(Severity severity, {required this.domain, required this.mailingList, required this.checks})
+    : super(FindingKind.authFailed, severity);
+
+  /// The sender's domain; empty when there is none.
+  final String domain;
+
+  /// It came through a mailing list, which often breaks the checks.
+  final bool mailingList;
+
+  /// The checks that failed, as the server reported them: "DMARC fail".
+  final List<String> checks;
+}
+
+/// Signed by a domain other than the sender's ([FindingKind.authUnaligned]).
+final class AuthUnalignedFinding extends Finding {
+  const AuthUnalignedFinding({required this.signer, required this.domain})
+    : super(FindingKind.authUnaligned, Severity.info);
+
+  /// The signing domain, if the server named it.
+  final String? signer;
+
+  /// The sender's domain.
+  final String domain;
+}
+
+/// The sender's name reads like another address
+/// ([FindingKind.nameShowsOtherAddress]).
+final class NameShowsOtherAddressFinding extends Finding {
+  const NameShowsOtherAddressFinding({required this.shown, required this.email, required this.from})
+    : super(FindingKind.nameShowsOtherAddress, Severity.warning);
+
+  /// The address in the name.
+  final String shown;
+
+  /// The address it comes from.
+  final String email;
+
+  /// The From address, as written.
+  final EmailAddress from;
+}
+
+/// Replies would go to another domain ([FindingKind.replyToDiffers]).
+final class ReplyToDiffersFinding extends Finding {
+  const ReplyToDiffersFinding(Severity severity, {required this.replyTo, required this.domain})
+    : super(FindingKind.replyToDiffers, severity);
+
+  final EmailAddress replyTo;
+
+  /// The sender's domain.
+  final String domain;
+}
+
+/// A new address uses the name of someone the user knows, or the user's own
+/// ([FindingKind.impersonation]).
+final class ImpersonationFinding extends Finding {
+  const ImpersonationFinding(
+    Severity severity, {
+    required this.name,
+    required this.email,
+    required this.namesake,
+    this.repliesElsewhere = false,
+  }) : super(FindingKind.impersonation, severity);
+
+  /// The name it is signed with.
+  final String name;
+
+  /// The address it comes from.
+  final String email;
+
+  /// Whose name it is.
+  final Namesake namesake;
+
+  /// And replies would go to yet another address.
+  final bool repliesElsewhere;
+}
+
+/// No mail from this address before ([FindingKind.firstTimeSender]).
+final class FirstTimeSenderFinding extends Finding {
+  const FirstTimeSenderFinding({required this.email}) : super(FindingKind.firstTimeSender, Severity.info);
+
+  final String email;
+}
+
+/// Look-alike letters in the sender's domain ([FindingKind.homographSender]).
+final class SenderHomographFinding extends Finding {
+  const SenderHomographFinding({required this.host}) : super(FindingKind.homographSender, Severity.danger);
+
+  final HostInfo host;
+}
+
+/// A sender domain imitating a brand's or the user's own
+/// ([FindingKind.lookalikeSender]).
+final class LookalikeFinding extends Finding {
+  LookalikeFinding({required this.domain, required this.lookalike})
+    : super(FindingKind.lookalikeSender, lookalike.strong ? Severity.danger : Severity.warning);
+
+  /// The sender's domain.
+  final String domain;
+  final Lookalike lookalike;
+}
+
+/// Links with an issue, the first one shown in the explanation: the link
+/// kinds of [FindingKind] ([FindingKind.linkMismatch] …,
+/// [FindingKind.dataLink], [FindingKind.scriptLink]).
+final class LinksFinding extends Finding {
+  const LinksFinding(super.kind, super.severity, {required this.links});
+
+  final List<LinkFinding> links;
+}
+
+/// Something in the content: password fields ([FindingKind.passwordField])
+/// or characters of hidden text ([FindingKind.hiddenText]), [count] of them.
+final class ContentFinding extends Finding {
+  const ContentFinding(super.kind, super.severity, {required this.count});
+
+  final int count;
 }
 
 /// A known person whose name the sender uses with another address.
@@ -126,6 +220,10 @@ final class SecurityReport {
     this.auth = AuthResults.none,
     this.senderVerified = false,
     this.technical = const [],
+    this.senderHistory,
+    this.linkHosts = const [],
+    this.hiddenElements = 0,
+    this.hiddenCharacters = 0,
   });
 
   final Verdict verdict;
@@ -139,8 +237,20 @@ final class SecurityReport {
   /// passed for that domain).
   final bool senderVerified;
 
-  /// Raw facts for the collapsed "Technical details": (label, value).
+  /// Header fields for the collapsed "Technical details", by their raw
+  /// names: From, Reply-To and the receiving server's results.
   final List<(String, String)> technical;
+
+  /// What the address book knows of the sender; null when it couldn't be
+  /// looked up. Also for the technical details, like the rest below.
+  final SenderHistory? senderHistory;
+
+  /// Where the links lead.
+  final List<String> linkHosts;
+
+  /// Hidden elements removed, and the characters of text in them.
+  final int hiddenElements;
+  final int hiddenCharacters;
 
   /// Findings worth a warning or worse.
   Iterable<Finding> get concerns => findings.where((f) => f.severity != Severity.info);
@@ -189,70 +299,39 @@ SecurityReport assessMessage({
   // Who sent it ---------------------------------------------------------------
 
   if (auth.verdict == AuthVerdict.failed) {
-    final failed = [
-      for (final m in auth.methods)
-        if (const {'fail', 'softfail', 'permerror', 'none'}.contains(m.result) &&
-            const {'dkim', 'spf', 'dmarc'}.contains(m.method))
-          '${m.method.toUpperCase()} ${m.result}',
-    ];
-    final from = domain.isEmpty ? 'its sender' : domain;
     findings.add(
-      Finding(
-        FindingKind.authFailed,
+      AuthFailedFinding(
         // Mailing lists change messages on the way and often break the checks.
         mailingList ? Severity.info : Severity.warning,
-        title: 'Sender not verified',
-        explanation: mailingList
-            ? "Your mail server couldn't confirm that this message comes from $from. Common for mailing lists."
-            : "Your mail server couldn't confirm that this message really comes from $from.",
-        advice: "Don't act on it unless you expected it. If in doubt, contact the sender another way.",
-        details: failed,
+        domain: domain,
+        mailingList: mailingList,
+        checks: [
+          for (final m in auth.methods)
+            if (const {'fail', 'softfail', 'permerror', 'none'}.contains(m.result) &&
+                const {'dkim', 'spf', 'dmarc'}.contains(m.method))
+              '${m.method.toUpperCase()} ${m.result}',
+        ],
       ),
     );
   } else if (auth.verdict == AuthVerdict.verified && !verified && domain.isNotEmpty) {
     final signer = auth.methods.where((m) => m.method == 'dkim' && m.result == 'pass').firstOrNull?.domain;
-    findings.add(
-      Finding(
-        FindingKind.authUnaligned,
-        Severity.info,
-        title: 'Signed by another domain',
-        explanation:
-            'The message is signed by ${signer ?? 'another domain'}, not $domain. Mailing services do this, '
-            "but it doesn't prove who wrote it.",
-      ),
-    );
+    findings.add(AuthUnalignedFinding(signer: signer, domain: domain));
   }
 
   if (sender != null) {
     final shown = RegExp(r'[\w.+-]+@[\w-]+(\.[\w-]+)+').firstMatch(sender.name ?? '')?[0]?.toLowerCase();
     if (shown != null && shown != email && !(sender.name ?? '').toLowerCase().contains(' via ')) {
-      findings.add(
-        Finding(
-          FindingKind.nameShowsOtherAddress,
-          Severity.warning,
-          title: 'Name shows a different address',
-          explanation: 'The sender\'s name reads “$shown”, but the message comes from $email.',
-          advice: 'Trust the address, not the name.',
-          details: ['From: $sender'],
-        ),
-      );
+      findings.add(NameShowsOtherAddressFinding(shown: shown, email: email, from: sender));
     }
   }
 
-  Finding? replyTo;
+  ReplyToDiffersFinding? replyTo;
   for (final r in message.replyTo) {
     final rEmail = r.email.toLowerCase();
     if (domain.isEmpty || mailingList || facts.ownAddresses.contains(rEmail)) break;
     if (registrableDomain(r.domain) == registrableDomain(domain)) continue;
     final severity = auth.verdict == AuthVerdict.failed || (firstTime && !bulk) ? Severity.warning : Severity.info;
-    replyTo = Finding(
-      FindingKind.replyToDiffers,
-      severity,
-      title: 'Replies go elsewhere',
-      explanation: 'Replying would send your answer to $rEmail, not to $domain.',
-      advice: 'Check the address before you reply with anything personal.',
-      details: ['Reply-To: $r'],
-    );
+    replyTo = ReplyToDiffersFinding(severity, replyTo: r, domain: domain);
     findings.add(replyTo);
     break;
   }
@@ -267,65 +346,27 @@ SecurityReport assessMessage({
     final namesake =
         others.where((n) => n.you).firstOrNull ?? others.where((n) => n.vip).firstOrNull ?? others.firstOrNull;
     if (namesake != null) {
-      final who = namesake.you
-          ? 'your own name'
-          : '${namesake.vip ? 'your VIP ' : ''}${namesake.address.displayName} (${namesake.address.email})';
-      var finding = Finding(
-        FindingKind.impersonation,
-        Severity.warning,
-        title: namesake.you ? 'Uses your name' : 'Uses the name of someone you know',
-        explanation: 'It is signed “${sender.displayName}”, like $who, but comes from a new address: $email.',
-        advice: 'If it asks for money, codes or files, check with them another way first.',
-        details: ['Known address: ${namesake.address.email}', 'This address: $email'],
+      findings.add(
+        ImpersonationFinding(
+          // Worse when replies would go to yet another address.
+          replyTo != null ? Severity.danger : Severity.warning,
+          name: sender.displayName,
+          email: email,
+          namesake: namesake,
+          repliesElsewhere: replyTo != null,
+        ),
       );
-      if (replyTo != null) {
-        finding = finding.escalate(Severity.danger, because: 'And replies would go to yet another address.');
-      }
-      findings.add(finding);
     }
   }
 
-  if (firstTime) {
-    findings.add(
-      Finding(
-        FindingKind.firstTimeSender,
-        Severity.info,
-        title: 'First message from this sender',
-        explanation: "You haven't had mail from $email before.",
-        advice: "Be careful with requests from people you don't know yet.",
-      ),
-    );
-  }
+  if (firstTime) findings.add(FirstTimeSenderFinding(email: email));
 
   if (domain.isNotEmpty && !own) {
     final host = inspectHost(domain);
     if (host.homograph) {
-      findings.add(
-        Finding(
-          FindingKind.homographSender,
-          Severity.danger,
-          title: "Look-alike letters in the sender's address",
-          explanation: host.looksLike == null
-              ? '${host.display} mixes letters from different alphabets to imitate another address.'
-              : '${host.display} uses look-alike letters: it is not ${host.looksLike}.',
-          advice: 'Delete it or report it as junk.',
-          details: ['Domain: ${host.host}'],
-        ),
-      );
+      findings.add(SenderHomographFinding(host: host));
     } else if (findLookalike(domain, ownDomains: facts.ownDomains) case final l?) {
-      final whose = l.own ? 'your own domain, ${l.imitates}' : '${l.name} (${l.imitates})';
-      findings.add(
-        Finding(
-          FindingKind.lookalikeSender,
-          l.strong ? Severity.danger : Severity.warning,
-          title: l.strong ? 'Look-alike domain' : 'Uses a familiar name in its domain',
-          explanation: l.strong
-              ? '$domain looks like $whose, but it is a different domain.'
-              : '$domain uses the name of $whose, but doesn\'t belong to it.',
-          advice: 'Real messages from ${l.own ? 'your organisation' : l.name} come from ${l.imitates}.',
-          details: ['Sender domain: $domain', 'Imitates: ${l.imitates}'],
-        ),
-      );
+      findings.add(LookalikeFinding(domain: domain, lookalike: l));
     }
   }
 
@@ -335,7 +376,6 @@ SecurityReport assessMessage({
     for (final l in analysis.links)
       if (l.issue == issue) l,
   ];
-  String hosts(List<LinkFinding> ls) => {for (final l in ls) l.host ?? l.url}.join(', ');
 
   final mismatches = links(LinkIssue.textMismatch);
   // Verified bulk mail goes through its mailing service's click tracking,
@@ -343,153 +383,29 @@ SecurityReport assessMessage({
   final uncheckable = verified && bulk;
   final hidden = mismatches.where((l) => !l.viaTracker && !uncheckable).toList();
   final tracked = mismatches.where((l) => l.viaTracker || uncheckable).toList();
-  if (hidden.isNotEmpty) {
-    final first = hidden.first;
-    findings.add(
-      Finding(
-        FindingKind.linkMismatch,
-        Severity.warning,
-        title: hidden.length == 1 ? 'A link hides where it goes' : '${hidden.length} links hide where they go',
-        explanation: 'A link shows ${first.detail}, but it opens ${first.host}.',
-        advice: "Don't sign in or pay through these links. Type the address yourself instead.",
-        details: [for (final l in hidden) '“${l.text}” → ${l.url}'],
-      ),
-    );
+  void addLinks(FindingKind kind, Severity severity, List<LinkFinding> ls) {
+    if (ls.isNotEmpty) findings.add(LinksFinding(kind, severity, links: ls));
   }
-  if (tracked.isNotEmpty) {
-    findings.add(
-      Finding(
-        FindingKind.linkUncheckable,
-        Severity.info,
-        title: "A link's destination can't be checked",
-        explanation:
-            'A link shows ${tracked.first.detail}, but goes through ${tracked.first.host}, which records the click '
-            'before passing it on.',
-        details: [for (final l in tracked) '“${l.text}” → ${l.url}'],
-      ),
-    );
-  }
-  final homographs = links(LinkIssue.homograph);
-  if (homographs.isNotEmpty) {
-    final h = homographs.first;
-    findings.add(
-      Finding(
-        FindingKind.linkHomograph,
-        Severity.danger,
-        title: 'Look-alike letters in a link',
-        explanation: h.detail == null
-            ? '${h.host} mixes letters from different alphabets to imitate another address.'
-            : '${h.host} uses look-alike letters: it is not ${h.detail}.',
-        advice: "Don't open it.",
-        details: [for (final l in homographs) l.url],
-      ),
-    );
-  }
-  final ips = links(LinkIssue.ipAddress);
-  if (ips.isNotEmpty) {
-    findings.add(
-      Finding(
-        FindingKind.linkIpAddress,
-        Severity.warning,
-        title: 'A link points to a bare IP address',
-        explanation: "${hosts(ips)} isn't a named website. Real companies rarely link like this.",
-        details: [for (final l in ips) l.url],
-      ),
-    );
-  }
-  final userInfo = links(LinkIssue.userInfo);
-  if (userInfo.isNotEmpty) {
-    final u = userInfo.first;
-    findings.add(
-      Finding(
-        FindingKind.linkUserInfo,
-        Severity.warning,
-        title: 'A disguised link',
-        explanation: 'A link starts with “${u.detail}@” to look like ${u.detail}, but it opens ${u.host}.',
-        details: [for (final l in userInfo) l.url],
-      ),
-    );
-  }
-  if (links(LinkIssue.dataUrl).isNotEmpty) {
-    findings.add(
-      const Finding(
-        FindingKind.dataLink,
-        Severity.warning,
-        title: 'A hidden page was disabled',
-        explanation: 'A link would have opened a page packed inside the message, a way around link checks.',
-      ),
-    );
-  }
+
+  addLinks(FindingKind.linkMismatch, Severity.warning, hidden);
+  addLinks(FindingKind.linkUncheckable, Severity.info, tracked);
+  addLinks(FindingKind.linkHomograph, Severity.danger, links(LinkIssue.homograph));
+  addLinks(FindingKind.linkIpAddress, Severity.warning, links(LinkIssue.ipAddress));
+  addLinks(FindingKind.linkUserInfo, Severity.warning, links(LinkIssue.userInfo));
+  addLinks(FindingKind.dataLink, Severity.warning, links(LinkIssue.dataUrl));
   if (analysis.passwordFields > 0) {
-    findings.add(
-      const Finding(
-        FindingKind.passwordField,
-        Severity.warning,
-        title: 'Asks for a password',
-        explanation: 'The message contained a password field. Loupe removed it.',
-        advice: 'Never type a password into an email.',
-      ),
-    );
+    findings.add(ContentFinding(FindingKind.passwordField, Severity.warning, count: analysis.passwordFields));
   }
-  if (links(LinkIssue.script).isNotEmpty) {
-    findings.add(
-      const Finding(
-        FindingKind.scriptLink,
-        Severity.info,
-        title: 'A link that runs code was disabled',
-        explanation: 'Loupe never runs code from messages.',
-      ),
-    );
-  }
-  final shorteners = links(LinkIssue.shortener);
-  if (shorteners.isNotEmpty) {
-    findings.add(
-      Finding(
-        FindingKind.linkShortener,
-        Severity.info,
-        title: shorteners.length == 1 ? 'A shortened link' : 'Shortened links',
-        explanation: '${hosts(shorteners)} hides the real destination until you open it.',
-        details: [for (final l in shorteners) l.url],
-      ),
-    );
-  }
-  final international = links(LinkIssue.international);
-  if (international.isNotEmpty) {
-    findings.add(
-      Finding(
-        FindingKind.linkInternational,
-        Severity.info,
-        title: 'International web address',
-        explanation:
-            '${hosts(international)} uses non-Latin letters. Normal for many languages; check it is the site '
-            'you expect.',
-        details: [for (final l in international) l.url],
-      ),
-    );
-  }
+  addLinks(FindingKind.scriptLink, Severity.info, links(LinkIssue.script));
+  addLinks(FindingKind.linkShortener, Severity.info, links(LinkIssue.shortener));
+  addLinks(FindingKind.linkInternational, Severity.info, links(LinkIssue.international));
   final hiddenText = analysis.hiddenTextLength;
   // Responsive newsletters hide a whole second layout; only an unverified
   // sender hiding far more than it shows is suspicious.
   if (!verified && hiddenText >= 500 && hiddenText > 2 * analysis.keptTextLength) {
-    findings.add(
-      Finding(
-        FindingKind.hiddenText,
-        Severity.warning,
-        title: 'Lots of hidden text',
-        explanation:
-            '$hiddenText characters of invisible text were removed. Hidden text like this is meant to fool '
-            'spam filters.',
-      ),
-    );
+    findings.add(ContentFinding(FindingKind.hiddenText, Severity.warning, count: hiddenText));
   } else if (hiddenText >= 200) {
-    findings.add(
-      Finding(
-        FindingKind.hiddenText,
-        Severity.info,
-        title: 'Hidden text removed',
-        explanation: '$hiddenText characters of invisible text were removed.',
-      ),
-    );
+    findings.add(ContentFinding(FindingKind.hiddenText, Severity.info, count: hiddenText));
   }
 
   findings.sort((a, b) {
@@ -503,17 +419,18 @@ SecurityReport assessMessage({
     privacy: analysis.privacy,
     auth: auth,
     senderVerified: verified,
+    // Raw header names, like the server's ones below and in View Source.
     technical: [
       if (sender != null) ('From', sender.toString()),
       for (final r in message.replyTo) ('Reply-To', r.toString()),
       for (final (name, value) in headers)
         if (const {'authentication-results', 'return-path', 'received-spf'}.contains(name.toLowerCase()))
           (name, value.replaceAll(RegExp(r'\s+'), ' ')),
-      if (history != null) ('Sender history', '${history.received} received, ${history.sent} sent'),
-      if (analysis.linkHosts.isNotEmpty) ('Links lead to', analysis.linkHosts.join(', ')),
-      if (analysis.hiddenElements > 0)
-        ('Hidden', '${analysis.hiddenElements} elements, ${analysis.hiddenTextLength} characters'),
     ],
+    senderHistory: history,
+    linkHosts: analysis.linkHosts,
+    hiddenElements: analysis.hiddenElements,
+    hiddenCharacters: analysis.hiddenTextLength,
   );
 }
 
