@@ -19,6 +19,7 @@ import '../features/notifications/notification_actions.dart';
 import '../features/notifications/notification_content.dart';
 import '../features/notifications/notification_settings.dart';
 import '../settings/app_mode.dart';
+import '../settings/app_settings.dart';
 import 'background.dart';
 import 'background_sync.dart';
 import 'foreground_bridge.dart';
@@ -57,6 +58,7 @@ Future<BackgroundSyncResult> runBackgroundSync({Duration? budget}) async {
   DartPluginRegistrant.ensureInitialized();
   final directory = await getApplicationSupportDirectory();
   final prefs = await SharedPreferences.getInstance();
+  AppSettingsController.loadLanguage(prefs);
   final notifier = await LocalMailNotifier.initializeInBackground(onBackgroundAction: onNotificationAction);
   final sync = _running = BackgroundSync(
     prefs: prefs,
@@ -106,6 +108,7 @@ Future<void> handleNotificationAction(NotificationResponse response) async {
   DartPluginRegistrant.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   await prefs.reload();
+  AppSettingsController.loadLanguage(prefs);
   if (prefs.getString(AppModeController.key) != AppMode.live.name) return;
   final directory = await getApplicationSupportDirectory();
   final leases = SyncLeases(directory);

@@ -4,6 +4,9 @@ plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+    // Push (docs/push.md): turns google-services.json (the Firebase project's public client settings) into
+    // resources Firebase starts from.
+    id("com.google.gms.google-services")
 }
 
 // Release signing: android/key.properties locally, or LOUPE_KEYSTORE_* environment

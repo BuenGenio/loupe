@@ -16,6 +16,7 @@ import 'platform/background_entry.dart';
 import 'platform/error_log.dart';
 import 'platform/instant_delivery.dart';
 import 'platform/local_notifications.dart';
+import 'platform/push.dart';
 import 'platform/work_scheduler.dart';
 import 'providers.dart';
 import 'settings/app_settings.dart';
@@ -58,6 +59,15 @@ Future<void> main() async {
         ]);
       } on Object catch (e) {
         debugPrint('Instant Delivery unavailable: $e');
+      }
+      // Push: Firebase Cloud Messaging. iOS follows once it has an APNs key.
+      try {
+        overrides.addAll([
+          pushServiceProvider.overrideWithValue(await FirebasePushService.initialize()),
+          pushAvailableProvider.overrideWithValue(true),
+        ]);
+      } on Object catch (e) {
+        debugPrint('Push unavailable: $e');
       }
     }
     try {

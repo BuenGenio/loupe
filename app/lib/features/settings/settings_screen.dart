@@ -22,6 +22,7 @@ import '../conversation/reader_prefs.dart';
 import '../conversation/security/security_provider.dart';
 import '../mailing_lists/technical_lists_screen.dart';
 import '../search/smart_mailbox_settings_screen.dart';
+import 'language_settings_screen.dart';
 import 'settings_widgets.dart';
 import '../../theme/loupe_icons.dart';
 
@@ -169,6 +170,12 @@ class SettingsScreen extends ConsumerWidget {
           header: l10n.settingsAppearanceHeader,
           separatorIndent: 16,
           children: [
+            GroupedRow(
+              key: const Key('settings-language'),
+              title: l10n.settingsLanguage,
+              detail: settings.language == null ? l10n.settingsLanguageSystem : languageNames[settings.language],
+              onTap: () => LanguageSettingsScreen.push(context),
+            ),
             SegmentedRow<ThemeMode>(
               title: l10n.settingsTheme,
               value: settings.themeMode,

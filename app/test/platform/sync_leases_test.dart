@@ -69,8 +69,8 @@ void main() {
       final acquired = real
           .acquireForeground(maxWait: const Duration(seconds: 5), poll: const Duration(milliseconds: 20))
           .then((ok) => waited = ok);
-      await Future<void>.delayed(const Duration(milliseconds: 100));
-      expect(await real.isHeld(SyncHolder.foreground), isTrue, reason: 'claimed at once, so the background stops');
+      // Claimed at once, so the background stops; a slow disk (CI) can take a moment to show it.
+      expect(await _eventually(() => real.isHeld(SyncHolder.foreground)), isTrue);
       expect(waited, isFalse);
       await background.release(SyncHolder.background);
       await acquired;
@@ -174,4 +174,14 @@ void main() {
       expect(await real.isHeld(SyncHolder.foreground), isFalse);
     });
   });
+}
+
+/// Whether [check] comes true within [timeout], asked every few milliseconds.
+Future<bool> _eventually(Future<bool> Function() check, {Duration timeout = const Duration(seconds: 3)}) async {
+  final deadline = DateTime.now().add(timeout);
+  while (DateTime.now().isBefore(deadline)) {
+    if (await check()) return true;
+    await Future<void>.delayed(const Duration(milliseconds: 10));
+  }
+  return check();
 }

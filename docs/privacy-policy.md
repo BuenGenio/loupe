@@ -10,6 +10,7 @@ Loupe is an open-source mail app for Android and iOS, developed by [owner name] 
 
 - Loupe has no servers. Your mail goes directly between your phone and your mail provider.
 - Loupe collects nothing: no analytics, no telemetry, no advertising, no tracking, no crash reports.
+- On Android, Push lets new mail wake Loupe through Google's push service. A push carries no mail, only "check now".
 - Your mail, your settings and your sign-in stay on your phone and with your mail provider. We never receive them, and so we can't read, sell or share them.
 
 ## What Loupe stores, and where
@@ -38,6 +39,10 @@ Loupe connects only to:
 - **Account discovery, when you add an account:**
   - To find server settings, Loupe asks Thunderbird's public settings database (autoconfig.thunderbird.net), and your mail domain's own configuration address.
   - It sends the domain of your address, and to your domain's own server the address itself.
+- **Google's push service (Firebase Cloud Messaging), on Android while Push is on** (Settings › Notifications; on by default once you add an account):
+  - Your phone gets a push address (a token) and an installation identifier from Google, and keeps them current. They identify this installation of Loupe, not you, your accounts or your mail.
+  - A push carries no mail, only "check now". Loupe then fetches new mail directly from your mail provider.
+  - Turning Push off deletes the token. Phones without Google Play services don't use Push.
 - **Websites you choose to open,** like links in a message, or a mailing list's unsubscribe address when you tap Unsubscribe.
 - **Senders' servers, for images in a message,** only when you choose to load remote content. Loupe blocks it by default.
 - **Certificate authorities, only if you turn on "Check Certificate Revocation Online"** (off by default). When you read S/MIME-signed mail, Loupe then asks the authority that issued the sender's certificate whether it was revoked, which tells that authority whose certificate is being checked and when.

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
@@ -8,6 +10,7 @@ import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/features/notifications/mail_notifier.dart';
 import 'package:loupe/features/notifications/notifications_coordinator.dart';
 import 'package:loupe/platform/instant_delivery.dart';
+import 'package:loupe/platform/push.dart';
 import 'package:loupe/platform/work_scheduler.dart';
 import 'package:loupe/providers.dart';
 import 'package:loupe/settings/app_mode.dart';
@@ -52,6 +55,29 @@ class FakeInstantService implements InstantService {
   Future<void> openBatterySettings() async => batterySettingsOpened++;
 }
 
+class FakePushService implements PushService {
+  FakePushService({this.unavailable = false});
+
+  /// Like a phone without Google Play services: no token.
+  final bool unavailable;
+  final calls = <bool>[];
+  final _pushes = StreamController<void>.broadcast();
+
+  bool? get enabled => calls.lastOrNull;
+
+  /// A push arriving with the app in the foreground.
+  void push() => _pushes.add(null);
+
+  @override
+  Future<void> setEnabled(bool enabled) async => calls.add(enabled);
+
+  @override
+  Future<String?> token() async => unavailable ? throw Exception('SERVICE_NOT_AVAILABLE') : 'fcm-token';
+
+  @override
+  Stream<void> get foregroundPushes => _pushes.stream;
+}
+
 class RecordingPeriodicSync implements PeriodicSync {
   final calls = <bool>[];
 
@@ -62,8 +88,8 @@ class RecordingPeriodicSync implements PeriodicSync {
 }
 
 /// Like `pumpLoupe`, with the notification seams replaced: [notifier],
-/// [periodic], [taps] and [instant] (which also makes Instant Delivery
-/// available), plus any other [overrides]. Live mode runs on the demo
+/// [periodic], [taps], [instant] (which also makes Instant Delivery
+/// available) and [push] (likewise Push), plus any other [overrides]. Live mode runs on the demo
 /// repository too.
 Future<DemoMailRepository> pumpWithNotifications(
   WidgetTester tester, {
@@ -75,6 +101,7 @@ Future<DemoMailRepository> pumpWithNotifications(
   DemoMailRepository? repository,
   bool servesActions = false,
   InstantService? instant,
+  PushService? push,
   List<Override> overrides = const [],
 }) async {
   tester.view
@@ -100,6 +127,8 @@ Future<DemoMailRepository> pumpWithNotifications(
         servesNotificationActionsProvider.overrideWithValue(servesActions),
         instantServiceProvider.overrideWithValue(instant ?? const NoopInstantService()),
         instantDeliveryAvailableProvider.overrideWithValue(instant != null),
+        pushServiceProvider.overrideWithValue(push ?? const NoopPushService()),
+        pushAvailableProvider.overrideWithValue(push != null),
         ...overrides,
       ],
       child: const LoupeApp(),

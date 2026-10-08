@@ -47,6 +47,7 @@ Go to Settings › **Notifications**.
 | **VIP Only** | Only messages from your VIPs notify. Off by default. |
 | **Hide Content** | Notifications only say "New message from" and the account, not who wrote or what about. Off by default. |
 | **Instant Delivery** | Experimental. See below. Off by default. |
+| **Push** | Lets new mail wake Loupe at once, where your mail service supports it. See below. On by default. |
 | **Send Test Notification** | Shows a notification for the newest message in your inboxes, so you can see how they look. |
 | **App Icon Badge** | The number on Loupe's icon: **Off**, **Unread in Inboxes** (the default) or **Unread in VIP** |
 
@@ -65,6 +66,14 @@ Instant Delivery keeps a connection to your inboxes open, so new mail notifies y
 3. If Loupe shows **Allow Unrestricted Battery Use**, tap it and allow it. Otherwise Android may stop Instant Delivery to save battery.
 
 Instant Delivery watches the inboxes of the accounts whose **New Mail** switch is on. Other folders, such as VIP mail elsewhere, still follow the 15-minute schedule.
+
+## Push
+
+Push lets new mail wake Loupe the moment it arrives, without keeping a connection open. It goes through Google's push service (Firebase Cloud Messaging). A push carries no mail, only "check now": Loupe then fetches your new mail directly from your mail server.
+
+- Push is on by default once you add an account. Turn it off in Settings › **Notifications** › **Push**; that deletes this phone's push address at Google.
+- Push needs Google Play services. On phones without them, Loupe says so and checks every 15 minutes as usual.
+- Pushes only come where something sends them for your mail service. Until then, Push changes nothing, and the 15-minute schedule and Instant Delivery work as before.
 
 ## If notifications don't arrive
 
