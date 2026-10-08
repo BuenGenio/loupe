@@ -21,7 +21,6 @@
     "popular": "Popolari",
     "allLanguages": "Il-lingwi kollha",
     "englishOnly": "Din il-paġna hija bl-Ingliż.",
-    "appEnglish": "Għalissa l-app Loupe hija bl-Ingliż; aktar lingwi ġejjin.",
     "docsEnglish": "Id-dokumentazzjoni hija bl-Ingliż."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Marka tas-saba' jew PIN qabel ma tidher il-posta tiegħek.",
     "later2": "Ħażna u esportazzjoni tal-posta",
     "later2Text": "Messaġġ bħala fajl .eml, folder bħala arkivju mbox.",
-    "later3": "L-app f'aktar lingwi",
-    "later3Text": "Illum l-app innifisha hija bl-Ingliż.",
+    "later3": "L-app bil-lingwa tiegħek",
+    "later3Text": "Loupe titkellem l-istess lingwi bħal dan is-sit, issegwi l-lingwa tal-mowbajl tiegħek, u minn Settings › Lingwa tagħżel oħra.",
     "later4": "Notifiki aktar mgħaġġla fuq iOS",
     "later4Text": "iOS ma jħallix lill-apps iżommu konnessjoni miftuħa. Relay fakultattiv jista' jibgħat pushes mingħajr kontenut li jgħidu biss “iċċekkja issa”, iżda biss jekk ikun jista' jaħdem mingħajr qatt ma jara l-posta.",
     "notTitle": "Deliberatament mhux ippjanat",

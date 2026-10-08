@@ -21,7 +21,6 @@
     "popular": "Népszerű",
     "allLanguages": "Minden nyelv",
     "englishOnly": "Ez az oldal angol nyelvű.",
-    "appEnglish": "A Loupe alkalmazás egyelőre angol nyelvű; további nyelvek is érkeznek.",
     "docsEnglish": "A dokumentáció angol nyelvű."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Ujjlenyomat vagy PIN-kód, mielőtt a leveleid megjelennek.",
     "later2": "Levelek mentése és exportálása",
     "later2Text": "Egy üzenet .eml fájlként, egy mappa mbox archívumként.",
-    "later3": "Az alkalmazás több nyelven",
-    "later3Text": "Ma maga az alkalmazás angol nyelvű.",
+    "later3": "Az alkalmazás a te nyelveden",
+    "later3Text": "A Loupe ugyanazokat a nyelveket beszéli, mint ez a webhely, követi a telefonod nyelvét, a Beállítások › Nyelv alatt pedig másikat választhatsz.",
     "later4": "Gyorsabb értesítések iOS-en",
     "later4Text": "Az iOS nem engedi, hogy az alkalmazások nyitva tartsanak egy kapcsolatot. Egy opcionális közvetítő tartalom nélküli „nézz rá most” push-értesítéseket küldhetne, de csak akkor, ha úgy is működhet, hogy soha egyetlen levelet sem lát.",
     "notTitle": "Szándékosan nincs tervben",

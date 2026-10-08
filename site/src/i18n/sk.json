@@ -21,7 +21,6 @@
     "popular": "Obľúbené",
     "allLanguages": "Všetky jazyky",
     "englishOnly": "Táto stránka je v angličtine.",
-    "appEnglish": "Aplikácia Loupe je zatiaľ v angličtine; ďalšie jazyky pribudnú.",
     "docsEnglish": "Dokumentácia je v angličtine."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Odtlačok prsta alebo PIN pred zobrazením pošty.",
     "later2": "Ukladanie a export pošty",
     "later2Text": "Správa ako súbor .eml, priečinok ako archív mbox.",
-    "later3": "Aplikácia vo viacerých jazykoch",
-    "later3Text": "Samotná aplikácia je zatiaľ v angličtine.",
+    "later3": "Aplikácia vo vašom jazyku",
+    "later3Text": "Loupe hovorí rovnakými jazykmi ako tento web, riadi sa jazykom vášho telefónu a v Nastavenia › Jazyk si vyberiete iný.",
     "later4": "Rýchlejšie upozornenia v iOS",
     "later4Text": "iOS nedovoľuje aplikáciám udržiavať otvorené spojenie. Voliteľný sprostredkujúci server by mohol posielať push upozornenia bez obsahu typu „skontroluj teraz“, ale len ak dokáže fungovať bez toho, aby niekedy videl poštu.",
     "notTitle": "Zámerne neplánované",

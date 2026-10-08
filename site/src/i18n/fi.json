@@ -21,7 +21,6 @@
     "popular": "Suositut",
     "allLanguages": "Kaikki kielet",
     "englishOnly": "Tämä sivu on englanniksi.",
-    "appEnglish": "Loupe-sovellus on toistaiseksi englanninkielinen; lisää kieliä on tulossa.",
     "docsEnglish": "Dokumentaatio on englanniksi."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Sormenjälki tai PIN-koodi ennen kuin postisi näkyy.",
     "later2": "Viestien tallennus ja vienti",
     "later2Text": "Viesti .eml-tiedostona, kansio mbox-arkistona.",
-    "later3": "Sovellus useammalla kielellä",
-    "later3Text": "Tällä hetkellä itse sovellus on englanninkielinen.",
+    "later3": "Sovellus omalla kielelläsi",
+    "later3Text": "Loupe puhuu samoja kieliä kuin tämä sivusto, seuraa puhelimesi kieltä, ja kohdasta Asetukset › Kieli valitset toisen.",
     "later4": "Nopeammat ilmoitukset iOS:llä",
     "later4Text": "iOS ei anna sovellusten pitää yhteyttä auki. Valinnainen välityspalvelin voisi lähettää sisällöttömiä ”tarkista nyt” -push-ilmoituksia, mutta vain jos se pystyy toimimaan näkemättä koskaan postia.",
     "notTitle": "Tarkoituksella ei suunnitelmissa",

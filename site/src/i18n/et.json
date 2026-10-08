@@ -21,7 +21,6 @@
     "popular": "Populaarsed",
     "allLanguages": "Kõik keeled",
     "englishOnly": "See leht on inglise keeles.",
-    "appEnglish": "Loupe'i rakendus on praegu inglise keeles; teisi keeli lisandub hiljem.",
     "docsEnglish": "Dokumentatsioon on inglise keeles."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Sõrmejälg või PIN-kood enne, kui sinu kirjad nähtavale tulevad.",
     "later2": "Kirjade salvestamine ja eksportimine",
     "later2Text": "Kiri .eml-failina, kaust mbox-arhiivina.",
-    "later3": "Rakendus rohkemates keeltes",
-    "later3Text": "Praegu on rakendus ise inglise keeles.",
+    "later3": "Rakendus sinu keeles",
+    "later3Text": "Loupe räägib samu keeli kui see veebisait, järgib sinu telefoni keelt ja Seaded › Keel alt valid mõne teise.",
     "later4": "Kiiremad teavitused iOS-is",
     "later4Text": "iOS ei luba rakendustel ühendust avatuna hoida. Valikuline vahendusserver võiks saata sisuta „kontrolli kohe“ tõuketeateid, kuid ainult juhul, kui see saab töötada ilma kirju kunagi nägemata.",
     "notTitle": "Teadlikult plaanist väljas",

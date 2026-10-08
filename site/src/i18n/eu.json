@@ -21,7 +21,6 @@
     "popular": "Ohikoenak",
     "allLanguages": "Hizkuntza guztiak",
     "englishOnly": "Orri hau ingelesez dago.",
-    "appEnglish": "Loupe aplikazioa ingelesez dago oraingoz; hizkuntza gehiago etorriko dira.",
     "docsEnglish": "Dokumentazioa ingelesez dago."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Hatz-marka edo PINa zure posta erakutsi aurretik.",
     "later2": "Posta gordetzea eta esportatzea",
     "later2Text": "Mezu bat .eml fitxategi gisa, karpeta bat mbox artxibo gisa.",
-    "later3": "Aplikazioa hizkuntza gehiagotan",
-    "later3Text": "Gaur egun, aplikazioa bera ingelesez dago.",
+    "later3": "Aplikazioa zure hizkuntzan",
+    "later3Text": "Loupe webgune honen hizkuntza berberetan dago: zure telefonoaren hizkuntzan abiatzen da, eta Ezarpenak › Hizkuntza atalean beste bat hauta dezakezu.",
     "later4": "Jakinarazpen azkarragoak iOS-en",
     "later4Text": "iOS-ek ez die aplikazioei konexio bat irekita mantentzen uzten. Aukerako bitartekari batek edukirik gabeko «begiratu orain» motako push jakinarazpenak bidal litzake, baina soilik posta inoiz ikusi gabe funtziona badezake.",
     "notTitle": "Nahita aurreikusi gabe",

@@ -69,7 +69,7 @@ No. Loupe suggests addresses from your mail, and it can add a calendar invitatio
 
 ### Is Loupe available in my language?
 
-Not yet. Loupe is in English only for now.
+Yes. Loupe speaks the same languages as this website. It follows your phone's language; to pick another, go to Settings › **Language**.
 
 ### Does Loupe work on tablets?
 

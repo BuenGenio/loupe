@@ -21,7 +21,6 @@
     "popular": "Populär",
     "allLanguages": "All Sproochen",
     "englishOnly": "Dës Säit ass op Englesch.",
-    "appEnglish": "D'Loupe-App ass fir de Moment op Englesch; aner Sprooche kommen nach.",
     "docsEnglish": "D'Dokumentatioun ass op Englesch."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Fangerofdrock oder PIN, ier Är Maile gewise ginn.",
     "later2": "Maile späicheren an exportéieren",
     "later2Text": "E Message als .eml-Fichier, en Dossier als mbox-Archiv.",
-    "later3": "D'App a méi Sproochen",
-    "later3Text": "Fir de Moment ass d'App selwer op Englesch.",
+    "later3": "D'App an Ärer Sprooch",
+    "later3Text": "Loupe schwätzt déi selwecht Sproochen wéi dës Websäit, follegt der Sprooch vun Ärem Handy, an ënner Astellungen › Sprooch wielt Dir eng aner.",
     "later4": "Méi séier Notifikatiounen op iOS",
     "later4Text": "iOS erlaabt Apps net, eng Verbindung oppen ze halen. En optionale Relais kéint Pushen ouni Inhalt schécken, déi just „kuck elo no“ soen, mee nëmmen, wann en funktionéiere kann, ouni jeemools Mailen ze gesinn.",
     "notTitle": "Bewosst net geplangt",

@@ -21,7 +21,6 @@
     "popular": "Popularne",
     "allLanguages": "Wszystkie języki",
     "englishOnly": "Ta strona jest po angielsku.",
-    "appEnglish": "Aplikacja Loupe jest na razie po angielsku; kolejne języki pojawią się później.",
     "docsEnglish": "Dokumentacja jest po angielsku."
   },
   "nav": {
@@ -562,8 +561,8 @@
     "later1Text": "Odcisk palca lub PIN, zanim zobaczysz pocztę.",
     "later2": "Zapisywanie i eksport poczty",
     "later2Text": "Wiadomość jako plik .eml, folder jako archiwum mbox.",
-    "later3": "Aplikacja w kolejnych językach",
-    "later3Text": "Na razie sama aplikacja jest po angielsku.",
+    "later3": "Aplikacja w twoim języku",
+    "later3Text": "Loupe mówi w tych samych językach co ta strona, idzie za językiem twojego telefonu, a w Ustawienia › Język wybierzesz inny.",
     "later4": "Szybsze powiadomienia na iOS",
     "later4Text": "iOS nie pozwala aplikacjom utrzymywać otwartego połączenia. Opcjonalny przekaźnik mógłby wysyłać pozbawione treści powiadomienia push typu „sprawdź teraz”, ale tylko jeśli da się to zrobić tak, by nigdy nie widział poczty.",
     "notTitle": "Celowo poza planem",
