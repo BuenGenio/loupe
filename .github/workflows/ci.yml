@@ -101,9 +101,15 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          notes="Build ${{ github.run_number }} from ${GITHUB_SHA::7}: $(git log -1 --format=%s)"
+          # The notes: the newest section of CHANGELOG.md, then the build.
+          notes="$RUNNER_TEMP/notes.md"
+          {
+            awk '/^## /{n++} n==1' CHANGELOG.md
+            echo
+            echo "Build ${{ github.run_number }} from ${GITHUB_SHA::7}. Earlier changes: [CHANGELOG.md]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/main/CHANGELOG.md)"
+          } > "$notes"
           git tag -f nightly && git push -f origin refs/tags/nightly
-          gh release view nightly >/dev/null 2>&1 || gh release create nightly --prerelease --title "Nightly" --notes "$notes"
-          gh release edit nightly --prerelease --title "Nightly 0.1.${{ github.run_number }}" --notes "$notes"
+          gh release view nightly >/dev/null 2>&1 || gh release create nightly --prerelease --title "Nightly" --notes-file "$notes"
+          gh release edit nightly --prerelease --title "Nightly 0.1.${{ github.run_number }}" --notes-file "$notes"
           for f in $(gh release view nightly --json assets --jq '.assets[].name'); do gh release delete-asset nightly "$f" --yes; done
           gh release upload nightly dist/*.apk --clobber
