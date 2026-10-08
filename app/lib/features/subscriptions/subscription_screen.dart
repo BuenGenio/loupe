@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../shared/bars.dart';
-import '../../shared/format.dart';
 import '../../shared/grouped_list.dart';
 import '../../shared/mailbox_display.dart';
 import '../../shared/message_row.dart';
@@ -30,6 +30,7 @@ class SubscriptionScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     final async = ref.watch(subscriptionsProvider);
     final s = async.value?.where((x) => x.key == subscriptionKey).firstOrNull;
     final emails = ref.watch(subscriptionEmailsProvider(subscriptionKey)).value ?? const <EmailSummary>[];
@@ -52,7 +53,7 @@ class SubscriptionScreen extends ConsumerWidget {
             SliverFillRemaining(
               hasScrollBody: false,
               child: async.hasValue
-                  ? Center(child: Text('No mail from this sender now.', style: styles.footnote))
+                  ? Center(child: Text(l10n.subscriptionsNoMailNow, style: styles.footnote))
                   : const Center(child: CupertinoActivityIndicator()),
             )
           else ...[
@@ -66,7 +67,7 @@ class SubscriptionScreen extends ConsumerWidget {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(32, 0, 16, 7),
-                  child: Text('LATEST MESSAGES', style: styles.footnote.copyWith(letterSpacing: 0.2)),
+                  child: Text(l10n.subscriptionsLatestMessages, style: styles.footnote.copyWith(letterSpacing: 0.2)),
                 ),
               ),
               SliverPadding(
@@ -96,7 +97,7 @@ class SubscriptionScreen extends ConsumerWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.fromLTRB(32, 16, 32, 24 + MediaQuery.paddingOf(context).bottom),
-              child: Text(subscriptionsPrivacyNote, style: styles.footnote),
+              child: Text(l10n.subscriptionsPrivacyNote, style: styles.footnote),
             ),
           ),
         ],
@@ -115,6 +116,7 @@ class _Summary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final folders = {
       for (final id in s.mailboxIds)
         if (boxes[id] case final box?) mailboxDisplayName(box),
@@ -123,14 +125,17 @@ class _Summary extends StatelessWidget {
     return InsetGroup(
       separatorIndent: 16,
       children: [
-        GroupedRow(title: 'Mail', detail: volumeLabel(s) == 'None lately' ? 'None in 90 days' : volumeLabel(s)),
         GroupedRow(
-          title: 'Read',
-          detail: '${readPercent(s)} · ${formatCount(s.readCount)} of ${formatCount(s.messageCount)}',
+          title: l10n.subscriptionsMail,
+          detail: s.recentCount == 0 ? l10n.subscriptionsNoneIn90Days : volumeLabel(l10n, s),
         ),
-        if (s.lastReceived case final last?) GroupedRow(title: 'Last Received', detail: shortDate(last)),
+        GroupedRow(
+          title: l10n.subscriptionsRead,
+          detail: l10n.subscriptionsReadDetail(readPercent(l10n, s), s.readCount, s.messageCount),
+        ),
+        if (s.lastReceived case final last?) GroupedRow(title: l10n.subscriptionsLastReceived, detail: shortDate(last)),
         if (folders.isNotEmpty)
-          GroupedRow(title: folders.length == 1 ? 'Folder' : 'Folders', detail: folders.join(', ')),
+          GroupedRow(title: l10n.subscriptionsFolders(folders.length), detail: folders.join(', ')),
         if (r != null)
           GroupedRow(
             key: const Key('subscription-status'),
@@ -138,10 +143,12 @@ class _Summary extends StatelessWidget {
               r.stillSending(s) ? LoupeIcons.warning : LoupeIcons.check,
               color: r.stillSending(s) ? colors.destructive : colors.success,
             ),
-            title: r.stillSending(s) ? 'Still Sending' : 'Unsubscribed',
+            title: r.stillSending(s) ? l10n.subscriptionsStillSendingTitle : l10n.subscriptionsUnsubscribedTitle,
             detail: r.stillSending(s)
-                ? 'since ${shortDate(r.at)}'
-                : '${r.via == UnsubscribeVia.web ? 'page opened ' : ''}${shortDate(r.at)}',
+                ? l10n.subscriptionsSince(shortDate(r.at))
+                : r.via == UnsubscribeVia.web
+                ? l10n.subscriptionsPageOpened(shortDate(r.at))
+                : shortDate(r.at),
           ),
       ],
     );
@@ -159,20 +166,21 @@ class _Actions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final methods = s.unsubscribe;
     final r = record;
     final blockRuleId = rules.where((x) => isBlocked(s, [x])).map((x) => x.id).firstOrNull;
     final canUnsubscribe = methods.isNotEmpty && (r == null || r.stillSending(s));
     return InsetGroup(
       separatorIndent: 54,
-      footer: methods.isEmpty ? '${s.name} doesn’t say how to unsubscribe.' : null,
+      footer: methods.isEmpty ? l10n.subscriptionsNoMethod(s.name) : null,
       children: [
         if (canUnsubscribe)
           GroupedRow(
             key: const Key('subscription-unsubscribe'),
             leading: Icon(LoupeIcons.unsubscribe, color: colors.unreadDot),
-            title: r == null ? 'Unsubscribe' : 'Unsubscribe Again',
-            subtitle: methodLabel(methods.first),
+            title: r == null ? l10n.subscriptionsUnsubscribe : l10n.subscriptionsUnsubscribeAgain,
+            subtitle: methodLabel(l10n, methods.first),
             chevron: false,
             onTap: () => actions.unsubscribe(s),
           ),
@@ -180,23 +188,23 @@ class _Actions extends StatelessWidget {
           GroupedRow(
             key: const Key('subscription-archive'),
             leading: Icon(LoupeIcons.archive, color: colors.unreadDot),
-            title: 'Archive ${formatCount(s.inboxCount)} in Inbox',
+            title: l10n.subscriptionsArchiveInbox(s.inboxCount),
             chevron: false,
             onTap: () => actions.archiveAll(s),
           ),
         GroupedRow(
           key: const Key('subscription-rule'),
           leading: Icon(LoupeIcons.makeRule, color: colors.unreadDot),
-          title: 'Create Rule…',
-          subtitle: 'Move or archive its future mail',
+          title: l10n.subscriptionsCreateRule,
+          subtitle: l10n.subscriptionsCreateRuleDetail,
           onTap: () => actions.createRule(s),
         ),
         if (s.listIds.isNotEmpty)
           GroupedRow(
             key: const Key('subscription-kind'),
             leading: Icon(LoupeIcons.mailingList, color: colors.unreadDot),
-            title: 'Treat as Discussion',
-            subtitle: 'A list people write to: read it forum style',
+            title: l10n.subscriptionsTreatAsDiscussion,
+            subtitle: l10n.subscriptionsTreatAsDiscussionDetail,
             chevron: false,
             onTap: () async {
               await actions.setKind(s, SubscriptionKind.discussion);
@@ -207,15 +215,15 @@ class _Actions extends StatelessWidget {
           GroupedRow(
             key: const Key('subscription-blocked'),
             leading: Icon(LoupeIcons.block, color: colors.secondaryText),
-            title: 'Blocked',
-            subtitle: 'New mail goes to Junk',
+            title: l10n.subscriptionsBlocked,
+            subtitle: l10n.subscriptionsBlockedDetail,
             onTap: () => context.push(Routes.editRule(blockRuleId)),
           )
         else
           GroupedRow(
             key: const Key('subscription-block'),
             leading: Icon(LoupeIcons.block, color: colors.destructive),
-            title: 'Block Sender',
+            title: l10n.subscriptionsBlockSender,
             destructive: true,
             onTap: () => actions.block(s),
           ),

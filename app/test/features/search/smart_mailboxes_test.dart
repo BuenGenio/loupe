@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/features/search/smart_mailbox_screen.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:loupe/providers.dart';
 import 'package:loupe/settings/app_settings.dart';
 import 'package:loupe/settings/ui_state.dart';
@@ -42,6 +44,8 @@ List<String> _names(SmartMailboxDocument? doc) => [
 
 String _legacyScope(String accountId, String path) =>
     MailboxRefCodec.encode(RealMailboxRef(MailIds.mailbox(accountId, path)));
+
+final _en = lookupAppLocalizations(const Locale('en'));
 
 void main() {
   late DemoMailRepository demo;
@@ -137,6 +141,7 @@ void main() {
       home: c.read(smartMailboxHomeProvider),
       accounts: c.read(accountsProvider).value!,
       status: c.read(smartMailboxSyncStatusProvider),
+      l10n: _en,
     );
     expect((icon, text), (LoupeIcons.thisDevice, 'On this device only'));
   });
@@ -173,6 +178,7 @@ void main() {
       home: c.read(smartMailboxHomeProvider),
       accounts: c.read(accountsProvider).value!,
       status: c.read(smartMailboxSyncStatusProvider),
+      l10n: _en,
     ).$2;
     expect(label(), 'Waiting to sync to Work');
     expect(c.read(smartMailboxSyncStatusProvider).failed, {'acc': 'Offline'});
@@ -204,7 +210,7 @@ void main() {
     expect(status.unsupported, {'gm', 'acc'});
     expect(status.failed, isEmpty);
     expect(
-      smartMailboxSyncLabel(box, home: 'acc', accounts: [gmail, testAccount], status: status).$2,
+      smartMailboxSyncLabel(box, home: 'acc', accounts: [gmail, testAccount], status: status, l10n: _en).$2,
       'On this device only: Work can’t keep it',
     );
   });

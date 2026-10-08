@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../l10n/l10n.dart';
 import '../../settings/app_mode.dart';
 import '../../shared/grouped_list.dart';
 import '../../shared/sheets.dart';
@@ -20,11 +21,12 @@ class _AdvancedSettingsScreenState extends ConsumerState<AdvancedSettingsScreen>
   late final Future<PackageInfo?> _info = PackageInfo.fromPlatform().then<PackageInfo?>((i) => i, onError: (_) => null);
 
   Future<void> _reset() async {
+    final l10n = context.l10n;
     final ok = await confirmDestructive(
       context,
-      title: 'Reset Loupe?',
-      message: 'This forgets every setting, smart mailbox and recent search, and returns to the welcome screen.',
-      action: 'Reset App',
+      title: l10n.settingsResetTitle,
+      message: l10n.settingsResetMessage,
+      action: l10n.settingsResetApp,
     );
     if (ok) await ref.read(appModeProvider.notifier).reset();
   }
@@ -32,28 +34,29 @@ class _AdvancedSettingsScreenState extends ConsumerState<AdvancedSettingsScreen>
   @override
   Widget build(BuildContext context) {
     final mode = ref.watch(appModeProvider);
+    final l10n = context.l10n;
     return GroupedPage(
-      title: 'Advanced',
+      title: l10n.settingsAdvanced,
       children: [
         InsetGroup(
-          header: 'Demo',
-          footer: 'Demo mail is a made-up mailbox that lives only on this phone. Nothing is sent anywhere.',
+          header: l10n.settingsDemoHeader,
+          footer: l10n.settingsDemoFooter,
           separatorIndent: 16,
           children: [
             SwitchRow(
-              title: 'Demo Mode',
+              title: l10n.settingsDemoMode,
               value: mode == AppMode.demo,
               onChanged: (on) => ref.read(appModeProvider.notifier).set(on ? AppMode.demo : AppMode.none),
             ),
           ],
         ),
         InsetGroup(
-          footer: 'Forgets all settings and returns to the welcome screen.',
+          footer: l10n.settingsResetFooter,
           separatorIndent: 16,
-          children: [GroupedRow(title: 'Reset App', destructive: true, onTap: _reset)],
+          children: [GroupedRow(title: l10n.settingsResetApp, destructive: true, onTap: _reset)],
         ),
         InsetGroup(
-          header: 'About',
+          header: l10n.settingsAboutHeader,
           separatorIndent: 16,
           children: [
             FutureBuilder<PackageInfo?>(
@@ -61,20 +64,20 @@ class _AdvancedSettingsScreenState extends ConsumerState<AdvancedSettingsScreen>
               builder: (context, snapshot) {
                 final info = snapshot.data;
                 return GroupedRow(
-                  title: 'Version',
+                  title: l10n.settingsVersion,
                   chevron: false,
                   detail: info == null ? '…' : '${info.version} (${info.buildNumber})',
                 );
               },
             ),
             GroupedRow(
-              title: 'Licences',
+              title: l10n.settingsLicences,
               onTap: () async {
                 final info = await _info;
                 if (!context.mounted) return;
                 showLicensePage(
                   context: context,
-                  applicationName: 'Loupe',
+                  applicationName: 'Loupe', // l10n-ignore: the name
                   applicationVersion: info?.version,
                   applicationIcon: Padding(
                     padding: const EdgeInsets.all(12),
@@ -84,8 +87,8 @@ class _AdvancedSettingsScreenState extends ConsumerState<AdvancedSettingsScreen>
               },
             ),
             GroupedRow(
-              title: 'Privacy',
-              subtitle: 'Loupe has no analytics and no tracking. Your mail goes only to your mail servers.',
+              title: l10n.settingsPrivacy,
+              subtitle: l10n.settingsPrivacyDetail,
               leading: Icon(LoupeIcons.privacy, color: LoupeColors.of(context).success),
               chevron: false,
             ),

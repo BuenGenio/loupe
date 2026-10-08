@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/calendar/device_calendar.dart';
 import 'package:loupe/features/calendar/invitation.dart';
 import 'package:loupe/features/calendar/invitation_format.dart';
 import 'package:loupe/features/calendar/invitation_reply.dart';
 import 'package:loupe/features/compose/identity_selection.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:mail_calendar/mail_calendar.dart';
 import 'package:mail_model/mail_model.dart';
 
@@ -99,7 +101,9 @@ Future<Invitation> read(String ics, {CalendarRecords? records, Attachment p = pa
 
 final london = IanaZone.named('Europe/London')!;
 
-EventTimeFormat format() => EventTimeFormat(deviceZone: london, now: DateTime.utc(2026, 10, 4));
+final en = lookupAppLocalizations(const Locale('en'));
+
+EventTimeFormat format() => EventTimeFormat(l10n: en, deviceZone: london, now: DateTime.utc(2026, 10, 4));
 
 String plain(String s) => s.replaceAll(RegExp('[  ]'), ' ');
 
@@ -197,9 +201,10 @@ void main() {
       final w = format().when(inv.span!);
       expect(w.day, 'Tuesday, October 13');
       expect(plain(w.time!), '9:00 AM–10:00 AM Los Angeles · 5:00 PM–6:00 PM your time');
-      final f24 = EventTimeFormat(deviceZone: london, use24h: true, now: DateTime.utc(2026, 10, 4));
+      final f24 = EventTimeFormat(l10n: en, deviceZone: london, use24h: true, now: DateTime.utc(2026, 10, 4));
       expect(f24.when(inv.span!).time, '09:00–10:00 Los Angeles · 17:00–18:00 your time');
       final there = EventTimeFormat(
+        l10n: en,
         deviceZone: IanaZone.named('America/Los_Angeles'),
         use24h: true,
         now: DateTime.utc(2026, 10, 4),
@@ -209,7 +214,12 @@ void main() {
 
     test('across midnight and on another day there', () async {
       final late = await read(outlookInvite(hour: 22).replaceAll('T230000', 'T230000'));
-      final tokyo = EventTimeFormat(deviceZone: IanaZone.named('Asia/Tokyo'), use24h: true, now: DateTime.utc(2026));
+      final tokyo = EventTimeFormat(
+        l10n: en,
+        deviceZone: IanaZone.named('Asia/Tokyo'),
+        use24h: true,
+        now: DateTime.utc(2026),
+      );
       final w = tokyo.when(late.span!);
       // 22:00 in Los Angeles is 14:00 the next day in Tokyo.
       expect(w.day, 'Wednesday, October 14');
@@ -225,7 +235,7 @@ void main() {
         source: message,
         accounts: const [account],
         answer: PartStat.accepted,
-        format: EventTimeFormat(use24h: true, now: DateTime.utc(2026, 10, 4)),
+        format: EventTimeFormat(l10n: en, use24h: true, now: DateTime.utc(2026, 10, 4)),
         comment: 'See you there',
         now: DateTime.utc(2026, 10, 6, 8, 30),
       );
@@ -308,7 +318,7 @@ void main() {
   group('add to calendar', () {
     test('title, times, zone, place, link and recurrence', () async {
       final ics = outlookInvite().replaceFirst('SEQUENCE:0', 'SEQUENCE:0\r\nRRULE:FREQ=WEEKLY;COUNT=4;BYDAY=TU');
-      final event = deviceEventFor(await read(ics))!;
+      final event = deviceEventFor(await read(ics), en)!;
       expect(event.title, 'Pricing review');
       expect(event.start, DateTime.utc(2026, 10, 13, 16));
       expect(event.end, DateTime.utc(2026, 10, 13, 17));
@@ -324,7 +334,7 @@ void main() {
       final ics = outlookInvite()
           .replaceFirst(RegExp('DTSTART;TZID=[^\r]*'), 'DTSTART;VALUE=DATE:20261012')
           .replaceFirst(RegExp('DTEND;TZID=[^\r]*'), 'DTEND;VALUE=DATE:20261014');
-      final event = deviceEventFor(await read(ics))!;
+      final event = deviceEventFor(await read(ics), en)!;
       expect(event.allDay, isTrue);
       expect(event.start, DateTime(2026, 10, 12));
       expect(event.end, DateTime(2026, 10, 14));

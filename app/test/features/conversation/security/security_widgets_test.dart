@@ -18,13 +18,18 @@ import '../../../helpers.dart';
 import '../fake_mail_repository.dart';
 import '../test_app.dart';
 
-const _finding = Finding(
+const _finding = LinksFinding(
   FindingKind.linkMismatch,
   Severity.warning,
-  title: 'A link hides where it goes',
-  explanation: 'A link shows www.bank.example, but it opens evil.example.',
-  advice: "Don't sign in through it.",
-  details: ['“www.bank.example” → https://evil.example/login'],
+  links: [
+    LinkFinding(
+      LinkIssue.textMismatch,
+      url: 'https://evil.example/login',
+      text: 'www.bank.example',
+      host: 'evil.example',
+      detail: 'www.bank.example',
+    ),
+  ],
 );
 
 SecurityReport report(Verdict verdict, {bool verified = false, int trackers = 0, List<Finding> findings = const []}) =>
@@ -155,12 +160,7 @@ void main() {
               trackers: 1,
               findings: const [
                 _finding,
-                Finding(
-                  FindingKind.firstTimeSender,
-                  Severity.info,
-                  title: 'First message from this sender',
-                  explanation: "You haven't had mail from x@y.example before.",
-                ),
+                FirstTimeSenderFinding(email: 'x@y.example'),
               ],
             ),
           ),
@@ -173,7 +173,9 @@ void main() {
       tester.getTopLeft(find.text('A link hides where it goes')).dy,
       lessThan(tester.getTopLeft(find.text('First message from this sender')).dy),
     );
-    expect(find.text("Don't sign in through it."), findsOneWidget);
+    expect(find.text('A link shows www.bank.example, but it opens evil.example.'), findsOneWidget);
+    expect(find.text("Don't sign in or pay through these links. Type the address yourself instead."), findsOneWidget);
+    expect(find.text("You haven't had mail from x@y.example before."), findsOneWidget);
     expect(find.text('1 tracking pixel removed'), findsOneWidget);
     expect(find.text('Checked on this device. Nothing was sent anywhere.'), findsOneWidget);
 
@@ -182,6 +184,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('mx; dmarc=fail'), findsOneWidget);
     expect(find.text('pixel.example'), findsOneWidget);
+    expect(find.text('“www.bank.example” → https://evil.example/login'), findsOneWidget);
   });
 
   group('in a conversation', () {

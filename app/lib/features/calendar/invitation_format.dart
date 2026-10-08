@@ -1,11 +1,15 @@
 import 'package:intl/intl.dart';
 import 'package:mail_calendar/mail_calendar.dart';
 
-/// How invitations write times: the device's locale and clock (12 or 24
-/// hours) and its time zone ([deviceZone]; the system's when null).
-final class EventTimeFormat {
-  EventTimeFormat({this.locale = 'en_US', this.use24h = false, this.deviceZone, required this.now});
+import '../../l10n/l10n.dart';
 
+/// How invitations write times: the device's locale and clock (12 or 24
+/// hours) and its time zone ([deviceZone]; the system's when null), with the
+/// app's words ([l10n]).
+final class EventTimeFormat {
+  EventTimeFormat({required this.l10n, this.locale = 'en_US', this.use24h = false, this.deviceZone, required this.now});
+
+  final AppLocalizations l10n;
   final String locale;
   final bool use24h;
   final Zone? deviceZone;
@@ -44,8 +48,8 @@ final class EventTimeFormat {
   ({String day, String? time}) when(TimeSpan span) {
     if (span.allDay) {
       final last = span.lastDay;
-      if (!last.isAfter(span.start)) return (day: day(span.start), time: 'All day');
-      return (day: '${shortDay(span.start)} – ${shortDay(last)}', time: 'All day');
+      if (!last.isAfter(span.start)) return (day: day(span.start), time: l10n.calendarAllDay);
+      return (day: '${shortDay(span.start)} – ${shortDay(last)}', time: l10n.calendarAllDay);
     }
     final s = local(span.start);
     final e = local(span.end);
@@ -55,7 +59,7 @@ final class EventTimeFormat {
       return (day: '${shortDay(s)}, ${time(s)} – ${shortDay(e)}, ${time(e)}', time: _elsewhere(span, null));
     }
     final elsewhere = _elsewhere(span, s);
-    return (day: day(s), time: elsewhere == null ? mine : '$elsewhere · $mine your time');
+    return (day: day(s), time: elsewhere == null ? mine : '$elsewhere · ${l10n.calendarYourTime(mine)}');
   }
 
   String _range(DateTime s, DateTime e) => s == e ? time(s) : '${time(s)}–${time(e)}';
@@ -88,7 +92,7 @@ final class EventTimeFormat {
       final w = when(span);
       return w.time == null ? w.day : '${w.day}, ${w.time}';
     }
-    final f = EventTimeFormat(locale: locale, use24h: use24h, deviceZone: zone, now: now);
+    final f = EventTimeFormat(l10n: l10n, locale: locale, use24h: use24h, deviceZone: zone, now: now);
     final w = f.when(span);
     final label = zoneLabel(zone, span.start);
     return w.time == null ? '${w.day} ($label)' : '${w.day}, ${w.time} ($label)';
@@ -97,7 +101,7 @@ final class EventTimeFormat {
 
 /// The text of a reply, for people (and mail apps) that don't read the
 /// calendar part: "Sam Rivera has accepted: Planning, Tuesday, October 13,
-/// 9:00 AM–10:00 AM (Los Angeles)", and the comment.
+/// 9:00 AM–10:00 AM (Los Angeles)", and the comment, in [format]'s words.
 String replyText({
   required String name,
   required PartStat answer,
@@ -110,7 +114,9 @@ String replyText({
     if (title != null && title.trim().isNotEmpty) title.trim(),
     if (span != null) format.inZone(span),
   ].join(', ');
-  final line = '$name has ${partStatVerb(answer)}${what.isEmpty ? ' the invitation' : ': $what'}';
+  final line = what.isEmpty
+      ? format.l10n.calendarReplyTextNoDetails(answer.name, name)
+      : format.l10n.calendarReplyText(answer.name, name, what);
   final note = comment?.trim() ?? '';
   return note.isEmpty ? '$line\n' : '$line\n\n$note\n';
 }

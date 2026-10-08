@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../../l10n/l10n.dart';
 import '../../../theme/loupe_icons.dart';
 import '../../../theme/theme.dart';
 import 'assessment.dart';
+import 'finding_text.dart';
 import 'security_provider.dart';
 import 'security_sheet.dart';
 
@@ -86,6 +88,7 @@ class PhishingBanner extends StatelessWidget {
     final theme = Theme.of(context);
     final colors = LoupeColors.of(context);
     final red = CupertinoColors.systemRed.resolveFrom(context);
+    final l10n = context.l10n;
     final top = report.findings.firstOrNull;
     return Semantics(
       container: true,
@@ -114,12 +117,14 @@ class PhishingBanner extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'This message looks like phishing',
+                        l10n.conversationPhishingBannerTitle,
                         style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600, fontSize: 16),
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        [if (top != null) '${top.title}.', 'Links and images are turned off.'].join(' '),
+                        top == null
+                            ? l10n.conversationPhishingBannerText
+                            : l10n.conversationPhishingBannerReason(findingText(l10n, top).title),
                         style: theme.textTheme.bodyMedium?.copyWith(color: colors.secondaryText),
                       ),
                     ],
@@ -130,11 +135,11 @@ class PhishingBanner extends StatelessWidget {
             Wrap(
               alignment: WrapAlignment.end,
               children: [
-                TextButton(onPressed: onWhy, child: const Text('Why?')),
+                TextButton(onPressed: onWhy, child: Text(l10n.conversationPhishingWhy)),
                 TextButton(
                   key: const ValueKey('show-anyway'),
                   onPressed: onShowAnyway,
-                  child: const Text('Show Anyway'),
+                  child: Text(l10n.conversationPhishingShowAnyway),
                 ),
               ],
             ),

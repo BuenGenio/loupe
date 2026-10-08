@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:readable/readable.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/theme.dart';
 import 'sheets.dart';
 
@@ -60,6 +62,7 @@ class _ReaderOptionsSheetState extends State<ReaderOptionsSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final s = _settings;
     return SafeArea(
       top: false,
@@ -75,10 +78,10 @@ class _ReaderOptionsSheetState extends State<ReaderOptionsSheet> {
               onValueChanged: (m) {
                 if (m != null) _set(s.copyWith(mode: m));
               },
-              children: const {
-                ReaderMode.readable: _Segment('Readable'),
-                ReaderMode.original: _Segment('Original'),
-                ReaderMode.plain: _Segment('Plain'),
+              children: {
+                ReaderMode.readable: _Segment(l10n.conversationReaderReadable),
+                ReaderMode.original: _Segment(l10n.conversationReaderOriginal),
+                ReaderMode.plain: _Segment(l10n.conversationReaderPlain),
               },
             ),
           ),
@@ -93,9 +96,9 @@ class _ReaderOptionsSheetState extends State<ReaderOptionsSheet> {
                       onValueChanged: (f) {
                         if (f != null) _set(s.copyWith(plainFont: f));
                       },
-                      children: const {
-                        PlainTextFont.sans: _Segment('Sans'),
-                        PlainTextFont.mono: _Segment('Mono', mono: true),
+                      children: {
+                        PlainTextFont.sans: _Segment(l10n.conversationReaderSans),
+                        PlainTextFont.mono: _Segment(l10n.conversationReaderMono, mono: true),
                       },
                     ),
                   )
@@ -115,7 +118,7 @@ class _ReaderOptionsSheetState extends State<ReaderOptionsSheet> {
                         min: 0.8,
                         max: 1.6,
                         divisions: 8,
-                        label: '${(s.textScale * 100).round()}%',
+                        label: NumberFormat.percentPattern().format(s.textScale),
                         onChanged: (v) => _set(s.copyWith(textScale: v)),
                       ),
                     ),
@@ -125,7 +128,7 @@ class _ReaderOptionsSheetState extends State<ReaderOptionsSheet> {
               ),
               SwitchListTile.adaptive(
                 dense: true,
-                title: const Text('Keep original colours', style: TextStyle(fontSize: 16)),
+                title: Text(l10n.conversationReaderKeepColours, style: const TextStyle(fontSize: 16)),
                 value: s.keepOriginalColors,
                 onChanged: s.mode == ReaderMode.readable ? (v) => _set(s.copyWith(keepOriginalColors: v)) : null,
               ),
@@ -136,7 +139,7 @@ class _ReaderOptionsSheetState extends State<ReaderOptionsSheet> {
               SwitchListTile.adaptive(
                 key: const Key('reader-remember'),
                 dense: true,
-                title: const Text('Remember for this sender', style: TextStyle(fontSize: 16)),
+                title: Text(l10n.conversationReaderRemember, style: const TextStyle(fontSize: 16)),
                 subtitle: widget.senderName == null
                     ? null
                     : Text(widget.senderName!, style: TextStyle(color: colors.secondaryText)),

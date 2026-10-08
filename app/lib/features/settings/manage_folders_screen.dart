@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../shared/grouped_list.dart';
 import '../../shared/mailbox_display.dart';
@@ -36,20 +37,19 @@ class ManageFoldersScreen extends ConsumerWidget {
         if (m.accountId == accountId) m,
     ];
     final tree = mailboxTree(mailboxes);
+    final l10n = context.l10n;
     return GroupedPage(
-      title: 'Manage Folders',
+      title: l10n.settingsManageFolders,
       children: [
         if (tree.isEmpty)
           Padding(
             padding: const EdgeInsets.all(32),
-            child: Text('No folders yet.', style: styles.footnote, textAlign: TextAlign.center),
+            child: Text(l10n.settingsNoFolders, style: styles.footnote, textAlign: TextAlign.center),
           )
         else
           InsetGroup(
             separatorIndent: 54,
-            footer:
-                'Subscribed folders show on the Mailboxes screen and sync in the background. '
-                'Other mail apps on the same account usually follow these subscriptions too.',
+            footer: l10n.settingsManageFoldersFooter,
             children: [
               for (final node in tree)
                 _FolderRow(
@@ -85,19 +85,18 @@ class _FolderRow extends StatelessWidget {
     final name = mailboxDisplayName(mailbox);
     final fixed = mailbox.role != MailboxRole.none;
     final toggle = !fixed && mailbox.isSelectable;
+    final l10n = context.l10n;
     return GroupedRow(
       title: name,
-      subtitle: ServerDocuments.isFolder(mailbox)
-          ? 'Keeps your Smart Mailboxes for your other devices. Hidden on the Mailboxes screen.'
-          : null,
+      subtitle: ServerDocuments.isFolder(mailbox) ? l10n.settingsSmartMailboxesFolder : null,
       indent: folderIndent(depth),
       leading: Icon(mailboxIcon(mailbox.role), color: colors.unreadDot, size: 24),
-      detail: fixed ? 'Always Shown' : null,
+      detail: fixed ? l10n.settingsFolderAlwaysShown : null,
       chevron: false,
       onTap: toggle ? () => onChanged(!mailbox.isSubscribed) : null,
       trailing: toggle
           ? Semantics(
-              label: 'Subscribe to $name',
+              label: l10n.settingsSubscribeToFolder(name),
               child: CupertinoSwitch(
                 value: mailbox.isSubscribed,
                 activeTrackColor: colors.success,

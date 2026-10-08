@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../l10n/l10n.dart';
 import '../../shared/grouped_list.dart';
 import '../../theme/theme.dart';
 import '../conversation/reader_prefs.dart';
@@ -29,15 +30,13 @@ class TechnicalListsScreen extends ConsumerWidget {
         if (!known.contains(id)) (id: id, name: id),
     ];
     final controller = ref.read(readerPrefsProvider.notifier);
+    final l10n = context.l10n;
     return GroupedPage(
-      title: 'Technical Lists',
+      title: l10n.mailingListsTechnicalTitle,
       children: [
         InsetGroup(
           separatorIndent: 16,
-          footer: rows.isEmpty
-              ? 'Mailing lists appear here once their mail arrives.'
-              : 'Messages from these lists open as plain text in a monospaced font, with patches shown as '
-                    'diffs. The Aa button still switches any message.',
+          footer: rows.isEmpty ? l10n.mailingListsTechnicalEmpty : l10n.mailingListsTechnicalFooter,
           children: [
             for (final r in rows)
               GroupedRow(

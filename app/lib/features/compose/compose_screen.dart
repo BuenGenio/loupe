@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/app_settings.dart';
@@ -443,13 +444,14 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
   }
 
   Future<String?> _prepareFromSource(ComposeArgs args) async {
+    final l10n = context.l10n;
     final id = args.sourceEmailId;
     final source = id == null ? null : await _repo.getEmail(id);
     if (!mounted) return null;
     if (source == null) {
       _useDefaultIdentity(_accountById(args.accountId));
       _body.text = _withSignature('');
-      return "Couldn't find the original message.";
+      return l10n.composeOriginalNotFound;
     }
     _sourceEmailId = source.id;
     String? warning;
@@ -472,7 +474,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     final subject = (content == null ? null : protectedSubjectIn(content)) ?? source.subject;
     if (args.mode == ComposeMode.forward) {
       _subject.text = ComposeText.forwardSubject(subject);
-      _body.text = '${_withSignature('')}\n\n${ComposeText.forwardBlock(source, text)}';
+      _body.text = '${_withSignature('')}\n\n${ComposeText.forwardBlock(source, text, l10n)}';
       if (content != null) warning ??= await _loadAttachments(source.id, content);
     } else {
       final list = args.toList ? listPostAddress(source.listPost) : null;
@@ -486,7 +488,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
       r.to.forEach(_to.add);
       r.cc.forEach(_cc.add);
       _subject.text = ComposeText.replySubject(subject);
-      _body.text = '${_withSignature('')}\n\n${ComposeText.replyBlock(source, text)}';
+      _body.text = '${_withSignature('')}\n\n${ComposeText.replyBlock(source, text, l10n)}';
       _inReplyTo = source.messageIdHeader;
       _references = ComposeText.replyReferences(source);
     }
@@ -495,12 +497,13 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
   }
 
   Future<String?> _prepareDraft(ComposeArgs args) async {
+    final l10n = context.l10n;
     final id = args.sourceEmailId;
     final draft = id == null ? null : await _repo.getEmail(id);
     if (!mounted) return null;
     if (draft == null) {
       _useDefaultIdentity(_accountById(args.accountId));
-      return "Couldn't find the draft.";
+      return l10n.composeDraftNotFound;
     }
     _draftId = draft.id;
     _useSenderIdentity(_accountById(draft.accountId), draft.from);
@@ -532,7 +535,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
 
   /// Crash recovery without the attachments' data: they are in the draft.
   Future<String?> _attachmentsFromDraft(String? draftId) async {
-    const lost = 'The attachments couldn’t be recovered. Add them again.';
+    final lost = context.l10n.composeAttachmentsLost;
     if (draftId == null) return lost;
     try {
       final content = await ref.read(contentLoaderProvider).loadContent(draftId);
@@ -544,6 +547,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
   }
 
   Future<String?> _loadAttachments(String emailId, EmailContent content) async {
+    final l10n = context.l10n;
     try {
       for (final a in content.visibleAttachments) {
         final data = await ref.read(contentLoaderProvider).loadAttachment(emailId, a.partId);
@@ -552,7 +556,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
       }
       return null;
     } on MailException catch (e) {
-      return "Some attachments couldn't be added: ${e.message}";
+      return l10n.composeSomeAttachmentsFailed(e.message);
     }
   }
 
@@ -579,7 +583,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     return option == null || option.$2.id == _identity?.id ? null : option;
   }
 
-  String get _fromVerb => _mode == ComposeMode.reply || _mode == ComposeMode.replyAll ? 'Reply' : 'Send';
+  bool get _replying => _mode == ComposeMode.reply || _mode == ComposeMode.replyAll;
 
   /// The From picker: the alias to offer, then every identity by account.
   Future<void> _pickIdentity() async {
@@ -590,6 +594,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     final picked = await showLoupeSheet<({MailAccount account, Identity identity, bool save})>(
       context,
       builder: (context) {
+        final l10n = context.l10n;
         final primary = Theme.of(context).colorScheme.primary;
         Widget? check(Identity i) => i.id == _identity?.id ? Icon(LoupeIcons.check, color: primary) : null;
         return SafeArea(
@@ -599,34 +604,37 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
               children: [
                 if (alias case (final account, final identity)?)
                   SheetGroup(
-                    header: 'From',
+                    header: l10n.composeFrom,
                     children: [
                       ListTile(
                         key: const ValueKey('identity-alias'),
                         dense: true,
-                        title: Text('$_fromVerb from ${identity.email}', style: const TextStyle(fontSize: 15)),
-                        subtitle: Text('Not saved as an identity · ${account.displayName}'),
+                        title: Text(
+                          _replying ? l10n.composeReplyFrom(identity.email) : l10n.composeSendFrom(identity.email),
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                        subtitle: Text(l10n.composeAliasNotSaved(account.displayName)),
                         trailing: check(identity),
                         onTap: () => Navigator.of(context).pop((account: account, identity: identity, save: false)),
                       ),
                       SheetRow(
                         key: const ValueKey('identity-save-alias'),
                         icon: LoupeIcons.add,
-                        label: 'Save as Identity',
+                        label: l10n.composeSaveAsIdentity,
                         onTap: () => Navigator.of(context).pop((account: account, identity: identity, save: true)),
                       ),
                     ],
                   ),
                 for (final (account, identities) in groups)
                   SheetGroup(
-                    header: alias == null && groups.length == 1 ? 'From' : account.displayName,
+                    header: alias == null && groups.length == 1 ? l10n.composeFrom : account.displayName,
                     children: [
                       for (final i in identities)
                         ListTile(
                           key: ValueKey('identity-${i.id}'),
                           dense: true,
                           title: Text(EmailAddress(i.email, i.name).toString(), style: const TextStyle(fontSize: 15)),
-                          subtitle: i.replyTo == null ? null : Text('Reply-To: ${i.replyTo}'),
+                          subtitle: i.replyTo == null ? null : Text(l10n.composeReplyTo(i.replyTo!)),
                           trailing: check(i),
                           onTap: () => Navigator.of(context).pop((account: account, identity: i, save: false)),
                         ),
@@ -663,6 +671,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
   /// Saves the alias [alias] of [account] as an identity and sends from it.
   Future<void> _saveAlias(MailAccount account, Identity alias) async {
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = context.l10n;
     final saved = Identity(
       id: newIdentityId(account),
       email: alias.email,
@@ -682,7 +691,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     if (!mounted) return;
     _accounts = [for (final a in _accounts) a.id == next.id ? next : a];
     _switchIdentity(next, saved);
-    showSnack(messenger, '${alias.email} is saved as an identity.');
+    showSnack(messenger, l10n.composeAliasSaved(alias.email));
   }
 
   /// Takes [old]'s automatic Cc and Bcc out of the recipients and adds [next]'s.
@@ -718,6 +727,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
 
   Future<void> _attach() async {
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = context.l10n;
     try {
       final files = await FilePicker.pickFiles();
       for (final f in files) {
@@ -727,10 +737,10 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
       _changed();
       final total = _attachments.fold<int>(0, (n, a) => n + a.data.length);
       if (total > 20 * 1024 * 1024) {
-        showSnack(messenger, 'Attachments total ${formatBytes(total)}; some servers refuse messages this large.');
+        showSnack(messenger, l10n.composeAttachmentsLarge(formatBytes(total)));
       }
     } on Exception {
-      showSnack(messenger, "Couldn't attach the file.");
+      showSnack(messenger, l10n.composeAttachFailed);
     }
   }
 
@@ -769,13 +779,14 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
   }
 
   Future<void> _send() async {
+    final l10n = context.l10n;
     final invalid = [..._to.invalid, ..._cc.invalid, ..._bcc.invalid];
     if (invalid.isNotEmpty) {
-      await _alert('Invalid Address', '“${invalid.first.email}” isn\'t a valid email address.');
+      await _alert(l10n.composeInvalidAddressTitle, l10n.composeInvalidAddress(invalid.first.email));
       return;
     }
     if (_subject.text.trim().isEmpty) {
-      final send = await _confirm('No Subject', 'This message has no subject. Send it anyway?', confirm: 'Send');
+      final send = await _confirm(l10n.composeNoSubjectTitle, l10n.composeNoSubjectText, confirm: l10n.mailSend);
       if (!send) return;
     }
     // OpenPGP: unlock the signing key, settle recipients without a key.
@@ -806,7 +817,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
           // It went out while being edited: keep the edits.
           await repo.saveDraft(_asDraft(message));
           _closeNow();
-          showSnack(messenger, 'It was sent before your changes, which are saved in Drafts.');
+          showSnack(messenger, l10n.composeSentBeforeChanges);
           return;
         }
         // Taken out of the Outbox: this screen holds the only copy now, and
@@ -827,22 +838,22 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
       showSnack(
         messenger,
         at != null
-            ? 'Scheduled for $when'
+            ? l10n.composeScheduled(when!)
             : undoSeconds > 0
-            ? 'Sending…'
-            : 'Sent',
+            ? l10n.composeSending
+            : l10n.composeSent,
         duration: Duration(seconds: at == null && undoSeconds > 0 ? undoSeconds : 4),
         action: undo
             ? SnackBarAction(
-                label: 'Undo',
-                onPressed: () => _undoSend(repo, outboxId, messenger, router, sendAt: at),
+                label: l10n.commonUndo,
+                onPressed: () => _undoSend(repo, outboxId, messenger, router, l10n, sendAt: at),
               )
             : null,
       );
     } on Object catch (e) {
       // The message stays here; Send can be tried again.
       if (mounted) setState(() => _busy = false);
-      showSnack(messenger, e is MailException ? e.message : 'Couldn’t send. Try again.');
+      showSnack(messenger, e is MailException ? e.message : l10n.composeSendFailed);
     }
   }
 
@@ -851,13 +862,14 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     MailRepository repo,
     String outboxId,
     ScaffoldMessengerState messenger,
-    GoRouter? router, {
+    GoRouter? router,
+    AppLocalizations l10n, {
     DateTime? sendAt,
   }) async {
     try {
       final message = await repo.cancelSend(outboxId);
       if (message == null) {
-        showSnack(messenger, 'Already sent.');
+        showSnack(messenger, l10n.composeAlreadySent);
       } else {
         await router?.push<void>(Routes.compose, extra: ComposeArgs.restore(message, sendAt: sendAt));
       }
@@ -870,12 +882,13 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     if (_busy) return;
     if (_preparing) return _closeNow();
     if (!_dirty) return _closeUnchanged();
+    final l10n = context.l10n;
     if (_outboxId != null) {
       final choice = await showActionSheet<_CloseChoice>(
         context,
-        actions: const [
-          SheetAction('Discard Changes', _CloseChoice.discardChanges, destructive: true),
-          SheetAction('Save Changes', _CloseChoice.save),
+        actions: [
+          SheetAction(l10n.composeDiscardChanges, _CloseChoice.discardChanges, destructive: true),
+          SheetAction(l10n.composeSaveChanges, _CloseChoice.save),
         ],
       );
       if (choice == null || !mounted) return;
@@ -883,9 +896,9 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     }
     final choice = await showActionSheet<_CloseChoice>(
       context,
-      actions: const [
-        SheetAction('Delete Draft', _CloseChoice.delete, destructive: true),
-        SheetAction('Save Draft', _CloseChoice.save),
+      actions: [
+        SheetAction(l10n.composeDeleteDraft, _CloseChoice.delete, destructive: true),
+        SheetAction(l10n.composeSaveDraft, _CloseChoice.save),
       ],
     );
     if (choice == null || !mounted) return;
@@ -908,7 +921,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
           if (message != null && _snapshot() != _lastSaved) await _repo.saveDraft(_asDraft(message));
           _forgetLocal();
           _closeNow();
-          showSnack(messenger, 'Draft saved');
+          showSnack(messenger, l10n.composeDraftSaved);
       }
     } on MailException catch (e) {
       if (mounted) setState(() => _busy = false);
@@ -954,7 +967,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
         CupertinoDialogAction(
           isDefaultAction: true,
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('OK'),
+          child: Text(context.l10n.commonOk),
         ),
       ],
     ),
@@ -967,7 +980,10 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
           title: Text(title),
           content: Text(message),
           actions: [
-            CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancel')),
+            CupertinoDialogAction(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(context.l10n.commonCancel),
+            ),
             CupertinoDialogAction(
               isDefaultAction: true,
               onPressed: () => Navigator.of(context).pop(true),
@@ -984,8 +1000,9 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final noAccount = !_preparing && _identity == null;
-    final title = _subject.text.trim().isEmpty ? 'New Message' : _subject.text.trim();
+    final title = _subject.text.trim().isEmpty ? l10n.composeNewMessageTitle : _subject.text.trim();
     return PopScope(
       // Back closes an untouched message at once; anything autosave may
       // have left behind goes through Cancel's cleanup.
@@ -999,18 +1016,18 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
           leading: TextButton(
             key: const Key('compose-cancel'),
             onPressed: _cancel,
-            child: const Text('Cancel', style: TextStyle(fontSize: 16)),
+            child: Text(l10n.commonCancel, style: const TextStyle(fontSize: 16)),
           ),
           title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 17)),
           actions: [
             IconButton(
-              tooltip: 'Attach',
+              tooltip: l10n.composeAttach,
               icon: const Icon(LoupeIcons.attachment),
               onPressed: _preparing || _busy ? null : _attach,
             ),
             IconButton(
               key: const Key('compose-send-later'),
-              tooltip: 'Send Later',
+              tooltip: l10n.composeSendLater,
               isSelected: _sendAt != null,
               icon: const Icon(LoupeIcons.sendLater),
               selectedIcon: Icon(LoupeIcons.sendLaterFilled, color: theme.colorScheme.primary),
@@ -1031,10 +1048,10 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
                 Container(
                   color: subtleFill(context),
                   padding: const EdgeInsets.all(16),
-                  child: Text('Add an account to send mail.', style: TextStyle(color: colors.secondaryText)),
+                  child: Text(l10n.composeNoAccount, style: TextStyle(color: colors.secondaryText)),
                 ),
               RecipientField(
-                label: 'To:',
+                label: l10n.composeTo,
                 controller: _to,
                 focusNode: _toFocus,
                 suggest: (p) => _repo.suggestAddresses(p),
@@ -1048,7 +1065,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
                     WidgetsBinding.instance.addPostFrameCallback((_) => _ccFocus.requestFocus());
                   },
                   child: Text(
-                    'Cc/Bcc, From: ${_identity?.email ?? ''}',
+                    l10n.composeCcBccFrom(_identity?.email ?? ''),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(color: colors.secondaryText, fontSize: 16),
@@ -1056,12 +1073,12 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
                 )
               else ...[
                 RecipientField(
-                  label: 'Cc:',
+                  label: l10n.composeCc,
                   controller: _cc,
                   focusNode: _ccFocus,
                   suggest: (p) => _repo.suggestAddresses(p),
                 ),
-                RecipientField(label: 'Bcc:', controller: _bcc, suggest: (p) => _repo.suggestAddresses(p)),
+                RecipientField(label: l10n.composeBcc, controller: _bcc, suggest: (p) => _repo.suggestAddresses(p)),
                 _row(
                   context,
                   key: const Key('compose-from'),
@@ -1073,7 +1090,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: 'From: ',
+                              text: '${l10n.composeFromLabel} ',
                               style: TextStyle(color: colors.secondaryText),
                             ),
                             TextSpan(
@@ -1089,7 +1106,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
                         Padding(
                           padding: const EdgeInsets.only(top: 2),
                           child: Text(
-                            'Reply-To: $replyTo',
+                            l10n.composeReplyTo(replyTo),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(color: colors.secondaryText, fontSize: 13),
@@ -1111,7 +1128,9 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
                     children: [
                       Expanded(
                         child: Text(
-                          '$_fromVerb from ${alias.email}?',
+                          _replying
+                              ? l10n.composeReplyFromSuggestion(alias.email)
+                              : l10n.composeSendFromSuggestion(alias.email),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(color: theme.colorScheme.primary, fontSize: 15),
@@ -1119,7 +1138,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
                       ),
                       Semantics(
                         button: true,
-                        label: 'Dismiss',
+                        label: l10n.composeDismiss,
                         child: InkResponse(
                           key: const Key('compose-alias-dismiss'),
                           radius: 18,
@@ -1142,7 +1161,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     isDense: true,
-                    prefixText: 'Subject: ',
+                    prefixText: '${l10n.composeSubjectLabel} ',
                     prefixStyle: TextStyle(color: colors.secondaryText, fontSize: 16),
                   ),
                 ),
@@ -1164,7 +1183,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
                             _changed();
                           },
                           deleteIcon: const Icon(LoupeIcons.clear, size: 18),
-                          deleteButtonTooltipMessage: 'Remove',
+                          deleteButtonTooltipMessage: l10n.commonRemove,
                         ),
                     ],
                   ),
@@ -1203,10 +1222,11 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
       child: CircularProgressIndicator(strokeWidth: 2, color: Theme.of(context).colorScheme.onPrimary),
     );
     final when = at == null ? null : formatSendTimeFor(context, at, now: DateTime.now(), compact: true);
+    final l10n = context.l10n;
     return Semantics(
       button: true,
-      label: when == null ? 'Send' : 'Send $when',
-      hint: 'Long-press to send later',
+      label: when == null ? l10n.mailSend : l10n.composeSendAt(when),
+      hint: l10n.composeSendHint,
       excludeSemantics: true,
       child: GestureDetector(
         onLongPress: onPressed == null ? null : _pickSendLater,

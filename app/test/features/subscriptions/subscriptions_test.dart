@@ -11,6 +11,7 @@ import 'package:loupe/features/subscriptions/subscription_format.dart';
 import 'package:loupe/features/subscriptions/subscription_providers.dart';
 import 'package:loupe/features/subscriptions/subscription_screen.dart';
 import 'package:loupe/features/subscriptions/subscriptions_screen.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:loupe/router.dart';
 import 'package:loupe/shared/grouped_list.dart';
 import 'package:loupe/theme/loupe_icons.dart';
@@ -110,17 +111,19 @@ Subscription _sub(String key, {int recent = 9, int read = 0, int total = 9}) => 
   lastReceived: testNow.subtract(const Duration(days: 2)),
 );
 
+final _l10n = lookupAppLocalizations(const Locale('en'));
+
 void main() {
   setUpAll(() => ReadableMessageView.debugSynchronous = true);
   tearDownAll(() => ReadableMessageView.debugSynchronous = false);
 
   group('labels', () {
     test('volume and read rate', () {
-      expect(statsLine(_sub(_deals)), '≈ 3 / month · read 0%');
-      expect(statsLine(_sub(_deals, recent: 2, read: 1, total: 2)), '< 1 / month · read 50%');
-      expect(statsLine(_sub(_deals, recent: 0, read: 0, total: 4)), 'None lately · read 0%');
-      expect(readLabel(_sub(_deals, recent: 300, read: 1, total: 300)), 'read <1%');
-      expect(readLabel(_sub(_deals, recent: 300, read: 299, total: 300)), 'read 99%');
+      expect(statsLine(_l10n, _sub(_deals)), '≈ 3 / month · read 0%');
+      expect(statsLine(_l10n, _sub(_deals, recent: 2, read: 1, total: 2)), '< 1 / month · read 50%');
+      expect(statsLine(_l10n, _sub(_deals, recent: 0, read: 0, total: 4)), 'None lately · read 0%');
+      expect(readLabel(_l10n, _sub(_deals, recent: 300, read: 1, total: 300)), 'read <1%');
+      expect(readLabel(_l10n, _sub(_deals, recent: 300, read: 299, total: 300)), 'read 99%');
     });
 
     test('filters', () {
@@ -141,10 +144,11 @@ void main() {
       final old = UnsubscribeRecord(at: testNow.subtract(const Duration(days: 12)), via: UnsubscribeVia.mail);
       expect(recent.stillSending(s), isFalse);
       expect(old.stillSending(s), isTrue);
-      expect(unsubscribedLabel(old, s), 'Still sending');
-      expect(unsubscribedLabel(recent, s, now: testNow), startsWith('Unsubscribed on '));
+      expect(unsubscribedLabel(_l10n, old, s), 'Still sending');
+      expect(unsubscribedLabel(_l10n, recent, s, now: testNow), startsWith('Unsubscribed on '));
       expect(
         unsubscribedLabel(
+          _l10n,
           UnsubscribeRecord(at: testNow, via: UnsubscribeVia.web),
           s,
           now: testNow,
@@ -164,7 +168,8 @@ void main() {
         senderCount: 4,
       );
       expect(subscriptionCondition(list), 'header:List-Id=dev.lists.example.org');
-      final block = blockRule(list);
+      final block = blockRule(_l10n, list);
+      expect(block.name, 'Block Dev');
       expect(block.actions, [const MarkJunkAction()]);
       expect(isBlocked(list, [block]), isTrue);
       expect(isBlocked(list, [block.copyWith(enabled: false)]), isFalse);

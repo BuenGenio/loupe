@@ -14,76 +14,12 @@ import 'package:flutter_test/flutter_test.dart';
 /// Take a file off once its strings are in app_en.arb.
 const pending = <String>{
   // Reading
-  'lib/features/conversation/attachments.dart',
-  'lib/features/conversation/conversation_screen.dart',
-  'lib/features/conversation/mailbox_picker.dart',
-  'lib/features/conversation/message_actions.dart',
-  'lib/features/conversation/message_card.dart',
-  'lib/features/conversation/raw_source_screen.dart',
-  'lib/features/conversation/reader_options_sheet.dart',
-  'lib/features/conversation/security/assessment.dart',
-  'lib/features/conversation/security/security_badge.dart',
-  'lib/features/conversation/security/security_gate.dart',
-  'lib/features/conversation/security/security_sheet.dart',
-  'lib/features/export/export_actions.dart',
-  'lib/features/mailboxes/mailboxes_screen.dart',
-  'lib/features/mailboxes/vip_screen.dart',
-  'lib/features/message_list/message_list_screen.dart',
-  'lib/features/panes/mail_home.dart',
-  'lib/features/snooze/snooze_sheet.dart',
-  'lib/features/snooze/snoozed_screen.dart',
 
   // Security
 
   // Settings
-  'lib/features/rules/include_sheet.dart',
-  'lib/features/rules/rule_editor_screen.dart',
-  'lib/features/rules/rules_screen.dart',
-  'lib/features/settings/account_settings_screen.dart',
-  'lib/features/settings/advanced_settings_screen.dart',
-  'lib/features/settings/identities_screen.dart',
-  'lib/features/settings/manage_folders_screen.dart',
-  'lib/features/settings/notification_settings_screen.dart',
-  'lib/features/settings/settings_screen.dart',
-  'lib/features/settings/swipe_settings_screen.dart',
-  'lib/features/subscriptions/one_click.dart',
-  'lib/features/subscriptions/subscription_actions.dart',
-  'lib/features/subscriptions/subscription_screen.dart',
-  'lib/features/subscriptions/subscriptions_screen.dart',
-
-  // More
-  'lib/app.dart',
-  'lib/features/attachments/attachment_actions.dart',
-  'lib/features/attachments/attachment_viewer_screen.dart',
-  'lib/features/attachments/viewers/details_card.dart',
-  'lib/features/attachments/viewers/eml_view.dart',
-  'lib/features/attachments/viewers/event_summary.dart',
-  'lib/features/calendar/invitation_card.dart',
-  'lib/features/calendar/invitation_reply.dart',
-  'lib/features/keyboard/shortcut_sheet.dart',
-  'lib/features/mailing_lists/mailing_list_screen.dart',
-  'lib/features/mailing_lists/technical_lists_screen.dart',
-  'lib/features/palette/command_palette.dart',
-  'lib/features/palette/palette_items.dart',
-  'lib/features/search/search_screen.dart',
-  'lib/features/search/search_view.dart',
-  'lib/features/search/smart_mailbox_screen.dart',
-  'lib/features/search/smart_mailbox_settings_screen.dart',
-  'lib/shared/bars.dart',
-  'lib/shared/mail_actions.dart',
-  'lib/shared/message_row.dart',
-  'lib/shared/sheets.dart',
 
   // Accounts and writing
-  'lib/features/account_import/account_import_screen.dart',
-  'lib/features/account_setup/account_setup_screen.dart',
-  'lib/features/account_setup/server_settings.dart',
-  'lib/features/account_setup/sign_in_again.dart',
-  'lib/features/compose/compose_recovery.dart',
-  'lib/features/compose/compose_screen.dart',
-  'lib/features/compose/send_later.dart',
-  'lib/features/outbox/outbox_screen.dart',
-  'lib/platform/error_log.dart',
 };
 
 /// A literal that starts like a word (`'Archive'`, `"Don't"`) where

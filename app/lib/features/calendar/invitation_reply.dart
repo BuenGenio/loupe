@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_calendar/mail_calendar.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../settings/app_settings.dart';
 import '../compose/send_later.dart' show deviceDateLocale;
@@ -26,12 +27,27 @@ final class InvitationReply {
 }
 
 /// Why an answer can't be sent.
+enum InvitationReplyProblem {
+  /// The invitation names no organizer to reply to.
+  noOrganizer,
+
+  /// No account can send the reply.
+  noAccount,
+}
+
+/// An answer that can't be sent, and why.
 final class InvitationReplyException implements Exception {
-  const InvitationReplyException(this.message);
-  final String message;
+  const InvitationReplyException(this.problem);
+  final InvitationReplyProblem problem;
+
+  /// What to tell the user.
+  String message(AppLocalizations l10n) => switch (problem) {
+    InvitationReplyProblem.noOrganizer => l10n.calendarNoOrganizer,
+    InvitationReplyProblem.noAccount => l10n.calendarNoAccount,
+  };
 
   @override
-  String toString() => message;
+  String toString() => 'InvitationReplyException: ${problem.name}';
 }
 
 /// The reply that answers [invitation] (in [source]) with [answer]: an iMIP
@@ -51,10 +67,10 @@ InvitationReply buildInvitationReply({
 }) {
   final organizer = invitation.event.organizer;
   if (organizer == null || organizer.email.isEmpty) {
-    throw const InvitationReplyException('This invitation has no organizer to reply to.');
+    throw const InvitationReplyException(InvitationReplyProblem.noOrganizer);
   }
   final from = replyIdentity(accounts: accounts, message: source, me: invitation.me, headers: headers);
-  if (from == null) throw const InvitationReplyException('There’s no account to reply from.');
+  if (from == null) throw const InvitationReplyException(InvitationReplyProblem.noAccount);
   final identity = from.identity;
   final name = identity.name?.trim().isNotEmpty ?? false ? identity.name!.trim() : null;
   final ics = buildReply(
@@ -110,6 +126,7 @@ Future<InvitationRecord?> sendInvitationReply(
   required ValueChanged<InvitationRecord?> onUndone,
 }) async {
   final messenger = ScaffoldMessenger.of(context);
+  final l10n = context.l10n;
   final repo = ref.read(repositoryProvider);
   final accounts = ref.read(accountsProvider).value ?? const <MailAccount>[];
   final now = clock.now();
@@ -124,13 +141,14 @@ Future<InvitationRecord?> sendInvitationReply(
       comment: comment,
       now: now,
       format: EventTimeFormat(
+        l10n: l10n,
         locale: deviceDateLocale(),
         use24h: MediaQuery.alwaysUse24HourFormatOf(context),
         now: now,
       ),
     );
   } on InvitationReplyException catch (e) {
-    showSnack(messenger, e.message);
+    showSnack(messenger, e.message(l10n));
     return null;
   }
 
@@ -177,22 +195,19 @@ Future<InvitationRecord?> sendInvitationReply(
     await records.writeCalendarRecord(uid, jsonEncode(after.toJson()), recurrenceId: recurrenceId);
   }
 
-  final verb = switch (answer) {
-    PartStat.accepted => 'Accepted',
-    PartStat.tentative => 'Maybe',
-    _ => 'Declined',
-  };
   showSnack(
     messenger,
-    undoSeconds > 0 ? '$verb · sending reply to ${message.to.first.displayName}…' : '$verb · reply sent',
+    undoSeconds > 0
+        ? l10n.calendarReplySending(answer.name, message.to.first.displayName)
+        : l10n.calendarReplySent(answer.name),
     duration: Duration(seconds: undoSeconds > 0 ? undoSeconds : 4),
     action: undoSeconds > 0
         ? SnackBarAction(
-            label: 'Undo',
+            label: l10n.commonUndo,
             onPressed: () async {
               final back = await repo.cancelSend(outboxId);
               if (back == null) {
-                showSnack(messenger, 'The reply was already sent.');
+                showSnack(messenger, l10n.calendarReplyAlreadySent);
                 return;
               }
               if (records != null && uid != null && uid.isNotEmpty) {
@@ -200,7 +215,7 @@ Future<InvitationRecord?> sendInvitationReply(
                 await records.writeCalendarRecord(uid, previous, recurrenceId: recurrenceId);
               }
               onUndone(before);
-              showSnack(messenger, 'Reply not sent.');
+              showSnack(messenger, l10n.calendarReplyNotSent);
             },
           )
         : null,

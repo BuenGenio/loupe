@@ -1,3 +1,5 @@
+import '../../l10n/l10n.dart';
+
 /// Which in-app viewer shows an attachment.
 enum AttachmentKind {
   /// Decodable images: the gallery.
@@ -302,7 +304,7 @@ String effectiveMimeType(String mimeType, [String? filename]) {
 
 /// A short, human description of the file type: "PDF Document",
 /// "ZIP Archive", "DOCX File".
-String describeFileType(String mimeType, [String? filename]) {
+String describeFileType(String mimeType, String? filename, {required AppLocalizations l10n}) {
   final mime = effectiveMimeType(mimeType, filename);
   final ext = fileExtension(filename);
   final kind = attachmentKindOf(mimeType, filename);
@@ -315,37 +317,38 @@ String describeFileType(String mimeType, [String? filename]) {
         'ms-bmp' => 'BMP',
         _ => sub.toUpperCase(),
       };
-      return name.isEmpty ? 'Image' : '$name Image';
+      return name.isEmpty ? l10n.attachmentsTypeImage : l10n.attachmentsTypeNamedImage(name);
     case AttachmentKind.pdf:
-      return 'PDF Document';
+      return l10n.attachmentsTypePdf;
     case AttachmentKind.csv:
-      return ext == 'tsv' || mime == 'text/tab-separated-values' ? 'Tab-Separated Values' : 'CSV Spreadsheet';
+      return ext == 'tsv' || mime == 'text/tab-separated-values' ? l10n.attachmentsTypeTsv : l10n.attachmentsTypeCsv;
     case AttachmentKind.calendar:
-      return 'Calendar Event';
+      return l10n.attachmentsTypeCalendar;
     case AttachmentKind.email:
-      return 'Email Message';
+      return l10n.attachmentsTypeEmail;
     case AttachmentKind.text:
-      if (ext == 'vcf' || ext == 'vcard' || mime.contains('vcard')) return 'Contact Card';
+      if (ext == 'vcf' || ext == 'vcard' || mime.contains('vcard')) return l10n.attachmentsTypeContact;
+      // Format names, the same in every language.
       if (ext == 'json' || mime.endsWith('json')) return 'JSON';
       if (ext == 'xml' || mime.endsWith('xml')) return 'XML';
       if (ext == 'md' || ext == 'markdown' || mime == 'text/markdown') return 'Markdown';
-      if (ext == 'log') return 'Log File';
-      return 'Text';
+      if (ext == 'log') return l10n.attachmentsTypeLog;
+      return l10n.attachmentsTypeText;
     case AttachmentKind.other:
       break;
   }
-  if (mime.contains('zip') || ext == 'zip') return 'ZIP Archive';
+  if (mime.contains('zip') || ext == 'zip') return l10n.attachmentsTypeZip;
   if (mime.contains('x-7z') || mime.contains('x-tar') || mime.contains('gzip') || mime.contains('rar')) {
-    return 'Archive';
+    return l10n.attachmentsTypeArchive;
   }
-  if (mime.contains('wordprocessingml') || mime == 'application/msword') return 'Word Document';
-  if (mime.contains('spreadsheetml') || mime == 'application/vnd.ms-excel') return 'Excel Spreadsheet';
-  if (mime.contains('presentationml') || mime.contains('powerpoint')) return 'PowerPoint Presentation';
-  if (mime.contains('opendocument')) return 'OpenDocument';
-  if (mime == 'text/html') return 'Web Page';
-  if (mime.startsWith('image/')) return 'Image';
-  if (mime.startsWith('video/')) return 'Video';
-  if (mime.startsWith('audio/')) return 'Audio';
-  if (ext.isNotEmpty && ext.length <= 6) return '${ext.toUpperCase()} File';
-  return 'File';
+  if (mime.contains('wordprocessingml') || mime == 'application/msword') return l10n.attachmentsTypeWord;
+  if (mime.contains('spreadsheetml') || mime == 'application/vnd.ms-excel') return l10n.attachmentsTypeExcel;
+  if (mime.contains('presentationml') || mime.contains('powerpoint')) return l10n.attachmentsTypePowerPoint;
+  if (mime.contains('opendocument')) return 'OpenDocument'; // The format's name.
+  if (mime == 'text/html') return l10n.attachmentsTypeWebPage;
+  if (mime.startsWith('image/')) return l10n.attachmentsTypeImage;
+  if (mime.startsWith('video/')) return l10n.attachmentsTypeVideo;
+  if (mime.startsWith('audio/')) return l10n.attachmentsTypeAudio;
+  if (ext.isNotEmpty && ext.length <= 6) return l10n.attachmentsTypeExtension(ext.toUpperCase());
+  return l10n.attachmentsTypeFile;
 }
