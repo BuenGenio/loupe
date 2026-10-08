@@ -171,3 +171,4 @@ final raw = compileGmailRaw(expr) ?? compileGmailRaw(widenForServer(expr, gmailS
 - `QuerySuggestion.replaceStart` and `replaceEnd`: the range that the completion replaces.
 - `compileImap(supported:)`.
 - `simplifyQuery`, `bindAccountTerms`, `matchesNothing`, `gmailSupports` and `jmapSupports`.
+- `findContradiction`: the term a query requires both to hold and not to hold (`is:read and is:unread`). `matchesNothing` is true for such queries too, so the app and the transports search nothing for them.
