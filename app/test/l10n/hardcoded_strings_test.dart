@@ -47,20 +47,6 @@ const pending = <String>{
   'lib/features/smime/smime_status.dart',
 
   // Settings
-  'lib/features/rules/include_sheet.dart',
-  'lib/features/rules/rule_editor_screen.dart',
-  'lib/features/rules/rules_screen.dart',
-  'lib/features/settings/account_settings_screen.dart',
-  'lib/features/settings/advanced_settings_screen.dart',
-  'lib/features/settings/identities_screen.dart',
-  'lib/features/settings/manage_folders_screen.dart',
-  'lib/features/settings/notification_settings_screen.dart',
-  'lib/features/settings/settings_screen.dart',
-  'lib/features/settings/swipe_settings_screen.dart',
-  'lib/features/subscriptions/one_click.dart',
-  'lib/features/subscriptions/subscription_actions.dart',
-  'lib/features/subscriptions/subscription_screen.dart',
-  'lib/features/subscriptions/subscriptions_screen.dart',
 
   // More
   'lib/app.dart',

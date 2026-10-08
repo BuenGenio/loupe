@@ -69,15 +69,32 @@ enum OneClickOutcome {
   failed,
 }
 
+/// Why a request [OneClickOutcome.failed].
+enum OneClickFailure {
+  /// The link isn't HTTPS on a host on the internet, so it wasn't sent.
+  notAllowed,
+
+  /// No answer in time.
+  timeout,
+
+  /// No connection: offline, a bad certificate.
+  unreachable,
+}
+
+/// How an unsubscribe went; the screens put it into words.
 @immutable
 final class OneClickResult {
-  const OneClickResult(this.outcome, {this.statusCode, this.message});
+  const OneClickResult(this.outcome, {required this.host, this.statusCode, this.failure});
 
   final OneClickOutcome outcome;
+
+  /// The host of the unsubscribe link.
+  final String host;
+
   final int? statusCode;
 
-  /// Why it didn't work, for the user.
-  final String? message;
+  /// Why it [OneClickOutcome.failed].
+  final OneClickFailure? failure;
 
   bool get ok => outcome == OneClickOutcome.unsubscribed;
 }
@@ -97,10 +114,7 @@ final class OneClickUnsubscriber {
   Future<OneClickResult> unsubscribe(Uri uri) async {
     final host = uri.host;
     if (!OneClickRequest.isAllowed(uri)) {
-      return const OneClickResult(
-        OneClickOutcome.failed,
-        message: 'The unsubscribe link isn’t a secure address on the internet.',
-      );
+      return OneClickResult(OneClickOutcome.failed, host: host, failure: OneClickFailure.notAllowed);
     }
     var request = OneClickRequest(uri);
     for (var hop = 0; ; hop++) {
@@ -108,13 +122,13 @@ final class OneClickUnsubscriber {
       try {
         response = await transport.send(request, timeout: timeout);
       } on TimeoutException {
-        return OneClickResult(OneClickOutcome.failed, message: '$host didn’t answer in time.');
+        return OneClickResult(OneClickOutcome.failed, host: host, failure: OneClickFailure.timeout);
       } on IOException {
-        return OneClickResult(OneClickOutcome.failed, message: 'Couldn’t reach $host.');
+        return OneClickResult(OneClickOutcome.failed, host: host, failure: OneClickFailure.unreachable);
       }
       final status = response.statusCode;
       if ((status >= 200 && status < 300) || status == 303) {
-        return OneClickResult(OneClickOutcome.unsubscribed, statusCode: status);
+        return OneClickResult(OneClickOutcome.unsubscribed, host: host, statusCode: status);
       }
       if (const {301, 302, 307, 308}.contains(status)) {
         final location = response.location;
@@ -124,20 +138,12 @@ final class OneClickUnsubscriber {
             target.host.toLowerCase() != host.toLowerCase() ||
             !OneClickRequest.isAllowed(target) ||
             hop >= maxRedirects) {
-          return OneClickResult(
-            OneClickOutcome.redirectedAway,
-            statusCode: status,
-            message: '$host sent the request on to another page, which Loupe doesn’t follow.',
-          );
+          return OneClickResult(OneClickOutcome.redirectedAway, host: host, statusCode: status);
         }
         request = OneClickRequest(target);
         continue;
       }
-      return OneClickResult(
-        OneClickOutcome.refused,
-        statusCode: status,
-        message: '$host refused the request (error $status).',
-      );
+      return OneClickResult(OneClickOutcome.refused, host: host, statusCode: status);
     }
   }
 }

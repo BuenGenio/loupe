@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../shared/mailbox_display.dart';
 import '../../shared/tags.dart';
@@ -25,29 +26,33 @@ final _random = Random();
 String newRuleId() =>
     'rule-${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}-${_random.nextInt(1 << 30).toRadixString(36)}';
 
-/// The folder of a move action, as the user knows it.
-String mailboxLabel(String mailboxId, Map<String, Mailbox> mailboxes) {
+/// The folder of a move action, as the user knows it; null when its id
+/// can't be read.
+String? mailboxLabel(String mailboxId, Map<String, Mailbox> mailboxes) {
   final box = mailboxes[mailboxId];
   if (box != null) return mailboxDisplayName(box);
   try {
     final path = MailIds.parseMailbox(mailboxId).$2;
     return path.split('/').last;
   } on FormatException {
-    return 'a folder';
+    return null;
   }
 }
 
 /// How an action reads ("Move to Receipts", "Tag Work").
-String describeAction(RuleAction action, Map<String, Mailbox> mailboxes) => switch (action) {
-  MoveToMailboxAction(:final mailboxId) => 'Move to ${mailboxLabel(mailboxId, mailboxes)}',
-  AddTagAction(:final keyword) => 'Tag ${tagLabel(keyword)}',
-  RemoveTagAction(:final keyword) => 'Remove Tag ${tagLabel(keyword)}',
-  FlagAction() => 'Flag',
-  MarkReadAction() => 'Mark as Read',
-  MarkJunkAction() => 'Move to Junk',
-  KeepInInboxAction() => 'Keep in Inbox',
+String describeAction(AppLocalizations l10n, RuleAction action, Map<String, Mailbox> mailboxes) => switch (action) {
+  MoveToMailboxAction(:final mailboxId) => switch (mailboxLabel(mailboxId, mailboxes)) {
+    final folder? => l10n.rulesActionMove(folder),
+    null => l10n.rulesActionMoveUnknown,
+  },
+  AddTagAction(:final keyword) => l10n.rulesActionTag(tagLabel(keyword)),
+  RemoveTagAction(:final keyword) => l10n.rulesActionRemoveTag(tagLabel(keyword)),
+  FlagAction() => l10n.mailFlag,
+  MarkReadAction() => l10n.mailMarkAsRead,
+  MarkJunkAction() => l10n.mailMoveToJunk,
+  KeepInInboxAction() => l10n.rulesActionKeepInInbox,
   ForwardAction(:final address, :final keepCopy) =>
-    keepCopy ? 'Forward to $address' : 'Forward to $address, keep no copy',
+    keepCopy ? l10n.rulesActionForward(address) : l10n.rulesActionForwardNoCopy(address),
 };
 
 IconData actionIcon(RuleAction action) => switch (action) {
@@ -61,16 +66,11 @@ IconData actionIcon(RuleAction action) => switch (action) {
 };
 
 /// One line summing up what a rule does.
-String describeActions(Rule rule, Map<String, Mailbox> mailboxes) {
-  final parts = [for (final a in rule.actions) describeAction(a, mailboxes)];
-  if (rule.stopProcessing && !rule.actions.any((a) => a is KeepInInboxAction)) parts.add('Stop');
-  return parts.isEmpty ? 'Does nothing yet' : parts.join(', ');
+String describeActions(AppLocalizations l10n, Rule rule, Map<String, Mailbox> mailboxes) {
+  final parts = [for (final a in rule.actions) describeAction(l10n, a, mailboxes)];
+  if (rule.stopProcessing && !rule.actions.any((a) => a is KeepInInboxAction)) parts.add(l10n.rulesActionStop);
+  return parts.isEmpty ? l10n.rulesNoActions : parts.join(', ');
 }
-
-String locationLabel(RuleLocation location) => switch (location) {
-  RuleLocation.device => 'Device',
-  RuleLocation.server => 'Server',
-};
 
 /// "Device" or "Server", as a small capsule.
 class RuleLocationBadge extends StatelessWidget {
@@ -90,10 +90,10 @@ class RuleLocationBadge extends StatelessWidget {
         children: [
           Icon(location == RuleLocation.server ? LoupeIcons.ruleServer : LoupeIcons.ruleDevice, size: 12, color: tint),
           const SizedBox(width: 3),
-          Text(
-            locationLabel(location),
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: tint),
-          ),
+          Text(switch (location) {
+            RuleLocation.device => context.l10n.rulesLocationDevice,
+            RuleLocation.server => context.l10n.rulesLocationServer,
+          }, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: tint)),
         ],
       ),
     );
