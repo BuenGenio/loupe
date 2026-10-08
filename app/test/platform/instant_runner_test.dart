@@ -75,6 +75,16 @@ void main() {
 
   Future<void> settle() => Future<void>.delayed(const Duration(milliseconds: 80));
 
+  /// Waits for [done], which the runner reaches a moment after a sync: it
+  /// notifies first, then updates the badge. A fixed delay would race a slow
+  /// machine.
+  Future<void> until(bool Function() done) async {
+    final deadline = DateTime.now().add(const Duration(seconds: 5));
+    while (!done() && DateTime.now().isBefore(deadline)) {
+      await Future<void>.delayed(const Duration(milliseconds: 10));
+    }
+  }
+
   setUp(() {
     dir = Directory.systemTemp.createTempSync('instant_runner_test');
     mail = FakeMail()..account('work');
@@ -108,7 +118,7 @@ void main() {
     instant
       ..finishSync()
       ..finishSync();
-    await settle();
+    await until(() => badge.shown.isNotEmpty && badge.shown.last == 1);
     expect(notifier.messageBodies, ['Within seconds']);
     expect(badge.shown.last, 1);
     await runner.close();
