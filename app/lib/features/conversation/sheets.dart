@@ -56,25 +56,32 @@ Future<T?> showActionSheet<T>(
   ),
 );
 
-/// A rounded bottom sheet with a drag handle, sized to its content.
-Future<T?> showLoupeSheet<T>(BuildContext context, {required WidgetBuilder builder, bool expand = false}) =>
-    showModalBottomSheet<T>(
-      context: context,
-      useSafeArea: true,
-      isScrollControlled: true,
-      showDragHandle: true,
-      backgroundColor: LoupeColors.of(context).groupedBackground,
-      builder: expand
-          ? (context) => DraggableScrollableSheet(
-              expand: false,
-              initialChildSize: 0.7,
-              minChildSize: 0.4,
-              maxChildSize: 1,
-              builder: (context, controller) =>
-                  PrimaryScrollController(controller: controller, child: builder(context)),
-            )
-          : builder,
-    );
+/// A rounded bottom sheet with a drag handle, sized to its content. Unless
+/// [dismissible], it has no handle and closes only from its own buttons
+/// (and Back, if it lets it).
+Future<T?> showLoupeSheet<T>(
+  BuildContext context, {
+  required WidgetBuilder builder,
+  bool expand = false,
+  bool dismissible = true,
+}) => showModalBottomSheet<T>(
+  context: context,
+  useSafeArea: true,
+  isScrollControlled: true,
+  isDismissible: dismissible,
+  enableDrag: dismissible,
+  showDragHandle: dismissible,
+  backgroundColor: LoupeColors.of(context).groupedBackground,
+  builder: expand
+      ? (context) => DraggableScrollableSheet(
+          expand: false,
+          initialChildSize: 0.7,
+          minChildSize: 0.4,
+          maxChildSize: 1,
+          builder: (context, controller) => PrimaryScrollController(controller: controller, child: builder(context)),
+        )
+      : builder,
+);
 
 /// A rounded group of rows on a grouped background, like an iOS inset list.
 class SheetGroup extends StatelessWidget {

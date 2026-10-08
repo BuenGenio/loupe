@@ -16,6 +16,7 @@ import '../../shared/bars.dart';
 import '../../shared/mail_actions.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
+import '../export/export_actions.dart';
 import '../keyboard/mail_commands.dart';
 import '../openpgp/content_loader.dart';
 import '../openpgp/pgp_status.dart';
@@ -498,6 +499,10 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
         }
       case MessageAction.source:
         await context.push(Routes.source(m.id));
+      case MessageAction.saveFile:
+        await saveMessageAsFile(context, ref, m);
+      case MessageAction.shareFile:
+        await shareMessageAsFile(context, ref, m);
       case MessageAction.search:
         final query = await showSearchFromSheet(context, m);
         if (query != null && mounted) await context.push(Routes.search(query));

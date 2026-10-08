@@ -165,6 +165,12 @@ List<PaletteItem> paletteItems(ProviderContainer container) {
   command(MailCommand.move, 'Move to Mailbox…', LoupeIcons.move, keywords: const ['folder', 'file']);
   command(MailCommand.markAllRead, 'Mark All as Read', LoupeIcons.markAllRead);
   command(
+    MailCommand.exportFolder,
+    'Export Folder…',
+    LoupeIcons.exportFolder,
+    keywords: const ['mbox', 'save', 'backup', 'download'],
+  );
+  command(
     MailCommand.refresh,
     'Get New Mail',
     LoupeIcons.refresh,

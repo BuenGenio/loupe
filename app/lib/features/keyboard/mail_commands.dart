@@ -18,6 +18,9 @@ enum MailCommand {
   snooze,
   move,
   markAllRead,
+
+  /// Export Folder…: the list's folder as an mbox file.
+  exportFolder,
   refresh,
   nextMessage,
   previousMessage,
