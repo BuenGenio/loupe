@@ -20,6 +20,7 @@ Loupe has no servers of its own and collects nothing about you. Your mail goes d
 | Your mail servers (IMAP and SMTP, JMAP, and ManageSieve for server rules) | To sync, send and search your mail |
 | Thunderbird's settings database (autoconfig.thunderbird.net), and your mail domain's own configuration address | When you add an account. The database learns your mail domain; your domain's own server learns your address. |
 | Google or Microsoft | When you sign in with them, and to renew that sign-in |
+| Google's push service (Firebase Cloud Messaging) | On Android, while [Push](/docs/notifications/#push) is on, to get and renew this phone's push address. A push carries no mail. |
 | A newsletter's unsubscribe address | Only when you tap Unsubscribe and the newsletter offers one-click unsubscribing |
 | The authority that issued an S/MIME certificate | Only if you turn on [revocation checking](/docs/encryption/#revocation-checking) |
 | Websites and maps | Only links, meeting links and map buttons you tap |

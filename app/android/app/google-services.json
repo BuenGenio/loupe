@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "641626010779",
+    "project_id": "loupe-18212",
+    "storage_bucket": "loupe-18212.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641626010779:android:1cc35101541e97a573423e",
+        "android_client_info": {
+          "package_name": "io.github.buengenio.loupe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUO-glkizCLGu6hjqNIV0Wao1STBReQ70"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

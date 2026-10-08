@@ -4921,6 +4921,36 @@ abstract class AppLocalizations {
   /// **'Allow Unrestricted Battery Use'**
   String get settingsAllowUnrestrictedBattery;
 
+  /// Android switch: lets a push message through Google's push service (Firebase Cloud Messaging) wake Loupe to check for mail.
+  ///
+  /// In en, this message translates to:
+  /// **'Push'**
+  String get settingsPush;
+
+  /// “check now” is all a push says; translate it as a short phrase.
+  ///
+  /// In en, this message translates to:
+  /// **'Push lets new mail wake Loupe at once, where your mail service supports it. Pushes go through Google’s push service and carry no mail, only “check now”.'**
+  String get settingsPushFooter;
+
+  /// No description provided for @settingsPushUnavailableFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone can’t receive pushes: they need Google Play services and a network connection. Loupe still checks for mail about every 15 minutes.'**
+  String get settingsPushUnavailableFooter;
+
+  /// Button: copies the address (token) pushes reach this phone at, e.g. to set up or test a push service.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Push Token'**
+  String get settingsCopyPushToken;
+
+  /// No description provided for @settingsPushTokenCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Push token copied'**
+  String get settingsPushTokenCopied;
+
   /// No description provided for @settingsSendTestNotification.
   ///
   /// In en, this message translates to:
