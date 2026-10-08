@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../shared/grouped_list.dart';
 import '../../shared/sheets.dart';
@@ -77,16 +78,17 @@ class _IdentitiesScreenState extends ConsumerState<IdentitiesScreen> {
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     final account = (ref.watch(accountsProvider).value ?? const <MailAccount>[])
         .where((a) => a.id == widget.accountId)
         .firstOrNull;
     if (account == null) {
       return GroupedPage(
-        title: 'Identities',
+        title: l10n.settingsIdentities,
         children: [
           Padding(
             padding: const EdgeInsets.all(32),
-            child: Text('This account was removed.', style: styles.footnote, textAlign: TextAlign.center),
+            child: Text(l10n.settingsAccountRemoved, style: styles.footnote, textAlign: TextAlign.center),
           ),
         ],
       );
@@ -94,12 +96,10 @@ class _IdentitiesScreenState extends ConsumerState<IdentitiesScreen> {
     final identities = _reordered ?? IdentitySelection.identitiesOf(account);
     final reorderable = identities.length > 1;
     return GroupedPage(
-      title: 'Identities',
+      title: l10n.settingsIdentities,
       children: [
         InsetGroup(
-          footer: reorderable
-              ? 'The first identity is the default for new messages. Drag to change the order.'
-              : 'The default identity for new messages.',
+          footer: reorderable ? l10n.settingsIdentitiesFooterReorder : l10n.settingsIdentitiesFooterSingle,
           children: [
             ReorderableListView(
               shrinkWrap: true,
@@ -117,7 +117,7 @@ class _IdentitiesScreenState extends ConsumerState<IdentitiesScreen> {
                         key: ValueKey('identity-row-${identity.id}'),
                         title: identity.name?.trim().isNotEmpty ?? false ? identity.name!.trim() : identity.email,
                         subtitle: identity.name?.trim().isNotEmpty ?? false ? identity.email : null,
-                        detail: index == 0 && reorderable ? 'Default' : null,
+                        detail: index == 0 && reorderable ? l10n.settingsIdentityDefault : null,
                         chevron: !reorderable,
                         onTap: () => _edit(account, identity),
                         trailing: reorderable
@@ -125,7 +125,7 @@ class _IdentitiesScreenState extends ConsumerState<IdentitiesScreen> {
                                 index: index,
                                 child: Semantics(
                                   container: true,
-                                  label: 'Reorder ${identity.email}',
+                                  label: l10n.settingsIdentityReorder(identity.email),
                                   child: Padding(
                                     padding: const EdgeInsetsDirectional.only(start: 12),
                                     child: Icon(LoupeIcons.reorder, color: colors.tertiaryText),
@@ -146,11 +146,11 @@ class _IdentitiesScreenState extends ConsumerState<IdentitiesScreen> {
           ],
         ),
         InsetGroup(
-          footer: 'A reply goes out from the identity the message was sent to.',
+          footer: l10n.settingsIdentitiesReplyFooter,
           children: [
             GroupedRow(
               key: const Key('identity-add'),
-              title: 'Add Identity',
+              title: l10n.settingsAddIdentity,
               titleStyle: styles.body.copyWith(color: colors.unreadDot),
               chevron: false,
               onTap: () => _edit(account, null),
@@ -226,12 +226,14 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
 
   /// Validates and resolves to the edited identity.
   Future<void> _done() async {
+    final l10n = context.l10n;
     final email = _email.text.trim();
-    if (email.isEmpty) return _alert('No Address', 'Enter the email address to send from.');
-    for (final (label, value) in [('', email), ('Reply-To ', _replyTo.text), ('Cc ', _cc.text), ('Bcc ', _bcc.text)]) {
+    if (email.isEmpty) return _alert(l10n.settingsIdentityNoAddressTitle, l10n.settingsIdentityNoAddressMessage);
+    // The field names the ARB select picks from.
+    for (final (field, value) in [('email', email), ('replyTo', _replyTo.text), ('cc', _cc.text), ('bcc', _bcc.text)]) {
       final v = value.trim();
       if (v.isNotEmpty && !ComposeText.isValidEmail(v)) {
-        return _alert('Invalid Address', '$label“$v” isn’t a valid email address.');
+        return _alert(l10n.settingsIdentityInvalidAddressTitle, l10n.settingsIdentityInvalidAddress(field, v));
       }
     }
     String? opt(TextEditingController c) => c.text.trim().isEmpty ? null : c.text.trim();
@@ -258,22 +260,24 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
   }
 
   Future<void> _delete() async {
+    final l10n = context.l10n;
     final ok = await confirmDestructive(
       context,
-      title: 'Delete “${_original!.email}”?',
-      message: 'Messages already sent from it stay as they are.',
-      action: 'Delete Identity',
+      title: l10n.settingsDeleteIdentityTitle(_original!.email),
+      message: l10n.settingsDeleteIdentityMessage,
+      action: l10n.settingsDeleteIdentity,
     );
     if (ok && mounted) _leave(const IdentityEdit.delete());
   }
 
   /// Back with unsaved edits asks first.
   Future<void> _confirmLeave() async {
+    final l10n = context.l10n;
     final save = await showActionSheet<bool>(
       context,
-      actions: const [
-        SheetAction('Save Identity', true, isDefault: true),
-        SheetAction('Discard Changes', false, destructive: true),
+      actions: [
+        SheetAction(l10n.settingsSaveIdentity, true, isDefault: true),
+        SheetAction(l10n.settingsDiscardChanges, false, destructive: true),
       ],
     );
     if (save == null || !mounted) return;
@@ -281,17 +285,18 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
   }
 
   Future<void> _addPattern() async {
+    final l10n = context.l10n;
     final input = await showTextPrompt(
       context,
-      title: 'Use for Replies To',
-      message: 'An address, or a pattern where * stands for anything.',
+      title: l10n.settingsReplyPatterns,
+      message: l10n.settingsReplyPatternPrompt,
       placeholder: '*@example.com',
-      confirm: 'Add',
+      confirm: l10n.commonAdd,
     );
     if (input == null || input.isEmpty || !mounted) return;
     final pattern = IdentitySelection.normalizePattern(input);
     if (pattern == null) {
-      return _alert('Invalid Pattern', '“$input” isn’t an address or a pattern like *@example.com.');
+      return _alert(l10n.settingsInvalidPatternTitle, l10n.settingsInvalidPatternMessage(input));
     }
     if (!_patterns.contains(pattern)) setState(() => _patterns.add(pattern));
   }
@@ -305,7 +310,7 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
         CupertinoDialogAction(
           isDefaultAction: true,
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('OK'),
+          child: Text(context.l10n.commonOk),
         ),
       ],
     ),
@@ -315,6 +320,7 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     Widget multiline(Key key, TextEditingController controller, String hint) => Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: TextField(
@@ -332,53 +338,68 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
         if (!didPop) unawaited(_confirmLeave());
       },
       child: GroupedPage(
-        title: _original == null ? 'New Identity' : 'Identity',
+        title: _original == null ? l10n.settingsNewIdentity : l10n.settingsIdentity,
         trailing: CupertinoButton(
           key: const Key('identity-done'),
           padding: EdgeInsets.zero,
           onPressed: _done,
-          child: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
+          child: Text(l10n.commonDone, style: const TextStyle(fontWeight: FontWeight.w600)),
         ),
         children: [
           InsetGroup(
             separatorIndent: 16,
             children: [
-              _Field(key: const Key('identity-name'), label: 'Name', controller: _name, hint: 'Your name'),
+              _Field(
+                key: const Key('identity-name'),
+                label: l10n.commonName,
+                controller: _name,
+                hint: l10n.settingsIdentityNameHint,
+              ),
               _Field(
                 key: const Key('identity-email'),
-                label: 'Email',
+                label: l10n.settingsEmail,
                 controller: _email,
                 hint: 'name@example.com',
                 email: true,
               ),
               _Field(
                 key: const Key('identity-reply-to'),
-                label: 'Reply-To',
+                label: l10n.settingsReplyTo,
                 controller: _replyTo,
-                hint: 'Optional',
+                hint: l10n.commonOptional,
                 email: true,
               ),
             ],
           ),
           InsetGroup(
-            header: 'Signature',
-            footer: 'Added below “-- ” in messages from this identity.',
-            children: [multiline(const Key('identity-signature'), _signature, 'No signature')],
+            header: l10n.settingsSignature,
+            footer: l10n.settingsSignatureFooter,
+            children: [multiline(const Key('identity-signature'), _signature, l10n.settingsNoSignature)],
           ),
           InsetGroup(
-            header: 'Copy to Myself',
-            footer: 'Added to every message from this identity.',
+            header: l10n.settingsCopyToMyself,
+            footer: l10n.settingsCopyToMyselfFooter,
             separatorIndent: 16,
             children: [
-              _Field(key: const Key('identity-cc'), label: 'Cc', controller: _cc, hint: 'Optional', email: true),
-              _Field(key: const Key('identity-bcc'), label: 'Bcc', controller: _bcc, hint: 'Optional', email: true),
+              _Field(
+                key: const Key('identity-cc'),
+                label: l10n.settingsCc,
+                controller: _cc,
+                hint: l10n.commonOptional,
+                email: true,
+              ),
+              _Field(
+                key: const Key('identity-bcc'),
+                label: l10n.settingsBcc,
+                controller: _bcc,
+                hint: l10n.commonOptional,
+                email: true,
+              ),
             ],
           ),
           InsetGroup(
-            header: 'Use for Replies To',
-            footer:
-                'Replies to messages sent to these addresses go out from this identity. '
-                '* stands for anything: *@example.com, me+*@example.com.',
+            header: l10n.settingsReplyPatterns,
+            footer: l10n.settingsReplyPatternsFooter,
             separatorIndent: 16,
             children: [
               for (final pattern in _patterns)
@@ -387,7 +408,7 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
                   title: pattern,
                   chevron: false,
                   trailing: IconButton(
-                    tooltip: 'Remove $pattern',
+                    tooltip: l10n.settingsRemoveReplyPattern(pattern),
                     visualDensity: VisualDensity.compact,
                     icon: Icon(LoupeIcons.remove, color: colors.destructive),
                     onPressed: () => setState(() => _patterns.remove(pattern)),
@@ -395,7 +416,7 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
                 ),
               GroupedRow(
                 key: const Key('identity-add-pattern'),
-                title: 'Add Address or Pattern',
+                title: l10n.settingsAddReplyPattern,
                 titleStyle: styles.body.copyWith(color: colors.unreadDot),
                 chevron: false,
                 onTap: _addPattern,
@@ -404,11 +425,11 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
           ),
           if (_original != null)
             InsetGroup(
-              footer: _isLast ? 'An account needs at least one identity.' : null,
+              footer: _isLast ? l10n.settingsLastIdentityFooter : null,
               children: [
                 GroupedRow(
                   key: const Key('identity-delete'),
-                  title: 'Delete Identity',
+                  title: l10n.settingsDeleteIdentity,
                   destructive: true,
                   enabled: !_isLast,
                   onTap: _delete,

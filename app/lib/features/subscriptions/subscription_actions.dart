@@ -8,12 +8,14 @@ import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:readable/readable.dart' show inspectHost;
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../shared/mail_actions.dart';
 import '../../shared/sheets.dart';
 import '../conversation/reader_prefs.dart';
 import '../conversation/sheets.dart' show showSnack;
+import 'subscription_format.dart';
 import 'subscription_providers.dart';
 
 /// What the Subscriptions screens do: unsubscribe (asking first), archive a
@@ -37,36 +39,38 @@ class SubscriptionActions {
     final methods = s.unsubscribe;
     final chosen = method ?? methods.firstOrNull;
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = context.l10n;
     if (chosen == null) {
-      showSnack(messenger, '${s.name} doesn’t say how to unsubscribe. You can block it instead.');
+      showSnack(messenger, l10n.subscriptionsNoMethodBlock(s.name));
       return false;
     }
     unawaited(HapticFeedback.selectionClick());
     switch (chosen) {
       case OneClickUnsubscribe(:final uri):
         if (!await _confirmOneClick(s, uri) || !context.mounted) return false;
-        showSnack(messenger, 'Unsubscribing from ${s.name}…', duration: const Duration(seconds: 30));
+        showSnack(messenger, l10n.subscriptionsUnsubscribing(s.name), duration: const Duration(seconds: 30));
         final result = await ref.read(oneClickUnsubscriberProvider).unsubscribe(uri);
         if (result.ok) {
           await ref.read(unsubscribeRecordsProvider.notifier).record(s.key, UnsubscribeVia.oneClick);
-          showSnack(messenger, 'Unsubscribed from ${s.name}.');
+          showSnack(messenger, l10n.subscriptionsUnsubscribed(s.name));
           return true;
         }
         messenger.hideCurrentSnackBar();
         if (!context.mounted) return false;
+        final reason = oneClickFailureText(l10n, result) ?? '';
         final others = [
           for (final m in methods)
             if (m is! OneClickUnsubscribe) m,
         ];
         if (others.isEmpty) {
-          showSnack(messenger, 'Couldn’t unsubscribe: ${result.message}');
+          showSnack(messenger, l10n.subscriptionsUnsubscribeFailed(reason));
           return false;
         }
         final next = await showActionSheet<UnsubscribeMethod>(
           context,
-          title: 'Couldn’t Unsubscribe Automatically',
-          message: result.message,
-          actions: [for (final m in others) SheetAction(_methodAction(m), m)],
+          title: l10n.subscriptionsOneClickFailedTitle,
+          message: reason,
+          actions: [for (final m in others) SheetAction(_methodAction(l10n, m), m)],
         );
         if (next == null || !context.mounted) return false;
         return unsubscribe(s, method: next);
@@ -75,61 +79,60 @@ class SubscriptionActions {
       case WebUnsubscribe(:final uri, :final isSecure):
         final host = inspectHost(uri.host);
         final ok = await _confirm(
-          title: 'Open ${host.display}?',
+          title: l10n.subscriptionsOpenSiteTitle(host.display),
           message: [
-            '${s.name} unsubscribes on its website. The page opens in Loupe’s browser; finish there.',
-            if (!isSecure) 'The connection to this site isn’t encrypted.',
-            if (host.homograph) _homographWarning(host.looksLike),
+            l10n.subscriptionsWebExplanation(s.name),
+            if (!isSecure) l10n.subscriptionsWebInsecure,
+            if (host.homograph) _homographWarning(l10n, host.looksLike),
           ].join('\n\n'),
-          action: 'Open',
+          action: l10n.subscriptionsOpen,
         );
         if (!ok || !context.mounted) return false;
         final opened = await ref.read(webPageOpenerProvider)(uri);
         if (!opened) {
-          showSnack(messenger, 'Couldn’t open ${host.display}.');
+          showSnack(messenger, l10n.subscriptionsOpenSiteFailed(host.display));
           return false;
         }
         await ref.read(unsubscribeRecordsProvider.notifier).record(s.key, UnsubscribeVia.web);
-        showSnack(messenger, 'Loupe notes today’s date and tells you if ${s.name} keeps writing.');
+        showSnack(messenger, l10n.subscriptionsWebOpened(s.name));
         return true;
     }
   }
 
-  static String _methodAction(UnsubscribeMethod m) => switch (m) {
-    OneClickUnsubscribe() => 'Try Again',
-    MailtoUnsubscribe() => 'Send Unsubscribe Email',
-    WebUnsubscribe(:final uri) => 'Open ${inspectHost(uri.host).display}',
+  static String _methodAction(AppLocalizations l10n, UnsubscribeMethod m) => switch (m) {
+    OneClickUnsubscribe() => l10n.commonTryAgain,
+    MailtoUnsubscribe() => l10n.subscriptionsSendUnsubscribeEmail,
+    WebUnsubscribe(:final uri) => l10n.subscriptionsOpenSite(inspectHost(uri.host).display),
   };
 
-  static String _homographWarning(String? looksLike) =>
-      'Careful: this address imitates ${looksLike ?? 'another site'} with look-alike letters.';
+  static String _homographWarning(AppLocalizations l10n, String? looksLike) =>
+      looksLike == null ? l10n.subscriptionsHomographWarningUnknown : l10n.subscriptionsHomographWarning(looksLike);
 
   Future<bool> _confirmOneClick(Subscription s, Uri uri) async {
+    final l10n = context.l10n;
     final explained = ref.read(oneClickExplainedProvider);
     final host = inspectHost(uri.host);
     final ok = await _confirm(
-      title: 'Unsubscribe from ${s.name}?',
+      title: l10n.subscriptionsUnsubscribeTitle(s.name),
       message: [
-        'Loupe will contact ${host.display} to unsubscribe.',
-        if (!explained)
-          'This is the only time Loupe contacts a sender’s website. It sends just '
-              '“List-Unsubscribe=One-Click” to the address ${s.name} gave, without cookies or anything else '
-              'about you, and doesn’t load the page.',
-        if (host.homograph) _homographWarning(host.looksLike),
+        l10n.subscriptionsOneClickContact(host.display),
+        if (!explained) l10n.subscriptionsOneClickExplanation(s.name),
+        if (host.homograph) _homographWarning(l10n, host.looksLike),
       ].join('\n\n'),
-      action: 'Unsubscribe',
+      action: l10n.subscriptionsUnsubscribe,
     );
     if (ok && !explained) await ref.read(oneClickExplainedProvider.notifier).set();
     return ok;
   }
 
   Future<bool> _unsubscribeByMail(Subscription s, MailtoUnsubscribe m, ScaffoldMessengerState messenger) async {
+    final l10n = context.l10n;
     final accounts = ref.read(accountsProvider).value ?? const <MailAccount>[];
     final latest = await _subs?.watchSubscriptionEmails(s.key, limit: 1).first ?? const <EmailSummary>[];
     final accountId = latest.firstOrNull?.accountId ?? s.accountIds.firstOrNull;
     final account = accounts.where((a) => a.id == accountId).firstOrNull;
     if (account == null || !context.mounted) {
-      showSnack(messenger, 'There’s no account to send the unsubscribe email from.');
+      showSnack(messenger, l10n.subscriptionsNoAccountToSend);
       return false;
     }
     final message = unsubscribeMessage(
@@ -139,11 +142,9 @@ class SubscriptionActions {
     );
     final from = account.identityById(message.identityId).email;
     final ok = await _confirm(
-      title: 'Unsubscribe from ${s.name}?',
-      message:
-          'Loupe will send an email to ${m.to.map((a) => a.email).join(', ')} from $from, '
-          'with the subject “${m.subject}”.',
-      action: 'Send',
+      title: l10n.subscriptionsUnsubscribeTitle(s.name),
+      message: l10n.subscriptionsMailConfirm(m.to.map((a) => a.email).join(', '), from, m.subject),
+      action: l10n.mailSend,
     );
     if (!ok || !context.mounted) return false;
     try {
@@ -153,7 +154,7 @@ class SubscriptionActions {
       return false;
     }
     await ref.read(unsubscribeRecordsProvider.notifier).record(s.key, UnsubscribeVia.mail);
-    showSnack(messenger, 'Unsubscribe email sent to ${m.to.first.email}.');
+    showSnack(messenger, l10n.subscriptionsMailSent(m.to.first.email));
     return true;
   }
 
@@ -165,7 +166,10 @@ class SubscriptionActions {
         title: Text(title),
         content: Padding(padding: const EdgeInsets.only(top: 8), child: Text(message)),
         actions: [
-          CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancel')),
+          CupertinoDialogAction(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(context.l10n.commonCancel),
+          ),
           CupertinoDialogAction(
             isDefaultAction: true,
             onPressed: () => Navigator.of(context).pop(true),
@@ -212,18 +216,19 @@ class SubscriptionActions {
   /// Adds a rule sending [s]'s future mail to Junk, after asking; then
   /// offers to move what is in the Inbox there too.
   Future<bool> block(Subscription s) async {
+    final l10n = context.l10n;
     final ok = await confirmDestructive(
       context,
-      title: 'Block ${s.name}?',
-      message:
-          'New mail from ${s.isList && s.senderCount > 1 ? 'this list' : s.address} goes to Junk. '
-          'You can change this in Settings › Rules.',
-      action: 'Block',
+      title: l10n.subscriptionsBlockTitle(s.name),
+      message: s.isList && s.senderCount > 1
+          ? l10n.subscriptionsBlockListMessage
+          : l10n.subscriptionsBlockSenderMessage(s.address),
+      action: l10n.subscriptionsBlock,
     );
     if (!ok || !context.mounted) return false;
     final messenger = ScaffoldMessenger.of(context);
     try {
-      await _repo.rules.saveRule(blockRule(s));
+      await _repo.rules.saveRule(blockRule(l10n, s));
     } on MailException catch (e) {
       showSnack(messenger, e.message);
       return false;
@@ -231,10 +236,10 @@ class SubscriptionActions {
     final inbox = s.inboxCount;
     showSnack(
       messenger,
-      'Blocked ${s.name}.',
+      l10n.subscriptionsBlockedSender(s.name),
       action: inbox == 0 || !context.mounted
           ? null
-          : SnackBarAction(label: 'Move $inbox to Junk', onPressed: () => unawaited(_junkInbox(s))),
+          : SnackBarAction(label: l10n.subscriptionsMoveToJunk(inbox), onPressed: () => unawaited(_junkInbox(s))),
       duration: const Duration(seconds: 6),
     );
     return true;
@@ -250,11 +255,14 @@ class SubscriptionActions {
     if (subs == null || lists.isEmpty) return;
     unawaited(HapticFeedback.selectionClick());
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = context.l10n;
     await subs.setListKind(lists, kind);
     showSnack(
       messenger,
-      kind == SubscriptionKind.newsletter ? '${s.name} is in Newsletters now.' : '${s.name} is in Discussions now.',
-      action: SnackBarAction(label: 'Undo', onPressed: () => unawaited(subs.setListKind(lists, s.kind))),
+      kind == SubscriptionKind.newsletter
+          ? l10n.subscriptionsNowNewsletter(s.name)
+          : l10n.subscriptionsNowDiscussion(s.name),
+      action: SnackBarAction(label: l10n.commonUndo, onPressed: () => unawaited(subs.setListKind(lists, s.kind))),
     );
   }
 

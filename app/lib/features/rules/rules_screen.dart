@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../shared/bars.dart';
@@ -24,6 +25,7 @@ class RulesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     final rules = ref.watch(rulesProvider);
     final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];
     final list = rules.value ?? const <Rule>[];
@@ -36,11 +38,11 @@ class RulesScreen extends ConsumerWidget {
       body: CustomScrollView(
         slivers: [
           LoupeTitleBar(
-            title: 'Rules',
+            title: l10n.rulesTitle,
             trailing: [
               BarIconButton(
                 icon: LoupeIcons.compose,
-                tooltip: 'New Rule',
+                tooltip: l10n.rulesNewRule,
                 onPressed: () => context.push(Routes.newRule()),
               ),
             ],
@@ -48,7 +50,7 @@ class RulesScreen extends ConsumerWidget {
           const SliverToBoxAdapter(child: SizedBox(height: 8)),
           if (rules.hasError)
             SliverToBoxAdapter(
-              child: RuleNotice(text: 'Couldn’t load the rules.', icon: LoupeIcons.error, tint: colors.destructive),
+              child: RuleNotice(text: l10n.rulesLoadError, icon: LoupeIcons.error, tint: colors.destructive),
             )
           else if (!rules.hasValue)
             const SliverToBoxAdapter(child: Center(child: CupertinoActivityIndicator()))
@@ -61,10 +63,8 @@ class RulesScreen extends ConsumerWidget {
           if (serverAccounts.isNotEmpty)
             SliverToBoxAdapter(
               child: InsetGroup(
-                header: 'Server Rules',
-                footer:
-                    'Server rules run on the mail server as mail arrives, also while this phone is off. '
-                    'They are kept in a Sieve script named “loupe”.',
+                header: l10n.rulesServerRulesHeader,
+                footer: l10n.rulesServerRulesFooter,
                 separatorIndent: 54,
                 children: [for (final a in serverAccounts) _ServerStatusRow(account: a)],
               ),
@@ -89,14 +89,9 @@ class _Empty extends StatelessWidget {
       children: [
         Icon(LoupeIcons.rules, size: 44, color: colors.tertiaryText),
         const SizedBox(height: 12),
-        Text('No Rules', style: styles.sectionHeader),
+        Text(context.l10n.rulesEmptyTitle, style: styles.sectionHeader),
         const SizedBox(height: 6),
-        Text(
-          'Rules file, tag and flag new mail for you. Make one with the compose button above, or from a search with '
-          '“Make This a Rule”.',
-          style: styles.footnote,
-          textAlign: TextAlign.center,
-        ),
+        Text(context.l10n.rulesEmptyText, style: styles.footnote, textAlign: TextAlign.center),
       ],
     ),
   );
@@ -154,9 +149,11 @@ class _RuleListState extends ConsumerState<_RuleList> {
       await showCupertinoDialog<void>(
         context: context,
         builder: (context) => CupertinoAlertDialog(
-          title: const Text('Couldn’t Change the Rule'),
+          title: Text(context.l10n.rulesChangeError),
           content: Text(e.message),
-          actions: [CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: const Text('OK'))],
+          actions: [
+            CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: Text(context.l10n.commonOk)),
+          ],
         ),
       );
     }
@@ -165,6 +162,7 @@ class _RuleListState extends ConsumerState<_RuleList> {
   @override
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final mailboxes = {for (final m in ref.watch(mailboxesProvider).value ?? const <Mailbox>[]) m.id: m};
     final rules = _rules;
     return Padding(
@@ -192,7 +190,7 @@ class _RuleListState extends ConsumerState<_RuleList> {
                     child: _RuleRow(
                       rule: rule,
                       index: i,
-                      summary: describeActions(rule, mailboxes),
+                      summary: describeActions(l10n, rule, mailboxes),
                       last: i == rules.length - 1,
                       onToggle: (v) => _toggle(rule, v),
                     ),
@@ -203,10 +201,7 @@ class _RuleListState extends ConsumerState<_RuleList> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 7, 16, 0),
-            child: Text(
-              'Rules run from top to bottom on new mail in the Inbox. Touch and hold a rule to move it.',
-              style: LoupeTextStyles.of(context).footnote,
-            ),
+            child: Text(l10n.rulesListFooter, style: LoupeTextStyles.of(context).footnote),
           ),
         ],
       ),
@@ -233,7 +228,8 @@ class _RuleRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
-    final condition = rule.condition.trim().isEmpty ? 'Every message' : rule.condition.trim();
+    final l10n = context.l10n;
+    final condition = rule.condition.trim().isEmpty ? l10n.rulesConditionEveryMessage : rule.condition.trim();
     return InkWell(
       onTap: () => context.push(Routes.editRule(rule.id)),
       child: DecoratedBox(
@@ -247,7 +243,7 @@ class _RuleRow extends StatelessWidget {
               ReorderableDragStartListener(
                 index: index,
                 child: Semantics(
-                  label: 'Move ${rule.name}',
+                  label: l10n.rulesMoveRule(rule.name),
                   child: Padding(
                     padding: const EdgeInsets.all(8),
                     child: Icon(LoupeIcons.reorder, size: 20, color: colors.tertiaryText),
@@ -284,7 +280,7 @@ class _RuleRow extends StatelessWidget {
                 ),
               ),
               Semantics(
-                label: '${rule.name} on',
+                label: l10n.rulesRuleOn(rule.name),
                 child: CupertinoSwitch(value: rule.enabled, activeTrackColor: colors.success, onChanged: onToggle),
               ),
             ],
@@ -304,35 +300,41 @@ class _ServerStatusRow extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final status = ref.watch(serverRulesStatusProvider(account.id));
     final s = status.value;
     final (IconData icon, Color tint, String detail, String? subtitle) = switch (s) {
-      null when status.hasError => (LoupeIcons.error, colors.destructive, 'Unknown', 'Couldn’t ask the server.'),
-      null => (LoupeIcons.ruleServer, colors.secondaryText, 'Checking…', null),
+      null when status.hasError => (
+        LoupeIcons.error,
+        colors.destructive,
+        l10n.rulesStatusUnknown,
+        l10n.rulesStatusError,
+      ),
+      null => (LoupeIcons.ruleServer, colors.secondaryText, l10n.rulesStatusChecking, null),
       ServerRulesStatus(state: ServerRulesState.active, viaInclude: true, :final activeScript) => (
         LoupeIcons.check,
         colors.success,
-        'On',
-        'Run from “$activeScript”.',
+        l10n.commonOn,
+        l10n.rulesStatusViaInclude('$activeScript'),
       ),
-      ServerRulesStatus(state: ServerRulesState.active) => (LoupeIcons.check, colors.success, 'On', null),
+      ServerRulesStatus(state: ServerRulesState.active) => (LoupeIcons.check, colors.success, l10n.commonOn, null),
       ServerRulesStatus(state: ServerRulesState.inactive, :final activeScript?) => (
         LoupeIcons.warning,
         colors.flag,
-        'Off',
-        '“$activeScript” is the active script. Tap to let it run Loupe’s rules too.',
+        l10n.commonOff,
+        l10n.rulesStatusOtherScript(activeScript),
       ),
       ServerRulesStatus(state: ServerRulesState.inactive) => (
         LoupeIcons.warning,
         colors.flag,
-        'Off',
-        'No script is active on the server. Saving a server rule turns Loupe’s on.',
+        l10n.commonOff,
+        l10n.rulesStatusNoScript,
       ),
       ServerRulesStatus(:final message) => (
         LoupeIcons.error,
         colors.destructive,
-        'Not Available',
-        message ?? 'This account’s server offers no Sieve (ManageSieve or JMAP).',
+        l10n.rulesStatusUnavailable,
+        message ?? l10n.rulesStatusNoSieve,
       ),
     };
     final canInclude = s != null && s.state == ServerRulesState.inactive && s.activeScript != null;

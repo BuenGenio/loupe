@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../router.dart';
 import '../../shared/avatar.dart';
 import '../../shared/bars.dart';
@@ -78,18 +79,20 @@ class _SubscriptionsScreenState extends ConsumerState<SubscriptionsScreen> {
     unawaited(HapticFeedback.mediumImpact());
     final record = unsubscribeRecordOf(ref.read(unsubscribeRecordsProvider), s);
     final methods = s.unsubscribe;
+    final l10n = context.l10n;
     final choice = await showActionSheet<String>(
       context,
       title: s.name,
       message: senderLine(s),
       actions: [
         if (methods.isNotEmpty && (record == null || record.stillSending(s)))
-          const SheetAction('Unsubscribe', 'unsubscribe', icon: LoupeIcons.unsubscribe),
+          SheetAction(l10n.subscriptionsUnsubscribe, 'unsubscribe', icon: LoupeIcons.unsubscribe),
         if (s.inboxCount > 0)
-          SheetAction('Archive ${formatCount(s.inboxCount)} in Inbox', 'archive', icon: LoupeIcons.archive),
-        const SheetAction('Create Rule…', 'rule', icon: LoupeIcons.makeRule),
-        if (s.listIds.isNotEmpty) const SheetAction('Treat as Discussion', 'kind', icon: LoupeIcons.mailingList),
-        if (!blocked) const SheetAction('Block Sender', 'block', icon: LoupeIcons.block, destructive: true),
+          SheetAction(l10n.subscriptionsArchiveInbox(s.inboxCount), 'archive', icon: LoupeIcons.archive),
+        SheetAction(l10n.subscriptionsCreateRule, 'rule', icon: LoupeIcons.makeRule),
+        if (s.listIds.isNotEmpty)
+          SheetAction(l10n.subscriptionsTreatAsDiscussion, 'kind', icon: LoupeIcons.mailingList),
+        if (!blocked) SheetAction(l10n.subscriptionsBlockSender, 'block', icon: LoupeIcons.block, destructive: true),
       ],
     );
     if (choice == null || !mounted) return;
@@ -112,22 +115,23 @@ class _SubscriptionsScreenState extends ConsumerState<SubscriptionsScreen> {
     final pinned = ref.read(pinnedListsProvider).contains(s.listId);
     final technical = ref.read(readerPrefsProvider).technicalLists.contains(s.listId);
     final record = unsubscribeRecordOf(ref.read(unsubscribeRecordsProvider), s);
+    final l10n = context.l10n;
     final choice = await showActionSheet<String>(
       context,
       title: s.name,
       message: senderLine(s),
       actions: [
         pinned
-            ? const SheetAction('Unpin from Mailboxes', 'pin', icon: LoupeIcons.unpin)
-            : const SheetAction('Pin to Mailboxes', 'pin', icon: LoupeIcons.pin),
+            ? SheetAction(l10n.subscriptionsUnpin, 'pin', icon: LoupeIcons.unpin)
+            : SheetAction(l10n.subscriptionsPin, 'pin', icon: LoupeIcons.pin),
         if (s.unsubscribe.isNotEmpty && (record == null || record.stillSending(s)))
-          const SheetAction('Unsubscribe', 'unsubscribe', icon: LoupeIcons.unsubscribe),
+          SheetAction(l10n.subscriptionsUnsubscribe, 'unsubscribe', icon: LoupeIcons.unsubscribe),
         SheetAction(
-          technical ? 'Open in Default View' : 'Open as Plain Text (Mono)',
+          technical ? l10n.subscriptionsOpenDefaultView : l10n.subscriptionsOpenPlainText,
           'technical',
           icon: LoupeIcons.font,
         ),
-        const SheetAction('Treat as Newsletter', 'kind', icon: LoupeIcons.newsletter),
+        SheetAction(l10n.subscriptionsTreatAsNewsletter, 'kind', icon: LoupeIcons.newsletter),
       ],
     );
     if (choice == null || !mounted) return;
@@ -149,11 +153,12 @@ class _SubscriptionsScreenState extends ConsumerState<SubscriptionsScreen> {
     final all = async.value ?? const <Subscription>[];
     final tab = _tab(all, loaded: async.hasValue);
     final text = _text.text;
+    final l10n = context.l10n;
     return Scaffold(
       body: CustomScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         slivers: [
-          const LoupeTitleBar(title: 'Subscriptions'),
+          LoupeTitleBar(title: l10n.subscriptionsTitle),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 4, 16, 10),
@@ -163,9 +168,9 @@ class _SubscriptionsScreenState extends ConsumerState<SubscriptionsScreen> {
                   CupertinoSlidingSegmentedControl<SubscriptionKind>(
                     key: const ValueKey('subscriptions-tabs'),
                     groupValue: tab,
-                    children: const {
-                      SubscriptionKind.newsletter: _Segment('Newsletters'),
-                      SubscriptionKind.discussion: _Segment('Discussions'),
+                    children: {
+                      SubscriptionKind.newsletter: _Segment(l10n.subscriptionsNewsletters),
+                      SubscriptionKind.discussion: _Segment(l10n.subscriptionsDiscussions),
                     },
                     onValueChanged: (kind) {
                       if (kind == null) return;
@@ -175,7 +180,7 @@ class _SubscriptionsScreenState extends ConsumerState<SubscriptionsScreen> {
                     },
                   ),
                   const SizedBox(height: 10),
-                  LoupeSearchField(controller: _text, placeholder: 'Filter'),
+                  LoupeSearchField(controller: _text, placeholder: l10n.subscriptionsFilter),
                 ],
               ),
             ),
@@ -183,7 +188,7 @@ class _SubscriptionsScreenState extends ConsumerState<SubscriptionsScreen> {
           if (async.hasError)
             SliverFillRemaining(
               hasScrollBody: false,
-              child: _Empty(title: 'Couldn’t Count Subscriptions', detail: '${async.error}'),
+              child: _Empty(title: l10n.subscriptionsCountError, detail: '${async.error}'),
             )
           else if (!async.hasValue)
             const SliverFillRemaining(hasScrollBody: false, child: Center(child: CupertinoActivityIndicator()))
@@ -204,6 +209,7 @@ class _SubscriptionsScreenState extends ConsumerState<SubscriptionsScreen> {
         if (!s.isDiscussion && matchesFilterText(s, text)) s,
     ];
     final shown = newsletters.where(_filter.matches).toList();
+    final l10n = context.l10n;
     return [
       SliverToBoxAdapter(
         child: _FilterChips(
@@ -219,13 +225,18 @@ class _SubscriptionsScreenState extends ConsumerState<SubscriptionsScreen> {
         SliverFillRemaining(
           hasScrollBody: false,
           child: text.trim().isNotEmpty
-              ? _Empty(title: 'No Matches', detail: 'No newsletter is called “${text.trim()}”.')
+              ? _Empty(title: l10n.subscriptionsNoMatches, detail: l10n.subscriptionsNoNewsletterMatch(text.trim()))
               : newsletters.isEmpty
-              ? const _Empty(
-                  title: 'No Newsletters',
-                  detail: 'Newsletters and other bulk mail show up here once they arrive.',
-                )
-              : _Empty(title: 'Nothing ${_filter.label}', detail: 'You read some of everything you get.'),
+              ? _Empty(title: l10n.subscriptionsNoNewsletters, detail: l10n.subscriptionsNoNewslettersDetail)
+              : _Empty(
+                  title: switch (_filter) {
+                    SubscriptionFilter.neverRead => l10n.subscriptionsNothingNeverRead,
+                    SubscriptionFilter.rarelyRead => l10n.subscriptionsNothingRarelyRead,
+                    // Not shown: with every newsletter shown, the list is only empty with none.
+                    SubscriptionFilter.all => l10n.subscriptionsNoNewsletters,
+                  },
+                  detail: l10n.subscriptionsNothingFilteredDetail,
+                ),
         )
       else
         SliverList.builder(
@@ -245,8 +256,8 @@ class _SubscriptionsScreenState extends ConsumerState<SubscriptionsScreen> {
             );
           },
         ),
-      const SliverToBoxAdapter(
-        child: _Footnote(icon: LoupeIcons.privacy, text: subscriptionsPrivacyNote),
+      SliverToBoxAdapter(
+        child: _Footnote(icon: LoupeIcons.privacy, text: l10n.subscriptionsPrivacyNote),
       ),
     ];
   }
@@ -257,15 +268,16 @@ class _SubscriptionsScreenState extends ConsumerState<SubscriptionsScreen> {
       for (final s in all)
         if (s.isDiscussion && matchesFilterText(s, text)) s,
     ]..sort(Subscription.compareByActivity);
+    final l10n = context.l10n;
     return [
       if (discussions.isEmpty)
         SliverFillRemaining(
           hasScrollBody: false,
           child: text.trim().isNotEmpty
-              ? _Empty(title: 'No Matches', detail: 'No list is called “${text.trim()}”.')
-              : const _Empty(
-                  title: 'No Discussions',
-                  detail: 'Mailing lists you can write to show up here once their mail arrives.',
+              ? _Empty(title: l10n.subscriptionsNoMatches, detail: l10n.subscriptionsNoListMatch(text.trim()))
+              : _Empty(
+                  title: l10n.subscriptionsNoDiscussions,
+                  detail: l10n.subscriptionsNoDiscussionsDetail,
                   icon: LoupeIcons.mailingList,
                 ),
         )
@@ -283,13 +295,8 @@ class _SubscriptionsScreenState extends ConsumerState<SubscriptionsScreen> {
             );
           },
         ),
-      const SliverToBoxAdapter(
-        child: _Footnote(
-          icon: LoupeIcons.info,
-          text:
-              'Lists that several people write to. Touch and hold one to pin it to Mailboxes, read it as plain '
-              'text, or move it to Newsletters.',
-        ),
+      SliverToBoxAdapter(
+        child: _Footnote(icon: LoupeIcons.info, text: l10n.subscriptionsDiscussionsFootnote),
       ),
     ];
   }
@@ -341,6 +348,12 @@ class _FilterChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
+    String label(SubscriptionFilter f) => switch (f) {
+      SubscriptionFilter.neverRead => l10n.subscriptionsFilterNeverRead,
+      SubscriptionFilter.rarelyRead => l10n.subscriptionsFilterRarelyRead,
+      SubscriptionFilter.all => l10n.subscriptionsFilterAll,
+    };
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
@@ -350,7 +363,7 @@ class _FilterChips extends StatelessWidget {
             Semantics(
               button: true,
               selected: f == selected,
-              label: '${f.label}, ${counts[f] ?? 0}',
+              label: l10n.subscriptionsFilterChip(label(f), counts[f] ?? 0),
               excludeSemantics: true,
               child: GestureDetector(
                 key: ValueKey('filter-${f.name}'),
@@ -366,7 +379,7 @@ class _FilterChips extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        f.label,
+                        label(f),
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
@@ -425,20 +438,21 @@ class SubscriptionRow extends StatelessWidget {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
     final metrics = LoupeMetrics.of(context);
+    final l10n = context.l10n;
     final s = subscription;
     final r = record;
     final stillSending = r != null && r.stillSending(s);
     final String? status = blocked
-        ? 'Blocked'
+        ? l10n.subscriptionsBlocked
         : r == null
         ? null
-        : unsubscribedLabel(r, s);
+        : unsubscribedLabel(l10n, r, s);
     final Widget? button = blocked
         ? null
         : r == null && s.unsubscribe.isNotEmpty
-        ? _RowButton(label: 'Unsubscribe', color: colors.unreadDot, onPressed: onUnsubscribe)
+        ? _RowButton(label: l10n.subscriptionsUnsubscribe, color: colors.unreadDot, onPressed: onUnsubscribe)
         : r == null || stillSending
-        ? _RowButton(label: 'Block', color: colors.destructive, onPressed: onBlock)
+        ? _RowButton(label: l10n.subscriptionsBlock, color: colors.destructive, onPressed: onBlock)
         : null;
     return Material(
       color: Theme.of(context).scaffoldBackgroundColor,
@@ -476,7 +490,7 @@ class SubscriptionRow extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     const SizedBox(height: 2),
-                                    Text(statsLine(s), style: styles.footnote.copyWith(color: colors.label)),
+                                    Text(statsLine(l10n, s), style: styles.footnote.copyWith(color: colors.label)),
                                     if (status != null)
                                       Padding(
                                         padding: const EdgeInsets.only(top: 2),
@@ -529,13 +543,14 @@ class DiscussionRow extends StatelessWidget {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
     final metrics = LoupeMetrics.of(context);
+    final l10n = context.l10n;
     final s = subscription;
     final unread = s.unreadCount;
     final last = s.lastReceived;
     return MergeSemantics(
       child: Semantics(
         button: true,
-        label: [if (pinned) 'Pinned', if (unread > 0) '${formatCount(unread)} unread'].join(', '),
+        label: [if (pinned) l10n.subscriptionsPinned, if (unread > 0) l10n.subscriptionsUnreadCount(unread)].join(', '),
         child: Material(
           color: Theme.of(context).scaffoldBackgroundColor,
           child: InkWell(

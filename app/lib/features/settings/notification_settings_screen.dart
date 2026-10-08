@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../platform/instant_delivery.dart';
 import '../../providers.dart';
 import '../../settings/app_mode.dart';
@@ -45,8 +46,6 @@ class NotificationSettingsScreen extends ConsumerStatefulWidget {
 
 class _NotificationSettingsScreenState extends ConsumerState<NotificationSettingsScreen> {
   late final AppLifecycleListener _lifecycle;
-
-  static const _badgeNote = 'The badge updates whenever Loupe checks for mail, also in the background.';
 
   @override
   void initState() {
@@ -90,17 +89,16 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
 
   Future<void> _sendTest() async {
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = context.l10n;
     void say(String text) => messenger.showSnackBar(SnackBar(content: Text(text)));
     final ios = defaultTargetPlatform == TargetPlatform.iOS;
     if (!await _ensurePermission()) {
-      say(
-        ios ? 'Notifications are off for Loupe in Settings.' : 'Notifications are off for Loupe in Android Settings.',
-      );
+      say(ios ? l10n.settingsNotificationsOffIos : l10n.settingsNotificationsOffAndroid);
       return;
     }
     final repository = ref.read(repositoryProvider);
     final settings = ref.read(notificationSettingsProvider);
-    final notification = await testNotification(repository, hideContent: settings.hideContent);
+    final notification = await testNotification(repository, l10n, hideContent: settings.hideContent);
     await ref.read(mailNotifierProvider).show([notification]);
   }
 
@@ -110,6 +108,7 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
     // App Refresh iOS's.
     final ios = defaultTargetPlatform == TargetPlatform.iOS;
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final mode = ref.watch(appModeProvider);
     final settings = ref.watch(notificationSettingsProvider);
     final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];
@@ -123,30 +122,29 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
         : false;
 
     return GroupedPage(
-      title: 'Notifications',
+      title: l10n.settingsNotifications,
       children: [
         if (granted == false && anyOn)
           InsetGroup(
             separatorIndent: 58,
-            footer: '${ios ? 'iOS' : 'Android'} doesn’t let Loupe show notifications. Allow them in Settings.',
+            // l10n-ignore: the systems' names
+            footer: l10n.settingsNotificationsBlockedFooter(ios ? 'iOS' : 'Android'),
             children: [
               GroupedRow(
                 leading: Icon(LoupeIcons.warning, color: colors.flag),
-                title: ios ? 'Open Settings' : 'Open Android Settings',
+                title: ios ? l10n.settingsOpenSystemSettings : l10n.settingsOpenAndroidSettings,
                 onTap: () => unawaited(ref.read(mailNotifierProvider).openSystemSettings()),
               ),
             ],
           ),
         InsetGroup(
-          header: 'New Mail',
+          header: l10n.settingsNewMailHeader,
           separatorIndent: 16,
           footer: mode == AppMode.demo
-              ? 'Demo mail doesn’t arrive in the background. Send a test notification to see how new mail looks.'
+              ? l10n.settingsNewMailFooterDemo
               : ios
-              ? 'Loupe checks for new mail in the background when iOS lets it, which can be hours apart for apps '
-                    'you don’t open often. You’re told about new messages in your inboxes, and from VIPs in any folder.'
-              : 'Loupe checks for new mail about every 15 minutes, when Android allows. You’re told about new '
-                    'messages in your inboxes, and from VIPs in any folder.',
+              ? l10n.settingsNewMailFooterIos
+              : l10n.settingsNewMailFooterAndroid,
           children: [
             for (final a in accounts)
               SwitchRow(
@@ -156,23 +154,21 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
                 value: settings.notifiesFor(a.id),
                 onChanged: (v) => unawaited(_setAccount(a, v)),
               ),
-            if (accounts.isEmpty) const GroupedRow(title: 'No Accounts', enabled: false, chevron: false),
+            if (accounts.isEmpty) GroupedRow(title: l10n.settingsNoAccounts, enabled: false, chevron: false),
           ],
         ),
         InsetGroup(
           separatorIndent: 16,
-          footer: settings.hideContent
-              ? 'Notifications only say “New message from” and the account, not who wrote or what about.'
-              : 'Hide Content keeps the sender, subject and preview off the lock screen and out of notifications.',
+          footer: settings.hideContent ? l10n.settingsHideContentFooterOn : l10n.settingsHideContentFooterOff,
           children: [
             SwitchRow(
-              title: 'VIP Only',
-              subtitle: 'Only messages from your VIPs',
+              title: l10n.settingsVipOnly,
+              subtitle: l10n.settingsVipOnlyDetail,
               value: settings.vipOnly,
               onChanged: (v) => unawaited(_controller.update((s) => s.copyWith(vipOnly: v))),
             ),
             SwitchRow(
-              title: 'Hide Content',
+              title: l10n.settingsHideContent,
               value: settings.hideContent,
               onChanged: (v) => unawaited(_controller.update((s) => s.copyWith(hideContent: v))),
             ),
@@ -181,34 +177,36 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
         if (ios)
           InsetGroup(
             separatorIndent: 16,
-            footer:
-                'New mail only arrives in the background while Background App Refresh is on for Loupe in Settings. '
-                'iOS can’t keep a connection to your inboxes open, so there’s no Instant Delivery.',
+            footer: l10n.settingsBackgroundRefreshFooter,
             children: [
-              GroupedRow(title: 'Background App Refresh', onTap: () => unawaited(ref.read(openAppSettingsProvider)())),
+              GroupedRow(
+                title: l10n.settingsBackgroundAppRefresh,
+                onTap: () => unawaited(ref.read(openAppSettingsProvider)()),
+              ),
             ],
           )
         else
           InsetGroup(
             separatorIndent: 16,
-            footer: batteryRestricted
-                ? 'Android may stop Instant Delivery to save battery. Let Loupe use the battery without '
-                      'restrictions to keep it running.'
-                : 'Instant Delivery (experimental) keeps a connection to your inboxes open, so new mail arrives '
-                      'within seconds. It shows a quiet “Watching for new mail” notification and uses more battery.',
+            footer: batteryRestricted ? l10n.settingsBatteryRestrictedFooter : l10n.settingsInstantDeliveryFooter,
             children: [
               if (instantAvailable)
                 SwitchRow(
-                  title: 'Instant Delivery',
-                  subtitle: 'Experimental',
+                  title: l10n.settingsInstantDelivery,
+                  subtitle: l10n.settingsExperimental,
                   value: settings.instant,
                   onChanged: (v) => unawaited(_setInstant(v)),
                 )
               else
-                const GroupedRow(title: 'Instant Delivery', detail: 'Coming Soon', enabled: false, chevron: false),
+                GroupedRow(
+                  title: l10n.settingsInstantDelivery,
+                  detail: l10n.settingsComingSoon,
+                  enabled: false,
+                  chevron: false,
+                ),
               if (batteryRestricted)
                 GroupedRow(
-                  title: 'Allow Unrestricted Battery Use',
+                  title: l10n.settingsAllowUnrestrictedBattery,
                   onTap: () => unawaited(ref.read(instantServiceProvider).openBatterySettings()),
                 ),
             ],
@@ -217,7 +215,7 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
           separatorIndent: 16,
           children: [
             GroupedRow(
-              title: 'Send Test Notification',
+              title: l10n.settingsSendTestNotification,
               titleStyle: LoupeTextStyles.of(context).body.copyWith(color: colors.unreadDot),
               chevron: false,
               onTap: () => unawaited(_sendTest()),
@@ -226,18 +224,16 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
         ),
         InsetGroup(
           separatorIndent: 16,
-          footer: badgeSupported == false
-              ? 'This phone’s home screen doesn’t show numbers on app icons. $_badgeNote'
-              : _badgeNote,
+          footer: badgeSupported == false ? l10n.settingsBadgeUnsupportedFooter : l10n.settingsBadgeNote,
           children: [
             GroupedRow(
-              title: 'App Icon Badge',
+              title: l10n.settingsAppIconBadge,
               detail: badgeCountLabel(badge),
               onTap: () => ChoicePage.push<BadgeCount>(
                 context,
-                title: 'App Icon Badge',
+                title: l10n.settingsAppIconBadge,
                 selected: badge,
-                footer: _badgeNote,
+                footer: l10n.settingsBadgeNote,
                 choices: [for (final c in BadgeCount.values) (value: c, label: badgeCountLabel(c), detail: null)],
                 onSelected: (v) => ref.read(appSettingsProvider.notifier).update((s) => s.copyWith(appIconBadge: v)),
               ),
@@ -252,7 +248,11 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
 /// A notification like the ones new mail brings, for the newest unread
 /// message in the inboxes (works with demo mail too); tapping it opens that
 /// message, and its buttons work.
-Future<MailNotification> testNotification(MailRepository repository, {required bool hideContent}) async {
+Future<MailNotification> testNotification(
+  MailRepository repository,
+  AppLocalizations l10n, {
+  required bool hideContent,
+}) async {
   const inboxes = VirtualMailboxRef(VirtualMailbox.allInboxes);
   final accounts = await repository.watchAccounts().first;
   final unread = await repository.watchList(inboxes, filters: {QuickFilter.unread}, threaded: false, limit: 1).first;
@@ -260,12 +260,12 @@ Future<MailNotification> testNotification(MailRepository repository, {required b
   final email = latest.firstOrNull?.latest;
   final account = accounts.where((a) => a.id == email?.accountId).firstOrNull;
   if (email == null || account == null) {
-    return const MailNotification(
+    return MailNotification(
       id: 1,
       channel: MailChannel.vip,
       groupKey: 'loupe.test',
-      title: 'Loupe',
-      body: 'Notifications for new mail look like this.',
+      title: 'Loupe', // l10n-ignore: the name
+      body: l10n.settingsTestNotificationBody,
     );
   }
   final vips = await repository.watchVipAddresses().first;

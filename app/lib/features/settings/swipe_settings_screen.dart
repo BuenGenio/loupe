@@ -1,11 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../l10n/l10n.dart';
 import '../../settings/app_settings.dart';
 import '../../shared/grouped_list.dart';
 import '../../theme/theme.dart';
-import 'settings_screen.dart';
 import '../../theme/loupe_icons.dart';
+
+String _actionLabel(AppLocalizations l10n, SwipeAction a) => switch (a) {
+  SwipeAction.none => l10n.commonNone,
+  SwipeAction.toggleRead => l10n.settingsSwipeToggleRead,
+  SwipeAction.toggleFlag => l10n.mailFlag,
+  SwipeAction.archive => l10n.mailArchive,
+  SwipeAction.trash => l10n.settingsSwipeTrash,
+  SwipeAction.move => l10n.settingsSwipeMove,
+  SwipeAction.snooze => l10n.settingsSwipeSnooze,
+  SwipeAction.more => l10n.commonMore,
+};
 
 /// Which actions sit behind a message when it is swiped.
 class SwipeSettingsScreen extends ConsumerWidget {
@@ -27,6 +38,7 @@ class SwipeSettingsScreen extends ConsumerWidget {
     final colors = LoupeColors.of(context);
     final settings = ref.watch(appSettingsProvider);
     final controller = ref.read(appSettingsProvider.notifier);
+    final l10n = context.l10n;
 
     Widget group(String header, String footer, SwipeAction current, AppSettings Function(SwipeAction) apply) {
       return InsetGroup(
@@ -36,7 +48,7 @@ class SwipeSettingsScreen extends ConsumerWidget {
         children: [
           for (final option in _options)
             GroupedRow(
-              title: option == SwipeAction.toggleRead ? 'Mark as Read / Unread' : swipeActionLabel(option),
+              title: _actionLabel(l10n, option),
               chevron: false,
               trailing: option == current
                   ? Icon(LoupeIcons.check, color: colors.unreadDot, size: 22)
@@ -48,17 +60,17 @@ class SwipeSettingsScreen extends ConsumerWidget {
     }
 
     return GroupedPage(
-      title: 'Swipe Actions',
+      title: l10n.settingsSwipeActions,
       children: [
         group(
-          'Swipe Left',
-          'A full swipe runs this action. Flag and More are always one short swipe away.',
+          l10n.settingsSwipeLeft,
+          l10n.settingsSwipeLeftFooter,
           settings.swipeTrailing,
           (a) => settings.copyWith(swipeTrailing: a),
         ),
         group(
-          'Swipe Right',
-          'A full swipe runs this action.',
+          l10n.settingsSwipeRight,
+          l10n.settingsSwipeRightFooter,
           settings.swipeLeading,
           (a) => settings.copyWith(swipeLeading: a),
         ),
