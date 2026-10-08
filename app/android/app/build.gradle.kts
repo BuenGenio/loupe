@@ -78,4 +78,7 @@ flutter {
 dependencies {
     // flutter_local_notifications: the desugaring library its README pins.
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    // The AppCompat themes in res/values*/styles.xml, which App Lock's prompt needs on Android 8 and earlier.
+    // androidx.biometric (local_auth) brings it at run time already; listed because the app's own styles use it.
+    implementation("androidx.appcompat:appcompat:1.7.1")
 }

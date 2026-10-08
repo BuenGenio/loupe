@@ -39,6 +39,7 @@ If Swift Package Manager ever has to be switched off (`flutter config --no-enabl
 | `CFBundleURLTypes` → `io.github.buengenio.loupe`, `msauth.io.github.buengenio.loupe` | The OAuth redirects for flutter_appauth: Google's `io.github.buengenio.loupe:/oauth2redirect` and Microsoft's `msauth.io.github.buengenio.loupe://auth`. The same as on Android; see [oauth-setup.md](oauth-setup.md). |
 | `CFBundleAllowMixedLocalizations` | Loupe is English-only. This key lets system UI (the share sheet, permission alerts) follow the phone's language, as share_plus's README advises. |
 | `NSCameraUsageDescription` | Scanning Thunderbird's "Export for Mobile" QR codes. |
+| `NSFaceIDUsageDescription` | App Lock (off by default) unlocks with Face ID through `local_auth`. Without the key, iOS ends the app when the Face ID prompt would show. |
 | `NSPhotoLibraryAddUsageDescription` | "Save Image" in the share sheet writes to Photos. Without this key iOS ends the app when the user taps it. |
 | `NSPhotoLibraryUsageDescription` | `image_picker` comes in through `flutter_zxing` (its scan-from-photo feature, which Loupe doesn't use). App Store Connect flags a binary that links it without the key (ITMS-90683, "Missing purpose string"), and image_picker's README requires it. Loupe never asks for it. |
 | `NSMicrophoneUsageDescription` | The `camera` plugin can record video with sound, so its README asks for this key. Loupe opens the camera without audio (`enableAudio: false`) and never asks. |
@@ -47,7 +48,6 @@ If Swift Package Manager ever has to be switched off (`flutter config --no-enabl
 
 Deliberately left out:
 
-- **`NSFaceIDUsageDescription`:** there is no app lock yet, and nothing uses `local_auth`. Add the key when the biometric lock arrives.
 - **`LSApplicationQueriesSchemes`:** Loupe calls `launchUrl`, never `canLaunchUrl`, and only the latter needs it.
 - **`ITSAppUsesNonExemptEncryption`:** it depends on a decision; see [Export compliance](#export-compliance-encryption).
 
@@ -108,6 +108,7 @@ The plugin's iOS service is never started.
 | app_badge_plus | Needs the notification permission (badge). If every account is muted, Loupe never asks, and the badge stays off. |
 | webview_flutter | WKWebView for the Original view, with JavaScript off. App Transport Security blocks `http:` images there, even when remote content is allowed (Readable mode loads them through Dart and is unaffected). Text size follows the reader setting on Android only. Both need checking on a device (#7). |
 | url_launcher | `launchUrl` only; no query schemes needed. |
+| local_auth | App Lock: Face ID, Touch ID or the passcode (`biometricOnly: false`). The app switcher's snapshot still shows mail (Android hides it with `setRecentsScreenshotEnabled`); iOS would need a cover drawn when the app resigns active. Untested on a device. |
 | flutter_appauth | Uses `ASWebAuthenticationSession`. Google needs an **iOS** OAuth client (see step 4). |
 | sqlite3 (SQLite3MultipleCiphers) | A build hook downloads the prebuilt, hash-checked `libsqlite3mc` for iOS (device arm64; Simulator arm64 and x64) while building. |
 | workmanager, flutter_local_notifications, flutter_foreground_task | See above. |

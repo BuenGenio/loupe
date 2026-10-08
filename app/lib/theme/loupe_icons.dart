@@ -245,6 +245,10 @@ abstract final class LoupeIcons {
   static const IconData images = FluentIcons.image_24_regular;
   static const IconData notifications = FluentIcons.alert_24_regular;
 
+  /// App Lock, and how long Loupe can be away before it locks.
+  static const IconData appLock = FluentIcons.phone_lock_24_regular;
+  static const IconData lockAfter = FluentIcons.timer_24_regular;
+
   // Rules -------------------------------------------------------------------
 
   static const IconData rules = FluentIcons.flash_flow_24_regular;

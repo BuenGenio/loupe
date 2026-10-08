@@ -1,6 +1,6 @@
 ---
 title: "Settings reference"
-description: "Every setting in Loupe with its default value: mail, appearance, reading, notifications, rules, encryption, accounts, identities and advanced options."
+description: "Every setting in Loupe with its default value: mail, appearance, reading, security, notifications, rules, encryption, accounts, identities and advanced options."
 section: "Reference"
 order: 180
 ---
@@ -36,6 +36,13 @@ One row per account, and **Add Account**. Tap an account for its own settings (s
 | **Technical Lists** | None | Mailing lists whose messages open as plain text in Mono. See [Mailing lists and patches](/docs/mailing-lists/). |
 | **Load Remote Images** | Off | Loads images from the internet in every message. Off, you allow them per message or per sender. |
 | **Open Links Directly** | On | Skips known click trackers when the destination is in the link |
+
+## Security
+
+| Setting | Default | What it does |
+|---|---|---|
+| **App Lock** | Off | Asks for your fingerprint, face or screen lock before your mail shows. Turning it on asks once first, and needs a screen lock on the phone. See [App Lock](/docs/privacy-security/#app-lock). |
+| **Lock After** | Immediately | Shown while App Lock is on: how long Loupe can be in the background before it asks again. Immediately, 1 Minute, 5 Minutes, 15 Minutes or 1 Hour. |
 
 ## Notifications
 

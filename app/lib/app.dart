@@ -9,6 +9,7 @@ import 'package:mail_sync/mail_sync.dart';
 
 import 'data/live.dart';
 import 'data/repositories.dart';
+import 'features/app_lock/app_lock.dart';
 import 'features/keyboard/app_shortcuts.dart';
 import 'features/notifications/app_icon_badge.dart';
 import 'features/notifications/new_mail_check.dart';
@@ -34,20 +35,25 @@ class LoupeApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(appSettingsProvider);
-    return MaterialApp.router(
-      title: 'Loupe',
-      debugShowCheckedModeBanner: false,
-      theme: LoupeTheme.light(density: settings.density),
-      darkTheme: LoupeTheme.dark(density: settings.density),
-      themeMode: settings.themeMode,
-      scrollBehavior: const LoupeScrollBehavior(),
-      routerConfig: ref.watch(routerProvider),
-      builder: (context, child) => _SystemBars(
-        // The badge and notification taps need the repository, so they wait
-        // behind the live gate.
-        child: _LiveGate(
-          child: AppIconBadgeUpdater(
-            child: NotificationsCoordinator(child: AppShortcuts(child: child ?? const SizedBox.shrink())),
+    return AppLockBackButton(
+      child: MaterialApp.router(
+        title: 'Loupe',
+        debugShowCheckedModeBanner: false,
+        theme: LoupeTheme.light(density: settings.density),
+        darkTheme: LoupeTheme.dark(density: settings.density),
+        themeMode: settings.themeMode,
+        scrollBehavior: const LoupeScrollBehavior(),
+        routerConfig: ref.watch(routerProvider),
+        builder: (context, child) => _SystemBars(
+          // App Lock covers everything below, the live gate's screens too.
+          child: AppLockGate(
+            // The badge and notification taps need the repository, so they
+            // wait behind the live gate.
+            child: _LiveGate(
+              child: AppIconBadgeUpdater(
+                child: NotificationsCoordinator(child: AppShortcuts(child: child ?? const SizedBox.shrink())),
+              ),
+            ),
           ),
         ),
       ),

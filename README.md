@@ -21,7 +21,7 @@ Status: **early development**, used daily by its owner on Android. iOS is prepar
 - **Writing:** identities with reply-from-recipient and catch-all aliases, draft autosave, undo send, scheduled send with an Outbox.
 - **Calendar invitations:** Accept, Maybe or Decline from the message, with updates, cancellations and the event's time zone beside yours.
 - **Notifications:** background sync every 15 minutes, notification actions (Archive, Mark as Read, Reply), app icon badge, and optional instant delivery (experimental).
-- **Security and privacy:** encrypted local database; no telemetry or servers of our own; remote images blocked; tracking-redirect unwrapping; an explainable phishing check; OpenPGP (compatible with Thunderbird, with Autocrypt) and S/MIME.
+- **Security and privacy:** encrypted local database; optional App Lock (fingerprint, face or screen lock); no telemetry or servers of our own; remote images blocked; tracking-redirect unwrapping; an explainable phishing check; OpenPGP (compatible with Thunderbird, with Autocrypt) and S/MIME.
 - **Accounts:** IMAP/SMTP with autoconfig, JMAP (Stalwart, Fastmail), import from Thunderbird's "Export for Mobile" QR codes, and Google/Microsoft sign-in once client IDs are configured ([docs/oauth-setup.md](docs/oauth-setup.md)).
 - **Tablets and keyboards:** three-pane layout, keyboard shortcuts, command palette (Ctrl/⌘+K), drag and drop.
 

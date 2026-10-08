@@ -1,11 +1,11 @@
 ---
 title: "Privacy and security"
-description: "What Loupe stores and who it talks to: an encrypted database, no telemetry, no servers of its own, blocked trackers and an explainable phishing check."
+description: "What Loupe stores and who it talks to: an encrypted database, optional App Lock, no telemetry or servers of its own, blocked trackers and an explainable phishing check."
 section: "Accounts & security"
 order: 150
 ---
 
-Loupe has no servers of its own and collects nothing about you. Your mail goes directly between your phone and your mail provider. On the phone, Loupe protects your mail with encryption and checks every message for trackers and phishing, and it explains what it found.
+Loupe has no servers of its own and collects nothing about you. Your mail goes directly between your phone and your mail provider. On the phone, Loupe protects your mail with encryption (and, if you like, your fingerprint or screen lock), checks every message for trackers and phishing, and explains what it found.
 
 ## No telemetry, no servers
 
@@ -33,6 +33,18 @@ Loupe has no servers of its own and collects nothing about you. Your mail goes d
 - **Removing an account** deletes its mail, settings and sign-in from the phone. Uninstalling Loupe deletes everything it stored.
 
 > **Note:** If the Keystore can't give back the database key (this can happen after restoring a phone from a backup), Loupe shows "Your accounts couldn't be opened". Tap **Try Again** first, and restart the phone if needed. Loupe never replaces the key by itself. Only if the key is gone for good, **Reset Mail on This Phone…** deletes the local copy so you can add your accounts again. Mail on your servers isn't affected, but messages still waiting in the Outbox are lost.
+
+## App Lock
+
+App Lock keeps your mail from anyone else who picks up your phone while it's unlocked. It's off by default: turn it on in Settings › Security › **App Lock**.
+
+- **Your phone's own lock.** Loupe asks with Android's own prompt: your fingerprint or face, or your screen lock's PIN, pattern or password. Loupe never sees them.
+- **Turning it on** asks once, so you know it works before it locks anything. If the phone has no screen lock, Loupe explains that App Lock needs one and stays off: **Open Settings** takes you to Android's screen lock settings.
+- **When it asks.** When Loupe starts, and when you come back after it has been in the background for the **Lock After** time: Immediately (the default), 1 Minute, 5 Minutes, 15 Minutes or 1 Hour. Pulling down the notification shade doesn't count as leaving.
+- **The lock screen** shows Loupe's icon and name and **Unlock**. The prompt opens by itself when the lock screen appears; if you close it, tap **Unlock**. Back leaves Loupe. Nothing of your mail shows before the lock does, and what you had open is still there when you unlock.
+- **Recent Apps** shows a blank card for Loupe instead of your mail while App Lock is on (Android 13 and later; earlier versions still show a screenshot). Taking screenshots inside Loupe keeps working.
+- **In the background** nothing changes while Loupe is locked: it checks for new mail, notifications arrive, and their **Archive** and **Mark as Read** buttons work. **Reply** and tapping a notification open the lock screen first. To keep senders and subjects out of notifications too, turn on **Hide Content** in Settings › Notifications.
+- **If you remove the phone's screen lock** later, App Lock turns itself off the next time you open Loupe, and tells you.
 
 ## Remote images and tracking pixels
 

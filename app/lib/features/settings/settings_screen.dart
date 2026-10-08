@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +14,9 @@ import '../../settings/app_settings.dart';
 import '../../settings/ui_state.dart';
 import '../../shared/grouped_list.dart';
 import '../../theme/theme.dart';
+import '../app_lock/app_lock.dart';
+import '../app_lock/app_lock_settings.dart';
+import '../app_lock/device_authenticator.dart';
 import '../conversation/reader_prefs.dart';
 import '../conversation/security/security_provider.dart';
 import '../mailing_lists/technical_lists_screen.dart';
@@ -37,6 +43,52 @@ String readerModeLabel(ReaderMode m) => switch (m) {
 
 String undoDelayLabel(int seconds) => seconds == 0 ? 'Off' : '$seconds seconds';
 
+/// App Lock's switch. Turning it on asks the user to prove it's them first,
+/// and needs a screen lock to check against; the switch stays off until then.
+Future<void> _setAppLock(BuildContext context, WidgetRef ref, bool on) async {
+  if (!on) return ref.read(appLockSettingsProvider.notifier).setEnabled(false);
+  final result = await ref.read(appLockProvider.notifier).enable();
+  if (!context.mounted) return;
+  if (result == AuthResult.unavailable) return _explainScreenLock(context, ref);
+  if (lockFailureText(result) case final reason?) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('App Lock is still off. $reason')));
+  }
+}
+
+/// Why App Lock can't be turned on: the phone has no screen lock.
+Future<void> _explainScreenLock(BuildContext context, WidgetRef ref) {
+  // The system, not the look: the wording and the way to fix it differ.
+  final ios = defaultTargetPlatform == TargetPlatform.iOS;
+  return showCupertinoDialog<void>(
+    context: context,
+    builder: (dialog) => CupertinoAlertDialog(
+      title: Text(ios ? 'Set Up a Passcode' : 'Set Up a Screen Lock'),
+      content: Text(
+        ios
+            ? 'App Lock uses Face ID, Touch ID or your passcode, and this iPhone has no passcode. Set one up in '
+                  'the Settings app, then turn on App Lock.'
+            : 'App Lock uses your phone’s screen lock, or a fingerprint or face added to it, and this phone has '
+                  'none. Set up a PIN, pattern or password in Android’s settings, then turn on App Lock.',
+      ),
+      actions: [
+        if (!ios)
+          CupertinoDialogAction(
+            onPressed: () {
+              Navigator.of(dialog).pop();
+              unawaited(ref.read(openScreenLockSettingsProvider)());
+            },
+            child: const Text('Open Settings'),
+          ),
+        CupertinoDialogAction(
+          isDefaultAction: true,
+          onPressed: () => Navigator.of(dialog).pop(),
+          child: const Text('OK'),
+        ),
+      ],
+    ),
+  );
+}
+
 /// Settings, Essentials first; power options live under Advanced.
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -47,6 +99,7 @@ class SettingsScreen extends ConsumerWidget {
     final settings = ref.watch(appSettingsProvider);
     final controller = ref.read(appSettingsProvider.notifier);
     final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];
+    final appLock = ref.watch(appLockSettingsProvider);
 
     return GroupedPage(
       title: 'Settings',
@@ -213,6 +266,42 @@ class SettingsScreen extends ConsumerWidget {
                 onChanged: (v) => ref.read(openLinksDirectlyProvider.notifier).set(v),
               ),
             ),
+          ],
+        ),
+        InsetGroup(
+          header: 'Security',
+          separatorIndent: 58,
+          footer: appLock.enabled
+              ? 'Loupe asks when it starts, and when you come back after being away for the Lock After time.'
+              : 'App Lock asks for your fingerprint, face or screen lock before your mail shows.',
+          children: [
+            GroupedRow(
+              key: const Key('app-lock'),
+              leading: SettingsIcon(LoupeIcons.appLock, colors.unreadDot),
+              title: 'App Lock',
+              chevron: false,
+              onTap: () => _setAppLock(context, ref, !appLock.enabled),
+              trailing: CupertinoSwitch(
+                value: appLock.enabled,
+                activeTrackColor: colors.success,
+                onChanged: (v) => _setAppLock(context, ref, v),
+              ),
+            ),
+            if (appLock.enabled)
+              GroupedRow(
+                key: const Key('lock-after'),
+                leading: SettingsIcon(LoupeIcons.lockAfter, colors.flag),
+                title: 'Lock After',
+                detail: appLock.lockAfter.label,
+                onTap: () => ChoicePage.push<LockAfter>(
+                  context,
+                  title: 'Lock After',
+                  footer: 'How long Loupe can be in the background before it asks again.',
+                  selected: appLock.lockAfter,
+                  choices: [for (final a in LockAfter.values) (value: a, label: a.label, detail: null)],
+                  onSelected: (v) => ref.read(appLockSettingsProvider.notifier).setLockAfter(v),
+                ),
+              ),
           ],
         ),
         InsetGroup(

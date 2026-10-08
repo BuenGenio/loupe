@@ -12,6 +12,7 @@ using the app, in a line or two; leave out internals, refactors and tests.
 
 ## 2026-10-08
 
+- **App Lock** (Settings › Security, off by default): your fingerprint, face or screen lock before your mail shows, when Loupe starts and when you come back after a while you choose. Recent Apps doesn't show your mail meanwhile (Android 13 and later).
 - **Sign in with Google and Microsoft** is switched on in the Nightly.
 - This changelog. The Nightly's release notes show its newest section.
 - **Search** says so when a query can't match anything (`from:alice and not from:alice`), and doesn't ask the server.

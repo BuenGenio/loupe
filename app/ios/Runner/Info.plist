@@ -54,6 +54,8 @@
 	<string>The calendar’s new-event screen suggests places from your contacts.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Loupe uses the camera to scan the QR codes Thunderbird shows when you export accounts.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>With App Lock on, Loupe asks for Face ID before your mail shows.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Loupe doesn’t use the microphone. The camera only scans QR codes, without sound.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
