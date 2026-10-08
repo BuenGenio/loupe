@@ -9,6 +9,8 @@
          The plugin merges WAKE_LOCK and RECEIVE_BOOT_COMPLETED (to start again after a reboot). -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!-- App Lock (off by default): local_auth_android merges USE_BIOMETRIC for the fingerprint or face prompt,
+         which also offers the screen lock's PIN, pattern or password. -->
 
     <!-- App icon badge. app_badge_plus 1.3.5 merges launcher permissions for many vendors from its own
          manifest (plus a HOME-intent query to find the launcher). Kept: Samsung (provider READ/WRITE; One UI

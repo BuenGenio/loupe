@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../router.dart';
 import '../../settings/app_mode.dart';
+import '../app_lock/app_lock.dart';
 import '../compose/compose_args.dart';
 import '../palette/command_palette.dart';
 import 'mail_commands.dart';
@@ -35,6 +36,19 @@ class _AppShortcutsState extends ConsumerState<AppShortcuts> {
   /// Holds the focus at start, so keys reach the shortcuts before any
   /// route takes it.
   final _focus = FocusNode(debugLabel: 'App shortcuts');
+
+  @override
+  void initState() {
+    super.initState();
+    // App Lock keeps the focus out of the app while locked (from the start,
+    // after a cold start): take it back once it's unlocked.
+    ref.listenManual(appLockProvider.select((s) => s.locked), (wasLocked, locked) {
+      if (wasLocked != true || locked) return;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && !_focus.hasFocus) _focus.requestFocus();
+      });
+    });
+  }
 
   @override
   void dispose() {

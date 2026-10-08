@@ -510,6 +510,30 @@ what is shown and the route stack stays at `/`; crossing the breakpoint converts
 shortcuts and the command palette act on the screen on top through `MailCommands`. See
 [tablet-and-keyboard.md](tablet-and-keyboard.md).
 
+## App Lock
+
+Opt-in (Settings › Security; `settings.appLock`, `settings.lockAfter`), in `app/lib/features/app_lock/`:
+
+- **Where:** `AppLockGate` sits in MaterialApp's builder, above the live gate, so it covers every route, dialog and
+  the account error screen. Locked, the app stays mounted under it (`Offstage`, tickers off, `ExcludeFocus`), so
+  nothing is painted, read out or typed into, and unlocking returns to the same place. `AppLockBackButton` wraps
+  MaterialApp so its `didPopRoute` comes before the router's: Back on the lock screen leaves the app.
+- **When** (`AppLockController`): locked from the first frame of a cold start (the setting is read synchronously
+  from the preloaded SharedPreferences). Going out of sight (`AppLifecycleListener.onHide`) with Lock After at
+  Immediately locks at once, so the first frame back is the lock; with a delay it puts up a cover and decides on
+  `onShow` from the time away (`clock.now()`, a clock turned back counts as expired). `inactive` alone (notification
+  shade, the prompt itself) never locks. The prompt shows by itself once each time the lock comes into view, on
+  `onResume` (Android can't show it from the background); not again after the prompt's own PIN screen (Android 10 and
+  earlier) hid the app, or closing it would reopen it.
+- **Who checks:** `DeviceAuthenticator` (`local_auth`, `biometricOnly: false`: biometrics or the screen lock's
+  credential); tests fake it. Turning App Lock on authenticates first, and refuses without a screen lock. If the
+  screen lock is removed later, App Lock turns itself off at the next unlock (removing it takes the credential).
+- **Android:** `MainActivity` is a `FlutterFragmentActivity` (BiometricPrompt needs a FragmentActivity); its
+  themes are AppCompat ones (the biometric dialog of Android 8 and earlier needs them), with the old colours
+  pinned. `RecentsChannel.kt` (`io.github.buengenio.loupe/recents`) turns off the Recent Apps screenshot while the
+  setting is on (`setRecentsScreenshotEnabled`, Android 13+), without FLAG_SECURE.
+- **Background work** never sees the lock: sync, Instant Delivery and notification buttons run in their own isolates.
+
 ## Conventions
 
 - Dart 3.13, `dart analyze` clean with the root `analysis_options.yaml`; 120-column lines.
