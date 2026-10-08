@@ -106,7 +106,7 @@
     "privacy4": "I tracker restano muti",
     "privacy4Text": "Immagini remote disattivate per impostazione predefinita, link di reindirizzamento smascherati.",
     "providersTitle": "Funziona con la posta che hai già",
-    "providersNote_html": "In più, l'importazione dal codice QR «Export for Mobile» di Thunderbird. L'accesso con Google e Microsoft, necessario per Outlook.com e Microsoft 365, è in arrivo. <a href=\"/docs/accounts/\">Guida agli account</a>",
+    "providersNote_html": "Accesso con Google e Microsoft per Gmail, Outlook.com e Microsoft 365, e importazione dal codice QR «Export for Mobile» di Thunderbird. <a href=\"/docs/accounts/\">Guida agli account</a>",
     "providerOwn": "Il tuo server",
     "openEyebrow": "Sviluppata alla luce del sole",
     "openTitle": "Open source, fino all'ultimo test.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Roadmap",
-    "description": "Cosa Loupe offre già, cosa arriva dopo (accesso con Google e Microsoft, Google Play, iOS), cosa potrebbe arrivare più avanti e cosa, di proposito, non è previsto.",
+    "description": "Cosa Loupe offre già, cosa arriva dopo (Google Play, iOS, accesso Google verificato), cosa potrebbe arrivare più avanti e cosa, di proposito, non è previsto.",
     "eyebrow": "Roadmap",
     "h1": "Dove sta andando Loupe",
     "lead": "Loupe è costruita per fasi, ognuna con un traguardo chiaro. Ecco cosa è fatto, cosa viene dopo e cosa, di proposito, non è in lista.",

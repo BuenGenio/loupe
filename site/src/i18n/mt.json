@@ -106,7 +106,7 @@
     "privacy4": "It-trackers jibqgħu siekta",
     "privacy4Text": "Stampi remoti mitfija b'mod awtomatiku, u links ta' ridirezzjoni mikxufa.",
     "providersTitle": "Taħdem mal-imejl li diġà għandek",
-    "providersNote_html": "Barra minn hekk, importazzjoni mill-kodiċi QR “Export for Mobile” ta' Thunderbird. Id-dħul b'Google u Microsoft, meħtieġ għal Outlook.com u Microsoft 365, ġej fi triqtu. <a href=\"/docs/accounts/\">Gwida għall-kontijiet</a>",
+    "providersNote_html": "Dħul b'Google u Microsoft għal Gmail, Outlook.com u Microsoft 365, u importazzjoni mill-kodiċi QR “Export for Mobile” ta' Thunderbird. <a href=\"/docs/accounts/\">Gwida għall-kontijiet</a>",
     "providerOwn": "Is-server tiegħek stess",
     "openEyebrow": "Mibnija fil-miftuħ",
     "openTitle": "Sors miftuħ, sal-aħħar test.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Pjan ta' żvilupp",
-    "description": "Dak li Loupe diġà ħarġet, x'ġej wara (dħul b'Google u Microsoft, Google Play, iOS), x'jista' jiġi aktar tard, u x'mhux ippjanat apposta.",
+    "description": "Dak li Loupe diġà ħarġet, x'ġej wara (Google Play, iOS, dħul ivverifikat b'Google), x'jista' jiġi aktar tard, u x'mhux ippjanat apposta.",
     "eyebrow": "Pjan ta' żvilupp",
     "h1": "Fejn sejra Loupe",
     "lead": "Loupe qed tinbena f'fażijiet, kull waħda b'linja tal-arrivu ċara. Hawn x'inhu lest, x'ġej wara, u x'mhux fuq il-lista apposta.",

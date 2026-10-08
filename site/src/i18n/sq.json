@@ -106,7 +106,7 @@
     "privacy4": "Gjurmuesit heshtin",
     "privacy4Text": "Imazhet e largëta të fikura si parazgjedhje, lidhjet e ridrejtimit të pastruara.",
     "providersTitle": "Funksionon me postën që keni tashmë",
-    "providersNote_html": "Plus importim nga kodi QR “Export for Mobile” i Thunderbird. Hyrja me Google dhe Microsoft, e nevojshme për Outlook.com dhe Microsoft 365, vjen së shpejti. <a href=\"/docs/accounts/\">Udhëzuesi i llogarive</a>",
+    "providersNote_html": "Hyrje me Google dhe Microsoft për Gmail, Outlook.com dhe Microsoft 365, si dhe importim nga kodi QR “Export for Mobile” i Thunderbird. <a href=\"/docs/accounts/\">Udhëzuesi i llogarive</a>",
     "providerOwn": "Serveri juaj",
     "openEyebrow": "Ndërtuar haptas",
     "openTitle": "Me burim të hapur, deri te testi i fundit.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Plani i zhvillimit",
-    "description": "Çfarë ka publikuar Loupe, çfarë vjen më pas (hyrja me Google dhe Microsoft, Google Play, iOS), çfarë mund të vijë më vonë dhe çfarë qëllimisht nuk është në plan.",
+    "description": "Çfarë ka publikuar Loupe, çfarë vjen më pas (Google Play, iOS, hyrja e verifikuar me Google), çfarë mund të vijë më vonë dhe çfarë qëllimisht nuk është në plan.",
     "eyebrow": "Plani i zhvillimit",
     "h1": "Ku po shkon Loupe",
     "lead": "Loupe ndërtohet me faza, secila me një vijë finishi të qartë. Ja çfarë është bërë, çfarë vjen më pas dhe çfarë qëllimisht nuk është në listë.",

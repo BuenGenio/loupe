@@ -168,11 +168,11 @@ post("2026-10-23-reddit-selfhosted", "2026-10-23T16:00:00Z", ["reddit"], campaig
      reddit={"subreddit": "selfhosted", "title": "A mobile mail client that keeps its state on your own server: Loupe (Android, open source, JMAP + Sieve)",
              "text": "If you run your own mail (Stalwart, Dovecot, mailcow…), you may like how Loupe works: it has no cloud of its own, so its state lives on your server.\n\n- **Server rules** compiled to Sieve and uploaded over ManageSieve, or over JMAP (RFC 9661)\n- **Snooze** = a `Snoozed` folder + a keyword with the wake-up time (documented convention)\n- **Smart Mailboxes** stored as IMAP METADATA, or a message in a `Loupe Settings` folder\n- **JMAP** accounts with push, plus plain IMAP/SMTP\n\nThe app itself: Android, MPL-2.0, no telemetry, encrypted local store, OpenPGP and S/MIME.\n\nSite: {link} · Source: https://github.com/BuenGenio/loupe\n\n(Check the sub's rules on new-project posts before this goes up: some days are reserved.)"})
 
-post("2026-10-24-thanks", "2026-10-24T16:00:00Z", IMG, campaign="launch", media=m("launch/thanks"), kind="image", link="https://loupe.mx/development/#roadmap",
+post("2026-10-24-thanks", "2026-10-24T16:00:00Z", IMG, campaign="launch", media=m("launch/thanks"), kind="image", link="https://loupe.mx/roadmap/",
      text="Thank you for an incredible launch week. Every download, bug report, star and kind word helps. Here's what's next for Loupe. {link}",
-     bluesky={"text": "Thank you for launch week 💙\n\nEvery download, bug report, star and kind word helps. Next up: Google and Microsoft sign-in, a Play Store beta, and iOS.\n\n{link}"},
-     mastodon={"text": "Thank you for launch week 💙\n\nEvery download, bug report, star and kind word made a difference. Next for Loupe: Sign in with Google and Microsoft, a Google Play beta, and iOS on TestFlight.\n\nThe roadmap: {link}\n\n#FOSS #Android #Email"},
-     instagram={"caption": "Thank you. 💙\n\nFor every download, bug report, star and kind word in launch week. Next: Google and Microsoft sign-in, a Play Store beta, and iOS.\n\nLink in bio.\n\n#opensource #android #email #thankyou"})
+     bluesky={"text": "Thank you for launch week 💙\n\nEvery download, bug report, star and kind word helps. Next up: a Google Play beta and iOS.\n\n{link}"},
+     mastodon={"text": "Thank you for launch week 💙\n\nEvery download, bug report, star and kind word made a difference. Next for Loupe: a Google Play beta, iOS on TestFlight, and Google's verification of Gmail sign-in.\n\nThe roadmap: {link}\n\n#FOSS #Android #Email"},
+     instagram={"caption": "Thank you. 💙\n\nFor every download, bug report, star and kind word in launch week. Next: a Google Play beta and iOS.\n\nLink in bio.\n\n#opensource #android #email #thankyou"})
 
 # ---------------------------------------------------------------- Week 2: no cloud
 post("2026-10-27-no-cloud", "2026-10-27T13:00:00Z", TEXT + ["linkedin"], campaign="no-cloud", link="https://loupe.mx/blog/no-loupe-cloud/",

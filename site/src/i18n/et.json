@@ -106,7 +106,7 @@
     "privacy4": "Jälgijad jäävad vait",
     "privacy4Text": "Välised pildid vaikimisi välja lülitatud, ümbersuunamislingid puhastatud.",
     "providersTitle": "Töötab sinu olemasoleva e-postiga",
-    "providersNote_html": "Lisaks import Thunderbirdi „Export for Mobile“ QR-koodist. Sisselogimine Google'i ja Microsoftiga, mida on vaja Outlook.com-i ja Microsoft 365 jaoks, on tulekul. <a href=\"/docs/accounts/\">Kontode juhend</a>",
+    "providersNote_html": "Sisselogimine Google'i ja Microsoftiga Gmaili, Outlook.com-i ja Microsoft 365 jaoks ning import Thunderbirdi „Export for Mobile“ QR-koodist. <a href=\"/docs/accounts/\">Kontode juhend</a>",
     "providerOwn": "Sinu oma server",
     "openEyebrow": "Avalikult ehitatud",
     "openTitle": "Avatud lähtekood, viimase testini välja.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Teekaart",
-    "description": "Mis Loupe'is on juba valmis, mis tuleb järgmisena (Google'i ja Microsofti sisselogimine, Google Play, iOS), mis võib tulla hiljem ja mis on teadlikult plaanist väljas.",
+    "description": "Mis Loupe'is on juba valmis, mis tuleb edasi (Google Play, iOS, kinnitatud Google'i sisselogimine), mis võib tulla hiljem ja mis on teadlikult plaanist väljas.",
     "eyebrow": "Teekaart",
     "h1": "Kuhu Loupe liigub",
     "lead": "Loupe'i ehitatakse etappidena ja igal etapil on selge finišijoon. Siin on kirjas, mis on tehtud, mis tuleb järgmisena ja mis on teadlikult nimekirjast välja jäetud.",

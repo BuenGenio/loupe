@@ -106,7 +106,7 @@
     "privacy4": "Os rastrexadores calan",
     "privacy4Text": "Imaxes remotas desactivadas por defecto, ligazóns de redirección limpas.",
     "providersTitle": "Funciona co correo que xa tes",
-    "providersNote_html": "Ademais, importación desde o código QR de “Export for Mobile” de Thunderbird. O inicio de sesión con Google e Microsoft, necesario para Outlook.com e Microsoft 365, está en camiño. <a href=\"/docs/accounts/\">Guía de contas</a>",
+    "providersNote_html": "Inicio de sesión con Google e Microsoft para Gmail, Outlook.com e Microsoft 365, e importación desde o código QR de “Export for Mobile” de Thunderbird. <a href=\"/docs/accounts/\">Guía de contas</a>",
     "providerOwn": "O teu propio servidor",
     "openEyebrow": "Feita en aberto",
     "openTitle": "Código aberto, ata a última proba.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Folla de ruta",
-    "description": "O que Loupe xa publicou, o que vén despois (inicio de sesión con Google e Microsoft, Google Play, iOS), o que podería chegar máis adiante e o que deliberadamente non está previsto.",
+    "description": "O que Loupe xa publicou, o que vén (Google Play, iOS, inicio de sesión de Google verificado), o que pode chegar máis tarde e o que, adrede, non está previsto.",
     "eyebrow": "Folla de ruta",
     "h1": "Cara a onde vai Loupe",
     "lead": "Loupe constrúese por fases, cada unha cunha meta clara. Isto é o que está feito, o que vén despois e o que deliberadamente non está na lista.",

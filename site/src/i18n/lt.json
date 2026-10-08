@@ -106,7 +106,7 @@
     "privacy4": "Sekikliai tyli",
     "privacy4Text": "Nuotoliniai vaizdai pagal numatytuosius nustatymus išjungti, peradresavimo nuorodos išvalytos.",
     "providersTitle": "Veikia su jau turimu paštu",
-    "providersNote_html": "Be to, galima importuoti iš Thunderbird „Export for Mobile“ QR kodo. Prisijungimas su Google ir Microsoft, reikalingas Outlook.com ir Microsoft 365, jau ruošiamas. <a href=\"/docs/accounts/\">Paskyrų vadovas</a>",
+    "providersNote_html": "Prisijungimas su Google ir Microsoft prie Gmail, Outlook.com ir Microsoft 365, taip pat importavimas iš Thunderbird „Export for Mobile“ QR kodo. <a href=\"/docs/accounts/\">Paskyrų vadovas</a>",
     "providerOwn": "Jūsų pačių serveris",
     "openEyebrow": "Kuriama atvirai",
     "openTitle": "Atvirasis kodas – iki paskutinio testo.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Kūrimo planas",
-    "description": "Ką Loupe jau išleido, kas laukia toliau (prisijungimas su Google ir Microsoft, Google Play, iOS), kas gali atsirasti vėliau ir kas sąmoningai neplanuojama.",
+    "description": "Ką Loupe jau išleido, kas laukia toliau (Google Play, iOS, patvirtintas prisijungimas su Google), kas gali atsirasti vėliau ir kas sąmoningai neplanuojama.",
     "eyebrow": "Kūrimo planas",
     "h1": "Kur link juda Loupe",
     "lead": "Loupe kuriama etapais, ir kiekvienas jų turi aiškią finišo liniją. Štai kas jau padaryta, kas laukia toliau ir kas sąmoningai neįtraukta į sąrašą.",

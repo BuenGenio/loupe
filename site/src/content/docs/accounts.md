@@ -39,8 +39,8 @@ If nothing is found, Loupe says "Couldn't find settings for *domain*. Enter them
 
 | Provider | How you sign in |
 |---|---|
-| Gmail | **Sign in with Google**, when your build of Loupe has it; otherwise an app password |
-| Outlook.com, Hotmail, Microsoft 365 | **Sign in with Microsoft**, when your build of Loupe has it |
+| Gmail | **Sign in with Google**, or an app password |
+| Outlook.com, Hotmail, Microsoft 365 | **Sign in with Microsoft** |
 | iCloud | An app-specific password, not your Apple Account password |
 | Yahoo and AOL | An app password, not your account password |
 | Fastmail | An API token (Loupe uses JMAP); or an app password over IMAP |
@@ -53,7 +53,9 @@ When a provider needs an app password or a token, the sign-in screen explains it
 
 With **Sign in with Google** or **Sign in with Microsoft**, you sign in on Google's or Microsoft's own page in your browser. Loupe never sees your password; it receives a permission to read and send your mail, which you can withdraw in your Google or Microsoft account at any time.
 
-> **Note:** These buttons only appear in builds of Loupe that have been registered with Google and Microsoft. In a build without them, Loupe says so on the sign-in screen.
+> **Note:** The Nightly builds from loupe.mx have both buttons. Until Google finishes reviewing Loupe's access to Gmail, Google may show a warning that the app isn't verified yet; continuing is safe, or use an app password instead.
+>
+> Builds of Loupe that aren't registered with Google and Microsoft (for example one you build yourself) say so on the sign-in screen:
 >
 > - **Gmail** then works with an app password, which needs 2-Step Verification on your Google account. Tap **Use an App Password** and follow **How to Create an App Password**.
 > - **Outlook, Hotmail and Microsoft 365** accounts can't be added in such a build: they no longer accept passwords from mail apps.

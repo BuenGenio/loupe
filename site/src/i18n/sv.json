@@ -106,7 +106,7 @@
     "privacy4": "Spårare håller tyst",
     "privacy4Text": "Fjärrbilder avstängda som standard, omdirigeringslänkar rensade.",
     "providersTitle": "Fungerar med den e-post du redan har",
-    "providersNote_html": "Dessutom import via QR-koden från Thunderbirds ”Export for Mobile”. Inloggning med Google och Microsoft, som krävs för Outlook.com och Microsoft 365, är på väg. <a href=\"/docs/accounts/\">Guide för konton</a>",
+    "providersNote_html": "Inloggning med Google och Microsoft för Gmail, Outlook.com och Microsoft 365, samt import via QR-koden från Thunderbirds ”Export for Mobile”. <a href=\"/docs/accounts/\">Guide för konton</a>",
     "providerOwn": "Din egen server",
     "openEyebrow": "Byggd öppet",
     "openTitle": "Öppen källkod, ända ner till sista testet.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Färdplan",
-    "description": "Vad Loupe har levererat, vad som kommer härnäst (inloggning med Google och Microsoft, Google Play, iOS), vad som kanske kommer senare och vad som medvetet inte är planerat.",
+    "description": "Vad Loupe levererat, vad som kommer härnäst (Google Play, iOS, verifierad Google-inloggning), vad som kan komma senare och vad som medvetet inte är planerat.",
     "eyebrow": "Färdplan",
     "h1": "Vart Loupe är på väg",
     "lead": "Loupe byggs i faser, var och en med en tydlig mållinje. Här ser du vad som är klart, vad som kommer härnäst och vad som medvetet inte står på listan.",

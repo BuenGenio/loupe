@@ -106,7 +106,7 @@
     "privacy4": "Sledovací prvky mlčí",
     "privacy4Text": "Vzdálené obrázky jsou ve výchozím stavu vypnuté a přesměrovací odkazy rozbalené.",
     "providersTitle": "Funguje s poštou, kterou už máte",
-    "providersNote_html": "A navíc import z QR kódu „Export for Mobile“ v Thunderbirdu. Přihlášení přes Google a Microsoft, potřebné pro Outlook.com a Microsoft 365, je na cestě. <a href=\"/docs/accounts/\">Průvodce účty</a>",
+    "providersNote_html": "Přihlášení přes Google a Microsoft pro Gmail, Outlook.com a Microsoft 365 a import z QR kódu „Export for Mobile“ v Thunderbirdu. <a href=\"/docs/accounts/\">Průvodce účty</a>",
     "providerOwn": "Váš vlastní server",
     "openEyebrow": "Vyvíjeno otevřeně",
     "openTitle": "Open source až do posledního testu.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Plán vývoje",
-    "description": "Co už Loupe umí, co přijde dál (přihlášení přes Google a Microsoft, Google Play, iOS), co může přijít později a co záměrně v plánu není.",
+    "description": "Co už Loupe umí, co přijde dál (Google Play, iOS, ověřené přihlášení přes Google), co může přijít později a co záměrně v plánu není.",
     "eyebrow": "Plán vývoje",
     "h1": "Kam Loupe směřuje",
     "lead": "Loupe vzniká po fázích a každá má jasně daný cíl. Tady je, co je hotové, co přijde dál a co na seznamu záměrně není.",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T12:38:03.176Z",
+  "generatedAt": "2026-10-08T16:25:10.484Z",
   "timezone": "UTC",
   "platforms": {
     "bluesky": {
@@ -1516,8 +1516,8 @@
       "time": "16:00",
       "campaign": "launch",
       "title": null,
-      "text": "Thank you for launch week 💙\n\nEvery download, bug report, star and kind word helps. Next up: Google and Microsoft sign-in, a Play Store beta, and iOS.\n\nloupe.mx/development",
-      "link": "https://loupe.mx/development/?utm_source=bluesky&utm_medium=social&utm_campaign=launch#roadmap",
+      "text": "Thank you for launch week 💙\n\nEvery download, bug report, star and kind word helps. Next up: a Google Play beta and iOS.\n\nloupe.mx/roadmap",
+      "link": "https://loupe.mx/roadmap/?utm_source=bluesky&utm_medium=social&utm_campaign=launch",
       "media": [
         {
           "src": "media/launch/thanks.jpg",
@@ -1528,12 +1528,12 @@
       "lengths": [
         {
           "field": "text",
-          "used": 171,
+          "used": 137,
           "max": 300
         },
         {
           "field": "text",
-          "used": 174,
+          "used": 140,
           "max": 3000
         }
       ],
@@ -1551,8 +1551,8 @@
       "time": "16:00",
       "campaign": "launch",
       "title": null,
-      "text": "Thank you for launch week 💙\n\nEvery download, bug report, star and kind word made a difference. Next for Loupe: Sign in with Google and Microsoft, a Google Play beta, and iOS on TestFlight.\n\nThe roadmap: https://loupe.mx/development/?utm_source=mastodon&utm_medium=social&utm_campaign=launch#roadmap\n\n#FOSS #Android #Email",
-      "link": "https://loupe.mx/development/?utm_source=mastodon&utm_medium=social&utm_campaign=launch#roadmap",
+      "text": "Thank you for launch week 💙\n\nEvery download, bug report, star and kind word made a difference. Next for Loupe: a Google Play beta, iOS on TestFlight, and Google's verification of Gmail sign-in.\n\nThe roadmap: https://loupe.mx/roadmap/?utm_source=mastodon&utm_medium=social&utm_campaign=launch\n\n#FOSS #Android #Email",
+      "link": "https://loupe.mx/roadmap/?utm_source=mastodon&utm_medium=social&utm_campaign=launch",
       "media": [
         {
           "src": "media/launch/thanks.jpg",
@@ -1563,7 +1563,7 @@
       "lengths": [
         {
           "field": "text",
-          "used": 249,
+          "used": 254,
           "max": 500
         }
       ],
@@ -1581,8 +1581,8 @@
       "time": "16:00",
       "campaign": "launch",
       "title": null,
-      "text": "Thank you for an incredible launch week. Every download, bug report, star and kind word helps. Here's what's next for Loupe. https://loupe.mx/development/?utm_source=threads&utm_medium=social&utm_campaign=launch#roadmap",
-      "link": "https://loupe.mx/development/?utm_source=threads&utm_medium=social&utm_campaign=launch#roadmap",
+      "text": "Thank you for an incredible launch week. Every download, bug report, star and kind word helps. Here's what's next for Loupe. https://loupe.mx/roadmap/?utm_source=threads&utm_medium=social&utm_campaign=launch",
+      "link": "https://loupe.mx/roadmap/?utm_source=threads&utm_medium=social&utm_campaign=launch",
       "media": [
         {
           "src": "media/launch/thanks.jpg",
@@ -1593,7 +1593,7 @@
       "lengths": [
         {
           "field": "text",
-          "used": 219,
+          "used": 207,
           "max": 500
         },
         {
@@ -1616,8 +1616,8 @@
       "time": "16:00",
       "campaign": "launch",
       "title": null,
-      "text": "Thank you. 💙\n\nFor every download, bug report, star and kind word in launch week. Next: Google and Microsoft sign-in, a Play Store beta, and iOS.\n\nLink in bio.\n\n#opensource #android #email #thankyou",
-      "link": "https://loupe.mx/development/?utm_source=instagram&utm_medium=social&utm_campaign=launch#roadmap",
+      "text": "Thank you. 💙\n\nFor every download, bug report, star and kind word in launch week. Next: a Google Play beta and iOS.\n\nLink in bio.\n\n#opensource #android #email #thankyou",
+      "link": "https://loupe.mx/roadmap/?utm_source=instagram&utm_medium=social&utm_campaign=launch",
       "media": [
         {
           "src": "media/launch/thanks.jpg",
@@ -1628,7 +1628,7 @@
       "lengths": [
         {
           "field": "caption",
-          "used": 198,
+          "used": 168,
           "max": 2200
         },
         {

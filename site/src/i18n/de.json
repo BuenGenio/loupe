@@ -106,7 +106,7 @@
     "privacy4": "Tracker bleiben stumm",
     "privacy4Text": "Externe Bilder standardmäßig aus, Weiterleitungslinks aufgelöst.",
     "providersTitle": "Funktioniert mit deinen bestehenden Mailkonten",
-    "providersNote_html": "Dazu Import über den QR-Code aus Thunderbirds „Export for Mobile“. Die Anmeldung mit Google und Microsoft, nötig für Outlook.com und Microsoft 365, ist in Arbeit. <a href=\"/docs/accounts/\">Anleitung zu Konten</a>",
+    "providersNote_html": "Anmeldung mit Google und Microsoft für Gmail, Outlook.com und Microsoft 365 sowie Import über den QR-Code aus Thunderbirds „Export for Mobile“. <a href=\"/docs/accounts/\">Anleitung zu Konten</a>",
     "providerOwn": "Dein eigener Server",
     "openEyebrow": "Offen entwickelt",
     "openTitle": "Open Source, bis zum letzten Test.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Roadmap",
-    "description": "Was Loupe schon bietet, was als Nächstes kommt (Anmeldung mit Google und Microsoft, Google Play, iOS), was später kommen könnte und was bewusst nicht geplant ist.",
+    "description": "Was Loupe schon bietet, was als Nächstes kommt (Google Play, iOS, verifizierte Google-Anmeldung), was später kommen könnte und was bewusst nicht geplant ist.",
     "eyebrow": "Roadmap",
     "h1": "Wohin sich Loupe entwickelt",
     "lead": "Loupe entsteht in Phasen, jede mit einer klaren Ziellinie. Hier siehst du, was fertig ist, was als Nächstes kommt und was bewusst nicht auf der Liste steht.",

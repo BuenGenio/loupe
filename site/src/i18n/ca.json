@@ -106,7 +106,7 @@
     "privacy4": "Els rastrejadors, en silenci",
     "privacy4Text": "Imatges remotes desactivades per defecte i enllaços de redirecció al descobert.",
     "providersTitle": "Funciona amb el correu que ja tens",
-    "providersNote_html": "A més, pots importar comptes amb el codi QR «Export for Mobile» de Thunderbird. L'inici de sessió amb Google i Microsoft, necessari per a Outlook.com i Microsoft 365, és en camí. <a href=\"/docs/accounts/\">Guia de comptes</a>",
+    "providersNote_html": "Inicia sessió amb Google i Microsoft per a Gmail, Outlook.com i Microsoft 365, i importa comptes des del codi QR «Export for Mobile» de Thunderbird. <a href=\"/docs/accounts/\">Guia de comptes</a>",
     "providerOwn": "El teu propi servidor",
     "openEyebrow": "Fet a la vista de tothom",
     "openTitle": "Codi obert, fins a l'última prova.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Full de ruta",
-    "description": "El que Loupe ja ofereix, el que ve ara (inici de sessió amb Google i Microsoft, Google Play, iOS), el que pot arribar més endavant i el que, deliberadament, no està previst.",
+    "description": "El que Loupe ja ofereix, el que ve ara (Google Play, iOS, inici de sessió de Google verificat), el que pot venir després i el que expressament no està previst.",
     "eyebrow": "Full de ruta",
     "h1": "Cap a on va Loupe",
     "lead": "Loupe es construeix per fases, cadascuna amb una meta clara. Aquí tens el que ja està fet, el que ve ara i el que, deliberadament, no és a la llista.",

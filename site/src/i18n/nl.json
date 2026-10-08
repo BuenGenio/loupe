@@ -106,7 +106,7 @@
     "privacy4": "Trackers blijven stil",
     "privacy4Text": "Externe afbeeldingen standaard uit, doorverwijslinks opgeschoond.",
     "providersTitle": "Werkt met de mail die je al hebt",
-    "providersNote_html": "Plus importeren via de QR-code van “Export for Mobile” in Thunderbird. Inloggen met Google en Microsoft, nodig voor Outlook.com en Microsoft 365, komt eraan. <a href=\"/docs/accounts/\">Handleiding accounts</a>",
+    "providersNote_html": "Inloggen met Google en Microsoft voor Gmail, Outlook.com en Microsoft 365, en importeren via de QR-code van “Export for Mobile” in Thunderbird. <a href=\"/docs/accounts/\">Handleiding accounts</a>",
     "providerOwn": "Je eigen server",
     "openEyebrow": "In alle openheid gebouwd",
     "openTitle": "Opensource, tot de laatste test.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Roadmap",
-    "description": "Wat Loupe al heeft uitgebracht, wat er nu komt (inloggen met Google en Microsoft, Google Play, iOS), wat er later misschien komt en wat bewust niet gepland is.",
+    "description": "Wat Loupe al heeft uitgebracht, wat er nu komt (Google Play, iOS, geverifieerd inloggen met Google), wat er later misschien komt en wat bewust niet gepland is.",
     "eyebrow": "Roadmap",
     "h1": "Waar Loupe naartoe gaat",
     "lead": "Loupe wordt in fasen gebouwd, elk met een duidelijke eindstreep. Dit is wat klaar is, wat er nu komt en wat bewust niet op de lijst staat.",

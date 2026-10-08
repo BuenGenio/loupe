@@ -106,7 +106,7 @@
     "privacy4": "İzleyiciler susturulur",
     "privacy4Text": "Uzak görseller varsayılan olarak kapalı, yönlendirme bağlantıları ayıklanmış.",
     "providersTitle": "Zaten kullandığınız e-postayla çalışır",
-    "providersNote_html": "Ayrıca Thunderbird'ün “Export for Mobile” QR kodundan içe aktarma. Outlook.com ve Microsoft 365 için gereken Google ve Microsoft ile oturum açma da yolda. <a href=\"/docs/accounts/\">Hesaplar kılavuzu</a>",
+    "providersNote_html": "Gmail, Outlook.com ve Microsoft 365 için Google ve Microsoft ile oturum açma, ayrıca Thunderbird'ün “Export for Mobile” QR kodundan içe aktarma. <a href=\"/docs/accounts/\">Hesaplar kılavuzu</a>",
     "providerOwn": "Kendi sunucunuz",
     "openEyebrow": "Herkesin gözü önünde",
     "openTitle": "Son testine kadar açık kaynak.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Yol haritası",
-    "description": "Loupe'un neleri tamamladığı, sırada ne olduğu (Google ve Microsoft ile oturum açma, Google Play, iOS), ileride neler gelebileceği ve nelerin bilerek planlanmadığı.",
+    "description": "Loupe'un neleri tamamladığı, sırada ne olduğu (Google Play, iOS, Google oturum açma doğrulaması), ileride neler gelebileceği ve nelerin bilerek planlanmadığı.",
     "eyebrow": "Yol haritası",
     "h1": "Loupe nereye gidiyor",
     "lead": "Loupe, her birinin net bir bitiş çizgisi olan aşamalar hâlinde geliştiriliyor. İşte tamamlananlar, sıradakiler ve bilerek listede yer almayanlar.",

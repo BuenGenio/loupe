@@ -106,7 +106,7 @@
     "privacy4": "Seurantatyökalut vaikenevat",
     "privacy4Text": "Etäkuvat oletuksena pois päältä, uudelleenohjauslinkit purettu.",
     "providersTitle": "Toimii nykyisen sähköpostisi kanssa",
-    "providersNote_html": "Lisäksi tuonti Thunderbirdin ”Export for Mobile” -QR-koodista. Kirjautuminen Googlella ja Microsoftilla, jota Outlook.com ja Microsoft 365 vaativat, on tulossa. <a href=\"/docs/accounts/\">Tiliopas</a>",
+    "providersNote_html": "Kirjautuminen Googlella ja Microsoftilla Gmailiin, Outlook.comiin ja Microsoft 365:een sekä tuonti Thunderbirdin ”Export for Mobile” -QR-koodista. <a href=\"/docs/accounts/\">Tiliopas</a>",
     "providerOwn": "Oma palvelimesi",
     "openEyebrow": "Rakennettu avoimesti",
     "openTitle": "Avointa lähdekoodia viimeistä testiä myöten.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Tiekartta",
-    "description": "Mitä Loupe on jo julkaissut, mitä on tulossa seuraavaksi (kirjautuminen Googlella ja Microsoftilla, Google Play, iOS), mitä voi tulla myöhemmin ja mitä ei tarkoituksella ole suunnitelmissa.",
+    "description": "Mitä Loupe on jo julkaissut, mitä on tulossa (Google Play, iOS, vahvistettu Google-kirjautuminen), mitä voi tulla myöhemmin ja mitä ei tietoisesti suunnitella.",
     "eyebrow": "Tiekartta",
     "h1": "Mihin Loupe on menossa",
     "lead": "Loupea rakennetaan vaiheittain, ja jokaisella vaiheella on selkeä maali. Tässä näet, mikä on valmista, mitä on tulossa seuraavaksi ja mikä on tarkoituksella jätetty listalta pois.",

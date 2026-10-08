@@ -106,7 +106,7 @@
     "privacy4": "Tracwyr yn dawel",
     "privacy4Text": "Delweddau o bell wedi'u diffodd yn ddiofyn, dolenni ailgyfeirio wedi'u dadlapio.",
     "providersTitle": "Yn gweithio gyda'r e-bost sydd gennych chi'n barod",
-    "providersNote_html": "Hefyd, mewnforio o god QR “Export for Mobile” Thunderbird. Mae mewngofnodi gyda Google a Microsoft, sydd ei angen ar gyfer Outlook.com a Microsoft 365, ar y ffordd. <a href=\"/docs/accounts/\">Canllaw cyfrifon</a>",
+    "providersNote_html": "Mewngofnodi gyda Google a Microsoft ar gyfer Gmail, Outlook.com a Microsoft 365, a mewnforio o god QR “Export for Mobile” Thunderbird. <a href=\"/docs/accounts/\">Canllaw cyfrifon</a>",
     "providerOwn": "Eich gweinydd eich hun",
     "openEyebrow": "Wedi'i adeiladu'n agored",
     "openTitle": "Cod agored, hyd at y prawf olaf.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Map ffordd",
-    "description": "Beth mae Loupe wedi'i ryddhau, beth sydd nesaf (mewngofnodi gyda Google a Microsoft, Google Play, iOS), beth allai ddod yn nes ymlaen, a beth sy'n fwriadol heb ei gynllunio.",
+    "description": "Beth mae Loupe wedi'i ryddhau, beth sydd nesaf (Google Play, iOS, mewngofnodi Google dilysedig), beth allai ddod wedyn, a beth sy'n fwriadol heb ei gynllunio.",
     "eyebrow": "Map ffordd",
     "h1": "I ble mae Loupe yn mynd",
     "lead": "Mae Loupe yn cael ei adeiladu fesul cyfnod, gyda llinell derfyn glir i bob un. Dyma beth sydd wedi'i wneud, beth sydd nesaf, a beth sy'n fwriadol oddi ar y rhestr.",

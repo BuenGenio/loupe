@@ -107,7 +107,7 @@
     "privacy4": "Trackers stay silent",
     "privacy4Text": "Remote images off by default, redirect links unwrapped.",
     "providersTitle": "Works with the mail you already have",
-    "providersNote_html": "Plus import from Thunderbird's “Export for Mobile” QR code. Sign-in with Google and Microsoft, needed for Outlook.com and Microsoft 365, is on the way. <a href=\"/docs/accounts/\">Accounts guide</a>",
+    "providersNote_html": "Sign in with Google and Microsoft for Gmail, Outlook.com and Microsoft 365, and import from Thunderbird's “Export for Mobile” QR code. <a href=\"/docs/accounts/\">Accounts guide</a>",
     "providerOwn": "Your own server",
     "openEyebrow": "Built in the open",
     "openTitle": "Open source, down to the last test.",
@@ -743,7 +743,7 @@
   },
   "roadmap": {
     "title": "Roadmap",
-    "description": "What Loupe has shipped, what's next (Google and Microsoft sign-in, Google Play, iOS), what may come later, and what is deliberately not planned.",
+    "description": "What Loupe has shipped, what's next (Google Play, iOS, verified Google sign-in), what may come later, and what is deliberately not planned.",
     "eyebrow": "Roadmap",
     "h1": "Where Loupe is going",
     "lead": "Loupe is built in phases, each with a clear finish line. Here's what's done, what's next, and what is deliberately not on the list.",

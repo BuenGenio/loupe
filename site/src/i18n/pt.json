@@ -106,7 +106,7 @@
     "privacy4": "Rastreadores em silêncio",
     "privacy4Text": "Imagens remotas desativadas por predefinição e ligações de redirecionamento limpas.",
     "providersTitle": "Funciona com o e-mail que já tem",
-    "providersNote_html": "E ainda a importação a partir do código QR «Export for Mobile» do Thunderbird. O início de sessão com Google e Microsoft, necessário para Outlook.com e Microsoft 365, está a caminho. <a href=\"/docs/accounts/\">Guia de contas</a>",
+    "providersNote_html": "Início de sessão com Google e Microsoft para Gmail, Outlook.com e Microsoft 365, e importação a partir do código QR «Export for Mobile» do Thunderbird. <a href=\"/docs/accounts/\">Guia de contas</a>",
     "providerOwn": "O seu próprio servidor",
     "openEyebrow": "Feito às claras",
     "openTitle": "Código aberto, até ao último teste.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Roteiro",
-    "description": "O que o Loupe já lançou, o que vem a seguir (início de sessão com Google e Microsoft, Google Play, iOS), o que poderá vir mais tarde e o que, deliberadamente, não está previsto.",
+    "description": "O que o Loupe já lançou, o que vem aí (Google Play, iOS, início de sessão Google verificado), o que poderá vir depois e o que, de propósito, não está previsto.",
     "eyebrow": "Roteiro",
     "h1": "Para onde vai o Loupe",
     "lead": "O Loupe é construído por fases, cada uma com uma meta clara. Eis o que está feito, o que vem a seguir e o que, deliberadamente, não está na lista.",

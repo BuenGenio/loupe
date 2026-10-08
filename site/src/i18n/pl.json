@@ -106,7 +106,7 @@
     "privacy4": "Trackery milczą",
     "privacy4Text": "Zdalne obrazy domyślnie wyłączone, linki przekierowujące rozwinięte.",
     "providersTitle": "Działa z pocztą, którą już masz",
-    "providersNote_html": "Do tego import z kodu QR „Export for Mobile” w Thunderbirdzie. Logowanie przez Google i Microsoft, potrzebne dla Outlook.com i Microsoft 365, jest w drodze. <a href=\"/docs/accounts/\">Przewodnik po kontach</a>",
+    "providersNote_html": "Logowanie przez Google i Microsoft do Gmaila, Outlook.com i Microsoft 365 oraz import z kodu QR „Export for Mobile” w Thunderbirdzie. <a href=\"/docs/accounts/\">Przewodnik po kontach</a>",
     "providerOwn": "Twój własny serwer",
     "openEyebrow": "Tworzona jawnie",
     "openTitle": "Open source, aż do ostatniego testu.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Plan rozwoju",
-    "description": "Co już trafiło do Loupe, co dalej (logowanie przez Google i Microsoft, Google Play, iOS), co może pojawić się później, a czego celowo nie ma w planach.",
+    "description": "Co już trafiło do Loupe, co dalej (Google Play, iOS, zweryfikowane logowanie przez Google), co może pojawić się później, a czego celowo nie ma w planach.",
     "eyebrow": "Plan rozwoju",
     "h1": "Dokąd zmierza Loupe",
     "lead": "Loupe powstaje etapami, a każdy z nich ma wyraźną metę. Oto co jest gotowe, co dalej i czego celowo nie ma na liście.",

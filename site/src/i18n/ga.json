@@ -106,7 +106,7 @@
     "privacy4": "Fanann rianairí ina dtost",
     "privacy4Text": "Íomhánna cianda múchta de réir réamhshocraithe, naisc atreoraithe dífhillte.",
     "providersTitle": "Oibríonn sé leis an ríomhphost atá agat cheana",
-    "providersNote_html": "Chomh maith leis sin, is féidir iompórtáil ó chód QR “Export for Mobile” Thunderbird. Tá síniú isteach le Google agus Microsoft, a theastaíonn le haghaidh Outlook.com agus Microsoft 365, ar an mbealach. <a href=\"/docs/accounts/\">Treoir na gcuntas</a>",
+    "providersNote_html": "Síniú isteach le Google agus Microsoft le haghaidh Gmail, Outlook.com agus Microsoft 365, agus iompórtáil ó chód QR “Export for Mobile” Thunderbird. <a href=\"/docs/accounts/\">Treoir na gcuntas</a>",
     "providerOwn": "D'fhreastalaí féin",
     "openEyebrow": "Tógtha go hoscailte",
     "openTitle": "Foinse oscailte, go dtí an tástáil dheireanach.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Treochlár",
-    "description": "Cad atá seolta ag Loupe, cad atá le teacht (síniú isteach le Google agus Microsoft, Google Play, iOS), cad a d'fhéadfadh teacht níos déanaí, agus cad nach bhfuil beartaithe d'aon ghnó.",
+    "description": "Cad atá seolta ag Loupe, cad atá le teacht (Google Play, iOS, síniú isteach fíoraithe Google), cad a thiocfadh ar ball agus cad nach bhfuil beartaithe d'aon ghnó.",
     "eyebrow": "Treochlár",
     "h1": "Cá bhfuil Loupe ag dul",
     "lead": "Tógtar Loupe i gcéimeanna, gach ceann acu le líne deiridh shoiléir. Seo a bhfuil déanta, a bhfuil le teacht, agus a bhfuil fágtha as an liosta d'aon ghnó.",

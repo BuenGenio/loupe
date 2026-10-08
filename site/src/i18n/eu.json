@@ -106,7 +106,7 @@
     "privacy4": "Jarraitzaileak isilik",
     "privacy4Text": "Urruneko irudiak desaktibatuta lehenespenez, birbideratze-estekak garbituta.",
     "providersTitle": "Dagoeneko duzun postarekin dabil",
-    "providersNote_html": "Gainera, Thunderbird-en «Export for Mobile» QR kodetik inporta dezakezu. Google eta Microsoft-ekin saioa hasteko aukera, Outlook.com eta Microsoft 365 erabiltzeko beharrezkoa dena, bidean da. <a href=\"/docs/accounts/\">Kontuen gida</a>",
+    "providersNote_html": "Hasi saioa Google eta Microsoft-ekin Gmail, Outlook.com eta Microsoft 365 erabiltzeko, eta inportatu Thunderbird-en «Export for Mobile» QR kodetik. <a href=\"/docs/accounts/\">Kontuen gida</a>",
     "providerOwn": "Zure zerbitzari propioa",
     "openEyebrow": "Agerian eraikia",
     "openTitle": "Kode irekia, azken probaraino.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Ibilbide-orria",
-    "description": "Loupe-k zer argitaratu duen, zer datorren (Google eta Microsoft-ekin saioa hastea, Google Play, iOS), zer etor daitekeen geroago, eta zer ez dagoen nahita aurreikusita.",
+    "description": "Loupe-k zer argitaratu duen, zer datorren (Google Play, iOS, Google saio-hasiera egiaztatua), zer etor daitekeen gero, eta zer ez dagoen nahita aurreikusita.",
     "eyebrow": "Ibilbide-orria",
     "h1": "Nora doan Loupe",
     "lead": "Loupe fasetan eraikitzen da, eta fase bakoitzak helmuga argia du. Hona hemen zer dagoen eginda, zer datorren, eta zer ez dagoen nahita zerrendan.",

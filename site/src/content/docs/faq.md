@@ -25,11 +25,11 @@ No, there are none. Your mail stays on your mail server, and Loupe keeps a copy 
 
 ### Does Loupe work with Gmail?
 
-Yes. Builds of Loupe that are registered with Google offer **Sign in with Google**. In a build without it, you can connect Gmail with an app password, which needs 2-Step Verification on your Google account. See [Accounts](/docs/accounts/#google-and-microsoft-sign-in).
+Yes. The Nightly builds from loupe.mx offer **Sign in with Google**. Until Google finishes reviewing Loupe's access to Gmail, Google may show a warning that the app isn't verified yet. You can also connect Gmail with an app password, which needs 2-Step Verification on your Google account. See [Accounts](/docs/accounts/#google-and-microsoft-sign-in).
 
 ### Does Loupe work with Outlook.com, Hotmail and Microsoft 365?
 
-Yes, over IMAP, in builds of Loupe that offer **Sign in with Microsoft**. Microsoft no longer accepts passwords from mail apps, so in a build without Microsoft sign-in these accounts can't be added.
+Yes, over IMAP, with **Sign in with Microsoft**, which the Nightly builds from loupe.mx offer. Microsoft no longer accepts passwords from mail apps, so a build of Loupe without Microsoft sign-in (for example one you built yourself without registering it) can't add these accounts.
 
 ### Does Loupe support Exchange, ActiveSync or POP3?
 

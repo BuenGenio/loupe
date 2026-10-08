@@ -47,7 +47,7 @@ Being honest about the edges:
 
 - Loupe is **Android only** for now. The iOS version is prepared and waits for an Apple Developer account.
 - It speaks **open standards** (IMAP, SMTP, JMAP, Sieve), not Exchange ActiveSync or POP3.
-- **Sign in with Google and Microsoft** is going through the providers' reviews. Until then, Gmail works with an app password; Outlook.com and Microsoft 365 need the sign-in.
+- **Sign in with Google and Microsoft** works, but Google is still reviewing Loupe's access to Gmail, so for now Google may show an "unverified app" warning (an app password works too).
 - Builds are **nightly**: every change becomes a new version. They're used every day, but expect rough edges and tell me about them.
 
 ## Try it

@@ -106,7 +106,7 @@
     "privacy4": "Trackerele tac",
     "privacy4Text": "Imaginile externe sunt dezactivate implicit, iar linkurile de redirecționare sunt curățate.",
     "providersTitle": "Funcționează cu e-mailul pe care îl ai deja",
-    "providersNote_html": "În plus, import din codul QR „Export for Mobile” din Thunderbird. Autentificarea cu Google și Microsoft, necesară pentru Outlook.com și Microsoft 365, este în lucru. <a href=\"/docs/accounts/\">Ghidul conturilor</a>",
+    "providersNote_html": "Autentificare cu Google și Microsoft pentru Gmail, Outlook.com și Microsoft 365, precum și import din codul QR „Export for Mobile” din Thunderbird. <a href=\"/docs/accounts/\">Ghidul conturilor</a>",
     "providerOwn": "Propriul tău server",
     "openEyebrow": "Dezvoltată la vedere",
     "openTitle": "Open source, până la ultimul test.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Foaie de parcurs",
-    "description": "Ce a lansat deja Loupe, ce urmează (autentificarea cu Google și Microsoft, Google Play, iOS), ce ar putea veni mai târziu și ce nu este planificat, în mod intenționat.",
+    "description": "Ce a lansat deja Loupe, ce urmează (Google Play, iOS, autentificare verificată cu Google), ce ar putea veni mai târziu și ce, intenționat, nu este planificat.",
     "eyebrow": "Foaie de parcurs",
     "h1": "Încotro se îndreaptă Loupe",
     "lead": "Loupe este construită în etape, fiecare cu o linie de sosire clară. Iată ce e gata, ce urmează și ce lipsește intenționat de pe listă.",

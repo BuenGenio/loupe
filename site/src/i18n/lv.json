@@ -106,7 +106,7 @@
     "privacy4": "Izsekotāji klusē",
     "privacy4Text": "Attālie attēli pēc noklusējuma izslēgti, novirzīšanas saites attīrītas.",
     "providersTitle": "Darbojas ar jūsu esošo pastu",
-    "providersNote_html": "Turklāt ir imports no Thunderbird „Export for Mobile“ QR koda. Pierakstīšanās ar Google un Microsoft, kas nepieciešama Outlook.com un Microsoft 365, jau top. <a href=\"/docs/accounts/\">Kontu ceļvedis</a>",
+    "providersNote_html": "Pierakstīšanās ar Google un Microsoft, lai lietotu Gmail, Outlook.com un Microsoft 365, kā arī imports no Thunderbird „Export for Mobile“ QR koda. <a href=\"/docs/accounts/\">Kontu ceļvedis</a>",
     "providerOwn": "Jūsu pašu serveris",
     "openEyebrow": "Veidots atklāti",
     "openTitle": "Atvērtais pirmkods — līdz pat pēdējam testam.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Attīstības plāns",
-    "description": "Ko Loupe jau ir izlaidusi, kas sekos (pierakstīšanās ar Google un Microsoft, Google Play, iOS), kas varētu nākt vēlāk un kas apzināti netiek plānots.",
+    "description": "Ko Loupe jau ir izlaidusi, kas sekos (Google Play, iOS, verificēta pierakstīšanās ar Google), kas varētu nākt vēlāk un kas apzināti netiek plānots.",
     "eyebrow": "Attīstības plāns",
     "h1": "Kurp virzās Loupe",
     "lead": "Loupe tiek veidota pa posmiem, un katram ir skaidra finiša līnija. Lūk, kas ir paveikts, kas sekos un kas apzināti nav iekļauts sarakstā.",

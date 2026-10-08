@@ -106,7 +106,7 @@
     "privacy4": "Tracker bleiwe stomm",
     "privacy4Text": "Extern Biller standardméisseg aus, Weiderleedungs-Linken entpaakt.",
     "providersTitle": "Funktionéiert mat der Mail, déi Dir schonn hutt",
-    "providersNote_html": "Dobäi kënnt den Import iwwer den „Export for Mobile“-QR-Code vun Thunderbird. D'Umeldung mat Google a Microsoft, déi fir Outlook.com a Microsoft 365 néideg ass, ass ënnerwee. <a href=\"/docs/accounts/\">Uleedung fir Konten</a>",
+    "providersNote_html": "Umeldung mat Google a Microsoft fir Gmail, Outlook.com a Microsoft 365, an Import iwwer den „Export for Mobile“-QR-Code vun Thunderbird. <a href=\"/docs/accounts/\">Uleedung fir Konten</a>",
     "providerOwn": "Ären eegene Server",
     "openEyebrow": "Offen entwéckelt",
     "openTitle": "Open Source, bis zum leschten Test.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Roadmap",
-    "description": "Wat Loupe scho geliwwert huet, wat als Nächst kënnt (Umeldung mat Google a Microsoft, Google Play, iOS), wat méi spéit kéint kommen a wat bewosst net geplangt ass.",
+    "description": "Wat Loupe scho geliwwert huet, wat als Nächst kënnt (Google Play, iOS, verifizéiert Google-Umeldung), wat méi spéit kéint kommen a wat bewosst net geplangt ass.",
     "eyebrow": "Roadmap",
     "h1": "Wouhin Loupe geet",
     "lead": "Loupe entsteet a Phasen, all mat enger klorer Zillinn. Hei ass, wat fäerdeg ass, wat als Nächst kënnt a wat bewosst net op der Lëscht steet.",

@@ -106,7 +106,7 @@
     "privacy4": "Трекери ћуте",
     "privacy4Text": "Удаљене слике су подразумевано искључене, а преусмеравања у линковима уклоњена.",
     "providersTitle": "Ради са поштом коју већ имате",
-    "providersNote_html": "Уз то и увоз из Thunderbird QR кода „Export for Mobile“. Пријава преко Google-а и Microsoft-а, потребна за Outlook.com и Microsoft 365, је у припреми. <a href=\"/docs/accounts/\">Водич за налоге</a>",
+    "providersNote_html": "Пријава преко Google-а и Microsoft-а за Gmail, Outlook.com и Microsoft 365, као и увоз из Thunderbird QR кода „Export for Mobile“. <a href=\"/docs/accounts/\">Водич за налоге</a>",
     "providerOwn": "Ваш сопствени сервер",
     "openEyebrow": "Развијано јавно",
     "openTitle": "Отворени код, до последњег теста.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "План развоја",
-    "description": "Шта је Loupe већ објавио, шта следи (пријава преко Google-а и Microsoft-а, Google Play, iOS), шта би могло доћи касније и шта намерно није у плану.",
+    "description": "Шта је Loupe већ објавио, шта следи (Google Play, iOS, верификована пријава преко Google-а), шта би могло доћи касније и шта намерно није у плану.",
     "eyebrow": "План развоја",
     "h1": "Куда иде Loupe",
     "lead": "Loupe настаје у фазама, од којих свака има јасан циљ. Ево шта је готово, шта следи и шта намерно није на списку.",

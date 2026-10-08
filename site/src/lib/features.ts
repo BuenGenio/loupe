@@ -30,6 +30,6 @@ export const groups: { id: string; shot: string; icons: [IconName, IconName, Ico
   { id: 'writing', shot: 'writing', icons: ['person-mail', 'arrow-undo', 'send-clock', 'alert'] },
 ];
 
-// Providers that work with a password or app password over IMAP/SMTP or JMAP.
-// Outlook.com and Microsoft 365 need Microsoft sign-in (builds with an OAuth client ID).
-export const providers = ['Gmail', 'iCloud Mail', 'Fastmail', 'Yahoo Mail', 'GMX', 'Posteo', 'mailbox.org', 'Stalwart', 'Dovecot', 'mailcow'];
+// Providers known to work: Gmail and Microsoft through their sign-in (in the
+// Nightly), the rest with a password, app password or token over IMAP or JMAP.
+export const providers = ['Gmail', 'Outlook.com', 'Microsoft 365', 'iCloud Mail', 'Fastmail', 'Yahoo Mail', 'GMX', 'Posteo', 'mailbox.org', 'Stalwart', 'Dovecot', 'mailcow'];

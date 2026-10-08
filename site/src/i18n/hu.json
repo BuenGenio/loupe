@@ -106,7 +106,7 @@
     "privacy4": "A nyomkövetők némák maradnak",
     "privacy4Text": "A távoli képek alapból ki vannak kapcsolva, az átirányító linkek pedig lecsupaszítva.",
     "providersTitle": "Működik a már meglévő levelezéseddel",
-    "providersNote_html": "Ráadásul importálhatsz a Thunderbird „Export for Mobile” QR-kódjából is. A Google- és Microsoft-bejelentkezés, amely az Outlook.comhoz és a Microsoft 365-höz szükséges, hamarosan érkezik. <a href=\"/docs/accounts/\">Útmutató a fiókokhoz</a>",
+    "providersNote_html": "Google- és Microsoft-bejelentkezés a Gmailhez, az Outlook.comhoz és a Microsoft 365-höz, valamint importálás a Thunderbird „Export for Mobile” QR-kódjából. <a href=\"/docs/accounts/\">Útmutató a fiókokhoz</a>",
     "providerOwn": "Saját szerver",
     "openEyebrow": "Nyíltan fejlesztve",
     "openTitle": "Nyílt forráskód, az utolsó tesztig.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Ütemterv",
-    "description": "Mi készült már el a Loupe-ban, mi következik (Google- és Microsoft-bejelentkezés, Google Play, iOS), mi jöhet később, és mi az, ami szándékosan nincs tervben.",
+    "description": "Mi készült már el a Loupe-ban, mi következik (Google Play, iOS, ellenőrzött Google-bejelentkezés), mi jöhet később, és mi az, ami szándékosan nincs tervben.",
     "eyebrow": "Ütemterv",
     "h1": "Merre tart a Loupe",
     "lead": "A Loupe szakaszokban készül, mindegyiknek világos célvonala van. Itt látod, mi készült el, mi következik, és mi az, ami szándékosan nincs a listán.",

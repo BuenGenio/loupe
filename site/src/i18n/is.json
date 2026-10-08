@@ -106,7 +106,7 @@
     "privacy4": "Rekjarar þegja",
     "privacy4Text": "Fjartengdar myndir eru sjálfgefið lokaðar og tilvísunartenglar afhjúpaðir.",
     "providersTitle": "Virkar með póstinum sem þú ert nú þegar með",
-    "providersNote_html": "Auk þess er hægt að flytja inn úr „Export for Mobile“ QR-kóða Thunderbird. Innskráning með Google og Microsoft, sem þarf fyrir Outlook.com og Microsoft 365, er á leiðinni. <a href=\"/docs/accounts/\">Leiðbeiningar um aðganga</a>",
+    "providersNote_html": "Innskráning með Google og Microsoft fyrir Gmail, Outlook.com og Microsoft 365, auk innflutnings úr „Export for Mobile“ QR-kóða Thunderbird. <a href=\"/docs/accounts/\">Leiðbeiningar um aðganga</a>",
     "providerOwn": "Þinn eigin netþjónn",
     "openEyebrow": "Smíðað fyrir opnum tjöldum",
     "openTitle": "Opinn grunnkóði, alveg niður í síðustu prófun.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Vegvísir",
-    "description": "Það sem Loupe hefur þegar gefið út, það sem kemur næst (innskráning með Google og Microsoft, Google Play, iOS), það sem gæti komið síðar og það sem er viljandi ekki á dagskrá.",
+    "description": "Það sem Loupe hefur gefið út, það sem kemur næst (Google Play, iOS, staðfest Google-innskráning), það sem gæti komið síðar og það sem er viljandi ekki á dagskrá.",
     "eyebrow": "Vegvísir",
     "h1": "Hvert Loupe stefnir",
     "lead": "Loupe er smíðað í áföngum, hver með skýra endalínu. Hér sérðu hvað er búið, hvað er næst og hvað er viljandi ekki á listanum.",

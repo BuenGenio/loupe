@@ -106,7 +106,7 @@
     "privacy4": "Трекери мовчать",
     "privacy4Text": "Віддалені зображення типово вимкнені, обгортки-переадресації з посилань знято.",
     "providersTitle": "Працює з поштою, яка у вас уже є",
-    "providersNote_html": "А ще імпорт із QR-коду «Export for Mobile» з Thunderbird. Вхід через Google і Microsoft, потрібний для Outlook.com і Microsoft 365, з’явиться незабаром. <a href=\"/docs/accounts/\">Посібник з облікових записів</a>",
+    "providersNote_html": "Вхід через Google і Microsoft для Gmail, Outlook.com і Microsoft 365, а також імпорт із QR-коду «Export for Mobile» з Thunderbird. <a href=\"/docs/accounts/\">Посібник з облікових записів</a>",
     "providerOwn": "Ваш власний сервер",
     "openEyebrow": "Створено відкрито",
     "openTitle": "Відкритий код — до останнього тесту.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Дорожня карта",
-    "description": "Що в Loupe вже готово, що далі (вхід через Google і Microsoft, Google Play, iOS), що може з’явитися згодом і чого свідомо не планується.",
+    "description": "Що в Loupe вже готово, що далі (Google Play, iOS, верифікований вхід через Google), що може з’явитися згодом і чого свідомо не планується.",
     "eyebrow": "Дорожня карта",
     "h1": "Куди рухається Loupe",
     "lead": "Loupe розвивається етапами, і кожен має чітку фінішну лінію. Ось що вже зроблено, що буде далі й чого свідомо немає в списку.",

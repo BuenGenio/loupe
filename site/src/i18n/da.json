@@ -106,7 +106,7 @@
     "privacy4": "Sporing tier stille",
     "privacy4Text": "Eksterne billeder er slået fra som standard, og omdirigeringslinks bliver pakket ud.",
     "providersTitle": "Virker med den mail, du allerede har",
-    "providersNote_html": "Plus import fra Thunderbirds QR-kode »Export for Mobile«. Log ind med Google og Microsoft, som kræves til Outlook.com og Microsoft 365, er på vej. <a href=\"/docs/accounts/\">Guide til konti</a>",
+    "providersNote_html": "Log ind med Google og Microsoft til Gmail, Outlook.com og Microsoft 365, og importér fra Thunderbirds QR-kode »Export for Mobile«. <a href=\"/docs/accounts/\">Guide til konti</a>",
     "providerOwn": "Din egen server",
     "openEyebrow": "Udviklet i fuld offentlighed",
     "openTitle": "Åben kildekode, helt ned til den sidste test.",
@@ -534,7 +534,7 @@
   },
   "roadmap": {
     "title": "Køreplan",
-    "description": "Hvad Loupe allerede kan, hvad der kommer næste gang (log ind med Google og Microsoft, Google Play, iOS), hvad der måske kommer senere, og hvad der bevidst ikke er planlagt.",
+    "description": "Hvad Loupe allerede kan, hvad der kommer nu (Google Play, iOS, verificeret Google-login), hvad der måske kommer senere, og hvad der bevidst ikke er planlagt.",
     "eyebrow": "Køreplan",
     "h1": "Hvor Loupe er på vej hen",
     "lead": "Loupe bygges i faser, hver med en klar målstreg. Her er, hvad der er færdigt, hvad der kommer næste gang, og hvad der bevidst ikke er på listen.",
