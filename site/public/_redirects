@@ -7,3 +7,8 @@
 /support        /donate/             301
 /sponsor        /donate/             301
 /docs/developer-mode/  /docs/mailing-lists/  301
+
+# Renamed sections (keep old links working).
+/blog           /news/               301
+/blog/          /news/               301
+/blog/*         /news/:splat         301

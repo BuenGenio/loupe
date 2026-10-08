@@ -11,15 +11,17 @@ on:
     branches: [main]
     paths:
       - "site/**"
+      - "CHANGELOG.md"
       - "docs/privacy-policy.md"
       - ".github/workflows/site.yml"
   pull_request:
     paths:
       - "site/**"
+      - "CHANGELOG.md"
       - "docs/privacy-policy.md"
       - ".github/workflows/site.yml"
   schedule:
-    # Daily: publishes blog posts whose date has come and refreshes the
+    # Daily: publishes news articles whose date has come and refreshes the
     # build-time numbers (tests, commits).
     - cron: "5 6 * * *"
   workflow_dispatch:

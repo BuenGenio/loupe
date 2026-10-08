@@ -2,7 +2,7 @@
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
-import { posts, formatDate, readingTime } from '../../lib/blog';
+import { posts, formatDate, readingTime } from '../../lib/news';
 import { blogPosting, breadcrumbs } from '../../lib/schema';
 import { site } from '../../config';
 
@@ -12,8 +12,8 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const path = `/blog/${entry.id}/`;
-const image = `/og/blog/${entry.id}.jpg`;
+const path = `/news/${entry.id}/`;
+const image = `/og/news/${entry.id}.jpg`;
 ---
 
 <Base
@@ -27,14 +27,14 @@ const image = `/og/blog/${entry.id}.jpg`;
     blogPosting({ title: entry.data.title, description: entry.data.description, path, date: entry.data.date, updated: entry.data.updated, image }),
     breadcrumbs([
       { name: 'Home', path: '/' },
-      { name: 'Blog', path: '/blog/' },
+      { name: 'News', path: '/news/' },
       { name: entry.data.title, path },
     ]),
   ]}
 >
   <article class="section-tight">
     <div class="wrap narrow">
-      <a class="back" href="/blog/"><Icon name="arrow-right" size={16} /> All posts</a>
+      <a class="back" href="/news/"><Icon name="arrow-right" size={16} /> All news</a>
       <p class="meta">
         <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time> · {readingTime(entry.body)} min read · {site.owner.name}
       </p>

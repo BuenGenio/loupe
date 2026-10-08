@@ -10,7 +10,7 @@ import { resolve } from 'node:path';
 import satori from 'satori';
 import sharp from 'sharp';
 import { allDocs } from '../../lib/docs';
-import { posts } from '../../lib/blog';
+import { posts } from '../../lib/news';
 import { screenshots } from '../../lib/screenshots';
 import { useT, hasStrings } from '../../i18n';
 import { otherCodes } from '../../i18n/locales';
@@ -31,19 +31,19 @@ const englishOnly: Record<string, Card> = {
   docs: { title: 'How to get the most out of Loupe', kicker: 'Documentation' },
   development: { title: 'Built in the open, tested to the bone.', kicker: 'Development' },
   privacy: { title: 'No servers. No tracking.', kicker: 'Privacy policy' },
-  blog: { title: 'Notes from the workbench', kicker: 'Blog' },
+  news: { title: "What's new in Loupe", kicker: 'News' },
 };
 
 export const getStaticPaths = (async () => {
   const docs = await allDocs();
-  const blog = await posts();
+  const articles = await posts();
   const pages = Object.keys(translated);
   return [
     ...pages.map((route) => ({ params: { route }, props: card('en', route) })),
     ...otherCodes.filter(hasStrings).flatMap((lang) => pages.map((page) => ({ params: { route: `${lang}/${page}` }, props: card(lang, page) }))),
     ...Object.entries(englishOnly).map(([route, c]) => ({ params: { route }, props: c })),
     ...docs.map((d) => ({ params: { route: `docs/${d.id}` }, props: { title: d.data.title, kicker: `Docs · ${d.data.section}` } })),
-    ...blog.map((p) => ({ params: { route: `blog/${p.id}` }, props: { title: p.data.title, kicker: 'Blog' } })),
+    ...articles.map((p) => ({ params: { route: `news/${p.id}` }, props: { title: p.data.title, kicker: 'News' } })),
   ];
 }) satisfies GetStaticPaths;
 
