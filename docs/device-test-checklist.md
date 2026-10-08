@@ -370,6 +370,23 @@ account), and Loupe having both keys (Autocrypt from a signed message of each, o
    - On mobile data, a file of 25 MB or more asks before downloading.
 5. **If not:** the viewer's details card shows the type and size. If no app opens a file, it suggests Share. Check logcat.
 
+## 13a. Saving and exporting mail (10 min)
+
+1. **Do:** in a message's ⋯ menu, **Save as File…**, and pick Downloads; then **Share as File…** to Drive or a chat.
+2. **Expect:** Android's save dialog suggests `<subject>.eml` ("Saved …"); the file opens in another mail app and
+   in Thunderbird, attachments included. An encrypted message (sections 11 and 12) is saved encrypted.
+3. **Do:** long-press a folder of a few hundred messages on Mailboxes, **Export Folder…**, then save to Downloads.
+4. **Expect:**
+   - "Finding messages…", then "Exporting n of N…" with a bar; the save dialog suggests
+     `<account> - <folder>.mbox`, without another extension added.
+   - Thunderbird with ImportExportTools NG imports the file with the same number of messages, oldest first.
+   - Settings › Apps › Loupe › Storage: the cache doesn't keep the export afterwards.
+5. **Do:** start another export and tap **Cancel**; start one more and turn on aeroplane mode halfway.
+6. **Expect:** Cancel (and Back) closes the sheet with no save dialog. Offline, the file is saved with what
+   was downloaded and "Saved … without N messages that couldn't be downloaded."
+7. **If not:** the save dialog for folders is `SaveFileChannel.kt` (logcat), the export
+   `app/lib/features/export/`.
+
 ## 14. Tablet and keyboard (10 min, on a tablet or a large emulator)
 
 1. **Do:**
