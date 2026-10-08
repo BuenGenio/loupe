@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:loupe/shared/swipe_row.dart';
 
 /// A list of rows that archive themselves on a full swipe to the left,
@@ -57,6 +58,7 @@ void main() {
     final key = GlobalKey<_ListState>();
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: loupeLocalizationsDelegates,
         home: Scaffold(
           body: _List(key: key, archived: archived),
         ),

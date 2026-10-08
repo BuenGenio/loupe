@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loupe/features/attachments/attachment_viewer_screen.dart';
 import 'package:loupe/features/conversation/attachments.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:loupe/theme/theme.dart';
 import 'package:mail_model/mail_model.dart';
 
@@ -63,7 +64,11 @@ Future<({AttachmentRepo repo, FakePlatform platform, List<String> loads})> _pump
   await tester.pumpWidget(
     ProviderScope(
       overrides: overridesFor(repo, platform),
-      child: MaterialApp.router(theme: LoupeTheme.light(), routerConfig: router),
+      child: MaterialApp.router(
+        localizationsDelegates: loupeLocalizationsDelegates,
+        theme: LoupeTheme.light(),
+        routerConfig: router,
+      ),
     ),
   );
   await tester.pumpAndSettle();

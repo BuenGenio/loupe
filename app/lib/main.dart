@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,6 +23,9 @@ import 'settings/app_settings.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   installErrorHandlers(ErrorLog(getApplicationSupportDirectory()));
+  // Dates in every language intl knows, before Flutter's own (a smaller
+  // set) can claim the table: see formatLocale in l10n/l10n.dart.
+  await initializeDateFormatting();
   final prefs = await SharedPreferences.getInstance();
   final taps = NotificationTaps();
   final android = !kIsWeb && Platform.isAndroid;

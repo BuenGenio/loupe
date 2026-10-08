@@ -9,6 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # BSD-3 (Flutter); Material, Cupertino and widget texts in the app's languages.
+  flutter_localizations:
+    sdk: flutter
   mail_model: {path: ../packages/mail_model}
   expr_search: {path: ../packages/expr_search}
   readable: {path: ../packages/readable}
@@ -72,6 +75,8 @@ dev_dependencies:
     sdk: flutter
 flutter:
   uses-material-design: true
+  # The app's strings: lib/l10n/app_<lang>.arb (see l10n.yaml and docs/localisation.md).
+  generate: true
   assets:
     - assets/demo/
     - assets/icon/icon_rounded.png

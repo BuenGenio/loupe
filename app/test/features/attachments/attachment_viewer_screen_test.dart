@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/attachments/attachment_platform.dart';
 import 'package:loupe/features/attachments/attachment_viewer_screen.dart';
 import 'package:loupe/features/attachments/viewers/csv_table_view.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:loupe/theme/theme.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:readable/readable.dart';
@@ -40,6 +41,7 @@ Future<_Setup> _open(
     ProviderScope(
       overrides: overridesFor(repo, platform),
       child: MaterialApp(
+        localizationsDelegates: loupeLocalizationsDelegates,
         theme: LoupeTheme.light(),
         home: AttachmentViewerScreen(emailId: 'm1', partId: part),
       ),
@@ -243,6 +245,7 @@ void main() {
       ProviderScope(
         overrides: overridesFor(repo, FakePlatform()),
         child: MaterialApp(
+          localizationsDelegates: loupeLocalizationsDelegates,
           theme: LoupeTheme.light(),
           home: const AttachmentViewerScreen(emailId: 'm1', partId: '2'),
         ),
