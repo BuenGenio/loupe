@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../shared/avatar.dart';
 import '../../shared/bars.dart';
 import '../../theme/theme.dart';
@@ -170,7 +171,7 @@ class _CompactTitle extends StatelessWidget {
     return Semantics(
       button: true,
       header: true,
-      onTapHint: 'Scroll to the top',
+      onTapHint: context.l10n.conversationScrollToTop,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
@@ -194,7 +195,7 @@ class _CompactTitle extends StatelessWidget {
                     duration: motion,
                     layoutBuilder: _startAligned,
                     child: Text(
-                      sender?.displayName ?? '(no sender)',
+                      sender?.displayName ?? context.l10n.conversationNoSender,
                       key: reading,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../shared/avatar.dart';
 import '../../shared/grouped_list.dart';
@@ -45,12 +46,13 @@ class _VipScreenState extends ConsumerState<VipScreen> {
   }
 
   Future<void> _add() async {
+    final l10n = context.l10n;
     final email = await showTextPrompt(
       context,
-      title: 'Add VIP',
-      message: 'Mail from this address gets a star and appears in the VIP mailbox.',
-      placeholder: 'name@example.com',
-      confirm: 'Add',
+      title: l10n.mailboxesAddVipTitle,
+      message: l10n.mailboxesAddVipText,
+      placeholder: l10n.mailboxesAddVipPlaceholder,
+      confirm: l10n.commonAdd,
     );
     if (email == null || !email.contains('@')) return;
     await ref.read(repositoryProvider).setVip(email.toLowerCase(), vip: true);
@@ -61,11 +63,12 @@ class _VipScreenState extends ConsumerState<VipScreen> {
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
     final vips = (ref.watch(vipAddressesProvider).value ?? const <String>{}).toList()..sort();
+    final l10n = context.l10n;
     return GroupedPage(
-      title: 'VIP',
+      title: l10n.mailboxesVipTitle,
       children: [
         InsetGroup(
-          footer: 'You can also tap a sender’s name in a message and turn on VIP.',
+          footer: l10n.mailboxesVipFooter,
           separatorIndent: 62,
           children: [
             for (final email in vips)
@@ -79,12 +82,12 @@ class _VipScreenState extends ConsumerState<VipScreen> {
                   padding: EdgeInsets.zero,
                   minimumSize: const Size(36, 36),
                   onPressed: () => ref.read(repositoryProvider).setVip(email, vip: false),
-                  child: Icon(LoupeIcons.remove, color: colors.destructive, semanticLabel: 'Remove'),
+                  child: Icon(LoupeIcons.remove, color: colors.destructive, semanticLabel: l10n.commonRemove),
                 ),
               ),
             GroupedRow(
               leading: Icon(LoupeIcons.add, color: colors.unreadDot, size: 26),
-              title: 'Add VIP…',
+              title: l10n.mailboxesAddVip,
               titleStyle: LoupeTextStyles.of(context).body.copyWith(color: colors.unreadDot),
               chevron: false,
               onTap: _add,

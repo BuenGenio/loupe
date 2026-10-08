@@ -9,6 +9,7 @@ import 'package:mail_model/mail_model.dart';
 import 'package:readable/readable.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/app_settings.dart';
@@ -286,6 +287,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
   /// Runs [action], shows [done] or the error, and closes the screen if asked.
   Future<void> _act(Future<void> Function() action, {String? done, bool close = false}) async {
     final messenger = ScaffoldMessenger.of(context);
+    final failed = context.l10n.conversationSomethingWentWrong;
     try {
       await action();
       if (close) _close();
@@ -293,7 +295,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
     } on MailException catch (e) {
       showSnack(messenger, e.message);
     } on Exception {
-      showSnack(messenger, 'Something went wrong. Try again.');
+      showSnack(messenger, failed);
     }
   }
 
@@ -359,13 +361,14 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
       openCompose(context, ComposeArgs(mode: mode, sourceEmailId: m.id, accountId: m.accountId, toList: toList));
 
   Future<void> _replyMenu(EmailSummary m) async {
+    final l10n = context.l10n;
     final choice = await showActionSheet<(ComposeMode, bool)>(
       context,
       actions: [
-        const SheetAction('Reply', (ComposeMode.reply, false)),
-        const SheetAction('Reply All', (ComposeMode.replyAll, false)),
-        if (listPostAddress(m.listPost) != null) const SheetAction('Reply to List', (ComposeMode.reply, true)),
-        const SheetAction('Forward', (ComposeMode.forward, false)),
+        SheetAction(l10n.mailReply, (ComposeMode.reply, false)),
+        SheetAction(l10n.mailReplyAll, (ComposeMode.replyAll, false)),
+        if (listPostAddress(m.listPost) != null) SheetAction(l10n.conversationReplyToList, (ComposeMode.reply, true)),
+        SheetAction(l10n.mailForward, (ComposeMode.forward, false)),
       ],
     );
     if (choice != null && mounted) _reply(m, choice.$1, toList: choice.$2);
@@ -374,14 +377,16 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
   Future<void> _setMuted(EmailSummary m, bool muted) async {
     final lists = mailingListsOf(_repo);
     if (lists == null) return;
+    final l10n = context.l10n;
     await _act(
       () => lists.setThreadMuted(m.id, muted: muted),
-      done: muted ? 'Thread muted. New messages in it arrive read.' : 'Thread unmuted.',
+      done: muted ? l10n.conversationThreadMuted : l10n.conversationThreadUnmuted,
     );
   }
 
   Future<void> _openLink(Uri uri) async {
     final messenger = ScaffoldMessenger.of(context);
+    final failed = context.l10n.conversationLinkFailed;
     if (uri.scheme == 'mailto') {
       await openCompose(context, ComposeArgs.fromMailto(uri, accountId: _target?.accountId));
       return;
@@ -389,9 +394,9 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
     final web = uri.scheme == 'http' || uri.scheme == 'https';
     try {
       final ok = await launchUrl(uri, mode: web ? LaunchMode.inAppBrowserView : LaunchMode.externalApplication);
-      if (!ok) showSnack(messenger, "Couldn't open the link.");
+      if (!ok) showSnack(messenger, failed);
     } on Exception {
-      showSnack(messenger, "Couldn't open the link.");
+      showSnack(messenger, failed);
     }
   }
 
@@ -685,6 +690,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
       if (error != null) {
         return belowBar(
           _StateMessage.error(
+            context.l10n,
             error,
             onRetry: () {
               setState(() => _error = null);
@@ -697,7 +703,11 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
     }
     if (messages.isEmpty) {
       return belowBar(
-        const _StateMessage(icon: LoupeIcons.email, title: 'No Message', message: 'This message was moved or deleted.'),
+        _StateMessage(
+          icon: LoupeIcons.email,
+          title: context.l10n.conversationGoneTitle,
+          message: context.l10n.conversationGoneText,
+        ),
       );
     }
     final target = _target!;
@@ -729,7 +739,12 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
                         alignment: PlaceholderAlignment.middle,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8),
-                          child: Icon(LoupeIcons.mute, size: 18, color: colors.secondaryText, semanticLabel: 'Muted'),
+                          child: Icon(
+                            LoupeIcons.mute,
+                            size: 18,
+                            color: colors.secondaryText,
+                            semanticLabel: context.l10n.conversationMuted,
+                          ),
                         ),
                       ),
                   ],
@@ -825,47 +840,48 @@ class _Toolbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final buttons = [
       _ToolbarButton(
         key: const Key('reader-options'),
         glyph: const _AaGlyph(),
-        label: 'Reader Options',
-        hint: 'Text size and view',
+        label: l10n.conversationReaderOptions,
+        hint: l10n.conversationReaderOptionsHint,
         onTap: onReaderOptions,
       ),
       _ToolbarButton(
         key: const Key('toolbar-flag'),
         icon: flagged ? LoupeIcons.flaggedFilled : LoupeIcons.flagged,
         color: flagged ? colors.flag : null,
-        label: flagged ? 'Unflag' : 'Flag',
+        label: flagged ? l10n.mailUnflag : l10n.mailFlag,
         onTap: onFlag,
       ),
-      _ToolbarButton(key: const Key('toolbar-move'), icon: LoupeIcons.move, label: 'Move', onTap: onMove),
+      _ToolbarButton(key: const Key('toolbar-move'), icon: LoupeIcons.move, label: l10n.commonMove, onTap: onMove),
       archive
           ? _ToolbarButton(
               key: const Key('toolbar-archive'),
               icon: LoupeIcons.archive,
-              label: 'Archive',
+              label: l10n.mailArchive,
               onTap: onArchiveOrTrash,
             )
           : _ToolbarButton(
               key: const Key('toolbar-trash'),
               icon: inTrash ? LoupeIcons.deleteForever : LoupeIcons.trash,
-              label: inTrash ? 'Delete' : 'Trash',
+              label: inTrash ? l10n.commonDelete : l10n.conversationTrash,
               onTap: onArchiveOrTrash,
             ),
       _ToolbarButton(
         key: const Key('toolbar-reply'),
         icon: LoupeIcons.reply,
-        label: 'Reply',
-        hint: 'Long-press for Reply All and Forward',
+        label: l10n.mailReply,
+        hint: l10n.conversationReplyHint,
         onTap: onReply,
         onLongPress: onReplyMenu,
       ),
       _ToolbarButton(
         key: const Key('toolbar-compose'),
         icon: LoupeIcons.compose,
-        label: 'New Message',
+        label: l10n.mailNewMessage,
         onTap: onCompose,
       ),
     ];
@@ -943,7 +959,7 @@ class _AaGlyph extends StatelessWidget {
     child: Align(
       widthFactor: 1,
       child: Text(
-        'Aa',
+        'Aa', // l10n-ignore: the reader options' glyph, like an icon
         maxLines: 1,
         softWrap: false,
         textScaler: TextScaler.noScaling,
@@ -975,19 +991,19 @@ class _LoadingConversation extends StatelessWidget {
 class _StateMessage extends StatelessWidget {
   const _StateMessage({required this.icon, required this.title, required this.message, this.onRetry});
 
-  factory _StateMessage.error(Object error, {required VoidCallback onRetry}) {
+  factory _StateMessage.error(AppLocalizations l10n, Object error, {required VoidCallback onRetry}) {
     if (error case MailException(kind: MailErrorKind.connection)) {
       return _StateMessage(
         icon: LoupeIcons.offline,
-        title: "You're Offline",
-        message: 'This conversation isn\'t downloaded yet. It will load when you\'re back online.',
+        title: l10n.conversationOfflineTitle,
+        message: l10n.conversationOfflineText,
         onRetry: onRetry,
       );
     }
     return _StateMessage(
       icon: LoupeIcons.error,
-      title: "Can't Show This Message",
-      message: error is MailException ? error.message : 'Something went wrong.',
+      title: l10n.conversationErrorTitle,
+      message: error is MailException ? error.message : l10n.conversationErrorText,
       onRetry: onRetry,
     );
   }
@@ -1016,7 +1032,7 @@ class _StateMessage extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(color: colors.secondaryText),
             ),
-            if (onRetry != null) TextButton(onPressed: onRetry, child: const Text('Try Again')),
+            if (onRetry != null) TextButton(onPressed: onRetry, child: Text(context.l10n.commonTryAgain)),
           ],
         ),
       ),
@@ -1041,7 +1057,9 @@ class _OfflineBanner extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              offline ? "You're offline" : (error is MailException ? (error as MailException).message : 'Not updated'),
+              offline
+                  ? context.l10n.conversationOfflineBanner
+                  : (error is MailException ? (error as MailException).message : context.l10n.conversationNotUpdated),
               style: TextStyle(color: colors.secondaryText, fontSize: 13),
             ),
           ),

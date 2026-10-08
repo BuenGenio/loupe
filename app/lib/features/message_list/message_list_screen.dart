@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/app_settings.dart';
@@ -34,15 +35,19 @@ import '../search/search_view.dart';
 import '../../theme/loupe_icons.dart';
 
 /// Label of a quick filter in the Filter sheet and the toolbar.
-String quickFilterLabel(QuickFilter f) => switch (f) {
-  QuickFilter.unread => 'Unread',
-  QuickFilter.flagged => 'Flagged',
-  QuickFilter.toMe => 'To: Me',
-  QuickFilter.ccMe => 'CC: Me',
-  QuickFilter.hasAttachment => 'With Attachments',
-  QuickFilter.unreplied => 'Unreplied',
-  QuickFilter.fromVip => 'From VIPs',
+String quickFilterLabel(AppLocalizations l10n, QuickFilter f) => switch (f) {
+  QuickFilter.unread => l10n.messageListFilterUnread,
+  QuickFilter.flagged => l10n.messageListFilterFlagged,
+  QuickFilter.toMe => l10n.messageListFilterToMe,
+  QuickFilter.ccMe => l10n.messageListFilterCcMe,
+  QuickFilter.hasAttachment => l10n.messageListFilterWithAttachments,
+  QuickFilter.unreplied => l10n.messageListFilterUnreplied,
+  QuickFilter.fromVip => l10n.messageListFilterFromVips,
 };
+
+/// The labels of [filters], as a list.
+String _filterLabels(AppLocalizations l10n, Iterable<QuickFilter> filters) =>
+    filters.map((f) => quickFilterLabel(l10n, f)).join(', ');
 
 IconData quickFilterIcon(QuickFilter f) => switch (f) {
   QuickFilter.unread => LoupeIcons.unread,
@@ -361,6 +366,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
   /// Marks every unread message of this mailbox read (those on the phone).
   Future<void> _markAllRead() async {
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = context.l10n;
     final repo = ref.read(repositoryProvider);
     final actions = MailActions(context, ref, scope: widget.mailboxRef, threaded: false);
     try {
@@ -369,10 +375,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
           .first;
       if (unread.isEmpty) return;
       await actions.setRead(unread, read: true);
-      showSnack(
-        messenger,
-        unread.length == 1 ? 'Marked 1 message as read' : 'Marked ${unread.length} messages as read',
-      );
+      showSnack(messenger, l10n.messageListMarkedRead(unread.length));
     } on MailException catch (e) {
       showSnack(messenger, e.message);
     }
@@ -391,7 +394,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
       // a server error.
       debugPrint('Loading older mail failed: ${e.runtimeType}');
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Couldn’t load older mail.')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.messageListLoadOlderFailed)));
       }
     }
     if (!mounted) return;
@@ -428,17 +431,18 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
   Future<void> _markSelected(List<ThreadSummary> rows, MailActions actions) async {
     final anyUnread = rows.any((r) => r.unreadCount > 0);
     final anyUnflagged = rows.any((r) => !r.latest.isFlagged);
+    final l10n = context.l10n;
     final choice = await showActionSheet<String>(
       context,
       actions: [
         SheetAction(
-          anyUnread ? 'Mark as Read' : 'Mark as Unread',
+          anyUnread ? l10n.mailMarkAsRead : l10n.mailMarkAsUnread,
           'read',
           icon: anyUnread ? LoupeIcons.markRead : LoupeIcons.markUnread,
         ),
-        SheetAction(anyUnflagged ? 'Flag' : 'Unflag', 'flag', icon: LoupeIcons.flagged),
-        const SheetAction('Snooze…', 'snooze', icon: LoupeIcons.snooze),
-        const SheetAction('Move to Junk', 'junk', icon: LoupeIcons.junk),
+        SheetAction(anyUnflagged ? l10n.mailFlag : l10n.mailUnflag, 'flag', icon: LoupeIcons.flagged),
+        SheetAction(l10n.snoozeMenu, 'snooze', icon: LoupeIcons.snooze),
+        SheetAction(l10n.mailMoveToJunk, 'junk', icon: LoupeIcons.junk),
       ],
     );
     switch (choice) {
@@ -528,6 +532,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
   /// the selection and Done.
   Widget _titleBar(BuildContext context, String title, List<ThreadSummary> rows, List<Mailbox> mailboxes) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];
     final account = switch (widget.mailboxRef) {
       RealMailboxRef(:final mailboxId) when accounts.length > 1 =>
@@ -536,7 +541,9 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
     };
     final allSelected = _selected.length == rows.length && rows.isNotEmpty;
     return LoupeTitleBar(
-      title: _editing ? (_selected.isEmpty ? 'Select Messages' : '${_selected.length} Selected') : title,
+      title: _editing
+          ? (_selected.isEmpty ? l10n.messageListSelectMessages : l10n.messageListSelected(_selected.length))
+          : title,
       subtitle: _editing || account == null
           ? null
           : Row(
@@ -554,7 +561,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
       automaticallyImplyLeading: !_editing,
       leading: _editing
           ? BarTextButton(
-              label: allSelected ? 'Deselect All' : 'Select All',
+              label: allSelected ? l10n.messageListDeselectAll : l10n.messageListSelectAll,
               onPressed: () => setState(() {
                 if (allSelected) {
                   _selected.clear();
@@ -566,7 +573,9 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
               }),
             )
           : null,
-      trailing: [BarTextButton(label: _editing ? 'Done' : 'Edit', bold: _editing, onPressed: _toggleEditing)],
+      trailing: [
+        BarTextButton(label: _editing ? l10n.commonDone : l10n.commonEdit, bold: _editing, onPressed: _toggleEditing),
+      ],
       searching: _searching,
       onCancelSearch: () => _setSearching(false),
       searchField: LoupeSearchField(
@@ -587,6 +596,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
     MailActions actions,
     List<Mailbox> mailboxes,
   ) {
+    final l10n = context.l10n;
     if (async.isLoading && !async.hasValue) {
       // Taller than the screen, so the initial offset that hides the search
       // field stays in range until the rows arrive.
@@ -603,7 +613,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
       return [
         SliverFillRemaining(
           hasScrollBody: false,
-          child: _EmptyState(icon: LoupeIcons.warning, title: 'Couldn’t Load Mail', detail: '${async.error}'),
+          child: _EmptyState(icon: LoupeIcons.warning, title: l10n.messageListLoadFailed, detail: '${async.error}'),
         ),
       ];
     }
@@ -616,13 +626,13 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
               ? _EmptyState(
                   icon: LoupeIcons.filter,
                   title: criteria.length == 1 && criteria.single == QuickFilter.unread
-                      ? 'No Unread Mail'
-                      : 'No Matching Mail',
-                  detail: 'Filtered by: ${criteria.map(quickFilterLabel).join(', ')}',
-                  action: 'Turn Off Filter',
+                      ? l10n.messageListNoUnread
+                      : l10n.messageListNoMatches,
+                  detail: l10n.messageListFilteredByDetail(_filterLabels(l10n, criteria)),
+                  action: l10n.messageListTurnOffFilter,
                   onAction: () => setState(() => _filterOn = false),
                 )
-              : const _EmptyState(icon: LoupeIcons.inbox, title: 'No Mail'),
+              : _EmptyState(icon: LoupeIcons.inbox, title: l10n.messageListEmpty),
         ),
       ];
     }
@@ -728,10 +738,11 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
     final styles = LoupeTextStyles.of(context);
     final criteria = ref.watch(filterCriteriaProvider);
     final unread = _unreadCount(rows, mailboxes);
+    final l10n = context.l10n;
     return LoupeBottomBar(
       leading: BarIconButton(
         icon: _filterOn ? LoupeIcons.filterFilled : LoupeIcons.filter,
-        tooltip: _filterOn ? 'Turn Off Filter' : 'Filter',
+        tooltip: _filterOn ? l10n.messageListTurnOffFilter : l10n.messageListFilter,
         onPressed: () {
           unawaited(HapticFeedback.selectionClick());
           if (!_filterOn && criteria.isEmpty) {
@@ -744,7 +755,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
       center: _filterOn
           ? Semantics(
               button: true,
-              label: 'Filter criteria: ${criteria.map(quickFilterLabel).join(', ')}',
+              label: l10n.messageListFilterCriteria(_filterLabels(l10n, criteria)),
               excludeSemantics: true,
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -752,9 +763,9 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Filtered by:', style: styles.caption.copyWith(color: colors.label)),
+                    Text(l10n.messageListFilteredBy, style: styles.caption.copyWith(color: colors.label)),
                     Text(
-                      criteria.map(quickFilterLabel).join(', '),
+                      _filterLabels(l10n, criteria),
                       style: styles.caption.copyWith(color: colors.unreadDot, fontWeight: FontWeight.w600),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -763,10 +774,10 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
                 ),
               ),
             )
-          : SyncStatusLine(detail: unread > 0 ? '${formatCount(unread)} Unread' : null),
+          : SyncStatusLine(detail: unread > 0 ? l10n.messageListUnreadCount(unread, formatCount(unread)) : null),
       trailing: BarIconButton(
         icon: LoupeIcons.compose,
-        tooltip: 'New Message',
+        tooltip: l10n.mailNewMessage,
         onPressed: () => openCompose(context, ComposeArgs(accountId: _accountOfRef())),
       ),
     );
@@ -789,19 +800,23 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
         role == MailboxRole.all ||
         role == MailboxRole.trash;
     final enabled = selected.isNotEmpty;
+    final l10n = context.l10n;
     Future<void> run(Future<void> Function() action) async {
       await action();
       if (mounted) _toggleEditing();
     }
 
     return LoupeBottomBar(
-      leading: BarTextButton(label: 'Mark', onPressed: enabled ? () => _markSelected(selected, actions) : null),
+      leading: BarTextButton(
+        label: l10n.messageListMark,
+        onPressed: enabled ? () => _markSelected(selected, actions) : null,
+      ),
       center: BarTextButton(
-        label: 'Move',
+        label: l10n.commonMove,
         onPressed: enabled ? () => run(() => actions.moveWithPicker(selected)) : null,
       ),
       trailing: BarTextButton(
-        label: useTrash ? (role == MailboxRole.trash ? 'Delete' : 'Trash') : 'Archive',
+        label: useTrash ? (role == MailboxRole.trash ? l10n.commonDelete : l10n.messageListTrash) : l10n.mailArchive,
         onPressed: enabled ? () => run(() => useTrash ? actions.trash(selected) : actions.archive(selected)) : null,
       ),
     );
@@ -824,6 +839,7 @@ class _FilterSheetState extends State<_FilterSheet> {
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     const order = [
       QuickFilter.unread,
       QuickFilter.flagged,
@@ -843,17 +859,17 @@ class _FilterSheetState extends State<_FilterSheet> {
               padding: const EdgeInsets.fromLTRB(20, 0, 8, 4),
               child: Row(
                 children: [
-                  Expanded(child: Text('Filter', style: styles.navTitle)),
+                  Expanded(child: Text(l10n.messageListFilterTitle, style: styles.navTitle)),
                   CupertinoButton(
                     onPressed: () => Navigator.of(context).pop(_selected),
-                    child: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
+                    child: Text(l10n.commonDone, style: const TextStyle(fontWeight: FontWeight.w600)),
                   ),
                 ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(32, 4, 16, 6),
-              child: Text('INCLUDE', style: styles.footnote),
+              child: Text(l10n.messageListFilterInclude, style: styles.footnote),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -867,7 +883,7 @@ class _FilterSheetState extends State<_FilterSheet> {
                         ListTile(
                           dense: true,
                           leading: Icon(quickFilterIcon(f), color: colors.unreadDot),
-                          title: Text(quickFilterLabel(f), style: styles.body),
+                          title: Text(quickFilterLabel(l10n, f), style: styles.body),
                           trailing: _selected.contains(f) ? Icon(LoupeIcons.check, color: colors.unreadDot) : null,
                           onTap: () {
                             unawaited(HapticFeedback.selectionClick());

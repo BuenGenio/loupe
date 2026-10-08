@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/theme.dart';
 
 /// Background of a row in a grouped list: white, or #1C1C1E in dark mode
@@ -27,13 +28,14 @@ final class SheetAction<T> {
   final bool isDefault;
 }
 
-/// An iOS-style action sheet. Returns the chosen value, or null for Cancel.
+/// An iOS-style action sheet. Returns the chosen value, or null for Cancel
+/// ([cancelLabel], "Cancel" unless given).
 Future<T?> showActionSheet<T>(
   BuildContext context, {
   String? title,
   String? message,
   required List<SheetAction<T>> actions,
-  String cancelLabel = 'Cancel',
+  String? cancelLabel,
 }) => showCupertinoModalPopup<T>(
   context: context,
   builder: (context) => CupertinoActionSheet(
@@ -51,7 +53,7 @@ Future<T?> showActionSheet<T>(
     cancelButton: CupertinoActionSheetAction(
       isDefaultAction: true,
       onPressed: () => Navigator.of(context).pop(),
-      child: Text(cancelLabel),
+      child: Text(cancelLabel ?? context.l10n.commonCancel),
     ),
   ),
 );
