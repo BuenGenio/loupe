@@ -14,6 +14,7 @@ using the app, in a line or two; leave out internals, refactors and tests.
 
 - **Sign in with Google and Microsoft** is switched on in the Nightly.
 - This changelog. The Nightly's release notes show its newest section.
+- **Search** says so when a query can't match anything (`from:alice and not from:alice`), and doesn't ask the server.
 
 ## 2026-10-07
 
@@ -45,3 +46,8 @@ The first Nightlies.
 - **Tablets and keyboards:** a three-pane layout, keyboard shortcuts, a command palette and drag and drop.
 - **Look:** titles on the top line, Fluent UI icons, and the Loupe app icon.
 - **Hardening:** 28 fixes, among them lost keys, duplicate sends, lost drafts and login storms. Smooth with 40,000 messages.
+
+<!--
+Reading the source of a changelog? You'd make a fine loupe.
+Next clue: search for mail that is both read and unread.
+-->

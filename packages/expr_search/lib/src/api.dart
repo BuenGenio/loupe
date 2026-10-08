@@ -149,8 +149,17 @@ SearchExpr simplifyQuery(SearchExpr expr) => simplify(expr);
 /// which callers can check with [matchesNothing] to skip the server.
 SearchExpr bindAccountTerms(SearchExpr expr, String accountLabel) => bindAccount(expr, accountLabel);
 
-/// Whether [expr] (after [simplifyQuery]) matches no message at all.
-bool matchesNothing(SearchExpr expr) => simplify(expr) == matchNone;
+/// Whether [expr] matches no message at all: it simplifies to nothing (see
+/// [simplifyQuery]), or has a [findContradiction].
+bool matchesNothing(SearchExpr expr) => simplify(expr) == matchNone || contradiction(expr) != null;
+
+/// A term that [expr] requires both to hold and not to hold, which makes it
+/// match nothing, or null if none is found: `KeywordTerm(Keywords.seen)` for
+/// `is:read and is:unread`, the `from:` term for
+/// `from:alice and not from:alice`. Finds a term next to its own negation,
+/// also for operators that expand to several terms (`to:x and not to:x`);
+/// other impossible queries (`before:2020 and after:2021`) aren't caught.
+SearchExpr? findContradiction(SearchExpr expr) => contradiction(expr);
 
 /// Evaluates [expr] against one message. Body and attachment terms need
 /// [content]; without it they match (superset semantics). [accountLabel] is the

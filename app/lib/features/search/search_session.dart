@@ -216,8 +216,17 @@ class SearchSession extends ChangeNotifier {
 
   void _run({required bool includeServer}) {
     final text = query;
-    final request = SearchRequest(expr: parseQuery(text).expr, text: text, scope: scope, includeServer: includeServer);
+    final expr = parseQuery(text).expr;
     _stop();
+    // A query that contradicts itself (is:read and is:unread) finds nothing
+    // anywhere, so nothing is searched; the view says why.
+    if (matchesNothing(expr)) {
+      results = const SearchResults(items: []);
+      resultsQuery = text;
+      notifyListeners();
+      return;
+    }
+    final request = SearchRequest(expr: expr, text: text, scope: scope, includeServer: includeServer);
     _subscription = repository
         .search(request)
         .listen(
@@ -237,6 +246,17 @@ class SearchSession extends ChangeNotifier {
             notifyListeners();
           },
         );
+  }
+
+  /// Why [results] are empty when the query contradicts itself, or null.
+  /// The one people try on purpose gets a joke.
+  String? get contradictionNote {
+    final term = findContradiction(parseQuery(resultsQuery).expr);
+    if (term == null) return null;
+    if (term == const KeywordTerm(Keywords.seen)) {
+      return "Schrödinger's inbox: every message here is read and unread until you open it.";
+    }
+    return 'No message can be both “${describeTerm(term)}” and not.';
   }
 
   void _cancelTimers() {

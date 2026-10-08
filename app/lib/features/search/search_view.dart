@@ -398,6 +398,14 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
           ),
         ),
       ),
+      if (results != null && results.items.isEmpty && results.isComplete)
+        if (_session.contradictionNote case final note?)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 2, 16, 4),
+              child: Text(note, style: styles.footnote),
+            ),
+          ),
       if (results != null)
         for (final id in results.pendingAccountIds)
           SliverToBoxAdapter(

@@ -228,6 +228,92 @@ void main() {
       expect(matchesNothing(and([a, work])), isFalse);
       expect(matchesNothing(const MatchAll()), isFalse);
       expect(matchesNothing(or([none, none])), isTrue);
+      expect(matchesNothing(and([read, unread])), isTrue);
+    });
+  });
+
+  group('findContradiction', () {
+    SearchExpr? of(String query) => findContradiction(parseQuery(query, now: testNow).expr);
+
+    test('a term next to its own negation', () {
+      expect(of('is:read and is:unread'), read);
+      expect(of('is:unread is:read'), read);
+      expect(of('from:alice and not from:alice'), from('alice'));
+      expect(of('s:x and (f:a and -s:x)'), subject('x'), reason: 'nested ANDs are flattened first');
+      expect(of('not (is:read or is:unread)'), read, reason: 'De Morgan');
+    });
+
+    test('an OR only when every branch contradicts itself', () {
+      expect(of('(is:read and is:unread) or (f:a and not f:a)'), read);
+      expect(of('(is:read and is:unread) or f:a'), isNull);
+      expect(of('f:a and ((is:read and is:unread) or (s:x and -s:x))'), read);
+      expect(of('is:read and (is:unread or is:unread)'), read, reason: 'each branch against what the AND assumes');
+    });
+
+    test('operators that expand to several terms', () {
+      // to: is "to or cc"; its negation is "neither".
+      expect(of('to:alice and not to:alice'), isNotNull);
+      expect(of('to:alice and not from:alice'), isNull);
+    });
+
+    test('satisfiable queries have none', () {
+      for (final q in ['', 'is:read', 'is:read and is:flagged', 'is:read or is:unread', 'f:alice and not f:bob']) {
+        expect(of(q), isNull, reason: q);
+      }
+    });
+
+    test('sound: what it finds is false for every truth assignment (random queries over three terms)', () {
+      final terms = [a, b, c];
+      final r = Random(23);
+      SearchExpr random(int depth) {
+        if (depth == 0 || r.nextInt(3) == 0) {
+          final t = terms[r.nextInt(3)];
+          return r.nextBool() ? t : not(t);
+        }
+        final kids = [for (var i = 0; i < 2 + r.nextInt(2); i++) random(depth - 1)];
+        return switch (r.nextInt(3)) {
+          0 => and(kids),
+          1 => or(kids),
+          _ => not(and(kids)),
+        };
+      }
+
+      bool eval(SearchExpr e, Map<SearchExpr, bool> v) => switch (e) {
+        SearchAnd(:final children) => children.every((c) => eval(c, v)),
+        SearchOr(:final children) => children.any((c) => eval(c, v)),
+        SearchNot(:final child) => !eval(child, v),
+        _ => v[e]!,
+      };
+
+      var found = 0;
+      for (var i = 0; i < 3000; i++) {
+        final e = random(4);
+        if (findContradiction(e) == null) continue;
+        found++;
+        for (var bits = 0; bits < 8; bits++) {
+          final v = {for (final (k, t) in terms.indexed) t: bits & (1 << k) != 0};
+          expect(eval(e, v), isFalse, reason: '$e');
+        }
+      }
+      expect(found, greaterThan(100), reason: 'the generator makes contradictions');
+    });
+
+    test('what it finds really matches nothing (random terms, complete messages)', () {
+      final gen = ExprGen(21);
+      final emails = EmailGen(22);
+      for (var i = 0; i < 500; i++) {
+        final t = gen.term();
+        final e = and([gen.expr(2), t, not(t)]);
+        expect(findContradiction(e), isNotNull, reason: '$e');
+        for (var j = 0; j < 4; j++) {
+          final m = emails.next(complete: true);
+          expect(
+            matchesEmail(e, m.email, content: m.content, accountLabel: m.account, headers: m.headers),
+            isFalse,
+            reason: '$e',
+          );
+        }
+      }
     });
   });
 }
