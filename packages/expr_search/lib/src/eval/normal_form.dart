@@ -65,6 +65,52 @@ SearchExpr simplify(SearchExpr e) {
   }
 }
 
+/// A term that [expr] requires both to hold and not to hold, however it
+/// matches, so that nothing matches (`is:read and is:unread`); null if none
+/// is found.
+///
+/// Works on the negation normal form, where literals are terms and negated
+/// terms. An AND assumes its literals: it contradicts itself when one of them
+/// is the negation of another, or when a child does under those assumptions.
+/// An OR contradicts itself when every branch does. That covers a term next
+/// to its own negation, also for operators that expand to several terms
+/// (`to:x and not to:x`); it is sound but not complete.
+SearchExpr? contradiction(SearchExpr expr) {
+  SearchExpr positive(SearchExpr literal) => literal is SearchNot ? literal.child : literal;
+  SearchExpr complement(SearchExpr literal) => literal is SearchNot ? literal.child : SearchNot(literal);
+
+  SearchExpr? go(SearchExpr e, Set<SearchExpr> assumed) {
+    switch (e) {
+      case SearchAnd(:final children):
+        final literals = {...assumed};
+        for (final c in children) {
+          if (c is SearchAnd || c is SearchOr) continue;
+          if (literals.contains(complement(c))) return positive(c);
+          literals.add(c);
+        }
+        for (final c in children) {
+          if (c is SearchAnd || c is SearchOr) {
+            if (go(c, literals) case final term?) return term;
+          }
+        }
+        return null;
+      case SearchOr(:final children):
+        if (children.isEmpty) return null;
+        SearchExpr? first;
+        for (final c in children) {
+          final term = go(c, assumed);
+          if (term == null) return null;
+          first ??= term;
+        }
+        return first;
+      default:
+        return assumed.contains(complement(e)) ? positive(e) : null;
+    }
+  }
+
+  return go(negationNormalForm(simplify(expr)), const {});
+}
+
 /// In negation normal form, replaces every literal whose term is not
 /// [supported] with [MatchAll], then simplifies. Since the normal form is
 /// monotone in its literals, the result matches a superset.
