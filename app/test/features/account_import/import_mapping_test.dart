@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/account_import/import_mapping.dart';
 import 'package:loupe/features/account_import/thunderbird_qr.dart';
+import 'package:loupe/features/account_setup/setup_text.dart' show SecretKind;
 import 'package:mail_model/mail_model.dart';
 
 import 'tb_payloads.dart';
@@ -89,7 +90,7 @@ void main() {
     expect(c.usesOAuth, isTrue);
     expect(c.canImport, isTrue);
     expect(c.needsPassword, isTrue);
-    expect(c.passwordLabel, 'App Password');
+    expect(c.secretKind, SecretKind.appPassword);
     expect(() => c.toSetup(), throwsStateError);
     expect((c.toSetup(password: 'abcd efgh').credentials as PasswordCredentials).password, 'abcd efgh');
   });

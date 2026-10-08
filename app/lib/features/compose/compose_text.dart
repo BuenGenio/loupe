@@ -1,11 +1,15 @@
+import 'package:intl/intl.dart';
 import 'package:mail_model/mail_model.dart';
 
-import '../../shared/format.dart';
+import '../../l10n/l10n.dart';
 
 /// Pure text helpers for replies, forwards, signatures and addresses.
 abstract final class ComposeText {
   static final _replyPrefix = RegExp(r'^\s*(re|aw|sv|antw|vs|ref)(\[\d+\])?\s*:\s*', caseSensitive: false);
   static final _forwardPrefix = RegExp(r'^\s*(fwd?|wg|tr|rv|enc)(\[\d+\])?\s*:\s*', caseSensitive: false);
+
+  // "Re:" and "Fwd:" stay as they are in every language, as in Thunderbird:
+  // the recipient's mail app recognises them, and prefixes them no further.
 
   /// "Re: " + subject, unless it already is a reply.
   static String replySubject(String subject) {
@@ -29,10 +33,20 @@ abstract final class ComposeText {
     }
   }
 
-  /// "On 4 October 2026 at 14:05, Alice wrote:".
-  static String attribution(EmailSummary source) {
-    final who = source.sender?.displayName ?? 'someone';
-    return 'On ${formatFullDate(source.sentAt ?? source.receivedAt)}, $who wrote:';
+  /// "On 4 October 2026 at 14:05, Alice wrote:", in the app's language: it
+  /// is the user's text in the message.
+  static String attribution(EmailSummary source, AppLocalizations l10n) {
+    final (date, time) = _dateAndTime(source);
+    return switch (source.sender?.displayName) {
+      final who? => l10n.composeAttribution(date, time, who),
+      null => l10n.composeAttributionUnknown(date, time),
+    };
+  }
+
+  /// "4 October 2026" and "14:05": when [source] was sent.
+  static (String, String) _dateAndTime(EmailSummary source) {
+    final local = (source.sentAt ?? source.receivedAt).toLocal();
+    return (DateFormat.yMMMMd().format(local), DateFormat.jm().format(local));
   }
 
   /// Prefixes every line with "> " (">" for lines that already are quotes).
@@ -43,18 +57,20 @@ abstract final class ComposeText {
       .join('\n');
 
   /// The quoted reply block: attribution and quoted text.
-  static String replyBlock(EmailSummary source, String sourceText) => '${attribution(source)}\n${quote(sourceText)}';
+  static String replyBlock(EmailSummary source, String sourceText, AppLocalizations l10n) =>
+      '${attribution(source, l10n)}\n${quote(sourceText)}';
 
   /// The forwarded-message block: header fields and the original text.
-  static String forwardBlock(EmailSummary source, String sourceText) {
+  static String forwardBlock(EmailSummary source, String sourceText, AppLocalizations l10n) {
     String list(List<EmailAddress> a) => a.map((e) => e.toString()).join(', ');
+    final (date, time) = _dateAndTime(source);
     return [
-      '---------- Forwarded message ----------',
-      'From: ${list(source.from)}',
-      'Date: ${formatFullDate(source.sentAt ?? source.receivedAt)}',
-      'Subject: ${source.subject}',
-      if (source.to.isNotEmpty) 'To: ${list(source.to)}',
-      if (source.cc.isNotEmpty) 'Cc: ${list(source.cc)}',
+      l10n.composeForwardHeader,
+      l10n.composeForwardFrom(list(source.from)),
+      l10n.composeForwardDate(date, time),
+      l10n.composeForwardSubject(source.subject),
+      if (source.to.isNotEmpty) l10n.composeForwardTo(list(source.to)),
+      if (source.cc.isNotEmpty) l10n.composeForwardCc(list(source.cc)),
       '',
       sourceText.trimRight(),
     ].join('\n');
@@ -66,7 +82,9 @@ abstract final class ComposeText {
     return s.isEmpty ? '' : '-- \n$s';
   }
 
-  static const _forwardMarker = '---------- Forwarded message ----------';
+  /// The forwarded-message line in any language: "---------- Forwarded
+  /// message ----------", ten hyphens on each side.
+  static final _forwardMarker = RegExp(r'^-{10} \S.* -{10}$');
   static final _delimiter = RegExp(r'^-- ?$', multiLine: true);
 
   /// Where the quoted or forwarded original starts in [body]: the
@@ -78,7 +96,7 @@ abstract final class ComposeText {
     var previousLine = '';
     for (final line in body.split('\n')) {
       if (line.startsWith('>')) return previous >= 0 && previousLine.trimRight().endsWith(':') ? previous : offset;
-      if (line.trim() == _forwardMarker) return offset;
+      if (_forwardMarker.hasMatch(line.trim())) return offset;
       previous = offset;
       previousLine = line;
       offset += line.length + 1;

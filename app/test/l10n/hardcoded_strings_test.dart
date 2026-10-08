@@ -31,15 +31,6 @@ const pending = <String>{
   // Settings
 
   // Accounts and writing
-  'lib/features/account_import/account_import_screen.dart',
-  'lib/features/account_setup/account_setup_screen.dart',
-  'lib/features/account_setup/server_settings.dart',
-  'lib/features/account_setup/sign_in_again.dart',
-  'lib/features/compose/compose_recovery.dart',
-  'lib/features/compose/compose_screen.dart',
-  'lib/features/compose/send_later.dart',
-  'lib/features/outbox/outbox_screen.dart',
-  'lib/platform/error_log.dart',
 };
 
 /// A literal that starts like a word (`'Archive'`, `"Don't"`) where

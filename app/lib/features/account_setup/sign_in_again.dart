@@ -4,6 +4,7 @@ import 'package:mail_model/mail_model.dart';
 import 'package:mail_platform/mail_platform.dart';
 
 import '../../data/oauth.dart';
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
@@ -24,21 +25,22 @@ bool canSignInAgain(WidgetRef ref, MailAccount account) =>
 /// first. Says how it went in a snack bar; returns whether it worked.
 Future<bool> signInAgain(BuildContext context, WidgetRef ref, MailAccount account) async {
   final messenger = ScaffoldMessenger.of(context);
+  final l10n = context.l10n;
   final renewal = signInRenewalOf(ref.read(repositoryProvider));
   final oauth = ref.read(oauthSignInProvider);
   if (renewal == null || !oauth.isConfigured(account.provider)) {
-    showSnack(messenger, 'Sign-in with ${oauthProviderName(account.provider)} isn’t available in this version.');
+    showSnack(messenger, l10n.accountSetupSignInUnavailable(oauthProviderName(account.provider)));
     return false;
   }
   try {
     final credentials = await oauth.signIn(account.provider, loginHint: account.email);
     await renewal.renewSignIn(account.id, credentials);
-    showSnack(messenger, 'Signed in again. ${account.displayName} is syncing.');
+    showSnack(messenger, l10n.accountSetupSignedInAgain(account.displayName));
     return true;
   } on MailException catch (e) {
     final cancelled = e is OAuthSignInException && e.failure == OAuthFailure.cancelled;
     if (!cancelled) {
-      showSnack(messenger, describeOAuthError(e, account.provider), duration: const Duration(seconds: 8));
+      showSnack(messenger, describeOAuthError(l10n, e, account.provider), duration: const Duration(seconds: 8));
     }
     return false;
   }
@@ -66,6 +68,7 @@ class _SignInBannerState extends ConsumerState<SignInBanner> {
         if (required.contains(a.id)) a,
     ];
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     return Column(
       children: [
         for (final a in accounts)
@@ -84,13 +87,10 @@ class _SignInBannerState extends ConsumerState<SignInBanner> {
                           await signInAgain(context, ref, a);
                           if (mounted) setState(() => _busy = null);
                         },
-                  child: Text(_busy == a.id ? 'Signing In…' : 'Sign In Again'),
+                  child: Text(_busy == a.id ? l10n.accountSetupSigningIn : l10n.accountSetupSignInAgain),
                 ),
             ],
-            child: Text(
-              '${oauthProviderName(a.provider)} no longer accepts Loupe’s sign-in for ${a.email}, so '
-              '${a.displayName} isn’t syncing. Sign in again to get its mail.',
-            ),
+            child: Text(l10n.accountSetupSignInExpired(oauthProviderName(a.provider), a.email, a.displayName)),
           ),
       ],
     );

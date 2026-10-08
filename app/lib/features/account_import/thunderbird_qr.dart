@@ -111,18 +111,20 @@ final class TbQrCode {
   final int skipped;
 }
 
-/// Why a payload can't be read. [message] is for people and never contains
-/// payload data.
+/// What is wrong with a payload that can't be read.
+enum TbQrProblem { notThunderbird, newerVersion, damaged, tooLarge }
+
+/// Why a payload can't be read: [problem], which the import screen puts in
+/// words. [message] is for logs and never contains payload data.
 final class TbQrFormatException implements Exception {
-  const TbQrFormatException(this.message);
+  const TbQrFormatException(this.problem, this.message);
 
-  static const notThunderbird = TbQrFormatException("This isn't a Thunderbird account code.");
-  static const newerVersion = TbQrFormatException(
-    'This code comes from a newer Thunderbird. Update Loupe to import it.',
-  );
-  static const damaged = TbQrFormatException("This Thunderbird code couldn't be read.");
-  static const tooLarge = TbQrFormatException('This code is too large to be a Thunderbird export.');
+  static const notThunderbird = TbQrFormatException(TbQrProblem.notThunderbird, 'Not a Thunderbird account code');
+  static const newerVersion = TbQrFormatException(TbQrProblem.newerVersion, 'From a newer Thunderbird');
+  static const damaged = TbQrFormatException(TbQrProblem.damaged, 'Damaged Thunderbird code');
+  static const tooLarge = TbQrFormatException(TbQrProblem.tooLarge, 'Too large for a Thunderbird export');
 
+  final TbQrProblem problem;
   final String message;
 
   @override

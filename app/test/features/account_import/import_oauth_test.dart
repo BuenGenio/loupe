@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/account_import/import_controller.dart';
 import 'package:loupe/features/account_import/import_mapping.dart';
 import 'package:loupe/features/account_import/thunderbird_qr.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:mail_platform/mail_platform.dart';
 
@@ -10,6 +11,10 @@ import '../account_setup/fake_oauth.dart';
 import '../conversation/fake_mail_repository.dart';
 import 'account_import_screen_test.dart' show FakeScanner, pumpImport, scan, tapKey;
 import 'tb_payloads.dart';
+
+/// What the row says about its failure, in English.
+String? errorOf(ImportRow row) =>
+    row.failure == null ? null : describeImportFailure(lookupAppLocalizations(const Locale('en')), row);
 
 /// Thunderbird's OAuth (auth 6) accounts at Gmail and Microsoft 365, and a
 /// password account.
@@ -105,8 +110,8 @@ void main() {
       await controller.importSelected();
       expect(repo.setups, isEmpty);
       expect(controller.rows.map((r) => r.status), [ImportStatus.failed, ImportStatus.failed]);
-      expect(controller.rows[0].error, contains('Sign-in was cancelled'));
-      expect(controller.rows[1].error, contains('Your organisation must approve Loupe'));
+      expect(errorOf(controller.rows[0]), contains('Sign-in was cancelled'));
+      expect(errorOf(controller.rows[1]), contains('Your organisation must approve Loupe'));
       // Signing in is not a password: no password field appears.
       expect(controller.rows.any((r) => r.asksPassword), isFalse);
 
@@ -121,7 +126,7 @@ void main() {
       controller.useAppPassword(row);
       expect((row.signsIn, row.asksPassword), (false, true));
       await controller.importSelected();
-      expect(row.error, contains('app password'));
+      expect(errorOf(row), contains('app password'));
       row.password.text = 'abcd efgh';
       await controller.importSelected();
       expect(agent.requests, isEmpty);

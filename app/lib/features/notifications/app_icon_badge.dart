@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../settings/app_mode.dart';
 import '../../settings/app_settings.dart';
@@ -54,11 +55,15 @@ final appIconBadgeProvider = Provider<AppIconBadge>((ref) => const PlatformAppIc
 /// Asked once per launch (on Android the answer depends on the launcher).
 final appIconBadgeSupportedProvider = FutureProvider<bool>((ref) => ref.watch(appIconBadgeProvider).isSupported());
 
-String badgeCountLabel(BadgeCount count) => switch (count) {
-  BadgeCount.off => 'Off',
-  BadgeCount.inboxes => 'Unread in Inboxes',
-  BadgeCount.vip => 'Unread in VIP',
-};
+/// What the badge counts, in [l10n] (by default the device's language).
+String badgeCountLabel(BadgeCount count, [AppLocalizations? l10n]) {
+  final strings = l10n ?? deviceL10n();
+  return switch (count) {
+    BadgeCount.off => strings.commonOff,
+    BadgeCount.inboxes => strings.notificationsBadgeInboxes,
+    BadgeCount.vip => strings.notificationsBadgeVip,
+  };
+}
 
 /// The number the badge should show: 0 when it's off or no account is set
 /// up, null while the counts load.

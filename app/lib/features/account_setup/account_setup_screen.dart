@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../data/live.dart' show DatabaseKeyUnavailable;
 import '../../data/oauth.dart';
 import '../../data/repositories.dart';
+import '../../l10n/l10n.dart';
 import '../../settings/app_mode.dart';
 import '../../router.dart';
 import '../../shared/bars.dart';
@@ -62,8 +63,8 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
 
   bool _busy = false;
 
-  /// What the primary button says while [_busy].
-  String _busyLabel = 'Connecting…';
+  /// What the primary button says while [_busy]; "Connecting…" if null.
+  String? _busyLabel;
   String? _error;
 
   /// A certificate fingerprint from a certificate error, offered for trust.
@@ -101,7 +102,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
   Future<void> _discover() async {
     final email = _email.text.trim();
     if (!ComposeText.isValidEmail(email)) {
-      setState(() => _error = 'Enter a valid email address.');
+      setState(() => _error = context.l10n.accountSetupInvalidEmail);
       return;
     }
     FocusScope.of(context).unfocus();
@@ -142,9 +143,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       _showSettings = _editSettings;
       _appPassword = false;
       _fingerprint = null;
-      _error = note == null && discovery.incoming == null
-          ? "Couldn't find settings for $domain. Enter them below."
-          : note;
+      _error = note == null && discovery.incoming == null ? context.l10n.accountSetupSettingsNotFoundFor(domain) : note;
     });
   }
 
@@ -161,18 +160,18 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     if (incoming == null || (incoming.protocol != ServerProtocol.jmap && outgoing == null)) {
       setState(() {
         _editSettings = _showSettings = true;
-        _error = 'Check the server names and ports.';
+        _error = context.l10n.accountSetupCheckServers;
       });
       return;
     }
     if (_password.text.isEmpty) {
-      setState(() => _error = 'Enter your password.');
+      setState(() => _error = context.l10n.accountSetupEnterPassword);
       return;
     }
     FocusScope.of(context).unfocus();
     setState(() {
       _busy = true;
-      _busyLabel = 'Connecting…';
+      _busyLabel = null;
       _error = null;
       _fingerprint = null;
     });
@@ -208,11 +207,11 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     debugPrint('Account setup failed: ${e.runtimeType}');
     setState(() {
       _busy = false;
-      _error = setupFailureMessage(e);
+      _error = setupFailureMessage(context.l10n, e);
     });
   }
 
-  String _describe(MailException e) => describeSetupError(e, _provider, protocol: _protocol);
+  String _describe(MailException e) => describeSetupError(context.l10n, e, _provider, protocol: _protocol);
 
   ServerProtocol get _protocol => _incoming?.protocol ?? ServerProtocol.imap;
 
@@ -251,14 +250,14 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     FocusScope.of(context).unfocus();
     setState(() {
       _busy = true;
-      _busyLabel = 'Waiting for ${oauthProviderName(provider)}…';
+      _busyLabel = context.l10n.accountSetupWaitingFor(oauthProviderName(provider));
       _error = null;
       _fingerprint = null;
     });
     try {
       final credentials = await ref.read(oauthSignInProvider).signIn(provider, loginHint: email);
       if (!mounted) return;
-      setState(() => _busyLabel = 'Connecting…');
+      setState(() => _busyLabel = null);
       final servers = oauthServers(provider);
       final account = await (await _repo).addAccount(
         AccountSetup(
@@ -276,7 +275,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       if (!mounted) return;
       setState(() {
         _busy = false;
-        _error = describeOAuthError(e, provider);
+        _error = describeOAuthError(context.l10n, e, provider);
       });
     } on Object catch (e) {
       if (mounted) _failed(e);
@@ -309,12 +308,13 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
 
   Future<void> _open(String url) async {
     final messenger = ScaffoldMessenger.of(context);
+    final failed = context.l10n.accountSetupCouldNotOpenPage;
     try {
       if (!await launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView)) {
-        showSnack(messenger, "Couldn't open the page.");
+        showSnack(messenger, failed);
       }
     } on Exception {
-      showSnack(messenger, "Couldn't open the page.");
+      showSnack(messenger, failed);
     }
   }
 
@@ -323,6 +323,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
   Future<void> _finish() async {
     final account = _account!;
     final description = _description.text.trim();
+    final l10n = context.l10n;
     setState(() => _busy = true);
     try {
       await (await _repo).updateAccount(
@@ -330,7 +331,9 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
       );
     } on Object catch (e) {
       // The account is added; only its name or colour didn't stick.
-      if (mounted) showSnack(ScaffoldMessenger.of(context), e is MailException ? e.message : 'Couldn’t save the name.');
+      if (mounted) {
+        showSnack(ScaffoldMessenger.of(context), e is MailException ? e.message : l10n.accountSetupCouldNotSaveName);
+      }
     }
     // The first real account switches the app from the welcome screen to live mode.
     if (ref.read(appModeProvider) == AppMode.none) await ref.read(appModeProvider.notifier).set(AppMode.live);
@@ -370,7 +373,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
   Widget _page(BuildContext context, {required List<Widget> children}) => CustomScrollView(
     slivers: [
       LoupeTitleBar(
-        title: _step == _Step.done ? 'Account Added' : 'Add Account',
+        title: _step == _Step.done ? context.l10n.accountSetupTitleDone : context.l10n.accountSetupTitle,
         automaticallyImplyLeading: _step != _Step.done,
       ),
       SliverSafeArea(top: false, sliver: SliverList.list(children: children)),
@@ -412,7 +415,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
               TextButton(
                 key: const Key('trust-certificate'),
                 onPressed: _busy ? null : _trustCertificate,
-                child: const Text('Trust This Certificate'),
+                child: Text(context.l10n.accountSetupTrustCertificate),
               ),
           ],
           child: Column(
@@ -454,58 +457,63 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
         ),
       );
 
-  Widget _addressStep(BuildContext context) => _page(
-    context,
-    children: [
-      _title(context, 'Add a Mail Account', 'Loupe finds the settings for most providers.'),
-      SheetGroup(
-        children: [
-          FormRow(
-            label: 'Name',
-            child: TextField(
-              key: const Key('setup-name'),
-              controller: _name,
-              textCapitalization: TextCapitalization.words,
-              textInputAction: TextInputAction.next,
-              autofillHints: const [AutofillHints.name],
-              decoration: const InputDecoration.collapsed(hintText: 'Your name'),
+  Widget _addressStep(BuildContext context) {
+    final l10n = context.l10n;
+    return _page(
+      context,
+      children: [
+        _title(context, l10n.accountSetupAddressTitle, l10n.accountSetupAddressText),
+        SheetGroup(
+          children: [
+            FormRow(
+              label: l10n.commonName,
+              child: TextField(
+                key: const Key('setup-name'),
+                controller: _name,
+                textCapitalization: TextCapitalization.words,
+                textInputAction: TextInputAction.next,
+                autofillHints: const [AutofillHints.name],
+                decoration: InputDecoration.collapsed(hintText: l10n.accountSetupNameHint),
+              ),
             ),
-          ),
-          FormRow(
-            label: 'Email',
-            child: TextField(
-              key: const Key('setup-email'),
-              controller: _email,
-              keyboardType: TextInputType.emailAddress,
-              autocorrect: false,
-              textInputAction: TextInputAction.go,
-              autofillHints: const [AutofillHints.email],
-              onSubmitted: (_) => _discover(),
-              decoration: const InputDecoration.collapsed(hintText: 'name@example.com'),
+            FormRow(
+              label: l10n.accountSetupEmail,
+              child: TextField(
+                key: const Key('setup-email'),
+                controller: _email,
+                keyboardType: TextInputType.emailAddress,
+                autocorrect: false,
+                textInputAction: TextInputAction.go,
+                autofillHints: const [AutofillHints.email],
+                onSubmitted: (_) => _discover(),
+                decoration: InputDecoration.collapsed(hintText: l10n.accountSetupEmailHint),
+              ),
             ),
-          ),
-        ],
-      ),
-      _errorNote(),
-      _primaryButton(
-        key: const Key('setup-continue'),
-        label: 'Continue',
-        busyLabel: 'Looking up settings…',
-        onTap: _discover,
-      ),
-      Center(
-        child: TextButton.icon(
-          key: const Key('setup-import-thunderbird'),
-          onPressed: _busy ? null : () => context.push(Routes.importAccounts),
-          icon: const Icon(LoupeIcons.qrCode, size: 20),
-          label: const Text('Import from Thunderbird'),
+          ],
         ),
-      ),
-      const SizedBox(height: 16),
-    ],
-  );
+        _errorNote(),
+        _primaryButton(
+          key: const Key('setup-continue'),
+          label: l10n.accountSetupContinue,
+          busyLabel: l10n.accountSetupLookingUp,
+          onTap: _discover,
+        ),
+        Center(
+          child: TextButton.icon(
+            key: const Key('setup-import-thunderbird'),
+            onPressed: _busy ? null : () => context.push(Routes.importAccounts),
+            icon: const Icon(LoupeIcons.qrCode, size: 20),
+            label: Text(l10n.accountSetupImport),
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
 
   Widget _signInStep(BuildContext context) {
+    final l10n = context.l10n;
+    final busyLabel = _busyLabel ?? l10n.accountSetupConnecting;
     final discovery = _discovery!;
     final email = _email.text.trim();
     final title = switch (_provider) {
@@ -528,7 +536,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
           SheetGroup(
             children: [
               FormRow(
-                label: _passwordLabel,
+                label: secretLabel(l10n, secretKind(_provider, protocol: _protocol)),
                 child: TextField(
                   key: const Key('setup-password'),
                   controller: _password,
@@ -539,9 +547,9 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
                   autofillHints: const [AutofillHints.password],
                   textInputAction: TextInputAction.go,
                   onSubmitted: (_) => _signIn(),
-                  decoration: InputDecoration.collapsed(hintText: 'Required').copyWith(
+                  decoration: InputDecoration.collapsed(hintText: l10n.accountSetupPasswordRequired).copyWith(
                     suffixIcon: IconButton(
-                      tooltip: _obscure ? 'Show password' : 'Hide password',
+                      tooltip: _obscure ? l10n.accountSetupShowPassword : l10n.accountSetupHidePassword,
                       icon: Icon(_obscure ? LoupeIcons.showPassword : LoupeIcons.hidePassword, size: 20),
                       onPressed: () => setState(() => _obscure = !_obscure),
                     ),
@@ -557,20 +565,25 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
           if (_editSettings) ...[
             ServerSettingsForm(
               key: ValueKey('incoming-${_incoming!.protocol.name}'),
-              title: 'Incoming · ${_incoming!.protocol.name.toUpperCase()}',
+              title: l10n.accountSetupIncoming(_incoming!.protocol.name.toUpperCase()),
               controller: _incoming!,
               enabled: !_busy,
               onProtocol: _switchProtocol,
             ),
             if (_incoming!.protocol != ServerProtocol.jmap)
-              ServerSettingsForm(title: 'Outgoing · SMTP', controller: _outgoing!, enabled: !_busy),
+              ServerSettingsForm(title: l10n.accountSetupOutgoing, controller: _outgoing!, enabled: !_busy),
           ],
-          _primaryButton(key: const Key('setup-sign-in'), label: 'Sign In', busyLabel: _busyLabel, onTap: _signIn),
+          _primaryButton(
+            key: const Key('setup-sign-in'),
+            label: l10n.accountSetupSignIn,
+            busyLabel: busyLabel,
+            onTap: _signIn,
+          ),
         ] else if (_oauthAvailable) ...[
           _primaryButton(
             key: const Key('setup-oauth'),
-            label: oauthButtonLabel(_provider),
-            busyLabel: _busyLabel,
+            label: oauthButtonLabel(l10n, _provider),
+            busyLabel: busyLabel,
             onTap: _signInWithOAuth,
           ),
           if (_provider == ProviderKind.gmail)
@@ -583,7 +596,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
                         _appPassword = true;
                         _error = null;
                       }),
-                child: const Text('Use an App Password Instead'),
+                child: Text(l10n.accountSetupUseAppPasswordInstead),
               ),
             ),
         ] else
@@ -591,27 +604,19 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
             padding: const EdgeInsets.all(16),
             child: OutlinedButton(
               onPressed: () => setState(() => _step = _Step.address),
-              child: const Text('Use a Different Address'),
+              child: Text(l10n.accountSetupUseDifferentAddress),
             ),
           ),
       ],
     );
   }
 
-  String get _passwordLabel => passwordLabel(_provider, protocol: _protocol);
-
   List<Widget> _providerNotes(BuildContext context) {
+    final l10n = context.l10n;
     Widget link(String label, String url) => TextButton(onPressed: () => _open(url), child: Text(label));
     return switch (_provider) {
       ProviderKind.gmail when !_appPassword && _oauthAvailable => [
-        const NoteCard(
-          key: Key('oauth-note'),
-          icon: LoupeIcons.info,
-          child: Text(
-            'You sign in on Google’s page, and Loupe never sees your password. Allow Loupe to read, '
-            'send and organise your mail.',
-          ),
-        ),
+        NoteCard(key: const Key('oauth-note'), icon: LoupeIcons.info, child: Text(l10n.accountSetupGoogleNote)),
       ],
       ProviderKind.gmail when !_appPassword => [
         NoteCard(
@@ -620,20 +625,17 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
             TextButton(
               key: const Key('use-app-password'),
               onPressed: () => setState(() => _appPassword = true),
-              child: const Text('Use an App Password'),
+              child: Text(l10n.accountSetupUseAppPassword),
             ),
           ],
-          child: const Text(
-            '“Sign in with Google” isn\'t available in this build yet. You can connect with an app password '
-            'instead (it needs 2-Step Verification on your Google account).',
-          ),
+          child: Text(l10n.accountSetupGmailAppPasswordOnlyNote),
         ),
       ],
       ProviderKind.gmail => [
         NoteCard(
           icon: LoupeIcons.password,
           actions: [
-            link('How to Create an App Password', gmailAppPasswordHelp),
+            link(l10n.accountSetupHowToCreateAppPassword, gmailAppPasswordHelp),
             if (_oauthAvailable)
               TextButton(
                 key: const Key('use-oauth'),
@@ -643,62 +645,49 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
                         _appPassword = false;
                         _error = null;
                       }),
-                child: Text(oauthButtonLabel(_provider)),
+                child: Text(oauthButtonLabel(l10n, _provider)),
               ),
           ],
-          child: const Text('Create an app password in your Google account and paste it below.'),
+          child: Text(l10n.accountSetupGmailAppPasswordNote),
         ),
       ],
       ProviderKind.microsoft when _oauthAvailable => [
-        const NoteCard(
-          key: Key('oauth-note'),
-          icon: LoupeIcons.info,
-          child: Text(
-            'You sign in on Microsoft’s page, and Loupe never sees your password. This works for Outlook.com '
-            'and Hotmail, and for work or school accounts on Microsoft 365.',
-          ),
-        ),
+        NoteCard(key: const Key('oauth-note'), icon: LoupeIcons.info, child: Text(l10n.accountSetupMicrosoftNote)),
       ],
       ProviderKind.microsoft => [
-        const NoteCard(
-          key: Key('microsoft-note'),
+        NoteCard(
+          key: const Key('microsoft-note'),
           icon: LoupeIcons.info,
-          child: Text(
-            'Microsoft sign-in arrives in a later build. Outlook, Hotmail and Microsoft 365 accounts need it: '
-            'they no longer accept passwords from mail apps.',
-          ),
+          child: Text(l10n.accountSetupMicrosoftUnavailableNote),
         ),
       ],
       ProviderKind.icloud => [
         NoteCard(
           icon: LoupeIcons.password,
-          actions: [link('How to Create One', 'https://support.apple.com/en-us/102654')],
-          child: const Text('iCloud Mail needs an app-specific password, not your Apple Account password.'),
+          actions: [link(l10n.accountSetupHowToCreateOne, 'https://support.apple.com/en-us/102654')],
+          child: Text(l10n.accountSetupICloudNote),
         ),
       ],
       ProviderKind.yahoo => [
         NoteCard(
           icon: LoupeIcons.password,
-          actions: [link('How to Create One', 'https://help.yahoo.com/kb/SLN15241.html')],
-          child: const Text('Yahoo Mail needs an app password, not your account password.'),
+          actions: [link(l10n.accountSetupHowToCreateOne, 'https://help.yahoo.com/kb/SLN15241.html')],
+          child: Text(l10n.accountSetupYahooNote),
         ),
       ],
       ProviderKind.fastmail when _protocol == ServerProtocol.jmap => [
         NoteCard(
           key: const Key('fastmail-jmap-note'),
           icon: LoupeIcons.password,
-          actions: [link('How to Create One', fastmailApiTokenHelp)],
-          child: const Text(
-            'Loupe connects to Fastmail over JMAP with an API token: Settings › Privacy & Security › Manage API '
-            'tokens, for JMAP, with access to email and sending.',
-          ),
+          actions: [link(l10n.accountSetupHowToCreateOne, fastmailApiTokenHelp)],
+          child: Text(l10n.accountSetupFastmailJmapNote),
         ),
       ],
       ProviderKind.fastmail => [
         NoteCard(
           icon: LoupeIcons.password,
-          actions: [link('How to Create One', 'https://www.fastmail.help/hc/en-us/articles/360058752854')],
-          child: const Text('Fastmail needs an app password for mail apps.'),
+          actions: [link(l10n.accountSetupHowToCreateOne, 'https://www.fastmail.help/hc/en-us/articles/360058752854')],
+          child: Text(l10n.accountSetupFastmailNote),
         ),
       ],
       ProviderKind.generic => const [],
@@ -707,6 +696,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
 
   Widget _settingsSummary(BuildContext context, AccountDiscovery discovery) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final incoming = _incoming!.config;
     final outgoing = _outgoing!.config;
     return SheetGroup(
@@ -714,11 +704,11 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
         ListTile(
           key: const Key('setup-settings'),
           dense: true,
-          title: const Text('Server Settings', style: TextStyle(fontSize: 16)),
-          subtitle: Text(
-            discovery.source == null ? 'Not found automatically' : 'Found via ${discovery.source}',
-            style: TextStyle(color: colors.secondaryText),
-          ),
+          title: Text(l10n.accountSetupServerSettings, style: const TextStyle(fontSize: 16)),
+          subtitle: Text(switch (discovery.source) {
+            null => l10n.accountSetupSettingsNotFound,
+            final source => l10n.accountSetupSettingsFoundVia(source),
+          }, style: TextStyle(color: colors.secondaryText)),
           trailing: Icon(_showSettings ? LoupeIcons.collapse : LoupeIcons.expand, color: colors.secondaryText),
           onTap: () => setState(() => _showSettings = !_showSettings),
         ),
@@ -726,19 +716,19 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
           ListTile(
             dense: true,
             leading: const Icon(LoupeIcons.download, size: 20),
-            title: Text(incoming == null ? '—' : describeServer(incoming)),
-            subtitle: Text('Incoming · ${_incoming!.protocol.name.toUpperCase()}'),
+            title: Text(incoming == null ? '—' : describeServer(l10n, incoming)),
+            subtitle: Text(l10n.accountSetupIncoming(_incoming!.protocol.name.toUpperCase())),
           ),
           if (outgoing != null && _incoming!.protocol != ServerProtocol.jmap)
             ListTile(
               dense: true,
               leading: const Icon(LoupeIcons.upload, size: 20),
-              title: Text(describeServer(outgoing)),
-              subtitle: const Text('Outgoing · SMTP'),
+              title: Text(describeServer(l10n, outgoing)),
+              subtitle: Text(l10n.accountSetupOutgoing),
             ),
           SheetRow(
             key: const Key('setup-edit-settings'),
-            label: 'Edit Settings',
+            label: l10n.accountSetupEditSettings,
             icon: LoupeIcons.serverSettings,
             onTap: _busy ? null : () => setState(() => _editSettings = true),
           ),
@@ -749,6 +739,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
 
   Widget _doneStep(BuildContext context) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     return _page(
       context,
       children: [
@@ -763,26 +754,26 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 4),
-              Text('Your mail is syncing.', style: TextStyle(color: colors.secondaryText)),
+              Text(l10n.accountSetupSyncing, style: TextStyle(color: colors.secondaryText)),
             ],
           ),
         ),
         SheetGroup(
           children: [
             FormRow(
-              label: 'Description',
+              label: l10n.accountSetupDescription,
               child: TextField(
                 key: const Key('setup-description'),
                 controller: _description,
                 textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration.collapsed(hintText: 'Work, Personal…'),
+                decoration: InputDecoration.collapsed(hintText: l10n.accountSetupDescriptionHint),
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Row(
                 children: [
-                  const SizedBox(width: 96, child: Text('Colour', style: TextStyle(fontSize: 16))),
+                  SizedBox(width: 96, child: Text(l10n.accountSetupColour, style: const TextStyle(fontSize: 16))),
                   Expanded(
                     child: Wrap(
                       spacing: 10,
@@ -792,7 +783,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
                           Semantics(
                             button: true,
                             selected: i == _colorIndex,
-                            label: 'Colour ${i + 1}',
+                            label: l10n.accountSetupColourNumber(i + 1),
                             child: GestureDetector(
                               key: ValueKey('setup-colour-$i'),
                               onTap: () => setState(() => _colorIndex = i),
@@ -817,15 +808,19 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
             ),
           ],
         ),
-        _primaryButton(key: const Key('setup-done'), label: 'Done', busyLabel: 'Saving…', onTap: _finish),
+        _primaryButton(
+          key: const Key('setup-done'),
+          label: l10n.commonDone,
+          busyLabel: l10n.accountSetupSaving,
+          onTap: _finish,
+        ),
       ],
     );
   }
 }
 
 /// What account setup says about a failure that isn't the server's.
-String setupFailureMessage(Object e) => switch (e) {
-  DatabaseKeyUnavailable() ||
-  MailStoreException() => 'Loupe couldn’t open its mail database on this phone. Close Loupe, open it again and retry.',
-  _ => 'Something went wrong (${e.runtimeType}). Try again.',
+String setupFailureMessage(AppLocalizations l10n, Object e) => switch (e) {
+  DatabaseKeyUnavailable() || MailStoreException() => l10n.accountSetupDatabaseUnavailable,
+  _ => l10n.accountSetupUnexpectedError('${e.runtimeType}'),
 };

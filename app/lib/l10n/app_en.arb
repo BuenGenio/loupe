@@ -2225,6 +2225,592 @@
 
   "@@x-section-accounts": "Accounts and writing: welcome, account setup and import, compose, outbox, notifications",
 
+  "accountSetupTitle": "Add Account",
+  "@accountSetupTitle": {"description": "Title of the account setup screen."},
+  "accountSetupTitleDone": "Account Added",
+  "@accountSetupTitleDone": {"description": "Title of account setup's last step, once the account is added."},
+  "accountSetupAddressTitle": "Add a Mail Account",
+  "accountSetupAddressText": "Loupe finds the settings for most providers.",
+  "accountSetupNameHint": "Your name",
+  "@accountSetupNameHint": {"description": "Placeholder of the Name field: the user's own name, as recipients see it."},
+  "accountSetupEmail": "Email",
+  "@accountSetupEmail": {"description": "Label of the email address field."},
+  "accountSetupEmailHint": "name@example.com",
+  "@accountSetupEmailHint": {"description": "Placeholder of the email address field: an example address."},
+  "accountSetupContinue": "Continue",
+  "@accountSetupContinue": {"description": "Button: look up the settings for the address."},
+  "accountSetupLookingUp": "Looking up settings…",
+  "@accountSetupLookingUp": {"description": "On the Continue button while Loupe looks up the server settings."},
+  "accountSetupImport": "Import from Thunderbird",
+  "@accountSetupImport": {"description": "Button: add accounts from Thunderbird desktop's QR codes instead."},
+  "accountSetupInvalidEmail": "Enter a valid email address.",
+  "accountSetupSettingsNotFoundFor": "Couldn't find settings for {domain}. Enter them below.",
+  "@accountSetupSettingsNotFoundFor": {"placeholders": {"domain": {"type": "String", "example": "example.com"}}},
+  "accountSetupCheckServers": "Check the server names and ports.",
+  "accountSetupEnterPassword": "Enter your password.",
+  "accountSetupConnecting": "Connecting…",
+  "@accountSetupConnecting": {"description": "On the sign-in button while Loupe connects to the mail server."},
+  "accountSetupWaitingFor": "Waiting for {provider}…",
+  "@accountSetupWaitingFor": {
+    "description": "On the sign-in button while the provider's sign-in page is open in the browser.",
+    "placeholders": {"provider": {"type": "String", "example": "Google"}}
+  },
+  "accountSetupCouldNotOpenPage": "Couldn't open the page.",
+  "@accountSetupCouldNotOpenPage": {"description": "A help page in the browser couldn't be opened."},
+  "accountSetupCouldNotSaveName": "Couldn’t save the name.",
+  "@accountSetupCouldNotSaveName": {"description": "The account was added, but its name and colour couldn't be saved."},
+  "accountSetupTrustCertificate": "Trust This Certificate",
+  "@accountSetupTrustCertificate": {"description": "Button under a certificate error: trust the server's own certificate and try again."},
+  "accountSetupPasswordRequired": "Required",
+  "@accountSetupPasswordRequired": {"description": "Placeholder of the password field."},
+  "accountSetupShowPassword": "Show password",
+  "@accountSetupShowPassword": {"description": "Tooltip of the eye button in the password field."},
+  "accountSetupHidePassword": "Hide password",
+  "@accountSetupHidePassword": {"description": "Tooltip of the eye button in the password field."},
+  "accountSetupAppPassword": "App Password",
+  "@accountSetupAppPassword": {"description": "Label of the password field for providers that only take an app password from mail apps."},
+  "accountSetupApiToken": "API Token",
+  "@accountSetupApiToken": {"description": "Label of the password field for Fastmail over JMAP, which takes an API token."},
+  "accountSetupIncoming": "Incoming · {protocol}",
+  "@accountSetupIncoming": {
+    "description": "Heading of the incoming server's settings.",
+    "placeholders": {"protocol": {"type": "String", "example": "IMAP"}}
+  },
+  "accountSetupOutgoing": "Outgoing · SMTP",
+  "@accountSetupOutgoing": {"description": "Heading of the outgoing server's settings. SMTP is the protocol's name."},
+  "accountSetupSignIn": "Sign In",
+  "@accountSetupSignIn": {"description": "Button: connect with the password and add the account."},
+  "accountSetupSignInWith": "Sign in with {provider}",
+  "@accountSetupSignInWith": {
+    "description": "Button that opens the provider's sign-in page in the browser.",
+    "placeholders": {"provider": {"type": "String", "example": "Google"}}
+  },
+  "accountSetupUseAppPassword": "Use an App Password",
+  "@accountSetupUseAppPassword": {"description": "Button: connect with an app password instead of signing in with Google."},
+  "accountSetupUseAppPasswordInstead": "Use an App Password Instead",
+  "@accountSetupUseAppPasswordInstead": {"description": "Button: connect with an app password instead of signing in with Google."},
+  "accountSetupUseDifferentAddress": "Use a Different Address",
+  "accountSetupHowToCreateAppPassword": "How to Create an App Password",
+  "@accountSetupHowToCreateAppPassword": {"description": "Link to Google's help page."},
+  "accountSetupHowToCreateOne": "How to Create One",
+  "@accountSetupHowToCreateOne": {"description": "Link to the provider's help page on creating an app password or API token."},
+  "accountSetupGoogleNote": "You sign in on Google’s page, and Loupe never sees your password. Allow Loupe to read, send and organise your mail.",
+  "accountSetupGmailAppPasswordOnlyNote": "“Sign in with Google” isn't available in this build yet. You can connect with an app password instead (it needs 2-Step Verification on your Google account).",
+  "@accountSetupGmailAppPasswordOnlyNote": {"description": "The quoted words are the button's (accountSetupSignInWith). 2-Step Verification is Google's name for it."},
+  "accountSetupGmailAppPasswordNote": "Create an app password in your Google account and paste it below.",
+  "accountSetupMicrosoftNote": "You sign in on Microsoft’s page, and Loupe never sees your password. This works for Outlook.com and Hotmail, and for work or school accounts on Microsoft 365.",
+  "accountSetupMicrosoftUnavailableNote": "Microsoft sign-in arrives in a later build. Outlook, Hotmail and Microsoft 365 accounts need it: they no longer accept passwords from mail apps.",
+  "accountSetupICloudNote": "iCloud Mail needs an app-specific password, not your Apple Account password.",
+  "accountSetupYahooNote": "Yahoo Mail needs an app password, not your account password.",
+  "accountSetupFastmailJmapNote": "Loupe connects to Fastmail over JMAP with an API token: Settings › Privacy & Security › Manage API tokens, for JMAP, with access to email and sending.",
+  "@accountSetupFastmailJmapNote": {"description": "Settings › Privacy & Security › Manage API tokens are Fastmail's menu items."},
+  "accountSetupFastmailNote": "Fastmail needs an app password for mail apps.",
+  "accountSetupServerSettings": "Server Settings",
+  "accountSetupSettingsNotFound": "Not found automatically",
+  "@accountSetupSettingsNotFound": {"description": "Under Server Settings: Loupe found no settings for the address."},
+  "accountSetupSettingsFoundVia": "Found via {source}",
+  "@accountSetupSettingsFoundVia": {
+    "description": "Under Server Settings: where Loupe found the settings, such as a lookup service or a domain.",
+    "placeholders": {"source": {"type": "String", "example": "autoconfig.example.com"}}
+  },
+  "accountSetupEditSettings": "Edit Settings",
+  "accountSetupSyncing": "Your mail is syncing.",
+  "accountSetupDescription": "Description",
+  "@accountSetupDescription": {"description": "Label of the account's name as Loupe shows it (Work, Gmail), on the last step."},
+  "accountSetupDescriptionHint": "Work, Personal…",
+  "@accountSetupDescriptionHint": {"description": "Placeholder of the account's name: example names."},
+  "accountSetupColour": "Colour",
+  "@accountSetupColour": {"description": "Label of the account's colour choice."},
+  "accountSetupColourNumber": "Colour {number}",
+  "@accountSetupColourNumber": {
+    "description": "Screen reader label of one colour to choose.",
+    "placeholders": {"number": {"type": "int", "example": "3"}}
+  },
+  "accountSetupSaving": "Saving…",
+  "accountSetupDatabaseUnavailable": "Loupe couldn’t open its mail database on this phone. Close Loupe, open it again and retry.",
+  "accountSetupUnexpectedError": "Something went wrong ({error}). Try again.",
+  "@accountSetupUnexpectedError": {
+    "description": "error is the technical name of what went wrong.",
+    "placeholders": {"error": {"type": "String", "example": "StateError"}}
+  },
+  "accountSetupSecurityNone": "None",
+  "@accountSetupSecurityNone": {"description": "Connection security: no encryption (the others are TLS and STARTTLS)."},
+  "accountSetupProtocol": "Protocol",
+  "@accountSetupProtocol": {"description": "Label of the choice between IMAP and JMAP."},
+  "accountSetupPort": "Port",
+  "accountSetupSecurity": "Security",
+  "@accountSetupSecurity": {"description": "Label of the connection security choice: TLS, STARTTLS or none."},
+  "accountSetupUsername": "Username",
+  "accountSetupUsernameHint": "Your email address",
+  "@accountSetupUsernameHint": {"description": "Placeholder of the Username field: by default it's the address."},
+  "accountSetupNoEncryptionTitle": "Connect Without Encryption?",
+  "accountSetupNoEncryptionText": "Your password and every message would travel as plain text. Anyone on the network, such as public Wi-Fi, could read them. Only use this for a server on your own network.",
+  "accountSetupUseWithoutEncryption": "Use Without Encryption",
+  "accountSetupApiTokenRejected": "API token rejected. Create a Fastmail API token for JMAP with access to email, and paste it.",
+  "accountSetupAppPasswordRejected": "Password rejected. Use an app password, not your account password.",
+  "accountSetupPasswordRejected": "Password rejected. Check it and try again.",
+  "accountSetupServerUnreachable": "Can't reach server. Check the server settings and your connection.",
+  "accountSetupCertificateUntrusted": "The server's certificate isn't trusted. {details}",
+  "@accountSetupCertificateUntrusted": {
+    "description": "details is the connection's own message, in English.",
+    "placeholders": {"details": {"type": "String", "example": "imap.example.com presented a self-signed certificate."}}
+  },
+  "accountSetupOAuthCancelled": "Sign-in was cancelled. Tap “Sign in with {provider}” to try again.",
+  "@accountSetupOAuthCancelled": {
+    "description": "The quoted words are the button's (accountSetupSignInWith).",
+    "placeholders": {"provider": {"type": "String", "example": "Google"}}
+  },
+  "accountSetupOAuthDeniedGmail": "Loupe needs permission to read and send your Gmail. Sign in again and allow access, with the Gmail box ticked.",
+  "accountSetupOAuthDenied": "Loupe needs permission to read and send your mail. Sign in again and accept the permissions.",
+  "accountSetupOAuthAdminApproval": "Your organisation must approve Loupe before you can use it with this account. Ask your IT administrator to grant admin consent for Loupe in Microsoft Entra ID, then try again.",
+  "accountSetupOAuthBlocked": "Your organisation’s sign-in rules don’t allow Loupe on this device. Ask your IT administrator.",
+  "accountSetupOAuthNetwork": "Couldn’t reach {provider}. Check your internet connection and try again.",
+  "@accountSetupOAuthNetwork": {"placeholders": {"provider": {"type": "String", "example": "Google"}}},
+  "accountSetupOAuthMisconfigured": "Sign-in with {provider} isn’t set up correctly in this version of Loupe. Please report this.",
+  "@accountSetupOAuthMisconfigured": {"placeholders": {"provider": {"type": "String", "example": "Google"}}},
+  "accountSetupOAuthFailed": "Sign-in with {provider} didn’t work. Try again.",
+  "@accountSetupOAuthFailed": {"placeholders": {"provider": {"type": "String", "example": "Google"}}},
+  "accountSetupOAuthRefusedGmail": "{provider} signed you in, but Gmail refused access for this address. Choose the same account when signing in. Work or school accounts may have IMAP turned off by their administrator.",
+  "@accountSetupOAuthRefusedGmail": {"placeholders": {"provider": {"type": "String", "example": "Google"}}},
+  "accountSetupOAuthRefused": "{provider} signed you in, but the mail server refused access for this address. Choose the same account when signing in. Work or school accounts may have IMAP turned off by their administrator.",
+  "@accountSetupOAuthRefused": {"placeholders": {"provider": {"type": "String", "example": "Microsoft"}}},
+  "accountSetupOAuthServerUnreachable": "Can't reach the mail server. Check your connection and try again.",
+  "accountSetupSignInUnavailable": "Sign-in with {provider} isn’t available in this version.",
+  "@accountSetupSignInUnavailable": {"placeholders": {"provider": {"type": "String", "example": "Google"}}},
+  "accountSetupSignedInAgain": "Signed in again. {account} is syncing.",
+  "@accountSetupSignedInAgain": {
+    "description": "account is the account's name in Loupe.",
+    "placeholders": {"account": {"type": "String", "example": "Work"}}
+  },
+  "accountSetupSignInAgain": "Sign In Again",
+  "@accountSetupSignInAgain": {"description": "Button: sign in with the provider again, after it stopped accepting Loupe's sign-in."},
+  "accountSetupSigningIn": "Signing In…",
+  "@accountSetupSigningIn": {"description": "On the Sign In Again button while the browser is open."},
+  "accountSetupSignInExpired": "{provider} no longer accepts Loupe’s sign-in for {email}, so {account} isn’t syncing. Sign in again to get its mail.",
+  "@accountSetupSignInExpired": {
+    "description": "account is the account's name in Loupe.",
+    "placeholders": {
+      "provider": {"type": "String", "example": "Google"},
+      "email": {"type": "String", "example": "alice@gmail.com"},
+      "account": {"type": "String", "example": "Gmail"}
+    }
+  },
+
+  "accountImportTitle": "Import from Thunderbird",
+  "@accountImportTitle": {"description": "Title of the screen that adds accounts from Thunderbird desktop's QR codes."},
+  "accountImportPointCamera": "Point the camera at the QR code Thunderbird shows.",
+  "accountImportProgress": "Scanned {scanned} of {total}",
+  "@accountImportProgress": {
+    "description": "How many of the export's QR codes were scanned.",
+    "placeholders": {"scanned": {"type": "int", "example": "2"}, "total": {"type": "int", "example": "3"}}
+  },
+  "accountImportProgressLabel": "{total, plural, other{Scanned {scanned} of {total} codes}}",
+  "@accountImportProgressLabel": {
+    "description": "Screen reader label of the dots that show the scanned codes.",
+    "placeholders": {"scanned": {"type": "int", "example": "2"}, "total": {"type": "int", "example": "3"}}
+  },
+  "accountImportAccountsSoFar": "{count, plural, =1{1 account so far} other{{count} accounts so far}}",
+  "@accountImportAccountsSoFar": {
+    "description": "Accounts in the codes scanned so far.",
+    "placeholders": {"count": {"type": "int", "example": "4"}}
+  },
+  "accountImportInstructions": "On your computer, open Thunderbird and choose Tools › Export for Mobile. Select your accounts, then scan each code it shows. Codes can be scanned in any order.",
+  "@accountImportInstructions": {"description": "Tools › Export for Mobile is Thunderbird's menu item: use its name in Thunderbird in your language."},
+  "accountImportContinueWith": "{count, plural, =1{Continue with 1 Account} other{Continue with {count} Accounts}}",
+  "@accountImportContinueWith": {
+    "description": "Button: go on with the accounts scanned so far, before every code is scanned.",
+    "placeholders": {"count": {"type": "int", "example": "4"}}
+  },
+  "accountImportPasteInstead": "Paste Text Instead",
+  "@accountImportPasteInstead": {"description": "Button: paste a code's text instead of scanning it."},
+  "accountImportStartOver": "Start Over",
+  "@accountImportStartOver": {"description": "Button: forget the codes scanned so far."},
+  "accountImportDuplicateCode": "That code was already added.",
+  "accountImportRestarted": "This code is from a new export, so the codes scanned before were set aside.",
+  "accountImportNotThunderbird": "This isn't a Thunderbird account code.",
+  "accountImportNewerVersion": "This code comes from a newer Thunderbird. Update Loupe to import it.",
+  "accountImportDamaged": "This Thunderbird code couldn't be read.",
+  "accountImportTooLarge": "This code is too large to be a Thunderbird export.",
+  "accountImportCouldNotOpenSettings": "Couldn’t open Settings.",
+  "@accountImportCouldNotOpenSettings": {"description": "The system settings (to allow the camera) couldn't be opened."},
+  "accountImportCameraOffTitle": "Camera Access Is Off",
+  "accountImportCameraOffText": "Allow Loupe to use the camera in Settings to scan the code, or paste the code’s text instead.",
+  "accountImportNoCameraTitle": "No Camera",
+  "accountImportNoCameraText": "Loupe can’t use a camera here. Paste the code’s text instead.",
+  "accountImportCameraFailedTitle": "The Camera Didn’t Start",
+  "accountImportCameraFailedText": "Try again, or paste the code’s text instead.",
+  "accountImportOpenSettings": "Open Settings",
+  "@accountImportOpenSettings": {"description": "Button: open the system settings to allow the camera."},
+  "accountImportFound": "{count, plural, =0{No Accounts Found} =1{Found 1 Account} other{Found {count} Accounts}}",
+  "@accountImportFound": {
+    "description": "Heading of the list of accounts read from the codes.",
+    "placeholders": {"count": {"type": "int", "example": "4"}}
+  },
+  "accountImportNoneReadable": "None of the accounts in these codes could be read.",
+  "accountImportChoose": "Choose the accounts to add to Loupe.",
+  "accountImportMissingCodes": "{count, plural, =1{Code {codes} of {total} wasn’t scanned, so its accounts aren’t listed.} other{Codes {codes} of {total} weren’t scanned, so their accounts aren’t listed.}}",
+  "@accountImportMissingCodes": {
+    "description": "count is how many codes weren't scanned; codes are their numbers (accountImportCodeList for more than one).",
+    "placeholders": {
+      "count": {"type": "int", "example": "2"},
+      "codes": {"type": "String", "example": "1 and 3"},
+      "total": {"type": "int", "example": "4"}
+    }
+  },
+  "accountImportCodeList": "{codes} and {last}",
+  "@accountImportCodeList": {
+    "description": "The numbers of the codes not scanned, in accountImportMissingCodes. codes is a list of numbers with commas.",
+    "placeholders": {"codes": {"type": "String", "example": "1, 2"}, "last": {"type": "String", "example": "4"}}
+  },
+  "accountImportScanMore": "Scan More Codes",
+  "accountImportSkipped": "{count, plural, =1{1 account in the codes couldn’t be read. They may use settings from a newer Thunderbird.} other{{count} accounts in the codes couldn’t be read. They may use settings from a newer Thunderbird.}}",
+  "@accountImportSkipped": {"placeholders": {"count": {"type": "int", "example": "2"}}},
+  "accountImportScanAgain": "Scan Again",
+  "accountImportAlreadyAdded": "An account with this address is already in Loupe.",
+  "accountImportSignsInWith": "You’ll sign in with {provider} when it’s added, as in Thunderbird.",
+  "@accountImportSignsInWith": {"placeholders": {"provider": {"type": "String", "example": "Google"}}},
+  "accountImportGmailAppPassword": "Add the account with an app password (it needs 2-Step Verification).",
+  "accountImportGmailNoSignIn": "Thunderbird signs in to Gmail with Google. “Sign in with Google” arrives in a later build; until then, add the account with an app password (it needs 2-Step Verification).",
+  "@accountImportGmailNoSignIn": {"description": "The quoted words are the button's (accountSetupSignInWith)."},
+  "accountImportBrowserSignIn": "Thunderbird signs in to this account in the browser. Loupe can’t do that yet: use an app password if your provider offers one.",
+  "accountImportUnencrypted": "Connects without encryption. Use this only on your own network.",
+  "accountImportEnterAgain": "Enter it again",
+  "@accountImportEnterAgain": {"description": "Placeholder of the password field when the server refused the password that came with the code."},
+  "accountImportAdded": "Added",
+  "@accountImportAdded": {"description": "Beside an account once it is added."},
+  "accountImportAdding": "Adding {index} of {total}…",
+  "@accountImportAdding": {
+    "description": "On the button while the chosen accounts are added one by one.",
+    "placeholders": {"index": {"type": "int", "example": "2"}, "total": {"type": "int", "example": "3"}}
+  },
+  "accountImportAddAccounts": "{count, plural, =0{Add Accounts} =1{Add 1 Account} other{Add {count} Accounts}}",
+  "@accountImportAddAccounts": {
+    "description": "Button: add the chosen accounts. With none chosen it is greyed out.",
+    "placeholders": {"count": {"type": "int", "example": "3"}}
+  },
+  "accountImportPasteTitle": "Paste Export Text",
+  "accountImportPasteText": "Paste the text of a Thunderbird export code, one code per line.",
+  "accountImportPop3": "POP3 accounts aren’t supported. Loupe keeps mail on the server with IMAP.",
+  "accountImportKerberos": "This account signs in with Kerberos, which Loupe doesn’t support.",
+  "accountImportNtlm": "This account signs in with NTLM, which Loupe doesn’t support.",
+  "accountImportClientCertificate": "This account signs in with a client certificate, which Loupe doesn’t support yet.",
+  "accountImportMicrosoftSignIn": "Microsoft sign-in arrives in a later build. Outlook and Microsoft 365 accounts no longer accept passwords from mail apps.",
+  "accountImportEnterPassword": "Enter the password.",
+  "accountImportEnterAppPassword": "Enter the app password.",
+  "accountImportEnterApiToken": "Enter the API token.",
+  "accountImportStorageFailed": "Loupe couldn’t open its account storage. Try again later.",
+  "accountImportFailed": "The account couldn’t be added. Try again, or add it manually.",
+
+  "composeNewMessageTitle": "New Message",
+  "@composeNewMessageTitle": {"description": "Title of the compose screen while the subject is empty."},
+  "composeAttach": "Attach",
+  "@composeAttach": {"description": "Tooltip of the paper clip button: attach a file."},
+  "composeSendLater": "Send Later",
+  "@composeSendLater": {"description": "The clock button beside Send, and the title of its sheet: send at a chosen time."},
+  "composeSendAt": "Send {time}",
+  "@composeSendAt": {
+    "description": "Screen reader label of the Send button when a Send Later time is set.",
+    "placeholders": {"time": {"type": "String", "example": "Tomorrow 08:00"}}
+  },
+  "composeSendHint": "Long-press to send later",
+  "@composeSendHint": {"description": "Screen reader hint of the Send button."},
+  "composeNoAccount": "Add an account to send mail.",
+  "composeTo": "To:",
+  "@composeTo": {"description": "Label of the recipients field."},
+  "composeCc": "Cc:",
+  "@composeCc": {"description": "Label of the copy recipients field."},
+  "composeBcc": "Bcc:",
+  "@composeBcc": {"description": "Label of the blind copy recipients field."},
+  "composeCcBccFrom": "Cc/Bcc, From: {email}",
+  "@composeCcBccFrom": {
+    "description": "Collapsed row under the recipients: tap to show the Cc, Bcc and From fields.",
+    "placeholders": {"email": {"type": "String", "example": "alice@example.com"}}
+  },
+  "composeFromLabel": "From:",
+  "@composeFromLabel": {"description": "Label before the sender's name and address."},
+  "composeSubjectLabel": "Subject:",
+  "@composeSubjectLabel": {"description": "Label before the subject field."},
+  "composeReplyTo": "Reply-To: {address}",
+  "@composeReplyTo": {
+    "description": "The identity's Reply-To address. Reply-To is a header's name: write it as mail apps in your language do.",
+    "placeholders": {"address": {"type": "String", "example": "team@example.com"}}
+  },
+  "composeFrom": "From",
+  "@composeFrom": {"description": "Heading of the sheet that picks the sender."},
+  "composeReplyFrom": "Reply from {email}",
+  "@composeReplyFrom": {
+    "description": "In the sender picker: reply from an address of the user's that isn't saved as an identity.",
+    "placeholders": {"email": {"type": "String", "example": "shop@alice.example"}}
+  },
+  "composeSendFrom": "Send from {email}",
+  "@composeSendFrom": {
+    "description": "In the sender picker: send from an address of the user's that isn't saved as an identity.",
+    "placeholders": {"email": {"type": "String", "example": "shop@alice.example"}}
+  },
+  "composeReplyFromSuggestion": "Reply from {email}?",
+  "@composeReplyFromSuggestion": {
+    "description": "Under the compose header: suggests replying from the address the original was sent to.",
+    "placeholders": {"email": {"type": "String", "example": "shop@alice.example"}}
+  },
+  "composeSendFromSuggestion": "Send from {email}?",
+  "@composeSendFromSuggestion": {
+    "description": "Under the compose header: suggests sending from the address the original was sent to.",
+    "placeholders": {"email": {"type": "String", "example": "shop@alice.example"}}
+  },
+  "composeDismiss": "Dismiss",
+  "@composeDismiss": {"description": "Screen reader label of the button that hides the suggested sender."},
+  "composeAliasNotSaved": "Not saved as an identity · {account}",
+  "@composeAliasNotSaved": {
+    "description": "account is the account's name in Loupe.",
+    "placeholders": {"account": {"type": "String", "example": "Work"}}
+  },
+  "composeSaveAsIdentity": "Save as Identity",
+  "composeAliasSaved": "{email} is saved as an identity.",
+  "@composeAliasSaved": {"placeholders": {"email": {"type": "String", "example": "shop@alice.example"}}},
+  "composeInvalidAddressLabel": "Invalid address {address}",
+  "@composeInvalidAddressLabel": {
+    "description": "Screen reader label of a recipient that isn't a valid address.",
+    "placeholders": {"address": {"type": "String", "example": "bob@"}}
+  },
+  "composeOriginalNotFound": "Couldn't find the original message.",
+  "composeDraftNotFound": "Couldn't find the draft.",
+  "composeAttachmentsLost": "The attachments couldn’t be recovered. Add them again.",
+  "composeSomeAttachmentsFailed": "Some attachments couldn't be added: {error}",
+  "@composeSomeAttachmentsFailed": {
+    "description": "error is the server's or the app's message, often in English.",
+    "placeholders": {"error": {"type": "String", "example": "The connection was lost."}}
+  },
+  "composeAttachmentsLarge": "Attachments total {size}; some servers refuse messages this large.",
+  "@composeAttachmentsLarge": {"placeholders": {"size": {"type": "String", "example": "24.3 MB"}}},
+  "composeAttachFailed": "Couldn't attach the file.",
+  "composeInvalidAddressTitle": "Invalid Address",
+  "composeInvalidAddress": "“{address}” isn't a valid email address.",
+  "@composeInvalidAddress": {"placeholders": {"address": {"type": "String", "example": "bob@"}}},
+  "composeNoSubjectTitle": "No Subject",
+  "@composeNoSubjectTitle": {"description": "Title of the question before sending a message without a subject."},
+  "composeNoSubjectText": "This message has no subject. Send it anyway?",
+  "composeSentBeforeChanges": "It was sent before your changes, which are saved in Drafts.",
+  "composeScheduled": "Scheduled for {time}",
+  "@composeScheduled": {
+    "description": "Snack bar after scheduling a message.",
+    "placeholders": {"time": {"type": "String", "example": "Tomorrow at 08:00"}}
+  },
+  "composeSending": "Sending…",
+  "@composeSending": {"description": "Snack bar while a message waits out its undo time."},
+  "composeSent": "Sent",
+  "@composeSent": {"description": "Snack bar after a message was sent."},
+  "composeSendFailed": "Couldn’t send. Try again.",
+  "composeAlreadySent": "Already sent.",
+  "@composeAlreadySent": {"description": "Snack bar when Undo comes too late."},
+  "composeDiscardChanges": "Discard Changes",
+  "@composeDiscardChanges": {"description": "Closing a message from the Outbox: forget the edits."},
+  "composeSaveChanges": "Save Changes",
+  "@composeSaveChanges": {"description": "Closing a message from the Outbox: put it back with the edits."},
+  "composeDeleteDraft": "Delete Draft",
+  "composeSaveDraft": "Save Draft",
+  "composeDraftSaved": "Draft saved",
+  "composeAttribution": "On {date} at {time}, {name} wrote:",
+  "@composeAttribution": {
+    "description": "Line above the quoted original in a reply; it goes out with the message.",
+    "placeholders": {
+      "date": {"type": "String", "example": "4 October 2026"},
+      "time": {"type": "String", "example": "14:05"},
+      "name": {"type": "String", "example": "Alice"}
+    }
+  },
+  "composeAttributionUnknown": "On {date} at {time}, someone wrote:",
+  "@composeAttributionUnknown": {
+    "description": "Line above the quoted original in a reply, when the sender is unknown.",
+    "placeholders": {
+      "date": {"type": "String", "example": "4 October 2026"},
+      "time": {"type": "String", "example": "14:05"}
+    }
+  },
+  "composeForwardHeader": "---------- Forwarded message ----------",
+  "@composeForwardHeader": {"description": "First line of the forwarded original in a message. Keep the ten hyphens and the space on each side: Loupe finds the forwarded original by them."},
+  "composeForwardFrom": "From: {addresses}",
+  "@composeForwardFrom": {
+    "description": "In a forwarded message: the original's sender.",
+    "placeholders": {"addresses": {"type": "String", "example": "Alice <alice@example.com>"}}
+  },
+  "composeForwardDate": "Date: {date} at {time}",
+  "@composeForwardDate": {
+    "description": "In a forwarded message: when the original was sent.",
+    "placeholders": {
+      "date": {"type": "String", "example": "4 October 2026"},
+      "time": {"type": "String", "example": "14:05"}
+    }
+  },
+  "composeForwardSubject": "Subject: {subject}",
+  "@composeForwardSubject": {
+    "description": "In a forwarded message: the original's subject.",
+    "placeholders": {"subject": {"type": "String", "example": "Lunch"}}
+  },
+  "composeForwardTo": "To: {addresses}",
+  "@composeForwardTo": {
+    "description": "In a forwarded message: the original's recipients.",
+    "placeholders": {"addresses": {"type": "String", "example": "Bob <bob@example.com>"}}
+  },
+  "composeForwardCc": "Cc: {addresses}",
+  "@composeForwardCc": {
+    "description": "In a forwarded message: the original's copy recipients.",
+    "placeholders": {"addresses": {"type": "String", "example": "Carol <carol@example.com>"}}
+  },
+  "composeLaterToday": "Later Today",
+  "@composeLaterToday": {"description": "Send Later choice: today at 18:00."},
+  "composeTomorrowMorning": "Tomorrow Morning",
+  "@composeTomorrowMorning": {"description": "Send Later choice: tomorrow at 08:00."},
+  "composeMondayMorning": "Monday Morning",
+  "@composeMondayMorning": {"description": "Send Later choice: next Monday at 08:00."},
+  "composePickDateTime": "Pick Date & Time…",
+  "composeSendWithoutDelay": "Send Without Delay",
+  "@composeSendWithoutDelay": {"description": "In the Send Later sheet: drop the chosen time and send right away."},
+  "composeSendTimeToday": "Today at {time}",
+  "@composeSendTimeToday": {
+    "description": "When a waiting message goes out.",
+    "placeholders": {"time": {"type": "String", "example": "18:00"}}
+  },
+  "composeSendTimeTomorrow": "Tomorrow at {time}",
+  "@composeSendTimeTomorrow": {
+    "description": "When a waiting message goes out.",
+    "placeholders": {"time": {"type": "String", "example": "08:00"}}
+  },
+  "composeSendTimeDay": "{day} at {time}",
+  "@composeSendTimeDay": {
+    "description": "When a waiting message goes out: day is a weekday in the coming week, or a date.",
+    "placeholders": {
+      "day": {"type": "String", "example": "Monday"},
+      "time": {"type": "String", "example": "08:00"}
+    }
+  },
+  "composeSendTimeTodayShort": "Today {time}",
+  "@composeSendTimeTodayShort": {
+    "description": "When a waiting message goes out, short (on the Send button).",
+    "placeholders": {"time": {"type": "String", "example": "18:00"}}
+  },
+  "composeSendTimeTomorrowShort": "Tomorrow {time}",
+  "@composeSendTimeTomorrowShort": {
+    "description": "When a waiting message goes out, short (on the Send button).",
+    "placeholders": {"time": {"type": "String", "example": "08:00"}}
+  },
+  "composeSendTimeDayShort": "{day} {time}",
+  "@composeSendTimeDayShort": {
+    "description": "When a waiting message goes out, short (on the Send button): day is a short weekday or date.",
+    "placeholders": {
+      "day": {"type": "String", "example": "Mon"},
+      "time": {"type": "String", "example": "08:00"}
+    }
+  },
+  "composeRecoveryTitle": "Continue editing your draft?",
+  "@composeRecoveryTitle": {"description": "Asked at launch when a message was left unsent when Loupe closed."},
+  "composeRecoveryUntitled": "{recipients, select, none{A message wasn’t sent when Loupe closed.} one{A message to {name} wasn’t sent when Loupe closed.} other{A message to {name} and others wasn’t sent when Loupe closed.}}",
+  "@composeRecoveryUntitled": {
+    "description": "A message without a subject. recipients is none, one or other (several); name is the first recipient's.",
+    "placeholders": {
+      "recipients": {"type": "String", "example": "one"},
+      "name": {"type": "String", "example": "Bob"}
+    }
+  },
+  "composeRecoveryWithSubject": "{recipients, select, none{“{subject}” wasn’t sent when Loupe closed.} one{“{subject}” to {name} wasn’t sent when Loupe closed.} other{“{subject}” to {name} and others wasn’t sent when Loupe closed.}}",
+  "@composeRecoveryWithSubject": {
+    "description": "recipients is none, one or other (several); name is the first recipient's.",
+    "placeholders": {
+      "recipients": {"type": "String", "example": "other"},
+      "subject": {"type": "String", "example": "Lunch"},
+      "name": {"type": "String", "example": "Bob"}
+    }
+  },
+  "composeRecoveryContinue": "Continue Editing",
+  "composeRecoverySave": "Save to Drafts",
+  "composeRecoveryDiscard": "Discard",
+  "@composeRecoveryDiscard": {"description": "Delete the message left unsent."},
+  "composeRecoverySaved": "Saved to Drafts",
+
+  "outboxSectionFailed": "Not Sent",
+  "@outboxSectionFailed": {"description": "Outbox section heading (shown in capitals): messages that failed."},
+  "outboxSectionSending": "Sending",
+  "@outboxSectionSending": {"description": "Outbox section heading (shown in capitals): messages about to go."},
+  "outboxSectionScheduled": "Scheduled",
+  "@outboxSectionScheduled": {"description": "Outbox section heading (shown in capitals): messages sent later."},
+  "outboxStatusQueued": "Sending soon",
+  "@outboxStatusQueued": {"description": "Beside a message waiting out its undo time."},
+  "outboxStatusSending": "Sending…",
+  "@outboxStatusSending": {"description": "Beside a message being sent."},
+  "outboxStatusFailed": "Not sent",
+  "@outboxStatusFailed": {"description": "Beside a message that failed."},
+  "outboxNoRecipients": "No Recipients",
+  "outboxNoSubject": "(No Subject)",
+  "outboxSendingFailed": "Sending failed.",
+  "@outboxSendingFailed": {"description": "Under a failed message when the server gave no reason."},
+  "outboxEmptyTitle": "Nothing to Send",
+  "outboxEmptyText": "Messages you send later wait here until it’s time.",
+  "outboxSendNow": "Send Now",
+  "outboxReschedule": "Reschedule",
+  "@outboxReschedule": {"description": "Swipe action: pick a new send time."},
+  "outboxRescheduleMenu": "Reschedule…",
+  "@outboxRescheduleMenu": {"description": "Menu item: pick a new send time."},
+  "outboxRescheduleTitle": "Reschedule",
+  "@outboxRescheduleTitle": {"description": "Title of the sheet that picks a new send time."},
+  "outboxRescheduled": "Rescheduled for {time}",
+  "@outboxRescheduled": {"placeholders": {"time": {"type": "String", "example": "Tomorrow at 08:00"}}},
+  "outboxCancel": "Cancel",
+  "@outboxCancel": {"description": "Swipe action: stop sending the message."},
+  "outboxCancelSending": "Cancel Sending…",
+  "@outboxCancelSending": {"description": "Menu item: stop sending the message."},
+  "outboxCancelTitle": "Cancel Sending?",
+  "outboxMoveToDrafts": "Move to Drafts",
+  "outboxDiscard": "Discard Message",
+  "outboxMovedToDrafts": "Moved to Drafts",
+  "outboxDiscarded": "Message discarded",
+  "outboxAlreadySent": "Already sent.",
+  "@outboxAlreadySent": {"description": "The message went out before it could be taken out of the Outbox."},
+  "outboxBeingSent": "This message is being sent.",
+  "outboxActionFailed": "That didn’t work. The message is still in the Outbox.",
+
+  "notificationsBadgeInboxes": "Unread in Inboxes",
+  "@notificationsBadgeInboxes": {"description": "App icon badge choice: the number of unread messages in the inboxes."},
+  "notificationsBadgeVip": "Unread in VIP",
+  "@notificationsBadgeVip": {"description": "App icon badge choice: the number of unread messages from VIPs."},
+  "notificationsVipChannel": "VIP",
+  "@notificationsVipChannel": {"description": "Name of the notification channel for mail from VIPs, in the system's notification settings."},
+  "notificationsVipChannelDescription": "New mail from your VIPs, in any account",
+  "@notificationsVipChannelDescription": {"description": "Description of the VIP notification channel, in the system's notification settings."},
+  "notificationsAccountChannelDescription": "New mail in {email}",
+  "@notificationsAccountChannelDescription": {
+    "description": "Description of an account's notification channel, in the system's notification settings.",
+    "placeholders": {"email": {"type": "String", "example": "alice@example.com"}}
+  },
+  "notificationsUnknownSender": "Unknown Sender",
+  "notificationsNoSubject": "(No Subject)",
+  "notificationsEncryptedMessage": "Encrypted message",
+  "@notificationsEncryptedMessage": {"description": "In a new-mail notification, in place of an encrypted message's subject."},
+  "notificationsHiddenMessage": "New message from {account}",
+  "@notificationsHiddenMessage": {
+    "description": "A new-mail notification with Hide Content on: only the account's name in Loupe.",
+    "placeholders": {"account": {"type": "String", "example": "Work"}}
+  },
+  "notificationsNewMessages": "{count, plural, =1{1 new message} other{{count} new messages}}",
+  "@notificationsNewMessages": {
+    "description": "Title of an account's notification summary.",
+    "placeholders": {"count": {"type": "int", "example": "3"}}
+  },
+  "notificationsHiddenSummary": "New messages in {account}",
+  "@notificationsHiddenSummary": {
+    "description": "An account's notification summary with Hide Content on.",
+    "placeholders": {"account": {"type": "String", "example": "Work"}}
+  },
+
+  "platformInstantChannel": "Instant Delivery",
+  "@platformInstantChannel": {"description": "Name of the notification channel of Instant Delivery (new mail in seconds), in the system's notification settings."},
+  "platformInstantChannelDescription": "Shows while Loupe watches your inboxes for new mail",
+  "@platformInstantChannelDescription": {"description": "Description of the Instant Delivery notification channel."},
+  "platformInstantTitle": "Watching for new mail",
+  "@platformInstantTitle": {"description": "Title of the quiet notification that shows while Instant Delivery runs."},
+  "platformInstantText": "Instant Delivery is on",
+  "@platformInstantText": {"description": "Text of the quiet notification that shows while Instant Delivery runs."},
+  "platformErrorBox": "Something went wrong showing this. Go back and try again.",
+  "@platformErrorBox": {"description": "In place of a part of a screen that failed to show."},
+
   "welcomeTagline": "Mail that’s simple on the surface\nand powerful underneath.",
   "@welcomeTagline": {"description": "First launch, under the app name. Two short lines."},
   "welcomeAccountsTitle": "Every account, one calm inbox",

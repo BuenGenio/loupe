@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
+import '../../l10n/l10n.dart';
 import '../../platform/background.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
@@ -14,14 +15,19 @@ import '../conversation/sheets.dart';
 
 /// The quick choices of "Send Later".
 enum SendLaterPreset {
-  laterToday('Later Today', LoupeIcons.laterToday),
-  tomorrowMorning('Tomorrow Morning', LoupeIcons.tomorrowMorning),
-  mondayMorning('Monday Morning', LoupeIcons.mondayMorning);
+  laterToday(LoupeIcons.laterToday),
+  tomorrowMorning(LoupeIcons.tomorrowMorning),
+  mondayMorning(LoupeIcons.mondayMorning);
 
-  const SendLaterPreset(this.label, this.icon);
+  const SendLaterPreset(this.icon);
 
-  final String label;
   final IconData icon;
+
+  String label(AppLocalizations l10n) => switch (this) {
+    laterToday => l10n.composeLaterToday,
+    tomorrowMorning => l10n.composeTomorrowMorning,
+    mondayMorning => l10n.composeMondayMorning,
+  };
 }
 
 /// "Later Today" (18:00) is offered only before this hour.
@@ -68,6 +74,7 @@ String deviceDateLocale() {
 String formatSendTime(
   DateTime at, {
   required DateTime now,
+  required AppLocalizations l10n,
   String locale = 'en_US',
   bool use24h = false,
   bool compact = false,
@@ -77,12 +84,10 @@ String formatSendTime(
   final time = (use24h ? DateFormat.Hm(locale) : DateFormat.jm(locale)).format(a);
   // Calendar days apart; UTC dates so a daylight-saving change doesn't make a day 23 hours.
   final days = DateTime.utc(a.year, a.month, a.day).difference(DateTime.utc(n.year, n.month, n.day)).inDays;
+  if (days == 0) return compact ? l10n.composeSendTimeTodayShort(time) : l10n.composeSendTimeToday(time);
+  if (days == 1) return compact ? l10n.composeSendTimeTomorrowShort(time) : l10n.composeSendTimeTomorrow(time);
   final String day;
-  if (days == 0) {
-    day = 'Today';
-  } else if (days == 1) {
-    day = 'Tomorrow';
-  } else if (days > 1 && days < 7) {
+  if (days > 1 && days < 7) {
     day = (compact ? DateFormat.E(locale) : DateFormat.EEEE(locale)).format(a);
   } else if (a.year == n.year) {
     day = (compact ? DateFormat.MMMd(locale) : DateFormat.MMMEd(locale)).format(a);
@@ -91,14 +96,16 @@ String formatSendTime(
     if (compact) return DateFormat.yMMMd(locale).format(a);
     day = DateFormat.yMMMEd(locale).format(a);
   }
-  return compact ? '$day $time' : '$day at $time';
+  return compact ? l10n.composeSendTimeDayShort(day, time) : l10n.composeSendTimeDay(day, time);
 }
 
-/// [formatSendTime] with the device's locale and clock setting.
+/// [formatSendTime] with the app's language, and the device's locale and
+/// clock setting.
 String formatSendTimeFor(BuildContext context, DateTime at, {required DateTime now, bool compact = false}) =>
     formatSendTime(
       at,
       now: now,
+      l10n: context.l10n,
       locale: deviceDateLocale(),
       use24h: MediaQuery.alwaysUse24HourFormatOf(context),
       compact: compact,
@@ -129,11 +136,12 @@ typedef SendLaterChoice = ({DateTime? at});
 
 /// The Send Later sheet: the presets, "Pick Date & Time…" and, when a time
 /// is already set ([current]), "Send Without Delay". Null when dismissed.
+/// [title] is "Send Later" unless given.
 Future<SendLaterChoice?> showSendLaterSheet(
   BuildContext context, {
   required DateTime now,
   DateTime? current,
-  String title = 'Send Later',
+  String? title,
 }) => showLoupeSheet<SendLaterChoice>(
   context,
   builder: (context) => SafeArea(
@@ -143,12 +151,12 @@ Future<SendLaterChoice?> showSendLaterSheet(
         mainAxisSize: MainAxisSize.min,
         children: [
           SheetGroup(
-            header: title,
+            header: title ?? context.l10n.composeSendLater,
             children: [
               for (final (preset, at) in sendLaterPresets(now))
                 SheetRow(
                   key: ValueKey('send-later-${preset.name}'),
-                  label: preset.label,
+                  label: preset.label(context.l10n),
                   subtitle: formatSendTimeFor(context, at, now: now),
                   icon: preset.icon,
                   trailing: at == current ? Icon(LoupeIcons.check, color: Theme.of(context).colorScheme.primary) : null,
@@ -156,7 +164,7 @@ Future<SendLaterChoice?> showSendLaterSheet(
                 ),
               SheetRow(
                 key: const ValueKey('send-later-pick'),
-                label: 'Pick Date & Time…',
+                label: context.l10n.composePickDateTime,
                 icon: LoupeIcons.pickDateTime,
                 onTap: () async {
                   final picked = await showSendTimePicker(context, now: now, initial: current);
@@ -170,7 +178,7 @@ Future<SendLaterChoice?> showSendLaterSheet(
               children: [
                 SheetRow(
                   key: const ValueKey('send-later-clear'),
-                  label: 'Send Without Delay',
+                  label: context.l10n.composeSendWithoutDelay,
                   icon: LoupeIcons.sendNow,
                   onTap: () => Navigator.of(context).pop((at: null)),
                 ),
@@ -189,13 +197,9 @@ DateTime roundUpToMinutes(DateTime t, int minutes) {
 }
 
 /// A date and time wheel for "Pick Date & Time…", from a few minutes from
-/// now up to a year ahead, in 5-minute steps. Null when cancelled.
-Future<DateTime?> showSendTimePicker(
-  BuildContext context, {
-  required DateTime now,
-  DateTime? initial,
-  String title = 'Send Later',
-}) {
+/// now up to a year ahead, in 5-minute steps. Null when cancelled. [title]
+/// is "Send Later" unless given.
+Future<DateTime?> showSendTimePicker(BuildContext context, {required DateTime now, DateTime? initial, String? title}) {
   final earliest = roundUpToMinutes(now.toLocal().add(const Duration(minutes: 1)), 5);
   var picked = initial != null && !initial.isBefore(earliest)
       ? roundUpToMinutes(initial.toLocal(), 5)
@@ -206,6 +210,7 @@ Future<DateTime?> showSendTimePicker(
     backgroundColor: LoupeColors.of(context).groupedBackground,
     builder: (context) {
       final styles = LoupeTextStyles.of(context);
+      final l10n = context.l10n;
       return SafeArea(
         top: false,
         child: Column(
@@ -215,14 +220,14 @@ Future<DateTime?> showSendTimePicker(
               padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
               child: Row(
                 children: [
-                  CupertinoButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+                  CupertinoButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.commonCancel)),
                   Expanded(
-                    child: Text(title, style: styles.navTitle, textAlign: TextAlign.center),
+                    child: Text(title ?? l10n.composeSendLater, style: styles.navTitle, textAlign: TextAlign.center),
                   ),
                   CupertinoButton(
                     key: const ValueKey('send-later-done'),
                     onPressed: () => Navigator.of(context).pop(picked),
-                    child: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
+                    child: Text(l10n.commonDone, style: const TextStyle(fontWeight: FontWeight.w600)),
                   ),
                 ],
               ),

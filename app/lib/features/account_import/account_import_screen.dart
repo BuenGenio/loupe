@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/oauth.dart';
 import '../../data/repositories.dart';
+import '../../l10n/l10n.dart';
 import '../../router.dart';
 import '../../settings/app_mode.dart';
 import '../../shared/bars.dart';
@@ -18,11 +19,13 @@ import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../account_setup/oauth_accounts.dart' show oauthProviderName;
 import '../account_setup/server_settings.dart' show FormRow, NoteCard, confirmNoEncryption;
-import '../account_setup/setup_text.dart' show gmailAppPasswordHelp;
+import '../account_setup/setup_text.dart' show gmailAppPasswordHelp, secretLabel;
 import '../conversation/sheets.dart' show showSnack;
 import 'import_controller.dart';
+import 'import_mapping.dart';
 import 'qr_scanner.dart';
 import 'qr_sequence.dart';
+import 'thunderbird_qr.dart';
 
 /// Imports accounts from Thunderbird desktop's "Export for Mobile" QR codes:
 /// scan (or paste) every code, choose the accounts, add them one by one.
@@ -88,24 +91,28 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
     switch (feedback) {
       case null:
         return;
-      case ScanRejected(:final message):
+      case ScanRejected(:final problem):
+        final l10n = context.l10n;
         setState(() {
-          _note = message;
+          _note = switch (problem) {
+            TbQrProblem.notThunderbird => l10n.accountImportNotThunderbird,
+            TbQrProblem.newerVersion => l10n.accountImportNewerVersion,
+            TbQrProblem.damaged => l10n.accountImportDamaged,
+            TbQrProblem.tooLarge => l10n.accountImportTooLarge,
+          };
           _noteIsProblem = true;
         });
       case ScanAccepted(result: QrSequenceResult.duplicate):
         if (pasted) {
           setState(() {
-            _note = 'That code was already added.';
+            _note = context.l10n.accountImportDuplicateCode;
             _noteIsProblem = false;
           });
         }
       case ScanAccepted(:final result):
         unawaited(HapticFeedback.selectionClick());
         setState(() {
-          _note = result == QrSequenceResult.restarted
-              ? 'This code is from a new export, so the codes scanned before were set aside.'
-              : null;
+          _note = result == QrSequenceResult.restarted ? context.l10n.accountImportRestarted : null;
           _noteIsProblem = false;
         });
         if (_import.sequence.isComplete) unawaited(_review());
@@ -124,7 +131,7 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
       await ref.read(openAppSettingsProvider)();
     } on Object {
       _awaitingSettings = false;
-      if (mounted) showSnack(ScaffoldMessenger.of(context), 'Couldn’t open Settings.');
+      if (mounted) showSnack(ScaffoldMessenger.of(context), context.l10n.accountImportCouldNotOpenSettings);
     }
   }
 
@@ -179,12 +186,13 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
 
   Future<void> _open(String url) async {
     final messenger = ScaffoldMessenger.of(context);
+    final failed = context.l10n.accountSetupCouldNotOpenPage;
     try {
       if (!await launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView)) {
-        showSnack(messenger, "Couldn't open the page.");
+        showSnack(messenger, failed);
       }
     } on Exception {
-      showSnack(messenger, "Couldn't open the page.");
+      showSnack(messenger, failed);
     }
   }
 
@@ -207,7 +215,7 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
           bottomNavigationBar: _reviewing ? _reviewButtons(context) : null,
           body: CustomScrollView(
             slivers: [
-              const LoupeTitleBar(title: 'Import from Thunderbird'),
+              LoupeTitleBar(title: context.l10n.accountImportTitle),
               const SliverToBoxAdapter(child: SizedBox(height: 8)),
               ...(_reviewing ? _reviewStep(context) : _scanStep(context)),
               SliverToBoxAdapter(child: SizedBox(height: 24 + MediaQuery.paddingOf(context).bottom)),
@@ -221,6 +229,7 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
   List<Widget> _scanStep(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     final sequence = _import.sequence;
     final scanner = ref.watch(qrScannerProvider);
     final accounts = sequence.accounts.length;
@@ -255,20 +264,20 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
             children: [
               if (sequence.isEmpty)
                 Text(
-                  'Point the camera at the QR code Thunderbird shows.',
+                  l10n.accountImportPointCamera,
                   textAlign: TextAlign.center,
                   style: styles.body.copyWith(color: colors.secondaryText),
                 )
               else ...[
                 Text(
-                  'Scanned ${sequence.scanned} of ${sequence.total}',
+                  l10n.accountImportProgress(sequence.scanned, sequence.total),
                   key: const Key('import-progress'),
                   style: styles.body.copyWith(fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 8),
                 _PartDots(sequence: sequence),
                 const SizedBox(height: 6),
-                Text(accounts == 1 ? '1 account so far' : '$accounts accounts so far', style: styles.footnote),
+                Text(l10n.accountImportAccountsSoFar(accounts), style: styles.footnote),
               ],
             ],
           ),
@@ -283,14 +292,8 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
             child: Text(note),
           ),
         ),
-      const SliverToBoxAdapter(
-        child: NoteCard(
-          icon: LoupeIcons.qrCode,
-          child: Text(
-            'On your computer, open Thunderbird and choose Tools › Export for Mobile. Select your accounts, '
-            'then scan each code it shows. Codes can be scanned in any order.',
-          ),
-        ),
+      SliverToBoxAdapter(
+        child: NoteCard(icon: LoupeIcons.qrCode, child: Text(l10n.accountImportInstructions)),
       ),
       SliverToBoxAdapter(
         child: Padding(
@@ -305,20 +308,20 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
                     key: const Key('import-continue'),
                     style: _buttonStyle,
                     onPressed: _opening ? null : _review,
-                    child: Text(accounts == 1 ? 'Continue with 1 Account' : 'Continue with $accounts Accounts'),
+                    child: Text(l10n.accountImportContinueWith(accounts)),
                   ),
                 ),
               TextButton.icon(
                 key: const Key('import-paste'),
                 onPressed: _opening ? null : _paste,
                 icon: const Icon(LoupeIcons.paste, size: 20),
-                label: const Text('Paste Text Instead'),
+                label: Text(l10n.accountImportPasteInstead),
               ),
               if (!sequence.isEmpty)
                 TextButton(
                   key: const Key('import-start-over'),
                   onPressed: _opening ? null : _startOver,
-                  child: const Text('Start Over'),
+                  child: Text(l10n.accountImportStartOver),
                 ),
             ],
           ),
@@ -336,13 +339,11 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
   /// Shown in place of the camera when it can't run.
   Widget _problem(BuildContext context, ScannerProblem problem) {
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     final (title, text) = switch (problem) {
-      ScannerProblem.permissionDenied => (
-        'Camera Access Is Off',
-        'Allow Loupe to use the camera in Settings to scan the code, or paste the code’s text instead.',
-      ),
-      ScannerProblem.unavailable => ('No Camera', 'Loupe can’t use a camera here. Paste the code’s text instead.'),
-      ScannerProblem.failed => ('The Camera Didn’t Start', 'Try again, or paste the code’s text instead.'),
+      ScannerProblem.permissionDenied => (l10n.accountImportCameraOffTitle, l10n.accountImportCameraOffText),
+      ScannerProblem.unavailable => (l10n.accountImportNoCameraTitle, l10n.accountImportNoCameraText),
+      ScannerProblem.failed => (l10n.accountImportCameraFailedTitle, l10n.accountImportCameraFailedText),
     };
     const light = Color(0xFFEBEBF5);
     return ColoredBox(
@@ -373,12 +374,12 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
                   key: const Key('import-open-settings'),
                   sizeStyle: CupertinoButtonSize.small,
                   onPressed: _openSettings,
-                  child: const Text('Open Settings'),
+                  child: Text(l10n.accountImportOpenSettings),
                 ),
                 ScannerProblem.failed => CupertinoButton.tinted(
                   sizeStyle: CupertinoButtonSize.small,
                   onPressed: _restartCamera,
-                  child: const Text('Try Again'),
+                  child: Text(l10n.commonTryAgain),
                 ),
                 ScannerProblem.unavailable => const SizedBox.shrink(),
               },
@@ -392,6 +393,7 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
   List<Widget> _reviewStep(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     final rows = _import.rows;
     final sequence = _import.sequence;
     final missing = sequence.missing;
@@ -402,20 +404,10 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
           padding: const EdgeInsets.fromLTRB(32, 0, 32, 16),
           child: Column(
             children: [
-              Text(
-                rows.isEmpty
-                    ? 'No Accounts Found'
-                    : rows.length == 1
-                    ? 'Found 1 Account'
-                    : 'Found ${rows.length} Accounts',
-                style: styles.navTitle,
-                textAlign: TextAlign.center,
-              ),
+              Text(l10n.accountImportFound(rows.length), style: styles.navTitle, textAlign: TextAlign.center),
               const SizedBox(height: 4),
               Text(
-                rows.isEmpty
-                    ? 'None of the accounts in these codes could be read.'
-                    : 'Choose the accounts to add to Loupe.',
+                rows.isEmpty ? l10n.accountImportNoneReadable : l10n.accountImportChoose,
                 style: styles.body.copyWith(color: colors.secondaryText),
                 textAlign: TextAlign.center,
               ),
@@ -433,13 +425,10 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
                 TextButton(
                   key: const Key('import-scan-more'),
                   onPressed: _scanMore,
-                  child: const Text('Scan More Codes'),
+                  child: Text(l10n.accountImportScanMore),
                 ),
             ],
-            child: Text(
-              '${_codes(missing)} of ${sequence.total} ${missing.length == 1 ? 'wasn’t' : 'weren’t'} scanned, so '
-              '${missing.length == 1 ? 'its accounts aren’t' : 'their accounts aren’t'} listed.',
-            ),
+            child: Text(l10n.accountImportMissingCodes(missing.length, _codes(l10n, missing), sequence.total)),
           ),
         ),
       if (sequence.skipped > 0)
@@ -447,10 +436,7 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
           child: NoteCard(
             icon: LoupeIcons.warning,
             color: colors.flag,
-            child: Text(
-              '${sequence.skipped == 1 ? '1 account' : '${sequence.skipped} accounts'} in the codes couldn’t be read. '
-              'They may use settings from a newer Thunderbird.',
-            ),
+            child: Text(l10n.accountImportSkipped(sequence.skipped)),
           ),
         ),
       for (final (i, row) in rows.indexed) SliverToBoxAdapter(child: _accountCard(context, i, row)),
@@ -463,20 +449,30 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
                 _startOver();
                 _scanMore();
               },
-              child: const Text('Scan Again'),
+              child: Text(l10n.accountImportScanAgain),
             ),
           ),
         ),
     ];
   }
 
-  static String _codes(List<int> parts) => parts.length == 1
-      ? 'Code ${parts.single}'
-      : 'Codes ${parts.sublist(0, parts.length - 1).join(', ')} and ${parts.last}';
+  /// The numbers of [parts]: "2", "1 and 3", "1, 2 and 4".
+  static String _codes(AppLocalizations l10n, List<int> parts) => parts.length == 1
+      ? '${parts.single}'
+      : l10n.accountImportCodeList(parts.sublist(0, parts.length - 1).join(', '), '${parts.last}');
+
+  static String _blockText(AppLocalizations l10n, ImportBlock block) => switch (block) {
+    ImportBlock.pop3 => l10n.accountImportPop3,
+    ImportBlock.kerberos => l10n.accountImportKerberos,
+    ImportBlock.ntlm => l10n.accountImportNtlm,
+    ImportBlock.clientCertificate => l10n.accountImportClientCertificate,
+    ImportBlock.microsoftSignIn => l10n.accountImportMicrosoftSignIn,
+  };
 
   Widget _accountCard(BuildContext context, int index, ImportRow row) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     final c = row.candidate;
     final busy = _import.busy;
     final Widget leading = switch (row.status) {
@@ -507,51 +503,39 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
     );
     final details = <Widget>[
       if (c.block case final block?)
-        note(LoupeIcons.info, block.message)
+        note(LoupeIcons.info, _blockText(l10n, block))
       else if (row.status != ImportStatus.added) ...[
-        if (row.alreadyAdded) note(LoupeIcons.info, 'An account with this address is already in Loupe.'),
+        if (row.alreadyAdded) note(LoupeIcons.info, l10n.accountImportAlreadyAdded),
         if (row.signsIn)
           note(
             LoupeIcons.info,
-            'You’ll sign in with ${oauthProviderName(c.provider)} when it’s added, as in Thunderbird.',
+            l10n.accountImportSignsInWith(oauthProviderName(c.provider)),
             actions: [
               if (c.provider == ProviderKind.gmail)
                 TextButton(
                   key: ValueKey('import-app-password-$index'),
                   onPressed: busy ? null : () => _import.useAppPassword(row),
-                  child: const Text('Use an App Password Instead'),
+                  child: Text(l10n.accountSetupUseAppPasswordInstead),
                 ),
             ],
           )
         else if (c.usesOAuth && c.provider == ProviderKind.gmail)
           note(
             LoupeIcons.info,
-            c.canSignIn
-                ? 'Add the account with an app password (it needs 2-Step Verification).'
-                : 'Thunderbird signs in to Gmail with Google. “Sign in with Google” arrives in a later build; until '
-                      'then, add the account with an app password (it needs 2-Step Verification).',
+            c.canSignIn ? l10n.accountImportGmailAppPassword : l10n.accountImportGmailNoSignIn,
             actions: [
               TextButton(
                 onPressed: () => _open(gmailAppPasswordHelp),
-                child: const Text('How to Create an App Password'),
+                child: Text(l10n.accountSetupHowToCreateAppPassword),
               ),
             ],
           )
         else if (c.usesOAuth)
-          note(
-            LoupeIcons.info,
-            'Thunderbird signs in to this account in the browser. Loupe can’t do that yet: use an app password if '
-            'your provider offers one.',
-          ),
-        if (c.unencrypted)
-          note(
-            LoupeIcons.warning,
-            'Connects without encryption. Use this only on your own network.',
-            color: colors.flag,
-          ),
+          note(LoupeIcons.info, l10n.accountImportBrowserSignIn),
+        if (c.unencrypted) note(LoupeIcons.warning, l10n.accountImportUnencrypted, color: colors.flag),
         if (row.selected && row.asksPassword)
           FormRow(
-            label: c.passwordLabel,
+            label: secretLabel(l10n, c.secretKind),
             child: TextField(
               key: ValueKey('import-password-$index'),
               controller: row.password,
@@ -561,14 +545,14 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
               enableSuggestions: false,
               autofillHints: const [AutofillHints.password],
               decoration: InputDecoration.collapsed(
-                hintText: c.includedPassword == null ? 'Required' : 'Enter it again',
+                hintText: c.includedPassword == null ? l10n.accountSetupPasswordRequired : l10n.accountImportEnterAgain,
               ),
             ),
           ),
-        if (row.error case final error?)
+        if (row.failure != null)
           note(
             LoupeIcons.error,
-            error,
+            describeImportFailure(l10n, row),
             color: colors.destructive,
             actions: [
               if (row.fingerprint case final fp?) ...[
@@ -576,7 +560,7 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
                 TextButton(
                   key: ValueKey('import-trust-$index'),
                   onPressed: busy ? null : () => _import.trustCertificate(row),
-                  child: const Text('Trust This Certificate'),
+                  child: Text(l10n.accountSetupTrustCertificate),
                 ),
               ],
             ],
@@ -595,7 +579,7 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
             leading: leading,
             title: c.email,
             subtitle: '${c.name} · ${c.incoming.host}',
-            detail: row.status == ImportStatus.added ? 'Added' : null,
+            detail: row.status == ImportStatus.added ? l10n.accountImportAdded : null,
             // Accounts that can't be added are greyed out; their note says why.
             enabled: c.canImport,
             chevron: false,
@@ -608,16 +592,17 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
   }
 
   Widget? _reviewButtons(BuildContext context) {
+    final l10n = context.l10n;
     final busy = _import.busy;
     final pending = _import.selected.length;
     final added = _import.anyAdded;
     final (label, key, onTap) = busy
-        ? ('Adding ${_import.addingIndex} of ${_import.addingTotal}…', 'import-add', null)
+        ? (l10n.accountImportAdding(_import.addingIndex, _import.addingTotal), 'import-add', null)
         : pending > 0
-        ? (pending == 1 ? 'Add 1 Account' : 'Add $pending Accounts', 'import-add', _add)
+        ? (l10n.accountImportAddAccounts(pending), 'import-add', _add)
         : added
-        ? ('Done', 'import-done', _finish)
-        : ('Add Accounts', 'import-add', null);
+        ? (l10n.commonDone, 'import-done', _finish)
+        : (l10n.accountImportAddAccounts(0), 'import-add', null);
     return SafeArea(
       top: false,
       child: Padding(
@@ -642,7 +627,7 @@ class _AccountImportScreenState extends ConsumerState<AccountImportScreen> with 
                   : Text(label),
             ),
             if (!busy && added && pending > 0)
-              TextButton(key: const Key('import-finish'), onPressed: _finish, child: const Text('Done')),
+              TextButton(key: const Key('import-finish'), onPressed: _finish, child: Text(l10n.commonDone)),
           ],
         ),
       ),
@@ -661,7 +646,7 @@ class _PartDots extends StatelessWidget {
     final colors = LoupeColors.of(context);
     if (sequence.total > 12) return const SizedBox.shrink();
     return Semantics(
-      label: 'Scanned ${sequence.scanned} of ${sequence.total} codes',
+      label: context.l10n.accountImportProgressLabel(sequence.scanned, sequence.total),
       excludeSemantics: true,
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -707,16 +692,13 @@ class _PasteDialogState extends State<_PasteDialog> {
 
   @override
   Widget build(BuildContext context) => CupertinoAlertDialog(
-    title: const Text('Paste Export Text'),
+    title: Text(context.l10n.accountImportPasteTitle),
     content: Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: Text('Paste the text of a Thunderbird export code, one code per line.'),
-          ),
+          Padding(padding: const EdgeInsets.only(bottom: 10), child: Text(context.l10n.accountImportPasteText)),
           CupertinoTextField(
             key: const Key('import-paste-field'),
             controller: _text,
@@ -733,12 +715,12 @@ class _PasteDialogState extends State<_PasteDialog> {
       ),
     ),
     actions: [
-      CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+      CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: Text(context.l10n.commonCancel)),
       CupertinoDialogAction(
         key: const Key('import-paste-add'),
         isDefaultAction: true,
         onPressed: () => Navigator.of(context).pop(_text.text),
-        child: const Text('Add'),
+        child: Text(context.l10n.commonAdd),
       ),
     ],
   );
