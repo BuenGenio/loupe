@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The languages Loupe speaks, for Android 13's per-app language setting: one per
+     lib/l10n/app_<lang>.arb (test/l10n/translations_test.dart checks it). -->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="en" />
+</locale-config>
