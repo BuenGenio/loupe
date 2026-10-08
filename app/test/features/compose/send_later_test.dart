@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:loupe/features/compose/send_later.dart';
+import 'package:loupe/l10n/l10n.dart';
 
 // Times are wall-clock times in the device's zone. Run this file with, e.g.,
 // TZ=Europe/Berlin or TZ=America/New_York to exercise daylight-saving days.
@@ -89,9 +90,11 @@ void main() {
 
   group('formatSendTime', () {
     final now = DateTime(2026, 10, 7, 9, 30);
+    final en = lookupAppLocalizations(const Locale('en'));
 
     test('today, tomorrow, weekdays and dates, 24-hour', () {
-      String f(DateTime at, {bool compact = false}) => formatSendTime(at, now: now, use24h: true, compact: compact);
+      String f(DateTime at, {bool compact = false}) =>
+          formatSendTime(at, now: now, l10n: en, use24h: true, compact: compact);
       expect(f(DateTime(2026, 10, 7, 18)), 'Today at 18:00');
       expect(f(DateTime(2026, 10, 8, 8)), 'Tomorrow at 08:00');
       expect(f(DateTime(2026, 10, 12, 8)), 'Monday at 08:00');
@@ -105,19 +108,25 @@ void main() {
 
     test("12-hour clock and other locales' formats", () {
       String plain(String s) => s.replaceAll(' ', ' ');
-      expect(plain(formatSendTime(DateTime(2026, 10, 7, 18), now: now)), 'Today at 6:00 PM');
-      expect(formatSendTime(DateTime(2026, 10, 7, 18), now: now, locale: 'de'), 'Today at 18:00');
-      expect(formatSendTime(DateTime(2026, 10, 20, 8), now: now, locale: 'de', compact: true), '20. Okt. 08:00');
-      expect(formatSendTime(DateTime(2026, 10, 12, 8), now: now, locale: 'fr', use24h: true), 'lundi at 08:00');
+      expect(plain(formatSendTime(DateTime(2026, 10, 7, 18), now: now, l10n: en)), 'Today at 6:00 PM');
+      expect(formatSendTime(DateTime(2026, 10, 7, 18), now: now, l10n: en, locale: 'de'), 'Today at 18:00');
+      expect(
+        formatSendTime(DateTime(2026, 10, 20, 8), now: now, l10n: en, locale: 'de', compact: true),
+        '20. Okt. 08:00',
+      );
+      expect(
+        formatSendTime(DateTime(2026, 10, 12, 8), now: now, l10n: en, locale: 'fr', use24h: true),
+        'lundi at 08:00',
+      );
     });
 
     test('a day is a calendar day, even when daylight saving makes it 23 hours long', () {
       expect(
-        formatSendTime(DateTime(2026, 3, 29, 8), now: DateTime(2026, 3, 28, 20), use24h: true),
+        formatSendTime(DateTime(2026, 3, 29, 8), now: DateTime(2026, 3, 28, 20), l10n: en, use24h: true),
         'Tomorrow at 08:00',
       );
       expect(
-        formatSendTime(DateTime(2026, 10, 25, 23), now: DateTime(2026, 10, 25, 0, 30), use24h: true),
+        formatSendTime(DateTime(2026, 10, 25, 23), now: DateTime(2026, 10, 25, 0, 30), l10n: en, use24h: true),
         'Today at 23:00',
       );
     });

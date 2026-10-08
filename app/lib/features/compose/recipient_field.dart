@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/theme.dart';
 import '../conversation/sheets.dart';
 import 'compose_text.dart';
@@ -216,7 +217,7 @@ class _RecipientFieldState extends State<RecipientField> {
       context,
       title: a.name?.trim().isNotEmpty ?? false ? a.name : null,
       message: a.email,
-      actions: const [SheetAction('Remove', true, destructive: true)],
+      actions: [SheetAction(context.l10n.commonRemove, true, destructive: true)],
     );
     if (remove ?? false) widget.controller.remove(a);
   }
@@ -320,7 +321,7 @@ class _AddressChip extends StatelessWidget {
         child: Text(
           address.displayName,
           style: TextStyle(color: color, fontSize: 15),
-          semanticsLabel: valid ? address.email : 'Invalid address ${address.email}',
+          semanticsLabel: valid ? address.email : context.l10n.composeInvalidAddressLabel(address.email),
         ),
       ),
     );

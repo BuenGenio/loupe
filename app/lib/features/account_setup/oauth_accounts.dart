@@ -1,6 +1,8 @@
 import 'package:mail_model/mail_model.dart';
 import 'package:mail_platform/mail_platform.dart';
 
+import '../../l10n/l10n.dart';
+
 /// Accounts that sign in with Google or Microsoft (OAuth): their servers
 /// and the wording shared by account setup, the Thunderbird import and
 /// "Sign In Again".
@@ -28,42 +30,32 @@ import 'package:mail_platform/mail_platform.dart';
 String oauthProviderName(ProviderKind provider) => OAuthSignIn.providerName(provider);
 
 /// "Sign in with Google", "Sign in with Microsoft".
-String oauthButtonLabel(ProviderKind provider) => 'Sign in with ${oauthProviderName(provider)}';
+String oauthButtonLabel(AppLocalizations l10n, ProviderKind provider) =>
+    l10n.accountSetupSignInWith(oauthProviderName(provider));
 
 /// A short message for a failed OAuth sign-in, or for a server that refused
 /// the tokens afterwards.
-String describeOAuthError(MailException e, ProviderKind provider) {
+String describeOAuthError(AppLocalizations l10n, MailException e, ProviderKind provider) {
   final name = oauthProviderName(provider);
   if (e is OAuthSignInException) {
     return switch (e.failure) {
-      OAuthFailure.cancelled => 'Sign-in was cancelled. Tap “${oauthButtonLabel(provider)}” to try again.',
+      OAuthFailure.cancelled => l10n.accountSetupOAuthCancelled(name),
       OAuthFailure.denied =>
-        provider == ProviderKind.gmail
-            ? 'Loupe needs permission to read and send your Gmail. Sign in again and allow access, '
-                  'with the Gmail box ticked.'
-            : 'Loupe needs permission to read and send your mail. Sign in again and accept the permissions.',
-      OAuthFailure.adminApproval =>
-        'Your organisation must approve Loupe before you can use it with this account. Ask your IT '
-            'administrator to grant admin consent for Loupe in Microsoft Entra ID, then try again.',
-      OAuthFailure.blockedByPolicy =>
-        'Your organisation’s sign-in rules don’t allow Loupe on this device. Ask your IT administrator.',
-      OAuthFailure.network => 'Couldn’t reach $name. Check your internet connection and try again.',
-      OAuthFailure.misconfigured =>
-        'Sign-in with $name isn’t set up correctly in this version of Loupe. Please report this.',
-      OAuthFailure.other => 'Sign-in with $name didn’t work. Try again.',
+        provider == ProviderKind.gmail ? l10n.accountSetupOAuthDeniedGmail : l10n.accountSetupOAuthDenied,
+      OAuthFailure.adminApproval => l10n.accountSetupOAuthAdminApproval,
+      OAuthFailure.blockedByPolicy => l10n.accountSetupOAuthBlocked,
+      OAuthFailure.network => l10n.accountSetupOAuthNetwork(name),
+      OAuthFailure.misconfigured => l10n.accountSetupOAuthMisconfigured(name),
+      OAuthFailure.other => l10n.accountSetupOAuthFailed(name),
     };
   }
   return switch (e.kind) {
     // The browser sign-in worked, the mail server refused the tokens: most
     // often another account was picked in the browser.
     MailErrorKind.authentication =>
-      provider == ProviderKind.gmail
-          ? '$name signed you in, but Gmail refused access for this address. Choose the same account when '
-                'signing in. Work or school accounts may have IMAP turned off by their administrator.'
-          : '$name signed you in, but the mail server refused access for this address. Choose the same '
-                'account when signing in. Work or school accounts may have IMAP turned off by their administrator.',
-    MailErrorKind.connection => "Can't reach the mail server. Check your connection and try again.",
-    MailErrorKind.certificate => "The server's certificate isn't trusted. ${e.message}",
+      provider == ProviderKind.gmail ? l10n.accountSetupOAuthRefusedGmail(name) : l10n.accountSetupOAuthRefused(name),
+    MailErrorKind.connection => l10n.accountSetupOAuthServerUnreachable,
+    MailErrorKind.certificate => l10n.accountSetupCertificateUntrusted(e.message),
     _ => e.message,
   };
 }

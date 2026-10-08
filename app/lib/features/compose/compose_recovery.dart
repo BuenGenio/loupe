@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/app_settings.dart';
@@ -177,17 +178,25 @@ Future<void> offerComposeRecovery(BuildContext context, WidgetRef ref) async {
   final record = store.read();
   if (record == null || ComposeSessions.isOpen(record.session)) return;
   store._offered = true;
+  final l10n = context.l10n;
   final m = record.message;
   final subject = m.subject.trim();
-  final to = m.to.isEmpty ? '' : ' to ${m.to.first.displayName}${m.to.length > 1 ? ' and others' : ''}';
+  final recipients = switch (m.to.length) {
+    0 => 'none',
+    1 => 'one',
+    _ => 'other',
+  };
+  final name = m.to.firstOrNull?.displayName ?? '';
   final choice = await showActionSheet<_Recovery>(
     context,
-    title: 'Continue editing your draft?',
-    message: '${subject.isEmpty ? 'A message' : '“$subject”'}$to wasn’t sent when Loupe closed.',
-    actions: const [
-      SheetAction('Continue Editing', _Recovery.resume, icon: LoupeIcons.edit, isDefault: true),
-      SheetAction('Save to Drafts', _Recovery.save, icon: LoupeIcons.drafts),
-      SheetAction('Discard', _Recovery.discard, icon: LoupeIcons.trash, destructive: true),
+    title: l10n.composeRecoveryTitle,
+    message: subject.isEmpty
+        ? l10n.composeRecoveryUntitled(recipients, name)
+        : l10n.composeRecoveryWithSubject(recipients, subject, name),
+    actions: [
+      SheetAction(l10n.composeRecoveryContinue, _Recovery.resume, icon: LoupeIcons.edit, isDefault: true),
+      SheetAction(l10n.composeRecoverySave, _Recovery.save, icon: LoupeIcons.drafts),
+      SheetAction(l10n.composeRecoveryDiscard, _Recovery.discard, icon: LoupeIcons.trash, destructive: true),
     ],
   );
   if (choice == null || !context.mounted) return;
@@ -208,7 +217,7 @@ Future<void> offerComposeRecovery(BuildContext context, WidgetRef ref) async {
       case _Recovery.save:
         await repo.saveDraft(m);
         await store.clear(session: record.session);
-        showSnack(messenger, 'Saved to Drafts');
+        showSnack(messenger, l10n.composeRecoverySaved);
       case _Recovery.discard:
         if (m.draftId case final id?) {
           try {

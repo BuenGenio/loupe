@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/theme.dart';
 import '../conversation/sheets.dart';
 
@@ -78,12 +79,13 @@ class ServerSettingsController {
 }
 
 /// A short, readable line for a server: "imap.example.com:993 · TLS".
-String describeServer(ServerConfig c) => '${c.host}:${c.port} · ${securityLabel(c.security)}';
+String describeServer(AppLocalizations l10n, ServerConfig c) =>
+    '${c.host}:${c.port} · ${securityLabel(l10n, c.security)}';
 
-String securityLabel(ConnectionSecurity s) => switch (s) {
+String securityLabel(AppLocalizations l10n, ConnectionSecurity s) => switch (s) {
   ConnectionSecurity.tls => 'TLS',
   ConnectionSecurity.startTls => 'STARTTLS',
-  ConnectionSecurity.none => 'None',
+  ConnectionSecurity.none => l10n.accountSetupSecurityNone,
 };
 
 /// The manual form for one server: host, port, security and username;
@@ -122,6 +124,7 @@ class _ServerSettingsFormState extends State<ServerSettingsForm> {
     final key = _c.protocol.name;
     final jmap = _c.protocol == ServerProtocol.jmap;
     final onProtocol = widget.onProtocol;
+    final l10n = context.l10n;
     return SheetGroup(
       header: widget.title,
       children: [
@@ -130,7 +133,7 @@ class _ServerSettingsFormState extends State<ServerSettingsForm> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Row(
               children: [
-                SizedBox(width: 96, child: Text('Protocol', style: _labelStyle(context))),
+                SizedBox(width: 96, child: Text(l10n.accountSetupProtocol, style: _labelStyle(context))),
                 Expanded(
                   child: CupertinoSlidingSegmentedControl<ServerProtocol>(
                     key: const ValueKey('setup-protocol'),
@@ -154,7 +157,7 @@ class _ServerSettingsFormState extends State<ServerSettingsForm> {
             ),
           ),
         FormRow(
-          label: 'Server',
+          label: l10n.commonServer,
           child: TextField(
             key: ValueKey('$key-host'),
             controller: _c.host,
@@ -165,7 +168,7 @@ class _ServerSettingsFormState extends State<ServerSettingsForm> {
           ),
         ),
         FormRow(
-          label: 'Port',
+          label: l10n.accountSetupPort,
           child: TextField(
             key: ValueKey('$key-port'),
             controller: _c.port,
@@ -180,7 +183,7 @@ class _ServerSettingsFormState extends State<ServerSettingsForm> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Row(
             children: [
-              SizedBox(width: 96, child: Text('Security', style: _labelStyle(context))),
+              SizedBox(width: 96, child: Text(l10n.accountSetupSecurity, style: _labelStyle(context))),
               Expanded(
                 child: CupertinoSlidingSegmentedControl<ConnectionSecurity>(
                   key: ValueKey('$key-security'),
@@ -192,7 +195,7 @@ class _ServerSettingsFormState extends State<ServerSettingsForm> {
                       if (!jmap || s != ConnectionSecurity.startTls)
                         s: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 6),
-                          child: Text(securityLabel(s), style: const TextStyle(fontSize: 13)),
+                          child: Text(securityLabel(l10n, s), style: const TextStyle(fontSize: 13)),
                         ),
                   },
                 ),
@@ -201,14 +204,14 @@ class _ServerSettingsFormState extends State<ServerSettingsForm> {
           ),
         ),
         FormRow(
-          label: 'Username',
+          label: l10n.accountSetupUsername,
           child: TextField(
             key: ValueKey('$key-username'),
             controller: _c.username,
             enabled: widget.enabled,
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration.collapsed(hintText: 'Your email address'),
+            decoration: InputDecoration.collapsed(hintText: l10n.accountSetupUsernameHint),
           ),
         ),
       ],
@@ -250,21 +253,18 @@ Future<bool> confirmNoEncryption(BuildContext context) async =>
     await showCupertinoDialog<bool>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        title: const Text('Connect Without Encryption?'),
-        content: const Text(
-          'Your password and every message would travel as plain text. Anyone on the network, such as '
-          'public Wi-Fi, could read them. Only use this for a server on your own network.',
-        ),
+        title: Text(context.l10n.accountSetupNoEncryptionTitle),
+        content: Text(context.l10n.accountSetupNoEncryptionText),
         actions: [
           CupertinoDialogAction(
             isDefaultAction: true,
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.commonCancel),
           ),
           CupertinoDialogAction(
             isDestructiveAction: true,
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Use Without Encryption'),
+            child: Text(context.l10n.accountSetupUseWithoutEncryption),
           ),
         ],
       ),

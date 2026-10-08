@@ -1,10 +1,17 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/account_import/import_controller.dart';
 import 'package:loupe/features/account_import/qr_sequence.dart';
+import 'package:loupe/features/account_import/thunderbird_qr.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../conversation/fake_mail_repository.dart';
 import 'tb_payloads.dart';
+
+/// What the row says about its failure, in English.
+String? errorOf(ImportRow row) =>
+    row.failure == null ? null : describeImportFailure(lookupAppLocalizations(const Locale('en')), row);
 
 void main() {
   late FakeMailRepository repo;
@@ -34,7 +41,7 @@ void main() {
     expect(controller.addPayload(code(part: 1, total: 2)), isA<ScanAccepted>());
     expect((controller.addPayload(code(part: 1, total: 2))! as ScanAccepted).result, QrSequenceResult.duplicate);
     final rejected = controller.addPayload('https://example.com');
-    expect((rejected! as ScanRejected).message, contains("isn't a Thunderbird"));
+    expect((rejected! as ScanRejected).problem, TbQrProblem.notThunderbird);
     // The camera keeps seeing the same code: say it once.
     expect(controller.addPayload('https://example.com'), isNull);
     expect(controller.sequence.scanned, 1);
@@ -128,7 +135,7 @@ void main() {
     expect(row.asksPassword, isTrue);
     await controller.importSelected();
     expect(repo.setups, isEmpty);
-    expect(row.error, 'Enter the password.');
+    expect(errorOf(row), 'Enter the password.');
 
     row.password.text = 'typed';
     await controller.importSelected();
@@ -151,12 +158,12 @@ void main() {
     expect(row.asksPassword, isFalse);
     await controller.importSelected();
     expect(row.status, ImportStatus.failed);
-    expect(row.error, startsWith('Password rejected'));
+    expect(errorOf(row), startsWith('Password rejected'));
     expect(row.asksPassword, isTrue);
 
     row.password.text = 'better';
     await controller.importSelected();
-    expect(row.error, startsWith("Can't reach server"));
+    expect(errorOf(row), startsWith("Can't reach server"));
     await controller.importSelected();
     expect(row.status, ImportStatus.added);
     expect((repo.setups.last.credentials as PasswordCredentials).password, 'better');
@@ -191,7 +198,7 @@ void main() {
     await controller.importSelected();
     final [one, two] = controller.rows;
     expect(one.status, ImportStatus.failed);
-    expect(one.error, isNot(contains('secret')));
+    expect(errorOf(one), isNot(contains('secret')));
     expect(two.status, ImportStatus.added);
   });
 

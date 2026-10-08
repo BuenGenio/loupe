@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../shared/bars.dart';
@@ -34,6 +35,7 @@ class OutboxScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final items = ref.watch(outboxProvider).value ?? const <OutboxItem>[];
     final actions = OutboxActions(context, ref);
+    final l10n = context.l10n;
     final failed = [
       for (final i in items)
         if (i.status == OutboxStatus.failed) i,
@@ -49,11 +51,15 @@ class OutboxScreen extends ConsumerWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const LoupeTitleBar(title: 'Outbox'),
+          LoupeTitleBar(title: l10n.mailboxOutbox),
           if (items.isEmpty)
             const SliverFillRemaining(hasScrollBody: false, child: _Empty())
           else
-            for (final (title, list) in [('Not Sent', failed), ('Sending', sending), ('Scheduled', scheduled)])
+            for (final (title, list) in [
+              (l10n.outboxSectionFailed, failed),
+              (l10n.outboxSectionSending, sending),
+              (l10n.outboxSectionScheduled, scheduled),
+            ])
               if (list.isNotEmpty) ...[
                 SliverToBoxAdapter(child: _SectionHeader(title)),
                 SliverList.builder(itemCount: list.length, itemBuilder: (context, i) => actions.row(list[i])),
@@ -76,20 +82,21 @@ class OutboxActions {
 
   Future<void> _run(Future<void> Function(ScaffoldMessengerState messenger) action) async {
     final messenger = ScaffoldMessenger.of(context);
+    final failed = context.l10n.outboxActionFailed;
     try {
       await action(messenger);
     } on MailException catch (e) {
       showSnack(messenger, e.message);
     } on Object catch (e) {
       debugPrint('Outbox action failed: ${e.runtimeType}');
-      showSnack(messenger, 'That didn’t work. The message is still in the Outbox.');
+      showSnack(messenger, failed);
     }
   }
 
   /// Reopens compose; sending there replaces the waiting message.
   Future<void> edit(OutboxItem item) async {
     if (item.status == OutboxStatus.sending) {
-      showSnack(ScaffoldMessenger.of(context), 'This message is being sent.');
+      showSnack(ScaffoldMessenger.of(context), context.l10n.outboxBeingSent);
       return;
     }
     await context.push<void>(
@@ -147,7 +154,7 @@ class OutboxActions {
       context,
       now: clock.now(),
       current: scheduled ? item.sendAt : null,
-      title: 'Reschedule',
+      title: context.l10n.outboxRescheduleTitle,
     );
     if (choice == null || !context.mounted) return;
     final at = choice.at;
@@ -158,19 +165,20 @@ class OutboxActions {
       await _repo.rescheduleSend(item.id, at);
       wakeUpAt(ref, at);
       if (!context.mounted) return;
-      showSnack(messenger, 'Rescheduled for ${formatSendTimeFor(context, at, now: DateTime.now())}');
+      showSnack(messenger, context.l10n.outboxRescheduled(formatSendTimeFor(context, at, now: DateTime.now())));
     });
   }
 
   /// Takes the message out of the Outbox: back to Drafts, or discarded
   /// (with Undo, which queues it again).
   Future<void> cancel(OutboxItem item) async {
+    final l10n = context.l10n;
     final choice = await showActionSheet<bool>(
       context,
-      title: 'Cancel Sending?',
-      actions: const [
-        SheetAction('Move to Drafts', true, icon: LoupeIcons.drafts),
-        SheetAction('Discard Message', false, icon: LoupeIcons.trash, destructive: true),
+      title: l10n.outboxCancelTitle,
+      actions: [
+        SheetAction(l10n.outboxMoveToDrafts, true, icon: LoupeIcons.drafts),
+        SheetAction(l10n.outboxDiscard, false, icon: LoupeIcons.trash, destructive: true),
       ],
     );
     if (choice == null || !context.mounted) return;
@@ -187,15 +195,15 @@ class OutboxActions {
           } on Object {
             // Left in Drafts; harmless.
           }
-          showSnack(messenger, 'Already sent.');
+          showSnack(messenger, l10n.outboxAlreadySent);
           return;
         }
-        showSnack(messenger, 'Moved to Drafts');
+        showSnack(messenger, l10n.outboxMovedToDrafts);
         return;
       }
       final message = await repo.cancelSend(item.id);
       if (message == null) {
-        showSnack(messenger, 'Already sent.');
+        showSnack(messenger, l10n.outboxAlreadySent);
         return;
       }
       // Undo restores the schedule as it was; one that is overdue by then
@@ -203,9 +211,9 @@ class OutboxActions {
       final scheduled = item.status == OutboxStatus.scheduled;
       showSnack(
         messenger,
-        'Message discarded',
+        l10n.outboxDiscarded,
         action: SnackBarAction(
-          label: 'Undo',
+          label: l10n.commonUndo,
           onPressed: () async {
             try {
               await repo.send(message, sendAt: scheduled ? item.sendAt : null);
@@ -221,14 +229,19 @@ class OutboxActions {
   Future<void> showMenu(OutboxItem item) async {
     if (item.status == OutboxStatus.sending) return;
     final failed = item.status == OutboxStatus.failed;
+    final l10n = context.l10n;
     final choice = await showActionSheet<String>(
       context,
       title: item.message.subject.isEmpty ? null : item.message.subject,
       actions: [
-        SheetAction(failed ? 'Retry' : 'Send Now', 'send', icon: failed ? LoupeIcons.retry : LoupeIcons.sendNow),
-        const SheetAction('Reschedule…', 'reschedule', icon: LoupeIcons.reschedule),
-        const SheetAction('Edit', 'edit', icon: LoupeIcons.edit),
-        const SheetAction('Cancel Sending…', 'cancel', icon: LoupeIcons.cancelSend, destructive: true),
+        SheetAction(
+          failed ? l10n.commonRetry : l10n.outboxSendNow,
+          'send',
+          icon: failed ? LoupeIcons.retry : LoupeIcons.sendNow,
+        ),
+        SheetAction(l10n.outboxRescheduleMenu, 'reschedule', icon: LoupeIcons.reschedule),
+        SheetAction(l10n.commonEdit, 'edit', icon: LoupeIcons.edit),
+        SheetAction(l10n.outboxCancelSending, 'cancel', icon: LoupeIcons.cancelSend, destructive: true),
       ],
     );
     if (choice == null || !context.mounted) return;
@@ -246,6 +259,7 @@ class OutboxActions {
 
   Widget row(OutboxItem item) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final busy = item.status == OutboxStatus.sending;
     return SwipeActionRow(
       key: ValueKey(item.id),
@@ -253,7 +267,7 @@ class OutboxActions {
       leading: [
         SwipeActionSpec(
           icon: LoupeIcons.swipeSendNow,
-          label: item.status == OutboxStatus.failed ? 'Retry' : 'Send Now',
+          label: item.status == OutboxStatus.failed ? l10n.commonRetry : l10n.outboxSendNow,
           color: colors.swipeRead,
           onTriggered: () => sendNow(item),
         ),
@@ -261,13 +275,13 @@ class OutboxActions {
       trailing: [
         SwipeActionSpec(
           icon: LoupeIcons.swipeCancelSend,
-          label: 'Cancel',
+          label: l10n.outboxCancel,
           color: colors.swipeTrash,
           onTriggered: () => cancel(item),
         ),
         SwipeActionSpec(
           icon: LoupeIcons.swipeReschedule,
-          label: 'Reschedule',
+          label: l10n.outboxReschedule,
           color: colors.swipeFlag,
           onTriggered: () => reschedule(item),
         ),
@@ -312,6 +326,7 @@ class _OutboxRow extends StatelessWidget {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
     final metrics = LoupeMetrics.of(context);
+    final l10n = context.l10n;
     final m = item.message;
     final recipients = [
       for (final a in [...m.to, ...m.cc, ...m.bcc]) a.displayName,
@@ -319,9 +334,9 @@ class _OutboxRow extends StatelessWidget {
     final failed = item.status == OutboxStatus.failed;
     final when = switch (item.status) {
       OutboxStatus.scheduled => formatSendTimeFor(context, item.sendAt, now: DateTime.now(), compact: true),
-      OutboxStatus.queued => 'Sending soon',
-      OutboxStatus.sending => 'Sending…',
-      OutboxStatus.failed => 'Not sent',
+      OutboxStatus.queued => l10n.outboxStatusQueued,
+      OutboxStatus.sending => l10n.outboxStatusSending,
+      OutboxStatus.failed => l10n.outboxStatusFailed,
     };
     final preview = m.text.replaceAll(RegExp(r'\s+'), ' ').trim();
     final gutter = switch (item.status) {
@@ -362,7 +377,7 @@ class _OutboxRow extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  recipients.isEmpty ? 'No Recipients' : recipients.join(', '),
+                                  recipients.isEmpty ? l10n.outboxNoRecipients : recipients.join(', '),
                                   style: styles.sender,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -374,7 +389,7 @@ class _OutboxRow extends StatelessWidget {
                           ),
                           const SizedBox(height: 1),
                           Text(
-                            m.subject.isEmpty ? '(No Subject)' : m.subject,
+                            m.subject.isEmpty ? l10n.outboxNoSubject : m.subject,
                             style: styles.subject,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -383,7 +398,7 @@ class _OutboxRow extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: 2),
                               child: Text(
-                                item.error ?? 'Sending failed.',
+                                item.error ?? l10n.outboxSendingFailed,
                                 style: styles.preview.copyWith(color: colors.destructive),
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
@@ -396,7 +411,10 @@ class _OutboxRow extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 4),
                                 minimumSize: const Size(44, 32),
                                 onPressed: onRetry,
-                                child: const Text('Retry', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                                child: Text(
+                                  l10n.commonRetry,
+                                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                                ),
                               ),
                             ),
                           ] else if (preview.isNotEmpty)
@@ -438,13 +456,9 @@ class _Empty extends StatelessWidget {
         children: [
           Icon(LoupeIcons.outbox, size: 52, color: colors.tertiaryText),
           const SizedBox(height: 14),
-          Text('Nothing to Send', style: styles.sectionHeader.copyWith(color: colors.secondaryText)),
+          Text(context.l10n.outboxEmptyTitle, style: styles.sectionHeader.copyWith(color: colors.secondaryText)),
           const SizedBox(height: 6),
-          Text(
-            'Messages you send later wait here until it’s time.',
-            style: styles.footnote,
-            textAlign: TextAlign.center,
-          ),
+          Text(context.l10n.outboxEmptyText, style: styles.footnote, textAlign: TextAlign.center),
         ],
       ),
     );

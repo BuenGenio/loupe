@@ -13,6 +13,7 @@ import '../data/live.dart';
 import '../features/notifications/app_icon_badge.dart';
 import '../features/notifications/new_mail.dart';
 import '../features/notifications/new_mail_check.dart';
+import '../l10n/l10n.dart';
 import 'background_entry.dart';
 import 'foreground_bridge.dart';
 import 'instant_runner.dart';
@@ -75,12 +76,13 @@ final instantDeliveryAvailableProvider = Provider<bool>((ref) => false);
 final class ForegroundTaskInstantService implements InstantService {
   /// Sets the plugin up; call once in the main isolate.
   ForegroundTaskInstantService() {
+    final l10n = deviceL10n();
     FlutterForegroundTask.initCommunicationPort();
     FlutterForegroundTask.init(
       androidNotificationOptions: AndroidNotificationOptions(
         channelId: 'loupe.instant',
-        channelName: 'Instant Delivery',
-        channelDescription: 'Shows while Loupe watches your inboxes for new mail',
+        channelName: l10n.platformInstantChannel,
+        channelDescription: l10n.platformInstantChannelDescription,
         channelImportance: NotificationChannelImportance.LOW,
         priority: NotificationPriority.LOW,
         onlyAlertOnce: true,
@@ -110,11 +112,12 @@ final class ForegroundTaskInstantService implements InstantService {
   @override
   Future<bool> start() async {
     if (await isRunning()) return true;
+    final l10n = deviceL10n();
     final result = await FlutterForegroundTask.startService(
       serviceId: _serviceId,
       serviceTypes: [ForegroundServiceTypes.specialUse],
-      notificationTitle: 'Watching for new mail',
-      notificationText: 'Instant Delivery is on',
+      notificationTitle: l10n.platformInstantTitle,
+      notificationText: l10n.platformInstantText,
       notificationIcon: const NotificationIcon(metaDataName: _iconMetaData),
       callback: startInstantDelivery,
     );

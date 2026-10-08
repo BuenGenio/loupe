@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:mail_platform/mail_platform.dart';
 
+import '../../l10n/l10n.dart';
 import '../account_setup/oauth_accounts.dart';
 import '../account_setup/setup_text.dart';
 import 'import_mapping.dart';
@@ -19,11 +20,55 @@ final class ScanAccepted extends ScanFeedback {
 }
 
 final class ScanRejected extends ScanFeedback {
-  const ScanRejected(this.message);
-  final String message;
+  const ScanRejected(this.problem);
+  final TbQrProblem problem;
 }
 
 enum ImportStatus { pending, adding, added, failed }
+
+/// Why an account wasn't added; [describeImportFailure] puts it in words.
+sealed class ImportFailure {
+  const ImportFailure();
+}
+
+/// The account needs a password (or app password) and none was typed.
+final class ImportPasswordMissing extends ImportFailure {
+  const ImportPasswordMissing();
+}
+
+/// Loupe couldn't open its account storage.
+final class ImportStorageUnavailable extends ImportFailure {
+  const ImportStorageUnavailable();
+}
+
+/// The server, or the provider's sign-in ([signedIn]), refused.
+final class ImportRefused extends ImportFailure {
+  const ImportRefused(this.error, {required this.signedIn});
+  final MailException error;
+  final bool signedIn;
+}
+
+/// Anything else; its details could include settings, so they aren't shown.
+final class ImportFailedOtherwise extends ImportFailure {
+  const ImportFailedOtherwise();
+}
+
+/// What the row of [row] says about its [ImportRow.failure].
+String describeImportFailure(AppLocalizations l10n, ImportRow row) {
+  final provider = row.candidate.provider;
+  return switch (row.failure) {
+    null => '',
+    ImportPasswordMissing() => switch (row.candidate.secretKind) {
+      SecretKind.password => l10n.accountImportEnterPassword,
+      SecretKind.appPassword => l10n.accountImportEnterAppPassword,
+      SecretKind.apiToken => l10n.accountImportEnterApiToken,
+    },
+    ImportStorageUnavailable() => l10n.accountImportStorageFailed,
+    ImportRefused(:final error, signedIn: true) => describeOAuthError(l10n, error, provider),
+    ImportRefused(:final error) => describeSetupError(l10n, error, provider),
+    ImportFailedOtherwise() => l10n.accountImportFailed,
+  };
+}
 
 /// One account of the review list, with its selection, password and progress.
 final class ImportRow {
@@ -37,7 +82,7 @@ final class ImportRow {
   ImportStatus status = ImportStatus.pending;
 
   /// Shown under the account after a failed attempt.
-  String? error;
+  ImportFailure? failure;
 
   /// A certificate fingerprint offered for trust after a certificate error.
   String? fingerprint;
@@ -113,7 +158,7 @@ class AccountImportController extends ChangeNotifier {
     } on TbQrFormatException catch (e) {
       if (text == _lastRejected) return null;
       _lastRejected = text;
-      return ScanRejected(e.message);
+      return ScanRejected(e.problem);
     }
   }
 
@@ -175,7 +220,7 @@ class AccountImportController extends ChangeNotifier {
     row
       ..useAppPassword = true
       ..status = ImportStatus.pending
-      ..error = null;
+      ..failure = null;
     notifyListeners();
   }
 
@@ -193,7 +238,7 @@ class AccountImportController extends ChangeNotifier {
       if (row.asksPassword && row.password.text.isEmpty) {
         row
           ..status = ImportStatus.failed
-          ..error = 'Enter the ${row.candidate.passwordLabel.toLowerCase()}.';
+          ..failure = const ImportPasswordMissing();
         missing = true;
       }
     }
@@ -216,7 +261,7 @@ class AccountImportController extends ChangeNotifier {
         for (final row in rows) {
           row
             ..status = ImportStatus.failed
-            ..error = 'Loupe couldn’t open its account storage. Try again later.';
+            ..failure = const ImportStorageUnavailable();
         }
         return;
       }
@@ -236,7 +281,10 @@ class AccountImportController extends ChangeNotifier {
   Future<void> trustCertificate(ImportRow row) async {
     final fp = row.fingerprint;
     if (fp == null || _busy) return;
-    final message = row.error ?? '';
+    final message = switch (row.failure) {
+      ImportRefused(:final error) => error.message,
+      _ => '',
+    };
     final hosts = {row.candidate.incoming.host, row.candidate.outgoing.host};
     final named = hosts.where(message.contains);
     for (final host in named.isEmpty ? hosts : named) {
@@ -248,7 +296,7 @@ class AccountImportController extends ChangeNotifier {
   Future<void> _add(MailRepository repo, ImportRow row) async {
     row
       ..status = ImportStatus.adding
-      ..error = null
+      ..failure = null
       ..fingerprint = null;
     notifyListeners();
     final candidate = row.candidate;
@@ -288,14 +336,14 @@ class AccountImportController extends ChangeNotifier {
     } on MailException catch (e) {
       row
         ..status = ImportStatus.failed
-        ..error = signsIn ? describeOAuthError(e, candidate.provider) : describeSetupError(e, candidate.provider)
+        ..failure = ImportRefused(e, signedIn: signsIn)
         ..fingerprint = e.kind == MailErrorKind.certificate ? fingerprintIn(e.message) : null
         .._passwordRejected = row._passwordRejected || (!signsIn && e.kind == MailErrorKind.authentication);
     } on Object {
       // Not a mail error: say little, since details could include settings.
       row
         ..status = ImportStatus.failed
-        ..error = 'The account couldn’t be added. Try again, or add it manually.';
+        ..failure = const ImportFailedOtherwise();
     }
     notifyListeners();
   }

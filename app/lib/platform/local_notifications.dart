@@ -6,6 +6,7 @@ import 'package:mail_model/mail_model.dart';
 
 import '../features/notifications/mail_notifier.dart';
 import '../features/notifications/notification_content.dart';
+import '../l10n/l10n.dart';
 
 /// The small status bar icon (res/drawable*/ic_stat_loupe.png).
 const _icon = 'ic_stat_loupe';
@@ -20,36 +21,41 @@ const _withoutArchive = 'loupe.message.noArchive';
 
 /// Archive and Mark as Read run in the background, like on Android; Reply
 /// opens the app.
-DarwinNotificationAction _darwinAction(MailAction a) => DarwinNotificationAction.plain(
+DarwinNotificationAction _darwinAction(MailAction a, AppLocalizations l10n) => DarwinNotificationAction.plain(
   a.id,
-  a.label,
+  a.label(l10n),
   options: {if (a == MailAction.reply) DarwinNotificationActionOption.foreground},
 );
 
-final _settings = InitializationSettings(
-  android: const AndroidInitializationSettings(_icon),
-  // Asks nothing at start: [LocalMailNotifier.requestPermission] does, at
-  // the same moment as on Android.
-  iOS: DarwinInitializationSettings(
-    requestAlertPermission: false,
-    requestBadgePermission: false,
-    requestSoundPermission: false,
-    notificationCategories: [
-      DarwinNotificationCategory(
-        _withArchive,
-        actions: [
-          for (final a in [MailAction.archive, MailAction.markRead, MailAction.reply]) _darwinAction(a),
-        ],
-      ),
-      DarwinNotificationCategory(
-        _withoutArchive,
-        actions: [
-          for (final a in [MailAction.markRead, MailAction.reply]) _darwinAction(a),
-        ],
-      ),
-    ],
-  ),
-);
+/// The plugin's settings, with the buttons in the device's language (this
+/// runs in background isolates too, without a widget tree).
+InitializationSettings _settings() {
+  final l10n = deviceL10n();
+  return InitializationSettings(
+    android: const AndroidInitializationSettings(_icon),
+    // Asks nothing at start: [LocalMailNotifier.requestPermission] does, at
+    // the same moment as on Android.
+    iOS: DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+      notificationCategories: [
+        DarwinNotificationCategory(
+          _withArchive,
+          actions: [
+            for (final a in [MailAction.archive, MailAction.markRead, MailAction.reply]) _darwinAction(a, l10n),
+          ],
+        ),
+        DarwinNotificationCategory(
+          _withoutArchive,
+          actions: [
+            for (final a in [MailAction.markRead, MailAction.reply]) _darwinAction(a, l10n),
+          ],
+        ),
+      ],
+    ),
+  );
+}
 
 /// [MailNotifier] on Android and iOS, through flutter_local_notifications.
 final class LocalMailNotifier implements MailNotifier {
@@ -72,7 +78,7 @@ final class LocalMailNotifier implements MailNotifier {
   }) async {
     final plugin = FlutterLocalNotificationsPlugin();
     await plugin.initialize(
-      settings: _settings,
+      settings: _settings(),
       onDidReceiveNotificationResponse: (response) {
         final tap = tapOf(response);
         if (tap != null) onTap(tap);
@@ -90,7 +96,7 @@ final class LocalMailNotifier implements MailNotifier {
     required DidReceiveBackgroundNotificationResponseCallback onBackgroundAction,
   }) async {
     final plugin = FlutterLocalNotificationsPlugin();
-    await plugin.initialize(settings: _settings, onDidReceiveBackgroundNotificationResponse: onBackgroundAction);
+    await plugin.initialize(settings: _settings(), onDidReceiveBackgroundNotificationResponse: onBackgroundAction);
     return LocalMailNotifier._(plugin);
   }
 
@@ -125,10 +131,11 @@ final class LocalMailNotifier implements MailNotifier {
   Future<void> syncChannels(List<MailAccount> accounts) async {
     final android = _android;
     if (android == null) return;
+    final l10n = deviceL10n();
     final wanted = [MailChannel.vip, for (final a in accounts) MailChannel.account(a)];
     for (final c in wanted) {
       await android.createNotificationChannel(
-        AndroidNotificationChannel(c.id, c.name, description: c.description, importance: Importance.high),
+        AndroidNotificationChannel(c.id, c.name(l10n), description: c.description(l10n), importance: Importance.high),
       );
     }
     final ids = {for (final c in wanted) c.id};
@@ -142,6 +149,7 @@ final class LocalMailNotifier implements MailNotifier {
   @override
   Future<void> show(List<MailNotification> notifications) async {
     final ios = _ios != null;
+    final l10n = deviceL10n();
     for (final n in notifications) {
       // iOS groups an account's notifications itself (by thread) and sums
       // them up: no summary notification there.
@@ -151,7 +159,7 @@ final class LocalMailNotifier implements MailNotifier {
         title: n.title,
         // iOS has no expanded style; the body shows several lines anyway.
         body: ios ? n.expandedBody ?? n.body : n.body,
-        notificationDetails: NotificationDetails(android: _details(n), iOS: _darwinDetails(n)),
+        notificationDetails: NotificationDetails(android: _details(n, l10n), iOS: _darwinDetails(n)),
         payload: n.target?.encode(),
       );
     }
@@ -167,10 +175,10 @@ final class LocalMailNotifier implements MailNotifier {
         : _withoutArchive,
   );
 
-  static AndroidNotificationDetails _details(MailNotification n) => AndroidNotificationDetails(
+  static AndroidNotificationDetails _details(MailNotification n, AppLocalizations l10n) => AndroidNotificationDetails(
     n.channel.id,
-    n.channel.name,
-    channelDescription: n.channel.description,
+    n.channel.name(l10n),
+    channelDescription: n.channel.description(l10n),
     importance: Importance.high,
     priority: Priority.high,
     category: AndroidNotificationCategory.email,
@@ -194,7 +202,7 @@ final class LocalMailNotifier implements MailNotifier {
       for (final a in n.actions)
         AndroidNotificationAction(
           a.id,
-          a.label,
+          a.label(l10n),
           titleColor: _accent,
           // Reply opens the app; the others run in the background.
           showsUserInterface: a == MailAction.reply,

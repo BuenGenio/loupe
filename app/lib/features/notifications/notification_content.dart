@@ -3,20 +3,26 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import 'new_mail.dart';
 import 'notification_settings.dart';
 
 /// The buttons on a new-mail notification.
 enum MailAction {
-  archive('archive', 'Archive'),
-  markRead('read', 'Mark as Read'),
-  reply('reply', 'Reply');
+  archive('archive'),
+  markRead('read'),
+  reply('reply');
 
-  const MailAction(this.id, this.label);
+  const MailAction(this.id);
 
   /// The platform action id.
   final String id;
-  final String label;
+
+  String label(AppLocalizations l10n) => switch (this) {
+    archive => l10n.mailArchive,
+    markRead => l10n.mailMarkAsRead,
+    reply => l10n.mailReply,
+  };
 
   static MailAction? byId(String? id) => values.where((a) => a.id == id).firstOrNull;
 }
@@ -82,25 +88,35 @@ final class AccountTarget extends NotificationTarget {
 /// each can have its own sound or be turned off in system settings.
 @immutable
 final class MailChannel {
-  const MailChannel(this.id, this.name, this.description);
+  const MailChannel._(this.id, [this._account]);
 
   MailChannel.account(MailAccount account)
-    : this('mail.${account.id}', accountName(account), 'New mail in ${account.email}');
+    : this._('mail.${account.id}', (name: accountName(account), email: account.email));
 
-  static const vip = MailChannel('mail.vip', 'VIP', 'New mail from your VIPs, in any account');
+  static const vip = MailChannel._('mail.vip');
 
   /// Channels Loupe made for accounts start with this.
   static const accountPrefix = 'mail.';
 
   final String id;
-  final String name;
-  final String description;
+
+  /// The account's name and address; null for [vip].
+  final ({String name, String email})? _account;
+
+  /// The account's name, or "VIP".
+  String name(AppLocalizations l10n) => _account?.name ?? l10n.notificationsVipChannel;
+
+  /// What the system's settings say about the channel.
+  String description(AppLocalizations l10n) => switch (_account) {
+    final account? => l10n.notificationsAccountChannelDescription(account.email),
+    null => l10n.notificationsVipChannelDescription,
+  };
 
   @override
-  bool operator ==(Object other) => other is MailChannel && other.id == id && other.name == name;
+  bool operator ==(Object other) => other is MailChannel && other.id == id && other._account?.name == _account?.name;
 
   @override
-  int get hashCode => Object.hash(id, name);
+  int get hashCode => Object.hash(id, _account?.name);
 }
 
 String accountName(MailAccount account) => account.displayName.trim().isEmpty ? account.email : account.displayName;
@@ -189,14 +205,18 @@ const maxNotificationsPerAccount = 6;
 /// muted accounts, mail that isn't from a VIP when [NotificationSettings.vipOnly]
 /// is on, and the oldest beyond [perAccount] per account.
 ///
-/// [archivable] lists the accounts that have somewhere to archive to.
+/// [archivable] lists the accounts that have somewhere to archive to. The
+/// text is in [l10n], by default the device's language ([deviceL10n]):
+/// this runs in the background too.
 List<MailNotification> messageNotifications(
   List<NewMail> mail, {
   required List<MailAccount> accounts,
   required NotificationSettings settings,
   Set<String> archivable = const {},
   int perAccount = maxNotificationsPerAccount,
+  AppLocalizations? l10n,
 }) {
+  final strings = l10n ?? deviceL10n();
   final byId = {for (final a in accounts) a.id: a};
   final kept = <String, List<NewMail>>{};
   for (final m in mail) {
@@ -214,16 +234,15 @@ List<MailNotification> messageNotifications(
           hideContent: settings.hideContent,
           canArchive: archivable.contains(accountId),
           showAccount: accounts.length > 1,
+          l10n: strings,
         ),
   ];
 }
 
-/// What a notification says instead of the subject of encrypted mail.
-const encryptedMessageText = 'Encrypted message';
-
-/// The notification for one new message.
+/// The notification for one new message, in [l10n] (by default the
+/// device's language).
 ///
-/// Encrypted mail says [encryptedMessageText] unless its protected subject
+/// Encrypted mail says "Encrypted message" unless its protected subject
 /// was decrypted on this device already ([EmailSummary.hasDecryptedSubject]).
 MailNotification messageNotification(
   NewMail mail,
@@ -231,22 +250,24 @@ MailNotification messageNotification(
   required bool hideContent,
   bool canArchive = true,
   bool showAccount = false,
+  AppLocalizations? l10n,
 }) {
+  final strings = l10n ?? deviceL10n();
   final e = mail.email;
   final sealed = e.isEncrypted && !e.hasDecryptedSubject;
   final subject = sealed
-      ? encryptedMessageText
+      ? strings.notificationsEncryptedMessage
       : e.subject.trim().isEmpty
-      ? '(No Subject)'
+      ? strings.notificationsNoSubject
       : e.subject.trim();
   final sender = e.sender;
-  final from = sender == null ? 'Unknown Sender' : _displayName(sender);
+  final from = sender == null ? strings.notificationsUnknownSender : _displayName(sender);
   final preview = sealed ? '' : e.preview.trim();
   return MailNotification(
     id: messageNotificationId(e.id),
     channel: mail.fromVip ? MailChannel.vip : MailChannel.account(account),
     groupKey: groupKeyFor(account.id),
-    title: hideContent ? 'New message from ${accountName(account)}' : from,
+    title: hideContent ? strings.notificationsHiddenMessage(accountName(account)) : from,
     body: hideContent ? null : subject,
     expandedBody: hideContent || preview.isEmpty ? null : '$subject\n$preview',
     subText: hideContent || !showAccount ? null : accountName(account),
@@ -256,21 +277,22 @@ MailNotification messageNotification(
   );
 }
 
-/// The group summary of [account] over the notifications that show for it.
+/// The group summary of [account] over the notifications that show for it,
+/// in [l10n] (by default the device's language).
 MailNotification summaryNotification(
   MailAccount account,
   List<ShownNotification> children, {
   required bool hideContent,
+  AppLocalizations? l10n,
 }) {
-  final n = children.length;
-  final count = n == 1 ? '1 new message' : '$n new messages';
+  final strings = l10n ?? deviceL10n();
   return MailNotification(
     id: summaryNotificationId(account.id),
     channel: MailChannel.account(account),
     groupKey: groupKeyFor(account.id),
     isSummary: true,
-    title: count,
-    body: hideContent ? 'New messages in ${accountName(account)}' : _senders(children),
+    title: strings.notificationsNewMessages(children.length),
+    body: hideContent ? strings.notificationsHiddenSummary(accountName(account)) : _senders(children),
     lines: hideContent
         ? const []
         : [

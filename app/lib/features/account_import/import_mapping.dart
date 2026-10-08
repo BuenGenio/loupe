@@ -4,20 +4,7 @@ import '../account_setup/setup_text.dart' as setup;
 import 'thunderbird_qr.dart';
 
 /// Why an account from Thunderbird can't be added yet.
-enum ImportBlock {
-  pop3('POP3 accounts aren’t supported. Loupe keeps mail on the server with IMAP.'),
-  kerberos('This account signs in with Kerberos, which Loupe doesn’t support.'),
-  ntlm('This account signs in with NTLM, which Loupe doesn’t support.'),
-  clientCertificate('This account signs in with a client certificate, which Loupe doesn’t support yet.'),
-  microsoftSignIn(
-    'Microsoft sign-in arrives in a later build. Outlook and Microsoft 365 accounts no longer accept passwords '
-    'from mail apps.',
-  );
-
-  const ImportBlock(this.message);
-
-  final String message;
-}
+enum ImportBlock { pop3, kerberos, ntlm, clientCertificate, microsoftSignIn }
 
 /// The provider a server belongs to, by its hostname.
 ProviderKind providerForHost(String host) {
@@ -139,8 +126,9 @@ final class ImportCandidate {
   bool get needsPassword => includedPassword == null;
   bool get unencrypted => incoming.security == ConnectionSecurity.none || outgoing.security == ConnectionSecurity.none;
 
-  /// "App Password" for providers that need one.
-  String get passwordLabel => usesOAuth ? 'App Password' : setup.passwordLabel(provider);
+  /// An app password for providers that need one (and those Thunderbird
+  /// signed in to in the browser).
+  setup.SecretKind get secretKind => usesOAuth ? setup.SecretKind.appPassword : setup.secretKind(provider);
 
   /// What account setup needs. [credentials] (from signing in) or
   /// [password] replace the included password; [trustedCertificates] pins

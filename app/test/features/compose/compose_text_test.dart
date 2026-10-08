@@ -1,11 +1,16 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/compose/compose_text.dart';
 import 'package:loupe/features/compose/identity_selection.dart';
+import 'package:loupe/l10n/l10n.dart';
+import 'package:loupe/shared/format.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../conversation/fake_mail_repository.dart';
 
 bool isMe(String email) => email.toLowerCase() == 'me@example.com';
+
+final en = lookupAppLocalizations(const Locale('en'));
 
 void main() {
   test('subject prefixes are added once', () {
@@ -19,15 +24,17 @@ void main() {
 
   test('quotes lines with "> "', () {
     expect(ComposeText.quote('Hi\n\n> earlier\nBye\n'), '> Hi\n>\n>> earlier\n> Bye');
-    final block = ComposeText.replyBlock(testEmail('m1'), 'Hello');
-    expect(block, startsWith('On '));
-    expect(block, contains('Alice Example wrote:\n> Hello'));
+    final source = testEmail('m1');
+    final block = ComposeText.replyBlock(source, 'Hello', en);
+    expect(block, 'On ${formatFullDate(source.sentAt ?? source.receivedAt)}, Alice Example wrote:\n> Hello');
   });
 
   test('forward block lists the original header fields', () {
-    final block = ComposeText.forwardBlock(testEmail('m1', cc: [bob]), 'Body');
-    expect(block, contains('---------- Forwarded message ----------'));
+    final source = testEmail('m1', cc: [bob]);
+    final block = ComposeText.forwardBlock(source, 'Body', en);
+    expect(block, startsWith('---------- Forwarded message ----------\n'));
     expect(block, contains('From: Alice Example <alice@example.com>'));
+    expect(block, contains('Date: ${formatFullDate(source.sentAt ?? source.receivedAt)}\n'));
     expect(block, contains('Cc: Bob Builder <bob@example.com>'));
     expect(block, endsWith('\n\nBody'));
   });
@@ -144,6 +151,9 @@ void main() {
     test('finds where the original starts', () {
       expect(ComposeText.quoteStart('Hi\n\n$quote'), 4);
       expect(ComposeText.quoteStart('Hi\n\n$forward'), 4);
+      // A forwarded original written in another language.
+      expect(ComposeText.quoteStart('Hi\n\n---------- Weitergeleitete Nachricht ----------\nVon: Alice'), 4);
+      expect(ComposeText.quoteStart('Hi\n---------- ----------'), 24);
       expect(ComposeText.quoteStart('Hi\n> no attribution'), 3);
       expect(ComposeText.quoteStart('Hi'), 2);
       expect(ComposeText.signatureRange('Hi\n\n-- \nSig\n\n$quote'), (4, 11));

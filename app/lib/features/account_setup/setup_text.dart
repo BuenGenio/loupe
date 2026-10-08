@@ -1,23 +1,29 @@
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
+
 /// Wording shared by account setup and the Thunderbird import.
 
 /// A short message for a failed sign-in.
-String describeSetupError(MailException e, ProviderKind provider, {ServerProtocol protocol = ServerProtocol.imap}) =>
-    switch (e.kind) {
-      MailErrorKind.authentication when provider == ProviderKind.fastmail && protocol == ServerProtocol.jmap =>
-        'API token rejected. Create a Fastmail API token for JMAP with access to email, and paste it.',
-      MailErrorKind.authentication => switch (provider) {
-        ProviderKind.gmail ||
-        ProviderKind.icloud ||
-        ProviderKind.yahoo ||
-        ProviderKind.fastmail => 'Password rejected. Use an app password, not your account password.',
-        _ => 'Password rejected. Check it and try again.',
-      },
-      MailErrorKind.connection => "Can't reach server. Check the server settings and your connection.",
-      MailErrorKind.certificate => "The server's certificate isn't trusted. ${e.message}",
-      _ => e.message,
-    };
+String describeSetupError(
+  AppLocalizations l10n,
+  MailException e,
+  ProviderKind provider, {
+  ServerProtocol protocol = ServerProtocol.imap,
+}) => switch (e.kind) {
+  MailErrorKind.authentication when provider == ProviderKind.fastmail && protocol == ServerProtocol.jmap =>
+    l10n.accountSetupApiTokenRejected,
+  MailErrorKind.authentication => switch (provider) {
+    ProviderKind.gmail ||
+    ProviderKind.icloud ||
+    ProviderKind.yahoo ||
+    ProviderKind.fastmail => l10n.accountSetupAppPasswordRejected,
+    _ => l10n.accountSetupPasswordRejected,
+  },
+  MailErrorKind.connection => l10n.accountSetupServerUnreachable,
+  MailErrorKind.certificate => l10n.accountSetupCertificateUntrusted(e.message),
+  _ => e.message,
+};
 
 /// "Gmail", "iCloud", … or the domain's first label ("Example").
 String defaultAccountDescription(ProviderKind provider, String email) {
@@ -34,12 +40,22 @@ String defaultAccountDescription(ProviderKind provider, String email) {
   };
 }
 
+/// What an account signs in with instead of a sign-in page.
+enum SecretKind { password, appPassword, apiToken }
+
 /// Providers that only take app passwords from mail apps; Fastmail over
 /// JMAP takes an API token.
-String passwordLabel(ProviderKind provider, {ServerProtocol protocol = ServerProtocol.imap}) => switch (provider) {
-  ProviderKind.fastmail when protocol == ServerProtocol.jmap => 'API Token',
-  ProviderKind.gmail || ProviderKind.yahoo || ProviderKind.fastmail || ProviderKind.icloud => 'App Password',
-  _ => 'Password',
+SecretKind secretKind(ProviderKind provider, {ServerProtocol protocol = ServerProtocol.imap}) => switch (provider) {
+  ProviderKind.fastmail when protocol == ServerProtocol.jmap => SecretKind.apiToken,
+  ProviderKind.gmail || ProviderKind.yahoo || ProviderKind.fastmail || ProviderKind.icloud => SecretKind.appPassword,
+  _ => SecretKind.password,
+};
+
+/// What the password field is labelled: Password, App Password or API Token.
+String secretLabel(AppLocalizations l10n, SecretKind kind) => switch (kind) {
+  SecretKind.password => l10n.commonPassword,
+  SecretKind.appPassword => l10n.accountSetupAppPassword,
+  SecretKind.apiToken => l10n.accountSetupApiToken,
 };
 
 /// Where Fastmail explains API tokens.
