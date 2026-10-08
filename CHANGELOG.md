@@ -15,6 +15,7 @@ using the app, in a line or two; leave out internals, refactors and tests.
 - **Sign in with Google and Microsoft** is switched on in the Nightly.
 - This changelog. The Nightly's release notes show its newest section.
 - **Search** says so when a query can't match anything (`from:alice and not from:alice`), and doesn't ask the server.
+- **Saving and exporting:** Save as File… and Share as File… in a message's ⋯ menu give you the message as an `.eml` file, and Export Folder… (long-press a folder) saves a whole folder as an mbox file.
 
 ## 2026-10-07
 

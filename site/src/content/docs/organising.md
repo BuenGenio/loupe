@@ -60,7 +60,7 @@ Long-press a message (or swipe left and tap **More**) for:
 - Archive;
 - Trash (or Delete Permanently, in the Trash).
 
-In a conversation, the **⋯** button on each message has the same actions and a few more: Mute Thread, Show All Headers, View Source and Search from This Message…. See [Reading mail](/docs/reading/).
+In a conversation, the **⋯** button on each message has the same actions and a few more: Mute Thread, Show All Headers, View Source, Save as File…, Share as File… and Search from This Message…. See [Reading mail](/docs/reading/).
 
 ## Select several messages
 
@@ -132,6 +132,16 @@ Loupe shows and syncs the folders you subscribe to, as Thunderbird does. Inbox, 
 - **Show everything:** Settings › *account* › **Show All Folders** shows every folder, subscribed or not.
 
 You can't create, rename or delete folders in Loupe yet. Use your provider's webmail or a desktop client for that.
+
+### Export a folder
+
+Long-press a folder on the Mailboxes screen and choose **Export Folder…** to save all its messages as one mbox file, oldest first, named after the account and the folder, such as `Work - Inbox.mbox`. Thunderbird (with the ImportExportTools NG add-on), Apple Mail and other mail programs can import it. With a keyboard, Export Folder… is also in the [command palette](/docs/tablets-and-keyboards/#the-command-palette) of a folder's message list.
+
+1. Loupe looks for the folder's older messages that aren't on your phone yet, then downloads every message from your server. A large folder takes a while, and uses mobile data when you are on it.
+2. A sheet shows how far it is, such as "Exporting 120 of 3,412…". **Cancel** (or Back) stops it, and nothing is saved.
+3. When it is done, Android asks where to save the file.
+
+A message that can't be downloaded doesn't stop the export: it is left out, and Loupe tells you how many at the end. Encrypted messages are exported as they are, still encrypted. To save a single message, use **Save as File…** in its ⋯ menu.
 
 ## Snooze
 

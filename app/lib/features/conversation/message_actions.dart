@@ -31,6 +31,11 @@ enum MessageAction {
   notJunk,
   headers,
   source,
+
+  /// The raw message as a `.eml` file, through the save dialog or to
+  /// another app.
+  saveFile,
+  shareFile,
   search,
 }
 
@@ -125,6 +130,8 @@ Future<MessageAction?> showMessageMenu(
               children: [
                 SheetRow(label: 'Show All Headers', icon: LoupeIcons.headers, onTap: () => pick(MessageAction.headers)),
                 SheetRow(label: 'View Source', icon: LoupeIcons.source, onTap: () => pick(MessageAction.source)),
+                SheetRow(label: 'Save as File…', icon: LoupeIcons.save, onTap: () => pick(MessageAction.saveFile)),
+                SheetRow(label: 'Share as File…', icon: LoupeIcons.share, onTap: () => pick(MessageAction.shareFile)),
                 SheetRow(
                   label: 'Search from This Message…',
                   icon: LoupeIcons.searchSender,
