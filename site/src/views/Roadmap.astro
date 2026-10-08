@@ -26,9 +26,10 @@ const phases: { key: string; state: State; icon: IconName }[] = [
   { key: 'p6', state: 'maybe', icon: 'braces' },
 ];
 const stateLabel: Record<State, string> = { done: t('roadmap.shipped'), now: t('roadmap.inProgress'), maybe: t('roadmap.maybe') };
-const later: { key: string; icon: IconName }[] = [
+// done: shipped since the plan listed it; the card says so.
+const later: { key: string; icon: IconName; done?: boolean }[] = [
   { key: 'later1', icon: 'lock-closed' },
-  { key: 'later2', icon: 'archive' },
+  { key: 'later2', icon: 'archive', done: true },
   { key: 'later3', icon: 'globe' },
   { key: 'later4', icon: 'alert' },
 ];
@@ -79,10 +80,15 @@ const not = ['not1', 'not2', 'not3', 'not4', 'not5'];
       <div class="later">
         {
           later.map((x) => (
-            <div class="card item">
+            <div class:list={['card', 'item', { done: x.done }]}>
               <div class="icon-tile">
                 <Icon name={x.icon} />
               </div>
+              {x.done && (
+                <p class="state">
+                  <Icon name="checkmark" size={14} /> {stateLabel.done}
+                </p>
+              )}
               <h3>{t(`roadmap.${x.key}`)}</h3>
               <p>{t(`roadmap.${x.key}Text`)}</p>
             </div>
@@ -272,6 +278,18 @@ const not = ['not1', 'not2', 'not3', 'not4', 'not5'];
     margin: 14px 0 6px;
     font-size: 1.0625rem;
     font-weight: 500;
+  }
+
+  .item .state {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 14px 0 0;
+    font-size: 0.75rem;
+  }
+
+  .item .state + h3 {
+    margin-top: 2px;
   }
 
   .item p {
