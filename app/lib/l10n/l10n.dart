@@ -1,8 +1,9 @@
 /// The app's languages and strings (docs/localisation.md).
 ///
-/// Loupe speaks the device's language when it has it (the first one, in the
-/// order the user put them in the system settings), else English. The
-/// strings are in `app_<lang>.arb` next to this file.
+/// Loupe speaks the language picked in Settings › Language ([appLanguage]),
+/// or else the device's when it has it (the first one, in the order the user
+/// put them in the system settings), or else English. The strings are in
+/// `app_<lang>.arb` next to this file.
 library;
 
 import 'dart:ui' show PlatformDispatcher;
@@ -34,9 +35,11 @@ const List<LocalizationsDelegate<dynamic>> loupeLocalizationsDelegates = [
 
 /// MaterialApp's localeListResolutionCallback: [resolveLocale], and dates
 /// and numbers formatted (intl) for it from then on ([formatLocale]).
+/// With a language picked in Settings, [preferred] is only that one; the
+/// device's languages still give the region where they match it.
 Locale loupeLocaleResolution(List<Locale>? preferred, Iterable<Locale> supported) {
   final locale = resolveLocale(preferred, supported);
-  Intl.defaultLocale = formatLocale(locale, preferred);
+  Intl.defaultLocale = formatLocale(locale, [...?preferred, ...PlatformDispatcher.instance.locales]);
   return locale;
 }
 
@@ -82,9 +85,61 @@ String formatLocale(Locale locale, [List<Locale>? preferred]) {
 const _formatFallback = {'lb': 'de'};
 
 /// Loupe's strings outside the widget tree (notifications, background
-/// work), in the device's language as the app would pick it.
-AppLocalizations deviceL10n() =>
-    lookupAppLocalizations(resolveLocale(PlatformDispatcher.instance.locales, AppLocalizations.supportedLocales));
+/// work), in the language the app shows: Settings › Language, else the
+/// device's.
+AppLocalizations deviceL10n() => lookupAppLocalizations(
+  resolveLocale([?_picked, ...PlatformDispatcher.instance.locales], AppLocalizations.supportedLocales),
+);
+
+/// The language picked in Settings › Language (a code from
+/// [AppLocalizations.supportedLocales]), or null for the device's. The app's
+/// settings keep it here, in the background isolates too (see
+/// AppSettingsController.loadLanguage), so text made outside the widget tree
+/// follows it.
+String? appLanguage;
+
+Locale? get _picked => appLanguage == null ? null : Locale(appLanguage!);
+
+/// Each language by its own name, for Settings › Language.
+const languageNames = {
+  'bg': 'Български',
+  'bs': 'Bosanski',
+  'ca': 'Català',
+  'cs': 'Čeština',
+  'cy': 'Cymraeg',
+  'da': 'Dansk',
+  'de': 'Deutsch',
+  'el': 'Ελληνικά',
+  'en': 'English',
+  'es': 'Español',
+  'et': 'Eesti',
+  'eu': 'Euskara',
+  'fi': 'Suomi',
+  'fr': 'Français',
+  'ga': 'Gaeilge',
+  'gl': 'Galego',
+  'hr': 'Hrvatski',
+  'hu': 'Magyar',
+  'is': 'Íslenska',
+  'it': 'Italiano',
+  'lb': 'Lëtzebuergesch',
+  'lt': 'Lietuvių',
+  'lv': 'Latviešu',
+  'mk': 'Македонски',
+  'mt': 'Malti',
+  'nb': 'Norsk bokmål',
+  'nl': 'Nederlands',
+  'pl': 'Polski',
+  'pt': 'Português',
+  'ro': 'Română',
+  'sk': 'Slovenčina',
+  'sl': 'Slovenščina',
+  'sq': 'Shqip',
+  'sr': 'Српски',
+  'sv': 'Svenska',
+  'tr': 'Türkçe',
+  'uk': 'Українська',
+};
 
 const _english = Locale('en');
 

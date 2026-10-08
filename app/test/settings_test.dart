@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:loupe/router.dart';
 import 'package:loupe/settings/app_mode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,6 +32,32 @@ void main() {
       ),
     );
     expect(toggle.value, isFalse);
+  });
+
+  testWidgets('Settings › Language picks a language for Loupe alone, or the phone\'s', (tester) async {
+    addTearDown(() => appLanguage = null);
+    await pumpLoupe(tester);
+    await goTo(tester, Routes.settings);
+    final row = find.byKey(const Key('settings-language'));
+    await tester.scrollUntilVisible(row, 200, scrollable: find.byType(Scrollable).first);
+    expect(find.descendant(of: row, matching: find.text('Same as Phone')), findsOneWidget);
+
+    await tester.tap(row);
+    await tester.pumpAndSettle();
+    // The phone's language, and every language Loupe has by its own name.
+    expect(find.text('Same as Phone'), findsOneWidget);
+    expect(find.descendant(of: find.byKey(const Key('language-en')), matching: find.text('English')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('language-en')));
+    await tester.pumpAndSettle();
+    final prefs = await SharedPreferences.getInstance();
+    expect(prefs.getString('settings.language'), 'en');
+    expect(appLanguage, 'en');
+
+    await tester.tap(find.byKey(const Key('language-phone')));
+    await tester.pumpAndSettle();
+    expect(prefs.containsKey('settings.language'), isFalse);
+    expect(appLanguage, isNull);
   });
 
   testWidgets('Reset App returns to the welcome screen', (tester) async {
