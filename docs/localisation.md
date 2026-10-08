@@ -4,7 +4,7 @@ Loupe shows the language picked in **Settings › Language**. With **Same as Pho
 
 The choice is kept as `settings.language`. `appLanguage` in `l10n.dart` holds it for text made outside the widget tree. Notifications and background work load it with `AppSettingsController.loadLanguage` when they start.
 
-The goal is the same 37 languages as the website (`site/src/i18n/locales.ts`). Progress is tracked in [#31](https://github.com/BuenGenio/loupe/issues/31).
+Loupe speaks the same 37 languages as the website (`site/src/i18n/locales.ts`). Every new string needs translating into all of them; `test/l10n/translations_test.dart` fails until it is.
 
 ## How it works
 

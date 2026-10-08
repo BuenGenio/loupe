@@ -12,6 +12,7 @@ using the app, in a line or two; leave out internals, refactors and tests.
 
 ## 2026-10-08
 
+- **Loupe speaks your language.** The app is translated into 37 languages, and follows your phone's. Settings › Language picks a different one for Loupe alone; notifications follow it too.
 - **Push** (Settings › Notifications, on by default): new mail can now wake Loupe through Google's push service, carrying no mail, only "check now". Nothing sends pushes yet; the push relay will. Needs Google Play services.
 - **App Lock** (Settings › Security, off by default): your fingerprint, face or screen lock before your mail shows, when Loupe starts and when you come back after a while you choose. Recent Apps doesn't show your mail meanwhile (Android 13 and later).
 - **Sign in with Google and Microsoft** is switched on in the Nightly.
