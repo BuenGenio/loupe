@@ -1,6 +1,8 @@
 {
   "@@locale": "en",
 
+  "@@x-section-shared": "Shared words and actions: common…, mail… (message actions), mailbox… (folder names)",
+
   "commonAdd": "Add",
   "commonCancel": "Cancel",
   "commonClose": "Close",
@@ -55,6 +57,16 @@
   "mailboxOutbox": "Outbox",
   "mailboxSent": "Sent",
   "mailboxTrash": "Trash",
+
+  "@@x-section-reading": "Reading: conversation, message list, mailboxes, snooze, export, panes",
+
+  "@@x-section-security": "Security: OpenPGP, S/MIME, App Lock",
+
+  "@@x-section-settings": "Settings, rules, subscriptions",
+
+  "@@x-section-more": "Shared widgets, attachments, search, calendar, palette, keyboard, mailing lists, the app's start",
+
+  "@@x-section-accounts": "Accounts and writing: welcome, account setup and import, compose, outbox, notifications",
 
   "welcomeTagline": "Mail that’s simple on the surface\nand powerful underneath.",
   "@welcomeTagline": {"description": "First launch, under the app name. Two short lines."},

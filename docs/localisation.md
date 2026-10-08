@@ -45,6 +45,7 @@ Add it to `app_en.arb`, then run `flutter gen-l10n`:
 "@searchResultCount": {"placeholders": {"count": {"type": "int"}}}
 ```
 
+- **Sections:** `app_en.arb` is split into sections by area (`"@@x-section-reading": …`); gen-l10n ignores those keys. Add a key to its area's section, right after the section's line, so changes to different areas don't collide.
 - **Keys:** camelCase, starting with the feature's folder (`accountSetup…`, `conversation…`, `settings…`). Name the thing, not its words: `settingsAppLockTitle`, not `settingsRequireUnlockToOpen`.
 - **Shared keys:**
   - `common…` holds generic buttons and words: Cancel, Done, Try Again.
