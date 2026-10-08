@@ -241,7 +241,7 @@
       "p1": { "title": "Identiteedid ja aliased", "text": "Vasta aadressilt, kuhu kiri saadeti, sealhulgas catch-all-aliastelt." },
       "p2": { "title": "Saatmise tühistamine", "text": "Lühike hetk ümbermõtlemiseks." },
       "p3": { "title": "Ajastatud saatmine", "text": "Vali aeg; väljuvate kirjade kaust hoiab kirja seni alles, ka võrguühenduseta." },
-      "p4": { "title": "Toimingutega teavitused", "text": "Arhiveeri, Mark as Read või Vasta otse teavitusest." }
+      "p4": { "title": "Toimingutega teavitused", "text": "Arhiveeri, Märgi loetuks või Vasta otse teavitusest." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Pika vajutuse menüüd",
     "place1Text": "Kirjadel, saatjatel, kiipidel ja kaustadel.",
     "place2": "⋯-menüü",
-    "place2Text": "View Source, kõik päised ja otsing selle kirja põhjal.",
+    "place2Text": "Näita lähteteksti, kõik päised ja otsing selle kirja põhjal.",
     "place3": "Otsingukeel",
     "place3Text": "Kirjutades kõik, mida kiibid oskavad, ja rohkemgi.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Vaata Loupe'i Androidis: postkast, Readable-režiim, avaldistega otsing, tellimused, kalendrikutsed, turvakontrollid, tume režiim ja tahvelarvutid.",
     "eyebrow": "Ekraanipildid",
     "h1": "Vaata ringi.",
-    "lead_html": "Päris ekraanid rakendusest, renderdatud selle sisseehitatud demopostkastist: samast, mille saad valikuga <strong>Try with demo mail</strong>.",
+    "lead_html": "Päris ekraanid rakendusest, renderdatud selle sisseehitatud demopostkastist: samast, mille saad valikuga <strong>Proovi demopostiga</strong>.",
     "filter": "Filtreeri ekraanipilte",
     "all": "Kõik",
     "soon": "Ekraanipildid on tulekul.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Otsing ja filtrid", "caption": "Soovitused ja filtrikiibid juba kirjutamise ajal: täpselt selle leidmine, mida tahad, võtab vaid sekundeid.", "alt": "Loupe'i otsinguvaade kirjutatud avaldise, filtrikiipide ja otsinguvälja all olevate soovitustega." },
     "phishing": { "title": "Andmepüük, selgitatud", "caption": "Kui kiri tundub kahtlane, ütleb Loupe lihtsate sõnadega, miks: ehtsat jäljendav domeen või tuttav nimi uuelt aadressilt.", "alt": "Loupe'i paneel „This looks like phishing“, kus on loetletud põhjused: ehtsat jäljendav domeen ja tuttav nimi, kes kirjutab uuelt aadressilt." },
     "tablet": { "title": "Kolm paani tahvelarvutis", "caption": "Postkastid, loend ja kiri kõrvuti, koos kiirklahvide ja käsupaletiga.", "alt": "Loupe tahvelarvutis rõhtpaigutuses: vasakul postkastid, keskel kõigi postkastide koondvaade ja paremal fotokarusselliga kiri." },
-    "subscriptions": { "title": "Tellimustest loobumise keskus", "caption": "Uudiskirjad järjestatud selle järgi, kui palju neist lugemata jätad, arvutatud sinu telefonis, ühe puudutusega tellimusest loobumisega.", "alt": "Loupe'i tellimuste vaade vahekaartidega Newsletters ja Discussions, filtritega Never Read ja Rarely Read, lugemismäärade ja tellimusest loobumise nuppudega." },
+    "subscriptions": { "title": "Tellimustest loobumise keskus", "caption": "Uudiskirjad järjestatud selle järgi, kui palju neist lugemata jätad, arvutatud sinu telefonis, ühe puudutusega tellimusest loobumisega.", "alt": "Loupe'i tellimuste vaade vahekaartidega Newsletters ja Discussions, filtritega Pole kunagi loetud ja Harva loetud, lugemismäärade ja tellimusest loobumise nuppudega." },
     "mailboxes": { "title": "Smart Mailboxid", "caption": "Salvestatud otsingud on sinu kaustade kõrval ja asuvad sinu e-posti serveris, nii et ka sinu teised seadmed näevad neid.", "alt": "Loupe'i postkastide vaade kokkuvolditud kontode ja kahe Smart Mailboxiga." },
     "invitation": { "title": "Kutsetele vastatud", "caption": "Koosolekukutsed näitavad mõlemat ajavööndit ja lasevad valida Accept, Maybe või Decline kirjast lahkumata.", "alt": "Outlooki koosolekukutse Loupe'is: sündmuse aeg kahes ajavööndis, Teamsiga liitumise link ning nupud Accept, Maybe ja Decline." },
     "openpgp": { "title": "Krüpteeritud, kinnitatud", "caption": "OpenPGP-kirjad dekrüpteeritakse seadmes ning näha on allkirjastaja, kaitstud teema ja võtme sõrmejälg.", "alt": "Loupe'i paneel „Signed by Dana Okafor“: dekrüpteeritud selles seadmes, kaitstud teema ja võtme sõrmejälg." },
-    "compose": { "title": "Kirja kirjutamine", "caption": "Adressaadid kiipidena, identiteet, millelt saadad, ja Send Later, kui kiri peaks hommikuni ootama.", "alt": "Loupe'i uue kirja vaade adressaadikiipide, saatja identiteedi, sisuteksti ning nuppudega Send Later ja Send." },
-    "rules": { "title": "Reeglid otsingukeeles", "caption": "Reegel on otsing pluss toiming; käivita see telefonis või serveris, kus Loupe kirjutab Sieve'i sinu eest.", "alt": "Loupe'i uue reegli redaktor: otsingulaadne tingimus, toiming Mark as Read, sisse lülitatud Run On Server ja genereeritud Sieve'i skript." },
+    "compose": { "title": "Kirja kirjutamine", "caption": "Adressaadid kiipidena, identiteet, millelt saadad, ja Saada hiljem, kui kiri peaks hommikuni ootama.", "alt": "Loupe'i uue kirja vaade adressaadikiipide, saatja identiteedi, sisuteksti ning nuppudega Saada hiljem ja Send." },
+    "rules": { "title": "Reeglid otsingukeeles", "caption": "Reegel on otsing pluss toiming; käivita see telefonis või serveris, kus Loupe kirjutab Sieve'i sinu eest.", "alt": "Loupe'i uue reegli redaktor: otsingulaadne tingimus, toiming Märgi loetuks, sisse lülitatud Run On Server ja genereeritud Sieve'i skript." },
     "patch": { "title": "Paigad diffidena", "caption": "Tehnilistes postiloendites kuvatakse paigad värviliste diffidena püsisammkirjas.", "alt": "Postiloendi kiri Loupe'is püsisammkirjas, paik kuvatud punase ja rohelise diffina." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Luba see paigaldus",
     "step2Text_html": "Android küsib ühe korra, kas sinu brauser võib rakendusi installida. Luba see ja puuduta siis <strong>Installi</strong>. Hilisemad versioonid paigalduvad selle peale ja sinu kontod jäävad alles.",
     "step3": "Proovi või lisa oma konto",
-    "step3Text_html": "Vali <strong>Try with demo mail</strong>, et kõigepealt ringi vaadata, või lisa oma konto. Vaata juhendit <a href=\"/docs/getting-started/\">Alustamine</a>.",
+    "step3Text_html": "Vali <strong>Proovi demopostiga</strong>, et kõigepealt ringi vaadata, või lisa oma konto. Vaata juhendit <a href=\"/docs/getting-started/\">Alustamine</a>.",
     "safety": "Iga versiooni ehitab GitHub Actions avalikust lähtekoodist ja see allkirjastatakse Loupe'i väljalaskevõtmega. Google Play Protect võib siiski hoiatada väljastpoolt Play Store'i pärit rakenduste eest."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Igapäevane e-post",
     "p1Text": "Automaatse seadistusega kontod, pühkimistega kirjade loend, vaated Readable, Original ja Plain, otsing, kirjutamine saatmise tühistamise ja väljuvate kirjade kaustaga, teavitused ja tume režiim.",
     "p2": "Võimekuse kiht",
-    "p2Text": "Täielik otsingukeel, Smart Mailboxid, sildid, reeglid ja Sieve, identiteedid, View Source ja autentimistulemused, kolm paani ja kiirklahvid, ajastatud saatmine.",
+    "p2Text": "Täielik otsingukeel, Smart Mailboxid, sildid, reeglid ja Sieve, identiteedid, Näita lähteteksti ja autentimistulemused, kolm paani ja kiirklahvid, ajastatud saatmine.",
     "p3": "JMAP",
     "p3Text": "JMAP-kontod Fastmaili ja Stalwarti jaoks: otsing serveris, saatmine ilma SMTP-ta, push serverist ja Sieve JMAP-i kaudu.",
     "p4": "Krüpteerimine",

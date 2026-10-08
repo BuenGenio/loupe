@@ -241,7 +241,7 @@
       "p1": { "title": "Identiteter og aliaser", "text": "Svar fra adressen e-posten ble sendt til, også catch-all-aliaser." },
       "p2": { "title": "Angre sending", "text": "Et kort øyeblikk til å ombestemme deg." },
       "p3": { "title": "Planlagt sending", "text": "Velg et tidspunkt; utboksen tar vare på meldingen til da, selv uten nett." },
-      "p4": { "title": "Varsler med handlinger", "text": "Arkiver, svar eller bruk Mark as Read rett fra varselet." }
+      "p4": { "title": "Varsler med handlinger", "text": "Arkiver, svar eller bruk Merk som lest rett fra varselet." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Menyer ved langt trykk",
     "place1Text": "På meldinger, avsendere, brikker og mapper.",
     "place2": "⋯-menyen",
-    "place2Text": "View Source, alle meldingshoder og søk ut fra denne meldingen.",
+    "place2Text": "Vis kilde, alle meldingshoder og søk ut fra denne meldingen.",
     "place3": "Søkespråket",
     "place3Text": "Alt brikkene kan gjøre, og mer, ved å skrive.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Se Loupe på Android: innboksen, Readable-modus, uttrykkssøk, abonnementer, kalenderinvitasjoner, sikkerhetssjekker, mørk modus og nettbrett.",
     "eyebrow": "Skjermbilder",
     "h1": "Se deg rundt.",
-    "lead_html": "Ekte skjermer fra appen, gjengitt fra den innebygde demopostkassen: den samme du får med <strong>Try with demo mail</strong>.",
+    "lead_html": "Ekte skjermer fra appen, gjengitt fra den innebygde demopostkassen: den samme du får med <strong>Prøv med demo-e-post</strong>.",
     "filter": "Filtrer skjermbilder",
     "all": "Alle",
     "soon": "Skjermbildene er på vei.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Søk og filtre", "caption": "Forslag og filterbrikker mens du skriver: å finne akkurat det du vil, tar sekunder.", "alt": "Loupes søkeskjerm med et innskrevet uttrykk, filterbrikker og forslag under søkefeltet." },
     "phishing": { "title": "Phishing, forklart", "caption": "Når en melding virker feil, sier Loupe hvorfor i klartekst: et domene som ligner til forveksling, eller et kjent navn fra en ny adresse.", "alt": "Loupes ark «This looks like phishing» med begrunnelsene: et domene som ligner til forveksling, og et navn du kjenner som skriver fra en ny adresse." },
     "tablet": { "title": "Tre ruter på nettbrett", "caption": "Postkasser, listen og meldingen side om side, med hurtigtaster og en kommandopalett.", "alt": "Loupe på et nettbrett i liggende format: postkasser til venstre, alle innbokser i midten og en melding med bildekarusell til høyre." },
-    "subscriptions": { "title": "Avmeldingssenter", "caption": "Nyhetsbrev rangert etter hvor mye du lar være ulest, telt opp på telefonen din, med avmelding med ett trykk.", "alt": "Loupes abonnementsskjerm med fanene Newsletters og Discussions, filtrene Never Read og Rarely Read, lesegrader og Unsubscribe-knapper." },
+    "subscriptions": { "title": "Avmeldingssenter", "caption": "Nyhetsbrev rangert etter hvor mye du lar være ulest, telt opp på telefonen din, med avmelding med ett trykk.", "alt": "Loupes abonnementsskjerm med fanene Newsletters og Discussions, filtrene Aldri lest og Sjelden lest, lesegrader og Unsubscribe-knapper." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Lagrede søk ligger ved siden av mappene dine og bor på e-postserveren, så de andre enhetene dine også ser dem.", "alt": "Loupes postkasseskjerm med kontoene slått sammen og to Smart Mailboxes i listen." },
     "invitation": { "title": "Invitasjoner, besvart", "caption": "Møteinvitasjoner viser begge tidssonene og lar deg velge Accept, Maybe eller Decline uten å forlate meldingen.", "alt": "En Outlook-møteinvitasjon i Loupe med tidspunktet i to tidssoner, en Teams-lenke for å bli med og knappene Accept, Maybe og Decline." },
     "openpgp": { "title": "Kryptert, verifisert", "caption": "OpenPGP-meldinger dekrypteres på enheten, med hvem som signerte, et beskyttet emne og nøkkelens fingeravtrykk.", "alt": "Loupes ark «Signed by Dana Okafor»: dekryptert på denne enheten, et beskyttet emne og nøkkelens fingeravtrykk." },
-    "compose": { "title": "Skriv en melding", "caption": "Mottakere som brikker, identiteten du sender fra, og Send Later når meldingen bør vente til morgenen.", "alt": "Loupes skjerm for ny melding med mottakerbrikker, Fra-identiteten, brødtekst og knappene Send Later og Send." },
-    "rules": { "title": "Regler som vanlige søk", "caption": "En regel er et søk pluss en handling; kjør den på telefonen eller på serveren, der Loupe skriver Sieve-koden for deg.", "alt": "Loupes redigeringsvindu for ny regel: en betingelse i søkeform, handlingen Mark as Read, Run On Server slått på og det genererte Sieve-skriptet." },
+    "compose": { "title": "Skriv en melding", "caption": "Mottakere som brikker, identiteten du sender fra, og Send senere når meldingen bør vente til morgenen.", "alt": "Loupes skjerm for ny melding med mottakerbrikker, Fra-identiteten, brødtekst og knappene Send senere og Send." },
+    "rules": { "title": "Regler som vanlige søk", "caption": "En regel er et søk pluss en handling; kjør den på telefonen eller på serveren, der Loupe skriver Sieve-koden for deg.", "alt": "Loupes redigeringsvindu for ny regel: en betingelse i søkeform, handlingen Merk som lest, Run On Server slått på og det genererte Sieve-skriptet." },
     "patch": { "title": "Patcher som differ", "caption": "På tekniske e-postlister vises patcher som fargede differ med monospace-skrift.", "alt": "En melding fra en e-postliste i Loupe med monospace-skrift og en patch vist som en rød og grønn diff." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Tillat denne installasjonen",
     "step2Text_html": "Android spør én gang om nettleseren din får installere apper. Tillat det, og trykk deretter på <strong>Installer</strong>. Senere bygg installeres over dette og beholder kontoene dine.",
     "step3": "Prøv den, eller legg til kontoen din",
-    "step3Text_html": "Velg <strong>Try with demo mail</strong> for å se deg rundt først, eller legg til kontoen din. Se <a href=\"/docs/getting-started/\">Kom i gang</a>.",
+    "step3Text_html": "Velg <strong>Prøv med demo-e-post</strong> for å se deg rundt først, eller legg til kontoen din. Se <a href=\"/docs/getting-started/\">Kom i gang</a>.",
     "safety": "Hvert bygg lages av GitHub Actions fra den offentlige kildekoden og signeres med Loupes utgivelsesnøkkel. Google Play Protect kan likevel advare mot apper som ikke kommer fra Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "E-post i hverdagen",
     "p1Text": "Kontoer med automatisk oppsett, meldingslisten med sveip, visningene Readable, Original og Plain, søk, skriving med angre sending og utboks, varsler og mørk modus.",
     "p2": "Det avanserte laget",
-    "p2Text": "Hele søkespråket, Smart Mailboxes, etiketter, regler og Sieve, identiteter, View Source og autentiseringsresultater, tre ruter og hurtigtaster, planlagt sending.",
+    "p2Text": "Hele søkespråket, Smart Mailboxes, etiketter, regler og Sieve, identiteter, Vis kilde og autentiseringsresultater, tre ruter og hurtigtaster, planlagt sending.",
     "p3": "JMAP",
     "p3Text": "JMAP-kontoer for Fastmail og Stalwart: søk på serveren, sending uten SMTP, push fra serveren og Sieve over JMAP.",
     "p4": "Kryptering",

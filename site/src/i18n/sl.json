@@ -241,7 +241,7 @@
       "p1": { "title": "Identitete in vzdevki", "text": "Odgovorite z naslova, na katerega je bila pošta poslana, vključno z vzdevki catch-all." },
       "p2": { "title": "Preklic pošiljanja", "text": "Kratek čas, da si premislite." },
       "p3": { "title": "Načrtovano pošiljanje", "text": "Izberite čas; mapa Odhodna pošta sporočilo hrani do takrat, tudi brez povezave." },
-      "p4": { "title": "Obvestila z dejanji", "text": "Archive, Mark as Read ali Reply kar iz obvestila." }
+      "p4": { "title": "Obvestila z dejanji", "text": "Archive, Označi kot prebrano ali Reply kar iz obvestila." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Meniji ob dolgem pritisku",
     "place1Text": "Na sporočilih, pošiljateljih, oblačkih in mapah.",
     "place2": "Meni ⋯",
-    "place2Text": "View Source, vse glave in iskanje, ki izhaja iz tega sporočila.",
+    "place2Text": "Pokaži izvorno kodo, vse glave in iskanje, ki izhaja iz tega sporočila.",
     "place3": "Iskalni jezik",
     "place3Text": "Vse, kar zmorejo oblački, in še več, kar s tipkanjem.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Oglejte si Loupe v Androidu: nabiralnik, način Readable, iskanje z izrazi, naročnine, koledarska povabila, varnostna preverjanja, temni način in tablice.",
     "eyebrow": "Posnetki zaslona",
     "h1": "Razglejte se.",
-    "lead_html": "Pravi zasloni iz aplikacije, izrisani iz njenega vgrajenega predstavitvenega nabiralnika: istega, ki ga dobite z <strong>Try with demo mail</strong>.",
+    "lead_html": "Pravi zasloni iz aplikacije, izrisani iz njenega vgrajenega predstavitvenega nabiralnika: istega, ki ga dobite z <strong>Preizkusi s predstavitveno pošto</strong>.",
     "filter": "Filtriraj posnetke zaslona",
     "all": "Vsi",
     "soon": "Posnetki zaslona so na poti.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Iskanje in filtri", "caption": "Predlogi in filtrirni oblački že med tipkanjem: najti natanko to, kar želite, traja le nekaj sekund.", "alt": "Iskalni zaslon Loupe z vtipkanim izrazom, filtrirnimi oblački in predlogi pod iskalnim poljem." },
     "phishing": { "title": "Lažno predstavljanje, pojasnjeno", "caption": "Ko se sporočilo zdi sumljivo, Loupe s preprostimi besedami pove, zakaj: domena, ki posnema pravo, ali znano ime z novega naslova.", "alt": "Okno „This looks like phishing“ v Loupe z razlogi: domena, ki posnema pravo, in ime, ki ga poznate, piše z novega naslova." },
     "tablet": { "title": "Tri podokna na tablicah", "caption": "Nabiralniki, seznam in sporočilo drug ob drugem, z bližnjicami na tipkovnici in paleto ukazov.", "alt": "Loupe na tablici v ležečem položaju: nabiralniki levo, vsa prejeta sporočila na sredini in sporočilo z vrtiljakom fotografij desno." },
-    "subscriptions": { "title": "Središče za odjavo", "caption": "E-novice, razvrščene po tem, koliko jih pustite neprebranih, prešteto v vašem telefonu, z odjavo z enim dotikom.", "alt": "Zaslon naročnin v Loupe z zavihkoma Newsletters in Discussions, filtroma Never Read in Rarely Read, deleži prebranega in gumbi za odjavo." },
+    "subscriptions": { "title": "Središče za odjavo", "caption": "E-novice, razvrščene po tem, koliko jih pustite neprebranih, prešteto v vašem telefonu, z odjavo z enim dotikom.", "alt": "Zaslon naročnin v Loupe z zavihkoma Newsletters in Discussions, filtroma Nikoli prebrano in Redko prebrano, deleži prebranega in gumbi za odjavo." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Shranjena iskanja so tik ob vaših mapah in živijo na vašem poštnem strežniku, zato jih vidijo tudi druge naprave.", "alt": "Zaslon nabiralnikov v Loupe s strnjenimi računi in dvema navedenima Smart Mailboxes." },
     "invitation": { "title": "Hiter odgovor na povabila", "caption": "Povabila na sestanke pokažejo oba časovna pasova in omogočajo Accept, Maybe ali Decline, ne da bi zapustili sporočilo.", "alt": "Povabilo na sestanek iz Outlooka v Loupe s časom dogodka v dveh časovnih pasovih, povezavo za pridružitev v Teams in gumbi Accept, Maybe in Decline." },
     "openpgp": { "title": "Šifrirano, preverjeno", "caption": "Sporočila OpenPGP se dešifrirajo v napravi, s podpisnikom, zaščiteno zadevo in prstnim odtisom ključa.", "alt": "Okno „Signed by Dana Okafor“ v Loupe: dešifrirano v tej napravi, zaščitena zadeva in prstni odtis ključa." },
-    "compose": { "title": "Pisanje sporočila", "caption": "Prejemniki kot oblački, identiteta, s katere pošiljate, in Send Later, ko naj sporočilo počaka do jutra.", "alt": "Zaslon novega sporočila v Loupe z oblački prejemnikov, identiteto pošiljatelja, besedilom ter gumboma Send Later in Send." },
-    "rules": { "title": "Pravila v obliki iskanja", "caption": "Pravilo je iskanje in dejanje; zaženite ga v telefonu ali na strežniku, kjer Loupe namesto vas napiše Sieve.", "alt": "Urejevalnik novega pravila v Loupe: pogoj v slogu iskanja, dejanje Mark as Read, vklopljen Run On Server in ustvarjeni skript Sieve." },
+    "compose": { "title": "Pisanje sporočila", "caption": "Prejemniki kot oblački, identiteta, s katere pošiljate, in Pošlji pozneje, ko naj sporočilo počaka do jutra.", "alt": "Zaslon novega sporočila v Loupe z oblački prejemnikov, identiteto pošiljatelja, besedilom ter gumboma Pošlji pozneje in Send." },
+    "rules": { "title": "Pravila v obliki iskanja", "caption": "Pravilo je iskanje in dejanje; zaženite ga v telefonu ali na strežniku, kjer Loupe namesto vas napiše Sieve.", "alt": "Urejevalnik novega pravila v Loupe: pogoj v slogu iskanja, dejanje Označi kot prebrano, vklopljen Run On Server in ustvarjeni skript Sieve." },
     "patch": { "title": "Popravki kot razlike", "caption": "Na tehničnih poštnih seznamih so popravki prikazani kot barvne razlike v pisavi s stalno širino.", "alt": "Sporočilo s poštnega seznama v Loupe v pisavi s stalno širino, s popravkom, prikazanim kot rdeče-zelena razlika." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Dovolite to namestitev",
     "step2Text_html": "Android vas enkrat vpraša, ali lahko vaš brskalnik nameša aplikacije. Dovolite, nato se dotaknite <strong>Namesti</strong>. Poznejše različice se namestijo čez to in ohranijo vaše račune.",
     "step3": "Preizkusite jo ali dodajte svoj račun",
-    "step3Text_html": "Izberite <strong>Try with demo mail</strong>, da se najprej razgledate, ali dodajte svoj račun. Glejte <a href=\"/docs/getting-started/\">Prvi koraki</a>.",
+    "step3Text_html": "Izberite <strong>Preizkusi s predstavitveno pošto</strong>, da se najprej razgledate, ali dodajte svoj račun. Glejte <a href=\"/docs/getting-started/\">Prvi koraki</a>.",
     "safety": "Vsako različico ustvari GitHub Actions iz javne izvorne kode, podpisana pa je z izdajnim ključem Loupe. Google Play Protect lahko kljub temu opozori na aplikacije, ki niso iz Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Vsakdanja pošta",
     "p1Text": "Računi s samodejno nastavitvijo, seznam sporočil s podrsljaji, pogledi Readable, Original in Plain, iskanje, pisanje s preklicem pošiljanja in mapo Odhodna pošta, obvestila in temni način.",
     "p2": "Plast za zahtevne uporabnike",
-    "p2Text": "Celoten iskalni jezik, Smart Mailboxes, oznake, pravila in Sieve, identitete, View Source in rezultati preverjanja pristnosti, tri podokna in bližnjice na tipkovnici, načrtovano pošiljanje.",
+    "p2Text": "Celoten iskalni jezik, Smart Mailboxes, oznake, pravila in Sieve, identitete, Pokaži izvorno kodo in rezultati preverjanja pristnosti, tri podokna in bližnjice na tipkovnici, načrtovano pošiljanje.",
     "p3": "JMAP",
     "p3Text": "Računi JMAP za Fastmail in Stalwart: iskanje na strežniku, pošiljanje brez SMTP, potiskanje s strežnika in Sieve prek JMAP.",
     "p4": "Šifriranje",

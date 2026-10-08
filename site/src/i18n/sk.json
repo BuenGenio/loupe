@@ -241,7 +241,7 @@
       "p1": { "title": "Identity a aliasy", "text": "Odpovedajte z adresy, na ktorú správa prišla, vrátane catch-all aliasov." },
       "p2": { "title": "Zrušenie odoslania", "text": "Krátka chvíľa na to, aby ste si to rozmysleli." },
       "p3": { "title": "Plánované odoslanie", "text": "Vyberte čas; priečinok Pošta na odoslanie si správu dovtedy podrží, aj offline." },
-      "p4": { "title": "Upozornenia s akciami", "text": "Archive, Mark as Read alebo Reply priamo z upozornenia." }
+      "p4": { "title": "Upozornenia s akciami", "text": "Archive, Označiť ako prečítané alebo Reply priamo z upozornenia." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Ponuky po dlhom podržaní",
     "place1Text": "Na správach, odosielateľoch, bublinách a priečinkoch.",
     "place2": "Ponuka ⋯",
-    "place2Text": "View Source, všetky hlavičky a vyhľadávanie vychádzajúce z tejto správy.",
+    "place2Text": "Zobraziť zdroj, všetky hlavičky a vyhľadávanie vychádzajúce z tejto správy.",
     "place3": "Jazyk vyhľadávania",
     "place3Text": "Všetko, čo dokážu bubliny, a ešte viac, len písaním.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Pozrite si Loupe v Androide: doručenú poštu, režim Readable, vyhľadávanie pomocou výrazov, odbery, pozvánky do kalendára, bezpečnostné kontroly, tmavý režim a tablety.",
     "eyebrow": "Snímky obrazovky",
     "h1": "Poobzerajte sa.",
-    "lead_html": "Skutočné obrazovky z aplikácie, vykreslené z jej vstavanej ukážkovej schránky: tej istej, ktorú dostanete cez <strong>Try with demo mail</strong>.",
+    "lead_html": "Skutočné obrazovky z aplikácie, vykreslené z jej vstavanej ukážkovej schránky: tej istej, ktorú dostanete cez <strong>Vyskúšať s ukážkovou poštou</strong>.",
     "filter": "Filtrovať snímky obrazovky",
     "all": "Všetky",
     "soon": "Snímky obrazovky sú na ceste.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Vyhľadávanie a filtre", "caption": "Návrhy a filtračné bubliny už počas písania: nájsť presne to, čo chcete, trvá pár sekúnd.", "alt": "Obrazovka vyhľadávania v Loupe s napísaným výrazom, filtračnými bublinami a návrhmi pod vyhľadávacím poľom." },
     "phishing": { "title": "Phishing s vysvetlením", "caption": "Keď správa vyzerá podozrivo, Loupe zrozumiteľne povie prečo: napodobnená doména alebo známe meno z novej adresy.", "alt": "Panel „This looks like phishing“ v Loupe so zoznamom dôvodov: napodobnená doména a známe meno, ktoré píše z novej adresy." },
     "tablet": { "title": "Tri panely na tabletoch", "caption": "Schránky, zoznam a správa vedľa seba, s klávesovými skratkami a paletou príkazov.", "alt": "Loupe na tablete na šírku: schránky vľavo, všetky doručené schránky v strede a správa s karuselom fotografií vpravo." },
-    "subscriptions": { "title": "Centrum odhlásenia", "caption": "Newslettery zoradené podľa toho, koľko z nich necháte neprečítaných, spočítané vo vašom telefóne, s odhlásením jedným ťuknutím.", "alt": "Obrazovka odberov v Loupe s kartami Newsletters a Discussions, filtrami Never Read a Rarely Read, mierou čítania a tlačidlami na odhlásenie." },
+    "subscriptions": { "title": "Centrum odhlásenia", "caption": "Newslettery zoradené podľa toho, koľko z nich necháte neprečítaných, spočítané vo vašom telefóne, s odhlásením jedným ťuknutím.", "alt": "Obrazovka odberov v Loupe s kartami Newsletters a Discussions, filtrami Nikdy nečítané a Zriedka čítané, mierou čítania a tlačidlami na odhlásenie." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Uložené vyhľadávania sú hneď vedľa vašich priečinkov a žijú na vašom poštovom serveri, takže ich vidia aj ostatné zariadenia.", "alt": "Obrazovka schránok v Loupe so zbalenými účtami a dvoma Smart Mailboxes v zozname." },
     "invitation": { "title": "Rýchla odpoveď na pozvánky", "caption": "Pozvánky na stretnutia ukazujú obe časové pásma a umožňujú zvoliť Accept, Maybe alebo Decline bez opustenia správy.", "alt": "Pozvánka na stretnutie z Outlooku v Loupe s časom udalosti v dvoch časových pásmach, odkazom na pripojenie cez Teams a tlačidlami Accept, Maybe a Decline." },
     "openpgp": { "title": "Zašifrované, overené", "caption": "Správy OpenPGP sa dešifrujú v zariadení, s podpisovateľom, chráneným predmetom a odtlačkom kľúča.", "alt": "Panel „Signed by Dana Okafor“ v Loupe: dešifrované v tomto zariadení, chránený predmet a odtlačok kľúča." },
-    "compose": { "title": "Písanie správy", "caption": "Príjemcovia ako bubliny, identita, z ktorej odosielate, a Send Later, keď má správa počkať do rána.", "alt": "Obrazovka novej správy v Loupe s bublinami príjemcov, identitou odosielateľa, textom správy a tlačidlami Send Later a Send." },
-    "rules": { "title": "Pravidlá ako obyčajné vyhľadávanie", "caption": "Pravidlo je vyhľadávanie plus akcia; spustite ho v telefóne alebo na serveri, kde za vás Loupe napíše Sieve.", "alt": "Editor nového pravidla v Loupe: podmienka v štýle vyhľadávania, akcia Mark as Read, zapnuté Run On Server a vygenerovaný skript Sieve." },
+    "compose": { "title": "Písanie správy", "caption": "Príjemcovia ako bubliny, identita, z ktorej odosielate, a Odoslať neskôr, keď má správa počkať do rána.", "alt": "Obrazovka novej správy v Loupe s bublinami príjemcov, identitou odosielateľa, textom správy a tlačidlami Odoslať neskôr a Send." },
+    "rules": { "title": "Pravidlá ako obyčajné vyhľadávanie", "caption": "Pravidlo je vyhľadávanie plus akcia; spustite ho v telefóne alebo na serveri, kde za vás Loupe napíše Sieve.", "alt": "Editor nového pravidla v Loupe: podmienka v štýle vyhľadávania, akcia Označiť ako prečítané, zapnuté Run On Server a vygenerovaný skript Sieve." },
     "patch": { "title": "Patche ako diffy", "caption": "V technických e-mailových konferenciách sa patche zobrazujú ako farebné diffy neproporcionálnym písmom.", "alt": "Správa z e-mailovej konferencie v Loupe, zobrazená neproporcionálnym písmom, s patchom vo forme červeno-zeleného diffu." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Povoľte túto inštaláciu",
     "step2Text_html": "Android sa raz opýta, či môže váš prehliadač inštalovať aplikácie. Povoľte to a potom ťuknite na <strong>Inštalovať</strong>. Ďalšie zostavy sa nainštalujú cez túto a ponechajú vaše účty.",
     "step3": "Vyskúšajte ju alebo pridajte svoj účet",
-    "step3Text_html": "Zvoľte <strong>Try with demo mail</strong> a najprv sa poobzerajte, alebo pridajte svoj účet. Pozrite si <a href=\"/docs/getting-started/\">Začíname</a>.",
+    "step3Text_html": "Zvoľte <strong>Vyskúšať s ukážkovou poštou</strong> a najprv sa poobzerajte, alebo pridajte svoj účet. Pozrite si <a href=\"/docs/getting-started/\">Začíname</a>.",
     "safety": "Každá zostava vzniká v GitHub Actions z verejného zdrojového kódu a je podpísaná kľúčom vydaní Loupe. Google Play Protect môže napriek tomu upozorniť na aplikácie mimo Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Každodenná pošta",
     "p1Text": "Účty s automatickou konfiguráciou, zoznam správ s potiahnutiami, zobrazenia Readable, Original a Plain, vyhľadávanie, písanie so zrušením odoslania a priečinkom Pošta na odoslanie, upozornenia a tmavý režim.",
     "p2": "Vrstva pre pokročilých",
-    "p2Text": "Plnohodnotný jazyk vyhľadávania, Smart Mailboxes, štítky, pravidlá a Sieve, identity, View Source a výsledky overenia, tri panely a klávesové skratky, plánované odoslanie.",
+    "p2Text": "Plnohodnotný jazyk vyhľadávania, Smart Mailboxes, štítky, pravidlá a Sieve, identity, Zobraziť zdroj a výsledky overenia, tri panely a klávesové skratky, plánované odoslanie.",
     "p3": "JMAP",
     "p3Text": "Účty JMAP pre Fastmail a Stalwart: vyhľadávanie na serveri, odosielanie bez SMTP, push zo servera a Sieve cez JMAP.",
     "p4": "Šifrovanie",

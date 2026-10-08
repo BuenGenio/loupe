@@ -241,7 +241,7 @@
       "p1": { "title": "Identités et alias", "text": "Répondez depuis l'adresse à laquelle l'e-mail a été envoyé, alias fourre-tout (catch-all) compris." },
       "p2": { "title": "Annuler l'envoi", "text": "Un court délai pour changer d'avis." },
       "p3": { "title": "Envoi programmé", "text": "Choisissez une heure ; la boîte d'envoi garde le message jusque-là, même hors ligne." },
-      "p4": { "title": "Notifications avec actions", "text": "Archivez, répondez ou utilisez Mark as Read directement depuis la notification." }
+      "p4": { "title": "Notifications avec actions", "text": "Archivez, répondez ou utilisez Marquer comme lu directement depuis la notification." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Menus par appui long",
     "place1Text": "Sur les messages, les expéditeurs, les pastilles et les dossiers.",
     "place2": "Le menu ⋯",
-    "place2Text": "View Source, tous les en-têtes, et une recherche à partir de ce message.",
+    "place2Text": "Afficher la source, tous les en-têtes, et une recherche à partir de ce message.",
     "place3": "Le langage de recherche",
     "place3Text": "Tout ce que font les pastilles, et plus encore, au clavier.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Découvrez Loupe sur Android : la boîte de réception, le mode Readable, la recherche par expressions, les abonnements, les invitations d'agenda, les contrôles de sécurité, le mode sombre et les tablettes.",
     "eyebrow": "Captures d'écran",
     "h1": "Jetez un œil.",
-    "lead_html": "De vrais écrans de l'application, générés à partir de sa boîte de démonstration intégrée : la même que celle que vous obtenez avec <strong>Try with demo mail</strong>.",
+    "lead_html": "De vrais écrans de l'application, générés à partir de sa boîte de démonstration intégrée : la même que celle que vous obtenez avec <strong>Essayer avec des e-mails de démonstration</strong>.",
     "filter": "Filtrer les captures",
     "all": "Toutes",
     "soon": "Les captures d'écran arrivent bientôt.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Recherche et filtres", "caption": "Suggestions et pastilles de filtre pendant la saisie : trouver exactement ce que vous voulez ne prend que quelques secondes.", "alt": "L'écran de recherche de Loupe avec une expression saisie, des pastilles de filtre et des suggestions sous le champ de recherche." },
     "phishing": { "title": "Le phishing, expliqué", "caption": "Quand un message semble louche, Loupe dit pourquoi en termes simples : un domaine sosie, ou un nom familier depuis une nouvelle adresse.", "alt": "Le panneau « This looks like phishing » de Loupe avec les raisons : un domaine sosie et un nom que vous connaissez qui écrit depuis une nouvelle adresse." },
     "tablet": { "title": "Trois volets sur tablette", "caption": "Les boîtes aux lettres, la liste et le message côte à côte, avec raccourcis clavier et palette de commandes.", "alt": "Loupe sur une tablette en mode paysage : les boîtes aux lettres à gauche, toutes les boîtes de réception au milieu et un message avec un carrousel de photos à droite." },
-    "subscriptions": { "title": "Centre de désabonnement", "caption": "Les newsletters classées selon la part que vous laissez non lue, calculée sur votre téléphone, avec désabonnement en un geste.", "alt": "L'écran Abonnements de Loupe avec les onglets Newsletters et Discussions, les filtres Never Read et Rarely Read, les taux de lecture et des boutons de désabonnement." },
+    "subscriptions": { "title": "Centre de désabonnement", "caption": "Les newsletters classées selon la part que vous laissez non lue, calculée sur votre téléphone, avec désabonnement en un geste.", "alt": "L'écran Abonnements de Loupe avec les onglets Newsletters et Discussions, les filtres Jamais lues et Rarement lues, les taux de lecture et des boutons de désabonnement." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Les recherches enregistrées côtoient vos dossiers et résident sur votre serveur de messagerie, pour que vos autres appareils les voient aussi.", "alt": "L'écran des boîtes aux lettres de Loupe avec les comptes repliés et deux Smart Mailboxes dans la liste." },
     "invitation": { "title": "Répondre aux invitations", "caption": "Les invitations aux réunions affichent les deux fuseaux horaires et vous permettent de répondre Accept, Maybe ou Decline sans quitter le message.", "alt": "Une invitation à une réunion Outlook dans Loupe avec l'heure de l'événement dans deux fuseaux horaires, un lien pour rejoindre Teams et les boutons Accept, Maybe et Decline." },
     "openpgp": { "title": "Chiffré, vérifié", "caption": "Les messages OpenPGP sont déchiffrés sur l'appareil, avec le signataire, un objet protégé et l'empreinte de la clé.", "alt": "Le panneau « Signed by Dana Okafor » de Loupe : déchiffré sur cet appareil, un objet protégé et l'empreinte de la clé." },
-    "compose": { "title": "Rédiger un message", "caption": "Les destinataires en pastilles, l'identité d'envoi, et Send Later quand le message doit attendre le matin.", "alt": "L'écran de nouveau message de Loupe avec des pastilles de destinataires, l'identité d'expéditeur, le corps du texte et les boutons Send Later et Send." },
-    "rules": { "title": "Des règles écrites comme des recherches", "caption": "Une règle, c'est une recherche plus une action ; exécutez-la sur le téléphone ou sur votre serveur, où Loupe écrit le Sieve pour vous.", "alt": "L'éditeur de nouvelle règle de Loupe : une condition sous forme de recherche, l'action Mark as Read, Run On Server activé et le script Sieve généré." },
+    "compose": { "title": "Rédiger un message", "caption": "Les destinataires en pastilles, l'identité d'envoi, et Envoyer plus tard quand le message doit attendre le matin.", "alt": "L'écran de nouveau message de Loupe avec des pastilles de destinataires, l'identité d'expéditeur, le corps du texte et les boutons Envoyer plus tard et Send." },
+    "rules": { "title": "Des règles écrites comme des recherches", "caption": "Une règle, c'est une recherche plus une action ; exécutez-la sur le téléphone ou sur votre serveur, où Loupe écrit le Sieve pour vous.", "alt": "L'éditeur de nouvelle règle de Loupe : une condition sous forme de recherche, l'action Marquer comme lu, Run On Server activé et le script Sieve généré." },
     "patch": { "title": "Les patchs en diffs", "caption": "Sur les listes de diffusion techniques, les patchs s'affichent en diffs colorés, dans une police à chasse fixe.", "alt": "Un message de liste de diffusion dans Loupe en police à chasse fixe, avec un patch affiché en diff rouge et vert." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Autorisez cette installation",
     "step2Text_html": "Android vous demande une fois si votre navigateur peut installer des applications. Autorisez-le, puis touchez <strong>Installer</strong>. Les versions suivantes s'installent par-dessus celle-ci et conservent vos comptes.",
     "step3": "Essayez-la, ou ajoutez votre compte",
-    "step3Text_html": "Choisissez <strong>Try with demo mail</strong> pour faire un tour d'abord, ou ajoutez votre compte. Consultez <a href=\"/docs/getting-started/\">Premiers pas</a>.",
+    "step3Text_html": "Choisissez <strong>Essayer avec des e-mails de démonstration</strong> pour faire un tour d'abord, ou ajoutez votre compte. Consultez <a href=\"/docs/getting-started/\">Premiers pas</a>.",
     "safety": "Chaque version est produite par GitHub Actions à partir du code source public et signée avec la clé de publication de Loupe. Google Play Protect peut tout de même afficher un avertissement pour les applications installées hors du Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Les e-mails au quotidien",
     "p1Text": "Comptes avec configuration automatique, liste des messages avec balayages, vues Readable, Original et Plain, recherche, rédaction avec annulation de l'envoi et boîte d'envoi, notifications et mode sombre.",
     "p2": "La couche avancée",
-    "p2Text": "Le langage de recherche complet, les Smart Mailboxes, les étiquettes, les règles et Sieve, les identités, View Source et les résultats d'authentification, trois volets et les raccourcis clavier, l'envoi programmé.",
+    "p2Text": "Le langage de recherche complet, les Smart Mailboxes, les étiquettes, les règles et Sieve, les identités, Afficher la source et les résultats d'authentification, trois volets et les raccourcis clavier, l'envoi programmé.",
     "p3": "JMAP",
     "p3Text": "Comptes JMAP pour Fastmail et Stalwart : recherche sur le serveur, envoi sans SMTP, push depuis le serveur et Sieve via JMAP.",
     "p4": "Chiffrement",

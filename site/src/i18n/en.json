@@ -1,5 +1,5 @@
 {
-  "$comment": "Source strings for loupe.mx. Keys ending in _html may contain <a>, <strong>, <em>, <code> and <br>; keep their tags and attributes exactly. {placeholders} must stay as they are. Search expressions, product names and quoted app labels stay in English.",
+  "$comment": "Source strings for loupe.mx. Keys ending in _html may contain <a>, <strong>, <em>, <code> and <br>; keep their tags and attributes exactly. {placeholders} must stay as they are. Search expressions and product names stay in English. A quoted app label (Send Later, Mark as Read) is the app's own wording in each language: take it from app/lib/l10n/app_<lang>.arb. Smart Mailbox and Readable stay English everywhere, as in the app.",
   "site": {
     "tagline": "Simple on the surface. Powerful underneath.",
     "description": "Loupe is a free, open-source mail app for Android: as calm as the best phone mail apps, with desktop-grade search, rules and encryption. No tracking, no servers."

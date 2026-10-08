@@ -241,7 +241,7 @@
       "p1": { "title": "Identități și aliasuri", "text": "Răspunde de pe adresa la care a fost trimis e-mailul, inclusiv de pe aliasuri catch-all." },
       "p2": { "title": "Anularea trimiterii", "text": "Un scurt interval în care te poți răzgândi." },
       "p3": { "title": "Trimitere programată", "text": "Alege o oră; căsuța de ieșire păstrează mesajul până atunci, chiar și offline." },
-      "p4": { "title": "Notificări cu acțiuni", "text": "Archive, Mark as Read sau Reply, direct din notificare." }
+      "p4": { "title": "Notificări cu acțiuni", "text": "Archive, Marchează ca citit sau Reply, direct din notificare." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Meniuri la apăsare lungă",
     "place1Text": "Pe mesaje, expeditori, bule și dosare.",
     "place2": "Meniul ⋯",
-    "place2Text": "View Source, toate anteturile și căutări pornind de la acest mesaj.",
+    "place2Text": "Vezi sursa, toate anteturile și căutări pornind de la acest mesaj.",
     "place3": "Limbajul de căutare",
     "place3Text": "Tot ce pot face bulele, și chiar mai mult, prin tastare.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Vezi Loupe pe Android: inboxul, modul Readable, căutarea prin expresii, abonamentele, invitațiile din calendar, verificările de securitate, modul întunecat și tabletele.",
     "eyebrow": "Capturi de ecran",
     "h1": "Aruncă o privire.",
-    "lead_html": "Ecrane reale din aplicație, generate din căsuța demo integrată: aceeași pe care o primești cu <strong>Try with demo mail</strong>.",
+    "lead_html": "Ecrane reale din aplicație, generate din căsuța demo integrată: aceeași pe care o primești cu <strong>Încearcă cu e-mailuri demo</strong>.",
     "filter": "Filtrează capturile de ecran",
     "all": "Toate",
     "soon": "Capturile de ecran sunt pe drum.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Căutare și filtre", "caption": "Sugestii și bule de filtrare pe măsură ce tastezi: găsești exact ce vrei în câteva secunde.", "alt": "Ecranul de căutare din Loupe cu o expresie tastată, bule de filtrare și sugestii sub câmpul de căutare." },
     "phishing": { "title": "Phishing, explicat", "caption": "Când un mesaj pare în neregulă, Loupe îți spune de ce, pe înțelesul tuturor: un domeniu care imită altul sau un nume cunoscut de la o adresă nouă.", "alt": "Panoul „This looks like phishing” din Loupe, cu motivele: un domeniu care imită altul și un nume pe care îl cunoști, care scrie de la o adresă nouă." },
     "tablet": { "title": "Trei panouri pe tablete", "caption": "Căsuțele poștale, lista și mesajul unul lângă altul, cu scurtături de tastatură și o paletă de comenzi.", "alt": "Loupe pe o tabletă în modul peisaj: căsuțele poștale în stânga, toate inboxurile la mijloc și un mesaj cu un carusel de fotografii în dreapta." },
-    "subscriptions": { "title": "Centrul de dezabonare", "caption": "Newsletterele ordonate după cât de mult lași necitit, calculat pe telefonul tău, cu dezabonare dintr-o atingere.", "alt": "Ecranul de abonamente din Loupe, cu filele Newsletters și Discussions, filtrele Never Read și Rarely Read, ratele de citire și butoane de dezabonare." },
+    "subscriptions": { "title": "Centrul de dezabonare", "caption": "Newsletterele ordonate după cât de mult lași necitit, calculat pe telefonul tău, cu dezabonare dintr-o atingere.", "alt": "Ecranul de abonamente din Loupe, cu filele Newsletters și Discussions, filtrele Niciodată citite și Rar citite, ratele de citire și butoane de dezabonare." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Căutările salvate stau lângă dosarele tale și se află pe serverul tău de e-mail, așa că le văd și celelalte dispozitive.", "alt": "Ecranul cu căsuțele poștale din Loupe, cu conturile restrânse și două Smart Mailboxes în listă." },
     "invitation": { "title": "Invitații, rezolvate", "caption": "Invitațiile la întâlniri arată ambele fusuri orare și îți permit să alegi Accept, Maybe sau Decline fără să părăsești mesajul.", "alt": "O invitație la o întâlnire Outlook în Loupe, cu ora evenimentului în două fusuri orare, un link de participare Teams și butoanele Accept, Maybe și Decline." },
     "openpgp": { "title": "Criptat, verificat", "caption": "Mesajele OpenPGP sunt decriptate pe dispozitiv, cu semnatarul, un subiect protejat și amprenta cheii.", "alt": "Panoul „Signed by Dana Okafor” din Loupe: decriptat pe acest dispozitiv, un subiect protejat și amprenta cheii." },
-    "compose": { "title": "Scrierea unui mesaj", "caption": "Destinatarii ca bule, identitatea de pe care trimiți și Send Later când mesajul trebuie să aștepte până dimineață.", "alt": "Ecranul de mesaj nou din Loupe, cu bulele destinatarilor, identitatea expeditorului, textul mesajului și butoanele Send Later și Send." },
-    "rules": { "title": "Reguli scrise ca o căutare", "caption": "O regulă este o căutare plus o acțiune; rulează-o pe telefon sau pe serverul tău, unde Loupe scrie Sieve-ul în locul tău.", "alt": "Editorul de reguli noi din Loupe: o condiție în stilul unei căutări, acțiunea Mark as Read, Run On Server activat și scriptul Sieve generat." },
+    "compose": { "title": "Scrierea unui mesaj", "caption": "Destinatarii ca bule, identitatea de pe care trimiți și Trimite mai târziu când mesajul trebuie să aștepte până dimineață.", "alt": "Ecranul de mesaj nou din Loupe, cu bulele destinatarilor, identitatea expeditorului, textul mesajului și butoanele Trimite mai târziu și Send." },
+    "rules": { "title": "Reguli scrise ca o căutare", "caption": "O regulă este o căutare plus o acțiune; rulează-o pe telefon sau pe serverul tău, unde Loupe scrie Sieve-ul în locul tău.", "alt": "Editorul de reguli noi din Loupe: o condiție în stilul unei căutări, acțiunea Marchează ca citit, Run On Server activat și scriptul Sieve generat." },
     "patch": { "title": "Patch-uri ca diff-uri", "caption": "Pe listele de e-mail tehnice, patch-urile sunt afișate ca diff-uri colorate, cu font monospațiat.", "alt": "Un mesaj dintr-o listă de e-mail în Loupe, cu font monospațiat și un patch afișat ca diff roșu și verde." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Permite această instalare",
     "step2Text_html": "Android te întreabă o singură dată dacă browserul tău poate instala aplicații. Permite, apoi atinge <strong>Instalați</strong>. Versiunile ulterioare se instalează peste aceasta și îți păstrează conturile.",
     "step3": "Încearc-o sau adaugă-ți contul",
-    "step3Text_html": "Alege <strong>Try with demo mail</strong> ca să explorezi mai întâi sau adaugă-ți contul. Vezi <a href=\"/docs/getting-started/\">Primii pași</a>.",
+    "step3Text_html": "Alege <strong>Încearcă cu e-mailuri demo</strong> ca să explorezi mai întâi sau adaugă-ți contul. Vezi <a href=\"/docs/getting-started/\">Primii pași</a>.",
     "safety": "Fiecare versiune este generată de GitHub Actions din codul sursă public și semnată cu cheia de lansare a Loupe. Google Play Protect te poate avertiza totuși în privința aplicațiilor din afara Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "E-mailul de zi cu zi",
     "p1Text": "Conturi cu configurare automată, lista de mesaje cu glisări, vizualizările Readable, Original și Plain, căutare, scriere cu anularea trimiterii și căsuță de ieșire, notificări și mod întunecat.",
     "p2": "Funcțiile avansate",
-    "p2Text": "Limbajul de căutare complet, Smart Mailboxes, etichete, reguli și Sieve, identități, View Source și rezultatele autentificării, trei panouri și scurtături de tastatură, trimitere programată.",
+    "p2Text": "Limbajul de căutare complet, Smart Mailboxes, etichete, reguli și Sieve, identități, Vezi sursa și rezultatele autentificării, trei panouri și scurtături de tastatură, trimitere programată.",
     "p3": "JMAP",
     "p3Text": "Conturi JMAP pentru Fastmail și Stalwart: căutare pe server, trimitere fără SMTP, push de la server și Sieve prin JMAP.",
     "p4": "Criptare",

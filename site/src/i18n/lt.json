@@ -241,7 +241,7 @@
       "p1": { "title": "Tapatybės ir pseudonimai", "text": "Atsakykite iš adreso, kuriuo laiškas buvo atsiųstas, įskaitant catch-all pseudonimus." },
       "p2": { "title": "Siuntimo atšaukimas", "text": "Trumpa akimirka persigalvoti." },
       "p3": { "title": "Suplanuotas siuntimas", "text": "Pasirinkite laiką; aplankas Siunčiamieji laikys laišką iki tol, net ir neprisijungus." },
-      "p4": { "title": "Pranešimai su veiksmais", "text": "Archyvuokite, atsakykite arba naudokite Mark as Read tiesiai iš pranešimo." }
+      "p4": { "title": "Pranešimai su veiksmais", "text": "Archyvuokite, atsakykite arba naudokite Pažymėti kaip skaitytą tiesiai iš pranešimo." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Ilgo paspaudimo meniu",
     "place1Text": "Laiškams, siuntėjams, žetonams ir aplankams.",
     "place2": "Meniu ⋯",
-    "place2Text": "View Source, visos antraštės ir paieška pagal šį laišką.",
+    "place2Text": "Rodyti šaltinį, visos antraštės ir paieška pagal šį laišką.",
     "place3": "Paieškos kalba",
     "place3Text": "Viskas, ką gali žetonai, ir dar daugiau – tiesiog rašant.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Pažiūrėkite, kaip Loupe atrodo Android įrenginyje: pašto dėžutė, režimas Readable, paieška išraiškomis, prenumeratos, kalendoriaus kvietimai, saugumo patikros, tamsusis režimas ir planšetės.",
     "eyebrow": "Ekrano nuotraukos",
     "h1": "Apsidairykite.",
-    "lead_html": "Tikri programėlės ekranai, sugeneruoti iš integruotos demonstracinės pašto dėžutės – tos pačios, kurią gaunate pasirinkę <strong>Try with demo mail</strong>.",
+    "lead_html": "Tikri programėlės ekranai, sugeneruoti iš integruotos demonstracinės pašto dėžutės – tos pačios, kurią gaunate pasirinkę <strong>Išbandyti su demonstraciniu paštu</strong>.",
     "filter": "Filtruoti ekrano nuotraukas",
     "all": "Visos",
     "soon": "Ekrano nuotraukos jau pakeliui.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Paieška ir filtrai", "caption": "Pasiūlymai ir filtrų žetonai jau rašant: rasti būtent tai, ko norite, užtrunka vos kelias sekundes.", "alt": "Loupe paieškos ekranas su įvesta išraiška, filtrų žetonais ir pasiūlymais po paieškos lauku." },
     "phishing": { "title": "Sukčiavimas, paaiškintas", "caption": "Kai laiškas atrodo įtartinai, Loupe paprastais žodžiais pasako kodėl: panašiai atrodantis domenas arba pažįstamas vardas iš naujo adreso.", "alt": "Loupe skydelis „This looks like phishing“ su priežastimis: panašiai atrodantis domenas ir pažįstamas vardas, rašantis iš naujo adreso." },
     "tablet": { "title": "Trys skydeliai planšetėse", "caption": "Pašto dėžutės, sąrašas ir laiškas greta, su sparčiaisiais klavišais ir komandų palete.", "alt": "Loupe planšetėje gulsčiai: pašto dėžutės kairėje, bendra pašto dėžutė viduryje ir laiškas su nuotraukų karuseliu dešinėje." },
-    "subscriptions": { "title": "Prenumeratų atsisakymo centras", "caption": "Naujienlaiškiai surikiuoti pagal tai, kiek jų paliekate neskaitytų, suskaičiuota jūsų telefone, su prenumeratos atsisakymu vienu bakstelėjimu.", "alt": "Loupe prenumeratų ekranas su skirtukais Newsletters ir Discussions, filtrais Never Read ir Rarely Read, skaitymo rodikliais ir prenumeratos atsisakymo mygtukais." },
+    "subscriptions": { "title": "Prenumeratų atsisakymo centras", "caption": "Naujienlaiškiai surikiuoti pagal tai, kiek jų paliekate neskaitytų, suskaičiuota jūsų telefone, su prenumeratos atsisakymu vienu bakstelėjimu.", "alt": "Loupe prenumeratų ekranas su skirtukais Newsletters ir Discussions, filtrais Niekada neskaityti ir Retai skaitomi, skaitymo rodikliais ir prenumeratos atsisakymo mygtukais." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Išsaugotos paieškos rodomos šalia jūsų aplankų ir saugomos jūsų pašto serveryje, todėl jas mato ir kiti jūsų įrenginiai.", "alt": "Loupe pašto dėžučių ekranas su suskleistomis paskyromis ir dviem Smart Mailboxes sąraše." },
     "invitation": { "title": "Kvietimai, atsakyti vietoje", "caption": "Susitikimų kvietimuose rodomos abi laiko juostos, ir galite pasirinkti Accept, Maybe arba Decline neišeidami iš laiško.", "alt": "Outlook susitikimo kvietimas programėlėje Loupe su renginio laiku dviejose laiko juostose, Teams prisijungimo nuoroda ir mygtukais Accept, Maybe ir Decline." },
     "openpgp": { "title": "Šifruota, patikrinta", "caption": "OpenPGP laiškai iššifruojami įrenginyje, parodant pasirašiusįjį, apsaugotą temą ir rakto kontrolinį kodą.", "alt": "Loupe skydelis „Signed by Dana Okafor“: iššifruota šiame įrenginyje, apsaugota tema ir rakto kontrolinis kodas." },
-    "compose": { "title": "Laiško rašymas", "caption": "Gavėjai kaip žetonai, tapatybė, iš kurios siunčiate, ir Send Later, kai laiškas turi palaukti iki ryto.", "alt": "Loupe naujo laiško ekranas su gavėjų žetonais, siuntėjo tapatybe, laiško tekstu ir mygtukais Send Later ir Send." },
-    "rules": { "title": "Taisyklės – paprasta paieška", "caption": "Taisyklė – tai paieška ir veiksmas; vykdykite ją telefone arba savo serveryje, kur Loupe parašys Sieve už jus.", "alt": "Loupe naujos taisyklės redaktorius: paieškos stiliaus sąlyga, veiksmas Mark as Read, įjungtas Run On Server ir sugeneruotas Sieve scenarijus." },
+    "compose": { "title": "Laiško rašymas", "caption": "Gavėjai kaip žetonai, tapatybė, iš kurios siunčiate, ir Siųsti vėliau, kai laiškas turi palaukti iki ryto.", "alt": "Loupe naujo laiško ekranas su gavėjų žetonais, siuntėjo tapatybe, laiško tekstu ir mygtukais Siųsti vėliau ir Send." },
+    "rules": { "title": "Taisyklės – paprasta paieška", "caption": "Taisyklė – tai paieška ir veiksmas; vykdykite ją telefone arba savo serveryje, kur Loupe parašys Sieve už jus.", "alt": "Loupe naujos taisyklės redaktorius: paieškos stiliaus sąlyga, veiksmas Pažymėti kaip skaitytą, įjungtas Run On Server ir sugeneruotas Sieve scenarijus." },
     "patch": { "title": "Pataisos kaip diff", "caption": "Techninėse el. pašto konferencijose pataisos rodomos kaip spalvoti diff lygiapločiu šriftu.", "alt": "El. pašto konferencijos laiškas programėlėje Loupe lygiapločiu šriftu, su pataisa, parodyta kaip raudonas ir žalias diff." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Leiskite įdiegti",
     "step2Text_html": "Android vieną kartą paklaus, ar jūsų naršyklė gali diegti programas. Leiskite, tada bakstelėkite <strong>Įdiegti</strong>. Vėlesnės versijos diegiamos ant šios ir išsaugo jūsų paskyras.",
     "step3": "Išbandykite arba pridėkite savo paskyrą",
-    "step3Text_html": "Pasirinkite <strong>Try with demo mail</strong>, kad pirmiausia apsidairytumėte, arba pridėkite savo paskyrą. Žr. <a href=\"/docs/getting-started/\">Darbo pradžia</a>.",
+    "step3Text_html": "Pasirinkite <strong>Išbandyti su demonstraciniu paštu</strong>, kad pirmiausia apsidairytumėte, arba pridėkite savo paskyrą. Žr. <a href=\"/docs/getting-started/\">Darbo pradžia</a>.",
     "safety": "Kiekvieną versiją GitHub Actions sukuria iš viešo pirminio kodo, o ji pasirašoma Loupe leidimų raktu. Google Play Protect vis tiek gali įspėti apie programas ne iš Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Kasdienis paštas",
     "p1Text": "Paskyros su automatine sąranka, laiškų sąrašas su braukimais, rodiniai Readable, Original ir Plain, paieška, laiškų rašymas su siuntimo atšaukimu ir aplanku Siunčiamieji, pranešimai ir tamsusis režimas.",
     "p2": "Pažangusis sluoksnis",
-    "p2Text": "Visa paieškos kalba, Smart Mailboxes, žymės, taisyklės ir Sieve, tapatybės, View Source ir autentifikavimo rezultatai, trys skydeliai ir spartieji klavišai, suplanuotas siuntimas.",
+    "p2Text": "Visa paieškos kalba, Smart Mailboxes, žymės, taisyklės ir Sieve, tapatybės, Rodyti šaltinį ir autentifikavimo rezultatai, trys skydeliai ir spartieji klavišai, suplanuotas siuntimas.",
     "p3": "JMAP",
     "p3Text": "JMAP paskyros Fastmail ir Stalwart: paieška serveryje, siuntimas be SMTP, push pranešimai iš serverio ir Sieve per JMAP.",
     "p4": "Šifravimas",

@@ -241,7 +241,7 @@
       "p1": { "title": "Kimlikler ve takma adlar", "text": "E-postanın gönderildiği adresten yanıt verin; catch-all takma adlar da dahil." },
       "p2": { "title": "Gönderimi geri al", "text": "Fikrinizi değiştirmek için kısa bir süre." },
       "p3": { "title": "Zamanlanmış gönderim", "text": "Bir saat seçin; Giden Kutusu iletiyi o zamana kadar saklar, çevrimdışıyken bile." },
-      "p4": { "title": "Eylemli bildirimler", "text": "Doğrudan bildirimden arşivleyin, Mark as Read'i seçin ya da yanıtlayın." }
+      "p4": { "title": "Eylemli bildirimler", "text": "Doğrudan bildirimden arşivleyin, Okundu olarak işaretle'i seçin ya da yanıtlayın." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Uzun basma menüleri",
     "place1Text": "İletilerde, gönderenlerde, çiplerde ve klasörlerde.",
     "place2": "⋯ menüsü",
-    "place2Text": "View Source, tüm üst bilgiler ve bu iletiden yola çıkarak arama.",
+    "place2Text": "Kaynağı görüntüle, tüm üst bilgiler ve bu iletiden yola çıkarak arama.",
     "place3": "Arama dili",
     "place3Text": "Çiplerin yapabildiği her şey ve fazlası, yazarak.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Loupe'u Android'de görün: gelen kutusu, Readable modu, ifade tabanlı arama, abonelikler, takvim davetleri, güvenlik denetimleri, koyu mod ve tabletler.",
     "eyebrow": "Ekran görüntüleri",
     "h1": "Şöyle bir göz atın.",
-    "lead_html": "Uygulamadan gerçek ekranlar, yerleşik demo posta kutusundan alındı: <strong>Try with demo mail</strong> ile karşınıza çıkanın aynısı.",
+    "lead_html": "Uygulamadan gerçek ekranlar, yerleşik demo posta kutusundan alındı: <strong>Demo e-postayla deneyin</strong> ile karşınıza çıkanın aynısı.",
     "filter": "Ekran görüntülerini filtrele",
     "all": "Tümü",
     "soon": "Ekran görüntüleri yolda.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Arama ve filtreler", "caption": "Siz yazarken öneriler ve filtre çipleri: tam olarak istediğinizi bulmak saniyeler sürer.", "alt": "Loupe'un arama ekranı: yazılmış bir ifade, filtre çipleri ve arama alanının altında öneriler." },
     "phishing": { "title": "Kimlik avı, açıklamalı", "caption": "Bir ileti şüpheli göründüğünde Loupe nedenini sade bir dille söyler: gerçeğine benzeyen bir alan adı ya da yeni bir adresten yazan tanıdık bir ad.", "alt": "Loupe'un “This looks like phishing” sayfası nedenleri listeliyor: gerçeğine benzeyen bir alan adı ve yeni bir adresten yazan, tanıdığınız bir ad." },
     "tablet": { "title": "Tabletlerde üç bölme", "caption": "Posta kutuları, liste ve ileti yan yana; klavye kısayolları ve bir komut paletiyle.", "alt": "Yatay konumdaki bir tablette Loupe: solda posta kutuları, ortada tüm gelen kutuları ve sağda fotoğraf karuseli içeren bir ileti." },
-    "subscriptions": { "title": "Abonelikten çıkma merkezi", "caption": "Bültenler, ne kadarını okunmadan bıraktığınıza göre sıralanır; sayım telefonunuzda yapılır, abonelikten çıkmak tek dokunuş.", "alt": "Loupe'un Abonelikler ekranı: Newsletters ve Discussions sekmeleri, Never Read ve Rarely Read filtreleri, okunma oranları ve abonelikten çıkma düğmeleri." },
+    "subscriptions": { "title": "Abonelikten çıkma merkezi", "caption": "Bültenler, ne kadarını okunmadan bıraktığınıza göre sıralanır; sayım telefonunuzda yapılır, abonelikten çıkmak tek dokunuş.", "alt": "Loupe'un Abonelikler ekranı: Newsletters ve Discussions sekmeleri, Hiç okunmamış ve Nadiren okunan filtreleri, okunma oranları ve abonelikten çıkma düğmeleri." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Kayıtlı aramalar klasörlerinizin yanında durur ve e-posta sunucunuzda saklanır; böylece diğer cihazlarınız da onları görür.", "alt": "Loupe'un Posta Kutuları ekranı: hesaplar daraltılmış, iki Smart Mailbox listelenmiş." },
     "invitation": { "title": "Davetler, yanıtlandı", "caption": "Toplantı davetleri iki saat dilimini birden gösterir ve iletiden çıkmadan Accept, Maybe veya Decline demenizi sağlar.", "alt": "Loupe'ta bir Outlook toplantı daveti: iki saat diliminde etkinlik saati, bir Teams katılma bağlantısı ve Accept, Maybe ve Decline düğmeleri." },
     "openpgp": { "title": "Şifreli, doğrulanmış", "caption": "OpenPGP iletilerinin şifresi cihazda çözülür; imzalayan, korumalı konu ve anahtarın parmak izi gösterilir.", "alt": "Loupe'un “Signed by Dana Okafor” sayfası: şifresi bu cihazda çözülmüş, korumalı bir konu ve anahtarın parmak izi." },
-    "compose": { "title": "İleti yazma", "caption": "Çip olarak alıcılar, gönderdiğiniz kimlik ve ileti sabaha kadar beklemeliyse Send Later.", "alt": "Loupe'un Yeni İleti ekranı: alıcı çipleri, gönderen kimliği, gövde metni ve Send Later ile Send düğmeleri." },
-    "rules": { "title": "Sade aramayla kurallar", "caption": "Kural, bir arama artı bir eylemdir; telefonda ya da sunucunuzda çalıştırın, Sieve kodunu Loupe sizin için yazar.", "alt": "Loupe'un Yeni Kural düzenleyicisi: arama biçiminde bir koşul, Mark as Read eylemi, açık konumda Run On Server ve oluşturulan Sieve betiği." },
+    "compose": { "title": "İleti yazma", "caption": "Çip olarak alıcılar, gönderdiğiniz kimlik ve ileti sabaha kadar beklemeliyse Daha sonra gönder.", "alt": "Loupe'un Yeni İleti ekranı: alıcı çipleri, gönderen kimliği, gövde metni ve Daha sonra gönder ile Send düğmeleri." },
+    "rules": { "title": "Sade aramayla kurallar", "caption": "Kural, bir arama artı bir eylemdir; telefonda ya da sunucunuzda çalıştırın, Sieve kodunu Loupe sizin için yazar.", "alt": "Loupe'un Yeni Kural düzenleyicisi: arama biçiminde bir koşul, Okundu olarak işaretle eylemi, açık konumda Run On Server ve oluşturulan Sieve betiği." },
     "patch": { "title": "Diff olarak yamalar", "caption": "Teknik e-posta listelerinde yamalar, eş aralıklı bir yazı tipiyle renkli diff olarak gösterilir.", "alt": "Loupe'ta eş aralıklı yazı tipiyle gösterilen bir e-posta listesi iletisi; içindeki yama kırmızı ve yeşil bir diff olarak çizilmiş." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Bu yüklemeye izin verin",
     "step2Text_html": "Android, tarayıcınızın uygulama yüklemesine izin verip vermeyeceğinizi bir kez sorar. İzin verin, ardından <strong>Yükle</strong>'ye dokunun. Sonraki derlemeler bunun üzerine yüklenir ve hesaplarınızı korur.",
     "step3": "Deneyin ya da hesabınızı ekleyin",
-    "step3Text_html": "Önce etrafa göz atmak için <strong>Try with demo mail</strong> seçeneğini seçin ya da hesabınızı ekleyin. <a href=\"/docs/getting-started/\">Başlarken</a> kılavuzuna bakın.",
+    "step3Text_html": "Önce etrafa göz atmak için <strong>Demo e-postayla deneyin</strong> seçeneğini seçin ya da hesabınızı ekleyin. <a href=\"/docs/getting-started/\">Başlarken</a> kılavuzuna bakın.",
     "safety": "Her derleme, herkese açık kaynak koddan GitHub Actions tarafından oluşturulur ve Loupe'un sürüm anahtarıyla imzalanır. Google Play Protect, Play Store dışından gelen uygulamalar için yine de uyarı gösterebilir."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Gündelik e-posta",
     "p1Text": "Otomatik kurulumlu hesaplar, kaydırma hareketli ileti listesi, Readable, Original ve Plain görünümleri, arama, gönderimi geri alma ve Giden Kutusu ile ileti yazma, bildirimler ve koyu mod.",
     "p2": "Güç katmanı",
-    "p2Text": "Arama dilinin tamamı, Smart Mailboxes, etiketler, kurallar ve Sieve, kimlikler, View Source ve kimlik doğrulama sonuçları, üç bölme ve klavye kısayolları, zamanlanmış gönderim.",
+    "p2Text": "Arama dilinin tamamı, Smart Mailboxes, etiketler, kurallar ve Sieve, kimlikler, Kaynağı görüntüle ve kimlik doğrulama sonuçları, üç bölme ve klavye kısayolları, zamanlanmış gönderim.",
     "p3": "JMAP",
     "p3Text": "Fastmail ve Stalwart için JMAP hesapları: sunucuda arama, SMTP olmadan gönderim, sunucudan push ve JMAP üzerinden Sieve.",
     "p4": "Şifreleme",

@@ -241,7 +241,7 @@
       "p1": { "title": "Tożsamości i aliasy", "text": "Odpowiadaj z adresu, na który przyszła wiadomość, także z aliasów catch-all." },
       "p2": { "title": "Cofnij wysłanie", "text": "Krótka chwila, by zmienić zdanie." },
       "p3": { "title": "Planowana wysyłka", "text": "Wybierz godzinę; skrzynka nadawcza przechowa wiadomość do tego czasu, nawet offline." },
-      "p4": { "title": "Powiadomienia z akcjami", "text": "Archiwizuj, odpowiadaj lub użyj Mark as Read prosto z powiadomienia." }
+      "p4": { "title": "Powiadomienia z akcjami", "text": "Archiwizuj, odpowiadaj lub użyj Oznacz jako przeczytane prosto z powiadomienia." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Menu po długim przytrzymaniu",
     "place1Text": "Na wiadomościach, nadawcach, chipach i folderach.",
     "place2": "Menu ⋯",
-    "place2Text": "View Source, wszystkie nagłówki i wyszukiwanie na podstawie tej wiadomości.",
+    "place2Text": "Pokaż źródło, wszystkie nagłówki i wyszukiwanie na podstawie tej wiadomości.",
     "place3": "Język wyszukiwania",
     "place3Text": "Wszystko, co potrafią chipy, i jeszcze więcej, z klawiatury.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Zobacz Loupe na Androidzie: skrzynkę odbiorczą, tryb Readable, wyszukiwanie za pomocą wyrażeń, subskrypcje, zaproszenia z kalendarza, kontrole bezpieczeństwa, tryb ciemny i tablety.",
     "eyebrow": "Zrzuty ekranu",
     "h1": "Rozejrzyj się.",
-    "lead_html": "Prawdziwe ekrany aplikacji, wygenerowane z wbudowanej skrzynki demonstracyjnej: tej samej, którą dostajesz po wybraniu <strong>Try with demo mail</strong>.",
+    "lead_html": "Prawdziwe ekrany aplikacji, wygenerowane z wbudowanej skrzynki demonstracyjnej: tej samej, którą dostajesz po wybraniu <strong>Wypróbuj z pocztą demonstracyjną</strong>.",
     "filter": "Filtruj zrzuty ekranu",
     "all": "Wszystkie",
     "soon": "Zrzuty ekranu są w drodze.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Wyszukiwanie i filtry", "caption": "Podpowiedzi i chipy filtrów już podczas pisania: znalezienie dokładnie tego, czego chcesz, zajmuje sekundy.", "alt": "Ekran wyszukiwania w Loupe z wpisanym wyrażeniem, chipami filtrów i podpowiedziami pod polem wyszukiwania." },
     "phishing": { "title": "Phishing bez tajemnic", "caption": "Gdy wiadomość wygląda podejrzanie, Loupe mówi prostymi słowami, dlaczego: łudząco podobna domena albo znajome nazwisko z nowego adresu.", "alt": "Panel „This looks like phishing” w Loupe z listą powodów: łudząco podobna domena i znana ci osoba pisząca z nowego adresu." },
     "tablet": { "title": "Trzy panele na tabletach", "caption": "Skrzynki, lista i wiadomość obok siebie, ze skrótami klawiszowymi i paletą poleceń.", "alt": "Loupe na tablecie w orientacji poziomej: skrzynki po lewej, widok wszystkich skrzynek odbiorczych pośrodku i wiadomość z karuzelą zdjęć po prawej." },
-    "subscriptions": { "title": "Centrum wypisywania", "caption": "Newslettery uszeregowane według tego, ile zostawiasz nieprzeczytanych, liczone na twoim telefonie, z wypisywaniem jednym stuknięciem.", "alt": "Ekran subskrypcji w Loupe z kartami Newsletters i Discussions, filtrami Never Read i Rarely Read, odsetkami przeczytanych i przyciskami Unsubscribe." },
+    "subscriptions": { "title": "Centrum wypisywania", "caption": "Newslettery uszeregowane według tego, ile zostawiasz nieprzeczytanych, liczone na twoim telefonie, z wypisywaniem jednym stuknięciem.", "alt": "Ekran subskrypcji w Loupe z kartami Newsletters i Discussions, filtrami Nigdy nieczytane i Rzadko czytane, odsetkami przeczytanych i przyciskami Unsubscribe." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Zapisane wyszukiwania leżą obok folderów i są przechowywane na serwerze pocztowym, więc widzą je też inne urządzenia.", "alt": "Ekran skrzynek w Loupe ze zwiniętymi kontami i dwiema Smart Mailboxes na liście." },
     "invitation": { "title": "Zaproszenia z odpowiedzią", "caption": "Zaproszenia na spotkania pokazują obie strefy czasowe i pozwalają wybrać Accept, Maybe lub Decline bez opuszczania wiadomości.", "alt": "Zaproszenie na spotkanie z Outlooka w Loupe z godziną wydarzenia w dwóch strefach czasowych, linkiem do dołączenia w Teams i przyciskami Accept, Maybe i Decline." },
     "openpgp": { "title": "Zaszyfrowane, zweryfikowane", "caption": "Wiadomości OpenPGP są odszyfrowywane na urządzeniu, z informacją o podpisującym, chronionym tematem i odciskiem klucza.", "alt": "Panel „Signed by Dana Okafor” w Loupe: odszyfrowano na tym urządzeniu, chroniony temat i odcisk klucza." },
-    "compose": { "title": "Pisanie wiadomości", "caption": "Odbiorcy jako chipy, tożsamość, z której wysyłasz, i Send Later, gdy wiadomość ma poczekać do rana.", "alt": "Ekran nowej wiadomości w Loupe z chipami odbiorców, tożsamością nadawcy, treścią oraz przyciskami Send Later i Send." },
-    "rules": { "title": "Reguły jako zwykłe wyszukiwanie", "caption": "Reguła to wyszukiwanie plus akcja; uruchom ją na telefonie albo na serwerze, gdzie Loupe napisze za ciebie skrypt Sieve.", "alt": "Edytor nowej reguły w Loupe: warunek w stylu wyszukiwania, akcja Mark as Read, włączony przełącznik Run On Server i wygenerowany skrypt Sieve." },
+    "compose": { "title": "Pisanie wiadomości", "caption": "Odbiorcy jako chipy, tożsamość, z której wysyłasz, i Wyślij później, gdy wiadomość ma poczekać do rana.", "alt": "Ekran nowej wiadomości w Loupe z chipami odbiorców, tożsamością nadawcy, treścią oraz przyciskami Wyślij później i Send." },
+    "rules": { "title": "Reguły jako zwykłe wyszukiwanie", "caption": "Reguła to wyszukiwanie plus akcja; uruchom ją na telefonie albo na serwerze, gdzie Loupe napisze za ciebie skrypt Sieve.", "alt": "Edytor nowej reguły w Loupe: warunek w stylu wyszukiwania, akcja Oznacz jako przeczytane, włączony przełącznik Run On Server i wygenerowany skrypt Sieve." },
     "patch": { "title": "Łatki jako diffy", "caption": "Na technicznych listach mailingowych łatki są pokazywane jako kolorowe diffy, czcionką o stałej szerokości.", "alt": "Wiadomość z listy mailingowej w Loupe, wyświetlona czcionką o stałej szerokości, z łatką pokazaną jako czerwono-zielony diff." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Zezwól na tę instalację",
     "step2Text_html": "Android raz zapyta, czy przeglądarka może instalować aplikacje. Zezwól, a potem stuknij <strong>Zainstaluj</strong>. Kolejne wersje instalują się na tej i zachowują twoje konta.",
     "step3": "Wypróbuj albo dodaj konto",
-    "step3Text_html": "Wybierz <strong>Try with demo mail</strong>, żeby najpierw się rozejrzeć, albo dodaj swoje konto. Zobacz <a href=\"/docs/getting-started/\">Pierwsze kroki</a>.",
+    "step3Text_html": "Wybierz <strong>Wypróbuj z pocztą demonstracyjną</strong>, żeby najpierw się rozejrzeć, albo dodaj swoje konto. Zobacz <a href=\"/docs/getting-started/\">Pierwsze kroki</a>.",
     "safety": "Każda wersja powstaje w GitHub Actions z publicznego kodu źródłowego i jest podpisana kluczem wydań Loupe. Google Play Protect może mimo to ostrzegać przed aplikacjami spoza Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Poczta na co dzień",
     "p1Text": "Konta z automatyczną konfiguracją, lista wiadomości z gestami przesunięcia, widoki Readable, Original i Plain, wyszukiwanie, pisanie z cofaniem wysyłki i skrzynką nadawczą, powiadomienia i tryb ciemny.",
     "p2": "Warstwa zaawansowana",
-    "p2Text": "Pełny język wyszukiwania, Smart Mailboxes, tagi, reguły i Sieve, tożsamości, View Source i wyniki uwierzytelniania, trzy panele i skróty klawiszowe, planowana wysyłka.",
+    "p2Text": "Pełny język wyszukiwania, Smart Mailboxes, tagi, reguły i Sieve, tożsamości, Pokaż źródło i wyniki uwierzytelniania, trzy panele i skróty klawiszowe, planowana wysyłka.",
     "p3": "JMAP",
     "p3Text": "Konta JMAP dla Fastmail i Stalwart: wyszukiwanie na serwerze, wysyłanie bez SMTP, push z serwera i Sieve przez JMAP.",
     "p4": "Szyfrowanie",

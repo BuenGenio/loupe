@@ -241,7 +241,7 @@
       "p1": { "title": "Identitete dhe pseudonime", "text": "Përgjigjuni nga adresa ku u dërgua mesazhi, përfshirë pseudonimet catch-all." },
       "p2": { "title": "Anulimi i dërgimit", "text": "Një dritare e shkurtër për të ndryshuar mendje." },
       "p3": { "title": "Dërgim i planifikuar", "text": "Zgjidhni një orë; Kutia dalëse e mban mesazhin deri atëherë, edhe pa internet." },
-      "p4": { "title": "Njoftime me veprime", "text": "Arkivoni, përgjigjuni ose prekni Mark as Read drejtpërdrejt nga njoftimi." }
+      "p4": { "title": "Njoftime me veprime", "text": "Arkivoni, përgjigjuni ose prekni Shëno si të lexuar drejtpërdrejt nga njoftimi." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Menytë me shtypje të gjatë",
     "place1Text": "Te mesazhet, dërguesit, butonat e filtrit dhe dosjet.",
     "place2": "Menyja ⋯",
-    "place2Text": "View Source, çdo kokë e mesazhit dhe kërkim duke u nisur nga ky mesazh.",
+    "place2Text": "Shih burimin, çdo kokë e mesazhit dhe kërkim duke u nisur nga ky mesazh.",
     "place3": "Gjuha e kërkimit",
     "place3Text": "Gjithçka që bëjnë butonat e filtrit, e madje më shumë, thjesht duke shkruar.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Shihni Loupe në Android: kutinë hyrëse, mënyrën Readable, kërkimin me shprehje, abonimet, ftesat e kalendarit, kontrollet e sigurisë, mënyrën e errët dhe tabletat.",
     "eyebrow": "Pamje ekrani",
     "h1": "Hidhni një sy përreth.",
-    "lead_html": "Ekrane të vërteta nga aplikacioni, të krijuara nga kutia e tij demo e integruar: e njëjta që merrni me <strong>Try with demo mail</strong>.",
+    "lead_html": "Ekrane të vërteta nga aplikacioni, të krijuara nga kutia e tij demo e integruar: e njëjta që merrni me <strong>Provojeni me postë demo</strong>.",
     "filter": "Filtro pamjet e ekranit",
     "all": "Të gjitha",
     "soon": "Pamjet e ekranit po vijnë.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Kërkimi dhe filtrat", "caption": "Sugjerime dhe butona filtri ndërsa shkruani: për të gjetur pikërisht atë që doni mjaftojnë disa sekonda.", "alt": "Ekrani i kërkimit në Loupe me një shprehje të shkruar, butona filtri dhe sugjerime nën fushën e kërkimit." },
     "phishing": { "title": "Phishing-u, i shpjeguar", "caption": "Kur një mesazh duket i dyshimtë, Loupe ju thotë pse me fjalë të thjeshta: një domen imitues ose një emër i njohur nga një adresë e re.", "alt": "Paneli “This looks like phishing” në Loupe me listën e arsyeve: një domen imitues dhe një emër që e njihni, i cili shkruan nga një adresë e re." },
     "tablet": { "title": "Tri panele në tableta", "caption": "Kutitë postare, lista dhe mesazhi krah për krah, me shkurtore tastiere dhe një paletë komandash.", "alt": "Loupe në një tablet në pozicion horizontal: kutitë postare majtas, kutitë hyrëse të të gjitha llogarive në mes dhe një mesazh me karusel fotosh djathtas." },
-    "subscriptions": { "title": "Qendra e çabonimit", "caption": "Buletinet renditen sipas sa shumë i lini të palexuar, numëruar në telefonin tuaj, me çabonim me një prekje.", "alt": "Ekrani i abonimeve në Loupe me skedat Newsletters dhe Discussions, filtrat Never Read dhe Rarely Read, përqindjet e leximit dhe butonat e çabonimit." },
+    "subscriptions": { "title": "Qendra e çabonimit", "caption": "Buletinet renditen sipas sa shumë i lini të palexuar, numëruar në telefonin tuaj, me çabonim me një prekje.", "alt": "Ekrani i abonimeve në Loupe me skedat Newsletters dhe Discussions, filtrat S’lexohen kurrë dhe Lexohen rrallë, përqindjet e leximit dhe butonat e çabonimit." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Kërkimet e ruajtura qëndrojnë pranë dosjeve tuaja dhe jetojnë në serverin tuaj të postës, ndaj i shohin edhe pajisjet tuaja të tjera.", "alt": "Ekrani i kutive postare në Loupe me llogaritë të palosura dhe dy Smart Mailboxes në listë." },
     "invitation": { "title": "Ftesat, me përgjigje", "caption": "Ftesat për takime tregojnë të dyja zonat kohore dhe ju lejojnë të zgjidhni Accept, Maybe ose Decline pa e lënë mesazhin.", "alt": "Një ftesë takimi nga Outlook në Loupe, me orën e ngjarjes në dy zona kohore, një lidhje për t’u bashkuar në Teams dhe butonat Accept, Maybe dhe Decline." },
     "openpgp": { "title": "Enkriptuar, verifikuar", "caption": "Mesazhet OpenPGP deshifrohen në pajisje, me nënshkruesin, një subjekt të mbrojtur dhe gjurmën e gishtit të çelësit.", "alt": "Paneli “Signed by Dana Okafor” në Loupe: deshifruar në këtë pajisje, një subjekt i mbrojtur dhe gjurma e gishtit e çelësit." },
-    "compose": { "title": "Shkrimi i një mesazhi", "caption": "Marrësit si butona, identiteti nga i cili dërgoni dhe Send Later kur mesazhi duhet të presë deri në mëngjes.", "alt": "Ekrani i mesazhit të ri në Loupe me marrësit si butona, identitetin e dërguesit në fushën Nga, tekstin e mesazhit, butonin Send Later dhe butonin e dërgimit." },
-    "rules": { "title": "Rregulla me kërkim të thjeshtë", "caption": "Një rregull është një kërkim plus një veprim; ekzekutojeni në telefon ose në serverin tuaj, ku Loupe e shkruan Sieve-n për ju.", "alt": "Redaktori i rregullit të ri në Loupe: një kusht në stilin e kërkimit, veprimi Mark as Read, Run On Server i aktivizuar dhe skripti Sieve i gjeneruar." },
+    "compose": { "title": "Shkrimi i një mesazhi", "caption": "Marrësit si butona, identiteti nga i cili dërgoni dhe Dërgo më vonë kur mesazhi duhet të presë deri në mëngjes.", "alt": "Ekrani i mesazhit të ri në Loupe me marrësit si butona, identitetin e dërguesit në fushën Nga, tekstin e mesazhit, butonin Dërgo më vonë dhe butonin e dërgimit." },
+    "rules": { "title": "Rregulla me kërkim të thjeshtë", "caption": "Një rregull është një kërkim plus një veprim; ekzekutojeni në telefon ose në serverin tuaj, ku Loupe e shkruan Sieve-n për ju.", "alt": "Redaktori i rregullit të ri në Loupe: një kusht në stilin e kërkimit, veprimi Shëno si të lexuar, Run On Server i aktivizuar dhe skripti Sieve i gjeneruar." },
     "patch": { "title": "Patch-et si diff", "caption": "Në listat teknike të postimeve, patch-et shfaqen si diff me ngjyra, me shkronja me gjerësi fikse.", "alt": "Një mesazh nga një listë postimesh në Loupe, me shkronja me gjerësi fikse, me një patch të shfaqur si diff i kuq dhe i gjelbër." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Lejoni këtë instalim",
     "step2Text_html": "Android ju pyet një herë nëse shfletuesi juaj mund të instalojë aplikacione. Lejojeni, pastaj prekni <strong>Instalo</strong>. Ndërtimet e mëvonshme instalohen mbi këtë dhe i ruajnë llogaritë tuaja.",
     "step3": "Provojeni ose shtoni llogarinë tuaj",
-    "step3Text_html": "Zgjidhni <strong>Try with demo mail</strong> për t’i hedhur fillimisht një sy, ose shtoni llogarinë tuaj. Shihni <a href=\"/docs/getting-started/\">Si të filloni</a>.",
+    "step3Text_html": "Zgjidhni <strong>Provojeni me postë demo</strong> për t’i hedhur fillimisht një sy, ose shtoni llogarinë tuaj. Shihni <a href=\"/docs/getting-started/\">Si të filloni</a>.",
     "safety": "Çdo ndërtim krijohet nga GitHub Actions prej kodit burim publik dhe nënshkruhet me çelësin e publikimeve të Loupe. Google Play Protect mund të paralajmërojë gjithsesi për aplikacionet jashtë Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Posta e përditshme",
     "p1Text": "Llogari me konfigurim automatik, lista e mesazheve me rrëshqitje, pamjet Readable, Original dhe Plain, kërkimi, shkrimi me anulim të dërgimit dhe Kuti dalëse, njoftimet dhe mënyra e errët.",
     "p2": "Shtresa e avancuar",
-    "p2Text": "Gjuha e plotë e kërkimit, Smart Mailboxes, etiketat, rregullat dhe Sieve, identitetet, View Source dhe rezultatet e autentikimit, tri panele dhe shkurtore tastiere, dërgimi i planifikuar.",
+    "p2Text": "Gjuha e plotë e kërkimit, Smart Mailboxes, etiketat, rregullat dhe Sieve, identitetet, Shih burimin dhe rezultatet e autentikimit, tri panele dhe shkurtore tastiere, dërgimi i planifikuar.",
     "p3": "JMAP",
     "p3Text": "Llogari JMAP për Fastmail dhe Stalwart: kërkim në server, dërgim pa SMTP, push nga serveri dhe Sieve përmes JMAP.",
     "p4": "Enkriptimi",
