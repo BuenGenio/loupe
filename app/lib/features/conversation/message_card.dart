@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:readable/readable.dart';
 
+import '../../l10n/l10n.dart';
 import '../../shared/avatar.dart';
 import '../../shared/format.dart';
 import '../../shared/tags.dart';
@@ -83,7 +84,8 @@ class _MessageCardState extends State<MessageCard> {
 
   EmailSummary get _m => widget.message;
 
-  String _name(EmailAddress a) => widget.ownAddresses.contains(a.email.toLowerCase()) ? 'me' : a.displayName;
+  String _name(EmailAddress a) =>
+      widget.ownAddresses.contains(a.email.toLowerCase()) ? context.l10n.conversationMe : a.displayName;
 
   @override
   Widget build(BuildContext context) => widget.expanded ? _expanded(context) : _collapsed(context);
@@ -108,7 +110,7 @@ class _MessageCardState extends State<MessageCard> {
                     children: [
                       Expanded(
                         child: Text(
-                          _m.sender == null ? '(no sender)' : _name(_m.sender!),
+                          _m.sender == null ? context.l10n.conversationNoSender : _name(_m.sender!),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
@@ -170,8 +172,8 @@ class _MessageCardState extends State<MessageCard> {
     final colors = LoupeColors.of(context);
     final sender = _m.sender;
     final recipients = [..._m.to, ..._m.cc, ..._m.bcc];
+    final l10n = context.l10n;
     final shown = recipients.take(2).map(_name).join(', ');
-    final more = recipients.length > 2 ? ' +${recipients.length - 2}' : '';
     final tags = _m.tags.toList();
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 14, 4, 0),
@@ -195,7 +197,7 @@ class _MessageCardState extends State<MessageCard> {
                         key: ValueKey('sender-${_m.id}'),
                         onTap: sender == null ? null : () => widget.onAddressTap(sender),
                         child: Text(
-                          sender == null ? '(no sender)' : _name(sender),
+                          sender == null ? l10n.conversationNoSender : _name(sender),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.titleSmall?.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
@@ -216,7 +218,11 @@ class _MessageCardState extends State<MessageCard> {
                       children: [
                         Flexible(
                           child: Text(
-                            recipients.isEmpty ? 'no recipients' : 'to $shown$more',
+                            recipients.isEmpty
+                                ? l10n.conversationNoRecipients
+                                : recipients.length > 2
+                                ? l10n.conversationRecipientsMore(shown, recipients.length - 2)
+                                : l10n.conversationRecipients(shown),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.bodySmall?.copyWith(color: colors.secondaryText, fontSize: 14),
@@ -260,7 +266,7 @@ class _MessageCardState extends State<MessageCard> {
           ),
           IconButton(
             key: ValueKey('more-${_m.id}'),
-            tooltip: 'More',
+            tooltip: l10n.commonMore,
             visualDensity: VisualDensity.compact,
             icon: Icon(LoupeIcons.more, color: theme.colorScheme.primary),
             onPressed: widget.onMore,
@@ -272,21 +278,26 @@ class _MessageCardState extends State<MessageCard> {
 
   Widget _detailsBlock(BuildContext context, AuthResults auth) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     return Padding(
       padding: const EdgeInsets.fromLTRB(68, 6, 16, 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _addressRow(context, 'From', _m.from),
-          _addressRow(context, 'To', _m.to),
-          if (_m.cc.isNotEmpty) _addressRow(context, 'Cc', _m.cc),
-          if (_m.bcc.isNotEmpty) _addressRow(context, 'Bcc', _m.bcc),
-          if (_m.replyTo.isNotEmpty) _addressRow(context, 'Reply-To', _m.replyTo),
-          _row(context, 'Date', Text(formatFullDate(_m.sentAt ?? _m.receivedAt), style: theme.textTheme.bodySmall)),
+          _addressRow(context, l10n.conversationHeaderFrom, _m.from),
+          _addressRow(context, l10n.conversationHeaderTo, _m.to),
+          if (_m.cc.isNotEmpty) _addressRow(context, l10n.conversationHeaderCc, _m.cc),
+          if (_m.bcc.isNotEmpty) _addressRow(context, l10n.conversationHeaderBcc, _m.bcc),
+          if (_m.replyTo.isNotEmpty) _addressRow(context, l10n.conversationHeaderReplyTo, _m.replyTo),
+          _row(
+            context,
+            l10n.conversationHeaderDate,
+            Text(formatFullDate(_m.sentAt ?? _m.receivedAt), style: theme.textTheme.bodySmall),
+          ),
           if (auth.methods.isNotEmpty)
             _row(
               context,
-              'Security',
+              l10n.conversationHeaderSecurity,
               Row(
                 children: [
                   AuthBadge(verdict: auth.verdict, summary: auth.summary, padding: EdgeInsets.zero),
@@ -413,12 +424,12 @@ class AuthBadge extends StatelessWidget {
       AuthVerdict.verified => (
         LoupeIcons.verified,
         CupertinoColors.systemGreen.resolveFrom(context),
-        'Verified sender',
+        context.l10n.conversationVerifiedSender,
       ),
       AuthVerdict.failed => (
         LoupeIcons.unverified,
         CupertinoColors.systemOrange.resolveFrom(context),
-        'Unverified sender',
+        context.l10n.conversationUnverifiedSender,
       ),
       AuthVerdict.unknown => (null, null, null),
     };
@@ -472,7 +483,7 @@ class BodySkeleton extends StatelessWidget {
       ),
     );
     return Semantics(
-      label: 'Loading message',
+      label: context.l10n.conversationLoadingMessage,
       child: Column(
         key: const Key('body-skeleton'),
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -491,20 +502,21 @@ class _BodyError extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
     final offline = error is MailException && (error as MailException).kind == MailErrorKind.connection;
+    final l10n = context.l10n;
     final message = switch (error) {
       MailException(:final message) => message,
-      _ => "This message couldn't be loaded.",
+      _ => l10n.conversationBodyError,
     };
     return Column(
       children: [
         Icon(offline ? LoupeIcons.offline : LoupeIcons.error, color: colors.secondaryText),
         const SizedBox(height: 8),
         Text(
-          offline ? "You're offline. The message will load when you're back online." : message,
+          offline ? l10n.conversationBodyOffline : message,
           textAlign: TextAlign.center,
           style: TextStyle(color: colors.secondaryText),
         ),
-        TextButton(onPressed: onRetry, child: const Text('Try Again')),
+        TextButton(onPressed: onRetry, child: Text(l10n.commonTryAgain)),
       ],
     );
   }
@@ -525,14 +537,14 @@ class _OriginalHint extends StatelessWidget {
           const SizedBox(width: 6),
           Expanded(
             child: Text(
-              'Looks better in Original view',
+              context.l10n.conversationOriginalHint,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(color: colors.secondaryText),
             ),
           ),
           TextButton(
             style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
             onPressed: onUseOriginal,
-            child: const Text('Show Original'),
+            child: Text(context.l10n.conversationShowOriginal),
           ),
         ],
       ),

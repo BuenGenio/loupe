@@ -1,7 +1,10 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/features/conversation/security/assessment.dart';
+import 'package:loupe/features/conversation/security/finding_text.dart';
 import 'package:loupe/features/conversation/security/sender_facts.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:readable/readable.dart';
 
@@ -34,6 +37,9 @@ LinkFinding mismatch({bool viaTracker = false}) => LinkFinding(
 );
 
 Set<FindingKind> kinds(SecurityReport r) => {for (final f in r.findings) f.kind};
+
+/// What [f] says, in English.
+FindingText words(Finding f) => findingText(lookupAppLocalizations(const Locale('en')), f);
 
 Future<SecurityReport> assessDemo(DemoMailRepository repo, bool Function(EmailSummary) where) async {
   final boxes = await repo.watchMailboxes().first;
@@ -108,7 +114,7 @@ void main() {
         ),
       );
       expect(homograph.verdict, Verdict.likelyPhishing);
-      expect(homograph.findings.first.explanation, contains('it is not apple.com'));
+      expect(words(homograph.findings.first).explanation, contains('it is not apple.com'));
 
       final lookalike = assessMessage(
         message: summary(from: const EmailAddress('service@paypa1.com', 'PayPal')),
@@ -137,7 +143,7 @@ void main() {
         facts: known,
       );
       expect(r.verdict, Verdict.likelyPhishing);
-      expect(r.findings.first.explanation, contains('your own domain, example.com'));
+      expect(words(r.findings.first).explanation, contains('your own domain, example.com'));
     });
 
     test('findings are sorted worst first', () {
@@ -172,7 +178,15 @@ void main() {
       expect(r.verdict, Verdict.likelyPhishing);
       final impersonation = r.findings.firstWhere((f) => f.kind == FindingKind.impersonation);
       expect(impersonation.severity, Severity.danger);
-      expect(impersonation.explanation, contains('your VIP Dana Okafor (dana@corp.example)'));
+      expect(
+        words(impersonation).explanation,
+        'It is signed “Dana Okafor”, like your VIP Dana Okafor (dana@corp.example), but comes from a new address: '
+        'dana.okafor@freemail.example. And replies would go to yet another address.',
+      );
+      expect(words(impersonation).details, [
+        'Known address: dana@corp.example',
+        'This address: dana.okafor@freemail.example',
+      ]);
       expect(kinds(r), containsAll({FindingKind.replyToDiffers, FindingKind.firstTimeSender}));
     });
 
@@ -307,14 +321,14 @@ void main() {
       final r = await assessDemo(repo, (m) => m.subject == 'Quick favour');
       expect(r.verdict, Verdict.beCareful);
       final impersonation = r.findings.firstWhere((f) => f.kind == FindingKind.impersonation);
-      expect(impersonation.explanation, contains('your VIP Dana Okafor'));
+      expect(words(impersonation).explanation, contains('your VIP Dana Okafor'));
     });
 
     test('a look-alike of the work domain is likely phishing', () async {
       final r = await assessDemo(repo, (m) => m.sender?.email == 'it-help@northwlnd.example');
       expect(r.verdict, Verdict.likelyPhishing);
       expect(r.findings.first.kind, FindingKind.lookalikeSender);
-      expect(r.findings.first.explanation, contains('your own domain, northwind.example'));
+      expect(words(r.findings.first).explanation, contains('your own domain, northwind.example'));
       expect(kinds(r), containsAll({FindingKind.replyToDiffers, FindingKind.impersonation}));
     });
 

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../l10n/l10n.dart';
 import '../theme/theme.dart';
 import 'mailbox_display.dart';
 import 'tags.dart';
@@ -48,7 +49,7 @@ Future<T?> showActionSheet<T>(
       cancelButton: CupertinoActionSheetAction(
         isDefaultAction: true,
         onPressed: () => Navigator.of(context).pop(),
-        child: const Text('Cancel'),
+        child: Text(context.l10n.commonCancel),
       ),
     ),
   );
@@ -77,7 +78,9 @@ Future<String?> showTextPrompt(
   String? message,
   String initial = '',
   String placeholder = '',
-  String confirm = 'Save',
+
+  /// The confirming button; Save unless given.
+  String? confirm,
 }) {
   final controller = TextEditingController(text: initial)
     ..selection = TextSelection(baseOffset: 0, extentOffset: initial.length);
@@ -102,11 +105,11 @@ Future<String?> showTextPrompt(
         ),
       ),
       actions: [
-        CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+        CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: Text(context.l10n.commonCancel)),
         CupertinoDialogAction(
           isDefaultAction: true,
           onPressed: () => Navigator.of(context).pop(controller.text.trim()),
-          child: Text(confirm),
+          child: Text(confirm ?? context.l10n.commonSave),
         ),
       ],
     ),
@@ -135,6 +138,7 @@ Future<String?> showMailboxPicker(
     builder: (context) {
       final colors = LoupeColors.of(context);
       final styles = LoupeTextStyles.of(context);
+      final l10n = context.l10n;
       return DraggableScrollableSheet(
         expand: false,
         initialChildSize: 0.6,
@@ -149,12 +153,12 @@ Future<String?> showMailboxPicker(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Move to…', style: styles.navTitle),
+                        Text(l10n.sharedMoveTo, style: styles.navTitle),
                         if (accountName != null) Text(accountName, style: styles.footnote),
                       ],
                     ),
                   ),
-                  CupertinoButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+                  CupertinoButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.commonCancel)),
                 ],
               ),
             ),
@@ -177,7 +181,7 @@ Future<String?> showMailboxPicker(
                                 contentPadding: EdgeInsets.only(left: 16 + folderIndent(node.depth), right: 16),
                                 leading: Icon(mailboxIcon(node.mailbox.role), color: colors.unreadDot),
                                 title: Text(
-                                  mailboxDisplayName(node.mailbox),
+                                  mailboxDisplayName(node.mailbox, l10n: l10n),
                                   style: styles.body,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -210,6 +214,7 @@ Future<Set<String>?> showTagPicker(BuildContext context, {required Set<String> c
         builder: (context, setState) {
           final colors = LoupeColors.of(context);
           final styles = LoupeTextStyles.of(context);
+          final l10n = context.l10n;
           return SafeArea(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -218,10 +223,10 @@ Future<Set<String>?> showTagPicker(BuildContext context, {required Set<String> c
                   padding: const EdgeInsets.fromLTRB(20, 0, 8, 8),
                   child: Row(
                     children: [
-                      Expanded(child: Text('Tags', style: styles.navTitle)),
+                      Expanded(child: Text(l10n.sharedTags, style: styles.navTitle)),
                       CupertinoButton(
                         onPressed: () => Navigator.of(context).pop(selected),
-                        child: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
+                        child: Text(l10n.commonDone, style: const TextStyle(fontWeight: FontWeight.w600)),
                       ),
                     ],
                   ),
@@ -238,7 +243,7 @@ Future<Set<String>?> showTagPicker(BuildContext context, {required Set<String> c
                             ListTile(
                               dense: true,
                               leading: Icon(LoupeIcons.dot, color: tagColor(tag.keyword), size: 16),
-                              title: Text(tag.label, style: styles.body),
+                              title: Text(tagLabel(tag.keyword, l10n: l10n), style: styles.body),
                               trailing: selected.contains(tag.keyword)
                                   ? Icon(LoupeIcons.check, color: colors.unreadDot)
                                   : null,

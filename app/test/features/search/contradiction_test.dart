@@ -1,5 +1,7 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/search/search_session.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../helpers.dart';
@@ -31,18 +33,21 @@ void main() {
       expect(repo.requests, isEmpty);
       expect(session.results!.items, isEmpty);
       expect(session.results!.isComplete, isTrue);
-      expect(session.contradictionNote, 'No message can be both “From: alice” and not.');
+      expect(
+        session.contradictionNote(lookupAppLocalizations(const Locale('en'))),
+        'No message can be both “From: alice” and not.',
+      );
     });
 
     test('read and unread is Schrödinger’s', () async {
       final (session, _) = await open('is:read and is:unread');
-      expect(session.contradictionNote, startsWith('Schrödinger'));
+      expect(session.contradictionNote(lookupAppLocalizations(const Locale('en'))), startsWith('Schrödinger'));
     });
 
     test('other queries search as before, with no note', () async {
       final (session, repo) = await open('is:read and is:flagged');
       expect(repo.requests, hasLength(1));
-      expect(session.contradictionNote, isNull);
+      expect(session.contradictionNote(lookupAppLocalizations(const Locale('en'))), isNull);
     });
   });
 

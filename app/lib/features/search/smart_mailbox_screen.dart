@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../settings/ui_state.dart';
@@ -23,17 +24,18 @@ import '../../theme/loupe_icons.dart';
   required String? home,
   required List<MailAccount> accounts,
   required SmartMailboxSyncStatus status,
+  required AppLocalizations l10n,
 }) {
   final ownerId = box.accountId ?? home;
   final owner = accounts.where((a) => a.id == ownerId).firstOrNull;
-  if (home == null || owner == null) return (LoupeIcons.thisDevice, 'On this device only');
+  if (home == null || owner == null) return (LoupeIcons.thisDevice, l10n.searchSyncDeviceOnly);
   final name = owner.displayName;
-  if (status.unsupported.contains(owner.id)) return (LoupeIcons.thisDevice, 'On this device only: $name can’t keep it');
-  if (status.newerFormat.contains(owner.id)) return (LoupeIcons.warning, 'Not synced: $name has a newer format');
+  if (status.unsupported.contains(owner.id)) return (LoupeIcons.thisDevice, l10n.searchSyncUnsupported(name));
+  if (status.newerFormat.contains(owner.id)) return (LoupeIcons.warning, l10n.searchSyncNewerFormat(name));
   if (status.pending || status.failed.containsKey(owner.id) || !status.synced.containsKey(owner.id)) {
-    return (LoupeIcons.syncPending, 'Waiting to sync to $name');
+    return (LoupeIcons.syncPending, l10n.searchSyncWaiting(name));
   }
-  return (LoupeIcons.synced, 'Synced to $name');
+  return (LoupeIcons.synced, l10n.searchSynced(name));
 }
 
 /// A saved search, shown like a mailbox.
@@ -62,20 +64,21 @@ class _SmartMailboxScreenState extends ConsumerState<SmartMailboxScreen> {
   );
 
   Future<void> _menu(SmartMailbox box) async {
+    final l10n = context.l10n;
     final choice = await showActionSheet<String>(
       context,
       title: box.name,
       message: box.query,
-      actions: const [
-        SheetAction('Rename', 'rename', icon: LoupeIcons.rename),
-        SheetAction('Edit Search', 'edit', icon: LoupeIcons.search),
-        SheetAction('Delete Smart Mailbox', 'delete', icon: LoupeIcons.trash, destructive: true),
+      actions: [
+        SheetAction(l10n.searchRename, 'rename', icon: LoupeIcons.rename),
+        SheetAction(l10n.searchEditSearch, 'edit', icon: LoupeIcons.search),
+        SheetAction(l10n.searchDeleteSmartMailbox, 'delete', icon: LoupeIcons.trash, destructive: true),
       ],
     );
     if (!mounted) return;
     switch (choice) {
       case 'rename':
-        final name = await showTextPrompt(context, title: 'Rename Smart Mailbox', initial: box.name);
+        final name = await showTextPrompt(context, title: l10n.searchRenameSmartMailbox, initial: box.name);
         if (name != null && name.isNotEmpty) await ref.read(smartMailboxesProvider.notifier).rename(box.id, name);
       case 'edit':
         await context.push(Routes.search(box.query));
@@ -87,11 +90,12 @@ class _SmartMailboxScreenState extends ConsumerState<SmartMailboxScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final box = ref.watch(smartMailboxesProvider).where((s) => s.id == widget.id).firstOrNull;
     if (box == null) {
       return Scaffold(
         appBar: AppBar(automaticallyImplyLeading: showsBackButton(context)),
-        body: Center(child: Text('This smart mailbox was deleted.', style: LoupeTextStyles.of(context).footnote)),
+        body: Center(child: Text(l10n.searchSmartMailboxDeleted, style: LoupeTextStyles.of(context).footnote)),
       );
     }
     final session = _sessionFor(box);
@@ -101,13 +105,16 @@ class _SmartMailboxScreenState extends ConsumerState<SmartMailboxScreen> {
       home: ref.watch(smartMailboxHomeProvider),
       accounts: ref.watch(accountsProvider).value ?? const <MailAccount>[],
       status: ref.watch(smartMailboxSyncStatusProvider),
+      l10n: l10n,
     );
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           LoupeTitleBar(
             title: box.name,
-            trailing: [BarIconButton(icon: LoupeIcons.moreCircle, tooltip: 'More', onPressed: () => _menu(box))],
+            trailing: [
+              BarIconButton(icon: LoupeIcons.moreCircle, tooltip: l10n.commonMore, onPressed: () => _menu(box)),
+            ],
           ),
           SliverToBoxAdapter(
             child: Padding(

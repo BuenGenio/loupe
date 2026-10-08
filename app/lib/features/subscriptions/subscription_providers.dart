@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../settings/app_mode.dart';
 import '../../settings/app_settings.dart';
@@ -99,12 +100,9 @@ class SubscriptionsTab extends Notifier<SubscriptionKind?> {
 
 /// Which subscriptions the list shows.
 enum SubscriptionFilter {
-  neverRead('Never Read'),
-  rarelyRead('Rarely Read'),
-  all('All');
-
-  const SubscriptionFilter(this.label);
-  final String label;
+  neverRead,
+  rarelyRead,
+  all;
 
   /// Rarely read: under a quarter, never-read ones included.
   bool matches(Subscription s) => switch (this) {
@@ -285,9 +283,9 @@ bool isBlocked(Subscription s, List<Rule> rules) {
 }
 
 /// The rule that sends [s]'s future mail to Junk.
-Rule blockRule(Subscription s) => Rule(
+Rule blockRule(AppLocalizations l10n, Subscription s) => Rule(
   id: newRuleId(),
-  name: 'Block ${s.name}',
+  name: l10n.subscriptionsBlockRuleName(s.name),
   condition: subscriptionCondition(s),
   actions: const [MarkJunkAction()],
   stopProcessing: true,

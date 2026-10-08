@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../../l10n/l10n.dart';
 import '../../../shared/format.dart';
 import '../../../theme/loupe_icons.dart';
 import '../../../theme/theme.dart';
@@ -44,7 +45,8 @@ class AttachmentDetailsCard extends StatelessWidget {
     final styles = LoupeTextStyles.of(context);
     final a = attachment;
     final bytes = size ?? a.size;
-    final type = describeFileType(a.mimeType, a.filename);
+    final l10n = context.l10n;
+    final type = describeFileType(a.mimeType, a.filename, l10n: l10n);
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(32, 24, 32, 48),
@@ -63,7 +65,7 @@ class AttachmentDetailsCard extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              a.filename?.isNotEmpty == true ? a.filename! : 'Untitled',
+              a.filename?.isNotEmpty == true ? a.filename! : l10n.attachmentsUntitledFile,
               textAlign: TextAlign.center,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
@@ -71,7 +73,7 @@ class AttachmentDetailsCard extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              bytes > 0 ? '$type · ${formatBytes(bytes)}' : type,
+              bytes > 0 ? '$type · ${formatBytes(bytes, l10n: l10n)}' : type,
               textAlign: TextAlign.center,
               style: styles.footnote.copyWith(color: colors.secondaryText),
             ),
@@ -90,7 +92,7 @@ class AttachmentDetailsCard extends StatelessWidget {
               child: FilledButton.tonalIcon(
                 onPressed: busy ? null : onOpenIn,
                 icon: const Icon(LoupeIcons.openIn, size: 20),
-                label: const Text('Open in…'),
+                label: Text(l10n.attachmentsOpenIn),
               ),
             ),
             const SizedBox(height: 8),
@@ -99,7 +101,7 @@ class AttachmentDetailsCard extends StatelessWidget {
               child: TextButton.icon(
                 onPressed: busy ? null : onShare,
                 icon: const Icon(LoupeIcons.share, size: 20),
-                label: const Text('Share'),
+                label: Text(l10n.commonShare),
               ),
             ),
             SizedBox(

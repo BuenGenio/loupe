@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../theme/theme.dart';
 import 'rule_format.dart';
@@ -62,6 +63,7 @@ class _IncludeSheetState extends ConsumerState<_IncludeSheet> {
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: 0.85,
@@ -78,35 +80,26 @@ class _IncludeSheetState extends ConsumerState<_IncludeSheet> {
             );
           } else if (snapshot.hasError) {
             final e = snapshot.error;
-            body = Text(e is MailException ? e.message : 'Couldn’t reach the server.', style: styles.body);
+            body = Text(e is MailException ? e.message : l10n.rulesServerUnreachable, style: styles.body);
           } else if (proposal == null) {
-            body = Text('The server already runs Loupe’s rules for ${widget.accountName}.', style: styles.body);
+            body = Text(l10n.rulesIncludeAlreadyOn(widget.accountName), style: styles.body);
           } else {
             body = Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  '“${proposal.scriptName}” is the active script on ${widget.accountName}’s server, so the server runs it '
-                  'and not Loupe’s rules. Loupe won’t replace it. It can add these lines to it, and the server then '
-                  'runs Loupe’s rules after the script’s own:',
-                  style: styles.body,
-                ),
+                Text(l10n.rulesIncludeExplanation(proposal.scriptName, widget.accountName), style: styles.body),
                 const SizedBox(height: 12),
                 CodeBox(proposal.addedLines.join('\n'), highlightLines: proposal.addedLines.toSet()),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: NoticeButton(
-                    _whole ? 'Hide Whole Script' : 'Show Whole Script',
+                    _whole ? l10n.rulesHideWholeScript : l10n.rulesShowWholeScript,
                     onPressed: () => setState(() => _whole = !_whole),
                   ),
                 ),
                 if (_whole) CodeBox(proposal.after, highlightLines: proposal.addedLines.toSet()),
                 const SizedBox(height: 8),
-                Text(
-                  'Nothing else in “${proposal.scriptName}” changes. If its filters are edited in the webmail later, '
-                  'the webmail may rewrite it without these lines; Loupe then shows server rules as off again.',
-                  style: styles.footnote,
-                ),
+                Text(l10n.rulesIncludeFootnote(proposal.scriptName), style: styles.footnote),
                 if (_error != null) ...[
                   const SizedBox(height: 12),
                   Text(_error!, style: styles.footnote.copyWith(color: colors.destructive)),
@@ -121,10 +114,10 @@ class _IncludeSheetState extends ConsumerState<_IncludeSheet> {
                 padding: const EdgeInsets.only(left: 20, right: 8),
                 child: Row(
                   children: [
-                    Expanded(child: Text('Turn On Server Rules', style: styles.navTitle)),
+                    Expanded(child: Text(l10n.rulesIncludeTitle, style: styles.navTitle)),
                     CupertinoButton(
                       onPressed: () => Navigator.of(context).pop(false),
-                      child: Text(proposal == null ? 'Done' : 'Leave Off'),
+                      child: Text(proposal == null ? l10n.commonDone : l10n.rulesIncludeLeaveOff),
                     ),
                   ],
                 ),
@@ -145,7 +138,11 @@ class _IncludeSheetState extends ConsumerState<_IncludeSheet> {
                       onPressed: _busy ? null : () => _apply(proposal),
                       child: _busy
                           ? const CupertinoActivityIndicator(color: Colors.white)
-                          : Text('Add to “${proposal.scriptName}”', maxLines: 1, overflow: TextOverflow.ellipsis),
+                          : Text(
+                              l10n.rulesIncludeAdd(proposal.scriptName),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                     ),
                   ),
                 ),

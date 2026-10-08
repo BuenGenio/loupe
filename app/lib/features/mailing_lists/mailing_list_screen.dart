@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../shared/bars.dart';
@@ -60,23 +61,25 @@ class _MailingListScreenState extends ConsumerState<MailingListScreen> {
   Future<void> _setMuted(ListThread thread, bool muted) async {
     final lists = _lists;
     if (lists == null) return;
+    final l10n = context.l10n;
     unawaited(HapticFeedback.selectionClick());
     await _act(
       () => lists.setThreadMuted(thread.latest.id, muted: muted),
-      done: muted ? 'Thread muted. New messages in it arrive read.' : 'Thread unmuted.',
+      done: muted ? l10n.mailingListsMuted : l10n.mailingListsUnmuted,
     );
   }
 
   Future<void> _threadMenu(ListThread thread) async {
     unawaited(HapticFeedback.mediumImpact());
+    final l10n = context.l10n;
     final choice = await showActionSheet<String>(
       context,
-      title: listThreadTitle(thread.first.subject, listId: widget.listId),
+      title: listThreadTitle(thread.first.subject, listId: widget.listId, l10n: l10n),
       actions: [
         thread.isMuted
-            ? const SheetAction('Unmute Thread', 'unmute', icon: LoupeIcons.notifications)
-            : const SheetAction('Mute Thread', 'mute', icon: LoupeIcons.mute),
-        if (thread.unreadCount > 0) const SheetAction('Mark as Read', 'read', icon: LoupeIcons.markRead),
+            ? SheetAction(l10n.mailingListsUnmuteThread, 'unmute', icon: LoupeIcons.notifications)
+            : SheetAction(l10n.mailingListsMuteThread, 'mute', icon: LoupeIcons.mute),
+        if (thread.unreadCount > 0) SheetAction(l10n.mailMarkAsRead, 'read', icon: LoupeIcons.markRead),
       ],
     );
     if (!mounted) return;
@@ -98,21 +101,26 @@ class _MailingListScreenState extends ConsumerState<MailingListScreen> {
     final prefs = ref.read(readerPrefsProvider);
     final technical = prefs.technicalLists.contains(widget.listId);
     final pinned = ref.read(pinnedListsProvider).contains(widget.listId);
+    final l10n = context.l10n;
     final choice = await showActionSheet<String>(
       context,
       title: list?.name ?? widget.listId,
       actions: [
         if (list != null)
           pinned
-              ? const SheetAction('Unpin from Mailboxes', 'pin', icon: LoupeIcons.unpin)
-              : const SheetAction('Pin to Mailboxes', 'pin', icon: LoupeIcons.pin),
+              ? SheetAction(l10n.mailingListsUnpin, 'pin', icon: LoupeIcons.unpin)
+              : SheetAction(l10n.mailingListsPin, 'pin', icon: LoupeIcons.pin),
         SheetAction(
-          technical ? 'Open in Default View' : 'Open as Plain Text (Mono)',
+          technical ? l10n.mailingListsDefaultView : l10n.mailingListsPlainText,
           'technical',
           icon: LoupeIcons.font,
         ),
-        SheetAction(_showMuted ? 'Hide Muted Threads' : 'Show Muted Threads', 'muted', icon: LoupeIcons.mute),
-        if (list != null) const SheetAction('Treat as Newsletter', 'kind', icon: LoupeIcons.newsletter),
+        SheetAction(
+          _showMuted ? l10n.mailingListsHideMuted : l10n.mailingListsShowMuted,
+          'muted',
+          icon: LoupeIcons.mute,
+        ),
+        if (list != null) SheetAction(l10n.mailingListsTreatAsNewsletter, 'kind', icon: LoupeIcons.newsletter),
       ],
     );
     if (!mounted) return;
@@ -137,16 +145,21 @@ class _MailingListScreenState extends ConsumerState<MailingListScreen> {
   @override
   Widget build(BuildContext context) {
     final list = _list();
+    final l10n = context.l10n;
     final async = ref.watch(listThreadsProvider(ListThreadsQuery(widget.listId, includeMuted: _showMuted)));
     final threads = async.value ?? const <ListThread>[];
     final unread = list?.unreadCount ?? 0;
     return Scaffold(
       bottomNavigationBar: LoupeBottomBar(
-        leading: BarIconButton(icon: LoupeIcons.more, tooltip: 'List Options', onPressed: () => _listMenu(list)),
-        center: SyncStatusLine(detail: unread > 0 ? '${formatCount(unread)} Unread' : null),
+        leading: BarIconButton(
+          icon: LoupeIcons.more,
+          tooltip: l10n.mailingListsOptions,
+          onPressed: () => _listMenu(list),
+        ),
+        center: SyncStatusLine(detail: unread > 0 ? l10n.mailingListsUnreadCount(unread, formatCount(unread)) : null),
         trailing: BarIconButton(
           icon: LoupeIcons.compose,
-          tooltip: 'New Message to List',
+          tooltip: l10n.mailingListsNewMessage,
           onPressed: list?.postAddress == null ? null : () => _compose(list!),
         ),
       ),
@@ -197,18 +210,19 @@ class ListThreadRow extends StatelessWidget {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
     final metrics = LoupeMetrics.of(context);
+    final l10n = context.l10n;
     final unread = thread.unreadCount > 0;
-    final title = listThreadTitle(thread.first.subject, listId: listId);
+    final title = listThreadTitle(thread.first.subject, listId: listId, l10n: l10n);
     final badge = thread.patchBadge;
     final replies = thread.replyCount;
     return MergeSemantics(
       child: Semantics(
         button: true,
         label: [
-          if (unread) 'Unread',
-          if (thread.isMuted) 'Muted',
+          if (unread) l10n.mailingListsRowUnread,
+          if (thread.isMuted) l10n.mailingListsRowMuted,
           ?badge,
-          replies == 1 ? '1 reply' : '$replies replies',
+          l10n.mailingListsReplyCount(replies),
         ].join(', '),
         child: Material(
           color: Theme.of(context).scaffoldBackgroundColor,
@@ -255,7 +269,7 @@ class ListThreadRow extends StatelessWidget {
                             const SizedBox(width: 8),
                             Padding(
                               padding: const EdgeInsets.only(top: 2),
-                              child: Text(formatListDate(thread.lastActivity), style: styles.date),
+                              child: Text(formatListDate(thread.lastActivity, l10n: l10n), style: styles.date),
                             ),
                           ],
                         ),
@@ -336,6 +350,7 @@ class _Empty extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     return Padding(
       padding: const EdgeInsets.fromLTRB(32, 0, 32, 80),
       child: Column(
@@ -343,10 +358,10 @@ class _Empty extends StatelessWidget {
         children: [
           Icon(LoupeIcons.mailingList, size: 52, color: colors.tertiaryText),
           const SizedBox(height: 14),
-          Text('No Threads', style: styles.sectionHeader.copyWith(color: colors.secondaryText)),
+          Text(l10n.mailingListsNoThreads, style: styles.sectionHeader.copyWith(color: colors.secondaryText)),
           if (!showMuted) ...[
             const SizedBox(height: 6),
-            Text('Muted threads are hidden.', style: styles.footnote, textAlign: TextAlign.center),
+            Text(l10n.mailingListsMutedHidden, style: styles.footnote, textAlign: TextAlign.center),
           ],
         ],
       ),

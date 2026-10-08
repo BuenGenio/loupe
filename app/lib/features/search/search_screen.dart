@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../settings/ui_state.dart';
 import '../../shared/bars.dart';
@@ -54,7 +55,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         slivers: [
           LoupeTitleBar(
-            title: 'Search',
+            title: context.l10n.commonSearch,
             searching: true,
             onCancelSearch: () => Navigator.of(context).maybePop(),
             searchField: LoupeSearchField(

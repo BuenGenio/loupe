@@ -2,6 +2,7 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:mail_calendar/mail_calendar.dart';
 
+import '../../../l10n/l10n.dart';
 import '../../../theme/loupe_icons.dart';
 import '../../../theme/theme.dart';
 import '../../calendar/invitation_format.dart';
@@ -24,8 +25,10 @@ class EventSummaryCard extends StatelessWidget {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     final e = calendar.primary!;
     final format = EventTimeFormat(
+      l10n: l10n,
       locale: deviceDateLocale(),
       use24h: MediaQuery.alwaysUse24HourFormatOf(context),
       deviceZone: deviceZone,
@@ -67,7 +70,7 @@ class EventSummaryCard extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    e.summary ?? 'Event',
+                    e.summary ?? l10n.calendarUntitledEvent,
                     style: styles.body.copyWith(fontSize: 17, fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -76,17 +79,18 @@ class EventSummaryCard extends StatelessWidget {
             if (cancelled)
               Padding(
                 padding: const EdgeInsets.only(top: 6),
-                child: Text('Cancelled', style: styles.footnote.copyWith(color: colors.destructive)),
+                child: Text(l10n.calendarCancelled, style: styles.footnote.copyWith(color: colors.destructive)),
               ),
             if (when != null) line(LoupeIcons.time, when.time == null ? when.day : '${when.day}\n${when.time}'),
             if (recurrence != null) line(LoupeIcons.recurring, recurrence),
             if (e.location != null) line(LoupeIcons.location, e.location!),
-            if (e.organizer case final organizer?) line(LoupeIcons.person, 'Organizer: ${organizer.displayName}'),
+            if (e.organizer case final organizer?)
+              line(LoupeIcons.person, l10n.attachmentsEventOrganizer(organizer.displayName)),
             if (more > 0)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
-                  more == 1 ? 'And 1 more event' : 'And $more more events',
+                  l10n.attachmentsEventMore(more),
                   style: styles.footnote.copyWith(color: colors.secondaryText),
                 ),
               ),

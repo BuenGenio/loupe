@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/theme.dart';
 import 'shortcuts.dart';
 
@@ -18,8 +19,9 @@ class ShortcutSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     final apple = appleKeyboard;
-    final groups = <String, List<ShortcutEntry>>{};
+    final groups = <ShortcutGroup, List<ShortcutEntry>>{};
     for (final e in shortcutTable) {
       groups.putIfAbsent(e.group, () => []).add(e);
     }
@@ -37,10 +39,10 @@ class ShortcutSheet extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 14, 8, 6),
               child: Row(
                 children: [
-                  Expanded(child: Text('Keyboard Shortcuts', style: styles.navTitle)),
+                  Expanded(child: Text(l10n.keyboardShortcuts, style: styles.navTitle)),
                   CupertinoButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
+                    child: Text(l10n.commonDone, style: const TextStyle(fontWeight: FontWeight.w600)),
                   ),
                 ],
               ),
@@ -53,7 +55,7 @@ class ShortcutSheet extends StatelessWidget {
                   for (final MapEntry(key: group, value: entries) in groups.entries) ...[
                     Padding(
                       padding: const EdgeInsets.only(top: 12, bottom: 4),
-                      child: Text(group.toUpperCase(), style: styles.footnote.copyWith(letterSpacing: 0.2)),
+                      child: Text(group.title(l10n).toUpperCase(), style: styles.footnote.copyWith(letterSpacing: 0.2)),
                     ),
                     for (final e in entries)
                       Padding(
@@ -61,7 +63,7 @@ class ShortcutSheet extends StatelessWidget {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(child: Text(e.label, style: styles.body)),
+                            Expanded(child: Text(e.label.text(l10n), style: styles.body)),
                             const SizedBox(width: 12),
                             Flexible(
                               child: Wrap(
@@ -71,8 +73,8 @@ class ShortcutSheet extends StatelessWidget {
                                 runSpacing: 4,
                                 children: [
                                   for (final (i, c) in e.combos.indexed) ...[
-                                    if (i > 0) Text('or', style: styles.footnote),
-                                    KeyCaps(c.keyLabels(apple: apple)),
+                                    if (i > 0) Text(l10n.keyboardOr, style: styles.footnote),
+                                    KeyCaps(c.keyLabels(apple: apple, l10n: l10n)),
                                   ],
                                 ],
                               ),

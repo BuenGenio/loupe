@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../shared/bars.dart';
 import '../../shared/format.dart';
@@ -111,7 +112,7 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
   /// A name from the condition when none was typed.
   String get _defaultName {
     final terms = queryTerms(_parsed.expr);
-    if (terms.isEmpty) return 'Every Message';
+    if (terms.isEmpty) return context.l10n.rulesDefaultNameEveryMessage;
     return terms.take(2).map(describeTerm).join(', ');
   }
 
@@ -171,18 +172,19 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
   // Actions ---------------------------------------------------------------------------
 
   Future<void> _addAction() async {
+    final l10n = context.l10n;
     final choice = await showActionSheet<String>(
       context,
-      title: 'Add Action',
+      title: l10n.rulesAddAction,
       actions: [
-        const SheetAction('Move to Folder…', 'move', icon: LoupeIcons.move),
-        const SheetAction('Add Tag…', 'tag', icon: LoupeIcons.tag),
-        const SheetAction('Remove Tag…', 'untag', icon: LoupeIcons.tag),
-        const SheetAction('Flag', 'flag', icon: LoupeIcons.flagged),
-        const SheetAction('Mark as Read', 'read', icon: LoupeIcons.markRead),
-        const SheetAction('Move to Junk', 'junk', icon: LoupeIcons.junk),
-        const SheetAction('Keep in Inbox', 'keep', icon: LoupeIcons.keepInInbox),
-        if (_location == RuleLocation.server) const SheetAction('Forward To…', 'forward', icon: LoupeIcons.forward),
+        SheetAction(l10n.rulesAddMove, 'move', icon: LoupeIcons.move),
+        SheetAction(l10n.rulesAddTagMenu, 'tag', icon: LoupeIcons.tag),
+        SheetAction(l10n.rulesRemoveTagMenu, 'untag', icon: LoupeIcons.tag),
+        SheetAction(l10n.mailFlag, 'flag', icon: LoupeIcons.flagged),
+        SheetAction(l10n.mailMarkAsRead, 'read', icon: LoupeIcons.markRead),
+        SheetAction(l10n.mailMoveToJunk, 'junk', icon: LoupeIcons.junk),
+        SheetAction(l10n.rulesActionKeepInInbox, 'keep', icon: LoupeIcons.keepInInbox),
+        if (_location == RuleLocation.server) SheetAction(l10n.rulesAddForward, 'forward', icon: LoupeIcons.forward),
       ],
     );
     if (choice == null || !mounted) return;
@@ -220,8 +222,8 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
     if (candidates.length > 1) {
       final picked = await showActionSheet<MailAccount>(
         context,
-        title: 'Folder in Which Account?',
-        message: 'Mail of the other accounts goes to the folder with the same name there.',
+        title: context.l10n.rulesMoveAccountTitle,
+        message: context.l10n.rulesMoveAccountMessage,
         actions: [for (final a in candidates) SheetAction(a.displayName, a)],
       );
       if (picked == null || !mounted) return null;
@@ -239,7 +241,7 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
   Future<RuleAction?> _pickTag({required bool add}) async {
     final keyword = await showActionSheet<String>(
       context,
-      title: add ? 'Add Tag' : 'Remove Tag',
+      title: add ? context.l10n.rulesAddTag : context.l10n.rulesRemoveTag,
       actions: [
         for (final t in TagDefinition.thunderbirdDefaults) SheetAction(t.label, t.keyword, icon: LoupeIcons.tagFilled),
       ],
@@ -249,26 +251,25 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
   }
 
   Future<RuleAction?> _pickForward() async {
+    final l10n = context.l10n;
     final address = await showTextPrompt(
       context,
-      title: 'Forward To',
-      message:
-          'The server sends every matching message on to this address, also while this phone is off. '
-          'Use an address you own or trust.',
+      title: l10n.rulesForwardTo,
+      message: l10n.rulesForwardToMessage,
       placeholder: 'name@example.com',
-      confirm: 'Add',
+      confirm: l10n.commonAdd,
     );
     if (address == null || address.isEmpty || !mounted) return null;
     if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(address)) {
-      await _alert('Not an Email Address', '“$address” isn’t an address to forward to.');
+      await _alert(l10n.rulesNotAnAddressTitle, l10n.rulesNotAnAddressMessage(address));
       return null;
     }
     final keep = await showActionSheet<bool>(
       context,
-      title: 'Keep a Copy Here?',
-      actions: const [
-        SheetAction('Keep a Copy', true, isDefault: true),
-        SheetAction('Don’t Keep a Copy', false, destructive: true),
+      title: l10n.rulesKeepCopyTitle,
+      actions: [
+        SheetAction(l10n.rulesKeepCopy, true, isDefault: true),
+        SheetAction(l10n.rulesDontKeepCopy, false, destructive: true),
       ],
     );
     if (keep == null) return null;
@@ -287,20 +288,21 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
         CupertinoDialogAction(
           isDefaultAction: true,
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('OK'),
+          child: Text(context.l10n.commonOk),
         ),
       ],
     ),
   );
 
   Future<void> _save() async {
+    final l10n = context.l10n;
     if (!_parsed.isValid) {
-      await _alert('Check the Condition', _parsed.errors.first.message);
+      await _alert(l10n.rulesCheckCondition, _parsed.errors.first.message);
       return;
     }
     final rule = _draft;
     if (rule.actions.isEmpty && !rule.stopProcessing) {
-      await _alert('Choose an Action', 'Add what the rule does with the messages it matches.');
+      await _alert(l10n.rulesChooseActionTitle, l10n.rulesChooseActionMessage);
       return;
     }
     setState(() => _saving = true);
@@ -313,7 +315,7 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
       final server = rule.location == RuleLocation.server;
       final canMove = server && !_actions.any((a) => !a.runsOn(RuleLocation.device));
       await _alert(
-        server ? 'Couldn’t Save the Server Rule' : 'Couldn’t Save the Rule',
+        server ? l10n.rulesSaveServerError : l10n.rulesSaveError,
         e.message,
         extra: [
           if (canMove)
@@ -322,7 +324,7 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
                 Navigator.of(context).pop();
                 setState(() => _location = RuleLocation.device);
               },
-              child: const Text('Run on This Device Instead'),
+              child: Text(l10n.rulesRunOnDeviceInstead),
             ),
         ],
       );
@@ -348,24 +350,34 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
   }
 
   Future<void> _delete() async {
-    final ok = await confirmDestructive(context, title: 'Delete “${_draft.name}”?', action: 'Delete Rule');
+    final l10n = context.l10n;
+    final ok = await confirmDestructive(
+      context,
+      title: l10n.rulesDeleteTitle(_draft.name),
+      action: l10n.rulesDeleteRule,
+    );
     if (!ok || !mounted) return;
     await ref.read(repositoryProvider).rules.deleteRule(_id);
     if (mounted) Navigator.of(context).maybePop();
   }
 
   Future<void> _applyToExisting() async {
+    final l10n = context.l10n;
     final rule = _draft;
     if (!_parsed.isValid || rule.actions.isEmpty) {
-      await _alert('Nothing to Apply', 'Give the rule a condition that works and an action first.');
+      await _alert(l10n.rulesNothingToApplyTitle, l10n.rulesNothingToApplyMessage);
       return;
     }
     final scope = await showActionSheet<SearchScope>(
       context,
-      title: 'Apply “${rule.name}” to Messages in…',
-      actions: const [
-        SheetAction('Inboxes', MailboxScope(VirtualMailboxRef(VirtualMailbox.allInboxes)), isDefault: true),
-        SheetAction('All Mailboxes', AllMailboxesScope()),
+      title: l10n.rulesApplyScopeTitle(rule.name),
+      actions: [
+        SheetAction(
+          l10n.rulesApplyScopeInboxes,
+          const MailboxScope(VirtualMailboxRef(VirtualMailbox.allInboxes)),
+          isDefault: true,
+        ),
+        SheetAction(l10n.rulesApplyScopeAll, const AllMailboxesScope()),
       ],
     );
     if (scope == null || !mounted) return;
@@ -373,9 +385,9 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
     unawaited(
       showCupertinoDialog<void>(
         context: context,
-        builder: (context) => const CupertinoAlertDialog(
-          title: Text('Finding Messages…'),
-          content: Padding(padding: EdgeInsets.only(top: 12), child: CupertinoActivityIndicator()),
+        builder: (context) => CupertinoAlertDialog(
+          title: Text(l10n.rulesFindingMessages),
+          content: const Padding(padding: EdgeInsets.only(top: 12), child: CupertinoActivityIndicator()),
         ),
       ),
     );
@@ -385,21 +397,22 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
     } catch (e) {
       if (!mounted) return;
       Navigator.of(context).pop();
-      await _alert('Couldn’t Search', e is MailException ? e.message : 'Something went wrong.');
+      await _alert(l10n.rulesSearchError, e is MailException ? e.message : l10n.rulesSearchErrorUnknown);
       return;
     }
     if (!mounted) return;
     Navigator.of(context).pop();
     if (matches.isEmpty) {
-      await _alert('No Messages Match', 'Nothing there matches “${rule.condition}”.');
+      await _alert(l10n.rulesNoMatchesTitle, l10n.rulesNoMatchesMessage(rule.condition));
       return;
     }
     final mailboxes = {for (final m in ref.read(mailboxesProvider).value ?? const <Mailbox>[]) m.id: m};
     final n = matches.length;
     final ok = await showActionSheet<bool>(
       context,
-      title: 'Apply “${rule.name}” to ${formatCount(n)} ${n == 1 ? 'Message' : 'Messages'}?',
+      title: l10n.rulesApplyConfirmTitle(n, rule.name),
       message: describeActions(
+        l10n,
         rule.copyWith(
           actions: [
             for (final a in rule.actions)
@@ -408,16 +421,12 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
         ),
         mailboxes,
       ),
-      actions: [SheetAction('Apply to ${formatCount(n)} ${n == 1 ? 'Message' : 'Messages'}', true, isDefault: true)],
+      actions: [SheetAction(l10n.rulesApplyConfirm(n), true, isDefault: true)],
     );
     if (ok != true || !mounted) return;
     final changed = await rules.applyRule(rule, [for (final e in matches) e.id]);
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Applied “${rule.name}” to ${formatCount(changed)} ${changed == 1 ? 'message' : 'messages'}'),
-      ),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.rulesApplied(changed, rule.name))));
   }
 
   Future<void> _pickAccounts() async {
@@ -440,6 +449,7 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
   @override
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     _condition
       ..operatorColor = colors.unreadDot
       ..keywordColor = colors.swipeArchive
@@ -451,12 +461,12 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         slivers: [
           LoupeTitleBar(
-            title: _isNew ? 'New Rule' : 'Edit Rule',
-            leading: BarTextButton(label: 'Cancel', onPressed: () => Navigator.of(context).maybePop()),
+            title: _isNew ? l10n.rulesNewRuleTitle : l10n.rulesEditRuleTitle,
+            leading: BarTextButton(label: l10n.commonCancel, onPressed: () => Navigator.of(context).maybePop()),
             trailing: [
               _saving
                   ? const Padding(padding: EdgeInsets.all(12), child: CupertinoActivityIndicator())
-                  : BarTextButton(label: 'Save', bold: true, onPressed: _loading ? null : _save),
+                  : BarTextButton(label: l10n.commonSave, bold: true, onPressed: _loading ? null : _save),
             ],
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 8)),
@@ -473,6 +483,7 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
   List<Widget> _sections(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];
     final mailboxes = {for (final m in ref.watch(mailboxesProvider).value ?? const <Mailbox>[]) m.id: m};
     final names = {for (final a in accounts) a.id: a.displayName};
@@ -483,7 +494,7 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
     final hidden = _actions.length - shown.length;
     return [
       InsetGroup(
-        header: 'Name',
+        header: l10n.commonName,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -499,39 +510,38 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
         ],
       ),
       InsetGroup(
-        header: 'When a New Message Matches',
-        footer: 'Write it as you would search: from:, to:, s: (subject), b: (body), tag:, has:attachment, larger:2M…',
+        header: l10n.rulesConditionHeader,
+        footer: l10n.rulesConditionFooter,
         children: [_ConditionField(controller: _condition, focus: _conditionFocus, onPick: _conditionChanged)],
       ),
       InsetGroup(
         separatorIndent: 16,
         children: [
           GroupedRow(
-            title: 'Accounts',
+            title: l10n.rulesAccounts,
             detail: _accounts.isEmpty
-                ? 'All Accounts'
-                : [for (final id in _accounts) names[id] ?? 'Removed account'].join(', '),
+                ? l10n.rulesAllAccounts
+                : [for (final id in _accounts) names[id] ?? l10n.rulesRemovedAccount].join(', '),
             onTap: _pickAccounts,
           ),
         ],
       ),
       InsetGroup(
-        header: 'Then',
+        header: l10n.rulesActionsHeader,
         separatorIndent: 54,
         footer: shown.any((a) => a is ForwardAction)
-            ? 'Forwarding sends every matching message to another address as it arrives, also while this phone is '
-                  'off. Some providers limit how much mail may be forwarded.'
-            : (hidden > 0 ? 'Forwarding only runs in server rules, so it is left out here.' : null),
+            ? l10n.rulesForwardingFooter
+            : (hidden > 0 ? l10n.rulesForwardingHiddenFooter : null),
         children: [
           for (final a in shown)
             GroupedRow(
               key: ValueKey('action-$a'),
               leading: Icon(actionIcon(a), color: colors.unreadDot, size: 22),
-              title: describeAction(a, mailboxes),
+              title: describeAction(l10n, a, mailboxes),
               chevron: false,
               trailing: Semantics(
                 button: true,
-                label: 'Remove ${describeAction(a, mailboxes)}',
+                label: l10n.rulesRemoveAction(describeAction(l10n, a, mailboxes)),
                 child: CupertinoButton(
                   padding: EdgeInsets.zero,
                   minimumSize: const Size(36, 36),
@@ -545,13 +555,13 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
             ),
           GroupedRow(
             leading: Icon(LoupeIcons.add, color: colors.unreadDot, size: 24),
-            title: 'Add Action',
+            title: l10n.rulesAddAction,
             titleStyle: styles.body.copyWith(color: colors.unreadDot),
             chevron: false,
             onTap: _addAction,
           ),
           SwitchRow(
-            title: 'Stop Processing More Rules',
+            title: l10n.rulesStopProcessing,
             value: _stop,
             onChanged: (v) => setState(() {
               _stop = v;
@@ -561,11 +571,8 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
         ],
       ),
       InsetGroup(
-        header: 'Run On',
-        footer: _location == RuleLocation.device
-            ? 'This device runs the rule on new Inbox mail each time Loupe checks for mail.'
-            : 'The mail server runs the rule as mail arrives, also while this phone is off. Needs Sieve, '
-                  'over ManageSieve (Dovecot, mailcow) or JMAP (Stalwart).',
+        header: l10n.rulesRunOnHeader,
+        footer: _location == RuleLocation.device ? l10n.rulesRunOnDeviceFooter : l10n.rulesRunOnServerFooter,
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
@@ -582,9 +589,15 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
                     });
                   }
                 },
-                children: const {
-                  RuleLocation.device: Padding(padding: EdgeInsets.symmetric(vertical: 4), child: Text('This Device')),
-                  RuleLocation.server: Padding(padding: EdgeInsets.symmetric(vertical: 4), child: Text('Server')),
+                children: {
+                  RuleLocation.device: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Text(l10n.rulesLocationThisDevice),
+                  ),
+                  RuleLocation.server: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Text(l10n.rulesLocationServer),
+                  ),
                 },
               ),
             ),
@@ -599,13 +612,13 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
           children: [
             GroupedRow(
               leading: Icon(LoupeIcons.applyRule, color: colors.unreadDot, size: 22),
-              title: 'Apply to Existing Messages…',
+              title: l10n.rulesApplyToExisting,
               chevron: false,
               onTap: _applyToExisting,
             ),
             GroupedRow(
               leading: Icon(LoupeIcons.trash, color: colors.destructive, size: 22),
-              title: 'Delete Rule',
+              title: l10n.rulesDeleteRule,
               destructive: true,
               onTap: _delete,
             ),
@@ -617,7 +630,7 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
           children: [
             GroupedRow(
               leading: Icon(LoupeIcons.applyRule, color: colors.unreadDot, size: 22),
-              title: 'Apply to Existing Messages…',
+              title: l10n.rulesApplyToExisting,
               chevron: false,
               onTap: _applyToExisting,
             ),
@@ -628,17 +641,18 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
 
   Widget _serverSection(BuildContext context, Map<String, String> names) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     if (!_parsed.isValid) return const SizedBox.shrink();
     return FutureBuilder<List<ServerRulePreview>>(
       future: _serverPreview(),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return const RuleNotice(text: 'Asking the server what it can do…', icon: LoupeIcons.ruleServer);
+          return RuleNotice(text: l10n.rulesServerChecking, icon: LoupeIcons.ruleServer);
         }
         if (snapshot.hasError) {
           final e = snapshot.error;
           return RuleNotice(
-            text: e is MailException ? e.message : 'Couldn’t reach the server.',
+            text: e is MailException ? e.message : l10n.rulesServerUnreachable,
             icon: LoupeIcons.error,
             tint: colors.destructive,
           );
@@ -656,7 +670,9 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
               for (final (account, problem) in problems)
                 RuleNotice(
                   key: ValueKey('problem-$account-$problem'),
-                  text: 'Can’t run on the server${previews.length > 1 ? ' of ${names[account]}' : ''}: $problem',
+                  text: previews.length > 1
+                      ? l10n.rulesServerProblemOf('${names[account]}', problem)
+                      : l10n.rulesServerProblem(problem),
                   icon: LoupeIcons.warning,
                   tint: colors.flag,
                 ),
@@ -666,7 +682,7 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: NoticeButton(
-                      'Run on This Device Instead',
+                      l10n.rulesRunOnDeviceInstead,
                       onPressed: () => setState(() => _location = RuleLocation.device),
                     ),
                   ),
@@ -679,7 +695,7 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
           children: [
             Divider(height: 0.5, thickness: 0.5, indent: 16, color: colors.separator),
             GroupedRow(
-              title: _showScript ? 'Hide Script' : 'Show Script',
+              title: _showScript ? l10n.rulesHideScript : l10n.rulesShowScript,
               chevron: false,
               trailing: Icon(
                 _showScript ? LoupeIcons.collapse : LoupeIcons.expand,
@@ -713,6 +729,7 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
   Widget _previewSection(BuildContext context, Map<String, String> names) {
     final styles = LoupeTextStyles.of(context);
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final results = _preview;
     final items = [
       for (final e in results?.items ?? const <EmailSummary>[])
@@ -720,18 +737,17 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
     ];
     final String header;
     if (!_parsed.isValid) {
-      header = 'Matching Messages';
+      header = l10n.rulesMatchingHeader;
     } else if (results == null) {
-      header = 'Matching Messages…';
+      header = l10n.rulesMatchingHeaderLoading;
+    } else if (results.items.length >= 50) {
+      header = l10n.rulesMatchingCountMore(items.length);
     } else {
-      final more = results.items.length >= 50 ? '+' : '';
-      header = '${formatCount(items.length)}$more Matching ${items.length == 1 ? 'Message' : 'Messages'}';
+      header = l10n.rulesMatchingCount(items.length);
     }
     return InsetGroup(
       header: header,
-      footer: _parsed.isValid
-          ? 'From the last 30 days. The rule itself only acts on new mail, unless you apply it to existing messages.'
-          : 'The condition has an error: ${_parsed.errors.first.message}',
+      footer: _parsed.isValid ? l10n.rulesPreviewFooter : l10n.rulesConditionError(_parsed.errors.first.message),
       separatorIndent: 16,
       children: [
         if (results != null && !results.isComplete)
@@ -747,13 +763,13 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        e.sender?.displayName ?? '(no sender)',
+                        e.sender?.displayName ?? l10n.rulesPreviewNoSender,
                         style: styles.body.copyWith(fontWeight: FontWeight.w600, fontSize: 15),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        e.subject.isEmpty ? '(no subject)' : e.subject,
+                        e.subject.isEmpty ? l10n.rulesPreviewNoSubject : e.subject,
                         style: styles.footnote.copyWith(color: colors.label),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -772,12 +788,12 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
         if (items.length > 8)
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 9, 14, 11),
-            child: Text('and ${formatCount(items.length - 8)} more', style: styles.footnote),
+            child: Text(l10n.rulesPreviewMore(items.length - 8), style: styles.footnote),
           ),
         if (results != null && results.isComplete && items.isEmpty && _parsed.isValid)
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 11, 14, 11),
-            child: Text('Nothing from the last 30 days.', style: styles.footnote),
+            child: Text(l10n.rulesPreviewEmpty, style: styles.footnote),
           ),
       ],
     );
@@ -819,7 +835,7 @@ class _ConditionField extends StatelessWidget {
                 minLines: 1,
                 maxLines: 4,
                 style: styles.body.copyWith(fontFamily: 'monospace', fontSize: 15),
-                decoration: const InputDecoration.collapsed(hintText: 'from:alice@example.com s:invoice'),
+                decoration: InputDecoration.collapsed(hintText: context.l10n.rulesConditionHint),
               ),
               if (terms.isNotEmpty) ...[
                 const SizedBox(height: 10),
@@ -895,6 +911,7 @@ class _AccountsPageState extends State<_AccountsPage> {
   @override
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     Widget check(bool on) => on ? Icon(LoupeIcons.check, color: colors.unreadDot, size: 22) : const SizedBox(width: 22);
     return PopScope<Set<String>>(
       canPop: false,
@@ -902,14 +919,14 @@ class _AccountsPageState extends State<_AccountsPage> {
         if (!didPop) Navigator.of(context).pop(_selected);
       },
       child: GroupedPage(
-        title: 'Accounts',
+        title: l10n.rulesAccounts,
         children: [
           InsetGroup(
             separatorIndent: 16,
-            footer: 'A rule for all accounts also covers accounts you add later.',
+            footer: l10n.rulesAccountsFooter,
             children: [
               GroupedRow(
-                title: 'All Accounts',
+                title: l10n.rulesAllAccounts,
                 chevron: false,
                 trailing: check(_selected.isEmpty),
                 onTap: () => setState(_selected.clear),

@@ -5,6 +5,7 @@ import 'package:expr_search/expr_search.dart';
 import 'package:flutter/material.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../shared/tags.dart';
 
 /// Query text for a structured term: the canonical syntax when [formatQuery]
@@ -22,7 +23,8 @@ abstract final class SearchTokens {
   static String get unreplied => queryTextFor(const SearchNot(KeywordTerm(Keywords.answered)), 'is:unreplied');
 
   static String tag(String keyword) {
-    final label = tagLabel(keyword);
+    // The search language is English: `tag:work` in every language.
+    final label = tagName(keyword);
     return queryTextFor(KeywordTerm(keyword), label.contains(' ') ? 'tag:"$label"' : 'tag:${label.toLowerCase()}');
   }
 
@@ -250,13 +252,11 @@ class SearchSession extends ChangeNotifier {
 
   /// Why [results] are empty when the query contradicts itself, or null.
   /// The one people try on purpose gets a joke.
-  String? get contradictionNote {
+  String? contradictionNote(AppLocalizations l10n) {
     final term = findContradiction(parseQuery(resultsQuery).expr);
     if (term == null) return null;
-    if (term == const KeywordTerm(Keywords.seen)) {
-      return "Schrödinger's inbox: every message here is read and unread until you open it.";
-    }
-    return 'No message can be both “${describeTerm(term)}” and not.';
+    if (term == const KeywordTerm(Keywords.seen)) return l10n.searchReadAndUnread;
+    return l10n.searchContradiction(describeTerm(term));
   }
 
   void _cancelTimers() {

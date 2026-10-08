@@ -2,8 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/widgets.dart' show Locale;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/subscriptions/one_click.dart';
+import 'package:loupe/features/subscriptions/subscription_format.dart';
+import 'package:loupe/l10n/l10n.dart';
+
+final _l10n = lookupAppLocalizations(const Locale('en'));
 
 /// Records requests and answers them from [answer].
 class FakeTransport implements OneClickTransport {
@@ -61,6 +66,11 @@ void main() {
       ]) {
         final result = await OneClickUnsubscriber(fake).unsubscribe(Uri.parse(uri));
         expect(result.outcome, OneClickOutcome.failed, reason: uri);
+        expect(
+          oneClickFailureText(_l10n, result),
+          'The unsubscribe link isn’t a secure address on the internet.',
+          reason: uri,
+        );
       }
       expect(fake.requests, isEmpty);
     });
@@ -76,7 +86,7 @@ void main() {
       expect((await answered(303, location: 'https://news.example/thanks')).ok, isTrue);
       final refused = await answered(500);
       expect(refused.outcome, OneClickOutcome.refused);
-      expect(refused.message, 'news.example refused the request (error 500).');
+      expect(oneClickFailureText(_l10n, refused), 'news.example refused the request (error 500).');
     });
 
     test('redirects are followed with the same POST on the same host only', () async {
@@ -91,6 +101,10 @@ void main() {
       ]);
       final away = await answered(302, location: 'https://tracker.example/landing');
       expect(away.outcome, OneClickOutcome.redirectedAway);
+      expect(
+        oneClickFailureText(_l10n, away),
+        'news.example sent the request on to another page, which Loupe doesn’t follow.',
+      );
       expect((await answered(308, location: 'http://news.example/u')).outcome, OneClickOutcome.redirectedAway);
       expect((await answered(301)).outcome, OneClickOutcome.redirectedAway, reason: 'no Location');
       final loop = FakeTransport((_) => const OneClickResponse(307, location: '/again'));
@@ -101,10 +115,10 @@ void main() {
     test('no answer', () async {
       final timeout = await OneClickUnsubscriber(ThrowingTransport(TimeoutException('slow'))).unsubscribe(_uri);
       expect(timeout.outcome, OneClickOutcome.failed);
-      expect(timeout.message, 'news.example didn’t answer in time.');
+      expect(oneClickFailureText(_l10n, timeout), 'news.example didn’t answer in time.');
       final offline = await OneClickUnsubscriber(ThrowingTransport(const SocketException('Network is unreachable')))
           .unsubscribe(_uri);
-      expect(offline.message, 'Couldn’t reach news.example.');
+      expect(oneClickFailureText(_l10n, offline), 'Couldn’t reach news.example.');
     });
   });
 

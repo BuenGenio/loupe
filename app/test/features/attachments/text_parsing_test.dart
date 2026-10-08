@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/attachments/attachment_type.dart';
 import 'package:loupe/features/attachments/csv.dart';
 import 'package:loupe/features/attachments/prepared_text.dart';
 import 'package:loupe/features/attachments/text_decoding.dart';
 import 'package:loupe/features/calendar/invitation_format.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:mail_calendar/mail_calendar.dart';
 
 void main() {
@@ -133,7 +135,11 @@ void main() {
     test('describes the time in words, in the device zone and the event\'s', () {
       // intl puts a narrow no-break space before AM/PM.
       final london = IanaZone.named('Europe/London')!;
-      final format = EventTimeFormat(deviceZone: london, now: DateTime.utc(2026, 10, 1));
+      final format = EventTimeFormat(
+        l10n: lookupAppLocalizations(const Locale('en')),
+        deviceZone: london,
+        now: DateTime.utc(2026, 10, 1),
+      );
       String describe(String props) {
         final c = Calendar.parse('BEGIN:VEVENT\n$props\nEND:VEVENT')!;
         final w = format.when(eventSpan(c.primary!, c.zones)!);

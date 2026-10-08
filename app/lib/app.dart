@@ -38,7 +38,7 @@ class LoupeApp extends ConsumerWidget {
     final settings = ref.watch(appSettingsProvider);
     return AppLockBackButton(
       child: MaterialApp.router(
-        title: 'Loupe',
+        title: 'Loupe', // l10n-ignore: the name
         debugShowCheckedModeBanner: false,
         localizationsDelegates: loupeLocalizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
@@ -137,18 +137,12 @@ class _LiveUnavailableState extends ConsumerState<_LiveUnavailable> {
   bool _busy = false;
 
   /// What went wrong, in words, without the details of the exception.
-  String get _explanation => switch (widget.error) {
-    UnimplementedError() => 'Real accounts aren’t available in this build yet.',
-    DatabaseKeyUnavailable(missing: false) =>
-      'Loupe couldn’t read the key that protects your mail on this phone. This is often temporary: try again, '
-          'or restart the phone.',
-    DatabaseKeyUnavailable(missing: true) =>
-      'The key that protects your mail on this phone is gone, which can happen after restoring a backup. Your '
-          'mail is still on the server.',
-    MailStoreException() =>
-      'The mail database on this phone can’t be read: it is damaged, or its key changed. Your mail is still on the '
-          'server.',
-    _ => 'Something went wrong while opening your accounts (${widget.error.runtimeType}).',
+  String _explanation(AppLocalizations l10n) => switch (widget.error) {
+    UnimplementedError() => l10n.appLiveGateUnavailableBuild,
+    DatabaseKeyUnavailable(missing: false) => l10n.appLiveGateKeyUnreadable,
+    DatabaseKeyUnavailable(missing: true) => l10n.appLiveGateKeyMissing,
+    MailStoreException() => l10n.appLiveGateDatabaseDamaged,
+    _ => l10n.appLiveGateUnknownError('${widget.error.runtimeType}'),
   };
 
   void _retry() => ref.invalidate(liveRepositoryProvider);
@@ -171,6 +165,7 @@ class _LiveUnavailableState extends ConsumerState<_LiveUnavailable> {
   Widget build(BuildContext context) {
     final styles = LoupeTextStyles.of(context);
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -181,36 +176,31 @@ class _LiveUnavailableState extends ConsumerState<_LiveUnavailable> {
               children: [
                 Icon(LoupeIcons.warning, size: 44, color: colors.flag),
                 const SizedBox(height: 16),
-                Text('Your accounts couldn’t be opened', style: styles.navTitle, textAlign: TextAlign.center),
+                Text(l10n.appLiveGateTitle, style: styles.navTitle, textAlign: TextAlign.center),
                 const SizedBox(height: 8),
-                Text(_explanation, style: styles.footnote, textAlign: TextAlign.center),
+                Text(_explanation(l10n), style: styles.footnote, textAlign: TextAlign.center),
                 const SizedBox(height: 24),
                 if (_confirmingReset) ...[
-                  Text(
-                    'This deletes your accounts and the mail stored on this phone, including messages waiting in '
-                    'the Outbox. Mail on your servers is not affected; add your accounts again afterwards.',
-                    style: styles.footnote,
-                    textAlign: TextAlign.center,
-                  ),
+                  Text(l10n.appLiveGateResetWarning, style: styles.footnote, textAlign: TextAlign.center),
                   const SizedBox(height: 16),
                   FilledButton(
                     style: FilledButton.styleFrom(backgroundColor: colors.destructive),
                     onPressed: _busy ? null : _reset,
-                    child: const Text('Delete and Start Over'),
+                    child: Text(l10n.appLiveGateDeleteAndStartOver),
                   ),
                   TextButton(
                     onPressed: _busy ? null : () => setState(() => _confirmingReset = false),
-                    child: const Text('Cancel'),
+                    child: Text(l10n.commonCancel),
                   ),
                 ] else ...[
-                  FilledButton(onPressed: _busy ? null : _retry, child: const Text('Try Again')),
+                  FilledButton(onPressed: _busy ? null : _retry, child: Text(l10n.commonTryAgain)),
                   TextButton(
                     onPressed: _busy ? null : () => ref.read(appModeProvider.notifier).set(AppMode.demo),
-                    child: const Text('Use Demo Mail'),
+                    child: Text(l10n.appLiveGateUseDemo),
                   ),
                   TextButton(
                     onPressed: _busy ? null : () => setState(() => _confirmingReset = true),
-                    child: Text('Reset Mail on This Phone…', style: TextStyle(color: colors.destructive)),
+                    child: Text(l10n.appLiveGateReset, style: TextStyle(color: colors.destructive)),
                   ),
                 ],
               ],
