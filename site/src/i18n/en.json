@@ -32,7 +32,8 @@
     "development": "Development",
     "blog": "Blog",
     "contact": "Contact",
-    "main": "Main"
+    "main": "Main",
+    "roadmap": "Roadmap"
   },
   "footer": {
     "about": "A calm mail app with serious tools underneath. Free, open source, and private by design.",
@@ -118,7 +119,48 @@
     "statCommits": "Commits",
     "statTrackers": "Trackers",
     "finalTitle": "Give your inbox a closer look.",
-    "finalText": "Loupe is free. If it earns a place on your phone, pay what you want, and help keep the nightly builds coming."
+    "finalText": "Loupe is free. If it earns a place on your phone, pay what you want, and help keep the nightly builds coming.",
+    "whyEyebrow": "Why Loupe exists",
+    "whyTitle": "Phone mail apps make you choose.",
+    "whyLead": "The simple ones are lovely until you need a message from two years ago. The powerful ones bury the inbox under toolbars. And many sync your mailbox through servers of their own. Loupe refuses all three trade-offs.",
+    "compareWhat": "What you get",
+    "compareTypical": "A typical phone mail app",
+    "compareLoupe": "Loupe",
+    "compareNote": "A comparison with common phone mail apps in general, not with any one app.",
+    "companionTitle": "A companion for your desktop client",
+    "companionText": "Loupe isn't trying to replace the mail client on your computer. It's for people who use Thunderbird or another desktop client and want the same power on the phone: the same tags, the same rules on the same server, and a QR code to bring accounts across.",
+    "cmp": {
+      "html": {
+        "label": "Badly formatted HTML mail",
+        "typical": "Shown as sent: pinch and pan",
+        "loupe": "Rebuilt to fit the screen"
+      },
+      "search": {
+        "label": "Search",
+        "typical": "Keywords",
+        "loupe": "A full boolean language: phone first, server after"
+      },
+      "power": {
+        "label": "Power features",
+        "typical": "A few, or a cluttered screen",
+        "loupe": "Tags, rules, identities, saved searches and raw source, one long-press away"
+      },
+      "protocols": {
+        "label": "Protocols",
+        "typical": "IMAP",
+        "loupe": "IMAP and JMAP, with Sieve rules on the server"
+      },
+      "tracking": {
+        "label": "Tracking",
+        "typical": "Images load, or go through a proxy",
+        "loupe": "Remote images off, tracking pixels removed, links checked"
+      },
+      "mailbox": {
+        "label": "Your mailbox",
+        "typical": "Often synced through the vendor's servers",
+        "loupe": "Only on your phone and your mail server"
+      }
+    }
   },
   "searchDemo": {
     "readsAs": "How Loupe reads it",
@@ -142,73 +184,181 @@
     "server": "From the server: streaming in"
   },
   "highlights": {
-    "readable": { "title": "Readable mode", "text": "HTML mail rebuilt to fit your screen: real text sizes, footers as fine print, photos in a swipeable carousel." },
-    "search": { "title": "Expression search", "text": "Chips or typed queries like from:alice and is:unread. Results from the phone appear at once, the server streams in after." },
-    "smart": { "title": "Smart Mailboxes that travel", "text": "Saved searches stored on your own mail server, so they follow you to every device." },
-    "rules": { "title": "Rules, on the device or the server", "text": "Turn any search into a rule. Run it on the phone, or as Sieve on your server so it works while you sleep." },
-    "subscriptions": { "title": "Subscriptions", "text": "Every newsletter by sender, with read rates and a one-tap unsubscribe centre that runs on your phone." },
-    "snooze": { "title": "Snooze that syncs", "text": "Snoozed mail lives in a folder on your server, so other clients that follow the convention see it too." },
-    "send": { "title": "Undo and schedule send", "text": "Take back a message in the first seconds, or write now and send tomorrow at nine." },
-    "encryption": { "title": "OpenPGP and S/MIME", "text": "Encrypt and sign with either standard. OpenPGP works with Thunderbird and Autocrypt." },
-    "phishing": { "title": "Explainable phishing check", "text": "Suspicious links and look-alike domains are flagged, with the reason in plain words." },
-    "calendar": { "title": "Calendar invitations", "text": "Accept, Maybe or Decline right above the message, with both time zones when they differ." },
-    "protocols": { "title": "IMAP and JMAP", "text": "Any IMAP provider with autoconfig, plus native JMAP for Fastmail and Stalwart." },
-    "tablet": { "title": "Tablets and keyboards", "text": "Three panes, keyboard shortcuts, drag and drop, and a command palette on Ctrl+K." }
+    "readable": {
+      "title": "Readable mode",
+      "text": "HTML mail rebuilt to fit your screen: real text sizes, footers as fine print, photos in a swipeable carousel."
+    },
+    "search": {
+      "title": "Expression search",
+      "text": "Chips or typed queries like from:alice and is:unread. Results from the phone appear at once, the server streams in after."
+    },
+    "smart": {
+      "title": "Smart Mailboxes that travel",
+      "text": "Saved searches stored on your own mail server, so they follow you to every device."
+    },
+    "rules": {
+      "title": "Rules, on the device or the server",
+      "text": "Turn any search into a rule. Run it on the phone, or as Sieve on your server so it works while you sleep."
+    },
+    "subscriptions": {
+      "title": "Subscriptions",
+      "text": "Every newsletter by sender, with read rates and a one-tap unsubscribe centre that runs on your phone."
+    },
+    "snooze": {
+      "title": "Snooze that syncs",
+      "text": "Snoozed mail lives in a folder on your server, so other clients that follow the convention see it too."
+    },
+    "send": {
+      "title": "Undo and schedule send",
+      "text": "Take back a message in the first seconds, or write now and send tomorrow at nine."
+    },
+    "encryption": {
+      "title": "OpenPGP and S/MIME",
+      "text": "Encrypt and sign with either standard. OpenPGP works with Thunderbird and Autocrypt."
+    },
+    "phishing": {
+      "title": "Explainable phishing check",
+      "text": "Suspicious links and look-alike domains are flagged, with the reason in plain words."
+    },
+    "calendar": {
+      "title": "Calendar invitations",
+      "text": "Accept, Maybe or Decline right above the message, with both time zones when they differ."
+    },
+    "protocols": {
+      "title": "IMAP and JMAP",
+      "text": "Any IMAP provider with autoconfig, plus native JMAP for Fastmail and Stalwart."
+    },
+    "tablet": {
+      "title": "Tablets and keyboards",
+      "text": "Three panes, keyboard shortcuts, drag and drop, and a command palette on Ctrl+K."
+    }
   },
   "groups": {
     "reading": {
       "eyebrow": "Reading",
       "title": "Every message, made for a phone.",
       "lead": "Most HTML mail is designed for a desktop inbox. Readable mode rebuilds it for the screen in your hand, and the original is one tap away.",
-      "p1": { "title": "Readable, Original, Plain", "text": "Three views per message; Loupe can remember your choice per sender. Plain comes in Sans and Mono." },
-      "p2": { "title": "Photos as a gallery", "text": "Image-heavy mail turns into a carousel; tap for a full-screen gallery." },
-      "p3": { "title": "Dark mode that works", "text": "Colours fixed for dark backgrounds, so dark text never disappears." },
-      "p4": { "title": "Footers as fine print", "text": "Legal blocks and unsubscribe boilerplate shrink out of the way." }
+      "p1": {
+        "title": "Readable, Original, Plain",
+        "text": "Three views per message; Loupe can remember your choice per sender. Plain comes in Sans and Mono."
+      },
+      "p2": {
+        "title": "Photos as a gallery",
+        "text": "Image-heavy mail turns into a carousel; tap for a full-screen gallery."
+      },
+      "p3": {
+        "title": "Dark mode that works",
+        "text": "Colours fixed for dark backgrounds, so dark text never disappears."
+      },
+      "p4": {
+        "title": "Footers as fine print",
+        "text": "Legal blocks and unsubscribe boilerplate shrink out of the way."
+      }
     },
     "search": {
       "eyebrow": "Search",
       "title": "Find anything, the way you think.",
       "lead": "Pull down to search. Tap chips, or type an expression with the same power as a desktop client. Loupe answers from the phone at once and asks the server in parallel.",
-      "p1": { "title": "Chips and expressions", "text": "Type an expression and each part becomes a chip in plain words; tap one to change it." },
-      "p2": { "title": "Local first, server after", "text": "Instant results from the encrypted on-device index, then the rest of your archive." },
-      "p3": { "title": "Smart Mailboxes", "text": "Save a search. It is stored on your server and appears on your other devices." },
-      "p4": { "title": "Search to rule", "text": "Any search can become a device or server rule in two taps." }
+      "p1": {
+        "title": "Chips and expressions",
+        "text": "Type an expression and each part becomes a chip in plain words; tap one to change it."
+      },
+      "p2": {
+        "title": "Local first, server after",
+        "text": "Instant results from the encrypted on-device index, then the rest of your archive."
+      },
+      "p3": {
+        "title": "Smart Mailboxes",
+        "text": "Save a search. It is stored on your server and appears on your other devices."
+      },
+      "p4": {
+        "title": "Search to rule",
+        "text": "Any search can become a device or server rule in two taps."
+      }
     },
     "organising": {
       "eyebrow": "Organising",
       "title": "Inbox zero without the busywork.",
       "lead": "Swipes with Undo, a Filter button for the views you use every day, tags that match Thunderbird, and snooze that keeps working on your other clients.",
-      "p1": { "title": "Swipes with Undo", "text": "Archive, flag, read or move with a swipe; nothing is final until you say so." },
-      "p2": { "title": "Filter button", "text": "Unread, flagged, with attachments, unreplied or addressed to you." },
-      "p3": { "title": "Tags", "text": "Compatible with Thunderbird, so they look the same on your desktop." },
-      "p4": { "title": "Snooze", "text": "Stored on the server as a folder and a keyword, not in a vendor cloud." }
+      "p1": {
+        "title": "Swipes with Undo",
+        "text": "Archive, flag, read or move with a swipe; nothing is final until you say so."
+      },
+      "p2": {
+        "title": "Filter button",
+        "text": "Unread, flagged, with attachments, unreplied or addressed to you."
+      },
+      "p3": {
+        "title": "Tags",
+        "text": "Compatible with Thunderbird, so they look the same on your desktop."
+      },
+      "p4": {
+        "title": "Snooze",
+        "text": "Stored on the server as a folder and a keyword, not in a vendor cloud."
+      }
     },
     "subscriptions": {
       "eyebrow": "Subscriptions",
       "title": "Newsletters, sorted by the people who send them.",
       "lead": "Loupe groups bulk mail by sender, shows how much of it you actually read, and unsubscribes on your phone, without a third-party service reading your inbox.",
-      "p1": { "title": "Newsletters and Discussions", "text": "Bulk senders and the mailing lists you write to, in two tabs." },
-      "p2": { "title": "Unsubscribe centre", "text": "One-click, by mail or on the sender's page: whatever the sender supports." },
-      "p3": { "title": "Lists as forums", "text": "Mailing-list threads read like a forum, with muting per thread." },
-      "p4": { "title": "Patches as diffs", "text": "Patches sent to a list are drawn as coloured diffs, for people who review code by mail." }
+      "p1": {
+        "title": "Newsletters and Discussions",
+        "text": "Bulk senders and the mailing lists you write to, in two tabs."
+      },
+      "p2": {
+        "title": "Unsubscribe centre",
+        "text": "One-click, by mail or on the sender's page: whatever the sender supports."
+      },
+      "p3": {
+        "title": "Lists as forums",
+        "text": "Mailing-list threads read like a forum, with muting per thread."
+      },
+      "p4": {
+        "title": "Patches as diffs",
+        "text": "Patches sent to a list are drawn as coloured diffs, for people who review code by mail."
+      }
     },
     "security": {
       "eyebrow": "Security and privacy",
       "title": "No servers. No tracking. No exceptions.",
       "lead": "Loupe talks to your mail provider and nobody else. There is no Loupe account, no analytics and no crash reporter. Your mail is encrypted on the phone.",
-      "p1": { "title": "Encrypted local store", "text": "Messages and the search index sit in an encrypted database." },
-      "p2": { "title": "Remote images blocked", "text": "Tracking pixels stay silent until you choose to load images." },
-      "p3": { "title": "Tracking links unwrapped", "text": "Redirect wrappers are removed, so you see and visit the real address." },
-      "p4": { "title": "OpenPGP and S/MIME", "text": "Keys on your device, Autocrypt for easy OpenPGP, Android KeyChain certificates for S/MIME." }
+      "p1": {
+        "title": "Encrypted local store",
+        "text": "Messages and the search index sit in an encrypted database."
+      },
+      "p2": {
+        "title": "Remote images blocked",
+        "text": "Tracking pixels stay silent until you choose to load images."
+      },
+      "p3": {
+        "title": "Tracking links unwrapped",
+        "text": "Redirect wrappers are removed, so you see and visit the real address."
+      },
+      "p4": {
+        "title": "OpenPGP and S/MIME",
+        "text": "Keys on your device, Autocrypt for easy OpenPGP, Android KeyChain certificates for S/MIME."
+      }
     },
     "writing": {
       "eyebrow": "Writing",
       "title": "Send with confidence.",
       "lead": "Identities and aliases, drafts that save themselves, a few seconds to take a message back, and an Outbox for mail that should go out later.",
-      "p1": { "title": "Identities and aliases", "text": "Reply from the address the mail was sent to, including catch-all aliases." },
-      "p2": { "title": "Undo send", "text": "A short window to change your mind." },
-      "p3": { "title": "Scheduled send", "text": "Pick a time; the Outbox keeps it until then, even offline." },
-      "p4": { "title": "Notifications with actions", "text": "Archive, Mark as Read or Reply from the notification." }
+      "p1": {
+        "title": "Identities and aliases",
+        "text": "Reply from the address the mail was sent to, including catch-all aliases."
+      },
+      "p2": {
+        "title": "Undo send",
+        "text": "A short window to change your mind."
+      },
+      "p3": {
+        "title": "Scheduled send",
+        "text": "Pick a time; the Outbox keeps it until then, even offline."
+      },
+      "p4": {
+        "title": "Notifications with actions",
+        "text": "Archive, Mark as Read or Reply from the notification."
+      }
     }
   },
   "features": {
@@ -219,7 +369,60 @@
     "lead": "A tour of what Loupe does today. Everything here is in the current Nightly build, and nothing needs an account with us.",
     "jump": "Jump to",
     "andMore": "And more",
-    "moreTitle": "The rest of the toolbox."
+    "moreTitle": "The rest of the toolbox.",
+    "principleEyebrow": "The design rule",
+    "principleTitle": "Simple by default, powerful on demand.",
+    "principleLead": "Every screen should feel familiar the first time you see it. No power feature gets a permanent button on the main screens; they live in four places instead.",
+    "place1": "Long-press menus",
+    "place1Text": "On messages, senders, chips and folders.",
+    "place2": "The ⋯ menu",
+    "place2Text": "View Source, every header, and search from this message.",
+    "place3": "The search language",
+    "place3Text": "Everything the chips can do, and more, by typing.",
+    "place4": "Settings › Advanced",
+    "place4Text": "Server details, sync and the rarely needed switches.",
+    "rpEyebrow": "Under the hood",
+    "rpTitle": "How Readable mode works",
+    "rpLead": "Every message goes through the same six steps, in the background, with limits on size, depth and time so a hostile message can't stall the app.",
+    "rp1": "Parse like a browser",
+    "rp1Text": "Broken markup is recovered the way browsers recover it.",
+    "rp2": "Drop what you shouldn't see",
+    "rp2Text": "Scripts, styles, forms, hidden preheaders and spam padding go, and so do tracking pixels.",
+    "rp3": "Rebuild the layout",
+    "rp3Text": "Layout tables become one readable column; real data tables stay tables and scroll on their own.",
+    "rp4": "Keep what matters",
+    "rp4Text": "Colours, highlights and emphasis stay; big text becomes a heading, legal footers become fine print.",
+    "rp5": "Fix colours for dark mode",
+    "rp5Text": "Text that would lose contrast changes lightness but keeps its hue, so a yellow highlight stays yellow.",
+    "rp6": "Draw it natively",
+    "rp6Text": "No web view and no JavaScript: nothing in a message can run, and selection and accessibility simply work.",
+    "seTitle": "One query, four engines",
+    "seLead": "Loupe reads your query once, then asks every place your mail lives in its own language.",
+    "seLocal": "On your phone",
+    "seLocalText": "Full-text search over the encrypted local copy, with results as you type.",
+    "seImap": "IMAP servers",
+    "seImapText": "The whole and/or/not tree maps onto the server's own search.",
+    "seGmail": "Gmail",
+    "seGmailText": "Translated into Gmail's own search syntax and run once, across all mail.",
+    "seJmap": "JMAP servers",
+    "seJmapText": "One nested filter, answered in a single round-trip.",
+    "seNote": "When a server can't express part of a query, Loupe asks for a slightly wider set and filters it on the phone, so the results always match exactly what you typed.",
+    "jmapEyebrow": "Protocols",
+    "jmapTitle": "Built around JMAP, fluent in IMAP.",
+    "jmapLead": "Loupe's own data model follows JMAP, the modern mail protocol. IMAP accounts are translated into it, and JMAP accounts speak it natively.",
+    "jmap1": "Efficient sync",
+    "jmap1Text": "Only what changed since last time crosses the network.",
+    "jmap2": "Search in one round-trip",
+    "jmap2Text": "Complex queries answered by the server in a single request.",
+    "jmap3": "Sending without SMTP",
+    "jmap3Text": "Mail is submitted through the same connection.",
+    "jmap4": "Push and Sieve",
+    "jmap4Text": "Changes pushed from the server, and rules written over JMAP.",
+    "securityDetails": "Security details",
+    "sec1": "Encrypted connections only: no silent fallback to plain text.",
+    "sec2": "A self-signed certificate is trusted only after you've seen and confirmed its fingerprint.",
+    "sec3": "Messages are taken apart in the background, with limits, so a malformed one can't freeze the app.",
+    "sec4": "Passwords and tokens live in Android's keystore; the mail database is encrypted."
   },
   "screenshots": {
     "title": "Screenshots",
@@ -249,19 +452,71 @@
     }
   },
   "shots": {
-    "inbox": { "title": "One calm inbox", "caption": "All your accounts in one list, with unread dots, VIP stars, flags and thread counts that tell you what needs you first.", "alt": "Loupe's All Inboxes screen on an Android phone: messages from Jordan Lee, Tracker, Dana Okafor, Felix Brandt and Ben Walsh with unread dots, stars, flags and thread counts, each account marked by a coloured stripe." },
-    "newsletter": { "title": "Readable mode", "caption": "Newsletters rebuilt to fit the phone: big photos, legible text, and the tracker count and verified sender right in the header.", "alt": "A Trailhead Outfitters newsletter in Loupe's Readable mode: a mountain photo titled 'Into the cold', the heading 'Three layers, every trail', body text and a 'Shop the guide' button." },
-    "search": { "title": "Search that understands", "caption": "Type f:(dana or ben) -is:read and Loupe shows what it understood as chips you can tap to change.", "alt": "Loupe's search screen with the query f:(dana or ben) -is:read, chips 'From: dana or ben' and 'Unread', and four results from Dana Okafor and Ben Walsh." },
-    "search-hero": { "title": "Search and filters", "caption": "Suggestions and filter chips as you type: finding exactly what you want takes seconds.", "alt": "Loupe's search screen with a typed expression, filter chips and suggestions below the search field." },
-    "phishing": { "title": "Phishing, explained", "caption": "When a message looks wrong, Loupe says why in plain words: a look-alike domain, or a familiar name from a new address.", "alt": "Loupe's 'This looks like phishing' sheet listing the reasons: a look-alike domain and a name you know writing from a new address." },
-    "tablet": { "title": "Three panes on tablets", "caption": "Mailboxes, the list and the message side by side, with keyboard shortcuts and a command palette.", "alt": "Loupe on a tablet in landscape: mailboxes on the left, All Inboxes in the middle and a message with a photo carousel on the right." },
-    "subscriptions": { "title": "Unsubscribe centre", "caption": "Newsletters ranked by how much you leave unread, counted on your phone, with one-tap unsubscribe.", "alt": "Loupe's Subscriptions screen with Newsletters and Discussions tabs, Never Read and Rarely Read filters, read rates and Unsubscribe buttons." },
-    "mailboxes": { "title": "Smart Mailboxes", "caption": "Saved searches sit next to your folders, and live on your mail server so your other devices see them too.", "alt": "Loupe's Mailboxes screen with accounts folded and two Smart Mailboxes listed." },
-    "invitation": { "title": "Invitations, answered", "caption": "Meeting invitations show both time zones and let you Accept, Maybe or Decline without leaving the message.", "alt": "An Outlook meeting invitation in Loupe with the event time in two time zones, a Teams join link and Accept, Maybe and Decline buttons." },
-    "openpgp": { "title": "Encrypted, verified", "caption": "OpenPGP messages are decrypted on the device, with the signer, a protected subject and the key's fingerprint.", "alt": "Loupe's 'Signed by Dana Okafor' sheet: decrypted on this device, a protected subject, and the key fingerprint." },
-    "compose": { "title": "Writing a message", "caption": "Recipients as chips, the identity you send from, and Send Later when it should wait until morning.", "alt": "Loupe's New Message screen with recipient chips, the From identity, body text, and Send Later and Send buttons." },
-    "rules": { "title": "Rules in plain search", "caption": "A rule is a search plus an action; run it on the phone or on your server, where Loupe writes the Sieve for you.", "alt": "Loupe's New Rule editor: a search-style condition, the Mark as Read action, Run On Server switched on and the generated Sieve script." },
-    "patch": { "title": "Patches as diffs", "caption": "On technical mailing lists, patches are drawn as coloured diffs in a monospace font.", "alt": "A mailing-list message in Loupe in monospace, with a patch drawn as a red and green diff." }
+    "inbox": {
+      "title": "One calm inbox",
+      "caption": "All your accounts in one list, with unread dots, VIP stars, flags and thread counts that tell you what needs you first.",
+      "alt": "Loupe's All Inboxes screen on an Android phone: messages from Jordan Lee, Tracker, Dana Okafor, Felix Brandt and Ben Walsh with unread dots, stars, flags and thread counts, each account marked by a coloured stripe."
+    },
+    "newsletter": {
+      "title": "Readable mode",
+      "caption": "Newsletters rebuilt to fit the phone: big photos, legible text, and the tracker count and verified sender right in the header.",
+      "alt": "A Trailhead Outfitters newsletter in Loupe's Readable mode: a mountain photo titled 'Into the cold', the heading 'Three layers, every trail', body text and a 'Shop the guide' button."
+    },
+    "search": {
+      "title": "Search that understands",
+      "caption": "Type f:(dana or ben) -is:read and Loupe shows what it understood as chips you can tap to change.",
+      "alt": "Loupe's search screen with the query f:(dana or ben) -is:read, chips 'From: dana or ben' and 'Unread', and four results from Dana Okafor and Ben Walsh."
+    },
+    "search-hero": {
+      "title": "Search and filters",
+      "caption": "Suggestions and filter chips as you type: finding exactly what you want takes seconds.",
+      "alt": "Loupe's search screen with a typed expression, filter chips and suggestions below the search field."
+    },
+    "phishing": {
+      "title": "Phishing, explained",
+      "caption": "When a message looks wrong, Loupe says why in plain words: a look-alike domain, or a familiar name from a new address.",
+      "alt": "Loupe's 'This looks like phishing' sheet listing the reasons: a look-alike domain and a name you know writing from a new address."
+    },
+    "tablet": {
+      "title": "Three panes on tablets",
+      "caption": "Mailboxes, the list and the message side by side, with keyboard shortcuts and a command palette.",
+      "alt": "Loupe on a tablet in landscape: mailboxes on the left, All Inboxes in the middle and a message with a photo carousel on the right."
+    },
+    "subscriptions": {
+      "title": "Unsubscribe centre",
+      "caption": "Newsletters ranked by how much you leave unread, counted on your phone, with one-tap unsubscribe.",
+      "alt": "Loupe's Subscriptions screen with Newsletters and Discussions tabs, Never Read and Rarely Read filters, read rates and Unsubscribe buttons."
+    },
+    "mailboxes": {
+      "title": "Smart Mailboxes",
+      "caption": "Saved searches sit next to your folders, and live on your mail server so your other devices see them too.",
+      "alt": "Loupe's Mailboxes screen with accounts folded and two Smart Mailboxes listed."
+    },
+    "invitation": {
+      "title": "Invitations, answered",
+      "caption": "Meeting invitations show both time zones and let you Accept, Maybe or Decline without leaving the message.",
+      "alt": "An Outlook meeting invitation in Loupe with the event time in two time zones, a Teams join link and Accept, Maybe and Decline buttons."
+    },
+    "openpgp": {
+      "title": "Encrypted, verified",
+      "caption": "OpenPGP messages are decrypted on the device, with the signer, a protected subject and the key's fingerprint.",
+      "alt": "Loupe's 'Signed by Dana Okafor' sheet: decrypted on this device, a protected subject, and the key fingerprint."
+    },
+    "compose": {
+      "title": "Writing a message",
+      "caption": "Recipients as chips, the identity you send from, and Send Later when it should wait until morning.",
+      "alt": "Loupe's New Message screen with recipient chips, the From identity, body text, and Send Later and Send buttons."
+    },
+    "rules": {
+      "title": "Rules in plain search",
+      "caption": "A rule is a search plus an action; run it on the phone or on your server, where Loupe writes the Sieve for you.",
+      "alt": "Loupe's New Rule editor: a search-style condition, the Mark as Read action, Run On Server switched on and the generated Sieve script."
+    },
+    "patch": {
+      "title": "Patches as diffs",
+      "caption": "On technical mailing lists, patches are drawn as coloured diffs in a monospace font.",
+      "alt": "A mailing-list message in Loupe in monospace, with a patch drawn as a red and green diff."
+    }
   },
   "download": {
     "title": "Download Loupe for Android",
@@ -356,7 +611,7 @@
     "paysFor": "What your support pays for",
     "pay1": "Development time: new features, fixes, and keeping up with mail providers.",
     "pay2": "The iOS version: an Apple Developer account and test devices.",
-    "pay3": "Google's security review for one-tap Gmail sign-in.",
+    "pay3": "Test accounts and devices, so Loupe works with every major provider.",
     "pay4": "This website and the domain.",
     "otherHelp_html": "Not in a position to give? That's fine. Telling a friend, <a href=\"{repo}\">starring the repository</a> or <a href=\"{contact}\">reporting a bug</a> helps just as much."
   },
@@ -433,12 +688,90 @@
     "downloadShot": "Download: {title}"
   },
   "og": {
-    "home": { "title": "Your mail, in focus.", "kicker": "Free, open-source mail for Android" },
-    "features": { "title": "Quiet by default. Capable when you need it.", "kicker": "Features" },
-    "screenshots": { "title": "Have a look around.", "kicker": "Screenshots" },
-    "download": { "title": "Download Loupe for Android", "kicker": "Free · pay what you want" },
-    "donate": { "title": "Keep Loupe independent", "kicker": "Support" },
-    "contact": { "title": "Talk to a human.", "kicker": "Contact" },
-    "press": { "title": "Logos, screenshots and facts", "kicker": "Press kit" }
+    "home": {
+      "title": "Your mail, in focus.",
+      "kicker": "Free, open-source mail for Android"
+    },
+    "features": {
+      "title": "Quiet by default. Capable when you need it.",
+      "kicker": "Features"
+    },
+    "screenshots": {
+      "title": "Have a look around.",
+      "kicker": "Screenshots"
+    },
+    "download": {
+      "title": "Download Loupe for Android",
+      "kicker": "Free · pay what you want"
+    },
+    "donate": {
+      "title": "Keep Loupe independent",
+      "kicker": "Support"
+    },
+    "contact": {
+      "title": "Talk to a human.",
+      "kicker": "Contact"
+    },
+    "press": {
+      "title": "Logos, screenshots and facts",
+      "kicker": "Press kit"
+    },
+    "roadmap": {
+      "title": "Where Loupe is going",
+      "kicker": "Roadmap"
+    }
+  },
+  "roadmap": {
+    "title": "Roadmap",
+    "description": "What Loupe has shipped, what's next (Google and Microsoft sign-in, Google Play, iOS), what may come later, and what is deliberately not planned.",
+    "eyebrow": "Roadmap",
+    "h1": "Where Loupe is going",
+    "lead": "Loupe is built in phases, each with a clear finish line. Here's what's done, what's next, and what is deliberately not on the list.",
+    "status": "Today: used every day on Android, with a new Nightly build after every change. The iOS version is prepared and waits for an Apple developer account.",
+    "shipped": "Shipped",
+    "inProgress": "In progress",
+    "maybe": "Later, maybe",
+    "phasesTitle": "The phases",
+    "p0": "Foundations",
+    "p0Text": "The name and licence, the Readable renderer, sync tested against the big providers, the encrypted store and the search parser.",
+    "p1": "Everyday mail",
+    "p1Text": "Accounts with automatic setup, the message list with swipes, Readable, Original and Plain views, search, compose with undo send and an Outbox, notifications and dark mode.",
+    "p2": "The power layer",
+    "p2Text": "The full search language, Smart Mailboxes, tags, rules and Sieve, identities, View Source and authentication results, three panes and keyboard shortcuts, scheduled send.",
+    "p3": "JMAP",
+    "p3Text": "JMAP accounts for Fastmail and Stalwart: search on the server, sending without SMTP, push from the server, and Sieve over JMAP.",
+    "p4": "Encryption",
+    "p4Text": "OpenPGP compatible with Thunderbird, with Autocrypt; S/MIME, including certificates installed on the device.",
+    "p5": "Public release",
+    "p5Text": "Sign in with Google and Microsoft through their verification, a public beta on Google Play, and iOS on TestFlight.",
+    "p6": "Plugins",
+    "p6Text": "Only if real needs can't be met by built-in features. See below.",
+    "laterTitle": "Further out",
+    "later1": "An app lock",
+    "later1Text": "Fingerprint or PIN before your mail shows.",
+    "later2": "Saving and exporting mail",
+    "later2Text": "A message as an .eml file, a folder as an mbox archive.",
+    "later3": "The app in more languages",
+    "later3Text": "Today the app itself is in English.",
+    "later4": "Faster notifications on iOS",
+    "later4Text": "iOS doesn't let apps keep a connection open. An optional relay could send content-free \"check now\" pushes, but only if it can work without ever seeing mail.",
+    "notTitle": "Deliberately not planned",
+    "notLead": "Saying no keeps Loupe small, fast and private. These won't happen, and here's why.",
+    "not1": "POP3",
+    "not1Text": "Loupe keeps mail on the server, so every device sees the same mailbox.",
+    "not2": "Exchange ActiveSync and EWS",
+    "not2Text": "Microsoft 365 works over IMAP with Microsoft sign-in. Loupe sticks to open standards.",
+    "not3": "Running Thunderbird add-ons",
+    "not3Text": "Their APIs are built around desktop windows, and about half of the popular ones reach into Thunderbird's internals, which a phone app can't offer.",
+    "not4": "A server that holds your password",
+    "not4Text": "Some apps keep your login on their servers to fetch your mail. Loupe never will.",
+    "not5": "Desktop versions",
+    "not5Text": "Loupe is for phones and tablets; your computer already has good mail clients.",
+    "pluginsTitle": "Plugins, if they're ever needed",
+    "pluginsText": "Most popular desktop add-ons fill gaps that Loupe covers natively: better search, conversations, scheduled send, authentication results, rules. If outside extensions ever become necessary, they'll run in a locked-down sandbox, with permissions you approve and no code downloaded from the internet.",
+    "howTitle": "How priorities are set",
+    "howText": "Each phase has a finish line, and nothing from the next phase sneaks in early. Bugs come first, then what people ask for in Discussions. Donations buy the time for both.",
+    "suggest": "Suggest a feature",
+    "support": "Support Loupe"
   }
 }

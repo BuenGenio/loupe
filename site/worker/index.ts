@@ -44,7 +44,7 @@ const cacheSeconds = 300;
 
 // Kept in step with src/i18n/locales.ts (codes, translatedPaths).
 const languages = ['en', 'es', 'de', 'fr', 'it', 'uk', 'sq', 'bs', 'bg', 'ca', 'hr', 'cs', 'da', 'nl', 'et', 'fi', 'gl', 'el', 'hu', 'is', 'ga', 'lv', 'lt', 'lb', 'mk', 'mt', 'nb', 'pl', 'pt', 'ro', 'sr', 'sk', 'sl', 'sv', 'tr', 'cy', 'eu'];
-const translatedPaths = ['/', '/features/', '/screenshots/', '/download/', '/download/start/', '/thanks/', '/donate/', '/contact/', '/press/'];
+const translatedPaths = ['/', '/features/', '/screenshots/', '/download/', '/download/start/', '/thanks/', '/donate/', '/contact/', '/press/', '/roadmap/'];
 // Browser tags that mean one of our languages under another name.
 const aliases: Record<string, string> = { no: 'nb', nn: 'nb', ua: 'uk', sh: 'sr', cnr: 'sr', me: 'sr', va: 'ca' };
 

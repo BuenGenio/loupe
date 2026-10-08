@@ -95,6 +95,44 @@ const heroPoints: [number, number][] = [
     </div>
   </section>
 
+  <section class="section-tight why" aria-labelledby="why-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">{t('home.whyEyebrow')}</p>
+        <h2 id="why-title">{t('home.whyTitle')}</h2>
+        <p class="lead">{t('home.whyLead')}</p>
+      </div>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead>
+            <tr>
+              <th scope="col"><span class="visually-hidden">{t('home.compareWhat')}</span></th>
+              <th scope="col">{t('home.compareTypical')}</th>
+              <th scope="col" class="us">{t('home.compareLoupe')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {['html', 'search', 'power', 'protocols', 'tracking', 'mailbox'].map((row) => (
+              <tr>
+                <th scope="row">{t(`home.cmp.${row}.label`)}</th>
+                <td>{t(`home.cmp.${row}.typical`)}</td>
+                <td class="us"><Icon name="checkmark" size={16} /> <span>{t(`home.cmp.${row}.loupe`)}</span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="muted compare-note">{t('home.compareNote')}</p>
+      <div class="companion card">
+        <div class="icon-tile"><Icon name="window-dev-tools" /></div>
+        <div>
+          <h3>{t('home.companionTitle')}</h3>
+          <p>{t('home.companionText')}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section split search" aria-labelledby="search-title">
     <div class="wrap split-grid">
       <div>
@@ -333,6 +371,99 @@ const heroPoints: [number, number][] = [
 
   .pillar p {
     margin: 0;
+    color: var(--ink-2);
+  }
+
+  .why .section-head {
+    max-width: 760px;
+  }
+
+  .compare-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    background: var(--bg-elev);
+  }
+
+  .compare {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+
+  .compare th,
+  .compare td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .compare tbody tr:last-child th,
+  .compare tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .compare thead th {
+    color: var(--ink-3);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .compare thead th.us {
+    color: var(--brand-ink);
+  }
+
+  .compare tbody th {
+    width: 24%;
+    font-weight: 500;
+  }
+
+  .compare td {
+    color: var(--ink-3);
+  }
+
+  .compare td.us {
+    color: var(--ink);
+    background: color-mix(in srgb, var(--brand-soft) 55%, transparent);
+  }
+
+  .compare td.us :global(svg) {
+    display: inline-block;
+    vertical-align: -3px;
+    margin-right: 4px;
+    color: var(--brand);
+  }
+
+  .compare-note {
+    margin: 10px 0 0;
+    font-size: 0.8125rem;
+  }
+
+  .companion {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    margin-top: 28px;
+    padding: 24px 28px;
+  }
+
+  .companion .icon-tile {
+    flex: none;
+  }
+
+  .companion h3 {
+    margin: 4px 0 6px;
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+
+  .companion p {
+    margin: 0;
+    max-width: 70ch;
     color: var(--ink-2);
   }
 

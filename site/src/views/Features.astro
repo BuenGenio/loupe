@@ -36,8 +36,30 @@ const more = highlights.filter((h) => extras.includes(h.key));
     </div>
   </section>
 
+  <section class="principle" aria-labelledby="principle-title">
+    <div class="wrap principle-grid">
+      <div>
+        <p class="eyebrow">{t('features.principleEyebrow')}</p>
+        <h2 id="principle-title">{t('features.principleTitle')}</h2>
+        <p class="lead">{t('features.principleLead')}</p>
+      </div>
+      <ol class="places">
+        {(['press-and-hold', 'more', 'search', 'settings'] as const).map((_, n) => (
+          <li>
+            <span class="num" aria-hidden="true">{n + 1}</span>
+            <div>
+              <strong>{t(`features.place${n + 1}`)}</strong>
+              <span>{t(`features.place${n + 1}Text`)}</span>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
   {
     groups.map((g, i) => (
+      <>
       <section id={g.id} class:list={['group', i % 2 ? 'alt' : '']} aria-labelledby={`${g.id}-title`}>
         <div class:list={['wrap', 'group-grid', i % 2 ? 'reverse' : '']}>
           <div class="copy">
@@ -62,12 +84,84 @@ const more = highlights.filter((h) => extras.includes(h.key));
                 </li>
               ))}
             </ul>
+            {g.id === 'security' && (
+              <div class="details">
+                <h3>{t('features.securityDetails')}</h3>
+                <ul>
+                  {[1, 2, 3, 4].map((n) => (
+                    <li>
+                      <Icon name="checkmark" size={16} /> {t(`features.sec${n}`)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
           <div class="visual">
             <Device shot={shotFor(g.shot)} placeholder={t('common.screenshotSoon')} />
           </div>
         </div>
       </section>
+      {g.id === 'reading' && (
+        <section class="deep" aria-labelledby="rp-title">
+          <div class="wrap">
+            <div class="section-head">
+              <p class="eyebrow">{t('features.rpEyebrow')}</p>
+              <h2 id="rp-title">{t('features.rpTitle')}</h2>
+              <p class="lead">{t('features.rpLead')}</p>
+            </div>
+            <ol class="steps">
+              {[1, 2, 3, 4, 5, 6].map((n) => (
+                <li class="card">
+                  <span class="step" aria-hidden="true">{n}</span>
+                  <h3>{t(`features.rp${n}`)}</h3>
+                  <p>{t(`features.rp${n}Text`)}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+      {g.id === 'search' && (
+        <section class="deep alt-deep" aria-labelledby="se-title">
+          <div class="wrap">
+            <div class="section-head">
+              <p class="eyebrow">{t('features.rpEyebrow')}</p>
+              <h2 id="se-title">{t('features.seTitle')}</h2>
+              <p class="lead">{t('features.seLead')}</p>
+            </div>
+            <div class="engines">
+              {(['Local', 'Imap', 'Gmail', 'Jmap'] as const).map((k) => (
+                <div class="engine">
+                  <h3>{t(`features.se${k}`)}</h3>
+                  <p>{t(`features.se${k}Text`)}</p>
+                </div>
+              ))}
+            </div>
+            <p class="engine-note"><Icon name="filter" size={18} /> <span>{t('features.seNote')}</span></p>
+          </div>
+        </section>
+      )}
+      {g.id === 'security' && (
+        <section class="jmap" aria-labelledby="jmap-title">
+          <div class="wrap jmap-grid">
+            <div>
+              <p class="eyebrow">{t('features.jmapEyebrow')}</p>
+              <h2 id="jmap-title">{t('features.jmapTitle')}</h2>
+              <p class="lead">{t('features.jmapLead')}</p>
+            </div>
+            <ul class="jmap-list">
+              {[1, 2, 3, 4].map((n) => (
+                <li>
+                  <strong>{t(`features.jmap${n}`)}</strong>
+                  <span>{t(`features.jmap${n}Text`)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+      </>
     ))
   }
 
@@ -129,6 +223,275 @@ const more = highlights.filter((h) => extras.includes(h.key));
   .jump a:hover {
     border-color: var(--brand);
     color: var(--brand-ink);
+  }
+
+  .principle {
+    padding-block: clamp(48px, 7vw, 88px);
+    border-top: 1px solid var(--line);
+    background: var(--bg-elev);
+  }
+
+  .principle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 6vw, 72px);
+    align-items: center;
+  }
+
+  .principle h2,
+  .deep h2,
+  .jmap h2 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+  }
+
+  .places {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .places li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 16px 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg);
+  }
+
+  .num {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--brand-soft);
+    color: var(--brand-ink);
+    font-weight: 500;
+  }
+
+  .places strong {
+    display: block;
+    font-weight: 500;
+  }
+
+  .places span {
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .deep {
+    padding-block: clamp(48px, 7vw, 88px);
+    border-top: 1px solid var(--line);
+  }
+
+  .alt-deep {
+    background: var(--bg-elev);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .steps li {
+    padding: 24px;
+  }
+
+  .step {
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: var(--navy);
+    color: #e6f6f8;
+    font-weight: 500;
+    font-size: 0.9375rem;
+  }
+
+  .steps h3,
+  .engine h3 {
+    margin: 14px 0 6px;
+    font-size: 1.0625rem;
+    font-weight: 500;
+  }
+
+  .steps p,
+  .engine p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .engines {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  .engine {
+    padding: 22px 24px;
+    border-right: 1px solid var(--line);
+  }
+
+  .engine:last-child {
+    border-right: 0;
+  }
+
+  .engine h3 {
+    margin-top: 0;
+    color: var(--brand-ink);
+  }
+
+  .engine-note {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    max-width: 72ch;
+    margin: 20px 0 0;
+    color: var(--ink-2);
+  }
+
+  .engine-note :global(svg) {
+    flex: none;
+    margin-top: 4px;
+    color: var(--brand);
+  }
+
+  .details {
+    margin-top: 28px;
+    padding: 20px 22px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg);
+  }
+
+  .details h3 {
+    margin: 0 0 10px;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .details ul {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .details li {
+    display: flex;
+    gap: 8px;
+  }
+
+  .details :global(svg) {
+    flex: none;
+    margin-top: 4px;
+    color: var(--ok);
+  }
+
+  .jmap {
+    padding-block: clamp(56px, 8vw, 96px);
+    background:
+      radial-gradient(700px 360px at 100% 0%, rgb(67 195 205 / 18%), transparent 70%),
+      linear-gradient(160deg, var(--navy), var(--navy-2));
+    color: #e6eef5;
+  }
+
+  .jmap .eyebrow {
+    color: #74d8e0;
+  }
+
+  .jmap h2 {
+    color: #fff;
+  }
+
+  .jmap .lead {
+    color: #b4c3d1;
+  }
+
+  .jmap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 6vw, 72px);
+    align-items: center;
+  }
+
+  .jmap-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .jmap-list li {
+    display: grid;
+    gap: 4px;
+    padding: 18px 20px;
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: var(--radius);
+    background: rgb(255 255 255 / 4%);
+  }
+
+  .jmap-list strong {
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .jmap-list span {
+    color: #b4c3d1;
+    font-size: 0.9375rem;
+  }
+
+  @media (max-width: 960px) {
+    .principle-grid,
+    .jmap-grid {
+      grid-template-columns: 1fr;
+    }
+    .steps {
+      grid-template-columns: 1fr 1fr;
+    }
+    .engines {
+      grid-template-columns: 1fr 1fr;
+    }
+    .engine:nth-child(2) {
+      border-right: 0;
+    }
+    .engine:nth-child(-n + 2) {
+      border-bottom: 1px solid var(--line);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .steps,
+    .engines,
+    .jmap-list {
+      grid-template-columns: 1fr;
+    }
+    .engine {
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .engine:last-child {
+      border-bottom: 0;
+    }
   }
 
   .group {

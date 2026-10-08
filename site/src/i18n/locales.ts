@@ -58,4 +58,4 @@ export const locale = (code: string) => locales.find((l) => l.code === code) ?? 
 
 // Pages that exist in every language. Everything else (docs, blog, privacy,
 // development) is English only, and the switcher sends other languages home.
-export const translatedPaths = ['/', '/features/', '/screenshots/', '/download/', '/download/start/', '/thanks/', '/donate/', '/contact/', '/press/'];
+export const translatedPaths = ['/', '/features/', '/screenshots/', '/download/', '/download/start/', '/thanks/', '/donate/', '/contact/', '/press/', '/roadmap/'];

@@ -16,7 +16,7 @@ import { otherCodes } from '../../i18n/locales';
 type Card = { title: string; kicker: string; shot?: boolean };
 
 // Translated pages take their words from src/i18n/<lang>.json (og.*).
-const translated: Record<string, boolean> = { home: true, features: true, screenshots: true, download: true, donate: false, contact: false, press: false };
+const translated: Record<string, boolean> = { home: true, features: true, screenshots: true, download: true, donate: false, contact: false, press: false, roadmap: false };
 const card = (lang: string, page: string): Card => {
   const t = useT(lang);
   let kicker = t(`og.${page}.kicker`);

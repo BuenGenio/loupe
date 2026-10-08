@@ -1,0 +1,360 @@
+---
+// The roadmap: phases from docs/plan/PLAN.md §9 with what has shipped, what's
+// next, what may come later, and what is deliberately not planned (§6, §10).
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { contact } from '../config';
+import { useT, localize } from '../i18n';
+import { breadcrumbs } from '../lib/schema';
+import type { IconName } from '../lib/icons';
+
+interface Props {
+  lang: string;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const l = (path: string) => localize(lang, path);
+
+type State = 'done' | 'now' | 'maybe';
+const phases: { key: string; state: State; icon: IconName }[] = [
+  { key: 'p0', state: 'done', icon: 'branch' },
+  { key: 'p1', state: 'done', icon: 'mail-inbox' },
+  { key: 'p2', state: 'done', icon: 'search-sparkle' },
+  { key: 'p3', state: 'done', icon: 'server' },
+  { key: 'p4', state: 'done', icon: 'shield-lock' },
+  { key: 'p5', state: 'now', icon: 'phone' },
+  { key: 'p6', state: 'maybe', icon: 'braces' },
+];
+const stateLabel: Record<State, string> = { done: t('roadmap.shipped'), now: t('roadmap.inProgress'), maybe: t('roadmap.maybe') };
+const later: { key: string; icon: IconName }[] = [
+  { key: 'later1', icon: 'lock-closed' },
+  { key: 'later2', icon: 'archive' },
+  { key: 'later3', icon: 'globe' },
+  { key: 'later4', icon: 'alert' },
+];
+const not = ['not1', 'not2', 'not3', 'not4', 'not5'];
+---
+
+<Base
+  lang={lang}
+  title={t('roadmap.title')}
+  description={t('roadmap.description')}
+  image={lang === 'en' ? '/og/roadmap.png' : `/og/${lang}/roadmap.png`}
+  jsonLd={[breadcrumbs([{ name: 'Loupe', path: l('/') }, { name: t('roadmap.title'), path: l('/roadmap/') }])]}
+>
+  <section class="top">
+    <div class="wrap">
+      <p class="eyebrow"><Icon name="flow" size={16} /> {t('roadmap.eyebrow')}</p>
+      <h1>{t('roadmap.h1')}</h1>
+      <p class="lead">{t('roadmap.lead')}</p>
+      <p class="status"><span class="pulse" aria-hidden="true"></span> {t('roadmap.status')}</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="phases-title">
+    <div class="wrap">
+      <h2 id="phases-title" class="visually-hidden">{t('roadmap.phasesTitle')}</h2>
+      <ol class="timeline">
+        {
+          phases.map((p) => (
+            <li class:list={['phase', p.state]}>
+              <span class="marker" aria-hidden="true">
+                <Icon name={p.state === 'done' ? 'checkmark' : p.icon} size={18} />
+              </span>
+              <div class="body">
+                <p class="state">{stateLabel[p.state]}</p>
+                <h3>{t(`roadmap.${p.key}`)}</h3>
+                <p>{t(`roadmap.${p.key}Text`)}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="later-title">
+    <div class="wrap">
+      <h2 id="later-title">{t('roadmap.laterTitle')}</h2>
+      <div class="later">
+        {
+          later.map((x) => (
+            <div class="card item">
+              <div class="icon-tile">
+                <Icon name={x.icon} />
+              </div>
+              <h3>{t(`roadmap.${x.key}`)}</h3>
+              <p>{t(`roadmap.${x.key}Text`)}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight not" aria-labelledby="not-title">
+    <div class="wrap two">
+      <div>
+        <h2 id="not-title">{t('roadmap.notTitle')}</h2>
+        <p class="lead small-lead">{t('roadmap.notLead')}</p>
+      </div>
+      <ul class="nots">
+        {
+          not.map((k) => (
+            <li>
+              <Icon name="dismiss" size={18} />
+              <div>
+                <strong>{t(`roadmap.${k}`)}</strong>
+                <span>{t(`roadmap.${k}Text`)}</span>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="plugins-title">
+    <div class="wrap two">
+      <div class="card panel">
+        <h2 id="plugins-title">{t('roadmap.pluginsTitle')}</h2>
+        <p>{t('roadmap.pluginsText')}</p>
+      </div>
+      <div class="card panel">
+        <h2>{t('roadmap.howTitle')}</h2>
+        <p>{t('roadmap.howText')}</p>
+        <div class="cta">
+          <a class="btn btn-primary" href={contact.discussions} rel="noopener"><Icon name="chat-multiple" size={18} /> {t('roadmap.suggest')}</a>
+          <a class="btn" href={l('/donate/')}><Icon name="heart" size={18} /> {t('roadmap.support')}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .top {
+    padding-block: clamp(48px, 7vw, 88px) 8px;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .top .lead {
+    max-width: 40em;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0 0;
+    padding: 10px 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-elev);
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .pulse {
+    flex: none;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--ok);
+  }
+
+  .timeline {
+    position: relative;
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .phase {
+    position: relative;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 20px;
+    padding-bottom: 28px;
+  }
+
+  .phase:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 21px;
+    top: 44px;
+    bottom: 0;
+    width: 2px;
+    background: var(--line-2);
+  }
+
+  .phase.done:not(:last-child)::before {
+    background: color-mix(in srgb, var(--ok) 45%, var(--line-2));
+  }
+
+  .marker {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--line-2);
+    background: var(--bg-elev);
+    color: var(--ink-3);
+  }
+
+  .done .marker {
+    border-color: var(--ok);
+    background: color-mix(in srgb, var(--ok) 12%, var(--bg-elev));
+    color: var(--ok);
+  }
+
+  .now .marker {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+    color: var(--brand-ink);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--brand) 14%, transparent);
+  }
+
+  .body {
+    padding: 2px 0 0;
+  }
+
+  .state {
+    margin: 0 0 2px;
+    color: var(--ink-3);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .done .state {
+    color: var(--ok);
+  }
+
+  .now .state {
+    color: var(--brand-ink);
+  }
+
+  .body h3 {
+    margin: 0 0 4px;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+
+  .body p:last-child {
+    max-width: 62ch;
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  h2 {
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+  }
+
+  .later {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .item {
+    padding: 24px;
+  }
+
+  .item h3 {
+    margin: 14px 0 6px;
+    font-size: 1.0625rem;
+    font-weight: 500;
+  }
+
+  .item p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(24px, 5vw, 56px);
+    align-items: start;
+  }
+
+  .small-lead {
+    font-size: 1.125rem;
+  }
+
+  .nots {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nots li {
+    display: flex;
+    gap: 14px;
+    padding: 16px 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-elev);
+  }
+
+  .nots :global(svg) {
+    flex: none;
+    margin-top: 3px;
+    color: var(--danger);
+  }
+
+  .nots strong {
+    display: block;
+    font-weight: 500;
+  }
+
+  .nots span {
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .panel {
+    padding: clamp(24px, 4vw, 36px);
+  }
+
+  .panel h2 {
+    font-size: 1.5rem;
+  }
+
+  .panel p {
+    color: var(--ink-2);
+  }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 960px) {
+    .later {
+      grid-template-columns: 1fr 1fr;
+    }
+    .two {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .later {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

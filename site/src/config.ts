@@ -79,6 +79,7 @@ export const nav = [
   { href: '/features/', label: 'nav.features' },
   { href: '/screenshots/', label: 'nav.screenshots' },
   { href: '/docs/', label: 'nav.docs' },
+  { href: '/roadmap/', label: 'nav.roadmap' },
   { href: '/development/', label: 'nav.development' },
   { href: '/blog/', label: 'nav.blog' },
 ];
@@ -106,7 +107,7 @@ export const footerNav = [
     title: 'footer.project',
     links: [
       { href: '/development/', label: 'footer.development' },
-      { href: '/development/#roadmap', label: 'footer.roadmap' },
+      { href: '/roadmap/', label: 'footer.roadmap' },
       { href: site.repo, label: 'footer.source' },
       { href: '/press/', label: 'footer.press' },
     ],

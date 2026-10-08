@@ -22,7 +22,8 @@
       "/thanks*",
       "/donate*",
       "/contact*",
-      "/press*"
+      "/press*",
+      "/roadmap*"
     ]
   },
   "vars": {

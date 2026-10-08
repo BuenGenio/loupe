@@ -8,6 +8,23 @@ import { stats, roughly } from '../lib/stats';
 
 const blob = (path: string) => `${site.repo}/blob/main/${path}`;
 
+const principles = [
+  { title: 'Contracts first', text: 'Packages meet only through mail_model, which holds types and interfaces and does no I/O. A contract change is its own commit, and every user is fixed in the same change.' },
+  { title: 'Shaped like JMAP', text: 'The data model follows JMAP: mailboxes with roles, emails with keywords, threads. IMAP is an adapter onto it, so JMAP was a new transport, not a rewrite.' },
+  { title: 'Deterministic ids', text: 'Transports produce final local ids (mailbox path, UIDVALIDITY and UID for IMAP), so the store needs no mapping table.' },
+  { title: 'State on your server', text: 'Snooze, Smart Mailboxes and rules use documented conventions on the mail server (a Snoozed folder, METADATA, Sieve), never a server of ours.' },
+  { title: 'Phase gates', text: 'Each phase has a finish line; nothing from the next phase starts early. It keeps a one-developer project shippable.' },
+  { title: 'Batteries included', text: 'The features people install desktop add-ons for are built in. Internal extension points come before any plugin API.' },
+];
+
+const risks = [
+  { risk: 'enough_mail, the IMAP library, has essentially one maintainer', plan: 'It sits behind Loupe\'s own MailTransport interface; fixes go upstream, with budget for a fork. JMAP lowers the dependency.' },
+  { risk: 'iOS allows no persistent connection, so no instant notifications', plan: 'Background refresh, said plainly during setup; an optional content-free push relay is on the roadmap.' },
+  { risk: 'Google verification for Gmail sign-in is slow or rejected', plan: 'The narrowest scope, a clear privacy policy, and no server ever touching mail data. App passwords work meanwhile.' },
+  { risk: 'Readable mode mangles some messages', plan: 'A corpus of real messages with golden tests, a one-tap Original view, and a hint when Original may look better.' },
+  { risk: 'Scope creep and burnout', plan: 'Strict phase gates and a public roadmap with a "not planned" list.' },
+];
+
 const packages = [
   { name: 'app', what: 'The Flutter app: screens, design system, demo mailbox, wiring (Riverpod, go_router).' },
   { name: 'mail_model', what: 'Every shared type and interface. No I/O, no dependencies: the contract between packages.' },
@@ -23,36 +40,11 @@ const packages = [
   { name: 'mail_platform', what: 'Keychain credential store, OAuth sign-in and token refresh.' },
 ];
 
-const shipped = [
-  'IMAP and SMTP accounts with autoconfig, and Thunderbird QR import',
-  'Readable, Original and Plain views; image gallery; dark-mode colour fixes',
-  'Local + server search, the full expression language, Smart Mailboxes',
-  'Swipes with Undo, Filter button, tags, folders, cross-client snooze',
-  'Subscriptions and the unsubscribe centre; mailing lists as forums',
-  'Device rules and server rules (Sieve over ManageSieve and JMAP)',
-  'Identities and aliases, undo send, scheduled send, Outbox',
-  'Background sync, notification actions, app icon badge',
-  'Tablet three-pane layout, keyboard shortcuts, command palette',
-  'JMAP accounts (Fastmail, Stalwart) with push',
-  'OpenPGP with Autocrypt; S/MIME with Android KeyChain certificates',
-  'Calendar invitations with Accept / Maybe / Decline',
-];
-
-const next = [
-  'Sign in with Google (security review) and with Microsoft',
-  'A public beta on Google Play',
-  'iOS on TestFlight (prepared; waiting for an Apple Developer account)',
-];
-
-const later = [
-  'An optional push relay for instant notifications, if it can be run without seeing mail',
-  'A sandboxed plugin system, only if real needs justify it',
-];
 ---
 
 <Base
   title="Development"
-  description="How Loupe is built: Flutter and Dart, eleven packages, an encrypted SQLite store, IMAP and JMAP transports. Build it from source, contribute, see the roadmap."
+  description="How Loupe is built: Flutter and Dart, small packages with explicit contracts, an encrypted store, IMAP and JMAP transports, testing, licensing and known risks."
   image="/og/development.png"
   jsonLd={[sourceCode(), breadcrumbs([{ name: 'Home', path: '/' }, { name: 'Development', path: '/development/' }])]}
 >
@@ -202,23 +194,68 @@ cd app && flutter run  <span class="c"># on a device or emulator</span></code></
     </div>
   </section>
 
-  <section id="roadmap" class="section-tight" aria-labelledby="roadmap-title">
+  <section class="section-tight" aria-labelledby="principles-title">
     <div class="wrap">
-      <h2 id="roadmap-title">Roadmap</h2>
-      <div class="roadmap">
-        <div class="col done">
-          <h3><Icon name="checkmark" size={18} /> Shipped</h3>
-          <ul>{shipped.map((s) => <li>{s}</li>)}</ul>
-        </div>
-        <div class="col now">
-          <h3><Icon name="arrow-sync" size={18} /> Next</h3>
-          <ul>{next.map((s) => <li>{s}</li>)}</ul>
-        </div>
-        <div class="col later">
-          <h3><Icon name="star" size={18} /> Later, maybe</h3>
-          <ul>{later.map((s) => <li>{s}</li>)}</ul>
-        </div>
+      <h2 id="principles-title">Engineering principles</h2>
+      <div class="principles">
+        {principles.map((p) => (
+          <div class="card principle">
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </div>
+        ))}
       </div>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="testing-title">
+    <div class="wrap two">
+      <div>
+        <h2 id="testing-title">How it's tested</h2>
+        <ul class="plain">
+          <li><strong>{roughly(stats.tests)} unit and widget tests</strong> across the workspace: the search parser and its four compilers, the sanitiser, the sync state machine, crypto, calendar.</li>
+          <li><strong>A corpus of real-world messages</strong> with golden tests for Readable mode: a sanitiser change ships only if it improves the corpus without regressions.</li>
+          <li><strong>Integration tests against real servers</strong>: GreenMail, Dovecot and Stalwart (IMAP, JMAP, ManageSieve), from <code>tool/test-servers/</code>.</li>
+          <li><strong>Every push</strong> runs <code>dart analyze</code> and the tests in GitHub Actions before a signed build is published.</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Licensing</h2>
+        <ul class="plain">
+          <li><strong>MPL-2.0</strong>, the same licence as Thunderbird: per-file copyleft, friendly to contributors and to app stores.</li>
+          <li><strong>A clean-room search parser</strong>: the language follows the Expression Search Reloaded add-on, but the Dart implementation is new, sharing only behaviour-level test cases.</li>
+          <li><strong>No borrowed GPL or AGPL code</strong> from other mail apps: ideas yes, code no.</li>
+          <li>The OpenPGP library in <code>third_party/</code> keeps its own licence.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="risks-title">
+    <div class="wrap">
+      <h2 id="risks-title">Known risks, and the plan for each</h2>
+      <div class="table-wrap">
+        <table class="pkgs risks">
+          <thead><tr><th scope="col">Risk</th><th scope="col">How it's handled</th></tr></thead>
+          <tbody>
+            {risks.map((r) => (
+              <tr><td>{r.risk}</td><td>{r.plan}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="roadmap" class="section-tight">
+    <div class="wrap">
+      <a class="card roadmap-link" href="/roadmap/">
+        <div>
+          <h2>Roadmap</h2>
+          <p>What has shipped, what's next (Google and Microsoft sign-in, Google Play, iOS), what may come later, and what is deliberately not planned.</p>
+        </div>
+        <Icon name="arrow-right" size={28} />
+      </a>
     </div>
   </section>
 </Base>
@@ -537,6 +574,88 @@ cd app && flutter run  <span class="c"># on a device or emulator</span></code></
     margin: 0;
     color: var(--ink-2);
     font-size: 0.9375rem;
+  }
+
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .principle {
+    padding: 22px;
+  }
+
+  .principle h3 {
+    margin: 0 0 6px;
+    font-size: 1.0625rem;
+    font-weight: 500;
+  }
+
+  .principle p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .plain {
+    display: grid;
+    gap: 12px;
+    margin: 16px 0 0;
+    padding-left: 1.1em;
+    color: var(--ink-2);
+  }
+
+  .plain strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .risks td:first-child {
+    width: 40%;
+    white-space: normal;
+    font-weight: 500;
+  }
+
+  .roadmap-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 28px 32px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .roadmap-link:hover {
+    border-color: var(--brand);
+  }
+
+  .roadmap-link h2 {
+    margin: 0 0 6px;
+  }
+
+  .roadmap-link p {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .roadmap-link :global(svg) {
+    flex: none;
+    color: var(--brand);
+  }
+
+  @media (max-width: 1000px) {
+    .principles {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .principles {
+      grid-template-columns: 1fr;
+    }
   }
 
   .roadmap {
