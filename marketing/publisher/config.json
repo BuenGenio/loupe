@@ -1,0 +1,32 @@
+{
+  "$comment": "No secrets here: credentials come from environment variables (see marketing/README.md). mode: api | postiz | assist | off. A platform whose credentials or Postiz integration id are missing is skipped with a warning.",
+  "maxLatenessHours": 12,
+  "languages": ["en"],
+  "utm": { "medium": "social" },
+  "postiz": {
+    "$comment": "Postiz Cloud. For self-hosted, set POSTIZ_URL to the instance origin (https://social.example.org); /api/public/v1 is added.",
+    "url": "https://api.postiz.com/public/v1"
+  },
+  "assist": {
+    "$comment": "Assist issues go to GITHUB_REPOSITORY (set by Actions) unless repository is set here.",
+    "repository": "",
+    "labels": ["social"],
+    "ref": "main"
+  },
+  "platforms": {
+    "bluesky": { "mode": "api" },
+    "mastodon": { "mode": "api", "visibility": "public" },
+    "instagram": { "mode": "postiz", "integration": "", "type": "instagram-standalone" },
+    "threads": { "mode": "postiz", "integration": "" },
+    "tiktok": {
+      "mode": "postiz",
+      "integration": "",
+      "settings": { "privacy_level": "PUBLIC_TO_EVERYONE", "content_posting_method": "DIRECT_POST" }
+    },
+    "youtube": { "mode": "postiz", "integration": "", "visibility": "public" },
+    "linkedin": { "mode": "postiz", "integration": "", "type": "linkedin-page" },
+    "x": { "mode": "off", "integration": "" },
+    "facebook": { "mode": "off", "integration": "" },
+    "reddit": { "mode": "assist" }
+  }
+}

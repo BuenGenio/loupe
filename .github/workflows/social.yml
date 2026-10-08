@@ -1,0 +1,150 @@
+# Social posts as code: publishes marketing/posts/*.md when they fall due.
+# How it works and how to set it up: marketing/README.md
+#
+# The ledger of what has been posted lives on the `social-state` branch, so
+# ledger commits never touch main and never trigger the app's CI (pushes made
+# with GITHUB_TOKEN don't start workflows anyway).
+
+name: Social
+
+on:
+  schedule:
+    # Every 30 minutes, off the top of the hour. GitHub starts scheduled runs
+    # late under load (often 5–30 min, occasionally more, sometimes skipped),
+    # so a post goes out within roughly an hour of its time. Scheduled runs
+    # only exist on the default branch, and GitHub disables them after 60
+    # days without repository activity.
+    - cron: "17,47 * * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: show what would be posted, post nothing"
+        type: boolean
+        default: false
+      only:
+        description: "Only this post id (optional)"
+        type: string
+        default: ""
+  pull_request:
+    paths:
+      - "marketing/**"
+      - ".github/workflows/social.yml"
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    concurrency:
+      group: social-check-${{ github.ref }}
+      cancel-in-progress: true
+    defaults:
+      run:
+        working-directory: marketing/publisher
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: marketing/publisher/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run check
+
+  publish:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # One publisher at a time, never cancelled half-way. Job-level so pull
+    # request checks can't displace a pending publish run (GitHub keeps only
+    # one pending run per concurrency group).
+    concurrency:
+      group: social
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: marketing/publisher
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: marketing/publisher/package-lock.json
+      - run: npm ci
+
+      - name: Check out the ledger (social-state branch; created if missing)
+        id: ledger
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          STATE_DIR="$RUNNER_TEMP/social-state"
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git ls-remote --exit-code --heads "$remote" social-state >/dev/null; then
+            git clone --quiet --depth 1 --branch social-state --single-branch "$remote" "$STATE_DIR"
+          else
+            echo "No social-state branch yet; starting one."
+            git init --quiet -b social-state "$STATE_DIR"
+            git -C "$STATE_DIR" remote add origin "$remote"
+            printf '%s\n' '# social-state' '' \
+              'Ledger of social posts published by .github/workflows/social.yml (see marketing/README.md on main).' \
+              'Maintained by the workflow: an entry here means that post will never be posted again on that platform.' \
+              > "$STATE_DIR/README.md"
+            printf '{\n  "version": 1,\n  "entries": []\n}\n' > "$STATE_DIR/published.json"
+          fi
+          echo "STATE_DIR=$STATE_DIR" >> "$GITHUB_ENV"
+          echo "SOCIAL_LEDGER=$STATE_DIR/published.json" >> "$GITHUB_ENV"
+
+      - name: Check posts
+        id: check
+        continue-on-error: true # invalid posts are skipped by publish; the job still fails at the end
+        run: npm run check
+
+      - name: Publish due posts
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+          ONLY: ${{ inputs.only }}
+          BLUESKY_HANDLE: ${{ vars.BLUESKY_HANDLE || secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          MASTODON_URL: ${{ vars.MASTODON_URL || secrets.MASTODON_URL }}
+          MASTODON_TOKEN: ${{ secrets.MASTODON_TOKEN }}
+          POSTIZ_URL: ${{ vars.POSTIZ_URL || secrets.POSTIZ_URL }}
+          POSTIZ_API_KEY: ${{ secrets.POSTIZ_API_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          args=()
+          if [ "${DRY_RUN:-false}" = "true" ]; then args+=(--dry-run); fi
+          if [ -n "${ONLY:-}" ]; then args+=(--only "$ONLY"); fi
+          npm run publish -- "${args[@]}"
+
+      - name: Commit the ledger to social-state
+        if: always() && steps.ledger.outcome == 'success' && inputs.dry_run != true
+        run: |
+          set -euo pipefail
+          cd "$STATE_DIR"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Ledger unchanged."
+            exit 0
+          fi
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit --quiet -m "Ledger: run ${GITHUB_RUN_ID}"
+          git push --quiet origin HEAD:refs/heads/social-state
+
+      - name: Fail if any post is invalid
+        if: steps.check.outcome == 'failure'
+        run: |
+          echo "::error::npm run check found invalid posts (they were skipped). See the Check posts step."
+          exit 1

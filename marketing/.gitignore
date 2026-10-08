@@ -1,0 +1,3 @@
+# Local publishing ledger (in GitHub Actions it lives on the social-state branch)
+.state/
+node_modules/

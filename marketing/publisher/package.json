@@ -1,0 +1,27 @@
+{
+  "name": "loupe-social-publisher",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Social posts as code for Loupe: publishes marketing/posts/*.md to Bluesky, Mastodon, Postiz-connected networks and GitHub assist issues.",
+  "license": "MPL-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "bin": {
+    "loupe-social": "bin/social.mjs"
+  },
+  "scripts": {
+    "check": "node bin/social.mjs check",
+    "due": "node bin/social.mjs due",
+    "publish": "node bin/social.mjs publish",
+    "preview": "node bin/social.mjs preview",
+    "calendar": "node bin/social.mjs calendar",
+    "test": "node --test \"test/**/*.test.mjs\"",
+    "postiz:integrations": "node bin/social.mjs postiz-integrations"
+  },
+  "dependencies": {
+    "@atproto/api": "0.24.0",
+    "yaml": "2.9.1"
+  }
+}

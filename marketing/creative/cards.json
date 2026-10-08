@@ -1,0 +1,40 @@
+{
+  "$comment": "Social images rendered by cards.mjs to marketing/media/<file>.jpg. Types: statement {kicker, headline, sub, footer}, screen {shot, theme, kicker, headline, sub, step, wide}, tip {headline, expr, chips, sub, footer}. Shots are files in site/src/assets/screenshots/.",
+  "cards": [
+    { "id": "teaser-focus", "file": "tease/focus", "type": "statement", "kicker": "Coming 20 October", "headline": "Your mail, in focus.", "sub": "A calm mail app for Android, with serious tools underneath." },
+    { "id": "teaser-search", "file": "tease/search", "type": "screen", "shot": "search.png", "kicker": "Look closer", "headline": "What if the mail app on your phone understood this?" },
+    { "id": "teaser-cloud", "file": "tease/no-cloud", "type": "statement", "kicker": "Privacy", "headline": "There is no Loupe cloud.", "sub": "Your phone talks to your mail server. Nobody sits in between." },
+    { "id": "teaser-tuesday", "file": "tease/tuesday", "type": "statement", "kicker": "Tuesday", "headline": "Free. Open source. Private by design.", "sub": "Loupe lands on 20 October." },
+
+    { "id": "launch-1", "file": "launch/1-hello", "type": "statement", "kicker": "Out now · Android", "headline": "Meet Loupe.", "sub": "Simple on the surface. Powerful underneath. Free and open source." },
+    { "id": "launch-2", "file": "launch/2-inbox", "type": "screen", "shot": "inbox.png", "step": "2 / 6", "headline": "One calm inbox.", "sub": "Every account together, with gestures you already know." },
+    { "id": "launch-3", "file": "launch/3-readable", "type": "screen", "shot": "newsletter.png", "step": "3 / 6", "headline": "Newsletters, rebuilt for your hand.", "sub": "Readable mode fits any HTML mail to the screen." },
+    { "id": "launch-4", "file": "launch/4-search", "type": "screen", "shot": "search.png", "step": "4 / 6", "headline": "Search like you mean it.", "sub": "Fields, groups, dates, negation. Phone first, server after." },
+    { "id": "launch-5", "file": "launch/5-phishing", "type": "screen", "shot": "phishing.png", "step": "5 / 6", "headline": "Phishing, explained.", "sub": "Loupe says why a message looks wrong, in plain words." },
+    { "id": "launch-6", "file": "launch/6-free", "type": "statement", "kicker": "6 / 6", "headline": "No servers. No tracking. No ads.", "sub": "Download free at loupe.mx. Pay what you want, if you like it." },
+
+    { "id": "readable", "file": "features/readable", "type": "screen", "shot": "newsletter.png", "kicker": "Readable mode", "headline": "Stop pinching newsletters.", "sub": "Real text sizes, footers as fine print, photos as a carousel." },
+    { "id": "selfhosted", "file": "features/your-server", "type": "screen", "shot": "rules.png", "kicker": "Your server, the source of truth", "headline": "Rules as Sieve. Snooze as a folder.", "sub": "Everything that outlives your phone lives on your mail server." },
+    { "id": "numbers", "file": "features/built-in-public", "type": "statement", "kicker": "Built in public", "headline": "11 packages. 1,900+ tests. 0 trackers.", "sub": "Every line is on GitHub under the MPL-2.0." },
+    { "id": "thanks", "file": "launch/thanks", "type": "statement", "kicker": "Launch week", "headline": "Thank you.", "sub": "For every download, bug report, star and kind word. Here's what's next." },
+
+    { "id": "snooze-1", "file": "no-cloud/snooze-1", "type": "statement", "kicker": "How it works · 1 / 4", "headline": "How do you snooze mail without a server?", "sub": "Most apps snooze on their own servers. Loupe has none." },
+    { "id": "snooze-2", "file": "no-cloud/snooze-2", "type": "statement", "kicker": "2 / 4", "headline": "The message moves to a Snoozed folder.", "sub": "On your mail server, where every client can see it." },
+    { "id": "snooze-3", "file": "no-cloud/snooze-3", "type": "statement", "kicker": "3 / 4", "headline": "A keyword says when it wakes up.", "sub": "Stored on the message itself, in UTC minutes." },
+    { "id": "snooze-4", "file": "no-cloud/snooze-4", "type": "statement", "kicker": "4 / 4", "headline": "Any device can wake it.", "sub": "Switch phones or clients: nothing is trapped. The convention is documented on GitHub." },
+    { "id": "phishing", "file": "no-cloud/phishing", "type": "screen", "shot": "phishing.png", "kicker": "Phishing check", "headline": "\"This looks like phishing\", and why.", "sub": "Look-alike domains and familiar names from new addresses, checked on your phone." },
+
+    { "id": "tip-unread", "file": "search/tip-unread-week", "type": "tip", "headline": "Unread this week, minus the newsletters", "expr": "is:unread newer_than:7d -tag:newsletter", "chips": ["Unread", "Newer than 7 days", "Not tagged newsletter"] },
+    { "id": "smart-mailboxes", "file": "search/smart-mailboxes", "type": "screen", "shot": "mailboxes.png", "kicker": "Smart Mailboxes", "headline": "Save a search. Find it on every device.", "sub": "Stored on your own mail server, not in our cloud. We don't have one." },
+    { "id": "tip-attachments", "file": "search/tip-old-attachments", "type": "tip", "headline": "Big, old attachments, ready to clean up", "expr": "attachment:yes older_than:1y", "chips": ["Has attachment", "Older than 1 year"], "sub": "Save it as a Smart Mailbox and tidy up once a month." },
+
+    { "id": "subscriptions", "file": "subscriptions/never-read", "type": "screen", "shot": "subscriptions.png", "kicker": "Subscriptions", "headline": "Which newsletters do you never read?", "sub": "Loupe counts on your phone, then unsubscribes in one tap." },
+    { "id": "openpgp", "file": "encryption/openpgp", "type": "screen", "shot": "openpgp.png", "kicker": "End-to-end encryption", "headline": "OpenPGP that just works.", "sub": "Autocrypt, Thunderbird-compatible keys, and a hidden subject line." },
+    { "id": "smime", "file": "encryption/smime", "type": "statement", "kicker": "S/MIME", "headline": "Use the certificate your company already gave you.", "sub": "Loupe signs and decrypts with certificates installed on your Android device." },
+    { "id": "rules", "file": "rules/rules", "type": "screen", "shot": "rules.png", "kicker": "Rules", "headline": "Write a rule like a search.", "sub": "Run it on the phone, or on your server as Sieve." },
+    { "id": "invitation", "file": "rules/invitation", "type": "screen", "shot": "invitation.png", "kicker": "Calendar invitations", "headline": "Accept, Maybe, Decline. Right there.", "sub": "With both time zones when they differ." },
+    { "id": "tablet", "file": "power/tablet", "type": "screen", "shot": "tablet.png", "wide": true, "kicker": "Tablets and keyboards", "headline": "Three panes and a command palette.", "sub": "Ctrl+K for everything." },
+    { "id": "patch", "file": "power/patches", "type": "screen", "shot": "patch.png", "kicker": "Mailing lists", "headline": "Review patches on the train.", "sub": "Diffs in colour, lists as forum threads, mute what's noisy." },
+    { "id": "dark", "file": "power/dark", "type": "screen", "shot": "inbox-dark.png", "theme": "dark", "kicker": "Dark mode", "headline": "True black, and readable.", "sub": "Message colours fixed for dark backgrounds." }
+  ]
+}
