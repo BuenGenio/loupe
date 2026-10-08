@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../shared/bars.dart';
@@ -248,7 +249,7 @@ class _MailHomeState extends ConsumerState<MailHome> with CommandScopeState<Mail
     final sidebarButton = BarIconButton(
       key: const Key('sidebar-toggle'),
       icon: LoupeIcons.sidebar,
-      tooltip: mailboxesShown ? 'Hide Mailboxes' : 'Show Mailboxes',
+      tooltip: mailboxesShown ? context.l10n.panesHideMailboxes : context.l10n.panesShowMailboxes,
       onPressed: _toggleSidebar,
     );
     final hairline = SizedBox(width: 0.5, child: ColoredBox(color: colors.separator));
@@ -293,13 +294,13 @@ class _MailHomeState extends ConsumerState<MailHome> with CommandScopeState<Mail
                   if (mailboxesShown)
                     _handle(
                       at: mw,
-                      label: 'Mailboxes width',
+                      label: context.l10n.panesMailboxesWidth,
                       onDrag: (dx) => notifier.resize(mailboxes: mw + dx),
                       onReset: () => notifier.resize(mailboxes: PaneWidths.defaultMailboxes),
                     ),
                   _handle(
                     at: listEdge,
-                    label: 'Message list width',
+                    label: context.l10n.panesListWidth,
                     onDrag: (dx) => notifier.resize(list: lw + dx),
                     onReset: () => notifier.resize(list: PaneWidths.defaultList),
                   ),
@@ -322,7 +323,7 @@ class _MailHomeState extends ConsumerState<MailHome> with CommandScopeState<Mail
                 ),
                 _handle(
                   at: lw,
-                  label: 'Message list width',
+                  label: context.l10n.panesListWidth,
                   onDrag: (dx) => notifier.resize(list: lw + dx),
                   onReset: () => notifier.resize(list: PaneWidths.defaultList),
                 ),
@@ -498,7 +499,10 @@ class NoMessageSelected extends StatelessWidget {
           children: [
             Icon(LoupeIcons.email, size: 56, color: colors.tertiaryText),
             const SizedBox(height: 12),
-            Text('No Message Selected', style: LoupeTextStyles.of(context).body.copyWith(color: colors.secondaryText)),
+            Text(
+              context.l10n.panesNoMessageSelected,
+              style: LoupeTextStyles.of(context).body.copyWith(color: colors.secondaryText),
+            ),
           ],
         ),
       ),

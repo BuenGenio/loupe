@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../shared/mail_actions.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
@@ -109,7 +110,9 @@ class MessageDragFeedback extends StatelessWidget {
     final styles = LoupeTextStyles.of(context);
     final count = rows.length;
     final subject = count == 1 ? rows.single.latest.subject.trim() : '';
-    final label = count == 1 ? (subject.isEmpty ? 'No Subject' : subject) : '$count Messages';
+    final label = count == 1
+        ? (subject.isEmpty ? context.l10n.mailNoSubject : subject)
+        : context.l10n.panesDragCount(count);
     return Material(
       type: MaterialType.transparency,
       child: Stack(

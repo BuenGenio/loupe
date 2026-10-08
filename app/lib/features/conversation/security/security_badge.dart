@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../../l10n/l10n.dart';
 import '../../../theme/loupe_icons.dart';
 import '../../../theme/theme.dart';
 import 'assessment.dart';
@@ -15,22 +16,22 @@ import 'security_sheet.dart';
       Verdict.likelyPhishing => (
         icon: LoupeIcons.phishing,
         color: CupertinoColors.systemRed.resolveFrom(context),
-        label: 'Possible phishing',
+        label: context.l10n.conversationSecurityPossiblePhishing,
       ),
       Verdict.beCareful => (
         icon: LoupeIcons.caution,
         color: CupertinoColors.systemOrange.resolveFrom(context),
-        label: 'Be careful',
+        label: context.l10n.conversationSecurityBeCareful,
       ),
       Verdict.noIssues when report.verified => (
         icon: LoupeIcons.verified,
         color: CupertinoColors.systemGreen.resolveFrom(context),
-        label: 'Verified',
+        label: context.l10n.conversationSecurityVerified,
       ),
       Verdict.noIssues => (
         icon: LoupeIcons.shield,
         color: LoupeColors.of(context).secondaryText,
-        label: 'No issues found',
+        label: context.l10n.conversationSecurityNoIssues,
       ),
     };
 
@@ -93,12 +94,12 @@ class SecurityBadgeView extends StatelessWidget {
     if (mark == null && trackers == 0) return const SizedBox.shrink();
     final label = [
       if (mark != null) style.label,
-      if (trackers > 0) '$trackers ${trackers == 1 ? 'tracker' : 'trackers'}',
+      if (trackers > 0) context.l10n.conversationSecurityTrackers(trackers),
     ].join(', ');
     return Semantics(
       button: true,
       label: label,
-      hint: 'Shows why',
+      hint: context.l10n.conversationSecurityBadgeHint,
       excludeSemantics: true,
       child: InkWell(
         key: const ValueKey('security-badge'),

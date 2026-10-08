@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../l10n/l10n.dart';
 import '../../../theme/loupe_icons.dart';
 import '../../../theme/theme.dart';
 import '../sheets.dart';
 import 'assessment.dart';
+import 'finding_text.dart';
 import 'security_badge.dart';
 
 /// "Why this looks suspicious": the verdict, the findings worst first with
@@ -23,30 +25,42 @@ class SecuritySheet extends StatelessWidget {
     final theme = Theme.of(context);
     final colors = LoupeColors.of(context);
     final style = verdictStyle(context, report);
+    final l10n = context.l10n;
     final (title, subtitle) = switch (report.verdict) {
-      Verdict.likelyPhishing => (
-        'This looks like phishing',
-        "Several signs say this message isn't what it claims to be.",
-      ),
-      Verdict.beCareful => ('Be careful with this message', 'Something about it deserves a second look.'),
+      Verdict.likelyPhishing => (l10n.conversationSecurityPhishingTitle, l10n.conversationSecurityPhishingText),
+      Verdict.beCareful => (l10n.conversationSecurityCarefulTitle, l10n.conversationSecurityCarefulText),
       Verdict.noIssues when report.verified => (
-        'No issues found',
-        'The sender is verified and nothing looks suspicious.',
+        l10n.conversationSecurityNoIssues,
+        l10n.conversationSecurityVerifiedText,
       ),
       Verdict.noIssues => (
-        'No issues found',
+        l10n.conversationSecurityNoIssues,
         report.auth.methods.isEmpty
-            ? "Nothing looks suspicious. Your mail server didn't say whether the sender is verified."
-            : 'Nothing looks suspicious.',
+            ? l10n.conversationSecurityUnverifiedText
+            : l10n.conversationSecurityNothingSuspicious,
       ),
     };
     final privacy = report.privacy;
+    final history = report.senderHistory;
     final details = [
       ...report.technical,
+      if (history != null)
+        (
+          l10n.conversationSecuritySenderHistory,
+          l10n.conversationSecuritySenderHistoryValue(history.received, history.sent),
+        ),
+      if (report.linkHosts.isNotEmpty) (l10n.conversationSecurityLinksLeadTo, report.linkHosts.join(', ')),
+      if (report.hiddenElements > 0)
+        (
+          l10n.conversationSecurityHidden,
+          l10n.conversationSecurityHiddenValue(report.hiddenElements, report.hiddenCharacters),
+        ),
       for (final f in report.findings)
-        for (final d in f.details) (f.title, d),
-      if (privacy.trackerHosts.isNotEmpty) ('Trackers', privacy.trackerHosts.join(', ')),
-      if (privacy.remoteImageHosts.isNotEmpty) ('Images from', privacy.remoteImageHosts.join(', ')),
+        if (findingText(l10n, f) case final text)
+          for (final d in text.details) (text.title, d),
+      if (privacy.trackerHosts.isNotEmpty) (l10n.conversationSecurityTrackersLabel, privacy.trackerHosts.join(', ')),
+      if (privacy.remoteImageHosts.isNotEmpty)
+        (l10n.conversationSecurityImagesFrom, privacy.remoteImageHosts.join(', ')),
     ];
     return ListView(
       key: const ValueKey('security-sheet'),
@@ -75,35 +89,34 @@ class SecuritySheet extends StatelessWidget {
         ),
         if (report.findings.isNotEmpty)
           SheetGroup(
-            header: 'Why',
+            header: l10n.conversationSecurityWhy,
             children: [for (final f in report.findings) _FindingRow(finding: f)],
           ),
         SheetGroup(
-          header: 'Privacy',
+          header: l10n.conversationSecurityPrivacy,
           children: [
             _InfoRow(
               icon: LoupeIcons.trackers,
               title: privacy.trackers == 0
-                  ? 'No tracking pixels'
-                  : '${_count(privacy.trackers, 'tracking pixel')} removed',
-              text: privacy.trackers == 0 ? null : 'They would have told the sender when you opened this message.',
+                  ? l10n.conversationSecurityNoTrackingPixels
+                  : l10n.conversationSecurityTrackingPixels(privacy.trackers),
+              text: privacy.trackers == 0 ? null : l10n.conversationSecurityTrackingPixelsText,
             ),
             _InfoRow(
               icon: LoupeIcons.images,
-              title: privacy.remoteImages == 0 ? 'No remote images' : _count(privacy.remoteImages, 'remote image'),
-              text: privacy.remoteImages == 0
-                  ? null
-                  : 'Loading them tells the sender when you read this message, and your IP address.',
+              title: privacy.remoteImages == 0
+                  ? l10n.conversationSecurityNoRemoteImages
+                  : l10n.conversationSecurityRemoteImages(privacy.remoteImages),
+              text: privacy.remoteImages == 0 ? null : l10n.conversationSecurityRemoteImagesText,
             ),
             _InfoRow(
               icon: LoupeIcons.redirect,
               title: privacy.trackedLinks == 0
-                  ? 'No click tracking'
-                  : '${_count(privacy.trackedLinks, 'link')} through click trackers',
+                  ? l10n.conversationSecurityNoClickTracking
+                  : l10n.conversationSecurityTrackedLinks(privacy.trackedLinks),
               text: privacy.trackedLinks == 0
                   ? null
-                  : '${privacy.trackingServices.join(', ')} would record your click. Long-press a link to open '
-                        'its destination directly.',
+                  : l10n.conversationSecurityTrackedLinksText(privacy.trackingServices.join(', ')),
             ),
           ],
         ),
@@ -114,7 +127,7 @@ class SecuritySheet extends StatelessWidget {
                 data: theme.copyWith(dividerColor: Colors.transparent),
                 child: ExpansionTile(
                   key: const ValueKey('security-technical'),
-                  title: const Text('Technical Details', style: TextStyle(fontSize: 16)),
+                  title: Text(l10n.conversationSecurityTechnicalDetails, style: const TextStyle(fontSize: 16)),
                   childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
                   expandedCrossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -137,7 +150,7 @@ class SecuritySheet extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
           child: Text(
-            'Checked on this device. Nothing was sent anywhere.',
+            l10n.conversationSecurityCheckedLocally,
             textAlign: TextAlign.center,
             style: theme.textTheme.bodySmall?.copyWith(color: colors.secondaryText),
           ),
@@ -145,8 +158,6 @@ class SecuritySheet extends StatelessWidget {
       ],
     );
   }
-
-  static String _count(int n, String noun) => '$n ${n == 1 ? noun : '${noun}s'}';
 }
 
 class _FindingRow extends StatelessWidget {
@@ -160,13 +171,8 @@ class _FindingRow extends StatelessWidget {
       Severity.warning => (LoupeIcons.warning, CupertinoColors.systemOrange.resolveFrom(context)),
       Severity.info => (LoupeIcons.info, LoupeColors.of(context).secondaryText),
     };
-    return _InfoRow(
-      icon: icon,
-      iconColor: color,
-      title: finding.title,
-      text: finding.explanation,
-      advice: finding.advice,
-    );
+    final text = findingText(context.l10n, finding);
+    return _InfoRow(icon: icon, iconColor: color, title: text.title, text: text.explanation, advice: text.advice);
   }
 }
 

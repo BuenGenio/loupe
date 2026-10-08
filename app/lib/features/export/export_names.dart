@@ -21,7 +21,8 @@ String sanitiseFileName(String text, {int maxLength = maxFileNameLength}) {
   return name.replaceFirst(RegExp(r'[.\s]+$'), '');
 }
 
-/// The name of a message saved as a file: `<subject>.eml`, or `message.eml`.
+/// The name of a message saved as a file: `<subject>.eml`, or `message.eml`
+/// (file names stay plain ASCII, the same in every language).
 String messageFileName(String subject) {
   final name = sanitiseFileName(subject);
   return '${name.isEmpty ? 'message' : name}.eml';

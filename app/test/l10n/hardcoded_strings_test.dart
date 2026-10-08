@@ -14,24 +14,6 @@ import 'package:flutter_test/flutter_test.dart';
 /// Take a file off once its strings are in app_en.arb.
 const pending = <String>{
   // Reading
-  'lib/features/conversation/attachments.dart',
-  'lib/features/conversation/conversation_screen.dart',
-  'lib/features/conversation/mailbox_picker.dart',
-  'lib/features/conversation/message_actions.dart',
-  'lib/features/conversation/message_card.dart',
-  'lib/features/conversation/raw_source_screen.dart',
-  'lib/features/conversation/reader_options_sheet.dart',
-  'lib/features/conversation/security/assessment.dart',
-  'lib/features/conversation/security/security_badge.dart',
-  'lib/features/conversation/security/security_gate.dart',
-  'lib/features/conversation/security/security_sheet.dart',
-  'lib/features/export/export_actions.dart',
-  'lib/features/mailboxes/mailboxes_screen.dart',
-  'lib/features/mailboxes/vip_screen.dart',
-  'lib/features/message_list/message_list_screen.dart',
-  'lib/features/panes/mail_home.dart',
-  'lib/features/snooze/snooze_sheet.dart',
-  'lib/features/snooze/snoozed_screen.dart',
 
   // Security
   'lib/features/app_lock/app_lock.dart',
