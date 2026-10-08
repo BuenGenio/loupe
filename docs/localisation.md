@@ -1,6 +1,8 @@
 # Localisation
 
-Loupe shows the device's language when it has it, else English. It takes the first of the languages the user set in the system settings that Loupe speaks. There is no language setting in the app. On Android 13 and later, the system's per-app language setting chooses one for Loupe alone.
+Loupe shows the language picked in **Settings › Language**. With **Same as Phone** (the default), it shows the device's language when it has it, else English: the first of the languages the user set in the system settings that Loupe speaks. On Android 13 and later, the system's per-app language setting also counts as the device's.
+
+The choice is kept as `settings.language`. `appLanguage` in `l10n.dart` holds it for text made outside the widget tree. Notifications and background work load it with `AppSettingsController.loadLanguage` when they start.
 
 The goal is the same 37 languages as the website (`site/src/i18n/locales.ts`). Progress is tracked in [#31](https://github.com/BuenGenio/loupe/issues/31).
 
@@ -27,7 +29,7 @@ final l10n = context.l10n;
 ```
 
 - **Outside widgets** (providers, services): return data (an enum, a count, the error) and turn it into text in the widget. If a string has to be made there, pass `AppLocalizations` in.
-- **Background work and notifications** run without a widget tree: use `deviceL10n()`.
+- **Background work and notifications** run without a widget tree: use `deviceL10n()`. It follows Settings › Language too.
 - **Widget tests** run in English, so `find.text('Archive')` still works. A test that builds its own `MaterialApp` needs `localizationsDelegates: loupeLocalizationsDelegates`.
 
 ## Adding a string

@@ -4351,6 +4351,24 @@ abstract class AppLocalizations {
   /// **'Not checked: only certificates from an authority Loupe trusts are checked.'**
   String get smimeRevocationNotChecked;
 
+  /// Settings row and page title: the language the app shows.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// Settings › Language: follow the phone's language setting. Below it shows which language that is.
+  ///
+  /// In en, this message translates to:
+  /// **'Same as Phone'**
+  String get settingsLanguageSystem;
+
+  /// Under the Same as Phone choice in Settings › Language.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe uses your phone’s language when it has it, and English when it doesn’t. The language you pick here is for Loupe alone, notifications included.'**
+  String get settingsLanguageFooter;
+
   /// Settings: section header above the accounts.
   ///
   /// In en, this message translates to:

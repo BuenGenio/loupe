@@ -2588,6 +2588,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get smimeRevocationNotChecked => 'Not checked: only certificates from an authority Loupe trusts are checked.';
 
   @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get settingsLanguageSystem => 'Same as Phone';
+
+  @override
+  String get settingsLanguageFooter =>
+      'Loupe uses your phone’s language when it has it, and English when it doesn’t. The language you pick here is for Loupe alone, notifications included.';
+
+  @override
   String get settingsAccountsHeader => 'Accounts';
 
   @override

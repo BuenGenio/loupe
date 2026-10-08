@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:loupe/l10n/l10n.dart';
+import 'package:loupe/settings/app_settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   const supported = [Locale('en'), Locale('de'), Locale('nb'), Locale('pt'), Locale('lb')];
@@ -42,6 +44,28 @@ void main() {
 
     test('formats Luxembourgish as German, which intl has data for', () {
       expect(formatLocale(const Locale('lb'), const [Locale('lb', 'LU')]), 'de');
+    });
+  });
+
+  group('Settings › Language', () {
+    tearDown(() => appLanguage = null);
+
+    test('is loaded for text made outside the widget tree', () async {
+      SharedPreferences.setMockInitialValues({'settings.language': 'en'});
+      expect(AppSettingsController.loadLanguage(await SharedPreferences.getInstance()), 'en');
+      expect(appLanguage, 'en');
+    });
+
+    test('counts as none for a language Loupe no longer has', () async {
+      SharedPreferences.setMockInitialValues({'settings.language': 'tlh'});
+      expect(AppSettingsController.loadLanguage(await SharedPreferences.getInstance()), isNull);
+      expect(appLanguage, isNull);
+    });
+
+    test('names every language Loupe has', () {
+      for (final l in AppLocalizations.supportedLocales) {
+        expect(languageNames, contains(l.languageCode));
+      }
     });
   });
 

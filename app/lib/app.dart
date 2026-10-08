@@ -40,6 +40,8 @@ class LoupeApp extends ConsumerWidget {
       child: MaterialApp.router(
         title: 'Loupe', // l10n-ignore: the name
         debugShowCheckedModeBanner: false,
+        // Settings › Language, else the phone's (localeListResolutionCallback).
+        locale: settings.language == null ? null : Locale(settings.language!),
         localizationsDelegates: loupeLocalizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         localeListResolutionCallback: loupeLocaleResolution,
