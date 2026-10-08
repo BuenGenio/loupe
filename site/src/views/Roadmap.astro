@@ -28,7 +28,7 @@ const phases: { key: string; state: State; icon: IconName }[] = [
 const stateLabel: Record<State, string> = { done: t('roadmap.shipped'), now: t('roadmap.inProgress'), maybe: t('roadmap.maybe') };
 // done: shipped since the plan listed it; the card says so.
 const later: { key: string; icon: IconName; done?: boolean }[] = [
-  { key: 'later1', icon: 'lock-closed' },
+  { key: 'later1', icon: 'lock-closed', done: true },
   { key: 'later2', icon: 'archive', done: true },
   { key: 'later3', icon: 'globe' },
   { key: 'later4', icon: 'alert' },
