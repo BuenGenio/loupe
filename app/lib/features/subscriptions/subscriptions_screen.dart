@@ -509,7 +509,8 @@ class SubscriptionRow extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              if (button != null) ...[const SizedBox(width: 8), button],
+                              // Flexible: a long label (another language) shrinks instead of overflowing.
+                              if (button != null) ...[const SizedBox(width: 8), Flexible(child: button)],
                             ],
                           ),
                         ],
@@ -661,6 +662,8 @@ class _RowButton extends StatelessWidget {
       onPressed: onPressed,
       child: Text(
         label,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: LoupeTextStyles.of(context).body.copyWith(color: color, fontSize: 14, fontWeight: FontWeight.w600),
       ),
     );

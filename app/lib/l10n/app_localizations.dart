@@ -4351,6 +4351,24 @@ abstract class AppLocalizations {
   /// **'Not checked: only certificates from an authority Loupe trusts are checked.'**
   String get smimeRevocationNotChecked;
 
+  /// Settings row and page title: the language the app shows.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// Settings › Language: follow the phone's language setting. Below it shows which language that is.
+  ///
+  /// In en, this message translates to:
+  /// **'Same as Phone'**
+  String get settingsLanguageSystem;
+
+  /// Under the Same as Phone choice in Settings › Language.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe uses your phone’s language when it has it, and English when it doesn’t. The language you pick here is for Loupe alone, notifications included.'**
+  String get settingsLanguageFooter;
+
   /// Settings: section header above the accounts.
   ///
   /// In en, this message translates to:
@@ -4902,6 +4920,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Allow Unrestricted Battery Use'**
   String get settingsAllowUnrestrictedBattery;
+
+  /// Android switch: lets a push message through Google's push service (Firebase Cloud Messaging) wake Loupe to check for mail.
+  ///
+  /// In en, this message translates to:
+  /// **'Push'**
+  String get settingsPush;
+
+  /// “check now” is all a push says; translate it as a short phrase.
+  ///
+  /// In en, this message translates to:
+  /// **'Push lets new mail wake Loupe at once, where your mail service supports it. Pushes go through Google’s push service and carry no mail, only “check now”.'**
+  String get settingsPushFooter;
+
+  /// No description provided for @settingsPushUnavailableFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone can’t receive pushes: they need Google Play services and a network connection. Loupe still checks for mail about every 15 minutes.'**
+  String get settingsPushUnavailableFooter;
+
+  /// Button: copies the address (token) pushes reach this phone at, e.g. to set up or test a push service.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Push Token'**
+  String get settingsCopyPushToken;
+
+  /// No description provided for @settingsPushTokenCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Push token copied'**
+  String get settingsPushTokenCopied;
 
   /// No description provided for @settingsSendTestNotification.
   ///

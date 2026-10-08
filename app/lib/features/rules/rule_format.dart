@@ -90,10 +90,17 @@ class RuleLocationBadge extends StatelessWidget {
         children: [
           Icon(location == RuleLocation.server ? LoupeIcons.ruleServer : LoupeIcons.ruleDevice, size: 12, color: tint),
           const SizedBox(width: 3),
-          Text(switch (location) {
-            RuleLocation.device => context.l10n.rulesLocationDevice,
-            RuleLocation.server => context.l10n.rulesLocationServer,
-          }, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: tint)),
+          Flexible(
+            child: Text(
+              switch (location) {
+                RuleLocation.device => context.l10n.rulesLocationDevice,
+                RuleLocation.server => context.l10n.rulesLocationServer,
+              },
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: tint),
+            ),
+          ),
         ],
       ),
     );

@@ -15,6 +15,7 @@ class NotificationSettings {
     this.vipOnly = false,
     this.hideContent = false,
     this.instant = false,
+    this.push = true,
     this.permissionRequested = false,
   });
 
@@ -31,6 +32,10 @@ class NotificationSettings {
   /// Instant delivery (an IMAP IDLE foreground service); not available yet.
   final bool instant;
 
+  /// Push (Android): a content-free "check now" through Firebase Cloud
+  /// Messaging wakes Loupe to sync (docs/push.md). On unless switched off.
+  final bool push;
+
   /// Whether Android was asked for POST_NOTIFICATIONS already.
   final bool permissionRequested;
 
@@ -41,12 +46,14 @@ class NotificationSettings {
     bool? vipOnly,
     bool? hideContent,
     bool? instant,
+    bool? push,
     bool? permissionRequested,
   }) => NotificationSettings(
     mutedAccounts: mutedAccounts ?? this.mutedAccounts,
     vipOnly: vipOnly ?? this.vipOnly,
     hideContent: hideContent ?? this.hideContent,
     instant: instant ?? this.instant,
+    push: push ?? this.push,
     permissionRequested: permissionRequested ?? this.permissionRequested,
   );
 
@@ -61,6 +68,7 @@ class NotificationSettings {
     vipOnly: p.getBool('${_prefix}vipOnly') ?? false,
     hideContent: p.getBool('${_prefix}hideContent') ?? false,
     instant: p.getBool('${_prefix}instant') ?? false,
+    push: p.getBool('${_prefix}push') ?? true,
     permissionRequested: p.getBool('${_prefix}permissionRequested') ?? false,
   );
 
@@ -70,6 +78,7 @@ class NotificationSettings {
       p.setBool('${_prefix}vipOnly', vipOnly),
       p.setBool('${_prefix}hideContent', hideContent),
       p.setBool('${_prefix}instant', instant),
+      p.setBool('${_prefix}push', push),
       p.setBool('${_prefix}permissionRequested', permissionRequested),
     ]);
   }
@@ -81,10 +90,11 @@ class NotificationSettings {
       other.vipOnly == vipOnly &&
       other.hideContent == hideContent &&
       other.instant == instant &&
+      other.push == push &&
       other.permissionRequested == permissionRequested;
 
   @override
-  int get hashCode => Object.hash(Object.hashAllUnordered(mutedAccounts), vipOnly, hideContent, instant);
+  int get hashCode => Object.hash(Object.hashAllUnordered(mutedAccounts), vipOnly, hideContent, instant, push);
 }
 
 final notificationSettingsProvider = NotifierProvider<NotificationSettingsController, NotificationSettings>(

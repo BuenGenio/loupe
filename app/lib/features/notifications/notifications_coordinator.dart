@@ -9,6 +9,7 @@ import '../../platform/background.dart';
 import '../../platform/background_entry.dart' show afterAction;
 import '../../platform/foreground_bridge.dart';
 import '../../platform/instant_delivery.dart';
+import '../../platform/push.dart';
 import '../../platform/work_scheduler.dart';
 import '../../providers.dart';
 import '../../router.dart';
@@ -30,6 +31,8 @@ final servesNotificationActionsProvider = Provider<bool>((ref) => false);
 /// - runs Archive and Mark as Read handed over from the background isolate;
 /// - turns the periodic background sync on in live mode, off otherwise;
 /// - runs the Instant Delivery service while it is switched on;
+/// - keeps Push on while it is switched on, in live mode, and syncs when a
+///   push arrives with the app in the foreground;
 /// - keeps one notification channel per account;
 /// - asks for POST_NOTIFICATIONS once, right after the first account is
 ///   added (never on first launch).
@@ -44,6 +47,7 @@ class NotificationsCoordinator extends ConsumerStatefulWidget {
 
 class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordinator> {
   StreamSubscription<NotificationTap>? _taps;
+  StreamSubscription<void>? _pushes;
   ForegroundBridgeServer? _bridge;
   String? _channelsFor;
 
@@ -63,6 +67,8 @@ class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordina
       fireImmediately: true,
     );
     ref.listenManual<NotificationSettings>(notificationSettingsProvider, (_, _) => _safely(_applyInstant));
+    ref.listenManual<bool>(notificationSettingsProvider.select((s) => s.push), (_, _) => _safely(_applyPush));
+    _pushes = ref.read(pushServiceProvider).foregroundPushes.listen((_) => _safely(_pushed));
   }
 
   /// Notifications are a side show: a failure here never reaches the user.
@@ -78,6 +84,7 @@ class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordina
   @override
   void dispose() {
     unawaited(_taps?.cancel());
+    unawaited(_pushes?.cancel());
     _bridge?.close();
     super.dispose();
   }
@@ -94,6 +101,7 @@ class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordina
     }
     if (live) await _accountsChanged(ref.read(accountsProvider).value);
     await _applyInstant();
+    await _applyPush();
   }
 
   Future<void> _instant = Future.value();
@@ -119,6 +127,28 @@ class _NotificationsCoordinatorState extends ConsumerState<NotificationsCoordina
         }
       })
       .catchError((Object e) => debugPrint('Instant Delivery: $e'));
+
+  Future<void> _push = Future.value();
+  bool? _pushOn;
+
+  /// Push on while it is switched on, in live mode (a push is no use without
+  /// an account); off otherwise. One change at a time.
+  Future<void> _applyPush() => _push = _push
+      .then((_) async {
+        if (!mounted) return;
+        final on = ref.read(notificationSettingsProvider).push && ref.read(appModeProvider) == AppMode.live;
+        if (on == _pushOn) return;
+        _pushOn = on;
+        await ref.read(pushServiceProvider).setEnabled(on);
+      })
+      .catchError((Object e) => debugPrint('Push: $e'));
+
+  /// A push with the app in the foreground: sync now, as pull to refresh
+  /// does. (In the background, a WorkManager job syncs: [onBackgroundPush].)
+  Future<void> _pushed() async {
+    if (!mounted || ref.read(appModeProvider) != AppMode.live) return;
+    await ref.read(repositoryProvider).refresh();
+  }
 
   Future<void> _accountsChanged(List<MailAccount>? accounts) async {
     if (accounts == null || !mounted || ref.read(appModeProvider) != AppMode.live) return;
