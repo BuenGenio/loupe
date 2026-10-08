@@ -31,7 +31,7 @@ Removing an account in Loupe deletes its mail, settings and sign-in from your ph
 
 Loupe connects only to:
 
-- **Your mail provider's servers:** IMAP, SMTP and, when you use server-side rules, ManageSieve. These are the servers you configured or Loupe found for your address.
+- **Your mail provider's servers:** IMAP and SMTP, or JMAP, and, when you use server-side rules, ManageSieve. These are the servers you configured or Loupe found for your address.
 - **Google or Microsoft, when you choose "Sign in with Google" or "Sign in with Microsoft":**
   - You sign in on their own page, in your phone's browser. Loupe never sees your Google or Microsoft password.
   - Loupe receives tokens that let it read, send and organise your mail through IMAP and SMTP. It later renews them directly with Google's or Microsoft's sign-in service.
@@ -40,6 +40,7 @@ Loupe connects only to:
   - It sends the domain of your address, and to your domain's own server the address itself.
 - **Websites you choose to open,** like links in a message, or a mailing list's unsubscribe address when you tap Unsubscribe.
 - **Senders' servers, for images in a message,** only when you choose to load remote content. Loupe blocks it by default.
+- **Certificate authorities, only if you turn on "Check Certificate Revocation Online"** (off by default). When you read S/MIME-signed mail, Loupe then asks the authority that issued the sender's certificate whether it was revoked, which tells that authority whose certificate is being checked and when.
 
 ## Google user data
 
