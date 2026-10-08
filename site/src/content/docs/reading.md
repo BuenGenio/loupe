@@ -30,7 +30,7 @@ After Archive, Move or Delete, the conversation closes and a bar offers **Undo**
 
 - **Tap the line under the sender** ("to …") to see all addresses (From, To, Cc, Bcc, Reply-To), the date, and the **Security** line: whether your mail server verified the sender (**Verified sender** or **Unverified sender**) with the results of its checks, such as "DKIM pass · SPF pass · DMARC pass". It appears when your server records these checks.
 - **Tap a name** for **VIP**, **New Message**, **Copy Address** and **Search Messages from** that person.
-- **The ⋯ button** of each message has: Reply, Reply All, Reply List and Forward; Mark as Read or Unread, Flag, Tags…, Mute Thread; Snooze…, Move…, Archive, Move to Trash, Move to Junk; and **Show All Headers**, **View Source** and **Search from This Message…**.
+- **The ⋯ button** of each message has: Reply, Reply All, Reply List and Forward; Mark as Read or Unread, Flag, Tags…, Mute Thread; Snooze…, Move…, Archive, Move to Trash, Move to Junk; and **Show All Headers**, **View Source**, **Save as File…**, **Share as File…** and **Search from This Message…**.
 
 Tags show as coloured chips under the header. A badge next to the sender shows the result of the [phishing check](/docs/privacy-security/#the-phishing-check).
 
@@ -123,6 +123,17 @@ In a message's ⋯ menu:
 
 - **Show All Headers** lists every header line, with Copy All.
 - **View Source** shows the raw message. **Share** there saves or sends it as a `message.eml` file, which other mail apps can open.
+
+## Saving a message as a file
+
+In a message's ⋯ menu:
+
+- **Save as File…** saves the message as an `.eml` file named after its subject, such as `Quarterly report.eml`. Android asks where to put it. Other mail apps, Thunderbird among them, open the file.
+- **Share as File…** sends the same file to another app, such as Drive or a chat.
+
+The file is the whole message as your server keeps it, with its attachments. An encrypted message stays encrypted in the file, so only you can read it.
+
+To save a whole folder, see [Export a folder](/docs/organising/#export-a-folder).
 
 ## Reading offline
 

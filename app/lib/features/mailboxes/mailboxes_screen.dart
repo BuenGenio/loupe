@@ -15,6 +15,7 @@ import '../../shared/bars.dart';
 import '../../shared/format.dart';
 import '../../shared/grouped_list.dart';
 import '../../shared/mailbox_display.dart';
+import '../../shared/sheets.dart';
 import '../../shared/sync_status.dart';
 import '../../shared/tags.dart';
 import '../../theme/theme.dart';
@@ -22,6 +23,7 @@ import '../account_setup/sign_in_again.dart' show SignInBanner;
 import '../compose/compose_args.dart';
 import '../compose/compose_recovery.dart';
 import '../compose/send_later.dart';
+import '../export/export_actions.dart';
 import '../keyboard/mail_commands.dart';
 import '../outbox/outbox_screen.dart';
 import '../palette/command_palette.dart';
@@ -235,6 +237,7 @@ class _MailboxTile extends ConsumerWidget {
     this.iconColor,
     this.count,
     this.onTap,
+    this.onLongPress,
     this.depth = 0,
     this.expanded,
     this.onToggleExpanded,
@@ -249,6 +252,9 @@ class _MailboxTile extends ConsumerWidget {
   final Color? iconColor;
   final int? count;
   final VoidCallback? onTap;
+
+  /// A folder's menu (Export Folder…); not while editing.
+  final VoidCallback? onLongPress;
   final bool editing;
   final bool visible;
   final VoidCallback onToggleVisible;
@@ -291,6 +297,7 @@ class _MailboxTile extends ConsumerWidget {
     final metrics = LoupeMetrics.of(context);
     return InkWell(
       onTap: editing ? onToggleVisible : onTap,
+      onLongPress: editing ? null : onLongPress,
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: metrics.groupedRowHeight),
         child: Padding(
@@ -516,6 +523,7 @@ class _AccountSection extends ConsumerWidget {
                   : null,
               target: MailboxTarget(RealMailboxRef(node.mailbox.id)),
               dropMailbox: node.mailbox,
+              onLongPress: node.mailbox.isSelectable ? () => _showFolderMenu(context, ref, node.mailbox) : null,
             ),
     ];
     return InsetGroup(
@@ -546,6 +554,23 @@ class _AccountSection extends ConsumerWidget {
       },
       children: rows,
     );
+  }
+}
+
+enum _FolderAction { export }
+
+/// A folder's long-press menu.
+Future<void> _showFolderMenu(BuildContext context, WidgetRef ref, Mailbox mailbox) async {
+  unawaited(HapticFeedback.selectionClick());
+  final action = await showActionSheet<_FolderAction>(
+    context,
+    title: mailboxDisplayName(mailbox),
+    actions: const [SheetAction('Export Folder…', _FolderAction.export, icon: LoupeIcons.exportFolder)],
+  );
+  if (action == null || !context.mounted) return;
+  switch (action) {
+    case _FolderAction.export:
+      await exportFolder(context, ref, mailbox);
   }
 }
 

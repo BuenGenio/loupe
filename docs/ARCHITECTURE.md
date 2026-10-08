@@ -10,7 +10,7 @@ app (UI, Riverpod, go_router)
               ├─ mail_sieve (rules: Sieve generation, ManageSieve client, rule runner)
               ├─ mail_store (drift + FTS5 + sqlite3mc)
               └─ TransportFactory ◄── mail_jmap CompositeTransportFactory (IMAP or JMAP by account)
-                                       ├─ mail_imap (enough_mail; IMAP, SMTP, MIME, discovery)
+                                       ├─ mail_imap (enough_mail; IMAP, SMTP, MIME, discovery, mbox)
                                        └─ mail_jmap (JMAP client and transport, EmailSubmission,
                                                      JMAP discovery, Sieve over JMAP)
 mail_platform: CredentialStore (keychain), OAuth sign-in (AppAuth) and token refresh (HTTPS)

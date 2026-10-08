@@ -31,6 +31,9 @@ abstract final class LoupeIcons {
   static const IconData tag = FluentIcons.tag_24_regular;
   static const IconData tagFilled = FluentIcons.tag_24_filled;
 
+  /// Export Folder… (as an mbox file).
+  static const IconData exportFolder = FluentIcons.folder_arrow_up_24_regular;
+
   // Mailing lists -------------------------------------------------------------
 
   static const IconData mailingList = FluentIcons.people_community_24_regular;

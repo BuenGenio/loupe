@@ -16,6 +16,7 @@ Status: **early development**, used daily by its owner on Android. iOS is prepar
 - **Reading:** Readable mode rebuilds HTML mail to fit the screen, with footers as fine print, image carousel and gallery, and dark-mode colour fixes. Original and Plain (Sans/Mono) views are one tap away. Developer mode shows patches with diff highlighting, and discussion lists as forum-style threads.
 - **Search:** pull-down search with chips or typed expressions (`f:alice and (s:invoice or b:"PO 123")`). Results from the phone appear at once and the server's stream in after. Smart Mailboxes are stored on your mail server (IMAP METADATA or a folder), so they follow you to other devices.
 - **Organising:** swipes with Undo, Filter button, tags compatible with Thunderbird, folder subscriptions, snooze that works across clients (a `Snoozed` folder plus a keyword), and Subscriptions: newsletters by sender with an on-device unsubscribe centre, and the discussion lists you write to.
+- **Saving and exporting:** a message as an `.eml` file (Save as File…, Share as File…), and a folder as an mbox archive (Export Folder…), written to storage as it downloads, never held in memory.
 - **Rules:** device rules, and server rules as Sieve (over ManageSieve, or JMAP for JMAP accounts); any search can become a rule.
 - **Writing:** identities with reply-from-recipient and catch-all aliases, draft autosave, undo send, scheduled send with an Outbox.
 - **Calendar invitations:** Accept, Maybe or Decline from the message, with updates, cancellations and the event's time zone beside yours.
@@ -52,7 +53,7 @@ cd app && flutter run    # on a device or emulator
 | `packages/mail_model` | Shared types and interfaces (the contract between all packages) |
 | `packages/expr_search` | Search language: parser, formatter, local matcher, IMAP/Gmail/JMAP compilers |
 | `packages/readable` | Readable HTML reader, Original and Plain views, image gallery |
-| `packages/mail_imap` | IMAP/SMTP transport (enough_mail), MIME composing, account discovery |
+| `packages/mail_imap` | IMAP/SMTP transport (enough_mail), MIME composing, account discovery, the mbox writer |
 | `packages/mail_store` | Encrypted local store: drift, SQLite FTS5, sqlite3mc |
 | `packages/mail_sync` | Sync engine, offline queue, the live `MailRepository` |
 | `packages/mail_platform` | Keychain credential store, OAuth sign-in |

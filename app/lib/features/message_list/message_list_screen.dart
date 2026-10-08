@@ -23,6 +23,7 @@ import '../../shared/sync_status.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
 import '../conversation/sheets.dart' show showSnack;
+import '../export/export_actions.dart';
 import '../keyboard/mail_commands.dart';
 import '../palette/command_palette.dart';
 import '../panes/mail_selection.dart';
@@ -234,6 +235,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
     MailCommand.search || MailCommand.refresh => true,
     MailCommand.back => _searching || _editing,
     MailCommand.markAllRead => !_searching,
+    MailCommand.exportFolder => !_searching && _folder != null,
     MailCommand.reply || MailCommand.replyAll || MailCommand.forward => !_inPane && !_editing && _cursorRow != null,
     MailCommand.archive ||
     MailCommand.trash ||
@@ -271,6 +273,8 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
         _searching ? _setSearching(false) : _toggleEditing();
       case MailCommand.markAllRead:
         unawaited(_markAllRead());
+      case MailCommand.exportFolder:
+        if (_folder case final folder?) unawaited(exportFolder(context, ref, folder));
       case MailCommand.refresh:
         unawaited(ref.read(repositoryProvider).refresh(ref: widget.mailboxRef));
       case MailCommand.reply:
@@ -346,6 +350,13 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
     final bar = MediaQuery.paddingOf(context).top + LoupeTitleBar.heightOf(context) + searchBarExtent(context);
     return top >= bar && top + row.size.height <= view.size.height;
   }
+
+  /// The folder listed, when it is one (not a unified mailbox).
+  Mailbox? get _folder => switch (widget.mailboxRef) {
+    RealMailboxRef(:final mailboxId) =>
+      (ref.read(mailboxesProvider).value ?? const <Mailbox>[]).where((m) => m.id == mailboxId).firstOrNull,
+    VirtualMailboxRef() => null,
+  };
 
   /// Marks every unread message of this mailbox read (those on the phone).
   Future<void> _markAllRead() async {
