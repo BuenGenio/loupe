@@ -1,6 +1,6 @@
 ---
 title: "Privacy and security"
-description: "What Loupe stores and who it talks to: an encrypted database, an optional App Lock, no telemetry, no servers of its own, blocked trackers and an explainable phishing check."
+description: "What Loupe stores and who it talks to: an encrypted database, optional App Lock, no telemetry or servers of its own, blocked trackers and an explainable phishing check."
 section: "Accounts & security"
 order: 150
 ---
