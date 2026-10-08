@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/conversation/security/assessment.dart';
 import 'package:loupe/features/conversation/security/security_badge.dart';
 import 'package:loupe/features/conversation/security/security_sheet.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:loupe/router.dart';
 import 'package:loupe/theme/loupe_icons.dart';
 import 'package:loupe/theme/theme.dart';
@@ -37,6 +38,7 @@ SecurityReport report(Verdict verdict, {bool verified = false, int trackers = 0,
 
 Future<void> pumpBadge(WidgetTester tester, SecurityReport r, {VoidCallback? onTap}) => tester.pumpWidget(
   MaterialApp(
+    localizationsDelegates: loupeLocalizationsDelegates,
     theme: LoupeTheme.light(),
     home: Scaffold(
       body: Center(
@@ -104,6 +106,7 @@ void main() {
     testWidgets('very large text keeps only the icon, and the label for screen readers', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
+          localizationsDelegates: loupeLocalizationsDelegates,
           theme: LoupeTheme.light(),
           home: MediaQuery(
             data: const MediaQueryData(textScaler: TextScaler.linear(2)),
@@ -143,6 +146,7 @@ void main() {
     addTearDown(tester.view.reset);
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: loupeLocalizationsDelegates,
         theme: LoupeTheme.light(),
         home: Scaffold(
           body: SecuritySheet(

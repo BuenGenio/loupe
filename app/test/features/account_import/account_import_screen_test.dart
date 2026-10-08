@@ -10,6 +10,7 @@ import 'package:loupe/data/repositories.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/features/account_import/account_import_screen.dart';
 import 'package:loupe/features/account_import/qr_scanner.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:loupe/providers.dart';
 import 'package:loupe/router.dart';
 import 'package:loupe/settings/app_mode.dart';
@@ -85,7 +86,11 @@ Future<(GoRouter, ProviderContainer)> pumpImport(
   await tester.pumpWidget(
     UncontrolledProviderScope(
       container: container,
-      child: MaterialApp.router(theme: LoupeTheme.light(), routerConfig: router),
+      child: MaterialApp.router(
+        localizationsDelegates: loupeLocalizationsDelegates,
+        theme: LoupeTheme.light(),
+        routerConfig: router,
+      ),
     ),
   );
   unawaited(router.push(Routes.importAccounts));

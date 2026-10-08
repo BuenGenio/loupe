@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:loupe/features/compose/compose_args.dart';
 import 'package:loupe/features/conversation/conversation_screen.dart';
 import 'package:loupe/features/conversation/raw_source_screen.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:loupe/providers.dart';
 import 'package:loupe/settings/app_settings.dart';
 import 'package:loupe/theme/theme.dart';
@@ -70,7 +71,12 @@ Future<GoRouter> pumpTestApp(
         sharedPreferencesProvider.overrideWithValue(sharedPrefs),
         ...overrides,
       ],
-      child: MaterialApp.router(theme: LoupeTheme.light(), scrollBehavior: scrollBehavior, routerConfig: router),
+      child: MaterialApp.router(
+        localizationsDelegates: loupeLocalizationsDelegates,
+        theme: LoupeTheme.light(),
+        scrollBehavior: scrollBehavior,
+        routerConfig: router,
+      ),
     ),
   );
   await tester.pumpAndSettle();

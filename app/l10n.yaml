@@ -1,0 +1,9 @@
+# The app's strings (docs/localisation.md). `flutter gen-l10n` (also run by
+# `flutter pub get`) turns lib/l10n/app_<lang>.arb into lib/l10n/app_localizations*.dart,
+# which are committed so `dart analyze` works on a fresh checkout.
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+output-class: AppLocalizations
+nullable-getter: false
+required-resource-attributes: false

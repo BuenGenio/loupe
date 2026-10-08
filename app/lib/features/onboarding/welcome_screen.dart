@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../l10n/l10n.dart';
 import '../../router.dart';
 import '../../settings/app_mode.dart';
 import '../../theme/theme.dart';
@@ -54,6 +55,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> with SingleTicker
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     return Scaffold(
       body: SafeArea(
         // Spacers keep it airy on phones; short screens (landscape) scroll
@@ -88,17 +90,21 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> with SingleTicker
                             'assets/icon/icon_rounded.png',
                             width: 104,
                             height: 104,
-                            semanticLabel: 'Loupe',
+                            semanticLabel: 'Loupe', // l10n-ignore: the name
                           ),
                         ),
                       ),
                       const SizedBox(height: 28),
-                      _stagger(0.1, Text('Loupe', style: styles.largeTitle.copyWith(fontSize: 40))),
+                      _stagger(
+                        0.1,
+                        // l10n-ignore: the name
+                        Text('Loupe', style: styles.largeTitle.copyWith(fontSize: 40)),
+                      ),
                       const SizedBox(height: 10),
                       _stagger(
                         0.18,
                         Text(
-                          'Mail that’s simple on the surface\nand powerful underneath.',
+                          l10n.welcomeTagline,
                           textAlign: TextAlign.center,
                           style: styles.body.copyWith(color: colors.secondaryText, height: 1.35),
                         ),
@@ -107,21 +113,21 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> with SingleTicker
                       _stagger(
                         0.3,
                         Column(
-                          children: const [
+                          children: [
                             _Feature(
                               icon: LoupeIcons.allInboxes,
-                              title: 'Every account, one calm inbox',
-                              text: 'Gmail, Outlook, iCloud, Fastmail and any IMAP or JMAP server.',
+                              title: l10n.welcomeAccountsTitle,
+                              text: l10n.welcomeAccountsText,
                             ),
                             _Feature(
                               icon: LoupeIcons.search,
-                              title: 'Search that finds it',
-                              text: 'Instant results on your phone, then the server’s.',
+                              title: l10n.welcomeSearchTitle,
+                              text: l10n.welcomeSearchText,
                             ),
                             _Feature(
                               icon: LoupeIcons.privacy,
-                              title: 'Private by design',
-                              text: 'No tracking. Remote images stay blocked until you say so.',
+                              title: l10n.welcomePrivacyTitle,
+                              text: l10n.welcomePrivacyText,
                             ),
                           ],
                         ),
@@ -139,22 +145,22 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> with SingleTicker
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                                 textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                               ),
-                              child: const Text('Add Account'),
+                              child: Text(l10n.welcomeAddAccount),
                             ),
                             const SizedBox(height: 6),
                             CupertinoButton(
                               key: const Key('welcome-import'),
                               onPressed: _importAccounts,
-                              child: const Row(
+                              child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(LoupeIcons.qrCode, size: 20),
-                                  SizedBox(width: 8),
-                                  Flexible(child: Text('Import from Thunderbird', overflow: TextOverflow.ellipsis)),
+                                  const Icon(LoupeIcons.qrCode, size: 20),
+                                  const SizedBox(width: 8),
+                                  Flexible(child: Text(l10n.welcomeImport, overflow: TextOverflow.ellipsis)),
                                 ],
                               ),
                             ),
-                            CupertinoButton(onPressed: _tryDemo, child: const Text('Try with demo mail')),
+                            CupertinoButton(onPressed: _tryDemo, child: Text(l10n.welcomeTryDemo)),
                           ],
                         ),
                       ),

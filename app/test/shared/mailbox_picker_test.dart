@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:loupe/shared/sheets.dart';
 import 'package:loupe/theme/theme.dart';
 import 'package:mail_model/mail_model.dart';
@@ -14,6 +15,7 @@ void main() {
   Future<void> open(WidgetTester tester, {required bool showAll}) async {
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: loupeLocalizationsDelegates,
         theme: LoupeTheme.light(),
         home: Builder(
           builder: (context) => TextButton(

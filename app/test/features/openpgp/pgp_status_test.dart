@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/openpgp/key_import.dart';
 import 'package:loupe/features/openpgp/openpgp_providers.dart';
 import 'package:loupe/features/openpgp/pgp_status.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:loupe/theme/loupe_icons.dart';
 import 'package:loupe/theme/theme.dart';
 import 'package:mail_crypto/mail_crypto.dart';
@@ -120,6 +121,7 @@ void main() {
       ProviderScope(
         overrides: [keyringStateProvider.overrideWith((ref) => Stream.value(keyring(KeyAcceptance.verified)))],
         child: MaterialApp(
+          localizationsDelegates: loupeLocalizationsDelegates,
           theme: LoupeTheme.light(),
           home: Scaffold(body: PgpStatusSheet(view: view)),
         ),

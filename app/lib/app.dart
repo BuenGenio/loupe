@@ -17,6 +17,7 @@ import 'features/notifications/notification_settings.dart';
 import 'features/notifications/notifications_coordinator.dart';
 import 'features/openpgp/subjects_watcher.dart';
 import 'features/snooze/snooze_wakeups.dart';
+import 'l10n/l10n.dart';
 import 'platform/background.dart';
 import 'platform/background_entry.dart';
 import 'platform/foreground_sync.dart';
@@ -39,6 +40,9 @@ class LoupeApp extends ConsumerWidget {
       child: MaterialApp.router(
         title: 'Loupe',
         debugShowCheckedModeBanner: false,
+        localizationsDelegates: loupeLocalizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        localeListResolutionCallback: loupeLocaleResolution,
         theme: LoupeTheme.light(density: settings.density),
         darkTheme: LoupeTheme.dark(density: settings.density),
         themeMode: settings.themeMode,
