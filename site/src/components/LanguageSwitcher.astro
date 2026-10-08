@@ -14,9 +14,20 @@ const { lang, path } = Astro.props;
 const t = useT(lang);
 const current = locale(lang);
 const translated = translatedPaths.includes(path);
-const available = locales.filter((l) => hasStrings(l.code));
+// Each language also gets its name in the page's language ("Shqip · Albanisch"
+// on a German page), from the ICU data in Node, sorted by that name.
+const displayNames = new Intl.DisplayNames([lang], { type: 'language' });
+const local = (code: string, fallback: string) => {
+  const n = displayNames.of(code) ?? fallback;
+  return n.charAt(0).toLocaleUpperCase(lang) + n.slice(1);
+};
+const available = locales
+  .filter((l) => hasStrings(l.code))
+  .map((l) => ({ ...l, local: local(l.code, l.english) }));
 const top = popular.map((c) => available.find((l) => l.code === c)).filter((l) => l !== undefined);
-const rest = available.filter((l) => !popular.includes(l.code)).sort((a, b) => a.english.localeCompare(b.english));
+const rest = available.filter((l) => !popular.includes(l.code)).sort((a, b) => a.local.localeCompare(b.local, lang));
+const search = (l: (typeof available)[number]) => `${l.name} ${l.local} ${l.english} ${l.code}`.toLowerCase();
+const secondary = (l: (typeof available)[number]) => (l.local.toLowerCase() === l.name.toLowerCase() ? '' : l.local);
 const href = (code: string) => (translated || code === 'en' ? localize(code, translated ? path : '/') : `/${code}/`);
 ---
 
@@ -27,14 +38,18 @@ const href = (code: string) => (translated || code === 'en' ? localize(code, tra
     <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
   </summary>
   <div class="panel">
+    <label class="filter">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.1 17.16a8 8 0 1 1 1.06-1.06l4.62 4.62a.75.75 0 1 1-1.06 1.06zM17.5 11a6.5 6.5 0 1 0-13 0 6.5 6.5 0 0 0 13 0" /></svg>
+      <input type="search" aria-label={t('common.language')} autocomplete="off" spellcheck="false" />
+    </label>
     <p class="group">{t('common.popular')}</p>
     <ul class="list">
       {
         top.map((l) => (
           <li>
-            <a href={href(l.code)} hreflang={l.code} lang={l.code} data-lang={l.code} aria-current={l.code === lang ? 'true' : undefined}>
+            <a href={href(l.code)} hreflang={l.code} data-lang={l.code} data-search={search(l)} aria-current={l.code === lang ? 'true' : undefined}>
               <img src={`/flags/${l.flag}.webp`} width="20" height="15" alt="" loading="lazy" />
-              <span>{l.name}</span>
+              <span class="names"><span lang={l.code}>{l.name}</span>{secondary(l) && <small>{secondary(l)}</small>}</span>
             </a>
           </li>
         ))
@@ -45,9 +60,9 @@ const href = (code: string) => (translated || code === 'en' ? localize(code, tra
       {
         rest.map((l) => (
           <li>
-            <a href={href(l.code)} hreflang={l.code} lang={l.code} data-lang={l.code} aria-current={l.code === lang ? 'true' : undefined} title={l.english}>
+            <a href={href(l.code)} hreflang={l.code} data-lang={l.code} data-search={search(l)} aria-current={l.code === lang ? 'true' : undefined}>
               <img src={`/flags/${l.flag}.webp`} width="20" height="15" alt="" loading="lazy" />
-              <span>{l.name}</span>
+              <span class="names"><span lang={l.code}>{l.name}</span>{secondary(l) && <small>{secondary(l)}</small>}</span>
             </a>
           </li>
         ))
@@ -66,6 +81,22 @@ const href = (code: string) => (translated || code === 'en' ? localize(code, tra
   document.addEventListener('click', (e) => {
     for (const d of document.querySelectorAll<HTMLDetailsElement>('.lang-switch[open]')) if (!d.contains(e.target as Node)) d.open = false;
   });
+  for (const d of document.querySelectorAll<HTMLDetailsElement>('.lang-switch')) {
+    const input = d.querySelector<HTMLInputElement>('.filter input')!;
+    const items = [...d.querySelectorAll<HTMLAnchorElement>('a[data-search]')];
+    const groups = [...d.querySelectorAll<HTMLElement>('.group')];
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      for (const a of items) a.parentElement!.hidden = Boolean(q) && !a.dataset.search!.includes(q);
+      for (const g of groups) g.hidden = Boolean(q);
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') items.find((a) => !a.parentElement!.hidden)?.click();
+    });
+    d.addEventListener('toggle', () => {
+      if (d.open && matchMedia('(pointer: fine)').matches) input.focus();
+    });
+  }
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') for (const d of document.querySelectorAll<HTMLDetailsElement>('.lang-switch[open]')) d.open = false;
   });
@@ -131,12 +162,60 @@ const href = (code: string) => (translated || code === 'en' ? localize(code, tra
     text-transform: uppercase;
   }
 
+  .filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 6px;
+    padding: 0 12px;
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--ink-3);
+  }
+
+  .filter:focus-within {
+    border-color: var(--brand);
+  }
+
+  .filter input {
+    flex: 1;
+    min-width: 0;
+    height: 36px;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.9375rem;
+    outline: none;
+  }
+
   .list {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    columns: 2;
+    column-gap: 4px;
     margin: 0 0 6px;
     padding: 0;
     list-style: none;
+  }
+
+  .list li {
+    break-inside: avoid;
+  }
+
+  .list li[hidden],
+  .group[hidden] {
+    display: none;
+  }
+
+  .names {
+    display: grid;
+    line-height: 1.2;
+  }
+
+  .names small {
+    color: var(--ink-3);
+    font-size: 0.75rem;
+    font-weight: 300;
   }
 
   .list a {

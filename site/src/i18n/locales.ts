@@ -51,7 +51,7 @@ export const locales: Locale[] = [
 ];
 
 export const defaultLocale = 'en';
-export const popular = ['en', 'es', 'de', 'fr', 'it', 'uk'];
+export const popular = ['en', 'es', 'de', 'fr', 'it', 'uk', 'sq'];
 export const codes = locales.map((l) => l.code);
 export const otherCodes = codes.filter((c) => c !== defaultLocale);
 export const locale = (code: string) => locales.find((l) => l.code === code) ?? locales[0];
