@@ -78,6 +78,12 @@ const rows = await Promise.all(
 </Base>
 
 <style>
+  /* News is a reading column: the heading and the feed share one width,
+     centred, rather than hugging the left of the site's wider wrap. */
+  .wrap {
+    --wrap: 820px;
+  }
+
   .top {
     padding-block: clamp(48px, 7vw, 88px) 8px;
   }
@@ -93,7 +99,6 @@ const rows = await Promise.all(
   /* The timeline: one line down the left, a dot per entry. */
   .feed {
     position: relative;
-    max-width: 820px;
     margin: 0;
     padding: 0 0 0 34px;
     list-style: none;
