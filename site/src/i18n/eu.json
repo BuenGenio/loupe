@@ -241,7 +241,7 @@
       "p1": { "title": "Identitateak eta aliasak", "text": "Erantzun mezua jaso zen helbide beretik, catch-all aliasak barne." },
       "p2": { "title": "Desegin bidalketa", "text": "Iritziz aldatzeko tarte labur bat." },
       "p3": { "title": "Bidalketa programatua", "text": "Aukeratu ordu bat; Irteera-ontziak gordeko du mezua ordura arte, konexiorik gabe ere." },
-      "p4": { "title": "Ekintzak dituzten jakinarazpenak", "text": "Artxibatu, aukeratu Mark as Read edo erantzun jakinarazpenetik bertatik." }
+      "p4": { "title": "Ekintzak dituzten jakinarazpenak", "text": "Artxibatu, aukeratu Markatu irakurritzat edo erantzun jakinarazpenetik bertatik." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Sakatze luzeko menuak",
     "place1Text": "Mezuetan, igorleetan, txipetan eta karpetetan.",
     "place2": "⋯ menua",
-    "place2Text": "View Source, goiburu guztiak, eta mezu honetatik abiatutako bilaketa.",
+    "place2Text": "Ikusi iturburua, goiburu guztiak, eta mezu honetatik abiatutako bilaketa.",
     "place3": "Bilaketa-lengoaia",
     "place3Text": "Txipek egin dezaketen guztia, eta gehiago, idatziz.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Ikusi Loupe Android-en: sarrera-ontzia, Readable modua, adierazpen bidezko bilaketa, harpidetzak, egutegiko gonbidapenak, segurtasun-egiaztapenak, modu iluna eta tabletak.",
     "eyebrow": "Pantaila-argazkiak",
     "h1": "Bota begirada bat.",
-    "lead_html": "Aplikazioko benetako pantailak, bertan datorren demo-postontzitik sortuak: <strong>Try with demo mail</strong> aukerarekin lortzen duzun bera.",
+    "lead_html": "Aplikazioko benetako pantailak, bertan datorren demo-postontzitik sortuak: <strong>Probatu demo-postarekin</strong> aukerarekin lortzen duzun bera.",
     "filter": "Iragazi pantaila-argazkiak",
     "all": "Denak",
     "soon": "Pantaila-argazkiak bidean dira.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Bilaketa eta iragazkiak", "caption": "Iradokizunak eta iragazki-txipak idatzi ahala: nahi duzuna zehazki aurkitzeko segundo batzuk besterik ez dira behar.", "alt": "Loupe-ren bilaketa-pantaila adierazpen idatzi batekin, iragazki-txipekin eta bilaketa-eremuaren azpiko iradokizunekin." },
     "phishing": { "title": "Phishinga, azalduta", "caption": "Mezu batek itxura txarra duenean, Loupe-k zergatik den esaten du hitz argitan: benetakoaren itxura duen domeinu bat, edo izen ezagun bat helbide berri batetik.", "alt": "Loupe-ren «This looks like phishing» orria, arrazoiak zerrendatuta: benetakoaren itxura duen domeinu bat eta ezagutzen duzun izen bat helbide berri batetik idazten." },
     "tablet": { "title": "Hiru panel tabletetan", "caption": "Postontziak, zerrenda eta mezua elkarren ondoan, lasterbideekin eta komando-paleta batekin.", "alt": "Loupe tableta batean, horizontalean: postontziak ezkerrean, sarrera-ontzi guztiak erdian eta argazki-karrusela duen mezu bat eskuinean." },
-    "subscriptions": { "title": "Harpidetzak kentzeko zentroa", "caption": "Buletinak irakurri gabe uzten duzunaren arabera sailkatuta, zure telefonoan zenbatuta, eta harpidetza ukitu batez kentzeko aukerarekin.", "alt": "Loupe-ren Harpidetzak pantaila, Newsletters eta Discussions fitxekin, Never Read eta Rarely Read iragazkiekin, irakurketa-tasekin eta harpidetza kentzeko botoiekin." },
+    "subscriptions": { "title": "Harpidetzak kentzeko zentroa", "caption": "Buletinak irakurri gabe uzten duzunaren arabera sailkatuta, zure telefonoan zenbatuta, eta harpidetza ukitu batez kentzeko aukerarekin.", "alt": "Loupe-ren Harpidetzak pantaila, Newsletters eta Discussions fitxekin, Inoiz irakurri gabeak eta Gutxitan irakurriak iragazkiekin, irakurketa-tasekin eta harpidetza kentzeko botoiekin." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Gordetako bilaketak zure karpeten ondoan daude, eta zure posta-zerbitzarian bizi dira, zure beste gailuek ere ikus ditzaten.", "alt": "Loupe-ren Postontziak pantaila, kontuak tolestuta eta bi Smart Mailbox zerrendan." },
     "invitation": { "title": "Gonbidapenak, erantzunda", "caption": "Bilera-gonbidapenek bi ordu-zonak erakusten dituzte, eta Accept, Maybe edo Decline aukeratzen uzten dizute mezutik irten gabe.", "alt": "Outlook bilera-gonbidapen bat Loupe-n: gertaeraren ordua bi ordu-zonatan, Teams-en sartzeko esteka bat eta Accept, Maybe eta Decline botoiak." },
     "openpgp": { "title": "Zifratua, egiaztatua", "caption": "OpenPGP mezuak gailuan deszifratzen dira, eta sinatzailea, gai babestua eta gakoaren hatz-marka erakusten dira.", "alt": "Loupe-ren «Signed by Dana Okafor» orria: gailu honetan deszifratua, gai babestu bat eta gakoaren hatz-marka." },
-    "compose": { "title": "Mezu bat idaztea", "caption": "Hartzaileak txip gisa, bidaltzeko erabiltzen duzun identitatea, eta Send Later, mezuak goizera arte itxaron behar duenean.", "alt": "Loupe-ren mezu berriaren pantaila, hartzaile-txipekin, igorlearen identitatearekin, gorputzeko testuarekin eta Send Later eta Send botoiekin." },
-    "rules": { "title": "Arauak, bilaketa soil gisa", "caption": "Arau bat bilaketa bat gehi ekintza bat da; exekutatu telefonoan edo zure zerbitzarian, eta Loupe-k idatziko dizu Sieve kodea.", "alt": "Loupe-ren arau berrien editorea: bilaketa-estiloko baldintza bat, Mark as Read ekintza, Run On Server aktibatuta eta sortutako Sieve scripta." },
+    "compose": { "title": "Mezu bat idaztea", "caption": "Hartzaileak txip gisa, bidaltzeko erabiltzen duzun identitatea, eta Bidali geroago, mezuak goizera arte itxaron behar duenean.", "alt": "Loupe-ren mezu berriaren pantaila, hartzaile-txipekin, igorlearen identitatearekin, gorputzeko testuarekin eta Bidali geroago eta Send botoiekin." },
+    "rules": { "title": "Arauak, bilaketa soil gisa", "caption": "Arau bat bilaketa bat gehi ekintza bat da; exekutatu telefonoan edo zure zerbitzarian, eta Loupe-k idatziko dizu Sieve kodea.", "alt": "Loupe-ren arau berrien editorea: bilaketa-estiloko baldintza bat, Markatu irakurritzat ekintza, Run On Server aktibatuta eta sortutako Sieve scripta." },
     "patch": { "title": "Adabakiak diff gisa", "caption": "Posta-zerrenda teknikoetan, adabakiak diff koloredun gisa erakusten dira, zabalera finkoko letra-tipo batean.", "alt": "Posta-zerrenda bateko mezu bat Loupe-n, zabalera finkoko letran, adabaki bat diff gorri eta berde gisa erakutsita." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Baimendu instalazio hau",
     "step2Text_html": "Android-ek behin galdetzen du zure arakatzaileak aplikazioak instala ditzakeen. Baimendu, eta sakatu <strong>Instalatu</strong>. Hurrengo bertsioak honen gainean instalatzen dira eta zure kontuak gordetzen dituzte.",
     "step3": "Probatu, edo gehitu zure kontua",
-    "step3Text_html": "Aukeratu <strong>Try with demo mail</strong> lehenik inguruan begiratzeko, edo gehitu zure kontua. Ikusi <a href=\"/docs/getting-started/\">Lehen urratsak</a>.",
+    "step3Text_html": "Aukeratu <strong>Probatu demo-postarekin</strong> lehenik inguruan begiratzeko, edo gehitu zure kontua. Ikusi <a href=\"/docs/getting-started/\">Lehen urratsak</a>.",
     "safety": "Bertsio bakoitza GitHub Actions-ek sortzen du iturburu-kode publikotik, eta Loupe-ren argitalpen-gakoarekin sinatzen da. Hala ere, Google Play Protect-ek abisua eman dezake Play Store-tik kanpoko aplikazioekin."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Eguneroko posta",
     "p1Text": "Konfigurazio automatikoa duten kontuak, irristatzeak dituen mezu-zerrenda, Readable, Original eta Plain ikuspegiak, bilaketa, bidalketa desegiteko aukera eta Irteera-ontzia dituen idazketa, jakinarazpenak eta modu iluna.",
     "p2": "Tresna aurreratuak",
-    "p2Text": "Bilaketa-lengoaia osoa, Smart Mailboxes, etiketak, arauak eta Sieve, identitateak, View Source eta autentifikazio-emaitzak, hiru panel eta lasterbideak, bidalketa programatua.",
+    "p2Text": "Bilaketa-lengoaia osoa, Smart Mailboxes, etiketak, arauak eta Sieve, identitateak, Ikusi iturburua eta autentifikazio-emaitzak, hiru panel eta lasterbideak, bidalketa programatua.",
     "p3": "JMAP",
     "p3Text": "JMAP kontuak Fastmail eta Stalwart-entzat: bilaketa zerbitzarian, bidalketa SMTP gabe, push zerbitzaritik, eta Sieve JMAP bidez.",
     "p4": "Zifratzea",

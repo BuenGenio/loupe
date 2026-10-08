@@ -241,7 +241,7 @@
       "p1": { "title": "Aitheantais agus ailiasanna", "text": "Freagair ón seoladh ar seoladh an ríomhphost chuige, ailiasanna catch-all san áireamh." },
       "p2": { "title": "Seoladh a chealú", "text": "Tréimhse ghearr chun d'intinn a athrú." },
       "p3": { "title": "Seoladh sceidealaithe", "text": "Roghnaigh am; coinníonn an Bosca Amach an teachtaireacht go dtí sin, fiú as líne." },
-      "p4": { "title": "Fógraí le gníomhartha", "text": "Cartlannaigh, Mark as Read nó Freagair ón bhfógra féin." }
+      "p4": { "title": "Fógraí le gníomhartha", "text": "Cartlannaigh, Marcáil mar léite nó Freagair ón bhfógra féin." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Roghchláir le brú fada",
     "place1Text": "Ar theachtaireachtaí, ar sheoltóirí, ar shlisní agus ar fhillteáin.",
     "place2": "An roghchlár ⋯",
-    "place2Text": "View Source, gach ceanntásc, agus cuardach ón teachtaireacht seo.",
+    "place2Text": "Féach ar an bhfoinse, gach ceanntásc, agus cuardach ón teachtaireacht seo.",
     "place3": "An teanga chuardaigh",
     "place3Text": "Gach rud is féidir leis na slisní a dhéanamh, agus tuilleadh, ach é a chlóscríobh.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Féach ar Loupe ar Android: an bosca isteach, an mód Readable, cuardach le sloinn, Síntiúis, cuirí féilire, seiceálacha slándála, mód dorcha agus táibléid.",
     "eyebrow": "Gabhálacha scáileáin",
     "h1": "Breathnaigh thart.",
-    "lead_html": "Fíorscáileáin ón aip, bunaithe ar an mbosca poist taispeána atá ionsuite inti: an ceann céanna a fhaigheann tú le <strong>Try with demo mail</strong>.",
+    "lead_html": "Fíorscáileáin ón aip, bunaithe ar an mbosca poist taispeána atá ionsuite inti: an ceann céanna a fhaigheann tú le <strong>Bain triail as le ríomhphost taispeántais</strong>.",
     "filter": "Scag gabhálacha scáileáin",
     "all": "Gach ceann",
     "soon": "Tá gabhálacha scáileáin ar an mbealach.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Cuardach agus scagairí", "caption": "Moltaí agus slisní scagaire de réir mar a chlóscríobhann tú: ní thógann sé ach soicindí go díreach an rud atá uait a aimsiú.", "alt": "Scáileán cuardaigh Loupe le slonn clóscríofa, slisní scagaire agus moltaí faoi bhun an réimse cuardaigh." },
     "phishing": { "title": "Fioscaireacht, mínithe", "caption": "Nuair nach bhfuil cuma cheart ar theachtaireacht, insíonn Loupe an fáth i bhfocail shimplí: fearann bréagchosúil, nó ainm aitheanta ó sheoladh nua.", "alt": "Bileog “This looks like phishing” Loupe ag liostú na gcúiseanna: fearann bréagchosúil agus ainm atá ar eolas agat ag scríobh ó sheoladh nua." },
     "tablet": { "title": "Trí phána ar tháibléid", "caption": "Boscaí poist, an liosta agus an teachtaireacht taobh le taobh, le haicearraí méarchláir agus pailéad orduithe.", "alt": "Loupe ar tháibléad i dtírdhreach: boscaí poist ar chlé, Gach Bosca Isteach sa lár agus teachtaireacht le carósal grianghraf ar dheis." },
-    "subscriptions": { "title": "Ionad díliostála", "caption": "Nuachtlitreacha rangaithe de réir an mhéid a fhágann tú gan léamh, comhairithe ar d'fhón, le díliostáil aon chnaig.", "alt": "Scáileán Síntiús Loupe le cluaisíní Newsletters agus Discussions, scagairí Never Read agus Rarely Read, rátaí léite agus cnaipí díliostála." },
+    "subscriptions": { "title": "Ionad díliostála", "caption": "Nuachtlitreacha rangaithe de réir an mhéid a fhágann tú gan léamh, comhairithe ar d'fhón, le díliostáil aon chnaig.", "alt": "Scáileán Síntiús Loupe le cluaisíní Newsletters agus Discussions, scagairí Gan léamh riamh agus Léite go hannamh, rátaí léite agus cnaipí díliostála." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Suíonn cuardaigh shábháilte in aice le d'fhillteáin, agus cónaíonn siad ar d'fhreastalaí ríomhphoist ionas go bhfeiceann do ghléasanna eile iad freisin.", "alt": "Scáileán Boscaí Poist Loupe le cuntais fillte agus dhá Smart Mailbox liostaithe." },
     "invitation": { "title": "Cuirí, freagartha", "caption": "Taispeánann cuirí cruinnithe an dá chrios ama agus ligeann siad duit Accept, Maybe nó Decline a roghnú gan an teachtaireacht a fhágáil.", "alt": "Cuireadh cruinnithe Outlook in Loupe le ham na hócáide in dhá chrios ama, nasc chun dul isteach ar Teams agus cnaipí Accept, Maybe agus Decline." },
     "openpgp": { "title": "Criptithe, fíoraithe", "caption": "Díchriptítear teachtaireachtaí OpenPGP ar an ngléas, agus taispeántar an sínitheoir, ábhar cosanta agus méarlorg na heochrach.", "alt": "Bileog “Signed by Dana Okafor” Loupe: díchriptithe ar an ngléas seo, ábhar cosanta, agus méarlorg na heochrach." },
-    "compose": { "title": "Teachtaireacht a scríobh", "caption": "Faighteoirí mar shlisní, an t-aitheantas óna seolann tú, agus Send Later nuair ba cheart don teachtaireacht fanacht go maidin.", "alt": "Scáileán Teachtaireacht Nua Loupe le slisní faighteoirí, an t-aitheantas seolta, corp téacs, agus cnaipí Send Later agus Send." },
-    "rules": { "title": "Rialacha i gcuardach simplí", "caption": "Is éard atá i riail ná cuardach móide gníomh; rith í ar an bhfón nó ar d'fhreastalaí, áit a scríobhann Loupe an Sieve duit.", "alt": "Eagarthóir Riail Nua Loupe: coinníoll i bhfoirm cuardaigh, an gníomh Mark as Read, Run On Server casta air agus an script Sieve ginte." },
+    "compose": { "title": "Teachtaireacht a scríobh", "caption": "Faighteoirí mar shlisní, an t-aitheantas óna seolann tú, agus Seol níos déanaí nuair ba cheart don teachtaireacht fanacht go maidin.", "alt": "Scáileán Teachtaireacht Nua Loupe le slisní faighteoirí, an t-aitheantas seolta, corp téacs, agus cnaipí Seol níos déanaí agus Send." },
+    "rules": { "title": "Rialacha i gcuardach simplí", "caption": "Is éard atá i riail ná cuardach móide gníomh; rith í ar an bhfón nó ar d'fhreastalaí, áit a scríobhann Loupe an Sieve duit.", "alt": "Eagarthóir Riail Nua Loupe: coinníoll i bhfoirm cuardaigh, an gníomh Marcáil mar léite, Run On Server casta air agus an script Sieve ginte." },
     "patch": { "title": "Paistí mar dhifríochtaí", "caption": "Ar liostaí ríomhphoist teicniúla, taispeántar paistí mar dhifríochtaí daite i gcló aonleithid.", "alt": "Teachtaireacht liosta ríomhphoist in Loupe i gcló aonleithid, le paiste léirithe mar dhifríocht dhearg agus ghlas." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Ceadaigh an tsuiteáil seo",
     "step2Text_html": "Fiafraíonn Android uair amháin an bhfuil cead ag do bhrabhsálaí aipeanna a shuiteáil. Ceadaigh é, ansin cnag ar <strong>Suiteáil</strong>. Suiteáiltear leaganacha níos déanaí thar an gceann seo agus coinníonn siad do chuntais.",
     "step3": "Bain triail as, nó cuir do chuntas leis",
-    "step3Text_html": "Roghnaigh <strong>Try with demo mail</strong> chun breathnú thart ar dtús, nó cuir do chuntas leis. Féach <a href=\"/docs/getting-started/\">Ag tosú</a>.",
+    "step3Text_html": "Roghnaigh <strong>Bain triail as le ríomhphost taispeántais</strong> chun breathnú thart ar dtús, nó cuir do chuntas leis. Féach <a href=\"/docs/getting-started/\">Ag tosú</a>.",
     "safety": "Tógann GitHub Actions gach leagan ón bhfoinse phoiblí agus sínítear é le heochair eisiúna Loupe. D'fhéadfadh Google Play Protect rabhadh a thabhairt fós faoi aipeanna ó lasmuigh den Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Ríomhphost laethúil",
     "p1Text": "Cuntais le huathchumraíocht, liosta na dteachtaireachtaí le svaidhpeanna, amhairc Readable, Original agus Plain, cuardach, cumadh le cealú seolta agus Bosca Amach, fógraí agus mód dorcha.",
     "p2": "An ciseal cumhachta",
-    "p2Text": "An teanga chuardaigh iomlán, Smart Mailboxes, clibeanna, rialacha agus Sieve, aitheantais, View Source agus torthaí fíordheimhnithe, trí phána agus aicearraí méarchláir, seoladh sceidealaithe.",
+    "p2Text": "An teanga chuardaigh iomlán, Smart Mailboxes, clibeanna, rialacha agus Sieve, aitheantais, Féach ar an bhfoinse agus torthaí fíordheimhnithe, trí phána agus aicearraí méarchláir, seoladh sceidealaithe.",
     "p3": "JMAP",
     "p3Text": "Cuntais JMAP do Fastmail agus Stalwart: cuardach ar an bhfreastalaí, seoladh gan SMTP, push ón bhfreastalaí, agus Sieve thar JMAP.",
     "p4": "Criptiú",

@@ -241,7 +241,7 @@
       "p1": { "title": "Hunaniaethau ac arallenwau", "text": "Atebwch o'r cyfeiriad yr anfonwyd yr e-bost ato, gan gynnwys arallenwau dal-y-cyfan." },
       "p2": { "title": "Dadwneud anfon", "text": "Ychydig eiliadau i newid eich meddwl." },
       "p3": { "title": "Amserlennu anfon", "text": "Dewiswch amser; mae'r Allflwch yn cadw'r neges tan hynny, hyd yn oed all-lein." },
-      "p4": { "title": "Hysbysiadau gyda gweithredoedd", "text": "Archifwch, dewiswch Mark as Read neu atebwch yn syth o'r hysbysiad." }
+      "p4": { "title": "Hysbysiadau gyda gweithredoedd", "text": "Archifwch, dewiswch Marcio fel wedi’i darllen neu atebwch yn syth o'r hysbysiad." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Dewislenni pwyso hir",
     "place1Text": "Ar negeseuon, anfonwyr, sglodion a ffolderi.",
     "place2": "Y ddewislen ⋯",
-    "place2Text": "View Source, pob pennyn, a chwilio o'r neges hon.",
+    "place2Text": "Gweld y ffynhonnell, pob pennyn, a chwilio o'r neges hon.",
     "place3": "Yr iaith chwilio",
     "place3Text": "Popeth y gall y sglodion ei wneud, a mwy, drwy deipio.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Gweld Loupe ar Android: y mewnflwch, modd Readable, chwilio â mynegiadau, tanysgrifiadau, gwahoddiadau calendr, gwiriadau diogelwch, modd tywyll a thabledi.",
     "eyebrow": "Sgrinluniau",
     "h1": "Cymerwch olwg o gwmpas.",
-    "lead_html": "Sgriniau go iawn o'r ap, wedi'u creu o'i flwch post demo adeiledig: yr un un a gewch chi gyda <strong>Try with demo mail</strong>.",
+    "lead_html": "Sgriniau go iawn o'r ap, wedi'u creu o'i flwch post demo adeiledig: yr un un a gewch chi gyda <strong>Rhoi cynnig arni gydag e-bost demo</strong>.",
     "filter": "Hidlo sgrinluniau",
     "all": "Y cyfan",
     "soon": "Mae sgrinluniau ar y ffordd.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Chwilio a hidlwyr", "caption": "Awgrymiadau a sglodion hidlo wrth i chi deipio: dim ond eiliadau mae'n eu cymryd i ddod o hyd i'r union beth rydych chi ei eisiau.", "alt": "Sgrin chwilio Loupe gyda mynegiad wedi'i deipio, sglodion hidlo ac awgrymiadau o dan y maes chwilio." },
     "phishing": { "title": "Gwe-rwydo, wedi'i esbonio", "caption": "Pan fydd neges yn edrych yn amheus, mae Loupe yn dweud pam mewn geiriau plaen: parth sy'n dynwared un go iawn, neu enw cyfarwydd o gyfeiriad newydd.", "alt": "Dalen “This looks like phishing” Loupe yn rhestru'r rhesymau: parth sy'n dynwared un go iawn ac enw rydych chi'n ei adnabod yn ysgrifennu o gyfeiriad newydd." },
     "tablet": { "title": "Tri phanel ar dabledi", "caption": "Blychau post, y rhestr a'r neges ochr yn ochr, gyda llwybrau byr bysellfwrdd a phalet gorchmynion.", "alt": "Loupe ar dabled yn llorweddol: blychau post ar y chwith, pob mewnflwch yn y canol a neges gyda charwsél lluniau ar y dde." },
-    "subscriptions": { "title": "Canolfan dad-danysgrifio", "caption": "Cylchlythyrau wedi'u trefnu yn ôl faint rydych chi'n ei adael heb ei ddarllen, wedi'i gyfrif ar eich ffôn, gyda dad-danysgrifio un tap.", "alt": "Sgrin Tanysgrifiadau Loupe gyda thabiau Newsletters a Discussions, hidlwyr Never Read a Rarely Read, cyfraddau darllen a botymau dad-danysgrifio." },
+    "subscriptions": { "title": "Canolfan dad-danysgrifio", "caption": "Cylchlythyrau wedi'u trefnu yn ôl faint rydych chi'n ei adael heb ei ddarllen, wedi'i gyfrif ar eich ffôn, gyda dad-danysgrifio un tap.", "alt": "Sgrin Tanysgrifiadau Loupe gyda thabiau Newsletters a Discussions, hidlwyr Byth yn cael eu darllen a Anaml yn cael eu darllen, cyfraddau darllen a botymau dad-danysgrifio." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Mae chwiliadau wedi'u cadw yn eistedd wrth ymyl eich ffolderi, ac yn byw ar eich gweinydd e-bost fel bod eich dyfeisiau eraill yn eu gweld hefyd.", "alt": "Sgrin Blychau Post Loupe gyda'r cyfrifon wedi'u plygu a dau Smart Mailbox wedi'u rhestru." },
     "invitation": { "title": "Gwahoddiadau, wedi'u hateb", "caption": "Mae gwahoddiadau i gyfarfodydd yn dangos y ddwy gylchfa amser ac yn gadael i chi ddewis Accept, Maybe neu Decline heb adael y neges.", "alt": "Gwahoddiad i gyfarfod Outlook yn Loupe gydag amser y digwyddiad mewn dwy gylchfa amser, dolen ymuno Teams a botymau Accept, Maybe a Decline." },
     "openpgp": { "title": "Wedi'i amgryptio, wedi'i ddilysu", "caption": "Caiff negeseuon OpenPGP eu dadgryptio ar y ddyfais, gyda'r llofnodwr, pwnc wedi'i ddiogelu ac ôl bys yr allwedd.", "alt": "Dalen “Signed by Dana Okafor” Loupe: wedi'i dadgryptio ar y ddyfais hon, pwnc wedi'i ddiogelu, ac ôl bys yr allwedd." },
-    "compose": { "title": "Ysgrifennu neges", "caption": "Derbynwyr fel sglodion, yr hunaniaeth rydych chi'n anfon ohoni, a Send Later pan ddylai'r neges aros tan y bore.", "alt": "Sgrin Neges Newydd Loupe gyda sglodion derbynwyr, yr hunaniaeth anfon, testun y corff, a botymau Send Later a Send." },
-    "rules": { "title": "Rheolau mewn chwiliad plaen", "caption": "Chwiliad ynghyd â gweithred yw rheol; rhedwch hi ar y ffôn neu ar eich gweinydd, lle mae Loupe yn ysgrifennu'r Sieve i chi.", "alt": "Golygydd Rheol Newydd Loupe: amod ar ffurf chwiliad, y weithred Mark as Read, Run On Server wedi'i droi ymlaen a'r sgript Sieve a gynhyrchwyd." },
+    "compose": { "title": "Ysgrifennu neges", "caption": "Derbynwyr fel sglodion, yr hunaniaeth rydych chi'n anfon ohoni, a Anfon yn hwyrach pan ddylai'r neges aros tan y bore.", "alt": "Sgrin Neges Newydd Loupe gyda sglodion derbynwyr, yr hunaniaeth anfon, testun y corff, a botymau Anfon yn hwyrach a Send." },
+    "rules": { "title": "Rheolau mewn chwiliad plaen", "caption": "Chwiliad ynghyd â gweithred yw rheol; rhedwch hi ar y ffôn neu ar eich gweinydd, lle mae Loupe yn ysgrifennu'r Sieve i chi.", "alt": "Golygydd Rheol Newydd Loupe: amod ar ffurf chwiliad, y weithred Marcio fel wedi’i darllen, Run On Server wedi'i droi ymlaen a'r sgript Sieve a gynhyrchwyd." },
     "patch": { "title": "Clytiau fel diffs", "caption": "Ar restrau e-bost technegol, caiff clytiau eu dangos fel diffs lliw mewn ffont unlled.", "alt": "Neges rhestr e-bost yn Loupe mewn ffont unlled, gyda chlwt wedi'i ddangos fel diff coch a gwyrdd." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Caniatewch y gosodiad hwn",
     "step2Text_html": "Mae Android yn gofyn unwaith a gaiff eich porwr osod apiau. Caniatewch hynny, yna tapiwch <strong>Install</strong>. Bydd adeiladau diweddarach yn gosod dros hwn ac yn cadw'ch cyfrifon.",
     "step3": "Rhowch gynnig arni, neu ychwanegwch eich cyfrif",
-    "step3Text_html": "Dewiswch <strong>Try with demo mail</strong> i gael golwg o gwmpas yn gyntaf, neu ychwanegwch eich cyfrif. Gweler <a href=\"/docs/getting-started/\">Dechrau arni</a>.",
+    "step3Text_html": "Dewiswch <strong>Rhoi cynnig arni gydag e-bost demo</strong> i gael golwg o gwmpas yn gyntaf, neu ychwanegwch eich cyfrif. Gweler <a href=\"/docs/getting-started/\">Dechrau arni</a>.",
     "safety": "Caiff pob adeiliad ei wneud gan GitHub Actions o'r cod ffynhonnell cyhoeddus a'i lofnodi ag allwedd ryddhau Loupe. Efallai y bydd Google Play Protect yn dal i rybuddio am apiau o'r tu allan i'r Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "E-bost bob dydd",
     "p1Text": "Cyfrifon gyda gosodiad awtomatig, y rhestr negeseuon gyda sweipio, golygon Readable, Original a Plain, chwilio, ysgrifennu gyda dadwneud anfon ac Allflwch, hysbysiadau a modd tywyll.",
     "p2": "Yr haen bwerus",
-    "p2Text": "Yr iaith chwilio lawn, Smart Mailboxes, tagiau, rheolau a Sieve, hunaniaethau, View Source a chanlyniadau dilysu, tri phanel a llwybrau byr bysellfwrdd, amserlennu anfon.",
+    "p2Text": "Yr iaith chwilio lawn, Smart Mailboxes, tagiau, rheolau a Sieve, hunaniaethau, Gweld y ffynhonnell a chanlyniadau dilysu, tri phanel a llwybrau byr bysellfwrdd, amserlennu anfon.",
     "p3": "JMAP",
     "p3Text": "Cyfrifon JMAP ar gyfer Fastmail a Stalwart: chwilio ar y gweinydd, anfon heb SMTP, gwthio o'r gweinydd, a Sieve dros JMAP.",
     "p4": "Amgryptio",

@@ -241,7 +241,7 @@
       "p1": { "title": "Identitäten und Aliasse", "text": "Antworte von der Adresse, an die die Mail ging, auch bei Catch-all-Aliassen." },
       "p2": { "title": "Senden rückgängig", "text": "Ein kurzes Zeitfenster, um es dir anders zu überlegen." },
       "p3": { "title": "Geplantes Senden", "text": "Wähle eine Uhrzeit; der Postausgang hält die Mail bis dahin bereit, auch offline." },
-      "p4": { "title": "Benachrichtigungen mit Aktionen", "text": "Archivieren, antworten oder Mark as Read direkt aus der Benachrichtigung." }
+      "p4": { "title": "Benachrichtigungen mit Aktionen", "text": "Archivieren, antworten oder Als gelesen markieren direkt aus der Benachrichtigung." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Menüs per langem Drücken",
     "place1Text": "Auf Nachrichten, Absendern, Chips und Ordnern.",
     "place2": "Das ⋯-Menü",
-    "place2Text": "View Source, sämtliche Header und eine Suche ausgehend von dieser Nachricht.",
+    "place2Text": "Quelltext anzeigen, sämtliche Header und eine Suche ausgehend von dieser Nachricht.",
     "place3": "Die Suchsprache",
     "place3Text": "Alles, was die Chips können, und noch mehr, einfach eingetippt.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Sieh dir Loupe auf Android an: den Posteingang, den Readable-Modus, die Suche mit Ausdrücken, Abonnements, Kalendereinladungen, Sicherheitsprüfungen, den Dunkelmodus und Tablets.",
     "eyebrow": "Screenshots",
     "h1": "Schau dich um.",
-    "lead_html": "Echte Bildschirme aus der App, erzeugt aus ihrem eingebauten Demo-Postfach: demselben, das du mit <strong>Try with demo mail</strong> bekommst.",
+    "lead_html": "Echte Bildschirme aus der App, erzeugt aus ihrem eingebauten Demo-Postfach: demselben, das du mit <strong>Mit Demo-Mails ausprobieren</strong> bekommst.",
     "filter": "Screenshots filtern",
     "all": "Alle",
     "soon": "Screenshots sind unterwegs.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Suche und Filter", "caption": "Vorschläge und Filter-Chips schon beim Tippen: Genau das Richtige zu finden dauert nur Sekunden.", "alt": "Der Suchbildschirm von Loupe mit einem eingegebenen Ausdruck, Filter-Chips und Vorschlägen unter dem Suchfeld." },
     "phishing": { "title": "Phishing, erklärt", "caption": "Wenn eine Nachricht nicht stimmt, sagt Loupe in klaren Worten, warum: eine Doppelgänger-Domain oder ein bekannter Name von einer neuen Adresse.", "alt": "Das Hinweisfenster „This looks like phishing“ in Loupe mit den Gründen: eine Doppelgänger-Domain und ein bekannter Name, der von einer neuen Adresse schreibt." },
     "tablet": { "title": "Drei Spalten auf Tablets", "caption": "Postfächer, Liste und Nachricht nebeneinander, mit Tastenkürzeln und einer Befehlspalette.", "alt": "Loupe auf einem Tablet im Querformat: links die Postfächer, in der Mitte alle Posteingänge und rechts eine Nachricht mit Fotokarussell." },
-    "subscriptions": { "title": "Abmeldezentrale", "caption": "Newsletter danach sortiert, wie viel du ungelesen lässt, gezählt auf deinem Smartphone, mit Abmeldung per Tipp.", "alt": "Der Abonnements-Bildschirm von Loupe mit den Tabs Newsletters und Discussions, den Filtern Never Read und Rarely Read, Leseraten und Schaltflächen zum Abmelden." },
+    "subscriptions": { "title": "Abmeldezentrale", "caption": "Newsletter danach sortiert, wie viel du ungelesen lässt, gezählt auf deinem Smartphone, mit Abmeldung per Tipp.", "alt": "Der Abonnements-Bildschirm von Loupe mit den Tabs Newsletters und Discussions, den Filtern Nie gelesen und Selten gelesen, Leseraten und Schaltflächen zum Abmelden." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Gespeicherte Suchen stehen neben deinen Ordnern und liegen auf deinem Mailserver, damit auch deine anderen Geräte sie sehen.", "alt": "Der Postfächer-Bildschirm von Loupe mit eingeklappten Konten und zwei aufgelisteten Smart Mailboxes." },
     "invitation": { "title": "Einladungen, beantwortet", "caption": "Besprechungseinladungen zeigen beide Zeitzonen und lassen dich mit Accept, Maybe oder Decline antworten, ohne die Nachricht zu verlassen.", "alt": "Eine Outlook-Besprechungseinladung in Loupe mit der Uhrzeit in zwei Zeitzonen, einem Link zum Beitreten in Teams und den Schaltflächen Accept, Maybe und Decline." },
     "openpgp": { "title": "Verschlüsselt, verifiziert", "caption": "OpenPGP-Nachrichten werden auf dem Gerät entschlüsselt, mit Unterzeichner, geschütztem Betreff und dem Fingerabdruck des Schlüssels.", "alt": "Das Hinweisfenster „Signed by Dana Okafor“ in Loupe: auf diesem Gerät entschlüsselt, ein geschützter Betreff und der Fingerabdruck des Schlüssels." },
-    "compose": { "title": "Eine Nachricht schreiben", "caption": "Empfänger als Chips, die Identität, von der du sendest, und Send Later, wenn die Mail bis morgen früh warten soll.", "alt": "Der Bildschirm für eine neue Nachricht in Loupe mit Empfänger-Chips, der Absenderidentität, Nachrichtentext und den Schaltflächen Send Later und Send." },
-    "rules": { "title": "Regeln als einfache Suche", "caption": "Eine Regel ist eine Suche plus eine Aktion; führe sie auf dem Smartphone oder auf deinem Server aus, wo Loupe das Sieve-Skript für dich schreibt.", "alt": "Der Editor für neue Regeln in Loupe: eine Bedingung im Suchformat, die Aktion Mark as Read, Run On Server eingeschaltet und das erzeugte Sieve-Skript." },
+    "compose": { "title": "Eine Nachricht schreiben", "caption": "Empfänger als Chips, die Identität, von der du sendest, und Später senden, wenn die Mail bis morgen früh warten soll.", "alt": "Der Bildschirm für eine neue Nachricht in Loupe mit Empfänger-Chips, der Absenderidentität, Nachrichtentext und den Schaltflächen Später senden und Send." },
+    "rules": { "title": "Regeln als einfache Suche", "caption": "Eine Regel ist eine Suche plus eine Aktion; führe sie auf dem Smartphone oder auf deinem Server aus, wo Loupe das Sieve-Skript für dich schreibt.", "alt": "Der Editor für neue Regeln in Loupe: eine Bedingung im Suchformat, die Aktion Als gelesen markieren, Run On Server eingeschaltet und das erzeugte Sieve-Skript." },
     "patch": { "title": "Patches als Diffs", "caption": "In technischen Mailinglisten werden Patches als farbige Diffs in einer Monospace-Schrift dargestellt.", "alt": "Eine Nachricht aus einer Mailingliste in Loupe in Monospace-Schrift, mit einem Patch als rot-grünem Diff." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Erlaube diese Installation",
     "step2Text_html": "Android fragt einmal, ob dein Browser Apps installieren darf. Erlaube es und tippe dann auf <strong>Installieren</strong>. Spätere Builds werden darüber installiert und behalten deine Konten.",
     "step3": "Probier sie aus oder füge dein Konto hinzu",
-    "step3Text_html": "Wähle <strong>Try with demo mail</strong>, um dich erst umzusehen, oder füge dein Konto hinzu. Siehe <a href=\"/docs/getting-started/\">Erste Schritte</a>.",
+    "step3Text_html": "Wähle <strong>Mit Demo-Mails ausprobieren</strong>, um dich erst umzusehen, oder füge dein Konto hinzu. Siehe <a href=\"/docs/getting-started/\">Erste Schritte</a>.",
     "safety": "Jeder Build wird von GitHub Actions aus dem öffentlichen Quellcode erstellt und mit dem Release-Schlüssel von Loupe signiert. Google Play Protect warnt womöglich trotzdem vor Apps, die nicht aus dem Play Store stammen."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Mail im Alltag",
     "p1Text": "Konten mit automatischer Einrichtung, die Nachrichtenliste mit Wischgesten, die Ansichten Readable, Original und Plain, Suche, Verfassen mit „Senden rückgängig“ und Postausgang, Benachrichtigungen und Dunkelmodus.",
     "p2": "Die Profi-Ebene",
-    "p2Text": "Die vollständige Suchsprache, Smart Mailboxes, Schlagwörter, Regeln und Sieve, Identitäten, View Source und Authentifizierungsergebnisse, drei Spalten und Tastenkürzel, geplantes Senden.",
+    "p2Text": "Die vollständige Suchsprache, Smart Mailboxes, Schlagwörter, Regeln und Sieve, Identitäten, Quelltext anzeigen und Authentifizierungsergebnisse, drei Spalten und Tastenkürzel, geplantes Senden.",
     "p3": "JMAP",
     "p3Text": "JMAP-Konten für Fastmail und Stalwart: Suche auf dem Server, Senden ohne SMTP, Push vom Server und Sieve über JMAP.",
     "p4": "Verschlüsselung",

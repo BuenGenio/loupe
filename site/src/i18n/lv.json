@@ -241,7 +241,7 @@
       "p1": { "title": "Identitātes un aizstājvārdi", "text": "Atbildiet no adreses, uz kuru pasts tika nosūtīts, ieskaitot catch-all aizstājvārdus." },
       "p2": { "title": "Sūtīšanas atsaukšana", "text": "Īss brīdis, lai pārdomātu." },
       "p3": { "title": "Ieplānota sūtīšana", "text": "Izvēlieties laiku; izsūtne glabās ziņojumu līdz tam, pat bezsaistē." },
-      "p4": { "title": "Paziņojumi ar darbībām", "text": "Arhivējiet, atbildiet vai izmantojiet Mark as Read tieši no paziņojuma." }
+      "p4": { "title": "Paziņojumi ar darbībām", "text": "Arhivējiet, atbildiet vai izmantojiet Atzīmēt kā lasītu tieši no paziņojuma." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Ilgā pieskāriena izvēlnes",
     "place1Text": "Ziņojumiem, sūtītājiem, žetoniem un mapēm.",
     "place2": "Izvēlne ⋯",
-    "place2Text": "View Source, visas galvenes un meklēšana pēc šī ziņojuma.",
+    "place2Text": "Skatīt avotu, visas galvenes un meklēšana pēc šī ziņojuma.",
     "place3": "Meklēšanas valoda",
     "place3Text": "Viss, ko prot žetoni, un vēl vairāk — vienkārši rakstot.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Apskatiet Loupe Android ierīcē: iesūtni, Readable režīmu, izteiksmju meklēšanu, abonementus, kalendāra ielūgumus, drošības pārbaudes, tumšo režīmu un planšetdatorus.",
     "eyebrow": "Ekrānuzņēmumi",
     "h1": "Paskatieties apkārt.",
-    "lead_html": "Īsti lietotnes ekrāni, kas iegūti no tās iebūvētās demonstrācijas pastkastes — tās pašas, ko saņemat ar <strong>Try with demo mail</strong>.",
+    "lead_html": "Īsti lietotnes ekrāni, kas iegūti no tās iebūvētās demonstrācijas pastkastes — tās pašas, ko saņemat ar <strong>Izmēģināt ar demonstrācijas pastu</strong>.",
     "filter": "Filtrēt ekrānuzņēmumus",
     "all": "Visi",
     "soon": "Ekrānuzņēmumi jau ceļā.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Meklēšana un filtri", "caption": "Ieteikumi un filtru žetoni jau rakstīšanas laikā: atrast tieši to, ko vēlaties, aizņem dažas sekundes.", "alt": "Loupe meklēšanas ekrāns ar ierakstītu izteiksmi, filtru žetoniem un ieteikumiem zem meklēšanas lauka." },
     "phishing": { "title": "Pikšķerēšana, paskaidrota", "caption": "Ja ziņojums šķiet aizdomīgs, Loupe vienkāršiem vārdiem pasaka, kāpēc: līdzīgi izskatīgs domēns vai pazīstams vārds no jaunas adreses.", "alt": "Loupe panelis „This looks like phishing“ ar iemesliem: līdzīgi izskatīgs domēns un pazīstams vārds, kas raksta no jaunas adreses." },
     "tablet": { "title": "Trīs paneļi planšetdatoros", "caption": "Pastkastes, saraksts un ziņojums blakus, ar īsinājumtaustiņiem un komandu paleti.", "alt": "Loupe planšetdatorā ainavas orientācijā: pastkastes kreisajā pusē, kopējā iesūtne vidū un ziņojums ar fotoattēlu karuseli labajā pusē." },
-    "subscriptions": { "title": "Abonementu atteikšanas centrs", "caption": "Jaunumu vēstules sarindotas pēc tā, cik daudz no tām paliek nelasīts, saskaitītas jūsu tālrunī, ar abonementa atteikšanu vienā pieskārienā.", "alt": "Loupe abonementu ekrāns ar cilnēm Newsletters un Discussions, filtriem Never Read un Rarely Read, lasīšanas rādītājiem un abonementa atteikšanas pogām." },
+    "subscriptions": { "title": "Abonementu atteikšanas centrs", "caption": "Jaunumu vēstules sarindotas pēc tā, cik daudz no tām paliek nelasīts, saskaitītas jūsu tālrunī, ar abonementa atteikšanu vienā pieskārienā.", "alt": "Loupe abonementu ekrāns ar cilnēm Newsletters un Discussions, filtriem Nekad nelasītas un Reti lasītas, lasīšanas rādītājiem un abonementa atteikšanas pogām." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Saglabātās meklēšanas atrodas blakus jūsu mapēm un glabājas jūsu pasta serverī, tāpēc tās redz arī citas jūsu ierīces.", "alt": "Loupe pastkastu ekrāns ar sakļautiem kontiem un divām Smart Mailboxes sarakstā." },
     "invitation": { "title": "Ielūgumi, atbildēti", "caption": "Sapulču ielūgumos redzamas abas laika joslas, un jūs varat izvēlēties Accept, Maybe vai Decline, neatstājot ziņojumu.", "alt": "Outlook sapulces ielūgums lietotnē Loupe ar pasākuma laiku divās laika joslās, Teams pievienošanās saiti un pogām Accept, Maybe un Decline." },
     "openpgp": { "title": "Šifrēts, pārbaudīts", "caption": "OpenPGP ziņojumi tiek atšifrēti ierīcē, parādot parakstītāju, aizsargātu tematu un atslēgas pirkstu nospiedumu.", "alt": "Loupe panelis „Signed by Dana Okafor“: atšifrēts šajā ierīcē, aizsargāts temats un atslēgas pirkstu nospiedums." },
-    "compose": { "title": "Ziņojuma rakstīšana", "caption": "Adresāti kā žetoni, identitāte, no kuras sūtāt, un Send Later, kad ziņojumam jāpagaida līdz rītam.", "alt": "Loupe jauna ziņojuma ekrāns ar adresātu žetoniem, sūtītāja identitāti, pamattekstu un pogām Send Later un Send." },
-    "rules": { "title": "Kārtulas kā vienkārša meklēšana", "caption": "Kārtula ir meklēšana plus darbība; izpildiet to tālrunī vai savā serverī, kur Loupe uzraksta Sieve jūsu vietā.", "alt": "Loupe jaunas kārtulas redaktors: meklēšanai līdzīgs nosacījums, darbība Mark as Read, ieslēgts Run On Server un ģenerētais Sieve skripts." },
+    "compose": { "title": "Ziņojuma rakstīšana", "caption": "Adresāti kā žetoni, identitāte, no kuras sūtāt, un Sūtīt vēlāk, kad ziņojumam jāpagaida līdz rītam.", "alt": "Loupe jauna ziņojuma ekrāns ar adresātu žetoniem, sūtītāja identitāti, pamattekstu un pogām Sūtīt vēlāk un Send." },
+    "rules": { "title": "Kārtulas kā vienkārša meklēšana", "caption": "Kārtula ir meklēšana plus darbība; izpildiet to tālrunī vai savā serverī, kur Loupe uzraksta Sieve jūsu vietā.", "alt": "Loupe jaunas kārtulas redaktors: meklēšanai līdzīgs nosacījums, darbība Atzīmēt kā lasītu, ieslēgts Run On Server un ģenerētais Sieve skripts." },
     "patch": { "title": "Ielāpi kā diff", "caption": "Tehniskos e-pasta sarakstos ielāpi tiek attēloti kā krāsaini diff vienplatuma fontā.", "alt": "E-pasta saraksta ziņojums lietotnē Loupe vienplatuma fontā ar ielāpu, kas attēlots kā sarkans un zaļš diff." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Atļaujiet šo instalēšanu",
     "step2Text_html": "Android vienreiz jautās, vai jūsu pārlūks drīkst instalēt lietotnes. Atļaujiet to un pēc tam pieskarieties <strong>Instalēt</strong>. Nākamie būvējumi tiek instalēti virs šī un saglabā jūsu kontus.",
     "step3": "Izmēģiniet vai pievienojiet savu kontu",
-    "step3Text_html": "Izvēlieties <strong>Try with demo mail</strong>, lai vispirms paskatītos apkārt, vai pievienojiet savu kontu. Skatiet sadaļu <a href=\"/docs/getting-started/\">Darba sākšana</a>.",
+    "step3Text_html": "Izvēlieties <strong>Izmēģināt ar demonstrācijas pastu</strong>, lai vispirms paskatītos apkārt, vai pievienojiet savu kontu. Skatiet sadaļu <a href=\"/docs/getting-started/\">Darba sākšana</a>.",
     "safety": "Katru būvējumu veido GitHub Actions no publiskā pirmkoda, un tas ir parakstīts ar Loupe laidienu atslēgu. Google Play Protect tomēr var brīdināt par lietotnēm, kas nav no Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Ikdienas pasts",
     "p1Text": "Konti ar automātisku iestatīšanu, ziņojumu saraksts ar pavilcieniem, Readable, Original un Plain skati, meklēšana, rakstīšana ar sūtīšanas atsaukšanu un izsūtni, paziņojumi un tumšais režīms.",
     "p2": "Jaudīgais slānis",
-    "p2Text": "Pilnā meklēšanas valoda, Smart Mailboxes, birkas, kārtulas un Sieve, identitātes, View Source un autentifikācijas rezultāti, trīs paneļi un īsinājumtaustiņi, ieplānota sūtīšana.",
+    "p2Text": "Pilnā meklēšanas valoda, Smart Mailboxes, birkas, kārtulas un Sieve, identitātes, Skatīt avotu un autentifikācijas rezultāti, trīs paneļi un īsinājumtaustiņi, ieplānota sūtīšana.",
     "p3": "JMAP",
     "p3Text": "JMAP konti Fastmail un Stalwart: meklēšana serverī, sūtīšana bez SMTP, push paziņojumi no servera un Sieve caur JMAP.",
     "p4": "Šifrēšana",

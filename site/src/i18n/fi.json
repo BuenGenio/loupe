@@ -241,7 +241,7 @@
       "p1": { "title": "Identiteetit ja aliakset", "text": "Vastaa osoitteesta, johon viesti lähetettiin, myös catch-all-aliaksista." },
       "p2": { "title": "Lähetyksen peruminen", "text": "Lyhyt hetki aikaa muuttaa mieltäsi." },
       "p3": { "title": "Ajastettu lähetys", "text": "Valitse aika; Lähtevät-kansio pitää viestin siihen asti, myös ilman verkkoyhteyttä." },
-      "p4": { "title": "Ilmoitukset toiminnoilla", "text": "Arkistoi, Mark as Read tai Vastaa suoraan ilmoituksesta." }
+      "p4": { "title": "Ilmoitukset toiminnoilla", "text": "Arkistoi, Merkitse luetuksi tai Vastaa suoraan ilmoituksesta." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Pitkän painalluksen valikot",
     "place1Text": "Viesteissä, lähettäjissä, siruissa ja kansioissa.",
     "place2": "⋯-valikko",
-    "place2Text": "View Source, kaikki otsakkeet ja haku tämän viestin perusteella.",
+    "place2Text": "Näytä lähdekoodi, kaikki otsakkeet ja haku tämän viestin perusteella.",
     "place3": "Hakukieli",
     "place3Text": "Kaikki, mihin sirut pystyvät, ja enemmänkin, kirjoittamalla.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Katso Loupea Androidilla: postilaatikko, Readable-tila, lausekehaku, tilaukset, kalenterikutsut, tietoturvatarkistukset, tumma tila ja tabletit.",
     "eyebrow": "Kuvakaappaukset",
     "h1": "Katsele ympärillesi.",
-    "lead_html": "Oikeita näkymiä sovelluksesta, renderöity sen sisäänrakennetusta demopostilaatikosta: samasta, jonka saat valitsemalla <strong>Try with demo mail</strong>.",
+    "lead_html": "Oikeita näkymiä sovelluksesta, renderöity sen sisäänrakennetusta demopostilaatikosta: samasta, jonka saat valitsemalla <strong>Kokeile demopostilla</strong>.",
     "filter": "Suodata kuvakaappauksia",
     "all": "Kaikki",
     "soon": "Kuvakaappaukset ovat tulossa.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Haku ja suodattimet", "caption": "Ehdotuksia ja suodatinsiruja jo kirjoittaessasi: juuri sen löytäminen, mitä haluat, vie sekunteja.", "alt": "Loupen hakunäkymä, jossa on kirjoitettu lauseke, suodatinsiruja ja ehdotuksia hakukentän alla." },
     "phishing": { "title": "Tietojenkalastelu selitettynä", "caption": "Kun viesti vaikuttaa epäilyttävältä, Loupe kertoo selkokielellä miksi: aitoa jäljittelevä verkkotunnus tai tuttu nimi uudesta osoitteesta.", "alt": "Loupen ”This looks like phishing” -paneeli, jossa luetellaan syyt: aitoa jäljittelevä verkkotunnus ja tuttu nimi, joka kirjoittaa uudesta osoitteesta." },
     "tablet": { "title": "Kolme paneelia tableteilla", "caption": "Postilaatikot, lista ja viesti rinnakkain, pikanäppäimin ja komentopaletilla.", "alt": "Loupe tabletilla vaakasuunnassa: vasemmalla postilaatikot, keskellä kaikkien postilaatikoiden näkymä ja oikealla viesti, jossa on kuvakaruselli." },
-    "subscriptions": { "title": "Tilausten peruutuskeskus", "caption": "Uutiskirjeet järjestettynä sen mukaan, kuinka paljon jätät lukematta, laskettuna puhelimessasi, ja peruutus yhdellä napautuksella.", "alt": "Loupen tilausnäkymä, jossa on Newsletters- ja Discussions-välilehdet, Never Read- ja Rarely Read -suodattimet, lukuprosentit ja peruutuspainikkeet." },
+    "subscriptions": { "title": "Tilausten peruutuskeskus", "caption": "Uutiskirjeet järjestettynä sen mukaan, kuinka paljon jätät lukematta, laskettuna puhelimessasi, ja peruutus yhdellä napautuksella.", "alt": "Loupen tilausnäkymä, jossa on Newsletters- ja Discussions-välilehdet, Ei koskaan luettu- ja Harvoin luettu -suodattimet, lukuprosentit ja peruutuspainikkeet." },
     "mailboxes": { "title": "Smart Mailboxit", "caption": "Tallennetut haut ovat kansioidesi vieressä ja asuvat sähköpostipalvelimellasi, joten muut laitteesi näkevät ne myös.", "alt": "Loupen postilaatikkonäkymä, jossa tilit on kutistettu ja listassa näkyy kaksi Smart Mailboxia." },
     "invitation": { "title": "Kutsuihin vastattu", "caption": "Kokouskutsut näyttävät molemmat aikavyöhykkeet, ja voit valita Accept, Maybe tai Decline poistumatta viestistä.", "alt": "Outlook-kokouskutsu Loupessa: tapahtuman aika kahdessa aikavyöhykkeessä, Teams-liittymislinkki sekä Accept-, Maybe- ja Decline-painikkeet." },
     "openpgp": { "title": "Salattu ja vahvistettu", "caption": "OpenPGP-viestien salaus puretaan laitteella, ja näkyvissä ovat allekirjoittaja, suojattu aihe ja avaimen sormenjälki.", "alt": "Loupen ”Signed by Dana Okafor” -paneeli: salaus purettu tällä laitteella, suojattu aihe ja avaimen sormenjälki." },
-    "compose": { "title": "Viestin kirjoittaminen", "caption": "Vastaanottajat siruina, identiteetti, jolta lähetät, ja Send Later, kun viestin pitää odottaa aamuun.", "alt": "Loupen uuden viestin näkymä, jossa on vastaanottajasirut, lähettäjäidentiteetti, viestin teksti sekä Send Later- ja Send-painikkeet." },
-    "rules": { "title": "Säännöt hakukielellä", "caption": "Sääntö on haku plus toiminto; suorita se puhelimessa tai palvelimellasi, jolloin Loupe kirjoittaa Sieven puolestasi.", "alt": "Loupen uuden säännön muokkain: hakutyylinen ehto, Mark as Read -toiminto, Run On Server päällä ja luotu Sieve-skripti." },
+    "compose": { "title": "Viestin kirjoittaminen", "caption": "Vastaanottajat siruina, identiteetti, jolta lähetät, ja Lähetä myöhemmin, kun viestin pitää odottaa aamuun.", "alt": "Loupen uuden viestin näkymä, jossa on vastaanottajasirut, lähettäjäidentiteetti, viestin teksti sekä Lähetä myöhemmin- ja Send-painikkeet." },
+    "rules": { "title": "Säännöt hakukielellä", "caption": "Sääntö on haku plus toiminto; suorita se puhelimessa tai palvelimellasi, jolloin Loupe kirjoittaa Sieven puolestasi.", "alt": "Loupen uuden säännön muokkain: hakutyylinen ehto, Merkitse luetuksi -toiminto, Run On Server päällä ja luotu Sieve-skripti." },
     "patch": { "title": "Patchit diffeinä", "caption": "Teknisillä postituslistoilla patchit näytetään värillisinä diffeinä tasalevyisellä fontilla.", "alt": "Postituslistan viesti Loupessa tasalevyisellä fontilla, patch näytettynä punavihreänä diffinä." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Salli tämä asennus",
     "step2Text_html": "Android kysyy kerran, saako selaimesi asentaa sovelluksia. Salli se ja napauta sitten <strong>Asenna</strong>. Myöhemmät versiot asentuvat tämän päälle, ja tilisi säilyvät.",
     "step3": "Kokeile tai lisää tilisi",
-    "step3Text_html": "Valitse <strong>Try with demo mail</strong>, jos haluat ensin katsella ympärillesi, tai lisää tilisi. Katso <a href=\"/docs/getting-started/\">Aloitusopas</a>.",
+    "step3Text_html": "Valitse <strong>Kokeile demopostilla</strong>, jos haluat ensin katsella ympärillesi, tai lisää tilisi. Katso <a href=\"/docs/getting-started/\">Aloitusopas</a>.",
     "safety": "Jokaisen version kokoaa GitHub Actions julkisesta lähdekoodista, ja se allekirjoitetaan Loupen julkaisuavaimella. Google Play Protect saattaa silti varoittaa Play Storen ulkopuolelta tulevista sovelluksista."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Arkiposti",
     "p1Text": "Automaattisesti määritettävät tilit, viestilista pyyhkäisyineen, Readable-, Original- ja Plain-näkymät, haku, kirjoittaminen lähetyksen perumisella ja Lähtevät-kansiolla, ilmoitukset ja tumma tila.",
     "p2": "Tehokerros",
-    "p2Text": "Koko hakukieli, Smart Mailboxit, tunnisteet, säännöt ja Sieve, identiteetit, View Source ja todennustulokset, kolme paneelia ja pikanäppäimet, ajastettu lähetys.",
+    "p2Text": "Koko hakukieli, Smart Mailboxit, tunnisteet, säännöt ja Sieve, identiteetit, Näytä lähdekoodi ja todennustulokset, kolme paneelia ja pikanäppäimet, ajastettu lähetys.",
     "p3": "JMAP",
     "p3Text": "JMAP-tilit Fastmailille ja Stalwartille: haku palvelimella, lähetys ilman SMTP:tä, push palvelimelta ja Sieve JMAP:n kautta.",
     "p4": "Salaus",

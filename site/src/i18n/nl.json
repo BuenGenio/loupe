@@ -241,7 +241,7 @@
       "p1": { "title": "Identiteiten en aliassen", "text": "Antwoord vanaf het adres waar de mail naartoe is gestuurd, ook bij catch-all-aliassen." },
       "p2": { "title": "Verzenden ongedaan maken", "text": "Even de tijd om je te bedenken." },
       "p3": { "title": "Gepland verzenden", "text": "Kies een tijd; het Postvak UIT bewaart het bericht tot dan, ook offline." },
-      "p4": { "title": "Meldingen met acties", "text": "Archiveren, Mark as Read of Beantwoorden, rechtstreeks vanuit de melding." }
+      "p4": { "title": "Meldingen met acties", "text": "Archiveren, Markeren als gelezen of Beantwoorden, rechtstreeks vanuit de melding." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Menu's bij lang indrukken",
     "place1Text": "Op berichten, afzenders, chips en mappen.",
     "place2": "Het ⋯-menu",
-    "place2Text": "View Source, alle headers en zoeken vanuit dit bericht.",
+    "place2Text": "Bron bekijken, alle headers en zoeken vanuit dit bericht.",
     "place3": "De zoektaal",
     "place3Text": "Alles wat de chips kunnen, en meer, door te typen.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Bekijk Loupe op Android: de inbox, de Readable-modus, zoeken met expressies, abonnementen, agenda-uitnodigingen, beveiligingscontroles, de donkere modus en tablets.",
     "eyebrow": "Screenshots",
     "h1": "Kijk gerust rond.",
-    "lead_html": "Echte schermen uit de app, gemaakt met de ingebouwde demomailbox: dezelfde die je krijgt met <strong>Try with demo mail</strong>.",
+    "lead_html": "Echte schermen uit de app, gemaakt met de ingebouwde demomailbox: dezelfde die je krijgt met <strong>Proberen met demomail</strong>.",
     "filter": "Screenshots filteren",
     "all": "Alle",
     "soon": "Screenshots zijn onderweg.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Zoeken en filters", "caption": "Suggesties en filterchips terwijl je typt: precies vinden wat je zoekt, kost maar een paar seconden.", "alt": "Het zoekscherm van Loupe met een getypte expressie, filterchips en suggesties onder het zoekveld." },
     "phishing": { "title": "Phishing, uitgelegd", "caption": "Als een bericht niet klopt, zegt Loupe in gewone woorden waarom: een nagebootst domein, of een bekende naam vanaf een nieuw adres.", "alt": "Het venster “This looks like phishing” van Loupe met de redenen: een nagebootst domein en een naam die je kent die vanaf een nieuw adres schrijft." },
     "tablet": { "title": "Drie panelen op tablets", "caption": "Mailboxen, de lijst en het bericht naast elkaar, met sneltoetsen en een opdrachtenpalet.", "alt": "Loupe op een tablet in liggende stand: mailboxen links, alle inboxen in het midden en rechts een bericht met een fotocarrousel." },
-    "subscriptions": { "title": "Afmeldcentrum", "caption": "Nieuwsbrieven gerangschikt op hoeveel je ongelezen laat, geteld op je telefoon, met afmelden in één tik.", "alt": "Het abonnementenscherm van Loupe met de tabbladen Newsletters en Discussions, de filters Never Read en Rarely Read, leespercentages en afmeldknoppen." },
+    "subscriptions": { "title": "Afmeldcentrum", "caption": "Nieuwsbrieven gerangschikt op hoeveel je ongelezen laat, geteld op je telefoon, met afmelden in één tik.", "alt": "Het abonnementenscherm van Loupe met de tabbladen Newsletters en Discussions, de filters Nooit gelezen en Zelden gelezen, leespercentages en afmeldknoppen." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Bewaarde zoekopdrachten staan naast je mappen en leven op je mailserver, zodat je andere apparaten ze ook zien.", "alt": "Het mailboxenscherm van Loupe met ingeklapte accounts en twee Smart Mailboxes." },
     "invitation": { "title": "Uitnodigingen, beantwoord", "caption": "Vergaderuitnodigingen tonen beide tijdzones en laten je Accept, Maybe of Decline kiezen zonder het bericht te verlaten.", "alt": "Een Outlook-vergaderuitnodiging in Loupe met de tijd in twee tijdzones, een Teams-link om deel te nemen en de knoppen Accept, Maybe en Decline." },
     "openpgp": { "title": "Versleuteld, geverifieerd", "caption": "OpenPGP-berichten worden op het apparaat ontsleuteld, met de ondertekenaar, een beschermd onderwerp en de vingerafdruk van de sleutel.", "alt": "Het venster “Signed by Dana Okafor” van Loupe: ontsleuteld op dit apparaat, een beschermd onderwerp en de vingerafdruk van de sleutel." },
-    "compose": { "title": "Een bericht schrijven", "caption": "Ontvangers als chips, de identiteit waarmee je verstuurt, en Send Later als het tot de ochtend moet wachten.", "alt": "Het scherm voor een nieuw bericht in Loupe met ontvangerchips, de afzenderidentiteit, berichttekst en de knoppen Send Later en Send." },
-    "rules": { "title": "Regels in gewone zoektaal", "caption": "Een regel is een zoekopdracht plus een actie; laat hem op je telefoon draaien of op je server, waar Loupe de Sieve voor je schrijft.", "alt": "De editor voor een nieuwe regel in Loupe: een voorwaarde in zoekstijl, de actie Mark as Read, Run On Server ingeschakeld en het gegenereerde Sieve-script." },
+    "compose": { "title": "Een bericht schrijven", "caption": "Ontvangers als chips, de identiteit waarmee je verstuurt, en Later verzenden als het tot de ochtend moet wachten.", "alt": "Het scherm voor een nieuw bericht in Loupe met ontvangerchips, de afzenderidentiteit, berichttekst en de knoppen Later verzenden en Send." },
+    "rules": { "title": "Regels in gewone zoektaal", "caption": "Een regel is een zoekopdracht plus een actie; laat hem op je telefoon draaien of op je server, waar Loupe de Sieve voor je schrijft.", "alt": "De editor voor een nieuwe regel in Loupe: een voorwaarde in zoekstijl, de actie Markeren als gelezen, Run On Server ingeschakeld en het gegenereerde Sieve-script." },
     "patch": { "title": "Patches als diffs", "caption": "Op technische mailinglijsten worden patches als gekleurde diffs in een monospace-lettertype getoond.", "alt": "Een bericht van een mailinglijst in Loupe in monospace, met een patch als rood-groene diff." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Sta deze installatie toe",
     "step2Text_html": "Android vraagt één keer of je browser apps mag installeren. Sta het toe en tik daarna op <strong>Installeren</strong>. Latere builds installeer je over deze heen, met behoud van je accounts.",
     "step3": "Probeer het, of voeg je account toe",
-    "step3Text_html": "Kies <strong>Try with demo mail</strong> om eerst rond te kijken, of voeg je account toe. Zie <a href=\"/docs/getting-started/\">Aan de slag</a>.",
+    "step3Text_html": "Kies <strong>Proberen met demomail</strong> om eerst rond te kijken, of voeg je account toe. Zie <a href=\"/docs/getting-started/\">Aan de slag</a>.",
     "safety": "Elke build wordt door GitHub Actions gemaakt uit de openbare broncode en ondertekend met de releasesleutel van Loupe. Google Play Protect kan toch waarschuwen voor apps van buiten de Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Dagelijkse mail",
     "p1Text": "Accounts met automatische configuratie, de berichtenlijst met veeggebaren, de weergaven Readable, Original en Plain, zoeken, opstellen met verzenden ongedaan maken en een Postvak UIT, meldingen en de donkere modus.",
     "p2": "De geavanceerde laag",
-    "p2Text": "De volledige zoektaal, Smart Mailboxes, tags, regels en Sieve, identiteiten, View Source en authenticatieresultaten, drie panelen en sneltoetsen, gepland verzenden.",
+    "p2Text": "De volledige zoektaal, Smart Mailboxes, tags, regels en Sieve, identiteiten, Bron bekijken en authenticatieresultaten, drie panelen en sneltoetsen, gepland verzenden.",
     "p3": "JMAP",
     "p3Text": "JMAP-accounts voor Fastmail en Stalwart: zoeken op de server, verzenden zonder SMTP, push vanaf de server en Sieve via JMAP.",
     "p4": "Versleuteling",

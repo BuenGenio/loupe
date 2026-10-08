@@ -241,7 +241,7 @@
       "p1": { "title": "Identitajiet u aliases", "text": "Wieġeb mill-indirizz li ntbagħat lilu l-imejl, inklużi l-aliases catch-all." },
       "p2": { "title": "Irtira l-bgħit", "text": "Ftit ħin biex tbiddel fehmtek." },
       "p3": { "title": "Bgħit skedat", "text": "Agħżel ħin; l-Outbox iżomm il-messaġġ sa dakinhar, anki offline." },
-      "p4": { "title": "Notifiki b'azzjonijiet", "text": "Arkivja, wieġeb jew uża Mark as Read direttament min-notifika." }
+      "p4": { "title": "Notifiki b'azzjonijiet", "text": "Arkivja, wieġeb jew uża Immarka bħala moqri direttament min-notifika." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Menus b'għafsa twila",
     "place1Text": "Fuq messaġġi, mittenti, chips u folders.",
     "place2": "Il-menu ⋯",
-    "place2Text": "View Source, l-intestaturi kollha, u tfittxija minn dan il-messaġġ.",
+    "place2Text": "Ara s-sors, l-intestaturi kollha, u tfittxija minn dan il-messaġġ.",
     "place3": "Il-lingwa tat-tfittxija",
     "place3Text": "Dak kollu li jagħmlu ċ-chips, u aktar, billi tikteb.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Ara Loupe fuq Android: l-inbox, il-modalità Readable, it-tfittxija b'espressjonijiet, l-abbonamenti, l-istediniet tal-kalendarju, il-kontrolli tas-sigurtà, il-modalità skura u t-tablets.",
     "eyebrow": "Stampi tal-iskrin",
     "h1": "Agħti daqqa t'għajn.",
-    "lead_html": "Skrins veri mill-app, magħmula mill-mailbox demo inkorporata fiha: l-istess waħda li tieħu b'<strong>Try with demo mail</strong>.",
+    "lead_html": "Skrins veri mill-app, magħmula mill-mailbox demo inkorporata fiha: l-istess waħda li tieħu b'<strong>Ipprova bil-posta demo</strong>.",
     "filter": "Iffiltra l-istampi tal-iskrin",
     "all": "Kollha",
     "soon": "L-istampi tal-iskrin ġejjin fi triqithom.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Tfittxija u filtri", "caption": "Suġġerimenti u chips tal-filtri waqt li tikteb: biex issib eżatt dak li trid tieħu sekondi.", "alt": "L-iskrin tat-tfittxija ta' Loupe b'espressjoni miktuba, chips tal-filtri u suġġerimenti taħt il-qasam tat-tfittxija." },
     "phishing": { "title": "Phishing, spjegat", "caption": "Meta messaġġ ma jidhirx sew, Loupe tgħidlek għaliex bi kliem sempliċi: dominju li jixbah lil ieħor, jew isem familjari minn indirizz ġdid.", "alt": "Il-folja “This looks like phishing” ta' Loupe bir-raġunijiet: dominju li jixbah lil ieħor u isem li taf jikteb minn indirizz ġdid." },
     "tablet": { "title": "Tliet pannelli fuq it-tablets", "caption": "Il-mailboxes, il-lista u l-messaġġ ħdejn xulxin, bi shortcuts tat-tastiera u paletta tal-kmandi.", "alt": "Loupe fuq tablet mimdud: il-mailboxes fuq ix-xellug, l-inboxes kollha fin-nofs u messaġġ b'carousel tar-ritratti fuq il-lemin." },
-    "subscriptions": { "title": "Ċentru biex tneħħi l-abbonament", "caption": "Newsletters ikklassifikati skont kemm tħallihom mhux moqrija, magħduda fuq il-mowbajl tiegħek, b'tneħħija tal-abbonament b'għafsa waħda.", "alt": "L-iskrin tal-abbonamenti ta' Loupe bit-tabs Newsletters u Discussions, il-filtri Never Read u Rarely Read, ir-rati tal-qari u l-buttuni Unsubscribe." },
+    "subscriptions": { "title": "Ċentru biex tneħħi l-abbonament", "caption": "Newsletters ikklassifikati skont kemm tħallihom mhux moqrija, magħduda fuq il-mowbajl tiegħek, b'tneħħija tal-abbonament b'għafsa waħda.", "alt": "L-iskrin tal-abbonamenti ta' Loupe bit-tabs Newsletters u Discussions, il-filtri Qatt moqrija u Rarament moqrija, ir-rati tal-qari u l-buttuni Unsubscribe." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "It-tfittxijiet maħżuna jinsabu ħdejn il-folders tiegħek, u jgħixu fuq is-server tal-imejl tiegħek biex l-apparati l-oħra tiegħek jarawhom ukoll.", "alt": "L-iskrin tal-mailboxes ta' Loupe bil-kontijiet magħluqa u żewġ Smart Mailboxes fil-lista." },
     "invitation": { "title": "Stediniet, imwieġba", "caption": "L-istediniet għal-laqgħat juru ż-żewġ żoni tal-ħin u jħalluk tagħżel Accept, Maybe jew Decline mingħajr ma toħroġ mill-messaġġ.", "alt": "Stedina għal-laqgħa minn Outlook f'Loupe bil-ħin tal-avveniment f'żewġ żoni tal-ħin, link biex tingħaqad fuq Teams u l-buttuni Accept, Maybe u Decline." },
     "openpgp": { "title": "Kriptat, ivverifikat", "caption": "Il-messaġġi OpenPGP jiġu dekriptati fuq l-apparat, b'min iffirma, suġġett protett u l-fingerprint taċ-ċavetta.", "alt": "Il-folja “Signed by Dana Okafor” ta' Loupe: dekriptat fuq dan l-apparat, suġġett protett u l-fingerprint taċ-ċavetta." },
-    "compose": { "title": "Kitba ta' messaġġ", "caption": "Ir-riċevituri bħala chips, l-identità li qed tibgħat minnha, u Send Later meta l-messaġġ għandu jistenna sa filgħodu.", "alt": "L-iskrin ta' messaġġ ġdid ta' Loupe b'chips tar-riċevituri, l-identità ta' min jibgħat, it-test, u l-buttuni Send Later u Send." },
-    "rules": { "title": "Regoli bi tfittxija sempliċi", "caption": "Regola hija tfittxija flimkien ma' azzjoni; ħaddimha fuq il-mowbajl jew fuq is-server tiegħek, fejn Loupe tiktiblek is-Sieve.", "alt": "L-editur ta' regola ġdida ta' Loupe: kundizzjoni bħal tfittxija, l-azzjoni Mark as Read, Run On Server mixgħul u l-iskript Sieve iġġenerat." },
+    "compose": { "title": "Kitba ta' messaġġ", "caption": "Ir-riċevituri bħala chips, l-identità li qed tibgħat minnha, u Ibgħat aktar tard meta l-messaġġ għandu jistenna sa filgħodu.", "alt": "L-iskrin ta' messaġġ ġdid ta' Loupe b'chips tar-riċevituri, l-identità ta' min jibgħat, it-test, u l-buttuni Ibgħat aktar tard u Send." },
+    "rules": { "title": "Regoli bi tfittxija sempliċi", "caption": "Regola hija tfittxija flimkien ma' azzjoni; ħaddimha fuq il-mowbajl jew fuq is-server tiegħek, fejn Loupe tiktiblek is-Sieve.", "alt": "L-editur ta' regola ġdida ta' Loupe: kundizzjoni bħal tfittxija, l-azzjoni Immarka bħala moqri, Run On Server mixgħul u l-iskript Sieve iġġenerat." },
     "patch": { "title": "Patches bħala diffs", "caption": "Fuq mailing lists tekniċi, il-patches jintwerew bħala diffs ikkuluriti b'tipa monospace.", "alt": "Messaġġ minn mailing list f'Loupe b'tipa monospace, b'patch muri bħala diff aħmar u aħdar." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Ippermetti din l-installazzjoni",
     "step2Text_html": "Android jistaqsik darba jekk il-browser tiegħek jistax jinstalla apps. Ippermettilu, imbagħad agħfas <strong>Install</strong>. Il-verżjonijiet ta' wara jinstallaw fuq din u jżommu l-kontijiet tiegħek.",
     "step3": "Ippruvaha, jew żid il-kont tiegħek",
-    "step3Text_html": "Agħżel <strong>Try with demo mail</strong> biex l-ewwel tagħti daqqa t'għajn, jew żid il-kont tiegħek. Ara <a href=\"/docs/getting-started/\">L-ewwel passi</a>.",
+    "step3Text_html": "Agħżel <strong>Ipprova bil-posta demo</strong> biex l-ewwel tagħti daqqa t'għajn, jew żid il-kont tiegħek. Ara <a href=\"/docs/getting-started/\">L-ewwel passi</a>.",
     "safety": "Kull verżjoni tinbena minn GitHub Actions mis-sors pubbliku u tiġi ffirmata biċ-ċavetta tar-rilaxx ta' Loupe. Google Play Protect xorta jista' jwissik dwar apps minn barra l-Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Il-posta ta' kuljum",
     "p1Text": "Kontijiet b'konfigurazzjoni awtomatika, il-lista tal-messaġġi bi swipes, il-veduti Readable, Original u Plain, it-tfittxija, il-kitba b'irtirar tal-bgħit u Outbox, in-notifiki u l-modalità skura.",
     "p2": "Is-saff avvanzat",
-    "p2Text": "Il-lingwa sħiħa tat-tfittxija, Smart Mailboxes, tikketti, regoli u Sieve, identitajiet, View Source u r-riżultati tal-awtentikazzjoni, tliet pannelli u shortcuts tat-tastiera, bgħit skedat.",
+    "p2Text": "Il-lingwa sħiħa tat-tfittxija, Smart Mailboxes, tikketti, regoli u Sieve, identitajiet, Ara s-sors u r-riżultati tal-awtentikazzjoni, tliet pannelli u shortcuts tat-tastiera, bgħit skedat.",
     "p3": "JMAP",
     "p3Text": "Kontijiet JMAP għal Fastmail u Stalwart: tfittxija fuq is-server, bgħit mingħajr SMTP, push mis-server, u Sieve permezz ta' JMAP.",
     "p4": "Kriptaġġ",

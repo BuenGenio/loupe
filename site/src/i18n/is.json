@@ -241,7 +241,7 @@
       "p1": { "title": "Auðkenni og samnefni", "text": "Svaraðu frá netfanginu sem pósturinn var sendur á, þar með talið catch-all-samnefnum." },
       "p2": { "title": "Afturkalla sendingu", "text": "Stuttur gluggi til að skipta um skoðun." },
       "p3": { "title": "Tímasett sending", "text": "Veldu tíma; úthólfið geymir skilaboðin þangað til, jafnvel án nettengingar." },
-      "p4": { "title": "Tilkynningar með aðgerðum", "text": "Setja í geymslu, Mark as Read eða svara beint úr tilkynningunni." }
+      "p4": { "title": "Tilkynningar með aðgerðum", "text": "Setja í geymslu, Merkja sem lesið eða svara beint úr tilkynningunni." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Valmyndir við langa snertingu",
     "place1Text": "Á skilaboðum, sendendum, merkimiðum og möppum.",
     "place2": "⋯-valmyndin",
-    "place2Text": "View Source, allir hausar og leit út frá þessum skilaboðum.",
+    "place2Text": "Skoða frumtexta, allir hausar og leit út frá þessum skilaboðum.",
     "place3": "Leitarmálið",
     "place3Text": "Allt sem merkimiðarnir geta, og meira til, einfaldlega með því að skrifa.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Sjáðu Loupe á Android: innhólfið, Readable-haminn, leit með segðum, áskriftir, dagatalsboð, öryggisathuganir, dökkan ham og spjaldtölvur.",
     "eyebrow": "Skjámyndir",
     "h1": "Litastu um.",
-    "lead_html": "Raunverulegir skjáir úr forritinu, búnir til úr innbyggða sýnipósthólfinu: því sama og þú færð með <strong>Try with demo mail</strong>.",
+    "lead_html": "Raunverulegir skjáir úr forritinu, búnir til úr innbyggða sýnipósthólfinu: því sama og þú færð með <strong>Prófa með sýnipósti</strong>.",
     "filter": "Sía skjámyndir",
     "all": "Allar",
     "soon": "Skjámyndir eru á leiðinni.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Leit og síur", "caption": "Tillögur og síumerkimiðar meðan þú skrifar: það tekur aðeins sekúndur að finna nákvæmlega það sem þú vilt.", "alt": "Leitarskjár Loupe með innsleginni segð, síumerkimiðum og tillögum fyrir neðan leitarreitinn." },
     "phishing": { "title": "Vefveiðar útskýrðar", "caption": "Þegar eitthvað er bogið við skilaboð segir Loupe hvers vegna á mannamáli: lén sem líkir eftir öðru, eða kunnuglegt nafn frá nýju netfangi.", "alt": "Spjaldið „This looks like phishing“ í Loupe með ástæðunum: lén sem líkir eftir öðru og nafn sem þú þekkir sem skrifar frá nýju netfangi." },
     "tablet": { "title": "Þrjú svæði á spjaldtölvu", "caption": "Pósthólf, listinn og skilaboðin hlið við hlið, með flýtilyklum og skipanaspjaldi.", "alt": "Loupe á spjaldtölvu í láréttri stöðu: pósthólf til vinstri, Öll innhólf í miðjunni og skilaboð með myndahringekju til hægri." },
-    "subscriptions": { "title": "Afskráningarmiðstöð", "caption": "Fréttabréfum raðað eftir því hve mikið af þeim þú lætur ólesið, talið í símanum þínum, með afskráningu í einni snertingu.", "alt": "Áskriftaskjár Loupe með flipunum Newsletters og Discussions, síunum Never Read og Rarely Read, lestrarhlutfalli og afskráningarhnöppum." },
+    "subscriptions": { "title": "Afskráningarmiðstöð", "caption": "Fréttabréfum raðað eftir því hve mikið af þeim þú lætur ólesið, talið í símanum þínum, með afskráningu í einni snertingu.", "alt": "Áskriftaskjár Loupe með flipunum Newsletters og Discussions, síunum Aldrei lesið og Sjaldan lesið, lestrarhlutfalli og afskráningarhnöppum." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Vistaðar leitir eru við hliðina á möppunum þínum og búa á póstþjóninum þínum, svo önnur tæki þín sjá þær líka.", "alt": "Pósthólfaskjár Loupe með samanbrotnum aðgöngum og tveimur Smart Mailboxes á listanum." },
     "invitation": { "title": "Boðum svarað", "caption": "Fundarboð sýna bæði tímabeltin og leyfa þér að velja Accept, Maybe eða Decline án þess að yfirgefa skilaboðin.", "alt": "Outlook-fundarboð í Loupe með tíma viðburðarins í tveimur tímabeltum, Teams-tengli til að taka þátt og hnöppunum Accept, Maybe og Decline." },
     "openpgp": { "title": "Dulkóðað, staðfest", "caption": "OpenPGP-skilaboð eru afkóðuð í tækinu, með undirritaranum, varinni efnislínu og fingrafari lykilsins.", "alt": "Spjaldið „Signed by Dana Okafor“ í Loupe: afkóðað í þessu tæki, varin efnislína og fingrafar lykilsins." },
-    "compose": { "title": "Að skrifa skilaboð", "caption": "Viðtakendur sem merkimiðar, auðkennið sem þú sendir frá og Send Later þegar pósturinn á að bíða til morguns.", "alt": "Skjárinn Ný skilaboð í Loupe með merkimiðum viðtakenda, sendandaauðkenninu, meginmáli og hnöppunum Send Later og Send." },
-    "rules": { "title": "Reglur á leitarmáli", "caption": "Regla er leit auk aðgerðar; keyrðu hana í símanum eða á netþjóninum þínum, þar sem Loupe skrifar Sieve-kóðann fyrir þig.", "alt": "Ritill fyrir nýja reglu í Loupe: skilyrði á leitarformi, aðgerðin Mark as Read, kveikt á Run On Server og Sieve-skriftan sem var búin til." },
+    "compose": { "title": "Að skrifa skilaboð", "caption": "Viðtakendur sem merkimiðar, auðkennið sem þú sendir frá og Senda síðar þegar pósturinn á að bíða til morguns.", "alt": "Skjárinn Ný skilaboð í Loupe með merkimiðum viðtakenda, sendandaauðkenninu, meginmáli og hnöppunum Senda síðar og Send." },
+    "rules": { "title": "Reglur á leitarmáli", "caption": "Regla er leit auk aðgerðar; keyrðu hana í símanum eða á netþjóninum þínum, þar sem Loupe skrifar Sieve-kóðann fyrir þig.", "alt": "Ritill fyrir nýja reglu í Loupe: skilyrði á leitarformi, aðgerðin Merkja sem lesið, kveikt á Run On Server og Sieve-skriftan sem var búin til." },
     "patch": { "title": "Plástrar sem diff", "caption": "Á tæknilegum póstlistum eru plástrar sýndir sem diff í lit með jafnbreiðu letri.", "alt": "Skilaboð af póstlista í Loupe með jafnbreiðu letri, þar sem plástur er sýndur sem rautt og grænt diff." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Leyfðu uppsetninguna",
     "step2Text_html": "Android spyr einu sinni hvort vafrinn þinn megi setja upp forrit. Leyfðu það og ýttu svo á <strong>Setja upp</strong>. Síðari útgáfur setjast upp yfir þessa og halda aðgöngunum þínum.",
     "step3": "Prófaðu það, eða bættu aðganginum þínum við",
-    "step3Text_html": "Veldu <strong>Try with demo mail</strong> til að líta fyrst í kringum þig, eða bættu aðganginum þínum við. Sjá <a href=\"/docs/getting-started/\">Fyrstu skrefin</a>.",
+    "step3Text_html": "Veldu <strong>Prófa með sýnipósti</strong> til að líta fyrst í kringum þig, eða bættu aðganginum þínum við. Sjá <a href=\"/docs/getting-started/\">Fyrstu skrefin</a>.",
     "safety": "Hver útgáfa er byggð af GitHub Actions úr opinberum grunnkóða og undirrituð með útgáfulykli Loupe. Google Play Protect gæti samt varað við forritum utan Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Hversdagspóstur",
     "p1Text": "Aðgangar með sjálfvirkri uppsetningu, skilaboðalistinn með strokum, sýnirnar Readable, Original og Plain, leit, skrif með afturköllun sendingar og úthólfi, tilkynningar og dökkur hamur.",
     "p2": "Öfluga lagið",
-    "p2Text": "Allt leitarmálið, Smart Mailboxes, merki, reglur og Sieve, auðkenni, View Source og niðurstöður sannvottunar, þrjú svæði og flýtilyklar, tímasett sending.",
+    "p2Text": "Allt leitarmálið, Smart Mailboxes, merki, reglur og Sieve, auðkenni, Skoða frumtexta og niðurstöður sannvottunar, þrjú svæði og flýtilyklar, tímasett sending.",
     "p3": "JMAP",
     "p3Text": "JMAP-aðgangar fyrir Fastmail og Stalwart: leit á netþjóninum, sending án SMTP, push frá netþjóninum og Sieve í gegnum JMAP.",
     "p4": "Dulkóðun",

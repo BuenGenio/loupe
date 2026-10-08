@@ -241,7 +241,7 @@
       "p1": { "title": "Identitéiten an Aliasen", "text": "Äntwert vun der Adress, un déi d'Mail geschéckt gouf, och vu Catch-all-Aliasen." },
       "p2": { "title": "Schécken annuléieren", "text": "E kuerze Moment, fir Iech nach ëmzeentscheeden." },
       "p3": { "title": "Geplangt Schécken", "text": "Wielt eng Zäit; den Ausgangsdossier hält d'Mail bis dohin zeréck, och offline." },
-      "p4": { "title": "Notifikatioune mat Aktiounen", "text": "Archivéiert, äntwert oder benotzt Mark as Read direkt aus der Notifikatioun." }
+      "p4": { "title": "Notifikatioune mat Aktiounen", "text": "Archivéiert, äntwert oder benotzt Als gelies markéieren direkt aus der Notifikatioun." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Menüe mat laangem Drock",
     "place1Text": "Op Messagen, Ofsender, Chips an Dossieren.",
     "place2": "De ⋯-Menü",
-    "place2Text": "View Source, all Headeren an eng Sich ausgoend vun dësem Message.",
+    "place2Text": "Quelltext weisen, all Headeren an eng Sich ausgoend vun dësem Message.",
     "place3": "D'Sichsprooch",
     "place3Text": "Alles, wat d'Chips kënnen, an nach méi, einfach mam Tippen.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Kuckt Loupe op Android: d'Inbox, de Readable-Modus, d'Sich mat Ausdréck, Abonnementer, Kalennerinvitatiounen, Sécherheetschecken, den donkele Modus an Tabletten.",
     "eyebrow": "Screenshots",
     "h1": "Kuckt Iech ëm.",
-    "lead_html": "Richteg Ecranen aus der App, aus hirer agebauter Demo-Mailbox: déi selwecht, déi Dir mat <strong>Try with demo mail</strong> kritt.",
+    "lead_html": "Richteg Ecranen aus der App, aus hirer agebauter Demo-Mailbox: déi selwecht, déi Dir mat <strong>Mat Demo-Mailen ausprobéieren</strong> kritt.",
     "filter": "Screenshots filteren",
     "all": "All",
     "soon": "Screenshots sinn ënnerwee.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Sich a Filteren", "caption": "Virschléi a Filterchips beim Tippen: genee dat ze fannen, wat Dir wëllt, dauert just e puer Sekonnen.", "alt": "Sichecran vu Loupe mat engem getippten Ausdrock, Filterchips a Virschléi ënnert dem Sichfeld." },
     "phishing": { "title": "Phishing, erkläert", "caption": "Wann e Message komesch ausgesäit, seet Loupe a klore Wierder firwat: eng Domain, déi änlech ausgesäit, oder e bekannten Numm vun enger neier Adress.", "alt": "De Panneau „This looks like phishing“ vu Loupe mat de Grënn: eng Domain, déi änlech ausgesäit, an en Numm, deen Dir kennt, deen awer vun enger neier Adress schreift." },
     "tablet": { "title": "Dräi Spalten op Tabletten", "caption": "Mailboxen, d'Lëscht an de Message nieftenee, mat Tastaturkierzelen an enger Kommandopalette.", "alt": "Loupe op engem Tablet am Queeformat: Mailboxe lénks, déi gemeinsam Inbox an der Mëtt an e Message mat engem Fotokarussell riets." },
-    "subscriptions": { "title": "Ofmeldzentrum", "caption": "Newsletteren no deem sortéiert, wéi vill Dir ongelies loosst, um Handy gezielt, mat Ofmelle mat engem Tipp.", "alt": "Abonnementsecran vu Loupe mat den Tabs Newsletters an Discussions, de Filteren Never Read a Rarely Read, Lieserquoten an Ofmeldknäppercher." },
+    "subscriptions": { "title": "Ofmeldzentrum", "caption": "Newsletteren no deem sortéiert, wéi vill Dir ongelies loosst, um Handy gezielt, mat Ofmelle mat engem Tipp.", "alt": "Abonnementsecran vu Loupe mat den Tabs Newsletters an Discussions, de Filteren Ni gelies a Seele gelies, Lieserquoten an Ofmeldknäppercher." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Gespäichert Siche stinn nieft Ären Dossieren a liewen op Ärem Mailserver, sou gesinn Är aner Apparater se och.", "alt": "Mailbox-Ecran vu Loupe mat zougeklappte Konten an zwou Smart Mailboxes an der Lëscht." },
     "invitation": { "title": "Invitatiounen, beäntwert", "caption": "Invitatioune fir Reuniounen weisen béid Zäitzonen a loossen Iech Accept, Maybe oder Decline wielen, ouni de Message ze verloossen.", "alt": "Eng Outlook-Invitatioun fir eng Reunioun a Loupe, mat der Zäit vum Evenement an zwou Zäitzonen, engem Teams-Link fir matzemaachen an de Knäppercher Accept, Maybe an Decline." },
     "openpgp": { "title": "Verschlësselt, verifizéiert", "caption": "OpenPGP-Message ginn um Apparat entschlësselt, mam Ënnerschreiwer, engem geschützte Sujet an dem Fangerofdrock vum Schlëssel.", "alt": "De Panneau „Signed by Dana Okafor“ vu Loupe: op dësem Apparat entschlësselt, e geschützte Sujet an de Fangerofdrock vum Schlëssel." },
-    "compose": { "title": "E Message schreiwen", "caption": "Empfänger als Chips, d'Identitéit, vun där Dir schéckt, a Send Later, wann et bis de Moie waarde soll.", "alt": "Ecran fir en neie Message vu Loupe mat Empfänger-Chips, der Absender-Identitéit, Text an de Knäppercher Send Later a Send." },
-    "rules": { "title": "Reegelen als einfach Sich", "caption": "Eng Reegel ass eng Sich plus eng Aktioun; loosst se um Handy lafen oder op Ärem Server, wou Loupe de Sieve fir Iech schreift.", "alt": "Editeur fir eng nei Reegel a Loupe: eng Konditioun am Stil vun enger Sich, d'Aktioun Mark as Read, Run On Server ageschalt an de generéierte Sieve-Skript." },
+    "compose": { "title": "E Message schreiwen", "caption": "Empfänger als Chips, d'Identitéit, vun där Dir schéckt, a Méi spéit schécken, wann et bis de Moie waarde soll.", "alt": "Ecran fir en neie Message vu Loupe mat Empfänger-Chips, der Absender-Identitéit, Text an de Knäppercher Méi spéit schécken a Send." },
+    "rules": { "title": "Reegelen als einfach Sich", "caption": "Eng Reegel ass eng Sich plus eng Aktioun; loosst se um Handy lafen oder op Ärem Server, wou Loupe de Sieve fir Iech schreift.", "alt": "Editeur fir eng nei Reegel a Loupe: eng Konditioun am Stil vun enger Sich, d'Aktioun Als gelies markéieren, Run On Server ageschalt an de generéierte Sieve-Skript." },
     "patch": { "title": "Patchen als Diffen", "caption": "Op technesche Mailinglëschte ginn Patchen als faarweg Diffen an enger Monospace-Schrëft duergestallt.", "alt": "E Message vun enger Mailinglëscht a Loupe, a Monospace-Schrëft, mat engem Patch als rouden a gréngen Diff." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Dës Installatioun erlaben",
     "step2Text_html": "Android freet eemol, ob Äre Browser Apps installéieren dierf. Erlaabt et an tippt dann op <strong>Install</strong>. Spéider Builds installéiere sech iwwer dësen a behalen Är Konten.",
     "step3": "Probéiert et aus, oder füügt Äre Kont derbäi",
-    "step3Text_html": "Wielt <strong>Try with demo mail</strong>, fir Iech als éischt ëmzekucken, oder füügt Äre Kont derbäi. Kuckt <a href=\"/docs/getting-started/\">Éischt Schrëtt</a>.",
+    "step3Text_html": "Wielt <strong>Mat Demo-Mailen ausprobéieren</strong>, fir Iech als éischt ëmzekucken, oder füügt Äre Kont derbäi. Kuckt <a href=\"/docs/getting-started/\">Éischt Schrëtt</a>.",
     "safety": "All Build gëtt vu GitHub Actions aus dem ëffentleche Quellcode gemaach a mam Release-Schlëssel vu Loupe signéiert. Google Play Protect kann trotzdem virun Apps warnen, déi net aus dem Play Store kommen."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Mail am Alldag",
     "p1Text": "Konte mat automatescher Ariichtung, d'Messagelëscht mat Wëschgesten, d'Usiichte Readable, Original a Plain, Sich, Schreiwe mat Schécken annuléieren an engem Ausgangsdossier, Notifikatiounen an den donkele Modus.",
     "p2": "D'Power-Schicht",
-    "p2Text": "Déi komplett Sichsprooch, Smart Mailboxes, Tags, Reegelen a Sieve, Identitéiten, View Source an Authentifizéierungsresultater, dräi Spalten an Tastaturkierzelen, geplangt Schécken.",
+    "p2Text": "Déi komplett Sichsprooch, Smart Mailboxes, Tags, Reegelen a Sieve, Identitéiten, Quelltext weisen an Authentifizéierungsresultater, dräi Spalten an Tastaturkierzelen, geplangt Schécken.",
     "p3": "JMAP",
     "p3Text": "JMAP-Konte fir Fastmail a Stalwart: Sich um Server, Schécken ouni SMTP, Push vum Server a Sieve iwwer JMAP.",
     "p4": "Verschlësselung",

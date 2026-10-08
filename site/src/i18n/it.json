@@ -241,7 +241,7 @@
       "p1": { "title": "Identità e alias", "text": "Rispondi dall'indirizzo a cui è stata inviata la mail, compresi gli alias catch-all." },
       "p2": { "title": "Annulla invio", "text": "Un breve margine per cambiare idea." },
       "p3": { "title": "Invio programmato", "text": "Scegli un orario; la Posta in uscita lo conserva fino ad allora, anche offline." },
-      "p4": { "title": "Notifiche con azioni", "text": "Archivia, rispondi o usa Mark as Read direttamente dalla notifica." }
+      "p4": { "title": "Notifiche con azioni", "text": "Archivia, rispondi o usa Segna come letto direttamente dalla notifica." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Menu a pressione prolungata",
     "place1Text": "Su messaggi, mittenti, chip e cartelle.",
     "place2": "Il menu ⋯",
-    "place2Text": "View Source, tutte le intestazioni e la ricerca a partire da questo messaggio.",
+    "place2Text": "Visualizza sorgente, tutte le intestazioni e la ricerca a partire da questo messaggio.",
     "place3": "Il linguaggio di ricerca",
     "place3Text": "Tutto quello che fanno i chip, e anche di più, scrivendo.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Guarda Loupe su Android: la posta in arrivo, la modalità Readable, la ricerca per espressioni, le iscrizioni, gli inviti di calendario, i controlli di sicurezza, la modalità scura e i tablet.",
     "eyebrow": "Screenshot",
     "h1": "Dai un'occhiata.",
-    "lead_html": "Schermate reali dell'app, generate dalla sua casella demo integrata: la stessa che ottieni con <strong>Try with demo mail</strong>.",
+    "lead_html": "Schermate reali dell'app, generate dalla sua casella demo integrata: la stessa che ottieni con <strong>Prova con la posta demo</strong>.",
     "filter": "Filtra gli screenshot",
     "all": "Tutti",
     "soon": "Gli screenshot sono in arrivo.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Ricerca e filtri", "caption": "Suggerimenti e chip di filtro mentre scrivi: trovare esattamente ciò che vuoi richiede pochi secondi.", "alt": "La schermata di ricerca di Loupe con un'espressione digitata, chip di filtro e suggerimenti sotto il campo di ricerca." },
     "phishing": { "title": "Phishing, spiegato", "caption": "Quando un messaggio non convince, Loupe ti dice perché in parole semplici: un dominio sosia, o un nome familiare da un indirizzo nuovo.", "alt": "Il pannello «This looks like phishing» di Loupe con i motivi: un dominio sosia e un nome che conosci che scrive da un nuovo indirizzo." },
     "tablet": { "title": "Tre riquadri sui tablet", "caption": "Caselle, elenco e messaggio affiancati, con scorciatoie da tastiera e una palette dei comandi.", "alt": "Loupe su un tablet in orizzontale: le caselle a sinistra, tutte le caselle in arrivo al centro e un messaggio con un carosello di foto a destra." },
-    "subscriptions": { "title": "Centro disiscrizioni", "caption": "Newsletter ordinate in base a quanto lasci da leggere, calcolato sul tuo telefono, con disiscrizione in un tocco.", "alt": "La schermata Iscrizioni di Loupe con le schede Newsletters e Discussions, i filtri Never Read e Rarely Read, i tassi di lettura e i pulsanti per annullare l'iscrizione." },
+    "subscriptions": { "title": "Centro disiscrizioni", "caption": "Newsletter ordinate in base a quanto lasci da leggere, calcolato sul tuo telefono, con disiscrizione in un tocco.", "alt": "La schermata Iscrizioni di Loupe con le schede Newsletters e Discussions, i filtri Mai lette e Lette di rado, i tassi di lettura e i pulsanti per annullare l'iscrizione." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Le ricerche salvate stanno accanto alle tue cartelle e vivono sul tuo server di posta, così le vedono anche gli altri tuoi dispositivi.", "alt": "La schermata delle caselle di Loupe con gli account compressi e due Smart Mailboxes in elenco." },
     "invitation": { "title": "Rispondere agli inviti", "caption": "Gli inviti alle riunioni mostrano entrambi i fusi orari e ti permettono di rispondere Accept, Maybe o Decline senza uscire dal messaggio.", "alt": "Un invito a una riunione di Outlook in Loupe con l'orario dell'evento in due fusi orari, un link per partecipare su Teams e i pulsanti Accept, Maybe e Decline." },
     "openpgp": { "title": "Cifrato, verificato", "caption": "I messaggi OpenPGP vengono decifrati sul dispositivo, con il firmatario, un oggetto protetto e l'impronta digitale della chiave.", "alt": "Il pannello «Signed by Dana Okafor» di Loupe: decifrato su questo dispositivo, un oggetto protetto e l'impronta digitale della chiave." },
-    "compose": { "title": "Scrivere un messaggio", "caption": "Destinatari come chip, l'identità da cui invii e Send Later quando il messaggio deve aspettare fino al mattino.", "alt": "La schermata Nuovo messaggio di Loupe con i chip dei destinatari, l'identità del mittente, il testo e i pulsanti Send Later e Send." },
-    "rules": { "title": "Regole scritte come ricerche", "caption": "Una regola è una ricerca più un'azione; eseguila sul telefono o sul tuo server, dove Loupe scrive lo script Sieve per te.", "alt": "L'editor Nuova regola di Loupe: una condizione in stile ricerca, l'azione Mark as Read, Run On Server attivato e lo script Sieve generato." },
+    "compose": { "title": "Scrivere un messaggio", "caption": "Destinatari come chip, l'identità da cui invii e Invia più tardi quando il messaggio deve aspettare fino al mattino.", "alt": "La schermata Nuovo messaggio di Loupe con i chip dei destinatari, l'identità del mittente, il testo e i pulsanti Invia più tardi e Send." },
+    "rules": { "title": "Regole scritte come ricerche", "caption": "Una regola è una ricerca più un'azione; eseguila sul telefono o sul tuo server, dove Loupe scrive lo script Sieve per te.", "alt": "L'editor Nuova regola di Loupe: una condizione in stile ricerca, l'azione Segna come letto, Run On Server attivato e lo script Sieve generato." },
     "patch": { "title": "Patch come diff", "caption": "Nelle mailing list tecniche, le patch sono mostrate come diff colorati in un carattere monospaziato.", "alt": "Un messaggio di una mailing list in Loupe in carattere monospaziato, con una patch mostrata come diff rosso e verde." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Consenti questa installazione",
     "step2Text_html": "Android ti chiede una sola volta se il browser può installare app. Consentilo, poi tocca <strong>Installa</strong>. Le build successive si installano sopra questa e mantengono i tuoi account.",
     "step3": "Provala o aggiungi il tuo account",
-    "step3Text_html": "Scegli <strong>Try with demo mail</strong> per dare prima un'occhiata, oppure aggiungi il tuo account. Vedi <a href=\"/docs/getting-started/\">Primi passi</a>.",
+    "step3Text_html": "Scegli <strong>Prova con la posta demo</strong> per dare prima un'occhiata, oppure aggiungi il tuo account. Vedi <a href=\"/docs/getting-started/\">Primi passi</a>.",
     "safety": "Ogni build è creata da GitHub Actions a partire dal codice sorgente pubblico e firmata con la chiave di rilascio di Loupe. Google Play Protect potrebbe comunque mostrare un avviso per le app installate al di fuori del Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "La posta di ogni giorno",
     "p1Text": "Account con configurazione automatica, l'elenco dei messaggi con gli swipe, le viste Readable, Original e Plain, la ricerca, la scrittura con annulla invio e Posta in uscita, le notifiche e la modalità scura.",
     "p2": "Il livello avanzato",
-    "p2Text": "Il linguaggio di ricerca completo, Smart Mailboxes, tag, regole e Sieve, identità, View Source e risultati di autenticazione, tre riquadri e scorciatoie da tastiera, invio programmato.",
+    "p2Text": "Il linguaggio di ricerca completo, Smart Mailboxes, tag, regole e Sieve, identità, Visualizza sorgente e risultati di autenticazione, tre riquadri e scorciatoie da tastiera, invio programmato.",
     "p3": "JMAP",
     "p3Text": "Account JMAP per Fastmail e Stalwart: ricerca sul server, invio senza SMTP, push dal server e Sieve tramite JMAP.",
     "p4": "Crittografia",

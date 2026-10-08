@@ -241,7 +241,7 @@
       "p1": { "title": "Identitások és álnevek", "text": "Válaszolj arról a címről, amelyre a levelet küldték, a catch-all álneveket is beleértve." },
       "p2": { "title": "Küldés visszavonása", "text": "Egy kis idő, hogy meggondold magad." },
       "p3": { "title": "Ütemezett küldés", "text": "Válassz időpontot; a Kimenő mappa addig megőrzi, akár offline is." },
-      "p4": { "title": "Értesítések műveletekkel", "text": "Archiválás, Mark as Read vagy válasz közvetlenül az értesítésből." }
+      "p4": { "title": "Értesítések műveletekkel", "text": "Archiválás, Megjelölés olvasottként vagy válasz közvetlenül az értesítésből." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Hosszú nyomásra megjelenő menük",
     "place1Text": "Üzeneteken, feladókon, buborékokon és mappákon.",
     "place2": "A ⋯ menü",
-    "place2Text": "View Source, az összes fejléc, és keresés ebből az üzenetből kiindulva.",
+    "place2Text": "Forrás megtekintése, az összes fejléc, és keresés ebből az üzenetből kiindulva.",
     "place3": "A keresési nyelv",
     "place3Text": "Mindaz, amire a buborékok képesek, és még több, egyszerűen begépelve.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Nézd meg a Loupe-ot Androidon: a beérkezett leveleket, a Readable módot, a kifejezésalapú keresést, a feliratkozásokat, a naptármeghívókat, a biztonsági ellenőrzéseket, a sötét módot és a táblagépes nézetet.",
     "eyebrow": "Képernyőképek",
     "h1": "Nézz körül.",
-    "lead_html": "Valódi képernyők az alkalmazásból, a beépített demó postafiókkal: ugyanazzal, amelyet a <strong>Try with demo mail</strong> választásakor kapsz.",
+    "lead_html": "Valódi képernyők az alkalmazásból, a beépített demó postafiókkal: ugyanazzal, amelyet a <strong>Kipróbálás demó levelekkel</strong> választásakor kapsz.",
     "filter": "Képernyőképek szűrése",
     "all": "Mind",
     "soon": "A képernyőképek hamarosan érkeznek.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Keresés és szűrők", "caption": "Javaslatok és szűrőbuborékok gépelés közben: másodpercek alatt megtalálod, amit keresel.", "alt": "A Loupe keresőképernyője egy begépelt kifejezéssel, szűrőbuborékokkal és javaslatokkal a keresőmező alatt." },
     "phishing": { "title": "Adathalászat, elmagyarázva", "caption": "Ha egy üzenettel valami nem stimmel, a Loupe közérthetően megmondja, miért: megtévesztően hasonló domain, vagy ismerős név egy új címről.", "alt": "A Loupe „This looks like phishing” panelje az okokkal: megtévesztően hasonló domain, és egy ismerős név, amely új címről ír." },
     "tablet": { "title": "Három panel táblagépen", "caption": "Postafiókok, lista és üzenet egymás mellett, billentyűparancsokkal és parancspalettával.", "alt": "A Loupe fekvő tájolású táblagépen: balra a postafiókok, középen az összes beérkezett levél, jobbra egy üzenet fotókarusszellel." },
-    "subscriptions": { "title": "Leiratkozási központ", "caption": "A hírlevelek aszerint rangsorolva, mennyit hagysz belőlük olvasatlanul, a telefonodon számolva, egy koppintásos leiratkozással.", "alt": "A Loupe Feliratkozások képernyője Newsletters és Discussions füllel, Never Read és Rarely Read szűrővel, olvasási arányokkal és leiratkozás gombokkal." },
+    "subscriptions": { "title": "Leiratkozási központ", "caption": "A hírlevelek aszerint rangsorolva, mennyit hagysz belőlük olvasatlanul, a telefonodon számolva, egy koppintásos leiratkozással.", "alt": "A Loupe Feliratkozások képernyője Newsletters és Discussions füllel, Soha nem olvasott és Ritkán olvasott szűrővel, olvasási arányokkal és leiratkozás gombokkal." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "A mentett keresések a mappáid mellett vannak, és a levelezőszervereden élnek, így a többi eszközöd is látja őket.", "alt": "A Loupe Postafiókok képernyője: összecsukott fiókok és két Smart Mailbox a listában." },
     "invitation": { "title": "Megválaszolt meghívók", "caption": "A meghívók mindkét időzónát mutatják, és az üzenet elhagyása nélkül választhatod az Accept, Maybe vagy Decline lehetőséget.", "alt": "Egy Outlook-értekezletmeghívó a Loupe-ban az esemény idejével két időzónában, Teams-csatlakozási linkkel, valamint Accept, Maybe és Decline gombokkal." },
     "openpgp": { "title": "Titkosítva, ellenőrizve", "caption": "Az OpenPGP-üzeneteket az eszköz fejti vissza, és megmutatja az aláírót, a védett tárgyat és a kulcs ujjlenyomatát.", "alt": "A Loupe „Signed by Dana Okafor” panelje: visszafejtve ezen az eszközön, védett tárgy és a kulcs ujjlenyomata." },
-    "compose": { "title": "Üzenet írása", "caption": "Címzettek buborékként, a küldő identitás, és Send Later, ha a levélnek reggelig várnia kell.", "alt": "A Loupe Új üzenet képernyője címzettbuborékokkal, a feladói identitással, szövegtörzzsel, valamint Send Later és Send gombbal." },
-    "rules": { "title": "Szabályok egyszerű keresésként", "caption": "A szabály egy keresés és egy művelet; futtasd a telefonon vagy a szervereden, ahol a Loupe megírja helyetted a Sieve-et.", "alt": "A Loupe Új szabály szerkesztője: keresésszerű feltétel, a Mark as Read művelet, bekapcsolt Run On Server kapcsoló és a generált Sieve-szkript." },
+    "compose": { "title": "Üzenet írása", "caption": "Címzettek buborékként, a küldő identitás, és Küldés később, ha a levélnek reggelig várnia kell.", "alt": "A Loupe Új üzenet képernyője címzettbuborékokkal, a feladói identitással, szövegtörzzsel, valamint Küldés később és Send gombbal." },
+    "rules": { "title": "Szabályok egyszerű keresésként", "caption": "A szabály egy keresés és egy művelet; futtasd a telefonon vagy a szervereden, ahol a Loupe megírja helyetted a Sieve-et.", "alt": "A Loupe Új szabály szerkesztője: keresésszerű feltétel, a Megjelölés olvasottként művelet, bekapcsolt Run On Server kapcsoló és a generált Sieve-szkript." },
     "patch": { "title": "Patchek diffként", "caption": "A technikai levelezőlistákon a patchek színes diffként, fix szélességű betűtípussal jelennek meg.", "alt": "Egy levelezőlistás üzenet a Loupe-ban fix szélességű betűkkel, amelyben egy patch piros-zöld diffként jelenik meg." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Engedélyezd a telepítést",
     "step2Text_html": "Az Android egyszer megkérdezi, hogy a böngésződ telepíthet-e alkalmazásokat. Engedélyezd, majd koppints a <strong>Telepítés</strong> gombra. A későbbi buildek erre települnek, és megtartják a fiókjaidat.",
     "step3": "Próbáld ki, vagy add hozzá a fiókodat",
-    "step3Text_html": "Válaszd a <strong>Try with demo mail</strong> lehetőséget, ha előbb körülnéznél, vagy add hozzá a fiókodat. Lásd: <a href=\"/docs/getting-started/\">Első lépések</a>.",
+    "step3Text_html": "Válaszd a <strong>Kipróbálás demó levelekkel</strong> lehetőséget, ha előbb körülnéznél, vagy add hozzá a fiókodat. Lásd: <a href=\"/docs/getting-started/\">Első lépések</a>.",
     "safety": "Minden buildet a GitHub Actions készít a nyilvános forráskódból, és a Loupe kiadási kulcsával van aláírva. A Google Play Protect ennek ellenére figyelmeztethet a Play Store-on kívülről származó alkalmazásokra."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Mindennapi levelezés",
     "p1Text": "Fiókok automatikus beállítással, üzenetlista csúsztatásokkal, Readable, Original és Plain nézet, keresés, levélírás a küldés visszavonásával és Kimenő mappával, értesítések és sötét mód.",
     "p2": "A haladó réteg",
-    "p2Text": "A teljes keresési nyelv, Smart Mailboxes, címkék, szabályok és Sieve, identitások, View Source és hitelesítési eredmények, három panel és billentyűparancsok, ütemezett küldés.",
+    "p2Text": "A teljes keresési nyelv, Smart Mailboxes, címkék, szabályok és Sieve, identitások, Forrás megtekintése és hitelesítési eredmények, három panel és billentyűparancsok, ütemezett küldés.",
     "p3": "JMAP",
     "p3Text": "JMAP-fiókok a Fastmailhez és a Stalwarthoz: keresés a szerveren, küldés SMTP nélkül, push a szerverről és Sieve JMAP-on keresztül.",
     "p4": "Titkosítás",

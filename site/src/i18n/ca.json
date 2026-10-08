@@ -241,7 +241,7 @@
       "p1": { "title": "Identitats i àlies", "text": "Respon des de l'adreça a la qual es va enviar el missatge, inclosos els àlies comodí." },
       "p2": { "title": "Desfés l'enviament", "text": "Un breu marge per canviar d'opinió." },
       "p3": { "title": "Enviament programat", "text": "Tria una hora; la safata de sortida el guarda fins aleshores, fins i tot sense connexió." },
-      "p4": { "title": "Notificacions amb accions", "text": "Arxiva, respon o tria Mark as Read directament des de la notificació." }
+      "p4": { "title": "Notificacions amb accions", "text": "Arxiva, respon o tria Marca com a llegit directament des de la notificació." }
     }
   },
   "features": {
@@ -259,7 +259,7 @@
     "place1": "Menús de toc llarg",
     "place1Text": "Als missatges, als remitents, a les fitxes i a les carpetes.",
     "place2": "El menú ⋯",
-    "place2Text": "View Source, totes les capçaleres i cerques a partir d'aquest missatge.",
+    "place2Text": "Mostra el codi font, totes les capçaleres i cerques a partir d'aquest missatge.",
     "place3": "El llenguatge de cerca",
     "place3Text": "Tot el que fan les fitxes, i més, només escrivint.",
     "place4": "Settings › Advanced",
@@ -312,7 +312,7 @@
     "description": "Mira Loupe a Android: la safata d'entrada, el mode Readable, la cerca per expressions, les subscripcions, les invitacions de calendari, les comprovacions de seguretat, el mode fosc i les tauletes.",
     "eyebrow": "Captures de pantalla",
     "h1": "Fes un cop d'ull.",
-    "lead_html": "Pantalles reals de l'aplicació, generades a partir de la bústia de demostració integrada: la mateixa que obtens amb <strong>Try with demo mail</strong>.",
+    "lead_html": "Pantalles reals de l'aplicació, generades a partir de la bústia de demostració integrada: la mateixa que obtens amb <strong>Prova-ho amb correu de demostració</strong>.",
     "filter": "Filtra les captures",
     "all": "Totes",
     "soon": "Les captures de pantalla són en camí.",
@@ -341,12 +341,12 @@
     "search-hero": { "title": "Cerca i filtres", "caption": "Suggeriments i fitxes de filtre mentre escrius: trobar exactament el que vols és qüestió de segons.", "alt": "La pantalla de cerca de Loupe amb una expressió escrita, fitxes de filtre i suggeriments sota el camp de cerca." },
     "phishing": { "title": "Phishing, explicat", "caption": "Quan un missatge fa mala espina, Loupe et diu per què en paraules senzilles: un domini que n'imita un altre, o un nom conegut que escriu des d'una adreça nova.", "alt": "El full «This looks like phishing» de Loupe amb la llista de motius: un domini que n'imita un altre i un nom que coneixes que escriu des d'una adreça nova." },
     "tablet": { "title": "Tres panells a les tauletes", "caption": "Les bústies, la llista i el missatge un al costat de l'altre, amb dreceres de teclat i una paleta d'ordres.", "alt": "Loupe en una tauleta en horitzontal: les bústies a l'esquerra, totes les safates d'entrada al mig i un missatge amb un carrusel de fotos a la dreta." },
-    "subscriptions": { "title": "Centre de baixes", "caption": "Butlletins ordenats segons quants en deixes sense llegir, calculat al teu telèfon, amb baixa d'un sol toc.", "alt": "La pantalla de subscripcions de Loupe amb les pestanyes Newsletters i Discussions, els filtres Never Read i Rarely Read, taxes de lectura i botons per donar-se de baixa." },
+    "subscriptions": { "title": "Centre de baixes", "caption": "Butlletins ordenats segons quants en deixes sense llegir, calculat al teu telèfon, amb baixa d'un sol toc.", "alt": "La pantalla de subscripcions de Loupe amb les pestanyes Newsletters i Discussions, els filtres Mai llegits i Poc llegits, taxes de lectura i botons per donar-se de baixa." },
     "mailboxes": { "title": "Smart Mailboxes", "caption": "Les cerques desades són al costat de les teves carpetes i viuen al teu servidor de correu, perquè els altres dispositius també les vegin.", "alt": "La pantalla de bústies de Loupe amb els comptes plegats i dues Smart Mailboxes a la llista." },
     "invitation": { "title": "Invitacions, contestades", "caption": "Les invitacions a reunions mostren les dues zones horàries i et permeten respondre Accept, Maybe o Decline sense sortir del missatge.", "alt": "Una invitació a una reunió d'Outlook a Loupe amb l'hora de l'esdeveniment en dues zones horàries, un enllaç per unir-se a Teams i els botons Accept, Maybe i Decline." },
     "openpgp": { "title": "Xifrat i verificat", "caption": "Els missatges OpenPGP es desxifren al dispositiu, amb el signant, un assumpte protegit i l'empremta de la clau.", "alt": "El full «Signed by Dana Okafor» de Loupe: desxifrat en aquest dispositiu, amb un assumpte protegit i l'empremta de la clau." },
-    "compose": { "title": "Escriure un missatge", "caption": "Destinataris com a fitxes, la identitat des de la qual envies i Send Later quan ha d'esperar fins al matí.", "alt": "La pantalla de missatge nou de Loupe amb fitxes de destinataris, la identitat del remitent, el text del missatge i els botons Send Later i Send." },
-    "rules": { "title": "Regles en forma de cerca", "caption": "Una regla és una cerca més una acció; executa-la al telèfon o al teu servidor, on Loupe escriu el Sieve per tu.", "alt": "L'editor de regla nova de Loupe: una condició en forma de cerca, l'acció Mark as Read, l'opció Run On Server activada i l'script Sieve generat." },
+    "compose": { "title": "Escriure un missatge", "caption": "Destinataris com a fitxes, la identitat des de la qual envies i Envia més tard quan ha d'esperar fins al matí.", "alt": "La pantalla de missatge nou de Loupe amb fitxes de destinataris, la identitat del remitent, el text del missatge i els botons Envia més tard i Send." },
+    "rules": { "title": "Regles en forma de cerca", "caption": "Una regla és una cerca més una acció; executa-la al telèfon o al teu servidor, on Loupe escriu el Sieve per tu.", "alt": "L'editor de regla nova de Loupe: una condició en forma de cerca, l'acció Marca com a llegit, l'opció Run On Server activada i l'script Sieve generat." },
     "patch": { "title": "Pedaços com a diffs", "caption": "A les llistes de correu tècniques, els pedaços es mostren com a diffs en color amb una lletra monoespaiada.", "alt": "Un missatge d'una llista de correu a Loupe en lletra monoespaiada, amb un pedaç mostrat com a diff en vermell i verd." }
   },
   "download": {
@@ -412,7 +412,7 @@
     "step2": "Permet aquesta instal·lació",
     "step2Text_html": "Android et pregunta una sola vegada si el navegador pot instal·lar aplicacions. Permet-ho i toca <strong>Instal·la</strong>. Les compilacions posteriors s'instal·len sobre aquesta i conserven els teus comptes.",
     "step3": "Prova-la o afegeix el teu compte",
-    "step3Text_html": "Tria <strong>Try with demo mail</strong> per fer-hi una ullada primer, o afegeix el teu compte. Consulta <a href=\"/docs/getting-started/\">Primers passos</a>.",
+    "step3Text_html": "Tria <strong>Prova-ho amb correu de demostració</strong> per fer-hi una ullada primer, o afegeix el teu compte. Consulta <a href=\"/docs/getting-started/\">Primers passos</a>.",
     "safety": "Cada compilació la fa GitHub Actions a partir del codi font públic i se signa amb la clau de publicació de Loupe. Tot i així, és possible que Google Play Protect mostri un avís per a les aplicacions de fora de la Play Store."
   },
   "start": {
@@ -547,7 +547,7 @@
     "p1": "Correu de cada dia",
     "p1Text": "Comptes amb configuració automàtica, la llista de missatges amb gestos de lliscar, les vistes Readable, Original i Plain, la cerca, la redacció amb desfer l'enviament i una safata de sortida, les notificacions i el mode fosc.",
     "p2": "La capa avançada",
-    "p2Text": "El llenguatge de cerca complet, Smart Mailboxes, etiquetes, regles i Sieve, identitats, View Source i resultats d'autenticació, tres panells i dreceres de teclat, enviament programat.",
+    "p2Text": "El llenguatge de cerca complet, Smart Mailboxes, etiquetes, regles i Sieve, identitats, Mostra el codi font i resultats d'autenticació, tres panells i dreceres de teclat, enviament programat.",
     "p3": "JMAP",
     "p3Text": "Comptes JMAP per a Fastmail i Stalwart: cerca al servidor, enviament sense SMTP, push des del servidor i Sieve a través de JMAP.",
     "p4": "Xifratge",
