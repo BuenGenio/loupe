@@ -68,6 +68,7 @@ Add it to `app_en.arb`, then run `flutter gen-l10n`:
 ## What stays English
 
 - Names: Loupe, Gmail, Thunderbird, and protocol and standard names (IMAP, JMAP, OpenPGP, S/MIME).
+- **Smart Mailbox** and **Smart Mailboxes**, the feature's name, as on the website in every language. Fit it to the language's grammar rather than transliterating it: inflect it where that reads well (Finnish `Smart Mailboxiksi`, Turkish `Smart Mailbox'ı`), or add a head noun and inflect that (`скриньки Smart Mailbox`). The three view names — **Readable**, **Original** and **Plain** — are translated, because they are labels you pick from a list.
 - What the user or a server wrote: mail, server error messages and folder names from the server. Only the special folders Loupe names itself get `mailbox…` keys.
 - The demo mailbox's mail, which is content like a real mailbox's.
 - Log lines (`debugPrint`), exception messages nobody sees, and raw header names in View Source.
