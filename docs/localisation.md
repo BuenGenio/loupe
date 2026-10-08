@@ -87,6 +87,7 @@ Each language is one `app_<lang>.arb` with the same keys and placeholders as `ap
   - Every plural needs `other`.
   - `=1` and `one` are the same thing to gen-l10n. In Ukrainian, Croatian, Serbian, Bosnian, Slovenian, Lithuanian, Latvian, Macedonian and Icelandic, `one` also means 21, 31 and so on; in French and Portuguese it also means 0. So `one` must show the number there (`one{{count} лист}`), never "1" or "a".
 - **Scripts:** Serbian is written in Cyrillic, as on the website.
+- **Tool:** `python3 tool/l10n.py todo <lang>` (in `app/`) prints the next untranslated strings with their descriptions and placeholder examples. `add <lang> <file.json>` checks a batch of translations and adds it in app_en.arb's order, and `check <lang>` reports what's missing or wrong.
 - **Checks:** `test/l10n/translations_test.dart` checks every file for missing or extra keys, lost placeholders and those plural rules. `flutter gen-l10n` checks the syntax.
 
 After adding a language, run `python3 tool/sync_languages.py` in `app/`. It lists the languages for Android 13's per-app language setting (`android/app/src/main/res/xml/locales_config.xml`) and in iOS's `Info.plist` (`CFBundleLocalizations`), and the test checks those lists too.
