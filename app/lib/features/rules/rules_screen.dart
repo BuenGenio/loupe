@@ -265,7 +265,8 @@ class _RuleRow extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 6),
-                        RuleLocationBadge(rule.location),
+                        // Flexible: a long badge (another language) shrinks instead of overflowing.
+                        Flexible(child: RuleLocationBadge(rule.location)),
                       ],
                     ),
                     const SizedBox(height: 2),
