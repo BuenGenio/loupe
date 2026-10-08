@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../l10n/l10n.dart';
 import 'mail_commands.dart';
 
 /// A shortcut's command; [modified] when it needs Ctrl or ⌘ (those work
@@ -44,18 +45,19 @@ final class KeyCombo {
     ];
   }
 
-  /// The keys as shown on this platform: "⇧⌘R" on Apple, "Ctrl+Shift+R" elsewhere.
-  List<String> keyLabels({required bool apple}) => [
-    if (primary) apple ? '⌘' : 'Ctrl',
-    if (shift) apple ? '⇧' : 'Shift',
-    label ?? _keyLabel(key!, apple: apple),
+  /// The keys as shown on this platform: "⇧⌘R" on Apple, "Ctrl+Shift+R"
+  /// elsewhere (key names in [l10n]'s words).
+  List<String> keyLabels({required bool apple, required AppLocalizations l10n}) => [
+    if (primary) apple ? '⌘' : l10n.keyboardKeyCtrl,
+    if (shift) apple ? '⇧' : l10n.keyboardKeyShift,
+    label ?? _keyLabel(key!, apple: apple, l10n: l10n),
   ];
 
-  static String _keyLabel(LogicalKeyboardKey key, {required bool apple}) {
-    if (key == LogicalKeyboardKey.enter) return apple ? '↩' : 'Enter';
-    if (key == LogicalKeyboardKey.escape) return 'Esc';
-    if (key == LogicalKeyboardKey.delete) return apple ? '⌦' : 'Delete';
-    if (key == LogicalKeyboardKey.backspace) return apple ? '⌫' : 'Backspace';
+  static String _keyLabel(LogicalKeyboardKey key, {required bool apple, required AppLocalizations l10n}) {
+    if (key == LogicalKeyboardKey.enter) return apple ? '↩' : l10n.keyboardKeyEnter;
+    if (key == LogicalKeyboardKey.escape) return l10n.keyboardKeyEsc;
+    if (key == LogicalKeyboardKey.delete) return apple ? '⌦' : l10n.keyboardKeyDelete;
+    if (key == LogicalKeyboardKey.backspace) return apple ? '⌫' : l10n.keyboardKeyBackspace;
     if (key == LogicalKeyboardKey.arrowDown) return '↓';
     if (key == LogicalKeyboardKey.arrowUp) return '↑';
     if (key == LogicalKeyboardKey.slash) return '/';
@@ -63,13 +65,69 @@ final class KeyCombo {
   }
 }
 
+/// A group of the cheat sheet.
+enum ShortcutGroup {
+  general,
+  messages,
+  compose;
+
+  /// Its heading.
+  String title(AppLocalizations l10n) => switch (this) {
+    general => l10n.keyboardGroupGeneral,
+    messages => l10n.keyboardGroupMessages,
+    compose => l10n.keyboardGroupCompose,
+  };
+}
+
+/// What a row of the cheat sheet says a shortcut does.
+enum ShortcutLabel {
+  newMessage,
+  commandPalette,
+  search,
+  shortcuts,
+  backClose,
+  nextMessage,
+  previousMessage,
+  openMessage,
+  reply,
+  replyAll,
+  forward,
+  archive,
+  moveToTrash,
+  toggleRead,
+  toggleFlag,
+  send,
+  closeDraft;
+
+  /// In words.
+  String text(AppLocalizations l10n) => switch (this) {
+    newMessage => l10n.mailNewMessage,
+    commandPalette => l10n.keyboardCommandPalette,
+    search => l10n.commonSearch,
+    shortcuts => l10n.keyboardShortcuts,
+    backClose => l10n.keyboardBackClose,
+    nextMessage => l10n.keyboardNextMessage,
+    previousMessage => l10n.keyboardPreviousMessage,
+    openMessage => l10n.keyboardOpenMessage,
+    reply => l10n.mailReply,
+    replyAll => l10n.mailReplyAll,
+    forward => l10n.mailForward,
+    archive => l10n.mailArchive,
+    moveToTrash => l10n.keyboardMoveToTrash,
+    toggleRead => l10n.keyboardToggleRead,
+    toggleFlag => l10n.keyboardToggleFlag,
+    send => l10n.mailSend,
+    closeDraft => l10n.keyboardCloseDraft,
+  };
+}
+
 /// A row of the cheat sheet: what [command] does and its keys.
 @immutable
 final class ShortcutEntry {
   const ShortcutEntry(this.group, this.label, this.command, this.combos);
 
-  final String group;
-  final String label;
+  final ShortcutGroup group;
+  final ShortcutLabel label;
   final MailCommand command;
   final List<KeyCombo> combos;
 }
@@ -81,55 +139,70 @@ const _r = LogicalKeyboardKey.keyR;
 /// Thunderbird's. Where those clash with a plain letter here, the letter
 /// wins and the other app's key is noted in docs/tablet-and-keyboard.md.
 const shortcutTable = [
-  ShortcutEntry('General', 'New Message', MailCommand.newMessage, [KeyCombo(LogicalKeyboardKey.keyN, primary: true)]),
-  ShortcutEntry('General', 'Command Palette', MailCommand.palette, [KeyCombo(LogicalKeyboardKey.keyK, primary: true)]),
-  ShortcutEntry('General', 'Search', MailCommand.search, [
+  ShortcutEntry(ShortcutGroup.general, ShortcutLabel.newMessage, MailCommand.newMessage, [
+    KeyCombo(LogicalKeyboardKey.keyN, primary: true),
+  ]),
+  ShortcutEntry(ShortcutGroup.general, ShortcutLabel.commandPalette, MailCommand.palette, [
+    KeyCombo(LogicalKeyboardKey.keyK, primary: true),
+  ]),
+  ShortcutEntry(ShortcutGroup.general, ShortcutLabel.search, MailCommand.search, [
     KeyCombo.char('/'),
     KeyCombo(LogicalKeyboardKey.keyF, primary: true),
   ]),
-  ShortcutEntry('General', 'Keyboard Shortcuts', MailCommand.shortcuts, [
+  ShortcutEntry(ShortcutGroup.general, ShortcutLabel.shortcuts, MailCommand.shortcuts, [
     KeyCombo(LogicalKeyboardKey.slash, primary: true),
     KeyCombo.char('?'),
   ]),
-  ShortcutEntry('General', 'Back, Close', MailCommand.back, [KeyCombo(LogicalKeyboardKey.escape)]),
-  ShortcutEntry('Messages', 'Next Message', MailCommand.nextMessage, [
+  ShortcutEntry(ShortcutGroup.general, ShortcutLabel.backClose, MailCommand.back, [
+    KeyCombo(LogicalKeyboardKey.escape),
+  ]),
+  ShortcutEntry(ShortcutGroup.messages, ShortcutLabel.nextMessage, MailCommand.nextMessage, [
     KeyCombo(LogicalKeyboardKey.keyJ),
     KeyCombo(LogicalKeyboardKey.arrowDown),
   ]),
-  ShortcutEntry('Messages', 'Previous Message', MailCommand.previousMessage, [
+  ShortcutEntry(ShortcutGroup.messages, ShortcutLabel.previousMessage, MailCommand.previousMessage, [
     KeyCombo(LogicalKeyboardKey.keyK),
     KeyCombo(LogicalKeyboardKey.arrowUp),
   ]),
-  ShortcutEntry('Messages', 'Open Message', MailCommand.open, [KeyCombo(LogicalKeyboardKey.enter)]),
-  ShortcutEntry('Messages', 'Reply', MailCommand.reply, [KeyCombo(_r), KeyCombo(_r, primary: true)]),
-  ShortcutEntry('Messages', 'Reply All', MailCommand.replyAll, [
+  ShortcutEntry(ShortcutGroup.messages, ShortcutLabel.openMessage, MailCommand.open, [
+    KeyCombo(LogicalKeyboardKey.enter),
+  ]),
+  ShortcutEntry(ShortcutGroup.messages, ShortcutLabel.reply, MailCommand.reply, [
+    KeyCombo(_r),
+    KeyCombo(_r, primary: true),
+  ]),
+  ShortcutEntry(ShortcutGroup.messages, ShortcutLabel.replyAll, MailCommand.replyAll, [
     KeyCombo(_r, shift: true),
     KeyCombo(_r, primary: true, shift: true),
   ]),
-  ShortcutEntry('Messages', 'Forward', MailCommand.forward, [
+  ShortcutEntry(ShortcutGroup.messages, ShortcutLabel.forward, MailCommand.forward, [
     KeyCombo(LogicalKeyboardKey.keyF),
     KeyCombo(LogicalKeyboardKey.keyF, primary: true, shift: true),
     KeyCombo(LogicalKeyboardKey.keyL, primary: true),
   ]),
-  ShortcutEntry('Messages', 'Archive', MailCommand.archive, [KeyCombo(LogicalKeyboardKey.keyE)]),
-  ShortcutEntry('Messages', 'Move to Trash', MailCommand.trash, [
+  ShortcutEntry(ShortcutGroup.messages, ShortcutLabel.archive, MailCommand.archive, [
+    KeyCombo(LogicalKeyboardKey.keyE),
+  ]),
+  ShortcutEntry(ShortcutGroup.messages, ShortcutLabel.moveToTrash, MailCommand.trash, [
     KeyCombo(LogicalKeyboardKey.delete),
     KeyCombo(LogicalKeyboardKey.backspace),
     KeyCombo(LogicalKeyboardKey.backspace, primary: true),
   ]),
-  ShortcutEntry('Messages', 'Mark as Read or Unread', MailCommand.toggleRead, [
+  ShortcutEntry(ShortcutGroup.messages, ShortcutLabel.toggleRead, MailCommand.toggleRead, [
     KeyCombo(LogicalKeyboardKey.keyU, shift: true),
     KeyCombo(LogicalKeyboardKey.keyU, primary: true, shift: true),
   ]),
-  ShortcutEntry('Messages', 'Flag or Unflag', MailCommand.toggleFlag, [
+  ShortcutEntry(ShortcutGroup.messages, ShortcutLabel.toggleFlag, MailCommand.toggleFlag, [
     KeyCombo(LogicalKeyboardKey.keyS),
     KeyCombo(LogicalKeyboardKey.keyL, primary: true, shift: true),
   ]),
-  ShortcutEntry('Compose', 'Send', MailCommand.send, [
+  ShortcutEntry(ShortcutGroup.compose, ShortcutLabel.send, MailCommand.send, [
     KeyCombo(LogicalKeyboardKey.enter, primary: true),
     KeyCombo(LogicalKeyboardKey.keyD, primary: true, shift: true),
   ]),
-  ShortcutEntry('Compose', 'Close (Save or Delete Draft)', MailCommand.back, [KeyCombo(LogicalKeyboardKey.escape)]),
+  ShortcutEntry(ShortcutGroup.compose, ShortcutLabel.closeDraft, MailCommand.back, [
+    KeyCombo(LogicalKeyboardKey.escape),
+  ]),
 ];
 
 /// The key bindings of [shortcutTable]. Only moving through the list
@@ -152,9 +225,9 @@ bool get appleKeyboard => switch (defaultTargetPlatform) {
 
 /// The keys of [command]'s first combination, as shown on this platform
 /// (["E"], ["⌘", "N"]), for hints in the palette.
-List<String>? shortcutKeys(MailCommand command) {
+List<String>? shortcutKeys(MailCommand command, AppLocalizations l10n) {
   for (final entry in shortcutTable) {
-    if (entry.command == command) return entry.combos.first.keyLabels(apple: appleKeyboard);
+    if (entry.command == command) return entry.combos.first.keyLabels(apple: appleKeyboard, l10n: l10n);
   }
   return null;
 }

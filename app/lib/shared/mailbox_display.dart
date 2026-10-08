@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../l10n/l10n.dart';
 import '../theme/loupe_icons.dart';
 
 /// Icon of a mailbox by role, as Apple Mail draws them.
@@ -20,14 +21,18 @@ IconData mailboxIcon(MailboxRole role) => switch (role) {
   MailboxRole.none => LoupeIcons.folder,
 };
 
-String virtualMailboxTitle(VirtualMailbox kind) => switch (kind) {
-  VirtualMailbox.allInboxes => 'All Inboxes',
-  VirtualMailbox.unread => 'Unread',
-  VirtualMailbox.flagged => 'Flagged',
-  VirtualMailbox.vip => 'VIP',
-  VirtualMailbox.allDrafts => 'All Drafts',
-  VirtualMailbox.allSent => 'All Sent',
-};
+/// The title of a unified mailbox, in [l10n]'s language (else the device's).
+String virtualMailboxTitle(VirtualMailbox kind, {AppLocalizations? l10n}) {
+  final strings = l10n ?? deviceL10n();
+  return switch (kind) {
+    VirtualMailbox.allInboxes => strings.sharedMailboxAllInboxes,
+    VirtualMailbox.unread => strings.sharedMailboxUnread,
+    VirtualMailbox.flagged => strings.sharedMailboxFlagged,
+    VirtualMailbox.vip => strings.sharedMailboxVip,
+    VirtualMailbox.allDrafts => strings.sharedMailboxAllDrafts,
+    VirtualMailbox.allSent => strings.sharedMailboxAllSent,
+  };
+}
 
 IconData virtualMailboxIcon(VirtualMailbox kind) => switch (kind) {
   VirtualMailbox.allInboxes => LoupeIcons.allInboxes,
@@ -60,7 +65,7 @@ int mailboxRoleOrder(MailboxRole role) => switch (role) {
 /// mailbox named like the role, else the one with the shortest path.
 List<Mailbox> withUniqueRoles(List<Mailbox> mailboxes) {
   final holders = <(String, MailboxRole), Mailbox>{};
-  int rank(Mailbox m) => mailboxDisplayName(m).toLowerCase() == m.name.toLowerCase() ? 0 : 1;
+  int rank(Mailbox m) => (_roleName(m.role) ?? m.name).toLowerCase() == m.name.toLowerCase() ? 0 : 1;
   for (final m in mailboxes) {
     if (m.role == MailboxRole.none) continue;
     final key = (m.accountId, m.role);
@@ -79,26 +84,46 @@ List<Mailbox> withUniqueRoles(List<Mailbox> mailboxes) {
   ];
 }
 
-/// Display name of a mailbox: the mailbox holding a role gets its familiar
-/// name ("Sent Mail" and "Sent Items" are both "Sent"); see
-/// [withUniqueRoles] for why only one per account does.
-String mailboxDisplayName(Mailbox box) => switch (box.role) {
+/// The English name of the folder holding [role], as servers usually name
+/// it; null for roles shown by their own name.
+String? _roleName(MailboxRole role) => switch (role) {
   MailboxRole.inbox => 'Inbox',
   MailboxRole.drafts => 'Drafts',
   MailboxRole.sent => 'Sent',
   MailboxRole.junk => 'Junk',
   MailboxRole.trash => 'Trash',
   MailboxRole.archive => 'Archive',
-  MailboxRole.all => box.name,
-  _ => box.name,
+  _ => null,
 };
 
+/// Display name of a mailbox: the mailbox holding a role gets its familiar
+/// name ("Sent Mail" and "Sent Items" are both "Sent"), in [l10n]'s language
+/// (else the device's); see [withUniqueRoles] for why only one per account
+/// does.
+String mailboxDisplayName(Mailbox box, {AppLocalizations? l10n}) {
+  if (_roleName(box.role) == null) return box.name;
+  final strings = l10n ?? deviceL10n();
+  return switch (box.role) {
+    MailboxRole.inbox => strings.mailboxInbox,
+    MailboxRole.drafts => strings.mailboxDrafts,
+    MailboxRole.sent => strings.mailboxSent,
+    MailboxRole.junk => strings.mailboxJunk,
+    MailboxRole.trash => strings.mailboxTrash,
+    MailboxRole.archive => strings.mailboxArchive,
+    _ => box.name,
+  };
+}
+
 /// The title of a message list.
-String mailboxRefTitle(MailboxRef ref, Iterable<Mailbox> mailboxes) => switch (ref) {
-  VirtualMailboxRef(:final kind) => virtualMailboxTitle(kind),
-  RealMailboxRef(:final mailboxId) =>
-    mailboxes.where((m) => m.id == mailboxId).map(mailboxDisplayName).firstOrNull ?? 'Mailbox',
-};
+String mailboxRefTitle(MailboxRef ref, Iterable<Mailbox> mailboxes, {AppLocalizations? l10n}) {
+  final strings = l10n ?? deviceL10n();
+  return switch (ref) {
+    VirtualMailboxRef(:final kind) => virtualMailboxTitle(kind, l10n: strings),
+    RealMailboxRef(:final mailboxId) =>
+      mailboxes.where((m) => m.id == mailboxId).map((m) => mailboxDisplayName(m, l10n: strings)).firstOrNull ??
+          strings.sharedMailboxUntitled,
+  };
+}
 
 /// The folders the Mailboxes screen shows, like Thunderbird: subscribed
 /// ones and those holding a role (Inbox, Sent…). An unsubscribed folder on

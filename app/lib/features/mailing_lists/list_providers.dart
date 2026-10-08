@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 
 /// The repository's mailing-list side, if it has one.
@@ -42,8 +43,9 @@ final _leadingTag = RegExp(r'^\s*\[([^\[\]]*)\]\s*');
 
 /// A thread's title in the list view: its first subject without reply
 /// prefixes, the list's own `[tag]` and the `[PATCH …]` tag (the row shows
-/// that as a badge). Other tags (`[RFC]`, `[ANN]`) stay.
-String listThreadTitle(String subject, {required String listId}) {
+/// that as a badge). Other tags (`[RFC]`, `[ANN]`) stay. An empty subject
+/// is [l10n]'s No Subject.
+String listThreadTitle(String subject, {required String listId, required AppLocalizations l10n}) {
   final short = listId.split('.').first.toLowerCase();
   var s = subject;
   for (var guard = 0; guard < 8; guard++) {
@@ -60,7 +62,7 @@ String listThreadTitle(String subject, {required String listId}) {
     s = s.substring(tag.end);
   }
   s = s.trim();
-  return s.isEmpty ? (subject.trim().isEmpty ? 'No Subject' : subject.trim()) : s;
+  return s.isEmpty ? (subject.trim().isEmpty ? l10n.mailNoSubject : subject.trim()) : s;
 }
 
 /// Who wrote in a thread, for its row: up to three names, then "+N".

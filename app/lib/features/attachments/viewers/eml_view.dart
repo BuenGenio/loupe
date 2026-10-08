@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:readable/readable.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../l10n/l10n.dart';
 import '../../../shared/format.dart';
 import '../../../theme/theme.dart';
 import '../eml.dart';
@@ -37,6 +38,7 @@ class _EmlViewState extends State<EmlView> {
     final m = widget.message;
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     final label = styles.footnote.copyWith(color: colors.secondaryText);
 
     Widget header(String name, String? value) => value == null || value.isEmpty
@@ -62,14 +64,14 @@ class _EmlViewState extends State<EmlView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                m.subject?.trim().isNotEmpty == true ? m.subject! : '(No Subject)',
+                m.subject?.trim().isNotEmpty == true ? m.subject! : l10n.attachmentsEmlNoSubject,
                 style: styles.body.copyWith(fontSize: 20, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 6),
-              header('From', m.from),
-              header('To', m.to),
-              header('Cc', m.cc),
-              if (m.date != null) header('Date', formatFullDate(m.date!)),
+              header(l10n.attachmentsEmlFrom, m.from),
+              header(l10n.attachmentsEmlTo, m.to),
+              header(l10n.attachmentsEmlCc, m.cc),
+              if (m.date != null) header(l10n.attachmentsEmlDate, formatFullDate(m.date!, l10n: l10n)),
             ],
           ),
         ),
@@ -85,12 +87,12 @@ class _EmlViewState extends State<EmlView> {
             onOpenLink: _openLink,
           )
         else
-          Text('This message has no text.', style: label),
+          Text(l10n.attachmentsEmlNoText, style: label),
         if (m.attachmentNames.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 16),
             child: Text(
-              '${m.attachmentNames.length == 1 ? 'Attachment' : 'Attachments'}: ${m.attachmentNames.join(', ')}',
+              l10n.attachmentsEmlAttachments(m.attachmentNames.length, m.attachmentNames.join(', ')),
               style: label,
             ),
           ),

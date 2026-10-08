@@ -10,6 +10,7 @@ import 'package:mail_model/mail_model.dart';
 import 'package:readable/readable.dart' show inspectHost;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
@@ -101,6 +102,7 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
   }
 
   EventTimeFormat _format(BuildContext context) => EventTimeFormat(
+    l10n: context.l10n,
     locale: deviceDateLocale(),
     use24h: MediaQuery.alwaysUse24HourFormatOf(context),
     deviceZone: ref.watch(invitationZoneProvider),
@@ -123,6 +125,7 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
 
   Widget _card(BuildContext context, Invitation inv) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final format = _format(context);
     final event = inv.event;
     final span = inv.span;
@@ -158,7 +161,7 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
                   ? null
                   : _SmallButton(
                       key: const Key('invitation-map'),
-                      label: 'Map',
+                      label: l10n.calendarMap,
                       onPressed: widget.inert ? null : () => _openMap(place),
                     ),
             ),
@@ -170,13 +173,13 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
                 key: const Key('invitation-meeting'),
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(_meetingName(link)),
+                  Text(_meetingName(link, l10n)),
                   Text(inspectHost(link.uri.host).display, style: TextStyle(color: colors.secondaryText, fontSize: 14)),
                 ],
               ),
               trailing: _SmallButton(
                 key: const Key('invitation-join'),
-                label: 'Join',
+                label: l10n.calendarJoin,
                 onPressed: widget.inert ? null : () => _join(link),
               ),
             ),
@@ -187,9 +190,9 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
               Text.rich(
                 TextSpan(
                   children: [
-                    TextSpan(text: inv.isOrganizer ? 'You' : organizer.displayName),
+                    TextSpan(text: inv.isOrganizer ? l10n.calendarOrganizerYou : organizer.displayName),
                     TextSpan(
-                      text: ' · organizer',
+                      text: ' · ${l10n.calendarOrganizerLabel}',
                       style: TextStyle(color: colors.secondaryText),
                     ),
                   ],
@@ -206,10 +209,12 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
   }
 
   /// "Teams meeting", "Google Meet", "Online meeting".
-  static String _meetingName(MeetingLink link) {
+  static String _meetingName(MeetingLink link, AppLocalizations l10n) {
     final provider = link.provider;
-    if (provider == null) return 'Online meeting';
-    return provider.endsWith('Meet') || provider.endsWith('Meeting') ? provider : '$provider meeting';
+    if (provider == null) return l10n.calendarOnlineMeeting;
+    return provider.endsWith('Meet') || provider.endsWith('Meeting')
+        ? provider
+        : l10n.calendarProviderMeeting(provider);
   }
 
   Widget _title(BuildContext context, Invitation inv) {
@@ -229,7 +234,7 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
         const SizedBox(width: 10),
         Expanded(
           child: Text(
-            inv.event.summary ?? 'Event',
+            inv.event.summary ?? context.l10n.calendarUntitledEvent,
             key: const Key('invitation-title'),
             style: styles.body.copyWith(
               fontSize: 17,
@@ -238,25 +243,26 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
             ),
           ),
         ),
-        if (_responseLabel(inv) case final label?) _Pill(label: label.$1, color: label.$2(context)),
+        if (_responseLabel(inv, context.l10n) case final label?) _Pill(label: label.$1, color: label.$2(context)),
       ],
     );
   }
 
   /// "Accepted" and its colour, for the title row.
-  (String, Color Function(BuildContext))? _responseLabel(Invitation inv) {
+  (String, Color Function(BuildContext))? _responseLabel(Invitation inv, AppLocalizations l10n) {
     if (inv.method != ItipMethod.request && inv.method != ItipMethod.add) return null;
     if (inv.cancelled || inv.outdated) return null;
     return switch (inv.response) {
-      PartStat.accepted => ('Accepted', (c) => CupertinoColors.systemGreen.resolveFrom(c)),
-      PartStat.tentative => ('Maybe', (c) => CupertinoColors.systemOrange.resolveFrom(c)),
-      PartStat.declined => ('Declined', (c) => CupertinoColors.systemRed.resolveFrom(c)),
+      PartStat.accepted => (l10n.calendarStatusAccepted, (c) => CupertinoColors.systemGreen.resolveFrom(c)),
+      PartStat.tentative => (l10n.calendarStatusMaybe, (c) => CupertinoColors.systemOrange.resolveFrom(c)),
+      PartStat.declined => (l10n.calendarStatusDeclined, (c) => CupertinoColors.systemRed.resolveFrom(c)),
       _ => null,
     };
   }
 
   List<Widget> _notices(BuildContext context, Invitation inv, EventTimeFormat format) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final orange = CupertinoColors.systemOrange.resolveFrom(context);
     final primary = Theme.of(context).colorScheme.primary;
     Widget notice(Key key, IconData icon, Color color, String text, {String? detail}) => Padding(
@@ -299,20 +305,34 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
               ValueKey('invitation-reply-${a.email}'),
               icon,
               color,
-              comment == null ? '$who ${partStatVerb(a.partStat)}' : '$who ${partStatVerb(a.partStat)}:',
-              detail: comment == null ? null : '“$comment”',
+              comment == null
+                  ? l10n.calendarAttendeeAnswer(a.partStat.name, who)
+                  : l10n.calendarAttendeeAnswerWithComment(a.partStat.name, who),
+              detail: comment == null ? null : l10n.calendarQuotedComment(comment),
             ),
           );
         }
       case ItipMethod.counter:
-        final who = inv.event.attendees.firstOrNull?.displayName ?? 'An attendee';
-        out.add(notice(const Key('invitation-counter'), LoupeIcons.eventUpdated, orange, '$who proposes a new time'));
-      case ItipMethod.declineCounter:
-        out.add(notice(const Key('invitation-declinecounter'), LoupeIcons.info, orange, 'The organizer kept the time'));
-      case ItipMethod.refresh:
-        final who = inv.event.attendees.firstOrNull?.displayName ?? 'An attendee';
+        final who = inv.event.attendees.firstOrNull?.displayName;
         out.add(
-          notice(const Key('invitation-refresh'), LoupeIcons.refresh, primary, '$who asks for the latest version'),
+          notice(
+            const Key('invitation-counter'),
+            LoupeIcons.eventUpdated,
+            orange,
+            who == null ? l10n.calendarCounterUnknown : l10n.calendarCounter(who),
+          ),
+        );
+      case ItipMethod.declineCounter:
+        out.add(notice(const Key('invitation-declinecounter'), LoupeIcons.info, orange, l10n.calendarDeclineCounter));
+      case ItipMethod.refresh:
+        final who = inv.event.attendees.firstOrNull?.displayName;
+        out.add(
+          notice(
+            const Key('invitation-refresh'),
+            LoupeIcons.refresh,
+            primary,
+            who == null ? l10n.calendarRefreshUnknown : l10n.calendarRefresh(who),
+          ),
         );
       default:
         break;
@@ -323,10 +343,8 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
           const Key('invitation-cancelled'),
           LoupeIcons.eventCancelled,
           colors.destructive,
-          'Cancelled',
-          detail: inv.method == ItipMethod.cancel
-              ? 'The organizer cancelled this event.'
-              : 'This event was cancelled later.',
+          l10n.calendarCancelled,
+          detail: inv.method == ItipMethod.cancel ? l10n.calendarCancelledByOrganizer : l10n.calendarCancelledLater,
         ),
       );
     } else if (inv.outdated) {
@@ -335,24 +353,36 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
           const Key('invitation-outdated'),
           LoupeIcons.eventUpdated,
           orange,
-          'Out of date',
-          detail: 'This invitation was updated later; the newer one counts.',
+          l10n.calendarOutdated,
+          detail: l10n.calendarOutdatedDetail,
         ),
       );
     } else if (inv.changes case final changes?) {
       final lines = <String>[
         if (changes.time case (final before, final after)) _timeChange(format, before, after),
         if (changes.location case (final before, final after))
-          after == null ? 'Location removed (was ${before ?? 'none'})' : 'Location changed to $after',
-        if (changes.title) 'New title',
-        if (changes.recurrence) 'The repeat changed',
+          after != null
+              ? l10n.calendarLocationChanged(after)
+              : before == null
+              ? l10n.calendarLocationRemovedNone
+              : l10n.calendarLocationRemoved(before),
+        if (changes.title) l10n.calendarNewTitle,
+        if (changes.recurrence) l10n.calendarRepeatChanged,
       ];
       out.add(
-        notice(const Key('invitation-updated'), LoupeIcons.eventUpdated, primary, 'Updated', detail: lines.join('\n')),
+        notice(
+          const Key('invitation-updated'),
+          LoupeIcons.eventUpdated,
+          primary,
+          l10n.calendarUpdated,
+          detail: lines.join('\n'),
+        ),
       );
     } else if (inv.event.sequence > 0 && inv.method == ItipMethod.request && inv.record?.previous == null) {
       // An update whose earlier version this device never saw.
-      out.add(notice(const Key('invitation-updated'), LoupeIcons.eventUpdated, primary, 'Updated invitation'));
+      out.add(
+        notice(const Key('invitation-updated'), LoupeIcons.eventUpdated, primary, l10n.calendarUpdatedInvitation),
+      );
     }
     return out;
   }
@@ -362,9 +392,9 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
     final a = format.when(before);
     final b = format.when(after);
     if (a.day == b.day && a.time != null && b.time != null && !before.allDay && !after.allDay) {
-      return 'Time changed from ${a.time} to ${b.time}';
+      return format.l10n.calendarTimeChanged(a.time!, b.time!);
     }
-    return 'Time changed from ${_describe(format, before)} to ${_describe(format, after)}';
+    return format.l10n.calendarTimeChanged(_describe(format, before), _describe(format, after));
   }
 
   String _describe(EventTimeFormat format, TimeSpan span) {
@@ -396,12 +426,12 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
             if (line.isNotEmpty) Text(line, style: TextStyle(color: colors.secondaryText, fontSize: 14)),
           if (span.unknownZone)
             Text(
-              'Time zone “${tzid ?? ''}” unknown: times as written',
+              format.l10n.calendarUnknownZone(tzid ?? ''),
               style: TextStyle(color: colors.secondaryText, fontSize: 13),
             ),
           if (showNext)
             Text(
-              'Next: ${_describe(format, next)}',
+              format.l10n.calendarNext(_describe(format, next)),
               key: const Key('invitation-next'),
               style: TextStyle(color: colors.secondaryText, fontSize: 14),
             ),
@@ -412,17 +442,18 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
 
   List<Widget> _attendeeRows(BuildContext context, Invitation inv, List<Attendee> attendees) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final counts = <PartStat, int>{};
     for (final a in attendees) {
       counts[a.partStat] = (counts[a.partStat] ?? 0) + 1;
     }
     final parts = [
-      if (counts[PartStat.accepted] case final n?) '$n accepted',
-      if (counts[PartStat.tentative] case final n?) '$n maybe',
-      if (counts[PartStat.declined] case final n?) '$n declined',
+      if (counts[PartStat.accepted] case final n?) l10n.calendarAcceptedCount(n),
+      if (counts[PartStat.tentative] case final n?) l10n.calendarMaybeCount(n),
+      if (counts[PartStat.declined] case final n?) l10n.calendarDeclinedCount(n),
     ];
-    final summary =
-        '${attendees.length} ${attendees.length == 1 ? 'guest' : 'guests'}${parts.isEmpty ? '' : ' · ${parts.join(', ')}'}';
+    final guests = l10n.calendarGuestCount(attendees.length);
+    final summary = parts.isEmpty ? guests : '$guests · ${parts.join(', ')}';
     return [
       InkWell(
         key: const Key('invitation-attendees'),
@@ -451,11 +482,11 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
                         child: Text(
                           [
                             if (identical(a, inv.me) || (inv.me != null && a.hasEmail(inv.me!.email)))
-                              '${a.displayName} (you)'
+                              l10n.calendarAttendeeYou(a.displayName)
                             else
                               a.displayName,
-                            if (a.role == AttendeeRole.optional) 'optional',
-                            if (a.isResource) 'room',
+                            if (a.role == AttendeeRole.optional) l10n.calendarAttendeeOptional,
+                            if (a.isResource) l10n.calendarAttendeeRoom,
                           ].join(' · '),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -473,6 +504,7 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
 
   Widget _answers(BuildContext context, Invitation inv) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final current = inv.response;
     final enabled = !widget.inert && !_sending;
     Widget answer(PartStat value, String label, Key key) {
@@ -499,16 +531,16 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
             Padding(
               padding: const EdgeInsets.only(bottom: 6, left: 3),
               child: Text(
-                'You ${partStatVerb(inv.record!.response!)} an earlier version.',
+                l10n.calendarEarlierAnswer(inv.record!.response!.name),
                 key: const Key('invitation-earlier-answer'),
                 style: TextStyle(color: colors.secondaryText, fontSize: 14),
               ),
             ),
           Row(
             children: [
-              answer(PartStat.accepted, 'Accept', const Key('invitation-accept')),
-              answer(PartStat.tentative, 'Maybe', const Key('invitation-maybe')),
-              answer(PartStat.declined, 'Decline', const Key('invitation-decline')),
+              answer(PartStat.accepted, l10n.calendarAccept, const Key('invitation-accept')),
+              answer(PartStat.tentative, l10n.calendarMaybe, const Key('invitation-maybe')),
+              answer(PartStat.declined, l10n.calendarDecline, const Key('invitation-decline')),
             ],
           ),
           if (_commenting)
@@ -520,10 +552,10 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
                 minLines: 1,
                 maxLines: 4,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: const InputDecoration(
-                  hintText: 'Comment for the organizer (optional)',
+                decoration: InputDecoration(
+                  hintText: l10n.calendarCommentHint,
                   isDense: true,
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
               ),
             ),
@@ -531,7 +563,7 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
             Padding(
               padding: const EdgeInsets.fromLTRB(3, 8, 3, 0),
               child: Text(
-                'Your reply goes to ${inv.event.organizer!.displayName} from $from.',
+                l10n.calendarReplyFrom(inv.event.organizer!.displayName, from),
                 key: const Key('invitation-reply-from'),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -557,6 +589,7 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
   /// Add a Comment (while answering is possible) and Add to Calendar.
   Widget _footer(BuildContext context, Invitation inv) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final style = TextButton.styleFrom(
       visualDensity: VisualDensity.compact,
       padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -577,7 +610,7 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
                   style: style,
                   onPressed: enabled ? () => setState(() => _commenting = true) : null,
                   icon: const Icon(LoupeIcons.comment, size: 18),
-                  label: const Text('Add a Comment'),
+                  label: Text(l10n.calendarAddComment),
                 ),
               if (inv.canAddToCalendar)
                 TextButton.icon(
@@ -585,13 +618,13 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
                   style: style,
                   onPressed: widget.inert ? null : () => _addToCalendar(inv),
                   icon: const Icon(LoupeIcons.addToCalendar, size: 18),
-                  label: const Text('Add to Calendar'),
+                  label: Text(l10n.calendarAddToCalendar),
                 ),
             ],
           ),
           if (inv.otherEvents > 0)
             Text(
-              inv.otherEvents == 1 ? 'And 1 more event in the file' : 'And ${inv.otherEvents} more events in the file',
+              l10n.calendarMoreEventsInFile(inv.otherEvents),
               textAlign: TextAlign.end,
               style: TextStyle(color: colors.secondaryText, fontSize: 13),
             ),
@@ -654,29 +687,33 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
 
   Future<void> _addToCalendar(Invitation inv) async {
     final messenger = ScaffoldMessenger.of(context);
-    final event = deviceEventFor(inv);
+    final l10n = context.l10n;
+    final event = deviceEventFor(inv, l10n);
     if (event == null) return;
     try {
       final opened = await ref.read(deviceCalendarProvider).add(event);
       if (!opened && defaultTargetPlatform == TargetPlatform.android) {
-        showSnack(messenger, 'There’s no calendar app to add the event to.');
+        showSnack(messenger, l10n.calendarNoCalendarApp);
       }
     } on Object {
-      showSnack(messenger, 'Couldn’t open the calendar.');
+      showSnack(messenger, l10n.calendarCantOpenCalendar);
     }
   }
 
   Future<void> _join(MeetingLink link) async {
     final host = inspectHost(link.uri.host);
+    final l10n = context.l10n;
+    final provider = link.provider;
+    final looksLike = host.looksLike;
     final ok = await showActionSheet<bool>(
       context,
-      title: 'Join ${link.provider ?? 'the'} Meeting?',
+      title: provider == null ? l10n.calendarJoinTitle : l10n.calendarJoinProviderTitle(provider),
       message: [
-        'Opens ${host.display} in your browser.',
+        l10n.calendarJoinOpens(host.display),
         if (host.homograph)
-          'Careful: this address imitates ${host.looksLike ?? 'another site'} with look-alike letters.',
+          looksLike == null ? l10n.calendarJoinHomographUnknown : l10n.calendarJoinHomograph(looksLike),
       ].join('\n\n'),
-      actions: [SheetAction('Open ${host.display}', true, isDefault: true)],
+      actions: [SheetAction(l10n.calendarJoinOpen(host.display), true, isDefault: true)],
     );
     if (ok != true || !mounted) return;
     await _launch(link.uri);
@@ -700,12 +737,13 @@ class _InvitationCardState extends ConsumerState<InvitationCard> {
 
   Future<bool> _launch(Uri uri, {bool quiet = false}) async {
     final messenger = ScaffoldMessenger.of(context);
+    final failed = context.l10n.calendarCantOpenLink;
     try {
       final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
-      if (!ok && !quiet) showSnack(messenger, 'Couldn’t open the link.');
+      if (!ok && !quiet) showSnack(messenger, failed);
       return ok;
     } on Object {
-      if (!quiet) showSnack(messenger, 'Couldn’t open the link.');
+      if (!quiet) showSnack(messenger, failed);
       return false;
     }
   }

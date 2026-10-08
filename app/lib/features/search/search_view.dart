@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../shared/bars.dart';
@@ -77,12 +78,13 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
 
   Future<void> _saveSmartMailbox() async {
     final query = _session.query.trim();
+    final l10n = context.l10n;
     final name = await showTextPrompt(
       context,
-      title: 'New Smart Mailbox',
-      message: 'Shows everything matching “$query”.',
+      title: l10n.searchNewSmartMailbox,
+      message: l10n.searchNewSmartMailboxMessage(query),
       initial: query,
-      placeholder: 'Name',
+      placeholder: l10n.commonName,
     );
     if (name == null || name.isEmpty || !mounted) return;
     final scope = switch (_session.scope) {
@@ -91,18 +93,19 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
     };
     await ref.read(smartMailboxesProvider.notifier).add(name, query, scope: scope);
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Saved “$name” to Mailboxes')));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.searchSavedToMailboxes(name))));
   }
 
   /// The search's menu: what to make of this search.
   Future<void> _showMenu() async {
     final query = _session.query.trim();
+    final l10n = context.l10n;
     final choice = await showActionSheet<String>(
       context,
       title: query,
-      actions: const [
-        SheetAction('Make This a Rule', 'rule', icon: LoupeIcons.makeRule),
-        SheetAction('Save as Smart Mailbox', 'smart', icon: LoupeIcons.saveSearch),
+      actions: [
+        SheetAction(l10n.searchMakeRule, 'rule', icon: LoupeIcons.makeRule),
+        SheetAction(l10n.searchSaveSmartMailbox, 'smart', icon: LoupeIcons.saveSearch),
       ],
     );
     if (!mounted) return;
@@ -118,12 +121,13 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
   Future<void> _editChip(List<SearchExpr> terms, int index) async {
     final term = terms[index];
     final negated = term is SearchNot;
+    final l10n = context.l10n;
     final choice = await showActionSheet<String>(
       context,
       title: describeTerm(term),
       actions: [
-        SheetAction(negated ? 'Don’t Negate' : 'Negate', 'negate', icon: LoupeIcons.negate),
-        const SheetAction('Remove', 'remove', icon: LoupeIcons.backspace, destructive: true),
+        SheetAction(negated ? l10n.searchDontNegate : l10n.searchNegate, 'negate', icon: LoupeIcons.negate),
+        SheetAction(l10n.commonRemove, 'remove', icon: LoupeIcons.backspace, destructive: true),
       ],
     );
     if (choice == null) return;
@@ -153,7 +157,8 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
 
   Widget _scopeBar(BuildContext context) {
     final mailboxes = ref.watch(mailboxesProvider).value ?? const <Mailbox>[];
-    final label = mailboxRefTitle(widget.thisMailbox!, mailboxes);
+    final l10n = context.l10n;
+    final label = mailboxRefTitle(widget.thisMailbox!, mailboxes, l10n: l10n);
     final isAll = _session.scope is AllMailboxesScope;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 6, 16, 10),
@@ -164,7 +169,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
           onValueChanged: (all) =>
               _session.setScope((all ?? true) ? const AllMailboxesScope() : MailboxScope(widget.thisMailbox!)),
           children: {
-            true: const Padding(padding: EdgeInsets.symmetric(vertical: 4), child: Text('All Mailboxes')),
+            true: Padding(padding: const EdgeInsets.symmetric(vertical: 4), child: Text(l10n.searchAllMailboxes)),
             false: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
@@ -180,12 +185,13 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
   List<Widget> _suggestions(BuildContext context) {
     final recents = ref.watch(recentSearchesProvider);
     final smart = ref.watch(smartMailboxesProvider);
+    final l10n = context.l10n;
     return [
       if (recents.isNotEmpty) ...[
         SliverToBoxAdapter(
           child: _SectionHeader(
-            'Recent Searches',
-            action: 'Clear',
+            l10n.searchRecent,
+            action: l10n.searchClear,
             onAction: () => ref.read(recentSearchesProvider.notifier).clear(),
           ),
         ),
@@ -193,38 +199,38 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
           children: [for (final q in recents) _SuggestionRow(icon: LoupeIcons.recent, label: q, onTap: () => _pick(q))],
         ),
       ],
-      const SliverToBoxAdapter(child: _SectionHeader('Suggestions')),
+      SliverToBoxAdapter(child: _SectionHeader(l10n.searchSuggestions)),
       SliverList.list(
         children: [
           _SuggestionRow(
             icon: LoupeIcons.unread,
-            label: 'Unread Messages',
+            label: l10n.searchUnreadMessages,
             onTap: () => _session.addToken(SearchTokens.unread),
           ),
           _SuggestionRow(
             icon: LoupeIcons.flagged,
-            label: 'Flagged Messages',
+            label: l10n.searchFlaggedMessages,
             onTap: () => _session.addToken(SearchTokens.flagged),
           ),
           _SuggestionRow(
             icon: LoupeIcons.attachment,
-            label: 'Messages with Attachments',
+            label: l10n.searchWithAttachments,
             onTap: () => _session.addToken(SearchTokens.attachments),
           ),
           _SuggestionRow(
             icon: LoupeIcons.reply,
-            label: 'Unreplied Messages',
+            label: l10n.searchUnrepliedMessages,
             onTap: () => _session.addToken(SearchTokens.unreplied),
           ),
         ],
       ),
-      const SliverToBoxAdapter(child: _SectionHeader('Tags')),
+      SliverToBoxAdapter(child: _SectionHeader(l10n.searchTags)),
       SliverList.list(
         children: [
           for (final t in TagDefinition.thunderbirdDefaults)
             _SuggestionRow(
               leading: Icon(LoupeIcons.tagFilled, size: 18, color: tagColor(t.keyword)),
-              label: t.label,
+              label: tagLabel(t.keyword, l10n: l10n),
               onTap: () => _session.addToken(SearchTokens.tag(t.keyword)),
             ),
         ],
@@ -237,7 +243,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
             if (people.isEmpty) return const SizedBox.shrink();
             return Column(
               children: [
-                const _SectionHeader('People'),
+                _SectionHeader(l10n.searchPeople),
                 for (final p in people)
                   _SuggestionRow(
                     icon: LoupeIcons.contact,
@@ -251,7 +257,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
         ),
       ),
       if (smart.isNotEmpty) ...[
-        const SliverToBoxAdapter(child: _SectionHeader('Smart Mailboxes')),
+        SliverToBoxAdapter(child: _SectionHeader(l10n.searchSmartMailboxes)),
         SliverList.list(
           children: [
             for (final s in smart)
@@ -273,6 +279,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
   List<Widget> _results(BuildContext context) {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
     final parsed = _session.parsed;
     final terms = parsed.isValid ? queryTerms(parsed.expr) : const <SearchExpr>[];
     final showChips = terms.length > 1 || terms.any((t) => !(t is TextTerm && t.field == SearchField.any));
@@ -337,7 +344,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
                   for (final p in people)
                     _SuggestionRow(
                       icon: LoupeIcons.contact,
-                      label: 'From: ${p.displayName}',
+                      label: l10n.searchFromPerson(p.displayName),
                       detail: p.email,
                       onTap: () {
                         final words = _session.query.trimRight().split(RegExp(r'\s+'))..removeLast();
@@ -357,10 +364,10 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
             children: [
               Text(
                 results == null
-                    ? 'Searching…'
+                    ? l10n.searchSearching
                     : results.items.isEmpty && results.isComplete
-                    ? 'No Results'
-                    : '${formatCount(results.items.length)} ${results.items.length == 1 ? 'Result' : 'Results'}',
+                    ? l10n.searchNoResults
+                    : l10n.searchResultCount(results.items.length, formatCount(results.items.length)),
                 style: styles.sectionHeader.copyWith(fontSize: 17),
               ),
               if (widget.showSuggestions && _session.hasQuery) ...[
@@ -368,21 +375,21 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
                 Flexible(
                   child: Semantics(
                     button: true,
-                    label: 'Save as Smart Mailbox',
+                    label: l10n.searchSaveSmartMailbox,
                     excludeSemantics: true,
                     child: CupertinoButton(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       minimumSize: const Size(44, 32),
                       onPressed: _saveSmartMailbox,
-                      child: const Row(
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(LoupeIcons.saveSearch, size: 18),
-                          SizedBox(width: 4),
+                          const Icon(LoupeIcons.saveSearch, size: 18),
+                          const SizedBox(width: 4),
                           Flexible(
                             child: Text(
-                              'Save as Smart Mailbox',
-                              style: TextStyle(fontSize: 15),
+                              l10n.searchSaveSmartMailbox,
+                              style: const TextStyle(fontSize: 15),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -392,14 +399,14 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
                     ),
                   ),
                 ),
-                BarIconButton(icon: LoupeIcons.moreCircle, tooltip: 'Search Menu', size: 22, onPressed: _showMenu),
+                BarIconButton(icon: LoupeIcons.moreCircle, tooltip: l10n.searchMenu, size: 22, onPressed: _showMenu),
               ],
             ],
           ),
         ),
       ),
       if (results != null && results.items.isEmpty && results.isComplete)
-        if (_session.contradictionNote case final note?)
+        if (_session.contradictionNote(l10n) case final note?)
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 2, 16, 4),
@@ -417,7 +424,10 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Searching ${accounts[id]?.displayName ?? 'account'} on the server…',
+                      switch (accounts[id]?.displayName) {
+                        final name? => l10n.searchSearchingAccount(name),
+                        null => l10n.searchSearchingUnknownAccount,
+                      },
                       style: styles.footnote,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -438,7 +448,10 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Couldn’t search ${accounts[id]?.displayName ?? 'account'} on the server',
+                      switch (accounts[id]?.displayName) {
+                        final name? => l10n.searchAccountFailed(name),
+                        null => l10n.searchUnknownAccountFailed,
+                      },
                       style: styles.footnote,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -478,7 +491,7 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
                   isVip: email.from.any((f) => vips.contains(f.email.toLowerCase())),
                   fromServer: results.fromServerIds.contains(email.id),
                   location: [
-                    if (box != null) mailboxDisplayName(box),
+                    if (box != null) mailboxDisplayName(box, l10n: l10n),
                     if (account != null && accounts.length > 1) account.displayName,
                   ].join(' · '),
                   showRecipients: box?.role == MailboxRole.sent || box?.role == MailboxRole.drafts,
@@ -586,7 +599,7 @@ class _Chip extends StatelessWidget {
     final tint = negated ? colors.destructive : colors.unreadDot;
     return Semantics(
       button: true,
-      label: '${negated ? 'Not ' : ''}$label. Double tap to edit.',
+      label: negated ? context.l10n.searchChipNegated(label) : context.l10n.searchChip(label),
       excludeSemantics: true,
       child: GestureDetector(
         onTap: onTap,

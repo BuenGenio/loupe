@@ -10,6 +10,7 @@ import '../features/compose/compose_args.dart';
 import '../features/compose/send_later.dart' show formatSendTimeFor, wakeUpAt;
 import '../features/conversation/sheets.dart' show showSnack;
 import '../features/snooze/snooze_sheet.dart';
+import '../l10n/l10n.dart';
 import '../providers.dart';
 import '../settings/app_settings.dart';
 import '../theme/theme.dart';
@@ -32,7 +33,8 @@ import '../settings/ui_state.dart';
 /// until the snack bar is gone would be lost if the app were closed meanwhile.
 class MailActions {
   MailActions(this.context, this.ref, {required this.scope, required this.threaded, this._mailboxes})
-    : _repository = ref.read(repositoryProvider);
+    : _repository = ref.read(repositoryProvider),
+      _l10n = context.l10n;
 
   final BuildContext context;
   final WidgetRef ref;
@@ -47,6 +49,9 @@ class MailActions {
   final MailRepository _repository;
 
   MailRepository get _repo => _repository;
+
+  /// The strings, read when the actions are made (see [_repository]).
+  final AppLocalizations _l10n;
 
   /// The mailboxes the messages acted on are in, when the caller has them
   /// at hand; otherwise every account's.
@@ -125,7 +130,7 @@ class MailActions {
   Future<void> toInbox(Iterable<ThreadSummary> rows) async {
     final emails = await _membersOf(rows);
     final boxes = _boxes.values;
-    await _withUndo(emails, _label(emails.length, (n) => 'Moved $n to Inbox'), () async {
+    await _withUndo(emails, _l10n.sharedMovedToInbox(emails.length), () async {
       final byAccount = <String, List<String>>{};
       for (final e in emails) {
         byAccount.putIfAbsent(e.accountId, () => []).add(e.id);
@@ -149,7 +154,7 @@ class MailActions {
     final accounts = {for (final r in list) r.latest.accountId};
     final messenger = ScaffoldMessenger.of(context);
     if (accounts.length > 1) {
-      showSnack(messenger, 'Select messages from one account to move them.');
+      showSnack(messenger, _l10n.sharedMoveOneAccount);
       return;
     }
     final accountId = accounts.single;
@@ -179,7 +184,7 @@ class MailActions {
     context,
     now: clock.now(),
     current: current,
-    title: current == null ? 'Snooze' : 'Change Snooze Time',
+    title: current == null ? _l10n.sharedSnoozeTitle : _l10n.sharedChangeSnoozeTimeTitle,
   );
 
   /// Asks when, then snoozes the conversations of [rows] (or gives snoozed
@@ -199,7 +204,7 @@ class MailActions {
 
   /// Archives [emails]. Returns whether it happened.
   Future<bool> archiveEmails(List<EmailSummary> emails) =>
-      _withUndo(emails, _label(emails.length, (n) => 'Archived $n'), () => _repo.archive(_ids(emails)));
+      _withUndo(emails, _l10n.sharedArchived(emails.length), () => _repo.archive(_ids(emails)));
 
   /// Moves [emails] to Trash; those already there are deleted permanently,
   /// after asking. Returns whether it happened (false if not confirmed).
@@ -218,15 +223,15 @@ class MailActions {
       final n = inTrash.length;
       final ok = await confirmDestructive(
         context,
-        title: n == 1 ? 'Delete this message permanently?' : 'Delete $n messages permanently?',
-        message: 'This can’t be undone.',
-        action: 'Delete Permanently',
+        title: _l10n.sharedDeletePermanentlyQuestion(n),
+        message: _l10n.sharedCantBeUndone,
+        action: _l10n.sharedDeletePermanently,
       );
       if (!ok || !context.mounted) return false;
     }
     return _withUndo(
       emails,
-      others.isEmpty ? _label(emails.length, (n) => 'Deleted $n') : _label(others.length, (n) => 'Moved $n to Trash'),
+      others.isEmpty ? _l10n.sharedDeleted(emails.length) : _l10n.sharedMovedToTrash(others.length),
       () => _repo.trash(_ids(emails)),
       undoable: others,
     );
@@ -235,17 +240,17 @@ class MailActions {
   /// Moves [emails] to Junk (or, with [junk] false, back to the inbox).
   Future<bool> junkEmails(List<EmailSummary> emails, {required bool junk}) => _withUndo(
     emails,
-    _label(emails.length, (n) => junk ? 'Moved $n to Junk' : 'Moved $n to Inbox'),
+    junk ? _l10n.sharedMovedToJunk(emails.length) : _l10n.sharedMovedToInbox(emails.length),
     () => _repo.markJunk(_ids(emails), junk: junk),
     restoreKeywords: const {Keywords.junk, Keywords.notJunk},
   );
 
   /// Moves [emails] to [targetMailboxId].
   Future<bool> moveEmails(List<EmailSummary> emails, String targetMailboxId) {
-    final name = _boxes[targetMailboxId]?.name ?? 'mailbox';
+    final name = _boxes[targetMailboxId]?.name;
     return _withUndo(
       emails,
-      _label(emails.length, (n) => 'Moved $n to $name'),
+      name == null ? _l10n.sharedMovedToUnknownMailbox(emails.length) : _l10n.sharedMovedToMailbox(emails.length, name),
       () => _repo.move(_ids(emails), targetMailboxId),
     );
   }
@@ -257,12 +262,10 @@ class MailActions {
     var storage = SnoozeStorage.server;
     final ok = await _withUndo(
       emails,
-      _label(emails.length, (n) => 'Snoozed $n until $when'),
+      _l10n.sharedSnoozedUntil(emails.length, when),
       () async => storage = await _repo.snooze(_ids(emails), at),
       restoreKeywords: {Snooze.keyword(at), for (final e in emails) ...Snooze.keywordsIn(e.keywords)},
-      relabel: () => storage == SnoozeStorage.device
-          ? 'Snoozed until $when on this device only: the server can’t store snooze times.'
-          : null,
+      relabel: () => storage == SnoozeStorage.device ? _l10n.sharedSnoozedOnDeviceOnly(when) : null,
     );
     if (ok && context.mounted) wakeUpAt(ref, at);
     return ok;
@@ -271,16 +274,12 @@ class MailActions {
   /// Wakes snoozed [emails] now: back to the Inbox, unread.
   Future<bool> wakeEmails(List<EmailSummary> emails) => _withUndo(
     emails,
-    _label(emails.length, (n) => 'Moved $n to Inbox'),
+    _l10n.sharedMovedToInbox(emails.length),
     () => _repo.unsnooze(_ids(emails)),
     restoreKeywords: {Keywords.seen, Keywords.newAgain, for (final e in emails) ...Snooze.keywordsIn(e.keywords)},
   );
 
   static List<String> _ids(List<EmailSummary> emails) => [for (final e in emails) e.id];
-
-  /// "Archived 1 message", "Moved 3 messages to Junk".
-  static String _label(int count, String Function(String messages) text) =>
-      text(count == 1 ? '1 message' : '$count messages');
 
   /// Runs [action] and shows [label] (or what [relabel] says afterwards)
   /// with Undo for [undoable] (default: all of [emails]). Errors are shown
@@ -311,7 +310,7 @@ class MailActions {
         action: restore.isEmpty
             ? null
             : SnackBarAction(
-                label: 'Undo',
+                label: _l10n.commonUndo,
                 onPressed: () async {
                   try {
                     await restoreMailboxes(repo, restore, keywords: restoreKeywords);
@@ -362,33 +361,33 @@ class MailActions {
       SwipeAction.none => null,
       SwipeAction.toggleRead => SwipeActionSpec(
         icon: unread ? LoupeIcons.swipeMarkRead : LoupeIcons.swipeMarkUnread,
-        label: unread ? 'Read' : 'Unread',
+        label: unread ? _l10n.sharedSwipeRead : _l10n.sharedSwipeUnread,
         color: colors.swipeRead,
         onTriggered: () => setRead([row], read: unread),
       ),
       SwipeAction.toggleFlag => SwipeActionSpec(
         icon: LoupeIcons.swipeFlag,
-        label: row.latest.isFlagged ? 'Unflag' : 'Flag',
+        label: row.latest.isFlagged ? _l10n.mailUnflag : _l10n.mailFlag,
         color: colors.swipeFlag,
         onTriggered: () => setFlag([row], flagged: !row.latest.isFlagged),
       ),
       SwipeAction.archive when role == MailboxRole.archive || role == MailboxRole.all => SwipeActionSpec(
         icon: LoupeIcons.swipeMoveToInbox,
-        label: 'Inbox',
+        label: _l10n.sharedSwipeInbox,
         color: colors.swipeArchive,
         removesRow: true,
         onTriggered: () => toInbox([row]),
       ),
       SwipeAction.archive => SwipeActionSpec(
         icon: LoupeIcons.swipeArchive,
-        label: 'Archive',
+        label: _l10n.mailArchive,
         color: colors.swipeArchive,
         removesRow: true,
         onTriggered: () => archive([row]),
       ),
       SwipeAction.trash => SwipeActionSpec(
         icon: LoupeIcons.swipeTrash,
-        label: role == MailboxRole.trash ? 'Delete' : 'Trash',
+        label: role == MailboxRole.trash ? _l10n.sharedSwipeDelete : _l10n.sharedTrash,
         color: colors.swipeTrash,
         // Deleting permanently asks first, so the row stays until confirmed.
         removesRow: role != MailboxRole.trash,
@@ -396,19 +395,19 @@ class MailActions {
       ),
       SwipeAction.move => SwipeActionSpec(
         icon: LoupeIcons.swipeMove,
-        label: 'Move',
+        label: _l10n.commonMove,
         color: colors.swipeArchive,
         onTriggered: () => moveWithPicker([row]),
       ),
       SwipeAction.snooze => SwipeActionSpec(
         icon: LoupeIcons.swipeSnooze,
-        label: 'Snooze',
+        label: _l10n.sharedSwipeSnooze,
         color: colors.snooze,
         onTriggered: () => snooze([row]),
       ),
       SwipeAction.more => SwipeActionSpec(
         icon: LoupeIcons.swipeMore,
-        label: 'More',
+        label: _l10n.commonMore,
         color: colors.swipeMore,
         onTriggered: () => showMore(row),
       ),
@@ -445,30 +444,30 @@ class MailActions {
       context,
       title: latest.subject.isEmpty ? null : latest.subject,
       actions: [
-        const SheetAction('Reply', 'reply', icon: LoupeIcons.reply),
-        if (recipients > 1) const SheetAction('Reply All', 'replyAll', icon: LoupeIcons.replyAll),
-        const SheetAction('Forward', 'forward', icon: LoupeIcons.forward),
-        SheetAction(latest.isFlagged ? 'Unflag' : 'Flag', 'flag', icon: LoupeIcons.flagged),
+        SheetAction(_l10n.mailReply, 'reply', icon: LoupeIcons.reply),
+        if (recipients > 1) SheetAction(_l10n.mailReplyAll, 'replyAll', icon: LoupeIcons.replyAll),
+        SheetAction(_l10n.mailForward, 'forward', icon: LoupeIcons.forward),
+        SheetAction(latest.isFlagged ? _l10n.mailUnflag : _l10n.mailFlag, 'flag', icon: LoupeIcons.flagged),
         SheetAction(
-          unread ? 'Mark as Read' : 'Mark as Unread',
+          unread ? _l10n.mailMarkAsRead : _l10n.mailMarkAsUnread,
           'read',
           icon: unread ? LoupeIcons.markRead : LoupeIcons.markUnread,
         ),
         if (snoozed) ...[
-          const SheetAction('Wake Now', 'wake', icon: LoupeIcons.wakeNow),
-          const SheetAction('Change Snooze Time…', 'snooze', icon: LoupeIcons.snooze),
+          SheetAction(_l10n.sharedWakeNow, 'wake', icon: LoupeIcons.wakeNow),
+          SheetAction(_l10n.sharedChangeSnoozeTime, 'snooze', icon: LoupeIcons.snooze),
         ] else
-          const SheetAction('Snooze…', 'snooze', icon: LoupeIcons.snooze),
-        const SheetAction('Tag…', 'tag', icon: LoupeIcons.tag),
-        const SheetAction('Move Message…', 'move', icon: LoupeIcons.move),
+          SheetAction(_l10n.sharedSnooze, 'snooze', icon: LoupeIcons.snooze),
+        SheetAction(_l10n.sharedTag, 'tag', icon: LoupeIcons.tag),
+        SheetAction(_l10n.sharedMoveMessage, 'move', icon: LoupeIcons.move),
         if (role == MailboxRole.junk)
-          const SheetAction('Not Junk', 'notJunk', icon: LoupeIcons.notJunk)
+          SheetAction(_l10n.sharedNotJunk, 'notJunk', icon: LoupeIcons.notJunk)
         else
-          const SheetAction('Move to Junk', 'junk', icon: LoupeIcons.junk),
+          SheetAction(_l10n.mailMoveToJunk, 'junk', icon: LoupeIcons.junk),
         if (role != MailboxRole.archive && role != MailboxRole.all)
-          const SheetAction('Archive', 'archive', icon: LoupeIcons.archive),
+          SheetAction(_l10n.mailArchive, 'archive', icon: LoupeIcons.archive),
         SheetAction(
-          role == MailboxRole.trash ? 'Delete Permanently' : 'Trash',
+          role == MailboxRole.trash ? _l10n.sharedDeletePermanently : _l10n.sharedTrash,
           'trash',
           icon: LoupeIcons.trash,
           destructive: true,
