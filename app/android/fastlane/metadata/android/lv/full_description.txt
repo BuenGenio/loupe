@@ -1,0 +1,24 @@
+Loupe ir mierīga, ātra e-pasta lietotne ar datora klases rīkiem zem virsmas: izteiksmju meklēšanu, servera puses kārtulām, OpenPGP un S/MIME. Tā sazinās ar jūsu pasta serveri un ne ar vienu citu.
+
+Ārēji vienkārša. Iekšēji jaudīga.
+• Readable režīms: HTML pasts pārveidots jūsu ekrānam: īsti teksta izmēri, kājenes sīkā drukā, fotoattēli pārvelkamā karuselī.
+• Izteiksmju meklēšana: Žetoni vai rakstīti vaicājumi, piemēram, from:alice un is:unread. Rezultāti no tālruņa parādās uzreiz, serveris tos papildina pēc tam.
+• Smart Mailboxes, kas ceļo līdzi: Saglabātas meklēšanas, kas glabājas jūsu pasta serverī, tāpēc tās jums seko uz katru ierīci.
+• Kārtulas ierīcē vai serverī: Pārvērtiet jebkuru meklēšanu par kārtulu. Izpildiet to tālrunī vai kā Sieve savā serverī, lai tā darbotos, kamēr guļat.
+• Abonementi: Visas jaunumu vēstules pēc sūtītāja, ar lasīšanas rādītājiem un abonementu atteikšanas centru, kurā pietiek ar vienu pieskārienu un kas darbojas jūsu tālrunī.
+• Atlikšana, kas sinhronizējas: Atliktais pasts glabājas mapē jūsu serverī, tāpēc to redz arī citi klienti, kas ievēro šo konvenciju.
+• Sūtīšanas atsaukšana un plānošana: Atsauciet ziņojumu pirmajās sekundēs vai uzrakstiet tagad un nosūtiet rīt deviņos.
+• OpenPGP un S/MIME: Šifrējiet un parakstiet ar jebkuru no abiem standartiem. OpenPGP darbojas ar Thunderbird un Autocrypt.
+• Saprotama pikšķerēšanas pārbaude: Aizdomīgas saites un līdzīgi izskatīgi domēni tiek atzīmēti, iemeslu paskaidrojot vienkāršiem vārdiem.
+• Kalendāra ielūgumi: Accept, Maybe vai Decline tieši virs ziņojuma, ar abām laika joslām, ja tās atšķiras.
+• IMAP un JMAP: Jebkurš IMAP pakalpojumu sniedzējs ar automātisko konfigurēšanu, kā arī iebūvēts JMAP atbalsts Fastmail un Stalwart.
+• Planšetdatori un tastatūras: Trīs paneļi, īsinājumtaustiņi, vilkšana un nomešana, kā arī komandu palete ar Ctrl+K.
+
+Loupe mākoņa nav. Un tieši tas ir galvenais.
+Jūsu tālrunis sazinās ar jūsu pasta serveri tieši. Loupe nav aizmugursistēmas, ko uzlauzt, nav analītikas, no kuras atteikties, un nav nekā, ko pārdot.
+
+Atvērtais pirmkods — līdz pat pēdējam testam.
+Katra rindiņa ir publiska ar licenci MPL-2.0. Nightly būvējumi nāk tieši no GitHub Actions, tāpēc tas, ko instalējat, ir tas, ko varat izlasīt.
+
+Loupe lietotne pagaidām ir angļu valodā; citas valodas sekos.
+https://loupe.mx

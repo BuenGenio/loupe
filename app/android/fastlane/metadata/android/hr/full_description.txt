@@ -1,0 +1,24 @@
+Loupe je smirena, brza aplikacija za e-poštu s alatima na razini računala ispod površine: pretraživanje izrazima, pravila na poslužitelju, OpenPGP i S/MIME. Razgovara s vašim poslužiteljem e-pošte i ni s kim drugim.
+
+Jednostavno izvana. Moćno iznutra.
+• Način Readable: HTML pošta prilagođena vašem zaslonu: prave veličine teksta, podnožja kao sitni tisak, fotografije u vrtuljku koji listate prstom.
+• Pretraživanje izrazima: Pločice ili upisani upiti poput from:alice i is:unread. Rezultati s telefona pojavljuju se odmah, a oni s poslužitelja stižu nakon toga.
+• Smart Mailboxes koji putuju s vama: Spremljene pretrage pohranjene na vašem poslužitelju e-pošte, pa vas prate na svaki uređaj.
+• Pravila, na uređaju ili poslužitelju: Pretvorite bilo koju pretragu u pravilo. Pokrenite ga na telefonu ili kao Sieve na poslužitelju, pa radi i dok spavate.
+• Pretplate: Svi bilteni po pošiljatelju, s udjelom pročitanog i centrom za odjavu jednim dodirom koji radi na vašem telefonu.
+• Odgoda koja se sinkronizira: Odgođena pošta čeka u mapi na vašem poslužitelju, pa je vide i drugi klijenti koji prate istu konvenciju.
+• Poništavanje i zakazivanje slanja: Povucite poruku u prvih nekoliko sekundi ili je napišite sada, a pošaljite sutra u devet.
+• OpenPGP i S/MIME: Šifrirajte i potpisujte uz bilo koji od ta dva standarda. OpenPGP radi s Thunderbirdom i Autocryptom.
+• Provjera phishinga s objašnjenjem: Sumnjive poveznice i domene koje oponašaju prave dobivaju oznaku, uz razlog objašnjen jednostavnim riječima.
+• Pozivnice za kalendar: Odgovorite s Accept, Maybe ili Decline odmah iznad poruke, uz obje vremenske zone kad se razlikuju.
+• IMAP i JMAP: Bilo koji IMAP pružatelj s automatskom konfiguracijom, plus izvorni JMAP za Fastmail i Stalwart.
+• Tableti i tipkovnice: Tri okna, tipkovnički prečaci, povlačenje i ispuštanje te paleta naredbi na Ctrl+K.
+
+Nema Loupe oblaka. U tome i jest poanta.
+Vaš telefon razgovara izravno s vašim poslužiteljem e-pošte. Loupe nema pozadinski sustav koji bi netko mogao probiti, nema analitike koju biste morali isključivati i nema ništa za prodaju.
+
+Otvoreni kod, do posljednjeg testa.
+Svaki je redak javan pod licencom MPL-2.0. Nightly verzije dolaze izravno iz GitHub Actions, pa je ono što instalirate upravo ono što možete pročitati.
+
+Aplikacija Loupe zasad je na engleskom; uskoro stižu i drugi jezici.
+https://loupe.mx

@@ -5,7 +5,8 @@
   "description": "Renders on-brand social images (1080x1350 JPEG) from cards.json into marketing/media/.",
   "scripts": {
     "cards": "node cards.mjs",
-    "cards:one": "node cards.mjs --only"
+    "cards:one": "node cards.mjs --only",
+    "play": "node play.mjs"
   },
   "dependencies": {
     "@fontsource/ubuntu": "^5.3.0",

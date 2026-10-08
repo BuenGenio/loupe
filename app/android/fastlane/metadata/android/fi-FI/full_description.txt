@@ -1,0 +1,24 @@
+Loupe on rauhallinen ja nopea sähköpostisovellus, jonka pinnan alla on tietokoneluokan työkalut: lausekehaku, palvelinpuolen säännöt, OpenPGP ja S/MIME. Se keskustelee sähköpostipalvelimesi kanssa eikä kenenkään muun.
+
+Pinnalta yksinkertainen. Pinnan alla tehokas.
+• Readable-tila: HTML-viestit rakennettu uudelleen näytöllesi sopiviksi: oikeat tekstikoot, alatunnisteet pikkupräntteinä, kuvat pyyhkäistävässä karusellissa.
+• Lausekehaku: Sirut tai kirjoitetut kyselyt, kuten from:alice ja is:unread. Puhelimen tulokset näkyvät heti, palvelimen tulokset saapuvat perässä.
+• Smart Mailboxit, jotka kulkevat mukana: Tallennetut haut omalla sähköpostipalvelimellasi, joten ne seuraavat sinua jokaiselle laitteelle.
+• Säännöt laitteella tai palvelimella: Tee mistä tahansa hausta sääntö. Suorita se puhelimessa tai Sievenä palvelimellasi, jolloin se toimii nukkuessasikin.
+• Tilaukset: Kaikki uutiskirjeet lähettäjittäin lukuprosentteineen sekä puhelimessasi toimiva peruutuskeskus, jossa tilauksen voi perua yhdellä napautuksella.
+• Synkronoituva torkku: Torkutetut viestit ovat kansiossa palvelimellasi, joten myös samaa käytäntöä noudattavat muut sovellukset näkevät ne.
+• Lähetyksen peruminen ja ajastus: Ota viesti takaisin ensimmäisten sekuntien aikana, tai kirjoita nyt ja lähetä huomenna kello yhdeksän.
+• OpenPGP ja S/MIME: Salaa ja allekirjoita kummalla tahansa standardilla. OpenPGP toimii Thunderbirdin ja Autocryptin kanssa.
+• Tietojenkalastelun tunnistus perusteluineen: Epäilyttävät linkit ja aitoja jäljittelevät verkkotunnukset merkitään, ja syy kerrotaan selkokielellä.
+• Kalenterikutsut: Accept, Maybe tai Decline suoraan viestin yläpuolella, ja molemmat aikavyöhykkeet, jos ne eroavat.
+• IMAP ja JMAP: Mikä tahansa IMAP-palveluntarjoaja automaattisilla asetuksilla sekä natiivi JMAP Fastmailille ja Stalwartille.
+• Tabletit ja näppäimistöt: Kolme paneelia, pikanäppäimet, vedä ja pudota sekä komentopaletti näppäinyhdistelmällä Ctrl+K.
+
+Loupe-pilveä ei ole. Juuri siinä on idea.
+Puhelimesi keskustelee suoraan sähköpostipalvelimesi kanssa. Loupella ei ole taustajärjestelmää, johon murtautua, analytiikkaa, josta kieltäytyä, eikä mitään myytävää.
+
+Avointa lähdekoodia viimeistä testiä myöten.
+Jokainen rivi on julkinen MPL-2.0-lisenssillä. Nightly-versiot tulevat suoraan GitHub Actionsista, joten se, minkä asennat, on sitä, minkä voit lukea.
+
+Loupe-sovellus on toistaiseksi englanninkielinen; lisää kieliä on tulossa.
+https://loupe.mx

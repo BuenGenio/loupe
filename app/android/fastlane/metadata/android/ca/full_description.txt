@@ -1,0 +1,24 @@
+Loupe és una aplicació de correu serena i ràpida amb eines de nivell d'escriptori a dins: cerca per expressions, regles al servidor, OpenPGP i S/MIME. Parla amb el teu servidor de correu i amb ningú més.
+
+Senzilla per fora. Potent per dins.
+• Mode Readable: Correu HTML refet perquè s'ajusti a la pantalla: mides de text reals, peus de pàgina en lletra petita i fotos en un carrusel que pots lliscar.
+• Cerca per expressions: Fitxes o consultes escrites com from:alice i is:unread. Els resultats del telèfon apareixen de seguida; els del servidor arriben després.
+• Smart Mailboxes que viatgen: Cerques desades al teu propi servidor de correu, perquè et segueixin a tots els dispositius.
+• Regles, al dispositiu o al servidor: Converteix qualsevol cerca en una regla. Executa-la al telèfon o com a Sieve al teu servidor, perquè funcioni mentre dorms.
+• Subscripcions: Tots els butlletins per remitent, amb taxes de lectura i un centre de baixes d'un sol toc que funciona al teu telèfon.
+• Posposar amb sincronització: El correu posposat es guarda en una carpeta del teu servidor, així que també el veuen els altres clients que segueixen la mateixa convenció.
+• Desfés i programa l'enviament: Recupera un missatge durant els primers segons, o escriu-lo ara i envia'l demà a les nou.
+• OpenPGP i S/MIME: Xifra i signa amb qualsevol dels dos estàndards. OpenPGP funciona amb Thunderbird i Autocrypt.
+• Detecció de phishing que s'explica: Els enllaços sospitosos i els dominis que n'imiten d'altres queden marcats, amb el motiu explicat en paraules senzilles.
+• Invitacions de calendari: Tria Accept, Maybe o Decline just a sobre del missatge, amb les dues zones horàries quan no coincideixen.
+• IMAP i JMAP: Qualsevol proveïdor IMAP amb configuració automàtica, i també JMAP natiu per a Fastmail i Stalwart.
+• Tauletes i teclats: Tres panells, dreceres de teclat, arrossegar i deixar anar, i una paleta d'ordres amb Ctrl+K.
+
+No hi ha cap núvol de Loupe. I aquesta és la idea.
+El teu telèfon parla directament amb el teu servidor de correu. Loupe no té cap servidor propi que es pugui atacar, cap analítica que hagis de desactivar ni res per vendre.
+
+Codi obert, fins a l'última prova.
+Cada línia és pública sota la llicència MPL-2.0. Les compilacions Nightly surten directament de GitHub Actions, de manera que el que instal·les és el que pots llegir.
+
+De moment, l'aplicació Loupe és en anglès; aviat n'hi haurà en més idiomes.
+https://loupe.mx

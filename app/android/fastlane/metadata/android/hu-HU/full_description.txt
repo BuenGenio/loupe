@@ -1,0 +1,24 @@
+A Loupe nyugodt, gyors levelezőalkalmazás, a mélyben asztali szintű eszközökkel: kifejezésalapú keresés, szerveroldali szabályok, OpenPGP és S/MIME. Csak a levelezőszervereddel kommunikál, senki mással.
+
+Egyszerű a felszínen. Erős a mélyben.
+• Readable mód: A HTML-levelek a képernyődhöz igazítva: valódi betűméretek, apró betűs láblécek, fotók lapozható karusszelben.
+• Kifejezésalapú keresés: Buborékok vagy begépelt lekérdezések, például from:alice és is:unread. A telefonon lévő találatok azonnal megjelennek, a szerverről érkezők utánuk.
+• Smart Mailboxes, amelyek veled tartanak: A saját levelezőszervereden tárolt mentett keresések, így minden eszközödön veled vannak.
+• Szabályok az eszközön vagy a szerveren: Bármely keresésből szabályt készíthetsz. Futtasd a telefonon, vagy Sieve-ként a szervereden, így akkor is dolgozik, amikor alszol.
+• Feliratkozások: Minden hírlevél feladónként, olvasási aránnyal és egy koppintásos leiratkozási központtal, amely a telefonodon fut.
+• Szundi, ami szinkronizál: A szundira tett levelek egy mappában várnak a szervereden, így a konvenciót követő más levelezőprogramok is látják őket.
+• Visszavonás és ütemezett küldés: Az első másodpercekben még visszavonhatod az üzenetet, vagy megírhatod most, és elküldheted holnap kilenckor.
+• OpenPGP és S/MIME: Titkosíts és írj alá bármelyik szabvánnyal. Az OpenPGP együttműködik a Thunderbirddel és az Autocrypttel.
+• Érthető adathalászat-ellenőrzés: A gyanús linkeket és a megtévesztően hasonló domaineket megjelöli, az okot pedig közérthetően elmagyarázza.
+• Naptármeghívók: Accept, Maybe vagy Decline közvetlenül az üzenet felett, mindkét időzónával, ha eltérnek.
+• IMAP és JMAP: Bármely IMAP-szolgáltató automatikus beállítással, valamint natív JMAP a Fastmailhez és a Stalwarthoz.
+• Táblagépek és billentyűzetek: Három panel, billentyűparancsok, fogd és vidd, valamint parancspaletta a Ctrl+K billentyűkombinációval.
+
+Nincs Loupe-felhő. Éppen ez a lényeg.
+A telefonod közvetlenül a levelezőszervereddel kommunikál. A Loupe-nak nincs feltörhető háttérrendszere, nincs analitikája, amelyből ki kellene jelentkezned, és nincs mit eladnia.
+
+Nyílt forráskód, az utolsó tesztig.
+Minden sor nyilvános, MPL-2.0 licenc alatt. A Nightly buildek egyenesen a GitHub Actionsből érkeznek, így amit telepítesz, azt el is olvashatod.
+
+A Loupe alkalmazás egyelőre angol nyelvű; további nyelvek is érkeznek.
+https://loupe.mx

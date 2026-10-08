@@ -1,0 +1,24 @@
+Loupe është një aplikacion poste i qetë dhe i shpejtë, me mjete të nivelit të desktopit nën sipërfaqe: kërkim me shprehje, rregulla në server, OpenPGP dhe S/MIME. Komunikon me serverin tuaj të postës dhe me askënd tjetër.
+
+Thjeshtësi në sipërfaqe. Fuqi në thellësi.
+• Mënyra Readable: Posta HTML e rindërtuar për ekranin tuaj: madhësi të vërteta teksti, fundfaqet me shkrim të imët, fotot në një karusel që rrëshqet.
+• Kërkim me shprehje: Butona filtri ose kërkesa të shkruara si from:alice dhe is:unread. Rezultatet nga telefoni shfaqen menjëherë, ato nga serveri vijnë më pas.
+• Smart Mailboxes që udhëtojnë me ju: Kërkime të ruajtura në serverin tuaj të postës, ndaj ju ndjekin në çdo pajisje.
+• Rregulla, në pajisje ose në server: Shndërroni çdo kërkim në rregull. Ekzekutojeni në telefon ose si Sieve në serverin tuaj, që të punojë edhe kur flini.
+• Abonimet: Çdo buletin sipas dërguesit, me përqindjen e leximit dhe një qendër çabonimi me një prekje që punon në telefonin tuaj.
+• Shtyrje që sinkronizohet: Posta e shtyrë ruhet në një dosje në serverin tuaj, ndaj e shohin edhe klientët e tjerë që ndjekin të njëjtën konventë.
+• Anulim dhe planifikim i dërgimit: Tërhiqni një mesazh në sekondat e para, ose shkruajeni tani dhe dërgojeni nesër në orën nëntë.
+• OpenPGP dhe S/MIME: Enkriptoni dhe nënshkruani me cilindo nga të dy standardet. OpenPGP funksionon me Thunderbird dhe Autocrypt.
+• Kontroll phishing-u me shpjegim: Lidhjet e dyshimta dhe domenet imituese sinjalizohen, me arsyen të shpjeguar me fjalë të thjeshta.
+• Ftesa kalendari: Accept, Maybe ose Decline drejt mbi mesazh, me të dyja zonat kohore kur ato ndryshojnë.
+• IMAP dhe JMAP: Çdo ofrues IMAP me konfigurim automatik, plus JMAP të integruar për Fastmail dhe Stalwart.
+• Tableta dhe tastiera: Tri panele, shkurtore tastiere, tërhiq-dhe-lësho dhe një paletë komandash me Ctrl+K.
+
+Loupe nuk ka cloud. Pikërisht ky është thelbi.
+Telefoni juaj komunikon drejtpërdrejt me serverin tuaj të postës. Loupe nuk ka backend që mund të cenohet, as analitikë që duhet ta çaktivizoni, as asgjë për të shitur.
+
+Me burim të hapur, deri te testi i fundit.
+Çdo rresht është publik sipas licencës MPL-2.0. Ndërtimet e përnatshme vijnë drejtpërdrejt nga GitHub Actions, ndaj ajo që instaloni është pikërisht ajo që mund të lexoni.
+
+Aplikacioni Loupe tani për tani është në anglisht; gjuhë të tjera do të vijnë më vonë.
+https://loupe.mx

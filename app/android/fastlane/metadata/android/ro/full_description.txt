@@ -1,0 +1,24 @@
+Loupe este o aplicație de e-mail liniștită și rapidă, cu instrumente de nivel desktop sub capotă: căutare prin expresii, reguli pe server, OpenPGP și S/MIME. Comunică doar cu serverul tău de e-mail și cu nimeni altcineva.
+
+Simplă la suprafață. Puternică în profunzime.
+• Modul Readable: E-mailurile HTML refăcute pe măsura ecranului: text la dimensiuni reale, subsoluri ca text mărunt, fotografii într-un carusel prin care glisezi.
+• Căutare prin expresii: Bule sau interogări tastate, precum from:alice și is:unread. Rezultatele de pe telefon apar imediat, iar cele de pe server sosesc după.
+• Smart Mailboxes care te urmează: Căutări salvate, stocate pe propriul tău server de e-mail, ca să te urmeze pe fiecare dispozitiv.
+• Reguli, pe dispozitiv sau pe server: Transformă orice căutare într-o regulă. Rulează-o pe telefon sau ca Sieve pe serverul tău, ca să funcționeze și cât dormi.
+• Abonamente: Fiecare newsletter grupat după expeditor, cu rata de citire și un centru de dezabonare dintr-o atingere, care rulează pe telefonul tău.
+• Amânare sincronizată: E-mailurile amânate stau într-un dosar pe serverul tău, așa că le văd și alți clienți care respectă aceeași convenție.
+• Anularea și programarea trimiterii: Retrage un mesaj în primele secunde sau scrie acum și trimite mâine la nouă.
+• OpenPGP și S/MIME: Criptează și semnează cu oricare dintre cele două standarde. OpenPGP funcționează cu Thunderbird și Autocrypt.
+• Verificare anti-phishing, cu explicații: Linkurile suspecte și domeniile care le imită pe cele reale sunt semnalate, cu motivul spus pe înțelesul tuturor.
+• Invitații din calendar: Accept, Maybe sau Decline chiar deasupra mesajului, cu ambele fusuri orare atunci când diferă.
+• IMAP și JMAP: Orice furnizor IMAP cu configurare automată, plus JMAP nativ pentru Fastmail și Stalwart.
+• Tablete și tastaturi: Trei panouri, scurtături de tastatură, glisare și fixare și o paletă de comenzi cu Ctrl+K.
+
+Nu există un cloud Loupe. Exact asta e ideea.
+Telefonul tău comunică direct cu serverul tău de e-mail. Loupe nu are niciun backend care să poată fi spart, nicio statistică de utilizare pe care să trebuiască s-o dezactivezi și nimic de vândut.
+
+Open source, până la ultimul test.
+Fiecare linie de cod este publică, sub licența MPL-2.0. Versiunile Nightly vin direct din GitHub Actions, așa că ce instalezi este exact ce poți citi.
+
+Deocamdată, aplicația Loupe este în engleză; vor urma și alte limbi.
+https://loupe.mx

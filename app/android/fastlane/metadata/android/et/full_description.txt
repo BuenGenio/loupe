@@ -1,0 +1,24 @@
+Loupe on rahulik ja kiire e-posti rakendus, mille all peituvad lauaarvuti tasemel tööriistad: avaldistega otsing, serveripoolsed reeglid, OpenPGP ja S/MIME. See suhtleb sinu e-posti serveriga ja mitte kellegi teisega.
+
+Pealtnäha lihtne. Seest võimas.
+• Readable-režiim: HTML-kirjad ekraanile sobivaks ümber ehitatud: päris tekstisuurused, jalused peenkirjana, fotod pühitavas karussellis.
+• Avaldistega otsing: Kiibid või kirjutatud päringud nagu from:alice ja is:unread. Telefonis olevad tulemused ilmuvad kohe, serveri omad jõuavad järele.
+• Smart Mailboxid, mis liiguvad kaasa: Salvestatud otsingud sinu enda e-posti serveris, nii et need järgnevad sulle igasse seadmesse.
+• Reeglid seadmes või serveris: Muuda mis tahes otsing reegliks. Käivita see telefonis või Sieve'ina serveris, nii et see töötab ka siis, kui sa magad.
+• Tellimused: Kõik uudiskirjad saatja kaupa koos lugemismääradega ja sinu telefonis töötav loobumiskeskus, kus tellimusest loobud ühe puudutusega.
+• Sünkroonitud edasilükkamine: Edasi lükatud kirjad on serveris kaustas, nii et ka teised sama kokkulepet järgivad kliendid näevad neid.
+• Saatmise tühistamine ja ajastamine: Võta kiri esimestel sekunditel tagasi või kirjuta kohe ja saada homme kell üheksa.
+• OpenPGP ja S/MIME: Krüpteeri ja allkirjasta kumma standardiga tahes. OpenPGP töötab koos Thunderbirdi ja Autocryptiga.
+• Selgitav andmepüügikontroll: Kahtlased lingid ja ehtsaid jäljendavad domeenid märgitakse ära ning põhjus öeldakse lihtsate sõnadega.
+• Kalendrikutsed: Accept, Maybe või Decline otse kirja kohal, koos mõlema ajavööndiga, kui need erinevad.
+• IMAP ja JMAP: Kõik automaatse seadistusega IMAP-teenusepakkujad ning natiivne JMAP Fastmaili ja Stalwarti jaoks.
+• Tahvelarvutid ja klaviatuurid: Kolm paani, kiirklahvid, pukseerimine ja käsupalett klahvidega Ctrl+K.
+
+Loupe'i pilve ei ole. Just selles ongi mõte.
+Sinu telefon suhtleb otse sinu e-posti serveriga. Loupe'il pole taustsüsteemi, mida häkkida, analüütikat, millest loobuda, ega midagi müüa.
+
+Avatud lähtekood, viimase testini välja.
+Iga rida on avalik litsentsi MPL-2.0 alusel. Nightly-versioonid tulevad otse GitHub Actionsist, nii et see, mida paigaldad, on täpselt see, mida saad lugeda.
+
+Loupe'i rakendus on praegu inglise keeles; teisi keeli lisandub hiljem.
+https://loupe.mx

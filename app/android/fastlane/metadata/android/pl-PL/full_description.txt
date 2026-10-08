@@ -1,0 +1,24 @@
+Loupe to spokojna, szybka aplikacja pocztowa z narzędziami klasy desktopowej pod spodem: wyszukiwaniem za pomocą wyrażeń, regułami po stronie serwera, OpenPGP i S/MIME. Łączy się z twoim serwerem pocztowym i z nikim więcej.
+
+Prostota na wierzchu. Moc pod spodem.
+• Tryb Readable: Poczta HTML przebudowana pod twój ekran: normalne rozmiary tekstu, stopki jako drobny druk, zdjęcia w przewijanej palcem karuzeli.
+• Wyszukiwanie za pomocą wyrażeń: Chipy albo wpisywane zapytania, takie jak from:alice i is:unread. Wyniki z telefonu pojawiają się od razu, te z serwera napływają chwilę później.
+• Smart Mailboxes, które idą za tobą: Zapisane wyszukiwania przechowywane na twoim własnym serwerze pocztowym, więc masz je na każdym urządzeniu.
+• Reguły na urządzeniu lub na serwerze: Zamień dowolne wyszukiwanie w regułę. Uruchom ją na telefonie albo jako Sieve na serwerze, żeby działała, gdy śpisz.
+• Subskrypcje: Każdy newsletter według nadawcy, z odsetkiem przeczytanych i centrum wypisywania jednym stuknięciem, które działa na twoim telefonie.
+• Odkładanie, które się synchronizuje: Odłożona poczta trafia do folderu na serwerze, więc widzą ją też inne programy, które stosują tę konwencję.
+• Cofanie i planowanie wysyłki: Wycofaj wiadomość w pierwszych sekundach albo napisz teraz i wyślij jutro o dziewiątej.
+• OpenPGP i S/MIME: Szyfruj i podpisuj w dowolnym z tych standardów. OpenPGP współpracuje z Thunderbirdem i Autocrypt.
+• Wykrywanie phishingu z wyjaśnieniem: Podejrzane linki i łudząco podobne domeny są oznaczane, a powód wyjaśniony prostymi słowami.
+• Zaproszenia z kalendarza: Wybierz Accept, Maybe lub Decline tuż nad wiadomością, z obiema strefami czasowymi, gdy się różnią.
+• IMAP i JMAP: Każdy dostawca IMAP z autokonfiguracją oraz natywny JMAP dla Fastmail i Stalwart.
+• Tablety i klawiatury: Trzy panele, skróty klawiszowe, przeciąganie i upuszczanie oraz paleta poleceń pod Ctrl+K.
+
+Nie ma chmury Loupe. I o to chodzi.
+Twój telefon łączy się z serwerem pocztowym bezpośrednio. Loupe nie ma backendu, do którego można się włamać, analityki, z której trzeba się wypisywać, ani niczego na sprzedaż.
+
+Open source, aż do ostatniego testu.
+Każda linijka jest publiczna na licencji MPL-2.0. Wersje Nightly powstają prosto w GitHub Actions, więc to, co instalujesz, możesz też przeczytać.
+
+Aplikacja Loupe jest na razie po angielsku; kolejne języki pojawią się później.
+https://loupe.mx

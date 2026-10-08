@@ -1,0 +1,24 @@
+Loupe is a calm, fast mail app with desktop-class tools underneath: expression search, server-side rules, OpenPGP and S/MIME. It talks to your mail server and nobody else.
+
+Simple on the surface. Powerful underneath.
+• Readable mode: HTML mail rebuilt to fit your screen: real text sizes, footers as fine print, photos in a swipeable carousel.
+• Expression search: Chips or typed queries like from:alice and is:unread. Results from the phone appear at once, the server streams in after.
+• Smart Mailboxes that travel: Saved searches stored on your own mail server, so they follow you to every device.
+• Rules, on the device or the server: Turn any search into a rule. Run it on the phone, or as Sieve on your server so it works while you sleep.
+• Subscriptions: Every newsletter by sender, with read rates and a one-tap unsubscribe centre that runs on your phone.
+• Snooze that syncs: Snoozed mail lives in a folder on your server, so other clients that follow the convention see it too.
+• Undo and schedule send: Take back a message in the first seconds, or write now and send tomorrow at nine.
+• OpenPGP and S/MIME: Encrypt and sign with either standard. OpenPGP works with Thunderbird and Autocrypt.
+• Explainable phishing check: Suspicious links and look-alike domains are flagged, with the reason in plain words.
+• Calendar invitations: Accept, Maybe or Decline right above the message, with both time zones when they differ.
+• IMAP and JMAP: Any IMAP provider with autoconfig, plus native JMAP for Fastmail and Stalwart.
+• Tablets and keyboards: Three panes, keyboard shortcuts, drag and drop, and a command palette on Ctrl+K.
+
+There's no Loupe cloud. That's the point.
+Your phone talks to your mail server, directly. Loupe has no backend to breach, no analytics to opt out of, and nothing to sell.
+
+Open source, down to the last test.
+Every line is public under the MPL-2.0. Nightly builds come straight from GitHub Actions, so what you install is what you can read.
+
+The Loupe app is in English for now; more languages will follow.
+https://loupe.mx

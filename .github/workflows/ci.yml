@@ -10,12 +10,16 @@ on:
       - "marketing/**"
       - ".github/workflows/site.yml"
       - ".github/workflows/social.yml"
+      - ".github/workflows/play-listing.yml"
+      - "app/android/fastlane/**"
   pull_request:
     paths-ignore:
       - "site/**"
       - "marketing/**"
       - ".github/workflows/site.yml"
       - ".github/workflows/social.yml"
+      - ".github/workflows/play-listing.yml"
+      - "app/android/fastlane/**"
   workflow_dispatch:
 
 concurrency:
@@ -42,7 +46,9 @@ jobs:
 
   android:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
+    env:
+      HAS_PLAY_KEY: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON != '' }}
     permissions:
       contents: write
     steps:
@@ -113,3 +119,41 @@ jobs:
           gh release edit nightly --prerelease --title "Nightly 0.1.${{ github.run_number }}" --notes-file "$notes"
           for f in $(gh release view nightly --json assets --jq '.assets[].name'); do gh release delete-asset nightly "$f" --yes; done
           gh release upload nightly dist/*.apk --clobber
+      # Google Play: the same build as an app bundle, signed with the upload key
+      # (the release keystore). After the Nightly so the APKs aren't held up.
+      - name: Build the app bundle for Google Play
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        working-directory: app
+        env:
+          LOUPE_KEYSTORE_PASSWORD: ${{ secrets.LOUPE_KEYSTORE_PASSWORD }}
+          LOUPE_KEY_ALIAS: ${{ secrets.LOUPE_KEY_ALIAS }}
+          LOUPE_KEY_PASSWORD: ${{ secrets.LOUPE_KEY_PASSWORD }}
+          LOUPE_GOOGLE_CLIENT_ID: ${{ secrets.LOUPE_GOOGLE_CLIENT_ID }}
+          LOUPE_MICROSOFT_CLIENT_ID: ${{ secrets.LOUPE_MICROSOFT_CLIENT_ID }}
+        run: |
+          flutter build appbundle --release \
+            --build-number=${{ github.run_number }} \
+            --build-name=0.1.${{ github.run_number }} \
+            --dart-define=LOUPE_GOOGLE_CLIENT_ID="$LOUPE_GOOGLE_CLIENT_ID" \
+            --dart-define=LOUPE_MICROSOFT_CLIENT_ID="$LOUPE_MICROSOFT_CLIENT_ID"
+          mkdir -p ../dist-play
+          cp build/app/outputs/bundle/release/app-release.aab ../dist-play/loupe-0.1.${{ github.run_number }}.aab
+      - uses: actions/upload-artifact@v5
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        with:
+          name: loupe-aab-${{ github.run_number }}
+          path: dist-play/*.aab
+          retention-days: 30
+      # Uploads to the internal testing track once the PLAY_SERVICE_ACCOUNT_JSON
+      # secret exists (docs/play-store.md). New apps only accept draft releases
+      # until the first one is published: set the repository variable
+      # PLAY_RELEASE_STATUS to "completed" after that.
+      - name: Upload to Google Play (internal testing)
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && env.HAS_PLAY_KEY == 'true'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: io.github.buengenio.loupe
+          releaseFiles: dist-play/*.aab
+          track: internal
+          status: ${{ vars.PLAY_RELEASE_STATUS || 'draft' }}

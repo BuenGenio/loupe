@@ -1,0 +1,24 @@
+Loupe ist eine ruhige, schnelle Mail-App mit Werkzeugen auf Desktop-Niveau unter der Haube: Suche mit Ausdrücken, serverseitige Regeln, OpenPGP und S/MIME. Sie spricht mit deinem Mailserver und mit niemandem sonst.
+
+Außen einfach. Innen leistungsstark.
+• Readable-Modus: HTML-Mails passend für deinen Bildschirm neu aufgebaut: echte Schriftgrößen, Fußzeilen als Kleingedrucktes, Fotos in einem wischbaren Karussell.
+• Suche mit Ausdrücken: Chips oder getippte Abfragen wie from:alice und is:unread. Ergebnisse vom Smartphone erscheinen sofort, die vom Server kommen danach.
+• Smart Mailboxes, die mitreisen: Gespeicherte Suchen auf deinem eigenen Mailserver, die dir auf jedes Gerät folgen.
+• Regeln auf dem Gerät oder auf dem Server: Mach aus jeder Suche eine Regel. Führe sie auf dem Smartphone aus oder als Sieve auf deinem Server, damit sie arbeitet, während du schläfst.
+• Abonnements: Alle Newsletter nach Absender, mit Leseraten und einer Abmeldezentrale, die auf deinem Smartphone läuft: abmelden mit einem Tipp.
+• Zurückstellen, synchronisiert: Zurückgestellte Mails liegen in einem Ordner auf deinem Server, sodass andere Clients, die dieser Konvention folgen, sie auch sehen.
+• Senden rückgängig machen und planen: Hol eine Nachricht in den ersten Sekunden zurück, oder schreib sie jetzt und schick sie morgen um neun.
+• OpenPGP und S/MIME: Verschlüssle und signiere mit einem der beiden Standards. OpenPGP funktioniert mit Thunderbird und Autocrypt.
+• Nachvollziehbare Phishing-Prüfung: Verdächtige Links und Doppelgänger-Domains werden markiert, mit der Begründung in klaren Worten.
+• Kalendereinladungen: Accept, Maybe oder Decline direkt über der Nachricht, mit beiden Zeitzonen, wenn sie sich unterscheiden.
+• IMAP und JMAP: Jeder IMAP-Anbieter mit Autoconfig, dazu natives JMAP für Fastmail und Stalwart.
+• Tablets und Tastaturen: Drei Spalten, Tastenkürzel, Drag-and-drop und eine Befehlspalette mit Ctrl+K.
+
+Es gibt keine Loupe-Cloud. Genau darum geht es.
+Dein Smartphone spricht direkt mit deinem Mailserver. Loupe hat kein Backend, das gehackt werden kann, keine Analyse, der du widersprechen müsstest, und nichts zu verkaufen.
+
+Open Source, bis zum letzten Test.
+Jede Zeile ist öffentlich unter der MPL-2.0. Nightly-Builds kommen direkt aus GitHub Actions: Was du installierst, kannst du auch lesen.
+
+Die Loupe-App ist vorerst auf Englisch; weitere Sprachen folgen.
+https://loupe.mx

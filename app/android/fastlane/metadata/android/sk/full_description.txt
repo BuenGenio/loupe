@@ -1,0 +1,24 @@
+Loupe je pokojná a rýchla e-mailová aplikácia s nástrojmi na úrovni desktopu pod povrchom: vyhľadávanie pomocou výrazov, pravidlá na serveri, OpenPGP a S/MIME. Komunikuje s vaším poštovým serverom a s nikým iným.
+
+Navonok jednoduchá. Vo vnútri výkonná.
+• Režim Readable: HTML pošta prerobená pre vašu obrazovku: skutočné veľkosti textu, päty ako drobné písmo, fotky v karuseli, ktorým listujete potiahnutím.
+• Vyhľadávanie pomocou výrazov: Bubliny alebo napísané dopyty ako from:alice a is:unread. Výsledky z telefónu sa objavia hneď, tie zo servera pribudnú potom.
+• Smart Mailboxes, ktoré cestujú s vami: Uložené vyhľadávania na vašom vlastnom poštovom serveri, takže vás sprevádzajú na každom zariadení.
+• Pravidlá v zariadení alebo na serveri: Z akéhokoľvek vyhľadávania urobte pravidlo. Spúšťajte ho v telefóne alebo ako Sieve na serveri, aby fungovalo, aj keď spíte.
+• Odbery: Všetky newslettery podľa odosielateľa, s mierou čítania a centrom odhlásenia jedným ťuknutím, ktoré beží vo vašom telefóne.
+• Odloženie, ktoré sa synchronizuje: Odložená pošta je v priečinku na vašom serveri, takže ju vidia aj ostatní klienti, ktorí dodržiavajú rovnakú konvenciu.
+• Zrušenie a plánovanie odoslania: Vezmite správu späť v prvých sekundách alebo ju napíšte teraz a odošlite zajtra o deviatej.
+• OpenPGP a S/MIME: Šifrujte a podpisujte podľa ktoréhokoľvek z oboch štandardov. OpenPGP funguje s Thunderbirdom a Autocryptom.
+• Kontrola phishingu s vysvetlením: Podozrivé odkazy a domény napodobňujúce iné sa označia aj s vysvetlením v zrozumiteľných slovách.
+• Pozvánky do kalendára: Accept, Maybe alebo Decline priamo nad správou, s oboma časovými pásmami, ak sa líšia.
+• IMAP a JMAP: Akýkoľvek poskytovateľ IMAP s automatickou konfiguráciou a k tomu natívny JMAP pre Fastmail a Stalwart.
+• Tablety a klávesnice: Tri panely, klávesové skratky, presúvanie potiahnutím a paleta príkazov na Ctrl+K.
+
+Loupe nemá cloud. A práve o to ide.
+Váš telefón komunikuje priamo s vaším poštovým serverom. Loupe nemá žiadny backend, ktorý by sa dal napadnúť, žiadnu analytiku, ktorú by ste museli vypínať, a nič na predaj.
+
+Open source až po posledný test.
+Každý riadok je verejný pod licenciou MPL-2.0. Zostavy Nightly prichádzajú priamo z GitHub Actions, takže to, čo inštalujete, si môžete aj prečítať.
+
+Aplikácia Loupe je zatiaľ v angličtine; ďalšie jazyky pribudnú.
+https://loupe.mx
