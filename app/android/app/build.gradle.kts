@@ -4,6 +4,9 @@ plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+    // Push (docs/push.md): turns google-services.json (the Firebase project's public client settings) into
+    // resources Firebase starts from.
+    id("com.google.gms.google-services")
 }
 
 // Release signing: android/key.properties locally, or LOUPE_KEYSTORE_* environment
@@ -73,6 +76,14 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+// Push needs only Firebase Cloud Messaging. firebase-messaging brings the Analytics connector, an interface
+// that does nothing without the Analytics SDK (which Loupe doesn't have) but makes tracker scanners such as
+// Exodus report "Google Firebase Analytics". Without it, FCM works as before; only the Firebase console's
+// notification campaigns, which ask FCM to log to Analytics, would fail, and Loupe never uses them.
+configurations.configureEach {
+    exclude(group = "com.google.firebase", module = "firebase-measurement-connector")
 }
 
 dependencies {

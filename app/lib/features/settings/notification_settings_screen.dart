@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../l10n/l10n.dart';
 import '../../platform/instant_delivery.dart';
+import '../../platform/push.dart';
 import '../../providers.dart';
 import '../../settings/app_mode.dart';
 import '../../settings/app_settings.dart';
@@ -33,9 +35,19 @@ final instantBatteryRestrictedProvider = FutureProvider.autoDispose<bool>(
   (ref) => ref.watch(instantServiceProvider).isBatteryRestricted(),
 );
 
+/// The address pushes reach this phone at, while Push is on in live mode;
+/// an error when the phone can't receive them (no Google Play services).
+/// Not retried: Play services don't appear by trying again, and the page
+/// asks afresh each time it opens.
+final pushTokenProvider = FutureProvider.autoDispose<String?>((ref) {
+  final on = ref.watch(notificationSettingsProvider.select((s) => s.push));
+  final live = ref.watch(appModeProvider) == AppMode.live;
+  return on && live ? ref.watch(pushServiceProvider).token() : Future.value();
+}, retry: (_, _) => null);
+
 /// Settings › Notifications: new-mail alerts per account, VIP only, hidden
 /// content, a test notification, and the app icon badge. Android adds
-/// Instant Delivery; iOS, which can't hold a connection open, points to
+/// Instant Delivery and Push; iOS, which can't hold a connection open, points to
 /// Background App Refresh instead.
 class NotificationSettingsScreen extends ConsumerStatefulWidget {
   const NotificationSettingsScreen({super.key});
@@ -87,6 +99,12 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
     if (on) await _ensurePermission();
   }
 
+  Future<void> _copyPushToken(String token) async {
+    final messenger = ScaffoldMessenger.of(context);
+    await Clipboard.setData(ClipboardData(text: token));
+    messenger.showSnackBar(const SnackBar(content: Text('Push token copied')));
+  }
+
   Future<void> _sendTest() async {
     final messenger = ScaffoldMessenger.of(context);
     final l10n = context.l10n;
@@ -120,6 +138,8 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
     final batteryRestricted = instantAvailable && settings.instant
         ? ref.watch(instantBatteryRestrictedProvider).value ?? false
         : false;
+    final pushAvailable = ref.watch(pushAvailableProvider);
+    final pushToken = pushAvailable ? ref.watch(pushTokenProvider) : null;
 
     return GroupedPage(
       title: l10n.settingsNotifications,
@@ -209,6 +229,24 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
                   title: l10n.settingsAllowUnrestrictedBattery,
                   onTap: () => unawaited(ref.read(instantServiceProvider).openBatterySettings()),
                 ),
+            ],
+          ),
+        if (!ios && pushAvailable)
+          InsetGroup(
+            separatorIndent: 16,
+            footer: settings.push && (pushToken?.hasError ?? false)
+                ? 'This phone can’t receive pushes: they need Google Play services and a network connection. '
+                      'Loupe still checks for mail about every 15 minutes.'
+                : 'Push lets new mail wake Loupe at once, where your mail service supports it. Pushes go through '
+                      'Google’s push service and carry no mail, only “check now”.',
+            children: [
+              SwitchRow(
+                title: 'Push',
+                value: settings.push,
+                onChanged: (v) => unawaited(_controller.update((s) => s.copyWith(push: v))),
+              ),
+              if (pushToken?.value case final token?)
+                GroupedRow(title: 'Copy Push Token', chevron: false, onTap: () => unawaited(_copyPushToken(token))),
             ],
           ),
         InsetGroup(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/account_import/qr_scanner.dart' show openAppSettingsProvider;
 import 'package:loupe/features/notifications/notification_content.dart';
@@ -207,5 +208,50 @@ void main() {
     await toggle(tester, 'Instant Delivery');
     expect(instant.running, isFalse);
     expect(find.text('Allow Unrestricted Battery Use'), findsNothing);
+  });
+
+  testWidgets('Push: on by default, its token copies, and a phone that can’t receive pushes says so', (tester) async {
+    final push = FakePushService();
+    await pumpWithNotifications(tester, notifier: FakeNotifier(), push: push, mode: AppMode.live);
+    await goTo(tester, Routes.notificationSettings);
+    // The row below, so all of Push is on screen.
+    await tester.scrollTo(find.text('Send Test Notification'));
+    expect(switchOf(tester, 'Push').value, isTrue);
+    expect(textContaining('carry no mail'), findsOneWidget);
+
+    String? copied;
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
+      if (call.method == 'Clipboard.setData') copied = (call.arguments as Map)['text'] as String?;
+      return null;
+    });
+    addTearDown(() => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.platform, null));
+    await tester.tap(find.text('Copy Push Token'));
+    await tester.pumpAndSettle();
+    expect(copied, 'fcm-token');
+    expect(find.text('Push token copied'), findsOneWidget);
+    await drainTimers(tester);
+
+    await toggle(tester, 'Push');
+    expect(switchOf(tester, 'Push').value, isFalse);
+    expect(find.text('Copy Push Token'), findsNothing);
+    final prefs = await SharedPreferences.getInstance();
+    expect(NotificationSettings.read(prefs).push, isFalse);
+
+    await pumpWithNotifications(
+      tester,
+      notifier: FakeNotifier(),
+      push: FakePushService(unavailable: true),
+      mode: AppMode.live,
+    );
+    await goTo(tester, Routes.notificationSettings);
+    await tester.scrollTo(find.text('Push'));
+    expect(textContaining('need Google Play services'), findsOneWidget);
+    expect(find.text('Copy Push Token'), findsNothing);
+  });
+
+  testWidgets('Push isn’t offered where the build has none (iOS for now)', (tester) async {
+    await pumpWithNotifications(tester, notifier: FakeNotifier(), mode: AppMode.live);
+    await goTo(tester, Routes.notificationSettings);
+    expect(find.text('Push'), findsNothing);
   });
 }

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/app.dart';
+import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/features/compose/compose_screen.dart';
 import 'package:loupe/features/conversation/conversation_screen.dart';
 import 'package:loupe/features/message_list/message_list_screen.dart';
@@ -15,8 +16,22 @@ import 'package:loupe/settings/app_mode.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../helpers.dart' show testNow;
+
 import 'fakes.dart';
 import 'pump.dart';
+
+class _CountingRepository extends DemoMailRepository {
+  _CountingRepository() : super(latency: DemoLatency.zero, clock: () => testNow);
+
+  int refreshes = 0;
+
+  @override
+  Future<void> refresh({MailboxRef? ref}) {
+    refreshes++;
+    return super.refresh(ref: ref);
+  }
+}
 
 ProviderContainer containerOf(WidgetTester tester) => ProviderScope.containerOf(tester.element(find.byType(LoupeApp)));
 
@@ -240,5 +255,47 @@ void main() {
     final demo = FakeInstantService();
     await pumpWithNotifications(tester, notifier: notifier, instant: demo, prefs: {'notifications.instant': true});
     expect(demo.starts, 0, reason: 'demo mail never syncs in the background');
+  });
+
+  testWidgets('Push is on in live mode unless switched off, and never in demo mode', (tester) async {
+    final demo = FakePushService();
+    await pumpWithNotifications(tester, notifier: notifier, push: demo);
+    expect(demo.calls, [false], reason: 'a push is no use without an account');
+
+    final push = FakePushService();
+    await pumpWithNotifications(tester, notifier: notifier, push: push, mode: AppMode.live);
+    expect(push.calls, [true], reason: 'on by default');
+
+    final container = containerOf(tester);
+    await container.read(notificationSettingsProvider.notifier).update((s) => s.copyWith(push: false));
+    await tester.pumpAndSettle();
+    expect(push.enabled, isFalse);
+    await container.read(notificationSettingsProvider.notifier).update((s) => s.copyWith(vipOnly: true));
+    await tester.pumpAndSettle();
+    expect(push.calls, [true, false], reason: 'other settings leave Push alone');
+    await container.read(notificationSettingsProvider.notifier).update((s) => s.copyWith(push: true));
+    await tester.pumpAndSettle();
+    expect(push.enabled, isTrue);
+    await container.read(appModeProvider.notifier).set(AppMode.demo);
+    await tester.pumpAndSettle();
+    expect(push.enabled, isFalse);
+  });
+
+  testWidgets('a push with the app open syncs, in live mode only', (tester) async {
+    final push = FakePushService();
+    final repo = _CountingRepository();
+    await pumpWithNotifications(tester, notifier: notifier, push: push, repository: repo, mode: AppMode.live);
+    final before = repo.refreshes;
+    push.push();
+    await tester.pumpAndSettle();
+    expect(repo.refreshes, before + 1);
+
+    final demoPush = FakePushService();
+    final demoRepo = _CountingRepository();
+    await pumpWithNotifications(tester, notifier: notifier, push: demoPush, repository: demoRepo);
+    final demoBefore = demoRepo.refreshes;
+    demoPush.push();
+    await tester.pumpAndSettle();
+    expect(demoRepo.refreshes, demoBefore);
   });
 }

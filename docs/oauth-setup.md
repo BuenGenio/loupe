@@ -54,7 +54,7 @@ Client ids aren't confidential: anyone can read them from the APK. The secrets k
   - The Cloud console's [own help](https://support.google.com/googleapi/answer/6158849) still describes that setting: "Custom URI scheme: This setting enables custom URI schemes for your Android client."
 - **Why not Google's recommended alternative:**
   - That is the Google Identity Services SDK (Credential Manager / `AuthorizationClient`). It runs in Google Play services and hands out access tokens instead of a refresh token.
-  - Loupe avoids Play services (the QR scanner was chosen for that reason), and has to work on phones without them and on iOS.
+  - Loupe avoids Play services (the QR scanner was chosen for that reason), and has to work on phones without them and on iOS. Only Push ([push.md](push.md)) uses them, where the phone has them.
   - It also can't share flutter_appauth's code path.
 - **Why not the reversed client id:**
   - It isn't needed: the package name works on Android, as in [Thunderbird for Android](https://github.com/thunderbird/thunderbird-android/blob/main/app-thunderbird/src/release/kotlin/net/thunderbird/android/auth/TbOAuthConfigurationFactory.kt) (`net.thunderbird.android:/oauth2redirect`) and [FairEmail](https://github.com/M66B/FairEmail/blob/master/app/src/main/res/xml/providers.xml) (`eu.faircode.email:/`).

@@ -30,6 +30,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" tools:node="remove" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />
+    <!-- Push (Firebase Cloud Messaging, docs/push.md) merges c2dm RECEIVE and WAKE_LOCK. Loupe has no ads and no
+         Analytics: no advertising ID, should any Google library ask for it. -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
     <uses-feature android:name="android.hardware.camera.any" android:required="false" tools:replace="android:required" />
     <!-- No backups and no phone-to-phone copies of Loupe's data (see res/xml/data_extraction_rules.xml):
          the database key lives in the Keystore, which doesn't move with them. -->
@@ -94,6 +97,11 @@
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="Instant email delivery: an optional, user-enabled mode that keeps an IMAP IDLE connection to the user's own mail server open, so new mail is notified within seconds instead of every 15 minutes. Standard IMAP servers offer no push service." />
         </service>
+        <!-- Push: no token until Loupe turns push on (live mode, Settings › Notifications › Push), so a phone
+             that only tries the demo never contacts Firebase. Loupe sets the flag itself after that. -->
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
         <!-- The status bar icon of the Instant Delivery notification. -->
         <meta-data
             android:name="io.github.buengenio.loupe.NOTIFICATION_ICON"
