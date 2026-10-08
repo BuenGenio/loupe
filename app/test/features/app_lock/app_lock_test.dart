@@ -112,9 +112,12 @@ void _expectOpen() {
   expect(_mail, findsOneWidget);
 }
 
-CupertinoSwitch _appLockSwitch(WidgetTester tester) => tester.widget<CupertinoSwitch>(
-  find.descendant(of: find.byKey(const Key('app-lock')), matching: find.byType(CupertinoSwitch)),
+final _appLockSwitchFinder = find.descendant(
+  of: find.byKey(const Key('app-lock')),
+  matching: find.byType(CupertinoSwitch),
 );
+
+CupertinoSwitch _appLockSwitch(WidgetTester tester) => tester.widget<CupertinoSwitch>(_appLockSwitchFinder);
 
 Future<void> _openSecuritySettings(WidgetTester tester) async {
   await goTo(tester, Routes.settings);
@@ -334,7 +337,7 @@ void main() {
     expect(_appLockSwitch(tester).value, isFalse);
 
     // Not recognised: still off, and says so.
-    await tester.tap(find.byType(CupertinoSwitch).last);
+    await tester.tap(_appLockSwitchFinder);
     await tester.pumpAndSettle();
     expect(_appLockSwitch(tester).value, isFalse);
     expect(find.text('App Lock is still off. Loupe couldn’t confirm it’s you.'), findsOneWidget);
