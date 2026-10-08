@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../shared/grouped_list.dart';
@@ -29,6 +30,7 @@ class EncryptionSettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final state = ref.watch(keyringStateProvider).value;
     final smime = ref.watch(smimeStateProvider).value ?? SmimeState.empty;
     final accounts = ref.watch(accountsProvider).value ?? const <MailAccount>[];
@@ -37,7 +39,7 @@ class EncryptionSettingsScreen extends ConsumerWidget {
         for (final i in IdentitySelection.identitiesOf(a)) i.email.trim().toLowerCase(),
     }.toList();
     if (state == null) {
-      return const GroupedPage(title: 'End-to-End Encryption', children: [SizedBox(height: 200)]);
+      return GroupedPage(title: l10n.openpgpEncryptionTitle, children: const [SizedBox(height: 200)]);
     }
     final now = DateTime.now();
     final decrypted = ref.watch(decryptedMailSettingsProvider);
@@ -50,29 +52,25 @@ class EncryptionSettingsScreen extends ConsumerWidget {
         if (e.source == KeySource.autocrypt && !e.isAccepted) e,
     ];
     return GroupedPage(
-      title: 'End-to-End Encryption',
+      title: l10n.openpgpEncryptionTitle,
       children: [
         InsetGroup(
-          header: 'My OpenPGP Keys',
+          header: l10n.openpgpMyKeys,
           separatorIndent: 58,
-          footer: state.ownKeys.isEmpty
-              ? 'With a key, you can read encrypted mail and sign and encrypt your own. Using Thunderbird? '
-                    'Export your key there (Account Settings › End-To-End Encryption › Export Secret Key) and '
-                    'import it here.'
-              : null,
+          footer: state.ownKeys.isEmpty ? l10n.openpgpMyKeysFooter : null,
           children: [
             for (final k in state.ownKeys)
               GroupedRow(
                 key: ValueKey('own-${k.fingerprint}'),
                 leading: SettingsIcon(LoupeIcons.pgpKey, colors.success),
                 title: k.displayName,
-                subtitle: _keySubtitle(k, now),
+                subtitle: _keySubtitle(l10n, k, now),
                 onTap: () => context.push(Routes.encryptionKey(k.fingerprint)),
               ),
             GroupedRow(
               key: const ValueKey('add-own-key'),
               leading: Icon(LoupeIcons.add, color: colors.unreadDot, size: 26),
-              title: 'Add Key…',
+              title: l10n.openpgpAddKey,
               titleStyle: LoupeTextStyles.of(context).body.copyWith(color: colors.unreadDot),
               chevron: false,
               onTap: () => _addKey(context, ref),
@@ -81,31 +79,29 @@ class EncryptionSettingsScreen extends ConsumerWidget {
         ),
         if (addresses.isNotEmpty)
           InsetGroup(
-            header: 'Addresses',
+            header: l10n.openpgpAddresses,
             separatorIndent: 16,
-            footer: 'Which key each address uses, and when it encrypts and signs.',
+            footer: l10n.openpgpAddressesFooter,
             children: [
               for (final email in addresses)
                 GroupedRow(
                   key: ValueKey('address-$email'),
                   title: email,
-                  detail: _addressDetail(state, smime, email),
+                  detail: _addressDetail(l10n, state, smime, email),
                   onTap: () => context.push(Routes.encryptionAddress(email)),
                 ),
             ],
           ),
         InsetGroup(
-          header: 'Correspondents’ OpenPGP Keys',
+          header: l10n.openpgpCorrespondentsKeys,
           separatorIndent: 58,
-          footer:
-              'Accept a key once you trust it belongs to its owner; compare the fingerprint with them to '
-              'mark it verified.',
+          footer: l10n.openpgpCorrespondentsKeysFooter,
           children: [
             for (final e in accepted) _publicRow(context, e),
             GroupedRow(
               key: const ValueKey('import-public-key'),
               leading: Icon(LoupeIcons.add, color: colors.unreadDot, size: 26),
-              title: 'Import Public Key…',
+              title: l10n.openpgpImportPublicKey,
               titleStyle: LoupeTextStyles.of(context).body.copyWith(color: colors.unreadDot),
               chevron: false,
               onTap: () => _importFrom(context, ref),
@@ -114,24 +110,20 @@ class EncryptionSettingsScreen extends ConsumerWidget {
         ),
         if (collected.isNotEmpty)
           InsetGroup(
-            header: 'Collected from Autocrypt',
+            header: l10n.openpgpCollected,
             separatorIndent: 58,
-            footer: 'Keys that arrived with messages. Loupe can encrypt to them when both sides ask for it.',
+            footer: l10n.openpgpCollectedFooter,
             children: [for (final e in collected) _publicRow(context, e)],
           ),
         const SmimeSettingsSection(),
         InsetGroup(
-          header: 'On This Device',
+          header: l10n.openpgpOnThisDevice,
           separatorIndent: 16,
-          footer:
-              'Encrypted messages hide their subject. Loupe keeps the subject of each message you open in its '
-              'encrypted database on this device, so the list, search and notifications show it. In the '
-              'background, Loupe can also decrypt the subjects of new messages with keys that have no '
-              'passphrase; it downloads each message (up to 1 MB) to do so.',
+          footer: l10n.openpgpOnThisDeviceFooter,
           children: [
             SwitchRow(
               key: const ValueKey('subjects-in-background'),
-              title: 'Decrypt Subjects in the Background',
+              title: l10n.openpgpDecryptSubjects,
               value: decrypted.subjectsInBackground,
               onChanged: (v) =>
                   ref.read(decryptedMailSettingsProvider.notifier).update((s) => s.copyWith(subjectsInBackground: v)),
@@ -140,41 +132,36 @@ class EncryptionSettingsScreen extends ConsumerWidget {
         ),
         InsetGroup(
           separatorIndent: 16,
-          footer:
-              'Search finds encrypted messages by their sender, recipients and subject. With this on, Loupe also '
-              'adds the text of each encrypted message it decrypts to the search index in its encrypted database on '
-              'this device, so search finds it by its text too. Turning it off removes that text from the index.',
+          footer: l10n.openpgpIndexFooter,
           children: [
             SwitchRow(
               key: const ValueKey('index-decrypted'),
-              title: 'Index Decrypted Messages for Search',
+              title: l10n.openpgpIndexDecrypted,
               value: decrypted.indexForSearch,
               onChanged: (v) => _setIndexing(ref, v),
             ),
           ],
         ),
         InsetGroup(
-          header: 'Passphrases',
+          header: l10n.openpgpPassphrases,
           separatorIndent: 16,
-          footer:
-              'OpenPGP keys and S/MIME certificates you protect with a passphrase are unlocked when needed. '
-              'Without "Remember", they are locked again two minutes after each use.',
+          footer: l10n.openpgpPassphrasesFooter,
           children: [
             SwitchRow(
-              title: 'Remember Passphrases',
-              subtitle: 'Until Loupe closes',
+              title: l10n.openpgpRememberPassphrases,
+              subtitle: l10n.openpgpRememberPassphrasesDetail,
               value: ref.watch(rememberPassphrasesProvider),
               onChanged: (v) => ref.read(rememberPassphrasesProvider.notifier).set(v),
             ),
             GroupedRow(
               key: const ValueKey('lock-keys'),
-              title: 'Lock Keys Now',
+              title: l10n.openpgpLockKeysNow,
               chevron: false,
               onTap: () async {
                 final messenger = ScaffoldMessenger.of(context);
                 (await ref.read(openPgpServiceProvider.future)).lockAll();
                 (await ref.read(smimeServiceProvider.future)).lockAll();
-                showSnack(messenger, 'Keys locked.');
+                showSnack(messenger, l10n.openpgpKeysLocked);
               },
             ),
           ],
@@ -196,6 +183,7 @@ class EncryptionSettingsScreen extends ConsumerWidget {
 
   Widget _publicRow(BuildContext context, PublicKeyEntry e) {
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final (icon, color) = switch (e.acceptance) {
       KeyAcceptance.verified => (LoupeIcons.signed, colors.success),
       KeyAcceptance.unverified => (LoupeIcons.pgpKey, colors.unreadDot),
@@ -206,43 +194,44 @@ class EncryptionSettingsScreen extends ConsumerWidget {
       key: ValueKey('public-${e.key.fingerprint}'),
       leading: SettingsIcon(icon, color),
       title: e.key.displayName,
-      subtitle: '${e.key.emails.join(', ')} · ${acceptanceLabel(e.acceptance)}',
+      subtitle: '${e.key.emails.join(', ')} · ${acceptanceLabel(l10n, e.acceptance)}',
       onTap: () => context.push(Routes.encryptionKey(e.key.fingerprint)),
     );
   }
 
-  static String _keySubtitle(PgpKey k, DateTime now) {
+  static String _keySubtitle(AppLocalizations l10n, PgpKey k, DateTime now) {
     final state = k.revoked
-        ? 'revoked'
+        ? l10n.openpgpKeyStateRevoked
         : k.isExpiredAt(now)
-        ? 'expired'
+        ? l10n.openpgpKeyStateExpired
         : k.expires == null
-        ? 'never expires'
-        : 'expires ${_day(k.expires!)}';
+        ? l10n.openpgpKeyStateNeverExpires
+        : l10n.openpgpKeyStateExpires(_day(k.expires!));
     return '${k.algorithm} · ${formatFingerprint(k.keyId)} · $state';
   }
 
-  static String _addressDetail(KeyringState state, SmimeState smime, String email) {
+  static String _addressDetail(AppLocalizations l10n, KeyringState state, SmimeState smime, String email) {
     final key = state.ownKeyFor(email);
     final certificate = smime.ownCertificateFor(email);
-    if (key == null && certificate == null) return 'No Key';
+    if (key == null && certificate == null) return l10n.openpgpNoKey;
     final s = state.identity(email);
-    if (s.encryptByDefault) return 'Always Encrypt';
+    if (s.encryptByDefault) return l10n.openpgpAlwaysEncrypt;
     return [
       if (key != null) formatFingerprint(key.keyId).split(' ').last,
-      if (certificate != null) 'S/MIME',
+      if (certificate != null) 'S/MIME', // l10n-ignore: the standard's name
     ].join(' · ');
   }
 
   Future<void> _addKey(BuildContext context, WidgetRef ref) async {
+    final l10n = context.l10n;
     final choice = await showActionSheet<String>(
       context,
-      title: 'Add an OpenPGP Key',
-      message: 'Import the key you use in Thunderbird, or make a new one.',
-      actions: const [
-        SheetAction('Import from Clipboard', 'paste'),
-        SheetAction('Import from File', 'file'),
-        SheetAction('Generate New Key', 'generate'),
+      title: l10n.openpgpAddKeyTitle,
+      message: l10n.openpgpAddKeyMessage,
+      actions: [
+        SheetAction(l10n.openpgpImportFromClipboard, 'paste'),
+        SheetAction(l10n.openpgpImportFromFile, 'file'),
+        SheetAction(l10n.openpgpGenerateNewKey, 'generate'),
       ],
     );
     if (choice == null || !context.mounted) return;
@@ -254,10 +243,11 @@ class EncryptionSettingsScreen extends ConsumerWidget {
   }
 
   Future<void> _importFrom(BuildContext context, WidgetRef ref) async {
+    final l10n = context.l10n;
     final choice = await showActionSheet<String>(
       context,
-      title: 'Import a Public Key',
-      actions: const [SheetAction('From Clipboard', 'paste'), SheetAction('From File', 'file')],
+      title: l10n.openpgpImportPublicKeyTitle,
+      actions: [SheetAction(l10n.openpgpFromClipboard, 'paste'), SheetAction(l10n.openpgpFromFile, 'file')],
     );
     if (choice == null || !context.mounted) return;
     await _import(context, ref, choice);
@@ -265,9 +255,10 @@ class EncryptionSettingsScreen extends ConsumerWidget {
 
   Future<void> _import(BuildContext context, WidgetRef ref, String from) async {
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = context.l10n;
     final data = await (from == 'paste' ? ref.read(pasteKeyProvider) : ref.read(pickKeyFileProvider))();
     if (data == null) {
-      if (from == 'paste') showSnack(messenger, 'The clipboard is empty. Copy the key first.');
+      if (from == 'paste') showSnack(messenger, l10n.openpgpClipboardEmpty);
       return;
     }
     if (context.mounted) await importKeys(context, ref, data);
@@ -288,79 +279,81 @@ class KeyDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
     final state = ref.watch(keyringStateProvider).value;
     final own = state?.ownKey(fingerprint);
     final entry = state?.publicEntry(fingerprint);
     final key = own ?? entry?.key;
     if (state == null || key == null) {
-      return const GroupedPage(title: 'Key', children: [SizedBox(height: 200)]);
+      return GroupedPage(title: l10n.openpgpKey, children: const [SizedBox(height: 200)]);
     }
     final colors = LoupeColors.of(context);
     final now = DateTime.now();
     final validity = key.revoked
-        ? 'Revoked'
+        ? l10n.openpgpValidityRevoked
         : key.isExpiredAt(now)
-        ? 'Expired ${_day(key.expires!)}'
+        ? l10n.openpgpValidityExpired(_day(key.expires!))
         : key.expires == null
-        ? 'Never expires'
-        : 'Valid until ${_day(key.expires!)}';
+        ? l10n.openpgpNeverExpires
+        : l10n.openpgpValidUntil(_day(key.expires!));
     return GroupedPage(
       title: key.displayName,
       children: [
         InsetGroup(
-          header: 'Key',
+          header: l10n.openpgpKey,
           separatorIndent: 16,
           children: [
             for (final u in key.userIds) GroupedRow(title: u, chevron: false),
             GroupedRow(
               key: const ValueKey('key-fingerprint'),
-              title: 'Fingerprint',
+              title: l10n.openpgpFingerprint,
               subtitle: key.formattedFingerprint,
               chevron: false,
-              onLongPress: () => _copy(context, key.fingerprint, 'Fingerprint copied.'),
+              onLongPress: () => _copy(context, key.fingerprint, l10n.openpgpFingerprintCopied),
             ),
-            GroupedRow(title: 'Algorithm', detail: key.algorithm, chevron: false),
-            GroupedRow(title: 'Created', detail: _day(key.created), chevron: false),
-            GroupedRow(title: 'Validity', detail: validity, chevron: false),
+            GroupedRow(title: l10n.openpgpAlgorithm, detail: key.algorithm, chevron: false),
+            GroupedRow(title: l10n.openpgpCreated, detail: _day(key.created), chevron: false),
+            GroupedRow(title: l10n.openpgpValidity, detail: validity, chevron: false),
             if (own != null)
-              GroupedRow(title: 'Protection', detail: own.isProtected ? 'Passphrase' : 'Keychain only', chevron: false),
+              GroupedRow(
+                title: l10n.openpgpProtection,
+                detail: own.isProtected ? l10n.openpgpProtectionPassphrase : l10n.openpgpProtectionKeychain,
+                chevron: false,
+              ),
             if (entry != null)
               GroupedRow(
                 key: const ValueKey('key-acceptance'),
-                title: 'Acceptance',
-                detail: acceptanceLabel(entry.acceptance),
+                title: l10n.openpgpAcceptance,
+                detail: acceptanceLabel(l10n, entry.acceptance),
                 onTap: () => pickAcceptance(context, ref, key, entry.acceptance),
               ),
           ],
         ),
         InsetGroup(
           separatorIndent: 16,
-          footer: own == null
-              ? null
-              : 'Share your public key so others can encrypt to you. The backup is your secret key, protected '
-                    'by its passphrase if it has one: keep it private.',
+          footer: own == null ? null : l10n.openpgpKeyDetailsFooter,
           children: [
             GroupedRow(
               key: const ValueKey('share-public-key'),
-              title: 'Share Public Key',
+              title: l10n.openpgpSharePublicKey,
               chevron: false,
               titleStyle: LoupeTextStyles.of(context).body.copyWith(color: colors.unreadDot),
               onTap: () => _sharePublic(context, ref, key),
             ),
             GroupedRow(
               key: const ValueKey('copy-public-key'),
-              title: 'Copy Public Key',
+              title: l10n.openpgpCopyPublicKey,
               chevron: false,
               titleStyle: LoupeTextStyles.of(context).body.copyWith(color: colors.unreadDot),
               onTap: () async {
                 final armored = (await ref.read(openPgpServiceProvider.future)).armoredPublicKey(key.fingerprint);
-                if (armored != null && context.mounted) _copy(context, armored, 'Public key copied.');
+                if (armored != null && context.mounted) _copy(context, armored, l10n.openpgpPublicKeyCopied);
               },
             ),
             if (own != null)
               GroupedRow(
                 key: const ValueKey('backup-secret-key'),
-                title: 'Back Up Secret Key',
+                title: l10n.openpgpBackUpSecretKey,
                 chevron: false,
                 titleStyle: LoupeTextStyles.of(context).body.copyWith(color: colors.unreadDot),
                 onTap: () => _backup(context, ref, own),
@@ -372,7 +365,7 @@ class KeyDetailsScreen extends ConsumerWidget {
           children: [
             GroupedRow(
               key: const ValueKey('delete-key'),
-              title: own != null ? 'Delete Key' : 'Remove Key',
+              title: own != null ? l10n.openpgpDeleteKey : l10n.openpgpRemoveKey,
               destructive: true,
               onTap: () => _delete(context, ref, key, own: own != null),
             ),
@@ -394,13 +387,12 @@ class KeyDetailsScreen extends ConsumerWidget {
   }
 
   Future<void> _backup(BuildContext context, WidgetRef ref, PgpKey key) async {
+    final l10n = context.l10n;
     final ok = await showActionSheet<bool>(
       context,
-      title: 'Back Up Secret Key?',
-      message: key.isProtected
-          ? 'The backup is protected by your key’s passphrase. Anyone with both can read your mail.'
-          : 'This key has no passphrase: anyone with the backup can read your mail and sign as you.',
-      actions: const [SheetAction('Back Up', true, isDefault: true)],
+      title: l10n.openpgpBackUpTitle,
+      message: key.isProtected ? l10n.openpgpBackUpProtected : l10n.openpgpBackUpUnprotected,
+      actions: [SheetAction(l10n.openpgpBackUp, true, isDefault: true)],
     );
     if (ok != true) return;
     final armored = await (await ref.read(openPgpServiceProvider.future)).armoredSecretKey(key.fingerprint);
@@ -409,13 +401,12 @@ class KeyDetailsScreen extends ConsumerWidget {
   }
 
   Future<void> _delete(BuildContext context, WidgetRef ref, PgpKey key, {required bool own}) async {
+    final l10n = context.l10n;
     final ok = await showActionSheet<bool>(
       context,
-      title: own ? 'Delete your key ${key.displayName}?' : 'Remove ${key.displayName}’s key?',
-      message: own
-          ? 'Mail encrypted to this key can’t be read on this device anymore, unless you import it again.'
-          : 'You can import it again later.',
-      actions: [SheetAction(own ? 'Delete Key' : 'Remove Key', true, destructive: true)],
+      title: own ? l10n.openpgpDeleteOwnKeyTitle(key.displayName) : l10n.openpgpRemoveKeyTitle(key.displayName),
+      message: own ? l10n.openpgpDeleteOwnKeyMessage : l10n.openpgpRemoveKeyMessage,
+      actions: [SheetAction(own ? l10n.openpgpDeleteKey : l10n.openpgpRemoveKey, true, destructive: true)],
     );
     if (ok != true || !context.mounted) return;
     final router = GoRouter.of(context);

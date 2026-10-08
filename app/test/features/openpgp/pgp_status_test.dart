@@ -13,6 +13,7 @@ import 'package:mail_model/mail_model.dart';
 import 'openpgp_test_support.dart';
 
 void main() {
+  final l10n = lookupAppLocalizations(const Locale('en'));
   final dana = pgp.publicKey(testKey('Dana Okafor <dana@example.com>'));
   final mine = testKey('Me <me@example.com>');
 
@@ -30,6 +31,7 @@ void main() {
   group('PgpStatusView', () {
     test('a good signature by a verified key: "Signed by Dana Okafor ✓" in green', () {
       final v = PgpStatusView.of(
+        l10n,
         signed(PgpSignatureStatus.good, by: dana.fingerprint, encrypted: true),
         keyring(KeyAcceptance.verified),
         sender: 'dana@example.com',
@@ -42,6 +44,7 @@ void main() {
 
     test('accepted without checking: ✓, but not green', () {
       final v = PgpStatusView.of(
+        l10n,
         signed(PgpSignatureStatus.good, by: dana.fingerprint),
         keyring(KeyAcceptance.unverified),
         sender: 'dana@example.com',
@@ -52,18 +55,21 @@ void main() {
 
     test('not accepted yet, rejected, another address', () {
       final undecided = PgpStatusView.of(
+        l10n,
         signed(PgpSignatureStatus.good, by: dana.fingerprint),
         keyring(KeyAcceptance.undecided),
         sender: 'dana@example.com',
       );
       expect((undecided.signatureLabel, undecided.check), ('Signed by Dana Okafor · key not accepted', false));
       final rejected = PgpStatusView.of(
+        l10n,
         signed(PgpSignatureStatus.good, by: dana.fingerprint),
         keyring(KeyAcceptance.rejected),
         sender: 'dana@example.com',
       );
       expect((rejected.signatureLabel, rejected.signatureTone), ('Signed with a rejected key', PgpTone.bad));
       final other = PgpStatusView.of(
+        l10n,
         signed(PgpSignatureStatus.good, by: dana.fingerprint),
         keyring(KeyAcceptance.verified),
         sender: 'ceo@example.com',
@@ -85,7 +91,7 @@ void main() {
           signerFingerprint: dana.fingerprint,
         ),
       );
-      final v = PgpStatusView.of(status, keyring(KeyAcceptance.verified), sender: 'dana@example.com');
+      final v = PgpStatusView.of(l10n, status, keyring(KeyAcceptance.verified), sender: 'dana@example.com');
       expect(
         (v.encryptionLabel, v.signatureLabel, v.check),
         ('Encrypted in part', 'Signed in part by Dana Okafor', false),
@@ -94,11 +100,12 @@ void main() {
 
     test('"Signature invalid" and "Unknown key"', () {
       final bad = PgpStatusView.of(
+        l10n,
         signed(PgpSignatureStatus.bad, by: dana.fingerprint),
         keyring(KeyAcceptance.verified),
       );
       expect((bad.signatureLabel, bad.signatureTone), ('Signature invalid', PgpTone.bad));
-      final unknown = PgpStatusView.of(signed(PgpSignatureStatus.unknownKey), keyring(null));
+      final unknown = PgpStatusView.of(l10n, signed(PgpSignatureStatus.unknownKey), keyring(null));
       expect((unknown.signatureLabel, unknown.signatureTone), ('Unknown key', PgpTone.caution));
     });
 
@@ -108,12 +115,13 @@ void main() {
         encrypted: true,
         failure: PgpDecryptFailure.noSecretKey,
       );
-      expect(PgpStatusView.of(status, keyring(null)).encryptionLabel, 'Encrypted · no key');
+      expect(PgpStatusView.of(l10n, status, keyring(null)).encryptionLabel, 'Encrypted · no key');
     });
   });
 
   testWidgets('the sheet explains an invalid signature and shows the fingerprint', (tester) async {
     final view = PgpStatusView.of(
+      l10n,
       signed(PgpSignatureStatus.bad, by: dana.fingerprint, encrypted: true),
       keyring(KeyAcceptance.verified),
     );

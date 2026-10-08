@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../router.dart';
 import '../../shared/grouped_list.dart';
@@ -31,6 +32,7 @@ class AddressEncryptionScreen extends ConsumerWidget {
     final key = state.ownKeyFor(email);
     final certificate = ref.watch(smimeStateProvider).value?.ownCertificateFor(email);
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     Future<void> update(IdentityPgp next) async => (await ref.read(keyringProvider.future)).setIdentity(email, next);
     final choices = [
       for (final k in state.ownKeys)
@@ -42,9 +44,9 @@ class AddressEncryptionScreen extends ConsumerWidget {
       title: email,
       children: [
         InsetGroup(
-          header: 'OpenPGP Key',
+          header: l10n.openpgpKeyHeader,
           separatorIndent: 16,
-          footer: key == null ? 'Add a key in End-to-End Encryption to encrypt and sign mail from this address.' : null,
+          footer: key == null ? l10n.openpgpAddressNoKeyFooter : null,
           children: [
             for (final k in choices)
               GroupedRow(
@@ -59,7 +61,7 @@ class AddressEncryptionScreen extends ConsumerWidget {
               ),
             GroupedRow(
               key: const ValueKey('generate-for-address'),
-              title: 'Generate a Key…',
+              title: l10n.openpgpGenerateAKey,
               titleStyle: LoupeTextStyles.of(context).body.copyWith(color: colors.unreadDot),
               chevron: false,
               onTap: () => context.push(Routes.generateKey, extra: email),
@@ -69,31 +71,29 @@ class AddressEncryptionScreen extends ConsumerWidget {
         SmimeAddressGroup(email: email, hasPgpKey: key != null),
         if (key != null || certificate != null)
           InsetGroup(
-            header: 'Sending',
+            header: l10n.openpgpSending,
             separatorIndent: 16,
-            footer:
-                'Automatic encryption turns on when every recipient has an accepted key or a trusted certificate, '
-                'or when Autocrypt says both sides want it. Encrypted mail is always signed.',
+            footer: l10n.openpgpSendingFooter,
             children: [
               SwitchRow(
-                title: 'Encrypt Automatically',
+                title: l10n.openpgpEncryptAutomatically,
                 value: settings.autoEncrypt,
                 onChanged: (v) => update(settings.copyWith(autoEncrypt: v)),
               ),
               SwitchRow(
-                title: 'Always Encrypt',
-                subtitle: 'Refuses to send when a recipient has no key',
+                title: l10n.openpgpAlwaysEncrypt,
+                subtitle: l10n.openpgpAlwaysEncryptDetail,
                 value: settings.encryptByDefault,
                 onChanged: (v) => update(settings.copyWith(encryptByDefault: v)),
               ),
               SwitchRow(
-                title: 'Sign Unencrypted Mail',
+                title: l10n.openpgpSignUnencrypted,
                 value: settings.signByDefault,
                 onChanged: (v) => update(settings.copyWith(signByDefault: v)),
               ),
               if (key != null)
                 SwitchRow(
-                  title: 'Attach My Public Key',
+                  title: l10n.openpgpAttachPublicKey,
                   value: settings.attachPublicKey,
                   onChanged: (v) => update(settings.copyWith(attachPublicKey: v)),
                 ),
@@ -101,20 +101,18 @@ class AddressEncryptionScreen extends ConsumerWidget {
           ),
         if (key != null)
           InsetGroup(
-            header: 'Autocrypt',
+            header: 'Autocrypt', // l10n-ignore: the standard's name
             separatorIndent: 16,
-            footer:
-                'Autocrypt sends your public key along with every message, so other apps can encrypt to you '
-                'without any setup.',
+            footer: l10n.openpgpAutocryptFooter,
             children: [
               SwitchRow(
-                title: 'Send My Key with Mail',
+                title: l10n.openpgpSendMyKey,
                 value: settings.autocrypt,
                 onChanged: (v) => update(settings.copyWith(autocrypt: v)),
               ),
               SwitchRow(
-                title: 'Prefer Encryption',
-                subtitle: 'Ask others to encrypt when they can',
+                title: l10n.openpgpPreferEncryption,
+                subtitle: l10n.openpgpPreferEncryptionDetail,
                 value: settings.preferEncrypt,
                 onChanged: (v) => update(settings.copyWith(preferEncrypt: v)),
               ),
@@ -127,14 +125,20 @@ class AddressEncryptionScreen extends ConsumerWidget {
 
 /// How long a new key is valid.
 enum KeyValidity {
-  oneYear('1 year', Duration(days: 365)),
-  twoYears('2 years', Duration(days: 730)),
-  threeYears('3 years', Duration(days: 1095)),
-  never('Never expires', null);
+  oneYear(Duration(days: 365)),
+  twoYears(Duration(days: 730)),
+  threeYears(Duration(days: 1095)),
+  never(null);
 
-  const KeyValidity(this.label, this.duration);
-  final String label;
+  const KeyValidity(this.duration);
   final Duration? duration;
+
+  String label(AppLocalizations l10n) => switch (this) {
+    oneYear => l10n.openpgpValidityYears(1),
+    twoYears => l10n.openpgpValidityYears(2),
+    threeYears => l10n.openpgpValidityYears(3),
+    never => l10n.openpgpNeverExpires,
+  };
 }
 
 /// "Generate New Key": a Curve25519 key (Ed25519 + X25519, as Thunderbird
@@ -173,9 +177,10 @@ class _GenerateKeyScreenState extends ConsumerState<GenerateKeyScreen> {
   Future<void> _generate() async {
     final email = _email;
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = context.l10n;
     if (email == null) return;
     if (_passphrase.text != _repeat.text) {
-      showSnack(messenger, 'The passphrases don’t match.');
+      showSnack(messenger, l10n.openpgpPassphrasesDontMatch);
       return;
     }
     setState(() => _busy = true);
@@ -189,7 +194,7 @@ class _GenerateKeyScreenState extends ConsumerState<GenerateKeyScreen> {
       );
       if (!mounted) return;
       context.pop();
-      showSnack(messenger, 'Your key ${formatFingerprint(key.keyId)} is ready.');
+      showSnack(messenger, l10n.openpgpKeyReady(formatFingerprint(key.keyId)));
     } on PgpException catch (e) {
       if (mounted) setState(() => _busy = false);
       showSnack(messenger, e.message);
@@ -205,41 +210,50 @@ class _GenerateKeyScreenState extends ConsumerState<GenerateKeyScreen> {
       _name.text = match?.name ?? '';
     }
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     return GroupedPage(
-      title: 'New Key',
+      title: l10n.openpgpNewKey,
       children: [
         InsetGroup(
-          header: 'For',
+          header: l10n.openpgpNewKeyFor,
           separatorIndent: 16,
           children: [
-            _Field(label: 'Name', controller: _name, hint: 'Your name'),
+            _Field(label: l10n.commonName, controller: _name, hint: l10n.openpgpYourName),
             GroupedRow(
               key: const ValueKey('generate-email'),
-              title: 'Address',
-              detail: _email ?? 'None',
+              title: l10n.openpgpAddress,
+              detail: _email ?? l10n.commonNone,
               onTap: identities.length < 2 ? null : () => _pickEmail(identities),
             ),
           ],
         ),
         InsetGroup(
-          header: 'Passphrase',
+          header: l10n.openpgpPassphrase,
           separatorIndent: 16,
-          footer:
-              'Optional. Without one, your phone’s keychain alone protects the key and Loupe never asks. '
-              'With one, Loupe asks for it when the key is needed.',
+          footer: l10n.openpgpNewKeyPassphraseFooter,
           children: [
-            _Field(label: 'Passphrase', controller: _passphrase, secret: true, key: const ValueKey('generate-pass')),
-            _Field(label: 'Repeat', controller: _repeat, secret: true, key: const ValueKey('generate-repeat')),
+            _Field(
+              label: l10n.openpgpPassphrase,
+              controller: _passphrase,
+              secret: true,
+              key: const ValueKey('generate-pass'),
+            ),
+            _Field(
+              label: l10n.openpgpRepeatPassphrase,
+              controller: _repeat,
+              secret: true,
+              key: const ValueKey('generate-repeat'),
+            ),
           ],
         ),
         InsetGroup(
-          header: 'Expires',
+          header: l10n.openpgpExpires,
           separatorIndent: 16,
-          footer: 'You can make a new key before it expires. Thunderbird uses three years too.',
+          footer: l10n.openpgpExpiresFooter,
           children: [
             for (final v in KeyValidity.values)
               GroupedRow(
-                title: v.label,
+                title: v.label(l10n),
                 chevron: false,
                 trailing: v == _validity
                     ? Icon(LoupeIcons.check, color: colors.unreadDot, size: 22)
@@ -255,7 +269,7 @@ class _GenerateKeyScreenState extends ConsumerState<GenerateKeyScreen> {
             onPressed: _busy || _email == null ? null : _generate,
             child: _busy
                 ? const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2))
-                : const Text('Generate Key'),
+                : Text(l10n.openpgpGenerateKey),
           ),
         ),
       ],
@@ -266,7 +280,7 @@ class _GenerateKeyScreenState extends ConsumerState<GenerateKeyScreen> {
     final emails = {for (final i in identities) i.email};
     final picked = await showActionSheet<String>(
       context,
-      title: 'Key for',
+      title: context.l10n.openpgpKeyFor,
       actions: [for (final e in emails) SheetAction(e, e, isDefault: e == _email)],
     );
     if (picked != null) setState(() => _email = picked);

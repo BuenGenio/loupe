@@ -8,6 +8,7 @@ import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../conversation/sheets.dart';
@@ -68,15 +69,16 @@ class _SmimePasswordDialogState extends State<SmimePasswordDialog> {
   @override
   Widget build(BuildContext context) {
     final error = widget.error;
+    final l10n = context.l10n;
     return CupertinoAlertDialog(
       key: const ValueKey('smime-password-dialog'),
-      title: const Text('Certificate Password'),
+      title: Text(l10n.smimeCertificatePassword),
       content: Padding(
         padding: const EdgeInsets.only(top: 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Enter the password the certificate file was exported with.'),
+            Text(l10n.smimeCertificatePasswordPrompt),
             if (error != null)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
@@ -90,19 +92,19 @@ class _SmimePasswordDialogState extends State<SmimePasswordDialog> {
               obscureText: true,
               autocorrect: false,
               enableSuggestions: false,
-              placeholder: 'Password',
+              placeholder: l10n.commonPassword,
               onSubmitted: (_) => Navigator.of(context).pop(_controller.text),
             ),
           ],
         ),
       ),
       actions: [
-        CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+        CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.commonCancel)),
         CupertinoDialogAction(
           key: const ValueKey('smime-password-import'),
           isDefaultAction: true,
           onPressed: () => Navigator.of(context).pop(_controller.text),
-          child: const Text('Import'),
+          child: Text(l10n.smimeImport),
         ),
       ],
     );
@@ -126,6 +128,7 @@ Future<void> importSmimeFile(BuildContext context, WidgetRef ref, Uint8List data
 
 Future<void> _import(BuildContext context, WidgetRef ref, Uint8List data, {required bool fromMessage}) async {
   final messenger = ScaffoldMessenger.of(context);
+  final l10n = context.l10n;
   final service = await ref.read(smimeServiceProvider.future);
   if (SmimeService.isPkcs12(data)) {
     if (context.mounted) await _importPkcs12(context, service, data, fromMessage: fromMessage);
@@ -135,7 +138,7 @@ Future<void> _import(BuildContext context, WidgetRef ref, Uint8List data, {requi
   try {
     certificates = await service.parseCertificates(data);
   } on SmimeException {
-    showSnack(messenger, 'No certificate found.');
+    showSnack(messenger, l10n.smimeNoCertificateFound);
     return;
   }
   final authorities = [
@@ -152,11 +155,13 @@ Future<void> _import(BuildContext context, WidgetRef ref, Uint8List data, {requi
     if (!context.mounted) break;
     if (ca.isSelfIssued && !service.isTrustedRoot(ca) && await _askTrust(context, service, ca)) trusted++;
   }
-  final done = [
-    if (people.isNotEmpty) people.map((c) => '${c.displayName}’s certificate').join(', '),
-    if (trusted > 0) trusted == 1 ? 'a trusted authority' : '$trusted trusted authorities',
-  ];
-  showSnack(messenger, done.isEmpty ? 'Nothing new to import.' : 'Imported ${done.join(' and ')}.');
+  final names = people.map((c) => l10n.smimeCertificateOf(c.displayName)).join(', ');
+  showSnack(messenger, switch ((people.isNotEmpty, trusted > 0)) {
+    (false, false) => l10n.smimeNothingNew,
+    (true, false) => l10n.smimeImportedCertificates(names),
+    (false, true) => l10n.smimeImportedAuthorities(trusted),
+    (true, true) => l10n.smimeImportedCertificatesAndAuthorities(trusted, names),
+  });
 }
 
 Future<void> _importPkcs12(
@@ -166,6 +171,7 @@ Future<void> _importPkcs12(
   required bool fromMessage,
 }) async {
   final messenger = ScaffoldMessenger.of(context);
+  final l10n = context.l10n;
   String? error;
   SmimeBundle? bundle;
   while (bundle == null) {
@@ -179,22 +185,20 @@ Future<void> _importPkcs12(
         showSnack(messenger, e.message);
         return;
       }
-      error = 'That password is wrong. Try again.';
+      error = l10n.smimeWrongPassword;
     }
   }
   if (bundle.keys.isEmpty) {
-    showSnack(messenger, 'This file has no private key. Export your certificate with its private key.');
+    showSnack(messenger, l10n.smimeNoPrivateKey);
     return;
   }
   final names = bundle.keys.map((k) => '${k.certificate.displayName} (${k.certificate.emails.join(', ')})').join(', ');
   if (fromMessage && context.mounted) {
     final ok = await showActionSheet<bool>(
       context,
-      title: 'Import as Your Certificate?',
-      message:
-          'This attachment holds a certificate with its private key: $names. Import it only if you exported it '
-          'yourself, from Outlook or Thunderbird for example.',
-      actions: const [SheetAction('Import as My Certificate', true, destructive: true)],
+      title: l10n.smimeImportAsYoursTitle,
+      message: l10n.smimeImportAsYoursMessage(names),
+      actions: [SheetAction(l10n.smimeImportAsMine, true, destructive: true)],
     );
     if (ok != true) return;
   }
@@ -202,7 +206,7 @@ Future<void> _importPkcs12(
     await service.addOwn(k, chain: bundle.chain);
   }
   if (context.mounted) await offerToTrustIssuer(context, service, bundle.keys.first.certificate, bundle.chain);
-  showSnack(messenger, 'Imported your certificate $names.');
+  showSnack(messenger, l10n.smimeImportedOwn(names));
 }
 
 /// Offers to trust the CA that issued the user's [certificate], when Loupe
@@ -229,6 +233,7 @@ Future<void> offerToTrustIssuer(
 /// on the device, and its CA offered for trust.
 Future<void> useDeviceCertificate(BuildContext context, WidgetRef ref) async {
   final messenger = ScaffoldMessenger.of(context);
+  final l10n = context.l10n;
   final device = ref.read(deviceCertificatesProvider);
   try {
     final alias = await device.choose();
@@ -236,10 +241,7 @@ Future<void> useDeviceCertificate(BuildContext context, WidgetRef ref) async {
     final service = await ref.read(smimeServiceProvider.future);
     final own = await service.addDeviceCertificate(alias);
     if (context.mounted) await offerToTrustIssuer(context, service, own.certificate, own.chain);
-    showSnack(
-      messenger,
-      'Added your certificate ${own.certificate.displayName} (${own.certificate.emails.join(', ')}) from this device.',
-    );
+    showSnack(messenger, l10n.smimeAddedFromDevice(own.certificate.displayName, own.certificate.emails.join(', ')));
   } on SmimeException catch (e) {
     showSnack(messenger, e.message);
   }
@@ -247,13 +249,12 @@ Future<void> useDeviceCertificate(BuildContext context, WidgetRef ref) async {
 
 Future<bool> _askTrust(BuildContext context, SmimeService service, SmimeCertificate ca) async {
   final fingerprint = [for (var i = 0; i < ca.fingerprint.length; i += 4) ca.fingerprint.substring(i, i + 4)].join(' ');
+  final l10n = context.l10n;
   final ok = await showActionSheet<bool>(
     context,
-    title: 'Trust “${ca.displayName}” for Mail?',
-    message:
-        'Loupe doesn’t know this certificate authority (a company’s own, perhaps). Trust it to check the '
-        'certificates it issues. Compare its fingerprint with your IT department first:\n$fingerprint',
-    actions: const [SheetAction('Trust', true, isDefault: true)],
+    title: l10n.smimeTrustUnknownAuthorityTitle(ca.displayName),
+    message: l10n.smimeTrustUnknownAuthorityMessage(fingerprint),
+    actions: [SheetAction(l10n.smimeTrust, true, isDefault: true)],
   );
   if (ok != true) return false;
   await service.store.trust(ca);
@@ -281,7 +282,7 @@ class SmimeCertificateAttachments extends ConsumerWidget {
           const SizedBox(width: 6),
           Expanded(
             child: Text(
-              files.length == 1 ? 'A certificate is attached.' : '${files.length} certificates are attached.',
+              context.l10n.smimeCertificatesAttached(files.length),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(color: colors.secondaryText),
             ),
           ),
@@ -302,7 +303,7 @@ class SmimeCertificateAttachments extends ConsumerWidget {
                 await importSmimeFile(context, ref, bytes, fromMessage: true);
               }
             },
-            child: const Text('Import'),
+            child: Text(context.l10n.smimeImport),
           ),
         ],
       ),
@@ -334,7 +335,7 @@ class SmimeImportButton extends ConsumerWidget {
         if (context.mounted) await importSmimeFile(context, ref, bytes, fromMessage: true);
       },
       icon: const Icon(LoupeIcons.certificate, size: 20),
-      label: const Text('Import Certificate'),
+      label: Text(context.l10n.smimeImportCertificate),
     ),
   );
 }

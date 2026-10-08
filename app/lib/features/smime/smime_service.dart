@@ -3,7 +3,8 @@ import 'dart:typed_data';
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_model/mail_model.dart';
 
-import '../openpgp/openpgp_providers.dart' show PgpRunner;
+import '../../l10n/l10n.dart';
+import '../openpgp/openpgp_providers.dart' show PassphraseError, PgpRunner;
 import 'device_certificates.dart';
 import 'smime_keys.dart';
 
@@ -23,11 +24,15 @@ final class SmimeReadOutcome {
 
 /// Asks for the passphrase of the user's [certificate]; null when they cancel.
 /// [error] explains why it is asked again.
-typedef SmimePassphrasePrompt = Future<String?> Function(SmimeCertificate certificate, {String? error});
+typedef SmimePassphrasePrompt = Future<String?> Function(SmimeCertificate certificate, {PassphraseError? error});
 
 /// S/MIME for the screens: reading protected mail, collecting
 /// correspondents' certificates, importing PKCS #12 files and
 /// certificates, certificates on the device, passphrases, trust.
+///
+/// The texts it makes (a status's failureMessage, an exception's message)
+/// are in the device's language, the app's ([deviceL10n]): there is no
+/// widget here to ask.
 final class SmimeService {
   SmimeService({
     required this.keys,
@@ -101,9 +106,7 @@ final class SmimeService {
       final request = outcome.status.keyRequest;
       final device = this.device;
       if (outcome.status.failure == SmimeDecryptFailure.noKey && locked.any((o) => !keys.isAvailable(o.fingerprint))) {
-        return SmimeReadOutcome(
-          status: _failed(outcome.status, 'Your S/MIME certificate is locked. Open the message again to unlock it.'),
-        );
+        return SmimeReadOutcome(status: _failed(outcome.status, deviceL10n().smimeLockedOpenAgain));
       }
       // A layer each round: a message encrypted twice asks twice.
       if (request == null || device == null || round >= SmimeReader.maxLayers) return outcome;
@@ -203,7 +206,7 @@ final class SmimeService {
     }
     final prompt = this.prompt;
     if (prompt == null) return null;
-    String? error;
+    PassphraseError? error;
     while (true) {
       final passphrase = await prompt(own.certificate, error: error);
       if (passphrase == null) return null;
@@ -213,7 +216,7 @@ final class SmimeService {
         return key;
       } on SmimeException catch (e) {
         if (e.kind != SmimeErrorKind.wrongPassword) rethrow;
-        error = 'That passphrase is wrong. Try again.';
+        error = PassphraseError.wrong;
       }
     }
   }
@@ -248,21 +251,18 @@ final class SmimeService {
   Future<SmimeOwnCertificate> addDeviceCertificate(String alias) async {
     final device = this.device;
     if (device == null || !device.supported) {
-      throw const SmimeException(SmimeErrorKind.unsupported, 'This device doesn’t offer its certificates.');
+      throw SmimeException(SmimeErrorKind.unsupported, deviceL10n().smimeDeviceHasNoCertificates);
     }
     final ders = await device.chain(alias);
     final List<SmimeCertificate> chain;
     try {
       chain = await run(() => [for (final d in ders) SmimeCertificate.fromDer(d)]);
     } on SmimeException {
-      throw const SmimeException(SmimeErrorKind.malformed, 'Loupe can’t read this certificate.');
+      throw SmimeException(SmimeErrorKind.malformed, deviceL10n().smimeCantReadCertificate);
     }
     final certificate = chain.first;
     if (certificate.emails.isEmpty || !(certificate.canSign || certificate.canEncrypt)) {
-      throw const SmimeException(
-        SmimeErrorKind.certificateUnusable,
-        'This certificate isn’t for mail: it has no email address, or isn’t meant for signing or encrypting.',
-      );
+      throw SmimeException(SmimeErrorKind.certificateUnusable, deviceL10n().smimeCertificateNotForMail);
     }
     final key = SmimePlatformKey(alias);
     await store.addOwn(SmimeKeyPair(certificate, key), chain: chain.skip(1).toList(), now: _clock());

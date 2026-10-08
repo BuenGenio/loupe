@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../conversation/sheets.dart';
@@ -54,40 +55,40 @@ final class SmimeStatusView {
   /// Show ✓: a valid signature by a trusted certificate of the sender.
   final bool check;
 
-  static SmimeStatusView of(SmimeMessageStatus status, {SmimeRevocationStatus? revocation}) {
+  static SmimeStatusView of(AppLocalizations l10n, SmimeMessageStatus status, {SmimeRevocationStatus? revocation}) {
     String? encryption;
     if (status.encrypted) {
       encryption = switch (status.failure) {
-        null => 'Encrypted (S/MIME)',
-        SmimeDecryptFailure.noKey => 'Encrypted (S/MIME) · no certificate',
-        SmimeDecryptFailure.damaged => 'Encrypted (S/MIME) · damaged',
-        SmimeDecryptFailure.unsupported => 'Encrypted (S/MIME) · unsupported',
-        SmimeDecryptFailure.locked => 'Encrypted (S/MIME) · locked',
+        null => l10n.smimeEncrypted,
+        SmimeDecryptFailure.noKey => l10n.smimeEncryptedNoCertificate,
+        SmimeDecryptFailure.damaged => l10n.smimeEncryptedDamaged,
+        SmimeDecryptFailure.unsupported => l10n.smimeEncryptedUnsupported,
+        SmimeDecryptFailure.locked => l10n.smimeEncryptedLocked,
       };
     }
     final sig = status.signature;
     if (sig == null) return SmimeStatusView(status: status, encryptionLabel: encryption);
-    final name = sig.certificate?.displayName ?? 'unknown';
+    final name = sig.certificate?.displayName ?? l10n.smimeUnknownSigner;
     final trust = sig.trust;
     final (String label, PgpTone tone, bool check) = switch (sig) {
-      SmimeSignatureStatus(modified: true) => ('Signature invalid: message modified', PgpTone.bad, false),
-      SmimeSignatureStatus(weak: true) => ('Signature insecure: outdated algorithm', PgpTone.bad, false),
-      SmimeSignatureStatus(valid: false) => ('Signature can’t be checked', PgpTone.caution, false),
-      _ when trust == null => ('Signed · certificate missing', PgpTone.caution, false),
-      _ when revocation?.revoked ?? false => ('Signed by $name · certificate revoked', PgpTone.bad, false),
+      SmimeSignatureStatus(modified: true) => (l10n.smimeSignatureModified, PgpTone.bad, false),
+      SmimeSignatureStatus(weak: true) => (l10n.smimeSignatureWeak, PgpTone.bad, false),
+      SmimeSignatureStatus(valid: false) => (l10n.smimeSignatureUncheckable, PgpTone.caution, false),
+      _ when trust == null => (l10n.smimeSignedCertificateMissing, PgpTone.caution, false),
+      _ when revocation?.revoked ?? false => (l10n.smimeSignedByRevoked(name), PgpTone.bad, false),
       SmimeSignatureStatus(dateMismatch: true) when trust.trusted => (
-        'Signed by $name · at another date',
+        l10n.smimeSignedByOtherDate(name),
         PgpTone.caution,
         false,
       ),
       _ => switch (trust.problem) {
-        null => ('Signed by $name', PgpTone.good, true),
-        SmimeProblem.invalidChain => ('Signed by $name · invalid certificate', PgpTone.bad, false),
-        SmimeProblem.untrusted => ('Signed by $name · not trusted', PgpTone.caution, false),
-        SmimeProblem.expired => ('Signed by $name · certificate expired', PgpTone.caution, false),
-        SmimeProblem.notYetValid => ('Signed by $name · certificate not yet valid', PgpTone.caution, false),
-        SmimeProblem.wrongUsage => ('Signed by $name · certificate not for mail', PgpTone.caution, false),
-        SmimeProblem.wrongAddress => ('Signed by $name, not the sender', PgpTone.caution, false),
+        null => (l10n.smimeSignedBy(name), PgpTone.good, true),
+        SmimeProblem.invalidChain => (l10n.smimeSignedByInvalid(name), PgpTone.bad, false),
+        SmimeProblem.untrusted => (l10n.smimeSignedByUntrusted(name), PgpTone.caution, false),
+        SmimeProblem.expired => (l10n.smimeSignedByExpired(name), PgpTone.caution, false),
+        SmimeProblem.notYetValid => (l10n.smimeSignedByNotYetValid(name), PgpTone.caution, false),
+        SmimeProblem.wrongUsage => (l10n.smimeSignedByNotForMail(name), PgpTone.caution, false),
+        SmimeProblem.wrongAddress => (l10n.smimeSignedByNotSender(name), PgpTone.caution, false),
       },
     };
     return SmimeStatusView(
@@ -117,13 +118,13 @@ IconData _signatureIcon(SmimeStatusView v) => switch (v.signatureTone) {
 
 /// The header's view of [content]'s S/MIME status, with the signer's
 /// revocation status as it comes in (when it is checked).
-SmimeStatusView? _viewOf(WidgetRef ref, EmailContent? content) {
+SmimeStatusView? _viewOf(BuildContext context, WidgetRef ref, EmailContent? content) {
   if (content == null) return null;
   final status = smimeStatusOf(content);
   if (status == null) return null;
   final signature = status.signature;
   final revocation = signature == null ? null : ref.watch(signerRevocationProvider(signature)).value;
-  return SmimeStatusView.of(status, revocation: revocation);
+  return SmimeStatusView.of(context.l10n, status, revocation: revocation);
 }
 
 /// Next to the sender: a lock for encrypted mail and a seal for a good
@@ -137,7 +138,7 @@ class SmimeHeaderMark extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final view = _viewOf(ref, content);
+    final view = _viewOf(context, ref, content);
     if (view == null) return const SizedBox.shrink();
     final colors = LoupeColors.of(context);
     final encrypted = view.encryptionLabel != null;
@@ -184,7 +185,7 @@ class SmimeStatusLine extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final view = _viewOf(ref, content);
+    final view = _viewOf(context, ref, content);
     if (view == null) return const SizedBox.shrink();
     final colors = LoupeColors.of(context);
     final style = Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 13, color: colors.secondaryText);
@@ -244,23 +245,20 @@ class SmimeStatusSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final status = this.view.status;
     final sig = status.signature;
     // The revocation answer may come while the sheet is open.
     final checking = ref.watch(checkRevocationProvider) && sig?.certificate != null;
     final revocationAsync = sig == null || !checking ? null : ref.watch(signerRevocationProvider(sig));
     final revocation = revocationAsync?.value ?? this.view.revocation;
-    final view = SmimeStatusView.of(status, revocation: revocation);
+    final view = SmimeStatusView.of(l10n, status, revocation: revocation);
     final cert = sig?.certificate;
     final trust = sig?.trust;
     final (icon, color, title) = switch (status.failure) {
-      SmimeDecryptFailure() => (
-        LoupeIcons.encrypted,
-        pgpToneColor(context, PgpTone.caution),
-        'Can’t decrypt this message',
-      ),
+      SmimeDecryptFailure() => (LoupeIcons.encrypted, pgpToneColor(context, PgpTone.caution), l10n.smimeCantDecrypt),
       null when sig != null => (_signatureIcon(view), pgpToneColor(context, view.signatureTone), view.signatureLabel!),
-      null => (LoupeIcons.encrypted, colors.secondaryText, 'Encrypted with S/MIME'),
+      null => (LoupeIcons.encrypted, colors.secondaryText, l10n.smimeEncryptedWithSmime),
     };
     final top = trust == null || trust.chain.length < 2 ? null : trust.chain.last;
     final canTrust = trust != null && trust.problems.contains(SmimeProblem.untrusted) && !sig!.modified;
@@ -284,7 +282,7 @@ class SmimeStatusSheet extends ConsumerWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    _summary(view),
+                    _summary(l10n, view),
                     textAlign: TextAlign.center,
                     style: theme.textTheme.bodyMedium?.copyWith(color: colors.secondaryText),
                   ),
@@ -293,16 +291,15 @@ class SmimeStatusSheet extends ConsumerWidget {
             ),
             if (status.encrypted)
               SheetGroup(
-                header: 'Encryption',
+                header: l10n.smimeEncryption,
                 children: [
                   _Row(
-                    label: status.decrypted ? 'Decrypted on this device' : status.failureMessage ?? 'Not decrypted',
+                    label: status.decrypted ? l10n.smimeDecryptedHere : status.failureMessage ?? l10n.smimeNotDecrypted,
                     value: status.decrypted
                         ? [
                             ?status.cipher,
-                            if (status.authenticated) 'authenticated',
-                            if (status.recipients.isNotEmpty)
-                              'for ${status.recipients.length} ${status.recipients.length == 1 ? 'certificate' : 'certificates'}',
+                            if (status.authenticated) l10n.smimeAuthenticated,
+                            if (status.recipients.isNotEmpty) l10n.smimeForCertificates(status.recipients.length),
                           ].join(' · ')
                         : null,
                   ),
@@ -310,52 +307,56 @@ class SmimeStatusSheet extends ConsumerWidget {
               ),
             if (sig != null)
               SheetGroup(
-                header: 'Signature',
+                header: l10n.smimeSignature,
                 children: [
                   if (cert != null) ...[
                     _Row(label: cert.displayName, value: cert.emails.join(', ')),
-                    _Row(label: 'Issued by', value: trust?.issuerName ?? cert.issuerName),
-                    _Row(label: 'Valid', value: '${_day(cert.notBefore)} to ${_day(cert.notAfter)}'),
-                    _Row(label: 'SHA-256 fingerprint', value: _grouped(cert.fingerprint), copy: cert.fingerprint),
+                    _Row(label: l10n.smimeIssuedBy, value: trust?.issuerName ?? cert.issuerName),
+                    _Row(
+                      label: l10n.smimeValid,
+                      value: l10n.smimeValidRange(_day(cert.notBefore), _day(cert.notAfter)),
+                    ),
+                    _Row(label: l10n.smimeSha256Fingerprint, value: _grouped(cert.fingerprint), copy: cert.fingerprint),
                   ],
-                  if (sig.signingTime case final at?) _Row(label: 'Signed', value: _date(at)),
+                  if (sig.signingTime case final at?) _Row(label: l10n.smimeSigned, value: _date(at)),
                   for (final p in trust?.problems ?? const <SmimeProblem>{})
-                    _Row(label: 'Problem', value: problemText(p)),
-                  if (sig.dateMismatch) const _Row(label: 'Problem', value: _dateMismatch),
-                  if (!sig.valid && sig.problem != null) _Row(label: 'Problem', value: sig.problem),
+                    _Row(label: l10n.smimeProblem, value: problemText(l10n, p)),
+                  if (sig.dateMismatch) _Row(label: l10n.smimeProblem, value: l10n.smimeDateMismatch),
+                  if (!sig.valid && sig.problem != null) _Row(label: l10n.smimeProblem, value: sig.problem),
                   if (checking)
                     _Row(
                       key: const ValueKey('smime-revocation'),
                       label: switch (revocation?.state) {
-                        null => 'Checking revocation…',
-                        SmimeRevocationState.good => 'Not revoked',
-                        SmimeRevocationState.revoked => 'Revoked',
-                        SmimeRevocationState.unknown => 'Revocation unknown',
+                        null => l10n.smimeCheckingRevocation,
+                        SmimeRevocationState.good => l10n.smimeNotRevoked,
+                        SmimeRevocationState.revoked => l10n.smimeRevoked,
+                        SmimeRevocationState.unknown => l10n.smimeRevocationUnknown,
                       },
                       value: switch (revocation) {
                         null => null,
                         SmimeRevocationStatus(state: SmimeRevocationState.revoked, :final revokedAt, :final reason) => [
-                          if (revokedAt != null) 'Since ${_date(revokedAt)}',
+                          if (revokedAt != null) l10n.smimeRevokedSince(_date(revokedAt)),
                           ?reason,
                         ].join(' · '),
                         SmimeRevocationStatus(state: SmimeRevocationState.unknown, :final problem) => problem,
                         SmimeRevocationStatus(:final source, :final checkedAt) =>
-                          'Asked the authority (${source == SmimeRevocationSource.crl ? 'its revocation list' : 'OCSP'}), '
-                              '${_date(checkedAt)}',
+                          source == SmimeRevocationSource.crl
+                              ? l10n.smimeAskedAuthorityCrl(_date(checkedAt))
+                              : l10n.smimeAskedAuthorityOcsp(_date(checkedAt)),
                       },
                     ),
                   if (canTrust && top != null && top != cert && top.isCa)
                     SheetRow(
                       key: const ValueKey('smime-trust-issuer'),
                       icon: LoupeIcons.certificate,
-                      label: 'Trust “${top.displayName}”…',
+                      label: l10n.smimeTrustIssuer(top.displayName),
                       onTap: () => _trust(context, ref, top, authority: true),
                     ),
                   if (canTrust && cert != null)
                     SheetRow(
                       key: const ValueKey('smime-trust-certificate'),
                       icon: LoupeIcons.certificate,
-                      label: 'Trust This Certificate…',
+                      label: l10n.smimeTrustThisCertificateEllipsis,
                       onTap: () => _trust(context, ref, cert, authority: false),
                     ),
                 ],
@@ -363,11 +364,7 @@ class SmimeStatusSheet extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
               child: Text(
-                checking
-                    ? 'Checked on this device with S/MIME, compatible with Outlook and Thunderbird; revocation with the '
-                          'certificate authority.'
-                    : 'Checked on this device with S/MIME, compatible with Outlook and Thunderbird. Revocation isn’t '
-                          'checked (Settings › End-to-End Encryption).',
+                checking ? l10n.smimeCheckedFooterRevocation : l10n.smimeCheckedFooter,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodySmall?.copyWith(color: colors.secondaryText),
               ),
@@ -379,13 +376,15 @@ class SmimeStatusSheet extends ConsumerWidget {
   }
 
   Future<void> _trust(BuildContext context, WidgetRef ref, SmimeCertificate cert, {required bool authority}) async {
+    final l10n = context.l10n;
+    final fingerprint = _grouped(cert.fingerprint);
     final ok = await showActionSheet<bool>(
       context,
-      title: authority ? 'Trust ${cert.displayName} for mail?' : 'Trust ${cert.displayName}’s certificate?',
-      message:
-          '${authority ? 'Every certificate this authority issues will be trusted, like your company’s CA. ' : ''}'
-          'Compare the fingerprint with its owner first:\n${_grouped(cert.fingerprint)}',
-      actions: const [SheetAction('Trust', true, isDefault: true)],
+      title: authority
+          ? l10n.smimeTrustAuthorityTitle(cert.displayName)
+          : l10n.smimeTrustCertificateTitle(cert.displayName),
+      message: authority ? l10n.smimeTrustAuthorityMessage(fingerprint) : l10n.smimeTrustMessage(fingerprint),
+      actions: [SheetAction(l10n.smimeTrust, true, isDefault: true)],
     );
     if (ok != true || !context.mounted) return;
     final navigator = Navigator.of(context);
@@ -394,33 +393,35 @@ class SmimeStatusSheet extends ConsumerWidget {
     onRetry?.call();
   }
 
-  static String _summary(SmimeStatusView view) {
+  static String _summary(AppLocalizations l10n, SmimeStatusView view) {
     final status = view.status;
     if (status.failure case final f?) {
       return switch (f) {
-        SmimeDecryptFailure.noKey => 'It was encrypted to a certificate that isn’t on this device.',
-        SmimeDecryptFailure.damaged => 'The encrypted data is damaged or was changed on the way.',
-        SmimeDecryptFailure.unsupported => 'It uses an algorithm Loupe doesn’t support.',
-        SmimeDecryptFailure.locked => status.failureMessage ?? 'Your S/MIME certificate is locked.',
+        SmimeDecryptFailure.noKey => l10n.smimeSummaryNoKey,
+        SmimeDecryptFailure.damaged => l10n.smimeSummaryDamaged,
+        SmimeDecryptFailure.unsupported => l10n.smimeSummaryUnsupported,
+        SmimeDecryptFailure.locked => status.failureMessage ?? l10n.smimeSummaryLocked,
       };
     }
-    final sig = status.signature;
-    final encrypted = status.encrypted ? 'Only you and the other recipients can read it. ' : '';
-    if (sig == null) return '${encrypted}It isn’t signed, so the sender isn’t confirmed.';
-    if (sig.modified) return '${encrypted}The signature doesn’t match: the message was changed after it was signed.';
-    if (!sig.valid) return '$encrypted${sig.problem ?? 'The signature can’t be checked.'}';
+    // Two sentences: who can read it, then what the signature says.
+    return [if (status.encrypted) l10n.smimeSummaryEncrypted, _signatureSummary(l10n, view)].join(' ');
+  }
+
+  static String _signatureSummary(AppLocalizations l10n, SmimeStatusView view) {
+    final sig = view.status.signature;
+    if (sig == null) return l10n.smimeSummaryNotSigned;
+    if (sig.modified) return l10n.smimeSummaryModified;
+    if (!sig.valid) return sig.problem ?? l10n.smimeSummaryUncheckable;
     final trust = sig.trust;
-    if (trust == null) return '${encrypted}The signer’s certificate isn’t in the message, so it can’t be checked.';
+    if (trust == null) return l10n.smimeSummaryNoCertificate;
     if (view.revocation case SmimeRevocationStatus(revoked: true, :final reason)) {
-      return '${encrypted}The certificate authority revoked the signer’s certificate'
-          '${reason == null ? '' : ' ($reason)'}: the signature can’t be trusted.';
+      return reason == null ? l10n.smimeSummaryRevoked : l10n.smimeSummaryRevokedReason(reason);
     }
-    if (sig.dateMismatch && trust.trusted) return '$encrypted$_dateMismatch';
-    return encrypted +
-        switch (trust.problem) {
-          null => 'The signature is valid, and ${trust.issuerName} vouches that the certificate belongs to the sender.',
-          final p => problemText(p),
-        };
+    if (sig.dateMismatch && trust.trusted) return l10n.smimeDateMismatch;
+    return switch (trust.problem) {
+      null => l10n.smimeSummaryValid(trust.issuerName),
+      final p => problemText(l10n, p),
+    };
   }
 
   static String _day(DateTime d) {
@@ -435,17 +436,14 @@ class SmimeStatusSheet extends ConsumerWidget {
   }
 }
 
-const _dateMismatch =
-    'It was signed more than an hour away from the message’s date: it may be an old message sent again.';
-
 /// A certificate problem in words.
-String problemText(SmimeProblem p) => switch (p) {
-  SmimeProblem.invalidChain => 'The certificate or one of its issuers is invalid.',
-  SmimeProblem.untrusted => 'The certificate comes from an authority Loupe doesn’t trust.',
-  SmimeProblem.expired => 'The certificate had expired.',
-  SmimeProblem.notYetValid => 'The certificate wasn’t valid yet.',
-  SmimeProblem.wrongUsage => 'The certificate isn’t meant for mail.',
-  SmimeProblem.wrongAddress => 'The certificate belongs to another address than the sender’s.',
+String problemText(AppLocalizations l10n, SmimeProblem p) => switch (p) {
+  SmimeProblem.invalidChain => l10n.smimeProblemInvalidChain,
+  SmimeProblem.untrusted => l10n.smimeProblemUntrusted,
+  SmimeProblem.expired => l10n.smimeProblemExpired,
+  SmimeProblem.notYetValid => l10n.smimeProblemNotYetValid,
+  SmimeProblem.wrongUsage => l10n.smimeProblemWrongUsage,
+  SmimeProblem.wrongAddress => l10n.smimeProblemWrongAddress,
 };
 
 /// A SHA-256 fingerprint in groups of four.

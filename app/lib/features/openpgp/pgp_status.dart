@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../conversation/sheets.dart';
@@ -46,16 +47,16 @@ final class PgpStatusView {
   /// The signer's key doesn't carry the sender's address.
   final bool mismatch;
 
-  static PgpStatusView of(PgpMessageStatus status, KeyringState keyring, {String? sender}) {
+  static PgpStatusView of(AppLocalizations l10n, PgpMessageStatus status, KeyringState keyring, {String? sender}) {
     String? encryption;
     if (status.encrypted) {
       encryption = switch (status.failure) {
-        null when status.partial => 'Encrypted in part',
-        null => 'Encrypted',
-        PgpDecryptFailure.locked => 'Encrypted · locked',
-        PgpDecryptFailure.noSecretKey => 'Encrypted · no key',
-        PgpDecryptFailure.damaged => 'Encrypted · damaged',
-        PgpDecryptFailure.unsupported => 'Encrypted · unsupported',
+        null when status.partial => l10n.openpgpEncryptedInPart,
+        null => l10n.openpgpEncrypted,
+        PgpDecryptFailure.locked => l10n.openpgpEncryptedLocked,
+        PgpDecryptFailure.noSecretKey => l10n.openpgpEncryptedNoKey,
+        PgpDecryptFailure.damaged => l10n.openpgpEncryptedDamaged,
+        PgpDecryptFailure.unsupported => l10n.openpgpEncryptedUnsupported,
       };
     }
     final sig = status.signature;
@@ -63,20 +64,20 @@ final class PgpStatusView {
     final fingerprint = sig.signerFingerprint;
     final signer = fingerprint == null ? null : keyring.ownKey(fingerprint) ?? keyring.publicEntry(fingerprint)?.key;
     final acceptance = fingerprint == null ? null : keyring.acceptanceOf(fingerprint);
-    final name = signer?.displayName ?? 'unknown';
+    final name = signer?.displayName ?? l10n.openpgpUnknownSigner;
     switch (sig.status) {
       case PgpSignatureStatus.unknownKey:
         return PgpStatusView(
           status: status,
           encryptionLabel: encryption,
-          signatureLabel: 'Unknown key',
+          signatureLabel: l10n.openpgpUnknownKey,
           signatureTone: PgpTone.caution,
         );
       case PgpSignatureStatus.bad:
         return PgpStatusView(
           status: status,
           encryptionLabel: encryption,
-          signatureLabel: 'Signature invalid',
+          signatureLabel: l10n.openpgpSignatureInvalid,
           signatureTone: PgpTone.bad,
           signer: signer,
           acceptance: acceptance,
@@ -84,12 +85,12 @@ final class PgpStatusView {
       case PgpSignatureStatus.good:
         final mismatch = sender != null && signer != null && !signer.hasEmail(sender);
         final (label, tone, check) = switch (acceptance) {
-          _ when mismatch => ('Signed by $name, not the sender', PgpTone.caution, false),
-          _ when status.partial => ('Signed in part by $name', PgpTone.caution, false),
-          KeyAcceptance.verified => ('Signed by $name', PgpTone.good, true),
-          KeyAcceptance.unverified => ('Signed by $name', PgpTone.neutral, true),
-          KeyAcceptance.rejected => ('Signed with a rejected key', PgpTone.bad, false),
-          KeyAcceptance.undecided || null => ('Signed by $name · key not accepted', PgpTone.caution, false),
+          _ when mismatch => (l10n.openpgpSignedByNotSender(name), PgpTone.caution, false),
+          _ when status.partial => (l10n.openpgpSignedInPartBy(name), PgpTone.caution, false),
+          KeyAcceptance.verified => (l10n.openpgpSignedBy(name), PgpTone.good, true),
+          KeyAcceptance.unverified => (l10n.openpgpSignedBy(name), PgpTone.neutral, true),
+          KeyAcceptance.rejected => (l10n.openpgpSignedWithRejectedKey, PgpTone.bad, false),
+          KeyAcceptance.undecided || null => (l10n.openpgpSignedByNotAccepted(name), PgpTone.caution, false),
         };
         return PgpStatusView(
           status: status,
@@ -119,12 +120,12 @@ IconData _signatureIcon(PgpStatusView v) => switch (v.signatureTone) {
     v.status.signature?.status == PgpSignatureStatus.unknownKey ? LoupeIcons.unknownKey : LoupeIcons.signed,
 };
 
-PgpStatusView? _viewOf(WidgetRef ref, EmailContent? content, EmailSummary message) {
+PgpStatusView? _viewOf(BuildContext context, WidgetRef ref, EmailContent? content, EmailSummary message) {
   if (content == null) return null;
   final status = pgpStatusOf(content);
   if (status == null) return null;
   final keyring = ref.watch(keyringStateProvider).value ?? KeyringState.empty;
-  return PgpStatusView.of(status, keyring, sender: message.sender?.email);
+  return PgpStatusView.of(context.l10n, status, keyring, sender: message.sender?.email);
 }
 
 /// Next to the sender, beside the security badge: a lock for encrypted
@@ -138,7 +139,7 @@ class PgpHeaderMark extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final view = _viewOf(ref, content, message);
+    final view = _viewOf(context, ref, content, message);
     if (view == null) return const SizedBox.shrink();
     final colors = LoupeColors.of(context);
     final encrypted = view.encryptionLabel != null;
@@ -185,7 +186,7 @@ class PgpStatusLine extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final view = _viewOf(ref, content, message);
+    final view = _viewOf(context, ref, content, message);
     if (view == null) return const SizedBox.shrink();
     final colors = LoupeColors.of(context);
     final style = Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 13, color: colors.secondaryText);
@@ -233,7 +234,7 @@ class PgpStatusLine extends ConsumerWidget {
               key: ValueKey('pgp-unlock-${message.id}'),
               style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
               onPressed: () => _unlockAndRetry(context, ref, view, onRetry!),
-              child: const Text('Unlock'),
+              child: Text(context.l10n.openpgpUnlock),
             ),
         ],
       ),
@@ -269,6 +270,7 @@ class PgpStatusSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final status = view.status;
     final sig = status.signature;
     final keyring = ref.watch(keyringStateProvider).value ?? KeyringState.empty;
@@ -276,13 +278,9 @@ class PgpStatusSheet extends ConsumerWidget {
     final acceptance = signer == null ? null : keyring.acceptanceOf(signer.fingerprint);
     final own = signer != null && keyring.ownKey(signer.fingerprint) != null;
     final (icon, color, title) = switch (status.failure) {
-      PgpDecryptFailure() => (
-        LoupeIcons.encrypted,
-        pgpToneColor(context, PgpTone.caution),
-        'Can’t decrypt this message',
-      ),
+      PgpDecryptFailure() => (LoupeIcons.encrypted, pgpToneColor(context, PgpTone.caution), l10n.openpgpCantDecrypt),
       null when sig != null => (_signatureIcon(view), pgpToneColor(context, view.signatureTone), view.signatureLabel!),
-      null => (LoupeIcons.encrypted, colors.secondaryText, 'Encrypted with OpenPGP'),
+      null => (LoupeIcons.encrypted, colors.secondaryText, l10n.openpgpEncryptedWithOpenPgp),
     };
     return SafeArea(
       top: false,
@@ -304,7 +302,7 @@ class PgpStatusSheet extends ConsumerWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    _summary(view, acceptance, own),
+                    _summary(l10n, view, acceptance, own),
                     textAlign: TextAlign.center,
                     style: theme.textTheme.bodyMedium?.copyWith(color: colors.secondaryText),
                   ),
@@ -313,20 +311,27 @@ class PgpStatusSheet extends ConsumerWidget {
             ),
             if (status.encrypted)
               SheetGroup(
-                header: 'Encryption',
+                header: l10n.openpgpEncryption,
                 children: [
                   _Row(
-                    label: status.decrypted ? 'Decrypted on this device' : status.failureMessage ?? 'Not decrypted',
+                    label: status.decrypted
+                        ? l10n.openpgpDecryptedHere
+                        : status.failureMessage ??
+                              (status.failure == PgpDecryptFailure.locked
+                                  ? l10n.openpgpKeyLocked
+                                  : l10n.openpgpNotDecrypted),
                     value: status.recipientKeyIds.isEmpty
                         ? null
-                        : 'For ${status.recipientKeyIds.length == 1 ? 'key' : 'keys'} '
-                              '${status.recipientKeyIds.map(formatFingerprint).join(', ')}',
+                        : l10n.openpgpForKeys(
+                            status.recipientKeyIds.length,
+                            status.recipientKeyIds.map(formatFingerprint).join(', '),
+                          ),
                   ),
-                  if (status.protectedSubject case final s?) _Row(label: 'Protected subject', value: s),
+                  if (status.protectedSubject case final s?) _Row(label: l10n.openpgpProtectedSubject, value: s),
                   if (status.failure == PgpDecryptFailure.locked && onRetry != null)
                     SheetRow(
                       icon: LoupeIcons.pgpKey,
-                      label: 'Unlock Key',
+                      label: l10n.openpgpUnlockKey,
                       onTap: () async {
                         Navigator.of(context).pop();
                         await _unlockAndRetry(context, ref, view, onRetry!);
@@ -336,25 +341,28 @@ class PgpStatusSheet extends ConsumerWidget {
               ),
             if (sig != null)
               SheetGroup(
-                header: 'Signature',
+                header: l10n.openpgpSignature,
                 children: [
                   if (signer != null) _Row(label: signer.userIds.firstOrNull ?? signer.displayName, value: null),
                   _Row(
-                    label: 'Fingerprint',
+                    label: l10n.openpgpFingerprint,
                     value: signer == null
-                        ? 'Key id ${formatFingerprint(sig.issuerKeyId)}'
+                        ? l10n.openpgpKeyIdValue(formatFingerprint(sig.issuerKeyId))
                         : signer.formattedFingerprint,
                     copy: signer?.fingerprint ?? sig.issuerKeyId,
                   ),
-                  if (sig.created case final at?) _Row(label: 'Signed', value: _date(at)),
-                  if (sig.detail case final d?) _Row(label: 'Problem', value: d),
+                  if (sig.created case final at?) _Row(label: l10n.openpgpSigned, value: _date(at)),
+                  if (sig.detail case final d?) _Row(label: l10n.openpgpProblem, value: d),
                   if (signer != null && !own)
-                    _Row(label: 'Acceptance', value: acceptanceLabel(acceptance ?? KeyAcceptance.undecided)),
+                    _Row(
+                      label: l10n.openpgpAcceptance,
+                      value: acceptanceLabel(l10n, acceptance ?? KeyAcceptance.undecided),
+                    ),
                   if (signer != null && !own)
                     SheetRow(
                       key: const ValueKey('pgp-change-acceptance'),
                       icon: LoupeIcons.pgpKey,
-                      label: 'Change Acceptance…',
+                      label: l10n.openpgpChangeAcceptance,
                       onTap: () => pickAcceptance(context, ref, signer, acceptance ?? KeyAcceptance.undecided),
                     ),
                 ],
@@ -362,7 +370,7 @@ class PgpStatusSheet extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
               child: Text(
-                'Checked on this device with OpenPGP, compatible with Thunderbird.',
+                l10n.openpgpCheckedFooter,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodySmall?.copyWith(color: colors.secondaryText),
               ),
@@ -373,40 +381,33 @@ class PgpStatusSheet extends ConsumerWidget {
     );
   }
 
-  static String _summary(PgpStatusView view, KeyAcceptance? acceptance, bool own) {
+  static String _summary(AppLocalizations l10n, PgpStatusView view, KeyAcceptance? acceptance, bool own) {
     final status = view.status;
     if (status.failure case final f?) {
       return switch (f) {
-        PgpDecryptFailure.locked => 'Your key is locked. Unlock it with its passphrase to read this message.',
-        PgpDecryptFailure.noSecretKey => 'It was encrypted to a key that isn’t on this device.',
-        PgpDecryptFailure.damaged => 'The encrypted data is damaged or was changed on the way.',
-        PgpDecryptFailure.unsupported => 'It uses an algorithm Loupe doesn’t support.',
+        PgpDecryptFailure.locked => l10n.openpgpSummaryLocked,
+        PgpDecryptFailure.noSecretKey => l10n.openpgpSummaryNoSecretKey,
+        PgpDecryptFailure.damaged => l10n.openpgpSummaryDamaged,
+        PgpDecryptFailure.unsupported => l10n.openpgpSummaryUnsupported,
       };
     }
     final sig = status.signature;
-    final encrypted = status.encrypted ? 'Only you and the other recipients can read it. ' : '';
-    if (sig == null) return '${encrypted}It isn’t signed, so the sender isn’t confirmed.';
-    return encrypted +
-        switch (sig.status) {
-          PgpSignatureStatus.unknownKey =>
-            'It is signed, but with a key you don’t have, so the signature can’t be checked.',
-          PgpSignatureStatus.bad => 'The signature doesn’t match: the message may have been changed.',
-          PgpSignatureStatus.good when view.mismatch =>
-            'The signature is valid, but the key belongs to another address than the sender’s.',
-          PgpSignatureStatus.good when status.partial =>
-            'Only part of the message is signed. Text outside the signature (a mailing list footer, for example) '
-                'is shown below the “Unsigned content” line, and other parts of the message, such as attachments, '
-                'aren’t covered either.',
-          PgpSignatureStatus.good when own => 'Signed with your own key.',
-          PgpSignatureStatus.good => switch (acceptance) {
-            KeyAcceptance.verified => 'The signature is valid, and you verified the key’s fingerprint.',
-            KeyAcceptance.unverified =>
-              'The signature is valid. You accepted the key without checking its fingerprint.',
-            KeyAcceptance.rejected => 'The signature is valid, but you rejected this key.',
-            _ =>
-              'The signature is valid, but you haven’t accepted this key yet. Compare its fingerprint with the sender.',
-          },
-        };
+    final signature = switch (sig?.status) {
+      null => l10n.openpgpSummaryNotSigned,
+      PgpSignatureStatus.unknownKey => l10n.openpgpSummaryUnknownKey,
+      PgpSignatureStatus.bad => l10n.openpgpSummaryBadSignature,
+      PgpSignatureStatus.good when view.mismatch => l10n.openpgpSummaryMismatch,
+      PgpSignatureStatus.good when status.partial => l10n.openpgpSummaryPartial,
+      PgpSignatureStatus.good when own => l10n.openpgpSummaryOwnKey,
+      PgpSignatureStatus.good => switch (acceptance) {
+        KeyAcceptance.verified => l10n.openpgpSummaryVerified,
+        KeyAcceptance.unverified => l10n.openpgpSummaryUnverified,
+        KeyAcceptance.rejected => l10n.openpgpSummaryRejected,
+        _ => l10n.openpgpSummaryUndecided,
+      },
+    };
+    // Two sentences: who can read it, then what the signature says.
+    return [if (status.encrypted) l10n.openpgpSummaryEncrypted, signature].join(' ');
   }
 
   static String _date(DateTime d) {
@@ -416,28 +417,29 @@ class PgpStatusSheet extends ConsumerWidget {
   }
 }
 
-String acceptanceLabel(KeyAcceptance a) => switch (a) {
-  KeyAcceptance.rejected => 'Rejected',
-  KeyAcceptance.undecided => 'Not accepted',
-  KeyAcceptance.unverified => 'Accepted',
-  KeyAcceptance.verified => 'Accepted and verified',
+String acceptanceLabel(AppLocalizations l10n, KeyAcceptance a) => switch (a) {
+  KeyAcceptance.rejected => l10n.openpgpAcceptanceRejected,
+  KeyAcceptance.undecided => l10n.openpgpAcceptanceUndecided,
+  KeyAcceptance.unverified => l10n.openpgpAcceptanceUnverified,
+  KeyAcceptance.verified => l10n.openpgpAcceptanceVerified,
 };
 
 /// Thunderbird's "Your acceptance" choice for [key].
 Future<void> pickAcceptance(BuildContext context, WidgetRef ref, PgpKey key, KeyAcceptance current) async {
+  final l10n = context.l10n;
   final choice = await showActionSheet<KeyAcceptance>(
     context,
-    title: 'Accept ${key.displayName}’s key?',
-    message: 'Fingerprint ${key.formattedFingerprint}',
+    title: l10n.openpgpAcceptKeyTitle(key.displayName),
+    message: l10n.openpgpFingerprintValue(key.formattedFingerprint),
     actions: [
+      SheetAction(l10n.openpgpAcceptVerified, KeyAcceptance.verified, isDefault: current == KeyAcceptance.verified),
       SheetAction(
-        'Yes, I verified the fingerprint',
-        KeyAcceptance.verified,
-        isDefault: current == KeyAcceptance.verified,
+        l10n.openpgpAcceptUnverified,
+        KeyAcceptance.unverified,
+        isDefault: current == KeyAcceptance.unverified,
       ),
-      SheetAction('Yes, without checking', KeyAcceptance.unverified, isDefault: current == KeyAcceptance.unverified),
-      SheetAction('Not yet', KeyAcceptance.undecided, isDefault: current == KeyAcceptance.undecided),
-      const SheetAction('Reject this key', KeyAcceptance.rejected, destructive: true),
+      SheetAction(l10n.openpgpAcceptLater, KeyAcceptance.undecided, isDefault: current == KeyAcceptance.undecided),
+      SheetAction(l10n.openpgpRejectKey, KeyAcceptance.rejected, destructive: true),
     ],
   );
   if (choice == null) return;
@@ -492,7 +494,7 @@ class ProtectedSubject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String shown(String s) => s.trim().isEmpty ? '(no subject)' : s;
+    String shown(String s) => s.trim().isEmpty ? context.l10n.openpgpNoSubject : s;
     return FutureBuilder<EmailContent>(
       future: content,
       builder: (context, snapshot) {

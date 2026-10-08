@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 
+import '../../l10n/l10n.dart';
 import '../../router.dart';
 import '../../shared/grouped_list.dart';
 import '../../theme/loupe_icons.dart';
@@ -30,16 +31,17 @@ String _grouped(String hex) => [for (var i = 0; i < hex.length; i += 4) hex.subs
 /// "Not trusted", "Expired 2021-01-01", …
 (String, Color) trustSummary(BuildContext context, SmimeTrustCheck check) {
   final colors = LoupeColors.of(context);
+  final l10n = context.l10n;
   final warning = CupertinoColors.systemOrange.resolveFrom(context);
   final c = check.certificate;
   return switch (check.problem) {
-    null => ('Trusted · ${check.issuerName}', colors.success),
-    SmimeProblem.untrusted => ('Not trusted · ${check.issuerName}', warning),
-    SmimeProblem.expired => ('Expired ${_day(c.notAfter)}', warning),
-    SmimeProblem.notYetValid => ('Valid from ${_day(c.notBefore)}', warning),
-    SmimeProblem.invalidChain => ('Invalid', colors.destructive),
-    SmimeProblem.wrongUsage => ('Not for mail', warning),
-    SmimeProblem.wrongAddress => ('Another address', warning),
+    null => (l10n.smimeTrustedBy(check.issuerName), colors.success),
+    SmimeProblem.untrusted => (l10n.smimeNotTrustedBy(check.issuerName), warning),
+    SmimeProblem.expired => (l10n.smimeExpiredOn(_day(c.notAfter)), warning),
+    SmimeProblem.notYetValid => (l10n.smimeValidFrom(_day(c.notBefore)), warning),
+    SmimeProblem.invalidChain => (l10n.smimeTrustInvalid, colors.destructive),
+    SmimeProblem.wrongUsage => (l10n.smimeTrustNotForMail, warning),
+    SmimeProblem.wrongAddress => (l10n.smimeTrustAnotherAddress, warning),
   };
 }
 
@@ -55,6 +57,7 @@ class SmimeSettingsSection extends ConsumerWidget {
     final state = ref.watch(smimeStateProvider).value;
     if (service == null || state == null) return const SizedBox.shrink();
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final now = DateTime.now();
     Widget row(SmimeCertificate c, SmimeUsage usage, {required String prefix}) {
       final check = service.check(c, usage: usage);
@@ -84,12 +87,12 @@ class SmimeSettingsSection extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         InsetGroup(
-          header: 'My S/MIME Certificates',
+          header: l10n.smimeMyCertificates,
           separatorIndent: 58,
           footer: state.own.isEmpty
-              ? 'For S/MIME, as Outlook and many companies use it. Import your certificate with its private key '
-                    '(a .p12 or .pfx file), exported from Outlook, Windows, macOS or Thunderbird'
-                    '${device.supported ? ', or use one your company or you installed on this device' : ''}.'
+              ? device.supported
+                    ? l10n.smimeMyCertificatesFooterDevice
+                    : l10n.smimeMyCertificatesFooter
               : null,
           children: [
             for (final o in state.own)
@@ -97,40 +100,38 @@ class SmimeSettingsSection extends ConsumerWidget {
                 key: ValueKey('smime-own-${o.fingerprint}'),
                 leading: SettingsIcon(LoupeIcons.certificate, colors.success),
                 title: o.certificate.displayName,
-                subtitle:
-                    '${o.certificate.emails.join(', ')} · '
-                    '${o.certificate.isExpiredAt(now) ? 'expired' : 'until ${_day(o.certificate.notAfter)}'}'
-                    '${o.onDevice ? ' · on this device' : ''}',
+                subtitle: [
+                  o.certificate.emails.join(', '),
+                  if (o.certificate.isExpiredAt(now))
+                    l10n.smimeCertificateExpired
+                  else
+                    l10n.smimeCertificateUntil(_day(o.certificate.notAfter)),
+                  if (o.onDevice) l10n.smimeCertificateOnDevice,
+                ].join(' · '),
                 onTap: () => context.push(Routes.smimeCertificate(o.fingerprint)),
               ),
-            add('smime-import-own', 'Import Certificate…', () => _importFile(context, ref)),
+            add('smime-import-own', l10n.smimeImportCertificateEllipsis, () => _importFile(context, ref)),
             if (device.supported)
-              add('smime-use-device', 'Use a Certificate from This Device…', () => useDeviceCertificate(context, ref)),
+              add('smime-use-device', l10n.smimeUseDeviceCertificate, () => useDeviceCertificate(context, ref)),
           ],
         ),
         InsetGroup(
-          header: 'Correspondents’ Certificates',
+          header: l10n.smimeCorrespondentsCertificates,
           separatorIndent: 58,
-          footer:
-              'Collected from signed mail, as Outlook and Thunderbird do. Mail is encrypted only to trusted '
-              'certificates: Loupe trusts the authorities Mozilla trusts for email, and those you add.',
+          footer: l10n.smimeCorrespondentsCertificatesFooter,
           children: [
             for (final c in contacts) row(c.certificate, SmimeUsage.encryption, prefix: 'smime-contact'),
-            add('smime-import-contact', 'Import Certificate…', () => _importContact(context, ref)),
+            add('smime-import-contact', l10n.smimeImportCertificateEllipsis, () => _importContact(context, ref)),
           ],
         ),
         InsetGroup(
-          header: 'Revocation',
+          header: l10n.smimeRevocation,
           separatorIndent: 16,
-          footer:
-              'When you open signed mail, Loupe asks the authority that issued the signer’s certificate whether it '
-              'was revoked (its OCSP responder, or its revocation list). The authority can then see when someone '
-              'at your internet address reads mail signed with that certificate. Answers are kept on this device '
-              'until they expire. A revoked certificate shows as "Revoked" in the message header.',
+          footer: l10n.smimeRevocationFooter,
           children: [
             SwitchRow(
               key: const ValueKey('smime-check-revocation'),
-              title: 'Check Certificate Revocation Online',
+              title: l10n.smimeCheckRevocation,
               value: ref.watch(checkRevocationProvider),
               onChanged: (v) => ref.read(checkRevocationProvider.notifier).set(v),
             ),
@@ -138,16 +139,16 @@ class SmimeSettingsSection extends ConsumerWidget {
         ),
         if (state.authorities.isNotEmpty)
           InsetGroup(
-            header: 'Trusted Authorities',
+            header: l10n.smimeTrustedAuthorities,
             separatorIndent: 58,
-            footer: 'Trusted by you, besides the ${mozillaRoots.length} that Mozilla trusts for email.',
+            footer: l10n.smimeTrustedAuthoritiesFooter(mozillaRoots.length),
             children: [
               for (final a in state.authorities)
                 GroupedRow(
                   key: ValueKey('smime-authority-${a.fingerprint}'),
                   leading: SettingsIcon(LoupeIcons.verified, colors.unreadDot),
                   title: a.displayName,
-                  subtitle: a.isCa ? 'Certificate authority' : a.emails.join(', '),
+                  subtitle: a.isCa ? l10n.smimeCertificateAuthority : a.emails.join(', '),
                   onTap: () => context.push(Routes.smimeCertificate(a.fingerprint)),
                 ),
             ],
@@ -163,17 +164,18 @@ class SmimeSettingsSection extends ConsumerWidget {
   }
 
   Future<void> _importContact(BuildContext context, WidgetRef ref) async {
+    final l10n = context.l10n;
     final choice = await showActionSheet<String>(
       context,
-      title: 'Import a Certificate',
-      message: 'A correspondent’s certificate (.cer, .crt, .pem) or a certificate authority’s.',
-      actions: const [SheetAction('From Clipboard', 'paste'), SheetAction('From File', 'file')],
+      title: l10n.smimeImportACertificate,
+      message: l10n.smimeImportContactMessage,
+      actions: [SheetAction(l10n.smimeFromClipboard, 'paste'), SheetAction(l10n.smimeFromFile, 'file')],
     );
     if (choice == null || !context.mounted) return;
     final messenger = ScaffoldMessenger.of(context);
     final data = await (choice == 'paste' ? ref.read(pasteKeyProvider) : ref.read(pickKeyFileProvider))();
     if (data == null) {
-      if (choice == 'paste') showSnack(messenger, 'The clipboard is empty. Copy the certificate first.');
+      if (choice == 'paste') showSnack(messenger, l10n.smimeClipboardEmpty);
       return;
     }
     if (context.mounted) await importSmimeFile(context, ref, data);
@@ -189,6 +191,7 @@ class SmimeCertificateScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
     final service = ref.watch(smimeServiceProvider).value;
     final state = ref.watch(smimeStateProvider).value;
     final own = state?.ownCertificate(fingerprint);
@@ -196,12 +199,16 @@ class SmimeCertificateScreen extends ConsumerWidget {
     final authority = state?.authorities.where((a) => a.fingerprint == fingerprint).firstOrNull;
     final cert = own?.certificate ?? contact?.certificate ?? authority;
     if (service == null || state == null || cert == null) {
-      return const GroupedPage(title: 'Certificate', children: [SizedBox(height: 200)]);
+      return GroupedPage(title: l10n.smimeCertificate, children: const [SizedBox(height: 200)]);
     }
     final colors = LoupeColors.of(context);
     final check = service.check(cert, usage: cert.canEncrypt ? SmimeUsage.encryption : SmimeUsage.signing);
     final (summary, color) = trustSummary(context, check);
-    final usage = [if (cert.canSign) 'Signing', if (cert.canEncrypt) 'Encryption', if (cert.isCa) 'Certificates'];
+    final usage = [
+      if (cert.canSign) l10n.smimeUsageSigning,
+      if (cert.canEncrypt) l10n.smimeUsageEncryption,
+      if (cert.isCa) l10n.smimeUsageCertificates,
+    ];
     final top = check.chain.length > 1 ? check.chain.last : null;
     final trustedByUser = state.isTrustedByUser(cert);
     final link = colors.unreadDot;
@@ -209,56 +216,64 @@ class SmimeCertificateScreen extends ConsumerWidget {
       title: cert.displayName,
       children: [
         InsetGroup(
-          header: 'Certificate',
+          header: l10n.smimeCertificate,
           separatorIndent: 16,
-          footer: own?.onDevice ?? false
-              ? 'Its private key stays in Android’s credential storage, where your company or you installed it: '
-                    'Loupe asks Android to sign and decrypt with it. Signed mail is signed when you send it.'
-              : null,
+          footer: own?.onDevice ?? false ? l10n.smimeOnDeviceFooter : null,
           children: [
             GroupedRow(title: cert.subject.toString(), chevron: false),
-            if (cert.emails.isNotEmpty) GroupedRow(title: 'Addresses', detail: cert.emails.join(', '), chevron: false),
-            GroupedRow(title: 'Issued by', detail: cert.issuer.displayName, chevron: false),
-            GroupedRow(title: 'Valid', detail: '${_day(cert.notBefore)} to ${_day(cert.notAfter)}', chevron: false),
-            GroupedRow(title: 'For', detail: usage.isEmpty ? 'Nothing Loupe uses' : usage.join(', '), chevron: false),
-            GroupedRow(title: 'Algorithm', detail: cert.algorithm, chevron: false),
-            GroupedRow(title: 'Serial number', subtitle: cert.serialHex, chevron: false),
+            if (cert.emails.isNotEmpty)
+              GroupedRow(title: l10n.smimeAddresses, detail: cert.emails.join(', '), chevron: false),
+            GroupedRow(title: l10n.smimeIssuedBy, detail: cert.issuer.displayName, chevron: false),
+            GroupedRow(
+              title: l10n.smimeValid,
+              detail: l10n.smimeValidRange(_day(cert.notBefore), _day(cert.notAfter)),
+              chevron: false,
+            ),
+            GroupedRow(
+              title: l10n.smimeUsage,
+              detail: usage.isEmpty ? l10n.smimeUsageNone : usage.join(', '),
+              chevron: false,
+            ),
+            GroupedRow(title: l10n.smimeAlgorithm, detail: cert.algorithm, chevron: false),
+            GroupedRow(title: l10n.smimeSerialNumber, subtitle: cert.serialHex, chevron: false),
             GroupedRow(
               key: const ValueKey('smime-fingerprint'),
-              title: 'SHA-256 fingerprint',
+              title: l10n.smimeSha256Fingerprint,
               subtitle: _grouped(cert.fingerprint),
               chevron: false,
               onLongPress: () {
                 copyToClipboard(cert.fingerprint);
-                showSnack(ScaffoldMessenger.of(context), 'Fingerprint copied.');
+                showSnack(ScaffoldMessenger.of(context), l10n.smimeFingerprintCopied);
               },
             ),
-            GroupedRow(title: 'SHA-1 thumbprint', subtitle: _grouped(cert.sha1Fingerprint), chevron: false),
+            GroupedRow(title: l10n.smimeSha1Thumbprint, subtitle: _grouped(cert.sha1Fingerprint), chevron: false),
             if (own != null)
               GroupedRow(
                 key: const ValueKey('smime-key-location'),
-                title: 'Private key',
+                title: l10n.smimePrivateKey,
                 detail: own.onDevice
-                    ? 'On this device'
+                    ? l10n.smimeKeyOnDevice
                     : own.hasPassphrase
-                    ? 'In Loupe, with a passphrase'
-                    : 'In Loupe',
+                    ? l10n.smimeKeyInLoupeWithPassphrase
+                    : l10n.smimeKeyInLoupe,
                 chevron: false,
               ),
             if (contact != null)
               GroupedRow(
-                title: 'From',
-                detail: contact.source == SmimeCertificateSource.collected ? 'Signed mail' : 'Imported',
+                title: l10n.smimeSource,
+                detail: contact.source == SmimeCertificateSource.collected
+                    ? l10n.smimeSourceSignedMail
+                    : l10n.smimeSourceImported,
                 chevron: false,
               ),
           ],
         ),
         InsetGroup(
-          header: 'Trust',
+          header: l10n.smimeTrustHeader,
           separatorIndent: 16,
           footer: check.trusted
               ? null
-              : [for (final p in SmimeProblem.values.where(check.problems.contains)) problemText(p)].join(' '),
+              : [for (final p in SmimeProblem.values.where(check.problems.contains)) problemText(l10n, p)].join(' '),
           children: [
             GroupedRow(
               key: const ValueKey('smime-trust-summary'),
@@ -267,11 +282,15 @@ class SmimeCertificateScreen extends ConsumerWidget {
               chevron: false,
             ),
             for (final c in check.chain.skip(1))
-              GroupedRow(title: c.displayName, subtitle: c == check.anchor ? 'Trusted root' : 'Issuer', chevron: false),
+              GroupedRow(
+                title: c.displayName,
+                subtitle: c == check.anchor ? l10n.smimeTrustedRoot : l10n.smimeIssuer,
+                chevron: false,
+              ),
             if (check.problem == SmimeProblem.untrusted && top != null && top.isCa)
               GroupedRow(
                 key: const ValueKey('smime-trust-top'),
-                title: 'Trust “${top.displayName}”',
+                title: l10n.smimeTrustNamed(top.displayName),
                 titleStyle: LoupeTextStyles.of(context).body.copyWith(color: link),
                 chevron: false,
                 onTap: () => _trust(context, service, top),
@@ -279,7 +298,7 @@ class SmimeCertificateScreen extends ConsumerWidget {
             if (check.problem == SmimeProblem.untrusted && !trustedByUser)
               GroupedRow(
                 key: const ValueKey('smime-trust-this'),
-                title: cert.isCa ? 'Trust This Authority' : 'Trust This Certificate',
+                title: cert.isCa ? l10n.smimeTrustThisAuthority : l10n.smimeTrustThisCertificate,
                 titleStyle: LoupeTextStyles.of(context).body.copyWith(color: link),
                 chevron: false,
                 onTap: () => _trust(context, service, cert),
@@ -287,7 +306,7 @@ class SmimeCertificateScreen extends ConsumerWidget {
             if (trustedByUser)
               GroupedRow(
                 key: const ValueKey('smime-untrust'),
-                title: 'Stop Trusting',
+                title: l10n.smimeStopTrusting,
                 destructive: true,
                 chevron: false,
                 onTap: () => service.store.untrust(cert.fingerprint),
@@ -296,16 +315,13 @@ class SmimeCertificateScreen extends ConsumerWidget {
         ),
         if (own != null && !own.onDevice)
           InsetGroup(
-            header: 'Passphrase',
+            header: l10n.smimePassphrase,
             separatorIndent: 16,
-            footer:
-                'Optional. With a passphrase, the private key is also encrypted on this device (Argon2id and '
-                'AES-256), and Loupe asks for it to sign and decrypt; Remember Passphrases says for how long. '
-                'Mail you send is signed as you send it; background work can’t use the key.',
+            footer: l10n.smimePassphraseFooter,
             children: [
               GroupedRow(
                 key: const ValueKey('smime-set-passphrase-row'),
-                title: own.hasPassphrase ? 'Change Passphrase…' : 'Set Passphrase…',
+                title: own.hasPassphrase ? l10n.smimeChangePassphrase : l10n.smimeSetPassphraseEllipsis,
                 titleStyle: LoupeTextStyles.of(context).body.copyWith(color: link),
                 chevron: false,
                 onTap: () => _setPassphrase(context, service, own),
@@ -313,7 +329,7 @@ class SmimeCertificateScreen extends ConsumerWidget {
               if (own.hasPassphrase)
                 GroupedRow(
                   key: const ValueKey('smime-remove-passphrase'),
-                  title: 'Remove Passphrase',
+                  title: l10n.smimeRemovePassphrase,
                   titleStyle: LoupeTextStyles.of(context).body.copyWith(color: link),
                   chevron: false,
                   onTap: () => _removePassphrase(context, service, own),
@@ -325,7 +341,7 @@ class SmimeCertificateScreen extends ConsumerWidget {
           children: [
             GroupedRow(
               key: const ValueKey('smime-share'),
-              title: 'Share Certificate',
+              title: l10n.smimeShareCertificate,
               titleStyle: LoupeTextStyles.of(context).body.copyWith(color: link),
               chevron: false,
               onTap: () => ref.read(certificateExportProvider)('${_fileName(cert)}.pem', cert.pem),
@@ -338,7 +354,7 @@ class SmimeCertificateScreen extends ConsumerWidget {
             children: [
               GroupedRow(
                 key: const ValueKey('smime-delete'),
-                title: own != null ? 'Delete Certificate' : 'Remove Certificate',
+                title: own != null ? l10n.smimeDeleteCertificate : l10n.smimeRemoveCertificate,
                 destructive: true,
                 onTap: () => _delete(context, service, cert, own: own != null),
               ),
@@ -350,13 +366,14 @@ class SmimeCertificateScreen extends ConsumerWidget {
 
   Future<void> _setPassphrase(BuildContext context, SmimeService service, SmimeOwnCertificate own) async {
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = context.l10n;
     try {
       // The current passphrase first, when there is one.
       if (await service.unlock(own.fingerprint) == null || !context.mounted) return;
       final passphrase = await showNewSmimePassphraseDialog(context);
       if (passphrase == null) return;
       if (await service.setPassphrase(own.fingerprint, passphrase)) {
-        showSnack(messenger, own.hasPassphrase ? 'Passphrase changed.' : 'Passphrase set.');
+        showSnack(messenger, own.hasPassphrase ? l10n.smimePassphraseChanged : l10n.smimePassphraseSet);
       }
     } on SmimeException catch (e) {
       showSnack(messenger, e.message);
@@ -365,17 +382,16 @@ class SmimeCertificateScreen extends ConsumerWidget {
 
   Future<void> _removePassphrase(BuildContext context, SmimeService service, SmimeOwnCertificate own) async {
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = context.l10n;
     final ok = await showActionSheet<bool>(
       context,
-      title: 'Remove the Passphrase?',
-      message:
-          'The private key is then protected by the keychain only, as without a passphrase: Loupe no longer asks '
-          'for it, and background work can use it.',
-      actions: const [SheetAction('Remove Passphrase', true, destructive: true)],
+      title: l10n.smimeRemovePassphraseTitle,
+      message: l10n.smimeRemovePassphraseMessage,
+      actions: [SheetAction(l10n.smimeRemovePassphrase, true, destructive: true)],
     );
     if (ok != true) return;
     try {
-      if (await service.removePassphrase(own.fingerprint)) showSnack(messenger, 'Passphrase removed.');
+      if (await service.removePassphrase(own.fingerprint)) showSnack(messenger, l10n.smimePassphraseRemoved);
     } on SmimeException catch (e) {
       showSnack(messenger, e.message);
     }
@@ -384,29 +400,28 @@ class SmimeCertificateScreen extends ConsumerWidget {
   static String _fileName(SmimeCertificate c) => c.displayName.replaceAll(RegExp(r'[^A-Za-z0-9._@-]+'), '_');
 
   Future<void> _trust(BuildContext context, SmimeService service, SmimeCertificate cert) async {
+    final l10n = context.l10n;
+    final fingerprint = _grouped(cert.fingerprint);
     final ok = await showActionSheet<bool>(
       context,
-      title: 'Trust ${cert.displayName}?',
-      message:
-          '${cert.isCa ? 'Every certificate it issues will be trusted for mail. ' : ''}'
-          'Compare the fingerprint with its owner first:\n${_grouped(cert.fingerprint)}',
-      actions: const [SheetAction('Trust', true, isDefault: true)],
+      title: l10n.smimeTrustTitle(cert.displayName),
+      message: cert.isCa ? l10n.smimeTrustCaMessage(fingerprint) : l10n.smimeTrustMessage(fingerprint),
+      actions: [SheetAction(l10n.smimeTrust, true, isDefault: true)],
     );
     if (ok == true) await service.store.trust(cert);
   }
 
   Future<void> _delete(BuildContext context, SmimeService service, SmimeCertificate cert, {required bool own}) async {
+    final l10n = context.l10n;
     final ok = await showActionSheet<bool>(
       context,
-      title: own ? 'Delete your certificate ${cert.displayName}?' : 'Remove ${cert.displayName}’s certificate?',
+      title: own ? l10n.smimeDeleteOwnTitle(cert.displayName) : l10n.smimeRemoveContactTitle(cert.displayName),
       message: own
           ? (service.state.ownCertificate(cert.fingerprint)?.onDevice ?? false)
-                ? 'Loupe stops using it: mail encrypted to it can’t be read in Loupe anymore. The certificate stays '
-                      'on this device (Settings › Security › Encryption & credentials).'
-                : 'Its private key is deleted from this device: mail encrypted to it can’t be read here anymore, '
-                      'unless you import it again.'
-          : 'It comes back with their next signed message.',
-      actions: [SheetAction(own ? 'Delete Certificate' : 'Remove Certificate', true, destructive: true)],
+                ? l10n.smimeDeleteDeviceMessage
+                : l10n.smimeDeleteOwnMessage
+          : l10n.smimeRemoveContactMessage,
+      actions: [SheetAction(own ? l10n.smimeDeleteCertificate : l10n.smimeRemoveCertificate, true, destructive: true)],
     );
     if (ok != true || !context.mounted) return;
     final router = GoRouter.of(context);
@@ -433,6 +448,7 @@ class SmimeAddressGroup extends ConsumerWidget {
     final state = ref.watch(smimeStateProvider).value;
     if (service == null || state == null) return const SizedBox.shrink();
     final colors = LoupeColors.of(context);
+    final l10n = context.l10n;
     final settings = state.identity(email);
     final current = state.ownCertificateFor(email);
     final choices = [
@@ -442,13 +458,13 @@ class SmimeAddressGroup extends ConsumerWidget {
     Future<void> update(IdentitySmime next) => service.store.setIdentity(email, next);
     if (choices.isEmpty) {
       return InsetGroup(
-        header: 'S/MIME',
+        header: 'S/MIME', // l10n-ignore: the standard's name
         separatorIndent: 16,
-        footer: 'Import a certificate for this address to sign and encrypt with S/MIME, as Outlook does.',
+        footer: l10n.smimeAddressImportFooter,
         children: [
           GroupedRow(
             key: const ValueKey('smime-address-import'),
-            title: 'Import a Certificate…',
+            title: l10n.smimeImportACertificateEllipsis,
             titleStyle: LoupeTextStyles.of(context).body.copyWith(color: colors.unreadDot),
             chevron: false,
             onTap: () async {
@@ -460,18 +476,15 @@ class SmimeAddressGroup extends ConsumerWidget {
       );
     }
     return InsetGroup(
-      header: 'S/MIME',
+      header: 'S/MIME', // l10n-ignore: the standard's name
       separatorIndent: 16,
-      footer: hasPgpKey
-          ? 'When both could protect a message, the preferred one is used, unless only the other has a key or '
-                'certificate for every recipient.'
-          : null,
+      footer: hasPgpKey ? l10n.smimePreferFooter : null,
       children: [
         for (final o in choices)
           GroupedRow(
             key: ValueKey('smime-use-${o.fingerprint}'),
             title: o.certificate.displayName,
-            subtitle: '${o.certificate.issuerName} · until ${_day(o.certificate.notAfter)}',
+            subtitle: '${o.certificate.issuerName} · ${l10n.smimeCertificateUntil(_day(o.certificate.notAfter))}',
             chevron: false,
             trailing: current?.fingerprint == o.fingerprint
                 ? Icon(LoupeIcons.check, color: colors.unreadDot, size: 22)
@@ -480,8 +493,8 @@ class SmimeAddressGroup extends ConsumerWidget {
           ),
         if (hasPgpKey)
           SwitchRow(
-            title: 'Prefer S/MIME',
-            subtitle: 'Rather than OpenPGP',
+            title: l10n.smimePreferSmime,
+            subtitle: l10n.smimePreferSmimeDetail,
             value: settings.preferSmime,
             onChanged: (v) => update(settings.copyWith(preferSmime: v)),
           ),

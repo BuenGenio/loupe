@@ -1,23 +1,31 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../l10n/l10n.dart';
 import '../../settings/app_mode.dart';
 import '../../settings/app_settings.dart';
 
 /// How long Loupe can be out of sight before App Lock asks again.
 enum LockAfter {
-  immediately(Duration.zero, 'Immediately'),
-  oneMinute(Duration(minutes: 1), '1 Minute'),
-  fiveMinutes(Duration(minutes: 5), '5 Minutes'),
-  fifteenMinutes(Duration(minutes: 15), '15 Minutes'),
-  oneHour(Duration(hours: 1), '1 Hour');
+  immediately(Duration.zero),
+  oneMinute(Duration(minutes: 1)),
+  fiveMinutes(Duration(minutes: 5)),
+  fifteenMinutes(Duration(minutes: 15)),
+  oneHour(Duration(hours: 1));
 
-  const LockAfter(this.duration, this.label);
+  const LockAfter(this.duration);
 
   final Duration duration;
 
-  /// As Settings shows it.
-  final String label;
+  /// As Settings shows it, in [l10n] (a widget's `context.l10n`).
+  String labelIn(AppLocalizations l10n) => switch (this) {
+    immediately => l10n.appLockAfterImmediately,
+    oneHour => l10n.appLockAfterHours(duration.inHours),
+    oneMinute || fiveMinutes || fifteenMinutes => l10n.appLockAfterMinutes(duration.inMinutes),
+  };
+
+  /// [labelIn] the device's language, for code without a `BuildContext`.
+  String get label => labelIn(deviceL10n());
 }
 
 /// Settings › Security: App Lock (off by default) and Lock After.

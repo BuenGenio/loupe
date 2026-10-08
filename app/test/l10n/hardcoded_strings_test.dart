@@ -34,17 +34,6 @@ const pending = <String>{
   'lib/features/snooze/snoozed_screen.dart',
 
   // Security
-  'lib/features/app_lock/app_lock.dart',
-  'lib/features/openpgp/address_settings_screens.dart',
-  'lib/features/openpgp/compose_security.dart',
-  'lib/features/openpgp/encryption_settings_screen.dart',
-  'lib/features/openpgp/key_import.dart',
-  'lib/features/openpgp/passphrase_dialog.dart',
-  'lib/features/openpgp/pgp_status.dart',
-  'lib/features/smime/smime_import.dart',
-  'lib/features/smime/smime_passphrase.dart',
-  'lib/features/smime/smime_settings.dart',
-  'lib/features/smime/smime_status.dart',
 
   // Settings
   'lib/features/rules/include_sheet.dart',

@@ -11,6 +11,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 
+import '../../l10n/l10n.dart';
+
 /// The device's certificate store.
 abstract interface class DeviceCertificates implements SmimePlatformKeys {
   /// Whether this platform offers its certificates to Loupe.
@@ -67,30 +69,27 @@ final class KeyChainCertificates implements DeviceCertificates {
     return out;
   }
 
-  static const _unavailable = SmimeException(
-    SmimeErrorKind.locked,
-    'The certificate isn’t on this device anymore, or Loupe may no longer use it. Choose it again in '
-    'Settings › End-to-End Encryption.',
-  );
+  static SmimeException get _unavailable =>
+      SmimeException(SmimeErrorKind.locked, deviceL10n().smimeDeviceCertificateGone);
 
-  /// Platform errors as [SmimeException]s, worded for the UI.
+  /// Platform errors as [SmimeException]s, worded for the UI (in the
+  /// device's language: there is no widget here to ask).
   static Future<T> _call<T>(Future<T> Function() call) async {
     try {
       return await call();
     } on MissingPluginException {
-      throw const SmimeException(
-        SmimeErrorKind.locked,
-        'The certificate on this device can only be used while Loupe is open.',
-      );
+      throw SmimeException(SmimeErrorKind.locked, deviceL10n().smimeDeviceCertificateAppOnly);
     } on PlatformException catch (e) {
+      final l10n = deviceL10n();
       throw switch (e.code) {
         'unavailable' => _unavailable,
-        'badPadding' => const SmimeException(SmimeErrorKind.malformed, 'The encrypted key is damaged.'),
+        'badPadding' => SmimeException(SmimeErrorKind.malformed, l10n.smimeDeviceKeyDamaged),
         'unsupported' => SmimeException(
           SmimeErrorKind.unsupported,
-          'The certificate on this device can’t do this: ${e.message ?? 'not supported'}.',
+          // e.message: Android's own words, in English.
+          l10n.smimeDeviceCertificateCantDo(e.message ?? l10n.smimeDeviceNotSupported),
         ),
-        _ => SmimeException(SmimeErrorKind.failed, 'The certificate on this device failed: ${e.message ?? e.code}.'),
+        _ => SmimeException(SmimeErrorKind.failed, l10n.smimeDeviceCertificateFailed(e.message ?? e.code)),
       };
     }
   }

@@ -12,15 +12,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../l10n/l10n.dart';
 import '../../platform/recents_privacy.dart';
 import '../../theme/theme.dart';
 import 'app_lock_settings.dart';
 import 'device_authenticator.dart';
 
+/// Something App Lock tells the user once the app shows.
+enum AppLockNotice {
+  /// The phone's screen lock was removed, so App Lock turned itself off.
+  screenLockRemoved,
+}
+
 /// What App Lock shows.
 @immutable
 class AppLockState {
-  const AppLockState({this.locked = false, this.covered = false, this.message, this.notice});
+  const AppLockState({this.locked = false, this.covered = false, this.failure, this.notice});
 
   /// The lock screen is up; the app under it is neither shown nor usable.
   final bool locked;
@@ -29,22 +36,26 @@ class AppLockState {
   /// without its button, stands in for the mail until then.
   final bool covered;
 
-  /// Why the last prompt didn't unlock, for the lock screen.
-  final String? message;
+  /// Why the last prompt didn't unlock, for the lock screen ([lockFailureText]).
+  final AuthResult? failure;
 
   /// Something to tell the user once the app shows (a SnackBar).
-  final String? notice;
+  final AppLockNotice? notice;
 }
 
 /// Why a prompt didn't unlock or turn App Lock on, in words; null when
-/// there's nothing to say (it worked, or the user cancelled).
-String? lockFailureText(AuthResult result) => switch (result) {
-  AuthResult.failed => 'Loupe couldn’t confirm it’s you.',
-  AuthResult.lockedOut => 'Too many attempts. Try again later.',
-  AuthResult.error => 'The prompt couldn’t be shown. Try again.',
-  AuthResult.unavailable => 'This phone has no screen lock.',
-  AuthResult.success || AuthResult.cancelled => null,
-};
+/// there's nothing to say (it worked, or the user cancelled). In [l10n]
+/// (a widget's `context.l10n`), else in the device's language.
+String? lockFailureText(AuthResult result, [AppLocalizations? l10n]) {
+  final strings = l10n ?? deviceL10n();
+  return switch (result) {
+    AuthResult.failed => strings.appLockFailed,
+    AuthResult.lockedOut => strings.appLockLockedOut,
+    AuthResult.error => strings.appLockPromptError,
+    AuthResult.unavailable => strings.appLockNoScreenLock,
+    AuthResult.success || AuthResult.cancelled => null,
+  };
+}
 
 final appLockProvider = NotifierProvider<AppLockController, AppLockState>(AppLockController.new);
 
@@ -133,7 +144,9 @@ class AppLockController extends Notifier<AppLockState> {
     if (!state.locked) return;
     _promptPending = false;
     state = const AppLockState(locked: true);
-    final result = await _authenticate(title: 'Unlock Loupe', reason: 'Confirm it’s you to see your mail.');
+    // No widget here: the system prompt speaks the device's language, as the app does.
+    final l10n = deviceL10n();
+    final result = await _authenticate(title: l10n.appLockUnlockPromptTitle, reason: l10n.appLockUnlockPromptReason);
     if (result == null || !ref.mounted || !state.locked) return;
     switch (result) {
       case AuthResult.success:
@@ -143,7 +156,7 @@ class AppLockController extends Notifier<AppLockState> {
       case AuthResult.unavailable:
         await _screenLockRemoved();
       case AuthResult.failed || AuthResult.lockedOut || AuthResult.error:
-        state = AppLockState(locked: true, message: lockFailureText(result));
+        state = AppLockState(locked: true, failure: result);
     }
   }
 
@@ -154,12 +167,10 @@ class AppLockController extends Notifier<AppLockState> {
     final available = await ref.read(deviceAuthenticatorProvider).isAvailable();
     if (!ref.mounted || !state.locked) return;
     if (available) {
-      state = AppLockState(locked: true, message: lockFailureText(AuthResult.error));
+      state = const AppLockState(locked: true, failure: AuthResult.error);
       return;
     }
-    state = const AppLockState(
-      notice: 'App Lock is off: this phone has no screen lock any more. Set one up to turn App Lock on again.',
-    );
+    state = const AppLockState(notice: AppLockNotice.screenLockRemoved);
     await ref.read(appLockSettingsProvider.notifier).setEnabled(false);
   }
 
@@ -170,8 +181,9 @@ class AppLockController extends Notifier<AppLockState> {
     if (_prompting) return AuthResult.cancelled;
     if (!await ref.read(deviceAuthenticatorProvider).isAvailable()) return AuthResult.unavailable;
     if (!ref.mounted) return AuthResult.cancelled;
+    final l10n = deviceL10n();
     final result =
-        await _authenticate(title: 'Turn On App Lock', reason: 'Confirm it’s you to turn on App Lock.') ??
+        await _authenticate(title: l10n.appLockTurnOnPromptTitle, reason: l10n.appLockTurnOnPromptReason) ??
         AuthResult.cancelled;
     if (result == AuthResult.success && ref.mounted) {
       await ref.read(appLockSettingsProvider.notifier).setEnabled(true);
@@ -234,7 +246,11 @@ class _AppLockGateState extends ConsumerState<AppLockGate> {
   @override
   Widget build(BuildContext context) {
     ref.listen(appLockProvider.select((s) => s.notice), (_, notice) {
-      if (notice != null) ScaffoldMessenger.maybeOf(context)?.showSnackBar(SnackBar(content: Text(notice)));
+      final text = switch (notice) {
+        AppLockNotice.screenLockRemoved => context.l10n.appLockScreenLockRemoved,
+        null => null,
+      };
+      if (text != null) ScaffoldMessenger.maybeOf(context)?.showSnackBar(SnackBar(content: Text(text)));
     });
     final lock = ref.watch(appLockProvider);
     return Stack(
@@ -251,7 +267,10 @@ class _AppLockGateState extends ConsumerState<AppLockGate> {
           ),
         ),
         if (lock.locked || lock.covered)
-          LockScreen(message: lock.message, onUnlock: lock.locked ? () => unawaited(_controller.unlock()) : null),
+          LockScreen(
+            message: lock.failure == null ? null : lockFailureText(lock.failure!, context.l10n),
+            onUnlock: lock.locked ? () => unawaited(_controller.unlock()) : null,
+          ),
       ],
     );
   }
@@ -315,6 +334,7 @@ class LockScreen extends StatelessWidget {
               children: [
                 Image.asset('assets/icon/icon_rounded.png', width: 80, height: 80, excludeFromSemantics: true),
                 const SizedBox(height: 14),
+                // l10n-ignore: the name
                 Semantics(header: true, child: Text('Loupe', style: styles.navTitle)),
                 if (onUnlock != null) ...[
                   if (message case final message?)
@@ -323,7 +343,7 @@ class LockScreen extends StatelessWidget {
                       child: Text(message, style: styles.footnote, textAlign: TextAlign.center),
                     ),
                   const SizedBox(height: 28),
-                  FilledButton(autofocus: true, onPressed: onUnlock, child: const Text('Unlock')),
+                  FilledButton(autofocus: true, onPressed: onUnlock, child: Text(context.l10n.appLockUnlock)),
                 ],
               ],
             ),
