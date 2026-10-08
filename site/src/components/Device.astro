@@ -125,6 +125,7 @@ const uid = `l${Math.random().toString(36).slice(2, 8)}`;
           <ellipse class="glare" cx="84" cy="76" rx="44" ry="22" fill={`url(#${uid}-loupe-glare)`} transform="rotate(-38 84 76)" opacity=".75" />
           <circle cx="66" cy="66" r="4" fill="#ffffff" opacity=".8" />
         </svg>
+        <span class="grip" />
         <p class="egg" hidden />
       </div>
     )
@@ -215,26 +216,34 @@ const uid = `l${Math.random().toString(36).slice(2, 8)}`;
 
     const fromEvent = (e: PointerEvent) => {
       const r = screen.getBoundingClientRect();
-      return {
-        x: Math.max(0, Math.min(r.width, e.clientX - r.left)),
-        y: Math.max(0, Math.min(r.height, e.clientY - r.top)),
-      };
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
     };
+    const onScreen = ({ x, y }: { x: number; y: number }) => ({
+      x: Math.max(0, Math.min(screen.clientWidth, x)),
+      y: Math.max(0, Math.min(screen.clientHeight, y)),
+    });
 
+    // A mouse moves the glass itself. A finger takes the handle and the glass
+    // keeps its distance from it, so the finger never covers what it shows.
+    let grab = { x: 0, y: 0 };
     device.addEventListener('pointermove', (e) => {
       if (reduced && !dragging) return;
       if (e.pointerType === 'mouse' || dragging) {
         lastPointer = performance.now();
-        target = fromEvent(e);
+        const p = fromEvent(e);
+        target = onScreen(dragging ? { x: p.x + grab.x, y: p.y + grab.y } : p);
         if (reduced) place(target.x, target.y);
       }
     });
-    loupe.addEventListener('pointerdown', (e) => {
+    const grip = loupe.querySelector<HTMLElement>('.grip')!;
+    grip.addEventListener('pointerdown', (e) => {
+      const p = fromEvent(e);
+      grab = { x: current.x - p.x, y: current.y - p.y };
       dragging = true;
-      loupe.setPointerCapture(e.pointerId);
+      grip.setPointerCapture(e.pointerId);
     });
-    loupe.addEventListener('pointerup', () => (dragging = false));
-    loupe.addEventListener('pointercancel', () => (dragging = false));
+    grip.addEventListener('pointerup', () => (dragging = false));
+    grip.addEventListener('pointercancel', () => (dragging = false));
     addEventListener('resize', () => {
       measure();
       target = current = toPoint(idleIndex);
@@ -330,13 +339,29 @@ const uid = `l${Math.random().toString(36).slice(2, 8)}`;
     width: calc(var(--d) * 300 / 160);
     height: calc(var(--d) * 300 / 160);
     opacity: 0;
-    cursor: grab;
-    touch-action: none;
+    /* Only the handle (.grip) takes touches: the page scrolls through the rest. */
+    pointer-events: none;
     transition: opacity 0.6s ease;
     will-change: transform;
   }
 
-  .loupe:active {
+  /* Over the handle, which the frame draws 45° down-right of the glass: centred
+     at (239.4, 239.4) of the frame's 300 units, of which the glass's 160 are --d. */
+  .grip {
+    position: absolute;
+    left: calc(var(--d) * 174.4 / 160);
+    top: calc(var(--d) * 207.4 / 160);
+    width: calc(var(--d) * 130 / 160);
+    height: calc(var(--d) * 64 / 160);
+    min-height: 44px;
+    border-radius: 999px;
+    transform: rotate(45deg);
+    pointer-events: auto;
+    touch-action: none;
+    cursor: grab;
+  }
+
+  .grip:active {
     cursor: grabbing;
   }
 
