@@ -2896,6 +2896,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAllowUnrestrictedBattery => 'Allow Unrestricted Battery Use';
 
   @override
+  String get settingsPush => 'Push';
+
+  @override
+  String get settingsPushFooter =>
+      'Push lets new mail wake Loupe at once, where your mail service supports it. Pushes go through Google’s push service and carry no mail, only “check now”.';
+
+  @override
+  String get settingsPushUnavailableFooter =>
+      'This phone can’t receive pushes: they need Google Play services and a network connection. Loupe still checks for mail about every 15 minutes.';
+
+  @override
+  String get settingsCopyPushToken => 'Copy Push Token';
+
+  @override
+  String get settingsPushTokenCopied => 'Push token copied';
+
+  @override
   String get settingsSendTestNotification => 'Send Test Notification';
 
   @override

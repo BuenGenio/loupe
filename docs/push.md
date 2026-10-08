@@ -26,8 +26,8 @@ Loupe ignores the data; any data message wakes it.
 
 - Project `loupe-18212` (Spark plan: FCM is free). Android app `io.github.buengenio.loupe`.
 - `app/android/app/google-services.json` is committed. It holds the project's client settings, which ship inside every APK anyway, not secrets. To harden it, restrict its API key to the Android app in Google Cloud › APIs & Services › Credentials.
-- **No Analytics, no Crashlytics.** `app/android/app/build.gradle.kts` also leaves out `firebase-measurement-connector`, an interface FCM brings along that does nothing without Analytics but makes tracker scanners such as Exodus report "Google Firebase Analytics".
-  - So **never send Firebase console notification campaigns** to Loupe: they ask FCM to log to Analytics, which crashes without the connector. Send data messages ([below](#sending-a-test-push)).
+- **No Analytics, no Crashlytics.** FCM still brings `firebase-measurement-connector`, an interface that does nothing without the Analytics SDK. It can't be left out: FCM asks for it when it starts (`FirebaseMessaging.shouldRetainProxyNotifications`). Tracker scanners such as Exodus look for its package name (`com.google.firebase.analytics.connector`) and may report "Google Firebase Analytics".
+- Test with data messages ([below](#sending-a-test-push)), not Firebase console notification campaigns: those show their own notification, and Loupe never sends that kind.
 - Sending needs a service account. Create its key only for the relay's deployment, and keep it out of the repository and the app.
 
 ## Sending a test push

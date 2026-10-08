@@ -101,8 +101,9 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
 
   Future<void> _copyPushToken(String token) async {
     final messenger = ScaffoldMessenger.of(context);
+    final copied = context.l10n.settingsPushTokenCopied;
     await Clipboard.setData(ClipboardData(text: token));
-    messenger.showSnackBar(const SnackBar(content: Text('Push token copied')));
+    messenger.showSnackBar(SnackBar(content: Text(copied)));
   }
 
   Future<void> _sendTest() async {
@@ -235,18 +236,20 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
           InsetGroup(
             separatorIndent: 16,
             footer: settings.push && (pushToken?.hasError ?? false)
-                ? 'This phone can’t receive pushes: they need Google Play services and a network connection. '
-                      'Loupe still checks for mail about every 15 minutes.'
-                : 'Push lets new mail wake Loupe at once, where your mail service supports it. Pushes go through '
-                      'Google’s push service and carry no mail, only “check now”.',
+                ? l10n.settingsPushUnavailableFooter
+                : l10n.settingsPushFooter,
             children: [
               SwitchRow(
-                title: 'Push',
+                title: l10n.settingsPush,
                 value: settings.push,
                 onChanged: (v) => unawaited(_controller.update((s) => s.copyWith(push: v))),
               ),
               if (pushToken?.value case final token?)
-                GroupedRow(title: 'Copy Push Token', chevron: false, onTap: () => unawaited(_copyPushToken(token))),
+                GroupedRow(
+                  title: l10n.settingsCopyPushToken,
+                  chevron: false,
+                  onTap: () => unawaited(_copyPushToken(token)),
+                ),
             ],
           ),
         InsetGroup(

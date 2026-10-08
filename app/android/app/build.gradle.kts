@@ -78,14 +78,6 @@ flutter {
     source = "../.."
 }
 
-// Push needs only Firebase Cloud Messaging. firebase-messaging brings the Analytics connector, an interface
-// that does nothing without the Analytics SDK (which Loupe doesn't have) but makes tracker scanners such as
-// Exodus report "Google Firebase Analytics". Without it, FCM works as before; only the Firebase console's
-// notification campaigns, which ask FCM to log to Analytics, would fail, and Loupe never uses them.
-configurations.configureEach {
-    exclude(group = "com.google.firebase", module = "firebase-measurement-connector")
-}
-
 dependencies {
     // flutter_local_notifications: the desugaring library its README pins.
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
