@@ -1461,6 +1461,12 @@
 
   "@@x-section-settings": "Settings, rules, subscriptions",
 
+  "settingsLanguage": "Language",
+  "@settingsLanguage": {"description": "Settings row and page title: the language the app shows."},
+  "settingsLanguageSystem": "Same as Phone",
+  "@settingsLanguageSystem": {"description": "Settings › Language: follow the phone's language setting. Below it shows which language that is."},
+  "settingsLanguageFooter": "Loupe uses your phone’s language when it has it, and English when it doesn’t. The language you pick here is for Loupe alone, notifications included.",
+  "@settingsLanguageFooter": {"description": "Under the Same as Phone choice in Settings › Language."},
   "settingsAccountsHeader": "Accounts",
   "@settingsAccountsHeader": {"description": "Settings: section header above the accounts."},
   "settingsAddAccount": "Add Account",

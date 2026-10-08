@@ -255,7 +255,7 @@ void main() {
     await pumpLoupe(tester);
     await goTo(tester, Routes.settings);
     final row = find.byKey(const Key('open-links-directly'));
-    await tester.ensureVisible(row);
+    await tester.scrollUntilVisible(row, 200, scrollable: find.byType(Scrollable).first);
     await tester.pumpAndSettle();
     final toggle = find.descendant(of: row, matching: find.byType(CupertinoSwitch));
     expect(tester.widget<CupertinoSwitch>(toggle).value, isTrue);

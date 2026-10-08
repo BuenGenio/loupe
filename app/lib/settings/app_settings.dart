@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:readable/readable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../l10n/l10n.dart';
 import 'app_mode.dart';
 
 enum Density { comfortable, compact }
@@ -26,6 +27,7 @@ class AppSettings {
     this.undoSendSeconds = 10,
     this.threaded = true,
     this.appIconBadge = BadgeCount.inboxes,
+    this.language,
   });
 
   final ThemeMode themeMode;
@@ -47,6 +49,10 @@ class AppSettings {
   /// The count on the app icon, like Apple Mail's Badge App Icon.
   final BadgeCount appIconBadge;
 
+  /// The language Loupe shows (Settings › Language), as a language code; null
+  /// for the phone's.
+  final String? language;
+
   AppSettings copyWith({
     ThemeMode? themeMode,
     Density? density,
@@ -58,6 +64,7 @@ class AppSettings {
     int? undoSendSeconds,
     bool? threaded,
     BadgeCount? appIconBadge,
+    Object? language = _unchanged,
   }) => AppSettings(
     themeMode: themeMode ?? this.themeMode,
     density: density ?? this.density,
@@ -69,7 +76,11 @@ class AppSettings {
     undoSendSeconds: undoSendSeconds ?? this.undoSendSeconds,
     threaded: threaded ?? this.threaded,
     appIconBadge: appIconBadge ?? this.appIconBadge,
+    language: identical(language, _unchanged) ? this.language : language as String?,
   );
+
+  /// copyWith's default for [language], which null would set.
+  static const _unchanged = Object();
 }
 
 /// Overridden in main() with the loaded instance (and in tests with a mock).
@@ -81,6 +92,15 @@ final appSettingsProvider = NotifierProvider<AppSettingsController, AppSettings>
 
 class AppSettingsController extends Notifier<AppSettings> {
   static const _prefix = 'settings.';
+  static const _languageKey = '${_prefix}language';
+
+  /// Settings › Language for text made outside the widget tree ([appLanguage]):
+  /// the app's settings do it, and background isolates call this when they
+  /// start. A language Loupe no longer has counts as none.
+  static String? loadLanguage(SharedPreferences prefs) {
+    final code = prefs.getString(_languageKey);
+    return appLanguage = AppLocalizations.supportedLocales.any((l) => l.languageCode == code) ? code : null;
+  }
 
   SharedPreferences get _prefs => ref.read(sharedPreferencesProvider);
 
@@ -105,12 +125,14 @@ class AppSettingsController extends Notifier<AppSettings> {
       undoSendSeconds: p.getInt('${_prefix}undoSendSeconds') ?? d.undoSendSeconds,
       threaded: p.getBool('${_prefix}threaded') ?? d.threaded,
       appIconBadge: pick(BadgeCount.values, 'appIconBadge', d.appIconBadge),
+      language: loadLanguage(p),
     );
   }
 
   Future<void> update(AppSettings Function(AppSettings current) change) async {
     final next = change(state);
     state = next;
+    appLanguage = next.language;
     await Future.wait([
       _prefs.setString('${_prefix}themeMode', next.themeMode.name),
       _prefs.setString('${_prefix}density', next.density.name),
@@ -122,6 +144,7 @@ class AppSettingsController extends Notifier<AppSettings> {
       _prefs.setInt('${_prefix}undoSendSeconds', next.undoSendSeconds),
       _prefs.setBool('${_prefix}threaded', next.threaded),
       _prefs.setString('${_prefix}appIconBadge', next.appIconBadge.name),
+      if (next.language case final code?) _prefs.setString(_languageKey, code) else _prefs.remove(_languageKey),
     ]);
   }
 }
