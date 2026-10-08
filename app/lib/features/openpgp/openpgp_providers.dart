@@ -98,13 +98,20 @@ final keySessionProvider = Provider<KeySession>((ref) {
   return session;
 });
 
+/// Why a passphrase (an OpenPGP key's or an S/MIME certificate's) is asked
+/// for again; the dialog says it in words.
+enum PassphraseError {
+  /// The last one didn't unlock the key.
+  wrong,
+}
+
 /// Asks for the passphrase of [key]; null when the user cancels. [error]
 /// explains why it is asked again.
-typedef PassphrasePrompt = Future<String?> Function(PgpKey key, {String? error});
+typedef PassphrasePrompt = Future<String?> Function(PgpKey key, {PassphraseError? error});
 
 /// Shows the passphrase dialog over whatever screen is open.
 final passphrasePromptProvider = Provider<PassphrasePrompt>((ref) {
-  return (PgpKey key, {String? error}) async {
+  return (PgpKey key, {PassphraseError? error}) async {
     final context = ref.read(routerProvider).routerDelegate.navigatorKey.currentContext;
     if (context == null || !context.mounted) return null;
     return showPassphraseDialog(context, key: key, error: error);

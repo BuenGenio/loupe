@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../smime/smime_providers.dart';
 import '../smime/smime_service.dart';
@@ -224,7 +225,7 @@ final class ContentLoader {
       entity = _entities[emailId];
     }
     final part = entity == null ? null : partOf(entity, partId, partPrefix: decryptedPartPrefix);
-    if (part == null) throw const MailException(MailErrorKind.notFound, 'This attachment is no longer available.');
+    if (part == null) throw MailException(MailErrorKind.notFound, deviceL10n().openpgpAttachmentGone);
     return part.decodedBody;
   }
 
@@ -265,24 +266,30 @@ final class ContentLoader {
   static const _plumbing = {'application/pgp-encrypted', 'application/pgp-signature', ...smimePlumbingTypes};
   static const _plumbingNames = {'encrypted.asc', 'smime.p7s', 'smime.p7m'};
 
-  static String _explainSmime(SmimeMessageStatus status) => switch (status.failure!) {
-    SmimeDecryptFailure.noKey =>
-      'This message is encrypted with S/MIME, but not to any certificate on this device. Import your certificate '
-          '(a .p12 or .pfx file) in Settings › End-to-End Encryption.',
-    SmimeDecryptFailure.damaged => 'This encrypted message is damaged, so it can’t be decrypted safely.',
-    SmimeDecryptFailure.unsupported => 'This message uses encryption that Loupe can’t read yet.',
-    SmimeDecryptFailure.locked =>
-      'This message is encrypted. ${status.failureMessage ?? 'Unlock your S/MIME certificate to read it.'}',
-  };
+  /// The text shown instead of an S/MIME message that can't be decrypted. Made without a widget, so in the
+  /// device's language (the app's: [deviceL10n]).
+  static String _explainSmime(SmimeMessageStatus status) {
+    final l10n = deviceL10n();
+    return switch (status.failure!) {
+      SmimeDecryptFailure.noKey => l10n.openpgpExplainSmimeNoKey,
+      SmimeDecryptFailure.damaged => l10n.openpgpExplainDamaged,
+      SmimeDecryptFailure.unsupported => l10n.openpgpExplainUnsupported,
+      SmimeDecryptFailure.locked => l10n.openpgpExplainSmimeLocked(
+        status.failureMessage ?? l10n.openpgpExplainSmimeUnlock,
+      ),
+    };
+  }
 
-  static String _explain(PgpDecryptFailure failure) => switch (failure) {
-    PgpDecryptFailure.locked => 'This message is encrypted. Unlock your OpenPGP key to read it.',
-    PgpDecryptFailure.noSecretKey =>
-      'This message is encrypted, but not to any OpenPGP key on this device. If you read it in '
-          'Thunderbird, import your key from there: Settings › End-to-End Encryption.',
-    PgpDecryptFailure.damaged => 'This encrypted message is damaged, so it can’t be decrypted safely.',
-    PgpDecryptFailure.unsupported => 'This message uses encryption that Loupe can’t read yet.',
-  };
+  /// The text shown instead of an OpenPGP message that can't be decrypted, as [_explainSmime].
+  static String _explain(PgpDecryptFailure failure) {
+    final l10n = deviceL10n();
+    return switch (failure) {
+      PgpDecryptFailure.locked => l10n.openpgpExplainLocked,
+      PgpDecryptFailure.noSecretKey => l10n.openpgpExplainNoKey,
+      PgpDecryptFailure.damaged => l10n.openpgpExplainDamaged,
+      PgpDecryptFailure.unsupported => l10n.openpgpExplainUnsupported,
+    };
+  }
 
   static EmailContent _copy(
     EmailContent c, {

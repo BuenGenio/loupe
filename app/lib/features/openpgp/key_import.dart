@@ -8,6 +8,7 @@ import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../conversation/sheets.dart';
@@ -40,12 +41,13 @@ Future<void> importKeys(
   KeySource source = KeySource.imported,
 }) async {
   final messenger = ScaffoldMessenger.of(context);
+  final l10n = context.l10n;
   final service = await ref.read(openPgpServiceProvider.future);
   final List<PgpKey> keys;
   try {
     keys = await service.parseKeys(data);
   } on PgpException catch (e) {
-    showSnack(messenger, e.kind == PgpErrorKind.malformed ? 'No OpenPGP key found.' : e.message);
+    showSnack(messenger, e.kind == PgpErrorKind.malformed ? l10n.openpgpNoKeyFound : e.message);
     return;
   }
   final secrets = [
@@ -62,36 +64,34 @@ Future<void> importKeys(
   if (secrets.isNotEmpty && source == KeySource.attachment && context.mounted) {
     final ok = await showActionSheet<bool>(
       context,
-      title: 'Import a Secret Key?',
-      message:
-          'This attachment holds a secret key (${secrets.map((k) => k.displayName).join(', ')}). Import it as your '
-          'own key only if you exported it yourself, from Thunderbird for example.',
-      actions: const [SheetAction('Import as My Key', true, destructive: true)],
+      title: l10n.openpgpImportSecretKeyTitle,
+      message: l10n.openpgpImportSecretKeyMessage(secrets.map((k) => k.displayName).join(', ')),
+      actions: [SheetAction(l10n.openpgpImportAsMyKey, true, destructive: true)],
     );
     if (ok != true) secrets.clear();
   }
   for (final k in secrets) {
     final imported = await service.importSecretKey(k);
-    if (imported != null) added.add('your key ${imported.displayName}');
+    if (imported != null) added.add(l10n.openpgpImportedOwnKey(imported.displayName));
   }
   if (publics.isNotEmpty && context.mounted) {
     final names = publics.map((k) => k.displayName).join(', ');
     final fingerprints = publics.map((k) => k.formattedFingerprint).join('\n');
     final acceptance = await showActionSheet<KeyAcceptance>(
       context,
-      title: publics.length == 1 ? 'Import $names’s key?' : 'Import ${publics.length} keys ($names)?',
+      title: l10n.openpgpImportPublicKeysTitle(publics.length, names),
       message: fingerprints,
-      actions: const [
-        SheetAction('Import and Accept', KeyAcceptance.unverified, isDefault: true),
-        SheetAction('Import, Decide Later', KeyAcceptance.undecided),
+      actions: [
+        SheetAction(l10n.openpgpImportAndAccept, KeyAcceptance.unverified, isDefault: true),
+        SheetAction(l10n.openpgpImportDecideLater, KeyAcceptance.undecided),
       ],
     );
     if (acceptance != null) {
       await service.importPublicKeys(publics, acceptance: acceptance, source: source);
-      added.addAll(publics.map((k) => '${k.displayName}’s key'));
+      added.addAll(publics.map((k) => l10n.openpgpImportedPublicKey(k.displayName)));
     }
   }
-  if (added.isNotEmpty) showSnack(messenger, 'Imported ${added.join(', ')}.');
+  if (added.isNotEmpty) showSnack(messenger, l10n.openpgpImported(added.join(', ')));
 }
 
 /// Under a message's attachments: "OpenPGP key attached · Import" for
@@ -127,7 +127,7 @@ class PgpKeyAttachments extends ConsumerWidget {
           const SizedBox(width: 6),
           Expanded(
             child: Text(
-              keys.length == 1 ? 'An OpenPGP key is attached.' : '${keys.length} OpenPGP keys are attached.',
+              context.l10n.openpgpKeysAttached(keys.length),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(color: colors.secondaryText),
             ),
           ),
@@ -151,7 +151,7 @@ class PgpKeyAttachments extends ConsumerWidget {
                 await importKeys(context, ref, Uint8List.fromList(parts), source: KeySource.attachment);
               }
             },
-            child: const Text('Import'),
+            child: Text(context.l10n.openpgpImport),
           ),
         ],
       ),

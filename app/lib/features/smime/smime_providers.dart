@@ -71,7 +71,7 @@ final smimeStateProvider = StreamProvider<SmimeState>((ref) async* {
 
 /// Shows the S/MIME passphrase dialog over whatever screen is open.
 final smimePassphrasePromptProvider = Provider<SmimePassphrasePrompt>((ref) {
-  return (SmimeCertificate certificate, {String? error}) async {
+  return (SmimeCertificate certificate, {PassphraseError? error}) async {
     final context = ref.read(routerProvider).routerDelegate.navigatorKey.currentContext;
     if (context == null || !context.mounted) return null;
     return showSmimeUnlockDialog(context, certificate: certificate, error: error);

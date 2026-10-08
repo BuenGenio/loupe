@@ -100,7 +100,7 @@ final class OpenPgpService implements PgpSendKeys {
   /// Asks until the passphrase unlocks [secret] or the user cancels.
   Future<PgpKey?> _askPassphrase(PgpKey info, PgpKey secret) async {
     final b = backend;
-    String? error;
+    PassphraseError? error;
     while (true) {
       final passphrase = await prompt(info, error: error);
       if (passphrase == null) return null;
@@ -108,7 +108,7 @@ final class OpenPgpService implements PgpSendKeys {
         return await run(() => b.unlock(secret, passphrase));
       } on PgpException catch (e) {
         if (e.kind != PgpErrorKind.wrongPassphrase) rethrow;
-        error = 'That passphrase is wrong. Try again.';
+        error = PassphraseError.wrong;
       }
     }
   }
@@ -145,8 +145,8 @@ final class OpenPgpService implements PgpSendKeys {
           status: PgpMessageStatus(
             protection: PgpProtection.pgpMimeEncrypted,
             encrypted: true,
+            // No failureMessage: the status sheet says the key is locked, in the app's language.
             failure: PgpDecryptFailure.locked,
-            failureMessage: 'Your key is locked.',
             recipientKeyIds: ids,
           ),
         );

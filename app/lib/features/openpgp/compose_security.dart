@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 import 'package:mail_model/mail_model.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../conversation/sheets.dart';
@@ -185,18 +186,20 @@ class ComposeSecurityController extends ChangeNotifier {
     var security = value;
     final plan = this.plan;
     if (security.isPlain || (plan == null && smimePlan == null)) return security;
+    final l10n = context.l10n;
     if (security.encrypt && missing.isNotEmpty) {
       final required = _from != null && _state.identity(_from!).encryptByDefault;
       final names = missing.join(', ');
-      final what = isSmime ? 'valid S/MIME certificate' : 'OpenPGP key';
       final choice = await showActionSheet<bool>(
         context,
-        title: 'Can’t Encrypt',
-        message: required
-            ? 'There is no $what for $names, and this address always encrypts. Remove the recipient, or '
-                  'import their ${isSmime ? 'certificate' : 'key'} in Settings › End-to-End Encryption.'
-            : 'There is no $what for $names.',
-        actions: [if (!required) const SheetAction('Send Unencrypted', false, destructive: true)],
+        title: l10n.openpgpCantEncrypt,
+        message: switch ((isSmime, required)) {
+          (false, true) => l10n.openpgpNoKeyAlwaysEncrypt(names),
+          (true, true) => l10n.openpgpNoCertificateAlwaysEncrypt(names),
+          (false, false) => l10n.openpgpNoKeyFor(names),
+          (true, false) => l10n.openpgpNoCertificateFor(names),
+        },
+        actions: [if (!required) SheetAction(l10n.openpgpSendUnencrypted, false, destructive: true)],
       );
       if (choice == null) return null;
       security = OutgoingSecurity(
@@ -216,10 +219,8 @@ class ComposeSecurityController extends ChangeNotifier {
           if (context.mounted) {
             await showActionSheet<bool>(
               context,
-              title: 'Can’t Sign',
-              message:
-                  'The private key of your S/MIME certificate isn’t on this device. Import the certificate '
-                  'again (a .p12 or .pfx file) in Settings › End-to-End Encryption.',
+              title: l10n.openpgpCantSign,
+              message: l10n.openpgpCantSignMessage,
               actions: const [],
             );
           }
@@ -251,18 +252,20 @@ class ComposeSecurityBar extends StatelessWidget {
       builder: (context, _) {
         if (!controller.available) return const SizedBox.shrink();
         final colors = LoupeColors.of(context);
+        final l10n = context.l10n;
         final smime = controller.isSmime;
         final missing = controller.missing;
         final String? hint;
         Color hintColor = colors.secondaryText;
         if (controller.encrypt && missing.isNotEmpty) {
-          hint = '${smime ? 'No certificate' : 'No key'} for ${missing.join(', ')}';
+          final names = missing.join(', ');
+          hint = smime ? l10n.openpgpComposeNoCertificate(names) : l10n.openpgpComposeNoKey(names);
           hintColor = CupertinoColors.systemOrange.resolveFrom(context);
         } else if (controller.encrypt) {
           final autocrypt = !smime && (controller.plan?.keys.values.any((k) => k?.viaAutocrypt ?? false) ?? false);
-          hint = autocrypt ? 'Keys from Autocrypt' : null;
+          hint = autocrypt ? l10n.openpgpComposeAutocryptKeys : null;
         } else if (controller.possible) {
-          hint = smime ? 'Everyone has a certificate' : 'Everyone has a key';
+          hint = smime ? l10n.openpgpComposeEveryoneHasCertificate : l10n.openpgpComposeEveryoneHasKey;
         } else {
           hint = null;
         }
@@ -275,7 +278,7 @@ class ComposeSecurityBar extends StatelessWidget {
                 children: [
                   _Toggle(
                     key: const Key('compose-encrypt'),
-                    label: 'Encrypt',
+                    label: l10n.openpgpComposeEncrypt,
                     on: controller.encrypt,
                     icon: controller.encrypt ? LoupeIcons.encrypted : LoupeIcons.encryptOff,
                     onTap: controller.toggleEncrypt,
@@ -283,7 +286,7 @@ class ComposeSecurityBar extends StatelessWidget {
                   const SizedBox(width: 8),
                   _Toggle(
                     key: const Key('compose-sign'),
-                    label: 'Sign',
+                    label: l10n.openpgpComposeSign,
                     on: controller.sign,
                     icon: controller.sign ? LoupeIcons.signed : LoupeIcons.signOff,
                     onTap: controller.toggleSign,
@@ -329,10 +332,10 @@ class _Technology extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = LoupeColors.of(context);
-    final label = smime ? 'S/MIME' : 'OpenPGP';
+    final label = smime ? 'S/MIME' : 'OpenPGP'; // l10n-ignore: the standards' names
     return Semantics(
       button: onTap != null,
-      label: onTap == null ? label : '$label, switch',
+      label: onTap == null ? label : context.l10n.openpgpComposeSwitchStandard(label),
       excludeSemantics: true,
       child: InkWell(
         borderRadius: BorderRadius.circular(14),

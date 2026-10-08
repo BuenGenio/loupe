@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/theme.dart';
+import 'openpgp_providers.dart' show PassphraseError;
 
 /// Asks for the passphrase of [key]. Null on Cancel.
-Future<String?> showPassphraseDialog(BuildContext context, {required PgpKey key, String? error}) =>
+Future<String?> showPassphraseDialog(BuildContext context, {required PgpKey key, PassphraseError? error}) =>
     showCupertinoDialog<String>(
       context: context,
       builder: (context) => PassphraseDialog(pgpKey: key, error: error),
@@ -16,7 +18,7 @@ class PassphraseDialog extends StatefulWidget {
   const PassphraseDialog({super.key, required this.pgpKey, this.error});
 
   final PgpKey pgpKey;
-  final String? error;
+  final PassphraseError? error;
 
   @override
   State<PassphraseDialog> createState() => _PassphraseDialogState();
@@ -39,16 +41,20 @@ class _PassphraseDialogState extends State<PassphraseDialog> {
   @override
   Widget build(BuildContext context) {
     final key = widget.pgpKey;
-    final error = widget.error;
+    final l10n = context.l10n;
+    final error = switch (widget.error) {
+      PassphraseError.wrong => l10n.openpgpWrongPassphrase,
+      null => null,
+    };
     return CupertinoAlertDialog(
       key: const ValueKey('passphrase-dialog'),
-      title: const Text('Unlock OpenPGP Key'),
+      title: Text(l10n.openpgpUnlockKeyTitle),
       content: Padding(
         padding: const EdgeInsets.only(top: 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Enter the passphrase of ${key.displayName}’s key (${formatFingerprint(key.keyId)}).'),
+            Text(l10n.openpgpEnterPassphrase(key.displayName, formatFingerprint(key.keyId))),
             if (error != null)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
@@ -62,19 +68,19 @@ class _PassphraseDialogState extends State<PassphraseDialog> {
               obscureText: true,
               autocorrect: false,
               enableSuggestions: false,
-              placeholder: 'Passphrase',
+              placeholder: l10n.openpgpPassphrase,
               onSubmitted: (_) => _submit(),
             ),
           ],
         ),
       ),
       actions: [
-        CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+        CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.commonCancel)),
         CupertinoDialogAction(
           key: const ValueKey('passphrase-unlock'),
           isDefaultAction: true,
           onPressed: _submit,
-          child: const Text('Unlock'),
+          child: Text(l10n.openpgpUnlock),
         ),
       ],
     );

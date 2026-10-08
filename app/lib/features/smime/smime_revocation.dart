@@ -13,6 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 
 import '../../demo/demo_smime.dart';
+import '../../l10n/l10n.dart';
 import '../../settings/app_mode.dart';
 import '../../settings/app_settings.dart';
 import '../openpgp/openpgp_providers.dart';
@@ -37,7 +38,9 @@ class CheckRevocation extends Notifier<bool> {
 }
 
 /// OCSP and CRLs over HTTP: strict timeouts, a size limit, plain requests
-/// (no cookies, a generic user agent), redirects only for CRLs.
+/// (no cookies, a generic user agent), redirects only for CRLs. Its errors
+/// end up in the message header's details (the revocation's problem), in
+/// the device's language.
 final class HttpRevocationFetcher implements SmimeRevocationFetcher {
   const HttpRevocationFetcher({
     this.connectTimeout = const Duration(seconds: 5),
@@ -72,7 +75,7 @@ final class HttpRevocationFetcher implements SmimeRevocationFetcher {
     String? contentType,
   }) async {
     if (url.scheme != 'http' && url.scheme != 'https') {
-      throw const SmimeException(SmimeErrorKind.unsupported, 'The authority’s address isn’t a web address.');
+      throw SmimeException(SmimeErrorKind.unsupported, deviceL10n().smimeAuthorityNotWebAddress);
     }
     final client = HttpClient()
       ..connectionTimeout = connectTimeout
@@ -81,9 +84,9 @@ final class HttpRevocationFetcher implements SmimeRevocationFetcher {
     try {
       return await _send(client, method, url, maxBytes, accept, body, contentType).timeout(timeout);
     } on TimeoutException {
-      throw const SmimeException(SmimeErrorKind.failed, 'The certificate authority didn’t answer in time.');
+      throw SmimeException(SmimeErrorKind.failed, deviceL10n().smimeAuthorityTimeout);
     } on IOException {
-      throw const SmimeException(SmimeErrorKind.failed, 'The certificate authority couldn’t be reached.');
+      throw SmimeException(SmimeErrorKind.failed, deviceL10n().smimeAuthorityUnreachable);
     } finally {
       client.close(force: true);
     }
@@ -112,16 +115,16 @@ final class HttpRevocationFetcher implements SmimeRevocationFetcher {
     final response = await request.close();
     if (response.statusCode != HttpStatus.ok) {
       await response.drain<void>();
-      throw SmimeException(SmimeErrorKind.failed, 'The certificate authority answered ${response.statusCode}.');
+      throw SmimeException(SmimeErrorKind.failed, deviceL10n().smimeAuthorityStatus('${response.statusCode}'));
     }
     if (response.contentLength > maxBytes) {
-      throw const SmimeException(SmimeErrorKind.malformed, 'The certificate authority’s answer is too large.');
+      throw SmimeException(SmimeErrorKind.malformed, deviceL10n().smimeAuthorityAnswerTooLarge);
     }
     final out = BytesBuilder(copy: false);
     await for (final chunk in response) {
       out.add(chunk);
       if (out.length > maxBytes) {
-        throw const SmimeException(SmimeErrorKind.malformed, 'The certificate authority’s answer is too large.');
+        throw SmimeException(SmimeErrorKind.malformed, deviceL10n().smimeAuthorityAnswerTooLarge);
       }
     }
     return out.takeBytes();
@@ -183,7 +186,7 @@ final signerRevocationProvider = FutureProvider.autoDispose.family<SmimeRevocati
       state: SmimeRevocationState.unknown,
       checkedAt: now,
       validUntil: now,
-      problem: 'Not checked: only certificates from an authority Loupe trusts are checked.',
+      problem: deviceL10n().smimeRevocationNotChecked,
     );
   }
   return checker.check(cert, issuer);

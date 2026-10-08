@@ -5,21 +5,26 @@ library;
 import 'package:flutter/cupertino.dart';
 import 'package:mail_crypto/mail_crypto.dart';
 
+import '../../l10n/l10n.dart';
 import '../../theme/theme.dart';
+import '../openpgp/openpgp_providers.dart' show PassphraseError;
 
 /// Asks for the passphrase of [certificate]'s key. Null on Cancel.
-Future<String?> showSmimeUnlockDialog(BuildContext context, {required SmimeCertificate certificate, String? error}) =>
-    showCupertinoDialog<String>(
-      context: context,
-      builder: (context) => SmimeUnlockDialog(certificate: certificate, error: error),
-    );
+Future<String?> showSmimeUnlockDialog(
+  BuildContext context, {
+  required SmimeCertificate certificate,
+  PassphraseError? error,
+}) => showCupertinoDialog<String>(
+  context: context,
+  builder: (context) => SmimeUnlockDialog(certificate: certificate, error: error),
+);
 
 /// "Unlock S/MIME Certificate": whose, a secure field, and the reason when it is asked again.
 class SmimeUnlockDialog extends StatefulWidget {
   const SmimeUnlockDialog({super.key, required this.certificate, this.error});
 
   final SmimeCertificate certificate;
-  final String? error;
+  final PassphraseError? error;
 
   @override
   State<SmimeUnlockDialog> createState() => _SmimeUnlockDialogState();
@@ -42,16 +47,20 @@ class _SmimeUnlockDialogState extends State<SmimeUnlockDialog> {
   @override
   Widget build(BuildContext context) {
     final c = widget.certificate;
-    final error = widget.error;
+    final l10n = context.l10n;
+    final error = switch (widget.error) {
+      PassphraseError.wrong => l10n.smimeWrongPassphrase,
+      null => null,
+    };
     return CupertinoAlertDialog(
       key: const ValueKey('smime-unlock-dialog'),
-      title: const Text('Unlock S/MIME Certificate'),
+      title: Text(l10n.smimeUnlockTitle),
       content: Padding(
         padding: const EdgeInsets.only(top: 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Enter the passphrase of ${c.displayName}’s certificate (${c.emails.join(', ')}).'),
+            Text(l10n.smimeEnterPassphrase(c.displayName, c.emails.join(', '))),
             if (error != null)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
@@ -65,19 +74,19 @@ class _SmimeUnlockDialogState extends State<SmimeUnlockDialog> {
               obscureText: true,
               autocorrect: false,
               enableSuggestions: false,
-              placeholder: 'Passphrase',
+              placeholder: l10n.smimePassphrase,
               onSubmitted: (_) => _submit(),
             ),
           ],
         ),
       ),
       actions: [
-        CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+        CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.commonCancel)),
         CupertinoDialogAction(
           key: const ValueKey('smime-unlock'),
           isDefaultAction: true,
           onPressed: _submit,
-          child: const Text('Unlock'),
+          child: Text(l10n.smimeUnlock),
         ),
       ],
     );
@@ -109,10 +118,11 @@ class _NewSmimePassphraseDialogState extends State<NewSmimePassphraseDialog> {
   }
 
   void _submit() {
+    final l10n = context.l10n;
     final error = _first.text.isEmpty
-        ? 'Enter a passphrase.'
+        ? l10n.smimeEnterAPassphrase
         : _first.text != _second.text
-        ? 'The two passphrases differ.'
+        ? l10n.smimePassphrasesDiffer
         : null;
     if (error != null) {
       setState(() => _error = error);
@@ -124,18 +134,16 @@ class _NewSmimePassphraseDialogState extends State<NewSmimePassphraseDialog> {
   @override
   Widget build(BuildContext context) {
     final error = _error;
+    final l10n = context.l10n;
     return CupertinoAlertDialog(
       key: const ValueKey('smime-new-passphrase-dialog'),
-      title: const Text('Set Passphrase'),
+      title: Text(l10n.smimeSetPassphraseTitle),
       content: Padding(
         padding: const EdgeInsets.only(top: 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Loupe will ask for it to sign and decrypt. If you forget it, import the certificate again from '
-              'its .p12 file.',
-            ),
+            Text(l10n.smimeSetPassphraseText),
             if (error != null)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
@@ -149,7 +157,7 @@ class _NewSmimePassphraseDialogState extends State<NewSmimePassphraseDialog> {
               obscureText: true,
               autocorrect: false,
               enableSuggestions: false,
-              placeholder: 'Passphrase',
+              placeholder: l10n.smimePassphrase,
             ),
             const SizedBox(height: 8),
             CupertinoTextField(
@@ -158,19 +166,19 @@ class _NewSmimePassphraseDialogState extends State<NewSmimePassphraseDialog> {
               obscureText: true,
               autocorrect: false,
               enableSuggestions: false,
-              placeholder: 'Again',
+              placeholder: l10n.smimePassphraseAgain,
               onSubmitted: (_) => _submit(),
             ),
           ],
         ),
       ),
       actions: [
-        CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+        CupertinoDialogAction(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.commonCancel)),
         CupertinoDialogAction(
           key: const ValueKey('smime-set-passphrase'),
           isDefaultAction: true,
           onPressed: _submit,
-          child: const Text('Set'),
+          child: Text(l10n.smimeSetPassphraseButton),
         ),
       ],
     );
