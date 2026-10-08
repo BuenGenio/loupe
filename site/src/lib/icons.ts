@@ -22,6 +22,7 @@ import documentText from '@fluentui/svg-icons/icons/document_text_24_regular.svg
 import peopleCommunity from '@fluentui/svg-icons/icons/people_community_24_regular.svg?raw';
 import heart from '@fluentui/svg-icons/icons/heart_24_regular.svg?raw';
 import arrowDownload from '@fluentui/svg-icons/icons/arrow_download_24_regular.svg?raw';
+import arrowLeft from '@fluentui/svg-icons/icons/arrow_left_24_regular.svg?raw';
 import arrowRight from '@fluentui/svg-icons/icons/arrow_right_24_regular.svg?raw';
 import open from '@fluentui/svg-icons/icons/open_24_regular.svg?raw';
 import checkmark from '@fluentui/svg-icons/icons/checkmark_24_regular.svg?raw';
@@ -79,6 +80,7 @@ export const icons = {
   'people-community': peopleCommunity,
   'heart': heart,
   'arrow-download': arrowDownload,
+  'arrow-left': arrowLeft,
   'arrow-right': arrowRight,
   'open': open,
   'checkmark': checkmark,
