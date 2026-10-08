@@ -21,7 +21,7 @@ const l = (path: string) => localize(lang, path);
   lang={lang}
   title={t('download.title')}
   description={t('download.description')}
-  image={lang === 'en' ? '/og/download.png' : `/og/${lang}/download.png`}
+  image={lang === 'en' ? '/og/download.jpg' : `/og/${lang}/download.jpg`}
   jsonLd={[softwareApplication(), breadcrumbs([{ name: 'Loupe', path: l('/') }, { name: t('download.h1'), path: l('/download/') }])]}
 >
   <section class="top">

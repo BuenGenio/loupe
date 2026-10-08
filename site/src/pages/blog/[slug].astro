@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const path = `/blog/${entry.id}/`;
-const image = `/og/blog/${entry.id}.png`;
+const image = `/og/blog/${entry.id}.jpg`;
 ---
 
 <Base

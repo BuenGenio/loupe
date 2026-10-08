@@ -16,7 +16,7 @@ interface Props {
 const { lang } = Astro.props;
 const t = useT(lang);
 const l = (path: string) => localize(lang, path);
-const og = lang === 'en' ? '/og/home.png' : `/og/${lang}/home.png`;
+const og = lang === 'en' ? '/og/home.jpg' : `/og/${lang}/home.jpg`;
 
 const hero = shot('search-hero', 'search', 'inbox') ?? screenshots.find((s) => s.device === 'phone');
 const reading = shotFor('reading');

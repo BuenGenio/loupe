@@ -33,7 +33,7 @@ const live = socials.filter((s) => s.href);
   lang={lang}
   title={t('contact.title')}
   description={t('contact.description')}
-  image={lang === 'en' ? '/og/contact.png' : `/og/${lang}/contact.png`}
+  image={lang === 'en' ? '/og/contact.jpg' : `/og/${lang}/contact.jpg`}
   jsonLd={[
     { '@type': 'ContactPage', name: t('contact.title'), url: new URL(l('/contact/'), site.url).href, inLanguage: lang },
     breadcrumbs([{ name: 'Loupe', path: l('/') }, { name: t('contact.title'), path: l('/contact/') }]),

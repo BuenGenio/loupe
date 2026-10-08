@@ -10,7 +10,7 @@ const { lang } = Astro.props;
 const t = useT(lang);
 ---
 
-<Base lang={lang} title={t('start.title')} description={t('start.description')} image={lang === 'en' ? '/og/download.png' : `/og/${lang}/download.png`} noindex>
+<Base lang={lang} title={t('start.title')} description={t('start.description')} image={lang === 'en' ? '/og/download.jpg' : `/og/${lang}/download.jpg`} noindex>
   <section class="section-tight">
     <div class="wrap narrow">
       <p class="eyebrow">{t('start.eyebrow')}</p>

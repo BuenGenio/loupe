@@ -1,5 +1,7 @@
-// Open Graph images (1200x630), one per page, rendered at build time with
-// satori (layout to SVG) and sharp (SVG to PNG). Shared links on Mastodon,
+// Open Graph images (1200x630 JPEG, ~80 KB), one per page and language,
+// rendered at build time with satori (layout to SVG) and sharp (SVG to JPEG).
+// JPEG because some link-preview fetchers (WhatsApp, Signal) are picky about
+// large PNGs. Shared links on Mastodon,
 // Bluesky, Reddit, Slack and the rest show these.
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { readFile } from 'node:fs/promises';
@@ -136,6 +138,6 @@ export const GET: APIRoute = async ({ props }) => {
     height: 630,
     fonts,
   });
-  const png = await sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toBuffer();
-  return new Response(new Uint8Array(png), { headers: { 'Content-Type': 'image/png' } });
+  const jpg = await sharp(Buffer.from(svg)).flatten({ background: '#0c2238' }).jpeg({ quality: 84, mozjpeg: true, chromaSubsampling: '4:4:4' }).toBuffer();
+  return new Response(new Uint8Array(jpg), { headers: { 'Content-Type': 'image/jpeg' } });
 };
