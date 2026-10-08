@@ -15,6 +15,23 @@ const { lang } = Astro.props;
 const t = useT(lang);
 const l = (path: string) => localize(lang, path);
 const more = highlights.filter((h) => extras.includes(h.key));
+
+// The chips, in order. Each one shows its panel below in place of the last;
+// without JavaScript they are plain links and every panel shows in turn.
+const tabs = [
+  { id: 'rule', label: t('features.principleEyebrow') },
+  ...groups.map((g) => ({ id: g.id, label: t(`groups.${g.id}.eyebrow`) })),
+  { id: 'protocols', label: t('features.jmapEyebrow') },
+  { id: 'more', label: t('features.andMore') },
+];
+
+// Panels with a second view, "under the hood", opened by a button named after
+// that view's own title (so no new strings to translate).
+const deeper: Record<string, string> = {
+  reading: t('features.rpTitle'),
+  search: t('features.seTitle'),
+  security: t('features.securityDetails'),
+};
 ---
 
 <Base
@@ -27,196 +44,383 @@ const more = highlights.filter((h) => extras.includes(h.key));
   <section class="top">
     <div class="wrap">
       <p class="eyebrow">{t('features.eyebrow')}</p>
-      <h1 set:html={t('features.h1_html')} />
+      <h1>
+        {t('features.h1_html')
+          .split(/<br\s*\/?>/)
+          .map((part, i) => (
+            <>
+              {i > 0 && ' '}
+              <span class="line" set:html={part} />
+            </>
+          ))}
+      </h1>
       <p class="lead">{t('features.lead')}</p>
-      <nav class="jump" aria-label={t('features.jump')}>
-        {groups.map((g) => <a class="chip" href={`#${g.id}`}>{t(`groups.${g.id}.eyebrow`)}</a>)}
-        <a class="chip" href="#more">{t('features.andMore')}</a>
-      </nav>
     </div>
   </section>
 
-  <section class="principle" aria-labelledby="principle-title">
-    <div class="wrap principle-grid">
-      <div>
-        <p class="eyebrow">{t('features.principleEyebrow')}</p>
-        <h2 id="principle-title">{t('features.principleTitle')}</h2>
-        <p class="lead">{t('features.principleLead')}</p>
+  <!-- Before the sections: take the #tab off the address so the browser
+       doesn't scroll down to that section while loading; the tabs script
+       below picks the tab and puts the hash back. -->
+  <script is:inline>
+    if (location.hash.length > 1) {
+      window.loupeFeaturesTab = location.hash.slice(1);
+      history.replaceState(history.state, '', location.pathname + location.search);
+    }
+  </script>
+
+  <div class="explorer" id="explorer">
+    <div class="tabs-bar">
+      <div class="wrap">
+        <nav class="jump" aria-label={t('features.jump')}>
+          {tabs.map((tab) => <a class="chip" href={`#${tab.id}`} data-tab={tab.id}>{tab.label}</a>)}
+        </nav>
       </div>
-      <ol class="places">
-        {(['press-and-hold', 'more', 'search', 'settings'] as const).map((_, n) => (
-          <li>
-            <span class="num" aria-hidden="true">{n + 1}</span>
-            <div>
-              <strong>{t(`features.place${n + 1}`)}</strong>
-              <span>{t(`features.place${n + 1}Text`)}</span>
-            </div>
-          </li>
-        ))}
-      </ol>
     </div>
-  </section>
 
-  {
-    groups.map((g, i) => (
-      <>
-      <section id={g.id} class:list={['group', i % 2 ? 'alt' : '']} aria-labelledby={`${g.id}-title`}>
-        <div class:list={['wrap', 'group-grid', i % 2 ? 'reverse' : '']}>
-          <div class="copy">
-            <p class="eyebrow">{t(`groups.${g.id}.eyebrow`)}</p>
-            <h2 id={`${g.id}-title`}>{t(`groups.${g.id}.title`)}</h2>
-            <p class="lead">{t(`groups.${g.id}.lead`)}</p>
-            {g.id === 'search' && (
-              <div class="demo">
-                <SearchPlayground lang={lang} full />
+    <section id="rule" class="panel principle" data-panel aria-labelledby="principle-title">
+      <div class="wrap principle-grid">
+        <div>
+          <p class="eyebrow panel-eyebrow">{t('features.principleEyebrow')}</p>
+          <h2 id="principle-title">{t('features.principleTitle')}</h2>
+          <p class="lead">{t('features.principleLead')}</p>
+        </div>
+        <ol class="places">
+          {(['press-and-hold', 'more', 'search', 'settings'] as const).map((_, n) => (
+            <li>
+              <span class="num" aria-hidden="true">{n + 1}</span>
+              <div>
+                <strong>{t(`features.place${n + 1}`)}</strong>
+                <span>{t(`features.place${n + 1}Text`)}</span>
               </div>
-            )}
-            <ul class="points">
-              {g.icons.map((icon, n) => (
-                <li>
-                  <div class="icon-tile">
-                    <Icon name={icon} />
-                  </div>
-                  <div>
-                    <h3>{t(`groups.${g.id}.p${n + 1}.title`)}</h3>
-                    <p>{t(`groups.${g.id}.p${n + 1}.text`)}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            {g.id === 'security' && (
-              <div class="details">
-                <h3>{t('features.securityDetails')}</h3>
-                <ul>
-                  {[1, 2, 3, 4].map((n) => (
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    {
+      groups.map((g) => (
+        <section id={g.id} class="panel group" data-panel aria-labelledby={`${g.id}-title`}>
+          <div class="view" data-view="main">
+            <div class="wrap group-grid">
+              <div class="copy">
+                <p class="eyebrow panel-eyebrow">{t(`groups.${g.id}.eyebrow`)}</p>
+                <h2 id={`${g.id}-title`}>{t(`groups.${g.id}.title`)}</h2>
+                <p class="lead">{t(`groups.${g.id}.lead`)}</p>
+                <ul class="points">
+                  {g.icons.map((icon, n) => (
                     <li>
-                      <Icon name="checkmark" size={16} /> {t(`features.sec${n}`)}
+                      <div class="icon-tile">
+                        <Icon name={icon} />
+                      </div>
+                      <div>
+                        <h3>{t(`groups.${g.id}.p${n + 1}.title`)}</h3>
+                        <p>{t(`groups.${g.id}.p${n + 1}.text`)}</p>
+                      </div>
                     </li>
                   ))}
                 </ul>
+                {deeper[g.id] && (
+                  <button type="button" class="deeper" data-show="deep">
+                    {deeper[g.id]} <Icon name="arrow-right" size={18} />
+                  </button>
+                )}
               </div>
-            )}
-          </div>
-          <div class="visual">
-            <Device shot={shotFor(g.shot)} placeholder={t('common.screenshotSoon')} />
-          </div>
-        </div>
-      </section>
-      {g.id === 'reading' && (
-        <section class="deep" aria-labelledby="rp-title">
-          <div class="wrap">
-            <div class="section-head">
-              <p class="eyebrow">{t('features.rpEyebrow')}</p>
-              <h2 id="rp-title">{t('features.rpTitle')}</h2>
-              <p class="lead">{t('features.rpLead')}</p>
+              <div class="visual">
+                {g.id === 'search' ? (
+                  <SearchPlayground lang={lang} />
+                ) : (
+                  <Device shot={shotFor(g.shot)} placeholder={t('common.screenshotSoon')} />
+                )}
+              </div>
             </div>
-            <ol class="steps">
-              {[1, 2, 3, 4, 5, 6].map((n) => (
-                <li class="card">
-                  <span class="step" aria-hidden="true">{n}</span>
-                  <h3>{t(`features.rp${n}`)}</h3>
-                  <p>{t(`features.rp${n}Text`)}</p>
-                </li>
-              ))}
-            </ol>
           </div>
-        </section>
-      )}
-      {g.id === 'search' && (
-        <section class="deep alt-deep" aria-labelledby="se-title">
-          <div class="wrap">
-            <div class="section-head">
-              <p class="eyebrow">{t('features.rpEyebrow')}</p>
-              <h2 id="se-title">{t('features.seTitle')}</h2>
-              <p class="lead">{t('features.seLead')}</p>
-            </div>
-            <div class="engines">
-              {(['Local', 'Imap', 'Gmail', 'Jmap'] as const).map((k) => (
-                <div class="engine">
-                  <h3>{t(`features.se${k}`)}</h3>
-                  <p>{t(`features.se${k}Text`)}</p>
-                </div>
-              ))}
-            </div>
-            <p class="engine-note"><Icon name="filter" size={18} /> <span>{t('features.seNote')}</span></p>
-          </div>
-        </section>
-      )}
-      {g.id === 'security' && (
-        <section class="jmap" aria-labelledby="jmap-title">
-          <div class="wrap jmap-grid">
-            <div>
-              <p class="eyebrow">{t('features.jmapEyebrow')}</p>
-              <h2 id="jmap-title">{t('features.jmapTitle')}</h2>
-              <p class="lead">{t('features.jmapLead')}</p>
-            </div>
-            <ul class="jmap-list">
-              {[1, 2, 3, 4].map((n) => (
-                <li>
-                  <strong>{t(`features.jmap${n}`)}</strong>
-                  <span>{t(`features.jmap${n}Text`)}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      )}
-      </>
-    ))
-  }
 
-  <section id="more" class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">{t('features.andMore')}</p>
-        <h2>{t('features.moreTitle')}</h2>
-      </div>
-      <div class="more-grid">
-        {
-          more.map((f) => (
-            <a class="card more" href={f.docs}>
-              <div class="icon-tile">
-                <Icon name={f.icon} />
+          {g.id === 'reading' && (
+            <div class="view deep" data-view="deep">
+              <div class="wrap">
+                <button type="button" class="back" data-show="main">
+                  <Icon name="arrow-left" size={18} /> {t(`groups.${g.id}.eyebrow`)}
+                </button>
+                <div class="section-head">
+                  <p class="eyebrow">{t('features.rpEyebrow')}</p>
+                  <h2 id="rp-title">{t('features.rpTitle')}</h2>
+                  <p class="lead">{t('features.rpLead')}</p>
+                </div>
+                <ol class="steps">
+                  {[1, 2, 3, 4, 5, 6].map((n) => (
+                    <li class="card">
+                      <span class="step" aria-hidden="true">{n}</span>
+                      <h3>{t(`features.rp${n}`)}</h3>
+                      <p>{t(`features.rp${n}Text`)}</p>
+                    </li>
+                  ))}
+                </ol>
               </div>
-              <h3>{t(`highlights.${f.key}.title`)}</h3>
-              <p>{t(`highlights.${f.key}.text`)}</p>
-              <span class="go">
-                {t('common.readGuide')} <Icon name="arrow-right" size={16} />
-              </span>
-            </a>
-          ))
+            </div>
+          )}
+
+          {g.id === 'search' && (
+            <div class="view deep" data-view="deep">
+              <div class="wrap">
+                <button type="button" class="back" data-show="main">
+                  <Icon name="arrow-left" size={18} /> {t(`groups.${g.id}.eyebrow`)}
+                </button>
+                <div class="section-head">
+                  <p class="eyebrow">{t('features.rpEyebrow')}</p>
+                  <h2 id="se-title">{t('features.seTitle')}</h2>
+                  <p class="lead">{t('features.seLead')}</p>
+                </div>
+                <div class="engines">
+                  {(['Local', 'Imap', 'Gmail', 'Jmap'] as const).map((k) => (
+                    <div class="engine">
+                      <h3>{t(`features.se${k}`)}</h3>
+                      <p>{t(`features.se${k}Text`)}</p>
+                    </div>
+                  ))}
+                </div>
+                <p class="engine-note">
+                  <Icon name="filter" size={18} /> <span>{t('features.seNote')}</span>
+                </p>
+              </div>
+            </div>
+          )}
+
+          {g.id === 'security' && (
+            <div class="view deep" data-view="deep">
+              <div class="wrap">
+                <button type="button" class="back" data-show="main">
+                  <Icon name="arrow-left" size={18} /> {t(`groups.${g.id}.eyebrow`)}
+                </button>
+                <div class="details">
+                  <h3>{t('features.securityDetails')}</h3>
+                  <ul>
+                    {[1, 2, 3, 4].map((n) => (
+                      <li>
+                        <Icon name="checkmark" size={16} /> {t(`features.sec${n}`)}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+      ))
+    }
+
+    <section id="protocols" class="panel jmap" data-panel aria-labelledby="jmap-title">
+      <div class="wrap jmap-grid">
+        <div>
+          <p class="eyebrow panel-eyebrow">{t('features.jmapEyebrow')}</p>
+          <h2 id="jmap-title">{t('features.jmapTitle')}</h2>
+          <p class="lead">{t('features.jmapLead')}</p>
+        </div>
+        <ul class="jmap-list">
+          {[1, 2, 3, 4].map((n) => (
+            <li>
+              <strong>{t(`features.jmap${n}`)}</strong>
+              <span>{t(`features.jmap${n}Text`)}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section id="more" class="panel more-panel" data-panel aria-labelledby="more-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow panel-eyebrow">{t('features.andMore')}</p>
+          <h2 id="more-title">{t('features.moreTitle')}</h2>
+        </div>
+        <div class="more-grid">
+          {
+            more.map((f) => (
+              <a class="card more" href={f.docs}>
+                <div class="icon-tile">
+                  <Icon name={f.icon} />
+                </div>
+                <h3>{t(`highlights.${f.key}.title`)}</h3>
+                <p>{t(`highlights.${f.key}.text`)}</p>
+                <span class="go">
+                  {t('common.readGuide')} <Icon name="arrow-right" size={16} />
+                </span>
+              </a>
+            ))
+          }
+        </div>
+        <div class="end">
+          <a class="btn btn-primary" href={l('/download/')}><Icon name="arrow-download" size={20} /> {t('common.downloadLoupe')}</a>
+          <a class="btn" href={l('/screenshots/')}>{t('common.seeAllScreenshots')}</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Inline, right after the markup, so only one panel is ever painted. -->
+  <script is:inline>
+    (() => {
+      const root = document.getElementById('explorer');
+      const nav = root && root.querySelector('.jump');
+      if (!nav) return;
+      const bar = root.querySelector('.tabs-bar');
+      const tabs = [...nav.querySelectorAll('[data-tab]')];
+      const panels = new Map([...root.querySelectorAll('[data-panel]')].map((p) => [p.id, p]));
+      const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let current = null;
+
+      root.classList.add('tabs-ready');
+      nav.setAttribute('role', 'tablist');
+      for (const tab of tabs) {
+        const panel = panels.get(tab.dataset.tab);
+        // Renamed so the browser finds nothing to scroll to for /features/#search;
+        // the hash picks the tab instead.
+        panel.id = `panel-${tab.dataset.tab}`;
+        tab.id = `tab-${tab.dataset.tab}`;
+        tab.setAttribute('role', 'tab');
+        tab.setAttribute('aria-controls', panel.id);
+        panel.setAttribute('role', 'tabpanel');
+        panel.setAttribute('aria-labelledby', tab.id);
+      }
+
+      // Fades in what the reader just picked (never on the first paint).
+      function fade(el) {
+        if (still) return;
+        el.classList.remove('fade');
+        void el.offsetWidth;
+        el.classList.add('fade');
+      }
+
+      function show(panel, name, animate = false) {
+        for (const view of panel.querySelectorAll('[data-view]')) {
+          const on = view.dataset.view === name;
+          view.hidden = !on;
+          if (on && animate) fade(view);
         }
-      </div>
-      <div class="end">
-        <a class="btn btn-primary" href={l('/download/')}><Icon name="arrow-download" size={20} /> {t('common.downloadLoupe')}</a>
-        <a class="btn" href={l('/screenshots/')}>{t('common.seeAllScreenshots')}</a>
-      </div>
-    </div>
-  </section>
+      }
+
+      function select(id, { focus = false, animate = true } = {}) {
+        current = id;
+        for (const tab of tabs) {
+          const on = tab.dataset.tab === id;
+          tab.setAttribute('aria-selected', String(on));
+          tab.tabIndex = on ? 0 : -1;
+          if (!on) continue;
+          if (focus) tab.focus({ preventScroll: true });
+          // On a phone the chips scroll sideways: bring this one to the middle.
+          const left = tab.offsetLeft - (nav.clientWidth - tab.offsetWidth) / 2;
+          nav.scrollTo({ left: Math.max(0, left), behavior: animate && !still ? 'smooth' : 'auto' });
+        }
+        for (const [pid, panel] of panels) {
+          const on = pid === id;
+          panel.hidden = !on;
+          if (!on) continue;
+          show(panel, 'main');
+          if (animate) fade(panel);
+        }
+      }
+
+      // If the reader has scrolled down a long panel (on a phone), start the new
+      // one just under the chips instead of somewhere in its middle.
+      function settle() {
+        const top = panels.get(current).getBoundingClientRect().top;
+        const under = bar.getBoundingClientRect().bottom;
+        if (top < under - 1) window.scrollBy(0, top - under);
+      }
+
+      const known = (hash) => {
+        try {
+          const id = decodeURIComponent(hash || '');
+          return panels.has(id) ? id : null;
+        } catch {
+          return null; // a malformed hash such as #%E0
+        }
+      };
+      const fromHash = () => known(location.hash.slice(1));
+      const early = window.loupeFeaturesTab;
+      const linked = known(early);
+      select(linked || tabs[0].dataset.tab, { animate: false });
+      // Put back the hash the script above took off (any hash, tab or not).
+      if (early) history.replaceState(history.state, '', `#${early}`);
+
+      nav.addEventListener('click', (e) => {
+        const tab = e.target.closest('[data-tab]');
+        if (!tab) return;
+        e.preventDefault();
+        select(tab.dataset.tab);
+        history.replaceState(null, '', `#${tab.dataset.tab}`);
+        settle();
+      });
+
+      nav.addEventListener('keydown', (e) => {
+        const i = tabs.indexOf(document.activeElement);
+        const to = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+        if (i < 0 || to === undefined) return;
+        e.preventDefault();
+        const tab = tabs[(to + tabs.length) % tabs.length];
+        select(tab.dataset.tab, { focus: true });
+        history.replaceState(null, '', `#${tab.dataset.tab}`);
+      });
+
+      root.addEventListener('click', (e) => {
+        const button = e.target.closest('[data-show]');
+        if (!button) return;
+        const panel = button.closest('[data-panel]');
+        show(panel, button.dataset.show, true);
+        panel.querySelector(`[data-view="${button.dataset.show}"] [data-show]`)?.focus({ preventScroll: true });
+        settle();
+      });
+
+      addEventListener('hashchange', () => {
+        const id = fromHash();
+        if (id && id !== current) {
+          select(id);
+          settle();
+        }
+      });
+    })();
+  </script>
 </Base>
 
 <style>
   .top {
-    padding-block: clamp(48px, 7vw, 96px) clamp(24px, 4vw, 48px);
+    padding-block: clamp(40px, 6vw, 80px) clamp(16px, 3vw, 28px);
   }
 
   h1 {
     max-width: 14em;
-    font-size: clamp(2.5rem, 6vw, 4.2rem);
+    font-size: clamp(2.3rem, 6vw, 4rem);
+  }
+
+  .line {
+    display: block;
   }
 
   .top .lead {
     max-width: 38em;
   }
 
+  /* The chips: links to the sections, or tabs once the script has run. They
+     stay under the header while a long panel scrolls on a phone. */
+  .tabs-bar {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 20;
+    padding-block: 12px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+  }
+
   .jump {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 28px;
   }
 
   .jump a {
+    min-height: 40px;
+    padding: 6px 16px;
+    font-size: 0.9375rem;
     text-decoration: none;
   }
 
@@ -225,10 +429,77 @@ const more = highlights.filter((h) => extras.includes(h.key));
     color: var(--brand-ink);
   }
 
-  .principle {
-    padding-block: clamp(48px, 7vw, 88px);
-    border-top: 1px solid var(--line);
+  .jump a[aria-selected='true'] {
+    border-color: var(--brand);
+    background: var(--brand);
+    color: var(--bg-elev);
+  }
+
+  .panel {
+    padding-block: clamp(32px, 5vw, 64px);
     background: var(--bg-elev);
+  }
+
+  /* Without the script every panel shows, one after the other. */
+  .panel + .panel {
+    border-top: 1px solid var(--line);
+  }
+
+  .tabs-ready [hidden] {
+    display: none !important;
+  }
+
+  .tabs-ready .panel-eyebrow {
+    display: none;
+  }
+
+  .tabs-ready .fade {
+    animation: fade-in 0.32s ease both;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+
+  .deeper,
+  .back {
+    display: none;
+  }
+
+  .tabs-ready .deeper,
+  .tabs-ready .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--brand-ink);
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .deeper {
+    margin-top: 20px;
+  }
+
+  .back {
+    margin-bottom: 12px;
+  }
+
+  .deeper:hover,
+  .back:hover {
+    text-decoration: underline;
   }
 
   .principle-grid {
@@ -240,7 +511,8 @@ const more = highlights.filter((h) => extras.includes(h.key));
 
   .principle h2,
   .deep h2,
-  .jmap h2 {
+  .jmap h2,
+  .more-panel h2 {
     font-size: clamp(2rem, 4vw, 2.8rem);
   }
 
@@ -285,12 +557,15 @@ const more = highlights.filter((h) => extras.includes(h.key));
   }
 
   .deep {
-    padding-block: clamp(48px, 7vw, 88px);
+    margin-top: clamp(40px, 6vw, 72px);
+    padding-top: clamp(40px, 6vw, 72px);
     border-top: 1px solid var(--line);
   }
 
-  .alt-deep {
-    background: var(--bg-elev);
+  .tabs-ready .deep {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
   }
 
   .steps {
@@ -303,7 +578,7 @@ const more = highlights.filter((h) => extras.includes(h.key));
   }
 
   .steps li {
-    padding: 24px;
+    padding: 20px 22px;
   }
 
   .step {
@@ -320,7 +595,7 @@ const more = highlights.filter((h) => extras.includes(h.key));
 
   .steps h3,
   .engine h3 {
-    margin: 14px 0 6px;
+    margin: 12px 0 6px;
     font-size: 1.0625rem;
     font-weight: 500;
   }
@@ -371,42 +646,40 @@ const more = highlights.filter((h) => extras.includes(h.key));
   }
 
   .details {
-    margin-top: 28px;
-    padding: 20px 22px;
+    max-width: 760px;
+    padding: 24px 26px;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--bg);
   }
 
   .details h3 {
-    margin: 0 0 10px;
-    font-size: 1rem;
+    margin: 0 0 14px;
+    font-size: clamp(1.4rem, 2.4vw, 1.8rem);
     font-weight: 500;
   }
 
   .details ul {
     display: grid;
-    gap: 8px;
+    gap: 12px;
     margin: 0;
     padding: 0;
     list-style: none;
     color: var(--ink-2);
-    font-size: 0.9375rem;
   }
 
   .details li {
     display: flex;
-    gap: 8px;
+    gap: 10px;
   }
 
   .details :global(svg) {
     flex: none;
-    margin-top: 4px;
+    margin-top: 5px;
     color: var(--ok);
   }
 
   .jmap {
-    padding-block: clamp(56px, 8vw, 96px);
     background:
       radial-gradient(700px 360px at 100% 0%, rgb(67 195 205 / 18%), transparent 70%),
       linear-gradient(160deg, var(--navy), var(--navy-2));
@@ -460,73 +733,22 @@ const more = highlights.filter((h) => extras.includes(h.key));
     font-size: 0.9375rem;
   }
 
-  @media (max-width: 960px) {
-    .principle-grid,
-    .jmap-grid {
-      grid-template-columns: 1fr;
-    }
-    .steps {
-      grid-template-columns: 1fr 1fr;
-    }
-    .engines {
-      grid-template-columns: 1fr 1fr;
-    }
-    .engine:nth-child(2) {
-      border-right: 0;
-    }
-    .engine:nth-child(-n + 2) {
-      border-bottom: 1px solid var(--line);
-    }
-  }
-
-  @media (max-width: 560px) {
-    .steps,
-    .engines,
-    .jmap-list {
-      grid-template-columns: 1fr;
-    }
-    .engine {
-      border-right: 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .engine:last-child {
-      border-bottom: 0;
-    }
-  }
-
-  .group {
-    padding-block: clamp(56px, 8vw, 104px);
-    border-top: 1px solid var(--line);
-  }
-
-  .group.alt {
-    background: var(--bg-elev);
-  }
-
   .group-grid {
     display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     align-items: center;
-    gap: clamp(32px, 6vw, 80px);
-  }
-
-  .group-grid.reverse .visual {
-    order: -1;
+    gap: clamp(32px, 5vw, 72px);
   }
 
   .group h2 {
     font-size: clamp(2rem, 4vw, 2.9rem);
   }
 
-  .demo {
-    margin: 24px 0 8px;
-  }
-
   .points {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px 28px;
-    margin: 32px 0 0;
+    margin: 28px 0 0;
     padding: 0;
     list-style: none;
   }
@@ -557,10 +779,15 @@ const more = highlights.filter((h) => extras.includes(h.key));
   .visual {
     display: grid;
     justify-items: center;
+    min-width: 0;
   }
 
   .visual :global(.device) {
     max-width: 320px;
+  }
+
+  .visual :global(.playground) {
+    width: 100%;
   }
 
   .more-grid {
@@ -606,25 +833,129 @@ const more = highlights.filter((h) => extras.includes(h.key));
     flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
-    margin-top: 48px;
+    margin-top: 40px;
+  }
+
+  /* A laptop or desktop: the title, the chips and one whole panel in one
+     screen. The headline goes on one line, and the phone is sized by the
+     height that's left (1170 × 2532 screenshots). */
+  @media (min-width: 961px) {
+    .top {
+      padding-block: clamp(28px, 5vh, 64px) 12px;
+    }
+    h1 {
+      max-width: none;
+      font-size: clamp(2.2rem, 3.4vw, 3.1rem);
+    }
+    .line {
+      display: inline;
+    }
+    .top .lead {
+      max-width: none;
+    }
+    .tabs-ready .points {
+      gap: 16px 24px;
+      margin-top: 20px;
+    }
+    .tabs-ready .panel {
+      padding-block: clamp(24px, 4vh, 48px);
+    }
+    .tabs-ready .group h2,
+    .tabs-ready .principle h2,
+    .tabs-ready .deep h2,
+    .tabs-ready .jmap h2,
+    .tabs-ready .more-panel h2 {
+      font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+    }
+    .visual :global(.device.phone) {
+      width: clamp(200px, calc((100svh - 420px) * 0.462), 320px);
+    }
+  }
+
+  /* A short laptop screen: tighter spacing, so most panels still fit. */
+  @media (min-width: 961px) and (max-height: 820px) {
+    .top {
+      padding-block: 20px 6px;
+    }
+    h1 {
+      font-size: 2.2rem;
+    }
+    .top .lead {
+      font-size: 1.05rem;
+    }
+    .tabs-bar {
+      padding-block: 8px;
+    }
+    .tabs-ready .panel {
+      padding-block: 20px;
+    }
+    .tabs-ready .group h2,
+    .tabs-ready .principle h2,
+    .tabs-ready .deep h2,
+    .tabs-ready .jmap h2,
+    .tabs-ready .more-panel h2 {
+      font-size: 1.75rem;
+    }
+    .tabs-ready .group .lead {
+      font-size: 1.05rem;
+    }
   }
 
   @media (max-width: 960px) {
+    .principle-grid,
+    .jmap-grid,
     .group-grid {
       grid-template-columns: 1fr;
     }
-    .group-grid.reverse .visual {
-      order: 0;
+    .steps {
+      grid-template-columns: 1fr 1fr;
+    }
+    .engines {
+      grid-template-columns: 1fr 1fr;
+    }
+    .engine:nth-child(2) {
+      border-right: 0;
+    }
+    .engine:nth-child(-n + 2) {
+      border-bottom: 1px solid var(--line);
     }
     .more-grid {
       grid-template-columns: repeat(2, 1fr);
     }
+    /* One row of chips that scrolls sideways, edge to edge. */
+    .jump {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin-inline: calc(-1 * var(--gutter));
+      padding-inline: var(--gutter);
+      scroll-padding-inline: var(--gutter);
+      scrollbar-width: none;
+    }
+    .jump::-webkit-scrollbar {
+      display: none;
+    }
+    .jump a {
+      flex: none;
+    }
+    .visual :global(.device.phone) {
+      width: min(72vw, 300px, calc((100svh - 220px) * 0.462));
+    }
   }
 
   @media (max-width: 560px) {
+    .steps,
+    .engines,
+    .jmap-list,
     .points,
     .more-grid {
       grid-template-columns: 1fr;
+    }
+    .engine {
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .engine:last-child {
+      border-bottom: 0;
     }
   }
 </style>
