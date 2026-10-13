@@ -1,4 +1,45 @@
 {
   "version": 1,
-  "entries": []
+  "entries": [
+    {
+      "publishedAt": "2026-10-13T08:27:36.146Z",
+      "id": "2026-10-12-tease-focus",
+      "platform": "bluesky",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-10-12-tease-focus → bluesky: 17h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-13T08:27:36.146Z",
+      "id": "2026-10-12-tease-focus",
+      "platform": "mastodon",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-10-12-tease-focus → mastodon: 17h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-13T08:27:36.147Z",
+      "id": "2026-10-12-tease-focus",
+      "platform": "instagram",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-12-tease-focus → instagram: 17h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-13T08:27:36.147Z",
+      "id": "2026-10-12-tease-focus",
+      "platform": "threads",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-12-tease-focus → threads: 17h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-13T08:27:36.148Z",
+      "id": "2026-10-12-tease-focus",
+      "platform": "linkedin",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-12-tease-focus → linkedin: 17h late (limit 12h); skipped"
+    }
+  ]
 }
