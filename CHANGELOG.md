@@ -10,6 +10,10 @@ creating the heading if it isn't there yet. Say what changed for the person
 using the app, in a line or two; leave out internals, refactors and tests.
 -->
 
+## 2026-10-13
+
+- Loupe can fill the home screen's leftmost page on launchers that let you choose one (Lawnchair, Neo Launcher and other Launcher3 forks): swipe right from the first home screen for a panel of mail. It is a sample panel for now, with fixed cards rather than your own mail, and the Pixel and Samsung launchers keep that page for Google. See [docs/android-minus-one.md](docs/android-minus-one.md).
+
 ## 2026-10-08
 
 - **Loupe speaks your language.** The app is translated into 37 languages, and follows your phone's. Settings › Language picks a different one for Loupe alone; notifications follow it too.

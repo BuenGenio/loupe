@@ -102,6 +102,24 @@
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
+        <!-- Loupe on the home screen's leftmost "minus one" page (docs/android-minus-one.md).
+             A launcher with a minus-one page binds a service answering this action in the app the
+             user picked as its feed provider, and talks to it over Google's private
+             ILauncherOverlay (src/main/aidl/). Exported because the launcher is another app; the
+             service serves the current home app only (MinusOneOverlayService.isHomeApp).
+             The data scheme is how launchers find providers: they query the action with an
+             app://<their package> URI. service.api.version 7 asks for windowAttached2. -->
+        <service
+            android:name=".minusone.MinusOneOverlayService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.launcher3.WINDOW_OVERLAY" />
+                <data android:scheme="app" />
+            </intent-filter>
+            <meta-data
+                android:name="service.api.version"
+                android:value="7" />
+        </service>
         <!-- The status bar icon of the Instant Delivery notification. -->
         <meta-data
             android:name="io.github.buengenio.loupe.NOTIFICATION_ICON"
@@ -137,6 +155,13 @@
         <intent>
             <action android:name="android.intent.action.VIEW"/>
             <data android:scheme="geo"/>
+        </intent>
+        <!-- The home app, so the minus-one service can tell whether the launcher calling it is the
+             one the user chose (MinusOneOverlayService.isHomeApp). app_badge_plus happens to merge
+             the same query; this one doesn't depend on that. -->
+        <intent>
+            <action android:name="android.intent.action.MAIN"/>
+            <category android:name="android.intent.category.HOME"/>
         </intent>
     </queries>
 </manifest>
