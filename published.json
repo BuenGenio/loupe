@@ -72,6 +72,46 @@
       "mode": "postiz",
       "status": "skipped",
       "note": "2026-10-14-tease-search → threads: 15h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-17T05:00:15.132Z",
+      "id": "2026-10-16-tease-cloud",
+      "platform": "bluesky",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-10-16-tease-cloud → bluesky: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-17T05:00:15.133Z",
+      "id": "2026-10-16-tease-cloud",
+      "platform": "instagram",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-16-tease-cloud → instagram: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-17T05:00:15.133Z",
+      "id": "2026-10-16-tease-cloud",
+      "platform": "mastodon",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-10-16-tease-cloud → mastodon: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-17T05:00:15.133Z",
+      "id": "2026-10-16-tease-cloud",
+      "platform": "threads",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-16-tease-cloud → threads: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-17T05:00:15.134Z",
+      "id": "2026-10-16-tease-cloud",
+      "platform": "linkedin",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-16-tease-cloud → linkedin: 14h late (limit 12h); skipped"
     }
   ]
 }
