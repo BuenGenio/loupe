@@ -194,6 +194,16 @@
       "mode": "postiz",
       "status": "skipped",
       "note": "2026-10-20-launch-carousel → linkedin: 17h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-21T16:08:15.001Z",
+      "id": "2026-10-21-reddit-fossdroid",
+      "platform": "reddit",
+      "mode": "assist",
+      "status": "assist",
+      "url": "https://github.com/BuenGenio/loupe/issues/55",
+      "remoteId": "55",
+      "note": "assist issue opened"
     }
   ]
 }
