@@ -154,6 +154,46 @@
       "url": "https://github.com/BuenGenio/loupe/issues/54",
       "remoteId": "54",
       "note": "assist issue opened"
+    },
+    {
+      "publishedAt": "2026-10-21T06:01:26.816Z",
+      "id": "2026-10-20-launch",
+      "platform": "bluesky",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-10-20-launch → bluesky: 17h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-21T06:01:26.817Z",
+      "id": "2026-10-20-launch-carousel",
+      "platform": "instagram",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-20-launch-carousel → instagram: 17h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-21T06:01:26.817Z",
+      "id": "2026-10-20-launch-carousel",
+      "platform": "threads",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-20-launch-carousel → threads: 17h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-21T06:01:26.817Z",
+      "id": "2026-10-20-launch",
+      "platform": "mastodon",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-10-20-launch → mastodon: 17h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-21T06:01:26.818Z",
+      "id": "2026-10-20-launch-carousel",
+      "platform": "linkedin",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-20-launch-carousel → linkedin: 17h late (limit 12h); skipped"
     }
   ]
 }
