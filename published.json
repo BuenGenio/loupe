@@ -236,6 +236,16 @@
       "mode": "postiz",
       "status": "skipped",
       "note": "2026-10-21-readable → instagram: 17h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-22T17:58:27.958Z",
+      "id": "2026-10-22-reddit-flutterdev",
+      "platform": "reddit",
+      "mode": "assist",
+      "status": "assist",
+      "url": "https://github.com/BuenGenio/loupe/issues/56",
+      "remoteId": "56",
+      "note": "assist issue opened"
     }
   ]
 }
