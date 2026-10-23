@@ -278,6 +278,16 @@
       "mode": "postiz",
       "status": "skipped",
       "note": "2026-10-22-your-server → threads: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-23T19:12:18.603Z",
+      "id": "2026-10-23-reddit-selfhosted",
+      "platform": "reddit",
+      "mode": "assist",
+      "status": "assist",
+      "url": "https://github.com/BuenGenio/loupe/issues/57",
+      "remoteId": "57",
+      "note": "assist issue opened"
     }
   ]
 }
