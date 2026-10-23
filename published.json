@@ -246,6 +246,38 @@
       "url": "https://github.com/BuenGenio/loupe/issues/56",
       "remoteId": "56",
       "note": "assist issue opened"
+    },
+    {
+      "publishedAt": "2026-10-23T04:47:18.647Z",
+      "id": "2026-10-22-your-server",
+      "platform": "bluesky",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-10-22-your-server → bluesky: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-23T04:47:18.648Z",
+      "id": "2026-10-22-your-server",
+      "platform": "instagram",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-22-your-server → instagram: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-23T04:47:18.648Z",
+      "id": "2026-10-22-your-server",
+      "platform": "mastodon",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-10-22-your-server → mastodon: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-23T04:47:18.648Z",
+      "id": "2026-10-22-your-server",
+      "platform": "threads",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-22-your-server → threads: 14h late (limit 12h); skipped"
     }
   ]
 }
