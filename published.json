@@ -288,6 +288,46 @@
       "url": "https://github.com/BuenGenio/loupe/issues/57",
       "remoteId": "57",
       "note": "assist issue opened"
+    },
+    {
+      "publishedAt": "2026-10-24T05:02:31.444Z",
+      "id": "2026-10-23-numbers",
+      "platform": "bluesky",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-10-23-numbers → bluesky: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-24T05:02:31.444Z",
+      "id": "2026-10-23-numbers",
+      "platform": "mastodon",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-10-23-numbers → mastodon: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-24T05:02:31.445Z",
+      "id": "2026-10-23-numbers",
+      "platform": "instagram",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-23-numbers → instagram: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-24T05:02:31.445Z",
+      "id": "2026-10-23-numbers",
+      "platform": "linkedin",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-23-numbers → linkedin: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-24T05:02:31.445Z",
+      "id": "2026-10-23-numbers",
+      "platform": "threads",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-23-numbers → threads: 14h late (limit 12h); skipped"
     }
   ]
 }
