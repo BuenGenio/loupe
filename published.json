@@ -328,6 +328,38 @@
       "mode": "postiz",
       "status": "skipped",
       "note": "2026-10-23-numbers → threads: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-25T05:19:29.952Z",
+      "id": "2026-10-24-thanks",
+      "platform": "bluesky",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-10-24-thanks → bluesky: 13h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-25T05:19:29.953Z",
+      "id": "2026-10-24-thanks",
+      "platform": "mastodon",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-10-24-thanks → mastodon: 13h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-25T05:19:29.954Z",
+      "id": "2026-10-24-thanks",
+      "platform": "instagram",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-24-thanks → instagram: 13h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-25T05:19:29.954Z",
+      "id": "2026-10-24-thanks",
+      "platform": "threads",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-24-thanks → threads: 13h late (limit 12h); skipped"
     }
   ]
 }
