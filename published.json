@@ -392,6 +392,16 @@
       "mode": "postiz",
       "status": "skipped",
       "note": "2026-10-27-no-cloud → threads: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-28T16:00:13.562Z",
+      "id": "2026-10-28-reddit-fastmail",
+      "platform": "reddit",
+      "mode": "assist",
+      "status": "assist",
+      "url": "https://github.com/BuenGenio/loupe/issues/58",
+      "remoteId": "58",
+      "note": "assist issue opened"
     }
   ]
 }
