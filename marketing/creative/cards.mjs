@@ -16,8 +16,8 @@ import sharp from 'sharp';
 const here = dirname(fileURLToPath(import.meta.url));
 const repo = resolve(here, '../..');
 const media = resolve(here, '../media');
-const shots = join(repo, 'site/src/assets/screenshots');
-const tilePath = join(repo, 'site/src/assets/brand/icon-tile.png');
+const shots = join(repo, 'site/v2/src/assets/screenshots');
+const tilePath = join(repo, 'site/v2/src/assets/brand/icon-tile.png');
 const require = createRequire(import.meta.url);
 
 const W = 1080;

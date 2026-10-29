@@ -1,0 +1,5 @@
+Contact: mailto:security@loupe.mx
+Expires: 2027-10-08T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://loupe.mx/.well-known/security.txt
+Policy: https://loupe.mx/development/#contrib-title
