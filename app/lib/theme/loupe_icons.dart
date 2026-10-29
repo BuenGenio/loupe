@@ -75,6 +75,7 @@ abstract final class LoupeIcons {
   static const IconData attachment = FluentIcons.attach_24_regular;
   static const IconData headers = FluentIcons.text_description_24_regular;
   static const IconData source = FluentIcons.code_24_regular;
+  static const IconData compare = FluentIcons.arrow_swap_24_regular;
   static const IconData searchSender = FluentIcons.person_search_24_regular;
 
   // Send Later and the Outbox ------------------------------------------------

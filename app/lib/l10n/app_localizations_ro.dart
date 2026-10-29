@@ -154,6 +154,51 @@ class AppLocalizationsRo extends AppLocalizations {
   String get mailboxTrash => 'Coș de gunoi';
 
   @override
+  String get conversationCompareMessages => 'Compară mesajele…';
+
+  @override
+  String get conversationChangesTitle => 'Modificări';
+
+  @override
+  String get conversationChangesFrom => 'Mesaj inițial';
+
+  @override
+  String get conversationChangesTo => 'Mesaj final';
+
+  @override
+  String get conversationChangesText => 'Textul mesajului';
+
+  @override
+  String get conversationChangesAdded => 'Adăugat';
+
+  @override
+  String get conversationChangesRemoved => 'Eliminat';
+
+  @override
+  String get conversationChangesNoText => 'Nu există modificări ale textului.';
+
+  @override
+  String get conversationChangesAttachments => 'Atașamente';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Se compară numele, tipurile și dimensiunile atașamentelor. Conținutul fișierelor nu este verificat.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Detalii identice';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Se compară întregul text al mesajului, inclusiv citatele și semnăturile.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Acest mesaj este prea mare pentru o comparație detaliată. O parte din text poate fi omisă sau afișată ca un bloc întreg.';
+
+  @override
+  String get conversationChangesLoadError => 'Aceste mesaje nu au putut fi comparate.';
+
+  @override
   String get conversationSomethingWentWrong => 'Ceva nu a mers bine. Încearcă din nou.';
 
   @override

@@ -249,19 +249,26 @@ class _MessageCardState extends State<MessageCard> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 2, left: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  formatListDate(_m.receivedAt),
-                  style: theme.textTheme.bodySmall?.copyWith(color: colors.secondaryText),
-                ),
-                if (_m.isFlagged)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Icon(LoupeIcons.flaggedFilled, size: 16, color: colors.flag),
+            // Older dates are wider than today's time. Keep them from taking
+            // the sender's entire column on a narrow phone with large text.
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 96),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    formatListDate(_m.receivedAt),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall?.copyWith(color: colors.secondaryText),
                   ),
-              ],
+                  if (_m.isFlagged)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Icon(LoupeIcons.flaggedFilled, size: 16, color: colors.flag),
+                    ),
+                ],
+              ),
             ),
           ),
           IconButton(

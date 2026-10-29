@@ -154,6 +154,50 @@ class AppLocalizationsBs extends AppLocalizations {
   String get mailboxTrash => 'Smeće';
 
   @override
+  String get conversationCompareMessages => 'Uporedi poruke…';
+
+  @override
+  String get conversationChangesTitle => 'Promjene';
+
+  @override
+  String get conversationChangesFrom => 'Polazna poruka';
+
+  @override
+  String get conversationChangesTo => 'Odredišna poruka';
+
+  @override
+  String get conversationChangesText => 'Tekst poruke';
+
+  @override
+  String get conversationChangesAdded => 'Dodano';
+
+  @override
+  String get conversationChangesRemoved => 'Uklonjeno';
+
+  @override
+  String get conversationChangesNoText => 'Nema promjena u tekstu.';
+
+  @override
+  String get conversationChangesAttachments => 'Prilozi';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Upoređuju se nazivi, vrste i veličine priloga. Sadržaj datoteka se ne provjerava.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Podudarni podaci';
+
+  @override
+  String get conversationChangesFullTextNote => 'Upoređuje se cijeli tekst poruke, uključujući citate i potpise.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Ova poruka je prevelika za detaljno poređenje. Dio teksta može biti izostavljen ili prikazan kao cijeli blok.';
+
+  @override
+  String get conversationChangesLoadError => 'Ove poruke nije bilo moguće uporediti.';
+
+  @override
   String get conversationSomethingWentWrong => 'Došlo je do greške. Pokušajte ponovo.';
 
   @override

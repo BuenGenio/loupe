@@ -148,6 +148,50 @@ class AppLocalizationsEt extends AppLocalizations {
   String get mailboxTrash => 'Prügikast';
 
   @override
+  String get conversationCompareMessages => 'Võrdle kirju…';
+
+  @override
+  String get conversationChangesTitle => 'Muudatused';
+
+  @override
+  String get conversationChangesFrom => 'Lähtekiri';
+
+  @override
+  String get conversationChangesTo => 'Sihtkiri';
+
+  @override
+  String get conversationChangesText => 'Kirja tekst';
+
+  @override
+  String get conversationChangesAdded => 'Lisatud';
+
+  @override
+  String get conversationChangesRemoved => 'Eemaldatud';
+
+  @override
+  String get conversationChangesNoText => 'Tekstis pole muudatusi.';
+
+  @override
+  String get conversationChangesAttachments => 'Manused';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Võrreldakse manuste nimesid, tüüpe ja suurusi. Failide sisu ei kontrollita.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Kattuvad andmed';
+
+  @override
+  String get conversationChangesFullTextNote => 'Võrreldakse kirja kogu teksti, sealhulgas tsitaate ja allkirju.';
+
+  @override
+  String get conversationChangesLimited =>
+      'See kiri on üksikasjalikuks võrdlemiseks liiga suur. Osa tekstist võidakse välja jätta või kuvada terve plokina.';
+
+  @override
+  String get conversationChangesLoadError => 'Neid kirju ei saanud võrrelda.';
+
+  @override
   String get conversationSomethingWentWrong => 'Midagi läks valesti. Proovi uuesti.';
 
   @override

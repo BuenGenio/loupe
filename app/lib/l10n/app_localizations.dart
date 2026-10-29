@@ -435,6 +435,90 @@ abstract class AppLocalizations {
   /// **'Trash'**
   String get mailboxTrash;
 
+  /// Message menu action opening a screen to compare the text and attachment details of two messages in the conversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Messages…'**
+  String get conversationCompareMessages;
+
+  /// No description provided for @conversationChangesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes'**
+  String get conversationChangesTitle;
+
+  /// Label for the baseline message in a comparison, not the sender address.
+  ///
+  /// In en, this message translates to:
+  /// **'From Message'**
+  String get conversationChangesFrom;
+
+  /// Label for the target message in a comparison, not the recipient address.
+  ///
+  /// In en, this message translates to:
+  /// **'To Message'**
+  String get conversationChangesTo;
+
+  /// No description provided for @conversationChangesText.
+  ///
+  /// In en, this message translates to:
+  /// **'Message Text'**
+  String get conversationChangesText;
+
+  /// Heading or badge for text or attachments present in the target message but absent from the baseline message.
+  ///
+  /// In en, this message translates to:
+  /// **'Added'**
+  String get conversationChangesAdded;
+
+  /// Heading or badge for text or attachments present in the baseline message but absent from the target message.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed'**
+  String get conversationChangesRemoved;
+
+  /// No description provided for @conversationChangesNoText.
+  ///
+  /// In en, this message translates to:
+  /// **'No text changes.'**
+  String get conversationChangesNoText;
+
+  /// No description provided for @conversationChangesAttachments.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachments'**
+  String get conversationChangesAttachments;
+
+  /// No description provided for @conversationChangesAttachmentNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachment names, types and sizes are compared. File contents are not checked.'**
+  String get conversationChangesAttachmentNote;
+
+  /// Heading for attachments whose filename, MIME type and size match. This does not mean the file contents were checked or verified to be identical.
+  ///
+  /// In en, this message translates to:
+  /// **'Matching Details'**
+  String get conversationChangesSameMetadata;
+
+  /// No description provided for @conversationChangesFullTextNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Full message text is compared, including quotes and signatures.'**
+  String get conversationChangesFullTextNote;
+
+  /// No description provided for @conversationChangesLimited.
+  ///
+  /// In en, this message translates to:
+  /// **'This message is too large for a detailed comparison. Some text may be omitted or shown as a whole block.'**
+  String get conversationChangesLimited;
+
+  /// No description provided for @conversationChangesLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'These messages couldn’t be compared.'**
+  String get conversationChangesLoadError;
+
   /// Snack bar when an action on a message (flag, mark as read, tags) failed for an unknown reason.
   ///
   /// In en, this message translates to:

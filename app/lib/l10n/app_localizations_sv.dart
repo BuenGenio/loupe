@@ -148,6 +148,50 @@ class AppLocalizationsSv extends AppLocalizations {
   String get mailboxTrash => 'Papperskorg';
 
   @override
+  String get conversationCompareMessages => 'Jämför meddelanden…';
+
+  @override
+  String get conversationChangesTitle => 'Ändringar';
+
+  @override
+  String get conversationChangesFrom => 'Utgångsmeddelande';
+
+  @override
+  String get conversationChangesTo => 'Målmeddelande';
+
+  @override
+  String get conversationChangesText => 'Meddelandetext';
+
+  @override
+  String get conversationChangesAdded => 'Tillagt';
+
+  @override
+  String get conversationChangesRemoved => 'Borttaget';
+
+  @override
+  String get conversationChangesNoText => 'Inga textändringar.';
+
+  @override
+  String get conversationChangesAttachments => 'Bilagor';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Bilagornas namn, typer och storlekar jämförs. Filernas innehåll kontrolleras inte.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Matchande uppgifter';
+
+  @override
+  String get conversationChangesFullTextNote => 'Hela meddelandetexten jämförs, inklusive citat och signaturer.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Det här meddelandet är för stort för en detaljerad jämförelse. Viss text kan utelämnas eller visas som ett helt block.';
+
+  @override
+  String get conversationChangesLoadError => 'Dessa meddelanden kunde inte jämföras.';
+
+  @override
   String get conversationSomethingWentWrong => 'Något gick fel. Försök igen.';
 
   @override
