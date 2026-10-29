@@ -13,9 +13,9 @@ Help someone understand what mail requires, see what changed, and keep track unt
 - **Brief** translates a message into supported facts and next steps, with source links and preserved conditions.
 - **Plain-English search and rules** produce visible, editable deterministic expressions and rule proposals.
 - **Documents** gain searchable contents, page-linked fact cards, version comparison and reply-readiness checks.
-- **Case files** collect related conversations, documents and actions, with manual membership and corrections first.
+- **Matters** collect related conversations, documents and actions, with manual membership and corrections first.
 - **On this phone / My server / Cloud** are explicit processing choices per account and feature. There is no silent local-to-cloud fallback or Loupe inference proxy.
-- **AI is optional.** Stopping inference or removing models preserves ordinary mail and independently managed actions/cases. Model output proposes data; the existing app controls execution.
+- **AI is optional.** Stopping inference or removing models preserves ordinary mail and independently managed actions/matters. Model output proposes data; the existing app controls execution.
 
 Source plans remain as historical inputs. This combined document resolves their differences: durable actions take precedence over a single Waiting Smart Mailbox or reply-clears-all heuristic; supported provider/capability checks take precedence over assumed universal Nano support; optional status projections do not imply universal sync or native support in other clients.
 
@@ -166,17 +166,17 @@ The check must inspect actual selected files when it makes a document-content cl
 
 Start with ordinary attachment reminders and user-selected request lists. Add extraction-driven suggestions after Brief and action records pass evaluation. Sending remains the user's decision; this feature neither blocks sending on a model guess nor attaches or emails private documents automatically.
 
-## 8. Living case files
+## 8. Matters
 
-A case groups related conversations, documents, requests and updates even when their subjects and senders differ. Examples include a mortgage application, an insurance claim or arranging repairs.
+A matter groups related conversations, documents, requests and updates even when their subjects and senders differ. Examples include a mortgage application, an insurance claim or arranging repairs.
 
-The case screen shows the latest supported position, open actions, what is waiting on another person, relevant documents and a chronological history. Users can create, rename, merge and split cases and correct membership. Suggested grouping must be reversible; sharing a sender or subject is not sufficient evidence that two cases are the same.
+The matter screen shows the latest supported position, open actions, what is waiting on another person, relevant documents and a chronological history. Users can create, rename, merge and split matters and correct membership. Suggested grouping must be reversible; sharing a sender or subject is not sufficient evidence that two matters are the same.
 
-Start with manual case membership and suggested candidates. Add model-assisted grouping only after identity, evidence and corrections work. Case state is separate from the physical mail folder, so filing a message does not remove it from the case.
+Start with manual matter membership and suggested candidates. Add model-assisted grouping only after identity, evidence and corrections work. Matter state is separate from the physical mail folder, so filing a message does not remove it from the matter.
 
-Use a tag and a saved Smart Mailbox as optional projections of explicit case membership, so existing mail tools remain useful. Dedicated case records hold the case identity, corrections, relationships and history. Do not define a case only as everyone who shares a sender or domain: one broker can handle several applications.
+Use a tag and a saved Smart Mailbox as optional projections of explicit matter membership, so existing mail tools remain useful. Dedicated matter records hold the matter identity, corrections, relationships and history. Do not define a matter only as everyone who shares a sender or domain: one broker can handle several applications.
 
-Cheap sender/subject matching can suggest candidate cases before invoking a model. Regenerate the short supported status only when relevant source messages, facts, membership or manual state change. “Matter” is an alternative product name; choose one label before localising the feature.
+Cheap sender/subject matching can suggest candidate matters before invoking a model. Regenerate the short supported status only when relevant source messages, facts, membership or manual state change. The product name is “Matter” (decided 2026-10-29); “case file” was the alternative.
 
 ## Shared architecture
 
@@ -194,7 +194,7 @@ A task carries a stable task type, bounded input, prompt/schema versions, output
 
 ### Evidence and identity
 
-Introduce plain contracts in `mail_model` for Brief facts, evidence references, obligations, case membership, comparison checkpoints and provider capabilities. Keep inference and extraction implementations behind interfaces so the app and demo repository can exercise them without loading a model.
+Introduce plain contracts in `mail_model` for Brief facts, evidence references, obligations, matter membership, comparison checkpoints and provider capabilities. Keep inference and extraction implementations behind interfaces so the app and demo repository can exercise them without loading a model.
 
 Evidence needs the account, logical message identity, current local location, body/attachment content hash, normalisation version and passage/page location. Preserve enough context to relocate a passage; normalised text offsets alone are fragile after parser changes.
 
@@ -206,7 +206,7 @@ Extraction runs should record input hashes, prompt/schema/model versions, provid
 
 - Briefs, extracted text, embeddings, document thumbnails and inference caches are sensitive derived mail data. Keep them device-local by default, under the existing protected storage design, with bounded retention and a clear delete/rebuild action.
 - Do not put extracted content or model output into the Smart Mailbox settings document.
-- Add separate versioned tables/documents for action and case state. If state sync is offered later, make it opt-in and minimise it to identities, manual states, timestamps and required conflict-resolution data.
+- Add separate versioned tables/documents for action and matter state. If state sync is offered later, make it opt-in and minimise it to identities, manual states, timestamps and required conflict-resolution data.
 - Inspect what that minimal state reveals before choosing a mail-server document format; titles and task descriptions can themselves expose sensitive content.
 - Existing server settings documents have provider limits. Gmail is unsupported by the current document mechanism; keep state local unless a separate supported route is designed. See [Smart Mailboxes format](../smart-mailboxes-format.md).
 - Reconcile edits deterministically, preserve manual completion/dismissal, and retain deletion tombstones long enough to prevent ordinary offline devices restoring removed items.
@@ -232,11 +232,11 @@ Keep these controls in Settings, with a small provider/result indicator where it
 
 | Control | Behaviour |
 |---|---|
-| Global AI switch | Stop new model calls and cancel queued inference. Ordinary mail, literal Changes and manual task/case work remain usable. |
+| Global AI switch | Stop new model calls and cancel queued inference. Ordinary mail, literal Changes and manual task/matter work remain usable. |
 | Account and feature policy | Select permitted providers, local-only restrictions, attachment scope, automatic-processing consent and any explicit fallback policy. Stronger account restrictions always win. |
 | Model management | Show model/version, download size, storage use, readiness and device-test result; allow download, replacement and removal of Loupe-owned models. Shared system-managed models remain under OS control. |
 | Usage and estimated cost | Show requests, reported input/output tokens and estimated spending by provider/model and period. Identify unavailable usage and the pricing date/source; estimates are not a provider billing statement. |
-| Delete derived results | Clear selected briefs, facts, embeddings and inference caches without deleting original mail or manually managed obligations/cases. Explain what can be rebuilt. |
+| Delete derived results | Clear selected briefs, facts, embeddings and inference caches without deleting original mail or manually managed obligations/matters. Explain what can be rebuilt. |
 | Provider removal | Revoke credentials, cancel pending requests and offer removal of provider-derived local results. Never silently select another network provider. |
 
 Disabling AI and deleting downloaded models are separate operations. Clear pending task inputs when cancellation/account policy requires it. Retain user decisions independently of generated prose, so clearing a cache cannot undo a completed task. Removing an account removes its associated derived data and durable account state.
@@ -295,9 +295,9 @@ Use dependency and quality gates to set scope. The earlier draft's week estimate
 | F: rule helper | Typed proposal, normal editor, capability checks and dry run | Preview matches execution; unsupported notification/invoice semantics remain unresolved; no raw generated Sieve |
 | G: semantic Changes | Source-backed fact differences, explicit review checkpoints | No false cancellations; conflicts visible; read/unread flags do not move the checkpoint |
 | H: documents and reply readiness | Bounded text extraction/search, document fact cards, content/version comparison and draft checks; OCR afterward | Page evidence, partial-index coverage, wrong-year/unknown-file handling and extraction limits |
-| I: case files and optional state sync | Manual grouping, later suggestions, minimal versioned sync | Correctable membership, account isolation, conflict recovery and disclosed provider limitations |
+| I: matters and optional state sync | Manual grouping, later suggestions, minimal versioned sync | Correctable membership, account isolation, conflict recovery and disclosed provider limitations |
 
-B is the immediate foundation. C is a small early consumer of it and can proceed alongside D's evidence/UI work. Manual action storage and virtual-folder work can begin before automatic extraction, while model-generated updates depend on the earlier quality gates. F can progress once typed proposals and previews work. Attachment comparison within Changes depends on H's extraction; case grouping can start manually before automatic suggestions and optional sync.
+B is the immediate foundation. C is a small early consumer of it and can proceed alongside D's evidence/UI work. Manual action storage and virtual-folder work can begin before automatic extraction, while model-generated updates depend on the earlier quality gates. F can progress once typed proposals and previews work. Attachment comparison within Changes depends on H's extraction; matter grouping can start manually before automatic suggestions and optional sync.
 
 A is the implemented first slice; all other milestones remain planned. Neither passing literal-diff tests nor returning schema-valid model output establishes that the full roadmap or a shipping AI model is ready.
 
@@ -318,7 +318,7 @@ Use synthetic mail, people, domains, attachments and sign-in secrets. Never comm
 | “Thanks” after documents sent | Keep sent/acknowledged/done distinctions; completion needs evidence or manual action |
 | Revised date/fee and contradictory participants | Show both supporting passages and uncertainty, including chronology and conditions |
 | Same attachment name and size, different bytes | Metadata comparison does not claim identical contents; byte comparison detects change once available |
-| Move, duplicate Message-ID, multi-label copies, UIDVALIDITY reset | Actions/cases/checkpoints retain the correct logical source without attaching to an unrelated message |
+| Move, duplicate Message-ID, multi-label copies, UIDVALIDITY reset | Actions/matters/checkpoints retain the correct logical source without attaching to an unrelated message |
 | Mark unread after reviewing / automatic mark read | Review checkpoint does not move as a side effect of either flag change |
 | Rule requesting invoice-only alerts | Unsupported notification action and semantic predicate are surfaced; no substitute action silently saved |
 | Unsupported rule fields, invalid folder, unknown action | Reject before preview/save; deterministic validation remains the authority |
@@ -331,7 +331,7 @@ Use synthetic mail, people, domains, attachments and sign-in secrets. Never comm
 | Saved “last seven days” search | Preserve rolling semantics through supported relative operators; distinguish it from a fixed date range |
 | Invalid translation or unsupported server rule | Offer explicit alternatives; do not silently execute full-text search or a device rule |
 | Invoice with several totals/currencies and mortgage with fee/payment figures | Select the correct field and qualifier or mark unknown; a matching quotation alone cannot pass |
-| Global off, model removal, cache deletion and provider revocation | Stop permitted work as configured; preserve independent manual task/case decisions |
+| Global off, model removal, cache deletion and provider revocation | Stop permitted work as configured; preserve independent manual task/matter decisions |
 | Missing token usage or outdated pricing | Show unknown/estimated cost with provenance; never display missing usage as zero |
 | Checklist reminder or calendar shortcut | Keep action-specific timing; preview event details; no implicit appointment or blanket message snooze |
 
@@ -347,8 +347,8 @@ Measure cold and warm performance on the actual S23 Ultra and at least one const
 | Provider breadth and maintenance | Select a small tested adapter set first. Resolve actual cloud model/version defaults from the same evaluation corpus; record endpoint capabilities and licences. |
 | PDF/OCR dependencies | Choose bounded text extraction with a compatible licence; assess page mapping, encrypted PDFs, OCR accuracy and native binary cost before expanding supported formats. |
 | Notification rules | Define a genuine notification-policy action and interaction with account muting, VIP settings and OS permissions before offering “quiet except invoices”. |
-| Action/case sync | Finalise the logical source identity, versioned minimal state, merge/tombstone rules and a supported Gmail route before promising cross-device restoration. |
-| Optional keyword projections | Publish a convention only after checking interoperability and collisions. Explain that ordinary mail clients may see tags/keywords without understanding Loupe task or case records. |
+| Action/matter sync | Finalise the logical source identity, versioned minimal state, merge/tombstone rules and a supported Gmail route before promising cross-device restoration. |
+| Optional keyword projections | Publish a convention only after checking interoperability and collisions. Explain that ordinary mail clients may see tags/keywords without understanding Loupe task or matter records. |
 | Battery, storage and OS restrictions | Set bounded jobs, concurrency, cancellation and cache/model-retention policies from measurement. Charging is an additional preference, not permission to bypass runtime restrictions. |
 | Usage estimates | Decide how provider usage and pricing metadata are updated and displayed. Add budget controls only with clear behaviour when usage is unavailable or approximate. |
 | Release disclosures | Update privacy policy and store listings for each data-processing route, encrypted-mail policy and provider retention links before the relevant feature ships. |
