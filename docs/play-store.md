@@ -31,5 +31,5 @@ What is ready in the repository, and the steps in Play Console that only the own
    - The camera (QR import) and notifications are ordinary runtime permissions; App Lock's biometric prompt needs no declaration.
 8. **Testing tracks:** internal testing (up to 100 people, no review) → closed testing (the 12-tester, 14-day rule for personal accounts) → open testing or production.
 9. **After it's listed:**
-   - Put the Play URL in `site/src/config.ts` → `stores.googlePlay`: the website's badge turns from "Coming soon" into a link.
+   - Put the Play URL in `site/v1/src/config.ts` → `stores.googlePlay`: the website's badge turns from "Coming soon" into a link.
    - For **Sign in with Google** (#2), add the **app signing** certificate's SHA-1 (Play Console › Test and release › App integrity) to the Android OAuth client, next to the upload key's.

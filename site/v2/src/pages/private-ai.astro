@@ -1,0 +1,666 @@
+---
+// Private AI: the planned features (docs/plan/PLAN-combined.md). English only,
+// and labelled "Coming soon" throughout: none of it has shipped.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import AiDemo from '../components/AiDemo.astro';
+import { aiFeatures, demo, intro, principles, soonLabel } from '../lib/private-ai';
+
+const faq = [
+  {
+    q: 'Is this in the app today?',
+    a: 'No. These features are planned and being designed in the open. The Nightly builds don’t include them yet; this page will say so when they do.',
+  },
+  {
+    q: 'Does my mail go to Loupe?',
+    a: 'Never. There’s no Loupe server. On this phone, nothing leaves it. With your own server or a cloud provider, your phone talks straight to it, only for the accounts and features you turned on, and Loupe shows what a request will include. If one fails, Loupe never quietly tries another.',
+  },
+  {
+    q: 'Which phones can run it on-device?',
+    a: 'We’re measuring that now, on real phones: speed, memory, battery and accuracy. Loupe will include a Test this phone check and recommend a model from the results. On iPhone, Apple’s on-device model where it’s available. Elsewhere, your own server or a cloud provider works.',
+  },
+  {
+    q: 'What about encrypted mail?',
+    a: 'Encrypted OpenPGP and S/MIME mail stays on your phone by default. Sending it to a server needs its own setting for that account.',
+  },
+  {
+    q: 'Can an email trick the AI into doing something?',
+    a: 'The models only return data, such as a list or an expression. They can’t move, send or delete anything; you confirm every change, and every result links back to its source.',
+  },
+];
+---
+
+<Base
+  title="Private AI"
+  description="Coming to Loupe: AI that turns mail into to-dos, plain English into searches and rules, and PDFs into key facts, on your phone, your server or a cloud you choose."
+>
+  <section class="ai-hero night">
+    <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="gridlines" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="head">
+        <span class="soon">{soonLabel}</span>
+        <h1>Private AI. <span class="grad-text">Your mail never leaves.</span></h1>
+        <p class="lead">{intro.lead}</p>
+      </div>
+      <AiDemo />
+    </div>
+  </section>
+
+  <section class="section-tight principles" aria-labelledby="principles-title">
+    <div class="wrap">
+      <h2 id="principles-title" class="visually-hidden">How it stays private</h2>
+      <ul class="principle-grid">
+        {
+          principles.map((p) => (
+            <li class="card spot">
+              <div class="icon-tile lit"><Icon name={p.icon} /></div>
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section flow-section" aria-labelledby="flow-title">
+    <div class="wrap flow-grid">
+      <div>
+        <p class="eyebrow">Where your mail goes</p>
+        <h2 id="flow-title">Two paths. Neither goes through us.</h2>
+        <p class="lead">On this phone is the default. Your own server or a cloud provider is used only after you choose it, account by account and feature by feature. Loupe always tells you which model answered.</p>
+      </div>
+      <div class="flow card" role="img" aria-label="Your phone talks to your mail server and, if you choose, to your own AI provider. There is no Loupe server in between.">
+        <div class="node phone-node"><Icon name="phone" size={28} /><strong>Your phone</strong><span>On-device model</span></div>
+        <div class="links">
+          <div class="link"><span>IMAP · JMAP</span><div class="node"><Icon name="server" size={22} /><strong>Your mail server</strong></div></div>
+          <div class="link opt"><span>Only if you choose</span><div class="node"><Icon name="key" size={22} /><strong>Your server or cloud</strong></div></div>
+          <div class="link none"><span>Never</span><div class="node"><Icon name="cloud-off" size={22} /><strong>Loupe cloud</strong><em>doesn’t exist</em></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {
+    aiFeatures.map((f, i) => (
+      <section class={`feature-row ${i % 2 ? 'alt' : ''}`} id={f.key} aria-labelledby={`${f.key}-title`}>
+        <div class="wrap row-grid">
+          <div class="copy reveal">
+            <div class="row-head">
+              <div class="icon-tile lit"><Icon name={f.icon} /></div>
+              <span class="soon">{soonLabel}</span>
+            </div>
+            <h2 id={`${f.key}-title`}>{f.title}</h2>
+            <p class="lead">{f.text}</p>
+            <ul class="ticks">
+              {f.points.map((point) => (
+                <li><Icon name="checkmark" size={18} /> {point}</li>
+              ))}
+            </ul>
+          </div>
+          <div class="mock reveal" aria-hidden="true">
+            {f.key === 'todo' && (
+              <div class="mock-card">
+                <p class="mock-title"><Icon name="sparkle" size={16} /> Brief</p>
+                {demo.todos.slice(0, 3).map((todo, j) => (
+                  <p class={`mock-item ${j === 0 ? 'done' : ''}`}><span class="box" />{todo.text}</p>
+                ))}
+              </div>
+            )}
+            {f.key === 'search' && (
+              <div class="mock-card">
+                <p class="mock-q"><Icon name="search" size={18} /> {demo.query}</p>
+                <code class="mock-code">{demo.expression}</code>
+              </div>
+            )}
+            {f.key === 'rules' && (
+              <div class="mock-card">
+                <p class="mock-q"><Icon name="flow" size={18} /> {demo.rule}</p>
+                <pre class="mock-code">{demo.sieve.join('\n')}</pre>
+              </div>
+            )}
+            {f.key === 'waiting' && (
+              <div class="mock-card">
+                <p class="mock-title"><Icon name="send-clock" size={16} /> Waiting on others</p>
+                <p class="mock-item"><strong>Northgate Solicitors</strong><span>No reply in 5 days · “Can you confirm the completion date?”</span></p>
+                <p class="mock-item"><strong>Needs my action · you promised</strong><span>Tomorrow, 9:00 · “I’ll send the SA302 tomorrow.”</span></p>
+              </div>
+            )}
+            {f.key === 'matters' && (
+              <div class="mock-card">
+                <p class="mock-title"><Icon name="mail-multiple" size={16} /> Mortgage · 3 open items</p>
+                <p class="mock-status">Valuation booked for Thursday; waiting on the offer.</p>
+                <ol class="timeline">
+                  <li><strong>Harbour Home Loans</strong><span>What we need next</span></li>
+                  <li><strong>Case manager</strong><span>Your case is with the lender</span></li>
+                  <li><strong>Northgate Solicitors</strong><span>Searches ordered</span></li>
+                </ol>
+              </div>
+            )}
+            {f.key === 'facts' && (
+              <div class="mock-card">
+                <p class="mock-title"><Icon name="document-text" size={16} /> Mortgage illustration.pdf</p>
+                <dl class="mock-facts">
+                  {demo.facts.map((fact) => (
+                    <div><dt>{fact.label}</dt><dd>{fact.value}</dd><span>p. {fact.page}</span></div>
+                  ))}
+                </dl>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section faq" aria-labelledby="faq-title">
+    <div class="wrap narrow">
+      <h2 id="faq-title">Questions</h2>
+      {
+        faq.map((item) => (
+          <details class="card">
+            <summary>{item.q}</summary>
+            <p>{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section-tight end">
+    <div class="wrap">
+      <div class="end-card night glow-border">
+        <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+        <h2>Loupe is useful today.</h2>
+        <p>Readable mail, expression search, server rules and encryption are in every Nightly build. Private AI comes next.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="/download/"><Icon name="arrow-download" size={20} /> Download Loupe</a>
+          <a class="btn" href="/roadmap/">See the roadmap</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ai-hero {
+    padding-block: clamp(56px, 9vw, 120px);
+  }
+
+  .head {
+    max-width: 860px;
+    margin: 0 auto clamp(36px, 5vw, 56px);
+    text-align: center;
+  }
+
+  .head h1 {
+    margin-top: 20px;
+    font-size: clamp(2.6rem, 7vw, 5.2rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+
+  .head .grad-text {
+    display: inline-block;
+    filter: drop-shadow(0 0 30px rgb(67 195 205 / 30%));
+  }
+
+  .ai-hero :global(.ai-demo) {
+    max-width: 960px;
+    margin-inline: auto;
+  }
+
+  .principle-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .principle-grid li {
+    padding: 24px;
+  }
+
+  .principle-grid h3 {
+    margin: 16px 0 6px;
+    font-size: 1.125rem;
+  }
+
+  .principle-grid p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .flow-section {
+    background: var(--bg-elev);
+    border-block: 1px solid var(--line);
+  }
+
+  .flow-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    align-items: center;
+    gap: clamp(32px, 6vw, 80px);
+  }
+
+  .flow-grid h2,
+  .feature-row h2,
+  .faq h2 {
+    font-size: clamp(2rem, 4.2vw, 3rem);
+  }
+
+  .flow {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 24px;
+    padding: 28px;
+  }
+
+  .node {
+    display: grid;
+    justify-items: start;
+    gap: 2px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg);
+  }
+
+  .node :global(svg) {
+    color: var(--brand);
+  }
+
+  .node span,
+  .node em {
+    color: var(--ink-3);
+    font-size: 0.8125rem;
+    font-style: normal;
+  }
+
+  .phone-node {
+    justify-items: center;
+    padding: 24px 20px;
+    background: var(--grad-brand);
+    border: 0;
+    color: #fff;
+    box-shadow: 0 16px 40px -16px var(--aurora-2);
+  }
+
+  .phone-node :global(svg),
+  .phone-node span {
+    color: #fff;
+  }
+
+  .links {
+    display: grid;
+    gap: 14px;
+  }
+
+  .link {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .link > span {
+    position: relative;
+    padding-bottom: 6px;
+    color: var(--ink-2);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .link > span::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--brand);
+  }
+
+  .link.opt > span::after {
+    background: repeating-linear-gradient(90deg, var(--brand-2) 0 6px, transparent 6px 11px);
+  }
+
+  .link.none > span {
+    color: var(--danger);
+  }
+
+  .link.none > span::after {
+    background: repeating-linear-gradient(90deg, var(--danger) 0 3px, transparent 3px 8px);
+    opacity: 0.6;
+  }
+
+  .link.none .node {
+    opacity: 0.6;
+    border-style: dashed;
+  }
+
+  .link.none .node strong {
+    text-decoration: line-through;
+  }
+
+  .link.none :global(svg) {
+    color: var(--danger);
+  }
+
+  .feature-row {
+    padding-block: clamp(56px, 8vw, 104px);
+  }
+
+  .feature-row.alt {
+    background: var(--bg-elev);
+    border-block: 1px solid var(--line);
+  }
+
+  .row-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(32px, 6vw, 80px);
+  }
+
+  .feature-row.alt .copy {
+    order: 2;
+  }
+
+  .row-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .ticks {
+    display: grid;
+    gap: 10px;
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ticks li {
+    display: flex;
+    gap: 10px;
+  }
+
+  .ticks :global(svg) {
+    flex: none;
+    margin-top: 3px;
+    color: var(--brand);
+  }
+
+  .mock {
+    position: relative;
+    padding: clamp(20px, 4vw, 40px);
+    border-radius: 28px;
+    background:
+      radial-gradient(400px 260px at 80% 0%, rgb(67 195 205 / 35%), transparent 70%),
+      radial-gradient(400px 260px at 0% 100%, rgb(122 108 240 / 30%), transparent 70%),
+      var(--night);
+    box-shadow: var(--shadow-l);
+  }
+
+  .mock-card {
+    display: grid;
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid var(--glass-line);
+    border-radius: 18px;
+    background: rgb(255 255 255 / 6%);
+    backdrop-filter: blur(10px);
+    color: var(--night-ink);
+    transform: rotate(-1.5deg);
+    transition: transform 0.4s ease;
+  }
+
+  .feature-row.alt .mock-card {
+    transform: rotate(1.5deg);
+  }
+
+  .mock:hover .mock-card {
+    transform: none;
+  }
+
+  .mock-card p {
+    margin: 0;
+  }
+
+  .mock-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #7fe3ea;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .mock-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2px 10px;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgb(0 0 0 / 25%);
+    font-size: 0.9375rem;
+  }
+
+  .mock-item strong {
+    grid-column: 1 / -1;
+    color: #fff;
+  }
+
+  .mock-item span:not(.box) {
+    grid-column: 1 / -1;
+    color: var(--night-ink-2);
+    font-size: 0.875rem;
+  }
+
+  .box {
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid #7fe3ea;
+    border-radius: 4px;
+  }
+
+  .mock-item.done {
+    color: var(--night-ink-2);
+    text-decoration: line-through;
+  }
+
+  .mock-item.done .box {
+    background: #7fe3ea;
+  }
+
+  .mock-q {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 999px;
+    background: rgb(0 0 0 / 25%);
+    color: #fff;
+  }
+
+  .mock-q :global(svg) {
+    flex: none;
+    color: #7fe3ea;
+  }
+
+  .mock-code {
+    display: block;
+    margin: 0;
+    padding: 12px 14px;
+    overflow-x: auto;
+    border-radius: 12px;
+    background: rgb(0 0 0 / 40%);
+    color: #8fe8ee;
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    white-space: pre;
+  }
+
+  .mock-status {
+    color: #fff;
+    font-size: 1.0625rem;
+  }
+
+  .timeline {
+    display: grid;
+    gap: 10px;
+    margin: 4px 0 0;
+    padding: 0 0 0 18px;
+    border-left: 2px solid rgb(127 227 234 / 40%);
+    list-style: none;
+  }
+
+  .timeline li {
+    position: relative;
+    display: grid;
+    font-size: 0.9375rem;
+  }
+
+  .timeline li::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 7px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #7fe3ea;
+    box-shadow: 0 0 10px #7fe3ea;
+  }
+
+  .timeline strong {
+    color: #fff;
+  }
+
+  .timeline span {
+    color: var(--night-ink-2);
+  }
+
+  .mock-facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 0;
+  }
+
+  .mock-facts div {
+    position: relative;
+    padding: 14px;
+    border-radius: 12px;
+    background: rgb(0 0 0 / 25%);
+  }
+
+  .mock-facts dt {
+    color: var(--night-ink-2);
+    font-size: 0.8125rem;
+  }
+
+  .mock-facts dd {
+    margin: 2px 0 0;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 500;
+  }
+
+  .mock-facts span {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    color: #7fe3ea;
+    font-size: 0.75rem;
+  }
+
+  .narrow {
+    max-width: calc(760px + 2 * var(--gutter));
+  }
+
+  .faq details {
+    margin-bottom: 12px;
+    padding: 0;
+  }
+
+  .faq summary {
+    padding: 18px 22px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .faq details p {
+    margin: 0;
+    padding: 0 22px 20px;
+    color: var(--ink-2);
+  }
+
+  .end {
+    padding-bottom: clamp(64px, 9vw, 112px);
+  }
+
+  .end-card {
+    padding: clamp(32px, 6vw, 72px);
+    border-radius: 32px;
+    text-align: center;
+  }
+
+  .end-card h2 {
+    font-size: clamp(2rem, 4.4vw, 3.2rem);
+  }
+
+  .end-card p {
+    max-width: 36em;
+    margin-inline: auto;
+  }
+
+  .end-card .cta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  @media (max-width: 960px) {
+    .principle-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .flow-grid,
+    .row-grid {
+      grid-template-columns: 1fr;
+    }
+    .feature-row.alt .copy {
+      order: 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .principle-grid {
+      grid-template-columns: 1fr;
+    }
+    .flow {
+      grid-template-columns: 1fr;
+    }
+    .link {
+      grid-template-columns: 90px 1fr;
+    }
+    .mock-facts {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

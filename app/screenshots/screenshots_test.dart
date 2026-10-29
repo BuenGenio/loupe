@@ -1,4 +1,4 @@
-// Marketing screenshots of Loupe for the website (site/src/assets/screenshots).
+// Marketing screenshots of Loupe for the website (site/v1/src/assets/screenshots).
 //
 // Not part of CI: tool/ci/test.sh runs only test/ directories. Run with
 // tool/screenshots.sh, or one shot with
@@ -45,7 +45,7 @@ import 'package:readable/readable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Where the PNGs go, relative to app/.
-const _outDir = '../site/src/assets/screenshots';
+const _outDir = '../site/v1/src/assets/screenshots';
 
 const _phone = Size(390, 844);
 const _tablet = Size(1280, 800);
@@ -361,7 +361,7 @@ Future<void> _tap(WidgetTester tester, Finder finder) async {
 
 // The shots --------------------------------------------------------------------
 //
-// In the order of site/src/data/screenshots.json, which describes each one.
+// In the order of site/v1/src/data/screenshots.json, which describes each one.
 
 const _hike = 'Photos from Sunday’s hike';
 const _trailhead = 'Members: 20% off layers + the autumn layering guide';

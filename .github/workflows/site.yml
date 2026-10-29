@@ -1,5 +1,6 @@
-# loupe.mx: builds the Astro site in site/ and deploys it to Cloudflare
-# (Workers with static assets, see site/wrangler.jsonc).
+# loupe.mx: builds the Astro site in site/v1/ and deploys it to Cloudflare
+# (Workers with static assets, see site/v1/wrangler.jsonc). The redesign in
+# site/v2/ is built to check it, never deployed.
 #
 # Secrets: CLOUDFLARE_API_TOKEN (template "Edit Cloudflare Workers"),
 #          CLOUDFLARE_ACCOUNT_ID. Without them the site is built, not deployed.
@@ -10,13 +11,14 @@ on:
   push:
     branches: [main]
     paths:
-      - "site/**"
+      - "site/v1/**"
       - "CHANGELOG.md"
       - "docs/privacy-policy.md"
       - ".github/workflows/site.yml"
   pull_request:
     paths:
-      - "site/**"
+      - "site/v1/**"
+      - "site/v2/**"
       - "CHANGELOG.md"
       - "docs/privacy-policy.md"
       - ".github/workflows/site.yml"
@@ -38,7 +40,7 @@ jobs:
       contents: read
     defaults:
       run:
-        working-directory: site
+        working-directory: site/v1
     steps:
       - uses: actions/checkout@v5
         with:
@@ -47,7 +49,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: site/package-lock.json
+          cache-dependency-path: site/v1/package-lock.json
       - run: npm ci
       - run: npm run build
       - name: Deploy to Cloudflare
@@ -80,3 +82,25 @@ jobs:
             curl -fsS -X PATCH "https://api.cloudflare.com/client/v4/zones/$zone/settings/$name" \
               -H "$auth" -H 'Content-Type: application/json' --data "{\"value\":$value}" | jq -c '{name: .result.id, value: .result.value, success}'
           done
+
+  # The redesign: built on pull requests that touch it, so it keeps building. Not deployed.
+  build-v2:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: site/v2
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: site/v2/package-lock.json
+      - run: npm ci
+      - run: npm run build

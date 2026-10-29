@@ -1,0 +1,87 @@
+---
+// Live facts about the current Nightly build, from the Worker's
+// /api/release.json. Hidden when the API isn't there (astro dev).
+import { downloads } from '../config';
+import { useT } from '../i18n';
+
+interface Props {
+  lang: string;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const labels = { nightly: t('download.nightly'), built: t('download.built'), justNow: t('download.justNow'), size: t('download.size') };
+---
+
+<p class="release-info" data-src={downloads.info} data-lang={lang} data-labels={JSON.stringify(labels)} hidden>
+  <span class="pulse" aria-hidden="true"></span>
+  <span class="text"></span>
+</p>
+
+<script>
+  const ago = (iso: string, lang: string, justNow: string) => {
+    const s = (Date.now() - Date.parse(iso)) / 1000;
+    const units: [number, Intl.RelativeTimeFormatUnit][] = [
+      [86400, 'day'],
+      [3600, 'hour'],
+      [60, 'minute'],
+    ];
+    const fmt = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' });
+    for (const [size, unit] of units) if (s >= size) return fmt.format(-Math.floor(s / size), unit);
+    return justNow;
+  };
+
+  type Release = { name: string; version: string | null; builtAt: string | null; assets: { target: string | null; size: number }[] };
+
+  for (const el of document.querySelectorAll<HTMLElement>('.release-info')) {
+    const lang = el.dataset.lang ?? 'en';
+    const l = JSON.parse(el.dataset.labels ?? '{}');
+    const fill = (s: string, k: string, v: string) => s.replace(`{${k}}`, v);
+    fetch(el.dataset.src!)
+      .then((r) => (r.ok ? (r.json() as Promise<Release>) : Promise.reject()))
+      .then((rel) => {
+        const arm = rel.assets?.find((a) => a.target === 'android-arm64');
+        const parts = [
+          rel.version ? fill(l.nightly, 'version', rel.version) : rel.name,
+          rel.builtAt ? fill(l.built, 'ago', ago(rel.builtAt, lang, l.justNow)) : null,
+          arm ? fill(l.size, 'mb', (arm.size / 1048576).toLocaleString(lang, { maximumFractionDigits: 0 })) : null,
+        ].filter(Boolean);
+        el.querySelector('.text')!.textContent = parts.join(' · ');
+        el.hidden = false;
+      })
+      .catch(() => {});
+  }
+</script>
+
+<style>
+  .release-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 6px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg-elev);
+    color: var(--ink-2);
+    font-size: 0.875rem;
+  }
+
+  .release-info[hidden] {
+    display: none;
+  }
+
+  .pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ok);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--ok) 60%, transparent);
+    animation: ring 2s infinite;
+  }
+
+  @keyframes ring {
+    70% {
+      box-shadow: 0 0 0 8px transparent;
+    }
+  }
+</style>
