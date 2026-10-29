@@ -17,7 +17,7 @@ Loupe is going to do this differently, and this post is the plan. None of it has
 - **Needs my action, Waiting on others.** Two folders that keep track until something is actually done, with a reminder per request, not per message. A "Thanks" from someone doesn't mark everything finished.
 - **Changes.** Compare two messages in a conversation and see what changed, line by line. This one is built, and will be in a Nightly soon. Later: an explanation of what changed in meaning, with both passages shown.
 - **Documents.** Search inside attachments, see the figures that matter in a mortgage illustration or an invoice with a link to the page, and a check that your reply includes what was asked for.
-- **Case files.** A mortgage, a claim or a move, gathered across senders and weeks into one timeline.
+- **Matters.** A mortgage, a claim or a move, gathered across senders and weeks into one timeline.
 
 The [Private AI page](/private-ai/) has a playable preview of the first few.
 

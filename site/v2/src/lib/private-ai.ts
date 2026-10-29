@@ -71,11 +71,11 @@ export const aiFeatures: AiFeature[] = [
   {
     key: 'matters',
     icon: 'mail-multiple',
-    title: 'Case files',
-    short: 'One timeline for a case that spans many senders and weeks.',
+    title: 'Matters',
+    short: 'One timeline for a matter that spans many senders and weeks.',
     text:
-      'A mortgage, a move, an insurance claim: broker, lender and solicitor all write from different addresses. A case file gathers them into one timeline, with every open item and the latest status in two lines.',
-    points: ['You decide what belongs; suggestions can be undone', 'Open items from every message', 'Filing a message doesn’t take it out of the case'],
+      'A mortgage, a move, an insurance claim: broker, lender and solicitor all write from different addresses. A matter gathers them into one timeline, with every open item and the latest status in two lines.',
+    points: ['You decide what belongs; suggestions can be undone', 'Open items from every message', 'Filing a message doesn’t take it out of the matter'],
   },
   {
     key: 'facts',
@@ -147,5 +147,5 @@ export const milestones: { key: string; state: MilestoneState; icon: IconName; t
   { key: 'f', state: 'planned', icon: 'flow', title: 'Rules in plain English', text: 'A typed proposal in the normal rule editor, with a dry run. Loupe writes the Sieve, never the model.' },
   { key: 'g', state: 'planned', icon: 'copy', title: 'Changes that explain themselves', text: 'On top of the literal diff: what changed in meaning, with both passages shown. Contradictions stay visible instead of being resolved by guesswork.' },
   { key: 'h', state: 'planned', icon: 'document-text', title: 'Documents', text: 'Search inside attachments, key-fact cards linked to their page, version comparison, and a check that your reply includes what was asked for.' },
-  { key: 'i', state: 'planned', icon: 'mail-multiple', title: 'Case files', text: 'Group a mortgage, a claim or a move across senders and weeks, by hand first. Suggestions and optional sync come after.' },
+  { key: 'i', state: 'planned', icon: 'mail-multiple', title: 'Matters', text: 'Group a mortgage, a claim or a move across senders and weeks, by hand first. Suggestions and optional sync come after.' },
 ];
