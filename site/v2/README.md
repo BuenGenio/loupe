@@ -27,8 +27,8 @@ Use `npm run dev` while editing. Static previews serve `dist/`, which a new buil
 | `src/assets/screenshots/` | App screenshots, light and dark, rendered by `tool/screenshots.sh` from the app's demo data |
 | `src/data/screenshots.json` | Titles, captions and alt text for the screenshots |
 | `worker/index.ts` | `/get/android-arm64`, `/get/android-x86_64` (302 to the current Nightly APK), `/api/release.json`, and the first-visit language redirect |
-| `../CHANGELOG.md` | The releases in `/news/`, one entry per `## YYYY-MM-DD` section (`releases` collection in `src/content.config.ts`) |
-| `../docs/privacy-policy.md` | The privacy policy, published at `/privacy/` (placeholders filled from `config.ts`) |
+| `../../CHANGELOG.md` | The releases in `/news/`, one entry per `## YYYY-MM-DD` section (`releases` collection in `src/content.config.ts`) |
+| `../../docs/privacy-policy.md` | The privacy policy, published at `/privacy/` (placeholders filled from `config.ts`) |
 
 ## Deploy
 

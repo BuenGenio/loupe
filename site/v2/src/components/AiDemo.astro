@@ -192,7 +192,7 @@ const tabs = [
     padding: 4px;
     border: 1px solid var(--glass-line);
     border-radius: 999px;
-    background: rgb(0 0 0 / 25%);
+    background: var(--night-surface);
   }
 
   .demo-tabs button {
@@ -213,7 +213,7 @@ const tabs = [
   }
 
   .demo-tabs button:hover {
-    color: #fff;
+    color: var(--night-ink);
   }
 
   .demo-tabs button[aria-selected='true'] {
@@ -245,7 +245,7 @@ const tabs = [
   .facts-grid div {
     border: 1px solid var(--glass-line);
     border-radius: 16px;
-    background: rgb(255 255 255 / 4%);
+    background: var(--glass-bg);
   }
 
   .mail {
@@ -259,11 +259,11 @@ const tabs = [
   }
 
   .mail .mail-from strong {
-    color: #fff;
+    color: var(--night-ink);
   }
 
   .mail .mail-subject {
-    color: #fff;
+    color: var(--night-ink);
     font-weight: 500;
     margin-bottom: 14px;
   }
@@ -277,7 +277,7 @@ const tabs = [
 
   .mail-line.lit {
     background: color-mix(in srgb, var(--aurora-4) 28%, transparent);
-    color: #fff !important;
+    color: var(--night-ink) !important;
   }
 
   .todo-card {
@@ -290,7 +290,7 @@ const tabs = [
     align-items: center;
     gap: 8px;
     margin: 0 0 12px;
-    color: #7fe3ea !important;
+    color: var(--night-accent) !important;
     font-size: 0.8125rem;
     font-weight: 500;
     letter-spacing: 0.06em;
@@ -312,12 +312,12 @@ const tabs = [
     gap: 10px;
     padding: 10px 12px;
     border-radius: 12px;
-    background: rgb(0 0 0 / 22%);
+    background: var(--night-surface);
     transition: background-color 0.2s ease;
   }
 
   .todos li:hover {
-    background: rgb(0 0 0 / 35%);
+    background: var(--night-hover);
   }
 
   .todos label {
@@ -326,13 +326,13 @@ const tabs = [
     gap: 10px;
     cursor: pointer;
     font-size: 0.9375rem;
-    color: #fff;
+    color: var(--night-ink);
   }
 
   .todos input {
     width: 18px;
     height: 18px;
-    accent-color: var(--aurora-1);
+    accent-color: var(--night-accent);
     flex: none;
   }
 
@@ -349,23 +349,23 @@ const tabs = [
     font-weight: 500;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    background: rgb(255 255 255 / 10%);
+    background: var(--night-surface);
     color: var(--night-ink-2);
   }
 
   .tag-document {
     background: rgb(95 179 230 / 20%);
-    color: #a8d8f6;
+    color: var(--brand-2);
   }
 
   .tag-action {
     background: rgb(67 195 205 / 20%);
-    color: #8fe8ee;
+    color: var(--night-accent);
   }
 
   .tag-deadline {
     background: rgb(240 166 90 / 20%);
-    color: #ffc58a;
+    color: color-mix(in srgb, var(--warm) 75%, var(--night-ink));
   }
 
   .card-note {
@@ -379,20 +379,20 @@ const tabs = [
     gap: 12px;
     padding: 14px 18px;
     border-radius: 999px;
-    color: #fff;
+    color: var(--night-ink);
     font-size: 1rem;
   }
 
   .searchbar :global(svg) {
     flex: none;
-    color: #7fe3ea;
+    color: var(--night-accent);
   }
 
   .caret {
     width: 2px;
     height: 1.2em;
     margin-left: -10px;
-    background: #7fe3ea;
+    background: var(--night-accent);
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -427,8 +427,8 @@ const tabs = [
     display: block;
     padding: 12px 14px;
     border-radius: 10px;
-    background: rgb(0 0 0 / 35%);
-    color: #8fe8ee;
+    background: var(--night-surface);
+    color: var(--night-accent);
     font-size: 1.0625rem;
     overflow-x: auto;
     white-space: nowrap;
@@ -443,9 +443,9 @@ const tabs = [
   }
 
   .expr-chips .chip {
-    background: rgb(255 255 255 / 6%);
+    background: var(--night-surface);
     border-color: var(--glass-line);
-    color: #fff;
+    color: var(--night-ink);
   }
 
   .mini-btn {
@@ -461,8 +461,8 @@ const tabs = [
     margin: 0;
     padding: 16px 18px;
     overflow-x: auto;
-    background: rgb(0 0 0 / 35%);
-    color: #cfe3f1;
+    background: var(--night-surface);
+    color: var(--night-ink);
     font-size: 0.9375rem;
     line-height: 1.6;
   }
@@ -472,7 +472,7 @@ const tabs = [
     align-items: center;
     gap: 8px;
     margin: 0;
-    color: #8fe8a8 !important;
+    color: var(--night-ok) !important;
     font-weight: 500;
   }
 
@@ -481,7 +481,7 @@ const tabs = [
     align-items: center;
     gap: 10px;
     margin: 0;
-    color: #fff !important;
+    color: var(--night-ink) !important;
     font-weight: 500;
   }
 
@@ -512,7 +512,7 @@ const tabs = [
     font-size: clamp(1.6rem, 3.4vw, 2.2rem);
     font-weight: 500;
     letter-spacing: -0.02em;
-    color: #fff;
+    color: var(--night-ink);
   }
 
   .page {
@@ -521,8 +521,8 @@ const tabs = [
     right: 14px;
     padding: 2px 8px;
     border-radius: 999px;
-    background: rgb(255 255 255 / 8%);
-    color: #7fe3ea;
+    background: var(--night-surface);
+    color: var(--night-accent);
     font-size: 0.75rem;
   }
 

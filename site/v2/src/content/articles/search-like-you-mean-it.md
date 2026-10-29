@@ -11,6 +11,24 @@ Most phone mail apps give you a search box and hope for the best. Loupe gives yo
 
 Pull down on any message list and type. `invoice` finds invoices; `electric bill` finds that exact phrase; `electric and bill` finds both words anywhere. Results from your phone show up as you type; a moment later, results from your server stream in for anything older than what's stored locally.
 
+## Search in plain English
+
+**Coming soon with Private AI.** Choose **Ask in Plain English** and describe what you want:
+
+> Unread mail from Dana or Ben
+
+Loupe will turn that into filters you can check and edit: **From: Dana or Ben**, **Unread**. The expression behind them will be available too:
+
+```text
+f:(dana or ben) -is:read
+```
+
+Once you've checked it, the same search that powers typed expressions will find your messages on the phone and the server. You will be able to save it as a Smart Mailbox or use it to start a rule. If a name, account or date is unclear, Loupe will ask you to clarify it.
+
+This will need a configured model: on a compatible phone, on your own server, or with a cloud provider you choose. Translating a search won't require sending message bodies to the model. Ordinary word search, chips and expressions will keep working without one.
+
+The translator is planned and isn't in the Nightly yet. See the [Private AI page](/private-ai/). The rest of this guide covers the search tools available today.
+
 ## Add fields
 
 Prefix a word with a field to say where to look:
