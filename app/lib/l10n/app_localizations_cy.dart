@@ -157,6 +157,50 @@ class AppLocalizationsCy extends AppLocalizations {
   String get mailboxTrash => 'Sbwriel';
 
   @override
+  String get conversationCompareMessages => 'Cymharu negeseuon…';
+
+  @override
+  String get conversationChangesTitle => 'Newidiadau';
+
+  @override
+  String get conversationChangesFrom => 'Neges gychwynnol';
+
+  @override
+  String get conversationChangesTo => 'Neges derfynol';
+
+  @override
+  String get conversationChangesText => 'Testun y neges';
+
+  @override
+  String get conversationChangesAdded => 'Ychwanegwyd';
+
+  @override
+  String get conversationChangesRemoved => 'Tynnwyd';
+
+  @override
+  String get conversationChangesNoText => 'Dim newidiadau i’r testun.';
+
+  @override
+  String get conversationChangesAttachments => 'Atodiadau';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Cymherir enwau, mathau a meintiau atodiadau. Ni chaiff cynnwys ffeiliau ei wirio.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Manylion sy’n cyfateb';
+
+  @override
+  String get conversationChangesFullTextNote => 'Cymherir testun cyfan y neges, gan gynnwys dyfyniadau a llofnodion.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Mae’r neges hon yn rhy fawr i’w chymharu’n fanwl. Gall rhywfaint o’r testun gael ei hepgor neu ei ddangos fel bloc cyfan.';
+
+  @override
+  String get conversationChangesLoadError => 'Methu cymharu’r negeseuon hyn.';
+
+  @override
   String get conversationSomethingWentWrong => 'Aeth rhywbeth o’i le. Rhowch gynnig arall arni.';
 
   @override

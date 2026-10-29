@@ -148,6 +148,51 @@ class AppLocalizationsSq extends AppLocalizations {
   String get mailboxTrash => 'Koshi';
 
   @override
+  String get conversationCompareMessages => 'Krahaso mesazhet…';
+
+  @override
+  String get conversationChangesTitle => 'Ndryshimet';
+
+  @override
+  String get conversationChangesFrom => 'Mesazhi fillestar';
+
+  @override
+  String get conversationChangesTo => 'Mesazhi përfundimtar';
+
+  @override
+  String get conversationChangesText => 'Teksti i mesazhit';
+
+  @override
+  String get conversationChangesAdded => 'Shtuar';
+
+  @override
+  String get conversationChangesRemoved => 'Hequr';
+
+  @override
+  String get conversationChangesNoText => 'Nuk ka ndryshime në tekst.';
+
+  @override
+  String get conversationChangesAttachments => 'Bashkëngjitjet';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Krahasohen emrat, llojet dhe madhësitë e bashkëngjitjeve. Përmbajtja e skedarëve nuk kontrollohet.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Të dhëna që përputhen';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Krahasohet teksti i plotë i mesazhit, përfshirë citimet dhe nënshkrimet.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Ky mesazh është tepër i madh për një krahasim të hollësishëm. Një pjesë e tekstit mund të lihet jashtë ose të shfaqet si një bllok i plotë.';
+
+  @override
+  String get conversationChangesLoadError => 'Këto mesazhe nuk mund të krahasoheshin.';
+
+  @override
   String get conversationSomethingWentWrong => 'Diçka shkoi keq. Provoni sërish.';
 
   @override

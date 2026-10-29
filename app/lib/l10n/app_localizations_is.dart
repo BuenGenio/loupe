@@ -148,6 +148,51 @@ class AppLocalizationsIs extends AppLocalizations {
   String get mailboxTrash => 'Rusl';
 
   @override
+  String get conversationCompareMessages => 'Bera saman skilaboð…';
+
+  @override
+  String get conversationChangesTitle => 'Breytingar';
+
+  @override
+  String get conversationChangesFrom => 'Upphafleg skilaboð';
+
+  @override
+  String get conversationChangesTo => 'Lokaskilaboð';
+
+  @override
+  String get conversationChangesText => 'Texti skilaboða';
+
+  @override
+  String get conversationChangesAdded => 'Bætt við';
+
+  @override
+  String get conversationChangesRemoved => 'Fjarlægt';
+
+  @override
+  String get conversationChangesNoText => 'Engar breytingar á texta.';
+
+  @override
+  String get conversationChangesAttachments => 'Viðhengi';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Nöfn, tegundir og stærðir viðhengja eru borin saman. Innihald skráa er ekki athugað.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Samsvarandi upplýsingar';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Allur texti skilaboðanna er borinn saman, þar á meðal tilvitnanir og undirskriftir.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Þessi skilaboð eru of stór fyrir ítarlegan samanburð. Hluta textans kann að vera sleppt eða hann birtur sem ein heild.';
+
+  @override
+  String get conversationChangesLoadError => 'Ekki tókst að bera þessi skilaboð saman.';
+
+  @override
   String get conversationSomethingWentWrong => 'Eitthvað fór úrskeiðis. Reyndu aftur.';
 
   @override

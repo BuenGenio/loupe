@@ -27,6 +27,8 @@ dependencies:
   go_router: ^18.0.2
   shared_preferences: ^2.5.5
   intl: ^0.20.3
+  # MIT (Dart team); turns HTML-only mail into text for local message comparisons.
+  html: ^0.15.7
   # BSD-3 (Dart team); clock.now() in logic, so tests can pin the time.
   clock: ^1.1.2
   url_launcher: ^6.3.3

@@ -154,6 +154,50 @@ class AppLocalizationsLt extends AppLocalizations {
   String get mailboxTrash => 'Šiukšliadėžė';
 
   @override
+  String get conversationCompareMessages => 'Palyginti laiškus…';
+
+  @override
+  String get conversationChangesTitle => 'Pakeitimai';
+
+  @override
+  String get conversationChangesFrom => 'Pradinis laiškas';
+
+  @override
+  String get conversationChangesTo => 'Galutinis laiškas';
+
+  @override
+  String get conversationChangesText => 'Laiško tekstas';
+
+  @override
+  String get conversationChangesAdded => 'Pridėta';
+
+  @override
+  String get conversationChangesRemoved => 'Pašalinta';
+
+  @override
+  String get conversationChangesNoText => 'Teksto pakeitimų nėra.';
+
+  @override
+  String get conversationChangesAttachments => 'Priedai';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Lyginami priedų pavadinimai, tipai ir dydžiai. Failų turinys netikrinamas.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Sutampantys duomenys';
+
+  @override
+  String get conversationChangesFullTextNote => 'Lyginamas visas laiško tekstas, įskaitant citatas ir parašus.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Šis laiškas per didelis išsamiam palyginimui. Dalis teksto gali būti praleista arba parodyta kaip visas blokas.';
+
+  @override
+  String get conversationChangesLoadError => 'Šių laiškų nepavyko palyginti.';
+
+  @override
   String get conversationSomethingWentWrong => 'Kažkas nepavyko. Bandykite dar kartą.';
 
   @override

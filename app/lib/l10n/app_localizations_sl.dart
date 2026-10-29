@@ -155,6 +155,51 @@ class AppLocalizationsSl extends AppLocalizations {
   String get mailboxTrash => 'Smeti';
 
   @override
+  String get conversationCompareMessages => 'Primerjaj sporočila…';
+
+  @override
+  String get conversationChangesTitle => 'Spremembe';
+
+  @override
+  String get conversationChangesFrom => 'Začetno sporočilo';
+
+  @override
+  String get conversationChangesTo => 'Končno sporočilo';
+
+  @override
+  String get conversationChangesText => 'Besedilo sporočila';
+
+  @override
+  String get conversationChangesAdded => 'Dodano';
+
+  @override
+  String get conversationChangesRemoved => 'Odstranjeno';
+
+  @override
+  String get conversationChangesNoText => 'Ni sprememb besedila.';
+
+  @override
+  String get conversationChangesAttachments => 'Priloge';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Primerjajo se imena, vrste in velikosti prilog. Vsebina datotek se ne preverja.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Ujemajoči se podatki';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Primerja se celotno besedilo sporočila, vključno z navedki in podpisi.';
+
+  @override
+  String get conversationChangesLimited =>
+      'To sporočilo je preveliko za podrobno primerjavo. Nekaj besedila je lahko izpuščenega ali prikazanega kot celoten blok.';
+
+  @override
+  String get conversationChangesLoadError => 'Teh sporočil ni bilo mogoče primerjati.';
+
+  @override
   String get conversationSomethingWentWrong => 'Prišlo je do napake. Poskusite znova.';
 
   @override

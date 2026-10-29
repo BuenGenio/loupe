@@ -148,6 +148,51 @@ class AppLocalizationsEl extends AppLocalizations {
   String get mailboxTrash => 'Κάδος απορριμμάτων';
 
   @override
+  String get conversationCompareMessages => 'Σύγκριση μηνυμάτων…';
+
+  @override
+  String get conversationChangesTitle => 'Αλλαγές';
+
+  @override
+  String get conversationChangesFrom => 'Αρχικό μήνυμα';
+
+  @override
+  String get conversationChangesTo => 'Τελικό μήνυμα';
+
+  @override
+  String get conversationChangesText => 'Κείμενο μηνύματος';
+
+  @override
+  String get conversationChangesAdded => 'Προστέθηκαν';
+
+  @override
+  String get conversationChangesRemoved => 'Αφαιρέθηκαν';
+
+  @override
+  String get conversationChangesNoText => 'Δεν υπάρχουν αλλαγές στο κείμενο.';
+
+  @override
+  String get conversationChangesAttachments => 'Συνημμένα';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Συγκρίνονται τα ονόματα, οι τύποι και τα μεγέθη των συνημμένων. Το περιεχόμενο των αρχείων δεν ελέγχεται.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Στοιχεία που ταιριάζουν';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Συγκρίνεται ολόκληρο το κείμενο του μηνύματος, συμπεριλαμβανομένων των παραθέσεων και των υπογραφών.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Αυτό το μήνυμα είναι πολύ μεγάλο για λεπτομερή σύγκριση. Κάποιο κείμενο ενδέχεται να παραλειφθεί ή να εμφανιστεί ως ενιαίο τμήμα.';
+
+  @override
+  String get conversationChangesLoadError => 'Δεν ήταν δυνατή η σύγκριση αυτών των μηνυμάτων.';
+
+  @override
   String get conversationSomethingWentWrong => 'Κάτι πήγε στραβά. Δοκιμάστε ξανά.';
 
   @override

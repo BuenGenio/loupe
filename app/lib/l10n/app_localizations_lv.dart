@@ -154,6 +154,51 @@ class AppLocalizationsLv extends AppLocalizations {
   String get mailboxTrash => 'Miskaste';
 
   @override
+  String get conversationCompareMessages => 'Salīdzināt vēstules…';
+
+  @override
+  String get conversationChangesTitle => 'Izmaiņas';
+
+  @override
+  String get conversationChangesFrom => 'Sākotnējā vēstule';
+
+  @override
+  String get conversationChangesTo => 'Gala vēstule';
+
+  @override
+  String get conversationChangesText => 'Vēstules teksts';
+
+  @override
+  String get conversationChangesAdded => 'Pievienots';
+
+  @override
+  String get conversationChangesRemoved => 'Noņemts';
+
+  @override
+  String get conversationChangesNoText => 'Teksta izmaiņu nav.';
+
+  @override
+  String get conversationChangesAttachments => 'Pielikumi';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Tiek salīdzināti pielikumu nosaukumi, veidi un izmēri. Failu saturs netiek pārbaudīts.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Sakrītoši dati';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Tiek salīdzināts viss vēstules teksts, ieskaitot citātus un parakstus.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Šī vēstule ir pārāk liela detalizētam salīdzinājumam. Daļa teksta var tikt izlaista vai parādīta kā vesels bloks.';
+
+  @override
+  String get conversationChangesLoadError => 'Šīs vēstules neizdevās salīdzināt.';
+
+  @override
   String get conversationSomethingWentWrong => 'Radās kļūda. Mēģiniet vēlreiz.';
 
   @override

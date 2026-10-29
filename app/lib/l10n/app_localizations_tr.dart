@@ -148,6 +148,50 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mailboxTrash => 'Çöp Kutusu';
 
   @override
+  String get conversationCompareMessages => 'İletileri karşılaştır…';
+
+  @override
+  String get conversationChangesTitle => 'Değişiklikler';
+
+  @override
+  String get conversationChangesFrom => 'Başlangıç iletisi';
+
+  @override
+  String get conversationChangesTo => 'Hedef ileti';
+
+  @override
+  String get conversationChangesText => 'İleti metni';
+
+  @override
+  String get conversationChangesAdded => 'Eklenen';
+
+  @override
+  String get conversationChangesRemoved => 'Kaldırılan';
+
+  @override
+  String get conversationChangesNoText => 'Metinde değişiklik yok.';
+
+  @override
+  String get conversationChangesAttachments => 'Ekler';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Eklerin adları, türleri ve boyutları karşılaştırılır. Dosya içerikleri kontrol edilmez.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Eşleşen ayrıntılar';
+
+  @override
+  String get conversationChangesFullTextNote => 'Alıntılar ve imzalar dahil iletinin tüm metni karşılaştırılır.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Bu ileti, ayrıntılı bir karşılaştırma için çok büyük. Metnin bir kısmı atlanabilir veya bütün bir blok olarak gösterilebilir.';
+
+  @override
+  String get conversationChangesLoadError => 'Bu iletiler karşılaştırılamadı.';
+
+  @override
   String get conversationSomethingWentWrong => 'Bir sorun oluştu. Tekrar deneyin.';
 
   @override

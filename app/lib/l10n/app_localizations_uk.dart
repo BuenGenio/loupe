@@ -154,6 +154,50 @@ class AppLocalizationsUk extends AppLocalizations {
   String get mailboxTrash => 'Кошик';
 
   @override
+  String get conversationCompareMessages => 'Порівняти листи…';
+
+  @override
+  String get conversationChangesTitle => 'Зміни';
+
+  @override
+  String get conversationChangesFrom => 'Початковий лист';
+
+  @override
+  String get conversationChangesTo => 'Кінцевий лист';
+
+  @override
+  String get conversationChangesText => 'Текст листа';
+
+  @override
+  String get conversationChangesAdded => 'Додано';
+
+  @override
+  String get conversationChangesRemoved => 'Вилучено';
+
+  @override
+  String get conversationChangesNoText => 'Змін у тексті немає.';
+
+  @override
+  String get conversationChangesAttachments => 'Вкладення';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Порівнюються назви, типи й розміри вкладень. Вміст файлів не перевіряється.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Дані, що збігаються';
+
+  @override
+  String get conversationChangesFullTextNote => 'Порівнюється повний текст листа, включно з цитатами й підписами.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Цей лист завеликий для докладного порівняння. Частину тексту може бути пропущено або показано як цілий блок.';
+
+  @override
+  String get conversationChangesLoadError => 'Не вдалося порівняти ці листи.';
+
+  @override
   String get conversationSomethingWentWrong => 'Щось пішло не так. Спробуйте ще раз.';
 
   @override

@@ -148,6 +148,51 @@ class AppLocalizationsNl extends AppLocalizations {
   String get mailboxTrash => 'Prullenbak';
 
   @override
+  String get conversationCompareMessages => 'Berichten vergelijken…';
+
+  @override
+  String get conversationChangesTitle => 'Wijzigingen';
+
+  @override
+  String get conversationChangesFrom => 'Beginbericht';
+
+  @override
+  String get conversationChangesTo => 'Eindbericht';
+
+  @override
+  String get conversationChangesText => 'Berichttekst';
+
+  @override
+  String get conversationChangesAdded => 'Toegevoegd';
+
+  @override
+  String get conversationChangesRemoved => 'Verwijderd';
+
+  @override
+  String get conversationChangesNoText => 'Geen tekstwijzigingen.';
+
+  @override
+  String get conversationChangesAttachments => 'Bijlagen';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Namen, typen en groottes van bijlagen worden vergeleken. De bestandsinhoud wordt niet gecontroleerd.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Overeenkomende gegevens';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'De volledige berichttekst wordt vergeleken, inclusief citaten en handtekeningen.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Dit bericht is te groot voor een gedetailleerde vergelijking. Sommige tekst kan worden weggelaten of als één volledig blok worden weergegeven.';
+
+  @override
+  String get conversationChangesLoadError => 'Deze berichten konden niet worden vergeleken.';
+
+  @override
   String get conversationSomethingWentWrong => 'Er ging iets mis. Probeer het opnieuw.';
 
   @override
