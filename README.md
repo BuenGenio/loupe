@@ -10,6 +10,7 @@ Status: **early development**, used daily by its owner on Android. iOS is prepar
 - Architecture and package contracts: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - iOS: what is set up and the checklist to TestFlight: [docs/ios.md](docs/ios.md)
 - Sign in with Google and Microsoft: registering the OAuth clients, and testing: [docs/oauth-setup.md](docs/oauth-setup.md)
+- The home screen's leftmost page, and which launchers can show it: [docs/android-minus-one.md](docs/android-minus-one.md)
 
 ## What it does
 

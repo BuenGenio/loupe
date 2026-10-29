@@ -22,6 +22,12 @@ android {
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
+    buildFeatures {
+        // src/main/aidl/: ILauncherOverlay, the launcher's minus-one page (MinusOneOverlayService.kt).
+        // AGP 8 generates no AIDL stubs unless this is on.
+        aidl = true
+    }
+
     compileOptions {
         // flutter_local_notifications needs core library desugaring (java.time on older Android).
         isCoreLibraryDesugaringEnabled = true
