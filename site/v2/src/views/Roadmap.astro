@@ -206,8 +206,8 @@ const not = ['not1', 'not2', 'not3', 'not4', 'not5'];
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: #6fe0a0;
-    box-shadow: 0 0 10px #6fe0a0;
+    background: var(--night-ok);
+    box-shadow: 0 0 10px var(--night-ok);
   }
 
   .ai-panel {
@@ -256,11 +256,11 @@ const not = ['not1', 'not2', 'not3', 'not4', 'not5'];
     padding: 20px;
     border: 1px solid var(--glass-line);
     border-radius: var(--radius-l);
-    background: rgb(255 255 255 / 4%);
+    background: var(--glass-bg);
   }
 
   .milestone.now {
-    border-color: rgb(127 227 234 / 45%);
+    border-color: color-mix(in srgb, var(--night-accent) 45%, transparent);
     background: linear-gradient(160deg, rgb(67 195 205 / 14%), rgb(122 108 240 / 8%));
   }
 
@@ -270,7 +270,7 @@ const not = ['not1', 'not2', 'not3', 'not4', 'not5'];
     width: 34px;
     height: 34px;
     border-radius: 10px;
-    background: rgb(255 255 255 / 8%);
+    background: var(--glass-bg);
     color: var(--night-ink-2);
     font-size: 0.9375rem;
     font-weight: 500;
@@ -291,7 +291,7 @@ const not = ['not1', 'not2', 'not3', 'not4', 'not5'];
   }
 
   .milestone.now .state {
-    color: #7fe3ea !important;
+    color: var(--night-accent) !important;
   }
 
   .milestone h3 {
@@ -305,7 +305,7 @@ const not = ['not1', 'not2', 'not3', 'not4', 'not5'];
 
   .milestone h3 :global(svg) {
     flex: none;
-    color: #7fe3ea;
+    color: var(--night-accent);
   }
 
   .milestone p:last-child {
@@ -324,7 +324,7 @@ const not = ['not1', 'not2', 'not3', 'not4', 'not5'];
 
   .gates :global(svg) {
     flex: none;
-    color: #6fe0a0;
+    color: var(--night-ok);
   }
 
   .timeline {

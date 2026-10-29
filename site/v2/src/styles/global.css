@@ -588,7 +588,7 @@ kbd {
 
 /* ---------- v2: depth, glow and motion ----------
    The redesign keeps the icon's colours and Ubuntu, and adds light: an aurora
-   behind dark sections, glass surfaces, a spotlight that follows the pointer
+   behind themed sections, glass surfaces, a spotlight that follows the pointer
    on cards, and a sheen on the primary button. All motion stops under
    prefers-reduced-motion. */
 
@@ -597,17 +597,59 @@ kbd {
   --aurora-2: #5fb3e6;
   --aurora-3: #7a6cf0;
   --aurora-4: #f0a65a;
+  --night: #f6f8fa;
+  --night-2: #edf5fa;
+  --night-ink: var(--ink);
+  --night-ink-2: var(--ink-2);
+  --night-accent: var(--brand-ink);
+  --night-ok: var(--ok);
+  --night-line: rgb(10 26 43 / 10%);
+  --night-surface: rgb(255 255 255 / 80%);
+  --night-hover: rgb(10 26 43 / 6%);
+  --glass-bg: rgb(255 255 255 / 65%);
+  --glass-line: rgb(10 26 43 / 12%);
+  --aurora-opacity: 0.24;
+  --aurora-blend: multiply;
+  --grad-brand: linear-gradient(100deg, #087a86, #286eaa 45%, #6752c5);
+}
+
+:root[data-theme='dark'] {
   --night: #050d18;
   --night-2: #0a1a2c;
   --night-ink: #eaf2f8;
   --night-ink-2: #a9bccd;
+  --night-accent: #7fe3ea;
+  --night-ok: #6fe0a0;
   --night-line: rgb(255 255 255 / 10%);
+  --night-surface: rgb(0 0 0 / 22%);
+  --night-hover: rgb(255 255 255 / 10%);
   --glass-bg: rgb(255 255 255 / 5%);
   --glass-line: rgb(255 255 255 / 12%);
+  --aurora-opacity: 0.55;
+  --aurora-blend: screen;
   --grad-brand: linear-gradient(100deg, var(--aurora-1), var(--aurora-2) 45%, var(--aurora-3));
 }
 
-/* A dark, lit section that looks the same in both themes. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --night: #050d18;
+    --night-2: #0a1a2c;
+    --night-ink: #eaf2f8;
+    --night-ink-2: #a9bccd;
+    --night-accent: #7fe3ea;
+    --night-ok: #6fe0a0;
+    --night-line: rgb(255 255 255 / 10%);
+    --night-surface: rgb(0 0 0 / 22%);
+    --night-hover: rgb(255 255 255 / 10%);
+    --glass-bg: rgb(255 255 255 / 5%);
+    --glass-line: rgb(255 255 255 / 12%);
+    --aurora-opacity: 0.55;
+    --aurora-blend: screen;
+    --grad-brand: linear-gradient(100deg, var(--aurora-1), var(--aurora-2) 45%, var(--aurora-3));
+  }
+}
+
+/* Lit sections follow both the site switch and the system theme. */
 .night {
   position: relative;
   isolation: isolate;
@@ -619,7 +661,7 @@ kbd {
 .night h1,
 .night h2,
 .night h3 {
-  color: #fff;
+  color: var(--night-ink);
 }
 
 .night .lead,
@@ -628,19 +670,19 @@ kbd {
 }
 
 .night .eyebrow {
-  color: #7fe3ea;
+  color: var(--night-accent);
 }
 
 .night .btn:not(.btn-primary) {
   --btn-bg: var(--glass-bg);
-  --btn-ink: #fff;
+  --btn-ink: var(--night-ink);
   --btn-line: var(--glass-line);
   backdrop-filter: blur(8px);
 }
 
 .night .btn-ghost {
   --btn-line: transparent;
-  color: #7fe3ea;
+  color: var(--night-accent);
 }
 
 .night .btn-ghost:hover {
@@ -655,7 +697,7 @@ kbd {
   z-index: -1;
   pointer-events: none;
   filter: blur(70px) saturate(130%);
-  opacity: 0.55;
+  opacity: var(--aurora-opacity);
 }
 
 .aurora span {
@@ -663,7 +705,7 @@ kbd {
   width: 46vmax;
   aspect-ratio: 1;
   border-radius: 50%;
-  mix-blend-mode: screen;
+  mix-blend-mode: var(--aurora-blend);
 }
 
 .aurora span:nth-child(1) {
@@ -819,9 +861,9 @@ kbd {
 .glass-panel {
   border: 1px solid var(--glass-line);
   border-radius: var(--radius-l);
-  background: linear-gradient(180deg, rgb(255 255 255 / 7%), rgb(255 255 255 / 2%));
+  background: linear-gradient(180deg, var(--glass-bg), color-mix(in srgb, var(--glass-bg) 40%, transparent));
   backdrop-filter: blur(14px);
-  box-shadow: 0 30px 80px -30px rgb(0 0 0 / 60%);
+  box-shadow: var(--shadow-l);
 }
 
 /* "Coming soon" label, used for features that are planned, not shipped. */
@@ -842,7 +884,7 @@ kbd {
 }
 
 .night .soon {
-  color: #ffc58a;
+  color: var(--warm);
 }
 
 .soon::before {

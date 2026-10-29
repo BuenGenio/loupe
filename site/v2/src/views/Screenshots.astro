@@ -64,7 +64,7 @@ const gallery = {
             </button>
             {features.map((f) => (
               <button type="button" class="chip" aria-pressed="false" data-filter={f}>
-                {t(`screenshots.feature.${f}`)}
+                {t(f === 'developer' ? 'shots.patch.title' : `screenshots.feature.${f}`)}
               </button>
             ))}
           </div>

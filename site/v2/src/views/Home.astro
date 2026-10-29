@@ -78,7 +78,7 @@ const heroPoints: [number, number][] = [
           <div class="showcase-filters" role="group" aria-label={t('screenshots.filter')}>
             <button type="button" class="chip" aria-pressed="true" data-filter="all">{t('screenshots.all')}</button>
             {stripFeatures.map((f) => (
-              <button type="button" class="chip" aria-pressed="false" data-filter={f}>{t(`screenshots.feature.${f}`)}</button>
+              <button type="button" class="chip" aria-pressed="false" data-filter={f}>{t(f === 'developer' ? 'shots.patch.title' : `screenshots.feature.${f}`)}</button>
             ))}
           </div>
           <div class="showcase-nav">
@@ -497,7 +497,7 @@ const heroPoints: [number, number][] = [
   }
 
   .facts :global(svg) {
-    color: #6fe0a0;
+    color: var(--night-ok);
   }
 
   /* The screenshot card: chips and arrows in its header, a sideways strip below. */
@@ -513,7 +513,7 @@ const heroPoints: [number, number][] = [
     gap: 14px;
     padding: 12px 14px 12px 20px;
     border-bottom: 1px solid var(--glass-line);
-    background: rgb(0 0 0 / 22%);
+    background: var(--night-surface);
   }
 
   .dots {
@@ -526,7 +526,7 @@ const heroPoints: [number, number][] = [
     width: 11px;
     height: 11px;
     border-radius: 50%;
-    background: rgb(255 255 255 / 18%);
+    background: color-mix(in srgb, var(--night-ink) 18%, transparent);
   }
 
   .dots i:nth-child(1) {
@@ -552,7 +552,7 @@ const heroPoints: [number, number][] = [
     flex: none;
     min-height: 34px;
     border-color: var(--glass-line);
-    background: rgb(255 255 255 / 5%);
+    background: var(--glass-bg);
     color: var(--night-ink-2);
     font: inherit;
     font-size: 0.875rem;
@@ -562,8 +562,8 @@ const heroPoints: [number, number][] = [
   }
 
   .showcase-filters .chip:hover {
-    color: #fff;
-    background: rgb(255 255 255 / 10%);
+    color: var(--night-ink);
+    background: var(--night-hover);
   }
 
   .showcase-filters .chip[aria-pressed='true'] {
@@ -586,14 +586,14 @@ const heroPoints: [number, number][] = [
     padding: 0;
     border: 1px solid var(--glass-line);
     border-radius: 50%;
-    background: rgb(255 255 255 / 6%);
-    color: #fff;
+    background: var(--glass-bg);
+    color: var(--night-ink);
     cursor: pointer;
     transition: background-color 0.2s ease, opacity 0.2s ease;
   }
 
   .icon-round:hover:not(:disabled) {
-    background: rgb(255 255 255 / 14%);
+    background: var(--night-hover);
   }
 
   .icon-round:disabled {
@@ -611,7 +611,7 @@ const heroPoints: [number, number][] = [
     scroll-snap-type: x mandatory;
     scroll-padding-inline: clamp(20px, 4vw, 40px);
     scrollbar-width: thin;
-    scrollbar-color: rgb(255 255 255 / 20%) transparent;
+    scrollbar-color: var(--glass-line) transparent;
     list-style: none;
   }
 
@@ -658,20 +658,20 @@ const heroPoints: [number, number][] = [
     border-radius: 999px;
     background: var(--glass-bg);
     backdrop-filter: blur(10px);
-    color: #fff;
+    color: var(--night-ink);
     font-size: 0.9375rem;
     text-decoration: none;
     transition: background-color 0.2s ease, transform 0.2s ease;
   }
 
   .hero-ai:hover {
-    background: rgb(255 255 255 / 10%);
+    background: var(--night-hover);
     transform: translateY(-1px);
   }
 
   .hero-ai :global(svg) {
     flex: none;
-    color: #7fe3ea;
+    color: var(--night-accent);
   }
 
   .providers-strip {
@@ -723,12 +723,12 @@ const heroPoints: [number, number][] = [
   .ai-principles :global(svg) {
     flex: none;
     margin-top: 2px;
-    color: #7fe3ea;
+    color: var(--night-accent);
   }
 
   .ai-principles strong {
     display: block;
-    color: #fff;
+    color: var(--night-ink);
   }
 
   .ai-principles span {
@@ -746,7 +746,7 @@ const heroPoints: [number, number][] = [
     padding: 24px;
     border: 1px solid var(--glass-line);
     border-radius: var(--radius-l);
-    background: rgb(255 255 255 / 3%);
+    background: var(--glass-bg);
     color: inherit;
     text-decoration: none;
     transition: transform 0.2s ease, border-color 0.2s ease;
@@ -754,7 +754,7 @@ const heroPoints: [number, number][] = [
 
   .ai-card:hover {
     transform: translateY(-3px);
-    border-color: rgb(127 227 234 / 40%);
+    border-color: color-mix(in srgb, var(--night-accent) 40%, transparent);
   }
 
   .ai-card h3 {
@@ -1005,27 +1005,27 @@ const heroPoints: [number, number][] = [
     padding-block: clamp(64px, 9vw, 112px);
     background:
       radial-gradient(800px 400px at 100% 0%, rgb(67 195 205 / 18%), transparent 70%),
-      linear-gradient(160deg, var(--navy), var(--navy-2));
-    color: #e6eef5;
+      linear-gradient(160deg, var(--night-2), var(--night));
+    color: var(--night-ink);
   }
 
   .privacy .eyebrow {
-    color: #74d8e0;
+    color: var(--night-accent);
   }
 
   .privacy h2 {
     font-size: clamp(2rem, 4.2vw, 3rem);
-    color: #fff;
+    color: var(--night-ink);
   }
 
   .privacy .lead {
-    color: #b4c3d1;
+    color: var(--night-ink-2);
   }
 
   .privacy .btn {
-    --btn-bg: rgb(255 255 255 / 8%);
-    --btn-ink: #fff;
-    --btn-line: rgb(255 255 255 / 20%);
+    --btn-bg: var(--glass-bg);
+    --btn-ink: var(--night-ink);
+    --btn-line: var(--glass-line);
     margin-top: 12px;
   }
 
@@ -1049,23 +1049,23 @@ const heroPoints: [number, number][] = [
     gap: 16px;
     align-items: flex-start;
     padding: 18px 20px;
-    border: 1px solid rgb(255 255 255 / 10%);
+    border: 1px solid var(--glass-line);
     border-radius: var(--radius);
-    background: rgb(255 255 255 / 4%);
+    background: var(--glass-bg);
   }
 
   .privacy-list :global(svg) {
     flex: none;
-    color: #74d8e0;
+    color: var(--night-accent);
   }
 
   .privacy-list strong {
     display: block;
-    color: #fff;
+    color: var(--night-ink);
   }
 
   .privacy-list span {
-    color: #b4c3d1;
+    color: var(--night-ink-2);
     font-size: 0.9375rem;
   }
 

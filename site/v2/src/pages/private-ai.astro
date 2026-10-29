@@ -418,7 +418,7 @@ const faq = [
     padding: 20px;
     border: 1px solid var(--glass-line);
     border-radius: 18px;
-    background: rgb(255 255 255 / 6%);
+    background: var(--glass-bg);
     backdrop-filter: blur(10px);
     color: var(--night-ink);
     transform: rotate(-1.5deg);
@@ -441,7 +441,7 @@ const faq = [
     display: flex;
     align-items: center;
     gap: 8px;
-    color: #7fe3ea;
+    color: var(--night-accent);
     font-size: 0.8125rem;
     font-weight: 500;
     letter-spacing: 0.06em;
@@ -455,13 +455,13 @@ const faq = [
     align-items: center;
     padding: 10px 12px;
     border-radius: 12px;
-    background: rgb(0 0 0 / 25%);
+    background: var(--night-surface);
     font-size: 0.9375rem;
   }
 
   .mock-item strong {
     grid-column: 1 / -1;
-    color: #fff;
+    color: var(--night-ink);
   }
 
   .mock-item span:not(.box) {
@@ -473,7 +473,7 @@ const faq = [
   .box {
     width: 16px;
     height: 16px;
-    border: 1.5px solid #7fe3ea;
+    border: 1.5px solid var(--night-accent);
     border-radius: 4px;
   }
 
@@ -483,7 +483,7 @@ const faq = [
   }
 
   .mock-item.done .box {
-    background: #7fe3ea;
+    background: var(--night-accent);
   }
 
   .mock-q {
@@ -492,13 +492,13 @@ const faq = [
     gap: 10px;
     padding: 12px 16px;
     border-radius: 999px;
-    background: rgb(0 0 0 / 25%);
-    color: #fff;
+    background: var(--night-surface);
+    color: var(--night-ink);
   }
 
   .mock-q :global(svg) {
     flex: none;
-    color: #7fe3ea;
+    color: var(--night-accent);
   }
 
   .mock-code {
@@ -507,15 +507,15 @@ const faq = [
     padding: 12px 14px;
     overflow-x: auto;
     border-radius: 12px;
-    background: rgb(0 0 0 / 40%);
-    color: #8fe8ee;
+    background: var(--night-surface);
+    color: var(--night-accent);
     font-family: var(--font-mono);
     font-size: 0.9375rem;
     white-space: pre;
   }
 
   .mock-status {
-    color: #fff;
+    color: var(--night-ink);
     font-size: 1.0625rem;
   }
 
@@ -524,7 +524,7 @@ const faq = [
     gap: 10px;
     margin: 4px 0 0;
     padding: 0 0 0 18px;
-    border-left: 2px solid rgb(127 227 234 / 40%);
+    border-left: 2px solid color-mix(in srgb, var(--night-accent) 40%, transparent);
     list-style: none;
   }
 
@@ -542,12 +542,12 @@ const faq = [
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #7fe3ea;
-    box-shadow: 0 0 10px #7fe3ea;
+    background: var(--night-accent);
+    box-shadow: 0 0 10px var(--night-accent);
   }
 
   .timeline strong {
-    color: #fff;
+    color: var(--night-ink);
   }
 
   .timeline span {
@@ -565,7 +565,7 @@ const faq = [
     position: relative;
     padding: 14px;
     border-radius: 12px;
-    background: rgb(0 0 0 / 25%);
+    background: var(--night-surface);
   }
 
   .mock-facts dt {
@@ -575,7 +575,7 @@ const faq = [
 
   .mock-facts dd {
     margin: 2px 0 0;
-    color: #fff;
+    color: var(--night-ink);
     font-size: 1.6rem;
     font-weight: 500;
   }
@@ -584,7 +584,7 @@ const faq = [
     position: absolute;
     top: 10px;
     right: 12px;
-    color: #7fe3ea;
+    color: var(--night-accent);
     font-size: 0.75rem;
   }
 
