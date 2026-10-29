@@ -1,0 +1,72 @@
+---
+// Where the Stripe payment links redirect after paying. Coming from the
+// download wall (utm_content=download), the download starts by itself.
+import Base from '../layouts/Base.astro';
+import StartDownload from '../components/StartDownload.astro';
+import Icon from '../components/Icon.astro';
+import { socials } from '../config';
+import { useT } from '../i18n';
+
+interface Props {
+  lang: string;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const follow = socials.filter((s) => s.href && s.icon !== 'github');
+---
+
+<Base lang={lang} title={t('thanks.title')} description={t('thanks.description')} noindex>
+  <section class="section-tight">
+    <div class="wrap narrow">
+      <div class="heart" aria-hidden="true"><Icon name="heart" size={32} /></div>
+      <h1>{t('thanks.h1')}</h1>
+      <p class="lead">{t('thanks.lead')}</p>
+      <StartDownload lang={lang} auto="when-downloading" />
+      {
+        follow.length > 0 && (
+          <p class="follow">
+            {t('thanks.follow')}{' '}
+            {follow.map((s, i) => (
+              <>
+                {i > 0 && ' · '}
+                <a href={s.href} rel="noopener">
+                  {s.name}
+                </a>
+              </>
+            ))}
+          </p>
+        )
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .narrow {
+    max-width: 760px;
+  }
+
+  .heart {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    background: var(--warm-soft);
+    color: var(--warm);
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+  }
+
+  .lead {
+    margin-bottom: 32px;
+  }
+
+  .follow {
+    margin-top: 32px;
+    color: var(--ink-2);
+  }
+</style>

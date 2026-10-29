@@ -1,0 +1,335 @@
+---
+import { Image } from 'astro:assets';
+import { nav, site } from '../config';
+import { useT, localize } from '../i18n';
+import tile from '../assets/brand/icon-tile.png';
+import Icon from './Icon.astro';
+import BrandIcon from './BrandIcon.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+
+interface Props {
+  lang: string;
+  path: string; // without the language prefix
+}
+const { lang, path } = Astro.props;
+const t = useT(lang);
+const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href={localize(lang, '/')} aria-label={t('common.home')}>
+      <Image src={tile} alt="" width={34} height={34} densities={[1, 2, 3]} loading="eager" />
+      <span class="wordmark">Loupe</span>
+    </a>
+
+    <nav class="primary" aria-label={t('nav.main')}>
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={localize(lang, item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.text ?? t(item.label)}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <div class="controls">
+        <LanguageSwitcher lang={lang} path={path} />
+        <button class="icon-btn theme-toggle" type="button" aria-label={t('common.theme')}>
+          <span class="sun"><Icon name="weather-sunny" size={20} /></span>
+          <span class="moon"><Icon name="weather-moon" size={20} /></span>
+        </button>
+        <a class="icon-btn hide-s" href={site.repo} aria-label={t('common.github')} rel="noopener">
+          <BrandIcon name="github" size={20} />
+        </a>
+        <a class="btn btn-primary btn-small" href={localize(lang, '/download/')} aria-label={t('common.download')}>
+          <Icon name="arrow-download" size={18} />
+          <span>{t('common.download')}</span>
+        </a>
+      </div>
+      <details class="menu">
+        <summary class="icon-btn" aria-label={t('common.menu')}><Icon name="navigation" size={22} /></summary>
+        <nav class="menu-panel" aria-label={t('nav.main')}>
+          {
+            nav.map((item) => (
+              <a href={localize(lang, item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.text ?? t(item.label)}
+              </a>
+            ))
+          }
+          <a href={localize(lang, '/contact/')}>{t('nav.contact')}</a>
+          <a href={site.repo} rel="noopener">GitHub</a>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.theme-toggle');
+  button?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const current =
+      root.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {}
+  });
+
+  // Fit the actual labels, including translations and late-loading fonts.
+  // The compact nav stays measurable outside the flex row.
+  const header = document.querySelector<HTMLElement>('.site-header');
+  const bar = header?.querySelector<HTMLElement>('.bar');
+  const brand = header?.querySelector<HTMLElement>('.brand');
+  const primary = header?.querySelector<HTMLElement>('.primary');
+  const controls = header?.querySelector<HTMLElement>('.controls');
+  const menu = header?.querySelector<HTMLDetailsElement>('.menu');
+  if (header && bar && brand && primary && controls && menu) {
+    const fitNavigation = () => {
+      const style = getComputedStyle(bar);
+      const available = bar.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+      const required = brand.offsetWidth + primary.offsetWidth + controls.offsetWidth + 2 * parseFloat(style.columnGap);
+      const compact = required > available;
+      header.dataset.compact = String(compact);
+      primary.inert = compact;
+      if (!compact) menu.open = false;
+    };
+    fitNavigation();
+    const observer = new ResizeObserver(fitNavigation);
+    for (const element of [bar, brand, primary, controls]) observer.observe(element);
+  }
+
+  // Close the compact menu after picking a link, tapping outside or Escape.
+  menu?.addEventListener('click', (e) => {
+    if ((e.target as Element).closest('a')) menu.open = false;
+  });
+  document.addEventListener('click', (e) => {
+    if (menu?.open && !menu.contains(e.target as Node)) menu.open = false;
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu?.open) {
+      menu.open = false;
+      menu.querySelector('summary')?.focus();
+    }
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-h);
+    /* Frosted glass: mostly see-through, strongly blurred. Only the standard
+       property is written; the build adds the -webkit- form where needed
+       (writing both made the minifier keep just the prefixed one). */
+    background: color-mix(in srgb, var(--bg) 55%, transparent);
+    backdrop-filter: blur(22px) saturate(1.8);
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+    box-shadow: inset 0 -1px 0 rgb(255 255 255 / 6%);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 100%;
+  }
+
+  .brand {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .brand img {
+    border-radius: 9px;
+    box-shadow: var(--shadow-s);
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  /* The compact menu also works without JavaScript. Expand only when it fits. */
+  .primary {
+    position: absolute;
+    /* Keep the measured row outside the viewport without widening the page. */
+    inset-inline-end: 100%;
+    visibility: hidden;
+    pointer-events: none;
+    flex: none;
+    width: max-content;
+    margin-right: auto;
+  }
+
+  .primary ul {
+    display: flex;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .primary a {
+    display: block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .primary a:hover {
+    color: var(--ink);
+    background: var(--bg-sunk);
+  }
+
+  .primary a[aria-current='page'] {
+    color: var(--brand-ink);
+    background: var(--brand-soft);
+  }
+
+  .actions {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .actions .btn {
+    white-space: nowrap;
+  }
+
+  .icon-btn {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink-2);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .icon-btn:hover {
+    background: var(--bg-sunk);
+    color: var(--ink);
+  }
+
+  .icon-btn::-webkit-details-marker {
+    display: none;
+  }
+
+  .theme-toggle .moon {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .theme-toggle .sun {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .theme-toggle .moon {
+    display: block;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .theme-toggle .sun {
+      display: none;
+    }
+    :global(:root:not([data-theme='light'])) .theme-toggle .moon {
+      display: block;
+    }
+  }
+
+  .menu {
+    position: relative;
+  }
+
+  .menu-panel {
+    position: absolute;
+    z-index: 60;
+    right: 0;
+    top: calc(100% + 10px);
+    display: grid;
+    min-width: 220px;
+    max-width: calc(100vw - 2 * var(--gutter));
+    max-height: calc(100dvh - var(--header-h) - 24px);
+    overflow-y: auto;
+    padding: 8px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-l);
+  }
+
+  .menu-panel a {
+    padding: 10px 14px;
+    border-radius: 10px;
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  .menu-panel a:hover,
+  .menu-panel a[aria-current='page'] {
+    background: var(--brand-soft);
+    color: var(--brand-ink);
+  }
+
+  .site-header[data-compact='false'] .primary {
+    position: static;
+    inset-inline-end: auto;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .site-header[data-compact='false'] .menu {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    .hide-s {
+      display: none;
+    }
+    .bar {
+      gap: 12px;
+    }
+    .actions .btn span {
+      display: none;
+    }
+    .actions .btn {
+      width: 40px;
+      padding: 0;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .wordmark { display: none; }
+  }
+</style>

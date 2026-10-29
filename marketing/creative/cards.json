@@ -1,5 +1,5 @@
 {
-  "$comment": "Social images rendered by cards.mjs to marketing/media/<file>.jpg. Types: statement {kicker, headline, sub, footer}, screen {shot, theme, kicker, headline, sub, step, wide}, tip {headline, expr, chips, sub, footer}. Shots are files in site/src/assets/screenshots/.",
+  "$comment": "Social images rendered by cards.mjs to marketing/media/<file>.jpg. Types: statement {kicker, headline, sub, footer}, screen {shot, theme, kicker, headline, sub, step, wide}, tip {headline, expr, chips, sub, footer}. Shots are files in site/v2/src/assets/screenshots/.",
   "cards": [
     { "id": "teaser-focus", "file": "tease/focus", "type": "statement", "kicker": "Coming 20 October", "headline": "Your mail, in focus.", "sub": "A calm mail app for Android, with serious tools underneath." },
     { "id": "teaser-search", "file": "tease/search", "type": "screen", "shot": "search.png", "kicker": "Look closer", "headline": "What if the mail app on your phone understood this?" },
