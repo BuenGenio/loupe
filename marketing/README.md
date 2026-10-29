@@ -627,7 +627,7 @@ Sources: [Buffer API](https://buffer.com/resources/legacy-rest-api-retired/) ·
 
 | File | What it does |
 |---|---|
-| `creative/cards.json` + `cards.mjs` | The social images (1080×1350 JPEG, Ubuntu, real app screenshots from `site/src/assets/screenshots/`). `cd creative && npm ci && npm run cards` re-renders all of them into `media/`; `npm run cards:one -- <id>` renders one. |
+| `creative/cards.json` + `cards.mjs` | The social images (1080×1350 JPEG, Ubuntu, real app screenshots from `site/v1/src/assets/screenshots/`). `cd creative && npm ci && npm run cards` re-renders all of them into `media/`; `npm run cards:one -- <id>` renders one. |
 | `creative/schedule.py` | The plan behind `posts/`: every post's date, platforms, per-network text and images. `python3 creative/schedule.py` rewrites `posts/*.md` and `posts/_drafts/*.md` from it, so either edit the post files directly and stop using the script, or edit the script and re-run it; don't mix the two. |
 | `creative/calendar_page.py` + `calendar_page.html` | A self-contained calendar page of the schedule (posts plus video drafts, with thumbnails). Run `npm run calendar` in `publisher/` first. |
 

@@ -4,8 +4,8 @@ import { execSync } from 'node:child_process';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
-// The monorepo root (the build runs in site/; this module is bundled first).
-const root = resolve(process.cwd(), '..');
+// The monorepo root (the build runs in site/v1/; this module is bundled first).
+const root = resolve(process.cwd(), '../..');
 
 function walk(dir: string, out: string[] = []): string[] {
   for (const name of readdirSync(dir)) {

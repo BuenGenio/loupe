@@ -3,7 +3,7 @@
 import sharp from 'sharp';
 import { writeFile } from 'node:fs/promises';
 
-const square = new URL('../../app/assets/icon/icon.png', import.meta.url).pathname;
+const square = new URL('../../../app/assets/icon/icon.png', import.meta.url).pathname;
 const pub = (name) => new URL(`../public/${name}`, import.meta.url).pathname;
 const brand = (name) => new URL(`../src/assets/brand/${name}`, import.meta.url).pathname;
 

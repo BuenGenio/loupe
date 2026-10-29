@@ -1,7 +1,7 @@
 // Writes the Google Play store listing for every language Play supports into
 // app/android/fastlane/metadata/android/<locale>/ (fastlane supply's layout):
 // title, short and full description from the website's translations
-// (site/src/i18n), a localised feature graphic, framed phone screenshots with
+// (site/v1/src/i18n), a localised feature graphic, framed phone screenshots with
 // localised captions, tablet screenshots and the 512 px icon.
 //
 //   cd marketing/creative && npm ci && npm run play            texts and images
@@ -19,8 +19,8 @@ import sharp from 'sharp';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repo = resolve(here, '../..');
-const i18n = join(repo, 'site/src/i18n');
-const shots = join(repo, 'site/src/assets/screenshots');
+const i18n = join(repo, 'site/v1/src/i18n');
+const shots = join(repo, 'site/v1/src/assets/screenshots');
 const out = join(repo, 'app/android/fastlane/metadata/android');
 const require = createRequire(import.meta.url);
 
@@ -78,7 +78,7 @@ const C = { navy: '#0c2238', navy2: '#071628', ring: '#0f8494', aqua: '#74d8e0',
 const uri = (buf) => `data:image/png;base64,${buf.toString('base64')}`;
 const h = (type, style, children) => ({ type, props: { style: { display: 'flex', ...style }, children } });
 const img = (src, width, height, style = {}) => ({ type: 'img', props: { src, width, height, style } });
-const tile = uri(await sharp(join(repo, 'site/src/assets/brand/icon-tile.png')).resize(128).png().toBuffer());
+const tile = uri(await sharp(join(repo, 'site/v1/src/assets/brand/icon-tile.png')).resize(128).png().toBuffer());
 
 async function phone(file, width) {
   const meta = await sharp(join(shots, file)).metadata();

@@ -4,7 +4,7 @@ Loupe shows the language picked in **Settings › Language**. With **Same as Pho
 
 The choice is kept as `settings.language`. `appLanguage` in `l10n.dart` holds it for text made outside the widget tree. Notifications and background work load it with `AppSettingsController.loadLanguage` when they start.
 
-Loupe speaks the same 37 languages as the website (`site/src/i18n/locales.ts`). Every new string needs translating into all of them; `test/l10n/translations_test.dart` fails until it is.
+Loupe speaks the same 37 languages as the website (`site/v1/src/i18n/locales.ts`). Every new string needs translating into all of them; `test/l10n/translations_test.dart` fails until it is.
 
 ## How it works
 
@@ -85,7 +85,7 @@ When you move a file's strings, take it off the list; the test fails if you forg
 
 Each language is one `app_<lang>.arb` with the same keys and placeholders as `app_en.arb`. It has no `@` entries and no `@@x-section` lines; those stay in the English file.
 
-- **Words:** reuse the website's words for the same things (`site/src/i18n/<lang>.json`), so the app and the site name things alike. Follow the language's own conventions for capitals (most use sentence case where English uses Title Case), quotes and the ellipsis.
+- **Words:** reuse the website's words for the same things (`site/v1/src/i18n/<lang>.json`), so the app and the site name things alike. Follow the language's own conventions for capitals (most use sentence case where English uses Title Case), quotes and the ellipsis.
 - **Plurals:** use the language's plural forms (`zero`, `one`, `two`, `few`, `many`, `other`), even where the English has only `other`.
   - Every plural needs `other`.
   - `=1` and `one` are the same thing to gen-l10n. In Ukrainian, Croatian, Serbian, Bosnian, Slovenian, Lithuanian, Latvian, Macedonian and Icelandic, `one` also means 21, 31 and so on; in French and Portuguese it also means 0. So `one` must show the number there (`one{{count} лист}`), never "1" or "a".

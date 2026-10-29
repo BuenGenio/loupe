@@ -58,7 +58,7 @@ const releases = defineCollection({
   loader: {
     name: 'repo-changelog',
     load: async ({ store, renderMarkdown, generateDigest, parseData, watcher }) => {
-      const file = new URL(`file://${process.cwd()}/../CHANGELOG.md`);
+      const file = new URL(`file://${process.cwd()}/../../CHANGELOG.md`);
       const sync = async () => {
         const entries = parseChangelog(await readFile(file, 'utf8'));
         store.clear();
@@ -81,11 +81,11 @@ const legal = defineCollection({
   loader: {
     name: 'repo-privacy-policy',
     load: async ({ store, renderMarkdown, generateDigest, parseData, watcher }) => {
-      const file = new URL(`file://${process.cwd()}/../docs/privacy-policy.md`);
+      const file = new URL(`file://${process.cwd()}/../../docs/privacy-policy.md`);
       const sync = async () => {
         let updated = new Date();
         try {
-          const iso = execSync('git log -1 --format=%cI -- docs/privacy-policy.md', { cwd: '..', stdio: ['ignore', 'pipe', 'ignore'] })
+          const iso = execSync('git log -1 --format=%cI -- docs/privacy-policy.md', { cwd: '../..', stdio: ['ignore', 'pipe', 'ignore'] })
             .toString()
             .trim();
           if (iso) updated = new Date(iso);
