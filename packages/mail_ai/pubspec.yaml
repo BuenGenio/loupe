@@ -1,0 +1,14 @@
+name: mail_ai
+description: "Private AI for Loupe: typed tasks, the provider contract, validation with one repair attempt, a fake provider for tests, and the plain-English search translator. Pure Dart: no model, SDK or network dependency."
+publish_to: none
+version: 0.1.0
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  mail_model: {path: ../mail_model}
+  expr_search: {path: ../expr_search}
+  # BSD-3 (the Dart team); SHA-256 for the input hash of a run.
+  crypto: ^3.0.0
+dev_dependencies:
+  test: any
