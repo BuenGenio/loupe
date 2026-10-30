@@ -124,20 +124,18 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
   /// Ask in Plain English: the sentence goes to the configured provider as a
   /// SearchTranslationTask; the sheet shows what came back, and only an
   /// expression the parser accepted can land in the field, where it is
-  /// editable like any typed query.
-  Future<void> _ask(AiProvider provider) async {
+  /// editable like any typed query. The run counts in Private AI's usage.
+  Future<void> _ask(AiService service) async {
     final sentence = _session.query.trim();
     final accounts = [for (final a in ref.read(accountsProvider).value ?? const <MailAccount>[]) a.displayName];
     FocusManager.instance.primaryFocus?.unfocus();
     final expression = await showAskSheet(
       context,
       sentence: sentence,
-      providerId: provider.id,
+      providerId: service.provider.id,
       run: () {
         final now = DateTime.now();
-        return AiRunner(
-          provider,
-        ).run(SearchTranslationTask(sentence, now: now, timeZone: now.timeZoneName, accounts: accounts));
+        return service.run(SearchTranslationTask(sentence, now: now, timeZone: now.timeZoneName, accounts: accounts));
       },
     );
     if (expression == null || !mounted) return;
@@ -318,8 +316,9 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
     final lastWord = _session.query.split(RegExp(r'\s+')).lastWhere((w) => w.isNotEmpty, orElse: () => '');
     final suggestPeople = widget.showSuggestions && lastWord.length >= 2 && !lastWord.contains(':');
     final word = _session.currentWord;
-    final aiProvider = ref.watch(aiProviderProvider);
-    final offerAsk = widget.showSuggestions && aiProvider != null && looksLikeASentence(_session.query, parsed);
+    // Searches every account, and sends a sentence, not mail.
+    final ai = ref.watch(aiServiceForProvider((AiFeature.search, null)));
+    final ask = widget.showSuggestions && looksLikeASentence(_session.query, parsed) ? ai : null;
     final completions = widget.showSuggestions && word.isNotEmpty
         ? suggest(_session.query, _cursor).where((c) => c.insertText != word).take(4).toList()
         : const <QuerySuggestion>[];
@@ -348,9 +347,9 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
             ),
           ),
         ),
-      if (offerAsk)
+      if (ask != null)
         SliverToBoxAdapter(
-          child: _SuggestionRow(icon: LoupeIcons.ask, label: l10n.searchAskPlainEnglish, onTap: () => _ask(aiProvider)),
+          child: _SuggestionRow(icon: LoupeIcons.ask, label: l10n.searchAskPlainEnglish, onTap: () => _ask(ask)),
         ),
       if (completions.isNotEmpty)
         SliverList.list(
