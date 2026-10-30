@@ -1,6 +1,7 @@
 import 'package:expr_search/expr_search.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/features/ai/demo_ai_provider.dart';
+import 'package:loupe/features/search/search_session.dart' show queryTerms;
 import 'package:mail_ai/mail_ai.dart';
 
 void main() {
@@ -12,7 +13,7 @@ void main() {
     expect(e, contains('from:dana'));
     expect(e, contains('is:unread'));
     expect(e, contains('has:attachment'));
-    expect(e, contains('after:2026-09-01'));
+    expect(e, contains('after:2026-08-31'));
     expect(parseQuery(e, now: now).isValid, isTrue);
   });
 
@@ -24,7 +25,7 @@ void main() {
   });
 
   test('a month later in the year than today belongs to last year', () {
-    expect(expression('mail from dana since december'), 'from:dana after:2025-12-01');
+    expect(expression('mail from dana since december'), 'from:dana after:2025-11-30');
   });
 
   test('words it does not know search as text, and are named in the interpretation', () {
@@ -52,6 +53,14 @@ void main() {
       expect(e, isNotEmpty, reason: s);
       expect(parseQuery(e, now: now).isValid, isTrue, reason: '$s → $e');
     }
+  });
+
+  test('“since” includes the first day: after: is exclusive, so it names the day before', () {
+    String chips(String sentence) =>
+        queryTerms(parseQuery(expression(sentence), now: now).expr).map(describeTerm).join(' · ');
+    expect(chips('unread from dana since september'), contains('Since 1 Sep 2026'));
+    expect(chips('invoices since 2025'), contains('Since 1 Jan 2025'));
+    expect(chips('invoices after 2025'), contains('Since 1 Jan 2026'));
   });
 
   test('as a provider it answers the translation task and refuses others', () async {
