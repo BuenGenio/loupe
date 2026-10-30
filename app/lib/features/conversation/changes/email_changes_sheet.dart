@@ -1,16 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../../l10n/l10n.dart';
 import '../../../shared/format.dart';
 import '../../../theme/loupe_icons.dart';
 import '../../../theme/theme.dart';
+import '../../ai/ai_providers.dart';
 import '../sheets.dart';
 import 'email_diff.dart';
+import 'what_changed.dart';
 
 /// An explicit comparison of two messages. Read flags are deliberately not
 /// used as a review checkpoint: opening a conversation already changes them.
+/// With Private AI on for the account, What Changed explains the text
+/// changes above the line diff (see [WhatChangedSection]).
 Future<void> showEmailChangesSheet(
   BuildContext context, {
   required List<EmailSummary> messages,
@@ -34,7 +39,7 @@ EmailContent _input(EmailContent content) => EmailContent(
   attachments: content.attachments,
 );
 
-class EmailChangesSheet extends StatefulWidget {
+class EmailChangesSheet extends ConsumerStatefulWidget {
   const EmailChangesSheet({super.key, required this.messages, required this.initialEmailId, required this.loadContent})
     : assert(messages.length >= 2);
 
@@ -43,10 +48,10 @@ class EmailChangesSheet extends StatefulWidget {
   final Future<EmailContent> Function(EmailSummary message) loadContent;
 
   @override
-  State<EmailChangesSheet> createState() => _EmailChangesSheetState();
+  ConsumerState<EmailChangesSheet> createState() => _EmailChangesSheetState();
 }
 
-class _EmailChangesSheetState extends State<EmailChangesSheet> {
+class _EmailChangesSheetState extends ConsumerState<EmailChangesSheet> {
   late final List<EmailSummary> _messages;
   late String _fromId;
   late String _toId;
@@ -127,6 +132,8 @@ class _EmailChangesSheetState extends State<EmailChangesSheet> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final accountId = _messages.firstWhere((m) => m.id == _toId).accountId;
+    final explain = ref.watch(aiServiceForProvider((AiFeature.changes, accountId)));
     return Column(
       children: [
         Padding(
@@ -158,7 +165,7 @@ class _EmailChangesSheetState extends State<EmailChangesSheet> {
                   ),
                 ]);
               } else if (snapshot.data case final diff?) {
-                rows.addAll(_result(diff));
+                rows.addAll(_result(diff, explain));
               }
               return SelectionArea(
                 child: ListView.builder(
@@ -175,11 +182,19 @@ class _EmailChangesSheetState extends State<EmailChangesSheet> {
     );
   }
 
-  List<Widget> _result(EmailDiff diff) {
+  List<Widget> _result(EmailDiff diff, AiService? explain) {
     final l10n = context.l10n;
     final colors = LoupeColors.of(context);
     final body = diff.body;
     return [
+      if (explain != null && body.hasChanges)
+        WhatChangedSection(
+          key: ObjectKey(diff),
+          service: explain,
+          diff: diff,
+          from: _messages.firstWhere((m) => m.id == _fromId),
+          to: _messages.firstWhere((m) => m.id == _toId),
+        ),
       if (!body.isTruncated)
         Padding(
           padding: const EdgeInsets.only(bottom: 12),

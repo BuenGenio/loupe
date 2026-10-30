@@ -148,6 +148,90 @@ class AppLocalizationsSq extends AppLocalizations {
   String get mailboxTrash => 'Koshi';
 
   @override
+  String get changesExplainTitle => 'Çfarë ndryshoi';
+
+  @override
+  String get changesExplainIntro =>
+      'Shpjegon faktet që kanë ndryshuar, secili i lidhur me pjesët e veta në të dy mesazhet.';
+
+  @override
+  String get changesExplainAction => 'Shpjego ndryshimet';
+
+  @override
+  String get changesExplainWorking => 'Po shpjegohen ndryshimet…';
+
+  @override
+  String get changesExplainFailed => 'Loupe nuk mundi t’i shpjegonte këto ndryshime.';
+
+  @override
+  String get changesExplainTooLarge => 'Këto mesazhe janë tepër të gjata për modelin.';
+
+  @override
+  String get changesExplainProviderError => 'Modeli nuk u përgjigj.';
+
+  @override
+  String get changesExplainInvalid => 'Përgjigjja nuk i kaloi kontrollet e Loupe, ndaj nuk shfaqet asgjë prej saj.';
+
+  @override
+  String get changesExplainNoChange =>
+      'Nuk u gjet asnjë ndryshim kuptimi. Ndryshimet e sakta të tekstit janë më poshtë.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Ndryshuar',
+      'added': 'E re',
+      'removed': 'Nuk përmendet më',
+      'contradiction': 'Kontradiktore',
+      'other': 'Ndryshuar',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first ose $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Mesazhet nuk thonë cila prej tyre vlen.';
+
+  @override
+  String get changesExplainPartial => 'U lexua vetëm fillimi i një mesazhi të gjatë.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Rreshtat që nisin me “>” citojnë postë të mëparshme. Ato lexohen si kontekst, jo si ajo që thotë ndonjëri nga mesazhet.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Një mesazh mund të citojë postë të mëparshme pa e shënuar, ndaj disa ndryshime mund të vijnë nga postë më e vjetër. Kontrolloni pjesët.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Çdo pjesë u gjet në mesazhin e vet. Lexojini përpara se të mbështeteni te një ndryshim.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Shpjegohet vetëm teksti i mesazheve. Bashkëngjitjet krahasohen vetëm sipas emrit, llojit dhe madhësisë.';
+
+  @override
+  String get changesExplainDemoNote => 'Bërë nga demonstrimi i integruar, jo nga një model.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Bërë nga $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Asnjë pjesë e theksuar në këtë mesazh.';
+
+  @override
   String get conversationCompareMessages => 'Krahaso mesazhet…';
 
   @override

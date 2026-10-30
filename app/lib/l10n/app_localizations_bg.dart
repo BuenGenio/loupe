@@ -148,6 +148,88 @@ class AppLocalizationsBg extends AppLocalizations {
   String get mailboxTrash => 'Кошче';
 
   @override
+  String get changesExplainTitle => 'Какво се промени';
+
+  @override
+  String get changesExplainIntro => 'Обяснява променените факти, всеки свързан с откъсите си в двете съобщения.';
+
+  @override
+  String get changesExplainAction => 'Обясняване на промените';
+
+  @override
+  String get changesExplainWorking => 'Обясняване на промените…';
+
+  @override
+  String get changesExplainFailed => 'Loupe не успя да обясни тези промени.';
+
+  @override
+  String get changesExplainTooLarge => 'Тези съобщения са твърде дълги за модела.';
+
+  @override
+  String get changesExplainProviderError => 'Моделът не отговори.';
+
+  @override
+  String get changesExplainInvalid => 'Отговорът не премина проверките на Loupe, затова нищо от него не се показва.';
+
+  @override
+  String get changesExplainNoChange => 'Не е открита промяна в смисъла. Точните промени в текста са по-долу.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Променено',
+      'added': 'Ново',
+      'removed': 'Вече не се споменава',
+      'contradiction': 'Противоречиво',
+      'other': 'Променено',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first или $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Съобщенията не казват кое от тези е в сила.';
+
+  @override
+  String get changesExplainPartial => 'Прочетено е само началото на дълго съобщение.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Редовете, започващи с „>“, цитират по-ранна поща. Те се четат като контекст, а не като казаното в някое от съобщенията.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Съобщението може да цитира по-ранна поща, без да я отбележи, затова някои промени може да идват от по-стара поща. Проверете откъсите.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Всеки откъс е открит в своето съобщение. Прочетете ги, преди да разчитате на дадена промяна.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Обяснява се само текстът на съобщенията. Прикачените файлове се сравняват само по име, тип и размер.';
+
+  @override
+  String get changesExplainDemoNote => 'Създадено от вградената демонстрация, не от модел.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Създадено от $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'В това съобщение няма маркиран откъс.';
+
+  @override
   String get conversationCompareMessages => 'Сравняване на съобщения…';
 
   @override

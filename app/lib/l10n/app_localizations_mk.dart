@@ -148,6 +148,88 @@ class AppLocalizationsMk extends AppLocalizations {
   String get mailboxTrash => 'Корпа';
 
   @override
+  String get changesExplainTitle => 'Што се промени';
+
+  @override
+  String get changesExplainIntro => 'Ги објаснува променетите факти, секој поврзан со неговите пасуси во двете пораки.';
+
+  @override
+  String get changesExplainAction => 'Објасни ги промените';
+
+  @override
+  String get changesExplainWorking => 'Се објаснуваат промените…';
+
+  @override
+  String get changesExplainFailed => 'Loupe не можеше да ги објасни овие промени.';
+
+  @override
+  String get changesExplainTooLarge => 'Овие пораки се предолги за моделот.';
+
+  @override
+  String get changesExplainProviderError => 'Моделот не одговори.';
+
+  @override
+  String get changesExplainInvalid => 'Одговорот не ги помина проверките на Loupe, па ништо од него не се прикажува.';
+
+  @override
+  String get changesExplainNoChange => 'Не е пронајдена промена на значењето. Точните промени во текстот се подолу.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Променето',
+      'added': 'Ново',
+      'removed': 'Повеќе не се спомнува',
+      'contradiction': 'Противречно',
+      'other': 'Променето',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first или $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Пораките не кажуваат кој од овие податоци важи.';
+
+  @override
+  String get changesExplainPartial => 'Прочитан е само почетокот на долга порака.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Редовите што почнуваат со „>“ цитираат претходна пошта. Се читаат како контекст, а не како содржина на некоја од пораките.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Пораката може да цитира претходна пошта без да ја означи, па некои промени може да потекнуваат од постара пошта. Проверете ги пасусите.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Секој пасус е пронајден во својата порака. Прочитајте ги пред да се потпрете на некоја промена.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Се објаснува само текстот на пораките. Прилозите се споредуваат само по име, тип и големина.';
+
+  @override
+  String get changesExplainDemoNote => 'Изработено од вградената демонстрација, не од модел.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Изработено од $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Во оваа порака не е истакнат ниеден пасус.';
+
+  @override
   String get conversationCompareMessages => 'Спореди пораки…';
 
   @override

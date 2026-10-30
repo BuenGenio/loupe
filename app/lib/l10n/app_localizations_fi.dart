@@ -148,6 +148,89 @@ class AppLocalizationsFi extends AppLocalizations {
   String get mailboxTrash => 'Roskakori';
 
   @override
+  String get changesExplainTitle => 'Mikä muuttui';
+
+  @override
+  String get changesExplainIntro =>
+      'Selittää muuttuneet tiedot ja linkittää kunkin vastaaviin tekstikohtiin molemmissa viesteissä.';
+
+  @override
+  String get changesExplainAction => 'Selitä muutokset';
+
+  @override
+  String get changesExplainWorking => 'Muutoksia selitetään…';
+
+  @override
+  String get changesExplainFailed => 'Loupe ei voinut selittää näitä muutoksia.';
+
+  @override
+  String get changesExplainTooLarge => 'Nämä viestit ovat liian pitkiä mallille.';
+
+  @override
+  String get changesExplainProviderError => 'Malli ei vastannut.';
+
+  @override
+  String get changesExplainInvalid => 'Vastaus ei läpäissyt Loupen tarkistuksia, joten siitä ei näytetä mitään.';
+
+  @override
+  String get changesExplainNoChange => 'Merkityksen muutoksia ei löytynyt. Tarkat tekstimuutokset ovat alla.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Muuttunut',
+      'added': 'Uusi',
+      'removed': 'Ei enää mainittu',
+      'contradiction': 'Ristiriitainen',
+      'other': 'Muuttunut',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first tai $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Viesteistä ei selviä, kumpi näistä pätee.';
+
+  @override
+  String get changesExplainPartial => 'Pitkästä viestistä luettiin vain alku.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Merkillä ”>” alkavat rivit lainaavat aiempaa postia. Ne luetaan taustatiedoksi, ei kummankaan viestin omaksi sisällöksi.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Viesti voi lainata aiempaa postia merkitsemättä sitä, joten jotkin muutokset voivat olla peräisin vanhemmasta postista. Tarkista tekstikohdat.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Jokainen tekstikohta löytyi viestistään. Lue ne, ennen kuin luotat muutokseen.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Vain viestin teksti selitetään. Liitteitä verrataan vain nimen, tyypin ja koon perusteella.';
+
+  @override
+  String get changesExplainDemoNote => 'Tehnyt sisäänrakennettu demo, ei malli.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Tehnyt $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Tässä viestissä ei ole korostettuja tekstikohtia.';
+
+  @override
   String get conversationCompareMessages => 'Vertaa viestejä…';
 
   @override

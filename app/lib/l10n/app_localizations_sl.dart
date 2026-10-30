@@ -155,6 +155,89 @@ class AppLocalizationsSl extends AppLocalizations {
   String get mailboxTrash => 'Smeti';
 
   @override
+  String get changesExplainTitle => 'Kaj se je spremenilo';
+
+  @override
+  String get changesExplainIntro => 'Pojasni spremenjena dejstva, vsako povezano z odlomki v obeh sporočilih.';
+
+  @override
+  String get changesExplainAction => 'Razloži spremembe';
+
+  @override
+  String get changesExplainWorking => 'Razlaganje sprememb…';
+
+  @override
+  String get changesExplainFailed => 'Loupe teh sprememb ni mogel pojasniti.';
+
+  @override
+  String get changesExplainTooLarge => 'Ta sporočila so predolga za model.';
+
+  @override
+  String get changesExplainProviderError => 'Model ni odgovoril.';
+
+  @override
+  String get changesExplainInvalid =>
+      'Odgovor ni prestal preverjanj aplikacije Loupe, zato ni prikazan noben njegov del.';
+
+  @override
+  String get changesExplainNoChange => 'Sprememba pomena ni bila najdena. Natančne spremembe besedila so spodaj.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Spremenjeno',
+      'added': 'Novo',
+      'removed': 'Ni več omenjeno',
+      'contradiction': 'V nasprotju',
+      'other': 'Spremenjeno',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first ali $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Sporočila ne povedo, kateri od teh podatkov velja.';
+
+  @override
+  String get changesExplainPartial => 'Prebran je bil le začetek dolgega sporočila.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Vrstice, ki se začnejo z „>“, navajajo starejšo pošto. Berejo se kot kontekst, ne kot vsebina katerega od sporočil.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Sporočilo lahko navaja starejšo pošto, ne da bi jo označilo, zato so lahko nekatere spremembe iz starejše pošte. Preverite odlomke.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Vsak odlomek je bil najden v svojem sporočilu. Preberite jih, preden se zanesete na spremembo.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Pojasnjeno je le besedilo sporočil. Priloge se primerjajo le po imenu, vrsti in velikosti.';
+
+  @override
+  String get changesExplainDemoNote => 'Pripravil vgrajeni demo, ne model.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Pripravil: $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'V tem sporočilu ni označen noben odlomek.';
+
+  @override
   String get conversationCompareMessages => 'Primerjaj sporočila…';
 
   @override

@@ -148,6 +148,91 @@ class AppLocalizationsEl extends AppLocalizations {
   String get mailboxTrash => 'Κάδος απορριμμάτων';
 
   @override
+  String get changesExplainTitle => 'Τι άλλαξε';
+
+  @override
+  String get changesExplainIntro =>
+      'Εξηγεί τα στοιχεία που άλλαξαν, το καθένα συνδεδεμένο με τα αποσπάσματά του και στα δύο μηνύματα.';
+
+  @override
+  String get changesExplainAction => 'Επεξήγηση αλλαγών';
+
+  @override
+  String get changesExplainWorking => 'Επεξήγηση των αλλαγών…';
+
+  @override
+  String get changesExplainFailed => 'Το Loupe δεν μπόρεσε να εξηγήσει αυτές τις αλλαγές.';
+
+  @override
+  String get changesExplainTooLarge => 'Αυτά τα μηνύματα είναι πολύ μεγάλα για το μοντέλο.';
+
+  @override
+  String get changesExplainProviderError => 'Το μοντέλο δεν απάντησε.';
+
+  @override
+  String get changesExplainInvalid =>
+      'Η απάντηση δεν πέρασε τους ελέγχους του Loupe, οπότε δεν εμφανίζεται τίποτα από αυτήν.';
+
+  @override
+  String get changesExplainNoChange =>
+      'Δεν βρέθηκε αλλαγή στο νόημα. Οι ακριβείς αλλαγές του κειμένου βρίσκονται παρακάτω.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Άλλαξε',
+      'added': 'Νέο',
+      'removed': 'Δεν αναφέρεται πια',
+      'contradiction': 'Αντιφατικό',
+      'other': 'Άλλαξε',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first ή $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Τα μηνύματα δεν λένε ποιο από αυτά ισχύει.';
+
+  @override
+  String get changesExplainPartial => 'Διαβάστηκε μόνο η αρχή ενός μεγάλου μηνύματος.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Οι γραμμές που ξεκινούν με «>» παραθέτουν προηγούμενα μηνύματα. Διαβάζονται ως πλαίσιο, όχι ως όσα λέει κάποιο από τα μηνύματα.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Ένα μήνυμα μπορεί να παραθέτει προηγούμενα μηνύματα χωρίς σήμανση, οπότε κάποιες αλλαγές μπορεί να προέρχονται από παλαιότερα μηνύματα. Ελέγξτε τα αποσπάσματα.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Κάθε απόσπασμα βρέθηκε στο μήνυμά του. Διαβάστε τα πριν βασιστείτε σε μια αλλαγή.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Εξηγείται μόνο το κείμενο των μηνυμάτων. Τα συνημμένα συγκρίνονται μόνο κατά όνομα, τύπο και μέγεθος.';
+
+  @override
+  String get changesExplainDemoNote => 'Δημιουργήθηκε από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Δημιουργήθηκε από: $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Δεν επισημαίνεται κανένα απόσπασμα σε αυτό το μήνυμα.';
+
+  @override
   String get conversationCompareMessages => 'Σύγκριση μηνυμάτων…';
 
   @override

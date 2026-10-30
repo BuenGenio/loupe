@@ -148,6 +148,91 @@ class AppLocalizationsCa extends AppLocalizations {
   String get mailboxTrash => 'Paperera';
 
   @override
+  String get changesExplainTitle => 'Què ha canviat';
+
+  @override
+  String get changesExplainIntro =>
+      'Explica les dades que han canviat, cadascuna enllaçada amb els seus passatges en tots dos missatges.';
+
+  @override
+  String get changesExplainAction => 'Explica els canvis';
+
+  @override
+  String get changesExplainWorking => 'S’estan explicant els canvis…';
+
+  @override
+  String get changesExplainFailed => 'El Loupe no ha pogut explicar aquests canvis.';
+
+  @override
+  String get changesExplainTooLarge => 'Aquests missatges són massa llargs per al model.';
+
+  @override
+  String get changesExplainProviderError => 'El model no ha respost.';
+
+  @override
+  String get changesExplainInvalid =>
+      'La resposta no ha superat les comprovacions del Loupe, així que no se’n mostra res.';
+
+  @override
+  String get changesExplainNoChange =>
+      'No s’ha trobat cap canvi de significat. Els canvis exactes del text són a sota.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Canviat',
+      'added': 'Nou',
+      'removed': 'Ja no s’esmenta',
+      'contradiction': 'Contradictori',
+      'other': 'Canviat',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first o $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Els missatges no diuen quina d’aquestes és vàlida.';
+
+  @override
+  String get changesExplainPartial => 'Només s’ha llegit el principi d’un missatge llarg.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Les línies que comencen amb «>» citen correu anterior. Es llegeixen com a context, no com el que diu cap dels missatges.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Un missatge pot citar correu anterior sense marcar-ho, així que alguns canvis poden venir de correu més antic. Comprova els passatges.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Cada passatge s’ha trobat al seu missatge. Llegeix-los abans de refiar-te d’un canvi.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Només s’explica el text dels missatges. Els fitxers adjunts només es comparen per nom, tipus i mida.';
+
+  @override
+  String get changesExplainDemoNote => 'Fet per la demostració integrada, no per un model.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Fet per $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'No hi ha cap passatge ressaltat en aquest missatge.';
+
+  @override
   String get conversationCompareMessages => 'Compara els missatges…';
 
   @override

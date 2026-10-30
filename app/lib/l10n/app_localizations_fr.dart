@@ -154,6 +154,90 @@ class AppLocalizationsFr extends AppLocalizations {
   String get mailboxTrash => 'Corbeille';
 
   @override
+  String get changesExplainTitle => 'Ce qui a changé';
+
+  @override
+  String get changesExplainIntro => 'Explique les faits modifiés, chacun relié à ses passages dans les deux messages.';
+
+  @override
+  String get changesExplainAction => 'Expliquer les modifications';
+
+  @override
+  String get changesExplainWorking => 'Explication des modifications en cours…';
+
+  @override
+  String get changesExplainFailed => 'Loupe n’a pas pu expliquer ces modifications.';
+
+  @override
+  String get changesExplainTooLarge => 'Ces messages sont trop longs pour le modèle.';
+
+  @override
+  String get changesExplainProviderError => 'Le modèle n’a pas répondu.';
+
+  @override
+  String get changesExplainInvalid =>
+      'La réponse n’a pas passé les contrôles de Loupe, elle n’est donc pas affichée du tout.';
+
+  @override
+  String get changesExplainNoChange =>
+      'Aucun changement de sens trouvé. Les modifications exactes du texte figurent ci-dessous.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Modifié',
+      'added': 'Nouveau',
+      'removed': 'Plus mentionné',
+      'contradiction': 'Contradictoire',
+      'other': 'Modifié',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first ou $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Les messages ne disent pas laquelle de ces informations s’applique.';
+
+  @override
+  String get changesExplainPartial => 'Seul le début d’un long message a été lu.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Les lignes commençant par « > » citent des messages antérieurs. Elles sont lues comme du contexte, non comme ce que dit l’un ou l’autre message.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Un message peut citer des messages antérieurs sans l’indiquer ; certaines modifications peuvent donc provenir de messages plus anciens. Vérifiez les passages.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Chaque passage a été trouvé dans son message. Lisez-les avant de vous fier à une modification.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Seul le texte des messages est expliqué. Les pièces jointes ne sont comparées que par nom, type et taille.';
+
+  @override
+  String get changesExplainDemoNote => 'Produit par la démo intégrée, pas par un modèle.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Produit par $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Aucun passage surligné dans ce message.';
+
+  @override
   String get conversationCompareMessages => 'Comparer les messages…';
 
   @override

@@ -153,6 +153,91 @@ class AppLocalizationsDe extends AppLocalizations {
   String get mailboxTrash => 'Papierkorb';
 
   @override
+  String get changesExplainTitle => 'Was sich geändert hat';
+
+  @override
+  String get changesExplainIntro =>
+      'Erklärt die geänderten Fakten, jeweils verknüpft mit ihren Textstellen in beiden Nachrichten.';
+
+  @override
+  String get changesExplainAction => 'Änderungen erklären';
+
+  @override
+  String get changesExplainWorking => 'Änderungen werden erklärt…';
+
+  @override
+  String get changesExplainFailed => 'Loupe konnte diese Änderungen nicht erklären.';
+
+  @override
+  String get changesExplainTooLarge => 'Diese Nachrichten sind für das Modell zu lang.';
+
+  @override
+  String get changesExplainProviderError => 'Das Modell hat nicht geantwortet.';
+
+  @override
+  String get changesExplainInvalid =>
+      'Die Antwort hat die Prüfungen von Loupe nicht bestanden, daher wird nichts davon angezeigt.';
+
+  @override
+  String get changesExplainNoChange =>
+      'Keine inhaltliche Änderung gefunden. Die genauen Textänderungen stehen weiter unten.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Geändert',
+      'added': 'Neu',
+      'removed': 'Nicht mehr erwähnt',
+      'contradiction': 'Widersprüchlich',
+      'other': 'Geändert',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first oder $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Aus den Nachrichten geht nicht hervor, welche dieser Angaben gilt.';
+
+  @override
+  String get changesExplainPartial => 'Von einer langen Nachricht wurde nur der Anfang gelesen.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Zeilen, die mit „>“ beginnen, zitieren frühere Mails. Sie werden als Kontext gelesen, nicht als Aussage einer der beiden Nachrichten.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Eine Nachricht kann frühere Mails zitieren, ohne das zu kennzeichnen, daher können manche Änderungen aus älteren Mails stammen. Prüfe die Textstellen.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Jede Textstelle wurde in ihrer Nachricht gefunden. Lies sie, bevor du dich auf eine Änderung verlässt.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Erklärt wird nur der Nachrichtentext. Anhänge werden nur nach Name, Typ und Größe verglichen.';
+
+  @override
+  String get changesExplainDemoNote => 'Erstellt von der eingebauten Demo, nicht von einem Modell.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Erstellt von $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'In dieser Nachricht ist keine Textstelle hervorgehoben.';
+
+  @override
   String get conversationCompareMessages => 'Nachrichten vergleichen…';
 
   @override

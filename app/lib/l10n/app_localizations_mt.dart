@@ -156,6 +156,90 @@ class AppLocalizationsMt extends AppLocalizations {
   String get mailboxTrash => 'Skart';
 
   @override
+  String get changesExplainTitle => 'X’inbidel';
+
+  @override
+  String get changesExplainIntro =>
+      'Jispjega l-fatti li nbidlu, kull wieħed marbut mas-siltiet tiegħu fiż-żewġ messaġġi.';
+
+  @override
+  String get changesExplainAction => 'Spjega l-bidliet';
+
+  @override
+  String get changesExplainWorking => 'Qed jiġu spjegati l-bidliet…';
+
+  @override
+  String get changesExplainFailed => 'Loupe ma setax jispjega dawn il-bidliet.';
+
+  @override
+  String get changesExplainTooLarge => 'Dawn il-messaġġi huma twal wisq għall-mudell.';
+
+  @override
+  String get changesExplainProviderError => 'Il-mudell ma weġibx.';
+
+  @override
+  String get changesExplainInvalid =>
+      'It-tweġiba ma għaddietx mill-kontrolli ta’ Loupe, għalhekk xejn minnha ma jintwera.';
+
+  @override
+  String get changesExplainNoChange =>
+      'Ma nstabet l-ebda bidla fit-tifsira. Il-bidliet eżatti fit-test jinsabu hawn taħt.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Mibdul',
+      'added': 'Ġdid',
+      'removed': 'Ma jissemmiex aktar',
+      'contradiction': 'Kontradittorju',
+      'other': 'Mibdul',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first jew $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Il-messaġġi ma jgħidux liema minn dawn jgħodd.';
+
+  @override
+  String get changesExplainPartial => 'Inqara biss il-bidu ta’ messaġġ twil.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Il-linji li jibdew b’“>” jikkwotaw posta preċedenti. Jinqraw bħala kuntest, mhux bħala dak li jgħid xi wieħed mill-messaġġi.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Messaġġ jista’ jikkwota posta preċedenti mingħajr ma jimmarkaha, għalhekk xi bidliet jistgħu jiġu minn posta eqdem. Iċċekkja s-siltiet.';
+
+  @override
+  String get changesExplainCheckNote => 'Kull silta nstabet fil-messaġġ tagħha. Aqrahom qabel ma tistrieħ fuq bidla.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Jiġi spjegat biss it-test tal-messaġġi. Il-mehmużin jitqabblu biss skont l-isem, it-tip u d-daqs.';
+
+  @override
+  String get changesExplainDemoNote => 'Magħmul mid-demo inkorporata, mhux minn mudell.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Magħmul minn $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'L-ebda silta ma hi enfasizzata f’dan il-messaġġ.';
+
+  @override
   String get conversationCompareMessages => 'Qabbel il-messaġġi…';
 
   @override

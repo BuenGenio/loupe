@@ -148,6 +148,87 @@ class AppLocalizationsEt extends AppLocalizations {
   String get mailboxTrash => 'Prügikast';
 
   @override
+  String get changesExplainTitle => 'Mis muutus';
+
+  @override
+  String get changesExplainIntro => 'Selgitab muutunud fakte ja seob igaühe vastavate tekstikohtadega mõlemas kirjas.';
+
+  @override
+  String get changesExplainAction => 'Selgita muudatusi';
+
+  @override
+  String get changesExplainWorking => 'Muudatuste selgitamine…';
+
+  @override
+  String get changesExplainFailed => 'Loupe ei suutnud neid muudatusi selgitada.';
+
+  @override
+  String get changesExplainTooLarge => 'Need kirjad on mudeli jaoks liiga pikad.';
+
+  @override
+  String get changesExplainProviderError => 'Mudel ei vastanud.';
+
+  @override
+  String get changesExplainInvalid => 'Vastus ei läbinud Loupe’i kontrolle, seega ei näidata sellest midagi.';
+
+  @override
+  String get changesExplainNoChange => 'Sisulisi muudatusi ei leitud. Täpsed tekstimuudatused on allpool.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Muutunud',
+      'added': 'Uus',
+      'removed': 'Enam ei mainita',
+      'contradiction': 'Vastuoluline',
+      'other': 'Muutunud',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first või $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Kirjadest ei selgu, kumb neist kehtib.';
+
+  @override
+  String get changesExplainPartial => 'Pikast kirjast loeti ainult algus.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Märgiga „>“ algavad read tsiteerivad varasemaid kirju. Neid käsitletakse kontekstina, mitte kummagi kirja enda sisuna.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Kiri võib tsiteerida varasemaid kirju seda märkimata, seega võivad mõned muudatused pärineda vanematest kirjadest. Kontrolli tekstikohti.';
+
+  @override
+  String get changesExplainCheckNote => 'Iga tekstikoht leiti oma kirjast. Loe need läbi, enne kui muudatusele toetud.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Selgitatakse ainult kirja teksti. Manuseid võrreldakse ainult nime, tüübi ja suuruse järgi.';
+
+  @override
+  String get changesExplainDemoNote => 'Koostas sisseehitatud demo, mitte mudel.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Koostas $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Selles kirjas pole ühtki tekstikohta esile tõstetud.';
+
+  @override
   String get conversationCompareMessages => 'Võrdle kirju…';
 
   @override

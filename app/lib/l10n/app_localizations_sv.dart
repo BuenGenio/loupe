@@ -148,6 +148,89 @@ class AppLocalizationsSv extends AppLocalizations {
   String get mailboxTrash => 'Papperskorg';
 
   @override
+  String get changesExplainTitle => 'Vad som har ändrats';
+
+  @override
+  String get changesExplainIntro =>
+      'Förklarar de ändrade uppgifterna, var och en länkad till sina passager i båda meddelandena.';
+
+  @override
+  String get changesExplainAction => 'Förklara ändringar';
+
+  @override
+  String get changesExplainWorking => 'Förklarar ändringarna…';
+
+  @override
+  String get changesExplainFailed => 'Loupe kunde inte förklara de här ändringarna.';
+
+  @override
+  String get changesExplainTooLarge => 'De här meddelandena är för långa för modellen.';
+
+  @override
+  String get changesExplainProviderError => 'Modellen svarade inte.';
+
+  @override
+  String get changesExplainInvalid => 'Svaret klarade inte Loupes kontroller, så inget av det visas.';
+
+  @override
+  String get changesExplainNoChange => 'Ingen ändring i betydelse hittades. De exakta textändringarna finns nedan.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Ändrat',
+      'added': 'Nytt',
+      'removed': 'Nämns inte längre',
+      'contradiction': 'Motstridigt',
+      'other': 'Ändrat',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first eller $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Meddelandena säger inte vilket av dessa som gäller.';
+
+  @override
+  String get changesExplainPartial => 'Bara början av ett långt meddelande lästes.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Rader som börjar med ”>” citerar tidigare e-post. De läses som sammanhang, inte som något meddelandena själva säger.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Ett meddelande kan citera tidigare e-post utan att markera det, så vissa ändringar kan komma från äldre e-post. Kontrollera passagerna.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Varje passage hittades i sitt meddelande. Läs dem innan du litar på en ändring.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Bara meddelandetexten förklaras. Bilagor jämförs bara efter namn, typ och storlek.';
+
+  @override
+  String get changesExplainDemoNote => 'Skapat av den inbyggda demon, inte av en modell.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Skapat av $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Ingen passage är markerad i det här meddelandet.';
+
+  @override
   String get conversationCompareMessages => 'Jämför meddelanden…';
 
   @override

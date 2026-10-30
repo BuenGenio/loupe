@@ -157,6 +157,88 @@ class AppLocalizationsCy extends AppLocalizations {
   String get mailboxTrash => 'Sbwriel';
 
   @override
+  String get changesExplainTitle => 'Beth sydd wedi newid';
+
+  @override
+  String get changesExplainIntro =>
+      'Yn esbonio’r ffeithiau a newidiodd, pob un wedi’i gysylltu â’i ddarnau yn y ddwy neges.';
+
+  @override
+  String get changesExplainAction => 'Esbonio’r newidiadau';
+
+  @override
+  String get changesExplainWorking => 'Wrthi’n esbonio’r newidiadau…';
+
+  @override
+  String get changesExplainFailed => 'Ni allai Loupe esbonio’r newidiadau hyn.';
+
+  @override
+  String get changesExplainTooLarge => 'Mae’r negeseuon hyn yn rhy hir i’r model.';
+
+  @override
+  String get changesExplainProviderError => 'Wnaeth y model ddim ateb.';
+
+  @override
+  String get changesExplainInvalid => 'Methodd yr ateb wiriadau Loupe, felly does dim ohono’n cael ei ddangos.';
+
+  @override
+  String get changesExplainNoChange => 'Ni chafwyd hyd i newid ystyr. Mae union newidiadau’r testun isod.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Wedi newid',
+      'added': 'Newydd',
+      'removed': 'Heb ei grybwyll mwyach',
+      'contradiction': 'Anghyson',
+      'other': 'Wedi newid',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first neu $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Dyw’r negeseuon ddim yn dweud pa un o’r rhain sy’n dal.';
+
+  @override
+  String get changesExplainPartial => 'Dim ond dechrau neges hir a ddarllenwyd.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Mae llinellau sy’n dechrau gyda “>” yn dyfynnu post cynharach. Cânt eu darllen fel cyd-destun, nid fel yr hyn y mae’r naill neges na’r llall yn ei ddweud.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Gall neges ddyfynnu post cynharach heb ei farcio, felly gall rhai newidiadau ddod o bost hŷn. Gwiriwch y darnau.';
+
+  @override
+  String get changesExplainCheckNote => 'Cafwyd hyd i bob darn yn ei neges. Darllenwch nhw cyn dibynnu ar newid.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Testun y negeseuon yn unig sy’n cael ei esbonio. Dim ond yn ôl enw, math a maint y caiff atodiadau eu cymharu.';
+
+  @override
+  String get changesExplainDemoNote => 'Gwnaed gan y demo mewnol, nid gan fodel.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Gwnaed gan $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Does dim darn wedi’i amlygu yn y neges hon.';
+
+  @override
   String get conversationCompareMessages => 'Cymharu negeseuon…';
 
   @override
