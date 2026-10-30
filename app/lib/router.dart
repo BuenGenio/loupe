@@ -26,9 +26,11 @@ import 'features/search/search_screen.dart';
 import 'features/search/smart_mailbox_screen.dart';
 import 'features/settings/account_settings_screen.dart';
 import 'features/settings/advanced_settings_screen.dart';
+import 'features/settings/ai_usage_screen.dart';
 import 'features/settings/identities_screen.dart';
 import 'features/settings/manage_folders_screen.dart';
 import 'features/settings/notification_settings_screen.dart';
+import 'features/settings/private_ai_settings_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/settings/swipe_settings_screen.dart';
 import 'features/snooze/snoozed_screen.dart';
@@ -52,6 +54,10 @@ abstract final class Routes {
   static const swipeSettings = '/settings/swipes';
   static const advancedSettings = '/settings/advanced';
   static const notificationSettings = '/settings/notifications';
+
+  /// Settings › Private AI, and its usage and estimated cost.
+  static const privateAi = '/settings/private-ai';
+  static const aiUsage = '$privateAi/usage';
 
   /// OpenPGP keys and settings.
   static const encryption = '/settings/encryption';
@@ -242,6 +248,11 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: 'swipes', builder: (context, state) => const SwipeSettingsScreen()),
           GoRoute(path: 'advanced', builder: (context, state) => const AdvancedSettingsScreen()),
           GoRoute(path: 'notifications', builder: (context, state) => const NotificationSettingsScreen()),
+          GoRoute(
+            path: 'private-ai',
+            builder: (context, state) => const PrivateAiSettingsScreen(),
+            routes: [GoRoute(path: 'usage', builder: (context, state) => const AiUsageScreen())],
+          ),
           GoRoute(
             path: 'rules',
             builder: (context, state) => const RulesScreen(),

@@ -50,7 +50,7 @@ class AppSettings {
   /// The count on the app icon, like Apple Mail's Badge App Icon.
   final BadgeCount appIconBadge;
 
-  /// Private AI (Settings › Private AI): Ask in Plain English in search. Off
+  /// Private AI's switch (Settings › Private AI), over every AI feature. Off
   /// by default; off means no model is asked for anything.
   final bool aiAssist;
 

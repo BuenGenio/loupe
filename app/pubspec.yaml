@@ -32,6 +32,8 @@ dependencies:
   html: ^0.15.7
   # BSD-3 (Dart team); clock.now() in logic, so tests can pin the time.
   clock: ^1.1.2
+  # BSD-3 (Dart team); the client Private AI's network providers share (mail_ai's adapters take it).
+  http: ^1.6.0
   url_launcher: ^6.3.3
   share_plus: ^13.3.1
   file_picker: ^13.1.0

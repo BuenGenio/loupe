@@ -6422,5 +6422,325 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Μετατρέπει μια πρόταση σε αναζήτηση που μπορείτε να ελέγξετε και να επεξεργαστείτε. Προς το παρόν μεταφράζει η ενσωματωμένη επίδειξη: χωρίς μοντέλο, χωρίς δίκτυο.';
+      'Επιτρέπει στις λειτουργίες του Loupe να ρωτούν το μοντέλο που επιλέγετε. Όταν είναι απενεργοποιημένο, κανένα μοντέλο δεν ερωτάται τίποτα, και η αλληλογραφία, η αναζήτηση και οι κανόνες λειτουργούν όπως πριν.';
+
+  @override
+  String get settingsAiProviderHeader => 'Πάροχος';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Χρησιμοποιείται μόνο ο πάροχος που επιλέγετε. Αν αποτύχει ή δεν έχει ρυθμιστεί, το Loupe το λέει και δεν στέλνει τίποτα αλλού.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Αυτός ο πάροχος δεν έχει ρυθμιστεί ακόμη, οπότε οι λειτουργίες δεν δείχνουν μέρη τεχνητής νοημοσύνης.';
+
+  @override
+  String get settingsAiDemo => 'Ενσωματωμένη επίδειξη';
+
+  @override
+  String get settingsAiDemoDetail =>
+      'Σε αυτό το τηλέφωνο. Χωρίς μοντέλο: λίγοι κανόνες, για να δοκιμάσετε τις λειτουργίες.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Cloud: Claude, με το δικό σας κλειδί API.';
+
+  @override
+  String get settingsAiServer => 'Ο διακομιστής μου';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Ο διακομιστής σας, μέσω δικτύου: Ollama, LM Studio ή άλλος διακομιστής με API συμβατό με OpenAI.';
+
+  @override
+  String get settingsAiOnPhone => 'Σε αυτό το τηλέφωνο';
+
+  @override
+  String get settingsAiOnPhoneDetail =>
+      'Δεν είναι ακόμη διαθέσιμο: το μοντέλο στη συσκευή δοκιμάζεται ακόμη σε τηλέφωνα.';
+
+  @override
+  String get settingsAiNotSetUp => 'Χωρίς ρύθμιση';
+
+  @override
+  String get settingsAiNotSet => 'Δεν έχει οριστεί';
+
+  @override
+  String get settingsAiKeySaved => 'Αποθηκευμένο';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Μη αναγνώσιμο';
+
+  @override
+  String get settingsAiApiKey => 'Κλειδί API';
+
+  @override
+  String get settingsAiModel => 'Μοντέλο';
+
+  @override
+  String get settingsAiOtherModel => 'Άλλο μοντέλο…';
+
+  @override
+  String get settingsAiModelId => 'Αναγνωριστικό μοντέλου';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Κλειδί API της Anthropic';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Φυλάσσεται στην κλειδοθήκη αυτού του τηλεφώνου και στέλνεται μόνο στο api.anthropic.com, στην κεφαλίδα του αιτήματος, ποτέ ως μέρος όσων διαβάζει το μοντέλο.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Κλειδί API του διακομιστή';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Προαιρετικό: αφήστε το κενό αν δεν υπάρχει. Φυλάσσεται στην κλειδοθήκη αυτού του τηλεφώνου και στέλνεται μόνο στον διακομιστή σας, στην κεφαλίδα του αιτήματος, ποτέ ως μέρος όσων διαβάζει το μοντέλο.';
+
+  @override
+  String get settingsAiServerAddress => 'Διεύθυνση';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Διεύθυνση διακομιστή';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Μαζί με τη διαδρομή του API, π.χ. http://192.168.1.20:11434/v1 για το Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Αυτή δεν είναι διεύθυνση http:// ή https://.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Όνομα μοντέλου';
+
+  @override
+  String get settingsAiServerModelMessage => 'Όπως το ονομάζει ο διακομιστής σας, π.χ. llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Δοκιμή σύνδεσης';
+
+  @override
+  String get settingsAiTesting => 'Δοκιμή…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return 'Το $model απάντησε σε $seconds s';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Η δοκιμή απέτυχε';
+
+  @override
+  String get settingsAiTestInvalid => 'Το μοντέλο απάντησε, αλλά όχι στη μορφή που ζήτησε το Loupe.';
+
+  @override
+  String get settingsAiRemoveKey => 'Αφαίρεση κλειδιού';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Αφαίρεση του κλειδιού API της Anthropic;';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Το Loupe το διαγράφει από την κλειδοθήκη αυτού του τηλεφώνου και σταματά να στέλνει αιτήματα στην Anthropic. Δεν αλλάζει σε άλλον πάροχο. Για να ανακαλέσετε το ίδιο το κλειδί, διαγράψτε το στο Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Αφαίρεση διακομιστή';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Αφαίρεση του διακομιστή σας;';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Το Loupe ξεχνά τη διεύθυνση και το μοντέλο του, διαγράφει το κλειδί του από την κλειδοθήκη αυτού του τηλεφώνου και σταματά να του στέλνει αιτήματα. Δεν αλλάζει σε άλλον πάροχο.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Διατήρηση δεδομένων από την Anthropic';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Η επίδειξη τρέχει σε αυτό το τηλέφωνο και δεν στέλνει τίποτα πουθενά. Δεν είναι μοντέλο: απαντά σε λίγα είδη αιτημάτων με απλούς κανόνες, και οι απαντήσεις της το λένε.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Τα αιτήματα πηγαίνουν μέσω διαδικτύου στην Anthropic (api.anthropic.com), με το κλειδί σας. Το καθένα περιέχει μόνο ό,τι χρειάζεται μία λειτουργία: την πρόταση που πληκτρολογήσατε και τα ονόματα των λογαριασμών σας, ή το θέμα, τον αποστολέα, την ημερομηνία, το κείμενο και τα ονόματα των συνημμένων ενός μηνύματος. Ποτέ τα ίδια τα συνημμένα, τους κωδικούς των λογαριασμών ή το κλειδί. Τα αποτελέσματα μένουν σε αυτό το τηλέφωνο· τι κρατά η Anthropic ορίζει η δική της πολιτική διατήρησης.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Τα αιτήματα φεύγουν από αυτό το τηλέφωνο για τον διακομιστή σας: επεξεργασία μέσω δικτύου, ακόμη και στο σπίτι. Το καθένα περιέχει μόνο ό,τι χρειάζεται μία λειτουργία: την πρόταση που πληκτρολογήσατε και τα ονόματα των λογαριασμών σας, ή το θέμα, τον αποστολέα, την ημερομηνία, το κείμενο και τα ονόματα των συνημμένων ενός μηνύματος. Ποτέ τα ίδια τα συνημμένα, τους κωδικούς των λογαριασμών ή το κλειδί. Τα αποτελέσματα μένουν σε αυτό το τηλέφωνο· τι κρατά ο διακομιστής εξαρτάται από τις ρυθμίσεις του.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Αυτή η διεύθυνση δεν είναι κρυπτογραφημένη (http): άλλοι στο δίκτυο μπορούν να διαβάσουν ό,τι στέλνεται.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Λειτουργίες';
+
+  @override
+  String get settingsAiFeaturesFooter =>
+      'Μια απενεργοποιημένη λειτουργία δεν δείχνει μέρος τεχνητής νοημοσύνης και δεν ρωτά κανένα μοντέλο.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Με λίγα λόγια';
+
+  @override
+  String get settingsAiFeatureActions => 'Προτεινόμενες ενέργειες';
+
+  @override
+  String get settingsAiFeatureRules => 'Περιγραφή κανόνα';
+
+  @override
+  String get settingsAiFeatureChanges => 'Τι άλλαξε';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Στοιχεία εγγράφων';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Έλεγχος απάντησης';
+
+  @override
+  String get settingsAiFeatureMatters => 'Κατάσταση υπόθεσης';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'Στην αναζήτηση: μια πρόταση γίνεται αναζήτηση που μπορείτε να ελέγξετε.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'Σε ένα μήνυμα: τι σας ζητά, με τα αποσπάσματα.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Προτείνει στοιχεία για τα «Περιμένει εμένα» και «Περιμένει άλλους».';
+
+  @override
+  String get settingsAiFeatureRulesDetail =>
+      'Στους Κανόνες: μια περιγραφή γίνεται κανόνας που ελέγχετε πριν τον αποθηκεύσετε.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'Στη Σύγκριση μηνυμάτων: τι άλλαξε στο νόημα, με πηγές.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Τα βασικά στοιχεία των συνημμένων εγγράφων, με τις σελίδες τους.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Πριν την αποστολή: τι μπορεί να παρέλειψε μια απάντηση.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Η τελευταία κατάσταση μιας υπόθεσης, από την αλληλογραφία της.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Αλληλογραφία μόνο στο τηλέφωνο';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Ένας λογαριασμός που το έχει ενεργό δεν στέλνει ποτέ την αλληλογραφία του στον διακομιστή σας ή σε cloud: με τέτοιον πάροχο, τα μέρη τεχνητής νοημοσύνης του μένουν κρυφά. Ένα μοντέλο σε αυτό το τηλέφωνο μπορεί πάντως να τη διαβάσει.';
+
+  @override
+  String get settingsAiUsage => 'Χρήση και εκτιμώμενο κόστος';
+
+  @override
+  String get settingsAiUsageToday => 'Σήμερα';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Αυτόν τον μήνα';
+
+  @override
+  String get settingsAiUsageAll => 'Όλα';
+
+  @override
+  String get settingsAiUsageNone => 'Κανένα αίτημα';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count αιτήματα', one: '1 αίτημα');
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input tokens εισόδου, $output εξόδου';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count αιτήματα χωρίς στοιχεία',
+      one: '1 αίτημα χωρίς στοιχεία',
+    );
+    return '$input tokens εισόδου, $output εξόδου· $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Χωρίς στοιχεία για tokens';
+
+  @override
+  String get settingsAiUsageTotal => 'Σύνολο';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Το Loupe κρατά σε αυτό το τηλέφωνο μια καταγραφή κάθε αιτήματος: την εργασία, τον πάροχο, το μοντέλο, τα tokens και τις ώρες, ποτέ ό,τι στάλθηκε ή απαντήθηκε. Tokens που δεν ανέφερε ένας πάροχος εμφανίζονται χωρίς στοιχεία, ποτέ ως μηδέν.';
+
+  @override
+  String get settingsAiCostNone => 'Χωρίς κόστος';
+
+  @override
+  String get settingsAiCostUnknown => 'Άγνωστο';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Τουλάχιστον $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Τιμές που χρησιμοποιούνται';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input είσοδος, $output έξοδος';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Δολάρια ΗΠΑ ανά εκατομμύριο tokens: τιμοκατάλογος της $source στις $date. Είναι εκτιμήσεις, όχι λογαριασμός: ισχύει η σελίδα χρήσης του παρόχου σας. Ένα μοντέλο χωρίς τιμή εδώ δείχνει «Άγνωστο».';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Διαγραφή παράγωγων αποτελεσμάτων';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Περιλήψεις, προτεινόμενες αναζητήσεις και άλλες απαντήσεις που φυλάσσονται για επαναχρησιμοποίηση, μόνο σε αυτό το τηλέφωνο. Η διαγραφή τους κρατά την αλληλογραφία σας και ό,τι αποφασίσατε, όπως τσεκαρισμένα στοιχεία, ενέργειες και υποθέσεις· οι λειτουργίες τις φτιάχνουν ξανά όταν χρειάζεται.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Διαγραφή $count αποτελεσμάτων;',
+      one: 'Διαγραφή 1 αποτελέσματος;',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Διαγραφή και των $count αποτελεσμάτων που έφτιαξε;',
+      one: 'Διαγραφή και του αποτελέσματος που έφτιαξε;',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Η αλληλογραφία σας και ό,τι αποφασίσατε μένουν. Οι λειτουργίες φτιάχνουν ξανά τα αποτελέσματα όταν τα χρειάζονται.';
+
+  @override
+  String get settingsAiDeleteResults => 'Διαγραφή αποτελεσμάτων';
 }

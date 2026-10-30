@@ -6516,5 +6516,334 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Paverčia sakinį paieška, kurią galite patikrinti ir pakeisti. Kol kas verčia įtaisytoji demonstracija: be modelio, be tinklo.';
+      'Leidžia Loupe funkcijoms klausti jūsų pasirinkto modelio. Išjungus jokio modelio nieko neklausiama, o paštas, paieška ir taisyklės veikia kaip anksčiau.';
+
+  @override
+  String get settingsAiProviderHeader => 'Teikėjas';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Naudojamas tik jūsų pasirinktas teikėjas. Jei jam nepavyksta arba jis nenustatytas, Loupe tai pasako ir niekur kitur nieko nesiunčia.';
+
+  @override
+  String get settingsAiNotSetUpFooter => 'Šis teikėjas dar nenustatytas, todėl funkcijos nerodo DI dalių.';
+
+  @override
+  String get settingsAiDemo => 'Įtaisyta demonstracinė versija';
+
+  @override
+  String get settingsAiDemoDetail => 'Šiame telefone. Be modelio: kelios taisyklės funkcijoms išbandyti.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Debesis: Claude su jūsų pačių API raktu.';
+
+  @override
+  String get settingsAiServer => 'Mano serveris';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Jūsų serveris, per tinklą: Ollama, LM Studio ar kitas serveris su OpenAI suderinama API.';
+
+  @override
+  String get settingsAiOnPhone => 'Šiame telefone';
+
+  @override
+  String get settingsAiOnPhoneDetail => 'Dar nepasiekiama: įrenginio modelis telefonuose dar bandomas.';
+
+  @override
+  String get settingsAiNotSetUp => 'Nenustatyta';
+
+  @override
+  String get settingsAiNotSet => 'Nenurodyta';
+
+  @override
+  String get settingsAiKeySaved => 'Išsaugotas';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Neįskaitomas';
+
+  @override
+  String get settingsAiApiKey => 'API raktas';
+
+  @override
+  String get settingsAiModel => 'Modelis';
+
+  @override
+  String get settingsAiOtherModel => 'Kitas modelis…';
+
+  @override
+  String get settingsAiModelId => 'Modelio ID';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Anthropic API raktas';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Laikomas šio telefono raktų saugykloje ir siunčiamas tik į api.anthropic.com užklausos antraštėje, niekada ne kaip dalis to, ką skaito modelis.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Serverio API raktas';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Neprivaloma: jei rakto nėra, palikite tuščią. Laikomas šio telefono raktų saugykloje ir siunčiamas tik į jūsų serverį užklausos antraštėje, niekada ne kaip dalis to, ką skaito modelis.';
+
+  @override
+  String get settingsAiServerAddress => 'Adresas';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Serverio adresas';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Įskaitant API kelią, pavyzdžiui, http://192.168.1.20:11434/v1, skirtą Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Tai nėra http:// ar https:// adresas.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Modelio pavadinimas';
+
+  @override
+  String get settingsAiServerModelMessage => 'Taip, kaip jį vadina jūsų serveris, pavyzdžiui, llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Tikrinti ryšį';
+
+  @override
+  String get settingsAiTesting => 'Tikrinama…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model atsakė per $seconds s';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Patikra nepavyko';
+
+  @override
+  String get settingsAiTestInvalid => 'Modelis atsakė, bet ne tokiu pavidalu, kokio prašė Loupe.';
+
+  @override
+  String get settingsAiRemoveKey => 'Pašalinti raktą';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Pašalinti Anthropic API raktą?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe ištrina jį iš šio telefono raktų saugyklos ir nebesiunčia užklausų Anthropic. Ji neperjungia kito teikėjo. Norėdami atšaukti patį raktą, ištrinkite jį Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Pašalinti serverį';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Pašalinti jūsų serverį?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe pamiršta jo adresą ir modelį, ištrina jo raktą iš šio telefono raktų saugyklos ir nebesiunčia jam užklausų. Ji neperjungia kito teikėjo.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Anthropic duomenų saugojimas';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Demonstracinė versija veikia šiame telefone ir niekur nieko nesiunčia. Ji nėra modelis: į kelių rūšių užklausas atsako paprastomis taisyklėmis, ir jos atsakymai tai nurodo.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Užklausos per internetą keliauja į Anthropic (api.anthropic.com) su jūsų raktu. Kiekvienoje yra tik tai, ko reikia vienai funkcijai: įvestas sakinys ir jūsų paskyrų pavadinimai arba vieno laiško tema, siuntėjas, data, tekstas ir priedų pavadinimai. Niekada ne patys priedai, paskyrų slaptažodžiai ar raktas. Rezultatai lieka šiame telefone; ką saugo Anthropic, nustato jos pačios saugojimo politika.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Užklausos palieka šį telefoną ir keliauja į jūsų serverį: tai apdorojimas per tinklą, net namuose. Kiekvienoje yra tik tai, ko reikia vienai funkcijai: įvestas sakinys ir jūsų paskyrų pavadinimai arba vieno laiško tema, siuntėjas, data, tekstas ir priedų pavadinimai. Niekada ne patys priedai, paskyrų slaptažodžiai ar raktas. Rezultatai lieka šiame telefone; ką saugo serveris, priklauso nuo jo nustatymų.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Šis adresas nešifruotas (http): kiti tinkle gali skaityti tai, kas siunčiama.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Funkcijos';
+
+  @override
+  String get settingsAiFeaturesFooter => 'Išjungta funkcija nerodo DI dalies ir neklausia jokio modelio.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Trumpai';
+
+  @override
+  String get settingsAiFeatureActions => 'Siūlomi veiksmai';
+
+  @override
+  String get settingsAiFeatureRules => 'Aprašyti taisyklę';
+
+  @override
+  String get settingsAiFeatureChanges => 'Kas pasikeitė';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Dokumentų faktai';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Atsakymo patikra';
+
+  @override
+  String get settingsAiFeatureMatters => 'Reikalo būsena';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'Paieškoje: sakinys tampa paieška, kurią galite patikrinti.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'Laiške: ko jis iš jūsų prašo, su ištraukomis.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Siūlo įrašus aplankams „Laukia manęs“ ir „Laukia kitų“.';
+
+  @override
+  String get settingsAiFeatureRulesDetail =>
+      'Taisyklėse: aprašymas tampa taisykle, kurią patikrinate prieš išsaugodami.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'Laiškų palyginime: kas pasikeitė prasme, su šaltiniais.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Svarbiausi pridėtų dokumentų faktai su jų puslapiais.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Prieš siunčiant: ką atsakymas galėjo praleisti.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Naujausia reikalo būsena pagal jo laiškus.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Laikyti paštą telefone';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Paskyra, kuriai tai įjungta, niekada nesiunčia savo pašto į jūsų serverį ar debesį: su tokiu teikėju jos DI dalys lieka paslėptos. Šio telefono modelis vis tiek gali jį skaityti.';
+
+  @override
+  String get settingsAiUsage => 'Naudojimas ir apskaičiuota kaina';
+
+  @override
+  String get settingsAiUsageToday => 'Šiandien';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Šį mėnesį';
+
+  @override
+  String get settingsAiUsageAll => 'Visi';
+
+  @override
+  String get settingsAiUsageNone => 'Užklausų nėra';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count užklausų',
+      many: '$count užklausos',
+      few: '$count užklausos',
+      one: '$count užklausa',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input žetonų įvestyje, $output išvestyje';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count užklausų be duomenų',
+      many: '$count užklausos be duomenų',
+      few: '$count užklausos be duomenų',
+      one: '$count užklausa be duomenų',
+    );
+    return '$input žetonų įvestyje, $output išvestyje; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Nėra duomenų apie žetonus';
+
+  @override
+  String get settingsAiUsageTotal => 'Iš viso';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe šiame telefone registruoja kiekvieną užklausą: užduotį, teikėją, modelį, žetonų skaičių ir laiką, niekada ne tai, kas buvo išsiųsta ar atsakyta. Skaičiai, kurių teikėjas nepranešė, rodomi kaip nepranešti, niekada kaip nulis.';
+
+  @override
+  String get settingsAiCostNone => 'Be išlaidų';
+
+  @override
+  String get settingsAiCostUnknown => 'Nežinoma';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Mažiausiai $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Naudotos kainos';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input įvestis, $output išvestis';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'JAV doleriai už milijoną žetonų: $source kainoraščio kainos, $date. Tai įverčiai, ne sąskaita: lemia jūsų teikėjo naudojimo puslapis. Modelis be kainos čia rodo „Nežinoma“.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Ištrinti išvestinius rezultatus';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Santraukos, siūlomos paieškos ir kiti atsakymai, laikomi pakartotiniam naudojimui, tik šiame telefone. Juos ištrynus lieka jūsų paštas ir jūsų sprendimai, pavyzdžiui, pažymėti įrašai, veiksmai ir reikalai; funkcijos juos prireikus sukuria iš naujo.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ištrinti $count rezultatų?',
+      many: 'Ištrinti $count rezultato?',
+      few: 'Ištrinti $count rezultatus?',
+      one: 'Ištrinti $count rezultatą?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ištrinti ir $count jo sukurtų rezultatų?',
+      many: 'Ištrinti ir $count jo sukurto rezultato?',
+      few: 'Ištrinti ir $count jo sukurtus rezultatus?',
+      one: 'Ištrinti ir $count jo sukurtą rezultatą?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Jūsų paštas ir jūsų sprendimai lieka. Funkcijos sukuria rezultatus iš naujo, kai jų prireikia.';
+
+  @override
+  String get settingsAiDeleteResults => 'Ištrinti rezultatus';
 }

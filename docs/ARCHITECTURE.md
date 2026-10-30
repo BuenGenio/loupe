@@ -450,8 +450,8 @@ Everything is counted on the device; services that do this elsewhere read the ma
      (`application/x-www-form-urlencoded`) without cookies, user agent, referrer or languages; 2xx or 303 means done;
      other redirects are followed with the same POST on the same host only (three at most); 20 s timeout; the answer's
      page isn't read. IP addresses and local names (`.local`, `localhost`…) are refused. Besides account setup
-     (autoconfig, OAuth), it is the only request Loupe makes outside the mail protocols, and only when the user taps
-     Unsubscribe; the first time, the confirmation explains it. The demo pretends.
+     (autoconfig, OAuth) and Private AI (below), it is the only request Loupe makes outside the mail protocols, and
+     only when the user taps Unsubscribe; the first time, the confirmation explains it. The demo pretends.
   2. `mailto:` through the normal send path (`unsubscribeMessage`): from the identity the mail was addressed to, to
      the URI's recipients only (its `cc=`/`bcc=` are ignored), with its subject and body (RFC 6068: `+` is a plus).
   3. The web page, in the in-app browser, after showing its host (homographs flagged).
@@ -542,4 +542,7 @@ Opt-in (Settings › Security; `settings.appLock`, `settings.lockAfter`), in `ap
 - No network access in unit tests. Integration tests against real servers are tagged `integration`: IMAP ones need
   `LOUPE_TEST_IMAP_HOST`, JMAP ones a Stalwart binary (`LOUPE_TEST_STALWART`); see `tool/test-servers/`.
 - No analytics or tracking code, ever. Remote content stays blocked by default. Besides account setup, the only
-  network request outside the mail protocols is the one-click unsubscribe the user taps (see Subscriptions).
+  network requests outside the mail protocols are the one-click unsubscribe the user taps (see Subscriptions) and
+  Private AI's, to the provider the user set up in Settings › Private AI: Anthropic with their own key, or their own
+  server. Off by default; never a Loupe proxy, never another provider than the one picked. The key is in the
+  keychain (`CredentialStore`, ids `ai.<provider>`); preferences hold the choices and usage records (`ai.*`).

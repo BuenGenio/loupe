@@ -6447,5 +6447,323 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Egy mondatból ellenőrizhető és szerkeszthető keresést készít. Egyelőre a beépített demó fordít: nincs modell, nincs hálózat.';
+      'Lehetővé teszi, hogy a Loupe funkciói az általad választott modellt kérdezzék. Kikapcsolva egy modellt sem kérdez semmiről, a levelezés, a keresés és a szabályok pedig ugyanúgy működnek, mint eddig.';
+
+  @override
+  String get settingsAiProviderHeader => 'Szolgáltató';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Csak az általad választott szolgáltató működik. Ha hibázik vagy nincs beállítva, a Loupe ezt jelzi, és semmit nem küld máshová.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Ez a szolgáltató még nincs beállítva, ezért a funkciók nem mutatnak MI-részeket.';
+
+  @override
+  String get settingsAiDemo => 'Beépített demó';
+
+  @override
+  String get settingsAiDemoDetail => 'Ezen a telefonon. Nincs modell: néhány szabály a funkciók kipróbálásához.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Felhő: Claude, a saját API-kulcsoddal.';
+
+  @override
+  String get settingsAiServer => 'Saját szerver';
+
+  @override
+  String get settingsAiServerDetail =>
+      'A szervered, hálózaton át: Ollama, LM Studio vagy más, OpenAI-kompatibilis API-val rendelkező szerver.';
+
+  @override
+  String get settingsAiOnPhone => 'Ezen a telefonon';
+
+  @override
+  String get settingsAiOnPhoneDetail => 'Még nem érhető el: az eszközön futó modellt még tesztelik telefonokon.';
+
+  @override
+  String get settingsAiNotSetUp => 'Nincs beállítva';
+
+  @override
+  String get settingsAiNotSet => 'Nincs megadva';
+
+  @override
+  String get settingsAiKeySaved => 'Mentve';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Olvashatatlan';
+
+  @override
+  String get settingsAiApiKey => 'API-kulcs';
+
+  @override
+  String get settingsAiModel => 'Modell';
+
+  @override
+  String get settingsAiOtherModel => 'Másik modell…';
+
+  @override
+  String get settingsAiModelId => 'Modellazonosító';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Anthropic API-kulcs';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'A telefon kulcstárolójában marad, és csak az api.anthropic.com kapja meg, a kérés fejlécében, soha nem annak részeként, amit a modell olvas.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'A szerver API-kulcsa';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Nem kötelező: ha nincs, hagyd üresen. A telefon kulcstárolójában marad, és csak a szervered kapja meg, a kérés fejlécében, soha nem annak részeként, amit a modell olvas.';
+
+  @override
+  String get settingsAiServerAddress => 'Cím';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Szervercím';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Az API útvonalával együtt, például http://192.168.1.20:11434/v1 az Ollamához.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Ez nem http:// vagy https:// cím.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Modellnév';
+
+  @override
+  String get settingsAiServerModelMessage => 'Ahogy a szervered nevezi, például llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Kapcsolat tesztelése';
+
+  @override
+  String get settingsAiTesting => 'Tesztelés…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model $seconds s alatt válaszolt';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'A teszt sikertelen';
+
+  @override
+  String get settingsAiTestInvalid => 'A modell válaszolt, de nem abban a formában, amit a Loupe kért.';
+
+  @override
+  String get settingsAiRemoveKey => 'Kulcs eltávolítása';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Eltávolítod az Anthropic API-kulcsot?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'A Loupe törli a telefon kulcstárolójából, és nem küld több kérést az Anthropicnak. Nem vált másik szolgáltatóra. Magát a kulcsot az Anthropic Console-ban törölve vonhatod vissza.';
+
+  @override
+  String get settingsAiRemoveServer => 'Szerver eltávolítása';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Eltávolítod a szerveredet?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'A Loupe elfelejti a címét és a modelljét, törli a kulcsát a telefon kulcstárolójából, és nem küld neki több kérést. Nem vált másik szolgáltatóra.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Az Anthropic adatmegőrzése';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'A demó ezen a telefonon fut, és semmit nem küld sehová. Nem modell: néhány fajta kérésre egyszerű szabályokkal válaszol, és a válaszai ezt jelzik is.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'A kérések az interneten át jutnak el az Anthropichoz (api.anthropic.com), a kulcsoddal. Mindegyik csak azt tartalmazza, amire egy funkciónak szüksége van: a beírt mondatot és a fiókjaid nevét, vagy egy üzenet tárgyát, feladóját, dátumát, szövegét és mellékleteinek nevét. Soha nem magukat a mellékleteket, a fiókok jelszavát vagy a kulcsot. Az eredmények ezen a telefonon maradnak; hogy az Anthropic mit őriz meg, azt a saját adatmegőrzési szabályzata határozza meg.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'A kérések elhagyják a telefont, és a szerveredhez jutnak: ez hálózati feldolgozás, otthon is. Mindegyik csak azt tartalmazza, amire egy funkciónak szüksége van: a beírt mondatot és a fiókjaid nevét, vagy egy üzenet tárgyát, feladóját, dátumát, szövegét és mellékleteinek nevét. Soha nem magukat a mellékleteket, a fiókok jelszavát vagy a kulcsot. Az eredmények ezen a telefonon maradnak; hogy a szerver mit őriz meg, a beállításaitól függ.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Ez a cím nem titkosított (http): a hálózaton mások is elolvashatják, amit küldesz.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Funkciók';
+
+  @override
+  String get settingsAiFeaturesFooter => 'Egy kikapcsolt funkció nem mutat MI-részt, és nem kérdez modellt.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Röviden';
+
+  @override
+  String get settingsAiFeatureActions => 'Javasolt teendők';
+
+  @override
+  String get settingsAiFeatureRules => 'Szabály leírása';
+
+  @override
+  String get settingsAiFeatureChanges => 'Mi változott';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Tények a dokumentumokból';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Válasz ellenőrzése';
+
+  @override
+  String get settingsAiFeatureMatters => 'Ügy állása';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'A keresésben: egy mondatból ellenőrizhető keresés lesz.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'Egy üzenetben: mit kér tőled, a hozzá tartozó részletekkel.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Tételeket javasol a „Rám vár” és a „Másokra vár” mappába.';
+
+  @override
+  String get settingsAiFeatureRulesDetail =>
+      'A Szabályokban: egy leírásból szabály lesz, amelyet mentés előtt ellenőrzöl.';
+
+  @override
+  String get settingsAiFeatureChangesDetail =>
+      'Az Üzenetek összehasonlításában: mi változott tartalmilag, forrásokkal.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'A csatolt dokumentumok fő tényei, oldalszámokkal.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Küldés előtt: mit hagyhatott ki egy válasz.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Egy ügy legfrissebb állása a levelei alapján.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Levelek a telefonon maradnak';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Az a fiók, amelynél ez be van kapcsolva, soha nem küldi el a leveleit a szerverednek vagy felhőbe: ilyen szolgáltatóval az MI-részei rejtve maradnak. Egy telefonon futó modell viszont olvashatja őket.';
+
+  @override
+  String get settingsAiUsage => 'Használat és becsült költség';
+
+  @override
+  String get settingsAiUsageToday => 'Ma';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Ebben a hónapban';
+
+  @override
+  String get settingsAiUsageAll => 'Összes';
+
+  @override
+  String get settingsAiUsageNone => 'Nincs kérés';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count kérés', one: '1 kérés');
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input token be, $output ki';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kérésnél nincs adat',
+      one: '1 kérésnél nincs adat',
+    );
+    return '$input token be, $output ki; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Nincs adat a tokenekről';
+
+  @override
+  String get settingsAiUsageTotal => 'Összesen';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'A Loupe ezen a telefonon minden kérést nyilvántart: a feladatot, a szolgáltatót, a modellt, a tokenek számát és az időpontokat, soha nem azt, amit elküldött vagy amit válaszoltak. Azok a tokenszámok, amelyeket a szolgáltató nem jelentett, adat nélküliként jelennek meg, soha nem nullaként.';
+
+  @override
+  String get settingsAiCostNone => 'Nincs költség';
+
+  @override
+  String get settingsAiCostUnknown => 'Ismeretlen';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Legalább $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Felhasznált árak';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input be, $output ki';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Amerikai dollár millió tokenenként: a(z) $source listaárai, $date. Ezek becslések, nem számla: a szolgáltatód saját használati oldala a mérvadó. Az ár nélküli modellnél itt „Ismeretlen” látszik.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Származtatott eredmények törlése';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Összefoglalók, javasolt keresések és más válaszok, amelyeket újrahasználatra őriz, csak ezen a telefonon. Törlésük után megmaradnak a leveleid és a döntéseid, például a kipipált tételek, teendők és ügyek; a funkciók szükség esetén újra elkészítik őket.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Törlöd a(z) $count eredményt?',
+      one: 'Törlöd az 1 eredményt?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Törlöd az általa készített $count eredményt is?',
+      one: 'Törlöd az általa készített eredményt is?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'A leveleid és a döntéseid megmaradnak. A funkciók újra elkészítik az eredményeket, amikor szükségük van rájuk.';
+
+  @override
+  String get settingsAiDeleteResults => 'Eredmények törlése';
 }

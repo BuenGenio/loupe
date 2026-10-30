@@ -6443,5 +6443,322 @@ class AppLocalizationsLb extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Mécht aus engem Saz eng Sich, déi sech kontrolléieren an änneren léisst. Fir de Moment iwwersetzt déi agebaute Demo: kee Modell, kee Netz.';
+      'Léisst d’Funktioune vu Loupe de Modell froen, deen Dir auswielt. Aus gëtt kee Modell gefrot, an E-Mail, Sich a Reegele funktionéiere wéi virdrun.';
+
+  @override
+  String get settingsAiProviderHeader => 'Ubidder';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Just den Ubidder, deen Dir auswielt, gëtt benotzt. Wann en net funktionéiert oder net ageriicht ass, seet Loupe et a schéckt soss néierens eppes hin.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Dësen Ubidder ass nach net ageriicht, dofir weisen d’Funktioune keng KI-Deeler.';
+
+  @override
+  String get settingsAiDemo => 'Agebaut Demo';
+
+  @override
+  String get settingsAiDemoDetail => 'Op dësem Handy. Kee Modell: e puer Reegelen, fir d’Funktiounen auszeprobéieren.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Cloud: Claude, mat Ärem eegene API-Schlëssel.';
+
+  @override
+  String get settingsAiServer => 'Mäi Server';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Ären Server, iwwer d’Netz: Ollama, LM Studio oder en anere Server mat enger OpenAI-kompatibeler API.';
+
+  @override
+  String get settingsAiOnPhone => 'Op dësem Handy';
+
+  @override
+  String get settingsAiOnPhoneDetail => 'Nach net disponibel: de Modell um Apparat gëtt nach op Handyen getest.';
+
+  @override
+  String get settingsAiNotSetUp => 'Net ageriicht';
+
+  @override
+  String get settingsAiNotSet => 'Net festgeluecht';
+
+  @override
+  String get settingsAiKeySaved => 'Gespäichert';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Net liesbar';
+
+  @override
+  String get settingsAiApiKey => 'API-Schlëssel';
+
+  @override
+  String get settingsAiModel => 'Modell';
+
+  @override
+  String get settingsAiOtherModel => 'Anert Modell…';
+
+  @override
+  String get settingsAiModelId => 'Modell-ID';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Anthropic-API-Schlëssel';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Läit am Schlësselbond vun dësem Handy a geet just un api.anthropic.com, am Header vun der Ufro, ni als Deel vun deem, wat de Modell liest.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'API-Schlëssel vum Server';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Optional: Loosst d’Feld eidel, wann et keen huet. Läit am Schlësselbond vun dësem Handy a geet just un Ären Server, am Header vun der Ufro, ni als Deel vun deem, wat de Modell liest.';
+
+  @override
+  String get settingsAiServerAddress => 'Adress';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Serveradress';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Bis an inklusiv dem API-Pad, z. B. http://192.168.1.20:11434/v1 fir Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Dat ass keng http://- oder https://-Adress.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Modellnumm';
+
+  @override
+  String get settingsAiServerModelMessage => 'Esou wéi Ären Server en nennt, z. B. llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Verbindung testen';
+
+  @override
+  String get settingsAiTesting => 'Gëtt getest…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model huet a(n) $seconds s geäntwert';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Test feelgeschloen';
+
+  @override
+  String get settingsAiTestInvalid => 'De Modell huet geäntwert, mä net an der Form, déi Loupe gefrot huet.';
+
+  @override
+  String get settingsAiRemoveKey => 'Schlëssel ewechhuelen';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Den Anthropic-API-Schlëssel ewechhuelen?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe läscht en aus dem Schlësselbond vun dësem Handy a schéckt keng Ufroe méi un Anthropic. Loupe wiesselt net op en aneren Ubidder. Fir de Schlëssel selwer zréckzezéien, läscht en an der Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Server ewechhuelen';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Ären Server ewechhuelen?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe vergësst seng Adress a säi Modell, läscht säi Schlëssel aus dem Schlësselbond vun dësem Handy a schéckt him keng Ufroe méi. Loupe wiesselt net op en aneren Ubidder.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Dateopbewarung bei Anthropic';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'D’Demo leeft op dësem Handy a schéckt néierens eppes hin. Si ass kee Modell: Si beäntwert e puer Zorte vun Ufroe mat einfache Reegelen, an hir Äntwerte soen dat.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Ufroe ginn iwwer den Internet un Anthropic (api.anthropic.com), mat Ärem Schlëssel. All Ufro enthält just dat, wat eng Funktioun brauch: de Saz, deen Dir getippt hutt, an d’Nimm vun Äre Konten, oder Sujet, Ofsender, Datum, Text an d’Nimm vun den Unhäng vun engem Message. Ni d’Unhäng selwer, d’Passwierder vun de Konten oder de Schlëssel. D’Resultater bleiwen op dësem Handy; wat Anthropic opbewaart, regelt seng eege Opbewarungsrichtlinn.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Ufroe verloossen dësen Handy a ginn un Ären Server: Veraarbechtung iwwer d’Netz, och doheem. All Ufro enthält just dat, wat eng Funktioun brauch: de Saz, deen Dir getippt hutt, an d’Nimm vun Äre Konten, oder Sujet, Ofsender, Datum, Text an d’Nimm vun den Unhäng vun engem Message. Ni d’Unhäng selwer, d’Passwierder vun de Konten oder de Schlëssel. D’Resultater bleiwen op dësem Handy; wat de Server opbewaart, hänkt dovun of, wéi en ageriicht ass.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Dës Adress ass net verschlësselt (http): Anerer am Netz kënne liesen, wat geschéckt gëtt.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Funktiounen';
+
+  @override
+  String get settingsAiFeaturesFooter => 'Eng ausgeschalte Funktioun weist keen KI-Deel a freet kee Modell.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Kuerzfassung';
+
+  @override
+  String get settingsAiFeatureActions => 'Proposéiert Aufgaben';
+
+  @override
+  String get settingsAiFeatureRules => 'Reegel beschreiwen';
+
+  @override
+  String get settingsAiFeatureChanges => 'Wat huet geännert';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Fakten aus Dokumenter';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Äntwertpréifung';
+
+  @override
+  String get settingsAiFeatureMatters => 'Stand vun enger Saach';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'An der Sich: Aus engem Saz gëtt eng Sich, déi Dir iwwerpréiwe kënnt.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'An engem Message: wat en vun Iech wëll, mat de Passagen.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Proposéiert Elementer fir „Waart op mech“ a „Waart op anerer“.';
+
+  @override
+  String get settingsAiFeatureRulesDetail =>
+      'A Reegelen: Aus enger Beschreiwung gëtt eng Reegel, déi Dir virum Späicheren iwwerpréift.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'A „Messagë vergläichen“: wat sech am Sënn geännert huet, mat Quellen.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Déi wichtegst Fakten aus ugehaangenen Dokumenter, mat hire Säiten.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Virum Schécken: wat eng Äntwert eventuell iwwersinn huet.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Den aktuelle Stand vun enger Saach, aus hiren E-Mailen.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'E-Mailen um Handy halen';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'E Kont, bei deem dat ageschalt ass, schéckt seng E-Mailen ni un Ären Server oder eng Cloud: Mat esou engem Ubidder bleiwen seng KI-Deeler verstoppt. E Modell op dësem Handy kann se trotzdeem liesen.';
+
+  @override
+  String get settingsAiUsage => 'Notzung a geschate Käschten';
+
+  @override
+  String get settingsAiUsageToday => 'Haut';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Dëse Mount';
+
+  @override
+  String get settingsAiUsageAll => 'All';
+
+  @override
+  String get settingsAiUsageNone => 'Keng Ufroen';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count Ufroen', one: '1 Ufro');
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input Tokens eran, $output eraus';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Ufroen ouni Angab',
+      one: '1 Ufro ouni Angab',
+    );
+    return '$input Tokens eran, $output eraus; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Tokens net uginn';
+
+  @override
+  String get settingsAiUsageTotal => 'Total';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe späichert fir all Ufro en Androg op dësem Handy: d’Aufgab, den Ubidder, de Modell, d’Zuel vun den Tokens an d’Zäiten, ni dat, wat geschéckt oder geäntwert gouf. Tokens, déi en Ubidder net uginn huet, stinn als net uginn do, ni als null.';
+
+  @override
+  String get settingsAiCostNone => 'Keng Käschten';
+
+  @override
+  String get settingsAiCostUnknown => 'Onbekannt';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Mindestens $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Benotzt Präisser';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input eran, $output eraus';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'US-Dollar pro Millioun Tokens: Lëschtepräisser vun $source den $date. Dat sinn Schätzungen, keng Rechnung: Moossgeblech ass d’Notzungssäit vun Ärem Ubidder. E Modell ouni Präis hei weist „Onbekannt“.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Ofgeleet Resultater läschen';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Kuerzfassungen, proposéiert Sichen an aner Äntwerten, déi fir d’Weiderbenotzung opgehale ginn, just op dësem Handy. Beim Läsche bleiwen Är E-Mailen an dat, wat Dir decidéiert hutt, z. B. ofgehakte Punkten, Aufgaben a Saachen; d’Funktioune maachen se nei, wann et néideg ass.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Resultater läschen?',
+      one: '1 Resultat läschen?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Och déi $count Resultater läschen, déi en ofgeliwwert huet?',
+      one: 'Och d’Resultat läschen, dat en ofgeliwwert huet?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Är E-Mailen an dat, wat Dir decidéiert hutt, bleiwen. D’Funktioune maachen d’Resultater nei, wa se se brauchen.';
+
+  @override
+  String get settingsAiDeleteResults => 'Resultater läschen';
 }

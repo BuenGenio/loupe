@@ -6561,5 +6561,332 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Transformă o propoziție într-o căutare pe care o poți verifica și modifica. Deocamdată traduce demonstrația încorporată: fără model, fără rețea.';
+      'Permite funcțiilor Loupe să întrebe modelul pe care îl alegi. Dezactivată, niciun model nu este întrebat nimic, iar e-mailurile, căutarea și regulile funcționează ca înainte.';
+
+  @override
+  String get settingsAiProviderHeader => 'Furnizor';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Este folosit doar furnizorul pe care îl alegi. Dacă dă greș sau nu e configurat, Loupe îți spune și nu trimite nimic altundeva.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Acest furnizor nu este încă configurat, așa că funcțiile nu afișează părți de IA.';
+
+  @override
+  String get settingsAiDemo => 'Demo integrat';
+
+  @override
+  String get settingsAiDemoDetail => 'Pe acest telefon. Fără model: câteva reguli, ca să încerci funcțiile.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Cloud: Claude, cu propria ta cheie API.';
+
+  @override
+  String get settingsAiServer => 'Serverul meu';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Serverul tău, prin rețea: Ollama, LM Studio sau alt server cu un API compatibil OpenAI.';
+
+  @override
+  String get settingsAiOnPhone => 'Pe acest telefon';
+
+  @override
+  String get settingsAiOnPhoneDetail => 'Încă indisponibil: modelul de pe dispozitiv este încă testat pe telefoane.';
+
+  @override
+  String get settingsAiNotSetUp => 'Neconfigurat';
+
+  @override
+  String get settingsAiNotSet => 'Nesetat';
+
+  @override
+  String get settingsAiKeySaved => 'Salvată';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Ilizibilă';
+
+  @override
+  String get settingsAiApiKey => 'Cheie API';
+
+  @override
+  String get settingsAiModel => 'Model';
+
+  @override
+  String get settingsAiOtherModel => 'Alt model…';
+
+  @override
+  String get settingsAiModelId => 'ID-ul modelului';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Cheie API Anthropic';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Păstrată în stocarea securizată a acestui telefon și trimisă doar către api.anthropic.com, în antetul cererii, niciodată ca parte din ce citește modelul.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Cheia API a serverului';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Opțional: lasă gol dacă nu există. Păstrată în stocarea securizată a acestui telefon și trimisă doar către serverul tău, în antetul cererii, niciodată ca parte din ce citește modelul.';
+
+  @override
+  String get settingsAiServerAddress => 'Adresă';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Adresa serverului';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Până la calea API inclusiv, de exemplu http://192.168.1.20:11434/v1 pentru Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Aceasta nu este o adresă http:// sau https://.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Numele modelului';
+
+  @override
+  String get settingsAiServerModelMessage => 'Așa cum îl numește serverul tău, de exemplu llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Testează conexiunea';
+
+  @override
+  String get settingsAiTesting => 'Se testează…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model a răspuns în $seconds s';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Testul a eșuat';
+
+  @override
+  String get settingsAiTestInvalid => 'Modelul a răspuns, dar nu în forma cerută de Loupe.';
+
+  @override
+  String get settingsAiRemoveKey => 'Elimină cheia';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Elimini cheia API Anthropic?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe o șterge din stocarea securizată a acestui telefon și nu mai trimite cereri către Anthropic. Nu trece la alt furnizor. Ca să revoci cheia în sine, șterge-o în Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Elimină serverul';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Elimini serverul tău?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe îi uită adresa și modelul, îi șterge cheia din stocarea securizată a acestui telefon și nu-i mai trimite cereri. Nu trece la alt furnizor.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Păstrarea datelor la Anthropic';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Demo-ul rulează pe acest telefon și nu trimite nimic nicăieri. Nu este un model: răspunde la câteva tipuri de cereri cu reguli simple, iar răspunsurile lui spun asta.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Cererile merg prin internet la Anthropic (api.anthropic.com), cu cheia ta. Fiecare conține doar ce îi trebuie unei funcții: propoziția pe care ai scris-o și numele conturilor tale, sau subiectul, expeditorul, data, textul și numele atașamentelor unui mesaj. Niciodată atașamentele în sine, parolele conturilor sau cheia. Rezultatele rămân pe acest telefon; ce păstrează Anthropic ține de propria sa politică de păstrare.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Cererile pleacă de pe acest telefon spre serverul tău: este procesare prin rețea, chiar și acasă. Fiecare conține doar ce îi trebuie unei funcții: propoziția pe care ai scris-o și numele conturilor tale, sau subiectul, expeditorul, data, textul și numele atașamentelor unui mesaj. Niciodată atașamentele în sine, parolele conturilor sau cheia. Rezultatele rămân pe acest telefon; ce păstrează serverul depinde de cum este configurat.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Această adresă nu este criptată (http): alții din rețea pot citi ce se trimite.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Funcții';
+
+  @override
+  String get settingsAiFeaturesFooter =>
+      'O funcție dezactivată nu afișează nicio parte de IA și nu întreabă niciun model.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Pe scurt';
+
+  @override
+  String get settingsAiFeatureActions => 'Acțiuni sugerate';
+
+  @override
+  String get settingsAiFeatureRules => 'Descrie o regulă';
+
+  @override
+  String get settingsAiFeatureChanges => 'Ce s-a schimbat';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Date din documente';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Verificarea răspunsului';
+
+  @override
+  String get settingsAiFeatureMatters => 'Stadiul unei chestiuni';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'În căutare: o propoziție devine o căutare pe care o poți verifica.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'Într-un mesaj: ce îți cere, cu pasajele.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Propune elemente pentru „De făcut de mine” și „În așteptarea altora”.';
+
+  @override
+  String get settingsAiFeatureRulesDetail =>
+      'În Reguli: o descriere devine o regulă pe care o verifici înainte de a o salva.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'În Compară mesajele: ce s-a schimbat ca sens, cu sursele.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Datele-cheie din documentele atașate, cu paginile lor.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Înainte de trimitere: ce i-ar fi putut scăpa unui răspuns.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Cel mai recent stadiu al unei chestiuni, din e-mailurile ei.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Păstrează e-mailurile pe telefon';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Un cont la care opțiunea e activată nu își trimite niciodată e-mailurile către serverul tău sau către un cloud: cu un astfel de furnizor, părțile lui de IA rămân ascunse. Un model de pe acest telefon le poate citi totuși.';
+
+  @override
+  String get settingsAiUsage => 'Utilizare și cost estimat';
+
+  @override
+  String get settingsAiUsageToday => 'Azi';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Luna aceasta';
+
+  @override
+  String get settingsAiUsageAll => 'Toate';
+
+  @override
+  String get settingsAiUsageNone => 'Nicio cerere';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count de cereri',
+      few: '$count cereri',
+      one: '1 cerere',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input tokenuri la intrare, $output la ieșire';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count de cereri neraportate',
+      few: '$count cereri neraportate',
+      one: '1 cerere neraportată',
+    );
+    return '$input tokenuri la intrare, $output la ieșire; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Tokenuri neraportate';
+
+  @override
+  String get settingsAiUsageTotal => 'Total';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe păstrează pe acest telefon o evidență a fiecărei cereri: sarcina, furnizorul, modelul, numărul de tokenuri și orele, niciodată ce s-a trimis sau ce s-a răspuns. Tokenurile pe care un furnizor nu le-a raportat apar ca neraportate, niciodată ca zero.';
+
+  @override
+  String get settingsAiCostNone => 'Fără cost';
+
+  @override
+  String get settingsAiCostUnknown => 'Necunoscut';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Cel puțin $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Prețuri folosite';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input la intrare, $output la ieșire';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Dolari americani pe milion de tokenuri: prețurile de listă $source din $date. Sunt estimări, nu o factură: pagina de utilizare a furnizorului tău este cea care contează. Un model fără preț aici afișează „Necunoscut”.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Șterge rezultatele derivate';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Rezumate, căutări propuse și alte răspunsuri păstrate pentru reutilizare, doar pe acest telefon. Ștergerea lor păstrează e-mailurile și ce ai decis, cum ar fi elementele bifate, acțiunile și chestiunile; funcțiile le refac când e nevoie.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ștergi $count de rezultate?',
+      few: 'Ștergi $count rezultate?',
+      one: 'Ștergi 1 rezultat?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ștergi și cele $count de rezultate pe care le-a creat?',
+      few: 'Ștergi și cele $count rezultate pe care le-a creat?',
+      one: 'Ștergi și rezultatul pe care l-a creat?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'E-mailurile și ce ai decis rămân. Funcțiile refac rezultatele când au nevoie de ele.';
+
+  @override
+  String get settingsAiDeleteResults => 'Șterge rezultatele';
 }

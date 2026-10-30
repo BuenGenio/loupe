@@ -6453,5 +6453,323 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Converteix una frase en una cerca que pots revisar i editar. De moment tradueix la demostració integrada: sense model, sense xarxa.';
+      'Permet que les funcions del Loupe consultin el model que triïs. Desactivada, no es consulta cap model, i el correu, la cerca i les regles funcionen com abans.';
+
+  @override
+  String get settingsAiProviderHeader => 'Proveïdor';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Només s’utilitza el proveïdor que triïs. Si falla o no està configurat, el Loupe ho diu i no envia res enlloc més.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Aquest proveïdor encara no està configurat, així que les funcions no mostren cap part d’IA.';
+
+  @override
+  String get settingsAiDemo => 'Demo integrada';
+
+  @override
+  String get settingsAiDemoDetail => 'En aquest telèfon. Sense model: unes quantes regles, per provar les funcions.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Núvol: Claude, amb la teva pròpia clau d’API.';
+
+  @override
+  String get settingsAiServer => 'El meu servidor';
+
+  @override
+  String get settingsAiServerDetail =>
+      'El teu servidor, per la xarxa: Ollama, LM Studio o un altre servidor amb una API compatible amb OpenAI.';
+
+  @override
+  String get settingsAiOnPhone => 'En aquest telèfon';
+
+  @override
+  String get settingsAiOnPhoneDetail =>
+      'Encara no disponible: el model al dispositiu encara s’està provant en telèfons.';
+
+  @override
+  String get settingsAiNotSetUp => 'Sense configurar';
+
+  @override
+  String get settingsAiNotSet => 'Sense definir';
+
+  @override
+  String get settingsAiKeySaved => 'Desada';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Il·legible';
+
+  @override
+  String get settingsAiApiKey => 'Clau d’API';
+
+  @override
+  String get settingsAiModel => 'Model';
+
+  @override
+  String get settingsAiOtherModel => 'Un altre model…';
+
+  @override
+  String get settingsAiModelId => 'ID del model';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Clau d’API d’Anthropic';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Es desa al clauer d’aquest telèfon i només s’envia a api.anthropic.com, a la capçalera de la petició, mai com a part del que llegeix el model.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Clau d’API del servidor';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Opcional: deixa-la buida si no n’hi ha cap. Es desa al clauer d’aquest telèfon i només s’envia al teu servidor, a la capçalera de la petició, mai com a part del que llegeix el model.';
+
+  @override
+  String get settingsAiServerAddress => 'Adreça';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Adreça del servidor';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Fins al camí de l’API inclòs, per exemple http://192.168.1.20:11434/v1 per a Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Aquesta no és una adreça http:// o https://.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Nom del model';
+
+  @override
+  String get settingsAiServerModelMessage => 'Tal com l’anomena el teu servidor, per exemple llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Prova la connexió';
+
+  @override
+  String get settingsAiTesting => 'S’està provant…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model ha respost en $seconds s';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'La prova ha fallat';
+
+  @override
+  String get settingsAiTestInvalid => 'El model ha respost, però no en la forma que el Loupe ha demanat.';
+
+  @override
+  String get settingsAiRemoveKey => 'Elimina la clau';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Vols eliminar la clau d’API d’Anthropic?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'El Loupe l’esborra del clauer d’aquest telèfon i deixa d’enviar peticions a Anthropic. No canvia a cap altre proveïdor. Per revocar la clau en si, esborra-la a l’Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Elimina el servidor';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Vols eliminar el teu servidor?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'El Loupe n’oblida l’adreça i el model, n’esborra la clau del clauer d’aquest telèfon i deixa d’enviar-li peticions. No canvia a cap altre proveïdor.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Conservació de dades d’Anthropic';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'La demo funciona en aquest telèfon i no envia res enlloc. No és un model: respon uns quants tipus de petició amb regles senzilles, i les seves respostes ho diuen.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Les peticions van per internet a Anthropic (api.anthropic.com), amb la teva clau. Cadascuna només conté el que necessita una funció: la frase que has escrit i els noms dels teus comptes, o l’assumpte, el remitent, la data, el text i els noms dels adjunts d’un missatge. Mai els adjunts en si, les contrasenyes dels comptes ni la clau. Els resultats es desen en aquest telèfon; el que conserva Anthropic depèn de la seva pròpia política de conservació.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Les peticions surten d’aquest telèfon cap al teu servidor: és processament per la xarxa, fins i tot a casa. Cadascuna només conté el que necessita una funció: la frase que has escrit i els noms dels teus comptes, o l’assumpte, el remitent, la data, el text i els noms dels adjunts d’un missatge. Mai els adjunts en si, les contrasenyes dels comptes ni la clau. Els resultats es desen en aquest telèfon; el que conserva el servidor depèn de com estigui configurat.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Aquesta adreça no està xifrada (http): altres persones de la xarxa poden llegir el que s’envia.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Funcions';
+
+  @override
+  String get settingsAiFeaturesFooter => 'Una funció desactivada no mostra cap part d’IA ni consulta cap model.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Resum';
+
+  @override
+  String get settingsAiFeatureActions => 'Accions suggerides';
+
+  @override
+  String get settingsAiFeatureRules => 'Descriu una regla';
+
+  @override
+  String get settingsAiFeatureChanges => 'Què ha canviat';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Dades dels documents';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Revisió de la resposta';
+
+  @override
+  String get settingsAiFeatureMatters => 'Estat de l’afer';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'A la cerca: una frase es converteix en una cerca que pots revisar.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'En un missatge: què et demana, amb els fragments.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Proposa elements per a «Pendent de mi» i «Esperant els altres».';
+
+  @override
+  String get settingsAiFeatureRulesDetail =>
+      'A Regles: una descripció es converteix en una regla que revises abans de desar-la.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'A Compara els missatges: què ha canviat en el sentit, amb les fonts.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Les dades clau dels documents adjunts, amb les seves pàgines.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Abans d’enviar: què pot haver passat per alt una resposta.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'L’estat més recent d’un afer, segons el seu correu.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Mantén el correu al telèfon';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Un compte amb això activat no envia mai el seu correu al teu servidor ni a cap núvol: amb un proveïdor així, les seves parts d’IA queden amagades. Un model en aquest telèfon sí que el pot llegir.';
+
+  @override
+  String get settingsAiUsage => 'Ús i cost estimat';
+
+  @override
+  String get settingsAiUsageToday => 'Avui';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Aquest mes';
+
+  @override
+  String get settingsAiUsageAll => 'Tot';
+
+  @override
+  String get settingsAiUsageNone => 'Cap petició';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count peticions', one: '1 petició');
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input tokens d’entrada, $output de sortida';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count peticions sense dades',
+      one: '1 petició sense dades',
+    );
+    return '$input tokens d’entrada, $output de sortida; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Tokens sense dades';
+
+  @override
+  String get settingsAiUsageTotal => 'Total';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'El Loupe desa un registre de cada petició en aquest telèfon: la tasca, el proveïdor, el model, els tokens i les hores, mai el que s’ha enviat o respost. Els tokens que un proveïdor no ha indicat es mostren sense dades, mai com a zero.';
+
+  @override
+  String get settingsAiCostNone => 'Sense cost';
+
+  @override
+  String get settingsAiCostUnknown => 'Desconegut';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Com a mínim $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Preus utilitzats';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input d’entrada, $output de sortida';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Dòlars americans per milió de tokens: preus de llista de $source a $date. Són estimacions, no una factura: la pàgina d’ús del teu proveïdor és la que val. Un model sense preu aquí mostra «Desconegut».';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Esborra els resultats derivats';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Resums, cerques proposades i altres respostes desades per reutilitzar-les, només en aquest telèfon. Esborrar-les manté el teu correu i el que has decidit, com ara elements marcats, accions i afers; les funcions les tornen a crear quan cal.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Vols esborrar $count resultats?',
+      one: 'Vols esborrar 1 resultat?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Vols esborrar també els $count resultats que ha creat?',
+      one: 'Vols esborrar també el resultat que ha creat?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'El teu correu i el que has decidit es queden. Les funcions tornen a crear els resultats quan els necessiten.';
+
+  @override
+  String get settingsAiDeleteResults => 'Esborra els resultats';
 }

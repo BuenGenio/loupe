@@ -6512,5 +6512,328 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Pārvērš teikumu meklēšanā, ko var pārbaudīt un rediģēt. Pagaidām tulko iebūvētā demonstrācija: bez modeļa, bez tīkla.';
+      'Ļauj Loupe funkcijām jautāt jūsu izvēlētajam modelim. Kad izslēgts, nevienam modelim nekas netiek jautāts, un pasts, meklēšana un kārtulas darbojas kā līdz šim.';
+
+  @override
+  String get settingsAiProviderHeader => 'Nodrošinātājs';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Tiek izmantots tikai jūsu izvēlētais nodrošinātājs. Ja tas neizdodas vai nav iestatīts, Loupe to pasaka un neko nesūta citur.';
+
+  @override
+  String get settingsAiNotSetUpFooter => 'Šis nodrošinātājs vēl nav iestatīts, tāpēc funkcijas nerāda MI daļas.';
+
+  @override
+  String get settingsAiDemo => 'Iebūvētā demonstrācija';
+
+  @override
+  String get settingsAiDemoDetail => 'Šajā tālrunī. Bez modeļa: dažas kārtulas funkciju izmēģināšanai.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Mākonis: Claude ar jūsu pašu API atslēgu.';
+
+  @override
+  String get settingsAiServer => 'Mans serveris';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Jūsu serveris, caur tīklu: Ollama, LM Studio vai cits serveris ar OpenAI saderīgu API.';
+
+  @override
+  String get settingsAiOnPhone => 'Šajā tālrunī';
+
+  @override
+  String get settingsAiOnPhoneDetail => 'Vēl nav pieejams: ierīces modelis tālruņos vēl tiek testēts.';
+
+  @override
+  String get settingsAiNotSetUp => 'Nav iestatīts';
+
+  @override
+  String get settingsAiNotSet => 'Nav norādīts';
+
+  @override
+  String get settingsAiKeySaved => 'Saglabāta';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Nav nolasāma';
+
+  @override
+  String get settingsAiApiKey => 'API atslēga';
+
+  @override
+  String get settingsAiModel => 'Modelis';
+
+  @override
+  String get settingsAiOtherModel => 'Cits modelis…';
+
+  @override
+  String get settingsAiModelId => 'Modeļa ID';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Anthropic API atslēga';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Glabājas šī tālruņa atslēgu krātuvē un tiek sūtīta tikai uz api.anthropic.com pieprasījuma galvenē, nekad kā daļa no tā, ko lasa modelis.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Servera API atslēga';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Neobligāti: ja tādas nav, atstājiet tukšu. Glabājas šī tālruņa atslēgu krātuvē un tiek sūtīta tikai uz jūsu serveri pieprasījuma galvenē, nekad kā daļa no tā, ko lasa modelis.';
+
+  @override
+  String get settingsAiServerAddress => 'Adrese';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Servera adrese';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Ieskaitot API ceļu, piemēram, http://192.168.1.20:11434/v1 rīkam Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Tā nav http:// vai https:// adrese.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Modeļa nosaukums';
+
+  @override
+  String get settingsAiServerModelMessage => 'Tā, kā to sauc jūsu serveris, piemēram, llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Pārbaudīt savienojumu';
+
+  @override
+  String get settingsAiTesting => 'Notiek pārbaude…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model atbildēja $seconds s laikā';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Pārbaude neizdevās';
+
+  @override
+  String get settingsAiTestInvalid => 'Modelis atbildēja, bet ne tādā formā, kādu prasīja Loupe.';
+
+  @override
+  String get settingsAiRemoveKey => 'Noņemt atslēgu';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Vai noņemt Anthropic API atslēgu?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe to izdzēš no šī tālruņa atslēgu krātuves un vairs nesūta pieprasījumus uz Anthropic. Tā nepārslēdzas uz citu nodrošinātāju. Lai atsauktu pašu atslēgu, izdzēsiet to Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Noņemt serveri';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Vai noņemt jūsu serveri?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe aizmirst tā adresi un modeli, izdzēš tā atslēgu no šī tālruņa atslēgu krātuves un vairs nesūta tam pieprasījumus. Tā nepārslēdzas uz citu nodrošinātāju.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Anthropic datu glabāšana';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Demonstrācija darbojas šajā tālrunī un neko nekur nesūta. Tā nav modelis: tā atbild uz dažiem pieprasījumu veidiem ar vienkāršām kārtulām, un tās atbildes to pasaka.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Pieprasījumi caur internetu nonāk pie Anthropic (api.anthropic.com) ar jūsu atslēgu. Katrs satur tikai to, kas vajadzīgs vienai funkcijai: ievadīto teikumu un jūsu kontu nosaukumus vai vienas vēstules tematu, sūtītāju, datumu, tekstu un pielikumu nosaukumus. Nekad pašus pielikumus, kontu paroles vai atslēgu. Rezultāti paliek šajā tālrunī; ko glabā Anthropic, nosaka tā paša datu glabāšanas politika.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Pieprasījumi atstāj šo tālruni un nonāk jūsu serverī: tā ir apstrāde caur tīklu, arī mājās. Katrs satur tikai to, kas vajadzīgs vienai funkcijai: ievadīto teikumu un jūsu kontu nosaukumus vai vienas vēstules tematu, sūtītāju, datumu, tekstu un pielikumu nosaukumus. Nekad pašus pielikumus, kontu paroles vai atslēgu. Rezultāti paliek šajā tālrunī; ko glabā serveris, ir atkarīgs no tā iestatījumiem.';
+
+  @override
+  String get settingsAiServerUnencrypted => 'Šī adrese nav šifrēta (http): citi tīklā var lasīt nosūtīto.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Funkcijas';
+
+  @override
+  String get settingsAiFeaturesFooter => 'Izslēgta funkcija nerāda MI daļu un nejautā nevienam modelim.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Īsumā';
+
+  @override
+  String get settingsAiFeatureActions => 'Ieteiktās darbības';
+
+  @override
+  String get settingsAiFeatureRules => 'Aprakstīt kārtulu';
+
+  @override
+  String get settingsAiFeatureChanges => 'Kas mainījās';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Fakti no dokumentiem';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Atbildes pārbaude';
+
+  @override
+  String get settingsAiFeatureMatters => 'Lietas stāvoklis';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'Meklēšanā: teikums kļūst par meklējumu, ko varat pārbaudīt.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'Vēstulē: ko tā no jums prasa, ar fragmentiem.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Iesaka vienumus mapēm „Gaida mani“ un „Gaida citus“.';
+
+  @override
+  String get settingsAiFeatureRulesDetail => 'Kārtulās: apraksts kļūst par kārtulu, ko pārbaudāt pirms saglabāšanas.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'Vēstuļu salīdzināšanā: kas mainījās pēc būtības, ar avotiem.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Pievienoto dokumentu galvenie fakti ar to lappusēm.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Pirms sūtīšanas: ko atbilde, iespējams, palaidusi garām.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Lietas jaunākais stāvoklis pēc tās pasta.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Paturēt pastu tālrunī';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Konts, kam tas ir ieslēgts, nekad nesūta savu pastu uz jūsu serveri vai mākoni: ar šādu nodrošinātāju tā MI daļas paliek paslēptas. Modelis šajā tālrunī to tomēr var lasīt.';
+
+  @override
+  String get settingsAiUsage => 'Lietojums un aplēstās izmaksas';
+
+  @override
+  String get settingsAiUsageToday => 'Šodien';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Šomēnes';
+
+  @override
+  String get settingsAiUsageAll => 'Visi';
+
+  @override
+  String get settingsAiUsageNone => 'Nav pieprasījumu';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pieprasījumi',
+      one: '$count pieprasījums',
+      zero: '$count pieprasījumu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input marķieri ievadē, $output izvadē';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pieprasījumiem nav datu',
+      one: '$count pieprasījumam nav datu',
+      zero: '$count pieprasījumiem nav datu',
+    );
+    return '$input marķieri ievadē, $output izvadē; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Nav datu par marķieriem';
+
+  @override
+  String get settingsAiUsageTotal => 'Kopā';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe šajā tālrunī reģistrē katru pieprasījumu: uzdevumu, nodrošinātāju, modeli, marķieru skaitu un laikus, nekad to, kas tika nosūtīts vai atbildēts. Marķieru skaits, ko nodrošinātājs nav paziņojis, tiek rādīts kā nepaziņots, nekad kā nulle.';
+
+  @override
+  String get settingsAiCostNone => 'Bez izmaksām';
+
+  @override
+  String get settingsAiCostUnknown => 'Nezināms';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Vismaz $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Izmantotās cenas';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input ievadē, $output izvadē';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'ASV dolāri par miljonu marķieru: $source cenrāža cenas $date. Tās ir aplēses, nevis rēķins: noteicošā ir jūsu nodrošinātāja lietojuma lapa. Modelim bez cenas šeit redzams „Nezināms“.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Dzēst atvasinātos rezultātus';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Kopsavilkumi, ieteiktie meklējumi un citas atbildes, kas glabātas atkārtotai izmantošanai, tikai šajā tālrunī. Pēc to dzēšanas paliek jūsu pasts un jūsu lēmumi, piemēram, atzīmētie vienumi, darbības un lietas; funkcijas tos izveido no jauna, kad vajag.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Vai dzēst $count rezultātus?',
+      one: 'Vai dzēst $count rezultātu?',
+      zero: 'Vai dzēst $count rezultātu?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Vai dzēst arī $count tā izveidotos rezultātus?',
+      one: 'Vai dzēst arī $count tā izveidoto rezultātu?',
+      zero: 'Vai dzēst arī $count tā izveidoto rezultātu?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Jūsu pasts un jūsu lēmumi paliek. Funkcijas izveido rezultātus no jauna, kad tie ir vajadzīgi.';
+
+  @override
+  String get settingsAiDeleteResults => 'Dzēst rezultātus';
 }

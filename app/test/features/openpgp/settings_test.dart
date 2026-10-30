@@ -26,6 +26,8 @@ void main() {
     await pumpLoupe(tester, overrides: [inlinePgp]);
     await goTo(tester, Routes.settings);
     await tester.scrollTo(find.byKey(const Key('encryption-settings')));
+    await tester.ensureVisible(find.byKey(const Key('encryption-settings')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('encryption-settings')));
     await tester.pumpAndSettle();
 

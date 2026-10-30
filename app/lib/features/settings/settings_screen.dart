@@ -23,6 +23,7 @@ import '../conversation/security/security_provider.dart';
 import '../mailing_lists/technical_lists_screen.dart';
 import '../search/smart_mailbox_settings_screen.dart';
 import 'language_settings_screen.dart';
+import 'private_ai_settings_screen.dart';
 import 'settings_widgets.dart';
 import '../../theme/loupe_icons.dart';
 
@@ -279,21 +280,14 @@ class SettingsScreen extends ConsumerWidget {
           ],
         ),
         InsetGroup(
-          header: l10n.settingsAiHeader,
           separatorIndent: 58,
           children: [
             GroupedRow(
-              key: const Key('ai-assist'),
+              key: const Key('private-ai'),
               leading: SettingsIcon(LoupeIcons.ask, colors.swipeMore),
-              title: l10n.searchAskPlainEnglish,
-              subtitle: l10n.settingsAiAssistDetail,
-              chevron: false,
-              onTap: () => controller.update((s) => s.copyWith(aiAssist: !s.aiAssist)),
-              trailing: CupertinoSwitch(
-                value: settings.aiAssist,
-                activeTrackColor: colors.success,
-                onChanged: (v) => controller.update((s) => s.copyWith(aiAssist: v)),
-              ),
+              title: l10n.settingsAiHeader,
+              detail: aiStatusLabel(l10n, ref),
+              onTap: () => context.push(Routes.privateAi),
             ),
           ],
         ),
