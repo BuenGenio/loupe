@@ -41,6 +41,6 @@ export 'src/tasks/brief.dart'
     show Brief, BriefDue, BriefEvidence, BriefInput, BriefItem, BriefItemKind, BriefOwner, BriefTask, DueKind;
 export 'src/tasks/change_explanation.dart'
     show ChangeExplanation, ChangeExplanationTask, ChangeKind, ChangePassage, ChangeSide, ChangeSource, ExplainedChange;
-export 'src/tasks/rule_proposal.dart' show RuleProposal, RuleProposalTask, UnsupportedRulePart, UnsupportedRuleReason;
 export 'src/tasks/matter_status.dart' show MatterStatus, MatterStatusMessage, MatterStatusStatement, MatterStatusTask;
+export 'src/tasks/rule_proposal.dart' show RuleProposal, RuleProposalTask, UnsupportedRulePart, UnsupportedRuleReason;
 export 'src/tasks/search_translation.dart' show SearchTranslation, SearchTranslationTask;
