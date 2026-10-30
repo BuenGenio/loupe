@@ -13,6 +13,7 @@ import 'package:loupe/features/compose/compose_args.dart';
 import 'package:loupe/features/compose/compose_screen.dart';
 import 'package:loupe/features/compose/reply_check.dart';
 import 'package:loupe/features/compose/reply_check_panel.dart';
+import 'package:loupe/features/conversation/message_card.dart';
 import 'package:loupe/router.dart';
 import 'package:mail_ai/mail_ai.dart';
 import 'package:mail_model/mail_model.dart';
@@ -111,6 +112,21 @@ void main() {
       expect(find.text('Your SA302 tax calculation for 2024/25.'), findsOneWidget);
     },
   );
+
+  testWidgets('a Brief made in the reader is reused: replying asks the provider nothing more', (tester) async {
+    final repo = await pumpLoupe(tester, prefs: _aiOn, size: const Size(390, 2400));
+    final id = await _idOf(repo, _adviser);
+    await goTo(tester, '/message/${Uri.encodeComponent(id)}');
+    final card = find.byWidgetPredicate((w) => w is MessageCard && w.message.id == id);
+    await tester.tap(find.descendant(of: card, matching: find.byKey(const Key('brief-button'))));
+    await tester.pumpAndSettle();
+    final ledger = ProviderScope.containerOf(tester.element(find.byType(LoupeApp))).read(aiLedgerProvider);
+    expect(ledger.records, hasLength(1));
+
+    await _compose(tester, ComposeArgs(mode: ComposeMode.reply, sourceEmailId: id));
+    expect(_panel, findsOneWidget);
+    expect(ledger.records, hasLength(1));
+  });
 
   testWidgets('no panel for a new message, nor for a reply to a message that asks nothing', (tester) async {
     final repo = await pumpLoupe(tester, prefs: _aiOn);

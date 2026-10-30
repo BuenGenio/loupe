@@ -43,7 +43,7 @@ bool briefReadable(EmailSummary message, EmailContent content) {
 FutureOr<BriefSource> briefSource(EmailSummary message, EmailContent content) {
   BriefSource source(String text, {required bool cut}) => (
     input: BriefInput(
-      subject: message.subject,
+      subject: protectedSubjectIn(content) ?? message.subject,
       from: message.sender?.toString() ?? '',
       date: message.sentAt ?? message.receivedAt,
       text: text,
@@ -59,6 +59,12 @@ FutureOr<BriefSource> briefSource(EmailSummary message, EmailContent content) {
   if (bounded.length <= _syncHtmlCharacters) return source(_tidy(emailHtmlText(bounded)), cut: cut);
   return compute(emailHtmlText, bounded).then((text) => source(_tidy(text), cut: cut));
 }
+
+/// The Brief task for [input], as the reader and Reply Check both make it, so
+/// an unchanged message has one result in [AiService] whichever asked first:
+/// [now]'s date and the device's time zone ([zone], an IANA name).
+BriefTask briefTaskFor(BriefInput input, {required DateTime now, String? zone}) =>
+    BriefTask(input, now: now, timeZone: zone ?? now.timeZoneName);
 
 /// Nested blocks leave runs of empty lines; a paragraph break is enough.
 String _tidy(String text) => text.replaceAll(RegExp(r'\n[ \t]*\n(?:[ \t]*\n)+'), '\n\n');
