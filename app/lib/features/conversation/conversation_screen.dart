@@ -23,6 +23,8 @@ import '../openpgp/content_loader.dart';
 import '../openpgp/pgp_status.dart';
 import '../mailing_lists/list_providers.dart';
 import 'conversation_bar.dart';
+import 'changes/comparison_content.dart';
+import 'changes/email_changes_sheet.dart';
 import 'mail_streams.dart';
 import 'mailbox_picker.dart';
 import 'message_actions.dart';
@@ -457,6 +459,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
       mailboxRole: role,
       snoozed: _mailActions.isSnoozed(m),
       muted: muted,
+      canCompare: (_messages?.length ?? 0) > 1,
     );
     if (action == null || !mounted) return;
     final single = (_messages?.length ?? 0) <= 1;
@@ -504,6 +507,31 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
         }
       case MessageAction.source:
         await context.push(Routes.source(m.id));
+      case MessageAction.compare:
+        final comparisonMessages = List<EmailSummary>.of(_messages ?? const []);
+        if (comparisonMessages.length < 2) return;
+        await showEmailChangesSheet(
+          context,
+          messages: comparisonMessages,
+          initialEmailId: m.id,
+          loadContent: (message) async {
+            try {
+              final content = await _contentFor(message);
+              if (!comparisonContentAvailable(
+                content,
+                summaryEncrypted: message.isEncrypted,
+                pgpStatus: pgpStatusOf(content),
+                smimeStatus: smimeStatusOf(content),
+              )) {
+                throw StateError('Message is not decrypted');
+              }
+              return content;
+            } on Object {
+              _content.remove(message.id)?.ignore();
+              rethrow;
+            }
+          },
+        );
       case MessageAction.saveFile:
         await saveMessageAsFile(context, ref, m);
       case MessageAction.shareFile:

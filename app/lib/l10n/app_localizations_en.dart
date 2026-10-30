@@ -148,6 +148,50 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mailboxTrash => 'Trash';
 
   @override
+  String get conversationCompareMessages => 'Compare Messages…';
+
+  @override
+  String get conversationChangesTitle => 'Changes';
+
+  @override
+  String get conversationChangesFrom => 'From Message';
+
+  @override
+  String get conversationChangesTo => 'To Message';
+
+  @override
+  String get conversationChangesText => 'Message Text';
+
+  @override
+  String get conversationChangesAdded => 'Added';
+
+  @override
+  String get conversationChangesRemoved => 'Removed';
+
+  @override
+  String get conversationChangesNoText => 'No text changes.';
+
+  @override
+  String get conversationChangesAttachments => 'Attachments';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Attachment names, types and sizes are compared. File contents are not checked.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Matching Details';
+
+  @override
+  String get conversationChangesFullTextNote => 'Full message text is compared, including quotes and signatures.';
+
+  @override
+  String get conversationChangesLimited =>
+      'This message is too large for a detailed comparison. Some text may be omitted or shown as a whole block.';
+
+  @override
+  String get conversationChangesLoadError => 'These messages couldn’t be compared.';
+
+  @override
   String get conversationSomethingWentWrong => 'Something went wrong. Try again.';
 
   @override

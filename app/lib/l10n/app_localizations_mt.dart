@@ -156,6 +156,51 @@ class AppLocalizationsMt extends AppLocalizations {
   String get mailboxTrash => 'Skart';
 
   @override
+  String get conversationCompareMessages => 'Qabbel il-messaġġi…';
+
+  @override
+  String get conversationChangesTitle => 'Bidliet';
+
+  @override
+  String get conversationChangesFrom => 'Messaġġ inizjali';
+
+  @override
+  String get conversationChangesTo => 'Messaġġ finali';
+
+  @override
+  String get conversationChangesText => 'Test tal-messaġġ';
+
+  @override
+  String get conversationChangesAdded => 'Miżjud';
+
+  @override
+  String get conversationChangesRemoved => 'Imneħħi';
+
+  @override
+  String get conversationChangesNoText => 'Ebda bidla fit-test.';
+
+  @override
+  String get conversationChangesAttachments => 'Mehmużin';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Jitqabblu l-ismijiet, it-tipi u d-daqsijiet tal-mehmużin. Il-kontenut tal-fajls ma jiġix iċċekkjat.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Dettalji li jaqblu';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Jitqabbel it-test kollu tal-messaġġ, inklużi l-kwotazzjonijiet u l-firem.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Dan il-messaġġ huwa kbir wisq għal tqabbil dettaljat. Xi test jista’ jitħalla barra jew jintwera bħala blokka sħiħa.';
+
+  @override
+  String get conversationChangesLoadError => 'Ma setgħux jitqabblu dawn il-messaġġi.';
+
+  @override
   String get conversationSomethingWentWrong => 'Xi ħaġa marret ħażin. Erġa’ pprova.';
 
   @override

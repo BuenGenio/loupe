@@ -148,6 +148,50 @@ class AppLocalizationsNb extends AppLocalizations {
   String get mailboxTrash => 'Papirkurv';
 
   @override
+  String get conversationCompareMessages => 'Sammenlign meldinger…';
+
+  @override
+  String get conversationChangesTitle => 'Endringer';
+
+  @override
+  String get conversationChangesFrom => 'Utgangsmelding';
+
+  @override
+  String get conversationChangesTo => 'Målmelding';
+
+  @override
+  String get conversationChangesText => 'Meldingstekst';
+
+  @override
+  String get conversationChangesAdded => 'Lagt til';
+
+  @override
+  String get conversationChangesRemoved => 'Fjernet';
+
+  @override
+  String get conversationChangesNoText => 'Ingen tekstendringer.';
+
+  @override
+  String get conversationChangesAttachments => 'Vedlegg';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Navn, typer og størrelser på vedlegg sammenlignes. Innholdet i filene kontrolleres ikke.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Samsvarende opplysninger';
+
+  @override
+  String get conversationChangesFullTextNote => 'Hele meldingsteksten sammenlignes, inkludert sitater og signaturer.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Denne meldingen er for stor for en detaljert sammenligning. Noe tekst kan bli utelatt eller vist som en hel blokk.';
+
+  @override
+  String get conversationChangesLoadError => 'Disse meldingene kunne ikke sammenlignes.';
+
+  @override
   String get conversationSomethingWentWrong => 'Noe gikk galt. Prøv igjen.';
 
   @override

@@ -148,6 +148,51 @@ class AppLocalizationsFi extends AppLocalizations {
   String get mailboxTrash => 'Roskakori';
 
   @override
+  String get conversationCompareMessages => 'Vertaa viestejä…';
+
+  @override
+  String get conversationChangesTitle => 'Muutokset';
+
+  @override
+  String get conversationChangesFrom => 'Lähtöviesti';
+
+  @override
+  String get conversationChangesTo => 'Kohdeviesti';
+
+  @override
+  String get conversationChangesText => 'Viestin teksti';
+
+  @override
+  String get conversationChangesAdded => 'Lisätty';
+
+  @override
+  String get conversationChangesRemoved => 'Poistettu';
+
+  @override
+  String get conversationChangesNoText => 'Ei tekstimuutoksia.';
+
+  @override
+  String get conversationChangesAttachments => 'Liitteet';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Liitteiden nimiä, tyyppejä ja kokoja verrataan. Tiedostojen sisältöä ei tarkisteta.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Vastaavat tiedot';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Viestin koko tekstiä verrataan, mukaan lukien lainaukset ja allekirjoitukset.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Tämä viesti on liian suuri yksityiskohtaiseen vertailuun. Osa tekstistä saatetaan jättää pois tai näyttää yhtenä kokonaisena lohkona.';
+
+  @override
+  String get conversationChangesLoadError => 'Näitä viestejä ei voitu verrata.';
+
+  @override
   String get conversationSomethingWentWrong => 'Jokin meni vikaan. Yritä uudelleen.';
 
   @override

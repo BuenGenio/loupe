@@ -154,6 +154,50 @@ class AppLocalizationsCs extends AppLocalizations {
   String get mailboxTrash => 'Koš';
 
   @override
+  String get conversationCompareMessages => 'Porovnat zprávy…';
+
+  @override
+  String get conversationChangesTitle => 'Změny';
+
+  @override
+  String get conversationChangesFrom => 'Výchozí zpráva';
+
+  @override
+  String get conversationChangesTo => 'Cílová zpráva';
+
+  @override
+  String get conversationChangesText => 'Text zprávy';
+
+  @override
+  String get conversationChangesAdded => 'Přidáno';
+
+  @override
+  String get conversationChangesRemoved => 'Odebráno';
+
+  @override
+  String get conversationChangesNoText => 'Žádné změny v textu.';
+
+  @override
+  String get conversationChangesAttachments => 'Přílohy';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Porovnávají se názvy, typy a velikosti příloh. Obsah souborů se nekontroluje.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Shodné údaje';
+
+  @override
+  String get conversationChangesFullTextNote => 'Porovnává se celý text zprávy včetně citací a podpisů.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Tato zpráva je pro podrobné porovnání příliš velká. Část textu může být vynechána nebo zobrazena jako jeden celý blok.';
+
+  @override
+  String get conversationChangesLoadError => 'Tyto zprávy se nepodařilo porovnat.';
+
+  @override
   String get conversationSomethingWentWrong => 'Něco se pokazilo. Zkuste to znovu.';
 
   @override
