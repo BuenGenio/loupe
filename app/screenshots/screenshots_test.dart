@@ -28,21 +28,28 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loupe/data/repositories.dart';
+import 'package:loupe/demo/demo_matters.dart';
 import 'package:loupe/demo/demo_repository.dart';
+import 'package:loupe/features/ai/ai_providers.dart';
 import 'package:loupe/features/compose/compose_args.dart';
+import 'package:loupe/features/conversation/message_card.dart';
 import 'package:loupe/features/keyboard/app_shortcuts.dart';
 import 'package:loupe/features/notifications/app_icon_badge.dart';
 import 'package:loupe/features/notifications/notifications_coordinator.dart';
 import 'package:loupe/features/openpgp/openpgp_providers.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:loupe/providers.dart';
 import 'package:loupe/router.dart';
 import 'package:loupe/settings/app_mode.dart';
 import 'package:loupe/settings/app_settings.dart';
 import 'package:loupe/settings/ui_state.dart';
 import 'package:loupe/theme/theme.dart';
+import 'package:mail_ai/mail_ai.dart';
 import 'package:mail_model/mail_model.dart';
 import 'package:readable/readable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+part 'private_ai_shots.dart';
 
 /// Where the PNGs go, relative to app/.
 const _outDir = '../site/v2/src/assets/screenshots';
@@ -208,6 +215,9 @@ class _ShotApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'Loupe',
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: loupeLocalizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('en'),
       theme: _withFonts(LoupeTheme.light(density: settings.density)),
       darkTheme: _withFonts(LoupeTheme.dark(density: settings.density)),
       themeMode: settings.themeMode,
@@ -287,14 +297,14 @@ Future<void> _resolveImages(WidgetTester tester) async {
   }
 }
 
-Future<void> _capture(WidgetTester tester, String slug) async {
+Future<void> _capture(WidgetTester tester, String slug, {String outDir = _outDir}) async {
   await _resolveImages(tester);
   final view = tester.binding.renderViews.first;
   final layer = view.debugLayer! as OffsetLayer;
   await tester.runAsync(() async {
     final image = await layer.toImage(view.paintBounds);
     final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-    final out = File('$_outDir/$slug.png');
+    final out = File('$outDir/$slug.png');
     out.parent.createSync(recursive: true);
     out.writeAsBytesSync(bytes!.buffer.asUint8List());
     // ignore: avoid_print
@@ -312,6 +322,7 @@ void _shot(
   double pixelRatio = 3,
   Map<String, Object> prefs = const {},
   List<Override> overrides = const [],
+  String outDir = _outDir,
 }) {
   for (final dark in [false, true]) {
     final name = dark ? '$slug-dark' : slug;
@@ -325,7 +336,7 @@ void _shot(
           overrides: overrides,
         );
         await body(tester, repo);
-        await _capture(tester, name);
+        await _capture(tester, name, outDir: outDir);
         // Let SnackBars and other timers run out.
         await tester.pump(const Duration(seconds: 10));
       });
@@ -493,4 +504,6 @@ void main() {
       await _reveal(tester, find.textContaining('v2: free the cache', findRichText: true).first, alignment: 0.14);
     },
   );
+
+  _privateAiShots();
 }
