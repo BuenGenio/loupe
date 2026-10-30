@@ -50,7 +50,9 @@ const gallery = {
   image={lang === 'en' ? '/og/screenshots.jpg' : `/og/${lang}/screenshots.jpg`}
   jsonLd={[gallery, breadcrumbs([{ name: 'Loupe', path: l('/') }, { name: t('screenshots.title'), path: l('/screenshots/') }])]}
 >
-  <section class="top">
+  <section class="top night">
+    <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="gridlines" aria-hidden="true"></div>
     <div class="wrap">
       <p class="eyebrow">{t('screenshots.eyebrow')}</p>
       <h1>{t('screenshots.h1')}</h1>
@@ -184,11 +186,13 @@ const gallery = {
 
 <style>
   .top {
-    padding-block: clamp(48px, 7vw, 88px) 8px;
+    padding-block: clamp(48px, 7vw, 88px) clamp(32px, 5vw, 56px);
   }
 
   h1 {
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2.75rem, 6.6vw, 4.6rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
   }
 
   .theme-note {
@@ -210,12 +214,21 @@ const gallery = {
     cursor: pointer;
     font: inherit;
     font-size: 0.875rem;
+    border-color: var(--glass-line);
+    background: var(--glass-bg);
+    color: var(--night-ink-2);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .filters button:hover {
+    color: var(--night-ink);
+    background: var(--night-hover);
   }
 
   .filters button[aria-pressed='true'] {
-    border-color: var(--brand);
-    background: var(--brand-soft);
-    color: var(--brand-ink);
+    border-color: transparent;
+    background: var(--grad-brand);
+    color: #fff;
   }
 
   .gallery {

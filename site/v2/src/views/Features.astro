@@ -42,7 +42,9 @@ const deeper: Record<string, string> = {
   image={lang === 'en' ? '/og/features.jpg' : `/og/${lang}/features.jpg`}
   jsonLd={[softwareApplication(), breadcrumbs([{ name: 'Loupe', path: l('/') }, { name: t('features.title'), path: l('/features/') }])]}
 >
-  <section class="top">
+  <section class="top night">
+    <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="gridlines" aria-hidden="true"></div>
     <div class="wrap">
       <p class="eyebrow">{t('features.eyebrow')}</p>
       <h1>
@@ -386,16 +388,28 @@ const deeper: Record<string, string> = {
 
 <style>
   .top {
-    padding-block: clamp(40px, 6vw, 80px) clamp(16px, 3vw, 28px);
+    padding-block: clamp(48px, 7vw, 88px) clamp(28px, 4vw, 44px);
   }
 
   h1 {
     max-width: 14em;
-    font-size: clamp(2.3rem, 6vw, 4rem);
+    font-size: clamp(2.6rem, 6.4vw, 4.4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
   }
 
   .line {
     display: block;
+  }
+
+  /* The second line of the headline carries the brand gradient. */
+  .line:last-child {
+    width: fit-content;
+    padding-right: 0.08em;
+    background: var(--grad-brand);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   .top .lead {
