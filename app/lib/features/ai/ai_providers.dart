@@ -79,3 +79,56 @@ final aiServiceProvider = Provider<AiService?>((ref) {
   if (provider == null) return null;
   return AiService(provider, ref.watch(aiLedgerProvider));
 });
+
+/// The Private AI features. Each can be switched off on its own in Settings ›
+/// Private AI; with Private AI off, none of them asks a model for anything.
+enum AiFeature {
+  /// Ask in Plain English, in search.
+  search,
+
+  /// Brief, in the reader.
+  brief,
+
+  /// Suggested actions for Needs My Action and Waiting on Others.
+  actions,
+
+  /// Describe a Rule, in Rules.
+  rules,
+
+  /// What Changed, in Compare Messages.
+  changes,
+
+  /// Key facts of documents.
+  documents,
+
+  /// Reply check, in compose.
+  replyCheck,
+
+  /// A matter's latest position.
+  matters,
+}
+
+/// The features that may ask a model while Private AI is on: all of them
+/// until Settings › Private AI turns some off. Features only read this.
+final aiFeaturesProvider = Provider<Set<AiFeature>>((ref) => AiFeature.values.toSet());
+
+/// Accounts whose mail never goes to a network provider (Settings › Private
+/// AI, per account). Their mail can still use a provider on this phone.
+final aiLocalOnlyAccountsProvider = Provider<Set<String>>((ref) => const {});
+
+/// The [AiService] a feature uses for mail of an account (null when the
+/// feature isn't about one account's mail), or null when Private AI or the
+/// feature is off, or the account keeps its mail on the phone and the
+/// provider is a network one. Null means: don't offer the AI part at all.
+final aiServiceForProvider = Provider.family<AiService?, (AiFeature, String?)>((ref, use) {
+  final (feature, accountId) = use;
+  if (!ref.watch(aiFeaturesProvider).contains(feature)) return null;
+  final service = ref.watch(aiServiceProvider);
+  if (service == null) return null;
+  if (accountId != null &&
+      service.provider.location != ProviderLocation.onThisPhone &&
+      ref.watch(aiLocalOnlyAccountsProvider).contains(accountId)) {
+    return null;
+  }
+  return service;
+});
