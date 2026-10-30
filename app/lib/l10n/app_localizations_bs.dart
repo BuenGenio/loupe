@@ -6496,4 +6496,32 @@ class AppLocalizationsBs extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Isprobaj s demo poštom';
+
+  @override
+  String get searchAskPlainEnglish => 'Pitaj svojim riječima';
+
+  @override
+  String get searchAskWorking => 'Priprema pretrage…';
+
+  @override
+  String get searchAskProposed => 'Predložena pretraga';
+
+  @override
+  String get searchAskUse => 'Koristi ovu pretragu';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe treba znati:';
+
+  @override
+  String get searchAskFailed => 'Loupe to nije mogao pretvoriti u pretragu.';
+
+  @override
+  String get searchAskDemoNote => 'Preveo ugrađeni demo, a ne model.';
+
+  @override
+  String get settingsAiHeader => 'Privatna AI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Pretvara rečenicu u pretragu koju možeš provjeriti i urediti. Zasad prevodi ugrađeni demo: bez modela, bez mreže.';
 }

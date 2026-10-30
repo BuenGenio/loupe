@@ -6445,4 +6445,32 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Išbandyti su demonstraciniu paštu';
+
+  @override
+  String get searchAskPlainEnglish => 'Klausti savais žodžiais';
+
+  @override
+  String get searchAskWorking => 'Ruošiama paieška…';
+
+  @override
+  String get searchAskProposed => 'Siūloma paieška';
+
+  @override
+  String get searchAskUse => 'Naudoti šią paiešką';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe reikia žinoti:';
+
+  @override
+  String get searchAskFailed => 'Loupe nepavyko to paversti paieška.';
+
+  @override
+  String get searchAskDemoNote => 'Išvertė įtaisytoji demonstracija, ne modelis.';
+
+  @override
+  String get settingsAiHeader => 'Privatus DI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Paverčia sakinį paieška, kurią galite patikrinti ir pakeisti. Kol kas verčia įtaisytoji demonstracija: be modelio, be tinklo.';
 }

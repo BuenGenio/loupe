@@ -6322,4 +6322,32 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Demo e-postayla deneyin';
+
+  @override
+  String get searchAskPlainEnglish => 'Kendi sözcüklerinizle sorun';
+
+  @override
+  String get searchAskWorking => 'Arama hazırlanıyor…';
+
+  @override
+  String get searchAskProposed => 'Önerilen arama';
+
+  @override
+  String get searchAskUse => 'Bu aramayı kullan';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe\'un bilmesi gereken:';
+
+  @override
+  String get searchAskFailed => 'Loupe bunu bir aramaya dönüştüremedi.';
+
+  @override
+  String get searchAskDemoNote => 'Yerleşik demo çevirdi, bir model değil.';
+
+  @override
+  String get settingsAiHeader => 'Özel yapay zekâ';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Bir cümleyi denetleyip düzenleyebileceğiniz bir aramaya dönüştürür. Şimdilik yerleşik demo çevirir: model yok, ağ yok.';
 }

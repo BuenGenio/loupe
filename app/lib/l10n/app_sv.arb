@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Ingen spårning. Fjärrbilder förblir blockerade tills du säger till.",
   "welcomeAddAccount": "Lägg till konto",
   "welcomeImport": "Importera från Thunderbird",
-  "welcomeTryDemo": "Prova med demo-e-post"
+  "welcomeTryDemo": "Prova med demo-e-post",
+  "searchAskPlainEnglish": "Fråga med egna ord",
+  "searchAskWorking": "Tar fram sökningen…",
+  "searchAskProposed": "Föreslagen sökning",
+  "searchAskUse": "Använd den här sökningen",
+  "searchAskNeedsAnswer": "Loupe behöver veta:",
+  "searchAskFailed": "Loupe kunde inte göra en sökning av det.",
+  "searchAskDemoNote": "Översatt av den inbyggda demon, inte av en modell.",
+  "settingsAiHeader": "Privat AI",
+  "settingsAiAssistDetail": "Gör en mening till en sökning du kan granska och ändra. Tills vidare översätter den inbyggda demon: ingen modell, inget nätverk."
 }

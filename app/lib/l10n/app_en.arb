@@ -3624,5 +3624,14 @@
   "welcomePrivacyText": "No tracking. Remote images stay blocked until you say so.",
   "welcomeAddAccount": "Add Account",
   "welcomeImport": "Import from Thunderbird",
-  "welcomeTryDemo": "Try with demo mail"
+  "welcomeTryDemo": "Try with demo mail",
+  "searchAskPlainEnglish": "Ask in Plain English",
+  "searchAskWorking": "Working out the search…",
+  "searchAskProposed": "Proposed search",
+  "searchAskUse": "Use This Search",
+  "searchAskNeedsAnswer": "Loupe needs to know:",
+  "searchAskFailed": "Loupe couldn't turn that into a search.",
+  "searchAskDemoNote": "Translated by the built-in demo, not a model.",
+  "settingsAiHeader": "Private AI",
+  "settingsAiAssistDetail": "Turn a sentence into a search you can check and edit. For now the built-in demo translates; no model, no network."
 }

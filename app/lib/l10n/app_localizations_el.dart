@@ -6350,4 +6350,32 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Δοκιμή με αλληλογραφία επίδειξης';
+
+  @override
+  String get searchAskPlainEnglish => 'Ρωτήστε με δικά σας λόγια';
+
+  @override
+  String get searchAskWorking => 'Προετοιμασία αναζήτησης…';
+
+  @override
+  String get searchAskProposed => 'Προτεινόμενη αναζήτηση';
+
+  @override
+  String get searchAskUse => 'Χρήση αυτής της αναζήτησης';
+
+  @override
+  String get searchAskNeedsAnswer => 'Το Loupe χρειάζεται να ξέρει:';
+
+  @override
+  String get searchAskFailed => 'Το Loupe δεν μπόρεσε να το μετατρέψει σε αναζήτηση.';
+
+  @override
+  String get searchAskDemoNote => 'Μεταφράστηκε από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
+
+  @override
+  String get settingsAiHeader => 'Ιδιωτική τεχνητή νοημοσύνη';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Μετατρέπει μια πρόταση σε αναζήτηση που μπορείτε να ελέγξετε και να επεξεργαστείτε. Προς το παρόν μεταφράζει η ενσωματωμένη επίδειξη: χωρίς μοντέλο, χωρίς δίκτυο.';
 }

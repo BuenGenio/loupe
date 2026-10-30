@@ -6375,4 +6375,32 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Kipróbálás demó levelekkel';
+
+  @override
+  String get searchAskPlainEnglish => 'Kérdezz a saját szavaiddal';
+
+  @override
+  String get searchAskWorking => 'Keresés összeállítása…';
+
+  @override
+  String get searchAskProposed => 'Javasolt keresés';
+
+  @override
+  String get searchAskUse => 'Keresés használata';
+
+  @override
+  String get searchAskNeedsAnswer => 'A Loupe-nak tudnia kell:';
+
+  @override
+  String get searchAskFailed => 'A Loupe nem tudott ebből keresést készíteni.';
+
+  @override
+  String get searchAskDemoNote => 'A beépített demó fordította, nem modell.';
+
+  @override
+  String get settingsAiHeader => 'Privát MI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Egy mondatból ellenőrizhető és szerkeszthető keresést készít. Egyelőre a beépített demó fordít: nincs modell, nincs hálózat.';
 }

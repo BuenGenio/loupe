@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Без праћења. Удаљене слике остају блокиране док не кажете другачије.",
   "welcomeAddAccount": "Додај налог",
   "welcomeImport": "Увези из Thunderbird-а",
-  "welcomeTryDemo": "Испробај уз демо пошту"
+  "welcomeTryDemo": "Испробај уз демо пошту",
+  "searchAskPlainEnglish": "Питајте својим речима",
+  "searchAskWorking": "Припрема претраге…",
+  "searchAskProposed": "Предложена претрага",
+  "searchAskUse": "Користи ову претрагу",
+  "searchAskNeedsAnswer": "Loupe треба да зна:",
+  "searchAskFailed": "Loupe није могао то да претвори у претрагу.",
+  "searchAskDemoNote": "Превео уграђени демо, а не модел.",
+  "settingsAiHeader": "Приватна ВИ",
+  "settingsAiAssistDetail": "Претвара реченицу у претрагу коју можете да проверите и измените. Засад преводи уграђени демо: без модела, без мреже."
 }

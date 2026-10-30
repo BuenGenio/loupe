@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Jokio sekimo. Nuotoliniai vaizdai lieka blokuojami, kol neleisite.",
   "welcomeAddAccount": "Pridėti paskyrą",
   "welcomeImport": "Importuoti iš Thunderbird",
-  "welcomeTryDemo": "Išbandyti su demonstraciniu paštu"
+  "welcomeTryDemo": "Išbandyti su demonstraciniu paštu",
+  "searchAskPlainEnglish": "Klausti savais žodžiais",
+  "searchAskWorking": "Ruošiama paieška…",
+  "searchAskProposed": "Siūloma paieška",
+  "searchAskUse": "Naudoti šią paiešką",
+  "searchAskNeedsAnswer": "Loupe reikia žinoti:",
+  "searchAskFailed": "Loupe nepavyko to paversti paieška.",
+  "searchAskDemoNote": "Išvertė įtaisytoji demonstracija, ne modelis.",
+  "settingsAiHeader": "Privatus DI",
+  "settingsAiAssistDetail": "Paverčia sakinį paieška, kurią galite patikrinti ir pakeisti. Kol kas verčia įtaisytoji demonstracija: be modelio, be tinklo."
 }

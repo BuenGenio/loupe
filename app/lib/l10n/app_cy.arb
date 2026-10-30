@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Dim tracio. Mae delweddau o bell yn aros wedi’u rhwystro nes i chi ddweud.",
   "welcomeAddAccount": "Ychwanegu cyfrif",
   "welcomeImport": "Mewnforio o Thunderbird",
-  "welcomeTryDemo": "Rhoi cynnig arni gydag e-bost demo"
+  "welcomeTryDemo": "Rhoi cynnig arni gydag e-bost demo",
+  "searchAskPlainEnglish": "Gofyn yn eich geiriau eich hun",
+  "searchAskWorking": "Wrthi'n llunio'r chwiliad…",
+  "searchAskProposed": "Chwiliad arfaethedig",
+  "searchAskUse": "Defnyddio'r chwiliad hwn",
+  "searchAskNeedsAnswer": "Mae angen i Loupe wybod:",
+  "searchAskFailed": "Ni allai Loupe wneud chwiliad o hynny.",
+  "searchAskDemoNote": "Cyfieithwyd gan y demo mewnol, nid gan fodel.",
+  "settingsAiHeader": "Deallusrwydd artiffisial preifat",
+  "settingsAiAssistDetail": "Mae'n troi brawddeg yn chwiliad y gallwch ei wirio a'i olygu. Am y tro, y demo mewnol sy'n cyfieithu: dim model, dim rhwydwaith."
 }

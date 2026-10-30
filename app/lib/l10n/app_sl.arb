@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Brez sledenja. Oddaljene slike ostanejo blokirane, dokler ne rečete drugače.",
   "welcomeAddAccount": "Dodaj račun",
   "welcomeImport": "Uvozi iz Thunderbirda",
-  "welcomeTryDemo": "Preizkusi s predstavitveno pošto"
+  "welcomeTryDemo": "Preizkusi s predstavitveno pošto",
+  "searchAskPlainEnglish": "Vprašaj s svojimi besedami",
+  "searchAskWorking": "Priprava iskanja…",
+  "searchAskProposed": "Predlagano iskanje",
+  "searchAskUse": "Uporabi to iskanje",
+  "searchAskNeedsAnswer": "Loupe mora vedeti:",
+  "searchAskFailed": "Loupe iz tega ni mogel narediti iskanja.",
+  "searchAskDemoNote": "Prevedel vgrajeni demo, ne model.",
+  "settingsAiHeader": "Zasebna UI",
+  "settingsAiAssistDetail": "Stavek spremeni v iskanje, ki ga lahko preverite in uredite. Zaenkrat prevaja vgrajeni demo: brez modela, brez omrežja."
 }

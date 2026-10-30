@@ -6473,4 +6473,32 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Vyzkoušet s ukázkovou poštou';
+
+  @override
+  String get searchAskPlainEnglish => 'Zeptat se vlastními slovy';
+
+  @override
+  String get searchAskWorking => 'Připravuje se hledání…';
+
+  @override
+  String get searchAskProposed => 'Navržené hledání';
+
+  @override
+  String get searchAskUse => 'Použít toto hledání';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe potřebuje vědět:';
+
+  @override
+  String get searchAskFailed => 'Loupe z toho nedokázal udělat hledání.';
+
+  @override
+  String get searchAskDemoNote => 'Přeložilo vestavěné demo, ne model.';
+
+  @override
+  String get settingsAiHeader => 'Soukromá AI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Promění větu v hledání, které můžete zkontrolovat a upravit. Zatím překládá vestavěné demo: bez modelu, bez sítě.';
 }

@@ -10244,6 +10244,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Try with demo mail'**
   String get welcomeTryDemo;
+
+  /// No description provided for @searchAskPlainEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask in Plain English'**
+  String get searchAskPlainEnglish;
+
+  /// No description provided for @searchAskWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Working out the search…'**
+  String get searchAskWorking;
+
+  /// No description provided for @searchAskProposed.
+  ///
+  /// In en, this message translates to:
+  /// **'Proposed search'**
+  String get searchAskProposed;
+
+  /// No description provided for @searchAskUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Use This Search'**
+  String get searchAskUse;
+
+  /// No description provided for @searchAskNeedsAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe needs to know:'**
+  String get searchAskNeedsAnswer;
+
+  /// No description provided for @searchAskFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe couldn\'t turn that into a search.'**
+  String get searchAskFailed;
+
+  /// No description provided for @searchAskDemoNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Translated by the built-in demo, not a model.'**
+  String get searchAskDemoNote;
+
+  /// No description provided for @settingsAiHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Private AI'**
+  String get settingsAiHeader;
+
+  /// No description provided for @settingsAiAssistDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn a sentence into a search you can check and edit. For now the built-in demo translates; no model, no network.'**
+  String get settingsAiAssistDetail;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

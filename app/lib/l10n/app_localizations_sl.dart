@@ -6530,4 +6530,32 @@ class AppLocalizationsSl extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Preizkusi s predstavitveno pošto';
+
+  @override
+  String get searchAskPlainEnglish => 'Vprašaj s svojimi besedami';
+
+  @override
+  String get searchAskWorking => 'Priprava iskanja…';
+
+  @override
+  String get searchAskProposed => 'Predlagano iskanje';
+
+  @override
+  String get searchAskUse => 'Uporabi to iskanje';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe mora vedeti:';
+
+  @override
+  String get searchAskFailed => 'Loupe iz tega ni mogel narediti iskanja.';
+
+  @override
+  String get searchAskDemoNote => 'Prevedel vgrajeni demo, ne model.';
+
+  @override
+  String get settingsAiHeader => 'Zasebna UI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Stavek spremeni v iskanje, ki ga lahko preverite in uredite. Zaenkrat prevaja vgrajeni demo: brez modela, brez omrežja.';
 }

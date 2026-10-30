@@ -6569,4 +6569,32 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Ipprova bil-posta demo';
+
+  @override
+  String get searchAskPlainEnglish => 'Staqsi bi kliemek';
+
+  @override
+  String get searchAskWorking => 'Qed titħejja t-tfittxija…';
+
+  @override
+  String get searchAskProposed => 'Tfittxija proposta';
+
+  @override
+  String get searchAskUse => 'Uża din it-tfittxija';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe jeħtieġ ikun jaf:';
+
+  @override
+  String get searchAskFailed => 'Loupe ma setax jagħmel tfittxija minn dan.';
+
+  @override
+  String get searchAskDemoNote => 'Tradott mid-demo inkorporata, mhux minn mudell.';
+
+  @override
+  String get settingsAiHeader => 'IA privata';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Jibdel sentenza fi tfittxija li tista\' tiċċekkja u teditja. Għalissa tittraduċi d-demo inkorporata: l-ebda mudell, l-ebda netwerk.';
 }

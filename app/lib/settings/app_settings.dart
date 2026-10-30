@@ -27,6 +27,7 @@ class AppSettings {
     this.undoSendSeconds = 10,
     this.threaded = true,
     this.appIconBadge = BadgeCount.inboxes,
+    this.aiAssist = false,
     this.language,
   });
 
@@ -49,6 +50,10 @@ class AppSettings {
   /// The count on the app icon, like Apple Mail's Badge App Icon.
   final BadgeCount appIconBadge;
 
+  /// Private AI (Settings › Private AI): Ask in Plain English in search. Off
+  /// by default; off means no model is asked for anything.
+  final bool aiAssist;
+
   /// The language Loupe shows (Settings › Language), as a language code; null
   /// for the phone's.
   final String? language;
@@ -64,6 +69,7 @@ class AppSettings {
     int? undoSendSeconds,
     bool? threaded,
     BadgeCount? appIconBadge,
+    bool? aiAssist,
     Object? language = _unchanged,
   }) => AppSettings(
     themeMode: themeMode ?? this.themeMode,
@@ -76,6 +82,7 @@ class AppSettings {
     undoSendSeconds: undoSendSeconds ?? this.undoSendSeconds,
     threaded: threaded ?? this.threaded,
     appIconBadge: appIconBadge ?? this.appIconBadge,
+    aiAssist: aiAssist ?? this.aiAssist,
     language: identical(language, _unchanged) ? this.language : language as String?,
   );
 
@@ -125,6 +132,7 @@ class AppSettingsController extends Notifier<AppSettings> {
       undoSendSeconds: p.getInt('${_prefix}undoSendSeconds') ?? d.undoSendSeconds,
       threaded: p.getBool('${_prefix}threaded') ?? d.threaded,
       appIconBadge: pick(BadgeCount.values, 'appIconBadge', d.appIconBadge),
+      aiAssist: p.getBool('${_prefix}aiAssist') ?? d.aiAssist,
       language: loadLanguage(p),
     );
   }
@@ -144,6 +152,7 @@ class AppSettingsController extends Notifier<AppSettings> {
       _prefs.setInt('${_prefix}undoSendSeconds', next.undoSendSeconds),
       _prefs.setBool('${_prefix}threaded', next.threaded),
       _prefs.setString('${_prefix}appIconBadge', next.appIconBadge.name),
+      _prefs.setBool('${_prefix}aiAssist', next.aiAssist),
       if (next.language case final code?) _prefs.setString(_languageKey, code) else _prefs.remove(_languageKey),
     ]);
   }

@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Pa gjurmim. Imazhet e largëta mbeten të bllokuara derisa ta vendosni ju.",
   "welcomeAddAccount": "Shto llogari",
   "welcomeImport": "Importo nga Thunderbird",
-  "welcomeTryDemo": "Provojeni me postë demo"
+  "welcomeTryDemo": "Provojeni me postë demo",
+  "searchAskPlainEnglish": "Pyet me fjalët e tua",
+  "searchAskWorking": "Po përgatitet kërkimi…",
+  "searchAskProposed": "Kërkimi i propozuar",
+  "searchAskUse": "Përdor këtë kërkim",
+  "searchAskNeedsAnswer": "Loupe duhet të dijë:",
+  "searchAskFailed": "Loupe nuk mundi ta kthente këtë në kërkim.",
+  "searchAskDemoNote": "Përkthyer nga demonstrimi i integruar, jo nga një model.",
+  "settingsAiHeader": "IA private",
+  "settingsAiAssistDetail": "Kthen një fjali në një kërkim që mund ta kontrollosh dhe ta ndryshosh. Tani për tani përkthen demonstrimi i integruar: pa model, pa rrjet."
 }

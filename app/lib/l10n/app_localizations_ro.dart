@@ -6489,4 +6489,32 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Încearcă cu e-mailuri demo';
+
+  @override
+  String get searchAskPlainEnglish => 'Întreabă cu propriile cuvinte';
+
+  @override
+  String get searchAskWorking => 'Se pregătește căutarea…';
+
+  @override
+  String get searchAskProposed => 'Căutare propusă';
+
+  @override
+  String get searchAskUse => 'Folosește această căutare';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe trebuie să știe:';
+
+  @override
+  String get searchAskFailed => 'Loupe nu a putut transforma asta într-o căutare.';
+
+  @override
+  String get searchAskDemoNote => 'Tradus de demonstrația încorporată, nu de un model.';
+
+  @override
+  String get settingsAiHeader => 'IA privată';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Transformă o propoziție într-o căutare pe care o poți verifica și modifica. Deocamdată traduce demonstrația încorporată: fără model, fără rețea.';
 }

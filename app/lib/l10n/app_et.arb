@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Jälgimist pole. Välised pildid jäävad blokeerituks, kuni sa teisiti ütled.",
   "welcomeAddAccount": "Lisa konto",
   "welcomeImport": "Impordi Thunderbirdist",
-  "welcomeTryDemo": "Proovi demopostiga"
+  "welcomeTryDemo": "Proovi demopostiga",
+  "searchAskPlainEnglish": "Küsi oma sõnadega",
+  "searchAskWorking": "Otsingu koostamine…",
+  "searchAskProposed": "Pakutud otsing",
+  "searchAskUse": "Kasuta seda otsingut",
+  "searchAskNeedsAnswer": "Loupe peab teadma:",
+  "searchAskFailed": "Loupe ei suutnud sellest otsingut teha.",
+  "searchAskDemoNote": "Tõlkis sisseehitatud demo, mitte mudel.",
+  "settingsAiHeader": "Privaatne tehisaru",
+  "settingsAiAssistDetail": "Muudab lause otsinguks, mida saad kontrollida ja muuta. Praegu tõlgib sisseehitatud demo: ei mudelit ega võrku."
 }

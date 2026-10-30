@@ -6320,4 +6320,32 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Provojeni me postë demo';
+
+  @override
+  String get searchAskPlainEnglish => 'Pyet me fjalët e tua';
+
+  @override
+  String get searchAskWorking => 'Po përgatitet kërkimi…';
+
+  @override
+  String get searchAskProposed => 'Kërkimi i propozuar';
+
+  @override
+  String get searchAskUse => 'Përdor këtë kërkim';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe duhet të dijë:';
+
+  @override
+  String get searchAskFailed => 'Loupe nuk mundi ta kthente këtë në kërkim.';
+
+  @override
+  String get searchAskDemoNote => 'Përkthyer nga demonstrimi i integruar, jo nga një model.';
+
+  @override
+  String get settingsAiHeader => 'IA private';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Kthen një fjali në një kërkim që mund ta kontrollosh dhe ta ndryshosh. Tani për tani përkthen demonstrimi i integruar: pa model, pa rrjet.';
 }

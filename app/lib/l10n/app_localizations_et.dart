@@ -6341,4 +6341,32 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Proovi demopostiga';
+
+  @override
+  String get searchAskPlainEnglish => 'Küsi oma sõnadega';
+
+  @override
+  String get searchAskWorking => 'Otsingu koostamine…';
+
+  @override
+  String get searchAskProposed => 'Pakutud otsing';
+
+  @override
+  String get searchAskUse => 'Kasuta seda otsingut';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe peab teadma:';
+
+  @override
+  String get searchAskFailed => 'Loupe ei suutnud sellest otsingut teha.';
+
+  @override
+  String get searchAskDemoNote => 'Tõlkis sisseehitatud demo, mitte mudel.';
+
+  @override
+  String get settingsAiHeader => 'Privaatne tehisaru';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Muudab lause otsinguks, mida saad kontrollida ja muuta. Praegu tõlgib sisseehitatud demo: ei mudelit ega võrku.';
 }

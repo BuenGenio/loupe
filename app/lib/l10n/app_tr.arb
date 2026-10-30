@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "İzleme yok. Uzak görseller siz izin verene kadar engelli kalır.",
   "welcomeAddAccount": "Hesap ekle",
   "welcomeImport": "Thunderbird’den içe aktar",
-  "welcomeTryDemo": "Demo e-postayla deneyin"
+  "welcomeTryDemo": "Demo e-postayla deneyin",
+  "searchAskPlainEnglish": "Kendi sözcüklerinizle sorun",
+  "searchAskWorking": "Arama hazırlanıyor…",
+  "searchAskProposed": "Önerilen arama",
+  "searchAskUse": "Bu aramayı kullan",
+  "searchAskNeedsAnswer": "Loupe'un bilmesi gereken:",
+  "searchAskFailed": "Loupe bunu bir aramaya dönüştüremedi.",
+  "searchAskDemoNote": "Yerleşik demo çevirdi, bir model değil.",
+  "settingsAiHeader": "Özel yapay zekâ",
+  "settingsAiAssistDetail": "Bir cümleyi denetleyip düzenleyebileceğiniz bir aramaya dönüştürür. Şimdilik yerleşik demo çevirir: model yok, ağ yok."
 }

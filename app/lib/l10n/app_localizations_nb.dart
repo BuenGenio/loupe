@@ -6290,4 +6290,32 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Prøv med demo-e-post';
+
+  @override
+  String get searchAskPlainEnglish => 'Spør med egne ord';
+
+  @override
+  String get searchAskWorking => 'Finner søket…';
+
+  @override
+  String get searchAskProposed => 'Foreslått søk';
+
+  @override
+  String get searchAskUse => 'Bruk dette søket';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe må vite:';
+
+  @override
+  String get searchAskFailed => 'Loupe klarte ikke å lage et søk av dette.';
+
+  @override
+  String get searchAskDemoNote => 'Oversatt av den innebygde demoen, ikke av en modell.';
+
+  @override
+  String get settingsAiHeader => 'Privat KI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Gjør en setning om til et søk du kan sjekke og redigere. Foreløpig oversetter den innebygde demoen: ingen modell, ingen nettverk.';
 }

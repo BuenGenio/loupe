@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Gan rianú. Fanann íomhánna cianda blocáilte go dtí go ndeir tú a mhalairt.",
   "welcomeAddAccount": "Cuir cuntas leis",
   "welcomeImport": "Iompórtáil ó Thunderbird",
-  "welcomeTryDemo": "Bain triail as le ríomhphost taispeántais"
+  "welcomeTryDemo": "Bain triail as le ríomhphost taispeántais",
+  "searchAskPlainEnglish": "Fiafraigh i d'fhocail féin",
+  "searchAskWorking": "Ag ullmhú an chuardaigh…",
+  "searchAskProposed": "Cuardach molta",
+  "searchAskUse": "Úsáid an cuardach seo",
+  "searchAskNeedsAnswer": "Teastaíonn ó Loupe a fháil amach:",
+  "searchAskFailed": "Níorbh fhéidir le Loupe cuardach a dhéanamh de sin.",
+  "searchAskDemoNote": "Aistrithe ag an taispeántas ionsuite, ní ag samhail.",
+  "settingsAiHeader": "IS príobháideach",
+  "settingsAiAssistDetail": "Déanann sé cuardach d'abairt is féidir leat a sheiceáil agus a chur in eagar. Go fóill is é an taispeántas ionsuite a aistríonn: gan samhail, gan líonra."
 }
