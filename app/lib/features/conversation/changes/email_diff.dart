@@ -342,6 +342,11 @@ String _htmlText(String source) {
   return output.toString().replaceAll(RegExp(r'\n[ \t]+\n'), '\n\n').trim();
 }
 
+/// [html]'s text as the comparison reads it: blocks on lines of their own,
+/// link destinations after their text, image alt text. Brief reads HTML mail
+/// the same way.
+String emailHtmlText(String html) => _htmlText(html);
+
 List<String>? _words(String line, int limit) {
   final tokens = <String>[];
   // Whitespace stays in the token stream, so word highlighting is lossless.
