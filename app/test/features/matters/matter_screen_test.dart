@@ -32,6 +32,9 @@ void main() {
   ) async {
     await pumpLoupe(tester);
     await tester.scrollTo(find.text('Buying 14 Quay Street'));
+    // Clear of the bottom bar, which the list scrolls under.
+    await tester.ensureVisible(find.text('Buying 14 Quay Street'));
+    await tester.pumpAndSettle();
     expect(inSection('matters-section', find.text('4 conversations')), findsOneWidget);
     expect(inSection('matters-section', find.text('New Matter…')), findsOneWidget);
     await tester.tap(find.text('Buying 14 Quay Street'));

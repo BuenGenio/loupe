@@ -72,6 +72,9 @@ void main() {
       expect(find.text('View Source'), findsOneWidget);
       expect(find.text('Save as File…'), findsOneWidget);
       expect(find.text('Share as File…'), findsOneWidget);
+      // The menu has grown past a phone's height (actions, matters).
+      await tester.ensureVisible(find.text('Save as File…'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Save as File…'));
       await tester.pumpAndSettle();
       expect(platform.calls, ['save $_hike.eml']);
