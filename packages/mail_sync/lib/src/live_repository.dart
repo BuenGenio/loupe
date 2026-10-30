@@ -20,7 +20,14 @@ import 'util.dart';
 /// background and [resume] when it returns; [syncOnce] serves background
 /// fetch tasks. [dispose] stops everything but leaves the store open.
 final class LiveMailRepository
-    implements MailRepository, MailingLists, MailSubscriptions, SignInRenewal, DecryptedMail, CalendarRecords {
+    implements
+        MailRepository,
+        MailingLists,
+        MailSubscriptions,
+        SignInRenewal,
+        DecryptedMail,
+        CalendarRecords,
+        MatterRecords {
   LiveMailRepository(
     this.store,
     this.transports,
@@ -559,6 +566,26 @@ final class LiveMailRepository
   @override
   Future<void> writeCalendarRecord(String uid, String? data, {String recurrenceId = ''}) =>
       store.putCalendarRecord(uid, data, recurrenceId: recurrenceId, now: _now());
+
+  // Matters -----------------------------------------------------------------
+
+  /// Kept in the store on this device; removing an account takes its
+  /// conversations out of them.
+  @override
+  Stream<List<Matter>> watchMatters() => store.watchMatters();
+
+  @override
+  Future<void> writeMatters({List<Matter> save = const [], List<String> delete = const []}) =>
+      store.writeMatters(save: save, delete: delete);
+
+  @override
+  Stream<List<EmailSummary>> watchMatterMessages(String matterId) => store.watchMatterMessages(matterId);
+
+  @override
+  Stream<Map<String, DateTime>> watchMatterActivity() => store.watchMatterActivity();
+
+  @override
+  Future<EmailSummary?> locateMessage(MessageRef ref) => store.locateMessage(ref);
 
   // Actions -----------------------------------------------------------------
 

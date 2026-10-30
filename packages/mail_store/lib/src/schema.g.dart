@@ -6640,6 +6640,1472 @@ class ListKindsCompanion extends UpdateCompanion<ListKindRow> {
   }
 }
 
+class $MattersTable extends Matters with TableInfo<$MattersTable, MatterRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MattersTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<int> createdAt = GeneratedColumn<int>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name, createdAt, updatedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'matters';
+  @override
+  VerificationContext validateIntegrity(Insertable<MatterRow> instance, {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(_nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta, createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta, updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MatterRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MatterRow(
+      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      createdAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!,
+    );
+  }
+
+  @override
+  $MattersTable createAlias(String alias) {
+    return $MattersTable(attachedDatabase, alias);
+  }
+}
+
+class MatterRow extends DataClass implements Insertable<MatterRow> {
+  final String id;
+  final String name;
+  final int createdAt;
+  final int updatedAt;
+  const MatterRow({required this.id, required this.name, required this.createdAt, required this.updatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    map['created_at'] = Variable<int>(createdAt);
+    map['updated_at'] = Variable<int>(updatedAt);
+    return map;
+  }
+
+  MattersCompanion toCompanion(bool nullToAbsent) {
+    return MattersCompanion(id: Value(id), name: Value(name), createdAt: Value(createdAt), updatedAt: Value(updatedAt));
+  }
+
+  factory MatterRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MatterRow(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'createdAt': serializer.toJson<int>(createdAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+    };
+  }
+
+  MatterRow copyWith({String? id, String? name, int? createdAt, int? updatedAt}) => MatterRow(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  MatterRow copyWithCompanion(MattersCompanion data) {
+    return MatterRow(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MatterRow(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MatterRow &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class MattersCompanion extends UpdateCompanion<MatterRow> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<int> createdAt;
+  final Value<int> updatedAt;
+  final Value<int> rowid;
+  const MattersCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MattersCompanion.insert({
+    required String id,
+    required String name,
+    required int createdAt,
+    required int updatedAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<MatterRow> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<int>? createdAt,
+    Expression<int>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MattersCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<int>? createdAt,
+    Value<int>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return MattersCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MattersCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MatterMembersTable extends MatterMembers with TableInfo<$MatterMembersTable, MatterMemberRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MatterMembersTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _matterIdMeta = const VerificationMeta('matterId');
+  @override
+  late final GeneratedColumn<String> matterId = GeneratedColumn<String>(
+    'matter_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('REFERENCES matters (id) ON DELETE CASCADE'),
+  );
+  static const VerificationMeta _accountIdMeta = const VerificationMeta('accountId');
+  @override
+  late final GeneratedColumn<String> accountId = GeneratedColumn<String>(
+    'account_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('REFERENCES accounts (id) ON DELETE CASCADE'),
+  );
+  static const VerificationMeta _threadIdMeta = const VerificationMeta('threadId');
+  @override
+  late final GeneratedColumn<String> threadId = GeneratedColumn<String>(
+    'thread_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _refMeta = const VerificationMeta('ref');
+  @override
+  late final GeneratedColumn<String> ref = GeneratedColumn<String>(
+    'ref',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _reasonMeta = const VerificationMeta('reason');
+  @override
+  late final GeneratedColumn<String> reason = GeneratedColumn<String>(
+    'reason',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _addedAtMeta = const VerificationMeta('addedAt');
+  @override
+  late final GeneratedColumn<int> addedAt = GeneratedColumn<int>(
+    'added_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _positionMeta = const VerificationMeta('position');
+  @override
+  late final GeneratedColumn<int> position = GeneratedColumn<int>(
+    'position',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [matterId, accountId, threadId, ref, source, reason, addedAt, position];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'matter_members';
+  @override
+  VerificationContext validateIntegrity(Insertable<MatterMemberRow> instance, {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('matter_id')) {
+      context.handle(_matterIdMeta, matterId.isAcceptableOrUnknown(data['matter_id']!, _matterIdMeta));
+    } else if (isInserting) {
+      context.missing(_matterIdMeta);
+    }
+    if (data.containsKey('account_id')) {
+      context.handle(_accountIdMeta, accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta));
+    } else if (isInserting) {
+      context.missing(_accountIdMeta);
+    }
+    if (data.containsKey('thread_id')) {
+      context.handle(_threadIdMeta, threadId.isAcceptableOrUnknown(data['thread_id']!, _threadIdMeta));
+    } else if (isInserting) {
+      context.missing(_threadIdMeta);
+    }
+    if (data.containsKey('ref')) {
+      context.handle(_refMeta, ref.isAcceptableOrUnknown(data['ref']!, _refMeta));
+    } else if (isInserting) {
+      context.missing(_refMeta);
+    }
+    if (data.containsKey('source')) {
+      context.handle(_sourceMeta, source.isAcceptableOrUnknown(data['source']!, _sourceMeta));
+    } else if (isInserting) {
+      context.missing(_sourceMeta);
+    }
+    if (data.containsKey('reason')) {
+      context.handle(_reasonMeta, reason.isAcceptableOrUnknown(data['reason']!, _reasonMeta));
+    }
+    if (data.containsKey('added_at')) {
+      context.handle(_addedAtMeta, addedAt.isAcceptableOrUnknown(data['added_at']!, _addedAtMeta));
+    } else if (isInserting) {
+      context.missing(_addedAtMeta);
+    }
+    if (data.containsKey('position')) {
+      context.handle(_positionMeta, position.isAcceptableOrUnknown(data['position']!, _positionMeta));
+    } else if (isInserting) {
+      context.missing(_positionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {matterId, accountId, threadId};
+  @override
+  MatterMemberRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MatterMemberRow(
+      matterId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}matter_id'])!,
+      accountId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}account_id'])!,
+      threadId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}thread_id'])!,
+      ref: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}ref'])!,
+      source: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}source'])!,
+      reason: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}reason']),
+      addedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}added_at'])!,
+      position: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}position'])!,
+    );
+  }
+
+  @override
+  $MatterMembersTable createAlias(String alias) {
+    return $MatterMembersTable(attachedDatabase, alias);
+  }
+}
+
+class MatterMemberRow extends DataClass implements Insertable<MatterMemberRow> {
+  final String matterId;
+  final String accountId;
+  final String threadId;
+  final String ref;
+  final String source;
+  final String? reason;
+  final int addedAt;
+  final int position;
+  const MatterMemberRow({
+    required this.matterId,
+    required this.accountId,
+    required this.threadId,
+    required this.ref,
+    required this.source,
+    this.reason,
+    required this.addedAt,
+    required this.position,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['matter_id'] = Variable<String>(matterId);
+    map['account_id'] = Variable<String>(accountId);
+    map['thread_id'] = Variable<String>(threadId);
+    map['ref'] = Variable<String>(ref);
+    map['source'] = Variable<String>(source);
+    if (!nullToAbsent || reason != null) {
+      map['reason'] = Variable<String>(reason);
+    }
+    map['added_at'] = Variable<int>(addedAt);
+    map['position'] = Variable<int>(position);
+    return map;
+  }
+
+  MatterMembersCompanion toCompanion(bool nullToAbsent) {
+    return MatterMembersCompanion(
+      matterId: Value(matterId),
+      accountId: Value(accountId),
+      threadId: Value(threadId),
+      ref: Value(ref),
+      source: Value(source),
+      reason: reason == null && nullToAbsent ? const Value.absent() : Value(reason),
+      addedAt: Value(addedAt),
+      position: Value(position),
+    );
+  }
+
+  factory MatterMemberRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MatterMemberRow(
+      matterId: serializer.fromJson<String>(json['matterId']),
+      accountId: serializer.fromJson<String>(json['accountId']),
+      threadId: serializer.fromJson<String>(json['threadId']),
+      ref: serializer.fromJson<String>(json['ref']),
+      source: serializer.fromJson<String>(json['source']),
+      reason: serializer.fromJson<String?>(json['reason']),
+      addedAt: serializer.fromJson<int>(json['addedAt']),
+      position: serializer.fromJson<int>(json['position']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'matterId': serializer.toJson<String>(matterId),
+      'accountId': serializer.toJson<String>(accountId),
+      'threadId': serializer.toJson<String>(threadId),
+      'ref': serializer.toJson<String>(ref),
+      'source': serializer.toJson<String>(source),
+      'reason': serializer.toJson<String?>(reason),
+      'addedAt': serializer.toJson<int>(addedAt),
+      'position': serializer.toJson<int>(position),
+    };
+  }
+
+  MatterMemberRow copyWith({
+    String? matterId,
+    String? accountId,
+    String? threadId,
+    String? ref,
+    String? source,
+    Value<String?> reason = const Value.absent(),
+    int? addedAt,
+    int? position,
+  }) => MatterMemberRow(
+    matterId: matterId ?? this.matterId,
+    accountId: accountId ?? this.accountId,
+    threadId: threadId ?? this.threadId,
+    ref: ref ?? this.ref,
+    source: source ?? this.source,
+    reason: reason.present ? reason.value : this.reason,
+    addedAt: addedAt ?? this.addedAt,
+    position: position ?? this.position,
+  );
+  MatterMemberRow copyWithCompanion(MatterMembersCompanion data) {
+    return MatterMemberRow(
+      matterId: data.matterId.present ? data.matterId.value : this.matterId,
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      threadId: data.threadId.present ? data.threadId.value : this.threadId,
+      ref: data.ref.present ? data.ref.value : this.ref,
+      source: data.source.present ? data.source.value : this.source,
+      reason: data.reason.present ? data.reason.value : this.reason,
+      addedAt: data.addedAt.present ? data.addedAt.value : this.addedAt,
+      position: data.position.present ? data.position.value : this.position,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MatterMemberRow(')
+          ..write('matterId: $matterId, ')
+          ..write('accountId: $accountId, ')
+          ..write('threadId: $threadId, ')
+          ..write('ref: $ref, ')
+          ..write('source: $source, ')
+          ..write('reason: $reason, ')
+          ..write('addedAt: $addedAt, ')
+          ..write('position: $position')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(matterId, accountId, threadId, ref, source, reason, addedAt, position);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MatterMemberRow &&
+          other.matterId == this.matterId &&
+          other.accountId == this.accountId &&
+          other.threadId == this.threadId &&
+          other.ref == this.ref &&
+          other.source == this.source &&
+          other.reason == this.reason &&
+          other.addedAt == this.addedAt &&
+          other.position == this.position);
+}
+
+class MatterMembersCompanion extends UpdateCompanion<MatterMemberRow> {
+  final Value<String> matterId;
+  final Value<String> accountId;
+  final Value<String> threadId;
+  final Value<String> ref;
+  final Value<String> source;
+  final Value<String?> reason;
+  final Value<int> addedAt;
+  final Value<int> position;
+  final Value<int> rowid;
+  const MatterMembersCompanion({
+    this.matterId = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.threadId = const Value.absent(),
+    this.ref = const Value.absent(),
+    this.source = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.addedAt = const Value.absent(),
+    this.position = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MatterMembersCompanion.insert({
+    required String matterId,
+    required String accountId,
+    required String threadId,
+    required String ref,
+    required String source,
+    this.reason = const Value.absent(),
+    required int addedAt,
+    required int position,
+    this.rowid = const Value.absent(),
+  }) : matterId = Value(matterId),
+       accountId = Value(accountId),
+       threadId = Value(threadId),
+       ref = Value(ref),
+       source = Value(source),
+       addedAt = Value(addedAt),
+       position = Value(position);
+  static Insertable<MatterMemberRow> custom({
+    Expression<String>? matterId,
+    Expression<String>? accountId,
+    Expression<String>? threadId,
+    Expression<String>? ref,
+    Expression<String>? source,
+    Expression<String>? reason,
+    Expression<int>? addedAt,
+    Expression<int>? position,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (matterId != null) 'matter_id': matterId,
+      if (accountId != null) 'account_id': accountId,
+      if (threadId != null) 'thread_id': threadId,
+      if (ref != null) 'ref': ref,
+      if (source != null) 'source': source,
+      if (reason != null) 'reason': reason,
+      if (addedAt != null) 'added_at': addedAt,
+      if (position != null) 'position': position,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MatterMembersCompanion copyWith({
+    Value<String>? matterId,
+    Value<String>? accountId,
+    Value<String>? threadId,
+    Value<String>? ref,
+    Value<String>? source,
+    Value<String?>? reason,
+    Value<int>? addedAt,
+    Value<int>? position,
+    Value<int>? rowid,
+  }) {
+    return MatterMembersCompanion(
+      matterId: matterId ?? this.matterId,
+      accountId: accountId ?? this.accountId,
+      threadId: threadId ?? this.threadId,
+      ref: ref ?? this.ref,
+      source: source ?? this.source,
+      reason: reason ?? this.reason,
+      addedAt: addedAt ?? this.addedAt,
+      position: position ?? this.position,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (matterId.present) {
+      map['matter_id'] = Variable<String>(matterId.value);
+    }
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(accountId.value);
+    }
+    if (threadId.present) {
+      map['thread_id'] = Variable<String>(threadId.value);
+    }
+    if (ref.present) {
+      map['ref'] = Variable<String>(ref.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (reason.present) {
+      map['reason'] = Variable<String>(reason.value);
+    }
+    if (addedAt.present) {
+      map['added_at'] = Variable<int>(addedAt.value);
+    }
+    if (position.present) {
+      map['position'] = Variable<int>(position.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MatterMembersCompanion(')
+          ..write('matterId: $matterId, ')
+          ..write('accountId: $accountId, ')
+          ..write('threadId: $threadId, ')
+          ..write('ref: $ref, ')
+          ..write('source: $source, ')
+          ..write('reason: $reason, ')
+          ..write('addedAt: $addedAt, ')
+          ..write('position: $position, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MatterExclusionsTable extends MatterExclusions with TableInfo<$MatterExclusionsTable, MatterExclusionRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MatterExclusionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _matterIdMeta = const VerificationMeta('matterId');
+  @override
+  late final GeneratedColumn<String> matterId = GeneratedColumn<String>(
+    'matter_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('REFERENCES matters (id) ON DELETE CASCADE'),
+  );
+  static const VerificationMeta _accountIdMeta = const VerificationMeta('accountId');
+  @override
+  late final GeneratedColumn<String> accountId = GeneratedColumn<String>(
+    'account_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('REFERENCES accounts (id) ON DELETE CASCADE'),
+  );
+  static const VerificationMeta _threadIdMeta = const VerificationMeta('threadId');
+  @override
+  late final GeneratedColumn<String> threadId = GeneratedColumn<String>(
+    'thread_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _refMeta = const VerificationMeta('ref');
+  @override
+  late final GeneratedColumn<String> ref = GeneratedColumn<String>(
+    'ref',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _removedMeta = const VerificationMeta('removed');
+  @override
+  late final GeneratedColumn<bool> removed = GeneratedColumn<bool>(
+    'removed',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("removed" IN (0, 1))'),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _atMeta = const VerificationMeta('at');
+  @override
+  late final GeneratedColumn<int> at = GeneratedColumn<int>(
+    'at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [matterId, accountId, threadId, ref, removed, at];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'matter_exclusions';
+  @override
+  VerificationContext validateIntegrity(Insertable<MatterExclusionRow> instance, {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('matter_id')) {
+      context.handle(_matterIdMeta, matterId.isAcceptableOrUnknown(data['matter_id']!, _matterIdMeta));
+    } else if (isInserting) {
+      context.missing(_matterIdMeta);
+    }
+    if (data.containsKey('account_id')) {
+      context.handle(_accountIdMeta, accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta));
+    } else if (isInserting) {
+      context.missing(_accountIdMeta);
+    }
+    if (data.containsKey('thread_id')) {
+      context.handle(_threadIdMeta, threadId.isAcceptableOrUnknown(data['thread_id']!, _threadIdMeta));
+    } else if (isInserting) {
+      context.missing(_threadIdMeta);
+    }
+    if (data.containsKey('ref')) {
+      context.handle(_refMeta, ref.isAcceptableOrUnknown(data['ref']!, _refMeta));
+    }
+    if (data.containsKey('removed')) {
+      context.handle(_removedMeta, removed.isAcceptableOrUnknown(data['removed']!, _removedMeta));
+    }
+    if (data.containsKey('at')) {
+      context.handle(_atMeta, at.isAcceptableOrUnknown(data['at']!, _atMeta));
+    } else if (isInserting) {
+      context.missing(_atMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {matterId, accountId, threadId};
+  @override
+  MatterExclusionRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MatterExclusionRow(
+      matterId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}matter_id'])!,
+      accountId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}account_id'])!,
+      threadId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}thread_id'])!,
+      ref: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}ref']),
+      removed: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}removed'])!,
+      at: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}at'])!,
+    );
+  }
+
+  @override
+  $MatterExclusionsTable createAlias(String alias) {
+    return $MatterExclusionsTable(attachedDatabase, alias);
+  }
+}
+
+class MatterExclusionRow extends DataClass implements Insertable<MatterExclusionRow> {
+  final String matterId;
+  final String accountId;
+  final String threadId;
+  final String? ref;
+  final bool removed;
+  final int at;
+  const MatterExclusionRow({
+    required this.matterId,
+    required this.accountId,
+    required this.threadId,
+    this.ref,
+    required this.removed,
+    required this.at,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['matter_id'] = Variable<String>(matterId);
+    map['account_id'] = Variable<String>(accountId);
+    map['thread_id'] = Variable<String>(threadId);
+    if (!nullToAbsent || ref != null) {
+      map['ref'] = Variable<String>(ref);
+    }
+    map['removed'] = Variable<bool>(removed);
+    map['at'] = Variable<int>(at);
+    return map;
+  }
+
+  MatterExclusionsCompanion toCompanion(bool nullToAbsent) {
+    return MatterExclusionsCompanion(
+      matterId: Value(matterId),
+      accountId: Value(accountId),
+      threadId: Value(threadId),
+      ref: ref == null && nullToAbsent ? const Value.absent() : Value(ref),
+      removed: Value(removed),
+      at: Value(at),
+    );
+  }
+
+  factory MatterExclusionRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MatterExclusionRow(
+      matterId: serializer.fromJson<String>(json['matterId']),
+      accountId: serializer.fromJson<String>(json['accountId']),
+      threadId: serializer.fromJson<String>(json['threadId']),
+      ref: serializer.fromJson<String?>(json['ref']),
+      removed: serializer.fromJson<bool>(json['removed']),
+      at: serializer.fromJson<int>(json['at']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'matterId': serializer.toJson<String>(matterId),
+      'accountId': serializer.toJson<String>(accountId),
+      'threadId': serializer.toJson<String>(threadId),
+      'ref': serializer.toJson<String?>(ref),
+      'removed': serializer.toJson<bool>(removed),
+      'at': serializer.toJson<int>(at),
+    };
+  }
+
+  MatterExclusionRow copyWith({
+    String? matterId,
+    String? accountId,
+    String? threadId,
+    Value<String?> ref = const Value.absent(),
+    bool? removed,
+    int? at,
+  }) => MatterExclusionRow(
+    matterId: matterId ?? this.matterId,
+    accountId: accountId ?? this.accountId,
+    threadId: threadId ?? this.threadId,
+    ref: ref.present ? ref.value : this.ref,
+    removed: removed ?? this.removed,
+    at: at ?? this.at,
+  );
+  MatterExclusionRow copyWithCompanion(MatterExclusionsCompanion data) {
+    return MatterExclusionRow(
+      matterId: data.matterId.present ? data.matterId.value : this.matterId,
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      threadId: data.threadId.present ? data.threadId.value : this.threadId,
+      ref: data.ref.present ? data.ref.value : this.ref,
+      removed: data.removed.present ? data.removed.value : this.removed,
+      at: data.at.present ? data.at.value : this.at,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MatterExclusionRow(')
+          ..write('matterId: $matterId, ')
+          ..write('accountId: $accountId, ')
+          ..write('threadId: $threadId, ')
+          ..write('ref: $ref, ')
+          ..write('removed: $removed, ')
+          ..write('at: $at')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(matterId, accountId, threadId, ref, removed, at);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MatterExclusionRow &&
+          other.matterId == this.matterId &&
+          other.accountId == this.accountId &&
+          other.threadId == this.threadId &&
+          other.ref == this.ref &&
+          other.removed == this.removed &&
+          other.at == this.at);
+}
+
+class MatterExclusionsCompanion extends UpdateCompanion<MatterExclusionRow> {
+  final Value<String> matterId;
+  final Value<String> accountId;
+  final Value<String> threadId;
+  final Value<String?> ref;
+  final Value<bool> removed;
+  final Value<int> at;
+  final Value<int> rowid;
+  const MatterExclusionsCompanion({
+    this.matterId = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.threadId = const Value.absent(),
+    this.ref = const Value.absent(),
+    this.removed = const Value.absent(),
+    this.at = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MatterExclusionsCompanion.insert({
+    required String matterId,
+    required String accountId,
+    required String threadId,
+    this.ref = const Value.absent(),
+    this.removed = const Value.absent(),
+    required int at,
+    this.rowid = const Value.absent(),
+  }) : matterId = Value(matterId),
+       accountId = Value(accountId),
+       threadId = Value(threadId),
+       at = Value(at);
+  static Insertable<MatterExclusionRow> custom({
+    Expression<String>? matterId,
+    Expression<String>? accountId,
+    Expression<String>? threadId,
+    Expression<String>? ref,
+    Expression<bool>? removed,
+    Expression<int>? at,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (matterId != null) 'matter_id': matterId,
+      if (accountId != null) 'account_id': accountId,
+      if (threadId != null) 'thread_id': threadId,
+      if (ref != null) 'ref': ref,
+      if (removed != null) 'removed': removed,
+      if (at != null) 'at': at,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MatterExclusionsCompanion copyWith({
+    Value<String>? matterId,
+    Value<String>? accountId,
+    Value<String>? threadId,
+    Value<String?>? ref,
+    Value<bool>? removed,
+    Value<int>? at,
+    Value<int>? rowid,
+  }) {
+    return MatterExclusionsCompanion(
+      matterId: matterId ?? this.matterId,
+      accountId: accountId ?? this.accountId,
+      threadId: threadId ?? this.threadId,
+      ref: ref ?? this.ref,
+      removed: removed ?? this.removed,
+      at: at ?? this.at,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (matterId.present) {
+      map['matter_id'] = Variable<String>(matterId.value);
+    }
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(accountId.value);
+    }
+    if (threadId.present) {
+      map['thread_id'] = Variable<String>(threadId.value);
+    }
+    if (ref.present) {
+      map['ref'] = Variable<String>(ref.value);
+    }
+    if (removed.present) {
+      map['removed'] = Variable<bool>(removed.value);
+    }
+    if (at.present) {
+      map['at'] = Variable<int>(at.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MatterExclusionsCompanion(')
+          ..write('matterId: $matterId, ')
+          ..write('accountId: $accountId, ')
+          ..write('threadId: $threadId, ')
+          ..write('ref: $ref, ')
+          ..write('removed: $removed, ')
+          ..write('at: $at, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MatterEventsTable extends MatterEvents with TableInfo<$MatterEventsTable, MatterEventRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MatterEventsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _matterIdMeta = const VerificationMeta('matterId');
+  @override
+  late final GeneratedColumn<String> matterId = GeneratedColumn<String>(
+    'matter_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('REFERENCES matters (id) ON DELETE CASCADE'),
+  );
+  static const VerificationMeta _seqMeta = const VerificationMeta('seq');
+  @override
+  late final GeneratedColumn<int> seq = GeneratedColumn<int>(
+    'seq',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _kindMeta = const VerificationMeta('kind');
+  @override
+  late final GeneratedColumn<String> kind = GeneratedColumn<String>(
+    'kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _atMeta = const VerificationMeta('at');
+  @override
+  late final GeneratedColumn<int> at = GeneratedColumn<int>(
+    'at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _detailMeta = const VerificationMeta('detail');
+  @override
+  late final GeneratedColumn<String> detail = GeneratedColumn<String>(
+    'detail',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _countMeta = const VerificationMeta('count');
+  @override
+  late final GeneratedColumn<int> count = GeneratedColumn<int>(
+    'count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _accountIdMeta = const VerificationMeta('accountId');
+  @override
+  late final GeneratedColumn<String> accountId = GeneratedColumn<String>(
+    'account_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('REFERENCES accounts (id) ON DELETE CASCADE'),
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [matterId, seq, kind, at, detail, count, accountId, source];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'matter_events';
+  @override
+  VerificationContext validateIntegrity(Insertable<MatterEventRow> instance, {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('matter_id')) {
+      context.handle(_matterIdMeta, matterId.isAcceptableOrUnknown(data['matter_id']!, _matterIdMeta));
+    } else if (isInserting) {
+      context.missing(_matterIdMeta);
+    }
+    if (data.containsKey('seq')) {
+      context.handle(_seqMeta, seq.isAcceptableOrUnknown(data['seq']!, _seqMeta));
+    } else if (isInserting) {
+      context.missing(_seqMeta);
+    }
+    if (data.containsKey('kind')) {
+      context.handle(_kindMeta, kind.isAcceptableOrUnknown(data['kind']!, _kindMeta));
+    } else if (isInserting) {
+      context.missing(_kindMeta);
+    }
+    if (data.containsKey('at')) {
+      context.handle(_atMeta, at.isAcceptableOrUnknown(data['at']!, _atMeta));
+    } else if (isInserting) {
+      context.missing(_atMeta);
+    }
+    if (data.containsKey('detail')) {
+      context.handle(_detailMeta, detail.isAcceptableOrUnknown(data['detail']!, _detailMeta));
+    }
+    if (data.containsKey('count')) {
+      context.handle(_countMeta, count.isAcceptableOrUnknown(data['count']!, _countMeta));
+    }
+    if (data.containsKey('account_id')) {
+      context.handle(_accountIdMeta, accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta));
+    }
+    if (data.containsKey('source')) {
+      context.handle(_sourceMeta, source.isAcceptableOrUnknown(data['source']!, _sourceMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {matterId, seq};
+  @override
+  MatterEventRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MatterEventRow(
+      matterId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}matter_id'])!,
+      seq: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}seq'])!,
+      kind: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}kind'])!,
+      at: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}at'])!,
+      detail: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}detail'])!,
+      count: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}count'])!,
+      accountId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}account_id']),
+      source: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}source']),
+    );
+  }
+
+  @override
+  $MatterEventsTable createAlias(String alias) {
+    return $MatterEventsTable(attachedDatabase, alias);
+  }
+}
+
+class MatterEventRow extends DataClass implements Insertable<MatterEventRow> {
+  final String matterId;
+  final int seq;
+  final String kind;
+  final int at;
+  final String detail;
+  final int count;
+  final String? accountId;
+  final String? source;
+  const MatterEventRow({
+    required this.matterId,
+    required this.seq,
+    required this.kind,
+    required this.at,
+    required this.detail,
+    required this.count,
+    this.accountId,
+    this.source,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['matter_id'] = Variable<String>(matterId);
+    map['seq'] = Variable<int>(seq);
+    map['kind'] = Variable<String>(kind);
+    map['at'] = Variable<int>(at);
+    map['detail'] = Variable<String>(detail);
+    map['count'] = Variable<int>(count);
+    if (!nullToAbsent || accountId != null) {
+      map['account_id'] = Variable<String>(accountId);
+    }
+    if (!nullToAbsent || source != null) {
+      map['source'] = Variable<String>(source);
+    }
+    return map;
+  }
+
+  MatterEventsCompanion toCompanion(bool nullToAbsent) {
+    return MatterEventsCompanion(
+      matterId: Value(matterId),
+      seq: Value(seq),
+      kind: Value(kind),
+      at: Value(at),
+      detail: Value(detail),
+      count: Value(count),
+      accountId: accountId == null && nullToAbsent ? const Value.absent() : Value(accountId),
+      source: source == null && nullToAbsent ? const Value.absent() : Value(source),
+    );
+  }
+
+  factory MatterEventRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MatterEventRow(
+      matterId: serializer.fromJson<String>(json['matterId']),
+      seq: serializer.fromJson<int>(json['seq']),
+      kind: serializer.fromJson<String>(json['kind']),
+      at: serializer.fromJson<int>(json['at']),
+      detail: serializer.fromJson<String>(json['detail']),
+      count: serializer.fromJson<int>(json['count']),
+      accountId: serializer.fromJson<String?>(json['accountId']),
+      source: serializer.fromJson<String?>(json['source']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'matterId': serializer.toJson<String>(matterId),
+      'seq': serializer.toJson<int>(seq),
+      'kind': serializer.toJson<String>(kind),
+      'at': serializer.toJson<int>(at),
+      'detail': serializer.toJson<String>(detail),
+      'count': serializer.toJson<int>(count),
+      'accountId': serializer.toJson<String?>(accountId),
+      'source': serializer.toJson<String?>(source),
+    };
+  }
+
+  MatterEventRow copyWith({
+    String? matterId,
+    int? seq,
+    String? kind,
+    int? at,
+    String? detail,
+    int? count,
+    Value<String?> accountId = const Value.absent(),
+    Value<String?> source = const Value.absent(),
+  }) => MatterEventRow(
+    matterId: matterId ?? this.matterId,
+    seq: seq ?? this.seq,
+    kind: kind ?? this.kind,
+    at: at ?? this.at,
+    detail: detail ?? this.detail,
+    count: count ?? this.count,
+    accountId: accountId.present ? accountId.value : this.accountId,
+    source: source.present ? source.value : this.source,
+  );
+  MatterEventRow copyWithCompanion(MatterEventsCompanion data) {
+    return MatterEventRow(
+      matterId: data.matterId.present ? data.matterId.value : this.matterId,
+      seq: data.seq.present ? data.seq.value : this.seq,
+      kind: data.kind.present ? data.kind.value : this.kind,
+      at: data.at.present ? data.at.value : this.at,
+      detail: data.detail.present ? data.detail.value : this.detail,
+      count: data.count.present ? data.count.value : this.count,
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      source: data.source.present ? data.source.value : this.source,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MatterEventRow(')
+          ..write('matterId: $matterId, ')
+          ..write('seq: $seq, ')
+          ..write('kind: $kind, ')
+          ..write('at: $at, ')
+          ..write('detail: $detail, ')
+          ..write('count: $count, ')
+          ..write('accountId: $accountId, ')
+          ..write('source: $source')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(matterId, seq, kind, at, detail, count, accountId, source);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MatterEventRow &&
+          other.matterId == this.matterId &&
+          other.seq == this.seq &&
+          other.kind == this.kind &&
+          other.at == this.at &&
+          other.detail == this.detail &&
+          other.count == this.count &&
+          other.accountId == this.accountId &&
+          other.source == this.source);
+}
+
+class MatterEventsCompanion extends UpdateCompanion<MatterEventRow> {
+  final Value<String> matterId;
+  final Value<int> seq;
+  final Value<String> kind;
+  final Value<int> at;
+  final Value<String> detail;
+  final Value<int> count;
+  final Value<String?> accountId;
+  final Value<String?> source;
+  final Value<int> rowid;
+  const MatterEventsCompanion({
+    this.matterId = const Value.absent(),
+    this.seq = const Value.absent(),
+    this.kind = const Value.absent(),
+    this.at = const Value.absent(),
+    this.detail = const Value.absent(),
+    this.count = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.source = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MatterEventsCompanion.insert({
+    required String matterId,
+    required int seq,
+    required String kind,
+    required int at,
+    this.detail = const Value.absent(),
+    this.count = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.source = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : matterId = Value(matterId),
+       seq = Value(seq),
+       kind = Value(kind),
+       at = Value(at);
+  static Insertable<MatterEventRow> custom({
+    Expression<String>? matterId,
+    Expression<int>? seq,
+    Expression<String>? kind,
+    Expression<int>? at,
+    Expression<String>? detail,
+    Expression<int>? count,
+    Expression<String>? accountId,
+    Expression<String>? source,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (matterId != null) 'matter_id': matterId,
+      if (seq != null) 'seq': seq,
+      if (kind != null) 'kind': kind,
+      if (at != null) 'at': at,
+      if (detail != null) 'detail': detail,
+      if (count != null) 'count': count,
+      if (accountId != null) 'account_id': accountId,
+      if (source != null) 'source': source,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MatterEventsCompanion copyWith({
+    Value<String>? matterId,
+    Value<int>? seq,
+    Value<String>? kind,
+    Value<int>? at,
+    Value<String>? detail,
+    Value<int>? count,
+    Value<String?>? accountId,
+    Value<String?>? source,
+    Value<int>? rowid,
+  }) {
+    return MatterEventsCompanion(
+      matterId: matterId ?? this.matterId,
+      seq: seq ?? this.seq,
+      kind: kind ?? this.kind,
+      at: at ?? this.at,
+      detail: detail ?? this.detail,
+      count: count ?? this.count,
+      accountId: accountId ?? this.accountId,
+      source: source ?? this.source,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (matterId.present) {
+      map['matter_id'] = Variable<String>(matterId.value);
+    }
+    if (seq.present) {
+      map['seq'] = Variable<int>(seq.value);
+    }
+    if (kind.present) {
+      map['kind'] = Variable<String>(kind.value);
+    }
+    if (at.present) {
+      map['at'] = Variable<int>(at.value);
+    }
+    if (detail.present) {
+      map['detail'] = Variable<String>(detail.value);
+    }
+    if (count.present) {
+      map['count'] = Variable<int>(count.value);
+    }
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(accountId.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MatterEventsCompanion(')
+          ..write('matterId: $matterId, ')
+          ..write('seq: $seq, ')
+          ..write('kind: $kind, ')
+          ..write('at: $at, ')
+          ..write('detail: $detail, ')
+          ..write('count: $count, ')
+          ..write('accountId: $accountId, ')
+          ..write('source: $source, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$StoreDatabase extends GeneratedDatabase {
   _$StoreDatabase(QueryExecutor e) : super(e);
   $StoreDatabaseManager get managers => $StoreDatabaseManager(this);
@@ -6662,6 +8128,10 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
   late final $RuleWatermarksTable ruleWatermarks = $RuleWatermarksTable(this);
   late final $MutedThreadsTable mutedThreads = $MutedThreadsTable(this);
   late final $ListKindsTable listKinds = $ListKindsTable(this);
+  late final $MattersTable matters = $MattersTable(this);
+  late final $MatterMembersTable matterMembers = $MatterMembersTable(this);
+  late final $MatterExclusionsTable matterExclusions = $MatterExclusionsTable(this);
+  late final $MatterEventsTable matterEvents = $MatterEventsTable(this);
   late final Index emailsMailboxReceived = Index(
     'emails_mailbox_received',
     'CREATE INDEX emails_mailbox_received ON emails (mailbox_id, received_at)',
@@ -6684,6 +8154,10 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
   late final Index emailKeywordsKeyword = Index(
     'email_keywords_keyword',
     'CREATE INDEX email_keywords_keyword ON email_keywords (keyword)',
+  );
+  late final Index matterMembersThread = Index(
+    'matter_members_thread',
+    'CREATE INDEX matter_members_thread ON matter_members (account_id, thread_id)',
   );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables => allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -6708,6 +8182,10 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     ruleWatermarks,
     mutedThreads,
     listKinds,
+    matters,
+    matterMembers,
+    matterExclusions,
+    matterEvents,
     emailsMailboxReceived,
     emailsReceived,
     emailsThread,
@@ -6716,6 +8194,7 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     emailsFrom,
     emailsList,
     emailKeywordsKeyword,
+    matterMembersThread,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
@@ -6786,6 +8265,30 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     WritePropagation(
       on: TableUpdateQuery.onTableName('accounts', limitUpdateKind: UpdateKind.delete),
       result: [TableUpdate('muted_threads', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('matters', limitUpdateKind: UpdateKind.delete),
+      result: [TableUpdate('matter_members', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('accounts', limitUpdateKind: UpdateKind.delete),
+      result: [TableUpdate('matter_members', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('matters', limitUpdateKind: UpdateKind.delete),
+      result: [TableUpdate('matter_exclusions', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('accounts', limitUpdateKind: UpdateKind.delete),
+      result: [TableUpdate('matter_exclusions', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('matters', limitUpdateKind: UpdateKind.delete),
+      result: [TableUpdate('matter_events', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('accounts', limitUpdateKind: UpdateKind.delete),
+      result: [TableUpdate('matter_events', kind: UpdateKind.delete)],
     ),
   ]);
 }
@@ -6872,6 +8375,46 @@ final class $$AccountsTableReferences extends BaseReferences<_$StoreDatabase, $A
     ).filter((f) => f.accountId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_mutedThreadsRefsTable($_db));
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$MatterMembersTable, List<MatterMemberRow>> _matterMembersRefsTable(_$StoreDatabase db) =>
+      MultiTypedResultKey.fromTable(db.matterMembers, aliasName: 'accounts__id__matter_members__account_id');
+
+  $$MatterMembersTableProcessedTableManager get matterMembersRefs {
+    final manager = $$MatterMembersTableTableManager(
+      $_db,
+      $_db.matterMembers,
+    ).filter((f) => f.accountId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_matterMembersRefsTable($_db));
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$MatterExclusionsTable, List<MatterExclusionRow>> _matterExclusionsRefsTable(
+    _$StoreDatabase db,
+  ) => MultiTypedResultKey.fromTable(db.matterExclusions, aliasName: 'accounts__id__matter_exclusions__account_id');
+
+  $$MatterExclusionsTableProcessedTableManager get matterExclusionsRefs {
+    final manager = $$MatterExclusionsTableTableManager(
+      $_db,
+      $_db.matterExclusions,
+    ).filter((f) => f.accountId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_matterExclusionsRefsTable($_db));
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$MatterEventsTable, List<MatterEventRow>> _matterEventsRefsTable(_$StoreDatabase db) =>
+      MultiTypedResultKey.fromTable(db.matterEvents, aliasName: 'accounts__id__matter_events__account_id');
+
+  $$MatterEventsTableProcessedTableManager get matterEventsRefs {
+    final manager = $$MatterEventsTableTableManager(
+      $_db,
+      $_db.matterEvents,
+    ).filter((f) => f.accountId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_matterEventsRefsTable($_db));
     return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
   }
 }
@@ -6979,6 +8522,60 @@ class $$AccountsTableFilterComposer extends Composer<_$StoreDatabase, $AccountsT
           $$MutedThreadsTableFilterComposer(
             $db: $db,
             $table: $db.mutedThreads,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> matterMembersRefs(Expression<bool> Function($$MatterMembersTableFilterComposer f) f) {
+    final $$MatterMembersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.matterMembers,
+      getReferencedColumn: (t) => t.accountId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MatterMembersTableFilterComposer(
+            $db: $db,
+            $table: $db.matterMembers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> matterExclusionsRefs(Expression<bool> Function($$MatterExclusionsTableFilterComposer f) f) {
+    final $$MatterExclusionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.matterExclusions,
+      getReferencedColumn: (t) => t.accountId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MatterExclusionsTableFilterComposer(
+            $db: $db,
+            $table: $db.matterExclusions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> matterEventsRefs(Expression<bool> Function($$MatterEventsTableFilterComposer f) f) {
+    final $$MatterEventsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.matterEvents,
+      getReferencedColumn: (t) => t.accountId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MatterEventsTableFilterComposer(
+            $db: $db,
+            $table: $db.matterEvents,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
@@ -7119,6 +8716,64 @@ class $$AccountsTableAnnotationComposer extends Composer<_$StoreDatabase, $Accou
     );
     return f(composer);
   }
+
+  Expression<T> matterMembersRefs<T extends Object>(
+    Expression<T> Function($$MatterMembersTableAnnotationComposer a) f,
+  ) {
+    final $$MatterMembersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.matterMembers,
+      getReferencedColumn: (t) => t.accountId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MatterMembersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.matterMembers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> matterExclusionsRefs<T extends Object>(
+    Expression<T> Function($$MatterExclusionsTableAnnotationComposer a) f,
+  ) {
+    final $$MatterExclusionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.matterExclusions,
+      getReferencedColumn: (t) => t.accountId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MatterExclusionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.matterExclusions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> matterEventsRefs<T extends Object>(Expression<T> Function($$MatterEventsTableAnnotationComposer a) f) {
+    final $$MatterEventsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.matterEvents,
+      getReferencedColumn: (t) => t.accountId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MatterEventsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.matterEvents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$AccountsTableTableManager
@@ -7140,6 +8795,9 @@ class $$AccountsTableTableManager
             bool pendingOpsRefs,
             bool threadRefsRefs,
             bool mutedThreadsRefs,
+            bool matterMembersRefs,
+            bool matterExclusionsRefs,
+            bool matterEventsRefs,
           })
         > {
   $$AccountsTableTableManager(_$StoreDatabase db, $AccountsTable table)
@@ -7192,6 +8850,9 @@ class $$AccountsTableTableManager
                 pendingOpsRefs = false,
                 threadRefsRefs = false,
                 mutedThreadsRefs = false,
+                matterMembersRefs = false,
+                matterExclusionsRefs = false,
+                matterEventsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -7201,6 +8862,9 @@ class $$AccountsTableTableManager
                     if (pendingOpsRefs) db.pendingOps,
                     if (threadRefsRefs) db.threadRefs,
                     if (mutedThreadsRefs) db.mutedThreads,
+                    if (matterMembersRefs) db.matterMembers,
+                    if (matterExclusionsRefs) db.matterExclusions,
+                    if (matterEventsRefs) db.matterEvents,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -7250,6 +8914,33 @@ class $$AccountsTableTableManager
                               referencedItems.where((e) => e.accountId == item.id),
                           typedResults: items,
                         ),
+                      if (matterMembersRefs)
+                        await $_getPrefetchedData<AccountRow, $AccountsTable, MatterMemberRow>(
+                          currentTable: table,
+                          referencedTable: $$AccountsTableReferences._matterMembersRefsTable(db),
+                          managerFromTypedResult: (p0) => $$AccountsTableReferences(db, table, p0).matterMembersRefs,
+                          referencedItemsForCurrentItem: (item, referencedItems) =>
+                              referencedItems.where((e) => e.accountId == item.id),
+                          typedResults: items,
+                        ),
+                      if (matterExclusionsRefs)
+                        await $_getPrefetchedData<AccountRow, $AccountsTable, MatterExclusionRow>(
+                          currentTable: table,
+                          referencedTable: $$AccountsTableReferences._matterExclusionsRefsTable(db),
+                          managerFromTypedResult: (p0) => $$AccountsTableReferences(db, table, p0).matterExclusionsRefs,
+                          referencedItemsForCurrentItem: (item, referencedItems) =>
+                              referencedItems.where((e) => e.accountId == item.id),
+                          typedResults: items,
+                        ),
+                      if (matterEventsRefs)
+                        await $_getPrefetchedData<AccountRow, $AccountsTable, MatterEventRow>(
+                          currentTable: table,
+                          referencedTable: $$AccountsTableReferences._matterEventsRefsTable(db),
+                          managerFromTypedResult: (p0) => $$AccountsTableReferences(db, table, p0).matterEventsRefs,
+                          referencedItemsForCurrentItem: (item, referencedItems) =>
+                              referencedItems.where((e) => e.accountId == item.id),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -7276,6 +8967,9 @@ typedef $$AccountsTableProcessedTableManager =
         bool pendingOpsRefs,
         bool threadRefsRefs,
         bool mutedThreadsRefs,
+        bool matterMembersRefs,
+        bool matterExclusionsRefs,
+        bool matterEventsRefs,
       })
     >;
 typedef $$MailboxesTableCreateCompanionBuilder = MailboxesCompanion Function({
@@ -12164,6 +13858,1410 @@ typedef $$ListKindsTableProcessedTableManager =
       ListKindRow,
       PrefetchHooks Function()
     >;
+typedef $$MattersTableCreateCompanionBuilder = MattersCompanion Function({
+  required String id,
+  required String name,
+  required int createdAt,
+  required int updatedAt,
+  Value<int> rowid,
+});
+typedef $$MattersTableUpdateCompanionBuilder = MattersCompanion Function({
+  Value<String> id,
+  Value<String> name,
+  Value<int> createdAt,
+  Value<int> updatedAt,
+  Value<int> rowid,
+});
+
+final class $$MattersTableReferences extends BaseReferences<_$StoreDatabase, $MattersTable, MatterRow> {
+  $$MattersTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$MatterMembersTable, List<MatterMemberRow>> _matterMembersRefsTable(_$StoreDatabase db) =>
+      MultiTypedResultKey.fromTable(db.matterMembers, aliasName: 'matters__id__matter_members__matter_id');
+
+  $$MatterMembersTableProcessedTableManager get matterMembersRefs {
+    final manager = $$MatterMembersTableTableManager(
+      $_db,
+      $_db.matterMembers,
+    ).filter((f) => f.matterId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_matterMembersRefsTable($_db));
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$MatterExclusionsTable, List<MatterExclusionRow>> _matterExclusionsRefsTable(
+    _$StoreDatabase db,
+  ) => MultiTypedResultKey.fromTable(db.matterExclusions, aliasName: 'matters__id__matter_exclusions__matter_id');
+
+  $$MatterExclusionsTableProcessedTableManager get matterExclusionsRefs {
+    final manager = $$MatterExclusionsTableTableManager(
+      $_db,
+      $_db.matterExclusions,
+    ).filter((f) => f.matterId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_matterExclusionsRefsTable($_db));
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$MatterEventsTable, List<MatterEventRow>> _matterEventsRefsTable(_$StoreDatabase db) =>
+      MultiTypedResultKey.fromTable(db.matterEvents, aliasName: 'matters__id__matter_events__matter_id');
+
+  $$MatterEventsTableProcessedTableManager get matterEventsRefs {
+    final manager = $$MatterEventsTableTableManager(
+      $_db,
+      $_db.matterEvents,
+    ).filter((f) => f.matterId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_matterEventsRefsTable($_db));
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
+  }
+}
+
+class $$MattersTableFilterComposer extends Composer<_$StoreDatabase, $MattersTable> {
+  $$MattersTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+
+  Expression<bool> matterMembersRefs(Expression<bool> Function($$MatterMembersTableFilterComposer f) f) {
+    final $$MatterMembersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.matterMembers,
+      getReferencedColumn: (t) => t.matterId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MatterMembersTableFilterComposer(
+            $db: $db,
+            $table: $db.matterMembers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> matterExclusionsRefs(Expression<bool> Function($$MatterExclusionsTableFilterComposer f) f) {
+    final $$MatterExclusionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.matterExclusions,
+      getReferencedColumn: (t) => t.matterId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MatterExclusionsTableFilterComposer(
+            $db: $db,
+            $table: $db.matterExclusions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> matterEventsRefs(Expression<bool> Function($$MatterEventsTableFilterComposer f) f) {
+    final $$MatterEventsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.matterEvents,
+      getReferencedColumn: (t) => t.matterId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MatterEventsTableFilterComposer(
+            $db: $db,
+            $table: $db.matterEvents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$MattersTableOrderingComposer extends Composer<_$StoreDatabase, $MattersTable> {
+  $$MattersTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+}
+
+class $$MattersTableAnnotationComposer extends Composer<_$StoreDatabase, $MattersTable> {
+  $$MattersTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name => $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<int> get createdAt => $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<int> get updatedAt => $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  Expression<T> matterMembersRefs<T extends Object>(
+    Expression<T> Function($$MatterMembersTableAnnotationComposer a) f,
+  ) {
+    final $$MatterMembersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.matterMembers,
+      getReferencedColumn: (t) => t.matterId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MatterMembersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.matterMembers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> matterExclusionsRefs<T extends Object>(
+    Expression<T> Function($$MatterExclusionsTableAnnotationComposer a) f,
+  ) {
+    final $$MatterExclusionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.matterExclusions,
+      getReferencedColumn: (t) => t.matterId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MatterExclusionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.matterExclusions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> matterEventsRefs<T extends Object>(Expression<T> Function($$MatterEventsTableAnnotationComposer a) f) {
+    final $$MatterEventsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.matterEvents,
+      getReferencedColumn: (t) => t.matterId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MatterEventsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.matterEvents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$MattersTableTableManager
+    extends
+        RootTableManager<
+          _$StoreDatabase,
+          $MattersTable,
+          MatterRow,
+          $$MattersTableFilterComposer,
+          $$MattersTableOrderingComposer,
+          $$MattersTableAnnotationComposer,
+          $$MattersTableCreateCompanionBuilder,
+          $$MattersTableUpdateCompanionBuilder,
+          (MatterRow, $$MattersTableReferences),
+          MatterRow,
+          PrefetchHooks Function({bool matterMembersRefs, bool matterExclusionsRefs, bool matterEventsRefs})
+        > {
+  $$MattersTableTableManager(_$StoreDatabase db, $MattersTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () => $$MattersTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$MattersTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$MattersTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<int> createdAt = const Value.absent(),
+            Value<int> updatedAt = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) => MattersCompanion(id: id, name: name, createdAt: createdAt, updatedAt: updatedAt, rowid: rowid),
+          createCompanionCallback: ({
+            required String id,
+            required String name,
+            required int createdAt,
+            required int updatedAt,
+            Value<int> rowid = const Value.absent(),
+          }) => MattersCompanion.insert(id: id, name: name, createdAt: createdAt, updatedAt: updatedAt, rowid: rowid),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable<$MattersTable, MatterRow>(table), $$MattersTableReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: ({matterMembersRefs = false, matterExclusionsRefs = false, matterEventsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (matterMembersRefs) db.matterMembers,
+                if (matterExclusionsRefs) db.matterExclusions,
+                if (matterEventsRefs) db.matterEvents,
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (matterMembersRefs)
+                    await $_getPrefetchedData<MatterRow, $MattersTable, MatterMemberRow>(
+                      currentTable: table,
+                      referencedTable: $$MattersTableReferences._matterMembersRefsTable(db),
+                      managerFromTypedResult: (p0) => $$MattersTableReferences(db, table, p0).matterMembersRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.matterId == item.id),
+                      typedResults: items,
+                    ),
+                  if (matterExclusionsRefs)
+                    await $_getPrefetchedData<MatterRow, $MattersTable, MatterExclusionRow>(
+                      currentTable: table,
+                      referencedTable: $$MattersTableReferences._matterExclusionsRefsTable(db),
+                      managerFromTypedResult: (p0) => $$MattersTableReferences(db, table, p0).matterExclusionsRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.matterId == item.id),
+                      typedResults: items,
+                    ),
+                  if (matterEventsRefs)
+                    await $_getPrefetchedData<MatterRow, $MattersTable, MatterEventRow>(
+                      currentTable: table,
+                      referencedTable: $$MattersTableReferences._matterEventsRefsTable(db),
+                      managerFromTypedResult: (p0) => $$MattersTableReferences(db, table, p0).matterEventsRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.matterId == item.id),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$MattersTableProcessedTableManager =
+    ProcessedTableManager<
+      _$StoreDatabase,
+      $MattersTable,
+      MatterRow,
+      $$MattersTableFilterComposer,
+      $$MattersTableOrderingComposer,
+      $$MattersTableAnnotationComposer,
+      $$MattersTableCreateCompanionBuilder,
+      $$MattersTableUpdateCompanionBuilder,
+      (MatterRow, $$MattersTableReferences),
+      MatterRow,
+      PrefetchHooks Function({bool matterMembersRefs, bool matterExclusionsRefs, bool matterEventsRefs})
+    >;
+typedef $$MatterMembersTableCreateCompanionBuilder = MatterMembersCompanion Function({
+  required String matterId,
+  required String accountId,
+  required String threadId,
+  required String ref,
+  required String source,
+  Value<String?> reason,
+  required int addedAt,
+  required int position,
+  Value<int> rowid,
+});
+typedef $$MatterMembersTableUpdateCompanionBuilder = MatterMembersCompanion Function({
+  Value<String> matterId,
+  Value<String> accountId,
+  Value<String> threadId,
+  Value<String> ref,
+  Value<String> source,
+  Value<String?> reason,
+  Value<int> addedAt,
+  Value<int> position,
+  Value<int> rowid,
+});
+
+final class $$MatterMembersTableReferences
+    extends BaseReferences<_$StoreDatabase, $MatterMembersTable, MatterMemberRow> {
+  $$MatterMembersTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $MattersTable _matterIdTable(_$StoreDatabase db) =>
+      db.matters.createAlias('matter_members__matter_id__matters__id');
+
+  $$MattersTableProcessedTableManager get matterId {
+    final $_column = $_itemColumn<String>('matter_id')!;
+
+    final manager = $$MattersTableTableManager($_db, $_db.matters).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_matterIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $AccountsTable _accountIdTable(_$StoreDatabase db) =>
+      db.accounts.createAlias('matter_members__account_id__accounts__id');
+
+  $$AccountsTableProcessedTableManager get accountId {
+    final $_column = $_itemColumn<String>('account_id')!;
+
+    final manager = $$AccountsTableTableManager($_db, $_db.accounts).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_accountIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$MatterMembersTableFilterComposer extends Composer<_$StoreDatabase, $MatterMembersTable> {
+  $$MatterMembersTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get threadId =>
+      $composableBuilder(column: $table.threadId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get ref => $composableBuilder(column: $table.ref, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get reason =>
+      $composableBuilder(column: $table.reason, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get addedAt =>
+      $composableBuilder(column: $table.addedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get position =>
+      $composableBuilder(column: $table.position, builder: (column) => ColumnFilters(column));
+
+  $$MattersTableFilterComposer get matterId {
+    final $$MattersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.matterId,
+      referencedTable: $db.matters,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MattersTableFilterComposer(
+            $db: $db,
+            $table: $db.matters,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$AccountsTableFilterComposer get accountId {
+    final $$AccountsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableFilterComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MatterMembersTableOrderingComposer extends Composer<_$StoreDatabase, $MatterMembersTable> {
+  $$MatterMembersTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get threadId =>
+      $composableBuilder(column: $table.threadId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get ref =>
+      $composableBuilder(column: $table.ref, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get reason =>
+      $composableBuilder(column: $table.reason, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get addedAt =>
+      $composableBuilder(column: $table.addedAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get position =>
+      $composableBuilder(column: $table.position, builder: (column) => ColumnOrderings(column));
+
+  $$MattersTableOrderingComposer get matterId {
+    final $$MattersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.matterId,
+      referencedTable: $db.matters,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MattersTableOrderingComposer(
+            $db: $db,
+            $table: $db.matters,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$AccountsTableOrderingComposer get accountId {
+    final $$AccountsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableOrderingComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MatterMembersTableAnnotationComposer extends Composer<_$StoreDatabase, $MatterMembersTable> {
+  $$MatterMembersTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get threadId => $composableBuilder(column: $table.threadId, builder: (column) => column);
+
+  GeneratedColumn<String> get ref => $composableBuilder(column: $table.ref, builder: (column) => column);
+
+  GeneratedColumn<String> get source => $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<String> get reason => $composableBuilder(column: $table.reason, builder: (column) => column);
+
+  GeneratedColumn<int> get addedAt => $composableBuilder(column: $table.addedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get position => $composableBuilder(column: $table.position, builder: (column) => column);
+
+  $$MattersTableAnnotationComposer get matterId {
+    final $$MattersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.matterId,
+      referencedTable: $db.matters,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MattersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.matters,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$AccountsTableAnnotationComposer get accountId {
+    final $$AccountsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MatterMembersTableTableManager
+    extends
+        RootTableManager<
+          _$StoreDatabase,
+          $MatterMembersTable,
+          MatterMemberRow,
+          $$MatterMembersTableFilterComposer,
+          $$MatterMembersTableOrderingComposer,
+          $$MatterMembersTableAnnotationComposer,
+          $$MatterMembersTableCreateCompanionBuilder,
+          $$MatterMembersTableUpdateCompanionBuilder,
+          (MatterMemberRow, $$MatterMembersTableReferences),
+          MatterMemberRow,
+          PrefetchHooks Function({bool matterId, bool accountId})
+        > {
+  $$MatterMembersTableTableManager(_$StoreDatabase db, $MatterMembersTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () => $$MatterMembersTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$MatterMembersTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$MatterMembersTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> matterId = const Value.absent(),
+                Value<String> accountId = const Value.absent(),
+                Value<String> threadId = const Value.absent(),
+                Value<String> ref = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<String?> reason = const Value.absent(),
+                Value<int> addedAt = const Value.absent(),
+                Value<int> position = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MatterMembersCompanion(
+                matterId: matterId,
+                accountId: accountId,
+                threadId: threadId,
+                ref: ref,
+                source: source,
+                reason: reason,
+                addedAt: addedAt,
+                position: position,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String matterId,
+                required String accountId,
+                required String threadId,
+                required String ref,
+                required String source,
+                Value<String?> reason = const Value.absent(),
+                required int addedAt,
+                required int position,
+                Value<int> rowid = const Value.absent(),
+              }) => MatterMembersCompanion.insert(
+                matterId: matterId,
+                accountId: accountId,
+                threadId: threadId,
+                ref: ref,
+                source: source,
+                reason: reason,
+                addedAt: addedAt,
+                position: position,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$MatterMembersTable, MatterMemberRow>(table),
+                  $$MatterMembersTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({matterId = false, accountId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (matterId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.matterId,
+                        referencedTable: $$MatterMembersTableReferences._matterIdTable(db),
+                        referencedColumn: $$MatterMembersTableReferences._matterIdTable(db).id,
+                      ) as T;
+                    }
+                    if (accountId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.accountId,
+                        referencedTable: $$MatterMembersTableReferences._accountIdTable(db),
+                        referencedColumn: $$MatterMembersTableReferences._accountIdTable(db).id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$MatterMembersTableProcessedTableManager =
+    ProcessedTableManager<
+      _$StoreDatabase,
+      $MatterMembersTable,
+      MatterMemberRow,
+      $$MatterMembersTableFilterComposer,
+      $$MatterMembersTableOrderingComposer,
+      $$MatterMembersTableAnnotationComposer,
+      $$MatterMembersTableCreateCompanionBuilder,
+      $$MatterMembersTableUpdateCompanionBuilder,
+      (MatterMemberRow, $$MatterMembersTableReferences),
+      MatterMemberRow,
+      PrefetchHooks Function({bool matterId, bool accountId})
+    >;
+typedef $$MatterExclusionsTableCreateCompanionBuilder = MatterExclusionsCompanion Function({
+  required String matterId,
+  required String accountId,
+  required String threadId,
+  Value<String?> ref,
+  Value<bool> removed,
+  required int at,
+  Value<int> rowid,
+});
+typedef $$MatterExclusionsTableUpdateCompanionBuilder = MatterExclusionsCompanion Function({
+  Value<String> matterId,
+  Value<String> accountId,
+  Value<String> threadId,
+  Value<String?> ref,
+  Value<bool> removed,
+  Value<int> at,
+  Value<int> rowid,
+});
+
+final class $$MatterExclusionsTableReferences
+    extends BaseReferences<_$StoreDatabase, $MatterExclusionsTable, MatterExclusionRow> {
+  $$MatterExclusionsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $MattersTable _matterIdTable(_$StoreDatabase db) =>
+      db.matters.createAlias('matter_exclusions__matter_id__matters__id');
+
+  $$MattersTableProcessedTableManager get matterId {
+    final $_column = $_itemColumn<String>('matter_id')!;
+
+    final manager = $$MattersTableTableManager($_db, $_db.matters).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_matterIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $AccountsTable _accountIdTable(_$StoreDatabase db) =>
+      db.accounts.createAlias('matter_exclusions__account_id__accounts__id');
+
+  $$AccountsTableProcessedTableManager get accountId {
+    final $_column = $_itemColumn<String>('account_id')!;
+
+    final manager = $$AccountsTableTableManager($_db, $_db.accounts).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_accountIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$MatterExclusionsTableFilterComposer extends Composer<_$StoreDatabase, $MatterExclusionsTable> {
+  $$MatterExclusionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get threadId =>
+      $composableBuilder(column: $table.threadId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get ref => $composableBuilder(column: $table.ref, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get removed =>
+      $composableBuilder(column: $table.removed, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get at => $composableBuilder(column: $table.at, builder: (column) => ColumnFilters(column));
+
+  $$MattersTableFilterComposer get matterId {
+    final $$MattersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.matterId,
+      referencedTable: $db.matters,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MattersTableFilterComposer(
+            $db: $db,
+            $table: $db.matters,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$AccountsTableFilterComposer get accountId {
+    final $$AccountsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableFilterComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MatterExclusionsTableOrderingComposer extends Composer<_$StoreDatabase, $MatterExclusionsTable> {
+  $$MatterExclusionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get threadId =>
+      $composableBuilder(column: $table.threadId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get ref =>
+      $composableBuilder(column: $table.ref, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get removed =>
+      $composableBuilder(column: $table.removed, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get at => $composableBuilder(column: $table.at, builder: (column) => ColumnOrderings(column));
+
+  $$MattersTableOrderingComposer get matterId {
+    final $$MattersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.matterId,
+      referencedTable: $db.matters,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MattersTableOrderingComposer(
+            $db: $db,
+            $table: $db.matters,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$AccountsTableOrderingComposer get accountId {
+    final $$AccountsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableOrderingComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MatterExclusionsTableAnnotationComposer extends Composer<_$StoreDatabase, $MatterExclusionsTable> {
+  $$MatterExclusionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get threadId => $composableBuilder(column: $table.threadId, builder: (column) => column);
+
+  GeneratedColumn<String> get ref => $composableBuilder(column: $table.ref, builder: (column) => column);
+
+  GeneratedColumn<bool> get removed => $composableBuilder(column: $table.removed, builder: (column) => column);
+
+  GeneratedColumn<int> get at => $composableBuilder(column: $table.at, builder: (column) => column);
+
+  $$MattersTableAnnotationComposer get matterId {
+    final $$MattersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.matterId,
+      referencedTable: $db.matters,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MattersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.matters,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$AccountsTableAnnotationComposer get accountId {
+    final $$AccountsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MatterExclusionsTableTableManager
+    extends
+        RootTableManager<
+          _$StoreDatabase,
+          $MatterExclusionsTable,
+          MatterExclusionRow,
+          $$MatterExclusionsTableFilterComposer,
+          $$MatterExclusionsTableOrderingComposer,
+          $$MatterExclusionsTableAnnotationComposer,
+          $$MatterExclusionsTableCreateCompanionBuilder,
+          $$MatterExclusionsTableUpdateCompanionBuilder,
+          (MatterExclusionRow, $$MatterExclusionsTableReferences),
+          MatterExclusionRow,
+          PrefetchHooks Function({bool matterId, bool accountId})
+        > {
+  $$MatterExclusionsTableTableManager(_$StoreDatabase db, $MatterExclusionsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () => $$MatterExclusionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$MatterExclusionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$MatterExclusionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> matterId = const Value.absent(),
+                Value<String> accountId = const Value.absent(),
+                Value<String> threadId = const Value.absent(),
+                Value<String?> ref = const Value.absent(),
+                Value<bool> removed = const Value.absent(),
+                Value<int> at = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MatterExclusionsCompanion(
+                matterId: matterId,
+                accountId: accountId,
+                threadId: threadId,
+                ref: ref,
+                removed: removed,
+                at: at,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String matterId,
+                required String accountId,
+                required String threadId,
+                Value<String?> ref = const Value.absent(),
+                Value<bool> removed = const Value.absent(),
+                required int at,
+                Value<int> rowid = const Value.absent(),
+              }) => MatterExclusionsCompanion.insert(
+                matterId: matterId,
+                accountId: accountId,
+                threadId: threadId,
+                ref: ref,
+                removed: removed,
+                at: at,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$MatterExclusionsTable, MatterExclusionRow>(table),
+                  $$MatterExclusionsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({matterId = false, accountId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (matterId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.matterId,
+                        referencedTable: $$MatterExclusionsTableReferences._matterIdTable(db),
+                        referencedColumn: $$MatterExclusionsTableReferences._matterIdTable(db).id,
+                      ) as T;
+                    }
+                    if (accountId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.accountId,
+                        referencedTable: $$MatterExclusionsTableReferences._accountIdTable(db),
+                        referencedColumn: $$MatterExclusionsTableReferences._accountIdTable(db).id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$MatterExclusionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$StoreDatabase,
+      $MatterExclusionsTable,
+      MatterExclusionRow,
+      $$MatterExclusionsTableFilterComposer,
+      $$MatterExclusionsTableOrderingComposer,
+      $$MatterExclusionsTableAnnotationComposer,
+      $$MatterExclusionsTableCreateCompanionBuilder,
+      $$MatterExclusionsTableUpdateCompanionBuilder,
+      (MatterExclusionRow, $$MatterExclusionsTableReferences),
+      MatterExclusionRow,
+      PrefetchHooks Function({bool matterId, bool accountId})
+    >;
+typedef $$MatterEventsTableCreateCompanionBuilder = MatterEventsCompanion Function({
+  required String matterId,
+  required int seq,
+  required String kind,
+  required int at,
+  Value<String> detail,
+  Value<int> count,
+  Value<String?> accountId,
+  Value<String?> source,
+  Value<int> rowid,
+});
+typedef $$MatterEventsTableUpdateCompanionBuilder = MatterEventsCompanion Function({
+  Value<String> matterId,
+  Value<int> seq,
+  Value<String> kind,
+  Value<int> at,
+  Value<String> detail,
+  Value<int> count,
+  Value<String?> accountId,
+  Value<String?> source,
+  Value<int> rowid,
+});
+
+final class $$MatterEventsTableReferences extends BaseReferences<_$StoreDatabase, $MatterEventsTable, MatterEventRow> {
+  $$MatterEventsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $MattersTable _matterIdTable(_$StoreDatabase db) =>
+      db.matters.createAlias('matter_events__matter_id__matters__id');
+
+  $$MattersTableProcessedTableManager get matterId {
+    final $_column = $_itemColumn<String>('matter_id')!;
+
+    final manager = $$MattersTableTableManager($_db, $_db.matters).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_matterIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $AccountsTable _accountIdTable(_$StoreDatabase db) =>
+      db.accounts.createAlias('matter_events__account_id__accounts__id');
+
+  $$AccountsTableProcessedTableManager? get accountId {
+    final $_column = $_itemColumn<String>('account_id');
+    if ($_column == null) return null;
+    final manager = $$AccountsTableTableManager($_db, $_db.accounts).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_accountIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$MatterEventsTableFilterComposer extends Composer<_$StoreDatabase, $MatterEventsTable> {
+  $$MatterEventsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get seq => $composableBuilder(column: $table.seq, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get kind => $composableBuilder(column: $table.kind, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get at => $composableBuilder(column: $table.at, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get detail =>
+      $composableBuilder(column: $table.detail, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get count => $composableBuilder(column: $table.count, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => ColumnFilters(column));
+
+  $$MattersTableFilterComposer get matterId {
+    final $$MattersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.matterId,
+      referencedTable: $db.matters,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MattersTableFilterComposer(
+            $db: $db,
+            $table: $db.matters,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$AccountsTableFilterComposer get accountId {
+    final $$AccountsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableFilterComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MatterEventsTableOrderingComposer extends Composer<_$StoreDatabase, $MatterEventsTable> {
+  $$MatterEventsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get seq => $composableBuilder(column: $table.seq, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get at => $composableBuilder(column: $table.at, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get detail =>
+      $composableBuilder(column: $table.detail, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get count =>
+      $composableBuilder(column: $table.count, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => ColumnOrderings(column));
+
+  $$MattersTableOrderingComposer get matterId {
+    final $$MattersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.matterId,
+      referencedTable: $db.matters,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MattersTableOrderingComposer(
+            $db: $db,
+            $table: $db.matters,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$AccountsTableOrderingComposer get accountId {
+    final $$AccountsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableOrderingComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MatterEventsTableAnnotationComposer extends Composer<_$StoreDatabase, $MatterEventsTable> {
+  $$MatterEventsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get seq => $composableBuilder(column: $table.seq, builder: (column) => column);
+
+  GeneratedColumn<String> get kind => $composableBuilder(column: $table.kind, builder: (column) => column);
+
+  GeneratedColumn<int> get at => $composableBuilder(column: $table.at, builder: (column) => column);
+
+  GeneratedColumn<String> get detail => $composableBuilder(column: $table.detail, builder: (column) => column);
+
+  GeneratedColumn<int> get count => $composableBuilder(column: $table.count, builder: (column) => column);
+
+  GeneratedColumn<String> get source => $composableBuilder(column: $table.source, builder: (column) => column);
+
+  $$MattersTableAnnotationComposer get matterId {
+    final $$MattersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.matterId,
+      referencedTable: $db.matters,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$MattersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.matters,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$AccountsTableAnnotationComposer get accountId {
+    final $$AccountsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MatterEventsTableTableManager
+    extends
+        RootTableManager<
+          _$StoreDatabase,
+          $MatterEventsTable,
+          MatterEventRow,
+          $$MatterEventsTableFilterComposer,
+          $$MatterEventsTableOrderingComposer,
+          $$MatterEventsTableAnnotationComposer,
+          $$MatterEventsTableCreateCompanionBuilder,
+          $$MatterEventsTableUpdateCompanionBuilder,
+          (MatterEventRow, $$MatterEventsTableReferences),
+          MatterEventRow,
+          PrefetchHooks Function({bool matterId, bool accountId})
+        > {
+  $$MatterEventsTableTableManager(_$StoreDatabase db, $MatterEventsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () => $$MatterEventsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$MatterEventsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$MatterEventsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> matterId = const Value.absent(),
+                Value<int> seq = const Value.absent(),
+                Value<String> kind = const Value.absent(),
+                Value<int> at = const Value.absent(),
+                Value<String> detail = const Value.absent(),
+                Value<int> count = const Value.absent(),
+                Value<String?> accountId = const Value.absent(),
+                Value<String?> source = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MatterEventsCompanion(
+                matterId: matterId,
+                seq: seq,
+                kind: kind,
+                at: at,
+                detail: detail,
+                count: count,
+                accountId: accountId,
+                source: source,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String matterId,
+                required int seq,
+                required String kind,
+                required int at,
+                Value<String> detail = const Value.absent(),
+                Value<int> count = const Value.absent(),
+                Value<String?> accountId = const Value.absent(),
+                Value<String?> source = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MatterEventsCompanion.insert(
+                matterId: matterId,
+                seq: seq,
+                kind: kind,
+                at: at,
+                detail: detail,
+                count: count,
+                accountId: accountId,
+                source: source,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$MatterEventsTable, MatterEventRow>(table),
+                  $$MatterEventsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({matterId = false, accountId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (matterId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.matterId,
+                        referencedTable: $$MatterEventsTableReferences._matterIdTable(db),
+                        referencedColumn: $$MatterEventsTableReferences._matterIdTable(db).id,
+                      ) as T;
+                    }
+                    if (accountId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.accountId,
+                        referencedTable: $$MatterEventsTableReferences._accountIdTable(db),
+                        referencedColumn: $$MatterEventsTableReferences._accountIdTable(db).id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$MatterEventsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$StoreDatabase,
+      $MatterEventsTable,
+      MatterEventRow,
+      $$MatterEventsTableFilterComposer,
+      $$MatterEventsTableOrderingComposer,
+      $$MatterEventsTableAnnotationComposer,
+      $$MatterEventsTableCreateCompanionBuilder,
+      $$MatterEventsTableUpdateCompanionBuilder,
+      (MatterEventRow, $$MatterEventsTableReferences),
+      MatterEventRow,
+      PrefetchHooks Function({bool matterId, bool accountId})
+    >;
 
 class $StoreDatabaseManager {
   final _$StoreDatabase _db;
@@ -12187,4 +15285,9 @@ class $StoreDatabaseManager {
   $$RuleWatermarksTableTableManager get ruleWatermarks => $$RuleWatermarksTableTableManager(_db, _db.ruleWatermarks);
   $$MutedThreadsTableTableManager get mutedThreads => $$MutedThreadsTableTableManager(_db, _db.mutedThreads);
   $$ListKindsTableTableManager get listKinds => $$ListKindsTableTableManager(_db, _db.listKinds);
+  $$MattersTableTableManager get matters => $$MattersTableTableManager(_db, _db.matters);
+  $$MatterMembersTableTableManager get matterMembers => $$MatterMembersTableTableManager(_db, _db.matterMembers);
+  $$MatterExclusionsTableTableManager get matterExclusions =>
+      $$MatterExclusionsTableTableManager(_db, _db.matterExclusions);
+  $$MatterEventsTableTableManager get matterEvents => $$MatterEventsTableTableManager(_db, _db.matterEvents);
 }
