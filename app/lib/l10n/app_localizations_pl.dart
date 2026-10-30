@@ -154,6 +154,88 @@ class AppLocalizationsPl extends AppLocalizations {
   String get mailboxTrash => 'Kosz';
 
   @override
+  String get changesExplainTitle => 'Co się zmieniło';
+
+  @override
+  String get changesExplainIntro => 'Wyjaśnia zmienione fakty, każdy powiązany z fragmentami w obu wiadomościach.';
+
+  @override
+  String get changesExplainAction => 'Wyjaśnij zmiany';
+
+  @override
+  String get changesExplainWorking => 'Wyjaśnianie zmian…';
+
+  @override
+  String get changesExplainFailed => 'Loupe nie zdołał wyjaśnić tych zmian.';
+
+  @override
+  String get changesExplainTooLarge => 'Te wiadomości są za długie dla modelu.';
+
+  @override
+  String get changesExplainProviderError => 'Model nie odpowiedział.';
+
+  @override
+  String get changesExplainInvalid => 'Odpowiedź nie przeszła kontroli Loupe, więc nic z niej nie jest pokazywane.';
+
+  @override
+  String get changesExplainNoChange => 'Nie znaleziono zmian znaczenia. Dokładne zmiany w tekście są poniżej.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Zmienione',
+      'added': 'Nowe',
+      'removed': 'Nie jest już wspomniane',
+      'contradiction': 'Sprzeczne',
+      'other': 'Zmienione',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first lub $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Wiadomości nie mówią, która z tych informacji obowiązuje.';
+
+  @override
+  String get changesExplainPartial => 'Przeczytano tylko początek długiej wiadomości.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Wiersze zaczynające się od „>” cytują wcześniejszą pocztę. Są czytane jako kontekst, a nie jako treść którejkolwiek z wiadomości.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Wiadomość może cytować wcześniejszą pocztę bez oznaczenia, więc niektóre zmiany mogą pochodzić ze starszej poczty. Sprawdź fragmenty.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Każdy fragment znaleziono w jego wiadomości. Przeczytaj je, zanim zaufasz jakiejś zmianie.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Wyjaśniany jest tylko tekst wiadomości. Załączniki są porównywane tylko według nazwy, typu i rozmiaru.';
+
+  @override
+  String get changesExplainDemoNote => 'Przygotowane przez wbudowane demo, nie przez model.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Przygotowane przez $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'W tej wiadomości nie wyróżniono żadnego fragmentu.';
+
+  @override
   String get conversationCompareMessages => 'Porównaj wiadomości…';
 
   @override

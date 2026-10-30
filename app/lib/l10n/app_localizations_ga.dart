@@ -156,6 +156,90 @@ class AppLocalizationsGa extends AppLocalizations {
   String get mailboxTrash => 'Bruscar';
 
   @override
+  String get changesExplainTitle => 'Cad a d’athraigh';
+
+  @override
+  String get changesExplainIntro =>
+      'Míníonn sé na fíricí a d’athraigh, agus nascann sé gach ceann acu lena sleachta sa dá theachtaireacht.';
+
+  @override
+  String get changesExplainAction => 'Mínigh na hathruithe';
+
+  @override
+  String get changesExplainWorking => 'Na hathruithe á míniú…';
+
+  @override
+  String get changesExplainFailed => 'Níorbh fhéidir le Loupe na hathruithe seo a mhíniú.';
+
+  @override
+  String get changesExplainTooLarge => 'Tá na teachtaireachtaí seo rófhada don tsamhail.';
+
+  @override
+  String get changesExplainProviderError => 'Níor fhreagair an tsamhail.';
+
+  @override
+  String get changesExplainInvalid =>
+      'Níor éirigh leis an bhfreagra seiceálacha Loupe a shárú, mar sin ní thaispeántar aon chuid de.';
+
+  @override
+  String get changesExplainNoChange => 'Níor aimsíodh aon athrú brí. Tá na hathruithe beachta téacs thíos.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Athraithe',
+      'added': 'Nua',
+      'removed': 'Ní luaitear a thuilleadh',
+      'contradiction': 'Contrártha',
+      'other': 'Athraithe',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first nó $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Ní deir na teachtaireachtaí cé acu díobh seo atá i bhfeidhm.';
+
+  @override
+  String get changesExplainPartial => 'Níor léadh ach tús teachtaireachta fada.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Is sleachta as ríomhphost níos luaithe iad línte a thosaíonn le “>”. Léitear iad mar chomhthéacs, ní mar a deir ceachtar den dá theachtaireacht.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'D’fhéadfadh teachtaireacht ríomhphost níos luaithe a lua gan é a mharcáil, mar sin d’fhéadfadh roinnt athruithe teacht ó ríomhphost níos sine. Seiceáil na sleachta.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Aimsíodh gach sliocht ina theachtaireacht féin. Léigh iad sula mbraitheann tú ar athrú.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Ní mhínítear ach téacs na dteachtaireachtaí. Ní chuirtear ceangaltáin i gcomparáid ach de réir ainm, cineáil agus méide.';
+
+  @override
+  String get changesExplainDemoNote => 'Rinne an taispeántas ionsuite é seo, ní samhail.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Déanta ag $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Níl aon sliocht aibhsithe sa teachtaireacht seo.';
+
+  @override
   String get conversationCompareMessages => 'Cuir teachtaireachtaí i gcomparáid…';
 
   @override

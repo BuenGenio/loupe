@@ -148,6 +148,89 @@ class AppLocalizationsEu extends AppLocalizations {
   String get mailboxTrash => 'Zakarrontzia';
 
   @override
+  String get changesExplainTitle => 'Zer aldatu den';
+
+  @override
+  String get changesExplainIntro => 'Aldatutako datuak azaltzen ditu, bakoitza bi mezuetako bere pasarteekin lotuta.';
+
+  @override
+  String get changesExplainAction => 'Azaldu aldaketak';
+
+  @override
+  String get changesExplainWorking => 'Aldaketak azaltzen…';
+
+  @override
+  String get changesExplainFailed => 'Loupek ezin izan ditu aldaketa hauek azaldu.';
+
+  @override
+  String get changesExplainTooLarge => 'Mezu hauek luzeegiak dira ereduarentzat.';
+
+  @override
+  String get changesExplainProviderError => 'Ereduak ez du erantzun.';
+
+  @override
+  String get changesExplainInvalid =>
+      'Erantzunak ez ditu Loupen egiaztapenak gainditu; beraz, ez da haren ezer erakusten.';
+
+  @override
+  String get changesExplainNoChange => 'Ez da esanahi-aldaketarik aurkitu. Testuaren aldaketa zehatzak behean daude.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Aldatuta',
+      'added': 'Berria',
+      'removed': 'Jada ez da aipatzen',
+      'contradiction': 'Kontraesankorra',
+      'other': 'Aldatuta',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first edo $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Mezuek ez dute esaten horietatik zein den baliozkoa.';
+
+  @override
+  String get changesExplainPartial => 'Mezu luze baten hasiera bakarrik irakurri da.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      '«>» ikurrarekin hasten diren lerroek lehenagoko mezuak aipatzen dituzte. Testuinguru gisa irakurtzen dira, ez mezuetako batek esaten duen gisa.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Mezu batek lehenagoko mezuak aipa ditzake markatu gabe; beraz, aldaketa batzuk mezu zaharragoetatik etor daitezke. Egiaztatu pasarteak.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Pasarte bakoitza bere mezuan aurkitu da. Irakurri itzazu aldaketa batean fidatu aurretik.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Mezuen testua bakarrik azaltzen da. Eranskinak izenaren, motaren eta tamainaren arabera bakarrik konparatzen dira.';
+
+  @override
+  String get changesExplainDemoNote => 'Demo integratuak egina, ez eredu batek.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Egilea: $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Mezu honetan ez dago pasarterik nabarmenduta.';
+
+  @override
   String get conversationCompareMessages => 'Konparatu mezuak…';
 
   @override

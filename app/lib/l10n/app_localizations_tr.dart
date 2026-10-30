@@ -148,6 +148,88 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mailboxTrash => 'Çöp Kutusu';
 
   @override
+  String get changesExplainTitle => 'Neler değişti';
+
+  @override
+  String get changesExplainIntro => 'Değişen bilgileri açıklar ve her birini iki iletideki ilgili bölümlere bağlar.';
+
+  @override
+  String get changesExplainAction => 'Değişiklikleri açıkla';
+
+  @override
+  String get changesExplainWorking => 'Değişiklikler açıklanıyor…';
+
+  @override
+  String get changesExplainFailed => 'Loupe bu değişiklikleri açıklayamadı.';
+
+  @override
+  String get changesExplainTooLarge => 'Bu iletiler model için çok uzun.';
+
+  @override
+  String get changesExplainProviderError => 'Model yanıt vermedi.';
+
+  @override
+  String get changesExplainInvalid => 'Yanıt Loupe’un denetimlerinden geçemedi, bu yüzden hiçbir kısmı gösterilmiyor.';
+
+  @override
+  String get changesExplainNoChange => 'Anlamda bir değişiklik bulunamadı. Metindeki tam değişiklikler aşağıda.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Değişti',
+      'added': 'Yeni',
+      'removed': 'Artık bahsedilmiyor',
+      'contradiction': 'Çelişkili',
+      'other': 'Değişti',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first veya $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'İletiler bunlardan hangisinin geçerli olduğunu söylemiyor.';
+
+  @override
+  String get changesExplainPartial => 'Uzun bir iletinin yalnızca başı okundu.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      '“>” ile başlayan satırlar önceki iletilerden alıntıdır. Bunlar iletilerin söylediği şey olarak değil, bağlam olarak okunur.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Bir ileti, önceki iletileri işaretlemeden alıntılayabilir; bu yüzden bazı değişiklikler daha eski iletilerden gelebilir. Bölümleri kontrol edin.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Her bölüm kendi iletisinde bulundu. Bir değişikliğe güvenmeden önce bölümleri okuyun.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Yalnızca ileti metni açıklanır. Ekler yalnızca ad, tür ve boyuta göre karşılaştırılır.';
+
+  @override
+  String get changesExplainDemoNote => 'Bunu bir model değil, yerleşik demo hazırladı.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Hazırlayan: $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Bu iletide vurgulanan bölüm yok.';
+
+  @override
   String get conversationCompareMessages => 'İletileri karşılaştır…';
 
   @override

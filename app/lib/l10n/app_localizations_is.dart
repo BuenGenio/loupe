@@ -148,6 +148,90 @@ class AppLocalizationsIs extends AppLocalizations {
   String get mailboxTrash => 'Rusl';
 
   @override
+  String get changesExplainTitle => 'Hvað hefur breyst';
+
+  @override
+  String get changesExplainIntro =>
+      'Útskýrir hvaða staðreyndir breyttust og tengir hverja við viðeigandi textabrot í báðum skilaboðunum.';
+
+  @override
+  String get changesExplainAction => 'Útskýra breytingar';
+
+  @override
+  String get changesExplainWorking => 'Útskýrir breytingarnar…';
+
+  @override
+  String get changesExplainFailed => 'Loupe gat ekki útskýrt þessar breytingar.';
+
+  @override
+  String get changesExplainTooLarge => 'Þessi skilaboð eru of löng fyrir líkanið.';
+
+  @override
+  String get changesExplainProviderError => 'Líkanið svaraði ekki.';
+
+  @override
+  String get changesExplainInvalid => 'Svarið stóðst ekki athuganir Loupe, svo ekkert af því er birt.';
+
+  @override
+  String get changesExplainNoChange =>
+      'Engin breyting á merkingu fannst. Nákvæmar breytingar á texta eru hér fyrir neðan.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Breytt',
+      'added': 'Nýtt',
+      'removed': 'Ekki lengur nefnt',
+      'contradiction': 'Misvísandi',
+      'other': 'Breytt',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first eða $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Skilaboðin segja ekki hvort þeirra gildir.';
+
+  @override
+  String get changesExplainPartial => 'Aðeins upphaf langra skilaboða var lesið.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Línur sem byrja á „>“ vitna í fyrri póst. Þær eru lesnar sem samhengi, ekki sem það sem skilaboðin sjálf segja.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Skilaboð geta vitnað í fyrri póst án þess að merkja það, svo sumar breytingar gætu komið úr eldri pósti. Athugaðu textabrotin.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Hvert textabrot fannst í sínum skilaboðum. Lestu þau áður en þú treystir á breytingu.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Aðeins texti skilaboðanna er útskýrður. Viðhengi eru aðeins borin saman eftir nafni, tegund og stærð.';
+
+  @override
+  String get changesExplainDemoNote => 'Búið til af innbyggðu sýnisútgáfunni, ekki af líkani.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Búið til af $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Ekkert textabrot er auðkennt í þessum skilaboðum.';
+
+  @override
   String get conversationCompareMessages => 'Bera saman skilaboð…';
 
   @override

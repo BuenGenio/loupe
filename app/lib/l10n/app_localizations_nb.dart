@@ -148,6 +148,88 @@ class AppLocalizationsNb extends AppLocalizations {
   String get mailboxTrash => 'Papirkurv';
 
   @override
+  String get changesExplainTitle => 'Hva som er endret';
+
+  @override
+  String get changesExplainIntro =>
+      'Forklarer de endrede opplysningene, hver med lenke til passasjene i begge meldingene.';
+
+  @override
+  String get changesExplainAction => 'Forklar endringer';
+
+  @override
+  String get changesExplainWorking => 'Forklarer endringene…';
+
+  @override
+  String get changesExplainFailed => 'Loupe klarte ikke å forklare disse endringene.';
+
+  @override
+  String get changesExplainTooLarge => 'Disse meldingene er for lange for modellen.';
+
+  @override
+  String get changesExplainProviderError => 'Modellen svarte ikke.';
+
+  @override
+  String get changesExplainInvalid => 'Svaret besto ikke Loupes kontroller, så ingenting av det vises.';
+
+  @override
+  String get changesExplainNoChange => 'Ingen endring i betydning funnet. De nøyaktige tekstendringene står nedenfor.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Endret',
+      'added': 'Ny',
+      'removed': 'Ikke lenger nevnt',
+      'contradiction': 'Motstridende',
+      'other': 'Endret',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first eller $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Meldingene sier ikke hvilken av disse som gjelder.';
+
+  @override
+  String get changesExplainPartial => 'Bare begynnelsen av en lang melding ble lest.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Linjer som begynner med «>», siterer tidligere e-post. De leses som kontekst, ikke som noe meldingene selv sier.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'En melding kan sitere tidligere e-post uten å markere det, så noen endringer kan komme fra eldre e-post. Sjekk passasjene.';
+
+  @override
+  String get changesExplainCheckNote => 'Hver passasje ble funnet i sin melding. Les dem før du stoler på en endring.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Bare meldingsteksten forklares. Vedlegg sammenlignes bare etter navn, type og størrelse.';
+
+  @override
+  String get changesExplainDemoNote => 'Laget av den innebygde demoen, ikke av en modell.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Laget av $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Ingen passasje er uthevet i denne meldingen.';
+
+  @override
   String get conversationCompareMessages => 'Sammenlign meldinger…';
 
   @override

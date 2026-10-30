@@ -154,6 +154,88 @@ class AppLocalizationsUk extends AppLocalizations {
   String get mailboxTrash => 'Кошик';
 
   @override
+  String get changesExplainTitle => 'Що змінилося';
+
+  @override
+  String get changesExplainIntro => 'Пояснює змінені факти, кожен пов’язаний з уривками в обох листах.';
+
+  @override
+  String get changesExplainAction => 'Пояснити зміни';
+
+  @override
+  String get changesExplainWorking => 'Пояснюємо зміни…';
+
+  @override
+  String get changesExplainFailed => 'Loupe не вдалося пояснити ці зміни.';
+
+  @override
+  String get changesExplainTooLarge => 'Ці листи задовгі для моделі.';
+
+  @override
+  String get changesExplainProviderError => 'Модель не відповіла.';
+
+  @override
+  String get changesExplainInvalid => 'Відповідь не пройшла перевірок Loupe, тож жодну її частину не показано.';
+
+  @override
+  String get changesExplainNoChange => 'Змін у змісті не знайдено. Точні зміни тексту нижче.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Змінено',
+      'added': 'Нове',
+      'removed': 'Більше не згадується',
+      'contradiction': 'Суперечність',
+      'other': 'Змінено',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first або $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'У листах не сказано, що з цього чинне.';
+
+  @override
+  String get changesExplainPartial => 'Прочитано лише початок довгого листа.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Рядки, що починаються з «>», цитують попередню пошту. Їх прочитано як контекст, а не як те, що каже котрийсь із листів.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Лист може цитувати попередню пошту без позначки, тож деякі зміни можуть походити зі старішої пошти. Перевірте уривки.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Кожен уривок знайдено в його листі. Прочитайте їх, перш ніж покладатися на зміну.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Пояснюється лише текст листів. Вкладення порівнюються лише за назвою, типом і розміром.';
+
+  @override
+  String get changesExplainDemoNote => 'Створено вбудованою демонстрацією, а не моделлю.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Створено: $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'У цьому листі не виділено жодного уривка.';
+
+  @override
   String get conversationCompareMessages => 'Порівняти листи…';
 
   @override

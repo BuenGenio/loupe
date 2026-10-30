@@ -154,6 +154,89 @@ class AppLocalizationsLt extends AppLocalizations {
   String get mailboxTrash => 'Šiukšliadėžė';
 
   @override
+  String get changesExplainTitle => 'Kas pasikeitė';
+
+  @override
+  String get changesExplainIntro =>
+      'Paaiškina pasikeitusius faktus, kiekvieną susiedamas su jo ištraukomis abiejuose laiškuose.';
+
+  @override
+  String get changesExplainAction => 'Paaiškinti pakeitimus';
+
+  @override
+  String get changesExplainWorking => 'Aiškinami pakeitimai…';
+
+  @override
+  String get changesExplainFailed => 'Loupe nepavyko paaiškinti šių pakeitimų.';
+
+  @override
+  String get changesExplainTooLarge => 'Šie laiškai modeliui per ilgi.';
+
+  @override
+  String get changesExplainProviderError => 'Modelis neatsakė.';
+
+  @override
+  String get changesExplainInvalid => 'Atsakymas neišlaikė Loupe patikrų, todėl iš jo nieko nerodoma.';
+
+  @override
+  String get changesExplainNoChange => 'Prasmės pakeitimų nerasta. Tikslūs teksto pakeitimai pateikti žemiau.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Pakeista',
+      'added': 'Nauja',
+      'removed': 'Nebeminima',
+      'contradiction': 'Prieštaringa',
+      'other': 'Pakeista',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first arba $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Laiškuose nenurodyta, kuris iš šių galioja.';
+
+  @override
+  String get changesExplainPartial => 'Perskaityta tik ilgo laiško pradžia.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Eilutės, prasidedančios „>“, cituoja ankstesnius laiškus. Jos skaitomos kaip kontekstas, o ne kaip kurio nors laiško teiginiai.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Laiškas gali cituoti ankstesnius laiškus jų nepažymėdamas, todėl kai kurie pakeitimai gali būti iš senesnių laiškų. Patikrinkite ištraukas.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Kiekviena ištrauka rasta savo laiške. Perskaitykite jas prieš pasikliaudami pakeitimu.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Aiškinamas tik laiškų tekstas. Priedai lyginami tik pagal pavadinimą, tipą ir dydį.';
+
+  @override
+  String get changesExplainDemoNote => 'Sukūrė įtaisytoji demonstracija, ne modelis.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Sukūrė: $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Šiame laiške nepažymėta jokia ištrauka.';
+
+  @override
   String get conversationCompareMessages => 'Palyginti laiškus…';
 
   @override

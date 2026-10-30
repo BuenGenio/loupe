@@ -148,6 +148,90 @@ class AppLocalizationsLb extends AppLocalizations {
   String get mailboxTrash => 'Pabeierkuerf';
 
   @override
+  String get changesExplainTitle => 'Wat sech geännert huet';
+
+  @override
+  String get changesExplainIntro =>
+      'Erkläert déi geännert Fakten, jeeweils verknäppt mat hire Passagen a béide Messagen.';
+
+  @override
+  String get changesExplainAction => 'Ännerungen erklären';
+
+  @override
+  String get changesExplainWorking => 'D’Ännerunge ginn erkläert…';
+
+  @override
+  String get changesExplainFailed => 'Loupe konnt dës Ännerungen net erklären.';
+
+  @override
+  String get changesExplainTooLarge => 'Dës Messagë sinn ze laang fir de Modell.';
+
+  @override
+  String get changesExplainProviderError => 'De Modell huet net geäntwert.';
+
+  @override
+  String get changesExplainInvalid =>
+      'D’Äntwert huet d’Kontrolle vu Loupe net bestanen, dofir gëtt näischt dovun ugewisen.';
+
+  @override
+  String get changesExplainNoChange => 'Keng inhaltlech Ännerung fonnt. Déi genee Textännerunge stinn hei drënner.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Geännert',
+      'added': 'Nei',
+      'removed': 'Net méi ernimmt',
+      'contradiction': 'Widderspréchlech',
+      'other': 'Geännert',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first oder $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'D’Messagë soen net, wéi eng vun dësen Ugabe gëllt.';
+
+  @override
+  String get changesExplainPartial => 'Vun engem laange Message gouf nëmmen den Ufank gelies.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Zeilen, déi mat „>“ ufänken, zitéiere fréier Mailen. Si gi als Kontext gelies, net als dat, wat ee vun deenen zwee Messagë seet.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'E Message kann fréier Mailen zitéieren, ouni dat ze markéieren, dofir kënnen e puer Ännerungen aus méi ale Maile kommen. Iwwerpréift d’Passagen.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'All Passage gouf am jeeweilege Message fonnt. Liest se, ier Dir Iech op eng Ännerung verloosst.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Nëmmen de Messagetext gëtt erkläert. Unhäng gi just no Numm, Typ a Gréisst verglach.';
+
+  @override
+  String get changesExplainDemoNote => 'Erstallt vun der agebauter Demo, net vun engem Modell.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Erstallt vun $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Keng Passagen an dësem Message markéiert.';
+
+  @override
   String get conversationCompareMessages => 'Messagë vergläichen…';
 
   @override

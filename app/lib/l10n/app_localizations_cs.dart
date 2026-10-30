@@ -154,6 +154,88 @@ class AppLocalizationsCs extends AppLocalizations {
   String get mailboxTrash => 'Koš';
 
   @override
+  String get changesExplainTitle => 'Co se změnilo';
+
+  @override
+  String get changesExplainIntro => 'Vysvětlí změněné údaje, každý propojený s úryvky v obou zprávách.';
+
+  @override
+  String get changesExplainAction => 'Vysvětlit změny';
+
+  @override
+  String get changesExplainWorking => 'Vysvětlují se změny…';
+
+  @override
+  String get changesExplainFailed => 'Loupe tyto změny nedokázal vysvětlit.';
+
+  @override
+  String get changesExplainTooLarge => 'Tyto zprávy jsou pro model příliš dlouhé.';
+
+  @override
+  String get changesExplainProviderError => 'Model neodpověděl.';
+
+  @override
+  String get changesExplainInvalid => 'Odpověď neprošla kontrolami aplikace Loupe, takže se z ní nic nezobrazuje.';
+
+  @override
+  String get changesExplainNoChange => 'Žádná změna významu nebyla nalezena. Přesné změny textu jsou níže.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Změněno',
+      'added': 'Nové',
+      'removed': 'Už se nezmiňuje',
+      'contradiction': 'V rozporu',
+      'other': 'Změněno',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first nebo $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Ze zpráv není jasné, který z těchto údajů platí.';
+
+  @override
+  String get changesExplainPartial => 'Byl přečten jen začátek dlouhé zprávy.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Řádky začínající znakem „>“ citují dřívější poštu. Čtou se jako kontext, ne jako obsah některé ze zpráv.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Zpráva může citovat dřívější poštu, aniž by to označila, takže některé změny mohou pocházet ze starší pošty. Zkontrolujte úryvky.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Každý úryvek byl nalezen ve své zprávě. Přečtěte si je, než se na změnu spolehnete.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Vysvětluje se jen text zpráv. Přílohy se porovnávají jen podle názvu, typu a velikosti.';
+
+  @override
+  String get changesExplainDemoNote => 'Vytvořilo vestavěné demo, ne model.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Vytvořeno pomocí $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'V této zprávě není zvýrazněn žádný úryvek.';
+
+  @override
   String get conversationCompareMessages => 'Porovnat zprávy…';
 
   @override
