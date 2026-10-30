@@ -532,6 +532,9 @@ void main() {
       final kestrelSub = (await repo.watchSubscriptions().first).firstWhere((s) => s.key == kestrel);
       final row = find.byKey(const ValueKey('list.dev.lists.example.org'));
       await tester.scrollTo(row);
+      // Clear of the bottom bar, which the list scrolls under.
+      await tester.ensureVisible(row);
+      await tester.pumpAndSettle();
       expect(find.descendant(of: row, matching: find.text('Kestrel developers')), findsOneWidget);
       expect(find.descendant(of: row, matching: find.text('${kestrelSub.unreadCount}')), findsOneWidget);
       expect(find.text('Open Garden development'), findsNothing);
