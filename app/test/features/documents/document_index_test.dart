@@ -2,9 +2,15 @@ import 'dart:convert';
 import 'dart:io' show ZLibEncoder;
 import 'dart:typed_data';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_attachments.dart';
+import 'package:loupe/demo/demo_repository.dart';
+import 'package:loupe/features/ai/ai_providers.dart';
+import 'package:loupe/features/ai/demo_ai_provider.dart';
 import 'package:loupe/features/documents/document_index.dart';
+import 'package:loupe/providers.dart';
+import 'package:mail_ai/mail_ai.dart';
 import 'package:mail_documents/mail_documents.dart';
 import 'package:mail_model/mail_model.dart';
 
@@ -67,5 +73,33 @@ void main() {
     expect(background, 1);
     expect(doc.status, ExtractionStatus.complete);
     expect(doc.pages.single.text, startsWith('Amount due'));
+  });
+
+  test('Key Facts are kept by content and forgotten with Private AI’s results', () async {
+    final repo = DemoMailRepository.instant(clock: () => DateTime(2026, 10, 30));
+    addTearDown(repo.dispose);
+    final container = ProviderContainer(overrides: [repositoryProvider.overrideWithValue(repo)]);
+    addTearDown(container.dispose);
+    final index = container.read(documentIndexProvider);
+    final ledger = container.read(aiLedgerProvider);
+    final service = AiService(DemoAiProvider(), ledger);
+    final bytes = pagedPdf('Invoice INV-2207', [
+      ['Payee: Quayside Removals Ltd', 'Amount due: GBP 450.00'],
+    ]);
+    const ref = DocumentRef('m1', '2');
+    const invoice = Attachment(partId: '2', mimeType: 'application/pdf', filename: 'INV-2207.pdf');
+    final doc = await index.read(ref, invoice, bytes);
+    final entry = DocumentEntry(
+      ref: ref,
+      attachment: invoice,
+      email: EmailSummary(id: 'm1', accountId: 'personal', mailboxId: 'personal|INBOX', receivedAt: DateTime(2026)),
+      document: doc,
+    );
+    final run = await index.facts(service, entry);
+    expect((run as AiSuccess<DocumentFacts>).value.known(FactField.amountDue)!.value, 'GBP 450.00');
+    expect(index.cachedFacts(service, doc), same(run));
+    ledger.clearResults();
+    expect(index.cachedFacts(service, doc), isNull);
+    expect(index.cached(ref), same(doc));
   });
 }
