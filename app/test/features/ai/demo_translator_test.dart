@@ -62,15 +62,15 @@ void main() {
     expect(value.expression, 'is:unread from:dana');
     expect(run.record.model, 'demo');
 
-    final other = await AiRunner(provider).run(BriefTaskStandIn());
+    final other = await AiRunner(provider).run(UnknownTaskStandIn());
     expect((other as AiFailure<String>).reason, AiFailureReason.providerError);
   });
 }
 
-/// Any task that is not a search translation.
-final class BriefTaskStandIn extends AiTask<String> {
+/// A task the demo has no answer for.
+final class UnknownTaskStandIn extends AiTask<String> {
   @override
-  String get type => 'brief.message';
+  String get type => 'demo.unknown';
   @override
   int get version => 1;
   @override
