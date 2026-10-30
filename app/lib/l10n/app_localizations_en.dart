@@ -6334,5 +6334,315 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Turn a sentence into a search you can check and edit. For now the built-in demo translates; no model, no network.';
+      'Lets Loupe’s features ask the model you choose. Off, no model is asked anything, and mail, search and rules work as before.';
+
+  @override
+  String get settingsAiProviderHeader => 'Provider';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Only the provider you pick is used. If it fails or isn’t set up, Loupe says so and sends nothing anywhere else.';
+
+  @override
+  String get settingsAiNotSetUpFooter => 'This provider isn’t set up yet, so the features show no AI parts.';
+
+  @override
+  String get settingsAiDemo => 'Built-in Demo';
+
+  @override
+  String get settingsAiDemoDetail => 'On this phone. No model: a few rules, to try the features.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Cloud: Claude, with your own API key.';
+
+  @override
+  String get settingsAiServer => 'My Server';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Your server, over the network: Ollama, LM Studio or another server with an OpenAI-compatible API.';
+
+  @override
+  String get settingsAiOnPhone => 'On This Phone';
+
+  @override
+  String get settingsAiOnPhoneDetail => 'Not available yet: the on-device model is still being tested on phones.';
+
+  @override
+  String get settingsAiNotSetUp => 'Not Set Up';
+
+  @override
+  String get settingsAiNotSet => 'Not Set';
+
+  @override
+  String get settingsAiKeySaved => 'Saved';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Unreadable';
+
+  @override
+  String get settingsAiApiKey => 'API Key';
+
+  @override
+  String get settingsAiModel => 'Model';
+
+  @override
+  String get settingsAiOtherModel => 'Other Model…';
+
+  @override
+  String get settingsAiModelId => 'Model ID';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Anthropic API Key';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Kept in this phone’s keychain and sent only to api.anthropic.com, in the request’s header, never as part of what the model reads.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Server API Key';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Optional: leave it empty for none. Kept in this phone’s keychain and sent only to your server, in the request’s header, never as part of what the model reads.';
+
+  @override
+  String get settingsAiServerAddress => 'Address';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Server Address';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Up to and including the API path, such as http://192.168.1.20:11434/v1 for Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'That isn’t an http:// or https:// address.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Model Name';
+
+  @override
+  String get settingsAiServerModelMessage => 'As your server names it, such as llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Test Connection';
+
+  @override
+  String get settingsAiTesting => 'Testing…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model answered in $seconds s';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Test Failed';
+
+  @override
+  String get settingsAiTestInvalid => 'The model answered, but not in the form Loupe asked for.';
+
+  @override
+  String get settingsAiRemoveKey => 'Remove Key';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Remove the Anthropic API key?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe deletes it from this phone’s keychain and stops sending requests to Anthropic. It won’t switch to another provider. To revoke the key itself, delete it in the Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Remove Server';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Remove your server?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe forgets its address and model, deletes its key from this phone’s keychain and stops sending it requests. It won’t switch to another provider.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Anthropic’s Data Retention';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'The demo runs on this phone and sends nothing anywhere. It isn’t a model: it answers a few kinds of request with simple rules, and its answers say so.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Requests go over the internet to Anthropic (api.anthropic.com), with your key. Each holds only what one feature needs: the sentence you typed and your accounts’ names, or one message’s subject, sender, date, text and attachment names. Never the attachments themselves, account passwords or the key. Results are kept on this phone; what Anthropic keeps is set by its own retention policy.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Requests leave this phone for your server: network processing, even at home. Each holds only what one feature needs: the sentence you typed and your accounts’ names, or one message’s subject, sender, date, text and attachment names. Never the attachments themselves, account passwords or the key. Results are kept on this phone; what the server keeps is up to how it’s set up.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'This address isn’t encrypted (http): others on the network can read what is sent.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Features';
+
+  @override
+  String get settingsAiFeaturesFooter => 'A feature that’s off shows no AI part and asks no model.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Brief';
+
+  @override
+  String get settingsAiFeatureActions => 'Suggested Actions';
+
+  @override
+  String get settingsAiFeatureRules => 'Describe a Rule';
+
+  @override
+  String get settingsAiFeatureChanges => 'What Changed';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Document Facts';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Reply Check';
+
+  @override
+  String get settingsAiFeatureMatters => 'Matter Status';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'In search: a sentence becomes a search you can check.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'In a message: what it asks of you, with the passages.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Proposes items for Needs My Action and Waiting on Others.';
+
+  @override
+  String get settingsAiFeatureRulesDetail => 'In Rules: a description becomes a rule you check before saving.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'In Compare Messages: what changed in meaning, with sources.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Key facts of attached documents, with their pages.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Before you send: what a reply may have missed.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'A matter’s latest position, from its mail.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Keep Mail on the Phone';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'An account that’s on never sends its mail to your server or a cloud: with such a provider, its AI parts stay hidden. A model on this phone can still read it.';
+
+  @override
+  String get settingsAiUsage => 'Usage & Estimated Cost';
+
+  @override
+  String get settingsAiUsageToday => 'Today';
+
+  @override
+  String get settingsAiUsageThisMonth => 'This Month';
+
+  @override
+  String get settingsAiUsageAll => 'All';
+
+  @override
+  String get settingsAiUsageNone => 'No Requests';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count requests', one: '1 request');
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input tokens in, $output out';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count requests', one: '1 request');
+    return '$input tokens in, $output out; $_temp0 not reported';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Tokens not reported';
+
+  @override
+  String get settingsAiUsageTotal => 'Total';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe keeps a record of each request on this phone: the task, provider, model, token counts and times, never what was sent or answered. Token counts a provider didn’t report show as not reported, never as zero.';
+
+  @override
+  String get settingsAiCostNone => 'No Cost';
+
+  @override
+  String get settingsAiCostUnknown => 'Unknown';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'At least $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Prices Used';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input in, $output out';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'US dollars per million tokens: $source’s list prices on $date. These are estimates, not a bill: your provider’s own usage page is the record. A model without a price here shows Unknown.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Delete Derived Results';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Briefs, proposed searches and other answers kept to reuse, on this phone only. Deleting them keeps your mail and what you decided, such as ticked items, actions and matters; features make them again when needed.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Delete $count results?',
+      one: 'Delete 1 result?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Also delete the $count results it made?',
+      one: 'Also delete the result it made?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Your mail and what you decided stay. Features make results again when they need them.';
+
+  @override
+  String get settingsAiDeleteResults => 'Delete Results';
 }

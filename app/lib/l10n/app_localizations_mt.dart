@@ -6641,5 +6641,335 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Jibdel sentenza fi tfittxija li tista\' tiċċekkja u teditja. Għalissa tittraduċi d-demo inkorporata: l-ebda mudell, l-ebda netwerk.';
+      'Iħalli lill-funzjonijiet ta’ Loupe jistaqsu lill-mudell li tagħżel. Mitfi, l-ebda mudell ma jiġi mistoqsi xejn, u l-posta, it-tfittxija u r-regoli jaħdmu bħal qabel.';
+
+  @override
+  String get settingsAiProviderHeader => 'Fornitur';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Jintuża biss il-fornitur li tagħżel. Jekk ifalli jew mhux issettjat, Loupe jgħidlek u ma jibgħat xejn x’imkien ieħor.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Dan il-fornitur għadu mhux issettjat, għalhekk il-funzjonijiet ma juru l-ebda parti tal-IA.';
+
+  @override
+  String get settingsAiDemo => 'Demo integrat';
+
+  @override
+  String get settingsAiDemoDetail => 'Fuq dan il-mowbajl. L-ebda mudell: ftit regoli, biex tipprova l-funzjonijiet.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Cloud: Claude, biċ-ċavetta API tiegħek stess.';
+
+  @override
+  String get settingsAiServer => 'Is-server tiegħi';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Is-server tiegħek, fuq in-netwerk: Ollama, LM Studio jew server ieħor b’API kompatibbli ma’ OpenAI.';
+
+  @override
+  String get settingsAiOnPhone => 'Fuq dan il-mowbajl';
+
+  @override
+  String get settingsAiOnPhoneDetail =>
+      'Għadu mhux disponibbli: il-mudell fuq l-apparat għadu qed jiġi ttestjat fuq il-mowbajls.';
+
+  @override
+  String get settingsAiNotSetUp => 'Mhux issettjat';
+
+  @override
+  String get settingsAiNotSet => 'Mhux stabbilit';
+
+  @override
+  String get settingsAiKeySaved => 'Maħżuna';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Ma tinqarax';
+
+  @override
+  String get settingsAiApiKey => 'Ċavetta API';
+
+  @override
+  String get settingsAiModel => 'Mudell';
+
+  @override
+  String get settingsAiOtherModel => 'Mudell ieħor…';
+
+  @override
+  String get settingsAiModelId => 'ID tal-mudell';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Ċavetta API ta’ Anthropic';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Tinżamm fil-ħażna sigura ta’ dan il-mowbajl u tintbagħat biss lil api.anthropic.com, fl-intestatura tat-talba, qatt bħala parti minn dak li jaqra l-mudell.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Ċavetta API tas-server';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Fakultattiva: ħalliha vojta jekk m’hemmx. Tinżamm fil-ħażna sigura ta’ dan il-mowbajl u tintbagħat biss lis-server tiegħek, fl-intestatura tat-talba, qatt bħala parti minn dak li jaqra l-mudell.';
+
+  @override
+  String get settingsAiServerAddress => 'Indirizz';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Indirizz tas-server';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Sal-mogħdija tal-API inkluża, pereżempju http://192.168.1.20:11434/v1 għal Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Dan mhux indirizz http:// jew https://.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Isem il-mudell';
+
+  @override
+  String get settingsAiServerModelMessage => 'Kif isejjaħlu s-server tiegħek, pereżempju llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Ittestja l-konnessjoni';
+
+  @override
+  String get settingsAiTesting => 'Qed jittestja…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model wieġeb f’$seconds s';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'It-test falla';
+
+  @override
+  String get settingsAiTestInvalid => 'Il-mudell wieġeb, iżda mhux fil-forma li talab Loupe.';
+
+  @override
+  String get settingsAiRemoveKey => 'Neħħi ċ-ċavetta';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Tneħħi ċ-ċavetta API ta’ Anthropic?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe iħassarha mill-ħażna sigura ta’ dan il-mowbajl u ma jibqax jibgħat talbiet lil Anthropic. Ma jaqlibx għal fornitur ieħor. Biex tirrevoka ċ-ċavetta nfisha, ħassarha fl-Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Neħħi s-server';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Tneħħi s-server tiegħek?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe jinsa l-indirizz u l-mudell tiegħu, iħassar iċ-ċavetta tiegħu mill-ħażna sigura ta’ dan il-mowbajl u ma jibqax jibagħtlu talbiet. Ma jaqlibx għal fornitur ieħor.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Iż-żamma tad-data ta’ Anthropic';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Id-demo jaħdem fuq dan il-mowbajl u ma jibgħat xejn imkien. Mhuwiex mudell: iwieġeb ftit tipi ta’ talbiet b’regoli sempliċi, u t-tweġibiet tiegħu jgħidu hekk.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'It-talbiet imorru fuq l-internet lil Anthropic (api.anthropic.com), biċ-ċavetta tiegħek. Kull waħda fiha biss dak li teħtieġ funzjoni waħda: is-sentenza li ktibt u l-ismijiet tal-kontijiet tiegħek, jew is-suġġett, il-mittent, id-data, it-test u l-ismijiet tal-annessi ta’ messaġġ wieħed. Qatt l-annessi nfushom, il-passwords tal-kontijiet jew iċ-ċavetta. Ir-riżultati jibqgħu fuq dan il-mowbajl; dak li żżomm Anthropic jiddependi mill-politika taż-żamma tagħha stess.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'It-talbiet iħallu dan il-mowbajl u jmorru lis-server tiegħek: ipproċessar fuq in-netwerk, anki d-dar. Kull waħda fiha biss dak li teħtieġ funzjoni waħda: is-sentenza li ktibt u l-ismijiet tal-kontijiet tiegħek, jew is-suġġett, il-mittent, id-data, it-test u l-ismijiet tal-annessi ta’ messaġġ wieħed. Qatt l-annessi nfushom, il-passwords tal-kontijiet jew iċ-ċavetta. Ir-riżultati jibqgħu fuq dan il-mowbajl; dak li jżomm is-server jiddependi minn kif huwa ssettjat.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Dan l-indirizz mhux kriptat (http): oħrajn fuq in-netwerk jistgħu jaqraw dak li jintbagħat.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Funzjonijiet';
+
+  @override
+  String get settingsAiFeaturesFooter => 'Funzjoni mitfija ma turi l-ebda parti tal-IA u ma tistaqsi l-ebda mudell.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Fil-qosor';
+
+  @override
+  String get settingsAiFeatureActions => 'Azzjonijiet issuġġeriti';
+
+  @override
+  String get settingsAiFeatureRules => 'Iddeskrivi regola';
+
+  @override
+  String get settingsAiFeatureChanges => 'X’inbidel';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Fatti mid-dokumenti';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Verifika tat-tweġiba';
+
+  @override
+  String get settingsAiFeatureMatters => 'L-istat tal-kwistjoni';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'Fit-tfittxija: sentenza ssir tfittxija li tista’ tivverifika.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'F’messaġġ: x’jitlob minnek, bis-siltiet.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Jipproponi elementi għal “Jistennew lili” u “Jistennew lil oħrajn”.';
+
+  @override
+  String get settingsAiFeatureRulesDetail => 'Fir-Regoli: deskrizzjoni ssir regola li tivverifika qabel ma taħżen.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'Fi Qabbel il-messaġġi: x’inbidel fit-tifsira, bis-sorsi.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Il-fatti ewlenin tad-dokumenti mehmuża, bil-paġni tagħhom.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Qabel tibgħat: x’setgħet taqbeż tweġiba.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'L-aħħar stat ta’ kwistjoni, mill-posta tagħha.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Żomm il-posta fuq il-mowbajl';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Kont li għandu dan mixgħul qatt ma jibgħat il-posta tiegħu lis-server tiegħek jew lil cloud: ma’ fornitur bħal dan, il-partijiet tal-IA tiegħu jibqgħu moħbija. Mudell fuq dan il-mowbajl xorta jista’ jaqraha.';
+
+  @override
+  String get settingsAiUsage => 'Użu u spiża stmata';
+
+  @override
+  String get settingsAiUsageToday => 'Illum';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Dan ix-xahar';
+
+  @override
+  String get settingsAiUsageAll => 'Kollha';
+
+  @override
+  String get settingsAiUsageNone => 'L-ebda talba';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count talba',
+      many: '$count-il talba',
+      few: '$count talbiet',
+      one: 'Talba waħda',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input token dħul, $output ħruġ';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count talba mingħajr data',
+      many: '$count-il talba mingħajr data',
+      few: '$count talbiet mingħajr data',
+      one: 'talba waħda mingħajr data',
+    );
+    return '$input token dħul, $output ħruġ; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Tokens mhux irrappurtati';
+
+  @override
+  String get settingsAiUsageTotal => 'Total';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe iżomm rekord ta’ kull talba fuq dan il-mowbajl: il-kompitu, il-fornitur, il-mudell, l-għadd ta’ tokens u l-ħinijiet, qatt dak li ntbagħat jew li ngħata bħala tweġiba. Tokens li fornitur ma rrappurtax jidhru bħala mhux irrappurtati, qatt bħala żero.';
+
+  @override
+  String get settingsAiCostNone => 'L-ebda spiża';
+
+  @override
+  String get settingsAiCostUnknown => 'Mhux magħruf';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Mill-inqas $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Prezzijiet użati';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input dħul, $output ħruġ';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Dollari Amerikani għal kull miljun token: il-prezzijiet tal-lista ta’ $source fl-$date. Dawn huma stimi, mhux kont: il-paġna tal-użu tal-fornitur tiegħek hija dik li tgħodd. Mudell mingħajr prezz hawn juri “Mhux magħruf”.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Ħassar ir-riżultati derivati';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Sommarji, tfittxijiet proposti u tweġibiet oħra miżmuma biex jerġgħu jintużaw, fuq dan il-mowbajl biss. Meta tħassarhom tibqa’ l-posta tiegħek u dak li ddeċidejt, bħal elementi mmarkati, azzjonijiet u kwistjonijiet; il-funzjonijiet jerġgħu jagħmluhom meta jkun hemm bżonn.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tħassar $count riżultat?',
+      many: 'Tħassar $count-il riżultat?',
+      few: 'Tħassar $count riżultati?',
+      one: 'Tħassar riżultat wieħed?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tħassar ukoll il-$count riżultat li għamel?',
+      many: 'Tħassar ukoll il-$count-il riżultat li għamel?',
+      few: 'Tħassar ukoll il-$count riżultati li għamel?',
+      one: 'Tħassar ukoll ir-riżultat li għamel?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Il-posta tiegħek u dak li ddeċidejt jibqgħu. Il-funzjonijiet jerġgħu jagħmlu r-riżultati meta jkollhom bżonnhom.';
+
+  @override
+  String get settingsAiDeleteResults => 'Ħassar ir-riżultati';
 }

@@ -6432,5 +6432,322 @@ class AppLocalizationsMk extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Претвора реченица во пребарување што можете да го проверите и уредите. Засега преведува вградената демонстрација: без модел, без мрежа.';
+      'Им овозможува на функциите на Loupe да го прашаат моделот што ќе го изберете. Кога е исклучено, ниеден модел не се прашува ништо, а поштата, пребарувањето и правилата работат како порано.';
+
+  @override
+  String get settingsAiProviderHeader => 'Давател';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Се користи само давателот што ќе го изберете. Ако не успее или не е поставен, Loupe го кажува тоа и ништо не испраќа на друго место.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Овој давател сè уште не е поставен, па функциите не прикажуваат делови со ВИ.';
+
+  @override
+  String get settingsAiDemo => 'Вградено демо';
+
+  @override
+  String get settingsAiDemoDetail => 'На овој телефон. Без модел: неколку правила за да ги испробате функциите.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Облак: Claude, со ваш сопствен API-клуч.';
+
+  @override
+  String get settingsAiServer => 'Мој сервер';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Вашиот сервер, преку мрежата: Ollama, LM Studio или друг сервер со API компатибилен со OpenAI.';
+
+  @override
+  String get settingsAiOnPhone => 'На овој телефон';
+
+  @override
+  String get settingsAiOnPhoneDetail => 'Сè уште не е достапно: моделот на уредот сè уште се тестира на телефони.';
+
+  @override
+  String get settingsAiNotSetUp => 'Не е поставено';
+
+  @override
+  String get settingsAiNotSet => 'Не е поставено';
+
+  @override
+  String get settingsAiKeySaved => 'Зачуван';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Нечитлив';
+
+  @override
+  String get settingsAiApiKey => 'API-клуч';
+
+  @override
+  String get settingsAiModel => 'Модел';
+
+  @override
+  String get settingsAiOtherModel => 'Друг модел…';
+
+  @override
+  String get settingsAiModelId => 'ID на моделот';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'API-клуч за Anthropic';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Се чува во складиштето за клучеви на овој телефон и се испраќа само до api.anthropic.com, во заглавието на барањето, никогаш како дел од она што го чита моделот.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'API-клуч на серверот';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Незадолжително: оставете празно ако нема. Се чува во складиштето за клучеви на овој телефон и се испраќа само до вашиот сервер, во заглавието на барањето, никогаш како дел од она што го чита моделот.';
+
+  @override
+  String get settingsAiServerAddress => 'Адреса';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Адреса на серверот';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Заедно со патеката на API, на пример http://192.168.1.20:11434/v1 за Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Тоа не е http:// ниту https:// адреса.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Име на моделот';
+
+  @override
+  String get settingsAiServerModelMessage => 'Како што го вика вашиот сервер, на пример llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Тестирај врска';
+
+  @override
+  String get settingsAiTesting => 'Се тестира…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model одговори за $seconds s';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Тестот не успеа';
+
+  @override
+  String get settingsAiTestInvalid => 'Моделот одговори, но не во обликот што го побара Loupe.';
+
+  @override
+  String get settingsAiRemoveKey => 'Отстрани клуч';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Да се отстрани API-клучот за Anthropic?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe го брише од складиштето за клучеви на овој телефон и престанува да испраќа барања до Anthropic. Не префрла на друг давател. За да го поништите самиот клуч, избришете го во Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Отстрани сервер';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Да се отстрани вашиот сервер?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe ги заборава неговата адреса и модел, го брише неговиот клуч од складиштето за клучеви на овој телефон и престанува да му испраќа барања. Не префрла на друг давател.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Чување податоци кај Anthropic';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Демото работи на овој телефон и ништо не испраќа никаде. Не е модел: на неколку видови барања одговара со едноставни правила, а неговите одговори го кажуваат тоа.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Барањата одат преку интернет до Anthropic (api.anthropic.com), со вашиот клуч. Секое содржи само она што ѝ треба на една функција: внесената реченица и имињата на вашите сметки или темата, испраќачот, датумот, текстот и имињата на прилозите на една порака. Никогаш самите прилози, лозинките на сметките ниту клучот. Резултатите остануваат на овој телефон; што чува Anthropic, одредуваат неговите сопствени правила за чување.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Барањата го напуштаат овој телефон и одат до вашиот сервер: обработка преку мрежа, дури и дома. Секое содржи само она што ѝ треба на една функција: внесената реченица и имињата на вашите сметки или темата, испраќачот, датумот, текстот и имињата на прилозите на една порака. Никогаш самите прилози, лозинките на сметките ниту клучот. Резултатите остануваат на овој телефон; што чува серверот, зависи од тоа како е поставен.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Оваа адреса не е шифрирана (http): други на мрежата можат да го читаат она што се испраќа.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Функции';
+
+  @override
+  String get settingsAiFeaturesFooter => 'Исклучена функција не прикажува дел со ВИ и не прашува ниеден модел.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Накратко';
+
+  @override
+  String get settingsAiFeatureActions => 'Предложени дејства';
+
+  @override
+  String get settingsAiFeatureRules => 'Опиши правило';
+
+  @override
+  String get settingsAiFeatureChanges => 'Што се смени';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Факти од документи';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Проверка на одговорот';
+
+  @override
+  String get settingsAiFeatureMatters => 'Состојба на предметот';
+
+  @override
+  String get settingsAiFeatureSearchDetail =>
+      'Во пребарувањето: реченица станува пребарување што можете да го проверите.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'Во порака: што бара од вас, со извадоците.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Предлага ставки за „Чека мене“ и „Чека други“.';
+
+  @override
+  String get settingsAiFeatureRulesDetail => 'Во Правила: опис станува правило што го проверувате пред да го зачувате.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'Во Спореди пораки: што се смени во значењето, со извори.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Клучните факти од приложените документи, со нивните страници.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Пред испраќање: што можеби пропуштил одговорот.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Најновата состојба на предметот, според неговата пошта.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Чувај ја поштата на телефонот';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Сметка за која ова е вклучено никогаш не ја испраќа својата пошта до вашиот сервер или во облак: со таков давател, нејзините делови со ВИ остануваат скриени. Модел на овој телефон сепак може да ја чита.';
+
+  @override
+  String get settingsAiUsage => 'Користење и проценет трошок';
+
+  @override
+  String get settingsAiUsageToday => 'Денес';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Овој месец';
+
+  @override
+  String get settingsAiUsageAll => 'Сè';
+
+  @override
+  String get settingsAiUsageNone => 'Нема барања';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count барања', one: '$count барање');
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input токени на влез, $output на излез';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count барања без податоци',
+      one: '$count барање без податоци',
+    );
+    return '$input токени на влез, $output на излез; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Токените не се пријавени';
+
+  @override
+  String get settingsAiUsageTotal => 'Вкупно';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe на овој телефон бележи секое барање: задачата, давателот, моделот, бројот на токени и времињата, никогаш она што е испратено или одговорено. Токените што давателот не ги пријавил се прикажуваат како непријавени, никогаш како нула.';
+
+  @override
+  String get settingsAiCostNone => 'Без трошок';
+
+  @override
+  String get settingsAiCostUnknown => 'Непознато';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Најмалку $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Користени цени';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input на влез, $output на излез';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Американски долари за милион токени: ценовник на $source на $date. Ова се проценки, не сметка: меродавна е страницата за користење на вашиот давател. Модел без цена тука прикажува „Непознато“.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Избриши изведени резултати';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Резимеа, предложени пребарувања и други одговори зачувани за повторна употреба, само на овој телефон. Со бришењето остануваат вашата пошта и вашите одлуки, како означени ставки, дејства и предмети; функциите ги прават повторно кога е потребно.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Да се избришат $count резултати?',
+      one: 'Да се избрише $count резултат?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Да се избришат и $count резултати што ги направи?',
+      one: 'Да се избрише и $count резултат што го направи?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Вашата пошта и вашите одлуки остануваат. Функциите ги прават резултатите повторно кога им се потребни.';
+
+  @override
+  String get settingsAiDeleteResults => 'Избриши резултати';
 }

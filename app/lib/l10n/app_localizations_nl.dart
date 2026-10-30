@@ -6456,5 +6456,324 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Maakt van een zin een zoekopdracht die je kunt controleren en bewerken. Voorlopig vertaalt de ingebouwde demo: geen model, geen netwerk.';
+      'Laat de functies van Loupe het model raadplegen dat je kiest. Uit wordt er geen model geraadpleegd, en werken mail, zoeken en regels zoals altijd.';
+
+  @override
+  String get settingsAiProviderHeader => 'Aanbieder';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Alleen de aanbieder die je kiest wordt gebruikt. Als die faalt of niet is ingesteld, zegt Loupe dat en stuurt het nergens anders iets heen.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Deze aanbieder is nog niet ingesteld, dus de functies tonen geen AI-onderdelen.';
+
+  @override
+  String get settingsAiDemo => 'Ingebouwde demo';
+
+  @override
+  String get settingsAiDemoDetail => 'Op deze telefoon. Geen model: een paar regels, om de functies uit te proberen.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Cloud: Claude, met je eigen API-sleutel.';
+
+  @override
+  String get settingsAiServer => 'Mijn server';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Je eigen server, via het netwerk: Ollama, LM Studio of een andere server met een OpenAI-compatibele API.';
+
+  @override
+  String get settingsAiOnPhone => 'Op deze telefoon';
+
+  @override
+  String get settingsAiOnPhoneDetail =>
+      'Nog niet beschikbaar: het model op het apparaat wordt nog op telefoons getest.';
+
+  @override
+  String get settingsAiNotSetUp => 'Niet ingesteld';
+
+  @override
+  String get settingsAiNotSet => 'Niet ingesteld';
+
+  @override
+  String get settingsAiKeySaved => 'Bewaard';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Onleesbaar';
+
+  @override
+  String get settingsAiApiKey => 'API-sleutel';
+
+  @override
+  String get settingsAiModel => 'Model';
+
+  @override
+  String get settingsAiOtherModel => 'Ander model…';
+
+  @override
+  String get settingsAiModelId => 'Model-ID';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Anthropic-API-sleutel';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Bewaard in de sleutelhanger van deze telefoon en alleen naar api.anthropic.com gestuurd, in de header van het verzoek, nooit als deel van wat het model leest.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'API-sleutel van de server';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Optioneel: laat leeg als er geen is. Bewaard in de sleutelhanger van deze telefoon en alleen naar je server gestuurd, in de header van het verzoek, nooit als deel van wat het model leest.';
+
+  @override
+  String get settingsAiServerAddress => 'Adres';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Serveradres';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Tot en met het API-pad, zoals http://192.168.1.20:11434/v1 voor Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Dat is geen http://- of https://-adres.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Modelnaam';
+
+  @override
+  String get settingsAiServerModelMessage => 'Zoals je server het noemt, bijvoorbeeld llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Verbinding testen';
+
+  @override
+  String get settingsAiTesting => 'Testen…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model antwoordde in $seconds s';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Test mislukt';
+
+  @override
+  String get settingsAiTestInvalid => 'Het model antwoordde, maar niet in de vorm waarom Loupe vroeg.';
+
+  @override
+  String get settingsAiRemoveKey => 'Sleutel verwijderen';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'De Anthropic-API-sleutel verwijderen?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe wist hem uit de sleutelhanger van deze telefoon en stuurt geen verzoeken meer naar Anthropic. Loupe stapt niet over op een andere aanbieder. Om de sleutel zelf in te trekken, verwijder je hem in de Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Server verwijderen';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Je server verwijderen?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe vergeet het adres en het model, wist de sleutel uit de sleutelhanger van deze telefoon en stuurt de server geen verzoeken meer. Loupe stapt niet over op een andere aanbieder.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Gegevensbewaring bij Anthropic';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'De demo draait op deze telefoon en stuurt nergens iets heen. Het is geen model: het beantwoordt een paar soorten verzoeken met eenvoudige regels, en de antwoorden zeggen dat.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Verzoeken gaan via internet naar Anthropic (api.anthropic.com), met je sleutel. Elk bevat alleen wat één functie nodig heeft: de zin die je typte en de namen van je accounts, of het onderwerp, de afzender, de datum, de tekst en de bijlagenamen van één bericht. Nooit de bijlagen zelf, accountwachtwoorden of de sleutel. Resultaten blijven op deze telefoon; wat Anthropic bewaart, bepaalt zijn eigen bewaarbeleid.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Verzoeken verlaten deze telefoon en gaan naar je server: verwerking via het netwerk, ook thuis. Elk bevat alleen wat één functie nodig heeft: de zin die je typte en de namen van je accounts, of het onderwerp, de afzender, de datum, de tekst en de bijlagenamen van één bericht. Nooit de bijlagen zelf, accountwachtwoorden of de sleutel. Resultaten blijven op deze telefoon; wat de server bewaart, hangt af van hoe die is ingesteld.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Dit adres is niet versleuteld (http): anderen op het netwerk kunnen lezen wat er wordt verstuurd.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Functies';
+
+  @override
+  String get settingsAiFeaturesFooter => 'Een functie die uit staat, toont geen AI-onderdeel en raadpleegt geen model.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Samenvatting';
+
+  @override
+  String get settingsAiFeatureActions => 'Voorgestelde acties';
+
+  @override
+  String get settingsAiFeatureRules => 'Regel beschrijven';
+
+  @override
+  String get settingsAiFeatureChanges => 'Wat er veranderde';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Feiten uit documenten';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Antwoordcontrole';
+
+  @override
+  String get settingsAiFeatureMatters => 'Stand van een dossier';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'In zoeken: een zin wordt een zoekopdracht die je kunt controleren.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'In een bericht: wat het van je vraagt, met de passages.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Stelt items voor in “Wacht op mij” en “Wacht op anderen”.';
+
+  @override
+  String get settingsAiFeatureRulesDetail =>
+      'In Regels: een beschrijving wordt een regel die je controleert voor je hem bewaart.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'In Berichten vergelijken: wat er inhoudelijk veranderde, met bronnen.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail =>
+      'De belangrijkste feiten uit bijgevoegde documenten, met hun pagina’s.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Voor je verstuurt: wat een antwoord misschien over het hoofd ziet.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'De laatste stand van een dossier, uit de mail ervan.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Mail op de telefoon houden';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Een account waarvoor dit aan staat, stuurt zijn mail nooit naar je server of een cloud: met zo’n aanbieder blijven de AI-onderdelen verborgen. Een model op deze telefoon kan de mail wel lezen.';
+
+  @override
+  String get settingsAiUsage => 'Gebruik en geschatte kosten';
+
+  @override
+  String get settingsAiUsageToday => 'Vandaag';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Deze maand';
+
+  @override
+  String get settingsAiUsageAll => 'Alles';
+
+  @override
+  String get settingsAiUsageNone => 'Geen verzoeken';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count verzoeken', one: '1 verzoek');
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input tokens in, $output uit';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count verzoeken niet gemeld',
+      one: '1 verzoek niet gemeld',
+    );
+    return '$input tokens in, $output uit; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Tokens niet gemeld';
+
+  @override
+  String get settingsAiUsageTotal => 'Totaal';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe houdt van elk verzoek een overzicht bij op deze telefoon: de taak, de aanbieder, het model, de aantallen tokens en de tijden, nooit wat er werd verstuurd of geantwoord. Aantallen die een aanbieder niet meldde, staan als niet gemeld, nooit als nul.';
+
+  @override
+  String get settingsAiCostNone => 'Geen kosten';
+
+  @override
+  String get settingsAiCostUnknown => 'Onbekend';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Minstens $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Gebruikte prijzen';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input in, $output uit';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Amerikaanse dollars per miljoen tokens: catalogusprijzen van $source op $date. Dit zijn schattingen, geen factuur: de gebruikspagina van je aanbieder is leidend. Een model zonder prijs hier toont “Onbekend”.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Afgeleide resultaten verwijderen';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Samenvattingen, voorgestelde zoekopdrachten en andere antwoorden die worden bewaard om opnieuw te gebruiken, alleen op deze telefoon. Bij verwijderen blijven je mail en wat je besliste, zoals afgevinkte punten, acties en dossiers; de functies maken ze opnieuw als dat nodig is.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count resultaten verwijderen?',
+      one: '1 resultaat verwijderen?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ook de $count resultaten verwijderen die hij maakte?',
+      one: 'Ook het resultaat verwijderen dat hij maakte?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Je mail en wat je besliste, blijven. De functies maken resultaten opnieuw als ze die nodig hebben.';
+
+  @override
+  String get settingsAiDeleteResults => 'Resultaten verwijderen';
 }

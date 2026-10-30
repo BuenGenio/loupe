@@ -6513,5 +6513,336 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Premení vetu na hľadanie, ktoré môžete skontrolovať a upraviť. Zatiaľ prekladá vstavané demo: bez modelu, bez siete.';
+      'Umožní funkciám Loupe pýtať sa modelu, ktorý vyberiete. Keď je vypnutá, žiadny model sa na nič nepýta a pošta, vyhľadávanie a pravidlá fungujú ako doteraz.';
+
+  @override
+  String get settingsAiProviderHeader => 'Poskytovateľ';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Používa sa len vybraný poskytovateľ. Keď zlyhá alebo nie je nastavený, Loupe to povie a nič nikam inam nepošle.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Tento poskytovateľ ešte nie je nastavený, takže funkcie nezobrazujú žiadne časti s AI.';
+
+  @override
+  String get settingsAiDemo => 'Vstavané demo';
+
+  @override
+  String get settingsAiDemoDetail => 'V tomto telefóne. Žiadny model: pár pravidiel na vyskúšanie funkcií.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Cloud: Claude s vaším vlastným kľúčom API.';
+
+  @override
+  String get settingsAiServer => 'Môj server';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Váš server, cez sieť: Ollama, LM Studio alebo iný server s API kompatibilným s OpenAI.';
+
+  @override
+  String get settingsAiOnPhone => 'V tomto telefóne';
+
+  @override
+  String get settingsAiOnPhoneDetail => 'Zatiaľ nedostupné: model v zariadení sa na telefónoch ešte testuje.';
+
+  @override
+  String get settingsAiNotSetUp => 'Nenastavené';
+
+  @override
+  String get settingsAiNotSet => 'Nenastavené';
+
+  @override
+  String get settingsAiKeySaved => 'Uložený';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Nečitateľný';
+
+  @override
+  String get settingsAiApiKey => 'Kľúč API';
+
+  @override
+  String get settingsAiModel => 'Model';
+
+  @override
+  String get settingsAiOtherModel => 'Iný model…';
+
+  @override
+  String get settingsAiModelId => 'ID modelu';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Kľúč API Anthropic';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Uložený v úložisku kľúčov tohto telefónu a posielaný len na api.anthropic.com, v hlavičke požiadavky, nikdy ako súčasť toho, čo model číta.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Kľúč API servera';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Voliteľné: ak žiadny nie je, nechajte prázdne. Uložený v úložisku kľúčov tohto telefónu a posielaný len na váš server, v hlavičke požiadavky, nikdy ako súčasť toho, čo model číta.';
+
+  @override
+  String get settingsAiServerAddress => 'Adresa';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Adresa servera';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Vrátane cesty k API, napríklad http://192.168.1.20:11434/v1 pre Ollamu.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'To nie je adresa http:// ani https://.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Názov modelu';
+
+  @override
+  String get settingsAiServerModelMessage => 'Tak, ako ho nazýva váš server, napríklad llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Otestovať pripojenie';
+
+  @override
+  String get settingsAiTesting => 'Testuje sa…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model odpovedal za $seconds s';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Test zlyhal';
+
+  @override
+  String get settingsAiTestInvalid => 'Model odpovedal, ale nie v podobe, o ktorú Loupe žiadal.';
+
+  @override
+  String get settingsAiRemoveKey => 'Odstrániť kľúč';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Odstrániť kľúč API Anthropic?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe ho vymaže z úložiska kľúčov tohto telefónu a prestane posielať požiadavky do Anthropic. Neprepne na iného poskytovateľa. Ak chcete zneplatniť samotný kľúč, vymažte ho v Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Odstrániť server';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Odstrániť váš server?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe zabudne jeho adresu a model, vymaže jeho kľúč z úložiska kľúčov tohto telefónu a prestane mu posielať požiadavky. Neprepne na iného poskytovateľa.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Uchovávanie údajov v Anthropic';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Demo beží v tomto telefóne a nič nikam neposiela. Nie je to model: na niekoľko druhov požiadaviek odpovedá jednoduchými pravidlami a jeho odpovede to hovoria.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Požiadavky idú cez internet do Anthropic (api.anthropic.com) s vaším kľúčom. Každá obsahuje len to, čo potrebuje jedna funkcia: napísanú vetu a názvy vašich účtov, alebo predmet, odosielateľa, dátum, text a názvy príloh jednej správy. Nikdy samotné prílohy, heslá k účtom ani kľúč. Výsledky zostávajú v tomto telefóne; čo si Anthropic uchováva, určujú jeho vlastné pravidlá uchovávania.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Požiadavky opúšťajú tento telefón a idú na váš server: spracovanie cez sieť, aj doma. Každá obsahuje len to, čo potrebuje jedna funkcia: napísanú vetu a názvy vašich účtov, alebo predmet, odosielateľa, dátum, text a názvy príloh jednej správy. Nikdy samotné prílohy, heslá k účtom ani kľúč. Výsledky zostávajú v tomto telefóne; čo si server uchováva, závisí od jeho nastavenia.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Táto adresa nie je šifrovaná (http): ostatní v sieti môžu čítať, čo sa posiela.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Funkcie';
+
+  @override
+  String get settingsAiFeaturesFooter => 'Vypnutá funkcia nezobrazuje žiadnu časť s AI a nepýta sa žiadneho modelu.';
+
+  @override
+  String get settingsAiFeatureBrief => 'V skratke';
+
+  @override
+  String get settingsAiFeatureActions => 'Navrhnuté úlohy';
+
+  @override
+  String get settingsAiFeatureRules => 'Opísať pravidlo';
+
+  @override
+  String get settingsAiFeatureChanges => 'Čo sa zmenilo';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Fakty z dokumentov';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Kontrola odpovede';
+
+  @override
+  String get settingsAiFeatureMatters => 'Stav záležitosti';
+
+  @override
+  String get settingsAiFeatureSearchDetail =>
+      'Vo vyhľadávaní: z vety sa stane vyhľadávanie, ktoré môžete skontrolovať.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'V správe: čo od vás chce, s príslušnými pasážami.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Navrhuje položky pre „Čaká na mňa“ a „Čaká na ostatných“.';
+
+  @override
+  String get settingsAiFeatureRulesDetail =>
+      'V Pravidlách: z opisu sa stane pravidlo, ktoré pred uložením skontrolujete.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'V Porovnať správy: čo sa zmenilo vo význame, so zdrojmi.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Kľúčové fakty z priložených dokumentov, s ich stranami.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Pred odoslaním: čo mohla odpoveď prehliadnuť.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Aktuálny stav záležitosti podľa jej pošty.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Nechať poštu v telefóne';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Účet, pri ktorom je to zapnuté, nikdy neposiela svoju poštu na váš server ani do cloudu: s takým poskytovateľom zostávajú jeho časti s AI skryté. Model v tomto telefóne ju čítať môže.';
+
+  @override
+  String get settingsAiUsage => 'Využitie a odhad nákladov';
+
+  @override
+  String get settingsAiUsageToday => 'Dnes';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Tento mesiac';
+
+  @override
+  String get settingsAiUsageAll => 'Všetko';
+
+  @override
+  String get settingsAiUsageNone => 'Žiadne požiadavky';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count požiadaviek',
+      many: '$count požiadavky',
+      few: '$count požiadavky',
+      one: '1 požiadavka',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input tokenov na vstupe, $output na výstupe';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count požiadaviek bez údajov',
+      many: '$count požiadavky bez údajov',
+      few: '$count požiadavky bez údajov',
+      one: '1 požiadavka bez údajov',
+    );
+    return '$input tokenov na vstupe, $output na výstupe; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Tokeny neuvedené';
+
+  @override
+  String get settingsAiUsageTotal => 'Spolu';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe si v tomto telefóne zaznamenáva každú požiadavku: úlohu, poskytovateľa, model, počty tokenov a časy, nikdy to, čo sa poslalo alebo odpovedalo. Počty tokenov, ktoré poskytovateľ neuviedol, sa zobrazujú ako neuvedené, nikdy ako nula.';
+
+  @override
+  String get settingsAiCostNone => 'Bez nákladov';
+
+  @override
+  String get settingsAiCostUnknown => 'Neznáme';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Najmenej $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Použité ceny';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input na vstupe, $output na výstupe';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Americké doláre za milión tokenov: cenníkové ceny $source k $date. Sú to odhady, nie faktúra: rozhoduje stránka využitia vášho poskytovateľa. Model bez ceny tu ukazuje „Neznáme“.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Vymazať odvodené výsledky';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Zhrnutia, navrhnuté vyhľadávania a ďalšie odpovede uložené na opätovné použitie, len v tomto telefóne. Ich vymazaním zostane vaša pošta aj vaše rozhodnutia, napríklad odškrtnuté položky, úlohy a záležitosti; funkcie ich v prípade potreby vytvoria znova.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Vymazať $count výsledkov?',
+      many: 'Vymazať $count výsledku?',
+      few: 'Vymazať $count výsledky?',
+      one: 'Vymazať 1 výsledok?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Vymazať aj $count výsledkov, ktoré vytvoril?',
+      many: 'Vymazať aj $count výsledku, ktoré vytvoril?',
+      few: 'Vymazať aj $count výsledky, ktoré vytvoril?',
+      one: 'Vymazať aj výsledok, ktorý vytvoril?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Vaša pošta aj vaše rozhodnutia zostanú. Funkcie vytvoria výsledky znova, keď ich budú potrebovať.';
+
+  @override
+  String get settingsAiDeleteResults => 'Vymazať výsledky';
 }

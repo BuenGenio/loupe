@@ -6429,5 +6429,325 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Esaldi bat egiaztatu eta edita dezakezun bilaketa bihurtzen du. Oraingoz demo integratuak itzultzen du: eredurik ez, sarerik ez.';
+      'Loupe-ren funtzioei aukeratzen duzun ereduari galdetzen uzten die. Desaktibatuta, ez zaio ezer galdetzen inongo ereduri, eta posta, bilaketa eta arauak lehen bezala dabiltza.';
+
+  @override
+  String get settingsAiProviderHeader => 'Hornitzailea';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Aukeratzen duzun hornitzailea bakarrik erabiltzen da. Huts egiten badu edo konfiguratu gabe badago, Loupe-k esan egiten du eta ez du ezer bidaltzen beste inora.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Hornitzaile hau oraindik ez dago konfiguratuta; beraz, funtzioek ez dute AA zatirik erakusten.';
+
+  @override
+  String get settingsAiDemo => 'Demo integratua';
+
+  @override
+  String get settingsAiDemoDetail => 'Telefono honetan. Eredurik ez: arau batzuk, funtzioak probatzeko.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Hodeia: Claude, zure API gakoarekin.';
+
+  @override
+  String get settingsAiServer => 'Nire zerbitzaria';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Zure zerbitzaria, saretik: Ollama, LM Studio edo OpenAIrekin bateragarria den APIa duen beste zerbitzari bat.';
+
+  @override
+  String get settingsAiOnPhone => 'Telefono honetan';
+
+  @override
+  String get settingsAiOnPhoneDetail =>
+      'Ez dago erabilgarri oraindik: gailuko eredua telefonoetan probatzen ari dira oraindik.';
+
+  @override
+  String get settingsAiNotSetUp => 'Konfiguratu gabe';
+
+  @override
+  String get settingsAiNotSet => 'Ezarri gabe';
+
+  @override
+  String get settingsAiKeySaved => 'Gordeta';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Ezin da irakurri';
+
+  @override
+  String get settingsAiApiKey => 'API gakoa';
+
+  @override
+  String get settingsAiModel => 'Eredua';
+
+  @override
+  String get settingsAiOtherModel => 'Beste eredu bat…';
+
+  @override
+  String get settingsAiModelId => 'Ereduaren IDa';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Anthropic-en API gakoa';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Telefono honen biltegi seguruan gordetzen da, eta api.anthropic.com helbidera bakarrik bidaltzen da, eskaeraren goiburuan, inoiz ez ereduak irakurtzen duenaren zati gisa.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Zerbitzariaren API gakoa';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Aukerakoa: ez badago, utzi hutsik. Telefono honen biltegi seguruan gordetzen da, eta zure zerbitzarira bakarrik bidaltzen da, eskaeraren goiburuan, inoiz ez ereduak irakurtzen duenaren zati gisa.';
+
+  @override
+  String get settingsAiServerAddress => 'Helbidea';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Zerbitzariaren helbidea';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'APIaren bidea barne, adibidez, http://192.168.1.20:11434/v1 Ollamarentzat.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Hori ez da http:// edo https:// helbide bat.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Ereduaren izena';
+
+  @override
+  String get settingsAiServerModelMessage => 'Zure zerbitzariak deitzen dion bezala, adibidez, llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Probatu konexioa';
+
+  @override
+  String get settingsAiTesting => 'Probatzen…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model ereduak $seconds s-tan erantzun du';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Probak huts egin du';
+
+  @override
+  String get settingsAiTestInvalid => 'Ereduak erantzun du, baina ez Loupe-k eskatutako moduan.';
+
+  @override
+  String get settingsAiRemoveKey => 'Kendu gakoa';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Anthropic-en API gakoa kendu nahi duzu?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe-k telefono honen biltegi segurutik ezabatzen du, eta ez dio eskaera gehiagorik bidaltzen Anthropic-i. Ez da beste hornitzaile batera aldatzen. Gakoa bera baliogabetzeko, ezabatu Anthropic Console-n.';
+
+  @override
+  String get settingsAiRemoveServer => 'Kendu zerbitzaria';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Zure zerbitzaria kendu nahi duzu?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe-k haren helbidea eta eredua ahazten ditu, haren gakoa telefono honen biltegi segurutik ezabatzen du, eta ez dio eskaera gehiagorik bidaltzen. Ez da beste hornitzaile batera aldatzen.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Anthropic-en datuen gordetzea';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Demoa telefono honetan dabil eta ez du ezer bidaltzen inora. Ez da eredu bat: eskaera mota batzuei arau errazekin erantzuten die, eta bere erantzunek hala diote.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Eskaerak Internet bidez doaz Anthropic-era (api.anthropic.com), zure gakoarekin. Bakoitzak funtzio batek behar duena bakarrik dauka: idatzi duzun esaldia eta zure kontuen izenak, edo mezu baten gaia, igorlea, data, testua eta eranskinen izenak. Inoiz ez eranskinak berak, kontuen pasahitzak edo gakoa. Emaitzak telefono honetan geratzen dira; Anthropic-ek zer gordetzen duen bere gordetze-politikak zehazten du.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Eskaerak telefono honetatik irten eta zure zerbitzarira doaz: sare bidezko prozesatzea da, etxean ere bai. Bakoitzak funtzio batek behar duena bakarrik dauka: idatzi duzun esaldia eta zure kontuen izenak, edo mezu baten gaia, igorlea, data, testua eta eranskinen izenak. Inoiz ez eranskinak berak, kontuen pasahitzak edo gakoa. Emaitzak telefono honetan geratzen dira; zerbitzariak zer gordetzen duen haren konfigurazioaren araberakoa da.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Helbide hau ez dago enkriptatuta (http): sareko beste batzuek bidaltzen dena irakur dezakete.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Funtzioak';
+
+  @override
+  String get settingsAiFeaturesFooter =>
+      'Desaktibatutako funtzio batek ez du AA zatirik erakusten eta ez dio inongo ereduri galdetzen.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Laburbilduz';
+
+  @override
+  String get settingsAiFeatureActions => 'Iradokitako ekintzak';
+
+  @override
+  String get settingsAiFeatureRules => 'Deskribatu arau bat';
+
+  @override
+  String get settingsAiFeatureChanges => 'Zer aldatu den';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Dokumentuen datuak';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Erantzunaren egiaztapena';
+
+  @override
+  String get settingsAiFeatureMatters => 'Gaiaren egoera';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'Bilaketan: esaldi bat egiazta dezakezun bilaketa bihurtzen da.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'Mezu batean: zuri zer eskatzen dizun, pasarteekin.';
+
+  @override
+  String get settingsAiFeatureActionsDetail =>
+      '«Niri dagokit» eta «Besteen zain» karpetetarako elementuak proposatzen ditu.';
+
+  @override
+  String get settingsAiFeatureRulesDetail =>
+      'Arauak atalean: deskribapen bat gorde aurretik egiaztatzen duzun arau bihurtzen da.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'Konparatu mezuak atalean: esanahian zer aldatu den, iturriekin.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Erantsitako dokumentuen datu nagusiak, beren orrialdeekin.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Bidali aurretik: erantzun bati zer pasa zaion agian.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Gai baten azken egoera, bere postatik.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Gorde posta telefonoan';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Hau aktibatuta duen kontu batek ez du inoiz bere posta zure zerbitzarira edo hodei batera bidaltzen: halako hornitzaile batekin, bere AA zatiak ezkutuan geratzen dira. Telefono honetako eredu batek irakur dezake, hala ere.';
+
+  @override
+  String get settingsAiUsage => 'Erabilera eta kostu estimatua';
+
+  @override
+  String get settingsAiUsageToday => 'Gaur';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Hilabete hau';
+
+  @override
+  String get settingsAiUsageAll => 'Guztiak';
+
+  @override
+  String get settingsAiUsageNone => 'Eskaerarik ez';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count eskaera', one: 'Eskaera 1');
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input token sarreran, $output irteeran';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count eskaera daturik gabe',
+      one: 'eskaera 1 daturik gabe',
+    );
+    return '$input token sarreran, $output irteeran; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Tokenen daturik ez';
+
+  @override
+  String get settingsAiUsageTotal => 'Guztira';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe-k eskaera bakoitzaren erregistroa gordetzen du telefono honetan: zeregina, hornitzailea, eredua, token kopuruak eta orduak, inoiz ez zer bidali edo erantzun zen. Hornitzaile batek jakinarazi ez dituen token kopuruak jakinarazi gabe gisa agertzen dira, inoiz ez zero gisa.';
+
+  @override
+  String get settingsAiCostNone => 'Kosturik ez';
+
+  @override
+  String get settingsAiCostUnknown => 'Ezezaguna';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Gutxienez $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Erabilitako prezioak';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input sarrera, $output irteera';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'AEBko dolarrak milioi token bakoitzeko: $source-en zerrendako prezioak, $date. Estimazioak dira, ez faktura bat: zure hornitzailearen erabilera-orria da balio duena. Hemen preziorik ez duen eredu batek «Ezezaguna» erakusten du.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Ezabatu eratorritako emaitzak';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Berrerabiltzeko gordetako laburpenak, proposatutako bilaketak eta beste erantzun batzuk, telefono honetan bakarrik. Ezabatzean, zure posta eta zuk erabakitakoa geratzen dira, hala nola markatutako elementuak, ekintzak eta gaiak; funtzioek berriro sortzen dituzte behar direnean.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count emaitza ezabatu nahi dituzu?',
+      one: 'Emaitza 1 ezabatu nahi duzu?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Sortu zituen $count emaitzak ere ezabatu nahi dituzu?',
+      one: 'Sortu zuen emaitza ere ezabatu nahi duzu?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Zure posta eta zuk erabakitakoa geratzen dira. Funtzioek emaitzak berriro sortzen dituzte behar dituztenean.';
+
+  @override
+  String get settingsAiDeleteResults => 'Ezabatu emaitzak';
 }

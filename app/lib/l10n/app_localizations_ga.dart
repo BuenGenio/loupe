@@ -6751,5 +6751,342 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Déanann sé cuardach d\'abairt is féidir leat a sheiceáil agus a chur in eagar. Go fóill is é an taispeántas ionsuite a aistríonn: gan samhail, gan líonra.';
+      'Ligeann sé d’fheidhmeanna Loupe ceist a chur ar an tsamhail a roghnaíonn tú. Nuair atá sé múchta, ní chuirtear ceist ar aon samhail, agus oibríonn ríomhphost, cuardach agus rialacha mar a d’oibrigh riamh.';
+
+  @override
+  String get settingsAiProviderHeader => 'Soláthraí';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Ní úsáidtear ach an soláthraí a roghnaíonn tú. Má theipeann air nó mura bhfuil sé socraithe, deir Loupe é sin agus ní sheolann sé aon rud áit ar bith eile.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Níl an soláthraí seo socraithe fós, mar sin ní thaispeánann na feidhmeanna aon chuid IS.';
+
+  @override
+  String get settingsAiDemo => 'Taispeántas ionsuite';
+
+  @override
+  String get settingsAiDemoDetail => 'Ar an bhfón seo. Gan samhail: cúpla riail, chun na feidhmeanna a thriail.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Néal: Claude, le d’eochair API féin.';
+
+  @override
+  String get settingsAiServer => 'Mo fhreastalaí';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Do fhreastalaí, thar an líonra: Ollama, LM Studio nó freastalaí eile a bhfuil API comhoiriúnach le OpenAI aige.';
+
+  @override
+  String get settingsAiOnPhone => 'Ar an bhfón seo';
+
+  @override
+  String get settingsAiOnPhoneDetail => 'Níl sé ar fáil fós: tá an tsamhail ar an ngléas fós á tástáil ar fhóin.';
+
+  @override
+  String get settingsAiNotSetUp => 'Gan socrú';
+
+  @override
+  String get settingsAiNotSet => 'Gan socrú';
+
+  @override
+  String get settingsAiKeySaved => 'Sábháilte';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Doléite';
+
+  @override
+  String get settingsAiApiKey => 'Eochair API';
+
+  @override
+  String get settingsAiModel => 'Samhail';
+
+  @override
+  String get settingsAiOtherModel => 'Samhail eile…';
+
+  @override
+  String get settingsAiModelId => 'Aitheantas na samhla';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Eochair API Anthropic';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Coinnítear í i slabhra eochrach an fhóin seo agus ní sheoltar í ach chuig api.anthropic.com, i gceanntásc an iarratais, riamh mar chuid den rud a léann an tsamhail.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Eochair API an fhreastalaí';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Roghnach: fág folamh é mura bhfuil ceann ann. Coinnítear í i slabhra eochrach an fhóin seo agus ní sheoltar í ach chuig do fhreastalaí, i gceanntásc an iarratais, riamh mar chuid den rud a léann an tsamhail.';
+
+  @override
+  String get settingsAiServerAddress => 'Seoladh';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Seoladh an fhreastalaí';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Suas go dtí cosán an API agus é san áireamh, mar shampla http://192.168.1.20:11434/v1 do Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Ní seoladh http:// ná https:// é sin.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Ainm na samhla';
+
+  @override
+  String get settingsAiServerModelMessage => 'Mar a ainmníonn do fhreastalaí í, mar shampla llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Tástáil an nasc';
+
+  @override
+  String get settingsAiTesting => 'Á thástáil…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return 'D’fhreagair $model i $seconds s';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Theip ar an tástáil';
+
+  @override
+  String get settingsAiTestInvalid => 'D’fhreagair an tsamhail, ach ní san fhoirm a d’iarr Loupe.';
+
+  @override
+  String get settingsAiRemoveKey => 'Bain an eochair';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'An eochair API Anthropic a bhaint?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Scriosann Loupe í as slabhra eochrach an fhóin seo agus stopann sé ag seoladh iarratas chuig Anthropic. Ní athraíonn sé go soláthraí eile. Chun an eochair féin a chúlghairm, scrios í san Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Bain an freastalaí';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Do fhreastalaí a bhaint?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Déanann Loupe dearmad ar a sheoladh agus ar a shamhail, scriosann sé a eochair as slabhra eochrach an fhóin seo agus stopann sé ag seoladh iarratas chuige. Ní athraíonn sé go soláthraí eile.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Coinneáil sonraí ag Anthropic';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Ritheann an taispeántas ar an bhfón seo agus ní sheolann sé aon rud áit ar bith. Ní samhail é: freagraíonn sé cúpla cineál iarratais le rialacha simplí, agus deir a chuid freagraí é sin.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Téann iarratais thar an idirlíon chuig Anthropic (api.anthropic.com), le d’eochair. Níl i ngach ceann ach a bhfuil de dhíth ar fheidhm amháin: an abairt a chlóscríobh tú agus ainmneacha do chuntas, nó ábhar, seoltóir, dáta, téacs agus ainmneacha ceangaltán teachtaireachta amháin. Riamh na ceangaltáin féin, pasfhocail na gcuntas ná an eochair. Fanann na torthaí ar an bhfón seo; is é beartas coinneála Anthropic féin a shocraíonn cad a choinníonn sé.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Fágann iarratais an fón seo chuig do fhreastalaí: próiseáil thar líonra atá ann, fiú sa bhaile. Níl i ngach ceann ach a bhfuil de dhíth ar fheidhm amháin: an abairt a chlóscríobh tú agus ainmneacha do chuntas, nó ábhar, seoltóir, dáta, téacs agus ainmneacha ceangaltán teachtaireachta amháin. Riamh na ceangaltáin féin, pasfhocail na gcuntas ná an eochair. Fanann na torthaí ar an bhfón seo; braitheann an méid a choinníonn an freastalaí ar an gcaoi a bhfuil sé socraithe.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Níl an seoladh seo criptithe (http): is féidir le daoine eile ar an líonra a bhfuil á sheoladh a léamh.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Feidhmeanna';
+
+  @override
+  String get settingsAiFeaturesFooter =>
+      'Ní thaispeánann feidhm atá múchta aon chuid IS agus ní chuireann sí ceist ar aon samhail.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Go hachomair';
+
+  @override
+  String get settingsAiFeatureActions => 'Gníomhartha molta';
+
+  @override
+  String get settingsAiFeatureRules => 'Déan cur síos ar riail';
+
+  @override
+  String get settingsAiFeatureChanges => 'Cad a d’athraigh';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Fíricí ó cháipéisí';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Seiceáil an fhreagra';
+
+  @override
+  String get settingsAiFeatureMatters => 'Staid an chúrsa';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'Sa chuardach: déantar cuardach is féidir leat a sheiceáil d’abairt.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'I dteachtaireacht: cad a iarrann sí ort, leis na sleachta.';
+
+  @override
+  String get settingsAiFeatureActionsDetail =>
+      'Molann sé míreanna do “Ag fanacht liomsa” agus “Ag fanacht le daoine eile”.';
+
+  @override
+  String get settingsAiFeatureRulesDetail =>
+      'I Rialacha: déantar riail de chur síos, a sheiceálann tú sula sábhálann tú í.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'I gcomparáid teachtaireachtaí: cad a d’athraigh sa bhrí, le foinsí.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Príomhfhíricí na gcáipéisí ceangailte, lena leathanaigh.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail =>
+      'Sula seolann tú: cad a d’fhéadfadh freagra a bheith tar éis a chailleadh.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'An staid is déanaí de chúrsa, óna ríomhphost.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Coinnigh an ríomhphost ar an bhfón';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Ní sheolann cuntas a bhfuil sé seo ar siúl dó a ríomhphost chuig do fhreastalaí ná chuig néal choíche: le soláthraí mar sin, fanann a chodanna IS i bhfolach. Is féidir le samhail ar an bhfón seo é a léamh fós.';
+
+  @override
+  String get settingsAiUsage => 'Úsáid agus costas measta';
+
+  @override
+  String get settingsAiUsageToday => 'Inniu';
+
+  @override
+  String get settingsAiUsageThisMonth => 'An mhí seo';
+
+  @override
+  String get settingsAiUsageAll => 'Gach rud';
+
+  @override
+  String get settingsAiUsageNone => 'Gan iarratais';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count iarratas',
+      many: '$count n-iarratas',
+      few: '$count iarratas',
+      two: '$count iarratas',
+      one: '$count iarratas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input comhartha isteach, $output amach';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count iarratas gan sonraí',
+      many: '$count n-iarratas gan sonraí',
+      few: '$count iarratas gan sonraí',
+      two: '$count iarratas gan sonraí',
+      one: '$count iarratas gan sonraí',
+    );
+    return '$input comhartha isteach, $output amach; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Comharthaí gan tuairisc';
+
+  @override
+  String get settingsAiUsageTotal => 'Iomlán';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Coinníonn Loupe taifead ar gach iarratas ar an bhfón seo: an tasc, an soláthraí, an tsamhail, líon na gcomharthaí agus na hamanna, riamh an rud a seoladh nó a freagraíodh. Taispeántar comharthaí nár thuairiscigh soláthraí mar ‘gan tuairisc’, riamh mar nialas.';
+
+  @override
+  String get settingsAiCostNone => 'Gan chostas';
+
+  @override
+  String get settingsAiCostUnknown => 'Anaithnid';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Ar a laghad $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Praghsanna a úsáideadh';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input isteach, $output amach';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Dollair SAM in aghaidh milliún comhartha: praghsanna liosta $source ar $date. Is meastacháin iad seo, ní bille: is é leathanach úsáide do sholáthraí féin an taifead. Taispeánann samhail gan phraghas anseo “Anaithnid”.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Scrios torthaí díorthaithe';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Achoimrí, cuardaigh mholta agus freagraí eile a choinnítear le húsáid arís, ar an bhfón seo amháin. Má scriosann tú iad, fanann do ríomhphost agus a bhfuil socraithe agat, mar shampla míreanna ticeáilte, gníomhartha agus cúrsaí; déanann na feidhmeanna arís iad nuair is gá.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count toradh a scriosadh?',
+      many: '$count dtoradh a scriosadh?',
+      few: '$count thoradh a scriosadh?',
+      two: '$count thoradh a scriosadh?',
+      one: '$count toradh a scriosadh?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Na $count toradh a rinne sé a scriosadh freisin?',
+      many: 'Na $count dtoradh a rinne sé a scriosadh freisin?',
+      few: 'Na $count thoradh a rinne sé a scriosadh freisin?',
+      two: 'An $count thoradh a rinne sé a scriosadh freisin?',
+      one: 'An $count toradh a rinne sé a scriosadh freisin?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Fanann do ríomhphost agus a bhfuil socraithe agat. Déanann na feidhmeanna torthaí arís nuair a bhíonn siad de dhíth orthu.';
+
+  @override
+  String get settingsAiDeleteResults => 'Scrios na torthaí';
 }

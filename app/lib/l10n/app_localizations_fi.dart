@@ -6409,5 +6409,320 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Muuttaa lauseen hauksi, jonka voit tarkistaa ja muokata. Toistaiseksi kääntää sisäänrakennettu demo: ei mallia, ei verkkoa.';
+      'Antaa Loupen ominaisuuksien kysyä valitsemaltasi mallilta. Pois päältä mitään mallia ei kysytä mitään, ja posti, haku ja säännöt toimivat kuten ennenkin.';
+
+  @override
+  String get settingsAiProviderHeader => 'Palveluntarjoaja';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Vain valitsemaasi palveluntarjoajaa käytetään. Jos se epäonnistuu tai sitä ei ole määritetty, Loupe kertoo sen eikä lähetä mitään muualle.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Tätä palveluntarjoajaa ei ole vielä määritetty, joten ominaisuudet eivät näytä tekoälyosia.';
+
+  @override
+  String get settingsAiDemo => 'Sisäänrakennettu demo';
+
+  @override
+  String get settingsAiDemoDetail => 'Tässä puhelimessa. Ei mallia: muutama sääntö ominaisuuksien kokeilemiseen.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Pilvi: Claude omalla API-avaimellasi.';
+
+  @override
+  String get settingsAiServer => 'Oma palvelin';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Palvelimesi verkon kautta: Ollama, LM Studio tai muu palvelin, jossa on OpenAI-yhteensopiva API.';
+
+  @override
+  String get settingsAiOnPhone => 'Tässä puhelimessa';
+
+  @override
+  String get settingsAiOnPhoneDetail => 'Ei vielä saatavilla: laitteessa toimivaa mallia testataan vielä puhelimissa.';
+
+  @override
+  String get settingsAiNotSetUp => 'Ei määritetty';
+
+  @override
+  String get settingsAiNotSet => 'Ei asetettu';
+
+  @override
+  String get settingsAiKeySaved => 'Tallennettu';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Ei luettavissa';
+
+  @override
+  String get settingsAiApiKey => 'API-avain';
+
+  @override
+  String get settingsAiModel => 'Malli';
+
+  @override
+  String get settingsAiOtherModel => 'Muu malli…';
+
+  @override
+  String get settingsAiModelId => 'Mallin tunnus';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Anthropicin API-avain';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Säilytetään tämän puhelimen avainsäilössä ja lähetetään vain osoitteeseen api.anthropic.com pyynnön otsakkeessa, ei koskaan osana sitä, mitä malli lukee.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Palvelimen API-avain';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Valinnainen: jätä tyhjäksi, jos avainta ei ole. Säilytetään tämän puhelimen avainsäilössä ja lähetetään vain palvelimellesi pyynnön otsakkeessa, ei koskaan osana sitä, mitä malli lukee.';
+
+  @override
+  String get settingsAiServerAddress => 'Osoite';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Palvelimen osoite';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'API-polku mukaan lukien, esimerkiksi http://192.168.1.20:11434/v1 Ollamalle.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Tämä ei ole http://- tai https://-osoite.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Mallin nimi';
+
+  @override
+  String get settingsAiServerModelMessage => 'Niin kuin palvelimesi sitä kutsuu, esimerkiksi llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Testaa yhteys';
+
+  @override
+  String get settingsAiTesting => 'Testataan…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model vastasi $seconds s:ssa';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Testi epäonnistui';
+
+  @override
+  String get settingsAiTestInvalid => 'Malli vastasi, mutta ei siinä muodossa, jota Loupe pyysi.';
+
+  @override
+  String get settingsAiRemoveKey => 'Poista avain';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Poistetaanko Anthropicin API-avain?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe poistaa sen tämän puhelimen avainsäilöstä eikä lähetä enää pyyntöjä Anthropicille. Se ei vaihda toiseen palveluntarjoajaan. Jos haluat mitätöidä itse avaimen, poista se Anthropic Consolessa.';
+
+  @override
+  String get settingsAiRemoveServer => 'Poista palvelin';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Poistetaanko palvelimesi?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe unohtaa sen osoitteen ja mallin, poistaa sen avaimen tämän puhelimen avainsäilöstä eikä lähetä sille enää pyyntöjä. Se ei vaihda toiseen palveluntarjoajaan.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Anthropicin tietojen säilytys';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Demo toimii tässä puhelimessa eikä lähetä mitään minnekään. Se ei ole malli: se vastaa muutamaan pyyntötyyppiin yksinkertaisilla säännöillä, ja sen vastaukset kertovat sen.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Pyynnöt kulkevat internetin kautta Anthropicille (api.anthropic.com) avaimesi kanssa. Kukin sisältää vain sen, mitä yksi ominaisuus tarvitsee: kirjoittamasi lauseen ja tiliesi nimet tai yhden viestin aiheen, lähettäjän, päivämäärän, tekstin ja liitteiden nimet. Ei koskaan itse liitteitä, tilien salasanoja eikä avainta. Tulokset pysyvät tässä puhelimessa; se, mitä Anthropic säilyttää, määräytyy sen omien säilytyskäytäntöjen mukaan.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Pyynnöt lähtevät tästä puhelimesta palvelimellesi: se on käsittelyä verkon kautta, myös kotona. Kukin sisältää vain sen, mitä yksi ominaisuus tarvitsee: kirjoittamasi lauseen ja tiliesi nimet tai yhden viestin aiheen, lähettäjän, päivämäärän, tekstin ja liitteiden nimet. Ei koskaan itse liitteitä, tilien salasanoja eikä avainta. Tulokset pysyvät tässä puhelimessa; se, mitä palvelin säilyttää, riippuu sen asetuksista.';
+
+  @override
+  String get settingsAiServerUnencrypted => 'Tämä osoite ei ole salattu (http): muut verkossa voivat lukea lähetetyn.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Ominaisuudet';
+
+  @override
+  String get settingsAiFeaturesFooter => 'Pois päältä oleva ominaisuus ei näytä tekoälyosaa eikä kysy mitään mallia.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Lyhyesti';
+
+  @override
+  String get settingsAiFeatureActions => 'Ehdotetut tehtävät';
+
+  @override
+  String get settingsAiFeatureRules => 'Kuvaile sääntö';
+
+  @override
+  String get settingsAiFeatureChanges => 'Mikä muuttui';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Asiakirjojen tiedot';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Vastauksen tarkistus';
+
+  @override
+  String get settingsAiFeatureMatters => 'Asian tilanne';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'Haussa: lauseesta tulee haku, jonka voit tarkistaa.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'Viestissä: mitä se pyytää sinulta, kohtineen.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Ehdottaa kohteita kansioihin ”Odottaa minua” ja ”Odottaa muita”.';
+
+  @override
+  String get settingsAiFeatureRulesDetail => 'Säännöissä: kuvauksesta tulee sääntö, jonka tarkistat ennen tallennusta.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'Viestien vertailussa: mikä muuttui merkitykseltään, lähteineen.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Liitettyjen asiakirjojen keskeiset tiedot sivuineen.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Ennen lähettämistä: mitä vastaukselta on ehkä jäänyt huomaamatta.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Asian viimeisin tilanne sen viestien perusteella.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Pidä posti puhelimessa';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Tili, jolla tämä on päällä, ei koskaan lähetä postiaan palvelimellesi tai pilveen: tällaisen palveluntarjoajan kanssa sen tekoälyosat pysyvät piilossa. Tässä puhelimessa toimiva malli voi silti lukea sen.';
+
+  @override
+  String get settingsAiUsage => 'Käyttö ja arvioitu hinta';
+
+  @override
+  String get settingsAiUsageToday => 'Tänään';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Tässä kuussa';
+
+  @override
+  String get settingsAiUsageAll => 'Kaikki';
+
+  @override
+  String get settingsAiUsageNone => 'Ei pyyntöjä';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count pyyntöä', one: '1 pyyntö');
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input tokenia sisään, $output ulos';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pyynnöstä ei tietoa',
+      one: '1 pyynnöstä ei tietoa',
+    );
+    return '$input tokenia sisään, $output ulos; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Tokeneista ei tietoa';
+
+  @override
+  String get settingsAiUsageTotal => 'Yhteensä';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe kirjaa tähän puhelimeen jokaisen pyynnön: tehtävän, palveluntarjoajan, mallin, tokenimäärät ja ajat, ei koskaan sitä, mitä lähetettiin tai vastattiin. Tokenimäärät, joita palveluntarjoaja ei ilmoittanut, näkyvät tuntemattomina, ei koskaan nollana.';
+
+  @override
+  String get settingsAiCostNone => 'Ei kuluja';
+
+  @override
+  String get settingsAiCostUnknown => 'Tuntematon';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Vähintään $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Käytetyt hinnat';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input sisään, $output ulos';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Yhdysvaltain dollareita miljoonaa tokenia kohden: $source-listahinnat $date. Nämä ovat arvioita, eivät lasku: palveluntarjoajasi oma käyttösivu on ratkaiseva. Malli, jolla ei ole hintaa tässä, näyttää ”Tuntematon”.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Poista johdetut tulokset';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Tiivistelmät, ehdotetut haut ja muut vastaukset, jotka säilytetään uudelleenkäyttöä varten, vain tässä puhelimessa. Kun ne poistetaan, postisi ja päätöksesi säilyvät, kuten rastitetut kohdat, tehtävät ja asiat; ominaisuudet tekevät ne uudelleen tarvittaessa.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Poistetaanko $count tulosta?',
+      one: 'Poistetaanko 1 tulos?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Poistetaanko myös sen tekemät $count tulosta?',
+      one: 'Poistetaanko myös sen tekemä tulos?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Postisi ja päätöksesi säilyvät. Ominaisuudet tekevät tulokset uudelleen, kun tarvitsevat niitä.';
+
+  @override
+  String get settingsAiDeleteResults => 'Poista tulokset';
 }

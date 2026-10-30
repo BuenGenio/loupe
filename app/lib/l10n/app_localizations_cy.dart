@@ -6809,5 +6809,344 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Mae\'n troi brawddeg yn chwiliad y gallwch ei wirio a\'i olygu. Am y tro, y demo mewnol sy\'n cyfieithu: dim model, dim rhwydwaith.';
+      'Yn gadael i nodweddion Loupe ofyn i’r model rydych chi’n ei ddewis. Wedi’i ddiffodd, ni ofynnir dim i unrhyw fodel, ac mae e-bost, chwilio a rheolau’n gweithio fel o’r blaen.';
+
+  @override
+  String get settingsAiProviderHeader => 'Darparwr';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Dim ond y darparwr rydych chi’n ei ddewis sy’n cael ei ddefnyddio. Os yw’n methu neu heb ei osod, mae Loupe yn dweud hynny ac nid yw’n anfon dim i unman arall.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Nid yw’r darparwr hwn wedi’i osod eto, felly nid yw’r nodweddion yn dangos rhannau deallusrwydd artiffisial.';
+
+  @override
+  String get settingsAiDemo => 'Demo adeiledig';
+
+  @override
+  String get settingsAiDemoDetail => 'Ar y ffôn hwn. Dim model: ychydig o reolau, i roi cynnig ar y nodweddion.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Cwmwl: Claude, gyda’ch allwedd API eich hun.';
+
+  @override
+  String get settingsAiServer => 'Fy ngweinydd';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Eich gweinydd, dros y rhwydwaith: Ollama, LM Studio neu weinydd arall ag API sy’n gydnaws ag OpenAI.';
+
+  @override
+  String get settingsAiOnPhone => 'Ar y ffôn hwn';
+
+  @override
+  String get settingsAiOnPhoneDetail => 'Ddim ar gael eto: mae’r model ar y ddyfais yn dal i gael ei brofi ar ffonau.';
+
+  @override
+  String get settingsAiNotSetUp => 'Heb ei osod';
+
+  @override
+  String get settingsAiNotSet => 'Heb ei osod';
+
+  @override
+  String get settingsAiKeySaved => 'Wedi’i chadw';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Annarllenadwy';
+
+  @override
+  String get settingsAiApiKey => 'Allwedd API';
+
+  @override
+  String get settingsAiModel => 'Model';
+
+  @override
+  String get settingsAiOtherModel => 'Model arall…';
+
+  @override
+  String get settingsAiModelId => 'ID y model';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Allwedd API Anthropic';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Yn cael ei chadw yng nghadwyn allweddi’r ffôn hwn a’i hanfon i api.anthropic.com yn unig, ym mhennyn y cais, byth fel rhan o’r hyn mae’r model yn ei ddarllen.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Allwedd API y gweinydd';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Dewisol: gadewch yn wag os nad oes un. Yn cael ei chadw yng nghadwyn allweddi’r ffôn hwn a’i hanfon i’ch gweinydd yn unig, ym mhennyn y cais, byth fel rhan o’r hyn mae’r model yn ei ddarllen.';
+
+  @override
+  String get settingsAiServerAddress => 'Cyfeiriad';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Cyfeiriad y gweinydd';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Hyd at lwybr yr API ac yn ei gynnwys, fel http://192.168.1.20:11434/v1 ar gyfer Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Nid cyfeiriad http:// neu https:// yw hwnnw.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Enw’r model';
+
+  @override
+  String get settingsAiServerModelMessage => 'Fel mae’ch gweinydd yn ei enwi, fel llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Profi’r cysylltiad';
+
+  @override
+  String get settingsAiTesting => 'Wrthi’n profi…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return 'Atebodd $model mewn $seconds s';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Methodd y prawf';
+
+  @override
+  String get settingsAiTestInvalid => 'Atebodd y model, ond nid yn y ffurf y gofynnodd Loupe amdani.';
+
+  @override
+  String get settingsAiRemoveKey => 'Tynnu’r allwedd';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Tynnu allwedd API Anthropic?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Mae Loupe yn ei dileu o gadwyn allweddi’r ffôn hwn ac yn peidio ag anfon ceisiadau at Anthropic. Nid yw’n newid i ddarparwr arall. I ddirymu’r allwedd ei hun, dilëwch hi yn yr Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Tynnu’r gweinydd';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Tynnu’ch gweinydd?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Mae Loupe yn anghofio’i gyfeiriad a’i fodel, yn dileu ei allwedd o gadwyn allweddi’r ffôn hwn ac yn peidio ag anfon ceisiadau ato. Nid yw’n newid i ddarparwr arall.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Cadw data gan Anthropic';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Mae’r demo’n rhedeg ar y ffôn hwn ac nid yw’n anfon dim i unman. Nid model ydyw: mae’n ateb ychydig o fathau o gais â rheolau syml, ac mae ei atebion yn dweud hynny.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Mae ceisiadau’n mynd dros y rhyngrwyd i Anthropic (api.anthropic.com), gyda’ch allwedd. Mae pob un yn cynnwys dim ond yr hyn sydd ei angen ar un nodwedd: y frawddeg a deipiwyd gennych ac enwau’ch cyfrifon, neu bwnc, anfonwr, dyddiad, testun ac enwau atodiadau un neges. Byth yr atodiadau eu hunain, cyfrineiriau cyfrifon na’r allwedd. Mae’r canlyniadau’n aros ar y ffôn hwn; polisi cadw Anthropic ei hun sy’n pennu beth mae’n ei gadw.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Mae ceisiadau’n gadael y ffôn hwn am eich gweinydd: prosesu dros rwydwaith yw hyn, hyd yn oed gartref. Mae pob un yn cynnwys dim ond yr hyn sydd ei angen ar un nodwedd: y frawddeg a deipiwyd gennych ac enwau’ch cyfrifon, neu bwnc, anfonwr, dyddiad, testun ac enwau atodiadau un neges. Byth yr atodiadau eu hunain, cyfrineiriau cyfrifon na’r allwedd. Mae’r canlyniadau’n aros ar y ffôn hwn; mae’r hyn mae’r gweinydd yn ei gadw’n dibynnu ar sut mae wedi’i osod.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Nid yw’r cyfeiriad hwn wedi’i amgryptio (http): gall eraill ar y rhwydwaith ddarllen yr hyn sy’n cael ei anfon.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Nodweddion';
+
+  @override
+  String get settingsAiFeaturesFooter =>
+      'Nid yw nodwedd sydd wedi’i diffodd yn dangos rhan deallusrwydd artiffisial nac yn gofyn i unrhyw fodel.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Yn gryno';
+
+  @override
+  String get settingsAiFeatureActions => 'Camau a awgrymir';
+
+  @override
+  String get settingsAiFeatureRules => 'Disgrifio rheol';
+
+  @override
+  String get settingsAiFeatureChanges => 'Beth newidiodd';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Ffeithiau o ddogfennau';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Gwirio’r ateb';
+
+  @override
+  String get settingsAiFeatureMatters => 'Statws mater';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'Wrth chwilio: mae brawddeg yn dod yn chwiliad y gallwch ei wirio.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'Mewn neges: beth mae’n ei ofyn gennych, gyda’r darnau.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Yn cynnig eitemau ar gyfer “Yn aros amdana i” ac “Yn aros am eraill”.';
+
+  @override
+  String get settingsAiFeatureRulesDetail =>
+      'Yn Rheolau: mae disgrifiad yn dod yn rheol rydych chi’n ei gwirio cyn ei chadw.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'Yn Cymharu negeseuon: beth newidiodd o ran ystyr, gyda ffynonellau.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Prif ffeithiau’r dogfennau atodedig, gyda’u tudalennau.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Cyn anfon: beth allai ateb fod wedi’i fethu.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Sefyllfa ddiweddaraf mater, o’i e-byst.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Cadw e-bost ar y ffôn';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Nid yw cyfrif sydd â hyn ymlaen byth yn anfon ei e-bost i’ch gweinydd nac i gwmwl: gyda darparwr o’r fath, mae ei rannau deallusrwydd artiffisial yn aros yn gudd. Gall model ar y ffôn hwn ei ddarllen o hyd.';
+
+  @override
+  String get settingsAiUsage => 'Defnydd a chost amcangyfrifedig';
+
+  @override
+  String get settingsAiUsageToday => 'Heddiw';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Y mis hwn';
+
+  @override
+  String get settingsAiUsageAll => 'Y cyfan';
+
+  @override
+  String get settingsAiUsageNone => 'Dim ceisiadau';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count cais',
+      many: '$count chais',
+      few: '$count chais',
+      two: '$count gais',
+      one: '$count cais',
+      zero: '$count cais',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input tocyn i mewn, $output allan';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count cais heb ddata',
+      many: '$count chais heb ddata',
+      few: '$count chais heb ddata',
+      two: '$count gais heb ddata',
+      one: '$count cais heb ddata',
+      zero: '$count cais heb ddata',
+    );
+    return '$input tocyn i mewn, $output allan; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Tocynnau heb eu hadrodd';
+
+  @override
+  String get settingsAiUsageTotal => 'Cyfanswm';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Mae Loupe yn cadw cofnod o bob cais ar y ffôn hwn: y dasg, y darparwr, y model, nifer y tocynnau a’r amseroedd, byth yr hyn a anfonwyd neu a atebwyd. Mae tocynnau na wnaeth darparwr eu hadrodd yn ymddangos heb eu hadrodd, byth fel sero.';
+
+  @override
+  String get settingsAiCostNone => 'Dim cost';
+
+  @override
+  String get settingsAiCostUnknown => 'Anhysbys';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'O leiaf $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Prisiau a ddefnyddiwyd';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input i mewn, $output allan';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Doleri UDA fesul miliwn o docynnau: prisiau rhestr $source ar $date. Amcangyfrifon yw’r rhain, nid bil: tudalen ddefnydd eich darparwr yw’r cofnod. Mae model heb bris yma’n dangos “Anhysbys”.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Dileu canlyniadau deilliedig';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Crynodebau, chwiliadau a awgrymwyd ac atebion eraill a gedwir i’w hailddefnyddio, ar y ffôn hwn yn unig. Mae eu dileu’n cadw’ch e-bost a’r hyn a benderfynoch, fel eitemau a diciwyd, camau a materion; mae’r nodweddion yn eu gwneud eto pan fo angen.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dileu $count canlyniad?',
+      many: 'Dileu $count chanlyniad?',
+      few: 'Dileu $count chanlyniad?',
+      two: 'Dileu $count ganlyniad?',
+      one: 'Dileu $count canlyniad?',
+      zero: 'Dileu $count canlyniad?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dileu’r $count canlyniad a wnaeth hefyd?',
+      many: 'Dileu’r $count chanlyniad a wnaeth hefyd?',
+      few: 'Dileu’r $count chanlyniad a wnaeth hefyd?',
+      two: 'Dileu’r $count ganlyniad a wnaeth hefyd?',
+      one: 'Dileu’r $count canlyniad a wnaeth hefyd?',
+      zero: 'Dileu’r $count canlyniad a wnaeth hefyd?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Mae’ch e-bost a’r hyn a benderfynoch yn aros. Mae’r nodweddion yn gwneud canlyniadau eto pan fydd eu hangen arnynt.';
+
+  @override
+  String get settingsAiDeleteResults => 'Dileu’r canlyniadau';
 }

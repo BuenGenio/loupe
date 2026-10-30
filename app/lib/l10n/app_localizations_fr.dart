@@ -6544,5 +6544,326 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Transforme une phrase en recherche à vérifier et modifier. Pour l\'instant, la démo intégrée traduit : aucun modèle, aucun réseau.';
+      'Permet aux fonctions de Loupe d’interroger le modèle que vous choisissez. Désactivé, aucun modèle n’est interrogé, et le courrier, la recherche et les règles fonctionnent comme avant.';
+
+  @override
+  String get settingsAiProviderHeader => 'Fournisseur';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Seul le fournisseur choisi est utilisé. S’il échoue ou n’est pas configuré, Loupe le signale et n’envoie rien ailleurs.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Ce fournisseur n’est pas encore configuré : les fonctions n’affichent donc aucune partie IA.';
+
+  @override
+  String get settingsAiDemo => 'Démo intégrée';
+
+  @override
+  String get settingsAiDemoDetail => 'Sur ce téléphone. Aucun modèle : quelques règles, pour essayer les fonctions.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Cloud : Claude, avec votre propre clé d’API.';
+
+  @override
+  String get settingsAiServer => 'Mon serveur';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Votre serveur, via le réseau : Ollama, LM Studio ou un autre serveur avec une API compatible OpenAI.';
+
+  @override
+  String get settingsAiOnPhone => 'Sur ce téléphone';
+
+  @override
+  String get settingsAiOnPhoneDetail =>
+      'Pas encore disponible : le modèle sur l’appareil est encore en test sur les téléphones.';
+
+  @override
+  String get settingsAiNotSetUp => 'Non configuré';
+
+  @override
+  String get settingsAiNotSet => 'Non défini';
+
+  @override
+  String get settingsAiKeySaved => 'Enregistrée';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Illisible';
+
+  @override
+  String get settingsAiApiKey => 'Clé d’API';
+
+  @override
+  String get settingsAiModel => 'Modèle';
+
+  @override
+  String get settingsAiOtherModel => 'Autre modèle…';
+
+  @override
+  String get settingsAiModelId => 'Identifiant du modèle';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Clé d’API Anthropic';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Conservée dans le stockage sécurisé de ce téléphone et envoyée uniquement à api.anthropic.com, dans l’en-tête de la requête, jamais dans ce que lit le modèle.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Clé d’API du serveur';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Facultative : laissez vide s’il n’y en a pas. Conservée dans le stockage sécurisé de ce téléphone et envoyée uniquement à votre serveur, dans l’en-tête de la requête, jamais dans ce que lit le modèle.';
+
+  @override
+  String get settingsAiServerAddress => 'Adresse';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Adresse du serveur';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Jusqu’au chemin de l’API inclus, par exemple http://192.168.1.20:11434/v1 pour Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Ce n’est pas une adresse http:// ou https://.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Nom du modèle';
+
+  @override
+  String get settingsAiServerModelMessage => 'Tel que votre serveur le nomme, par exemple llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Tester la connexion';
+
+  @override
+  String get settingsAiTesting => 'Test en cours…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model a répondu en $seconds s';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Échec du test';
+
+  @override
+  String get settingsAiTestInvalid => 'Le modèle a répondu, mais pas sous la forme demandée par Loupe.';
+
+  @override
+  String get settingsAiRemoveKey => 'Supprimer la clé';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Supprimer la clé d’API Anthropic ?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe la supprime du stockage sécurisé de ce téléphone et n’envoie plus de requêtes à Anthropic. Loupe ne passe pas à un autre fournisseur. Pour révoquer la clé elle-même, supprimez-la dans l’Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Supprimer le serveur';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Supprimer votre serveur ?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe oublie son adresse et son modèle, supprime sa clé du stockage sécurisé de ce téléphone et ne lui envoie plus de requêtes. Loupe ne passe pas à un autre fournisseur.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Conservation des données chez Anthropic';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'La démo fonctionne sur ce téléphone et n’envoie rien nulle part. Ce n’est pas un modèle : elle répond à quelques types de demandes avec des règles simples, et ses réponses le disent.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Les requêtes passent par Internet jusqu’à Anthropic (api.anthropic.com), avec votre clé. Chacune ne contient que ce dont une fonction a besoin : la phrase que vous avez tapée et les noms de vos comptes, ou l’objet, l’expéditeur, la date, le texte et les noms des pièces jointes d’un message. Jamais les pièces jointes elles-mêmes, les mots de passe des comptes ni la clé. Les résultats restent sur ce téléphone ; ce qu’Anthropic conserve relève de sa propre politique de conservation.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Les requêtes quittent ce téléphone pour votre serveur : un traitement via le réseau, même à la maison. Chacune ne contient que ce dont une fonction a besoin : la phrase que vous avez tapée et les noms de vos comptes, ou l’objet, l’expéditeur, la date, le texte et les noms des pièces jointes d’un message. Jamais les pièces jointes elles-mêmes, les mots de passe des comptes ni la clé. Les résultats restent sur ce téléphone ; ce que le serveur conserve dépend de sa configuration.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Cette adresse n’est pas chiffrée (http) : d’autres sur le réseau peuvent lire ce qui est envoyé.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Fonctions';
+
+  @override
+  String get settingsAiFeaturesFooter =>
+      'Une fonction désactivée n’affiche aucune partie IA et n’interroge aucun modèle.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Résumé';
+
+  @override
+  String get settingsAiFeatureActions => 'Actions suggérées';
+
+  @override
+  String get settingsAiFeatureRules => 'Décrire une règle';
+
+  @override
+  String get settingsAiFeatureChanges => 'Ce qui a changé';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Faits des documents';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Vérification de la réponse';
+
+  @override
+  String get settingsAiFeatureMatters => 'État d’un dossier';
+
+  @override
+  String get settingsAiFeatureSearchDetail =>
+      'Dans la recherche : une phrase devient une recherche que vous pouvez vérifier.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'Dans un message : ce qu’il vous demande, avec les passages.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Propose des éléments pour « À traiter » et « En attente des autres ».';
+
+  @override
+  String get settingsAiFeatureRulesDetail =>
+      'Dans Règles : une description devient une règle à vérifier avant de l’enregistrer.';
+
+  @override
+  String get settingsAiFeatureChangesDetail =>
+      'Dans Comparer les messages : ce qui a changé sur le fond, avec les sources.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Les faits clés des documents joints, avec leurs pages.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Avant l’envoi : ce qu’une réponse a pu oublier.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Le point actuel d’un dossier, d’après ses messages.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Garder le courrier sur le téléphone';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Un compte pour lequel c’est activé n’envoie jamais son courrier à votre serveur ni à un cloud : avec un tel fournisseur, ses parties IA restent masquées. Un modèle sur ce téléphone peut quand même le lire.';
+
+  @override
+  String get settingsAiUsage => 'Utilisation et coût estimé';
+
+  @override
+  String get settingsAiUsageToday => 'Aujourd’hui';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Ce mois-ci';
+
+  @override
+  String get settingsAiUsageAll => 'Tout';
+
+  @override
+  String get settingsAiUsageNone => 'Aucune requête';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count requêtes', one: '$count requête');
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input jetons en entrée, $output en sortie';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count requêtes non déclarées',
+      one: '$count requête non déclarée',
+    );
+    return '$input jetons en entrée, $output en sortie ; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Jetons non déclarés';
+
+  @override
+  String get settingsAiUsageTotal => 'Total';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe garde une trace de chaque requête sur ce téléphone : la tâche, le fournisseur, le modèle, le nombre de jetons et les heures, jamais ce qui a été envoyé ou répondu. Les jetons qu’un fournisseur n’a pas déclarés apparaissent comme non déclarés, jamais comme zéro.';
+
+  @override
+  String get settingsAiCostNone => 'Aucun coût';
+
+  @override
+  String get settingsAiCostUnknown => 'Inconnu';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Au moins $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Prix utilisés';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input en entrée, $output en sortie';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Dollars américains par million de jetons : prix catalogue de $source au $date. Ce sont des estimations, pas une facture : la page d’utilisation de votre fournisseur fait foi. Un modèle sans prix ici affiche « Inconnu ».';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Supprimer les résultats dérivés';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Résumés, recherches proposées et autres réponses gardés pour être réutilisés, uniquement sur ce téléphone. Les supprimer conserve votre courrier et ce que vous avez décidé, comme les éléments cochés, les actions et les dossiers ; les fonctions les refont au besoin.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Supprimer $count résultats ?',
+      one: 'Supprimer $count résultat ?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Supprimer aussi les $count résultats qu’il a produits ?',
+      one: 'Supprimer aussi $count résultat qu’il a produit ?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Votre courrier et ce que vous avez décidé restent. Les fonctions refont les résultats quand elles en ont besoin.';
+
+  @override
+  String get settingsAiDeleteResults => 'Supprimer les résultats';
 }

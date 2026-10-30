@@ -6393,5 +6393,322 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Bir cümleyi denetleyip düzenleyebileceğiniz bir aramaya dönüştürür. Şimdilik yerleşik demo çevirir: model yok, ağ yok.';
+      'Loupe’un özelliklerinin seçtiğiniz modele sormasını sağlar. Kapalıyken hiçbir modele bir şey sorulmaz; e-posta, arama ve kurallar eskisi gibi çalışır.';
+
+  @override
+  String get settingsAiProviderHeader => 'Sağlayıcı';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Yalnızca seçtiğiniz sağlayıcı kullanılır. Başarısız olursa ya da kurulmamışsa Loupe bunu söyler ve başka hiçbir yere bir şey göndermez.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Bu sağlayıcı henüz kurulmadı, bu yüzden özellikler yapay zekâ bölümü göstermiyor.';
+
+  @override
+  String get settingsAiDemo => 'Yerleşik demo';
+
+  @override
+  String get settingsAiDemoDetail => 'Bu telefonda. Model yok: özellikleri denemek için birkaç kural.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Bulut: Claude, kendi API anahtarınızla.';
+
+  @override
+  String get settingsAiServer => 'Sunucum';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Sunucunuz, ağ üzerinden: Ollama, LM Studio ya da OpenAI uyumlu API’si olan başka bir sunucu.';
+
+  @override
+  String get settingsAiOnPhone => 'Bu telefonda';
+
+  @override
+  String get settingsAiOnPhoneDetail => 'Henüz kullanılamıyor: cihazdaki model telefonlarda hâlâ test ediliyor.';
+
+  @override
+  String get settingsAiNotSetUp => 'Kurulmadı';
+
+  @override
+  String get settingsAiNotSet => 'Ayarlanmadı';
+
+  @override
+  String get settingsAiKeySaved => 'Kaydedildi';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Okunamıyor';
+
+  @override
+  String get settingsAiApiKey => 'API anahtarı';
+
+  @override
+  String get settingsAiModel => 'Model';
+
+  @override
+  String get settingsAiOtherModel => 'Başka model…';
+
+  @override
+  String get settingsAiModelId => 'Model kimliği';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Anthropic API anahtarı';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Bu telefonun anahtar deposunda saklanır ve yalnızca api.anthropic.com’a, isteğin üst bilgisinde gönderilir; asla modelin okuduğu içeriğin parçası olarak değil.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Sunucu API anahtarı';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'İsteğe bağlı: yoksa boş bırakın. Bu telefonun anahtar deposunda saklanır ve yalnızca sunucunuza, isteğin üst bilgisinde gönderilir; asla modelin okuduğu içeriğin parçası olarak değil.';
+
+  @override
+  String get settingsAiServerAddress => 'Adres';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Sunucu adresi';
+
+  @override
+  String get settingsAiServerAddressMessage => 'API yolu dahil, örneğin Ollama için http://192.168.1.20:11434/v1.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Bu bir http:// ya da https:// adresi değil.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Model adı';
+
+  @override
+  String get settingsAiServerModelMessage => 'Sunucunuzun verdiği adla, örneğin llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Bağlantıyı test et';
+
+  @override
+  String get settingsAiTesting => 'Test ediliyor…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model $seconds s içinde yanıt verdi';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Test başarısız';
+
+  @override
+  String get settingsAiTestInvalid => 'Model yanıt verdi, ancak Loupe’un istediği biçimde değil.';
+
+  @override
+  String get settingsAiRemoveKey => 'Anahtarı kaldır';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Anthropic API anahtarı kaldırılsın mı?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe onu bu telefonun anahtar deposundan siler ve Anthropic’e istek göndermeyi bırakır. Başka bir sağlayıcıya geçmez. Anahtarın kendisini iptal etmek için onu Anthropic Console’da silin.';
+
+  @override
+  String get settingsAiRemoveServer => 'Sunucuyu kaldır';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Sunucunuz kaldırılsın mı?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe sunucunun adresini ve modelini unutur, anahtarını bu telefonun anahtar deposundan siler ve ona istek göndermeyi bırakır. Başka bir sağlayıcıya geçmez.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Anthropic’in veri saklama politikası';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Demo bu telefonda çalışır ve hiçbir yere bir şey göndermez. Bir model değildir: birkaç tür isteği basit kurallarla yanıtlar ve yanıtları bunu belirtir.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'İstekler internet üzerinden anahtarınızla Anthropic’e (api.anthropic.com) gider. Her biri yalnızca bir özelliğin ihtiyacını içerir: yazdığınız cümle ve hesaplarınızın adları ya da bir iletinin konusu, göndereni, tarihi, metni ve eklerinin adları. Asla eklerin kendisi, hesap parolaları veya anahtar değil. Sonuçlar bu telefonda kalır; Anthropic’in neyi sakladığı kendi saklama politikasına bağlıdır.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'İstekler bu telefondan çıkıp sunucunuza gider: evde bile ağ üzerinden işlemedir. Her biri yalnızca bir özelliğin ihtiyacını içerir: yazdığınız cümle ve hesaplarınızın adları ya da bir iletinin konusu, göndereni, tarihi, metni ve eklerinin adları. Asla eklerin kendisi, hesap parolaları veya anahtar değil. Sonuçlar bu telefonda kalır; sunucunun neyi sakladığı nasıl kurulduğuna bağlıdır.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Bu adres şifreli değil (http): ağdaki başkaları gönderilenleri okuyabilir.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Özellikler';
+
+  @override
+  String get settingsAiFeaturesFooter => 'Kapalı bir özellik yapay zekâ bölümü göstermez ve hiçbir modele sormaz.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Kısaca';
+
+  @override
+  String get settingsAiFeatureActions => 'Önerilen eylemler';
+
+  @override
+  String get settingsAiFeatureRules => 'Kural tarif et';
+
+  @override
+  String get settingsAiFeatureChanges => 'Ne değişti';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Belge bilgileri';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Yanıt denetimi';
+
+  @override
+  String get settingsAiFeatureMatters => 'Konunun durumu';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'Aramada: bir cümle, denetleyebileceğiniz bir aramaya dönüşür.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'Bir iletide: sizden ne istediği, ilgili bölümlerle.';
+
+  @override
+  String get settingsAiFeatureActionsDetail =>
+      '“Benden bekleyenler” ve “Başkalarından beklenenler” için öğeler önerir.';
+
+  @override
+  String get settingsAiFeatureRulesDetail =>
+      'Kurallar’da: bir tarif, kaydetmeden önce denetlediğiniz bir kurala dönüşür.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'İletileri karşılaştır’da: anlamda ne değiştiği, kaynaklarıyla.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Ekli belgelerin temel bilgileri, sayfalarıyla.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Göndermeden önce: bir yanıtın neyi atlamış olabileceği.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Bir konunun son durumu, e-postalarından.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'E-postayı telefonda tut';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Bunun açık olduğu bir hesap e-postasını asla sunucunuza ya da bir buluta göndermez: böyle bir sağlayıcıyla yapay zekâ bölümleri gizli kalır. Bu telefondaki bir model yine de okuyabilir.';
+
+  @override
+  String get settingsAiUsage => 'Kullanım ve tahmini maliyet';
+
+  @override
+  String get settingsAiUsageToday => 'Bugün';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Bu ay';
+
+  @override
+  String get settingsAiUsageAll => 'Tümü';
+
+  @override
+  String get settingsAiUsageNone => 'İstek yok';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count istek', one: '1 istek');
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input token giriş, $output çıkış';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count istek bildirilmedi',
+      one: '1 istek bildirilmedi',
+    );
+    return '$input token giriş, $output çıkış; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Token sayısı bildirilmedi';
+
+  @override
+  String get settingsAiUsageTotal => 'Toplam';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe bu telefonda her isteğin kaydını tutar: görev, sağlayıcı, model, token sayıları ve saatler; asla neyin gönderildiği ya da yanıtlandığı değil. Bir sağlayıcının bildirmediği token sayıları sıfır olarak değil, bildirilmedi olarak gösterilir.';
+
+  @override
+  String get settingsAiCostNone => 'Ücretsiz';
+
+  @override
+  String get settingsAiCostUnknown => 'Bilinmiyor';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'En az $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Kullanılan fiyatlar';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input giriş, $output çıkış';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Milyon token başına ABD doları: $source liste fiyatları, $date itibarıyla. Bunlar tahmindir, fatura değildir: geçerli olan sağlayıcınızın kendi kullanım sayfasıdır. Burada fiyatı olmayan bir model “Bilinmiyor” gösterir.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Türetilmiş sonuçları sil';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Yeniden kullanmak için saklanan özetler, önerilen aramalar ve diğer yanıtlar, yalnızca bu telefonda. Silmek e-postanızı ve verdiğiniz kararları (işaretlenen öğeler, eylemler, konular) korur; özellikler gerektiğinde onları yeniden oluşturur.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sonuç silinsin mi?',
+      one: '1 sonuç silinsin mi?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Onun oluşturduğu $count sonuç da silinsin mi?',
+      one: 'Onun oluşturduğu sonuç da silinsin mi?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'E-postanız ve verdiğiniz kararlar kalır. Özellikler sonuçları ihtiyaç duyduklarında yeniden oluşturur.';
+
+  @override
+  String get settingsAiDeleteResults => 'Sonuçları sil';
 }

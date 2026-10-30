@@ -10377,11 +10377,533 @@ abstract class AppLocalizations {
   /// **'Private AI'**
   String get settingsAiHeader;
 
-  /// No description provided for @settingsAiAssistDetail.
+  /// Under Private AI's main switch (Settings › Private AI), which every AI feature waits on.
   ///
   /// In en, this message translates to:
-  /// **'Turn a sentence into a search you can check and edit. For now the built-in demo translates; no model, no network.'**
+  /// **'Lets Loupe’s features ask the model you choose. Off, no model is asked anything, and mail, search and rules work as before.'**
   String get settingsAiAssistDetail;
+
+  /// Section header in Settings › Private AI: where the model runs (the built-in demo, Anthropic, the user's own server, this phone). One is picked.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider'**
+  String get settingsAiProviderHeader;
+
+  /// No description provided for @settingsAiProviderFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the provider you pick is used. If it fails or isn’t set up, Loupe says so and sends nothing anywhere else.'**
+  String get settingsAiProviderFooter;
+
+  /// Under the provider list when the picked provider lacks its API key or server address.
+  ///
+  /// In en, this message translates to:
+  /// **'This provider isn’t set up yet, so the features show no AI parts.'**
+  String get settingsAiNotSetUpFooter;
+
+  /// A provider: Loupe's built-in demo, a few rules instead of a model.
+  ///
+  /// In en, this message translates to:
+  /// **'Built-in Demo'**
+  String get settingsAiDemo;
+
+  /// No description provided for @settingsAiDemoDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'On this phone. No model: a few rules, to try the features.'**
+  String get settingsAiDemoDetail;
+
+  /// Under the provider Anthropic. Claude is the name of Anthropic's models; keep it.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud: Claude, with your own API key.'**
+  String get settingsAiAnthropicDetail;
+
+  /// A provider: a server the user runs (Ollama, LM Studio). Also a section header.
+  ///
+  /// In en, this message translates to:
+  /// **'My Server'**
+  String get settingsAiServer;
+
+  /// Under the provider My Server. Ollama, LM Studio and OpenAI are names; keep them.
+  ///
+  /// In en, this message translates to:
+  /// **'Your server, over the network: Ollama, LM Studio or another server with an OpenAI-compatible API.'**
+  String get settingsAiServerDetail;
+
+  /// A provider: a model that runs on the phone itself. Not available yet.
+  ///
+  /// In en, this message translates to:
+  /// **'On This Phone'**
+  String get settingsAiOnPhone;
+
+  /// No description provided for @settingsAiOnPhoneDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available yet: the on-device model is still being tested on phones.'**
+  String get settingsAiOnPhoneDetail;
+
+  /// Value beside Private AI in Settings: the picked provider lacks its key or server.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Set Up'**
+  String get settingsAiNotSetUp;
+
+  /// Value of a provider setting that is empty (API key, server address, model).
+  ///
+  /// In en, this message translates to:
+  /// **'Not Set'**
+  String get settingsAiNotSet;
+
+  /// Value beside API Key: a key is in the phone's keychain. The key itself is never shown.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get settingsAiKeySaved;
+
+  /// Value beside API Key when the phone's keychain could not be read.
+  ///
+  /// In en, this message translates to:
+  /// **'Unreadable'**
+  String get settingsAiKeyUnreadable;
+
+  /// No description provided for @settingsAiApiKey.
+  ///
+  /// In en, this message translates to:
+  /// **'API Key'**
+  String get settingsAiApiKey;
+
+  /// Row and action sheet title: which model of the provider answers.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get settingsAiModel;
+
+  /// Action sheet button: type a model ID that isn't in the list.
+  ///
+  /// In en, this message translates to:
+  /// **'Other Model…'**
+  String get settingsAiOtherModel;
+
+  /// Title of the prompt for a model's ID, such as claude-sonnet-5-5.
+  ///
+  /// In en, this message translates to:
+  /// **'Model ID'**
+  String get settingsAiModelId;
+
+  /// No description provided for @settingsAiAnthropicKeyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Anthropic API Key'**
+  String get settingsAiAnthropicKeyTitle;
+
+  /// No description provided for @settingsAiAnthropicKeyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept in this phone’s keychain and sent only to api.anthropic.com, in the request’s header, never as part of what the model reads.'**
+  String get settingsAiAnthropicKeyMessage;
+
+  /// No description provided for @settingsAiServerKeyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Server API Key'**
+  String get settingsAiServerKeyTitle;
+
+  /// No description provided for @settingsAiServerKeyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional: leave it empty for none. Kept in this phone’s keychain and sent only to your server, in the request’s header, never as part of what the model reads.'**
+  String get settingsAiServerKeyMessage;
+
+  /// Row: the web address of the user's AI server.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get settingsAiServerAddress;
+
+  /// No description provided for @settingsAiServerAddressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Server Address'**
+  String get settingsAiServerAddressTitle;
+
+  /// No description provided for @settingsAiServerAddressMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to and including the API path, such as http://192.168.1.20:11434/v1 for Ollama.'**
+  String get settingsAiServerAddressMessage;
+
+  /// Snack bar after entering a server address that can't be used.
+  ///
+  /// In en, this message translates to:
+  /// **'That isn’t an http:// or https:// address.'**
+  String get settingsAiServerAddressInvalid;
+
+  /// No description provided for @settingsAiServerModelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Model Name'**
+  String get settingsAiServerModelTitle;
+
+  /// No description provided for @settingsAiServerModelMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'As your server names it, such as llama3.2.'**
+  String get settingsAiServerModelMessage;
+
+  /// Button: send one tiny request to the provider to see whether it answers.
+  ///
+  /// In en, this message translates to:
+  /// **'Test Connection'**
+  String get settingsAiTestConnection;
+
+  /// No description provided for @settingsAiTesting.
+  ///
+  /// In en, this message translates to:
+  /// **'Testing…'**
+  String get settingsAiTesting;
+
+  /// After Test Connection worked. s is seconds.
+  ///
+  /// In en, this message translates to:
+  /// **'{model} answered in {seconds} s'**
+  String settingsAiTestOk(String model, String seconds);
+
+  /// After Test Connection did not work; the provider's own message shows below it.
+  ///
+  /// In en, this message translates to:
+  /// **'Test Failed'**
+  String get settingsAiTestFailed;
+
+  /// No description provided for @settingsAiTestInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The model answered, but not in the form Loupe asked for.'**
+  String get settingsAiTestInvalid;
+
+  /// Button: delete the Anthropic API key from the phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Key'**
+  String get settingsAiRemoveKey;
+
+  /// No description provided for @settingsAiRemoveKeyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove the Anthropic API key?'**
+  String get settingsAiRemoveKeyTitle;
+
+  /// Anthropic Console is the name of Anthropic's website for keys; keep it.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe deletes it from this phone’s keychain and stops sending requests to Anthropic. It won’t switch to another provider. To revoke the key itself, delete it in the Anthropic Console.'**
+  String get settingsAiRemoveKeyMessage;
+
+  /// Button: forget the user's AI server (address, model, key).
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Server'**
+  String get settingsAiRemoveServer;
+
+  /// No description provided for @settingsAiRemoveServerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove your server?'**
+  String get settingsAiRemoveServerTitle;
+
+  /// No description provided for @settingsAiRemoveServerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe forgets its address and model, deletes its key from this phone’s keychain and stops sending it requests. It won’t switch to another provider.'**
+  String get settingsAiRemoveServerMessage;
+
+  /// Row that opens Anthropic's page on how long it keeps API requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Anthropic’s Data Retention'**
+  String get settingsAiAnthropicRetention;
+
+  /// No description provided for @settingsAiDemoDisclosure.
+  ///
+  /// In en, this message translates to:
+  /// **'The demo runs on this phone and sends nothing anywhere. It isn’t a model: it answers a few kinds of request with simple rules, and its answers say so.'**
+  String get settingsAiDemoDisclosure;
+
+  /// What a request to the cloud provider contains, under its settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests go over the internet to Anthropic (api.anthropic.com), with your key. Each holds only what one feature needs: the sentence you typed and your accounts’ names, or one message’s subject, sender, date, text and attachment names. Never the attachments themselves, account passwords or the key. Results are kept on this phone; what Anthropic keeps is set by its own retention policy.'**
+  String get settingsAiAnthropicDisclosure;
+
+  /// What a request to the user's own server contains, under its settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests leave this phone for your server: network processing, even at home. Each holds only what one feature needs: the sentence you typed and your accounts’ names, or one message’s subject, sender, date, text and attachment names. Never the attachments themselves, account passwords or the key. Results are kept on this phone; what the server keeps is up to how it’s set up.'**
+  String get settingsAiServerDisclosure;
+
+  /// No description provided for @settingsAiServerUnencrypted.
+  ///
+  /// In en, this message translates to:
+  /// **'This address isn’t encrypted (http): others on the network can read what is sent.'**
+  String get settingsAiServerUnencrypted;
+
+  /// No description provided for @settingsAiFeaturesHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get settingsAiFeaturesHeader;
+
+  /// No description provided for @settingsAiFeaturesFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'A feature that’s off shows no AI part and asks no model.'**
+  String get settingsAiFeaturesFooter;
+
+  /// An AI feature's name: a short account of what a message asks of the reader.
+  ///
+  /// In en, this message translates to:
+  /// **'Brief'**
+  String get settingsAiFeatureBrief;
+
+  /// An AI feature's name: proposed to-dos for the Needs My Action and Waiting on Others folders.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested Actions'**
+  String get settingsAiFeatureActions;
+
+  /// An AI feature's name: a rule made from a description in the user's words.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe a Rule'**
+  String get settingsAiFeatureRules;
+
+  /// An AI feature's name, in Compare Messages: what changed in meaning between two messages.
+  ///
+  /// In en, this message translates to:
+  /// **'What Changed'**
+  String get settingsAiFeatureChanges;
+
+  /// An AI feature's name: key facts of attached documents.
+  ///
+  /// In en, this message translates to:
+  /// **'Document Facts'**
+  String get settingsAiFeatureDocuments;
+
+  /// An AI feature's name, in compose: what a reply may have missed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply Check'**
+  String get settingsAiFeatureReplyCheck;
+
+  /// An AI feature's name: the latest position of a matter (a group of related conversations, such as a house purchase).
+  ///
+  /// In en, this message translates to:
+  /// **'Matter Status'**
+  String get settingsAiFeatureMatters;
+
+  /// No description provided for @settingsAiFeatureSearchDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'In search: a sentence becomes a search you can check.'**
+  String get settingsAiFeatureSearchDetail;
+
+  /// No description provided for @settingsAiFeatureBriefDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'In a message: what it asks of you, with the passages.'**
+  String get settingsAiFeatureBriefDetail;
+
+  /// Needs My Action and Waiting on Others are folder names; use the app's names for them.
+  ///
+  /// In en, this message translates to:
+  /// **'Proposes items for Needs My Action and Waiting on Others.'**
+  String get settingsAiFeatureActionsDetail;
+
+  /// No description provided for @settingsAiFeatureRulesDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'In Rules: a description becomes a rule you check before saving.'**
+  String get settingsAiFeatureRulesDetail;
+
+  /// No description provided for @settingsAiFeatureChangesDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'In Compare Messages: what changed in meaning, with sources.'**
+  String get settingsAiFeatureChangesDetail;
+
+  /// No description provided for @settingsAiFeatureDocumentsDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Key facts of attached documents, with their pages.'**
+  String get settingsAiFeatureDocumentsDetail;
+
+  /// No description provided for @settingsAiFeatureReplyCheckDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Before you send: what a reply may have missed.'**
+  String get settingsAiFeatureReplyCheckDetail;
+
+  /// No description provided for @settingsAiFeatureMattersDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'A matter’s latest position, from its mail.'**
+  String get settingsAiFeatureMattersDetail;
+
+  /// Section header above a switch per account: that account's mail is never sent to a network provider.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Mail on the Phone'**
+  String get settingsAiLocalOnlyHeader;
+
+  /// No description provided for @settingsAiLocalOnlyFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'An account that’s on never sends its mail to your server or a cloud: with such a provider, its AI parts stay hidden. A model on this phone can still read it.'**
+  String get settingsAiLocalOnlyFooter;
+
+  /// Row and screen title: requests, tokens and the estimated cost of Private AI.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage & Estimated Cost'**
+  String get settingsAiUsage;
+
+  /// Period of the usage shown: today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get settingsAiUsageToday;
+
+  /// Period of the usage shown: this calendar month.
+  ///
+  /// In en, this message translates to:
+  /// **'This Month'**
+  String get settingsAiUsageThisMonth;
+
+  /// Period of the usage shown: every record on the phone.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get settingsAiUsageAll;
+
+  /// In place of the usage when no request was sent in the period.
+  ///
+  /// In en, this message translates to:
+  /// **'No Requests'**
+  String get settingsAiUsageNone;
+
+  /// Requests sent to a provider.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 request} other{{count} requests}}'**
+  String settingsAiUsageRequests(int count);
+
+  /// Tokens (units of text a model reads and writes) sent to and received from a provider.
+  ///
+  /// In en, this message translates to:
+  /// **'{input} tokens in, {output} out'**
+  String settingsAiUsageTokens(String input, String output);
+
+  /// Tokens, when the provider gave no token counts for some requests: those are not in the sums.
+  ///
+  /// In en, this message translates to:
+  /// **'{input} tokens in, {output} out; {count, plural, =1{1 request} other{{count} requests}} not reported'**
+  String settingsAiUsageTokensPartly(int count, String input, String output);
+
+  /// The provider gave no token counts: they are unknown, not zero.
+  ///
+  /// In en, this message translates to:
+  /// **'Tokens not reported'**
+  String get settingsAiUsageTokensUnreported;
+
+  /// No description provided for @settingsAiUsageTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get settingsAiUsageTotal;
+
+  /// No description provided for @settingsAiUsageFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe keeps a record of each request on this phone: the task, provider, model, token counts and times, never what was sent or answered. Token counts a provider didn’t report show as not reported, never as zero.'**
+  String get settingsAiUsageFooter;
+
+  /// Estimated cost of requests that ran on the phone.
+  ///
+  /// In en, this message translates to:
+  /// **'No Cost'**
+  String get settingsAiCostNone;
+
+  /// Estimated cost when the model's price or the token counts are unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get settingsAiCostUnknown;
+
+  /// An estimated cost.
+  ///
+  /// In en, this message translates to:
+  /// **'≈ {amount}'**
+  String settingsAiCostEstimate(String amount);
+
+  /// An estimated cost when part of it is unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'At least {amount}'**
+  String settingsAiCostAtLeast(String amount);
+
+  /// Section header: the model prices the cost estimate uses.
+  ///
+  /// In en, this message translates to:
+  /// **'Prices Used'**
+  String get settingsAiPricesHeader;
+
+  /// A model's price per million tokens read (in) and written (out).
+  ///
+  /// In en, this message translates to:
+  /// **'{input} in, {output} out'**
+  String settingsAiPrice(String input, String output);
+
+  /// Under the price list.
+  ///
+  /// In en, this message translates to:
+  /// **'US dollars per million tokens: {source}’s list prices on {date}. These are estimates, not a bill: your provider’s own usage page is the record. A model without a price here shows Unknown.'**
+  String settingsAiPricesFooter(String source, String date);
+
+  /// Button: delete what Private AI made (briefs, proposed searches) without touching mail.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Derived Results'**
+  String get settingsAiDeleteDerived;
+
+  /// No description provided for @settingsAiDeleteDerivedFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'Briefs, proposed searches and other answers kept to reuse, on this phone only. Deleting them keeps your mail and what you decided, such as ticked items, actions and matters; features make them again when needed.'**
+  String get settingsAiDeleteDerivedFooter;
+
+  /// No description provided for @settingsAiDeleteDerivedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Delete 1 result?} other{Delete {count} results?}}'**
+  String settingsAiDeleteDerivedTitle(int count);
+
+  /// After removing a provider: delete what that provider made too?
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Also delete the result it made?} other{Also delete the {count} results it made?}}'**
+  String settingsAiDeleteItsResultsTitle(int count);
+
+  /// No description provided for @settingsAiDeleteDerivedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your mail and what you decided stay. Features make results again when they need them.'**
+  String get settingsAiDeleteDerivedMessage;
+
+  /// Button in the confirmation of Delete Derived Results.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Results'**
+  String get settingsAiDeleteResults;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

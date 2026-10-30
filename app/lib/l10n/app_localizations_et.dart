@@ -6412,5 +6412,319 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Muudab lause otsinguks, mida saad kontrollida ja muuta. Praegu tõlgib sisseehitatud demo: ei mudelit ega võrku.';
+      'Laseb Loupe’i funktsioonidel küsida sinu valitud mudelilt. Väljas olles ei küsita ühelt mudelilt midagi ning post, otsing ja reeglid töötavad nagu enne.';
+
+  @override
+  String get settingsAiProviderHeader => 'Teenusepakkuja';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Kasutatakse ainult sinu valitud teenusepakkujat. Kui see ebaõnnestub või pole seadistatud, ütleb Loupe seda ega saada midagi mujale.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'See teenusepakkuja pole veel seadistatud, nii et funktsioonid ei näita tehisaru osi.';
+
+  @override
+  String get settingsAiDemo => 'Sisseehitatud demo';
+
+  @override
+  String get settingsAiDemoDetail => 'Selles telefonis. Mudelit pole: mõni reegel funktsioonide proovimiseks.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Pilv: Claude sinu enda API-võtmega.';
+
+  @override
+  String get settingsAiServer => 'Minu server';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Sinu server võrgu kaudu: Ollama, LM Studio või muu OpenAI-ühilduva API-ga server.';
+
+  @override
+  String get settingsAiOnPhone => 'Selles telefonis';
+
+  @override
+  String get settingsAiOnPhoneDetail => 'Pole veel saadaval: seadmes töötavat mudelit alles testitakse telefonides.';
+
+  @override
+  String get settingsAiNotSetUp => 'Seadistamata';
+
+  @override
+  String get settingsAiNotSet => 'Määramata';
+
+  @override
+  String get settingsAiKeySaved => 'Salvestatud';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Loetamatu';
+
+  @override
+  String get settingsAiApiKey => 'API-võti';
+
+  @override
+  String get settingsAiModel => 'Mudel';
+
+  @override
+  String get settingsAiOtherModel => 'Muu mudel…';
+
+  @override
+  String get settingsAiModelId => 'Mudeli ID';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Anthropicu API-võti';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Hoitakse selle telefoni võtmehoidlas ja saadetakse ainult aadressile api.anthropic.com päringu päises, mitte kunagi osana sellest, mida mudel loeb.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Serveri API-võti';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Valikuline: jäta tühjaks, kui võtit pole. Hoitakse selle telefoni võtmehoidlas ja saadetakse ainult sinu serverisse päringu päises, mitte kunagi osana sellest, mida mudel loeb.';
+
+  @override
+  String get settingsAiServerAddress => 'Aadress';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Serveri aadress';
+
+  @override
+  String get settingsAiServerAddressMessage => 'Koos API teega, näiteks http://192.168.1.20:11434/v1 Ollama jaoks.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'See pole http://- ega https://-aadress.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Mudeli nimi';
+
+  @override
+  String get settingsAiServerModelMessage => 'Nii, nagu sinu server seda nimetab, näiteks llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Testi ühendust';
+
+  @override
+  String get settingsAiTesting => 'Testimine…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model vastas $seconds s-ga';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Test ebaõnnestus';
+
+  @override
+  String get settingsAiTestInvalid => 'Mudel vastas, kuid mitte sellisel kujul, nagu Loupe palus.';
+
+  @override
+  String get settingsAiRemoveKey => 'Eemalda võti';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Kas eemaldada Anthropicu API-võti?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe kustutab selle telefoni võtmehoidlast ega saada enam päringuid Anthropicule. See ei lülitu teisele teenusepakkujale. Võtme enda tühistamiseks kustuta see Anthropic Console’is.';
+
+  @override
+  String get settingsAiRemoveServer => 'Eemalda server';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Kas eemaldada sinu server?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe unustab selle aadressi ja mudeli, kustutab selle võtme telefoni võtmehoidlast ega saada sellele enam päringuid. See ei lülitu teisele teenusepakkujale.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Anthropicu andmete säilitamine';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Demo töötab selles telefonis ega saada midagi kuhugi. See pole mudel: see vastab mõnele päringuliigile lihtsate reeglitega ja selle vastused ütlevad seda.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Päringud lähevad interneti kaudu Anthropicule (api.anthropic.com) sinu võtmega. Igaüks sisaldab ainult seda, mida üks funktsioon vajab: sinu sisestatud lauset ja kontode nimesid või ühe kirja teemat, saatjat, kuupäeva, teksti ja manuste nimesid. Mitte kunagi manuseid endid, kontode paroole ega võtit. Tulemused jäävad sellesse telefoni; mida Anthropic säilitab, määrab tema enda säilituspoliitika.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Päringud lahkuvad sellest telefonist sinu serverisse: see on võrgu kaudu töötlemine, ka kodus. Igaüks sisaldab ainult seda, mida üks funktsioon vajab: sinu sisestatud lauset ja kontode nimesid või ühe kirja teemat, saatjat, kuupäeva, teksti ja manuste nimesid. Mitte kunagi manuseid endid, kontode paroole ega võtit. Tulemused jäävad sellesse telefoni; mida server säilitab, sõltub selle seadistusest.';
+
+  @override
+  String get settingsAiServerUnencrypted => 'See aadress pole krüptitud (http): teised võrgus saavad saadetut lugeda.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Funktsioonid';
+
+  @override
+  String get settingsAiFeaturesFooter => 'Väljalülitatud funktsioon ei näita tehisaru osa ega küsi ühegi mudeli käest.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Lühidalt';
+
+  @override
+  String get settingsAiFeatureActions => 'Soovitatud toimingud';
+
+  @override
+  String get settingsAiFeatureRules => 'Kirjelda reeglit';
+
+  @override
+  String get settingsAiFeatureChanges => 'Mis muutus';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Dokumentide faktid';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Vastuse kontroll';
+
+  @override
+  String get settingsAiFeatureMatters => 'Asja seis';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'Otsingus: lausest saab otsing, mida saad kontrollida.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'Kirjas: mida see sinult palub, koos lõikudega.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Soovitab kirjeid kaustadesse „Ootab mind“ ja „Ootab teisi“.';
+
+  @override
+  String get settingsAiFeatureRulesDetail => 'Reeglites: kirjeldusest saab reegel, mida enne salvestamist kontrollid.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'Kirjade võrdluses: mis muutus sisuliselt, koos allikatega.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Manustatud dokumentide põhifaktid koos lehekülgedega.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Enne saatmist: mis võis vastusest välja jääda.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Asja viimane seis selle kirjade põhjal.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Hoia post telefonis';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Konto, millel see on sees, ei saada oma posti kunagi sinu serverisse ega pilve: sellise teenusepakkujaga jäävad selle tehisaru osad peidetuks. Selles telefonis töötav mudel saab seda siiski lugeda.';
+
+  @override
+  String get settingsAiUsage => 'Kasutus ja hinnanguline kulu';
+
+  @override
+  String get settingsAiUsageToday => 'Täna';
+
+  @override
+  String get settingsAiUsageThisMonth => 'See kuu';
+
+  @override
+  String get settingsAiUsageAll => 'Kõik';
+
+  @override
+  String get settingsAiUsageNone => 'Päringuid pole';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count päringut', one: '1 päring');
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input tokenit sisse, $output välja';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count päringu kohta andmed puuduvad',
+      one: '1 päringu kohta andmed puuduvad',
+    );
+    return '$input tokenit sisse, $output välja; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Tokenite andmed puuduvad';
+
+  @override
+  String get settingsAiUsageTotal => 'Kokku';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe peab selles telefonis iga päringu kohta arvet: ülesanne, teenusepakkuja, mudel, tokenite arv ja ajad, mitte kunagi see, mis saadeti või vastati. Tokenite arvud, mida teenusepakkuja ei teatanud, näidatakse teatamata, mitte kunagi nullina.';
+
+  @override
+  String get settingsAiCostNone => 'Kulu pole';
+
+  @override
+  String get settingsAiCostUnknown => 'Teadmata';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Vähemalt $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Kasutatud hinnad';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input sisse, $output välja';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'USA dollarit miljoni tokeni kohta: $source hinnakirja hinnad seisuga $date. Need on hinnangud, mitte arve: määrav on sinu teenusepakkuja enda kasutuslehekülg. Mudel, millel siin hinda pole, näitab „Teadmata“.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Kustuta tuletatud tulemused';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Kokkuvõtted, soovitatud otsingud ja muud vastused, mida hoitakse taaskasutuseks, ainult selles telefonis. Kustutamisel jäävad alles sinu post ja sinu otsused, näiteks märgitud punktid, toimingud ja asjad; funktsioonid teevad need vajaduse korral uuesti.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Kas kustutada $count tulemust?',
+      one: 'Kas kustutada 1 tulemus?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Kas kustutada ka tema tehtud $count tulemust?',
+      one: 'Kas kustutada ka tema tehtud tulemus?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Sinu post ja sinu otsused jäävad alles. Funktsioonid teevad tulemused uuesti, kui neid vajavad.';
+
+  @override
+  String get settingsAiDeleteResults => 'Kustuta tulemused';
 }

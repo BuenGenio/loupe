@@ -6417,5 +6417,322 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Breytir setningu í leit sem þú getur skoðað og breytt. Í bili þýðir innbyggða sýnisútgáfan: ekkert líkan, ekkert net.';
+      'Leyfir eiginleikum Loupe að spyrja líkanið sem þú velur. Þegar slökkt er á þessu er ekkert líkan spurt neins, og póstur, leit og reglur virka eins og áður.';
+
+  @override
+  String get settingsAiProviderHeader => 'Þjónustuveita';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Aðeins þjónustuveitan sem þú velur er notuð. Ef hún bregst eða er ekki uppsett segir Loupe frá því og sendir ekkert annað.';
+
+  @override
+  String get settingsAiNotSetUpFooter =>
+      'Þessi þjónustuveita er ekki uppsett enn, svo eiginleikarnir sýna enga gervigreindarhluta.';
+
+  @override
+  String get settingsAiDemo => 'Innbyggð sýnisútgáfa';
+
+  @override
+  String get settingsAiDemoDetail => 'Í þessum síma. Ekkert líkan: nokkrar reglur til að prófa eiginleikana.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Ský: Claude, með þínum eigin API-lykli.';
+
+  @override
+  String get settingsAiServer => 'Netþjónninn minn';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Netþjónninn þinn, yfir netið: Ollama, LM Studio eða annar netþjónn með API sem er samhæft OpenAI.';
+
+  @override
+  String get settingsAiOnPhone => 'Í þessum síma';
+
+  @override
+  String get settingsAiOnPhoneDetail => 'Ekki tiltækt enn: líkanið í tækinu er enn í prófunum á símum.';
+
+  @override
+  String get settingsAiNotSetUp => 'Ekki uppsett';
+
+  @override
+  String get settingsAiNotSet => 'Ekki stillt';
+
+  @override
+  String get settingsAiKeySaved => 'Vistaður';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Ólæsilegur';
+
+  @override
+  String get settingsAiApiKey => 'API-lykill';
+
+  @override
+  String get settingsAiModel => 'Líkan';
+
+  @override
+  String get settingsAiOtherModel => 'Annað líkan…';
+
+  @override
+  String get settingsAiModelId => 'Auðkenni líkans';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'API-lykill Anthropic';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Geymdur í lyklageymslu þessa síma og aðeins sendur á api.anthropic.com, í haus beiðninnar, aldrei sem hluti af því sem líkanið les.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'API-lykill netþjóns';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Valfrjálst: skildu eftir autt ef enginn er. Geymdur í lyklageymslu þessa síma og aðeins sendur á netþjóninn þinn, í haus beiðninnar, aldrei sem hluti af því sem líkanið les.';
+
+  @override
+  String get settingsAiServerAddress => 'Vistfang';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Vistfang netþjóns';
+
+  @override
+  String get settingsAiServerAddressMessage =>
+      'Að og með slóð API-sins, til dæmis http://192.168.1.20:11434/v1 fyrir Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Þetta er ekki http://- eða https://-vistfang.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Heiti líkans';
+
+  @override
+  String get settingsAiServerModelMessage => 'Eins og netþjónninn þinn nefnir það, til dæmis llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Prófa tengingu';
+
+  @override
+  String get settingsAiTesting => 'Prófar…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model svaraði á $seconds s';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Prófun mistókst';
+
+  @override
+  String get settingsAiTestInvalid => 'Líkanið svaraði, en ekki á því formi sem Loupe bað um.';
+
+  @override
+  String get settingsAiRemoveKey => 'Fjarlægja lykil';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Fjarlægja API-lykil Anthropic?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe eyðir honum úr lyklageymslu þessa síma og hættir að senda beiðnir til Anthropic. Það skiptir ekki yfir í aðra þjónustuveitu. Til að afturkalla lykilinn sjálfan skaltu eyða honum í Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Fjarlægja netþjón';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Fjarlægja netþjóninn þinn?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe gleymir vistfangi hans og líkani, eyðir lykli hans úr lyklageymslu þessa síma og hættir að senda honum beiðnir. Það skiptir ekki yfir í aðra þjónustuveitu.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Gagnageymsla Anthropic';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Sýnisútgáfan keyrir í þessum síma og sendir ekkert neitt. Hún er ekki líkan: hún svarar nokkrum gerðum beiðna með einföldum reglum, og svörin segja frá því.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Beiðnir fara um netið til Anthropic (api.anthropic.com), með lyklinum þínum. Hver inniheldur aðeins það sem einn eiginleiki þarf: setninguna sem þú slóst inn og heiti aðganganna þinna, eða efni, sendanda, dagsetningu, texta og heiti viðhengja eins skeytis. Aldrei viðhengin sjálf, lykilorð aðganga eða lykilinn. Niðurstöður haldast í þessum síma; hvað Anthropic geymir ræðst af eigin geymslustefnu þess.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Beiðnir fara úr þessum síma á netþjóninn þinn: vinnsla yfir netið, líka heima. Hver inniheldur aðeins það sem einn eiginleiki þarf: setninguna sem þú slóst inn og heiti aðganganna þinna, eða efni, sendanda, dagsetningu, texta og heiti viðhengja eins skeytis. Aldrei viðhengin sjálf, lykilorð aðganga eða lykilinn. Niðurstöður haldast í þessum síma; hvað netþjónninn geymir fer eftir uppsetningu hans.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Þetta vistfang er ekki dulkóðað (http): aðrir á netinu geta lesið það sem er sent.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Eiginleikar';
+
+  @override
+  String get settingsAiFeaturesFooter =>
+      'Eiginleiki sem slökkt er á sýnir engan gervigreindarhluta og spyr ekkert líkan.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Í stuttu máli';
+
+  @override
+  String get settingsAiFeatureActions => 'Tillögur að aðgerðum';
+
+  @override
+  String get settingsAiFeatureRules => 'Lýsa reglu';
+
+  @override
+  String get settingsAiFeatureChanges => 'Hvað breyttist';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Staðreyndir úr skjölum';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Yfirferð svars';
+
+  @override
+  String get settingsAiFeatureMatters => 'Staða máls';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'Í leit: setning verður að leit sem þú getur yfirfarið.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'Í skeyti: hvers það krefst af þér, með köflunum.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Leggur til atriði fyrir „Bíður mín“ og „Bíður annarra“.';
+
+  @override
+  String get settingsAiFeatureRulesDetail => 'Í Reglum: lýsing verður að reglu sem þú yfirferð áður en þú vistar.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'Í Bera saman skilaboð: hvað breyttist að merkingu, með heimildum.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'Helstu staðreyndir viðhengdra skjala, með blaðsíðum þeirra.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Áður en þú sendir: hvað svarið gæti hafa misst af.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Nýjasta staða máls, út frá pósti þess.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Halda pósti í símanum';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'Aðgangur sem kveikt er á þessu fyrir sendir aldrei póstinn sinn á netþjóninn þinn eða í ský: með slíkri þjónustuveitu haldast gervigreindarhlutar hans faldir. Líkan í þessum síma getur samt lesið hann.';
+
+  @override
+  String get settingsAiUsage => 'Notkun og áætlaður kostnaður';
+
+  @override
+  String get settingsAiUsageToday => 'Í dag';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Þessi mánuður';
+
+  @override
+  String get settingsAiUsageAll => 'Allt';
+
+  @override
+  String get settingsAiUsageNone => 'Engar beiðnir';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count beiðnir', one: '$count beiðni');
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input tókar inn, $output út';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count beiðnir án gagna',
+      one: '$count beiðni án gagna',
+    );
+    return '$input tókar inn, $output út; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Engin gögn um tóka';
+
+  @override
+  String get settingsAiUsageTotal => 'Samtals';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe skráir hverja beiðni í þessum síma: verkið, þjónustuveituna, líkanið, fjölda tóka og tíma, aldrei það sem var sent eða svarað. Fjöldi tóka sem þjónustuveita gaf ekki upp birtist sem ekki uppgefinn, aldrei sem núll.';
+
+  @override
+  String get settingsAiCostNone => 'Enginn kostnaður';
+
+  @override
+  String get settingsAiCostUnknown => 'Óþekkt';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Að minnsta kosti $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Verð sem notuð eru';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input inn, $output út';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Bandaríkjadalir á hverja milljón tóka: listaverð $source þann $date. Þetta eru áætlanir, ekki reikningur: notkunarsíða þjónustuveitunnar þinnar gildir. Líkan án verðs hér sýnir „Óþekkt“.';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Eyða afleiddum niðurstöðum';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Samantektir, tillögur að leitum og önnur svör sem eru geymd til endurnotkunar, aðeins í þessum síma. Þegar þeim er eytt haldast pósturinn þinn og ákvarðanir þínar, svo sem merkt atriði, aðgerðir og mál; eiginleikarnir búa þau til aftur þegar þarf.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Eyða $count niðurstöðum?',
+      one: 'Eyða $count niðurstöðu?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Eyða líka $count niðurstöðum sem hún bjó til?',
+      one: 'Eyða líka $count niðurstöðu sem hún bjó til?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Pósturinn þinn og ákvarðanir þínar haldast. Eiginleikarnir búa niðurstöður til aftur þegar þeir þurfa á þeim að halda.';
+
+  @override
+  String get settingsAiDeleteResults => 'Eyða niðurstöðum';
 }

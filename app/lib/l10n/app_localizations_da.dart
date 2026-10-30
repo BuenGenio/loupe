@@ -6359,5 +6359,325 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get settingsAiAssistDetail =>
-      'Gør en sætning til en søgning, du kan tjekke og redigere. Indtil videre oversætter den indbyggede demo: ingen model, intet netværk.';
+      'Lader Loupes funktioner spørge den model, du vælger. Slået fra spørges ingen model, og mail, søgning og regler virker som før.';
+
+  @override
+  String get settingsAiProviderHeader => 'Udbyder';
+
+  @override
+  String get settingsAiProviderFooter =>
+      'Kun den udbyder, du vælger, bruges. Hvis den fejler eller ikke er sat op, siger Loupe det og sender intet andre steder hen.';
+
+  @override
+  String get settingsAiNotSetUpFooter => 'Denne udbyder er ikke sat op endnu, så funktionerne viser ingen AI-dele.';
+
+  @override
+  String get settingsAiDemo => 'Indbygget demo';
+
+  @override
+  String get settingsAiDemoDetail => 'På denne telefon. Ingen model: nogle få regler, så du kan prøve funktionerne.';
+
+  @override
+  String get settingsAiAnthropicDetail => 'Sky: Claude, med din egen API-nøgle.';
+
+  @override
+  String get settingsAiServer => 'Min server';
+
+  @override
+  String get settingsAiServerDetail =>
+      'Din server, over netværket: Ollama, LM Studio eller en anden server med et OpenAI-kompatibelt API.';
+
+  @override
+  String get settingsAiOnPhone => 'På denne telefon';
+
+  @override
+  String get settingsAiOnPhoneDetail =>
+      'Ikke tilgængelig endnu: modellen på enheden bliver stadig testet på telefoner.';
+
+  @override
+  String get settingsAiNotSetUp => 'Ikke sat op';
+
+  @override
+  String get settingsAiNotSet => 'Ikke angivet';
+
+  @override
+  String get settingsAiKeySaved => 'Gemt';
+
+  @override
+  String get settingsAiKeyUnreadable => 'Ulæselig';
+
+  @override
+  String get settingsAiApiKey => 'API-nøgle';
+
+  @override
+  String get settingsAiModel => 'Model';
+
+  @override
+  String get settingsAiOtherModel => 'Anden model…';
+
+  @override
+  String get settingsAiModelId => 'Model-id';
+
+  @override
+  String get settingsAiAnthropicKeyTitle => 'Anthropic-API-nøgle';
+
+  @override
+  String get settingsAiAnthropicKeyMessage =>
+      'Gemmes i telefonens nøglelager og sendes kun til api.anthropic.com, i forespørgslens header, aldrig som en del af det, modellen læser.';
+
+  @override
+  String get settingsAiServerKeyTitle => 'Serverens API-nøgle';
+
+  @override
+  String get settingsAiServerKeyMessage =>
+      'Valgfri: lad feltet stå tomt, hvis der ikke er nogen. Gemmes i telefonens nøglelager og sendes kun til din server, i forespørgslens header, aldrig som en del af det, modellen læser.';
+
+  @override
+  String get settingsAiServerAddress => 'Adresse';
+
+  @override
+  String get settingsAiServerAddressTitle => 'Serveradresse';
+
+  @override
+  String get settingsAiServerAddressMessage => 'Til og med API-stien, fx http://192.168.1.20:11434/v1 for Ollama.';
+
+  @override
+  String get settingsAiServerAddressInvalid => 'Det er ikke en http://- eller https://-adresse.';
+
+  @override
+  String get settingsAiServerModelTitle => 'Modelnavn';
+
+  @override
+  String get settingsAiServerModelMessage => 'Som din server kalder den, fx llama3.2.';
+
+  @override
+  String get settingsAiTestConnection => 'Test forbindelse';
+
+  @override
+  String get settingsAiTesting => 'Tester…';
+
+  @override
+  String settingsAiTestOk(String model, String seconds) {
+    return '$model svarede på $seconds s';
+  }
+
+  @override
+  String get settingsAiTestFailed => 'Testen mislykkedes';
+
+  @override
+  String get settingsAiTestInvalid => 'Modellen svarede, men ikke i den form, Loupe bad om.';
+
+  @override
+  String get settingsAiRemoveKey => 'Fjern nøgle';
+
+  @override
+  String get settingsAiRemoveKeyTitle => 'Fjern Anthropic-API-nøglen?';
+
+  @override
+  String get settingsAiRemoveKeyMessage =>
+      'Loupe sletter den fra telefonens nøglelager og holder op med at sende forespørgsler til Anthropic. Loupe skifter ikke til en anden udbyder. Vil du tilbagekalde selve nøglen, så slet den i Anthropic Console.';
+
+  @override
+  String get settingsAiRemoveServer => 'Fjern server';
+
+  @override
+  String get settingsAiRemoveServerTitle => 'Fjern din server?';
+
+  @override
+  String get settingsAiRemoveServerMessage =>
+      'Loupe glemmer dens adresse og model, sletter dens nøgle fra telefonens nøglelager og holder op med at sende den forespørgsler. Loupe skifter ikke til en anden udbyder.';
+
+  @override
+  String get settingsAiAnthropicRetention => 'Anthropics opbevaring af data';
+
+  @override
+  String get settingsAiDemoDisclosure =>
+      'Demoen kører på denne telefon og sender intet nogen steder hen. Den er ikke en model: Den besvarer nogle få slags forespørgsler med enkle regler, og dens svar siger det.';
+
+  @override
+  String get settingsAiAnthropicDisclosure =>
+      'Forespørgsler går over internettet til Anthropic (api.anthropic.com) med din nøgle. Hver indeholder kun det, én funktion har brug for: sætningen, du skrev, og navnene på dine konti, eller emne, afsender, dato, tekst og navne på vedhæftede filer i én besked. Aldrig selve de vedhæftede filer, kontoadgangskoder eller nøglen. Resultater bliver på denne telefon; hvad Anthropic gemmer, afgøres af dens egen opbevaringspolitik.';
+
+  @override
+  String get settingsAiServerDisclosure =>
+      'Forespørgsler forlader telefonen og går til din server: behandling over netværket, også derhjemme. Hver indeholder kun det, én funktion har brug for: sætningen, du skrev, og navnene på dine konti, eller emne, afsender, dato, tekst og navne på vedhæftede filer i én besked. Aldrig selve de vedhæftede filer, kontoadgangskoder eller nøglen. Resultater bliver på denne telefon; hvad serveren gemmer, afhænger af, hvordan den er sat op.';
+
+  @override
+  String get settingsAiServerUnencrypted =>
+      'Denne adresse er ikke krypteret (http): Andre på netværket kan læse det, der sendes.';
+
+  @override
+  String get settingsAiFeaturesHeader => 'Funktioner';
+
+  @override
+  String get settingsAiFeaturesFooter => 'En funktion, der er slået fra, viser ingen AI-del og spørger ingen model.';
+
+  @override
+  String get settingsAiFeatureBrief => 'Kort fortalt';
+
+  @override
+  String get settingsAiFeatureActions => 'Foreslåede handlinger';
+
+  @override
+  String get settingsAiFeatureRules => 'Beskriv en regel';
+
+  @override
+  String get settingsAiFeatureChanges => 'Hvad er ændret';
+
+  @override
+  String get settingsAiFeatureDocuments => 'Fakta fra dokumenter';
+
+  @override
+  String get settingsAiFeatureReplyCheck => 'Svartjek';
+
+  @override
+  String get settingsAiFeatureMatters => 'Status for en sag';
+
+  @override
+  String get settingsAiFeatureSearchDetail => 'I søgning: En sætning bliver til en søgning, du kan tjekke.';
+
+  @override
+  String get settingsAiFeatureBriefDetail => 'I en besked: hvad den beder dig om, med tekststederne.';
+
+  @override
+  String get settingsAiFeatureActionsDetail => 'Foreslår punkter til «Venter på mig» og «Venter på andre».';
+
+  @override
+  String get settingsAiFeatureRulesDetail => 'I Regler: En beskrivelse bliver til en regel, du tjekker, før du gemmer.';
+
+  @override
+  String get settingsAiFeatureChangesDetail => 'I Sammenlign beskeder: hvad der er ændret i indholdet, med kilder.';
+
+  @override
+  String get settingsAiFeatureDocumentsDetail => 'De vigtigste fakta fra vedhæftede dokumenter, med deres sider.';
+
+  @override
+  String get settingsAiFeatureReplyCheckDetail => 'Før du sender: hvad et svar måske har overset.';
+
+  @override
+  String get settingsAiFeatureMattersDetail => 'Den seneste status for en sag, ud fra dens mail.';
+
+  @override
+  String get settingsAiLocalOnlyHeader => 'Behold mail på telefonen';
+
+  @override
+  String get settingsAiLocalOnlyFooter =>
+      'En konto, hvor dette er slået til, sender aldrig sin mail til din server eller en sky: Med sådan en udbyder forbliver dens AI-dele skjult. En model på denne telefon kan stadig læse den.';
+
+  @override
+  String get settingsAiUsage => 'Forbrug og anslåede omkostninger';
+
+  @override
+  String get settingsAiUsageToday => 'I dag';
+
+  @override
+  String get settingsAiUsageThisMonth => 'Denne måned';
+
+  @override
+  String get settingsAiUsageAll => 'Alle';
+
+  @override
+  String get settingsAiUsageNone => 'Ingen forespørgsler';
+
+  @override
+  String settingsAiUsageRequests(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count forespørgsler',
+      one: '1 forespørgsel',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiUsageTokens(String input, String output) {
+    return '$input tokens ind, $output ud';
+  }
+
+  @override
+  String settingsAiUsageTokensPartly(int count, String input, String output) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count forespørgsler ikke oplyst',
+      one: '1 forespørgsel ikke oplyst',
+    );
+    return '$input tokens ind, $output ud; $_temp0';
+  }
+
+  @override
+  String get settingsAiUsageTokensUnreported => 'Tokens ikke oplyst';
+
+  @override
+  String get settingsAiUsageTotal => 'I alt';
+
+  @override
+  String get settingsAiUsageFooter =>
+      'Loupe gemmer en registrering af hver forespørgsel på denne telefon: opgaven, udbyderen, modellen, antal tokens og tidspunkter, aldrig hvad der blev sendt eller svaret. Antal tokens, som en udbyder ikke oplyste, vises som ikke oplyst, aldrig som nul.';
+
+  @override
+  String get settingsAiCostNone => 'Ingen omkostning';
+
+  @override
+  String get settingsAiCostUnknown => 'Ukendt';
+
+  @override
+  String settingsAiCostEstimate(String amount) {
+    return '≈ $amount';
+  }
+
+  @override
+  String settingsAiCostAtLeast(String amount) {
+    return 'Mindst $amount';
+  }
+
+  @override
+  String get settingsAiPricesHeader => 'Anvendte priser';
+
+  @override
+  String settingsAiPrice(String input, String output) {
+    return '$input ind, $output ud';
+  }
+
+  @override
+  String settingsAiPricesFooter(String source, String date) {
+    return 'Amerikanske dollar pr. million tokens: listepriser fra $source den $date. Det er skøn, ikke en regning: Din udbyders egen forbrugsside er det gældende. En model uden pris her viser «Ukendt».';
+  }
+
+  @override
+  String get settingsAiDeleteDerived => 'Slet afledte resultater';
+
+  @override
+  String get settingsAiDeleteDerivedFooter =>
+      'Opsummeringer, foreslåede søgninger og andre svar, der gemmes til genbrug, kun på denne telefon. Når de slettes, beholdes din mail og det, du har besluttet, fx afkrydsede punkter, handlinger og sager; funktionerne laver dem igen, når der er brug for det.';
+
+  @override
+  String settingsAiDeleteDerivedTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Slet $count resultater?',
+      one: 'Slet 1 resultat?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAiDeleteItsResultsTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Skal de $count resultater, den lavede, også slettes?',
+      one: 'Skal resultatet, den lavede, også slettes?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsAiDeleteDerivedMessage =>
+      'Din mail og det, du har besluttet, bliver. Funktionerne laver resultater igen, når de har brug for dem.';
+
+  @override
+  String get settingsAiDeleteResults => 'Slet resultater';
 }
