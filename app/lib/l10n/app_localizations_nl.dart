@@ -1236,6 +1236,215 @@ class AppLocalizationsNl extends AppLocalizations {
   String get snoozeEmptyText => 'Snooze een bericht om het terug te laten komen in de inbox wanneer je het nodig hebt.';
 
   @override
+  String get briefButton => 'In het kort';
+
+  @override
+  String get briefButtonHint => 'Somt op wat dit bericht van je vraagt';
+
+  @override
+  String get briefReaderView => 'In het kort';
+
+  @override
+  String get briefTitle => 'In het kort';
+
+  @override
+  String get briefShowOriginal => 'Origineel tonen';
+
+  @override
+  String get briefWorking => 'Bericht wordt gelezen…';
+
+  @override
+  String get briefStopped => 'Je hebt de samenvatting gestopt.';
+
+  @override
+  String get briefFailedTooLarge => 'Dit bericht is te lang voor het model, dus er is niets verstuurd.';
+
+  @override
+  String get briefFailedProvider => 'Het model kon dit bericht niet samenvatten.';
+
+  @override
+  String get briefFailedInvalid =>
+      'Het antwoord kwam niet door de controles van Loupe, dus er wordt geen lijst getoond.';
+
+  @override
+  String get briefNothingTitle => 'Niets samen te vatten';
+
+  @override
+  String get briefPartial =>
+      'Dit bericht is lang, dus de samenvatting dekt alleen het begin. Lees de rest in het bericht zelf.';
+
+  @override
+  String get briefSectionToDo => 'Te doen';
+
+  @override
+  String get briefSectionDocuments => 'Te sturen documenten';
+
+  @override
+  String get briefSectionOtherDocuments => 'Documenten';
+
+  @override
+  String get briefSectionDates => 'Data';
+
+  @override
+  String get briefSectionConditions => 'Voorwaarden';
+
+  @override
+  String get briefSectionNext => 'Wat er daarna gebeurt';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Uiterlijk: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Op $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Streefdatum, geen deadline: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Gerekend vanaf een gebeurtenis: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Geen deadline genoemd';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Jij', 'them': 'Anderen', 'other': 'Niet vermeld'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Markeren als gedaan';
+
+  @override
+  String get briefMarkNotDone => 'Markeren als niet gedaan';
+
+  @override
+  String get briefDismiss => 'Verbergen';
+
+  @override
+  String get briefRestore => 'Terugzetten';
+
+  @override
+  String get briefCopy => 'Kopiëren';
+
+  @override
+  String get briefAddToCalendar => 'Toevoegen aan agenda…';
+
+  @override
+  String get briefTrack => 'Volgen';
+
+  @override
+  String get briefShowInMessage => 'Tonen in bericht';
+
+  @override
+  String get briefMarkedDone => 'Gemarkeerd als gedaan';
+
+  @override
+  String get briefDismissed => 'Verborgen';
+
+  @override
+  String get briefItemCopied => 'Gekopieerd';
+
+  @override
+  String get briefChecklistCopied => 'Lijst gekopieerd';
+
+  @override
+  String briefTracking(String item) {
+    return '“$item” wordt gevolgd';
+  }
+
+  @override
+  String get briefTrackFailed => 'Dit punt kon niet worden gevolgd.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count verborgen punten tonen',
+      one: '$count verborgen punt tonen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Verborgen punten verbergen';
+
+  @override
+  String get briefCopyChecklist => 'Lijst kopiëren';
+
+  @override
+  String get briefMadeByDemo => 'Gemaakt door de ingebouwde demo, niet door een model.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Op deze telefoon gemaakt door $name.',
+      'myServer': 'Op je eigen server gemaakt door $name.',
+      'other': 'In de cloud gemaakt door $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Een samenvatting kan dingen missen of verkeerd lezen. Het bericht zelf is wat telt.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Controleer het bericht zelf voordat je iets uit deze samenvatting doet.';
+  }
+
+  @override
+  String get briefSecurityText => 'Controleer het bericht zelf voordat je iets uit deze samenvatting doet.';
+
+  @override
+  String get briefSourceTitle => 'In het bericht';
+
+  @override
+  String get briefSourceAttachment =>
+      'Dit komt uit de naam van een bijgevoegd bestand. De samenvatting leest niet wat er in bijlagen staat.';
+
+  @override
+  String get briefEventTitle => 'Nieuwe afspraak';
+
+  @override
+  String get briefEventDate => 'Datum';
+
+  @override
+  String get briefEventTime => 'Tijd';
+
+  @override
+  String get briefEventAllDay => 'Hele dag';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Tijdzone';
+
+  @override
+  String get briefEventNotes => 'Notities';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Uit “$subject”, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Je agenda-app opent met deze afspraak. Er wordt niets bewaard tot je het daar bewaart.';
+
+  @override
   String get appLockUnlock => 'Ontgrendelen';
 
   @override

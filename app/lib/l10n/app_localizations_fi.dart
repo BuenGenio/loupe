@@ -1230,6 +1230,212 @@ class AppLocalizationsFi extends AppLocalizations {
   String get snoozeEmptyText => 'Torkuta viesti, niin se palaa Saapuneet-kansioon, kun tarvitset sitä.';
 
   @override
+  String get briefButton => 'Lyhyesti';
+
+  @override
+  String get briefButtonHint => 'Luettelee, mitä tämä viesti pyytää sinulta';
+
+  @override
+  String get briefReaderView => 'Lyhyesti';
+
+  @override
+  String get briefTitle => 'Lyhyesti';
+
+  @override
+  String get briefShowOriginal => 'Näytä alkuperäinen';
+
+  @override
+  String get briefWorking => 'Luetaan viestiä…';
+
+  @override
+  String get briefStopped => 'Keskeytit tiivistelmän.';
+
+  @override
+  String get briefFailedTooLarge => 'Viesti on liian pitkä mallille, joten mitään ei lähetetty.';
+
+  @override
+  String get briefFailedProvider => 'Malli ei pystynyt tiivistämään tätä viestiä.';
+
+  @override
+  String get briefFailedInvalid => 'Vastaus ei läpäissyt Loupen tarkistuksia, joten tarkistuslistaa ei näytetä.';
+
+  @override
+  String get briefNothingTitle => 'Ei tiivistettävää';
+
+  @override
+  String get briefPartial => 'Viesti on pitkä, joten tiivistelmä kattaa vain sen alun. Lue loput itse viestistä.';
+
+  @override
+  String get briefSectionToDo => 'Tehtävät';
+
+  @override
+  String get briefSectionDocuments => 'Lähetettävät asiakirjat';
+
+  @override
+  String get briefSectionOtherDocuments => 'Asiakirjat';
+
+  @override
+  String get briefSectionDates => 'Päivämäärät';
+
+  @override
+  String get briefSectionConditions => 'Ehdot';
+
+  @override
+  String get briefSectionNext => 'Mitä seuraavaksi tapahtuu';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Määräaika: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Päivä: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Tavoite, ei määräaika: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Lasketaan tapahtumasta: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Ei mainittua määräaikaa';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Sinä', 'them': 'Muut', 'other': 'Ei mainittu'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Merkitse tehdyksi';
+
+  @override
+  String get briefMarkNotDone => 'Merkitse tekemättömäksi';
+
+  @override
+  String get briefDismiss => 'Ohita';
+
+  @override
+  String get briefRestore => 'Palauta';
+
+  @override
+  String get briefCopy => 'Kopioi';
+
+  @override
+  String get briefAddToCalendar => 'Lisää kalenteriin…';
+
+  @override
+  String get briefTrack => 'Seuraa';
+
+  @override
+  String get briefShowInMessage => 'Näytä viestissä';
+
+  @override
+  String get briefMarkedDone => 'Merkitty tehdyksi';
+
+  @override
+  String get briefDismissed => 'Ohitettu';
+
+  @override
+  String get briefItemCopied => 'Kopioitu';
+
+  @override
+  String get briefChecklistCopied => 'Tarkistuslista kopioitu';
+
+  @override
+  String briefTracking(String item) {
+    return 'Seurataan: ”$item”';
+  }
+
+  @override
+  String get briefTrackFailed => 'Kohdan seuraaminen ei onnistunut.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Näytä $count ohitettua kohtaa',
+      one: 'Näytä $count ohitettu kohta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Piilota ohitetut kohdat';
+
+  @override
+  String get briefCopyChecklist => 'Kopioi tarkistuslista';
+
+  @override
+  String get briefMadeByDemo => 'Tehnyt sisäänrakennettu demo, ei malli.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Tehty tällä puhelimella: $name.',
+      'myServer': 'Tehty omalla palvelimellasi: $name.',
+      'other': 'Tehty pilvessä: $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Tiivistelmä voi ohittaa tai ymmärtää asioita väärin. Ratkaisevaa on itse viesti.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Tarkista itse viesti, ennen kuin teet mitään tämän tiivistelmän perusteella.';
+  }
+
+  @override
+  String get briefSecurityText => 'Tarkista itse viesti, ennen kuin teet mitään tämän tiivistelmän perusteella.';
+
+  @override
+  String get briefSourceTitle => 'Viestissä';
+
+  @override
+  String get briefSourceAttachment => 'Tämä tulee liitetiedoston nimestä. Tiivistelmä ei lue liitteiden sisältöä.';
+
+  @override
+  String get briefEventTitle => 'Uusi tapahtuma';
+
+  @override
+  String get briefEventDate => 'Päivä';
+
+  @override
+  String get briefEventTime => 'Aika';
+
+  @override
+  String get briefEventAllDay => 'Koko päivän';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Aikavyöhyke';
+
+  @override
+  String get briefEventNotes => 'Muistiinpanot';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Viestistä ”$subject”, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Kalenterisovellus avautuu tällä tapahtumalla. Mitään ei tallenneta, ennen kuin tallennat sen siellä.';
+
+  @override
   String get appLockUnlock => 'Avaa lukitus';
 
   @override

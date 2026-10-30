@@ -1242,6 +1242,215 @@ class AppLocalizationsIt extends AppLocalizations {
   String get snoozeEmptyText => 'Posticipa un messaggio per farlo tornare nella Posta in arrivo quando ti serve.';
 
   @override
+  String get briefButton => 'In breve';
+
+  @override
+  String get briefButtonHint => 'Elenca cosa ti chiede questo messaggio';
+
+  @override
+  String get briefReaderView => 'In breve';
+
+  @override
+  String get briefTitle => 'In breve';
+
+  @override
+  String get briefShowOriginal => 'Mostra originale';
+
+  @override
+  String get briefWorking => 'Lettura del messaggio…';
+
+  @override
+  String get briefStopped => 'Hai interrotto il riepilogo.';
+
+  @override
+  String get briefFailedTooLarge => 'Questo messaggio è troppo lungo per il modello, quindi non è stato inviato nulla.';
+
+  @override
+  String get briefFailedProvider => 'Il modello non è riuscito a riassumere questo messaggio.';
+
+  @override
+  String get briefFailedInvalid =>
+      'La risposta non ha superato i controlli di Loupe, quindi non viene mostrato alcun elenco.';
+
+  @override
+  String get briefNothingTitle => 'Niente da riassumere';
+
+  @override
+  String get briefPartial =>
+      'Questo messaggio è lungo, quindi il riepilogo ne copre solo l’inizio. Leggi il resto nel messaggio stesso.';
+
+  @override
+  String get briefSectionToDo => 'Da fare';
+
+  @override
+  String get briefSectionDocuments => 'Documenti da inviare';
+
+  @override
+  String get briefSectionOtherDocuments => 'Documenti';
+
+  @override
+  String get briefSectionDates => 'Date';
+
+  @override
+  String get briefSectionConditions => 'Condizioni';
+
+  @override
+  String get briefSectionNext => 'Cosa succede dopo';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Scadenza: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Data: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Obiettivo, non scadenza: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Si conta da un evento: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Nessuna scadenza indicata';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Tu', 'them': 'Altri', 'other': 'Non indicato'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Segna come fatto';
+
+  @override
+  String get briefMarkNotDone => 'Segna come non fatto';
+
+  @override
+  String get briefDismiss => 'Ignora';
+
+  @override
+  String get briefRestore => 'Ripristina';
+
+  @override
+  String get briefCopy => 'Copia';
+
+  @override
+  String get briefAddToCalendar => 'Aggiungi al calendario…';
+
+  @override
+  String get briefTrack => 'Tieni traccia';
+
+  @override
+  String get briefShowInMessage => 'Mostra nel messaggio';
+
+  @override
+  String get briefMarkedDone => 'Segnato come fatto';
+
+  @override
+  String get briefDismissed => 'Ignorato';
+
+  @override
+  String get briefItemCopied => 'Copiato';
+
+  @override
+  String get briefChecklistCopied => 'Elenco copiato';
+
+  @override
+  String briefTracking(String item) {
+    return 'Ora tieni traccia di «$item»';
+  }
+
+  @override
+  String get briefTrackFailed => 'Impossibile tenere traccia di questa voce.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Mostra $count voci ignorate',
+      one: 'Mostra $count voce ignorata',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Nascondi voci ignorate';
+
+  @override
+  String get briefCopyChecklist => 'Copia elenco';
+
+  @override
+  String get briefMadeByDemo => 'Fatto dalla demo integrata, non da un modello.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Fatto su questo telefono da $name.',
+      'myServer': 'Fatto sul tuo server da $name.',
+      'other': 'Fatto nel cloud da $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Un riepilogo può tralasciare o fraintendere qualcosa. Fa fede il messaggio stesso.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Controlla il messaggio stesso prima di fare qualsiasi cosa di questo riepilogo.';
+  }
+
+  @override
+  String get briefSecurityText => 'Controlla il messaggio stesso prima di fare qualsiasi cosa di questo riepilogo.';
+
+  @override
+  String get briefSourceTitle => 'Nel messaggio';
+
+  @override
+  String get briefSourceAttachment =>
+      'Viene dal nome di un file allegato. Il riepilogo non legge il contenuto degli allegati.';
+
+  @override
+  String get briefEventTitle => 'Nuovo evento';
+
+  @override
+  String get briefEventDate => 'Data';
+
+  @override
+  String get briefEventTime => 'Ora';
+
+  @override
+  String get briefEventAllDay => 'Tutto il giorno';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Fuso orario';
+
+  @override
+  String get briefEventNotes => 'Note';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Da «$subject», $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'La tua app di calendario si apre con questo evento. Non viene salvato nulla finché non lo salvi lì.';
+
+  @override
   String get appLockUnlock => 'Sblocca';
 
   @override

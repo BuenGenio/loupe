@@ -1230,6 +1230,213 @@ class AppLocalizationsEt extends AppLocalizations {
   String get snoozeEmptyText => 'Lükka kiri edasi ja see naaseb sisendkausta siis, kui seda vajad.';
 
   @override
+  String get briefButton => 'Lühidalt';
+
+  @override
+  String get briefButtonHint => 'Loetleb, mida see kiri sinult palub';
+
+  @override
+  String get briefReaderView => 'Lühidalt';
+
+  @override
+  String get briefTitle => 'Lühidalt';
+
+  @override
+  String get briefShowOriginal => 'Näita originaali';
+
+  @override
+  String get briefWorking => 'Kirja lugemine…';
+
+  @override
+  String get briefStopped => 'Sa peatasid kokkuvõtte.';
+
+  @override
+  String get briefFailedTooLarge => 'See kiri on mudeli jaoks liiga pikk, seega midagi ei saadetud.';
+
+  @override
+  String get briefFailedProvider => 'Mudel ei suutnud sellest kirjast kokkuvõtet teha.';
+
+  @override
+  String get briefFailedInvalid => 'Vastus ei läbinud Loupe’i kontrolle, seega kontrollnimekirja ei näidata.';
+
+  @override
+  String get briefNothingTitle => 'Pole midagi kokku võtta';
+
+  @override
+  String get briefPartial =>
+      'See kiri on pikk, seega hõlmab kokkuvõte ainult selle algust. Loe ülejäänut kirjast endast.';
+
+  @override
+  String get briefSectionToDo => 'Teha';
+
+  @override
+  String get briefSectionDocuments => 'Saadetavad dokumendid';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumendid';
+
+  @override
+  String get briefSectionDates => 'Kuupäevad';
+
+  @override
+  String get briefSectionConditions => 'Tingimused';
+
+  @override
+  String get briefSectionNext => 'Mis edasi saab';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Tähtaeg: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Kuupäev: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Eesmärk, mitte tähtaeg: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Arvestatakse sündmusest: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Tähtaega pole märgitud';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Sina', 'them': 'Teised', 'other': 'Pole märgitud'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Märgi tehtuks';
+
+  @override
+  String get briefMarkNotDone => 'Märgi tegemata';
+
+  @override
+  String get briefDismiss => 'Jäta kõrvale';
+
+  @override
+  String get briefRestore => 'Taasta';
+
+  @override
+  String get briefCopy => 'Kopeeri';
+
+  @override
+  String get briefAddToCalendar => 'Lisa kalendrisse…';
+
+  @override
+  String get briefTrack => 'Jälgi';
+
+  @override
+  String get briefShowInMessage => 'Näita kirjas';
+
+  @override
+  String get briefMarkedDone => 'Märgitud tehtuks';
+
+  @override
+  String get briefDismissed => 'Kõrvale jäetud';
+
+  @override
+  String get briefItemCopied => 'Kopeeritud';
+
+  @override
+  String get briefChecklistCopied => 'Kontrollnimekiri on kopeeritud';
+
+  @override
+  String briefTracking(String item) {
+    return 'Jälgitakse: „$item“';
+  }
+
+  @override
+  String get briefTrackFailed => 'Seda punkti ei õnnestunud jälgida.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Näita $count kõrvale jäetud punkti',
+      one: 'Näita $count kõrvale jäetud punkt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Peida kõrvale jäetud punktid';
+
+  @override
+  String get briefCopyChecklist => 'Kopeeri kontrollnimekiri';
+
+  @override
+  String get briefMadeByDemo => 'Tegi sisseehitatud demo, mitte mudel.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Tehtud selles telefonis, tegija $name.',
+      'myServer': 'Tehtud sinu serveris, tegija $name.',
+      'other': 'Tehtud pilves, tegija $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Kokkuvõte võib asju märkamata jätta või valesti mõista. Loeb kiri ise.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Kontrolli kirja ennast, enne kui teed midagi sellest kokkuvõttest.';
+  }
+
+  @override
+  String get briefSecurityText => 'Kontrolli kirja ennast, enne kui teed midagi sellest kokkuvõttest.';
+
+  @override
+  String get briefSourceTitle => 'Kirjas';
+
+  @override
+  String get briefSourceAttachment => 'See pärineb manustatud faili nimest. Kokkuvõte ei loe manuste sisu.';
+
+  @override
+  String get briefEventTitle => 'Uus sündmus';
+
+  @override
+  String get briefEventDate => 'Kuupäev';
+
+  @override
+  String get briefEventTime => 'Kellaaeg';
+
+  @override
+  String get briefEventAllDay => 'Terve päev';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Ajavöönd';
+
+  @override
+  String get briefEventNotes => 'Märkmed';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Kirjast „$subject“, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Kalendrirakendus avaneb selle sündmusega. Midagi ei salvestata enne, kui sa selle seal salvestad.';
+
+  @override
   String get appLockUnlock => 'Ava lukk';
 
   @override

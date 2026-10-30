@@ -209,6 +209,17 @@ abstract final class LoupeIcons {
   static const IconData redirect = FluentIcons.arrow_routing_24_regular;
   static const IconData openDirectly = FluentIcons.link_24_regular;
 
+  // Brief (Private AI) ---------------------------------------------------------
+
+  /// Brief: what a message asks of you.
+  static const IconData brief = FluentIcons.notepad_sparkle_24_regular;
+
+  /// A target the message suggests, not a deadline.
+  static const IconData briefTarget = FluentIcons.target_24_regular;
+
+  /// A timing measured from an event ("within 24 hours after submission").
+  static const IconData briefAfterEvent = FluentIcons.hourglass_half_24_regular;
+
   // End-to-end encryption (OpenPGP, S/MIME) ------------------------------------
 
   static const IconData encrypted = FluentIcons.lock_closed_24_filled;

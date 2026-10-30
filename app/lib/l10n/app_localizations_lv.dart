@@ -1270,6 +1270,215 @@ class AppLocalizationsLv extends AppLocalizations {
   String get snoozeEmptyText => 'Atlieciet ziņojumu, lai tas atgrieztos iesūtnē, kad jums tas būs vajadzīgs.';
 
   @override
+  String get briefButton => 'Īsumā';
+
+  @override
+  String get briefButtonHint => 'Uzskaita, ko šis ziņojums no jums prasa';
+
+  @override
+  String get briefReaderView => 'Īsumā';
+
+  @override
+  String get briefTitle => 'Īsumā';
+
+  @override
+  String get briefShowOriginal => 'Rādīt oriģinālu';
+
+  @override
+  String get briefWorking => 'Lasa ziņojumu…';
+
+  @override
+  String get briefStopped => 'Jūs apturējāt kopsavilkumu.';
+
+  @override
+  String get briefFailedTooLarge => 'Šis ziņojums modelim ir par garu, tāpēc nekas netika nosūtīts.';
+
+  @override
+  String get briefFailedProvider => 'Modelim neizdevās izveidot šī ziņojuma kopsavilkumu.';
+
+  @override
+  String get briefFailedInvalid => 'Atbilde neizturēja Loupe pārbaudes, tāpēc kontrolsaraksts netiek rādīts.';
+
+  @override
+  String get briefNothingTitle => 'Nav ko apkopot';
+
+  @override
+  String get briefPartial =>
+      'Šis ziņojums ir garš, tāpēc kopsavilkums aptver tikai tā sākumu. Pārējo izlasiet pašā ziņojumā.';
+
+  @override
+  String get briefSectionToDo => 'Jāizdara';
+
+  @override
+  String get briefSectionDocuments => 'Nosūtāmie dokumenti';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumenti';
+
+  @override
+  String get briefSectionDates => 'Datumi';
+
+  @override
+  String get briefSectionConditions => 'Nosacījumi';
+
+  @override
+  String get briefSectionNext => 'Kas notiks tālāk';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Termiņš: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Datums: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Mērķis, nevis termiņš: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Skaitot no notikuma: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Termiņš nav norādīts';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Jūs', 'them': 'Citi', 'other': 'Nav norādīts'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Atzīmēt kā izdarītu';
+
+  @override
+  String get briefMarkNotDone => 'Atzīmēt kā neizdarītu';
+
+  @override
+  String get briefDismiss => 'Noraidīt';
+
+  @override
+  String get briefRestore => 'Atjaunot';
+
+  @override
+  String get briefCopy => 'Kopēt';
+
+  @override
+  String get briefAddToCalendar => 'Pievienot kalendāram…';
+
+  @override
+  String get briefTrack => 'Sekot';
+
+  @override
+  String get briefShowInMessage => 'Rādīt ziņojumā';
+
+  @override
+  String get briefMarkedDone => 'Atzīmēts kā izdarīts';
+
+  @override
+  String get briefDismissed => 'Noraidīts';
+
+  @override
+  String get briefItemCopied => 'Nokopēts';
+
+  @override
+  String get briefChecklistCopied => 'Kontrolsaraksts nokopēts';
+
+  @override
+  String briefTracking(String item) {
+    return 'Seko: „$item“';
+  }
+
+  @override
+  String get briefTrackFailed => 'Neizdevās sekot šim punktam.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Rādīt noraidītos ($count)',
+      one: 'Rādīt noraidītos ($count)',
+      zero: 'Rādīt noraidītos ($count)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Paslēpt noraidītos punktus';
+
+  @override
+  String get briefCopyChecklist => 'Kopēt kontrolsarakstu';
+
+  @override
+  String get briefMadeByDemo => 'Izveidoja iebūvētā demonstrācija, nevis modelis.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Izveidots šajā tālrunī, veidotājs: $name.',
+      'myServer': 'Izveidots jūsu serverī, veidotājs: $name.',
+      'other': 'Izveidots mākonī, veidotājs: $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution =>
+      'Kopsavilkumā kaut kas var tikt palaists garām vai pārprasts. Noteicošais ir pats ziņojums.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Pārbaudiet pašu ziņojumu, pirms darāt kaut ko no šī kopsavilkuma.';
+  }
+
+  @override
+  String get briefSecurityText => 'Pārbaudiet pašu ziņojumu, pirms darāt kaut ko no šī kopsavilkuma.';
+
+  @override
+  String get briefSourceTitle => 'Ziņojumā';
+
+  @override
+  String get briefSourceAttachment => 'Tas ņemts no pievienotā faila nosaukuma. Kopsavilkums nelasa pielikumu saturu.';
+
+  @override
+  String get briefEventTitle => 'Jauns notikums';
+
+  @override
+  String get briefEventDate => 'Datums';
+
+  @override
+  String get briefEventTime => 'Laiks';
+
+  @override
+  String get briefEventAllDay => 'Visu dienu';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Laika josla';
+
+  @override
+  String get briefEventNotes => 'Piezīmes';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'No „$subject“, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Kalendāra lietotne atvērsies ar šo notikumu. Nekas netiek saglabāts, kamēr to tur nesaglabājat.';
+
+  @override
   String get appLockUnlock => 'Atbloķēt';
 
   @override

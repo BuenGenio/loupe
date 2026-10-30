@@ -1245,6 +1245,215 @@ class AppLocalizationsCa extends AppLocalizations {
   String get snoozeEmptyText => 'Posposa un missatge perquè torni a la safata d’entrada quan el necessitis.';
 
   @override
+  String get briefButton => 'En breu';
+
+  @override
+  String get briefButtonHint => 'Enumera què et demana aquest missatge';
+
+  @override
+  String get briefReaderView => 'En breu';
+
+  @override
+  String get briefTitle => 'En breu';
+
+  @override
+  String get briefShowOriginal => 'Mostra l’original';
+
+  @override
+  String get briefWorking => 'S’està llegint el missatge…';
+
+  @override
+  String get briefStopped => 'Has aturat el resum.';
+
+  @override
+  String get briefFailedTooLarge => 'Aquest missatge és massa llarg per al model, així que no s’ha enviat res.';
+
+  @override
+  String get briefFailedProvider => 'El model no ha pogut resumir aquest missatge.';
+
+  @override
+  String get briefFailedInvalid =>
+      'La resposta no ha superat les comprovacions de Loupe, així que no es mostra cap llista.';
+
+  @override
+  String get briefNothingTitle => 'Res a resumir';
+
+  @override
+  String get briefPartial =>
+      'Aquest missatge és llarg, així que el resum només en cobreix el principi. Llegeix-ne la resta al mateix missatge.';
+
+  @override
+  String get briefSectionToDo => 'Per fer';
+
+  @override
+  String get briefSectionDocuments => 'Documents per enviar';
+
+  @override
+  String get briefSectionOtherDocuments => 'Documents';
+
+  @override
+  String get briefSectionDates => 'Dates';
+
+  @override
+  String get briefSectionConditions => 'Condicions';
+
+  @override
+  String get briefSectionNext => 'Què passa després';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Termini: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'El $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Objectiu, no termini: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Es compta des d’un esdeveniment: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Sense termini indicat';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Tu', 'them': 'Altres', 'other': 'No s’indica'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Marca com a fet';
+
+  @override
+  String get briefMarkNotDone => 'Marca com a no fet';
+
+  @override
+  String get briefDismiss => 'Descarta';
+
+  @override
+  String get briefRestore => 'Restaura';
+
+  @override
+  String get briefCopy => 'Copia';
+
+  @override
+  String get briefAddToCalendar => 'Afegeix al calendari…';
+
+  @override
+  String get briefTrack => 'Fes-ne el seguiment';
+
+  @override
+  String get briefShowInMessage => 'Mostra al missatge';
+
+  @override
+  String get briefMarkedDone => 'S’ha marcat com a fet';
+
+  @override
+  String get briefDismissed => 'S’ha descartat';
+
+  @override
+  String get briefItemCopied => 'S’ha copiat';
+
+  @override
+  String get briefChecklistCopied => 'S’ha copiat la llista';
+
+  @override
+  String briefTracking(String item) {
+    return 'Seguiment de «$item»';
+  }
+
+  @override
+  String get briefTrackFailed => 'No s’ha pogut fer el seguiment d’aquest element.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Mostra $count elements descartats',
+      one: 'Mostra $count element descartat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Amaga els elements descartats';
+
+  @override
+  String get briefCopyChecklist => 'Copia la llista';
+
+  @override
+  String get briefMadeByDemo => 'Fet per la demostració integrada, no per un model.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Fet en aquest telèfon per $name.',
+      'myServer': 'Fet al teu servidor per $name.',
+      'other': 'Fet al núvol per $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Un resum pot passar per alt o malinterpretar coses. El que compta és el mateix missatge.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Comprova el mateix missatge abans de fer res d’aquest resum.';
+  }
+
+  @override
+  String get briefSecurityText => 'Comprova el mateix missatge abans de fer res d’aquest resum.';
+
+  @override
+  String get briefSourceTitle => 'Al missatge';
+
+  @override
+  String get briefSourceAttachment =>
+      'Això ve del nom d’un fitxer adjunt. El resum no llegeix el contingut dels adjunts.';
+
+  @override
+  String get briefEventTitle => 'Esdeveniment nou';
+
+  @override
+  String get briefEventDate => 'Data';
+
+  @override
+  String get briefEventTime => 'Hora';
+
+  @override
+  String get briefEventAllDay => 'Tot el dia';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Zona horària';
+
+  @override
+  String get briefEventNotes => 'Notes';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'De «$subject», $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'L’app de calendari s’obre amb aquest esdeveniment. No es desa res fins que no el desis allà.';
+
+  @override
   String get appLockUnlock => 'Desbloqueja';
 
   @override

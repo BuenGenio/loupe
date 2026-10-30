@@ -2145,6 +2145,348 @@ abstract class AppLocalizations {
   /// **'Snooze a message to have it come back to the Inbox when you need it.'**
   String get snoozeEmptyText;
 
+  /// Button above a message's text (Private AI): shows what the message asks of you, item by item, in place of the text.
+  ///
+  /// In en, this message translates to:
+  /// **'Brief'**
+  String get briefButton;
+
+  /// Screen reader hint of the Brief button above a message.
+  ///
+  /// In en, this message translates to:
+  /// **'Lists what this message asks of you'**
+  String get briefButtonHint;
+
+  /// View of a message in the “Aa” sheet, next to Readable, Original and Plain: what the message asks of you (Private AI).
+  ///
+  /// In en, this message translates to:
+  /// **'Brief'**
+  String get briefReaderView;
+
+  /// Heading of a message's Brief, shown in place of the message's text.
+  ///
+  /// In en, this message translates to:
+  /// **'Brief'**
+  String get briefTitle;
+
+  /// Button in a Brief: shows the message's own text again, in its usual view.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Original'**
+  String get briefShowOriginal;
+
+  /// While Private AI makes the Brief of a message.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading the message…'**
+  String get briefWorking;
+
+  /// After Cancel while the Brief was being made.
+  ///
+  /// In en, this message translates to:
+  /// **'You stopped the Brief.'**
+  String get briefStopped;
+
+  /// The Brief failed: the message is bigger than the model takes.
+  ///
+  /// In en, this message translates to:
+  /// **'This message is too long for the model, so nothing was sent.'**
+  String get briefFailedTooLarge;
+
+  /// The Brief failed: the model or its server failed (no network, a quota, a model not downloaded). The model's own reason may follow.
+  ///
+  /// In en, this message translates to:
+  /// **'The model couldn’t make a Brief of this message.'**
+  String get briefFailedProvider;
+
+  /// The Brief failed: the model's answer was rejected twice, for example an item quoted a passage that isn't in the message.
+  ///
+  /// In en, this message translates to:
+  /// **'The answer didn’t pass Loupe’s checks, so no checklist is shown.'**
+  String get briefFailedInvalid;
+
+  /// Brief of a short message that asks nothing of you (“Thanks, all received”). The model's one-line summary follows.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to Summarise'**
+  String get briefNothingTitle;
+
+  /// Above the items of a Brief when the message was longer than the model reads.
+  ///
+  /// In en, this message translates to:
+  /// **'This message is long, so the Brief covers only its beginning. Read the rest in the message itself.'**
+  String get briefPartial;
+
+  /// Group of a Brief: what you have to do.
+  ///
+  /// In en, this message translates to:
+  /// **'To Do'**
+  String get briefSectionToDo;
+
+  /// Group of a Brief: documents you have to provide.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents to Send'**
+  String get briefSectionDocuments;
+
+  /// Group of a Brief: documents the message mentions that aren't yours to send (an attached illustration, say).
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get briefSectionOtherDocuments;
+
+  /// Group of a Brief: dates the message states.
+  ///
+  /// In en, this message translates to:
+  /// **'Dates'**
+  String get briefSectionDates;
+
+  /// Group of a Brief: conditions the message attaches to something (“once we have all of the above”).
+  ///
+  /// In en, this message translates to:
+  /// **'Conditions'**
+  String get briefSectionConditions;
+
+  /// Group of a Brief: what the message says happens next.
+  ///
+  /// In en, this message translates to:
+  /// **'What Happens Next'**
+  String get briefSectionNext;
+
+  /// Under an item of a Brief: a deadline the message states, as written there.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline: {when}'**
+  String briefDueDeadline(String when);
+
+  /// Under a date of a Brief: the calendar date the message states.
+  ///
+  /// In en, this message translates to:
+  /// **'On {date}'**
+  String briefDueOn(String date);
+
+  /// Under an item of a Brief: a target or an “ideally by” the message suggests, as written there.
+  ///
+  /// In en, this message translates to:
+  /// **'Target, not a deadline: {when}'**
+  String briefDueSuggested(String when);
+
+  /// Under an item of a Brief: a timing that counts from an event, not from today, so it is no date. As written in the message.
+  ///
+  /// In en, this message translates to:
+  /// **'Measured from an event: {when}'**
+  String briefDueConditional(String when);
+
+  /// Under something you have to do or send, in a Brief: the message gives no deadline.
+  ///
+  /// In en, this message translates to:
+  /// **'No deadline stated'**
+  String get briefDueNone;
+
+  /// Under an item of a Brief: who does it, you or the sender and others.
+  ///
+  /// In en, this message translates to:
+  /// **'{owner, select, me{You} them{Them} other{Not stated}}'**
+  String briefOwner(String owner);
+
+  /// Action on an item of a Brief, and the screen reader label of its tick box.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Done'**
+  String get briefMarkDone;
+
+  /// Action on a ticked item of a Brief.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Not Done'**
+  String get briefMarkNotDone;
+
+  /// Action on an item of a Brief: hides it from the checklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get briefDismiss;
+
+  /// Action on a dismissed item of a Brief: shows it in the checklist again.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get briefRestore;
+
+  /// Action on an item of a Brief: copies its text.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get briefCopy;
+
+  /// Action on a dated item of a Brief: shows the event, then hands it to the calendar app.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Calendar…'**
+  String get briefAddToCalendar;
+
+  /// Action on an item of a Brief: keeps it as an action of yours until you mark it done.
+  ///
+  /// In en, this message translates to:
+  /// **'Track'**
+  String get briefTrack;
+
+  /// Action on an item of a Brief, and the screen reader hint of the item: shows the passage of the message it comes from.
+  ///
+  /// In en, this message translates to:
+  /// **'Show in Message'**
+  String get briefShowInMessage;
+
+  /// Snack bar after ticking an item of a Brief, with Undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as done'**
+  String get briefMarkedDone;
+
+  /// Snack bar after dismissing an item of a Brief, with Undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismissed'**
+  String get briefDismissed;
+
+  /// Snack bar after copying an item of a Brief.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied'**
+  String get briefItemCopied;
+
+  /// Snack bar after Copy Checklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklist copied'**
+  String get briefChecklistCopied;
+
+  /// Snack bar after Track on an item of a Brief.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracking “{item}”'**
+  String briefTracking(String item);
+
+  /// Snack bar when Track on an item of a Brief failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t track this item.'**
+  String get briefTrackFailed;
+
+  /// Button under a Brief: shows the items you dismissed.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Show 1 Dismissed Item} other{Show {count} Dismissed Items}}'**
+  String briefShowDismissed(int count);
+
+  /// Button under a Brief: hides the dismissed items again.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Dismissed Items'**
+  String get briefHideDismissed;
+
+  /// Button under a Brief: copies all its items as a plain-text checklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Checklist'**
+  String get briefCopyChecklist;
+
+  /// Under a Brief made by the demo's rules.
+  ///
+  /// In en, this message translates to:
+  /// **'Made by the built-in demo, not a model.'**
+  String get briefMadeByDemo;
+
+  /// Under a Brief: where the model ran and which it is.
+  ///
+  /// In en, this message translates to:
+  /// **'{location, select, onThisPhone{Made on this phone by {name}.} myServer{Made on your server by {name}.} other{Made in the cloud by {name}.}}'**
+  String briefMadeBy(String location, String name);
+
+  /// Under a Brief.
+  ///
+  /// In en, this message translates to:
+  /// **'A Brief can miss or misread things. The message itself is what counts.'**
+  String get briefCaution;
+
+  /// Above a Brief, under “This looks like phishing” or “Be careful with this message”, with the strongest sign first.
+  ///
+  /// In en, this message translates to:
+  /// **'{reason}. Check the message itself before you act on anything in this Brief.'**
+  String briefSecurityReason(String reason);
+
+  /// Above a Brief, under “This looks like phishing” or “Be careful with this message”.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the message itself before you act on anything in this Brief.'**
+  String get briefSecurityText;
+
+  /// Title of the sheet that shows the passage of the message an item of a Brief comes from.
+  ///
+  /// In en, this message translates to:
+  /// **'In the Message'**
+  String get briefSourceTitle;
+
+  /// In the In the Message sheet, when an item of a Brief comes from the file name of an attachment, which is shown below.
+  ///
+  /// In en, this message translates to:
+  /// **'This comes from the name of an attached file. The Brief doesn’t read what’s in attachments.'**
+  String get briefSourceAttachment;
+
+  /// Title of the sheet that shows an event made from a Brief item before it goes to the calendar app.
+  ///
+  /// In en, this message translates to:
+  /// **'New Event'**
+  String get briefEventTitle;
+
+  /// Label in the New Event sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get briefEventDate;
+
+  /// Label in the New Event sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get briefEventTime;
+
+  /// The time of an event from a Brief when the message states no time.
+  ///
+  /// In en, this message translates to:
+  /// **'All day'**
+  String get briefEventAllDay;
+
+  /// The time of an event from a Brief.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} – {end}'**
+  String briefEventTimeRange(String start, String end);
+
+  /// Label in the New Event sheet: the phone's time zone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone'**
+  String get briefEventZone;
+
+  /// Label in the New Event sheet: the event's notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get briefEventNotes;
+
+  /// Notes of an event made from a Brief: the message it comes from.
+  ///
+  /// In en, this message translates to:
+  /// **'From “{subject}”, {sender}'**
+  String briefEventFrom(String subject, String sender);
+
+  /// Under the Add to Calendar button of the New Event sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Your calendar app opens with this event. Nothing is saved until you save it there.'**
+  String get briefEventFootnote;
+
   /// Button on the lock screen that shows the phone’s fingerprint, face or screen-lock prompt.
   ///
   /// In en, this message translates to:

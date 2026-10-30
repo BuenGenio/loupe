@@ -1264,6 +1264,215 @@ class AppLocalizationsRo extends AppLocalizations {
   String get snoozeEmptyText => 'Amână un mesaj ca să revină în Inbox când ai nevoie de el.';
 
   @override
+  String get briefButton => 'Pe scurt';
+
+  @override
+  String get briefButtonHint => 'Enumeră ce îți cere acest mesaj';
+
+  @override
+  String get briefReaderView => 'Pe scurt';
+
+  @override
+  String get briefTitle => 'Pe scurt';
+
+  @override
+  String get briefShowOriginal => 'Afișează originalul';
+
+  @override
+  String get briefWorking => 'Se citește mesajul…';
+
+  @override
+  String get briefStopped => 'Ai oprit rezumatul.';
+
+  @override
+  String get briefFailedTooLarge => 'Mesajul e prea lung pentru model, așa că nu s-a trimis nimic.';
+
+  @override
+  String get briefFailedProvider => 'Modelul nu a putut rezuma acest mesaj.';
+
+  @override
+  String get briefFailedInvalid => 'Răspunsul nu a trecut verificările Loupe, așa că nu se afișează nicio listă.';
+
+  @override
+  String get briefNothingTitle => 'Nimic de rezumat';
+
+  @override
+  String get briefPartial =>
+      'Mesajul e lung, așa că rezumatul acoperă doar începutul. Citește restul în mesajul propriu-zis.';
+
+  @override
+  String get briefSectionToDo => 'De făcut';
+
+  @override
+  String get briefSectionDocuments => 'Documente de trimis';
+
+  @override
+  String get briefSectionOtherDocuments => 'Documente';
+
+  @override
+  String get briefSectionDates => 'Date';
+
+  @override
+  String get briefSectionConditions => 'Condiții';
+
+  @override
+  String get briefSectionNext => 'Ce urmează';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Termen: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Data: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Țintă, nu termen: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Socotit de la un eveniment: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Niciun termen precizat';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Tu', 'them': 'Alții', 'other': 'Neprecizat'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Marchează ca făcut';
+
+  @override
+  String get briefMarkNotDone => 'Marchează ca nefăcut';
+
+  @override
+  String get briefDismiss => 'Respinge';
+
+  @override
+  String get briefRestore => 'Restabilește';
+
+  @override
+  String get briefCopy => 'Copiază';
+
+  @override
+  String get briefAddToCalendar => 'Adaugă în calendar…';
+
+  @override
+  String get briefTrack => 'Urmărește';
+
+  @override
+  String get briefShowInMessage => 'Afișează în mesaj';
+
+  @override
+  String get briefMarkedDone => 'Marcat ca făcut';
+
+  @override
+  String get briefDismissed => 'Respins';
+
+  @override
+  String get briefItemCopied => 'Copiat';
+
+  @override
+  String get briefChecklistCopied => 'Lista a fost copiată';
+
+  @override
+  String briefTracking(String item) {
+    return 'Se urmărește „$item”';
+  }
+
+  @override
+  String get briefTrackFailed => 'Elementul nu a putut fi urmărit.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Afișează $count de elemente respinse',
+      few: 'Afișează $count elemente respinse',
+      one: 'Afișează $count element respins',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Ascunde elementele respinse';
+
+  @override
+  String get briefCopyChecklist => 'Copiază lista';
+
+  @override
+  String get briefMadeByDemo => 'Făcut de demonstrația încorporată, nu de un model.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Făcut pe acest telefon de $name.',
+      'myServer': 'Făcut pe serverul tău de $name.',
+      'other': 'Făcut în cloud de $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Un rezumat poate omite sau înțelege greșit lucruri. Contează mesajul în sine.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Verifică mesajul în sine înainte să faci ceva din acest rezumat.';
+  }
+
+  @override
+  String get briefSecurityText => 'Verifică mesajul în sine înainte să faci ceva din acest rezumat.';
+
+  @override
+  String get briefSourceTitle => 'În mesaj';
+
+  @override
+  String get briefSourceAttachment =>
+      'Provine din numele unui fișier atașat. Rezumatul nu citește conținutul atașamentelor.';
+
+  @override
+  String get briefEventTitle => 'Eveniment nou';
+
+  @override
+  String get briefEventDate => 'Data';
+
+  @override
+  String get briefEventTime => 'Ora';
+
+  @override
+  String get briefEventAllDay => 'Toată ziua';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Fus orar';
+
+  @override
+  String get briefEventNotes => 'Note';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Din „$subject”, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Aplicația de calendar se deschide cu acest eveniment. Nu se salvează nimic până nu îl salvezi acolo.';
+
+  @override
   String get appLockUnlock => 'Deblochează';
 
   @override

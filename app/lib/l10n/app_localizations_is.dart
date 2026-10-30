@@ -1228,6 +1228,214 @@ class AppLocalizationsIs extends AppLocalizations {
       'Settu skilaboð í blund til að fá þau aftur í innhólfið þegar þú þarft á þeim að halda.';
 
   @override
+  String get briefButton => 'Samantekt';
+
+  @override
+  String get briefButtonHint => 'Telur upp hvað þessi skilaboð biðja þig um';
+
+  @override
+  String get briefReaderView => 'Samantekt';
+
+  @override
+  String get briefTitle => 'Samantekt';
+
+  @override
+  String get briefShowOriginal => 'Sýna upprunalegt';
+
+  @override
+  String get briefWorking => 'Les skilaboðin…';
+
+  @override
+  String get briefStopped => 'Þú stöðvaðir samantektina.';
+
+  @override
+  String get briefFailedTooLarge => 'Þessi skilaboð eru of löng fyrir líkanið, svo ekkert var sent.';
+
+  @override
+  String get briefFailedProvider => 'Líkanið gat ekki tekið þessi skilaboð saman.';
+
+  @override
+  String get briefFailedInvalid => 'Svarið stóðst ekki athuganir Loupe, svo enginn gátlisti er sýndur.';
+
+  @override
+  String get briefNothingTitle => 'Ekkert að taka saman';
+
+  @override
+  String get briefPartial =>
+      'Þessi skilaboð eru löng, svo samantektin nær aðeins yfir upphafið. Lestu restina í skilaboðunum sjálfum.';
+
+  @override
+  String get briefSectionToDo => 'Verkefni';
+
+  @override
+  String get briefSectionDocuments => 'Skjöl til að senda';
+
+  @override
+  String get briefSectionOtherDocuments => 'Skjöl';
+
+  @override
+  String get briefSectionDates => 'Dagsetningar';
+
+  @override
+  String get briefSectionConditions => 'Skilyrði';
+
+  @override
+  String get briefSectionNext => 'Hvað gerist næst';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Frestur: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Dagsetning: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Markmið, ekki frestur: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Talið frá atburði: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Enginn frestur tilgreindur';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Þú', 'them': 'Aðrir', 'other': 'Ekki tilgreint'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Merkja sem lokið';
+
+  @override
+  String get briefMarkNotDone => 'Merkja sem ólokið';
+
+  @override
+  String get briefDismiss => 'Hafna';
+
+  @override
+  String get briefRestore => 'Endurheimta';
+
+  @override
+  String get briefCopy => 'Afrita';
+
+  @override
+  String get briefAddToCalendar => 'Bæta við dagatal…';
+
+  @override
+  String get briefTrack => 'Fylgjast með';
+
+  @override
+  String get briefShowInMessage => 'Sýna í skilaboðunum';
+
+  @override
+  String get briefMarkedDone => 'Merkt sem lokið';
+
+  @override
+  String get briefDismissed => 'Hafnað';
+
+  @override
+  String get briefItemCopied => 'Afritað';
+
+  @override
+  String get briefChecklistCopied => 'Gátlisti afritaður';
+
+  @override
+  String briefTracking(String item) {
+    return 'Fylgst með „$item“';
+  }
+
+  @override
+  String get briefTrackFailed => 'Ekki tókst að fylgjast með þessu atriði.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Sýna $count höfnuð atriði',
+      one: 'Sýna $count hafnað atriði',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Fela höfnuð atriði';
+
+  @override
+  String get briefCopyChecklist => 'Afrita gátlista';
+
+  @override
+  String get briefMadeByDemo => 'Gert af innbyggðu sýnisútgáfunni, ekki af líkani.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Gert í þessum síma af $name.',
+      'myServer': 'Gert á þínum netþjóni af $name.',
+      'other': 'Gert í skýinu af $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Samantekt getur misst af hlutum eða misskilið þá. Skilaboðin sjálf gilda.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Skoðaðu skilaboðin sjálf áður en þú gerir nokkuð úr þessari samantekt.';
+  }
+
+  @override
+  String get briefSecurityText => 'Skoðaðu skilaboðin sjálf áður en þú gerir nokkuð úr þessari samantekt.';
+
+  @override
+  String get briefSourceTitle => 'Í skilaboðunum';
+
+  @override
+  String get briefSourceAttachment =>
+      'Þetta kemur úr nafni viðhengdrar skrár. Samantektin les ekki innihald viðhengja.';
+
+  @override
+  String get briefEventTitle => 'Nýr viðburður';
+
+  @override
+  String get briefEventDate => 'Dagsetning';
+
+  @override
+  String get briefEventTime => 'Tími';
+
+  @override
+  String get briefEventAllDay => 'Allan daginn';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Tímabelti';
+
+  @override
+  String get briefEventNotes => 'Athugasemdir';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Úr „$subject“, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Dagatalsforritið opnast með þessum viðburði. Ekkert er vistað fyrr en þú vistar það þar.';
+
+  @override
   String get appLockUnlock => 'Taka úr lás';
 
   @override

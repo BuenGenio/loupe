@@ -1303,6 +1303,218 @@ class AppLocalizationsMt extends AppLocalizations {
   String get snoozeEmptyText => 'Ipposponi messaġġ biex jerġa’ lura fl-Inbox meta jkollok bżonnu.';
 
   @override
+  String get briefButton => 'Fil-qosor';
+
+  @override
+  String get briefButtonHint => 'Jelenka x’qed jitolbok dan il-messaġġ';
+
+  @override
+  String get briefReaderView => 'Fil-qosor';
+
+  @override
+  String get briefTitle => 'Fil-qosor';
+
+  @override
+  String get briefShowOriginal => 'Uri l-oriġinal';
+
+  @override
+  String get briefWorking => 'Qed jinqara l-messaġġ…';
+
+  @override
+  String get briefStopped => 'Waqqaft is-sommarju.';
+
+  @override
+  String get briefFailedTooLarge => 'Dan il-messaġġ huwa twil wisq għall-mudell, għalhekk ma ntbagħat xejn.';
+
+  @override
+  String get briefFailedProvider => 'Il-mudell ma setax jagħmel sommarju ta’ dan il-messaġġ.';
+
+  @override
+  String get briefFailedInvalid =>
+      'Ir-risposta ma għaddietx mill-kontrolli ta’ Loupe, għalhekk ma tidher l-ebda lista.';
+
+  @override
+  String get briefNothingTitle => 'Xejn x’tiġbor fil-qosor';
+
+  @override
+  String get briefPartial =>
+      'Dan il-messaġġ huwa twil, għalhekk is-sommarju jkopri biss il-bidu tiegħu. Aqra l-bqija fil-messaġġ innifsu.';
+
+  @override
+  String get briefSectionToDo => 'X’għandek tagħmel';
+
+  @override
+  String get briefSectionDocuments => 'Dokumenti x’tibgħat';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumenti';
+
+  @override
+  String get briefSectionDates => 'Dati';
+
+  @override
+  String get briefSectionConditions => 'Kundizzjonijiet';
+
+  @override
+  String get briefSectionNext => 'X’jiġri wara';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Skadenza: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Data: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Mira, mhux skadenza: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Magħdud minn avveniment: $when';
+  }
+
+  @override
+  String get briefDueNone => 'L-ebda skadenza mogħtija';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Int', 'them': 'Oħrajn', 'other': 'Mhux imsemmi'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Immarka bħala magħmul';
+
+  @override
+  String get briefMarkNotDone => 'Immarka bħala mhux magħmul';
+
+  @override
+  String get briefDismiss => 'Warrab';
+
+  @override
+  String get briefRestore => 'Irrestawra';
+
+  @override
+  String get briefCopy => 'Ikkopja';
+
+  @override
+  String get briefAddToCalendar => 'Żid mal-kalendarju…';
+
+  @override
+  String get briefTrack => 'Segwi';
+
+  @override
+  String get briefShowInMessage => 'Uri fil-messaġġ';
+
+  @override
+  String get briefMarkedDone => 'Immarkat bħala magħmul';
+
+  @override
+  String get briefDismissed => 'Imwarrab';
+
+  @override
+  String get briefItemCopied => 'Ikkupjat';
+
+  @override
+  String get briefChecklistCopied => 'Il-lista ġiet ikkupjata';
+
+  @override
+  String briefTracking(String item) {
+    return 'Qed jiġi segwit “$item”';
+  }
+
+  @override
+  String get briefTrackFailed => 'Ma setax jiġi segwit dan l-element.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Uri l-elementi mwarrba ($count)',
+      many: 'Uri l-elementi mwarrba ($count)',
+      few: 'Uri l-elementi mwarrba ($count)',
+      two: 'Uri l-elementi mwarrba ($count)',
+      one: 'Uri l-elementi mwarrba ($count)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Aħbi l-elementi mwarrba';
+
+  @override
+  String get briefCopyChecklist => 'Ikkopja l-lista';
+
+  @override
+  String get briefMadeByDemo => 'Magħmul mid-demo inkorporata, mhux minn mudell.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Magħmul fuq dan it-telefon minn $name.',
+      'myServer': 'Magħmul fuq is-server tiegħek minn $name.',
+      'other': 'Magħmul fil-cloud minn $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution =>
+      'Sommarju jista’ jaqbeż jew jifhem ħażin xi affarijiet. Dak li jgħodd huwa l-messaġġ innifsu.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Iċċekkja l-messaġġ innifsu qabel ma tagħmel xi ħaġa minn dan is-sommarju.';
+  }
+
+  @override
+  String get briefSecurityText => 'Iċċekkja l-messaġġ innifsu qabel ma tagħmel xi ħaġa minn dan is-sommarju.';
+
+  @override
+  String get briefSourceTitle => 'Fil-messaġġ';
+
+  @override
+  String get briefSourceAttachment => 'Dan ġej mill-isem ta’ fajl mehmuż. Is-sommarju ma jaqrax x’hemm fl-attachments.';
+
+  @override
+  String get briefEventTitle => 'Avveniment ġdid';
+
+  @override
+  String get briefEventDate => 'Data';
+
+  @override
+  String get briefEventTime => 'Ħin';
+
+  @override
+  String get briefEventAllDay => 'Il-ġurnata kollha';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Żona tal-ħin';
+
+  @override
+  String get briefEventNotes => 'Noti';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Minn “$subject”, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'L-app tal-kalendarju tiftaħ b’dan l-avveniment. Xejn ma jiġi ssejvjat sakemm tissejvjah hemmhekk.';
+
+  @override
   String get appLockUnlock => 'Iftaħ';
 
   @override

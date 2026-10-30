@@ -1239,6 +1239,214 @@ class AppLocalizationsLb extends AppLocalizations {
   String get snoozeEmptyText => 'Stellt e Message zréck, da kënnt e erëm an d’Inbox, wann Dir e braucht.';
 
   @override
+  String get briefButton => 'Kuerzfassung';
+
+  @override
+  String get briefButtonHint => 'Lëscht op, wat dëse Message vun Iech wëllt';
+
+  @override
+  String get briefReaderView => 'Kuerzfassung';
+
+  @override
+  String get briefTitle => 'Kuerzfassung';
+
+  @override
+  String get briefShowOriginal => 'Original weisen';
+
+  @override
+  String get briefWorking => 'De Message gëtt gelies…';
+
+  @override
+  String get briefStopped => 'Dir hutt d’Kuerzfassung ofgebrach.';
+
+  @override
+  String get briefFailedTooLarge => 'Dëse Message ass ze laang fir de Modell, dofir gouf näischt geschéckt.';
+
+  @override
+  String get briefFailedProvider => 'De Modell konnt dëse Message net zesummefaassen.';
+
+  @override
+  String get briefFailedInvalid => 'D’Äntwert huet d’Kontrolle vu Loupe net bestanen, dofir gëtt keng Lëscht gewisen.';
+
+  @override
+  String get briefNothingTitle => 'Näischt zesummenzefaassen';
+
+  @override
+  String get briefPartial =>
+      'Dëse Message ass laang, dofir deckt d’Kuerzfassung just säin Ufank of. Liest de Rescht am Message selwer.';
+
+  @override
+  String get briefSectionToDo => 'Ze maachen';
+
+  @override
+  String get briefSectionDocuments => 'Dokumenter ze schécken';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumenter';
+
+  @override
+  String get briefSectionDates => 'Datumer';
+
+  @override
+  String get briefSectionConditions => 'Konditiounen';
+
+  @override
+  String get briefSectionNext => 'Wéi et weidergeet';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Delai: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Datum: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Zil, keen Delai: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Vun engem Evenement u gerechent: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Keen Delai uginn';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Dir', 'them': 'Aner', 'other': 'Net uginn'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Als erleedegt markéieren';
+
+  @override
+  String get briefMarkNotDone => 'Als net erleedegt markéieren';
+
+  @override
+  String get briefDismiss => 'Ausblennen';
+
+  @override
+  String get briefRestore => 'Zréckhuelen';
+
+  @override
+  String get briefCopy => 'Kopéieren';
+
+  @override
+  String get briefAddToCalendar => 'An de Kalenner setzen…';
+
+  @override
+  String get briefTrack => 'Verfollegen';
+
+  @override
+  String get briefShowInMessage => 'Am Message weisen';
+
+  @override
+  String get briefMarkedDone => 'Als erleedegt markéiert';
+
+  @override
+  String get briefDismissed => 'Ausgeblent';
+
+  @override
+  String get briefItemCopied => 'Kopéiert';
+
+  @override
+  String get briefChecklistCopied => 'Lëscht kopéiert';
+
+  @override
+  String briefTracking(String item) {
+    return '„$item“ gëtt verfollegt';
+  }
+
+  @override
+  String get briefTrackFailed => 'Dëse Punkt konnt net verfollegt ginn.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ausgeblent Punkte weisen',
+      one: '$count ausgeblente Punkt weisen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Ausgeblent Punkte verstoppen';
+
+  @override
+  String get briefCopyChecklist => 'Lëscht kopéieren';
+
+  @override
+  String get briefMadeByDemo => 'Gemaach vun der agebauter Demo, net vun engem Modell.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Op dësem Telefon gemaach vun $name.',
+      'myServer': 'Op Ärem Server gemaach vun $name.',
+      'other': 'An der Cloud gemaach vun $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Eng Kuerzfassung kann eppes iwwersinn oder falsch verstoen. Et zielt de Message selwer.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Kuckt de Message selwer no, ier Dir eppes aus dëser Kuerzfassung maacht.';
+  }
+
+  @override
+  String get briefSecurityText => 'Kuckt de Message selwer no, ier Dir eppes aus dëser Kuerzfassung maacht.';
+
+  @override
+  String get briefSourceTitle => 'Am Message';
+
+  @override
+  String get briefSourceAttachment =>
+      'Dat kënnt aus dem Numm vun engem ugehaangene Fichier. D’Kuerzfassung liest net, wat an den Unhäng steet.';
+
+  @override
+  String get briefEventTitle => 'Neien Termin';
+
+  @override
+  String get briefEventDate => 'Datum';
+
+  @override
+  String get briefEventTime => 'Auerzäit';
+
+  @override
+  String get briefEventAllDay => 'De ganzen Dag';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Zäitzon';
+
+  @override
+  String get briefEventNotes => 'Notizen';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Aus „$subject“, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Är Kalenner-App mécht sech mat dësem Termin op. Et gëtt näischt gespäichert, ier Dir en do späichert.';
+
+  @override
   String get appLockUnlock => 'Entspären';
 
   @override

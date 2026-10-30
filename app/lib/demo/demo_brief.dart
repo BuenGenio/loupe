@@ -83,7 +83,13 @@ final _documentWords = RegExp(
 final _question = RegExp(r'^(could|can|would|will|should|do|did|are|is)\s+(you|we)\b|\?$', caseSensitive: false);
 final _promise = RegExp(r"\b(I|we)\s+(will|'ll|shall)\b|\bI'll\b|\bwe'll\b|\bwill (be|then)\b", caseSensitive: false);
 final _condition = RegExp(r'^(once|if|when|as soon as)\b', caseSensitive: false);
-final _onceClause = RegExp(r'\b(once|as soon as|after)\s+[^,.;:]+', caseSensitive: false);
+
+/// "Once we have all of the above" of "Once we have all of the above we can
+/// submit…": up to a comma, or to where the main clause starts.
+final _onceClause = RegExp(
+  r'\b(once|as soon as|after)\s+.+?(?=[,.;:]|\s(?:we|you|they|I|it|he|she)\s(?:can|will|shall|may|must|would|should)\b|$)',
+  caseSensitive: false,
+);
 final _channel = RegExp(r'\b(in the [A-Z][\w-]*(?: [A-Z][\w-]*)* app|by bank transfer|by email|by post|online)\b');
 const _monthNames = [
   'January',
@@ -247,9 +253,19 @@ Map<String, Object?> _dueOf(String passage, DateTime sent) {
   };
 }
 
+/// The passage as an item: without "Please", capitalised, and cut short at
+/// a clause ("…, and will keep you updated") rather than in the middle of a
+/// timing or an amount.
 String _shorten(String s) {
+  const limit = 120;
   var t = s.trim().replaceFirst(RegExp(r'^(please|kindly)\s+', caseSensitive: false), '');
   if (t.endsWith('.')) t = t.substring(0, t.length - 1);
   if (t.isNotEmpty) t = t[0].toUpperCase() + t.substring(1);
-  return t.length <= 90 ? t : '${t.substring(0, 89).trimRight()}…';
+  if (t.length <= limit) return t;
+  final clause = RegExp(r'[,;] | (and|but|which|so that) ')
+      .allMatches(t)
+      .map((m) => m.start)
+      .where((i) => i >= 40 && i < limit);
+  final end = clause.isEmpty ? t.lastIndexOf(' ', limit - 1) : clause.last;
+  return '${t.substring(0, end > 0 ? end : limit - 1).trimRight()}…';
 }

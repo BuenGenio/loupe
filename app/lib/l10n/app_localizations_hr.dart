@@ -1269,6 +1269,214 @@ class AppLocalizationsHr extends AppLocalizations {
   String get snoozeEmptyText => 'Odgodite poruku i vratit će se u pristiglu poštu kad vam zatreba.';
 
   @override
+  String get briefButton => 'Ukratko';
+
+  @override
+  String get briefButtonHint => 'Navodi što ova poruka traži od vas';
+
+  @override
+  String get briefReaderView => 'Ukratko';
+
+  @override
+  String get briefTitle => 'Ukratko';
+
+  @override
+  String get briefShowOriginal => 'Prikaži izvorno';
+
+  @override
+  String get briefWorking => 'Čitanje poruke…';
+
+  @override
+  String get briefStopped => 'Zaustavili ste sažetak.';
+
+  @override
+  String get briefFailedTooLarge => 'Poruka je preduga za model, pa ništa nije poslano.';
+
+  @override
+  String get briefFailedProvider => 'Model nije uspio sažeti ovu poruku.';
+
+  @override
+  String get briefFailedInvalid => 'Odgovor nije prošao Loupeove provjere, pa se popis ne prikazuje.';
+
+  @override
+  String get briefNothingTitle => 'Nema se što sažeti';
+
+  @override
+  String get briefPartial =>
+      'Poruka je duga, pa sažetak obuhvaća samo njezin početak. Ostatak pročitajte u samoj poruci.';
+
+  @override
+  String get briefSectionToDo => 'Za obaviti';
+
+  @override
+  String get briefSectionDocuments => 'Dokumenti za slanje';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumenti';
+
+  @override
+  String get briefSectionDates => 'Datumi';
+
+  @override
+  String get briefSectionConditions => 'Uvjeti';
+
+  @override
+  String get briefSectionNext => 'Što slijedi';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Rok: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Datum: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Cilj, ne rok: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Računa se od događaja: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Rok nije naveden';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Vi', 'them': 'Drugi', 'other': 'Nije navedeno'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Označi kao obavljeno';
+
+  @override
+  String get briefMarkNotDone => 'Označi kao neobavljeno';
+
+  @override
+  String get briefDismiss => 'Odbaci';
+
+  @override
+  String get briefRestore => 'Vrati';
+
+  @override
+  String get briefCopy => 'Kopiraj';
+
+  @override
+  String get briefAddToCalendar => 'Dodaj u kalendar…';
+
+  @override
+  String get briefTrack => 'Prati';
+
+  @override
+  String get briefShowInMessage => 'Prikaži u poruci';
+
+  @override
+  String get briefMarkedDone => 'Označeno kao obavljeno';
+
+  @override
+  String get briefDismissed => 'Odbačeno';
+
+  @override
+  String get briefItemCopied => 'Kopirano';
+
+  @override
+  String get briefChecklistCopied => 'Popis je kopiran';
+
+  @override
+  String briefTracking(String item) {
+    return 'Praćenje: „$item“';
+  }
+
+  @override
+  String get briefTrackFailed => 'Praćenje ove stavke nije uspjelo.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Prikaži $count odbačenih stavki',
+      few: 'Prikaži $count odbačene stavke',
+      one: 'Prikaži $count odbačenu stavku',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Sakrij odbačene stavke';
+
+  @override
+  String get briefCopyChecklist => 'Kopiraj popis';
+
+  @override
+  String get briefMadeByDemo => 'Izradio ugrađeni demo, a ne model.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Izrađeno na ovom telefonu: $name.',
+      'myServer': 'Izrađeno na vašem poslužitelju: $name.',
+      'other': 'Izrađeno u oblaku: $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Sažetak može nešto propustiti ili pogrešno shvatiti. Mjerodavna je sama poruka.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Prije nego što učinite bilo što iz ovog sažetka, provjerite samu poruku.';
+  }
+
+  @override
+  String get briefSecurityText => 'Prije nego što učinite bilo što iz ovog sažetka, provjerite samu poruku.';
+
+  @override
+  String get briefSourceTitle => 'U poruci';
+
+  @override
+  String get briefSourceAttachment => 'Ovo potječe iz naziva priložene datoteke. Sažetak ne čita sadržaj privitaka.';
+
+  @override
+  String get briefEventTitle => 'Novi događaj';
+
+  @override
+  String get briefEventDate => 'Datum';
+
+  @override
+  String get briefEventTime => 'Vrijeme';
+
+  @override
+  String get briefEventAllDay => 'Cijeli dan';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Vremenska zona';
+
+  @override
+  String get briefEventNotes => 'Bilješke';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Iz poruke „$subject“, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Aplikacija za kalendar otvara se s ovim događajem. Ništa se ne sprema dok ga ondje ne spremite.';
+
+  @override
   String get appLockUnlock => 'Otključaj';
 
   @override

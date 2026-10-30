@@ -1241,6 +1241,214 @@ class AppLocalizationsHu extends AppLocalizations {
       'Szundiztass egy üzenetet, és akkor kerül vissza a Beérkező levelek közé, amikor szükséged van rá.';
 
   @override
+  String get briefButton => 'Röviden';
+
+  @override
+  String get briefButtonHint => 'Felsorolja, mit kér tőled ez az üzenet';
+
+  @override
+  String get briefReaderView => 'Röviden';
+
+  @override
+  String get briefTitle => 'Röviden';
+
+  @override
+  String get briefShowOriginal => 'Eredeti megjelenítése';
+
+  @override
+  String get briefWorking => 'Az üzenet olvasása…';
+
+  @override
+  String get briefStopped => 'Leállítottad az összefoglalót.';
+
+  @override
+  String get briefFailedTooLarge => 'Az üzenet túl hosszú a modellnek, ezért semmi sem lett elküldve.';
+
+  @override
+  String get briefFailedProvider => 'A modell nem tudta összefoglalni ezt az üzenetet.';
+
+  @override
+  String get briefFailedInvalid => 'A válasz nem ment át a Loupe ellenőrzésein, ezért nem jelenik meg lista.';
+
+  @override
+  String get briefNothingTitle => 'Nincs mit összefoglalni';
+
+  @override
+  String get briefPartial =>
+      'Az üzenet hosszú, ezért az összefoglaló csak az elejét fedi le. A többit olvasd el magában az üzenetben.';
+
+  @override
+  String get briefSectionToDo => 'Teendők';
+
+  @override
+  String get briefSectionDocuments => 'Elküldendő dokumentumok';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumentumok';
+
+  @override
+  String get briefSectionDates => 'Dátumok';
+
+  @override
+  String get briefSectionConditions => 'Feltételek';
+
+  @override
+  String get briefSectionNext => 'Mi következik';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Határidő: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Dátum: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Cél, nem határidő: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Egy eseménytől számítva: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Nincs megadott határidő';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Te', 'them': 'Mások', 'other': 'Nincs megadva'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Megjelölés késznek';
+
+  @override
+  String get briefMarkNotDone => 'Megjelölés nem késznek';
+
+  @override
+  String get briefDismiss => 'Elvetés';
+
+  @override
+  String get briefRestore => 'Visszaállítás';
+
+  @override
+  String get briefCopy => 'Másolás';
+
+  @override
+  String get briefAddToCalendar => 'Hozzáadás a naptárhoz…';
+
+  @override
+  String get briefTrack => 'Követés';
+
+  @override
+  String get briefShowInMessage => 'Megjelenítés az üzenetben';
+
+  @override
+  String get briefMarkedDone => 'Késznek jelölve';
+
+  @override
+  String get briefDismissed => 'Elvetve';
+
+  @override
+  String get briefItemCopied => 'Másolva';
+
+  @override
+  String get briefChecklistCopied => 'Lista másolva';
+
+  @override
+  String briefTracking(String item) {
+    return 'Követés: „$item”';
+  }
+
+  @override
+  String get briefTrackFailed => 'Ezt a tételt nem sikerült követni.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count elvetett tétel megjelenítése',
+      one: '$count elvetett tétel megjelenítése',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Elvetett tételek elrejtése';
+
+  @override
+  String get briefCopyChecklist => 'Lista másolása';
+
+  @override
+  String get briefMadeByDemo => 'A beépített demó készítette, nem modell.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Ezen a telefonon készítette: $name.',
+      'myServer': 'A saját szervereden készítette: $name.',
+      'other': 'A felhőben készítette: $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Az összefoglaló kihagyhat vagy félreérthet dolgokat. Maga az üzenet a mérvadó.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Mielőtt bármit megtennél ebből az összefoglalóból, ellenőrizd magát az üzenetet.';
+  }
+
+  @override
+  String get briefSecurityText => 'Mielőtt bármit megtennél ebből az összefoglalóból, ellenőrizd magát az üzenetet.';
+
+  @override
+  String get briefSourceTitle => 'Az üzenetben';
+
+  @override
+  String get briefSourceAttachment =>
+      'Ez egy csatolt fájl nevéből származik. Az összefoglaló nem olvassa a mellékletek tartalmát.';
+
+  @override
+  String get briefEventTitle => 'Új esemény';
+
+  @override
+  String get briefEventDate => 'Dátum';
+
+  @override
+  String get briefEventTime => 'Időpont';
+
+  @override
+  String get briefEventAllDay => 'Egész nap';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Időzóna';
+
+  @override
+  String get briefEventNotes => 'Jegyzetek';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Innen: „$subject”, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'A naptáralkalmazás ezzel az eseménnyel nyílik meg. Semmi sem mentődik, amíg ott el nem mented.';
+
+  @override
   String get appLockUnlock => 'Feloldás';
 
   @override

@@ -347,4 +347,57 @@ void main() {
     final brief = ((await run(task(message), [answer])) as AiSuccess<Brief>).value;
     expect(brief.items.single.evidence.start, 0);
   });
+
+  group('a quote across a wrapped line', () {
+    Map<String, Object?> answerQuoting(String quote) => {
+      'summary': 'Send the contract.',
+      'nothing_to_summarise': false,
+      'items': [
+        {
+          'kind': 'document',
+          'text': 'The signed contract',
+          'quote': quote,
+          'channel': null,
+          'owner': 'me',
+          'due': {'kind': 'none', 'text': null, 'date': null},
+        },
+      ],
+    };
+
+    test('is found, and points at the message’s own text', () async {
+      // Plain text wrapped at 72 columns, or format=flowed's soft breaks.
+      final message = BriefInput(
+        subject: 's',
+        from: 'f',
+        date: now,
+        text: 'Hello Sam,\n\nPlease send us the signed contract and a copy of your \npassport before the move.\n',
+      );
+      final brief = ((await run(task(message), [
+        answerQuoting('the signed contract and a copy of your passport'),
+      ])) as AiSuccess<Brief>).value;
+      final evidence = brief.items.single.evidence;
+      expect(evidence.quote, 'the signed contract and a copy of your\npassport');
+      expect(message.normalisedText.substring(evidence.start, evidence.end), evidence.quote);
+    });
+
+    test('is found when the model keeps a break the text doesn’t have', () async {
+      final message = BriefInput(subject: 's', from: 'f', date: now, text: 'Please send the signed contract.');
+      final brief =
+          ((await run(task(message), [answerQuoting('Please send the signed\ncontract.')])) as AiSuccess<Brief>).value;
+      expect(brief.items.single.evidence.start, 0);
+      expect(brief.items.single.evidence.quote, 'Please send the signed contract.');
+    });
+
+    test('in quoted earlier mail is still not a request', () async {
+      final message = BriefInput(
+        subject: 's',
+        from: 'f',
+        date: now,
+        text: 'Thanks, got it.\n\n> Please send the signed contract and a copy of\n> your passport.',
+      );
+      // Copied across the wrap, quote marker and all.
+      final answer = answerQuoting('Please send the signed contract and a copy of > your passport.');
+      expect(reasonOf(await run(task(message), [answer, answer])), contains('quotes earlier mail'));
+    });
+  });
 }

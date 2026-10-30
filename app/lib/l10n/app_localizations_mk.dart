@@ -1242,6 +1242,214 @@ class AppLocalizationsMk extends AppLocalizations {
   String get snoozeEmptyText => 'Одложете ја пораката и таа ќе се врати во Влезното сандаче кога ќе ви треба.';
 
   @override
+  String get briefButton => 'Накратко';
+
+  @override
+  String get briefButtonHint => 'Наведува што бара оваа порака од вас';
+
+  @override
+  String get briefReaderView => 'Накратко';
+
+  @override
+  String get briefTitle => 'Накратко';
+
+  @override
+  String get briefShowOriginal => 'Прикажи оригинал';
+
+  @override
+  String get briefWorking => 'Се чита пораката…';
+
+  @override
+  String get briefStopped => 'Го запревте резимето.';
+
+  @override
+  String get briefFailedTooLarge => 'Пораката е предолга за моделот, па ништо не е испратено.';
+
+  @override
+  String get briefFailedProvider => 'Моделот не успеа да ја резимира оваа порака.';
+
+  @override
+  String get briefFailedInvalid => 'Одговорот не ги помина проверките на Loupe, па списокот не се прикажува.';
+
+  @override
+  String get briefNothingTitle => 'Нема што да се резимира';
+
+  @override
+  String get briefPartial =>
+      'Пораката е долга, па резимето го опфаќа само нејзиниот почеток. Остатокот прочитајте го во самата порака.';
+
+  @override
+  String get briefSectionToDo => 'За правење';
+
+  @override
+  String get briefSectionDocuments => 'Документи за испраќање';
+
+  @override
+  String get briefSectionOtherDocuments => 'Документи';
+
+  @override
+  String get briefSectionDates => 'Датуми';
+
+  @override
+  String get briefSectionConditions => 'Услови';
+
+  @override
+  String get briefSectionNext => 'Што следува';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Рок: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Датум: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Цел, не рок: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Се смета од настан: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Не е наведен рок';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Вие', 'them': 'Други', 'other': 'Не е наведено'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Означи како завршено';
+
+  @override
+  String get briefMarkNotDone => 'Означи како незавршено';
+
+  @override
+  String get briefDismiss => 'Отфрли';
+
+  @override
+  String get briefRestore => 'Врати';
+
+  @override
+  String get briefCopy => 'Копирај';
+
+  @override
+  String get briefAddToCalendar => 'Додај во календар…';
+
+  @override
+  String get briefTrack => 'Следи';
+
+  @override
+  String get briefShowInMessage => 'Прикажи во пораката';
+
+  @override
+  String get briefMarkedDone => 'Означено како завршено';
+
+  @override
+  String get briefDismissed => 'Отфрлено';
+
+  @override
+  String get briefItemCopied => 'Копирано';
+
+  @override
+  String get briefChecklistCopied => 'Списокот е копиран';
+
+  @override
+  String briefTracking(String item) {
+    return 'Се следи „$item“';
+  }
+
+  @override
+  String get briefTrackFailed => 'Не успеа следењето на оваа ставка.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Прикажи $count отфрлени ставки',
+      one: 'Прикажи $count отфрлена ставка',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Скриј ги отфрлените ставки';
+
+  @override
+  String get briefCopyChecklist => 'Копирај го списокот';
+
+  @override
+  String get briefMadeByDemo => 'Направено од вградената демонстрација, не од модел.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Направено на овој телефон од $name.',
+      'myServer': 'Направено на вашиот сервер од $name.',
+      'other': 'Направено во облакот од $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Резимето може нешто да пропушти или погрешно да разбере. Важи самата порака.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Проверете ја самата порака пред да направите што било од ова резиме.';
+  }
+
+  @override
+  String get briefSecurityText => 'Проверете ја самата порака пред да направите што било од ова резиме.';
+
+  @override
+  String get briefSourceTitle => 'Во пораката';
+
+  @override
+  String get briefSourceAttachment =>
+      'Ова доаѓа од името на приложена датотека. Резимето не ја чита содржината на прилозите.';
+
+  @override
+  String get briefEventTitle => 'Нов настан';
+
+  @override
+  String get briefEventDate => 'Датум';
+
+  @override
+  String get briefEventTime => 'Време';
+
+  @override
+  String get briefEventAllDay => 'Цел ден';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Временска зона';
+
+  @override
+  String get briefEventNotes => 'Белешки';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Од „$subject“, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Апликацијата за календар се отвора со овој настан. Ништо не се зачувува додека не го зачувате таму.';
+
+  @override
   String get appLockUnlock => 'Отклучи';
 
   @override

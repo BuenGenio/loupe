@@ -1276,6 +1276,217 @@ class AppLocalizationsFr extends AppLocalizations {
       'Mettez un message en attente pour qu’il revienne dans la boîte de réception quand vous en avez besoin.';
 
   @override
+  String get briefButton => 'En bref';
+
+  @override
+  String get briefButtonHint => 'Liste ce que ce message attend de vous';
+
+  @override
+  String get briefReaderView => 'En bref';
+
+  @override
+  String get briefTitle => 'En bref';
+
+  @override
+  String get briefShowOriginal => 'Afficher l’original';
+
+  @override
+  String get briefWorking => 'Lecture du message…';
+
+  @override
+  String get briefStopped => 'Vous avez arrêté le résumé.';
+
+  @override
+  String get briefFailedTooLarge => 'Ce message est trop long pour le modèle ; rien n’a été envoyé.';
+
+  @override
+  String get briefFailedProvider => 'Le modèle n’a pas pu résumer ce message.';
+
+  @override
+  String get briefFailedInvalid => 'La réponse n’a pas passé les vérifications de Loupe ; aucune liste n’est affichée.';
+
+  @override
+  String get briefNothingTitle => 'Rien à résumer';
+
+  @override
+  String get briefPartial =>
+      'Ce message est long : le résumé n’en couvre que le début. Lisez la suite dans le message lui-même.';
+
+  @override
+  String get briefSectionToDo => 'À faire';
+
+  @override
+  String get briefSectionDocuments => 'Documents à envoyer';
+
+  @override
+  String get briefSectionOtherDocuments => 'Documents';
+
+  @override
+  String get briefSectionDates => 'Dates';
+
+  @override
+  String get briefSectionConditions => 'Conditions';
+
+  @override
+  String get briefSectionNext => 'Et ensuite';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Échéance : $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Le $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Objectif, pas une échéance : $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Compté à partir d’un événement : $when';
+  }
+
+  @override
+  String get briefDueNone => 'Aucune échéance indiquée';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Vous', 'them': 'Eux', 'other': 'Non précisé'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Marquer comme fait';
+
+  @override
+  String get briefMarkNotDone => 'Marquer comme non fait';
+
+  @override
+  String get briefDismiss => 'Écarter';
+
+  @override
+  String get briefRestore => 'Rétablir';
+
+  @override
+  String get briefCopy => 'Copier';
+
+  @override
+  String get briefAddToCalendar => 'Ajouter à l’agenda…';
+
+  @override
+  String get briefTrack => 'Suivre';
+
+  @override
+  String get briefShowInMessage => 'Voir dans le message';
+
+  @override
+  String get briefMarkedDone => 'Marqué comme fait';
+
+  @override
+  String get briefDismissed => 'Écarté';
+
+  @override
+  String get briefItemCopied => 'Copié';
+
+  @override
+  String get briefChecklistCopied => 'Liste copiée';
+
+  @override
+  String briefTracking(String item) {
+    return 'Suivi de « $item »';
+  }
+
+  @override
+  String get briefTrackFailed => 'Impossible de suivre cet élément.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Afficher $count éléments écartés',
+      many: 'Afficher $count d’éléments écartés',
+      one: 'Afficher $count élément écarté',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Masquer les éléments écartés';
+
+  @override
+  String get briefCopyChecklist => 'Copier la liste';
+
+  @override
+  String get briefMadeByDemo => 'Fait par la démo intégrée, pas par un modèle.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Fait sur ce téléphone par $name.',
+      'myServer': 'Fait sur votre serveur par $name.',
+      'other': 'Fait dans le cloud par $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution =>
+      'Un résumé peut oublier ou mal comprendre des choses. C’est le message lui-même qui compte.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Vérifiez le message lui-même avant de donner suite à quoi que ce soit dans ce résumé.';
+  }
+
+  @override
+  String get briefSecurityText =>
+      'Vérifiez le message lui-même avant de donner suite à quoi que ce soit dans ce résumé.';
+
+  @override
+  String get briefSourceTitle => 'Dans le message';
+
+  @override
+  String get briefSourceAttachment =>
+      'Cela vient du nom d’un fichier joint. Le résumé ne lit pas le contenu des pièces jointes.';
+
+  @override
+  String get briefEventTitle => 'Nouvel événement';
+
+  @override
+  String get briefEventDate => 'Date';
+
+  @override
+  String get briefEventTime => 'Heure';
+
+  @override
+  String get briefEventAllDay => 'Toute la journée';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Fuseau horaire';
+
+  @override
+  String get briefEventNotes => 'Notes';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Tiré de « $subject », $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Votre app d’agenda s’ouvre avec cet événement. Rien n’est enregistré tant que vous ne l’y enregistrez pas.';
+
+  @override
   String get appLockUnlock => 'Déverrouiller';
 
   @override
