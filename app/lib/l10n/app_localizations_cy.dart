@@ -191,7 +191,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get conversationChangesSameMetadata => 'Manylion sy’n cyfateb';
 
   @override
-  String get conversationChangesFullTextNote => 'Cymherir testun cyfan y neges, gan gynnwys dyfyniadau a llofnodion.';
+  String get conversationChangesFullTextNote =>
+      'Cymherir testun cyfan y neges, gan gynnwys dyfyniadau a llofnodion.';
 
   @override
   String get conversationChangesLimited =>
@@ -201,7 +202,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get conversationChangesLoadError => 'Methu cymharu’r negeseuon hyn.';
 
   @override
-  String get conversationSomethingWentWrong => 'Aeth rhywbeth o’i le. Rhowch gynnig arall arni.';
+  String get conversationSomethingWentWrong =>
+      'Aeth rhywbeth o’i le. Rhowch gynnig arall arni.';
 
   @override
   String get conversationReplyToList => 'Ateb y rhestr';
@@ -223,7 +225,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get conversationGoneTitle => 'Dim neges';
 
   @override
-  String get conversationGoneText => 'Mae’r neges hon wedi’i symud neu ei dileu.';
+  String get conversationGoneText =>
+      'Mae’r neges hon wedi’i symud neu ei dileu.';
 
   @override
   String get conversationMuted => 'Wedi’i ddistewi';
@@ -238,7 +241,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get conversationTrash => 'I’r sbwriel';
 
   @override
-  String get conversationReplyHint => 'Pwyswch yn hir i Ateb pawb neu Anfon ymlaen';
+  String get conversationReplyHint =>
+      'Pwyswch yn hir i Ateb pawb neu Anfon ymlaen';
 
   @override
   String get conversationOfflineTitle => 'Rydych chi all-lein';
@@ -312,10 +316,12 @@ class AppLocalizationsCy extends AppLocalizations {
   String get conversationBodyError => 'Methu llwytho’r neges hon.';
 
   @override
-  String get conversationBodyOffline => 'Rydych chi all-lein. Bydd y neges yn llwytho pan fyddwch chi ar-lein eto.';
+  String get conversationBodyOffline =>
+      'Rydych chi all-lein. Bydd y neges yn llwytho pan fyddwch chi ar-lein eto.';
 
   @override
-  String get conversationOriginalHint => 'Mae’n edrych yn well yn y golwg Gwreiddiol';
+  String get conversationOriginalHint =>
+      'Mae’n edrych yn well yn y golwg Gwreiddiol';
 
   @override
   String get conversationShowOriginal => 'Dangos y gwreiddiol';
@@ -495,7 +501,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get conversationSecurityBadgeHint => 'Yn dangos pam';
 
   @override
-  String get conversationPhishingBannerTitle => 'Mae’r neges hon yn edrych fel gwe-rwydo';
+  String get conversationPhishingBannerTitle =>
+      'Mae’r neges hon yn edrych fel gwe-rwydo';
 
   @override
   String conversationPhishingBannerReason(String reason) {
@@ -503,7 +510,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get conversationPhishingBannerText => 'Mae dolenni a delweddau wedi’u diffodd.';
+  String get conversationPhishingBannerText =>
+      'Mae dolenni a delweddau wedi’u diffodd.';
 
   @override
   String get conversationPhishingWhy => 'Pam?';
@@ -512,26 +520,32 @@ class AppLocalizationsCy extends AppLocalizations {
   String get conversationPhishingShowAnyway => 'Dangos beth bynnag';
 
   @override
-  String get conversationSecurityPhishingTitle => 'Mae hyn yn edrych fel gwe-rwydo';
+  String get conversationSecurityPhishingTitle =>
+      'Mae hyn yn edrych fel gwe-rwydo';
 
   @override
-  String get conversationSecurityPhishingText => 'Mae sawl arwydd nad yw’r neges hon yr hyn y mae’n honni ei bod.';
+  String get conversationSecurityPhishingText =>
+      'Mae sawl arwydd nad yw’r neges hon yr hyn y mae’n honni ei bod.';
 
   @override
-  String get conversationSecurityCarefulTitle => 'Byddwch yn ofalus gyda’r neges hon';
+  String get conversationSecurityCarefulTitle =>
+      'Byddwch yn ofalus gyda’r neges hon';
 
   @override
-  String get conversationSecurityCarefulText => 'Mae rhywbeth amdani sy’n haeddu ail olwg.';
+  String get conversationSecurityCarefulText =>
+      'Mae rhywbeth amdani sy’n haeddu ail olwg.';
 
   @override
-  String get conversationSecurityVerifiedText => 'Mae’r anfonwr wedi’i ddilysu a does dim byd yn edrych yn amheus.';
+  String get conversationSecurityVerifiedText =>
+      'Mae’r anfonwr wedi’i ddilysu a does dim byd yn edrych yn amheus.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Does dim byd yn edrych yn amheus. Wnaeth eich gweinydd e-bost ddim dweud a yw’r anfonwr wedi’i ddilysu.';
 
   @override
-  String get conversationSecurityNothingSuspicious => 'Does dim byd yn edrych yn amheus.';
+  String get conversationSecurityNothingSuspicious =>
+      'Does dim byd yn edrych yn amheus.';
 
   @override
   String get conversationSecurityWhy => 'Pam';
@@ -610,7 +624,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Manylion technegol';
 
   @override
-  String get conversationSecurityCheckedLocally => 'Wedi’i wirio ar y ddyfais hon. Chafodd dim byd ei anfon i unman.';
+  String get conversationSecurityCheckedLocally =>
+      'Wedi’i wirio ar y ddyfais hon. Chafodd dim byd ei anfon i unman.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Tracwyr';
@@ -683,7 +698,8 @@ class AppLocalizationsCy extends AppLocalizations {
       'Peidiwch â gweithredu arni oni bai eich bod chi’n ei disgwyl. Os oes amheuaeth, cysylltwch â’r anfonwr mewn ffordd arall.';
 
   @override
-  String get conversationSecurityAuthUnalignedTitle => 'Wedi’i llofnodi gan barth arall';
+  String get conversationSecurityAuthUnalignedTitle =>
+      'Wedi’i llofnodi gan barth arall';
 
   @override
   String conversationSecurityAuthUnalignedText(String signer, String domain) {
@@ -696,7 +712,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle => 'Mae’r enw’n dangos cyfeiriad gwahanol';
+  String get conversationSecurityNameShowsAddressTitle =>
+      'Mae’r enw’n dangos cyfeiriad gwahanol';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -704,10 +721,12 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice => 'Ymddiriedwch yn y cyfeiriad, nid yn yr enw.';
+  String get conversationSecurityNameShowsAddressAdvice =>
+      'Ymddiriedwch yn y cyfeiriad, nid yn yr enw.';
 
   @override
-  String get conversationSecurityReplyToTitle => 'Mae atebion yn mynd i rywle arall';
+  String get conversationSecurityReplyToTitle =>
+      'Mae atebion yn mynd i rywle arall';
 
   @override
   String conversationSecurityReplyToText(String address, String domain) {
@@ -715,13 +734,15 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityReplyToAdvice => 'Gwiriwch y cyfeiriad cyn ateb gydag unrhyw beth personol.';
+  String get conversationSecurityReplyToAdvice =>
+      'Gwiriwch y cyfeiriad cyn ateb gydag unrhyw beth personol.';
 
   @override
   String get conversationSecurityImpersonationYouTitle => 'Yn defnyddio’ch enw';
 
   @override
-  String get conversationSecurityImpersonationTitle => 'Yn defnyddio enw rhywun rydych chi’n ei adnabod';
+  String get conversationSecurityImpersonationTitle =>
+      'Yn defnyddio enw rhywun rydych chi’n ei adnabod';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -729,17 +750,28 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationVipText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Mae wedi’i llofnodi “$name”, fel eich VIP $knownName ($knownEmail), ond mae’n dod o gyfeiriad newydd: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Mae wedi’i llofnodi “$name”, fel $knownName ($knownEmail), ond mae’n dod o gyfeiriad newydd: $email.';
   }
 
   @override
-  String get conversationSecurityImpersonationRepliesElsewhere => 'A byddai atebion yn mynd i gyfeiriad arall eto.';
+  String get conversationSecurityImpersonationRepliesElsewhere =>
+      'A byddai atebion yn mynd i gyfeiriad arall eto.';
 
   @override
   String get conversationSecurityImpersonationAdvice =>
@@ -756,7 +788,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle => 'Y neges gyntaf gan yr anfonwr hwn';
+  String get conversationSecurityFirstTimeTitle =>
+      'Y neges gyntaf gan yr anfonwr hwn';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -768,10 +801,12 @@ class AppLocalizationsCy extends AppLocalizations {
       'Byddwch yn ofalus gyda cheisiadau gan bobl nad ydych chi’n eu hadnabod eto.';
 
   @override
-  String get conversationSecuritySenderHomographTitle => 'Llythrennau tebyg yng nghyfeiriad yr anfonwr';
+  String get conversationSecuritySenderHomographTitle =>
+      'Llythrennau tebyg yng nghyfeiriad yr anfonwr';
 
   @override
-  String get conversationSecurityLinkHomographTitle => 'Llythrennau tebyg mewn dolen';
+  String get conversationSecurityLinkHomographTitle =>
+      'Llythrennau tebyg mewn dolen';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -784,7 +819,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice => 'Dilëwch hi neu rhowch wybod ei bod yn sothach.';
+  String get conversationSecuritySenderHomographAdvice =>
+      'Dilëwch hi neu rhowch wybod ei bod yn sothach.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Peidiwch â’i hagor.';
@@ -798,7 +834,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get conversationSecurityLookalikeTitle => 'Parth sy’n edrych yn debyg';
 
   @override
-  String get conversationSecurityFamiliarNameTitle => 'Yn defnyddio enw cyfarwydd yn ei barth';
+  String get conversationSecurityFamiliarNameTitle =>
+      'Yn defnyddio enw cyfarwydd yn ei barth';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -806,7 +843,11 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(String domain, String brand, String real) {
+  String conversationSecurityLookalikeText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return 'Mae $domain yn edrych fel $brand ($real), ond mae’n barth gwahanol.';
   }
 
@@ -816,7 +857,11 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
+  String conversationSecurityFamiliarNameText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return 'Mae $domain yn defnyddio enw $brand ($real), ond dyw e ddim yn perthyn iddo.';
   }
 
@@ -870,7 +915,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle => 'Does dim modd gwirio cyrchfan dolen';
+  String get conversationSecurityLinkUncheckableTitle =>
+      'Does dim modd gwirio cyrchfan dolen';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -878,7 +924,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle => 'Mae dolen yn pwyntio at gyfeiriad IP moel';
+  String get conversationSecurityIpAddressTitle =>
+      'Mae dolen yn pwyntio at gyfeiriad IP moel';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -904,16 +951,20 @@ class AppLocalizationsCy extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Yn gofyn am gyfrinair';
 
   @override
-  String get conversationSecurityPasswordFieldText => 'Roedd maes cyfrinair yn y neges. Mae Loupe wedi’i dynnu.';
+  String get conversationSecurityPasswordFieldText =>
+      'Roedd maes cyfrinair yn y neges. Mae Loupe wedi’i dynnu.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice => 'Peidiwch byth â theipio cyfrinair mewn e-bost.';
+  String get conversationSecurityPasswordFieldAdvice =>
+      'Peidiwch byth â theipio cyfrinair mewn e-bost.';
 
   @override
-  String get conversationSecurityScriptLinkTitle => 'Analluogwyd dolen sy’n rhedeg cod';
+  String get conversationSecurityScriptLinkTitle =>
+      'Analluogwyd dolen sy’n rhedeg cod';
 
   @override
-  String get conversationSecurityScriptLinkText => 'Dyw Loupe byth yn rhedeg cod o negeseuon.';
+  String get conversationSecurityScriptLinkText =>
+      'Dyw Loupe byth yn rhedeg cod o negeseuon.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -936,7 +987,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityInternationalTitle => 'Cyfeiriad gwe rhyngwladol';
+  String get conversationSecurityInternationalTitle =>
+      'Cyfeiriad gwe rhyngwladol';
 
   @override
   String conversationSecurityInternationalText(String hosts) {
@@ -944,19 +996,26 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLotsOfHiddenTextTitle => 'Llawer o destun cudd';
+  String get conversationSecurityLotsOfHiddenTextTitle =>
+      'Llawer o destun cudd';
 
   @override
   String conversationSecurityLotsOfHiddenTextText(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Tynnwyd $count nod o destun anweledig. Mae testun cudd fel hyn wedi’i fwriadu i dwyllo hidlwyr sbam.',
-      many: 'Tynnwyd $count nod o destun anweledig. Mae testun cudd fel hyn wedi’i fwriadu i dwyllo hidlwyr sbam.',
-      few: 'Tynnwyd $count nod o destun anweledig. Mae testun cudd fel hyn wedi’i fwriadu i dwyllo hidlwyr sbam.',
-      two: 'Tynnwyd $count nod o destun anweledig. Mae testun cudd fel hyn wedi’i fwriadu i dwyllo hidlwyr sbam.',
-      one: 'Tynnwyd $count nod o destun anweledig. Mae testun cudd fel hyn wedi’i fwriadu i dwyllo hidlwyr sbam.',
-      zero: 'Tynnwyd $count nod o destun anweledig. Mae testun cudd fel hyn wedi’i fwriadu i dwyllo hidlwyr sbam.',
+      other:
+          'Tynnwyd $count nod o destun anweledig. Mae testun cudd fel hyn wedi’i fwriadu i dwyllo hidlwyr sbam.',
+      many:
+          'Tynnwyd $count nod o destun anweledig. Mae testun cudd fel hyn wedi’i fwriadu i dwyllo hidlwyr sbam.',
+      few:
+          'Tynnwyd $count nod o destun anweledig. Mae testun cudd fel hyn wedi’i fwriadu i dwyllo hidlwyr sbam.',
+      two:
+          'Tynnwyd $count nod o destun anweledig. Mae testun cudd fel hyn wedi’i fwriadu i dwyllo hidlwyr sbam.',
+      one:
+          'Tynnwyd $count nod o destun anweledig. Mae testun cudd fel hyn wedi’i fwriadu i dwyllo hidlwyr sbam.',
+      zero:
+          'Tynnwyd $count nod o destun anweledig. Mae testun cudd fel hyn wedi’i fwriadu i dwyllo hidlwyr sbam.',
     );
     return '$_temp0';
   }
@@ -980,7 +1039,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed => 'Methu llwytho’r neges i lawr. Gwiriwch y cysylltiad a rhowch gynnig arall arni.';
+  String get exportDownloadFailed =>
+      'Methu llwytho’r neges i lawr. Gwiriwch y cysylltiad a rhowch gynnig arall arni.';
 
   @override
   String exportSaved(String name) {
@@ -1010,12 +1070,17 @@ class AppLocalizationsCy extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Wedi cadw “$name” heb $formattedCount neges nad oedd modd eu llwytho i lawr.',
-      many: 'Wedi cadw “$name” heb $formattedCount neges nad oedd modd eu llwytho i lawr.',
-      few: 'Wedi cadw “$name” heb $formattedCount neges nad oedd modd eu llwytho i lawr.',
-      two: 'Wedi cadw “$name” heb $formattedCount neges nad oedd modd eu llwytho i lawr.',
+      other:
+          'Wedi cadw “$name” heb $formattedCount neges nad oedd modd eu llwytho i lawr.',
+      many:
+          'Wedi cadw “$name” heb $formattedCount neges nad oedd modd eu llwytho i lawr.',
+      few:
+          'Wedi cadw “$name” heb $formattedCount neges nad oedd modd eu llwytho i lawr.',
+      two:
+          'Wedi cadw “$name” heb $formattedCount neges nad oedd modd eu llwytho i lawr.',
       one: 'Wedi cadw “$name” heb 1 neges nad oedd modd ei llwytho i lawr.',
-      zero: 'Wedi cadw “$name” heb $formattedCount neges nad oedd modd eu llwytho i lawr.',
+      zero:
+          'Wedi cadw “$name” heb $formattedCount neges nad oedd modd eu llwytho i lawr.',
     );
     return '$_temp0';
   }
@@ -1131,7 +1196,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get projectsDelete => 'Dileu’r prosiect';
 
   @override
-  String get projectsDeleteMessage => 'Mae ei sgyrsiau’n aros lle maen nhw, y tu allan i’r prosiect.';
+  String get projectsDeleteMessage =>
+      'Mae ei sgyrsiau’n aros lle maen nhw, y tu allan i’r prosiect.';
 
   @override
   String get projectsUntitled => 'Prosiect';
@@ -1249,7 +1315,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get mailboxesVipTitle => 'VIP';
 
   @override
-  String get mailboxesVipFooter => 'Gallwch chi hefyd dapio enw anfonwr mewn neges a throi VIP ymlaen.';
+  String get mailboxesVipFooter =>
+      'Gallwch chi hefyd dapio enw anfonwr mewn neges a throi VIP ymlaen.';
 
   @override
   String get mailboxesAddVip => 'Ychwanegu VIP…';
@@ -1258,7 +1325,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get mailboxesAddVipTitle => 'Ychwanegu VIP';
 
   @override
-  String get mailboxesAddVipText => 'Mae e-bost o’r cyfeiriad hwn yn cael seren ac yn ymddangos yn y blwch post VIP.';
+  String get mailboxesAddVipText =>
+      'Mae e-bost o’r cyfeiriad hwn yn cael seren ac yn ymddangos yn y blwch post VIP.';
 
   @override
   String get mailboxesAddVipPlaceholder => 'name@example.com';
@@ -1460,19 +1528,22 @@ class AppLocalizationsCy extends AppLocalizations {
   String get snoozeNoTime => 'Dim amser wedi’i osod';
 
   @override
-  String get snoozeFooter => 'Mae negeseuon wedi’u gohirio’n dod yn ôl i’r Mewnflwch, heb eu darllen, ar eu hamser.';
+  String get snoozeFooter =>
+      'Mae negeseuon wedi’u gohirio’n dod yn ôl i’r Mewnflwch, heb eu darllen, ar eu hamser.';
 
   @override
   String get snoozeEmptyTitle => 'Dim byd wedi’i ohirio';
 
   @override
-  String get snoozeEmptyText => 'Gohiriwch neges i’w chael yn ôl yn y Mewnflwch pan fydd ei hangen arnoch chi.';
+  String get snoozeEmptyText =>
+      'Gohiriwch neges i’w chael yn ôl yn y Mewnflwch pan fydd ei hangen arnoch chi.';
 
   @override
   String get briefButton => 'Yn gryno';
 
   @override
-  String get briefButtonHint => 'Yn rhestru beth mae’r neges hon yn ei ofyn gennych chi';
+  String get briefButtonHint =>
+      'Yn rhestru beth mae’r neges hon yn ei ofyn gennych chi';
 
   @override
   String get briefReaderView => 'Yn gryno';
@@ -1490,10 +1561,12 @@ class AppLocalizationsCy extends AppLocalizations {
   String get briefStopped => 'Rydych chi wedi atal y crynodeb.';
 
   @override
-  String get briefFailedTooLarge => 'Mae’r neges hon yn rhy hir i’r model, felly anfonwyd dim byd.';
+  String get briefFailedTooLarge =>
+      'Mae’r neges hon yn rhy hir i’r model, felly anfonwyd dim byd.';
 
   @override
-  String get briefFailedProvider => 'Doedd y model ddim yn gallu crynhoi’r neges hon.';
+  String get briefFailedProvider =>
+      'Doedd y model ddim yn gallu crynhoi’r neges hon.';
 
   @override
   String get briefFailedInvalid =>
@@ -1549,7 +1622,11 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Chi', 'them': 'Eraill', 'other': 'Heb ei nodi'});
+    String _temp0 = intl.Intl.selectLogic(owner, {
+      'me': 'Chi',
+      'them': 'Eraill',
+      'other': 'Heb ei nodi',
+    });
     return '$_temp0';
   }
 
@@ -1619,7 +1696,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get briefCopyChecklist => 'Copïo’r rhestr';
 
   @override
-  String get briefMadeByDemo => 'Wedi’i wneud gan y demo mewnol, nid gan fodel.';
+  String get briefMadeByDemo =>
+      'Wedi’i wneud gan y demo mewnol, nid gan fodel.';
 
   @override
   String briefMadeBy(String location, String name) {
@@ -1632,7 +1710,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get briefCaution => 'Gall crynodeb golli neu gamddeall pethau. Y neges ei hun sy’n cyfrif.';
+  String get briefCaution =>
+      'Gall crynodeb golli neu gamddeall pethau. Y neges ei hun sy’n cyfrif.';
 
   @override
   String briefSecurityReason(String reason) {
@@ -1640,7 +1719,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText => 'Gwiriwch y neges ei hun cyn gwneud unrhyw beth o’r crynodeb hwn.';
+  String get briefSecurityText =>
+      'Gwiriwch y neges ei hun cyn gwneud unrhyw beth o’r crynodeb hwn.';
 
   @override
   String get briefSourceTitle => 'Yn y neges';
@@ -1685,13 +1765,16 @@ class AppLocalizationsCy extends AppLocalizations {
   String get appLockUnlock => 'Datgloi';
 
   @override
-  String get appLockFailed => 'Doedd Loupe ddim yn gallu cadarnhau mai chi sydd yno.';
+  String get appLockFailed =>
+      'Doedd Loupe ddim yn gallu cadarnhau mai chi sydd yno.';
 
   @override
-  String get appLockLockedOut => 'Gormod o ymdrechion. Rhowch gynnig arall arni nes ymlaen.';
+  String get appLockLockedOut =>
+      'Gormod o ymdrechion. Rhowch gynnig arall arni nes ymlaen.';
 
   @override
-  String get appLockPromptError => 'Methu dangos yr anogwr. Rhowch gynnig arall arni.';
+  String get appLockPromptError =>
+      'Methu dangos yr anogwr. Rhowch gynnig arall arni.';
 
   @override
   String get appLockNoScreenLock => 'Does gan y ffôn hwn ddim clo sgrin.';
@@ -1700,13 +1783,15 @@ class AppLocalizationsCy extends AppLocalizations {
   String get appLockUnlockPromptTitle => 'Datgloi Loupe';
 
   @override
-  String get appLockUnlockPromptReason => 'Cadarnhewch mai chi sydd yno i weld eich e-bost.';
+  String get appLockUnlockPromptReason =>
+      'Cadarnhewch mai chi sydd yno i weld eich e-bost.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Troi Clo Ap ymlaen';
 
   @override
-  String get appLockTurnOnPromptReason => 'Cadarnhewch mai chi sydd yno i droi Clo Ap ymlaen.';
+  String get appLockTurnOnPromptReason =>
+      'Cadarnhewch mai chi sydd yno i droi Clo Ap ymlaen.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1761,7 +1846,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get openpgpEncryptedDamaged => 'Wedi’i hamgryptio · wedi’i difrodi';
 
   @override
-  String get openpgpEncryptedUnsupported => 'Wedi’i hamgryptio · heb gefnogaeth';
+  String get openpgpEncryptedUnsupported =>
+      'Wedi’i hamgryptio · heb gefnogaeth';
 
   @override
   String get openpgpUnknownSigner => 'anhysbys';
@@ -1788,7 +1874,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get openpgpSignedWithRejectedKey => 'Wedi’i llofnodi ag allwedd a wrthodwyd';
+  String get openpgpSignedWithRejectedKey =>
+      'Wedi’i llofnodi ag allwedd a wrthodwyd';
 
   @override
   String openpgpSignedByNotAccepted(String name) {
@@ -1861,33 +1948,40 @@ class AppLocalizationsCy extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Newid derbyn…';
 
   @override
-  String get openpgpCheckedFooter => 'Wedi’i gwirio ar y ddyfais hon gydag OpenPGP, yn gydnaws â Thunderbird.';
+  String get openpgpCheckedFooter =>
+      'Wedi’i gwirio ar y ddyfais hon gydag OpenPGP, yn gydnaws â Thunderbird.';
 
   @override
   String get openpgpSummaryLocked =>
       'Mae’ch allwedd ar glo. Datglowch hi gyda’i chyfrinymadrodd i ddarllen y neges hon.';
 
   @override
-  String get openpgpSummaryNoSecretKey => 'Cafodd ei hamgryptio i allwedd sydd ddim ar y ddyfais hon.';
+  String get openpgpSummaryNoSecretKey =>
+      'Cafodd ei hamgryptio i allwedd sydd ddim ar y ddyfais hon.';
 
   @override
-  String get openpgpSummaryDamaged => 'Mae’r data wedi’i amgryptio wedi’i ddifrodi neu wedi’i newid ar y ffordd.';
+  String get openpgpSummaryDamaged =>
+      'Mae’r data wedi’i amgryptio wedi’i ddifrodi neu wedi’i newid ar y ffordd.';
 
   @override
-  String get openpgpSummaryUnsupported => 'Mae’n defnyddio algorithm nad yw Loupe yn ei gefnogi.';
+  String get openpgpSummaryUnsupported =>
+      'Mae’n defnyddio algorithm nad yw Loupe yn ei gefnogi.';
 
   @override
-  String get openpgpSummaryEncrypted => 'Dim ond chi a’r derbynwyr eraill sy’n gallu ei darllen.';
+  String get openpgpSummaryEncrypted =>
+      'Dim ond chi a’r derbynwyr eraill sy’n gallu ei darllen.';
 
   @override
-  String get openpgpSummaryNotSigned => 'Dyw hi ddim wedi’i llofnodi, felly dyw’r anfonwr ddim wedi’i gadarnhau.';
+  String get openpgpSummaryNotSigned =>
+      'Dyw hi ddim wedi’i llofnodi, felly dyw’r anfonwr ddim wedi’i gadarnhau.';
 
   @override
   String get openpgpSummaryUnknownKey =>
       'Mae wedi’i llofnodi, ond ag allwedd sydd ddim gennych chi, felly does dim modd gwirio’r llofnod.';
 
   @override
-  String get openpgpSummaryBadSignature => 'Dyw’r llofnod ddim yn cyfateb: efallai bod y neges wedi’i newid.';
+  String get openpgpSummaryBadSignature =>
+      'Dyw’r llofnod ddim yn cyfateb: efallai bod y neges wedi’i newid.';
 
   @override
   String get openpgpSummaryMismatch =>
@@ -1901,13 +1995,16 @@ class AppLocalizationsCy extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Wedi’i llofnodi â’ch allwedd eich hun.';
 
   @override
-  String get openpgpSummaryVerified => 'Mae’r llofnod yn ddilys, ac rydych chi wedi gwirio ôl bys yr allwedd.';
+  String get openpgpSummaryVerified =>
+      'Mae’r llofnod yn ddilys, ac rydych chi wedi gwirio ôl bys yr allwedd.';
 
   @override
-  String get openpgpSummaryUnverified => 'Mae’r llofnod yn ddilys. Fe dderbynioch chi’r allwedd heb wirio’i hôl bys.';
+  String get openpgpSummaryUnverified =>
+      'Mae’r llofnod yn ddilys. Fe dderbynioch chi’r allwedd heb wirio’i hôl bys.';
 
   @override
-  String get openpgpSummaryRejected => 'Mae’r llofnod yn ddilys, ond rydych chi wedi gwrthod yr allwedd hon.';
+  String get openpgpSummaryRejected =>
+      'Mae’r llofnod yn ddilys, ond rydych chi wedi gwrthod yr allwedd hon.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -2002,7 +2099,8 @@ class AppLocalizationsCy extends AppLocalizations {
       'Mae chwilio’n dod o hyd i negeseuon wedi’u hamgryptio yn ôl eu hanfonwr, eu derbynwyr a’u pwnc. Gyda hyn ymlaen, mae Loupe hefyd yn ychwanegu testun pob neges wedi’i hamgryptio y mae’n ei dadgryptio at y mynegai chwilio yn ei gronfa ddata wedi’i hamgryptio ar y ddyfais hon, fel bod chwilio’n dod o hyd iddi yn ôl ei thestun hefyd. Mae ei ddiffodd yn tynnu’r testun hwnnw o’r mynegai.';
 
   @override
-  String get openpgpIndexDecrypted => 'Mynegeio negeseuon wedi’u dadgryptio ar gyfer chwilio';
+  String get openpgpIndexDecrypted =>
+      'Mynegeio negeseuon wedi’u dadgryptio ar gyfer chwilio';
 
   @override
   String get openpgpPassphrases => 'Cyfrinymadroddion';
@@ -2069,7 +2167,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get openpgpFromFile => 'O ffeil';
 
   @override
-  String get openpgpClipboardEmpty => 'Mae’r clipfwrdd yn wag. Copïwch yr allwedd yn gyntaf.';
+  String get openpgpClipboardEmpty =>
+      'Mae’r clipfwrdd yn wag. Copïwch yr allwedd yn gyntaf.';
 
   @override
   String get openpgpKey => 'Allwedd';
@@ -2125,7 +2224,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get openpgpPublicKeyCopied => 'Allwedd gyhoeddus wedi’i chopïo.';
 
   @override
-  String get openpgpBackUpSecretKey => 'Gwneud copi wrth gefn o’r allwedd gyfrinachol';
+  String get openpgpBackUpSecretKey =>
+      'Gwneud copi wrth gefn o’r allwedd gyfrinachol';
 
   @override
   String get openpgpDeleteKey => 'Dileu’r allwedd';
@@ -2134,7 +2234,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get openpgpRemoveKey => 'Tynnu’r allwedd';
 
   @override
-  String get openpgpBackUpTitle => 'Gwneud copi wrth gefn o’r allwedd gyfrinachol?';
+  String get openpgpBackUpTitle =>
+      'Gwneud copi wrth gefn o’r allwedd gyfrinachol?';
 
   @override
   String get openpgpBackUpProtected =>
@@ -2162,7 +2263,8 @@ class AppLocalizationsCy extends AppLocalizations {
       'Fydd dim modd darllen e-bost wedi’i amgryptio i’r allwedd hon ar y ddyfais hon mwyach, oni bai eich bod chi’n ei mewnforio eto.';
 
   @override
-  String get openpgpRemoveKeyMessage => 'Gallwch chi ei mewnforio eto yn nes ymlaen.';
+  String get openpgpRemoveKeyMessage =>
+      'Gallwch chi ei mewnforio eto yn nes ymlaen.';
 
   @override
   String get openpgpKeyHeader => 'Allwedd OpenPGP';
@@ -2185,7 +2287,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Amgryptio’n awtomatig';
 
   @override
-  String get openpgpAlwaysEncryptDetail => 'Yn gwrthod anfon pan fo derbynnydd heb allwedd';
+  String get openpgpAlwaysEncryptDetail =>
+      'Yn gwrthod anfon pan fo derbynnydd heb allwedd';
 
   @override
   String get openpgpSignUnencrypted => 'Llofnodi e-bost heb ei amgryptio';
@@ -2204,7 +2307,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get openpgpPreferEncryption => 'Mae’n well gen i amgryptio';
 
   @override
-  String get openpgpPreferEncryptionDetail => 'Gofyn i eraill amgryptio pan allan nhw';
+  String get openpgpPreferEncryptionDetail =>
+      'Gofyn i eraill amgryptio pan allan nhw';
 
   @override
   String openpgpValidityYears(int count) {
@@ -2222,7 +2326,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get openpgpPassphrasesDontMatch => 'Dyw’r cyfrinymadroddion ddim yn cyfateb.';
+  String get openpgpPassphrasesDontMatch =>
+      'Dyw’r cyfrinymadroddion ddim yn cyfateb.';
 
   @override
   String openpgpKeyReady(String id) {
@@ -2404,10 +2509,12 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get openpgpWrongPassphrase => 'Mae’r cyfrinymadrodd yna’n anghywir. Rhowch gynnig arall arni.';
+  String get openpgpWrongPassphrase =>
+      'Mae’r cyfrinymadrodd yna’n anghywir. Rhowch gynnig arall arni.';
 
   @override
-  String get openpgpExplainLocked => 'Mae’r neges hon wedi’i hamgryptio. Datglowch eich allwedd OpenPGP i’w darllen.';
+  String get openpgpExplainLocked =>
+      'Mae’r neges hon wedi’i hamgryptio. Datglowch eich allwedd OpenPGP i’w darllen.';
 
   @override
   String get openpgpExplainNoKey =>
@@ -2431,7 +2538,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock => 'Datglowch eich tystysgrif S/MIME i’w darllen.';
+  String get openpgpExplainSmimeUnlock =>
+      'Datglowch eich tystysgrif S/MIME i’w darllen.';
 
   @override
   String get openpgpAttachmentGone => 'Dyw’r atodiad hwn ddim ar gael bellach.';
@@ -2440,13 +2548,16 @@ class AppLocalizationsCy extends AppLocalizations {
   String get smimeEncrypted => 'Wedi’i hamgryptio (S/MIME)';
 
   @override
-  String get smimeEncryptedNoCertificate => 'Wedi’i hamgryptio (S/MIME) · dim tystysgrif';
+  String get smimeEncryptedNoCertificate =>
+      'Wedi’i hamgryptio (S/MIME) · dim tystysgrif';
 
   @override
-  String get smimeEncryptedDamaged => 'Wedi’i hamgryptio (S/MIME) · wedi’i difrodi';
+  String get smimeEncryptedDamaged =>
+      'Wedi’i hamgryptio (S/MIME) · wedi’i difrodi';
 
   @override
-  String get smimeEncryptedUnsupported => 'Wedi’i hamgryptio (S/MIME) · heb gefnogaeth';
+  String get smimeEncryptedUnsupported =>
+      'Wedi’i hamgryptio (S/MIME) · heb gefnogaeth';
 
   @override
   String get smimeEncryptedLocked => 'Wedi’i hamgryptio (S/MIME) · ar glo';
@@ -2464,7 +2575,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get smimeSignatureUncheckable => 'Does dim modd gwirio’r llofnod';
 
   @override
-  String get smimeSignedCertificateMissing => 'Wedi’i llofnodi · tystysgrif ar goll';
+  String get smimeSignedCertificateMissing =>
+      'Wedi’i llofnodi · tystysgrif ar goll';
 
   @override
   String smimeSignedByRevoked(String name) {
@@ -2600,7 +2712,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get smimeTrustThisCertificateEllipsis => 'Ymddiried yn y dystysgrif hon…';
+  String get smimeTrustThisCertificateEllipsis =>
+      'Ymddiried yn y dystysgrif hon…';
 
   @override
   String get smimeCheckedFooterRevocation =>
@@ -2634,22 +2747,27 @@ class AppLocalizationsCy extends AppLocalizations {
   String get smimeTrust => 'Ymddiried';
 
   @override
-  String get smimeSummaryNoKey => 'Cafodd ei hamgryptio i dystysgrif sydd ddim ar y ddyfais hon.';
+  String get smimeSummaryNoKey =>
+      'Cafodd ei hamgryptio i dystysgrif sydd ddim ar y ddyfais hon.';
 
   @override
-  String get smimeSummaryDamaged => 'Mae’r data wedi’i amgryptio wedi’i ddifrodi neu wedi’i newid ar y ffordd.';
+  String get smimeSummaryDamaged =>
+      'Mae’r data wedi’i amgryptio wedi’i ddifrodi neu wedi’i newid ar y ffordd.';
 
   @override
-  String get smimeSummaryUnsupported => 'Mae’n defnyddio algorithm nad yw Loupe yn ei gefnogi.';
+  String get smimeSummaryUnsupported =>
+      'Mae’n defnyddio algorithm nad yw Loupe yn ei gefnogi.';
 
   @override
   String get smimeSummaryLocked => 'Mae’ch tystysgrif S/MIME ar glo.';
 
   @override
-  String get smimeSummaryEncrypted => 'Dim ond chi a’r derbynwyr eraill sy’n gallu ei darllen.';
+  String get smimeSummaryEncrypted =>
+      'Dim ond chi a’r derbynwyr eraill sy’n gallu ei darllen.';
 
   @override
-  String get smimeSummaryNotSigned => 'Dyw hi ddim wedi’i llofnodi, felly dyw’r anfonwr ddim wedi’i gadarnhau.';
+  String get smimeSummaryNotSigned =>
+      'Dyw hi ddim wedi’i llofnodi, felly dyw’r anfonwr ddim wedi’i gadarnhau.';
 
   @override
   String get smimeSummaryModified =>
@@ -2659,7 +2777,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get smimeSummaryUncheckable => 'Does dim modd gwirio’r llofnod.';
 
   @override
-  String get smimeSummaryNoCertificate => 'Dyw tystysgrif y llofnodwr ddim yn y neges, felly does dim modd ei gwirio.';
+  String get smimeSummaryNoCertificate =>
+      'Dyw tystysgrif y llofnodwr ddim yn y neges, felly does dim modd ei gwirio.';
 
   @override
   String get smimeSummaryRevoked =>
@@ -2680,22 +2799,27 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain => 'Mae’r dystysgrif neu un o’i chyhoeddwyr yn annilys.';
+  String get smimeProblemInvalidChain =>
+      'Mae’r dystysgrif neu un o’i chyhoeddwyr yn annilys.';
 
   @override
-  String get smimeProblemUntrusted => 'Mae’r dystysgrif yn dod gan awdurdod nad yw Loupe yn ymddiried ynddo.';
+  String get smimeProblemUntrusted =>
+      'Mae’r dystysgrif yn dod gan awdurdod nad yw Loupe yn ymddiried ynddo.';
 
   @override
   String get smimeProblemExpired => 'Roedd y dystysgrif wedi dod i ben.';
 
   @override
-  String get smimeProblemNotYetValid => 'Doedd y dystysgrif ddim yn ddilys eto.';
+  String get smimeProblemNotYetValid =>
+      'Doedd y dystysgrif ddim yn ddilys eto.';
 
   @override
-  String get smimeProblemWrongUsage => 'Dyw’r dystysgrif ddim wedi’i bwriadu ar gyfer e-bost.';
+  String get smimeProblemWrongUsage =>
+      'Dyw’r dystysgrif ddim wedi’i bwriadu ar gyfer e-bost.';
 
   @override
-  String get smimeProblemWrongAddress => 'Mae’r dystysgrif yn perthyn i gyfeiriad gwahanol i un yr anfonwr.';
+  String get smimeProblemWrongAddress =>
+      'Mae’r dystysgrif yn perthyn i gyfeiriad gwahanol i un yr anfonwr.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2752,7 +2876,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get smimeImportCertificateEllipsis => 'Mewnforio tystysgrif…';
 
   @override
-  String get smimeUseDeviceCertificate => 'Defnyddio tystysgrif o’r ddyfais hon…';
+  String get smimeUseDeviceCertificate =>
+      'Defnyddio tystysgrif o’r ddyfais hon…';
 
   @override
   String get smimeCorrespondentsCertificates => 'Tystysgrifau gohebwyr';
@@ -2787,7 +2912,8 @@ class AppLocalizationsCy extends AppLocalizations {
           'Rydych chi’n ymddiried ynddyn nhw, yn ogystal â’r $count mae Mozilla yn ymddiried ynddyn nhw ar gyfer e-bost.',
       two:
           'Rydych chi’n ymddiried ynddyn nhw, yn ogystal â’r $count mae Mozilla yn ymddiried ynddyn nhw ar gyfer e-bost.',
-      one: 'Rydych chi’n ymddiried ynddyn nhw, yn ogystal â’r $count mae Mozilla yn ymddiried ynddo ar gyfer e-bost.',
+      one:
+          'Rydych chi’n ymddiried ynddyn nhw, yn ogystal â’r $count mae Mozilla yn ymddiried ynddo ar gyfer e-bost.',
       zero:
           'Rydych chi’n ymddiried ynddyn nhw, yn ogystal â’r $count mae Mozilla yn ymddiried ynddyn nhw ar gyfer e-bost.',
     );
@@ -2811,7 +2937,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get smimeFromFile => 'O ffeil';
 
   @override
-  String get smimeClipboardEmpty => 'Mae’r clipfwrdd yn wag. Copïwch y dystysgrif yn gyntaf.';
+  String get smimeClipboardEmpty =>
+      'Mae’r clipfwrdd yn wag. Copïwch y dystysgrif yn gyntaf.';
 
   @override
   String get smimeCertificate => 'Tystysgrif';
@@ -2964,7 +3091,8 @@ class AppLocalizationsCy extends AppLocalizations {
       'Mae ei hallwedd breifat yn cael ei dileu o’r ddyfais hon: fydd dim modd darllen e-bost wedi’i amgryptio iddi yma mwyach, oni bai eich bod chi’n ei mewnforio eto.';
 
   @override
-  String get smimeRemoveContactMessage => 'Bydd yn dod yn ôl gyda’u neges nesaf wedi’i llofnodi.';
+  String get smimeRemoveContactMessage =>
+      'Bydd yn dod yn ôl gyda’u neges nesaf wedi’i llofnodi.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -2987,13 +3115,15 @@ class AppLocalizationsCy extends AppLocalizations {
   String get smimeCertificatePassword => 'Cyfrinair y dystysgrif';
 
   @override
-  String get smimeCertificatePasswordPrompt => 'Rhowch y cyfrinair a ddefnyddiwyd i allforio ffeil y dystysgrif.';
+  String get smimeCertificatePasswordPrompt =>
+      'Rhowch y cyfrinair a ddefnyddiwyd i allforio ffeil y dystysgrif.';
 
   @override
   String get smimeImport => 'Mewnforio';
 
   @override
-  String get smimeWrongPassword => 'Mae’r cyfrinair yna’n anghywir. Rhowch gynnig arall arni.';
+  String get smimeWrongPassword =>
+      'Mae’r cyfrinair yna’n anghywir. Rhowch gynnig arall arni.';
 
   @override
   String get smimeNoCertificateFound => 'Heb ddod o hyd i dystysgrif.';
@@ -3027,7 +3157,10 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
+  String smimeImportedCertificatesAndAuthorities(
+    int count,
+    String certificates,
+  ) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -3103,7 +3236,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get smimeWrongPassphrase => 'Mae’r cyfrinymadrodd yna’n anghywir. Rhowch gynnig arall arni.';
+  String get smimeWrongPassphrase =>
+      'Mae’r cyfrinymadrodd yna’n anghywir. Rhowch gynnig arall arni.';
 
   @override
   String get smimeUnlock => 'Datgloi';
@@ -3128,13 +3262,16 @@ class AppLocalizationsCy extends AppLocalizations {
   String get smimeSetPassphraseButton => 'Gosod';
 
   @override
-  String get smimeLockedOpenAgain => 'Mae’ch tystysgrif S/MIME ar glo. Agorwch y neges eto i’w datgloi.';
+  String get smimeLockedOpenAgain =>
+      'Mae’ch tystysgrif S/MIME ar glo. Agorwch y neges eto i’w datgloi.';
 
   @override
-  String get smimeDeviceHasNoCertificates => 'Dyw’r ddyfais hon ddim yn cynnig ei thystysgrifau.';
+  String get smimeDeviceHasNoCertificates =>
+      'Dyw’r ddyfais hon ddim yn cynnig ei thystysgrifau.';
 
   @override
-  String get smimeCantReadCertificate => 'Dyw Loupe ddim yn gallu darllen y dystysgrif hon.';
+  String get smimeCantReadCertificate =>
+      'Dyw Loupe ddim yn gallu darllen y dystysgrif hon.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -3149,7 +3286,8 @@ class AppLocalizationsCy extends AppLocalizations {
       'Dim ond tra bo Loupe ar agor y gellir defnyddio’r dystysgrif ar y ddyfais hon.';
 
   @override
-  String get smimeDeviceKeyDamaged => 'Mae’r allwedd wedi’i hamgryptio wedi’i difrodi.';
+  String get smimeDeviceKeyDamaged =>
+      'Mae’r allwedd wedi’i hamgryptio wedi’i difrodi.';
 
   @override
   String smimeDeviceCertificateCantDo(String reason) {
@@ -3165,13 +3303,16 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress => 'Dyw cyfeiriad yr awdurdod ddim yn gyfeiriad gwe.';
+  String get smimeAuthorityNotWebAddress =>
+      'Dyw cyfeiriad yr awdurdod ddim yn gyfeiriad gwe.';
 
   @override
-  String get smimeAuthorityTimeout => 'Wnaeth yr awdurdod tystysgrifau ddim ateb mewn pryd.';
+  String get smimeAuthorityTimeout =>
+      'Wnaeth yr awdurdod tystysgrifau ddim ateb mewn pryd.';
 
   @override
-  String get smimeAuthorityUnreachable => 'Doedd dim modd cysylltu â’r awdurdod tystysgrifau.';
+  String get smimeAuthorityUnreachable =>
+      'Doedd dim modd cysylltu â’r awdurdod tystysgrifau.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -3179,15 +3320,25 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge => 'Mae ateb yr awdurdod tystysgrifau’n rhy fawr.';
+  String get smimeAuthorityAnswerTooLarge =>
+      'Mae ateb yr awdurdod tystysgrifau’n rhy fawr.';
 
   @override
   String get smimeRevocationNotChecked =>
       'Heb ei gwirio: dim ond tystysgrifau gan awdurdod mae Loupe yn ymddiried ynddo sy’n cael eu gwirio.';
 
   @override
+  String get actionsNeedsMyAction => 'Angen i mi weithredu';
+
+  @override
+  String get actionsWaitingOnOthers => 'Aros am eraill';
+
+  @override
   String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Gwthio', 'other': 'IDLE'});
+    String _temp0 = intl.Intl.selectLogic(protocol, {
+      'jmap': 'Gwthio',
+      'other': 'IDLE',
+    });
     return '$_temp0';
   }
 
@@ -3220,7 +3371,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsSignatureDefault => 'Diofyn';
 
   @override
-  String get settingsSignatureWhenCopiedAnyone => 'Pan fydd rhywun yn cael copi';
+  String get settingsSignatureWhenCopiedAnyone =>
+      'Pan fydd rhywun yn cael copi';
 
   @override
   String settingsSignatureWhenCopying(String addresses) {
@@ -3252,7 +3404,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsSignatureAddField => 'Ychwanegu maes';
 
   @override
-  String get settingsSignatureImageFailed => 'Methu ychwanegu’r ddelwedd honno. Rhowch gynnig ar PNG neu JPEG llai.';
+  String get settingsSignatureImageFailed =>
+      'Methu ychwanegu’r ddelwedd honno. Rhowch gynnig ar PNG neu JPEG llai.';
 
   @override
   String get settingsSignatureWhenToUse => 'Pryd i’w ddefnyddio';
@@ -3268,7 +3421,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Ychwanegu cyfeiriad neu barth…';
 
   @override
-  String get settingsSignatureCopiedPrompt => 'Cyfeiriad, neu barth fel client.example.';
+  String get settingsSignatureCopiedPrompt =>
+      'Cyfeiriad, neu barth fel client.example.';
 
   @override
   String get settingsSignatureScheduled => 'Wedi’i amserlennu';
@@ -3287,7 +3441,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsSignatureRotation => 'Mewn cylchdro';
 
   @override
-  String get settingsSignatureRotationFooter => 'Mae pob neges newydd yn cael un o’r llofnodion yn y cylchdro, ar hap.';
+  String get settingsSignatureRotationFooter =>
+      'Mae pob neges newydd yn cael un o’r llofnodion yn y cylchdro, ar hap.';
 
   @override
   String get settingsSignatureMakeDefault => 'Gwneud yn ddiofyn';
@@ -3328,10 +3483,12 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsSwipeRight => 'Sweipio i’r dde';
 
   @override
-  String get settingsSwipeRightFooter => 'Mae sweip llawn yn rhedeg y weithred hon.';
+  String get settingsSwipeRightFooter =>
+      'Mae sweip llawn yn rhedeg y weithred hon.';
 
   @override
-  String get settingsSwipeToggleRead => 'Marcio fel wedi’i darllen / heb ei darllen';
+  String get settingsSwipeToggleRead =>
+      'Marcio fel wedi’i darllen / heb ei darllen';
 
   @override
   String get settingsSwipeTrash => 'I’r sbwriel';
@@ -3398,25 +3555,29 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsReadingHeader => 'Darllen';
 
   @override
-  String get settingsReadingFooter => 'Gall delweddau o bell ddweud wrth anfonwyr pryd a ble agoroch chi neges.';
+  String get settingsReadingFooter =>
+      'Gall delweddau o bell ddweud wrth anfonwyr pryd a ble agoroch chi neges.';
 
   @override
   String get settingsDefaultView => 'Golwg ddiofyn';
 
   @override
-  String get settingsDefaultViewFooter => 'Gallwch chi newid unrhyw neges gyda’r botwm Aa.';
+  String get settingsDefaultViewFooter =>
+      'Gallwch chi newid unrhyw neges gyda’r botwm Aa.';
 
   @override
   String get settingsViewReadable => 'Darllenadwy';
 
   @override
-  String get settingsViewReadableDetail => 'Glân, eglur, yn dilyn y modd tywyll';
+  String get settingsViewReadableDetail =>
+      'Glân, eglur, yn dilyn y modd tywyll';
 
   @override
   String get settingsViewOriginal => 'Gwreiddiol';
 
   @override
-  String get settingsViewOriginalDetail => 'Yn union fel y cynlluniodd yr anfonwr hi';
+  String get settingsViewOriginalDetail =>
+      'Yn union fel y cynlluniodd yr anfonwr hi';
 
   @override
   String get settingsViewPlain => 'Testun plaen';
@@ -3434,7 +3595,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsFontMono => 'Unlled';
 
   @override
-  String get settingsFontMonoDetail => 'Yn cadw celf ASCII a thablau wedi’u halinio';
+  String get settingsFontMonoDetail =>
+      'Yn cadw celf ASCII a thablau wedi’u halinio';
 
   @override
   String get settingsTechnicalLists => 'Rhestrau technegol';
@@ -3446,7 +3608,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Agor dolenni’n uniongyrchol';
 
   @override
-  String get settingsOpenLinksDirectlyDetail => 'Hepgor tracwyr cliciau pan fo’r gyrchfan yn hysbys';
+  String get settingsOpenLinksDirectlyDetail =>
+      'Hepgor tracwyr cliciau pan fo’r gyrchfan yn hysbys';
 
   @override
   String get settingsSecurityHeader => 'Diogelwch';
@@ -3491,7 +3654,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsLockAfter => 'Cloi ar ôl';
 
   @override
-  String get settingsLockAfterFooter => 'Am faint y gall Loupe fod yn y cefndir cyn gofyn eto.';
+  String get settingsLockAfterFooter =>
+      'Am faint y gall Loupe fod yn y cefndir cyn gofyn eto.';
 
   @override
   String get settingsNotifications => 'Hysbysiadau';
@@ -3516,7 +3680,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsResetApp => 'Ailosod yr ap';
 
   @override
-  String get settingsResetFooter => 'Yn anghofio pob gosodiad ac yn mynd yn ôl i’r sgrin groeso.';
+  String get settingsResetFooter =>
+      'Yn anghofio pob gosodiad ac yn mynd yn ôl i’r sgrin groeso.';
 
   @override
   String get settingsResetTitle => 'Ailosod Loupe?';
@@ -3542,10 +3707,12 @@ class AppLocalizationsCy extends AppLocalizations {
       'Does gan Loupe ddim dadansoddeg na thracio. Dim ond i’ch gweinyddion e-bost y mae’ch e-bost yn mynd.';
 
   @override
-  String get settingsNotificationsOffIos => 'Mae hysbysiadau i ffwrdd ar gyfer Loupe yn Settings.';
+  String get settingsNotificationsOffIos =>
+      'Mae hysbysiadau i ffwrdd ar gyfer Loupe yn Settings.';
 
   @override
-  String get settingsNotificationsOffAndroid => 'Mae hysbysiadau i ffwrdd ar gyfer Loupe yng Ngosodiadau Android.';
+  String get settingsNotificationsOffAndroid =>
+      'Mae hysbysiadau i ffwrdd ar gyfer Loupe yng Ngosodiadau Android.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -3612,7 +3779,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsComingSoon => 'Ar y ffordd';
 
   @override
-  String get settingsAllowUnrestrictedBattery => 'Caniatáu defnydd batri heb gyfyngiad';
+  String get settingsAllowUnrestrictedBattery =>
+      'Caniatáu defnydd batri heb gyfyngiad';
 
   @override
   String get settingsPush => 'Gwthio';
@@ -3646,7 +3814,8 @@ class AppLocalizationsCy extends AppLocalizations {
       'Dyw sgrin gartref y ffôn hwn ddim yn dangos rhifau ar eiconau apiau. Mae’r bathodyn yn diweddaru pryd bynnag y bydd Loupe yn chwilio am e-bost, yn y cefndir hefyd.';
 
   @override
-  String get settingsTestNotificationBody => 'Fel hyn mae hysbysiadau am e-bost newydd yn edrych.';
+  String get settingsTestNotificationBody =>
+      'Fel hyn mae hysbysiadau am e-bost newydd yn edrych.';
 
   @override
   String get settingsAccountRemoved => 'Mae’r cyfrif hwn wedi’i dynnu.';
@@ -3667,7 +3836,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsColour => 'Lliw';
 
   @override
-  String get settingsColourFooter => 'Yn marcio negeseuon y cyfrif hwn yn Pob Mewnflwch.';
+  String get settingsColourFooter =>
+      'Yn marcio negeseuon y cyfrif hwn yn Pob Mewnflwch.';
 
   @override
   String settingsColourNumber(int number) {
@@ -3759,10 +3929,12 @@ class AppLocalizationsCy extends AppLocalizations {
       'Yr hunaniaeth gyntaf yw’r un ddiofyn ar gyfer negeseuon newydd. Llusgwch i newid y drefn.';
 
   @override
-  String get settingsIdentitiesFooterSingle => 'Yr hunaniaeth ddiofyn ar gyfer negeseuon newydd.';
+  String get settingsIdentitiesFooterSingle =>
+      'Yr hunaniaeth ddiofyn ar gyfer negeseuon newydd.';
 
   @override
-  String get settingsIdentitiesReplyFooter => 'Mae ateb yn mynd o’r hunaniaeth yr anfonwyd y neges ati.';
+  String get settingsIdentitiesReplyFooter =>
+      'Mae ateb yn mynd o’r hunaniaeth yr anfonwyd y neges ati.';
 
   @override
   String get settingsIdentityDefault => 'Diofyn';
@@ -3794,7 +3966,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsCopyToMyself => 'Copi i mi fy hun';
 
   @override
-  String get settingsCopyToMyselfFooter => 'Wedi’i ychwanegu at bob neges o’r hunaniaeth hon.';
+  String get settingsCopyToMyselfFooter =>
+      'Wedi’i ychwanegu at bob neges o’r hunaniaeth hon.';
 
   @override
   String get settingsCc => 'Cc';
@@ -3810,7 +3983,8 @@ class AppLocalizationsCy extends AppLocalizations {
       'Mae atebion i negeseuon a anfonwyd i’r cyfeiriadau hyn yn mynd o’r hunaniaeth hon. Mae * yn golygu unrhyw beth: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt => 'Cyfeiriad, neu batrwm lle mae * yn golygu unrhyw beth.';
+  String get settingsReplyPatternPrompt =>
+      'Cyfeiriad, neu batrwm lle mae * yn golygu unrhyw beth.';
 
   @override
   String get settingsAddReplyPattern => 'Ychwanegu cyfeiriad neu batrwm';
@@ -3832,7 +4006,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Dim cyfeiriad';
 
   @override
-  String get settingsIdentityNoAddressMessage => 'Rhowch y cyfeiriad e-bost i anfon ohono.';
+  String get settingsIdentityNoAddressMessage =>
+      'Rhowch y cyfeiriad e-bost i anfon ohono.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Cyfeiriad annilys';
@@ -3863,10 +4038,12 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage => 'Mae negeseuon sydd eisoes wedi’u hanfon ohoni’n aros fel y maen nhw.';
+  String get settingsDeleteIdentityMessage =>
+      'Mae negeseuon sydd eisoes wedi’u hanfon ohoni’n aros fel y maen nhw.';
 
   @override
-  String get settingsLastIdentityFooter => 'Mae angen o leiaf un hunaniaeth ar gyfrif.';
+  String get settingsLastIdentityFooter =>
+      'Mae angen o leiaf un hunaniaeth ar gyfrif.';
 
   @override
   String get rulesTitle => 'Rheolau';
@@ -3938,7 +4115,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get rulesStatusUnavailable => 'Ddim ar gael';
 
   @override
-  String get rulesStatusNoSieve => 'Dyw gweinydd y cyfrif hwn ddim yn cynnig Sieve (ManageSieve na JMAP).';
+  String get rulesStatusNoSieve =>
+      'Dyw gweinydd y cyfrif hwn ddim yn cynnig Sieve (ManageSieve na JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -4083,7 +4261,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get rulesMoveAccountTitle => 'Ffolder ym mha gyfrif?';
 
   @override
-  String get rulesMoveAccountMessage => 'Mae e-bost y cyfrifon eraill yn mynd i’r ffolder gyda’r un enw yno.';
+  String get rulesMoveAccountMessage =>
+      'Mae e-bost y cyfrifon eraill yn mynd i’r ffolder gyda’r un enw yno.';
 
   @override
   String get rulesAddTag => 'Ychwanegu tag';
@@ -4122,7 +4301,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get rulesChooseActionTitle => 'Dewiswch weithred';
 
   @override
-  String get rulesChooseActionMessage => 'Ychwanegwch beth mae’r rheol yn ei wneud gyda’r negeseuon sy’n cyfateb iddi.';
+  String get rulesChooseActionMessage =>
+      'Ychwanegwch beth mae’r rheol yn ei wneud gyda’r negeseuon sy’n cyfateb iddi.';
 
   @override
   String get rulesSaveError => 'Methu cadw’r rheol';
@@ -4137,7 +4317,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Dim byd i’w roi ar waith';
 
   @override
-  String get rulesNothingToApplyMessage => 'Rhowch amod sy’n gweithio a gweithred i’r rheol yn gyntaf.';
+  String get rulesNothingToApplyMessage =>
+      'Rhowch amod sy’n gweithio a gweithred i’r rheol yn gyntaf.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4169,7 +4350,8 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4187,7 +4369,8 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4205,7 +4388,8 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4222,7 +4406,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get rulesServerChecking => 'Yn holi’r gweinydd beth mae’n gallu ei wneud…';
+  String get rulesServerChecking =>
+      'Yn holi’r gweinydd beth mae’n gallu ei wneud…';
 
   @override
   String get rulesServerUnreachable => 'Methu cysylltu â’r gweinydd.';
@@ -4251,7 +4436,8 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4269,7 +4455,8 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4302,7 +4489,8 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4406,10 +4594,12 @@ class AppLocalizationsCy extends AppLocalizations {
   String get subscriptionsNothingNeverRead => 'Dim byd heb ei ddarllen erioed';
 
   @override
-  String get subscriptionsNothingRarelyRead => 'Dim byd sy’n cael ei ddarllen yn anaml';
+  String get subscriptionsNothingRarelyRead =>
+      'Dim byd sy’n cael ei ddarllen yn anaml';
 
   @override
-  String get subscriptionsNothingFilteredDetail => 'Rydych chi’n darllen rhywfaint o bopeth rydych chi’n ei gael.';
+  String get subscriptionsNothingFilteredDetail =>
+      'Rydych chi’n darllen rhywfaint o bopeth rydych chi’n ei gael.';
 
   @override
   String get subscriptionsNoDiscussions => 'Dim trafodaethau';
@@ -4486,7 +4676,8 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4506,13 +4697,15 @@ class AppLocalizationsCy extends AppLocalizations {
   String get subscriptionsCreateRule => 'Creu rheol…';
 
   @override
-  String get subscriptionsCreateRuleDetail => 'Symud neu archifo ei e-bost yn y dyfodol';
+  String get subscriptionsCreateRuleDetail =>
+      'Symud neu archifo ei e-bost yn y dyfodol';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Trin fel trafodaeth';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail => 'Rhestr mae pobl yn ysgrifennu ati: darllenwch hi fel fforwm';
+  String get subscriptionsTreatAsDiscussionDetail =>
+      'Rhestr mae pobl yn ysgrifennu ati: darllenwch hi fel fforwm';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Trin fel cylchlythyr';
@@ -4527,7 +4720,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get subscriptionsBlocked => 'Wedi’i rwystro';
 
   @override
-  String get subscriptionsBlockedDetail => 'Mae e-bost newydd yn mynd i Sothach';
+  String get subscriptionsBlockedDetail =>
+      'Mae e-bost newydd yn mynd i Sothach';
 
   @override
   String get subscriptionsPin => 'Pinio i Blychau post';
@@ -4546,7 +4740,8 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4579,9 +4774,12 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString o $totalString';
@@ -4647,10 +4845,12 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle => 'Methu dad-danysgrifio’n awtomatig';
+  String get subscriptionsOneClickFailedTitle =>
+      'Methu dad-danysgrifio’n awtomatig';
 
   @override
-  String get subscriptionsSendUnsubscribeEmail => 'Anfon e-bost dad-danysgrifio';
+  String get subscriptionsSendUnsubscribeEmail =>
+      'Anfon e-bost dad-danysgrifio';
 
   @override
   String subscriptionsOpenSite(String site) {
@@ -4671,7 +4871,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsWebInsecure => 'Dyw’r cysylltiad â’r wefan hon ddim wedi’i amgryptio.';
+  String get subscriptionsWebInsecure =>
+      'Dyw’r cysylltiad â’r wefan hon ddim wedi’i amgryptio.';
 
   @override
   String subscriptionsHomographWarning(String site) {
@@ -4708,7 +4909,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed => 'Dyw’r ddolen dad-danysgrifio ddim yn gyfeiriad diogel ar y rhyngrwyd.';
+  String get subscriptionsOneClickNotAllowed =>
+      'Dyw’r ddolen dad-danysgrifio ddim yn gyfeiriad diogel ar y rhyngrwyd.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -4731,7 +4933,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend => 'Does dim cyfrif i anfon yr e-bost dad-danysgrifio ohono.';
+  String get subscriptionsNoAccountToSend =>
+      'Does dim cyfrif i anfon yr e-bost dad-danysgrifio ohono.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -4796,7 +4999,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get appLiveGateTitle => 'Methu agor eich cyfrifon';
 
   @override
-  String get appLiveGateUnavailableBuild => 'Dyw cyfrifon go iawn ddim ar gael yn yr adeiliad hwn eto.';
+  String get appLiveGateUnavailableBuild =>
+      'Dyw cyfrifon go iawn ddim ar gael yn yr adeiliad hwn eto.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -4964,7 +5168,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get attachmentsCopied => 'Wedi’i gopïo';
 
   @override
-  String get attachmentsImageUnavailable => 'Does dim modd dangos y ddelwedd hon yma. Rhowch gynnig ar Agor yn….';
+  String get attachmentsImageUnavailable =>
+      'Does dim modd dangos y ddelwedd hon yma. Rhowch gynnig ar Agor yn….';
 
   @override
   String get attachmentsEmlNoSubject => '(Dim pwnc)';
@@ -5198,16 +5403,19 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get calendarRefreshUnknown => 'Mae mynychwr yn gofyn am y fersiwn ddiweddaraf';
+  String get calendarRefreshUnknown =>
+      'Mae mynychwr yn gofyn am y fersiwn ddiweddaraf';
 
   @override
   String get calendarCancelled => 'Wedi’i ganslo';
 
   @override
-  String get calendarCancelledByOrganizer => 'Canslodd y trefnydd y digwyddiad hwn.';
+  String get calendarCancelledByOrganizer =>
+      'Canslodd y trefnydd y digwyddiad hwn.';
 
   @override
-  String get calendarCancelledLater => 'Cafodd y digwyddiad hwn ei ganslo’n nes ymlaen.';
+  String get calendarCancelledLater =>
+      'Cafodd y digwyddiad hwn ei ganslo’n nes ymlaen.';
 
   @override
   String get calendarOutdated => 'Wedi dyddio';
@@ -5222,7 +5430,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get calendarLocationRemovedNone => 'Lleoliad wedi’i dynnu (doedd dim un)';
+  String get calendarLocationRemovedNone =>
+      'Lleoliad wedi’i dynnu (doedd dim un)';
 
   @override
   String calendarLocationChanged(String location) {
@@ -5378,7 +5587,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp => 'Does dim ap calendr i ychwanegu’r digwyddiad ato.';
+  String get calendarNoCalendarApp =>
+      'Does dim ap calendr i ychwanegu’r digwyddiad ato.';
 
   @override
   String get calendarCantOpenCalendar => 'Methu agor y calendr.';
@@ -5414,7 +5624,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer => 'Does gan y gwahoddiad hwn ddim trefnydd i’w ateb.';
+  String get calendarNoOrganizer =>
+      'Does gan y gwahoddiad hwn ddim trefnydd i’w ateb.';
 
   @override
   String get calendarNoAccount => 'Does dim cyfrif i ateb ohono.';
@@ -5485,7 +5696,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get keyboardMoveToTrash => 'Symud i’r Sbwriel';
 
   @override
-  String get keyboardToggleRead => 'Marcio fel wedi’i darllen neu heb ei darllen';
+  String get keyboardToggleRead =>
+      'Marcio fel wedi’i darllen neu heb ei darllen';
 
   @override
   String get keyboardToggleFlag => 'Fflagio neu ddad-fflagio';
@@ -5515,7 +5727,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get keyboardKeyBackspace => 'Backspace';
 
   @override
-  String get mailingListsMuted => 'Edefyn wedi’i ddistewi. Bydd negeseuon newydd ynddo’n cyrraedd wedi’u darllen.';
+  String get mailingListsMuted =>
+      'Edefyn wedi’i ddistewi. Bydd negeseuon newydd ynddo’n cyrraedd wedi’u darllen.';
 
   @override
   String get mailingListsUnmuted => 'Edefyn wedi’i ddad-ddistewi.';
@@ -5593,13 +5806,15 @@ class AppLocalizationsCy extends AppLocalizations {
   String get mailingListsNoThreads => 'Dim edafedd';
 
   @override
-  String get mailingListsMutedHidden => 'Mae edafedd wedi’u distewi wedi’u cuddio.';
+  String get mailingListsMutedHidden =>
+      'Mae edafedd wedi’u distewi wedi’u cuddio.';
 
   @override
   String get mailingListsTechnicalTitle => 'Rhestrau technegol';
 
   @override
-  String get mailingListsTechnicalEmpty => 'Mae rhestrau e-bost yn ymddangos yma unwaith mae eu he-bost yn cyrraedd.';
+  String get mailingListsTechnicalEmpty =>
+      'Mae rhestrau e-bost yn ymddangos yma unwaith mae eu he-bost yn cyrraedd.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -5668,7 +5883,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get palettePlaceholder => 'Chwilio gweithredoedd, blychau post, gosodiadau';
+  String get palettePlaceholder =>
+      'Chwilio gweithredoedd, blychau post, gosodiadau';
 
   @override
   String get paletteNothingFound => 'Heb ddod o hyd i ddim';
@@ -5766,7 +5982,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get searchSearchingUnknownAccount => 'Yn chwilio cyfrif ar y gweinydd…';
+  String get searchSearchingUnknownAccount =>
+      'Yn chwilio cyfrif ar y gweinydd…';
 
   @override
   String searchAccountFailed(String account) {
@@ -5831,13 +6048,15 @@ class AppLocalizationsCy extends AppLocalizations {
   String get searchRenameSmartMailbox => 'Ailenwi’r Smart Mailbox';
 
   @override
-  String get searchSmartMailboxDeleted => 'Mae’r Smart Mailbox hwn wedi’i ddileu.';
+  String get searchSmartMailboxDeleted =>
+      'Mae’r Smart Mailbox hwn wedi’i ddileu.';
 
   @override
   String get searchSettingsTitle => 'Smart Mailboxes';
 
   @override
-  String get searchSettingsLocalFooter => 'Mae Smart Mailboxes yn aros ar y ddyfais hon.';
+  String get searchSettingsLocalFooter =>
+      'Mae Smart Mailboxes yn aros ar y ddyfais hon.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -5854,7 +6073,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get searchGmailCantKeep => 'All Gmail ddim cadw Smart Mailboxes';
 
   @override
-  String get searchKeepOnDevice => 'Cadw Smart Mailboxes ar y ddyfais hon yn unig';
+  String get searchKeepOnDevice =>
+      'Cadw Smart Mailboxes ar y ddyfais hon yn unig';
 
   @override
   String get searchOnTheServer => 'Ar y gweinydd';
@@ -6166,7 +6386,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount => 'Dewiswch negeseuon o un cyfrif i’w symud.';
+  String get sharedMoveOneAccount =>
+      'Dewiswch negeseuon o un cyfrif i’w symud.';
 
   @override
   String get sharedSnoozeTitle => 'Gohirio';
@@ -6247,7 +6468,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get accountSetupAddressTitle => 'Ychwanegu cyfrif e-bost';
 
   @override
-  String get accountSetupAddressText => 'Mae Loupe yn dod o hyd i’r gosodiadau ar gyfer y rhan fwyaf o ddarparwyr.';
+  String get accountSetupAddressText =>
+      'Mae Loupe yn dod o hyd i’r gosodiadau ar gyfer y rhan fwyaf o ddarparwyr.';
 
   @override
   String get accountSetupNameHint => 'Eich enw';
@@ -6276,7 +6498,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCheckServers => 'Gwiriwch enwau a phyrth y gweinyddion.';
+  String get accountSetupCheckServers =>
+      'Gwiriwch enwau a phyrth y gweinyddion.';
 
   @override
   String get accountSetupEnterPassword => 'Rhowch eich cyfrinair.';
@@ -6333,7 +6556,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Defnyddio cyfrinair ap';
 
   @override
-  String get accountSetupUseAppPasswordInstead => 'Defnyddio cyfrinair ap yn lle hynny';
+  String get accountSetupUseAppPasswordInstead =>
+      'Defnyddio cyfrinair ap yn lle hynny';
 
   @override
   String get accountSetupUseDifferentAddress => 'Defnyddio cyfeiriad gwahanol';
@@ -6353,7 +6577,8 @@ class AppLocalizationsCy extends AppLocalizations {
       'Dyw “Mewngofnodi gyda Google” ddim ar gael yn yr adeiliad hwn eto. Gallwch chi gysylltu â chyfrinair ap yn lle hynny (mae angen Dilysu 2 Gam ar eich cyfrif Google).';
 
   @override
-  String get accountSetupGmailAppPasswordNote => 'Crëwch gyfrinair ap yn eich cyfrif Google a’i ludo isod.';
+  String get accountSetupGmailAppPasswordNote =>
+      'Crëwch gyfrinair ap yn eich cyfrif Google a’i ludo isod.';
 
   @override
   String get accountSetupMicrosoftNote =>
@@ -6364,23 +6589,27 @@ class AppLocalizationsCy extends AppLocalizations {
       'Bydd mewngofnodi Microsoft yn cyrraedd mewn adeiliad diweddarach. Mae ei angen ar gyfrifon Outlook, Hotmail a Microsoft 365: dydyn nhw ddim yn derbyn cyfrineiriau gan apiau e-bost bellach.';
 
   @override
-  String get accountSetupICloudNote => 'Mae iCloud Mail angen cyfrinair penodol i ap, nid cyfrinair eich Cyfrif Apple.';
+  String get accountSetupICloudNote =>
+      'Mae iCloud Mail angen cyfrinair penodol i ap, nid cyfrinair eich Cyfrif Apple.';
 
   @override
-  String get accountSetupYahooNote => 'Mae Yahoo Mail angen cyfrinair ap, nid cyfrinair eich cyfrif.';
+  String get accountSetupYahooNote =>
+      'Mae Yahoo Mail angen cyfrinair ap, nid cyfrinair eich cyfrif.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Mae Loupe yn cysylltu â Fastmail dros JMAP gyda thocyn API: Settings › Privacy & Security › Manage API tokens, ar gyfer JMAP, gyda mynediad at e-bost ac anfon.';
 
   @override
-  String get accountSetupFastmailNote => 'Mae Fastmail angen cyfrinair ap ar gyfer apiau e-bost.';
+  String get accountSetupFastmailNote =>
+      'Mae Fastmail angen cyfrinair ap ar gyfer apiau e-bost.';
 
   @override
   String get accountSetupServerSettings => 'Gosodiadau’r gweinydd';
 
   @override
-  String get accountSetupSettingsNotFound => 'Heb ddod o hyd iddyn nhw’n awtomatig';
+  String get accountSetupSettingsNotFound =>
+      'Heb ddod o hyd iddyn nhw’n awtomatig';
 
   @override
   String accountSetupSettingsFoundVia(String source) {
@@ -6456,7 +6685,8 @@ class AppLocalizationsCy extends AppLocalizations {
       'Gwrthodwyd y cyfrinair. Defnyddiwch gyfrinair ap, nid cyfrinair eich cyfrif.';
 
   @override
-  String get accountSetupPasswordRejected => 'Gwrthodwyd y cyfrinair. Gwiriwch ef a rhowch gynnig arall arni.';
+  String get accountSetupPasswordRejected =>
+      'Gwrthodwyd y cyfrinair. Gwiriwch ef a rhowch gynnig arall arni.';
 
   @override
   String get accountSetupServerUnreachable =>
@@ -6534,7 +6764,11 @@ class AppLocalizationsCy extends AppLocalizations {
   String get accountSetupSigningIn => 'Yn mewngofnodi…';
 
   @override
-  String accountSetupSignInExpired(String provider, String email, String account) {
+  String accountSetupSignInExpired(
+    String provider,
+    String email,
+    String account,
+  ) {
     return 'Dyw $provider ddim yn derbyn mewngofnodi Loupe ar gyfer $email bellach, felly dyw $account ddim yn cysoni. Mewngofnodwch eto i gael ei e-bost.';
   }
 
@@ -6542,7 +6776,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get accountImportTitle => 'Mewnforio o Thunderbird';
 
   @override
-  String get accountImportPointCamera => 'Pwyntiwch y camera at y cod QR mae Thunderbird yn ei ddangos.';
+  String get accountImportPointCamera =>
+      'Pwyntiwch y camera at y cod QR mae Thunderbird yn ei ddangos.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -6605,14 +6840,16 @@ class AppLocalizationsCy extends AppLocalizations {
   String get accountImportStartOver => 'Dechrau eto';
 
   @override
-  String get accountImportDuplicateCode => 'Mae’r cod yna eisoes wedi’i ychwanegu.';
+  String get accountImportDuplicateCode =>
+      'Mae’r cod yna eisoes wedi’i ychwanegu.';
 
   @override
   String get accountImportRestarted =>
       'Mae’r cod hwn o allforiad newydd, felly cafodd y codau a sganiwyd o’r blaen eu rhoi o’r neilltu.';
 
   @override
-  String get accountImportNotThunderbird => 'Dyw hwn ddim yn god cyfrif Thunderbird.';
+  String get accountImportNotThunderbird =>
+      'Dyw hwn ddim yn god cyfrif Thunderbird.';
 
   @override
   String get accountImportNewerVersion =>
@@ -6622,7 +6859,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get accountImportDamaged => 'Methu darllen y cod Thunderbird hwn.';
 
   @override
-  String get accountImportTooLarge => 'Mae’r cod hwn yn rhy fawr i fod yn allforiad Thunderbird.';
+  String get accountImportTooLarge =>
+      'Mae’r cod hwn yn rhy fawr i fod yn allforiad Thunderbird.';
 
   @override
   String get accountImportCouldNotOpenSettings => 'Methu agor y Gosodiadau.';
@@ -6638,13 +6876,15 @@ class AppLocalizationsCy extends AppLocalizations {
   String get accountImportNoCameraTitle => 'Dim camera';
 
   @override
-  String get accountImportNoCameraText => 'All Loupe ddim defnyddio camera yma. Gludwch destun y cod yn lle hynny.';
+  String get accountImportNoCameraText =>
+      'All Loupe ddim defnyddio camera yma. Gludwch destun y cod yn lle hynny.';
 
   @override
   String get accountImportCameraFailedTitle => 'Wnaeth y camera ddim cychwyn';
 
   @override
-  String get accountImportCameraFailedText => 'Rhowch gynnig arall arni, neu gludwch destun y cod yn lle hynny.';
+  String get accountImportCameraFailedText =>
+      'Rhowch gynnig arall arni, neu gludwch destun y cod yn lle hynny.';
 
   @override
   String get accountImportOpenSettings => 'Agor Gosodiadau';
@@ -6665,22 +6905,30 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable => 'Doedd dim modd darllen yr un o’r cyfrifon yn y codau hyn.';
+  String get accountImportNoneReadable =>
+      'Doedd dim modd darllen yr un o’r cyfrifon yn y codau hyn.';
 
   @override
-  String get accountImportChoose => 'Dewiswch y cyfrifon i’w hychwanegu at Loupe.';
+  String get accountImportChoose =>
+      'Dewiswch y cyfrifon i’w hychwanegu at Loupe.';
 
   @override
   String accountImportMissingCodes(int count, String codes, int total) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Chafodd codau $codes o $total mo’u sganio, felly dyw eu cyfrifon ddim wedi’u rhestru.',
-      many: 'Chafodd codau $codes o $total mo’u sganio, felly dyw eu cyfrifon ddim wedi’u rhestru.',
-      few: 'Chafodd codau $codes o $total mo’u sganio, felly dyw eu cyfrifon ddim wedi’u rhestru.',
-      two: 'Chafodd codau $codes o $total mo’u sganio, felly dyw eu cyfrifon ddim wedi’u rhestru.',
-      one: 'Chafodd cod $codes o $total mo’i sganio, felly dyw ei gyfrifon ddim wedi’u rhestru.',
-      zero: 'Chafodd codau $codes o $total mo’u sganio, felly dyw eu cyfrifon ddim wedi’u rhestru.',
+      other:
+          'Chafodd codau $codes o $total mo’u sganio, felly dyw eu cyfrifon ddim wedi’u rhestru.',
+      many:
+          'Chafodd codau $codes o $total mo’u sganio, felly dyw eu cyfrifon ddim wedi’u rhestru.',
+      few:
+          'Chafodd codau $codes o $total mo’u sganio, felly dyw eu cyfrifon ddim wedi’u rhestru.',
+      two:
+          'Chafodd codau $codes o $total mo’u sganio, felly dyw eu cyfrifon ddim wedi’u rhestru.',
+      one:
+          'Chafodd cod $codes o $total mo’i sganio, felly dyw ei gyfrifon ddim wedi’u rhestru.',
+      zero:
+          'Chafodd codau $codes o $total mo’u sganio, felly dyw eu cyfrifon ddim wedi’u rhestru.',
     );
     return '$_temp0';
   }
@@ -6717,7 +6965,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get accountImportScanAgain => 'Sganio eto';
 
   @override
-  String get accountImportAlreadyAdded => 'Mae cyfrif gyda’r cyfeiriad hwn eisoes yn Loupe.';
+  String get accountImportAlreadyAdded =>
+      'Mae cyfrif gyda’r cyfeiriad hwn eisoes yn Loupe.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -6725,7 +6974,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get accountImportGmailAppPassword => 'Ychwanegwch y cyfrif gyda chyfrinair ap (mae angen Dilysu 2 Gam).';
+  String get accountImportGmailAppPassword =>
+      'Ychwanegwch y cyfrif gyda chyfrinair ap (mae angen Dilysu 2 Gam).';
 
   @override
   String get accountImportGmailNoSignIn =>
@@ -6769,7 +7019,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get accountImportPasteTitle => 'Gludo testun allforio';
 
   @override
-  String get accountImportPasteText => 'Gludwch destun cod allforio Thunderbird, un cod ar bob llinell.';
+  String get accountImportPasteText =>
+      'Gludwch destun cod allforio Thunderbird, un cod ar bob llinell.';
 
   @override
   String get accountImportPop3 =>
@@ -6780,7 +7031,8 @@ class AppLocalizationsCy extends AppLocalizations {
       'Mae’r cyfrif hwn yn mewngofnodi gyda Kerberos, a dyw Loupe ddim yn cefnogi hynny.';
 
   @override
-  String get accountImportNtlm => 'Mae’r cyfrif hwn yn mewngofnodi gyda NTLM, a dyw Loupe ddim yn cefnogi hynny.';
+  String get accountImportNtlm =>
+      'Mae’r cyfrif hwn yn mewngofnodi gyda NTLM, a dyw Loupe ddim yn cefnogi hynny.';
 
   @override
   String get accountImportClientCertificate =>
@@ -6804,7 +7056,8 @@ class AppLocalizationsCy extends AppLocalizations {
       'Doedd Loupe ddim yn gallu agor ei storfa cyfrifon. Rhowch gynnig arall arni nes ymlaen.';
 
   @override
-  String get accountImportFailed => 'Methu ychwanegu’r cyfrif. Rhowch gynnig arall arni, neu ei ychwanegu â llaw.';
+  String get accountImportFailed =>
+      'Methu ychwanegu’r cyfrif. Rhowch gynnig arall arni, neu ei ychwanegu â llaw.';
 
   @override
   String get composeNewMessageTitle => 'Neges newydd';
@@ -6902,7 +7155,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get composeDraftNotFound => 'Methu dod o hyd i’r drafft.';
 
   @override
-  String get composeAttachmentsLost => 'Methu adfer yr atodiadau. Ychwanegwch nhw eto.';
+  String get composeAttachmentsLost =>
+      'Methu adfer yr atodiadau. Ychwanegwch nhw eto.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -6929,10 +7183,12 @@ class AppLocalizationsCy extends AppLocalizations {
   String get composeNoSubjectTitle => 'Dim pwnc';
 
   @override
-  String get composeNoSubjectText => 'Does gan y neges hon ddim pwnc. Ei hanfon beth bynnag?';
+  String get composeNoSubjectText =>
+      'Does gan y neges hon ddim pwnc. Ei hanfon beth bynnag?';
 
   @override
-  String get composeSentBeforeChanges => 'Cafodd ei hanfon cyn eich newidiadau, sydd wedi’u cadw yn Drafftiau.';
+  String get composeSentBeforeChanges =>
+      'Cafodd ei hanfon cyn eich newidiadau, sydd wedi’u cadw yn Drafftiau.';
 
   @override
   String composeScheduled(String time) {
@@ -6977,7 +7233,8 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get composeForwardHeader => '---------- Neges wedi’i hanfon ymlaen ----------';
+  String get composeForwardHeader =>
+      '---------- Neges wedi’i hanfon ymlaen ----------';
 
   @override
   String composeForwardFrom(String addresses) {
@@ -7063,11 +7320,16 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String composeRecoveryWithSubject(String recipients, String subject, String name) {
+  String composeRecoveryWithSubject(
+    String recipients,
+    String subject,
+    String name,
+  ) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Chafodd “$subject” mo’i hanfon pan gaeodd Loupe.',
       'one': 'Chafodd “$subject” at $name mo’i hanfon pan gaeodd Loupe.',
-      'other': 'Chafodd “$subject” at $name ac eraill mo’i hanfon pan gaeodd Loupe.',
+      'other':
+          'Chafodd “$subject” at $name ac eraill mo’i hanfon pan gaeodd Loupe.',
     });
     return '$_temp0';
   }
@@ -7115,7 +7377,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get outboxEmptyTitle => 'Dim byd i’w anfon';
 
   @override
-  String get outboxEmptyText => 'Mae negeseuon rydych chi’n eu hanfon yn hwyrach yn aros yma nes ei bod hi’n amser.';
+  String get outboxEmptyText =>
+      'Mae negeseuon rydych chi’n eu hanfon yn hwyrach yn aros yma nes ei bod hi’n amser.';
 
   @override
   String get outboxSendNow => 'Anfon nawr';
@@ -7162,7 +7425,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get outboxBeingSent => 'Mae’r neges hon yn cael ei hanfon.';
 
   @override
-  String get outboxActionFailed => 'Wnaeth hynny ddim gweithio. Mae’r neges yn dal yn yr Allflwch.';
+  String get outboxActionFailed =>
+      'Wnaeth hynny ddim gweithio. Mae’r neges yn dal yn yr Allflwch.';
 
   @override
   String get notificationsBadgeInboxes => 'Heb eu darllen yn y mewnflychau';
@@ -7174,7 +7438,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription => 'E-bost newydd gan eich VIPs, mewn unrhyw gyfrif';
+  String get notificationsVipChannelDescription =>
+      'E-bost newydd gan eich VIPs, mewn unrhyw gyfrif';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -7219,7 +7484,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get platformInstantChannel => 'Danfon ar unwaith';
 
   @override
-  String get platformInstantChannelDescription => 'Yn ymddangos tra bo Loupe yn gwylio’ch mewnflychau am e-bost newydd';
+  String get platformInstantChannelDescription =>
+      'Yn ymddangos tra bo Loupe yn gwylio’ch mewnflychau am e-bost newydd';
 
   @override
   String get platformInstantTitle => 'Yn gwylio am e-bost newydd';
@@ -7228,28 +7494,33 @@ class AppLocalizationsCy extends AppLocalizations {
   String get platformInstantText => 'Mae Danfon ar unwaith ymlaen';
 
   @override
-  String get platformErrorBox => 'Aeth rhywbeth o’i le wrth ddangos hyn. Ewch yn ôl a rhowch gynnig arall arni.';
+  String get platformErrorBox =>
+      'Aeth rhywbeth o’i le wrth ddangos hyn. Ewch yn ôl a rhowch gynnig arall arni.';
 
   @override
-  String get welcomeTagline => 'E-bost sy’n syml ar yr wyneb\nac yn bwerus oddi tano.';
+  String get welcomeTagline =>
+      'E-bost sy’n syml ar yr wyneb\nac yn bwerus oddi tano.';
 
   @override
   String get welcomeAccountsTitle => 'Pob cyfrif, un mewnflwch tawel';
 
   @override
-  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail ac unrhyw weinydd IMAP neu JMAP.';
+  String get welcomeAccountsText =>
+      'Gmail, Outlook, iCloud, Fastmail ac unrhyw weinydd IMAP neu JMAP.';
 
   @override
   String get welcomeSearchTitle => 'Chwilio sy’n dod o hyd iddo';
 
   @override
-  String get welcomeSearchText => 'Canlyniadau ar unwaith ar eich ffôn, yna rhai’r gweinydd.';
+  String get welcomeSearchText =>
+      'Canlyniadau ar unwaith ar eich ffôn, yna rhai’r gweinydd.';
 
   @override
   String get welcomePrivacyTitle => 'Preifat o’r cychwyn';
 
   @override
-  String get welcomePrivacyText => 'Dim tracio. Mae delweddau o bell yn aros wedi’u rhwystro nes i chi ddweud.';
+  String get welcomePrivacyText =>
+      'Dim tracio. Mae delweddau o bell yn aros wedi’u rhwystro nes i chi ddweud.';
 
   @override
   String get welcomeAddAccount => 'Ychwanegu cyfrif';
@@ -7279,7 +7550,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get searchAskFailed => 'Ni allai Loupe wneud chwiliad o hynny.';
 
   @override
-  String get searchAskDemoNote => 'Cyfieithwyd gan y demo mewnol, nid gan fodel.';
+  String get searchAskDemoNote =>
+      'Cyfieithwyd gan y demo mewnol, nid gan fodel.';
 
   @override
   String get settingsAiHeader => 'Deallusrwydd artiffisial preifat';
@@ -7303,10 +7575,12 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsAiDemo => 'Demo adeiledig';
 
   @override
-  String get settingsAiDemoDetail => 'Ar y ffôn hwn. Dim model: ychydig o reolau, i roi cynnig ar y nodweddion.';
+  String get settingsAiDemoDetail =>
+      'Ar y ffôn hwn. Dim model: ychydig o reolau, i roi cynnig ar y nodweddion.';
 
   @override
-  String get settingsAiAnthropicDetail => 'Cwmwl: Claude, gyda’ch allwedd API eich hun.';
+  String get settingsAiAnthropicDetail =>
+      'Cwmwl: Claude, gyda’ch allwedd API eich hun.';
 
   @override
   String get settingsAiServer => 'Fy ngweinydd';
@@ -7319,7 +7593,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsAiOnPhone => 'Ar y ffôn hwn';
 
   @override
-  String get settingsAiOnPhoneDetail => 'Ddim ar gael eto: mae’r model ar y ddyfais yn dal i gael ei brofi ar ffonau.';
+  String get settingsAiOnPhoneDetail =>
+      'Ddim ar gael eto: mae’r model ar y ddyfais yn dal i gael ei brofi ar ffonau.';
 
   @override
   String get settingsAiNotSetUp => 'Heb ei osod';
@@ -7370,13 +7645,15 @@ class AppLocalizationsCy extends AppLocalizations {
       'Hyd at lwybr yr API ac yn ei gynnwys, fel http://192.168.1.20:11434/v1 ar gyfer Ollama.';
 
   @override
-  String get settingsAiServerAddressInvalid => 'Nid cyfeiriad http:// neu https:// yw hwnnw.';
+  String get settingsAiServerAddressInvalid =>
+      'Nid cyfeiriad http:// neu https:// yw hwnnw.';
 
   @override
   String get settingsAiServerModelTitle => 'Enw’r model';
 
   @override
-  String get settingsAiServerModelMessage => 'Fel mae’ch gweinydd yn ei enwi, fel llama3.2.';
+  String get settingsAiServerModelMessage =>
+      'Fel mae’ch gweinydd yn ei enwi, fel llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Profi’r cysylltiad';
@@ -7393,7 +7670,8 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsAiTestFailed => 'Methodd y prawf';
 
   @override
-  String get settingsAiTestInvalid => 'Atebodd y model, ond nid yn y ffurf y gofynnodd Loupe amdani.';
+  String get settingsAiTestInvalid =>
+      'Atebodd y model, ond nid yn y ffurf y gofynnodd Loupe amdani.';
 
   @override
   String get settingsAiRemoveKey => 'Tynnu’r allwedd';
@@ -7463,29 +7741,36 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Statws mater';
 
   @override
-  String get settingsAiFeatureSearchDetail => 'Wrth chwilio: mae brawddeg yn dod yn chwiliad y gallwch ei wirio.';
+  String get settingsAiFeatureSearchDetail =>
+      'Wrth chwilio: mae brawddeg yn dod yn chwiliad y gallwch ei wirio.';
 
   @override
-  String get settingsAiFeatureBriefDetail => 'Mewn neges: beth mae’n ei ofyn gennych, gyda’r darnau.';
+  String get settingsAiFeatureBriefDetail =>
+      'Mewn neges: beth mae’n ei ofyn gennych, gyda’r darnau.';
 
   @override
-  String get settingsAiFeatureActionsDetail => 'Yn cynnig eitemau ar gyfer “Yn aros amdana i” ac “Yn aros am eraill”.';
+  String get settingsAiFeatureActionsDetail =>
+      'Yn cynnig eitemau ar gyfer “Yn aros amdana i” ac “Yn aros am eraill”.';
 
   @override
   String get settingsAiFeatureRulesDetail =>
       'Yn Rheolau: mae disgrifiad yn dod yn rheol rydych chi’n ei gwirio cyn ei chadw.';
 
   @override
-  String get settingsAiFeatureChangesDetail => 'Yn Cymharu negeseuon: beth newidiodd o ran ystyr, gyda ffynonellau.';
+  String get settingsAiFeatureChangesDetail =>
+      'Yn Cymharu negeseuon: beth newidiodd o ran ystyr, gyda ffynonellau.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail => 'Prif ffeithiau’r dogfennau atodedig, gyda’u tudalennau.';
+  String get settingsAiFeatureDocumentsDetail =>
+      'Prif ffeithiau’r dogfennau atodedig, gyda’u tudalennau.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail => 'Cyn anfon: beth allai ateb fod wedi’i fethu.';
+  String get settingsAiFeatureReplyCheckDetail =>
+      'Cyn anfon: beth allai ateb fod wedi’i fethu.';
 
   @override
-  String get settingsAiFeatureMattersDetail => 'Sefyllfa ddiweddaraf mater, o’i e-byst.';
+  String get settingsAiFeatureMattersDetail =>
+      'Sefyllfa ddiweddaraf mater, o’i e-byst.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Cadw e-bost ar y ffôn';

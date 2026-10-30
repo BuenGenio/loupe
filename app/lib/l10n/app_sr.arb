@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Сертификационо тело је одговорило кодом {status}.",
   "smimeAuthorityAnswerTooLarge": "Одговор сертификационог тела је превелик.",
   "smimeRevocationNotChecked": "Није проверено: проверавају се само сертификати које издају сертификациона тела којима Loupe верује.",
+  "actionsNeedsMyAction": "Потребна моја радња",
+  "actionsWaitingOnOthers": "Чекам друге",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Сервер одмах јавља нову пошту у пријемном сандучету, преко везе коју Loupe држи отвореном. Кад је искључено, Loupe проверава сваких неколико минута и користи једну везу мање.",
   "settingsPasswordUnchanged": "Без промене",

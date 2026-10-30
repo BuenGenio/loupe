@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Varmenteen myöntäjä vastasi koodilla {status}.",
   "smimeAuthorityAnswerTooLarge": "Varmenteen myöntäjän vastaus on liian suuri.",
   "smimeRevocationNotChecked": "Ei tarkistettu: vain niiden myöntäjien varmenteet tarkistetaan, joihin Loupe luottaa.",
+  "actionsNeedsMyAction": "Vaatii toimiani",
+  "actionsWaitingOnOthers": "Odottaa muita",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Palvelin ilmoittaa Saapuneet-kansion uudesta postista heti yhteyden kautta, jonka Loupe pitää auki. Pois päältä Loupe tarkistaa postin muutaman minuutin välein ja käyttää yhden yhteyden vähemmän.",
   "settingsPasswordUnchanged": "Ennallaan",

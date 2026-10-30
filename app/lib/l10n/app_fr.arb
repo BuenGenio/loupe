@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "L’autorité de certification a répondu {status}.",
   "smimeAuthorityAnswerTooLarge": "La réponse de l’autorité de certification est trop volumineuse.",
   "smimeRevocationNotChecked": "Non vérifié : seuls les certificats d’une autorité approuvée par Loupe sont vérifiés.",
+  "actionsNeedsMyAction": "Requiert mon action",
+  "actionsWaitingOnOthers": "En attente des autres",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Le serveur signale aussitôt le nouveau courrier dans la boîte de réception, par une connexion que Loupe garde ouverte. Désactivé, Loupe relève le courrier toutes les quelques minutes et utilise une connexion de moins.",
   "settingsPasswordUnchanged": "Inchangé",

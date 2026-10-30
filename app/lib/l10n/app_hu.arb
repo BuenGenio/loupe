@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "A hitelesítésszolgáltató válasza: {status}.",
   "smimeAuthorityAnswerTooLarge": "A hitelesítésszolgáltató válasza túl nagy.",
   "smimeRevocationNotChecked": "Nincs ellenőrizve: csak a Loupe által megbízhatónak tartott szolgáltatóktól származó tanúsítványok ellenőrzése történik meg.",
+  "actionsNeedsMyAction": "Teendőim",
+  "actionsWaitingOnOthers": "Másokra várok",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "A szerver azonnal jelzi a Beérkező levelek új leveleit egy kapcsolaton át, amelyet a Loupe nyitva tart. Kikapcsolva a Loupe néhány percenként ellenőriz, és eggyel kevesebb kapcsolatot használ.",
   "settingsPasswordUnchanged": "Változatlan",

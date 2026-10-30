@@ -83,7 +83,12 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String commonMessageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count mesazhe', one: '1 mesazh');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mesazhe',
+      one: '1 mesazh',
+    );
     return '$_temp0';
   }
 
@@ -190,10 +195,12 @@ class AppLocalizationsSq extends AppLocalizations {
       'Ky mesazh është tepër i madh për një krahasim të hollësishëm. Një pjesë e tekstit mund të lihet jashtë ose të shfaqet si një bllok i plotë.';
 
   @override
-  String get conversationChangesLoadError => 'Këto mesazhe nuk mund të krahasoheshin.';
+  String get conversationChangesLoadError =>
+      'Këto mesazhe nuk mund të krahasoheshin.';
 
   @override
-  String get conversationSomethingWentWrong => 'Diçka shkoi keq. Provoni sërish.';
+  String get conversationSomethingWentWrong =>
+      'Diçka shkoi keq. Provoni sërish.';
 
   @override
   String get conversationReplyToList => 'Përgjigju listës';
@@ -202,7 +209,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get conversationReplyList => 'Listës';
 
   @override
-  String get conversationThreadMuted => 'Rrjedha u heshtua. Mesazhet e reja në të vijnë si të lexuara.';
+  String get conversationThreadMuted =>
+      'Rrjedha u heshtua. Mesazhet e reja në të vijnë si të lexuara.';
 
   @override
   String get conversationThreadUnmuted => 'Rrjedhës iu hoq heshtja.';
@@ -229,7 +237,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get conversationTrash => 'Në kosh';
 
   @override
-  String get conversationReplyHint => 'Shtypni gjatë për “Përgjigju të gjithëve” dhe “Përcill”';
+  String get conversationReplyHint =>
+      'Shtypni gjatë për “Përgjigju të gjithëve” dhe “Përcill”';
 
   @override
   String get conversationOfflineTitle => 'Jeni jashtë linje';
@@ -303,7 +312,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get conversationBodyError => 'Ky mesazh nuk u ngarkua dot.';
 
   @override
-  String get conversationBodyOffline => 'Jeni jashtë linje. Mesazhi do të ngarkohet kur të riktheheni në linjë.';
+  String get conversationBodyOffline =>
+      'Jeni jashtë linje. Mesazhi do të ngarkohet kur të riktheheni në linjë.';
 
   @override
   String get conversationOriginalHint => 'Duket më mirë në pamjen “Origjinale”';
@@ -469,7 +479,12 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String conversationSecurityTrackers(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count gjurmues', one: '1 gjurmues');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gjurmues',
+      one: '1 gjurmues',
+    );
     return '$_temp0';
   }
 
@@ -485,7 +500,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get conversationPhishingBannerText => 'Lidhjet dhe imazhet janë çaktivizuar.';
+  String get conversationPhishingBannerText =>
+      'Lidhjet dhe imazhet janë çaktivizuar.';
 
   @override
   String get conversationPhishingWhy => 'Pse?';
@@ -497,23 +513,27 @@ class AppLocalizationsSq extends AppLocalizations {
   String get conversationSecurityPhishingTitle => 'Kjo duket si phishing';
 
   @override
-  String get conversationSecurityPhishingText => 'Disa shenja tregojnë se ky mesazh nuk është ai që pretendon të jetë.';
+  String get conversationSecurityPhishingText =>
+      'Disa shenja tregojnë se ky mesazh nuk është ai që pretendon të jetë.';
 
   @override
   String get conversationSecurityCarefulTitle => 'Kini kujdes me këtë mesazh';
 
   @override
-  String get conversationSecurityCarefulText => 'Diçka në të meriton një shikim të dytë.';
+  String get conversationSecurityCarefulText =>
+      'Diçka në të meriton një shikim të dytë.';
 
   @override
-  String get conversationSecurityVerifiedText => 'Dërguesi është i verifikuar dhe asgjë nuk duket e dyshimtë.';
+  String get conversationSecurityVerifiedText =>
+      'Dërguesi është i verifikuar dhe asgjë nuk duket e dyshimtë.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Asgjë nuk duket e dyshimtë. Serveri juaj i postës nuk tregoi nëse dërguesi është i verifikuar.';
 
   @override
-  String get conversationSecurityNothingSuspicious => 'Asgjë nuk duket e dyshimtë.';
+  String get conversationSecurityNothingSuspicious =>
+      'Asgjë nuk duket e dyshimtë.';
 
   @override
   String get conversationSecurityWhy => 'Pse';
@@ -536,7 +556,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityTrackingPixelsText => 'Ata do t’i tregonin dërguesit kur e hapët këtë mesazh.';
+  String get conversationSecurityTrackingPixelsText =>
+      'Ata do t’i tregonin dërguesit kur e hapët këtë mesazh.';
 
   @override
   String get conversationSecurityNoRemoteImages => 'Asnjë imazh i largët';
@@ -579,7 +600,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Hollësi teknike';
 
   @override
-  String get conversationSecurityCheckedLocally => 'U kontrollua në këtë pajisje. Asgjë nuk u dërgua askund.';
+  String get conversationSecurityCheckedLocally =>
+      'U kontrollua në këtë pajisje. Asgjë nuk u dërgua askund.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Gjurmues';
@@ -603,8 +625,18 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String conversationSecurityHiddenValue(int elements, int characters) {
-    String _temp0 = intl.Intl.pluralLogic(elements, locale: localeName, other: '$elements elemente', one: '1 element');
-    String _temp1 = intl.Intl.pluralLogic(characters, locale: localeName, other: '$characters shenja', one: '1 shenjë');
+    String _temp0 = intl.Intl.pluralLogic(
+      elements,
+      locale: localeName,
+      other: '$elements elemente',
+      one: '1 element',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      characters,
+      locale: localeName,
+      other: '$characters shenja',
+      one: '1 shenjë',
+    );
     return '$_temp0, $_temp1';
   }
 
@@ -634,7 +666,8 @@ class AppLocalizationsSq extends AppLocalizations {
       'Mos veproni sipas tij, përveç nëse e prisnit. Nëse keni dyshime, kontaktoni dërguesin në një mënyrë tjetër.';
 
   @override
-  String get conversationSecurityAuthUnalignedTitle => 'Nënshkruar nga një domen tjetër';
+  String get conversationSecurityAuthUnalignedTitle =>
+      'Nënshkruar nga një domen tjetër';
 
   @override
   String conversationSecurityAuthUnalignedText(String signer, String domain) {
@@ -647,7 +680,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle => 'Emri tregon një adresë tjetër';
+  String get conversationSecurityNameShowsAddressTitle =>
+      'Emri tregon një adresë tjetër';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -655,10 +689,12 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice => 'Besojini adresës, jo emrit.';
+  String get conversationSecurityNameShowsAddressAdvice =>
+      'Besojini adresës, jo emrit.';
 
   @override
-  String get conversationSecurityReplyToTitle => 'Përgjigjet shkojnë diku tjetër';
+  String get conversationSecurityReplyToTitle =>
+      'Përgjigjet shkojnë diku tjetër';
 
   @override
   String conversationSecurityReplyToText(String address, String domain) {
@@ -673,7 +709,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get conversationSecurityImpersonationYouTitle => 'Përdor emrin tuaj';
 
   @override
-  String get conversationSecurityImpersonationTitle => 'Përdor emrin e dikujt që njihni';
+  String get conversationSecurityImpersonationTitle =>
+      'Përdor emrin e dikujt që njihni';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -681,12 +718,22 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationVipText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Është nënshkruar “$name”, si kontakti juaj VIP $knownName ($knownEmail), por vjen nga një adresë e re: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Është nënshkruar “$name”, si kontakti juaj $knownName ($knownEmail), por vjen nga një adresë e re: $email.';
   }
 
@@ -709,7 +756,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle => 'Mesazhi i parë nga ky dërgues';
+  String get conversationSecurityFirstTimeTitle =>
+      'Mesazhi i parë nga ky dërgues';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -717,13 +765,16 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeAdvice => 'Kini kujdes me kërkesat nga njerëz që s’i njihni ende.';
+  String get conversationSecurityFirstTimeAdvice =>
+      'Kini kujdes me kërkesat nga njerëz që s’i njihni ende.';
 
   @override
-  String get conversationSecuritySenderHomographTitle => 'Shkronja të ngjashme në adresën e dërguesit';
+  String get conversationSecuritySenderHomographTitle =>
+      'Shkronja të ngjashme në adresën e dërguesit';
 
   @override
-  String get conversationSecurityLinkHomographTitle => 'Shkronja të ngjashme në një lidhje';
+  String get conversationSecurityLinkHomographTitle =>
+      'Shkronja të ngjashme në një lidhje';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -736,7 +787,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice => 'Fshijeni ose raportojeni si të padëshiruar.';
+  String get conversationSecuritySenderHomographAdvice =>
+      'Fshijeni ose raportojeni si të padëshiruar.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Mos e hapni.';
@@ -750,7 +802,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get conversationSecurityLookalikeTitle => 'Domen imitues';
 
   @override
-  String get conversationSecurityFamiliarNameTitle => 'Përdor një emër të njohur në domenin e vet';
+  String get conversationSecurityFamiliarNameTitle =>
+      'Përdor një emër të njohur në domenin e vet';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -758,7 +811,11 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(String domain, String brand, String real) {
+  String conversationSecurityLookalikeText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return '$domain ngjan me $brand ($real), por është një domen tjetër.';
   }
 
@@ -768,7 +825,11 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
+  String conversationSecurityFamiliarNameText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return '$domain përdor emrin e $brand ($real), por nuk i përket.';
   }
 
@@ -818,7 +879,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle => 'Destinacioni i një lidhjeje s’mund të kontrollohet';
+  String get conversationSecurityLinkUncheckableTitle =>
+      'Destinacioni i një lidhjeje s’mund të kontrollohet';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -826,7 +888,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle => 'Një lidhje të çon te një adresë IP e zhveshur';
+  String get conversationSecurityIpAddressTitle =>
+      'Një lidhje të çon te një adresë IP e zhveshur';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -842,7 +905,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityDataLinkTitle => 'Një faqe e fshehur u çaktivizua';
+  String get conversationSecurityDataLinkTitle =>
+      'Një faqe e fshehur u çaktivizua';
 
   @override
   String get conversationSecurityDataLinkText =>
@@ -852,16 +916,20 @@ class AppLocalizationsSq extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Kërkon fjalëkalim';
 
   @override
-  String get conversationSecurityPasswordFieldText => 'Mesazhi përmbante një fushë fjalëkalimi. Loupe e hoqi.';
+  String get conversationSecurityPasswordFieldText =>
+      'Mesazhi përmbante një fushë fjalëkalimi. Loupe e hoqi.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice => 'Mos shkruani kurrë fjalëkalim në një email.';
+  String get conversationSecurityPasswordFieldAdvice =>
+      'Mos shkruani kurrë fjalëkalim në një email.';
 
   @override
-  String get conversationSecurityScriptLinkTitle => 'Një lidhje që ekzekuton kod u çaktivizua';
+  String get conversationSecurityScriptLinkTitle =>
+      'Një lidhje që ekzekuton kod u çaktivizua';
 
   @override
-  String get conversationSecurityScriptLinkText => 'Loupe nuk ekzekuton kurrë kod nga mesazhet.';
+  String get conversationSecurityScriptLinkText =>
+      'Loupe nuk ekzekuton kurrë kod nga mesazhet.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -880,7 +948,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityInternationalTitle => 'Adresë uebi ndërkombëtare';
+  String get conversationSecurityInternationalTitle =>
+      'Adresë uebi ndërkombëtare';
 
   @override
   String conversationSecurityInternationalText(String hosts) {
@@ -888,7 +957,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLotsOfHiddenTextTitle => 'Shumë tekst i fshehur';
+  String get conversationSecurityLotsOfHiddenTextTitle =>
+      'Shumë tekst i fshehur';
 
   @override
   String conversationSecurityLotsOfHiddenTextText(int count) {
@@ -917,7 +987,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed => 'Mesazhi nuk u shkarkua dot. Kontrolloni lidhjen dhe provoni sërish.';
+  String get exportDownloadFailed =>
+      'Mesazhi nuk u shkarkua dot. Kontrolloni lidhjen dhe provoni sërish.';
 
   @override
   String exportSaved(String name) {
@@ -947,7 +1018,8 @@ class AppLocalizationsSq extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'U ruajt “$name” pa $formattedCount mesazhe që nuk u shkarkuan dot.',
+      other:
+          'U ruajt “$name” pa $formattedCount mesazhe që nuk u shkarkuan dot.',
       one: 'U ruajt “$name” pa 1 mesazh që nuk u shkarkua dot.',
     );
     return '$_temp0';
@@ -1026,7 +1098,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get mailboxesSmartMailboxes => 'Smart Mailboxes';
 
   @override
-  String get mailboxesSmartMailboxesEmpty => 'Ruani një kërkim për ta mbajtur këtu.';
+  String get mailboxesSmartMailboxesEmpty =>
+      'Ruani një kërkim për ta mbajtur këtu.';
 
   @override
   String get mailboxesTags => 'Etiketat';
@@ -1060,7 +1133,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get projectsDelete => 'Fshi projektin';
 
   @override
-  String get projectsDeleteMessage => 'Bisedat e tij mbeten ku janë, jashtë projektit.';
+  String get projectsDeleteMessage =>
+      'Bisedat e tij mbeten ku janë, jashtë projektit.';
 
   @override
   String get projectsUntitled => 'Projekt';
@@ -1184,7 +1258,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get mailboxesAddVipTitle => 'Shto VIP';
 
   @override
-  String get mailboxesAddVipText => 'Posta nga kjo adresë merr një yll dhe shfaqet te kutia postare VIP.';
+  String get mailboxesAddVipText =>
+      'Posta nga kjo adresë merr një yll dhe shfaqet te kutia postare VIP.';
 
   @override
   String get mailboxesAddVipPlaceholder => 'name@example.com';
@@ -1222,7 +1297,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get messageListLoadOlderFailed => 'Posta më e vjetër nuk u ngarkua dot.';
+  String get messageListLoadOlderFailed =>
+      'Posta më e vjetër nuk u ngarkua dot.';
 
   @override
   String get messageListSelectMessages => 'Përzgjidh mesazhe';
@@ -1321,7 +1397,12 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String panesDragCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count mesazhe', one: '1 mesazh');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mesazhe',
+      one: '1 mesazh',
+    );
     return '$_temp0';
   }
 
@@ -1365,13 +1446,15 @@ class AppLocalizationsSq extends AppLocalizations {
   String get snoozeNoTime => 'S’ka kohë të caktuar';
 
   @override
-  String get snoozeFooter => 'Mesazhet e shtyra kthehen te Kutia hyrëse, të palexuara, në kohën e caktuar.';
+  String get snoozeFooter =>
+      'Mesazhet e shtyra kthehen te Kutia hyrëse, të palexuara, në kohën e caktuar.';
 
   @override
   String get snoozeEmptyTitle => 'S’ka gjë të shtyrë';
 
   @override
-  String get snoozeEmptyText => 'Shtyni një mesazh që të kthehet te Kutia hyrëse kur t’ju duhet.';
+  String get snoozeEmptyText =>
+      'Shtyni një mesazh që të kthehet te Kutia hyrëse kur t’ju duhet.';
 
   @override
   String get briefButton => 'Përmbledhje';
@@ -1395,13 +1478,16 @@ class AppLocalizationsSq extends AppLocalizations {
   String get briefStopped => 'E ndalët përmbledhjen.';
 
   @override
-  String get briefFailedTooLarge => 'Ky mesazh është shumë i gjatë për modelin, ndaj nuk u dërgua asgjë.';
+  String get briefFailedTooLarge =>
+      'Ky mesazh është shumë i gjatë për modelin, ndaj nuk u dërgua asgjë.';
 
   @override
-  String get briefFailedProvider => 'Modeli nuk arriti ta përmbledhë këtë mesazh.';
+  String get briefFailedProvider =>
+      'Modeli nuk arriti ta përmbledhë këtë mesazh.';
 
   @override
-  String get briefFailedInvalid => 'Përgjigjja nuk i kaloi kontrollet e Loupe, ndaj nuk shfaqet asnjë listë.';
+  String get briefFailedInvalid =>
+      'Përgjigjja nuk i kaloi kontrollet e Loupe, ndaj nuk shfaqet asnjë listë.';
 
   @override
   String get briefNothingTitle => 'Asgjë për të përmbledhur';
@@ -1453,7 +1539,11 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Ju', 'them': 'Të tjerët', 'other': 'Nuk thuhet'});
+    String _temp0 = intl.Intl.selectLogic(owner, {
+      'me': 'Ju',
+      'them': 'Të tjerët',
+      'other': 'Nuk thuhet',
+    });
     return '$_temp0';
   }
 
@@ -1519,7 +1609,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get briefCopyChecklist => 'Kopjo listën';
 
   @override
-  String get briefMadeByDemo => 'Bërë nga demonstrimi i integruar, jo nga një model.';
+  String get briefMadeByDemo =>
+      'Bërë nga demonstrimi i integruar, jo nga një model.';
 
   @override
   String briefMadeBy(String location, String name) {
@@ -1532,7 +1623,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get briefCaution => 'Një përmbledhje mund të anashkalojë ose të keqkuptojë gjëra. Vlen vetë mesazhi.';
+  String get briefCaution =>
+      'Një përmbledhje mund të anashkalojë ose të keqkuptojë gjëra. Vlen vetë mesazhi.';
 
   @override
   String briefSecurityReason(String reason) {
@@ -1540,7 +1632,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText => 'Kontrolloni vetë mesazhin përpara se të bëni diçka nga kjo përmbledhje.';
+  String get briefSecurityText =>
+      'Kontrolloni vetë mesazhin përpara se të bëni diçka nga kjo përmbledhje.';
 
   @override
   String get briefSourceTitle => 'Te mesazhi';
@@ -1591,7 +1684,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get appLockLockedOut => 'Shumë përpjekje. Provoni sërish më vonë.';
 
   @override
-  String get appLockPromptError => 'Kërkesa për verifikim nuk u shfaq dot. Provoni sërish.';
+  String get appLockPromptError =>
+      'Kërkesa për verifikim nuk u shfaq dot. Provoni sërish.';
 
   @override
   String get appLockNoScreenLock => 'Ky telefon s’ka kyçje ekrani.';
@@ -1600,13 +1694,15 @@ class AppLocalizationsSq extends AppLocalizations {
   String get appLockUnlockPromptTitle => 'Shkyçni Loupe';
 
   @override
-  String get appLockUnlockPromptReason => 'Konfirmoni se jeni ju për të parë postën tuaj.';
+  String get appLockUnlockPromptReason =>
+      'Konfirmoni se jeni ju për të parë postën tuaj.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Aktivizoni kyçjen e aplikacionit';
 
   @override
-  String get appLockTurnOnPromptReason => 'Konfirmoni se jeni ju për të aktivizuar kyçjen e aplikacionit.';
+  String get appLockTurnOnPromptReason =>
+      'Konfirmoni se jeni ju për të aktivizuar kyçjen e aplikacionit.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1617,13 +1713,23 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String appLockAfterMinutes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count minuta', one: '1 minutë');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minuta',
+      one: '1 minutë',
+    );
     return '$_temp0';
   }
 
   @override
   String appLockAfterHours(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count orë', one: '1 orë');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count orë',
+      one: '1 orë',
+    );
     return '$_temp0';
   }
 
@@ -1670,7 +1776,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get openpgpSignedWithRejectedKey => 'Nënshkruar me një çelës të hedhur poshtë';
+  String get openpgpSignedWithRejectedKey =>
+      'Nënshkruar me një çelës të hedhur poshtë';
 
   @override
   String openpgpSignedByNotAccepted(String name) {
@@ -1739,33 +1846,40 @@ class AppLocalizationsSq extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Ndrysho pranimin…';
 
   @override
-  String get openpgpCheckedFooter => 'U kontrollua në këtë pajisje me OpenPGP, në përputhje me Thunderbird.';
+  String get openpgpCheckedFooter =>
+      'U kontrollua në këtë pajisje me OpenPGP, në përputhje me Thunderbird.';
 
   @override
   String get openpgpSummaryLocked =>
       'Çelësi juaj është i kyçur. Shkyçeni me frazëkalimin e tij për ta lexuar këtë mesazh.';
 
   @override
-  String get openpgpSummaryNoSecretKey => 'U enkriptua për një çelës që s’është në këtë pajisje.';
+  String get openpgpSummaryNoSecretKey =>
+      'U enkriptua për një çelës që s’është në këtë pajisje.';
 
   @override
-  String get openpgpSummaryDamaged => 'Të dhënat e enkriptuara janë dëmtuar ose u ndryshuan gjatë rrugës.';
+  String get openpgpSummaryDamaged =>
+      'Të dhënat e enkriptuara janë dëmtuar ose u ndryshuan gjatë rrugës.';
 
   @override
-  String get openpgpSummaryUnsupported => 'Përdor një algoritëm që Loupe nuk e mbulon.';
+  String get openpgpSummaryUnsupported =>
+      'Përdor një algoritëm që Loupe nuk e mbulon.';
 
   @override
-  String get openpgpSummaryEncrypted => 'Vetëm ju dhe marrësit e tjerë mund ta lexoni.';
+  String get openpgpSummaryEncrypted =>
+      'Vetëm ju dhe marrësit e tjerë mund ta lexoni.';
 
   @override
-  String get openpgpSummaryNotSigned => 'Nuk është i nënshkruar, ndaj dërguesi nuk është konfirmuar.';
+  String get openpgpSummaryNotSigned =>
+      'Nuk është i nënshkruar, ndaj dërguesi nuk është konfirmuar.';
 
   @override
   String get openpgpSummaryUnknownKey =>
       'Është i nënshkruar, por me një çelës që s’e keni, ndaj nënshkrimi s’mund të kontrollohet.';
 
   @override
-  String get openpgpSummaryBadSignature => 'Nënshkrimi nuk përputhet: mesazhi mund të jetë ndryshuar.';
+  String get openpgpSummaryBadSignature =>
+      'Nënshkrimi nuk përputhet: mesazhi mund të jetë ndryshuar.';
 
   @override
   String get openpgpSummaryMismatch =>
@@ -1787,7 +1901,8 @@ class AppLocalizationsSq extends AppLocalizations {
       'Nënshkrimi është i vlefshëm. E pranuat çelësin pa e kontrolluar gjurmën e gishtit.';
 
   @override
-  String get openpgpSummaryRejected => 'Nënshkrimi është i vlefshëm, por e keni hedhur poshtë këtë çelës.';
+  String get openpgpSummaryRejected =>
+      'Nënshkrimi është i vlefshëm, por e keni hedhur poshtë këtë çelës.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -1847,7 +1962,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get openpgpAddresses => 'Adresat';
 
   @override
-  String get openpgpAddressesFooter => 'Cilin çelës përdor secila adresë dhe kur enkripton e nënshkruan.';
+  String get openpgpAddressesFooter =>
+      'Cilin çelës përdor secila adresë dhe kur enkripton e nënshkruan.';
 
   @override
   String get openpgpCorrespondentsKeys => 'Çelësat OpenPGP të korrespondentëve';
@@ -1881,7 +1997,8 @@ class AppLocalizationsSq extends AppLocalizations {
       'Kërkimi i gjen mesazhet e enkriptuara sipas dërguesit, marrësve dhe subjektit. Kur kjo është aktive, Loupe shton edhe tekstin e çdo mesazhi të enkriptuar që deshifron në indeksin e kërkimit në bazën e vet të të dhënave të enkriptuar në këtë pajisje, që kërkimi ta gjejë edhe sipas tekstit. Çaktivizimi e heq këtë tekst nga indeksi.';
 
   @override
-  String get openpgpIndexDecrypted => 'Indekso mesazhet e deshifruara për kërkim';
+  String get openpgpIndexDecrypted =>
+      'Indekso mesazhet e deshifruara për kërkim';
 
   @override
   String get openpgpPassphrases => 'Frazëkalimet';
@@ -1926,7 +2043,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get openpgpAddKeyTitle => 'Shtoni një çelës OpenPGP';
 
   @override
-  String get openpgpAddKeyMessage => 'Importoni çelësin që përdorni në Thunderbird ose krijoni një të ri.';
+  String get openpgpAddKeyMessage =>
+      'Importoni çelësin që përdorni në Thunderbird ose krijoni një të ri.';
 
   @override
   String get openpgpImportFromClipboard => 'Importo nga e papastra';
@@ -1947,7 +2065,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get openpgpFromFile => 'Nga skedar';
 
   @override
-  String get openpgpClipboardEmpty => 'E papastra është bosh. Kopjoni fillimisht çelësin.';
+  String get openpgpClipboardEmpty =>
+      'E papastra është bosh. Kopjoni fillimisht çelësin.';
 
   @override
   String get openpgpKey => 'Çelësi';
@@ -2063,7 +2182,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Enkripto automatikisht';
 
   @override
-  String get openpgpAlwaysEncryptDetail => 'Nuk dërgon kur një marrës s’ka çelës';
+  String get openpgpAlwaysEncryptDetail =>
+      'Nuk dërgon kur një marrës s’ka çelës';
 
   @override
   String get openpgpSignUnencrypted => 'Nënshkruaj postën e paenkriptuar';
@@ -2082,11 +2202,17 @@ class AppLocalizationsSq extends AppLocalizations {
   String get openpgpPreferEncryption => 'Parapëlqe enkriptimin';
 
   @override
-  String get openpgpPreferEncryptionDetail => 'U kërkon të tjerëve të enkriptojnë kur munden';
+  String get openpgpPreferEncryptionDetail =>
+      'U kërkon të tjerëve të enkriptojnë kur munden';
 
   @override
   String openpgpValidityYears(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count vjet', one: '1 vit');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count vjet',
+      one: '1 vit',
+    );
     return '$_temp0';
   }
 
@@ -2183,7 +2309,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get openpgpComposeEveryoneHasKey => 'Të gjithë kanë çelës';
 
   @override
-  String get openpgpComposeEveryoneHasCertificate => 'Të gjithë kanë certifikatë';
+  String get openpgpComposeEveryoneHasCertificate =>
+      'Të gjithë kanë certifikatë';
 
   @override
   String get openpgpComposeEncrypt => 'Enkripto';
@@ -2200,7 +2327,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get openpgpNoKeyFound => 'S’u gjet çelës OpenPGP.';
 
   @override
-  String get openpgpImportSecretKeyTitle => 'Të importohet një çelës i fshehtë?';
+  String get openpgpImportSecretKeyTitle =>
+      'Të importohet një çelës i fshehtë?';
 
   @override
   String openpgpImportSecretKeyMessage(String names) {
@@ -2265,10 +2393,12 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get openpgpWrongPassphrase => 'Ky frazëkalim është i gabuar. Provoni sërish.';
+  String get openpgpWrongPassphrase =>
+      'Ky frazëkalim është i gabuar. Provoni sërish.';
 
   @override
-  String get openpgpExplainLocked => 'Ky mesazh është i enkriptuar. Shkyçni çelësin tuaj OpenPGP për ta lexuar.';
+  String get openpgpExplainLocked =>
+      'Ky mesazh është i enkriptuar. Shkyçni çelësin tuaj OpenPGP për ta lexuar.';
 
   @override
   String get openpgpExplainNoKey =>
@@ -2279,7 +2409,8 @@ class AppLocalizationsSq extends AppLocalizations {
       'Ky mesazh i enkriptuar është i dëmtuar, ndaj s’mund të deshifrohet në mënyrë të sigurt.';
 
   @override
-  String get openpgpExplainUnsupported => 'Ky mesazh përdor një enkriptim që Loupe s’e lexon dot ende.';
+  String get openpgpExplainUnsupported =>
+      'Ky mesazh përdor një enkriptim që Loupe s’e lexon dot ende.';
 
   @override
   String get openpgpExplainSmimeNoKey =>
@@ -2291,16 +2422,19 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock => 'Shkyçni certifikatën tuaj S/MIME për ta lexuar.';
+  String get openpgpExplainSmimeUnlock =>
+      'Shkyçni certifikatën tuaj S/MIME për ta lexuar.';
 
   @override
-  String get openpgpAttachmentGone => 'Kjo bashkëngjitje s’është më e disponueshme.';
+  String get openpgpAttachmentGone =>
+      'Kjo bashkëngjitje s’është më e disponueshme.';
 
   @override
   String get smimeEncrypted => 'I enkriptuar (S/MIME)';
 
   @override
-  String get smimeEncryptedNoCertificate => 'I enkriptuar (S/MIME) · pa certifikatë';
+  String get smimeEncryptedNoCertificate =>
+      'I enkriptuar (S/MIME) · pa certifikatë';
 
   @override
   String get smimeEncryptedDamaged => 'I enkriptuar (S/MIME) · i dëmtuar';
@@ -2315,7 +2449,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get smimeUnknownSigner => 'i panjohur';
 
   @override
-  String get smimeSignatureModified => 'Nënshkrim i pavlefshëm: mesazhi është ndryshuar';
+  String get smimeSignatureModified =>
+      'Nënshkrim i pavlefshëm: mesazhi është ndryshuar';
 
   @override
   String get smimeSignatureWeak => 'Nënshkrim i pasigurt: algoritëm i vjetruar';
@@ -2490,31 +2625,38 @@ class AppLocalizationsSq extends AppLocalizations {
   String get smimeTrust => 'Besoji';
 
   @override
-  String get smimeSummaryNoKey => 'U enkriptua për një certifikatë që s’është në këtë pajisje.';
+  String get smimeSummaryNoKey =>
+      'U enkriptua për një certifikatë që s’është në këtë pajisje.';
 
   @override
-  String get smimeSummaryDamaged => 'Të dhënat e enkriptuara janë dëmtuar ose u ndryshuan gjatë rrugës.';
+  String get smimeSummaryDamaged =>
+      'Të dhënat e enkriptuara janë dëmtuar ose u ndryshuan gjatë rrugës.';
 
   @override
-  String get smimeSummaryUnsupported => 'Përdor një algoritëm që Loupe nuk e mbulon.';
+  String get smimeSummaryUnsupported =>
+      'Përdor një algoritëm që Loupe nuk e mbulon.';
 
   @override
   String get smimeSummaryLocked => 'Certifikata juaj S/MIME është e kyçur.';
 
   @override
-  String get smimeSummaryEncrypted => 'Vetëm ju dhe marrësit e tjerë mund ta lexoni.';
+  String get smimeSummaryEncrypted =>
+      'Vetëm ju dhe marrësit e tjerë mund ta lexoni.';
 
   @override
-  String get smimeSummaryNotSigned => 'Nuk është i nënshkruar, ndaj dërguesi nuk është konfirmuar.';
+  String get smimeSummaryNotSigned =>
+      'Nuk është i nënshkruar, ndaj dërguesi nuk është konfirmuar.';
 
   @override
-  String get smimeSummaryModified => 'Nënshkrimi nuk përputhet: mesazhi u ndryshua pasi u nënshkrua.';
+  String get smimeSummaryModified =>
+      'Nënshkrimi nuk përputhet: mesazhi u ndryshua pasi u nënshkrua.';
 
   @override
   String get smimeSummaryUncheckable => 'Nënshkrimi s’mund të kontrollohet.';
 
   @override
-  String get smimeSummaryNoCertificate => 'Certifikata e nënshkruesit s’është në mesazh, ndaj s’mund të kontrollohet.';
+  String get smimeSummaryNoCertificate =>
+      'Certifikata e nënshkruesit s’është në mesazh, ndaj s’mund të kontrollohet.';
 
   @override
   String get smimeSummaryRevoked =>
@@ -2535,10 +2677,12 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain => 'Certifikata ose një nga lëshuesit e saj është e pavlefshme.';
+  String get smimeProblemInvalidChain =>
+      'Certifikata ose një nga lëshuesit e saj është e pavlefshme.';
 
   @override
-  String get smimeProblemUntrusted => 'Certifikata vjen nga një autoritet të cilit Loupe nuk i beson.';
+  String get smimeProblemUntrusted =>
+      'Certifikata vjen nga një autoritet të cilit Loupe nuk i beson.';
 
   @override
   String get smimeProblemExpired => 'Certifikata kishte skaduar.';
@@ -2550,7 +2694,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get smimeProblemWrongUsage => 'Certifikata s’është menduar për postë.';
 
   @override
-  String get smimeProblemWrongAddress => 'Certifikata i përket një adrese tjetër nga ajo e dërguesit.';
+  String get smimeProblemWrongAddress =>
+      'Certifikata i përket një adrese tjetër nga ajo e dërguesit.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2607,10 +2752,12 @@ class AppLocalizationsSq extends AppLocalizations {
   String get smimeImportCertificateEllipsis => 'Importo certifikatë…';
 
   @override
-  String get smimeUseDeviceCertificate => 'Përdor një certifikatë nga kjo pajisje…';
+  String get smimeUseDeviceCertificate =>
+      'Përdor një certifikatë nga kjo pajisje…';
 
   @override
-  String get smimeCorrespondentsCertificates => 'Certifikatat e korrespondentëve';
+  String get smimeCorrespondentsCertificates =>
+      'Certifikatat e korrespondentëve';
 
   @override
   String get smimeCorrespondentsCertificatesFooter =>
@@ -2624,7 +2771,8 @@ class AppLocalizationsSq extends AppLocalizations {
       'Kur hapni postë të nënshkruar, Loupe e pyet autoritetin që lëshoi certifikatën e nënshkruesit nëse është shfuqizuar (përmes shërbyesit të tij OCSP ose listës së tij të shfuqizimeve). Kështu autoriteti mund të shohë kur dikush nga adresa juaj e internetit lexon postë të nënshkruar me atë certifikatë. Përgjigjet ruhen në këtë pajisje derisa të skadojnë. Një certifikatë e shfuqizuar shfaqet si “certifikata është shfuqizuar” në kryet e mesazhit.';
 
   @override
-  String get smimeCheckRevocation => 'Kontrollo shfuqizimin e certifikatave në internet';
+  String get smimeCheckRevocation =>
+      'Kontrollo shfuqizimin e certifikatave në internet';
 
   @override
   String get smimeTrustedAuthorities => 'Autoritete të besuara';
@@ -2634,7 +2782,8 @@ class AppLocalizationsSq extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Të besuara nga ju, përveç $count autoriteteve që u beson Mozilla për email-in.',
+      other:
+          'Të besuara nga ju, përveç $count autoriteteve që u beson Mozilla për email-in.',
       one: 'Të besuara nga ju, përveç 1 autoriteti që i beson Mozilla për email-in.',
     );
     return '$_temp0';
@@ -2657,7 +2806,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get smimeFromFile => 'Nga skedar';
 
   @override
-  String get smimeClipboardEmpty => 'E papastra është bosh. Kopjoni fillimisht certifikatën.';
+  String get smimeClipboardEmpty =>
+      'E papastra është bosh. Kopjoni fillimisht certifikatën.';
 
   @override
   String get smimeCertificate => 'Certifikata';
@@ -2810,7 +2960,8 @@ class AppLocalizationsSq extends AppLocalizations {
       'Çelësi i saj privat fshihet nga kjo pajisje: posta e enkriptuar për të s’mund të lexohet më këtu, veç nëse e importoni sërish.';
 
   @override
-  String get smimeRemoveContactMessage => 'Rikthehet me mesazhin e ardhshëm të nënshkruar prej tyre.';
+  String get smimeRemoveContactMessage =>
+      'Rikthehet me mesazhin e ardhshëm të nënshkruar prej tyre.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -2833,13 +2984,15 @@ class AppLocalizationsSq extends AppLocalizations {
   String get smimeCertificatePassword => 'Fjalëkalimi i certifikatës';
 
   @override
-  String get smimeCertificatePasswordPrompt => 'Jepni fjalëkalimin me të cilin u eksportua skedari i certifikatës.';
+  String get smimeCertificatePasswordPrompt =>
+      'Jepni fjalëkalimin me të cilin u eksportua skedari i certifikatës.';
 
   @override
   String get smimeImport => 'Importo';
 
   @override
-  String get smimeWrongPassword => 'Ky fjalëkalim është i gabuar. Provoni sërish.';
+  String get smimeWrongPassword =>
+      'Ky fjalëkalim është i gabuar. Provoni sërish.';
 
   @override
   String get smimeNoCertificateFound => 'S’u gjet certifikatë.';
@@ -2869,7 +3022,10 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
+  String smimeImportedCertificatesAndAuthorities(
+    int count,
+    String certificates,
+  ) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -2937,7 +3093,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get smimeWrongPassphrase => 'Ky frazëkalim është i gabuar. Provoni sërish.';
+  String get smimeWrongPassphrase =>
+      'Ky frazëkalim është i gabuar. Provoni sërish.';
 
   @override
   String get smimeUnlock => 'Shkyç';
@@ -2962,13 +3119,16 @@ class AppLocalizationsSq extends AppLocalizations {
   String get smimeSetPassphraseButton => 'Cakto';
 
   @override
-  String get smimeLockedOpenAgain => 'Certifikata juaj S/MIME është e kyçur. Hapeni sërish mesazhin për ta shkyçur.';
+  String get smimeLockedOpenAgain =>
+      'Certifikata juaj S/MIME është e kyçur. Hapeni sërish mesazhin për ta shkyçur.';
 
   @override
-  String get smimeDeviceHasNoCertificates => 'Kjo pajisje nuk i ofron certifikatat e saj.';
+  String get smimeDeviceHasNoCertificates =>
+      'Kjo pajisje nuk i ofron certifikatat e saj.';
 
   @override
-  String get smimeCantReadCertificate => 'Loupe s’e lexon dot këtë certifikatë.';
+  String get smimeCantReadCertificate =>
+      'Loupe s’e lexon dot këtë certifikatë.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -2999,13 +3159,16 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress => 'Adresa e autoritetit s’është adresë uebi.';
+  String get smimeAuthorityNotWebAddress =>
+      'Adresa e autoritetit s’është adresë uebi.';
 
   @override
-  String get smimeAuthorityTimeout => 'Autoriteti i certifikatave nuk u përgjigj në kohë.';
+  String get smimeAuthorityTimeout =>
+      'Autoriteti i certifikatave nuk u përgjigj në kohë.';
 
   @override
-  String get smimeAuthorityUnreachable => 'Autoriteti i certifikatave s’u arrit dot.';
+  String get smimeAuthorityUnreachable =>
+      'Autoriteti i certifikatave s’u arrit dot.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -3013,15 +3176,25 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge => 'Përgjigjja e autoritetit të certifikatave është shumë e madhe.';
+  String get smimeAuthorityAnswerTooLarge =>
+      'Përgjigjja e autoritetit të certifikatave është shumë e madhe.';
 
   @override
   String get smimeRevocationNotChecked =>
       'S’u kontrollua: kontrollohen vetëm certifikatat nga autoritete që Loupe u beson.';
 
   @override
+  String get actionsNeedsMyAction => 'Kërkon veprimin tim';
+
+  @override
+  String get actionsWaitingOnOthers => 'Në pritje të të tjerëve';
+
+  @override
   String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    String _temp0 = intl.Intl.selectLogic(protocol, {
+      'jmap': 'Push',
+      'other': 'IDLE',
+    });
     return '$_temp0';
   }
 
@@ -3086,7 +3259,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsSignatureAddField => 'Shto fushë';
 
   @override
-  String get settingsSignatureImageFailed => 'Figura nuk u shtua dot. Provoni një PNG ose JPEG më të vogël.';
+  String get settingsSignatureImageFailed =>
+      'Figura nuk u shtua dot. Provoni një PNG ose JPEG më të vogël.';
 
   @override
   String get settingsSignatureWhenToUse => 'Kur përdoret';
@@ -3102,7 +3276,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Shto adresë ose domen…';
 
   @override
-  String get settingsSignatureCopiedPrompt => 'Një adresë, ose një domen si client.example.';
+  String get settingsSignatureCopiedPrompt =>
+      'Një adresë, ose një domen si client.example.';
 
   @override
   String get settingsSignatureScheduled => 'I planifikuar';
@@ -3121,7 +3296,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsSignatureRotation => 'Në rotacion';
 
   @override
-  String get settingsSignatureRotationFooter => 'Çdo mesazh i ri merr rastësisht një nga nënshkrimet në rotacion.';
+  String get settingsSignatureRotationFooter =>
+      'Çdo mesazh i ri merr rastësisht një nga nënshkrimet në rotacion.';
 
   @override
   String get settingsSignatureMakeDefault => 'Bëje të parazgjedhur';
@@ -3162,7 +3338,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsSwipeRight => 'Rrëshqitje djathtas';
 
   @override
-  String get settingsSwipeRightFooter => 'Një rrëshqitje e plotë e kryen këtë veprim.';
+  String get settingsSwipeRightFooter =>
+      'Një rrëshqitje e plotë e kryen këtë veprim.';
 
   @override
   String get settingsSwipeToggleRead => 'Shëno si të lexuar / të palexuar';
@@ -3183,11 +3360,17 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsUndoSendDelay => 'Vonesa për zhbërjen e dërgimit';
 
   @override
-  String get settingsUndoSendDelayFooter => 'Mesazhet e dërguara presin kaq gjatë, që t’i tërhiqni dot.';
+  String get settingsUndoSendDelayFooter =>
+      'Mesazhet e dërguara presin kaq gjatë, që t’i tërhiqni dot.';
 
   @override
   String settingsUndoSendSeconds(int seconds) {
-    String _temp0 = intl.Intl.pluralLogic(seconds, locale: localeName, other: '$seconds sekonda', one: '1 sekondë');
+    String _temp0 = intl.Intl.pluralLogic(
+      seconds,
+      locale: localeName,
+      other: '$seconds sekonda',
+      one: '1 sekondë',
+    );
     return '$_temp0';
   }
 
@@ -3222,25 +3405,29 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsReadingHeader => 'Leximi';
 
   @override
-  String get settingsReadingFooter => 'Imazhet e largëta mund t’u tregojnë dërguesve kur dhe ku e hapët një mesazh.';
+  String get settingsReadingFooter =>
+      'Imazhet e largëta mund t’u tregojnë dërguesve kur dhe ku e hapët një mesazh.';
 
   @override
   String get settingsDefaultView => 'Pamja parazgjedhje';
 
   @override
-  String get settingsDefaultViewFooter => 'Mund ta ndërroni pamjen e çdo mesazhi me butonin Aa.';
+  String get settingsDefaultViewFooter =>
+      'Mund ta ndërroni pamjen e çdo mesazhi me butonin Aa.';
 
   @override
   String get settingsViewReadable => 'E lexueshme';
 
   @override
-  String get settingsViewReadableDetail => 'E pastër, e qartë, ndjek mënyrën e errët';
+  String get settingsViewReadableDetail =>
+      'E pastër, e qartë, ndjek mënyrën e errët';
 
   @override
   String get settingsViewOriginal => 'Origjinale';
 
   @override
-  String get settingsViewOriginalDetail => 'Saktësisht siç e projektoi dërguesi';
+  String get settingsViewOriginalDetail =>
+      'Saktësisht siç e projektoi dërguesi';
 
   @override
   String get settingsViewPlain => 'Tekst i thjeshtë';
@@ -3258,7 +3445,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsFontMono => 'Me gjerësi fikse';
 
   @override
-  String get settingsFontMonoDetail => 'I mban të radhitura vizatimet ASCII dhe tabelat';
+  String get settingsFontMonoDetail =>
+      'I mban të radhitura vizatimet ASCII dhe tabelat';
 
   @override
   String get settingsTechnicalLists => 'Listat teknike';
@@ -3270,7 +3458,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Hap lidhjet drejtpërdrejt';
 
   @override
-  String get settingsOpenLinksDirectlyDetail => 'Anashkalo gjurmuesit e klikimeve kur destinacioni dihet';
+  String get settingsOpenLinksDirectlyDetail =>
+      'Anashkalo gjurmuesit e klikimeve kur destinacioni dihet';
 
   @override
   String get settingsSecurityHeader => 'Siguria';
@@ -3315,7 +3504,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsLockAfter => 'Kyç pas';
 
   @override
-  String get settingsLockAfterFooter => 'Sa gjatë mund të jetë Loupe në sfond përpara se të pyesë sërish.';
+  String get settingsLockAfterFooter =>
+      'Sa gjatë mund të jetë Loupe në sfond përpara se të pyesë sërish.';
 
   @override
   String get settingsNotifications => 'Njoftimet';
@@ -3340,7 +3530,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsResetApp => 'Rikthe aplikacionin në fillim';
 
   @override
-  String get settingsResetFooter => 'Harron të gjitha cilësimet dhe kthehet te ekrani i mirëseardhjes.';
+  String get settingsResetFooter =>
+      'Harron të gjitha cilësimet dhe kthehet te ekrani i mirëseardhjes.';
 
   @override
   String get settingsResetTitle => 'Të rikthehet Loupe në fillim?';
@@ -3366,10 +3557,12 @@ class AppLocalizationsSq extends AppLocalizations {
       'Loupe s’ka analitikë dhe s’bën gjurmim. Posta juaj shkon vetëm te serverët tuaj të postës.';
 
   @override
-  String get settingsNotificationsOffIos => 'Njoftimet për Loupe janë çaktivizuar te Settings.';
+  String get settingsNotificationsOffIos =>
+      'Njoftimet për Loupe janë çaktivizuar te Settings.';
 
   @override
-  String get settingsNotificationsOffAndroid => 'Njoftimet për Loupe janë çaktivizuar te cilësimet e Android-it.';
+  String get settingsNotificationsOffAndroid =>
+      'Njoftimet për Loupe janë çaktivizuar te cilësimet e Android-it.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -3436,7 +3629,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsComingSoon => 'Së shpejti';
 
   @override
-  String get settingsAllowUnrestrictedBattery => 'Lejo përdorim të pakufizuar të baterisë';
+  String get settingsAllowUnrestrictedBattery =>
+      'Lejo përdorim të pakufizuar të baterisë';
 
   @override
   String get settingsPush => 'Push';
@@ -3462,14 +3656,16 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsAppIconBadge => 'Distinktivi i ikonës';
 
   @override
-  String get settingsBadgeNote => 'Distinktivi përditësohet sa herë që Loupe kontrollon për postë, edhe në sfond.';
+  String get settingsBadgeNote =>
+      'Distinktivi përditësohet sa herë që Loupe kontrollon për postë, edhe në sfond.';
 
   @override
   String get settingsBadgeUnsupportedFooter =>
       'Ekrani bazë i këtij telefoni nuk shfaq numra mbi ikonat e aplikacioneve. Distinktivi përditësohet sa herë që Loupe kontrollon për postë, edhe në sfond.';
 
   @override
-  String get settingsTestNotificationBody => 'Njoftimet për postë të re duken kështu.';
+  String get settingsTestNotificationBody =>
+      'Njoftimet për postë të re duken kështu.';
 
   @override
   String get settingsAccountRemoved => 'Kjo llogari u hoq.';
@@ -3490,7 +3686,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsColour => 'Ngjyra';
 
   @override
-  String get settingsColourFooter => 'Shënon mesazhet e kësaj llogarie te “Të gjitha kutitë hyrëse”.';
+  String get settingsColourFooter =>
+      'Shënon mesazhet e kësaj llogarie te “Të gjitha kutitë hyrëse”.';
 
   @override
   String settingsColourNumber(int number) {
@@ -3582,10 +3779,12 @@ class AppLocalizationsSq extends AppLocalizations {
       'Identiteti i parë është parazgjedhja për mesazhet e reja. Tërhiqeni për të ndryshuar radhën.';
 
   @override
-  String get settingsIdentitiesFooterSingle => 'Identiteti parazgjedhje për mesazhet e reja.';
+  String get settingsIdentitiesFooterSingle =>
+      'Identiteti parazgjedhje për mesazhet e reja.';
 
   @override
-  String get settingsIdentitiesReplyFooter => 'Një përgjigje dërgohet nga identiteti ku u dërgua mesazhi.';
+  String get settingsIdentitiesReplyFooter =>
+      'Një përgjigje dërgohet nga identiteti ku u dërgua mesazhi.';
 
   @override
   String get settingsIdentityDefault => 'Parazgjedhje';
@@ -3617,7 +3816,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsCopyToMyself => 'Kopje për veten';
 
   @override
-  String get settingsCopyToMyselfFooter => 'Shtohet në çdo mesazh nga ky identitet.';
+  String get settingsCopyToMyselfFooter =>
+      'Shtohet në çdo mesazh nga ky identitet.';
 
   @override
   String get settingsCc => 'Cc';
@@ -3633,7 +3833,8 @@ class AppLocalizationsSq extends AppLocalizations {
       'Përgjigjet ndaj mesazheve të dërguara te këto adresa dërgohen nga ky identitet. * do të thotë çfarëdo: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt => 'Një adresë, ose një model ku * do të thotë çfarëdo.';
+  String get settingsReplyPatternPrompt =>
+      'Një adresë, ose një model ku * do të thotë çfarëdo.';
 
   @override
   String get settingsAddReplyPattern => 'Shto adresë ose model';
@@ -3655,7 +3856,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'S’ka adresë';
 
   @override
-  String get settingsIdentityNoAddressMessage => 'Jepni adresën email nga e cila do të dërgohet.';
+  String get settingsIdentityNoAddressMessage =>
+      'Jepni adresën email nga e cila do të dërgohet.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Adresë e pavlefshme';
@@ -3663,7 +3865,8 @@ class AppLocalizationsSq extends AppLocalizations {
   @override
   String settingsIdentityInvalidAddress(String field, String address) {
     String _temp0 = intl.Intl.selectLogic(field, {
-      'replyTo': '“$address” te “Përgjigju te” s’është adresë email e vlefshme.',
+      'replyTo':
+          '“$address” te “Përgjigju te” s’është adresë email e vlefshme.',
       'cc': '“$address” te Cc s’është adresë email e vlefshme.',
       'bcc': '“$address” te Bcc s’është adresë email e vlefshme.',
       'other': '“$address” s’është adresë email e vlefshme.',
@@ -3686,10 +3889,12 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage => 'Mesazhet e dërguara tashmë prej tij mbeten siç janë.';
+  String get settingsDeleteIdentityMessage =>
+      'Mesazhet e dërguara tashmë prej tij mbeten siç janë.';
 
   @override
-  String get settingsLastIdentityFooter => 'Një llogari ka nevojë për të paktën një identitet.';
+  String get settingsLastIdentityFooter =>
+      'Një llogari ka nevojë për të paktën një identitet.';
 
   @override
   String get rulesTitle => 'Rregullat';
@@ -3761,7 +3966,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get rulesStatusUnavailable => 'Jo i disponueshëm';
 
   @override
-  String get rulesStatusNoSieve => 'Serveri i kësaj llogarie nuk ofron Sieve (ManageSieve ose JMAP).';
+  String get rulesStatusNoSieve =>
+      'Serveri i kësaj llogarie nuk ofron Sieve (ManageSieve ose JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -3843,7 +4049,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get rulesRemovedAccount => 'Llogari e hequr';
 
   @override
-  String get rulesAccountsFooter => 'Një rregull për të gjitha llogaritë mbulon edhe llogaritë që shtoni më vonë.';
+  String get rulesAccountsFooter =>
+      'Një rregull për të gjitha llogaritë mbulon edhe llogaritë që shtoni më vonë.';
 
   @override
   String get rulesActionsHeader => 'Atëherë';
@@ -3905,7 +4112,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get rulesMoveAccountTitle => 'Dosje në cilën llogari?';
 
   @override
-  String get rulesMoveAccountMessage => 'Posta e llogarive të tjera shkon te dosja me të njëjtin emër atje.';
+  String get rulesMoveAccountMessage =>
+      'Posta e llogarive të tjera shkon te dosja me të njëjtin emër atje.';
 
   @override
   String get rulesAddTag => 'Shto etiketë';
@@ -3944,7 +4152,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get rulesChooseActionTitle => 'Zgjidhni një veprim';
 
   @override
-  String get rulesChooseActionMessage => 'Shtoni se çfarë bën rregulli me mesazhet që përputhen.';
+  String get rulesChooseActionMessage =>
+      'Shtoni se çfarë bën rregulli me mesazhet që përputhen.';
 
   @override
   String get rulesSaveError => 'Rregulli nuk u ruajt dot';
@@ -3959,7 +4168,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'S’ka ç’të zbatohet';
 
   @override
-  String get rulesNothingToApplyMessage => 'Jepini fillimisht rregullit një kusht që funksionon dhe një veprim.';
+  String get rulesNothingToApplyMessage =>
+      'Jepini fillimisht rregullit një kusht që funksionon dhe një veprim.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -3991,7 +4201,8 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4005,7 +4216,8 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4019,7 +4231,8 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4061,7 +4274,8 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4075,7 +4289,8 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4104,7 +4319,8 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4197,7 +4413,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get subscriptionsNoNewsletters => 'S’ka buletine';
 
   @override
-  String get subscriptionsNoNewslettersDetail => 'Buletinet dhe posta tjetër masive shfaqen këtu sapo të mbërrijnë.';
+  String get subscriptionsNoNewslettersDetail =>
+      'Buletinet dhe posta tjetër masive shfaqen këtu sapo të mbërrijnë.';
 
   @override
   String get subscriptionsNothingNeverRead => 'S’ka gjë që s’lexohet kurrë';
@@ -4206,7 +4423,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get subscriptionsNothingRarelyRead => 'S’ka gjë që lexohet rrallë';
 
   @override
-  String get subscriptionsNothingFilteredDetail => 'Lexoni pak nga gjithçka që merrni.';
+  String get subscriptionsNothingFilteredDetail =>
+      'Lexoni pak nga gjithçka që merrni.';
 
   @override
   String get subscriptionsNoDiscussions => 'S’ka diskutime';
@@ -4283,10 +4501,15 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Arkivo $countString te Kutia hyrëse');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Arkivo $countString te Kutia hyrëse',
+    );
     return '$_temp0';
   }
 
@@ -4294,13 +4517,15 @@ class AppLocalizationsSq extends AppLocalizations {
   String get subscriptionsCreateRule => 'Krijo rregull…';
 
   @override
-  String get subscriptionsCreateRuleDetail => 'Zhvendos ose arkivo postën e tij të ardhshme';
+  String get subscriptionsCreateRuleDetail =>
+      'Zhvendos ose arkivo postën e tij të ardhshme';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Trajtoje si diskutim';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail => 'Një listë ku shkruajnë njerëz: lexojeni si forum';
+  String get subscriptionsTreatAsDiscussionDetail =>
+      'Një listë ku shkruajnë njerëz: lexojeni si forum';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Trajtoje si buletin';
@@ -4315,7 +4540,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get subscriptionsBlocked => 'I bllokuar';
 
   @override
-  String get subscriptionsBlockedDetail => 'Posta e re shkon te Të padëshiruara';
+  String get subscriptionsBlockedDetail =>
+      'Posta e re shkon te Të padëshiruara';
 
   @override
   String get subscriptionsPin => 'Fiksoje te Kutitë postare';
@@ -4334,7 +4560,8 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4363,9 +4590,12 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString nga $totalString';
@@ -4376,7 +4606,12 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Dosjet', one: 'Dosja');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dosjet',
+      one: 'Dosja',
+    );
     return '$_temp0';
   }
 
@@ -4446,7 +4681,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsWebInsecure => 'Lidhja me këtë sajt s’është e enkriptuar.';
+  String get subscriptionsWebInsecure =>
+      'Lidhja me këtë sajt s’është e enkriptuar.';
 
   @override
   String subscriptionsHomographWarning(String site) {
@@ -4483,7 +4719,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed => 'Lidhja e çabonimit s’është adresë e sigurt në internet.';
+  String get subscriptionsOneClickNotAllowed =>
+      'Lidhja e çabonimit s’është adresë e sigurt në internet.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -4506,7 +4743,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend => 'S’ka llogari nga e cila të dërgohet email-i i çabonimit.';
+  String get subscriptionsNoAccountToSend =>
+      'S’ka llogari nga e cila të dërgohet email-i i çabonimit.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -4539,7 +4777,11 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String subscriptionsMoveToJunk(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Zhvendos $count te Të padëshiruara');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Zhvendos $count te Të padëshiruara',
+    );
     return '$_temp0';
   }
 
@@ -4562,7 +4804,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get appLiveGateTitle => 'Llogaritë tuaja nuk u hapën dot';
 
   @override
-  String get appLiveGateUnavailableBuild => 'Llogaritë e vërteta ende s’janë të disponueshme në këtë version.';
+  String get appLiveGateUnavailableBuild =>
+      'Llogaritë e vërteta ende s’janë të disponueshme në këtë version.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -4610,7 +4853,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get attachmentsShareMenu => 'Ndaj…';
 
   @override
-  String get attachmentsDownloadError => 'Bashkëngjitja nuk u shkarkua dot. Kontrolloni lidhjen dhe provoni sërish.';
+  String get attachmentsDownloadError =>
+      'Bashkëngjitja nuk u shkarkua dot. Kontrolloni lidhjen dhe provoni sërish.';
 
   @override
   String get attachmentsShareError => 'Bashkëngjitja nuk u nda dot.';
@@ -4621,7 +4865,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get attachmentsOpenInError => 'Bashkëngjitja nuk u hap dot në një aplikacion tjetër.';
+  String get attachmentsOpenInError =>
+      'Bashkëngjitja nuk u hap dot në një aplikacion tjetër.';
 
   @override
   String attachmentsSaved(String name) {
@@ -4639,7 +4884,12 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String attachmentsPageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count faqe', one: '1 faqe');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count faqe',
+      one: '1 faqe',
+    );
     return '$_temp0';
   }
 
@@ -4649,7 +4899,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload => 'Kjo bashkëngjitje është e madhe. Shkarkojeni tani, ose më vonë me Wi-Fi.';
+  String get attachmentsLargeDownload =>
+      'Kjo bashkëngjitje është e madhe. Shkarkojeni tani, ose më vonë me Wi-Fi.';
 
   @override
   String get attachmentsDownload => 'Shkarko';
@@ -4671,7 +4922,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get attachmentsPdfUnavailable => 'Ky PDF s’mund të shfaqet këtu (mund të jetë i mbrojtur me fjalëkalim).';
+  String get attachmentsPdfUnavailable =>
+      'Ky PDF s’mund të shfaqet këtu (mund të jetë i mbrojtur me fjalëkalim).';
 
   @override
   String attachmentsPageOf(int page, int count) {
@@ -4698,7 +4950,12 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String attachmentsTextInfo(String charset, int count, String lines) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$lines rreshta', one: '$lines rresht');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$lines rreshta',
+      one: '$lines rresht',
+    );
     return '$charset · $_temp0';
   }
 
@@ -4709,7 +4966,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get attachmentsCopied => 'U kopjua';
 
   @override
-  String get attachmentsImageUnavailable => 'Ky imazh s’mund të shfaqet këtu. Provoni “Hape me…”.';
+  String get attachmentsImageUnavailable =>
+      'Ky imazh s’mund të shfaqet këtu. Provoni “Hape me…”.';
 
   @override
   String get attachmentsEmlNoSubject => '(Pa subjekt)';
@@ -4731,7 +4989,11 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String attachmentsEmlAttachments(int count, String names) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Bashkëngjitje: $names');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Bashkëngjitje: $names',
+    );
     return '$_temp0';
   }
 
@@ -4930,13 +5192,15 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get calendarRefreshUnknown => 'Një pjesëmarrës kërkon versionin më të fundit';
+  String get calendarRefreshUnknown =>
+      'Një pjesëmarrës kërkon versionin më të fundit';
 
   @override
   String get calendarCancelled => 'Anuluar';
 
   @override
-  String get calendarCancelledByOrganizer => 'Organizatori e anuloi këtë ngjarje.';
+  String get calendarCancelledByOrganizer =>
+      'Organizatori e anuloi këtë ngjarje.';
 
   @override
   String get calendarCancelledLater => 'Kjo ngjarje u anulua më vonë.';
@@ -4945,7 +5209,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get calendarOutdated => 'E vjetruar';
 
   @override
-  String get calendarOutdatedDetail => 'Kjo ftesë u përditësua më vonë; vlen ajo më e reja.';
+  String get calendarOutdatedDetail =>
+      'Kjo ftesë u përditësua më vonë; vlen ajo më e reja.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -4989,25 +5254,44 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String calendarGuestCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count të ftuar', one: '1 i ftuar');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count të ftuar',
+      one: '1 i ftuar',
+    );
     return '$_temp0';
   }
 
   @override
   String calendarAcceptedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count pranuan', one: '1 pranoi');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pranuan',
+      one: '1 pranoi',
+    );
     return '$_temp0';
   }
 
   @override
   String calendarMaybeCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ndoshta');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ndoshta',
+    );
     return '$_temp0';
   }
 
   @override
   String calendarDeclinedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count refuzuan', one: '1 refuzoi');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count refuzuan',
+      one: '1 refuzoi',
+    );
     return '$_temp0';
   }
 
@@ -5069,7 +5353,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp => 'S’ka aplikacion kalendari ku të shtohet ngjarja.';
+  String get calendarNoCalendarApp =>
+      'S’ka aplikacion kalendari ku të shtohet ngjarja.';
 
   @override
   String get calendarCantOpenCalendar => 'Kalendari nuk u hap dot.';
@@ -5096,7 +5381,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get calendarJoinHomographUnknown => 'Kujdes: kjo adresë imiton një sajt tjetër me shkronja të ngjashme.';
+  String get calendarJoinHomographUnknown =>
+      'Kujdes: kjo adresë imiton një sajt tjetër me shkronja të ngjashme.';
 
   @override
   String calendarJoinOpen(String host) {
@@ -5104,20 +5390,29 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer => 'Kjo ftesë s’ka organizator të cilit t’i përgjigjeni.';
+  String get calendarNoOrganizer =>
+      'Kjo ftesë s’ka organizator të cilit t’i përgjigjeni.';
 
   @override
   String get calendarNoAccount => 'S’ka llogari nga e cila të përgjigjeni.';
 
   @override
   String calendarReplySending(String answer, String name) {
-    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Pranuar', 'tentative': 'Ndoshta', 'other': 'Refuzuar'});
+    String _temp0 = intl.Intl.selectLogic(answer, {
+      'accepted': 'Pranuar',
+      'tentative': 'Ndoshta',
+      'other': 'Refuzuar',
+    });
     return '$_temp0 · po dërgohet përgjigja te $name…';
   }
 
   @override
   String calendarReplySent(String answer) {
-    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Pranuar', 'tentative': 'Ndoshta', 'other': 'Refuzuar'});
+    String _temp0 = intl.Intl.selectLogic(answer, {
+      'accepted': 'Pranuar',
+      'tentative': 'Ndoshta',
+      'other': 'Refuzuar',
+    });
     return '$_temp0 · përgjigja u dërgua';
   }
 
@@ -5197,7 +5492,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get keyboardKeyBackspace => 'Backspace';
 
   @override
-  String get mailingListsMuted => 'Rrjedha u heshtua. Mesazhet e reja në të vijnë si të lexuara.';
+  String get mailingListsMuted =>
+      'Rrjedha u heshtua. Mesazhet e reja në të vijnë si të lexuara.';
 
   @override
   String get mailingListsUnmuted => 'Rrjedhës iu hoq heshtja.';
@@ -5254,7 +5550,12 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String mailingListsReplyCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count përgjigje', one: '1 përgjigje');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count përgjigje',
+      one: '1 përgjigje',
+    );
     return '$_temp0';
   }
 
@@ -5268,7 +5569,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Listat teknike';
 
   @override
-  String get mailingListsTechnicalEmpty => 'Listat e postimeve shfaqen këtu sapo të mbërrijë posta e tyre.';
+  String get mailingListsTechnicalEmpty =>
+      'Listat e postimeve shfaqen këtu sapo të mbërrijë posta e tyre.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -5431,7 +5733,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get searchSearchingUnknownAccount => 'Po kërkohet në llogari në server…';
+  String get searchSearchingUnknownAccount =>
+      'Po kërkohet në llogari në server…';
 
   @override
   String searchAccountFailed(String account) {
@@ -5439,7 +5742,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get searchUnknownAccountFailed => 'Kërkimi në llogari në server dështoi';
+  String get searchUnknownAccountFailed =>
+      'Kërkimi në llogari në server dështoi';
 
   @override
   String searchChip(String term) {
@@ -5502,7 +5806,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get searchSettingsTitle => 'Smart Mailboxes';
 
   @override
-  String get searchSettingsLocalFooter => 'Smart Mailboxes mbeten në këtë pajisje.';
+  String get searchSettingsLocalFooter =>
+      'Smart Mailboxes mbeten në këtë pajisje.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -5513,13 +5818,15 @@ class AppLocalizationsSq extends AppLocalizations {
   String get searchSyncVia => 'Sinkronizo përmes';
 
   @override
-  String get searchSyncViaFooter => 'Zgjidhni të njëjtën llogari në çdo pajisje.';
+  String get searchSyncViaFooter =>
+      'Zgjidhni të njëjtën llogari në çdo pajisje.';
 
   @override
   String get searchGmailCantKeep => 'Gmail s’mund të mbajë Smart Mailboxes';
 
   @override
-  String get searchKeepOnDevice => 'Mbaji Smart Mailboxes vetëm në këtë pajisje';
+  String get searchKeepOnDevice =>
+      'Mbaji Smart Mailboxes vetëm në këtë pajisje';
 
   @override
   String get searchOnTheServer => 'Në server';
@@ -5568,7 +5875,12 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String sharedBytes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count bajte', one: '1 bajt');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bajte',
+      one: '1 bajt',
+    );
     return '$_temp0';
   }
 
@@ -5786,7 +6098,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount => 'Përzgjidhni mesazhe nga një llogari për t’i zhvendosur.';
+  String get sharedMoveOneAccount =>
+      'Përzgjidhni mesazhe nga një llogari për t’i zhvendosur.';
 
   @override
   String get sharedSnoozeTitle => 'Shtyrje';
@@ -5863,7 +6176,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get accountSetupAddressTitle => 'Shtoni një llogari poste';
 
   @override
-  String get accountSetupAddressText => 'Loupe i gjen cilësimet për shumicën e ofruesve.';
+  String get accountSetupAddressText =>
+      'Loupe i gjen cilësimet për shumicën e ofruesve.';
 
   @override
   String get accountSetupNameHint => 'Emri juaj';
@@ -5892,7 +6206,8 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCheckServers => 'Kontrolloni emrat e serverëve dhe portat.';
+  String get accountSetupCheckServers =>
+      'Kontrolloni emrat e serverëve dhe portat.';
 
   @override
   String get accountSetupEnterPassword => 'Jepni fjalëkalimin tuaj.';
@@ -5949,13 +6264,15 @@ class AppLocalizationsSq extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Përdor një fjalëkalim aplikacioni';
 
   @override
-  String get accountSetupUseAppPasswordInstead => 'Përdor më mirë një fjalëkalim aplikacioni';
+  String get accountSetupUseAppPasswordInstead =>
+      'Përdor më mirë një fjalëkalim aplikacioni';
 
   @override
   String get accountSetupUseDifferentAddress => 'Përdor një adresë tjetër';
 
   @override
-  String get accountSetupHowToCreateAppPassword => 'Si të krijoni një fjalëkalim aplikacioni';
+  String get accountSetupHowToCreateAppPassword =>
+      'Si të krijoni një fjalëkalim aplikacioni';
 
   @override
   String get accountSetupHowToCreateOne => 'Si ta krijoni';
@@ -5985,14 +6302,16 @@ class AppLocalizationsSq extends AppLocalizations {
       'iCloud Mail kërkon një fjalëkalim specifik për aplikacionin, jo fjalëkalimin e llogarisë suaj Apple.';
 
   @override
-  String get accountSetupYahooNote => 'Yahoo Mail kërkon një fjalëkalim aplikacioni, jo fjalëkalimin e llogarisë suaj.';
+  String get accountSetupYahooNote =>
+      'Yahoo Mail kërkon një fjalëkalim aplikacioni, jo fjalëkalimin e llogarisë suaj.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Loupe lidhet me Fastmail përmes JMAP me një token API: Settings › Privacy & Security › Manage API tokens, për JMAP, me qasje te email-i dhe dërgimi.';
 
   @override
-  String get accountSetupFastmailNote => 'Fastmail kërkon një fjalëkalim aplikacioni për aplikacionet e postës.';
+  String get accountSetupFastmailNote =>
+      'Fastmail kërkon një fjalëkalim aplikacioni për aplikacionet e postës.';
 
   @override
   String get accountSetupServerSettings => 'Cilësimet e serverit';
@@ -6074,10 +6393,12 @@ class AppLocalizationsSq extends AppLocalizations {
       'Fjalëkalimi u refuzua. Përdorni një fjalëkalim aplikacioni, jo fjalëkalimin e llogarisë.';
 
   @override
-  String get accountSetupPasswordRejected => 'Fjalëkalimi u refuzua. Kontrollojeni dhe provoni sërish.';
+  String get accountSetupPasswordRejected =>
+      'Fjalëkalimi u refuzua. Kontrollojeni dhe provoni sërish.';
 
   @override
-  String get accountSetupServerUnreachable => 'Serveri s’arrihet. Kontrolloni cilësimet e serverit dhe lidhjen tuaj.';
+  String get accountSetupServerUnreachable =>
+      'Serveri s’arrihet. Kontrolloni cilësimet e serverit dhe lidhjen tuaj.';
 
   @override
   String accountSetupCertificateUntrusted(String details) {
@@ -6151,7 +6472,11 @@ class AppLocalizationsSq extends AppLocalizations {
   String get accountSetupSigningIn => 'Po hyhet…';
 
   @override
-  String accountSetupSignInExpired(String provider, String email, String account) {
+  String accountSetupSignInExpired(
+    String provider,
+    String email,
+    String account,
+  ) {
     return '$provider s’e pranon më hyrjen e Loupe për $email, ndaj $account s’po sinkronizohet. Hyni sërish për të marrë postën e saj.';
   }
 
@@ -6159,7 +6484,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get accountImportTitle => 'Importo nga Thunderbird';
 
   @override
-  String get accountImportPointCamera => 'Drejtojeni kamerën te kodi QR që shfaq Thunderbird.';
+  String get accountImportPointCamera =>
+      'Drejtojeni kamerën te kodi QR që shfaq Thunderbird.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -6168,7 +6494,11 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String accountImportProgressLabel(int scanned, int total) {
-    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: 'U skanuan $scanned nga $total kode');
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'U skanuan $scanned nga $total kode',
+    );
     return '$_temp0';
   }
 
@@ -6212,7 +6542,8 @@ class AppLocalizationsSq extends AppLocalizations {
       'Ky kod është nga një eksport i ri, ndaj kodet e skanuara më parë u lanë mënjanë.';
 
   @override
-  String get accountImportNotThunderbird => 'Ky s’është kod llogarie Thunderbird.';
+  String get accountImportNotThunderbird =>
+      'Ky s’është kod llogarie Thunderbird.';
 
   @override
   String get accountImportNewerVersion =>
@@ -6222,7 +6553,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get accountImportDamaged => 'Ky kod Thunderbird nuk u lexua dot.';
 
   @override
-  String get accountImportTooLarge => 'Ky kod është shumë i madh për të qenë eksport Thunderbird.';
+  String get accountImportTooLarge =>
+      'Ky kod është shumë i madh për të qenë eksport Thunderbird.';
 
   @override
   String get accountImportCouldNotOpenSettings => 'Cilësimet nuk u hapën dot.';
@@ -6238,13 +6570,15 @@ class AppLocalizationsSq extends AppLocalizations {
   String get accountImportNoCameraTitle => 'S’ka kamerë';
 
   @override
-  String get accountImportNoCameraText => 'Loupe s’mund të përdorë kamerë këtu. Ngjitni tekstin e kodit.';
+  String get accountImportNoCameraText =>
+      'Loupe s’mund të përdorë kamerë këtu. Ngjitni tekstin e kodit.';
 
   @override
   String get accountImportCameraFailedTitle => 'Kamera nuk u nis';
 
   @override
-  String get accountImportCameraFailedText => 'Provoni sërish, ose ngjitni tekstin e kodit.';
+  String get accountImportCameraFailedText =>
+      'Provoni sërish, ose ngjitni tekstin e kodit.';
 
   @override
   String get accountImportOpenSettings => 'Hap cilësimet';
@@ -6262,18 +6596,22 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable => 'Asnjë nga llogaritë në këto kode nuk u lexua dot.';
+  String get accountImportNoneReadable =>
+      'Asnjë nga llogaritë në këto kode nuk u lexua dot.';
 
   @override
-  String get accountImportChoose => 'Zgjidhni llogaritë që do të shtohen në Loupe.';
+  String get accountImportChoose =>
+      'Zgjidhni llogaritë që do të shtohen në Loupe.';
 
   @override
   String accountImportMissingCodes(int count, String codes, int total) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Kodet $codes nga $total nuk u skanuan, ndaj llogaritë e tyre nuk shfaqen.',
-      one: 'Kodi $codes nga $total nuk u skanua, ndaj llogaritë e tij nuk shfaqen.',
+      other:
+          'Kodet $codes nga $total nuk u skanuan, ndaj llogaritë e tyre nuk shfaqen.',
+      one:
+          'Kodi $codes nga $total nuk u skanua, ndaj llogaritë e tij nuk shfaqen.',
     );
     return '$_temp0';
   }
@@ -6291,7 +6629,8 @@ class AppLocalizationsSq extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count llogari në kode nuk u lexuan dot. Mund të përdorin cilësime nga një Thunderbird më i ri.',
+      other:
+          '$count llogari në kode nuk u lexuan dot. Mund të përdorin cilësime nga një Thunderbird më i ri.',
       one: '1 llogari në kode nuk u lexua dot. Mund të përdorë cilësime nga një Thunderbird më i ri.',
     );
     return '$_temp0';
@@ -6301,7 +6640,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get accountImportScanAgain => 'Skano sërish';
 
   @override
-  String get accountImportAlreadyAdded => 'Një llogari me këtë adresë është tashmë në Loupe.';
+  String get accountImportAlreadyAdded =>
+      'Një llogari me këtë adresë është tashmë në Loupe.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -6321,7 +6661,8 @@ class AppLocalizationsSq extends AppLocalizations {
       'Thunderbird hyn në këtë llogari përmes shfletuesit. Loupe s’e bën dot ende këtë: përdorni një fjalëkalim aplikacioni, nëse e ofron ofruesi juaj.';
 
   @override
-  String get accountImportUnencrypted => 'Lidhet pa enkriptim. Përdoreni vetëm në rrjetin tuaj.';
+  String get accountImportUnencrypted =>
+      'Lidhet pa enkriptim. Përdoreni vetëm në rrjetin tuaj.';
 
   @override
   String get accountImportEnterAgain => 'Jepeni sërish';
@@ -6350,16 +6691,20 @@ class AppLocalizationsSq extends AppLocalizations {
   String get accountImportPasteTitle => 'Ngjitni tekstin e eksportit';
 
   @override
-  String get accountImportPasteText => 'Ngjitni tekstin e një kodi eksporti Thunderbird, një kod për rresht.';
+  String get accountImportPasteText =>
+      'Ngjitni tekstin e një kodi eksporti Thunderbird, një kod për rresht.';
 
   @override
-  String get accountImportPop3 => 'Llogaritë POP3 nuk mbulohen. Loupe e mban postën në server me IMAP.';
+  String get accountImportPop3 =>
+      'Llogaritë POP3 nuk mbulohen. Loupe e mban postën në server me IMAP.';
 
   @override
-  String get accountImportKerberos => 'Kjo llogari hyn me Kerberos, që Loupe nuk e mbulon.';
+  String get accountImportKerberos =>
+      'Kjo llogari hyn me Kerberos, që Loupe nuk e mbulon.';
 
   @override
-  String get accountImportNtlm => 'Kjo llogari hyn me NTLM, që Loupe nuk e mbulon.';
+  String get accountImportNtlm =>
+      'Kjo llogari hyn me NTLM, që Loupe nuk e mbulon.';
 
   @override
   String get accountImportClientCertificate =>
@@ -6373,16 +6718,19 @@ class AppLocalizationsSq extends AppLocalizations {
   String get accountImportEnterPassword => 'Jepni fjalëkalimin.';
 
   @override
-  String get accountImportEnterAppPassword => 'Jepni fjalëkalimin e aplikacionit.';
+  String get accountImportEnterAppPassword =>
+      'Jepni fjalëkalimin e aplikacionit.';
 
   @override
   String get accountImportEnterApiToken => 'Jepni token-in API.';
 
   @override
-  String get accountImportStorageFailed => 'Loupe nuk e hapi dot depon e vet të llogarive. Provoni sërish më vonë.';
+  String get accountImportStorageFailed =>
+      'Loupe nuk e hapi dot depon e vet të llogarive. Provoni sërish më vonë.';
 
   @override
-  String get accountImportFailed => 'Llogaria nuk u shtua dot. Provoni sërish, ose shtojeni dorazi.';
+  String get accountImportFailed =>
+      'Llogaria nuk u shtua dot. Provoni sërish, ose shtojeni dorazi.';
 
   @override
   String get composeNewMessageTitle => 'Mesazh i ri';
@@ -6480,7 +6828,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get composeDraftNotFound => 'Skica nuk u gjet.';
 
   @override
-  String get composeAttachmentsLost => 'Bashkëngjitjet nuk u rikthyen dot. Shtojini sërish.';
+  String get composeAttachmentsLost =>
+      'Bashkëngjitjet nuk u rikthyen dot. Shtojini sërish.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -6507,10 +6856,12 @@ class AppLocalizationsSq extends AppLocalizations {
   String get composeNoSubjectTitle => 'Pa subjekt';
 
   @override
-  String get composeNoSubjectText => 'Ky mesazh s’ka subjekt. Të dërgohet sidoqoftë?';
+  String get composeNoSubjectText =>
+      'Ky mesazh s’ka subjekt. Të dërgohet sidoqoftë?';
 
   @override
-  String get composeSentBeforeChanges => 'U dërgua përpara ndryshimeve tuaja, të cilat janë ruajtur te Skica.';
+  String get composeSentBeforeChanges =>
+      'U dërgua përpara ndryshimeve tuaja, të cilat janë ruajtur te Skica.';
 
   @override
   String composeScheduled(String time) {
@@ -6635,17 +6986,23 @@ class AppLocalizationsSq extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Një mesazh nuk u dërgua kur u mbyll Loupe.',
       'one': 'Një mesazh për $name nuk u dërgua kur u mbyll Loupe.',
-      'other': 'Një mesazh për $name dhe të tjerë nuk u dërgua kur u mbyll Loupe.',
+      'other':
+          'Një mesazh për $name dhe të tjerë nuk u dërgua kur u mbyll Loupe.',
     });
     return '$_temp0';
   }
 
   @override
-  String composeRecoveryWithSubject(String recipients, String subject, String name) {
+  String composeRecoveryWithSubject(
+    String recipients,
+    String subject,
+    String name,
+  ) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': '“$subject” nuk u dërgua kur u mbyll Loupe.',
       'one': '“$subject” për $name nuk u dërgua kur u mbyll Loupe.',
-      'other': '“$subject” për $name dhe të tjerë nuk u dërgua kur u mbyll Loupe.',
+      'other':
+          '“$subject” për $name dhe të tjerë nuk u dërgua kur u mbyll Loupe.',
     });
     return '$_temp0';
   }
@@ -6693,7 +7050,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get outboxEmptyTitle => 'S’ka gjë për të dërguar';
 
   @override
-  String get outboxEmptyText => 'Mesazhet që i dërgoni më vonë presin këtu deri në kohën e tyre.';
+  String get outboxEmptyText =>
+      'Mesazhet që i dërgoni më vonë presin këtu deri në kohën e tyre.';
 
   @override
   String get outboxSendNow => 'Dërgo tani';
@@ -6740,7 +7098,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get outboxBeingSent => 'Ky mesazh po dërgohet.';
 
   @override
-  String get outboxActionFailed => 'Kjo nuk funksionoi. Mesazhi është ende te Kutia dalëse.';
+  String get outboxActionFailed =>
+      'Kjo nuk funksionoi. Mesazhi është ende te Kutia dalëse.';
 
   @override
   String get notificationsBadgeInboxes => 'Të palexuara te kutitë hyrëse';
@@ -6752,7 +7111,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription => 'Postë e re nga VIP-at tuaj, në çdo llogari';
+  String get notificationsVipChannelDescription =>
+      'Postë e re nga VIP-at tuaj, në çdo llogari';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -6793,7 +7153,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get platformInstantChannel => 'Dorëzim i menjëhershëm';
 
   @override
-  String get platformInstantChannelDescription => 'Shfaqet ndërsa Loupe i vëzhgon kutitë tuaja hyrëse për postë të re';
+  String get platformInstantChannelDescription =>
+      'Shfaqet ndërsa Loupe i vëzhgon kutitë tuaja hyrëse për postë të re';
 
   @override
   String get platformInstantTitle => 'Në pritje të postës së re';
@@ -6802,28 +7163,33 @@ class AppLocalizationsSq extends AppLocalizations {
   String get platformInstantText => 'Dorëzimi i menjëhershëm është aktiv';
 
   @override
-  String get platformErrorBox => 'Diçka shkoi keq gjatë shfaqjes. Kthehuni prapa dhe provoni sërish.';
+  String get platformErrorBox =>
+      'Diçka shkoi keq gjatë shfaqjes. Kthehuni prapa dhe provoni sërish.';
 
   @override
-  String get welcomeTagline => 'Postë e thjeshtë në sipërfaqe\ndhe e fuqishme në thellësi.';
+  String get welcomeTagline =>
+      'Postë e thjeshtë në sipërfaqe\ndhe e fuqishme në thellësi.';
 
   @override
   String get welcomeAccountsTitle => 'Çdo llogari, një kuti hyrëse e qetë';
 
   @override
-  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail dhe çdo server IMAP ose JMAP.';
+  String get welcomeAccountsText =>
+      'Gmail, Outlook, iCloud, Fastmail dhe çdo server IMAP ose JMAP.';
 
   @override
   String get welcomeSearchTitle => 'Kërkim që e gjen';
 
   @override
-  String get welcomeSearchText => 'Përfundime të menjëhershme në telefon, pastaj ato të serverit.';
+  String get welcomeSearchText =>
+      'Përfundime të menjëhershme në telefon, pastaj ato të serverit.';
 
   @override
   String get welcomePrivacyTitle => 'Privat që nga projektimi';
 
   @override
-  String get welcomePrivacyText => 'Pa gjurmim. Imazhet e largëta mbeten të bllokuara derisa ta vendosni ju.';
+  String get welcomePrivacyText =>
+      'Pa gjurmim. Imazhet e largëta mbeten të bllokuara derisa ta vendosni ju.';
 
   @override
   String get welcomeAddAccount => 'Shto llogari';
@@ -6853,7 +7219,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get searchAskFailed => 'Loupe nuk mundi ta kthente këtë në kërkim.';
 
   @override
-  String get searchAskDemoNote => 'Përkthyer nga demonstrimi i integruar, jo nga një model.';
+  String get searchAskDemoNote =>
+      'Përkthyer nga demonstrimi i integruar, jo nga një model.';
 
   @override
   String get settingsAiHeader => 'IA private';
@@ -6877,7 +7244,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsAiDemo => 'Demo i integruar';
 
   @override
-  String get settingsAiDemoDetail => 'Në këtë telefon. Pa model: disa rregulla, për të provuar funksionet.';
+  String get settingsAiDemoDetail =>
+      'Në këtë telefon. Pa model: disa rregulla, për të provuar funksionet.';
 
   @override
   String get settingsAiAnthropicDetail => 'Re: Claude, me çelësin tuaj API.';
@@ -6893,7 +7261,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsAiOnPhone => 'Në këtë telefon';
 
   @override
-  String get settingsAiOnPhoneDetail => 'Ende jo i disponueshëm: modeli në pajisje po testohet ende në telefona.';
+  String get settingsAiOnPhoneDetail =>
+      'Ende jo i disponueshëm: modeli në pajisje po testohet ende në telefona.';
 
   @override
   String get settingsAiNotSetUp => 'I pakonfiguruar';
@@ -6944,13 +7313,15 @@ class AppLocalizationsSq extends AppLocalizations {
       'Deri te shtegu i API-së përfshirë, për shembull http://192.168.1.20:11434/v1 për Ollama.';
 
   @override
-  String get settingsAiServerAddressInvalid => 'Kjo nuk është adresë http:// ose https://.';
+  String get settingsAiServerAddressInvalid =>
+      'Kjo nuk është adresë http:// ose https://.';
 
   @override
   String get settingsAiServerModelTitle => 'Emri i modelit';
 
   @override
-  String get settingsAiServerModelMessage => 'Siç e quan serveri juaj, për shembull llama3.2.';
+  String get settingsAiServerModelMessage =>
+      'Siç e quan serveri juaj, për shembull llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Testo lidhjen';
@@ -6967,7 +7338,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsAiTestFailed => 'Testi dështoi';
 
   @override
-  String get settingsAiTestInvalid => 'Modeli u përgjigj, por jo në formën që kërkoi Loupe.';
+  String get settingsAiTestInvalid =>
+      'Modeli u përgjigj, por jo në formën që kërkoi Loupe.';
 
   @override
   String get settingsAiRemoveKey => 'Hiq çelësin';
@@ -6990,7 +7362,8 @@ class AppLocalizationsSq extends AppLocalizations {
       'Loupe harron adresën dhe modelin e tij, fshin çelësin e tij nga depoja e çelësave e këtij telefoni dhe nuk i dërgon më kërkesa. Nuk kalon te një ofrues tjetër.';
 
   @override
-  String get settingsAiAnthropicRetention => 'Ruajtja e të dhënave nga Anthropic';
+  String get settingsAiAnthropicRetention =>
+      'Ruajtja e të dhënave nga Anthropic';
 
   @override
   String get settingsAiDemoDisclosure =>
@@ -7012,7 +7385,8 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsAiFeaturesHeader => 'Funksionet';
 
   @override
-  String get settingsAiFeaturesFooter => 'Një funksion i çaktivizuar nuk shfaq pjesë me IA dhe nuk pyet asnjë model.';
+  String get settingsAiFeaturesFooter =>
+      'Një funksion i çaktivizuar nuk shfaq pjesë me IA dhe nuk pyet asnjë model.';
 
   @override
   String get settingsAiFeatureBrief => 'Shkurt';
@@ -7036,29 +7410,36 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Gjendja e çështjes';
 
   @override
-  String get settingsAiFeatureSearchDetail => 'Në kërkim: një fjali bëhet kërkim që mund ta kontrolloni.';
+  String get settingsAiFeatureSearchDetail =>
+      'Në kërkim: një fjali bëhet kërkim që mund ta kontrolloni.';
 
   @override
-  String get settingsAiFeatureBriefDetail => 'Në një mesazh: çfarë ju kërkon, me pasazhet.';
+  String get settingsAiFeatureBriefDetail =>
+      'Në një mesazh: çfarë ju kërkon, me pasazhet.';
 
   @override
-  String get settingsAiFeatureActionsDetail => 'Propozon elemente për “Më presin mua” dhe “Presin të tjerët”.';
+  String get settingsAiFeatureActionsDetail =>
+      'Propozon elemente për “Më presin mua” dhe “Presin të tjerët”.';
 
   @override
   String get settingsAiFeatureRulesDetail =>
       'Te Rregullat: një përshkrim bëhet rregull që e kontrolloni para se ta ruani.';
 
   @override
-  String get settingsAiFeatureChangesDetail => 'Te Krahaso mesazhet: çfarë ndryshoi në kuptim, me burime.';
+  String get settingsAiFeatureChangesDetail =>
+      'Te Krahaso mesazhet: çfarë ndryshoi në kuptim, me burime.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail => 'Faktet kryesore të dokumenteve të bashkëngjitura, me faqet e tyre.';
+  String get settingsAiFeatureDocumentsDetail =>
+      'Faktet kryesore të dokumenteve të bashkëngjitura, me faqet e tyre.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail => 'Para dërgimit: çfarë mund t’i ketë shpëtuar një përgjigjeje.';
+  String get settingsAiFeatureReplyCheckDetail =>
+      'Para dërgimit: çfarë mund t’i ketë shpëtuar një përgjigjeje.';
 
   @override
-  String get settingsAiFeatureMattersDetail => 'Gjendja më e fundit e një çështjeje, nga posta e saj.';
+  String get settingsAiFeatureMattersDetail =>
+      'Gjendja më e fundit e një çështjeje, nga posta e saj.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Mbaje postën në telefon';
@@ -7084,7 +7465,12 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String settingsAiUsageRequests(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count kërkesa', one: '1 kërkesë');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kërkesa',
+      one: '1 kërkesë',
+    );
     return '$_temp0';
   }
 

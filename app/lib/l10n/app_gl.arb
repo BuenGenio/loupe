@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "A autoridade de certificación respondeu {status}.",
   "smimeAuthorityAnswerTooLarge": "A resposta da autoridade de certificación é demasiado grande.",
   "smimeRevocationNotChecked": "Non comprobado: só se comproban os certificados de autoridades nas que Loupe confía.",
+  "actionsNeedsMyAction": "Require a miña acción",
+  "actionsWaitingOnOthers": "Á espera doutros",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "O servidor avisa ao momento do correo novo na caixa de entrada, a través dunha conexión que Loupe mantén aberta. Desactivado, Loupe comproba o correo cada poucos minutos e usa unha conexión menos.",
   "settingsPasswordUnchanged": "Sen cambios",

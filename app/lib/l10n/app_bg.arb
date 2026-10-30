@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Сертифициращият орган отговори с {status}.",
   "smimeAuthorityAnswerTooLarge": "Отговорът на сертифициращия орган е твърде голям.",
   "smimeRevocationNotChecked": "Не е проверено: проверяват се само сертификати от органи, на които Loupe има доверие.",
+  "actionsNeedsMyAction": "Изисква действие от мен",
+  "actionsWaitingOnOthers": "Очаквам от други",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Сървърът съобщава веднага за нова поща във „Входящи“ чрез връзка, която Loupe държи отворена. Когато е изключено, Loupe проверява на всеки няколко минути и използва една връзка по-малко.",
   "settingsPasswordUnchanged": "Без промяна",

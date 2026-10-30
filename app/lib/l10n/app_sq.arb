@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Autoriteti i certifikatave u përgjigj me {status}.",
   "smimeAuthorityAnswerTooLarge": "Përgjigjja e autoritetit të certifikatave është shumë e madhe.",
   "smimeRevocationNotChecked": "S’u kontrollua: kontrollohen vetëm certifikatat nga autoritete që Loupe u beson.",
+  "actionsNeedsMyAction": "Kërkon veprimin tim",
+  "actionsWaitingOnOthers": "Në pritje të të tjerëve",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Serveri njofton menjëherë për postë të re në Kutinë hyrëse, përmes një lidhjeje që Loupe e mban të hapur. Kur është çaktivizuar, Loupe kontrollon çdo disa minuta dhe përdor një lidhje më pak.",
   "settingsPasswordUnchanged": "Pa ndryshim",

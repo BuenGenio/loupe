@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Sertifikatutstederen svarte {status}.",
   "smimeAuthorityAnswerTooLarge": "Svaret fra sertifikatutstederen er for stort.",
   "smimeRevocationNotChecked": "Ikke sjekket: bare sertifikater fra en utsteder Loupe stoler på, blir sjekket.",
+  "actionsNeedsMyAction": "Krever handling fra meg",
+  "actionsWaitingOnOthers": "Venter på andre",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Tjeneren melder ny e-post i innboksen med en gang, over en tilkobling Loupe holder åpen. Av: Loupe sjekker med noen minutters mellomrom og bruker én tilkobling mindre.",
   "settingsPasswordUnchanged": "Uendret",

@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "L-awtorità taċ-ċertifikazzjoni wieġbet {status}.",
   "smimeAuthorityAnswerTooLarge": "It-tweġiba tal-awtorità taċ-ċertifikazzjoni hija kbira wisq.",
   "smimeRevocationNotChecked": "Mhux iċċekkjat: jiġu ċċekkjati biss ċertifikati minn awtorità li Loupe tafda.",
+  "actionsNeedsMyAction": "Jeħtieġ azzjoni minni",
+  "actionsWaitingOnOthers": "Qed nistenna lil ħaddieħor",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Is-server jgħarraf mill-ewwel bil-posta l-ġdida fl-Inbox, permezz ta’ konnessjoni li Loupe iżomm miftuħa. Mitfi, Loupe jiċċekkja kull ftit minuti u juża konnessjoni waħda inqas.",
   "settingsPasswordUnchanged": "Bla bidla",

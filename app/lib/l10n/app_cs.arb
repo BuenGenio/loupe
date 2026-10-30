@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Certifikační autorita odpověděla kódem {status}.",
   "smimeAuthorityAnswerTooLarge": "Odpověď certifikační autority je příliš velká.",
   "smimeRevocationNotChecked": "Nezkontrolováno: kontrolují se jen certifikáty od autorit, kterým Loupe důvěřuje.",
+  "actionsNeedsMyAction": "Vyžaduje mou akci",
+  "actionsWaitingOnOthers": "Čekám na ostatní",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Server hned hlásí novou poštu v Doručené poště přes spojení, které Loupe udržuje otevřené. Když je vypnuto, Loupe kontroluje poštu každých pár minut a používá o jedno spojení méně.",
   "settingsPasswordUnchanged": "Beze změny",

@@ -198,10 +198,12 @@ class AppLocalizationsMt extends AppLocalizations {
       'Dan il-messaġġ huwa kbir wisq għal tqabbil dettaljat. Xi test jista’ jitħalla barra jew jintwera bħala blokka sħiħa.';
 
   @override
-  String get conversationChangesLoadError => 'Ma setgħux jitqabblu dawn il-messaġġi.';
+  String get conversationChangesLoadError =>
+      'Ma setgħux jitqabblu dawn il-messaġġi.';
 
   @override
-  String get conversationSomethingWentWrong => 'Xi ħaġa marret ħażin. Erġa’ pprova.';
+  String get conversationSomethingWentWrong =>
+      'Xi ħaġa marret ħażin. Erġa’ pprova.';
 
   @override
   String get conversationReplyToList => 'Wieġeb lil-lista';
@@ -210,7 +212,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get conversationReplyList => 'Wieġeb lil-lista';
 
   @override
-  String get conversationThreadMuted => 'It-thread ġie msikket. Il-messaġġi l-ġodda fih jaslu diġà moqrija.';
+  String get conversationThreadMuted =>
+      'It-thread ġie msikket. Il-messaġġi l-ġodda fih jaslu diġà moqrija.';
 
   @override
   String get conversationThreadUnmuted => 'It-thread m’għadux imsikket.';
@@ -237,7 +240,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get conversationTrash => 'Skart';
 
   @override
-  String get conversationReplyHint => 'Agħfas fit-tul għal Wieġeb lil kulħadd u Għaddi';
+  String get conversationReplyHint =>
+      'Agħfas fit-tul għal Wieġeb lil kulħadd u Għaddi';
 
   @override
   String get conversationOfflineTitle => 'Int offline';
@@ -311,7 +315,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get conversationBodyError => 'Dan il-messaġġ ma setax jitgħabba.';
 
   @override
-  String get conversationBodyOffline => 'Int offline. Il-messaġġ jitgħabba meta terġa’ tkun online.';
+  String get conversationBodyOffline =>
+      'Int offline. Il-messaġġ jitgħabba meta terġa’ tkun online.';
 
   @override
   String get conversationOriginalHint => 'Jidher aħjar fil-veduta Oriġinali';
@@ -440,7 +445,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get conversationMoveTo => 'Ċaqlaq għal…';
 
   @override
-  String get conversationMailboxesError => 'Il-mailboxes ma setgħux jitgħabbew.';
+  String get conversationMailboxesError =>
+      'Il-mailboxes ma setgħux jitgħabbew.';
 
   @override
   String get conversationReaderReadable => 'Leġġibbli';
@@ -493,7 +499,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get conversationSecurityBadgeHint => 'Juri għaliex';
 
   @override
-  String get conversationPhishingBannerTitle => 'Dan il-messaġġ jidher li hu phishing';
+  String get conversationPhishingBannerTitle =>
+      'Dan il-messaġġ jidher li hu phishing';
 
   @override
   String conversationPhishingBannerReason(String reason) {
@@ -501,7 +508,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get conversationPhishingBannerText => 'Il-links u l-istampi huma mitfija.';
+  String get conversationPhishingBannerText =>
+      'Il-links u l-istampi huma mitfija.';
 
   @override
   String get conversationPhishingWhy => 'Għaliex?';
@@ -513,23 +521,28 @@ class AppLocalizationsMt extends AppLocalizations {
   String get conversationSecurityPhishingTitle => 'Dan jidher li hu phishing';
 
   @override
-  String get conversationSecurityPhishingText => 'Diversi sinjali juru li dan il-messaġġ mhuwiex dak li jgħid li hu.';
+  String get conversationSecurityPhishingText =>
+      'Diversi sinjali juru li dan il-messaġġ mhuwiex dak li jgħid li hu.';
 
   @override
-  String get conversationSecurityCarefulTitle => 'Oqgħod attent b’dan il-messaġġ';
+  String get conversationSecurityCarefulTitle =>
+      'Oqgħod attent b’dan il-messaġġ';
 
   @override
-  String get conversationSecurityCarefulText => 'Hemm xi ħaġa fih li jistħoqqilha ħarsa oħra.';
+  String get conversationSecurityCarefulText =>
+      'Hemm xi ħaġa fih li jistħoqqilha ħarsa oħra.';
 
   @override
-  String get conversationSecurityVerifiedText => 'Il-mittent huwa vverifikat u xejn ma jidher suspettuż.';
+  String get conversationSecurityVerifiedText =>
+      'Il-mittent huwa vverifikat u xejn ma jidher suspettuż.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Xejn ma jidher suspettuż. Is-server tal-imejl tiegħek ma qalx jekk il-mittent huwiex ivverifikat.';
 
   @override
-  String get conversationSecurityNothingSuspicious => 'Xejn ma jidher suspettuż.';
+  String get conversationSecurityNothingSuspicious =>
+      'Xejn ma jidher suspettuż.';
 
   @override
   String get conversationSecurityWhy => 'Għaliex';
@@ -555,7 +568,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityTrackingPixelsText => 'Kienu jgħidu lill-mittent meta ftaħt dan il-messaġġ.';
+  String get conversationSecurityTrackingPixelsText =>
+      'Kienu jgħidu lill-mittent meta ftaħt dan il-messaġġ.';
 
   @override
   String get conversationSecurityNoRemoteImages => 'L-ebda stampa remota';
@@ -604,7 +618,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Dettalji tekniċi';
 
   @override
-  String get conversationSecurityCheckedLocally => 'Iċċekkjat fuq dan l-apparat. Xejn ma ntbagħat x’imkien.';
+  String get conversationSecurityCheckedLocally =>
+      'Iċċekkjat fuq dan l-apparat. Xejn ma ntbagħat x’imkien.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Trackers';
@@ -675,7 +690,8 @@ class AppLocalizationsMt extends AppLocalizations {
       'Tagħmel xejn fuqu jekk ma kontx qed tistennieh. Jekk għandek xi dubju, ikkuntattja lill-mittent b’mod ieħor.';
 
   @override
-  String get conversationSecurityAuthUnalignedTitle => 'Iffirmat minn dominju ieħor';
+  String get conversationSecurityAuthUnalignedTitle =>
+      'Iffirmat minn dominju ieħor';
 
   @override
   String conversationSecurityAuthUnalignedText(String signer, String domain) {
@@ -688,7 +704,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle => 'L-isem juri indirizz ieħor';
+  String get conversationSecurityNameShowsAddressTitle =>
+      'L-isem juri indirizz ieħor';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -696,10 +713,12 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice => 'Afda fl-indirizz, mhux fl-isem.';
+  String get conversationSecurityNameShowsAddressAdvice =>
+      'Afda fl-indirizz, mhux fl-isem.';
 
   @override
-  String get conversationSecurityReplyToTitle => 'It-tweġibiet imorru x’imkien ieħor';
+  String get conversationSecurityReplyToTitle =>
+      'It-tweġibiet imorru x’imkien ieħor';
 
   @override
   String conversationSecurityReplyToText(String address, String domain) {
@@ -707,13 +726,15 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityReplyToAdvice => 'Iċċekkja l-indirizz qabel ma twieġeb b’xi ħaġa personali.';
+  String get conversationSecurityReplyToAdvice =>
+      'Iċċekkja l-indirizz qabel ma twieġeb b’xi ħaġa personali.';
 
   @override
   String get conversationSecurityImpersonationYouTitle => 'Juża ismek';
 
   @override
-  String get conversationSecurityImpersonationTitle => 'Juża l-isem ta’ xi ħadd li taf';
+  String get conversationSecurityImpersonationTitle =>
+      'Juża l-isem ta’ xi ħadd li taf';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -721,12 +742,22 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationVipText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Huwa ffirmat “$name”, bħall-VIP tiegħek $knownName ($knownEmail), iżda ġej minn indirizz ġdid: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Huwa ffirmat “$name”, bħal $knownName ($knownEmail), iżda ġej minn indirizz ġdid: $email.';
   }
 
@@ -749,7 +780,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle => 'L-ewwel messaġġ minn dan il-mittent';
+  String get conversationSecurityFirstTimeTitle =>
+      'L-ewwel messaġġ minn dan il-mittent';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -757,10 +789,12 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeAdvice => 'Oqgħod attent għal talbiet minn nies li għadek ma tafx.';
+  String get conversationSecurityFirstTimeAdvice =>
+      'Oqgħod attent għal talbiet minn nies li għadek ma tafx.';
 
   @override
-  String get conversationSecuritySenderHomographTitle => 'Ittri qarrieqa fl-indirizz tal-mittent';
+  String get conversationSecuritySenderHomographTitle =>
+      'Ittri qarrieqa fl-indirizz tal-mittent';
 
   @override
   String get conversationSecurityLinkHomographTitle => 'Ittri qarrieqa f’link';
@@ -776,7 +810,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice => 'Ħassru jew irrapportah bħala spam.';
+  String get conversationSecuritySenderHomographAdvice =>
+      'Ħassru jew irrapportah bħala spam.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Tiftħux.';
@@ -787,10 +822,12 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLookalikeTitle => 'Dominju li jixbah lil ieħor';
+  String get conversationSecurityLookalikeTitle =>
+      'Dominju li jixbah lil ieħor';
 
   @override
-  String get conversationSecurityFamiliarNameTitle => 'Juża isem familjari fid-dominju tiegħu';
+  String get conversationSecurityFamiliarNameTitle =>
+      'Juża isem familjari fid-dominju tiegħu';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -798,7 +835,11 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(String domain, String brand, String real) {
+  String conversationSecurityLookalikeText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return '$domain jixbah lil $brand ($real), iżda huwa dominju differenti.';
   }
 
@@ -808,7 +849,11 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
+  String conversationSecurityFamiliarNameText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return '$domain juża l-isem ta’ $brand ($real), iżda mhuwiex tagħhom.';
   }
 
@@ -861,7 +906,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle => 'Id-destinazzjoni ta’ link ma tistax tiġi ċċekkjata';
+  String get conversationSecurityLinkUncheckableTitle =>
+      'Id-destinazzjoni ta’ link ma tistax tiġi ċċekkjata';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -869,7 +915,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle => 'Link jipponta lejn indirizz IP biss';
+  String get conversationSecurityIpAddressTitle =>
+      'Link jipponta lejn indirizz IP biss';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -885,7 +932,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityDataLinkTitle => 'Paġna moħbija ġiet diżattivata';
+  String get conversationSecurityDataLinkTitle =>
+      'Paġna moħbija ġiet diżattivata';
 
   @override
   String get conversationSecurityDataLinkText =>
@@ -895,16 +943,20 @@ class AppLocalizationsMt extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Jitlob password';
 
   @override
-  String get conversationSecurityPasswordFieldText => 'Il-messaġġ kien fih qasam tal-password. Loupe neħħietu.';
+  String get conversationSecurityPasswordFieldText =>
+      'Il-messaġġ kien fih qasam tal-password. Loupe neħħietu.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice => 'Qatt tikteb password f’imejl.';
+  String get conversationSecurityPasswordFieldAdvice =>
+      'Qatt tikteb password f’imejl.';
 
   @override
-  String get conversationSecurityScriptLinkTitle => 'Link li jħaddem kodiċi ġie diżattivat';
+  String get conversationSecurityScriptLinkTitle =>
+      'Link li jħaddem kodiċi ġie diżattivat';
 
   @override
-  String get conversationSecurityScriptLinkText => 'Loupe qatt ma tħaddem kodiċi mill-messaġġi.';
+  String get conversationSecurityScriptLinkText =>
+      'Loupe qatt ma tħaddem kodiċi mill-messaġġi.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -926,7 +978,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityInternationalTitle => 'Indirizz web internazzjonali';
+  String get conversationSecurityInternationalTitle =>
+      'Indirizz web internazzjonali';
 
   @override
   String conversationSecurityInternationalText(String hosts) {
@@ -941,12 +994,16 @@ class AppLocalizationsMt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Tneħħew $count karattru ta’ test inviżibbli. Test moħbi bħal dan isir biex iqarraq bil-filtri tal-ispam.',
+      other:
+          'Tneħħew $count karattru ta’ test inviżibbli. Test moħbi bħal dan isir biex iqarraq bil-filtri tal-ispam.',
       many:
           'Tneħħew $count-il karattru ta’ test inviżibbli. Test moħbi bħal dan isir biex iqarraq bil-filtri tal-ispam.',
-      few: 'Tneħħew $count karattri ta’ test inviżibbli. Test moħbi bħal dan isir biex iqarraq bil-filtri tal-ispam.',
-      two: 'Tneħħew $count karattri ta’ test inviżibbli. Test moħbi bħal dan isir biex iqarraq bil-filtri tal-ispam.',
-      one: 'Tneħħa $count karattru ta’ test inviżibbli. Test moħbi bħal dan isir biex iqarraq bil-filtri tal-ispam.',
+      few:
+          'Tneħħew $count karattri ta’ test inviżibbli. Test moħbi bħal dan isir biex iqarraq bil-filtri tal-ispam.',
+      two:
+          'Tneħħew $count karattri ta’ test inviżibbli. Test moħbi bħal dan isir biex iqarraq bil-filtri tal-ispam.',
+      one:
+          'Tneħħa $count karattru ta’ test inviżibbli. Test moħbi bħal dan isir biex iqarraq bil-filtri tal-ispam.',
     );
     return '$_temp0';
   }
@@ -969,7 +1026,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed => 'Il-messaġġ ma setax jitniżżel. Iċċekkja l-konnessjoni u erġa’ pprova.';
+  String get exportDownloadFailed =>
+      'Il-messaġġ ma setax jitniżżel. Iċċekkja l-konnessjoni u erġa’ pprova.';
 
   @override
   String exportSaved(String name) {
@@ -999,10 +1057,14 @@ class AppLocalizationsMt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '“$name” ġie maħżun mingħajr $formattedCount messaġġ li ma setgħux jitniżżlu.',
-      many: '“$name” ġie maħżun mingħajr $formattedCount-il messaġġ li ma setgħux jitniżżlu.',
-      few: '“$name” ġie maħżun mingħajr $formattedCount messaġġi li ma setgħux jitniżżlu.',
-      two: '“$name” ġie maħżun mingħajr $formattedCount messaġġi li ma setgħux jitniżżlu.',
+      other:
+          '“$name” ġie maħżun mingħajr $formattedCount messaġġ li ma setgħux jitniżżlu.',
+      many:
+          '“$name” ġie maħżun mingħajr $formattedCount-il messaġġ li ma setgħux jitniżżlu.',
+      few:
+          '“$name” ġie maħżun mingħajr $formattedCount messaġġi li ma setgħux jitniżżlu.',
+      two:
+          '“$name” ġie maħżun mingħajr $formattedCount messaġġi li ma setgħux jitniżżlu.',
       one: '“$name” ġie maħżun mingħajr messaġġ wieħed li ma setax jitniżżel.',
     );
     return '$_temp0';
@@ -1084,7 +1146,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get mailboxesSmartMailboxes => 'Smart Mailboxes';
 
   @override
-  String get mailboxesSmartMailboxesEmpty => 'Aħżen tfittxija biex iżżommha hawn.';
+  String get mailboxesSmartMailboxesEmpty =>
+      'Aħżen tfittxija biex iżżommha hawn.';
 
   @override
   String get mailboxesTags => 'Tikketti';
@@ -1118,7 +1181,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get projectsDelete => 'Ħassar il-proġett';
 
   @override
-  String get projectsDeleteMessage => 'Il-konversazzjonijiet tiegħu jibqgħu fejn huma, barra l-proġett.';
+  String get projectsDeleteMessage =>
+      'Il-konversazzjonijiet tiegħu jibqgħu fejn huma, barra l-proġett.';
 
   @override
   String get projectsUntitled => 'Proġett';
@@ -1172,7 +1236,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get projectsAiTimeout => 'Is-server dam wisq.';
 
   @override
-  String get projectsAiBadAnswer => 'It-tweġiba tas-server ma setgħetx tinqara.';
+  String get projectsAiBadAnswer =>
+      'It-tweġiba tas-server ma setgħetx tinqara.';
 
   @override
   String projectsAiNoModel(String models) {
@@ -1234,7 +1299,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get mailboxesVipTitle => 'VIP';
 
   @override
-  String get mailboxesVipFooter => 'Tista’ wkoll tagħfas fuq l-isem ta’ mittent f’messaġġ u tixgħel VIP.';
+  String get mailboxesVipFooter =>
+      'Tista’ wkoll tagħfas fuq l-isem ta’ mittent f’messaġġ u tixgħel VIP.';
 
   @override
   String get mailboxesAddVip => 'Żid VIP…';
@@ -1243,7 +1309,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get mailboxesAddVipTitle => 'Żid VIP';
 
   @override
-  String get mailboxesAddVipText => 'Il-posta minn dan l-indirizz tieħu stilla u tidher fil-mailbox VIP.';
+  String get mailboxesAddVipText =>
+      'Il-posta minn dan l-indirizz tieħu stilla u tidher fil-mailbox VIP.';
 
   @override
   String get mailboxesAddVipPlaceholder => 'isem@example.com';
@@ -1284,7 +1351,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get messageListLoadOlderFailed => 'Il-posta eqdem ma setgħetx titgħabba.';
+  String get messageListLoadOlderFailed =>
+      'Il-posta eqdem ma setgħetx titgħabba.';
 
   @override
   String get messageListSelectMessages => 'Agħżel messaġġi';
@@ -1441,13 +1509,15 @@ class AppLocalizationsMt extends AppLocalizations {
   String get snoozeNoTime => 'L-ebda ħin stabbilit';
 
   @override
-  String get snoozeFooter => 'Il-messaġġi pposponuti jerġgħu lura fl-Inbox, mhux moqrija, fil-ħin tagħhom.';
+  String get snoozeFooter =>
+      'Il-messaġġi pposponuti jerġgħu lura fl-Inbox, mhux moqrija, fil-ħin tagħhom.';
 
   @override
   String get snoozeEmptyTitle => 'Xejn ipposponut';
 
   @override
-  String get snoozeEmptyText => 'Ipposponi messaġġ biex jerġa’ lura fl-Inbox meta jkollok bżonnu.';
+  String get snoozeEmptyText =>
+      'Ipposponi messaġġ biex jerġa’ lura fl-Inbox meta jkollok bżonnu.';
 
   @override
   String get briefButton => 'Fil-qosor';
@@ -1471,10 +1541,12 @@ class AppLocalizationsMt extends AppLocalizations {
   String get briefStopped => 'Waqqaft is-sommarju.';
 
   @override
-  String get briefFailedTooLarge => 'Dan il-messaġġ huwa twil wisq għall-mudell, għalhekk ma ntbagħat xejn.';
+  String get briefFailedTooLarge =>
+      'Dan il-messaġġ huwa twil wisq għall-mudell, għalhekk ma ntbagħat xejn.';
 
   @override
-  String get briefFailedProvider => 'Il-mudell ma setax jagħmel sommarju ta’ dan il-messaġġ.';
+  String get briefFailedProvider =>
+      'Il-mudell ma setax jagħmel sommarju ta’ dan il-messaġġ.';
 
   @override
   String get briefFailedInvalid =>
@@ -1530,7 +1602,11 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Int', 'them': 'Oħrajn', 'other': 'Mhux imsemmi'});
+    String _temp0 = intl.Intl.selectLogic(owner, {
+      'me': 'Int',
+      'them': 'Oħrajn',
+      'other': 'Mhux imsemmi',
+    });
     return '$_temp0';
   }
 
@@ -1599,7 +1675,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get briefCopyChecklist => 'Ikkopja l-lista';
 
   @override
-  String get briefMadeByDemo => 'Magħmul mid-demo inkorporata, mhux minn mudell.';
+  String get briefMadeByDemo =>
+      'Magħmul mid-demo inkorporata, mhux minn mudell.';
 
   @override
   String briefMadeBy(String location, String name) {
@@ -1621,13 +1698,15 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText => 'Iċċekkja l-messaġġ innifsu qabel ma tagħmel xi ħaġa minn dan is-sommarju.';
+  String get briefSecurityText =>
+      'Iċċekkja l-messaġġ innifsu qabel ma tagħmel xi ħaġa minn dan is-sommarju.';
 
   @override
   String get briefSourceTitle => 'Fil-messaġġ';
 
   @override
-  String get briefSourceAttachment => 'Dan ġej mill-isem ta’ fajl mehmuż. Is-sommarju ma jaqrax x’hemm fl-attachments.';
+  String get briefSourceAttachment =>
+      'Dan ġej mill-isem ta’ fajl mehmuż. Is-sommarju ma jaqrax x’hemm fl-attachments.';
 
   @override
   String get briefEventTitle => 'Avveniment ġdid';
@@ -1671,22 +1750,26 @@ class AppLocalizationsMt extends AppLocalizations {
   String get appLockLockedOut => 'Wisq tentattivi. Erġa’ pprova aktar tard.';
 
   @override
-  String get appLockPromptError => 'It-talba ma setgħetx tintwera. Erġa’ pprova.';
+  String get appLockPromptError =>
+      'It-talba ma setgħetx tintwera. Erġa’ pprova.';
 
   @override
-  String get appLockNoScreenLock => 'Dan il-mowbajl m’għandux qafla tal-iskrin.';
+  String get appLockNoScreenLock =>
+      'Dan il-mowbajl m’għandux qafla tal-iskrin.';
 
   @override
   String get appLockUnlockPromptTitle => 'Iftaħ Loupe';
 
   @override
-  String get appLockUnlockPromptReason => 'Ikkonferma li int biex tara l-posta tiegħek.';
+  String get appLockUnlockPromptReason =>
+      'Ikkonferma li int biex tara l-posta tiegħek.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Ixgħel il-Qafla għall-app';
 
   @override
-  String get appLockTurnOnPromptReason => 'Ikkonferma li int biex tixgħel il-Qafla għall-app.';
+  String get appLockTurnOnPromptReason =>
+      'Ikkonferma li int biex tixgħel il-Qafla għall-app.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1838,33 +1921,40 @@ class AppLocalizationsMt extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Ibdel l-aċċettazzjoni…';
 
   @override
-  String get openpgpCheckedFooter => 'Iċċekkjat fuq dan l-apparat b’OpenPGP, kompatibbli ma’ Thunderbird.';
+  String get openpgpCheckedFooter =>
+      'Iċċekkjat fuq dan l-apparat b’OpenPGP, kompatibbli ma’ Thunderbird.';
 
   @override
   String get openpgpSummaryLocked =>
       'Iċ-ċavetta tiegħek hija msakkra. Iftaħha bil-frażi sigrieta tagħha biex taqra dan il-messaġġ.';
 
   @override
-  String get openpgpSummaryNoSecretKey => 'Ġie kriptat għal ċavetta li mhix fuq dan l-apparat.';
+  String get openpgpSummaryNoSecretKey =>
+      'Ġie kriptat għal ċavetta li mhix fuq dan l-apparat.';
 
   @override
-  String get openpgpSummaryDamaged => 'Id-data kriptata għandha ħsara jew inbidlet fit-triq.';
+  String get openpgpSummaryDamaged =>
+      'Id-data kriptata għandha ħsara jew inbidlet fit-triq.';
 
   @override
-  String get openpgpSummaryUnsupported => 'Juża algoritmu li Loupe ma tappoġġjax.';
+  String get openpgpSummaryUnsupported =>
+      'Juża algoritmu li Loupe ma tappoġġjax.';
 
   @override
-  String get openpgpSummaryEncrypted => 'Int u r-riċevituri l-oħra biss tistgħu taqrawh.';
+  String get openpgpSummaryEncrypted =>
+      'Int u r-riċevituri l-oħra biss tistgħu taqrawh.';
 
   @override
-  String get openpgpSummaryNotSigned => 'Mhuwiex iffirmat, għalhekk il-mittent mhuwiex ikkonfermat.';
+  String get openpgpSummaryNotSigned =>
+      'Mhuwiex iffirmat, għalhekk il-mittent mhuwiex ikkonfermat.';
 
   @override
   String get openpgpSummaryUnknownKey =>
       'Huwa ffirmat, iżda b’ċavetta li m’għandekx, għalhekk il-firma ma tistax tiġi ċċekkjata.';
 
   @override
-  String get openpgpSummaryBadSignature => 'Il-firma ma taqbilx: il-messaġġ seta’ nbidel.';
+  String get openpgpSummaryBadSignature =>
+      'Il-firma ma taqbilx: il-messaġġ seta’ nbidel.';
 
   @override
   String get openpgpSummaryMismatch =>
@@ -1878,14 +1968,16 @@ class AppLocalizationsMt extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Iffirmat biċ-ċavetta tiegħek stess.';
 
   @override
-  String get openpgpSummaryVerified => 'Il-firma hija valida, u vverifikajt il-fingerprint taċ-ċavetta.';
+  String get openpgpSummaryVerified =>
+      'Il-firma hija valida, u vverifikajt il-fingerprint taċ-ċavetta.';
 
   @override
   String get openpgpSummaryUnverified =>
       'Il-firma hija valida. Aċċettajt iċ-ċavetta mingħajr ma ċċekkjajt il-fingerprint tagħha.';
 
   @override
-  String get openpgpSummaryRejected => 'Il-firma hija valida, iżda ċħadt din iċ-ċavetta.';
+  String get openpgpSummaryRejected =>
+      'Il-firma hija valida, iżda ċħadt din iċ-ċavetta.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -1945,10 +2037,12 @@ class AppLocalizationsMt extends AppLocalizations {
   String get openpgpAddresses => 'Indirizzi';
 
   @override
-  String get openpgpAddressesFooter => 'Liema ċavetta juża kull indirizz, u meta jikkripta u jiffirma.';
+  String get openpgpAddressesFooter =>
+      'Liema ċavetta juża kull indirizz, u meta jikkripta u jiffirma.';
 
   @override
-  String get openpgpCorrespondentsKeys => 'Iċ-ċwievet OpenPGP tal-korrispondenti';
+  String get openpgpCorrespondentsKeys =>
+      'Iċ-ċwievet OpenPGP tal-korrispondenti';
 
   @override
   String get openpgpCorrespondentsKeysFooter =>
@@ -1979,7 +2073,8 @@ class AppLocalizationsMt extends AppLocalizations {
       'It-tfittxija ssib messaġġi kriptati skont il-mittent, ir-riċevituri u s-suġġett tagħhom. B’dan mixgħul, Loupe iżżid ukoll it-test ta’ kull messaġġ kriptat li tiddekripta mal-indiċi tat-tfittxija fid-database kriptata tagħha fuq dan l-apparat, biex it-tfittxija ssibu wkoll mit-test tiegħu. Jekk titfih, dak it-test jitneħħa mill-indiċi.';
 
   @override
-  String get openpgpIndexDecrypted => 'Indiċizza l-messaġġi dekriptati għat-tfittxija';
+  String get openpgpIndexDecrypted =>
+      'Indiċizza l-messaġġi dekriptati għat-tfittxija';
 
   @override
   String get openpgpPassphrases => 'Frażijiet sigrieti';
@@ -2024,7 +2119,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get openpgpAddKeyTitle => 'Żid ċavetta OpenPGP';
 
   @override
-  String get openpgpAddKeyMessage => 'Importa ċ-ċavetta li tuża f’Thunderbird, jew agħmel waħda ġdida.';
+  String get openpgpAddKeyMessage =>
+      'Importa ċ-ċavetta li tuża f’Thunderbird, jew agħmel waħda ġdida.';
 
   @override
   String get openpgpImportFromClipboard => 'Importa mill-clipboard';
@@ -2045,7 +2141,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get openpgpFromFile => 'Minn fajl';
 
   @override
-  String get openpgpClipboardEmpty => 'Il-clipboard huwa vojt. L-ewwel ikkopja ċ-ċavetta.';
+  String get openpgpClipboardEmpty =>
+      'Il-clipboard huwa vojt. L-ewwel ikkopja ċ-ċavetta.';
 
   @override
   String get openpgpKey => 'Ċavetta';
@@ -2161,7 +2258,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Ikkripta awtomatikament';
 
   @override
-  String get openpgpAlwaysEncryptDetail => 'Ma jibgħatx jekk riċevitur m’għandux ċavetta';
+  String get openpgpAlwaysEncryptDetail =>
+      'Ma jibgħatx jekk riċevitur m’għandux ċavetta';
 
   @override
   String get openpgpSignUnencrypted => 'Iffirma l-posta mhux kriptata';
@@ -2180,7 +2278,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get openpgpPreferEncryption => 'Ippreferi l-kriptaġġ';
 
   @override
-  String get openpgpPreferEncryptionDetail => 'Itlob lill-oħrajn jikkriptaw meta jistgħu';
+  String get openpgpPreferEncryptionDetail =>
+      'Itlob lill-oħrajn jikkriptaw meta jistgħu';
 
   @override
   String openpgpValidityYears(int count) {
@@ -2289,7 +2388,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get openpgpComposeEveryoneHasKey => 'Kulħadd għandu ċavetta';
 
   @override
-  String get openpgpComposeEveryoneHasCertificate => 'Kulħadd għandu ċertifikat';
+  String get openpgpComposeEveryoneHasCertificate =>
+      'Kulħadd għandu ċertifikat';
 
   @override
   String get openpgpComposeEncrypt => 'Ikkripta';
@@ -2377,10 +2477,12 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get openpgpWrongPassphrase => 'Dik il-frażi sigrieta hija żbaljata. Erġa’ pprova.';
+  String get openpgpWrongPassphrase =>
+      'Dik il-frażi sigrieta hija żbaljata. Erġa’ pprova.';
 
   @override
-  String get openpgpExplainLocked => 'Dan il-messaġġ huwa kriptat. Iftaħ iċ-ċavetta OpenPGP tiegħek biex taqrah.';
+  String get openpgpExplainLocked =>
+      'Dan il-messaġġ huwa kriptat. Iftaħ iċ-ċavetta OpenPGP tiegħek biex taqrah.';
 
   @override
   String get openpgpExplainNoKey =>
@@ -2391,7 +2493,8 @@ class AppLocalizationsMt extends AppLocalizations {
       'Dan il-messaġġ kriptat għandu ħsara, għalhekk ma jistax jiġi dekriptat b’mod sigur.';
 
   @override
-  String get openpgpExplainUnsupported => 'Dan il-messaġġ juża kriptaġġ li Loupe għadha ma tistax taqra.';
+  String get openpgpExplainUnsupported =>
+      'Dan il-messaġġ juża kriptaġġ li Loupe għadha ma tistax taqra.';
 
   @override
   String get openpgpExplainSmimeNoKey =>
@@ -2403,7 +2506,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock => 'Iftaħ iċ-ċertifikat S/MIME tiegħek biex taqrah.';
+  String get openpgpExplainSmimeUnlock =>
+      'Iftaħ iċ-ċertifikat S/MIME tiegħek biex taqrah.';
 
   @override
   String get openpgpAttachmentGone => 'Dan l-anness m’għadux disponibbli.';
@@ -2412,7 +2516,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get smimeEncrypted => 'Kriptat (S/MIME)';
 
   @override
-  String get smimeEncryptedNoCertificate => 'Kriptat (S/MIME) · l-ebda ċertifikat';
+  String get smimeEncryptedNoCertificate =>
+      'Kriptat (S/MIME) · l-ebda ċertifikat';
 
   @override
   String get smimeEncryptedDamaged => 'Kriptat (S/MIME) · bil-ħsara';
@@ -2605,25 +2710,31 @@ class AppLocalizationsMt extends AppLocalizations {
   String get smimeTrust => 'Afda';
 
   @override
-  String get smimeSummaryNoKey => 'Ġie kriptat għal ċertifikat li mhux fuq dan l-apparat.';
+  String get smimeSummaryNoKey =>
+      'Ġie kriptat għal ċertifikat li mhux fuq dan l-apparat.';
 
   @override
-  String get smimeSummaryDamaged => 'Id-data kriptata għandha ħsara jew inbidlet fit-triq.';
+  String get smimeSummaryDamaged =>
+      'Id-data kriptata għandha ħsara jew inbidlet fit-triq.';
 
   @override
-  String get smimeSummaryUnsupported => 'Juża algoritmu li Loupe ma tappoġġjax.';
+  String get smimeSummaryUnsupported =>
+      'Juża algoritmu li Loupe ma tappoġġjax.';
 
   @override
   String get smimeSummaryLocked => 'Iċ-ċertifikat S/MIME tiegħek huwa msakkar.';
 
   @override
-  String get smimeSummaryEncrypted => 'Int u r-riċevituri l-oħra biss tistgħu taqrawh.';
+  String get smimeSummaryEncrypted =>
+      'Int u r-riċevituri l-oħra biss tistgħu taqrawh.';
 
   @override
-  String get smimeSummaryNotSigned => 'Mhuwiex iffirmat, għalhekk il-mittent mhuwiex ikkonfermat.';
+  String get smimeSummaryNotSigned =>
+      'Mhuwiex iffirmat, għalhekk il-mittent mhuwiex ikkonfermat.';
 
   @override
-  String get smimeSummaryModified => 'Il-firma ma taqbilx: il-messaġġ inbidel wara li ġie ffirmat.';
+  String get smimeSummaryModified =>
+      'Il-firma ma taqbilx: il-messaġġ inbidel wara li ġie ffirmat.';
 
   @override
   String get smimeSummaryUncheckable => 'Il-firma ma tistax tiġi ċċekkjata.';
@@ -2651,10 +2762,12 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain => 'Iċ-ċertifikat jew wieħed minn dawk li ħarġuh huwa invalidu.';
+  String get smimeProblemInvalidChain =>
+      'Iċ-ċertifikat jew wieħed minn dawk li ħarġuh huwa invalidu.';
 
   @override
-  String get smimeProblemUntrusted => 'Iċ-ċertifikat ġej minn awtorità li Loupe ma tafdax.';
+  String get smimeProblemUntrusted =>
+      'Iċ-ċertifikat ġej minn awtorità li Loupe ma tafdax.';
 
   @override
   String get smimeProblemExpired => 'Iċ-ċertifikat kien skada.';
@@ -2663,10 +2776,12 @@ class AppLocalizationsMt extends AppLocalizations {
   String get smimeProblemNotYetValid => 'Iċ-ċertifikat kien għadu mhux validu.';
 
   @override
-  String get smimeProblemWrongUsage => 'Iċ-ċertifikat mhuwiex maħsub għall-posta.';
+  String get smimeProblemWrongUsage =>
+      'Iċ-ċertifikat mhuwiex maħsub għall-posta.';
 
   @override
-  String get smimeProblemWrongAddress => 'Iċ-ċertifikat jappartjeni għal indirizz ieħor minflok dak tal-mittent.';
+  String get smimeProblemWrongAddress =>
+      'Iċ-ċertifikat jappartjeni għal indirizz ieħor minflok dak tal-mittent.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2726,7 +2841,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get smimeUseDeviceCertificate => 'Uża ċertifikat minn dan l-apparat…';
 
   @override
-  String get smimeCorrespondentsCertificates => 'Iċ-ċertifikati tal-korrispondenti';
+  String get smimeCorrespondentsCertificates =>
+      'Iċ-ċertifikati tal-korrispondenti';
 
   @override
   String get smimeCorrespondentsCertificatesFooter =>
@@ -2750,7 +2866,8 @@ class AppLocalizationsMt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Fdati minnek, minbarra dawk li Mozilla tafda għall-imejl ($count).',
+      other:
+          'Fdati minnek, minbarra dawk li Mozilla tafda għall-imejl ($count).',
     );
     return '$_temp0';
   }
@@ -2772,7 +2889,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get smimeFromFile => 'Minn fajl';
 
   @override
-  String get smimeClipboardEmpty => 'Il-clipboard huwa vojt. L-ewwel ikkopja ċ-ċertifikat.';
+  String get smimeClipboardEmpty =>
+      'Il-clipboard huwa vojt. L-ewwel ikkopja ċ-ċertifikat.';
 
   @override
   String get smimeCertificate => 'Ċertifikat';
@@ -2925,7 +3043,8 @@ class AppLocalizationsMt extends AppLocalizations {
       'Iċ-ċavetta privata tiegħu titħassar minn dan l-apparat: il-posta kriptata għalih ma tkunx tista’ tinqara aktar hawn, sakemm ma terġax timportah.';
 
   @override
-  String get smimeRemoveContactMessage => 'Jerġa’ lura mal-messaġġ iffirmat li jmiss minn din il-persuna.';
+  String get smimeRemoveContactMessage =>
+      'Jerġa’ lura mal-messaġġ iffirmat li jmiss minn din il-persuna.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -2948,13 +3067,15 @@ class AppLocalizationsMt extends AppLocalizations {
   String get smimeCertificatePassword => 'Password taċ-ċertifikat';
 
   @override
-  String get smimeCertificatePasswordPrompt => 'Daħħal il-password li biha ġie esportat il-fajl taċ-ċertifikat.';
+  String get smimeCertificatePasswordPrompt =>
+      'Daħħal il-password li biha ġie esportat il-fajl taċ-ċertifikat.';
 
   @override
   String get smimeImport => 'Importa';
 
   @override
-  String get smimeWrongPassword => 'Dik il-password hija żbaljata. Erġa’ pprova.';
+  String get smimeWrongPassword =>
+      'Dik il-password hija żbaljata. Erġa’ pprova.';
 
   @override
   String get smimeNoCertificateFound => 'Ma nstab l-ebda ċertifikat.';
@@ -2987,7 +3108,10 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
+  String smimeImportedCertificatesAndAuthorities(
+    int count,
+    String certificates,
+  ) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -3061,7 +3185,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get smimeWrongPassphrase => 'Dik il-frażi sigrieta hija żbaljata. Erġa’ pprova.';
+  String get smimeWrongPassphrase =>
+      'Dik il-frażi sigrieta hija żbaljata. Erġa’ pprova.';
 
   @override
   String get smimeUnlock => 'Iftaħ';
@@ -3070,7 +3195,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get smimeEnterAPassphrase => 'Daħħal frażi sigrieta.';
 
   @override
-  String get smimePassphrasesDiffer => 'Iż-żewġ frażijiet sigrieti huma differenti.';
+  String get smimePassphrasesDiffer =>
+      'Iż-żewġ frażijiet sigrieti huma differenti.';
 
   @override
   String get smimeSetPassphraseTitle => 'Issettja frażi sigrieta';
@@ -3086,13 +3212,16 @@ class AppLocalizationsMt extends AppLocalizations {
   String get smimeSetPassphraseButton => 'Issettja';
 
   @override
-  String get smimeLockedOpenAgain => 'Iċ-ċertifikat S/MIME tiegħek huwa msakkar. Erġa’ iftaħ il-messaġġ biex tiftħu.';
+  String get smimeLockedOpenAgain =>
+      'Iċ-ċertifikat S/MIME tiegħek huwa msakkar. Erġa’ iftaħ il-messaġġ biex tiftħu.';
 
   @override
-  String get smimeDeviceHasNoCertificates => 'Dan l-apparat ma joffrix iċ-ċertifikati tiegħu.';
+  String get smimeDeviceHasNoCertificates =>
+      'Dan l-apparat ma joffrix iċ-ċertifikati tiegħu.';
 
   @override
-  String get smimeCantReadCertificate => 'Loupe ma tistax taqra dan iċ-ċertifikat.';
+  String get smimeCantReadCertificate =>
+      'Loupe ma tistax taqra dan iċ-ċertifikat.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -3123,13 +3252,16 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress => 'L-indirizz tal-awtorità mhuwiex indirizz web.';
+  String get smimeAuthorityNotWebAddress =>
+      'L-indirizz tal-awtorità mhuwiex indirizz web.';
 
   @override
-  String get smimeAuthorityTimeout => 'L-awtorità taċ-ċertifikazzjoni ma wieġbitx fil-ħin.';
+  String get smimeAuthorityTimeout =>
+      'L-awtorità taċ-ċertifikazzjoni ma wieġbitx fil-ħin.';
 
   @override
-  String get smimeAuthorityUnreachable => 'L-awtorità taċ-ċertifikazzjoni ma setgħetx tintlaħaq.';
+  String get smimeAuthorityUnreachable =>
+      'L-awtorità taċ-ċertifikazzjoni ma setgħetx tintlaħaq.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -3137,15 +3269,25 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge => 'It-tweġiba tal-awtorità taċ-ċertifikazzjoni hija kbira wisq.';
+  String get smimeAuthorityAnswerTooLarge =>
+      'It-tweġiba tal-awtorità taċ-ċertifikazzjoni hija kbira wisq.';
 
   @override
   String get smimeRevocationNotChecked =>
       'Mhux iċċekkjat: jiġu ċċekkjati biss ċertifikati minn awtorità li Loupe tafda.';
 
   @override
+  String get actionsNeedsMyAction => 'Jeħtieġ azzjoni minni';
+
+  @override
+  String get actionsWaitingOnOthers => 'Qed nistenna lil ħaddieħor';
+
+  @override
   String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    String _temp0 = intl.Intl.selectLogic(protocol, {
+      'jmap': 'Push',
+      'other': 'IDLE',
+    });
     return '$_temp0';
   }
 
@@ -3210,7 +3352,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsSignatureAddField => 'Żid qasam';
 
   @override
-  String get settingsSignatureImageFailed => 'Ma setgħetx tiżdied dik l-istampa. Ipprova PNG jew JPEG iżgħar.';
+  String get settingsSignatureImageFailed =>
+      'Ma setgħetx tiżdied dik l-istampa. Ipprova PNG jew JPEG iżgħar.';
 
   @override
   String get settingsSignatureWhenToUse => 'Meta tintuża';
@@ -3226,7 +3369,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Żid indirizz jew dominju…';
 
   @override
-  String get settingsSignatureCopiedPrompt => 'Indirizz, jew dominju bħal client.example.';
+  String get settingsSignatureCopiedPrompt =>
+      'Indirizz, jew dominju bħal client.example.';
 
   @override
   String get settingsSignatureScheduled => 'Skedata';
@@ -3245,7 +3389,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsSignatureRotation => 'F’rotazzjoni';
 
   @override
-  String get settingsSignatureRotationFooter => 'Kull messaġġ ġdid jieħu waħda mill-firem f’rotazzjoni, bl-addoċċ.';
+  String get settingsSignatureRotationFooter =>
+      'Kull messaġġ ġdid jieħu waħda mill-firem f’rotazzjoni, bl-addoċċ.';
 
   @override
   String get settingsSignatureMakeDefault => 'Agħmilha d-default';
@@ -3307,7 +3452,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsUndoSendDelay => 'Ħin biex tirtira l-bgħit';
 
   @override
-  String get settingsUndoSendDelayFooter => 'Il-messaġġi mibgħuta jistennew dan iż-żmien, biex tkun tista’ tirtirahom.';
+  String get settingsUndoSendDelayFooter =>
+      'Il-messaġġi mibgħuta jistennew dan iż-żmien, biex tkun tista’ tirtirahom.';
 
   @override
   String settingsUndoSendSeconds(int seconds) {
@@ -3354,19 +3500,22 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsReadingHeader => 'Qari';
 
   @override
-  String get settingsReadingFooter => 'L-istampi remoti jistgħu jgħidu lill-mittenti meta u fejn ftaħt messaġġ.';
+  String get settingsReadingFooter =>
+      'L-istampi remoti jistgħu jgħidu lill-mittenti meta u fejn ftaħt messaġġ.';
 
   @override
   String get settingsDefaultView => 'Veduta default';
 
   @override
-  String get settingsDefaultViewFooter => 'Tista’ tibdel il-veduta ta’ kwalunkwe messaġġ bil-buttuna Aa.';
+  String get settingsDefaultViewFooter =>
+      'Tista’ tibdel il-veduta ta’ kwalunkwe messaġġ bil-buttuna Aa.';
 
   @override
   String get settingsViewReadable => 'Leġġibbli';
 
   @override
-  String get settingsViewReadableDetail => 'Nadifa, tinqara faċilment, issegwi l-modalità skura';
+  String get settingsViewReadableDetail =>
+      'Nadifa, tinqara faċilment, issegwi l-modalità skura';
 
   @override
   String get settingsViewOriginal => 'Oriġinali';
@@ -3390,7 +3539,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsFontMono => 'Monospace';
 
   @override
-  String get settingsFontMonoDetail => 'Iżomm l-arti ASCII u t-tabelli allinjati';
+  String get settingsFontMonoDetail =>
+      'Iżomm l-arti ASCII u t-tabelli allinjati';
 
   @override
   String get settingsTechnicalLists => 'Listi tekniċi';
@@ -3402,7 +3552,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Iftaħ il-links direttament';
 
   @override
-  String get settingsOpenLinksDirectlyDetail => 'Aqbeż it-trackers tal-klikks meta d-destinazzjoni tkun magħrufa';
+  String get settingsOpenLinksDirectlyDetail =>
+      'Aqbeż it-trackers tal-klikks meta d-destinazzjoni tkun magħrufa';
 
   @override
   String get settingsSecurityHeader => 'Sigurtà';
@@ -3447,7 +3598,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsLockAfter => 'Sakkar wara';
 
   @override
-  String get settingsLockAfterFooter => 'Kemm tista’ Loupe tkun fl-isfond qabel ma terġa’ titlob.';
+  String get settingsLockAfterFooter =>
+      'Kemm tista’ Loupe tkun fl-isfond qabel ma terġa’ titlob.';
 
   @override
   String get settingsNotifications => 'Notifiki';
@@ -3472,7 +3624,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsResetApp => 'Irrisettja l-app';
 
   @override
-  String get settingsResetFooter => 'Tinsa s-settings kollha u tmur lura għall-iskrin ta’ merħba.';
+  String get settingsResetFooter =>
+      'Tinsa s-settings kollha u tmur lura għall-iskrin ta’ merħba.';
 
   @override
   String get settingsResetTitle => 'Tirrisettja Loupe?';
@@ -3498,10 +3651,12 @@ class AppLocalizationsMt extends AppLocalizations {
       'Loupe m’għandha l-ebda analitika u l-ebda traċċar. Il-posta tiegħek tmur biss għas-servers tal-imejl tiegħek.';
 
   @override
-  String get settingsNotificationsOffIos => 'In-notifiki ta’ Loupe huma mitfija f’Settings.';
+  String get settingsNotificationsOffIos =>
+      'In-notifiki ta’ Loupe huma mitfija f’Settings.';
 
   @override
-  String get settingsNotificationsOffAndroid => 'In-notifiki ta’ Loupe huma mitfija fis-settings ta’ Android.';
+  String get settingsNotificationsOffAndroid =>
+      'In-notifiki ta’ Loupe huma mitfija fis-settings ta’ Android.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -3568,7 +3723,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsComingSoon => 'Dalwaqt';
 
   @override
-  String get settingsAllowUnrestrictedBattery => 'Ippermetti użu tal-batterija mingħajr restrizzjonijiet';
+  String get settingsAllowUnrestrictedBattery =>
+      'Ippermetti użu tal-batterija mingħajr restrizzjonijiet';
 
   @override
   String get settingsPush => 'Push';
@@ -3594,14 +3750,16 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsAppIconBadge => 'Badge fuq l-ikona tal-app';
 
   @override
-  String get settingsBadgeNote => 'Il-badge jiġi aġġornat kull meta Loupe tiċċekkja l-posta, anki fl-isfond.';
+  String get settingsBadgeNote =>
+      'Il-badge jiġi aġġornat kull meta Loupe tiċċekkja l-posta, anki fl-isfond.';
 
   @override
   String get settingsBadgeUnsupportedFooter =>
       'L-iskrin ewlieni ta’ dan il-mowbajl ma jurix numri fuq l-ikoni tal-apps. Il-badge jiġi aġġornat kull meta Loupe tiċċekkja l-posta, anki fl-isfond.';
 
   @override
-  String get settingsTestNotificationBody => 'In-notifiki għal posta ġdida jidhru hekk.';
+  String get settingsTestNotificationBody =>
+      'In-notifiki għal posta ġdida jidhru hekk.';
 
   @override
   String get settingsAccountRemoved => 'Dan il-kont tneħħa.';
@@ -3622,7 +3780,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsColour => 'Kulur';
 
   @override
-  String get settingsColourFooter => 'Jimmarka l-messaġġi ta’ dan il-kont fl-Inboxes kollha.';
+  String get settingsColourFooter =>
+      'Jimmarka l-messaġġi ta’ dan il-kont fl-Inboxes kollha.';
 
   @override
   String settingsColourNumber(int number) {
@@ -3714,10 +3873,12 @@ class AppLocalizationsMt extends AppLocalizations {
       'L-ewwel identità hija d-default għal messaġġi ġodda. Kaxkar biex tibdel l-ordni.';
 
   @override
-  String get settingsIdentitiesFooterSingle => 'L-identità default għal messaġġi ġodda.';
+  String get settingsIdentitiesFooterSingle =>
+      'L-identità default għal messaġġi ġodda.';
 
   @override
-  String get settingsIdentitiesReplyFooter => 'Tweġiba toħroġ mill-identità li ntbagħat lilha l-messaġġ.';
+  String get settingsIdentitiesReplyFooter =>
+      'Tweġiba toħroġ mill-identità li ntbagħat lilha l-messaġġ.';
 
   @override
   String get settingsIdentityDefault => 'Default';
@@ -3749,7 +3910,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsCopyToMyself => 'Kopja lili nnifsi';
 
   @override
-  String get settingsCopyToMyselfFooter => 'Jiżdiedu ma’ kull messaġġ minn din l-identità.';
+  String get settingsCopyToMyselfFooter =>
+      'Jiżdiedu ma’ kull messaġġ minn din l-identità.';
 
   @override
   String get settingsCc => 'Cc';
@@ -3765,7 +3927,8 @@ class AppLocalizationsMt extends AppLocalizations {
       'It-tweġibiet għal messaġġi mibgħuta lil dawn l-indirizzi joħorġu minn din l-identità. * tfisser kwalunkwe ħaġa: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt => 'Indirizz, jew mudell fejn * tfisser kwalunkwe ħaġa.';
+  String get settingsReplyPatternPrompt =>
+      'Indirizz, jew mudell fejn * tfisser kwalunkwe ħaġa.';
 
   @override
   String get settingsAddReplyPattern => 'Żid indirizz jew mudell';
@@ -3787,7 +3950,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'L-ebda indirizz';
 
   @override
-  String get settingsIdentityNoAddressMessage => 'Daħħal l-indirizz tal-imejl li minnu tibgħat.';
+  String get settingsIdentityNoAddressMessage =>
+      'Daħħal l-indirizz tal-imejl li minnu tibgħat.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Indirizz invalidu';
@@ -3818,10 +3982,12 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage => 'Il-messaġġi diġà mibgħuta minnha jibqgħu kif inhuma.';
+  String get settingsDeleteIdentityMessage =>
+      'Il-messaġġi diġà mibgħuta minnha jibqgħu kif inhuma.';
 
   @override
-  String get settingsLastIdentityFooter => 'Kont għandu bżonn mill-inqas identità waħda.';
+  String get settingsLastIdentityFooter =>
+      'Kont għandu bżonn mill-inqas identità waħda.';
 
   @override
   String get rulesTitle => 'Regoli';
@@ -3893,7 +4059,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get rulesStatusUnavailable => 'Mhux disponibbli';
 
   @override
-  String get rulesStatusNoSieve => 'Is-server ta’ dan il-kont ma joffrix Sieve (ManageSieve jew JMAP).';
+  String get rulesStatusNoSieve =>
+      'Is-server ta’ dan il-kont ma joffrix Sieve (ManageSieve jew JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -3975,7 +4142,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get rulesRemovedAccount => 'Kont imneħħi';
 
   @override
-  String get rulesAccountsFooter => 'Regola għall-kontijiet kollha tkopri wkoll il-kontijiet li żżid aktar tard.';
+  String get rulesAccountsFooter =>
+      'Regola għall-kontijiet kollha tkopri wkoll il-kontijiet li żżid aktar tard.';
 
   @override
   String get rulesActionsHeader => 'Imbagħad';
@@ -3985,7 +4153,8 @@ class AppLocalizationsMt extends AppLocalizations {
       'B’Għaddi, kull messaġġ li jaqbel jintbagħat lil indirizz ieħor hekk kif jasal, anki meta dan il-mowbajl ikun mitfi. Xi fornituri jillimitaw kemm posta tista’ tingħadda.';
 
   @override
-  String get rulesForwardingHiddenFooter => 'Għaddi jaħdem biss fir-regoli fuq is-server, għalhekk mhuwiex muri hawn.';
+  String get rulesForwardingHiddenFooter =>
+      'Għaddi jaħdem biss fir-regoli fuq is-server, għalhekk mhuwiex muri hawn.';
 
   @override
   String rulesRemoveAction(String action) {
@@ -4036,7 +4205,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get rulesMoveAccountTitle => 'Folder f’liema kont?';
 
   @override
-  String get rulesMoveAccountMessage => 'Il-posta tal-kontijiet l-oħra tmur fil-folder bl-istess isem hemmhekk.';
+  String get rulesMoveAccountMessage =>
+      'Il-posta tal-kontijiet l-oħra tmur fil-folder bl-istess isem hemmhekk.';
 
   @override
   String get rulesAddTag => 'Żid tikketta';
@@ -4075,13 +4245,15 @@ class AppLocalizationsMt extends AppLocalizations {
   String get rulesChooseActionTitle => 'Agħżel azzjoni';
 
   @override
-  String get rulesChooseActionMessage => 'Żid x’tagħmel ir-regola bil-messaġġi li jaqblu magħha.';
+  String get rulesChooseActionMessage =>
+      'Żid x’tagħmel ir-regola bil-messaġġi li jaqblu magħha.';
 
   @override
   String get rulesSaveError => 'Ir-regola ma setgħetx tinħażen';
 
   @override
-  String get rulesSaveServerError => 'Ir-regola fuq is-server ma setgħetx tinħażen';
+  String get rulesSaveServerError =>
+      'Ir-regola fuq is-server ma setgħetx tinħażen';
 
   @override
   String get rulesRunOnDeviceInstead => 'Minflok, ħaddimha fuq dan l-apparat';
@@ -4090,7 +4262,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Xejn x’tapplika';
 
   @override
-  String get rulesNothingToApplyMessage => 'L-ewwel agħti lir-regola kundizzjoni li taħdem u azzjoni.';
+  String get rulesNothingToApplyMessage =>
+      'L-ewwel agħti lir-regola kundizzjoni li taħdem u azzjoni.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4122,7 +4295,8 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4139,7 +4313,8 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4156,7 +4331,8 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4172,7 +4348,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get rulesServerChecking => 'Qed jiġi mistoqsi s-server x’jista’ jagħmel…';
+  String get rulesServerChecking =>
+      'Qed jiġi mistoqsi s-server x’jista’ jagħmel…';
 
   @override
   String get rulesServerUnreachable => 'Is-server ma setax jintlaħaq.';
@@ -4201,7 +4378,8 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4218,7 +4396,8 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4250,7 +4429,8 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4343,7 +4523,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get subscriptionsNoNewsletters => 'L-ebda newsletter';
 
   @override
-  String get subscriptionsNoNewslettersDetail => 'In-newsletters u posta oħra bl-ingrossa jidhru hawn hekk kif jaslu.';
+  String get subscriptionsNoNewslettersDetail =>
+      'In-newsletters u posta oħra bl-ingrossa jidhru hawn hekk kif jaslu.';
 
   @override
   String get subscriptionsNothingNeverRead => 'Xejn f’“Qatt moqrija”';
@@ -4352,7 +4533,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get subscriptionsNothingRarelyRead => 'Xejn f’“Rarament moqrija”';
 
   @override
-  String get subscriptionsNothingFilteredDetail => 'Taqra ftit minn kull ma tirċievi.';
+  String get subscriptionsNothingFilteredDetail =>
+      'Taqra ftit minn kull ma tirċievi.';
 
   @override
   String get subscriptionsNoDiscussions => 'L-ebda diskussjoni';
@@ -4429,10 +4611,15 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Arkivja $countString fl-Inbox');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Arkivja $countString fl-Inbox',
+    );
     return '$_temp0';
   }
 
@@ -4440,13 +4627,15 @@ class AppLocalizationsMt extends AppLocalizations {
   String get subscriptionsCreateRule => 'Oħloq regola…';
 
   @override
-  String get subscriptionsCreateRuleDetail => 'Ċaqlaq jew arkivja l-posta futura tiegħu';
+  String get subscriptionsCreateRuleDetail =>
+      'Ċaqlaq jew arkivja l-posta futura tiegħu';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Ittrattaha bħala diskussjoni';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail => 'Lista li n-nies jiktbu fiha: aqraha bħal forum';
+  String get subscriptionsTreatAsDiscussionDetail =>
+      'Lista li n-nies jiktbu fiha: aqraha bħal forum';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Ittrattaha bħala newsletter';
@@ -4480,7 +4669,8 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4493,7 +4683,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoMailNow => 'Bħalissa m’hemmx posta minn dan il-mittent.';
+  String get subscriptionsNoMailNow =>
+      'Bħalissa m’hemmx posta minn dan il-mittent.';
 
   @override
   String get subscriptionsLatestMessages => 'L-AĦĦAR MESSAĠĠI';
@@ -4509,9 +4700,12 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString minn $totalString';
@@ -4522,7 +4716,12 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Folders', one: 'Folder');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Folders',
+      one: 'Folder',
+    );
     return '$_temp0';
   }
 
@@ -4568,10 +4767,12 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle => 'L-abbonament ma setax jitneħħa awtomatikament';
+  String get subscriptionsOneClickFailedTitle =>
+      'L-abbonament ma setax jitneħħa awtomatikament';
 
   @override
-  String get subscriptionsSendUnsubscribeEmail => 'Ibgħat imejl biex tneħħi l-abbonament';
+  String get subscriptionsSendUnsubscribeEmail =>
+      'Ibgħat imejl biex tneħħi l-abbonament';
 
   @override
   String subscriptionsOpenSite(String site) {
@@ -4592,7 +4793,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsWebInsecure => 'Il-konnessjoni ma’ dan is-sit mhix kriptata.';
+  String get subscriptionsWebInsecure =>
+      'Il-konnessjoni ma’ dan is-sit mhix kriptata.';
 
   @override
   String subscriptionsHomographWarning(String site) {
@@ -4687,7 +4889,11 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String subscriptionsMoveToJunk(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Ċaqlaq $count għall-Ispam');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ċaqlaq $count għall-Ispam',
+    );
     return '$_temp0';
   }
 
@@ -4710,7 +4916,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get appLiveGateTitle => 'Il-kontijiet tiegħek ma setgħux jinfetħu';
 
   @override
-  String get appLiveGateUnavailableBuild => 'Il-kontijiet veri għadhom mhumiex disponibbli f’din il-verżjoni.';
+  String get appLiveGateUnavailableBuild =>
+      'Il-kontijiet veri għadhom mhumiex disponibbli f’din il-verżjoni.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -4758,7 +4965,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get attachmentsShareMenu => 'Aqsam…';
 
   @override
-  String get attachmentsDownloadError => 'L-anness ma setax jitniżżel. Iċċekkja l-konnessjoni u erġa’ pprova.';
+  String get attachmentsDownloadError =>
+      'L-anness ma setax jitniżżel. Iċċekkja l-konnessjoni u erġa’ pprova.';
 
   @override
   String get attachmentsShareError => 'L-anness ma setax jinqasam.';
@@ -4805,7 +5013,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload => 'Dan l-anness huwa kbir. Niżżlu issa, jew aktar tard fuq Wi-Fi.';
+  String get attachmentsLargeDownload =>
+      'Dan l-anness huwa kbir. Niżżlu issa, jew aktar tard fuq Wi-Fi.';
 
   @override
   String get attachmentsDownload => 'Niżżel';
@@ -4827,7 +5036,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get attachmentsPdfUnavailable => 'Dan il-PDF ma jistax jintwera hawn (jista’ jkun protett b’password).';
+  String get attachmentsPdfUnavailable =>
+      'Dan il-PDF ma jistax jintwera hawn (jista’ jkun protett b’password).';
 
   @override
   String attachmentsPageOf(int page, int count) {
@@ -4873,7 +5083,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get attachmentsCopied => 'Ikkupjat';
 
   @override
-  String get attachmentsImageUnavailable => 'Din l-istampa ma tistax tintwera hawn. Ipprova “Iftaħ f’…”.';
+  String get attachmentsImageUnavailable =>
+      'Din l-istampa ma tistax tintwera hawn. Ipprova “Iftaħ f’…”.';
 
   @override
   String get attachmentsEmlNoSubject => '(Mingħajr suġġett)';
@@ -4895,7 +5106,12 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String attachmentsEmlAttachments(int count, String names) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Annessi: $names', one: 'Anness: $names');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Annessi: $names',
+      one: 'Anness: $names',
+    );
     return '$_temp0';
   }
 
@@ -5097,22 +5313,26 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get calendarRefreshUnknown => 'Parteċipant qed jitlob l-aħħar verżjoni';
+  String get calendarRefreshUnknown =>
+      'Parteċipant qed jitlob l-aħħar verżjoni';
 
   @override
   String get calendarCancelled => 'Ikkanċellat';
 
   @override
-  String get calendarCancelledByOrganizer => 'L-organizzatur ikkanċella dan l-avveniment.';
+  String get calendarCancelledByOrganizer =>
+      'L-organizzatur ikkanċella dan l-avveniment.';
 
   @override
-  String get calendarCancelledLater => 'Dan l-avveniment ġie kkanċellat aktar tard.';
+  String get calendarCancelledLater =>
+      'Dan l-avveniment ġie kkanċellat aktar tard.';
 
   @override
   String get calendarOutdated => 'Mhux aġġornat';
 
   @override
-  String get calendarOutdatedDetail => 'Din l-istedina ġiet aġġornata aktar tard; dik l-aktar ġdida hija li tgħodd.';
+  String get calendarOutdatedDetail =>
+      'Din l-istedina ġiet aġġornata aktar tard; dik l-aktar ġdida hija li tgħodd.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -5120,7 +5340,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get calendarLocationRemovedNone => 'Il-post tneħħa (qabel ma kien hemm xejn)';
+  String get calendarLocationRemovedNone =>
+      'Il-post tneħħa (qabel ma kien hemm xejn)';
 
   @override
   String calendarLocationChanged(String location) {
@@ -5170,13 +5391,22 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String calendarAcceptedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count aċċettaw', one: '$count aċċetta');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count aċċettaw',
+      one: '$count aċċetta',
+    );
     return '$_temp0';
   }
 
   @override
   String calendarMaybeCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count forsi');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count forsi',
+    );
     return '$_temp0';
   }
 
@@ -5252,7 +5482,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp => 'M’hemm l-ebda app tal-kalendarju biex iżżid l-avveniment fiha.';
+  String get calendarNoCalendarApp =>
+      'M’hemm l-ebda app tal-kalendarju biex iżżid l-avveniment fiha.';
 
   @override
   String get calendarCantOpenCalendar => 'Il-kalendarju ma setax jinfetaħ.';
@@ -5279,7 +5510,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get calendarJoinHomographUnknown => 'Attent: dan l-indirizz jimita sit ieħor b’ittri li jixbhu lil oħrajn.';
+  String get calendarJoinHomographUnknown =>
+      'Attent: dan l-indirizz jimita sit ieħor b’ittri li jixbhu lil oħrajn.';
 
   @override
   String calendarJoinOpen(String host) {
@@ -5287,7 +5519,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer => 'Din l-istedina m’għandhiex organizzatur biex twieġbu.';
+  String get calendarNoOrganizer =>
+      'Din l-istedina m’għandhiex organizzatur biex twieġbu.';
 
   @override
   String get calendarNoAccount => 'M’hemm l-ebda kont li minnu tista’ twieġeb.';
@@ -5388,7 +5621,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get keyboardKeyBackspace => 'Backspace';
 
   @override
-  String get mailingListsMuted => 'It-thread ġie msikket. Il-messaġġi l-ġodda fih jaslu diġà moqrija.';
+  String get mailingListsMuted =>
+      'It-thread ġie msikket. Il-messaġġi l-ġodda fih jaslu diġà moqrija.';
 
   @override
   String get mailingListsUnmuted => 'It-thread m’għadux imsikket.';
@@ -5467,7 +5701,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Listi tekniċi';
 
   @override
-  String get mailingListsTechnicalEmpty => 'Il-mailing lists jidhru hawn hekk kif tasal il-posta tagħhom.';
+  String get mailingListsTechnicalEmpty =>
+      'Il-mailing lists jidhru hawn hekk kif tasal il-posta tagħhom.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -5633,7 +5868,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get searchSearchingUnknownAccount => 'Tfittxija fil-kont fuq is-server…';
+  String get searchSearchingUnknownAccount =>
+      'Tfittxija fil-kont fuq is-server…';
 
   @override
   String searchAccountFailed(String account) {
@@ -5641,7 +5877,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get searchUnknownAccountFailed => 'It-tfittxija fil-kont fuq is-server ma setgħetx issir';
+  String get searchUnknownAccountFailed =>
+      'It-tfittxija fil-kont fuq is-server ma setgħetx issir';
 
   @override
   String searchChip(String term) {
@@ -5654,7 +5891,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get searchReadAndUnread => 'L-inbox ta’ Schrödinger: kull messaġġ hawn huwa moqri u mhux moqri sakemm tiftħu.';
+  String get searchReadAndUnread =>
+      'L-inbox ta’ Schrödinger: kull messaġġ hawn huwa moqri u mhux moqri sakemm tiftħu.';
 
   @override
   String searchContradiction(String term) {
@@ -5703,7 +5941,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get searchSettingsTitle => 'Smart Mailboxes';
 
   @override
-  String get searchSettingsLocalFooter => 'Is-Smart Mailboxes jibqgħu fuq dan l-apparat.';
+  String get searchSettingsLocalFooter =>
+      'Is-Smart Mailboxes jibqgħu fuq dan l-apparat.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -5720,7 +5959,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get searchGmailCantKeep => 'Gmail ma jistax iżomm Smart Mailboxes';
 
   @override
-  String get searchKeepOnDevice => 'Żomm is-Smart Mailboxes fuq dan l-apparat biss';
+  String get searchKeepOnDevice =>
+      'Żomm is-Smart Mailboxes fuq dan l-apparat biss';
 
   @override
   String get searchOnTheServer => 'Fuq is-server';
@@ -5769,7 +6009,12 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String sharedBytes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count bytes', one: '$count byte');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bytes',
+      one: '$count byte',
+    );
     return '$_temp0';
   }
 
@@ -6014,7 +6259,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount => 'Agħżel messaġġi minn kont wieħed biex iċċaqlaqhom.';
+  String get sharedMoveOneAccount =>
+      'Agħżel messaġġi minn kont wieħed biex iċċaqlaqhom.';
 
   @override
   String get sharedSnoozeTitle => 'Ipposponi';
@@ -6094,7 +6340,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get accountSetupAddressTitle => 'Żid kont tal-imejl';
 
   @override
-  String get accountSetupAddressText => 'Loupe ssib is-settings għall-biċċa l-kbira tal-fornituri.';
+  String get accountSetupAddressText =>
+      'Loupe ssib is-settings għall-biċċa l-kbira tal-fornituri.';
 
   @override
   String get accountSetupNameHint => 'Ismek';
@@ -6123,7 +6370,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCheckServers => 'Iċċekkja l-ismijiet tas-servers u l-portijiet.';
+  String get accountSetupCheckServers =>
+      'Iċċekkja l-ismijiet tas-servers u l-portijiet.';
 
   @override
   String get accountSetupEnterPassword => 'Daħħal il-password tiegħek.';
@@ -6180,13 +6428,15 @@ class AppLocalizationsMt extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Uża password tal-app';
 
   @override
-  String get accountSetupUseAppPasswordInstead => 'Minflok, uża password tal-app';
+  String get accountSetupUseAppPasswordInstead =>
+      'Minflok, uża password tal-app';
 
   @override
   String get accountSetupUseDifferentAddress => 'Uża indirizz ieħor';
 
   @override
-  String get accountSetupHowToCreateAppPassword => 'Kif toħloq password tal-app';
+  String get accountSetupHowToCreateAppPassword =>
+      'Kif toħloq password tal-app';
 
   @override
   String get accountSetupHowToCreateOne => 'Kif toħloq waħda';
@@ -6200,7 +6450,8 @@ class AppLocalizationsMt extends AppLocalizations {
       '“Idħol b’Google” għadu mhux disponibbli f’din il-verżjoni. Minflok, tista’ tikkonnettja b’password tal-app (għandek bżonn 2-Step Verification fuq il-kont Google tiegħek).';
 
   @override
-  String get accountSetupGmailAppPasswordNote => 'Oħloq password tal-app fil-kont Google tiegħek u waħħalha hawn taħt.';
+  String get accountSetupGmailAppPasswordNote =>
+      'Oħloq password tal-app fil-kont Google tiegħek u waħħalha hawn taħt.';
 
   @override
   String get accountSetupMicrosoftNote =>
@@ -6215,14 +6466,16 @@ class AppLocalizationsMt extends AppLocalizations {
       'iCloud Mail għandu bżonn password speċifika għall-app, mhux il-password tal-Apple Account tiegħek.';
 
   @override
-  String get accountSetupYahooNote => 'Yahoo Mail għandu bżonn password tal-app, mhux il-password tal-kont tiegħek.';
+  String get accountSetupYahooNote =>
+      'Yahoo Mail għandu bżonn password tal-app, mhux il-password tal-kont tiegħek.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Loupe tikkonnettja ma’ Fastmail permezz ta’ JMAP b’token tal-API: Settings › Privacy & Security › Manage API tokens, għal JMAP, b’aċċess għall-imejl u għall-bgħit.';
 
   @override
-  String get accountSetupFastmailNote => 'Fastmail għandu bżonn password tal-app għall-apps tal-imejl.';
+  String get accountSetupFastmailNote =>
+      'Fastmail għandu bżonn password tal-app għall-apps tal-imejl.';
 
   @override
   String get accountSetupServerSettings => 'Settings tas-server';
@@ -6304,7 +6557,8 @@ class AppLocalizationsMt extends AppLocalizations {
       'Il-password ġiet irrifjutata. Uża password tal-app, mhux il-password tal-kont tiegħek.';
 
   @override
-  String get accountSetupPasswordRejected => 'Il-password ġiet irrifjutata. Iċċekkjaha u erġa’ pprova.';
+  String get accountSetupPasswordRejected =>
+      'Il-password ġiet irrifjutata. Iċċekkjaha u erġa’ pprova.';
 
   @override
   String get accountSetupServerUnreachable =>
@@ -6382,7 +6636,11 @@ class AppLocalizationsMt extends AppLocalizations {
   String get accountSetupSigningIn => 'Qed tidħol…';
 
   @override
-  String accountSetupSignInExpired(String provider, String email, String account) {
+  String accountSetupSignInExpired(
+    String provider,
+    String email,
+    String account,
+  ) {
     return '$provider m’għadux jaċċetta d-dħul ta’ Loupe għal $email, għalhekk $account mhux qed jissinkronizza. Erġa’ idħol biex tieħu l-posta tiegħu.';
   }
 
@@ -6390,7 +6648,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get accountImportTitle => 'Importa minn Thunderbird';
 
   @override
-  String get accountImportPointCamera => 'Ipponta l-kamera lejn il-kodiċi QR li juri Thunderbird.';
+  String get accountImportPointCamera =>
+      'Ipponta l-kamera lejn il-kodiċi QR li juri Thunderbird.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -6399,7 +6658,11 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String accountImportProgressLabel(int scanned, int total) {
-    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: 'Skennjati $scanned minn $total kodiċi');
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Skennjati $scanned minn $total kodiċi',
+    );
     return '$_temp0';
   }
 
@@ -6449,20 +6712,24 @@ class AppLocalizationsMt extends AppLocalizations {
       'Dan il-kodiċi huwa minn esportazzjoni ġdida, għalhekk il-kodiċijiet skennjati qabel tpoġġew fil-ġenb.';
 
   @override
-  String get accountImportNotThunderbird => 'Dan mhuwiex kodiċi ta’ kont ta’ Thunderbird.';
+  String get accountImportNotThunderbird =>
+      'Dan mhuwiex kodiċi ta’ kont ta’ Thunderbird.';
 
   @override
   String get accountImportNewerVersion =>
       'Dan il-kodiċi ġej minn Thunderbird aktar ġdid. Aġġorna Loupe biex timportah.';
 
   @override
-  String get accountImportDamaged => 'Dan il-kodiċi ta’ Thunderbird ma setax jinqara.';
+  String get accountImportDamaged =>
+      'Dan il-kodiċi ta’ Thunderbird ma setax jinqara.';
 
   @override
-  String get accountImportTooLarge => 'Dan il-kodiċi huwa kbir wisq biex ikun esportazzjoni ta’ Thunderbird.';
+  String get accountImportTooLarge =>
+      'Dan il-kodiċi huwa kbir wisq biex ikun esportazzjoni ta’ Thunderbird.';
 
   @override
-  String get accountImportCouldNotOpenSettings => 'Is-Settings ma setgħux jinfetħu.';
+  String get accountImportCouldNotOpenSettings =>
+      'Is-Settings ma setgħux jinfetħu.';
 
   @override
   String get accountImportCameraOffTitle => 'L-aċċess għall-kamera huwa mitfi';
@@ -6475,13 +6742,15 @@ class AppLocalizationsMt extends AppLocalizations {
   String get accountImportNoCameraTitle => 'L-ebda kamera';
 
   @override
-  String get accountImportNoCameraText => 'Loupe ma tistax tuża kamera hawn. Minflok, waħħal it-test tal-kodiċi.';
+  String get accountImportNoCameraText =>
+      'Loupe ma tistax tuża kamera hawn. Minflok, waħħal it-test tal-kodiċi.';
 
   @override
   String get accountImportCameraFailedTitle => 'Il-kamera ma bdietx';
 
   @override
-  String get accountImportCameraFailedText => 'Erġa’ pprova, jew minflok waħħal it-test tal-kodiċi.';
+  String get accountImportCameraFailedText =>
+      'Erġa’ pprova, jew minflok waħħal it-test tal-kodiċi.';
 
   @override
   String get accountImportOpenSettings => 'Iftaħ is-Settings';
@@ -6502,18 +6771,22 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable => 'L-ebda wieħed mill-kontijiet f’dawn il-kodiċijiet ma seta’ jinqara.';
+  String get accountImportNoneReadable =>
+      'L-ebda wieħed mill-kontijiet f’dawn il-kodiċijiet ma seta’ jinqara.';
 
   @override
-  String get accountImportChoose => 'Agħżel il-kontijiet li trid iżżid ma’ Loupe.';
+  String get accountImportChoose =>
+      'Agħżel il-kontijiet li trid iżżid ma’ Loupe.';
 
   @override
   String accountImportMissingCodes(int count, String codes, int total) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Il-kodiċijiet $codes minn $total ma ġewx skennjati, għalhekk il-kontijiet tagħhom mhumiex elenkati.',
-      one: 'Il-kodiċi $codes minn $total ma ġiex skennjat, għalhekk il-kontijiet tiegħu mhumiex elenkati.',
+      other:
+          'Il-kodiċijiet $codes minn $total ma ġewx skennjati, għalhekk il-kontijiet tagħhom mhumiex elenkati.',
+      one:
+          'Il-kodiċi $codes minn $total ma ġiex skennjat, għalhekk il-kontijiet tiegħu mhumiex elenkati.',
     );
     return '$_temp0';
   }
@@ -6548,7 +6821,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get accountImportScanAgain => 'Erġa’ skennja';
 
   @override
-  String get accountImportAlreadyAdded => 'Kont b’dan l-indirizz diġà jinsab f’Loupe.';
+  String get accountImportAlreadyAdded =>
+      'Kont b’dan l-indirizz diġà jinsab f’Loupe.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -6556,7 +6830,8 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get accountImportGmailAppPassword => 'Żid il-kont b’password tal-app (għandek bżonn 2-Step Verification).';
+  String get accountImportGmailAppPassword =>
+      'Żid il-kont b’password tal-app (għandek bżonn 2-Step Verification).';
 
   @override
   String get accountImportGmailNoSignIn =>
@@ -6567,7 +6842,8 @@ class AppLocalizationsMt extends AppLocalizations {
       'Thunderbird jidħol f’dan il-kont fil-browser. Loupe għadha ma tistax tagħmel dan: uża password tal-app jekk il-fornitur tiegħek joffri waħda.';
 
   @override
-  String get accountImportUnencrypted => 'Jikkonnettja mingħajr kriptaġġ. Uża dan biss fuq in-network tiegħek stess.';
+  String get accountImportUnencrypted =>
+      'Jikkonnettja mingħajr kriptaġġ. Uża dan biss fuq in-network tiegħek stess.';
 
   @override
   String get accountImportEnterAgain => 'Erġa’ daħħalha';
@@ -6603,13 +6879,16 @@ class AppLocalizationsMt extends AppLocalizations {
       'Waħħal it-test ta’ kodiċi ta’ esportazzjoni ta’ Thunderbird, kodiċi wieħed f’kull linja.';
 
   @override
-  String get accountImportPop3 => 'Il-kontijiet POP3 mhumiex appoġġjati. Loupe iżżomm il-posta fuq is-server b’IMAP.';
+  String get accountImportPop3 =>
+      'Il-kontijiet POP3 mhumiex appoġġjati. Loupe iżżomm il-posta fuq is-server b’IMAP.';
 
   @override
-  String get accountImportKerberos => 'Dan il-kont jidħol b’Kerberos, li Loupe ma tappoġġjax.';
+  String get accountImportKerberos =>
+      'Dan il-kont jidħol b’Kerberos, li Loupe ma tappoġġjax.';
 
   @override
-  String get accountImportNtlm => 'Dan il-kont jidħol b’NTLM, li Loupe ma tappoġġjax.';
+  String get accountImportNtlm =>
+      'Dan il-kont jidħol b’NTLM, li Loupe ma tappoġġjax.';
 
   @override
   String get accountImportClientCertificate =>
@@ -6633,7 +6912,8 @@ class AppLocalizationsMt extends AppLocalizations {
       'Loupe ma setgħetx tiftaħ il-ħażna tal-kontijiet tagħha. Erġa’ pprova aktar tard.';
 
   @override
-  String get accountImportFailed => 'Il-kont ma setax jiżdied. Erġa’ pprova, jew żidu manwalment.';
+  String get accountImportFailed =>
+      'Il-kont ma setax jiżdied. Erġa’ pprova, jew żidu manwalment.';
 
   @override
   String get composeNewMessageTitle => 'Messaġġ ġdid';
@@ -6731,7 +7011,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get composeDraftNotFound => 'L-abbozz ma nstabx.';
 
   @override
-  String get composeAttachmentsLost => 'L-annessi ma setgħux jiġu rkuprati. Erġa’ żidhom.';
+  String get composeAttachmentsLost =>
+      'L-annessi ma setgħux jiġu rkuprati. Erġa’ żidhom.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -6758,10 +7039,12 @@ class AppLocalizationsMt extends AppLocalizations {
   String get composeNoSubjectTitle => 'Mingħajr suġġett';
 
   @override
-  String get composeNoSubjectText => 'Dan il-messaġġ m’għandux suġġett. Tibagħtu xorta waħda?';
+  String get composeNoSubjectText =>
+      'Dan il-messaġġ m’għandux suġġett. Tibagħtu xorta waħda?';
 
   @override
-  String get composeSentBeforeChanges => 'Intbagħat qabel il-bidliet tiegħek, li huma maħżuna fl-Abbozzi.';
+  String get composeSentBeforeChanges =>
+      'Intbagħat qabel il-bidliet tiegħek, li huma maħżuna fl-Abbozzi.';
 
   @override
   String composeScheduled(String time) {
@@ -6892,11 +7175,16 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String composeRecoveryWithSubject(String recipients, String subject, String name) {
+  String composeRecoveryWithSubject(
+    String recipients,
+    String subject,
+    String name,
+  ) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': '“$subject” ma ntbagħatx meta Loupe ngħalqet.',
       'one': '“$subject” lil $name ma ntbagħatx meta Loupe ngħalqet.',
-      'other': '“$subject” lil $name u oħrajn ma ntbagħatx meta Loupe ngħalqet.',
+      'other':
+          '“$subject” lil $name u oħrajn ma ntbagħatx meta Loupe ngħalqet.',
     });
     return '$_temp0';
   }
@@ -6944,7 +7232,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get outboxEmptyTitle => 'Xejn x’tibgħat';
 
   @override
-  String get outboxEmptyText => 'Il-messaġġi li tibgħat aktar tard jistennew hawn sakemm jasal il-ħin.';
+  String get outboxEmptyText =>
+      'Il-messaġġi li tibgħat aktar tard jistennew hawn sakemm jasal il-ħin.';
 
   @override
   String get outboxSendNow => 'Ibgħat issa';
@@ -7003,7 +7292,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription => 'Posta ġdida mill-VIPs tiegħek, f’kull kont';
+  String get notificationsVipChannelDescription =>
+      'Posta ġdida mill-VIPs tiegħek, f’kull kont';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -7057,7 +7347,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get platformInstantText => 'It-Twassil immedjat huwa mixgħul';
 
   @override
-  String get platformErrorBox => 'Xi ħaġa marret ħażin waqt li kien qed jintwera dan. Mur lura u erġa’ pprova.';
+  String get platformErrorBox =>
+      'Xi ħaġa marret ħażin waqt li kien qed jintwera dan. Mur lura u erġa’ pprova.';
 
   @override
   String get welcomeTagline => 'Imejl sempliċi fil-wiċċ\nu qawwi minn taħt.';
@@ -7066,19 +7357,22 @@ class AppLocalizationsMt extends AppLocalizations {
   String get welcomeAccountsTitle => 'Kull kont, inbox waħda kalma';
 
   @override
-  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail u kull server IMAP jew JMAP.';
+  String get welcomeAccountsText =>
+      'Gmail, Outlook, iCloud, Fastmail u kull server IMAP jew JMAP.';
 
   @override
   String get welcomeSearchTitle => 'Tfittxija li ssib';
 
   @override
-  String get welcomeSearchText => 'Riżultati minnufih fuq il-mowbajl tiegħek, imbagħad dawk tas-server.';
+  String get welcomeSearchText =>
+      'Riżultati minnufih fuq il-mowbajl tiegħek, imbagħad dawk tas-server.';
 
   @override
   String get welcomePrivacyTitle => 'Privata mid-disinn';
 
   @override
-  String get welcomePrivacyText => 'L-ebda traċċar. L-istampi remoti jibqgħu mblukkati sakemm tgħid int.';
+  String get welcomePrivacyText =>
+      'L-ebda traċċar. L-istampi remoti jibqgħu mblukkati sakemm tgħid int.';
 
   @override
   String get welcomeAddAccount => 'Żid kont';
@@ -7108,7 +7402,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get searchAskFailed => 'Loupe ma setax jagħmel tfittxija minn dan.';
 
   @override
-  String get searchAskDemoNote => 'Tradott mid-demo inkorporata, mhux minn mudell.';
+  String get searchAskDemoNote =>
+      'Tradott mid-demo inkorporata, mhux minn mudell.';
 
   @override
   String get settingsAiHeader => 'IA privata';
@@ -7132,10 +7427,12 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsAiDemo => 'Demo integrat';
 
   @override
-  String get settingsAiDemoDetail => 'Fuq dan il-mowbajl. L-ebda mudell: ftit regoli, biex tipprova l-funzjonijiet.';
+  String get settingsAiDemoDetail =>
+      'Fuq dan il-mowbajl. L-ebda mudell: ftit regoli, biex tipprova l-funzjonijiet.';
 
   @override
-  String get settingsAiAnthropicDetail => 'Cloud: Claude, biċ-ċavetta API tiegħek stess.';
+  String get settingsAiAnthropicDetail =>
+      'Cloud: Claude, biċ-ċavetta API tiegħek stess.';
 
   @override
   String get settingsAiServer => 'Is-server tiegħi';
@@ -7200,13 +7497,15 @@ class AppLocalizationsMt extends AppLocalizations {
       'Sal-mogħdija tal-API inkluża, pereżempju http://192.168.1.20:11434/v1 għal Ollama.';
 
   @override
-  String get settingsAiServerAddressInvalid => 'Dan mhux indirizz http:// jew https://.';
+  String get settingsAiServerAddressInvalid =>
+      'Dan mhux indirizz http:// jew https://.';
 
   @override
   String get settingsAiServerModelTitle => 'Isem il-mudell';
 
   @override
-  String get settingsAiServerModelMessage => 'Kif isejjaħlu s-server tiegħek, pereżempju llama3.2.';
+  String get settingsAiServerModelMessage =>
+      'Kif isejjaħlu s-server tiegħek, pereżempju llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Ittestja l-konnessjoni';
@@ -7223,7 +7522,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsAiTestFailed => 'It-test falla';
 
   @override
-  String get settingsAiTestInvalid => 'Il-mudell wieġeb, iżda mhux fil-forma li talab Loupe.';
+  String get settingsAiTestInvalid =>
+      'Il-mudell wieġeb, iżda mhux fil-forma li talab Loupe.';
 
   @override
   String get settingsAiRemoveKey => 'Neħħi ċ-ċavetta';
@@ -7268,7 +7568,8 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsAiFeaturesHeader => 'Funzjonijiet';
 
   @override
-  String get settingsAiFeaturesFooter => 'Funzjoni mitfija ma turi l-ebda parti tal-IA u ma tistaqsi l-ebda mudell.';
+  String get settingsAiFeaturesFooter =>
+      'Funzjoni mitfija ma turi l-ebda parti tal-IA u ma tistaqsi l-ebda mudell.';
 
   @override
   String get settingsAiFeatureBrief => 'Fil-qosor';
@@ -7292,28 +7593,36 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsAiFeatureMatters => 'L-istat tal-kwistjoni';
 
   @override
-  String get settingsAiFeatureSearchDetail => 'Fit-tfittxija: sentenza ssir tfittxija li tista’ tivverifika.';
+  String get settingsAiFeatureSearchDetail =>
+      'Fit-tfittxija: sentenza ssir tfittxija li tista’ tivverifika.';
 
   @override
-  String get settingsAiFeatureBriefDetail => 'F’messaġġ: x’jitlob minnek, bis-siltiet.';
+  String get settingsAiFeatureBriefDetail =>
+      'F’messaġġ: x’jitlob minnek, bis-siltiet.';
 
   @override
-  String get settingsAiFeatureActionsDetail => 'Jipproponi elementi għal “Jistennew lili” u “Jistennew lil oħrajn”.';
+  String get settingsAiFeatureActionsDetail =>
+      'Jipproponi elementi għal “Jistennew lili” u “Jistennew lil oħrajn”.';
 
   @override
-  String get settingsAiFeatureRulesDetail => 'Fir-Regoli: deskrizzjoni ssir regola li tivverifika qabel ma taħżen.';
+  String get settingsAiFeatureRulesDetail =>
+      'Fir-Regoli: deskrizzjoni ssir regola li tivverifika qabel ma taħżen.';
 
   @override
-  String get settingsAiFeatureChangesDetail => 'Fi Qabbel il-messaġġi: x’inbidel fit-tifsira, bis-sorsi.';
+  String get settingsAiFeatureChangesDetail =>
+      'Fi Qabbel il-messaġġi: x’inbidel fit-tifsira, bis-sorsi.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail => 'Il-fatti ewlenin tad-dokumenti mehmuża, bil-paġni tagħhom.';
+  String get settingsAiFeatureDocumentsDetail =>
+      'Il-fatti ewlenin tad-dokumenti mehmuża, bil-paġni tagħhom.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail => 'Qabel tibgħat: x’setgħet taqbeż tweġiba.';
+  String get settingsAiFeatureReplyCheckDetail =>
+      'Qabel tibgħat: x’setgħet taqbeż tweġiba.';
 
   @override
-  String get settingsAiFeatureMattersDetail => 'L-aħħar stat ta’ kwistjoni, mill-posta tagħha.';
+  String get settingsAiFeatureMattersDetail =>
+      'L-aħħar stat ta’ kwistjoni, mill-posta tagħha.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Żomm il-posta fuq il-mowbajl';

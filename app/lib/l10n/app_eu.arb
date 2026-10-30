@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Ziurtagiri-autoritateak {status} erantzun du.",
   "smimeAuthorityAnswerTooLarge": "Ziurtagiri-autoritatearen erantzuna handiegia da.",
   "smimeRevocationNotChecked": "Egiaztatu gabe: Loupe-k fidagarritzat jotzen dituen autoritateen ziurtagiriak bakarrik egiaztatzen dira.",
+  "actionsNeedsMyAction": "Nire ekintza behar du",
+  "actionsWaitingOnOthers": "Besteen zain",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Zerbitzariak berehala jakinarazten du sarrera-ontziko posta berria, Loupe-k irekita mantentzen duen konexio baten bidez. Desaktibatuta, Loupe-k minutu gutxiro egiaztatzen du posta, eta konexio bat gutxiago erabiltzen du.",
   "settingsPasswordUnchanged": "Aldatu gabe",

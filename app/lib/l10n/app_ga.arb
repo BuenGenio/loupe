@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "D’fhreagair an t-údarás deimhnithe {status}.",
   "smimeAuthorityAnswerTooLarge": "Tá freagra an údaráis dheimhnithe rómhór.",
   "smimeRevocationNotChecked": "Gan seiceáil: ní sheiceáiltear ach teastais ó údarás a bhfuil muinín ag Loupe as.",
+  "actionsNeedsMyAction": "Gníomh de dhíth uaim",
+  "actionsWaitingOnOthers": "Ag fanacht ar dhaoine eile",
   "settingsIdle": "{protocol, select, jmap{Brú} other{IDLE}}",
   "settingsIdleFooter": "Insíonn an freastalaí láithreach faoi ríomhphost nua sa Bhosca Isteach, thar cheangal a choinníonn Loupe oscailte. Nuair atá sé múchta, seiceálann Loupe gach cúpla nóiméad agus úsáideann sé ceangal amháin níos lú.",
   "settingsPasswordUnchanged": "Gan athrú",

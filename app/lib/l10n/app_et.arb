@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Sertifitseerimisasutus vastas koodiga {status}.",
   "smimeAuthorityAnswerTooLarge": "Sertifitseerimisasutuse vastus on liiga suur.",
   "smimeRevocationNotChecked": "Pole kontrollitud: kontrollitakse ainult nende asutuste sertifikaate, mida Loupe usaldab.",
+  "actionsNeedsMyAction": "Vajab minu tegevust",
+  "actionsWaitingOnOthers": "Ootan teisi",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Server teatab uutest kirjadest sisendkaustas kohe, ühenduse kaudu, mida Loupe hoiab avatuna. Välja lülitatuna kontrollib Loupe kirju iga paari minuti järel ja kasutab ühe ühenduse vähem.",
   "settingsPasswordUnchanged": "Muutmata",

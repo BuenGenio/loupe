@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "D’Zertifizéierungsstell huet mat {status} geäntwert.",
   "smimeAuthorityAnswerTooLarge": "D’Äntwert vun der Zertifizéierungsstell ass ze grouss.",
   "smimeRevocationNotChecked": "Net iwwerpréift: Nëmmen Zertifikater vu Stellen, deene Loupe vertraut, ginn iwwerpréift.",
+  "actionsNeedsMyAction": "Brauch meng Aktioun",
+  "actionsWaitingOnOthers": "Waart op anerer",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "De Server mellt nei Mailen an der Inbox direkt, iwwer eng Verbindung, déi Loupe op hält. Aus: Loupe kuckt all puer Minutten no a brauch eng Verbindung manner.",
   "settingsPasswordUnchanged": "Onverännert",

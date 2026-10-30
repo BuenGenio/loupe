@@ -196,7 +196,8 @@ class AppLocalizationsLv extends AppLocalizations {
       'Šī vēstule ir pārāk liela detalizētam salīdzinājumam. Daļa teksta var tikt izlaista vai parādīta kā vesels bloks.';
 
   @override
-  String get conversationChangesLoadError => 'Šīs vēstules neizdevās salīdzināt.';
+  String get conversationChangesLoadError =>
+      'Šīs vēstules neizdevās salīdzināt.';
 
   @override
   String get conversationSomethingWentWrong => 'Radās kļūda. Mēģiniet vēlreiz.';
@@ -208,7 +209,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get conversationReplyList => 'Atbildēt sarakstam';
 
   @override
-  String get conversationThreadMuted => 'Pavediens apklusināts. Jauni ziņojumi tajā tiks saņemti kā lasīti.';
+  String get conversationThreadMuted =>
+      'Pavediens apklusināts. Jauni ziņojumi tajā tiks saņemti kā lasīti.';
 
   @override
   String get conversationThreadUnmuted => 'Pavediena apklusināšana atcelta.';
@@ -235,7 +237,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get conversationTrash => 'Uz miskasti';
 
   @override
-  String get conversationReplyHint => 'Turiet nospiestu, lai atbildētu visiem vai pārsūtītu';
+  String get conversationReplyHint =>
+      'Turiet nospiestu, lai atbildētu visiem vai pārsūtītu';
 
   @override
   String get conversationOfflineTitle => 'Jūs esat bezsaistē';
@@ -309,7 +312,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get conversationBodyError => 'Šo ziņojumu neizdevās ielādēt.';
 
   @override
-  String get conversationBodyOffline => 'Jūs esat bezsaistē. Ziņojums tiks ielādēts, kad atkal būsiet tiešsaistē.';
+  String get conversationBodyOffline =>
+      'Jūs esat bezsaistē. Ziņojums tiks ielādēts, kad atkal būsiet tiešsaistē.';
 
   @override
   String get conversationOriginalHint => 'Skatā „Oriģināls“ izskatās labāk';
@@ -489,7 +493,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get conversationSecurityBadgeHint => 'Parāda iemeslu';
 
   @override
-  String get conversationPhishingBannerTitle => 'Šis ziņojums izskatās pēc pikšķerēšanas';
+  String get conversationPhishingBannerTitle =>
+      'Šis ziņojums izskatās pēc pikšķerēšanas';
 
   @override
   String conversationPhishingBannerReason(String reason) {
@@ -506,26 +511,32 @@ class AppLocalizationsLv extends AppLocalizations {
   String get conversationPhishingShowAnyway => 'Tomēr rādīt';
 
   @override
-  String get conversationSecurityPhishingTitle => 'Tas izskatās pēc pikšķerēšanas';
+  String get conversationSecurityPhishingTitle =>
+      'Tas izskatās pēc pikšķerēšanas';
 
   @override
-  String get conversationSecurityPhishingText => 'Vairākas pazīmes liecina, ka šis ziņojums nav tas, par ko uzdodas.';
+  String get conversationSecurityPhishingText =>
+      'Vairākas pazīmes liecina, ka šis ziņojums nav tas, par ko uzdodas.';
 
   @override
-  String get conversationSecurityCarefulTitle => 'Esiet piesardzīgi ar šo ziņojumu';
+  String get conversationSecurityCarefulTitle =>
+      'Esiet piesardzīgi ar šo ziņojumu';
 
   @override
-  String get conversationSecurityCarefulText => 'Kaut kas tajā ir pelnījis rūpīgāku apskati.';
+  String get conversationSecurityCarefulText =>
+      'Kaut kas tajā ir pelnījis rūpīgāku apskati.';
 
   @override
-  String get conversationSecurityVerifiedText => 'Sūtītājs ir pārbaudīts, un nekas neizskatās aizdomīgs.';
+  String get conversationSecurityVerifiedText =>
+      'Sūtītājs ir pārbaudīts, un nekas neizskatās aizdomīgs.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Nekas neizskatās aizdomīgs. Jūsu pasta serveris nenorādīja, vai sūtītājs ir pārbaudīts.';
 
   @override
-  String get conversationSecurityNothingSuspicious => 'Nekas neizskatās aizdomīgs.';
+  String get conversationSecurityNothingSuspicious =>
+      'Nekas neizskatās aizdomīgs.';
 
   @override
   String get conversationSecurityWhy => 'Kāpēc';
@@ -549,7 +560,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityTrackingPixelsText => 'Tie būtu paziņojuši sūtītājam, kad atvērāt šo ziņojumu.';
+  String get conversationSecurityTrackingPixelsText =>
+      'Tie būtu paziņojuši sūtītājam, kad atvērāt šo ziņojumu.';
 
   @override
   String get conversationSecurityNoRemoteImages => 'Nav attālo attēlu';
@@ -594,7 +606,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Tehniskā informācija';
 
   @override
-  String get conversationSecurityCheckedLocally => 'Pārbaudīts šajā ierīcē. Nekas netika nekur nosūtīts.';
+  String get conversationSecurityCheckedLocally =>
+      'Pārbaudīts šajā ierīcē. Nekas netika nekur nosūtīts.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Izsekotāji';
@@ -661,7 +674,8 @@ class AppLocalizationsLv extends AppLocalizations {
       'Nerīkojieties pēc tā, ja vien to negaidījāt. Ja šaubāties, sazinieties ar sūtītāju citā veidā.';
 
   @override
-  String get conversationSecurityAuthUnalignedTitle => 'Parakstījis cits domēns';
+  String get conversationSecurityAuthUnalignedTitle =>
+      'Parakstījis cits domēns';
 
   @override
   String conversationSecurityAuthUnalignedText(String signer, String domain) {
@@ -674,7 +688,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle => 'Vārdā redzama cita adrese';
+  String get conversationSecurityNameShowsAddressTitle =>
+      'Vārdā redzama cita adrese';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -682,7 +697,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice => 'Uzticieties adresei, nevis vārdam.';
+  String get conversationSecurityNameShowsAddressAdvice =>
+      'Uzticieties adresei, nevis vārdam.';
 
   @override
   String get conversationSecurityReplyToTitle => 'Atbildes nonāks citur';
@@ -693,13 +709,15 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityReplyToAdvice => 'Pirms atbildat ar kaut ko personisku, pārbaudiet adresi.';
+  String get conversationSecurityReplyToAdvice =>
+      'Pirms atbildat ar kaut ko personisku, pārbaudiet adresi.';
 
   @override
   String get conversationSecurityImpersonationYouTitle => 'Izmanto jūsu vārdu';
 
   @override
-  String get conversationSecurityImpersonationTitle => 'Izmanto kāda jums pazīstama cilvēka vārdu';
+  String get conversationSecurityImpersonationTitle =>
+      'Izmanto kāda jums pazīstama cilvēka vārdu';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -707,17 +725,28 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationVipText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Paraksts ir „$name“ — tāpat kā jūsu VIP $knownName ($knownEmail), taču ziņojums nāk no jaunas adreses: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Paraksts ir „$name“ — tāpat kā $knownName ($knownEmail), taču ziņojums nāk no jaunas adreses: $email.';
   }
 
   @override
-  String get conversationSecurityImpersonationRepliesElsewhere => 'Un atbildes nonāktu vēl citā adresē.';
+  String get conversationSecurityImpersonationRepliesElsewhere =>
+      'Un atbildes nonāktu vēl citā adresē.';
 
   @override
   String get conversationSecurityImpersonationAdvice =>
@@ -734,7 +763,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle => 'Pirmais ziņojums no šī sūtītāja';
+  String get conversationSecurityFirstTimeTitle =>
+      'Pirmais ziņojums no šī sūtītāja';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -742,13 +772,16 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeAdvice => 'Esiet piesardzīgi ar lūgumiem no cilvēkiem, kurus vēl nepazīstat.';
+  String get conversationSecurityFirstTimeAdvice =>
+      'Esiet piesardzīgi ar lūgumiem no cilvēkiem, kurus vēl nepazīstat.';
 
   @override
-  String get conversationSecuritySenderHomographTitle => 'Līdzīga izskata burti sūtītāja adresē';
+  String get conversationSecuritySenderHomographTitle =>
+      'Līdzīga izskata burti sūtītāja adresē';
 
   @override
-  String get conversationSecurityLinkHomographTitle => 'Līdzīga izskata burti saitē';
+  String get conversationSecurityLinkHomographTitle =>
+      'Līdzīga izskata burti saitē';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -761,7 +794,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice => 'Izdzēsiet to vai ziņojiet par to kā par mēstuli.';
+  String get conversationSecuritySenderHomographAdvice =>
+      'Izdzēsiet to vai ziņojiet par to kā par mēstuli.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Neatveriet to.';
@@ -775,7 +809,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get conversationSecurityLookalikeTitle => 'Līdzīga izskata domēns';
 
   @override
-  String get conversationSecurityFamiliarNameTitle => 'Domēnā izmantots pazīstams nosaukums';
+  String get conversationSecurityFamiliarNameTitle =>
+      'Domēnā izmantots pazīstams nosaukums';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -783,7 +818,11 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(String domain, String brand, String real) {
+  String conversationSecurityLookalikeText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return '$domain izskatās pēc $brand ($real), taču tas ir cits domēns.';
   }
 
@@ -793,7 +832,11 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
+  String conversationSecurityFamiliarNameText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return '$domain izmanto $brand ($real) nosaukumu, taču tam nepieder.';
   }
 
@@ -844,7 +887,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle => 'Saites galamērķi nevar pārbaudīt';
+  String get conversationSecurityLinkUncheckableTitle =>
+      'Saites galamērķi nevar pārbaudīt';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -878,16 +922,20 @@ class AppLocalizationsLv extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Prasa paroli';
 
   @override
-  String get conversationSecurityPasswordFieldText => 'Ziņojumā bija paroles lauks. Loupe to noņēma.';
+  String get conversationSecurityPasswordFieldText =>
+      'Ziņojumā bija paroles lauks. Loupe to noņēma.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice => 'Nekad neievadiet paroli e-pasta ziņojumā.';
+  String get conversationSecurityPasswordFieldAdvice =>
+      'Nekad neievadiet paroli e-pasta ziņojumā.';
 
   @override
-  String get conversationSecurityScriptLinkTitle => 'Saite, kas izpilda kodu, atspējota';
+  String get conversationSecurityScriptLinkTitle =>
+      'Saite, kas izpilda kodu, atspējota';
 
   @override
-  String get conversationSecurityScriptLinkText => 'Loupe nekad neizpilda kodu no ziņojumiem.';
+  String get conversationSecurityScriptLinkText =>
+      'Loupe nekad neizpilda kodu no ziņojumiem.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -907,7 +955,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityInternationalTitle => 'Starptautiska tīmekļa adrese';
+  String get conversationSecurityInternationalTitle =>
+      'Starptautiska tīmekļa adrese';
 
   @override
   String conversationSecurityInternationalText(String hosts) {
@@ -948,7 +997,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed => 'Neizdevās lejupielādēt ziņojumu. Pārbaudiet savienojumu un mēģiniet vēlreiz.';
+  String get exportDownloadFailed =>
+      'Neizdevās lejupielādēt ziņojumu. Pārbaudiet savienojumu un mēģiniet vēlreiz.';
 
   @override
   String exportSaved(String name) {
@@ -978,9 +1028,11 @@ class AppLocalizationsLv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Saglabāts „$name“ bez $formattedCount ziņojumiem, kurus nevarēja lejupielādēt.',
+      other:
+          'Saglabāts „$name“ bez $formattedCount ziņojumiem, kurus nevarēja lejupielādēt.',
       one: 'Saglabāts „$name“ bez $count ziņojuma, kuru nevarēja lejupielādēt.',
-      zero: 'Saglabāts „$name“ bez $formattedCount ziņojumiem, kurus nevarēja lejupielādēt.',
+      zero:
+          'Saglabāts „$name“ bez $formattedCount ziņojumiem, kurus nevarēja lejupielādēt.',
     );
     return '$_temp0';
   }
@@ -1059,7 +1111,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get mailboxesSmartMailboxes => 'Smart Mailboxes';
 
   @override
-  String get mailboxesSmartMailboxesEmpty => 'Saglabājiet meklēšanu, lai tā būtu šeit.';
+  String get mailboxesSmartMailboxesEmpty =>
+      'Saglabājiet meklēšanu, lai tā būtu šeit.';
 
   @override
   String get mailboxesTags => 'Birkas';
@@ -1093,7 +1146,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get projectsDelete => 'Dzēst projektu';
 
   @override
-  String get projectsDeleteMessage => 'Tā sarunas paliek, kur ir, ārpus projekta.';
+  String get projectsDeleteMessage =>
+      'Tā sarunas paliek, kur ir, ārpus projekta.';
 
   @override
   String get projectsUntitled => 'Projekts';
@@ -1164,7 +1218,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get projectsSettingsEverythingElse => 'Rādīt visu pārējo';
 
   @override
-  String get projectsSettingsEverythingElseFooter => 'Flīžu skatā flīze iesūtnes pastam, kas nav nevienā projektā.';
+  String get projectsSettingsEverythingElseFooter =>
+      'Flīžu skatā flīze iesūtnes pastam, kas nav nevienā projektā.';
 
   @override
   String get projectsSettingsSuggest => 'Ieteikt tēmas';
@@ -1207,7 +1262,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get mailboxesVipTitle => 'VIP';
 
   @override
-  String get mailboxesVipFooter => 'Varat arī ziņojumā pieskarties sūtītāja vārdam un ieslēgt VIP.';
+  String get mailboxesVipFooter =>
+      'Varat arī ziņojumā pieskarties sūtītāja vārdam un ieslēgt VIP.';
 
   @override
   String get mailboxesAddVip => 'Pievienot VIP…';
@@ -1216,7 +1272,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get mailboxesAddVipTitle => 'Pievienot VIP';
 
   @override
-  String get mailboxesAddVipText => 'Pasts no šīs adreses saņem zvaigznīti un parādās VIP pastkastē.';
+  String get mailboxesAddVipText =>
+      'Pasts no šīs adreses saņem zvaigznīti un parādās VIP pastkastē.';
 
   @override
   String get mailboxesAddVipPlaceholder => 'name@example.com';
@@ -1406,13 +1463,15 @@ class AppLocalizationsLv extends AppLocalizations {
   String get snoozeNoTime => 'Laiks nav iestatīts';
 
   @override
-  String get snoozeFooter => 'Atliktie ziņojumi noteiktajā laikā atgriežas iesūtnē kā nelasīti.';
+  String get snoozeFooter =>
+      'Atliktie ziņojumi noteiktajā laikā atgriežas iesūtnē kā nelasīti.';
 
   @override
   String get snoozeEmptyTitle => 'Nav atliktu ziņojumu';
 
   @override
-  String get snoozeEmptyText => 'Atlieciet ziņojumu, lai tas atgrieztos iesūtnē, kad jums tas būs vajadzīgs.';
+  String get snoozeEmptyText =>
+      'Atlieciet ziņojumu, lai tas atgrieztos iesūtnē, kad jums tas būs vajadzīgs.';
 
   @override
   String get briefButton => 'Īsumā';
@@ -1436,13 +1495,16 @@ class AppLocalizationsLv extends AppLocalizations {
   String get briefStopped => 'Jūs apturējāt kopsavilkumu.';
 
   @override
-  String get briefFailedTooLarge => 'Šis ziņojums modelim ir par garu, tāpēc nekas netika nosūtīts.';
+  String get briefFailedTooLarge =>
+      'Šis ziņojums modelim ir par garu, tāpēc nekas netika nosūtīts.';
 
   @override
-  String get briefFailedProvider => 'Modelim neizdevās izveidot šī ziņojuma kopsavilkumu.';
+  String get briefFailedProvider =>
+      'Modelim neizdevās izveidot šī ziņojuma kopsavilkumu.';
 
   @override
-  String get briefFailedInvalid => 'Atbilde neizturēja Loupe pārbaudes, tāpēc kontrolsaraksts netiek rādīts.';
+  String get briefFailedInvalid =>
+      'Atbilde neizturēja Loupe pārbaudes, tāpēc kontrolsaraksts netiek rādīts.';
 
   @override
   String get briefNothingTitle => 'Nav ko apkopot';
@@ -1494,7 +1556,11 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Jūs', 'them': 'Citi', 'other': 'Nav norādīts'});
+    String _temp0 = intl.Intl.selectLogic(owner, {
+      'me': 'Jūs',
+      'them': 'Citi',
+      'other': 'Nav norādīts',
+    });
     return '$_temp0';
   }
 
@@ -1561,7 +1627,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get briefCopyChecklist => 'Kopēt kontrolsarakstu';
 
   @override
-  String get briefMadeByDemo => 'Izveidoja iebūvētā demonstrācija, nevis modelis.';
+  String get briefMadeByDemo =>
+      'Izveidoja iebūvētā demonstrācija, nevis modelis.';
 
   @override
   String briefMadeBy(String location, String name) {
@@ -1583,13 +1650,15 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText => 'Pārbaudiet pašu ziņojumu, pirms darāt kaut ko no šī kopsavilkuma.';
+  String get briefSecurityText =>
+      'Pārbaudiet pašu ziņojumu, pirms darāt kaut ko no šī kopsavilkuma.';
 
   @override
   String get briefSourceTitle => 'Ziņojumā';
 
   @override
-  String get briefSourceAttachment => 'Tas ņemts no pievienotā faila nosaukuma. Kopsavilkums nelasa pielikumu saturu.';
+  String get briefSourceAttachment =>
+      'Tas ņemts no pievienotā faila nosaukuma. Kopsavilkums nelasa pielikumu saturu.';
 
   @override
   String get briefEventTitle => 'Jauns notikums';
@@ -1630,25 +1699,30 @@ class AppLocalizationsLv extends AppLocalizations {
   String get appLockFailed => 'Loupe nevarēja apstiprināt, ka tas esat jūs.';
 
   @override
-  String get appLockLockedOut => 'Pārāk daudz mēģinājumu. Mēģiniet vēlreiz vēlāk.';
+  String get appLockLockedOut =>
+      'Pārāk daudz mēģinājumu. Mēģiniet vēlreiz vēlāk.';
 
   @override
-  String get appLockPromptError => 'Uzvedni neizdevās parādīt. Mēģiniet vēlreiz.';
+  String get appLockPromptError =>
+      'Uzvedni neizdevās parādīt. Mēģiniet vēlreiz.';
 
   @override
-  String get appLockNoScreenLock => 'Šim tālrunim nav iestatīta ekrāna bloķēšana.';
+  String get appLockNoScreenLock =>
+      'Šim tālrunim nav iestatīta ekrāna bloķēšana.';
 
   @override
   String get appLockUnlockPromptTitle => 'Atbloķēt Loupe';
 
   @override
-  String get appLockUnlockPromptReason => 'Apstipriniet, ka tas esat jūs, lai redzētu savu pastu.';
+  String get appLockUnlockPromptReason =>
+      'Apstipriniet, ka tas esat jūs, lai redzētu savu pastu.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Ieslēgt lietotnes bloķēšanu';
 
   @override
-  String get appLockTurnOnPromptReason => 'Apstipriniet, ka tas esat jūs, lai ieslēgtu lietotnes bloķēšanu.';
+  String get appLockTurnOnPromptReason =>
+      'Apstipriniet, ka tas esat jūs, lai ieslēgtu lietotnes bloķēšanu.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1754,7 +1828,11 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String openpgpForKeys(int count, String keys) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Atslēgu ID: $keys');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Atslēgu ID: $keys',
+    );
     return '$_temp0';
   }
 
@@ -1788,36 +1866,44 @@ class AppLocalizationsLv extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Mainīt pieņemšanu…';
 
   @override
-  String get openpgpCheckedFooter => 'Pārbaudīts šajā ierīcē ar OpenPGP, saderīgs ar Thunderbird.';
+  String get openpgpCheckedFooter =>
+      'Pārbaudīts šajā ierīcē ar OpenPGP, saderīgs ar Thunderbird.';
 
   @override
   String get openpgpSummaryLocked =>
       'Jūsu atslēga ir bloķēta. Atbloķējiet to ar tās paroles frāzi, lai lasītu šo ziņojumu.';
 
   @override
-  String get openpgpSummaryNoSecretKey => 'Tas tika šifrēts atslēgai, kuras šajā ierīcē nav.';
+  String get openpgpSummaryNoSecretKey =>
+      'Tas tika šifrēts atslēgai, kuras šajā ierīcē nav.';
 
   @override
-  String get openpgpSummaryDamaged => 'Šifrētie dati ir bojāti vai tika mainīti ceļā.';
+  String get openpgpSummaryDamaged =>
+      'Šifrētie dati ir bojāti vai tika mainīti ceļā.';
 
   @override
-  String get openpgpSummaryUnsupported => 'Tajā izmantots algoritms, ko Loupe neatbalsta.';
+  String get openpgpSummaryUnsupported =>
+      'Tajā izmantots algoritms, ko Loupe neatbalsta.';
 
   @override
-  String get openpgpSummaryEncrypted => 'To var lasīt tikai jūs un pārējie adresāti.';
+  String get openpgpSummaryEncrypted =>
+      'To var lasīt tikai jūs un pārējie adresāti.';
 
   @override
-  String get openpgpSummaryNotSigned => 'Tas nav parakstīts, tāpēc sūtītājs nav apstiprināts.';
+  String get openpgpSummaryNotSigned =>
+      'Tas nav parakstīts, tāpēc sūtītājs nav apstiprināts.';
 
   @override
   String get openpgpSummaryUnknownKey =>
       'Tas ir parakstīts, bet ar atslēgu, kuras jums nav, tāpēc parakstu nevar pārbaudīt.';
 
   @override
-  String get openpgpSummaryBadSignature => 'Paraksts neatbilst: ziņojums, iespējams, ir mainīts.';
+  String get openpgpSummaryBadSignature =>
+      'Paraksts neatbilst: ziņojums, iespējams, ir mainīts.';
 
   @override
-  String get openpgpSummaryMismatch => 'Paraksts ir derīgs, bet atslēga pieder citai adresei, nevis sūtītājam.';
+  String get openpgpSummaryMismatch =>
+      'Paraksts ir derīgs, bet atslēga pieder citai adresei, nevis sūtītājam.';
 
   @override
   String get openpgpSummaryPartial =>
@@ -1827,14 +1913,16 @@ class AppLocalizationsLv extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Parakstīts ar jūsu atslēgu.';
 
   @override
-  String get openpgpSummaryVerified => 'Paraksts ir derīgs, un jūs pārbaudījāt atslēgas pirkstu nospiedumu.';
+  String get openpgpSummaryVerified =>
+      'Paraksts ir derīgs, un jūs pārbaudījāt atslēgas pirkstu nospiedumu.';
 
   @override
   String get openpgpSummaryUnverified =>
       'Paraksts ir derīgs. Jūs pieņēmāt atslēgu, nepārbaudot tās pirkstu nospiedumu.';
 
   @override
-  String get openpgpSummaryRejected => 'Paraksts ir derīgs, bet jūs noraidījāt šo atslēgu.';
+  String get openpgpSummaryRejected =>
+      'Paraksts ir derīgs, bet jūs noraidījāt šo atslēgu.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -1894,7 +1982,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get openpgpAddresses => 'Adreses';
 
   @override
-  String get openpgpAddressesFooter => 'Kuru atslēgu izmanto katra adrese un kad tā šifrē un paraksta.';
+  String get openpgpAddressesFooter =>
+      'Kuru atslēgu izmanto katra adrese un kad tā šifrē un paraksta.';
 
   @override
   String get openpgpCorrespondentsKeys => 'Sarakstes partneru OpenPGP atslēgas';
@@ -1928,7 +2017,8 @@ class AppLocalizationsLv extends AppLocalizations {
       'Meklēšana atrod šifrētus ziņojumus pēc sūtītāja, adresātiem un temata. Ja šī opcija ir ieslēgta, Loupe katra atšifrētā ziņojuma tekstu pievieno arī meklēšanas indeksam savā šifrētajā datubāzē šajā ierīcē, lai meklēšana tos atrastu arī pēc teksta. Izslēdzot to, šis teksts tiek noņemts no indeksa.';
 
   @override
-  String get openpgpIndexDecrypted => 'Indeksēt atšifrētos ziņojumus meklēšanai';
+  String get openpgpIndexDecrypted =>
+      'Indeksēt atšifrētos ziņojumus meklēšanai';
 
   @override
   String get openpgpPassphrases => 'Paroles frāzes';
@@ -1973,7 +2063,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get openpgpAddKeyTitle => 'Pievienot OpenPGP atslēgu';
 
   @override
-  String get openpgpAddKeyMessage => 'Importējiet atslēgu, ko izmantojat Thunderbird, vai izveidojiet jaunu.';
+  String get openpgpAddKeyMessage =>
+      'Importējiet atslēgu, ko izmantojat Thunderbird, vai izveidojiet jaunu.';
 
   @override
   String get openpgpImportFromClipboard => 'Importēt no starpliktuves';
@@ -1994,7 +2085,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get openpgpFromFile => 'No faila';
 
   @override
-  String get openpgpClipboardEmpty => 'Starpliktuve ir tukša. Vispirms nokopējiet atslēgu.';
+  String get openpgpClipboardEmpty =>
+      'Starpliktuve ir tukša. Vispirms nokopējiet atslēgu.';
 
   @override
   String get openpgpKey => 'Atslēga';
@@ -2110,7 +2202,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Šifrēt automātiski';
 
   @override
-  String get openpgpAlwaysEncryptDetail => 'Atsakās sūtīt, ja adresātam nav atslēgas';
+  String get openpgpAlwaysEncryptDetail =>
+      'Atsakās sūtīt, ja adresātam nav atslēgas';
 
   @override
   String get openpgpSignUnencrypted => 'Parakstīt nešifrētu pastu';
@@ -2129,7 +2222,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get openpgpPreferEncryption => 'Dot priekšroku šifrēšanai';
 
   @override
-  String get openpgpPreferEncryptionDetail => 'Lūgt citiem šifrēt, kad viņi to var';
+  String get openpgpPreferEncryptionDetail =>
+      'Lūgt citiem šifrēt, kad viņi to var';
 
   @override
   String openpgpValidityYears(int count) {
@@ -2320,20 +2414,24 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get openpgpWrongPassphrase => 'Paroles frāze ir nepareiza. Mēģiniet vēlreiz.';
+  String get openpgpWrongPassphrase =>
+      'Paroles frāze ir nepareiza. Mēģiniet vēlreiz.';
 
   @override
-  String get openpgpExplainLocked => 'Šis ziņojums ir šifrēts. Atbloķējiet savu OpenPGP atslēgu, lai to izlasītu.';
+  String get openpgpExplainLocked =>
+      'Šis ziņojums ir šifrēts. Atbloķējiet savu OpenPGP atslēgu, lai to izlasītu.';
 
   @override
   String get openpgpExplainNoKey =>
       'Šis ziņojums ir šifrēts, bet ne kādai no OpenPGP atslēgām šajā ierīcē. Ja lasāt to Thunderbird, importējiet atslēgu no turienes: Iestatījumi › Pilnīga šifrēšana.';
 
   @override
-  String get openpgpExplainDamaged => 'Šis šifrētais ziņojums ir bojāts, tāpēc to nevar droši atšifrēt.';
+  String get openpgpExplainDamaged =>
+      'Šis šifrētais ziņojums ir bojāts, tāpēc to nevar droši atšifrēt.';
 
   @override
-  String get openpgpExplainUnsupported => 'Šajā ziņojumā izmantota šifrēšana, ko Loupe vēl nevar nolasīt.';
+  String get openpgpExplainUnsupported =>
+      'Šajā ziņojumā izmantota šifrēšana, ko Loupe vēl nevar nolasīt.';
 
   @override
   String get openpgpExplainSmimeNoKey =>
@@ -2345,7 +2443,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock => 'Atbloķējiet savu S/MIME sertifikātu, lai to izlasītu.';
+  String get openpgpExplainSmimeUnlock =>
+      'Atbloķējiet savu S/MIME sertifikātu, lai to izlasītu.';
 
   @override
   String get openpgpAttachmentGone => 'Šis pielikums vairs nav pieejams.';
@@ -2354,7 +2453,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get smimeEncrypted => 'Šifrēts (S/MIME)';
 
   @override
-  String get smimeEncryptedNoCertificate => 'Šifrēts (S/MIME) · nav sertifikāta';
+  String get smimeEncryptedNoCertificate =>
+      'Šifrēts (S/MIME) · nav sertifikāta';
 
   @override
   String get smimeEncryptedDamaged => 'Šifrēts (S/MIME) · bojāts';
@@ -2511,7 +2611,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get smimeTrustThisCertificateEllipsis => 'Uzticēties šim sertifikātam…';
+  String get smimeTrustThisCertificateEllipsis =>
+      'Uzticēties šim sertifikātam…';
 
   @override
   String get smimeCheckedFooterRevocation =>
@@ -2545,34 +2646,42 @@ class AppLocalizationsLv extends AppLocalizations {
   String get smimeTrust => 'Uzticēties';
 
   @override
-  String get smimeSummaryNoKey => 'Tas tika šifrēts sertifikātam, kura šajā ierīcē nav.';
+  String get smimeSummaryNoKey =>
+      'Tas tika šifrēts sertifikātam, kura šajā ierīcē nav.';
 
   @override
-  String get smimeSummaryDamaged => 'Šifrētie dati ir bojāti vai tika mainīti ceļā.';
+  String get smimeSummaryDamaged =>
+      'Šifrētie dati ir bojāti vai tika mainīti ceļā.';
 
   @override
-  String get smimeSummaryUnsupported => 'Tajā izmantots algoritms, ko Loupe neatbalsta.';
+  String get smimeSummaryUnsupported =>
+      'Tajā izmantots algoritms, ko Loupe neatbalsta.';
 
   @override
   String get smimeSummaryLocked => 'Jūsu S/MIME sertifikāts ir bloķēts.';
 
   @override
-  String get smimeSummaryEncrypted => 'To var lasīt tikai jūs un pārējie adresāti.';
+  String get smimeSummaryEncrypted =>
+      'To var lasīt tikai jūs un pārējie adresāti.';
 
   @override
-  String get smimeSummaryNotSigned => 'Tas nav parakstīts, tāpēc sūtītājs nav apstiprināts.';
+  String get smimeSummaryNotSigned =>
+      'Tas nav parakstīts, tāpēc sūtītājs nav apstiprināts.';
 
   @override
-  String get smimeSummaryModified => 'Paraksts neatbilst: ziņojums tika mainīts pēc parakstīšanas.';
+  String get smimeSummaryModified =>
+      'Paraksts neatbilst: ziņojums tika mainīts pēc parakstīšanas.';
 
   @override
   String get smimeSummaryUncheckable => 'Parakstu nevar pārbaudīt.';
 
   @override
-  String get smimeSummaryNoCertificate => 'Parakstītāja sertifikāta ziņojumā nav, tāpēc to nevar pārbaudīt.';
+  String get smimeSummaryNoCertificate =>
+      'Parakstītāja sertifikāta ziņojumā nav, tāpēc to nevar pārbaudīt.';
 
   @override
-  String get smimeSummaryRevoked => 'Sertifikātu iestāde atsauca parakstītāja sertifikātu: parakstam nevar uzticēties.';
+  String get smimeSummaryRevoked =>
+      'Sertifikātu iestāde atsauca parakstītāja sertifikātu: parakstam nevar uzticēties.';
 
   @override
   String smimeSummaryRevokedReason(String reason) {
@@ -2589,10 +2698,12 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain => 'Sertifikāts vai kāds no tā izdevējiem ir nederīgs.';
+  String get smimeProblemInvalidChain =>
+      'Sertifikāts vai kāds no tā izdevējiem ir nederīgs.';
 
   @override
-  String get smimeProblemUntrusted => 'Sertifikātu izdevusi iestāde, kurai Loupe neuzticas.';
+  String get smimeProblemUntrusted =>
+      'Sertifikātu izdevusi iestāde, kurai Loupe neuzticas.';
 
   @override
   String get smimeProblemExpired => 'Sertifikāta derīgums bija beidzies.';
@@ -2604,7 +2715,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get smimeProblemWrongUsage => 'Sertifikāts nav paredzēts pastam.';
 
   @override
-  String get smimeProblemWrongAddress => 'Sertifikāts pieder citai adresei, nevis sūtītājam.';
+  String get smimeProblemWrongAddress =>
+      'Sertifikāts pieder citai adresei, nevis sūtītājam.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2661,10 +2773,12 @@ class AppLocalizationsLv extends AppLocalizations {
   String get smimeImportCertificateEllipsis => 'Importēt sertifikātu…';
 
   @override
-  String get smimeUseDeviceCertificate => 'Izmantot sertifikātu no šīs ierīces…';
+  String get smimeUseDeviceCertificate =>
+      'Izmantot sertifikātu no šīs ierīces…';
 
   @override
-  String get smimeCorrespondentsCertificates => 'Sarakstes partneru sertifikāti';
+  String get smimeCorrespondentsCertificates =>
+      'Sarakstes partneru sertifikāti';
 
   @override
   String get smimeCorrespondentsCertificatesFooter =>
@@ -2678,7 +2792,8 @@ class AppLocalizationsLv extends AppLocalizations {
       'Kad atverat parakstītu ziņojumu, Loupe vaicā iestādei, kas izdevusi parakstītāja sertifikātu (tās OCSP serverim vai atsaukšanas sarakstam), vai tas ir atsaukts. Tādējādi iestāde var redzēt, kad kāds no jūsu interneta adreses lasa ar šo sertifikātu parakstītu pastu. Atbildes tiek glabātas šajā ierīcē līdz to derīguma beigām. Atsaukts sertifikāts ziņojuma galvenē tiek parādīts kā „sertifikāts atsaukts“.';
 
   @override
-  String get smimeCheckRevocation => 'Pārbaudīt sertifikātu atsaukšanu tiešsaistē';
+  String get smimeCheckRevocation =>
+      'Pārbaudīt sertifikātu atsaukšanu tiešsaistē';
 
   @override
   String get smimeTrustedAuthorities => 'Uzticamās iestādes';
@@ -2688,9 +2803,12 @@ class AppLocalizationsLv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Jūsu uzticētās iestādes papildus $count iestādēm, kurām e-pasta jomā uzticas Mozilla.',
-      one: 'Jūsu uzticētās iestādes papildus $count iestādei, kurai e-pasta jomā uzticas Mozilla.',
-      zero: 'Jūsu uzticētās iestādes papildus $count iestādēm, kurām e-pasta jomā uzticas Mozilla.',
+      other:
+          'Jūsu uzticētās iestādes papildus $count iestādēm, kurām e-pasta jomā uzticas Mozilla.',
+      one:
+          'Jūsu uzticētās iestādes papildus $count iestādei, kurai e-pasta jomā uzticas Mozilla.',
+      zero:
+          'Jūsu uzticētās iestādes papildus $count iestādēm, kurām e-pasta jomā uzticas Mozilla.',
     );
     return '$_temp0';
   }
@@ -2712,7 +2830,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get smimeFromFile => 'No faila';
 
   @override
-  String get smimeClipboardEmpty => 'Starpliktuve ir tukša. Vispirms nokopējiet sertifikātu.';
+  String get smimeClipboardEmpty =>
+      'Starpliktuve ir tukša. Vispirms nokopējiet sertifikātu.';
 
   @override
   String get smimeCertificate => 'Sertifikāts';
@@ -2865,7 +2984,8 @@ class AppLocalizationsLv extends AppLocalizations {
       'Tā privātā atslēga tiks izdzēsta no šīs ierīces: tam šifrēto pastu šeit vairs nevarēs izlasīt, ja vien to neimportēsiet vēlreiz.';
 
   @override
-  String get smimeRemoveContactMessage => 'Tas atgriezīsies ar nākamo šī sūtītāja parakstīto ziņojumu.';
+  String get smimeRemoveContactMessage =>
+      'Tas atgriezīsies ar nākamo šī sūtītāja parakstīto ziņojumu.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -2888,7 +3008,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get smimeCertificatePassword => 'Sertifikāta parole';
 
   @override
-  String get smimeCertificatePasswordPrompt => 'Ievadiet paroli, ar kuru sertifikāta fails tika eksportēts.';
+  String get smimeCertificatePasswordPrompt =>
+      'Ievadiet paroli, ar kuru sertifikāta fails tika eksportēts.';
 
   @override
   String get smimeImport => 'Importēt';
@@ -2925,7 +3046,10 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
+  String smimeImportedCertificatesAndAuthorities(
+    int count,
+    String certificates,
+  ) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -2995,7 +3119,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get smimeWrongPassphrase => 'Paroles frāze ir nepareiza. Mēģiniet vēlreiz.';
+  String get smimeWrongPassphrase =>
+      'Paroles frāze ir nepareiza. Mēģiniet vēlreiz.';
 
   @override
   String get smimeUnlock => 'Atbloķēt';
@@ -3020,10 +3145,12 @@ class AppLocalizationsLv extends AppLocalizations {
   String get smimeSetPassphraseButton => 'Iestatīt';
 
   @override
-  String get smimeLockedOpenAgain => 'Jūsu S/MIME sertifikāts ir bloķēts. Atveriet ziņojumu vēlreiz, lai to atbloķētu.';
+  String get smimeLockedOpenAgain =>
+      'Jūsu S/MIME sertifikāts ir bloķēts. Atveriet ziņojumu vēlreiz, lai to atbloķētu.';
 
   @override
-  String get smimeDeviceHasNoCertificates => 'Šī ierīce nepiedāvā savus sertifikātus.';
+  String get smimeDeviceHasNoCertificates =>
+      'Šī ierīce nepiedāvā savus sertifikātus.';
 
   @override
   String get smimeCantReadCertificate => 'Loupe nevar nolasīt šo sertifikātu.';
@@ -3057,13 +3184,15 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress => 'Iestādes adrese nav tīmekļa adrese.';
+  String get smimeAuthorityNotWebAddress =>
+      'Iestādes adrese nav tīmekļa adrese.';
 
   @override
   String get smimeAuthorityTimeout => 'Sertifikātu iestāde laikus neatbildēja.';
 
   @override
-  String get smimeAuthorityUnreachable => 'Ar sertifikātu iestādi neizdevās sazināties.';
+  String get smimeAuthorityUnreachable =>
+      'Ar sertifikātu iestādi neizdevās sazināties.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -3071,15 +3200,25 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge => 'Sertifikātu iestādes atbilde ir pārāk liela.';
+  String get smimeAuthorityAnswerTooLarge =>
+      'Sertifikātu iestādes atbilde ir pārāk liela.';
 
   @override
   String get smimeRevocationNotChecked =>
       'Nav pārbaudīts: tiek pārbaudīti tikai sertifikāti no iestādēm, kurām Loupe uzticas.';
 
   @override
+  String get actionsNeedsMyAction => 'Nepieciešama mana rīcība';
+
+  @override
+  String get actionsWaitingOnOthers => 'Gaidu citus';
+
+  @override
   String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    String _temp0 = intl.Intl.selectLogic(protocol, {
+      'jmap': 'Push',
+      'other': 'IDLE',
+    });
     return '$_temp0';
   }
 
@@ -3144,7 +3283,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsSignatureAddField => 'Pievienot lauku';
 
   @override
-  String get settingsSignatureImageFailed => 'Neizdevās pievienot attēlu. Mēģiniet mazāku PNG vai JPEG.';
+  String get settingsSignatureImageFailed =>
+      'Neizdevās pievienot attēlu. Mēģiniet mazāku PNG vai JPEG.';
 
   @override
   String get settingsSignatureWhenToUse => 'Kad izmantot';
@@ -3160,7 +3300,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Pievienot adresi vai domēnu…';
 
   @override
-  String get settingsSignatureCopiedPrompt => 'Adrese vai domēns, piemēram, client.example.';
+  String get settingsSignatureCopiedPrompt =>
+      'Adrese vai domēns, piemēram, client.example.';
 
   @override
   String get settingsSignatureScheduled => 'Ieplānots';
@@ -3242,7 +3383,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsUndoSendDelay => 'Sūtīšanas atsaukšanas aizture';
 
   @override
-  String get settingsUndoSendDelayFooter => 'Nosūtītie ziņojumi gaida tik ilgi, lai jūs varētu tos atsaukt.';
+  String get settingsUndoSendDelayFooter =>
+      'Nosūtītie ziņojumi gaida tik ilgi, lai jūs varētu tos atsaukt.';
 
   @override
   String settingsUndoSendSeconds(int seconds) {
@@ -3287,19 +3429,22 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsReadingHeader => 'Lasīšana';
 
   @override
-  String get settingsReadingFooter => 'Attālie attēli var pavēstīt sūtītājiem, kad un kur atvērāt ziņojumu.';
+  String get settingsReadingFooter =>
+      'Attālie attēli var pavēstīt sūtītājiem, kad un kur atvērāt ziņojumu.';
 
   @override
   String get settingsDefaultView => 'Noklusējuma skats';
 
   @override
-  String get settingsDefaultViewFooter => 'Jebkura ziņojuma skatu varat pārslēgt ar pogu Aa.';
+  String get settingsDefaultViewFooter =>
+      'Jebkura ziņojuma skatu varat pārslēgt ar pogu Aa.';
 
   @override
   String get settingsViewReadable => 'Lasīšanai';
 
   @override
-  String get settingsViewReadableDetail => 'Tīrs, salasāms, pielāgojas tumšajam režīmam';
+  String get settingsViewReadableDetail =>
+      'Tīrs, salasāms, pielāgojas tumšajam režīmam';
 
   @override
   String get settingsViewOriginal => 'Oriģināls';
@@ -3323,7 +3468,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsFontMono => 'Vienplatuma';
 
   @override
-  String get settingsFontMonoDetail => 'Saglabā ASCII zīmējumu un tabulu līdzinājumu';
+  String get settingsFontMonoDetail =>
+      'Saglabā ASCII zīmējumu un tabulu līdzinājumu';
 
   @override
   String get settingsTechnicalLists => 'Tehniskie saraksti';
@@ -3335,7 +3481,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Atvērt saites tieši';
 
   @override
-  String get settingsOpenLinksDirectlyDetail => 'Izlaist klikšķu izsekotājus, ja galamērķis ir zināms';
+  String get settingsOpenLinksDirectlyDetail =>
+      'Izlaist klikšķu izsekotājus, ja galamērķis ir zināms';
 
   @override
   String get settingsSecurityHeader => 'Drošība';
@@ -3380,7 +3527,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsLockAfter => 'Bloķēt pēc';
 
   @override
-  String get settingsLockAfterFooter => 'Cik ilgi Loupe var būt fonā, pirms tā atkal prasa apstiprinājumu.';
+  String get settingsLockAfterFooter =>
+      'Cik ilgi Loupe var būt fonā, pirms tā atkal prasa apstiprinājumu.';
 
   @override
   String get settingsNotifications => 'Paziņojumi';
@@ -3405,7 +3553,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsResetApp => 'Atiestatīt lietotni';
 
   @override
-  String get settingsResetFooter => 'Aizmirst visus iestatījumus un atgriežas sveiciena ekrānā.';
+  String get settingsResetFooter =>
+      'Aizmirst visus iestatījumus un atgriežas sveiciena ekrānā.';
 
   @override
   String get settingsResetTitle => 'Vai atiestatīt Loupe?';
@@ -3431,10 +3580,12 @@ class AppLocalizationsLv extends AppLocalizations {
       'Loupe nav analītikas un izsekošanas. Jūsu pasts nonāk tikai jūsu pasta serveros.';
 
   @override
-  String get settingsNotificationsOffIos => 'Loupe paziņojumi ir izslēgti iestatījumos.';
+  String get settingsNotificationsOffIos =>
+      'Loupe paziņojumi ir izslēgti iestatījumos.';
 
   @override
-  String get settingsNotificationsOffAndroid => 'Loupe paziņojumi ir izslēgti Android iestatījumos.';
+  String get settingsNotificationsOffAndroid =>
+      'Loupe paziņojumi ir izslēgti Android iestatījumos.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -3501,7 +3652,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsComingSoon => 'Drīzumā';
 
   @override
-  String get settingsAllowUnrestrictedBattery => 'Atļaut neierobežotu akumulatora lietojumu';
+  String get settingsAllowUnrestrictedBattery =>
+      'Atļaut neierobežotu akumulatora lietojumu';
 
   @override
   String get settingsPush => 'Push paziņojumi';
@@ -3527,14 +3679,16 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsAppIconBadge => 'Lietotnes ikonas emblēma';
 
   @override
-  String get settingsBadgeNote => 'Emblēma tiek atjaunināta ikreiz, kad Loupe pārbauda pastu, arī fonā.';
+  String get settingsBadgeNote =>
+      'Emblēma tiek atjaunināta ikreiz, kad Loupe pārbauda pastu, arī fonā.';
 
   @override
   String get settingsBadgeUnsupportedFooter =>
       'Šī tālruņa sākuma ekrāns nerāda skaitļus uz lietotņu ikonām. Emblēma tiek atjaunināta ikreiz, kad Loupe pārbauda pastu, arī fonā.';
 
   @override
-  String get settingsTestNotificationBody => 'Jauna pasta paziņojumi izskatās šādi.';
+  String get settingsTestNotificationBody =>
+      'Jauna pasta paziņojumi izskatās šādi.';
 
   @override
   String get settingsAccountRemoved => 'Šis konts tika noņemts.';
@@ -3555,7 +3709,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsColour => 'Krāsa';
 
   @override
-  String get settingsColourFooter => 'Iezīmē šī konta ziņojumus skatā „Visas iesūtnes“.';
+  String get settingsColourFooter =>
+      'Iezīmē šī konta ziņojumus skatā „Visas iesūtnes“.';
 
   @override
   String settingsColourNumber(int number) {
@@ -3647,10 +3802,12 @@ class AppLocalizationsLv extends AppLocalizations {
       'Pirmā identitāte ir noklusējuma identitāte jauniem ziņojumiem. Velciet, lai mainītu secību.';
 
   @override
-  String get settingsIdentitiesFooterSingle => 'Noklusējuma identitāte jauniem ziņojumiem.';
+  String get settingsIdentitiesFooterSingle =>
+      'Noklusējuma identitāte jauniem ziņojumiem.';
 
   @override
-  String get settingsIdentitiesReplyFooter => 'Atbilde tiek sūtīta no identitātes, uz kuru ziņojums tika nosūtīts.';
+  String get settingsIdentitiesReplyFooter =>
+      'Atbilde tiek sūtīta no identitātes, uz kuru ziņojums tika nosūtīts.';
 
   @override
   String get settingsIdentityDefault => 'Noklusējuma';
@@ -3682,7 +3839,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsCopyToMyself => 'Kopija sev';
 
   @override
-  String get settingsCopyToMyselfFooter => 'Tiek pievienots katram šīs identitātes ziņojumam.';
+  String get settingsCopyToMyselfFooter =>
+      'Tiek pievienots katram šīs identitātes ziņojumam.';
 
   @override
   String get settingsCc => 'Kopija';
@@ -3698,7 +3856,8 @@ class AppLocalizationsLv extends AppLocalizations {
       'Atbildes uz ziņojumiem, kas nosūtīti uz šīm adresēm, tiek sūtītas no šīs identitātes. * nozīmē jebko: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt => 'Adrese vai paraugs, kurā * nozīmē jebko.';
+  String get settingsReplyPatternPrompt =>
+      'Adrese vai paraugs, kurā * nozīmē jebko.';
 
   @override
   String get settingsAddReplyPattern => 'Pievienot adresi vai paraugu';
@@ -3720,7 +3879,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Nav adreses';
 
   @override
-  String get settingsIdentityNoAddressMessage => 'Ievadiet e-pasta adresi, no kuras sūtīt.';
+  String get settingsIdentityNoAddressMessage =>
+      'Ievadiet e-pasta adresi, no kuras sūtīt.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Nederīga adrese';
@@ -3751,10 +3911,12 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage => 'No tās jau nosūtītie ziņojumi paliks nemainīti.';
+  String get settingsDeleteIdentityMessage =>
+      'No tās jau nosūtītie ziņojumi paliks nemainīti.';
 
   @override
-  String get settingsLastIdentityFooter => 'Kontam nepieciešama vismaz viena identitāte.';
+  String get settingsLastIdentityFooter =>
+      'Kontam nepieciešama vismaz viena identitāte.';
 
   @override
   String get rulesTitle => 'Kārtulas';
@@ -3826,7 +3988,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get rulesStatusUnavailable => 'Nav pieejams';
 
   @override
-  String get rulesStatusNoSieve => 'Šī konta serveris nepiedāvā Sieve (ManageSieve vai JMAP).';
+  String get rulesStatusNoSieve =>
+      'Šī konta serveris nepiedāvā Sieve (ManageSieve vai JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -3908,7 +4071,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get rulesRemovedAccount => 'Noņemts konts';
 
   @override
-  String get rulesAccountsFooter => 'Kārtula visiem kontiem attiecas arī uz kontiem, ko pievienosiet vēlāk.';
+  String get rulesAccountsFooter =>
+      'Kārtula visiem kontiem attiecas arī uz kontiem, ko pievienosiet vēlāk.';
 
   @override
   String get rulesActionsHeader => 'Tad';
@@ -3918,7 +4082,8 @@ class AppLocalizationsLv extends AppLocalizations {
       'Pārsūtīšana nosūta katru atbilstošo ziņojumu uz citu adresi, tiklīdz tas pienāk, arī tad, kad šis tālrunis ir izslēgts. Daži pakalpojumu sniedzēji ierobežo, cik daudz pasta drīkst pārsūtīt.';
 
   @override
-  String get rulesForwardingHiddenFooter => 'Pārsūtīšana darbojas tikai servera kārtulās, tāpēc šeit tā nav iekļauta.';
+  String get rulesForwardingHiddenFooter =>
+      'Pārsūtīšana darbojas tikai servera kārtulās, tāpēc šeit tā nav iekļauta.';
 
   @override
   String rulesRemoveAction(String action) {
@@ -3969,7 +4134,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get rulesMoveAccountTitle => 'Kura konta mapē?';
 
   @override
-  String get rulesMoveAccountMessage => 'Pārējo kontu pasts nonāk tur esošajā mapē ar tādu pašu nosaukumu.';
+  String get rulesMoveAccountMessage =>
+      'Pārējo kontu pasts nonāk tur esošajā mapē ar tādu pašu nosaukumu.';
 
   @override
   String get rulesAddTag => 'Pievienot birku';
@@ -4008,7 +4174,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get rulesChooseActionTitle => 'Izvēlieties darbību';
 
   @override
-  String get rulesChooseActionMessage => 'Pievienojiet, ko kārtula dara ar ziņojumiem, kas tai atbilst.';
+  String get rulesChooseActionMessage =>
+      'Pievienojiet, ko kārtula dara ar ziņojumiem, kas tai atbilst.';
 
   @override
   String get rulesSaveError => 'Neizdevās saglabāt kārtulu';
@@ -4023,7 +4190,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Nav ko lietot';
 
   @override
-  String get rulesNothingToApplyMessage => 'Vispirms norādiet kārtulai derīgu nosacījumu un darbību.';
+  String get rulesNothingToApplyMessage =>
+      'Vispirms norādiet kārtulai derīgu nosacījumu un darbību.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4055,7 +4223,8 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4070,7 +4239,8 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4085,7 +4255,8 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4128,7 +4299,8 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4143,7 +4315,8 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4173,10 +4346,15 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'un vēl $countString');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'un vēl $countString',
+    );
     return '$_temp0';
   }
 
@@ -4271,7 +4449,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get subscriptionsNothingRarelyRead => 'Nav reti lasītu';
 
   @override
-  String get subscriptionsNothingFilteredDetail => 'Jūs mazliet izlasāt no visa, ko saņemat.';
+  String get subscriptionsNothingFilteredDetail =>
+      'Jūs mazliet izlasāt no visa, ko saņemat.';
 
   @override
   String get subscriptionsNoDiscussions => 'Nav diskusiju';
@@ -4348,10 +4527,15 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Arhivēt $countString no iesūtnes');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Arhivēt $countString no iesūtnes',
+    );
     return '$_temp0';
   }
 
@@ -4359,13 +4543,15 @@ class AppLocalizationsLv extends AppLocalizations {
   String get subscriptionsCreateRule => 'Izveidot kārtulu…';
 
   @override
-  String get subscriptionsCreateRuleDetail => 'Pārvietot vai arhivēt tā turpmāko pastu';
+  String get subscriptionsCreateRuleDetail =>
+      'Pārvietot vai arhivēt tā turpmāko pastu';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Uzskatīt par diskusiju';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail => 'Saraksts, kurā raksta cilvēki: lasīt kā forumu';
+  String get subscriptionsTreatAsDiscussionDetail =>
+      'Saraksts, kurā raksta cilvēki: lasīt kā forumu';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Uzskatīt par jaunumu vēstuli';
@@ -4399,7 +4585,8 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4429,9 +4616,12 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString no $totalString';
@@ -4442,7 +4632,11 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Atrašanās vieta');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Atrašanās vieta',
+    );
     return '$_temp0';
   }
 
@@ -4488,7 +4682,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle => 'Neizdevās atteikties automātiski';
+  String get subscriptionsOneClickFailedTitle =>
+      'Neizdevās atteikties automātiski';
 
   @override
   String get subscriptionsSendUnsubscribeEmail => 'Sūtīt atteikšanās e-pastu';
@@ -4512,7 +4707,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsWebInsecure => 'Savienojums ar šo vietni nav šifrēts.';
+  String get subscriptionsWebInsecure =>
+      'Savienojums ar šo vietni nav šifrēts.';
 
   @override
   String subscriptionsHomographWarning(String site) {
@@ -4549,7 +4745,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed => 'Atteikšanās saite nav droša interneta adrese.';
+  String get subscriptionsOneClickNotAllowed =>
+      'Atteikšanās saite nav droša interneta adrese.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -4572,7 +4769,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend => 'Nav konta, no kura nosūtīt atteikšanās e-pastu.';
+  String get subscriptionsNoAccountToSend =>
+      'Nav konta, no kura nosūtīt atteikšanās e-pastu.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -4605,7 +4803,11 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String subscriptionsMoveToJunk(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Pārvietot $count uz mēstulēm');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pārvietot $count uz mēstulēm',
+    );
     return '$_temp0';
   }
 
@@ -4628,7 +4830,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get appLiveGateTitle => 'Jūsu kontus neizdevās atvērt';
 
   @override
-  String get appLiveGateUnavailableBuild => 'Īsti konti šajā būvējumā vēl nav pieejami.';
+  String get appLiveGateUnavailableBuild =>
+      'Īsti konti šajā būvējumā vēl nav pieejami.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -4688,7 +4891,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get attachmentsOpenInError => 'Neizdevās atvērt pielikumu citā lietotnē.';
+  String get attachmentsOpenInError =>
+      'Neizdevās atvērt pielikumu citā lietotnē.';
 
   @override
   String attachmentsSaved(String name) {
@@ -4745,7 +4949,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get attachmentsPdfUnavailable => 'Šo PDF šeit nevar parādīt (iespējams, tas ir aizsargāts ar paroli).';
+  String get attachmentsPdfUnavailable =>
+      'Šo PDF šeit nevar parādīt (iespējams, tas ir aizsargāts ar paroli).';
 
   @override
   String attachmentsPageOf(int page, int count) {
@@ -4789,7 +4994,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get attachmentsCopied => 'Nokopēts';
 
   @override
-  String get attachmentsImageUnavailable => 'Šo attēlu šeit nevar parādīt. Mēģiniet „Atvērt ar…“.';
+  String get attachmentsImageUnavailable =>
+      'Šo attēlu šeit nevar parādīt. Mēģiniet „Atvērt ar…“.';
 
   @override
   String get attachmentsEmlNoSubject => '(Bez temata)';
@@ -4811,7 +5017,11 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String attachmentsEmlAttachments(int count, String names) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Pielikumā: $names');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pielikumā: $names',
+    );
     return '$_temp0';
   }
 
@@ -5026,7 +5236,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get calendarOutdated => 'Novecojis';
 
   @override
-  String get calendarOutdatedDetail => 'Šis ielūgums vēlāk tika atjaunināts; spēkā ir jaunākais.';
+  String get calendarOutdatedDetail =>
+      'Šis ielūgums vēlāk tika atjaunināts; spēkā ir jaunākais.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -5082,19 +5293,31 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String calendarAcceptedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count pieņēma');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pieņēma',
+    );
     return '$_temp0';
   }
 
   @override
   String calendarMaybeCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count varbūt');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count varbūt',
+    );
     return '$_temp0';
   }
 
   @override
   String calendarDeclinedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count noraidīja');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count noraidīja',
+    );
     return '$_temp0';
   }
 
@@ -5157,7 +5380,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp => 'Nav kalendāra lietotnes, kurai pievienot notikumu.';
+  String get calendarNoCalendarApp =>
+      'Nav kalendāra lietotnes, kurai pievienot notikumu.';
 
   @override
   String get calendarCantOpenCalendar => 'Neizdevās atvērt kalendāru.';
@@ -5184,7 +5408,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get calendarJoinHomographUnknown => 'Uzmanību: šī adrese ar līdzīga izskata burtiem atdarina citu vietni.';
+  String get calendarJoinHomographUnknown =>
+      'Uzmanību: šī adrese ar līdzīga izskata burtiem atdarina citu vietni.';
 
   @override
   String calendarJoinOpen(String host) {
@@ -5192,7 +5417,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer => 'Šim ielūgumam nav organizatora, kuram atbildēt.';
+  String get calendarNoOrganizer =>
+      'Šim ielūgumam nav organizatora, kuram atbildēt.';
 
   @override
   String get calendarNoAccount => 'Nav konta, no kura atbildēt.';
@@ -5293,7 +5519,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get keyboardKeyBackspace => 'Backspace';
 
   @override
-  String get mailingListsMuted => 'Pavediens apklusināts. Jauni ziņojumi tajā tiks saņemti kā lasīti.';
+  String get mailingListsMuted =>
+      'Pavediens apklusināts. Jauni ziņojumi tajā tiks saņemti kā lasīti.';
 
   @override
   String get mailingListsUnmuted => 'Pavediena apklusināšana atcelta.';
@@ -5371,7 +5598,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Tehniskie saraksti';
 
   @override
-  String get mailingListsTechnicalEmpty => 'E-pasta saraksti šeit parādīsies, tiklīdz pienāks to pasts.';
+  String get mailingListsTechnicalEmpty =>
+      'E-pasta saraksti šeit parādīsies, tiklīdz pienāks to pasts.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -5897,7 +6125,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount => 'Lai pārvietotu ziņojumus, atlasiet tos no viena konta.';
+  String get sharedMoveOneAccount =>
+      'Lai pārvietotu ziņojumus, atlasiet tos no viena konta.';
 
   @override
   String get sharedSnoozeTitle => 'Atlikt';
@@ -5975,7 +6204,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get accountSetupAddressTitle => 'Pievienot e-pasta kontu';
 
   @override
-  String get accountSetupAddressText => 'Loupe atrod iestatījumus lielākajai daļai pakalpojumu sniedzēju.';
+  String get accountSetupAddressText =>
+      'Loupe atrod iestatījumus lielākajai daļai pakalpojumu sniedzēju.';
 
   @override
   String get accountSetupNameHint => 'Jūsu vārds';
@@ -6004,7 +6234,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCheckServers => 'Pārbaudiet serveru nosaukumus un portus.';
+  String get accountSetupCheckServers =>
+      'Pārbaudiet serveru nosaukumus un portus.';
 
   @override
   String get accountSetupEnterPassword => 'Ievadiet paroli.';
@@ -6061,13 +6292,15 @@ class AppLocalizationsLv extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Izmantot lietotnes paroli';
 
   @override
-  String get accountSetupUseAppPasswordInstead => 'Tā vietā izmantot lietotnes paroli';
+  String get accountSetupUseAppPasswordInstead =>
+      'Tā vietā izmantot lietotnes paroli';
 
   @override
   String get accountSetupUseDifferentAddress => 'Izmantot citu adresi';
 
   @override
-  String get accountSetupHowToCreateAppPassword => 'Kā izveidot lietotnes paroli';
+  String get accountSetupHowToCreateAppPassword =>
+      'Kā izveidot lietotnes paroli';
 
   @override
   String get accountSetupHowToCreateOne => 'Kā to izveidot';
@@ -6097,14 +6330,16 @@ class AppLocalizationsLv extends AppLocalizations {
       'iCloud Mail nepieciešama lietotnei specifiska parole, nevis jūsu Apple konta parole.';
 
   @override
-  String get accountSetupYahooNote => 'Yahoo Mail nepieciešama lietotnes parole, nevis jūsu konta parole.';
+  String get accountSetupYahooNote =>
+      'Yahoo Mail nepieciešama lietotnes parole, nevis jūsu konta parole.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Loupe izveido savienojumu ar Fastmail, izmantojot JMAP un API marķieri: Settings › Privacy & Security › Manage API tokens, JMAP, ar piekļuvi e-pastam un sūtīšanai.';
 
   @override
-  String get accountSetupFastmailNote => 'Fastmail pasta lietotnēm nepieciešama lietotnes parole.';
+  String get accountSetupFastmailNote =>
+      'Fastmail pasta lietotnēm nepieciešama lietotnes parole.';
 
   @override
   String get accountSetupServerSettings => 'Servera iestatījumi';
@@ -6168,7 +6403,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get accountSetupUsernameHint => 'Jūsu e-pasta adrese';
 
   @override
-  String get accountSetupNoEncryptionTitle => 'Vai izveidot savienojumu bez šifrēšanas?';
+  String get accountSetupNoEncryptionTitle =>
+      'Vai izveidot savienojumu bez šifrēšanas?';
 
   @override
   String get accountSetupNoEncryptionText =>
@@ -6182,13 +6418,16 @@ class AppLocalizationsLv extends AppLocalizations {
       'API marķieris noraidīts. Izveidojiet Fastmail API marķieri JMAP ar piekļuvi e-pastam un ielīmējiet to.';
 
   @override
-  String get accountSetupAppPasswordRejected => 'Parole noraidīta. Izmantojiet lietotnes paroli, nevis konta paroli.';
+  String get accountSetupAppPasswordRejected =>
+      'Parole noraidīta. Izmantojiet lietotnes paroli, nevis konta paroli.';
 
   @override
-  String get accountSetupPasswordRejected => 'Parole noraidīta. Pārbaudiet to un mēģiniet vēlreiz.';
+  String get accountSetupPasswordRejected =>
+      'Parole noraidīta. Pārbaudiet to un mēģiniet vēlreiz.';
 
   @override
-  String get accountSetupServerUnreachable => 'Nevar sasniegt serveri. Pārbaudiet servera iestatījumus un savienojumu.';
+  String get accountSetupServerUnreachable =>
+      'Nevar sasniegt serveri. Pārbaudiet servera iestatījumus un savienojumu.';
 
   @override
   String accountSetupCertificateUntrusted(String details) {
@@ -6262,7 +6501,11 @@ class AppLocalizationsLv extends AppLocalizations {
   String get accountSetupSigningIn => 'Pierakstās…';
 
   @override
-  String accountSetupSignInExpired(String provider, String email, String account) {
+  String accountSetupSignInExpired(
+    String provider,
+    String email,
+    String account,
+  ) {
     return '$provider vairs nepieņem Loupe pierakstīšanos adresei $email, tāpēc $account netiek sinhronizēts. Pierakstieties vēlreiz, lai saņemtu tā pastu.';
   }
 
@@ -6270,7 +6513,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get accountImportTitle => 'Importēt no Thunderbird';
 
   @override
-  String get accountImportPointCamera => 'Pavērsiet kameru pret QR kodu, ko rāda Thunderbird.';
+  String get accountImportPointCamera =>
+      'Pavērsiet kameru pret QR kodu, ko rāda Thunderbird.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -6341,10 +6585,12 @@ class AppLocalizationsLv extends AppLocalizations {
   String get accountImportDamaged => 'Šo Thunderbird kodu neizdevās nolasīt.';
 
   @override
-  String get accountImportTooLarge => 'Šis kods ir pārāk liels, lai būtu Thunderbird eksports.';
+  String get accountImportTooLarge =>
+      'Šis kods ir pārāk liels, lai būtu Thunderbird eksports.';
 
   @override
-  String get accountImportCouldNotOpenSettings => 'Neizdevās atvērt iestatījumus.';
+  String get accountImportCouldNotOpenSettings =>
+      'Neizdevās atvērt iestatījumus.';
 
   @override
   String get accountImportCameraOffTitle => 'Piekļuve kamerai ir izslēgta';
@@ -6357,13 +6603,15 @@ class AppLocalizationsLv extends AppLocalizations {
   String get accountImportNoCameraTitle => 'Nav kameras';
 
   @override
-  String get accountImportNoCameraText => 'Loupe šeit nevar izmantot kameru. Tā vietā ielīmējiet koda tekstu.';
+  String get accountImportNoCameraText =>
+      'Loupe šeit nevar izmantot kameru. Tā vietā ielīmējiet koda tekstu.';
 
   @override
   String get accountImportCameraFailedTitle => 'Kamera neieslēdzās';
 
   @override
-  String get accountImportCameraFailedText => 'Mēģiniet vēlreiz vai tā vietā ielīmējiet koda tekstu.';
+  String get accountImportCameraFailedText =>
+      'Mēģiniet vēlreiz vai tā vietā ielīmējiet koda tekstu.';
 
   @override
   String get accountImportOpenSettings => 'Atvērt iestatījumus';
@@ -6381,7 +6629,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable => 'Nevienu no šajos kodos esošajiem kontiem neizdevās nolasīt.';
+  String get accountImportNoneReadable =>
+      'Nevienu no šajos kodos esošajiem kontiem neizdevās nolasīt.';
 
   @override
   String get accountImportChoose => 'Izvēlieties kontus, ko pievienot Loupe.';
@@ -6391,9 +6640,12 @@ class AppLocalizationsLv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Netika noskenēti $count kodi no $total ($codes), tāpēc to konti nav sarakstā.',
-      one: 'Netika noskenēts $count kods no $total ($codes), tāpēc tā konti nav sarakstā.',
-      zero: 'Netika noskenēti $count kodi no $total ($codes), tāpēc to konti nav sarakstā.',
+      other:
+          'Netika noskenēti $count kodi no $total ($codes), tāpēc to konti nav sarakstā.',
+      one:
+          'Netika noskenēts $count kods no $total ($codes), tāpēc tā konti nav sarakstā.',
+      zero:
+          'Netika noskenēti $count kodi no $total ($codes), tāpēc to konti nav sarakstā.',
     );
     return '$_temp0';
   }
@@ -6413,8 +6665,10 @@ class AppLocalizationsLv extends AppLocalizations {
       locale: localeName,
       other:
           'Kodos neizdevās nolasīt $count kontus. Iespējams, tie izmanto jaunākas Thunderbird versijas iestatījumus.',
-      one: 'Kodos neizdevās nolasīt $count kontu. Iespējams, tas izmanto jaunākas Thunderbird versijas iestatījumus.',
-      zero: 'Kodos neizdevās nolasīt $count kontus. Iespējams, tie izmanto jaunākas Thunderbird versijas iestatījumus.',
+      one:
+          'Kodos neizdevās nolasīt $count kontu. Iespējams, tas izmanto jaunākas Thunderbird versijas iestatījumus.',
+      zero:
+          'Kodos neizdevās nolasīt $count kontus. Iespējams, tie izmanto jaunākas Thunderbird versijas iestatījumus.',
     );
     return '$_temp0';
   }
@@ -6443,7 +6697,8 @@ class AppLocalizationsLv extends AppLocalizations {
       'Thunderbird pierakstās šajā kontā pārlūkā. Loupe to vēl nespēj: izmantojiet lietotnes paroli, ja jūsu pakalpojumu sniedzējs tādu piedāvā.';
 
   @override
-  String get accountImportUnencrypted => 'Savienojas bez šifrēšanas. Izmantojiet to tikai savā tīklā.';
+  String get accountImportUnencrypted =>
+      'Savienojas bez šifrēšanas. Izmantojiet to tikai savā tīklā.';
 
   @override
   String get accountImportEnterAgain => 'Ievadiet vēlreiz';
@@ -6472,19 +6727,24 @@ class AppLocalizationsLv extends AppLocalizations {
   String get accountImportPasteTitle => 'Ielīmēt eksporta tekstu';
 
   @override
-  String get accountImportPasteText => 'Ielīmējiet Thunderbird eksporta koda tekstu, vienu kodu katrā rindā.';
+  String get accountImportPasteText =>
+      'Ielīmējiet Thunderbird eksporta koda tekstu, vienu kodu katrā rindā.';
 
   @override
-  String get accountImportPop3 => 'POP3 konti netiek atbalstīti. Loupe glabā pastu serverī, izmantojot IMAP.';
+  String get accountImportPop3 =>
+      'POP3 konti netiek atbalstīti. Loupe glabā pastu serverī, izmantojot IMAP.';
 
   @override
-  String get accountImportKerberos => 'Šis konts pierakstās ar Kerberos, ko Loupe neatbalsta.';
+  String get accountImportKerberos =>
+      'Šis konts pierakstās ar Kerberos, ko Loupe neatbalsta.';
 
   @override
-  String get accountImportNtlm => 'Šis konts pierakstās ar NTLM, ko Loupe neatbalsta.';
+  String get accountImportNtlm =>
+      'Šis konts pierakstās ar NTLM, ko Loupe neatbalsta.';
 
   @override
-  String get accountImportClientCertificate => 'Šis konts pierakstās ar klienta sertifikātu, ko Loupe vēl neatbalsta.';
+  String get accountImportClientCertificate =>
+      'Šis konts pierakstās ar klienta sertifikātu, ko Loupe vēl neatbalsta.';
 
   @override
   String get accountImportMicrosoftSignIn =>
@@ -6500,10 +6760,12 @@ class AppLocalizationsLv extends AppLocalizations {
   String get accountImportEnterApiToken => 'Ievadiet API marķieri.';
 
   @override
-  String get accountImportStorageFailed => 'Loupe neizdevās atvērt savu kontu krātuvi. Vēlāk mēģiniet vēlreiz.';
+  String get accountImportStorageFailed =>
+      'Loupe neizdevās atvērt savu kontu krātuvi. Vēlāk mēģiniet vēlreiz.';
 
   @override
-  String get accountImportFailed => 'Kontu neizdevās pievienot. Mēģiniet vēlreiz vai pievienojiet to manuāli.';
+  String get accountImportFailed =>
+      'Kontu neizdevās pievienot. Mēģiniet vēlreiz vai pievienojiet to manuāli.';
 
   @override
   String get composeNewMessageTitle => 'Jauns ziņojums';
@@ -6601,7 +6863,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get composeDraftNotFound => 'Neizdevās atrast melnrakstu.';
 
   @override
-  String get composeAttachmentsLost => 'Pielikumus neizdevās atgūt. Pievienojiet tos vēlreiz.';
+  String get composeAttachmentsLost =>
+      'Pielikumus neizdevās atgūt. Pievienojiet tos vēlreiz.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -6628,10 +6891,12 @@ class AppLocalizationsLv extends AppLocalizations {
   String get composeNoSubjectTitle => 'Nav temata';
 
   @override
-  String get composeNoSubjectText => 'Šim ziņojumam nav temata. Vai tomēr nosūtīt?';
+  String get composeNoSubjectText =>
+      'Šim ziņojumam nav temata. Vai tomēr nosūtīt?';
 
   @override
-  String get composeSentBeforeChanges => 'Tas tika nosūtīts pirms jūsu izmaiņām, kas ir saglabātas melnrakstos.';
+  String get composeSentBeforeChanges =>
+      'Tas tika nosūtīts pirms jūsu izmaiņām, kas ir saglabātas melnrakstos.';
 
   @override
   String composeScheduled(String time) {
@@ -6755,18 +7020,26 @@ class AppLocalizationsLv extends AppLocalizations {
   String composeRecoveryUntitled(String recipients, String name) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Kad Loupe tika aizvērta, kāds ziņojums netika nosūtīts.',
-      'one': 'Kad Loupe tika aizvērta, ziņojums adresātam $name netika nosūtīts.',
-      'other': 'Kad Loupe tika aizvērta, ziņojums adresātam $name un citiem netika nosūtīts.',
+      'one':
+          'Kad Loupe tika aizvērta, ziņojums adresātam $name netika nosūtīts.',
+      'other':
+          'Kad Loupe tika aizvērta, ziņojums adresātam $name un citiem netika nosūtīts.',
     });
     return '$_temp0';
   }
 
   @override
-  String composeRecoveryWithSubject(String recipients, String subject, String name) {
+  String composeRecoveryWithSubject(
+    String recipients,
+    String subject,
+    String name,
+  ) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Kad Loupe tika aizvērta, „$subject“ netika nosūtīts.',
-      'one': 'Kad Loupe tika aizvērta, „$subject“ adresātam $name netika nosūtīts.',
-      'other': 'Kad Loupe tika aizvērta, „$subject“ adresātam $name un citiem netika nosūtīts.',
+      'one':
+          'Kad Loupe tika aizvērta, „$subject“ adresātam $name netika nosūtīts.',
+      'other':
+          'Kad Loupe tika aizvērta, „$subject“ adresātam $name un citiem netika nosūtīts.',
     });
     return '$_temp0';
   }
@@ -6814,7 +7087,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get outboxEmptyTitle => 'Nav ko sūtīt';
 
   @override
-  String get outboxEmptyText => 'Ziņojumi, ko sūtāt vēlāk, gaida šeit, līdz pienāk laiks.';
+  String get outboxEmptyText =>
+      'Ziņojumi, ko sūtāt vēlāk, gaida šeit, līdz pienāk laiks.';
 
   @override
   String get outboxSendNow => 'Sūtīt tūlīt';
@@ -6861,7 +7135,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get outboxBeingSent => 'Šis ziņojums tiek sūtīts.';
 
   @override
-  String get outboxActionFailed => 'Tas neizdevās. Ziņojums joprojām ir izsūtnē.';
+  String get outboxActionFailed =>
+      'Tas neizdevās. Ziņojums joprojām ir izsūtnē.';
 
   @override
   String get notificationsBadgeInboxes => 'Nelasītie iesūtnēs';
@@ -6873,7 +7148,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription => 'Jauns pasts no jūsu VIP jebkurā kontā';
+  String get notificationsVipChannelDescription =>
+      'Jauns pasts no jūsu VIP jebkurā kontā';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -6915,7 +7191,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get platformInstantChannel => 'Tūlītēja piegāde';
 
   @override
-  String get platformInstantChannelDescription => 'Tiek rādīts, kamēr Loupe gaida jaunu pastu jūsu iesūtnēs';
+  String get platformInstantChannelDescription =>
+      'Tiek rādīts, kamēr Loupe gaida jaunu pastu jūsu iesūtnēs';
 
   @override
   String get platformInstantTitle => 'Gaida jaunu pastu';
@@ -6924,28 +7201,33 @@ class AppLocalizationsLv extends AppLocalizations {
   String get platformInstantText => 'Tūlītēja piegāde ir ieslēgta';
 
   @override
-  String get platformErrorBox => 'Parādot šo, radās kļūda. Atgriezieties un mēģiniet vēlreiz.';
+  String get platformErrorBox =>
+      'Parādot šo, radās kļūda. Atgriezieties un mēģiniet vēlreiz.';
 
   @override
-  String get welcomeTagline => 'Pasts, kas virspusē ir vienkāršs,\nbet dziļumā — jaudīgs.';
+  String get welcomeTagline =>
+      'Pasts, kas virspusē ir vienkāršs,\nbet dziļumā — jaudīgs.';
 
   @override
   String get welcomeAccountsTitle => 'Visi konti vienā mierīgā iesūtnē';
 
   @override
-  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail un jebkurš IMAP vai JMAP serveris.';
+  String get welcomeAccountsText =>
+      'Gmail, Outlook, iCloud, Fastmail un jebkurš IMAP vai JMAP serveris.';
 
   @override
   String get welcomeSearchTitle => 'Meklēšana, kas atrod';
 
   @override
-  String get welcomeSearchText => 'Tūlītēji rezultāti jūsu tālrunī, pēc tam no servera.';
+  String get welcomeSearchText =>
+      'Tūlītēji rezultāti jūsu tālrunī, pēc tam no servera.';
 
   @override
   String get welcomePrivacyTitle => 'Privāts pēc būtības';
 
   @override
-  String get welcomePrivacyText => 'Nekādas izsekošanas. Attālie attēli paliek bloķēti, līdz jūs tos atļaujat.';
+  String get welcomePrivacyText =>
+      'Nekādas izsekošanas. Attālie attēli paliek bloķēti, līdz jūs tos atļaujat.';
 
   @override
   String get welcomeAddAccount => 'Pievienot kontu';
@@ -6975,7 +7257,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get searchAskFailed => 'Loupe nevarēja to pārvērst meklēšanā.';
 
   @override
-  String get searchAskDemoNote => 'Tulkoja iebūvētā demonstrācija, nevis modelis.';
+  String get searchAskDemoNote =>
+      'Tulkoja iebūvētā demonstrācija, nevis modelis.';
 
   @override
   String get settingsAiHeader => 'Privātais MI';
@@ -6992,16 +7275,19 @@ class AppLocalizationsLv extends AppLocalizations {
       'Tiek izmantots tikai jūsu izvēlētais nodrošinātājs. Ja tas neizdodas vai nav iestatīts, Loupe to pasaka un neko nesūta citur.';
 
   @override
-  String get settingsAiNotSetUpFooter => 'Šis nodrošinātājs vēl nav iestatīts, tāpēc funkcijas nerāda MI daļas.';
+  String get settingsAiNotSetUpFooter =>
+      'Šis nodrošinātājs vēl nav iestatīts, tāpēc funkcijas nerāda MI daļas.';
 
   @override
   String get settingsAiDemo => 'Iebūvētā demonstrācija';
 
   @override
-  String get settingsAiDemoDetail => 'Šajā tālrunī. Bez modeļa: dažas kārtulas funkciju izmēģināšanai.';
+  String get settingsAiDemoDetail =>
+      'Šajā tālrunī. Bez modeļa: dažas kārtulas funkciju izmēģināšanai.';
 
   @override
-  String get settingsAiAnthropicDetail => 'Mākonis: Claude ar jūsu pašu API atslēgu.';
+  String get settingsAiAnthropicDetail =>
+      'Mākonis: Claude ar jūsu pašu API atslēgu.';
 
   @override
   String get settingsAiServer => 'Mans serveris';
@@ -7014,7 +7300,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsAiOnPhone => 'Šajā tālrunī';
 
   @override
-  String get settingsAiOnPhoneDetail => 'Vēl nav pieejams: ierīces modelis tālruņos vēl tiek testēts.';
+  String get settingsAiOnPhoneDetail =>
+      'Vēl nav pieejams: ierīces modelis tālruņos vēl tiek testēts.';
 
   @override
   String get settingsAiNotSetUp => 'Nav iestatīts';
@@ -7065,13 +7352,15 @@ class AppLocalizationsLv extends AppLocalizations {
       'Ieskaitot API ceļu, piemēram, http://192.168.1.20:11434/v1 rīkam Ollama.';
 
   @override
-  String get settingsAiServerAddressInvalid => 'Tā nav http:// vai https:// adrese.';
+  String get settingsAiServerAddressInvalid =>
+      'Tā nav http:// vai https:// adrese.';
 
   @override
   String get settingsAiServerModelTitle => 'Modeļa nosaukums';
 
   @override
-  String get settingsAiServerModelMessage => 'Tā, kā to sauc jūsu serveris, piemēram, llama3.2.';
+  String get settingsAiServerModelMessage =>
+      'Tā, kā to sauc jūsu serveris, piemēram, llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Pārbaudīt savienojumu';
@@ -7088,7 +7377,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsAiTestFailed => 'Pārbaude neizdevās';
 
   @override
-  String get settingsAiTestInvalid => 'Modelis atbildēja, bet ne tādā formā, kādu prasīja Loupe.';
+  String get settingsAiTestInvalid =>
+      'Modelis atbildēja, bet ne tādā formā, kādu prasīja Loupe.';
 
   @override
   String get settingsAiRemoveKey => 'Noņemt atslēgu';
@@ -7126,13 +7416,15 @@ class AppLocalizationsLv extends AppLocalizations {
       'Pieprasījumi atstāj šo tālruni un nonāk jūsu serverī: tā ir apstrāde caur tīklu, arī mājās. Katrs satur tikai to, kas vajadzīgs vienai funkcijai: ievadīto teikumu un jūsu kontu nosaukumus vai vienas vēstules tematu, sūtītāju, datumu, tekstu un pielikumu nosaukumus. Nekad pašus pielikumus, kontu paroles vai atslēgu. Rezultāti paliek šajā tālrunī; ko glabā serveris, ir atkarīgs no tā iestatījumiem.';
 
   @override
-  String get settingsAiServerUnencrypted => 'Šī adrese nav šifrēta (http): citi tīklā var lasīt nosūtīto.';
+  String get settingsAiServerUnencrypted =>
+      'Šī adrese nav šifrēta (http): citi tīklā var lasīt nosūtīto.';
 
   @override
   String get settingsAiFeaturesHeader => 'Funkcijas';
 
   @override
-  String get settingsAiFeaturesFooter => 'Izslēgta funkcija nerāda MI daļu un nejautā nevienam modelim.';
+  String get settingsAiFeaturesFooter =>
+      'Izslēgta funkcija nerāda MI daļu un nejautā nevienam modelim.';
 
   @override
   String get settingsAiFeatureBrief => 'Īsumā';
@@ -7156,28 +7448,36 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Lietas stāvoklis';
 
   @override
-  String get settingsAiFeatureSearchDetail => 'Meklēšanā: teikums kļūst par meklējumu, ko varat pārbaudīt.';
+  String get settingsAiFeatureSearchDetail =>
+      'Meklēšanā: teikums kļūst par meklējumu, ko varat pārbaudīt.';
 
   @override
-  String get settingsAiFeatureBriefDetail => 'Vēstulē: ko tā no jums prasa, ar fragmentiem.';
+  String get settingsAiFeatureBriefDetail =>
+      'Vēstulē: ko tā no jums prasa, ar fragmentiem.';
 
   @override
-  String get settingsAiFeatureActionsDetail => 'Iesaka vienumus mapēm „Gaida mani“ un „Gaida citus“.';
+  String get settingsAiFeatureActionsDetail =>
+      'Iesaka vienumus mapēm „Gaida mani“ un „Gaida citus“.';
 
   @override
-  String get settingsAiFeatureRulesDetail => 'Kārtulās: apraksts kļūst par kārtulu, ko pārbaudāt pirms saglabāšanas.';
+  String get settingsAiFeatureRulesDetail =>
+      'Kārtulās: apraksts kļūst par kārtulu, ko pārbaudāt pirms saglabāšanas.';
 
   @override
-  String get settingsAiFeatureChangesDetail => 'Vēstuļu salīdzināšanā: kas mainījās pēc būtības, ar avotiem.';
+  String get settingsAiFeatureChangesDetail =>
+      'Vēstuļu salīdzināšanā: kas mainījās pēc būtības, ar avotiem.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail => 'Pievienoto dokumentu galvenie fakti ar to lappusēm.';
+  String get settingsAiFeatureDocumentsDetail =>
+      'Pievienoto dokumentu galvenie fakti ar to lappusēm.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail => 'Pirms sūtīšanas: ko atbilde, iespējams, palaidusi garām.';
+  String get settingsAiFeatureReplyCheckDetail =>
+      'Pirms sūtīšanas: ko atbilde, iespējams, palaidusi garām.';
 
   @override
-  String get settingsAiFeatureMattersDetail => 'Lietas jaunākais stāvoklis pēc tās pasta.';
+  String get settingsAiFeatureMattersDetail =>
+      'Lietas jaunākais stāvoklis pēc tās pasta.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Paturēt pastu tālrunī';

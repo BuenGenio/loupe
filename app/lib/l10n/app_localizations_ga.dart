@@ -156,7 +156,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get mailboxTrash => 'Bruscar';
 
   @override
-  String get conversationCompareMessages => 'Cuir teachtaireachtaí i gcomparáid…';
+  String get conversationCompareMessages =>
+      'Cuir teachtaireachtaí i gcomparáid…';
 
   @override
   String get conversationChangesTitle => 'Athruithe';
@@ -198,10 +199,12 @@ class AppLocalizationsGa extends AppLocalizations {
       'Tá an teachtaireacht seo rómhór le haghaidh comparáid mhionsonraithe. D’fhéadfaí cuid den téacs a fhágáil ar lár nó a thaispeáint mar bhloc iomlán.';
 
   @override
-  String get conversationChangesLoadError => 'Níorbh fhéidir na teachtaireachtaí seo a chur i gcomparáid.';
+  String get conversationChangesLoadError =>
+      'Níorbh fhéidir na teachtaireachtaí seo a chur i gcomparáid.';
 
   @override
-  String get conversationSomethingWentWrong => 'Chuaigh rud éigin mícheart. Bain triail eile as.';
+  String get conversationSomethingWentWrong =>
+      'Chuaigh rud éigin mícheart. Bain triail eile as.';
 
   @override
   String get conversationReplyToList => 'Freagair an liosta';
@@ -223,7 +226,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get conversationGoneTitle => 'Gan teachtaireacht';
 
   @override
-  String get conversationGoneText => 'Bogadh nó scriosadh an teachtaireacht seo.';
+  String get conversationGoneText =>
+      'Bogadh nó scriosadh an teachtaireacht seo.';
 
   @override
   String get conversationMuted => 'Balbhaithe';
@@ -238,16 +242,19 @@ class AppLocalizationsGa extends AppLocalizations {
   String get conversationTrash => 'Cuir sa bhruscar';
 
   @override
-  String get conversationReplyHint => 'Brúigh go fada le haghaidh Freagair cách agus Seol ar aghaidh';
+  String get conversationReplyHint =>
+      'Brúigh go fada le haghaidh Freagair cách agus Seol ar aghaidh';
 
   @override
   String get conversationOfflineTitle => 'Tá tú as líne';
 
   @override
-  String get conversationOfflineText => 'Níl an comhrá seo íoslódáilte fós. Lódálfar é nuair a bheidh tú ar líne arís.';
+  String get conversationOfflineText =>
+      'Níl an comhrá seo íoslódáilte fós. Lódálfar é nuair a bheidh tú ar líne arís.';
 
   @override
-  String get conversationErrorTitle => 'Ní féidir an teachtaireacht seo a thaispeáint';
+  String get conversationErrorTitle =>
+      'Ní féidir an teachtaireacht seo a thaispeáint';
 
   @override
   String get conversationErrorText => 'Chuaigh rud éigin mícheart.';
@@ -308,13 +315,16 @@ class AppLocalizationsGa extends AppLocalizations {
   String get conversationLoadingMessage => 'Teachtaireacht á lódáil';
 
   @override
-  String get conversationBodyError => 'Níorbh fhéidir an teachtaireacht seo a lódáil.';
+  String get conversationBodyError =>
+      'Níorbh fhéidir an teachtaireacht seo a lódáil.';
 
   @override
-  String get conversationBodyOffline => 'Tá tú as líne. Lódálfar an teachtaireacht nuair a bheidh tú ar líne arís.';
+  String get conversationBodyOffline =>
+      'Tá tú as líne. Lódálfar an teachtaireacht nuair a bheidh tú ar líne arís.';
 
   @override
-  String get conversationOriginalHint => 'Is fearr a bhreathnaíonn sé san amharc Bunaidh';
+  String get conversationOriginalHint =>
+      'Is fearr a bhreathnaíonn sé san amharc Bunaidh';
 
   @override
   String get conversationShowOriginal => 'Taispeáin an bunleagan';
@@ -356,7 +366,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get conversationShareAsFile => 'Comhroinn mar chomhad…';
 
   @override
-  String get conversationSearchFromMessageMenu => 'Cuardaigh ón teachtaireacht seo…';
+  String get conversationSearchFromMessageMenu =>
+      'Cuardaigh ón teachtaireacht seo…';
 
   @override
   String get conversationVip => 'VIP';
@@ -388,7 +399,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get conversationNoHeaders => 'Gan cheanntáisc';
 
   @override
-  String get conversationSearchFromMessageTitle => 'Cuardaigh ón teachtaireacht seo';
+  String get conversationSearchFromMessageTitle =>
+      'Cuardaigh ón teachtaireacht seo';
 
   @override
   String conversationSearchFrom(String name) {
@@ -412,7 +424,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get conversationSourceCopied => 'Foinse cóipeáilte';
 
   @override
-  String get conversationShareFailed => 'Níorbh fhéidir an teachtaireacht a chomhroinnt.';
+  String get conversationShareFailed =>
+      'Níorbh fhéidir an teachtaireacht a chomhroinnt.';
 
   @override
   String get conversationWrapLines => 'Timfhill línte';
@@ -440,7 +453,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get conversationMoveTo => 'Bog go…';
 
   @override
-  String get conversationMailboxesError => 'Níorbh fhéidir na boscaí poist a lódáil.';
+  String get conversationMailboxesError =>
+      'Níorbh fhéidir na boscaí poist a lódáil.';
 
   @override
   String get conversationReaderReadable => 'Inléite';
@@ -493,7 +507,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get conversationSecurityBadgeHint => 'Taispeánann sé an fáth';
 
   @override
-  String get conversationPhishingBannerTitle => 'Tá cuma fhioscaireachta ar an teachtaireacht seo';
+  String get conversationPhishingBannerTitle =>
+      'Tá cuma fhioscaireachta ar an teachtaireacht seo';
 
   @override
   String conversationPhishingBannerReason(String reason) {
@@ -510,27 +525,32 @@ class AppLocalizationsGa extends AppLocalizations {
   String get conversationPhishingShowAnyway => 'Taispeáin mar sin féin';
 
   @override
-  String get conversationSecurityPhishingTitle => 'Tá cuma fhioscaireachta air seo';
+  String get conversationSecurityPhishingTitle =>
+      'Tá cuma fhioscaireachta air seo';
 
   @override
   String get conversationSecurityPhishingText =>
       'Léiríonn roinnt comharthaí nach bhfuil an teachtaireacht seo mar a mhaíonn sí a bheith.';
 
   @override
-  String get conversationSecurityCarefulTitle => 'Bí cúramach leis an teachtaireacht seo';
+  String get conversationSecurityCarefulTitle =>
+      'Bí cúramach leis an teachtaireacht seo';
 
   @override
-  String get conversationSecurityCarefulText => 'Is fiú súil eile a chaitheamh ar rud éigin inti.';
+  String get conversationSecurityCarefulText =>
+      'Is fiú súil eile a chaitheamh ar rud éigin inti.';
 
   @override
-  String get conversationSecurityVerifiedText => 'Tá an seoltóir fíoraithe agus níl aon rud amhrasach le feiceáil.';
+  String get conversationSecurityVerifiedText =>
+      'Tá an seoltóir fíoraithe agus níl aon rud amhrasach le feiceáil.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Níl aon rud amhrasach le feiceáil. Níor dhúirt d’fhreastalaí ríomhphoist an bhfuil an seoltóir fíoraithe.';
 
   @override
-  String get conversationSecurityNothingSuspicious => 'Níl aon rud amhrasach le feiceáil.';
+  String get conversationSecurityNothingSuspicious =>
+      'Níl aon rud amhrasach le feiceáil.';
 
   @override
   String get conversationSecurityWhy => 'Cén fáth';
@@ -606,7 +626,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Sonraí teicniúla';
 
   @override
-  String get conversationSecurityCheckedLocally => 'Seiceáilte ar an ngléas seo. Níor seoladh aon rud áit ar bith.';
+  String get conversationSecurityCheckedLocally =>
+      'Seiceáilte ar an ngléas seo. Níor seoladh aon rud áit ar bith.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Rianairí';
@@ -677,7 +698,8 @@ class AppLocalizationsGa extends AppLocalizations {
       'Ná déan dada faoi mura raibh tú ag súil leis. Má tá amhras ort, déan teagmháil leis an seoltóir ar bhealach eile.';
 
   @override
-  String get conversationSecurityAuthUnalignedTitle => 'Sínithe ag fearann eile';
+  String get conversationSecurityAuthUnalignedTitle =>
+      'Sínithe ag fearann eile';
 
   @override
   String conversationSecurityAuthUnalignedText(String signer, String domain) {
@@ -690,7 +712,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle => 'Taispeánann an t-ainm seoladh eile';
+  String get conversationSecurityNameShowsAddressTitle =>
+      'Taispeánann an t-ainm seoladh eile';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -698,7 +721,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice => 'Cuir muinín sa seoladh, ní san ainm.';
+  String get conversationSecurityNameShowsAddressAdvice =>
+      'Cuir muinín sa seoladh, ní san ainm.';
 
   @override
   String get conversationSecurityReplyToTitle => 'Téann freagraí áit eile';
@@ -716,7 +740,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get conversationSecurityImpersonationYouTitle => 'Úsáideann sé d’ainm';
 
   @override
-  String get conversationSecurityImpersonationTitle => 'Úsáideann sé ainm duine a bhfuil aithne agat air';
+  String get conversationSecurityImpersonationTitle =>
+      'Úsáideann sé ainm duine a bhfuil aithne agat air';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -724,17 +749,28 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationVipText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Tá sé sínithe “$name”, cosúil le do VIP $knownName ($knownEmail), ach tagann sé ó sheoladh nua: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Tá sé sínithe “$name”, cosúil le $knownName ($knownEmail), ach tagann sé ó sheoladh nua: $email.';
   }
 
   @override
-  String get conversationSecurityImpersonationRepliesElsewhere => 'Agus rachadh freagraí chuig seoladh eile fós.';
+  String get conversationSecurityImpersonationRepliesElsewhere =>
+      'Agus rachadh freagraí chuig seoladh eile fós.';
 
   @override
   String get conversationSecurityImpersonationAdvice =>
@@ -751,7 +787,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle => 'An chéad teachtaireacht ón seoltóir seo';
+  String get conversationSecurityFirstTimeTitle =>
+      'An chéad teachtaireacht ón seoltóir seo';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -763,10 +800,12 @@ class AppLocalizationsGa extends AppLocalizations {
       'Bí cúramach le hiarratais ó dhaoine nach bhfuil aithne agat orthu fós.';
 
   @override
-  String get conversationSecuritySenderHomographTitle => 'Litreacha cosúla i seoladh an tseoltóra';
+  String get conversationSecuritySenderHomographTitle =>
+      'Litreacha cosúla i seoladh an tseoltóra';
 
   @override
-  String get conversationSecurityLinkHomographTitle => 'Litreacha cosúla i nasc';
+  String get conversationSecurityLinkHomographTitle =>
+      'Litreacha cosúla i nasc';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -779,7 +818,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice => 'Scrios í nó tuairiscigh mar thurscar í.';
+  String get conversationSecuritySenderHomographAdvice =>
+      'Scrios í nó tuairiscigh mar thurscar í.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Ná hoscail é.';
@@ -790,10 +830,12 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLookalikeTitle => 'Fearann a bhfuil cuma fhearainn eile air';
+  String get conversationSecurityLookalikeTitle =>
+      'Fearann a bhfuil cuma fhearainn eile air';
 
   @override
-  String get conversationSecurityFamiliarNameTitle => 'Úsáideann sé ainm aitheanta ina fhearann';
+  String get conversationSecurityFamiliarNameTitle =>
+      'Úsáideann sé ainm aitheanta ina fhearann';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -801,7 +843,11 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(String domain, String brand, String real) {
+  String conversationSecurityLookalikeText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return 'Tá $domain cosúil le $brand ($real), ach is fearann eile é.';
   }
 
@@ -811,7 +857,11 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
+  String conversationSecurityFamiliarNameText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return 'Úsáideann $domain ainm $brand ($real), ach ní bhaineann sé leis.';
   }
 
@@ -864,7 +914,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle => 'Ní féidir ceann scríbe naisc a sheiceáil';
+  String get conversationSecurityLinkUncheckableTitle =>
+      'Ní féidir ceann scríbe naisc a sheiceáil';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -872,7 +923,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle => 'Díríonn nasc ar sheoladh IP lom';
+  String get conversationSecurityIpAddressTitle =>
+      'Díríonn nasc ar sheoladh IP lom';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -888,7 +940,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityDataLinkTitle => 'Díchumasaíodh leathanach folaithe';
+  String get conversationSecurityDataLinkTitle =>
+      'Díchumasaíodh leathanach folaithe';
 
   @override
   String get conversationSecurityDataLinkText =>
@@ -898,16 +951,20 @@ class AppLocalizationsGa extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Iarrann sé pasfhocal';
 
   @override
-  String get conversationSecurityPasswordFieldText => 'Bhí réimse pasfhocail sa teachtaireacht. Bhain Loupe é.';
+  String get conversationSecurityPasswordFieldText =>
+      'Bhí réimse pasfhocail sa teachtaireacht. Bhain Loupe é.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice => 'Ná clóscríobh pasfhocal i ríomhphost choíche.';
+  String get conversationSecurityPasswordFieldAdvice =>
+      'Ná clóscríobh pasfhocal i ríomhphost choíche.';
 
   @override
-  String get conversationSecurityScriptLinkTitle => 'Díchumasaíodh nasc a ritheann cód';
+  String get conversationSecurityScriptLinkTitle =>
+      'Díchumasaíodh nasc a ritheann cód';
 
   @override
-  String get conversationSecurityScriptLinkText => 'Ní ritheann Loupe cód ó theachtaireachtaí riamh.';
+  String get conversationSecurityScriptLinkText =>
+      'Ní ritheann Loupe cód ó theachtaireachtaí riamh.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -929,7 +986,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityInternationalTitle => 'Seoladh gréasáin idirnáisiúnta';
+  String get conversationSecurityInternationalTitle =>
+      'Seoladh gréasáin idirnáisiúnta';
 
   @override
   String conversationSecurityInternationalText(String hosts) {
@@ -937,7 +995,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLotsOfHiddenTextTitle => 'Go leor téacs folaithe';
+  String get conversationSecurityLotsOfHiddenTextTitle =>
+      'Go leor téacs folaithe';
 
   @override
   String conversationSecurityLotsOfHiddenTextText(int count) {
@@ -1007,10 +1066,14 @@ class AppLocalizationsGa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Sábháladh “$name” gan $formattedCount teachtaireacht nárbh fhéidir a íoslódáil.',
-      many: 'Sábháladh “$name” gan $formattedCount dteachtaireacht nárbh fhéidir a íoslódáil.',
-      few: 'Sábháladh “$name” gan $formattedCount theachtaireacht nárbh fhéidir a íoslódáil.',
-      two: 'Sábháladh “$name” gan $formattedCount theachtaireacht nárbh fhéidir a íoslódáil.',
+      other:
+          'Sábháladh “$name” gan $formattedCount teachtaireacht nárbh fhéidir a íoslódáil.',
+      many:
+          'Sábháladh “$name” gan $formattedCount dteachtaireacht nárbh fhéidir a íoslódáil.',
+      few:
+          'Sábháladh “$name” gan $formattedCount theachtaireacht nárbh fhéidir a íoslódáil.',
+      two:
+          'Sábháladh “$name” gan $formattedCount theachtaireacht nárbh fhéidir a íoslódáil.',
       one: 'Sábháladh “$name” gan 1 teachtaireacht nárbh fhéidir a íoslódáil.',
     );
     return '$_temp0';
@@ -1092,7 +1155,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get mailboxesSmartMailboxes => 'Smart Mailboxes';
 
   @override
-  String get mailboxesSmartMailboxesEmpty => 'Sábháil cuardach chun é a choinneáil anseo.';
+  String get mailboxesSmartMailboxesEmpty =>
+      'Sábháil cuardach chun é a choinneáil anseo.';
 
   @override
   String get mailboxesTags => 'Clibeanna';
@@ -1126,7 +1190,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get projectsDelete => 'Scrios an tionscadal';
 
   @override
-  String get projectsDeleteMessage => 'Fanann a chomhráite mar a bhfuil siad, lasmuigh den tionscadal.';
+  String get projectsDeleteMessage =>
+      'Fanann a chomhráite mar a bhfuil siad, lasmuigh den tionscadal.';
 
   @override
   String get projectsUntitled => 'Tionscadal';
@@ -1167,7 +1232,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get projectsAiUnreachable => 'Níorbh fhéidir an freastalaí a shroicheadh.';
+  String get projectsAiUnreachable =>
+      'Níorbh fhéidir an freastalaí a shroicheadh.';
 
   @override
   String get projectsAiRefused => 'Dhiúltaigh an freastalaí an eochair.';
@@ -1181,7 +1247,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get projectsAiTimeout => 'Thóg an freastalaí rófhada.';
 
   @override
-  String get projectsAiBadAnswer => 'Níorbh fhéidir freagra an fhreastalaí a léamh.';
+  String get projectsAiBadAnswer =>
+      'Níorbh fhéidir freagra an fhreastalaí a léamh.';
 
   @override
   String projectsAiNoModel(String models) {
@@ -1295,7 +1362,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get messageListLoadOlderFailed => 'Níorbh fhéidir ríomhphost níos sine a lódáil.';
+  String get messageListLoadOlderFailed =>
+      'Níorbh fhéidir ríomhphost níos sine a lódáil.';
 
   @override
   String get messageListSelectMessages => 'Roghnaigh teachtaireachtaí';
@@ -1466,7 +1534,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get briefButton => 'Achoimre';
 
   @override
-  String get briefButtonHint => 'Liostaíonn sé a n-iarrann an teachtaireacht seo ort';
+  String get briefButtonHint =>
+      'Liostaíonn sé a n-iarrann an teachtaireacht seo ort';
 
   @override
   String get briefReaderView => 'Achoimre';
@@ -1484,10 +1553,12 @@ class AppLocalizationsGa extends AppLocalizations {
   String get briefStopped => 'Stop tú an achoimre.';
 
   @override
-  String get briefFailedTooLarge => 'Tá an teachtaireacht seo rófhada don tsamhail, mar sin níor seoladh aon rud.';
+  String get briefFailedTooLarge =>
+      'Tá an teachtaireacht seo rófhada don tsamhail, mar sin níor seoladh aon rud.';
 
   @override
-  String get briefFailedProvider => 'Níorbh fhéidir leis an tsamhail achoimre a dhéanamh ar an teachtaireacht seo.';
+  String get briefFailedProvider =>
+      'Níorbh fhéidir leis an tsamhail achoimre a dhéanamh ar an teachtaireacht seo.';
 
   @override
   String get briefFailedInvalid =>
@@ -1543,7 +1614,11 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Tusa', 'them': 'Daoine eile', 'other': 'Gan lua'});
+    String _temp0 = intl.Intl.selectLogic(owner, {
+      'me': 'Tusa',
+      'them': 'Daoine eile',
+      'other': 'Gan lua',
+    });
     return '$_temp0';
   }
 
@@ -1612,7 +1687,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get briefCopyChecklist => 'Cóipeáil an liosta';
 
   @override
-  String get briefMadeByDemo => 'Déanta ag an taispeántas ionsuite, ní ag samhail.';
+  String get briefMadeByDemo =>
+      'Déanta ag an taispeántas ionsuite, ní ag samhail.';
 
   @override
   String briefMadeBy(String location, String name) {
@@ -1634,7 +1710,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText => 'Seiceáil an teachtaireacht féin sula ndéanann tú aon rud ón achoimre seo.';
+  String get briefSecurityText =>
+      'Seiceáil an teachtaireacht féin sula ndéanann tú aon rud ón achoimre seo.';
 
   @override
   String get briefSourceTitle => 'Sa teachtaireacht';
@@ -1679,13 +1756,16 @@ class AppLocalizationsGa extends AppLocalizations {
   String get appLockUnlock => 'Díghlasáil';
 
   @override
-  String get appLockFailed => 'Níorbh fhéidir le Loupe a dhearbhú gur tusa atá ann.';
+  String get appLockFailed =>
+      'Níorbh fhéidir le Loupe a dhearbhú gur tusa atá ann.';
 
   @override
-  String get appLockLockedOut => 'An iomarca iarrachtaí. Bain triail eile as ar ball.';
+  String get appLockLockedOut =>
+      'An iomarca iarrachtaí. Bain triail eile as ar ball.';
 
   @override
-  String get appLockPromptError => 'Níorbh fhéidir an fhuinneog fíordheimhnithe a thaispeáint. Bain triail eile as.';
+  String get appLockPromptError =>
+      'Níorbh fhéidir an fhuinneog fíordheimhnithe a thaispeáint. Bain triail eile as.';
 
   @override
   String get appLockNoScreenLock => 'Níl glas scáileáin ar an bhfón seo.';
@@ -1694,13 +1774,15 @@ class AppLocalizationsGa extends AppLocalizations {
   String get appLockUnlockPromptTitle => 'Díghlasáil Loupe';
 
   @override
-  String get appLockUnlockPromptReason => 'Dearbhaigh gur tusa atá ann chun do ríomhphost a fheiceáil.';
+  String get appLockUnlockPromptReason =>
+      'Dearbhaigh gur tusa atá ann chun do ríomhphost a fheiceáil.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Cuir Glas Aipe ar siúl';
 
   @override
-  String get appLockTurnOnPromptReason => 'Dearbhaigh gur tusa atá ann chun Glas Aipe a chur ar siúl.';
+  String get appLockTurnOnPromptReason =>
+      'Dearbhaigh gur tusa atá ann chun Glas Aipe a chur ar siúl.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1791,7 +1873,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get openpgpUnlock => 'Díghlasáil';
 
   @override
-  String get openpgpCantDecrypt => 'Ní féidir an teachtaireacht seo a dhíchriptiú';
+  String get openpgpCantDecrypt =>
+      'Ní féidir an teachtaireacht seo a dhíchriptiú';
 
   @override
   String get openpgpEncryptedWithOpenPgp => 'Criptithe le OpenPGP';
@@ -1852,33 +1935,40 @@ class AppLocalizationsGa extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Athraigh an glacadh…';
 
   @override
-  String get openpgpCheckedFooter => 'Seiceáilte ar an ngléas seo le OpenPGP, comhoiriúnach le Thunderbird.';
+  String get openpgpCheckedFooter =>
+      'Seiceáilte ar an ngléas seo le OpenPGP, comhoiriúnach le Thunderbird.';
 
   @override
   String get openpgpSummaryLocked =>
       'Tá d’eochair faoi ghlas. Díghlasáil í lena pasfhrása chun an teachtaireacht seo a léamh.';
 
   @override
-  String get openpgpSummaryNoSecretKey => 'Criptíodh í d’eochair nach bhfuil ar an ngléas seo.';
+  String get openpgpSummaryNoSecretKey =>
+      'Criptíodh í d’eochair nach bhfuil ar an ngléas seo.';
 
   @override
-  String get openpgpSummaryDamaged => 'Tá na sonraí criptithe damáistithe nó athraíodh iad ar an mbealach.';
+  String get openpgpSummaryDamaged =>
+      'Tá na sonraí criptithe damáistithe nó athraíodh iad ar an mbealach.';
 
   @override
-  String get openpgpSummaryUnsupported => 'Úsáideann sí algartam nach dtacaíonn Loupe leis.';
+  String get openpgpSummaryUnsupported =>
+      'Úsáideann sí algartam nach dtacaíonn Loupe leis.';
 
   @override
-  String get openpgpSummaryEncrypted => 'Ní féidir í a léamh ach agatsa agus ag na faighteoirí eile.';
+  String get openpgpSummaryEncrypted =>
+      'Ní féidir í a léamh ach agatsa agus ag na faighteoirí eile.';
 
   @override
-  String get openpgpSummaryNotSigned => 'Níl sí sínithe, mar sin níl an seoltóir dearbhaithe.';
+  String get openpgpSummaryNotSigned =>
+      'Níl sí sínithe, mar sin níl an seoltóir dearbhaithe.';
 
   @override
   String get openpgpSummaryUnknownKey =>
       'Tá sí sínithe, ach le heochair nach bhfuil agat, mar sin ní féidir an síniú a sheiceáil.';
 
   @override
-  String get openpgpSummaryBadSignature => 'Ní mheaitseálann an síniú: b’fhéidir gur athraíodh an teachtaireacht.';
+  String get openpgpSummaryBadSignature =>
+      'Ní mheaitseálann an síniú: b’fhéidir gur athraíodh an teachtaireacht.';
 
   @override
   String get openpgpSummaryMismatch =>
@@ -1892,13 +1982,16 @@ class AppLocalizationsGa extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Sínithe le d’eochair féin.';
 
   @override
-  String get openpgpSummaryVerified => 'Tá an síniú bailí, agus d’fhíoraigh tú méarlorg na heochrach.';
+  String get openpgpSummaryVerified =>
+      'Tá an síniú bailí, agus d’fhíoraigh tú méarlorg na heochrach.';
 
   @override
-  String get openpgpSummaryUnverified => 'Tá an síniú bailí. Ghlac tú leis an eochair gan a méarlorg a sheiceáil.';
+  String get openpgpSummaryUnverified =>
+      'Tá an síniú bailí. Ghlac tú leis an eochair gan a méarlorg a sheiceáil.';
 
   @override
-  String get openpgpSummaryRejected => 'Tá an síniú bailí, ach dhiúltaigh tú don eochair seo.';
+  String get openpgpSummaryRejected =>
+      'Tá an síniú bailí, ach dhiúltaigh tú don eochair seo.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -1962,7 +2055,8 @@ class AppLocalizationsGa extends AppLocalizations {
       'An eochair a úsáideann gach seoladh, agus cathain a chriptíonn agus a shíníonn sé.';
 
   @override
-  String get openpgpCorrespondentsKeys => 'Eochracha OpenPGP do chomhfhreagraithe';
+  String get openpgpCorrespondentsKeys =>
+      'Eochracha OpenPGP do chomhfhreagraithe';
 
   @override
   String get openpgpCorrespondentsKeysFooter =>
@@ -1993,7 +2087,8 @@ class AppLocalizationsGa extends AppLocalizations {
       'Aimsíonn an cuardach teachtaireachtaí criptithe de réir a seoltóra, a bhfaighteoirí agus a n-ábhair. Nuair atá sé seo ar siúl, cuireann Loupe téacs gach teachtaireachta criptithe a dhíchriptíonn sé leis an innéacs cuardaigh ina bhunachar sonraí criptithe ar an ngléas seo freisin, ionas go n-aimsíonn an cuardach í de réir a téacs freisin. Má mhúchann tú é, bainfear an téacs sin den innéacs.';
 
   @override
-  String get openpgpIndexDecrypted => 'Innéacsaigh teachtaireachtaí díchriptithe don chuardach';
+  String get openpgpIndexDecrypted =>
+      'Innéacsaigh teachtaireachtaí díchriptithe don chuardach';
 
   @override
   String get openpgpPassphrases => 'Pasfhrásaí';
@@ -2038,7 +2133,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get openpgpAddKeyTitle => 'Cuir eochair OpenPGP leis';
 
   @override
-  String get openpgpAddKeyMessage => 'Iompórtáil an eochair a úsáideann tú in Thunderbird, nó cruthaigh ceann nua.';
+  String get openpgpAddKeyMessage =>
+      'Iompórtáil an eochair a úsáideann tú in Thunderbird, nó cruthaigh ceann nua.';
 
   @override
   String get openpgpImportFromClipboard => 'Iompórtáil ón ngearrthaisce';
@@ -2059,7 +2155,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get openpgpFromFile => 'Ó chomhad';
 
   @override
-  String get openpgpClipboardEmpty => 'Tá an ghearrthaisce folamh. Cóipeáil an eochair ar dtús.';
+  String get openpgpClipboardEmpty =>
+      'Tá an ghearrthaisce folamh. Cóipeáil an eochair ar dtús.';
 
   @override
   String get openpgpKey => 'Eochair';
@@ -2152,7 +2249,8 @@ class AppLocalizationsGa extends AppLocalizations {
       'Ní féidir ríomhphost a criptíodh don eochair seo a léamh ar an ngléas seo a thuilleadh, mura n-iompórtálann tú arís í.';
 
   @override
-  String get openpgpRemoveKeyMessage => 'Is féidir leat í a iompórtáil arís níos déanaí.';
+  String get openpgpRemoveKeyMessage =>
+      'Is féidir leat í a iompórtáil arís níos déanaí.';
 
   @override
   String get openpgpKeyHeader => 'Eochair OpenPGP';
@@ -2175,7 +2273,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Criptigh go huathoibríoch';
 
   @override
-  String get openpgpAlwaysEncryptDetail => 'Diúltaíonn sé seoladh nuair nach bhfuil eochair ag faighteoir';
+  String get openpgpAlwaysEncryptDetail =>
+      'Diúltaíonn sé seoladh nuair nach bhfuil eochair ag faighteoir';
 
   @override
   String get openpgpSignUnencrypted => 'Sínigh ríomhphost neamhchriptithe';
@@ -2194,7 +2293,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get openpgpPreferEncryption => 'B’fhearr liom criptiú';
 
   @override
-  String get openpgpPreferEncryptionDetail => 'Iarr ar dhaoine eile criptiú nuair is féidir leo';
+  String get openpgpPreferEncryptionDetail =>
+      'Iarr ar dhaoine eile criptiú nuair is féidir leo';
 
   @override
   String openpgpValidityYears(int count) {
@@ -2391,10 +2491,12 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get openpgpWrongPassphrase => 'Tá an pasfhrása sin mícheart. Bain triail eile as.';
+  String get openpgpWrongPassphrase =>
+      'Tá an pasfhrása sin mícheart. Bain triail eile as.';
 
   @override
-  String get openpgpExplainLocked => 'Tá an teachtaireacht seo criptithe. Díghlasáil d’eochair OpenPGP chun í a léamh.';
+  String get openpgpExplainLocked =>
+      'Tá an teachtaireacht seo criptithe. Díghlasáil d’eochair OpenPGP chun í a léamh.';
 
   @override
   String get openpgpExplainNoKey =>
@@ -2405,7 +2507,8 @@ class AppLocalizationsGa extends AppLocalizations {
       'Tá damáiste déanta don teachtaireacht chriptithe seo, mar sin ní féidir í a dhíchriptiú go sábháilte.';
 
   @override
-  String get openpgpExplainUnsupported => 'Úsáideann an teachtaireacht seo criptiú nach féidir le Loupe a léamh fós.';
+  String get openpgpExplainUnsupported =>
+      'Úsáideann an teachtaireacht seo criptiú nach féidir le Loupe a léamh fós.';
 
   @override
   String get openpgpExplainSmimeNoKey =>
@@ -2417,10 +2520,12 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock => 'Díghlasáil do theastas S/MIME chun í a léamh.';
+  String get openpgpExplainSmimeUnlock =>
+      'Díghlasáil do theastas S/MIME chun í a léamh.';
 
   @override
-  String get openpgpAttachmentGone => 'Níl an ceangaltán seo ar fáil a thuilleadh.';
+  String get openpgpAttachmentGone =>
+      'Níl an ceangaltán seo ar fáil a thuilleadh.';
 
   @override
   String get smimeEncrypted => 'Criptithe (S/MIME)';
@@ -2441,7 +2546,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get smimeUnknownSigner => 'anaithnid';
 
   @override
-  String get smimeSignatureModified => 'Síniú neamhbhailí: athraíodh an teachtaireacht';
+  String get smimeSignatureModified =>
+      'Síniú neamhbhailí: athraíodh an teachtaireacht';
 
   @override
   String get smimeSignatureWeak => 'Síniú neamhshlán: algartam as dáta';
@@ -2498,7 +2604,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get smimeCantDecrypt => 'Ní féidir an teachtaireacht seo a dhíchriptiú';
+  String get smimeCantDecrypt =>
+      'Ní féidir an teachtaireacht seo a dhíchriptiú';
 
   @override
   String get smimeEncryptedWithSmime => 'Criptithe le S/MIME';
@@ -2619,25 +2726,31 @@ class AppLocalizationsGa extends AppLocalizations {
   String get smimeTrust => 'Cuir muinín ann';
 
   @override
-  String get smimeSummaryNoKey => 'Criptíodh í do theastas nach bhfuil ar an ngléas seo.';
+  String get smimeSummaryNoKey =>
+      'Criptíodh í do theastas nach bhfuil ar an ngléas seo.';
 
   @override
-  String get smimeSummaryDamaged => 'Tá na sonraí criptithe damáistithe nó athraíodh iad ar an mbealach.';
+  String get smimeSummaryDamaged =>
+      'Tá na sonraí criptithe damáistithe nó athraíodh iad ar an mbealach.';
 
   @override
-  String get smimeSummaryUnsupported => 'Úsáideann sí algartam nach dtacaíonn Loupe leis.';
+  String get smimeSummaryUnsupported =>
+      'Úsáideann sí algartam nach dtacaíonn Loupe leis.';
 
   @override
   String get smimeSummaryLocked => 'Tá do theastas S/MIME faoi ghlas.';
 
   @override
-  String get smimeSummaryEncrypted => 'Ní féidir í a léamh ach agatsa agus ag na faighteoirí eile.';
+  String get smimeSummaryEncrypted =>
+      'Ní féidir í a léamh ach agatsa agus ag na faighteoirí eile.';
 
   @override
-  String get smimeSummaryNotSigned => 'Níl sí sínithe, mar sin níl an seoltóir dearbhaithe.';
+  String get smimeSummaryNotSigned =>
+      'Níl sí sínithe, mar sin níl an seoltóir dearbhaithe.';
 
   @override
-  String get smimeSummaryModified => 'Ní mheaitseálann an síniú: athraíodh an teachtaireacht tar éis í a shíniú.';
+  String get smimeSummaryModified =>
+      'Ní mheaitseálann an síniú: athraíodh an teachtaireacht tar éis í a shíniú.';
 
   @override
   String get smimeSummaryUncheckable => 'Ní féidir an síniú a sheiceáil.';
@@ -2665,10 +2778,12 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain => 'Tá an teastas nó ceann dá eisitheoirí neamhbhailí.';
+  String get smimeProblemInvalidChain =>
+      'Tá an teastas nó ceann dá eisitheoirí neamhbhailí.';
 
   @override
-  String get smimeProblemUntrusted => 'Tagann an teastas ó údarás nach bhfuil muinín ag Loupe as.';
+  String get smimeProblemUntrusted =>
+      'Tagann an teastas ó údarás nach bhfuil muinín ag Loupe as.';
 
   @override
   String get smimeProblemExpired => 'Bhí an teastas imithe as feidhm.';
@@ -2680,7 +2795,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get smimeProblemWrongUsage => 'Níl an teastas ceaptha do ríomhphost.';
 
   @override
-  String get smimeProblemWrongAddress => 'Baineann an teastas le seoladh eile seachas seoladh an tseoltóra.';
+  String get smimeProblemWrongAddress =>
+      'Baineann an teastas le seoladh eile seachas seoladh an tseoltóra.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2764,11 +2880,16 @@ class AppLocalizationsGa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Iontaofa duitse, chomh maith leis na $count údarás a bhfuil muinín ag Mozilla astu don ríomhphost.',
-      many: 'Iontaofa duitse, chomh maith leis na $count n-údarás a bhfuil muinín ag Mozilla astu don ríomhphost.',
-      few: 'Iontaofa duitse, chomh maith leis na $count údarás a bhfuil muinín ag Mozilla astu don ríomhphost.',
-      two: 'Iontaofa duitse, chomh maith leis an $count údarás a bhfuil muinín ag Mozilla astu don ríomhphost.',
-      one: 'Iontaofa duitse, chomh maith leis an $count údarás a bhfuil muinín ag Mozilla astu don ríomhphost.',
+      other:
+          'Iontaofa duitse, chomh maith leis na $count údarás a bhfuil muinín ag Mozilla astu don ríomhphost.',
+      many:
+          'Iontaofa duitse, chomh maith leis na $count n-údarás a bhfuil muinín ag Mozilla astu don ríomhphost.',
+      few:
+          'Iontaofa duitse, chomh maith leis na $count údarás a bhfuil muinín ag Mozilla astu don ríomhphost.',
+      two:
+          'Iontaofa duitse, chomh maith leis an $count údarás a bhfuil muinín ag Mozilla astu don ríomhphost.',
+      one:
+          'Iontaofa duitse, chomh maith leis an $count údarás a bhfuil muinín ag Mozilla astu don ríomhphost.',
     );
     return '$_temp0';
   }
@@ -2780,7 +2901,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get smimeImportACertificate => 'Iompórtáil teastas';
 
   @override
-  String get smimeImportContactMessage => 'Teastas comhfhreagraí (.cer, .crt, .pem) nó teastas údaráis deimhnithe.';
+  String get smimeImportContactMessage =>
+      'Teastas comhfhreagraí (.cer, .crt, .pem) nó teastas údaráis deimhnithe.';
 
   @override
   String get smimeFromClipboard => 'Ón ngearrthaisce';
@@ -2789,7 +2911,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get smimeFromFile => 'Ó chomhad';
 
   @override
-  String get smimeClipboardEmpty => 'Tá an ghearrthaisce folamh. Cóipeáil an teastas ar dtús.';
+  String get smimeClipboardEmpty =>
+      'Tá an ghearrthaisce folamh. Cóipeáil an teastas ar dtús.';
 
   @override
   String get smimeCertificate => 'Teastas';
@@ -2942,7 +3065,8 @@ class AppLocalizationsGa extends AppLocalizations {
       'Scriostar a eochair phríobháideach ón ngléas seo: ní féidir ríomhphost a criptíodh dó a léamh anseo a thuilleadh, mura n-iompórtálann tú arís é.';
 
   @override
-  String get smimeRemoveContactMessage => 'Tagann sé ar ais lena gcéad teachtaireacht shínithe eile.';
+  String get smimeRemoveContactMessage =>
+      'Tagann sé ar ais lena gcéad teachtaireacht shínithe eile.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -2965,13 +3089,15 @@ class AppLocalizationsGa extends AppLocalizations {
   String get smimeCertificatePassword => 'Pasfhocal an teastais';
 
   @override
-  String get smimeCertificatePasswordPrompt => 'Cuir isteach an pasfhocal lenar easpórtáladh comhad an teastais.';
+  String get smimeCertificatePasswordPrompt =>
+      'Cuir isteach an pasfhocal lenar easpórtáladh comhad an teastais.';
 
   @override
   String get smimeImport => 'Iompórtáil';
 
   @override
-  String get smimeWrongPassword => 'Tá an pasfhocal sin mícheart. Bain triail eile as.';
+  String get smimeWrongPassword =>
+      'Tá an pasfhocal sin mícheart. Bain triail eile as.';
 
   @override
   String get smimeNoCertificateFound => 'Níor aimsíodh teastas.';
@@ -3004,7 +3130,10 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
+  String smimeImportedCertificatesAndAuthorities(
+    int count,
+    String certificates,
+  ) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -3078,7 +3207,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get smimeWrongPassphrase => 'Tá an pasfhrása sin mícheart. Bain triail eile as.';
+  String get smimeWrongPassphrase =>
+      'Tá an pasfhrása sin mícheart. Bain triail eile as.';
 
   @override
   String get smimeUnlock => 'Díghlasáil';
@@ -3107,10 +3237,12 @@ class AppLocalizationsGa extends AppLocalizations {
       'Tá do theastas S/MIME faoi ghlas. Oscail an teachtaireacht arís chun é a dhíghlasáil.';
 
   @override
-  String get smimeDeviceHasNoCertificates => 'Ní thairgeann an gléas seo a chuid teastas.';
+  String get smimeDeviceHasNoCertificates =>
+      'Ní thairgeann an gléas seo a chuid teastas.';
 
   @override
-  String get smimeCantReadCertificate => 'Ní féidir le Loupe an teastas seo a léamh.';
+  String get smimeCantReadCertificate =>
+      'Ní féidir le Loupe an teastas seo a léamh.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -3141,13 +3273,16 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress => 'Ní seoladh gréasáin é seoladh an údaráis.';
+  String get smimeAuthorityNotWebAddress =>
+      'Ní seoladh gréasáin é seoladh an údaráis.';
 
   @override
-  String get smimeAuthorityTimeout => 'Níor fhreagair an t-údarás deimhnithe in am.';
+  String get smimeAuthorityTimeout =>
+      'Níor fhreagair an t-údarás deimhnithe in am.';
 
   @override
-  String get smimeAuthorityUnreachable => 'Níorbh fhéidir teagmháil a dhéanamh leis an údarás deimhnithe.';
+  String get smimeAuthorityUnreachable =>
+      'Níorbh fhéidir teagmháil a dhéanamh leis an údarás deimhnithe.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -3155,15 +3290,25 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge => 'Tá freagra an údaráis dheimhnithe rómhór.';
+  String get smimeAuthorityAnswerTooLarge =>
+      'Tá freagra an údaráis dheimhnithe rómhór.';
 
   @override
   String get smimeRevocationNotChecked =>
       'Gan seiceáil: ní sheiceáiltear ach teastais ó údarás a bhfuil muinín ag Loupe as.';
 
   @override
+  String get actionsNeedsMyAction => 'Gníomh de dhíth uaim';
+
+  @override
+  String get actionsWaitingOnOthers => 'Ag fanacht ar dhaoine eile';
+
+  @override
   String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Brú', 'other': 'IDLE'});
+    String _temp0 = intl.Intl.selectLogic(protocol, {
+      'jmap': 'Brú',
+      'other': 'IDLE',
+    });
     return '$_temp0';
   }
 
@@ -3196,7 +3341,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsSignatureDefault => 'Réamhshocrú';
 
   @override
-  String get settingsSignatureWhenCopiedAnyone => 'Nuair a fhaigheann duine cóip';
+  String get settingsSignatureWhenCopiedAnyone =>
+      'Nuair a fhaigheann duine cóip';
 
   @override
   String settingsSignatureWhenCopying(String addresses) {
@@ -3245,7 +3391,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Cuir seoladh nó fearann leis…';
 
   @override
-  String get settingsSignatureCopiedPrompt => 'Seoladh, nó fearann mar client.example.';
+  String get settingsSignatureCopiedPrompt =>
+      'Seoladh, nó fearann mar client.example.';
 
   @override
   String get settingsSignatureScheduled => 'Sceidealta';
@@ -3306,7 +3453,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsSwipeRight => 'Svaidhpeáil ar dheis';
 
   @override
-  String get settingsSwipeRightFooter => 'Ritheann svaidhpeáil iomlán an gníomh seo.';
+  String get settingsSwipeRightFooter =>
+      'Ritheann svaidhpeáil iomlán an gníomh seo.';
 
   @override
   String get settingsSwipeToggleRead => 'Marcáil mar léite / neamhléite';
@@ -3382,13 +3530,15 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsDefaultView => 'Amharc réamhshocraithe';
 
   @override
-  String get settingsDefaultViewFooter => 'Is féidir leat aon teachtaireacht a athrú leis an gcnaipe Aa.';
+  String get settingsDefaultViewFooter =>
+      'Is féidir leat aon teachtaireacht a athrú leis an gcnaipe Aa.';
 
   @override
   String get settingsViewReadable => 'Inléite';
 
   @override
-  String get settingsViewReadableDetail => 'Glan, soléite, leanann sé an mód dorcha';
+  String get settingsViewReadableDetail =>
+      'Glan, soléite, leanann sé an mód dorcha';
 
   @override
   String get settingsViewOriginal => 'Bunaidh';
@@ -3412,7 +3562,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsFontMono => 'Aonleithid';
 
   @override
-  String get settingsFontMonoDetail => 'Coinníonn sé líníocht ASCII agus táblaí ailínithe';
+  String get settingsFontMonoDetail =>
+      'Coinníonn sé líníocht ASCII agus táblaí ailínithe';
 
   @override
   String get settingsTechnicalLists => 'Liostaí teicniúla';
@@ -3424,7 +3575,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Oscail naisc go díreach';
 
   @override
-  String get settingsOpenLinksDirectlyDetail => 'Seachain rianairí cliceanna nuair is eol an ceann scríbe';
+  String get settingsOpenLinksDirectlyDetail =>
+      'Seachain rianairí cliceanna nuair is eol an ceann scríbe';
 
   @override
   String get settingsSecurityHeader => 'Slándáil';
@@ -3469,7 +3621,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsLockAfter => 'Cuir faoi ghlas tar éis';
 
   @override
-  String get settingsLockAfterFooter => 'An fad is féidir le Loupe a bheith sa chúlra sula n-iarrann sé arís.';
+  String get settingsLockAfterFooter =>
+      'An fad is féidir le Loupe a bheith sa chúlra sula n-iarrann sé arís.';
 
   @override
   String get settingsNotifications => 'Fógraí';
@@ -3494,7 +3647,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsResetApp => 'Athshocraigh an aip';
 
   @override
-  String get settingsResetFooter => 'Déanann sé dearmad ar gach socrú agus filleann sé ar an scáileán fáilte.';
+  String get settingsResetFooter =>
+      'Déanann sé dearmad ar gach socrú agus filleann sé ar an scáileán fáilte.';
 
   @override
   String get settingsResetTitle => 'Loupe a athshocrú?';
@@ -3520,10 +3674,12 @@ class AppLocalizationsGa extends AppLocalizations {
       'Níl anailísíocht ná rianú ar bith in Loupe. Ní théann do ríomhphost ach chuig d’fhreastalaithe ríomhphoist.';
 
   @override
-  String get settingsNotificationsOffIos => 'Tá fógraí as do Loupe in Settings.';
+  String get settingsNotificationsOffIos =>
+      'Tá fógraí as do Loupe in Settings.';
 
   @override
-  String get settingsNotificationsOffAndroid => 'Tá fógraí as do Loupe i Socruithe Android.';
+  String get settingsNotificationsOffAndroid =>
+      'Tá fógraí as do Loupe i Socruithe Android.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -3590,7 +3746,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsComingSoon => 'Ar fáil go luath';
 
   @override
-  String get settingsAllowUnrestrictedBattery => 'Ceadaigh úsáid ceallra gan srian';
+  String get settingsAllowUnrestrictedBattery =>
+      'Ceadaigh úsáid ceallra gan srian';
 
   @override
   String get settingsPush => 'Brú';
@@ -3624,7 +3781,8 @@ class AppLocalizationsGa extends AppLocalizations {
       'Ní thaispeánann scáileán baile an fhóin seo uimhreacha ar dheilbhíní aipeanna. Nuashonraítear an suaitheantas gach uair a sheiceálann Loupe le haghaidh ríomhphoist, sa chúlra freisin.';
 
   @override
-  String get settingsTestNotificationBody => 'Seo an chuma atá ar fhógraí faoi ríomhphost nua.';
+  String get settingsTestNotificationBody =>
+      'Seo an chuma atá ar fhógraí faoi ríomhphost nua.';
 
   @override
   String get settingsAccountRemoved => 'Baineadh an cuntas seo.';
@@ -3645,7 +3803,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsColour => 'Dath';
 
   @override
-  String get settingsColourFooter => 'Marcálann sé teachtaireachtaí an chuntais seo in Gach Bosca Isteach.';
+  String get settingsColourFooter =>
+      'Marcálann sé teachtaireachtaí an chuntais seo in Gach Bosca Isteach.';
 
   @override
   String settingsColourNumber(int number) {
@@ -3737,10 +3896,12 @@ class AppLocalizationsGa extends AppLocalizations {
       'Is é an chéad aitheantas an réamhshocrú do theachtaireachtaí nua. Tarraing chun an t-ord a athrú.';
 
   @override
-  String get settingsIdentitiesFooterSingle => 'An t-aitheantas réamhshocraithe do theachtaireachtaí nua.';
+  String get settingsIdentitiesFooterSingle =>
+      'An t-aitheantas réamhshocraithe do theachtaireachtaí nua.';
 
   @override
-  String get settingsIdentitiesReplyFooter => 'Seoltar freagra ón aitheantas ar seoladh an teachtaireacht chuige.';
+  String get settingsIdentitiesReplyFooter =>
+      'Seoltar freagra ón aitheantas ar seoladh an teachtaireacht chuige.';
 
   @override
   String get settingsIdentityDefault => 'Réamhshocrú';
@@ -3772,7 +3933,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsCopyToMyself => 'Cóip chugam féin';
 
   @override
-  String get settingsCopyToMyselfFooter => 'Curtha le gach teachtaireacht ón aitheantas seo.';
+  String get settingsCopyToMyselfFooter =>
+      'Curtha le gach teachtaireacht ón aitheantas seo.';
 
   @override
   String get settingsCc => 'Cc';
@@ -3788,7 +3950,8 @@ class AppLocalizationsGa extends AppLocalizations {
       'Seoltar freagraí ar theachtaireachtaí a seoladh chuig na seoltaí seo ón aitheantas seo. Seasann * do rud ar bith: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt => 'Seoladh, nó patrún ina seasann * do rud ar bith.';
+  String get settingsReplyPatternPrompt =>
+      'Seoladh, nó patrún ina seasann * do rud ar bith.';
 
   @override
   String get settingsAddReplyPattern => 'Cuir seoladh nó patrún leis';
@@ -3810,7 +3973,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Gan seoladh';
 
   @override
-  String get settingsIdentityNoAddressMessage => 'Cuir isteach an seoladh ríomhphoist le seoladh uaidh.';
+  String get settingsIdentityNoAddressMessage =>
+      'Cuir isteach an seoladh ríomhphoist le seoladh uaidh.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Seoladh neamhbhailí';
@@ -3841,10 +4005,12 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage => 'Fanann teachtaireachtaí a seoladh uaidh cheana mar atá siad.';
+  String get settingsDeleteIdentityMessage =>
+      'Fanann teachtaireachtaí a seoladh uaidh cheana mar atá siad.';
 
   @override
-  String get settingsLastIdentityFooter => 'Tá aitheantas amháin ar a laghad de dhíth ar chuntas.';
+  String get settingsLastIdentityFooter =>
+      'Tá aitheantas amháin ar a laghad de dhíth ar chuntas.';
 
   @override
   String get rulesTitle => 'Rialacha';
@@ -3893,7 +4059,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get rulesStatusUnknown => 'Anaithnid';
 
   @override
-  String get rulesStatusError => 'Níorbh fhéidir ceist a chur ar an bhfreastalaí.';
+  String get rulesStatusError =>
+      'Níorbh fhéidir ceist a chur ar an bhfreastalaí.';
 
   @override
   String get rulesStatusChecking => 'Á seiceáil…';
@@ -3916,7 +4083,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get rulesStatusUnavailable => 'Níl ar fáil';
 
   @override
-  String get rulesStatusNoSieve => 'Ní thairgeann freastalaí an chuntais seo Sieve (ManageSieve ná JMAP).';
+  String get rulesStatusNoSieve =>
+      'Ní thairgeann freastalaí an chuntais seo Sieve (ManageSieve ná JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -4047,7 +4215,8 @@ class AppLocalizationsGa extends AppLocalizations {
       'Ritheann an freastalaí ríomhphoist an riail de réir mar a thagann ríomhphost, fiú nuair atá an fón seo múchta. Teastaíonn Sieve, thar ManageSieve (Dovecot, mailcow) nó JMAP (Stalwart).';
 
   @override
-  String get rulesApplyToExisting => 'Cuir i bhfeidhm ar theachtaireachtaí atá ann…';
+  String get rulesApplyToExisting =>
+      'Cuir i bhfeidhm ar theachtaireachtaí atá ann…';
 
   @override
   String get rulesDeleteRule => 'Scrios an riail';
@@ -4108,7 +4277,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get rulesSaveError => 'Níorbh fhéidir an riail a shábháil';
 
   @override
-  String get rulesSaveServerError => 'Níorbh fhéidir riail an fhreastalaí a shábháil';
+  String get rulesSaveServerError =>
+      'Níorbh fhéidir riail an fhreastalaí a shábháil';
 
   @override
   String get rulesRunOnDeviceInstead => 'Rith ar an ngléas seo ina ionad';
@@ -4117,7 +4287,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Níl aon rud le cur i bhfeidhm';
 
   @override
-  String get rulesNothingToApplyMessage => 'Tabhair coinníoll a oibríonn agus gníomh don riail ar dtús.';
+  String get rulesNothingToApplyMessage =>
+      'Tabhair coinníoll a oibríonn agus gníomh don riail ar dtús.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4149,7 +4320,8 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4166,7 +4338,8 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4183,7 +4356,8 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4199,10 +4373,12 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get rulesServerChecking => 'Ag fiafraí den fhreastalaí cad is féidir leis a dhéanamh…';
+  String get rulesServerChecking =>
+      'Ag fiafraí den fhreastalaí cad is féidir leis a dhéanamh…';
 
   @override
-  String get rulesServerUnreachable => 'Níorbh fhéidir teagmháil a dhéanamh leis an bhfreastalaí.';
+  String get rulesServerUnreachable =>
+      'Níorbh fhéidir teagmháil a dhéanamh leis an bhfreastalaí.';
 
   @override
   String rulesServerProblem(String problem) {
@@ -4228,7 +4404,8 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4245,7 +4422,8 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4277,7 +4455,8 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4354,7 +4533,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsCountError => 'Níorbh fhéidir na síntiúis a chomhaireamh';
+  String get subscriptionsCountError =>
+      'Níorbh fhéidir na síntiúis a chomhaireamh';
 
   @override
   String get subscriptionsNoMatches => 'Gan torthaí';
@@ -4380,10 +4560,12 @@ class AppLocalizationsGa extends AppLocalizations {
   String get subscriptionsNothingNeverRead => 'Níl aon rud nár léadh riamh';
 
   @override
-  String get subscriptionsNothingRarelyRead => 'Níl aon rud is annamh a léitear';
+  String get subscriptionsNothingRarelyRead =>
+      'Níl aon rud is annamh a léitear';
 
   @override
-  String get subscriptionsNothingFilteredDetail => 'Léann tú cuid de gach rud a fhaigheann tú.';
+  String get subscriptionsNothingFilteredDetail =>
+      'Léann tú cuid de gach rud a fhaigheann tú.';
 
   @override
   String get subscriptionsNoDiscussions => 'Gan díospóireachtaí';
@@ -4460,7 +4642,8 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4479,13 +4662,15 @@ class AppLocalizationsGa extends AppLocalizations {
   String get subscriptionsCreateRule => 'Cruthaigh riail…';
 
   @override
-  String get subscriptionsCreateRuleDetail => 'Bog nó cartlannaigh a ríomhphost amach anseo';
+  String get subscriptionsCreateRuleDetail =>
+      'Bog nó cartlannaigh a ríomhphost amach anseo';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Láimhseáil mar dhíospóireacht';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail => 'Liosta a scríobhann daoine chuige: léigh é mar fhóram';
+  String get subscriptionsTreatAsDiscussionDetail =>
+      'Liosta a scríobhann daoine chuige: léigh é mar fhóram';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Láimhseáil mar nuachtlitir';
@@ -4509,17 +4694,20 @@ class AppLocalizationsGa extends AppLocalizations {
   String get subscriptionsUnpin => 'Díphionnáil ó Boscaí poist';
 
   @override
-  String get subscriptionsOpenDefaultView => 'Oscail san amharc réamhshocraithe';
+  String get subscriptionsOpenDefaultView =>
+      'Oscail san amharc réamhshocraithe';
 
   @override
-  String get subscriptionsOpenPlainText => 'Oscail mar ghnáth-théacs (aonleithid)';
+  String get subscriptionsOpenPlainText =>
+      'Oscail mar ghnáth-théacs (aonleithid)';
 
   @override
   String get subscriptionsPinned => 'Pionnáilte';
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4551,9 +4739,12 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString as $totalString';
@@ -4618,7 +4809,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle => 'Níorbh fhéidir díliostáil go huathoibríoch';
+  String get subscriptionsOneClickFailedTitle =>
+      'Níorbh fhéidir díliostáil go huathoibríoch';
 
   @override
   String get subscriptionsSendUnsubscribeEmail => 'Seol ríomhphost díliostála';
@@ -4642,7 +4834,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsWebInsecure => 'Níl an ceangal leis an suíomh seo criptithe.';
+  String get subscriptionsWebInsecure =>
+      'Níl an ceangal leis an suíomh seo criptithe.';
 
   @override
   String subscriptionsHomographWarning(String site) {
@@ -4679,7 +4872,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed => 'Ní seoladh slán ar an idirlíon é an nasc díliostála.';
+  String get subscriptionsOneClickNotAllowed =>
+      'Ní seoladh slán ar an idirlíon é an nasc díliostála.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -4702,7 +4896,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend => 'Níl aon chuntas ann chun an ríomhphost díliostála a sheoladh uaidh.';
+  String get subscriptionsNoAccountToSend =>
+      'Níl aon chuntas ann chun an ríomhphost díliostála a sheoladh uaidh.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -4766,7 +4961,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get appLiveGateTitle => 'Níorbh fhéidir do chuntais a oscailt';
 
   @override
-  String get appLiveGateUnavailableBuild => 'Níl fíorchuntais ar fáil sa leagan seo fós.';
+  String get appLiveGateUnavailableBuild =>
+      'Níl fíorchuntais ar fáil sa leagan seo fós.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -4818,7 +5014,8 @@ class AppLocalizationsGa extends AppLocalizations {
       'Níorbh fhéidir an ceangaltán a íoslódáil. Seiceáil do cheangal agus bain triail eile as.';
 
   @override
-  String get attachmentsShareError => 'Níorbh fhéidir an ceangaltán a chomhroinnt.';
+  String get attachmentsShareError =>
+      'Níorbh fhéidir an ceangaltán a chomhroinnt.';
 
   @override
   String attachmentsNoApp(String type) {
@@ -4826,7 +5023,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get attachmentsOpenInError => 'Níorbh fhéidir an ceangaltán a oscailt in aip eile.';
+  String get attachmentsOpenInError =>
+      'Níorbh fhéidir an ceangaltán a oscailt in aip eile.';
 
   @override
   String attachmentsSaved(String name) {
@@ -4840,7 +5038,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get attachmentsGone => 'Níl an ceangaltán seo ar fáil a thuilleadh.';
 
   @override
-  String get attachmentsDownloadFailed => 'Níorbh fhéidir an ceangaltán a íoslódáil.';
+  String get attachmentsDownloadFailed =>
+      'Níorbh fhéidir an ceangaltán a íoslódáil.';
 
   @override
   String attachmentsPageCount(int count) {
@@ -4862,7 +5061,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload => 'Tá an ceangaltán seo mór. Íoslódáil anois é, nó níos déanaí ar Wi-Fi.';
+  String get attachmentsLargeDownload =>
+      'Tá an ceangaltán seo mór. Íoslódáil anois é, nó níos déanaí ar Wi-Fi.';
 
   @override
   String get attachmentsDownload => 'Íoslódáil';
@@ -4931,7 +5131,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get attachmentsCopied => 'Cóipeáilte';
 
   @override
-  String get attachmentsImageUnavailable => 'Ní féidir an íomhá seo a thaispeáint anseo. Bain triail as Oscail i….';
+  String get attachmentsImageUnavailable =>
+      'Ní féidir an íomhá seo a thaispeáint anseo. Bain triail as Oscail i….';
 
   @override
   String get attachmentsEmlNoSubject => '(Gan ábhar)';
@@ -5163,16 +5364,19 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get calendarRefreshUnknown => 'Iarrann rannpháirtí an leagan is déanaí';
+  String get calendarRefreshUnknown =>
+      'Iarrann rannpháirtí an leagan is déanaí';
 
   @override
   String get calendarCancelled => 'Curtha ar ceal';
 
   @override
-  String get calendarCancelledByOrganizer => 'Chuir an t-eagraí an t-imeacht seo ar ceal.';
+  String get calendarCancelledByOrganizer =>
+      'Chuir an t-eagraí an t-imeacht seo ar ceal.';
 
   @override
-  String get calendarCancelledLater => 'Cuireadh an t-imeacht seo ar ceal níos déanaí.';
+  String get calendarCancelledLater =>
+      'Cuireadh an t-imeacht seo ar ceal níos déanaí.';
 
   @override
   String get calendarOutdated => 'As dáta';
@@ -5187,7 +5391,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get calendarLocationRemovedNone => 'Baineadh an suíomh (ní raibh ceann ann)';
+  String get calendarLocationRemovedNone =>
+      'Baineadh an suíomh (ní raibh ceann ann)';
 
   @override
   String calendarLocationChanged(String location) {
@@ -5338,7 +5543,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp => 'Níl aip féilire ann chun an t-imeacht a chur leis.';
+  String get calendarNoCalendarApp =>
+      'Níl aip féilire ann chun an t-imeacht a chur leis.';
 
   @override
   String get calendarCantOpenCalendar => 'Níorbh fhéidir an féilire a oscailt.';
@@ -5374,10 +5580,12 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer => 'Níl eagraí ag an gcuireadh seo le freagra a thabhairt air.';
+  String get calendarNoOrganizer =>
+      'Níl eagraí ag an gcuireadh seo le freagra a thabhairt air.';
 
   @override
-  String get calendarNoAccount => 'Níl aon chuntas ann le freagra a sheoladh uaidh.';
+  String get calendarNoAccount =>
+      'Níl aon chuntas ann le freagra a sheoladh uaidh.';
 
   @override
   String calendarReplySending(String answer, String name) {
@@ -5558,7 +5766,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Liostaí teicniúla';
 
   @override
-  String get mailingListsTechnicalEmpty => 'Taispeántar liostaí ríomhphoist anseo nuair a thagann a ríomhphost.';
+  String get mailingListsTechnicalEmpty =>
+      'Taispeántar liostaí ríomhphoist anseo nuair a thagann a ríomhphost.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -5627,7 +5836,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get palettePlaceholder => 'Cuardaigh gníomhartha, boscaí poist, socruithe';
+  String get palettePlaceholder =>
+      'Cuardaigh gníomhartha, boscaí poist, socruithe';
 
   @override
   String get paletteNothingFound => 'Níor aimsíodh aon rud';
@@ -5724,7 +5934,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get searchSearchingUnknownAccount => 'Cuntas á chuardach ar an bhfreastalaí…';
+  String get searchSearchingUnknownAccount =>
+      'Cuntas á chuardach ar an bhfreastalaí…';
 
   @override
   String searchAccountFailed(String account) {
@@ -5732,7 +5943,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get searchUnknownAccountFailed => 'Níorbh fhéidir an cuntas a chuardach ar an bhfreastalaí';
+  String get searchUnknownAccountFailed =>
+      'Níorbh fhéidir an cuntas a chuardach ar an bhfreastalaí';
 
   @override
   String searchChip(String term) {
@@ -5795,7 +6007,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get searchSettingsTitle => 'Smart Mailboxes';
 
   @override
-  String get searchSettingsLocalFooter => 'Fanann Smart Mailboxes ar an ngléas seo.';
+  String get searchSettingsLocalFooter =>
+      'Fanann Smart Mailboxes ar an ngléas seo.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -5809,10 +6022,12 @@ class AppLocalizationsGa extends AppLocalizations {
   String get searchSyncViaFooter => 'Roghnaigh an cuntas céanna ar gach gléas.';
 
   @override
-  String get searchGmailCantKeep => 'Ní féidir le Gmail Smart Mailboxes a choinneáil';
+  String get searchGmailCantKeep =>
+      'Ní féidir le Gmail Smart Mailboxes a choinneáil';
 
   @override
-  String get searchKeepOnDevice => 'Coinnigh Smart Mailboxes ar an ngléas seo amháin';
+  String get searchKeepOnDevice =>
+      'Coinnigh Smart Mailboxes ar an ngléas seo amháin';
 
   @override
   String get searchOnTheServer => 'Ar an bhfreastalaí';
@@ -5890,7 +6105,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get sharedSyncChecking => 'Ag seiceáil le haghaidh ríomhphoist…';
 
   @override
-  String get sharedSyncFailed => 'Níorbh fhéidir seiceáil le haghaidh ríomhphoist';
+  String get sharedSyncFailed =>
+      'Níorbh fhéidir seiceáil le haghaidh ríomhphoist';
 
   @override
   String sharedSyncAccountError(String account, String error) {
@@ -6114,7 +6330,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount => 'Roghnaigh teachtaireachtaí ó chuntas amháin chun iad a bhogadh.';
+  String get sharedMoveOneAccount =>
+      'Roghnaigh teachtaireachtaí ó chuntas amháin chun iad a bhogadh.';
 
   @override
   String get sharedSnoozeTitle => 'Cuir ar athló';
@@ -6194,7 +6411,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get accountSetupAddressTitle => 'Cuir cuntas ríomhphoist leis';
 
   @override
-  String get accountSetupAddressText => 'Aimsíonn Loupe na socruithe don chuid is mó de sholáthraithe.';
+  String get accountSetupAddressText =>
+      'Aimsíonn Loupe na socruithe don chuid is mó de sholáthraithe.';
 
   @override
   String get accountSetupNameHint => 'D’ainm';
@@ -6215,7 +6433,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get accountSetupImport => 'Iompórtáil ó Thunderbird';
 
   @override
-  String get accountSetupInvalidEmail => 'Cuir isteach seoladh ríomhphoist bailí.';
+  String get accountSetupInvalidEmail =>
+      'Cuir isteach seoladh ríomhphoist bailí.';
 
   @override
   String accountSetupSettingsNotFoundFor(String domain) {
@@ -6223,7 +6442,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCheckServers => 'Seiceáil ainmneacha agus calafoirt na bhfreastalaithe.';
+  String get accountSetupCheckServers =>
+      'Seiceáil ainmneacha agus calafoirt na bhfreastalaithe.';
 
   @override
   String get accountSetupEnterPassword => 'Cuir isteach do phasfhocal.';
@@ -6237,10 +6457,12 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCouldNotOpenPage => 'Níorbh fhéidir an leathanach a oscailt.';
+  String get accountSetupCouldNotOpenPage =>
+      'Níorbh fhéidir an leathanach a oscailt.';
 
   @override
-  String get accountSetupCouldNotSaveName => 'Níorbh fhéidir an t-ainm a shábháil.';
+  String get accountSetupCouldNotSaveName =>
+      'Níorbh fhéidir an t-ainm a shábháil.';
 
   @override
   String get accountSetupTrustCertificate => 'Cuir muinín sa teastas seo';
@@ -6280,13 +6502,15 @@ class AppLocalizationsGa extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Úsáid pasfhocal aipe';
 
   @override
-  String get accountSetupUseAppPasswordInstead => 'Úsáid pasfhocal aipe ina ionad';
+  String get accountSetupUseAppPasswordInstead =>
+      'Úsáid pasfhocal aipe ina ionad';
 
   @override
   String get accountSetupUseDifferentAddress => 'Úsáid seoladh eile';
 
   @override
-  String get accountSetupHowToCreateAppPassword => 'Conas pasfhocal aipe a chruthú';
+  String get accountSetupHowToCreateAppPassword =>
+      'Conas pasfhocal aipe a chruthú';
 
   @override
   String get accountSetupHowToCreateOne => 'Conas ceann a chruthú';
@@ -6300,7 +6524,8 @@ class AppLocalizationsGa extends AppLocalizations {
       'Níl “Sínigh isteach le Google” ar fáil sa leagan seo fós. Is féidir leat ceangal le pasfhocal aipe ina ionad (teastaíonn Fíorú Dhá Chéim ar do chuntas Google).';
 
   @override
-  String get accountSetupGmailAppPasswordNote => 'Cruthaigh pasfhocal aipe i do chuntas Google agus greamaigh thíos é.';
+  String get accountSetupGmailAppPasswordNote =>
+      'Cruthaigh pasfhocal aipe i do chuntas Google agus greamaigh thíos é.';
 
   @override
   String get accountSetupMicrosoftNote =>
@@ -6315,14 +6540,16 @@ class AppLocalizationsGa extends AppLocalizations {
       'Teastaíonn pasfhocal aip-shonrach ó iCloud Mail, ní pasfhocal do Chuntais Apple.';
 
   @override
-  String get accountSetupYahooNote => 'Teastaíonn pasfhocal aipe ó Yahoo Mail, ní pasfhocal do chuntais.';
+  String get accountSetupYahooNote =>
+      'Teastaíonn pasfhocal aipe ó Yahoo Mail, ní pasfhocal do chuntais.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Ceanglaíonn Loupe le Fastmail thar JMAP le comhartha API: Settings › Privacy & Security › Manage API tokens, do JMAP, le rochtain ar ríomhphost agus ar sheoladh.';
 
   @override
-  String get accountSetupFastmailNote => 'Teastaíonn pasfhocal aipe ó Fastmail d’aipeanna ríomhphoist.';
+  String get accountSetupFastmailNote =>
+      'Teastaíonn pasfhocal aipe ó Fastmail d’aipeanna ríomhphoist.';
 
   @override
   String get accountSetupServerSettings => 'Socruithe freastalaí';
@@ -6404,7 +6631,8 @@ class AppLocalizationsGa extends AppLocalizations {
       'Diúltaíodh don phasfhocal. Úsáid pasfhocal aipe, ní pasfhocal do chuntais.';
 
   @override
-  String get accountSetupPasswordRejected => 'Diúltaíodh don phasfhocal. Seiceáil é agus bain triail eile as.';
+  String get accountSetupPasswordRejected =>
+      'Diúltaíodh don phasfhocal. Seiceáil é agus bain triail eile as.';
 
   @override
   String get accountSetupServerUnreachable =>
@@ -6482,7 +6710,11 @@ class AppLocalizationsGa extends AppLocalizations {
   String get accountSetupSigningIn => 'Ag síniú isteach…';
 
   @override
-  String accountSetupSignInExpired(String provider, String email, String account) {
+  String accountSetupSignInExpired(
+    String provider,
+    String email,
+    String account,
+  ) {
     return 'Ní ghlacann $provider le síniú isteach Loupe do $email a thuilleadh, mar sin níl $account á shioncrónú. Sínigh isteach arís chun a ríomhphost a fháil.';
   }
 
@@ -6490,7 +6722,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get accountImportTitle => 'Iompórtáil ó Thunderbird';
 
   @override
-  String get accountImportPointCamera => 'Dírigh an ceamara ar an gcód QR a thaispeánann Thunderbird.';
+  String get accountImportPointCamera =>
+      'Dírigh an ceamara ar an gcód QR a thaispeánann Thunderbird.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -6564,13 +6797,16 @@ class AppLocalizationsGa extends AppLocalizations {
       'Tagann an cód seo ó leagan níos nuaí de Thunderbird. Nuashonraigh Loupe chun é a iompórtáil.';
 
   @override
-  String get accountImportDamaged => 'Níorbh fhéidir an cód Thunderbird seo a léamh.';
+  String get accountImportDamaged =>
+      'Níorbh fhéidir an cód Thunderbird seo a léamh.';
 
   @override
-  String get accountImportTooLarge => 'Tá an cód seo rómhór le bheith ina easpórtáil Thunderbird.';
+  String get accountImportTooLarge =>
+      'Tá an cód seo rómhór le bheith ina easpórtáil Thunderbird.';
 
   @override
-  String get accountImportCouldNotOpenSettings => 'Níorbh fhéidir Socruithe a oscailt.';
+  String get accountImportCouldNotOpenSettings =>
+      'Níorbh fhéidir Socruithe a oscailt.';
 
   @override
   String get accountImportCameraOffTitle => 'Tá rochtain ar an gceamara múchta';
@@ -6590,7 +6826,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get accountImportCameraFailedTitle => 'Níor thosaigh an ceamara';
 
   @override
-  String get accountImportCameraFailedText => 'Bain triail eile as, nó greamaigh téacs an chóid ina ionad.';
+  String get accountImportCameraFailedText =>
+      'Bain triail eile as, nó greamaigh téacs an chóid ina ionad.';
 
   @override
   String get accountImportOpenSettings => 'Oscail Socruithe';
@@ -6611,7 +6848,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable => 'Níorbh fhéidir aon cheann de na cuntais sna cóid seo a léamh.';
+  String get accountImportNoneReadable =>
+      'Níorbh fhéidir aon cheann de na cuntais sna cóid seo a léamh.';
 
   @override
   String get accountImportChoose => 'Roghnaigh na cuntais le cur le Loupe.';
@@ -6621,11 +6859,16 @@ class AppLocalizationsGa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Níor scanadh cóid $codes as $total, mar sin níl a gcuntais liostaithe.',
-      many: 'Níor scanadh cóid $codes as $total, mar sin níl a gcuntais liostaithe.',
-      few: 'Níor scanadh cóid $codes as $total, mar sin níl a gcuntais liostaithe.',
-      two: 'Níor scanadh cóid $codes as $total, mar sin níl a gcuntais liostaithe.',
-      one: 'Níor scanadh cód $codes as $total, mar sin níl a chuntais liostaithe.',
+      other:
+          'Níor scanadh cóid $codes as $total, mar sin níl a gcuntais liostaithe.',
+      many:
+          'Níor scanadh cóid $codes as $total, mar sin níl a gcuntais liostaithe.',
+      few:
+          'Níor scanadh cóid $codes as $total, mar sin níl a gcuntais liostaithe.',
+      two:
+          'Níor scanadh cóid $codes as $total, mar sin níl a gcuntais liostaithe.',
+      one:
+          'Níor scanadh cód $codes as $total, mar sin níl a chuntais liostaithe.',
     );
     return '$_temp0';
   }
@@ -6660,7 +6903,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get accountImportScanAgain => 'Scan arís';
 
   @override
-  String get accountImportAlreadyAdded => 'Tá cuntas leis an seoladh seo in Loupe cheana.';
+  String get accountImportAlreadyAdded =>
+      'Tá cuntas leis an seoladh seo in Loupe cheana.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -6668,7 +6912,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get accountImportGmailAppPassword => 'Cuir an cuntas leis le pasfhocal aipe (teastaíonn Fíorú Dhá Chéim).';
+  String get accountImportGmailAppPassword =>
+      'Cuir an cuntas leis le pasfhocal aipe (teastaíonn Fíorú Dhá Chéim).';
 
   @override
   String get accountImportGmailNoSignIn =>
@@ -6679,7 +6924,8 @@ class AppLocalizationsGa extends AppLocalizations {
       'Síníonn Thunderbird isteach sa chuntas seo sa bhrabhsálaí. Ní féidir le Loupe é sin a dhéanamh fós: úsáid pasfhocal aipe má thairgeann do sholáthraí ceann.';
 
   @override
-  String get accountImportUnencrypted => 'Ceanglaíonn sé gan chriptiú. Ná húsáid é seo ach ar do líonra féin.';
+  String get accountImportUnencrypted =>
+      'Ceanglaíonn sé gan chriptiú. Ná húsáid é seo ach ar do líonra féin.';
 
   @override
   String get accountImportEnterAgain => 'Cuir isteach arís é';
@@ -6711,17 +6957,20 @@ class AppLocalizationsGa extends AppLocalizations {
   String get accountImportPasteTitle => 'Greamaigh téacs easpórtála';
 
   @override
-  String get accountImportPasteText => 'Greamaigh téacs chód easpórtála Thunderbird, cód amháin ar gach líne.';
+  String get accountImportPasteText =>
+      'Greamaigh téacs chód easpórtála Thunderbird, cód amháin ar gach líne.';
 
   @override
   String get accountImportPop3 =>
       'Ní thacaítear le cuntais POP3. Coinníonn Loupe ríomhphost ar an bhfreastalaí le IMAP.';
 
   @override
-  String get accountImportKerberos => 'Síníonn an cuntas seo isteach le Kerberos, rud nach dtacaíonn Loupe leis.';
+  String get accountImportKerberos =>
+      'Síníonn an cuntas seo isteach le Kerberos, rud nach dtacaíonn Loupe leis.';
 
   @override
-  String get accountImportNtlm => 'Síníonn an cuntas seo isteach le NTLM, rud nach dtacaíonn Loupe leis.';
+  String get accountImportNtlm =>
+      'Síníonn an cuntas seo isteach le NTLM, rud nach dtacaíonn Loupe leis.';
 
   @override
   String get accountImportClientCertificate =>
@@ -6838,13 +7087,15 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get composeOriginalNotFound => 'Níorbh fhéidir an bunteachtaireacht a aimsiú.';
+  String get composeOriginalNotFound =>
+      'Níorbh fhéidir an bunteachtaireacht a aimsiú.';
 
   @override
   String get composeDraftNotFound => 'Níorbh fhéidir an dréacht a aimsiú.';
 
   @override
-  String get composeAttachmentsLost => 'Níorbh fhéidir na ceangaltáin a aisghabháil. Cuir leis arís iad.';
+  String get composeAttachmentsLost =>
+      'Níorbh fhéidir na ceangaltáin a aisghabháil. Cuir leis arís iad.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -6871,10 +7122,12 @@ class AppLocalizationsGa extends AppLocalizations {
   String get composeNoSubjectTitle => 'Gan ábhar';
 
   @override
-  String get composeNoSubjectText => 'Níl ábhar ag an teachtaireacht seo. Í a sheoladh mar sin féin?';
+  String get composeNoSubjectText =>
+      'Níl ábhar ag an teachtaireacht seo. Í a sheoladh mar sin féin?';
 
   @override
-  String get composeSentBeforeChanges => 'Seoladh í roimh d’athruithe, atá sábháilte in Dréachtaí.';
+  String get composeSentBeforeChanges =>
+      'Seoladh í roimh d’athruithe, atá sábháilte in Dréachtaí.';
 
   @override
   String composeScheduled(String time) {
@@ -6888,7 +7141,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get composeSent => 'Seolta';
 
   @override
-  String get composeSendFailed => 'Níorbh fhéidir í a sheoladh. Bain triail eile as.';
+  String get composeSendFailed =>
+      'Níorbh fhéidir í a sheoladh. Bain triail eile as.';
 
   @override
   String get composeAlreadySent => 'Seolta cheana.';
@@ -6919,7 +7173,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get composeForwardHeader => '---------- Teachtaireacht curtha ar aghaidh ----------';
+  String get composeForwardHeader =>
+      '---------- Teachtaireacht curtha ar aghaidh ----------';
 
   @override
   String composeForwardFrom(String addresses) {
@@ -6992,24 +7247,31 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get composeRecoveryTitle => 'Leanúint ar aghaidh ag cur do dhréachta in eagar?';
+  String get composeRecoveryTitle =>
+      'Leanúint ar aghaidh ag cur do dhréachta in eagar?';
 
   @override
   String composeRecoveryUntitled(String recipients, String name) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Níor seoladh teachtaireacht nuair a dhún Loupe.',
       'one': 'Níor seoladh teachtaireacht chuig $name nuair a dhún Loupe.',
-      'other': 'Níor seoladh teachtaireacht chuig $name agus daoine eile nuair a dhún Loupe.',
+      'other':
+          'Níor seoladh teachtaireacht chuig $name agus daoine eile nuair a dhún Loupe.',
     });
     return '$_temp0';
   }
 
   @override
-  String composeRecoveryWithSubject(String recipients, String subject, String name) {
+  String composeRecoveryWithSubject(
+    String recipients,
+    String subject,
+    String name,
+  ) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Níor seoladh “$subject” nuair a dhún Loupe.',
       'one': 'Níor seoladh “$subject” chuig $name nuair a dhún Loupe.',
-      'other': 'Níor seoladh “$subject” chuig $name agus daoine eile nuair a dhún Loupe.',
+      'other':
+          'Níor seoladh “$subject” chuig $name agus daoine eile nuair a dhún Loupe.',
     });
     return '$_temp0';
   }
@@ -7057,7 +7319,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get outboxEmptyTitle => 'Níl aon rud le seoladh';
 
   @override
-  String get outboxEmptyText => 'Fanann teachtaireachtaí a sheolann tú níos déanaí anseo go dtí go mbíonn sé in am.';
+  String get outboxEmptyText =>
+      'Fanann teachtaireachtaí a sheolann tú níos déanaí anseo go dtí go mbíonn sé in am.';
 
   @override
   String get outboxSendNow => 'Seol anois';
@@ -7104,7 +7367,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get outboxBeingSent => 'Tá an teachtaireacht seo á seoladh.';
 
   @override
-  String get outboxActionFailed => 'Níor oibrigh sé sin. Tá an teachtaireacht sa Bhosca Amach fós.';
+  String get outboxActionFailed =>
+      'Níor oibrigh sé sin. Tá an teachtaireacht sa Bhosca Amach fós.';
 
   @override
   String get notificationsBadgeInboxes => 'Neamhléite sna boscaí isteach';
@@ -7116,7 +7380,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription => 'Ríomhphost nua ó do VIPanna, in aon chuntas';
+  String get notificationsVipChannelDescription =>
+      'Ríomhphost nua ó do VIPanna, in aon chuntas';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -7174,25 +7439,29 @@ class AppLocalizationsGa extends AppLocalizations {
       'Chuaigh rud éigin mícheart agus é seo á thaispeáint. Téigh siar agus bain triail eile as.';
 
   @override
-  String get welcomeTagline => 'Ríomhphost simplí ar an dromchla\nagus cumhachtach ina chroí.';
+  String get welcomeTagline =>
+      'Ríomhphost simplí ar an dromchla\nagus cumhachtach ina chroí.';
 
   @override
   String get welcomeAccountsTitle => 'Gach cuntas, bosca isteach socair amháin';
 
   @override
-  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail agus aon fhreastalaí IMAP nó JMAP.';
+  String get welcomeAccountsText =>
+      'Gmail, Outlook, iCloud, Fastmail agus aon fhreastalaí IMAP nó JMAP.';
 
   @override
   String get welcomeSearchTitle => 'Cuardach a aimsíonn é';
 
   @override
-  String get welcomeSearchText => 'Torthaí láithreacha ar d’fhón, agus ansin torthaí an fhreastalaí.';
+  String get welcomeSearchText =>
+      'Torthaí láithreacha ar d’fhón, agus ansin torthaí an fhreastalaí.';
 
   @override
   String get welcomePrivacyTitle => 'Príobháideach ó dhearadh';
 
   @override
-  String get welcomePrivacyText => 'Gan rianú. Fanann íomhánna cianda blocáilte go dtí go ndeir tú a mhalairt.';
+  String get welcomePrivacyText =>
+      'Gan rianú. Fanann íomhánna cianda blocáilte go dtí go ndeir tú a mhalairt.';
 
   @override
   String get welcomeAddAccount => 'Cuir cuntas leis';
@@ -7219,10 +7488,12 @@ class AppLocalizationsGa extends AppLocalizations {
   String get searchAskNeedsAnswer => 'Teastaíonn ó Loupe a fháil amach:';
 
   @override
-  String get searchAskFailed => 'Níorbh fhéidir le Loupe cuardach a dhéanamh de sin.';
+  String get searchAskFailed =>
+      'Níorbh fhéidir le Loupe cuardach a dhéanamh de sin.';
 
   @override
-  String get searchAskDemoNote => 'Aistrithe ag an taispeántas ionsuite, ní ag samhail.';
+  String get searchAskDemoNote =>
+      'Aistrithe ag an taispeántas ionsuite, ní ag samhail.';
 
   @override
   String get settingsAiHeader => 'IS príobháideach';
@@ -7246,10 +7517,12 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsAiDemo => 'Taispeántas ionsuite';
 
   @override
-  String get settingsAiDemoDetail => 'Ar an bhfón seo. Gan samhail: cúpla riail, chun na feidhmeanna a thriail.';
+  String get settingsAiDemoDetail =>
+      'Ar an bhfón seo. Gan samhail: cúpla riail, chun na feidhmeanna a thriail.';
 
   @override
-  String get settingsAiAnthropicDetail => 'Néal: Claude, le d’eochair API féin.';
+  String get settingsAiAnthropicDetail =>
+      'Néal: Claude, le d’eochair API féin.';
 
   @override
   String get settingsAiServer => 'Mo fhreastalaí';
@@ -7262,7 +7535,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsAiOnPhone => 'Ar an bhfón seo';
 
   @override
-  String get settingsAiOnPhoneDetail => 'Níl sé ar fáil fós: tá an tsamhail ar an ngléas fós á tástáil ar fhóin.';
+  String get settingsAiOnPhoneDetail =>
+      'Níl sé ar fáil fós: tá an tsamhail ar an ngléas fós á tástáil ar fhóin.';
 
   @override
   String get settingsAiNotSetUp => 'Gan socrú';
@@ -7313,13 +7587,15 @@ class AppLocalizationsGa extends AppLocalizations {
       'Suas go dtí cosán an API agus é san áireamh, mar shampla http://192.168.1.20:11434/v1 do Ollama.';
 
   @override
-  String get settingsAiServerAddressInvalid => 'Ní seoladh http:// ná https:// é sin.';
+  String get settingsAiServerAddressInvalid =>
+      'Ní seoladh http:// ná https:// é sin.';
 
   @override
   String get settingsAiServerModelTitle => 'Ainm na samhla';
 
   @override
-  String get settingsAiServerModelMessage => 'Mar a ainmníonn do fhreastalaí í, mar shampla llama3.2.';
+  String get settingsAiServerModelMessage =>
+      'Mar a ainmníonn do fhreastalaí í, mar shampla llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Tástáil an nasc';
@@ -7336,7 +7612,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsAiTestFailed => 'Theip ar an tástáil';
 
   @override
-  String get settingsAiTestInvalid => 'D’fhreagair an tsamhail, ach ní san fhoirm a d’iarr Loupe.';
+  String get settingsAiTestInvalid =>
+      'D’fhreagair an tsamhail, ach ní san fhoirm a d’iarr Loupe.';
 
   @override
   String get settingsAiRemoveKey => 'Bain an eochair';
@@ -7406,10 +7683,12 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Staid an chúrsa';
 
   @override
-  String get settingsAiFeatureSearchDetail => 'Sa chuardach: déantar cuardach is féidir leat a sheiceáil d’abairt.';
+  String get settingsAiFeatureSearchDetail =>
+      'Sa chuardach: déantar cuardach is féidir leat a sheiceáil d’abairt.';
 
   @override
-  String get settingsAiFeatureBriefDetail => 'I dteachtaireacht: cad a iarrann sí ort, leis na sleachta.';
+  String get settingsAiFeatureBriefDetail =>
+      'I dteachtaireacht: cad a iarrann sí ort, leis na sleachta.';
 
   @override
   String get settingsAiFeatureActionsDetail =>
@@ -7420,17 +7699,20 @@ class AppLocalizationsGa extends AppLocalizations {
       'I Rialacha: déantar riail de chur síos, a sheiceálann tú sula sábhálann tú í.';
 
   @override
-  String get settingsAiFeatureChangesDetail => 'I gcomparáid teachtaireachtaí: cad a d’athraigh sa bhrí, le foinsí.';
+  String get settingsAiFeatureChangesDetail =>
+      'I gcomparáid teachtaireachtaí: cad a d’athraigh sa bhrí, le foinsí.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail => 'Príomhfhíricí na gcáipéisí ceangailte, lena leathanaigh.';
+  String get settingsAiFeatureDocumentsDetail =>
+      'Príomhfhíricí na gcáipéisí ceangailte, lena leathanaigh.';
 
   @override
   String get settingsAiFeatureReplyCheckDetail =>
       'Sula seolann tú: cad a d’fhéadfadh freagra a bheith tar éis a chailleadh.';
 
   @override
-  String get settingsAiFeatureMattersDetail => 'An staid is déanaí de chúrsa, óna ríomhphost.';
+  String get settingsAiFeatureMattersDetail =>
+      'An staid is déanaí de chúrsa, óna ríomhphost.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Coinnigh an ríomhphost ar an bhfón';

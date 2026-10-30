@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Sertifika yetkilisi {status} yanıtını verdi.",
   "smimeAuthorityAnswerTooLarge": "Sertifika yetkilisinin yanıtı çok büyük.",
   "smimeRevocationNotChecked": "Denetlenmedi: yalnızca Loupe’un güvendiği bir yetkilinin sertifikaları denetlenir.",
+  "actionsNeedsMyAction": "Yapmam gerekenler",
+  "actionsWaitingOnOthers": "Başkalarından beklenenler",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Sunucu, Gelen Kutusu’ndaki yeni e-postaları Loupe’un açık tuttuğu bir bağlantı üzerinden hemen bildirir. Kapalıyken Loupe birkaç dakikada bir denetler ve bir bağlantı daha az kullanır.",
   "settingsPasswordUnchanged": "Değiştirilmedi",

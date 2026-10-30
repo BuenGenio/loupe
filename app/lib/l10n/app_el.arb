@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Η αρχή πιστοποίησης απάντησε με {status}.",
   "smimeAuthorityAnswerTooLarge": "Η απάντηση της αρχής πιστοποίησης είναι πολύ μεγάλη.",
   "smimeRevocationNotChecked": "Δεν ελέγχθηκε: ελέγχονται μόνο πιστοποιητικά από αρχές που εμπιστεύεται το Loupe.",
+  "actionsNeedsMyAction": "Χρειάζεται ενέργειά μου",
+  "actionsWaitingOnOthers": "Αναμονή για άλλους",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Ο διακομιστής ενημερώνει αμέσως για νέα μηνύματα στα Εισερχόμενα, μέσω μιας σύνδεσης που το Loupe κρατά ανοιχτή. Όταν είναι ανενεργό, το Loupe ελέγχει κάθε λίγα λεπτά και χρησιμοποιεί μία σύνδεση λιγότερη.",
   "settingsPasswordUnchanged": "Χωρίς αλλαγή",

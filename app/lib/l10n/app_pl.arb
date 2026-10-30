@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Urząd certyfikacji odpowiedział kodem {status}.",
   "smimeAuthorityAnswerTooLarge": "Odpowiedź urzędu certyfikacji jest za duża.",
   "smimeRevocationNotChecked": "Nie sprawdzono: sprawdzane są tylko certyfikaty od urzędów, którym ufa Loupe.",
+  "actionsNeedsMyAction": "Wymaga mojego działania",
+  "actionsWaitingOnOthers": "Czekam na innych",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Serwer od razu zgłasza nową pocztę w folderze Odebrane przez połączenie, które Loupe utrzymuje otwarte. Po wyłączeniu Loupe sprawdza pocztę co kilka minut i używa o jedno połączenie mniej.",
   "settingsPasswordUnchanged": "Bez zmian",

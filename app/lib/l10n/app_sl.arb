@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Overitelj potrdil je odgovoril s kodo {status}.",
   "smimeAuthorityAnswerTooLarge": "Odgovor overitelja potrdil je prevelik.",
   "smimeRevocationNotChecked": "Ni preverjeno: preverjajo se le potrdila overiteljev, ki jim Loupe zaupa.",
+  "actionsNeedsMyAction": "Potrebno moje ukrepanje",
+  "actionsWaitingOnOthers": "Čakam na druge",
   "settingsIdle": "{protocol, select, jmap{Potiskanje} other{IDLE}}",
   "settingsIdleFooter": "Strežnik takoj sporoči novo pošto v mapi Prejeto, prek povezave, ki jo Loupe ohranja odprto. Ko je izklopljeno, Loupe preverja pošto vsakih nekaj minut in uporablja eno povezavo manj.",
   "settingsPasswordUnchanged": "Nespremenjeno",

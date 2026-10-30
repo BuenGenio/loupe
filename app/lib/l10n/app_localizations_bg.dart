@@ -83,7 +83,12 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String commonMessageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count писма', one: '1 писмо');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count писма',
+      one: '1 писмо',
+    );
     return '$_temp0';
   }
 
@@ -190,10 +195,12 @@ class AppLocalizationsBg extends AppLocalizations {
       'Това съобщение е твърде голямо за подробно сравнение. Част от текста може да бъде пропусната или показана като цял блок.';
 
   @override
-  String get conversationChangesLoadError => 'Тези съобщения не можаха да бъдат сравнени.';
+  String get conversationChangesLoadError =>
+      'Тези съобщения не можаха да бъдат сравнени.';
 
   @override
-  String get conversationSomethingWentWrong => 'Нещо се обърка. Опитайте отново.';
+  String get conversationSomethingWentWrong =>
+      'Нещо се обърка. Опитайте отново.';
 
   @override
   String get conversationReplyToList => 'Отговор до списъка';
@@ -202,7 +209,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get conversationReplyList => 'До списъка';
 
   @override
-  String get conversationThreadMuted => 'Нишката е заглушена. Новите писма в нея пристигат като прочетени.';
+  String get conversationThreadMuted =>
+      'Нишката е заглушена. Новите писма в нея пристигат като прочетени.';
 
   @override
   String get conversationThreadUnmuted => 'Нишката вече не е заглушена.';
@@ -229,13 +237,15 @@ class AppLocalizationsBg extends AppLocalizations {
   String get conversationTrash => 'В кошчето';
 
   @override
-  String get conversationReplyHint => 'Задръжте за „Отговор до всички“ и „Препращане“';
+  String get conversationReplyHint =>
+      'Задръжте за „Отговор до всички“ и „Препращане“';
 
   @override
   String get conversationOfflineTitle => 'Няма връзка';
 
   @override
-  String get conversationOfflineText => 'Този разговор още не е изтеглен. Ще се зареди, когато връзката се възстанови.';
+  String get conversationOfflineText =>
+      'Този разговор още не е изтеглен. Ще се зареди, когато връзката се възстанови.';
 
   @override
   String get conversationErrorTitle => 'Писмото не може да се покаже';
@@ -302,10 +312,12 @@ class AppLocalizationsBg extends AppLocalizations {
   String get conversationBodyError => 'Писмото не можа да се зареди.';
 
   @override
-  String get conversationBodyOffline => 'Няма връзка. Писмото ще се зареди, когато връзката се възстанови.';
+  String get conversationBodyOffline =>
+      'Няма връзка. Писмото ще се зареди, когато връзката се възстанови.';
 
   @override
-  String get conversationOriginalHint => 'Изглежда по-добре в изгледа „Оригинален“';
+  String get conversationOriginalHint =>
+      'Изглежда по-добре в изгледа „Оригинален“';
 
   @override
   String get conversationShowOriginal => 'Показване на оригинала';
@@ -449,7 +461,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get conversationReaderMono => 'Моноширинен';
 
   @override
-  String get conversationReaderKeepColours => 'Запазване на оригиналните цветове';
+  String get conversationReaderKeepColours =>
+      'Запазване на оригиналните цветове';
 
   @override
   String get conversationReaderRemember => 'Запомняне за този подател';
@@ -489,7 +502,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get conversationPhishingBannerText => 'Връзките и изображенията са изключени.';
+  String get conversationPhishingBannerText =>
+      'Връзките и изображенията са изключени.';
 
   @override
   String get conversationPhishingWhy => 'Защо?';
@@ -508,17 +522,20 @@ class AppLocalizationsBg extends AppLocalizations {
   String get conversationSecurityCarefulTitle => 'Внимавайте с това писмо';
 
   @override
-  String get conversationSecurityCarefulText => 'Нещо в него заслужава втори поглед.';
+  String get conversationSecurityCarefulText =>
+      'Нещо в него заслужава втори поглед.';
 
   @override
-  String get conversationSecurityVerifiedText => 'Подателят е потвърден и нищо не изглежда подозрително.';
+  String get conversationSecurityVerifiedText =>
+      'Подателят е потвърден и нищо не изглежда подозрително.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Нищо не изглежда подозрително. Пощенският ви сървър не съобщи дали подателят е потвърден.';
 
   @override
-  String get conversationSecurityNothingSuspicious => 'Нищо не изглежда подозрително.';
+  String get conversationSecurityNothingSuspicious =>
+      'Нищо не изглежда подозрително.';
 
   @override
   String get conversationSecurityWhy => 'Защо';
@@ -527,7 +544,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get conversationSecurityPrivacy => 'Поверителност';
 
   @override
-  String get conversationSecurityNoTrackingPixels => 'Няма проследяващи пиксели';
+  String get conversationSecurityNoTrackingPixels =>
+      'Няма проследяващи пиксели';
 
   @override
   String conversationSecurityTrackingPixels(int count) {
@@ -541,10 +559,12 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityTrackingPixelsText => 'Те щяха да съобщят на подателя кога сте отворили това писмо.';
+  String get conversationSecurityTrackingPixelsText =>
+      'Те щяха да съобщят на подателя кога сте отворили това писмо.';
 
   @override
-  String get conversationSecurityNoRemoteImages => 'Няма отдалечени изображения';
+  String get conversationSecurityNoRemoteImages =>
+      'Няма отдалечени изображения';
 
   @override
   String conversationSecurityRemoteImages(int count) {
@@ -562,7 +582,8 @@ class AppLocalizationsBg extends AppLocalizations {
       'Зареждането им съобщава на подателя кога четете това писмо, както и IP адреса ви.';
 
   @override
-  String get conversationSecurityNoClickTracking => 'Няма проследяване на кликванията';
+  String get conversationSecurityNoClickTracking =>
+      'Няма проследяване на кликванията';
 
   @override
   String conversationSecurityTrackedLinks(int count) {
@@ -584,7 +605,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Технически подробности';
 
   @override
-  String get conversationSecurityCheckedLocally => 'Проверено на това устройство. Нищо не е изпратено никъде.';
+  String get conversationSecurityCheckedLocally =>
+      'Проверено на това устройство. Нищо не е изпратено никъде.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Проследяващи елементи';
@@ -608,8 +630,18 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String conversationSecurityHiddenValue(int elements, int characters) {
-    String _temp0 = intl.Intl.pluralLogic(elements, locale: localeName, other: '$elements елемента', one: '1 елемент');
-    String _temp1 = intl.Intl.pluralLogic(characters, locale: localeName, other: '$characters знака', one: '1 знак');
+    String _temp0 = intl.Intl.pluralLogic(
+      elements,
+      locale: localeName,
+      other: '$elements елемента',
+      one: '1 елемент',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      characters,
+      locale: localeName,
+      other: '$characters знака',
+      one: '1 знак',
+    );
     return '$_temp0, $_temp1';
   }
 
@@ -639,7 +671,8 @@ class AppLocalizationsBg extends AppLocalizations {
       'Не предприемайте нищо по него, освен ако не сте го очаквали. Ако се съмнявате, свържете се с подателя по друг начин.';
 
   @override
-  String get conversationSecurityAuthUnalignedTitle => 'Подписано от друг домейн';
+  String get conversationSecurityAuthUnalignedTitle =>
+      'Подписано от друг домейн';
 
   @override
   String conversationSecurityAuthUnalignedText(String signer, String domain) {
@@ -652,7 +685,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle => 'Името показва друг адрес';
+  String get conversationSecurityNameShowsAddressTitle =>
+      'Името показва друг адрес';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -660,7 +694,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice => 'Вярвайте на адреса, а не на името.';
+  String get conversationSecurityNameShowsAddressAdvice =>
+      'Вярвайте на адреса, а не на името.';
 
   @override
   String get conversationSecurityReplyToTitle => 'Отговорите отиват другаде';
@@ -671,13 +706,15 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityReplyToAdvice => 'Проверете адреса, преди да изпратите в отговор нещо лично.';
+  String get conversationSecurityReplyToAdvice =>
+      'Проверете адреса, преди да изпратите в отговор нещо лично.';
 
   @override
   String get conversationSecurityImpersonationYouTitle => 'Използва вашето име';
 
   @override
-  String get conversationSecurityImpersonationTitle => 'Използва името на човек, когото познавате';
+  String get conversationSecurityImpersonationTitle =>
+      'Използва името на човек, когото познавате';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -685,12 +722,22 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationVipText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Подписано е „$name“ като вашия VIP контакт $knownName ($knownEmail), но идва от нов адрес: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Подписано е „$name“ като вашия контакт $knownName ($knownEmail), но идва от нов адрес: $email.';
   }
 
@@ -713,7 +760,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle => 'Първо писмо от този подател';
+  String get conversationSecurityFirstTimeTitle =>
+      'Първо писмо от този подател';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -721,13 +769,16 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeAdvice => 'Внимавайте с молби от хора, които още не познавате.';
+  String get conversationSecurityFirstTimeAdvice =>
+      'Внимавайте с молби от хора, които още не познавате.';
 
   @override
-  String get conversationSecuritySenderHomographTitle => 'Подобни на вид букви в адреса на подателя';
+  String get conversationSecuritySenderHomographTitle =>
+      'Подобни на вид букви в адреса на подателя';
 
   @override
-  String get conversationSecurityLinkHomographTitle => 'Подобни на вид букви във връзка';
+  String get conversationSecurityLinkHomographTitle =>
+      'Подобни на вид букви във връзка';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -740,7 +791,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice => 'Изтрийте го или го докладвайте като спам.';
+  String get conversationSecuritySenderHomographAdvice =>
+      'Изтрийте го или го докладвайте като спам.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Не я отваряйте.';
@@ -754,7 +806,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get conversationSecurityLookalikeTitle => 'Домейн двойник';
 
   @override
-  String get conversationSecurityFamiliarNameTitle => 'Използва познато име в домейна си';
+  String get conversationSecurityFamiliarNameTitle =>
+      'Използва познато име в домейна си';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -762,7 +815,11 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(String domain, String brand, String real) {
+  String conversationSecurityLookalikeText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return '$domain прилича на $brand ($real), но е друг домейн.';
   }
 
@@ -772,7 +829,11 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
+  String conversationSecurityFamiliarNameText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return '$domain използва името на $brand ($real), но не е техен.';
   }
 
@@ -822,7 +883,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle => 'Накъде води връзката, не може да се провери';
+  String get conversationSecurityLinkUncheckableTitle =>
+      'Накъде води връзката, не може да се провери';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -830,7 +892,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle => 'Връзка сочи към гол IP адрес';
+  String get conversationSecurityIpAddressTitle =>
+      'Връзка сочи към гол IP адрес';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -846,7 +909,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityDataLinkTitle => 'Скрита страница беше изключена';
+  String get conversationSecurityDataLinkTitle =>
+      'Скрита страница беше изключена';
 
   @override
   String get conversationSecurityDataLinkText =>
@@ -856,16 +920,20 @@ class AppLocalizationsBg extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Иска парола';
 
   @override
-  String get conversationSecurityPasswordFieldText => 'Писмото съдържаше поле за парола. Loupe го премахна.';
+  String get conversationSecurityPasswordFieldText =>
+      'Писмото съдържаше поле за парола. Loupe го премахна.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice => 'Никога не въвеждайте парола в имейл.';
+  String get conversationSecurityPasswordFieldAdvice =>
+      'Никога не въвеждайте парола в имейл.';
 
   @override
-  String get conversationSecurityScriptLinkTitle => 'Връзка, която изпълнява код, беше изключена';
+  String get conversationSecurityScriptLinkTitle =>
+      'Връзка, която изпълнява код, беше изключена';
 
   @override
-  String get conversationSecurityScriptLinkText => 'Loupe никога не изпълнява код от писма.';
+  String get conversationSecurityScriptLinkText =>
+      'Loupe никога не изпълнява код от писма.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -899,7 +967,8 @@ class AppLocalizationsBg extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Премахнати са $count знака невидим текст. Такъв скрит текст цели да заблуди филтрите за спам.',
+      other:
+          'Премахнати са $count знака невидим текст. Такъв скрит текст цели да заблуди филтрите за спам.',
       one: 'Премахнат е 1 знак невидим текст. Такъв скрит текст цели да заблуди филтрите за спам.',
     );
     return '$_temp0';
@@ -920,7 +989,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed => 'Писмото не можа да се изтегли. Проверете връзката и опитайте отново.';
+  String get exportDownloadFailed =>
+      'Писмото не можа да се изтегли. Проверете връзката и опитайте отново.';
 
   @override
   String exportSaved(String name) {
@@ -950,7 +1020,8 @@ class AppLocalizationsBg extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '„$name“ е запазен без $formattedCount писма, които не можаха да се изтеглят.',
+      other:
+          '„$name“ е запазен без $formattedCount писма, които не можаха да се изтеглят.',
       one: '„$name“ е запазен без 1 писмо, което не можа да се изтегли.',
     );
     return '$_temp0';
@@ -1029,7 +1100,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get mailboxesSmartMailboxes => 'Smart Mailboxes';
 
   @override
-  String get mailboxesSmartMailboxesEmpty => 'Запазете търсене, за да го държите тук.';
+  String get mailboxesSmartMailboxesEmpty =>
+      'Запазете търсене, за да го държите тук.';
 
   @override
   String get mailboxesTags => 'Етикети';
@@ -1063,7 +1135,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get projectsDelete => 'Изтриване на проекта';
 
   @override
-  String get projectsDeleteMessage => 'Разговорите му остават, където са, извън проекта.';
+  String get projectsDeleteMessage =>
+      'Разговорите му остават, където са, извън проекта.';
 
   @override
   String get projectsUntitled => 'Проект';
@@ -1115,7 +1188,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get projectsAiTimeout => 'Сървърът се забави твърде много.';
 
   @override
-  String get projectsAiBadAnswer => 'Отговорът на сървъра не може да бъде прочетен.';
+  String get projectsAiBadAnswer =>
+      'Отговорът на сървъра не може да бъде прочетен.';
 
   @override
   String projectsAiNoModel(String models) {
@@ -1144,7 +1218,8 @@ class AppLocalizationsBg extends AppLocalizations {
       'Loupe преглежда на това устройство разговорите от последните 90 дни, в които сте участвали, и предлага тези, които изглеждат свързани.';
 
   @override
-  String get projectsSettingsForget => 'Повторно показване на отхвърлените теми';
+  String get projectsSettingsForget =>
+      'Повторно показване на отхвърлените теми';
 
   @override
   String get projectsSettingsAi => 'Предложения с ИИ';
@@ -1177,7 +1252,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get mailboxesVipTitle => 'VIP';
 
   @override
-  String get mailboxesVipFooter => 'Можете също да докоснете името на подател в писмо и да включите VIP.';
+  String get mailboxesVipFooter =>
+      'Можете също да докоснете името на подател в писмо и да включите VIP.';
 
   @override
   String get mailboxesAddVip => 'Добавяне на VIP…';
@@ -1186,7 +1262,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get mailboxesAddVipTitle => 'Добавяне на VIP';
 
   @override
-  String get mailboxesAddVipText => 'Писмата от този адрес получават звезда и се показват в пощенската кутия VIP.';
+  String get mailboxesAddVipText =>
+      'Писмата от този адрес получават звезда и се показват в пощенската кутия VIP.';
 
   @override
   String get mailboxesAddVipPlaceholder => 'name@example.com';
@@ -1224,14 +1301,19 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get messageListLoadOlderFailed => 'По-старата поща не можа да се зареди.';
+  String get messageListLoadOlderFailed =>
+      'По-старата поща не можа да се зареди.';
 
   @override
   String get messageListSelectMessages => 'Избиране на писма';
 
   @override
   String messageListSelected(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Избрани: $count');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Избрани: $count',
+    );
     return '$_temp0';
   }
 
@@ -1280,7 +1362,11 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String messageListUnreadCount(int count, String formattedCount) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Непрочетени: $formattedCount');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Непрочетени: $formattedCount',
+    );
     return '$_temp0';
   }
 
@@ -1313,7 +1399,12 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String panesDragCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count писма', one: '1 писмо');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count писма',
+      one: '1 писмо',
+    );
     return '$_temp0';
   }
 
@@ -1357,13 +1448,15 @@ class AppLocalizationsBg extends AppLocalizations {
   String get snoozeNoTime => 'Няма зададен час';
 
   @override
-  String get snoozeFooter => 'Отложените писма се връщат във „Входящи“ като непрочетени в зададения час.';
+  String get snoozeFooter =>
+      'Отложените писма се връщат във „Входящи“ като непрочетени в зададения час.';
 
   @override
   String get snoozeEmptyTitle => 'Няма отложени писма';
 
   @override
-  String get snoozeEmptyText => 'Отложете писмо, за да се върне във „Входящи“, когато ви потрябва.';
+  String get snoozeEmptyText =>
+      'Отложете писмо, за да се върне във „Входящи“, когато ви потрябва.';
 
   @override
   String get briefButton => 'Накратко';
@@ -1387,13 +1480,15 @@ class AppLocalizationsBg extends AppLocalizations {
   String get briefStopped => 'Спряхте резюмето.';
 
   @override
-  String get briefFailedTooLarge => 'Писмото е твърде дълго за модела, затова нищо не е изпратено.';
+  String get briefFailedTooLarge =>
+      'Писмото е твърде дълго за модела, затова нищо не е изпратено.';
 
   @override
   String get briefFailedProvider => 'Моделът не успя да резюмира това писмо.';
 
   @override
-  String get briefFailedInvalid => 'Отговорът не премина проверките на Loupe, затова не се показва списък.';
+  String get briefFailedInvalid =>
+      'Отговорът не премина проверките на Loupe, затова не се показва списък.';
 
   @override
   String get briefNothingTitle => 'Няма какво да се резюмира';
@@ -1445,7 +1540,11 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Вие', 'them': 'Други', 'other': 'Не е посочено'});
+    String _temp0 = intl.Intl.selectLogic(owner, {
+      'me': 'Вие',
+      'them': 'Други',
+      'other': 'Не е посочено',
+    });
     return '$_temp0';
   }
 
@@ -1511,7 +1610,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get briefCopyChecklist => 'Копиране на списъка';
 
   @override
-  String get briefMadeByDemo => 'Направено от вградената демонстрация, не от модел.';
+  String get briefMadeByDemo =>
+      'Направено от вградената демонстрация, не от модел.';
 
   @override
   String briefMadeBy(String location, String name) {
@@ -1524,7 +1624,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get briefCaution => 'Резюмето може да пропусне или да разбере погрешно нещо. Важи самото писмо.';
+  String get briefCaution =>
+      'Резюмето може да пропусне или да разбере погрешно нещо. Важи самото писмо.';
 
   @override
   String briefSecurityReason(String reason) {
@@ -1532,7 +1633,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText => 'Проверете самото писмо, преди да направите каквото и да е от това резюме.';
+  String get briefSecurityText =>
+      'Проверете самото писмо, преди да направите каквото и да е от това резюме.';
 
   @override
   String get briefSourceTitle => 'В писмото';
@@ -1580,10 +1682,12 @@ class AppLocalizationsBg extends AppLocalizations {
   String get appLockFailed => 'Loupe не можа да потвърди, че сте вие.';
 
   @override
-  String get appLockLockedOut => 'Твърде много опити. Опитайте отново по-късно.';
+  String get appLockLockedOut =>
+      'Твърде много опити. Опитайте отново по-късно.';
 
   @override
-  String get appLockPromptError => 'Проверката не можа да се покаже. Опитайте отново.';
+  String get appLockPromptError =>
+      'Проверката не можа да се покаже. Опитайте отново.';
 
   @override
   String get appLockNoScreenLock => 'Този телефон няма заключване на екрана.';
@@ -1592,13 +1696,16 @@ class AppLocalizationsBg extends AppLocalizations {
   String get appLockUnlockPromptTitle => 'Отключване на Loupe';
 
   @override
-  String get appLockUnlockPromptReason => 'Потвърдете, че сте вие, за да видите пощата си.';
+  String get appLockUnlockPromptReason =>
+      'Потвърдете, че сте вие, за да видите пощата си.';
 
   @override
-  String get appLockTurnOnPromptTitle => 'Включване на заключването на приложението';
+  String get appLockTurnOnPromptTitle =>
+      'Включване на заключването на приложението';
 
   @override
-  String get appLockTurnOnPromptReason => 'Потвърдете, че сте вие, за да включите заключването на приложението.';
+  String get appLockTurnOnPromptReason =>
+      'Потвърдете, че сте вие, за да включите заключването на приложението.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1609,13 +1716,23 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String appLockAfterMinutes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count минути', one: '1 минута');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count минути',
+      one: '1 минута',
+    );
     return '$_temp0';
   }
 
   @override
   String appLockAfterHours(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count часа', one: '1 час');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count часа',
+      one: '1 час',
+    );
     return '$_temp0';
   }
 
@@ -1692,7 +1809,12 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String openpgpForKeys(int count, String keys) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'За ключове $keys', one: 'За ключ $keys');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'За ключове $keys',
+      one: 'За ключ $keys',
+    );
     return '$_temp0';
   }
 
@@ -1726,33 +1848,40 @@ class AppLocalizationsBg extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Промяна на приемането…';
 
   @override
-  String get openpgpCheckedFooter => 'Проверено на това устройство с OpenPGP, съвместимо с Thunderbird.';
+  String get openpgpCheckedFooter =>
+      'Проверено на това устройство с OpenPGP, съвместимо с Thunderbird.';
 
   @override
   String get openpgpSummaryLocked =>
       'Ключът ви е заключен. Отключете го с паролната му фраза, за да прочетете това писмо.';
 
   @override
-  String get openpgpSummaryNoSecretKey => 'Шифровано е за ключ, който не е на това устройство.';
+  String get openpgpSummaryNoSecretKey =>
+      'Шифровано е за ключ, който не е на това устройство.';
 
   @override
-  String get openpgpSummaryDamaged => 'Шифрованите данни са повредени или са променени по пътя.';
+  String get openpgpSummaryDamaged =>
+      'Шифрованите данни са повредени или са променени по пътя.';
 
   @override
-  String get openpgpSummaryUnsupported => 'Използва алгоритъм, който Loupe не поддържа.';
+  String get openpgpSummaryUnsupported =>
+      'Използва алгоритъм, който Loupe не поддържа.';
 
   @override
-  String get openpgpSummaryEncrypted => 'Само вие и другите получатели можете да го прочетете.';
+  String get openpgpSummaryEncrypted =>
+      'Само вие и другите получатели можете да го прочетете.';
 
   @override
-  String get openpgpSummaryNotSigned => 'Не е подписано, така че подателят не е потвърден.';
+  String get openpgpSummaryNotSigned =>
+      'Не е подписано, така че подателят не е потвърден.';
 
   @override
   String get openpgpSummaryUnknownKey =>
       'Подписано е, но с ключ, който нямате, така че подписът не може да се провери.';
 
   @override
-  String get openpgpSummaryBadSignature => 'Подписът не съвпада: писмото може да е било променено.';
+  String get openpgpSummaryBadSignature =>
+      'Подписът не съвпада: писмото може да е било променено.';
 
   @override
   String get openpgpSummaryMismatch =>
@@ -1766,13 +1895,16 @@ class AppLocalizationsBg extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Подписано със собствения ви ключ.';
 
   @override
-  String get openpgpSummaryVerified => 'Подписът е валиден и сте проверили отпечатъка на ключа.';
+  String get openpgpSummaryVerified =>
+      'Подписът е валиден и сте проверили отпечатъка на ключа.';
 
   @override
-  String get openpgpSummaryUnverified => 'Подписът е валиден. Приели сте ключа, без да проверите отпечатъка му.';
+  String get openpgpSummaryUnverified =>
+      'Подписът е валиден. Приели сте ключа, без да проверите отпечатъка му.';
 
   @override
-  String get openpgpSummaryRejected => 'Подписът е валиден, но сте отхвърлили този ключ.';
+  String get openpgpSummaryRejected =>
+      'Подписът е валиден, но сте отхвърлили този ключ.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -1832,7 +1964,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get openpgpAddresses => 'Адреси';
 
   @override
-  String get openpgpAddressesFooter => 'Кой ключ използва всеки адрес и кога шифрова и подписва.';
+  String get openpgpAddressesFooter =>
+      'Кой ключ използва всеки адрес и кога шифрова и подписва.';
 
   @override
   String get openpgpCorrespondentsKeys => 'Ключове OpenPGP на кореспондентите';
@@ -1866,7 +1999,8 @@ class AppLocalizationsBg extends AppLocalizations {
       'Търсенето намира шифровани писма по подател, получатели и тема. Когато това е включено, Loupe добавя и текста на всяко шифровано писмо, което дешифрира, към индекса за търсене в шифрованата си база данни на това устройство, така че търсенето да го намира и по текста му. Изключването премахва този текст от индекса.';
 
   @override
-  String get openpgpIndexDecrypted => 'Индексиране на дешифрираните писма за търсене';
+  String get openpgpIndexDecrypted =>
+      'Индексиране на дешифрираните писма за търсене';
 
   @override
   String get openpgpPassphrases => 'Паролни фрази';
@@ -1911,7 +2045,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get openpgpAddKeyTitle => 'Добавяне на ключ OpenPGP';
 
   @override
-  String get openpgpAddKeyMessage => 'Импортирайте ключа, който използвате в Thunderbird, или създайте нов.';
+  String get openpgpAddKeyMessage =>
+      'Импортирайте ключа, който използвате в Thunderbird, или създайте нов.';
 
   @override
   String get openpgpImportFromClipboard => 'Импортиране от буфера';
@@ -1932,7 +2067,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get openpgpFromFile => 'От файл';
 
   @override
-  String get openpgpClipboardEmpty => 'Буферът е празен. Първо копирайте ключа.';
+  String get openpgpClipboardEmpty =>
+      'Буферът е празен. Първо копирайте ключа.';
 
   @override
   String get openpgpKey => 'Ключ';
@@ -2025,7 +2161,8 @@ class AppLocalizationsBg extends AppLocalizations {
       'Писмата, шифровани за този ключ, вече няма да могат да се четат на това устройство, освен ако не го импортирате отново.';
 
   @override
-  String get openpgpRemoveKeyMessage => 'Можете да го импортирате отново по-късно.';
+  String get openpgpRemoveKeyMessage =>
+      'Можете да го импортирате отново по-късно.';
 
   @override
   String get openpgpKeyHeader => 'Ключ OpenPGP';
@@ -2048,7 +2185,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Автоматично шифроване';
 
   @override
-  String get openpgpAlwaysEncryptDetail => 'Не изпраща, ако някой получател няма ключ';
+  String get openpgpAlwaysEncryptDetail =>
+      'Не изпраща, ако някой получател няма ключ';
 
   @override
   String get openpgpSignUnencrypted => 'Подписване на нешифрованите писма';
@@ -2067,11 +2205,17 @@ class AppLocalizationsBg extends AppLocalizations {
   String get openpgpPreferEncryption => 'Предпочитане на шифроване';
 
   @override
-  String get openpgpPreferEncryptionDetail => 'Другите се молят да шифроват, когато могат';
+  String get openpgpPreferEncryptionDetail =>
+      'Другите се молят да шифроват, когато могат';
 
   @override
   String openpgpValidityYears(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count години', one: '1 година');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count години',
+      one: '1 година',
+    );
     return '$_temp0';
   }
 
@@ -2250,20 +2394,24 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get openpgpWrongPassphrase => 'Паролната фраза е грешна. Опитайте отново.';
+  String get openpgpWrongPassphrase =>
+      'Паролната фраза е грешна. Опитайте отново.';
 
   @override
-  String get openpgpExplainLocked => 'Това писмо е шифровано. Отключете ключа си OpenPGP, за да го прочетете.';
+  String get openpgpExplainLocked =>
+      'Това писмо е шифровано. Отключете ключа си OpenPGP, за да го прочетете.';
 
   @override
   String get openpgpExplainNoKey =>
       'Това писмо е шифровано, но не за ключ OpenPGP на това устройство. Ако го четете в Thunderbird, импортирайте ключа си оттам: „Настройки › Шифроване от край до край“.';
 
   @override
-  String get openpgpExplainDamaged => 'Това шифровано писмо е повредено и не може да се дешифрира безопасно.';
+  String get openpgpExplainDamaged =>
+      'Това шифровано писмо е повредено и не може да се дешифрира безопасно.';
 
   @override
-  String get openpgpExplainUnsupported => 'Това писмо използва шифроване, което Loupe още не може да чете.';
+  String get openpgpExplainUnsupported =>
+      'Това писмо използва шифроване, което Loupe още не може да чете.';
 
   @override
   String get openpgpExplainSmimeNoKey =>
@@ -2275,7 +2423,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock => 'Отключете сертификата си S/MIME, за да го прочетете.';
+  String get openpgpExplainSmimeUnlock =>
+      'Отключете сертификата си S/MIME, за да го прочетете.';
 
   @override
   String get openpgpAttachmentGone => 'Този прикачен файл вече не е наличен.';
@@ -2284,7 +2433,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get smimeEncrypted => 'Шифровано (S/MIME)';
 
   @override
-  String get smimeEncryptedNoCertificate => 'Шифровано (S/MIME) · няма сертификат';
+  String get smimeEncryptedNoCertificate =>
+      'Шифровано (S/MIME) · няма сертификат';
 
   @override
   String get smimeEncryptedDamaged => 'Шифровано (S/MIME) · повредено';
@@ -2440,7 +2590,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get smimeTrustThisCertificateEllipsis => 'Доверие към този сертификат…';
+  String get smimeTrustThisCertificateEllipsis =>
+      'Доверие към този сертификат…';
 
   @override
   String get smimeCheckedFooterRevocation =>
@@ -2474,31 +2625,38 @@ class AppLocalizationsBg extends AppLocalizations {
   String get smimeTrust => 'Доверие';
 
   @override
-  String get smimeSummaryNoKey => 'Шифровано е за сертификат, който не е на това устройство.';
+  String get smimeSummaryNoKey =>
+      'Шифровано е за сертификат, който не е на това устройство.';
 
   @override
-  String get smimeSummaryDamaged => 'Шифрованите данни са повредени или са променени по пътя.';
+  String get smimeSummaryDamaged =>
+      'Шифрованите данни са повредени или са променени по пътя.';
 
   @override
-  String get smimeSummaryUnsupported => 'Използва алгоритъм, който Loupe не поддържа.';
+  String get smimeSummaryUnsupported =>
+      'Използва алгоритъм, който Loupe не поддържа.';
 
   @override
   String get smimeSummaryLocked => 'Сертификатът ви S/MIME е заключен.';
 
   @override
-  String get smimeSummaryEncrypted => 'Само вие и другите получатели можете да го прочетете.';
+  String get smimeSummaryEncrypted =>
+      'Само вие и другите получатели можете да го прочетете.';
 
   @override
-  String get smimeSummaryNotSigned => 'Не е подписано, така че подателят не е потвърден.';
+  String get smimeSummaryNotSigned =>
+      'Не е подписано, така че подателят не е потвърден.';
 
   @override
-  String get smimeSummaryModified => 'Подписът не съвпада: писмото е променено, след като е подписано.';
+  String get smimeSummaryModified =>
+      'Подписът не съвпада: писмото е променено, след като е подписано.';
 
   @override
   String get smimeSummaryUncheckable => 'Подписът не може да се провери.';
 
   @override
-  String get smimeSummaryNoCertificate => 'Сертификатът на подписващия не е в писмото, така че не може да се провери.';
+  String get smimeSummaryNoCertificate =>
+      'Сертификатът на подписващия не е в писмото, така че не може да се провери.';
 
   @override
   String get smimeSummaryRevoked =>
@@ -2519,10 +2677,12 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain => 'Сертификатът или някой от издателите му е невалиден.';
+  String get smimeProblemInvalidChain =>
+      'Сертификатът или някой от издателите му е невалиден.';
 
   @override
-  String get smimeProblemUntrusted => 'Сертификатът е от орган, на който Loupe няма доверие.';
+  String get smimeProblemUntrusted =>
+      'Сертификатът е от орган, на който Loupe няма доверие.';
 
   @override
   String get smimeProblemExpired => 'Сертификатът е бил изтекъл.';
@@ -2531,10 +2691,12 @@ class AppLocalizationsBg extends AppLocalizations {
   String get smimeProblemNotYetValid => 'Сертификатът още не е бил валиден.';
 
   @override
-  String get smimeProblemWrongUsage => 'Сертификатът не е предназначен за поща.';
+  String get smimeProblemWrongUsage =>
+      'Сертификатът не е предназначен за поща.';
 
   @override
-  String get smimeProblemWrongAddress => 'Сертификатът принадлежи на адрес, различен от този на подателя.';
+  String get smimeProblemWrongAddress =>
+      'Сертификатът принадлежи на адрес, различен от този на подателя.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2591,10 +2753,12 @@ class AppLocalizationsBg extends AppLocalizations {
   String get smimeImportCertificateEllipsis => 'Импортиране на сертификат…';
 
   @override
-  String get smimeUseDeviceCertificate => 'Използване на сертификат от това устройство…';
+  String get smimeUseDeviceCertificate =>
+      'Използване на сертификат от това устройство…';
 
   @override
-  String get smimeCorrespondentsCertificates => 'Сертификати на кореспондентите';
+  String get smimeCorrespondentsCertificates =>
+      'Сертификати на кореспондентите';
 
   @override
   String get smimeCorrespondentsCertificatesFooter =>
@@ -2618,7 +2782,8 @@ class AppLocalizationsBg extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Доверени от вас, освен $count органа, на които Mozilla има доверие за имейл.',
+      other:
+          'Доверени от вас, освен $count органа, на които Mozilla има доверие за имейл.',
       one: 'Доверени от вас, освен 1 орган, на който Mozilla има доверие за имейл.',
     );
     return '$_temp0';
@@ -2631,7 +2796,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get smimeImportACertificate => 'Импортиране на сертификат';
 
   @override
-  String get smimeImportContactMessage => 'Сертификат на кореспондент (.cer, .crt, .pem) или на сертифициращ орган.';
+  String get smimeImportContactMessage =>
+      'Сертификат на кореспондент (.cer, .crt, .pem) или на сертифициращ орган.';
 
   @override
   String get smimeFromClipboard => 'От буфера';
@@ -2640,7 +2806,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get smimeFromFile => 'От файл';
 
   @override
-  String get smimeClipboardEmpty => 'Буферът е празен. Първо копирайте сертификата.';
+  String get smimeClipboardEmpty =>
+      'Буферът е празен. Първо копирайте сертификата.';
 
   @override
   String get smimeCertificate => 'Сертификат';
@@ -2793,7 +2960,8 @@ class AppLocalizationsBg extends AppLocalizations {
       'Частният му ключ се изтрива от това устройство: писмата, шифровани за него, вече не могат да се четат тук, освен ако не го импортирате отново.';
 
   @override
-  String get smimeRemoveContactMessage => 'Ще се появи отново със следващото подписано писмо от този човек.';
+  String get smimeRemoveContactMessage =>
+      'Ще се появи отново със следващото подписано писмо от този човек.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -2816,7 +2984,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get smimeCertificatePassword => 'Парола на сертификата';
 
   @override
-  String get smimeCertificatePasswordPrompt => 'Въведете паролата, с която е изнесен файлът на сертификата.';
+  String get smimeCertificatePasswordPrompt =>
+      'Въведете паролата, с която е изнесен файлът на сертификата.';
 
   @override
   String get smimeImport => 'Импортиране';
@@ -2852,7 +3021,10 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
+  String smimeImportedCertificatesAndAuthorities(
+    int count,
+    String certificates,
+  ) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -2863,7 +3035,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get smimeNoPrivateKey => 'Този файл няма частен ключ. Изнесете сертификата си заедно с частния му ключ.';
+  String get smimeNoPrivateKey =>
+      'Този файл няма частен ключ. Изнесете сертификата си заедно с частния му ключ.';
 
   @override
   String get smimeImportAsYoursTitle => 'Импортиране като ваш сертификат?';
@@ -2919,7 +3092,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get smimeWrongPassphrase => 'Паролната фраза е грешна. Опитайте отново.';
+  String get smimeWrongPassphrase =>
+      'Паролната фраза е грешна. Опитайте отново.';
 
   @override
   String get smimeUnlock => 'Отключване';
@@ -2944,13 +3118,16 @@ class AppLocalizationsBg extends AppLocalizations {
   String get smimeSetPassphraseButton => 'Задаване';
 
   @override
-  String get smimeLockedOpenAgain => 'Сертификатът ви S/MIME е заключен. Отворете писмото отново, за да го отключите.';
+  String get smimeLockedOpenAgain =>
+      'Сертификатът ви S/MIME е заключен. Отворете писмото отново, за да го отключите.';
 
   @override
-  String get smimeDeviceHasNoCertificates => 'Това устройство не предоставя сертификатите си.';
+  String get smimeDeviceHasNoCertificates =>
+      'Това устройство не предоставя сертификатите си.';
 
   @override
-  String get smimeCantReadCertificate => 'Loupe не може да прочете този сертификат.';
+  String get smimeCantReadCertificate =>
+      'Loupe не може да прочете този сертификат.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -2984,10 +3161,12 @@ class AppLocalizationsBg extends AppLocalizations {
   String get smimeAuthorityNotWebAddress => 'Адресът на органа не е уеб адрес.';
 
   @override
-  String get smimeAuthorityTimeout => 'Сертифициращият орган не отговори навреме.';
+  String get smimeAuthorityTimeout =>
+      'Сертифициращият орган не отговори навреме.';
 
   @override
-  String get smimeAuthorityUnreachable => 'Няма връзка със сертифициращия орган.';
+  String get smimeAuthorityUnreachable =>
+      'Няма връзка със сертифициращия орган.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -2995,15 +3174,25 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge => 'Отговорът на сертифициращия орган е твърде голям.';
+  String get smimeAuthorityAnswerTooLarge =>
+      'Отговорът на сертифициращия орган е твърде голям.';
 
   @override
   String get smimeRevocationNotChecked =>
       'Не е проверено: проверяват се само сертификати от органи, на които Loupe има доверие.';
 
   @override
+  String get actionsNeedsMyAction => 'Изисква действие от мен';
+
+  @override
+  String get actionsWaitingOnOthers => 'Очаквам от други';
+
+  @override
   String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    String _temp0 = intl.Intl.selectLogic(protocol, {
+      'jmap': 'Push',
+      'other': 'IDLE',
+    });
     return '$_temp0';
   }
 
@@ -3085,7 +3274,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Добавяне на адрес или домейн…';
 
   @override
-  String get settingsSignatureCopiedPrompt => 'Адрес или домейн, например client.example.';
+  String get settingsSignatureCopiedPrompt =>
+      'Адрес или домейн, например client.example.';
 
   @override
   String get settingsSignatureScheduled => 'По график';
@@ -3104,7 +3294,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsSignatureRotation => 'В ротация';
 
   @override
-  String get settingsSignatureRotationFooter => 'Всяко ново съобщение получава случаен подпис от тези в ротация.';
+  String get settingsSignatureRotationFooter =>
+      'Всяко ново съобщение получава случаен подпис от тези в ротация.';
 
   @override
   String get settingsSignatureMakeDefault => 'Задаване по подразбиране';
@@ -3145,7 +3336,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsSwipeRight => 'Плъзгане надясно';
 
   @override
-  String get settingsSwipeRightFooter => 'Пълното плъзгане изпълнява това действие.';
+  String get settingsSwipeRightFooter =>
+      'Пълното плъзгане изпълнява това действие.';
 
   @override
   String get settingsSwipeToggleRead => 'Маркиране като прочетено/непрочетено';
@@ -3166,11 +3358,17 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsUndoSendDelay => 'Време за отмяна на изпращането';
 
   @override
-  String get settingsUndoSendDelayFooter => 'Изпратените писма изчакват толкова време, за да можете да ги върнете.';
+  String get settingsUndoSendDelayFooter =>
+      'Изпратените писма изчакват толкова време, за да можете да ги върнете.';
 
   @override
   String settingsUndoSendSeconds(int seconds) {
-    String _temp0 = intl.Intl.pluralLogic(seconds, locale: localeName, other: '$seconds секунди', one: '1 секунда');
+    String _temp0 = intl.Intl.pluralLogic(
+      seconds,
+      locale: localeName,
+      other: '$seconds секунди',
+      one: '1 секунда',
+    );
     return '$_temp0';
   }
 
@@ -3212,13 +3410,15 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsDefaultView => 'Изглед по подразбиране';
 
   @override
-  String get settingsDefaultViewFooter => 'Можете да превключите изгледа на всяко писмо с бутона Aa.';
+  String get settingsDefaultViewFooter =>
+      'Можете да превключите изгледа на всяко писмо с бутона Aa.';
 
   @override
   String get settingsViewReadable => 'Четлив';
 
   @override
-  String get settingsViewReadableDetail => 'Изчистен, лесен за четене, следва тъмния режим';
+  String get settingsViewReadableDetail =>
+      'Изчистен, лесен за четене, следва тъмния режим';
 
   @override
   String get settingsViewOriginal => 'Оригинален';
@@ -3242,7 +3442,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsFontMono => 'Моноширинен';
 
   @override
-  String get settingsFontMonoDetail => 'Запазва подравняването на ASCII рисунки и таблици';
+  String get settingsFontMonoDetail =>
+      'Запазва подравняването на ASCII рисунки и таблици';
 
   @override
   String get settingsTechnicalLists => 'Технически списъци';
@@ -3294,13 +3495,15 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsOpenSystemSettings => 'Отваряне на настройките';
 
   @override
-  String get settingsOpenAndroidSettings => 'Отваряне на настройките на Android';
+  String get settingsOpenAndroidSettings =>
+      'Отваряне на настройките на Android';
 
   @override
   String get settingsLockAfter => 'Заключване след';
 
   @override
-  String get settingsLockAfterFooter => 'Колко време Loupe може да е на заден план, преди да попита отново.';
+  String get settingsLockAfterFooter =>
+      'Колко време Loupe може да е на заден план, преди да попита отново.';
 
   @override
   String get settingsNotifications => 'Известия';
@@ -3325,7 +3528,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsResetApp => 'Нулиране на приложението';
 
   @override
-  String get settingsResetFooter => 'Забравя всички настройки и се връща към началния екран.';
+  String get settingsResetFooter =>
+      'Забравя всички настройки и се връща към началния екран.';
 
   @override
   String get settingsResetTitle => 'Нулиране на Loupe?';
@@ -3351,10 +3555,12 @@ class AppLocalizationsBg extends AppLocalizations {
       'Loupe няма анализи и проследяване. Пощата ви отива само до вашите пощенски сървъри.';
 
   @override
-  String get settingsNotificationsOffIos => 'Известията за Loupe са изключени в „Настройки“.';
+  String get settingsNotificationsOffIos =>
+      'Известията за Loupe са изключени в „Настройки“.';
 
   @override
-  String get settingsNotificationsOffAndroid => 'Известията за Loupe са изключени в настройките на Android.';
+  String get settingsNotificationsOffAndroid =>
+      'Известията за Loupe са изключени в настройките на Android.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -3397,7 +3603,8 @@ class AppLocalizationsBg extends AppLocalizations {
       '„Скриване на съдържанието“ не показва подателя, темата и откъса на заключения екран и в известията.';
 
   @override
-  String get settingsBackgroundAppRefresh => 'Опресняване на приложенията във фонов режим';
+  String get settingsBackgroundAppRefresh =>
+      'Опресняване на приложенията във фонов режим';
 
   @override
   String get settingsBackgroundRefreshFooter =>
@@ -3421,7 +3628,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsComingSoon => 'Очаквайте скоро';
 
   @override
-  String get settingsAllowUnrestrictedBattery => 'Разрешаване на неограничено използване на батерията';
+  String get settingsAllowUnrestrictedBattery =>
+      'Разрешаване на неограничено използване на батерията';
 
   @override
   String get settingsPush => 'Push';
@@ -3455,7 +3663,8 @@ class AppLocalizationsBg extends AppLocalizations {
       'Началният екран на този телефон не показва числа върху иконите на приложенията. Значката се обновява всеки път, когато Loupe проверява за поща, включително на заден план.';
 
   @override
-  String get settingsTestNotificationBody => 'Известията за нова поща изглеждат така.';
+  String get settingsTestNotificationBody =>
+      'Известията за нова поща изглеждат така.';
 
   @override
   String get settingsAccountRemoved => 'Този профил е премахнат.';
@@ -3476,7 +3685,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsColour => 'Цвят';
 
   @override
-  String get settingsColourFooter => 'Отбелязва писмата от този профил във „Всички входящи“.';
+  String get settingsColourFooter =>
+      'Отбелязва писмата от този профил във „Всички входящи“.';
 
   @override
   String settingsColourNumber(int number) {
@@ -3568,10 +3778,12 @@ class AppLocalizationsBg extends AppLocalizations {
       'Първата самоличност е тази по подразбиране за нови писма. Плъзнете, за да промените реда.';
 
   @override
-  String get settingsIdentitiesFooterSingle => 'Самоличността по подразбиране за нови писма.';
+  String get settingsIdentitiesFooterSingle =>
+      'Самоличността по подразбиране за нови писма.';
 
   @override
-  String get settingsIdentitiesReplyFooter => 'Отговорът се изпраща от самоличността, до която е изпратено писмото.';
+  String get settingsIdentitiesReplyFooter =>
+      'Отговорът се изпраща от самоличността, до която е изпратено писмото.';
 
   @override
   String get settingsIdentityDefault => 'По подразбиране';
@@ -3603,7 +3815,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsCopyToMyself => 'Копие до мен';
 
   @override
-  String get settingsCopyToMyselfFooter => 'Добавя се към всяко писмо от тази самоличност.';
+  String get settingsCopyToMyselfFooter =>
+      'Добавя се към всяко писмо от тази самоличност.';
 
   @override
   String get settingsCc => 'Копие';
@@ -3619,7 +3832,8 @@ class AppLocalizationsBg extends AppLocalizations {
       'Отговорите на писма, изпратени до тези адреси, се изпращат от тази самоличност. * означава каквото и да е: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt => 'Адрес или шаблон, в който * означава каквото и да е.';
+  String get settingsReplyPatternPrompt =>
+      'Адрес или шаблон, в който * означава каквото и да е.';
 
   @override
   String get settingsAddReplyPattern => 'Добавяне на адрес или шаблон';
@@ -3641,7 +3855,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Няма адрес';
 
   @override
-  String get settingsIdentityNoAddressMessage => 'Въведете имейл адреса, от който да се изпраща.';
+  String get settingsIdentityNoAddressMessage =>
+      'Въведете имейл адреса, от който да се изпраща.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Невалиден адрес';
@@ -3672,10 +3887,12 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage => 'Вече изпратените от нея писма остават непроменени.';
+  String get settingsDeleteIdentityMessage =>
+      'Вече изпратените от нея писма остават непроменени.';
 
   @override
-  String get settingsLastIdentityFooter => 'Всеки профил има нужда от поне една самоличност.';
+  String get settingsLastIdentityFooter =>
+      'Всеки профил има нужда от поне една самоличност.';
 
   @override
   String get rulesTitle => 'Правила';
@@ -3747,7 +3964,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get rulesStatusUnavailable => 'Не е налично';
 
   @override
-  String get rulesStatusNoSieve => 'Сървърът на този профил не предлага Sieve (ManageSieve или JMAP).';
+  String get rulesStatusNoSieve =>
+      'Сървърът на този профил не предлага Sieve (ManageSieve или JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -3829,7 +4047,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get rulesRemovedAccount => 'Премахнат профил';
 
   @override
-  String get rulesAccountsFooter => 'Правило за всички профили обхваща и профилите, които добавите по-късно.';
+  String get rulesAccountsFooter =>
+      'Правило за всички профили обхваща и профилите, които добавите по-късно.';
 
   @override
   String get rulesActionsHeader => 'Тогава';
@@ -3839,7 +4058,8 @@ class AppLocalizationsBg extends AppLocalizations {
       'Препращането изпраща всяко съвпадащо писмо на друг адрес веднага щом пристигне, дори когато телефонът е изключен. Някои доставчици ограничават колко поща може да се препраща.';
 
   @override
-  String get rulesForwardingHiddenFooter => 'Препращането работи само в правилата на сървъра, затова тук е пропуснато.';
+  String get rulesForwardingHiddenFooter =>
+      'Препращането работи само в правилата на сървъра, затова тук е пропуснато.';
 
   @override
   String rulesRemoveAction(String action) {
@@ -3890,7 +4110,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get rulesMoveAccountTitle => 'Папка в кой профил?';
 
   @override
-  String get rulesMoveAccountMessage => 'Пощата на другите профили отива в папката със същото име там.';
+  String get rulesMoveAccountMessage =>
+      'Пощата на другите профили отива в папката със същото име там.';
 
   @override
   String get rulesAddTag => 'Добавяне на етикет';
@@ -3929,13 +4150,15 @@ class AppLocalizationsBg extends AppLocalizations {
   String get rulesChooseActionTitle => 'Изберете действие';
 
   @override
-  String get rulesChooseActionMessage => 'Добавете какво да прави правилото със съвпадащите писма.';
+  String get rulesChooseActionMessage =>
+      'Добавете какво да прави правилото със съвпадащите писма.';
 
   @override
   String get rulesSaveError => 'Правилото не можа да се запази';
 
   @override
-  String get rulesSaveServerError => 'Правилото на сървъра не можа да се запази';
+  String get rulesSaveServerError =>
+      'Правилото на сървъра не можа да се запази';
 
   @override
   String get rulesRunOnDeviceInstead => 'Изпълнение на това устройство';
@@ -3944,7 +4167,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Няма какво да се приложи';
 
   @override
-  String get rulesNothingToApplyMessage => 'Първо задайте на правилото работещо условие и действие.';
+  String get rulesNothingToApplyMessage =>
+      'Първо задайте на правилото работещо условие и действие.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -3976,7 +4200,8 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -3990,7 +4215,8 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4004,7 +4230,8 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4046,7 +4273,8 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4060,7 +4288,8 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4089,10 +4318,15 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'и още $countString');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'и още $countString',
+    );
     return '$_temp0';
   }
 
@@ -4177,7 +4411,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get subscriptionsNoNewsletters => 'Няма бюлетини';
 
   @override
-  String get subscriptionsNoNewslettersDetail => 'Бюлетините и другата масова поща ще се появят тук, щом пристигнат.';
+  String get subscriptionsNoNewslettersDetail =>
+      'Бюлетините и другата масова поща ще се появят тук, щом пристигнат.';
 
   @override
   String get subscriptionsNothingNeverRead => 'Няма нечетени';
@@ -4186,7 +4421,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get subscriptionsNothingRarelyRead => 'Няма рядко четени';
 
   @override
-  String get subscriptionsNothingFilteredDetail => 'Четете по нещо от всичко, което получавате.';
+  String get subscriptionsNothingFilteredDetail =>
+      'Четете по нещо от всичко, което получавате.';
 
   @override
   String get subscriptionsNoDiscussions => 'Няма дискусии';
@@ -4263,10 +4499,15 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Архивиране на $countString във „Входящи“');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Архивиране на $countString във „Входящи“',
+    );
     return '$_temp0';
   }
 
@@ -4274,13 +4515,15 @@ class AppLocalizationsBg extends AppLocalizations {
   String get subscriptionsCreateRule => 'Създаване на правило…';
 
   @override
-  String get subscriptionsCreateRuleDetail => 'Преместване или архивиране на бъдещата му поща';
+  String get subscriptionsCreateRuleDetail =>
+      'Преместване или архивиране на бъдещата му поща';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Третиране като дискусия';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail => 'Списък, в който пишат хора: четене като във форум';
+  String get subscriptionsTreatAsDiscussionDetail =>
+      'Списък, в който пишат хора: четене като във форум';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Третиране като бюлетин';
@@ -4304,17 +4547,20 @@ class AppLocalizationsBg extends AppLocalizations {
   String get subscriptionsUnpin => 'Откачване от „Пощенски кутии“';
 
   @override
-  String get subscriptionsOpenDefaultView => 'Отваряне в изгледа по подразбиране';
+  String get subscriptionsOpenDefaultView =>
+      'Отваряне в изгледа по подразбиране';
 
   @override
-  String get subscriptionsOpenPlainText => 'Отваряне като обикновен текст (моноширинен)';
+  String get subscriptionsOpenPlainText =>
+      'Отваряне като обикновен текст (моноширинен)';
 
   @override
   String get subscriptionsPinned => 'Закачен';
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4343,9 +4589,12 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString от $totalString';
@@ -4356,7 +4605,12 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Папки', one: 'Папка');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Папки',
+      one: 'Папка',
+    );
     return '$_temp0';
   }
 
@@ -4402,10 +4656,12 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle => 'Автоматичното отписване е неуспешно';
+  String get subscriptionsOneClickFailedTitle =>
+      'Автоматичното отписване е неуспешно';
 
   @override
-  String get subscriptionsSendUnsubscribeEmail => 'Изпращане на имейл за отписване';
+  String get subscriptionsSendUnsubscribeEmail =>
+      'Изпращане на имейл за отписване';
 
   @override
   String subscriptionsOpenSite(String site) {
@@ -4434,7 +4690,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsHomographWarningUnknown => 'Внимание: този адрес имитира друг сайт с подобни на вид букви.';
+  String get subscriptionsHomographWarningUnknown =>
+      'Внимание: този адрес имитира друг сайт с подобни на вид букви.';
 
   @override
   String subscriptionsOpenSiteFailed(String site) {
@@ -4462,7 +4719,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed => 'Връзката за отписване не е защитен интернет адрес.';
+  String get subscriptionsOneClickNotAllowed =>
+      'Връзката за отписване не е защитен интернет адрес.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -4485,7 +4743,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend => 'Няма профил, от който да се изпрати имейлът за отписване.';
+  String get subscriptionsNoAccountToSend =>
+      'Няма профил, от който да се изпрати имейлът за отписване.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -4518,7 +4777,11 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String subscriptionsMoveToJunk(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Преместване на $count в „Спам“');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Преместване на $count в „Спам“',
+    );
     return '$_temp0';
   }
 
@@ -4541,7 +4804,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get appLiveGateTitle => 'Профилите ви не можаха да се отворят';
 
   @override
-  String get appLiveGateUnavailableBuild => 'Истинските профили още не са налични в тази компилация.';
+  String get appLiveGateUnavailableBuild =>
+      'Истинските профили още не са налични в тази компилация.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -4601,7 +4865,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get attachmentsOpenInError => 'Прикаченият файл не можа да се отвори в друго приложение.';
+  String get attachmentsOpenInError =>
+      'Прикаченият файл не можа да се отвори в друго приложение.';
 
   @override
   String attachmentsSaved(String name) {
@@ -4615,11 +4880,17 @@ class AppLocalizationsBg extends AppLocalizations {
   String get attachmentsGone => 'Този прикачен файл вече не е наличен.';
 
   @override
-  String get attachmentsDownloadFailed => 'Прикаченият файл не можа да се изтегли.';
+  String get attachmentsDownloadFailed =>
+      'Прикаченият файл не можа да се изтегли.';
 
   @override
   String attachmentsPageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count страници', one: '1 страница');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count страници',
+      one: '1 страница',
+    );
     return '$_temp0';
   }
 
@@ -4629,7 +4900,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload => 'Този прикачен файл е голям. Изтеглете го сега или по-късно през Wi-Fi.';
+  String get attachmentsLargeDownload =>
+      'Този прикачен файл е голям. Изтеглете го сега или по-късно през Wi-Fi.';
 
   @override
   String get attachmentsDownload => 'Изтегляне';
@@ -4651,7 +4923,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get attachmentsPdfUnavailable => 'Този PDF не може да се покаже тук (може да е защитен с парола).';
+  String get attachmentsPdfUnavailable =>
+      'Този PDF не може да се покаже тук (може да е защитен с парола).';
 
   @override
   String attachmentsPageOf(int page, int count) {
@@ -4678,7 +4951,12 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String attachmentsTextInfo(String charset, int count, String lines) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$lines реда', one: '$lines ред');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$lines реда',
+      one: '$lines ред',
+    );
     return '$charset · $_temp0';
   }
 
@@ -4689,7 +4967,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get attachmentsCopied => 'Копирано';
 
   @override
-  String get attachmentsImageUnavailable => 'Това изображение не може да се покаже тук. Опитайте „Отваряне с…“.';
+  String get attachmentsImageUnavailable =>
+      'Това изображение не може да се покаже тук. Опитайте „Отваряне с…“.';
 
   @override
   String get attachmentsEmlNoSubject => '(Без тема)';
@@ -4921,7 +5200,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get calendarCancelled => 'Отменено';
 
   @override
-  String get calendarCancelledByOrganizer => 'Организаторът отмени това събитие.';
+  String get calendarCancelledByOrganizer =>
+      'Организаторът отмени това събитие.';
 
   @override
   String get calendarCancelledLater => 'Това събитие беше отменено по-късно.';
@@ -4930,7 +5210,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get calendarOutdated => 'Остаряло';
 
   @override
-  String get calendarOutdatedDetail => 'Тази покана беше обновена по-късно; важи по-новата.';
+  String get calendarOutdatedDetail =>
+      'Тази покана беше обновена по-късно; важи по-новата.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -4938,7 +5219,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get calendarLocationRemovedNone => 'Мястото е премахнато (нямаше такова)';
+  String get calendarLocationRemovedNone =>
+      'Мястото е премахнато (нямаше такова)';
 
   @override
   String calendarLocationChanged(String location) {
@@ -4974,25 +5256,44 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String calendarGuestCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count гости', one: '1 гост');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count гости',
+      one: '1 гост',
+    );
     return '$_temp0';
   }
 
   @override
   String calendarAcceptedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count приели', one: '1 приел');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count приели',
+      one: '1 приел',
+    );
     return '$_temp0';
   }
 
   @override
   String calendarMaybeCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count може би');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count може би',
+    );
     return '$_temp0';
   }
 
   @override
   String calendarDeclinedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count отказали', one: '1 отказал');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count отказали',
+      one: '1 отказал',
+    );
     return '$_temp0';
   }
 
@@ -5054,7 +5355,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp => 'Няма приложение за календар, в което да се добави събитието.';
+  String get calendarNoCalendarApp =>
+      'Няма приложение за календар, в което да се добави събитието.';
 
   @override
   String get calendarCantOpenCalendar => 'Календарът не можа да се отвори.';
@@ -5081,7 +5383,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get calendarJoinHomographUnknown => 'Внимание: този адрес имитира друг сайт с подобни на вид букви.';
+  String get calendarJoinHomographUnknown =>
+      'Внимание: този адрес имитира друг сайт с подобни на вид букви.';
 
   @override
   String calendarJoinOpen(String host) {
@@ -5089,7 +5392,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer => 'Тази покана няма организатор, на когото да се отговори.';
+  String get calendarNoOrganizer =>
+      'Тази покана няма организатор, на когото да се отговори.';
 
   @override
   String get calendarNoAccount => 'Няма профил, от който да се отговори.';
@@ -5166,7 +5470,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get keyboardToggleFlag => 'Поставяне или премахване на флаг';
 
   @override
-  String get keyboardCloseDraft => 'Затваряне (запазване или изтриване на черновата)';
+  String get keyboardCloseDraft =>
+      'Затваряне (запазване или изтриване на черновата)';
 
   @override
   String get keyboardOr => 'или';
@@ -5190,7 +5495,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get keyboardKeyBackspace => 'Backspace';
 
   @override
-  String get mailingListsMuted => 'Нишката е заглушена. Новите писма в нея пристигат като прочетени.';
+  String get mailingListsMuted =>
+      'Нишката е заглушена. Новите писма в нея пристигат като прочетени.';
 
   @override
   String get mailingListsUnmuted => 'Нишката вече не е заглушена.';
@@ -5211,7 +5517,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get mailingListsDefaultView => 'Отваряне в изгледа по подразбиране';
 
   @override
-  String get mailingListsPlainText => 'Отваряне като обикновен текст (моноширинен)';
+  String get mailingListsPlainText =>
+      'Отваряне като обикновен текст (моноширинен)';
 
   @override
   String get mailingListsShowMuted => 'Показване на заглушените нишки';
@@ -5227,7 +5534,11 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String mailingListsUnreadCount(int count, String formatted) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Непрочетени: $formatted');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Непрочетени: $formatted',
+    );
     return '$_temp0';
   }
 
@@ -5242,7 +5553,12 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String mailingListsReplyCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count отговора', one: '1 отговор');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count отговора',
+      one: '1 отговор',
+    );
     return '$_temp0';
   }
 
@@ -5256,7 +5572,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Технически списъци';
 
   @override
-  String get mailingListsTechnicalEmpty => 'Пощенските списъци се появяват тук, щом пристигне поща от тях.';
+  String get mailingListsTechnicalEmpty =>
+      'Пощенските списъци се появяват тук, щом пристигне поща от тях.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -5325,7 +5642,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get palettePlaceholder => 'Търсене на действия, пощенски кутии, настройки';
+  String get palettePlaceholder =>
+      'Търсене на действия, пощенски кутии, настройки';
 
   @override
   String get paletteNothingFound => 'Нищо не е намерено';
@@ -5427,7 +5745,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get searchUnknownAccountFailed => 'Търсенето в профила на сървъра е неуспешно';
+  String get searchUnknownAccountFailed =>
+      'Търсенето в профила на сървъра е неуспешно';
 
   @override
   String searchChip(String term) {
@@ -5490,7 +5809,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get searchSettingsTitle => 'Smart Mailboxes';
 
   @override
-  String get searchSettingsLocalFooter => 'Smart Mailboxes остават на това устройство.';
+  String get searchSettingsLocalFooter =>
+      'Smart Mailboxes остават на това устройство.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -5501,13 +5821,15 @@ class AppLocalizationsBg extends AppLocalizations {
   String get searchSyncVia => 'Синхронизиране чрез';
 
   @override
-  String get searchSyncViaFooter => 'Изберете един и същ профил на всяко устройство.';
+  String get searchSyncViaFooter =>
+      'Изберете един и същ профил на всяко устройство.';
 
   @override
   String get searchGmailCantKeep => 'Gmail не може да пази Smart Mailboxes';
 
   @override
-  String get searchKeepOnDevice => 'Пазене на Smart Mailboxes само на това устройство';
+  String get searchKeepOnDevice =>
+      'Пазене на Smart Mailboxes само на това устройство';
 
   @override
   String get searchOnTheServer => 'На сървъра';
@@ -5556,7 +5878,12 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String sharedBytes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count байта', one: '1 байт');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count байта',
+      one: '1 байт',
+    );
     return '$_temp0';
   }
 
@@ -5774,7 +6101,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount => 'Изберете писма от един профил, за да ги преместите.';
+  String get sharedMoveOneAccount =>
+      'Изберете писма от един профил, за да ги преместите.';
 
   @override
   String get sharedSnoozeTitle => 'Отлагане';
@@ -5851,7 +6179,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get accountSetupAddressTitle => 'Добавяне на пощенски профил';
 
   @override
-  String get accountSetupAddressText => 'Loupe намира настройките за повечето доставчици.';
+  String get accountSetupAddressText =>
+      'Loupe намира настройките за повечето доставчици.';
 
   @override
   String get accountSetupNameHint => 'Вашето име';
@@ -5880,7 +6209,8 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCheckServers => 'Проверете имената на сървърите и портовете.';
+  String get accountSetupCheckServers =>
+      'Проверете имената на сървърите и портовете.';
 
   @override
   String get accountSetupEnterPassword => 'Въведете паролата си.';
@@ -5937,13 +6267,15 @@ class AppLocalizationsBg extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Използване на парола за приложение';
 
   @override
-  String get accountSetupUseAppPasswordInstead => 'Използване на парола за приложение вместо това';
+  String get accountSetupUseAppPasswordInstead =>
+      'Използване на парола за приложение вместо това';
 
   @override
   String get accountSetupUseDifferentAddress => 'Използване на друг адрес';
 
   @override
-  String get accountSetupHowToCreateAppPassword => 'Как да създадете парола за приложение';
+  String get accountSetupHowToCreateAppPassword =>
+      'Как да създадете парола за приложение';
 
   @override
   String get accountSetupHowToCreateOne => 'Как да я създадете';
@@ -5973,14 +6305,16 @@ class AppLocalizationsBg extends AppLocalizations {
       'iCloud Mail изисква парола за конкретно приложение, а не паролата на профила ви в Apple.';
 
   @override
-  String get accountSetupYahooNote => 'Yahoo Mail изисква парола за приложение, а не паролата на профила ви.';
+  String get accountSetupYahooNote =>
+      'Yahoo Mail изисква парола за приложение, а не паролата на профила ви.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Loupe се свързва с Fastmail чрез JMAP с API токен: Settings › Privacy & Security › Manage API tokens, за JMAP, с достъп до имейла и изпращането.';
 
   @override
-  String get accountSetupFastmailNote => 'Fastmail изисква парола за приложение за пощенските приложения.';
+  String get accountSetupFastmailNote =>
+      'Fastmail изисква парола за приложение за пощенските приложения.';
 
   @override
   String get accountSetupServerSettings => 'Настройки на сървъра';
@@ -6062,7 +6396,8 @@ class AppLocalizationsBg extends AppLocalizations {
       'Паролата е отхвърлена. Използвайте парола за приложение, а не паролата на профила си.';
 
   @override
-  String get accountSetupPasswordRejected => 'Паролата е отхвърлена. Проверете я и опитайте отново.';
+  String get accountSetupPasswordRejected =>
+      'Паролата е отхвърлена. Проверете я и опитайте отново.';
 
   @override
   String get accountSetupServerUnreachable =>
@@ -6140,7 +6475,11 @@ class AppLocalizationsBg extends AppLocalizations {
   String get accountSetupSigningIn => 'Влизане…';
 
   @override
-  String accountSetupSignInExpired(String provider, String email, String account) {
+  String accountSetupSignInExpired(
+    String provider,
+    String email,
+    String account,
+  ) {
     return '$provider вече не приема входа на Loupe за $email, така че $account не се синхронизира. Влезте отново, за да получавате пощата му.';
   }
 
@@ -6148,7 +6487,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get accountImportTitle => 'Импортиране от Thunderbird';
 
   @override
-  String get accountImportPointCamera => 'Насочете камерата към QR кода, който Thunderbird показва.';
+  String get accountImportPointCamera =>
+      'Насочете камерата към QR кода, който Thunderbird показва.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -6157,7 +6497,11 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String accountImportProgressLabel(int scanned, int total) {
-    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: 'Сканирани $scanned от $total кода');
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Сканирани $scanned от $total кода',
+    );
     return '$_temp0';
   }
 
@@ -6201,20 +6545,24 @@ class AppLocalizationsBg extends AppLocalizations {
       'Този код е от нов експорт, затова сканираните преди това кодове бяха оставени настрана.';
 
   @override
-  String get accountImportNotThunderbird => 'Това не е код на профил от Thunderbird.';
+  String get accountImportNotThunderbird =>
+      'Това не е код на профил от Thunderbird.';
 
   @override
   String get accountImportNewerVersion =>
       'Този код е от по-нова версия на Thunderbird. Обновете Loupe, за да го импортирате.';
 
   @override
-  String get accountImportDamaged => 'Този код на Thunderbird не можа да се прочете.';
+  String get accountImportDamaged =>
+      'Този код на Thunderbird не можа да се прочете.';
 
   @override
-  String get accountImportTooLarge => 'Този код е твърде голям, за да е експорт от Thunderbird.';
+  String get accountImportTooLarge =>
+      'Този код е твърде голям, за да е експорт от Thunderbird.';
 
   @override
-  String get accountImportCouldNotOpenSettings => 'Настройките не можаха да се отворят.';
+  String get accountImportCouldNotOpenSettings =>
+      'Настройките не можаха да се отворят.';
 
   @override
   String get accountImportCameraOffTitle => 'Достъпът до камерата е изключен';
@@ -6227,13 +6575,15 @@ class AppLocalizationsBg extends AppLocalizations {
   String get accountImportNoCameraTitle => 'Няма камера';
 
   @override
-  String get accountImportNoCameraText => 'Loupe не може да използва камера тук. Вместо това поставете текста на кода.';
+  String get accountImportNoCameraText =>
+      'Loupe не може да използва камера тук. Вместо това поставете текста на кода.';
 
   @override
   String get accountImportCameraFailedTitle => 'Камерата не се стартира';
 
   @override
-  String get accountImportCameraFailedText => 'Опитайте отново или вместо това поставете текста на кода.';
+  String get accountImportCameraFailedText =>
+      'Опитайте отново или вместо това поставете текста на кода.';
 
   @override
   String get accountImportOpenSettings => 'Отваряне на настройките';
@@ -6251,18 +6601,22 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable => 'Нито един от профилите в тези кодове не можа да се прочете.';
+  String get accountImportNoneReadable =>
+      'Нито един от профилите в тези кодове не можа да се прочете.';
 
   @override
-  String get accountImportChoose => 'Изберете профилите, които да добавите в Loupe.';
+  String get accountImportChoose =>
+      'Изберете профилите, които да добавите в Loupe.';
 
   @override
   String accountImportMissingCodes(int count, String codes, int total) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Кодове $codes от $total не са сканирани, затова профилите в тях не са показани.',
-      one: 'Код $codes от $total не е сканиран, затова профилите в него не са показани.',
+      other:
+          'Кодове $codes от $total не са сканирани, затова профилите в тях не са показани.',
+      one:
+          'Код $codes от $total не е сканиран, затова профилите в него не са показани.',
     );
     return '$_temp0';
   }
@@ -6291,7 +6645,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get accountImportScanAgain => 'Повторно сканиране';
 
   @override
-  String get accountImportAlreadyAdded => 'Профил с този адрес вече има в Loupe.';
+  String get accountImportAlreadyAdded =>
+      'Профил с този адрес вече има в Loupe.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -6311,7 +6666,8 @@ class AppLocalizationsBg extends AppLocalizations {
       'Thunderbird влиза в този профил през браузъра. Loupe още не може да прави това: използвайте парола за приложение, ако доставчикът ви предлага такава.';
 
   @override
-  String get accountImportUnencrypted => 'Свързва се без шифроване. Използвайте това само във вашата собствена мрежа.';
+  String get accountImportUnencrypted =>
+      'Свързва се без шифроване. Използвайте това само във вашата собствена мрежа.';
 
   @override
   String get accountImportEnterAgain => 'Въведете я отново';
@@ -6340,19 +6696,24 @@ class AppLocalizationsBg extends AppLocalizations {
   String get accountImportPasteTitle => 'Поставяне на текст от експорт';
 
   @override
-  String get accountImportPasteText => 'Поставете текста на код за експорт от Thunderbird, по един код на ред.';
+  String get accountImportPasteText =>
+      'Поставете текста на код за експорт от Thunderbird, по един код на ред.';
 
   @override
-  String get accountImportPop3 => 'Профилите POP3 не се поддържат. Loupe пази пощата на сървъра чрез IMAP.';
+  String get accountImportPop3 =>
+      'Профилите POP3 не се поддържат. Loupe пази пощата на сървъра чрез IMAP.';
 
   @override
-  String get accountImportKerberos => 'Този профил влиза с Kerberos, който Loupe не поддържа.';
+  String get accountImportKerberos =>
+      'Този профил влиза с Kerberos, който Loupe не поддържа.';
 
   @override
-  String get accountImportNtlm => 'Този профил влиза с NTLM, който Loupe не поддържа.';
+  String get accountImportNtlm =>
+      'Този профил влиза с NTLM, който Loupe не поддържа.';
 
   @override
-  String get accountImportClientCertificate => 'Този профил влиза с клиентски сертификат, който Loupe още не поддържа.';
+  String get accountImportClientCertificate =>
+      'Този профил влиза с клиентски сертификат, който Loupe още не поддържа.';
 
   @override
   String get accountImportMicrosoftSignIn =>
@@ -6362,7 +6723,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get accountImportEnterPassword => 'Въведете паролата.';
 
   @override
-  String get accountImportEnterAppPassword => 'Въведете паролата за приложение.';
+  String get accountImportEnterAppPassword =>
+      'Въведете паролата за приложение.';
 
   @override
   String get accountImportEnterApiToken => 'Въведете API токена.';
@@ -6372,7 +6734,8 @@ class AppLocalizationsBg extends AppLocalizations {
       'Loupe не можа да отвори хранилището си за профили. Опитайте отново по-късно.';
 
   @override
-  String get accountImportFailed => 'Профилът не можа да се добави. Опитайте отново или го добавете ръчно.';
+  String get accountImportFailed =>
+      'Профилът не можа да се добави. Опитайте отново или го добавете ръчно.';
 
   @override
   String get composeNewMessageTitle => 'Ново писмо';
@@ -6470,7 +6833,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get composeDraftNotFound => 'Черновата не беше намерена.';
 
   @override
-  String get composeAttachmentsLost => 'Прикачените файлове не можаха да се възстановят. Добавете ги отново.';
+  String get composeAttachmentsLost =>
+      'Прикачените файлове не можаха да се възстановят. Добавете ги отново.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -6497,10 +6861,12 @@ class AppLocalizationsBg extends AppLocalizations {
   String get composeNoSubjectTitle => 'Без тема';
 
   @override
-  String get composeNoSubjectText => 'Това писмо няма тема. Да се изпрати ли въпреки това?';
+  String get composeNoSubjectText =>
+      'Това писмо няма тема. Да се изпрати ли въпреки това?';
 
   @override
-  String get composeSentBeforeChanges => 'Писмото беше изпратено преди промените ви, които са запазени в „Чернови“.';
+  String get composeSentBeforeChanges =>
+      'Писмото беше изпратено преди промените ви, които са запазени в „Чернови“.';
 
   @override
   String composeScheduled(String time) {
@@ -6625,17 +6991,23 @@ class AppLocalizationsBg extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Едно писмо не беше изпратено, когато Loupe се затвори.',
       'one': 'Писмо до $name не беше изпратено, когато Loupe се затвори.',
-      'other': 'Писмо до $name и други не беше изпратено, когато Loupe се затвори.',
+      'other':
+          'Писмо до $name и други не беше изпратено, когато Loupe се затвори.',
     });
     return '$_temp0';
   }
 
   @override
-  String composeRecoveryWithSubject(String recipients, String subject, String name) {
+  String composeRecoveryWithSubject(
+    String recipients,
+    String subject,
+    String name,
+  ) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': '„$subject“ не беше изпратено, когато Loupe се затвори.',
       'one': '„$subject“ до $name не беше изпратено, когато Loupe се затвори.',
-      'other': '„$subject“ до $name и други не беше изпратено, когато Loupe се затвори.',
+      'other':
+          '„$subject“ до $name и други не беше изпратено, когато Loupe се затвори.',
     });
     return '$_temp0';
   }
@@ -6683,7 +7055,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get outboxEmptyTitle => 'Няма нищо за изпращане';
 
   @override
-  String get outboxEmptyText => 'Писмата, които изпращате по-късно, чакат тук, докато дойде време.';
+  String get outboxEmptyText =>
+      'Писмата, които изпращате по-късно, чакат тук, докато дойде време.';
 
   @override
   String get outboxSendNow => 'Изпращане сега';
@@ -6730,7 +7103,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get outboxBeingSent => 'Това писмо се изпраща в момента.';
 
   @override
-  String get outboxActionFailed => 'Това не сработи. Писмото все още е в „Изходящи“.';
+  String get outboxActionFailed =>
+      'Това не сработи. Писмото все още е в „Изходящи“.';
 
   @override
   String get notificationsBadgeInboxes => 'Непрочетени във входящите';
@@ -6742,7 +7116,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription => 'Нова поща от вашите VIP контакти във всеки профил';
+  String get notificationsVipChannelDescription =>
+      'Нова поща от вашите VIP контакти във всеки профил';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -6765,7 +7140,12 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String notificationsNewMessages(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count нови писма', one: '1 ново писмо');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count нови писма',
+      one: '1 ново писмо',
+    );
     return '$_temp0';
   }
 
@@ -6778,7 +7158,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get platformInstantChannel => 'Незабавна доставка';
 
   @override
-  String get platformInstantChannelDescription => 'Показва се, докато Loupe следи входящите ви пощи за нова поща';
+  String get platformInstantChannelDescription =>
+      'Показва се, докато Loupe следи входящите ви пощи за нова поща';
 
   @override
   String get platformInstantTitle => 'Следене за нова поща';
@@ -6787,22 +7168,26 @@ class AppLocalizationsBg extends AppLocalizations {
   String get platformInstantText => '„Незабавна доставка“ е включена';
 
   @override
-  String get platformErrorBox => 'Нещо се обърка при показването. Върнете се назад и опитайте отново.';
+  String get platformErrorBox =>
+      'Нещо се обърка при показването. Върнете се назад и опитайте отново.';
 
   @override
   String get welcomeTagline => 'Поща, която е проста отгоре\nи мощна отвътре.';
 
   @override
-  String get welcomeAccountsTitle => 'Всички профили, една спокойна входяща поща';
+  String get welcomeAccountsTitle =>
+      'Всички профили, една спокойна входяща поща';
 
   @override
-  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail и всеки сървър с IMAP или JMAP.';
+  String get welcomeAccountsText =>
+      'Gmail, Outlook, iCloud, Fastmail и всеки сървър с IMAP или JMAP.';
 
   @override
   String get welcomeSearchTitle => 'Търсене, което намира';
 
   @override
-  String get welcomeSearchText => 'Мигновени резултати от телефона ви, после и от сървъра.';
+  String get welcomeSearchText =>
+      'Мигновени резултати от телефона ви, после и от сървъра.';
 
   @override
   String get welcomePrivacyTitle => 'Поверителност по замисъл';
@@ -6839,7 +7224,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get searchAskFailed => 'Loupe не успя да превърне това в търсене.';
 
   @override
-  String get searchAskDemoNote => 'Преведено от вградената демонстрация, не от модел.';
+  String get searchAskDemoNote =>
+      'Преведено от вградената демонстрация, не от модел.';
 
   @override
   String get settingsAiHeader => 'Личен ИИ';
@@ -6856,16 +7242,19 @@ class AppLocalizationsBg extends AppLocalizations {
       'Използва се само доставчикът, който изберете. Ако се провали или не е настроен, Loupe казва това и не изпраща нищо другаде.';
 
   @override
-  String get settingsAiNotSetUpFooter => 'Този доставчик още не е настроен, затова функциите не показват части с ИИ.';
+  String get settingsAiNotSetUpFooter =>
+      'Този доставчик още не е настроен, затова функциите не показват части с ИИ.';
 
   @override
   String get settingsAiDemo => 'Вградено демо';
 
   @override
-  String get settingsAiDemoDetail => 'На този телефон. Без модел: няколко правила, за да изпробвате функциите.';
+  String get settingsAiDemoDetail =>
+      'На този телефон. Без модел: няколко правила, за да изпробвате функциите.';
 
   @override
-  String get settingsAiAnthropicDetail => 'Облак: Claude, със собствения ви API ключ.';
+  String get settingsAiAnthropicDetail =>
+      'Облак: Claude, със собствения ви API ключ.';
 
   @override
   String get settingsAiServer => 'Моят сървър';
@@ -6878,7 +7267,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsAiOnPhone => 'На този телефон';
 
   @override
-  String get settingsAiOnPhoneDetail => 'Още не е налично: моделът на устройството все още се тества на телефони.';
+  String get settingsAiOnPhoneDetail =>
+      'Още не е налично: моделът на устройството все още се тества на телефони.';
 
   @override
   String get settingsAiNotSetUp => 'Не е настроено';
@@ -6925,16 +7315,19 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsAiServerAddressTitle => 'Адрес на сървъра';
 
   @override
-  String get settingsAiServerAddressMessage => 'Заедно с пътя на API, например http://192.168.1.20:11434/v1 за Ollama.';
+  String get settingsAiServerAddressMessage =>
+      'Заедно с пътя на API, например http://192.168.1.20:11434/v1 за Ollama.';
 
   @override
-  String get settingsAiServerAddressInvalid => 'Това не е адрес с http:// или https://.';
+  String get settingsAiServerAddressInvalid =>
+      'Това не е адрес с http:// или https://.';
 
   @override
   String get settingsAiServerModelTitle => 'Име на модела';
 
   @override
-  String get settingsAiServerModelMessage => 'Както го нарича вашият сървър, например llama3.2.';
+  String get settingsAiServerModelMessage =>
+      'Както го нарича вашият сървър, например llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Тестване на връзката';
@@ -6951,13 +7344,15 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsAiTestFailed => 'Тестът е неуспешен';
 
   @override
-  String get settingsAiTestInvalid => 'Моделът отговори, но не във вида, поискан от Loupe.';
+  String get settingsAiTestInvalid =>
+      'Моделът отговори, но не във вида, поискан от Loupe.';
 
   @override
   String get settingsAiRemoveKey => 'Премахване на ключа';
 
   @override
-  String get settingsAiRemoveKeyTitle => 'Да се премахне ли API ключът за Anthropic?';
+  String get settingsAiRemoveKeyTitle =>
+      'Да се премахне ли API ключът за Anthropic?';
 
   @override
   String get settingsAiRemoveKeyMessage =>
@@ -6974,7 +7369,8 @@ class AppLocalizationsBg extends AppLocalizations {
       'Loupe забравя адреса и модела му, изтрива ключа му от хранилището за ключове на този телефон и спира да му изпраща заявки. Не превключва към друг доставчик.';
 
   @override
-  String get settingsAiAnthropicRetention => 'Съхранение на данни при Anthropic';
+  String get settingsAiAnthropicRetention =>
+      'Съхранение на данни при Anthropic';
 
   @override
   String get settingsAiDemoDisclosure =>
@@ -6996,7 +7392,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsAiFeaturesHeader => 'Функции';
 
   @override
-  String get settingsAiFeaturesFooter => 'Изключена функция не показва част с ИИ и не пита никой модел.';
+  String get settingsAiFeaturesFooter =>
+      'Изключена функция не показва част с ИИ и не пита никой модел.';
 
   @override
   String get settingsAiFeatureBrief => 'Накратко';
@@ -7020,29 +7417,36 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Състояние на въпроса';
 
   @override
-  String get settingsAiFeatureSearchDetail => 'В търсенето: изречение става търсене, което можете да проверите.';
+  String get settingsAiFeatureSearchDetail =>
+      'В търсенето: изречение става търсене, което можете да проверите.';
 
   @override
-  String get settingsAiFeatureBriefDetail => 'В съобщение: какво иска от вас, с откъсите.';
+  String get settingsAiFeatureBriefDetail =>
+      'В съобщение: какво иска от вас, с откъсите.';
 
   @override
-  String get settingsAiFeatureActionsDetail => 'Предлага елементи за „Чака мен“ и „Чака други“.';
+  String get settingsAiFeatureActionsDetail =>
+      'Предлага елементи за „Чака мен“ и „Чака други“.';
 
   @override
   String get settingsAiFeatureRulesDetail =>
       'В Правила: описание става правило, което проверявате, преди да го запазите.';
 
   @override
-  String get settingsAiFeatureChangesDetail => 'В Сравняване на съобщения: какво се промени по смисъл, с източници.';
+  String get settingsAiFeatureChangesDetail =>
+      'В Сравняване на съобщения: какво се промени по смисъл, с източници.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail => 'Ключовите факти от прикачените документи, със страниците им.';
+  String get settingsAiFeatureDocumentsDetail =>
+      'Ключовите факти от прикачените документи, със страниците им.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail => 'Преди изпращане: какво може да е пропуснал отговорът.';
+  String get settingsAiFeatureReplyCheckDetail =>
+      'Преди изпращане: какво може да е пропуснал отговорът.';
 
   @override
-  String get settingsAiFeatureMattersDetail => 'Последното състояние на въпроса, по пощата му.';
+  String get settingsAiFeatureMattersDetail =>
+      'Последното състояние на въпроса, по пощата му.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Пощата остава на телефона';
@@ -7068,7 +7472,12 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String settingsAiUsageRequests(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count заявки', one: '1 заявка');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count заявки',
+      one: '1 заявка',
+    );
     return '$_temp0';
   }
 

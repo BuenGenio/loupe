@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Autoritatea de certificare a răspuns {status}.",
   "smimeAuthorityAnswerTooLarge": "Răspunsul autorității de certificare este prea mare.",
   "smimeRevocationNotChecked": "Neverificat: sunt verificate doar certificatele de la autorități în care Loupe are încredere.",
+  "actionsNeedsMyAction": "Necesită acțiunea mea",
+  "actionsWaitingOnOthers": "În așteptarea altora",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Serverul anunță imediat e-mailurile noi din Inbox, printr-o conexiune pe care Loupe o ține deschisă. Dezactivat, Loupe verifică la câteva minute și folosește o conexiune mai puțin.",
   "settingsPasswordUnchanged": "Neschimbată",

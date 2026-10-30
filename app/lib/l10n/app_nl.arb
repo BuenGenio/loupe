@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "De certificeringsinstantie antwoordde met {status}.",
   "smimeAuthorityAnswerTooLarge": "Het antwoord van de certificeringsinstantie is te groot.",
   "smimeRevocationNotChecked": "Niet gecontroleerd: alleen certificaten van een instantie die Loupe vertrouwt, worden gecontroleerd.",
+  "actionsNeedsMyAction": "Actie van mij nodig",
+  "actionsWaitingOnOthers": "Wachten op anderen",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "De server meldt nieuwe mail in de inbox meteen, via een verbinding die Loupe openhoudt. Uit: Loupe kijkt om de paar minuten en gebruikt één verbinding minder.",
   "settingsPasswordUnchanged": "Ongewijzigd",

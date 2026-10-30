@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Центр сертифікації відповів кодом {status}.",
   "smimeAuthorityAnswerTooLarge": "Відповідь центру сертифікації завелика.",
   "smimeRevocationNotChecked": "Не перевірено: перевіряються лише сертифікати від центрів, яким довіряє Loupe.",
+  "actionsNeedsMyAction": "Потребує моєї дії",
+  "actionsWaitingOnOthers": "Чекаю на інших",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Сервер одразу повідомляє про нову пошту у «Вхідних» через з’єднання, яке Loupe тримає відкритим. Якщо вимкнено, Loupe перевіряє пошту кожні кілька хвилин і використовує на одне з’єднання менше.",
   "settingsPasswordUnchanged": "Без змін",

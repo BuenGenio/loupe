@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "L’autorità di certificazione ha risposto {status}.",
   "smimeAuthorityAnswerTooLarge": "La risposta dell’autorità di certificazione è troppo grande.",
   "smimeRevocationNotChecked": "Non verificata: vengono verificati solo i certificati di autorità che Loupe considera attendibili.",
+  "actionsNeedsMyAction": "Richiede una mia azione",
+  "actionsWaitingOnOthers": "In attesa di altri",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Il server segnala subito i nuovi messaggi in Posta in arrivo, tramite una connessione che Loupe tiene aperta. Disattivato, Loupe controlla ogni pochi minuti e usa una connessione in meno.",
   "settingsPasswordUnchanged": "Invariata",

@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Die Zertifizierungsstelle hat mit {status} geantwortet.",
   "smimeAuthorityAnswerTooLarge": "Die Antwort der Zertifizierungsstelle ist zu groß.",
   "smimeRevocationNotChecked": "Nicht geprüft: Nur Zertifikate von Stellen, denen Loupe vertraut, werden geprüft.",
+  "actionsNeedsMyAction": "Wartet auf mich",
+  "actionsWaitingOnOthers": "Wartet auf andere",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Der Server meldet neue Mails im Posteingang sofort, über eine Verbindung, die Loupe offen hält. Aus: Loupe sieht alle paar Minuten nach und nutzt eine Verbindung weniger.",
   "settingsPasswordUnchanged": "Unverändert",

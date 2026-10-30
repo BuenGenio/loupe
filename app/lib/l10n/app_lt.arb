@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Sertifikavimo įstaiga atsakė {status}.",
   "smimeAuthorityAnswerTooLarge": "Sertifikavimo įstaigos atsakymas per didelis.",
   "smimeRevocationNotChecked": "Netikrinta: tikrinami tik sertifikatai iš įstaigų, kuriomis Loupe pasitiki.",
+  "actionsNeedsMyAction": "Reikia mano veiksmo",
+  "actionsWaitingOnOthers": "Laukiu kitų",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Serveris iškart praneša apie naujus laiškus aplanke „Gauti laiškai“ per ryšį, kurį Loupe laiko atvirą. Išjungus Loupe tikrina paštą kas kelias minutes ir naudoja vienu ryšiu mažiau.",
   "settingsPasswordUnchanged": "Nepakeistas",

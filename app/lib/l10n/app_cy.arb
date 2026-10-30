@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Atebodd yr awdurdod tystysgrifau {status}.",
   "smimeAuthorityAnswerTooLarge": "Mae ateb yr awdurdod tystysgrifau’n rhy fawr.",
   "smimeRevocationNotChecked": "Heb ei gwirio: dim ond tystysgrifau gan awdurdod mae Loupe yn ymddiried ynddo sy’n cael eu gwirio.",
+  "actionsNeedsMyAction": "Angen i mi weithredu",
+  "actionsWaitingOnOthers": "Aros am eraill",
   "settingsIdle": "{protocol, select, jmap{Gwthio} other{IDLE}}",
   "settingsIdleFooter": "Mae’r gweinydd yn rhoi gwybod am e-bost newydd yn y Mewnflwch ar unwaith, dros gysylltiad y mae Loupe yn ei gadw ar agor. I ffwrdd, mae Loupe yn gwirio bob ychydig funudau ac yn defnyddio un cysylltiad yn llai.",
   "settingsPasswordUnchanged": "Heb newid",

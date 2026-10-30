@@ -188,17 +188,20 @@ class AppLocalizationsCs extends AppLocalizations {
   String get conversationChangesSameMetadata => 'Shodné údaje';
 
   @override
-  String get conversationChangesFullTextNote => 'Porovnává se celý text zprávy včetně citací a podpisů.';
+  String get conversationChangesFullTextNote =>
+      'Porovnává se celý text zprávy včetně citací a podpisů.';
 
   @override
   String get conversationChangesLimited =>
       'Tato zpráva je pro podrobné porovnání příliš velká. Část textu může být vynechána nebo zobrazena jako jeden celý blok.';
 
   @override
-  String get conversationChangesLoadError => 'Tyto zprávy se nepodařilo porovnat.';
+  String get conversationChangesLoadError =>
+      'Tyto zprávy se nepodařilo porovnat.';
 
   @override
-  String get conversationSomethingWentWrong => 'Něco se pokazilo. Zkuste to znovu.';
+  String get conversationSomethingWentWrong =>
+      'Něco se pokazilo. Zkuste to znovu.';
 
   @override
   String get conversationReplyToList => 'Odpovědět do konference';
@@ -207,7 +210,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get conversationReplyList => 'Do konference';
 
   @override
-  String get conversationThreadMuted => 'Vlákno ztlumeno. Nové zprávy v něm přijdou jako přečtené.';
+  String get conversationThreadMuted =>
+      'Vlákno ztlumeno. Nové zprávy v něm přijdou jako přečtené.';
 
   @override
   String get conversationThreadUnmuted => 'Ztlumení vlákna zrušeno.';
@@ -240,7 +244,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get conversationOfflineTitle => 'Jste offline';
 
   @override
-  String get conversationOfflineText => 'Tato konverzace ještě není stažená. Načte se, až budete znovu online.';
+  String get conversationOfflineText =>
+      'Tato konverzace ještě není stažená. Načte se, až budete znovu online.';
 
   @override
   String get conversationErrorTitle => 'Tuto zprávu nelze zobrazit';
@@ -307,7 +312,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get conversationBodyError => 'Tuto zprávu se nepodařilo načíst.';
 
   @override
-  String get conversationBodyOffline => 'Jste offline. Zpráva se načte, až budete znovu online.';
+  String get conversationBodyOffline =>
+      'Jste offline. Zpráva se načte, až budete znovu online.';
 
   @override
   String get conversationOriginalHint => 'Lépe vypadá v zobrazení „Originál“';
@@ -487,7 +493,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get conversationSecurityBadgeHint => 'Ukáže proč';
 
   @override
-  String get conversationPhishingBannerTitle => 'Tato zpráva vypadá jako phishing';
+  String get conversationPhishingBannerTitle =>
+      'Tato zpráva vypadá jako phishing';
 
   @override
   String conversationPhishingBannerReason(String reason) {
@@ -507,16 +514,20 @@ class AppLocalizationsCs extends AppLocalizations {
   String get conversationSecurityPhishingTitle => 'Vypadá to jako phishing';
 
   @override
-  String get conversationSecurityPhishingText => 'Několik znaků naznačuje, že tato zpráva není tím, za co se vydává.';
+  String get conversationSecurityPhishingText =>
+      'Několik znaků naznačuje, že tato zpráva není tím, za co se vydává.';
 
   @override
-  String get conversationSecurityCarefulTitle => 'S touto zprávou buďte opatrní';
+  String get conversationSecurityCarefulTitle =>
+      'S touto zprávou buďte opatrní';
 
   @override
-  String get conversationSecurityCarefulText => 'Něco na ní stojí za druhý pohled.';
+  String get conversationSecurityCarefulText =>
+      'Něco na ní stojí za druhý pohled.';
 
   @override
-  String get conversationSecurityVerifiedText => 'Odesílatel je ověřený a nic nevypadá podezřele.';
+  String get conversationSecurityVerifiedText =>
+      'Odesílatel je ověřený a nic nevypadá podezřele.';
 
   @override
   String get conversationSecurityUnverifiedText =>
@@ -547,7 +558,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityTrackingPixelsText => 'Prozradily by odesílateli, kdy jste tuto zprávu otevřeli.';
+  String get conversationSecurityTrackingPixelsText =>
+      'Prozradily by odesílateli, kdy jste tuto zprávu otevřeli.';
 
   @override
   String get conversationSecurityNoRemoteImages => 'Žádné vzdálené obrázky';
@@ -592,7 +604,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Technické podrobnosti';
 
   @override
-  String get conversationSecurityCheckedLocally => 'Zkontrolováno v tomto zařízení. Nic se nikam neodeslalo.';
+  String get conversationSecurityCheckedLocally =>
+      'Zkontrolováno v tomto zařízení. Nic se nikam neodeslalo.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Sledovače';
@@ -659,7 +672,8 @@ class AppLocalizationsCs extends AppLocalizations {
       'Nejednejte podle ní, pokud jste ji nečekali. Máte-li pochybnosti, kontaktujte odesílatele jinou cestou.';
 
   @override
-  String get conversationSecurityAuthUnalignedTitle => 'Podepsáno jinou doménou';
+  String get conversationSecurityAuthUnalignedTitle =>
+      'Podepsáno jinou doménou';
 
   @override
   String conversationSecurityAuthUnalignedText(String signer, String domain) {
@@ -672,7 +686,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle => 'Jméno ukazuje jinou adresu';
+  String get conversationSecurityNameShowsAddressTitle =>
+      'Jméno ukazuje jinou adresu';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -680,7 +695,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice => 'Věřte adrese, ne jménu.';
+  String get conversationSecurityNameShowsAddressAdvice =>
+      'Věřte adrese, ne jménu.';
 
   @override
   String get conversationSecurityReplyToTitle => 'Odpovědi jdou jinam';
@@ -691,13 +707,15 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityReplyToAdvice => 'Než odpovíte čímkoli osobním, zkontrolujte adresu.';
+  String get conversationSecurityReplyToAdvice =>
+      'Než odpovíte čímkoli osobním, zkontrolujte adresu.';
 
   @override
   String get conversationSecurityImpersonationYouTitle => 'Používá vaše jméno';
 
   @override
-  String get conversationSecurityImpersonationTitle => 'Používá jméno někoho, koho znáte';
+  String get conversationSecurityImpersonationTitle =>
+      'Používá jméno někoho, koho znáte';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -705,17 +723,28 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationVipText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Je podepsaná „$name“ jako váš VIP kontakt $knownName ($knownEmail), ale přichází z nové adresy: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Je podepsaná „$name“ jako $knownName ($knownEmail), ale přichází z nové adresy: $email.';
   }
 
   @override
-  String get conversationSecurityImpersonationRepliesElsewhere => 'A odpovědi by šly na ještě jinou adresu.';
+  String get conversationSecurityImpersonationRepliesElsewhere =>
+      'A odpovědi by šly na ještě jinou adresu.';
 
   @override
   String get conversationSecurityImpersonationAdvice =>
@@ -732,7 +761,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle => 'První zpráva od tohoto odesílatele';
+  String get conversationSecurityFirstTimeTitle =>
+      'První zpráva od tohoto odesílatele';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -740,13 +770,16 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeAdvice => 'Buďte opatrní u žádostí od lidí, které ještě neznáte.';
+  String get conversationSecurityFirstTimeAdvice =>
+      'Buďte opatrní u žádostí od lidí, které ještě neznáte.';
 
   @override
-  String get conversationSecuritySenderHomographTitle => 'Podobně vypadající písmena v adrese odesílatele';
+  String get conversationSecuritySenderHomographTitle =>
+      'Podobně vypadající písmena v adrese odesílatele';
 
   @override
-  String get conversationSecurityLinkHomographTitle => 'Podobně vypadající písmena v odkazu';
+  String get conversationSecurityLinkHomographTitle =>
+      'Podobně vypadající písmena v odkazu';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -759,7 +792,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice => 'Smažte ji nebo ji nahlaste jako spam.';
+  String get conversationSecuritySenderHomographAdvice =>
+      'Smažte ji nebo ji nahlaste jako spam.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Neotvírejte ho.';
@@ -773,7 +807,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get conversationSecurityLookalikeTitle => 'Napodobená doména';
 
   @override
-  String get conversationSecurityFamiliarNameTitle => 'Používá v doméně známé jméno';
+  String get conversationSecurityFamiliarNameTitle =>
+      'Používá v doméně známé jméno';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -781,7 +816,11 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(String domain, String brand, String real) {
+  String conversationSecurityLookalikeText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return '$domain vypadá jako $brand ($real), ale je to jiná doména.';
   }
 
@@ -791,7 +830,11 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
+  String conversationSecurityFamiliarNameText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return '$domain používá jméno $brand ($real), ale nepatří k ní.';
   }
 
@@ -842,7 +885,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle => 'Cíl odkazu nelze ověřit';
+  String get conversationSecurityLinkUncheckableTitle =>
+      'Cíl odkazu nelze ověřit';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -850,7 +894,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle => 'Odkaz vede na holou IP adresu';
+  String get conversationSecurityIpAddressTitle =>
+      'Odkaz vede na holou IP adresu';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -866,7 +911,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityDataLinkTitle => 'Skrytá stránka byla zakázána';
+  String get conversationSecurityDataLinkTitle =>
+      'Skrytá stránka byla zakázána';
 
   @override
   String get conversationSecurityDataLinkText =>
@@ -876,16 +922,20 @@ class AppLocalizationsCs extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Žádá heslo';
 
   @override
-  String get conversationSecurityPasswordFieldText => 'Zpráva obsahovala pole pro heslo. Loupe ho odstranila.';
+  String get conversationSecurityPasswordFieldText =>
+      'Zpráva obsahovala pole pro heslo. Loupe ho odstranila.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice => 'Nikdy nezadávejte heslo do e-mailu.';
+  String get conversationSecurityPasswordFieldAdvice =>
+      'Nikdy nezadávejte heslo do e-mailu.';
 
   @override
-  String get conversationSecurityScriptLinkTitle => 'Odkaz spouštějící kód byl zakázán';
+  String get conversationSecurityScriptLinkTitle =>
+      'Odkaz spouštějící kód byl zakázán';
 
   @override
-  String get conversationSecurityScriptLinkText => 'Loupe nikdy nespouští kód ze zpráv.';
+  String get conversationSecurityScriptLinkText =>
+      'Loupe nikdy nespouští kód ze zpráv.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -905,7 +955,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityInternationalTitle => 'Mezinárodní webová adresa';
+  String get conversationSecurityInternationalTitle =>
+      'Mezinárodní webová adresa';
 
   @override
   String conversationSecurityInternationalText(String hosts) {
@@ -913,16 +964,20 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLotsOfHiddenTextTitle => 'Mnoho skrytého textu';
+  String get conversationSecurityLotsOfHiddenTextTitle =>
+      'Mnoho skrytého textu';
 
   @override
   String conversationSecurityLotsOfHiddenTextText(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Odstraněno $count znaků neviditelného textu. Takový skrytý text má oklamat spamové filtry.',
-      few: 'Odstraněny $count znaky neviditelného textu. Takový skrytý text má oklamat spamové filtry.',
-      one: 'Odstraněn $count znak neviditelného textu. Takový skrytý text má oklamat spamové filtry.',
+      other:
+          'Odstraněno $count znaků neviditelného textu. Takový skrytý text má oklamat spamové filtry.',
+      few:
+          'Odstraněny $count znaky neviditelného textu. Takový skrytý text má oklamat spamové filtry.',
+      one:
+          'Odstraněn $count znak neviditelného textu. Takový skrytý text má oklamat spamové filtry.',
     );
     return '$_temp0';
   }
@@ -943,7 +998,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed => 'Zprávu se nepodařilo stáhnout. Zkontrolujte připojení a zkuste to znovu.';
+  String get exportDownloadFailed =>
+      'Zprávu se nepodařilo stáhnout. Zkontrolujte připojení a zkuste to znovu.';
 
   @override
   String exportSaved(String name) {
@@ -973,8 +1029,10 @@ class AppLocalizationsCs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Uloženo „$name“ bez $formattedCount zpráv, které se nepodařilo stáhnout.',
-      few: 'Uloženo „$name“ bez $formattedCount zpráv, které se nepodařilo stáhnout.',
+      other:
+          'Uloženo „$name“ bez $formattedCount zpráv, které se nepodařilo stáhnout.',
+      few:
+          'Uloženo „$name“ bez $formattedCount zpráv, které se nepodařilo stáhnout.',
       one: 'Uloženo „$name“ bez $count zprávy, kterou se nepodařilo stáhnout.',
     );
     return '$_temp0';
@@ -1088,7 +1146,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get projectsDelete => 'Smazat projekt';
 
   @override
-  String get projectsDeleteMessage => 'Jeho konverzace zůstanou, kde jsou, mimo projekt.';
+  String get projectsDeleteMessage =>
+      'Jeho konverzace zůstanou, kde jsou, mimo projekt.';
 
   @override
   String get projectsUntitled => 'Projekt';
@@ -1203,7 +1262,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get mailboxesVipTitle => 'VIP';
 
   @override
-  String get mailboxesVipFooter => 'Můžete také klepnout na jméno odesílatele ve zprávě a zapnout VIP.';
+  String get mailboxesVipFooter =>
+      'Můžete také klepnout na jméno odesílatele ve zprávě a zapnout VIP.';
 
   @override
   String get mailboxesAddVip => 'Přidat VIP…';
@@ -1212,7 +1272,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get mailboxesAddVipTitle => 'Přidat VIP';
 
   @override
-  String get mailboxesAddVipText => 'Pošta z této adresy dostane hvězdičku a objeví se ve schránce VIP.';
+  String get mailboxesAddVipText =>
+      'Pošta z této adresy dostane hvězdičku a objeví se ve schránce VIP.';
 
   @override
   String get mailboxesAddVipPlaceholder => 'name@example.com';
@@ -1402,13 +1463,15 @@ class AppLocalizationsCs extends AppLocalizations {
   String get snoozeNoTime => 'Čas nenastaven';
 
   @override
-  String get snoozeFooter => 'Odložené zprávy se ve svůj čas vrátí do Doručené pošty jako nepřečtené.';
+  String get snoozeFooter =>
+      'Odložené zprávy se ve svůj čas vrátí do Doručené pošty jako nepřečtené.';
 
   @override
   String get snoozeEmptyTitle => 'Nic není odloženo';
 
   @override
-  String get snoozeEmptyText => 'Odložte zprávu a vrátí se do Doručené pošty, až ji budete potřebovat.';
+  String get snoozeEmptyText =>
+      'Odložte zprávu a vrátí se do Doručené pošty, až ji budete potřebovat.';
 
   @override
   String get briefButton => 'Ve zkratce';
@@ -1432,13 +1495,15 @@ class AppLocalizationsCs extends AppLocalizations {
   String get briefStopped => 'Shrnutí jste zastavili.';
 
   @override
-  String get briefFailedTooLarge => 'Zpráva je pro model příliš dlouhá, proto nebylo nic odesláno.';
+  String get briefFailedTooLarge =>
+      'Zpráva je pro model příliš dlouhá, proto nebylo nic odesláno.';
 
   @override
   String get briefFailedProvider => 'Model nedokázal tuto zprávu shrnout.';
 
   @override
-  String get briefFailedInvalid => 'Odpověď neprošla kontrolami Loupe, proto se žádný seznam nezobrazuje.';
+  String get briefFailedInvalid =>
+      'Odpověď neprošla kontrolami Loupe, proto se žádný seznam nezobrazuje.';
 
   @override
   String get briefNothingTitle => 'Není co shrnout';
@@ -1490,7 +1555,11 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Vy', 'them': 'Ostatní', 'other': 'Neuvedeno'});
+    String _temp0 = intl.Intl.selectLogic(owner, {
+      'me': 'Vy',
+      'them': 'Ostatní',
+      'other': 'Neuvedeno',
+    });
     return '$_temp0';
   }
 
@@ -1570,7 +1639,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get briefCaution => 'Shrnutí může něco vynechat nebo špatně pochopit. Platí samotná zpráva.';
+  String get briefCaution =>
+      'Shrnutí může něco vynechat nebo špatně pochopit. Platí samotná zpráva.';
 
   @override
   String briefSecurityReason(String reason) {
@@ -1578,13 +1648,15 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText => 'Než podle tohoto shrnutí cokoli uděláte, zkontrolujte samotnou zprávu.';
+  String get briefSecurityText =>
+      'Než podle tohoto shrnutí cokoli uděláte, zkontrolujte samotnou zprávu.';
 
   @override
   String get briefSourceTitle => 'Ve zprávě';
 
   @override
-  String get briefSourceAttachment => 'Pochází to z názvu přiloženého souboru. Shrnutí obsah příloh nečte.';
+  String get briefSourceAttachment =>
+      'Pochází to z názvu přiloženého souboru. Shrnutí obsah příloh nečte.';
 
   @override
   String get briefEventTitle => 'Nová událost';
@@ -1628,7 +1700,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get appLockLockedOut => 'Příliš mnoho pokusů. Zkuste to později.';
 
   @override
-  String get appLockPromptError => 'Výzvu se nepodařilo zobrazit. Zkuste to znovu.';
+  String get appLockPromptError =>
+      'Výzvu se nepodařilo zobrazit. Zkuste to znovu.';
 
   @override
   String get appLockNoScreenLock => 'Tento telefon nemá zámek obrazovky.';
@@ -1637,13 +1710,15 @@ class AppLocalizationsCs extends AppLocalizations {
   String get appLockUnlockPromptTitle => 'Odemknout Loupe';
 
   @override
-  String get appLockUnlockPromptReason => 'Potvrďte, že jste to vy, a uvidíte svou poštu.';
+  String get appLockUnlockPromptReason =>
+      'Potvrďte, že jste to vy, a uvidíte svou poštu.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Zapnout zámek aplikace';
 
   @override
-  String get appLockTurnOnPromptReason => 'Potvrďte, že jste to vy, a zapněte zámek aplikace.';
+  String get appLockTurnOnPromptReason =>
+      'Potvrďte, že jste to vy, a zapněte zámek aplikace.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1789,34 +1864,44 @@ class AppLocalizationsCs extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Změnit přijetí…';
 
   @override
-  String get openpgpCheckedFooter => 'Zkontrolováno v tomto zařízení pomocí OpenPGP, kompatibilně s Thunderbirdem.';
+  String get openpgpCheckedFooter =>
+      'Zkontrolováno v tomto zařízení pomocí OpenPGP, kompatibilně s Thunderbirdem.';
 
   @override
-  String get openpgpSummaryLocked => 'Váš klíč je zamčený. Odemkněte ho heslem, abyste si mohli tuto zprávu přečíst.';
+  String get openpgpSummaryLocked =>
+      'Váš klíč je zamčený. Odemkněte ho heslem, abyste si mohli tuto zprávu přečíst.';
 
   @override
-  String get openpgpSummaryNoSecretKey => 'Byla zašifrována pro klíč, který v tomto zařízení není.';
+  String get openpgpSummaryNoSecretKey =>
+      'Byla zašifrována pro klíč, který v tomto zařízení není.';
 
   @override
-  String get openpgpSummaryDamaged => 'Šifrovaná data jsou poškozená nebo byla cestou změněna.';
+  String get openpgpSummaryDamaged =>
+      'Šifrovaná data jsou poškozená nebo byla cestou změněna.';
 
   @override
-  String get openpgpSummaryUnsupported => 'Používá algoritmus, který Loupe nepodporuje.';
+  String get openpgpSummaryUnsupported =>
+      'Používá algoritmus, který Loupe nepodporuje.';
 
   @override
-  String get openpgpSummaryEncrypted => 'Přečíst ji můžete jen vy a ostatní příjemci.';
+  String get openpgpSummaryEncrypted =>
+      'Přečíst ji můžete jen vy a ostatní příjemci.';
 
   @override
-  String get openpgpSummaryNotSigned => 'Není podepsaná, takže odesílatel není ověřený.';
+  String get openpgpSummaryNotSigned =>
+      'Není podepsaná, takže odesílatel není ověřený.';
 
   @override
-  String get openpgpSummaryUnknownKey => 'Je podepsaná, ale klíčem, který nemáte, takže podpis nelze ověřit.';
+  String get openpgpSummaryUnknownKey =>
+      'Je podepsaná, ale klíčem, který nemáte, takže podpis nelze ověřit.';
 
   @override
-  String get openpgpSummaryBadSignature => 'Podpis nesouhlasí: zpráva mohla být změněna.';
+  String get openpgpSummaryBadSignature =>
+      'Podpis nesouhlasí: zpráva mohla být změněna.';
 
   @override
-  String get openpgpSummaryMismatch => 'Podpis je platný, ale klíč patří k jiné adrese, než je adresa odesílatele.';
+  String get openpgpSummaryMismatch =>
+      'Podpis je platný, ale klíč patří k jiné adrese, než je adresa odesílatele.';
 
   @override
   String get openpgpSummaryPartial =>
@@ -1826,13 +1911,16 @@ class AppLocalizationsCs extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Podepsáno vaším vlastním klíčem.';
 
   @override
-  String get openpgpSummaryVerified => 'Podpis je platný a otisk klíče jste ověřili.';
+  String get openpgpSummaryVerified =>
+      'Podpis je platný a otisk klíče jste ověřili.';
 
   @override
-  String get openpgpSummaryUnverified => 'Podpis je platný. Klíč jste přijali bez ověření otisku.';
+  String get openpgpSummaryUnverified =>
+      'Podpis je platný. Klíč jste přijali bez ověření otisku.';
 
   @override
-  String get openpgpSummaryRejected => 'Podpis je platný, ale tento klíč jste odmítli.';
+  String get openpgpSummaryRejected =>
+      'Podpis je platný, ale tento klíč jste odmítli.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -1892,7 +1980,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get openpgpAddresses => 'Adresy';
 
   @override
-  String get openpgpAddressesFooter => 'Jaký klíč každá adresa používá a kdy šifruje a podepisuje.';
+  String get openpgpAddressesFooter =>
+      'Jaký klíč každá adresa používá a kdy šifruje a podepisuje.';
 
   @override
   String get openpgpCorrespondentsKeys => 'Klíče OpenPGP korespondentů';
@@ -1926,7 +2015,8 @@ class AppLocalizationsCs extends AppLocalizations {
       'Hledání najde šifrované zprávy podle odesílatele, příjemců a předmětu. Když je tato volba zapnutá, Loupe přidá do vyhledávacího indexu ve své šifrované databázi v tomto zařízení i text každé dešifrované zprávy, takže ji hledání najde i podle textu. Vypnutím se tento text z indexu odstraní.';
 
   @override
-  String get openpgpIndexDecrypted => 'Indexovat dešifrované zprávy pro hledání';
+  String get openpgpIndexDecrypted =>
+      'Indexovat dešifrované zprávy pro hledání';
 
   @override
   String get openpgpPassphrases => 'Hesla ke klíčům';
@@ -1971,7 +2061,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get openpgpAddKeyTitle => 'Přidat klíč OpenPGP';
 
   @override
-  String get openpgpAddKeyMessage => 'Importujte klíč, který používáte v Thunderbirdu, nebo vytvořte nový.';
+  String get openpgpAddKeyMessage =>
+      'Importujte klíč, který používáte v Thunderbirdu, nebo vytvořte nový.';
 
   @override
   String get openpgpImportFromClipboard => 'Importovat ze schránky';
@@ -1992,7 +2083,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get openpgpFromFile => 'Ze souboru';
 
   @override
-  String get openpgpClipboardEmpty => 'Schránka je prázdná. Nejdřív zkopírujte klíč.';
+  String get openpgpClipboardEmpty =>
+      'Schránka je prázdná. Nejdřív zkopírujte klíč.';
 
   @override
   String get openpgpKey => 'Klíč';
@@ -2127,7 +2219,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get openpgpPreferEncryption => 'Upřednostňovat šifrování';
 
   @override
-  String get openpgpPreferEncryptionDetail => 'Žádat ostatní, aby šifrovali, když mohou';
+  String get openpgpPreferEncryptionDetail =>
+      'Žádat ostatní, aby šifrovali, když mohou';
 
   @override
   String openpgpValidityYears(int count) {
@@ -2329,10 +2422,12 @@ class AppLocalizationsCs extends AppLocalizations {
       'Tato zpráva je šifrovaná, ale pro žádný klíč OpenPGP v tomto zařízení. Pokud ji čtete v Thunderbirdu, importujte odtud svůj klíč: Nastavení › Koncové šifrování.';
 
   @override
-  String get openpgpExplainDamaged => 'Tato šifrovaná zpráva je poškozená, takže ji nelze bezpečně dešifrovat.';
+  String get openpgpExplainDamaged =>
+      'Tato šifrovaná zpráva je poškozená, takže ji nelze bezpečně dešifrovat.';
 
   @override
-  String get openpgpExplainUnsupported => 'Tato zpráva používá šifrování, které Loupe zatím neumí přečíst.';
+  String get openpgpExplainUnsupported =>
+      'Tato zpráva používá šifrování, které Loupe zatím neumí přečíst.';
 
   @override
   String get openpgpExplainSmimeNoKey =>
@@ -2344,7 +2439,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock => 'Odemkněte svůj certifikát S/MIME, abyste si ji mohli přečíst.';
+  String get openpgpExplainSmimeUnlock =>
+      'Odemkněte svůj certifikát S/MIME, abyste si ji mohli přečíst.';
 
   @override
   String get openpgpAttachmentGone => 'Tato příloha už není k dispozici.';
@@ -2353,7 +2449,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get smimeEncrypted => 'Šifrováno (S/MIME)';
 
   @override
-  String get smimeEncryptedNoCertificate => 'Šifrováno (S/MIME) · chybí certifikát';
+  String get smimeEncryptedNoCertificate =>
+      'Šifrováno (S/MIME) · chybí certifikát';
 
   @override
   String get smimeEncryptedDamaged => 'Šifrováno (S/MIME) · poškozeno';
@@ -2510,7 +2607,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get smimeTrustThisCertificateEllipsis => 'Důvěřovat tomuto certifikátu…';
+  String get smimeTrustThisCertificateEllipsis =>
+      'Důvěřovat tomuto certifikátu…';
 
   @override
   String get smimeCheckedFooterRevocation =>
@@ -2544,34 +2642,42 @@ class AppLocalizationsCs extends AppLocalizations {
   String get smimeTrust => 'Důvěřovat';
 
   @override
-  String get smimeSummaryNoKey => 'Byla zašifrována pro certifikát, který v tomto zařízení není.';
+  String get smimeSummaryNoKey =>
+      'Byla zašifrována pro certifikát, který v tomto zařízení není.';
 
   @override
-  String get smimeSummaryDamaged => 'Šifrovaná data jsou poškozená nebo byla cestou změněna.';
+  String get smimeSummaryDamaged =>
+      'Šifrovaná data jsou poškozená nebo byla cestou změněna.';
 
   @override
-  String get smimeSummaryUnsupported => 'Používá algoritmus, který Loupe nepodporuje.';
+  String get smimeSummaryUnsupported =>
+      'Používá algoritmus, který Loupe nepodporuje.';
 
   @override
   String get smimeSummaryLocked => 'Váš certifikát S/MIME je zamčený.';
 
   @override
-  String get smimeSummaryEncrypted => 'Přečíst ji můžete jen vy a ostatní příjemci.';
+  String get smimeSummaryEncrypted =>
+      'Přečíst ji můžete jen vy a ostatní příjemci.';
 
   @override
-  String get smimeSummaryNotSigned => 'Není podepsaná, takže odesílatel není ověřený.';
+  String get smimeSummaryNotSigned =>
+      'Není podepsaná, takže odesílatel není ověřený.';
 
   @override
-  String get smimeSummaryModified => 'Podpis nesouhlasí: zpráva byla po podepsání změněna.';
+  String get smimeSummaryModified =>
+      'Podpis nesouhlasí: zpráva byla po podepsání změněna.';
 
   @override
   String get smimeSummaryUncheckable => 'Podpis nelze ověřit.';
 
   @override
-  String get smimeSummaryNoCertificate => 'Certifikát podepisujícího ve zprávě není, takže ho nelze ověřit.';
+  String get smimeSummaryNoCertificate =>
+      'Certifikát podepisujícího ve zprávě není, takže ho nelze ověřit.';
 
   @override
-  String get smimeSummaryRevoked => 'Certifikační autorita odvolala certifikát podepisujícího: podpisu nelze věřit.';
+  String get smimeSummaryRevoked =>
+      'Certifikační autorita odvolala certifikát podepisujícího: podpisu nelze věřit.';
 
   @override
   String smimeSummaryRevokedReason(String reason) {
@@ -2588,10 +2694,12 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain => 'Certifikát nebo některý z jeho vydavatelů je neplatný.';
+  String get smimeProblemInvalidChain =>
+      'Certifikát nebo některý z jeho vydavatelů je neplatný.';
 
   @override
-  String get smimeProblemUntrusted => 'Certifikát pochází od autority, které Loupe nedůvěřuje.';
+  String get smimeProblemUntrusted =>
+      'Certifikát pochází od autority, které Loupe nedůvěřuje.';
 
   @override
   String get smimeProblemExpired => 'Platnost certifikátu vypršela.';
@@ -2603,7 +2711,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get smimeProblemWrongUsage => 'Certifikát není určen pro poštu.';
 
   @override
-  String get smimeProblemWrongAddress => 'Certifikát patří k jiné adrese, než je adresa odesílatele.';
+  String get smimeProblemWrongAddress =>
+      'Certifikát patří k jiné adrese, než je adresa odesílatele.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2660,7 +2769,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get smimeImportCertificateEllipsis => 'Importovat certifikát…';
 
   @override
-  String get smimeUseDeviceCertificate => 'Použít certifikát z tohoto zařízení…';
+  String get smimeUseDeviceCertificate =>
+      'Použít certifikát z tohoto zařízení…';
 
   @override
   String get smimeCorrespondentsCertificates => 'Certifikáty korespondentů';
@@ -2687,9 +2797,12 @@ class AppLocalizationsCs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Důvěryhodné pro vás, kromě $count autorit, kterým Mozilla důvěřuje pro e-mail.',
-      few: 'Důvěryhodné pro vás, kromě $count autorit, kterým Mozilla důvěřuje pro e-mail.',
-      one: 'Důvěryhodné pro vás, kromě $count autority, které Mozilla důvěřuje pro e-mail.',
+      other:
+          'Důvěryhodné pro vás, kromě $count autorit, kterým Mozilla důvěřuje pro e-mail.',
+      few:
+          'Důvěryhodné pro vás, kromě $count autorit, kterým Mozilla důvěřuje pro e-mail.',
+      one:
+          'Důvěryhodné pro vás, kromě $count autority, které Mozilla důvěřuje pro e-mail.',
     );
     return '$_temp0';
   }
@@ -2701,7 +2814,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get smimeImportACertificate => 'Importovat certifikát';
 
   @override
-  String get smimeImportContactMessage => 'Certifikát korespondenta (.cer, .crt, .pem) nebo certifikační autority.';
+  String get smimeImportContactMessage =>
+      'Certifikát korespondenta (.cer, .crt, .pem) nebo certifikační autority.';
 
   @override
   String get smimeFromClipboard => 'Ze schránky';
@@ -2710,7 +2824,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get smimeFromFile => 'Ze souboru';
 
   @override
-  String get smimeClipboardEmpty => 'Schránka je prázdná. Nejdřív zkopírujte certifikát.';
+  String get smimeClipboardEmpty =>
+      'Schránka je prázdná. Nejdřív zkopírujte certifikát.';
 
   @override
   String get smimeCertificate => 'Certifikát';
@@ -2863,7 +2978,8 @@ class AppLocalizationsCs extends AppLocalizations {
       'Jeho soukromý klíč bude z tohoto zařízení smazán: poštu zašifrovanou pro něj tu už nepůjde přečíst, dokud ho znovu neimportujete.';
 
   @override
-  String get smimeRemoveContactMessage => 'Vrátí se s další podepsanou zprávou od této osoby.';
+  String get smimeRemoveContactMessage =>
+      'Vrátí se s další podepsanou zprávou od této osoby.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -2886,7 +3002,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get smimeCertificatePassword => 'Heslo certifikátu';
 
   @override
-  String get smimeCertificatePasswordPrompt => 'Zadejte heslo, se kterým byl soubor certifikátu exportován.';
+  String get smimeCertificatePasswordPrompt =>
+      'Zadejte heslo, se kterým byl soubor certifikátu exportován.';
 
   @override
   String get smimeImport => 'Importovat';
@@ -2923,19 +3040,25 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
+  String smimeImportedCertificatesAndAuthorities(
+    int count,
+    String certificates,
+  ) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Importováno: $certificates a $count důvěryhodných certifikačních autorit.',
-      few: 'Importováno: $certificates a $count důvěryhodné certifikační autority.',
+      other:
+          'Importováno: $certificates a $count důvěryhodných certifikačních autorit.',
+      few:
+          'Importováno: $certificates a $count důvěryhodné certifikační autority.',
       one: 'Importováno: $certificates a důvěryhodná certifikační autorita.',
     );
     return '$_temp0';
   }
 
   @override
-  String get smimeNoPrivateKey => 'Tento soubor neobsahuje soukromý klíč. Exportujte certifikát i se soukromým klíčem.';
+  String get smimeNoPrivateKey =>
+      'Tento soubor neobsahuje soukromý klíč. Exportujte certifikát i se soukromým klíčem.';
 
   @override
   String get smimeImportAsYoursTitle => 'Importovat jako váš certifikát?';
@@ -3017,13 +3140,16 @@ class AppLocalizationsCs extends AppLocalizations {
   String get smimeSetPassphraseButton => 'Nastavit';
 
   @override
-  String get smimeLockedOpenAgain => 'Váš certifikát S/MIME je zamčený. Otevřete zprávu znovu a odemkněte ho.';
+  String get smimeLockedOpenAgain =>
+      'Váš certifikát S/MIME je zamčený. Otevřete zprávu znovu a odemkněte ho.';
 
   @override
-  String get smimeDeviceHasNoCertificates => 'Toto zařízení své certifikáty nenabízí.';
+  String get smimeDeviceHasNoCertificates =>
+      'Toto zařízení své certifikáty nenabízí.';
 
   @override
-  String get smimeCantReadCertificate => 'Loupe tento certifikát nedokáže přečíst.';
+  String get smimeCantReadCertificate =>
+      'Loupe tento certifikát nedokáže přečíst.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -3034,7 +3160,8 @@ class AppLocalizationsCs extends AppLocalizations {
       'Certifikát už v tomto zařízení není nebo ho Loupe už nesmí používat. Vyberte ho znovu v Nastavení › Koncové šifrování.';
 
   @override
-  String get smimeDeviceCertificateAppOnly => 'Certifikát v tomto zařízení lze použít, jen když je Loupe otevřená.';
+  String get smimeDeviceCertificateAppOnly =>
+      'Certifikát v tomto zařízení lze použít, jen když je Loupe otevřená.';
 
   @override
   String get smimeDeviceKeyDamaged => 'Šifrovaný klíč je poškozený.';
@@ -3053,13 +3180,16 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress => 'Adresa autority není webová adresa.';
+  String get smimeAuthorityNotWebAddress =>
+      'Adresa autority není webová adresa.';
 
   @override
-  String get smimeAuthorityTimeout => 'Certifikační autorita neodpověděla včas.';
+  String get smimeAuthorityTimeout =>
+      'Certifikační autorita neodpověděla včas.';
 
   @override
-  String get smimeAuthorityUnreachable => 'Certifikační autoritu se nepodařilo kontaktovat.';
+  String get smimeAuthorityUnreachable =>
+      'Certifikační autoritu se nepodařilo kontaktovat.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -3067,15 +3197,25 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge => 'Odpověď certifikační autority je příliš velká.';
+  String get smimeAuthorityAnswerTooLarge =>
+      'Odpověď certifikační autority je příliš velká.';
 
   @override
   String get smimeRevocationNotChecked =>
       'Nezkontrolováno: kontrolují se jen certifikáty od autorit, kterým Loupe důvěřuje.';
 
   @override
+  String get actionsNeedsMyAction => 'Vyžaduje mou akci';
+
+  @override
+  String get actionsWaitingOnOthers => 'Čekám na ostatní';
+
+  @override
   String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    String _temp0 = intl.Intl.selectLogic(protocol, {
+      'jmap': 'Push',
+      'other': 'IDLE',
+    });
     return '$_temp0';
   }
 
@@ -3140,7 +3280,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsSignatureAddField => 'Přidat pole';
 
   @override
-  String get settingsSignatureImageFailed => 'Obrázek nelze přidat. Zkuste menší PNG nebo JPEG.';
+  String get settingsSignatureImageFailed =>
+      'Obrázek nelze přidat. Zkuste menší PNG nebo JPEG.';
 
   @override
   String get settingsSignatureWhenToUse => 'Kdy použít';
@@ -3156,7 +3297,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Přidat adresu nebo doménu…';
 
   @override
-  String get settingsSignatureCopiedPrompt => 'Adresa, nebo doména jako client.example.';
+  String get settingsSignatureCopiedPrompt =>
+      'Adresa, nebo doména jako client.example.';
 
   @override
   String get settingsSignatureScheduled => 'Naplánovaný';
@@ -3175,7 +3317,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsSignatureRotation => 'V rotaci';
 
   @override
-  String get settingsSignatureRotationFooter => 'Každá nová zpráva dostane náhodně jeden z podpisů v rotaci.';
+  String get settingsSignatureRotationFooter =>
+      'Každá nová zpráva dostane náhodně jeden z podpisů v rotaci.';
 
   @override
   String get settingsSignatureMakeDefault => 'Nastavit jako výchozí';
@@ -3237,7 +3380,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsUndoSendDelay => 'Prodleva pro vrácení odeslání';
 
   @override
-  String get settingsUndoSendDelayFooter => 'Odeslané zprávy tak dlouho počkají, abyste je mohli vzít zpět.';
+  String get settingsUndoSendDelayFooter =>
+      'Odeslané zprávy tak dlouho počkají, abyste je mohli vzít zpět.';
 
   @override
   String settingsUndoSendSeconds(int seconds) {
@@ -3282,25 +3426,29 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsReadingHeader => 'Čtení';
 
   @override
-  String get settingsReadingFooter => 'Vzdálené obrázky mohou odesílatelům prozradit, kdy a kde jste zprávu otevřeli.';
+  String get settingsReadingFooter =>
+      'Vzdálené obrázky mohou odesílatelům prozradit, kdy a kde jste zprávu otevřeli.';
 
   @override
   String get settingsDefaultView => 'Výchozí zobrazení';
 
   @override
-  String get settingsDefaultViewFooter => 'Každou zprávu můžete přepnout tlačítkem Aa.';
+  String get settingsDefaultViewFooter =>
+      'Každou zprávu můžete přepnout tlačítkem Aa.';
 
   @override
   String get settingsViewReadable => 'Čitelné';
 
   @override
-  String get settingsViewReadableDetail => 'Čisté, čitelné, řídí se tmavým režimem';
+  String get settingsViewReadableDetail =>
+      'Čisté, čitelné, řídí se tmavým režimem';
 
   @override
   String get settingsViewOriginal => 'Originál';
 
   @override
-  String get settingsViewOriginalDetail => 'Přesně tak, jak ji navrhl odesílatel';
+  String get settingsViewOriginalDetail =>
+      'Přesně tak, jak ji navrhl odesílatel';
 
   @override
   String get settingsViewPlain => 'Prostý text';
@@ -3330,7 +3478,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Otevírat odkazy přímo';
 
   @override
-  String get settingsOpenLinksDirectlyDetail => 'Vynechat sledování kliknutí, když je cíl známý';
+  String get settingsOpenLinksDirectlyDetail =>
+      'Vynechat sledování kliknutí, když je cíl známý';
 
   @override
   String get settingsSecurityHeader => 'Zabezpečení';
@@ -3375,7 +3524,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsLockAfter => 'Zamknout po';
 
   @override
-  String get settingsLockAfterFooter => 'Jak dlouho může být Loupe na pozadí, než se znovu zeptá.';
+  String get settingsLockAfterFooter =>
+      'Jak dlouho může být Loupe na pozadí, než se znovu zeptá.';
 
   @override
   String get settingsNotifications => 'Oznámení';
@@ -3400,7 +3550,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsResetApp => 'Resetovat aplikaci';
 
   @override
-  String get settingsResetFooter => 'Zapomene všechna nastavení a vrátí se na úvodní obrazovku.';
+  String get settingsResetFooter =>
+      'Zapomene všechna nastavení a vrátí se na úvodní obrazovku.';
 
   @override
   String get settingsResetTitle => 'Resetovat Loupe?';
@@ -3426,10 +3577,12 @@ class AppLocalizationsCs extends AppLocalizations {
       'Loupe nemá žádnou analytiku ani sledování. Vaše pošta jde jen na vaše poštovní servery.';
 
   @override
-  String get settingsNotificationsOffIos => 'Oznámení pro Loupe jsou vypnutá v Nastavení.';
+  String get settingsNotificationsOffIos =>
+      'Oznámení pro Loupe jsou vypnutá v Nastavení.';
 
   @override
-  String get settingsNotificationsOffAndroid => 'Oznámení pro Loupe jsou vypnutá v nastavení Androidu.';
+  String get settingsNotificationsOffAndroid =>
+      'Oznámení pro Loupe jsou vypnutá v nastavení Androidu.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -3464,7 +3617,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsHideContent => 'Skrýt obsah';
 
   @override
-  String get settingsHideContentFooterOn => 'Oznámení uvádějí jen „Nová zpráva od“ a účet, ne kdo psal ani o čem.';
+  String get settingsHideContentFooterOn =>
+      'Oznámení uvádějí jen „Nová zpráva od“ a účet, ne kdo psal ani o čem.';
 
   @override
   String get settingsHideContentFooterOff =>
@@ -3495,7 +3649,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsComingSoon => 'Již brzy';
 
   @override
-  String get settingsAllowUnrestrictedBattery => 'Povolit neomezené využití baterie';
+  String get settingsAllowUnrestrictedBattery =>
+      'Povolit neomezené využití baterie';
 
   @override
   String get settingsPush => 'Push';
@@ -3521,14 +3676,16 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsAppIconBadge => 'Odznak na ikoně';
 
   @override
-  String get settingsBadgeNote => 'Odznak se aktualizuje pokaždé, když Loupe kontroluje poštu, i na pozadí.';
+  String get settingsBadgeNote =>
+      'Odznak se aktualizuje pokaždé, když Loupe kontroluje poštu, i na pozadí.';
 
   @override
   String get settingsBadgeUnsupportedFooter =>
       'Domovská obrazovka tohoto telefonu nezobrazuje čísla na ikonách aplikací. Odznak se aktualizuje pokaždé, když Loupe kontroluje poštu, i na pozadí.';
 
   @override
-  String get settingsTestNotificationBody => 'Takto vypadají oznámení o nové poště.';
+  String get settingsTestNotificationBody =>
+      'Takto vypadají oznámení o nové poště.';
 
   @override
   String get settingsAccountRemoved => 'Tento účet byl odebrán.';
@@ -3549,7 +3706,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsColour => 'Barva';
 
   @override
-  String get settingsColourFooter => 'Označuje zprávy tohoto účtu ve Všech doručených.';
+  String get settingsColourFooter =>
+      'Označuje zprávy tohoto účtu ve Všech doručených.';
 
   @override
   String settingsColourNumber(int number) {
@@ -3637,13 +3795,16 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsIdentities => 'Identity';
 
   @override
-  String get settingsIdentitiesFooterReorder => 'První identita je výchozí pro nové zprávy. Přetažením změníte pořadí.';
+  String get settingsIdentitiesFooterReorder =>
+      'První identita je výchozí pro nové zprávy. Přetažením změníte pořadí.';
 
   @override
-  String get settingsIdentitiesFooterSingle => 'Výchozí identita pro nové zprávy.';
+  String get settingsIdentitiesFooterSingle =>
+      'Výchozí identita pro nové zprávy.';
 
   @override
-  String get settingsIdentitiesReplyFooter => 'Odpověď odchází z identity, na kterou zpráva přišla.';
+  String get settingsIdentitiesReplyFooter =>
+      'Odpověď odchází z identity, na kterou zpráva přišla.';
 
   @override
   String get settingsIdentityDefault => 'Výchozí';
@@ -3675,7 +3836,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsCopyToMyself => 'Kopie sobě';
 
   @override
-  String get settingsCopyToMyselfFooter => 'Přidává se ke každé zprávě z této identity.';
+  String get settingsCopyToMyselfFooter =>
+      'Přidává se ke každé zprávě z této identity.';
 
   @override
   String get settingsCc => 'Kopie';
@@ -3691,7 +3853,8 @@ class AppLocalizationsCs extends AppLocalizations {
       'Odpovědi na zprávy poslané na tyto adresy odcházejí z této identity. * zastupuje cokoli: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt => 'Adresa nebo vzor, ve kterém * zastupuje cokoli.';
+  String get settingsReplyPatternPrompt =>
+      'Adresa nebo vzor, ve kterém * zastupuje cokoli.';
 
   @override
   String get settingsAddReplyPattern => 'Přidat adresu nebo vzor';
@@ -3713,7 +3876,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Chybí adresa';
 
   @override
-  String get settingsIdentityNoAddressMessage => 'Zadejte e-mailovou adresu, ze které se má odesílat.';
+  String get settingsIdentityNoAddressMessage =>
+      'Zadejte e-mailovou adresu, ze které se má odesílat.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Neplatná adresa';
@@ -3744,10 +3908,12 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage => 'Zprávy, které z ní už byly odeslány, zůstanou beze změny.';
+  String get settingsDeleteIdentityMessage =>
+      'Zprávy, které z ní už byly odeslány, zůstanou beze změny.';
 
   @override
-  String get settingsLastIdentityFooter => 'Účet potřebuje alespoň jednu identitu.';
+  String get settingsLastIdentityFooter =>
+      'Účet potřebuje alespoň jednu identitu.';
 
   @override
   String get rulesTitle => 'Pravidla';
@@ -3819,7 +3985,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get rulesStatusUnavailable => 'Není k dispozici';
 
   @override
-  String get rulesStatusNoSieve => 'Server tohoto účtu nenabízí Sieve (ManageSieve ani JMAP).';
+  String get rulesStatusNoSieve =>
+      'Server tohoto účtu nenabízí Sieve (ManageSieve ani JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -3901,7 +4068,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get rulesRemovedAccount => 'Odebraný účet';
 
   @override
-  String get rulesAccountsFooter => 'Pravidlo pro všechny účty platí i pro účty, které přidáte později.';
+  String get rulesAccountsFooter =>
+      'Pravidlo pro všechny účty platí i pro účty, které přidáte později.';
 
   @override
   String get rulesActionsHeader => 'Pak';
@@ -3911,7 +4079,8 @@ class AppLocalizationsCs extends AppLocalizations {
       'Přeposílání pošle každou odpovídající zprávu na jinou adresu hned, jak přijde, i když je tento telefon vypnutý. Někteří poskytovatelé omezují, kolik pošty lze přeposlat.';
 
   @override
-  String get rulesForwardingHiddenFooter => 'Přeposílání funguje jen v pravidlech na serveru, proto tu chybí.';
+  String get rulesForwardingHiddenFooter =>
+      'Přeposílání funguje jen v pravidlech na serveru, proto tu chybí.';
 
   @override
   String rulesRemoveAction(String action) {
@@ -3962,7 +4131,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get rulesMoveAccountTitle => 'Složka v kterém účtu?';
 
   @override
-  String get rulesMoveAccountMessage => 'Pošta z ostatních účtů půjde do složky se stejným názvem v daném účtu.';
+  String get rulesMoveAccountMessage =>
+      'Pošta z ostatních účtů půjde do složky se stejným názvem v daném účtu.';
 
   @override
   String get rulesAddTag => 'Přidat štítek';
@@ -4001,7 +4171,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get rulesChooseActionTitle => 'Vyberte akci';
 
   @override
-  String get rulesChooseActionMessage => 'Přidejte, co má pravidlo dělat s odpovídajícími zprávami.';
+  String get rulesChooseActionMessage =>
+      'Přidejte, co má pravidlo dělat s odpovídajícími zprávami.';
 
   @override
   String get rulesSaveError => 'Pravidlo se nepodařilo uložit';
@@ -4016,7 +4187,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Není co použít';
 
   @override
-  String get rulesNothingToApplyMessage => 'Nejdřív pravidlu zadejte funkční podmínku a akci.';
+  String get rulesNothingToApplyMessage =>
+      'Nejdřív pravidlu zadejte funkční podmínku a akci.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4048,7 +4220,8 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4063,7 +4236,8 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4078,7 +4252,8 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4121,7 +4296,8 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4136,7 +4312,8 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4166,7 +4343,8 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4260,7 +4438,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get subscriptionsNoNewsletters => 'Žádné newslettery';
 
   @override
-  String get subscriptionsNoNewslettersDetail => 'Newslettery a další hromadná pošta se tu objeví, jakmile dorazí.';
+  String get subscriptionsNoNewslettersDetail =>
+      'Newslettery a další hromadná pošta se tu objeví, jakmile dorazí.';
 
   @override
   String get subscriptionsNothingNeverRead => 'Nic nikdy nečteného';
@@ -4269,7 +4448,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get subscriptionsNothingRarelyRead => 'Nic zřídka čteného';
 
   @override
-  String get subscriptionsNothingFilteredDetail => 'Ze všeho, co dostáváte, něco čtete.';
+  String get subscriptionsNothingFilteredDetail =>
+      'Ze všeho, co dostáváte, něco čtete.';
 
   @override
   String get subscriptionsNoDiscussions => 'Žádné diskuse';
@@ -4346,7 +4526,8 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4363,13 +4544,15 @@ class AppLocalizationsCs extends AppLocalizations {
   String get subscriptionsCreateRule => 'Vytvořit pravidlo…';
 
   @override
-  String get subscriptionsCreateRuleDetail => 'Přesouvat nebo archivovat budoucí poštu';
+  String get subscriptionsCreateRuleDetail =>
+      'Přesouvat nebo archivovat budoucí poštu';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Považovat za diskusi';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail => 'Konference, do které lidé píšou: číst jako fórum';
+  String get subscriptionsTreatAsDiscussionDetail =>
+      'Konference, do které lidé píšou: číst jako fórum';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Považovat za newsletter';
@@ -4403,7 +4586,8 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4417,7 +4601,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoMailNow => 'Od tohoto odesílatele teď není žádná pošta.';
+  String get subscriptionsNoMailNow =>
+      'Od tohoto odesílatele teď není žádná pošta.';
 
   @override
   String get subscriptionsLatestMessages => 'NEJNOVĚJŠÍ ZPRÁVY';
@@ -4433,9 +4618,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString z $totalString';
@@ -4446,7 +4634,13 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Složky', few: 'Složky', one: 'Složka');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Složky',
+      few: 'Složky',
+      one: 'Složka',
+    );
     return '$_temp0';
   }
 
@@ -4492,7 +4686,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle => 'Odběr se nepodařilo zrušit automaticky';
+  String get subscriptionsOneClickFailedTitle =>
+      'Odběr se nepodařilo zrušit automaticky';
 
   @override
   String get subscriptionsSendUnsubscribeEmail => 'Odeslat e-mail s odhlášením';
@@ -4516,7 +4711,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsWebInsecure => 'Spojení s tímto webem není šifrované.';
+  String get subscriptionsWebInsecure =>
+      'Spojení s tímto webem není šifrované.';
 
   @override
   String subscriptionsHomographWarning(String site) {
@@ -4553,7 +4749,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed => 'Odkaz pro odhlášení není zabezpečená adresa na internetu.';
+  String get subscriptionsOneClickNotAllowed =>
+      'Odkaz pro odhlášení není zabezpečená adresa na internetu.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -4576,7 +4773,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend => 'Není žádný účet, ze kterého by šlo e-mail s odhlášením odeslat.';
+  String get subscriptionsNoAccountToSend =>
+      'Není žádný účet, ze kterého by šlo e-mail s odhlášením odeslat.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -4638,7 +4836,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get appLiveGateTitle => 'Vaše účty se nepodařilo otevřít';
 
   @override
-  String get appLiveGateUnavailableBuild => 'Skutečné účty zatím v tomto sestavení nejsou k dispozici.';
+  String get appLiveGateUnavailableBuild =>
+      'Skutečné účty zatím v tomto sestavení nejsou k dispozici.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -4686,7 +4885,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get attachmentsShareMenu => 'Sdílet…';
 
   @override
-  String get attachmentsDownloadError => 'Přílohu se nepodařilo stáhnout. Zkontrolujte připojení a zkuste to znovu.';
+  String get attachmentsDownloadError =>
+      'Přílohu se nepodařilo stáhnout. Zkontrolujte připojení a zkuste to znovu.';
 
   @override
   String get attachmentsShareError => 'Přílohu se nepodařilo sdílet.';
@@ -4697,7 +4897,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get attachmentsOpenInError => 'Přílohu se nepodařilo otevřít v jiné aplikaci.';
+  String get attachmentsOpenInError =>
+      'Přílohu se nepodařilo otevřít v jiné aplikaci.';
 
   @override
   String attachmentsSaved(String name) {
@@ -4731,7 +4932,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload => 'Tato příloha je velká. Stáhněte ji teď, nebo později přes Wi-Fi.';
+  String get attachmentsLargeDownload =>
+      'Tato příloha je velká. Stáhněte ji teď, nebo později přes Wi-Fi.';
 
   @override
   String get attachmentsDownload => 'Stáhnout';
@@ -4753,7 +4955,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get attachmentsPdfUnavailable => 'Toto PDF zde nelze zobrazit (může být chráněno heslem).';
+  String get attachmentsPdfUnavailable =>
+      'Toto PDF zde nelze zobrazit (může být chráněno heslem).';
 
   @override
   String attachmentsPageOf(int page, int count) {
@@ -4797,7 +5000,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get attachmentsCopied => 'Zkopírováno';
 
   @override
-  String get attachmentsImageUnavailable => 'Tento obrázek zde nelze zobrazit. Zkuste „Otevřít v…“.';
+  String get attachmentsImageUnavailable =>
+      'Tento obrázek zde nelze zobrazit. Zkuste „Otevřít v…“.';
 
   @override
   String get attachmentsEmlNoSubject => '(Bez předmětu)';
@@ -5040,7 +5244,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get calendarOutdated => 'Zastaralé';
 
   @override
-  String get calendarOutdatedDetail => 'Tato pozvánka byla později aktualizována; platí ta novější.';
+  String get calendarOutdatedDetail =>
+      'Tato pozvánka byla později aktualizována; platí ta novější.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -5189,7 +5394,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp => 'Není tu žádná aplikace kalendáře, do které by šlo událost přidat.';
+  String get calendarNoCalendarApp =>
+      'Není tu žádná aplikace kalendáře, do které by šlo událost přidat.';
 
   @override
   String get calendarCantOpenCalendar => 'Kalendář se nepodařilo otevřít.';
@@ -5216,7 +5422,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get calendarJoinHomographUnknown => 'Pozor: tato adresa napodobuje jiný web podobně vypadajícími písmeny.';
+  String get calendarJoinHomographUnknown =>
+      'Pozor: tato adresa napodobuje jiný web podobně vypadajícími písmeny.';
 
   @override
   String calendarJoinOpen(String host) {
@@ -5224,20 +5431,30 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer => 'Tato pozvánka nemá organizátora, kterému by šlo odpovědět.';
+  String get calendarNoOrganizer =>
+      'Tato pozvánka nemá organizátora, kterému by šlo odpovědět.';
 
   @override
-  String get calendarNoAccount => 'Není žádný účet, ze kterého by šlo odpovědět.';
+  String get calendarNoAccount =>
+      'Není žádný účet, ze kterého by šlo odpovědět.';
 
   @override
   String calendarReplySending(String answer, String name) {
-    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Přijato', 'tentative': 'Možná', 'other': 'Odmítnuto'});
+    String _temp0 = intl.Intl.selectLogic(answer, {
+      'accepted': 'Přijato',
+      'tentative': 'Možná',
+      'other': 'Odmítnuto',
+    });
     return '$_temp0 · odesílání odpovědi pro $name…';
   }
 
   @override
   String calendarReplySent(String answer) {
-    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Přijato', 'tentative': 'Možná', 'other': 'Odmítnuto'});
+    String _temp0 = intl.Intl.selectLogic(answer, {
+      'accepted': 'Přijato',
+      'tentative': 'Možná',
+      'other': 'Odmítnuto',
+    });
     return '$_temp0 · odpověď odeslána';
   }
 
@@ -5317,7 +5534,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get keyboardKeyBackspace => 'Backspace';
 
   @override
-  String get mailingListsMuted => 'Vlákno ztlumeno. Nové zprávy v něm přijdou jako přečtené.';
+  String get mailingListsMuted =>
+      'Vlákno ztlumeno. Nové zprávy v něm přijdou jako přečtené.';
 
   @override
   String get mailingListsUnmuted => 'Ztlumení vlákna zrušeno.';
@@ -5395,7 +5613,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Technické konference';
 
   @override
-  String get mailingListsTechnicalEmpty => 'E-mailové konference se tu objeví, jakmile z nich přijde pošta.';
+  String get mailingListsTechnicalEmpty =>
+      'E-mailové konference se tu objeví, jakmile z nich přijde pošta.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -5567,7 +5786,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get searchUnknownAccountFailed => 'Účet se na serveru nepodařilo prohledat';
+  String get searchUnknownAccountFailed =>
+      'Účet se na serveru nepodařilo prohledat';
 
   @override
   String searchChip(String term) {
@@ -5624,13 +5844,15 @@ class AppLocalizationsCs extends AppLocalizations {
   String get searchRenameSmartMailbox => 'Přejmenovat schránku Smart Mailbox';
 
   @override
-  String get searchSmartMailboxDeleted => 'Tato schránka Smart Mailbox byla smazána.';
+  String get searchSmartMailboxDeleted =>
+      'Tato schránka Smart Mailbox byla smazána.';
 
   @override
   String get searchSettingsTitle => 'Smart Mailboxes';
 
   @override
-  String get searchSettingsLocalFooter => 'Schránky Smart Mailbox zůstávají v tomto zařízení.';
+  String get searchSettingsLocalFooter =>
+      'Schránky Smart Mailbox zůstávají v tomto zařízení.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -5644,10 +5866,12 @@ class AppLocalizationsCs extends AppLocalizations {
   String get searchSyncViaFooter => 'Na každém zařízení zvolte stejný účet.';
 
   @override
-  String get searchGmailCantKeep => 'Gmail neumí uchovávat schránky Smart Mailbox';
+  String get searchGmailCantKeep =>
+      'Gmail neumí uchovávat schránky Smart Mailbox';
 
   @override
-  String get searchKeepOnDevice => 'Uchovávat schránky Smart Mailbox jen v tomto zařízení';
+  String get searchKeepOnDevice =>
+      'Uchovávat schránky Smart Mailbox jen v tomto zařízení';
 
   @override
   String get searchOnTheServer => 'Na serveru';
@@ -5929,7 +6153,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount => 'Chcete-li zprávy přesunout, vyberte je z jednoho účtu.';
+  String get sharedMoveOneAccount =>
+      'Chcete-li zprávy přesunout, vyberte je z jednoho účtu.';
 
   @override
   String get sharedSnoozeTitle => 'Odložit';
@@ -6007,7 +6232,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get accountSetupAddressTitle => 'Přidejte poštovní účet';
 
   @override
-  String get accountSetupAddressText => 'Loupe najde nastavení pro většinu poskytovatelů.';
+  String get accountSetupAddressText =>
+      'Loupe najde nastavení pro většinu poskytovatelů.';
 
   @override
   String get accountSetupNameHint => 'Vaše jméno';
@@ -6093,13 +6319,15 @@ class AppLocalizationsCs extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Použít heslo aplikace';
 
   @override
-  String get accountSetupUseAppPasswordInstead => 'Použít raději heslo aplikace';
+  String get accountSetupUseAppPasswordInstead =>
+      'Použít raději heslo aplikace';
 
   @override
   String get accountSetupUseDifferentAddress => 'Použít jinou adresu';
 
   @override
-  String get accountSetupHowToCreateAppPassword => 'Jak vytvořit heslo aplikace';
+  String get accountSetupHowToCreateAppPassword =>
+      'Jak vytvořit heslo aplikace';
 
   @override
   String get accountSetupHowToCreateOne => 'Jak ho vytvořit';
@@ -6113,7 +6341,8 @@ class AppLocalizationsCs extends AppLocalizations {
       '„Přihlásit se přes Google“ zatím v tomto sestavení není k dispozici. Místo toho se můžete připojit pomocí hesla aplikace (vyžaduje dvoufázové ověření ve vašem účtu Google).';
 
   @override
-  String get accountSetupGmailAppPasswordNote => 'Vytvořte heslo aplikace ve svém účtu Google a vložte ho níže.';
+  String get accountSetupGmailAppPasswordNote =>
+      'Vytvořte heslo aplikace ve svém účtu Google a vložte ho níže.';
 
   @override
   String get accountSetupMicrosoftNote =>
@@ -6124,17 +6353,20 @@ class AppLocalizationsCs extends AppLocalizations {
       'Přihlášení přes Microsoft přijde v některém z dalších sestavení. Účty Outlook, Hotmail a Microsoft 365 ho potřebují: hesla z poštovních aplikací už nepřijímají.';
 
   @override
-  String get accountSetupICloudNote => 'iCloud Mail vyžaduje heslo pro konkrétní aplikaci, ne heslo k účtu Apple.';
+  String get accountSetupICloudNote =>
+      'iCloud Mail vyžaduje heslo pro konkrétní aplikaci, ne heslo k účtu Apple.';
 
   @override
-  String get accountSetupYahooNote => 'Yahoo Mail vyžaduje heslo aplikace, ne heslo k účtu.';
+  String get accountSetupYahooNote =>
+      'Yahoo Mail vyžaduje heslo aplikace, ne heslo k účtu.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Loupe se k Fastmailu připojuje přes JMAP pomocí tokenu API: Settings › Privacy & Security › Manage API tokens, pro JMAP, s přístupem k poště a odesílání.';
 
   @override
-  String get accountSetupFastmailNote => 'Fastmail vyžaduje pro poštovní aplikace heslo aplikace.';
+  String get accountSetupFastmailNote =>
+      'Fastmail vyžaduje pro poštovní aplikace heslo aplikace.';
 
   @override
   String get accountSetupServerSettings => 'Nastavení serveru';
@@ -6212,13 +6444,16 @@ class AppLocalizationsCs extends AppLocalizations {
       'Token API byl odmítnut. Vytvořte token API Fastmailu pro JMAP s přístupem k e-mailu a vložte ho.';
 
   @override
-  String get accountSetupAppPasswordRejected => 'Heslo bylo odmítnuto. Použijte heslo aplikace, ne heslo k účtu.';
+  String get accountSetupAppPasswordRejected =>
+      'Heslo bylo odmítnuto. Použijte heslo aplikace, ne heslo k účtu.';
 
   @override
-  String get accountSetupPasswordRejected => 'Heslo bylo odmítnuto. Zkontrolujte ho a zkuste to znovu.';
+  String get accountSetupPasswordRejected =>
+      'Heslo bylo odmítnuto. Zkontrolujte ho a zkuste to znovu.';
 
   @override
-  String get accountSetupServerUnreachable => 'Server je nedostupný. Zkontrolujte nastavení serveru a připojení.';
+  String get accountSetupServerUnreachable =>
+      'Server je nedostupný. Zkontrolujte nastavení serveru a připojení.';
 
   @override
   String accountSetupCertificateUntrusted(String details) {
@@ -6292,7 +6527,11 @@ class AppLocalizationsCs extends AppLocalizations {
   String get accountSetupSigningIn => 'Přihlašování…';
 
   @override
-  String accountSetupSignInExpired(String provider, String email, String account) {
+  String accountSetupSignInExpired(
+    String provider,
+    String email,
+    String account,
+  ) {
     return '$provider už nepřijímá přihlášení z Loupe pro $email, takže se $account nesynchronizuje. Přihlaste se znovu, abyste dostávali poštu.';
   }
 
@@ -6300,7 +6539,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get accountImportTitle => 'Import z Thunderbirdu';
 
   @override
-  String get accountImportPointCamera => 'Namiřte fotoaparát na QR kód, který zobrazuje Thunderbird.';
+  String get accountImportPointCamera =>
+      'Namiřte fotoaparát na QR kód, který zobrazuje Thunderbird.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -6357,23 +6597,28 @@ class AppLocalizationsCs extends AppLocalizations {
   String get accountImportDuplicateCode => 'Tento kód už byl přidán.';
 
   @override
-  String get accountImportRestarted => 'Tento kód je z nového exportu, takže dříve naskenované kódy byly odloženy.';
+  String get accountImportRestarted =>
+      'Tento kód je z nového exportu, takže dříve naskenované kódy byly odloženy.';
 
   @override
-  String get accountImportNotThunderbird => 'Toto není kód účtu z Thunderbirdu.';
+  String get accountImportNotThunderbird =>
+      'Toto není kód účtu z Thunderbirdu.';
 
   @override
   String get accountImportNewerVersion =>
       'Tento kód pochází z novějšího Thunderbirdu. Aktualizujte Loupe, abyste ho mohli importovat.';
 
   @override
-  String get accountImportDamaged => 'Tento kód z Thunderbirdu se nepodařilo přečíst.';
+  String get accountImportDamaged =>
+      'Tento kód z Thunderbirdu se nepodařilo přečíst.';
 
   @override
-  String get accountImportTooLarge => 'Tento kód je příliš velký na to, aby šlo o export z Thunderbirdu.';
+  String get accountImportTooLarge =>
+      'Tento kód je příliš velký na to, aby šlo o export z Thunderbirdu.';
 
   @override
-  String get accountImportCouldNotOpenSettings => 'Nastavení se nepodařilo otevřít.';
+  String get accountImportCouldNotOpenSettings =>
+      'Nastavení se nepodařilo otevřít.';
 
   @override
   String get accountImportCameraOffTitle => 'Přístup k fotoaparátu je vypnutý';
@@ -6386,13 +6631,15 @@ class AppLocalizationsCs extends AppLocalizations {
   String get accountImportNoCameraTitle => 'Žádný fotoaparát';
 
   @override
-  String get accountImportNoCameraText => 'Loupe tu nemůže použít fotoaparát. Vložte raději text kódu.';
+  String get accountImportNoCameraText =>
+      'Loupe tu nemůže použít fotoaparát. Vložte raději text kódu.';
 
   @override
   String get accountImportCameraFailedTitle => 'Fotoaparát se nespustil';
 
   @override
-  String get accountImportCameraFailedText => 'Zkuste to znovu, nebo raději vložte text kódu.';
+  String get accountImportCameraFailedText =>
+      'Zkuste to znovu, nebo raději vložte text kódu.';
 
   @override
   String get accountImportOpenSettings => 'Otevřít nastavení';
@@ -6411,19 +6658,24 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable => 'Žádný z účtů v těchto kódech se nepodařilo přečíst.';
+  String get accountImportNoneReadable =>
+      'Žádný z účtů v těchto kódech se nepodařilo přečíst.';
 
   @override
-  String get accountImportChoose => 'Vyberte účty, které chcete přidat do Loupe.';
+  String get accountImportChoose =>
+      'Vyberte účty, které chcete přidat do Loupe.';
 
   @override
   String accountImportMissingCodes(int count, String codes, int total) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Kódy $codes z $total nebyly naskenovány, takže jejich účty nejsou uvedeny.',
-      few: 'Kódy $codes z $total nebyly naskenovány, takže jejich účty nejsou uvedeny.',
-      one: 'Kód $codes z $total nebyl naskenován, takže jeho účty nejsou uvedeny.',
+      other:
+          'Kódy $codes z $total nebyly naskenovány, takže jejich účty nejsou uvedeny.',
+      few:
+          'Kódy $codes z $total nebyly naskenovány, takže jejich účty nejsou uvedeny.',
+      one:
+          'Kód $codes z $total nebyl naskenován, takže jeho účty nejsou uvedeny.',
     );
     return '$_temp0';
   }
@@ -6441,9 +6693,12 @@ class AppLocalizationsCs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count účtů v kódech se nepodařilo přečíst. Možná používají nastavení z novějšího Thunderbirdu.',
-      few: '$count účty v kódech se nepodařilo přečíst. Možná používají nastavení z novějšího Thunderbirdu.',
-      one: '$count účet v kódech se nepodařilo přečíst. Možná používá nastavení z novějšího Thunderbirdu.',
+      other:
+          '$count účtů v kódech se nepodařilo přečíst. Možná používají nastavení z novějšího Thunderbirdu.',
+      few:
+          '$count účty v kódech se nepodařilo přečíst. Možná používají nastavení z novějšího Thunderbirdu.',
+      one:
+          '$count účet v kódech se nepodařilo přečíst. Možná používá nastavení z novějšího Thunderbirdu.',
     );
     return '$_temp0';
   }
@@ -6460,7 +6715,8 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get accountImportGmailAppPassword => 'Přidejte účet pomocí hesla aplikace (vyžaduje dvoufázové ověření).';
+  String get accountImportGmailAppPassword =>
+      'Přidejte účet pomocí hesla aplikace (vyžaduje dvoufázové ověření).';
 
   @override
   String get accountImportGmailNoSignIn =>
@@ -6471,7 +6727,8 @@ class AppLocalizationsCs extends AppLocalizations {
       'Thunderbird se k tomuto účtu přihlašuje v prohlížeči. To Loupe zatím neumí: použijte heslo aplikace, pokud ho váš poskytovatel nabízí.';
 
   @override
-  String get accountImportUnencrypted => 'Připojuje se bez šifrování. Používejte to jen ve vlastní síti.';
+  String get accountImportUnencrypted =>
+      'Připojuje se bez šifrování. Používejte to jen ve vlastní síti.';
 
   @override
   String get accountImportEnterAgain => 'Zadejte ho znovu';
@@ -6501,16 +6758,20 @@ class AppLocalizationsCs extends AppLocalizations {
   String get accountImportPasteTitle => 'Vložte text exportu';
 
   @override
-  String get accountImportPasteText => 'Vložte text kódu exportu z Thunderbirdu, jeden kód na řádek.';
+  String get accountImportPasteText =>
+      'Vložte text kódu exportu z Thunderbirdu, jeden kód na řádek.';
 
   @override
-  String get accountImportPop3 => 'Účty POP3 nejsou podporovány. Loupe nechává poštu na serveru přes IMAP.';
+  String get accountImportPop3 =>
+      'Účty POP3 nejsou podporovány. Loupe nechává poštu na serveru přes IMAP.';
 
   @override
-  String get accountImportKerberos => 'Tento účet se přihlašuje přes Kerberos, který Loupe nepodporuje.';
+  String get accountImportKerberos =>
+      'Tento účet se přihlašuje přes Kerberos, který Loupe nepodporuje.';
 
   @override
-  String get accountImportNtlm => 'Tento účet se přihlašuje přes NTLM, které Loupe nepodporuje.';
+  String get accountImportNtlm =>
+      'Tento účet se přihlašuje přes NTLM, které Loupe nepodporuje.';
 
   @override
   String get accountImportClientCertificate =>
@@ -6530,10 +6791,12 @@ class AppLocalizationsCs extends AppLocalizations {
   String get accountImportEnterApiToken => 'Zadejte token API.';
 
   @override
-  String get accountImportStorageFailed => 'Loupe nedokázala otevřít úložiště účtů. Zkuste to později.';
+  String get accountImportStorageFailed =>
+      'Loupe nedokázala otevřít úložiště účtů. Zkuste to později.';
 
   @override
-  String get accountImportFailed => 'Účet se nepodařilo přidat. Zkuste to znovu, nebo ho přidejte ručně.';
+  String get accountImportFailed =>
+      'Účet se nepodařilo přidat. Zkuste to znovu, nebo ho přidejte ručně.';
 
   @override
   String get composeNewMessageTitle => 'Nová zpráva';
@@ -6631,7 +6894,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get composeDraftNotFound => 'Koncept se nepodařilo najít.';
 
   @override
-  String get composeAttachmentsLost => 'Přílohy se nepodařilo obnovit. Přidejte je znovu.';
+  String get composeAttachmentsLost =>
+      'Přílohy se nepodařilo obnovit. Přidejte je znovu.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -6658,10 +6922,12 @@ class AppLocalizationsCs extends AppLocalizations {
   String get composeNoSubjectTitle => 'Bez předmětu';
 
   @override
-  String get composeNoSubjectText => 'Tato zpráva nemá předmět. Přesto odeslat?';
+  String get composeNoSubjectText =>
+      'Tato zpráva nemá předmět. Přesto odeslat?';
 
   @override
-  String get composeSentBeforeChanges => 'Zpráva byla odeslána před vašimi změnami, které jsou uložené v Konceptech.';
+  String get composeSentBeforeChanges =>
+      'Zpráva byla odeslána před vašimi změnami, které jsou uložené v Konceptech.';
 
   @override
   String composeScheduled(String time) {
@@ -6786,17 +7052,24 @@ class AppLocalizationsCs extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Zpráva nebyla odeslána, když se Loupe zavřela.',
       'one': 'Zpráva pro $name nebyla odeslána, když se Loupe zavřela.',
-      'other': 'Zpráva pro $name a další nebyla odeslána, když se Loupe zavřela.',
+      'other':
+          'Zpráva pro $name a další nebyla odeslána, když se Loupe zavřela.',
     });
     return '$_temp0';
   }
 
   @override
-  String composeRecoveryWithSubject(String recipients, String subject, String name) {
+  String composeRecoveryWithSubject(
+    String recipients,
+    String subject,
+    String name,
+  ) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Zpráva „$subject“ nebyla odeslána, když se Loupe zavřela.',
-      'one': 'Zpráva „$subject“ pro $name nebyla odeslána, když se Loupe zavřela.',
-      'other': 'Zpráva „$subject“ pro $name a další nebyla odeslána, když se Loupe zavřela.',
+      'one':
+          'Zpráva „$subject“ pro $name nebyla odeslána, když se Loupe zavřela.',
+      'other':
+          'Zpráva „$subject“ pro $name a další nebyla odeslána, když se Loupe zavřela.',
     });
     return '$_temp0';
   }
@@ -6844,7 +7117,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get outboxEmptyTitle => 'Nic k odeslání';
 
   @override
-  String get outboxEmptyText => 'Zprávy, které odešlete později, tu čekají, až přijde jejich čas.';
+  String get outboxEmptyText =>
+      'Zprávy, které odešlete později, tu čekají, až přijde jejich čas.';
 
   @override
   String get outboxSendNow => 'Odeslat hned';
@@ -6891,7 +7165,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get outboxBeingSent => 'Tato zpráva se právě odesílá.';
 
   @override
-  String get outboxActionFailed => 'Nepovedlo se. Zpráva je stále ve složce K odeslání.';
+  String get outboxActionFailed =>
+      'Nepovedlo se. Zpráva je stále ve složce K odeslání.';
 
   @override
   String get notificationsBadgeInboxes => 'Nepřečtené v doručené poště';
@@ -6903,7 +7178,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription => 'Nová pošta od vašich VIP v jakémkoli účtu';
+  String get notificationsVipChannelDescription =>
+      'Nová pošta od vašich VIP v jakémkoli účtu';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -6955,28 +7231,33 @@ class AppLocalizationsCs extends AppLocalizations {
   String get platformInstantText => 'Okamžité doručování je zapnuté';
 
   @override
-  String get platformErrorBox => 'Při zobrazení se něco pokazilo. Vraťte se zpět a zkuste to znovu.';
+  String get platformErrorBox =>
+      'Při zobrazení se něco pokazilo. Vraťte se zpět a zkuste to znovu.';
 
   @override
-  String get welcomeTagline => 'Pošta na povrchu jednoduchá\na pod povrchem výkonná.';
+  String get welcomeTagline =>
+      'Pošta na povrchu jednoduchá\na pod povrchem výkonná.';
 
   @override
   String get welcomeAccountsTitle => 'Všechny účty, jedna klidná schránka';
 
   @override
-  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail a jakýkoli server IMAP nebo JMAP.';
+  String get welcomeAccountsText =>
+      'Gmail, Outlook, iCloud, Fastmail a jakýkoli server IMAP nebo JMAP.';
 
   @override
   String get welcomeSearchTitle => 'Hledání, které najde';
 
   @override
-  String get welcomeSearchText => 'Okamžité výsledky v telefonu, pak ty ze serveru.';
+  String get welcomeSearchText =>
+      'Okamžité výsledky v telefonu, pak ty ze serveru.';
 
   @override
   String get welcomePrivacyTitle => 'Soukromí od základu';
 
   @override
-  String get welcomePrivacyText => 'Žádné sledování. Vzdálené obrázky zůstanou blokované, dokud je nepovolíte.';
+  String get welcomePrivacyText =>
+      'Žádné sledování. Vzdálené obrázky zůstanou blokované, dokud je nepovolíte.';
 
   @override
   String get welcomeAddAccount => 'Přidat účet';
@@ -7030,10 +7311,12 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsAiDemo => 'Vestavěné demo';
 
   @override
-  String get settingsAiDemoDetail => 'V tomto telefonu. Žádný model: pár pravidel na vyzkoušení funkcí.';
+  String get settingsAiDemoDetail =>
+      'V tomto telefonu. Žádný model: pár pravidel na vyzkoušení funkcí.';
 
   @override
-  String get settingsAiAnthropicDetail => 'Cloud: Claude s vaším vlastním klíčem API.';
+  String get settingsAiAnthropicDetail =>
+      'Cloud: Claude s vaším vlastním klíčem API.';
 
   @override
   String get settingsAiServer => 'Můj server';
@@ -7046,7 +7329,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsAiOnPhone => 'V tomto telefonu';
 
   @override
-  String get settingsAiOnPhoneDetail => 'Zatím nedostupné: model v zařízení se na telefonech ještě testuje.';
+  String get settingsAiOnPhoneDetail =>
+      'Zatím nedostupné: model v zařízení se na telefonech ještě testuje.';
 
   @override
   String get settingsAiNotSetUp => 'Nenastaveno';
@@ -7093,16 +7377,19 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsAiServerAddressTitle => 'Adresa serveru';
 
   @override
-  String get settingsAiServerAddressMessage => 'Včetně cesty k API, například http://192.168.1.20:11434/v1 pro Ollamu.';
+  String get settingsAiServerAddressMessage =>
+      'Včetně cesty k API, například http://192.168.1.20:11434/v1 pro Ollamu.';
 
   @override
-  String get settingsAiServerAddressInvalid => 'To není adresa http:// ani https://.';
+  String get settingsAiServerAddressInvalid =>
+      'To není adresa http:// ani https://.';
 
   @override
   String get settingsAiServerModelTitle => 'Název modelu';
 
   @override
-  String get settingsAiServerModelMessage => 'Tak, jak ho nazývá váš server, například llama3.2.';
+  String get settingsAiServerModelMessage =>
+      'Tak, jak ho nazývá váš server, například llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Otestovat připojení';
@@ -7119,7 +7406,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsAiTestFailed => 'Test selhal';
 
   @override
-  String get settingsAiTestInvalid => 'Model odpověděl, ale ne v podobě, o kterou Loupe žádal.';
+  String get settingsAiTestInvalid =>
+      'Model odpověděl, ale ne v podobě, o kterou Loupe žádal.';
 
   @override
   String get settingsAiRemoveKey => 'Odebrat klíč';
@@ -7164,7 +7452,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsAiFeaturesHeader => 'Funkce';
 
   @override
-  String get settingsAiFeaturesFooter => 'Vypnutá funkce nezobrazuje žádnou část s AI a neptá se žádného modelu.';
+  String get settingsAiFeaturesFooter =>
+      'Vypnutá funkce nezobrazuje žádnou část s AI a neptá se žádného modelu.';
 
   @override
   String get settingsAiFeatureBrief => 'Ve zkratce';
@@ -7188,29 +7477,36 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Stav záležitosti';
 
   @override
-  String get settingsAiFeatureSearchDetail => 'V hledání: z věty se stane hledání, které můžete zkontrolovat.';
+  String get settingsAiFeatureSearchDetail =>
+      'V hledání: z věty se stane hledání, které můžete zkontrolovat.';
 
   @override
-  String get settingsAiFeatureBriefDetail => 'Ve zprávě: co po vás chce, s příslušnými pasážemi.';
+  String get settingsAiFeatureBriefDetail =>
+      'Ve zprávě: co po vás chce, s příslušnými pasážemi.';
 
   @override
-  String get settingsAiFeatureActionsDetail => 'Navrhuje položky pro „Čeká na mě“ a „Čeká na ostatní“.';
+  String get settingsAiFeatureActionsDetail =>
+      'Navrhuje položky pro „Čeká na mě“ a „Čeká na ostatní“.';
 
   @override
   String get settingsAiFeatureRulesDetail =>
       'V Pravidlech: z popisu se stane pravidlo, které před uložením zkontrolujete.';
 
   @override
-  String get settingsAiFeatureChangesDetail => 'V Porovnat zprávy: co se změnilo ve významu, se zdroji.';
+  String get settingsAiFeatureChangesDetail =>
+      'V Porovnat zprávy: co se změnilo ve významu, se zdroji.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail => 'Klíčová fakta z přiložených dokumentů, s jejich stránkami.';
+  String get settingsAiFeatureDocumentsDetail =>
+      'Klíčová fakta z přiložených dokumentů, s jejich stránkami.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail => 'Před odesláním: co mohla odpověď přehlédnout.';
+  String get settingsAiFeatureReplyCheckDetail =>
+      'Před odesláním: co mohla odpověď přehlédnout.';
 
   @override
-  String get settingsAiFeatureMattersDetail => 'Aktuální stav záležitosti podle její pošty.';
+  String get settingsAiFeatureMattersDetail =>
+      'Aktuální stav záležitosti podle její pošty.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Nechat poštu v telefonu';

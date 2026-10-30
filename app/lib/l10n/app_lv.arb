@@ -822,6 +822,8 @@
   "smimeAuthorityStatus": "Sertifikātu iestāde atbildēja ar {status}.",
   "smimeAuthorityAnswerTooLarge": "Sertifikātu iestādes atbilde ir pārāk liela.",
   "smimeRevocationNotChecked": "Nav pārbaudīts: tiek pārbaudīti tikai sertifikāti no iestādēm, kurām Loupe uzticas.",
+  "actionsNeedsMyAction": "Nepieciešama mana rīcība",
+  "actionsWaitingOnOthers": "Gaidu citus",
   "settingsIdle": "{protocol, select, jmap{Push} other{IDLE}}",
   "settingsIdleFooter": "Serveris uzreiz ziņo par jaunu pastu iesūtnē, izmantojot savienojumu, ko Loupe uztur atvērtu. Kad izslēgts, Loupe pārbauda pastu ik pēc dažām minūtēm un izmanto par vienu savienojumu mazāk.",
   "settingsPasswordUnchanged": "Nemainīta",
