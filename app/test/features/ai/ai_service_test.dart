@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_data.dart';
 import 'package:loupe/demo/demo_private_ai.dart';
@@ -46,4 +47,49 @@ void main() {
       containsAll(['Mortgage illustration.pdf', 'SA302 2024-25.pdf', 'INV-2207.pdf', 'Valuation booking.pdf']),
     );
   });
+
+  test('a feature gets no service when Private AI or the feature is off, or the account keeps mail local', () {
+    ProviderContainer container({
+      required bool on,
+      Set<AiFeature>? features,
+      Set<String> local = const {},
+      AiProvider? provider,
+    }) {
+      final c = ProviderContainer(
+        overrides: [
+          aiProviderProvider.overrideWithValue(on ? provider ?? DemoAiProvider() : null),
+          if (features != null) aiFeaturesProvider.overrideWithValue(features),
+          aiLocalOnlyAccountsProvider.overrideWithValue(local),
+        ],
+      );
+      addTearDown(c.dispose);
+      return c;
+    }
+
+    expect(container(on: false).read(aiServiceForProvider((AiFeature.brief, 'personal'))), isNull);
+    expect(container(on: true).read(aiServiceForProvider((AiFeature.brief, 'personal'))), isNotNull);
+    expect(
+      container(on: true, features: {AiFeature.search}).read(aiServiceForProvider((AiFeature.brief, null))),
+      isNull,
+    );
+    // The demo runs on the phone, so a local-only account may still use it.
+    expect(
+      container(on: true, local: {'personal'}).read(aiServiceForProvider((AiFeature.brief, 'personal'))),
+      isNotNull,
+    );
+    final cloud = container(on: true, local: {'personal'}, provider: _CloudStandIn());
+    expect(cloud.read(aiServiceForProvider((AiFeature.brief, 'personal'))), isNull);
+    expect(cloud.read(aiServiceForProvider((AiFeature.brief, 'work'))), isNotNull);
+  });
+}
+
+final class _CloudStandIn implements AiProvider {
+  @override
+  String get id => 'cloud-stand-in';
+  @override
+  ProviderLocation get location => ProviderLocation.cloud;
+  @override
+  ProviderCapabilities get capabilities => const ProviderCapabilities(maxInputTokens: 1000, maxOutputTokens: 100);
+  @override
+  Future<AiCompletion> complete(AiRequest request, {CancelToken? cancel}) async => const AiCompletion('');
 }
