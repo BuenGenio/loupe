@@ -84,6 +84,7 @@ class AttachmentCache {
   final _fileSizes = <String, int>{};
   final _memory = <String, Uint8List>{};
   final _pending = <String, Future<Uint8List>>{};
+  final _downloaded = <String, (String, Attachment)>{};
   var _next = 0;
 
   static String _key(String emailId, String partId) => '$emailId\u0000$partId';
@@ -107,6 +108,13 @@ class AttachmentCache {
     return _memory.containsKey(key) || _files.containsKey(key);
   }
 
+  /// The attachments downloaded this session and still cached, as (email
+  /// id, attachment), oldest first: what Documents can search on the phone.
+  List<(String, Attachment)> get downloaded => [
+    for (final MapEntry(:key, :value) in _downloaded.entries)
+      if (_memory.containsKey(key) || _files.containsKey(key)) value,
+  ];
+
   /// The attachment's bytes: from the cache, or downloaded with [download]
   /// (by default from the repository). Concurrent calls share one download.
   Future<Uint8List> bytes(String emailId, Attachment attachment, {Future<Uint8List> Function()? download}) async {
@@ -124,7 +132,7 @@ class AttachmentCache {
     }
     final pending = _pending[key];
     if (pending != null) return pending;
-    final load = _download(key, attachment, download ?? () => _load(emailId, attachment.partId));
+    final load = _download(key, emailId, attachment, download ?? () => _load(emailId, attachment.partId));
     _pending[key] = load;
     try {
       return await load;
@@ -133,8 +141,14 @@ class AttachmentCache {
     }
   }
 
-  Future<Uint8List> _download(String key, Attachment attachment, Future<Uint8List> Function() download) async {
+  Future<Uint8List> _download(
+    String key,
+    String emailId,
+    Attachment attachment,
+    Future<Uint8List> Function() download,
+  ) async {
     final data = await download();
+    _downloaded[key] = (emailId, attachment);
     final dir = await _dir();
     if (dir != null) {
       try {

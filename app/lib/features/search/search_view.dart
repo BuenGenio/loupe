@@ -25,6 +25,7 @@ import '../../shared/swipe_row.dart';
 import '../../shared/tags.dart';
 import '../../theme/theme.dart';
 import '../ai/ai_providers.dart';
+import '../documents/document_search_terms.dart';
 import 'ask_sheet.dart';
 import 'search_session.dart';
 import '../../theme/loupe_icons.dart';
@@ -350,6 +351,19 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
       if (ask != null)
         SliverToBoxAdapter(
           child: _SuggestionRow(icon: LoupeIcons.ask, label: l10n.searchAskPlainEnglish, onTap: () => _ask(ask)),
+        ),
+      // The same words inside downloaded attachments.
+      if (documentWords(terms) case final words? when widget.showSuggestions)
+        SliverToBoxAdapter(
+          child: _SuggestionRow(
+            icon: LoupeIcons.documents,
+            label: l10n.documentsSearchInDocuments,
+            detail: words,
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+              unawaited(context.push(Routes.documentsSearch(words)));
+            },
+          ),
         ),
       if (completions.isNotEmpty)
         SliverList.list(

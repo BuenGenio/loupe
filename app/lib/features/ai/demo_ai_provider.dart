@@ -4,6 +4,7 @@ import 'package:mail_ai/mail_ai.dart';
 
 import '../../demo/demo_brief.dart';
 import '../../demo/demo_changes.dart';
+import '../../demo/demo_documents.dart';
 import '../../demo/demo_rule_proposal.dart';
 
 /// The demo's answer to one task type: the text a model would return, made
@@ -35,6 +36,7 @@ final class DemoAiProvider implements AiProvider {
     'search.translate': (request, now) => jsonEncode(demoTranslate(_sentence(request.input), now: now)),
     'brief.message': demoBrief,
     'changes.explain': demoChangeExplanation,
+    'documents.facts': demoDocumentFacts,
     'rules.propose': demoRuleProposal,
   };
 

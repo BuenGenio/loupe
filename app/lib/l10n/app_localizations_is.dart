@@ -83,7 +83,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String commonMessageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count skilaboð', one: '$count skilaboð');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count skilaboð',
+      one: '$count skilaboð',
+    );
     return '$_temp0';
   }
 
@@ -161,16 +166,19 @@ class AppLocalizationsIs extends AppLocalizations {
   String get changesExplainWorking => 'Útskýrir breytingarnar…';
 
   @override
-  String get changesExplainFailed => 'Loupe gat ekki útskýrt þessar breytingar.';
+  String get changesExplainFailed =>
+      'Loupe gat ekki útskýrt þessar breytingar.';
 
   @override
-  String get changesExplainTooLarge => 'Þessi skilaboð eru of löng fyrir líkanið.';
+  String get changesExplainTooLarge =>
+      'Þessi skilaboð eru of löng fyrir líkanið.';
 
   @override
   String get changesExplainProviderError => 'Líkanið svaraði ekki.';
 
   @override
-  String get changesExplainInvalid => 'Svarið stóðst ekki athuganir Loupe, svo ekkert af því er birt.';
+  String get changesExplainInvalid =>
+      'Svarið stóðst ekki athuganir Loupe, svo ekkert af því er birt.';
 
   @override
   String get changesExplainNoChange =>
@@ -199,10 +207,12 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get changesExplainConflictNote => 'Skilaboðin segja ekki hvort þeirra gildir.';
+  String get changesExplainConflictNote =>
+      'Skilaboðin segja ekki hvort þeirra gildir.';
 
   @override
-  String get changesExplainPartial => 'Aðeins upphaf langra skilaboða var lesið.';
+  String get changesExplainPartial =>
+      'Aðeins upphaf langra skilaboða var lesið.';
 
   @override
   String get changesExplainQuotedNote =>
@@ -221,7 +231,8 @@ class AppLocalizationsIs extends AppLocalizations {
       'Aðeins texti skilaboðanna er útskýrður. Viðhengi eru aðeins borin saman eftir nafni, tegund og stærð.';
 
   @override
-  String get changesExplainDemoNote => 'Búið til af innbyggðu sýnisútgáfunni, ekki af líkani.';
+  String get changesExplainDemoNote =>
+      'Búið til af innbyggðu sýnisútgáfunni, ekki af líkani.';
 
   @override
   String changesExplainMadeBy(String provider) {
@@ -229,7 +240,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get changesExplainNoPassage => 'Ekkert textabrot er auðkennt í þessum skilaboðum.';
+  String get changesExplainNoPassage =>
+      'Ekkert textabrot er auðkennt í þessum skilaboðum.';
 
   @override
   String get conversationCompareMessages => 'Bera saman skilaboð…';
@@ -274,10 +286,12 @@ class AppLocalizationsIs extends AppLocalizations {
       'Þessi skilaboð eru of stór fyrir ítarlegan samanburð. Hluta textans kann að vera sleppt eða hann birtur sem ein heild.';
 
   @override
-  String get conversationChangesLoadError => 'Ekki tókst að bera þessi skilaboð saman.';
+  String get conversationChangesLoadError =>
+      'Ekki tókst að bera þessi skilaboð saman.';
 
   @override
-  String get conversationSomethingWentWrong => 'Eitthvað fór úrskeiðis. Reyndu aftur.';
+  String get conversationSomethingWentWrong =>
+      'Eitthvað fór úrskeiðis. Reyndu aftur.';
 
   @override
   String get conversationReplyToList => 'Svara póstlistanum';
@@ -286,7 +300,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get conversationReplyList => 'Svara lista';
 
   @override
-  String get conversationThreadMuted => 'Þráðurinn er þaggaður. Ný skilaboð í honum berast sem lesin.';
+  String get conversationThreadMuted =>
+      'Þráðurinn er þaggaður. Ný skilaboð í honum berast sem lesin.';
 
   @override
   String get conversationThreadUnmuted => 'Þráðurinn er ekki lengur þaggaður.';
@@ -313,7 +328,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get conversationTrash => 'Henda';
 
   @override
-  String get conversationReplyHint => 'Haltu inni fyrir Svara öllum og Áframsenda';
+  String get conversationReplyHint =>
+      'Haltu inni fyrir Svara öllum og Áframsenda';
 
   @override
   String get conversationOfflineTitle => 'Engin nettenging';
@@ -384,10 +400,12 @@ class AppLocalizationsIs extends AppLocalizations {
   String get conversationLoadingMessage => 'Hleð inn skilaboðum';
 
   @override
-  String get conversationBodyError => 'Ekki tókst að hlaða inn þessum skilaboðum.';
+  String get conversationBodyError =>
+      'Ekki tókst að hlaða inn þessum skilaboðum.';
 
   @override
-  String get conversationBodyOffline => 'Engin nettenging. Skilaboðin hlaðast inn þegar tengingin kemst aftur á.';
+  String get conversationBodyOffline =>
+      'Engin nettenging. Skilaboðin hlaðast inn þegar tengingin kemst aftur á.';
 
   @override
   String get conversationOriginalHint => 'Lítur betur út í sýninni Upprunalegt';
@@ -432,7 +450,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get conversationShareAsFile => 'Deila sem skrá…';
 
   @override
-  String get conversationSearchFromMessageMenu => 'Leita út frá þessum skilaboðum…';
+  String get conversationSearchFromMessageMenu =>
+      'Leita út frá þessum skilaboðum…';
 
   @override
   String get conversationVip => 'VIP';
@@ -464,7 +483,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get conversationNoHeaders => 'Engir hausar';
 
   @override
-  String get conversationSearchFromMessageTitle => 'Leita út frá þessum skilaboðum';
+  String get conversationSearchFromMessageTitle =>
+      'Leita út frá þessum skilaboðum';
 
   @override
   String conversationSearchFrom(String name) {
@@ -516,7 +536,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get conversationMoveTo => 'Færa í…';
 
   @override
-  String get conversationMailboxesError => 'Ekki tókst að hlaða inn pósthólfum.';
+  String get conversationMailboxesError =>
+      'Ekki tókst að hlaða inn pósthólfum.';
 
   @override
   String get conversationReaderReadable => 'Læsilegt';
@@ -553,7 +574,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String conversationSecurityTrackers(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count rekjarar', one: '$count rekjari');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count rekjarar',
+      one: '$count rekjari',
+    );
     return '$_temp0';
   }
 
@@ -561,7 +587,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get conversationSecurityBadgeHint => 'Sýnir ástæðuna';
 
   @override
-  String get conversationPhishingBannerTitle => 'Þessi skilaboð líta út fyrir að vera vefveiðar';
+  String get conversationPhishingBannerTitle =>
+      'Þessi skilaboð líta út fyrir að vera vefveiðar';
 
   @override
   String conversationPhishingBannerReason(String reason) {
@@ -578,27 +605,32 @@ class AppLocalizationsIs extends AppLocalizations {
   String get conversationPhishingShowAnyway => 'Sýna samt';
 
   @override
-  String get conversationSecurityPhishingTitle => 'Þetta lítur út fyrir að vera vefveiðar';
+  String get conversationSecurityPhishingTitle =>
+      'Þetta lítur út fyrir að vera vefveiðar';
 
   @override
   String get conversationSecurityPhishingText =>
       'Ýmis merki benda til þess að þessi skilaboð séu ekki það sem þau segjast vera.';
 
   @override
-  String get conversationSecurityCarefulTitle => 'Farðu varlega með þessi skilaboð';
+  String get conversationSecurityCarefulTitle =>
+      'Farðu varlega með þessi skilaboð';
 
   @override
-  String get conversationSecurityCarefulText => 'Eitthvað við þau verðskuldar nánari skoðun.';
+  String get conversationSecurityCarefulText =>
+      'Eitthvað við þau verðskuldar nánari skoðun.';
 
   @override
-  String get conversationSecurityVerifiedText => 'Sendandinn er staðfestur og ekkert virðist grunsamlegt.';
+  String get conversationSecurityVerifiedText =>
+      'Sendandinn er staðfestur og ekkert virðist grunsamlegt.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Ekkert virðist grunsamlegt. Póstþjónninn þinn gaf ekki upp hvort sendandinn sé staðfestur.';
 
   @override
-  String get conversationSecurityNothingSuspicious => 'Ekkert virðist grunsamlegt.';
+  String get conversationSecurityNothingSuspicious =>
+      'Ekkert virðist grunsamlegt.';
 
   @override
   String get conversationSecurityWhy => 'Af hverju';
@@ -665,7 +697,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Tæknilegar upplýsingar';
 
   @override
-  String get conversationSecurityCheckedLocally => 'Athugað í þessu tæki. Ekkert var sent úr tækinu.';
+  String get conversationSecurityCheckedLocally =>
+      'Athugað í þessu tæki. Ekkert var sent úr tækinu.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Rekjarar';
@@ -689,7 +722,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String conversationSecurityHiddenValue(int elements, int characters) {
-    String _temp0 = intl.Intl.pluralLogic(elements, locale: localeName, other: '$elements stök', one: '$elements stak');
+    String _temp0 = intl.Intl.pluralLogic(
+      elements,
+      locale: localeName,
+      other: '$elements stök',
+      one: '$elements stak',
+    );
     String _temp1 = intl.Intl.pluralLogic(
       characters,
       locale: localeName,
@@ -725,7 +763,8 @@ class AppLocalizationsIs extends AppLocalizations {
       'Ekki bregðast við þeim nema þú hafir átt von á þeim. Ef þú ert í vafa skaltu hafa samband við sendandann eftir annarri leið.';
 
   @override
-  String get conversationSecurityAuthUnalignedTitle => 'Undirritað af öðru léni';
+  String get conversationSecurityAuthUnalignedTitle =>
+      'Undirritað af öðru léni';
 
   @override
   String conversationSecurityAuthUnalignedText(String signer, String domain) {
@@ -738,7 +777,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle => 'Nafnið sýnir annað netfang';
+  String get conversationSecurityNameShowsAddressTitle =>
+      'Nafnið sýnir annað netfang';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -746,7 +786,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice => 'Treystu netfanginu, ekki nafninu.';
+  String get conversationSecurityNameShowsAddressAdvice =>
+      'Treystu netfanginu, ekki nafninu.';
 
   @override
   String get conversationSecurityReplyToTitle => 'Svör fara annað';
@@ -757,13 +798,15 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityReplyToAdvice => 'Athugaðu netfangið áður en þú svarar með einhverju persónulegu.';
+  String get conversationSecurityReplyToAdvice =>
+      'Athugaðu netfangið áður en þú svarar með einhverju persónulegu.';
 
   @override
   String get conversationSecurityImpersonationYouTitle => 'Notar nafnið þitt';
 
   @override
-  String get conversationSecurityImpersonationTitle => 'Notar nafn einhvers sem þú þekkir';
+  String get conversationSecurityImpersonationTitle =>
+      'Notar nafn einhvers sem þú þekkir';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -771,17 +814,28 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationVipText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Sendandinn kallar sig „$name“, eins og VIP-tengiliðurinn þinn $knownName ($knownEmail), en skrifar frá nýju netfangi: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Sendandinn kallar sig „$name“, eins og $knownName ($knownEmail), en skrifar frá nýju netfangi: $email.';
   }
 
   @override
-  String get conversationSecurityImpersonationRepliesElsewhere => 'Og svör færu á enn annað netfang.';
+  String get conversationSecurityImpersonationRepliesElsewhere =>
+      'Og svör færu á enn annað netfang.';
 
   @override
   String get conversationSecurityImpersonationAdvice =>
@@ -798,7 +852,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle => 'Fyrstu skilaboð frá þessum sendanda';
+  String get conversationSecurityFirstTimeTitle =>
+      'Fyrstu skilaboð frá þessum sendanda';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -806,13 +861,16 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeAdvice => 'Farðu varlega með beiðnir frá fólki sem þú þekkir ekki enn.';
+  String get conversationSecurityFirstTimeAdvice =>
+      'Farðu varlega með beiðnir frá fólki sem þú þekkir ekki enn.';
 
   @override
-  String get conversationSecuritySenderHomographTitle => 'Stafir sem líkja eftir öðrum í netfangi sendandans';
+  String get conversationSecuritySenderHomographTitle =>
+      'Stafir sem líkja eftir öðrum í netfangi sendandans';
 
   @override
-  String get conversationSecurityLinkHomographTitle => 'Stafir sem líkja eftir öðrum í tengli';
+  String get conversationSecurityLinkHomographTitle =>
+      'Stafir sem líkja eftir öðrum í tengli';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -825,7 +883,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice => 'Eyddu skilaboðunum eða tilkynntu þau sem ruslpóst.';
+  String get conversationSecuritySenderHomographAdvice =>
+      'Eyddu skilaboðunum eða tilkynntu þau sem ruslpóst.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Ekki opna hann.';
@@ -839,7 +898,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get conversationSecurityLookalikeTitle => 'Lén sem líkir eftir öðru';
 
   @override
-  String get conversationSecurityFamiliarNameTitle => 'Notar þekkt nafn í léninu';
+  String get conversationSecurityFamiliarNameTitle =>
+      'Notar þekkt nafn í léninu';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -847,7 +907,11 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(String domain, String brand, String real) {
+  String conversationSecurityLookalikeText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return '$domain líkist $brand ($real), en er annað lén.';
   }
 
@@ -857,7 +921,11 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
+  String conversationSecurityFamiliarNameText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return '$domain notar nafnið $brand ($real) en er ekki á þeirra vegum.';
   }
 
@@ -907,7 +975,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle => 'Ekki er hægt að athuga hvert tengill vísar';
+  String get conversationSecurityLinkUncheckableTitle =>
+      'Ekki er hægt að athuga hvert tengill vísar';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -915,7 +984,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle => 'Tengill vísar beint á IP-tölu';
+  String get conversationSecurityIpAddressTitle =>
+      'Tengill vísar beint á IP-tölu';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -941,16 +1011,20 @@ class AppLocalizationsIs extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Biður um lykilorð';
 
   @override
-  String get conversationSecurityPasswordFieldText => 'Skilaboðin innihéldu lykilorðsreit. Loupe fjarlægði hann.';
+  String get conversationSecurityPasswordFieldText =>
+      'Skilaboðin innihéldu lykilorðsreit. Loupe fjarlægði hann.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice => 'Sláðu aldrei lykilorð inn í tölvupóst.';
+  String get conversationSecurityPasswordFieldAdvice =>
+      'Sláðu aldrei lykilorð inn í tölvupóst.';
 
   @override
-  String get conversationSecurityScriptLinkTitle => 'Tengill sem keyrir kóða var gerður óvirkur';
+  String get conversationSecurityScriptLinkTitle =>
+      'Tengill sem keyrir kóða var gerður óvirkur';
 
   @override
-  String get conversationSecurityScriptLinkText => 'Loupe keyrir aldrei kóða úr skilaboðum.';
+  String get conversationSecurityScriptLinkText =>
+      'Loupe keyrir aldrei kóða úr skilaboðum.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -977,15 +1051,18 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLotsOfHiddenTextTitle => 'Mikið af földum texta';
+  String get conversationSecurityLotsOfHiddenTextTitle =>
+      'Mikið af földum texta';
 
   @override
   String conversationSecurityLotsOfHiddenTextText(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count stafir af ósýnilegum texta voru fjarlægðir. Falinn texti af þessu tagi á að blekkja ruslpóstsíur.',
-      one: '$count stafur af ósýnilegum texta var fjarlægður. Falinn texti af þessu tagi á að blekkja ruslpóstsíur.',
+      other:
+          '$count stafir af ósýnilegum texta voru fjarlægðir. Falinn texti af þessu tagi á að blekkja ruslpóstsíur.',
+      one:
+          '$count stafur af ósýnilegum texta var fjarlægður. Falinn texti af þessu tagi á að blekkja ruslpóstsíur.',
     );
     return '$_temp0';
   }
@@ -1005,7 +1082,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed => 'Ekki tókst að sækja skilaboðin. Athugaðu tenginguna og reyndu aftur.';
+  String get exportDownloadFailed =>
+      'Ekki tókst að sækja skilaboðin. Athugaðu tenginguna og reyndu aftur.';
 
   @override
   String exportSaved(String name) {
@@ -1035,7 +1113,8 @@ class AppLocalizationsIs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Vistað: „$name“, án $formattedCount skilaboða sem ekki tókst að sækja.',
+      other:
+          'Vistað: „$name“, án $formattedCount skilaboða sem ekki tókst að sækja.',
       one: 'Vistað: „$name“, án $count skilaboða sem ekki tókst að sækja.',
     );
     return '$_temp0';
@@ -1114,7 +1193,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get mailboxesSmartMailboxes => 'Smart Mailboxes';
 
   @override
-  String get mailboxesSmartMailboxesEmpty => 'Vistaðu leit til að geyma hana hér.';
+  String get mailboxesSmartMailboxesEmpty =>
+      'Vistaðu leit til að geyma hana hér.';
 
   @override
   String get mailboxesTags => 'Merki';
@@ -1148,7 +1228,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get projectsDelete => 'Eyða verkefni';
 
   @override
-  String get projectsDeleteMessage => 'Samtöl þess verða áfram þar sem þau eru, utan verkefnisins.';
+  String get projectsDeleteMessage =>
+      'Samtöl þess verða áfram þar sem þau eru, utan verkefnisins.';
 
   @override
   String get projectsUntitled => 'Verkefni';
@@ -1211,7 +1292,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get projectsAddRule => 'Bæta við reglu…';
 
   @override
-  String get projectsRulesFooter => 'Nýr póstur sem passar við reglu fer í verkefnið. Svör fylgja alltaf sínu samtali.';
+  String get projectsRulesFooter =>
+      'Nýr póstur sem passar við reglu fer í verkefnið. Svör fylgja alltaf sínu samtali.';
 
   @override
   String get projectsSettingsEverythingElse => 'Sýna Allt annað';
@@ -1261,7 +1343,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get mailboxesVipTitle => 'VIP';
 
   @override
-  String get mailboxesVipFooter => 'Þú getur líka ýtt á nafn sendanda í skilaboðum og kveikt á VIP.';
+  String get mailboxesVipFooter =>
+      'Þú getur líka ýtt á nafn sendanda í skilaboðum og kveikt á VIP.';
 
   @override
   String get mailboxesAddVip => 'Bæta við VIP…';
@@ -1270,7 +1353,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get mailboxesAddVipTitle => 'Bæta við VIP';
 
   @override
-  String get mailboxesAddVipText => 'Póstur frá þessu netfangi fær stjörnu og birtist í VIP-pósthólfinu.';
+  String get mailboxesAddVipText =>
+      'Póstur frá þessu netfangi fær stjörnu og birtist í VIP-pósthólfinu.';
 
   @override
   String get mailboxesAddVipPlaceholder => 'nafn@example.com';
@@ -1308,14 +1392,20 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get messageListLoadOlderFailed => 'Ekki tókst að hlaða inn eldri pósti.';
+  String get messageListLoadOlderFailed =>
+      'Ekki tókst að hlaða inn eldri pósti.';
 
   @override
   String get messageListSelectMessages => 'Velja skilaboð';
 
   @override
   String messageListSelected(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count valin', one: '$count valið');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count valin',
+      one: '$count valið',
+    );
     return '$_temp0';
   }
 
@@ -1402,7 +1492,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String panesDragCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count skilaboð', one: '$count skilaboð');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count skilaboð',
+      one: '$count skilaboð',
+    );
     return '$_temp0';
   }
 
@@ -1446,7 +1541,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get snoozeNoTime => 'Enginn tími stilltur';
 
   @override
-  String get snoozeFooter => 'Skilaboð í blundi koma aftur í innhólfið, ólesin, á tilsettum tíma.';
+  String get snoozeFooter =>
+      'Skilaboð í blundi koma aftur í innhólfið, ólesin, á tilsettum tíma.';
 
   @override
   String get snoozeEmptyTitle => 'Ekkert í blundi';
@@ -1477,13 +1573,16 @@ class AppLocalizationsIs extends AppLocalizations {
   String get briefStopped => 'Þú stöðvaðir samantektina.';
 
   @override
-  String get briefFailedTooLarge => 'Þessi skilaboð eru of löng fyrir líkanið, svo ekkert var sent.';
+  String get briefFailedTooLarge =>
+      'Þessi skilaboð eru of löng fyrir líkanið, svo ekkert var sent.';
 
   @override
-  String get briefFailedProvider => 'Líkanið gat ekki tekið þessi skilaboð saman.';
+  String get briefFailedProvider =>
+      'Líkanið gat ekki tekið þessi skilaboð saman.';
 
   @override
-  String get briefFailedInvalid => 'Svarið stóðst ekki athuganir Loupe, svo enginn gátlisti er sýndur.';
+  String get briefFailedInvalid =>
+      'Svarið stóðst ekki athuganir Loupe, svo enginn gátlisti er sýndur.';
 
   @override
   String get briefNothingTitle => 'Ekkert að taka saman';
@@ -1535,7 +1634,11 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Þú', 'them': 'Aðrir', 'other': 'Ekki tilgreint'});
+    String _temp0 = intl.Intl.selectLogic(owner, {
+      'me': 'Þú',
+      'them': 'Aðrir',
+      'other': 'Ekki tilgreint',
+    });
     return '$_temp0';
   }
 
@@ -1601,7 +1704,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get briefCopyChecklist => 'Afrita gátlista';
 
   @override
-  String get briefMadeByDemo => 'Gert af innbyggðu sýnisútgáfunni, ekki af líkani.';
+  String get briefMadeByDemo =>
+      'Gert af innbyggðu sýnisútgáfunni, ekki af líkani.';
 
   @override
   String briefMadeBy(String location, String name) {
@@ -1614,7 +1718,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get briefCaution => 'Samantekt getur misst af hlutum eða misskilið þá. Skilaboðin sjálf gilda.';
+  String get briefCaution =>
+      'Samantekt getur misst af hlutum eða misskilið þá. Skilaboðin sjálf gilda.';
 
   @override
   String briefSecurityReason(String reason) {
@@ -1622,7 +1727,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText => 'Skoðaðu skilaboðin sjálf áður en þú gerir nokkuð úr þessari samantekt.';
+  String get briefSecurityText =>
+      'Skoðaðu skilaboðin sjálf áður en þú gerir nokkuð úr þessari samantekt.';
 
   @override
   String get briefSourceTitle => 'Í skilaboðunum';
@@ -1673,7 +1779,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get appLockLockedOut => 'Of margar tilraunir. Reyndu aftur síðar.';
 
   @override
-  String get appLockPromptError => 'Ekki tókst að birta auðkenningargluggann. Reyndu aftur.';
+  String get appLockPromptError =>
+      'Ekki tókst að birta auðkenningargluggann. Reyndu aftur.';
 
   @override
   String get appLockNoScreenLock => 'Enginn skjálás er á þessum síma.';
@@ -1682,13 +1789,15 @@ class AppLocalizationsIs extends AppLocalizations {
   String get appLockUnlockPromptTitle => 'Taka Loupe úr lás';
 
   @override
-  String get appLockUnlockPromptReason => 'Staðfestu að þetta sért þú til að sjá póstinn þinn.';
+  String get appLockUnlockPromptReason =>
+      'Staðfestu að þetta sért þú til að sjá póstinn þinn.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Kveikja á forritalás';
 
   @override
-  String get appLockTurnOnPromptReason => 'Staðfestu að þetta sért þú til að kveikja á forritalás.';
+  String get appLockTurnOnPromptReason =>
+      'Staðfestu að þetta sért þú til að kveikja á forritalás.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1699,7 +1808,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String appLockAfterMinutes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count mínútur', one: '$count mínúta');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mínútur',
+      one: '$count mínúta',
+    );
     return '$_temp0';
   }
 
@@ -1826,36 +1940,44 @@ class AppLocalizationsIs extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Breyta samþykki…';
 
   @override
-  String get openpgpCheckedFooter => 'Athugað í þessu tæki með OpenPGP, samhæft Thunderbird.';
+  String get openpgpCheckedFooter =>
+      'Athugað í þessu tæki með OpenPGP, samhæft Thunderbird.';
 
   @override
   String get openpgpSummaryLocked =>
       'Lykillinn þinn er læstur. Taktu hann úr lás með lykilfrasanum til að lesa þessi skilaboð.';
 
   @override
-  String get openpgpSummaryNoSecretKey => 'Þau voru dulkóðuð fyrir lykil sem er ekki í þessu tæki.';
+  String get openpgpSummaryNoSecretKey =>
+      'Þau voru dulkóðuð fyrir lykil sem er ekki í þessu tæki.';
 
   @override
-  String get openpgpSummaryDamaged => 'Dulkóðuðu gögnin eru skemmd eða þeim var breytt á leiðinni.';
+  String get openpgpSummaryDamaged =>
+      'Dulkóðuðu gögnin eru skemmd eða þeim var breytt á leiðinni.';
 
   @override
-  String get openpgpSummaryUnsupported => 'Þau nota reiknirit sem Loupe styður ekki.';
+  String get openpgpSummaryUnsupported =>
+      'Þau nota reiknirit sem Loupe styður ekki.';
 
   @override
-  String get openpgpSummaryEncrypted => 'Aðeins þú og hinir viðtakendurnir geta lesið þau.';
+  String get openpgpSummaryEncrypted =>
+      'Aðeins þú og hinir viðtakendurnir geta lesið þau.';
 
   @override
-  String get openpgpSummaryNotSigned => 'Þau eru ekki undirrituð, svo sendandinn er ekki staðfestur.';
+  String get openpgpSummaryNotSigned =>
+      'Þau eru ekki undirrituð, svo sendandinn er ekki staðfestur.';
 
   @override
   String get openpgpSummaryUnknownKey =>
       'Þau eru undirrituð, en með lykli sem þú ert ekki með, svo ekki er hægt að athuga undirritunina.';
 
   @override
-  String get openpgpSummaryBadSignature => 'Undirritunin passar ekki: skilaboðunum gæti hafa verið breytt.';
+  String get openpgpSummaryBadSignature =>
+      'Undirritunin passar ekki: skilaboðunum gæti hafa verið breytt.';
 
   @override
-  String get openpgpSummaryMismatch => 'Undirritunin er gild, en lykillinn tilheyrir öðru netfangi en sendandans.';
+  String get openpgpSummaryMismatch =>
+      'Undirritunin er gild, en lykillinn tilheyrir öðru netfangi en sendandans.';
 
   @override
   String get openpgpSummaryPartial =>
@@ -1865,14 +1987,16 @@ class AppLocalizationsIs extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Undirritað með þínum eigin lykli.';
 
   @override
-  String get openpgpSummaryVerified => 'Undirritunin er gild og þú hefur staðfest fingrafar lykilsins.';
+  String get openpgpSummaryVerified =>
+      'Undirritunin er gild og þú hefur staðfest fingrafar lykilsins.';
 
   @override
   String get openpgpSummaryUnverified =>
       'Undirritunin er gild. Þú samþykktir lykilinn án þess að athuga fingrafar hans.';
 
   @override
-  String get openpgpSummaryRejected => 'Undirritunin er gild, en þú hafnaðir þessum lykli.';
+  String get openpgpSummaryRejected =>
+      'Undirritunin er gild, en þú hafnaðir þessum lykli.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -1932,7 +2056,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get openpgpAddresses => 'Netföng';
 
   @override
-  String get openpgpAddressesFooter => 'Hvaða lykil hvert netfang notar, og hvenær það dulkóðar og undirritar.';
+  String get openpgpAddressesFooter =>
+      'Hvaða lykil hvert netfang notar, og hvenær það dulkóðar og undirritar.';
 
   @override
   String get openpgpCorrespondentsKeys => 'OpenPGP-lyklar bréfritara';
@@ -2011,7 +2136,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get openpgpAddKeyTitle => 'Bæta við OpenPGP-lykli';
 
   @override
-  String get openpgpAddKeyMessage => 'Fluttu inn lykilinn sem þú notar í Thunderbird, eða búðu til nýjan.';
+  String get openpgpAddKeyMessage =>
+      'Fluttu inn lykilinn sem þú notar í Thunderbird, eða búðu til nýjan.';
 
   @override
   String get openpgpImportFromClipboard => 'Flytja inn af klippiborði';
@@ -2032,7 +2158,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get openpgpFromFile => 'Úr skrá';
 
   @override
-  String get openpgpClipboardEmpty => 'Klippiborðið er tómt. Afritaðu lykilinn fyrst.';
+  String get openpgpClipboardEmpty =>
+      'Klippiborðið er tómt. Afritaðu lykilinn fyrst.';
 
   @override
   String get openpgpKey => 'Lykill';
@@ -2148,7 +2275,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Dulkóða sjálfkrafa';
 
   @override
-  String get openpgpAlwaysEncryptDetail => 'Neitar að senda þegar viðtakandi hefur engan lykil';
+  String get openpgpAlwaysEncryptDetail =>
+      'Neitar að senda þegar viðtakandi hefur engan lykil';
 
   @override
   String get openpgpSignUnencrypted => 'Undirrita ódulkóðaðan póst';
@@ -2167,11 +2295,17 @@ class AppLocalizationsIs extends AppLocalizations {
   String get openpgpPreferEncryption => 'Kjósa dulkóðun';
 
   @override
-  String get openpgpPreferEncryptionDetail => 'Biðja aðra um að dulkóða þegar þeir geta';
+  String get openpgpPreferEncryptionDetail =>
+      'Biðja aðra um að dulkóða þegar þeir geta';
 
   @override
   String openpgpValidityYears(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ár', one: '$count ár');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ár',
+      one: '$count ár',
+    );
     return '$_temp0';
   }
 
@@ -2353,7 +2487,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get openpgpWrongPassphrase => 'Rangur lykilfrasi. Reyndu aftur.';
 
   @override
-  String get openpgpExplainLocked => 'Þessi skilaboð eru dulkóðuð. Taktu OpenPGP-lykilinn þinn úr lás til að lesa þau.';
+  String get openpgpExplainLocked =>
+      'Þessi skilaboð eru dulkóðuð. Taktu OpenPGP-lykilinn þinn úr lás til að lesa þau.';
 
   @override
   String get openpgpExplainNoKey =>
@@ -2364,7 +2499,8 @@ class AppLocalizationsIs extends AppLocalizations {
       'Þessi dulkóðuðu skilaboð eru skemmd, svo ekki er hægt að afkóða þau á öruggan hátt.';
 
   @override
-  String get openpgpExplainUnsupported => 'Þessi skilaboð nota dulkóðun sem Loupe getur ekki lesið enn.';
+  String get openpgpExplainUnsupported =>
+      'Þessi skilaboð nota dulkóðun sem Loupe getur ekki lesið enn.';
 
   @override
   String get openpgpExplainSmimeNoKey =>
@@ -2376,7 +2512,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock => 'Taktu S/MIME-skilríkin þín úr lás til að lesa þau.';
+  String get openpgpExplainSmimeUnlock =>
+      'Taktu S/MIME-skilríkin þín úr lás til að lesa þau.';
 
   @override
   String get openpgpAttachmentGone => 'Þetta viðhengi er ekki lengur tiltækt.';
@@ -2385,7 +2522,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get smimeEncrypted => 'Dulkóðað (S/MIME)';
 
   @override
-  String get smimeEncryptedNoCertificate => 'Dulkóðað (S/MIME) · engin skilríki';
+  String get smimeEncryptedNoCertificate =>
+      'Dulkóðað (S/MIME) · engin skilríki';
 
   @override
   String get smimeEncryptedDamaged => 'Dulkóðað (S/MIME) · skemmt';
@@ -2400,7 +2538,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get smimeUnknownSigner => 'óþekktum aðila';
 
   @override
-  String get smimeSignatureModified => 'Ógild undirritun: skilaboðunum var breytt';
+  String get smimeSignatureModified =>
+      'Ógild undirritun: skilaboðunum var breytt';
 
   @override
   String get smimeSignatureWeak => 'Óörugg undirritun: úrelt reiknirit';
@@ -2575,25 +2714,31 @@ class AppLocalizationsIs extends AppLocalizations {
   String get smimeTrust => 'Treysta';
 
   @override
-  String get smimeSummaryNoKey => 'Þau voru dulkóðuð fyrir skilríki sem eru ekki í þessu tæki.';
+  String get smimeSummaryNoKey =>
+      'Þau voru dulkóðuð fyrir skilríki sem eru ekki í þessu tæki.';
 
   @override
-  String get smimeSummaryDamaged => 'Dulkóðuðu gögnin eru skemmd eða þeim var breytt á leiðinni.';
+  String get smimeSummaryDamaged =>
+      'Dulkóðuðu gögnin eru skemmd eða þeim var breytt á leiðinni.';
 
   @override
-  String get smimeSummaryUnsupported => 'Þau nota reiknirit sem Loupe styður ekki.';
+  String get smimeSummaryUnsupported =>
+      'Þau nota reiknirit sem Loupe styður ekki.';
 
   @override
   String get smimeSummaryLocked => 'S/MIME-skilríkin þín eru læst.';
 
   @override
-  String get smimeSummaryEncrypted => 'Aðeins þú og hinir viðtakendurnir geta lesið þau.';
+  String get smimeSummaryEncrypted =>
+      'Aðeins þú og hinir viðtakendurnir geta lesið þau.';
 
   @override
-  String get smimeSummaryNotSigned => 'Þau eru ekki undirrituð, svo sendandinn er ekki staðfestur.';
+  String get smimeSummaryNotSigned =>
+      'Þau eru ekki undirrituð, svo sendandinn er ekki staðfestur.';
 
   @override
-  String get smimeSummaryModified => 'Undirritunin passar ekki: skilaboðunum var breytt eftir að þau voru undirrituð.';
+  String get smimeSummaryModified =>
+      'Undirritunin passar ekki: skilaboðunum var breytt eftir að þau voru undirrituð.';
 
   @override
   String get smimeSummaryUncheckable => 'Ekki er hægt að athuga undirritunina.';
@@ -2621,10 +2766,12 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain => 'Skilríkin, eða einhver útgefandi þeirra, eru ógild.';
+  String get smimeProblemInvalidChain =>
+      'Skilríkin, eða einhver útgefandi þeirra, eru ógild.';
 
   @override
-  String get smimeProblemUntrusted => 'Skilríkin koma frá vottunarstöð sem Loupe treystir ekki.';
+  String get smimeProblemUntrusted =>
+      'Skilríkin koma frá vottunarstöð sem Loupe treystir ekki.';
 
   @override
   String get smimeProblemExpired => 'Skilríkin voru útrunnin.';
@@ -2636,7 +2783,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get smimeProblemWrongUsage => 'Skilríkin eru ekki ætluð fyrir póst.';
 
   @override
-  String get smimeProblemWrongAddress => 'Skilríkin tilheyra öðru netfangi en sendandans.';
+  String get smimeProblemWrongAddress =>
+      'Skilríkin tilheyra öðru netfangi en sendandans.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2720,8 +2868,10 @@ class AppLocalizationsIs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Treyst af þér, auk þeirra $count sem Mozilla treystir fyrir tölvupóst.',
-      one: 'Treyst af þér, auk þeirra $count sem Mozilla treystir fyrir tölvupóst.',
+      other:
+          'Treyst af þér, auk þeirra $count sem Mozilla treystir fyrir tölvupóst.',
+      one:
+          'Treyst af þér, auk þeirra $count sem Mozilla treystir fyrir tölvupóst.',
     );
     return '$_temp0';
   }
@@ -2733,7 +2883,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get smimeImportACertificate => 'Flytja inn skilríki';
 
   @override
-  String get smimeImportContactMessage => 'Skilríki bréfritara (.cer, .crt, .pem) eða vottunarstöðvar.';
+  String get smimeImportContactMessage =>
+      'Skilríki bréfritara (.cer, .crt, .pem) eða vottunarstöðvar.';
 
   @override
   String get smimeFromClipboard => 'Af klippiborði';
@@ -2742,7 +2893,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get smimeFromFile => 'Úr skrá';
 
   @override
-  String get smimeClipboardEmpty => 'Klippiborðið er tómt. Afritaðu skilríkin fyrst.';
+  String get smimeClipboardEmpty =>
+      'Klippiborðið er tómt. Afritaðu skilríkin fyrst.';
 
   @override
   String get smimeCertificate => 'Skilríki';
@@ -2895,7 +3047,8 @@ class AppLocalizationsIs extends AppLocalizations {
       'Einkalykli þeirra er eytt úr þessu tæki: ekki verður lengur hægt að lesa póst sem er dulkóðaður fyrir þau hér, nema þú flytjir þau inn aftur.';
 
   @override
-  String get smimeRemoveContactMessage => 'Þau koma aftur með næstu undirrituðu skilaboðum viðkomandi.';
+  String get smimeRemoveContactMessage =>
+      'Þau koma aftur með næstu undirrituðu skilaboðum viðkomandi.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -2918,7 +3071,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get smimeCertificatePassword => 'Lykilorð skilríkja';
 
   @override
-  String get smimeCertificatePasswordPrompt => 'Sláðu inn lykilorðið sem skilríkjaskráin var flutt út með.';
+  String get smimeCertificatePasswordPrompt =>
+      'Sláðu inn lykilorðið sem skilríkjaskráin var flutt út með.';
 
   @override
   String get smimeImport => 'Flytja inn';
@@ -2954,7 +3108,10 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
+  String smimeImportedCertificatesAndAuthorities(
+    int count,
+    String certificates,
+  ) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -2965,7 +3122,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get smimeNoPrivateKey => 'Þessi skrá er ekki með einkalykil. Fluttu skilríkin þín út ásamt einkalyklinum.';
+  String get smimeNoPrivateKey =>
+      'Þessi skrá er ekki með einkalykil. Fluttu skilríkin þín út ásamt einkalyklinum.';
 
   @override
   String get smimeImportAsYoursTitle => 'Flytja inn sem þín skilríki?';
@@ -3046,13 +3204,16 @@ class AppLocalizationsIs extends AppLocalizations {
   String get smimeSetPassphraseButton => 'Stilla';
 
   @override
-  String get smimeLockedOpenAgain => 'S/MIME-skilríkin þín eru læst. Opnaðu skilaboðin aftur til að taka þau úr lás.';
+  String get smimeLockedOpenAgain =>
+      'S/MIME-skilríkin þín eru læst. Opnaðu skilaboðin aftur til að taka þau úr lás.';
 
   @override
-  String get smimeDeviceHasNoCertificates => 'Þetta tæki býður ekki upp á skilríkin sín.';
+  String get smimeDeviceHasNoCertificates =>
+      'Þetta tæki býður ekki upp á skilríkin sín.';
 
   @override
-  String get smimeCantReadCertificate => 'Loupe getur ekki lesið þessi skilríki.';
+  String get smimeCantReadCertificate =>
+      'Loupe getur ekki lesið þessi skilríki.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -3063,7 +3224,8 @@ class AppLocalizationsIs extends AppLocalizations {
       'Skilríkin eru ekki lengur í þessu tæki, eða Loupe má ekki lengur nota þau. Veldu þau aftur í Stillingar › Dulkóðun enda á milli.';
 
   @override
-  String get smimeDeviceCertificateAppOnly => 'Aðeins er hægt að nota skilríkin í þessu tæki á meðan Loupe er opið.';
+  String get smimeDeviceCertificateAppOnly =>
+      'Aðeins er hægt að nota skilríkin í þessu tæki á meðan Loupe er opið.';
 
   @override
   String get smimeDeviceKeyDamaged => 'Dulkóðaði lykillinn er skemmdur.';
@@ -3082,13 +3244,15 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress => 'Slóð vottunarstöðvarinnar er ekki veffang.';
+  String get smimeAuthorityNotWebAddress =>
+      'Slóð vottunarstöðvarinnar er ekki veffang.';
 
   @override
   String get smimeAuthorityTimeout => 'Vottunarstöðin svaraði ekki í tæka tíð.';
 
   @override
-  String get smimeAuthorityUnreachable => 'Ekki náðist samband við vottunarstöðina.';
+  String get smimeAuthorityUnreachable =>
+      'Ekki náðist samband við vottunarstöðina.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -3096,7 +3260,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge => 'Svar vottunarstöðvarinnar er of stórt.';
+  String get smimeAuthorityAnswerTooLarge =>
+      'Svar vottunarstöðvarinnar er of stórt.';
 
   @override
   String get smimeRevocationNotChecked =>
@@ -3123,13 +3288,23 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String actionsCountMine(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count eftir', one: '$count eftir');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count eftir',
+      one: '$count eftir',
+    );
     return '$_temp0';
   }
 
   @override
   String actionsCountWaiting(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count í bið', one: '$count í bið');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count í bið',
+      one: '$count í bið',
+    );
     return '$_temp0';
   }
 
@@ -3301,7 +3476,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get actionsOriginManual => 'Þú bættir við';
 
   @override
-  String get actionsOriginDemo => 'Tillaga frá innbyggðu sýnisútgáfunni: reglur, ekkert líkan';
+  String get actionsOriginDemo =>
+      'Tillaga frá innbyggðu sýnisútgáfunni: reglur, ekkert líkan';
 
   @override
   String actionsOriginSuggested(String provider) {
@@ -3368,13 +3544,16 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get actionsSuggestByDemo => 'Frá innbyggðu sýnisútgáfunni: reglur, ekkert líkan. Ekkert fer úr þessum síma.';
+  String get actionsSuggestByDemo =>
+      'Frá innbyggðu sýnisútgáfunni: reglur, ekkert líkan. Ekkert fer úr þessum síma.';
 
   @override
-  String get actionsSuggestNone => 'Ekkert í þessum skilaboðum til að fylgjast með.';
+  String get actionsSuggestNone =>
+      'Ekkert í þessum skilaboðum til að fylgjast með.';
 
   @override
-  String get actionsSuggestPartial => 'Þessi skilaboð eru löng: aðeins upphaf þeirra var lesið.';
+  String get actionsSuggestPartial =>
+      'Þessi skilaboð eru löng: aðeins upphaf þeirra var lesið.';
 
   @override
   String get actionsSuggestTracked => 'Fylgst með';
@@ -3398,10 +3577,12 @@ class AppLocalizationsIs extends AppLocalizations {
       'Hver tillaga vitnar í skilaboðin og ekki er fylgst með neinu fyrr en þú bætir því við. Eldri póstur sem vitnað er í telst ekki með.';
 
   @override
-  String get actionsSuggestTooLarge => 'Þessi skilaboð eru of löng fyrir valið líkan.';
+  String get actionsSuggestTooLarge =>
+      'Þessi skilaboð eru of löng fyrir valið líkan.';
 
   @override
-  String get actionsSuggestInvalid => 'Svarið stemmdi ekki við skilaboðin, svo engu er stungið upp á.';
+  String get actionsSuggestInvalid =>
+      'Svarið stemmdi ekki við skilaboðin, svo engu er stungið upp á.';
 
   @override
   String get actionsSuggestCancelled => 'Stöðvað.';
@@ -3411,7 +3592,10 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    String _temp0 = intl.Intl.selectLogic(protocol, {
+      'jmap': 'Push',
+      'other': 'IDLE',
+    });
     return '$_temp0';
   }
 
@@ -3476,7 +3660,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsSignatureAddField => 'Bæta við reit';
 
   @override
-  String get settingsSignatureImageFailed => 'Ekki tókst að bæta myndinni við. Prófaðu minni PNG- eða JPEG-mynd.';
+  String get settingsSignatureImageFailed =>
+      'Ekki tókst að bæta myndinni við. Prófaðu minni PNG- eða JPEG-mynd.';
 
   @override
   String get settingsSignatureWhenToUse => 'Hvenær á að nota';
@@ -3492,7 +3677,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Bæta við netfangi eða léni…';
 
   @override
-  String get settingsSignatureCopiedPrompt => 'Netfang, eða lén eins og client.example.';
+  String get settingsSignatureCopiedPrompt =>
+      'Netfang, eða lén eins og client.example.';
 
   @override
   String get settingsSignatureScheduled => 'Tímasett';
@@ -3511,7 +3697,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsSignatureRotation => 'Í skiptum';
 
   @override
-  String get settingsSignatureRotationFooter => 'Hvert nýtt bréf fær af handahófi eina af undirskriftunum í skiptum.';
+  String get settingsSignatureRotationFooter =>
+      'Hvert nýtt bréf fær af handahófi eina af undirskriftunum í skiptum.';
 
   @override
   String get settingsSignatureMakeDefault => 'Gera sjálfgefna';
@@ -3573,7 +3760,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsUndoSendDelay => 'Tími til að afturkalla';
 
   @override
-  String get settingsUndoSendDelayFooter => 'Send skilaboð bíða svona lengi, svo þú getir dregið þau til baka.';
+  String get settingsUndoSendDelayFooter =>
+      'Send skilaboð bíða svona lengi, svo þú getir dregið þau til baka.';
 
   @override
   String settingsUndoSendSeconds(int seconds) {
@@ -3617,25 +3805,29 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsReadingHeader => 'Lestur';
 
   @override
-  String get settingsReadingFooter => 'Fjartengdar myndir geta sagt sendendum hvenær og hvar þú opnaðir skilaboð.';
+  String get settingsReadingFooter =>
+      'Fjartengdar myndir geta sagt sendendum hvenær og hvar þú opnaðir skilaboð.';
 
   @override
   String get settingsDefaultView => 'Sjálfgefin sýn';
 
   @override
-  String get settingsDefaultViewFooter => 'Þú getur skipt um sýn á hvaða skilaboðum sem er með Aa-hnappnum.';
+  String get settingsDefaultViewFooter =>
+      'Þú getur skipt um sýn á hvaða skilaboðum sem er með Aa-hnappnum.';
 
   @override
   String get settingsViewReadable => 'Læsilegt';
 
   @override
-  String get settingsViewReadableDetail => 'Hreint, læsilegt, fylgir dökkum ham';
+  String get settingsViewReadableDetail =>
+      'Hreint, læsilegt, fylgir dökkum ham';
 
   @override
   String get settingsViewOriginal => 'Upprunalegt';
 
   @override
-  String get settingsViewOriginalDetail => 'Nákvæmlega eins og sendandinn hannaði það';
+  String get settingsViewOriginalDetail =>
+      'Nákvæmlega eins og sendandinn hannaði það';
 
   @override
   String get settingsViewPlain => 'Einfaldur texti';
@@ -3653,7 +3845,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsFontMono => 'Jafnbreitt letur';
 
   @override
-  String get settingsFontMonoDetail => 'Heldur ASCII-myndum og töflum í réttum skorðum';
+  String get settingsFontMonoDetail =>
+      'Heldur ASCII-myndum og töflum í réttum skorðum';
 
   @override
   String get settingsTechnicalLists => 'Tæknilegir póstlistar';
@@ -3665,7 +3858,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Opna tengla beint';
 
   @override
-  String get settingsOpenLinksDirectlyDetail => 'Sleppa smellirekjurum þegar áfangastaðurinn er þekktur';
+  String get settingsOpenLinksDirectlyDetail =>
+      'Sleppa smellirekjurum þegar áfangastaðurinn er þekktur';
 
   @override
   String get settingsSecurityHeader => 'Öryggi';
@@ -3710,7 +3904,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsLockAfter => 'Læsa eftir';
 
   @override
-  String get settingsLockAfterFooter => 'Hve lengi Loupe má vera í bakgrunni áður en það spyr aftur.';
+  String get settingsLockAfterFooter =>
+      'Hve lengi Loupe má vera í bakgrunni áður en það spyr aftur.';
 
   @override
   String get settingsNotifications => 'Tilkynningar';
@@ -3735,7 +3930,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsResetApp => 'Endurstilla forritið';
 
   @override
-  String get settingsResetFooter => 'Gleymir öllum stillingum og fer aftur á upphafsskjáinn.';
+  String get settingsResetFooter =>
+      'Gleymir öllum stillingum og fer aftur á upphafsskjáinn.';
 
   @override
   String get settingsResetTitle => 'Endurstilla Loupe?';
@@ -3761,10 +3957,12 @@ class AppLocalizationsIs extends AppLocalizations {
       'Loupe er hvorki með greiningu né rakningu. Pósturinn þinn fer aðeins á póstþjónana þína.';
 
   @override
-  String get settingsNotificationsOffIos => 'Slökkt er á tilkynningum fyrir Loupe í Stillingum.';
+  String get settingsNotificationsOffIos =>
+      'Slökkt er á tilkynningum fyrir Loupe í Stillingum.';
 
   @override
-  String get settingsNotificationsOffAndroid => 'Slökkt er á tilkynningum fyrir Loupe í stillingum Android.';
+  String get settingsNotificationsOffAndroid =>
+      'Slökkt er á tilkynningum fyrir Loupe í stillingum Android.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -3793,7 +3991,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsVipOnly => 'Aðeins VIP';
 
   @override
-  String get settingsVipOnlyDetail => 'Aðeins skilaboð frá VIP-tengiliðunum þínum';
+  String get settingsVipOnlyDetail =>
+      'Aðeins skilaboð frá VIP-tengiliðunum þínum';
 
   @override
   String get settingsHideContent => 'Fela efni';
@@ -3831,7 +4030,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsComingSoon => 'Væntanlegt';
 
   @override
-  String get settingsAllowUnrestrictedBattery => 'Leyfa ótakmarkaða rafhlöðunotkun';
+  String get settingsAllowUnrestrictedBattery =>
+      'Leyfa ótakmarkaða rafhlöðunotkun';
 
   @override
   String get settingsPush => 'Push';
@@ -3857,14 +4057,16 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsAppIconBadge => 'Merki á forritstákni';
 
   @override
-  String get settingsBadgeNote => 'Merkið uppfærist í hvert sinn sem Loupe athugar með póst, líka í bakgrunni.';
+  String get settingsBadgeNote =>
+      'Merkið uppfærist í hvert sinn sem Loupe athugar með póst, líka í bakgrunni.';
 
   @override
   String get settingsBadgeUnsupportedFooter =>
       'Heimaskjár þessa síma sýnir ekki tölur á forritstáknum. Merkið uppfærist í hvert sinn sem Loupe athugar með póst, líka í bakgrunni.';
 
   @override
-  String get settingsTestNotificationBody => 'Tilkynningar um nýjan póst líta svona út.';
+  String get settingsTestNotificationBody =>
+      'Tilkynningar um nýjan póst líta svona út.';
 
   @override
   String get settingsAccountRemoved => 'Þessi aðgangur var fjarlægður.';
@@ -3885,7 +4087,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsColour => 'Litur';
 
   @override
-  String get settingsColourFooter => 'Merkir skilaboð þessa aðgangs í Öllum innhólfum.';
+  String get settingsColourFooter =>
+      'Merkir skilaboð þessa aðgangs í Öllum innhólfum.';
 
   @override
   String settingsColourNumber(int number) {
@@ -3958,7 +4161,8 @@ class AppLocalizationsIs extends AppLocalizations {
       'Möppur í áskrift birtast á pósthólfaskjánum og samstillast í bakgrunni. Önnur póstforrit á sama aðgangi fylgja yfirleitt þessum áskriftum líka.';
 
   @override
-  String get settingsSmartMailboxesFolder => 'Geymir Smart Mailboxes fyrir önnur tæki þín. Falin á pósthólfaskjánum.';
+  String get settingsSmartMailboxesFolder =>
+      'Geymir Smart Mailboxes fyrir önnur tæki þín. Falin á pósthólfaskjánum.';
 
   @override
   String get settingsFolderAlwaysShown => 'Alltaf sýnd';
@@ -3976,10 +4180,12 @@ class AppLocalizationsIs extends AppLocalizations {
       'Fyrsta auðkennið er sjálfgefið fyrir ný skilaboð. Dragðu til að breyta röðinni.';
 
   @override
-  String get settingsIdentitiesFooterSingle => 'Sjálfgefna auðkennið fyrir ný skilaboð.';
+  String get settingsIdentitiesFooterSingle =>
+      'Sjálfgefna auðkennið fyrir ný skilaboð.';
 
   @override
-  String get settingsIdentitiesReplyFooter => 'Svar er sent frá auðkenninu sem skilaboðin voru send á.';
+  String get settingsIdentitiesReplyFooter =>
+      'Svar er sent frá auðkenninu sem skilaboðin voru send á.';
 
   @override
   String get settingsIdentityDefault => 'Sjálfgefið';
@@ -4011,7 +4217,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsCopyToMyself => 'Afrit til mín';
 
   @override
-  String get settingsCopyToMyselfFooter => 'Bætt við öll skilaboð frá þessu auðkenni.';
+  String get settingsCopyToMyselfFooter =>
+      'Bætt við öll skilaboð frá þessu auðkenni.';
 
   @override
   String get settingsCc => 'Afrit';
@@ -4027,7 +4234,8 @@ class AppLocalizationsIs extends AppLocalizations {
       'Svör við skilaboðum sem send voru á þessi netföng eru send frá þessu auðkenni. * stendur fyrir hvað sem er: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt => 'Netfang, eða mynstur þar sem * stendur fyrir hvað sem er.';
+  String get settingsReplyPatternPrompt =>
+      'Netfang, eða mynstur þar sem * stendur fyrir hvað sem er.';
 
   @override
   String get settingsAddReplyPattern => 'Bæta við netfangi eða mynstri';
@@ -4049,7 +4257,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Ekkert netfang';
 
   @override
-  String get settingsIdentityNoAddressMessage => 'Sláðu inn netfangið sem á að senda frá.';
+  String get settingsIdentityNoAddressMessage =>
+      'Sláðu inn netfangið sem á að senda frá.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Ógilt netfang';
@@ -4080,10 +4289,12 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage => 'Skilaboð sem þegar hafa verið send frá því haldast óbreytt.';
+  String get settingsDeleteIdentityMessage =>
+      'Skilaboð sem þegar hafa verið send frá því haldast óbreytt.';
 
   @override
-  String get settingsLastIdentityFooter => 'Aðgangur þarf að minnsta kosti eitt auðkenni.';
+  String get settingsLastIdentityFooter =>
+      'Aðgangur þarf að minnsta kosti eitt auðkenni.';
 
   @override
   String get rulesTitle => 'Reglur';
@@ -4155,7 +4366,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get rulesStatusUnavailable => 'Ekki í boði';
 
   @override
-  String get rulesStatusNoSieve => 'Netþjónn þessa aðgangs býður ekki upp á Sieve (ManageSieve eða JMAP).';
+  String get rulesStatusNoSieve =>
+      'Netþjónn þessa aðgangs býður ekki upp á Sieve (ManageSieve eða JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -4237,7 +4449,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get rulesRemovedAccount => 'Fjarlægður aðgangur';
 
   @override
-  String get rulesAccountsFooter => 'Regla fyrir alla aðganga nær líka yfir aðganga sem þú bætir við síðar.';
+  String get rulesAccountsFooter =>
+      'Regla fyrir alla aðganga nær líka yfir aðganga sem þú bætir við síðar.';
 
   @override
   String get rulesActionsHeader => 'Þá';
@@ -4247,7 +4460,8 @@ class AppLocalizationsIs extends AppLocalizations {
       'Áframsending sendir hver samsvarandi skilaboð á annað netfang um leið og þau berast, líka á meðan slökkt er á þessum síma. Sumar þjónustur takmarka hve mikinn póst má áframsenda.';
 
   @override
-  String get rulesForwardingHiddenFooter => 'Áframsending keyrir aðeins í reglum á netþjóni, svo henni er sleppt hér.';
+  String get rulesForwardingHiddenFooter =>
+      'Áframsending keyrir aðeins í reglum á netþjóni, svo henni er sleppt hér.';
 
   @override
   String rulesRemoveAction(String action) {
@@ -4298,7 +4512,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get rulesMoveAccountTitle => 'Mappa í hvaða aðgangi?';
 
   @override
-  String get rulesMoveAccountMessage => 'Póstur hinna aðganganna fer í möppuna með sama nafni þar.';
+  String get rulesMoveAccountMessage =>
+      'Póstur hinna aðganganna fer í möppuna með sama nafni þar.';
 
   @override
   String get rulesAddTag => 'Bæta við merki';
@@ -4337,13 +4552,15 @@ class AppLocalizationsIs extends AppLocalizations {
   String get rulesChooseActionTitle => 'Veldu aðgerð';
 
   @override
-  String get rulesChooseActionMessage => 'Bættu við því sem reglan gerir við skilaboðin sem passa.';
+  String get rulesChooseActionMessage =>
+      'Bættu við því sem reglan gerir við skilaboðin sem passa.';
 
   @override
   String get rulesSaveError => 'Ekki tókst að vista regluna';
 
   @override
-  String get rulesSaveServerError => 'Ekki tókst að vista regluna á netþjóninum';
+  String get rulesSaveServerError =>
+      'Ekki tókst að vista regluna á netþjóninum';
 
   @override
   String get rulesRunOnDeviceInstead => 'Keyra frekar á þessu tæki';
@@ -4352,7 +4569,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Ekkert til að beita';
 
   @override
-  String get rulesNothingToApplyMessage => 'Gefðu reglunni fyrst skilyrði sem virkar og aðgerð.';
+  String get rulesNothingToApplyMessage =>
+      'Gefðu reglunni fyrst skilyrði sem virkar og aðgerð.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4384,7 +4602,8 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4398,7 +4617,8 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4412,7 +4632,8 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4454,7 +4675,8 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4468,7 +4690,8 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4497,7 +4720,8 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4590,7 +4814,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get subscriptionsNoNewsletters => 'Engin fréttabréf';
 
   @override
-  String get subscriptionsNoNewslettersDetail => 'Fréttabréf og annar fjöldapóstur birtast hér þegar þau berast.';
+  String get subscriptionsNoNewslettersDetail =>
+      'Fréttabréf og annar fjöldapóstur birtast hér þegar þau berast.';
 
   @override
   String get subscriptionsNothingNeverRead => 'Ekkert sem aldrei er lesið';
@@ -4599,7 +4824,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get subscriptionsNothingRarelyRead => 'Ekkert sem sjaldan er lesið';
 
   @override
-  String get subscriptionsNothingFilteredDetail => 'Þú lest eitthvað af öllu sem þú færð.';
+  String get subscriptionsNothingFilteredDetail =>
+      'Þú lest eitthvað af öllu sem þú færð.';
 
   @override
   String get subscriptionsNoDiscussions => 'Engar umræður';
@@ -4676,7 +4902,8 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4692,13 +4919,15 @@ class AppLocalizationsIs extends AppLocalizations {
   String get subscriptionsCreateRule => 'Búa til reglu…';
 
   @override
-  String get subscriptionsCreateRuleDetail => 'Færa framtíðarpóst eða setja hann í geymslu';
+  String get subscriptionsCreateRuleDetail =>
+      'Færa framtíðarpóst eða setja hann í geymslu';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Meðhöndla sem umræðu';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail => 'Listi sem fólk skrifar á: lestu hann eins og spjallborð';
+  String get subscriptionsTreatAsDiscussionDetail =>
+      'Listi sem fólk skrifar á: lestu hann eins og spjallborð';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Meðhöndla sem fréttabréf';
@@ -4732,7 +4961,8 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4745,7 +4975,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoMailNow => 'Enginn póstur frá þessum sendanda núna.';
+  String get subscriptionsNoMailNow =>
+      'Enginn póstur frá þessum sendanda núna.';
 
   @override
   String get subscriptionsLatestMessages => 'NÝJUSTU SKILABOÐ';
@@ -4761,9 +4992,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString af $totalString';
@@ -4774,7 +5008,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count möppur', one: '$count mappa');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count möppur',
+      one: '$count mappa',
+    );
     return '$_temp0';
   }
 
@@ -4820,7 +5059,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle => 'Ekki tókst að afskrá sjálfkrafa';
+  String get subscriptionsOneClickFailedTitle =>
+      'Ekki tókst að afskrá sjálfkrafa';
 
   @override
   String get subscriptionsSendUnsubscribeEmail => 'Senda afskráningarpóst';
@@ -4844,7 +5084,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsWebInsecure => 'Tengingin við þetta vefsvæði er ekki dulkóðuð.';
+  String get subscriptionsWebInsecure =>
+      'Tengingin við þetta vefsvæði er ekki dulkóðuð.';
 
   @override
   String subscriptionsHomographWarning(String site) {
@@ -4881,7 +5122,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed => 'Afskráningartengillinn er ekki örugg slóð á netinu.';
+  String get subscriptionsOneClickNotAllowed =>
+      'Afskráningartengillinn er ekki örugg slóð á netinu.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -4904,7 +5146,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend => 'Enginn aðgangur er til að senda afskráningarpóstinn frá.';
+  String get subscriptionsNoAccountToSend =>
+      'Enginn aðgangur er til að senda afskráningarpóstinn frá.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -5014,11 +5257,16 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get rulesDescribeScopeChoose => 'Þú velur hvar hún keyrir í regluritlinum.';
+  String get rulesDescribeScopeChoose =>
+      'Þú velur hvar hún keyrir í regluritlinum.';
 
   @override
   String rulesDescribeCantDoHeader(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Það sem Loupe getur ekki gert');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Það sem Loupe getur ekki gert',
+    );
     return '$_temp0';
   }
 
@@ -5057,7 +5305,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get rulesDescribeReasonOther => 'Reglur geta ekki gert þetta.';
 
   @override
-  String get rulesDescribeSuggestion => 'Orð sem Loupe getur passað við í staðinn:';
+  String get rulesDescribeSuggestion =>
+      'Orð sem Loupe getur passað við í staðinn:';
 
   @override
   String get rulesDescribeQuestions => 'Loupe þarf að vita';
@@ -5070,16 +5319,20 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunCount(int total, int matched, String account) {
-    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
-    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat matchedNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String matchedString = matchedNumberFormat.format(matched);
 
     String _temp0 = intl.Intl.pluralLogic(
       total,
       locale: localeName,
-      other: 'Myndi passa við $matchedString af $totalString sóttum skilaboðum í $account',
-      one: 'Myndi passa við $matchedString af $totalString sóttum skilaboðum í $account',
+      other:
+          'Myndi passa við $matchedString af $totalString sóttum skilaboðum í $account',
+      one:
+          'Myndi passa við $matchedString af $totalString sóttum skilaboðum í $account',
     );
     return '$_temp0';
   }
@@ -5096,7 +5349,8 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunCapped(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -5110,26 +5364,31 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunUnchecked(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$countString skilaboð var ekki hægt að athuga án þess að sækja texta þeirra.',
-      one: '$countString skilaboð var ekki hægt að athuga án þess að sækja texta þeirra.',
+      other:
+          '$countString skilaboð var ekki hægt að athuga án þess að sækja texta þeirra.',
+      one:
+          '$countString skilaboð var ekki hægt að athuga án þess að sækja texta þeirra.',
     );
     return '$_temp0';
   }
 
   @override
-  String get rulesDescribeDryRunFailed => 'Loupe gat ekki athugað póstinn í þessum síma.';
+  String get rulesDescribeDryRunFailed =>
+      'Loupe gat ekki athugað póstinn í þessum síma.';
 
   @override
   String get rulesDescribeOpenEditor => 'Opna í regluritli';
 
   @override
-  String get rulesDescribeDemoNote => 'Lagt til af innbyggðu sýnisútgáfunni, ekki af líkani.';
+  String get rulesDescribeDemoNote =>
+      'Lagt til af innbyggðu sýnisútgáfunni, ekki af líkani.';
 
   @override
   String rulesDescribeProviderNote(String provider) {
@@ -5153,7 +5412,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get appLiveGateTitle => 'Ekki tókst að opna aðgangana þína';
 
   @override
-  String get appLiveGateUnavailableBuild => 'Raunverulegir aðgangar eru ekki enn í boði í þessari útgáfu.';
+  String get appLiveGateUnavailableBuild =>
+      'Raunverulegir aðgangar eru ekki enn í boði í þessari útgáfu.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -5201,7 +5461,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get attachmentsShareMenu => 'Deila…';
 
   @override
-  String get attachmentsDownloadError => 'Ekki tókst að sækja viðhengið. Athugaðu tenginguna og reyndu aftur.';
+  String get attachmentsDownloadError =>
+      'Ekki tókst að sækja viðhengið. Athugaðu tenginguna og reyndu aftur.';
 
   @override
   String get attachmentsShareError => 'Ekki tókst að deila viðhenginu.';
@@ -5212,7 +5473,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get attachmentsOpenInError => 'Ekki tókst að opna viðhengið í öðru forriti.';
+  String get attachmentsOpenInError =>
+      'Ekki tókst að opna viðhengið í öðru forriti.';
 
   @override
   String attachmentsSaved(String name) {
@@ -5230,7 +5492,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String attachmentsPageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count síður', one: '$count síða');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count síður',
+      one: '$count síða',
+    );
     return '$_temp0';
   }
 
@@ -5240,7 +5507,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload => 'Þetta viðhengi er stórt. Sæktu það núna, eða síðar á Wi-Fi.';
+  String get attachmentsLargeDownload =>
+      'Þetta viðhengi er stórt. Sæktu það núna, eða síðar á Wi-Fi.';
 
   @override
   String get attachmentsDownload => 'Sækja';
@@ -5290,7 +5558,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String attachmentsTextInfo(String charset, int count, String lines) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$lines línur', one: '$count lína');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$lines línur',
+      one: '$count lína',
+    );
     return '$charset · $_temp0';
   }
 
@@ -5301,7 +5574,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get attachmentsCopied => 'Afritað';
 
   @override
-  String get attachmentsImageUnavailable => 'Ekki er hægt að sýna þessa mynd hér. Prófaðu „Opna í…“.';
+  String get attachmentsImageUnavailable =>
+      'Ekki er hægt að sýna þessa mynd hér. Prófaðu „Opna í…“.';
 
   @override
   String get attachmentsEmlNoSubject => '(Ekkert efni)';
@@ -5533,7 +5807,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get calendarCancelled => 'Aflýst';
 
   @override
-  String get calendarCancelledByOrganizer => 'Skipuleggjandinn aflýsti þessum viðburði.';
+  String get calendarCancelledByOrganizer =>
+      'Skipuleggjandinn aflýsti þessum viðburði.';
 
   @override
   String get calendarCancelledLater => 'Þessum viðburði var aflýst síðar.';
@@ -5542,7 +5817,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get calendarOutdated => 'Úrelt';
 
   @override
-  String get calendarOutdatedDetail => 'Þessu boði var breytt síðar; nýrra boðið gildir.';
+  String get calendarOutdatedDetail =>
+      'Þessu boði var breytt síðar; nýrra boðið gildir.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -5586,7 +5862,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String calendarGuestCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count gestir', one: '$count gestur');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gestir',
+      one: '$count gestur',
+    );
     return '$_temp0';
   }
 
@@ -5603,13 +5884,23 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String calendarMaybeCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count kannski', one: '$count kannski');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kannski',
+      one: '$count kannski',
+    );
     return '$_temp0';
   }
 
   @override
   String calendarDeclinedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count höfnuðu', one: '$count hafnaði');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count höfnuðu',
+      one: '$count hafnaði',
+    );
     return '$_temp0';
   }
 
@@ -5646,7 +5937,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get calendarDecline => 'Hafna';
 
   @override
-  String get calendarCommentHint => 'Athugasemd til skipuleggjanda (valfrjálst)';
+  String get calendarCommentHint =>
+      'Athugasemd til skipuleggjanda (valfrjálst)';
 
   @override
   String calendarReplyFrom(String organizer, String address) {
@@ -5671,7 +5963,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp => 'Ekkert dagatalsforrit er til að bæta viðburðinum við.';
+  String get calendarNoCalendarApp =>
+      'Ekkert dagatalsforrit er til að bæta viðburðinum við.';
 
   @override
   String get calendarCantOpenCalendar => 'Ekki tókst að opna dagatalið.';
@@ -5707,20 +6000,29 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer => 'Þetta boð hefur engan skipuleggjanda til að svara.';
+  String get calendarNoOrganizer =>
+      'Þetta boð hefur engan skipuleggjanda til að svara.';
 
   @override
   String get calendarNoAccount => 'Enginn aðgangur er til að svara frá.';
 
   @override
   String calendarReplySending(String answer, String name) {
-    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Samþykkt', 'tentative': 'Kannski', 'other': 'Hafnað'});
+    String _temp0 = intl.Intl.selectLogic(answer, {
+      'accepted': 'Samþykkt',
+      'tentative': 'Kannski',
+      'other': 'Hafnað',
+    });
     return '$_temp0 · sendi svar til $name…';
   }
 
   @override
   String calendarReplySent(String answer) {
-    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Samþykkt', 'tentative': 'Kannski', 'other': 'Hafnað'});
+    String _temp0 = intl.Intl.selectLogic(answer, {
+      'accepted': 'Samþykkt',
+      'tentative': 'Kannski',
+      'other': 'Hafnað',
+    });
     return '$_temp0 · svar sent';
   }
 
@@ -5800,7 +6102,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get keyboardKeyBackspace => 'Backspace';
 
   @override
-  String get mailingListsMuted => 'Þráðurinn er þaggaður. Ný skilaboð í honum berast sem lesin.';
+  String get mailingListsMuted =>
+      'Þráðurinn er þaggaður. Ný skilaboð í honum berast sem lesin.';
 
   @override
   String get mailingListsUnmuted => 'Þráðurinn er ekki lengur þaggaður.';
@@ -5837,7 +6140,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String mailingListsUnreadCount(int count, String formatted) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$formatted ólesin', one: '$count ólesið');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$formatted ólesin',
+      one: '$count ólesið',
+    );
     return '$_temp0';
   }
 
@@ -5852,7 +6160,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String mailingListsReplyCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count svör', one: '$count svar');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count svör',
+      one: '$count svar',
+    );
     return '$_temp0';
   }
 
@@ -5866,7 +6179,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Tæknilegir póstlistar';
 
   @override
-  String get mailingListsTechnicalEmpty => 'Póstlistar birtast hér þegar póstur frá þeim berst.';
+  String get mailingListsTechnicalEmpty =>
+      'Póstlistar birtast hér þegar póstur frá þeim berst.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -6037,7 +6351,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get searchUnknownAccountFailed => 'Ekki tókst að leita í aðgangi á netþjóninum';
+  String get searchUnknownAccountFailed =>
+      'Ekki tókst að leita í aðgangi á netþjóninum';
 
   @override
   String searchChip(String term) {
@@ -6100,7 +6415,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get searchSettingsTitle => 'Smart Mailboxes';
 
   @override
-  String get searchSettingsLocalFooter => 'Smart Mailboxes eru geymd í þessu tæki.';
+  String get searchSettingsLocalFooter =>
+      'Smart Mailboxes eru geymd í þessu tæki.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -6166,7 +6482,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String sharedBytes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count bæti', one: '$count bæti');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bæti',
+      one: '$count bæti',
+    );
     return '$_temp0';
   }
 
@@ -6384,7 +6705,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount => 'Veldu skilaboð úr einum aðgangi til að færa þau.';
+  String get sharedMoveOneAccount =>
+      'Veldu skilaboð úr einum aðgangi til að færa þau.';
 
   @override
   String get sharedSnoozeTitle => 'Blunda';
@@ -6446,6 +6768,331 @@ class AppLocalizationsIs extends AppLocalizations {
   String get sharedNotJunk => 'Ekki ruslpóstur';
 
   @override
+  String get documentsTitle => 'Documents';
+
+  @override
+  String get documentsSearchPlaceholder => 'Search in Documents';
+
+  @override
+  String get documentsSearchInDocuments => 'Search in Documents';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count downloaded documents',
+      one: '1 downloaded document',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count downloaded documents',
+      one: '1 downloaded document',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable can’t be read',
+      one: '1 can’t be read',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Searched $count downloaded documents',
+      one: 'Searched 1 downloaded document',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Searched $count downloaded documents',
+      one: 'Searched 1 downloaded document',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable couldn’t be read',
+      one: '1 couldn’t be read',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.';
+
+  @override
+  String get documentsEmpty => 'No Documents Yet';
+
+  @override
+  String get documentsEmptyDetail =>
+      'PDFs and text files you open from mail show up here, so you can search inside them.';
+
+  @override
+  String get documentsNoResults => 'No Matches';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'No downloaded document contains “$query”.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Matched on page $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Matched on line $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count more matches',
+      one: '1 more match',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Page $page';
+  }
+
+  @override
+  String get documentsReading => 'Reading…';
+
+  @override
+  String get documentsStatusNotDownloaded =>
+      'Not downloaded: open it to read and search it.';
+
+  @override
+  String get documentsStatusEncrypted =>
+      'Password protected: Loupe can’t read it.';
+
+  @override
+  String get documentsStatusNoText =>
+      'No text found: it may be a scan or a photo, which Loupe can’t read yet.';
+
+  @override
+  String get documentsStatusEmpty => 'This file has no text.';
+
+  @override
+  String get documentsStatusUnsupported =>
+      'Loupe can’t read this kind of document yet.';
+
+  @override
+  String get documentsStatusTooLarge => 'Too large to read on this phone.';
+
+  @override
+  String get documentsStatusDamaged =>
+      'Couldn’t be read: the file may be damaged.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total pages',
+      one: '1 page',
+    );
+    return 'Read $read of $_temp0; the rest isn’t searched.';
+  }
+
+  @override
+  String get documentsStatusPartialText =>
+      'Only the beginning was read; the rest isn’t searched.';
+
+  @override
+  String get documentsOpenDocument => 'Open Document';
+
+  @override
+  String get documentsOpenMessage => 'Open Message';
+
+  @override
+  String get documentsDetails => 'Document Details';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Contents fingerprint $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Text by Page';
+
+  @override
+  String get documentsVersionsHeader => 'Other Copies';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Different contents from the earlier copy ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'A newer copy ($date) has different contents';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Same contents as the copy of $date';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Same name as the copy of $date; contents not compared until both are downloaded';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges =>
+      'The Key Facts are the same; other text differs.';
+
+  @override
+  String get documentsKeyFacts => 'Key Facts';
+
+  @override
+  String get documentsKeyFactsFind => 'Find Key Facts';
+
+  @override
+  String get documentsKeyFactsWorking => 'Reading the document…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Couldn’t find the Key Facts.';
+
+  @override
+  String get documentsKeyFactsDemoNote =>
+      'Made by the built-in demo, not a model.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Made by $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint =>
+      'Tap a fact to see where the document says it.';
+
+  @override
+  String get documentsKeyFactsNone =>
+      'Loupe has no Key Facts for this kind of document yet.';
+
+  @override
+  String get documentsKeyFactsPartial =>
+      'Only the first pages were read; facts on later pages are unknown.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Not stated';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Stated differently';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Also on page $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Mortgage illustration';
+
+  @override
+  String get documentsTypeInvoice => 'Invoice';
+
+  @override
+  String get documentsTypeBooking => 'Booking';
+
+  @override
+  String get documentsTypeOther => 'Other document';
+
+  @override
+  String get documentsFieldInitialRate => 'Initial rate';
+
+  @override
+  String get documentsFieldRatePeriod => 'Rate period';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Monthly payment';
+
+  @override
+  String get documentsFieldTerm => 'Term';
+
+  @override
+  String get documentsFieldLoanAmount => 'Loan amount';
+
+  @override
+  String get documentsFieldArrangementFee => 'Arrangement fee';
+
+  @override
+  String get documentsFieldValuationFee => 'Valuation fee';
+
+  @override
+  String get documentsFieldBrokerFee => 'Broker fee';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Early repayment charges';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Total amount payable';
+
+  @override
+  String get documentsFieldAmountDue => 'Amount due';
+
+  @override
+  String get documentsFieldCurrency => 'Currency';
+
+  @override
+  String get documentsFieldDueDate => 'Due date';
+
+  @override
+  String get documentsFieldPayee => 'Payee';
+
+  @override
+  String get documentsFieldReference => 'Reference';
+
+  @override
+  String get documentsFieldSubtotal => 'Subtotal';
+
+  @override
+  String get documentsFieldTax => 'Tax';
+
+  @override
+  String get documentsFieldDate => 'Date';
+
+  @override
+  String get documentsFieldTime => 'Time';
+
+  @override
+  String get documentsFieldTimeZone => 'Time zone';
+
+  @override
+  String get documentsFieldAddress => 'Address';
+
+  @override
+  String get documentsFieldPerson => 'Person';
+
+  @override
   String get composeSignature => 'Undirskrift';
 
   @override
@@ -6461,7 +7108,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get accountSetupAddressTitle => 'Bæta við póstaðgangi';
 
   @override
-  String get accountSetupAddressText => 'Loupe finnur stillingarnar fyrir flestar póstþjónustur.';
+  String get accountSetupAddressText =>
+      'Loupe finnur stillingarnar fyrir flestar póstþjónustur.';
 
   @override
   String get accountSetupNameHint => 'Nafnið þitt';
@@ -6547,13 +7195,15 @@ class AppLocalizationsIs extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Nota forritslykilorð';
 
   @override
-  String get accountSetupUseAppPasswordInstead => 'Nota forritslykilorð í staðinn';
+  String get accountSetupUseAppPasswordInstead =>
+      'Nota forritslykilorð í staðinn';
 
   @override
   String get accountSetupUseDifferentAddress => 'Nota annað netfang';
 
   @override
-  String get accountSetupHowToCreateAppPassword => 'Hvernig á að búa til forritslykilorð';
+  String get accountSetupHowToCreateAppPassword =>
+      'Hvernig á að búa til forritslykilorð';
 
   @override
   String get accountSetupHowToCreateOne => 'Leiðbeiningar';
@@ -6583,14 +7233,16 @@ class AppLocalizationsIs extends AppLocalizations {
       'iCloud Mail þarf sérstakt forritslykilorð, ekki lykilorð Apple-reikningsins þíns.';
 
   @override
-  String get accountSetupYahooNote => 'Yahoo Mail þarf forritslykilorð, ekki lykilorð aðgangsins þíns.';
+  String get accountSetupYahooNote =>
+      'Yahoo Mail þarf forritslykilorð, ekki lykilorð aðgangsins þíns.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Loupe tengist Fastmail um JMAP með API-tóka: Settings › Privacy & Security › Manage API tokens, fyrir JMAP, með aðgangi að tölvupósti og sendingu.';
 
   @override
-  String get accountSetupFastmailNote => 'Fastmail þarf forritslykilorð fyrir póstforrit.';
+  String get accountSetupFastmailNote =>
+      'Fastmail þarf forritslykilorð fyrir póstforrit.';
 
   @override
   String get accountSetupServerSettings => 'Stillingar netþjóns';
@@ -6668,10 +7320,12 @@ class AppLocalizationsIs extends AppLocalizations {
       'API-tóka hafnað. Búðu til Fastmail API-tóka fyrir JMAP með aðgangi að tölvupósti og límdu hann inn.';
 
   @override
-  String get accountSetupAppPasswordRejected => 'Lykilorði hafnað. Notaðu forritslykilorð, ekki lykilorð aðgangsins.';
+  String get accountSetupAppPasswordRejected =>
+      'Lykilorði hafnað. Notaðu forritslykilorð, ekki lykilorð aðgangsins.';
 
   @override
-  String get accountSetupPasswordRejected => 'Lykilorði hafnað. Athugaðu það og reyndu aftur.';
+  String get accountSetupPasswordRejected =>
+      'Lykilorði hafnað. Athugaðu það og reyndu aftur.';
 
   @override
   String get accountSetupServerUnreachable =>
@@ -6729,7 +7383,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get accountSetupOAuthServerUnreachable => 'Ekki næst í póstþjóninn. Athugaðu tenginguna og reyndu aftur.';
+  String get accountSetupOAuthServerUnreachable =>
+      'Ekki næst í póstþjóninn. Athugaðu tenginguna og reyndu aftur.';
 
   @override
   String accountSetupSignInUnavailable(String provider) {
@@ -6748,7 +7403,11 @@ class AppLocalizationsIs extends AppLocalizations {
   String get accountSetupSigningIn => 'Skrái inn…';
 
   @override
-  String accountSetupSignInExpired(String provider, String email, String account) {
+  String accountSetupSignInExpired(
+    String provider,
+    String email,
+    String account,
+  ) {
     return '$provider samþykkir ekki lengur innskráningu Loupe fyrir $email, svo $account samstillist ekki. Skráðu þig inn aftur til að fá póstinn.';
   }
 
@@ -6756,7 +7415,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get accountImportTitle => 'Flytja inn úr Thunderbird';
 
   @override
-  String get accountImportPointCamera => 'Beindu myndavélinni að QR-kóðanum sem Thunderbird sýnir.';
+  String get accountImportPointCamera =>
+      'Beindu myndavélinni að QR-kóðanum sem Thunderbird sýnir.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -6814,20 +7474,24 @@ class AppLocalizationsIs extends AppLocalizations {
       'Þessi kóði er úr nýjum útflutningi, svo kóðarnir sem voru skannaðir áður voru lagðir til hliðar.';
 
   @override
-  String get accountImportNotThunderbird => 'Þetta er ekki aðgangskóði frá Thunderbird.';
+  String get accountImportNotThunderbird =>
+      'Þetta er ekki aðgangskóði frá Thunderbird.';
 
   @override
   String get accountImportNewerVersion =>
       'Þessi kóði kemur úr nýrri útgáfu af Thunderbird. Uppfærðu Loupe til að flytja hann inn.';
 
   @override
-  String get accountImportDamaged => 'Ekki tókst að lesa þennan Thunderbird-kóða.';
+  String get accountImportDamaged =>
+      'Ekki tókst að lesa þennan Thunderbird-kóða.';
 
   @override
-  String get accountImportTooLarge => 'Þessi kóði er of stór til að vera útflutningur úr Thunderbird.';
+  String get accountImportTooLarge =>
+      'Þessi kóði er of stór til að vera útflutningur úr Thunderbird.';
 
   @override
-  String get accountImportCouldNotOpenSettings => 'Ekki tókst að opna stillingar.';
+  String get accountImportCouldNotOpenSettings =>
+      'Ekki tókst að opna stillingar.';
 
   @override
   String get accountImportCameraOffTitle => 'Slökkt er á aðgangi að myndavél';
@@ -6840,13 +7504,15 @@ class AppLocalizationsIs extends AppLocalizations {
   String get accountImportNoCameraTitle => 'Engin myndavél';
 
   @override
-  String get accountImportNoCameraText => 'Loupe getur ekki notað myndavél hér. Límdu inn texta kóðans í staðinn.';
+  String get accountImportNoCameraText =>
+      'Loupe getur ekki notað myndavél hér. Límdu inn texta kóðans í staðinn.';
 
   @override
   String get accountImportCameraFailedTitle => 'Myndavélin ræstist ekki';
 
   @override
-  String get accountImportCameraFailedText => 'Reyndu aftur, eða límdu inn texta kóðans í staðinn.';
+  String get accountImportCameraFailedText =>
+      'Reyndu aftur, eða límdu inn texta kóðans í staðinn.';
 
   @override
   String get accountImportOpenSettings => 'Opna stillingar';
@@ -6864,7 +7530,8 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable => 'Ekki var hægt að lesa neinn af aðgöngunum í þessum kóðum.';
+  String get accountImportNoneReadable =>
+      'Ekki var hægt að lesa neinn af aðgöngunum í þessum kóðum.';
 
   @override
   String get accountImportChoose => 'Veldu aðgangana sem á að bæta við Loupe.';
@@ -6874,8 +7541,10 @@ class AppLocalizationsIs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count kóðar af $total voru ekki skannaðir (nr. $codes), svo aðgangar þeirra eru ekki á listanum.',
-      one: '$count kóði af $total var ekki skannaður (nr. $codes), svo aðgangar hans eru ekki á listanum.',
+      other:
+          '$count kóðar af $total voru ekki skannaðir (nr. $codes), svo aðgangar þeirra eru ekki á listanum.',
+      one:
+          '$count kóði af $total var ekki skannaður (nr. $codes), svo aðgangar hans eru ekki á listanum.',
     );
     return '$_temp0';
   }
@@ -6895,7 +7564,8 @@ class AppLocalizationsIs extends AppLocalizations {
       locale: localeName,
       other:
           'Ekki var hægt að lesa $count aðganga í kóðunum. Þeir gætu notað stillingar úr nýrri útgáfu af Thunderbird.',
-      one: 'Ekki var hægt að lesa $count aðgang í kóðunum. Hann gæti notað stillingar úr nýrri útgáfu af Thunderbird.',
+      one:
+          'Ekki var hægt að lesa $count aðgang í kóðunum. Hann gæti notað stillingar úr nýrri útgáfu af Thunderbird.',
     );
     return '$_temp0';
   }
@@ -6904,7 +7574,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get accountImportScanAgain => 'Skanna aftur';
 
   @override
-  String get accountImportAlreadyAdded => 'Aðgangur með þessu netfangi er þegar í Loupe.';
+  String get accountImportAlreadyAdded =>
+      'Aðgangur með þessu netfangi er þegar í Loupe.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -6924,7 +7595,8 @@ class AppLocalizationsIs extends AppLocalizations {
       'Thunderbird skráir sig inn á þennan aðgang í vafranum. Loupe getur það ekki enn: notaðu forritslykilorð ef þjónustan þín býður upp á slíkt.';
 
   @override
-  String get accountImportUnencrypted => 'Tengist án dulkóðunar. Notaðu þetta aðeins á þínu eigin neti.';
+  String get accountImportUnencrypted =>
+      'Tengist án dulkóðunar. Notaðu þetta aðeins á þínu eigin neti.';
 
   @override
   String get accountImportEnterAgain => 'Sláðu það inn aftur';
@@ -6953,16 +7625,20 @@ class AppLocalizationsIs extends AppLocalizations {
   String get accountImportPasteTitle => 'Líma útflutningstexta';
 
   @override
-  String get accountImportPasteText => 'Límdu inn texta útflutningskóða úr Thunderbird, einn kóða í hverja línu.';
+  String get accountImportPasteText =>
+      'Límdu inn texta útflutningskóða úr Thunderbird, einn kóða í hverja línu.';
 
   @override
-  String get accountImportPop3 => 'POP3-aðgangar eru ekki studdir. Loupe geymir póstinn á netþjóninum með IMAP.';
+  String get accountImportPop3 =>
+      'POP3-aðgangar eru ekki studdir. Loupe geymir póstinn á netþjóninum með IMAP.';
 
   @override
-  String get accountImportKerberos => 'Þessi aðgangur skráir sig inn með Kerberos, sem Loupe styður ekki.';
+  String get accountImportKerberos =>
+      'Þessi aðgangur skráir sig inn með Kerberos, sem Loupe styður ekki.';
 
   @override
-  String get accountImportNtlm => 'Þessi aðgangur skráir sig inn með NTLM, sem Loupe styður ekki.';
+  String get accountImportNtlm =>
+      'Þessi aðgangur skráir sig inn með NTLM, sem Loupe styður ekki.';
 
   @override
   String get accountImportClientCertificate =>
@@ -6982,10 +7658,12 @@ class AppLocalizationsIs extends AppLocalizations {
   String get accountImportEnterApiToken => 'Sláðu inn API-tókann.';
 
   @override
-  String get accountImportStorageFailed => 'Loupe gat ekki opnað aðgangageymsluna sína. Reyndu aftur síðar.';
+  String get accountImportStorageFailed =>
+      'Loupe gat ekki opnað aðgangageymsluna sína. Reyndu aftur síðar.';
 
   @override
-  String get accountImportFailed => 'Ekki tókst að bæta aðganginum við. Reyndu aftur eða bættu honum við handvirkt.';
+  String get accountImportFailed =>
+      'Ekki tókst að bæta aðganginum við. Reyndu aftur eða bættu honum við handvirkt.';
 
   @override
   String get composeNewMessageTitle => 'Ný skilaboð';
@@ -7083,7 +7761,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get composeDraftNotFound => 'Drögin fundust ekki.';
 
   @override
-  String get composeAttachmentsLost => 'Ekki tókst að endurheimta viðhengin. Bættu þeim við aftur.';
+  String get composeAttachmentsLost =>
+      'Ekki tókst að endurheimta viðhengin. Bættu þeim við aftur.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -7110,10 +7789,12 @@ class AppLocalizationsIs extends AppLocalizations {
   String get composeNoSubjectTitle => 'Ekkert efni';
 
   @override
-  String get composeNoSubjectText => 'Þessi skilaboð hafa ekkert efni. Senda samt?';
+  String get composeNoSubjectText =>
+      'Þessi skilaboð hafa ekkert efni. Senda samt?';
 
   @override
-  String get composeSentBeforeChanges => 'Þau voru send áður en þú gerðir breytingarnar, sem eru vistaðar í Drögum.';
+  String get composeSentBeforeChanges =>
+      'Þau voru send áður en þú gerðir breytingarnar, sem eru vistaðar í Drögum.';
 
   @override
   String composeScheduled(String time) {
@@ -7238,17 +7919,24 @@ class AppLocalizationsIs extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Skilaboð voru ekki send þegar Loupe lokaðist.',
       'one': 'Skilaboð til $name voru ekki send þegar Loupe lokaðist.',
-      'other': 'Skilaboð til $name og fleiri voru ekki send þegar Loupe lokaðist.',
+      'other':
+          'Skilaboð til $name og fleiri voru ekki send þegar Loupe lokaðist.',
     });
     return '$_temp0';
   }
 
   @override
-  String composeRecoveryWithSubject(String recipients, String subject, String name) {
+  String composeRecoveryWithSubject(
+    String recipients,
+    String subject,
+    String name,
+  ) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Skilaboðin „$subject“ voru ekki send þegar Loupe lokaðist.',
-      'one': 'Skilaboðin „$subject“ til $name voru ekki send þegar Loupe lokaðist.',
-      'other': 'Skilaboðin „$subject“ til $name og fleiri voru ekki send þegar Loupe lokaðist.',
+      'one':
+          'Skilaboðin „$subject“ til $name voru ekki send þegar Loupe lokaðist.',
+      'other':
+          'Skilaboðin „$subject“ til $name og fleiri voru ekki send þegar Loupe lokaðist.',
     });
     return '$_temp0';
   }
@@ -7296,7 +7984,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get outboxEmptyTitle => 'Ekkert að senda';
 
   @override
-  String get outboxEmptyText => 'Skilaboð sem þú sendir síðar bíða hér þar til tími er kominn.';
+  String get outboxEmptyText =>
+      'Skilaboð sem þú sendir síðar bíða hér þar til tími er kominn.';
 
   @override
   String get outboxSendNow => 'Senda núna';
@@ -7343,7 +8032,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get outboxBeingSent => 'Verið er að senda þessi skilaboð.';
 
   @override
-  String get outboxActionFailed => 'Það tókst ekki. Skilaboðin eru enn í úthólfinu.';
+  String get outboxActionFailed =>
+      'Það tókst ekki. Skilaboðin eru enn í úthólfinu.';
 
   @override
   String get notificationsBadgeInboxes => 'Ólesið í innhólfum';
@@ -7355,7 +8045,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription => 'Nýr póstur frá VIP-tengiliðunum þínum, í hvaða aðgangi sem er';
+  String get notificationsVipChannelDescription =>
+      'Nýr póstur frá VIP-tengiliðunum þínum, í hvaða aðgangi sem er';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -7396,7 +8087,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get platformInstantChannel => 'Tafarlaus afhending';
 
   @override
-  String get platformInstantChannelDescription => 'Birtist á meðan Loupe fylgist með nýjum pósti í innhólfunum þínum';
+  String get platformInstantChannelDescription =>
+      'Birtist á meðan Loupe fylgist með nýjum pósti í innhólfunum þínum';
 
   @override
   String get platformInstantTitle => 'Fylgist með nýjum pósti';
@@ -7405,28 +8097,33 @@ class AppLocalizationsIs extends AppLocalizations {
   String get platformInstantText => 'Kveikt er á tafarlausri afhendingu';
 
   @override
-  String get platformErrorBox => 'Eitthvað fór úrskeiðis við að birta þetta. Farðu til baka og reyndu aftur.';
+  String get platformErrorBox =>
+      'Eitthvað fór úrskeiðis við að birta þetta. Farðu til baka og reyndu aftur.';
 
   @override
-  String get welcomeTagline => 'Póstur sem er einfaldur á yfirborðinu\nog öflugur undir niðri.';
+  String get welcomeTagline =>
+      'Póstur sem er einfaldur á yfirborðinu\nog öflugur undir niðri.';
 
   @override
   String get welcomeAccountsTitle => 'Allir aðgangar, eitt rólegt innhólf';
 
   @override
-  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail og hvaða IMAP- eða JMAP-netþjónn sem er.';
+  String get welcomeAccountsText =>
+      'Gmail, Outlook, iCloud, Fastmail og hvaða IMAP- eða JMAP-netþjónn sem er.';
 
   @override
   String get welcomeSearchTitle => 'Leit sem finnur';
 
   @override
-  String get welcomeSearchText => 'Tafarlausar niðurstöður úr símanum, síðan frá netþjóninum.';
+  String get welcomeSearchText =>
+      'Tafarlausar niðurstöður úr símanum, síðan frá netþjóninum.';
 
   @override
   String get welcomePrivacyTitle => 'Persónuvernd frá grunni';
 
   @override
-  String get welcomePrivacyText => 'Engin rakning. Fjartengdar myndir eru lokaðar þar til þú segir annað.';
+  String get welcomePrivacyText =>
+      'Engin rakning. Fjartengdar myndir eru lokaðar þar til þú segir annað.';
 
   @override
   String get welcomeAddAccount => 'Bæta við aðgangi';
@@ -7456,7 +8153,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get searchAskFailed => 'Loupe gat ekki gert leit úr þessu.';
 
   @override
-  String get searchAskDemoNote => 'Þýtt af innbyggðu sýnisútgáfunni, ekki af líkani.';
+  String get searchAskDemoNote =>
+      'Þýtt af innbyggðu sýnisútgáfunni, ekki af líkani.';
 
   @override
   String get settingsAiHeader => 'Einkagervigreind';
@@ -7480,10 +8178,12 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsAiDemo => 'Innbyggð sýnisútgáfa';
 
   @override
-  String get settingsAiDemoDetail => 'Í þessum síma. Ekkert líkan: nokkrar reglur til að prófa eiginleikana.';
+  String get settingsAiDemoDetail =>
+      'Í þessum síma. Ekkert líkan: nokkrar reglur til að prófa eiginleikana.';
 
   @override
-  String get settingsAiAnthropicDetail => 'Ský: Claude, með þínum eigin API-lykli.';
+  String get settingsAiAnthropicDetail =>
+      'Ský: Claude, með þínum eigin API-lykli.';
 
   @override
   String get settingsAiServer => 'Netþjónninn minn';
@@ -7496,7 +8196,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsAiOnPhone => 'Í þessum síma';
 
   @override
-  String get settingsAiOnPhoneDetail => 'Ekki tiltækt enn: líkanið í tækinu er enn í prófunum á símum.';
+  String get settingsAiOnPhoneDetail =>
+      'Ekki tiltækt enn: líkanið í tækinu er enn í prófunum á símum.';
 
   @override
   String get settingsAiNotSetUp => 'Ekki uppsett';
@@ -7547,13 +8248,15 @@ class AppLocalizationsIs extends AppLocalizations {
       'Að og með slóð API-sins, til dæmis http://192.168.1.20:11434/v1 fyrir Ollama.';
 
   @override
-  String get settingsAiServerAddressInvalid => 'Þetta er ekki http://- eða https://-vistfang.';
+  String get settingsAiServerAddressInvalid =>
+      'Þetta er ekki http://- eða https://-vistfang.';
 
   @override
   String get settingsAiServerModelTitle => 'Heiti líkans';
 
   @override
-  String get settingsAiServerModelMessage => 'Eins og netþjónninn þinn nefnir það, til dæmis llama3.2.';
+  String get settingsAiServerModelMessage =>
+      'Eins og netþjónninn þinn nefnir það, til dæmis llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Prófa tengingu';
@@ -7570,7 +8273,8 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsAiTestFailed => 'Prófun mistókst';
 
   @override
-  String get settingsAiTestInvalid => 'Líkanið svaraði, en ekki á því formi sem Loupe bað um.';
+  String get settingsAiTestInvalid =>
+      'Líkanið svaraði, en ekki á því formi sem Loupe bað um.';
 
   @override
   String get settingsAiRemoveKey => 'Fjarlægja lykil';
@@ -7640,28 +8344,36 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Staða máls';
 
   @override
-  String get settingsAiFeatureSearchDetail => 'Í leit: setning verður að leit sem þú getur yfirfarið.';
+  String get settingsAiFeatureSearchDetail =>
+      'Í leit: setning verður að leit sem þú getur yfirfarið.';
 
   @override
-  String get settingsAiFeatureBriefDetail => 'Í skeyti: hvers það krefst af þér, með köflunum.';
+  String get settingsAiFeatureBriefDetail =>
+      'Í skeyti: hvers það krefst af þér, með köflunum.';
 
   @override
-  String get settingsAiFeatureActionsDetail => 'Leggur til atriði fyrir „Bíður mín“ og „Bíður annarra“.';
+  String get settingsAiFeatureActionsDetail =>
+      'Leggur til atriði fyrir „Bíður mín“ og „Bíður annarra“.';
 
   @override
-  String get settingsAiFeatureRulesDetail => 'Í Reglum: lýsing verður að reglu sem þú yfirferð áður en þú vistar.';
+  String get settingsAiFeatureRulesDetail =>
+      'Í Reglum: lýsing verður að reglu sem þú yfirferð áður en þú vistar.';
 
   @override
-  String get settingsAiFeatureChangesDetail => 'Í Bera saman skilaboð: hvað breyttist að merkingu, með heimildum.';
+  String get settingsAiFeatureChangesDetail =>
+      'Í Bera saman skilaboð: hvað breyttist að merkingu, með heimildum.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail => 'Helstu staðreyndir viðhengdra skjala, með blaðsíðum þeirra.';
+  String get settingsAiFeatureDocumentsDetail =>
+      'Helstu staðreyndir viðhengdra skjala, með blaðsíðum þeirra.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail => 'Áður en þú sendir: hvað svarið gæti hafa misst af.';
+  String get settingsAiFeatureReplyCheckDetail =>
+      'Áður en þú sendir: hvað svarið gæti hafa misst af.';
 
   @override
-  String get settingsAiFeatureMattersDetail => 'Nýjasta staða máls, út frá pósti þess.';
+  String get settingsAiFeatureMattersDetail =>
+      'Nýjasta staða máls, út frá pósti þess.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Halda pósti í símanum';
@@ -7687,7 +8399,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String settingsAiUsageRequests(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count beiðnir', one: '$count beiðni');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count beiðnir',
+      one: '$count beiðni',
+    );
     return '$_temp0';
   }
 

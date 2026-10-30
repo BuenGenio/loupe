@@ -157,7 +157,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get changesExplainTitle => 'Ce s-a schimbat';
 
   @override
-  String get changesExplainIntro => 'Explică faptele schimbate, fiecare legat de pasajele sale din ambele mesaje.';
+  String get changesExplainIntro =>
+      'Explică faptele schimbate, fiecare legat de pasajele sale din ambele mesaje.';
 
   @override
   String get changesExplainAction => 'Explică modificările';
@@ -166,16 +167,19 @@ class AppLocalizationsRo extends AppLocalizations {
   String get changesExplainWorking => 'Se explică modificările…';
 
   @override
-  String get changesExplainFailed => 'Loupe nu a putut explica aceste modificări.';
+  String get changesExplainFailed =>
+      'Loupe nu a putut explica aceste modificări.';
 
   @override
-  String get changesExplainTooLarge => 'Aceste mesaje sunt prea lungi pentru model.';
+  String get changesExplainTooLarge =>
+      'Aceste mesaje sunt prea lungi pentru model.';
 
   @override
   String get changesExplainProviderError => 'Modelul nu a răspuns.';
 
   @override
-  String get changesExplainInvalid => 'Răspunsul nu a trecut verificările Loupe, așa că nu se afișează nimic din el.';
+  String get changesExplainInvalid =>
+      'Răspunsul nu a trecut verificările Loupe, așa că nu se afișează nimic din el.';
 
   @override
   String get changesExplainNoChange =>
@@ -204,10 +208,12 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get changesExplainConflictNote => 'Mesajele nu spun care dintre acestea este valabil.';
+  String get changesExplainConflictNote =>
+      'Mesajele nu spun care dintre acestea este valabil.';
 
   @override
-  String get changesExplainPartial => 'S-a citit doar începutul unui mesaj lung.';
+  String get changesExplainPartial =>
+      'S-a citit doar începutul unui mesaj lung.';
 
   @override
   String get changesExplainQuotedNote =>
@@ -226,7 +232,8 @@ class AppLocalizationsRo extends AppLocalizations {
       'Se explică doar textul mesajelor. Atașamentele se compară doar după nume, tip și dimensiune.';
 
   @override
-  String get changesExplainDemoNote => 'Realizat de demonstrația încorporată, nu de un model.';
+  String get changesExplainDemoNote =>
+      'Realizat de demonstrația încorporată, nu de un model.';
 
   @override
   String changesExplainMadeBy(String provider) {
@@ -234,7 +241,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get changesExplainNoPassage => 'Niciun pasaj evidențiat în acest mesaj.';
+  String get changesExplainNoPassage =>
+      'Niciun pasaj evidențiat în acest mesaj.';
 
   @override
   String get conversationCompareMessages => 'Compară mesajele…';
@@ -279,10 +287,12 @@ class AppLocalizationsRo extends AppLocalizations {
       'Acest mesaj este prea mare pentru o comparație detaliată. O parte din text poate fi omisă sau afișată ca un bloc întreg.';
 
   @override
-  String get conversationChangesLoadError => 'Aceste mesaje nu au putut fi comparate.';
+  String get conversationChangesLoadError =>
+      'Aceste mesaje nu au putut fi comparate.';
 
   @override
-  String get conversationSomethingWentWrong => 'Ceva nu a mers bine. Încearcă din nou.';
+  String get conversationSomethingWentWrong =>
+      'Ceva nu a mers bine. Încearcă din nou.';
 
   @override
   String get conversationReplyToList => 'Răspunde listei';
@@ -291,7 +301,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get conversationReplyList => 'Răspunde listei';
 
   @override
-  String get conversationThreadMuted => 'Fir ignorat. Mesajele noi din el sosesc deja citite.';
+  String get conversationThreadMuted =>
+      'Fir ignorat. Mesajele noi din el sosesc deja citite.';
 
   @override
   String get conversationThreadUnmuted => 'Firul nu mai este ignorat.';
@@ -312,13 +323,15 @@ class AppLocalizationsRo extends AppLocalizations {
   String get conversationReaderOptions => 'Opțiuni de citire';
 
   @override
-  String get conversationReaderOptionsHint => 'Dimensiunea textului și vizualizarea';
+  String get conversationReaderOptionsHint =>
+      'Dimensiunea textului și vizualizarea';
 
   @override
   String get conversationTrash => 'Coș de gunoi';
 
   @override
-  String get conversationReplyHint => 'Apasă lung pentru Răspunde tuturor și Redirecționează';
+  String get conversationReplyHint =>
+      'Apasă lung pentru Răspunde tuturor și Redirecționează';
 
   @override
   String get conversationOfflineTitle => 'Ești offline';
@@ -392,10 +405,12 @@ class AppLocalizationsRo extends AppLocalizations {
   String get conversationBodyError => 'Acest mesaj nu a putut fi încărcat.';
 
   @override
-  String get conversationBodyOffline => 'Ești offline. Mesajul se va încărca atunci când revii online.';
+  String get conversationBodyOffline =>
+      'Ești offline. Mesajul se va încărca atunci când revii online.';
 
   @override
-  String get conversationOriginalHint => 'Arată mai bine în vizualizarea Original';
+  String get conversationOriginalHint =>
+      'Arată mai bine în vizualizarea Original';
 
   @override
   String get conversationShowOriginal => 'Afișează originalul';
@@ -437,7 +452,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get conversationShareAsFile => 'Distribuie ca fișier…';
 
   @override
-  String get conversationSearchFromMessageMenu => 'Caută pornind de la acest mesaj…';
+  String get conversationSearchFromMessageMenu =>
+      'Caută pornind de la acest mesaj…';
 
   @override
   String get conversationVip => 'VIP';
@@ -469,7 +485,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get conversationNoHeaders => 'Niciun antet';
 
   @override
-  String get conversationSearchFromMessageTitle => 'Caută pornind de la acest mesaj';
+  String get conversationSearchFromMessageTitle =>
+      'Caută pornind de la acest mesaj';
 
   @override
   String conversationSearchFrom(String name) {
@@ -521,7 +538,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get conversationMoveTo => 'Mută în…';
 
   @override
-  String get conversationMailboxesError => 'Căsuțele poștale nu au putut fi încărcate.';
+  String get conversationMailboxesError =>
+      'Căsuțele poștale nu au putut fi încărcate.';
 
   @override
   String get conversationReaderReadable => 'Lizibil';
@@ -572,7 +590,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get conversationSecurityBadgeHint => 'Arată de ce';
 
   @override
-  String get conversationPhishingBannerTitle => 'Acest mesaj pare a fi phishing';
+  String get conversationPhishingBannerTitle =>
+      'Acest mesaj pare a fi phishing';
 
   @override
   String conversationPhishingBannerReason(String reason) {
@@ -580,7 +599,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get conversationPhishingBannerText => 'Linkurile și imaginile sunt dezactivate.';
+  String get conversationPhishingBannerText =>
+      'Linkurile și imaginile sunt dezactivate.';
 
   @override
   String get conversationPhishingWhy => 'De ce?';
@@ -592,16 +612,19 @@ class AppLocalizationsRo extends AppLocalizations {
   String get conversationSecurityPhishingTitle => 'Pare a fi phishing';
 
   @override
-  String get conversationSecurityPhishingText => 'Mai multe semne arată că acest mesaj nu este ceea ce pretinde.';
+  String get conversationSecurityPhishingText =>
+      'Mai multe semne arată că acest mesaj nu este ceea ce pretinde.';
 
   @override
   String get conversationSecurityCarefulTitle => 'Ai grijă cu acest mesaj';
 
   @override
-  String get conversationSecurityCarefulText => 'Ceva din el merită o a doua privire.';
+  String get conversationSecurityCarefulText =>
+      'Ceva din el merită o a doua privire.';
 
   @override
-  String get conversationSecurityVerifiedText => 'Expeditorul este verificat și nimic nu pare suspect.';
+  String get conversationSecurityVerifiedText =>
+      'Expeditorul este verificat și nimic nu pare suspect.';
 
   @override
   String get conversationSecurityUnverifiedText =>
@@ -632,7 +655,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityTrackingPixelsText => 'I-ar fi spus expeditorului când ai deschis acest mesaj.';
+  String get conversationSecurityTrackingPixelsText =>
+      'I-ar fi spus expeditorului când ai deschis acest mesaj.';
 
   @override
   String get conversationSecurityNoRemoteImages => 'Nicio imagine externă';
@@ -677,7 +701,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Detalii tehnice';
 
   @override
-  String get conversationSecurityCheckedLocally => 'Verificat pe acest dispozitiv. Nu s-a trimis nimic nicăieri.';
+  String get conversationSecurityCheckedLocally =>
+      'Verificat pe acest dispozitiv. Nu s-a trimis nimic nicăieri.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Trackere';
@@ -757,7 +782,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle => 'Numele arată o altă adresă';
+  String get conversationSecurityNameShowsAddressTitle =>
+      'Numele arată o altă adresă';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -765,10 +791,12 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice => 'Ai încredere în adresă, nu în nume.';
+  String get conversationSecurityNameShowsAddressAdvice =>
+      'Ai încredere în adresă, nu în nume.';
 
   @override
-  String get conversationSecurityReplyToTitle => 'Răspunsurile ajung în altă parte';
+  String get conversationSecurityReplyToTitle =>
+      'Răspunsurile ajung în altă parte';
 
   @override
   String conversationSecurityReplyToText(String address, String domain) {
@@ -776,13 +804,16 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityReplyToAdvice => 'Verifică adresa înainte să răspunzi cu ceva personal.';
+  String get conversationSecurityReplyToAdvice =>
+      'Verifică adresa înainte să răspunzi cu ceva personal.';
 
   @override
-  String get conversationSecurityImpersonationYouTitle => 'Folosește numele tău';
+  String get conversationSecurityImpersonationYouTitle =>
+      'Folosește numele tău';
 
   @override
-  String get conversationSecurityImpersonationTitle => 'Folosește numele cuiva pe care îl cunoști';
+  String get conversationSecurityImpersonationTitle =>
+      'Folosește numele cuiva pe care îl cunoști';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -790,17 +821,28 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationVipText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Este semnat „$name”, ca VIP-ul tău $knownName ($knownEmail), dar vine de la o adresă nouă: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
+  String conversationSecurityImpersonationText(
+    String name,
+    String knownName,
+    String knownEmail,
+    String email,
+  ) {
     return 'Este semnat „$name”, ca $knownName ($knownEmail), dar vine de la o adresă nouă: $email.';
   }
 
   @override
-  String get conversationSecurityImpersonationRepliesElsewhere => 'Iar răspunsurile ar ajunge la încă o altă adresă.';
+  String get conversationSecurityImpersonationRepliesElsewhere =>
+      'Iar răspunsurile ar ajunge la încă o altă adresă.';
 
   @override
   String get conversationSecurityImpersonationAdvice =>
@@ -817,7 +859,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle => 'Primul mesaj de la acest expeditor';
+  String get conversationSecurityFirstTimeTitle =>
+      'Primul mesaj de la acest expeditor';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -829,10 +872,12 @@ class AppLocalizationsRo extends AppLocalizations {
       'Ai grijă la cererile venite de la persoane pe care încă nu le cunoști.';
 
   @override
-  String get conversationSecuritySenderHomographTitle => 'Litere înșelătoare în adresa expeditorului';
+  String get conversationSecuritySenderHomographTitle =>
+      'Litere înșelătoare în adresa expeditorului';
 
   @override
-  String get conversationSecurityLinkHomographTitle => 'Litere înșelătoare într-un link';
+  String get conversationSecurityLinkHomographTitle =>
+      'Litere înșelătoare într-un link';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -845,7 +890,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice => 'Șterge-l sau raportează-l ca spam.';
+  String get conversationSecuritySenderHomographAdvice =>
+      'Șterge-l sau raportează-l ca spam.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Nu-l deschide.';
@@ -859,7 +905,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get conversationSecurityLookalikeTitle => 'Domeniu care imită altul';
 
   @override
-  String get conversationSecurityFamiliarNameTitle => 'Folosește un nume cunoscut în domeniu';
+  String get conversationSecurityFamiliarNameTitle =>
+      'Folosește un nume cunoscut în domeniu';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -867,7 +914,11 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(String domain, String brand, String real) {
+  String conversationSecurityLookalikeText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return '$domain seamănă cu $brand ($real), dar este un domeniu diferit.';
   }
 
@@ -877,7 +928,11 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
+  String conversationSecurityFamiliarNameText(
+    String domain,
+    String brand,
+    String real,
+  ) {
     return '$domain folosește numele $brand ($real), dar nu îi aparține.';
   }
 
@@ -928,7 +983,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle => 'Destinația unui link nu poate fi verificată';
+  String get conversationSecurityLinkUncheckableTitle =>
+      'Destinația unui link nu poate fi verificată';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -936,7 +992,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle => 'Un link duce la o simplă adresă IP';
+  String get conversationSecurityIpAddressTitle =>
+      'Un link duce la o simplă adresă IP';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -952,7 +1009,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityDataLinkTitle => 'O pagină ascunsă a fost dezactivată';
+  String get conversationSecurityDataLinkTitle =>
+      'O pagină ascunsă a fost dezactivată';
 
   @override
   String get conversationSecurityDataLinkText =>
@@ -962,16 +1020,20 @@ class AppLocalizationsRo extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Cere o parolă';
 
   @override
-  String get conversationSecurityPasswordFieldText => 'Mesajul conținea un câmp pentru parolă. Loupe l-a eliminat.';
+  String get conversationSecurityPasswordFieldText =>
+      'Mesajul conținea un câmp pentru parolă. Loupe l-a eliminat.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice => 'Nu introduce niciodată o parolă într-un e-mail.';
+  String get conversationSecurityPasswordFieldAdvice =>
+      'Nu introduce niciodată o parolă într-un e-mail.';
 
   @override
-  String get conversationSecurityScriptLinkTitle => 'Un link care rulează cod a fost dezactivat';
+  String get conversationSecurityScriptLinkTitle =>
+      'Un link care rulează cod a fost dezactivat';
 
   @override
-  String get conversationSecurityScriptLinkText => 'Loupe nu rulează niciodată cod din mesaje.';
+  String get conversationSecurityScriptLinkText =>
+      'Loupe nu rulează niciodată cod din mesaje.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -991,7 +1053,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityInternationalTitle => 'Adresă web internațională';
+  String get conversationSecurityInternationalTitle =>
+      'Adresă web internațională';
 
   @override
   String conversationSecurityInternationalText(String hosts) {
@@ -1032,7 +1095,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed => 'Mesajul nu a putut fi descărcat. Verifică conexiunea și încearcă din nou.';
+  String get exportDownloadFailed =>
+      'Mesajul nu a putut fi descărcat. Verifică conexiunea și încearcă din nou.';
 
   @override
   String exportSaved(String name) {
@@ -1062,9 +1126,12 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '„$name” a fost salvat fără $formattedCount de mesaje care nu au putut fi descărcate.',
-      few: '„$name” a fost salvat fără $formattedCount mesaje care nu au putut fi descărcate.',
-      one: '„$name” a fost salvat fără $count mesaj care nu a putut fi descărcat.',
+      other:
+          '„$name” a fost salvat fără $formattedCount de mesaje care nu au putut fi descărcate.',
+      few:
+          '„$name” a fost salvat fără $formattedCount mesaje care nu au putut fi descărcate.',
+      one:
+          '„$name” a fost salvat fără $count mesaj care nu a putut fi descărcat.',
     );
     return '$_temp0';
   }
@@ -1143,7 +1210,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get mailboxesSmartMailboxes => 'Smart Mailboxes';
 
   @override
-  String get mailboxesSmartMailboxesEmpty => 'Salvează o căutare ca s-o păstrezi aici.';
+  String get mailboxesSmartMailboxesEmpty =>
+      'Salvează o căutare ca s-o păstrezi aici.';
 
   @override
   String get mailboxesTags => 'Etichete';
@@ -1177,7 +1245,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get projectsDelete => 'Șterge proiectul';
 
   @override
-  String get projectsDeleteMessage => 'Conversațiile lui rămân unde sunt, în afara proiectului.';
+  String get projectsDeleteMessage =>
+      'Conversațiile lui rămân unde sunt, în afara proiectului.';
 
   @override
   String get projectsUntitled => 'Proiect';
@@ -1292,7 +1361,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get mailboxesVipTitle => 'VIP';
 
   @override
-  String get mailboxesVipFooter => 'Poți și să atingi numele unui expeditor într-un mesaj și să activezi VIP.';
+  String get mailboxesVipFooter =>
+      'Poți și să atingi numele unui expeditor într-un mesaj și să activezi VIP.';
 
   @override
   String get mailboxesAddVip => 'Adaugă VIP…';
@@ -1301,7 +1371,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get mailboxesAddVipTitle => 'Adaugă VIP';
 
   @override
-  String get mailboxesAddVipText => 'E-mailurile de la această adresă primesc o stea și apar în căsuța poștală VIP.';
+  String get mailboxesAddVipText =>
+      'E-mailurile de la această adresă primesc o stea și apar în căsuța poștală VIP.';
 
   @override
   String get mailboxesAddVipPlaceholder => 'nume@example.com';
@@ -1340,14 +1411,19 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get messageListLoadOlderFailed => 'E-mailurile mai vechi nu au putut fi încărcate.';
+  String get messageListLoadOlderFailed =>
+      'E-mailurile mai vechi nu au putut fi încărcate.';
 
   @override
   String get messageListSelectMessages => 'Selectează mesaje';
 
   @override
   String messageListSelected(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Selectate: $count');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Selectate: $count',
+    );
     return '$_temp0';
   }
 
@@ -1484,13 +1560,15 @@ class AppLocalizationsRo extends AppLocalizations {
   String get snoozeNoTime => 'Nicio oră setată';
 
   @override
-  String get snoozeFooter => 'Mesajele amânate revin în Inbox, necitite, la ora stabilită.';
+  String get snoozeFooter =>
+      'Mesajele amânate revin în Inbox, necitite, la ora stabilită.';
 
   @override
   String get snoozeEmptyTitle => 'Nimic amânat';
 
   @override
-  String get snoozeEmptyText => 'Amână un mesaj ca să revină în Inbox când ai nevoie de el.';
+  String get snoozeEmptyText =>
+      'Amână un mesaj ca să revină în Inbox când ai nevoie de el.';
 
   @override
   String get briefButton => 'Pe scurt';
@@ -1514,13 +1592,15 @@ class AppLocalizationsRo extends AppLocalizations {
   String get briefStopped => 'Ai oprit rezumatul.';
 
   @override
-  String get briefFailedTooLarge => 'Mesajul e prea lung pentru model, așa că nu s-a trimis nimic.';
+  String get briefFailedTooLarge =>
+      'Mesajul e prea lung pentru model, așa că nu s-a trimis nimic.';
 
   @override
   String get briefFailedProvider => 'Modelul nu a putut rezuma acest mesaj.';
 
   @override
-  String get briefFailedInvalid => 'Răspunsul nu a trecut verificările Loupe, așa că nu se afișează nicio listă.';
+  String get briefFailedInvalid =>
+      'Răspunsul nu a trecut verificările Loupe, așa că nu se afișează nicio listă.';
 
   @override
   String get briefNothingTitle => 'Nimic de rezumat';
@@ -1572,7 +1652,11 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Tu', 'them': 'Alții', 'other': 'Neprecizat'});
+    String _temp0 = intl.Intl.selectLogic(owner, {
+      'me': 'Tu',
+      'them': 'Alții',
+      'other': 'Neprecizat',
+    });
     return '$_temp0';
   }
 
@@ -1639,7 +1723,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get briefCopyChecklist => 'Copiază lista';
 
   @override
-  String get briefMadeByDemo => 'Făcut de demonstrația încorporată, nu de un model.';
+  String get briefMadeByDemo =>
+      'Făcut de demonstrația încorporată, nu de un model.';
 
   @override
   String briefMadeBy(String location, String name) {
@@ -1652,7 +1737,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get briefCaution => 'Un rezumat poate omite sau înțelege greșit lucruri. Contează mesajul în sine.';
+  String get briefCaution =>
+      'Un rezumat poate omite sau înțelege greșit lucruri. Contează mesajul în sine.';
 
   @override
   String briefSecurityReason(String reason) {
@@ -1660,7 +1746,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText => 'Verifică mesajul în sine înainte să faci ceva din acest rezumat.';
+  String get briefSecurityText =>
+      'Verifică mesajul în sine înainte să faci ceva din acest rezumat.';
 
   @override
   String get briefSourceTitle => 'În mesaj';
@@ -1708,25 +1795,30 @@ class AppLocalizationsRo extends AppLocalizations {
   String get appLockFailed => 'Loupe nu a putut confirma că ești tu.';
 
   @override
-  String get appLockLockedOut => 'Prea multe încercări. Încearcă din nou mai târziu.';
+  String get appLockLockedOut =>
+      'Prea multe încercări. Încearcă din nou mai târziu.';
 
   @override
-  String get appLockPromptError => 'Solicitarea nu a putut fi afișată. Încearcă din nou.';
+  String get appLockPromptError =>
+      'Solicitarea nu a putut fi afișată. Încearcă din nou.';
 
   @override
-  String get appLockNoScreenLock => 'Acest telefon nu are blocarea ecranului configurată.';
+  String get appLockNoScreenLock =>
+      'Acest telefon nu are blocarea ecranului configurată.';
 
   @override
   String get appLockUnlockPromptTitle => 'Deblochează Loupe';
 
   @override
-  String get appLockUnlockPromptReason => 'Confirmă că ești tu ca să-ți vezi e-mailurile.';
+  String get appLockUnlockPromptReason =>
+      'Confirmă că ești tu ca să-ți vezi e-mailurile.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Activează Blocarea aplicației';
 
   @override
-  String get appLockTurnOnPromptReason => 'Confirmă că ești tu ca să activezi Blocarea aplicației.';
+  String get appLockTurnOnPromptReason =>
+      'Confirmă că ești tu ca să activezi Blocarea aplicației.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1872,32 +1964,40 @@ class AppLocalizationsRo extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Schimbă acceptarea…';
 
   @override
-  String get openpgpCheckedFooter => 'Verificat pe acest dispozitiv cu OpenPGP, compatibil cu Thunderbird.';
+  String get openpgpCheckedFooter =>
+      'Verificat pe acest dispozitiv cu OpenPGP, compatibil cu Thunderbird.';
 
   @override
-  String get openpgpSummaryLocked => 'Cheia ta este blocată. Deblocheaz-o cu fraza de acces ca să citești acest mesaj.';
+  String get openpgpSummaryLocked =>
+      'Cheia ta este blocată. Deblocheaz-o cu fraza de acces ca să citești acest mesaj.';
 
   @override
-  String get openpgpSummaryNoSecretKey => 'A fost criptat pentru o cheie care nu se află pe acest dispozitiv.';
+  String get openpgpSummaryNoSecretKey =>
+      'A fost criptat pentru o cheie care nu se află pe acest dispozitiv.';
 
   @override
-  String get openpgpSummaryDamaged => 'Datele criptate sunt deteriorate sau au fost modificate pe drum.';
+  String get openpgpSummaryDamaged =>
+      'Datele criptate sunt deteriorate sau au fost modificate pe drum.';
 
   @override
-  String get openpgpSummaryUnsupported => 'Folosește un algoritm pe care Loupe nu îl acceptă.';
+  String get openpgpSummaryUnsupported =>
+      'Folosește un algoritm pe care Loupe nu îl acceptă.';
 
   @override
-  String get openpgpSummaryEncrypted => 'Doar tu și ceilalți destinatari îl puteți citi.';
+  String get openpgpSummaryEncrypted =>
+      'Doar tu și ceilalți destinatari îl puteți citi.';
 
   @override
-  String get openpgpSummaryNotSigned => 'Nu este semnat, deci expeditorul nu este confirmat.';
+  String get openpgpSummaryNotSigned =>
+      'Nu este semnat, deci expeditorul nu este confirmat.';
 
   @override
   String get openpgpSummaryUnknownKey =>
       'Este semnat, dar cu o cheie pe care nu o ai, așa că semnătura nu poate fi verificată.';
 
   @override
-  String get openpgpSummaryBadSignature => 'Semnătura nu se potrivește: este posibil ca mesajul să fi fost modificat.';
+  String get openpgpSummaryBadSignature =>
+      'Semnătura nu se potrivește: este posibil ca mesajul să fi fost modificat.';
 
   @override
   String get openpgpSummaryMismatch =>
@@ -1911,13 +2011,16 @@ class AppLocalizationsRo extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Semnat cu propria ta cheie.';
 
   @override
-  String get openpgpSummaryVerified => 'Semnătura este validă și ai verificat amprenta cheii.';
+  String get openpgpSummaryVerified =>
+      'Semnătura este validă și ai verificat amprenta cheii.';
 
   @override
-  String get openpgpSummaryUnverified => 'Semnătura este validă. Ai acceptat cheia fără să-i verifici amprenta.';
+  String get openpgpSummaryUnverified =>
+      'Semnătura este validă. Ai acceptat cheia fără să-i verifici amprenta.';
 
   @override
-  String get openpgpSummaryRejected => 'Semnătura este validă, dar ai respins această cheie.';
+  String get openpgpSummaryRejected =>
+      'Semnătura este validă, dar ai respins această cheie.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -1977,7 +2080,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get openpgpAddresses => 'Adrese';
 
   @override
-  String get openpgpAddressesFooter => 'Ce cheie folosește fiecare adresă și când criptează și semnează.';
+  String get openpgpAddressesFooter =>
+      'Ce cheie folosește fiecare adresă și când criptează și semnează.';
 
   @override
   String get openpgpCorrespondentsKeys => 'Cheile OpenPGP ale corespondenților';
@@ -2011,7 +2115,8 @@ class AppLocalizationsRo extends AppLocalizations {
       'Căutarea găsește mesajele criptate după expeditor, destinatari și subiect. Cu această opțiune activată, Loupe adaugă și textul fiecărui mesaj criptat pe care îl decriptează în indexul de căutare din baza sa de date criptată de pe acest dispozitiv, așa că și căutarea după text îl găsește. Dacă o dezactivezi, acel text este eliminat din index.';
 
   @override
-  String get openpgpIndexDecrypted => 'Indexează mesajele decriptate pentru căutare';
+  String get openpgpIndexDecrypted =>
+      'Indexează mesajele decriptate pentru căutare';
 
   @override
   String get openpgpPassphrases => 'Fraze de acces';
@@ -2056,7 +2161,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get openpgpAddKeyTitle => 'Adaugă o cheie OpenPGP';
 
   @override
-  String get openpgpAddKeyMessage => 'Importă cheia pe care o folosești în Thunderbird sau creează una nouă.';
+  String get openpgpAddKeyMessage =>
+      'Importă cheia pe care o folosești în Thunderbird sau creează una nouă.';
 
   @override
   String get openpgpImportFromClipboard => 'Importă din clipboard';
@@ -2077,7 +2183,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get openpgpFromFile => 'Din fișier';
 
   @override
-  String get openpgpClipboardEmpty => 'Clipboardul este gol. Copiază mai întâi cheia.';
+  String get openpgpClipboardEmpty =>
+      'Clipboardul este gol. Copiază mai întâi cheia.';
 
   @override
   String get openpgpKey => 'Cheie';
@@ -2193,7 +2300,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Criptează automat';
 
   @override
-  String get openpgpAlwaysEncryptDetail => 'Refuză trimiterea când un destinatar nu are cheie';
+  String get openpgpAlwaysEncryptDetail =>
+      'Refuză trimiterea când un destinatar nu are cheie';
 
   @override
   String get openpgpSignUnencrypted => 'Semnează e-mailurile necriptate';
@@ -2212,7 +2320,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get openpgpPreferEncryption => 'Preferă criptarea';
 
   @override
-  String get openpgpPreferEncryptionDetail => 'Le cere celorlalți să cripteze când pot';
+  String get openpgpPreferEncryptionDetail =>
+      'Le cere celorlalți să cripteze când pot';
 
   @override
   String openpgpValidityYears(int count) {
@@ -2403,20 +2512,24 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get openpgpWrongPassphrase => 'Fraza de acces este greșită. Încearcă din nou.';
+  String get openpgpWrongPassphrase =>
+      'Fraza de acces este greșită. Încearcă din nou.';
 
   @override
-  String get openpgpExplainLocked => 'Acest mesaj este criptat. Deblochează-ți cheia OpenPGP ca să-l citești.';
+  String get openpgpExplainLocked =>
+      'Acest mesaj este criptat. Deblochează-ți cheia OpenPGP ca să-l citești.';
 
   @override
   String get openpgpExplainNoKey =>
       'Acest mesaj este criptat, dar nu pentru vreo cheie OpenPGP de pe acest dispozitiv. Dacă îl citești în Thunderbird, importă-ți cheia de acolo: Setări › Criptare end-to-end.';
 
   @override
-  String get openpgpExplainDamaged => 'Acest mesaj criptat este deteriorat, așa că nu poate fi decriptat în siguranță.';
+  String get openpgpExplainDamaged =>
+      'Acest mesaj criptat este deteriorat, așa că nu poate fi decriptat în siguranță.';
 
   @override
-  String get openpgpExplainUnsupported => 'Acest mesaj folosește o criptare pe care Loupe nu o poate citi încă.';
+  String get openpgpExplainUnsupported =>
+      'Acest mesaj folosește o criptare pe care Loupe nu o poate citi încă.';
 
   @override
   String get openpgpExplainSmimeNoKey =>
@@ -2428,7 +2541,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock => 'Deblochează-ți certificatul S/MIME ca să-l citești.';
+  String get openpgpExplainSmimeUnlock =>
+      'Deblochează-ți certificatul S/MIME ca să-l citești.';
 
   @override
   String get openpgpAttachmentGone => 'Acest atașament nu mai este disponibil.';
@@ -2437,7 +2551,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get smimeEncrypted => 'Criptat (S/MIME)';
 
   @override
-  String get smimeEncryptedNoCertificate => 'Criptat (S/MIME) · fără certificat';
+  String get smimeEncryptedNoCertificate =>
+      'Criptat (S/MIME) · fără certificat';
 
   @override
   String get smimeEncryptedDamaged => 'Criptat (S/MIME) · deteriorat';
@@ -2594,7 +2709,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get smimeTrustThisCertificateEllipsis => 'Ai încredere în acest certificat…';
+  String get smimeTrustThisCertificateEllipsis =>
+      'Ai încredere în acest certificat…';
 
   @override
   String get smimeCheckedFooterRevocation =>
@@ -2628,25 +2744,31 @@ class AppLocalizationsRo extends AppLocalizations {
   String get smimeTrust => 'Ai încredere';
 
   @override
-  String get smimeSummaryNoKey => 'A fost criptat pentru un certificat care nu se află pe acest dispozitiv.';
+  String get smimeSummaryNoKey =>
+      'A fost criptat pentru un certificat care nu se află pe acest dispozitiv.';
 
   @override
-  String get smimeSummaryDamaged => 'Datele criptate sunt deteriorate sau au fost modificate pe drum.';
+  String get smimeSummaryDamaged =>
+      'Datele criptate sunt deteriorate sau au fost modificate pe drum.';
 
   @override
-  String get smimeSummaryUnsupported => 'Folosește un algoritm pe care Loupe nu îl acceptă.';
+  String get smimeSummaryUnsupported =>
+      'Folosește un algoritm pe care Loupe nu îl acceptă.';
 
   @override
   String get smimeSummaryLocked => 'Certificatul tău S/MIME este blocat.';
 
   @override
-  String get smimeSummaryEncrypted => 'Doar tu și ceilalți destinatari îl puteți citi.';
+  String get smimeSummaryEncrypted =>
+      'Doar tu și ceilalți destinatari îl puteți citi.';
 
   @override
-  String get smimeSummaryNotSigned => 'Nu este semnat, deci expeditorul nu este confirmat.';
+  String get smimeSummaryNotSigned =>
+      'Nu este semnat, deci expeditorul nu este confirmat.';
 
   @override
-  String get smimeSummaryModified => 'Semnătura nu se potrivește: mesajul a fost modificat după ce a fost semnat.';
+  String get smimeSummaryModified =>
+      'Semnătura nu se potrivește: mesajul a fost modificat după ce a fost semnat.';
 
   @override
   String get smimeSummaryUncheckable => 'Semnătura nu poate fi verificată.';
@@ -2674,10 +2796,12 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain => 'Certificatul sau unul dintre emitenții săi este nevalid.';
+  String get smimeProblemInvalidChain =>
+      'Certificatul sau unul dintre emitenții săi este nevalid.';
 
   @override
-  String get smimeProblemUntrusted => 'Certificatul provine de la o autoritate în care Loupe nu are încredere.';
+  String get smimeProblemUntrusted =>
+      'Certificatul provine de la o autoritate în care Loupe nu are încredere.';
 
   @override
   String get smimeProblemExpired => 'Certificatul expirase.';
@@ -2686,10 +2810,12 @@ class AppLocalizationsRo extends AppLocalizations {
   String get smimeProblemNotYetValid => 'Certificatul nu era încă valid.';
 
   @override
-  String get smimeProblemWrongUsage => 'Certificatul nu este destinat e-mailului.';
+  String get smimeProblemWrongUsage =>
+      'Certificatul nu este destinat e-mailului.';
 
   @override
-  String get smimeProblemWrongAddress => 'Certificatul aparține altei adrese decât cea a expeditorului.';
+  String get smimeProblemWrongAddress =>
+      'Certificatul aparține altei adrese decât cea a expeditorului.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2746,10 +2872,12 @@ class AppLocalizationsRo extends AppLocalizations {
   String get smimeImportCertificateEllipsis => 'Importă un certificat…';
 
   @override
-  String get smimeUseDeviceCertificate => 'Folosește un certificat de pe acest dispozitiv…';
+  String get smimeUseDeviceCertificate =>
+      'Folosește un certificat de pe acest dispozitiv…';
 
   @override
-  String get smimeCorrespondentsCertificates => 'Certificatele corespondenților';
+  String get smimeCorrespondentsCertificates =>
+      'Certificatele corespondenților';
 
   @override
   String get smimeCorrespondentsCertificatesFooter =>
@@ -2773,8 +2901,10 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Alese de tine, pe lângă cele $count în care Mozilla are încredere pentru e-mail.',
-      few: 'Alese de tine, pe lângă cele $count în care Mozilla are încredere pentru e-mail.',
+      other:
+          'Alese de tine, pe lângă cele $count în care Mozilla are încredere pentru e-mail.',
+      few:
+          'Alese de tine, pe lângă cele $count în care Mozilla are încredere pentru e-mail.',
       one: 'Alese de tine, pe lângă cea în care Mozilla are încredere pentru e-mail.',
     );
     return '$_temp0';
@@ -2797,7 +2927,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get smimeFromFile => 'Din fișier';
 
   @override
-  String get smimeClipboardEmpty => 'Clipboardul este gol. Copiază mai întâi certificatul.';
+  String get smimeClipboardEmpty =>
+      'Clipboardul este gol. Copiază mai întâi certificatul.';
 
   @override
   String get smimeCertificate => 'Certificat';
@@ -2950,7 +3081,8 @@ class AppLocalizationsRo extends AppLocalizations {
       'Cheia sa privată este ștearsă de pe acest dispozitiv: e-mailurile criptate pentru el nu mai pot fi citite aici, decât dacă îl imporți din nou.';
 
   @override
-  String get smimeRemoveContactMessage => 'Revine odată cu următorul mesaj semnat de la persoana respectivă.';
+  String get smimeRemoveContactMessage =>
+      'Revine odată cu următorul mesaj semnat de la persoana respectivă.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -2973,7 +3105,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get smimeCertificatePassword => 'Parola certificatului';
 
   @override
-  String get smimeCertificatePasswordPrompt => 'Introdu parola cu care a fost exportat fișierul certificatului.';
+  String get smimeCertificatePasswordPrompt =>
+      'Introdu parola cu care a fost exportat fișierul certificatului.';
 
   @override
   String get smimeImport => 'Importă';
@@ -3010,11 +3143,15 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
+  String smimeImportedCertificatesAndAuthorities(
+    int count,
+    String certificates,
+  ) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'S-au importat $certificates și $count de autorități de încredere.',
+      other:
+          'S-au importat $certificates și $count de autorități de încredere.',
       few: 'S-au importat $certificates și $count autorități de încredere.',
       one: 'S-au importat $certificates și o autoritate de încredere.',
     );
@@ -3080,7 +3217,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get smimeWrongPassphrase => 'Fraza de acces este greșită. Încearcă din nou.';
+  String get smimeWrongPassphrase =>
+      'Fraza de acces este greșită. Încearcă din nou.';
 
   @override
   String get smimeUnlock => 'Deblochează';
@@ -3109,10 +3247,12 @@ class AppLocalizationsRo extends AppLocalizations {
       'Certificatul tău S/MIME este blocat. Deschide din nou mesajul ca să-l deblochezi.';
 
   @override
-  String get smimeDeviceHasNoCertificates => 'Acest dispozitiv nu își pune la dispoziție certificatele.';
+  String get smimeDeviceHasNoCertificates =>
+      'Acest dispozitiv nu își pune la dispoziție certificatele.';
 
   @override
-  String get smimeCantReadCertificate => 'Loupe nu poate citi acest certificat.';
+  String get smimeCantReadCertificate =>
+      'Loupe nu poate citi acest certificat.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -3143,13 +3283,16 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress => 'Adresa autorității nu este o adresă web.';
+  String get smimeAuthorityNotWebAddress =>
+      'Adresa autorității nu este o adresă web.';
 
   @override
-  String get smimeAuthorityTimeout => 'Autoritatea de certificare nu a răspuns la timp.';
+  String get smimeAuthorityTimeout =>
+      'Autoritatea de certificare nu a răspuns la timp.';
 
   @override
-  String get smimeAuthorityUnreachable => 'Autoritatea de certificare nu a putut fi contactată.';
+  String get smimeAuthorityUnreachable =>
+      'Autoritatea de certificare nu a putut fi contactată.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -3157,7 +3300,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge => 'Răspunsul autorității de certificare este prea mare.';
+  String get smimeAuthorityAnswerTooLarge =>
+      'Răspunsul autorității de certificare este prea mare.';
 
   @override
   String get smimeRevocationNotChecked =>
@@ -3176,7 +3320,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get actionsWaitingOnOthersEmpty => 'Nu aștepți pe nimeni';
 
   @override
-  String get actionsFolderEmptyDetail => 'Ca să urmărești ceva, atinge ⋯ la un mesaj și alege Adaugă o acțiune…';
+  String get actionsFolderEmptyDetail =>
+      'Ca să urmărești ceva, atinge ⋯ la un mesaj și alege Adaugă o acțiune…';
 
   @override
   String get actionsTitle => 'Acțiuni';
@@ -3375,7 +3520,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get actionsOriginManual => 'Adăugată de tine';
 
   @override
-  String get actionsOriginDemo => 'Sugerată de demonstrația încorporată: reguli, fără model';
+  String get actionsOriginDemo =>
+      'Sugerată de demonstrația încorporată: reguli, fără model';
 
   @override
   String actionsOriginSuggested(String provider) {
@@ -3449,7 +3595,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get actionsSuggestNone => 'Nimic de urmărit în acest mesaj.';
 
   @override
-  String get actionsSuggestPartial => 'Acest mesaj este lung: s-a citit doar începutul.';
+  String get actionsSuggestPartial =>
+      'Acest mesaj este lung: s-a citit doar începutul.';
 
   @override
   String get actionsSuggestTracked => 'Urmărită';
@@ -3474,10 +3621,12 @@ class AppLocalizationsRo extends AppLocalizations {
       'Fiecare sugestie citează mesajul și nimic nu este urmărit până nu îl adaugi. E-mailurile anterioare citate nu contează.';
 
   @override
-  String get actionsSuggestTooLarge => 'Acest mesaj este prea lung pentru modelul ales.';
+  String get actionsSuggestTooLarge =>
+      'Acest mesaj este prea lung pentru modelul ales.';
 
   @override
-  String get actionsSuggestInvalid => 'Răspunsul nu s-a potrivit cu mesajul, așa că nu se sugerează nimic.';
+  String get actionsSuggestInvalid =>
+      'Răspunsul nu s-a potrivit cu mesajul, așa că nu se sugerează nimic.';
 
   @override
   String get actionsSuggestCancelled => 'Oprit.';
@@ -3487,7 +3636,10 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    String _temp0 = intl.Intl.selectLogic(protocol, {
+      'jmap': 'Push',
+      'other': 'IDLE',
+    });
     return '$_temp0';
   }
 
@@ -3520,7 +3672,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsSignatureDefault => 'Implicită';
 
   @override
-  String get settingsSignatureWhenCopiedAnyone => 'Când cineva primește o copie';
+  String get settingsSignatureWhenCopiedAnyone =>
+      'Când cineva primește o copie';
 
   @override
   String settingsSignatureWhenCopying(String addresses) {
@@ -3552,7 +3705,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsSignatureAddField => 'Adaugă un câmp';
 
   @override
-  String get settingsSignatureImageFailed => 'Imaginea nu a putut fi adăugată. Încearcă un PNG sau JPEG mai mic.';
+  String get settingsSignatureImageFailed =>
+      'Imaginea nu a putut fi adăugată. Încearcă un PNG sau JPEG mai mic.';
 
   @override
   String get settingsSignatureWhenToUse => 'Când se folosește';
@@ -3568,7 +3722,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Adaugă o adresă sau un domeniu…';
 
   @override
-  String get settingsSignatureCopiedPrompt => 'O adresă sau un domeniu precum client.example.';
+  String get settingsSignatureCopiedPrompt =>
+      'O adresă sau un domeniu precum client.example.';
 
   @override
   String get settingsSignatureScheduled => 'Programată';
@@ -3629,7 +3784,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsSwipeRight => 'Glisare la dreapta';
 
   @override
-  String get settingsSwipeRightFooter => 'O glisare completă rulează această acțiune.';
+  String get settingsSwipeRightFooter =>
+      'O glisare completă rulează această acțiune.';
 
   @override
   String get settingsSwipeToggleRead => 'Marchează ca citit / necitit';
@@ -3650,7 +3806,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsUndoSendDelay => 'Întârziere pentru anularea trimiterii';
 
   @override
-  String get settingsUndoSendDelayFooter => 'Mesajele trimise așteaptă atât, ca să le poți retrage.';
+  String get settingsUndoSendDelayFooter =>
+      'Mesajele trimise așteaptă atât, ca să le poți retrage.';
 
   @override
   String settingsUndoSendSeconds(int seconds) {
@@ -3695,19 +3852,22 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsReadingHeader => 'Citire';
 
   @override
-  String get settingsReadingFooter => 'Imaginile externe le pot spune expeditorilor când și unde ai deschis un mesaj.';
+  String get settingsReadingFooter =>
+      'Imaginile externe le pot spune expeditorilor când și unde ai deschis un mesaj.';
 
   @override
   String get settingsDefaultView => 'Vizualizare implicită';
 
   @override
-  String get settingsDefaultViewFooter => 'Poți schimba vizualizarea oricărui mesaj cu butonul Aa.';
+  String get settingsDefaultViewFooter =>
+      'Poți schimba vizualizarea oricărui mesaj cu butonul Aa.';
 
   @override
   String get settingsViewReadable => 'Lizibil';
 
   @override
-  String get settingsViewReadableDetail => 'Curat, lizibil, urmează modul întunecat';
+  String get settingsViewReadableDetail =>
+      'Curat, lizibil, urmează modul întunecat';
 
   @override
   String get settingsViewOriginal => 'Original';
@@ -3731,7 +3891,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsFontMono => 'Monospațiat';
 
   @override
-  String get settingsFontMonoDetail => 'Păstrează aliniate tabelele și desenele ASCII';
+  String get settingsFontMonoDetail =>
+      'Păstrează aliniate tabelele și desenele ASCII';
 
   @override
   String get settingsTechnicalLists => 'Liste tehnice';
@@ -3743,7 +3904,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Deschide linkurile direct';
 
   @override
-  String get settingsOpenLinksDirectlyDetail => 'Ocolește trackerele de clicuri când destinația este cunoscută';
+  String get settingsOpenLinksDirectlyDetail =>
+      'Ocolește trackerele de clicuri când destinația este cunoscută';
 
   @override
   String get settingsSecurityHeader => 'Securitate';
@@ -3772,7 +3934,8 @@ class AppLocalizationsRo extends AppLocalizations {
       'Blocarea aplicației folosește Face ID, Touch ID sau codul de acces, iar acest iPhone nu are cod de acces. Configurează unul în aplicația Configurări, apoi activează Blocarea aplicației.';
 
   @override
-  String get settingsScreenLockTitleAndroid => 'Configurează blocarea ecranului';
+  String get settingsScreenLockTitleAndroid =>
+      'Configurează blocarea ecranului';
 
   @override
   String get settingsScreenLockTextAndroid =>
@@ -3788,7 +3951,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsLockAfter => 'Blochează după';
 
   @override
-  String get settingsLockAfterFooter => 'Cât timp poate sta Loupe în fundal înainte să ceară din nou.';
+  String get settingsLockAfterFooter =>
+      'Cât timp poate sta Loupe în fundal înainte să ceară din nou.';
 
   @override
   String get settingsNotifications => 'Notificări';
@@ -3813,7 +3977,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsResetApp => 'Resetează aplicația';
 
   @override
-  String get settingsResetFooter => 'Uită toate setările și revine la ecranul de bun venit.';
+  String get settingsResetFooter =>
+      'Uită toate setările și revine la ecranul de bun venit.';
 
   @override
   String get settingsResetTitle => 'Resetezi Loupe?';
@@ -3839,10 +4004,12 @@ class AppLocalizationsRo extends AppLocalizations {
       'Loupe nu are statistici de utilizare și nu te urmărește. E-mailurile tale ajung doar la serverele tale de e-mail.';
 
   @override
-  String get settingsNotificationsOffIos => 'Notificările pentru Loupe sunt dezactivate în Configurări.';
+  String get settingsNotificationsOffIos =>
+      'Notificările pentru Loupe sunt dezactivate în Configurări.';
 
   @override
-  String get settingsNotificationsOffAndroid => 'Notificările pentru Loupe sunt dezactivate în setările Android.';
+  String get settingsNotificationsOffAndroid =>
+      'Notificările pentru Loupe sunt dezactivate în setările Android.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -3909,7 +4076,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsComingSoon => 'În curând';
 
   @override
-  String get settingsAllowUnrestrictedBattery => 'Permite utilizarea nerestricționată a bateriei';
+  String get settingsAllowUnrestrictedBattery =>
+      'Permite utilizarea nerestricționată a bateriei';
 
   @override
   String get settingsPush => 'Push';
@@ -3943,7 +4111,8 @@ class AppLocalizationsRo extends AppLocalizations {
       'Ecranul de pornire al acestui telefon nu afișează numere pe pictogramele aplicațiilor. Insigna se actualizează de fiecare dată când Loupe caută e-mailuri, inclusiv în fundal.';
 
   @override
-  String get settingsTestNotificationBody => 'Notificările pentru e-mailurile noi arată așa.';
+  String get settingsTestNotificationBody =>
+      'Notificările pentru e-mailurile noi arată așa.';
 
   @override
   String get settingsAccountRemoved => 'Acest cont a fost eliminat.';
@@ -3964,7 +4133,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsColour => 'Culoare';
 
   @override
-  String get settingsColourFooter => 'Marchează mesajele acestui cont în Toate inboxurile.';
+  String get settingsColourFooter =>
+      'Marchează mesajele acestui cont în Toate inboxurile.';
 
   @override
   String settingsColourNumber(int number) {
@@ -4056,10 +4226,12 @@ class AppLocalizationsRo extends AppLocalizations {
       'Prima identitate este cea implicită pentru mesajele noi. Trage ca să schimbi ordinea.';
 
   @override
-  String get settingsIdentitiesFooterSingle => 'Identitatea implicită pentru mesajele noi.';
+  String get settingsIdentitiesFooterSingle =>
+      'Identitatea implicită pentru mesajele noi.';
 
   @override
-  String get settingsIdentitiesReplyFooter => 'Un răspuns pleacă de pe identitatea la care a fost trimis mesajul.';
+  String get settingsIdentitiesReplyFooter =>
+      'Un răspuns pleacă de pe identitatea la care a fost trimis mesajul.';
 
   @override
   String get settingsIdentityDefault => 'Implicită';
@@ -4091,7 +4263,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsCopyToMyself => 'Copie pentru mine';
 
   @override
-  String get settingsCopyToMyselfFooter => 'Adăugate la fiecare mesaj de pe această identitate.';
+  String get settingsCopyToMyselfFooter =>
+      'Adăugate la fiecare mesaj de pe această identitate.';
 
   @override
   String get settingsCc => 'Cc';
@@ -4107,7 +4280,8 @@ class AppLocalizationsRo extends AppLocalizations {
       'Răspunsurile la mesajele trimise la aceste adrese pleacă de pe această identitate. * înlocuiește orice: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt => 'O adresă sau un model în care * înlocuiește orice.';
+  String get settingsReplyPatternPrompt =>
+      'O adresă sau un model în care * înlocuiește orice.';
 
   @override
   String get settingsAddReplyPattern => 'Adaugă o adresă sau un model';
@@ -4129,7 +4303,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Nicio adresă';
 
   @override
-  String get settingsIdentityNoAddressMessage => 'Introdu adresa de e-mail de pe care vrei să trimiți.';
+  String get settingsIdentityNoAddressMessage =>
+      'Introdu adresa de e-mail de pe care vrei să trimiți.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Adresă nevalidă';
@@ -4137,7 +4312,8 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String settingsIdentityInvalidAddress(String field, String address) {
     String _temp0 = intl.Intl.selectLogic(field, {
-      'replyTo': 'La Răspuns către, „$address” nu este o adresă de e-mail validă.',
+      'replyTo':
+          'La Răspuns către, „$address” nu este o adresă de e-mail validă.',
       'cc': 'La Cc, „$address” nu este o adresă de e-mail validă.',
       'bcc': 'La Bcc, „$address” nu este o adresă de e-mail validă.',
       'other': '„$address” nu este o adresă de e-mail validă.',
@@ -4160,10 +4336,12 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage => 'Mesajele deja trimise de pe ea rămân neschimbate.';
+  String get settingsDeleteIdentityMessage =>
+      'Mesajele deja trimise de pe ea rămân neschimbate.';
 
   @override
-  String get settingsLastIdentityFooter => 'Un cont are nevoie de cel puțin o identitate.';
+  String get settingsLastIdentityFooter =>
+      'Un cont are nevoie de cel puțin o identitate.';
 
   @override
   String get rulesTitle => 'Reguli';
@@ -4235,7 +4413,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get rulesStatusUnavailable => 'Indisponibil';
 
   @override
-  String get rulesStatusNoSieve => 'Serverul acestui cont nu oferă Sieve (ManageSieve sau JMAP).';
+  String get rulesStatusNoSieve =>
+      'Serverul acestui cont nu oferă Sieve (ManageSieve sau JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -4420,7 +4599,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get rulesChooseActionTitle => 'Alege o acțiune';
 
   @override
-  String get rulesChooseActionMessage => 'Adaugă ce face regula cu mesajele care se potrivesc.';
+  String get rulesChooseActionMessage =>
+      'Adaugă ce face regula cu mesajele care se potrivesc.';
 
   @override
   String get rulesSaveError => 'Regula nu a putut fi salvată';
@@ -4435,7 +4615,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Nimic de aplicat';
 
   @override
-  String get rulesNothingToApplyMessage => 'Dă-i mai întâi regulii o condiție validă și o acțiune.';
+  String get rulesNothingToApplyMessage =>
+      'Dă-i mai întâi regulii o condiție validă și o acțiune.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4467,7 +4648,8 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4482,7 +4664,8 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4497,7 +4680,8 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4540,7 +4724,8 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4555,7 +4740,8 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4585,7 +4771,8 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4679,7 +4866,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get subscriptionsNoNewsletters => 'Niciun newsletter';
 
   @override
-  String get subscriptionsNoNewslettersDetail => 'Newsletterele și alte e-mailuri în masă apar aici după ce sosesc.';
+  String get subscriptionsNoNewslettersDetail =>
+      'Newsletterele și alte e-mailuri în masă apar aici după ce sosesc.';
 
   @override
   String get subscriptionsNothingNeverRead => 'Nimic la „Niciodată citite”';
@@ -4688,7 +4876,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get subscriptionsNothingRarelyRead => 'Nimic la „Rar citite”';
 
   @override
-  String get subscriptionsNothingFilteredDetail => 'Citești câte ceva din tot ce primești.';
+  String get subscriptionsNothingFilteredDetail =>
+      'Citești câte ceva din tot ce primești.';
 
   @override
   String get subscriptionsNoDiscussions => 'Nicio discuție';
@@ -4765,7 +4954,8 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4782,13 +4972,15 @@ class AppLocalizationsRo extends AppLocalizations {
   String get subscriptionsCreateRule => 'Creează o regulă…';
 
   @override
-  String get subscriptionsCreateRuleDetail => 'Mută sau arhivează e-mailurile viitoare';
+  String get subscriptionsCreateRuleDetail =>
+      'Mută sau arhivează e-mailurile viitoare';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Tratează ca discuție';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail => 'O listă la care scriu oamenii: citește-o ca pe un forum';
+  String get subscriptionsTreatAsDiscussionDetail =>
+      'O listă la care scriu oamenii: citește-o ca pe un forum';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Tratează ca newsletter';
@@ -4812,7 +5004,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get subscriptionsUnpin => 'Anulează fixarea din Căsuțe poștale';
 
   @override
-  String get subscriptionsOpenDefaultView => 'Deschide în vizualizarea implicită';
+  String get subscriptionsOpenDefaultView =>
+      'Deschide în vizualizarea implicită';
 
   @override
   String get subscriptionsOpenPlainText => 'Deschide ca text simplu (Mono)';
@@ -4822,7 +5015,8 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4836,7 +5030,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoMailNow => 'Momentan nu există e-mailuri de la acest expeditor.';
+  String get subscriptionsNoMailNow =>
+      'Momentan nu există e-mailuri de la acest expeditor.';
 
   @override
   String get subscriptionsLatestMessages => 'ULTIMELE MESAJE';
@@ -4852,9 +5047,12 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString din $totalString';
@@ -4865,7 +5063,13 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Dosare', few: 'Dosare', one: 'Dosar');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dosare',
+      few: 'Dosare',
+      one: 'Dosar',
+    );
     return '$_temp0';
   }
 
@@ -4911,10 +5115,12 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle => 'Dezabonarea automată nu a reușit';
+  String get subscriptionsOneClickFailedTitle =>
+      'Dezabonarea automată nu a reușit';
 
   @override
-  String get subscriptionsSendUnsubscribeEmail => 'Trimite e-mailul de dezabonare';
+  String get subscriptionsSendUnsubscribeEmail =>
+      'Trimite e-mailul de dezabonare';
 
   @override
   String subscriptionsOpenSite(String site) {
@@ -4935,7 +5141,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsWebInsecure => 'Conexiunea la acest site nu este criptată.';
+  String get subscriptionsWebInsecure =>
+      'Conexiunea la acest site nu este criptată.';
 
   @override
   String subscriptionsHomographWarning(String site) {
@@ -4943,7 +5150,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsHomographWarningUnknown => 'Atenție: această adresă imită alt site cu litere asemănătoare.';
+  String get subscriptionsHomographWarningUnknown =>
+      'Atenție: această adresă imită alt site cu litere asemănătoare.';
 
   @override
   String subscriptionsOpenSiteFailed(String site) {
@@ -4971,7 +5179,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed => 'Linkul de dezabonare nu este o adresă sigură de pe internet.';
+  String get subscriptionsOneClickNotAllowed =>
+      'Linkul de dezabonare nu este o adresă sigură de pe internet.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -4994,7 +5203,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend => 'Nu există niciun cont de pe care să fie trimis e-mailul de dezabonare.';
+  String get subscriptionsNoAccountToSend =>
+      'Nu există niciun cont de pe care să fie trimis e-mailul de dezabonare.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -5066,7 +5276,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get rulesDescribeAccount => 'Cont';
 
   @override
-  String get rulesDescribeHint => 'Mută chitanțele de la Harbor Coffee în Receipts';
+  String get rulesDescribeHint =>
+      'Mută chitanțele de la Harbor Coffee în Receipts';
 
   @override
   String rulesDescribeSentNote(String account) {
@@ -5080,7 +5291,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get rulesDescribeWorking => 'Se pregătește regula…';
 
   @override
-  String get rulesDescribeFailed => 'Loupe nu a putut transforma asta într-o regulă.';
+  String get rulesDescribeFailed =>
+      'Loupe nu a putut transforma asta într-o regulă.';
 
   @override
   String get rulesDescribeProposed => 'Regulă propusă';
@@ -5105,7 +5317,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get rulesDescribeScopeChoose => 'Alegi tu unde rulează, în editorul de reguli.';
+  String get rulesDescribeScopeChoose =>
+      'Alegi tu unde rulează, în editorul de reguli.';
 
   @override
   String rulesDescribeCantDoHeader(int count) {
@@ -5148,13 +5361,15 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get rulesDescribeReasonTag => 'Nu există nicio etichetă cu acest nume.';
+  String get rulesDescribeReasonTag =>
+      'Nu există nicio etichetă cu acest nume.';
 
   @override
   String get rulesDescribeReasonOther => 'Regulile nu pot face asta.';
 
   @override
-  String get rulesDescribeSuggestion => 'Cuvinte pe care Loupe le poate căuta în schimb:';
+  String get rulesDescribeSuggestion =>
+      'Cuvinte pe care Loupe le poate căuta în schimb:';
 
   @override
   String get rulesDescribeQuestions => 'Loupe trebuie să știe';
@@ -5163,20 +5378,25 @@ class AppLocalizationsRo extends AppLocalizations {
   String get rulesDescribeDryRunHeader => 'Rulare de probă';
 
   @override
-  String get rulesDescribeDryRunWorking => 'Se verifică e-mailurile de pe acest telefon…';
+  String get rulesDescribeDryRunWorking =>
+      'Se verifică e-mailurile de pe acest telefon…';
 
   @override
   String rulesDescribeDryRunCount(int total, int matched, String account) {
-    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
-    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat matchedNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String matchedString = matchedNumberFormat.format(matched);
 
     String _temp0 = intl.Intl.pluralLogic(
       total,
       locale: localeName,
-      other: 'În $account, s-ar potrivi cu $matchedString din $totalString de mesaje descărcate',
-      few: 'În $account, s-ar potrivi cu $matchedString din $totalString mesaje descărcate',
+      other:
+          'În $account, s-ar potrivi cu $matchedString din $totalString de mesaje descărcate',
+      few:
+          'În $account, s-ar potrivi cu $matchedString din $totalString mesaje descărcate',
       one: 'În $account, s-ar potrivi cu $matchedString din 1 mesaj descărcat',
     );
     return '$_temp0';
@@ -5194,7 +5414,8 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunCapped(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -5209,27 +5430,32 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String rulesDescribeDryRunUnchecked(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$countString de mesaje nu au putut fi verificate fără a le descărca textul.',
-      few: '$countString mesaje nu au putut fi verificate fără a le descărca textul.',
+      other:
+          '$countString de mesaje nu au putut fi verificate fără a le descărca textul.',
+      few:
+          '$countString mesaje nu au putut fi verificate fără a le descărca textul.',
       one: '1 mesaj nu a putut fi verificat fără a-i descărca textul.',
     );
     return '$_temp0';
   }
 
   @override
-  String get rulesDescribeDryRunFailed => 'Loupe nu a putut verifica e-mailurile de pe acest telefon.';
+  String get rulesDescribeDryRunFailed =>
+      'Loupe nu a putut verifica e-mailurile de pe acest telefon.';
 
   @override
   String get rulesDescribeOpenEditor => 'Deschide în editorul de reguli';
 
   @override
-  String get rulesDescribeDemoNote => 'Propusă de demonstrația încorporată, nu de un model.';
+  String get rulesDescribeDemoNote =>
+      'Propusă de demonstrația încorporată, nu de un model.';
 
   @override
   String rulesDescribeProviderNote(String provider) {
@@ -5254,7 +5480,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get appLiveGateTitle => 'Conturile tale nu au putut fi deschise';
 
   @override
-  String get appLiveGateUnavailableBuild => 'Conturile reale nu sunt încă disponibile în această versiune.';
+  String get appLiveGateUnavailableBuild =>
+      'Conturile reale nu sunt încă disponibile în această versiune.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -5314,7 +5541,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get attachmentsOpenInError => 'Atașamentul nu a putut fi deschis în altă aplicație.';
+  String get attachmentsOpenInError =>
+      'Atașamentul nu a putut fi deschis în altă aplicație.';
 
   @override
   String attachmentsSaved(String name) {
@@ -5328,7 +5556,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get attachmentsGone => 'Acest atașament nu mai este disponibil.';
 
   @override
-  String get attachmentsDownloadFailed => 'Atașamentul nu a putut fi descărcat.';
+  String get attachmentsDownloadFailed =>
+      'Atașamentul nu a putut fi descărcat.';
 
   @override
   String attachmentsPageCount(int count) {
@@ -5348,7 +5577,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload => 'Acest atașament este mare. Descarcă-l acum sau mai târziu prin Wi-Fi.';
+  String get attachmentsLargeDownload =>
+      'Acest atașament este mare. Descarcă-l acum sau mai târziu prin Wi-Fi.';
 
   @override
   String get attachmentsDownload => 'Descarcă';
@@ -5370,7 +5600,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get attachmentsPdfUnavailable => 'Acest PDF nu poate fi afișat aici (poate fi protejat cu parolă).';
+  String get attachmentsPdfUnavailable =>
+      'Acest PDF nu poate fi afișat aici (poate fi protejat cu parolă).';
 
   @override
   String attachmentsPageOf(int page, int count) {
@@ -5414,7 +5645,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get attachmentsCopied => 'Copiat';
 
   @override
-  String get attachmentsImageUnavailable => 'Această imagine nu poate fi afișată aici. Încearcă Deschide în….';
+  String get attachmentsImageUnavailable =>
+      'Această imagine nu poate fi afișată aici. Încearcă Deschide în….';
 
   @override
   String get attachmentsEmlNoSubject => '(Fără subiect)';
@@ -5642,22 +5874,26 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get calendarRefreshUnknown => 'Un participant cere cea mai recentă versiune';
+  String get calendarRefreshUnknown =>
+      'Un participant cere cea mai recentă versiune';
 
   @override
   String get calendarCancelled => 'Anulat';
 
   @override
-  String get calendarCancelledByOrganizer => 'Organizatorul a anulat acest eveniment.';
+  String get calendarCancelledByOrganizer =>
+      'Organizatorul a anulat acest eveniment.';
 
   @override
-  String get calendarCancelledLater => 'Acest eveniment a fost anulat ulterior.';
+  String get calendarCancelledLater =>
+      'Acest eveniment a fost anulat ulterior.';
 
   @override
   String get calendarOutdated => 'Depășit';
 
   @override
-  String get calendarOutdatedDetail => 'Această invitație a fost actualizată ulterior; contează cea mai nouă.';
+  String get calendarOutdatedDetail =>
+      'Această invitație a fost actualizată ulterior; contează cea mai nouă.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -5806,7 +6042,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp => 'Nu există nicio aplicație de calendar în care să adaugi evenimentul.';
+  String get calendarNoCalendarApp =>
+      'Nu există nicio aplicație de calendar în care să adaugi evenimentul.';
 
   @override
   String get calendarCantOpenCalendar => 'Calendarul nu a putut fi deschis.';
@@ -5833,7 +6070,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get calendarJoinHomographUnknown => 'Atenție: această adresă imită alt site cu litere asemănătoare.';
+  String get calendarJoinHomographUnknown =>
+      'Atenție: această adresă imită alt site cu litere asemănătoare.';
 
   @override
   String calendarJoinOpen(String host) {
@@ -5841,20 +6079,30 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer => 'Această invitație nu are un organizator căruia să-i răspunzi.';
+  String get calendarNoOrganizer =>
+      'Această invitație nu are un organizator căruia să-i răspunzi.';
 
   @override
-  String get calendarNoAccount => 'Nu există niciun cont de pe care să răspunzi.';
+  String get calendarNoAccount =>
+      'Nu există niciun cont de pe care să răspunzi.';
 
   @override
   String calendarReplySending(String answer, String name) {
-    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Acceptat', 'tentative': 'Poate', 'other': 'Refuzat'});
+    String _temp0 = intl.Intl.selectLogic(answer, {
+      'accepted': 'Acceptat',
+      'tentative': 'Poate',
+      'other': 'Refuzat',
+    });
     return '$_temp0 · se trimite răspunsul către $name…';
   }
 
   @override
   String calendarReplySent(String answer) {
-    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Acceptat', 'tentative': 'Poate', 'other': 'Refuzat'});
+    String _temp0 = intl.Intl.selectLogic(answer, {
+      'accepted': 'Acceptat',
+      'tentative': 'Poate',
+      'other': 'Refuzat',
+    });
     return '$_temp0 · răspuns trimis';
   }
 
@@ -5934,7 +6182,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get keyboardKeyBackspace => 'Backspace';
 
   @override
-  String get mailingListsMuted => 'Fir ignorat. Mesajele noi din el sosesc deja citite.';
+  String get mailingListsMuted =>
+      'Fir ignorat. Mesajele noi din el sosesc deja citite.';
 
   @override
   String get mailingListsUnmuted => 'Firul nu mai este ignorat.';
@@ -6011,7 +6260,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Liste tehnice';
 
   @override
-  String get mailingListsTechnicalEmpty => 'Listele de e-mail apar aici după ce sosesc e-mailurile lor.';
+  String get mailingListsTechnicalEmpty =>
+      'Listele de e-mail apar aici după ce sosesc e-mailurile lor.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -6183,7 +6433,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get searchUnknownAccountFailed => 'Căutarea în cont pe server nu a reușit';
+  String get searchUnknownAccountFailed =>
+      'Căutarea în cont pe server nu a reușit';
 
   @override
   String searchChip(String term) {
@@ -6246,7 +6497,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get searchSettingsTitle => 'Smart Mailboxes';
 
   @override
-  String get searchSettingsLocalFooter => 'Smart Mailboxes rămân pe acest dispozitiv.';
+  String get searchSettingsLocalFooter =>
+      'Smart Mailboxes rămân pe acest dispozitiv.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -6257,13 +6509,15 @@ class AppLocalizationsRo extends AppLocalizations {
   String get searchSyncVia => 'Sincronizează prin';
 
   @override
-  String get searchSyncViaFooter => 'Alege același cont pe toate dispozitivele.';
+  String get searchSyncViaFooter =>
+      'Alege același cont pe toate dispozitivele.';
 
   @override
   String get searchGmailCantKeep => 'Gmail nu poate păstra Smart Mailboxes';
 
   @override
-  String get searchKeepOnDevice => 'Păstrează Smart Mailboxes doar pe acest dispozitiv';
+  String get searchKeepOnDevice =>
+      'Păstrează Smart Mailboxes doar pe acest dispozitiv';
 
   @override
   String get searchOnTheServer => 'Pe server';
@@ -6545,7 +6799,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount => 'Selectează mesaje dintr-un singur cont ca să le muți.';
+  String get sharedMoveOneAccount =>
+      'Selectează mesaje dintr-un singur cont ca să le muți.';
 
   @override
   String get sharedSnoozeTitle => 'Amână';
@@ -6608,6 +6863,331 @@ class AppLocalizationsRo extends AppLocalizations {
   String get sharedNotJunk => 'Nu este spam';
 
   @override
+  String get documentsTitle => 'Documents';
+
+  @override
+  String get documentsSearchPlaceholder => 'Search in Documents';
+
+  @override
+  String get documentsSearchInDocuments => 'Search in Documents';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count downloaded documents',
+      one: '1 downloaded document',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count downloaded documents',
+      one: '1 downloaded document',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable can’t be read',
+      one: '1 can’t be read',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Searched $count downloaded documents',
+      one: 'Searched 1 downloaded document',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Searched $count downloaded documents',
+      one: 'Searched 1 downloaded document',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable couldn’t be read',
+      one: '1 couldn’t be read',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.';
+
+  @override
+  String get documentsEmpty => 'No Documents Yet';
+
+  @override
+  String get documentsEmptyDetail =>
+      'PDFs and text files you open from mail show up here, so you can search inside them.';
+
+  @override
+  String get documentsNoResults => 'No Matches';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'No downloaded document contains “$query”.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Matched on page $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Matched on line $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count more matches',
+      one: '1 more match',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Page $page';
+  }
+
+  @override
+  String get documentsReading => 'Reading…';
+
+  @override
+  String get documentsStatusNotDownloaded =>
+      'Not downloaded: open it to read and search it.';
+
+  @override
+  String get documentsStatusEncrypted =>
+      'Password protected: Loupe can’t read it.';
+
+  @override
+  String get documentsStatusNoText =>
+      'No text found: it may be a scan or a photo, which Loupe can’t read yet.';
+
+  @override
+  String get documentsStatusEmpty => 'This file has no text.';
+
+  @override
+  String get documentsStatusUnsupported =>
+      'Loupe can’t read this kind of document yet.';
+
+  @override
+  String get documentsStatusTooLarge => 'Too large to read on this phone.';
+
+  @override
+  String get documentsStatusDamaged =>
+      'Couldn’t be read: the file may be damaged.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total pages',
+      one: '1 page',
+    );
+    return 'Read $read of $_temp0; the rest isn’t searched.';
+  }
+
+  @override
+  String get documentsStatusPartialText =>
+      'Only the beginning was read; the rest isn’t searched.';
+
+  @override
+  String get documentsOpenDocument => 'Open Document';
+
+  @override
+  String get documentsOpenMessage => 'Open Message';
+
+  @override
+  String get documentsDetails => 'Document Details';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Contents fingerprint $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Text by Page';
+
+  @override
+  String get documentsVersionsHeader => 'Other Copies';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Different contents from the earlier copy ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'A newer copy ($date) has different contents';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Same contents as the copy of $date';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Same name as the copy of $date; contents not compared until both are downloaded';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges =>
+      'The Key Facts are the same; other text differs.';
+
+  @override
+  String get documentsKeyFacts => 'Key Facts';
+
+  @override
+  String get documentsKeyFactsFind => 'Find Key Facts';
+
+  @override
+  String get documentsKeyFactsWorking => 'Reading the document…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Couldn’t find the Key Facts.';
+
+  @override
+  String get documentsKeyFactsDemoNote =>
+      'Made by the built-in demo, not a model.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Made by $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint =>
+      'Tap a fact to see where the document says it.';
+
+  @override
+  String get documentsKeyFactsNone =>
+      'Loupe has no Key Facts for this kind of document yet.';
+
+  @override
+  String get documentsKeyFactsPartial =>
+      'Only the first pages were read; facts on later pages are unknown.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Not stated';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Stated differently';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Also on page $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Mortgage illustration';
+
+  @override
+  String get documentsTypeInvoice => 'Invoice';
+
+  @override
+  String get documentsTypeBooking => 'Booking';
+
+  @override
+  String get documentsTypeOther => 'Other document';
+
+  @override
+  String get documentsFieldInitialRate => 'Initial rate';
+
+  @override
+  String get documentsFieldRatePeriod => 'Rate period';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Monthly payment';
+
+  @override
+  String get documentsFieldTerm => 'Term';
+
+  @override
+  String get documentsFieldLoanAmount => 'Loan amount';
+
+  @override
+  String get documentsFieldArrangementFee => 'Arrangement fee';
+
+  @override
+  String get documentsFieldValuationFee => 'Valuation fee';
+
+  @override
+  String get documentsFieldBrokerFee => 'Broker fee';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Early repayment charges';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Total amount payable';
+
+  @override
+  String get documentsFieldAmountDue => 'Amount due';
+
+  @override
+  String get documentsFieldCurrency => 'Currency';
+
+  @override
+  String get documentsFieldDueDate => 'Due date';
+
+  @override
+  String get documentsFieldPayee => 'Payee';
+
+  @override
+  String get documentsFieldReference => 'Reference';
+
+  @override
+  String get documentsFieldSubtotal => 'Subtotal';
+
+  @override
+  String get documentsFieldTax => 'Tax';
+
+  @override
+  String get documentsFieldDate => 'Date';
+
+  @override
+  String get documentsFieldTime => 'Time';
+
+  @override
+  String get documentsFieldTimeZone => 'Time zone';
+
+  @override
+  String get documentsFieldAddress => 'Address';
+
+  @override
+  String get documentsFieldPerson => 'Person';
+
+  @override
   String get composeSignature => 'Semnătură';
 
   @override
@@ -6623,7 +7203,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get accountSetupAddressTitle => 'Adaugă un cont de e-mail';
 
   @override
-  String get accountSetupAddressText => 'Loupe găsește setările pentru majoritatea furnizorilor.';
+  String get accountSetupAddressText =>
+      'Loupe găsește setările pentru majoritatea furnizorilor.';
 
   @override
   String get accountSetupNameHint => 'Numele tău';
@@ -6652,7 +7233,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCheckServers => 'Verifică numele serverelor și porturile.';
+  String get accountSetupCheckServers =>
+      'Verifică numele serverelor și porturile.';
 
   @override
   String get accountSetupEnterPassword => 'Introdu parola.';
@@ -6709,13 +7291,15 @@ class AppLocalizationsRo extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Folosește o parolă de aplicație';
 
   @override
-  String get accountSetupUseAppPasswordInstead => 'Folosește în schimb o parolă de aplicație';
+  String get accountSetupUseAppPasswordInstead =>
+      'Folosește în schimb o parolă de aplicație';
 
   @override
   String get accountSetupUseDifferentAddress => 'Folosește altă adresă';
 
   @override
-  String get accountSetupHowToCreateAppPassword => 'Cum creezi o parolă de aplicație';
+  String get accountSetupHowToCreateAppPassword =>
+      'Cum creezi o parolă de aplicație';
 
   @override
   String get accountSetupHowToCreateOne => 'Cum creezi una';
@@ -6729,7 +7313,8 @@ class AppLocalizationsRo extends AppLocalizations {
       '„Conectează-te cu Google” nu este încă disponibil în această versiune. Te poți conecta în schimb cu o parolă de aplicație (necesită Verificarea în doi pași în Contul Google).';
 
   @override
-  String get accountSetupGmailAppPasswordNote => 'Creează o parolă de aplicație în Contul Google și lipește-o mai jos.';
+  String get accountSetupGmailAppPasswordNote =>
+      'Creează o parolă de aplicație în Contul Google și lipește-o mai jos.';
 
   @override
   String get accountSetupMicrosoftNote =>
@@ -6744,14 +7329,16 @@ class AppLocalizationsRo extends AppLocalizations {
       'iCloud Mail necesită o parolă specifică aplicației, nu parola contului tău Apple.';
 
   @override
-  String get accountSetupYahooNote => 'Yahoo Mail necesită o parolă de aplicație, nu parola contului tău.';
+  String get accountSetupYahooNote =>
+      'Yahoo Mail necesită o parolă de aplicație, nu parola contului tău.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Loupe se conectează la Fastmail prin JMAP cu un token API: Settings › Privacy & Security › Manage API tokens, pentru JMAP, cu acces la e-mailuri și la trimitere.';
 
   @override
-  String get accountSetupFastmailNote => 'Fastmail necesită o parolă de aplicație pentru aplicațiile de e-mail.';
+  String get accountSetupFastmailNote =>
+      'Fastmail necesită o parolă de aplicație pentru aplicațiile de e-mail.';
 
   @override
   String get accountSetupServerSettings => 'Setările serverului';
@@ -6829,10 +7416,12 @@ class AppLocalizationsRo extends AppLocalizations {
       'Token API respins. Creează un token API Fastmail pentru JMAP, cu acces la e-mailuri, și lipește-l.';
 
   @override
-  String get accountSetupAppPasswordRejected => 'Parolă respinsă. Folosește o parolă de aplicație, nu parola contului.';
+  String get accountSetupAppPasswordRejected =>
+      'Parolă respinsă. Folosește o parolă de aplicație, nu parola contului.';
 
   @override
-  String get accountSetupPasswordRejected => 'Parolă respinsă. Verific-o și încearcă din nou.';
+  String get accountSetupPasswordRejected =>
+      'Parolă respinsă. Verific-o și încearcă din nou.';
 
   @override
   String get accountSetupServerUnreachable =>
@@ -6910,7 +7499,11 @@ class AppLocalizationsRo extends AppLocalizations {
   String get accountSetupSigningIn => 'Se conectează…';
 
   @override
-  String accountSetupSignInExpired(String provider, String email, String account) {
+  String accountSetupSignInExpired(
+    String provider,
+    String email,
+    String account,
+  ) {
     return '$provider nu mai acceptă autentificarea Loupe pentru $email, așa că $account nu se sincronizează. Conectează-te din nou ca să primești e-mailurile.';
   }
 
@@ -6918,7 +7511,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get accountImportTitle => 'Importă din Thunderbird';
 
   @override
-  String get accountImportPointCamera => 'Îndreaptă camera spre codul QR afișat de Thunderbird.';
+  String get accountImportPointCamera =>
+      'Îndreaptă camera spre codul QR afișat de Thunderbird.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -6979,20 +7573,24 @@ class AppLocalizationsRo extends AppLocalizations {
       'Acest cod provine dintr-un export nou, așa că codurile scanate anterior au fost puse deoparte.';
 
   @override
-  String get accountImportNotThunderbird => 'Acesta nu este un cod de cont Thunderbird.';
+  String get accountImportNotThunderbird =>
+      'Acesta nu este un cod de cont Thunderbird.';
 
   @override
   String get accountImportNewerVersion =>
       'Acest cod provine dintr-o versiune mai nouă de Thunderbird. Actualizează Loupe ca să-l imporți.';
 
   @override
-  String get accountImportDamaged => 'Acest cod Thunderbird nu a putut fi citit.';
+  String get accountImportDamaged =>
+      'Acest cod Thunderbird nu a putut fi citit.';
 
   @override
-  String get accountImportTooLarge => 'Acest cod este prea mare ca să fie un export Thunderbird.';
+  String get accountImportTooLarge =>
+      'Acest cod este prea mare ca să fie un export Thunderbird.';
 
   @override
-  String get accountImportCouldNotOpenSettings => 'Setările nu au putut fi deschise.';
+  String get accountImportCouldNotOpenSettings =>
+      'Setările nu au putut fi deschise.';
 
   @override
   String get accountImportCameraOffTitle => 'Accesul la cameră este dezactivat';
@@ -7005,13 +7603,15 @@ class AppLocalizationsRo extends AppLocalizations {
   String get accountImportNoCameraTitle => 'Nicio cameră';
 
   @override
-  String get accountImportNoCameraText => 'Loupe nu poate folosi o cameră aici. Lipește în schimb textul codului.';
+  String get accountImportNoCameraText =>
+      'Loupe nu poate folosi o cameră aici. Lipește în schimb textul codului.';
 
   @override
   String get accountImportCameraFailedTitle => 'Camera nu a pornit';
 
   @override
-  String get accountImportCameraFailedText => 'Încearcă din nou sau lipește în schimb textul codului.';
+  String get accountImportCameraFailedText =>
+      'Încearcă din nou sau lipește în schimb textul codului.';
 
   @override
   String get accountImportOpenSettings => 'Deschide Setările';
@@ -7030,19 +7630,24 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable => 'Niciunul dintre conturile din aceste coduri nu a putut fi citit.';
+  String get accountImportNoneReadable =>
+      'Niciunul dintre conturile din aceste coduri nu a putut fi citit.';
 
   @override
-  String get accountImportChoose => 'Alege conturile pe care să le adaugi în Loupe.';
+  String get accountImportChoose =>
+      'Alege conturile pe care să le adaugi în Loupe.';
 
   @override
   String accountImportMissingCodes(int count, String codes, int total) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Codurile $codes din $total nu au fost scanate, așa că nu apar conturile din ele.',
-      few: 'Codurile $codes din $total nu au fost scanate, așa că nu apar conturile din ele.',
-      one: 'Codul $codes din $total nu a fost scanat, așa că nu apar conturile din el.',
+      other:
+          'Codurile $codes din $total nu au fost scanate, așa că nu apar conturile din ele.',
+      few:
+          'Codurile $codes din $total nu au fost scanate, așa că nu apar conturile din ele.',
+      one:
+          'Codul $codes din $total nu a fost scanat, așa că nu apar conturile din el.',
     );
     return '$_temp0';
   }
@@ -7073,7 +7678,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get accountImportScanAgain => 'Scanează din nou';
 
   @override
-  String get accountImportAlreadyAdded => 'Un cont cu această adresă există deja în Loupe.';
+  String get accountImportAlreadyAdded =>
+      'Un cont cu această adresă există deja în Loupe.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -7093,7 +7699,8 @@ class AppLocalizationsRo extends AppLocalizations {
       'Thunderbird se conectează la acest cont în browser. Loupe nu poate face asta încă: folosește o parolă de aplicație, dacă furnizorul tău oferă una.';
 
   @override
-  String get accountImportUnencrypted => 'Se conectează fără criptare. Folosește asta doar în propria rețea.';
+  String get accountImportUnencrypted =>
+      'Se conectează fără criptare. Folosește asta doar în propria rețea.';
 
   @override
   String get accountImportEnterAgain => 'Introdu-o din nou';
@@ -7123,16 +7730,20 @@ class AppLocalizationsRo extends AppLocalizations {
   String get accountImportPasteTitle => 'Lipește textul exportului';
 
   @override
-  String get accountImportPasteText => 'Lipește textul unui cod de export Thunderbird, câte un cod pe rând.';
+  String get accountImportPasteText =>
+      'Lipește textul unui cod de export Thunderbird, câte un cod pe rând.';
 
   @override
-  String get accountImportPop3 => 'Conturile POP3 nu sunt acceptate. Loupe păstrează e-mailurile pe server cu IMAP.';
+  String get accountImportPop3 =>
+      'Conturile POP3 nu sunt acceptate. Loupe păstrează e-mailurile pe server cu IMAP.';
 
   @override
-  String get accountImportKerberos => 'Acest cont se conectează cu Kerberos, pe care Loupe nu îl acceptă.';
+  String get accountImportKerberos =>
+      'Acest cont se conectează cu Kerberos, pe care Loupe nu îl acceptă.';
 
   @override
-  String get accountImportNtlm => 'Acest cont se conectează cu NTLM, pe care Loupe nu îl acceptă.';
+  String get accountImportNtlm =>
+      'Acest cont se conectează cu NTLM, pe care Loupe nu îl acceptă.';
 
   @override
   String get accountImportClientCertificate =>
@@ -7156,7 +7767,8 @@ class AppLocalizationsRo extends AppLocalizations {
       'Loupe nu a putut deschide spațiul de stocare a conturilor. Încearcă din nou mai târziu.';
 
   @override
-  String get accountImportFailed => 'Contul nu a putut fi adăugat. Încearcă din nou sau adaugă-l manual.';
+  String get accountImportFailed =>
+      'Contul nu a putut fi adăugat. Încearcă din nou sau adaugă-l manual.';
 
   @override
   String get composeNewMessageTitle => 'Mesaj nou';
@@ -7254,7 +7866,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get composeDraftNotFound => 'Ciorna nu a putut fi găsită.';
 
   @override
-  String get composeAttachmentsLost => 'Atașamentele nu au putut fi recuperate. Adaugă-le din nou.';
+  String get composeAttachmentsLost =>
+      'Atașamentele nu au putut fi recuperate. Adaugă-le din nou.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -7281,10 +7894,12 @@ class AppLocalizationsRo extends AppLocalizations {
   String get composeNoSubjectTitle => 'Fără subiect';
 
   @override
-  String get composeNoSubjectText => 'Acest mesaj nu are subiect. Îl trimiți oricum?';
+  String get composeNoSubjectText =>
+      'Acest mesaj nu are subiect. Îl trimiți oricum?';
 
   @override
-  String get composeSentBeforeChanges => 'A fost trimis înainte de modificările tale, care sunt salvate în Ciorne.';
+  String get composeSentBeforeChanges =>
+      'A fost trimis înainte de modificările tale, care sunt salvate în Ciorne.';
 
   @override
   String composeScheduled(String time) {
@@ -7329,7 +7944,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get composeForwardHeader => '---------- Mesaj redirecționat ----------';
+  String get composeForwardHeader =>
+      '---------- Mesaj redirecționat ----------';
 
   @override
   String composeForwardFrom(String addresses) {
@@ -7409,17 +8025,23 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Un mesaj nu a fost trimis când s-a închis Loupe.',
       'one': 'Un mesaj către $name nu a fost trimis când s-a închis Loupe.',
-      'other': 'Un mesaj către $name și alții nu a fost trimis când s-a închis Loupe.',
+      'other':
+          'Un mesaj către $name și alții nu a fost trimis când s-a închis Loupe.',
     });
     return '$_temp0';
   }
 
   @override
-  String composeRecoveryWithSubject(String recipients, String subject, String name) {
+  String composeRecoveryWithSubject(
+    String recipients,
+    String subject,
+    String name,
+  ) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': '„$subject” nu a fost trimis când s-a închis Loupe.',
       'one': '„$subject” către $name nu a fost trimis când s-a închis Loupe.',
-      'other': '„$subject” către $name și alții nu a fost trimis când s-a închis Loupe.',
+      'other':
+          '„$subject” către $name și alții nu a fost trimis când s-a închis Loupe.',
     });
     return '$_temp0';
   }
@@ -7467,7 +8089,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get outboxEmptyTitle => 'Nimic de trimis';
 
   @override
-  String get outboxEmptyText => 'Mesajele pe care le trimiți mai târziu așteaptă aici până le vine vremea.';
+  String get outboxEmptyText =>
+      'Mesajele pe care le trimiți mai târziu așteaptă aici până le vine vremea.';
 
   @override
   String get outboxSendNow => 'Trimite acum';
@@ -7514,7 +8137,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get outboxBeingSent => 'Acest mesaj se trimite acum.';
 
   @override
-  String get outboxActionFailed => 'Nu a funcționat. Mesajul este încă în Căsuța de ieșire.';
+  String get outboxActionFailed =>
+      'Nu a funcționat. Mesajul este încă în Căsuța de ieșire.';
 
   @override
   String get notificationsBadgeInboxes => 'Necitite din inboxuri';
@@ -7526,7 +8150,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription => 'E-mailuri noi de la VIP-urile tale, din orice cont';
+  String get notificationsVipChannelDescription =>
+      'E-mailuri noi de la VIP-urile tale, din orice cont';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -7568,7 +8193,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get platformInstantChannel => 'Livrare instantanee';
 
   @override
-  String get platformInstantChannelDescription => 'Apare cât timp Loupe urmărește inboxurile pentru e-mailuri noi';
+  String get platformInstantChannelDescription =>
+      'Apare cât timp Loupe urmărește inboxurile pentru e-mailuri noi';
 
   @override
   String get platformInstantTitle => 'Se așteaptă e-mailuri noi';
@@ -7577,28 +8203,34 @@ class AppLocalizationsRo extends AppLocalizations {
   String get platformInstantText => 'Livrarea instantanee este activată';
 
   @override
-  String get platformErrorBox => 'Ceva nu a mers bine la afișare. Întoarce-te și încearcă din nou.';
+  String get platformErrorBox =>
+      'Ceva nu a mers bine la afișare. Întoarce-te și încearcă din nou.';
 
   @override
-  String get welcomeTagline => 'E-mail simplu la suprafață\nși puternic în profunzime.';
+  String get welcomeTagline =>
+      'E-mail simplu la suprafață\nși puternic în profunzime.';
 
   @override
-  String get welcomeAccountsTitle => 'Toate conturile, un singur inbox liniștit';
+  String get welcomeAccountsTitle =>
+      'Toate conturile, un singur inbox liniștit';
 
   @override
-  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail și orice server IMAP sau JMAP.';
+  String get welcomeAccountsText =>
+      'Gmail, Outlook, iCloud, Fastmail și orice server IMAP sau JMAP.';
 
   @override
   String get welcomeSearchTitle => 'O căutare care găsește';
 
   @override
-  String get welcomeSearchText => 'Rezultate instantanee de pe telefon, apoi cele de pe server.';
+  String get welcomeSearchText =>
+      'Rezultate instantanee de pe telefon, apoi cele de pe server.';
 
   @override
   String get welcomePrivacyTitle => 'Gândită pentru confidențialitate';
 
   @override
-  String get welcomePrivacyText => 'Fără urmărire. Imaginile externe rămân blocate până decizi tu altfel.';
+  String get welcomePrivacyText =>
+      'Fără urmărire. Imaginile externe rămân blocate până decizi tu altfel.';
 
   @override
   String get welcomeAddAccount => 'Adaugă un cont';
@@ -7625,10 +8257,12 @@ class AppLocalizationsRo extends AppLocalizations {
   String get searchAskNeedsAnswer => 'Loupe trebuie să știe:';
 
   @override
-  String get searchAskFailed => 'Loupe nu a putut transforma asta într-o căutare.';
+  String get searchAskFailed =>
+      'Loupe nu a putut transforma asta într-o căutare.';
 
   @override
-  String get searchAskDemoNote => 'Tradus de demonstrația încorporată, nu de un model.';
+  String get searchAskDemoNote =>
+      'Tradus de demonstrația încorporată, nu de un model.';
 
   @override
   String get settingsAiHeader => 'IA privată';
@@ -7652,10 +8286,12 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsAiDemo => 'Demo integrat';
 
   @override
-  String get settingsAiDemoDetail => 'Pe acest telefon. Fără model: câteva reguli, ca să încerci funcțiile.';
+  String get settingsAiDemoDetail =>
+      'Pe acest telefon. Fără model: câteva reguli, ca să încerci funcțiile.';
 
   @override
-  String get settingsAiAnthropicDetail => 'Cloud: Claude, cu propria ta cheie API.';
+  String get settingsAiAnthropicDetail =>
+      'Cloud: Claude, cu propria ta cheie API.';
 
   @override
   String get settingsAiServer => 'Serverul meu';
@@ -7668,7 +8304,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsAiOnPhone => 'Pe acest telefon';
 
   @override
-  String get settingsAiOnPhoneDetail => 'Încă indisponibil: modelul de pe dispozitiv este încă testat pe telefoane.';
+  String get settingsAiOnPhoneDetail =>
+      'Încă indisponibil: modelul de pe dispozitiv este încă testat pe telefoane.';
 
   @override
   String get settingsAiNotSetUp => 'Neconfigurat';
@@ -7719,13 +8356,15 @@ class AppLocalizationsRo extends AppLocalizations {
       'Până la calea API inclusiv, de exemplu http://192.168.1.20:11434/v1 pentru Ollama.';
 
   @override
-  String get settingsAiServerAddressInvalid => 'Aceasta nu este o adresă http:// sau https://.';
+  String get settingsAiServerAddressInvalid =>
+      'Aceasta nu este o adresă http:// sau https://.';
 
   @override
   String get settingsAiServerModelTitle => 'Numele modelului';
 
   @override
-  String get settingsAiServerModelMessage => 'Așa cum îl numește serverul tău, de exemplu llama3.2.';
+  String get settingsAiServerModelMessage =>
+      'Așa cum îl numește serverul tău, de exemplu llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Testează conexiunea';
@@ -7742,7 +8381,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsAiTestFailed => 'Testul a eșuat';
 
   @override
-  String get settingsAiTestInvalid => 'Modelul a răspuns, dar nu în forma cerută de Loupe.';
+  String get settingsAiTestInvalid =>
+      'Modelul a răspuns, dar nu în forma cerută de Loupe.';
 
   @override
   String get settingsAiRemoveKey => 'Elimină cheia';
@@ -7812,29 +8452,36 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Stadiul unei chestiuni';
 
   @override
-  String get settingsAiFeatureSearchDetail => 'În căutare: o propoziție devine o căutare pe care o poți verifica.';
+  String get settingsAiFeatureSearchDetail =>
+      'În căutare: o propoziție devine o căutare pe care o poți verifica.';
 
   @override
-  String get settingsAiFeatureBriefDetail => 'Într-un mesaj: ce îți cere, cu pasajele.';
+  String get settingsAiFeatureBriefDetail =>
+      'Într-un mesaj: ce îți cere, cu pasajele.';
 
   @override
-  String get settingsAiFeatureActionsDetail => 'Propune elemente pentru „De făcut de mine” și „În așteptarea altora”.';
+  String get settingsAiFeatureActionsDetail =>
+      'Propune elemente pentru „De făcut de mine” și „În așteptarea altora”.';
 
   @override
   String get settingsAiFeatureRulesDetail =>
       'În Reguli: o descriere devine o regulă pe care o verifici înainte de a o salva.';
 
   @override
-  String get settingsAiFeatureChangesDetail => 'În Compară mesajele: ce s-a schimbat ca sens, cu sursele.';
+  String get settingsAiFeatureChangesDetail =>
+      'În Compară mesajele: ce s-a schimbat ca sens, cu sursele.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail => 'Datele-cheie din documentele atașate, cu paginile lor.';
+  String get settingsAiFeatureDocumentsDetail =>
+      'Datele-cheie din documentele atașate, cu paginile lor.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail => 'Înainte de trimitere: ce i-ar fi putut scăpa unui răspuns.';
+  String get settingsAiFeatureReplyCheckDetail =>
+      'Înainte de trimitere: ce i-ar fi putut scăpa unui răspuns.';
 
   @override
-  String get settingsAiFeatureMattersDetail => 'Cel mai recent stadiu al unei chestiuni, din e-mailurile ei.';
+  String get settingsAiFeatureMattersDetail =>
+      'Cel mai recent stadiu al unei chestiuni, din e-mailurile ei.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Păstrează e-mailurile pe telefon';
