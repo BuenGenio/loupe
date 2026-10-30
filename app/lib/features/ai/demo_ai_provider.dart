@@ -2,11 +2,16 @@ import 'dart:convert';
 
 import 'package:mail_ai/mail_ai.dart';
 
-/// Stands in for a model until one ships. It answers `search.translate` with
-/// a few rules over the sentence (status words, "from" / "to" / "about",
-/// attachments, periods, months), so Ask in Plain English can be used and
-/// tested end to end without a model. It refuses every other task. Its
-/// completions carry the model name "demo", and the sheet says so.
+/// The demo's answer to one task type: the text a model would return, made
+/// by rules from the request. [now] is the provider's clock.
+typedef DemoAnswer = String Function(AiRequest request, DateTime now);
+
+/// Stands in for a model until one ships. It answers the task types in
+/// [answers] with a few rules each (`search.translate`: status words, "from" /
+/// "to" / "about", attachments, periods, months), so the Private AI features
+/// can be used and tested end to end without a model. It refuses every other
+/// task. Its completions carry the model name "demo", and the features say so.
+/// Its answers go through the same task parsers as a model's.
 final class DemoAiProvider implements AiProvider {
   DemoAiProvider({DateTime Function()? now}) : _now = now ?? DateTime.now;
 
@@ -18,15 +23,20 @@ final class DemoAiProvider implements AiProvider {
   ProviderLocation get location => ProviderLocation.onThisPhone;
   @override
   ProviderCapabilities get capabilities =>
-      const ProviderCapabilities(maxInputTokens: 4000, maxOutputTokens: 400, constrainedOutput: true);
+      const ProviderCapabilities(maxInputTokens: 16000, maxOutputTokens: 4000, constrainedOutput: true);
+
+  /// What the demo can do, by task type. A feature with a demo adds its
+  /// answer here.
+  static final Map<String, DemoAnswer> answers = {
+    'search.translate': (request, now) => jsonEncode(demoTranslate(_sentence(request.input), now: now)),
+  };
 
   @override
   Future<AiCompletion> complete(AiRequest request, {CancelToken? cancel}) async {
     if (cancel?.isCancelled ?? false) throw const AiCancelled();
-    if (request.taskType != 'search.translate') {
-      throw const AiProviderException('The built-in demo only translates searches.');
-    }
-    return AiCompletion(jsonEncode(demoTranslate(_sentence(request.input), now: _now())), model: 'demo');
+    final answer = answers[request.taskType];
+    if (answer == null) throw AiProviderException('The built-in demo can’t do ${request.taskType}.');
+    return AiCompletion(answer(request, _now()), model: 'demo');
   }
 
   /// The task sends `Sentence: <JSON string>`; a repair turn appends to it.
