@@ -154,6 +154,89 @@ class AppLocalizationsRo extends AppLocalizations {
   String get mailboxTrash => 'Coș de gunoi';
 
   @override
+  String get changesExplainTitle => 'Ce s-a schimbat';
+
+  @override
+  String get changesExplainIntro => 'Explică faptele schimbate, fiecare legat de pasajele sale din ambele mesaje.';
+
+  @override
+  String get changesExplainAction => 'Explică modificările';
+
+  @override
+  String get changesExplainWorking => 'Se explică modificările…';
+
+  @override
+  String get changesExplainFailed => 'Loupe nu a putut explica aceste modificări.';
+
+  @override
+  String get changesExplainTooLarge => 'Aceste mesaje sunt prea lungi pentru model.';
+
+  @override
+  String get changesExplainProviderError => 'Modelul nu a răspuns.';
+
+  @override
+  String get changesExplainInvalid => 'Răspunsul nu a trecut verificările Loupe, așa că nu se afișează nimic din el.';
+
+  @override
+  String get changesExplainNoChange =>
+      'Nu s-a găsit nicio schimbare de sens. Modificările exacte ale textului sunt mai jos.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Modificat',
+      'added': 'Nou',
+      'removed': 'Nu mai este menționat',
+      'contradiction': 'Contradictoriu',
+      'other': 'Modificat',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first sau $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Mesajele nu spun care dintre acestea este valabil.';
+
+  @override
+  String get changesExplainPartial => 'S-a citit doar începutul unui mesaj lung.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Rândurile care încep cu „>” citează mesaje anterioare. Sunt citite ca context, nu ca ceea ce spune vreunul dintre mesaje.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Un mesaj poate cita mesaje anterioare fără să le marcheze, așa că unele modificări pot proveni din mesaje mai vechi. Verifică pasajele.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Fiecare pasaj a fost găsit în mesajul său. Citește-le înainte să te bazezi pe o modificare.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Se explică doar textul mesajelor. Atașamentele se compară doar după nume, tip și dimensiune.';
+
+  @override
+  String get changesExplainDemoNote => 'Realizat de demonstrația încorporată, nu de un model.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Realizat de $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Niciun pasaj evidențiat în acest mesaj.';
+
+  @override
   String get conversationCompareMessages => 'Compară mesajele…';
 
   @override

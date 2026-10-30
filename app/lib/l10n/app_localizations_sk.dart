@@ -154,6 +154,88 @@ class AppLocalizationsSk extends AppLocalizations {
   String get mailboxTrash => 'Kôš';
 
   @override
+  String get changesExplainTitle => 'Čo sa zmenilo';
+
+  @override
+  String get changesExplainIntro => 'Vysvetlí zmenené údaje, každý prepojený s úryvkami v oboch správach.';
+
+  @override
+  String get changesExplainAction => 'Vysvetliť zmeny';
+
+  @override
+  String get changesExplainWorking => 'Vysvetľujú sa zmeny…';
+
+  @override
+  String get changesExplainFailed => 'Loupe tieto zmeny nedokázal vysvetliť.';
+
+  @override
+  String get changesExplainTooLarge => 'Tieto správy sú pre model príliš dlhé.';
+
+  @override
+  String get changesExplainProviderError => 'Model neodpovedal.';
+
+  @override
+  String get changesExplainInvalid => 'Odpoveď neprešla kontrolami aplikácie Loupe, preto sa z nej nič nezobrazuje.';
+
+  @override
+  String get changesExplainNoChange => 'Nenašla sa žiadna zmena významu. Presné zmeny textu sú nižšie.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Zmenené',
+      'added': 'Nové',
+      'removed': 'Už sa nespomína',
+      'contradiction': 'V rozpore',
+      'other': 'Zmenené',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first alebo $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Zo správ nie je jasné, ktorý z týchto údajov platí.';
+
+  @override
+  String get changesExplainPartial => 'Prečítal sa len začiatok dlhej správy.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Riadky začínajúce znakom „>“ citujú staršiu poštu. Čítajú sa ako kontext, nie ako obsah niektorej zo správ.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Správa môže citovať staršiu poštu bez označenia, preto niektoré zmeny môžu pochádzať zo staršej pošty. Skontrolujte úryvky.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Každý úryvok sa našiel vo svojej správe. Prečítajte si ich skôr, než sa na zmenu spoľahnete.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Vysvetľuje sa len text správ. Prílohy sa porovnávajú len podľa názvu, typu a veľkosti.';
+
+  @override
+  String get changesExplainDemoNote => 'Vytvorilo vstavané demo, nie model.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Vytvorené pomocou $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'V tejto správe nie je zvýraznený žiadny úryvok.';
+
+  @override
   String get conversationCompareMessages => 'Porovnať správy…';
 
   @override

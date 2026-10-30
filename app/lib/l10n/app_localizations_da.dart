@@ -148,6 +148,87 @@ class AppLocalizationsDa extends AppLocalizations {
   String get mailboxTrash => 'Papirkurv';
 
   @override
+  String get changesExplainTitle => 'Hvad er ændret';
+
+  @override
+  String get changesExplainIntro => 'Forklarer de ændrede oplysninger, hver med link til passagerne i begge beskeder.';
+
+  @override
+  String get changesExplainAction => 'Forklar ændringer';
+
+  @override
+  String get changesExplainWorking => 'Forklarer ændringerne…';
+
+  @override
+  String get changesExplainFailed => 'Loupe kunne ikke forklare disse ændringer.';
+
+  @override
+  String get changesExplainTooLarge => 'Disse beskeder er for lange til modellen.';
+
+  @override
+  String get changesExplainProviderError => 'Modellen svarede ikke.';
+
+  @override
+  String get changesExplainInvalid => 'Svaret bestod ikke Loupes kontroller, så intet af det vises.';
+
+  @override
+  String get changesExplainNoChange => 'Ingen ændring i betydningen fundet. De nøjagtige tekstændringer står nedenfor.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Ændret',
+      'added': 'Ny',
+      'removed': 'Ikke længere nævnt',
+      'contradiction': 'Modstridende',
+      'other': 'Ændret',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first eller $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Beskederne siger ikke, hvilken af disse der gælder.';
+
+  @override
+  String get changesExplainPartial => 'Kun begyndelsen af en lang besked blev læst.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Linjer, der starter med »>«, citerer tidligere mail. De læses som kontekst, ikke som noget, beskederne selv siger.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'En besked kan citere tidligere mail uden at markere det, så nogle ændringer kan stamme fra ældre mail. Tjek passagerne.';
+
+  @override
+  String get changesExplainCheckNote => 'Hver passage blev fundet i sin besked. Læs dem, før du stoler på en ændring.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Kun beskedteksten forklares. Vedhæftninger sammenlignes kun efter navn, type og størrelse.';
+
+  @override
+  String get changesExplainDemoNote => 'Lavet af den indbyggede demo, ikke af en model.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Lavet af $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Ingen passage er fremhævet i denne besked.';
+
+  @override
   String get conversationCompareMessages => 'Sammenlign beskeder…';
 
   @override

@@ -154,6 +154,88 @@ class AppLocalizationsLv extends AppLocalizations {
   String get mailboxTrash => 'Miskaste';
 
   @override
+  String get changesExplainTitle => 'Kas mainījies';
+
+  @override
+  String get changesExplainIntro => 'Izskaidro mainītos faktus, katru saistot ar tā fragmentiem abās vēstulēs.';
+
+  @override
+  String get changesExplainAction => 'Izskaidrot izmaiņas';
+
+  @override
+  String get changesExplainWorking => 'Skaidro izmaiņas…';
+
+  @override
+  String get changesExplainFailed => 'Loupe nevarēja izskaidrot šīs izmaiņas.';
+
+  @override
+  String get changesExplainTooLarge => 'Šīs vēstules ir pārāk garas modelim.';
+
+  @override
+  String get changesExplainProviderError => 'Modelis neatbildēja.';
+
+  @override
+  String get changesExplainInvalid => 'Atbilde neizturēja Loupe pārbaudes, tāpēc nekas no tās netiek rādīts.';
+
+  @override
+  String get changesExplainNoChange => 'Nozīmes izmaiņas nav atrastas. Precīzās teksta izmaiņas ir redzamas zemāk.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Mainīts',
+      'added': 'Jauns',
+      'removed': 'Vairs netiek minēts',
+      'contradiction': 'Pretrunīgs',
+      'other': 'Mainīts',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first vai $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Vēstulēs nav teikts, kurš no šiem ir spēkā.';
+
+  @override
+  String get changesExplainPartial => 'Tika izlasīts tikai garas vēstules sākums.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Rindas, kas sākas ar „>“, citē agrākas vēstules. Tās tiek lasītas kā konteksts, nevis kā kādā no vēstulēm teiktais.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Vēstule var citēt agrākas vēstules, to neatzīmējot, tāpēc dažas izmaiņas var būt no vecākām vēstulēm. Pārbaudiet fragmentus.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Katrs fragments tika atrasts savā vēstulē. Izlasiet tos, pirms paļaujaties uz kādu izmaiņu.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Tiek skaidrots tikai vēstuļu teksts. Pielikumi tiek salīdzināti tikai pēc nosaukuma, veida un izmēra.';
+
+  @override
+  String get changesExplainDemoNote => 'Izveidoja iebūvētā demonstrācija, nevis modelis.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Izveidoja: $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Šajā vēstulē nav iezīmēts neviens fragments.';
+
+  @override
   String get conversationCompareMessages => 'Salīdzināt vēstules…';
 
   @override

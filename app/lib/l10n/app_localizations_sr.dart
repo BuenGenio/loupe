@@ -154,6 +154,88 @@ class AppLocalizationsSr extends AppLocalizations {
   String get mailboxTrash => 'Смеће';
 
   @override
+  String get changesExplainTitle => 'Шта се променило';
+
+  @override
+  String get changesExplainIntro => 'Објашњава промењене чињенице, сваку повезану са одломцима у обе поруке.';
+
+  @override
+  String get changesExplainAction => 'Објасни промене';
+
+  @override
+  String get changesExplainWorking => 'Објашњавање промена…';
+
+  @override
+  String get changesExplainFailed => 'Loupe није могао да објасни ове промене.';
+
+  @override
+  String get changesExplainTooLarge => 'Ове поруке су предуге за модел.';
+
+  @override
+  String get changesExplainProviderError => 'Модел није одговорио.';
+
+  @override
+  String get changesExplainInvalid => 'Одговор није прошао провере апликације Loupe, па се ништа од њега не приказује.';
+
+  @override
+  String get changesExplainNoChange => 'Није пронађена промена значења. Тачне промене текста налазе се испод.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Промењено',
+      'added': 'Ново',
+      'removed': 'Више се не помиње',
+      'contradiction': 'Противречно',
+      'other': 'Промењено',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first или $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Поруке не кажу који од ових података важи.';
+
+  @override
+  String get changesExplainPartial => 'Прочитан је само почетак дуге поруке.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Редови који почињу знаком „>“ цитирају ранију пошту. Читају се као контекст, а не као садржај било које од порука.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Порука може да цитира ранију пошту без ознаке, па неке промене могу потицати из старије поште. Проверите одломке.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Сваки одломак је пронађен у својој поруци. Прочитајте их пре него што се ослоните на промену.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Објашњава се само текст порука. Прилози се упоређују само по називу, типу и величини.';
+
+  @override
+  String get changesExplainDemoNote => 'Направио уграђени демо, а не модел.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Направио: $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'У овој поруци није истакнут ниједан одломак.';
+
+  @override
   String get conversationCompareMessages => 'Упореди поруке…';
 
   @override

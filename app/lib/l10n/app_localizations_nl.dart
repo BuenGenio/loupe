@@ -148,6 +148,91 @@ class AppLocalizationsNl extends AppLocalizations {
   String get mailboxTrash => 'Prullenbak';
 
   @override
+  String get changesExplainTitle => 'Wat er is veranderd';
+
+  @override
+  String get changesExplainIntro =>
+      'Legt de gewijzigde feiten uit, elk gekoppeld aan de bijbehorende passages in beide berichten.';
+
+  @override
+  String get changesExplainAction => 'Wijzigingen uitleggen';
+
+  @override
+  String get changesExplainWorking => 'Wijzigingen worden uitgelegd…';
+
+  @override
+  String get changesExplainFailed => 'Loupe kon deze wijzigingen niet uitleggen.';
+
+  @override
+  String get changesExplainTooLarge => 'Deze berichten zijn te lang voor het model.';
+
+  @override
+  String get changesExplainProviderError => 'Het model gaf geen antwoord.';
+
+  @override
+  String get changesExplainInvalid =>
+      'Het antwoord heeft de controles van Loupe niet doorstaan, dus er wordt niets van getoond.';
+
+  @override
+  String get changesExplainNoChange =>
+      'Geen verandering in betekenis gevonden. De exacte tekstwijzigingen staan hieronder.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Gewijzigd',
+      'added': 'Nieuw',
+      'removed': 'Niet meer genoemd',
+      'contradiction': 'Tegenstrijdig',
+      'other': 'Gewijzigd',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first of $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'De berichten zeggen niet welke hiervan geldt.';
+
+  @override
+  String get changesExplainPartial => 'Van een lang bericht is alleen het begin gelezen.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Regels die met “>” beginnen, citeren eerdere mail. Ze worden gelezen als context, niet als wat een van beide berichten zegt.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Een bericht kan eerdere mail citeren zonder dat aan te geven, dus sommige wijzigingen kunnen uit oudere mail komen. Controleer de passages.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Elke passage is in het bijbehorende bericht gevonden. Lees ze voordat je op een wijziging vertrouwt.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Alleen de berichttekst wordt uitgelegd. Bijlagen worden alleen op naam, type en grootte vergeleken.';
+
+  @override
+  String get changesExplainDemoNote => 'Gemaakt door de ingebouwde demo, niet door een model.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Gemaakt door $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'In dit bericht is geen passage gemarkeerd.';
+
+  @override
   String get conversationCompareMessages => 'Berichten vergelijken…';
 
   @override

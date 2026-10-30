@@ -435,6 +435,132 @@ abstract class AppLocalizations {
   /// **'Trash'**
   String get mailboxTrash;
 
+  /// Header of the section in Compare Messages (the Changes screen) where Private AI explains which facts changed between the two messages, above the exact text changes.
+  ///
+  /// In en, this message translates to:
+  /// **'What Changed'**
+  String get changesExplainTitle;
+
+  /// Under What Changed, before it has run, above the Explain Changes button.
+  ///
+  /// In en, this message translates to:
+  /// **'Explains the changed facts, each linked to its passages in both messages.'**
+  String get changesExplainIntro;
+
+  /// Button: asks Private AI to explain what changed between the two compared messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Explain Changes'**
+  String get changesExplainAction;
+
+  /// Progress line while Private AI explains the changes, beside a Cancel button.
+  ///
+  /// In en, this message translates to:
+  /// **'Explaining the changes…'**
+  String get changesExplainWorking;
+
+  /// What Changed failed. A line saying why and a Retry button follow.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe couldn’t explain these changes.'**
+  String get changesExplainFailed;
+
+  /// Why What Changed failed: the messages don’t fit the AI model’s limits, so nothing was sent.
+  ///
+  /// In en, this message translates to:
+  /// **'These messages are too long for the model.'**
+  String get changesExplainTooLarge;
+
+  /// Why What Changed failed: the AI model or its service reported a problem. Its own message, in English, follows.
+  ///
+  /// In en, this message translates to:
+  /// **'The model didn’t answer.'**
+  String get changesExplainProviderError;
+
+  /// Why What Changed failed: the AI model’s answer quoted text that isn’t in the messages, or broke another rule, twice. The technical reason, in English, follows.
+  ///
+  /// In en, this message translates to:
+  /// **'The answer didn’t pass Loupe’s checks, so none of it is shown.'**
+  String get changesExplainInvalid;
+
+  /// What Changed found only differences of wording, greetings or layout. The literal text comparison follows below it.
+  ///
+  /// In en, this message translates to:
+  /// **'No change in meaning found. The exact text changes are below.'**
+  String get changesExplainNoChange;
+
+  /// Small label above one explained change. changed: the two messages give it different values. added: only the To Message says it. removed: only the From Message says it; the To Message doesn’t repeat it, which is not the same as cancelling it, so don’t use a word like “cancelled” or “deleted”. contradiction: two passages disagree and the mail doesn’t say which holds.
+  ///
+  /// In en, this message translates to:
+  /// **'{kind, select, changed{Changed} added{New} removed{No longer mentioned} contradiction{Conflicting} other{Changed}}'**
+  String changesExplainKind(String kind);
+
+  /// One explained change: the value as the From Message states it, an arrow, the value as the To Message states it. Both are quoted from the mail.
+  ///
+  /// In en, this message translates to:
+  /// **'{before} → {after}'**
+  String changesExplainValues(String before, String after);
+
+  /// Two values that passages of the mail state for the same thing and that disagree; the mail doesn’t say which holds. Both are quoted from the mail.
+  ///
+  /// In en, this message translates to:
+  /// **'{first} or {second}'**
+  String changesExplainConflictValues(String first, String second);
+
+  /// Under two conflicting passages of the mail. Loupe doesn’t pick the newer one.
+  ///
+  /// In en, this message translates to:
+  /// **'The messages don’t say which of these holds.'**
+  String get changesExplainConflictNote;
+
+  /// Note under What Changed when a message was longer than Private AI’s limit.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the beginning of a long message was read.'**
+  String get changesExplainPartial;
+
+  /// Note under What Changed when a message quotes earlier mail with “>” lines.
+  ///
+  /// In en, this message translates to:
+  /// **'Lines starting with “>” quote earlier mail. They are read as context, not as what either message says.'**
+  String get changesExplainQuotedNote;
+
+  /// Note under What Changed when a message seems to contain forwarded or quoted mail that isn’t marked with “>”, so where the sender’s own words end is uncertain.
+  ///
+  /// In en, this message translates to:
+  /// **'A message may quote earlier mail without marking it, so some changes may come from older mail. Check the passages.'**
+  String get changesExplainUnmarkedQuoteNote;
+
+  /// Note under the explained changes: Loupe checked that every quoted passage is really in its message, which doesn’t prove the explanation right. Tapping a change shows its passages.
+  ///
+  /// In en, this message translates to:
+  /// **'Each passage was found in its message. Read them before relying on a change.'**
+  String get changesExplainCheckNote;
+
+  /// Note under What Changed: attachment contents are not read or compared.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the message text is explained. Attachments are compared by name, type and size only.'**
+  String get changesExplainAttachmentNote;
+
+  /// Footnote under What Changed when the built-in demo, a few rules and no AI model, made the explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Made by the built-in demo, not a model.'**
+  String get changesExplainDemoNote;
+
+  /// Footnote under What Changed naming the AI provider and model that made the explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Made by {provider}'**
+  String changesExplainMadeBy(String provider);
+
+  /// Above one of the two messages shown for an explained change, when the change quotes nothing from that message (it is new, or no longer mentioned there).
+  ///
+  /// In en, this message translates to:
+  /// **'No passage highlighted in this message.'**
+  String get changesExplainNoPassage;
+
   /// Message menu action opening a screen to compare the text and attachment details of two messages in the conversation.
   ///
   /// In en, this message translates to:

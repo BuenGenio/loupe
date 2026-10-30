@@ -148,6 +148,90 @@ class AppLocalizationsHu extends AppLocalizations {
   String get mailboxTrash => 'Kuka';
 
   @override
+  String get changesExplainTitle => 'Mi változott';
+
+  @override
+  String get changesExplainIntro =>
+      'Elmagyarázza a megváltozott tényeket, mindegyiket a két üzenet megfelelő szövegrészeihez kapcsolva.';
+
+  @override
+  String get changesExplainAction => 'Változások magyarázata';
+
+  @override
+  String get changesExplainWorking => 'A változások magyarázata folyamatban…';
+
+  @override
+  String get changesExplainFailed => 'A Loupe nem tudta elmagyarázni ezeket a változásokat.';
+
+  @override
+  String get changesExplainTooLarge => 'Ezek az üzenetek túl hosszúak a modellnek.';
+
+  @override
+  String get changesExplainProviderError => 'A modell nem válaszolt.';
+
+  @override
+  String get changesExplainInvalid => 'A válasz nem ment át a Loupe ellenőrzésein, ezért semmi sem jelenik meg belőle.';
+
+  @override
+  String get changesExplainNoChange =>
+      'Nem találtunk jelentésbeli változást. A szöveg pontos változásai lent láthatók.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Megváltozott',
+      'added': 'Új',
+      'removed': 'Már nem szerepel',
+      'contradiction': 'Ellentmondásos',
+      'other': 'Megváltozott',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first vagy $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Az üzenetekből nem derül ki, melyik érvényes ezek közül.';
+
+  @override
+  String get changesExplainPartial => 'Egy hosszú üzenetnek csak az elejét olvastuk el.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'A „>” jellel kezdődő sorok korábbi leveleket idéznek. Ezeket háttérként olvassuk, nem úgy, mint amit valamelyik üzenet állít.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Egy üzenet jelölés nélkül is idézhet korábbi leveleket, így egyes változások régebbi levelekből származhatnak. Ellenőrizd a szövegrészeket.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Minden szövegrészt megtaláltunk a saját üzenetében. Olvasd el őket, mielőtt egy változásra hagyatkozol.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Csak az üzenetek szövegét magyarázzuk. A mellékleteket csak név, típus és méret alapján hasonlítjuk össze.';
+
+  @override
+  String get changesExplainDemoNote => 'A beépített demó készítette, nem modell.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Készítette: $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Ebben az üzenetben nincs kiemelt szövegrész.';
+
+  @override
   String get conversationCompareMessages => 'Üzenetek összehasonlítása…';
 
   @override
