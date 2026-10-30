@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mail_ai/mail_ai.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../l10n/l10n.dart';
@@ -70,6 +71,62 @@ String describeActions(AppLocalizations l10n, Rule rule, Map<String, Mailbox> ma
   final parts = [for (final a in rule.actions) describeAction(l10n, a, mailboxes)];
   if (rule.stopProcessing && !rule.actions.any((a) => a is KeepInInboxAction)) parts.add(l10n.rulesActionStop);
   return parts.isEmpty ? l10n.rulesNoActions : parts.join(', ');
+}
+
+/// Why Loupe left part of a described rule out ([accountName] names the
+/// account whose folders were searched).
+String describeUnsupportedReason(AppLocalizations l10n, UnsupportedRuleReason reason, String accountName) =>
+    switch (reason) {
+      UnsupportedRuleReason.noNotificationAction => l10n.rulesDescribeReasonNotification,
+      UnsupportedRuleReason.notSemanticPredicate => l10n.rulesDescribeReasonSemantic,
+      UnsupportedRuleReason.unknownFolder => l10n.rulesDescribeReasonFolder(accountName),
+      UnsupportedRuleReason.unknownTag => l10n.rulesDescribeReasonTag,
+      UnsupportedRuleReason.other => l10n.rulesDescribeReasonOther,
+    };
+
+/// One part of a described rule that Loupe can't do: the user's words,
+/// why, and explicit wording to choose instead when there is some.
+class UnsupportedPartRow extends StatelessWidget {
+  const UnsupportedPartRow({super.key, required this.part, required this.accountName});
+
+  final UnsupportedRulePart part;
+  final String accountName;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = LoupeColors.of(context);
+    final styles = LoupeTextStyles.of(context);
+    final l10n = context.l10n;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 10, 14, 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 1),
+            child: Icon(LoupeIcons.warning, size: 20, color: colors.flag),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.rulesDescribeQuoted(part.request), style: styles.body),
+                const SizedBox(height: 2),
+                Text(describeUnsupportedReason(l10n, part.reason, accountName), style: styles.footnote),
+                if (part.suggestion case final suggestion?) ...[
+                  const SizedBox(height: 6),
+                  Text(l10n.rulesDescribeSuggestion, style: styles.footnote),
+                  const SizedBox(height: 2),
+                  SelectableText(suggestion, style: CodeBox.style.copyWith(color: colors.label, fontSize: 13)),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 /// "Device" or "Server", as a small capsule.

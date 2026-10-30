@@ -4172,6 +4172,213 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Popsat pravidlo…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Napište jednou větou, co má pravidlo dělat. Návrh od Loupe zkontrolujete a nic se neuloží, dokud ho neuložíte v editoru pravidel.';
+
+  @override
+  String get rulesDescribeTitle => 'Popsat pravidlo';
+
+  @override
+  String get rulesDescribeAccount => 'Účet';
+
+  @override
+  String get rulesDescribeHint => 'Přesouvat účtenky od Harbor Coffee do Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Použije se jen tato věta a názvy složek a štítků účtu $account, nikdy vaše pošta.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Navrhnout pravidlo';
+
+  @override
+  String get rulesDescribeWorking => 'Připravuje se pravidlo…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe z toho nedokázala udělat pravidlo.';
+
+  @override
+  String get rulesDescribeProposed => 'Navržené pravidlo';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Pravidla hledají slova, adresy a data, které tu vidíte, ne to, o čem zpráva je.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Pošle odpovídající poštu na $address, mimo tento účet.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Na tomto telefonu, na novou poštu v Doručené poště účtu $account, pokaždé, když Loupe kontroluje poštu.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Na poštovním serveru účtu $account, když pošta přichází. Přeposílání funguje jen tam.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Kde se pravidlo spouští, zvolíte v editoru pravidel.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tyto části Loupe neumí',
+      many: 'Tyto části Loupe neumí',
+      few: 'Tyto části Loupe neumí',
+      one: 'Tuto část Loupe neumí',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Z pravidla jsou vynechány a nic je nenahradilo.',
+      many: 'Z pravidla jsou vynechány a nic je nenahradilo.',
+      few: 'Z pravidla jsou vynechány a nic je nenahradilo.',
+      one: 'Z pravidla je vynechána a nic ji nenahradilo.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '„$request“';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Pravidla nemohou měnit oznámení. Označit poštu jako přečtenou nebo ji přesunout není totéž co ji ztišit.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe tento druh pošty nerozpozná. Pravidlo umí hledat jen slova, která zvolíte.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return 'Účet $account nemá složku s tímto názvem.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Štítek s tímto názvem neexistuje.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Tohle pravidla neumí.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Slova, která Loupe umí hledat místo toho:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe potřebuje vědět';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Zkušební běh';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Kontroluje se pošta v tomto telefonu…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Pravidlo by zachytilo $matchedString z $totalString stažených zpráv v účtu $account',
+      many: 'Pravidlo by zachytilo $matchedString z $totalString stažené zprávy v účtu $account',
+      few: 'Pravidlo by zachytilo $matchedString z $totalString stažených zpráv v účtu $account',
+      one: 'Pravidlo by zachytilo $matchedString z $totalString stažené zprávy v účtu $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Odpovídaly by';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Neodpovídaly by';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Zkontrolovala se jen pošta stažená do tohoto telefonu, mimo složky Odeslané, Koncepty, Spam a Koš, a to kódem, který spouští pravidla v zařízení. Na serveru a ve starší poště může být víc.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Zkontrolovalo se jen $countString nejnovějších zpráv.',
+      many: 'Zkontrolovalo se jen $countString nejnovější zprávy.',
+      few: 'Zkontrolovaly se jen $countString nejnovější zprávy.',
+      one: 'Zkontrolovala se jen nejnovější zpráva.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString zpráv nešlo zkontrolovat bez stažení jejich textu.',
+      many: '$countString zprávy nešlo zkontrolovat bez stažení jejich textu.',
+      few: '$countString zprávy nešlo zkontrolovat bez stažení jejich textu.',
+      one: '$countString zprávu nešlo zkontrolovat bez stažení jejího textu.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe nedokázala zkontrolovat poštu v tomto telefonu.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Otevřít v editoru pravidel';
+
+  @override
+  String get rulesDescribeDemoNote => 'Navrhlo vestavěné demo, ne model.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Návrh od $provider. Před uložením ho zkontrolujte.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Není v tomto pravidle';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tyto části byly ve vašem popisu, ale Loupe je neumí, proto byly vynechány a nic je nenahradilo.',
+      many: 'Tyto části byly ve vašem popisu, ale Loupe je neumí, proto byly vynechány a nic je nenahradilo.',
+      few: 'Tyto části byly ve vašem popisu, ale Loupe je neumí, proto byly vynechány a nic je nenahradilo.',
+      one: 'Tato část byla ve vašem popisu, ale Loupe ji neumí, proto byla vynechána a nic ji nenahradilo.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Vaše účty se nepodařilo otevřít';
 
   @override

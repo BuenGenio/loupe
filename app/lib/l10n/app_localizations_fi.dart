@@ -4107,6 +4107,202 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Kuvaile sääntö…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Kerro yhdellä lauseella, mitä säännön pitäisi tehdä. Tarkistat itse Loupen ehdotuksen, eikä mitään tallenneta ennen kuin tallennat sen sääntöeditorissa.';
+
+  @override
+  String get rulesDescribeTitle => 'Kuvaile sääntö';
+
+  @override
+  String get rulesDescribeAccount => 'Tili';
+
+  @override
+  String get rulesDescribeHint => 'Siirrä Harbor Coffeen kuitit kansioon Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Käytetään vain tätä lausetta sekä tilin $account kansioiden ja tunnisteiden nimiä, ei koskaan postiasi.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Ehdota sääntöä';
+
+  @override
+  String get rulesDescribeWorking => 'Sääntöä muodostetaan…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe ei saanut tästä sääntöä.';
+
+  @override
+  String get rulesDescribeProposed => 'Ehdotettu sääntö';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Säännöt etsivät tässä näkyviä sanoja, osoitteita ja päivämääriä, eivät sitä, mistä viestissä on kyse.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Lähettää vastaavat viestit osoitteeseen $address, tämän tilin ulkopuolelle.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Tässä puhelimessa, tilin $account Saapuneet-kansion uudelle postille, aina kun Loupe tarkistaa postin.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Tilin $account sähköpostipalvelimella postin saapuessa. Edelleenlähetys toimii vain siellä.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Valitset suorituspaikan sääntöeditorissa.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Näitä osia Loupe ei voi tehdä',
+      one: 'Tätä osaa Loupe ei voi tehdä',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ne on jätetty pois säännöstä, eikä niiden tilalle ole laitettu mitään.',
+      one: 'Se on jätetty pois säännöstä, eikä sen tilalle ole laitettu mitään.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '”$request”';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Säännöt eivät voi muuttaa ilmoituksia. Postin merkitseminen luetuksi tai siirtäminen ei ole sama asia kuin sen hiljentäminen.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe ei tunnista tällaista postia. Sääntö voi etsiä vain valitsemiasi sanoja.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return 'Tilillä $account ei ole kansiota sillä nimellä.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Sillä nimellä ei ole tunnistetta.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Säännöt eivät voi tehdä tätä.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Loupe voi sen sijaan etsiä näitä sanoja:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupen täytyy tietää';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Koeajo';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Tarkistetaan tämän puhelimen postia…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Tilin $account $totalString ladatusta viestistä $matchedString täsmäisi',
+      one: 'Tilin $account $totalString ladatusta viestistä $matchedString täsmäisi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Täsmäisi';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Ei täsmäisi';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Vain tähän puhelimeen ladattu posti tarkistettiin Lähetetyt-, Luonnokset-, Roskaposti- ja Roskakori-kansioita lukuun ottamatta, samalla koodilla, joka suorittaa laitesäännöt. Palvelimella ja vanhemmassa postissa voi olla lisää.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Vain $countString uusinta viestiä tarkistettiin.',
+      one: 'Vain uusin viesti tarkistettiin.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString viestiä ei voitu tarkistaa lataamatta niiden tekstiä.',
+      one: 'Yhtä viestiä ei voitu tarkistaa lataamatta sen tekstiä.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe ei voinut tarkistaa tämän puhelimen postia.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Avaa sääntöeditorissa';
+
+  @override
+  String get rulesDescribeDemoNote => 'Ehdottanut sisäänrakennettu demo, ei malli.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Ehdottanut $provider. Tarkista se ennen tallentamista.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Ei tässä säännössä';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Kuvailit nämä, mutta Loupe ei voi tehdä niitä, joten ne jätettiin pois eikä niiden tilalle laitettu mitään.',
+      one: 'Kuvailit tämän, mutta Loupe ei voi tehdä sitä, joten se jätettiin pois eikä sen tilalle laitettu mitään.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Tilejäsi ei voitu avata';
 
   @override

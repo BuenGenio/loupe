@@ -4322,6 +4322,225 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Disgrifio rheol…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Dywedwch mewn brawddeg beth ddylai rheol ei wneud. Chi sy’n gwirio’r hyn mae Loupe yn ei gynnig, a does dim byd yn cael ei gadw nes i chi ei chadw yn y golygydd rheolau.';
+
+  @override
+  String get rulesDescribeTitle => 'Disgrifio rheol';
+
+  @override
+  String get rulesDescribeAccount => 'Cyfrif';
+
+  @override
+  String get rulesDescribeHint => 'Symud derbynebau oddi wrth Harbor Coffee i Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Dim ond y frawddeg hon ac enwau ffolderi a thagiau $account sy’n cael eu defnyddio, byth eich e-bost.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Cynnig rheol';
+
+  @override
+  String get rulesDescribeWorking => 'Wrthi’n llunio’r rheol…';
+
+  @override
+  String get rulesDescribeFailed => 'Ni allai Loupe wneud rheol o hynny.';
+
+  @override
+  String get rulesDescribeProposed => 'Rheol arfaethedig';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Mae rheolau’n cyfateb i’r geiriau, y cyfeiriadau a’r dyddiadau a ddangosir yma, nid i’r hyn mae neges yn sôn amdano.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Mae’n anfon e-bost sy’n cyfateb at $address, y tu allan i’r cyfrif hwn.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Ar y ffôn hwn, ar e-bost newydd ym Mewnflwch $account, bob tro mae Loupe yn chwilio am e-bost.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Ar weinydd e-bost $account, wrth i e-bost gyrraedd. Dim ond yno mae anfon ymlaen yn rhedeg.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Chi sy’n dewis ble mae’n rhedeg yn y golygydd rheolau.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'All Loupe ddim gwneud y rhannau hyn',
+      many: 'All Loupe ddim gwneud y rhannau hyn',
+      few: 'All Loupe ddim gwneud y rhannau hyn',
+      two: 'All Loupe ddim gwneud y rhannau hyn',
+      one: 'All Loupe ddim gwneud y rhan hon',
+      zero: 'All Loupe ddim gwneud y rhannau hyn',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Maen nhw wedi’u gadael allan o’r rheol, a does dim byd wedi’i roi yn eu lle.',
+      many: 'Maen nhw wedi’u gadael allan o’r rheol, a does dim byd wedi’i roi yn eu lle.',
+      few: 'Maen nhw wedi’u gadael allan o’r rheol, a does dim byd wedi’i roi yn eu lle.',
+      two: 'Maen nhw wedi’u gadael allan o’r rheol, a does dim byd wedi’i roi yn eu lle.',
+      one: 'Mae wedi’i gadael allan o’r rheol, a does dim byd wedi’i roi yn ei lle.',
+      zero: 'Maen nhw wedi’u gadael allan o’r rheol, a does dim byd wedi’i roi yn eu lle.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '“$request”';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'All rheolau ddim newid hysbysiadau. Dyw marcio e-bost fel wedi’i ddarllen neu ei symud ddim yr un peth â’i gadw’n dawel.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'All Loupe ddim adnabod y math hwn o e-bost. Dim ond i eiriau rydych chi’n eu dewis y gall rheol gyfateb.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return 'Does gan $account ddim ffolder â’r enw hwnnw.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Does dim tag â’r enw hwnnw.';
+
+  @override
+  String get rulesDescribeReasonOther => 'All rheolau ddim gwneud hyn.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Geiriau y gall Loupe gyfateb iddyn nhw yn lle hynny:';
+
+  @override
+  String get rulesDescribeQuestions => 'Mae angen i Loupe wybod';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Rhediad prawf';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Yn gwirio’r e-bost ar y ffôn hwn…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Byddai’n cyfateb i $matchedString o $totalString neges wedi’u llwytho i lawr yn $account',
+      many: 'Byddai’n cyfateb i $matchedString o $totalString neges wedi’u llwytho i lawr yn $account',
+      few: 'Byddai’n cyfateb i $matchedString o $totalString neges wedi’u llwytho i lawr yn $account',
+      two: 'Byddai’n cyfateb i $matchedString o $totalString neges wedi’u llwytho i lawr yn $account',
+      one: 'Byddai’n cyfateb i $matchedString o $totalString neges wedi’i llwytho i lawr yn $account',
+      zero: 'Byddai’n cyfateb i $matchedString o $totalString neges wedi’u llwytho i lawr yn $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Byddai’n cyfateb';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Fyddai ddim yn cyfateb';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Dim ond e-bost wedi’i lwytho i lawr i’r ffôn hwn a wiriwyd, y tu allan i Anfonwyd, Drafftiau, Sothach a Sbwriel, gan y cod sy’n rhedeg rheolau dyfais. Gall fod mwy ar y gweinydd ac mewn e-bost hŷn.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dim ond y $countString neges ddiweddaraf a wiriwyd.',
+      many: 'Dim ond y $countString neges ddiweddaraf a wiriwyd.',
+      few: 'Dim ond y $countString neges ddiweddaraf a wiriwyd.',
+      two: 'Dim ond y $countString neges ddiweddaraf a wiriwyd.',
+      one: 'Dim ond y neges ddiweddaraf a wiriwyd.',
+      zero: 'Dim ond y $countString neges ddiweddaraf a wiriwyd.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Doedd dim modd gwirio $countString neges heb lwytho eu testun i lawr.',
+      many: 'Doedd dim modd gwirio $countString neges heb lwytho eu testun i lawr.',
+      few: 'Doedd dim modd gwirio $countString neges heb lwytho eu testun i lawr.',
+      two: 'Doedd dim modd gwirio $countString neges heb lwytho eu testun i lawr.',
+      one: 'Doedd dim modd gwirio $countString neges heb lwytho ei thestun i lawr.',
+      zero: 'Doedd dim modd gwirio $countString neges heb lwytho eu testun i lawr.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Ni allai Loupe wirio’r e-bost ar y ffôn hwn.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Agor yn y golygydd rheolau';
+
+  @override
+  String get rulesDescribeDemoNote => 'Cynigiwyd gan y demo mewnol, nid gan fodel.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Cynigiwyd gan $provider. Gwiriwch hi cyn i chi ei chadw.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Ddim yn y rheol hon';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Fe wnaethoch chi ddisgrifio’r rhain, ond all Loupe mo’u gwneud, felly cawson nhw eu gadael allan a does dim byd wedi’i roi yn eu lle.',
+      many: 'Fe wnaethoch chi ddisgrifio’r rhain, ond all Loupe mo’u gwneud, felly cawson nhw eu gadael allan a does dim byd wedi’i roi yn eu lle.',
+      few: 'Fe wnaethoch chi ddisgrifio’r rhain, ond all Loupe mo’u gwneud, felly cawson nhw eu gadael allan a does dim byd wedi’i roi yn eu lle.',
+      two: 'Fe wnaethoch chi ddisgrifio’r rhain, ond all Loupe mo’u gwneud, felly cawson nhw eu gadael allan a does dim byd wedi’i roi yn eu lle.',
+      one: 'Fe wnaethoch chi ddisgrifio hyn, ond all Loupe mo’i wneud, felly cafodd ei adael allan a does dim byd wedi’i roi yn ei le.',
+      zero: 'Fe wnaethoch chi ddisgrifio’r rhain, ond all Loupe mo’u gwneud, felly cawson nhw eu gadael allan a does dim byd wedi’i roi yn eu lle.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Methu agor eich cyfrifon';
 
   @override

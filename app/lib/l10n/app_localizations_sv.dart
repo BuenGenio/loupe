@@ -4065,6 +4065,201 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Beskriv en regel…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Säg med en mening vad en regel ska göra. Du kontrollerar vad Loupe föreslår, och inget sparas förrän du sparar det i regelredigeraren.';
+
+  @override
+  String get rulesDescribeTitle => 'Beskriv en regel';
+
+  @override
+  String get rulesDescribeAccount => 'Konto';
+
+  @override
+  String get rulesDescribeHint => 'Flytta kvitton från Harbor Coffee till Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Bara den här meningen och namnen på mappar och taggar i $account används, aldrig din e-post.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Föreslå regel';
+
+  @override
+  String get rulesDescribeWorking => 'Tar fram regeln…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe kunde inte göra en regel av det.';
+
+  @override
+  String get rulesDescribeProposed => 'Föreslagen regel';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Regler matchar orden, adresserna och datumen som visas här, inte vad ett meddelande handlar om.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Skickar matchande e-post till $address, utanför det här kontot.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'På den här telefonen, på ny e-post i inkorgen för $account, varje gång Loupe söker efter e-post.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'På e-postservern för $account, när e-posten kommer in. Vidarebefordran körs bara där.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'I regelredigeraren väljer du var den körs.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'De här delarna kan Loupe inte utföra',
+      one: 'Den här delen kan Loupe inte utföra',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'De har utelämnats ur regeln, och inget har lagts till i stället.',
+      one: 'Den har utelämnats ur regeln, och inget har lagts till i stället.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '”$request”';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Regler kan inte ändra aviseringar. Att markera e-post som läst eller flytta den är inte samma sak som att tysta den.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe kan inte känna igen den här sortens e-post. En regel kan bara matcha ord som du väljer.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return '$account har ingen mapp med det namnet.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Det finns ingen tagg med det namnet.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Det kan regler inte göra.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Ord som Loupe kan matcha i stället:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe behöver veta';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Testkörning';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Kontrollerar e-posten på den här telefonen…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Skulle matcha $matchedString av $totalString nedladdade meddelanden i $account',
+      one: 'Skulle matcha $matchedString av 1 nedladdat meddelande i $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Skulle matcha';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Skulle inte matcha';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Bara e-post som har laddats ned till den här telefonen kontrollerades, utanför Skickat, Utkast, Skräppost och Papperskorg, med koden som kör enhetsregler. Servern och äldre e-post kan innehålla mer.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Bara de $countString senaste meddelandena kontrollerades.',
+      one: 'Bara det senaste meddelandet kontrollerades.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString meddelanden kunde inte kontrolleras utan att texten laddades ned.',
+      one: '1 meddelande kunde inte kontrolleras utan att texten laddades ned.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe kunde inte kontrollera e-posten på den här telefonen.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Öppna i regelredigeraren';
+
+  @override
+  String get rulesDescribeDemoNote => 'Föreslagen av den inbyggda demon, inte av en modell.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Föreslagen av $provider. Kontrollera den innan du sparar den.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Inte med i den här regeln';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Du beskrev dessa saker, men Loupe kan inte utföra dem, så de utelämnades och inget lades till i stället.',
+      one: 'Du beskrev detta, men Loupe kan inte utföra det, så det utelämnades och inget lades till i stället.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Det gick inte att öppna dina konton';
 
   @override

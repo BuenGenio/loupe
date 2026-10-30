@@ -5,6 +5,7 @@ import 'package:expr_search/expr_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mail_ai/mail_ai.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../l10n/l10n.dart';
@@ -20,8 +21,9 @@ import 'include_sheet.dart';
 import 'rule_format.dart';
 
 /// Edits a rule, or makes a new one ([ruleId] null), optionally with a
-/// condition, a name and actions already filled in ("Make This a Rule" from
-/// a search, "Create Rule" from Subscriptions).
+/// condition, a name, actions, accounts and where it runs already filled in
+/// ("Make This a Rule" from a search, "Create Rule" from Subscriptions,
+/// "Describe a Rule"). Nothing is saved until Save.
 class RuleEditorScreen extends ConsumerStatefulWidget {
   const RuleEditorScreen({
     super.key,
@@ -29,12 +31,21 @@ class RuleEditorScreen extends ConsumerStatefulWidget {
     this.initialCondition = '',
     this.initialName = '',
     this.initialActions = const [],
+    this.initialAccounts = const {},
+    this.initialLocation = RuleLocation.device,
+    this.leftOut = const [],
   });
 
   final String? ruleId;
   final String initialCondition;
   final String initialName;
   final List<RuleAction> initialActions;
+  final Set<String> initialAccounts;
+  final RuleLocation initialLocation;
+
+  /// What a described rule asked for that Loupe can't do, shown above the
+  /// rule so the user knows it was left out rather than replaced.
+  final List<UnsupportedRulePart> leftOut;
 
   @override
   ConsumerState<RuleEditorScreen> createState() => _RuleEditorScreenState();
@@ -48,11 +59,11 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
   Rule? _original;
   bool _loading = true;
   bool _saving = false;
-  Set<String> _accounts = {};
+  late Set<String> _accounts = {...widget.initialAccounts};
   late List<RuleAction> _actions = [...widget.initialActions];
   bool _stop = false;
   bool _enabled = true;
-  RuleLocation _location = RuleLocation.device;
+  late RuleLocation _location = widget.initialLocation;
 
   /// Matching messages from the last 30 days, for the condition [_previewFor].
   StreamSubscription<SearchResults>? _previewSub;
@@ -492,7 +503,16 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
         if (a.runsOn(_location)) a,
     ];
     final hidden = _actions.length - shown.length;
+    final accountName = _accounts.length == 1 ? names[_accounts.single] ?? '' : '';
     return [
+      if (_isNew && widget.leftOut.isNotEmpty)
+        InsetGroup(
+          key: const ValueKey('rule-left-out'),
+          header: l10n.rulesDescribeLeftOutHeader,
+          footer: l10n.rulesDescribeLeftOutFooter(widget.leftOut.length),
+          separatorIndent: 16,
+          children: [for (final part in widget.leftOut) UnsupportedPartRow(part: part, accountName: accountName)],
+        ),
       InsetGroup(
         header: l10n.commonName,
         children: [

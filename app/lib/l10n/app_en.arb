@@ -2340,6 +2340,136 @@
     "placeholders": {"sender": {"type": "String", "example": "flutter-dev"}}
   },
 
+  "@@x-section-rules-ai": "Describe a Rule: a sentence becomes a rule proposal",
+
+  "rulesDescribeRule": "Describe a Rule…",
+  "@rulesDescribeRule": {
+    "description": "Row in Settings › Rules that opens Describe a Rule: the user writes in a sentence what a rule should do, and Private AI proposes the rule."
+  },
+  "rulesDescribeRuleFooter": "Say in a sentence what a rule should do. You check what Loupe proposes, and nothing is saved until you save it in the rule editor.",
+  "@rulesDescribeRuleFooter": {"description": "Footer under Describe a Rule… in Settings › Rules."},
+  "rulesDescribeTitle": "Describe a Rule",
+  "@rulesDescribeTitle": {"description": "Title of the sheet where the user describes a rule in a sentence."},
+  "rulesDescribeAccount": "Account",
+  "@rulesDescribeAccount": {
+    "description": "Row label in Describe a Rule: the one account the rule is for (its folders and tags are the ones the rule may use). Also the title of the sheet picking it."
+  },
+  "rulesDescribeHint": "Move receipts from Harbor Coffee to Receipts",
+  "@rulesDescribeHint": {
+    "description": "Placeholder of the sentence field in Describe a Rule: an example sentence. Harbor Coffee is a café's name and Receipts a folder name in the demo; keep both as they are."
+  },
+  "rulesDescribeSentNote": "Only this sentence and the folder and tag names of {account} are used, never your mail.",
+  "@rulesDescribeSentNote": {
+    "description": "Footnote under the sentence field: what the model is given.",
+    "placeholders": {"account": {"type": "String", "example": "Personal"}}
+  },
+  "rulesDescribePropose": "Propose Rule",
+  "@rulesDescribePropose": {"description": "Button that sends the sentence to be turned into a proposed rule."},
+  "rulesDescribeWorking": "Working out the rule…",
+  "@rulesDescribeWorking": {"description": "Shown while the sentence is being turned into a rule."},
+  "rulesDescribeFailed": "Loupe couldn’t turn that into a rule.",
+  "@rulesDescribeFailed": {"description": "Shown when no rule could be proposed; the provider's reason and a Retry button follow."},
+  "rulesDescribeProposed": "Proposed rule",
+  "@rulesDescribeProposed": {"description": "Heading above the proposed rule and its explanation."},
+  "rulesDescribeConditionNote": "Rules match the words, addresses and dates shown here, not what a message is about.",
+  "@rulesDescribeConditionNote": {"description": "Footer under the proposed condition: it is a word match, not an understanding of the mail."},
+  "rulesDescribeForwardWarning": "Sends matching mail to {address}, outside this account.",
+  "@rulesDescribeForwardWarning": {
+    "description": "Under a proposed Forward action: where the mail would go.",
+    "placeholders": {"address": {"type": "String", "example": "someone@example.com"}}
+  },
+  "rulesDescribeScopeDevice": "On this phone, on new mail in the Inbox of {account}, each time Loupe checks for mail.",
+  "@rulesDescribeScopeDevice": {
+    "description": "Where a proposed device rule would run.",
+    "placeholders": {"account": {"type": "String", "example": "Personal"}}
+  },
+  "rulesDescribeScopeServer": "On the mail server of {account}, as mail arrives. Forwarding only runs there.",
+  "@rulesDescribeScopeServer": {
+    "description": "Where a proposed server rule would run (proposed when it forwards mail).",
+    "placeholders": {"account": {"type": "String", "example": "Fastmail"}}
+  },
+  "rulesDescribeScopeChoose": "You choose where it runs in the rule editor.",
+  "@rulesDescribeScopeChoose": {"description": "Footer under where a proposed rule would run."},
+  "rulesDescribeCantDoHeader": "{count, plural, =1{Loupe Can’t Do This Part} other{Loupe Can’t Do These Parts}}",
+  "@rulesDescribeCantDoHeader": {
+    "description": "Section header above the parts of the sentence no rule can express.",
+    "placeholders": {"count": {"type": "int", "example": "2"}}
+  },
+  "rulesDescribeCantDoFooter": "{count, plural, =1{It is left out of the rule, and nothing was put in its place.} other{They are left out of the rule, and nothing was put in their place.}}",
+  "@rulesDescribeCantDoFooter": {
+    "description": "Footer under the parts of the sentence no rule can express.",
+    "placeholders": {"count": {"type": "int", "example": "2"}}
+  },
+  "rulesDescribeQuoted": "“{request}”",
+  "@rulesDescribeQuoted": {
+    "description": "Words of the user's sentence, quoted, in the language's own quotation marks.",
+    "placeholders": {"request": {"type": "String", "example": "notify me about invoices"}}
+  },
+  "rulesDescribeReasonNotification": "Rules can’t change notifications. Marking mail as read or moving it isn’t the same as keeping it quiet.",
+  "@rulesDescribeReasonNotification": {"description": "Why a request about notifications or quiet was left out of the rule."},
+  "rulesDescribeReasonSemantic": "Loupe can’t recognise this kind of mail. A rule can only match words you choose.",
+  "@rulesDescribeReasonSemantic": {"description": "Why a kind of mail (invoices, important mail) was left out of the rule's condition."},
+  "rulesDescribeReasonFolder": "{account} has no folder by that name.",
+  "@rulesDescribeReasonFolder": {
+    "description": "Why a move to a folder was left out of the rule.",
+    "placeholders": {"account": {"type": "String", "example": "Personal"}}
+  },
+  "rulesDescribeReasonTag": "There’s no tag by that name.",
+  "@rulesDescribeReasonTag": {"description": "Why tagging was left out of the rule."},
+  "rulesDescribeReasonOther": "Rules can’t do this.",
+  "@rulesDescribeReasonOther": {"description": "Why a part of the sentence was left out of the rule, when no other reason fits."},
+  "rulesDescribeSuggestion": "Words Loupe can match instead:",
+  "@rulesDescribeSuggestion": {"description": "Before a search expression the user could use instead of a kind of mail, e.g. subject:invoice."},
+  "rulesDescribeQuestions": "Loupe Needs to Know",
+  "@rulesDescribeQuestions": {"description": "Section header above questions about the sentence (which sender, which folder)."},
+  "rulesDescribeDryRunHeader": "Dry Run",
+  "@rulesDescribeDryRunHeader": {"description": "Section header: what the proposed rule would match in the mail on this phone, without doing anything."},
+  "rulesDescribeDryRunWorking": "Checking the mail on this phone…",
+  "@rulesDescribeDryRunWorking": {"description": "Shown while the dry run runs."},
+  "rulesDescribeDryRunCount": "{total, plural, =1{Would match {matched} of 1 downloaded message in {account}} other{Would match {matched} of {total} downloaded messages in {account}}}",
+  "@rulesDescribeDryRunCount": {
+    "description": "The dry run's result: how many of the messages on this phone the proposed rule matches.",
+    "placeholders": {
+      "total": {"type": "int", "format": "decimalPattern", "example": "312"},
+      "matched": {"type": "int", "format": "decimalPattern", "example": "5"},
+      "account": {"type": "String", "example": "Personal"}
+    }
+  },
+  "rulesDescribeDryRunMatches": "Would Match",
+  "@rulesDescribeDryRunMatches": {"description": "Label above messages of the dry run the rule matches."},
+  "rulesDescribeDryRunMisses": "Wouldn’t Match",
+  "@rulesDescribeDryRunMisses": {"description": "Label above messages of the dry run the rule doesn't match, the nearest misses first."},
+  "rulesDescribeDryRunCoverage": "Only mail downloaded to this phone was checked, outside Sent, Drafts, Junk and Trash, by the code that runs device rules. The server and older mail may hold more.",
+  "@rulesDescribeDryRunCoverage": {"description": "Footnote under the dry run: what it covers."},
+  "rulesDescribeDryRunCapped": "{count, plural, =1{Only the newest message was checked.} other{Only the newest {count} were checked.}}",
+  "@rulesDescribeDryRunCapped": {
+    "description": "Footnote under the dry run when the phone has more mail than it checks.",
+    "placeholders": {"count": {"type": "int", "format": "decimalPattern", "example": "2,000"}}
+  },
+  "rulesDescribeDryRunUnchecked": "{count, plural, =1{1 message couldn’t be checked without downloading its text.} other{{count} messages couldn’t be checked without downloading their text.}}",
+  "@rulesDescribeDryRunUnchecked": {
+    "description": "Footnote under the dry run: messages it couldn't decide; they count as not matching.",
+    "placeholders": {"count": {"type": "int", "format": "decimalPattern", "example": "14"}}
+  },
+  "rulesDescribeDryRunFailed": "Loupe couldn’t check the mail on this phone.",
+  "@rulesDescribeDryRunFailed": {"description": "Shown when the dry run failed."},
+  "rulesDescribeOpenEditor": "Open in Rule Editor",
+  "@rulesDescribeOpenEditor": {"description": "Button: opens the proposed rule in the rule editor, where nothing is saved until Save."},
+  "rulesDescribeDemoNote": "Proposed by the built-in demo, not a model.",
+  "@rulesDescribeDemoNote": {"description": "Footnote: who proposed the rule, when it was the demo."},
+  "rulesDescribeProviderNote": "Proposed by {provider}. Check it before you save it.",
+  "@rulesDescribeProviderNote": {
+    "description": "Footnote: which AI provider and model proposed the rule.",
+    "placeholders": {"provider": {"type": "String", "example": "anthropic · claude-haiku"}}
+  },
+  "rulesDescribeLeftOutHeader": "Not in This Rule",
+  "@rulesDescribeLeftOutHeader": {"description": "Rule editor, opened from Describe a Rule: header above what the sentence asked for that Loupe can't do."},
+  "rulesDescribeLeftOutFooter": "{count, plural, =1{You described this, but Loupe can’t do it, so it was left out and nothing was put in its place.} other{You described these, but Loupe can’t do them, so they were left out and nothing was put in their place.}}",
+  "@rulesDescribeLeftOutFooter": {
+    "description": "Rule editor, opened from Describe a Rule: footer under what was left out.",
+    "placeholders": {"count": {"type": "int", "example": "2"}}
+  },
+
   "@@x-section-more": "Shared widgets, attachments, search, calendar, palette, keyboard, mailing lists, the app's start",
 
   "appLiveGateTitle": "Your accounts couldn’t be opened",

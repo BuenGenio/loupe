@@ -4183,6 +4183,204 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Descrie o regulă…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Spune într-o propoziție ce ar trebui să facă o regulă. Verifici tu ce propune Loupe și nimic nu se salvează până nu o salvezi în editorul de reguli.';
+
+  @override
+  String get rulesDescribeTitle => 'Descrie o regulă';
+
+  @override
+  String get rulesDescribeAccount => 'Cont';
+
+  @override
+  String get rulesDescribeHint => 'Mută chitanțele de la Harbor Coffee în Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Se folosesc doar această propoziție și numele dosarelor și etichetelor din $account, niciodată e-mailurile tale.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Propune regula';
+
+  @override
+  String get rulesDescribeWorking => 'Se pregătește regula…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe nu a putut transforma asta într-o regulă.';
+
+  @override
+  String get rulesDescribeProposed => 'Regulă propusă';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Regulile se potrivesc cu cuvintele, adresele și datele afișate aici, nu cu despre ce este vorba într-un mesaj.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Trimite e-mailurile potrivite la $address, în afara acestui cont.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Pe acest telefon, pentru e-mailurile noi din Inbox, în contul $account, de fiecare dată când Loupe caută e-mailuri.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Pe serverul de e-mail al contului $account, pe măsură ce sosesc e-mailurile. Redirecționarea funcționează doar acolo.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Alegi tu unde rulează, în editorul de reguli.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Loupe nu poate face aceste părți',
+      one: 'Loupe nu poate face această parte',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Sunt lăsate în afara regulii și nu s-a pus nimic în locul lor.',
+      one: 'Este lăsată în afara regulii și nu s-a pus nimic în locul ei.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '„$request”';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Regulile nu pot schimba notificările. Să marchezi e-mailurile ca citite sau să le muți nu e același lucru cu a le face silențioase.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe nu poate recunoaște acest tip de e-mail. O regulă se poate potrivi doar cu cuvintele pe care le alegi tu.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return '$account nu are niciun dosar cu acest nume.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Nu există nicio etichetă cu acest nume.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Regulile nu pot face asta.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Cuvinte pe care Loupe le poate căuta în schimb:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe trebuie să știe';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Rulare de probă';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Se verifică e-mailurile de pe acest telefon…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'În $account, s-ar potrivi cu $matchedString din $totalString de mesaje descărcate',
+      few: 'În $account, s-ar potrivi cu $matchedString din $totalString mesaje descărcate',
+      one: 'În $account, s-ar potrivi cu $matchedString din 1 mesaj descărcat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'S-ar potrivi';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Nu s-ar potrivi';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Au fost verificate doar e-mailurile descărcate pe acest telefon, în afara dosarelor Trimise, Ciorne, Spam și Coș de gunoi, de codul care rulează regulile pe dispozitiv. Pe server și printre e-mailurile mai vechi pot fi mai multe.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Au fost verificate doar cele mai noi $countString de mesaje.',
+      few: 'Au fost verificate doar cele mai noi $countString mesaje.',
+      one: 'A fost verificat doar cel mai nou mesaj.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString de mesaje nu au putut fi verificate fără a le descărca textul.',
+      few: '$countString mesaje nu au putut fi verificate fără a le descărca textul.',
+      one: '1 mesaj nu a putut fi verificat fără a-i descărca textul.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe nu a putut verifica e-mailurile de pe acest telefon.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Deschide în editorul de reguli';
+
+  @override
+  String get rulesDescribeDemoNote => 'Propusă de demonstrația încorporată, nu de un model.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Propusă de $provider. Verific-o înainte s-o salvezi.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'În afara acestei reguli';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ai descris aceste lucruri, dar Loupe nu le poate face, așa că au fost lăsate deoparte și nu s-a pus nimic în locul lor.',
+      one: 'Ai descris lucrul acesta, dar Loupe nu îl poate face, așa că a fost lăsat deoparte și nu s-a pus nimic în locul lui.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Conturile tale nu au putut fi deschise';
 
   @override

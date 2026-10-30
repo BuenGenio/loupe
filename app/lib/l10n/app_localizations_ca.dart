@@ -4128,6 +4128,201 @@ class AppLocalizationsCa extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Descriu una regla…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Digues en una frase què ha de fer una regla. Tu revises el que proposa Loupe, i no es desa res fins que ho desis a l’editor de regles.';
+
+  @override
+  String get rulesDescribeTitle => 'Descriu una regla';
+
+  @override
+  String get rulesDescribeAccount => 'Compte';
+
+  @override
+  String get rulesDescribeHint => 'Mou els rebuts de Harbor Coffee a Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Només es fan servir aquesta frase i els noms de les carpetes i les etiquetes de $account, mai el teu correu.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Proposa una regla';
+
+  @override
+  String get rulesDescribeWorking => 'S’està preparant la regla…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe no ha pogut convertir-ho en una regla.';
+
+  @override
+  String get rulesDescribeProposed => 'Regla proposada';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Les regles cerquen les paraules, les adreces i les dates que veus aquí, no de què tracta un missatge.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Envia el correu coincident a $address, fora d’aquest compte.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'En aquest telèfon, sobre el correu nou de la safata d’entrada de $account, cada vegada que Loupe comprova el correu.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Al servidor de correu de $account, a mesura que arriba el correu. El reenviament només funciona allà.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'A l’editor de regles tries on s’executa.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Loupe no pot fer aquestes parts',
+      one: 'Loupe no pot fer aquesta part',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'S’han deixat fora de la regla i no s’ha posat res al seu lloc.',
+      one: 'S’ha deixat fora de la regla i no s’ha posat res al seu lloc.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '«$request»';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Les regles no poden canviar les notificacions. Marcar el correu com a llegit o moure’l no és el mateix que silenciar-lo.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe no sap reconèixer aquest tipus de correu. Una regla només pot cercar paraules que triïs tu.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return '$account no té cap carpeta amb aquest nom.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'No hi ha cap etiqueta amb aquest nom.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Les regles no poden fer això.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Paraules que Loupe pot cercar en lloc d’això:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe necessita saber';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Simulació';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'S’està comprovant el correu d’aquest telèfon…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Coincidiria amb $matchedString dels $totalString missatges baixats de $account',
+      one: 'Coincidiria amb $matchedString d’1 missatge baixat de $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Coincidirien';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'No coincidirien';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Només s’ha comprovat el correu baixat en aquest telèfon, fora d’Enviats, Esborranys, Correu brossa i Paperera, amb el codi que executa les regles del dispositiu. El servidor i el correu més antic en poden tenir més.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Només s’han comprovat els $countString més recents.',
+      one: 'Només s’ha comprovat el missatge més recent.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'No s’han pogut comprovar $countString missatges sense baixar-ne el text.',
+      one: 'No s’ha pogut comprovar 1 missatge sense baixar-ne el text.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe no ha pogut comprovar el correu d’aquest telèfon.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Obre a l’editor de regles';
+
+  @override
+  String get rulesDescribeDemoNote => 'Proposada per la demostració integrada, no per un model.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Proposada per $provider. Revisa-la abans de desar-la.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'No inclòs en aquesta regla';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Has descrit aquestes parts, però Loupe no les pot fer, així que s’han deixat fora i no s’ha posat res al seu lloc.',
+      one: 'Has descrit aquesta part, però Loupe no la pot fer, així que s’ha deixat fora i no s’ha posat res al seu lloc.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'No s’han pogut obrir els teus comptes';
 
   @override

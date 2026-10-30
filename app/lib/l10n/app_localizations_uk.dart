@@ -4184,6 +4184,213 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Описати правило…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Опишіть одним реченням, що має робити правило. Ви перевірите, що запропонує Loupe, і нічого не буде збережено, доки ви не збережете правило в редакторі правил.';
+
+  @override
+  String get rulesDescribeTitle => 'Описати правило';
+
+  @override
+  String get rulesDescribeAccount => 'Обліковий запис';
+
+  @override
+  String get rulesDescribeHint => 'Переміщувати чеки від Harbor Coffee в теку Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Використовуються лише це речення й назви тек і міток облікового запису $account — і ніколи ваша пошта.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Запропонувати правило';
+
+  @override
+  String get rulesDescribeWorking => 'Складаємо правило…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe не вдалося перетворити це на правило.';
+
+  @override
+  String get rulesDescribeProposed => 'Запропоноване правило';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Правила спрацьовують на показані тут слова, адреси й дати, а не на те, про що йдеться в листі.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Надсилає відповідні листи на $address, за межі цього облікового запису.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'На цьому телефоні, для нових листів у «Вхідних» облікового запису $account, щоразу, коли Loupe перевіряє пошту.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'На поштовому сервері облікового запису $account, під час надходження пошти. Пересилання працює лише там.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Де його виконувати, ви обираєте в редакторі правил.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Loupe не може виконати $count частин',
+      many: 'Loupe не може виконати $count частин',
+      few: 'Loupe не може виконати $count частини',
+      one: 'Loupe не може виконати $count частину',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count частин не включено до правила, і натомість нічого не додано.',
+      many: '$count частин не включено до правила, і натомість нічого не додано.',
+      few: '$count частини не включено до правила, і натомість нічого не додано.',
+      one: '$count частину не включено до правила, і натомість нічого не додано.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '«$request»';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Правила не можуть змінювати сповіщення. Позначити лист як прочитаний чи перемістити його — не те саме, що приглушити його.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe не може розпізнати такий вид пошти. Правило може реагувати лише на слова, які ви оберете.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return 'В обліковому записі $account немає теки з такою назвою.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Мітки з такою назвою немає.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Правила не можуть цього зробити.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Натомість Loupe може реагувати на такі слова:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe потрібно знати';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Пробний запуск';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Перевіряємо пошту на цьому телефоні…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Правило охопило б $matchedString з $totalString завантажених листів у $account',
+      many: 'Правило охопило б $matchedString з $totalString завантажених листів у $account',
+      few: 'Правило охопило б $matchedString з $totalString завантажених листів у $account',
+      one: 'Правило охопило б $matchedString з $totalString завантаженого листа у $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Відповідали б';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Не відповідали б';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Перевірено лише пошту, завантажену на цей телефон, крім «Надісланих», «Чернеток», «Спаму» й «Кошика», кодом, який виконує правила на пристрої. На сервері й у старішій пошті може бути більше листів.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Перевірено лише $countString найновіших листів.',
+      many: 'Перевірено лише $countString найновіших листів.',
+      few: 'Перевірено лише $countString найновіші листи.',
+      one: 'Перевірено лише $countString найновіший лист.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Не вдалося перевірити $countString листів без завантаження їхнього тексту.',
+      many: 'Не вдалося перевірити $countString листів без завантаження їхнього тексту.',
+      few: 'Не вдалося перевірити $countString листи без завантаження їхнього тексту.',
+      one: 'Не вдалося перевірити $countString лист без завантаження його тексту.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe не вдалося перевірити пошту на цьому телефоні.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Відкрити в редакторі правил';
+
+  @override
+  String get rulesDescribeDemoNote => 'Запропоновано вбудованою демонстрацією, а не моделлю.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Запропоновано через $provider. Перевірте правило, перш ніж його зберегти.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Не входить у це правило';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ви описали $count частин, які Loupe не може виконати, тому їх пропущено й нічим не замінено.',
+      many: 'Ви описали $count частин, які Loupe не може виконати, тому їх пропущено й нічим не замінено.',
+      few: 'Ви описали $count частини, які Loupe не може виконати, тому їх пропущено й нічим не замінено.',
+      one: 'Ви описали $count частину, яку Loupe не може виконати, тому її пропущено й нічим не замінено.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Не вдалося відкрити ваші облікові записи';
 
   @override

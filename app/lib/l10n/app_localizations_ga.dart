@@ -4291,6 +4291,219 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Déan cur síos ar riail…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Abair in abairt amháin cad ba cheart do riail a dhéanamh. Seiceálann tú an rud a mholann Loupe, agus ní shábháiltear aon rud go dtí go sábhálann tú é san eagarthóir rialacha.';
+
+  @override
+  String get rulesDescribeTitle => 'Déan cur síos ar riail';
+
+  @override
+  String get rulesDescribeAccount => 'Cuntas';
+
+  @override
+  String get rulesDescribeHint => 'Bog admhálacha ó Harbor Coffee go Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Ní úsáidtear ach an abairt seo agus ainmneacha na bhfillteán agus na gclibeanna sa chuntas $account, ní do ríomhphost riamh.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Mol riail';
+
+  @override
+  String get rulesDescribeWorking => 'Ag ullmhú na rialach…';
+
+  @override
+  String get rulesDescribeFailed => 'Níorbh fhéidir le Loupe riail a dhéanamh de sin.';
+
+  @override
+  String get rulesDescribeProposed => 'Riail mholta';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Meaitseálann rialacha na focail, na seoltaí agus na dátaí a thaispeántar anseo, ní an rud a bhfuil teachtaireacht faoi.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Seolann sé ríomhphost comhoiriúnach chuig $address, lasmuigh den chuntas seo.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Ar an bhfón seo, ar ríomhphost nua i mBosca Isteach $account, gach uair a sheiceálann Loupe le haghaidh ríomhphoist.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Ar fhreastalaí ríomhphoist $account, de réir mar a thagann ríomhphost. Ní ritheann seoladh ar aghaidh ach ansin.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Roghnaíonn tú san eagarthóir rialacha cá háit a ritheann sí.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ní féidir le Loupe na codanna seo a dhéanamh',
+      many: 'Ní féidir le Loupe na codanna seo a dhéanamh',
+      few: 'Ní féidir le Loupe na codanna seo a dhéanamh',
+      two: 'Ní féidir le Loupe na codanna seo a dhéanamh',
+      one: 'Ní féidir le Loupe an chuid seo a dhéanamh',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Fágadh as an riail iad, agus níor cuireadh aon rud ina n-áit.',
+      many: 'Fágadh as an riail iad, agus níor cuireadh aon rud ina n-áit.',
+      few: 'Fágadh as an riail iad, agus níor cuireadh aon rud ina n-áit.',
+      two: 'Fágadh as an riail iad, agus níor cuireadh aon rud ina n-áit.',
+      one: 'Fágadh as an riail í, agus níor cuireadh aon rud ina háit.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '“$request”';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Ní féidir le rialacha fógraí a athrú. Ní hionann ríomhphost a mharcáil mar léite nó é a bhogadh agus é a choinneáil ciúin.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Ní aithníonn Loupe an cineál seo ríomhphoist. Ní féidir le riail ach focail a roghnaíonn tú a mheaitseáil.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return 'Níl aon fhillteán den ainm sin ag $account.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Níl aon chlib den ainm sin ann.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Ní féidir le rialacha é seo a dhéanamh.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Focail is féidir le Loupe a mheaitseáil ina ionad:';
+
+  @override
+  String get rulesDescribeQuestions => 'Teastaíonn ó Loupe a fháil amach';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Rith tástála';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Ag seiceáil an ríomhphoist ar an bhfón seo…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Mheaitseálfadh an riail $matchedString as $totalString teachtaireacht íoslódáilte sa chuntas $account',
+      many: 'Mheaitseálfadh an riail $matchedString as $totalString dteachtaireacht íoslódáilte sa chuntas $account',
+      few: 'Mheaitseálfadh an riail $matchedString as $totalString theachtaireacht íoslódáilte sa chuntas $account',
+      two: 'Mheaitseálfadh an riail $matchedString as $totalString theachtaireacht íoslódáilte sa chuntas $account',
+      one: 'Mheaitseálfadh an riail $matchedString as $totalString teachtaireacht íoslódáilte sa chuntas $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Mheaitseálfadh';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Ní mheaitseálfadh';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Níor seiceáladh ach ríomhphost atá íoslódáilte ar an bhfón seo, lasmuigh de na fillteáin Seolta, Dréachtaí, Turscar agus Bruscar, leis an gcód a ritheann rialacha gléis. D’fhéadfadh níos mó a bheith ar an bhfreastalaí agus i ríomhphost níos sine.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Níor seiceáladh ach $countString teachtaireacht, na cinn is nuaí.',
+      many: 'Níor seiceáladh ach $countString dteachtaireacht, na cinn is nuaí.',
+      few: 'Níor seiceáladh ach $countString theachtaireacht, na cinn is nuaí.',
+      two: 'Níor seiceáladh ach $countString theachtaireacht, na cinn is nuaí.',
+      one: 'Níor seiceáladh ach an teachtaireacht is nuaí.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Níorbh fhéidir $countString teachtaireacht a sheiceáil gan a dtéacs a íoslódáil.',
+      many: 'Níorbh fhéidir $countString dteachtaireacht a sheiceáil gan a dtéacs a íoslódáil.',
+      few: 'Níorbh fhéidir $countString theachtaireacht a sheiceáil gan a dtéacs a íoslódáil.',
+      two: 'Níorbh fhéidir $countString theachtaireacht a sheiceáil gan a dtéacs a íoslódáil.',
+      one: 'Níorbh fhéidir $countString teachtaireacht a sheiceáil gan a téacs a íoslódáil.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Níorbh fhéidir le Loupe an ríomhphost ar an bhfón seo a sheiceáil.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Oscail san eagarthóir rialacha';
+
+  @override
+  String get rulesDescribeDemoNote => 'Molta ag an taispeántas ionsuite, ní ag samhail.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Molta ag $provider. Seiceáil í sula sábhálann tú í.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Fágtha as an riail seo';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Rinne tú cur síos orthu seo, ach ní féidir le Loupe iad a dhéanamh, mar sin fágadh ar lár iad agus níor cuireadh aon rud ina n-áit.',
+      many: 'Rinne tú cur síos orthu seo, ach ní féidir le Loupe iad a dhéanamh, mar sin fágadh ar lár iad agus níor cuireadh aon rud ina n-áit.',
+      few: 'Rinne tú cur síos orthu seo, ach ní féidir le Loupe iad a dhéanamh, mar sin fágadh ar lár iad agus níor cuireadh aon rud ina n-áit.',
+      two: 'Rinne tú cur síos orthu seo, ach ní féidir le Loupe iad a dhéanamh, mar sin fágadh ar lár iad agus níor cuireadh aon rud ina n-áit.',
+      one: 'Rinne tú cur síos air seo, ach ní féidir le Loupe é a dhéanamh, mar sin fágadh ar lár é agus níor cuireadh aon rud ina áit.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Níorbh fhéidir do chuntais a oscailt';
 
   @override
