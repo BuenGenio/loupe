@@ -6753,21 +6753,21 @@ class AppLocalizationsTr extends AppLocalizations {
   String get sharedNotJunk => 'Gereksiz değil';
 
   @override
-  String get documentsTitle => 'Documents';
+  String get documentsTitle => 'Belgeler';
 
   @override
-  String get documentsSearchPlaceholder => 'Search in Documents';
+  String get documentsSearchPlaceholder => 'Belgelerde ara';
 
   @override
-  String get documentsSearchInDocuments => 'Search in Documents';
+  String get documentsSearchInDocuments => 'Belgelerde ara';
 
   @override
   String documentsLibraryCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count indirilmiş belge',
+      one: '1 indirilmiş belge',
     );
     return '$_temp0';
   }
@@ -6777,14 +6777,14 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count indirilmiş belge',
+      one: '1 indirilmiş belge',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable can’t be read',
-      one: '1 can’t be read',
+      other: '$unreadable belge okunamıyor',
+      one: '1 belge okunamıyor',
     );
     return '$_temp0 · $_temp1';
   }
@@ -6794,8 +6794,8 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: '$count indirilmiş belgede arandı',
+      one: '1 indirilmiş belgede arandı',
     );
     return '$_temp0';
   }
@@ -6805,45 +6805,45 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: '$count indirilmiş belgede arandı',
+      one: '1 indirilmiş belgede arandı',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable couldn’t be read',
-      one: '1 couldn’t be read',
+      other: '$unreadable belge okunamadı',
+      one: '1 belge okunamadı',
     );
     return '$_temp0 · $_temp1';
   }
 
   @override
   String get documentsScopeNote =>
-      'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.';
+      'Tüm posta kutunuzda değil, bu telefondaki eklerde arar. Eklemek istediğiniz eki açın.';
 
   @override
-  String get documentsEmpty => 'No Documents Yet';
+  String get documentsEmpty => 'Henüz belge yok';
 
   @override
   String get documentsEmptyDetail =>
-      'PDFs and text files you open from mail show up here, so you can search inside them.';
+      'E-postadan açtığınız PDF’ler ve metin dosyaları burada görünür; böylece içlerinde arama yapabilirsiniz.';
 
   @override
-  String get documentsNoResults => 'No Matches';
+  String get documentsNoResults => 'Eşleşme yok';
 
   @override
   String documentsNoResultsDetail(String query) {
-    return 'No downloaded document contains “$query”.';
+    return 'İndirilmiş belgelerin hiçbiri “$query” içermiyor.';
   }
 
   @override
   String documentsMatchedOnPage(int page) {
-    return 'Matched on page $page';
+    return 'Eşleştiği sayfa: $page';
   }
 
   @override
   String documentsMatchedOnLine(int line) {
-    return 'Matched on line $line';
+    return 'Eşleştiği satır: $line';
   }
 
   @override
@@ -6851,99 +6851,96 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count more matches',
-      one: '1 more match',
+      other: '$count eşleşme daha',
+      one: '1 eşleşme daha',
     );
     return '$_temp0';
   }
 
   @override
   String documentsPage(int page) {
-    return 'Page $page';
+    return 'Sayfa $page';
   }
 
   @override
-  String get documentsReading => 'Reading…';
-
-  @override
   String get documentsStatusNotDownloaded =>
-      'Not downloaded: open it to read and search it.';
+      'İndirilmedi: okumak ve içinde aramak için açın.';
 
   @override
   String get documentsStatusEncrypted =>
-      'Password protected: Loupe can’t read it.';
+      'Parolayla korunuyor: Loupe bunu okuyamıyor.';
 
   @override
   String get documentsStatusNoText =>
-      'No text found: it may be a scan or a photo, which Loupe can’t read yet.';
+      'Metin bulunamadı: Loupe’un henüz okuyamadığı bir tarama veya fotoğraf olabilir.';
 
   @override
-  String get documentsStatusEmpty => 'This file has no text.';
+  String get documentsStatusEmpty => 'Bu dosyada metin yok.';
 
   @override
   String get documentsStatusUnsupported =>
-      'Loupe can’t read this kind of document yet.';
+      'Loupe bu tür belgeleri henüz okuyamıyor.';
 
   @override
-  String get documentsStatusTooLarge => 'Too large to read on this phone.';
+  String get documentsStatusTooLarge =>
+      'Bu telefonda okunamayacak kadar büyük.';
 
   @override
-  String get documentsStatusDamaged =>
-      'Couldn’t be read: the file may be damaged.';
+  String get documentsStatusDamaged => 'Okunamadı: dosya bozuk olabilir.';
 
   @override
   String documentsStatusPartial(int read, int total) {
     String _temp0 = intl.Intl.pluralLogic(
       total,
       locale: localeName,
-      other: '$total pages',
-      one: '1 page',
+      other: '$total sayfadan $read tanesi okundu',
+      one: '1 sayfadan $read tanesi okundu',
     );
-    return 'Read $read of $_temp0; the rest isn’t searched.';
+    return '$_temp0; geri kalanında arama yapılmıyor.';
   }
 
   @override
   String get documentsStatusPartialText =>
-      'Only the beginning was read; the rest isn’t searched.';
+      'Yalnızca baş kısmı okundu; geri kalanında arama yapılmıyor.';
 
   @override
-  String get documentsOpenDocument => 'Open Document';
+  String get documentsOpenDocument => 'Belgeyi aç';
 
   @override
-  String get documentsOpenMessage => 'Open Message';
+  String get documentsOpenMessage => 'İletiyi aç';
 
   @override
-  String get documentsDetails => 'Document Details';
+  String get documentsDetails => 'Belge ayrıntıları';
 
   @override
   String documentsFingerprint(String hash) {
-    return 'Contents fingerprint $hash';
+    return 'İçerik parmak izi $hash';
   }
 
   @override
-  String get documentsPagesHeader => 'Text by Page';
+  String get documentsPagesHeader => 'Sayfalara göre metin';
 
   @override
-  String get documentsVersionsHeader => 'Other Copies';
+  String get documentsVersionsHeader => 'Diğer kopyalar';
 
   @override
   String documentsVersionDifferentEarlier(String date) {
-    return 'Different contents from the earlier copy ($date)';
+    return 'İçeriği önceki kopyadan ($date) farklı';
   }
 
   @override
   String documentsVersionDifferentLater(String date) {
-    return 'A newer copy ($date) has different contents';
+    return 'Daha yeni bir kopyanın ($date) içeriği farklı';
   }
 
   @override
   String documentsVersionSame(String date) {
-    return 'Same contents as the copy of $date';
+    return 'İçeriği $date tarihli kopyayla aynı';
   }
 
   @override
   String documentsVersionNotDownloaded(String date) {
-    return 'Same name as the copy of $date; contents not compared until both are downloaded';
+    return 'Adı $date tarihli kopyayla aynı; ikisi de indirilene kadar içerikler karşılaştırılmaz';
   }
 
   @override
@@ -6953,129 +6950,129 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get documentsNoFactChanges =>
-      'The Key Facts are the same; other text differs.';
+      'Temel bilgiler aynı; farklar metnin başka yerlerinde.';
 
   @override
-  String get documentsKeyFacts => 'Key Facts';
+  String get documentsKeyFacts => 'Temel bilgiler';
 
   @override
-  String get documentsKeyFactsFind => 'Find Key Facts';
+  String get documentsKeyFactsFind => 'Temel bilgileri bul';
 
   @override
-  String get documentsKeyFactsWorking => 'Reading the document…';
+  String get documentsKeyFactsWorking => 'Belge okunuyor…';
 
   @override
-  String get documentsKeyFactsFailed => 'Couldn’t find the Key Facts.';
+  String get documentsKeyFactsFailed => 'Temel bilgiler bulunamadı.';
 
   @override
   String get documentsKeyFactsDemoNote =>
-      'Made by the built-in demo, not a model.';
+      'Yerleşik demo hazırladı, bir model değil.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
-    return 'Made by $provider.';
+    return 'Hazırlayan: $provider.';
   }
 
   @override
   String get documentsKeyFactsHint =>
-      'Tap a fact to see where the document says it.';
+      'Belgenin bunu nerede belirttiğini görmek için bir bilgiye dokunun.';
 
   @override
   String get documentsKeyFactsNone =>
-      'Loupe has no Key Facts for this kind of document yet.';
+      'Loupe bu tür belgeler için henüz temel bilgi sunmuyor.';
 
   @override
   String get documentsKeyFactsPartial =>
-      'Only the first pages were read; facts on later pages are unknown.';
+      'Yalnızca ilk sayfalar okundu; sonraki sayfalardaki bilgiler bilinmiyor.';
 
   @override
-  String get documentsKeyFactsNotStated => 'Not stated';
+  String get documentsKeyFactsNotStated => 'Belirtilmemiş';
 
   @override
-  String get documentsKeyFactsConflicting => 'Stated differently';
+  String get documentsKeyFactsConflicting => 'Farklı belirtilmiş';
 
   @override
   String documentsEvidenceAlso(int page) {
-    return 'Also on page $page:';
+    return 'Ayrıca sayfa $page:';
   }
 
   @override
-  String get documentsTypeMortgageIllustration => 'Mortgage illustration';
+  String get documentsTypeMortgageIllustration => 'Konut kredisi teklifi';
 
   @override
-  String get documentsTypeInvoice => 'Invoice';
+  String get documentsTypeInvoice => 'Fatura';
 
   @override
-  String get documentsTypeBooking => 'Booking';
+  String get documentsTypeBooking => 'Rezervasyon';
 
   @override
-  String get documentsTypeOther => 'Other document';
+  String get documentsTypeOther => 'Diğer belge';
 
   @override
-  String get documentsFieldInitialRate => 'Initial rate';
+  String get documentsFieldInitialRate => 'Başlangıç faiz oranı';
 
   @override
-  String get documentsFieldRatePeriod => 'Rate period';
+  String get documentsFieldRatePeriod => 'Başlangıç faizi süresi';
 
   @override
-  String get documentsFieldMonthlyPayment => 'Monthly payment';
+  String get documentsFieldMonthlyPayment => 'Aylık taksit';
 
   @override
-  String get documentsFieldTerm => 'Term';
+  String get documentsFieldTerm => 'Vade';
 
   @override
-  String get documentsFieldLoanAmount => 'Loan amount';
+  String get documentsFieldLoanAmount => 'Kredi tutarı';
 
   @override
-  String get documentsFieldArrangementFee => 'Arrangement fee';
+  String get documentsFieldArrangementFee => 'Kredi tahsis ücreti';
 
   @override
-  String get documentsFieldValuationFee => 'Valuation fee';
+  String get documentsFieldValuationFee => 'Ekspertiz ücreti';
 
   @override
-  String get documentsFieldBrokerFee => 'Broker fee';
+  String get documentsFieldBrokerFee => 'Aracı ücreti';
 
   @override
-  String get documentsFieldEarlyRepaymentCharges => 'Early repayment charges';
+  String get documentsFieldEarlyRepaymentCharges => 'Erken ödeme tazminatı';
 
   @override
-  String get documentsFieldTotalAmountPayable => 'Total amount payable';
+  String get documentsFieldTotalAmountPayable => 'Toplam geri ödeme tutarı';
 
   @override
-  String get documentsFieldAmountDue => 'Amount due';
+  String get documentsFieldAmountDue => 'Ödenecek tutar';
 
   @override
-  String get documentsFieldCurrency => 'Currency';
+  String get documentsFieldCurrency => 'Para birimi';
 
   @override
-  String get documentsFieldDueDate => 'Due date';
+  String get documentsFieldDueDate => 'Son ödeme tarihi';
 
   @override
-  String get documentsFieldPayee => 'Payee';
+  String get documentsFieldPayee => 'Alıcı';
 
   @override
-  String get documentsFieldReference => 'Reference';
+  String get documentsFieldReference => 'Referans numarası';
 
   @override
-  String get documentsFieldSubtotal => 'Subtotal';
+  String get documentsFieldSubtotal => 'Ara toplam';
 
   @override
-  String get documentsFieldTax => 'Tax';
+  String get documentsFieldTax => 'Vergi';
 
   @override
-  String get documentsFieldDate => 'Date';
+  String get documentsFieldDate => 'Tarih';
 
   @override
-  String get documentsFieldTime => 'Time';
+  String get documentsFieldTime => 'Saat';
 
   @override
-  String get documentsFieldTimeZone => 'Time zone';
+  String get documentsFieldTimeZone => 'Saat dilimi';
 
   @override
-  String get documentsFieldAddress => 'Address';
+  String get documentsFieldAddress => 'Adres';
 
   @override
-  String get documentsFieldPerson => 'Person';
+  String get documentsFieldPerson => 'Kişi';
 
   @override
   String get composeSignature => 'İmza';

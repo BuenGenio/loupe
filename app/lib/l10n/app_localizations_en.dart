@@ -6844,9 +6844,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get documentsReading => 'Reading…';
-
-  @override
   String get documentsStatusNotDownloaded =>
       'Not downloaded: open it to read and search it.';
 

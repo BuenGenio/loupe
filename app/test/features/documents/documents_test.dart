@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:loupe/app.dart';
 import 'package:loupe/demo/demo_data.dart';
 import 'package:loupe/features/attachments/attachment_cache.dart';
@@ -13,6 +14,7 @@ import 'package:loupe/features/attachments/viewers/pdf_view.dart';
 import 'package:loupe/features/openpgp/content_loader.dart';
 import 'package:loupe/providers.dart';
 import 'package:loupe/features/documents/document_index.dart';
+import 'package:loupe/l10n/l10n.dart';
 import 'package:loupe/router.dart';
 import 'package:loupe/settings/app_mode.dart';
 import 'package:mail_documents/mail_documents.dart';
@@ -41,11 +43,13 @@ Future<void> pumpDocs(
   WidgetTester tester, {
   Map<String, Object> prefs = const {},
   AppMode mode = AppMode.demo,
+  Size size = const Size(390, 844),
   List<Override> overrides = const [],
 }) => pumpLoupe(
   tester,
   prefs: prefs,
   mode: mode,
+  size: size,
   overrides: [
     attachmentCacheProvider.overrideWith(
       (ref) => AttachmentCache(
@@ -66,6 +70,9 @@ Future<void> search(WidgetTester tester, String text) async {
 }
 
 void main() {
+  // As main.dart does: dates in every language.
+  setUpAll(initializeDateFormatting);
+
   testWidgets('Mailboxes › Documents lists the demo’s documents and says what it can’t read', (tester) async {
     await pumpDocs(tester);
     await tester.scrollTo(find.text('Documents'));
@@ -320,4 +327,21 @@ void main() {
     expect(find.text('Read 2 of 340 pages; the rest isn’t searched.'), findsOneWidget);
     await drainTimers(tester);
   });
+
+  // Translations run longer than English: the screens must fit a small phone.
+  for (final lang in ['de', 'fi', 'ga', 'el', 'hu']) {
+    testWidgets('Documents, a search and Key Facts fit a small phone in $lang', (tester) async {
+      await pumpDocs(tester, prefs: {..._ai, 'settings.language': lang}, size: const Size(360, 640));
+      addTearDown(() => appLanguage = null);
+      await goTo(tester, Routes.documents);
+      expect(tester.takeException(), isNull);
+      await search(tester, 'GBP');
+      expect(tester.takeException(), isNull);
+      final (revised, attachment) = attachmentsNamed('Mortgage illustration.pdf').last;
+      await goTo(tester, Routes.document(revised.id, attachment.partId));
+      await tester.scrollTo(find.byKey(const ValueKey('fact-early_repayment_charges')));
+      expect(tester.takeException(), isNull);
+      await drainTimers(tester);
+    });
+  }
 }

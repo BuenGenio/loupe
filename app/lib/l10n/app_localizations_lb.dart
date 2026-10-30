@@ -6807,21 +6807,21 @@ class AppLocalizationsLb extends AppLocalizations {
   String get sharedNotJunk => 'Kee Spam';
 
   @override
-  String get documentsTitle => 'Documents';
+  String get documentsTitle => 'Dokumenter';
 
   @override
-  String get documentsSearchPlaceholder => 'Search in Documents';
+  String get documentsSearchPlaceholder => 'An Dokumenter sichen';
 
   @override
-  String get documentsSearchInDocuments => 'Search in Documents';
+  String get documentsSearchInDocuments => 'An Dokumenter sichen';
 
   @override
   String documentsLibraryCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count erofgelueden Dokumenter',
+      one: '$count erofgeluedent Dokument',
     );
     return '$_temp0';
   }
@@ -6831,14 +6831,14 @@ class AppLocalizationsLb extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count erofgelueden Dokumenter',
+      one: '$count erofgeluedent Dokument',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable can’t be read',
-      one: '1 can’t be read',
+      other: '$unreadable net liesbar',
+      one: '$unreadable net liesbar',
     );
     return '$_temp0 · $_temp1';
   }
@@ -6848,8 +6848,8 @@ class AppLocalizationsLb extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: '$count erofgelueden Dokumenter duerchsicht',
+      one: '$count erofgeluedent Dokument duerchsicht',
     );
     return '$_temp0';
   }
@@ -6859,45 +6859,45 @@ class AppLocalizationsLb extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: '$count erofgelueden Dokumenter duerchsicht',
+      one: '$count erofgeluedent Dokument duerchsicht',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable couldn’t be read',
-      one: '1 couldn’t be read',
+      other: '$unreadable konnten net gelies ginn',
+      one: '$unreadable konnt net gelies ginn',
     );
     return '$_temp0 · $_temp1';
   }
 
   @override
   String get documentsScopeNote =>
-      'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.';
+      'Duerchsicht Unhäng op dësem Handy, net Är ganz Mailbox. Maacht en Unhang op, fir en derbäizesetzen.';
 
   @override
-  String get documentsEmpty => 'No Documents Yet';
+  String get documentsEmpty => 'Nach keng Dokumenter';
 
   @override
   String get documentsEmptyDetail =>
-      'PDFs and text files you open from mail show up here, so you can search inside them.';
+      'PDF- an Textfichieren, déi Dir aus Mailen opmaacht, erschéngen hei, sou datt Dir dra siche kënnt.';
 
   @override
-  String get documentsNoResults => 'No Matches';
+  String get documentsNoResults => 'Keng Treffer';
 
   @override
   String documentsNoResultsDetail(String query) {
-    return 'No downloaded document contains “$query”.';
+    return 'Keen erofgeluedent Dokument enthält „$query“.';
   }
 
   @override
   String documentsMatchedOnPage(int page) {
-    return 'Matched on page $page';
+    return 'Fonnt op Säit $page';
   }
 
   @override
   String documentsMatchedOnLine(int line) {
-    return 'Matched on line $line';
+    return 'Fonnt an der Zeil $line';
   }
 
   @override
@@ -6905,99 +6905,97 @@ class AppLocalizationsLb extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count more matches',
-      one: '1 more match',
+      other: 'Nach $count Treffer',
+      one: 'Nach $count Treffer',
     );
     return '$_temp0';
   }
 
   @override
   String documentsPage(int page) {
-    return 'Page $page';
+    return 'Säit $page';
   }
 
   @override
-  String get documentsReading => 'Reading…';
-
-  @override
   String get documentsStatusNotDownloaded =>
-      'Not downloaded: open it to read and search it.';
+      'Net erofgelueden: Maacht d’Dokument op, fir et ze liesen an ze duerchsichen.';
 
   @override
   String get documentsStatusEncrypted =>
-      'Password protected: Loupe can’t read it.';
+      'Mat engem Passwuert geschützt: Loupe kann et net liesen.';
 
   @override
   String get documentsStatusNoText =>
-      'No text found: it may be a scan or a photo, which Loupe can’t read yet.';
+      'Keen Text fonnt: Et ka e Scan oder eng Foto sinn, an esou eppes kann Loupe nach net liesen.';
 
   @override
-  String get documentsStatusEmpty => 'This file has no text.';
+  String get documentsStatusEmpty => 'Dëse Fichier huet keen Text.';
 
   @override
   String get documentsStatusUnsupported =>
-      'Loupe can’t read this kind of document yet.';
+      'Loupe kann dës Zort Dokument nach net liesen.';
 
   @override
-  String get documentsStatusTooLarge => 'Too large to read on this phone.';
+  String get documentsStatusTooLarge =>
+      'Ze grouss, fir op dësem Handy gelies ze ginn.';
 
   @override
   String get documentsStatusDamaged =>
-      'Couldn’t be read: the file may be damaged.';
+      'Konnt net gelies ginn: De Fichier ass méiglecherweis beschiedegt.';
 
   @override
   String documentsStatusPartial(int read, int total) {
     String _temp0 = intl.Intl.pluralLogic(
       total,
       locale: localeName,
-      other: '$total pages',
-      one: '1 page',
+      other: '$total Säite',
+      one: '$total Säit',
     );
-    return 'Read $read of $_temp0; the rest isn’t searched.';
+    return '$read vun $_temp0 gelies; de Rescht gëtt net duerchsicht.';
   }
 
   @override
   String get documentsStatusPartialText =>
-      'Only the beginning was read; the rest isn’t searched.';
+      'Nëmmen den Ufank gouf gelies; de Rescht gëtt net duerchsicht.';
 
   @override
-  String get documentsOpenDocument => 'Open Document';
+  String get documentsOpenDocument => 'Dokument opmaachen';
 
   @override
-  String get documentsOpenMessage => 'Open Message';
+  String get documentsOpenMessage => 'Message opmaachen';
 
   @override
-  String get documentsDetails => 'Document Details';
+  String get documentsDetails => 'Detailer vum Dokument';
 
   @override
   String documentsFingerprint(String hash) {
-    return 'Contents fingerprint $hash';
+    return 'Fangerofdrock vum Inhalt $hash';
   }
 
   @override
-  String get documentsPagesHeader => 'Text by Page';
+  String get documentsPagesHeader => 'Text pro Säit';
 
   @override
-  String get documentsVersionsHeader => 'Other Copies';
+  String get documentsVersionsHeader => 'Aner Kopien';
 
   @override
   String documentsVersionDifferentEarlier(String date) {
-    return 'Different contents from the earlier copy ($date)';
+    return 'Aneren Inhalt wéi déi fréier Kopie ($date)';
   }
 
   @override
   String documentsVersionDifferentLater(String date) {
-    return 'A newer copy ($date) has different contents';
+    return 'Eng méi nei Kopie ($date) huet en aneren Inhalt';
   }
 
   @override
   String documentsVersionSame(String date) {
-    return 'Same contents as the copy of $date';
+    return 'Selwechten Inhalt wéi d’Kopie vum $date';
   }
 
   @override
   String documentsVersionNotDownloaded(String date) {
-    return 'Same name as the copy of $date; contents not compared until both are downloaded';
+    return 'Selwechten Numm wéi d’Kopie vum $date; den Inhalt gëtt eréischt verglach, wa béid erofgeluede sinn';
   }
 
   @override
@@ -7007,129 +7005,130 @@ class AppLocalizationsLb extends AppLocalizations {
 
   @override
   String get documentsNoFactChanges =>
-      'The Key Facts are the same; other text differs.';
+      'D’Eckdate sinn d’selwecht; nëmmen aneren Text ënnerscheet sech.';
 
   @override
-  String get documentsKeyFacts => 'Key Facts';
+  String get documentsKeyFacts => 'Eckdaten';
 
   @override
-  String get documentsKeyFactsFind => 'Find Key Facts';
+  String get documentsKeyFactsFind => 'Eckdate fannen';
 
   @override
-  String get documentsKeyFactsWorking => 'Reading the document…';
+  String get documentsKeyFactsWorking => 'Dokument gëtt gelies…';
 
   @override
-  String get documentsKeyFactsFailed => 'Couldn’t find the Key Facts.';
+  String get documentsKeyFactsFailed => 'D’Eckdate konnten net fonnt ginn.';
 
   @override
   String get documentsKeyFactsDemoNote =>
-      'Made by the built-in demo, not a model.';
+      'Erstallt vun der agebauter Demo, net vun engem Modell.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
-    return 'Made by $provider.';
+    return 'Erstallt vun $provider.';
   }
 
   @override
   String get documentsKeyFactsHint =>
-      'Tap a fact to see where the document says it.';
+      'Tippt op eng Angab, fir ze gesinn, wou se am Dokument steet.';
 
   @override
   String get documentsKeyFactsNone =>
-      'Loupe has no Key Facts for this kind of document yet.';
+      'Loupe huet nach keng Eckdate fir dës Zort Dokument.';
 
   @override
   String get documentsKeyFactsPartial =>
-      'Only the first pages were read; facts on later pages are unknown.';
+      'Nëmmen déi éischt Säite goufe gelies; Angaben op spéidere Säite sinn onbekannt.';
 
   @override
-  String get documentsKeyFactsNotStated => 'Not stated';
+  String get documentsKeyFactsNotStated => 'Net uginn';
 
   @override
-  String get documentsKeyFactsConflicting => 'Stated differently';
+  String get documentsKeyFactsConflicting => 'Ënnerschiddlech uginn';
 
   @override
   String documentsEvidenceAlso(int page) {
-    return 'Also on page $page:';
+    return 'Och op Säit $page:';
   }
 
   @override
-  String get documentsTypeMortgageIllustration => 'Mortgage illustration';
+  String get documentsTypeMortgageIllustration => 'Offer fir e Wunnengskredit';
 
   @override
-  String get documentsTypeInvoice => 'Invoice';
+  String get documentsTypeInvoice => 'Rechnung';
 
   @override
-  String get documentsTypeBooking => 'Booking';
+  String get documentsTypeBooking => 'Reservatioun';
 
   @override
-  String get documentsTypeOther => 'Other document';
+  String get documentsTypeOther => 'Anert Dokument';
 
   @override
-  String get documentsFieldInitialRate => 'Initial rate';
+  String get documentsFieldInitialRate => 'Zënssaz am Ufank';
 
   @override
-  String get documentsFieldRatePeriod => 'Rate period';
+  String get documentsFieldRatePeriod => 'Zënsbindung';
 
   @override
-  String get documentsFieldMonthlyPayment => 'Monthly payment';
+  String get documentsFieldMonthlyPayment => 'Mensualitéit';
 
   @override
-  String get documentsFieldTerm => 'Term';
+  String get documentsFieldTerm => 'Laufzäit';
 
   @override
-  String get documentsFieldLoanAmount => 'Loan amount';
+  String get documentsFieldLoanAmount => 'Kreditbetrag';
 
   @override
-  String get documentsFieldArrangementFee => 'Arrangement fee';
+  String get documentsFieldArrangementFee => 'Dossierskäschten';
 
   @override
-  String get documentsFieldValuationFee => 'Valuation fee';
+  String get documentsFieldValuationFee => 'Schätzungskäschten';
 
   @override
-  String get documentsFieldBrokerFee => 'Broker fee';
+  String get documentsFieldBrokerFee => 'Vermëttlungskäschten';
 
   @override
-  String get documentsFieldEarlyRepaymentCharges => 'Early repayment charges';
+  String get documentsFieldEarlyRepaymentCharges =>
+      'Käschte fir e virzäitege Remboursement';
 
   @override
-  String get documentsFieldTotalAmountPayable => 'Total amount payable';
+  String get documentsFieldTotalAmountPayable => 'Ze bezuelende Gesamtbetrag';
 
   @override
-  String get documentsFieldAmountDue => 'Amount due';
+  String get documentsFieldAmountDue => 'Fällege Betrag';
 
   @override
-  String get documentsFieldCurrency => 'Currency';
+  String get documentsFieldCurrency => 'Währung';
 
   @override
-  String get documentsFieldDueDate => 'Due date';
+  String get documentsFieldDueDate => 'Fällegkeetsdatum';
 
   @override
-  String get documentsFieldPayee => 'Payee';
+  String get documentsFieldPayee => 'Bezuelungsempfänger';
 
   @override
-  String get documentsFieldReference => 'Reference';
+  String get documentsFieldReference => 'Referenz';
 
   @override
-  String get documentsFieldSubtotal => 'Subtotal';
+  String get documentsFieldSubtotal => 'Zwëschesumm';
 
   @override
-  String get documentsFieldTax => 'Tax';
+  String get documentsFieldTax => 'Steier';
 
   @override
-  String get documentsFieldDate => 'Date';
+  String get documentsFieldDate => 'Datum';
 
   @override
-  String get documentsFieldTime => 'Time';
+  String get documentsFieldTime => 'Auerzäit';
 
   @override
-  String get documentsFieldTimeZone => 'Time zone';
+  String get documentsFieldTimeZone => 'Zäitzon';
 
   @override
-  String get documentsFieldAddress => 'Address';
+  String get documentsFieldAddress => 'Adress';
 
   @override
-  String get documentsFieldPerson => 'Person';
+  String get documentsFieldPerson => 'Persoun';
 
   @override
   String get composeSignature => 'Signatur';

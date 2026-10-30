@@ -6799,21 +6799,21 @@ class AppLocalizationsMk extends AppLocalizations {
   String get sharedNotJunk => 'Не е несакана пошта';
 
   @override
-  String get documentsTitle => 'Documents';
+  String get documentsTitle => 'Документи';
 
   @override
-  String get documentsSearchPlaceholder => 'Search in Documents';
+  String get documentsSearchPlaceholder => 'Пребарај во документите';
 
   @override
-  String get documentsSearchInDocuments => 'Search in Documents';
+  String get documentsSearchInDocuments => 'Пребарај во документите';
 
   @override
   String documentsLibraryCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count преземени документи',
+      one: '$count преземен документ',
     );
     return '$_temp0';
   }
@@ -6823,14 +6823,14 @@ class AppLocalizationsMk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count преземени документи',
+      one: '$count преземен документ',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable can’t be read',
-      one: '1 can’t be read',
+      other: '$unreadable не можат да се прочитаат',
+      one: '$unreadable не може да се прочита',
     );
     return '$_temp0 · $_temp1';
   }
@@ -6840,8 +6840,8 @@ class AppLocalizationsMk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Пребарани се $count преземени документи',
+      one: 'Пребаран е $count преземен документ',
     );
     return '$_temp0';
   }
@@ -6851,45 +6851,45 @@ class AppLocalizationsMk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Пребарани се $count преземени документи',
+      one: 'Пребаран е $count преземен документ',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable couldn’t be read',
-      one: '1 couldn’t be read',
+      other: '$unreadable не можеа да се прочитаат',
+      one: '$unreadable не можеше да се прочита',
     );
     return '$_temp0 · $_temp1';
   }
 
   @override
   String get documentsScopeNote =>
-      'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.';
+      'Се пребаруваат прилозите на овој телефон, а не целата ваша пошта. Отворете прилог за да го додадете.';
 
   @override
-  String get documentsEmpty => 'No Documents Yet';
+  String get documentsEmpty => 'Сè уште нема документи';
 
   @override
   String get documentsEmptyDetail =>
-      'PDFs and text files you open from mail show up here, so you can search inside them.';
+      'PDF-документите и текстуалните датотеки што ги отворате од поштата се појавуваат тука, за да можете да пребарувате во нив.';
 
   @override
-  String get documentsNoResults => 'No Matches';
+  String get documentsNoResults => 'Нема совпаѓања';
 
   @override
   String documentsNoResultsDetail(String query) {
-    return 'No downloaded document contains “$query”.';
+    return 'Ниеден преземен документ не содржи „$query“.';
   }
 
   @override
   String documentsMatchedOnPage(int page) {
-    return 'Matched on page $page';
+    return 'Пронајдено на страница $page';
   }
 
   @override
   String documentsMatchedOnLine(int line) {
-    return 'Matched on line $line';
+    return 'Пронајдено во ред $line';
   }
 
   @override
@@ -6897,99 +6897,97 @@ class AppLocalizationsMk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count more matches',
-      one: '1 more match',
+      other: 'Уште $count совпаѓања',
+      one: 'Уште $count совпаѓање',
     );
     return '$_temp0';
   }
 
   @override
   String documentsPage(int page) {
-    return 'Page $page';
+    return 'Страница $page';
   }
 
   @override
-  String get documentsReading => 'Reading…';
-
-  @override
   String get documentsStatusNotDownloaded =>
-      'Not downloaded: open it to read and search it.';
+      'Не е преземен: отворете го за да може да го читате и пребарувате.';
 
   @override
   String get documentsStatusEncrypted =>
-      'Password protected: Loupe can’t read it.';
+      'Заштитен со лозинка: Loupe не може да го прочита.';
 
   @override
   String get documentsStatusNoText =>
-      'No text found: it may be a scan or a photo, which Loupe can’t read yet.';
+      'Не е пронајден текст: можеби е скениран документ или фотографија, што Loupe сè уште не може да ги чита.';
 
   @override
-  String get documentsStatusEmpty => 'This file has no text.';
+  String get documentsStatusEmpty => 'Оваа датотека нема текст.';
 
   @override
   String get documentsStatusUnsupported =>
-      'Loupe can’t read this kind of document yet.';
+      'Loupe сè уште не може да го чита овој вид документ.';
 
   @override
-  String get documentsStatusTooLarge => 'Too large to read on this phone.';
+  String get documentsStatusTooLarge =>
+      'Премногу голем за читање на овој телефон.';
 
   @override
   String get documentsStatusDamaged =>
-      'Couldn’t be read: the file may be damaged.';
+      'Не можеше да се прочита: датотеката можеби е оштетена.';
 
   @override
   String documentsStatusPartial(int read, int total) {
     String _temp0 = intl.Intl.pluralLogic(
       total,
       locale: localeName,
-      other: '$total pages',
-      one: '1 page',
+      other: '$total страници',
+      one: '$total страница',
     );
-    return 'Read $read of $_temp0; the rest isn’t searched.';
+    return 'Прочитани се $read од $_temp0; остатокот не се пребарува.';
   }
 
   @override
   String get documentsStatusPartialText =>
-      'Only the beginning was read; the rest isn’t searched.';
+      'Прочитан е само почетокот; остатокот не се пребарува.';
 
   @override
-  String get documentsOpenDocument => 'Open Document';
+  String get documentsOpenDocument => 'Отвори документ';
 
   @override
-  String get documentsOpenMessage => 'Open Message';
+  String get documentsOpenMessage => 'Отвори порака';
 
   @override
-  String get documentsDetails => 'Document Details';
+  String get documentsDetails => 'Детали за документот';
 
   @override
   String documentsFingerprint(String hash) {
-    return 'Contents fingerprint $hash';
+    return 'Отпечаток на содржината: $hash';
   }
 
   @override
-  String get documentsPagesHeader => 'Text by Page';
+  String get documentsPagesHeader => 'Текст по страници';
 
   @override
-  String get documentsVersionsHeader => 'Other Copies';
+  String get documentsVersionsHeader => 'Други копии';
 
   @override
   String documentsVersionDifferentEarlier(String date) {
-    return 'Different contents from the earlier copy ($date)';
+    return 'Содржината се разликува од претходната копија ($date)';
   }
 
   @override
   String documentsVersionDifferentLater(String date) {
-    return 'A newer copy ($date) has different contents';
+    return 'Поновата копија ($date) има различна содржина';
   }
 
   @override
   String documentsVersionSame(String date) {
-    return 'Same contents as the copy of $date';
+    return 'Иста содржина како копијата од $date';
   }
 
   @override
   String documentsVersionNotDownloaded(String date) {
-    return 'Same name as the copy of $date; contents not compared until both are downloaded';
+    return 'Исто име како копијата од $date; содржините не се споредуваат додека не се преземат двете';
   }
 
   @override
@@ -6999,129 +6997,131 @@ class AppLocalizationsMk extends AppLocalizations {
 
   @override
   String get documentsNoFactChanges =>
-      'The Key Facts are the same; other text differs.';
+      'Клучните податоци се исти; разликите се во останатиот текст.';
 
   @override
-  String get documentsKeyFacts => 'Key Facts';
+  String get documentsKeyFacts => 'Клучни податоци';
 
   @override
-  String get documentsKeyFactsFind => 'Find Key Facts';
+  String get documentsKeyFactsFind => 'Најди клучни податоци';
 
   @override
-  String get documentsKeyFactsWorking => 'Reading the document…';
+  String get documentsKeyFactsWorking => 'Се чита документот…';
 
   @override
-  String get documentsKeyFactsFailed => 'Couldn’t find the Key Facts.';
+  String get documentsKeyFactsFailed =>
+      'Клучните податоци не можеа да се најдат.';
 
   @override
   String get documentsKeyFactsDemoNote =>
-      'Made by the built-in demo, not a model.';
+      'Направено од вградената демонстрација, не од модел.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
-    return 'Made by $provider.';
+    return 'Направено од $provider.';
   }
 
   @override
   String get documentsKeyFactsHint =>
-      'Tap a fact to see where the document says it.';
+      'Допрете податок за да видите каде го наведува документот.';
 
   @override
   String get documentsKeyFactsNone =>
-      'Loupe has no Key Facts for this kind of document yet.';
+      'Loupe сè уште нема клучни податоци за овој вид документ.';
 
   @override
   String get documentsKeyFactsPartial =>
-      'Only the first pages were read; facts on later pages are unknown.';
+      'Прочитани се само првите страници; податоците на подоцнежните страници не се познати.';
 
   @override
-  String get documentsKeyFactsNotStated => 'Not stated';
+  String get documentsKeyFactsNotStated => 'Не е наведено';
 
   @override
-  String get documentsKeyFactsConflicting => 'Stated differently';
+  String get documentsKeyFactsConflicting => 'Наведено различно';
 
   @override
   String documentsEvidenceAlso(int page) {
-    return 'Also on page $page:';
+    return 'Исто така на страница $page:';
   }
 
   @override
-  String get documentsTypeMortgageIllustration => 'Mortgage illustration';
+  String get documentsTypeMortgageIllustration => 'Понуда за станбен кредит';
 
   @override
-  String get documentsTypeInvoice => 'Invoice';
+  String get documentsTypeInvoice => 'Фактура';
 
   @override
-  String get documentsTypeBooking => 'Booking';
+  String get documentsTypeBooking => 'Резервација';
 
   @override
-  String get documentsTypeOther => 'Other document';
+  String get documentsTypeOther => 'Друг документ';
 
   @override
-  String get documentsFieldInitialRate => 'Initial rate';
+  String get documentsFieldInitialRate => 'Почетна каматна стапка';
 
   @override
-  String get documentsFieldRatePeriod => 'Rate period';
+  String get documentsFieldRatePeriod => 'Траење на почетната стапка';
 
   @override
-  String get documentsFieldMonthlyPayment => 'Monthly payment';
+  String get documentsFieldMonthlyPayment => 'Месечна рата';
 
   @override
-  String get documentsFieldTerm => 'Term';
+  String get documentsFieldTerm => 'Рок на отплата';
 
   @override
-  String get documentsFieldLoanAmount => 'Loan amount';
+  String get documentsFieldLoanAmount => 'Износ на кредитот';
 
   @override
-  String get documentsFieldArrangementFee => 'Arrangement fee';
+  String get documentsFieldArrangementFee => 'Провизија за одобрување';
 
   @override
-  String get documentsFieldValuationFee => 'Valuation fee';
+  String get documentsFieldValuationFee => 'Надоместок за проценка';
 
   @override
-  String get documentsFieldBrokerFee => 'Broker fee';
+  String get documentsFieldBrokerFee => 'Провизија за посредник';
 
   @override
-  String get documentsFieldEarlyRepaymentCharges => 'Early repayment charges';
+  String get documentsFieldEarlyRepaymentCharges =>
+      'Надоместоци за предвремена отплата';
 
   @override
-  String get documentsFieldTotalAmountPayable => 'Total amount payable';
+  String get documentsFieldTotalAmountPayable => 'Вкупен износ за отплата';
 
   @override
-  String get documentsFieldAmountDue => 'Amount due';
+  String get documentsFieldAmountDue => 'Износ за плаќање';
 
   @override
-  String get documentsFieldCurrency => 'Currency';
+  String get documentsFieldCurrency => 'Валута';
 
   @override
-  String get documentsFieldDueDate => 'Due date';
+  String get documentsFieldDueDate => 'Рок за плаќање';
 
   @override
-  String get documentsFieldPayee => 'Payee';
+  String get documentsFieldPayee => 'Примач на уплатата';
 
   @override
-  String get documentsFieldReference => 'Reference';
+  String get documentsFieldReference => 'Референтен број';
 
   @override
-  String get documentsFieldSubtotal => 'Subtotal';
+  String get documentsFieldSubtotal => 'Меѓузбир';
 
   @override
-  String get documentsFieldTax => 'Tax';
+  String get documentsFieldTax => 'Данок';
 
   @override
-  String get documentsFieldDate => 'Date';
+  String get documentsFieldDate => 'Датум';
 
   @override
-  String get documentsFieldTime => 'Time';
+  String get documentsFieldTime => 'Време';
 
   @override
-  String get documentsFieldTimeZone => 'Time zone';
+  String get documentsFieldTimeZone => 'Временска зона';
 
   @override
-  String get documentsFieldAddress => 'Address';
+  String get documentsFieldAddress => 'Адреса';
 
   @override
-  String get documentsFieldPerson => 'Person';
+  String get documentsFieldPerson => 'Лице';
 
   @override
   String get composeSignature => 'Потпис';
