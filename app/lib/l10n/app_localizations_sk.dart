@@ -6442,4 +6442,32 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Vyskúšať s ukážkovou poštou';
+
+  @override
+  String get searchAskPlainEnglish => 'Opýtať sa vlastnými slovami';
+
+  @override
+  String get searchAskWorking => 'Pripravuje sa hľadanie…';
+
+  @override
+  String get searchAskProposed => 'Navrhnuté hľadanie';
+
+  @override
+  String get searchAskUse => 'Použiť toto hľadanie';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe potrebuje vedieť:';
+
+  @override
+  String get searchAskFailed => 'Loupe z toho nedokázal urobiť hľadanie.';
+
+  @override
+  String get searchAskDemoNote => 'Preložilo vstavané demo, nie model.';
+
+  @override
+  String get settingsAiHeader => 'Súkromná AI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Premení vetu na hľadanie, ktoré môžete skontrolovať a upraviť. Zatiaľ prekladá vstavané demo: bez modelu, bez siete.';
 }

@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Žiadne sledovanie. Vzdialené obrázky zostanú blokované, kým nepoviete inak.",
   "welcomeAddAccount": "Pridať účet",
   "welcomeImport": "Importovať z Thunderbirdu",
-  "welcomeTryDemo": "Vyskúšať s ukážkovou poštou"
+  "welcomeTryDemo": "Vyskúšať s ukážkovou poštou",
+  "searchAskPlainEnglish": "Opýtať sa vlastnými slovami",
+  "searchAskWorking": "Pripravuje sa hľadanie…",
+  "searchAskProposed": "Navrhnuté hľadanie",
+  "searchAskUse": "Použiť toto hľadanie",
+  "searchAskNeedsAnswer": "Loupe potrebuje vedieť:",
+  "searchAskFailed": "Loupe z toho nedokázal urobiť hľadanie.",
+  "searchAskDemoNote": "Preložilo vstavané demo, nie model.",
+  "settingsAiHeader": "Súkromná AI",
+  "settingsAiAssistDetail": "Premení vetu na hľadanie, ktoré môžete skontrolovať a upraviť. Zatiaľ prekladá vstavané demo: bez modelu, bez siete."
 }

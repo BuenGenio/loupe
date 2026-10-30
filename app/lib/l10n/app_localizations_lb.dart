@@ -6371,4 +6371,32 @@ class AppLocalizationsLb extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Mat Demo-Mailen ausprobéieren';
+
+  @override
+  String get searchAskPlainEnglish => 'Mat eegene Wierder froen';
+
+  @override
+  String get searchAskWorking => 'Sich gëtt virbereet …';
+
+  @override
+  String get searchAskProposed => 'Proposéiert Sich';
+
+  @override
+  String get searchAskUse => 'Dës Sich benotzen';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe muss wëssen:';
+
+  @override
+  String get searchAskFailed => 'Loupe konnt doraus keng Sich maachen.';
+
+  @override
+  String get searchAskDemoNote => 'Iwwersat vun der agebauter Demo, net vun engem Modell.';
+
+  @override
+  String get settingsAiHeader => 'Privat KI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Mécht aus engem Saz eng Sich, déi sech kontrolléieren an änneren léisst. Fir de Moment iwwersetzt déi agebaute Demo: kee Modell, kee Netz.';
 }

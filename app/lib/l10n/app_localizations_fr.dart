@@ -6472,4 +6472,32 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Essayer avec des e-mails de démonstration';
+
+  @override
+  String get searchAskPlainEnglish => 'Demander en langage courant';
+
+  @override
+  String get searchAskWorking => 'Recherche en préparation…';
+
+  @override
+  String get searchAskProposed => 'Recherche proposée';
+
+  @override
+  String get searchAskUse => 'Utiliser cette recherche';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe a besoin de savoir :';
+
+  @override
+  String get searchAskFailed => 'Loupe n\'a pas pu en faire une recherche.';
+
+  @override
+  String get searchAskDemoNote => 'Traduit par la démo intégrée, pas par un modèle.';
+
+  @override
+  String get settingsAiHeader => 'IA privée';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Transforme une phrase en recherche à vérifier et modifier. Pour l\'instant, la démo intégrée traduit : aucun modèle, aucun réseau.';
 }

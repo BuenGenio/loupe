@@ -6494,4 +6494,32 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Спробувати з демопоштою';
+
+  @override
+  String get searchAskPlainEnglish => 'Запитати своїми словами';
+
+  @override
+  String get searchAskWorking => 'Готуємо пошук…';
+
+  @override
+  String get searchAskProposed => 'Запропонований пошук';
+
+  @override
+  String get searchAskUse => 'Використати цей пошук';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe потрібно знати:';
+
+  @override
+  String get searchAskFailed => 'Loupe не вдалося перетворити це на пошук.';
+
+  @override
+  String get searchAskDemoNote => 'Перекладено вбудованою демонстрацією, а не моделлю.';
+
+  @override
+  String get settingsAiHeader => 'Приватний ШІ';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Перетворює речення на пошук, який можна перевірити й змінити. Поки що перекладає вбудована демонстрація: без моделі, без мережі.';
 }

@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Geen tracking. Externe afbeeldingen blijven geblokkeerd tot jij het zegt.",
   "welcomeAddAccount": "Account toevoegen",
   "welcomeImport": "Importeren uit Thunderbird",
-  "welcomeTryDemo": "Proberen met demomail"
+  "welcomeTryDemo": "Proberen met demomail",
+  "searchAskPlainEnglish": "Vraag het in je eigen woorden",
+  "searchAskWorking": "Zoekopdracht wordt bepaald…",
+  "searchAskProposed": "Voorgestelde zoekopdracht",
+  "searchAskUse": "Deze zoekopdracht gebruiken",
+  "searchAskNeedsAnswer": "Loupe moet weten:",
+  "searchAskFailed": "Loupe kon hier geen zoekopdracht van maken.",
+  "searchAskDemoNote": "Vertaald door de ingebouwde demo, niet door een model.",
+  "settingsAiHeader": "Privé-AI",
+  "settingsAiAssistDetail": "Maakt van een zin een zoekopdracht die je kunt controleren en bewerken. Voorlopig vertaalt de ingebouwde demo: geen model, geen netwerk."
 }

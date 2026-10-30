@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Nekādas izsekošanas. Attālie attēli paliek bloķēti, līdz jūs tos atļaujat.",
   "welcomeAddAccount": "Pievienot kontu",
   "welcomeImport": "Importēt no Thunderbird",
-  "welcomeTryDemo": "Izmēģināt ar demonstrācijas pastu"
+  "welcomeTryDemo": "Izmēģināt ar demonstrācijas pastu",
+  "searchAskPlainEnglish": "Jautāt saviem vārdiem",
+  "searchAskWorking": "Gatavo meklēšanu…",
+  "searchAskProposed": "Ieteiktā meklēšana",
+  "searchAskUse": "Izmantot šo meklēšanu",
+  "searchAskNeedsAnswer": "Loupe ir jāzina:",
+  "searchAskFailed": "Loupe nevarēja to pārvērst meklēšanā.",
+  "searchAskDemoNote": "Tulkoja iebūvētā demonstrācija, nevis modelis.",
+  "settingsAiHeader": "Privātais MI",
+  "settingsAiAssistDetail": "Pārvērš teikumu meklēšanā, ko var pārbaudīt un rediģēt. Pagaidām tulko iebūvētā demonstrācija: bez modeļa, bez tīkla."
 }

@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Без следење. Далечинските слики остануваат блокирани додека не кажете поинаку.",
   "welcomeAddAccount": "Додај сметка",
   "welcomeImport": "Увези од Thunderbird",
-  "welcomeTryDemo": "Пробај со демо пошта"
+  "welcomeTryDemo": "Пробај со демо пошта",
+  "searchAskPlainEnglish": "Прашајте со свои зборови",
+  "searchAskWorking": "Се подготвува пребарувањето…",
+  "searchAskProposed": "Предложено пребарување",
+  "searchAskUse": "Користи го ова пребарување",
+  "searchAskNeedsAnswer": "Loupe треба да знае:",
+  "searchAskFailed": "Loupe не можеше да го претвори ова во пребарување.",
+  "searchAskDemoNote": "Преведено од вградената демонстрација, не од модел.",
+  "settingsAiHeader": "Приватна ВИ",
+  "settingsAiAssistDetail": "Претвора реченица во пребарување што можете да го проверите и уредите. Засега преведува вградената демонстрација: без модел, без мрежа."
 }

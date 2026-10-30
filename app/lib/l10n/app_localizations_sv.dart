@@ -6298,4 +6298,32 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Prova med demo-e-post';
+
+  @override
+  String get searchAskPlainEnglish => 'Fråga med egna ord';
+
+  @override
+  String get searchAskWorking => 'Tar fram sökningen…';
+
+  @override
+  String get searchAskProposed => 'Föreslagen sökning';
+
+  @override
+  String get searchAskUse => 'Använd den här sökningen';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe behöver veta:';
+
+  @override
+  String get searchAskFailed => 'Loupe kunde inte göra en sökning av det.';
+
+  @override
+  String get searchAskDemoNote => 'Översatt av den inbyggda demon, inte av en modell.';
+
+  @override
+  String get settingsAiHeader => 'Privat AI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Gör en mening till en sökning du kan granska och ändra. Tills vidare översätter den inbyggda demon: ingen modell, inget nätverk.';
 }

@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Sense seguiment. Les imatges remotes continuen bloquejades fins que tu ho diguis.",
   "welcomeAddAccount": "Afegeix un compte",
   "welcomeImport": "Importa de Thunderbird",
-  "welcomeTryDemo": "Prova-ho amb correu de demostració"
+  "welcomeTryDemo": "Prova-ho amb correu de demostració",
+  "searchAskPlainEnglish": "Pregunta amb les teves paraules",
+  "searchAskWorking": "S'està preparant la cerca…",
+  "searchAskProposed": "Cerca proposada",
+  "searchAskUse": "Utilitza aquesta cerca",
+  "searchAskNeedsAnswer": "El Loupe necessita saber:",
+  "searchAskFailed": "El Loupe no ha pogut convertir-ho en una cerca.",
+  "searchAskDemoNote": "Traduït per la demostració integrada, no per un model.",
+  "settingsAiHeader": "IA privada",
+  "settingsAiAssistDetail": "Converteix una frase en una cerca que pots revisar i editar. De moment tradueix la demostració integrada: sense model, sense xarxa."
 }

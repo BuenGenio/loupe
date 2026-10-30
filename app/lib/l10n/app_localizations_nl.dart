@@ -6384,4 +6384,32 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Proberen met demomail';
+
+  @override
+  String get searchAskPlainEnglish => 'Vraag het in je eigen woorden';
+
+  @override
+  String get searchAskWorking => 'Zoekopdracht wordt bepaald…';
+
+  @override
+  String get searchAskProposed => 'Voorgestelde zoekopdracht';
+
+  @override
+  String get searchAskUse => 'Deze zoekopdracht gebruiken';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe moet weten:';
+
+  @override
+  String get searchAskFailed => 'Loupe kon hier geen zoekopdracht van maken.';
+
+  @override
+  String get searchAskDemoNote => 'Vertaald door de ingebouwde demo, niet door een model.';
+
+  @override
+  String get settingsAiHeader => 'Privé-AI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Maakt van een zin een zoekopdracht die je kunt controleren en bewerken. Voorlopig vertaalt de ingebouwde demo: geen model, geen netwerk.';
 }

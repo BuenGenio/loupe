@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Без стеження. Віддалені зображення заблоковано, доки ви їх не дозволите.",
   "welcomeAddAccount": "Додати обліковий запис",
   "welcomeImport": "Імпортувати з Thunderbird",
-  "welcomeTryDemo": "Спробувати з демопоштою"
+  "welcomeTryDemo": "Спробувати з демопоштою",
+  "searchAskPlainEnglish": "Запитати своїми словами",
+  "searchAskWorking": "Готуємо пошук…",
+  "searchAskProposed": "Запропонований пошук",
+  "searchAskUse": "Використати цей пошук",
+  "searchAskNeedsAnswer": "Loupe потрібно знати:",
+  "searchAskFailed": "Loupe не вдалося перетворити це на пошук.",
+  "searchAskDemoNote": "Перекладено вбудованою демонстрацією, а не моделлю.",
+  "settingsAiHeader": "Приватний ШІ",
+  "settingsAiAssistDetail": "Перетворює речення на пошук, який можна перевірити й змінити. Поки що перекладає вбудована демонстрація: без моделі, без мережі."
 }
