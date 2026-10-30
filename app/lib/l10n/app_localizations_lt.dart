@@ -1265,6 +1265,214 @@ class AppLocalizationsLt extends AppLocalizations {
   String get snoozeEmptyText => 'Atidėkite laišką, kad jis grįžtų į aplanką „Gauti laiškai“ tada, kai jums jo reikės.';
 
   @override
+  String get briefButton => 'Trumpai';
+
+  @override
+  String get briefButtonHint => 'Išvardija, ko šis laiškas iš jūsų prašo';
+
+  @override
+  String get briefReaderView => 'Trumpai';
+
+  @override
+  String get briefTitle => 'Trumpai';
+
+  @override
+  String get briefShowOriginal => 'Rodyti originalą';
+
+  @override
+  String get briefWorking => 'Skaitomas laiškas…';
+
+  @override
+  String get briefStopped => 'Sustabdėte santrauką.';
+
+  @override
+  String get briefFailedTooLarge => 'Šis laiškas per ilgas modeliui, todėl niekas nebuvo išsiųsta.';
+
+  @override
+  String get briefFailedProvider => 'Modeliui nepavyko apibendrinti šio laiško.';
+
+  @override
+  String get briefFailedInvalid => 'Atsakymas neperėjo „Loupe“ patikrų, todėl kontrolinis sąrašas nerodomas.';
+
+  @override
+  String get briefNothingTitle => 'Nėra ką apibendrinti';
+
+  @override
+  String get briefPartial =>
+      'Šis laiškas ilgas, todėl santrauka apima tik jo pradžią. Likusią dalį perskaitykite pačiame laiške.';
+
+  @override
+  String get briefSectionToDo => 'Reikia atlikti';
+
+  @override
+  String get briefSectionDocuments => 'Dokumentai, kuriuos reikia išsiųsti';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumentai';
+
+  @override
+  String get briefSectionDates => 'Datos';
+
+  @override
+  String get briefSectionConditions => 'Sąlygos';
+
+  @override
+  String get briefSectionNext => 'Kas bus toliau';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Terminas: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Data: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Tikslas, ne terminas: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Skaičiuojama nuo įvykio: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Terminas nenurodytas';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Jūs', 'them': 'Kiti', 'other': 'Nenurodyta'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Pažymėti kaip atliktą';
+
+  @override
+  String get briefMarkNotDone => 'Pažymėti kaip neatliktą';
+
+  @override
+  String get briefDismiss => 'Atmesti';
+
+  @override
+  String get briefRestore => 'Atkurti';
+
+  @override
+  String get briefCopy => 'Kopijuoti';
+
+  @override
+  String get briefAddToCalendar => 'Įtraukti į kalendorių…';
+
+  @override
+  String get briefTrack => 'Sekti';
+
+  @override
+  String get briefShowInMessage => 'Rodyti laiške';
+
+  @override
+  String get briefMarkedDone => 'Pažymėta kaip atlikta';
+
+  @override
+  String get briefDismissed => 'Atmesta';
+
+  @override
+  String get briefItemCopied => 'Nukopijuota';
+
+  @override
+  String get briefChecklistCopied => 'Kontrolinis sąrašas nukopijuotas';
+
+  @override
+  String briefTracking(String item) {
+    return 'Sekama: „$item“';
+  }
+
+  @override
+  String get briefTrackFailed => 'Nepavyko sekti šio punkto.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Rodyti atmestus ($count)',
+      few: 'Rodyti atmestus ($count)',
+      one: 'Rodyti atmestus ($count)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Slėpti atmestus punktus';
+
+  @override
+  String get briefCopyChecklist => 'Kopijuoti sąrašą';
+
+  @override
+  String get briefMadeByDemo => 'Sukūrė įtaisytoji demonstracija, ne modelis.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Sukurta šiame telefone, kūrė $name.',
+      'myServer': 'Sukurta jūsų serveryje, kūrė $name.',
+      'other': 'Sukurta debesyje, kūrė $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Santrauka gali ką nors praleisti ar klaidingai suprasti. Svarbiausia – pats laiškas.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Prieš ką nors darydami pagal šią santrauką, patikrinkite patį laišką.';
+  }
+
+  @override
+  String get briefSecurityText => 'Prieš ką nors darydami pagal šią santrauką, patikrinkite patį laišką.';
+
+  @override
+  String get briefSourceTitle => 'Laiške';
+
+  @override
+  String get briefSourceAttachment => 'Tai paimta iš pridėto failo pavadinimo. Santrauka neskaito priedų turinio.';
+
+  @override
+  String get briefEventTitle => 'Naujas įvykis';
+
+  @override
+  String get briefEventDate => 'Data';
+
+  @override
+  String get briefEventTime => 'Laikas';
+
+  @override
+  String get briefEventAllDay => 'Visą dieną';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Laiko juosta';
+
+  @override
+  String get briefEventNotes => 'Pastabos';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Iš laiško „$subject“, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Kalendoriaus programa atsidarys su šiuo įvykiu. Niekas neišsaugoma, kol neišsaugosite ten.';
+
+  @override
   String get appLockUnlock => 'Atrakinti';
 
   @override

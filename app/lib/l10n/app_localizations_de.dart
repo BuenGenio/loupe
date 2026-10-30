@@ -1253,6 +1253,216 @@ class AppLocalizationsDe extends AppLocalizations {
       'Stelle eine Nachricht zurück, damit sie wieder im Posteingang auftaucht, wenn du sie brauchst.';
 
   @override
+  String get briefButton => 'Kurzfassung';
+
+  @override
+  String get briefButtonHint => 'Listet auf, was diese Nachricht von dir verlangt';
+
+  @override
+  String get briefReaderView => 'Kurzfassung';
+
+  @override
+  String get briefTitle => 'Kurzfassung';
+
+  @override
+  String get briefShowOriginal => 'Original anzeigen';
+
+  @override
+  String get briefWorking => 'Nachricht wird gelesen…';
+
+  @override
+  String get briefStopped => 'Du hast die Kurzfassung abgebrochen.';
+
+  @override
+  String get briefFailedTooLarge => 'Diese Nachricht ist zu lang für das Modell, daher wurde nichts gesendet.';
+
+  @override
+  String get briefFailedProvider => 'Das Modell konnte keine Kurzfassung dieser Nachricht erstellen.';
+
+  @override
+  String get briefFailedInvalid =>
+      'Die Antwort hat Loupes Prüfungen nicht bestanden, daher wird keine Checkliste angezeigt.';
+
+  @override
+  String get briefNothingTitle => 'Nichts zusammenzufassen';
+
+  @override
+  String get briefPartial =>
+      'Diese Nachricht ist lang, daher deckt die Kurzfassung nur ihren Anfang ab. Lies den Rest in der Nachricht selbst.';
+
+  @override
+  String get briefSectionToDo => 'Zu erledigen';
+
+  @override
+  String get briefSectionDocuments => 'Zu sendende Dokumente';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumente';
+
+  @override
+  String get briefSectionDates => 'Termine';
+
+  @override
+  String get briefSectionConditions => 'Bedingungen';
+
+  @override
+  String get briefSectionNext => 'Wie es weitergeht';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Frist: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Am $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Ziel, keine Frist: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Ab einem Ereignis gerechnet: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Keine Frist genannt';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Du', 'them': 'Andere', 'other': 'Nicht angegeben'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Als erledigt markieren';
+
+  @override
+  String get briefMarkNotDone => 'Als nicht erledigt markieren';
+
+  @override
+  String get briefDismiss => 'Ausblenden';
+
+  @override
+  String get briefRestore => 'Wiederherstellen';
+
+  @override
+  String get briefCopy => 'Kopieren';
+
+  @override
+  String get briefAddToCalendar => 'Zum Kalender hinzufügen…';
+
+  @override
+  String get briefTrack => 'Verfolgen';
+
+  @override
+  String get briefShowInMessage => 'In der Nachricht zeigen';
+
+  @override
+  String get briefMarkedDone => 'Als erledigt markiert';
+
+  @override
+  String get briefDismissed => 'Ausgeblendet';
+
+  @override
+  String get briefItemCopied => 'Kopiert';
+
+  @override
+  String get briefChecklistCopied => 'Checkliste kopiert';
+
+  @override
+  String briefTracking(String item) {
+    return '„$item“ wird verfolgt';
+  }
+
+  @override
+  String get briefTrackFailed => 'Dieser Punkt konnte nicht verfolgt werden.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ausgeblendete Punkte zeigen',
+      one: '$count ausgeblendeten Punkt zeigen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Ausgeblendete Punkte verbergen';
+
+  @override
+  String get briefCopyChecklist => 'Checkliste kopieren';
+
+  @override
+  String get briefMadeByDemo => 'Erstellt von der eingebauten Demo, nicht von einem Modell.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Auf diesem Telefon erstellt von $name.',
+      'myServer': 'Auf deinem Server erstellt von $name.',
+      'other': 'In der Cloud erstellt von $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution =>
+      'Eine Kurzfassung kann Dinge übersehen oder falsch verstehen. Maßgeblich ist die Nachricht selbst.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Prüfe die Nachricht selbst, bevor du etwas aus dieser Kurzfassung erledigst.';
+  }
+
+  @override
+  String get briefSecurityText => 'Prüfe die Nachricht selbst, bevor du etwas aus dieser Kurzfassung erledigst.';
+
+  @override
+  String get briefSourceTitle => 'In der Nachricht';
+
+  @override
+  String get briefSourceAttachment =>
+      'Das stammt aus dem Namen einer angehängten Datei. Die Kurzfassung liest nicht, was in Anhängen steht.';
+
+  @override
+  String get briefEventTitle => 'Neuer Termin';
+
+  @override
+  String get briefEventDate => 'Datum';
+
+  @override
+  String get briefEventTime => 'Uhrzeit';
+
+  @override
+  String get briefEventAllDay => 'Ganztägig';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Zeitzone';
+
+  @override
+  String get briefEventNotes => 'Notizen';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Aus „$subject“, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Deine Kalender-App öffnet sich mit diesem Termin. Gespeichert wird erst, wenn du ihn dort sicherst.';
+
+  @override
   String get appLockUnlock => 'Entsperren';
 
   @override

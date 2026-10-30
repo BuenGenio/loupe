@@ -1265,6 +1265,214 @@ class AppLocalizationsCs extends AppLocalizations {
   String get snoozeEmptyText => 'Odložte zprávu a vrátí se do Doručené pošty, až ji budete potřebovat.';
 
   @override
+  String get briefButton => 'Ve zkratce';
+
+  @override
+  String get briefButtonHint => 'Vypíše, co od vás tato zpráva žádá';
+
+  @override
+  String get briefReaderView => 'Ve zkratce';
+
+  @override
+  String get briefTitle => 'Ve zkratce';
+
+  @override
+  String get briefShowOriginal => 'Zobrazit originál';
+
+  @override
+  String get briefWorking => 'Čte se zpráva…';
+
+  @override
+  String get briefStopped => 'Shrnutí jste zastavili.';
+
+  @override
+  String get briefFailedTooLarge => 'Zpráva je pro model příliš dlouhá, proto nebylo nic odesláno.';
+
+  @override
+  String get briefFailedProvider => 'Model nedokázal tuto zprávu shrnout.';
+
+  @override
+  String get briefFailedInvalid => 'Odpověď neprošla kontrolami Loupe, proto se žádný seznam nezobrazuje.';
+
+  @override
+  String get briefNothingTitle => 'Není co shrnout';
+
+  @override
+  String get briefPartial =>
+      'Zpráva je dlouhá, proto shrnutí pokrývá jen její začátek. Zbytek si přečtěte v samotné zprávě.';
+
+  @override
+  String get briefSectionToDo => 'Úkoly';
+
+  @override
+  String get briefSectionDocuments => 'Dokumenty k odeslání';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumenty';
+
+  @override
+  String get briefSectionDates => 'Termíny';
+
+  @override
+  String get briefSectionConditions => 'Podmínky';
+
+  @override
+  String get briefSectionNext => 'Co bude dál';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Termín: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Datum: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Cíl, ne termín: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Počítáno od události: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Termín neuveden';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Vy', 'them': 'Ostatní', 'other': 'Neuvedeno'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Označit jako hotové';
+
+  @override
+  String get briefMarkNotDone => 'Označit jako nehotové';
+
+  @override
+  String get briefDismiss => 'Odmítnout';
+
+  @override
+  String get briefRestore => 'Obnovit';
+
+  @override
+  String get briefCopy => 'Kopírovat';
+
+  @override
+  String get briefAddToCalendar => 'Přidat do kalendáře…';
+
+  @override
+  String get briefTrack => 'Sledovat';
+
+  @override
+  String get briefShowInMessage => 'Zobrazit ve zprávě';
+
+  @override
+  String get briefMarkedDone => 'Označeno jako hotové';
+
+  @override
+  String get briefDismissed => 'Odmítnuto';
+
+  @override
+  String get briefItemCopied => 'Zkopírováno';
+
+  @override
+  String get briefChecklistCopied => 'Seznam zkopírován';
+
+  @override
+  String briefTracking(String item) {
+    return 'Sleduje se „$item“';
+  }
+
+  @override
+  String get briefTrackFailed => 'Tuto položku se nepodařilo sledovat.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Zobrazit $count odmítnutých položek',
+      few: 'Zobrazit $count odmítnuté položky',
+      one: 'Zobrazit $count odmítnutou položku',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Skrýt odmítnuté položky';
+
+  @override
+  String get briefCopyChecklist => 'Kopírovat seznam';
+
+  @override
+  String get briefMadeByDemo => 'Vytvořilo vestavěné demo, ne model.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Vytvořeno v tomto telefonu: $name.',
+      'myServer': 'Vytvořeno na vašem serveru: $name.',
+      'other': 'Vytvořeno v cloudu: $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Shrnutí může něco vynechat nebo špatně pochopit. Platí samotná zpráva.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Než podle tohoto shrnutí cokoli uděláte, zkontrolujte samotnou zprávu.';
+  }
+
+  @override
+  String get briefSecurityText => 'Než podle tohoto shrnutí cokoli uděláte, zkontrolujte samotnou zprávu.';
+
+  @override
+  String get briefSourceTitle => 'Ve zprávě';
+
+  @override
+  String get briefSourceAttachment => 'Pochází to z názvu přiloženého souboru. Shrnutí obsah příloh nečte.';
+
+  @override
+  String get briefEventTitle => 'Nová událost';
+
+  @override
+  String get briefEventDate => 'Datum';
+
+  @override
+  String get briefEventTime => 'Čas';
+
+  @override
+  String get briefEventAllDay => 'Celý den';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Časové pásmo';
+
+  @override
+  String get briefEventNotes => 'Poznámky';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Ze zprávy „$subject“, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Kalendářová aplikace se otevře s touto událostí. Nic se neuloží, dokud ji tam neuložíte.';
+
+  @override
   String get appLockUnlock => 'Odemknout';
 
   @override

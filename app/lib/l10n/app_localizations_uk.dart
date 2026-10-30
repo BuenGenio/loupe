@@ -1266,6 +1266,213 @@ class AppLocalizationsUk extends AppLocalizations {
   String get snoozeEmptyText => 'Відкладіть лист, і він повернеться у «Вхідні», коли знадобиться.';
 
   @override
+  String get briefButton => 'Коротко';
+
+  @override
+  String get briefButtonHint => 'Перелічує, чого цей лист вимагає від вас';
+
+  @override
+  String get briefReaderView => 'Коротко';
+
+  @override
+  String get briefTitle => 'Коротко';
+
+  @override
+  String get briefShowOriginal => 'Показати оригінал';
+
+  @override
+  String get briefWorking => 'Читаємо лист…';
+
+  @override
+  String get briefStopped => 'Ви зупинили підсумок.';
+
+  @override
+  String get briefFailedTooLarge => 'Лист задовгий для моделі, тож нічого не надіслано.';
+
+  @override
+  String get briefFailedProvider => 'Моделі не вдалося підсумувати цей лист.';
+
+  @override
+  String get briefFailedInvalid => 'Відповідь не пройшла перевірок Loupe, тож список не показано.';
+
+  @override
+  String get briefNothingTitle => 'Нічого підсумовувати';
+
+  @override
+  String get briefPartial => 'Лист довгий, тож підсумок охоплює лише його початок. Решту прочитайте в самому листі.';
+
+  @override
+  String get briefSectionToDo => 'Зробити';
+
+  @override
+  String get briefSectionDocuments => 'Документи, які треба надіслати';
+
+  @override
+  String get briefSectionOtherDocuments => 'Документи';
+
+  @override
+  String get briefSectionDates => 'Дати';
+
+  @override
+  String get briefSectionConditions => 'Умови';
+
+  @override
+  String get briefSectionNext => 'Що далі';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Термін: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Дата: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Мета, не термін: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Відлік від події: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Термін не вказано';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Ви', 'them': 'Інші', 'other': 'Не вказано'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Позначити як виконане';
+
+  @override
+  String get briefMarkNotDone => 'Позначити як невиконане';
+
+  @override
+  String get briefDismiss => 'Відхилити';
+
+  @override
+  String get briefRestore => 'Відновити';
+
+  @override
+  String get briefCopy => 'Копіювати';
+
+  @override
+  String get briefAddToCalendar => 'Додати в календар…';
+
+  @override
+  String get briefTrack => 'Відстежувати';
+
+  @override
+  String get briefShowInMessage => 'Показати в листі';
+
+  @override
+  String get briefMarkedDone => 'Позначено як виконане';
+
+  @override
+  String get briefDismissed => 'Відхилено';
+
+  @override
+  String get briefItemCopied => 'Скопійовано';
+
+  @override
+  String get briefChecklistCopied => 'Список скопійовано';
+
+  @override
+  String briefTracking(String item) {
+    return 'Відстежується «$item»';
+  }
+
+  @override
+  String get briefTrackFailed => 'Не вдалося відстежувати цей пункт.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Показати $count відхилених пунктів',
+      few: 'Показати $count відхилені пункти',
+      one: 'Показати $count відхилений пункт',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Сховати відхилені пункти';
+
+  @override
+  String get briefCopyChecklist => 'Копіювати список';
+
+  @override
+  String get briefMadeByDemo => 'Зроблено вбудованою демонстрацією, а не моделлю.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Зроблено на цьому телефоні: $name.',
+      'myServer': 'Зроблено на вашому сервері: $name.',
+      'other': 'Зроблено в хмарі: $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Підсумок може щось пропустити або неправильно зрозуміти. Важить сам лист.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Перевірте сам лист, перш ніж робити щось із цього підсумку.';
+  }
+
+  @override
+  String get briefSecurityText => 'Перевірте сам лист, перш ніж робити щось із цього підсумку.';
+
+  @override
+  String get briefSourceTitle => 'У листі';
+
+  @override
+  String get briefSourceAttachment => 'Це взято з назви вкладеного файлу. Підсумок не читає вміст вкладень.';
+
+  @override
+  String get briefEventTitle => 'Нова подія';
+
+  @override
+  String get briefEventDate => 'Дата';
+
+  @override
+  String get briefEventTime => 'Час';
+
+  @override
+  String get briefEventAllDay => 'Увесь день';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Часовий пояс';
+
+  @override
+  String get briefEventNotes => 'Нотатки';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'З листа «$subject», $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Застосунок календаря відкриється з цією подією. Нічого не збережеться, доки ви не збережете її там.';
+
+  @override
   String get appLockUnlock => 'Розблокувати';
 
   @override

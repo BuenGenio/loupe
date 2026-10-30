@@ -1242,6 +1242,214 @@ class AppLocalizationsEu extends AppLocalizations {
   String get snoozeEmptyText => 'Atzeratu mezu bat, behar duzunean Sarrera-ontzira itzul dadin.';
 
   @override
+  String get briefButton => 'Laburpena';
+
+  @override
+  String get briefButtonHint => 'Mezu honek zuri zer eskatzen dizun zerrendatzen du';
+
+  @override
+  String get briefReaderView => 'Laburpena';
+
+  @override
+  String get briefTitle => 'Laburpena';
+
+  @override
+  String get briefShowOriginal => 'Erakutsi jatorrizkoa';
+
+  @override
+  String get briefWorking => 'Mezua irakurtzen…';
+
+  @override
+  String get briefStopped => 'Laburpena gelditu duzu.';
+
+  @override
+  String get briefFailedTooLarge => 'Mezu hau luzeegia da ereduarentzat; beraz, ez da ezer bidali.';
+
+  @override
+  String get briefFailedProvider => 'Ereduak ezin izan du mezu hau laburtu.';
+
+  @override
+  String get briefFailedInvalid =>
+      'Erantzunak ez ditu Loupe-ren egiaztapenak gainditu; beraz, ez da zerrendarik erakusten.';
+
+  @override
+  String get briefNothingTitle => 'Ez dago laburtzeko ezer';
+
+  @override
+  String get briefPartial =>
+      'Mezu hau luzea da; beraz, laburpenak hasiera baino ez du hartzen. Irakurri gainerakoa mezuan bertan.';
+
+  @override
+  String get briefSectionToDo => 'Egitekoak';
+
+  @override
+  String get briefSectionDocuments => 'Bidali beharreko dokumentuak';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumentuak';
+
+  @override
+  String get briefSectionDates => 'Datak';
+
+  @override
+  String get briefSectionConditions => 'Baldintzak';
+
+  @override
+  String get briefSectionNext => 'Zer gertatuko den gero';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Epea: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Data: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Helburua, ez epea: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Gertaera batetik zenbatuta: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Ez da eperik adierazi';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Zu', 'them': 'Besteak', 'other': 'Adierazi gabe'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Markatu eginda gisa';
+
+  @override
+  String get briefMarkNotDone => 'Markatu egin gabe gisa';
+
+  @override
+  String get briefDismiss => 'Baztertu';
+
+  @override
+  String get briefRestore => 'Leheneratu';
+
+  @override
+  String get briefCopy => 'Kopiatu';
+
+  @override
+  String get briefAddToCalendar => 'Gehitu egutegira…';
+
+  @override
+  String get briefTrack => 'Jarraitu';
+
+  @override
+  String get briefShowInMessage => 'Erakutsi mezuan';
+
+  @override
+  String get briefMarkedDone => 'Eginda gisa markatu da';
+
+  @override
+  String get briefDismissed => 'Baztertu da';
+
+  @override
+  String get briefItemCopied => 'Kopiatu da';
+
+  @override
+  String get briefChecklistCopied => 'Zerrenda kopiatu da';
+
+  @override
+  String briefTracking(String item) {
+    return '«$item» jarraitzen';
+  }
+
+  @override
+  String get briefTrackFailed => 'Ezin izan da elementu hau jarraitu.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Erakutsi baztertutako $count elementu',
+      one: 'Erakutsi baztertutako elementu $count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Ezkutatu baztertutako elementuak';
+
+  @override
+  String get briefCopyChecklist => 'Kopiatu zerrenda';
+
+  @override
+  String get briefMadeByDemo => 'Demo integratuak egina, ez eredu batek.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Telefono honetan egina, $name ereduak.',
+      'myServer': 'Zure zerbitzarian egina, $name ereduak.',
+      'other': 'Hodeian egina, $name ereduak.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Laburpen batek gauzak ahaztu edo gaizki uler ditzake. Mezua bera da balio duena.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Egiaztatu mezua bera laburpen honetako ezer egin aurretik.';
+  }
+
+  @override
+  String get briefSecurityText => 'Egiaztatu mezua bera laburpen honetako ezer egin aurretik.';
+
+  @override
+  String get briefSourceTitle => 'Mezuan';
+
+  @override
+  String get briefSourceAttachment =>
+      'Hau erantsitako fitxategi baten izenetik dator. Laburpenak ez ditu eranskinen edukiak irakurtzen.';
+
+  @override
+  String get briefEventTitle => 'Gertaera berria';
+
+  @override
+  String get briefEventDate => 'Data';
+
+  @override
+  String get briefEventTime => 'Ordua';
+
+  @override
+  String get briefEventAllDay => 'Egun osoa';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Ordu-zona';
+
+  @override
+  String get briefEventNotes => 'Oharrak';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return '«$subject» mezutik, $sender';
+  }
+
+  @override
+  String get briefEventFootnote => 'Egutegi-aplikazioa gertaera honekin irekiko da. Ez da ezer gordeko han gorde arte.';
+
+  @override
   String get appLockUnlock => 'Desblokeatu';
 
   @override

@@ -1232,6 +1232,214 @@ class AppLocalizationsEl extends AppLocalizations {
   String get snoozeEmptyText => 'Αναβάλετε ένα μήνυμα για να επιστρέψει στα Εισερχόμενα όταν το χρειάζεστε.';
 
   @override
+  String get briefButton => 'Σύνοψη';
+
+  @override
+  String get briefButtonHint => 'Απαριθμεί τι σας ζητά αυτό το μήνυμα';
+
+  @override
+  String get briefReaderView => 'Σύνοψη';
+
+  @override
+  String get briefTitle => 'Σύνοψη';
+
+  @override
+  String get briefShowOriginal => 'Εμφάνιση πρωτότυπου';
+
+  @override
+  String get briefWorking => 'Ανάγνωση του μηνύματος…';
+
+  @override
+  String get briefStopped => 'Σταματήσατε τη σύνοψη.';
+
+  @override
+  String get briefFailedTooLarge => 'Το μήνυμα είναι πολύ μεγάλο για το μοντέλο, γι’ αυτό δεν στάλθηκε τίποτα.';
+
+  @override
+  String get briefFailedProvider => 'Το μοντέλο δεν μπόρεσε να συνοψίσει αυτό το μήνυμα.';
+
+  @override
+  String get briefFailedInvalid => 'Η απάντηση δεν πέρασε τους ελέγχους του Loupe, γι’ αυτό δεν εμφανίζεται λίστα.';
+
+  @override
+  String get briefNothingTitle => 'Τίποτα για σύνοψη';
+
+  @override
+  String get briefPartial =>
+      'Το μήνυμα είναι μεγάλο, γι’ αυτό η σύνοψη καλύπτει μόνο την αρχή του. Διαβάστε τα υπόλοιπα στο ίδιο το μήνυμα.';
+
+  @override
+  String get briefSectionToDo => 'Για να γίνουν';
+
+  @override
+  String get briefSectionDocuments => 'Έγγραφα για αποστολή';
+
+  @override
+  String get briefSectionOtherDocuments => 'Έγγραφα';
+
+  @override
+  String get briefSectionDates => 'Ημερομηνίες';
+
+  @override
+  String get briefSectionConditions => 'Προϋποθέσεις';
+
+  @override
+  String get briefSectionNext => 'Τι ακολουθεί';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Προθεσμία: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Ημερομηνία: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Στόχος, όχι προθεσμία: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Μετράει από ένα γεγονός: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Δεν αναφέρεται προθεσμία';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Εσείς', 'them': 'Άλλοι', 'other': 'Δεν αναφέρεται'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Σήμανση ως ολοκληρωμένο';
+
+  @override
+  String get briefMarkNotDone => 'Σήμανση ως μη ολοκληρωμένο';
+
+  @override
+  String get briefDismiss => 'Απόρριψη';
+
+  @override
+  String get briefRestore => 'Επαναφορά';
+
+  @override
+  String get briefCopy => 'Αντιγραφή';
+
+  @override
+  String get briefAddToCalendar => 'Προσθήκη στο ημερολόγιο…';
+
+  @override
+  String get briefTrack => 'Παρακολούθηση';
+
+  @override
+  String get briefShowInMessage => 'Εμφάνιση στο μήνυμα';
+
+  @override
+  String get briefMarkedDone => 'Σημειώθηκε ως ολοκληρωμένο';
+
+  @override
+  String get briefDismissed => 'Απορρίφθηκε';
+
+  @override
+  String get briefItemCopied => 'Αντιγράφηκε';
+
+  @override
+  String get briefChecklistCopied => 'Η λίστα αντιγράφηκε';
+
+  @override
+  String briefTracking(String item) {
+    return 'Παρακολουθείται: «$item»';
+  }
+
+  @override
+  String get briefTrackFailed => 'Δεν ήταν δυνατή η παρακολούθηση αυτού του στοιχείου.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Εμφάνιση $count απορριφθέντων στοιχείων',
+      one: 'Εμφάνιση $count απορριφθέντος στοιχείου',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Απόκρυψη απορριφθέντων στοιχείων';
+
+  @override
+  String get briefCopyChecklist => 'Αντιγραφή λίστας';
+
+  @override
+  String get briefMadeByDemo => 'Έγινε από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Έγινε σε αυτό το τηλέφωνο από $name.',
+      'myServer': 'Έγινε στον διακομιστή σας από $name.',
+      'other': 'Έγινε στο cloud από $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Μια σύνοψη μπορεί να παραλείψει ή να παρερμηνεύσει κάτι. Ισχύει το ίδιο το μήνυμα.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Ελέγξτε το ίδιο το μήνυμα πριν κάνετε οτιδήποτε από αυτή τη σύνοψη.';
+  }
+
+  @override
+  String get briefSecurityText => 'Ελέγξτε το ίδιο το μήνυμα πριν κάνετε οτιδήποτε από αυτή τη σύνοψη.';
+
+  @override
+  String get briefSourceTitle => 'Στο μήνυμα';
+
+  @override
+  String get briefSourceAttachment =>
+      'Αυτό προέρχεται από το όνομα ενός συνημμένου αρχείου. Η σύνοψη δεν διαβάζει το περιεχόμενο των συνημμένων.';
+
+  @override
+  String get briefEventTitle => 'Νέο συμβάν';
+
+  @override
+  String get briefEventDate => 'Ημερομηνία';
+
+  @override
+  String get briefEventTime => 'Ώρα';
+
+  @override
+  String get briefEventAllDay => 'Ολοήμερο';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Ζώνη ώρας';
+
+  @override
+  String get briefEventNotes => 'Σημειώσεις';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Από «$subject», $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Η εφαρμογή ημερολογίου ανοίγει με αυτό το συμβάν. Τίποτα δεν αποθηκεύεται μέχρι να το αποθηκεύσετε εκεί.';
+
+  @override
   String get appLockUnlock => 'Ξεκλείδωμα';
 
   @override

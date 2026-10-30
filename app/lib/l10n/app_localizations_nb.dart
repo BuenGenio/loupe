@@ -1217,6 +1217,214 @@ class AppLocalizationsNb extends AppLocalizations {
   String get snoozeEmptyText => 'Slumre en melding, så kommer den tilbake til innboksen når du trenger den.';
 
   @override
+  String get briefButton => 'Kort fortalt';
+
+  @override
+  String get briefButtonHint => 'Viser hva denne meldingen ber deg om';
+
+  @override
+  String get briefReaderView => 'Kort fortalt';
+
+  @override
+  String get briefTitle => 'Kort fortalt';
+
+  @override
+  String get briefShowOriginal => 'Vis original';
+
+  @override
+  String get briefWorking => 'Leser meldingen…';
+
+  @override
+  String get briefStopped => 'Du stoppet sammendraget.';
+
+  @override
+  String get briefFailedTooLarge => 'Denne meldingen er for lang for modellen, så ingenting ble sendt.';
+
+  @override
+  String get briefFailedProvider => 'Modellen klarte ikke å lage et sammendrag av denne meldingen.';
+
+  @override
+  String get briefFailedInvalid => 'Svaret besto ikke Loupes kontroller, så ingen sjekkliste vises.';
+
+  @override
+  String get briefNothingTitle => 'Ingenting å oppsummere';
+
+  @override
+  String get briefPartial =>
+      'Denne meldingen er lang, så sammendraget dekker bare begynnelsen. Les resten i selve meldingen.';
+
+  @override
+  String get briefSectionToDo => 'Å gjøre';
+
+  @override
+  String get briefSectionDocuments => 'Dokumenter som skal sendes';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumenter';
+
+  @override
+  String get briefSectionDates => 'Datoer';
+
+  @override
+  String get briefSectionConditions => 'Betingelser';
+
+  @override
+  String get briefSectionNext => 'Hva som skjer videre';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Frist: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Dato: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Mål, ikke en frist: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Regnet fra en hendelse: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Ingen frist oppgitt';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Du', 'them': 'Andre', 'other': 'Ikke oppgitt'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Merk som utført';
+
+  @override
+  String get briefMarkNotDone => 'Merk som ikke utført';
+
+  @override
+  String get briefDismiss => 'Avvis';
+
+  @override
+  String get briefRestore => 'Gjenopprett';
+
+  @override
+  String get briefCopy => 'Kopier';
+
+  @override
+  String get briefAddToCalendar => 'Legg til i kalenderen…';
+
+  @override
+  String get briefTrack => 'Følg';
+
+  @override
+  String get briefShowInMessage => 'Vis i meldingen';
+
+  @override
+  String get briefMarkedDone => 'Merket som utført';
+
+  @override
+  String get briefDismissed => 'Avvist';
+
+  @override
+  String get briefItemCopied => 'Kopiert';
+
+  @override
+  String get briefChecklistCopied => 'Sjekklisten er kopiert';
+
+  @override
+  String briefTracking(String item) {
+    return 'Følger «$item»';
+  }
+
+  @override
+  String get briefTrackFailed => 'Kunne ikke følge dette punktet.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Vis $count avviste punkter',
+      one: 'Vis $count avvist punkt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Skjul avviste punkter';
+
+  @override
+  String get briefCopyChecklist => 'Kopier sjekkliste';
+
+  @override
+  String get briefMadeByDemo => 'Laget av den innebygde demoen, ikke av en modell.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Laget på denne telefonen av $name.',
+      'myServer': 'Laget på serveren din av $name.',
+      'other': 'Laget i skyen av $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Et sammendrag kan overse eller misforstå ting. Det er selve meldingen som gjelder.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Sjekk selve meldingen før du gjør noe fra dette sammendraget.';
+  }
+
+  @override
+  String get briefSecurityText => 'Sjekk selve meldingen før du gjør noe fra dette sammendraget.';
+
+  @override
+  String get briefSourceTitle => 'I meldingen';
+
+  @override
+  String get briefSourceAttachment =>
+      'Dette kommer fra navnet på en vedlagt fil. Sammendraget leser ikke hva som står i vedlegg.';
+
+  @override
+  String get briefEventTitle => 'Ny hendelse';
+
+  @override
+  String get briefEventDate => 'Dato';
+
+  @override
+  String get briefEventTime => 'Klokkeslett';
+
+  @override
+  String get briefEventAllDay => 'Hele dagen';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Tidssone';
+
+  @override
+  String get briefEventNotes => 'Notater';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Fra «$subject», $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Kalenderappen din åpnes med denne hendelsen. Ingenting lagres før du lagrer det der.';
+
+  @override
   String get appLockUnlock => 'Lås opp';
 
   @override

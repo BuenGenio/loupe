@@ -1315,6 +1315,219 @@ class AppLocalizationsGa extends AppLocalizations {
       'Cuir teachtaireacht ar athló chun go bhfillfidh sí ar an mBosca Isteach nuair a bheidh sí uait.';
 
   @override
+  String get briefButton => 'Achoimre';
+
+  @override
+  String get briefButtonHint => 'Liostaíonn sé a n-iarrann an teachtaireacht seo ort';
+
+  @override
+  String get briefReaderView => 'Achoimre';
+
+  @override
+  String get briefTitle => 'Achoimre';
+
+  @override
+  String get briefShowOriginal => 'Taispeáin an bunleagan';
+
+  @override
+  String get briefWorking => 'Ag léamh na teachtaireachta…';
+
+  @override
+  String get briefStopped => 'Stop tú an achoimre.';
+
+  @override
+  String get briefFailedTooLarge => 'Tá an teachtaireacht seo rófhada don tsamhail, mar sin níor seoladh aon rud.';
+
+  @override
+  String get briefFailedProvider => 'Níorbh fhéidir leis an tsamhail achoimre a dhéanamh ar an teachtaireacht seo.';
+
+  @override
+  String get briefFailedInvalid =>
+      'Níor éirigh leis an bhfreagra seiceálacha Loupe, mar sin ní thaispeántar aon liosta.';
+
+  @override
+  String get briefNothingTitle => 'Níl aon rud le hachoimriú';
+
+  @override
+  String get briefPartial =>
+      'Tá an teachtaireacht seo fada, mar sin ní chlúdaíonn an achoimre ach a tús. Léigh an chuid eile sa teachtaireacht féin.';
+
+  @override
+  String get briefSectionToDo => 'Le déanamh';
+
+  @override
+  String get briefSectionDocuments => 'Doiciméid le seoladh';
+
+  @override
+  String get briefSectionOtherDocuments => 'Doiciméid';
+
+  @override
+  String get briefSectionDates => 'Dátaí';
+
+  @override
+  String get briefSectionConditions => 'Coinníollacha';
+
+  @override
+  String get briefSectionNext => 'Cad a tharlóidh ina dhiaidh sin';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Spriocdháta: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Dáta: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Sprioc, ní spriocdháta: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Comhairthe ó theagmhas: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Níl aon spriocdháta luaite';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Tusa', 'them': 'Daoine eile', 'other': 'Gan lua'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Marcáil mar déanta';
+
+  @override
+  String get briefMarkNotDone => 'Marcáil mar gan déanamh';
+
+  @override
+  String get briefDismiss => 'Ruaig';
+
+  @override
+  String get briefRestore => 'Athchóirigh';
+
+  @override
+  String get briefCopy => 'Cóipeáil';
+
+  @override
+  String get briefAddToCalendar => 'Cuir leis an bhféilire…';
+
+  @override
+  String get briefTrack => 'Lean';
+
+  @override
+  String get briefShowInMessage => 'Taispeáin sa teachtaireacht';
+
+  @override
+  String get briefMarkedDone => 'Marcáilte mar déanta';
+
+  @override
+  String get briefDismissed => 'Ruaigthe';
+
+  @override
+  String get briefItemCopied => 'Cóipeáilte';
+
+  @override
+  String get briefChecklistCopied => 'Liosta cóipeáilte';
+
+  @override
+  String briefTracking(String item) {
+    return 'Ag leanúint “$item”';
+  }
+
+  @override
+  String get briefTrackFailed => 'Níorbh fhéidir an mhír seo a leanúint.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Taispeáin míreanna ruaigthe ($count)',
+      many: 'Taispeáin míreanna ruaigthe ($count)',
+      few: 'Taispeáin míreanna ruaigthe ($count)',
+      two: 'Taispeáin míreanna ruaigthe ($count)',
+      one: 'Taispeáin míreanna ruaigthe ($count)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Folaigh míreanna ruaigthe';
+
+  @override
+  String get briefCopyChecklist => 'Cóipeáil an liosta';
+
+  @override
+  String get briefMadeByDemo => 'Déanta ag an taispeántas ionsuite, ní ag samhail.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Déanta ar an bhfón seo ag $name.',
+      'myServer': 'Déanta ar do fhreastalaí ag $name.',
+      'other': 'Déanta sa néal ag $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution =>
+      'Is féidir le hachoimre rudaí a chailleadh nó a mhíthuiscint. Is í an teachtaireacht féin atá i gceist.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Seiceáil an teachtaireacht féin sula ndéanann tú aon rud ón achoimre seo.';
+  }
+
+  @override
+  String get briefSecurityText => 'Seiceáil an teachtaireacht féin sula ndéanann tú aon rud ón achoimre seo.';
+
+  @override
+  String get briefSourceTitle => 'Sa teachtaireacht';
+
+  @override
+  String get briefSourceAttachment =>
+      'Tagann sé seo ó ainm comhaid cheangailte. Ní léann an achoimre a bhfuil i gceangaltáin.';
+
+  @override
+  String get briefEventTitle => 'Imeacht nua';
+
+  @override
+  String get briefEventDate => 'Dáta';
+
+  @override
+  String get briefEventTime => 'Am';
+
+  @override
+  String get briefEventAllDay => 'An lá ar fad';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Crios ama';
+
+  @override
+  String get briefEventNotes => 'Nótaí';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Ó “$subject”, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Osclaíonn d’aip féilire leis an imeacht seo. Ní shábháiltear aon rud go dtí go sábhálann tú ansin é.';
+
+  @override
   String get appLockUnlock => 'Díghlasáil';
 
   @override

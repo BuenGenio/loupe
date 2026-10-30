@@ -1223,6 +1223,214 @@ class AppLocalizationsTr extends AppLocalizations {
   String get snoozeEmptyText => 'Bir iletiyi erteleyin, ihtiyacınız olduğunda Gelen Kutusu’na geri gelsin.';
 
   @override
+  String get briefButton => 'Özet';
+
+  @override
+  String get briefButtonHint => 'Bu iletinin sizden ne istediğini listeler';
+
+  @override
+  String get briefReaderView => 'Özet';
+
+  @override
+  String get briefTitle => 'Özet';
+
+  @override
+  String get briefShowOriginal => 'Orijinali göster';
+
+  @override
+  String get briefWorking => 'İleti okunuyor…';
+
+  @override
+  String get briefStopped => 'Özeti durdurdunuz.';
+
+  @override
+  String get briefFailedTooLarge => 'Bu ileti model için çok uzun, bu yüzden hiçbir şey gönderilmedi.';
+
+  @override
+  String get briefFailedProvider => 'Model bu iletiyi özetleyemedi.';
+
+  @override
+  String get briefFailedInvalid => 'Yanıt Loupe denetimlerini geçemedi, bu yüzden liste gösterilmiyor.';
+
+  @override
+  String get briefNothingTitle => 'Özetlenecek bir şey yok';
+
+  @override
+  String get briefPartial =>
+      'Bu ileti uzun, bu yüzden özet yalnızca başını kapsıyor. Gerisini iletinin kendisinde okuyun.';
+
+  @override
+  String get briefSectionToDo => 'Yapılacaklar';
+
+  @override
+  String get briefSectionDocuments => 'Gönderilecek belgeler';
+
+  @override
+  String get briefSectionOtherDocuments => 'Belgeler';
+
+  @override
+  String get briefSectionDates => 'Tarihler';
+
+  @override
+  String get briefSectionConditions => 'Koşullar';
+
+  @override
+  String get briefSectionNext => 'Sırada ne var';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Son tarih: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Tarih: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Hedef, son tarih değil: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Bir olaydan itibaren: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Son tarih belirtilmemiş';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Siz', 'them': 'Diğerleri', 'other': 'Belirtilmemiş'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Yapıldı olarak işaretle';
+
+  @override
+  String get briefMarkNotDone => 'Yapılmadı olarak işaretle';
+
+  @override
+  String get briefDismiss => 'Yok say';
+
+  @override
+  String get briefRestore => 'Geri getir';
+
+  @override
+  String get briefCopy => 'Kopyala';
+
+  @override
+  String get briefAddToCalendar => 'Takvime ekle…';
+
+  @override
+  String get briefTrack => 'Takip et';
+
+  @override
+  String get briefShowInMessage => 'İletide göster';
+
+  @override
+  String get briefMarkedDone => 'Yapıldı olarak işaretlendi';
+
+  @override
+  String get briefDismissed => 'Yok sayıldı';
+
+  @override
+  String get briefItemCopied => 'Kopyalandı';
+
+  @override
+  String get briefChecklistCopied => 'Liste kopyalandı';
+
+  @override
+  String briefTracking(String item) {
+    return '“$item” takip ediliyor';
+  }
+
+  @override
+  String get briefTrackFailed => 'Bu öğe takip edilemedi.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Yok sayılan $count öğeyi göster',
+      one: 'Yok sayılan $count öğeyi göster',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Yok sayılan öğeleri gizle';
+
+  @override
+  String get briefCopyChecklist => 'Listeyi kopyala';
+
+  @override
+  String get briefMadeByDemo => 'Yerleşik demo hazırladı, bir model değil.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Bu telefonda $name hazırladı.',
+      'myServer': 'Sunucunuzda $name hazırladı.',
+      'other': 'Bulutta $name hazırladı.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution =>
+      'Bir özet bazı şeyleri atlayabilir ya da yanlış anlayabilir. Geçerli olan iletinin kendisidir.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Bu özetteki herhangi bir şeyi yapmadan önce iletinin kendisini kontrol edin.';
+  }
+
+  @override
+  String get briefSecurityText => 'Bu özetteki herhangi bir şeyi yapmadan önce iletinin kendisini kontrol edin.';
+
+  @override
+  String get briefSourceTitle => 'İletide';
+
+  @override
+  String get briefSourceAttachment => 'Bu, ekli bir dosyanın adından geliyor. Özet eklerin içeriğini okumaz.';
+
+  @override
+  String get briefEventTitle => 'Yeni etkinlik';
+
+  @override
+  String get briefEventDate => 'Tarih';
+
+  @override
+  String get briefEventTime => 'Saat';
+
+  @override
+  String get briefEventAllDay => 'Tüm gün';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Saat dilimi';
+
+  @override
+  String get briefEventNotes => 'Notlar';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return '“$subject” iletisinden, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Takvim uygulamanız bu etkinlikle açılır. Orada kaydedene kadar hiçbir şey kaydedilmez.';
+
+  @override
   String get appLockUnlock => 'Kilidi aç';
 
   @override

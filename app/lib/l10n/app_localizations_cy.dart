@@ -1320,6 +1320,219 @@ class AppLocalizationsCy extends AppLocalizations {
   String get snoozeEmptyText => 'Gohiriwch neges i’w chael yn ôl yn y Mewnflwch pan fydd ei hangen arnoch chi.';
 
   @override
+  String get briefButton => 'Yn gryno';
+
+  @override
+  String get briefButtonHint => 'Yn rhestru beth mae’r neges hon yn ei ofyn gennych chi';
+
+  @override
+  String get briefReaderView => 'Yn gryno';
+
+  @override
+  String get briefTitle => 'Yn gryno';
+
+  @override
+  String get briefShowOriginal => 'Dangos y gwreiddiol';
+
+  @override
+  String get briefWorking => 'Wrthi’n darllen y neges…';
+
+  @override
+  String get briefStopped => 'Rydych chi wedi atal y crynodeb.';
+
+  @override
+  String get briefFailedTooLarge => 'Mae’r neges hon yn rhy hir i’r model, felly anfonwyd dim byd.';
+
+  @override
+  String get briefFailedProvider => 'Doedd y model ddim yn gallu crynhoi’r neges hon.';
+
+  @override
+  String get briefFailedInvalid =>
+      'Wnaeth yr ateb ddim pasio gwiriadau Loupe, felly does dim rhestr yn cael ei dangos.';
+
+  @override
+  String get briefNothingTitle => 'Dim byd i’w grynhoi';
+
+  @override
+  String get briefPartial =>
+      'Mae’r neges hon yn hir, felly dim ond ei dechrau mae’r crynodeb yn ei gwmpasu. Darllenwch y gweddill yn y neges ei hun.';
+
+  @override
+  String get briefSectionToDo => 'I’w gwneud';
+
+  @override
+  String get briefSectionDocuments => 'Dogfennau i’w hanfon';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dogfennau';
+
+  @override
+  String get briefSectionDates => 'Dyddiadau';
+
+  @override
+  String get briefSectionConditions => 'Amodau';
+
+  @override
+  String get briefSectionNext => 'Beth sy’n digwydd nesaf';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Terfyn amser: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Dyddiad: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Targed, nid terfyn amser: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Wedi’i gyfrif o ddigwyddiad: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Dim terfyn amser wedi’i nodi';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Chi', 'them': 'Eraill', 'other': 'Heb ei nodi'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Marcio fel wedi’i wneud';
+
+  @override
+  String get briefMarkNotDone => 'Marcio fel heb ei wneud';
+
+  @override
+  String get briefDismiss => 'Diystyru';
+
+  @override
+  String get briefRestore => 'Adfer';
+
+  @override
+  String get briefCopy => 'Copïo';
+
+  @override
+  String get briefAddToCalendar => 'Ychwanegu at y calendr…';
+
+  @override
+  String get briefTrack => 'Dilyn';
+
+  @override
+  String get briefShowInMessage => 'Dangos yn y neges';
+
+  @override
+  String get briefMarkedDone => 'Wedi’i farcio fel wedi’i wneud';
+
+  @override
+  String get briefDismissed => 'Wedi’i ddiystyru';
+
+  @override
+  String get briefItemCopied => 'Wedi’i gopïo';
+
+  @override
+  String get briefChecklistCopied => 'Rhestr wedi’i chopïo';
+
+  @override
+  String briefTracking(String item) {
+    return 'Yn dilyn “$item”';
+  }
+
+  @override
+  String get briefTrackFailed => 'Methu dilyn yr eitem hon.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dangos eitemau a ddiystyrwyd ($count)',
+      many: 'Dangos eitemau a ddiystyrwyd ($count)',
+      few: 'Dangos eitemau a ddiystyrwyd ($count)',
+      two: 'Dangos eitemau a ddiystyrwyd ($count)',
+      one: 'Dangos eitemau a ddiystyrwyd ($count)',
+      zero: 'Dangos eitemau a ddiystyrwyd ($count)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Cuddio eitemau a ddiystyrwyd';
+
+  @override
+  String get briefCopyChecklist => 'Copïo’r rhestr';
+
+  @override
+  String get briefMadeByDemo => 'Wedi’i wneud gan y demo mewnol, nid gan fodel.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Wedi’i wneud ar y ffôn hwn gan $name.',
+      'myServer': 'Wedi’i wneud ar eich gweinydd gan $name.',
+      'other': 'Wedi’i wneud yn y cwmwl gan $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Gall crynodeb golli neu gamddeall pethau. Y neges ei hun sy’n cyfrif.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Gwiriwch y neges ei hun cyn gwneud unrhyw beth o’r crynodeb hwn.';
+  }
+
+  @override
+  String get briefSecurityText => 'Gwiriwch y neges ei hun cyn gwneud unrhyw beth o’r crynodeb hwn.';
+
+  @override
+  String get briefSourceTitle => 'Yn y neges';
+
+  @override
+  String get briefSourceAttachment =>
+      'Daw hyn o enw ffeil sydd wedi’i hatodi. Dydy’r crynodeb ddim yn darllen beth sydd mewn atodiadau.';
+
+  @override
+  String get briefEventTitle => 'Digwyddiad newydd';
+
+  @override
+  String get briefEventDate => 'Dyddiad';
+
+  @override
+  String get briefEventTime => 'Amser';
+
+  @override
+  String get briefEventAllDay => 'Drwy’r dydd';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Cylchfa amser';
+
+  @override
+  String get briefEventNotes => 'Nodiadau';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'O “$subject”, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Mae eich ap calendr yn agor gyda’r digwyddiad hwn. Does dim yn cael ei gadw nes i chi ei gadw yno.';
+
+  @override
   String get appLockUnlock => 'Datgloi';
 
   @override

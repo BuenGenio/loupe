@@ -10,6 +10,9 @@ import '../../shared/avatar.dart';
 import '../../shared/format.dart';
 import '../../shared/tags.dart';
 import '../../theme/theme.dart';
+import '../ai/ai_providers.dart';
+import '../brief/brief_input.dart';
+import '../brief/brief_view.dart';
 import '../calendar/invitation_card.dart';
 import '../openpgp/key_import.dart';
 import '../openpgp/pgp_status.dart';
@@ -43,6 +46,9 @@ class MessageCard extends StatefulWidget {
     required this.onUseOriginal,
     required this.onRetry,
     required this.loadAttachment,
+    this.briefService,
+    this.showBrief = false,
+    this.onBrief,
   });
 
   final EmailSummary message;
@@ -74,6 +80,16 @@ class MessageCard extends StatefulWidget {
   final VoidCallback onUseOriginal;
   final VoidCallback onRetry;
   final Future<Uint8List> Function(Attachment attachment) loadAttachment;
+
+  /// What makes this message's Brief, or null when Brief isn't offered for
+  /// it (Private AI or Brief off, a draft, the user's own message).
+  final AiService? briefService;
+
+  /// Shows the Brief in place of the body.
+  final bool showBrief;
+
+  /// Switches between the Brief and the body.
+  final ValueChanged<bool>? onBrief;
 
   @override
   State<MessageCard> createState() => _MessageCardState();
@@ -372,7 +388,39 @@ class _MessageCardState extends State<MessageCard> {
     );
   }
 
+  /// The body, or its Brief: with Brief offered, a Brief button above the
+  /// body, or the Brief in its place (the attachments stay below).
   Widget _body(EmailContent content) {
+    final brief = widget.briefService;
+    if (brief == null || !briefReadable(_m, content)) return _messageBody(content);
+    if (!widget.showBrief) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          BriefButton(onPressed: () => widget.onBrief?.call(true)),
+          _messageBody(content),
+        ],
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        BriefView(
+          message: _m,
+          content: content,
+          service: brief,
+          loadAttachment: widget.loadAttachment,
+          onShowOriginal: () => widget.onBrief?.call(false),
+          textScale: widget.settings.textScale,
+        ),
+        AttachmentList(content: content, load: widget.loadAttachment),
+        PgpKeyAttachments(content: content, load: widget.loadAttachment),
+        SmimeCertificateAttachments(content: content, load: widget.loadAttachment),
+      ],
+    );
+  }
+
+  Widget _messageBody(EmailContent content) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
