@@ -10,177 +10,180 @@ class AppLocalizationsEl extends AppLocalizations {
   AppLocalizationsEl([String locale = 'el']) : super(locale);
 
   @override
-  String get mattersTitle => 'Matters';
+  String get mattersTitle => 'Υποθέσεις';
 
   @override
-  String get mattersNewMatter => 'New Matter…';
+  String get mattersNewMatter => 'Νέα υπόθεση…';
 
   @override
-  String get mattersNewMatterTitle => 'New Matter';
+  String get mattersNewMatterTitle => 'Νέα υπόθεση';
 
   @override
-  String get mattersNameHint => 'Buying a house, an insurance claim…';
+  String get mattersNameHint => 'Αγορά σπιτιού, ασφαλιστική αποζημίωση…';
 
   @override
   String get mattersEmptyFooter =>
-      'Keep the conversations about one thing together, such as a house purchase, whoever they’re from.';
+      'Κρατήστε μαζί τις συζητήσεις για την ίδια υπόθεση, όπως μια αγορά σπιτιού, όποιος κι αν τις στέλνει.';
 
   @override
   String mattersRowDetail(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count conversations',
-      one: '1 conversation',
-      zero: 'No conversations',
+      other: '$count συζητήσεις',
+      one: '1 συζήτηση',
+      zero: 'Καμία συζήτηση',
     );
     return '$_temp0';
   }
 
   @override
-  String get mattersMenu => 'Matter Actions';
+  String get mattersMenu => 'Ενέργειες υπόθεσης';
 
   @override
-  String get mattersRename => 'Rename…';
+  String get mattersRename => 'Μετονομασία…';
 
   @override
-  String get mattersRenameTitle => 'Rename Matter';
+  String get mattersRenameTitle => 'Μετονομασία υπόθεσης';
 
   @override
-  String get mattersSplit => 'Split…';
+  String get mattersSplit => 'Διαχωρισμός…';
 
   @override
-  String get mattersMergeInto => 'Merge Into…';
+  String get mattersMergeInto => 'Συγχώνευση σε…';
 
   @override
-  String get mattersDelete => 'Delete Matter';
+  String get mattersDelete => 'Διαγραφή υπόθεσης';
 
   @override
   String mattersDeleteTitle(String name) {
-    return 'Delete “$name”?';
+    return 'Διαγραφή της υπόθεσης «$name»;';
   }
 
   @override
-  String get mattersDeleteMessage => 'Its conversations stay in your mailboxes. Only the matter goes.';
+  String get mattersDeleteMessage =>
+      'Οι συζητήσεις της παραμένουν στα γραμματοκιβώτιά σας. Διαγράφεται μόνο η υπόθεση.';
 
   @override
   String mattersMergeTitle(String name) {
-    return 'Merge “$name” Into';
+    return 'Συγχώνευση της «$name» σε άλλη υπόθεση';
   }
 
   @override
   String mattersMerged(String name) {
-    return 'Merged into “$name”';
+    return 'Συγχωνεύτηκε στην «$name»';
   }
 
   @override
-  String get mattersNoOtherMatter => 'There’s no other matter to merge into.';
+  String get mattersNoOtherMatter => 'Δεν υπάρχει άλλη υπόθεση για συγχώνευση.';
 
   @override
-  String get mattersSplitTitle => 'Choose Conversations';
+  String get mattersSplitTitle => 'Επιλέξτε συζητήσεις';
 
   @override
-  String get mattersSplitMove => 'Move to New Matter…';
+  String get mattersSplitMove => 'Μετακίνηση σε νέα υπόθεση…';
 
   @override
   String mattersMovedTo(int count, String name) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Moved $count conversations to “$name”',
-      one: 'Moved 1 conversation to “$name”',
+      other: 'Μετακινήθηκαν $count συζητήσεις στην «$name»',
+      one: 'Μετακινήθηκε 1 συζήτηση στην «$name»',
     );
     return '$_temp0';
   }
 
   @override
-  String get mattersConversations => 'Conversations';
+  String get mattersConversations => 'Συζητήσεις';
 
   @override
   String get mattersNoConversations =>
-      'No conversations yet. Add one from a conversation’s ⋯ menu with Add to Matter…, or from the suggestions.';
+      'Δεν υπάρχουν ακόμη συζητήσεις. Προσθέστε μία από το μενού ⋯ μιας συζήτησης με «Προσθήκη σε υπόθεση…» ή από τις προτάσεις.';
 
   @override
   String mattersConversationDetail(String people, int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count messages', one: '1 message');
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count μηνύματα', one: '1 μήνυμα');
     return '$people, $_temp0';
   }
 
   @override
-  String get mattersConversationGone => 'Not on this phone, or only in Trash';
+  String get mattersConversationGone => 'Δεν υπάρχει σε αυτό το τηλέφωνο ή είναι μόνο στον Κάδο απορριμμάτων';
 
   @override
-  String get mattersAddToMatter => 'Add to Matter…';
+  String get mattersAddToMatter => 'Προσθήκη σε υπόθεση…';
 
   @override
-  String get mattersAddToMatterTitle => 'Add to Matter';
+  String get mattersAddToMatterTitle => 'Προσθήκη σε υπόθεση';
 
   @override
-  String get mattersAlreadyIn => 'Already in it';
+  String get mattersAlreadyIn => 'Περιέχεται ήδη';
 
   @override
   String mattersAddedTo(String name) {
-    return 'Added to “$name”';
+    return 'Προστέθηκε στην «$name»';
   }
 
   @override
-  String get mattersRemove => 'Remove from Matter';
+  String get mattersRemove => 'Αφαίρεση από την υπόθεση';
 
   @override
-  String get mattersRemoveWhich => 'Remove from Which Matter?';
+  String get mattersRemoveWhich => 'Αφαίρεση από ποια υπόθεση;';
 
   @override
   String mattersRemoved(String name) {
-    return 'Removed from “$name”';
+    return 'Αφαιρέθηκε από την «$name»';
   }
 
   @override
   String mattersOpenMatter(String name) {
-    return 'Open matter “$name”';
+    return 'Άνοιγμα υπόθεσης «$name»';
   }
 
   @override
-  String get mattersGone => 'This matter no longer exists.';
+  String get mattersGone => 'Αυτή η υπόθεση δεν υπάρχει πλέον.';
 
   @override
-  String get mattersStatusTitle => 'Where Things Stand';
+  String get mattersStatusTitle => 'Πού βρισκόμαστε';
 
   @override
-  String get mattersStatusHint => 'A few lines on the latest position, each from a message here.';
+  String get mattersStatusHint =>
+      'Λίγες γραμμές για την τρέχουσα κατάσταση, καθεμία βασισμένη σε ένα μήνυμα της υπόθεσης.';
 
   @override
-  String get mattersStatusWorking => 'Reading the latest messages…';
+  String get mattersStatusWorking => 'Ανάγνωση των πιο πρόσφατων μηνυμάτων…';
 
   @override
-  String get mattersStatusFailed => 'Loupe couldn’t work out where things stand.';
+  String get mattersStatusFailed => 'Το Loupe δεν μπόρεσε να διαπιστώσει πού βρισκόμαστε.';
 
   @override
-  String get mattersStatusOutdated => 'New messages have come in since this was written.';
+  String get mattersStatusOutdated => 'Έχουν έρθει νέα μηνύματα από τότε που γράφτηκε αυτό.';
 
   @override
-  String get mattersStatusUpdate => 'Update';
+  String get mattersStatusUpdate => 'Ενημέρωση';
 
   @override
-  String get mattersStatusDemoNote => 'Written by the built-in demo, not a model.';
+  String get mattersStatusDemoNote => 'Γράφτηκε από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
 
   @override
   String mattersStatusProvider(String provider) {
-    return 'Written by $provider';
+    return 'Γράφτηκε από $provider';
   }
 
   @override
-  String get mattersStatusPartial => 'Only the latest messages were read.';
+  String get mattersStatusPartial => 'Διαβάστηκαν μόνο τα πιο πρόσφατα μηνύματα.';
 
   @override
   String mattersStatusLocalOnly(String accounts) {
-    return 'Mail from $accounts stays on this phone, so it isn’t included.';
+    return 'Η αλληλογραφία από $accounts μένει σε αυτό το τηλέφωνο, γι’ αυτό δεν περιλαμβάνεται.';
   }
 
   @override
-  String get mattersStatusEncrypted => 'Encrypted messages stay on this phone, so they aren’t included.';
+  String get mattersStatusEncrypted =>
+      'Τα κρυπτογραφημένα μηνύματα μένουν σε αυτό το τηλέφωνο, γι’ αυτό δεν περιλαμβάνονται.';
 
   @override
-  String get mattersStatusNoInput => 'None of these messages may go to this provider.';
+  String get mattersStatusNoInput => 'Κανένα από αυτά τα μηνύματα δεν επιτρέπεται να σταλεί σε αυτόν τον πάροχο.';
 
   @override
   String mattersStatusSource(String sender, String date) {
@@ -188,13 +191,13 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get mattersOpenActions => 'Open Actions';
+  String get mattersOpenActions => 'Εκκρεμείς ενέργειες';
 
   @override
-  String get mattersWaiting => 'Waiting on Others';
+  String get mattersWaiting => 'Σε αναμονή άλλων';
 
   @override
-  String get mattersDocuments => 'Documents';
+  String get mattersDocuments => 'Έγγραφα';
 
   @override
   String mattersDocumentDetail(String sender, String date) {
@@ -202,63 +205,64 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get mattersDocumentsIncomplete => 'Some messages couldn’t be opened, so their files aren’t listed.';
+  String get mattersDocumentsIncomplete =>
+      'Ορισμένα μηνύματα δεν ήταν δυνατό να ανοιχτούν, γι’ αυτό τα αρχεία τους δεν εμφανίζονται.';
 
   @override
-  String get mattersPeople => 'People Involved';
+  String get mattersPeople => 'Εμπλεκόμενα άτομα';
 
   @override
-  String get mattersHistory => 'History';
+  String get mattersHistory => 'Ιστορικό';
 
   @override
-  String get mattersSuggestions => 'Suggested Conversations';
+  String get mattersSuggestions => 'Προτεινόμενες συζητήσεις';
 
   @override
   String get mattersSuggestionsFooter =>
-      'Found on this phone by shared words, references and senders. Nothing is added until you choose.';
+      'Βρέθηκαν σε αυτό το τηλέφωνο με βάση κοινές λέξεις, κωδικούς αναφοράς και αποστολείς. Δεν προστίθεται τίποτα μέχρι να επιλέξετε.';
 
   @override
-  String get mattersNotThisOne => 'Not This One';
+  String get mattersNotThisOne => 'Όχι αυτή';
 
   @override
   String mattersReasonMentions(String words) {
-    return 'Mentions “$words”';
+    return 'Αναφέρει «$words»';
   }
 
   @override
   String mattersReasonSameSender(String name) {
-    return 'Also from $name. A shared sender alone doesn’t mean it belongs.';
+    return 'Επίσης από $name. Ο ίδιος αποστολέας από μόνος του δεν σημαίνει ότι ανήκει εδώ.';
   }
 
   @override
   String mattersReasonSameDomain(String domain) {
-    return 'Also from $domain. A shared domain alone doesn’t mean it belongs.';
+    return 'Επίσης από τον τομέα $domain. Ο ίδιος τομέας από μόνος του δεν σημαίνει ότι ανήκει εδώ.';
   }
 
   @override
-  String get mattersActivity => 'Activity';
+  String get mattersActivity => 'Δραστηριότητα';
 
   @override
-  String get mattersEventCreated => 'Matter created';
+  String get mattersEventCreated => 'Η υπόθεση δημιουργήθηκε';
 
   @override
   String mattersEventRenamed(String name) {
-    return 'Renamed to “$name”';
+    return 'Μετονομάστηκε σε «$name»';
   }
 
   @override
   String mattersEventAdded(String subject) {
-    return 'Added “$subject”';
+    return 'Προστέθηκε η συζήτηση «$subject»';
   }
 
   @override
   String mattersEventAddedSuggested(String subject) {
-    return 'Added “$subject” from a suggestion';
+    return 'Προστέθηκε η συζήτηση «$subject» από πρόταση';
   }
 
   @override
   String mattersEventRemoved(String subject) {
-    return 'Removed “$subject”';
+    return 'Αφαιρέθηκε η συζήτηση «$subject»';
   }
 
   @override
@@ -266,9 +270,9 @@ class AppLocalizationsEl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Merged in “$name”, with $count conversations',
-      one: 'Merged in “$name”, with 1 conversation',
-      zero: 'Merged in “$name”',
+      other: 'Συγχωνεύτηκε εδώ η «$name», με $count συζητήσεις',
+      one: 'Συγχωνεύτηκε εδώ η «$name», με 1 συζήτηση',
+      zero: 'Συγχωνεύτηκε εδώ η «$name»',
     );
     return '$_temp0';
   }
@@ -278,8 +282,8 @@ class AppLocalizationsEl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Made from $count conversations of “$name”',
-      one: 'Made from 1 conversation of “$name”',
+      other: 'Δημιουργήθηκε από $count συζητήσεις της «$name»',
+      one: 'Δημιουργήθηκε από 1 συζήτηση της «$name»',
     );
     return '$_temp0';
   }

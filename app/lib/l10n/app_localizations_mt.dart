@@ -10,177 +10,192 @@ class AppLocalizationsMt extends AppLocalizations {
   AppLocalizationsMt([String locale = 'mt']) : super(locale);
 
   @override
-  String get mattersTitle => 'Matters';
+  String get mattersTitle => 'Każijiet';
 
   @override
-  String get mattersNewMatter => 'New Matter…';
+  String get mattersNewMatter => 'Każ ġdid…';
 
   @override
-  String get mattersNewMatterTitle => 'New Matter';
+  String get mattersNewMatterTitle => 'Każ ġdid';
 
   @override
-  String get mattersNameHint => 'Buying a house, an insurance claim…';
+  String get mattersNameHint => 'Xiri ta’ dar, talba tal-assigurazzjoni…';
 
   @override
   String get mattersEmptyFooter =>
-      'Keep the conversations about one thing together, such as a house purchase, whoever they’re from.';
+      'Żomm flimkien il-konversazzjonijiet dwar ħaġa waħda, bħax-xiri ta’ dar, ikunu minn għand min ikunu.';
 
   @override
   String mattersRowDetail(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count conversations',
-      one: '1 conversation',
-      zero: 'No conversations',
+      other: '$count konversazzjoni',
+      many: '$count-il konversazzjoni',
+      few: '$count konversazzjonijiet',
+      two: '$count konversazzjonijiet',
+      one: 'Konversazzjoni waħda',
+      zero: 'L-ebda konversazzjoni',
     );
     return '$_temp0';
   }
 
   @override
-  String get mattersMenu => 'Matter Actions';
+  String get mattersMenu => 'Azzjonijiet tal-każ';
 
   @override
-  String get mattersRename => 'Rename…';
+  String get mattersRename => 'Ibdel l-isem…';
 
   @override
-  String get mattersRenameTitle => 'Rename Matter';
+  String get mattersRenameTitle => 'Ibdel l-isem tal-każ';
 
   @override
-  String get mattersSplit => 'Split…';
+  String get mattersSplit => 'Aqsam…';
 
   @override
-  String get mattersMergeInto => 'Merge Into…';
+  String get mattersMergeInto => 'Għaqqad ma’…';
 
   @override
-  String get mattersDelete => 'Delete Matter';
+  String get mattersDelete => 'Ħassar il-każ';
 
   @override
   String mattersDeleteTitle(String name) {
-    return 'Delete “$name”?';
+    return 'Tħassar “$name”?';
   }
 
   @override
-  String get mattersDeleteMessage => 'Its conversations stay in your mailboxes. Only the matter goes.';
+  String get mattersDeleteMessage =>
+      'Il-konversazzjonijiet tal-każ jibqgħu fil-mailboxes tiegħek. Jitħassar il-każ biss.';
 
   @override
   String mattersMergeTitle(String name) {
-    return 'Merge “$name” Into';
+    return 'Ma’ liema każ tgħaqqad “$name”?';
   }
 
   @override
   String mattersMerged(String name) {
-    return 'Merged into “$name”';
+    return 'Ingħaqad ma’ “$name”';
   }
 
   @override
-  String get mattersNoOtherMatter => 'There’s no other matter to merge into.';
+  String get mattersNoOtherMatter => 'M’hemmx każ ieħor x’tgħaqqad miegħu.';
 
   @override
-  String get mattersSplitTitle => 'Choose Conversations';
+  String get mattersSplitTitle => 'Agħżel il-konversazzjonijiet';
 
   @override
-  String get mattersSplitMove => 'Move to New Matter…';
+  String get mattersSplitMove => 'Ċaqlaq għal każ ġdid…';
 
   @override
   String mattersMovedTo(int count, String name) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Moved $count conversations to “$name”',
-      one: 'Moved 1 conversation to “$name”',
+      other: '$count konversazzjoni ġew imċaqalqin għal “$name”',
+      many: '$count-il konversazzjoni ġew imċaqalqin għal “$name”',
+      few: '$count konversazzjonijiet ġew imċaqalqin għal “$name”',
+      two: '$count konversazzjonijiet ġew imċaqalqin għal “$name”',
+      one: 'Konversazzjoni waħda ġiet imċaqalqa għal “$name”',
     );
     return '$_temp0';
   }
 
   @override
-  String get mattersConversations => 'Conversations';
+  String get mattersConversations => 'Konversazzjonijiet';
 
   @override
   String get mattersNoConversations =>
-      'No conversations yet. Add one from a conversation’s ⋯ menu with Add to Matter…, or from the suggestions.';
+      'Għad m’hemmx konversazzjonijiet. Żid waħda mill-menu ⋯ ta’ konversazzjoni b’“Żid mal-każ…”, jew mis-suġġerimenti.';
 
   @override
   String mattersConversationDetail(String people, int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count messages', one: '1 message');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count messaġġ',
+      many: '$count-il messaġġ',
+      few: '$count messaġġi',
+      two: '$count messaġġi',
+      one: '$count messaġġ',
+    );
     return '$people, $_temp0';
   }
 
   @override
-  String get mattersConversationGone => 'Not on this phone, or only in Trash';
+  String get mattersConversationGone => 'Mhux fuq dan il-mowbajl, jew fl-Iskart biss';
 
   @override
-  String get mattersAddToMatter => 'Add to Matter…';
+  String get mattersAddToMatter => 'Żid mal-każ…';
 
   @override
-  String get mattersAddToMatterTitle => 'Add to Matter';
+  String get mattersAddToMatterTitle => 'Żid mal-każ';
 
   @override
-  String get mattersAlreadyIn => 'Already in it';
+  String get mattersAlreadyIn => 'Diġà fih';
 
   @override
   String mattersAddedTo(String name) {
-    return 'Added to “$name”';
+    return 'Miżjuda ma’ “$name”';
   }
 
   @override
-  String get mattersRemove => 'Remove from Matter';
+  String get mattersRemove => 'Neħħi mill-każ';
 
   @override
-  String get mattersRemoveWhich => 'Remove from Which Matter?';
+  String get mattersRemoveWhich => 'Neħħi minn liema każ?';
 
   @override
   String mattersRemoved(String name) {
-    return 'Removed from “$name”';
+    return 'Imneħħija minn “$name”';
   }
 
   @override
   String mattersOpenMatter(String name) {
-    return 'Open matter “$name”';
+    return 'Iftaħ il-każ “$name”';
   }
 
   @override
-  String get mattersGone => 'This matter no longer exists.';
+  String get mattersGone => 'Dan il-każ m’għadux jeżisti.';
 
   @override
-  String get mattersStatusTitle => 'Where Things Stand';
+  String get mattersStatusTitle => 'Fejn wasal il-każ';
 
   @override
-  String get mattersStatusHint => 'A few lines on the latest position, each from a message here.';
+  String get mattersStatusHint => 'Ftit linji dwar l-aħħar pożizzjoni, kull waħda minn messaġġ ta’ dan il-każ.';
 
   @override
-  String get mattersStatusWorking => 'Reading the latest messages…';
+  String get mattersStatusWorking => 'Qed jinqraw l-aħħar messaġġi…';
 
   @override
-  String get mattersStatusFailed => 'Loupe couldn’t work out where things stand.';
+  String get mattersStatusFailed => 'Loupe ma setax jifhem fejn wasal il-każ.';
 
   @override
-  String get mattersStatusOutdated => 'New messages have come in since this was written.';
+  String get mattersStatusOutdated => 'Waslu messaġġi ġodda minn meta nkiteb dan.';
 
   @override
-  String get mattersStatusUpdate => 'Update';
+  String get mattersStatusUpdate => 'Aġġorna';
 
   @override
-  String get mattersStatusDemoNote => 'Written by the built-in demo, not a model.';
+  String get mattersStatusDemoNote => 'Miktub mid-demo inkorporata, mhux minn mudell.';
 
   @override
   String mattersStatusProvider(String provider) {
-    return 'Written by $provider';
+    return 'Miktub minn $provider';
   }
 
   @override
-  String get mattersStatusPartial => 'Only the latest messages were read.';
+  String get mattersStatusPartial => 'Inqraw biss l-aħħar messaġġi.';
 
   @override
   String mattersStatusLocalOnly(String accounts) {
-    return 'Mail from $accounts stays on this phone, so it isn’t included.';
+    return 'Il-posta minn $accounts tibqa’ fuq dan il-mowbajl, għalhekk mhix inkluża.';
   }
 
   @override
-  String get mattersStatusEncrypted => 'Encrypted messages stay on this phone, so they aren’t included.';
+  String get mattersStatusEncrypted => 'Il-messaġġi kriptati jibqgħu fuq dan il-mowbajl, għalhekk mhumiex inklużi.';
 
   @override
-  String get mattersStatusNoInput => 'None of these messages may go to this provider.';
+  String get mattersStatusNoInput => 'L-ebda wieħed minn dawn il-messaġġi ma jista’ jmur għand dan il-fornitur.';
 
   @override
   String mattersStatusSource(String sender, String date) {
@@ -188,13 +203,13 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get mattersOpenActions => 'Open Actions';
+  String get mattersOpenActions => 'Azzjonijiet pendenti';
 
   @override
-  String get mattersWaiting => 'Waiting on Others';
+  String get mattersWaiting => 'Nistennew lil ħaddieħor';
 
   @override
-  String get mattersDocuments => 'Documents';
+  String get mattersDocuments => 'Dokumenti';
 
   @override
   String mattersDocumentDetail(String sender, String date) {
@@ -202,63 +217,64 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get mattersDocumentsIncomplete => 'Some messages couldn’t be opened, so their files aren’t listed.';
+  String get mattersDocumentsIncomplete =>
+      'Xi messaġġi ma setgħux jinfetħu, għalhekk il-fajls tagħhom mhumiex elenkati.';
 
   @override
-  String get mattersPeople => 'People Involved';
+  String get mattersPeople => 'Nies involuti';
 
   @override
-  String get mattersHistory => 'History';
+  String get mattersHistory => 'Storja';
 
   @override
-  String get mattersSuggestions => 'Suggested Conversations';
+  String get mattersSuggestions => 'Konversazzjonijiet issuġġeriti';
 
   @override
   String get mattersSuggestionsFooter =>
-      'Found on this phone by shared words, references and senders. Nothing is added until you choose.';
+      'Instabu fuq dan il-mowbajl minn kliem, referenzi u mittenti komuni. Xejn ma jiżdied sakemm ma tagħżilx int.';
 
   @override
-  String get mattersNotThisOne => 'Not This One';
+  String get mattersNotThisOne => 'Mhux din';
 
   @override
   String mattersReasonMentions(String words) {
-    return 'Mentions “$words”';
+    return 'Isemmi “$words”';
   }
 
   @override
   String mattersReasonSameSender(String name) {
-    return 'Also from $name. A shared sender alone doesn’t mean it belongs.';
+    return 'Anki minn $name. L-istess mittent waħdu ma jfissirx li tagħmel parti minn dan il-każ.';
   }
 
   @override
   String mattersReasonSameDomain(String domain) {
-    return 'Also from $domain. A shared domain alone doesn’t mean it belongs.';
+    return 'Anki minn $domain. L-istess dominju waħdu ma jfissirx li tagħmel parti minn dan il-każ.';
   }
 
   @override
-  String get mattersActivity => 'Activity';
+  String get mattersActivity => 'Attività';
 
   @override
-  String get mattersEventCreated => 'Matter created';
+  String get mattersEventCreated => 'Il-każ inħoloq';
 
   @override
   String mattersEventRenamed(String name) {
-    return 'Renamed to “$name”';
+    return 'L-isem inbidel għal “$name”';
   }
 
   @override
   String mattersEventAdded(String subject) {
-    return 'Added “$subject”';
+    return 'Żdiedet il-konversazzjoni “$subject”';
   }
 
   @override
   String mattersEventAddedSuggested(String subject) {
-    return 'Added “$subject” from a suggestion';
+    return 'Żdiedet il-konversazzjoni “$subject” minn suġġeriment';
   }
 
   @override
   String mattersEventRemoved(String subject) {
-    return 'Removed “$subject”';
+    return 'Tneħħiet il-konversazzjoni “$subject”';
   }
 
   @override
@@ -266,9 +282,12 @@ class AppLocalizationsMt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Merged in “$name”, with $count conversations',
-      one: 'Merged in “$name”, with 1 conversation',
-      zero: 'Merged in “$name”',
+      other: 'Ingħaqad hawn “$name”, ma’ $count konversazzjoni',
+      many: 'Ingħaqad hawn “$name”, ma’ $count-il konversazzjoni',
+      few: 'Ingħaqad hawn “$name”, ma’ $count konversazzjonijiet',
+      two: 'Ingħaqad hawn “$name”, ma’ $count konversazzjonijiet',
+      one: 'Ingħaqad hawn “$name”, ma’ konversazzjoni waħda',
+      zero: 'Ingħaqad hawn “$name”',
     );
     return '$_temp0';
   }
@@ -278,8 +297,11 @@ class AppLocalizationsMt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Made from $count conversations of “$name”',
-      one: 'Made from 1 conversation of “$name”',
+      other: 'Inħoloq minn $count konversazzjoni ta’ “$name”',
+      many: 'Inħoloq minn $count-il konversazzjoni ta’ “$name”',
+      few: 'Inħoloq minn $count konversazzjonijiet ta’ “$name”',
+      two: 'Inħoloq minn $count konversazzjonijiet ta’ “$name”',
+      one: 'Inħoloq minn konversazzjoni waħda ta’ “$name”',
     );
     return '$_temp0';
   }

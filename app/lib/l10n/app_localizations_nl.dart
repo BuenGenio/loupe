@@ -10,177 +10,177 @@ class AppLocalizationsNl extends AppLocalizations {
   AppLocalizationsNl([String locale = 'nl']) : super(locale);
 
   @override
-  String get mattersTitle => 'Matters';
+  String get mattersTitle => 'Dossiers';
 
   @override
-  String get mattersNewMatter => 'New Matter…';
+  String get mattersNewMatter => 'Nieuw dossier…';
 
   @override
-  String get mattersNewMatterTitle => 'New Matter';
+  String get mattersNewMatterTitle => 'Nieuw dossier';
 
   @override
-  String get mattersNameHint => 'Buying a house, an insurance claim…';
+  String get mattersNameHint => 'Een huis kopen, een verzekeringsclaim…';
 
   @override
   String get mattersEmptyFooter =>
-      'Keep the conversations about one thing together, such as a house purchase, whoever they’re from.';
+      'Houd de gesprekken over één onderwerp bij elkaar, zoals de aankoop van een huis, van wie ze ook komen.';
 
   @override
   String mattersRowDetail(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count conversations',
-      one: '1 conversation',
-      zero: 'No conversations',
+      other: '$count gesprekken',
+      one: '$count gesprek',
+      zero: 'Geen gesprekken',
     );
     return '$_temp0';
   }
 
   @override
-  String get mattersMenu => 'Matter Actions';
+  String get mattersMenu => 'Dossieracties';
 
   @override
-  String get mattersRename => 'Rename…';
+  String get mattersRename => 'Naam wijzigen…';
 
   @override
-  String get mattersRenameTitle => 'Rename Matter';
+  String get mattersRenameTitle => 'Naam van dossier wijzigen';
 
   @override
-  String get mattersSplit => 'Split…';
+  String get mattersSplit => 'Splitsen…';
 
   @override
-  String get mattersMergeInto => 'Merge Into…';
+  String get mattersMergeInto => 'Samenvoegen met…';
 
   @override
-  String get mattersDelete => 'Delete Matter';
+  String get mattersDelete => 'Dossier verwijderen';
 
   @override
   String mattersDeleteTitle(String name) {
-    return 'Delete “$name”?';
+    return '“$name” verwijderen?';
   }
 
   @override
-  String get mattersDeleteMessage => 'Its conversations stay in your mailboxes. Only the matter goes.';
+  String get mattersDeleteMessage => 'De gesprekken blijven in je mailboxen. Alleen het dossier verdwijnt.';
 
   @override
   String mattersMergeTitle(String name) {
-    return 'Merge “$name” Into';
+    return '“$name” samenvoegen met';
   }
 
   @override
   String mattersMerged(String name) {
-    return 'Merged into “$name”';
+    return 'Samengevoegd met “$name”';
   }
 
   @override
-  String get mattersNoOtherMatter => 'There’s no other matter to merge into.';
+  String get mattersNoOtherMatter => 'Er is geen ander dossier om mee samen te voegen.';
 
   @override
-  String get mattersSplitTitle => 'Choose Conversations';
+  String get mattersSplitTitle => 'Kies gesprekken';
 
   @override
-  String get mattersSplitMove => 'Move to New Matter…';
+  String get mattersSplitMove => 'Naar nieuw dossier verplaatsen…';
 
   @override
   String mattersMovedTo(int count, String name) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Moved $count conversations to “$name”',
-      one: 'Moved 1 conversation to “$name”',
+      other: '$count gesprekken naar “$name” verplaatst',
+      one: '$count gesprek naar “$name” verplaatst',
     );
     return '$_temp0';
   }
 
   @override
-  String get mattersConversations => 'Conversations';
+  String get mattersConversations => 'Gesprekken';
 
   @override
   String get mattersNoConversations =>
-      'No conversations yet. Add one from a conversation’s ⋯ menu with Add to Matter…, or from the suggestions.';
+      'Nog geen gesprekken. Voeg er een toe met “Aan dossier toevoegen…” in het ⋯-menu van een gesprek, of uit de suggesties.';
 
   @override
   String mattersConversationDetail(String people, int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count messages', one: '1 message');
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count berichten', one: '$count bericht');
     return '$people, $_temp0';
   }
 
   @override
-  String get mattersConversationGone => 'Not on this phone, or only in Trash';
+  String get mattersConversationGone => 'Niet op deze telefoon, of alleen in de prullenbak';
 
   @override
-  String get mattersAddToMatter => 'Add to Matter…';
+  String get mattersAddToMatter => 'Aan dossier toevoegen…';
 
   @override
-  String get mattersAddToMatterTitle => 'Add to Matter';
+  String get mattersAddToMatterTitle => 'Aan dossier toevoegen';
 
   @override
-  String get mattersAlreadyIn => 'Already in it';
+  String get mattersAlreadyIn => 'Zit er al in';
 
   @override
   String mattersAddedTo(String name) {
-    return 'Added to “$name”';
+    return 'Toegevoegd aan “$name”';
   }
 
   @override
-  String get mattersRemove => 'Remove from Matter';
+  String get mattersRemove => 'Uit dossier verwijderen';
 
   @override
-  String get mattersRemoveWhich => 'Remove from Which Matter?';
+  String get mattersRemoveWhich => 'Uit welk dossier verwijderen?';
 
   @override
   String mattersRemoved(String name) {
-    return 'Removed from “$name”';
+    return 'Verwijderd uit “$name”';
   }
 
   @override
   String mattersOpenMatter(String name) {
-    return 'Open matter “$name”';
+    return 'Dossier “$name” openen';
   }
 
   @override
-  String get mattersGone => 'This matter no longer exists.';
+  String get mattersGone => 'Dit dossier bestaat niet meer.';
 
   @override
-  String get mattersStatusTitle => 'Where Things Stand';
+  String get mattersStatusTitle => 'Stand van zaken';
 
   @override
-  String get mattersStatusHint => 'A few lines on the latest position, each from a message here.';
+  String get mattersStatusHint => 'Een paar regels over de laatste stand, elk uit een bericht hier.';
 
   @override
-  String get mattersStatusWorking => 'Reading the latest messages…';
+  String get mattersStatusWorking => 'Nieuwste berichten worden gelezen…';
 
   @override
-  String get mattersStatusFailed => 'Loupe couldn’t work out where things stand.';
+  String get mattersStatusFailed => 'Loupe kon de stand van zaken niet bepalen.';
 
   @override
-  String get mattersStatusOutdated => 'New messages have come in since this was written.';
+  String get mattersStatusOutdated => 'Er zijn nieuwe berichten binnengekomen sinds dit is geschreven.';
 
   @override
-  String get mattersStatusUpdate => 'Update';
+  String get mattersStatusUpdate => 'Bijwerken';
 
   @override
-  String get mattersStatusDemoNote => 'Written by the built-in demo, not a model.';
+  String get mattersStatusDemoNote => 'Geschreven door de ingebouwde demo, niet door een model.';
 
   @override
   String mattersStatusProvider(String provider) {
-    return 'Written by $provider';
+    return 'Geschreven door $provider';
   }
 
   @override
-  String get mattersStatusPartial => 'Only the latest messages were read.';
+  String get mattersStatusPartial => 'Alleen de nieuwste berichten zijn gelezen.';
 
   @override
   String mattersStatusLocalOnly(String accounts) {
-    return 'Mail from $accounts stays on this phone, so it isn’t included.';
+    return 'Mail van $accounts blijft op deze telefoon en is dus niet meegenomen.';
   }
 
   @override
-  String get mattersStatusEncrypted => 'Encrypted messages stay on this phone, so they aren’t included.';
+  String get mattersStatusEncrypted => 'Versleutelde berichten blijven op deze telefoon en zijn dus niet meegenomen.';
 
   @override
-  String get mattersStatusNoInput => 'None of these messages may go to this provider.';
+  String get mattersStatusNoInput => 'Geen van deze berichten mag naar deze provider.';
 
   @override
   String mattersStatusSource(String sender, String date) {
@@ -188,13 +188,13 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get mattersOpenActions => 'Open Actions';
+  String get mattersOpenActions => 'Openstaande acties';
 
   @override
-  String get mattersWaiting => 'Waiting on Others';
+  String get mattersWaiting => 'Wachten op anderen';
 
   @override
-  String get mattersDocuments => 'Documents';
+  String get mattersDocuments => 'Documenten';
 
   @override
   String mattersDocumentDetail(String sender, String date) {
@@ -202,63 +202,64 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get mattersDocumentsIncomplete => 'Some messages couldn’t be opened, so their files aren’t listed.';
+  String get mattersDocumentsIncomplete =>
+      'Sommige berichten konden niet worden geopend, dus hun bestanden staan er niet bij.';
 
   @override
-  String get mattersPeople => 'People Involved';
+  String get mattersPeople => 'Betrokkenen';
 
   @override
-  String get mattersHistory => 'History';
+  String get mattersHistory => 'Geschiedenis';
 
   @override
-  String get mattersSuggestions => 'Suggested Conversations';
+  String get mattersSuggestions => 'Voorgestelde gesprekken';
 
   @override
   String get mattersSuggestionsFooter =>
-      'Found on this phone by shared words, references and senders. Nothing is added until you choose.';
+      'Op deze telefoon gevonden aan de hand van gedeelde woorden, referentienummers en afzenders. Er wordt niets toegevoegd tot je kiest.';
 
   @override
-  String get mattersNotThisOne => 'Not This One';
+  String get mattersNotThisOne => 'Hoort er niet bij';
 
   @override
   String mattersReasonMentions(String words) {
-    return 'Mentions “$words”';
+    return 'Noemt “$words”';
   }
 
   @override
   String mattersReasonSameSender(String name) {
-    return 'Also from $name. A shared sender alone doesn’t mean it belongs.';
+    return 'Ook van $name. Een gedeelde afzender alleen betekent niet dat het erbij hoort.';
   }
 
   @override
   String mattersReasonSameDomain(String domain) {
-    return 'Also from $domain. A shared domain alone doesn’t mean it belongs.';
+    return 'Ook van $domain. Een gedeeld domein alleen betekent niet dat het erbij hoort.';
   }
 
   @override
-  String get mattersActivity => 'Activity';
+  String get mattersActivity => 'Activiteit';
 
   @override
-  String get mattersEventCreated => 'Matter created';
+  String get mattersEventCreated => 'Dossier aangemaakt';
 
   @override
   String mattersEventRenamed(String name) {
-    return 'Renamed to “$name”';
+    return 'Naam gewijzigd in “$name”';
   }
 
   @override
   String mattersEventAdded(String subject) {
-    return 'Added “$subject”';
+    return '“$subject” toegevoegd';
   }
 
   @override
   String mattersEventAddedSuggested(String subject) {
-    return 'Added “$subject” from a suggestion';
+    return '“$subject” toegevoegd uit een suggestie';
   }
 
   @override
   String mattersEventRemoved(String subject) {
-    return 'Removed “$subject”';
+    return '“$subject” verwijderd';
   }
 
   @override
@@ -266,9 +267,9 @@ class AppLocalizationsNl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Merged in “$name”, with $count conversations',
-      one: 'Merged in “$name”, with 1 conversation',
-      zero: 'Merged in “$name”',
+      other: '“$name” hierin samengevoegd, met $count gesprekken',
+      one: '“$name” hierin samengevoegd, met $count gesprek',
+      zero: '“$name” hierin samengevoegd',
     );
     return '$_temp0';
   }
@@ -278,8 +279,8 @@ class AppLocalizationsNl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Made from $count conversations of “$name”',
-      one: 'Made from 1 conversation of “$name”',
+      other: 'Gemaakt van $count gesprekken uit “$name”',
+      one: 'Gemaakt van $count gesprek uit “$name”',
     );
     return '$_temp0';
   }

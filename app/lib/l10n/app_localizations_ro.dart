@@ -10,177 +10,185 @@ class AppLocalizationsRo extends AppLocalizations {
   AppLocalizationsRo([String locale = 'ro']) : super(locale);
 
   @override
-  String get mattersTitle => 'Matters';
+  String get mattersTitle => 'Chestiuni';
 
   @override
-  String get mattersNewMatter => 'New Matter…';
+  String get mattersNewMatter => 'Chestiune nouă…';
 
   @override
-  String get mattersNewMatterTitle => 'New Matter';
+  String get mattersNewMatterTitle => 'Chestiune nouă';
 
   @override
-  String get mattersNameHint => 'Buying a house, an insurance claim…';
+  String get mattersNameHint => 'Cumpărarea unei case, o cerere de despăgubire…';
 
   @override
   String get mattersEmptyFooter =>
-      'Keep the conversations about one thing together, such as a house purchase, whoever they’re from.';
+      'Ține la un loc conversațiile despre un singur lucru, cum ar fi cumpărarea unei case, indiferent de la cine sunt.';
 
   @override
   String mattersRowDetail(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count conversations',
-      one: '1 conversation',
-      zero: 'No conversations',
+      other: '$count de conversații',
+      few: '$count conversații',
+      one: '$count conversație',
+      zero: 'Nicio conversație',
     );
     return '$_temp0';
   }
 
   @override
-  String get mattersMenu => 'Matter Actions';
+  String get mattersMenu => 'Acțiuni pentru chestiune';
 
   @override
-  String get mattersRename => 'Rename…';
+  String get mattersRename => 'Redenumește…';
 
   @override
-  String get mattersRenameTitle => 'Rename Matter';
+  String get mattersRenameTitle => 'Redenumește chestiunea';
 
   @override
-  String get mattersSplit => 'Split…';
+  String get mattersSplit => 'Împarte…';
 
   @override
-  String get mattersMergeInto => 'Merge Into…';
+  String get mattersMergeInto => 'Unește cu…';
 
   @override
-  String get mattersDelete => 'Delete Matter';
+  String get mattersDelete => 'Șterge chestiunea';
 
   @override
   String mattersDeleteTitle(String name) {
-    return 'Delete “$name”?';
+    return 'Ștergi „$name”?';
   }
 
   @override
-  String get mattersDeleteMessage => 'Its conversations stay in your mailboxes. Only the matter goes.';
+  String get mattersDeleteMessage => 'Conversațiile ei rămân în căsuțele tale poștale. Dispare doar chestiunea.';
 
   @override
   String mattersMergeTitle(String name) {
-    return 'Merge “$name” Into';
+    return 'Cu ce chestiune unești „$name”?';
   }
 
   @override
   String mattersMerged(String name) {
-    return 'Merged into “$name”';
+    return 'Unită cu „$name”';
   }
 
   @override
-  String get mattersNoOtherMatter => 'There’s no other matter to merge into.';
+  String get mattersNoOtherMatter => 'Nu există altă chestiune cu care s-o unești.';
 
   @override
-  String get mattersSplitTitle => 'Choose Conversations';
+  String get mattersSplitTitle => 'Alege conversațiile';
 
   @override
-  String get mattersSplitMove => 'Move to New Matter…';
+  String get mattersSplitMove => 'Mută într-o chestiune nouă…';
 
   @override
   String mattersMovedTo(int count, String name) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Moved $count conversations to “$name”',
-      one: 'Moved 1 conversation to “$name”',
+      other: '$count de conversații mutate în „$name”',
+      few: '$count conversații mutate în „$name”',
+      one: '$count conversație mutată în „$name”',
     );
     return '$_temp0';
   }
 
   @override
-  String get mattersConversations => 'Conversations';
+  String get mattersConversations => 'Conversații';
 
   @override
   String get mattersNoConversations =>
-      'No conversations yet. Add one from a conversation’s ⋯ menu with Add to Matter…, or from the suggestions.';
+      'Încă nu există conversații. Adaugă una din meniul ⋯ al unei conversații, cu „Adaugă la o chestiune…”, sau din sugestii.';
 
   @override
   String mattersConversationDetail(String people, int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count messages', one: '1 message');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count de mesaje',
+      few: '$count mesaje',
+      one: '$count mesaj',
+    );
     return '$people, $_temp0';
   }
 
   @override
-  String get mattersConversationGone => 'Not on this phone, or only in Trash';
+  String get mattersConversationGone => 'Nu e pe acest telefon sau e doar în Coșul de gunoi';
 
   @override
-  String get mattersAddToMatter => 'Add to Matter…';
+  String get mattersAddToMatter => 'Adaugă la o chestiune…';
 
   @override
-  String get mattersAddToMatterTitle => 'Add to Matter';
+  String get mattersAddToMatterTitle => 'Adaugă la o chestiune';
 
   @override
-  String get mattersAlreadyIn => 'Already in it';
+  String get mattersAlreadyIn => 'Deja adăugată';
 
   @override
   String mattersAddedTo(String name) {
-    return 'Added to “$name”';
+    return 'Adăugată la „$name”';
   }
 
   @override
-  String get mattersRemove => 'Remove from Matter';
+  String get mattersRemove => 'Elimină din chestiune';
 
   @override
-  String get mattersRemoveWhich => 'Remove from Which Matter?';
+  String get mattersRemoveWhich => 'Din ce chestiune o elimini?';
 
   @override
   String mattersRemoved(String name) {
-    return 'Removed from “$name”';
+    return 'Eliminată din „$name”';
   }
 
   @override
   String mattersOpenMatter(String name) {
-    return 'Open matter “$name”';
+    return 'Deschide chestiunea „$name”';
   }
 
   @override
-  String get mattersGone => 'This matter no longer exists.';
+  String get mattersGone => 'Această chestiune nu mai există.';
 
   @override
-  String get mattersStatusTitle => 'Where Things Stand';
+  String get mattersStatusTitle => 'Unde s-a ajuns';
 
   @override
-  String get mattersStatusHint => 'A few lines on the latest position, each from a message here.';
+  String get mattersStatusHint => 'Câteva rânduri despre situația actuală, fiecare dintr-un mesaj de aici.';
 
   @override
-  String get mattersStatusWorking => 'Reading the latest messages…';
+  String get mattersStatusWorking => 'Se citesc cele mai recente mesaje…';
 
   @override
-  String get mattersStatusFailed => 'Loupe couldn’t work out where things stand.';
+  String get mattersStatusFailed => 'Loupe nu a putut stabili unde s-a ajuns.';
 
   @override
-  String get mattersStatusOutdated => 'New messages have come in since this was written.';
+  String get mattersStatusOutdated => 'De când a fost scris acest rezumat au sosit mesaje noi.';
 
   @override
-  String get mattersStatusUpdate => 'Update';
+  String get mattersStatusUpdate => 'Actualizează';
 
   @override
-  String get mattersStatusDemoNote => 'Written by the built-in demo, not a model.';
+  String get mattersStatusDemoNote => 'Scris de demonstrația încorporată, nu de un model.';
 
   @override
   String mattersStatusProvider(String provider) {
-    return 'Written by $provider';
+    return 'Scris de $provider';
   }
 
   @override
-  String get mattersStatusPartial => 'Only the latest messages were read.';
+  String get mattersStatusPartial => 'Au fost citite doar cele mai recente mesaje.';
 
   @override
   String mattersStatusLocalOnly(String accounts) {
-    return 'Mail from $accounts stays on this phone, so it isn’t included.';
+    return 'E-mailurile din $accounts rămân pe acest telefon, așa că nu sunt incluse.';
   }
 
   @override
-  String get mattersStatusEncrypted => 'Encrypted messages stay on this phone, so they aren’t included.';
+  String get mattersStatusEncrypted => 'Mesajele criptate rămân pe acest telefon, așa că nu sunt incluse.';
 
   @override
-  String get mattersStatusNoInput => 'None of these messages may go to this provider.';
+  String get mattersStatusNoInput => 'Niciunul dintre aceste mesaje nu poate ajunge la acest furnizor.';
 
   @override
   String mattersStatusSource(String sender, String date) {
@@ -188,13 +196,13 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get mattersOpenActions => 'Open Actions';
+  String get mattersOpenActions => 'De făcut';
 
   @override
-  String get mattersWaiting => 'Waiting on Others';
+  String get mattersWaiting => 'În așteptarea altora';
 
   @override
-  String get mattersDocuments => 'Documents';
+  String get mattersDocuments => 'Documente';
 
   @override
   String mattersDocumentDetail(String sender, String date) {
@@ -202,63 +210,64 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get mattersDocumentsIncomplete => 'Some messages couldn’t be opened, so their files aren’t listed.';
+  String get mattersDocumentsIncomplete =>
+      'Unele mesaje nu au putut fi deschise, așa că fișierele lor nu apar în listă.';
 
   @override
-  String get mattersPeople => 'People Involved';
+  String get mattersPeople => 'Persoane implicate';
 
   @override
-  String get mattersHistory => 'History';
+  String get mattersHistory => 'Istoric';
 
   @override
-  String get mattersSuggestions => 'Suggested Conversations';
+  String get mattersSuggestions => 'Conversații sugerate';
 
   @override
   String get mattersSuggestionsFooter =>
-      'Found on this phone by shared words, references and senders. Nothing is added until you choose.';
+      'Găsite pe acest telefon după cuvinte, referințe și expeditori comuni. Nu se adaugă nimic până nu alegi tu.';
 
   @override
-  String get mattersNotThisOne => 'Not This One';
+  String get mattersNotThisOne => 'Nu face parte';
 
   @override
   String mattersReasonMentions(String words) {
-    return 'Mentions “$words”';
+    return 'Menționează „$words”';
   }
 
   @override
   String mattersReasonSameSender(String name) {
-    return 'Also from $name. A shared sender alone doesn’t mean it belongs.';
+    return 'Tot de la $name. Doar un expeditor comun nu înseamnă că își are locul aici.';
   }
 
   @override
   String mattersReasonSameDomain(String domain) {
-    return 'Also from $domain. A shared domain alone doesn’t mean it belongs.';
+    return 'Tot de la $domain. Doar un domeniu comun nu înseamnă că își are locul aici.';
   }
 
   @override
-  String get mattersActivity => 'Activity';
+  String get mattersActivity => 'Activitate';
 
   @override
-  String get mattersEventCreated => 'Matter created';
+  String get mattersEventCreated => 'Chestiune creată';
 
   @override
   String mattersEventRenamed(String name) {
-    return 'Renamed to “$name”';
+    return 'Redenumită în „$name”';
   }
 
   @override
   String mattersEventAdded(String subject) {
-    return 'Added “$subject”';
+    return 'S-a adăugat „$subject”';
   }
 
   @override
   String mattersEventAddedSuggested(String subject) {
-    return 'Added “$subject” from a suggestion';
+    return 'S-a adăugat „$subject” dintr-o sugestie';
   }
 
   @override
   String mattersEventRemoved(String subject) {
-    return 'Removed “$subject”';
+    return 'S-a eliminat „$subject”';
   }
 
   @override
@@ -266,9 +275,10 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Merged in “$name”, with $count conversations',
-      one: 'Merged in “$name”, with 1 conversation',
-      zero: 'Merged in “$name”',
+      other: 'Unită cu „$name”, care avea $count de conversații',
+      few: 'Unită cu „$name”, care avea $count conversații',
+      one: 'Unită cu „$name”, care avea $count conversație',
+      zero: 'Unită cu „$name”',
     );
     return '$_temp0';
   }
@@ -278,8 +288,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Made from $count conversations of “$name”',
-      one: 'Made from 1 conversation of “$name”',
+      other: 'Desprinsă din „$name”, cu $count de conversații',
+      few: 'Desprinsă din „$name”, cu $count conversații',
+      one: 'Desprinsă din „$name”, cu $count conversație',
     );
     return '$_temp0';
   }

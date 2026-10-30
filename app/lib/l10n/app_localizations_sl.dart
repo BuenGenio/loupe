@@ -10,177 +10,188 @@ class AppLocalizationsSl extends AppLocalizations {
   AppLocalizationsSl([String locale = 'sl']) : super(locale);
 
   @override
-  String get mattersTitle => 'Matters';
+  String get mattersTitle => 'Zadeve';
 
   @override
-  String get mattersNewMatter => 'New Matter…';
+  String get mattersNewMatter => 'Nova zadeva …';
 
   @override
-  String get mattersNewMatterTitle => 'New Matter';
+  String get mattersNewMatterTitle => 'Nova zadeva';
 
   @override
-  String get mattersNameHint => 'Buying a house, an insurance claim…';
+  String get mattersNameHint => 'Nakup hiše, odškodninski zahtevek …';
 
   @override
   String get mattersEmptyFooter =>
-      'Keep the conversations about one thing together, such as a house purchase, whoever they’re from.';
+      'Pogovore o eni stvari, na primer o nakupu hiše, imejte skupaj, ne glede na to, od koga so.';
 
   @override
   String mattersRowDetail(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count conversations',
-      one: '1 conversation',
-      zero: 'No conversations',
+      other: '$count pogovorov',
+      few: '$count pogovori',
+      two: '$count pogovora',
+      one: '$count pogovor',
+      zero: 'Ni pogovorov',
     );
     return '$_temp0';
   }
 
   @override
-  String get mattersMenu => 'Matter Actions';
+  String get mattersMenu => 'Dejanja za zadevo';
 
   @override
-  String get mattersRename => 'Rename…';
+  String get mattersRename => 'Preimenuj …';
 
   @override
-  String get mattersRenameTitle => 'Rename Matter';
+  String get mattersRenameTitle => 'Preimenuj zadevo';
 
   @override
-  String get mattersSplit => 'Split…';
+  String get mattersSplit => 'Razdeli …';
 
   @override
-  String get mattersMergeInto => 'Merge Into…';
+  String get mattersMergeInto => 'Združi v …';
 
   @override
-  String get mattersDelete => 'Delete Matter';
+  String get mattersDelete => 'Izbriši zadevo';
 
   @override
   String mattersDeleteTitle(String name) {
-    return 'Delete “$name”?';
+    return 'Želite izbrisati „$name“?';
   }
 
   @override
-  String get mattersDeleteMessage => 'Its conversations stay in your mailboxes. Only the matter goes.';
+  String get mattersDeleteMessage => 'Njeni pogovori ostanejo v vaših nabiralnikih. Izbriše se le zadeva.';
 
   @override
   String mattersMergeTitle(String name) {
-    return 'Merge “$name” Into';
+    return 'Kam združiti „$name“';
   }
 
   @override
   String mattersMerged(String name) {
-    return 'Merged into “$name”';
+    return 'Združeno v „$name“';
   }
 
   @override
-  String get mattersNoOtherMatter => 'There’s no other matter to merge into.';
+  String get mattersNoOtherMatter => 'Ni druge zadeve, v katero bi jo lahko združili.';
 
   @override
-  String get mattersSplitTitle => 'Choose Conversations';
+  String get mattersSplitTitle => 'Izberite pogovore';
 
   @override
-  String get mattersSplitMove => 'Move to New Matter…';
+  String get mattersSplitMove => 'Premakni v novo zadevo …';
 
   @override
   String mattersMovedTo(int count, String name) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Moved $count conversations to “$name”',
-      one: 'Moved 1 conversation to “$name”',
+      other: '$count pogovorov premaknjenih v „$name“',
+      few: '$count pogovori premaknjeni v „$name“',
+      two: '$count pogovora premaknjena v „$name“',
+      one: '$count pogovor premaknjen v „$name“',
     );
     return '$_temp0';
   }
 
   @override
-  String get mattersConversations => 'Conversations';
+  String get mattersConversations => 'Pogovori';
 
   @override
   String get mattersNoConversations =>
-      'No conversations yet. Add one from a conversation’s ⋯ menu with Add to Matter…, or from the suggestions.';
+      'Pogovorov še ni. Dodajte jih z ukazom „Dodaj v zadevo …“ v meniju ⋯ pogovora ali iz predlogov.';
 
   @override
   String mattersConversationDetail(String people, int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count messages', one: '1 message');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sporočil',
+      few: '$count sporočila',
+      two: '$count sporočili',
+      one: '$count sporočilo',
+    );
     return '$people, $_temp0';
   }
 
   @override
-  String get mattersConversationGone => 'Not on this phone, or only in Trash';
+  String get mattersConversationGone => 'Ni v tem telefonu ali je samo v smeteh';
 
   @override
-  String get mattersAddToMatter => 'Add to Matter…';
+  String get mattersAddToMatter => 'Dodaj v zadevo …';
 
   @override
-  String get mattersAddToMatterTitle => 'Add to Matter';
+  String get mattersAddToMatterTitle => 'Dodaj v zadevo';
 
   @override
-  String get mattersAlreadyIn => 'Already in it';
+  String get mattersAlreadyIn => 'Že dodano';
 
   @override
   String mattersAddedTo(String name) {
-    return 'Added to “$name”';
+    return 'Dodano v „$name“';
   }
 
   @override
-  String get mattersRemove => 'Remove from Matter';
+  String get mattersRemove => 'Odstrani iz zadeve';
 
   @override
-  String get mattersRemoveWhich => 'Remove from Which Matter?';
+  String get mattersRemoveWhich => 'Iz katere zadeve ga želite odstraniti?';
 
   @override
   String mattersRemoved(String name) {
-    return 'Removed from “$name”';
+    return 'Odstranjeno iz „$name“';
   }
 
   @override
   String mattersOpenMatter(String name) {
-    return 'Open matter “$name”';
+    return 'Odpri zadevo „$name“';
   }
 
   @override
-  String get mattersGone => 'This matter no longer exists.';
+  String get mattersGone => 'Ta zadeva ne obstaja več.';
 
   @override
-  String get mattersStatusTitle => 'Where Things Stand';
+  String get mattersStatusTitle => 'Stanje zadeve';
 
   @override
-  String get mattersStatusHint => 'A few lines on the latest position, each from a message here.';
+  String get mattersStatusHint => 'Nekaj vrstic o trenutnem stanju, vsaka iz enega od sporočil v tej zadevi.';
 
   @override
-  String get mattersStatusWorking => 'Reading the latest messages…';
+  String get mattersStatusWorking => 'Branje najnovejših sporočil …';
 
   @override
-  String get mattersStatusFailed => 'Loupe couldn’t work out where things stand.';
+  String get mattersStatusFailed => 'Loupe ni mogla ugotoviti stanja zadeve.';
 
   @override
-  String get mattersStatusOutdated => 'New messages have come in since this was written.';
+  String get mattersStatusOutdated => 'Odkar je bilo to napisano, so prispela nova sporočila.';
 
   @override
-  String get mattersStatusUpdate => 'Update';
+  String get mattersStatusUpdate => 'Posodobi';
 
   @override
-  String get mattersStatusDemoNote => 'Written by the built-in demo, not a model.';
+  String get mattersStatusDemoNote => 'Napisal vgrajeni demo, ne model.';
 
   @override
   String mattersStatusProvider(String provider) {
-    return 'Written by $provider';
+    return 'Avtor: $provider';
   }
 
   @override
-  String get mattersStatusPartial => 'Only the latest messages were read.';
+  String get mattersStatusPartial => 'Prebrana so bila le najnovejša sporočila.';
 
   @override
   String mattersStatusLocalOnly(String accounts) {
-    return 'Mail from $accounts stays on this phone, so it isn’t included.';
+    return 'Pošta iz $accounts ostane v tem telefonu, zato ni vključena.';
   }
 
   @override
-  String get mattersStatusEncrypted => 'Encrypted messages stay on this phone, so they aren’t included.';
+  String get mattersStatusEncrypted => 'Šifrirana sporočila ostanejo v tem telefonu, zato niso vključena.';
 
   @override
-  String get mattersStatusNoInput => 'None of these messages may go to this provider.';
+  String get mattersStatusNoInput => 'Nobeno od teh sporočil ne sme k temu ponudniku.';
 
   @override
   String mattersStatusSource(String sender, String date) {
@@ -188,13 +199,13 @@ class AppLocalizationsSl extends AppLocalizations {
   }
 
   @override
-  String get mattersOpenActions => 'Open Actions';
+  String get mattersOpenActions => 'Odprta opravila';
 
   @override
-  String get mattersWaiting => 'Waiting on Others';
+  String get mattersWaiting => 'Čaka na druge';
 
   @override
-  String get mattersDocuments => 'Documents';
+  String get mattersDocuments => 'Dokumenti';
 
   @override
   String mattersDocumentDetail(String sender, String date) {
@@ -202,63 +213,64 @@ class AppLocalizationsSl extends AppLocalizations {
   }
 
   @override
-  String get mattersDocumentsIncomplete => 'Some messages couldn’t be opened, so their files aren’t listed.';
+  String get mattersDocumentsIncomplete =>
+      'Nekaterih sporočil ni bilo mogoče odpreti, zato njihove datoteke niso navedene.';
 
   @override
-  String get mattersPeople => 'People Involved';
+  String get mattersPeople => 'Udeležene osebe';
 
   @override
-  String get mattersHistory => 'History';
+  String get mattersHistory => 'Zgodovina';
 
   @override
-  String get mattersSuggestions => 'Suggested Conversations';
+  String get mattersSuggestions => 'Predlagani pogovori';
 
   @override
   String get mattersSuggestionsFooter =>
-      'Found on this phone by shared words, references and senders. Nothing is added until you choose.';
+      'Najdeno v tem telefonu po skupnih besedah, sklicih in pošiljateljih. Nič se ne doda, dokler sami ne izberete.';
 
   @override
-  String get mattersNotThisOne => 'Not This One';
+  String get mattersNotThisOne => 'Ne spada sem';
 
   @override
   String mattersReasonMentions(String words) {
-    return 'Mentions “$words”';
+    return 'Omenja „$words“';
   }
 
   @override
   String mattersReasonSameSender(String name) {
-    return 'Also from $name. A shared sender alone doesn’t mean it belongs.';
+    return 'Isti pošiljatelj: $name. Samo to še ne pomeni, da spada sem.';
   }
 
   @override
   String mattersReasonSameDomain(String domain) {
-    return 'Also from $domain. A shared domain alone doesn’t mean it belongs.';
+    return 'Ista domena: $domain. Samo to še ne pomeni, da spada sem.';
   }
 
   @override
-  String get mattersActivity => 'Activity';
+  String get mattersActivity => 'Dejavnost';
 
   @override
-  String get mattersEventCreated => 'Matter created';
+  String get mattersEventCreated => 'Zadeva ustvarjena';
 
   @override
   String mattersEventRenamed(String name) {
-    return 'Renamed to “$name”';
+    return 'Preimenovano v „$name“';
   }
 
   @override
   String mattersEventAdded(String subject) {
-    return 'Added “$subject”';
+    return 'Dodano: „$subject“';
   }
 
   @override
   String mattersEventAddedSuggested(String subject) {
-    return 'Added “$subject” from a suggestion';
+    return 'Dodano iz predloga: „$subject“';
   }
 
   @override
   String mattersEventRemoved(String subject) {
-    return 'Removed “$subject”';
+    return 'Odstranjeno: „$subject“';
   }
 
   @override
@@ -266,9 +278,11 @@ class AppLocalizationsSl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Merged in “$name”, with $count conversations',
-      one: 'Merged in “$name”, with 1 conversation',
-      zero: 'Merged in “$name”',
+      other: 'Pridružena zadeva „$name“ ($count pogovorov)',
+      few: 'Pridružena zadeva „$name“ ($count pogovori)',
+      two: 'Pridružena zadeva „$name“ ($count pogovora)',
+      one: 'Pridružena zadeva „$name“ ($count pogovor)',
+      zero: 'Pridružena zadeva „$name“',
     );
     return '$_temp0';
   }
@@ -278,8 +292,10 @@ class AppLocalizationsSl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Made from $count conversations of “$name”',
-      one: 'Made from 1 conversation of “$name”',
+      other: 'Nastala z razdelitvijo zadeve „$name“ ($count pogovorov)',
+      few: 'Nastala z razdelitvijo zadeve „$name“ ($count pogovori)',
+      two: 'Nastala z razdelitvijo zadeve „$name“ ($count pogovora)',
+      one: 'Nastala z razdelitvijo zadeve „$name“ ($count pogovor)',
     );
     return '$_temp0';
   }

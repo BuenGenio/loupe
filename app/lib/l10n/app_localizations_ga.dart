@@ -10,177 +10,193 @@ class AppLocalizationsGa extends AppLocalizations {
   AppLocalizationsGa([String locale = 'ga']) : super(locale);
 
   @override
-  String get mattersTitle => 'Matters';
+  String get mattersTitle => 'Cásanna';
 
   @override
-  String get mattersNewMatter => 'New Matter…';
+  String get mattersNewMatter => 'Cás nua…';
 
   @override
-  String get mattersNewMatterTitle => 'New Matter';
+  String get mattersNewMatterTitle => 'Cás nua';
 
   @override
-  String get mattersNameHint => 'Buying a house, an insurance claim…';
+  String get mattersNameHint => 'Teach a cheannach, éileamh árachais…';
 
   @override
   String get mattersEmptyFooter =>
-      'Keep the conversations about one thing together, such as a house purchase, whoever they’re from.';
+      'Coinnigh na comhráite faoi rud amháin le chéile, ar nós ceannach tí, is cuma cé a sheol iad.';
 
   @override
   String mattersRowDetail(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count conversations',
-      one: '1 conversation',
-      zero: 'No conversations',
+      other: '$count comhrá',
+      many: '$count gcomhrá',
+      few: '$count chomhrá',
+      two: '$count chomhrá',
+      one: '$count chomhrá',
+      zero: 'Gan aon chomhrá',
     );
     return '$_temp0';
   }
 
   @override
-  String get mattersMenu => 'Matter Actions';
+  String get mattersMenu => 'Gníomhartha an cháis';
 
   @override
-  String get mattersRename => 'Rename…';
+  String get mattersRename => 'Athainmnigh…';
 
   @override
-  String get mattersRenameTitle => 'Rename Matter';
+  String get mattersRenameTitle => 'Athainmnigh an cás';
 
   @override
-  String get mattersSplit => 'Split…';
+  String get mattersSplit => 'Roinn…';
 
   @override
-  String get mattersMergeInto => 'Merge Into…';
+  String get mattersMergeInto => 'Cumaisc le…';
 
   @override
-  String get mattersDelete => 'Delete Matter';
+  String get mattersDelete => 'Scrios an cás';
 
   @override
   String mattersDeleteTitle(String name) {
-    return 'Delete “$name”?';
+    return '“$name” a scriosadh?';
   }
 
   @override
-  String get mattersDeleteMessage => 'Its conversations stay in your mailboxes. Only the matter goes.';
+  String get mattersDeleteMessage => 'Fanann a chomhráite i do bhoscaí poist. Ní scriostar ach an cás.';
 
   @override
   String mattersMergeTitle(String name) {
-    return 'Merge “$name” Into';
+    return 'Cumaisc “$name” le';
   }
 
   @override
   String mattersMerged(String name) {
-    return 'Merged into “$name”';
+    return 'Cumascadh le “$name”';
   }
 
   @override
-  String get mattersNoOtherMatter => 'There’s no other matter to merge into.';
+  String get mattersNoOtherMatter => 'Níl aon chás eile ann le cumasc leis.';
 
   @override
-  String get mattersSplitTitle => 'Choose Conversations';
+  String get mattersSplitTitle => 'Roghnaigh comhráite';
 
   @override
-  String get mattersSplitMove => 'Move to New Matter…';
+  String get mattersSplitMove => 'Bog go cás nua…';
 
   @override
   String mattersMovedTo(int count, String name) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Moved $count conversations to “$name”',
-      one: 'Moved 1 conversation to “$name”',
+      other: 'Bogadh $count comhrá go “$name”',
+      many: 'Bogadh $count gcomhrá go “$name”',
+      few: 'Bogadh $count chomhrá go “$name”',
+      two: 'Bogadh $count chomhrá go “$name”',
+      one: 'Bogadh $count chomhrá go “$name”',
     );
     return '$_temp0';
   }
 
   @override
-  String get mattersConversations => 'Conversations';
+  String get mattersConversations => 'Comhráite';
 
   @override
   String get mattersNoConversations =>
-      'No conversations yet. Add one from a conversation’s ⋯ menu with Add to Matter…, or from the suggestions.';
+      'Níl aon chomhrá ann fós. Cuir ceann leis le “Cuir le cás…” i roghchlár ⋯ comhrá, nó ó na moltaí.';
 
   @override
   String mattersConversationDetail(String people, int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count messages', one: '1 message');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count teachtaireacht',
+      many: '$count dteachtaireacht',
+      few: '$count theachtaireacht',
+      two: '$count theachtaireacht',
+      one: '$count teachtaireacht',
+    );
     return '$people, $_temp0';
   }
 
   @override
-  String get mattersConversationGone => 'Not on this phone, or only in Trash';
+  String get mattersConversationGone => 'Níl sé ar an bhfón seo, nó sa Bhruscar amháin';
 
   @override
-  String get mattersAddToMatter => 'Add to Matter…';
+  String get mattersAddToMatter => 'Cuir le cás…';
 
   @override
-  String get mattersAddToMatterTitle => 'Add to Matter';
+  String get mattersAddToMatterTitle => 'Cuir le cás';
 
   @override
-  String get mattersAlreadyIn => 'Already in it';
+  String get mattersAlreadyIn => 'Ann cheana';
 
   @override
   String mattersAddedTo(String name) {
-    return 'Added to “$name”';
+    return 'Curtha le “$name”';
   }
 
   @override
-  String get mattersRemove => 'Remove from Matter';
+  String get mattersRemove => 'Bain den chás';
 
   @override
-  String get mattersRemoveWhich => 'Remove from Which Matter?';
+  String get mattersRemoveWhich => 'Cén cás óna mbainfear é?';
 
   @override
   String mattersRemoved(String name) {
-    return 'Removed from “$name”';
+    return 'Bainte de “$name”';
   }
 
   @override
   String mattersOpenMatter(String name) {
-    return 'Open matter “$name”';
+    return 'Oscail an cás “$name”';
   }
 
   @override
-  String get mattersGone => 'This matter no longer exists.';
+  String get mattersGone => 'Níl an cás seo ann a thuilleadh.';
 
   @override
-  String get mattersStatusTitle => 'Where Things Stand';
+  String get mattersStatusTitle => 'Mar atá cúrsaí';
 
   @override
-  String get mattersStatusHint => 'A few lines on the latest position, each from a message here.';
+  String get mattersStatusHint => 'Cúpla líne faoin staid is déanaí, gach ceann acu ó theachtaireacht anseo.';
 
   @override
-  String get mattersStatusWorking => 'Reading the latest messages…';
+  String get mattersStatusWorking => 'Ag léamh na dteachtaireachtaí is déanaí…';
 
   @override
-  String get mattersStatusFailed => 'Loupe couldn’t work out where things stand.';
+  String get mattersStatusFailed => 'Níorbh fhéidir le Loupe a dhéanamh amach conas atá cúrsaí.';
 
   @override
-  String get mattersStatusOutdated => 'New messages have come in since this was written.';
+  String get mattersStatusOutdated => 'Tá teachtaireachtaí nua tagtha ó scríobhadh é seo.';
 
   @override
-  String get mattersStatusUpdate => 'Update';
+  String get mattersStatusUpdate => 'Nuashonraigh';
 
   @override
-  String get mattersStatusDemoNote => 'Written by the built-in demo, not a model.';
+  String get mattersStatusDemoNote => 'Scríofa ag an taispeántas ionsuite, ní ag samhail.';
 
   @override
   String mattersStatusProvider(String provider) {
-    return 'Written by $provider';
+    return 'Scríofa ag $provider';
   }
 
   @override
-  String get mattersStatusPartial => 'Only the latest messages were read.';
+  String get mattersStatusPartial => 'Níor léadh ach na teachtaireachtaí is déanaí.';
 
   @override
   String mattersStatusLocalOnly(String accounts) {
-    return 'Mail from $accounts stays on this phone, so it isn’t included.';
+    return 'Fanann ríomhphost ó $accounts ar an bhfón seo, mar sin níl sé san áireamh.';
   }
 
   @override
-  String get mattersStatusEncrypted => 'Encrypted messages stay on this phone, so they aren’t included.';
+  String get mattersStatusEncrypted =>
+      'Fanann teachtaireachtaí criptithe ar an bhfón seo, mar sin níl siad san áireamh.';
 
   @override
-  String get mattersStatusNoInput => 'None of these messages may go to this provider.';
+  String get mattersStatusNoInput =>
+      'Ní cheadaítear aon cheann de na teachtaireachtaí seo a sheoladh chuig an soláthraí seo.';
 
   @override
   String mattersStatusSource(String sender, String date) {
@@ -188,13 +204,13 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get mattersOpenActions => 'Open Actions';
+  String get mattersOpenActions => 'Le déanamh';
 
   @override
-  String get mattersWaiting => 'Waiting on Others';
+  String get mattersWaiting => 'Ag fanacht ar dhaoine eile';
 
   @override
-  String get mattersDocuments => 'Documents';
+  String get mattersDocuments => 'Doiciméid';
 
   @override
   String mattersDocumentDetail(String sender, String date) {
@@ -202,63 +218,64 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get mattersDocumentsIncomplete => 'Some messages couldn’t be opened, so their files aren’t listed.';
+  String get mattersDocumentsIncomplete =>
+      'Níorbh fhéidir roinnt teachtaireachtaí a oscailt, mar sin níl a gcomhaid liostaithe.';
 
   @override
-  String get mattersPeople => 'People Involved';
+  String get mattersPeople => 'Rannpháirtithe';
 
   @override
-  String get mattersHistory => 'History';
+  String get mattersHistory => 'Stair';
 
   @override
-  String get mattersSuggestions => 'Suggested Conversations';
+  String get mattersSuggestions => 'Comhráite molta';
 
   @override
   String get mattersSuggestionsFooter =>
-      'Found on this phone by shared words, references and senders. Nothing is added until you choose.';
+      'Aimsithe ar an bhfón seo de réir focal, tagairtí agus seoltóirí i gcoiteann. Ní chuirtear aon rud leis go dtí go roghnaíonn tú.';
 
   @override
-  String get mattersNotThisOne => 'Not This One';
+  String get mattersNotThisOne => 'Ní bhaineann sé leis';
 
   @override
   String mattersReasonMentions(String words) {
-    return 'Mentions “$words”';
+    return 'Luann sé “$words”';
   }
 
   @override
   String mattersReasonSameSender(String name) {
-    return 'Also from $name. A shared sender alone doesn’t mean it belongs.';
+    return 'Ó $name freisin. Ní chiallaíonn seoltóir comónta leis féin go mbaineann sé leis.';
   }
 
   @override
   String mattersReasonSameDomain(String domain) {
-    return 'Also from $domain. A shared domain alone doesn’t mean it belongs.';
+    return 'Ó $domain freisin. Ní chiallaíonn fearann comónta leis féin go mbaineann sé leis.';
   }
 
   @override
-  String get mattersActivity => 'Activity';
+  String get mattersActivity => 'Gníomhaíocht';
 
   @override
-  String get mattersEventCreated => 'Matter created';
+  String get mattersEventCreated => 'Cruthaíodh an cás';
 
   @override
   String mattersEventRenamed(String name) {
-    return 'Renamed to “$name”';
+    return 'Athainmníodh mar “$name”';
   }
 
   @override
   String mattersEventAdded(String subject) {
-    return 'Added “$subject”';
+    return 'Cuireadh “$subject” leis';
   }
 
   @override
   String mattersEventAddedSuggested(String subject) {
-    return 'Added “$subject” from a suggestion';
+    return 'Cuireadh “$subject” leis ó mholadh';
   }
 
   @override
   String mattersEventRemoved(String subject) {
-    return 'Removed “$subject”';
+    return 'Baineadh “$subject” as';
   }
 
   @override
@@ -266,9 +283,12 @@ class AppLocalizationsGa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Merged in “$name”, with $count conversations',
-      one: 'Merged in “$name”, with 1 conversation',
-      zero: 'Merged in “$name”',
+      other: 'Cumascadh “$name” isteach, le $count comhrá',
+      many: 'Cumascadh “$name” isteach, le $count gcomhrá',
+      few: 'Cumascadh “$name” isteach, le $count chomhrá',
+      two: 'Cumascadh “$name” isteach, le $count chomhrá',
+      one: 'Cumascadh “$name” isteach, le $count chomhrá',
+      zero: 'Cumascadh “$name” isteach',
     );
     return '$_temp0';
   }
@@ -278,8 +298,11 @@ class AppLocalizationsGa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Made from $count conversations of “$name”',
-      one: 'Made from 1 conversation of “$name”',
+      other: 'Cruthaithe as $count comhrá de chuid “$name”',
+      many: 'Cruthaithe as $count gcomhrá de chuid “$name”',
+      few: 'Cruthaithe as $count chomhrá de chuid “$name”',
+      two: 'Cruthaithe as $count chomhrá de chuid “$name”',
+      one: 'Cruthaithe as $count chomhrá de chuid “$name”',
     );
     return '$_temp0';
   }

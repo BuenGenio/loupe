@@ -10,177 +10,177 @@ class AppLocalizationsHu extends AppLocalizations {
   AppLocalizationsHu([String locale = 'hu']) : super(locale);
 
   @override
-  String get mattersTitle => 'Matters';
+  String get mattersTitle => 'Ügyek';
 
   @override
-  String get mattersNewMatter => 'New Matter…';
+  String get mattersNewMatter => 'Új ügy…';
 
   @override
-  String get mattersNewMatterTitle => 'New Matter';
+  String get mattersNewMatterTitle => 'Új ügy';
 
   @override
-  String get mattersNameHint => 'Buying a house, an insurance claim…';
+  String get mattersNameHint => 'Házvásárlás, biztosítási kárigény…';
 
   @override
   String get mattersEmptyFooter =>
-      'Keep the conversations about one thing together, such as a house purchase, whoever they’re from.';
+      'Tartsd együtt az egy dologról, például egy házvásárlásról szóló beszélgetéseket, bárkitől érkeznek is.';
 
   @override
   String mattersRowDetail(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count conversations',
-      one: '1 conversation',
-      zero: 'No conversations',
+      other: '$count beszélgetés',
+      one: '$count beszélgetés',
+      zero: 'Nincs beszélgetés',
     );
     return '$_temp0';
   }
 
   @override
-  String get mattersMenu => 'Matter Actions';
+  String get mattersMenu => 'Ügyműveletek';
 
   @override
-  String get mattersRename => 'Rename…';
+  String get mattersRename => 'Átnevezés…';
 
   @override
-  String get mattersRenameTitle => 'Rename Matter';
+  String get mattersRenameTitle => 'Ügy átnevezése';
 
   @override
-  String get mattersSplit => 'Split…';
+  String get mattersSplit => 'Szétválasztás…';
 
   @override
-  String get mattersMergeInto => 'Merge Into…';
+  String get mattersMergeInto => 'Beolvasztás másik ügybe…';
 
   @override
-  String get mattersDelete => 'Delete Matter';
+  String get mattersDelete => 'Ügy törlése';
 
   @override
   String mattersDeleteTitle(String name) {
-    return 'Delete “$name”?';
+    return 'Törlöd: „$name”?';
   }
 
   @override
-  String get mattersDeleteMessage => 'Its conversations stay in your mailboxes. Only the matter goes.';
+  String get mattersDeleteMessage => 'A beszélgetései a postafiókjaidban maradnak. Csak az ügy törlődik.';
 
   @override
   String mattersMergeTitle(String name) {
-    return 'Merge “$name” Into';
+    return 'Melyik ügybe olvasztod be: „$name”?';
   }
 
   @override
   String mattersMerged(String name) {
-    return 'Merged into “$name”';
+    return 'Beolvasztva ebbe: „$name”';
   }
 
   @override
-  String get mattersNoOtherMatter => 'There’s no other matter to merge into.';
+  String get mattersNoOtherMatter => 'Nincs másik ügy, amelybe beolvaszthatnád.';
 
   @override
-  String get mattersSplitTitle => 'Choose Conversations';
+  String get mattersSplitTitle => 'Válaszd ki a beszélgetéseket';
 
   @override
-  String get mattersSplitMove => 'Move to New Matter…';
+  String get mattersSplitMove => 'Áthelyezés új ügybe…';
 
   @override
   String mattersMovedTo(int count, String name) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Moved $count conversations to “$name”',
-      one: 'Moved 1 conversation to “$name”',
+      other: '$count beszélgetés áthelyezve ide: „$name”',
+      one: '$count beszélgetés áthelyezve ide: „$name”',
     );
     return '$_temp0';
   }
 
   @override
-  String get mattersConversations => 'Conversations';
+  String get mattersConversations => 'Beszélgetések';
 
   @override
   String get mattersNoConversations =>
-      'No conversations yet. Add one from a conversation’s ⋯ menu with Add to Matter…, or from the suggestions.';
+      'Még nincsenek beszélgetések. Adj hozzá egyet egy beszélgetés ⋯ menüjének „Hozzáadás ügyhöz…” parancsával, vagy a javaslatok közül.';
 
   @override
   String mattersConversationDetail(String people, int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count messages', one: '1 message');
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count üzenet', one: '$count üzenet');
     return '$people, $_temp0';
   }
 
   @override
-  String get mattersConversationGone => 'Not on this phone, or only in Trash';
+  String get mattersConversationGone => 'Nincs ezen a telefonon, vagy csak a Kukában van';
 
   @override
-  String get mattersAddToMatter => 'Add to Matter…';
+  String get mattersAddToMatter => 'Hozzáadás ügyhöz…';
 
   @override
-  String get mattersAddToMatterTitle => 'Add to Matter';
+  String get mattersAddToMatterTitle => 'Hozzáadás ügyhöz';
 
   @override
-  String get mattersAlreadyIn => 'Already in it';
+  String get mattersAlreadyIn => 'Már benne van';
 
   @override
   String mattersAddedTo(String name) {
-    return 'Added to “$name”';
+    return 'Hozzáadva ehhez: „$name”';
   }
 
   @override
-  String get mattersRemove => 'Remove from Matter';
+  String get mattersRemove => 'Eltávolítás az ügyből';
 
   @override
-  String get mattersRemoveWhich => 'Remove from Which Matter?';
+  String get mattersRemoveWhich => 'Melyik ügyből távolítod el?';
 
   @override
   String mattersRemoved(String name) {
-    return 'Removed from “$name”';
+    return 'Eltávolítva ebből: „$name”';
   }
 
   @override
   String mattersOpenMatter(String name) {
-    return 'Open matter “$name”';
+    return '„$name” ügy megnyitása';
   }
 
   @override
-  String get mattersGone => 'This matter no longer exists.';
+  String get mattersGone => 'Ez az ügy már nem létezik.';
 
   @override
-  String get mattersStatusTitle => 'Where Things Stand';
+  String get mattersStatusTitle => 'Hol tart az ügy';
 
   @override
-  String get mattersStatusHint => 'A few lines on the latest position, each from a message here.';
+  String get mattersStatusHint => 'Néhány sor a jelenlegi állásról, mindegyik egy itteni üzenet alapján.';
 
   @override
-  String get mattersStatusWorking => 'Reading the latest messages…';
+  String get mattersStatusWorking => 'A legújabb üzenetek olvasása…';
 
   @override
-  String get mattersStatusFailed => 'Loupe couldn’t work out where things stand.';
+  String get mattersStatusFailed => 'A Loupe nem tudta megállapítani, hol tart az ügy.';
 
   @override
-  String get mattersStatusOutdated => 'New messages have come in since this was written.';
+  String get mattersStatusOutdated => 'Az összefoglaló megírása óta új üzenetek érkeztek.';
 
   @override
-  String get mattersStatusUpdate => 'Update';
+  String get mattersStatusUpdate => 'Frissítés';
 
   @override
-  String get mattersStatusDemoNote => 'Written by the built-in demo, not a model.';
+  String get mattersStatusDemoNote => 'A beépített demó írta, nem modell.';
 
   @override
   String mattersStatusProvider(String provider) {
-    return 'Written by $provider';
+    return 'Írta: $provider';
   }
 
   @override
-  String get mattersStatusPartial => 'Only the latest messages were read.';
+  String get mattersStatusPartial => 'Csak a legújabb üzenetek alapján készült.';
 
   @override
   String mattersStatusLocalOnly(String accounts) {
-    return 'Mail from $accounts stays on this phone, so it isn’t included.';
+    return '$accounts levelei ezen a telefonon maradnak, ezért nem szerepelnek benne.';
   }
 
   @override
-  String get mattersStatusEncrypted => 'Encrypted messages stay on this phone, so they aren’t included.';
+  String get mattersStatusEncrypted => 'A titkosított üzenetek ezen a telefonon maradnak, ezért nem szerepelnek benne.';
 
   @override
-  String get mattersStatusNoInput => 'None of these messages may go to this provider.';
+  String get mattersStatusNoInput => 'Ezek közül egyik üzenet sem kerülhet ehhez a szolgáltatóhoz.';
 
   @override
   String mattersStatusSource(String sender, String date) {
@@ -188,13 +188,13 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get mattersOpenActions => 'Open Actions';
+  String get mattersOpenActions => 'Teendők';
 
   @override
-  String get mattersWaiting => 'Waiting on Others';
+  String get mattersWaiting => 'Várakozás másokra';
 
   @override
-  String get mattersDocuments => 'Documents';
+  String get mattersDocuments => 'Dokumentumok';
 
   @override
   String mattersDocumentDetail(String sender, String date) {
@@ -202,63 +202,64 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get mattersDocumentsIncomplete => 'Some messages couldn’t be opened, so their files aren’t listed.';
+  String get mattersDocumentsIncomplete =>
+      'Néhány üzenetet nem sikerült megnyitni, ezért a fájljaik nem szerepelnek a listában.';
 
   @override
-  String get mattersPeople => 'People Involved';
+  String get mattersPeople => 'Érintett személyek';
 
   @override
-  String get mattersHistory => 'History';
+  String get mattersHistory => 'Előzmények';
 
   @override
-  String get mattersSuggestions => 'Suggested Conversations';
+  String get mattersSuggestions => 'Javasolt beszélgetések';
 
   @override
   String get mattersSuggestionsFooter =>
-      'Found on this phone by shared words, references and senders. Nothing is added until you choose.';
+      'A Loupe ezen a telefonon találta őket közös szavak, hivatkozási számok és feladók alapján. Semmi sem kerül hozzá, amíg nem döntesz.';
 
   @override
-  String get mattersNotThisOne => 'Not This One';
+  String get mattersNotThisOne => 'Nem ide tartozik';
 
   @override
   String mattersReasonMentions(String words) {
-    return 'Mentions “$words”';
+    return 'Említi: „$words”';
   }
 
   @override
   String mattersReasonSameSender(String name) {
-    return 'Also from $name. A shared sender alone doesn’t mean it belongs.';
+    return 'Ugyanaz a feladó: $name. Ez önmagában még nem jelenti, hogy ide tartozik.';
   }
 
   @override
   String mattersReasonSameDomain(String domain) {
-    return 'Also from $domain. A shared domain alone doesn’t mean it belongs.';
+    return 'Ugyanaz a domain: $domain. Ez önmagában még nem jelenti, hogy ide tartozik.';
   }
 
   @override
-  String get mattersActivity => 'Activity';
+  String get mattersActivity => 'Tevékenység';
 
   @override
-  String get mattersEventCreated => 'Matter created';
+  String get mattersEventCreated => 'Ügy létrehozva';
 
   @override
   String mattersEventRenamed(String name) {
-    return 'Renamed to “$name”';
+    return 'Átnevezve erre: „$name”';
   }
 
   @override
   String mattersEventAdded(String subject) {
-    return 'Added “$subject”';
+    return 'Hozzáadva: „$subject”';
   }
 
   @override
   String mattersEventAddedSuggested(String subject) {
-    return 'Added “$subject” from a suggestion';
+    return 'Hozzáadva javaslatból: „$subject”';
   }
 
   @override
   String mattersEventRemoved(String subject) {
-    return 'Removed “$subject”';
+    return 'Eltávolítva: „$subject”';
   }
 
   @override
@@ -266,9 +267,9 @@ class AppLocalizationsHu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Merged in “$name”, with $count conversations',
-      one: 'Merged in “$name”, with 1 conversation',
-      zero: 'Merged in “$name”',
+      other: 'Beolvasztott ügy: „$name”, $count beszélgetéssel',
+      one: 'Beolvasztott ügy: „$name”, $count beszélgetéssel',
+      zero: 'Beolvasztott ügy: „$name”',
     );
     return '$_temp0';
   }
@@ -278,8 +279,8 @@ class AppLocalizationsHu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Made from $count conversations of “$name”',
-      one: 'Made from 1 conversation of “$name”',
+      other: 'Létrehozva „$name” $count beszélgetéséből',
+      one: 'Létrehozva „$name” $count beszélgetéséből',
     );
     return '$_temp0';
   }
