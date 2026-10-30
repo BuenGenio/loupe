@@ -99,7 +99,7 @@ final class _Tracker implements BriefItemTracker {
   bool canTrack(BriefItem item) => item.kind == BriefItemKind.action || item.kind == BriefItemKind.document;
 
   @override
-  Future<void> track(MessageRef source, BriefItem item) async => tracked.add((source, item));
+  Future<void> track(MessageRef source, BriefItem item, {AiRunRecord? run}) async => tracked.add((source, item));
 }
 
 /// The demo's rules behind a provider a test controls.
@@ -341,7 +341,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Mark as Done'), findsOneWidget);
       expect(find.text('Add to Calendar…'), findsNothing);
-      expect(find.text('Track'), findsNothing, reason: 'no tracker yet');
+      expect(find.text('Track'), findsOneWidget, reason: 'the demo keeps actions');
       await drainTimers(tester);
     });
   });
