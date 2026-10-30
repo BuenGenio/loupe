@@ -14,6 +14,7 @@ export 'src/ids.dart';
 export 'src/keywords.dart';
 export 'src/lists.dart';
 export 'src/mailbox.dart';
+export 'src/matters.dart';
 export 'src/message_ref.dart';
 export 'src/outbox.dart';
 export 'src/outgoing.dart';
