@@ -14,7 +14,9 @@
 /// [SearchTranslationTask] is the first consumer: a sentence becomes an
 /// expression of the search language, checked by its parser. [BriefTask]
 /// reads one message for what it requires of the reader, every item tied to
-/// a passage that is really there.
+/// a passage that is really there. [RuleProposalTask] turns a sentence into a
+/// typed rule draft for the rule editor, with what rules can't do left
+/// visibly unresolved.
 library;
 
 export 'src/fake_provider.dart' show FakeProvider;
@@ -34,4 +36,5 @@ export 'src/runner.dart' show AiFailure, AiFailureReason, AiRun, AiRunRecord, Ai
 export 'src/task.dart' show AiTask, Parsed, Rejected, TaskParse, TaskSize, parseJsonObject, unfence;
 export 'src/tasks/brief.dart'
     show Brief, BriefDue, BriefEvidence, BriefInput, BriefItem, BriefItemKind, BriefOwner, BriefTask, DueKind;
+export 'src/tasks/rule_proposal.dart' show RuleProposal, RuleProposalTask, UnsupportedRulePart, UnsupportedRuleReason;
 export 'src/tasks/search_translation.dart' show SearchTranslation, SearchTranslationTask;
