@@ -505,7 +505,11 @@ class _BriefViewState extends ConsumerState<BriefView> {
     final l10n = context.l10n;
     final messenger = ScaffoldMessenger.of(context);
     try {
-      await tracker.track(MessageRef.of(widget.message), item);
+      final run = switch (_step) {
+        _Finished(run: AiSuccess(:final record)) => record,
+        _ => null,
+      };
+      await tracker.track(MessageRef.of(widget.message), item, run: run);
       showSnack(messenger, l10n.briefTracking(item.text));
     } on Object {
       showSnack(messenger, l10n.briefTrackFailed);
