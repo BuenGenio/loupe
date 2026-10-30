@@ -330,6 +330,36 @@ class ListKinds extends Table {
   Set<Column> get primaryKey => {listId};
 }
 
+/// The actions the user tracks (`ActionRecords`): Needs My Action and
+/// Waiting on Others. Local to the device, gone with their account. [json]
+/// is the whole `ActionRecord`; the other columns are what the folders'
+/// queries read: where its message was last seen ([emailId]; found again by
+/// [messageIdHeader], guarded by [subject] and [receivedAt], as
+/// `MessageRef.matches` does), the owner and state, and whether the user
+/// deleted it (kept, so the same suggestion isn't offered again). Schema
+/// version 9.
+@DataClassName('TrackedActionRow')
+class TrackedActions extends Table {
+  TextColumn get id => text()();
+  TextColumn get accountId => text().references(Accounts, #id, onDelete: KeyAction.cascade)();
+  TextColumn get emailId => text()();
+  TextColumn get messageIdHeader => text().nullable()();
+  TextColumn get subject => text().withDefault(const Constant(''))();
+  IntColumn get receivedAt => integer().nullable()();
+
+  /// `ActionOwner.name`.
+  TextColumn get owner => text()();
+
+  /// `ActionState.name`.
+  TextColumn get state => text()();
+  BoolColumn get deleted => boolean().withDefault(const Constant(false))();
+  IntColumn get updatedAt => integer()();
+  TextColumn get json => text()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
 /// What the device remembers about calendar invitations (`CalendarRecords`):
 /// by UID and RECURRENCE-ID, the JSON the app writes. Schema version 8; plain
 /// SQL, read and written by [MailStore.calendarRecord] and
@@ -580,6 +610,7 @@ END;''',
     RuleWatermarks,
     MutedThreads,
     ListKinds,
+    TrackedActions,
   ],
 )
 class StoreDatabase extends _$StoreDatabase {
@@ -599,9 +630,10 @@ class StoreDatabase extends _$StoreDatabase {
   /// ([_subscriptionCache], made again), and the user's choices
   /// ([ListKinds]). 8: calendar invitations: what the device remembers about
   /// them ([_calendarRecords]); cached contents of invitations from before,
-  /// whose `text/calendar` part wasn't listed, are fetched again.
+  /// whose `text/calendar` part wasn't listed, are fetched again. 9: the
+  /// actions the user tracks ([TrackedActions]).
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   /// Creates or upgrades the file in one write transaction, from the
   /// version it has then. The app and a background isolate can open it at
@@ -697,6 +729,9 @@ class StoreDatabase extends _$StoreDatabase {
         "DELETE FROM contents WHERE attachments_json NOT LIKE '%text/calendar%' "
         "AND (headers_json LIKE '%calendarmessage%' OR headers_json LIKE '%text/calendar%')",
       );
+    }
+    if (from < 9) {
+      await m.createTable(trackedActions);
     }
   }
 

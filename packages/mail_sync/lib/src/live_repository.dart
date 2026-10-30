@@ -20,7 +20,14 @@ import 'util.dart';
 /// background and [resume] when it returns; [syncOnce] serves background
 /// fetch tasks. [dispose] stops everything but leaves the store open.
 final class LiveMailRepository
-    implements MailRepository, MailingLists, MailSubscriptions, SignInRenewal, DecryptedMail, CalendarRecords {
+    implements
+        MailRepository,
+        MailingLists,
+        MailSubscriptions,
+        SignInRenewal,
+        DecryptedMail,
+        CalendarRecords,
+        ActionRecords {
   LiveMailRepository(
     this.store,
     this.transports,
@@ -423,13 +430,16 @@ final class LiveMailRepository
     return store.watchList(ref, filters: filters, threaded: threaded, limit: limit);
   }
 
-  /// The mailbox of each account that a virtual mailbox draws from.
+  /// The mailbox of each account that a virtual mailbox draws from; none for
+  /// the action folders, which hold what is on this device.
   Future<List<(AccountSyncer, String)>> _roleMailboxes(VirtualMailbox kind) async {
     final role = switch (kind) {
       VirtualMailbox.allDrafts => MailboxRole.drafts,
       VirtualMailbox.allSent => MailboxRole.sent,
+      VirtualMailbox.needsMyAction || VirtualMailbox.waitingOnOthers => null,
       _ => MailboxRole.inbox,
     };
+    if (role == null) return const [];
     return [
       for (final s in _syncers.values)
         if (await store.mailboxByRole(s.account.id, role) case final m?) (s, m.id),
@@ -559,6 +569,19 @@ final class LiveMailRepository
   @override
   Future<void> writeCalendarRecord(String uid, String? data, {String recurrenceId = ''}) =>
       store.putCalendarRecord(uid, data, recurrenceId: recurrenceId, now: _now());
+
+  // Needs My Action and Waiting on Others ------------------------------------
+
+  /// Kept in the store on this device; nothing goes to the server.
+  @override
+  Stream<List<ActionRecord>> watchActions({bool includeDeleted = false}) =>
+      store.watchActions(includeDeleted: includeDeleted);
+
+  @override
+  Future<void> saveActions(List<ActionRecord> records) => store.putActions(records);
+
+  @override
+  Future<void> forgetActions(List<String> ids) => store.deleteActions(ids);
 
   // Actions -----------------------------------------------------------------
 

@@ -920,7 +920,10 @@ final class MailStore {
                 "AND $m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $snoozeFolder",
           VirtualMailbox.allDrafts => "$m.role = 'drafts'",
           VirtualMailbox.allSent => "$m.role = 'sent'",
-          VirtualMailbox.needsMyAction || VirtualMailbox.waitingOnOthers => '0',
+          // By the conversations' messages, so the work follows the actions, not the mailbox.
+          VirtualMailbox.needsMyAction || VirtualMailbox.waitingOnOthers =>
+            "$m.role NOT IN ('trash', 'junk') AND $e.seq IN (SELECT x.seq FROM (${_actionThreadsSql(kind)}) t "
+                'CROSS JOIN emails x INDEXED BY emails_thread ON x.account_id = t.account_id AND x.thread_id = t.thread_id)',
         };
     }
   }
@@ -1045,6 +1048,7 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
       _db.accounts,
       _db.vipAddresses,
       _db.emailKeywords,
+      if (_isActionFolder(ref)) ...{_db.trackedActions, _db.idAliases},
     }).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) _threadFromRow(r, threaded)]);
   }
 
@@ -1104,7 +1108,8 @@ SELECT * FROM members WHERE copy_rank = 1 ORDER BY received_at ASC, seq ASC''';
 
   /// Badge counts of the virtual mailboxes: unread messages for All Inboxes,
   /// Unread and VIP; the number of flagged messages for Flagged and of drafts
-  /// for Drafts (as Apple Mail shows them); zero for Sent.
+  /// for Drafts (as Apple Mail shows them); zero for Sent; conversations with
+  /// open actions for Needs My Action and Waiting on Others.
   ///
   /// All Inboxes and Unread agree with the mailboxes' own (server) counts,
   /// although only the newest messages are stored: All Inboxes sums the
@@ -1120,7 +1125,7 @@ SELECT * FROM members WHERE copy_rank = 1 ORDER BY received_at ASC, seq ASC''';
     const byMailbox = 'FROM mailboxes m CROSS JOIN emails e ON e.mailbox_id = m.id';
     const from = 'FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id';
     const unreadRoles = "m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $_snoozeFolderSql";
-    const sql =
+    final sql =
         '''
 SELECT
   (SELECT coalesce(sum(unread_count), 0) FROM mailboxes WHERE role = 'inbox') AS all_inboxes,
@@ -1133,8 +1138,16 @@ SELECT
     AND NOT $_snoozeFolderSql) AS flagged,
   (SELECT $distinctKey $from WHERE e.is_seen = 0 AND e.from_email IN (SELECT email FROM vip_addresses)
     AND $unreadRoles) AS vip,
-  (SELECT coalesce(sum(total_count), 0) FROM mailboxes WHERE role = 'drafts') AS drafts''';
-    return _select(sql, [], {_db.emails, _db.mailboxes, _db.vipAddresses}).watch().distinct(_rowsEqual).map((rows) {
+  (SELECT coalesce(sum(total_count), 0) FROM mailboxes WHERE role = 'drafts') AS drafts,
+  ($_needsMyActionCountSql) AS needs_my_action,
+  ($_waitingOnOthersCountSql) AS waiting_on_others''';
+    return _select(sql, [], {
+      _db.emails,
+      _db.mailboxes,
+      _db.vipAddresses,
+      _db.trackedActions,
+      _db.idAliases,
+    }).watch().distinct(_rowsEqual).map((rows) {
       final r = rows.single;
       return {
         VirtualMailbox.allInboxes: r.read<int>('all_inboxes'),
@@ -1143,6 +1156,8 @@ SELECT
         VirtualMailbox.vip: r.read<int>('vip'),
         VirtualMailbox.allDrafts: r.read<int>('drafts'),
         VirtualMailbox.allSent: 0,
+        VirtualMailbox.needsMyAction: r.read<int>('needs_my_action'),
+        VirtualMailbox.waitingOnOthers: r.read<int>('waiting_on_others'),
       };
     });
   }
@@ -1794,6 +1809,117 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
       'ON CONFLICT (uid, recurrence_id) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at',
       [uid, recurrenceId, data, (now ?? DateTime.now()).millisecondsSinceEpoch],
     );
+  }
+
+  // Actions -----------------------------------------------------------------
+
+  /// SQL selecting the `seq` of the stored copies of the source message of
+  /// `tracked_actions a`: by the id it was last seen at (through a move's
+  /// alias), and by its Message-ID, guarded by subject and date as
+  /// `MessageRef.matches` is. Index lookups only: the work follows the number
+  /// of actions, not of messages.
+  static const _actionSourceSeqs = """
+SELECT seq FROM emails WHERE id = coalesce((SELECT new_id FROM id_aliases WHERE old_id = a.email_id), a.email_id)
+UNION
+SELECT seq FROM emails INDEXED BY emails_message_id
+WHERE account_id = a.account_id AND message_id_header = a.message_id_header
+  AND (a.subject = '' OR subject = a.subject OR protected_subject = a.subject)
+  AND (a.received_at IS NULL OR abs(received_at - a.received_at) < 172800000)""";
+
+  static bool _isActionFolder(MailboxRef ref) => ref is VirtualMailboxRef && _actionPairs(ref.kind).isNotEmpty;
+
+  /// The `owner/state` pairs of the open actions in [folder]
+  /// (`ActionRecord.folderOf`), as SQL strings; none for other mailboxes.
+  static List<String> _actionPairs(VirtualMailbox folder) => [
+    for (final o in ActionOwner.values)
+      for (final st in ActionState.values)
+        if (ActionRecord.folderOf(o, st) == folder) "'${o.name}/${st.name}'",
+  ];
+
+  /// SQL listing (account id, thread id) of the conversations with an open
+  /// action in [folder].
+  static String _actionThreadsSql(VirtualMailbox folder) =>
+      """
+SELECT s.account_id, s.thread_id FROM tracked_actions a JOIN emails s ON s.seq IN ($_actionSourceSeqs)
+WHERE a.deleted = 0 AND a.owner || '/' || a.state IN (${_actionPairs(folder).join(', ')})""";
+
+  /// SQL counting the conversations of [folder] with a message outside
+  /// Trash and Junk, as its list shows them.
+  static String _actionCountSql(VirtualMailbox folder) =>
+      """
+SELECT count(*) FROM (SELECT DISTINCT t.account_id, t.thread_id FROM (${_actionThreadsSql(folder)}) t
+  WHERE EXISTS (SELECT 1 FROM emails e INDEXED BY emails_thread JOIN mailboxes m ON m.id = e.mailbox_id
+    WHERE e.account_id = t.account_id AND e.thread_id = t.thread_id AND m.role NOT IN ('trash', 'junk')))""";
+
+  static final _needsMyActionCountSql = _actionCountSql(VirtualMailbox.needsMyAction);
+  static final _waitingOnOthersCountSql = _actionCountSql(VirtualMailbox.waitingOnOthers);
+
+  /// Every action of every account, the most recently changed first; see
+  /// `ActionRecords.watchActions`. Each source is as last seen: the stored
+  /// copy of its message (the one it was made from, else outside Trash and
+  /// Junk, as a conversation prefers), with its current id and conversation.
+  Stream<List<ActionRecord>> watchActions({bool includeDeleted = false}) {
+    const sql =
+        """
+SELECT a.json, s.id AS seen_id, s.thread_id AS seen_thread, s.message_id_header AS seen_mid
+FROM tracked_actions a LEFT JOIN emails s ON s.seq = (
+  SELECT e.seq FROM emails e JOIN mailboxes m ON m.id = e.mailbox_id WHERE e.seq IN ($_actionSourceSeqs)
+  ORDER BY (e.id = a.email_id) DESC, CASE WHEN m.role IN ('trash', 'junk') THEN 9 ELSE $_copyRank END, e.seq LIMIT 1)
+WHERE ?1 OR a.deleted = 0
+ORDER BY a.updated_at DESC, a.id""";
+    return _select(
+      sql,
+      [includeDeleted],
+      {_db.trackedActions, _db.emails, _db.mailboxes, _db.idAliases},
+    ).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) _actionFromRow(r)]);
+  }
+
+  static ActionRecord _actionFromRow(QueryRow r) {
+    final record = ActionRecord.fromJson((jsonDecode(r.read<String>('json')) as Map).cast<String, Object?>());
+    final seen = r.read<String?>('seen_id');
+    if (seen == null) return record;
+    final source = record.source;
+    return record.seenAt(
+      MessageRef(
+        accountId: source.accountId,
+        emailId: seen,
+        messageIdHeader: source.messageIdHeader ?? r.read<String?>('seen_mid'),
+        threadId: r.read<String>('seen_thread'),
+        subject: source.subject,
+        receivedAt: source.receivedAt,
+      ),
+    );
+  }
+
+  /// Saves [records], replacing those with the same ids.
+  Future<void> putActions(List<ActionRecord> records) => _db.transaction(() async {
+    for (final r in records) {
+      final source = r.source;
+      await _db
+          .into(_db.trackedActions)
+          .insertOnConflictUpdate(
+            TrackedActionsCompanion.insert(
+              id: r.id,
+              accountId: source.accountId,
+              emailId: source.emailId,
+              messageIdHeader: Value(source.messageIdHeader),
+              subject: Value(source.subject),
+              receivedAt: Value(source.receivedAt?.millisecondsSinceEpoch),
+              owner: r.owner.name,
+              state: r.state.name,
+              deleted: Value(r.deleted),
+              updatedAt: r.updatedAt.millisecondsSinceEpoch,
+              json: jsonEncode(r.toJson()),
+            ),
+          );
+    }
+  });
+
+  /// Deletes the actions [ids] without a trace.
+  Future<void> deleteActions(Iterable<String> ids) async {
+    final list = ids.toSet().toList();
+    if (list.isEmpty) return;
+    await (_db.delete(_db.trackedActions)..where((t) => t.id.isIn(list))).go();
   }
 
   // Content -----------------------------------------------------------------

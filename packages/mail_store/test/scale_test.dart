@@ -302,6 +302,35 @@ void main() {
     }
   });
 
+  test('the action folders work by their actions, not by the mailbox', () async {
+    final inbox = await store.watchList(RealMailboxRef(mbox('INBOX')), threaded: false, limit: 40).first;
+    final at = DateTime.utc(2026, 9, 2);
+    await store.putActions([
+      for (final (i, t) in inbox.indexed)
+        if (i % 4 == 0)
+          ActionRecord(
+            id: 'a$i',
+            owner: i % 8 == 0 ? ActionOwner.me : ActionOwner.them,
+            kind: ActionKind.task,
+            source: MessageRef.of(t.latest),
+            originalRequest: 'Request $i',
+            currentRequest: 'Request $i',
+            createdAt: at,
+            updatedAt: at,
+          ),
+    ]);
+    addTearDown(() => store.deleteActions([for (var i = 0; i < 40; i++) 'a$i']));
+    for (final kind in [VirtualMailbox.needsMyAction, VirtualMailbox.waitingOnOthers]) {
+      final statements = await first('watchList ${kind.name}', () => store.watchList(VirtualMailboxRef(kind)));
+      final list = statements.singleWhere((s) => s.sql.startsWith('WITH me(addr)'));
+      expect(await store.watchList(VirtualMailboxRef(kind)).first, hasLength(5), reason: kind.name);
+      await expectNoFullScan(kind.name, list.sql, list.args);
+    }
+    final counts = await store.watchVirtualCounts().first;
+    expect((counts[VirtualMailbox.needsMyAction], counts[VirtualMailbox.waitingOnOthers]), (5, 5));
+    await first('watchActions', () => store.watchActions());
+  });
+
   test('lists hold the newest threads, one copy per message', () async {
     final roles = {for (final m in await store.getMailboxes()) m.id: m.role.name};
     bool virtualOk(Map<String, Object?> r, {bool mine = true}) {
