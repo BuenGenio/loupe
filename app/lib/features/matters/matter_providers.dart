@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../providers.dart';
+import '../actions/action_providers.dart';
 
 /// The repository's matters, if it keeps them.
 MatterRecords? matterRecordsOf(MailRepository repository) => switch (repository) {
@@ -42,8 +43,7 @@ List<Matter> mattersWith(List<Matter> matters, Iterable<EmailSummary> conversati
 ];
 
 /// An open request or a wait about a matter's mail, from Needs My Action
-/// and Waiting on Others. A stand-in until the action folders land; see
-/// [matterOpenItemsProvider].
+/// and Waiting on Others ([matterOpenItemsProvider]).
 final class MatterOpenItem {
   const MatterOpenItem({required this.text, required this.source, this.waitingOnOthers = false, this.due});
 
@@ -58,14 +58,23 @@ final class MatterOpenItem {
   final DateTime? due;
 }
 
-/// The open actions and waits of matter [matterId]'s messages: the hook
-/// for the action folders (Needs My Action, Waiting on Others), built on
-/// another branch. Until they are wired in it is always empty, and the
-/// Matter screen shows neither section. Wiring: override or replace this
-/// provider with one that watches [matterMessagesProvider] (or the matter's
-/// members' [MatterMember.ref]s) and returns the open action records whose
-/// source message is among them.
-final matterOpenItemsProvider = Provider.autoDispose.family<List<MatterOpenItem>, String>((ref, matterId) => const []);
+/// The open actions and waits of matter [matterId]'s messages, from Needs My
+/// Action and Waiting on Others: every action still in one of the two
+/// folders whose message is one of the matter's, wherever it is now.
+final matterOpenItemsProvider = Provider.autoDispose.family<List<MatterOpenItem>, String>((ref, matterId) {
+  final messages = ref.watch(matterMessagesProvider(matterId)).value ?? const <EmailSummary>[];
+  final actions = ref.watch(allActionsProvider).value ?? const <ActionRecord>[];
+  return [
+    for (final a in actions)
+      if (a.folder case final folder? when messages.any(a.source.matches))
+        MatterOpenItem(
+          text: a.currentRequest,
+          source: a.source,
+          waitingOnOthers: folder == VirtualMailbox.waitingOnOthers,
+          due: a.due.date,
+        ),
+  ];
+});
 
 /// Edits matters: every change is a [Matter] value written back whole, so
 /// what an edit means is mail_model's, the same in the demo and live.

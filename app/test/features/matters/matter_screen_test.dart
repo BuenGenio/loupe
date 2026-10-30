@@ -27,6 +27,16 @@ void main() {
 
   Finder inSection(String key, Finder finder) => find.descendant(of: find.byKey(Key(key)), matching: finder);
 
+  testWidgets('the matter lists its open actions and what it waits for, from the action folders', (tester) async {
+    final repo = await pumpLoupe(tester, size: const Size(390, 2400));
+    final matter = (await repo.watchMatters().first).single;
+    await goTo(tester, Routes.matter(matter.id));
+    expect(find.text('OPEN ACTIONS'), findsOneWidget);
+    expect(find.text('WAITING ON OTHERS'), findsOneWidget);
+    expect(find.textContaining('tax year overview for 2025'), findsOneWidget);
+    expect(find.textContaining('valuation booking'), findsWidgets);
+  });
+
   testWidgets('Mailboxes › Matters › Buying 14 Quay Street: four senders in the history, both illustrations', (
     tester,
   ) async {
@@ -88,6 +98,9 @@ void main() {
         .ancestor(of: find.text('Thank you for the introduction'), matching: find.byType(InkWell))
         .first;
     await tester.ensureVisible(find.descendant(of: referral, matching: find.text('Not This One')));
+    // Clear of the title bar, which the list scrolls under.
+    await tester.drag(find.byType(Scrollable).first, const Offset(0, 300));
+    await tester.pumpAndSettle();
     await tester.tap(find.descendant(of: referral, matching: find.text('Not This One')));
     await tester.pumpAndSettle();
     expect(find.text('Thank you for the introduction'), findsNothing);
