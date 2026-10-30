@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Без проследяване. Отдалечените изображения остават блокирани, докато не решите друго.",
   "welcomeAddAccount": "Добавяне на профил",
   "welcomeImport": "Импортиране от Thunderbird",
-  "welcomeTryDemo": "Изпробване с демо поща"
+  "welcomeTryDemo": "Изпробване с демо поща",
+  "searchAskPlainEnglish": "Попитайте със свои думи",
+  "searchAskWorking": "Подготвяне на търсенето…",
+  "searchAskProposed": "Предложено търсене",
+  "searchAskUse": "Използване на това търсене",
+  "searchAskNeedsAnswer": "Loupe трябва да знае:",
+  "searchAskFailed": "Loupe не успя да превърне това в търсене.",
+  "searchAskDemoNote": "Преведено от вградената демонстрация, не от модел.",
+  "settingsAiHeader": "Личен ИИ",
+  "settingsAiAssistDetail": "Превръща изречение в търсене, което можете да проверите и промените. Засега превежда вградената демонстрация: без модел, без мрежа."
 }

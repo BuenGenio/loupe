@@ -6337,4 +6337,32 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Kokeile demopostilla';
+
+  @override
+  String get searchAskPlainEnglish => 'Kysy omin sanoin';
+
+  @override
+  String get searchAskWorking => 'Hakua muodostetaan…';
+
+  @override
+  String get searchAskProposed => 'Ehdotettu haku';
+
+  @override
+  String get searchAskUse => 'Käytä tätä hakua';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupen täytyy tietää:';
+
+  @override
+  String get searchAskFailed => 'Loupe ei saanut tästä hakua.';
+
+  @override
+  String get searchAskDemoNote => 'Kääntänyt sisäänrakennettu demo, ei malli.';
+
+  @override
+  String get settingsAiHeader => 'Yksityinen tekoäly';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Muuttaa lauseen hauksi, jonka voit tarkistaa ja muokata. Toistaiseksi kääntää sisäänrakennettu demo: ei mallia, ei verkkoa.';
 }

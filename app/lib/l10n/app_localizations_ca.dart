@@ -6381,4 +6381,32 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Prova-ho amb correu de demostració';
+
+  @override
+  String get searchAskPlainEnglish => 'Pregunta amb les teves paraules';
+
+  @override
+  String get searchAskWorking => 'S\'està preparant la cerca…';
+
+  @override
+  String get searchAskProposed => 'Cerca proposada';
+
+  @override
+  String get searchAskUse => 'Utilitza aquesta cerca';
+
+  @override
+  String get searchAskNeedsAnswer => 'El Loupe necessita saber:';
+
+  @override
+  String get searchAskFailed => 'El Loupe no ha pogut convertir-ho en una cerca.';
+
+  @override
+  String get searchAskDemoNote => 'Traduït per la demostració integrada, no per un model.';
+
+  @override
+  String get settingsAiHeader => 'IA privada';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Converteix una frase en una cerca que pots revisar i editar. De moment tradueix la demostració integrada: sense model, sense xarxa.';
 }

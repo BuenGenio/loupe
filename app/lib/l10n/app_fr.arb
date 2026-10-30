@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Aucun pistage. Les images distantes restent bloquées tant que vous ne le décidez pas.",
   "welcomeAddAccount": "Ajouter un compte",
   "welcomeImport": "Importer depuis Thunderbird",
-  "welcomeTryDemo": "Essayer avec des e-mails de démonstration"
+  "welcomeTryDemo": "Essayer avec des e-mails de démonstration",
+  "searchAskPlainEnglish": "Demander en langage courant",
+  "searchAskWorking": "Recherche en préparation…",
+  "searchAskProposed": "Recherche proposée",
+  "searchAskUse": "Utiliser cette recherche",
+  "searchAskNeedsAnswer": "Loupe a besoin de savoir :",
+  "searchAskFailed": "Loupe n'a pas pu en faire une recherche.",
+  "searchAskDemoNote": "Traduit par la démo intégrée, pas par un modèle.",
+  "settingsAiHeader": "IA privée",
+  "settingsAiAssistDetail": "Transforme une phrase en recherche à vérifier et modifier. Pour l'instant, la démo intégrée traduit : aucun modèle, aucun réseau."
 }

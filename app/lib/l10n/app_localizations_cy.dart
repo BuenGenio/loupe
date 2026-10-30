@@ -6738,4 +6738,32 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Rhoi cynnig arni gydag e-bost demo';
+
+  @override
+  String get searchAskPlainEnglish => 'Gofyn yn eich geiriau eich hun';
+
+  @override
+  String get searchAskWorking => 'Wrthi\'n llunio\'r chwiliad…';
+
+  @override
+  String get searchAskProposed => 'Chwiliad arfaethedig';
+
+  @override
+  String get searchAskUse => 'Defnyddio\'r chwiliad hwn';
+
+  @override
+  String get searchAskNeedsAnswer => 'Mae angen i Loupe wybod:';
+
+  @override
+  String get searchAskFailed => 'Ni allai Loupe wneud chwiliad o hynny.';
+
+  @override
+  String get searchAskDemoNote => 'Cyfieithwyd gan y demo mewnol, nid gan fodel.';
+
+  @override
+  String get settingsAiHeader => 'Deallusrwydd artiffisial preifat';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Mae\'n troi brawddeg yn chwiliad y gallwch ei wirio a\'i olygu. Am y tro, y demo mewnol sy\'n cyfieithu: dim model, dim rhwydwaith.';
 }

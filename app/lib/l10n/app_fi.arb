@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Ei seurantaa. Etäkuvat pysyvät estettyinä, kunnes toisin päätät.",
   "welcomeAddAccount": "Lisää tili",
   "welcomeImport": "Tuo Thunderbirdistä",
-  "welcomeTryDemo": "Kokeile demopostilla"
+  "welcomeTryDemo": "Kokeile demopostilla",
+  "searchAskPlainEnglish": "Kysy omin sanoin",
+  "searchAskWorking": "Hakua muodostetaan…",
+  "searchAskProposed": "Ehdotettu haku",
+  "searchAskUse": "Käytä tätä hakua",
+  "searchAskNeedsAnswer": "Loupen täytyy tietää:",
+  "searchAskFailed": "Loupe ei saanut tästä hakua.",
+  "searchAskDemoNote": "Kääntänyt sisäänrakennettu demo, ei malli.",
+  "settingsAiHeader": "Yksityinen tekoäly",
+  "settingsAiAssistDetail": "Muuttaa lauseen hauksi, jonka voit tarkistaa ja muokata. Toistaiseksi kääntää sisäänrakennettu demo: ei mallia, ei verkkoa."
 }

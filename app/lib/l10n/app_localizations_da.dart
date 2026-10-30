@@ -6288,4 +6288,32 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Prøv med demomail';
+
+  @override
+  String get searchAskPlainEnglish => 'Spørg med dine egne ord';
+
+  @override
+  String get searchAskWorking => 'Finder søgningen…';
+
+  @override
+  String get searchAskProposed => 'Foreslået søgning';
+
+  @override
+  String get searchAskUse => 'Brug denne søgning';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe skal vide:';
+
+  @override
+  String get searchAskFailed => 'Loupe kunne ikke lave det om til en søgning.';
+
+  @override
+  String get searchAskDemoNote => 'Oversat af den indbyggede demo, ikke af en model.';
+
+  @override
+  String get settingsAiHeader => 'Privat AI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Gør en sætning til en søgning, du kan tjekke og redigere. Indtil videre oversætter den indbyggede demo: ingen model, intet netværk.';
 }

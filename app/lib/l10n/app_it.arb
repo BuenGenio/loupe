@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Nessun tracciamento. Le immagini remote restano bloccate finché non decidi tu.",
   "welcomeAddAccount": "Aggiungi account",
   "welcomeImport": "Importa da Thunderbird",
-  "welcomeTryDemo": "Prova con la posta demo"
+  "welcomeTryDemo": "Prova con la posta demo",
+  "searchAskPlainEnglish": "Chiedi con parole tue",
+  "searchAskWorking": "Preparazione della ricerca…",
+  "searchAskProposed": "Ricerca proposta",
+  "searchAskUse": "Usa questa ricerca",
+  "searchAskNeedsAnswer": "Loupe deve sapere:",
+  "searchAskFailed": "Loupe non è riuscito a trasformarlo in una ricerca.",
+  "searchAskDemoNote": "Tradotto dalla demo integrata, non da un modello.",
+  "settingsAiHeader": "IA privata",
+  "settingsAiAssistDetail": "Trasforma una frase in una ricerca che puoi controllare e modificare. Per ora traduce la demo integrata: nessun modello, nessuna rete."
 }

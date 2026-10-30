@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Bez praćenja. Udaljene slike ostaju blokirane dok ne kažete drugačije.",
   "welcomeAddAccount": "Dodaj račun",
   "welcomeImport": "Uvezi iz Thunderbirda",
-  "welcomeTryDemo": "Isprobaj s demo poštom"
+  "welcomeTryDemo": "Isprobaj s demo poštom",
+  "searchAskPlainEnglish": "Pitaj svojim riječima",
+  "searchAskWorking": "Priprema pretrage…",
+  "searchAskProposed": "Predložena pretraga",
+  "searchAskUse": "Koristi ovu pretragu",
+  "searchAskNeedsAnswer": "Loupe treba znati:",
+  "searchAskFailed": "Loupe to nije mogao pretvoriti u pretragu.",
+  "searchAskDemoNote": "Preveo ugrađeni demo, a ne model.",
+  "settingsAiHeader": "Privatna AI",
+  "settingsAiAssistDetail": "Pretvara rečenicu u pretragu koju možeš provjeriti i urediti. Zasad prevodi ugrađeni demo: bez modela, bez mreže."
 }

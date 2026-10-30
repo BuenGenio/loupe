@@ -6440,4 +6440,32 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Izmēģināt ar demonstrācijas pastu';
+
+  @override
+  String get searchAskPlainEnglish => 'Jautāt saviem vārdiem';
+
+  @override
+  String get searchAskWorking => 'Gatavo meklēšanu…';
+
+  @override
+  String get searchAskProposed => 'Ieteiktā meklēšana';
+
+  @override
+  String get searchAskUse => 'Izmantot šo meklēšanu';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe ir jāzina:';
+
+  @override
+  String get searchAskFailed => 'Loupe nevarēja to pārvērst meklēšanā.';
+
+  @override
+  String get searchAskDemoNote => 'Tulkoja iebūvētā demonstrācija, nevis modelis.';
+
+  @override
+  String get settingsAiHeader => 'Privātais MI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Pārvērš teikumu meklēšanā, ko var pārbaudīt un rediģēt. Pagaidām tulko iebūvētā demonstrācija: bez modeļa, bez tīkla.';
 }

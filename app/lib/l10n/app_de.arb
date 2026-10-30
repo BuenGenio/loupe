@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Kein Tracking. Externe Bilder bleiben blockiert, bis du es sagst.",
   "welcomeAddAccount": "Konto hinzufügen",
   "welcomeImport": "Aus Thunderbird importieren",
-  "welcomeTryDemo": "Mit Demo-Mails ausprobieren"
+  "welcomeTryDemo": "Mit Demo-Mails ausprobieren",
+  "searchAskPlainEnglish": "Mit eigenen Worten fragen",
+  "searchAskWorking": "Suche wird ermittelt …",
+  "searchAskProposed": "Vorgeschlagene Suche",
+  "searchAskUse": "Diese Suche verwenden",
+  "searchAskNeedsAnswer": "Loupe muss wissen:",
+  "searchAskFailed": "Loupe konnte daraus keine Suche machen.",
+  "searchAskDemoNote": "Übersetzt von der eingebauten Demo, nicht von einem Modell.",
+  "settingsAiHeader": "Private KI",
+  "settingsAiAssistDetail": "Macht aus einem Satz eine Suche, die sich prüfen und ändern lässt. Vorerst übersetzt die eingebaute Demo: kein Modell, kein Netzwerk."
 }

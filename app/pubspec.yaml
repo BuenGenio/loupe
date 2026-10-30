@@ -14,6 +14,7 @@ dependencies:
     sdk: flutter
   mail_model: {path: ../packages/mail_model}
   expr_search: {path: ../packages/expr_search}
+  mail_ai: {path: ../packages/mail_ai}
   readable: {path: ../packages/readable}
   mail_imap: {path: ../packages/mail_imap}
   mail_jmap: {path: ../packages/mail_jmap}

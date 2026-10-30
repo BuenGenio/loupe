@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Fără urmărire. Imaginile externe rămân blocate până decizi tu altfel.",
   "welcomeAddAccount": "Adaugă un cont",
   "welcomeImport": "Importă din Thunderbird",
-  "welcomeTryDemo": "Încearcă cu e-mailuri demo"
+  "welcomeTryDemo": "Încearcă cu e-mailuri demo",
+  "searchAskPlainEnglish": "Întreabă cu propriile cuvinte",
+  "searchAskWorking": "Se pregătește căutarea…",
+  "searchAskProposed": "Căutare propusă",
+  "searchAskUse": "Folosește această căutare",
+  "searchAskNeedsAnswer": "Loupe trebuie să știe:",
+  "searchAskFailed": "Loupe nu a putut transforma asta într-o căutare.",
+  "searchAskDemoNote": "Tradus de demonstrația încorporată, nu de un model.",
+  "settingsAiHeader": "IA privată",
+  "settingsAiAssistDetail": "Transformă o propoziție într-o căutare pe care o poți verifica și modifica. Deocamdată traduce demonstrația încorporată: fără model, fără rețea."
 }

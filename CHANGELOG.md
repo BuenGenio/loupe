@@ -10,6 +10,10 @@ creating the heading if it isn't there yet. Say what changed for the person
 using the app, in a line or two; leave out internals, refactors and tests.
 -->
 
+## 2026-10-30
+
+- **Ask in Plain English** (preview, off by default: Settings › Private AI). Type a sentence in search and Loupe proposes an expression you can check and edit before it runs. For now the built-in demo does the translating, with a few rules; no model and no network are involved.
+
 ## 2026-10-08
 
 - **Loupe speaks your language.** The app is translated into 37 languages, and follows your phone's. Settings › Language picks a different one for Loupe alone; notifications follow it too.
