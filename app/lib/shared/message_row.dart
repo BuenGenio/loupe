@@ -25,6 +25,7 @@ class MessageRow extends StatelessWidget {
     this.location,
     this.showRecipients = false,
     this.wakeTime,
+    this.footer,
     this.onTap,
     this.onLongPress,
   });
@@ -60,6 +61,10 @@ class MessageRow extends StatelessWidget {
   /// When a snoozed message comes back ("Tomorrow 08:00"), shown with a
   /// clock instead of the date (the Snoozed mailbox).
   final String? wakeTime;
+
+  /// Under the preview: in Needs My Action and Waiting on Others, how many
+  /// of the conversation's actions are open there and when one is due.
+  final Widget? footer;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
 
@@ -220,6 +225,7 @@ class MessageRow extends StatelessWidget {
             padding: const EdgeInsets.only(top: 3),
             child: Text(location!, style: styles.caption, maxLines: 1, overflow: TextOverflow.ellipsis),
           ),
+        ?footer,
       ],
     );
 

@@ -2730,6 +2730,321 @@ class AppLocalizationsLv extends AppLocalizations {
   String get actionsWaitingOnOthers => 'Gaidu citus';
 
   @override
+  String get actionsNeedsMyActionEmpty => 'Nekas neprasa jūsu rīcību';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Jūs negaidāt nevienu';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Lai kaut kam sekotu, ziņojumā pieskarieties ⋯ un izvēlieties „Pievienot darbību…“';
+
+  @override
+  String get actionsTitle => 'Darbības';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jāizdara',
+      one: '$count jāizdara',
+      zero: '$count jāizdara',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gaida',
+      one: '$count gaida',
+      zero: '$count gaida',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pabeigtas darbības',
+      one: '$count pabeigta darbība',
+      zero: '$count pabeigtu darbību',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Pabeigtās';
+
+  @override
+  String get actionsNoneInConversation => 'Šajā sarunā nav darbību.';
+
+  @override
+  String get actionsFooter =>
+      'Darbības tiek glabātas šajā tālrunī. Pasts tās nekad nemaina, pat ne atbilde „Paldies“: to darāt tikai jūs.';
+
+  @override
+  String get actionsMarkDone => 'Atzīmēt kā izdarītu';
+
+  @override
+  String get actionsReopen => 'Atvērt atkārtoti';
+
+  @override
+  String get actionsStateNeedsAction => 'Nepieciešama rīcība';
+
+  @override
+  String get actionsStateInProgress => 'Procesā';
+
+  @override
+  String get actionsStateSent => 'Nosūtīts';
+
+  @override
+  String get actionsStateWaiting => 'Gaida apstiprinājumu';
+
+  @override
+  String get actionsStateAcknowledged => 'Apstiprināts';
+
+  @override
+  String get actionsStateDone => 'Izdarīts';
+
+  @override
+  String get actionsStateDismissed => 'Noraidīts';
+
+  @override
+  String get actionsStateSuperseded => 'Aizstāts';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Atzīmēts, ka nepieciešama rīcība',
+      'inProgress': 'Atzīmēts kā procesā',
+      'sent': 'Atzīmēts kā nosūtīts',
+      'waitingForAcknowledgement': 'Gaida apstiprinājumu',
+      'acknowledged': 'Atzīmēts kā apstiprināts',
+      'done': 'Atzīmēts kā izdarīts',
+      'dismissed': 'Darbība noraidīta',
+      'superseded': 'Atzīmēts kā aizstāts',
+      'other': 'Darbība mainīta',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Darbība pārformulēta';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Atgādinājums iestatīts: $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Atgādinājums noņemts';
+
+  @override
+  String get actionsDeleted => 'Darbība izdzēsta';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pievienotas $count darbības',
+      one: 'Pievienota $count darbība',
+      zero: 'Pievienots $count darbību',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Darbību neizdevās saglabāt.';
+
+  @override
+  String get actionsStatusHeader => 'Statuss';
+
+  @override
+  String get actionsEditText => 'Rediģēt tekstu…';
+
+  @override
+  String get actionsEditTitle => 'Rediģēt darbību';
+
+  @override
+  String get actionsRemindMe => 'Atgādināt…';
+
+  @override
+  String get actionsChangeReminder => 'Mainīt atgādinājumu…';
+
+  @override
+  String get actionsClearReminder => 'Noņemt atgādinājumu';
+
+  @override
+  String get actionsRemindTitle => 'Atgādināt';
+
+  @override
+  String get actionsDelete => 'Dzēst darbību';
+
+  @override
+  String get actionsHistoryHeader => 'Vēsture';
+
+  @override
+  String get actionsHistoryAdded => 'Pievienota';
+
+  @override
+  String get actionsHistoryEdited => 'Pārformulēta';
+
+  @override
+  String get actionsHistoryDue => 'Mainīts termiņš';
+
+  @override
+  String get actionsHistoryReminder => 'Mainīts atgādinājums';
+
+  @override
+  String get actionsHistoryRevised => 'Atjaunināta pēc jauna ieteikuma';
+
+  @override
+  String get actionsHistoryDeleted => 'Izdzēsta';
+
+  @override
+  String get actionsHistoryRestored => 'Atjaunota';
+
+  @override
+  String get actionsOwnerMe => 'Man jādara';
+
+  @override
+  String get actionsOwnerThem => 'Izdarīs citi';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Sākotnēji: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '„$quote“';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Sūtītāja $sender ziņojums, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Pievienojāt jūs';
+
+  @override
+  String get actionsOriginDemo => 'Ieteica iebūvētā demonstrācija: kārtulas, bez modeļa';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Ieteica $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Ieteica $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Termiņš: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Vēlamais termiņš: $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '„$timing“';
+  }
+
+  @override
+  String get actionsAddMenu => 'Pievienot darbību…';
+
+  @override
+  String get actionsSuggestMenu => 'Ieteikt darbības';
+
+  @override
+  String get actionsAddTitle => 'Pievienot darbību';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Kas jums jādara?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Ko jūs gaidāt?';
+
+  @override
+  String get actionsDueDate => 'Termiņš';
+
+  @override
+  String get actionsClearDueDate => 'Bez termiņa';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Par „$subject“';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Ieteiktās darbības';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'šajā tālrunī',
+      'myServer': 'jūsu serverī',
+      'other': 'mākonī',
+    });
+    return 'Ieteica $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'Ieteica iebūvētā demonstrācija: kārtulas, bez modeļa. Nekas neatstāj šo tālruni.';
+
+  @override
+  String get actionsSuggestNone => 'Šajā ziņojumā nav nekā, kam sekot.';
+
+  @override
+  String get actionsSuggestPartial => 'Šis ziņojums ir garš: tika izlasīts tikai tā sākums.';
+
+  @override
+  String get actionsSuggestTracked => 'Tiek sekots';
+
+  @override
+  String get actionsSuggestUpdate => 'Atjaunināt';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pievienot visas $count',
+      two: 'Pievienot abas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Katrs ieteikums citē ziņojumu, un nekam netiek sekots, kamēr to nepievienojat. Citētas agrākas vēstules netiek ņemtas vērā.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Šis ziņojums ir pārāk garš izvēlētajam modelim.';
+
+  @override
+  String get actionsSuggestInvalid => 'Atbilde nesakrita ar ziņojumu, tāpēc nekas netiek ieteikts.';
+
+  @override
+  String get actionsSuggestCancelled => 'Apturēts.';
+
+  @override
+  String get actionsSuggestFailed => 'Ieteikumi pašlaik nav pieejami.';
+
+  @override
   String get settingsLanguage => 'Valoda';
 
   @override

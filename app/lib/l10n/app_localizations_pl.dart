@@ -2732,6 +2732,326 @@ class AppLocalizationsPl extends AppLocalizations {
   String get actionsWaitingOnOthers => 'Czekam na innych';
 
   @override
+  String get actionsNeedsMyActionEmpty => 'Nic nie wymaga twojego działania';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Na nikogo nie czekasz';
+
+  @override
+  String get actionsFolderEmptyDetail => 'Aby coś śledzić, stuknij ⋯ przy wiadomości i wybierz „Dodaj działanie…”';
+
+  @override
+  String get actionsTitle => 'Działania';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count do zrobienia',
+      many: '$count do zrobienia',
+      few: '$count do zrobienia',
+      one: '$count do zrobienia',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count oczekuje',
+      many: '$count oczekuje',
+      few: '$count oczekują',
+      one: '$count oczekuje',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count załatwionego działania',
+      many: '$count załatwionych działań',
+      few: '$count załatwione działania',
+      one: '$count załatwione działanie',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Załatwione';
+
+  @override
+  String get actionsNoneInConversation => 'Ta konwersacja nie ma żadnych działań.';
+
+  @override
+  String get actionsFooter =>
+      'Działania są przechowywane na tym telefonie. Poczta nigdy ich nie zmienia, nawet odpowiedź „Dziękuję”: zmieniasz je tylko ty.';
+
+  @override
+  String get actionsMarkDone => 'Oznacz jako zrobione';
+
+  @override
+  String get actionsReopen => 'Otwórz ponownie';
+
+  @override
+  String get actionsStateNeedsAction => 'Wymaga działania';
+
+  @override
+  String get actionsStateInProgress => 'W toku';
+
+  @override
+  String get actionsStateSent => 'Wysłane';
+
+  @override
+  String get actionsStateWaiting => 'Czeka na potwierdzenie';
+
+  @override
+  String get actionsStateAcknowledged => 'Potwierdzone';
+
+  @override
+  String get actionsStateDone => 'Zrobione';
+
+  @override
+  String get actionsStateDismissed => 'Odrzucone';
+
+  @override
+  String get actionsStateSuperseded => 'Zastąpione';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Oznaczono jako wymagające działania',
+      'inProgress': 'Oznaczono jako w toku',
+      'sent': 'Oznaczono jako wysłane',
+      'waitingForAcknowledgement': 'Czeka na potwierdzenie',
+      'acknowledged': 'Oznaczono jako potwierdzone',
+      'done': 'Oznaczono jako zrobione',
+      'dismissed': 'Odrzucono działanie',
+      'superseded': 'Oznaczono jako zastąpione',
+      'other': 'Zmieniono działanie',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Przeredagowano działanie';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Ustawiono przypomnienie: $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Usunięto przypomnienie';
+
+  @override
+  String get actionsDeleted => 'Usunięto działanie';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dodano $count działania',
+      many: 'Dodano $count działań',
+      few: 'Dodano $count działania',
+      one: 'Dodano działanie',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Nie udało się zapisać działania.';
+
+  @override
+  String get actionsStatusHeader => 'Stan';
+
+  @override
+  String get actionsEditText => 'Edytuj tekst…';
+
+  @override
+  String get actionsEditTitle => 'Edytuj działanie';
+
+  @override
+  String get actionsRemindMe => 'Przypomnij mi…';
+
+  @override
+  String get actionsChangeReminder => 'Zmień przypomnienie…';
+
+  @override
+  String get actionsClearReminder => 'Usuń przypomnienie';
+
+  @override
+  String get actionsRemindTitle => 'Przypomnij mi';
+
+  @override
+  String get actionsDelete => 'Usuń działanie';
+
+  @override
+  String get actionsHistoryHeader => 'Historia';
+
+  @override
+  String get actionsHistoryAdded => 'Dodano';
+
+  @override
+  String get actionsHistoryEdited => 'Przeredagowano';
+
+  @override
+  String get actionsHistoryDue => 'Zmieniono termin';
+
+  @override
+  String get actionsHistoryReminder => 'Zmieniono przypomnienie';
+
+  @override
+  String get actionsHistoryRevised => 'Zaktualizowano według nowej sugestii';
+
+  @override
+  String get actionsHistoryDeleted => 'Usunięto';
+
+  @override
+  String get actionsHistoryRestored => 'Przywrócono';
+
+  @override
+  String get actionsOwnerMe => 'Muszę ja';
+
+  @override
+  String get actionsOwnerThem => 'Zrobią inni';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Pierwotnie: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '„$quote”';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Wiadomość od: $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Dodane przez ciebie';
+
+  @override
+  String get actionsOriginDemo => 'Zasugerowane przez wbudowane demo: reguły, bez modelu';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Zasugerowane przez $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Zasugerowane przez $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Termin: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Najlepiej do: $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '„$timing”';
+  }
+
+  @override
+  String get actionsAddMenu => 'Dodaj działanie…';
+
+  @override
+  String get actionsSuggestMenu => 'Zasugeruj działania';
+
+  @override
+  String get actionsAddTitle => 'Dodaj działanie';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Co musisz zrobić?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Na co czekasz?';
+
+  @override
+  String get actionsDueDate => 'Termin';
+
+  @override
+  String get actionsClearDueDate => 'Bez terminu';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Dotyczy: „$subject”';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Sugerowane działania';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'na tym telefonie',
+      'myServer': 'na twoim serwerze',
+      'other': 'w chmurze',
+    });
+    return 'Sugestie: $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'Sugestie wbudowanego demo: reguły, bez modelu. Nic nie opuszcza tego telefonu.';
+
+  @override
+  String get actionsSuggestNone => 'W tej wiadomości nie ma nic do śledzenia.';
+
+  @override
+  String get actionsSuggestPartial => 'Ta wiadomość jest długa: przeczytano tylko jej początek.';
+
+  @override
+  String get actionsSuggestTracked => 'Śledzone';
+
+  @override
+  String get actionsSuggestUpdate => 'Aktualizuj';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dodaj wszystkie $count',
+      many: 'Dodaj wszystkie $count',
+      few: 'Dodaj wszystkie $count',
+      two: 'Dodaj oba',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Każda sugestia cytuje wiadomość, a nic nie jest śledzone, dopóki tego nie dodasz. Cytowana wcześniejsza poczta się nie liczy.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Ta wiadomość jest za długa dla wybranego modelu.';
+
+  @override
+  String get actionsSuggestInvalid => 'Odpowiedź nie zgadzała się z wiadomością, więc nic nie zasugerowano.';
+
+  @override
+  String get actionsSuggestCancelled => 'Zatrzymano.';
+
+  @override
+  String get actionsSuggestFailed => 'Sugestie są teraz niedostępne.';
+
+  @override
   String get settingsLanguage => 'Język';
 
   @override

@@ -2688,6 +2688,307 @@ class AppLocalizationsCa extends AppLocalizations {
   String get actionsWaitingOnOthers => 'Esperant els altres';
 
   @override
+  String get actionsNeedsMyActionEmpty => 'Res no requereix la teva acció';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'No esperes res de ningú';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Per fer el seguiment d’alguna cosa, toca ⋯ en un missatge i tria Afegeix una acció…';
+
+  @override
+  String get actionsTitle => 'Accions';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count per fer', one: '1 per fer');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count en espera', one: '1 en espera');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count accions resoltes',
+      one: '1 acció resolta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Resoltes';
+
+  @override
+  String get actionsNoneInConversation => 'Aquesta conversa no té cap acció.';
+
+  @override
+  String get actionsFooter =>
+      'Les accions es desen en aquest telèfon. El correu no les canvia mai, ni tan sols una resposta que digui «Gràcies»: només les canvies tu.';
+
+  @override
+  String get actionsMarkDone => 'Marca com a feta';
+
+  @override
+  String get actionsReopen => 'Torna a obrir';
+
+  @override
+  String get actionsStateNeedsAction => 'Requereix acció';
+
+  @override
+  String get actionsStateInProgress => 'En curs';
+
+  @override
+  String get actionsStateSent => 'Enviada';
+
+  @override
+  String get actionsStateWaiting => 'Pendent de confirmació';
+
+  @override
+  String get actionsStateAcknowledged => 'Confirmada';
+
+  @override
+  String get actionsStateDone => 'Feta';
+
+  @override
+  String get actionsStateDismissed => 'Descartada';
+
+  @override
+  String get actionsStateSuperseded => 'Substituïda';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Marcada com a pendent',
+      'inProgress': 'Marcada com en curs',
+      'sent': 'Marcada com a enviada',
+      'waitingForAcknowledgement': 'Pendent de confirmació',
+      'acknowledged': 'Marcada com a confirmada',
+      'done': 'Marcada com a feta',
+      'dismissed': 'Acció descartada',
+      'superseded': 'Marcada com a substituïda',
+      'other': 'Acció canviada',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Acció reformulada';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Recordatori programat per a $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Recordatori eliminat';
+
+  @override
+  String get actionsDeleted => 'Acció suprimida';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count accions afegides',
+      one: 'Acció afegida',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'No s’ha pogut desar l’acció.';
+
+  @override
+  String get actionsStatusHeader => 'Estat';
+
+  @override
+  String get actionsEditText => 'Edita el text…';
+
+  @override
+  String get actionsEditTitle => 'Edita l’acció';
+
+  @override
+  String get actionsRemindMe => 'Recorda-m’ho…';
+
+  @override
+  String get actionsChangeReminder => 'Canvia el recordatori…';
+
+  @override
+  String get actionsClearReminder => 'Elimina el recordatori';
+
+  @override
+  String get actionsRemindTitle => 'Recorda-m’ho';
+
+  @override
+  String get actionsDelete => 'Suprimeix l’acció';
+
+  @override
+  String get actionsHistoryHeader => 'Historial';
+
+  @override
+  String get actionsHistoryAdded => 'Afegida';
+
+  @override
+  String get actionsHistoryEdited => 'Reformulada';
+
+  @override
+  String get actionsHistoryDue => 'Termini canviat';
+
+  @override
+  String get actionsHistoryReminder => 'Recordatori canviat';
+
+  @override
+  String get actionsHistoryRevised => 'Actualitzada amb un suggeriment nou';
+
+  @override
+  String get actionsHistoryDeleted => 'Suprimida';
+
+  @override
+  String get actionsHistoryRestored => 'Restaurada';
+
+  @override
+  String get actionsOwnerMe => 'Ho he de fer jo';
+
+  @override
+  String get actionsOwnerThem => 'Ho faran ells';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Originalment: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '«$quote»';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Missatge de $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Afegida per tu';
+
+  @override
+  String get actionsOriginDemo => 'Suggerida per la demostració integrada: regles, sense model';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Suggerida per $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Suggerida per $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Termini: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Idealment: $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '«$timing»';
+  }
+
+  @override
+  String get actionsAddMenu => 'Afegeix una acció…';
+
+  @override
+  String get actionsSuggestMenu => 'Suggereix accions';
+
+  @override
+  String get actionsAddTitle => 'Afegeix una acció';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Què has de fer?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Què estàs esperant?';
+
+  @override
+  String get actionsDueDate => 'Data límit';
+
+  @override
+  String get actionsClearDueDate => 'Sense data límit';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Sobre «$subject»';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Accions suggerides';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'en aquest telèfon',
+      'myServer': 'al teu servidor',
+      'other': 'al núvol',
+    });
+    return 'Per $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'Per la demostració integrada: regles, sense model. No surt res d’aquest telèfon.';
+
+  @override
+  String get actionsSuggestNone => 'En aquest missatge no hi ha res que calgui seguir.';
+
+  @override
+  String get actionsSuggestPartial => 'Aquest missatge és llarg: només se n’ha llegit el principi.';
+
+  @override
+  String get actionsSuggestTracked => 'En seguiment';
+
+  @override
+  String get actionsSuggestUpdate => 'Actualitza';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Afegeix les $count',
+      two: 'Afegeix les dues',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Cada suggeriment cita el missatge, i no se’n fa cap seguiment fins que l’afegeixes. El correu anterior citat no compta.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Aquest missatge és massa llarg per al model triat.';
+
+  @override
+  String get actionsSuggestInvalid => 'La resposta no quadrava amb el missatge, així que no se suggereix res.';
+
+  @override
+  String get actionsSuggestCancelled => 'Aturat.';
+
+  @override
+  String get actionsSuggestFailed => 'Ara mateix els suggeriments no estan disponibles.';
+
+  @override
   String get settingsLanguage => 'Idioma';
 
   @override

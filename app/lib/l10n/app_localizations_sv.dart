@@ -2648,6 +2648,307 @@ class AppLocalizationsSv extends AppLocalizations {
   String get actionsWaitingOnOthers => 'Väntar på andra';
 
   @override
+  String get actionsNeedsMyActionEmpty => 'Inget kräver din åtgärd';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Du väntar inte på någon';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Om du vill följa något trycker du på ⋯ i ett meddelande och väljer Lägg till åtgärd…';
+
+  @override
+  String get actionsTitle => 'Åtgärder';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count att göra', one: '1 att göra');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count väntar', one: '1 väntar');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count avslutade åtgärder',
+      one: '1 avslutad åtgärd',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Avslutade';
+
+  @override
+  String get actionsNoneInConversation => 'Den här konversationen har inga åtgärder.';
+
+  @override
+  String get actionsFooter =>
+      'Åtgärder sparas i den här telefonen. E-post ändrar dem aldrig, inte ens ett svar som säger ”Tack”: det gör bara du.';
+
+  @override
+  String get actionsMarkDone => 'Markera som utförd';
+
+  @override
+  String get actionsReopen => 'Öppna igen';
+
+  @override
+  String get actionsStateNeedsAction => 'Kräver åtgärd';
+
+  @override
+  String get actionsStateInProgress => 'Pågår';
+
+  @override
+  String get actionsStateSent => 'Skickad';
+
+  @override
+  String get actionsStateWaiting => 'Väntar på bekräftelse';
+
+  @override
+  String get actionsStateAcknowledged => 'Bekräftad';
+
+  @override
+  String get actionsStateDone => 'Utförd';
+
+  @override
+  String get actionsStateDismissed => 'Avfärdad';
+
+  @override
+  String get actionsStateSuperseded => 'Ersatt';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Markerad som kräver åtgärd',
+      'inProgress': 'Markerad som pågående',
+      'sent': 'Markerad som skickad',
+      'waitingForAcknowledgement': 'Väntar på bekräftelse',
+      'acknowledged': 'Markerad som bekräftad',
+      'done': 'Markerad som utförd',
+      'dismissed': 'Åtgärden avfärdades',
+      'superseded': 'Markerad som ersatt',
+      'other': 'Åtgärden ändrades',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Åtgärden omformulerades';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Påminnelse inställd på $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Påminnelsen togs bort';
+
+  @override
+  String get actionsDeleted => 'Åtgärden raderades';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count åtgärder tillagda',
+      one: 'Åtgärd tillagd',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Åtgärden kunde inte sparas.';
+
+  @override
+  String get actionsStatusHeader => 'Status';
+
+  @override
+  String get actionsEditText => 'Redigera text…';
+
+  @override
+  String get actionsEditTitle => 'Redigera åtgärd';
+
+  @override
+  String get actionsRemindMe => 'Påminn mig…';
+
+  @override
+  String get actionsChangeReminder => 'Ändra påminnelse…';
+
+  @override
+  String get actionsClearReminder => 'Ta bort påminnelse';
+
+  @override
+  String get actionsRemindTitle => 'Påminn mig';
+
+  @override
+  String get actionsDelete => 'Radera åtgärd';
+
+  @override
+  String get actionsHistoryHeader => 'Historik';
+
+  @override
+  String get actionsHistoryAdded => 'Tillagd';
+
+  @override
+  String get actionsHistoryEdited => 'Omformulerad';
+
+  @override
+  String get actionsHistoryDue => 'Tidsfrist ändrad';
+
+  @override
+  String get actionsHistoryReminder => 'Påminnelse ändrad';
+
+  @override
+  String get actionsHistoryRevised => 'Uppdaterad från ett nytt förslag';
+
+  @override
+  String get actionsHistoryDeleted => 'Raderad';
+
+  @override
+  String get actionsHistoryRestored => 'Återställd';
+
+  @override
+  String get actionsOwnerMe => 'Jag måste';
+
+  @override
+  String get actionsOwnerThem => 'Andra ska';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Ursprungligen: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '”$quote”';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Meddelande från $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Tillagd av dig';
+
+  @override
+  String get actionsOriginDemo => 'Föreslagen av den inbyggda demon: regler, ingen modell';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Föreslagen av $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Föreslagen av $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Tidsfrist: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Helst senast $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '”$timing”';
+  }
+
+  @override
+  String get actionsAddMenu => 'Lägg till åtgärd…';
+
+  @override
+  String get actionsSuggestMenu => 'Föreslå åtgärder';
+
+  @override
+  String get actionsAddTitle => 'Lägg till åtgärd';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Vad behöver du göra?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Vad väntar du på?';
+
+  @override
+  String get actionsDueDate => 'Tidsfrist';
+
+  @override
+  String get actionsClearDueDate => 'Ingen tidsfrist';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Om ”$subject”';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Föreslagna åtgärder';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'i den här telefonen',
+      'myServer': 'på din server',
+      'other': 'i molnet',
+    });
+    return 'Av $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'Av den inbyggda demon: regler, ingen modell. Inget lämnar den här telefonen.';
+
+  @override
+  String get actionsSuggestNone => 'Inget att följa upp i det här meddelandet.';
+
+  @override
+  String get actionsSuggestPartial => 'Meddelandet är långt: bara början lästes.';
+
+  @override
+  String get actionsSuggestTracked => 'Följs';
+
+  @override
+  String get actionsSuggestUpdate => 'Uppdatera';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Lägg till alla $count',
+      two: 'Lägg till båda',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Varje förslag citerar meddelandet, och inget följs förrän du lägger till det. Citerad äldre e-post räknas inte.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Meddelandet är för långt för den valda modellen.';
+
+  @override
+  String get actionsSuggestInvalid => 'Svaret stämde inte med meddelandet, så inget föreslås.';
+
+  @override
+  String get actionsSuggestCancelled => 'Avbrutet.';
+
+  @override
+  String get actionsSuggestFailed => 'Förslag är inte tillgängliga just nu.';
+
+  @override
   String get settingsLanguage => 'Språk';
 
   @override

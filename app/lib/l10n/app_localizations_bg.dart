@@ -2655,6 +2655,311 @@ class AppLocalizationsBg extends AppLocalizations {
   String get actionsWaitingOnOthers => 'Очаквам от други';
 
   @override
+  String get actionsNeedsMyActionEmpty => 'Нищо не изисква действие от вас';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Не очаквате нищо от никого';
+
+  @override
+  String get actionsFolderEmptyDetail => 'За да следите нещо, докоснете ⋯ в писмо и изберете „Добавяне на действие…“';
+
+  @override
+  String get actionsTitle => 'Действия';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count за изпълнение',
+      one: '1 за изпълнение',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count в очакване', one: '1 в очакване');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count приключени действия',
+      one: '1 приключено действие',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Приключени';
+
+  @override
+  String get actionsNoneInConversation => 'В този разговор няма действия.';
+
+  @override
+  String get actionsFooter =>
+      'Действията се пазят на този телефон. Пощата никога не ги променя, дори отговор „Благодаря“: променяте ги само вие.';
+
+  @override
+  String get actionsMarkDone => 'Маркиране като изпълнено';
+
+  @override
+  String get actionsReopen => 'Повторно отваряне';
+
+  @override
+  String get actionsStateNeedsAction => 'Изисква действие';
+
+  @override
+  String get actionsStateInProgress => 'В процес';
+
+  @override
+  String get actionsStateSent => 'Изпратено';
+
+  @override
+  String get actionsStateWaiting => 'Очаква потвърждение';
+
+  @override
+  String get actionsStateAcknowledged => 'Потвърдено';
+
+  @override
+  String get actionsStateDone => 'Изпълнено';
+
+  @override
+  String get actionsStateDismissed => 'Отхвърлено';
+
+  @override
+  String get actionsStateSuperseded => 'Заменено';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Маркирано като изискващо действие',
+      'inProgress': 'Маркирано като започнато',
+      'sent': 'Маркирано като изпратено',
+      'waitingForAcknowledgement': 'Очаква потвърждение',
+      'acknowledged': 'Маркирано като потвърдено',
+      'done': 'Маркирано като изпълнено',
+      'dismissed': 'Действието е отхвърлено',
+      'superseded': 'Маркирано като заменено',
+      'other': 'Действието е променено',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Действието е преформулирано';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Напомнянето е зададено за $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Напомнянето е премахнато';
+
+  @override
+  String get actionsDeleted => 'Действието е изтрито';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Добавени са $count действия',
+      one: 'Действието е добавено',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Действието не можа да бъде запазено.';
+
+  @override
+  String get actionsStatusHeader => 'Състояние';
+
+  @override
+  String get actionsEditText => 'Редактиране на текста…';
+
+  @override
+  String get actionsEditTitle => 'Редактиране на действие';
+
+  @override
+  String get actionsRemindMe => 'Напомняне…';
+
+  @override
+  String get actionsChangeReminder => 'Промяна на напомнянето…';
+
+  @override
+  String get actionsClearReminder => 'Премахване на напомнянето';
+
+  @override
+  String get actionsRemindTitle => 'Напомняне';
+
+  @override
+  String get actionsDelete => 'Изтриване на действието';
+
+  @override
+  String get actionsHistoryHeader => 'История';
+
+  @override
+  String get actionsHistoryAdded => 'Добавено';
+
+  @override
+  String get actionsHistoryEdited => 'Преформулирано';
+
+  @override
+  String get actionsHistoryDue => 'Срокът е променен';
+
+  @override
+  String get actionsHistoryReminder => 'Напомнянето е променено';
+
+  @override
+  String get actionsHistoryRevised => 'Обновено от ново предложение';
+
+  @override
+  String get actionsHistoryDeleted => 'Изтрито';
+
+  @override
+  String get actionsHistoryRestored => 'Възстановено';
+
+  @override
+  String get actionsOwnerMe => 'От мен';
+
+  @override
+  String get actionsOwnerThem => 'От други';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Първоначално: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '„$quote“';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Писмо от $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Добавено от вас';
+
+  @override
+  String get actionsOriginDemo => 'Предложено от вградената демонстрация: правила, без модел';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Предложено от $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Предложено от $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Срок: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'По възможност до $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '„$timing“';
+  }
+
+  @override
+  String get actionsAddMenu => 'Добавяне на действие…';
+
+  @override
+  String get actionsSuggestMenu => 'Предлагане на действия';
+
+  @override
+  String get actionsAddTitle => 'Добавяне на действие';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Какво трябва да направите?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Какво очаквате?';
+
+  @override
+  String get actionsDueDate => 'Краен срок';
+
+  @override
+  String get actionsClearDueDate => 'Без краен срок';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Относно „$subject“';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Предложени действия';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'на този телефон',
+      'myServer': 'на вашия сървър',
+      'other': 'в облака',
+    });
+    return 'От $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'От вградената демонстрация: правила, без модел. Нищо не напуска този телефон.';
+
+  @override
+  String get actionsSuggestNone => 'В това писмо няма нищо за следене.';
+
+  @override
+  String get actionsSuggestPartial => 'Писмото е дълго: прочетено е само началото му.';
+
+  @override
+  String get actionsSuggestTracked => 'Следи се';
+
+  @override
+  String get actionsSuggestUpdate => 'Обновяване';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Добавяне на всички $count',
+      two: 'Добавяне на двете',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Всяко предложение цитира писмото и нищо не се следи, докато не го добавите. Цитираните по-стари писма не се броят.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Писмото е твърде дълго за избрания модел.';
+
+  @override
+  String get actionsSuggestInvalid => 'Отговорът не съответства на писмото, затова нищо не се предлага.';
+
+  @override
+  String get actionsSuggestCancelled => 'Спряно.';
+
+  @override
+  String get actionsSuggestFailed => 'В момента предложенията не са налични.';
+
+  @override
   String get settingsLanguage => 'Език';
 
   @override

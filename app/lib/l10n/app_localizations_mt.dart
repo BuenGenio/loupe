@@ -2791,6 +2791,330 @@ class AppLocalizationsMt extends AppLocalizations {
   String get actionsWaitingOnOthers => 'Qed nistenna lil ħaddieħor';
 
   @override
+  String get actionsNeedsMyActionEmpty => 'Xejn ma jeħtieġ azzjoni minnek';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Mhux qed tistenna lil ħadd';
+
+  @override
+  String get actionsFolderEmptyDetail => 'Biex iżżomm kont ta’ xi ħaġa, agħfas ⋯ fuq messaġġ u agħżel “Żid azzjoni…”';
+
+  @override
+  String get actionsTitle => 'Azzjonijiet';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Biex tagħmel: $count',
+      many: 'Biex tagħmel: $count',
+      few: 'Biex tagħmel: $count',
+      two: 'Biex tagħmel: $count',
+      one: 'Biex tagħmel: $count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Qed tistenna: $count',
+      many: 'Qed tistenna: $count',
+      few: 'Qed tistenna: $count',
+      two: 'Qed tistenna: $count',
+      one: 'Qed tistenna: $count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count azzjoni magħluqa',
+      many: '$count-il azzjoni magħluqa',
+      few: '$count azzjonijiet magħluqin',
+      two: '$count azzjonijiet magħluqin',
+      one: '$count azzjoni magħluqa',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Magħluqin';
+
+  @override
+  String get actionsNoneInConversation => 'Din il-konversazzjoni m’għandha l-ebda azzjoni.';
+
+  @override
+  String get actionsFooter =>
+      'L-azzjonijiet jinżammu fuq dan il-mowbajl. Il-posta qatt ma tbiddilhom, lanqas risposta li tgħid “Grazzi”: int biss tbiddilhom.';
+
+  @override
+  String get actionsMarkDone => 'Immarka bħala magħmula';
+
+  @override
+  String get actionsReopen => 'Erġa’ iftaħ';
+
+  @override
+  String get actionsStateNeedsAction => 'Jeħtieġ azzjoni';
+
+  @override
+  String get actionsStateInProgress => 'Għaddejja';
+
+  @override
+  String get actionsStateSent => 'Mibgħuta';
+
+  @override
+  String get actionsStateWaiting => 'Qed tistenna konferma';
+
+  @override
+  String get actionsStateAcknowledged => 'Ikkonfermata';
+
+  @override
+  String get actionsStateDone => 'Magħmula';
+
+  @override
+  String get actionsStateDismissed => 'Imwarrba';
+
+  @override
+  String get actionsStateSuperseded => 'Sostitwita';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Immarkata bħala li teħtieġ azzjoni',
+      'inProgress': 'Immarkata bħala għaddejja',
+      'sent': 'Immarkata bħala mibgħuta',
+      'waitingForAcknowledgement': 'Qed tistenna konferma',
+      'acknowledged': 'Immarkata bħala kkonfermata',
+      'done': 'Immarkata bħala magħmula',
+      'dismissed': 'Azzjoni mwarrba',
+      'superseded': 'Immarkata bħala sostitwita',
+      'other': 'Azzjoni mibdula',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Azzjoni riformulata';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Tfakkira ssettjata għal $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Tfakkira mneħħija';
+
+  @override
+  String get actionsDeleted => 'Azzjoni mħassra';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count azzjoni miżjuda',
+      many: '$count-il azzjoni miżjuda',
+      few: '$count azzjonijiet miżjuda',
+      two: '$count azzjonijiet miżjuda',
+      one: 'Azzjoni miżjuda',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'L-azzjoni ma setgħetx tiġi maħżuna.';
+
+  @override
+  String get actionsStatusHeader => 'Status';
+
+  @override
+  String get actionsEditText => 'Editja t-test…';
+
+  @override
+  String get actionsEditTitle => 'Editja l-azzjoni';
+
+  @override
+  String get actionsRemindMe => 'Fakkarni…';
+
+  @override
+  String get actionsChangeReminder => 'Ibdel it-tfakkira…';
+
+  @override
+  String get actionsClearReminder => 'Neħħi t-tfakkira';
+
+  @override
+  String get actionsRemindTitle => 'Fakkarni';
+
+  @override
+  String get actionsDelete => 'Ħassar l-azzjoni';
+
+  @override
+  String get actionsHistoryHeader => 'Storja';
+
+  @override
+  String get actionsHistoryAdded => 'Miżjuda';
+
+  @override
+  String get actionsHistoryEdited => 'Riformulata';
+
+  @override
+  String get actionsHistoryDue => 'L-iskadenza nbidlet';
+
+  @override
+  String get actionsHistoryReminder => 'It-tfakkira nbidlet';
+
+  @override
+  String get actionsHistoryRevised => 'Aġġornata minn suġġeriment ġdid';
+
+  @override
+  String get actionsHistoryDeleted => 'Imħassra';
+
+  @override
+  String get actionsHistoryRestored => 'Irrestawrata';
+
+  @override
+  String get actionsOwnerMe => 'Irrid jien';
+
+  @override
+  String get actionsOwnerThem => 'Se jagħmlu oħrajn';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Oriġinarjament: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '“$quote”';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Messaġġ minn $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Miżjuda minnek';
+
+  @override
+  String get actionsOriginDemo => 'Issuġġerita mid-demo inkorporata: regoli, l-ebda mudell';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Issuġġerita minn $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Issuġġerita minn $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Skadenza: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Idealment sa $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '“$timing”';
+  }
+
+  @override
+  String get actionsAddMenu => 'Żid azzjoni…';
+
+  @override
+  String get actionsSuggestMenu => 'Issuġġerixxi azzjonijiet';
+
+  @override
+  String get actionsAddTitle => 'Żid azzjoni';
+
+  @override
+  String get actionsAddPlaceholderMe => 'X’għandek bżonn tagħmel?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'X’qed tistenna?';
+
+  @override
+  String get actionsDueDate => 'Data tal-iskadenza';
+
+  @override
+  String get actionsClearDueDate => 'L-ebda skadenza';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Dwar “$subject”';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Azzjonijiet issuġġeriti';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'fuq dan il-mowbajl',
+      'myServer': 'fuq is-server tiegħek',
+      'other': 'fil-cloud',
+    });
+    return 'Minn $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'Mid-demo inkorporata: regoli, l-ebda mudell. Xejn ma joħroġ minn dan il-mowbajl.';
+
+  @override
+  String get actionsSuggestNone => 'M’hemm xejn f’dan il-messaġġ biex iżżomm kont tiegħu.';
+
+  @override
+  String get actionsSuggestPartial => 'Dan il-messaġġ huwa twil: inqara biss il-bidu tiegħu.';
+
+  @override
+  String get actionsSuggestTracked => 'Diġà miżjuda';
+
+  @override
+  String get actionsSuggestUpdate => 'Aġġorna';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Żidhom kollha ($count)',
+      many: 'Żidhom kollha ($count)',
+      few: 'Żidhom kollha ($count)',
+      two: 'Żid it-tnejn',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Kull suġġeriment jikkwota l-messaġġ, u xejn ma jiġi segwit sakemm iżżidu. Il-posta preċedenti kkwotata ma tgħoddx.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Dan il-messaġġ huwa twil wisq għall-mudell magħżul.';
+
+  @override
+  String get actionsSuggestInvalid => 'It-tweġiba ma qablitx mal-messaġġ, għalhekk xejn mhu ssuġġerit.';
+
+  @override
+  String get actionsSuggestCancelled => 'Imwaqqaf.';
+
+  @override
+  String get actionsSuggestFailed => 'Is-suġġerimenti mhumiex disponibbli bħalissa.';
+
+  @override
   String get settingsLanguage => 'Lingwa';
 
   @override

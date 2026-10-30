@@ -23,6 +23,12 @@ enum MessageAction {
   toggleSeen,
   toggleFlag,
   tags,
+
+  /// Add Action…: something the user has to do, or waits for, from this message.
+  addAction,
+
+  /// Suggest Actions: Private AI reads the message for actions to track.
+  suggestActions,
   snooze,
   wakeNow,
   move,
@@ -45,6 +51,8 @@ enum MessageAction {
 /// mailbox and the message isn't in it. [mailboxRole]: where it lives now.
 /// [snoozed]: it waits in the Snoozed folder (Wake Now, Change Time).
 /// [muted]: whether its thread is muted; null when muting isn't available.
+/// [canAddAction]: the repository keeps actions; [canSuggestActions]:
+/// Private AI may read this message for them.
 Future<MessageAction?> showMessageMenu(
   BuildContext context, {
   required EmailSummary message,
@@ -53,6 +61,8 @@ Future<MessageAction?> showMessageMenu(
   bool snoozed = false,
   bool? muted,
   bool canCompare = false,
+  bool canAddAction = false,
+  bool canSuggestActions = false,
 }) {
   final toList = listPostAddress(message.listPost) != null;
   final junk = mailboxRole == MailboxRole.junk || message.keywords.contains(Keywords.junk);
@@ -105,6 +115,24 @@ Future<MessageAction?> showMessageMenu(
                   ),
               ],
             ),
+            if (canAddAction)
+              SheetGroup(
+                children: [
+                  SheetRow(
+                    key: const ValueKey('menu-add-action'),
+                    label: l10n.actionsAddMenu,
+                    icon: LoupeIcons.addAction,
+                    onTap: () => pick(MessageAction.addAction),
+                  ),
+                  if (canSuggestActions)
+                    SheetRow(
+                      key: const ValueKey('menu-suggest-actions'),
+                      label: l10n.actionsSuggestMenu,
+                      icon: LoupeIcons.suggestActions,
+                      onTap: () => pick(MessageAction.suggestActions),
+                    ),
+                ],
+              ),
             SheetGroup(
               children: [
                 if (snoozed) ...[

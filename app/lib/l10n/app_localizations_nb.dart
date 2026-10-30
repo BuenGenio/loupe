@@ -2654,6 +2654,307 @@ class AppLocalizationsNb extends AppLocalizations {
   String get actionsWaitingOnOthers => 'Venter på andre';
 
   @override
+  String get actionsNeedsMyActionEmpty => 'Ingenting krever handling fra deg';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Du venter ikke på noen';
+
+  @override
+  String get actionsFolderEmptyDetail => 'For å følge med på noe, trykk på ⋯ i en melding og velg Legg til handling…';
+
+  @override
+  String get actionsTitle => 'Handlinger';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count å gjøre', one: '1 å gjøre');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count venter', one: '1 venter');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count avsluttede handlinger',
+      one: '1 avsluttet handling',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Avsluttet';
+
+  @override
+  String get actionsNoneInConversation => 'Denne samtalen har ingen handlinger.';
+
+  @override
+  String get actionsFooter =>
+      'Handlinger lagres på denne telefonen. E-post endrer dem aldri, ikke engang et svar som sier «Takk»: det gjør bare du.';
+
+  @override
+  String get actionsMarkDone => 'Merk som utført';
+
+  @override
+  String get actionsReopen => 'Åpne på nytt';
+
+  @override
+  String get actionsStateNeedsAction => 'Krever handling';
+
+  @override
+  String get actionsStateInProgress => 'Pågår';
+
+  @override
+  String get actionsStateSent => 'Sendt';
+
+  @override
+  String get actionsStateWaiting => 'Venter på bekreftelse';
+
+  @override
+  String get actionsStateAcknowledged => 'Bekreftet';
+
+  @override
+  String get actionsStateDone => 'Utført';
+
+  @override
+  String get actionsStateDismissed => 'Avvist';
+
+  @override
+  String get actionsStateSuperseded => 'Erstattet';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Merket som krever handling',
+      'inProgress': 'Merket som pågår',
+      'sent': 'Merket som sendt',
+      'waitingForAcknowledgement': 'Venter på bekreftelse',
+      'acknowledged': 'Merket som bekreftet',
+      'done': 'Merket som utført',
+      'dismissed': 'Handling avvist',
+      'superseded': 'Merket som erstattet',
+      'other': 'Handling endret',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Handling omformulert';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Påminnelse satt til $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Påminnelse fjernet';
+
+  @override
+  String get actionsDeleted => 'Handling slettet';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count handlinger lagt til',
+      one: 'Handling lagt til',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Handlingen kunne ikke lagres.';
+
+  @override
+  String get actionsStatusHeader => 'Status';
+
+  @override
+  String get actionsEditText => 'Rediger tekst…';
+
+  @override
+  String get actionsEditTitle => 'Rediger handling';
+
+  @override
+  String get actionsRemindMe => 'Minn meg på…';
+
+  @override
+  String get actionsChangeReminder => 'Endre påminnelse…';
+
+  @override
+  String get actionsClearReminder => 'Fjern påminnelse';
+
+  @override
+  String get actionsRemindTitle => 'Minn meg på';
+
+  @override
+  String get actionsDelete => 'Slett handling';
+
+  @override
+  String get actionsHistoryHeader => 'Historikk';
+
+  @override
+  String get actionsHistoryAdded => 'Lagt til';
+
+  @override
+  String get actionsHistoryEdited => 'Omformulert';
+
+  @override
+  String get actionsHistoryDue => 'Frist endret';
+
+  @override
+  String get actionsHistoryReminder => 'Påminnelse endret';
+
+  @override
+  String get actionsHistoryRevised => 'Oppdatert fra et nytt forslag';
+
+  @override
+  String get actionsHistoryDeleted => 'Slettet';
+
+  @override
+  String get actionsHistoryRestored => 'Gjenopprettet';
+
+  @override
+  String get actionsOwnerMe => 'Jeg må';
+
+  @override
+  String get actionsOwnerThem => 'Andre skal';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Opprinnelig: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '«$quote»';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Melding fra $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Lagt til av deg';
+
+  @override
+  String get actionsOriginDemo => 'Foreslått av den innebygde demoen: regler, ingen modell';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Foreslått av $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Foreslått av $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Frist: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Helst innen $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '«$timing»';
+  }
+
+  @override
+  String get actionsAddMenu => 'Legg til handling…';
+
+  @override
+  String get actionsSuggestMenu => 'Foreslå handlinger';
+
+  @override
+  String get actionsAddTitle => 'Legg til handling';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Hva må du gjøre?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Hva venter du på?';
+
+  @override
+  String get actionsDueDate => 'Frist';
+
+  @override
+  String get actionsClearDueDate => 'Ingen frist';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Om «$subject»';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Foreslåtte handlinger';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'på denne telefonen',
+      'myServer': 'på serveren din',
+      'other': 'i skyen',
+    });
+    return 'Av $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'Av den innebygde demoen: regler, ingen modell. Ingenting forlater denne telefonen.';
+
+  @override
+  String get actionsSuggestNone => 'Ingenting å følge med på i denne meldingen.';
+
+  @override
+  String get actionsSuggestPartial => 'Meldingen er lang: bare begynnelsen ble lest.';
+
+  @override
+  String get actionsSuggestTracked => 'Følges';
+
+  @override
+  String get actionsSuggestUpdate => 'Oppdater';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Legg til alle $count',
+      two: 'Legg til begge',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Hvert forslag siterer meldingen, og ingenting følges før du legger det til. Sitert eldre e-post teller ikke.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Meldingen er for lang for den valgte modellen.';
+
+  @override
+  String get actionsSuggestInvalid => 'Svaret stemte ikke med meldingen, så ingenting foreslås.';
+
+  @override
+  String get actionsSuggestCancelled => 'Stoppet.';
+
+  @override
+  String get actionsSuggestFailed => 'Forslag er ikke tilgjengelige akkurat nå.';
+
+  @override
   String get settingsLanguage => 'Språk';
 
   @override

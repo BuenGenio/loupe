@@ -2679,6 +2679,313 @@ class AppLocalizationsEl extends AppLocalizations {
   String get actionsWaitingOnOthers => 'Αναμονή για άλλους';
 
   @override
+  String get actionsNeedsMyActionEmpty => 'Τίποτα δεν χρειάζεται ενέργειά σας';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Δεν περιμένετε κανέναν';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Για να παρακολουθείτε κάτι, πατήστε ⋯ σε ένα μήνυμα και επιλέξτε «Προσθήκη ενέργειας…»';
+
+  @override
+  String get actionsTitle => 'Ενέργειες';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count προς εκτέλεση',
+      one: '1 προς εκτέλεση',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count σε αναμονή', one: '1 σε αναμονή');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count διευθετημένες ενέργειες',
+      one: '1 διευθετημένη ενέργεια',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Διευθετημένες';
+
+  @override
+  String get actionsNoneInConversation => 'Αυτή η συζήτηση δεν έχει ενέργειες.';
+
+  @override
+  String get actionsFooter =>
+      'Οι ενέργειες φυλάσσονται σε αυτό το τηλέφωνο. Η αλληλογραφία δεν τις αλλάζει ποτέ, ούτε καν μια απάντηση που λέει «Ευχαριστώ»: τις αλλάζετε μόνο εσείς.';
+
+  @override
+  String get actionsMarkDone => 'Σήμανση ως ολοκληρωμένη';
+
+  @override
+  String get actionsReopen => 'Άνοιγμα ξανά';
+
+  @override
+  String get actionsStateNeedsAction => 'Χρειάζεται ενέργεια';
+
+  @override
+  String get actionsStateInProgress => 'Σε εξέλιξη';
+
+  @override
+  String get actionsStateSent => 'Στάλθηκε';
+
+  @override
+  String get actionsStateWaiting => 'Αναμονή επιβεβαίωσης';
+
+  @override
+  String get actionsStateAcknowledged => 'Επιβεβαιώθηκε';
+
+  @override
+  String get actionsStateDone => 'Ολοκληρώθηκε';
+
+  @override
+  String get actionsStateDismissed => 'Απορρίφθηκε';
+
+  @override
+  String get actionsStateSuperseded => 'Αντικαταστάθηκε';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Σημειώθηκε ότι χρειάζεται ενέργεια',
+      'inProgress': 'Σημειώθηκε ως σε εξέλιξη',
+      'sent': 'Σημειώθηκε ότι στάλθηκε',
+      'waitingForAcknowledgement': 'Αναμονή επιβεβαίωσης',
+      'acknowledged': 'Σημειώθηκε ως επιβεβαιωμένη',
+      'done': 'Σημειώθηκε ως ολοκληρωμένη',
+      'dismissed': 'Η ενέργεια απορρίφθηκε',
+      'superseded': 'Σημειώθηκε ότι αντικαταστάθηκε',
+      'other': 'Η ενέργεια άλλαξε',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Η ενέργεια αναδιατυπώθηκε';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Ορίστηκε υπενθύμιση για $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Η υπενθύμιση αφαιρέθηκε';
+
+  @override
+  String get actionsDeleted => 'Η ενέργεια διαγράφηκε';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Προστέθηκαν $count ενέργειες',
+      one: 'Η ενέργεια προστέθηκε',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Δεν ήταν δυνατή η αποθήκευση της ενέργειας.';
+
+  @override
+  String get actionsStatusHeader => 'Κατάσταση';
+
+  @override
+  String get actionsEditText => 'Επεξεργασία κειμένου…';
+
+  @override
+  String get actionsEditTitle => 'Επεξεργασία ενέργειας';
+
+  @override
+  String get actionsRemindMe => 'Υπενθύμιση…';
+
+  @override
+  String get actionsChangeReminder => 'Αλλαγή υπενθύμισης…';
+
+  @override
+  String get actionsClearReminder => 'Αφαίρεση υπενθύμισης';
+
+  @override
+  String get actionsRemindTitle => 'Υπενθύμιση';
+
+  @override
+  String get actionsDelete => 'Διαγραφή ενέργειας';
+
+  @override
+  String get actionsHistoryHeader => 'Ιστορικό';
+
+  @override
+  String get actionsHistoryAdded => 'Προστέθηκε';
+
+  @override
+  String get actionsHistoryEdited => 'Αναδιατυπώθηκε';
+
+  @override
+  String get actionsHistoryDue => 'Άλλαξε η προθεσμία';
+
+  @override
+  String get actionsHistoryReminder => 'Άλλαξε η υπενθύμιση';
+
+  @override
+  String get actionsHistoryRevised => 'Ενημερώθηκε από νέα πρόταση';
+
+  @override
+  String get actionsHistoryDeleted => 'Διαγράφηκε';
+
+  @override
+  String get actionsHistoryRestored => 'Επαναφέρθηκε';
+
+  @override
+  String get actionsOwnerMe => 'Πρέπει να κάνω';
+
+  @override
+  String get actionsOwnerThem => 'Θα κάνουν άλλοι';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Αρχικά: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '«$quote»';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Μήνυμα από $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Προστέθηκε από εσάς';
+
+  @override
+  String get actionsOriginDemo => 'Προτάθηκε από την ενσωματωμένη επίδειξη: κανόνες, χωρίς μοντέλο';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Προτάθηκε από $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Προτάθηκε από $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Προθεσμία: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Ιδανικά έως $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '«$timing»';
+  }
+
+  @override
+  String get actionsAddMenu => 'Προσθήκη ενέργειας…';
+
+  @override
+  String get actionsSuggestMenu => 'Πρόταση ενεργειών';
+
+  @override
+  String get actionsAddTitle => 'Προσθήκη ενέργειας';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Τι πρέπει να κάνετε;';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Τι περιμένετε;';
+
+  @override
+  String get actionsDueDate => 'Προθεσμία';
+
+  @override
+  String get actionsClearDueDate => 'Χωρίς προθεσμία';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Σχετικά με «$subject»';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Προτεινόμενες ενέργειες';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'σε αυτό το τηλέφωνο',
+      'myServer': 'στον διακομιστή σας',
+      'other': 'στο cloud',
+    });
+    return 'Από $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'Από την ενσωματωμένη επίδειξη: κανόνες, χωρίς μοντέλο. Τίποτα δεν φεύγει από αυτό το τηλέφωνο.';
+
+  @override
+  String get actionsSuggestNone => 'Δεν υπάρχει τίποτα για παρακολούθηση σε αυτό το μήνυμα.';
+
+  @override
+  String get actionsSuggestPartial => 'Αυτό το μήνυμα είναι μεγάλο: διαβάστηκε μόνο η αρχή του.';
+
+  @override
+  String get actionsSuggestTracked => 'Παρακολουθείται';
+
+  @override
+  String get actionsSuggestUpdate => 'Ενημέρωση';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Προσθήκη και των $count',
+      two: 'Προσθήκη και των δύο',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Κάθε πρόταση παραθέτει το μήνυμα, και τίποτα δεν παρακολουθείται μέχρι να το προσθέσετε. Η παλαιότερη αλληλογραφία σε παράθεση δεν μετράει.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Αυτό το μήνυμα είναι πολύ μεγάλο για το επιλεγμένο μοντέλο.';
+
+  @override
+  String get actionsSuggestInvalid => 'Η απάντηση δεν συμφωνούσε με το μήνυμα, οπότε δεν προτείνεται τίποτα.';
+
+  @override
+  String get actionsSuggestCancelled => 'Διακόπηκε.';
+
+  @override
+  String get actionsSuggestFailed => 'Οι προτάσεις δεν είναι διαθέσιμες αυτή τη στιγμή.';
+
+  @override
   String get settingsLanguage => 'Γλώσσα';
 
   @override

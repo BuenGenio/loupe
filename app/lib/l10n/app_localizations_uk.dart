@@ -2729,6 +2729,327 @@ class AppLocalizationsUk extends AppLocalizations {
   String get actionsWaitingOnOthers => 'Чекаю на інших';
 
   @override
+  String get actionsNeedsMyActionEmpty => 'Ніщо не потребує вашої дії';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Ви ні на кого не чекаєте';
+
+  @override
+  String get actionsFolderEmptyDetail => 'Щоб відстежувати щось, торкніться ⋯ у листі й виберіть «Додати дію…»';
+
+  @override
+  String get actionsTitle => 'Дії';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count до виконання',
+      many: '$count до виконання',
+      few: '$count до виконання',
+      one: '$count до виконання',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count в очікуванні',
+      many: '$count в очікуванні',
+      few: '$count в очікуванні',
+      one: '$count в очікуванні',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count завершеної дії',
+      many: '$count завершених дій',
+      few: '$count завершені дії',
+      one: '$count завершена дія',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Завершені';
+
+  @override
+  String get actionsNoneInConversation => 'У цій розмові немає дій.';
+
+  @override
+  String get actionsFooter =>
+      'Дії зберігаються на цьому телефоні. Пошта ніколи їх не змінює, навіть відповідь «Дякую»: змінюєте їх лише ви.';
+
+  @override
+  String get actionsMarkDone => 'Позначити як виконану';
+
+  @override
+  String get actionsReopen => 'Відкрити знову';
+
+  @override
+  String get actionsStateNeedsAction => 'Потребує дії';
+
+  @override
+  String get actionsStateInProgress => 'Виконується';
+
+  @override
+  String get actionsStateSent => 'Надіслано';
+
+  @override
+  String get actionsStateWaiting => 'Очікує підтвердження';
+
+  @override
+  String get actionsStateAcknowledged => 'Підтверджено';
+
+  @override
+  String get actionsStateDone => 'Виконано';
+
+  @override
+  String get actionsStateDismissed => 'Відхилено';
+
+  @override
+  String get actionsStateSuperseded => 'Замінено';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Позначено як таку, що потребує дії',
+      'inProgress': 'Позначено як таку, що виконується',
+      'sent': 'Позначено як надіслану',
+      'waitingForAcknowledgement': 'Очікує підтвердження',
+      'acknowledged': 'Позначено як підтверджену',
+      'done': 'Позначено як виконану',
+      'dismissed': 'Дію відхилено',
+      'superseded': 'Позначено як замінену',
+      'other': 'Дію змінено',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Дію переформульовано';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Нагадування встановлено на $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Нагадування вилучено';
+
+  @override
+  String get actionsDeleted => 'Дію видалено';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Додано $count дії',
+      many: 'Додано $count дій',
+      few: 'Додано $count дії',
+      one: 'Додано $count дію',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Не вдалося зберегти дію.';
+
+  @override
+  String get actionsStatusHeader => 'Стан';
+
+  @override
+  String get actionsEditText => 'Змінити текст…';
+
+  @override
+  String get actionsEditTitle => 'Змінити дію';
+
+  @override
+  String get actionsRemindMe => 'Нагадати…';
+
+  @override
+  String get actionsChangeReminder => 'Змінити нагадування…';
+
+  @override
+  String get actionsClearReminder => 'Вилучити нагадування';
+
+  @override
+  String get actionsRemindTitle => 'Нагадати';
+
+  @override
+  String get actionsDelete => 'Видалити дію';
+
+  @override
+  String get actionsHistoryHeader => 'Історія';
+
+  @override
+  String get actionsHistoryAdded => 'Додано';
+
+  @override
+  String get actionsHistoryEdited => 'Переформульовано';
+
+  @override
+  String get actionsHistoryDue => 'Змінено строк';
+
+  @override
+  String get actionsHistoryReminder => 'Змінено нагадування';
+
+  @override
+  String get actionsHistoryRevised => 'Оновлено за новою пропозицією';
+
+  @override
+  String get actionsHistoryDeleted => 'Видалено';
+
+  @override
+  String get actionsHistoryRestored => 'Відновлено';
+
+  @override
+  String get actionsOwnerMe => 'Маю я';
+
+  @override
+  String get actionsOwnerThem => 'Зроблять інші';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Спочатку: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '«$quote»';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Лист від відправника $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Додано вами';
+
+  @override
+  String get actionsOriginDemo => 'Запропонувала вбудована демонстрація: правила, без моделі';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Запропоновано: $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Запропоновано: $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Строк: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Бажаний строк: $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '«$timing»';
+  }
+
+  @override
+  String get actionsAddMenu => 'Додати дію…';
+
+  @override
+  String get actionsSuggestMenu => 'Запропонувати дії';
+
+  @override
+  String get actionsAddTitle => 'Додати дію';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Що вам потрібно зробити?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'На що ви чекаєте?';
+
+  @override
+  String get actionsDueDate => 'Строк';
+
+  @override
+  String get actionsClearDueDate => 'Без строку';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Щодо «$subject»';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Запропоновані дії';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'на цьому телефоні',
+      'myServer': 'на вашому сервері',
+      'other': 'у хмарі',
+    });
+    return 'Запропоновано: $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'Запропонувала вбудована демонстрація: правила, без моделі. Ніщо не залишає цей телефон.';
+
+  @override
+  String get actionsSuggestNone => 'У цьому листі немає нічого для відстеження.';
+
+  @override
+  String get actionsSuggestPartial => 'Цей лист довгий: прочитано лише його початок.';
+
+  @override
+  String get actionsSuggestTracked => 'Відстежується';
+
+  @override
+  String get actionsSuggestUpdate => 'Оновити';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Додати всі $count',
+      many: 'Додати всі $count',
+      few: 'Додати всі $count',
+      two: 'Додати обидві',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Кожна пропозиція цитує лист, і нічого не відстежується, доки ви її не додасте. Процитовані попередні листи не враховуються.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Цей лист задовгий для вибраної моделі.';
+
+  @override
+  String get actionsSuggestInvalid => 'Відповідь не збіглася з листом, тому нічого не запропоновано.';
+
+  @override
+  String get actionsSuggestCancelled => 'Зупинено.';
+
+  @override
+  String get actionsSuggestFailed => 'Пропозиції зараз недоступні.';
+
+  @override
   String get settingsLanguage => 'Мова';
 
   @override
