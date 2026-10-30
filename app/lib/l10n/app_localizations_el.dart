@@ -83,12 +83,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String commonMessageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count μηνύματα',
-      one: '1 μήνυμα',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count μηνύματα', one: '1 μήνυμα');
     return '$_temp0';
   }
 
@@ -195,12 +190,10 @@ class AppLocalizationsEl extends AppLocalizations {
       'Αυτό το μήνυμα είναι πολύ μεγάλο για λεπτομερή σύγκριση. Κάποιο κείμενο ενδέχεται να παραλειφθεί ή να εμφανιστεί ως ενιαίο τμήμα.';
 
   @override
-  String get conversationChangesLoadError =>
-      'Δεν ήταν δυνατή η σύγκριση αυτών των μηνυμάτων.';
+  String get conversationChangesLoadError => 'Δεν ήταν δυνατή η σύγκριση αυτών των μηνυμάτων.';
 
   @override
-  String get conversationSomethingWentWrong =>
-      'Κάτι πήγε στραβά. Δοκιμάστε ξανά.';
+  String get conversationSomethingWentWrong => 'Κάτι πήγε στραβά. Δοκιμάστε ξανά.';
 
   @override
   String get conversationReplyToList => 'Απάντηση στη λίστα';
@@ -209,22 +202,19 @@ class AppLocalizationsEl extends AppLocalizations {
   String get conversationReplyList => 'Στη λίστα';
 
   @override
-  String get conversationThreadMuted =>
-      'Το νήμα τέθηκε σε σίγαση. Τα νέα μηνύματά του θα φτάνουν ως αναγνωσμένα.';
+  String get conversationThreadMuted => 'Το νήμα τέθηκε σε σίγαση. Τα νέα μηνύματά του θα φτάνουν ως αναγνωσμένα.';
 
   @override
   String get conversationThreadUnmuted => 'Η σίγαση του νήματος καταργήθηκε.';
 
   @override
-  String get conversationLinkFailed =>
-      'Δεν ήταν δυνατό το άνοιγμα του συνδέσμου.';
+  String get conversationLinkFailed => 'Δεν ήταν δυνατό το άνοιγμα του συνδέσμου.';
 
   @override
   String get conversationGoneTitle => 'Κανένα μήνυμα';
 
   @override
-  String get conversationGoneText =>
-      'Αυτό το μήνυμα μετακινήθηκε ή διαγράφηκε.';
+  String get conversationGoneText => 'Αυτό το μήνυμα μετακινήθηκε ή διαγράφηκε.';
 
   @override
   String get conversationMuted => 'Σε σίγαση';
@@ -239,19 +229,16 @@ class AppLocalizationsEl extends AppLocalizations {
   String get conversationTrash => 'Στον κάδο';
 
   @override
-  String get conversationReplyHint =>
-      'Παρατεταμένο πάτημα για «Απάντηση σε όλους» και «Προώθηση»';
+  String get conversationReplyHint => 'Παρατεταμένο πάτημα για «Απάντηση σε όλους» και «Προώθηση»';
 
   @override
   String get conversationOfflineTitle => 'Είστε εκτός σύνδεσης';
 
   @override
-  String get conversationOfflineText =>
-      'Αυτή η συζήτηση δεν έχει ληφθεί ακόμη. Θα φορτωθεί όταν συνδεθείτε ξανά.';
+  String get conversationOfflineText => 'Αυτή η συζήτηση δεν έχει ληφθεί ακόμη. Θα φορτωθεί όταν συνδεθείτε ξανά.';
 
   @override
-  String get conversationErrorTitle =>
-      'Δεν είναι δυνατή η εμφάνιση του μηνύματος';
+  String get conversationErrorTitle => 'Δεν είναι δυνατή η εμφάνιση του μηνύματος';
 
   @override
   String get conversationErrorText => 'Κάτι πήγε στραβά.';
@@ -312,16 +299,13 @@ class AppLocalizationsEl extends AppLocalizations {
   String get conversationLoadingMessage => 'Φόρτωση μηνύματος';
 
   @override
-  String get conversationBodyError =>
-      'Δεν ήταν δυνατή η φόρτωση αυτού του μηνύματος.';
+  String get conversationBodyError => 'Δεν ήταν δυνατή η φόρτωση αυτού του μηνύματος.';
 
   @override
-  String get conversationBodyOffline =>
-      'Είστε εκτός σύνδεσης. Το μήνυμα θα φορτωθεί όταν συνδεθείτε ξανά.';
+  String get conversationBodyOffline => 'Είστε εκτός σύνδεσης. Το μήνυμα θα φορτωθεί όταν συνδεθείτε ξανά.';
 
   @override
-  String get conversationOriginalHint =>
-      'Φαίνεται καλύτερα στην προβολή «Πρωτότυπη»';
+  String get conversationOriginalHint => 'Φαίνεται καλύτερα στην προβολή «Πρωτότυπη»';
 
   @override
   String get conversationShowOriginal => 'Εμφάνιση πρωτότυπου';
@@ -363,8 +347,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get conversationShareAsFile => 'Κοινοποίηση ως αρχείο…';
 
   @override
-  String get conversationSearchFromMessageMenu =>
-      'Αναζήτηση με βάση αυτό το μήνυμα…';
+  String get conversationSearchFromMessageMenu => 'Αναζήτηση με βάση αυτό το μήνυμα…';
 
   @override
   String get conversationVip => 'VIP';
@@ -396,8 +379,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get conversationNoHeaders => 'Δεν υπάρχουν κεφαλίδες';
 
   @override
-  String get conversationSearchFromMessageTitle =>
-      'Αναζήτηση με βάση αυτό το μήνυμα';
+  String get conversationSearchFromMessageTitle => 'Αναζήτηση με βάση αυτό το μήνυμα';
 
   @override
   String conversationSearchFrom(String name) {
@@ -421,8 +403,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get conversationSourceCopied => 'Ο πηγαίος κώδικας αντιγράφηκε';
 
   @override
-  String get conversationShareFailed =>
-      'Δεν ήταν δυνατή η κοινοποίηση του μηνύματος.';
+  String get conversationShareFailed => 'Δεν ήταν δυνατή η κοινοποίηση του μηνύματος.';
 
   @override
   String get conversationWrapLines => 'Αναδίπλωση γραμμών';
@@ -431,8 +412,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get conversationDontWrapLines => 'Χωρίς αναδίπλωση γραμμών';
 
   @override
-  String get conversationSourceError =>
-      'Δεν ήταν δυνατή η φόρτωση του πηγαίου κώδικα.';
+  String get conversationSourceError => 'Δεν ήταν δυνατή η φόρτωση του πηγαίου κώδικα.';
 
   @override
   String conversationSourceCut(String shown, String total) {
@@ -451,8 +431,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get conversationMoveTo => 'Μετακίνηση σε…';
 
   @override
-  String get conversationMailboxesError =>
-      'Δεν ήταν δυνατή η φόρτωση των φακέλων.';
+  String get conversationMailboxesError => 'Δεν ήταν δυνατή η φόρτωση των φακέλων.';
 
   @override
   String get conversationReaderReadable => 'Ευανάγνωστη';
@@ -473,8 +452,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get conversationReaderKeepColours => 'Διατήρηση αρχικών χρωμάτων';
 
   @override
-  String get conversationReaderRemember =>
-      'Απομνημόνευση για αυτόν τον αποστολέα';
+  String get conversationReaderRemember => 'Απομνημόνευση για αυτόν τον αποστολέα';
 
   @override
   String get conversationSecurityPossiblePhishing => 'Πιθανό phishing';
@@ -490,12 +468,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String conversationSecurityTrackers(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count ιχνηλάτες',
-      one: '1 ιχνηλάτης',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ιχνηλάτες', one: '1 ιχνηλάτης');
     return '$_temp0';
   }
 
@@ -503,8 +476,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get conversationSecurityBadgeHint => 'Εμφανίζει τον λόγο';
 
   @override
-  String get conversationPhishingBannerTitle =>
-      'Αυτό το μήνυμα μοιάζει με phishing';
+  String get conversationPhishingBannerTitle => 'Αυτό το μήνυμα μοιάζει με phishing';
 
   @override
   String conversationPhishingBannerReason(String reason) {
@@ -512,8 +484,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get conversationPhishingBannerText =>
-      'Οι σύνδεσμοι και οι εικόνες έχουν απενεργοποιηθεί.';
+  String get conversationPhishingBannerText => 'Οι σύνδεσμοι και οι εικόνες έχουν απενεργοποιηθεί.';
 
   @override
   String get conversationPhishingWhy => 'Γιατί;';
@@ -532,20 +503,17 @@ class AppLocalizationsEl extends AppLocalizations {
   String get conversationSecurityCarefulTitle => 'Προσοχή με αυτό το μήνυμα';
 
   @override
-  String get conversationSecurityCarefulText =>
-      'Κάτι σε αυτό αξίζει μια δεύτερη ματιά.';
+  String get conversationSecurityCarefulText => 'Κάτι σε αυτό αξίζει μια δεύτερη ματιά.';
 
   @override
-  String get conversationSecurityVerifiedText =>
-      'Ο αποστολέας είναι επαληθευμένος και τίποτα δεν φαίνεται ύποπτο.';
+  String get conversationSecurityVerifiedText => 'Ο αποστολέας είναι επαληθευμένος και τίποτα δεν φαίνεται ύποπτο.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Τίποτα δεν φαίνεται ύποπτο. Ο διακομιστής αλληλογραφίας σας δεν ανέφερε αν ο αποστολέας είναι επαληθευμένος.';
 
   @override
-  String get conversationSecurityNothingSuspicious =>
-      'Τίποτα δεν φαίνεται ύποπτο.';
+  String get conversationSecurityNothingSuspicious => 'Τίποτα δεν φαίνεται ύποπτο.';
 
   @override
   String get conversationSecurityWhy => 'Γιατί';
@@ -554,8 +522,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get conversationSecurityPrivacy => 'Απόρρητο';
 
   @override
-  String get conversationSecurityNoTrackingPixels =>
-      'Κανένα pixel παρακολούθησης';
+  String get conversationSecurityNoTrackingPixels => 'Κανένα pixel παρακολούθησης';
 
   @override
   String conversationSecurityTrackingPixels(int count) {
@@ -569,8 +536,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityTrackingPixelsText =>
-      'Θα ενημέρωναν τον αποστολέα πότε ανοίξατε αυτό το μήνυμα.';
+  String get conversationSecurityTrackingPixelsText => 'Θα ενημέρωναν τον αποστολέα πότε ανοίξατε αυτό το μήνυμα.';
 
   @override
   String get conversationSecurityNoRemoteImages => 'Καμία απομακρυσμένη εικόνα';
@@ -613,8 +579,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Τεχνικές λεπτομέρειες';
 
   @override
-  String get conversationSecurityCheckedLocally =>
-      'Ελέγχθηκε σε αυτή τη συσκευή. Δεν στάλθηκε τίποτα πουθενά.';
+  String get conversationSecurityCheckedLocally => 'Ελέγχθηκε σε αυτή τη συσκευή. Δεν στάλθηκε τίποτα πουθενά.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Ιχνηλάτες';
@@ -638,12 +603,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String conversationSecurityHiddenValue(int elements, int characters) {
-    String _temp0 = intl.Intl.pluralLogic(
-      elements,
-      locale: localeName,
-      other: '$elements στοιχεία',
-      one: '1 στοιχείο',
-    );
+    String _temp0 = intl.Intl.pluralLogic(elements, locale: localeName, other: '$elements στοιχεία', one: '1 στοιχείο');
     String _temp1 = intl.Intl.pluralLogic(
       characters,
       locale: localeName,
@@ -654,8 +614,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityAuthFailedTitle =>
-      'Ο αποστολέας δεν επαληθεύτηκε';
+  String get conversationSecurityAuthFailedTitle => 'Ο αποστολέας δεν επαληθεύτηκε';
 
   @override
   String conversationSecurityAuthFailedText(String domain) {
@@ -680,8 +639,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Μην κάνετε τίποτα με βάση αυτό, εκτός αν το περιμένατε. Αν έχετε αμφιβολίες, επικοινωνήστε με τον αποστολέα με άλλον τρόπο.';
 
   @override
-  String get conversationSecurityAuthUnalignedTitle =>
-      'Υπογεγραμμένο από άλλον τομέα';
+  String get conversationSecurityAuthUnalignedTitle => 'Υπογεγραμμένο από άλλον τομέα';
 
   @override
   String conversationSecurityAuthUnalignedText(String signer, String domain) {
@@ -694,8 +652,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle =>
-      'Το όνομα δείχνει άλλη διεύθυνση';
+  String get conversationSecurityNameShowsAddressTitle => 'Το όνομα δείχνει άλλη διεύθυνση';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -703,12 +660,10 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice =>
-      'Εμπιστευτείτε τη διεύθυνση, όχι το όνομα.';
+  String get conversationSecurityNameShowsAddressAdvice => 'Εμπιστευτείτε τη διεύθυνση, όχι το όνομα.';
 
   @override
-  String get conversationSecurityReplyToTitle =>
-      'Οι απαντήσεις πηγαίνουν αλλού';
+  String get conversationSecurityReplyToTitle => 'Οι απαντήσεις πηγαίνουν αλλού';
 
   @override
   String conversationSecurityReplyToText(String address, String domain) {
@@ -720,12 +675,10 @@ class AppLocalizationsEl extends AppLocalizations {
       'Ελέγξτε τη διεύθυνση πριν στείλετε στην απάντηση οτιδήποτε προσωπικό.';
 
   @override
-  String get conversationSecurityImpersonationYouTitle =>
-      'Χρησιμοποιεί το όνομά σας';
+  String get conversationSecurityImpersonationYouTitle => 'Χρησιμοποιεί το όνομά σας';
 
   @override
-  String get conversationSecurityImpersonationTitle =>
-      'Χρησιμοποιεί το όνομα κάποιου που γνωρίζετε';
+  String get conversationSecurityImpersonationTitle => 'Χρησιμοποιεί το όνομα κάποιου που γνωρίζετε';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -733,22 +686,12 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
     return 'Είναι υπογεγραμμένο «$name», όπως η επαφή VIP σας $knownName ($knownEmail), αλλά προέρχεται από νέα διεύθυνση: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
     return 'Είναι υπογεγραμμένο «$name», όπως η επαφή σας $knownName ($knownEmail), αλλά προέρχεται από νέα διεύθυνση: $email.';
   }
 
@@ -771,8 +714,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle =>
-      'Πρώτο μήνυμα από αυτόν τον αποστολέα';
+  String get conversationSecurityFirstTimeTitle => 'Πρώτο μήνυμα από αυτόν τον αποστολέα';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -780,16 +722,13 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeAdvice =>
-      'Προσέχετε τα αιτήματα από άτομα που δεν γνωρίζετε ακόμη.';
+  String get conversationSecurityFirstTimeAdvice => 'Προσέχετε τα αιτήματα από άτομα που δεν γνωρίζετε ακόμη.';
 
   @override
-  String get conversationSecuritySenderHomographTitle =>
-      'Γράμματα που μοιάζουν στη διεύθυνση του αποστολέα';
+  String get conversationSecuritySenderHomographTitle => 'Γράμματα που μοιάζουν στη διεύθυνση του αποστολέα';
 
   @override
-  String get conversationSecurityLinkHomographTitle =>
-      'Γράμματα που μοιάζουν σε σύνδεσμο';
+  String get conversationSecurityLinkHomographTitle => 'Γράμματα που μοιάζουν σε σύνδεσμο';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -802,8 +741,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice =>
-      'Διαγράψτε το ή αναφέρετέ το ως ανεπιθύμητο.';
+  String get conversationSecuritySenderHomographAdvice => 'Διαγράψτε το ή αναφέρετέ το ως ανεπιθύμητο.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Μην τον ανοίξετε.';
@@ -817,8 +755,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get conversationSecurityLookalikeTitle => 'Τομέας που μιμείται άλλον';
 
   @override
-  String get conversationSecurityFamiliarNameTitle =>
-      'Χρησιμοποιεί γνωστό όνομα στον τομέα του';
+  String get conversationSecurityFamiliarNameTitle => 'Χρησιμοποιεί γνωστό όνομα στον τομέα του';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -826,11 +763,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityLookalikeText(String domain, String brand, String real) {
     return 'Το $domain μοιάζει με $brand ($real), αλλά είναι διαφορετικός τομέας.';
   }
 
@@ -840,11 +773,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
     return 'Το $domain χρησιμοποιεί το όνομα $brand ($real), αλλά δεν σχετίζεται με αυτό.';
   }
 
@@ -894,8 +823,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle =>
-      'Ο προορισμός ενός συνδέσμου δεν μπορεί να ελεγχθεί';
+  String get conversationSecurityLinkUncheckableTitle => 'Ο προορισμός ενός συνδέσμου δεν μπορεί να ελεγχθεί';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -903,8 +831,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle =>
-      'Ένας σύνδεσμος οδηγεί σε σκέτη διεύθυνση IP';
+  String get conversationSecurityIpAddressTitle => 'Ένας σύνδεσμος οδηγεί σε σκέτη διεύθυνση IP';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -912,8 +839,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityUserInfoTitle =>
-      'Ένας μεταμφιεσμένος σύνδεσμος';
+  String get conversationSecurityUserInfoTitle => 'Ένας μεταμφιεσμένος σύνδεσμος';
 
   @override
   String conversationSecurityUserInfoText(String shown, String host) {
@@ -921,8 +847,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityDataLinkTitle =>
-      'Μια κρυφή σελίδα απενεργοποιήθηκε';
+  String get conversationSecurityDataLinkTitle => 'Μια κρυφή σελίδα απενεργοποιήθηκε';
 
   @override
   String get conversationSecurityDataLinkText =>
@@ -936,16 +861,13 @@ class AppLocalizationsEl extends AppLocalizations {
       'Το μήνυμα περιείχε πεδίο κωδικού πρόσβασης. Το Loupe το αφαίρεσε.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice =>
-      'Μην πληκτρολογείτε ποτέ κωδικό πρόσβασης μέσα σε email.';
+  String get conversationSecurityPasswordFieldAdvice => 'Μην πληκτρολογείτε ποτέ κωδικό πρόσβασης μέσα σε email.';
 
   @override
-  String get conversationSecurityScriptLinkTitle =>
-      'Ένας σύνδεσμος που εκτελεί κώδικα απενεργοποιήθηκε';
+  String get conversationSecurityScriptLinkTitle => 'Ένας σύνδεσμος που εκτελεί κώδικα απενεργοποιήθηκε';
 
   @override
-  String get conversationSecurityScriptLinkText =>
-      'Το Loupe δεν εκτελεί ποτέ κώδικα από μηνύματα.';
+  String get conversationSecurityScriptLinkText => 'Το Loupe δεν εκτελεί ποτέ κώδικα από μηνύματα.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -964,8 +886,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityInternationalTitle =>
-      'Διεθνής διεύθυνση ιστού';
+  String get conversationSecurityInternationalTitle => 'Διεθνής διεύθυνση ιστού';
 
   @override
   String conversationSecurityInternationalText(String hosts) {
@@ -1002,8 +923,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed =>
-      'Δεν ήταν δυνατή η λήψη του μηνύματος. Ελέγξτε τη σύνδεση και δοκιμάστε ξανά.';
+  String get exportDownloadFailed => 'Δεν ήταν δυνατή η λήψη του μηνύματος. Ελέγξτε τη σύνδεση και δοκιμάστε ξανά.';
 
   @override
   String exportSaved(String name) {
@@ -1033,10 +953,8 @@ class AppLocalizationsEl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Το «$name» αποθηκεύτηκε χωρίς $formattedCount μηνύματα που δεν ήταν δυνατό να ληφθούν.',
-      one:
-          'Το «$name» αποθηκεύτηκε χωρίς 1 μήνυμα που δεν ήταν δυνατό να ληφθεί.',
+      other: 'Το «$name» αποθηκεύτηκε χωρίς $formattedCount μηνύματα που δεν ήταν δυνατό να ληφθούν.',
+      one: 'Το «$name» αποθηκεύτηκε χωρίς 1 μήνυμα που δεν ήταν δυνατό να ληφθεί.',
     );
     return '$_temp0';
   }
@@ -1114,8 +1032,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get mailboxesSmartMailboxes => 'Smart Mailboxes';
 
   @override
-  String get mailboxesSmartMailboxesEmpty =>
-      'Αποθηκεύστε μια αναζήτηση για να τη βρίσκετε εδώ.';
+  String get mailboxesSmartMailboxesEmpty => 'Αποθηκεύστε μια αναζήτηση για να τη βρίσκετε εδώ.';
 
   @override
   String get mailboxesTags => 'Ετικέτες';
@@ -1149,8 +1066,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get projectsDelete => 'Διαγραφή έργου';
 
   @override
-  String get projectsDeleteMessage =>
-      'Οι συζητήσεις του μένουν εκεί που είναι, εκτός έργου.';
+  String get projectsDeleteMessage => 'Οι συζητήσεις του μένουν εκεί που είναι, εκτός έργου.';
 
   @override
   String get projectsUntitled => 'Έργο';
@@ -1231,8 +1147,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Το Loupe εξετάζει σε αυτήν τη συσκευή τις συζητήσεις των τελευταίων 90 ημερών στις οποίες συμμετείχατε και προτείνει όσες μοιάζουν να ανήκουν μαζί.';
 
   @override
-  String get projectsSettingsForget =>
-      'Εμφάνιση ξανά των απορριφθέντων θεμάτων';
+  String get projectsSettingsForget => 'Εμφάνιση ξανά των απορριφθέντων θεμάτων';
 
   @override
   String get projectsSettingsAi => 'Προτάσεις με ΤΝ';
@@ -1314,20 +1229,14 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get messageListLoadOlderFailed =>
-      'Δεν ήταν δυνατή η φόρτωση παλαιότερων μηνυμάτων.';
+  String get messageListLoadOlderFailed => 'Δεν ήταν δυνατή η φόρτωση παλαιότερων μηνυμάτων.';
 
   @override
   String get messageListSelectMessages => 'Επιλογή μηνυμάτων';
 
   @override
   String messageListSelected(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count επιλεγμένες',
-      one: '1 επιλεγμένη',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count επιλεγμένες', one: '1 επιλεγμένη');
     return '$_temp0';
   }
 
@@ -1338,8 +1247,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get messageListDeselectAll => 'Αποεπιλογή όλων';
 
   @override
-  String get messageListLoadFailed =>
-      'Δεν ήταν δυνατή η φόρτωση της αλληλογραφίας';
+  String get messageListLoadFailed => 'Δεν ήταν δυνατή η φόρτωση της αλληλογραφίας';
 
   @override
   String get messageListNoUnread => 'Κανένα μη αναγνωσμένο μήνυμα';
@@ -1415,12 +1323,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String panesDragCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count μηνύματα',
-      one: '1 μήνυμα',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count μηνύματα', one: '1 μήνυμα');
     return '$_temp0';
   }
 
@@ -1471,8 +1374,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get snoozeEmptyTitle => 'Τίποτα σε αναβολή';
 
   @override
-  String get snoozeEmptyText =>
-      'Αναβάλετε ένα μήνυμα για να επιστρέψει στα Εισερχόμενα όταν το χρειάζεστε.';
+  String get snoozeEmptyText => 'Αναβάλετε ένα μήνυμα για να επιστρέψει στα Εισερχόμενα όταν το χρειάζεστε.';
 
   @override
   String get briefButton => 'Σύνοψη';
@@ -1496,16 +1398,13 @@ class AppLocalizationsEl extends AppLocalizations {
   String get briefStopped => 'Σταματήσατε τη σύνοψη.';
 
   @override
-  String get briefFailedTooLarge =>
-      'Το μήνυμα είναι πολύ μεγάλο για το μοντέλο, γι’ αυτό δεν στάλθηκε τίποτα.';
+  String get briefFailedTooLarge => 'Το μήνυμα είναι πολύ μεγάλο για το μοντέλο, γι’ αυτό δεν στάλθηκε τίποτα.';
 
   @override
-  String get briefFailedProvider =>
-      'Το μοντέλο δεν μπόρεσε να συνοψίσει αυτό το μήνυμα.';
+  String get briefFailedProvider => 'Το μοντέλο δεν μπόρεσε να συνοψίσει αυτό το μήνυμα.';
 
   @override
-  String get briefFailedInvalid =>
-      'Η απάντηση δεν πέρασε τους ελέγχους του Loupe, γι’ αυτό δεν εμφανίζεται λίστα.';
+  String get briefFailedInvalid => 'Η απάντηση δεν πέρασε τους ελέγχους του Loupe, γι’ αυτό δεν εμφανίζεται λίστα.';
 
   @override
   String get briefNothingTitle => 'Τίποτα για σύνοψη';
@@ -1557,11 +1456,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {
-      'me': 'Εσείς',
-      'them': 'Άλλοι',
-      'other': 'Δεν αναφέρεται',
-    });
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Εσείς', 'them': 'Άλλοι', 'other': 'Δεν αναφέρεται'});
     return '$_temp0';
   }
 
@@ -1607,8 +1502,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get briefTrackFailed =>
-      'Δεν ήταν δυνατή η παρακολούθηση αυτού του στοιχείου.';
+  String get briefTrackFailed => 'Δεν ήταν δυνατή η παρακολούθηση αυτού του στοιχείου.';
 
   @override
   String briefShowDismissed(int count) {
@@ -1628,8 +1522,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get briefCopyChecklist => 'Αντιγραφή λίστας';
 
   @override
-  String get briefMadeByDemo =>
-      'Έγινε από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
+  String get briefMadeByDemo => 'Έγινε από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
 
   @override
   String briefMadeBy(String location, String name) {
@@ -1642,8 +1535,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get briefCaution =>
-      'Μια σύνοψη μπορεί να παραλείψει ή να παρερμηνεύσει κάτι. Ισχύει το ίδιο το μήνυμα.';
+  String get briefCaution => 'Μια σύνοψη μπορεί να παραλείψει ή να παρερμηνεύσει κάτι. Ισχύει το ίδιο το μήνυμα.';
 
   @override
   String briefSecurityReason(String reason) {
@@ -1651,8 +1543,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText =>
-      'Ελέγξτε το ίδιο το μήνυμα πριν κάνετε οτιδήποτε από αυτή τη σύνοψη.';
+  String get briefSecurityText => 'Ελέγξτε το ίδιο το μήνυμα πριν κάνετε οτιδήποτε από αυτή τη σύνοψη.';
 
   @override
   String get briefSourceTitle => 'Στο μήνυμα';
@@ -1697,34 +1588,28 @@ class AppLocalizationsEl extends AppLocalizations {
   String get appLockUnlock => 'Ξεκλείδωμα';
 
   @override
-  String get appLockFailed =>
-      'Το Loupe δεν μπόρεσε να επιβεβαιώσει ότι είστε εσείς.';
+  String get appLockFailed => 'Το Loupe δεν μπόρεσε να επιβεβαιώσει ότι είστε εσείς.';
 
   @override
-  String get appLockLockedOut =>
-      'Πάρα πολλές προσπάθειες. Δοκιμάστε ξανά αργότερα.';
+  String get appLockLockedOut => 'Πάρα πολλές προσπάθειες. Δοκιμάστε ξανά αργότερα.';
 
   @override
-  String get appLockPromptError =>
-      'Δεν ήταν δυνατή η εμφάνιση του παραθύρου επιβεβαίωσης. Δοκιμάστε ξανά.';
+  String get appLockPromptError => 'Δεν ήταν δυνατή η εμφάνιση του παραθύρου επιβεβαίωσης. Δοκιμάστε ξανά.';
 
   @override
-  String get appLockNoScreenLock =>
-      'Αυτό το τηλέφωνο δεν έχει κλείδωμα οθόνης.';
+  String get appLockNoScreenLock => 'Αυτό το τηλέφωνο δεν έχει κλείδωμα οθόνης.';
 
   @override
   String get appLockUnlockPromptTitle => 'Ξεκλείδωμα του Loupe';
 
   @override
-  String get appLockUnlockPromptReason =>
-      'Επιβεβαιώστε ότι είστε εσείς για να δείτε την αλληλογραφία σας.';
+  String get appLockUnlockPromptReason => 'Επιβεβαιώστε ότι είστε εσείς για να δείτε την αλληλογραφία σας.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Ενεργοποίηση κλειδώματος εφαρμογής';
 
   @override
-  String get appLockTurnOnPromptReason =>
-      'Επιβεβαιώστε ότι είστε εσείς για να ενεργοποιήσετε το κλείδωμα εφαρμογής.';
+  String get appLockTurnOnPromptReason => 'Επιβεβαιώστε ότι είστε εσείς για να ενεργοποιήσετε το κλείδωμα εφαρμογής.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1735,23 +1620,13 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String appLockAfterMinutes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count λεπτά',
-      one: '1 λεπτό',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count λεπτά', one: '1 λεπτό');
     return '$_temp0';
   }
 
   @override
   String appLockAfterHours(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count ώρες',
-      one: '1 ώρα',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ώρες', one: '1 ώρα');
     return '$_temp0';
   }
 
@@ -1771,8 +1646,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get openpgpEncryptedDamaged => 'Κρυπτογραφημένο · κατεστραμμένο';
 
   @override
-  String get openpgpEncryptedUnsupported =>
-      'Κρυπτογραφημένο · δεν υποστηρίζεται';
+  String get openpgpEncryptedUnsupported => 'Κρυπτογραφημένο · δεν υποστηρίζεται';
 
   @override
   String get openpgpUnknownSigner => 'άγνωστο';
@@ -1799,8 +1673,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get openpgpSignedWithRejectedKey =>
-      'Υπογεγραμμένο με απορριφθέν κλειδί';
+  String get openpgpSignedWithRejectedKey => 'Υπογεγραμμένο με απορριφθέν κλειδί';
 
   @override
   String openpgpSignedByNotAccepted(String name) {
@@ -1811,8 +1684,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get openpgpUnlock => 'Ξεκλείδωμα';
 
   @override
-  String get openpgpCantDecrypt =>
-      'Δεν είναι δυνατή η αποκρυπτογράφηση αυτού του μηνύματος';
+  String get openpgpCantDecrypt => 'Δεν είναι δυνατή η αποκρυπτογράφηση αυτού του μηνύματος';
 
   @override
   String get openpgpEncryptedWithOpenPgp => 'Κρυπτογραφημένο με OpenPGP';
@@ -1870,40 +1742,33 @@ class AppLocalizationsEl extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Αλλαγή αποδοχής…';
 
   @override
-  String get openpgpCheckedFooter =>
-      'Ελέγχθηκε σε αυτή τη συσκευή με OpenPGP, συμβατό με το Thunderbird.';
+  String get openpgpCheckedFooter => 'Ελέγχθηκε σε αυτή τη συσκευή με OpenPGP, συμβατό με το Thunderbird.';
 
   @override
   String get openpgpSummaryLocked =>
       'Το κλειδί σας είναι κλειδωμένο. Ξεκλειδώστε το με τη φράση πρόσβασής του για να διαβάσετε αυτό το μήνυμα.';
 
   @override
-  String get openpgpSummaryNoSecretKey =>
-      'Κρυπτογραφήθηκε για ένα κλειδί που δεν υπάρχει σε αυτή τη συσκευή.';
+  String get openpgpSummaryNoSecretKey => 'Κρυπτογραφήθηκε για ένα κλειδί που δεν υπάρχει σε αυτή τη συσκευή.';
 
   @override
-  String get openpgpSummaryDamaged =>
-      'Τα κρυπτογραφημένα δεδομένα είναι κατεστραμμένα ή άλλαξαν στη διαδρομή.';
+  String get openpgpSummaryDamaged => 'Τα κρυπτογραφημένα δεδομένα είναι κατεστραμμένα ή άλλαξαν στη διαδρομή.';
 
   @override
-  String get openpgpSummaryUnsupported =>
-      'Χρησιμοποιεί αλγόριθμο που το Loupe δεν υποστηρίζει.';
+  String get openpgpSummaryUnsupported => 'Χρησιμοποιεί αλγόριθμο που το Loupe δεν υποστηρίζει.';
 
   @override
-  String get openpgpSummaryEncrypted =>
-      'Μόνο εσείς και οι άλλοι παραλήπτες μπορείτε να το διαβάσετε.';
+  String get openpgpSummaryEncrypted => 'Μόνο εσείς και οι άλλοι παραλήπτες μπορείτε να το διαβάσετε.';
 
   @override
-  String get openpgpSummaryNotSigned =>
-      'Δεν είναι υπογεγραμμένο, οπότε ο αποστολέας δεν είναι επιβεβαιωμένος.';
+  String get openpgpSummaryNotSigned => 'Δεν είναι υπογεγραμμένο, οπότε ο αποστολέας δεν είναι επιβεβαιωμένος.';
 
   @override
   String get openpgpSummaryUnknownKey =>
       'Είναι υπογεγραμμένο, αλλά με κλειδί που δεν έχετε, οπότε η υπογραφή δεν μπορεί να ελεγχθεί.';
 
   @override
-  String get openpgpSummaryBadSignature =>
-      'Η υπογραφή δεν ταιριάζει: το μήνυμα μπορεί να έχει αλλοιωθεί.';
+  String get openpgpSummaryBadSignature => 'Η υπογραφή δεν ταιριάζει: το μήνυμα μπορεί να έχει αλλοιωθεί.';
 
   @override
   String get openpgpSummaryMismatch =>
@@ -1917,16 +1782,14 @@ class AppLocalizationsEl extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Υπογεγραμμένο με το δικό σας κλειδί.';
 
   @override
-  String get openpgpSummaryVerified =>
-      'Η υπογραφή είναι έγκυρη και έχετε επαληθεύσει το αποτύπωμα του κλειδιού.';
+  String get openpgpSummaryVerified => 'Η υπογραφή είναι έγκυρη και έχετε επαληθεύσει το αποτύπωμα του κλειδιού.';
 
   @override
   String get openpgpSummaryUnverified =>
       'Η υπογραφή είναι έγκυρη. Αποδεχτήκατε το κλειδί χωρίς να ελέγξετε το αποτύπωμά του.';
 
   @override
-  String get openpgpSummaryRejected =>
-      'Η υπογραφή είναι έγκυρη, αλλά έχετε απορρίψει αυτό το κλειδί.';
+  String get openpgpSummaryRejected => 'Η υπογραφή είναι έγκυρη, αλλά έχετε απορρίψει αυτό το κλειδί.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -1986,8 +1849,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get openpgpAddresses => 'Διευθύνσεις';
 
   @override
-  String get openpgpAddressesFooter =>
-      'Ποιο κλειδί χρησιμοποιεί κάθε διεύθυνση και πότε κρυπτογραφεί και υπογράφει.';
+  String get openpgpAddressesFooter => 'Ποιο κλειδί χρησιμοποιεί κάθε διεύθυνση και πότε κρυπτογραφεί και υπογράφει.';
 
   @override
   String get openpgpCorrespondentsKeys => 'Κλειδιά OpenPGP επαφών';
@@ -2014,16 +1876,14 @@ class AppLocalizationsEl extends AppLocalizations {
       'Τα κρυπτογραφημένα μηνύματα κρύβουν το θέμα τους. Το Loupe κρατά το θέμα κάθε μηνύματος που ανοίγετε στην κρυπτογραφημένη βάση δεδομένων του σε αυτή τη συσκευή, ώστε να εμφανίζεται στη λίστα, στην αναζήτηση και στις ειδοποιήσεις. Στο παρασκήνιο, το Loupe μπορεί επίσης να αποκρυπτογραφεί τα θέματα νέων μηνυμάτων με κλειδιά χωρίς φράση πρόσβασης· για τον σκοπό αυτό κατεβάζει κάθε μήνυμα (έως 1 MB).';
 
   @override
-  String get openpgpDecryptSubjects =>
-      'Αποκρυπτογράφηση θεμάτων στο παρασκήνιο';
+  String get openpgpDecryptSubjects => 'Αποκρυπτογράφηση θεμάτων στο παρασκήνιο';
 
   @override
   String get openpgpIndexFooter =>
       'Η αναζήτηση βρίσκει κρυπτογραφημένα μηνύματα με βάση τον αποστολέα, τους παραλήπτες και το θέμα. Με αυτή τη ρύθμιση ενεργή, το Loupe προσθέτει επίσης το κείμενο κάθε κρυπτογραφημένου μηνύματος που αποκρυπτογραφεί στο ευρετήριο αναζήτησης της κρυπτογραφημένης βάσης δεδομένων του σε αυτή τη συσκευή, ώστε η αναζήτηση να το βρίσκει και από το κείμενό του. Η απενεργοποίηση αφαιρεί αυτό το κείμενο από το ευρετήριο.';
 
   @override
-  String get openpgpIndexDecrypted =>
-      'Ευρετηρίαση αποκρυπτογραφημένων μηνυμάτων για αναζήτηση';
+  String get openpgpIndexDecrypted => 'Ευρετηρίαση αποκρυπτογραφημένων μηνυμάτων για αναζήτηση';
 
   @override
   String get openpgpPassphrases => 'Φράσεις πρόσβασης';
@@ -2068,8 +1928,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get openpgpAddKeyTitle => 'Προσθήκη κλειδιού OpenPGP';
 
   @override
-  String get openpgpAddKeyMessage =>
-      'Εισαγάγετε το κλειδί που χρησιμοποιείτε στο Thunderbird ή δημιουργήστε ένα νέο.';
+  String get openpgpAddKeyMessage => 'Εισαγάγετε το κλειδί που χρησιμοποιείτε στο Thunderbird ή δημιουργήστε ένα νέο.';
 
   @override
   String get openpgpImportFromClipboard => 'Εισαγωγή από το πρόχειρο';
@@ -2090,8 +1949,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get openpgpFromFile => 'Από αρχείο';
 
   @override
-  String get openpgpClipboardEmpty =>
-      'Το πρόχειρο είναι κενό. Αντιγράψτε πρώτα το κλειδί.';
+  String get openpgpClipboardEmpty => 'Το πρόχειρο είναι κενό. Αντιγράψτε πρώτα το κλειδί.';
 
   @override
   String get openpgpKey => 'Κλειδί';
@@ -2156,8 +2014,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get openpgpRemoveKey => 'Αφαίρεση κλειδιού';
 
   @override
-  String get openpgpBackUpTitle =>
-      'Δημιουργία αντιγράφου ασφαλείας του μυστικού κλειδιού;';
+  String get openpgpBackUpTitle => 'Δημιουργία αντιγράφου ασφαλείας του μυστικού κλειδιού;';
 
   @override
   String get openpgpBackUpProtected =>
@@ -2185,8 +2042,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Τα μηνύματα που κρυπτογραφήθηκαν για αυτό το κλειδί δεν θα μπορούν πλέον να διαβαστούν σε αυτή τη συσκευή, εκτός αν το εισαγάγετε ξανά.';
 
   @override
-  String get openpgpRemoveKeyMessage =>
-      'Μπορείτε να το εισαγάγετε ξανά αργότερα.';
+  String get openpgpRemoveKeyMessage => 'Μπορείτε να το εισαγάγετε ξανά αργότερα.';
 
   @override
   String get openpgpKeyHeader => 'Κλειδί OpenPGP';
@@ -2209,8 +2065,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Αυτόματη κρυπτογράφηση';
 
   @override
-  String get openpgpAlwaysEncryptDetail =>
-      'Δεν γίνεται αποστολή αν ένας παραλήπτης δεν έχει κλειδί';
+  String get openpgpAlwaysEncryptDetail => 'Δεν γίνεται αποστολή αν ένας παραλήπτης δεν έχει κλειδί';
 
   @override
   String get openpgpSignUnencrypted => 'Υπογραφή μη κρυπτογραφημένων μηνυμάτων';
@@ -2229,23 +2084,16 @@ class AppLocalizationsEl extends AppLocalizations {
   String get openpgpPreferEncryption => 'Προτίμηση κρυπτογράφησης';
 
   @override
-  String get openpgpPreferEncryptionDetail =>
-      'Ζητά από τους άλλους να κρυπτογραφούν όταν μπορούν';
+  String get openpgpPreferEncryptionDetail => 'Ζητά από τους άλλους να κρυπτογραφούν όταν μπορούν';
 
   @override
   String openpgpValidityYears(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count έτη',
-      one: '1 έτος',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count έτη', one: '1 έτος');
     return '$_temp0';
   }
 
   @override
-  String get openpgpPassphrasesDontMatch =>
-      'Οι φράσεις πρόσβασης δεν ταιριάζουν.';
+  String get openpgpPassphrasesDontMatch => 'Οι φράσεις πρόσβασης δεν ταιριάζουν.';
 
   @override
   String openpgpKeyReady(String id) {
@@ -2419,8 +2267,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get openpgpWrongPassphrase =>
-      'Λανθασμένη φράση πρόσβασης. Δοκιμάστε ξανά.';
+  String get openpgpWrongPassphrase => 'Λανθασμένη φράση πρόσβασης. Δοκιμάστε ξανά.';
 
   @override
   String get openpgpExplainLocked =>
@@ -2448,27 +2295,22 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock =>
-      'Ξεκλειδώστε το πιστοποιητικό S/MIME σας για να το διαβάσετε.';
+  String get openpgpExplainSmimeUnlock => 'Ξεκλειδώστε το πιστοποιητικό S/MIME σας για να το διαβάσετε.';
 
   @override
-  String get openpgpAttachmentGone =>
-      'Αυτό το συνημμένο δεν είναι πλέον διαθέσιμο.';
+  String get openpgpAttachmentGone => 'Αυτό το συνημμένο δεν είναι πλέον διαθέσιμο.';
 
   @override
   String get smimeEncrypted => 'Κρυπτογραφημένο (S/MIME)';
 
   @override
-  String get smimeEncryptedNoCertificate =>
-      'Κρυπτογραφημένο (S/MIME) · χωρίς πιστοποιητικό';
+  String get smimeEncryptedNoCertificate => 'Κρυπτογραφημένο (S/MIME) · χωρίς πιστοποιητικό';
 
   @override
-  String get smimeEncryptedDamaged =>
-      'Κρυπτογραφημένο (S/MIME) · κατεστραμμένο';
+  String get smimeEncryptedDamaged => 'Κρυπτογραφημένο (S/MIME) · κατεστραμμένο';
 
   @override
-  String get smimeEncryptedUnsupported =>
-      'Κρυπτογραφημένο (S/MIME) · δεν υποστηρίζεται';
+  String get smimeEncryptedUnsupported => 'Κρυπτογραφημένο (S/MIME) · δεν υποστηρίζεται';
 
   @override
   String get smimeEncryptedLocked => 'Κρυπτογραφημένο (S/MIME) · κλειδωμένο';
@@ -2477,19 +2319,16 @@ class AppLocalizationsEl extends AppLocalizations {
   String get smimeUnknownSigner => 'άγνωστο';
 
   @override
-  String get smimeSignatureModified =>
-      'Μη έγκυρη υπογραφή: το μήνυμα τροποποιήθηκε';
+  String get smimeSignatureModified => 'Μη έγκυρη υπογραφή: το μήνυμα τροποποιήθηκε';
 
   @override
-  String get smimeSignatureWeak =>
-      'Μη ασφαλής υπογραφή: παρωχημένος αλγόριθμος';
+  String get smimeSignatureWeak => 'Μη ασφαλής υπογραφή: παρωχημένος αλγόριθμος';
 
   @override
   String get smimeSignatureUncheckable => 'Η υπογραφή δεν μπορεί να ελεγχθεί';
 
   @override
-  String get smimeSignedCertificateMissing =>
-      'Υπογεγραμμένο · λείπει το πιστοποιητικό';
+  String get smimeSignedCertificateMissing => 'Υπογεγραμμένο · λείπει το πιστοποιητικό';
 
   @override
   String smimeSignedByRevoked(String name) {
@@ -2537,8 +2376,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get smimeCantDecrypt =>
-      'Δεν είναι δυνατή η αποκρυπτογράφηση αυτού του μηνύματος';
+  String get smimeCantDecrypt => 'Δεν είναι δυνατή η αποκρυπτογράφηση αυτού του μηνύματος';
 
   @override
   String get smimeEncryptedWithSmime => 'Κρυπτογραφημένο με S/MIME';
@@ -2622,8 +2460,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get smimeTrustThisCertificateEllipsis =>
-      'Εμπιστοσύνη σε αυτό το πιστοποιητικό…';
+  String get smimeTrustThisCertificateEllipsis => 'Εμπιστοσύνη σε αυτό το πιστοποιητικό…';
 
   @override
   String get smimeCheckedFooterRevocation =>
@@ -2657,32 +2494,25 @@ class AppLocalizationsEl extends AppLocalizations {
   String get smimeTrust => 'Εμπιστοσύνη';
 
   @override
-  String get smimeSummaryNoKey =>
-      'Κρυπτογραφήθηκε για ένα πιστοποιητικό που δεν υπάρχει σε αυτή τη συσκευή.';
+  String get smimeSummaryNoKey => 'Κρυπτογραφήθηκε για ένα πιστοποιητικό που δεν υπάρχει σε αυτή τη συσκευή.';
 
   @override
-  String get smimeSummaryDamaged =>
-      'Τα κρυπτογραφημένα δεδομένα είναι κατεστραμμένα ή άλλαξαν στη διαδρομή.';
+  String get smimeSummaryDamaged => 'Τα κρυπτογραφημένα δεδομένα είναι κατεστραμμένα ή άλλαξαν στη διαδρομή.';
 
   @override
-  String get smimeSummaryUnsupported =>
-      'Χρησιμοποιεί αλγόριθμο που το Loupe δεν υποστηρίζει.';
+  String get smimeSummaryUnsupported => 'Χρησιμοποιεί αλγόριθμο που το Loupe δεν υποστηρίζει.';
 
   @override
-  String get smimeSummaryLocked =>
-      'Το πιστοποιητικό S/MIME σας είναι κλειδωμένο.';
+  String get smimeSummaryLocked => 'Το πιστοποιητικό S/MIME σας είναι κλειδωμένο.';
 
   @override
-  String get smimeSummaryEncrypted =>
-      'Μόνο εσείς και οι άλλοι παραλήπτες μπορείτε να το διαβάσετε.';
+  String get smimeSummaryEncrypted => 'Μόνο εσείς και οι άλλοι παραλήπτες μπορείτε να το διαβάσετε.';
 
   @override
-  String get smimeSummaryNotSigned =>
-      'Δεν είναι υπογεγραμμένο, οπότε ο αποστολέας δεν είναι επιβεβαιωμένος.';
+  String get smimeSummaryNotSigned => 'Δεν είναι υπογεγραμμένο, οπότε ο αποστολέας δεν είναι επιβεβαιωμένος.';
 
   @override
-  String get smimeSummaryModified =>
-      'Η υπογραφή δεν ταιριάζει: το μήνυμα άλλαξε αφού υπογράφηκε.';
+  String get smimeSummaryModified => 'Η υπογραφή δεν ταιριάζει: το μήνυμα άλλαξε αφού υπογράφηκε.';
 
   @override
   String get smimeSummaryUncheckable => 'Η υπογραφή δεν μπορεί να ελεγχθεί.';
@@ -2710,12 +2540,10 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain =>
-      'Το πιστοποιητικό ή κάποιος από τους εκδότες του δεν είναι έγκυρος.';
+  String get smimeProblemInvalidChain => 'Το πιστοποιητικό ή κάποιος από τους εκδότες του δεν είναι έγκυρος.';
 
   @override
-  String get smimeProblemUntrusted =>
-      'Το πιστοποιητικό προέρχεται από αρχή που το Loupe δεν εμπιστεύεται.';
+  String get smimeProblemUntrusted => 'Το πιστοποιητικό προέρχεται από αρχή που το Loupe δεν εμπιστεύεται.';
 
   @override
   String get smimeProblemExpired => 'Το πιστοποιητικό είχε λήξει.';
@@ -2724,12 +2552,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get smimeProblemNotYetValid => 'Το πιστοποιητικό δεν ίσχυε ακόμη.';
 
   @override
-  String get smimeProblemWrongUsage =>
-      'Το πιστοποιητικό δεν προορίζεται για email.';
+  String get smimeProblemWrongUsage => 'Το πιστοποιητικό δεν προορίζεται για email.';
 
   @override
-  String get smimeProblemWrongAddress =>
-      'Το πιστοποιητικό ανήκει σε άλλη διεύθυνση από αυτή του αποστολέα.';
+  String get smimeProblemWrongAddress => 'Το πιστοποιητικό ανήκει σε άλλη διεύθυνση από αυτή του αποστολέα.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2786,8 +2612,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get smimeImportCertificateEllipsis => 'Εισαγωγή πιστοποιητικού…';
 
   @override
-  String get smimeUseDeviceCertificate =>
-      'Χρήση πιστοποιητικού από αυτή τη συσκευή…';
+  String get smimeUseDeviceCertificate => 'Χρήση πιστοποιητικού από αυτή τη συσκευή…';
 
   @override
   String get smimeCorrespondentsCertificates => 'Πιστοποιητικά επαφών';
@@ -2804,8 +2629,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Όταν ανοίγετε ένα υπογεγραμμένο μήνυμα, το Loupe ρωτά την αρχή που εξέδωσε το πιστοποιητικό του υπογράφοντος αν έχει ανακληθεί (μέσω του διακομιστή OCSP της ή της λίστας ανάκλησής της). Έτσι η αρχή μπορεί να δει πότε κάποιος από τη δική σας διεύθυνση internet διαβάζει μηνύματα υπογεγραμμένα με αυτό το πιστοποιητικό. Οι απαντήσεις φυλάσσονται σε αυτή τη συσκευή μέχρι να λήξουν. Ένα ανακληθέν πιστοποιητικό εμφανίζεται ως «το πιστοποιητικό ανακλήθηκε» στην κεφαλίδα του μηνύματος.';
 
   @override
-  String get smimeCheckRevocation =>
-      'Ηλεκτρονικός έλεγχος ανάκλησης πιστοποιητικών';
+  String get smimeCheckRevocation => 'Ηλεκτρονικός έλεγχος ανάκλησης πιστοποιητικών';
 
   @override
   String get smimeTrustedAuthorities => 'Αξιόπιστες αρχές';
@@ -2815,8 +2639,7 @@ class AppLocalizationsEl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Αξιόπιστες για εσάς, πέρα από τις $count που εμπιστεύεται η Mozilla για email.',
+      other: 'Αξιόπιστες για εσάς, πέρα από τις $count που εμπιστεύεται η Mozilla για email.',
       one: 'Αξιόπιστες για εσάς, πέρα από τη μία που εμπιστεύεται η Mozilla για email.',
     );
     return '$_temp0';
@@ -2829,8 +2652,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get smimeImportACertificate => 'Εισαγωγή πιστοποιητικού';
 
   @override
-  String get smimeImportContactMessage =>
-      'Πιστοποιητικό επαφής (.cer, .crt, .pem) ή αρχής πιστοποίησης.';
+  String get smimeImportContactMessage => 'Πιστοποιητικό επαφής (.cer, .crt, .pem) ή αρχής πιστοποίησης.';
 
   @override
   String get smimeFromClipboard => 'Από το πρόχειρο';
@@ -2839,8 +2661,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get smimeFromFile => 'Από αρχείο';
 
   @override
-  String get smimeClipboardEmpty =>
-      'Το πρόχειρο είναι κενό. Αντιγράψτε πρώτα το πιστοποιητικό.';
+  String get smimeClipboardEmpty => 'Το πρόχειρο είναι κενό. Αντιγράψτε πρώτα το πιστοποιητικό.';
 
   @override
   String get smimeCertificate => 'Πιστοποιητικό';
@@ -2918,8 +2739,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get smimeTrustThisAuthority => 'Εμπιστοσύνη σε αυτή την αρχή';
 
   @override
-  String get smimeTrustThisCertificate =>
-      'Εμπιστοσύνη σε αυτό το πιστοποιητικό';
+  String get smimeTrustThisCertificate => 'Εμπιστοσύνη σε αυτό το πιστοποιητικό';
 
   @override
   String get smimeStopTrusting => 'Διακοπή εμπιστοσύνης';
@@ -2994,8 +2814,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Το ιδιωτικό του κλειδί διαγράφεται από αυτή τη συσκευή: τα μηνύματα που κρυπτογραφήθηκαν για αυτό δεν θα διαβάζονται πλέον εδώ, εκτός αν το εισαγάγετε ξανά.';
 
   @override
-  String get smimeRemoveContactMessage =>
-      'Θα επιστρέψει με το επόμενο υπογεγραμμένο μήνυμα της επαφής.';
+  String get smimeRemoveContactMessage => 'Θα επιστρέψει με το επόμενο υπογεγραμμένο μήνυμα της επαφής.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -3055,10 +2874,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(
-    int count,
-    String certificates,
-  ) {
+  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -3126,8 +2942,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get smimeWrongPassphrase =>
-      'Λανθασμένη φράση πρόσβασης. Δοκιμάστε ξανά.';
+  String get smimeWrongPassphrase => 'Λανθασμένη φράση πρόσβασης. Δοκιμάστε ξανά.';
 
   @override
   String get smimeUnlock => 'Ξεκλείδωμα';
@@ -3156,12 +2971,10 @@ class AppLocalizationsEl extends AppLocalizations {
       'Το πιστοποιητικό S/MIME σας είναι κλειδωμένο. Ανοίξτε ξανά το μήνυμα για να το ξεκλειδώσετε.';
 
   @override
-  String get smimeDeviceHasNoCertificates =>
-      'Αυτή η συσκευή δεν παρέχει τα πιστοποιητικά της.';
+  String get smimeDeviceHasNoCertificates => 'Αυτή η συσκευή δεν παρέχει τα πιστοποιητικά της.';
 
   @override
-  String get smimeCantReadCertificate =>
-      'Το Loupe δεν μπορεί να διαβάσει αυτό το πιστοποιητικό.';
+  String get smimeCantReadCertificate => 'Το Loupe δεν μπορεί να διαβάσει αυτό το πιστοποιητικό.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -3176,8 +2989,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Το πιστοποιητικό αυτής της συσκευής μπορεί να χρησιμοποιηθεί μόνο όσο το Loupe είναι ανοιχτό.';
 
   @override
-  String get smimeDeviceKeyDamaged =>
-      'Το κρυπτογραφημένο κλειδί είναι κατεστραμμένο.';
+  String get smimeDeviceKeyDamaged => 'Το κρυπτογραφημένο κλειδί είναι κατεστραμμένο.';
 
   @override
   String smimeDeviceCertificateCantDo(String reason) {
@@ -3193,16 +3005,13 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress =>
-      'Η διεύθυνση της αρχής δεν είναι διεύθυνση ιστού.';
+  String get smimeAuthorityNotWebAddress => 'Η διεύθυνση της αρχής δεν είναι διεύθυνση ιστού.';
 
   @override
-  String get smimeAuthorityTimeout =>
-      'Η αρχή πιστοποίησης δεν απάντησε εγκαίρως.';
+  String get smimeAuthorityTimeout => 'Η αρχή πιστοποίησης δεν απάντησε εγκαίρως.';
 
   @override
-  String get smimeAuthorityUnreachable =>
-      'Δεν ήταν δυνατή η επικοινωνία με την αρχή πιστοποίησης.';
+  String get smimeAuthorityUnreachable => 'Δεν ήταν δυνατή η επικοινωνία με την αρχή πιστοποίησης.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -3210,8 +3019,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge =>
-      'Η απάντηση της αρχής πιστοποίησης είναι πολύ μεγάλη.';
+  String get smimeAuthorityAnswerTooLarge => 'Η απάντηση της αρχής πιστοποίησης είναι πολύ μεγάλη.';
 
   @override
   String get smimeRevocationNotChecked =>
@@ -3224,11 +3032,315 @@ class AppLocalizationsEl extends AppLocalizations {
   String get actionsWaitingOnOthers => 'Αναμονή για άλλους';
 
   @override
-  String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {
-      'jmap': 'Push',
-      'other': 'IDLE',
+  String get actionsNeedsMyActionEmpty => 'Τίποτα δεν χρειάζεται ενέργειά σας';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Δεν περιμένετε κανέναν';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Για να παρακολουθείτε κάτι, πατήστε ⋯ σε ένα μήνυμα και επιλέξτε «Προσθήκη ενέργειας…»';
+
+  @override
+  String get actionsTitle => 'Ενέργειες';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count προς εκτέλεση',
+      one: '1 προς εκτέλεση',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count σε αναμονή', one: '1 σε αναμονή');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count διευθετημένες ενέργειες',
+      one: '1 διευθετημένη ενέργεια',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Διευθετημένες';
+
+  @override
+  String get actionsNoneInConversation => 'Αυτή η συζήτηση δεν έχει ενέργειες.';
+
+  @override
+  String get actionsFooter =>
+      'Οι ενέργειες φυλάσσονται σε αυτό το τηλέφωνο. Η αλληλογραφία δεν τις αλλάζει ποτέ, ούτε καν μια απάντηση που λέει «Ευχαριστώ»: τις αλλάζετε μόνο εσείς.';
+
+  @override
+  String get actionsMarkDone => 'Σήμανση ως ολοκληρωμένη';
+
+  @override
+  String get actionsReopen => 'Άνοιγμα ξανά';
+
+  @override
+  String get actionsStateNeedsAction => 'Χρειάζεται ενέργεια';
+
+  @override
+  String get actionsStateInProgress => 'Σε εξέλιξη';
+
+  @override
+  String get actionsStateSent => 'Στάλθηκε';
+
+  @override
+  String get actionsStateWaiting => 'Αναμονή επιβεβαίωσης';
+
+  @override
+  String get actionsStateAcknowledged => 'Επιβεβαιώθηκε';
+
+  @override
+  String get actionsStateDone => 'Ολοκληρώθηκε';
+
+  @override
+  String get actionsStateDismissed => 'Απορρίφθηκε';
+
+  @override
+  String get actionsStateSuperseded => 'Αντικαταστάθηκε';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Σημειώθηκε ότι χρειάζεται ενέργεια',
+      'inProgress': 'Σημειώθηκε ως σε εξέλιξη',
+      'sent': 'Σημειώθηκε ότι στάλθηκε',
+      'waitingForAcknowledgement': 'Αναμονή επιβεβαίωσης',
+      'acknowledged': 'Σημειώθηκε ως επιβεβαιωμένη',
+      'done': 'Σημειώθηκε ως ολοκληρωμένη',
+      'dismissed': 'Η ενέργεια απορρίφθηκε',
+      'superseded': 'Σημειώθηκε ότι αντικαταστάθηκε',
+      'other': 'Η ενέργεια άλλαξε',
     });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Η ενέργεια αναδιατυπώθηκε';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Ορίστηκε υπενθύμιση για $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Η υπενθύμιση αφαιρέθηκε';
+
+  @override
+  String get actionsDeleted => 'Η ενέργεια διαγράφηκε';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Προστέθηκαν $count ενέργειες',
+      one: 'Η ενέργεια προστέθηκε',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Δεν ήταν δυνατή η αποθήκευση της ενέργειας.';
+
+  @override
+  String get actionsStatusHeader => 'Κατάσταση';
+
+  @override
+  String get actionsEditText => 'Επεξεργασία κειμένου…';
+
+  @override
+  String get actionsEditTitle => 'Επεξεργασία ενέργειας';
+
+  @override
+  String get actionsRemindMe => 'Υπενθύμιση…';
+
+  @override
+  String get actionsChangeReminder => 'Αλλαγή υπενθύμισης…';
+
+  @override
+  String get actionsClearReminder => 'Αφαίρεση υπενθύμισης';
+
+  @override
+  String get actionsRemindTitle => 'Υπενθύμιση';
+
+  @override
+  String get actionsDelete => 'Διαγραφή ενέργειας';
+
+  @override
+  String get actionsHistoryHeader => 'Ιστορικό';
+
+  @override
+  String get actionsHistoryAdded => 'Προστέθηκε';
+
+  @override
+  String get actionsHistoryEdited => 'Αναδιατυπώθηκε';
+
+  @override
+  String get actionsHistoryDue => 'Άλλαξε η προθεσμία';
+
+  @override
+  String get actionsHistoryReminder => 'Άλλαξε η υπενθύμιση';
+
+  @override
+  String get actionsHistoryRevised => 'Ενημερώθηκε από νέα πρόταση';
+
+  @override
+  String get actionsHistoryDeleted => 'Διαγράφηκε';
+
+  @override
+  String get actionsHistoryRestored => 'Επαναφέρθηκε';
+
+  @override
+  String get actionsOwnerMe => 'Πρέπει να κάνω';
+
+  @override
+  String get actionsOwnerThem => 'Θα κάνουν άλλοι';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Αρχικά: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '«$quote»';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Μήνυμα από $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Προστέθηκε από εσάς';
+
+  @override
+  String get actionsOriginDemo => 'Προτάθηκε από την ενσωματωμένη επίδειξη: κανόνες, χωρίς μοντέλο';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Προτάθηκε από $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Προτάθηκε από $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Προθεσμία: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Ιδανικά έως $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '«$timing»';
+  }
+
+  @override
+  String get actionsAddMenu => 'Προσθήκη ενέργειας…';
+
+  @override
+  String get actionsSuggestMenu => 'Πρόταση ενεργειών';
+
+  @override
+  String get actionsAddTitle => 'Προσθήκη ενέργειας';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Τι πρέπει να κάνετε;';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Τι περιμένετε;';
+
+  @override
+  String get actionsDueDate => 'Προθεσμία';
+
+  @override
+  String get actionsClearDueDate => 'Χωρίς προθεσμία';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Σχετικά με «$subject»';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Προτεινόμενες ενέργειες';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'σε αυτό το τηλέφωνο',
+      'myServer': 'στον διακομιστή σας',
+      'other': 'στο cloud',
+    });
+    return 'Από $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'Από την ενσωματωμένη επίδειξη: κανόνες, χωρίς μοντέλο. Τίποτα δεν φεύγει από αυτό το τηλέφωνο.';
+
+  @override
+  String get actionsSuggestNone => 'Δεν υπάρχει τίποτα για παρακολούθηση σε αυτό το μήνυμα.';
+
+  @override
+  String get actionsSuggestPartial => 'Αυτό το μήνυμα είναι μεγάλο: διαβάστηκε μόνο η αρχή του.';
+
+  @override
+  String get actionsSuggestTracked => 'Παρακολουθείται';
+
+  @override
+  String get actionsSuggestUpdate => 'Ενημέρωση';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Προσθήκη και των $count',
+      two: 'Προσθήκη και των δύο',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Κάθε πρόταση παραθέτει το μήνυμα, και τίποτα δεν παρακολουθείται μέχρι να το προσθέσετε. Η παλαιότερη αλληλογραφία σε παράθεση δεν μετράει.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Αυτό το μήνυμα είναι πολύ μεγάλο για το επιλεγμένο μοντέλο.';
+
+  @override
+  String get actionsSuggestInvalid => 'Η απάντηση δεν συμφωνούσε με το μήνυμα, οπότε δεν προτείνεται τίποτα.';
+
+  @override
+  String get actionsSuggestCancelled => 'Διακόπηκε.';
+
+  @override
+  String get actionsSuggestFailed => 'Οι προτάσεις δεν είναι διαθέσιμες αυτή τη στιγμή.';
+
+  @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
     return '$_temp0';
   }
 
@@ -3261,8 +3373,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsSignatureDefault => 'Προεπιλογή';
 
   @override
-  String get settingsSignatureWhenCopiedAnyone =>
-      'Όταν κάποιος είναι σε κοινοποίηση';
+  String get settingsSignatureWhenCopiedAnyone => 'Όταν κάποιος είναι σε κοινοποίηση';
 
   @override
   String settingsSignatureWhenCopying(String addresses) {
@@ -3294,8 +3405,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsSignatureAddField => 'Προσθήκη πεδίου';
 
   @override
-  String get settingsSignatureImageFailed =>
-      'Δεν ήταν δυνατή η προσθήκη της εικόνας. Δοκιμάστε μικρότερο PNG ή JPEG.';
+  String get settingsSignatureImageFailed => 'Δεν ήταν δυνατή η προσθήκη της εικόνας. Δοκιμάστε μικρότερο PNG ή JPEG.';
 
   @override
   String get settingsSignatureWhenToUse => 'Πότε χρησιμοποιείται';
@@ -3311,8 +3421,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Προσθήκη διεύθυνσης ή τομέα…';
 
   @override
-  String get settingsSignatureCopiedPrompt =>
-      'Μια διεύθυνση ή ένας τομέας, όπως client.example.';
+  String get settingsSignatureCopiedPrompt => 'Μια διεύθυνση ή ένας τομέας, όπως client.example.';
 
   @override
   String get settingsSignatureScheduled => 'Προγραμματισμένη';
@@ -3331,8 +3440,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsSignatureRotation => 'Σε εναλλαγή';
 
   @override
-  String get settingsSignatureRotationFooter =>
-      'Κάθε νέο μήνυμα παίρνει τυχαία μία από τις υπογραφές σε εναλλαγή.';
+  String get settingsSignatureRotationFooter => 'Κάθε νέο μήνυμα παίρνει τυχαία μία από τις υπογραφές σε εναλλαγή.';
 
   @override
   String get settingsSignatureMakeDefault => 'Ορισμός ως προεπιλογή';
@@ -3373,12 +3481,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsSwipeRight => 'Σάρωση δεξιά';
 
   @override
-  String get settingsSwipeRightFooter =>
-      'Μια πλήρης σάρωση εκτελεί αυτή την ενέργεια.';
+  String get settingsSwipeRightFooter => 'Μια πλήρης σάρωση εκτελεί αυτή την ενέργεια.';
 
   @override
-  String get settingsSwipeToggleRead =>
-      'Σήμανση ως αναγνωσμένο / μη αναγνωσμένο';
+  String get settingsSwipeToggleRead => 'Σήμανση ως αναγνωσμένο / μη αναγνωσμένο';
 
   @override
   String get settingsSwipeTrash => 'Στον κάδο';
@@ -3448,22 +3554,19 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsDefaultView => 'Προεπιλεγμένη προβολή';
 
   @override
-  String get settingsDefaultViewFooter =>
-      'Μπορείτε να αλλάξετε την προβολή κάθε μηνύματος με το κουμπί Aa.';
+  String get settingsDefaultViewFooter => 'Μπορείτε να αλλάξετε την προβολή κάθε μηνύματος με το κουμπί Aa.';
 
   @override
   String get settingsViewReadable => 'Ευανάγνωστη';
 
   @override
-  String get settingsViewReadableDetail =>
-      'Καθαρή, ευκρινής, ακολουθεί τη σκοτεινή λειτουργία';
+  String get settingsViewReadableDetail => 'Καθαρή, ευκρινής, ακολουθεί τη σκοτεινή λειτουργία';
 
   @override
   String get settingsViewOriginal => 'Πρωτότυπη';
 
   @override
-  String get settingsViewOriginalDetail =>
-      'Ακριβώς όπως τη σχεδίασε ο αποστολέας';
+  String get settingsViewOriginalDetail => 'Ακριβώς όπως τη σχεδίασε ο αποστολέας';
 
   @override
   String get settingsViewPlain => 'Απλό κείμενο';
@@ -3481,8 +3584,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsFontMono => 'Σταθερού πλάτους';
 
   @override
-  String get settingsFontMonoDetail =>
-      'Διατηρεί στοιχισμένα τα σχέδια ASCII και τους πίνακες';
+  String get settingsFontMonoDetail => 'Διατηρεί στοιχισμένα τα σχέδια ASCII και τους πίνακες';
 
   @override
   String get settingsTechnicalLists => 'Τεχνικές λίστες';
@@ -3494,8 +3596,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Απευθείας άνοιγμα συνδέσμων';
 
   @override
-  String get settingsOpenLinksDirectlyDetail =>
-      'Παράκαμψη της παρακολούθησης κλικ όταν ο προορισμός είναι γνωστός';
+  String get settingsOpenLinksDirectlyDetail => 'Παράκαμψη της παρακολούθησης κλικ όταν ο προορισμός είναι γνωστός';
 
   @override
   String get settingsSecurityHeader => 'Ασφάλεια';
@@ -3540,8 +3641,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsLockAfter => 'Κλείδωμα μετά από';
 
   @override
-  String get settingsLockAfterFooter =>
-      'Πόση ώρα μπορεί το Loupe να είναι στο παρασκήνιο πριν ρωτήσει ξανά.';
+  String get settingsLockAfterFooter => 'Πόση ώρα μπορεί το Loupe να είναι στο παρασκήνιο πριν ρωτήσει ξανά.';
 
   @override
   String get settingsNotifications => 'Ειδοποιήσεις';
@@ -3566,8 +3666,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsResetApp => 'Επαναφορά εφαρμογής';
 
   @override
-  String get settingsResetFooter =>
-      'Ξεχνά όλες τις ρυθμίσεις και επιστρέφει στην οθόνη καλωσορίσματος.';
+  String get settingsResetFooter => 'Ξεχνά όλες τις ρυθμίσεις και επιστρέφει στην οθόνη καλωσορίσματος.';
 
   @override
   String get settingsResetTitle => 'Επαναφορά του Loupe;';
@@ -3593,8 +3692,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Το Loupe δεν έχει στατιστικά χρήσης ούτε παρακολούθηση. Η αλληλογραφία σας πηγαίνει μόνο στους διακομιστές αλληλογραφίας σας.';
 
   @override
-  String get settingsNotificationsOffIos =>
-      'Οι ειδοποιήσεις για το Loupe είναι απενεργοποιημένες στις Ρυθμίσεις.';
+  String get settingsNotificationsOffIos => 'Οι ειδοποιήσεις για το Loupe είναι απενεργοποιημένες στις Ρυθμίσεις.';
 
   @override
   String get settingsNotificationsOffAndroid =>
@@ -3641,8 +3739,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Η «Απόκρυψη περιεχομένου» κρατά τον αποστολέα, το θέμα και την προεπισκόπηση έξω από την οθόνη κλειδώματος και τις ειδοποιήσεις.';
 
   @override
-  String get settingsBackgroundAppRefresh =>
-      'Ανανέωση εφαρμογών στο παρασκήνιο';
+  String get settingsBackgroundAppRefresh => 'Ανανέωση εφαρμογών στο παρασκήνιο';
 
   @override
   String get settingsBackgroundRefreshFooter =>
@@ -3666,8 +3763,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsComingSoon => 'Έρχεται σύντομα';
 
   @override
-  String get settingsAllowUnrestrictedBattery =>
-      'Να επιτρέπεται απεριόριστη χρήση μπαταρίας';
+  String get settingsAllowUnrestrictedBattery => 'Να επιτρέπεται απεριόριστη χρήση μπαταρίας';
 
   @override
   String get settingsPush => 'Push';
@@ -3687,8 +3783,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsPushTokenCopied => 'Το διακριτικό push αντιγράφηκε';
 
   @override
-  String get settingsSendTestNotification =>
-      'Αποστολή δοκιμαστικής ειδοποίησης';
+  String get settingsSendTestNotification => 'Αποστολή δοκιμαστικής ειδοποίησης';
 
   @override
   String get settingsAppIconBadge => 'Σήμα εικονιδίου εφαρμογής';
@@ -3702,8 +3797,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Η αρχική οθόνη αυτού του τηλεφώνου δεν εμφανίζει αριθμούς στα εικονίδια εφαρμογών. Το σήμα ενημερώνεται κάθε φορά που το Loupe ελέγχει για μηνύματα, και στο παρασκήνιο.';
 
   @override
-  String get settingsTestNotificationBody =>
-      'Έτσι φαίνονται οι ειδοποιήσεις για νέα μηνύματα.';
+  String get settingsTestNotificationBody => 'Έτσι φαίνονται οι ειδοποιήσεις για νέα μηνύματα.';
 
   @override
   String get settingsAccountRemoved => 'Αυτός ο λογαριασμός αφαιρέθηκε.';
@@ -3724,8 +3818,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsColour => 'Χρώμα';
 
   @override
-  String get settingsColourFooter =>
-      'Σημαδεύει τα μηνύματα αυτού του λογαριασμού στα «Όλα τα εισερχόμενα».';
+  String get settingsColourFooter => 'Σημαδεύει τα μηνύματα αυτού του λογαριασμού στα «Όλα τα εισερχόμενα».';
 
   @override
   String settingsColourNumber(int number) {
@@ -3817,12 +3910,10 @@ class AppLocalizationsEl extends AppLocalizations {
       'Η πρώτη ταυτότητα είναι η προεπιλογή για νέα μηνύματα. Σύρετε για να αλλάξετε τη σειρά.';
 
   @override
-  String get settingsIdentitiesFooterSingle =>
-      'Η προεπιλεγμένη ταυτότητα για νέα μηνύματα.';
+  String get settingsIdentitiesFooterSingle => 'Η προεπιλεγμένη ταυτότητα για νέα μηνύματα.';
 
   @override
-  String get settingsIdentitiesReplyFooter =>
-      'Η απάντηση στέλνεται από την ταυτότητα στην οποία στάλθηκε το μήνυμα.';
+  String get settingsIdentitiesReplyFooter => 'Η απάντηση στέλνεται από την ταυτότητα στην οποία στάλθηκε το μήνυμα.';
 
   @override
   String get settingsIdentityDefault => 'Προεπιλογή';
@@ -3854,8 +3945,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsCopyToMyself => 'Αντίγραφο σε εμένα';
 
   @override
-  String get settingsCopyToMyselfFooter =>
-      'Προστίθεται σε κάθε μήνυμα από αυτή την ταυτότητα.';
+  String get settingsCopyToMyselfFooter => 'Προστίθεται σε κάθε μήνυμα από αυτή την ταυτότητα.';
 
   @override
   String get settingsCc => 'Κοιν.';
@@ -3871,8 +3961,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Οι απαντήσεις σε μηνύματα που στάλθηκαν σε αυτές τις διευθύνσεις στέλνονται από αυτή την ταυτότητα. Το * σημαίνει οτιδήποτε: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt =>
-      'Μια διεύθυνση ή ένα μοτίβο όπου το * σημαίνει οτιδήποτε.';
+  String get settingsReplyPatternPrompt => 'Μια διεύθυνση ή ένα μοτίβο όπου το * σημαίνει οτιδήποτε.';
 
   @override
   String get settingsAddReplyPattern => 'Προσθήκη διεύθυνσης ή μοτίβου';
@@ -3894,8 +3983,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Χωρίς διεύθυνση';
 
   @override
-  String get settingsIdentityNoAddressMessage =>
-      'Εισαγάγετε τη διεύθυνση email από την οποία θα γίνεται η αποστολή.';
+  String get settingsIdentityNoAddressMessage => 'Εισαγάγετε τη διεύθυνση email από την οποία θα γίνεται η αποστολή.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Μη έγκυρη διεύθυνση';
@@ -3903,11 +3991,9 @@ class AppLocalizationsEl extends AppLocalizations {
   @override
   String settingsIdentityInvalidAddress(String field, String address) {
     String _temp0 = intl.Intl.selectLogic(field, {
-      'replyTo':
-          'Το «$address» στο πεδίο «Απάντηση προς» δεν είναι έγκυρη διεύθυνση email.',
+      'replyTo': 'Το «$address» στο πεδίο «Απάντηση προς» δεν είναι έγκυρη διεύθυνση email.',
       'cc': 'Το «$address» στο πεδίο «Κοιν.» δεν είναι έγκυρη διεύθυνση email.',
-      'bcc':
-          'Το «$address» στο πεδίο «Ιδιαίτ. κοιν.» δεν είναι έγκυρη διεύθυνση email.',
+      'bcc': 'Το «$address» στο πεδίο «Ιδιαίτ. κοιν.» δεν είναι έγκυρη διεύθυνση email.',
       'other': 'Το «$address» δεν είναι έγκυρη διεύθυνση email.',
     });
     return '$_temp0';
@@ -3928,12 +4014,10 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage =>
-      'Τα μηνύματα που έχουν ήδη σταλεί από αυτή παραμένουν ως έχουν.';
+  String get settingsDeleteIdentityMessage => 'Τα μηνύματα που έχουν ήδη σταλεί από αυτή παραμένουν ως έχουν.';
 
   @override
-  String get settingsLastIdentityFooter =>
-      'Ένας λογαριασμός χρειάζεται τουλάχιστον μία ταυτότητα.';
+  String get settingsLastIdentityFooter => 'Ένας λογαριασμός χρειάζεται τουλάχιστον μία ταυτότητα.';
 
   @override
   String get rulesTitle => 'Κανόνες';
@@ -3982,8 +4066,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get rulesStatusUnknown => 'Άγνωστο';
 
   @override
-  String get rulesStatusError =>
-      'Δεν ήταν δυνατή η επικοινωνία με τον διακομιστή.';
+  String get rulesStatusError => 'Δεν ήταν δυνατή η επικοινωνία με τον διακομιστή.';
 
   @override
   String get rulesStatusChecking => 'Έλεγχος…';
@@ -4006,8 +4089,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get rulesStatusUnavailable => 'Μη διαθέσιμο';
 
   @override
-  String get rulesStatusNoSieve =>
-      'Ο διακομιστής αυτού του λογαριασμού δεν προσφέρει Sieve (ManageSieve ή JMAP).';
+  String get rulesStatusNoSieve => 'Ο διακομιστής αυτού του λογαριασμού δεν προσφέρει Sieve (ManageSieve ή JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -4192,15 +4274,13 @@ class AppLocalizationsEl extends AppLocalizations {
   String get rulesChooseActionTitle => 'Επιλέξτε ενέργεια';
 
   @override
-  String get rulesChooseActionMessage =>
-      'Προσθέστε τι κάνει ο κανόνας με τα μηνύματα που ταιριάζουν.';
+  String get rulesChooseActionMessage => 'Προσθέστε τι κάνει ο κανόνας με τα μηνύματα που ταιριάζουν.';
 
   @override
   String get rulesSaveError => 'Δεν ήταν δυνατή η αποθήκευση του κανόνα';
 
   @override
-  String get rulesSaveServerError =>
-      'Δεν ήταν δυνατή η αποθήκευση του κανόνα διακομιστή';
+  String get rulesSaveServerError => 'Δεν ήταν δυνατή η αποθήκευση του κανόνα διακομιστή';
 
   @override
   String get rulesRunOnDeviceInstead => 'Εκτέλεση σε αυτή τη συσκευή';
@@ -4209,8 +4289,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Τίποτα για εφαρμογή';
 
   @override
-  String get rulesNothingToApplyMessage =>
-      'Δώστε πρώτα στον κανόνα μια συνθήκη που λειτουργεί και μια ενέργεια.';
+  String get rulesNothingToApplyMessage => 'Δώστε πρώτα στον κανόνα μια συνθήκη που λειτουργεί και μια ενέργεια.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4242,8 +4321,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4257,8 +4335,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4272,8 +4349,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4286,12 +4362,10 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get rulesServerChecking =>
-      'Ερώτηση στον διακομιστή για τις δυνατότητές του…';
+  String get rulesServerChecking => 'Ερώτηση στον διακομιστή για τις δυνατότητές του…';
 
   @override
-  String get rulesServerUnreachable =>
-      'Δεν ήταν δυνατή η σύνδεση με τον διακομιστή.';
+  String get rulesServerUnreachable => 'Δεν ήταν δυνατή η σύνδεση με τον διακομιστή.';
 
   @override
   String rulesServerProblem(String problem) {
@@ -4317,8 +4391,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4332,8 +4405,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4362,15 +4434,10 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'και $countString ακόμη',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'και $countString ακόμη');
     return '$_temp0';
   }
 
@@ -4436,8 +4503,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsCountError =>
-      'Δεν ήταν δυνατή η καταμέτρηση των συνδρομών';
+  String get subscriptionsCountError => 'Δεν ήταν δυνατή η καταμέτρηση των συνδρομών';
 
   @override
   String get subscriptionsNoMatches => 'Δεν βρέθηκαν αποτελέσματα';
@@ -4466,8 +4532,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get subscriptionsNothingRarelyRead => 'Τίποτα που διαβάζεται σπάνια';
 
   @override
-  String get subscriptionsNothingFilteredDetail =>
-      'Διαβάζετε λίγο από όλα όσα λαμβάνετε.';
+  String get subscriptionsNothingFilteredDetail => 'Διαβάζετε λίγο από όλα όσα λαμβάνετε.';
 
   @override
   String get subscriptionsNoDiscussions => 'Καμία συζήτηση';
@@ -4544,8 +4609,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4560,15 +4624,13 @@ class AppLocalizationsEl extends AppLocalizations {
   String get subscriptionsCreateRule => 'Δημιουργία κανόνα…';
 
   @override
-  String get subscriptionsCreateRuleDetail =>
-      'Μετακίνηση ή αρχειοθέτηση των μελλοντικών μηνυμάτων του';
+  String get subscriptionsCreateRuleDetail => 'Μετακίνηση ή αρχειοθέτηση των μελλοντικών μηνυμάτων του';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Χειρισμός ως συζήτηση';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail =>
-      'Λίστα στην οποία γράφουν άτομα: ανάγνωση σαν φόρουμ';
+  String get subscriptionsTreatAsDiscussionDetail => 'Λίστα στην οποία γράφουν άτομα: ανάγνωση σαν φόρουμ';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Χειρισμός ως newsletter';
@@ -4583,8 +4645,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get subscriptionsBlocked => 'Αποκλεισμένος';
 
   @override
-  String get subscriptionsBlockedDetail =>
-      'Τα νέα μηνύματα πηγαίνουν στα Ανεπιθύμητα';
+  String get subscriptionsBlockedDetail => 'Τα νέα μηνύματα πηγαίνουν στα Ανεπιθύμητα';
 
   @override
   String get subscriptionsPin => 'Καρφίτσωμα στα Γραμματοκιβώτια';
@@ -4593,20 +4654,17 @@ class AppLocalizationsEl extends AppLocalizations {
   String get subscriptionsUnpin => 'Ξεκαρφίτσωμα από τα Γραμματοκιβώτια';
 
   @override
-  String get subscriptionsOpenDefaultView =>
-      'Άνοιγμα στην προεπιλεγμένη προβολή';
+  String get subscriptionsOpenDefaultView => 'Άνοιγμα στην προεπιλεγμένη προβολή';
 
   @override
-  String get subscriptionsOpenPlainText =>
-      'Άνοιγμα ως απλό κείμενο (σταθερού πλάτους)';
+  String get subscriptionsOpenPlainText => 'Άνοιγμα ως απλό κείμενο (σταθερού πλάτους)';
 
   @override
   String get subscriptionsPinned => 'Καρφιτσωμένη';
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4619,8 +4677,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoMailNow =>
-      'Δεν υπάρχουν τώρα μηνύματα από αυτόν τον αποστολέα.';
+  String get subscriptionsNoMailNow => 'Δεν υπάρχουν τώρα μηνύματα από αυτόν τον αποστολέα.';
 
   @override
   String get subscriptionsLatestMessages => 'ΤΕΛΕΥΤΑΙΑ ΜΗΝΥΜΑΤΑ';
@@ -4636,12 +4693,9 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
-      localeName,
-    );
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString από $totalString';
@@ -4652,12 +4706,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Φάκελοι',
-      one: 'Φάκελος',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Φάκελοι', one: 'Φάκελος');
     return '$_temp0';
   }
 
@@ -4727,8 +4776,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsWebInsecure =>
-      'Η σύνδεση με αυτόν τον ιστότοπο δεν είναι κρυπτογραφημένη.';
+  String get subscriptionsWebInsecure => 'Η σύνδεση με αυτόν τον ιστότοπο δεν είναι κρυπτογραφημένη.';
 
   @override
   String subscriptionsHomographWarning(String site) {
@@ -4765,8 +4813,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed =>
-      'Ο σύνδεσμος απεγγραφής δεν είναι ασφαλής διεύθυνση στο internet.';
+  String get subscriptionsOneClickNotAllowed => 'Ο σύνδεσμος απεγγραφής δεν είναι ασφαλής διεύθυνση στο internet.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -4789,8 +4836,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend =>
-      'Δεν υπάρχει λογαριασμός από τον οποίο να σταλεί το email απεγγραφής.';
+  String get subscriptionsNoAccountToSend => 'Δεν υπάρχει λογαριασμός από τον οποίο να σταλεί το email απεγγραφής.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -4823,11 +4869,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String subscriptionsMoveToJunk(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Μετακίνηση $count στα Ανεπιθύμητα',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Μετακίνηση $count στα Ανεπιθύμητα');
     return '$_temp0';
   }
 
@@ -4847,12 +4889,10 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get appLiveGateTitle =>
-      'Δεν ήταν δυνατό το άνοιγμα των λογαριασμών σας';
+  String get appLiveGateTitle => 'Δεν ήταν δυνατό το άνοιγμα των λογαριασμών σας';
 
   @override
-  String get appLiveGateUnavailableBuild =>
-      'Οι πραγματικοί λογαριασμοί δεν είναι ακόμη διαθέσιμοι σε αυτή την έκδοση.';
+  String get appLiveGateUnavailableBuild => 'Οι πραγματικοί λογαριασμοί δεν είναι ακόμη διαθέσιμοι σε αυτή την έκδοση.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -4904,8 +4944,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Δεν ήταν δυνατή η λήψη του συνημμένου. Ελέγξτε τη σύνδεση και δοκιμάστε ξανά.';
 
   @override
-  String get attachmentsShareError =>
-      'Δεν ήταν δυνατή η κοινοποίηση του συνημμένου.';
+  String get attachmentsShareError => 'Δεν ήταν δυνατή η κοινοποίηση του συνημμένου.';
 
   @override
   String attachmentsNoApp(String type) {
@@ -4913,8 +4952,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get attachmentsOpenInError =>
-      'Δεν ήταν δυνατό το άνοιγμα του συνημμένου σε άλλη εφαρμογή.';
+  String get attachmentsOpenInError => 'Δεν ήταν δυνατό το άνοιγμα του συνημμένου σε άλλη εφαρμογή.';
 
   @override
   String attachmentsSaved(String name) {
@@ -4922,24 +4960,17 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get attachmentsSaveError =>
-      'Δεν ήταν δυνατή η αποθήκευση του συνημμένου.';
+  String get attachmentsSaveError => 'Δεν ήταν δυνατή η αποθήκευση του συνημμένου.';
 
   @override
   String get attachmentsGone => 'Αυτό το συνημμένο δεν είναι πλέον διαθέσιμο.';
 
   @override
-  String get attachmentsDownloadFailed =>
-      'Δεν ήταν δυνατή η λήψη του συνημμένου.';
+  String get attachmentsDownloadFailed => 'Δεν ήταν δυνατή η λήψη του συνημμένου.';
 
   @override
   String attachmentsPageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count σελίδες',
-      one: '1 σελίδα',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count σελίδες', one: '1 σελίδα');
     return '$_temp0';
   }
 
@@ -4949,8 +4980,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload =>
-      'Αυτό το συνημμένο είναι μεγάλο. Κατεβάστε το τώρα ή αργότερα μέσω Wi-Fi.';
+  String get attachmentsLargeDownload => 'Αυτό το συνημμένο είναι μεγάλο. Κατεβάστε το τώρα ή αργότερα μέσω Wi-Fi.';
 
   @override
   String get attachmentsDownload => 'Λήψη';
@@ -5000,12 +5030,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String attachmentsTextInfo(String charset, int count, String lines) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$lines γραμμές',
-      one: '$lines γραμμή',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$lines γραμμές', one: '$lines γραμμή');
     return '$charset · $_temp0';
   }
 
@@ -5016,8 +5041,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get attachmentsCopied => 'Αντιγράφηκε';
 
   @override
-  String get attachmentsImageUnavailable =>
-      'Αυτή η εικόνα δεν μπορεί να εμφανιστεί εδώ. Δοκιμάστε το «Άνοιγμα με…».';
+  String get attachmentsImageUnavailable => 'Αυτή η εικόνα δεν μπορεί να εμφανιστεί εδώ. Δοκιμάστε το «Άνοιγμα με…».';
 
   @override
   String get attachmentsEmlNoSubject => '(Χωρίς θέμα)';
@@ -5243,15 +5267,13 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get calendarRefreshUnknown =>
-      'Ένας συμμετέχων ζητά την πιο πρόσφατη έκδοση';
+  String get calendarRefreshUnknown => 'Ένας συμμετέχων ζητά την πιο πρόσφατη έκδοση';
 
   @override
   String get calendarCancelled => 'Ακυρώθηκε';
 
   @override
-  String get calendarCancelledByOrganizer =>
-      'Ο διοργανωτής ακύρωσε αυτό το συμβάν.';
+  String get calendarCancelledByOrganizer => 'Ο διοργανωτής ακύρωσε αυτό το συμβάν.';
 
   @override
   String get calendarCancelledLater => 'Αυτό το συμβάν ακυρώθηκε αργότερα.';
@@ -5260,8 +5282,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get calendarOutdated => 'Παρωχημένη';
 
   @override
-  String get calendarOutdatedDetail =>
-      'Αυτή η πρόσκληση ενημερώθηκε αργότερα· ισχύει η νεότερη.';
+  String get calendarOutdatedDetail => 'Αυτή η πρόσκληση ενημερώθηκε αργότερα· ισχύει η νεότερη.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -5269,8 +5290,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get calendarLocationRemovedNone =>
-      'Η τοποθεσία αφαιρέθηκε (δεν υπήρχε)';
+  String get calendarLocationRemovedNone => 'Η τοποθεσία αφαιρέθηκε (δεν υπήρχε)';
 
   @override
   String calendarLocationChanged(String location) {
@@ -5306,44 +5326,25 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String calendarGuestCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count καλεσμένοι',
-      one: '1 καλεσμένος',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count καλεσμένοι', one: '1 καλεσμένος');
     return '$_temp0';
   }
 
   @override
   String calendarAcceptedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count αποδέχτηκαν',
-      one: '1 αποδέχτηκε',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count αποδέχτηκαν', one: '1 αποδέχτηκε');
     return '$_temp0';
   }
 
   @override
   String calendarMaybeCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count ίσως',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ίσως');
     return '$_temp0';
   }
 
   @override
   String calendarDeclinedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count απέρριψαν',
-      one: '1 απέρριψε',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count απέρριψαν', one: '1 απέρριψε');
     return '$_temp0';
   }
 
@@ -5405,16 +5406,13 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp =>
-      'Δεν υπάρχει εφαρμογή ημερολογίου για να προστεθεί το συμβάν.';
+  String get calendarNoCalendarApp => 'Δεν υπάρχει εφαρμογή ημερολογίου για να προστεθεί το συμβάν.';
 
   @override
-  String get calendarCantOpenCalendar =>
-      'Δεν ήταν δυνατό το άνοιγμα του ημερολογίου.';
+  String get calendarCantOpenCalendar => 'Δεν ήταν δυνατό το άνοιγμα του ημερολογίου.';
 
   @override
-  String get calendarCantOpenLink =>
-      'Δεν ήταν δυνατό το άνοιγμα του συνδέσμου.';
+  String get calendarCantOpenLink => 'Δεν ήταν δυνατό το άνοιγμα του συνδέσμου.';
 
   @override
   String calendarJoinProviderTitle(String provider) {
@@ -5444,30 +5442,20 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer =>
-      'Αυτή η πρόσκληση δεν έχει διοργανωτή στον οποίο να απαντήσετε.';
+  String get calendarNoOrganizer => 'Αυτή η πρόσκληση δεν έχει διοργανωτή στον οποίο να απαντήσετε.';
 
   @override
-  String get calendarNoAccount =>
-      'Δεν υπάρχει λογαριασμός από τον οποίο να απαντήσετε.';
+  String get calendarNoAccount => 'Δεν υπάρχει λογαριασμός από τον οποίο να απαντήσετε.';
 
   @override
   String calendarReplySending(String answer, String name) {
-    String _temp0 = intl.Intl.selectLogic(answer, {
-      'accepted': 'Αποδοχή',
-      'tentative': 'Ίσως',
-      'other': 'Απόρριψη',
-    });
+    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Αποδοχή', 'tentative': 'Ίσως', 'other': 'Απόρριψη'});
     return '$_temp0 · αποστολή απάντησης σε $name…';
   }
 
   @override
   String calendarReplySent(String answer) {
-    String _temp0 = intl.Intl.selectLogic(answer, {
-      'accepted': 'Αποδοχή',
-      'tentative': 'Ίσως',
-      'other': 'Απόρριψη',
-    });
+    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Αποδοχή', 'tentative': 'Ίσως', 'other': 'Απόρριψη'});
     return '$_temp0 · η απάντηση στάλθηκε';
   }
 
@@ -5547,8 +5535,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get keyboardKeyBackspace => 'Backspace';
 
   @override
-  String get mailingListsMuted =>
-      'Το νήμα τέθηκε σε σίγαση. Τα νέα μηνύματά του θα φτάνουν ως αναγνωσμένα.';
+  String get mailingListsMuted => 'Το νήμα τέθηκε σε σίγαση. Τα νέα μηνύματά του θα φτάνουν ως αναγνωσμένα.';
 
   @override
   String get mailingListsUnmuted => 'Η σίγαση του νήματος καταργήθηκε.';
@@ -5569,8 +5556,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get mailingListsDefaultView => 'Άνοιγμα στην προεπιλεγμένη προβολή';
 
   @override
-  String get mailingListsPlainText =>
-      'Άνοιγμα ως απλό κείμενο (σταθερού πλάτους)';
+  String get mailingListsPlainText => 'Άνοιγμα ως απλό κείμενο (σταθερού πλάτους)';
 
   @override
   String get mailingListsShowMuted => 'Εμφάνιση νημάτων σε σίγαση';
@@ -5606,12 +5592,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String mailingListsReplyCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count απαντήσεις',
-      one: '1 απάντηση',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count απαντήσεις', one: '1 απάντηση');
     return '$_temp0';
   }
 
@@ -5625,8 +5606,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Τεχνικές λίστες';
 
   @override
-  String get mailingListsTechnicalEmpty =>
-      'Οι λίστες αλληλογραφίας εμφανίζονται εδώ μόλις φτάσουν τα μηνύματά τους.';
+  String get mailingListsTechnicalEmpty => 'Οι λίστες αλληλογραφίας εμφανίζονται εδώ μόλις φτάσουν τα μηνύματά τους.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -5695,8 +5675,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get palettePlaceholder =>
-      'Αναζήτηση ενεργειών, γραμματοκιβωτίων, ρυθμίσεων';
+  String get palettePlaceholder => 'Αναζήτηση ενεργειών, γραμματοκιβωτίων, ρυθμίσεων';
 
   @override
   String get paletteNothingFound => 'Δεν βρέθηκε τίποτα';
@@ -5790,8 +5769,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get searchSearchingUnknownAccount =>
-      'Αναζήτηση λογαριασμού στον διακομιστή…';
+  String get searchSearchingUnknownAccount => 'Αναζήτηση λογαριασμού στον διακομιστή…';
 
   @override
   String searchAccountFailed(String account) {
@@ -5799,8 +5777,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get searchUnknownAccountFailed =>
-      'Η αναζήτηση λογαριασμού στον διακομιστή απέτυχε';
+  String get searchUnknownAccountFailed => 'Η αναζήτηση λογαριασμού στον διακομιστή απέτυχε';
 
   @override
   String searchChip(String term) {
@@ -5863,8 +5840,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get searchSettingsTitle => 'Smart Mailboxes';
 
   @override
-  String get searchSettingsLocalFooter =>
-      'Τα Smart Mailboxes μένουν σε αυτή τη συσκευή.';
+  String get searchSettingsLocalFooter => 'Τα Smart Mailboxes μένουν σε αυτή τη συσκευή.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -5875,16 +5851,13 @@ class AppLocalizationsEl extends AppLocalizations {
   String get searchSyncVia => 'Συγχρονισμός μέσω';
 
   @override
-  String get searchSyncViaFooter =>
-      'Επιλέξτε τον ίδιο λογαριασμό σε κάθε συσκευή.';
+  String get searchSyncViaFooter => 'Επιλέξτε τον ίδιο λογαριασμό σε κάθε συσκευή.';
 
   @override
-  String get searchGmailCantKeep =>
-      'Το Gmail δεν μπορεί να κρατήσει Smart Mailboxes';
+  String get searchGmailCantKeep => 'Το Gmail δεν μπορεί να κρατήσει Smart Mailboxes';
 
   @override
-  String get searchKeepOnDevice =>
-      'Διατήρηση των Smart Mailboxes μόνο σε αυτή τη συσκευή';
+  String get searchKeepOnDevice => 'Διατήρηση των Smart Mailboxes μόνο σε αυτή τη συσκευή';
 
   @override
   String get searchOnTheServer => 'Στον διακομιστή';
@@ -5933,12 +5906,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String sharedBytes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count byte',
-      one: '1 byte',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count byte', one: '1 byte');
     return '$_temp0';
   }
 
@@ -6156,8 +6124,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount =>
-      'Επιλέξτε μηνύματα από έναν λογαριασμό για να τα μετακινήσετε.';
+  String get sharedMoveOneAccount => 'Επιλέξτε μηνύματα από έναν λογαριασμό για να τα μετακινήσετε.';
 
   @override
   String get sharedSnoozeTitle => 'Αναβολή';
@@ -6234,8 +6201,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get accountSetupAddressTitle => 'Προσθήκη λογαριασμού αλληλογραφίας';
 
   @override
-  String get accountSetupAddressText =>
-      'Το Loupe βρίσκει τις ρυθμίσεις για τους περισσότερους παρόχους.';
+  String get accountSetupAddressText => 'Το Loupe βρίσκει τις ρυθμίσεις για τους περισσότερους παρόχους.';
 
   @override
   String get accountSetupNameHint => 'Το όνομά σας';
@@ -6256,8 +6222,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get accountSetupImport => 'Εισαγωγή από το Thunderbird';
 
   @override
-  String get accountSetupInvalidEmail =>
-      'Εισαγάγετε μια έγκυρη διεύθυνση email.';
+  String get accountSetupInvalidEmail => 'Εισαγάγετε μια έγκυρη διεύθυνση email.';
 
   @override
   String accountSetupSettingsNotFoundFor(String domain) {
@@ -6265,12 +6230,10 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCheckServers =>
-      'Ελέγξτε τα ονόματα των διακομιστών και τις θύρες.';
+  String get accountSetupCheckServers => 'Ελέγξτε τα ονόματα των διακομιστών και τις θύρες.';
 
   @override
-  String get accountSetupEnterPassword =>
-      'Εισαγάγετε τον κωδικό πρόσβασής σας.';
+  String get accountSetupEnterPassword => 'Εισαγάγετε τον κωδικό πρόσβασής σας.';
 
   @override
   String get accountSetupConnecting => 'Σύνδεση…';
@@ -6281,16 +6244,13 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCouldNotOpenPage =>
-      'Δεν ήταν δυνατό το άνοιγμα της σελίδας.';
+  String get accountSetupCouldNotOpenPage => 'Δεν ήταν δυνατό το άνοιγμα της σελίδας.';
 
   @override
-  String get accountSetupCouldNotSaveName =>
-      'Δεν ήταν δυνατή η αποθήκευση του ονόματος.';
+  String get accountSetupCouldNotSaveName => 'Δεν ήταν δυνατή η αποθήκευση του ονόματος.';
 
   @override
-  String get accountSetupTrustCertificate =>
-      'Εμπιστοσύνη σε αυτό το πιστοποιητικό';
+  String get accountSetupTrustCertificate => 'Εμπιστοσύνη σε αυτό το πιστοποιητικό';
 
   @override
   String get accountSetupPasswordRequired => 'Απαιτείται';
@@ -6327,15 +6287,13 @@ class AppLocalizationsEl extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Χρήση κωδικού εφαρμογής';
 
   @override
-  String get accountSetupUseAppPasswordInstead =>
-      'Χρήση κωδικού εφαρμογής αντί γι’ αυτό';
+  String get accountSetupUseAppPasswordInstead => 'Χρήση κωδικού εφαρμογής αντί γι’ αυτό';
 
   @override
   String get accountSetupUseDifferentAddress => 'Χρήση άλλης διεύθυνσης';
 
   @override
-  String get accountSetupHowToCreateAppPassword =>
-      'Πώς να δημιουργήσετε κωδικό εφαρμογής';
+  String get accountSetupHowToCreateAppPassword => 'Πώς να δημιουργήσετε κωδικό εφαρμογής';
 
   @override
   String get accountSetupHowToCreateOne => 'Πώς να τον δημιουργήσετε';
@@ -6365,16 +6323,14 @@ class AppLocalizationsEl extends AppLocalizations {
       'Το iCloud Mail χρειάζεται κωδικό για συγκεκριμένη εφαρμογή, όχι τον κωδικό του λογαριασμού σας Apple.';
 
   @override
-  String get accountSetupYahooNote =>
-      'Το Yahoo Mail χρειάζεται κωδικό εφαρμογής, όχι τον κωδικό του λογαριασμού σας.';
+  String get accountSetupYahooNote => 'Το Yahoo Mail χρειάζεται κωδικό εφαρμογής, όχι τον κωδικό του λογαριασμού σας.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Το Loupe συνδέεται με το Fastmail μέσω JMAP με διακριτικό API: Settings › Privacy & Security › Manage API tokens, για JMAP, με πρόσβαση στο email και στην αποστολή.';
 
   @override
-  String get accountSetupFastmailNote =>
-      'Το Fastmail χρειάζεται κωδικό εφαρμογής για τις εφαρμογές αλληλογραφίας.';
+  String get accountSetupFastmailNote => 'Το Fastmail χρειάζεται κωδικό εφαρμογής για τις εφαρμογές αλληλογραφίας.';
 
   @override
   String get accountSetupServerSettings => 'Ρυθμίσεις διακομιστή';
@@ -6456,8 +6412,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Ο κωδικός απορρίφθηκε. Χρησιμοποιήστε κωδικό εφαρμογής, όχι τον κωδικό του λογαριασμού σας.';
 
   @override
-  String get accountSetupPasswordRejected =>
-      'Ο κωδικός απορρίφθηκε. Ελέγξτε τον και δοκιμάστε ξανά.';
+  String get accountSetupPasswordRejected => 'Ο κωδικός απορρίφθηκε. Ελέγξτε τον και δοκιμάστε ξανά.';
 
   @override
   String get accountSetupServerUnreachable =>
@@ -6535,11 +6490,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get accountSetupSigningIn => 'Σύνδεση…';
 
   @override
-  String accountSetupSignInExpired(
-    String provider,
-    String email,
-    String account,
-  ) {
+  String accountSetupSignInExpired(String provider, String email, String account) {
     return 'Ο πάροχος $provider δεν δέχεται πλέον τη σύνδεση του Loupe για το $email, οπότε ο λογαριασμός $account δεν συγχρονίζεται. Συνδεθείτε ξανά για να λαμβάνετε τα μηνύματά του.';
   }
 
@@ -6547,8 +6498,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get accountImportTitle => 'Εισαγωγή από το Thunderbird';
 
   @override
-  String get accountImportPointCamera =>
-      'Στρέψτε την κάμερα στον κωδικό QR που εμφανίζει το Thunderbird.';
+  String get accountImportPointCamera => 'Στρέψτε την κάμερα στον κωδικό QR που εμφανίζει το Thunderbird.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -6557,11 +6507,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String accountImportProgressLabel(int scanned, int total) {
-    String _temp0 = intl.Intl.pluralLogic(
-      total,
-      locale: localeName,
-      other: 'Σαρώθηκαν $scanned από $total κωδικούς',
-    );
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: 'Σαρώθηκαν $scanned από $total κωδικούς');
     return '$_temp0';
   }
 
@@ -6598,36 +6544,30 @@ class AppLocalizationsEl extends AppLocalizations {
   String get accountImportStartOver => 'Από την αρχή';
 
   @override
-  String get accountImportDuplicateCode =>
-      'Αυτός ο κωδικός έχει ήδη προστεθεί.';
+  String get accountImportDuplicateCode => 'Αυτός ο κωδικός έχει ήδη προστεθεί.';
 
   @override
   String get accountImportRestarted =>
       'Αυτός ο κωδικός προέρχεται από νέα εξαγωγή, οπότε οι κωδικοί που σαρώθηκαν πριν μπήκαν στην άκρη.';
 
   @override
-  String get accountImportNotThunderbird =>
-      'Αυτός δεν είναι κωδικός λογαριασμού του Thunderbird.';
+  String get accountImportNotThunderbird => 'Αυτός δεν είναι κωδικός λογαριασμού του Thunderbird.';
 
   @override
   String get accountImportNewerVersion =>
       'Αυτός ο κωδικός προέρχεται από νεότερο Thunderbird. Ενημερώστε το Loupe για να τον εισαγάγετε.';
 
   @override
-  String get accountImportDamaged =>
-      'Δεν ήταν δυνατή η ανάγνωση αυτού του κωδικού του Thunderbird.';
+  String get accountImportDamaged => 'Δεν ήταν δυνατή η ανάγνωση αυτού του κωδικού του Thunderbird.';
 
   @override
-  String get accountImportTooLarge =>
-      'Αυτός ο κωδικός είναι πολύ μεγάλος για να είναι εξαγωγή του Thunderbird.';
+  String get accountImportTooLarge => 'Αυτός ο κωδικός είναι πολύ μεγάλος για να είναι εξαγωγή του Thunderbird.';
 
   @override
-  String get accountImportCouldNotOpenSettings =>
-      'Δεν ήταν δυνατό το άνοιγμα των Ρυθμίσεων.';
+  String get accountImportCouldNotOpenSettings => 'Δεν ήταν δυνατό το άνοιγμα των Ρυθμίσεων.';
 
   @override
-  String get accountImportCameraOffTitle =>
-      'Η πρόσβαση στην κάμερα είναι απενεργοποιημένη';
+  String get accountImportCameraOffTitle => 'Η πρόσβαση στην κάμερα είναι απενεργοποιημένη';
 
   @override
   String get accountImportCameraOffText =>
@@ -6644,8 +6584,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get accountImportCameraFailedTitle => 'Η κάμερα δεν ξεκίνησε';
 
   @override
-  String get accountImportCameraFailedText =>
-      'Δοκιμάστε ξανά ή επικολλήστε το κείμενο του κωδικού.';
+  String get accountImportCameraFailedText => 'Δοκιμάστε ξανά ή επικολλήστε το κείμενο του κωδικού.';
 
   @override
   String get accountImportOpenSettings => 'Άνοιγμα Ρυθμίσεων';
@@ -6667,18 +6606,15 @@ class AppLocalizationsEl extends AppLocalizations {
       'Κανένας από τους λογαριασμούς σε αυτούς τους κωδικούς δεν ήταν δυνατό να διαβαστεί.';
 
   @override
-  String get accountImportChoose =>
-      'Επιλέξτε τους λογαριασμούς που θα προστεθούν στο Loupe.';
+  String get accountImportChoose => 'Επιλέξτε τους λογαριασμούς που θα προστεθούν στο Loupe.';
 
   @override
   String accountImportMissingCodes(int count, String codes, int total) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Οι κωδικοί $codes από $total δεν σαρώθηκαν, οπότε οι λογαριασμοί τους δεν εμφανίζονται.',
-      one:
-          'Ο κωδικός $codes από $total δεν σαρώθηκε, οπότε οι λογαριασμοί του δεν εμφανίζονται.',
+      other: 'Οι κωδικοί $codes από $total δεν σαρώθηκαν, οπότε οι λογαριασμοί τους δεν εμφανίζονται.',
+      one: 'Ο κωδικός $codes από $total δεν σαρώθηκε, οπότε οι λογαριασμοί του δεν εμφανίζονται.',
     );
     return '$_temp0';
   }
@@ -6707,8 +6643,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get accountImportScanAgain => 'Νέα σάρωση';
 
   @override
-  String get accountImportAlreadyAdded =>
-      'Υπάρχει ήδη λογαριασμός με αυτή τη διεύθυνση στο Loupe.';
+  String get accountImportAlreadyAdded => 'Υπάρχει ήδη λογαριασμός με αυτή τη διεύθυνση στο Loupe.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -6728,8 +6663,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Το Thunderbird συνδέεται σε αυτόν τον λογαριασμό μέσω του προγράμματος περιήγησης. Το Loupe δεν μπορεί ακόμη να το κάνει αυτό: χρησιμοποιήστε κωδικό εφαρμογής, αν τον προσφέρει ο πάροχός σας.';
 
   @override
-  String get accountImportUnencrypted =>
-      'Συνδέεται χωρίς κρυπτογράφηση. Χρησιμοποιήστε το μόνο στο δικό σας δίκτυο.';
+  String get accountImportUnencrypted => 'Συνδέεται χωρίς κρυπτογράφηση. Χρησιμοποιήστε το μόνο στο δικό σας δίκτυο.';
 
   @override
   String get accountImportEnterAgain => 'Εισαγάγετέ τον ξανά';
@@ -6766,12 +6700,10 @@ class AppLocalizationsEl extends AppLocalizations {
       'Οι λογαριασμοί POP3 δεν υποστηρίζονται. Το Loupe κρατά την αλληλογραφία στον διακομιστή με IMAP.';
 
   @override
-  String get accountImportKerberos =>
-      'Αυτός ο λογαριασμός συνδέεται με Kerberos, που το Loupe δεν υποστηρίζει.';
+  String get accountImportKerberos => 'Αυτός ο λογαριασμός συνδέεται με Kerberos, που το Loupe δεν υποστηρίζει.';
 
   @override
-  String get accountImportNtlm =>
-      'Αυτός ο λογαριασμός συνδέεται με NTLM, που το Loupe δεν υποστηρίζει.';
+  String get accountImportNtlm => 'Αυτός ο λογαριασμός συνδέεται με NTLM, που το Loupe δεν υποστηρίζει.';
 
   @override
   String get accountImportClientCertificate =>
@@ -6785,8 +6717,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get accountImportEnterPassword => 'Εισαγάγετε τον κωδικό πρόσβασης.';
 
   @override
-  String get accountImportEnterAppPassword =>
-      'Εισαγάγετε τον κωδικό εφαρμογής.';
+  String get accountImportEnterAppPassword => 'Εισαγάγετε τον κωδικό εφαρμογής.';
 
   @override
   String get accountImportEnterApiToken => 'Εισαγάγετε το διακριτικό API.';
@@ -6817,8 +6748,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get composeSendHint => 'Πατήστε παρατεταμένα για αποστολή αργότερα';
 
   @override
-  String get composeNoAccount =>
-      'Προσθέστε έναν λογαριασμό για να στέλνετε μηνύματα.';
+  String get composeNoAccount => 'Προσθέστε έναν λογαριασμό για να στέλνετε μηνύματα.';
 
   @override
   String get composeTo => 'Προς:';
@@ -6896,8 +6826,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get composeDraftNotFound => 'Δεν βρέθηκε το πρόχειρο.';
 
   @override
-  String get composeAttachmentsLost =>
-      'Δεν ήταν δυνατή η ανάκτηση των συνημμένων. Προσθέστε τα ξανά.';
+  String get composeAttachmentsLost => 'Δεν ήταν δυνατή η ανάκτηση των συνημμένων. Προσθέστε τα ξανά.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -6924,12 +6853,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get composeNoSubjectTitle => 'Χωρίς θέμα';
 
   @override
-  String get composeNoSubjectText =>
-      'Αυτό το μήνυμα δεν έχει θέμα. Να σταλεί παρ’ όλα αυτά;';
+  String get composeNoSubjectText => 'Αυτό το μήνυμα δεν έχει θέμα. Να σταλεί παρ’ όλα αυτά;';
 
   @override
-  String get composeSentBeforeChanges =>
-      'Στάλθηκε πριν από τις αλλαγές σας, οι οποίες αποθηκεύτηκαν στα Πρόχειρα.';
+  String get composeSentBeforeChanges => 'Στάλθηκε πριν από τις αλλαγές σας, οι οποίες αποθηκεύτηκαν στα Πρόχειρα.';
 
   @override
   String composeScheduled(String time) {
@@ -7054,23 +6981,17 @@ class AppLocalizationsEl extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Ένα μήνυμα δεν στάλθηκε όταν έκλεισε το Loupe.',
       'one': 'Ένα μήνυμα προς $name δεν στάλθηκε όταν έκλεισε το Loupe.',
-      'other':
-          'Ένα μήνυμα προς $name και άλλους δεν στάλθηκε όταν έκλεισε το Loupe.',
+      'other': 'Ένα μήνυμα προς $name και άλλους δεν στάλθηκε όταν έκλεισε το Loupe.',
     });
     return '$_temp0';
   }
 
   @override
-  String composeRecoveryWithSubject(
-    String recipients,
-    String subject,
-    String name,
-  ) {
+  String composeRecoveryWithSubject(String recipients, String subject, String name) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Το «$subject» δεν στάλθηκε όταν έκλεισε το Loupe.',
       'one': 'Το «$subject» προς $name δεν στάλθηκε όταν έκλεισε το Loupe.',
-      'other':
-          'Το «$subject» προς $name και άλλους δεν στάλθηκε όταν έκλεισε το Loupe.',
+      'other': 'Το «$subject» προς $name και άλλους δεν στάλθηκε όταν έκλεισε το Loupe.',
     });
     return '$_temp0';
   }
@@ -7118,8 +7039,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get outboxEmptyTitle => 'Τίποτα για αποστολή';
 
   @override
-  String get outboxEmptyText =>
-      'Τα μηνύματα που στέλνετε αργότερα περιμένουν εδώ μέχρι να έρθει η ώρα τους.';
+  String get outboxEmptyText => 'Τα μηνύματα που στέλνετε αργότερα περιμένουν εδώ μέχρι να έρθει η ώρα τους.';
 
   @override
   String get outboxSendNow => 'Αποστολή τώρα';
@@ -7166,8 +7086,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get outboxBeingSent => 'Αυτό το μήνυμα αποστέλλεται.';
 
   @override
-  String get outboxActionFailed =>
-      'Αυτό δεν λειτούργησε. Το μήνυμα είναι ακόμη στα Εξερχόμενα.';
+  String get outboxActionFailed => 'Αυτό δεν λειτούργησε. Το μήνυμα είναι ακόμη στα Εξερχόμενα.';
 
   @override
   String get notificationsBadgeInboxes => 'Μη αναγνωσμένα στα Εισερχόμενα';
@@ -7179,8 +7098,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription =>
-      'Νέα μηνύματα από τις επαφές VIP σας, σε οποιονδήποτε λογαριασμό';
+  String get notificationsVipChannelDescription => 'Νέα μηνύματα από τις επαφές VIP σας, σε οποιονδήποτε λογαριασμό';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -7203,12 +7121,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String notificationsNewMessages(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count νέα μηνύματα',
-      one: '1 νέο μήνυμα',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count νέα μηνύματα', one: '1 νέο μήνυμα');
     return '$_temp0';
   }
 
@@ -7231,27 +7144,22 @@ class AppLocalizationsEl extends AppLocalizations {
   String get platformInstantText => 'Η Άμεση παράδοση είναι ενεργή';
 
   @override
-  String get platformErrorBox =>
-      'Κάτι πήγε στραβά κατά την εμφάνιση. Επιστρέψτε και δοκιμάστε ξανά.';
+  String get platformErrorBox => 'Κάτι πήγε στραβά κατά την εμφάνιση. Επιστρέψτε και δοκιμάστε ξανά.';
 
   @override
-  String get welcomeTagline =>
-      'Αλληλογραφία απλή στην επιφάνεια\nκαι ισχυρή στο βάθος.';
+  String get welcomeTagline => 'Αλληλογραφία απλή στην επιφάνεια\nκαι ισχυρή στο βάθος.';
 
   @override
-  String get welcomeAccountsTitle =>
-      'Όλοι οι λογαριασμοί σε ενιαία, ήρεμα εισερχόμενα';
+  String get welcomeAccountsTitle => 'Όλοι οι λογαριασμοί σε ενιαία, ήρεμα εισερχόμενα';
 
   @override
-  String get welcomeAccountsText =>
-      'Gmail, Outlook, iCloud, Fastmail και κάθε διακομιστής IMAP ή JMAP.';
+  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail και κάθε διακομιστής IMAP ή JMAP.';
 
   @override
   String get welcomeSearchTitle => 'Αναζήτηση που βρίσκει';
 
   @override
-  String get welcomeSearchText =>
-      'Άμεσα αποτελέσματα στο τηλέφωνό σας και μετά από τον διακομιστή.';
+  String get welcomeSearchText => 'Άμεσα αποτελέσματα στο τηλέφωνό σας και μετά από τον διακομιστή.';
 
   @override
   String get welcomePrivacyTitle => 'Ιδιωτικότητα από τον σχεδιασμό';
@@ -7285,12 +7193,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get searchAskNeedsAnswer => 'Το Loupe χρειάζεται να ξέρει:';
 
   @override
-  String get searchAskFailed =>
-      'Το Loupe δεν μπόρεσε να το μετατρέψει σε αναζήτηση.';
+  String get searchAskFailed => 'Το Loupe δεν μπόρεσε να το μετατρέψει σε αναζήτηση.';
 
   @override
-  String get searchAskDemoNote =>
-      'Μεταφράστηκε από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
+  String get searchAskDemoNote => 'Μεταφράστηκε από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
 
   @override
   String get settingsAiHeader => 'Ιδιωτική τεχνητή νοημοσύνη';
@@ -7318,8 +7224,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Σε αυτό το τηλέφωνο. Χωρίς μοντέλο: λίγοι κανόνες, για να δοκιμάσετε τις λειτουργίες.';
 
   @override
-  String get settingsAiAnthropicDetail =>
-      'Cloud: Claude, με το δικό σας κλειδί API.';
+  String get settingsAiAnthropicDetail => 'Cloud: Claude, με το δικό σας κλειδί API.';
 
   @override
   String get settingsAiServer => 'Ο διακομιστής μου';
@@ -7384,15 +7289,13 @@ class AppLocalizationsEl extends AppLocalizations {
       'Μαζί με τη διαδρομή του API, π.χ. http://192.168.1.20:11434/v1 για το Ollama.';
 
   @override
-  String get settingsAiServerAddressInvalid =>
-      'Αυτή δεν είναι διεύθυνση http:// ή https://.';
+  String get settingsAiServerAddressInvalid => 'Αυτή δεν είναι διεύθυνση http:// ή https://.';
 
   @override
   String get settingsAiServerModelTitle => 'Όνομα μοντέλου';
 
   @override
-  String get settingsAiServerModelMessage =>
-      'Όπως το ονομάζει ο διακομιστής σας, π.χ. llama3.2.';
+  String get settingsAiServerModelMessage => 'Όπως το ονομάζει ο διακομιστής σας, π.χ. llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Δοκιμή σύνδεσης';
@@ -7409,15 +7312,13 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsAiTestFailed => 'Η δοκιμή απέτυχε';
 
   @override
-  String get settingsAiTestInvalid =>
-      'Το μοντέλο απάντησε, αλλά όχι στη μορφή που ζήτησε το Loupe.';
+  String get settingsAiTestInvalid => 'Το μοντέλο απάντησε, αλλά όχι στη μορφή που ζήτησε το Loupe.';
 
   @override
   String get settingsAiRemoveKey => 'Αφαίρεση κλειδιού';
 
   @override
-  String get settingsAiRemoveKeyTitle =>
-      'Αφαίρεση του κλειδιού API της Anthropic;';
+  String get settingsAiRemoveKeyTitle => 'Αφαίρεση του κλειδιού API της Anthropic;';
 
   @override
   String get settingsAiRemoveKeyMessage =>
@@ -7434,8 +7335,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Το Loupe ξεχνά τη διεύθυνση και το μοντέλο του, διαγράφει το κλειδί του από την κλειδοθήκη αυτού του τηλεφώνου και σταματά να του στέλνει αιτήματα. Δεν αλλάζει σε άλλον πάροχο.';
 
   @override
-  String get settingsAiAnthropicRetention =>
-      'Διατήρηση δεδομένων από την Anthropic';
+  String get settingsAiAnthropicRetention => 'Διατήρηση δεδομένων από την Anthropic';
 
   @override
   String get settingsAiDemoDisclosure =>
@@ -7482,36 +7382,29 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Κατάσταση υπόθεσης';
 
   @override
-  String get settingsAiFeatureSearchDetail =>
-      'Στην αναζήτηση: μια πρόταση γίνεται αναζήτηση που μπορείτε να ελέγξετε.';
+  String get settingsAiFeatureSearchDetail => 'Στην αναζήτηση: μια πρόταση γίνεται αναζήτηση που μπορείτε να ελέγξετε.';
 
   @override
-  String get settingsAiFeatureBriefDetail =>
-      'Σε ένα μήνυμα: τι σας ζητά, με τα αποσπάσματα.';
+  String get settingsAiFeatureBriefDetail => 'Σε ένα μήνυμα: τι σας ζητά, με τα αποσπάσματα.';
 
   @override
-  String get settingsAiFeatureActionsDetail =>
-      'Προτείνει στοιχεία για τα «Περιμένει εμένα» και «Περιμένει άλλους».';
+  String get settingsAiFeatureActionsDetail => 'Προτείνει στοιχεία για τα «Περιμένει εμένα» και «Περιμένει άλλους».';
 
   @override
   String get settingsAiFeatureRulesDetail =>
       'Στους Κανόνες: μια περιγραφή γίνεται κανόνας που ελέγχετε πριν τον αποθηκεύσετε.';
 
   @override
-  String get settingsAiFeatureChangesDetail =>
-      'Στη Σύγκριση μηνυμάτων: τι άλλαξε στο νόημα, με πηγές.';
+  String get settingsAiFeatureChangesDetail => 'Στη Σύγκριση μηνυμάτων: τι άλλαξε στο νόημα, με πηγές.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail =>
-      'Τα βασικά στοιχεία των συνημμένων εγγράφων, με τις σελίδες τους.';
+  String get settingsAiFeatureDocumentsDetail => 'Τα βασικά στοιχεία των συνημμένων εγγράφων, με τις σελίδες τους.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail =>
-      'Πριν την αποστολή: τι μπορεί να παρέλειψε μια απάντηση.';
+  String get settingsAiFeatureReplyCheckDetail => 'Πριν την αποστολή: τι μπορεί να παρέλειψε μια απάντηση.';
 
   @override
-  String get settingsAiFeatureMattersDetail =>
-      'Η τελευταία κατάσταση μιας υπόθεσης, από την αλληλογραφία της.';
+  String get settingsAiFeatureMattersDetail => 'Η τελευταία κατάσταση μιας υπόθεσης, από την αλληλογραφία της.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Αλληλογραφία μόνο στο τηλέφωνο';
@@ -7537,12 +7430,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String settingsAiUsageRequests(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count αιτήματα',
-      one: '1 αίτημα',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count αιτήματα', one: '1 αίτημα');
     return '$_temp0';
   }
 

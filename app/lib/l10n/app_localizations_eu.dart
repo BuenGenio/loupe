@@ -83,12 +83,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String commonMessageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count mezu',
-      one: 'mezu $count',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count mezu', one: 'mezu $count');
     return '$_temp0';
   }
 
@@ -187,20 +182,17 @@ class AppLocalizationsEu extends AppLocalizations {
   String get conversationChangesSameMetadata => 'Bat datozen xehetasunak';
 
   @override
-  String get conversationChangesFullTextNote =>
-      'Mezuaren testu osoa konparatzen da, aipuak eta sinadurak barne.';
+  String get conversationChangesFullTextNote => 'Mezuaren testu osoa konparatzen da, aipuak eta sinadurak barne.';
 
   @override
   String get conversationChangesLimited =>
       'Mezu hau handiegia da konparazio xehea egiteko. Baliteke testuaren zati bat ez agertzea edo bloke oso gisa erakustea.';
 
   @override
-  String get conversationChangesLoadError =>
-      'Ezin izan dira mezu hauek konparatu.';
+  String get conversationChangesLoadError => 'Ezin izan dira mezu hauek konparatu.';
 
   @override
-  String get conversationSomethingWentWrong =>
-      'Zerbait gaizki joan da. Saiatu berriro.';
+  String get conversationSomethingWentWrong => 'Zerbait gaizki joan da. Saiatu berriro.';
 
   @override
   String get conversationReplyToList => 'Erantzun zerrendari';
@@ -209,8 +201,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get conversationReplyList => 'Erantzun zerrendari';
 
   @override
-  String get conversationThreadMuted =>
-      'Haria isilarazi da. Bertako mezu berriak irakurrita iritsiko dira.';
+  String get conversationThreadMuted => 'Haria isilarazi da. Bertako mezu berriak irakurrita iritsiko dira.';
 
   @override
   String get conversationThreadUnmuted => 'Haria jada ez dago isilarazita.';
@@ -237,8 +228,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get conversationTrash => 'Zakarrontzia';
 
   @override
-  String get conversationReplyHint =>
-      'Sakatu luze Erantzun guztiei eta Birbidali aukeretarako';
+  String get conversationReplyHint => 'Sakatu luze Erantzun guztiei eta Birbidali aukeretarako';
 
   @override
   String get conversationOfflineTitle => 'Konexiorik gabe zaude';
@@ -312,12 +302,10 @@ class AppLocalizationsEu extends AppLocalizations {
   String get conversationBodyError => 'Ezin izan da mezu hau kargatu.';
 
   @override
-  String get conversationBodyOffline =>
-      'Konexiorik gabe zaude. Berriro konektatzen zarenean kargatuko da mezua.';
+  String get conversationBodyOffline => 'Konexiorik gabe zaude. Berriro konektatzen zarenean kargatuko da mezua.';
 
   @override
-  String get conversationOriginalHint =>
-      'Hobeto ikusten da Jatorrizkoa ikuspegian';
+  String get conversationOriginalHint => 'Hobeto ikusten da Jatorrizkoa ikuspegian';
 
   @override
   String get conversationShowOriginal => 'Erakutsi jatorrizkoa';
@@ -359,8 +347,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get conversationShareAsFile => 'Partekatu fitxategi gisa…';
 
   @override
-  String get conversationSearchFromMessageMenu =>
-      'Bilatu mezu honetatik abiatuta…';
+  String get conversationSearchFromMessageMenu => 'Bilatu mezu honetatik abiatuta…';
 
   @override
   String get conversationVip => 'VIP';
@@ -392,8 +379,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get conversationNoHeaders => 'Goibururik ez';
 
   @override
-  String get conversationSearchFromMessageTitle =>
-      'Bilatu mezu honetatik abiatuta';
+  String get conversationSearchFromMessageTitle => 'Bilatu mezu honetatik abiatuta';
 
   @override
   String conversationSearchFrom(String name) {
@@ -445,8 +431,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get conversationMoveTo => 'Mugitu hona…';
 
   @override
-  String get conversationMailboxesError =>
-      'Ezin izan dira postontziak kargatu.';
+  String get conversationMailboxesError => 'Ezin izan dira postontziak kargatu.';
 
   @override
   String get conversationReaderReadable => 'Irakurgarria';
@@ -504,8 +489,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get conversationPhishingBannerText =>
-      'Estekak eta irudiak desaktibatuta daude.';
+  String get conversationPhishingBannerText => 'Estekak eta irudiak desaktibatuta daude.';
 
   @override
   String get conversationPhishingWhy => 'Zergatik?';
@@ -517,27 +501,23 @@ class AppLocalizationsEu extends AppLocalizations {
   String get conversationSecurityPhishingTitle => 'Honek phishing itxura du';
 
   @override
-  String get conversationSecurityPhishingText =>
-      'Hainbat zantzuk adierazten dute mezu hau ez dela dirudiena.';
+  String get conversationSecurityPhishingText => 'Hainbat zantzuk adierazten dute mezu hau ez dela dirudiena.';
 
   @override
   String get conversationSecurityCarefulTitle => 'Kontuz mezu honekin';
 
   @override
-  String get conversationSecurityCarefulText =>
-      'Badago bigarren begirada bat merezi duen zerbait.';
+  String get conversationSecurityCarefulText => 'Badago bigarren begirada bat merezi duen zerbait.';
 
   @override
-  String get conversationSecurityVerifiedText =>
-      'Igorlea egiaztatuta dago, eta ez dago ezer susmagarririk.';
+  String get conversationSecurityVerifiedText => 'Igorlea egiaztatuta dago, eta ez dago ezer susmagarririk.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Ez dago ezer susmagarririk. Zure posta-zerbitzariak ez du esan igorlea egiaztatuta dagoen.';
 
   @override
-  String get conversationSecurityNothingSuspicious =>
-      'Ez dago ezer susmagarririk.';
+  String get conversationSecurityNothingSuspicious => 'Ez dago ezer susmagarririk.';
 
   @override
   String get conversationSecurityWhy => 'Zergatik';
@@ -560,8 +540,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityTrackingPixelsText =>
-      'Mezu hau noiz ireki duzun jakinaraziko zioten igorleari.';
+  String get conversationSecurityTrackingPixelsText => 'Mezu hau noiz ireki duzun jakinaraziko zioten igorleari.';
 
   @override
   String get conversationSecurityNoRemoteImages => 'Urruneko irudirik ez';
@@ -604,8 +583,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Xehetasun teknikoak';
 
   @override
-  String get conversationSecurityCheckedLocally =>
-      'Gailu honetan egiaztatua. Ez da ezer inora bidali.';
+  String get conversationSecurityCheckedLocally => 'Gailu honetan egiaztatua. Ez da ezer inora bidali.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Jarraitzaileak';
@@ -645,8 +623,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityAuthFailedTitle =>
-      'Igorlea ez dago egiaztatuta';
+  String get conversationSecurityAuthFailedTitle => 'Igorlea ez dago egiaztatuta';
 
   @override
   String conversationSecurityAuthFailedText(String domain) {
@@ -671,8 +648,7 @@ class AppLocalizationsEu extends AppLocalizations {
       'Ez egin ezer horren arabera, espero ez bazenuen. Zalantzarik baduzu, jarri harremanetan igorlearekin beste bide batetik.';
 
   @override
-  String get conversationSecurityAuthUnalignedTitle =>
-      'Beste domeinu batek sinatua';
+  String get conversationSecurityAuthUnalignedTitle => 'Beste domeinu batek sinatua';
 
   @override
   String conversationSecurityAuthUnalignedText(String signer, String domain) {
@@ -685,8 +661,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle =>
-      'Izenak beste helbide bat erakusten du';
+  String get conversationSecurityNameShowsAddressTitle => 'Izenak beste helbide bat erakusten du';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -694,12 +669,10 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice =>
-      'Fidatu helbideaz, ez izenaz.';
+  String get conversationSecurityNameShowsAddressAdvice => 'Fidatu helbideaz, ez izenaz.';
 
   @override
-  String get conversationSecurityReplyToTitle =>
-      'Erantzunak beste nonbaitera doaz';
+  String get conversationSecurityReplyToTitle => 'Erantzunak beste nonbaitera doaz';
 
   @override
   String conversationSecurityReplyToText(String address, String domain) {
@@ -711,12 +684,10 @@ class AppLocalizationsEu extends AppLocalizations {
       'Egiaztatu helbidea informazio pertsonala duen ezer erantzun aurretik.';
 
   @override
-  String get conversationSecurityImpersonationYouTitle =>
-      'Zure izena erabiltzen du';
+  String get conversationSecurityImpersonationYouTitle => 'Zure izena erabiltzen du';
 
   @override
-  String get conversationSecurityImpersonationTitle =>
-      'Ezagutzen duzun norbaiten izena erabiltzen du';
+  String get conversationSecurityImpersonationTitle => 'Ezagutzen duzun norbaiten izena erabiltzen du';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -724,22 +695,12 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
     return '«$name» izenarekin sinatuta dago, zure VIP $knownName ($knownEmail) bezala, baina helbide berri batetik dator: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
     return '«$name» izenarekin sinatuta dago, $knownName ($knownEmail) bezala, baina helbide berri batetik dator: $email.';
   }
 
@@ -770,16 +731,13 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeAdvice =>
-      'Kontuz oraindik ezagutzen ez duzun jendearen eskaerekin.';
+  String get conversationSecurityFirstTimeAdvice => 'Kontuz oraindik ezagutzen ez duzun jendearen eskaerekin.';
 
   @override
-  String get conversationSecuritySenderHomographTitle =>
-      'Itxura bereko letrak igorlearen helbidean';
+  String get conversationSecuritySenderHomographTitle => 'Itxura bereko letrak igorlearen helbidean';
 
   @override
-  String get conversationSecurityLinkHomographTitle =>
-      'Itxura bereko letrak esteka batean';
+  String get conversationSecurityLinkHomographTitle => 'Itxura bereko letrak esteka batean';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -792,8 +750,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice =>
-      'Ezabatu, edo salatu zabor-posta gisa.';
+  String get conversationSecuritySenderHomographAdvice => 'Ezabatu, edo salatu zabor-posta gisa.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Ez ireki.';
@@ -804,12 +761,10 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLookalikeTitle =>
-      'Benetakoaren itxura duen domeinua';
+  String get conversationSecurityLookalikeTitle => 'Benetakoaren itxura duen domeinua';
 
   @override
-  String get conversationSecurityFamiliarNameTitle =>
-      'Izen ezagun bat erabiltzen du domeinuan';
+  String get conversationSecurityFamiliarNameTitle => 'Izen ezagun bat erabiltzen du domeinuan';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -817,11 +772,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityLookalikeText(String domain, String brand, String real) {
     return '$domain domeinuak $brand ($real) dirudi, baina beste domeinu bat da.';
   }
 
@@ -831,11 +782,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
     return '$domain domeinuak $brand ($real) izena erabiltzen du, baina ez da haiena.';
   }
 
@@ -885,8 +832,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle =>
-      'Ezin da egiaztatu esteka baten helmuga';
+  String get conversationSecurityLinkUncheckableTitle => 'Ezin da egiaztatu esteka baten helmuga';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -894,8 +840,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityIpAddressTitle =>
-      'Esteka bat IP helbide huts batera doa';
+  String get conversationSecurityIpAddressTitle => 'Esteka bat IP helbide huts batera doa';
 
   @override
   String conversationSecurityIpAddressText(String hosts) {
@@ -918,24 +863,19 @@ class AppLocalizationsEu extends AppLocalizations {
       'Esteka batek mezuaren barruan bildutako orri bat irekiko zuen, esteken egiaztapena saihesteko modu bat.';
 
   @override
-  String get conversationSecurityPasswordFieldTitle =>
-      'Pasahitz bat eskatzen du';
+  String get conversationSecurityPasswordFieldTitle => 'Pasahitz bat eskatzen du';
 
   @override
-  String get conversationSecurityPasswordFieldText =>
-      'Mezuak pasahitz-eremu bat zuen. Loupe-k kendu egin du.';
+  String get conversationSecurityPasswordFieldText => 'Mezuak pasahitz-eremu bat zuen. Loupe-k kendu egin du.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice =>
-      'Ez idatzi inoiz pasahitzik mezu elektroniko batean.';
+  String get conversationSecurityPasswordFieldAdvice => 'Ez idatzi inoiz pasahitzik mezu elektroniko batean.';
 
   @override
-  String get conversationSecurityScriptLinkTitle =>
-      'Kodea exekutatzen duen esteka bat desgaitu da';
+  String get conversationSecurityScriptLinkTitle => 'Kodea exekutatzen duen esteka bat desgaitu da';
 
   @override
-  String get conversationSecurityScriptLinkText =>
-      'Loupe-k ez du inoiz mezuetako koderik exekutatzen.';
+  String get conversationSecurityScriptLinkText => 'Loupe-k ez du inoiz mezuetako koderik exekutatzen.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -954,8 +894,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityInternationalTitle =>
-      'Web-helbide internazionala';
+  String get conversationSecurityInternationalTitle => 'Web-helbide internazionala';
 
   @override
   String conversationSecurityInternationalText(String hosts) {
@@ -972,8 +911,7 @@ class AppLocalizationsEu extends AppLocalizations {
       locale: localeName,
       other:
           'Testu ikusezineko $count karaktere kendu dira. Horrelako testu ezkutuak spam-iragazkiak engainatzeko dira.',
-      one:
-          'Testu ikusezineko karaktere $count kendu da. Horrelako testu ezkutuak spam-iragazkiak engainatzeko dira.',
+      one: 'Testu ikusezineko karaktere $count kendu da. Horrelako testu ezkutuak spam-iragazkiak engainatzeko dira.',
     );
     return '$_temp0';
   }
@@ -993,8 +931,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed =>
-      'Ezin izan da mezua deskargatu. Egiaztatu konexioa eta saiatu berriro.';
+  String get exportDownloadFailed => 'Ezin izan da mezua deskargatu. Egiaztatu konexioa eta saiatu berriro.';
 
   @override
   String exportSaved(String name) {
@@ -1024,8 +961,7 @@ class AppLocalizationsEu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '«$name» gorde da, deskargatu ezin izan diren $formattedCount mezu gabe.',
+      other: '«$name» gorde da, deskargatu ezin izan diren $formattedCount mezu gabe.',
       one: '«$name» gorde da, deskargatu ezin izan den mezu $count gabe.',
     );
     return '$_temp0';
@@ -1104,8 +1040,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get mailboxesSmartMailboxes => 'Smart Mailboxes';
 
   @override
-  String get mailboxesSmartMailboxesEmpty =>
-      'Gorde bilaketa bat hemen edukitzeko.';
+  String get mailboxesSmartMailboxesEmpty => 'Gorde bilaketa bat hemen edukitzeko.';
 
   @override
   String get mailboxesTags => 'Etiketak';
@@ -1139,8 +1074,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get projectsDelete => 'Ezabatu proiektua';
 
   @override
-  String get projectsDeleteMessage =>
-      'Haren elkarrizketak dauden lekuan geratzen dira, proiektutik kanpo.';
+  String get projectsDeleteMessage => 'Haren elkarrizketak dauden lekuan geratzen dira, proiektutik kanpo.';
 
   @override
   String get projectsUntitled => 'Proiektua';
@@ -1192,8 +1126,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get projectsAiTimeout => 'Zerbitzariak gehiegi behar izan du.';
 
   @override
-  String get projectsAiBadAnswer =>
-      'Ezin izan da zerbitzariaren erantzuna irakurri.';
+  String get projectsAiBadAnswer => 'Ezin izan da zerbitzariaren erantzuna irakurri.';
 
   @override
   String projectsAiNoModel(String models) {
@@ -1255,8 +1188,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get mailboxesVipTitle => 'VIP';
 
   @override
-  String get mailboxesVipFooter =>
-      'Mezu bateko igorlearen izena ere saka dezakezu, eta VIP aktibatu.';
+  String get mailboxesVipFooter => 'Mezu bateko igorlearen izena ere saka dezakezu, eta VIP aktibatu.';
 
   @override
   String get mailboxesAddVip => 'Gehitu VIPa…';
@@ -1265,8 +1197,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get mailboxesAddVipTitle => 'Gehitu VIPa';
 
   @override
-  String get mailboxesAddVipText =>
-      'Helbide honetako mezuek izar bat izango dute eta VIP postontzian agertuko dira.';
+  String get mailboxesAddVipText => 'Helbide honetako mezuek izar bat izango dute eta VIP postontzian agertuko dira.';
 
   @override
   String get mailboxesAddVipPlaceholder => 'izena@example.com';
@@ -1304,8 +1235,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get messageListLoadOlderFailed =>
-      'Ezin izan da posta zaharragoa kargatu.';
+  String get messageListLoadOlderFailed => 'Ezin izan da posta zaharragoa kargatu.';
 
   @override
   String get messageListSelectMessages => 'Hautatu mezuak';
@@ -1404,12 +1334,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String panesDragCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count mezu',
-      one: 'Mezu $count',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count mezu', one: 'Mezu $count');
     return '$_temp0';
   }
 
@@ -1453,22 +1378,19 @@ class AppLocalizationsEu extends AppLocalizations {
   String get snoozeNoTime => 'Ez da ordurik ezarri';
 
   @override
-  String get snoozeFooter =>
-      'Atzeratutako mezuak Sarrera-ontzira itzultzen dira, irakurri gabe, ezarritako orduan.';
+  String get snoozeFooter => 'Atzeratutako mezuak Sarrera-ontzira itzultzen dira, irakurri gabe, ezarritako orduan.';
 
   @override
   String get snoozeEmptyTitle => 'Ez dago ezer atzeratuta';
 
   @override
-  String get snoozeEmptyText =>
-      'Atzeratu mezu bat, behar duzunean Sarrera-ontzira itzul dadin.';
+  String get snoozeEmptyText => 'Atzeratu mezu bat, behar duzunean Sarrera-ontzira itzul dadin.';
 
   @override
   String get briefButton => 'Laburpena';
 
   @override
-  String get briefButtonHint =>
-      'Mezu honek zuri zer eskatzen dizun zerrendatzen du';
+  String get briefButtonHint => 'Mezu honek zuri zer eskatzen dizun zerrendatzen du';
 
   @override
   String get briefReaderView => 'Laburpena';
@@ -1486,8 +1408,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get briefStopped => 'Laburpena gelditu duzu.';
 
   @override
-  String get briefFailedTooLarge =>
-      'Mezu hau luzeegia da ereduarentzat; beraz, ez da ezer bidali.';
+  String get briefFailedTooLarge => 'Mezu hau luzeegia da ereduarentzat; beraz, ez da ezer bidali.';
 
   @override
   String get briefFailedProvider => 'Ereduak ezin izan du mezu hau laburtu.';
@@ -1546,11 +1467,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {
-      'me': 'Zu',
-      'them': 'Besteak',
-      'other': 'Adierazi gabe',
-    });
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Zu', 'them': 'Besteak', 'other': 'Adierazi gabe'});
     return '$_temp0';
   }
 
@@ -1629,8 +1546,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get briefCaution =>
-      'Laburpen batek gauzak ahaztu edo gaizki uler ditzake. Mezua bera da balio duena.';
+  String get briefCaution => 'Laburpen batek gauzak ahaztu edo gaizki uler ditzake. Mezua bera da balio duena.';
 
   @override
   String briefSecurityReason(String reason) {
@@ -1638,8 +1554,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText =>
-      'Egiaztatu mezua bera laburpen honetako ezer egin aurretik.';
+  String get briefSecurityText => 'Egiaztatu mezua bera laburpen honetako ezer egin aurretik.';
 
   @override
   String get briefSourceTitle => 'Mezuan';
@@ -1677,8 +1592,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get briefEventFootnote =>
-      'Egutegi-aplikazioa gertaera honekin irekiko da. Ez da ezer gordeko han gorde arte.';
+  String get briefEventFootnote => 'Egutegi-aplikazioa gertaera honekin irekiko da. Ez da ezer gordeko han gorde arte.';
 
   @override
   String get appLockUnlock => 'Desblokeatu';
@@ -1690,26 +1604,22 @@ class AppLocalizationsEu extends AppLocalizations {
   String get appLockLockedOut => 'Saiakera gehiegi. Saiatu berriro geroago.';
 
   @override
-  String get appLockPromptError =>
-      'Ezin izan da eskaera erakutsi. Saiatu berriro.';
+  String get appLockPromptError => 'Ezin izan da eskaera erakutsi. Saiatu berriro.';
 
   @override
-  String get appLockNoScreenLock =>
-      'Telefono honek ez du pantailaren blokeorik.';
+  String get appLockNoScreenLock => 'Telefono honek ez du pantailaren blokeorik.';
 
   @override
   String get appLockUnlockPromptTitle => 'Desblokeatu Loupe';
 
   @override
-  String get appLockUnlockPromptReason =>
-      'Berretsi zu zarela zure posta ikusteko.';
+  String get appLockUnlockPromptReason => 'Berretsi zu zarela zure posta ikusteko.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Aktibatu aplikazio-blokeoa';
 
   @override
-  String get appLockTurnOnPromptReason =>
-      'Berretsi zu zarela aplikazio-blokeoa aktibatzeko.';
+  String get appLockTurnOnPromptReason => 'Berretsi zu zarela aplikazio-blokeoa aktibatzeko.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1720,23 +1630,13 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String appLockAfterMinutes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count minutu',
-      one: 'Minutu $count',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count minutu', one: 'Minutu $count');
     return '$_temp0';
   }
 
   @override
   String appLockAfterHours(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count ordu',
-      one: 'Ordu $count',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ordu', one: 'Ordu $count');
     return '$_temp0';
   }
 
@@ -1783,8 +1683,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get openpgpSignedWithRejectedKey =>
-      'Baztertutako gako batekin sinatua';
+  String get openpgpSignedWithRejectedKey => 'Baztertutako gako batekin sinatua';
 
   @override
   String openpgpSignedByNotAccepted(String name) {
@@ -1814,12 +1713,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String openpgpForKeys(int count, String keys) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Gakoak: $keys',
-      one: 'Gakoa: $keys',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Gakoak: $keys', one: 'Gakoa: $keys');
     return '$_temp0';
   }
 
@@ -1853,44 +1747,36 @@ class AppLocalizationsEu extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Aldatu onarpena…';
 
   @override
-  String get openpgpCheckedFooter =>
-      'Gailu honetan egiaztatua OpenPGP bidez, Thunderbird-ekin bateragarria.';
+  String get openpgpCheckedFooter => 'Gailu honetan egiaztatua OpenPGP bidez, Thunderbird-ekin bateragarria.';
 
   @override
   String get openpgpSummaryLocked =>
       'Zure gakoa blokeatuta dago. Desblokeatu bere pasaesaldiarekin mezu hau irakurtzeko.';
 
   @override
-  String get openpgpSummaryNoSecretKey =>
-      'Gailu honetan ez dagoen gako baterako zifratu zen.';
+  String get openpgpSummaryNoSecretKey => 'Gailu honetan ez dagoen gako baterako zifratu zen.';
 
   @override
-  String get openpgpSummaryDamaged =>
-      'Zifratutako datuak hondatuta daude edo bidean aldatu dira.';
+  String get openpgpSummaryDamaged => 'Zifratutako datuak hondatuta daude edo bidean aldatu dira.';
 
   @override
-  String get openpgpSummaryUnsupported =>
-      'Loupe-k onartzen ez duen algoritmo bat erabiltzen du.';
+  String get openpgpSummaryUnsupported => 'Loupe-k onartzen ez duen algoritmo bat erabiltzen du.';
 
   @override
-  String get openpgpSummaryEncrypted =>
-      'Zuk eta beste hartzaileek bakarrik irakur dezakezue.';
+  String get openpgpSummaryEncrypted => 'Zuk eta beste hartzaileek bakarrik irakur dezakezue.';
 
   @override
-  String get openpgpSummaryNotSigned =>
-      'Ez dago sinatuta; beraz, igorlea ez dago berretsita.';
+  String get openpgpSummaryNotSigned => 'Ez dago sinatuta; beraz, igorlea ez dago berretsita.';
 
   @override
   String get openpgpSummaryUnknownKey =>
       'Sinatuta dago, baina ez duzun gako batekin; beraz, ezin da sinadura egiaztatu.';
 
   @override
-  String get openpgpSummaryBadSignature =>
-      'Sinadura ez dator bat: baliteke mezua aldatu izana.';
+  String get openpgpSummaryBadSignature => 'Sinadura ez dator bat: baliteke mezua aldatu izana.';
 
   @override
-  String get openpgpSummaryMismatch =>
-      'Sinadura baliozkoa da, baina gakoa igorlearena ez den beste helbide batena da.';
+  String get openpgpSummaryMismatch => 'Sinadura baliozkoa da, baina gakoa igorlearena ez den beste helbide batena da.';
 
   @override
   String get openpgpSummaryPartial =>
@@ -1900,16 +1786,13 @@ class AppLocalizationsEu extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Zure gakoarekin sinatua.';
 
   @override
-  String get openpgpSummaryVerified =>
-      'Sinadura baliozkoa da, eta gakoaren hatz-marka egiaztatu duzu.';
+  String get openpgpSummaryVerified => 'Sinadura baliozkoa da, eta gakoaren hatz-marka egiaztatu duzu.';
 
   @override
-  String get openpgpSummaryUnverified =>
-      'Sinadura baliozkoa da. Gakoa onartu duzu hatz-marka egiaztatu gabe.';
+  String get openpgpSummaryUnverified => 'Sinadura baliozkoa da. Gakoa onartu duzu hatz-marka egiaztatu gabe.';
 
   @override
-  String get openpgpSummaryRejected =>
-      'Sinadura baliozkoa da, baina gako hau baztertu duzu.';
+  String get openpgpSummaryRejected => 'Sinadura baliozkoa da, baina gako hau baztertu duzu.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -2004,8 +1887,7 @@ class AppLocalizationsEu extends AppLocalizations {
       'Bilaketak mezu zifratuak aurkitzen ditu igorlearen, hartzaileen eta gaiaren arabera. Hau aktibatuta, Loupe-k deszifratzen duen mezu zifratu bakoitzaren testua ere gehitzen dio gailu honetako datu-base zifratuko bilaketa-indizeari, bilaketak testuaren arabera ere aurki dezan. Desaktibatzen baduzu, testu hori indizetik kentzen da.';
 
   @override
-  String get openpgpIndexDecrypted =>
-      'Indexatu deszifratutako mezuak bilaketarako';
+  String get openpgpIndexDecrypted => 'Indexatu deszifratutako mezuak bilaketarako';
 
   @override
   String get openpgpPassphrases => 'Pasaesaldiak';
@@ -2050,8 +1932,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get openpgpAddKeyTitle => 'Gehitu OpenPGP gako bat';
 
   @override
-  String get openpgpAddKeyMessage =>
-      'Inportatu Thunderbird-en erabiltzen duzun gakoa, edo sortu berri bat.';
+  String get openpgpAddKeyMessage => 'Inportatu Thunderbird-en erabiltzen duzun gakoa, edo sortu berri bat.';
 
   @override
   String get openpgpImportFromClipboard => 'Inportatu arbeletik';
@@ -2072,8 +1953,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get openpgpFromFile => 'Fitxategitik';
 
   @override
-  String get openpgpClipboardEmpty =>
-      'Arbela hutsik dago. Kopiatu gakoa lehenik.';
+  String get openpgpClipboardEmpty => 'Arbela hutsik dago. Kopiatu gakoa lehenik.';
 
   @override
   String get openpgpKey => 'Gakoa';
@@ -2189,8 +2069,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Zifratu automatikoki';
 
   @override
-  String get openpgpAlwaysEncryptDetail =>
-      'Ez du bidaltzen hartzaileren batek gakorik ez badu';
+  String get openpgpAlwaysEncryptDetail => 'Ez du bidaltzen hartzaileren batek gakorik ez badu';
 
   @override
   String get openpgpSignUnencrypted => 'Sinatu zifratu gabeko posta';
@@ -2209,17 +2088,11 @@ class AppLocalizationsEu extends AppLocalizations {
   String get openpgpPreferEncryption => 'Hobetsi zifratzea';
 
   @override
-  String get openpgpPreferEncryptionDetail =>
-      'Eskatu besteei ahal dutenean zifratzeko';
+  String get openpgpPreferEncryptionDetail => 'Eskatu besteei ahal dutenean zifratzeko';
 
   @override
   String openpgpValidityYears(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count urte',
-      one: 'Urte $count',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count urte', one: 'Urte $count');
     return '$_temp0';
   }
 
@@ -2398,24 +2271,20 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get openpgpWrongPassphrase =>
-      'Pasaesaldi hori ez da zuzena. Saiatu berriro.';
+  String get openpgpWrongPassphrase => 'Pasaesaldi hori ez da zuzena. Saiatu berriro.';
 
   @override
-  String get openpgpExplainLocked =>
-      'Mezu hau zifratuta dago. Desblokeatu zure OpenPGP gakoa irakurtzeko.';
+  String get openpgpExplainLocked => 'Mezu hau zifratuta dago. Desblokeatu zure OpenPGP gakoa irakurtzeko.';
 
   @override
   String get openpgpExplainNoKey =>
       'Mezu hau zifratuta dago, baina ez gailu honetako OpenPGP gakoetako baterako. Thunderbird-en irakurtzen baduzu, inportatu han erabiltzen duzun gakoa: Ezarpenak › Muturretik muturrerako zifratzea.';
 
   @override
-  String get openpgpExplainDamaged =>
-      'Mezu zifratu hau hondatuta dago; beraz, ezin da segurtasunez deszifratu.';
+  String get openpgpExplainDamaged => 'Mezu zifratu hau hondatuta dago; beraz, ezin da segurtasunez deszifratu.';
 
   @override
-  String get openpgpExplainUnsupported =>
-      'Mezu honek Loupe-k oraindik irakurri ezin duen zifratze bat erabiltzen du.';
+  String get openpgpExplainUnsupported => 'Mezu honek Loupe-k oraindik irakurri ezin duen zifratze bat erabiltzen du.';
 
   @override
   String get openpgpExplainSmimeNoKey =>
@@ -2427,8 +2296,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock =>
-      'Desblokeatu zure S/MIME ziurtagiria irakurtzeko.';
+  String get openpgpExplainSmimeUnlock => 'Desblokeatu zure S/MIME ziurtagiria irakurtzeko.';
 
   @override
   String get openpgpAttachmentGone => 'Eranskin hau ez dago erabilgarri jada.';
@@ -2437,8 +2305,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get smimeEncrypted => 'Zifratua (S/MIME)';
 
   @override
-  String get smimeEncryptedNoCertificate =>
-      'Zifratua (S/MIME) · ziurtagiririk ez';
+  String get smimeEncryptedNoCertificate => 'Zifratua (S/MIME) · ziurtagiririk ez';
 
   @override
   String get smimeEncryptedDamaged => 'Zifratua (S/MIME) · hondatuta';
@@ -2594,8 +2461,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get smimeTrustThisCertificateEllipsis =>
-      'Jo ziurtagiri hau fidagarritzat…';
+  String get smimeTrustThisCertificateEllipsis => 'Jo ziurtagiri hau fidagarritzat…';
 
   @override
   String get smimeCheckedFooterRevocation =>
@@ -2629,38 +2495,31 @@ class AppLocalizationsEu extends AppLocalizations {
   String get smimeTrust => 'Jo fidagarritzat';
 
   @override
-  String get smimeSummaryNoKey =>
-      'Gailu honetan ez dagoen ziurtagiri baterako zifratu zen.';
+  String get smimeSummaryNoKey => 'Gailu honetan ez dagoen ziurtagiri baterako zifratu zen.';
 
   @override
-  String get smimeSummaryDamaged =>
-      'Zifratutako datuak hondatuta daude edo bidean aldatu dira.';
+  String get smimeSummaryDamaged => 'Zifratutako datuak hondatuta daude edo bidean aldatu dira.';
 
   @override
-  String get smimeSummaryUnsupported =>
-      'Loupe-k onartzen ez duen algoritmo bat erabiltzen du.';
+  String get smimeSummaryUnsupported => 'Loupe-k onartzen ez duen algoritmo bat erabiltzen du.';
 
   @override
   String get smimeSummaryLocked => 'Zure S/MIME ziurtagiria blokeatuta dago.';
 
   @override
-  String get smimeSummaryEncrypted =>
-      'Zuk eta beste hartzaileek bakarrik irakur dezakezue.';
+  String get smimeSummaryEncrypted => 'Zuk eta beste hartzaileek bakarrik irakur dezakezue.';
 
   @override
-  String get smimeSummaryNotSigned =>
-      'Ez dago sinatuta; beraz, igorlea ez dago berretsita.';
+  String get smimeSummaryNotSigned => 'Ez dago sinatuta; beraz, igorlea ez dago berretsita.';
 
   @override
-  String get smimeSummaryModified =>
-      'Sinadura ez dator bat: mezua sinatu ondoren aldatu da.';
+  String get smimeSummaryModified => 'Sinadura ez dator bat: mezua sinatu ondoren aldatu da.';
 
   @override
   String get smimeSummaryUncheckable => 'Ezin da sinadura egiaztatu.';
 
   @override
-  String get smimeSummaryNoCertificate =>
-      'Sinatzailearen ziurtagiria ez dago mezuan; beraz, ezin da egiaztatu.';
+  String get smimeSummaryNoCertificate => 'Sinatzailearen ziurtagiria ez dago mezuan; beraz, ezin da egiaztatu.';
 
   @override
   String get smimeSummaryRevoked =>
@@ -2681,26 +2540,22 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain =>
-      'Ziurtagiria edo haren jaulkitzaileetako bat baliogabea da.';
+  String get smimeProblemInvalidChain => 'Ziurtagiria edo haren jaulkitzaileetako bat baliogabea da.';
 
   @override
-  String get smimeProblemUntrusted =>
-      'Ziurtagiria Loupe-k fidagarritzat jotzen ez duen autoritate batena da.';
+  String get smimeProblemUntrusted => 'Ziurtagiria Loupe-k fidagarritzat jotzen ez duen autoritate batena da.';
 
   @override
   String get smimeProblemExpired => 'Ziurtagiria iraungita zegoen.';
 
   @override
-  String get smimeProblemNotYetValid =>
-      'Ziurtagiria oraindik ez zen baliozkoa.';
+  String get smimeProblemNotYetValid => 'Ziurtagiria oraindik ez zen baliozkoa.';
 
   @override
   String get smimeProblemWrongUsage => 'Ziurtagiria ez da postarako.';
 
   @override
-  String get smimeProblemWrongAddress =>
-      'Ziurtagiria igorlearena ez den beste helbide batena da.';
+  String get smimeProblemWrongAddress => 'Ziurtagiria igorlearena ez den beste helbide batena da.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2757,8 +2612,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get smimeImportCertificateEllipsis => 'Inportatu ziurtagiria…';
 
   @override
-  String get smimeUseDeviceCertificate =>
-      'Erabili gailu honetako ziurtagiri bat…';
+  String get smimeUseDeviceCertificate => 'Erabili gailu honetako ziurtagiri bat…';
 
   @override
   String get smimeCorrespondentsCertificates => 'Kontaktuen ziurtagiriak';
@@ -2775,8 +2629,7 @@ class AppLocalizationsEu extends AppLocalizations {
       'Sinatutako posta irekitzen duzunean, Loupe-k sinatzailearen ziurtagiria jaulki zuen autoritateari galdetzen dio baliogabetu ote den (bere OCSP erantzuleari edo bere baliogabetze-zerrendari). Hala, autoritateak jakin dezake noiz irakurtzen duen norbaitek, zure IP helbidetik, ziurtagiri horrekin sinatutako posta. Erantzunak gailu honetan gordetzen dira iraungi arte. Baliogabetutako ziurtagiri bat «Baliogabetua» gisa agertzen da mezuaren goiburuan.';
 
   @override
-  String get smimeCheckRevocation =>
-      'Egiaztatu ziurtagirien baliogabetzea linean';
+  String get smimeCheckRevocation => 'Egiaztatu ziurtagirien baliogabetzea linean';
 
   @override
   String get smimeTrustedAuthorities => 'Autoritate fidagarriak';
@@ -2811,8 +2664,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get smimeFromFile => 'Fitxategitik';
 
   @override
-  String get smimeClipboardEmpty =>
-      'Arbela hutsik dago. Kopiatu ziurtagiria lehenik.';
+  String get smimeClipboardEmpty => 'Arbela hutsik dago. Kopiatu ziurtagiria lehenik.';
 
   @override
   String get smimeCertificate => 'Ziurtagiria';
@@ -2965,8 +2817,7 @@ class AppLocalizationsEu extends AppLocalizations {
       'Bere gako pribatua gailu honetatik ezabatzen da: harentzat zifratutako posta ezin izango da hemen irakurri, berriro inportatzen ez baduzu.';
 
   @override
-  String get smimeRemoveContactMessage =>
-      'Pertsona horren hurrengo mezu sinatuarekin itzuliko da.';
+  String get smimeRemoveContactMessage => 'Pertsona horren hurrengo mezu sinatuarekin itzuliko da.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -2989,15 +2840,13 @@ class AppLocalizationsEu extends AppLocalizations {
   String get smimeCertificatePassword => 'Ziurtagiriaren pasahitza';
 
   @override
-  String get smimeCertificatePasswordPrompt =>
-      'Idatzi ziurtagiri-fitxategia esportatzean erabilitako pasahitza.';
+  String get smimeCertificatePasswordPrompt => 'Idatzi ziurtagiri-fitxategia esportatzean erabilitako pasahitza.';
 
   @override
   String get smimeImport => 'Inportatu';
 
   @override
-  String get smimeWrongPassword =>
-      'Pasahitz hori ez da zuzena. Saiatu berriro.';
+  String get smimeWrongPassword => 'Pasahitz hori ez da zuzena. Saiatu berriro.';
 
   @override
   String get smimeNoCertificateFound => 'Ez da ziurtagiririk aurkitu.';
@@ -3027,10 +2876,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(
-    int count,
-    String certificates,
-  ) {
+  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -3098,8 +2944,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get smimeWrongPassphrase =>
-      'Pasaesaldi hori ez da zuzena. Saiatu berriro.';
+  String get smimeWrongPassphrase => 'Pasaesaldi hori ez da zuzena. Saiatu berriro.';
 
   @override
   String get smimeUnlock => 'Desblokeatu';
@@ -3124,16 +2969,13 @@ class AppLocalizationsEu extends AppLocalizations {
   String get smimeSetPassphraseButton => 'Ezarri';
 
   @override
-  String get smimeLockedOpenAgain =>
-      'Zure S/MIME ziurtagiria blokeatuta dago. Ireki berriro mezua desblokeatzeko.';
+  String get smimeLockedOpenAgain => 'Zure S/MIME ziurtagiria blokeatuta dago. Ireki berriro mezua desblokeatzeko.';
 
   @override
-  String get smimeDeviceHasNoCertificates =>
-      'Gailu honek ez ditu bere ziurtagiriak eskaintzen.';
+  String get smimeDeviceHasNoCertificates => 'Gailu honek ez ditu bere ziurtagiriak eskaintzen.';
 
   @override
-  String get smimeCantReadCertificate =>
-      'Loupe-k ezin du ziurtagiri hau irakurri.';
+  String get smimeCantReadCertificate => 'Loupe-k ezin du ziurtagiri hau irakurri.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -3164,16 +3006,13 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress =>
-      'Autoritatearen helbidea ez da web-helbide bat.';
+  String get smimeAuthorityNotWebAddress => 'Autoritatearen helbidea ez da web-helbide bat.';
 
   @override
-  String get smimeAuthorityTimeout =>
-      'Ziurtagiri-autoritateak ez du garaiz erantzun.';
+  String get smimeAuthorityTimeout => 'Ziurtagiri-autoritateak ez du garaiz erantzun.';
 
   @override
-  String get smimeAuthorityUnreachable =>
-      'Ezin izan da ziurtagiri-autoritatearekin konektatu.';
+  String get smimeAuthorityUnreachable => 'Ezin izan da ziurtagiri-autoritatearekin konektatu.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -3181,8 +3020,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge =>
-      'Ziurtagiri-autoritatearen erantzuna handiegia da.';
+  String get smimeAuthorityAnswerTooLarge => 'Ziurtagiri-autoritatearen erantzuna handiegia da.';
 
   @override
   String get smimeRevocationNotChecked =>
@@ -3195,11 +3033,310 @@ class AppLocalizationsEu extends AppLocalizations {
   String get actionsWaitingOnOthers => 'Besteen zain';
 
   @override
-  String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {
-      'jmap': 'Push',
-      'other': 'IDLE',
+  String get actionsNeedsMyActionEmpty => 'Ezerk ez du zure ekintzarik behar';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Ez zaude inoren zain';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Zerbaiten jarraipena egiteko, sakatu ⋯ mezu batean eta aukeratu «Gehitu ekintza…»';
+
+  @override
+  String get actionsTitle => 'Ekintzak';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count egiteko', one: '$count egiteko');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count zain', one: '$count zain');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ekintza ebatzita',
+      one: 'Ekintza $count ebatzita',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Ebatzitakoak';
+
+  @override
+  String get actionsNoneInConversation => 'Elkarrizketa honek ez du ekintzarik.';
+
+  @override
+  String get actionsFooter =>
+      'Ekintzak telefono honetan gordetzen dira. Postak ez ditu inoiz aldatzen, ezta «Eskerrik asko» dioen erantzun batek ere: zuk bakarrik aldatzen dituzu.';
+
+  @override
+  String get actionsMarkDone => 'Markatu egindakotzat';
+
+  @override
+  String get actionsReopen => 'Ireki berriro';
+
+  @override
+  String get actionsStateNeedsAction => 'Ekintza behar du';
+
+  @override
+  String get actionsStateInProgress => 'Abian';
+
+  @override
+  String get actionsStateSent => 'Bidalita';
+
+  @override
+  String get actionsStateWaiting => 'Berrespenaren zain';
+
+  @override
+  String get actionsStateAcknowledged => 'Berretsita';
+
+  @override
+  String get actionsStateDone => 'Eginda';
+
+  @override
+  String get actionsStateDismissed => 'Baztertuta';
+
+  @override
+  String get actionsStateSuperseded => 'Ordezkatuta';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Ekintza behar duela markatu da',
+      'inProgress': 'Abian dagoela markatu da',
+      'sent': 'Bidalitzat markatu da',
+      'waitingForAcknowledgement': 'Berrespenaren zain',
+      'acknowledged': 'Berretsitzat markatu da',
+      'done': 'Egindakotzat markatu da',
+      'dismissed': 'Ekintza baztertu da',
+      'superseded': 'Ordezkatutzat markatu da',
+      'other': 'Ekintza aldatu da',
     });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Ekintza birformulatu da';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Gogorarazpena ezarri da: $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Gogorarazpena kendu da';
+
+  @override
+  String get actionsDeleted => 'Ekintza ezabatu da';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ekintza gehitu dira',
+      one: 'Ekintza gehitu da',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Ezin izan da ekintza gorde.';
+
+  @override
+  String get actionsStatusHeader => 'Egoera';
+
+  @override
+  String get actionsEditText => 'Editatu testua…';
+
+  @override
+  String get actionsEditTitle => 'Editatu ekintza';
+
+  @override
+  String get actionsRemindMe => 'Gogorarazi…';
+
+  @override
+  String get actionsChangeReminder => 'Aldatu gogorarazpena…';
+
+  @override
+  String get actionsClearReminder => 'Kendu gogorarazpena';
+
+  @override
+  String get actionsRemindTitle => 'Gogorarazi';
+
+  @override
+  String get actionsDelete => 'Ezabatu ekintza';
+
+  @override
+  String get actionsHistoryHeader => 'Historia';
+
+  @override
+  String get actionsHistoryAdded => 'Gehituta';
+
+  @override
+  String get actionsHistoryEdited => 'Birformulatuta';
+
+  @override
+  String get actionsHistoryDue => 'Epea aldatu da';
+
+  @override
+  String get actionsHistoryReminder => 'Gogorarazpena aldatu da';
+
+  @override
+  String get actionsHistoryRevised => 'Iradokizun berri batekin eguneratuta';
+
+  @override
+  String get actionsHistoryDeleted => 'Ezabatuta';
+
+  @override
+  String get actionsHistoryRestored => 'Leheneratuta';
+
+  @override
+  String get actionsOwnerMe => 'Niri dagokit';
+
+  @override
+  String get actionsOwnerThem => 'Besteei dagokie';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Jatorriz: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '«$quote»';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return '$sender igorlearen mezua, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Zuk gehitua';
+
+  @override
+  String get actionsOriginDemo => 'Demo integratuak iradokia: arauak, eredurik ez';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Iradokitzailea: $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Iradokitzailea: $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Epea: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Epe gomendatua: $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '«$timing»';
+  }
+
+  @override
+  String get actionsAddMenu => 'Gehitu ekintza…';
+
+  @override
+  String get actionsSuggestMenu => 'Iradoki ekintzak';
+
+  @override
+  String get actionsAddTitle => 'Gehitu ekintza';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Zer egin behar duzu?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Zeren zain zaude?';
+
+  @override
+  String get actionsDueDate => 'Muga-eguna';
+
+  @override
+  String get actionsClearDueDate => 'Muga-egunik ez';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Gaia: «$subject»';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Iradokitako ekintzak';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'telefono honetan',
+      'myServer': 'zure zerbitzarian',
+      'other': 'hodeian',
+    });
+    return 'Iradokitzailea: $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'Demo integratuak iradokiak: arauak, eredurik ez. Ezer ez da telefono honetatik ateratzen.';
+
+  @override
+  String get actionsSuggestNone => 'Mezu honetan ez dago jarraitu beharreko ezer.';
+
+  @override
+  String get actionsSuggestPartial => 'Mezu hau luzea da: hasiera bakarrik irakurri da.';
+
+  @override
+  String get actionsSuggestTracked => 'Jarraipenean';
+
+  @override
+  String get actionsSuggestUpdate => 'Eguneratu';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Gehitu $count ekintzak',
+      two: 'Gehitu biak',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Iradokizun bakoitzak mezua aipatzen du, eta ez da ezeren jarraipenik egiten zuk gehitu arte. Aipatutako lehenagoko postak ez du balio.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Mezu hau luzeegia da aukeratutako eredurako.';
+
+  @override
+  String get actionsSuggestInvalid => 'Erantzuna ez dator bat mezuarekin; beraz, ez da ezer iradokitzen.';
+
+  @override
+  String get actionsSuggestCancelled => 'Geldituta.';
+
+  @override
+  String get actionsSuggestFailed => 'Iradokizunak ez daude erabilgarri une honetan.';
+
+  @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
     return '$_temp0';
   }
 
@@ -3264,8 +3401,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsSignatureAddField => 'Gehitu eremua';
 
   @override
-  String get settingsSignatureImageFailed =>
-      'Ezin izan da irudia gehitu. Saiatu PNG edo JPEG txikiago batekin.';
+  String get settingsSignatureImageFailed => 'Ezin izan da irudia gehitu. Saiatu PNG edo JPEG txikiago batekin.';
 
   @override
   String get settingsSignatureWhenToUse => 'Noiz erabili';
@@ -3281,8 +3417,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Gehitu helbidea edo domeinua…';
 
   @override
-  String get settingsSignatureCopiedPrompt =>
-      'Helbide bat, edo domeinu bat, adibidez client.example.';
+  String get settingsSignatureCopiedPrompt => 'Helbide bat, edo domeinu bat, adibidez client.example.';
 
   @override
   String get settingsSignatureScheduled => 'Programatua';
@@ -3343,12 +3478,10 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsSwipeRight => 'Irristatu eskuinera';
 
   @override
-  String get settingsSwipeRightFooter =>
-      'Irristatze osoak ekintza hau exekutatzen du.';
+  String get settingsSwipeRightFooter => 'Irristatze osoak ekintza hau exekutatzen du.';
 
   @override
-  String get settingsSwipeToggleRead =>
-      'Markatu irakurritzat / irakurri gabetzat';
+  String get settingsSwipeToggleRead => 'Markatu irakurritzat / irakurri gabetzat';
 
   @override
   String get settingsSwipeTrash => 'Bota zakarrontzira';
@@ -3418,15 +3551,13 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsDefaultView => 'Ikuspegi lehenetsia';
 
   @override
-  String get settingsDefaultViewFooter =>
-      'Edozein mezuren ikuspegia alda dezakezu Aa botoiarekin.';
+  String get settingsDefaultViewFooter => 'Edozein mezuren ikuspegia alda dezakezu Aa botoiarekin.';
 
   @override
   String get settingsViewReadable => 'Irakurgarria';
 
   @override
-  String get settingsViewReadableDetail =>
-      'Garbia, irakurgarria, modu iluna jarraitzen du';
+  String get settingsViewReadableDetail => 'Garbia, irakurgarria, modu iluna jarraitzen du';
 
   @override
   String get settingsViewOriginal => 'Jatorrizkoa';
@@ -3450,8 +3581,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsFontMono => 'Zabalera finkokoa';
 
   @override
-  String get settingsFontMonoDetail =>
-      'ASCII artea eta taulak lerrokatuta mantentzen ditu';
+  String get settingsFontMonoDetail => 'ASCII artea eta taulak lerrokatuta mantentzen ditu';
 
   @override
   String get settingsTechnicalLists => 'Zerrenda teknikoak';
@@ -3463,8 +3593,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Ireki estekak zuzenean';
 
   @override
-  String get settingsOpenLinksDirectlyDetail =>
-      'Saltatu klik-jarraitzaileak helmuga ezaguna denean';
+  String get settingsOpenLinksDirectlyDetail => 'Saltatu klik-jarraitzaileak helmuga ezaguna denean';
 
   @override
   String get settingsSecurityHeader => 'Segurtasuna';
@@ -3493,8 +3622,7 @@ class AppLocalizationsEu extends AppLocalizations {
       'Aplikazio-blokeoak Face ID, Touch ID edo zure pasakodea erabiltzen ditu, eta iPhone honek ez du pasakoderik. Konfiguratu bat Ezarpenak aplikazioan, eta gero aktibatu aplikazio-blokeoa.';
 
   @override
-  String get settingsScreenLockTitleAndroid =>
-      'Konfiguratu pantailaren blokeoa';
+  String get settingsScreenLockTitleAndroid => 'Konfiguratu pantailaren blokeoa';
 
   @override
   String get settingsScreenLockTextAndroid =>
@@ -3510,8 +3638,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsLockAfter => 'Blokeatze-denbora';
 
   @override
-  String get settingsLockAfterFooter =>
-      'Loupe zenbat denbora egon daitekeen atzeko planoan berriro eskatu aurretik.';
+  String get settingsLockAfterFooter => 'Loupe zenbat denbora egon daitekeen atzeko planoan berriro eskatu aurretik.';
 
   @override
   String get settingsNotifications => 'Jakinarazpenak';
@@ -3536,8 +3663,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsResetApp => 'Berrezarri aplikazioa';
 
   @override
-  String get settingsResetFooter =>
-      'Ezarpen guztiak ahazten ditu eta ongietorri-pantailara itzultzen da.';
+  String get settingsResetFooter => 'Ezarpen guztiak ahazten ditu eta ongietorri-pantailara itzultzen da.';
 
   @override
   String get settingsResetTitle => 'Loupe berrezarri?';
@@ -3563,12 +3689,10 @@ class AppLocalizationsEu extends AppLocalizations {
       'Loupe-k ez du analitikarik ez jarraipenik. Zure posta zure posta-zerbitzarietara bakarrik doa.';
 
   @override
-  String get settingsNotificationsOffIos =>
-      'Loupe-ren jakinarazpenak desaktibatuta daude Ezarpenak aplikazioan.';
+  String get settingsNotificationsOffIos => 'Loupe-ren jakinarazpenak desaktibatuta daude Ezarpenak aplikazioan.';
 
   @override
-  String get settingsNotificationsOffAndroid =>
-      'Loupe-ren jakinarazpenak desaktibatuta daude Android-en ezarpenetan.';
+  String get settingsNotificationsOffAndroid => 'Loupe-ren jakinarazpenak desaktibatuta daude Android-en ezarpenetan.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -3635,8 +3759,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsComingSoon => 'Laster';
 
   @override
-  String get settingsAllowUnrestrictedBattery =>
-      'Baimendu bateria murriztapenik gabe erabiltzea';
+  String get settingsAllowUnrestrictedBattery => 'Baimendu bateria murriztapenik gabe erabiltzea';
 
   @override
   String get settingsPush => 'Push';
@@ -3670,8 +3793,7 @@ class AppLocalizationsEu extends AppLocalizations {
       'Telefono honen hasierako pantailak ez du zenbakirik erakusten aplikazioen ikonoetan. Bereizgarria eguneratu egiten da Loupe-k posta begiratzen duen bakoitzean, atzeko planoan ere bai.';
 
   @override
-  String get settingsTestNotificationBody =>
-      'Posta berriaren jakinarazpenak horrelakoak dira.';
+  String get settingsTestNotificationBody => 'Posta berriaren jakinarazpenak horrelakoak dira.';
 
   @override
   String get settingsAccountRemoved => 'Kontu hau kendu da.';
@@ -3692,8 +3814,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsColour => 'Kolorea';
 
   @override
-  String get settingsColourFooter =>
-      'Kontu honen mezuak markatzen ditu Sarrera-ontzi guztiak atalean.';
+  String get settingsColourFooter => 'Kontu honen mezuak markatzen ditu Sarrera-ontzi guztiak atalean.';
 
   @override
   String settingsColourNumber(int number) {
@@ -3785,12 +3906,10 @@ class AppLocalizationsEu extends AppLocalizations {
       'Lehen identitatea da mezu berrietarako lehenetsia. Arrastatu ordena aldatzeko.';
 
   @override
-  String get settingsIdentitiesFooterSingle =>
-      'Mezu berrietarako identitate lehenetsia.';
+  String get settingsIdentitiesFooterSingle => 'Mezu berrietarako identitate lehenetsia.';
 
   @override
-  String get settingsIdentitiesReplyFooter =>
-      'Erantzun bat mezua jaso zuen identitatetik bidaltzen da.';
+  String get settingsIdentitiesReplyFooter => 'Erantzun bat mezua jaso zuen identitatetik bidaltzen da.';
 
   @override
   String get settingsIdentityDefault => 'Lehenetsia';
@@ -3822,8 +3941,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsCopyToMyself => 'Kopia niri';
 
   @override
-  String get settingsCopyToMyselfFooter =>
-      'Identitate honetako mezu guztiei gehitzen zaie.';
+  String get settingsCopyToMyselfFooter => 'Identitate honetako mezu guztiei gehitzen zaie.';
 
   @override
   String get settingsCc => 'Cc';
@@ -3839,8 +3957,7 @@ class AppLocalizationsEu extends AppLocalizations {
       'Helbide hauetara bidalitako mezuei emandako erantzunak identitate honetatik bidaltzen dira. * ikurrak edozer adierazten du: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt =>
-      'Helbide bat, edo * ikurrak edozer adierazten duen eredu bat.';
+  String get settingsReplyPatternPrompt => 'Helbide bat, edo * ikurrak edozer adierazten duen eredu bat.';
 
   @override
   String get settingsAddReplyPattern => 'Gehitu helbidea edo eredua';
@@ -3862,8 +3979,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Helbiderik ez';
 
   @override
-  String get settingsIdentityNoAddressMessage =>
-      'Idatzi bidaltzeko helbide elektronikoa.';
+  String get settingsIdentityNoAddressMessage => 'Idatzi bidaltzeko helbide elektronikoa.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Helbide baliogabea';
@@ -3871,8 +3987,7 @@ class AppLocalizationsEu extends AppLocalizations {
   @override
   String settingsIdentityInvalidAddress(String field, String address) {
     String _temp0 = intl.Intl.selectLogic(field, {
-      'replyTo':
-          'Erantzun honi: «$address» ez da baliozko helbide elektronikoa.',
+      'replyTo': 'Erantzun honi: «$address» ez da baliozko helbide elektronikoa.',
       'cc': 'Cc: «$address» ez da baliozko helbide elektronikoa.',
       'bcc': 'Bcc: «$address» ez da baliozko helbide elektronikoa.',
       'other': '«$address» ez da baliozko helbide elektronikoa.',
@@ -3895,12 +4010,10 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage =>
-      'Hortik dagoeneko bidalitako mezuak dauden bezala geratzen dira.';
+  String get settingsDeleteIdentityMessage => 'Hortik dagoeneko bidalitako mezuak dauden bezala geratzen dira.';
 
   @override
-  String get settingsLastIdentityFooter =>
-      'Kontu batek identitate bat behar du gutxienez.';
+  String get settingsLastIdentityFooter => 'Kontu batek identitate bat behar du gutxienez.';
 
   @override
   String get rulesTitle => 'Arauak';
@@ -3972,8 +4085,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get rulesStatusUnavailable => 'Ez dago erabilgarri';
 
   @override
-  String get rulesStatusNoSieve =>
-      'Kontu honen zerbitzariak ez du Sieve eskaintzen (ManageSieve edo JMAP).';
+  String get rulesStatusNoSieve => 'Kontu honen zerbitzariak ez du Sieve eskaintzen (ManageSieve edo JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -4055,8 +4167,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get rulesRemovedAccount => 'Kendutako kontua';
 
   @override
-  String get rulesAccountsFooter =>
-      'Kontu guztietarako arau batek geroago gehitzen dituzun kontuak ere hartzen ditu.';
+  String get rulesAccountsFooter => 'Kontu guztietarako arau batek geroago gehitzen dituzun kontuak ere hartzen ditu.';
 
   @override
   String get rulesActionsHeader => 'Orduan';
@@ -4118,8 +4229,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get rulesMoveAccountTitle => 'Zein kontutako karpeta?';
 
   @override
-  String get rulesMoveAccountMessage =>
-      'Beste kontuetako posta izen bereko karpetara joango da kontu horietan.';
+  String get rulesMoveAccountMessage => 'Beste kontuetako posta izen bereko karpetara joango da kontu horietan.';
 
   @override
   String get rulesAddTag => 'Gehitu etiketa';
@@ -4158,8 +4268,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get rulesChooseActionTitle => 'Aukeratu ekintza bat';
 
   @override
-  String get rulesChooseActionMessage =>
-      'Gehitu arauak bat datozen mezuekin zer egiten duen.';
+  String get rulesChooseActionMessage => 'Gehitu arauak bat datozen mezuekin zer egiten duen.';
 
   @override
   String get rulesSaveError => 'Ezin izan da araua gorde';
@@ -4174,8 +4283,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Ez dago aplikatzeko ezer';
 
   @override
-  String get rulesNothingToApplyMessage =>
-      'Eman lehenik arauari funtzionatzen duen baldintza bat eta ekintza bat.';
+  String get rulesNothingToApplyMessage => 'Eman lehenik arauari funtzionatzen duen baldintza bat eta ekintza bat.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4207,8 +4315,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4222,8 +4329,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4237,8 +4343,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4251,8 +4356,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get rulesServerChecking =>
-      'Zerbitzariari zer egin dezakeen galdetzen…';
+  String get rulesServerChecking => 'Zerbitzariari zer egin dezakeen galdetzen…';
 
   @override
   String get rulesServerUnreachable => 'Ezin izan da zerbitzaria atzitu.';
@@ -4281,8 +4385,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4296,8 +4399,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4326,8 +4428,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4424,16 +4525,13 @@ class AppLocalizationsEu extends AppLocalizations {
       'Buletinak eta beste posta masiboa hemen agertzen dira iristen direnean.';
 
   @override
-  String get subscriptionsNothingNeverRead =>
-      'Ezer ez «Inoiz irakurri gabeak» atalean';
+  String get subscriptionsNothingNeverRead => 'Ezer ez «Inoiz irakurri gabeak» atalean';
 
   @override
-  String get subscriptionsNothingRarelyRead =>
-      'Ezer ez «Gutxitan irakurriak» atalean';
+  String get subscriptionsNothingRarelyRead => 'Ezer ez «Gutxitan irakurriak» atalean';
 
   @override
-  String get subscriptionsNothingFilteredDetail =>
-      'Jasotzen duzun guztitik zerbait irakurtzen duzu.';
+  String get subscriptionsNothingFilteredDetail => 'Jasotzen duzun guztitik zerbait irakurtzen duzu.';
 
   @override
   String get subscriptionsNoDiscussions => 'Eztabaidarik ez';
@@ -4510,8 +4608,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4527,15 +4624,13 @@ class AppLocalizationsEu extends AppLocalizations {
   String get subscriptionsCreateRule => 'Sortu araua…';
 
   @override
-  String get subscriptionsCreateRuleDetail =>
-      'Mugitu edo artxibatu bere etorkizuneko posta';
+  String get subscriptionsCreateRuleDetail => 'Mugitu edo artxibatu bere etorkizuneko posta';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Tratatu eztabaida gisa';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail =>
-      'Jendeak idazten dion zerrenda bat: irakurri foro gisa';
+  String get subscriptionsTreatAsDiscussionDetail => 'Jendeak idazten dion zerrenda bat: irakurri foro gisa';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Tratatu buletin gisa';
@@ -4569,8 +4664,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4599,12 +4693,9 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
-      localeName,
-    );
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString/$totalString';
@@ -4615,12 +4706,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Karpetak',
-      one: 'Karpeta',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Karpetak', one: 'Karpeta');
     return '$_temp0';
   }
 
@@ -4666,12 +4752,10 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle =>
-      'Ezin izan da harpidetza automatikoki kendu';
+  String get subscriptionsOneClickFailedTitle => 'Ezin izan da harpidetza automatikoki kendu';
 
   @override
-  String get subscriptionsSendUnsubscribeEmail =>
-      'Bidali harpidetza kentzeko mezua';
+  String get subscriptionsSendUnsubscribeEmail => 'Bidali harpidetza kentzeko mezua';
 
   @override
   String subscriptionsOpenSite(String site) {
@@ -4692,8 +4776,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsWebInsecure =>
-      'Webgune honekiko konexioa ez dago zifratuta.';
+  String get subscriptionsWebInsecure => 'Webgune honekiko konexioa ez dago zifratuta.';
 
   @override
   String subscriptionsHomographWarning(String site) {
@@ -4730,8 +4813,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed =>
-      'Harpidetza kentzeko esteka ez da interneteko helbide segurua.';
+  String get subscriptionsOneClickNotAllowed => 'Harpidetza kentzeko esteka ez da interneteko helbide segurua.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -4754,8 +4836,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend =>
-      'Ez dago harpidetza kentzeko mezua bidaltzeko konturik.';
+  String get subscriptionsNoAccountToSend => 'Ez dago harpidetza kentzeko mezua bidaltzeko konturik.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -4816,8 +4897,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get appLiveGateTitle => 'Ezin izan dira zure kontuak ireki';
 
   @override
-  String get appLiveGateUnavailableBuild =>
-      'Benetako kontuak ez daude erabilgarri bertsio honetan oraindik.';
+  String get appLiveGateUnavailableBuild => 'Benetako kontuak ez daude erabilgarri bertsio honetan oraindik.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -4865,8 +4945,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get attachmentsShareMenu => 'Partekatu…';
 
   @override
-  String get attachmentsDownloadError =>
-      'Ezin izan da eranskina deskargatu. Egiaztatu konexioa eta saiatu berriro.';
+  String get attachmentsDownloadError => 'Ezin izan da eranskina deskargatu. Egiaztatu konexioa eta saiatu berriro.';
 
   @override
   String get attachmentsShareError => 'Ezin izan da eranskina partekatu.';
@@ -4877,8 +4956,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get attachmentsOpenInError =>
-      'Ezin izan da eranskina beste aplikazio batean ireki.';
+  String get attachmentsOpenInError => 'Ezin izan da eranskina beste aplikazio batean ireki.';
 
   @override
   String attachmentsSaved(String name) {
@@ -4896,12 +4974,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String attachmentsPageCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count orri',
-      one: 'Orri $count',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count orri', one: 'Orri $count');
     return '$_temp0';
   }
 
@@ -4911,8 +4984,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload =>
-      'Eranskin hau handia da. Deskargatu orain, edo geroago Wi-Fi bidez.';
+  String get attachmentsLargeDownload => 'Eranskin hau handia da. Deskargatu orain, edo geroago Wi-Fi bidez.';
 
   @override
   String get attachmentsDownload => 'Deskargatu';
@@ -4934,8 +5006,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get attachmentsPdfUnavailable =>
-      'PDF hau ezin da hemen erakutsi (baliteke pasahitzez babestuta egotea).';
+  String get attachmentsPdfUnavailable => 'PDF hau ezin da hemen erakutsi (baliteke pasahitzez babestuta egotea).';
 
   @override
   String attachmentsPageOf(int page, int count) {
@@ -4962,12 +5033,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String attachmentsTextInfo(String charset, int count, String lines) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$lines lerro',
-      one: 'lerro $lines',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$lines lerro', one: 'lerro $lines');
     return '$charset · $_temp0';
   }
 
@@ -4978,8 +5044,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get attachmentsCopied => 'Kopiatuta';
 
   @override
-  String get attachmentsImageUnavailable =>
-      'Irudi hau ezin da hemen erakutsi. Probatu «Ireki honekin…».';
+  String get attachmentsImageUnavailable => 'Irudi hau ezin da hemen erakutsi. Probatu «Ireki honekin…».';
 
   @override
   String get attachmentsEmlNoSubject => '(Gairik ez)';
@@ -5194,8 +5259,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get calendarCounterUnknown =>
-      'Parte-hartzaile batek ordu berri bat proposatzen du';
+  String get calendarCounterUnknown => 'Parte-hartzaile batek ordu berri bat proposatzen du';
 
   @override
   String get calendarDeclineCounter => 'Antolatzaileak ordua mantendu du';
@@ -5206,26 +5270,22 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get calendarRefreshUnknown =>
-      'Parte-hartzaile batek azken bertsioa eskatzen du';
+  String get calendarRefreshUnknown => 'Parte-hartzaile batek azken bertsioa eskatzen du';
 
   @override
   String get calendarCancelled => 'Bertan behera utzita';
 
   @override
-  String get calendarCancelledByOrganizer =>
-      'Antolatzaileak gertaera hau bertan behera utzi du.';
+  String get calendarCancelledByOrganizer => 'Antolatzaileak gertaera hau bertan behera utzi du.';
 
   @override
-  String get calendarCancelledLater =>
-      'Gertaera hau geroago bertan behera utzi zen.';
+  String get calendarCancelledLater => 'Gertaera hau geroago bertan behera utzi zen.';
 
   @override
   String get calendarOutdated => 'Zaharkituta';
 
   @override
-  String get calendarOutdatedDetail =>
-      'Gonbidapen hau geroago eguneratu zen; berriena da baliozkoa.';
+  String get calendarOutdatedDetail => 'Gonbidapen hau geroago eguneratu zen; berriena da baliozkoa.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -5233,8 +5293,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get calendarLocationRemovedNone =>
-      'Kokapena kendu da (lehen: bat ere ez)';
+  String get calendarLocationRemovedNone => 'Kokapena kendu da (lehen: bat ere ez)';
 
   @override
   String calendarLocationChanged(String location) {
@@ -5281,31 +5340,19 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String calendarAcceptedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count onartuta',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count onartuta');
     return '$_temp0';
   }
 
   @override
   String calendarMaybeCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count agian',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count agian');
     return '$_temp0';
   }
 
   @override
   String calendarDeclinedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count ukatuta',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ukatuta');
     return '$_temp0';
   }
 
@@ -5367,8 +5414,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp =>
-      'Ez dago gertaera gehitzeko egutegi-aplikaziorik.';
+  String get calendarNoCalendarApp => 'Ez dago gertaera gehitzeko egutegi-aplikaziorik.';
 
   @override
   String get calendarCantOpenCalendar => 'Ezin izan da egutegia ireki.';
@@ -5404,29 +5450,20 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer =>
-      'Gonbidapen honek ez du erantzuteko antolatzailerik.';
+  String get calendarNoOrganizer => 'Gonbidapen honek ez du erantzuteko antolatzailerik.';
 
   @override
   String get calendarNoAccount => 'Ez dago erantzuteko konturik.';
 
   @override
   String calendarReplySending(String answer, String name) {
-    String _temp0 = intl.Intl.selectLogic(answer, {
-      'accepted': 'Onartua',
-      'tentative': 'Agian',
-      'other': 'Ukatua',
-    });
+    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Onartua', 'tentative': 'Agian', 'other': 'Ukatua'});
     return '$_temp0 · erantzuna bidaltzen honi: $name…';
   }
 
   @override
   String calendarReplySent(String answer) {
-    String _temp0 = intl.Intl.selectLogic(answer, {
-      'accepted': 'Onartua',
-      'tentative': 'Agian',
-      'other': 'Ukatua',
-    });
+    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Onartua', 'tentative': 'Agian', 'other': 'Ukatua'});
     return '$_temp0 · erantzuna bidali da';
   }
 
@@ -5506,8 +5543,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get keyboardKeyBackspace => 'Atzera-tekla';
 
   @override
-  String get mailingListsMuted =>
-      'Haria isilarazi da. Bertako mezu berriak irakurrita iritsiko dira.';
+  String get mailingListsMuted => 'Haria isilarazi da. Bertako mezu berriak irakurrita iritsiko dira.';
 
   @override
   String get mailingListsUnmuted => 'Haria jada ez dago isilarazita.';
@@ -5544,11 +5580,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String mailingListsUnreadCount(int count, String formatted) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$formatted irakurri gabe',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$formatted irakurri gabe');
     return '$_temp0';
   }
 
@@ -5563,12 +5595,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String mailingListsReplyCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count erantzun',
-      one: 'Erantzun $count',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count erantzun', one: 'Erantzun $count');
     return '$_temp0';
   }
 
@@ -5576,15 +5603,13 @@ class AppLocalizationsEu extends AppLocalizations {
   String get mailingListsNoThreads => 'Haririk ez';
 
   @override
-  String get mailingListsMutedHidden =>
-      'Isilarazitako hariak ezkutatuta daude.';
+  String get mailingListsMutedHidden => 'Isilarazitako hariak ezkutatuta daude.';
 
   @override
   String get mailingListsTechnicalTitle => 'Zerrenda teknikoak';
 
   @override
-  String get mailingListsTechnicalEmpty =>
-      'Posta-zerrendak hemen agertzen dira haien posta iristen denean.';
+  String get mailingListsTechnicalEmpty => 'Posta-zerrendak hemen agertzen dira haien posta iristen denean.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -5755,8 +5780,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get searchUnknownAccountFailed =>
-      'Ezin izan da kontua zerbitzarian bilatu';
+  String get searchUnknownAccountFailed => 'Ezin izan da kontua zerbitzarian bilatu';
 
   @override
   String searchChip(String term) {
@@ -5819,8 +5843,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get searchSettingsTitle => 'Smart Mailboxes';
 
   @override
-  String get searchSettingsLocalFooter =>
-      'Smart Mailboxes gailu honetan geratzen dira.';
+  String get searchSettingsLocalFooter => 'Smart Mailboxes gailu honetan geratzen dira.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -5886,12 +5909,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String sharedBytes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count byte',
-      one: 'Byte $count',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count byte', one: 'Byte $count');
     return '$_temp0';
   }
 
@@ -6109,8 +6127,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount =>
-      'Hautatu kontu bakarreko mezuak mugitzeko.';
+  String get sharedMoveOneAccount => 'Hautatu kontu bakarreko mezuak mugitzeko.';
 
   @override
   String get sharedSnoozeTitle => 'Atzeratu';
@@ -6187,8 +6204,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get accountSetupAddressTitle => 'Gehitu posta-kontu bat';
 
   @override
-  String get accountSetupAddressText =>
-      'Loupe-k hornitzaile gehienen ezarpenak aurkitzen ditu.';
+  String get accountSetupAddressText => 'Loupe-k hornitzaile gehienen ezarpenak aurkitzen ditu.';
 
   @override
   String get accountSetupNameHint => 'Zure izena';
@@ -6209,8 +6225,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get accountSetupImport => 'Inportatu Thunderbird-etik';
 
   @override
-  String get accountSetupInvalidEmail =>
-      'Idatzi baliozko helbide elektroniko bat.';
+  String get accountSetupInvalidEmail => 'Idatzi baliozko helbide elektroniko bat.';
 
   @override
   String accountSetupSettingsNotFoundFor(String domain) {
@@ -6218,8 +6233,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCheckServers =>
-      'Egiaztatu zerbitzarien izenak eta atakak.';
+  String get accountSetupCheckServers => 'Egiaztatu zerbitzarien izenak eta atakak.';
 
   @override
   String get accountSetupEnterPassword => 'Idatzi zure pasahitza.';
@@ -6276,15 +6290,13 @@ class AppLocalizationsEu extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Erabili aplikazio-pasahitz bat';
 
   @override
-  String get accountSetupUseAppPasswordInstead =>
-      'Erabili aplikazio-pasahitz bat horren ordez';
+  String get accountSetupUseAppPasswordInstead => 'Erabili aplikazio-pasahitz bat horren ordez';
 
   @override
   String get accountSetupUseDifferentAddress => 'Erabili beste helbide bat';
 
   @override
-  String get accountSetupHowToCreateAppPassword =>
-      'Nola sortu aplikazio-pasahitz bat';
+  String get accountSetupHowToCreateAppPassword => 'Nola sortu aplikazio-pasahitz bat';
 
   @override
   String get accountSetupHowToCreateOne => 'Nola sortu';
@@ -6298,8 +6310,7 @@ class AppLocalizationsEu extends AppLocalizations {
       '«Hasi saioa Google erabiliz» ez dago erabilgarri bertsio honetan oraindik. Aplikazio-pasahitz batekin konekta zaitezke horren ordez (zure Google kontuan bi urratseko egiaztapena behar da).';
 
   @override
-  String get accountSetupGmailAppPasswordNote =>
-      'Sortu aplikazio-pasahitz bat zure Google kontuan eta itsatsi behean.';
+  String get accountSetupGmailAppPasswordNote => 'Sortu aplikazio-pasahitz bat zure Google kontuan eta itsatsi behean.';
 
   @override
   String get accountSetupMicrosoftNote =>
@@ -6314,16 +6325,14 @@ class AppLocalizationsEu extends AppLocalizations {
       'iCloud Mail-ek aplikazio-pasahitz espezifiko bat behar du, ez zure Apple kontuaren pasahitza.';
 
   @override
-  String get accountSetupYahooNote =>
-      'Yahoo Mail-ek aplikazio-pasahitz bat behar du, ez zure kontuaren pasahitza.';
+  String get accountSetupYahooNote => 'Yahoo Mail-ek aplikazio-pasahitz bat behar du, ez zure kontuaren pasahitza.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Loupe Fastmail-era JMAP bidez konektatzen da API token batekin: Settings › Privacy & Security › Manage API tokens, JMAPerako, posta eta bidalketarako sarbidearekin.';
 
   @override
-  String get accountSetupFastmailNote =>
-      'Fastmail-ek aplikazio-pasahitz bat behar du posta-aplikazioetarako.';
+  String get accountSetupFastmailNote => 'Fastmail-ek aplikazio-pasahitz bat behar du posta-aplikazioetarako.';
 
   @override
   String get accountSetupServerSettings => 'Zerbitzariaren ezarpenak';
@@ -6405,8 +6414,7 @@ class AppLocalizationsEu extends AppLocalizations {
       'Pasahitza baztertu da. Erabili aplikazio-pasahitz bat, ez zure kontuaren pasahitza.';
 
   @override
-  String get accountSetupPasswordRejected =>
-      'Pasahitza baztertu da. Egiaztatu eta saiatu berriro.';
+  String get accountSetupPasswordRejected => 'Pasahitza baztertu da. Egiaztatu eta saiatu berriro.';
 
   @override
   String get accountSetupServerUnreachable =>
@@ -6484,11 +6492,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get accountSetupSigningIn => 'Saioa hasten…';
 
   @override
-  String accountSetupSignInExpired(
-    String provider,
-    String email,
-    String account,
-  ) {
+  String accountSetupSignInExpired(String provider, String email, String account) {
     return '$provider zerbitzuak jada ez du onartzen Loupe-ren saio-hasiera $email helbiderako; beraz, $account ez da sinkronizatzen ari. Hasi saioa berriro bere posta jasotzeko.';
   }
 
@@ -6496,8 +6500,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get accountImportTitle => 'Inportatu Thunderbird-etik';
 
   @override
-  String get accountImportPointCamera =>
-      'Zuzendu kamera Thunderbird-ek erakusten duen QR kodera.';
+  String get accountImportPointCamera => 'Zuzendu kamera Thunderbird-ek erakusten duen QR kodera.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -6506,11 +6509,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String accountImportProgressLabel(int scanned, int total) {
-    String _temp0 = intl.Intl.pluralLogic(
-      total,
-      locale: localeName,
-      other: '$scanned/$total kode eskaneatuta',
-    );
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$scanned/$total kode eskaneatuta');
     return '$_temp0';
   }
 
@@ -6554,28 +6553,23 @@ class AppLocalizationsEu extends AppLocalizations {
       'Kode hau esportazio berri batekoa da; beraz, aurretik eskaneatutako kodeak alde batera utzi dira.';
 
   @override
-  String get accountImportNotThunderbird =>
-      'Hau ez da Thunderbird-en kontu-kode bat.';
+  String get accountImportNotThunderbird => 'Hau ez da Thunderbird-en kontu-kode bat.';
 
   @override
   String get accountImportNewerVersion =>
       'Kode hau Thunderbird-en bertsio berriago batekoa da. Eguneratu Loupe inportatzeko.';
 
   @override
-  String get accountImportDamaged =>
-      'Ezin izan da Thunderbird kode hau irakurri.';
+  String get accountImportDamaged => 'Ezin izan da Thunderbird kode hau irakurri.';
 
   @override
-  String get accountImportTooLarge =>
-      'Kode hau handiegia da Thunderbird-en esportazio bat izateko.';
+  String get accountImportTooLarge => 'Kode hau handiegia da Thunderbird-en esportazio bat izateko.';
 
   @override
-  String get accountImportCouldNotOpenSettings =>
-      'Ezin izan dira ezarpenak ireki.';
+  String get accountImportCouldNotOpenSettings => 'Ezin izan dira ezarpenak ireki.';
 
   @override
-  String get accountImportCameraOffTitle =>
-      'Kamerarako sarbidea desaktibatuta dago';
+  String get accountImportCameraOffTitle => 'Kamerarako sarbidea desaktibatuta dago';
 
   @override
   String get accountImportCameraOffText =>
@@ -6592,8 +6586,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get accountImportCameraFailedTitle => 'Kamera ez da abiarazi';
 
   @override
-  String get accountImportCameraFailedText =>
-      'Saiatu berriro, edo itsatsi kodearen testua horren ordez.';
+  String get accountImportCameraFailedText => 'Saiatu berriro, edo itsatsi kodearen testua horren ordez.';
 
   @override
   String get accountImportOpenSettings => 'Ireki ezarpenak';
@@ -6611,8 +6604,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable =>
-      'Kode hauetako kontu bat ere ezin izan da irakurri.';
+  String get accountImportNoneReadable => 'Kode hauetako kontu bat ere ezin izan da irakurri.';
 
   @override
   String get accountImportChoose => 'Aukeratu Loupe-ra gehitzeko kontuak.';
@@ -6622,10 +6614,8 @@ class AppLocalizationsEu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          '$total kodeetatik, $codes kodeak ez dira eskaneatu; beraz, haien kontuak ez daude zerrendan.',
-      one:
-          '$total kodeetatik, $codes. kodea ez da eskaneatu; beraz, bere kontuak ez daude zerrendan.',
+      other: '$total kodeetatik, $codes kodeak ez dira eskaneatu; beraz, haien kontuak ez daude zerrendan.',
+      one: '$total kodeetatik, $codes. kodea ez da eskaneatu; beraz, bere kontuak ez daude zerrendan.',
     );
     return '$_temp0';
   }
@@ -6654,8 +6644,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get accountImportScanAgain => 'Eskaneatu berriro';
 
   @override
-  String get accountImportAlreadyAdded =>
-      'Helbide hau duen kontu bat badago Loupe-n.';
+  String get accountImportAlreadyAdded => 'Helbide hau duen kontu bat badago Loupe-n.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -6675,8 +6664,7 @@ class AppLocalizationsEu extends AppLocalizations {
       'Thunderbird-ek arakatzailean hasten du saioa kontu honetan. Loupe-k ezin du hori egin oraindik: erabili aplikazio-pasahitz bat zure hornitzaileak eskaintzen badu.';
 
   @override
-  String get accountImportUnencrypted =>
-      'Zifratu gabe konektatzen da. Erabili hau zure sare propioan soilik.';
+  String get accountImportUnencrypted => 'Zifratu gabe konektatzen da. Erabili hau zure sare propioan soilik.';
 
   @override
   String get accountImportEnterAgain => 'Idatzi berriro';
@@ -6709,16 +6697,13 @@ class AppLocalizationsEu extends AppLocalizations {
       'Itsatsi Thunderbird-en esportazio-kode baten testua, kode bat lerro bakoitzeko.';
 
   @override
-  String get accountImportPop3 =>
-      'POP3 kontuak ez dira onartzen. Loupe-k posta zerbitzarian gordetzen du IMAP bidez.';
+  String get accountImportPop3 => 'POP3 kontuak ez dira onartzen. Loupe-k posta zerbitzarian gordetzen du IMAP bidez.';
 
   @override
-  String get accountImportKerberos =>
-      'Kontu honek Kerberos bidez hasten du saioa, eta Loupe-k ez du hori onartzen.';
+  String get accountImportKerberos => 'Kontu honek Kerberos bidez hasten du saioa, eta Loupe-k ez du hori onartzen.';
 
   @override
-  String get accountImportNtlm =>
-      'Kontu honek NTLM bidez hasten du saioa, eta Loupe-k ez du hori onartzen.';
+  String get accountImportNtlm => 'Kontu honek NTLM bidez hasten du saioa, eta Loupe-k ez du hori onartzen.';
 
   @override
   String get accountImportClientCertificate =>
@@ -6738,12 +6723,10 @@ class AppLocalizationsEu extends AppLocalizations {
   String get accountImportEnterApiToken => 'Idatzi API tokena.';
 
   @override
-  String get accountImportStorageFailed =>
-      'Loupe-k ezin izan du bere kontuen biltegia ireki. Saiatu berriro geroago.';
+  String get accountImportStorageFailed => 'Loupe-k ezin izan du bere kontuen biltegia ireki. Saiatu berriro geroago.';
 
   @override
-  String get accountImportFailed =>
-      'Ezin izan da kontua gehitu. Saiatu berriro, edo gehitu eskuz.';
+  String get accountImportFailed => 'Ezin izan da kontua gehitu. Saiatu berriro, edo gehitu eskuz.';
 
   @override
   String get composeNewMessageTitle => 'Mezu berria';
@@ -6835,15 +6818,13 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get composeOriginalNotFound =>
-      'Ezin izan da jatorrizko mezua aurkitu.';
+  String get composeOriginalNotFound => 'Ezin izan da jatorrizko mezua aurkitu.';
 
   @override
   String get composeDraftNotFound => 'Ezin izan da zirriborroa aurkitu.';
 
   @override
-  String get composeAttachmentsLost =>
-      'Ezin izan dira eranskinak berreskuratu. Gehitu berriro.';
+  String get composeAttachmentsLost => 'Ezin izan dira eranskinak berreskuratu. Gehitu berriro.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -6870,8 +6851,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get composeNoSubjectTitle => 'Gairik ez';
 
   @override
-  String get composeNoSubjectText =>
-      'Mezu honek ez du gairik. Bidali hala ere?';
+  String get composeNoSubjectText => 'Mezu honek ez du gairik. Bidali hala ere?';
 
   @override
   String get composeSentBeforeChanges =>
@@ -6920,8 +6900,7 @@ class AppLocalizationsEu extends AppLocalizations {
   }
 
   @override
-  String get composeForwardHeader =>
-      '---------- Birbidalitako mezua ----------';
+  String get composeForwardHeader => '---------- Birbidalitako mezua ----------';
 
   @override
   String composeForwardFrom(String addresses) {
@@ -7001,24 +6980,17 @@ class AppLocalizationsEu extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Mezu bat ez zen bidali Loupe itxi zenean.',
       'one': '$name pertsonarentzako mezu bat ez zen bidali Loupe itxi zenean.',
-      'other':
-          '$name eta beste batzuentzako mezu bat ez zen bidali Loupe itxi zenean.',
+      'other': '$name eta beste batzuentzako mezu bat ez zen bidali Loupe itxi zenean.',
     });
     return '$_temp0';
   }
 
   @override
-  String composeRecoveryWithSubject(
-    String recipients,
-    String subject,
-    String name,
-  ) {
+  String composeRecoveryWithSubject(String recipients, String subject, String name) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': '«$subject» ez zen bidali Loupe itxi zenean.',
-      'one':
-          '$name pertsonarentzako «$subject» ez zen bidali Loupe itxi zenean.',
-      'other':
-          '$name eta beste batzuentzako «$subject» ez zen bidali Loupe itxi zenean.',
+      'one': '$name pertsonarentzako «$subject» ez zen bidali Loupe itxi zenean.',
+      'other': '$name eta beste batzuentzako «$subject» ez zen bidali Loupe itxi zenean.',
     });
     return '$_temp0';
   }
@@ -7066,8 +7038,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get outboxEmptyTitle => 'Ez dago bidaltzeko ezer';
 
   @override
-  String get outboxEmptyText =>
-      'Geroago bidaltzen dituzun mezuak hemen itxaroten dute ordua iritsi arte.';
+  String get outboxEmptyText => 'Geroago bidaltzen dituzun mezuak hemen itxaroten dute ordua iritsi arte.';
 
   @override
   String get outboxSendNow => 'Bidali orain';
@@ -7114,8 +7085,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get outboxBeingSent => 'Mezu hau bidaltzen ari da.';
 
   @override
-  String get outboxActionFailed =>
-      'Ez du funtzionatu. Mezua Irteera-ontzian dago oraindik.';
+  String get outboxActionFailed => 'Ez du funtzionatu. Mezua Irteera-ontzian dago oraindik.';
 
   @override
   String get notificationsBadgeInboxes => 'Sarrera-ontzietako irakurri gabeak';
@@ -7127,8 +7097,7 @@ class AppLocalizationsEu extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription =>
-      'Zure VIPen posta berria, edozein kontutan';
+  String get notificationsVipChannelDescription => 'Zure VIPen posta berria, edozein kontutan';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -7179,33 +7148,28 @@ class AppLocalizationsEu extends AppLocalizations {
   String get platformInstantText => 'Berehalako entrega aktibatuta dago';
 
   @override
-  String get platformErrorBox =>
-      'Zerbait gaizki joan da hau erakustean. Itzuli atzera eta saiatu berriro.';
+  String get platformErrorBox => 'Zerbait gaizki joan da hau erakustean. Itzuli atzera eta saiatu berriro.';
 
   @override
   String get welcomeTagline => 'Posta, sinplea azalean\neta indartsua barruan.';
 
   @override
-  String get welcomeAccountsTitle =>
-      'Kontu guztiak, sarrera-ontzi lasai bakarrean';
+  String get welcomeAccountsTitle => 'Kontu guztiak, sarrera-ontzi lasai bakarrean';
 
   @override
-  String get welcomeAccountsText =>
-      'Gmail, Outlook, iCloud, Fastmail eta edozein IMAP edo JMAP zerbitzari.';
+  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail eta edozein IMAP edo JMAP zerbitzari.';
 
   @override
   String get welcomeSearchTitle => 'Aurkitzen duen bilaketa';
 
   @override
-  String get welcomeSearchText =>
-      'Berehalako emaitzak zure telefonoan, eta gero zerbitzarikoak.';
+  String get welcomeSearchText => 'Berehalako emaitzak zure telefonoan, eta gero zerbitzarikoak.';
 
   @override
   String get welcomePrivacyTitle => 'Pribatua diseinuz';
 
   @override
-  String get welcomePrivacyText =>
-      'Jarraipenik ez. Urruneko irudiak blokeatuta daude zuk esan arte.';
+  String get welcomePrivacyText => 'Jarraipenik ez. Urruneko irudiak blokeatuta daude zuk esan arte.';
 
   @override
   String get welcomeAddAccount => 'Gehitu kontua';
@@ -7259,12 +7223,10 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsAiDemo => 'Demo integratua';
 
   @override
-  String get settingsAiDemoDetail =>
-      'Telefono honetan. Eredurik ez: arau batzuk, funtzioak probatzeko.';
+  String get settingsAiDemoDetail => 'Telefono honetan. Eredurik ez: arau batzuk, funtzioak probatzeko.';
 
   @override
-  String get settingsAiAnthropicDetail =>
-      'Hodeia: Claude, zure API gakoarekin.';
+  String get settingsAiAnthropicDetail => 'Hodeia: Claude, zure API gakoarekin.';
 
   @override
   String get settingsAiServer => 'Nire zerbitzaria';
@@ -7329,15 +7291,13 @@ class AppLocalizationsEu extends AppLocalizations {
       'APIaren bidea barne, adibidez, http://192.168.1.20:11434/v1 Ollamarentzat.';
 
   @override
-  String get settingsAiServerAddressInvalid =>
-      'Hori ez da http:// edo https:// helbide bat.';
+  String get settingsAiServerAddressInvalid => 'Hori ez da http:// edo https:// helbide bat.';
 
   @override
   String get settingsAiServerModelTitle => 'Ereduaren izena';
 
   @override
-  String get settingsAiServerModelMessage =>
-      'Zure zerbitzariak deitzen dion bezala, adibidez, llama3.2.';
+  String get settingsAiServerModelMessage => 'Zure zerbitzariak deitzen dion bezala, adibidez, llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Probatu konexioa';
@@ -7354,15 +7314,13 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsAiTestFailed => 'Probak huts egin du';
 
   @override
-  String get settingsAiTestInvalid =>
-      'Ereduak erantzun du, baina ez Loupe-k eskatutako moduan.';
+  String get settingsAiTestInvalid => 'Ereduak erantzun du, baina ez Loupe-k eskatutako moduan.';
 
   @override
   String get settingsAiRemoveKey => 'Kendu gakoa';
 
   @override
-  String get settingsAiRemoveKeyTitle =>
-      'Anthropic-en API gakoa kendu nahi duzu?';
+  String get settingsAiRemoveKeyTitle => 'Anthropic-en API gakoa kendu nahi duzu?';
 
   @override
   String get settingsAiRemoveKeyMessage =>
@@ -7426,12 +7384,10 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Gaiaren egoera';
 
   @override
-  String get settingsAiFeatureSearchDetail =>
-      'Bilaketan: esaldi bat egiazta dezakezun bilaketa bihurtzen da.';
+  String get settingsAiFeatureSearchDetail => 'Bilaketan: esaldi bat egiazta dezakezun bilaketa bihurtzen da.';
 
   @override
-  String get settingsAiFeatureBriefDetail =>
-      'Mezu batean: zuri zer eskatzen dizun, pasarteekin.';
+  String get settingsAiFeatureBriefDetail => 'Mezu batean: zuri zer eskatzen dizun, pasarteekin.';
 
   @override
   String get settingsAiFeatureActionsDetail =>
@@ -7442,20 +7398,16 @@ class AppLocalizationsEu extends AppLocalizations {
       'Arauak atalean: deskribapen bat gorde aurretik egiaztatzen duzun arau bihurtzen da.';
 
   @override
-  String get settingsAiFeatureChangesDetail =>
-      'Konparatu mezuak atalean: esanahian zer aldatu den, iturriekin.';
+  String get settingsAiFeatureChangesDetail => 'Konparatu mezuak atalean: esanahian zer aldatu den, iturriekin.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail =>
-      'Erantsitako dokumentuen datu nagusiak, beren orrialdeekin.';
+  String get settingsAiFeatureDocumentsDetail => 'Erantsitako dokumentuen datu nagusiak, beren orrialdeekin.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail =>
-      'Bidali aurretik: erantzun bati zer pasa zaion agian.';
+  String get settingsAiFeatureReplyCheckDetail => 'Bidali aurretik: erantzun bati zer pasa zaion agian.';
 
   @override
-  String get settingsAiFeatureMattersDetail =>
-      'Gai baten azken egoera, bere postatik.';
+  String get settingsAiFeatureMattersDetail => 'Gai baten azken egoera, bere postatik.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Gorde posta telefonoan';
@@ -7481,12 +7433,7 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String settingsAiUsageRequests(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count eskaera',
-      one: 'Eskaera 1',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count eskaera', one: 'Eskaera 1');
     return '$_temp0';
   }
 

@@ -188,8 +188,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get conversationChangesSameMetadata => 'Sutampantys duomenys';
 
   @override
-  String get conversationChangesFullTextNote =>
-      'Lyginamas visas laiško tekstas, įskaitant citatas ir parašus.';
+  String get conversationChangesFullTextNote => 'Lyginamas visas laiško tekstas, įskaitant citatas ir parašus.';
 
   @override
   String get conversationChangesLimited =>
@@ -199,8 +198,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get conversationChangesLoadError => 'Šių laiškų nepavyko palyginti.';
 
   @override
-  String get conversationSomethingWentWrong =>
-      'Kažkas nepavyko. Bandykite dar kartą.';
+  String get conversationSomethingWentWrong => 'Kažkas nepavyko. Bandykite dar kartą.';
 
   @override
   String get conversationReplyToList => 'Atsakyti konferencijai';
@@ -209,8 +207,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get conversationReplyList => 'Atsakyti konferencijai';
 
   @override
-  String get conversationThreadMuted =>
-      'Gija nutildyta. Nauji jos laiškai bus gaunami kaip skaityti.';
+  String get conversationThreadMuted => 'Gija nutildyta. Nauji jos laiškai bus gaunami kaip skaityti.';
 
   @override
   String get conversationThreadUnmuted => 'Gijos nutildymas atšauktas.';
@@ -237,15 +234,13 @@ class AppLocalizationsLt extends AppLocalizations {
   String get conversationTrash => 'Į šiukšliadėžę';
 
   @override
-  String get conversationReplyHint =>
-      'Paspauskite ilgai, kad atsakytumėte visiems arba persiųstumėte';
+  String get conversationReplyHint => 'Paspauskite ilgai, kad atsakytumėte visiems arba persiųstumėte';
 
   @override
   String get conversationOfflineTitle => 'Esate neprisijungę';
 
   @override
-  String get conversationOfflineText =>
-      'Šis pokalbis dar neatsisiųstas. Jis bus įkeltas, kai vėl prisijungsite.';
+  String get conversationOfflineText => 'Šis pokalbis dar neatsisiųstas. Jis bus įkeltas, kai vėl prisijungsite.';
 
   @override
   String get conversationErrorTitle => 'Nepavyksta parodyti šio laiško';
@@ -312,8 +307,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get conversationBodyError => 'Šio laiško nepavyko įkelti.';
 
   @override
-  String get conversationBodyOffline =>
-      'Esate neprisijungę. Laiškas bus įkeltas, kai vėl prisijungsite.';
+  String get conversationBodyOffline => 'Esate neprisijungę. Laiškas bus įkeltas, kai vėl prisijungsite.';
 
   @override
   String get conversationOriginalHint => 'Geriau atrodo rodinyje „Originalas“';
@@ -493,8 +487,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get conversationSecurityBadgeHint => 'Parodo priežastį';
 
   @override
-  String get conversationPhishingBannerTitle =>
-      'Šis laiškas panašus į sukčiavimą';
+  String get conversationPhishingBannerTitle => 'Šis laiškas panašus į sukčiavimą';
 
   @override
   String conversationPhishingBannerReason(String reason) {
@@ -514,28 +507,23 @@ class AppLocalizationsLt extends AppLocalizations {
   String get conversationSecurityPhishingTitle => 'Panašu į sukčiavimą';
 
   @override
-  String get conversationSecurityPhishingText =>
-      'Keli požymiai rodo, kad šis laiškas nėra tas, kuo dedasi.';
+  String get conversationSecurityPhishingText => 'Keli požymiai rodo, kad šis laiškas nėra tas, kuo dedasi.';
 
   @override
-  String get conversationSecurityCarefulTitle =>
-      'Būkite atsargūs su šiuo laišku';
+  String get conversationSecurityCarefulTitle => 'Būkite atsargūs su šiuo laišku';
 
   @override
-  String get conversationSecurityCarefulText =>
-      'Kai ką jame verta patikrinti dar kartą.';
+  String get conversationSecurityCarefulText => 'Kai ką jame verta patikrinti dar kartą.';
 
   @override
-  String get conversationSecurityVerifiedText =>
-      'Siuntėjas patvirtintas, ir niekas neatrodo įtartina.';
+  String get conversationSecurityVerifiedText => 'Siuntėjas patvirtintas, ir niekas neatrodo įtartina.';
 
   @override
   String get conversationSecurityUnverifiedText =>
       'Niekas neatrodo įtartina. Jūsų pašto serveris nenurodė, ar siuntėjas patvirtintas.';
 
   @override
-  String get conversationSecurityNothingSuspicious =>
-      'Niekas neatrodo įtartina.';
+  String get conversationSecurityNothingSuspicious => 'Niekas neatrodo įtartina.';
 
   @override
   String get conversationSecurityWhy => 'Kodėl';
@@ -559,8 +547,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityTrackingPixelsText =>
-      'Jie būtų pranešę siuntėjui, kada atidarėte šį laišką.';
+  String get conversationSecurityTrackingPixelsText => 'Jie būtų pranešę siuntėjui, kada atidarėte šį laišką.';
 
   @override
   String get conversationSecurityNoRemoteImages => 'Nuotolinių vaizdų nėra';
@@ -605,8 +592,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get conversationSecurityTechnicalDetails => 'Techninė informacija';
 
   @override
-  String get conversationSecurityCheckedLocally =>
-      'Patikrinta šiame įrenginyje. Niekas niekur nebuvo išsiųsta.';
+  String get conversationSecurityCheckedLocally => 'Patikrinta šiame įrenginyje. Niekas niekur nebuvo išsiųsta.';
 
   @override
   String get conversationSecurityTrackersLabel => 'Sekikliai';
@@ -686,8 +672,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressTitle =>
-      'Varde rodomas kitas adresas';
+  String get conversationSecurityNameShowsAddressTitle => 'Varde rodomas kitas adresas';
 
   @override
   String conversationSecurityNameShowsAddressText(String shown, String email) {
@@ -695,8 +680,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityNameShowsAddressAdvice =>
-      'Pasitikėkite adresu, o ne vardu.';
+  String get conversationSecurityNameShowsAddressAdvice => 'Pasitikėkite adresu, o ne vardu.';
 
   @override
   String get conversationSecurityReplyToTitle => 'Atsakymai keliauja kitur';
@@ -707,15 +691,13 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityReplyToAdvice =>
-      'Prieš atsakydami ką nors asmeniško, patikrinkite adresą.';
+  String get conversationSecurityReplyToAdvice => 'Prieš atsakydami ką nors asmeniško, patikrinkite adresą.';
 
   @override
   String get conversationSecurityImpersonationYouTitle => 'Naudoja jūsų vardą';
 
   @override
-  String get conversationSecurityImpersonationTitle =>
-      'Naudoja jūsų pažįstamo žmogaus vardą';
+  String get conversationSecurityImpersonationTitle => 'Naudoja jūsų pažįstamo žmogaus vardą';
 
   @override
   String conversationSecurityImpersonationYouText(String name, String email) {
@@ -723,28 +705,17 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityImpersonationVipText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationVipText(String name, String knownName, String knownEmail, String email) {
     return 'Pasirašyta „$name“, kaip ir jūsų VIP $knownName ($knownEmail), bet laiškas atėjo iš naujo adreso: $email.';
   }
 
   @override
-  String conversationSecurityImpersonationText(
-    String name,
-    String knownName,
-    String knownEmail,
-    String email,
-  ) {
+  String conversationSecurityImpersonationText(String name, String knownName, String knownEmail, String email) {
     return 'Pasirašyta „$name“, kaip ir $knownName ($knownEmail), bet laiškas atėjo iš naujo adreso: $email.';
   }
 
   @override
-  String get conversationSecurityImpersonationRepliesElsewhere =>
-      'O atsakymai keliautų dar kitu adresu.';
+  String get conversationSecurityImpersonationRepliesElsewhere => 'O atsakymai keliautų dar kitu adresu.';
 
   @override
   String get conversationSecurityImpersonationAdvice =>
@@ -761,8 +732,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeTitle =>
-      'Pirmas laiškas iš šio siuntėjo';
+  String get conversationSecurityFirstTimeTitle => 'Pirmas laiškas iš šio siuntėjo';
 
   @override
   String conversationSecurityFirstTimeText(String email) {
@@ -770,16 +740,13 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityFirstTimeAdvice =>
-      'Būkite atsargūs su dar nepažįstamų žmonių prašymais.';
+  String get conversationSecurityFirstTimeAdvice => 'Būkite atsargūs su dar nepažįstamų žmonių prašymais.';
 
   @override
-  String get conversationSecuritySenderHomographTitle =>
-      'Panašiai atrodančios raidės siuntėjo adrese';
+  String get conversationSecuritySenderHomographTitle => 'Panašiai atrodančios raidės siuntėjo adrese';
 
   @override
-  String get conversationSecurityLinkHomographTitle =>
-      'Panašiai atrodančios raidės nuorodoje';
+  String get conversationSecurityLinkHomographTitle => 'Panašiai atrodančios raidės nuorodoje';
 
   @override
   String conversationSecurityHomographText(String host) {
@@ -792,8 +759,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecuritySenderHomographAdvice =>
-      'Ištrinkite jį arba praneškite apie jį kaip apie šlamštą.';
+  String get conversationSecuritySenderHomographAdvice => 'Ištrinkite jį arba praneškite apie jį kaip apie šlamštą.';
 
   @override
   String get conversationSecurityLinkHomographAdvice => 'Neatidarykite jos.';
@@ -804,12 +770,10 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLookalikeTitle =>
-      'Panašiai atrodantis domenas';
+  String get conversationSecurityLookalikeTitle => 'Panašiai atrodantis domenas';
 
   @override
-  String get conversationSecurityFamiliarNameTitle =>
-      'Domene naudojamas žinomas pavadinimas';
+  String get conversationSecurityFamiliarNameTitle => 'Domene naudojamas žinomas pavadinimas';
 
   @override
   String conversationSecurityLookalikeOwnText(String domain, String real) {
@@ -817,11 +781,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityLookalikeText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityLookalikeText(String domain, String brand, String real) {
     return '$domain panašus į $brand ($real), bet tai kitas domenas.';
   }
 
@@ -831,11 +791,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String conversationSecurityFamiliarNameText(
-    String domain,
-    String brand,
-    String real,
-  ) {
+  String conversationSecurityFamiliarNameText(String domain, String brand, String real) {
     return '$domain naudoja $brand ($real) pavadinimą, bet jam nepriklauso.';
   }
 
@@ -886,8 +842,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLinkUncheckableTitle =>
-      'Nuorodos tikslo patikrinti neįmanoma';
+  String get conversationSecurityLinkUncheckableTitle => 'Nuorodos tikslo patikrinti neįmanoma';
 
   @override
   String conversationSecurityLinkUncheckableText(String shown, String host) {
@@ -911,8 +866,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityDataLinkTitle =>
-      'Paslėptas puslapis išjungtas';
+  String get conversationSecurityDataLinkTitle => 'Paslėptas puslapis išjungtas';
 
   @override
   String get conversationSecurityDataLinkText =>
@@ -922,20 +876,16 @@ class AppLocalizationsLt extends AppLocalizations {
   String get conversationSecurityPasswordFieldTitle => 'Prašo slaptažodžio';
 
   @override
-  String get conversationSecurityPasswordFieldText =>
-      'Laiške buvo slaptažodžio laukas. Loupe jį pašalino.';
+  String get conversationSecurityPasswordFieldText => 'Laiške buvo slaptažodžio laukas. Loupe jį pašalino.';
 
   @override
-  String get conversationSecurityPasswordFieldAdvice =>
-      'Niekada neįveskite slaptažodžio el. laiške.';
+  String get conversationSecurityPasswordFieldAdvice => 'Niekada neįveskite slaptažodžio el. laiške.';
 
   @override
-  String get conversationSecurityScriptLinkTitle =>
-      'Kodą vykdanti nuoroda išjungta';
+  String get conversationSecurityScriptLinkTitle => 'Kodą vykdanti nuoroda išjungta';
 
   @override
-  String get conversationSecurityScriptLinkText =>
-      'Loupe niekada nevykdo kodo iš laiškų.';
+  String get conversationSecurityScriptLinkText => 'Loupe niekada nevykdo kodo iš laiškų.';
 
   @override
   String conversationSecurityShortenerTitle(int count) {
@@ -955,8 +905,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityInternationalTitle =>
-      'Tarptautinis žiniatinklio adresas';
+  String get conversationSecurityInternationalTitle => 'Tarptautinis žiniatinklio adresas';
 
   @override
   String conversationSecurityInternationalText(String hosts) {
@@ -964,27 +913,22 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get conversationSecurityLotsOfHiddenTextTitle =>
-      'Daug paslėpto teksto';
+  String get conversationSecurityLotsOfHiddenTextTitle => 'Daug paslėpto teksto';
 
   @override
   String conversationSecurityLotsOfHiddenTextText(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Pašalinta $count nematomo teksto simbolių. Toks paslėptas tekstas skirtas apgauti šlamšto filtrus.',
-      few:
-          'Pašalinti $count nematomo teksto simboliai. Toks paslėptas tekstas skirtas apgauti šlamšto filtrus.',
-      one:
-          'Pašalintas $count nematomo teksto simbolis. Toks paslėptas tekstas skirtas apgauti šlamšto filtrus.',
+      other: 'Pašalinta $count nematomo teksto simbolių. Toks paslėptas tekstas skirtas apgauti šlamšto filtrus.',
+      few: 'Pašalinti $count nematomo teksto simboliai. Toks paslėptas tekstas skirtas apgauti šlamšto filtrus.',
+      one: 'Pašalintas $count nematomo teksto simbolis. Toks paslėptas tekstas skirtas apgauti šlamšto filtrus.',
     );
     return '$_temp0';
   }
 
   @override
-  String get conversationSecurityHiddenTextTitle =>
-      'Paslėptas tekstas pašalintas';
+  String get conversationSecurityHiddenTextTitle => 'Paslėptas tekstas pašalintas';
 
   @override
   String conversationSecurityHiddenTextText(int count) {
@@ -999,8 +943,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get exportDownloadFailed =>
-      'Nepavyko atsisiųsti laiško. Patikrinkite ryšį ir bandykite dar kartą.';
+  String get exportDownloadFailed => 'Nepavyko atsisiųsti laiško. Patikrinkite ryšį ir bandykite dar kartą.';
 
   @override
   String exportSaved(String name) {
@@ -1030,10 +973,8 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Išsaugota „$name“ be $formattedCount laiškų, kurių nepavyko atsisiųsti.',
-      few:
-          'Išsaugota „$name“ be $formattedCount laiškų, kurių nepavyko atsisiųsti.',
+      other: 'Išsaugota „$name“ be $formattedCount laiškų, kurių nepavyko atsisiųsti.',
+      few: 'Išsaugota „$name“ be $formattedCount laiškų, kurių nepavyko atsisiųsti.',
       one: 'Išsaugota „$name“ be $count laiško, kurio nepavyko atsisiųsti.',
     );
     return '$_temp0';
@@ -1113,8 +1054,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get mailboxesSmartMailboxes => 'Smart Mailboxes';
 
   @override
-  String get mailboxesSmartMailboxesEmpty =>
-      'Išsaugokite paiešką, kad ji būtų čia.';
+  String get mailboxesSmartMailboxesEmpty => 'Išsaugokite paiešką, kad ji būtų čia.';
 
   @override
   String get mailboxesTags => 'Žymės';
@@ -1148,8 +1088,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get projectsDelete => 'Ištrinti projektą';
 
   @override
-  String get projectsDeleteMessage =>
-      'Jo pokalbiai lieka ten, kur yra, už projekto ribų.';
+  String get projectsDeleteMessage => 'Jo pokalbiai lieka ten, kur yra, už projekto ribų.';
 
   @override
   String get projectsUntitled => 'Projektas';
@@ -1264,8 +1203,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get mailboxesVipTitle => 'VIP';
 
   @override
-  String get mailboxesVipFooter =>
-      'Taip pat galite laiške bakstelėti siuntėjo vardą ir įjungti VIP.';
+  String get mailboxesVipFooter => 'Taip pat galite laiške bakstelėti siuntėjo vardą ir įjungti VIP.';
 
   @override
   String get mailboxesAddVip => 'Pridėti VIP…';
@@ -1274,8 +1212,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get mailboxesAddVipTitle => 'Pridėti VIP';
 
   @override
-  String get mailboxesAddVipText =>
-      'Laiškai iš šio adreso pažymimi žvaigždute ir rodomi VIP pašto dėžutėje.';
+  String get mailboxesAddVipText => 'Laiškai iš šio adreso pažymimi žvaigždute ir rodomi VIP pašto dėžutėje.';
 
   @override
   String get mailboxesAddVipPlaceholder => 'name@example.com';
@@ -1465,15 +1402,13 @@ class AppLocalizationsLt extends AppLocalizations {
   String get snoozeNoTime => 'Laikas nenustatytas';
 
   @override
-  String get snoozeFooter =>
-      'Atidėti laiškai nustatytu laiku grįžta į aplanką „Gauti laiškai“ kaip neskaityti.';
+  String get snoozeFooter => 'Atidėti laiškai nustatytu laiku grįžta į aplanką „Gauti laiškai“ kaip neskaityti.';
 
   @override
   String get snoozeEmptyTitle => 'Atidėtų laiškų nėra';
 
   @override
-  String get snoozeEmptyText =>
-      'Atidėkite laišką, kad jis grįžtų į aplanką „Gauti laiškai“ tada, kai jums jo reikės.';
+  String get snoozeEmptyText => 'Atidėkite laišką, kad jis grįžtų į aplanką „Gauti laiškai“ tada, kai jums jo reikės.';
 
   @override
   String get briefButton => 'Trumpai';
@@ -1497,16 +1432,13 @@ class AppLocalizationsLt extends AppLocalizations {
   String get briefStopped => 'Sustabdėte santrauką.';
 
   @override
-  String get briefFailedTooLarge =>
-      'Šis laiškas per ilgas modeliui, todėl niekas nebuvo išsiųsta.';
+  String get briefFailedTooLarge => 'Šis laiškas per ilgas modeliui, todėl niekas nebuvo išsiųsta.';
 
   @override
-  String get briefFailedProvider =>
-      'Modeliui nepavyko apibendrinti šio laiško.';
+  String get briefFailedProvider => 'Modeliui nepavyko apibendrinti šio laiško.';
 
   @override
-  String get briefFailedInvalid =>
-      'Atsakymas neperėjo „Loupe“ patikrų, todėl kontrolinis sąrašas nerodomas.';
+  String get briefFailedInvalid => 'Atsakymas neperėjo „Loupe“ patikrų, todėl kontrolinis sąrašas nerodomas.';
 
   @override
   String get briefNothingTitle => 'Nėra ką apibendrinti';
@@ -1558,11 +1490,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String briefOwner(String owner) {
-    String _temp0 = intl.Intl.selectLogic(owner, {
-      'me': 'Jūs',
-      'them': 'Kiti',
-      'other': 'Nenurodyta',
-    });
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Jūs', 'them': 'Kiti', 'other': 'Nenurodyta'});
     return '$_temp0';
   }
 
@@ -1642,8 +1570,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get briefCaution =>
-      'Santrauka gali ką nors praleisti ar klaidingai suprasti. Svarbiausia – pats laiškas.';
+  String get briefCaution => 'Santrauka gali ką nors praleisti ar klaidingai suprasti. Svarbiausia – pats laiškas.';
 
   @override
   String briefSecurityReason(String reason) {
@@ -1651,15 +1578,13 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get briefSecurityText =>
-      'Prieš ką nors darydami pagal šią santrauką, patikrinkite patį laišką.';
+  String get briefSecurityText => 'Prieš ką nors darydami pagal šią santrauką, patikrinkite patį laišką.';
 
   @override
   String get briefSourceTitle => 'Laiške';
 
   @override
-  String get briefSourceAttachment =>
-      'Tai paimta iš pridėto failo pavadinimo. Santrauka neskaito priedų turinio.';
+  String get briefSourceAttachment => 'Tai paimta iš pridėto failo pavadinimo. Santrauka neskaito priedų turinio.';
 
   @override
   String get briefEventTitle => 'Naujas įvykis';
@@ -1703,26 +1628,22 @@ class AppLocalizationsLt extends AppLocalizations {
   String get appLockLockedOut => 'Per daug bandymų. Bandykite vėliau.';
 
   @override
-  String get appLockPromptError =>
-      'Nepavyko parodyti užklausos. Bandykite dar kartą.';
+  String get appLockPromptError => 'Nepavyko parodyti užklausos. Bandykite dar kartą.';
 
   @override
-  String get appLockNoScreenLock =>
-      'Šiame telefone nenustatytas ekrano užraktas.';
+  String get appLockNoScreenLock => 'Šiame telefone nenustatytas ekrano užraktas.';
 
   @override
   String get appLockUnlockPromptTitle => 'Atrakinti Loupe';
 
   @override
-  String get appLockUnlockPromptReason =>
-      'Patvirtinkite, kad tai jūs, ir matysite savo paštą.';
+  String get appLockUnlockPromptReason => 'Patvirtinkite, kad tai jūs, ir matysite savo paštą.';
 
   @override
   String get appLockTurnOnPromptTitle => 'Įjungti programėlės užraktą';
 
   @override
-  String get appLockTurnOnPromptReason =>
-      'Patvirtinkite, kad tai jūs, ir įjungsite programėlės užraktą.';
+  String get appLockTurnOnPromptReason => 'Patvirtinkite, kad tai jūs, ir įjungsite programėlės užraktą.';
 
   @override
   String get appLockScreenLockRemoved =>
@@ -1828,11 +1749,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String openpgpForKeys(int count, String keys) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Raktų ID: $keys',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Raktų ID: $keys');
     return '$_temp0';
   }
 
@@ -1866,44 +1783,36 @@ class AppLocalizationsLt extends AppLocalizations {
   String get openpgpChangeAcceptance => 'Keisti priėmimą…';
 
   @override
-  String get openpgpCheckedFooter =>
-      'Patikrinta šiame įrenginyje naudojant OpenPGP, suderinamą su Thunderbird.';
+  String get openpgpCheckedFooter => 'Patikrinta šiame įrenginyje naudojant OpenPGP, suderinamą su Thunderbird.';
 
   @override
   String get openpgpSummaryLocked =>
       'Jūsų raktas užrakintas. Atrakinkite jį slaptafraze, kad perskaitytumėte šį laišką.';
 
   @override
-  String get openpgpSummaryNoSecretKey =>
-      'Jis užšifruotas raktui, kurio šiame įrenginyje nėra.';
+  String get openpgpSummaryNoSecretKey => 'Jis užšifruotas raktui, kurio šiame įrenginyje nėra.';
 
   @override
-  String get openpgpSummaryDamaged =>
-      'Šifruoti duomenys sugadinti arba buvo pakeisti pakeliui.';
+  String get openpgpSummaryDamaged => 'Šifruoti duomenys sugadinti arba buvo pakeisti pakeliui.';
 
   @override
-  String get openpgpSummaryUnsupported =>
-      'Jame naudojamas algoritmas, kurio Loupe nepalaiko.';
+  String get openpgpSummaryUnsupported => 'Jame naudojamas algoritmas, kurio Loupe nepalaiko.';
 
   @override
-  String get openpgpSummaryEncrypted =>
-      'Jį gali perskaityti tik jūs ir kiti gavėjai.';
+  String get openpgpSummaryEncrypted => 'Jį gali perskaityti tik jūs ir kiti gavėjai.';
 
   @override
-  String get openpgpSummaryNotSigned =>
-      'Jis nepasirašytas, todėl siuntėjas nepatvirtintas.';
+  String get openpgpSummaryNotSigned => 'Jis nepasirašytas, todėl siuntėjas nepatvirtintas.';
 
   @override
   String get openpgpSummaryUnknownKey =>
       'Jis pasirašytas, bet raktu, kurio neturite, todėl parašo patikrinti neįmanoma.';
 
   @override
-  String get openpgpSummaryBadSignature =>
-      'Parašas neatitinka: laiškas galėjo būti pakeistas.';
+  String get openpgpSummaryBadSignature => 'Parašas neatitinka: laiškas galėjo būti pakeistas.';
 
   @override
-  String get openpgpSummaryMismatch =>
-      'Parašas galioja, bet raktas priklauso ne siuntėjo, o kitam adresui.';
+  String get openpgpSummaryMismatch => 'Parašas galioja, bet raktas priklauso ne siuntėjo, o kitam adresui.';
 
   @override
   String get openpgpSummaryPartial =>
@@ -1913,16 +1822,13 @@ class AppLocalizationsLt extends AppLocalizations {
   String get openpgpSummaryOwnKey => 'Pasirašyta jūsų pačių raktu.';
 
   @override
-  String get openpgpSummaryVerified =>
-      'Parašas galioja, ir jūs patikrinote rakto kontrolinį kodą.';
+  String get openpgpSummaryVerified => 'Parašas galioja, ir jūs patikrinote rakto kontrolinį kodą.';
 
   @override
-  String get openpgpSummaryUnverified =>
-      'Parašas galioja. Raktą priėmėte nepatikrinę jo kontrolinio kodo.';
+  String get openpgpSummaryUnverified => 'Parašas galioja. Raktą priėmėte nepatikrinę jo kontrolinio kodo.';
 
   @override
-  String get openpgpSummaryRejected =>
-      'Parašas galioja, bet jūs atmetėte šį raktą.';
+  String get openpgpSummaryRejected => 'Parašas galioja, bet jūs atmetėte šį raktą.';
 
   @override
   String get openpgpSummaryUndecided =>
@@ -1982,8 +1888,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get openpgpAddresses => 'Adresai';
 
   @override
-  String get openpgpAddressesFooter =>
-      'Kurį raktą naudoja kiekvienas adresas ir kada jis šifruoja bei pasirašo.';
+  String get openpgpAddressesFooter => 'Kurį raktą naudoja kiekvienas adresas ir kada jis šifruoja bei pasirašo.';
 
   @override
   String get openpgpCorrespondentsKeys => 'Adresatų OpenPGP raktai';
@@ -2062,8 +1967,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get openpgpAddKeyTitle => 'Pridėti OpenPGP raktą';
 
   @override
-  String get openpgpAddKeyMessage =>
-      'Importuokite raktą, kurį naudojate Thunderbird, arba sukurkite naują.';
+  String get openpgpAddKeyMessage => 'Importuokite raktą, kurį naudojate Thunderbird, arba sukurkite naują.';
 
   @override
   String get openpgpImportFromClipboard => 'Importuoti iš iškarpinės';
@@ -2084,8 +1988,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get openpgpFromFile => 'Iš failo';
 
   @override
-  String get openpgpClipboardEmpty =>
-      'Iškarpinė tuščia. Pirmiausia nukopijuokite raktą.';
+  String get openpgpClipboardEmpty => 'Iškarpinė tuščia. Pirmiausia nukopijuokite raktą.';
 
   @override
   String get openpgpKey => 'Raktas';
@@ -2201,8 +2104,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get openpgpEncryptAutomatically => 'Šifruoti automatiškai';
 
   @override
-  String get openpgpAlwaysEncryptDetail =>
-      'Nesiunčia, jei gavėjas neturi rakto';
+  String get openpgpAlwaysEncryptDetail => 'Nesiunčia, jei gavėjas neturi rakto';
 
   @override
   String get openpgpSignUnencrypted => 'Pasirašyti nešifruotus laiškus';
@@ -2221,8 +2123,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get openpgpPreferEncryption => 'Teikti pirmenybę šifravimui';
 
   @override
-  String get openpgpPreferEncryptionDetail =>
-      'Prašyti kitų šifruoti, kai jie gali';
+  String get openpgpPreferEncryptionDetail => 'Prašyti kitų šifruoti, kai jie gali';
 
   @override
   String openpgpValidityYears(int count) {
@@ -2413,24 +2314,20 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get openpgpWrongPassphrase =>
-      'Slaptafrazė neteisinga. Bandykite dar kartą.';
+  String get openpgpWrongPassphrase => 'Slaptafrazė neteisinga. Bandykite dar kartą.';
 
   @override
-  String get openpgpExplainLocked =>
-      'Šis laiškas šifruotas. Atrakinkite savo OpenPGP raktą, kad jį perskaitytumėte.';
+  String get openpgpExplainLocked => 'Šis laiškas šifruotas. Atrakinkite savo OpenPGP raktą, kad jį perskaitytumėte.';
 
   @override
   String get openpgpExplainNoKey =>
       'Šis laiškas šifruotas, bet ne nė vienam šio įrenginio OpenPGP raktui. Jei skaitote jį Thunderbird, importuokite raktą iš ten: Nustatymai › Ištisinis šifravimas.';
 
   @override
-  String get openpgpExplainDamaged =>
-      'Šis šifruotas laiškas sugadintas, todėl jo negalima saugiai iššifruoti.';
+  String get openpgpExplainDamaged => 'Šis šifruotas laiškas sugadintas, todėl jo negalima saugiai iššifruoti.';
 
   @override
-  String get openpgpExplainUnsupported =>
-      'Šiame laiške naudojamas šifravimas, kurio Loupe dar negali perskaityti.';
+  String get openpgpExplainUnsupported => 'Šiame laiške naudojamas šifravimas, kurio Loupe dar negali perskaityti.';
 
   @override
   String get openpgpExplainSmimeNoKey =>
@@ -2442,8 +2339,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get openpgpExplainSmimeUnlock =>
-      'Atrakinkite savo S/MIME sertifikatą, kad jį perskaitytumėte.';
+  String get openpgpExplainSmimeUnlock => 'Atrakinkite savo S/MIME sertifikatą, kad jį perskaitytumėte.';
 
   @override
   String get openpgpAttachmentGone => 'Šis priedas nebepasiekiamas.';
@@ -2452,8 +2348,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get smimeEncrypted => 'Šifruotas (S/MIME)';
 
   @override
-  String get smimeEncryptedNoCertificate =>
-      'Šifruotas (S/MIME) · nėra sertifikato';
+  String get smimeEncryptedNoCertificate => 'Šifruotas (S/MIME) · nėra sertifikato';
 
   @override
   String get smimeEncryptedDamaged => 'Šifruotas (S/MIME) · sugadintas';
@@ -2477,8 +2372,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get smimeSignatureUncheckable => 'Parašo patikrinti neįmanoma';
 
   @override
-  String get smimeSignedCertificateMissing =>
-      'Pasirašyta · trūksta sertifikato';
+  String get smimeSignedCertificateMissing => 'Pasirašyta · trūksta sertifikato';
 
   @override
   String smimeSignedByRevoked(String name) {
@@ -2611,8 +2505,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get smimeTrustThisCertificateEllipsis =>
-      'Pasitikėti šiuo sertifikatu…';
+  String get smimeTrustThisCertificateEllipsis => 'Pasitikėti šiuo sertifikatu…';
 
   @override
   String get smimeCheckedFooterRevocation =>
@@ -2646,38 +2539,31 @@ class AppLocalizationsLt extends AppLocalizations {
   String get smimeTrust => 'Pasitikėti';
 
   @override
-  String get smimeSummaryNoKey =>
-      'Jis užšifruotas sertifikatui, kurio šiame įrenginyje nėra.';
+  String get smimeSummaryNoKey => 'Jis užšifruotas sertifikatui, kurio šiame įrenginyje nėra.';
 
   @override
-  String get smimeSummaryDamaged =>
-      'Šifruoti duomenys sugadinti arba buvo pakeisti pakeliui.';
+  String get smimeSummaryDamaged => 'Šifruoti duomenys sugadinti arba buvo pakeisti pakeliui.';
 
   @override
-  String get smimeSummaryUnsupported =>
-      'Jame naudojamas algoritmas, kurio Loupe nepalaiko.';
+  String get smimeSummaryUnsupported => 'Jame naudojamas algoritmas, kurio Loupe nepalaiko.';
 
   @override
   String get smimeSummaryLocked => 'Jūsų S/MIME sertifikatas užrakintas.';
 
   @override
-  String get smimeSummaryEncrypted =>
-      'Jį gali perskaityti tik jūs ir kiti gavėjai.';
+  String get smimeSummaryEncrypted => 'Jį gali perskaityti tik jūs ir kiti gavėjai.';
 
   @override
-  String get smimeSummaryNotSigned =>
-      'Jis nepasirašytas, todėl siuntėjas nepatvirtintas.';
+  String get smimeSummaryNotSigned => 'Jis nepasirašytas, todėl siuntėjas nepatvirtintas.';
 
   @override
-  String get smimeSummaryModified =>
-      'Parašas neatitinka: laiškas buvo pakeistas po pasirašymo.';
+  String get smimeSummaryModified => 'Parašas neatitinka: laiškas buvo pakeistas po pasirašymo.';
 
   @override
   String get smimeSummaryUncheckable => 'Parašo patikrinti neįmanoma.';
 
   @override
-  String get smimeSummaryNoCertificate =>
-      'Pasirašiusiojo sertifikato laiške nėra, todėl jo patikrinti neįmanoma.';
+  String get smimeSummaryNoCertificate => 'Pasirašiusiojo sertifikato laiške nėra, todėl jo patikrinti neįmanoma.';
 
   @override
   String get smimeSummaryRevoked =>
@@ -2698,12 +2584,10 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get smimeProblemInvalidChain =>
-      'Sertifikatas arba vienas iš jo išdavėjų netinkamas.';
+  String get smimeProblemInvalidChain => 'Sertifikatas arba vienas iš jo išdavėjų netinkamas.';
 
   @override
-  String get smimeProblemUntrusted =>
-      'Sertifikatą išdavė įstaiga, kuria Loupe nepasitiki.';
+  String get smimeProblemUntrusted => 'Sertifikatą išdavė įstaiga, kuria Loupe nepasitiki.';
 
   @override
   String get smimeProblemExpired => 'Sertifikato galiojimas buvo pasibaigęs.';
@@ -2715,8 +2599,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get smimeProblemWrongUsage => 'Sertifikatas neskirtas el. paštui.';
 
   @override
-  String get smimeProblemWrongAddress =>
-      'Sertifikatas priklauso ne siuntėjo, o kitam adresui.';
+  String get smimeProblemWrongAddress => 'Sertifikatas priklauso ne siuntėjo, o kitam adresui.';
 
   @override
   String smimeTrustedBy(String issuer) {
@@ -2800,12 +2683,9 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Jūsų patikimomis pažymėtos įstaigos, be $count įstaigų, kuriomis el. pašto srityje pasitiki Mozilla.',
-      few:
-          'Jūsų patikimomis pažymėtos įstaigos, be $count įstaigų, kuriomis el. pašto srityje pasitiki Mozilla.',
-      one:
-          'Jūsų patikimomis pažymėtos įstaigos, be $count įstaigos, kuria el. pašto srityje pasitiki Mozilla.',
+      other: 'Jūsų patikimomis pažymėtos įstaigos, be $count įstaigų, kuriomis el. pašto srityje pasitiki Mozilla.',
+      few: 'Jūsų patikimomis pažymėtos įstaigos, be $count įstaigų, kuriomis el. pašto srityje pasitiki Mozilla.',
+      one: 'Jūsų patikimomis pažymėtos įstaigos, be $count įstaigos, kuria el. pašto srityje pasitiki Mozilla.',
     );
     return '$_temp0';
   }
@@ -2827,8 +2707,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get smimeFromFile => 'Iš failo';
 
   @override
-  String get smimeClipboardEmpty =>
-      'Iškarpinė tuščia. Pirmiausia nukopijuokite sertifikatą.';
+  String get smimeClipboardEmpty => 'Iškarpinė tuščia. Pirmiausia nukopijuokite sertifikatą.';
 
   @override
   String get smimeCertificate => 'Sertifikatas';
@@ -2981,8 +2860,7 @@ class AppLocalizationsLt extends AppLocalizations {
       'Jo privatusis raktas ištrinamas iš šio įrenginio: jam užšifruotų laiškų čia nebebus galima perskaityti, nebent vėl jį importuosite.';
 
   @override
-  String get smimeRemoveContactMessage =>
-      'Jis sugrįš su kitu šio adresato pasirašytu laišku.';
+  String get smimeRemoveContactMessage => 'Jis sugrįš su kitu šio adresato pasirašytu laišku.';
 
   @override
   String get smimeAddressImportFooter =>
@@ -3005,15 +2883,13 @@ class AppLocalizationsLt extends AppLocalizations {
   String get smimeCertificatePassword => 'Sertifikato slaptažodis';
 
   @override
-  String get smimeCertificatePasswordPrompt =>
-      'Įveskite slaptažodį, su kuriuo buvo eksportuotas sertifikato failas.';
+  String get smimeCertificatePasswordPrompt => 'Įveskite slaptažodį, su kuriuo buvo eksportuotas sertifikato failas.';
 
   @override
   String get smimeImport => 'Importuoti';
 
   @override
-  String get smimeWrongPassword =>
-      'Slaptažodis neteisingas. Bandykite dar kartą.';
+  String get smimeWrongPassword => 'Slaptažodis neteisingas. Bandykite dar kartą.';
 
   @override
   String get smimeNoCertificateFound => 'Sertifikato nerasta.';
@@ -3044,10 +2920,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String smimeImportedCertificatesAndAuthorities(
-    int count,
-    String certificates,
-  ) {
+  String smimeImportedCertificatesAndAuthorities(int count, String certificates) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -3117,8 +2990,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get smimeWrongPassphrase =>
-      'Slaptafrazė neteisinga. Bandykite dar kartą.';
+  String get smimeWrongPassphrase => 'Slaptafrazė neteisinga. Bandykite dar kartą.';
 
   @override
   String get smimeUnlock => 'Atrakinti';
@@ -3147,12 +3019,10 @@ class AppLocalizationsLt extends AppLocalizations {
       'Jūsų S/MIME sertifikatas užrakintas. Atidarykite laišką dar kartą, kad jį atrakintumėte.';
 
   @override
-  String get smimeDeviceHasNoCertificates =>
-      'Šis įrenginys nesiūlo savo sertifikatų.';
+  String get smimeDeviceHasNoCertificates => 'Šis įrenginys nesiūlo savo sertifikatų.';
 
   @override
-  String get smimeCantReadCertificate =>
-      'Loupe negali perskaityti šio sertifikato.';
+  String get smimeCantReadCertificate => 'Loupe negali perskaityti šio sertifikato.';
 
   @override
   String get smimeCertificateNotForMail =>
@@ -3163,8 +3033,7 @@ class AppLocalizationsLt extends AppLocalizations {
       'Sertifikato šiame įrenginyje nebėra arba Loupe nebegali jo naudoti. Vėl jį pasirinkite skiltyje Nustatymai › Ištisinis šifravimas.';
 
   @override
-  String get smimeDeviceCertificateAppOnly =>
-      'Šio įrenginio sertifikatą galima naudoti tik tada, kai Loupe atidaryta.';
+  String get smimeDeviceCertificateAppOnly => 'Šio įrenginio sertifikatą galima naudoti tik tada, kai Loupe atidaryta.';
 
   @override
   String get smimeDeviceKeyDamaged => 'Šifruotas raktas sugadintas.';
@@ -3183,15 +3052,13 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityNotWebAddress =>
-      'Įstaigos adresas nėra žiniatinklio adresas.';
+  String get smimeAuthorityNotWebAddress => 'Įstaigos adresas nėra žiniatinklio adresas.';
 
   @override
   String get smimeAuthorityTimeout => 'Sertifikavimo įstaiga laiku neatsakė.';
 
   @override
-  String get smimeAuthorityUnreachable =>
-      'Nepavyko susisiekti su sertifikavimo įstaiga.';
+  String get smimeAuthorityUnreachable => 'Nepavyko susisiekti su sertifikavimo įstaiga.';
 
   @override
   String smimeAuthorityStatus(String status) {
@@ -3199,12 +3066,10 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get smimeAuthorityAnswerTooLarge =>
-      'Sertifikavimo įstaigos atsakymas per didelis.';
+  String get smimeAuthorityAnswerTooLarge => 'Sertifikavimo įstaigos atsakymas per didelis.';
 
   @override
-  String get smimeRevocationNotChecked =>
-      'Netikrinta: tikrinami tik sertifikatai iš įstaigų, kuriomis Loupe pasitiki.';
+  String get smimeRevocationNotChecked => 'Netikrinta: tikrinami tik sertifikatai iš įstaigų, kuriomis Loupe pasitiki.';
 
   @override
   String get actionsNeedsMyAction => 'Reikia mano veiksmo';
@@ -3213,11 +3078,319 @@ class AppLocalizationsLt extends AppLocalizations {
   String get actionsWaitingOnOthers => 'Laukiu kitų';
 
   @override
-  String settingsIdle(String protocol) {
-    String _temp0 = intl.Intl.selectLogic(protocol, {
-      'jmap': 'Push',
-      'other': 'IDLE',
+  String get actionsNeedsMyActionEmpty => 'Niekam nereikia jūsų veiksmo';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Nieko nelaukiate';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Norėdami ką nors stebėti, laiške bakstelėkite ⋯ ir pasirinkite „Pridėti veiksmą…“';
+
+  @override
+  String get actionsTitle => 'Veiksmai';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count reikia atlikti',
+      few: '$count reikia atlikti',
+      one: '$count reikia atlikti',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count laukiama',
+      few: '$count laukiama',
+      one: '$count laukiama',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count užbaigtų veiksmų',
+      few: '$count užbaigti veiksmai',
+      one: '$count užbaigtas veiksmas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Užbaigti';
+
+  @override
+  String get actionsNoneInConversation => 'Šiame pokalbyje veiksmų nėra.';
+
+  @override
+  String get actionsFooter =>
+      'Veiksmai saugomi šiame telefone. Paštas jų niekada nekeičia, net atsakymas „Ačiū“: tai darote tik jūs.';
+
+  @override
+  String get actionsMarkDone => 'Pažymėti kaip atliktą';
+
+  @override
+  String get actionsReopen => 'Atidaryti iš naujo';
+
+  @override
+  String get actionsStateNeedsAction => 'Reikia veiksmo';
+
+  @override
+  String get actionsStateInProgress => 'Vykdoma';
+
+  @override
+  String get actionsStateSent => 'Išsiųsta';
+
+  @override
+  String get actionsStateWaiting => 'Laukiama patvirtinimo';
+
+  @override
+  String get actionsStateAcknowledged => 'Patvirtinta';
+
+  @override
+  String get actionsStateDone => 'Atlikta';
+
+  @override
+  String get actionsStateDismissed => 'Atmesta';
+
+  @override
+  String get actionsStateSuperseded => 'Pakeista nauju';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Pažymėta, kad reikia veiksmo',
+      'inProgress': 'Pažymėta kaip vykdoma',
+      'sent': 'Pažymėta kaip išsiųsta',
+      'waitingForAcknowledgement': 'Laukiama patvirtinimo',
+      'acknowledged': 'Pažymėta kaip patvirtinta',
+      'done': 'Pažymėta kaip atlikta',
+      'dismissed': 'Veiksmas atmestas',
+      'superseded': 'Pažymėta kaip pakeista nauju',
+      'other': 'Veiksmas pakeistas',
     });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Veiksmas performuluotas';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Priminimas nustatytas: $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Priminimas pašalintas';
+
+  @override
+  String get actionsDeleted => 'Veiksmas ištrintas';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pridėta $count veiksmų',
+      few: 'Pridėti $count veiksmai',
+      one: 'Pridėtas $count veiksmas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Veiksmo nepavyko išsaugoti.';
+
+  @override
+  String get actionsStatusHeader => 'Būsena';
+
+  @override
+  String get actionsEditText => 'Redaguoti tekstą…';
+
+  @override
+  String get actionsEditTitle => 'Redaguoti veiksmą';
+
+  @override
+  String get actionsRemindMe => 'Priminti…';
+
+  @override
+  String get actionsChangeReminder => 'Keisti priminimą…';
+
+  @override
+  String get actionsClearReminder => 'Pašalinti priminimą';
+
+  @override
+  String get actionsRemindTitle => 'Priminti';
+
+  @override
+  String get actionsDelete => 'Ištrinti veiksmą';
+
+  @override
+  String get actionsHistoryHeader => 'Istorija';
+
+  @override
+  String get actionsHistoryAdded => 'Pridėta';
+
+  @override
+  String get actionsHistoryEdited => 'Performuluota';
+
+  @override
+  String get actionsHistoryDue => 'Pakeistas terminas';
+
+  @override
+  String get actionsHistoryReminder => 'Pakeistas priminimas';
+
+  @override
+  String get actionsHistoryRevised => 'Atnaujinta pagal naują pasiūlymą';
+
+  @override
+  String get actionsHistoryDeleted => 'Ištrinta';
+
+  @override
+  String get actionsHistoryRestored => 'Atkurta';
+
+  @override
+  String get actionsOwnerMe => 'Turiu aš';
+
+  @override
+  String get actionsOwnerThem => 'Atliks kiti';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Iš pradžių: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '„$quote“';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Siuntėjo $sender laiškas, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Pridėjote jūs';
+
+  @override
+  String get actionsOriginDemo => 'Pasiūlė įtaisytoji demonstracija: taisyklės, be modelio';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Pasiūlė $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Pasiūlė $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Terminas: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Pageidaujamas terminas: $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '„$timing“';
+  }
+
+  @override
+  String get actionsAddMenu => 'Pridėti veiksmą…';
+
+  @override
+  String get actionsSuggestMenu => 'Pasiūlyti veiksmų';
+
+  @override
+  String get actionsAddTitle => 'Pridėti veiksmą';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Ką turite padaryti?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Ko laukiate?';
+
+  @override
+  String get actionsDueDate => 'Terminas';
+
+  @override
+  String get actionsClearDueDate => 'Be termino';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Apie „$subject“';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Siūlomi veiksmai';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'šiame telefone',
+      'myServer': 'jūsų serveryje',
+      'other': 'debesyje',
+    });
+    return 'Pasiūlė $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'Pasiūlė įtaisytoji demonstracija: taisyklės, be modelio. Niekas nepalieka šio telefono.';
+
+  @override
+  String get actionsSuggestNone => 'Šiame laiške nėra ko stebėti.';
+
+  @override
+  String get actionsSuggestPartial => 'Šis laiškas ilgas: perskaityta tik jo pradžia.';
+
+  @override
+  String get actionsSuggestTracked => 'Stebima';
+
+  @override
+  String get actionsSuggestUpdate => 'Atnaujinti';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Pridėti visus $count', two: 'Pridėti abu');
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Kiekvienas pasiūlymas cituoja laišką, ir niekas nestebima, kol to nepridedate. Cituojami ankstesni laiškai neskaičiuojami.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Šis laiškas per ilgas pasirinktam modeliui.';
+
+  @override
+  String get actionsSuggestInvalid => 'Atsakymas neatitiko laiško, todėl nieko nesiūloma.';
+
+  @override
+  String get actionsSuggestCancelled => 'Sustabdyta.';
+
+  @override
+  String get actionsSuggestFailed => 'Pasiūlymai šiuo metu nepasiekiami.';
+
+  @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
     return '$_temp0';
   }
 
@@ -3282,8 +3455,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsSignatureAddField => 'Pridėti lauką';
 
   @override
-  String get settingsSignatureImageFailed =>
-      'Nepavyko pridėti paveikslėlio. Bandykite mažesnį PNG arba JPEG.';
+  String get settingsSignatureImageFailed => 'Nepavyko pridėti paveikslėlio. Bandykite mažesnį PNG arba JPEG.';
 
   @override
   String get settingsSignatureWhenToUse => 'Kada naudoti';
@@ -3299,8 +3471,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsSignatureAddCopied => 'Pridėti adresą arba domeną…';
 
   @override
-  String get settingsSignatureCopiedPrompt =>
-      'Adresas arba domenas, pvz., client.example.';
+  String get settingsSignatureCopiedPrompt => 'Adresas arba domenas, pvz., client.example.';
 
   @override
   String get settingsSignatureScheduled => 'Suplanuotas';
@@ -3382,8 +3553,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsUndoSendDelay => 'Siuntimo atšaukimo delsa';
 
   @override
-  String get settingsUndoSendDelayFooter =>
-      'Išsiųsti laiškai tiek laiko palaukia, kad galėtumėte juos atšaukti.';
+  String get settingsUndoSendDelayFooter => 'Išsiųsti laiškai tiek laiko palaukia, kad galėtumėte juos atšaukti.';
 
   @override
   String settingsUndoSendSeconds(int seconds) {
@@ -3428,29 +3598,25 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsReadingHeader => 'Skaitymas';
 
   @override
-  String get settingsReadingFooter =>
-      'Nuotoliniai vaizdai gali pranešti siuntėjams, kada ir kur atidarėte laišką.';
+  String get settingsReadingFooter => 'Nuotoliniai vaizdai gali pranešti siuntėjams, kada ir kur atidarėte laišką.';
 
   @override
   String get settingsDefaultView => 'Numatytasis rodinys';
 
   @override
-  String get settingsDefaultViewFooter =>
-      'Bet kurio laiško rodinį galite perjungti mygtuku Aa.';
+  String get settingsDefaultViewFooter => 'Bet kurio laiško rodinį galite perjungti mygtuku Aa.';
 
   @override
   String get settingsViewReadable => 'Skaitymui';
 
   @override
-  String get settingsViewReadableDetail =>
-      'Švarus, įskaitomas, prisitaiko prie tamsiojo režimo';
+  String get settingsViewReadableDetail => 'Švarus, įskaitomas, prisitaiko prie tamsiojo režimo';
 
   @override
   String get settingsViewOriginal => 'Originalas';
 
   @override
-  String get settingsViewOriginalDetail =>
-      'Tiksliai taip, kaip sukūrė siuntėjas';
+  String get settingsViewOriginalDetail => 'Tiksliai taip, kaip sukūrė siuntėjas';
 
   @override
   String get settingsViewPlain => 'Paprastas tekstas';
@@ -3468,8 +3634,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsFontMono => 'Lygiaplotis';
 
   @override
-  String get settingsFontMonoDetail =>
-      'ASCII piešiniai ir lentelės lieka sulygiuoti';
+  String get settingsFontMonoDetail => 'ASCII piešiniai ir lentelės lieka sulygiuoti';
 
   @override
   String get settingsTechnicalLists => 'Techninės konferencijos';
@@ -3481,8 +3646,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsOpenLinksDirectly => 'Atidaryti nuorodas tiesiogiai';
 
   @override
-  String get settingsOpenLinksDirectlyDetail =>
-      'Praleisti paspaudimų sekiklius, kai tikslas žinomas';
+  String get settingsOpenLinksDirectlyDetail => 'Praleisti paspaudimų sekiklius, kai tikslas žinomas';
 
   @override
   String get settingsSecurityHeader => 'Saugumas';
@@ -3527,8 +3691,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsLockAfter => 'Užrakinti po';
 
   @override
-  String get settingsLockAfterFooter =>
-      'Kiek laiko Loupe gali veikti fone, kol vėl paprašys patvirtinimo.';
+  String get settingsLockAfterFooter => 'Kiek laiko Loupe gali veikti fone, kol vėl paprašys patvirtinimo.';
 
   @override
   String get settingsNotifications => 'Pranešimai';
@@ -3553,8 +3716,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsResetApp => 'Atkurti programėlę';
 
   @override
-  String get settingsResetFooter =>
-      'Pamiršta visus nustatymus ir grįžta į pasveikinimo ekraną.';
+  String get settingsResetFooter => 'Pamiršta visus nustatymus ir grįžta į pasveikinimo ekraną.';
 
   @override
   String get settingsResetTitle => 'Atkurti Loupe?';
@@ -3580,12 +3742,10 @@ class AppLocalizationsLt extends AppLocalizations {
       'Loupe nenaudoja analitikos ir jūsų neseka. Jūsų paštas keliauja tik į jūsų pašto serverius.';
 
   @override
-  String get settingsNotificationsOffIos =>
-      'Loupe pranešimai išjungti nustatymuose.';
+  String get settingsNotificationsOffIos => 'Loupe pranešimai išjungti nustatymuose.';
 
   @override
-  String get settingsNotificationsOffAndroid =>
-      'Loupe pranešimai išjungti Android nustatymuose.';
+  String get settingsNotificationsOffAndroid => 'Loupe pranešimai išjungti Android nustatymuose.';
 
   @override
   String settingsNotificationsBlockedFooter(String system) {
@@ -3652,8 +3812,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsComingSoon => 'Netrukus';
 
   @override
-  String get settingsAllowUnrestrictedBattery =>
-      'Leisti neribotą akumuliatoriaus naudojimą';
+  String get settingsAllowUnrestrictedBattery => 'Leisti neribotą akumuliatoriaus naudojimą';
 
   @override
   String get settingsPush => 'Push pranešimai';
@@ -3679,16 +3838,14 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsAppIconBadge => 'Programėlės piktogramos ženklelis';
 
   @override
-  String get settingsBadgeNote =>
-      'Ženklelis atnaujinamas kaskart, kai Loupe tikrina paštą, taip pat ir fone.';
+  String get settingsBadgeNote => 'Ženklelis atnaujinamas kaskart, kai Loupe tikrina paštą, taip pat ir fone.';
 
   @override
   String get settingsBadgeUnsupportedFooter =>
       'Šio telefono pagrindinis ekranas nerodo skaičių ant programėlių piktogramų. Ženklelis atnaujinamas kaskart, kai Loupe tikrina paštą, taip pat ir fone.';
 
   @override
-  String get settingsTestNotificationBody =>
-      'Naujų laiškų pranešimai atrodo taip.';
+  String get settingsTestNotificationBody => 'Naujų laiškų pranešimai atrodo taip.';
 
   @override
   String get settingsAccountRemoved => 'Ši paskyra pašalinta.';
@@ -3709,8 +3866,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsColour => 'Spalva';
 
   @override
-  String get settingsColourFooter =>
-      'Žymi šios paskyros laiškus rodinyje „Visi gauti laiškai“.';
+  String get settingsColourFooter => 'Žymi šios paskyros laiškus rodinyje „Visi gauti laiškai“.';
 
   @override
   String settingsColourNumber(int number) {
@@ -3802,12 +3958,10 @@ class AppLocalizationsLt extends AppLocalizations {
       'Pirmoji tapatybė yra numatytoji naujiems laiškams. Vilkite, kad pakeistumėte tvarką.';
 
   @override
-  String get settingsIdentitiesFooterSingle =>
-      'Numatytoji naujų laiškų tapatybė.';
+  String get settingsIdentitiesFooterSingle => 'Numatytoji naujų laiškų tapatybė.';
 
   @override
-  String get settingsIdentitiesReplyFooter =>
-      'Atsakymas siunčiamas iš tapatybės, kuriai laiškas buvo atsiųstas.';
+  String get settingsIdentitiesReplyFooter => 'Atsakymas siunčiamas iš tapatybės, kuriai laiškas buvo atsiųstas.';
 
   @override
   String get settingsIdentityDefault => 'Numatytoji';
@@ -3839,8 +3993,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsCopyToMyself => 'Kopija sau';
 
   @override
-  String get settingsCopyToMyselfFooter =>
-      'Pridedama prie kiekvieno šios tapatybės laiško.';
+  String get settingsCopyToMyselfFooter => 'Pridedama prie kiekvieno šios tapatybės laiško.';
 
   @override
   String get settingsCc => 'Kopija';
@@ -3856,8 +4009,7 @@ class AppLocalizationsLt extends AppLocalizations {
       'Atsakymai į laiškus, atsiųstus šiais adresais, siunčiami iš šios tapatybės. * reiškia bet ką: *@example.com, me+*@example.com.';
 
   @override
-  String get settingsReplyPatternPrompt =>
-      'Adresas arba šablonas, kuriame * reiškia bet ką.';
+  String get settingsReplyPatternPrompt => 'Adresas arba šablonas, kuriame * reiškia bet ką.';
 
   @override
   String get settingsAddReplyPattern => 'Pridėti adresą arba šabloną';
@@ -3879,8 +4031,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsIdentityNoAddressTitle => 'Nėra adreso';
 
   @override
-  String get settingsIdentityNoAddressMessage =>
-      'Įveskite el. pašto adresą, iš kurio siųsti.';
+  String get settingsIdentityNoAddressMessage => 'Įveskite el. pašto adresą, iš kurio siųsti.';
 
   @override
   String get settingsIdentityInvalidAddressTitle => 'Netinkamas adresas';
@@ -3888,11 +4039,9 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String settingsIdentityInvalidAddress(String field, String address) {
     String _temp0 = intl.Intl.selectLogic(field, {
-      'replyTo':
-          '„Atsakyti kam“ adresas „$address“ nėra tinkamas el. pašto adresas.',
+      'replyTo': '„Atsakyti kam“ adresas „$address“ nėra tinkamas el. pašto adresas.',
       'cc': 'Kopijos adresas „$address“ nėra tinkamas el. pašto adresas.',
-      'bcc':
-          'Slaptos kopijos adresas „$address“ nėra tinkamas el. pašto adresas.',
+      'bcc': 'Slaptos kopijos adresas „$address“ nėra tinkamas el. pašto adresas.',
       'other': '„$address“ nėra tinkamas el. pašto adresas.',
     });
     return '$_temp0';
@@ -3913,12 +4062,10 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get settingsDeleteIdentityMessage =>
-      'Iš jos jau išsiųsti laiškai liks nepakeisti.';
+  String get settingsDeleteIdentityMessage => 'Iš jos jau išsiųsti laiškai liks nepakeisti.';
 
   @override
-  String get settingsLastIdentityFooter =>
-      'Paskyrai reikia bent vienos tapatybės.';
+  String get settingsLastIdentityFooter => 'Paskyrai reikia bent vienos tapatybės.';
 
   @override
   String get rulesTitle => 'Taisyklės';
@@ -3990,8 +4137,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get rulesStatusUnavailable => 'Nepasiekiama';
 
   @override
-  String get rulesStatusNoSieve =>
-      'Šios paskyros serveris nesiūlo Sieve (ManageSieve arba JMAP).';
+  String get rulesStatusNoSieve => 'Šios paskyros serveris nesiūlo Sieve (ManageSieve arba JMAP).';
 
   @override
   String rulesActionMove(String folder) {
@@ -4073,8 +4219,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get rulesRemovedAccount => 'Pašalinta paskyra';
 
   @override
-  String get rulesAccountsFooter =>
-      'Taisyklė visoms paskyroms taikoma ir vėliau pridėtoms paskyroms.';
+  String get rulesAccountsFooter => 'Taisyklė visoms paskyroms taikoma ir vėliau pridėtoms paskyroms.';
 
   @override
   String get rulesActionsHeader => 'Tada';
@@ -4084,8 +4229,7 @@ class AppLocalizationsLt extends AppLocalizations {
       'Persiuntimas kiekvieną atitinkantį laišką vos gavus siunčia kitu adresu, net kai šis telefonas išjungtas. Kai kurie paslaugų teikėjai riboja, kiek laiškų galima persiųsti.';
 
   @override
-  String get rulesForwardingHiddenFooter =>
-      'Persiuntimas veikia tik serverio taisyklėse, todėl čia jo nėra.';
+  String get rulesForwardingHiddenFooter => 'Persiuntimas veikia tik serverio taisyklėse, todėl čia jo nėra.';
 
   @override
   String rulesRemoveAction(String action) {
@@ -4136,8 +4280,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get rulesMoveAccountTitle => 'Kurios paskyros aplankas?';
 
   @override
-  String get rulesMoveAccountMessage =>
-      'Kitų paskyrų laiškai keliauja į ten esantį tokio paties pavadinimo aplanką.';
+  String get rulesMoveAccountMessage => 'Kitų paskyrų laiškai keliauja į ten esantį tokio paties pavadinimo aplanką.';
 
   @override
   String get rulesAddTag => 'Pridėti žymę';
@@ -4176,8 +4319,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get rulesChooseActionTitle => 'Pasirinkite veiksmą';
 
   @override
-  String get rulesChooseActionMessage =>
-      'Nurodykite, ką taisyklė daro su jai atitinkančiais laiškais.';
+  String get rulesChooseActionMessage => 'Nurodykite, ką taisyklė daro su jai atitinkančiais laiškais.';
 
   @override
   String get rulesSaveError => 'Nepavyko išsaugoti taisyklės';
@@ -4192,8 +4334,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get rulesNothingToApplyTitle => 'Nėra ko taikyti';
 
   @override
-  String get rulesNothingToApplyMessage =>
-      'Pirmiausia nurodykite taisyklei veikiančią sąlygą ir veiksmą.';
+  String get rulesNothingToApplyMessage => 'Pirmiausia nurodykite taisyklei veikiančią sąlygą ir veiksmą.';
 
   @override
   String rulesApplyScopeTitle(String rule) {
@@ -4225,8 +4366,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String rulesApplyConfirmTitle(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4241,8 +4381,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String rulesApplyConfirm(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4257,8 +4396,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String rulesApplied(int count, String rule) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4301,8 +4439,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String rulesMatchingCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4317,8 +4454,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String rulesMatchingCountMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4348,15 +4484,10 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String rulesPreviewMore(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'ir dar $countString',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'ir dar $countString');
     return '$_temp0';
   }
 
@@ -4451,8 +4582,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get subscriptionsNothingRarelyRead => 'Retai skaitomų nėra';
 
   @override
-  String get subscriptionsNothingFilteredDetail =>
-      'Šiek tiek skaitote visko, ką gaunate.';
+  String get subscriptionsNothingFilteredDetail => 'Šiek tiek skaitote visko, ką gaunate.';
 
   @override
   String get subscriptionsNoDiscussions => 'Diskusijų nėra';
@@ -4529,8 +4659,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String subscriptionsArchiveInbox(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4545,15 +4674,13 @@ class AppLocalizationsLt extends AppLocalizations {
   String get subscriptionsCreateRule => 'Sukurti taisyklę…';
 
   @override
-  String get subscriptionsCreateRuleDetail =>
-      'Perkelti arba archyvuoti būsimus jo laiškus';
+  String get subscriptionsCreateRuleDetail => 'Perkelti arba archyvuoti būsimus jo laiškus';
 
   @override
   String get subscriptionsTreatAsDiscussion => 'Laikyti diskusija';
 
   @override
-  String get subscriptionsTreatAsDiscussionDetail =>
-      'Konferencija, į kurią rašo žmonės: skaityti kaip forumą';
+  String get subscriptionsTreatAsDiscussionDetail => 'Konferencija, į kurią rašo žmonės: skaityti kaip forumą';
 
   @override
   String get subscriptionsTreatAsNewsletter => 'Laikyti naujienlaiškiu';
@@ -4580,16 +4707,14 @@ class AppLocalizationsLt extends AppLocalizations {
   String get subscriptionsOpenDefaultView => 'Atidaryti numatytuoju rodiniu';
 
   @override
-  String get subscriptionsOpenPlainText =>
-      'Atidaryti kaip paprastą tekstą (Mono)';
+  String get subscriptionsOpenPlainText => 'Atidaryti kaip paprastą tekstą (Mono)';
 
   @override
   String get subscriptionsPinned => 'Prisegta';
 
   @override
   String subscriptionsUnreadCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     String _temp0 = intl.Intl.pluralLogic(
@@ -4619,12 +4744,9 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String subscriptionsReadDetail(String percent, int read, int total) {
-    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(
-      localeName,
-    );
+    final intl.NumberFormat readNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String readString = readNumberFormat.format(read);
-    final intl.NumberFormat totalNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String totalString = totalNumberFormat.format(total);
 
     return '$percent · $readString iš $totalString';
@@ -4635,11 +4757,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String subscriptionsFolders(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Vieta',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Vieta');
     return '$_temp0';
   }
 
@@ -4685,8 +4803,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickFailedTitle =>
-      'Nepavyko atsisakyti automatiškai';
+  String get subscriptionsOneClickFailedTitle => 'Nepavyko atsisakyti automatiškai';
 
   @override
   String get subscriptionsSendUnsubscribeEmail => 'Siųsti atsisakymo laišką';
@@ -4747,8 +4864,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsOneClickNotAllowed =>
-      'Atsisakymo nuoroda nėra saugus interneto adresas.';
+  String get subscriptionsOneClickNotAllowed => 'Atsisakymo nuoroda nėra saugus interneto adresas.';
 
   @override
   String subscriptionsOneClickTimeout(String site) {
@@ -4771,8 +4887,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get subscriptionsNoAccountToSend =>
-      'Nėra paskyros, iš kurios būtų galima išsiųsti atsisakymo laišką.';
+  String get subscriptionsNoAccountToSend => 'Nėra paskyros, iš kurios būtų galima išsiųsti atsisakymo laišką.';
 
   @override
   String subscriptionsMailConfirm(String to, String from, String subject) {
@@ -4805,11 +4920,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String subscriptionsMoveToJunk(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Perkelti $count į šlamštą',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Perkelti $count į šlamštą');
     return '$_temp0';
   }
 
@@ -4832,8 +4943,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get appLiveGateTitle => 'Nepavyko atidaryti jūsų paskyrų';
 
   @override
-  String get appLiveGateUnavailableBuild =>
-      'Tikros paskyros šioje versijoje dar nepasiekiamos.';
+  String get appLiveGateUnavailableBuild => 'Tikros paskyros šioje versijoje dar nepasiekiamos.';
 
   @override
   String get appLiveGateKeyUnreadable =>
@@ -4881,8 +4991,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get attachmentsShareMenu => 'Bendrinti…';
 
   @override
-  String get attachmentsDownloadError =>
-      'Nepavyko atsisiųsti priedo. Patikrinkite ryšį ir bandykite dar kartą.';
+  String get attachmentsDownloadError => 'Nepavyko atsisiųsti priedo. Patikrinkite ryšį ir bandykite dar kartą.';
 
   @override
   String get attachmentsShareError => 'Nepavyko bendrinti priedo.';
@@ -4893,8 +5002,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get attachmentsOpenInError =>
-      'Nepavyko atidaryti priedo kitoje programoje.';
+  String get attachmentsOpenInError => 'Nepavyko atidaryti priedo kitoje programoje.';
 
   @override
   String attachmentsSaved(String name) {
@@ -4928,8 +5036,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get attachmentsLargeDownload =>
-      'Šis priedas didelis. Atsisiųskite jį dabar arba vėliau per Wi-Fi.';
+  String get attachmentsLargeDownload => 'Šis priedas didelis. Atsisiųskite jį dabar arba vėliau per Wi-Fi.';
 
   @override
   String get attachmentsDownload => 'Atsisiųsti';
@@ -4943,8 +5050,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get attachmentsDownloading => 'Atsisiunčiama…';
 
   @override
-  String get attachmentsTooLarge =>
-      'Per didelis, kad būtų galima peržiūrėti čia.';
+  String get attachmentsTooLarge => 'Per didelis, kad būtų galima peržiūrėti čia.';
 
   @override
   String attachmentsTruncated(String shown, String total) {
@@ -4952,8 +5058,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get attachmentsPdfUnavailable =>
-      'Šio PDF čia parodyti negalima (galbūt jis apsaugotas slaptažodžiu).';
+  String get attachmentsPdfUnavailable => 'Šio PDF čia parodyti negalima (galbūt jis apsaugotas slaptažodžiu).';
 
   @override
   String attachmentsPageOf(int page, int count) {
@@ -4997,8 +5102,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get attachmentsCopied => 'Nukopijuota';
 
   @override
-  String get attachmentsImageUnavailable =>
-      'Šio vaizdo čia parodyti negalima. Pabandykite „Atidaryti su…“.';
+  String get attachmentsImageUnavailable => 'Šio vaizdo čia parodyti negalima. Pabandykite „Atidaryti su…“.';
 
   @override
   String get attachmentsEmlNoSubject => '(Be temos)';
@@ -5020,11 +5124,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String attachmentsEmlAttachments(int count, String names) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Pridėta: $names',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Pridėta: $names');
     return '$_temp0';
   }
 
@@ -5239,8 +5339,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get calendarOutdated => 'Pasenęs';
 
   @override
-  String get calendarOutdatedDetail =>
-      'Šis kvietimas vėliau buvo atnaujintas; galioja naujesnis.';
+  String get calendarOutdatedDetail => 'Šis kvietimas vėliau buvo atnaujintas; galioja naujesnis.';
 
   @override
   String calendarLocationRemoved(String location) {
@@ -5296,31 +5395,19 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String calendarAcceptedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count priėmė',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count priėmė');
     return '$_temp0';
   }
 
   @override
   String calendarMaybeCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count galbūt',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count galbūt');
     return '$_temp0';
   }
 
   @override
   String calendarDeclinedCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count atmetė',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count atmetė');
     return '$_temp0';
   }
 
@@ -5383,8 +5470,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get calendarNoCalendarApp =>
-      'Nėra kalendoriaus programos, į kurią būtų galima įtraukti įvykį.';
+  String get calendarNoCalendarApp => 'Nėra kalendoriaus programos, į kurią būtų galima įtraukti įvykį.';
 
   @override
   String get calendarCantOpenCalendar => 'Nepavyko atidaryti kalendoriaus.';
@@ -5420,30 +5506,20 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get calendarNoOrganizer =>
-      'Šis kvietimas neturi organizatoriaus, kuriam būtų galima atsakyti.';
+  String get calendarNoOrganizer => 'Šis kvietimas neturi organizatoriaus, kuriam būtų galima atsakyti.';
 
   @override
-  String get calendarNoAccount =>
-      'Nėra paskyros, iš kurios būtų galima atsakyti.';
+  String get calendarNoAccount => 'Nėra paskyros, iš kurios būtų galima atsakyti.';
 
   @override
   String calendarReplySending(String answer, String name) {
-    String _temp0 = intl.Intl.selectLogic(answer, {
-      'accepted': 'Priimta',
-      'tentative': 'Galbūt',
-      'other': 'Atmesta',
-    });
+    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Priimta', 'tentative': 'Galbūt', 'other': 'Atmesta'});
     return '$_temp0 · siunčiamas atsakymas: $name…';
   }
 
   @override
   String calendarReplySent(String answer) {
-    String _temp0 = intl.Intl.selectLogic(answer, {
-      'accepted': 'Priimta',
-      'tentative': 'Galbūt',
-      'other': 'Atmesta',
-    });
+    String _temp0 = intl.Intl.selectLogic(answer, {'accepted': 'Priimta', 'tentative': 'Galbūt', 'other': 'Atmesta'});
     return '$_temp0 · atsakymas išsiųstas';
   }
 
@@ -5499,8 +5575,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get keyboardToggleFlag => 'Pažymėti vėliavėle arba nuimti vėliavėlę';
 
   @override
-  String get keyboardCloseDraft =>
-      'Uždaryti (išsaugoti arba ištrinti juodraštį)';
+  String get keyboardCloseDraft => 'Uždaryti (išsaugoti arba ištrinti juodraštį)';
 
   @override
   String get keyboardOr => 'arba';
@@ -5524,8 +5599,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get keyboardKeyBackspace => 'Backspace';
 
   @override
-  String get mailingListsMuted =>
-      'Gija nutildyta. Nauji jos laiškai bus gaunami kaip skaityti.';
+  String get mailingListsMuted => 'Gija nutildyta. Nauji jos laiškai bus gaunami kaip skaityti.';
 
   @override
   String get mailingListsUnmuted => 'Gijos nutildymas atšauktas.';
@@ -5603,8 +5677,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get mailingListsTechnicalTitle => 'Techninės konferencijos';
 
   @override
-  String get mailingListsTechnicalEmpty =>
-      'El. pašto konferencijos bus rodomos čia, kai tik gausite jų laiškų.';
+  String get mailingListsTechnicalEmpty => 'El. pašto konferencijos bus rodomos čia, kai tik gausite jų laiškų.';
 
   @override
   String get mailingListsTechnicalFooter =>
@@ -5776,8 +5849,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get searchUnknownAccountFailed =>
-      'Nepavyko ieškoti paskyroje serveryje';
+  String get searchUnknownAccountFailed => 'Nepavyko ieškoti paskyroje serveryje';
 
   @override
   String searchChip(String term) {
@@ -5840,8 +5912,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get searchSettingsTitle => 'Smart Mailboxes';
 
   @override
-  String get searchSettingsLocalFooter =>
-      'Smart Mailboxes lieka šiame įrenginyje.';
+  String get searchSettingsLocalFooter => 'Smart Mailboxes lieka šiame įrenginyje.';
 
   @override
   String searchSettingsServerFooter(String account) {
@@ -5852,15 +5923,13 @@ class AppLocalizationsLt extends AppLocalizations {
   String get searchSyncVia => 'Sinchronizuoti per';
 
   @override
-  String get searchSyncViaFooter =>
-      'Kiekviename įrenginyje pasirinkite tą pačią paskyrą.';
+  String get searchSyncViaFooter => 'Kiekviename įrenginyje pasirinkite tą pačią paskyrą.';
 
   @override
   String get searchGmailCantKeep => 'Gmail negali saugoti Smart Mailboxes';
 
   @override
-  String get searchKeepOnDevice =>
-      'Saugoti Smart Mailboxes tik šiame įrenginyje';
+  String get searchKeepOnDevice => 'Saugoti Smart Mailboxes tik šiame įrenginyje';
 
   @override
   String get searchOnTheServer => 'Serveryje';
@@ -6142,8 +6211,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get sharedMoveOneAccount =>
-      'Kad perkeltumėte laiškus, pasirinkite juos iš vienos paskyros.';
+  String get sharedMoveOneAccount => 'Kad perkeltumėte laiškus, pasirinkite juos iš vienos paskyros.';
 
   @override
   String get sharedSnoozeTitle => 'Atidėti';
@@ -6221,8 +6289,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get accountSetupAddressTitle => 'Pridėti pašto paskyrą';
 
   @override
-  String get accountSetupAddressText =>
-      'Loupe randa daugumos paslaugų teikėjų nustatymus.';
+  String get accountSetupAddressText => 'Loupe randa daugumos paslaugų teikėjų nustatymus.';
 
   @override
   String get accountSetupNameHint => 'Jūsų vardas';
@@ -6251,8 +6318,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get accountSetupCheckServers =>
-      'Patikrinkite serverių pavadinimus ir prievadus.';
+  String get accountSetupCheckServers => 'Patikrinkite serverių pavadinimus ir prievadus.';
 
   @override
   String get accountSetupEnterPassword => 'Įveskite slaptažodį.';
@@ -6309,15 +6375,13 @@ class AppLocalizationsLt extends AppLocalizations {
   String get accountSetupUseAppPassword => 'Naudoti programėlės slaptažodį';
 
   @override
-  String get accountSetupUseAppPasswordInstead =>
-      'Vietoj to naudoti programėlės slaptažodį';
+  String get accountSetupUseAppPasswordInstead => 'Vietoj to naudoti programėlės slaptažodį';
 
   @override
   String get accountSetupUseDifferentAddress => 'Naudoti kitą adresą';
 
   @override
-  String get accountSetupHowToCreateAppPassword =>
-      'Kaip sukurti programėlės slaptažodį';
+  String get accountSetupHowToCreateAppPassword => 'Kaip sukurti programėlės slaptažodį';
 
   @override
   String get accountSetupHowToCreateOne => 'Kaip jį sukurti';
@@ -6347,16 +6411,14 @@ class AppLocalizationsLt extends AppLocalizations {
       'iCloud Mail reikia konkrečiai programėlei skirto slaptažodžio, o ne jūsų Apple paskyros slaptažodžio.';
 
   @override
-  String get accountSetupYahooNote =>
-      'Yahoo Mail reikia programėlės slaptažodžio, o ne jūsų paskyros slaptažodžio.';
+  String get accountSetupYahooNote => 'Yahoo Mail reikia programėlės slaptažodžio, o ne jūsų paskyros slaptažodžio.';
 
   @override
   String get accountSetupFastmailJmapNote =>
       'Loupe jungiasi prie Fastmail per JMAP su API prieigos raktu: Settings › Privacy & Security › Manage API tokens, skirtu JMAP, su prieiga prie el. pašto ir siuntimo.';
 
   @override
-  String get accountSetupFastmailNote =>
-      'Fastmail pašto programoms reikia programėlės slaptažodžio.';
+  String get accountSetupFastmailNote => 'Fastmail pašto programoms reikia programėlės slaptažodžio.';
 
   @override
   String get accountSetupServerSettings => 'Serverio nustatymai';
@@ -6438,12 +6500,10 @@ class AppLocalizationsLt extends AppLocalizations {
       'Slaptažodis atmestas. Naudokite programėlės slaptažodį, o ne paskyros slaptažodį.';
 
   @override
-  String get accountSetupPasswordRejected =>
-      'Slaptažodis atmestas. Patikrinkite jį ir bandykite dar kartą.';
+  String get accountSetupPasswordRejected => 'Slaptažodis atmestas. Patikrinkite jį ir bandykite dar kartą.';
 
   @override
-  String get accountSetupServerUnreachable =>
-      'Nepavyksta pasiekti serverio. Patikrinkite serverio nustatymus ir ryšį.';
+  String get accountSetupServerUnreachable => 'Nepavyksta pasiekti serverio. Patikrinkite serverio nustatymus ir ryšį.';
 
   @override
   String accountSetupCertificateUntrusted(String details) {
@@ -6517,11 +6577,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get accountSetupSigningIn => 'Prisijungiama…';
 
   @override
-  String accountSetupSignInExpired(
-    String provider,
-    String email,
-    String account,
-  ) {
+  String accountSetupSignInExpired(String provider, String email, String account) {
     return '$provider nebepriima Loupe prisijungimo adresui $email, todėl $account nesinchronizuojama. Prisijunkite iš naujo, kad gautumėte jos laiškus.';
   }
 
@@ -6529,8 +6585,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get accountImportTitle => 'Importuoti iš Thunderbird';
 
   @override
-  String get accountImportPointCamera =>
-      'Nukreipkite kamerą į Thunderbird rodomą QR kodą.';
+  String get accountImportPointCamera => 'Nukreipkite kamerą į Thunderbird rodomą QR kodą.';
 
   @override
   String accountImportProgress(int scanned, int total) {
@@ -6591,24 +6646,20 @@ class AppLocalizationsLt extends AppLocalizations {
       'Šis kodas yra iš naujo eksporto, todėl anksčiau nuskaityti kodai atidėti į šalį.';
 
   @override
-  String get accountImportNotThunderbird =>
-      'Tai ne Thunderbird paskyros kodas.';
+  String get accountImportNotThunderbird => 'Tai ne Thunderbird paskyros kodas.';
 
   @override
   String get accountImportNewerVersion =>
       'Šis kodas yra iš naujesnės Thunderbird versijos. Atnaujinkite Loupe, kad jį importuotumėte.';
 
   @override
-  String get accountImportDamaged =>
-      'Šio Thunderbird kodo nepavyko perskaityti.';
+  String get accountImportDamaged => 'Šio Thunderbird kodo nepavyko perskaityti.';
 
   @override
-  String get accountImportTooLarge =>
-      'Šis kodas per didelis, kad būtų Thunderbird eksportas.';
+  String get accountImportTooLarge => 'Šis kodas per didelis, kad būtų Thunderbird eksportas.';
 
   @override
-  String get accountImportCouldNotOpenSettings =>
-      'Nepavyko atidaryti nustatymų.';
+  String get accountImportCouldNotOpenSettings => 'Nepavyko atidaryti nustatymų.';
 
   @override
   String get accountImportCameraOffTitle => 'Prieiga prie kameros išjungta';
@@ -6621,15 +6672,13 @@ class AppLocalizationsLt extends AppLocalizations {
   String get accountImportNoCameraTitle => 'Kameros nėra';
 
   @override
-  String get accountImportNoCameraText =>
-      'Loupe čia negali naudoti kameros. Vietoj to įklijuokite kodo tekstą.';
+  String get accountImportNoCameraText => 'Loupe čia negali naudoti kameros. Vietoj to įklijuokite kodo tekstą.';
 
   @override
   String get accountImportCameraFailedTitle => 'Kamera neįsijungė';
 
   @override
-  String get accountImportCameraFailedText =>
-      'Bandykite dar kartą arba vietoj to įklijuokite kodo tekstą.';
+  String get accountImportCameraFailedText => 'Bandykite dar kartą arba vietoj to įklijuokite kodo tekstą.';
 
   @override
   String get accountImportOpenSettings => 'Atidaryti nustatymus';
@@ -6648,24 +6697,19 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get accountImportNoneReadable =>
-      'Nepavyko perskaityti nė vienos šiuose koduose esančios paskyros.';
+  String get accountImportNoneReadable => 'Nepavyko perskaityti nė vienos šiuose koduose esančios paskyros.';
 
   @override
-  String get accountImportChoose =>
-      'Pasirinkite paskyras, kurias norite pridėti prie Loupe.';
+  String get accountImportChoose => 'Pasirinkite paskyras, kurias norite pridėti prie Loupe.';
 
   @override
   String accountImportMissingCodes(int count, String codes, int total) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other:
-          'Nenuskaityta $count kodų iš $total ($codes), todėl jų paskyros nerodomos.',
-      few:
-          'Nenuskaityti $count kodai iš $total ($codes), todėl jų paskyros nerodomos.',
-      one:
-          'Nenuskaitytas $count kodas iš $total ($codes), todėl jo paskyros nerodomos.',
+      other: 'Nenuskaityta $count kodų iš $total ($codes), todėl jų paskyros nerodomos.',
+      few: 'Nenuskaityti $count kodai iš $total ($codes), todėl jų paskyros nerodomos.',
+      one: 'Nenuskaitytas $count kodas iš $total ($codes), todėl jo paskyros nerodomos.',
     );
     return '$_temp0';
   }
@@ -6697,8 +6741,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get accountImportScanAgain => 'Nuskaityti dar kartą';
 
   @override
-  String get accountImportAlreadyAdded =>
-      'Paskyra su šiuo adresu jau yra Loupe.';
+  String get accountImportAlreadyAdded => 'Paskyra su šiuo adresu jau yra Loupe.';
 
   @override
   String accountImportSignsInWith(String provider) {
@@ -6718,8 +6761,7 @@ class AppLocalizationsLt extends AppLocalizations {
       'Thunderbird prie šios paskyros jungiasi naršyklėje. Loupe to dar negali: naudokite programėlės slaptažodį, jei jūsų paslaugų teikėjas jį siūlo.';
 
   @override
-  String get accountImportUnencrypted =>
-      'Jungiasi be šifravimo. Naudokite tai tik savo tinkle.';
+  String get accountImportUnencrypted => 'Jungiasi be šifravimo. Naudokite tai tik savo tinkle.';
 
   @override
   String get accountImportEnterAgain => 'Įveskite dar kartą';
@@ -6749,20 +6791,16 @@ class AppLocalizationsLt extends AppLocalizations {
   String get accountImportPasteTitle => 'Įklijuoti eksporto tekstą';
 
   @override
-  String get accountImportPasteText =>
-      'Įklijuokite Thunderbird eksporto kodo tekstą, po vieną kodą eilutėje.';
+  String get accountImportPasteText => 'Įklijuokite Thunderbird eksporto kodo tekstą, po vieną kodą eilutėje.';
 
   @override
-  String get accountImportPop3 =>
-      'POP3 paskyros nepalaikomos. Loupe laiškus laiko serveryje naudodama IMAP.';
+  String get accountImportPop3 => 'POP3 paskyros nepalaikomos. Loupe laiškus laiko serveryje naudodama IMAP.';
 
   @override
-  String get accountImportKerberos =>
-      'Ši paskyra jungiasi naudodama Kerberos, kurio Loupe nepalaiko.';
+  String get accountImportKerberos => 'Ši paskyra jungiasi naudodama Kerberos, kurio Loupe nepalaiko.';
 
   @override
-  String get accountImportNtlm =>
-      'Ši paskyra jungiasi naudodama NTLM, kurio Loupe nepalaiko.';
+  String get accountImportNtlm => 'Ši paskyra jungiasi naudodama NTLM, kurio Loupe nepalaiko.';
 
   @override
   String get accountImportClientCertificate =>
@@ -6776,19 +6814,16 @@ class AppLocalizationsLt extends AppLocalizations {
   String get accountImportEnterPassword => 'Įveskite slaptažodį.';
 
   @override
-  String get accountImportEnterAppPassword =>
-      'Įveskite programėlės slaptažodį.';
+  String get accountImportEnterAppPassword => 'Įveskite programėlės slaptažodį.';
 
   @override
   String get accountImportEnterApiToken => 'Įveskite API prieigos raktą.';
 
   @override
-  String get accountImportStorageFailed =>
-      'Loupe nepavyko atidaryti savo paskyrų saugyklos. Bandykite vėliau.';
+  String get accountImportStorageFailed => 'Loupe nepavyko atidaryti savo paskyrų saugyklos. Bandykite vėliau.';
 
   @override
-  String get accountImportFailed =>
-      'Nepavyko pridėti paskyros. Bandykite dar kartą arba pridėkite ją rankiniu būdu.';
+  String get accountImportFailed => 'Nepavyko pridėti paskyros. Bandykite dar kartą arba pridėkite ją rankiniu būdu.';
 
   @override
   String get composeNewMessageTitle => 'Naujas laiškas';
@@ -6808,8 +6843,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get composeSendHint => 'Paspauskite ilgai, kad išsiųstumėte vėliau';
 
   @override
-  String get composeNoAccount =>
-      'Kad galėtumėte siųsti laiškus, pridėkite paskyrą.';
+  String get composeNoAccount => 'Kad galėtumėte siųsti laiškus, pridėkite paskyrą.';
 
   @override
   String get composeTo => 'Kam:';
@@ -6887,8 +6921,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get composeDraftNotFound => 'Nepavyko rasti juodraščio.';
 
   @override
-  String get composeAttachmentsLost =>
-      'Priedų nepavyko atkurti. Pridėkite juos dar kartą.';
+  String get composeAttachmentsLost => 'Priedų nepavyko atkurti. Pridėkite juos dar kartą.';
 
   @override
   String composeSomeAttachmentsFailed(String error) {
@@ -6915,12 +6948,10 @@ class AppLocalizationsLt extends AppLocalizations {
   String get composeNoSubjectTitle => 'Nėra temos';
 
   @override
-  String get composeNoSubjectText =>
-      'Šis laiškas neturi temos. Vis tiek siųsti?';
+  String get composeNoSubjectText => 'Šis laiškas neturi temos. Vis tiek siųsti?';
 
   @override
-  String get composeSentBeforeChanges =>
-      'Jis buvo išsiųstas prieš jūsų pakeitimus, kurie išsaugoti juodraščiuose.';
+  String get composeSentBeforeChanges => 'Jis buvo išsiųstas prieš jūsų pakeitimus, kurie išsaugoti juodraščiuose.';
 
   @override
   String composeScheduled(String time) {
@@ -7045,23 +7076,17 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Uždarant Loupe vienas laiškas liko neišsiųstas.',
       'one': 'Uždarant Loupe laiškas gavėjui $name liko neišsiųstas.',
-      'other':
-          'Uždarant Loupe laiškas gavėjui $name ir kitiems liko neišsiųstas.',
+      'other': 'Uždarant Loupe laiškas gavėjui $name ir kitiems liko neišsiųstas.',
     });
     return '$_temp0';
   }
 
   @override
-  String composeRecoveryWithSubject(
-    String recipients,
-    String subject,
-    String name,
-  ) {
+  String composeRecoveryWithSubject(String recipients, String subject, String name) {
     String _temp0 = intl.Intl.selectLogic(recipients, {
       'none': 'Uždarant Loupe „$subject“ liko neišsiųstas.',
       'one': 'Uždarant Loupe „$subject“ gavėjui $name liko neišsiųstas.',
-      'other':
-          'Uždarant Loupe „$subject“ gavėjui $name ir kitiems liko neišsiųstas.',
+      'other': 'Uždarant Loupe „$subject“ gavėjui $name ir kitiems liko neišsiųstas.',
     });
     return '$_temp0';
   }
@@ -7109,8 +7134,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get outboxEmptyTitle => 'Nėra ką siųsti';
 
   @override
-  String get outboxEmptyText =>
-      'Vėliau siunčiami laiškai laukia čia, kol ateis laikas.';
+  String get outboxEmptyText => 'Vėliau siunčiami laiškai laukia čia, kol ateis laikas.';
 
   @override
   String get outboxSendNow => 'Siųsti dabar';
@@ -7157,8 +7181,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get outboxBeingSent => 'Šis laiškas siunčiamas.';
 
   @override
-  String get outboxActionFailed =>
-      'Nepavyko. Laiškas vis dar yra aplanke „Siunčiamieji“.';
+  String get outboxActionFailed => 'Nepavyko. Laiškas vis dar yra aplanke „Siunčiamieji“.';
 
   @override
   String get notificationsBadgeInboxes => 'Neskaityti gautuose';
@@ -7170,8 +7193,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get notificationsVipChannel => 'VIP';
 
   @override
-  String get notificationsVipChannelDescription =>
-      'Nauji laiškai iš jūsų VIP bet kurioje paskyroje';
+  String get notificationsVipChannelDescription => 'Nauji laiškai iš jūsų VIP bet kurioje paskyroje';
 
   @override
   String notificationsAccountChannelDescription(String email) {
@@ -7223,34 +7245,28 @@ class AppLocalizationsLt extends AppLocalizations {
   String get platformInstantText => 'Momentinis pristatymas įjungtas';
 
   @override
-  String get platformErrorBox =>
-      'Rodant šią dalį kažkas nepavyko. Grįžkite ir bandykite dar kartą.';
+  String get platformErrorBox => 'Rodant šią dalį kažkas nepavyko. Grįžkite ir bandykite dar kartą.';
 
   @override
-  String get welcomeTagline =>
-      'Paštas, paprastas paviršiuje\nir galingas viduje.';
+  String get welcomeTagline => 'Paštas, paprastas paviršiuje\nir galingas viduje.';
 
   @override
-  String get welcomeAccountsTitle =>
-      'Visos paskyros vienoje ramioje pašto dėžutėje';
+  String get welcomeAccountsTitle => 'Visos paskyros vienoje ramioje pašto dėžutėje';
 
   @override
-  String get welcomeAccountsText =>
-      'Gmail, Outlook, iCloud, Fastmail ir bet kuris IMAP ar JMAP serveris.';
+  String get welcomeAccountsText => 'Gmail, Outlook, iCloud, Fastmail ir bet kuris IMAP ar JMAP serveris.';
 
   @override
   String get welcomeSearchTitle => 'Paieška, kuri randa';
 
   @override
-  String get welcomeSearchText =>
-      'Akimirksniu gaunami rezultatai jūsų telefone, paskui – iš serverio.';
+  String get welcomeSearchText => 'Akimirksniu gaunami rezultatai jūsų telefone, paskui – iš serverio.';
 
   @override
   String get welcomePrivacyTitle => 'Privatumas pagal sumanymą';
 
   @override
-  String get welcomePrivacyText =>
-      'Jokio sekimo. Nuotoliniai vaizdai lieka blokuojami, kol neleisite.';
+  String get welcomePrivacyText => 'Jokio sekimo. Nuotoliniai vaizdai lieka blokuojami, kol neleisite.';
 
   @override
   String get welcomeAddAccount => 'Pridėti paskyrą';
@@ -7280,8 +7296,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get searchAskFailed => 'Loupe nepavyko to paversti paieška.';
 
   @override
-  String get searchAskDemoNote =>
-      'Išvertė įtaisytoji demonstracija, ne modelis.';
+  String get searchAskDemoNote => 'Išvertė įtaisytoji demonstracija, ne modelis.';
 
   @override
   String get settingsAiHeader => 'Privatus DI';
@@ -7298,19 +7313,16 @@ class AppLocalizationsLt extends AppLocalizations {
       'Naudojamas tik jūsų pasirinktas teikėjas. Jei jam nepavyksta arba jis nenustatytas, Loupe tai pasako ir niekur kitur nieko nesiunčia.';
 
   @override
-  String get settingsAiNotSetUpFooter =>
-      'Šis teikėjas dar nenustatytas, todėl funkcijos nerodo DI dalių.';
+  String get settingsAiNotSetUpFooter => 'Šis teikėjas dar nenustatytas, todėl funkcijos nerodo DI dalių.';
 
   @override
   String get settingsAiDemo => 'Įtaisyta demonstracinė versija';
 
   @override
-  String get settingsAiDemoDetail =>
-      'Šiame telefone. Be modelio: kelios taisyklės funkcijoms išbandyti.';
+  String get settingsAiDemoDetail => 'Šiame telefone. Be modelio: kelios taisyklės funkcijoms išbandyti.';
 
   @override
-  String get settingsAiAnthropicDetail =>
-      'Debesis: Claude su jūsų pačių API raktu.';
+  String get settingsAiAnthropicDetail => 'Debesis: Claude su jūsų pačių API raktu.';
 
   @override
   String get settingsAiServer => 'Mano serveris';
@@ -7323,8 +7335,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsAiOnPhone => 'Šiame telefone';
 
   @override
-  String get settingsAiOnPhoneDetail =>
-      'Dar nepasiekiama: įrenginio modelis telefonuose dar bandomas.';
+  String get settingsAiOnPhoneDetail => 'Dar nepasiekiama: įrenginio modelis telefonuose dar bandomas.';
 
   @override
   String get settingsAiNotSetUp => 'Nenustatyta';
@@ -7375,15 +7386,13 @@ class AppLocalizationsLt extends AppLocalizations {
       'Įskaitant API kelią, pavyzdžiui, http://192.168.1.20:11434/v1, skirtą Ollama.';
 
   @override
-  String get settingsAiServerAddressInvalid =>
-      'Tai nėra http:// ar https:// adresas.';
+  String get settingsAiServerAddressInvalid => 'Tai nėra http:// ar https:// adresas.';
 
   @override
   String get settingsAiServerModelTitle => 'Modelio pavadinimas';
 
   @override
-  String get settingsAiServerModelMessage =>
-      'Taip, kaip jį vadina jūsų serveris, pavyzdžiui, llama3.2.';
+  String get settingsAiServerModelMessage => 'Taip, kaip jį vadina jūsų serveris, pavyzdžiui, llama3.2.';
 
   @override
   String get settingsAiTestConnection => 'Tikrinti ryšį';
@@ -7400,8 +7409,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsAiTestFailed => 'Patikra nepavyko';
 
   @override
-  String get settingsAiTestInvalid =>
-      'Modelis atsakė, bet ne tokiu pavidalu, kokio prašė Loupe.';
+  String get settingsAiTestInvalid => 'Modelis atsakė, bet ne tokiu pavidalu, kokio prašė Loupe.';
 
   @override
   String get settingsAiRemoveKey => 'Pašalinti raktą';
@@ -7446,8 +7454,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsAiFeaturesHeader => 'Funkcijos';
 
   @override
-  String get settingsAiFeaturesFooter =>
-      'Išjungta funkcija nerodo DI dalies ir neklausia jokio modelio.';
+  String get settingsAiFeaturesFooter => 'Išjungta funkcija nerodo DI dalies ir neklausia jokio modelio.';
 
   @override
   String get settingsAiFeatureBrief => 'Trumpai';
@@ -7471,36 +7478,29 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsAiFeatureMatters => 'Reikalo būsena';
 
   @override
-  String get settingsAiFeatureSearchDetail =>
-      'Paieškoje: sakinys tampa paieška, kurią galite patikrinti.';
+  String get settingsAiFeatureSearchDetail => 'Paieškoje: sakinys tampa paieška, kurią galite patikrinti.';
 
   @override
-  String get settingsAiFeatureBriefDetail =>
-      'Laiške: ko jis iš jūsų prašo, su ištraukomis.';
+  String get settingsAiFeatureBriefDetail => 'Laiške: ko jis iš jūsų prašo, su ištraukomis.';
 
   @override
-  String get settingsAiFeatureActionsDetail =>
-      'Siūlo įrašus aplankams „Laukia manęs“ ir „Laukia kitų“.';
+  String get settingsAiFeatureActionsDetail => 'Siūlo įrašus aplankams „Laukia manęs“ ir „Laukia kitų“.';
 
   @override
   String get settingsAiFeatureRulesDetail =>
       'Taisyklėse: aprašymas tampa taisykle, kurią patikrinate prieš išsaugodami.';
 
   @override
-  String get settingsAiFeatureChangesDetail =>
-      'Laiškų palyginime: kas pasikeitė prasme, su šaltiniais.';
+  String get settingsAiFeatureChangesDetail => 'Laiškų palyginime: kas pasikeitė prasme, su šaltiniais.';
 
   @override
-  String get settingsAiFeatureDocumentsDetail =>
-      'Svarbiausi pridėtų dokumentų faktai su jų puslapiais.';
+  String get settingsAiFeatureDocumentsDetail => 'Svarbiausi pridėtų dokumentų faktai su jų puslapiais.';
 
   @override
-  String get settingsAiFeatureReplyCheckDetail =>
-      'Prieš siunčiant: ką atsakymas galėjo praleisti.';
+  String get settingsAiFeatureReplyCheckDetail => 'Prieš siunčiant: ką atsakymas galėjo praleisti.';
 
   @override
-  String get settingsAiFeatureMattersDetail =>
-      'Naujausia reikalo būsena pagal jo laiškus.';
+  String get settingsAiFeatureMattersDetail => 'Naujausia reikalo būsena pagal jo laiškus.';
 
   @override
   String get settingsAiLocalOnlyHeader => 'Laikyti paštą telefone';

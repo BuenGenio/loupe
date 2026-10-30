@@ -26,6 +26,7 @@ class MessageRow extends StatelessWidget {
     this.showRecipients = false,
     this.wakeTime,
     this.projects = const [],
+    this.footer,
     this.onTap,
     this.onLongPress,
   });
@@ -65,6 +66,9 @@ class MessageRow extends StatelessWidget {
   /// The projects the message is in (besides the one listed), shown as
   /// small coloured badges after its tags.
   final List<({String name, Color color})> projects;
+  /// Under the preview: in Needs My Action and Waiting on Others, how many
+  /// of the conversation's actions are open there and when one is due.
+  final Widget? footer;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
 
@@ -233,6 +237,7 @@ class MessageRow extends StatelessWidget {
             padding: const EdgeInsets.only(top: 3),
             child: Text(location!, style: styles.caption, maxLines: 1, overflow: TextOverflow.ellipsis),
           ),
+        ?footer,
       ],
     );
 
