@@ -292,6 +292,9 @@ abstract final class LoupeIcons {
   static const IconData mobileData = FluentIcons.cellular_data_1_24_regular;
   static const IconData fileError = FluentIcons.document_error_24_regular;
 
+  /// Documents: search inside attachments.
+  static const IconData documents = FluentIcons.document_search_24_regular;
+
   // Calendar invitations ------------------------------------------------------
 
   static const IconData recurring = FluentIcons.arrow_repeat_all_24_regular;

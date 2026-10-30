@@ -3046,6 +3046,185 @@
   "sharedNotJunk": "Not Junk",
   "@sharedNotJunk": {"description": "Menu item: moves a message out of Junk."},
 
+  "@@x-section-documents": "Documents: search inside attachments, Key Facts, versions",
+
+  "documentsTitle": "Documents",
+  "@documentsTitle": {"description": "Title of the screen that lists and searches the text of downloaded attachments (PDFs, text files), and its row on the Mailboxes screen."},
+  "documentsSearchPlaceholder": "Search in Documents",
+  "@documentsSearchPlaceholder": {"description": "Placeholder of the search field on the Documents screen."},
+  "documentsSearchInDocuments": "Search in Documents",
+  "@documentsSearchInDocuments": {"description": "Row under the results of a mail search: searches the same words inside downloaded attachments instead."},
+  "documentsLibraryCount": "{count, plural, =1{1 downloaded document} other{{count} downloaded documents}}",
+  "@documentsLibraryCount": {
+    "description": "Header of the Documents screen's list: how many attachments are on this phone.",
+    "placeholders": {"count": {"type": "int", "example": "14"}}
+  },
+  "documentsLibraryCountWithUnreadable": "{count, plural, =1{1 downloaded document} other{{count} downloaded documents}} · {unreadable, plural, =1{1 can’t be read} other{{unreadable} can’t be read}}",
+  "@documentsLibraryCountWithUnreadable": {
+    "description": "Header of the Documents screen's list, when some attachments can't be read (password protected, scanned, unsupported).",
+    "placeholders": {"count": {"type": "int", "example": "14"}, "unreadable": {"type": "int", "example": "1"}}
+  },
+  "documentsCoverage": "{count, plural, =1{Searched 1 downloaded document} other{Searched {count} downloaded documents}}",
+  "@documentsCoverage": {
+    "description": "Above search results in documents: what was searched. Never the whole mailbox, only attachments on this phone.",
+    "placeholders": {"count": {"type": "int", "example": "14"}}
+  },
+  "documentsCoverageWithUnreadable": "{count, plural, =1{Searched 1 downloaded document} other{Searched {count} downloaded documents}} · {unreadable, plural, =1{1 couldn’t be read} other{{unreadable} couldn’t be read}}",
+  "@documentsCoverageWithUnreadable": {
+    "description": "Above search results in documents, when some attachments couldn't be searched.",
+    "placeholders": {"count": {"type": "int", "example": "14"}, "unreadable": {"type": "int", "example": "1"}}
+  },
+  "documentsScopeNote": "Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.",
+  "@documentsScopeNote": {"description": "Footnote on the Documents screen: only downloaded attachments are searched."},
+  "documentsEmpty": "No Documents Yet",
+  "@documentsEmpty": {"description": "Title on the Documents screen when no attachment has been downloaded."},
+  "documentsEmptyDetail": "PDFs and text files you open from mail show up here, so you can search inside them.",
+  "documentsNoResults": "No Matches",
+  "@documentsNoResults": {"description": "Title when a search in documents finds nothing."},
+  "documentsNoResultsDetail": "No downloaded document contains “{query}”.",
+  "@documentsNoResultsDetail": {"placeholders": {"query": {"type": "String", "example": "4.19%"}}},
+  "documentsMatchedOnPage": "Matched on page {page}",
+  "@documentsMatchedOnPage": {
+    "description": "Under a document search result: where the exact words were found.",
+    "placeholders": {"page": {"type": "int", "example": "2"}}
+  },
+  "documentsMatchedOnLine": "Matched on line {line}",
+  "@documentsMatchedOnLine": {
+    "description": "Under a search result in a text file, which has no pages.",
+    "placeholders": {"line": {"type": "int", "example": "12"}}
+  },
+  "documentsMoreMatches": "{count, plural, =1{1 more match} other{{count} more matches}}",
+  "@documentsMoreMatches": {
+    "description": "After the first matches in one document: how many more there are.",
+    "placeholders": {"count": {"type": "int", "example": "3"}}
+  },
+  "documentsPage": "Page {page}",
+  "@documentsPage": {
+    "description": "A page of a document: a row in the list of pages, and the title of the sheet showing its text.",
+    "placeholders": {"page": {"type": "int", "example": "2"}}
+  },
+  "documentsReading": "Reading…",
+  "@documentsReading": {"description": "While Loupe reads a document's text."},
+  "documentsStatusNotDownloaded": "Not downloaded: open it to read and search it.",
+  "documentsStatusEncrypted": "Password protected: Loupe can’t read it.",
+  "documentsStatusNoText": "No text found: it may be a scan or a photo, which Loupe can’t read yet.",
+  "documentsStatusEmpty": "This file has no text.",
+  "documentsStatusUnsupported": "Loupe can’t read this kind of document yet.",
+  "documentsStatusTooLarge": "Too large to read on this phone.",
+  "documentsStatusDamaged": "Couldn’t be read: the file may be damaged.",
+  "documentsStatusPartial": "Read {read} of {total, plural, =1{1 page} other{{total} pages}}; the rest isn’t searched.",
+  "@documentsStatusPartial": {
+    "description": "A long or partly damaged document: only some pages were read.",
+    "placeholders": {"read": {"type": "int", "example": "200"}, "total": {"type": "int", "example": "340"}}
+  },
+  "documentsStatusPartialText": "Only the beginning was read; the rest isn’t searched.",
+  "@documentsStatusPartialText": {"description": "A very long text file, or a document cut short before its pages could be counted."},
+  "documentsOpenDocument": "Open Document",
+  "@documentsOpenDocument": {"description": "Button: opens the attachment in the viewer."},
+  "documentsOpenMessage": "Open Message",
+  "@documentsOpenMessage": {"description": "Button: opens the message the attachment came with."},
+  "documentsDetails": "Document Details",
+  "@documentsDetails": {"description": "Button in the attachment viewer: the document's text, Key Facts and other copies."},
+  "documentsFingerprint": "Contents fingerprint {hash}",
+  "@documentsFingerprint": {
+    "description": "Identifies the file's bytes (the start of its SHA-256), so two copies can be told apart whatever their names.",
+    "placeholders": {"hash": {"type": "String", "example": "3f2a 9c1d"}}
+  },
+  "documentsPagesHeader": "Text by Page",
+  "@documentsPagesHeader": {"description": "Section header: the text Loupe read from each page."},
+  "documentsVersionsHeader": "Other Copies",
+  "@documentsVersionsHeader": {"description": "Section header: attachments with the same name in the same conversation or from the same sender."},
+  "documentsVersionDifferentEarlier": "Different contents from the earlier copy ({date})",
+  "@documentsVersionDifferentEarlier": {
+    "description": "Under an attachment: an earlier attachment with the same name has different bytes.",
+    "placeholders": {"date": {"type": "String", "example": "28 Oct"}}
+  },
+  "documentsVersionDifferentLater": "A newer copy ({date}) has different contents",
+  "@documentsVersionDifferentLater": {"placeholders": {"date": {"type": "String", "example": "30 Oct"}}},
+  "documentsVersionSame": "Same contents as the copy of {date}",
+  "@documentsVersionSame": {
+    "description": "Another attachment with the same name has exactly the same bytes.",
+    "placeholders": {"date": {"type": "String", "example": "28 Oct"}}
+  },
+  "documentsVersionNotDownloaded": "Same name as the copy of {date}; contents not compared until both are downloaded",
+  "@documentsVersionNotDownloaded": {
+    "description": "A same-named attachment can't be compared because its bytes aren't on the phone; name and size prove nothing.",
+    "placeholders": {"date": {"type": "String", "example": "28 Oct"}}
+  },
+  "documentsChange": "{before} → {after}",
+  "@documentsChange": {
+    "description": "A Key Fact that changed between two copies, old value then new.",
+    "placeholders": {"before": {"type": "String", "example": "4.29%"}, "after": {"type": "String", "example": "4.19%"}}
+  },
+  "documentsNoFactChanges": "The Key Facts are the same; other text differs.",
+  "documentsKeyFacts": "Key Facts",
+  "@documentsKeyFacts": {"description": "Title of the card with a document's important fields (rate, amount due, date), each linked to its page. Also the button that opens it."},
+  "documentsKeyFactsFind": "Find Key Facts",
+  "@documentsKeyFactsFind": {"description": "Button: asks the Private AI provider to read the document's important fields."},
+  "documentsKeyFactsWorking": "Reading the document…",
+  "documentsKeyFactsFailed": "Couldn’t find the Key Facts.",
+  "documentsKeyFactsDemoNote": "Made by the built-in demo, not a model.",
+  "@documentsKeyFactsDemoNote": {"description": "Under Key Facts made by the demo's rules."},
+  "documentsKeyFactsMadeBy": "Made by {provider}.",
+  "@documentsKeyFactsMadeBy": {
+    "description": "Under Key Facts: which AI provider and model made them.",
+    "placeholders": {"provider": {"type": "String", "example": "anthropic: claude-haiku"}}
+  },
+  "documentsKeyFactsHint": "Tap a fact to see where the document says it.",
+  "documentsKeyFactsNone": "Loupe has no Key Facts for this kind of document yet.",
+  "documentsKeyFactsPartial": "Only the first pages were read; facts on later pages are unknown.",
+  "documentsKeyFactsNotStated": "Not stated",
+  "@documentsKeyFactsNotStated": {"description": "Value of a Key Facts field the document doesn't state (or Loupe couldn't confirm)."},
+  "documentsKeyFactsConflicting": "Stated differently",
+  "@documentsKeyFactsConflicting": {"description": "Value of a Key Facts field the document gives two different values for; neither is chosen."},
+  "documentsEvidenceAlso": "Also on page {page}:",
+  "@documentsEvidenceAlso": {
+    "description": "In the sheet showing where a fact is stated: a second passage that gives another value.",
+    "placeholders": {"page": {"type": "int", "example": "3"}}
+  },
+  "documentsTypeMortgageIllustration": "Mortgage illustration",
+  "@documentsTypeMortgageIllustration": {"description": "Kind of document, next to the Key Facts title: a lender's personalised mortgage offer summary (UK: KFI/ESIS)."},
+  "documentsTypeInvoice": "Invoice",
+  "@documentsTypeInvoice": {"description": "Kind of document, next to the Key Facts title."},
+  "documentsTypeBooking": "Booking",
+  "@documentsTypeBooking": {"description": "Kind of document, next to the Key Facts title: a booking or appointment confirmation."},
+  "documentsTypeOther": "Other document",
+  "@documentsTypeOther": {"description": "Kind of document, next to the Key Facts title: none of the kinds Loupe has fields for."},
+  "documentsFieldInitialRate": "Initial rate",
+  "@documentsFieldInitialRate": {"description": "Key Facts field of a mortgage illustration: the interest rate of the first period."},
+  "documentsFieldRatePeriod": "Rate period",
+  "@documentsFieldRatePeriod": {"description": "Key Facts field of a mortgage illustration: how long the initial rate lasts."},
+  "documentsFieldMonthlyPayment": "Monthly payment",
+  "documentsFieldTerm": "Term",
+  "@documentsFieldTerm": {"description": "Key Facts field of a mortgage illustration: how long the mortgage runs (e.g. 30 years)."},
+  "documentsFieldLoanAmount": "Loan amount",
+  "documentsFieldArrangementFee": "Arrangement fee",
+  "@documentsFieldArrangementFee": {"description": "Key Facts field of a mortgage illustration: the lender's product fee."},
+  "documentsFieldValuationFee": "Valuation fee",
+  "documentsFieldBrokerFee": "Broker fee",
+  "documentsFieldEarlyRepaymentCharges": "Early repayment charges",
+  "documentsFieldTotalAmountPayable": "Total amount payable",
+  "documentsFieldAmountDue": "Amount due",
+  "@documentsFieldAmountDue": {"description": "Key Facts field of an invoice."},
+  "documentsFieldCurrency": "Currency",
+  "documentsFieldDueDate": "Due date",
+  "documentsFieldPayee": "Payee",
+  "@documentsFieldPayee": {"description": "Key Facts field of an invoice: who is to be paid."},
+  "documentsFieldReference": "Reference",
+  "@documentsFieldReference": {"description": "Key Facts field of an invoice or booking: its number or reference."},
+  "documentsFieldSubtotal": "Subtotal",
+  "documentsFieldTax": "Tax",
+  "@documentsFieldTax": {"description": "Key Facts field of an invoice: VAT or sales tax."},
+  "documentsFieldDate": "Date",
+  "@documentsFieldDate": {"description": "Key Facts field of a booking: the day of the appointment."},
+  "documentsFieldTime": "Time",
+  "@documentsFieldTime": {"description": "Key Facts field of a booking: the time of the appointment."},
+  "documentsFieldTimeZone": "Time zone",
+  "documentsFieldAddress": "Address",
+  "@documentsFieldAddress": {"description": "Key Facts field of a booking: where it takes place."},
+  "documentsFieldPerson": "Person",
+  "@documentsFieldPerson": {"description": "Key Facts field of a booking: who comes or who to see (a valuer, an engineer)."},
+
   "@@x-section-accounts": "Accounts and writing: welcome, account setup and import, compose, outbox, notifications",
 
   "accountSetupTitle": "Add Account",

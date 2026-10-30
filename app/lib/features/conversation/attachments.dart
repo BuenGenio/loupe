@@ -18,6 +18,7 @@ import '../attachments/attachment_gallery.dart';
 import '../attachments/attachment_icon.dart';
 import '../attachments/attachment_type.dart';
 import '../calendar/invitation.dart' show isCalendarAlternative;
+import '../documents/attachment_extras.dart';
 import 'sheets.dart';
 
 export '../attachments/attachment_gallery.dart' show AttachmentImage;
@@ -150,9 +151,11 @@ class _AttachmentTileState extends ConsumerState<AttachmentTile> {
                         formatBytes(_a.size),
                         style: theme.textTheme.bodySmall?.copyWith(color: colors.secondaryText),
                       ),
+                    AttachmentCopyNote(emailId: widget.emailId, attachment: _a),
                   ],
                 ),
               ),
+              AttachmentKeyFactsButton(emailId: widget.emailId, attachment: _a),
               if (_busy)
                 const SizedBox(
                   width: 44,

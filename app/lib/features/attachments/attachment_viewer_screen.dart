@@ -12,6 +12,7 @@ import '../../shared/format.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../conversation/sheets.dart' show showSnack;
+import '../documents/attachment_extras.dart';
 import '../openpgp/content_loader.dart';
 import '../smime/smime_import.dart';
 import 'attachment_actions.dart';
@@ -237,6 +238,7 @@ class _AttachmentViewerScreenState extends ConsumerState<AttachmentViewerScreen>
             title: a?.filename?.isNotEmpty == true ? a!.filename! : l10n.attachmentsUntitled,
             subtitle: subtitle == null ? null : Text(subtitle, key: const Key('attachment-subtitle')),
             trailing: [
+              if (a != null) DocumentDetailsButton(emailId: widget.emailId, attachment: a),
               BarIconButton(
                 key: _shareKey,
                 icon: LoupeIcons.share,

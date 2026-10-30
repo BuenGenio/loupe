@@ -8775,6 +8775,462 @@ abstract class AppLocalizations {
   /// **'Not Junk'**
   String get sharedNotJunk;
 
+  /// Title of the screen that lists and searches the text of downloaded attachments (PDFs, text files), and its row on the Mailboxes screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get documentsTitle;
+
+  /// Placeholder of the search field on the Documents screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Search in Documents'**
+  String get documentsSearchPlaceholder;
+
+  /// Row under the results of a mail search: searches the same words inside downloaded attachments instead.
+  ///
+  /// In en, this message translates to:
+  /// **'Search in Documents'**
+  String get documentsSearchInDocuments;
+
+  /// Header of the Documents screen's list: how many attachments are on this phone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 downloaded document} other{{count} downloaded documents}}'**
+  String documentsLibraryCount(int count);
+
+  /// Header of the Documents screen's list, when some attachments can't be read (password protected, scanned, unsupported).
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 downloaded document} other{{count} downloaded documents}} · {unreadable, plural, =1{1 can’t be read} other{{unreadable} can’t be read}}'**
+  String documentsLibraryCountWithUnreadable(int count, int unreadable);
+
+  /// Above search results in documents: what was searched. Never the whole mailbox, only attachments on this phone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Searched 1 downloaded document} other{Searched {count} downloaded documents}}'**
+  String documentsCoverage(int count);
+
+  /// Above search results in documents, when some attachments couldn't be searched.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Searched 1 downloaded document} other{Searched {count} downloaded documents}} · {unreadable, plural, =1{1 couldn’t be read} other{{unreadable} couldn’t be read}}'**
+  String documentsCoverageWithUnreadable(int count, int unreadable);
+
+  /// Footnote on the Documents screen: only downloaded attachments are searched.
+  ///
+  /// In en, this message translates to:
+  /// **'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.'**
+  String get documentsScopeNote;
+
+  /// Title on the Documents screen when no attachment has been downloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'No Documents Yet'**
+  String get documentsEmpty;
+
+  /// No description provided for @documentsEmptyDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'PDFs and text files you open from mail show up here, so you can search inside them.'**
+  String get documentsEmptyDetail;
+
+  /// Title when a search in documents finds nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'No Matches'**
+  String get documentsNoResults;
+
+  /// No description provided for @documentsNoResultsDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'No downloaded document contains “{query}”.'**
+  String documentsNoResultsDetail(String query);
+
+  /// Under a document search result: where the exact words were found.
+  ///
+  /// In en, this message translates to:
+  /// **'Matched on page {page}'**
+  String documentsMatchedOnPage(int page);
+
+  /// Under a search result in a text file, which has no pages.
+  ///
+  /// In en, this message translates to:
+  /// **'Matched on line {line}'**
+  String documentsMatchedOnLine(int line);
+
+  /// After the first matches in one document: how many more there are.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 more match} other{{count} more matches}}'**
+  String documentsMoreMatches(int count);
+
+  /// A page of a document: a row in the list of pages, and the title of the sheet showing its text.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page}'**
+  String documentsPage(int page);
+
+  /// While Loupe reads a document's text.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading…'**
+  String get documentsReading;
+
+  /// No description provided for @documentsStatusNotDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Not downloaded: open it to read and search it.'**
+  String get documentsStatusNotDownloaded;
+
+  /// No description provided for @documentsStatusEncrypted.
+  ///
+  /// In en, this message translates to:
+  /// **'Password protected: Loupe can’t read it.'**
+  String get documentsStatusEncrypted;
+
+  /// No description provided for @documentsStatusNoText.
+  ///
+  /// In en, this message translates to:
+  /// **'No text found: it may be a scan or a photo, which Loupe can’t read yet.'**
+  String get documentsStatusNoText;
+
+  /// No description provided for @documentsStatusEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'This file has no text.'**
+  String get documentsStatusEmpty;
+
+  /// No description provided for @documentsStatusUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe can’t read this kind of document yet.'**
+  String get documentsStatusUnsupported;
+
+  /// No description provided for @documentsStatusTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Too large to read on this phone.'**
+  String get documentsStatusTooLarge;
+
+  /// No description provided for @documentsStatusDamaged.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t be read: the file may be damaged.'**
+  String get documentsStatusDamaged;
+
+  /// A long or partly damaged document: only some pages were read.
+  ///
+  /// In en, this message translates to:
+  /// **'Read {read} of {total, plural, =1{1 page} other{{total} pages}}; the rest isn’t searched.'**
+  String documentsStatusPartial(int read, int total);
+
+  /// A very long text file, or a document cut short before its pages could be counted.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the beginning was read; the rest isn’t searched.'**
+  String get documentsStatusPartialText;
+
+  /// Button: opens the attachment in the viewer.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Document'**
+  String get documentsOpenDocument;
+
+  /// Button: opens the message the attachment came with.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Message'**
+  String get documentsOpenMessage;
+
+  /// Button in the attachment viewer: the document's text, Key Facts and other copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Document Details'**
+  String get documentsDetails;
+
+  /// Identifies the file's bytes (the start of its SHA-256), so two copies can be told apart whatever their names.
+  ///
+  /// In en, this message translates to:
+  /// **'Contents fingerprint {hash}'**
+  String documentsFingerprint(String hash);
+
+  /// Section header: the text Loupe read from each page.
+  ///
+  /// In en, this message translates to:
+  /// **'Text by Page'**
+  String get documentsPagesHeader;
+
+  /// Section header: attachments with the same name in the same conversation or from the same sender.
+  ///
+  /// In en, this message translates to:
+  /// **'Other Copies'**
+  String get documentsVersionsHeader;
+
+  /// Under an attachment: an earlier attachment with the same name has different bytes.
+  ///
+  /// In en, this message translates to:
+  /// **'Different contents from the earlier copy ({date})'**
+  String documentsVersionDifferentEarlier(String date);
+
+  /// No description provided for @documentsVersionDifferentLater.
+  ///
+  /// In en, this message translates to:
+  /// **'A newer copy ({date}) has different contents'**
+  String documentsVersionDifferentLater(String date);
+
+  /// Another attachment with the same name has exactly the same bytes.
+  ///
+  /// In en, this message translates to:
+  /// **'Same contents as the copy of {date}'**
+  String documentsVersionSame(String date);
+
+  /// A same-named attachment can't be compared because its bytes aren't on the phone; name and size prove nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Same name as the copy of {date}; contents not compared until both are downloaded'**
+  String documentsVersionNotDownloaded(String date);
+
+  /// A Key Fact that changed between two copies, old value then new.
+  ///
+  /// In en, this message translates to:
+  /// **'{before} → {after}'**
+  String documentsChange(String before, String after);
+
+  /// No description provided for @documentsNoFactChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'The Key Facts are the same; other text differs.'**
+  String get documentsNoFactChanges;
+
+  /// Title of the card with a document's important fields (rate, amount due, date), each linked to its page. Also the button that opens it.
+  ///
+  /// In en, this message translates to:
+  /// **'Key Facts'**
+  String get documentsKeyFacts;
+
+  /// Button: asks the Private AI provider to read the document's important fields.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Key Facts'**
+  String get documentsKeyFactsFind;
+
+  /// No description provided for @documentsKeyFactsWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading the document…'**
+  String get documentsKeyFactsWorking;
+
+  /// No description provided for @documentsKeyFactsFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t find the Key Facts.'**
+  String get documentsKeyFactsFailed;
+
+  /// Under Key Facts made by the demo's rules.
+  ///
+  /// In en, this message translates to:
+  /// **'Made by the built-in demo, not a model.'**
+  String get documentsKeyFactsDemoNote;
+
+  /// Under Key Facts: which AI provider and model made them.
+  ///
+  /// In en, this message translates to:
+  /// **'Made by {provider}.'**
+  String documentsKeyFactsMadeBy(String provider);
+
+  /// No description provided for @documentsKeyFactsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a fact to see where the document says it.'**
+  String get documentsKeyFactsHint;
+
+  /// No description provided for @documentsKeyFactsNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe has no Key Facts for this kind of document yet.'**
+  String get documentsKeyFactsNone;
+
+  /// No description provided for @documentsKeyFactsPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the first pages were read; facts on later pages are unknown.'**
+  String get documentsKeyFactsPartial;
+
+  /// Value of a Key Facts field the document doesn't state (or Loupe couldn't confirm).
+  ///
+  /// In en, this message translates to:
+  /// **'Not stated'**
+  String get documentsKeyFactsNotStated;
+
+  /// Value of a Key Facts field the document gives two different values for; neither is chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Stated differently'**
+  String get documentsKeyFactsConflicting;
+
+  /// In the sheet showing where a fact is stated: a second passage that gives another value.
+  ///
+  /// In en, this message translates to:
+  /// **'Also on page {page}:'**
+  String documentsEvidenceAlso(int page);
+
+  /// Kind of document, next to the Key Facts title: a lender's personalised mortgage offer summary (UK: KFI/ESIS).
+  ///
+  /// In en, this message translates to:
+  /// **'Mortgage illustration'**
+  String get documentsTypeMortgageIllustration;
+
+  /// Kind of document, next to the Key Facts title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice'**
+  String get documentsTypeInvoice;
+
+  /// Kind of document, next to the Key Facts title: a booking or appointment confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking'**
+  String get documentsTypeBooking;
+
+  /// Kind of document, next to the Key Facts title: none of the kinds Loupe has fields for.
+  ///
+  /// In en, this message translates to:
+  /// **'Other document'**
+  String get documentsTypeOther;
+
+  /// Key Facts field of a mortgage illustration: the interest rate of the first period.
+  ///
+  /// In en, this message translates to:
+  /// **'Initial rate'**
+  String get documentsFieldInitialRate;
+
+  /// Key Facts field of a mortgage illustration: how long the initial rate lasts.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate period'**
+  String get documentsFieldRatePeriod;
+
+  /// No description provided for @documentsFieldMonthlyPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly payment'**
+  String get documentsFieldMonthlyPayment;
+
+  /// Key Facts field of a mortgage illustration: how long the mortgage runs (e.g. 30 years).
+  ///
+  /// In en, this message translates to:
+  /// **'Term'**
+  String get documentsFieldTerm;
+
+  /// No description provided for @documentsFieldLoanAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan amount'**
+  String get documentsFieldLoanAmount;
+
+  /// Key Facts field of a mortgage illustration: the lender's product fee.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrangement fee'**
+  String get documentsFieldArrangementFee;
+
+  /// No description provided for @documentsFieldValuationFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Valuation fee'**
+  String get documentsFieldValuationFee;
+
+  /// No description provided for @documentsFieldBrokerFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Broker fee'**
+  String get documentsFieldBrokerFee;
+
+  /// No description provided for @documentsFieldEarlyRepaymentCharges.
+  ///
+  /// In en, this message translates to:
+  /// **'Early repayment charges'**
+  String get documentsFieldEarlyRepaymentCharges;
+
+  /// No description provided for @documentsFieldTotalAmountPayable.
+  ///
+  /// In en, this message translates to:
+  /// **'Total amount payable'**
+  String get documentsFieldTotalAmountPayable;
+
+  /// Key Facts field of an invoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount due'**
+  String get documentsFieldAmountDue;
+
+  /// No description provided for @documentsFieldCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get documentsFieldCurrency;
+
+  /// No description provided for @documentsFieldDueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date'**
+  String get documentsFieldDueDate;
+
+  /// Key Facts field of an invoice: who is to be paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Payee'**
+  String get documentsFieldPayee;
+
+  /// Key Facts field of an invoice or booking: its number or reference.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get documentsFieldReference;
+
+  /// No description provided for @documentsFieldSubtotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtotal'**
+  String get documentsFieldSubtotal;
+
+  /// Key Facts field of an invoice: VAT or sales tax.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax'**
+  String get documentsFieldTax;
+
+  /// Key Facts field of a booking: the day of the appointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get documentsFieldDate;
+
+  /// Key Facts field of a booking: the time of the appointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get documentsFieldTime;
+
+  /// No description provided for @documentsFieldTimeZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone'**
+  String get documentsFieldTimeZone;
+
+  /// Key Facts field of a booking: where it takes place.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get documentsFieldAddress;
+
+  /// Key Facts field of a booking: who comes or who to see (a valuer, an engineer).
+  ///
+  /// In en, this message translates to:
+  /// **'Person'**
+  String get documentsFieldPerson;
+
   /// Title of the account setup screen.
   ///
   /// In en, this message translates to:

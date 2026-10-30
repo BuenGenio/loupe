@@ -466,6 +466,17 @@ class _VirtualSection extends ConsumerWidget {
           onToggleVisible: () => v.toggle('tool.subscriptions'),
           onTap: () => context.push(Routes.subscriptions),
         ),
+      // Search inside downloaded attachments.
+      if (editing || v.visible('tool.documents'))
+        _MailboxTile(
+          key: const ValueKey('documents'),
+          title: l10n.documentsTitle,
+          icon: LoupeIcons.documents,
+          editing: editing,
+          visible: v.visible('tool.documents'),
+          onToggleVisible: () => v.toggle('tool.documents'),
+          onTap: () => context.push(Routes.documents),
+        ),
     ];
     if (rows.isEmpty) return const SizedBox.shrink();
     return InsetGroup(separatorIndent: 51, children: rows);

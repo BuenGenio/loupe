@@ -12,6 +12,8 @@ import 'features/compose/compose_args.dart';
 import 'features/compose/compose_screen.dart';
 import 'features/conversation/conversation_screen.dart';
 import 'features/conversation/raw_source_screen.dart';
+import 'features/documents/document_screen.dart';
+import 'features/documents/documents_screen.dart';
 import 'features/mailing_lists/mailing_list_screen.dart';
 import 'features/message_list/message_list_screen.dart';
 import 'features/onboarding/welcome_screen.dart';
@@ -123,6 +125,16 @@ abstract final class Routes {
   static String attachment(String emailId, String partId) =>
       '/attachment/${Uri.encodeComponent(emailId)}/${Uri.encodeComponent(partId)}';
 
+  /// Mailboxes › Documents: search inside downloaded attachments.
+  static const documents = '/documents';
+
+  /// Documents with [query] already searched.
+  static String documentsSearch(String query) => Uri(path: documents, queryParameters: {'q': query}).toString();
+
+  /// One document: an attachment's text by page, other copies, Key Facts.
+  static String document(String emailId, String partId) =>
+      '$documents/${Uri.encodeComponent(emailId)}/${Uri.encodeComponent(partId)}';
+
   /// Search with [query] already entered; [scope] null means all mailboxes.
   static String search(String query, {MailboxRef? scope}) => Uri(
     path: '/search',
@@ -220,6 +232,17 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/attachment/:id/:part',
         builder: (context, state) =>
             AttachmentViewerScreen(emailId: state.pathParameters['id']!, partId: state.pathParameters['part']!),
+      ),
+      GoRoute(
+        path: Routes.documents,
+        builder: (context, state) => DocumentsScreen(initialQuery: state.uri.queryParameters['q'] ?? ''),
+        routes: [
+          GoRoute(
+            path: ':id/:part',
+            builder: (context, state) =>
+                DocumentScreen(emailId: state.pathParameters['id']!, partId: state.pathParameters['part']!),
+          ),
+        ],
       ),
       GoRoute(
         path: '/search',
