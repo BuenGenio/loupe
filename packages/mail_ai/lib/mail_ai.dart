@@ -18,7 +18,9 @@
 /// typed rule draft for the rule editor, with what rules can't do left
 /// visibly unresolved. [ChangeExplanationTask] explains what changed between
 /// two messages of a conversation, each change tied to both passages, with
-/// the literal line diff as its evidence.
+/// the literal line diff as its evidence. [DocumentFactsTask] reads an
+/// attachment's pages into a card of key facts, each field tied to a quote on
+/// its page.
 library;
 
 export 'src/fake_provider.dart' show FakeProvider;
@@ -40,5 +42,15 @@ export 'src/tasks/brief.dart'
     show Brief, BriefDue, BriefEvidence, BriefInput, BriefItem, BriefItemKind, BriefOwner, BriefTask, DueKind;
 export 'src/tasks/change_explanation.dart'
     show ChangeExplanation, ChangeExplanationTask, ChangeKind, ChangePassage, ChangeSide, ChangeSource, ExplainedChange;
+export 'src/tasks/document_facts.dart'
+    show
+        DocumentFact,
+        DocumentFacts,
+        DocumentFactsInput,
+        DocumentFactsTask,
+        DocumentType,
+        FactEvidence,
+        FactField,
+        FactKind;
 export 'src/tasks/rule_proposal.dart' show RuleProposal, RuleProposalTask, UnsupportedRulePart, UnsupportedRuleReason;
 export 'src/tasks/search_translation.dart' show SearchTranslation, SearchTranslationTask;
