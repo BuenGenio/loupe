@@ -297,10 +297,13 @@ final class DocumentFactsTask extends AiTask<DocumentFacts> {
   final _sent = <String>[];
   var _cut = false;
 
+  /// [version], for keys made before a task exists.
+  static const int currentVersion = 1;
+
   @override
   String get type => 'documents.facts';
   @override
-  int get version => 1;
+  int get version => currentVersion;
   @override
   TaskSize get size => TaskSize.long;
   @override
