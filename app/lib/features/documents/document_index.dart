@@ -101,25 +101,37 @@ final class DocumentIndex {
   };
 
   /// Reads [bytes], the attachment's, or returns what an earlier read of the
-  /// same bytes found. Small files are read at once with tight limits (a
-  /// few milliseconds); larger ones, and small ones that reach those
-  /// limits, in another isolate with the full ones.
+  /// same bytes found, and remembers it for [ref].
   Future<ExtractedDocument> read(DocumentRef ref, Attachment attachment, Uint8List bytes) async {
-    final mime = effectiveMimeType(attachment.mimeType, attachment.filename);
-    final name = attachment.filename;
-    if (bytes.length <= ExtractionLimits.quick.maxBytes) {
-      final hash = contentHash(bytes);
-      if (_byContent[_key(hash)] case final hit?) return _remember(ref, hit);
-      final quick = readDocument(bytes, mimeType: mime, fileName: name, limits: ExtractionLimits.quick, hash: hash);
-      if (quick.limit == null) return _remember(ref, quick);
-    }
-    final doc = await _run(() => readDocument(bytes, mimeType: mime, fileName: name));
-    return _remember(ref, _byContent[_key(doc.contentHash)] ?? doc);
+    final doc = await readBytes(
+      bytes,
+      mimeType: effectiveMimeType(attachment.mimeType, attachment.filename),
+      fileName: attachment.filename,
+    );
+    _contentOf[ref] = doc.contentHash;
+    return doc;
   }
 
-  ExtractedDocument _remember(DocumentRef ref, ExtractedDocument doc) {
-    _contentOf[ref] = doc.contentHash;
-    return _byContent[_key(doc.contentHash)] = doc;
+  /// Reads any file's [bytes] (a draft's attachment too), cached by content.
+  /// Small files are read at once with tight limits (a few milliseconds);
+  /// larger ones, and small ones that reach those limits, in another isolate
+  /// with the full ones. Never throws for what the bytes contain: the
+  /// document's status says what could be read.
+  Future<ExtractedDocument> readBytes(Uint8List bytes, {required String mimeType, String? fileName}) async {
+    if (bytes.length <= ExtractionLimits.quick.maxBytes) {
+      final hash = contentHash(bytes);
+      if (_byContent[_key(hash)] case final hit?) return hit;
+      final quick = readDocument(
+        bytes,
+        mimeType: mimeType,
+        fileName: fileName,
+        limits: ExtractionLimits.quick,
+        hash: hash,
+      );
+      if (quick.limit == null) return _byContent[_key(hash)] = quick;
+    }
+    final doc = await _run(() => readDocument(bytes, mimeType: mimeType, fileName: fileName));
+    return _byContent[_key(doc.contentHash)] ??= doc;
   }
 
   static String _factsKey(AiService service, ExtractedDocument doc) =>
