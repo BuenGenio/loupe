@@ -5942,6 +5942,200 @@ class AppLocalizationsEt extends AppLocalizations {
   String get accountImportFailed => 'Kontot ei õnnestunud lisada. Proovi uuesti või lisa see käsitsi.';
 
   @override
+  String get composeReplyCheckTitle => 'Vastuse kontroll';
+
+  @override
+  String get composeReplyCheckChecking => 'Palvete lugemine…';
+
+  @override
+  String get composeReplyCheckFailed => 'Palveid ei õnnestunud lugeda.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached/$total lisatud',
+      one: '$attached/$total lisatud',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count võib olla vale perioodi kohta',
+      one: '$count võib olla vale perioodi kohta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count loetamatut',
+      one: '$count loetamatu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tuleb teha väljaspool e-posti',
+      one: '$count tuleb teha väljaspool e-posti',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mainitud sinu tekstis',
+      one: '$count mainitud sinu tekstis',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count vajab vastust',
+      one: '$count vajab vastust',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Lisatud';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Kontrolli perioodi';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Pole lisatud';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Vastuses puudub';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Väljaspool e-posti';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Sinu tekstis';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Teadmata';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '„$file“ tuvastati ainult nime järgi.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '„$file“ tuvastati sisu järgi.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Kontrolli, et periood oleks $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Paluti perioodi $asked; nimes „$file“ on $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Paluti perioodi $asked; failis „$file“ on kirjas $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Faili „$file“ ei õnnestunud lugeda, seega pole teada, kas see on õige fail.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Tehakse väljaspool e-posti, mitte faili lisamisega.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '„$file“ on lisatud, kuid seda ei tehta e-posti teel.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Kirjutasid: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Algsest kirjast';
+
+  @override
+  String get composeReplyCheckByNameNote => 'Faili nimi ei näita, mis selles on. Kindluse mõttes ava failid.';
+
+  @override
+  String get composeReplyCheckPartial => 'Kiri on pikk; loeti ainult selle algust.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Palved leidis sisseehitatud demo, mitte mudel.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Palved leidis $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Ära kontrolli seda';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count palvet jäi kontrollimata',
+      one: '$count palve jäi kontrollimata',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Kontrolli kõiki';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Näita palveid';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Peida palved';
+
+  @override
+  String get composeReplyCheckHide => 'Peida vastuse kontroll';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Sinu tekstis mainitakse manust, kuid midagi pole lisatud.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Peida meeldetuletus';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demodokumendid';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Sirvi faile…';
+
+  @override
   String get composeNewMessageTitle => 'Uus kiri';
 
   @override

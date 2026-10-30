@@ -5934,6 +5934,200 @@ class AppLocalizationsFi extends AppLocalizations {
   String get accountImportFailed => 'Tiliä ei voitu lisätä. Yritä uudelleen tai lisää se käsin.';
 
   @override
+  String get composeReplyCheckTitle => 'Vastauksen tarkistus';
+
+  @override
+  String get composeReplyCheckChecking => 'Luetaan, mitä viestissä pyydettiin…';
+
+  @override
+  String get composeReplyCheckFailed => 'Ei voitu lukea, mitä viestissä pyydettiin.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached/$total liitetty',
+      one: '$attached/$total liitetty',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count voi olla väärältä ajanjaksolta',
+      one: '$count voi olla väärältä ajanjaksolta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ei luettavissa',
+      one: '$count ei luettavissa',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hoidettavaa muualla kuin sähköpostissa',
+      one: '$count hoidettava muualla kuin sähköpostissa',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mainittu tekstissäsi',
+      one: '$count mainittu tekstissäsi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count vastattavaa',
+      one: '$count vastattava',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Liitetty';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Tarkista ajanjakso';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Ei liitetty';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Ei vastauksessasi';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Muualla kuin sähköpostissa';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Tekstissäsi';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Ei tiedossa';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '”$file” tunnistettiin vain nimen perusteella.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '”$file” tunnistettiin sisällön perusteella.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Tarkista, että se koskee ajanjaksoa $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Pyydettiin ajanjaksoa $asked; nimessä ”$file” lukee $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Pyydettiin ajanjaksoa $asked; tiedostossa ”$file” lukee $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Tiedostoa ”$file” ei voitu lukea, joten ei tiedetä, onko se oikea tiedosto.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Hoidetaan muualla kuin sähköpostissa, ei liittämällä tiedostoa.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '”$file” on liitetty, mutta tätä ei hoideta sähköpostilla.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Kirjoitit: ”$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Alkuperäisestä viestistä';
+
+  @override
+  String get composeReplyCheckByNameNote => 'Tiedoston nimestä ei näe, mitä siinä on. Avaa tiedostot varmistaaksesi.';
+
+  @override
+  String get composeReplyCheckPartial => 'Viesti on pitkä; siitä luettiin vain alku.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Pyynnöt löysi sisäänrakennettu demo, ei malli.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Pyynnöt löysi $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Älä tarkista tätä';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pyyntöä jätetty tarkistamatta',
+      one: '$count pyyntö jätetty tarkistamatta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Tarkista kaikki';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Näytä pyynnöt';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Piilota pyynnöt';
+
+  @override
+  String get composeReplyCheckHide => 'Piilota vastauksen tarkistus';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Tekstissäsi mainitaan liite, mutta mitään ei ole liitetty.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Piilota muistutus';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demoasiakirjat';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Selaa tiedostoja…';
+
+  @override
   String get composeNewMessageTitle => 'Uusi viesti';
 
   @override

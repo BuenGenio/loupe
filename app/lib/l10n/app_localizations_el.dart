@@ -5950,6 +5950,202 @@ class AppLocalizationsEl extends AppLocalizations {
       'Δεν ήταν δυνατή η προσθήκη του λογαριασμού. Δοκιμάστε ξανά ή προσθέστε τον χειροκίνητα.';
 
   @override
+  String get composeReplyCheckTitle => 'Έλεγχος απάντησης';
+
+  @override
+  String get composeReplyCheckChecking => 'Ανάγνωση όσων σας ζητούν…';
+
+  @override
+  String get composeReplyCheckFailed => 'Δεν ήταν δυνατή η ανάγνωση όσων σας ζητούν.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached από $total επισυνάφθηκαν',
+      one: '$attached από $total επισυνάφθηκε',
+      zero: 'Κανένα από $total δεν επισυνάφθηκε',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ίσως για λάθος περίοδο',
+      one: '$count ίσως για λάθος περίοδο',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count δεν ήταν δυνατό να διαβαστούν',
+      one: '$count δεν ήταν δυνατό να διαβαστεί',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count γίνονται εκτός email',
+      one: '$count γίνεται εκτός email',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count στο κείμενό σας',
+      one: '$count στο κείμενό σας',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count χωρίς απάντηση',
+      one: '$count χωρίς απάντηση',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Επισυνάφθηκε';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Ελέγξτε την περίοδο';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Δεν επισυνάφθηκε';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Λείπει από την απάντηση';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Εκτός email';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Στο κείμενό σας';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Άγνωστο';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Το «$file» αντιστοιχίστηκε μόνο από το όνομά του.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Το «$file» αντιστοιχίστηκε από το περιεχόμενό του.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Ελέγξτε ότι είναι για $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Ζήτησαν $asked, αλλά το όνομα «$file» γράφει $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Ζήτησαν $asked, αλλά το «$file» γράφει $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Δεν ήταν δυνατή η ανάγνωση του «$file», οπότε δεν είναι γνωστό αν είναι το σωστό αρχείο.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Γίνεται εκτός email, όχι με επισύναψη αρχείου.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return 'Το «$file» επισυνάφθηκε, αλλά αυτό δεν γίνεται μέσω email.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Γράψατε: «$text»';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Από το μήνυμά τους';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Το όνομα ενός αρχείου δεν δείχνει τι περιέχει. Ανοίξτε τα αρχεία για να βεβαιωθείτε.';
+
+  @override
+  String get composeReplyCheckPartial => 'Το μήνυμά τους είναι μεγάλο· διαβάστηκε μόνο η αρχή του.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Τα αιτήματα βρέθηκαν από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Τα αιτήματα βρέθηκαν από το $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Εξαίρεση από τον έλεγχο';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count αιτήματα δεν ελέγχθηκαν',
+      one: '$count αίτημα δεν ελέγχθηκε',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Έλεγχος όλων';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Εμφάνιση αιτημάτων';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Απόκρυψη αιτημάτων';
+
+  @override
+  String get composeReplyCheckHide => 'Απόκρυψη ελέγχου απάντησης';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Το κείμενό σας αναφέρει συνημμένο, αλλά δεν έχει επισυναφθεί τίποτα.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Απόκρυψη υπενθύμισης';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Έγγραφα επίδειξης';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Επιλογή αρχείου…';
+
+  @override
   String get composeNewMessageTitle => 'Νέο μήνυμα';
 
   @override

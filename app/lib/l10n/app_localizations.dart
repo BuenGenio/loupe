@@ -9597,6 +9597,246 @@ abstract class AppLocalizations {
   /// **'The account couldn’t be added. Try again, or add it manually.'**
   String get accountImportFailed;
 
+  /// Title of a panel in compose, above the text of a reply: what the original message asked the user for (documents, steps), checked against the reply and its attachments. A Private AI feature; the name of a feature, like a title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply Check'**
+  String get composeReplyCheckTitle;
+
+  /// Reply Check panel while Private AI reads the original message for its requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading what they asked for…'**
+  String get composeReplyCheckChecking;
+
+  /// Reply Check panel when reading the original message's requests failed. A Retry button follows. Sending is not affected.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t read what they asked for.'**
+  String get composeReplyCheckFailed;
+
+  /// Part of Reply Check's one-line summary: how many of the documents the original message asked for are attached to the reply. Other parts follow after a “·”.
+  ///
+  /// In en, this message translates to:
+  /// **'{attached, plural, =0{None of {total} attached} =1{1 of {total} attached} other{{attached} of {total} attached}}'**
+  String composeReplyCheckSummaryAttached(int attached, int total);
+
+  /// Part of Reply Check's summary: attached documents that seem to be for another period (another tax year or month) than the one asked for.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 may be for the wrong period} other{{count} may be for the wrong period}}'**
+  String composeReplyCheckSummaryWrongPeriod(int count);
+
+  /// Part of Reply Check's summary: attached documents Loupe couldn't read (protected or damaged), so it can't tell whether they are the right ones.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 couldn’t be read} other{{count} couldn’t be read}}'**
+  String composeReplyCheckSummaryUnknown(int count);
+
+  /// Part of Reply Check's summary: requests that are done somewhere else (in an app, a form at a link), not by attaching a file.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 to do outside email} other{{count} to do outside email}}'**
+  String composeReplyCheckSummaryOutside(int count);
+
+  /// Part of Reply Check's summary: requests the reply's text says are done or coming (“I’ll do the ID check tonight”).
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 in your text} other{{count} in your text}}'**
+  String composeReplyCheckSummaryMentioned(int count);
+
+  /// Part of Reply Check's summary: questions or confirmations the original message asked for that the reply's text doesn't mention yet.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 to answer} other{{count} to answer}}'**
+  String composeReplyCheckSummaryToAnswer(int count);
+
+  /// Status of a request in Reply Check: a matching file is attached.
+  ///
+  /// In en, this message translates to:
+  /// **'Attached'**
+  String get composeReplyCheckStatusIncluded;
+
+  /// Status of a request in Reply Check: the attached file seems to be for another tax year or month than the one asked for.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the period'**
+  String get composeReplyCheckStatusWrongPeriod;
+
+  /// Status of a requested document in Reply Check: nothing attached matches it.
+  ///
+  /// In en, this message translates to:
+  /// **'Not attached'**
+  String get composeReplyCheckStatusMissing;
+
+  /// Status of a question or confirmation in Reply Check: the reply's text doesn't mention it yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not in your reply'**
+  String get composeReplyCheckStatusToAnswer;
+
+  /// Status of a request in Reply Check: it is done somewhere else (in an app, a form at a link, in person), not by attaching a file.
+  ///
+  /// In en, this message translates to:
+  /// **'Outside email'**
+  String get composeReplyCheckStatusOutside;
+
+  /// Status of a request in Reply Check: the reply's text says it is done or coming, or answers it.
+  ///
+  /// In en, this message translates to:
+  /// **'In your text'**
+  String get composeReplyCheckStatusMentioned;
+
+  /// Status of a request in Reply Check: a matching file is attached but couldn't be read, so whether it is the right one is unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Can’t tell'**
+  String get composeReplyCheckStatusUnknown;
+
+  /// Under a request in Reply Check: the attached file was matched to it by its file name, without reading it, so the match is tentative.
+  ///
+  /// In en, this message translates to:
+  /// **'Matched “{file}” by its name only.'**
+  String composeReplyCheckByName(String file);
+
+  /// Under a request in Reply Check: the attached file was matched to it by reading its text.
+  ///
+  /// In en, this message translates to:
+  /// **'Matched “{file}” by what it says.'**
+  String composeReplyCheckByContents(String file);
+
+  /// Under a request in Reply Check: the attached file doesn't say which period it is for. period is copied from the original message, untranslated.
+  ///
+  /// In en, this message translates to:
+  /// **'Check that it’s for {period}.'**
+  String composeReplyCheckCheckPeriod(String period);
+
+  /// Under a request in Reply Check: the file's name states another period than the original message asked for. asked and found are copied from the message and the file name, untranslated.
+  ///
+  /// In en, this message translates to:
+  /// **'They asked for {asked}; the name “{file}” says {found}.'**
+  String composeReplyCheckPeriodInName(String asked, String file, String found);
+
+  /// Under a request in Reply Check: the text inside the file states another period than the original message asked for. asked and found are copied from the message and the file, untranslated.
+  ///
+  /// In en, this message translates to:
+  /// **'They asked for {asked}; “{file}” says {found}.'**
+  String composeReplyCheckPeriodInContents(String asked, String file, String found);
+
+  /// Under a request in Reply Check: the attached file is protected or damaged.
+  ///
+  /// In en, this message translates to:
+  /// **'“{file}” couldn’t be read, so whether it’s the right file is unknown.'**
+  String composeReplyCheckUnreadable(String file);
+
+  /// Under a request in Reply Check that is done in an app, a form at a link or in person. The way, as the message wrote it, is shown next to it.
+  ///
+  /// In en, this message translates to:
+  /// **'Done outside email, not by attaching a file.'**
+  String get composeReplyCheckOutsideDetail;
+
+  /// Warning under a request done outside email (an ID check in an app) when a file that looks like it (a passport scan) is attached: attaching it doesn't do the step.
+  ///
+  /// In en, this message translates to:
+  /// **'“{file}” is attached, but this isn’t done by email.'**
+  String composeReplyCheckAttachedAnyway(String file);
+
+  /// Under a request in Reply Check: the sentence of the reply that mentions it.
+  ///
+  /// In en, this message translates to:
+  /// **'You wrote: “{text}”'**
+  String composeReplyCheckYouWrote(String text);
+
+  /// Label above the passage of the original message a request in Reply Check comes from.
+  ///
+  /// In en, this message translates to:
+  /// **'From their message'**
+  String get composeReplyCheckFromMessage;
+
+  /// Note at the end of Reply Check when some files were matched by their names only.
+  ///
+  /// In en, this message translates to:
+  /// **'A file’s name doesn’t show what’s in it. Open the files to be sure.'**
+  String get composeReplyCheckByNameNote;
+
+  /// Note at the end of Reply Check: requests further down the original message may be missing.
+  ///
+  /// In en, this message translates to:
+  /// **'Their message is long; only its beginning was read.'**
+  String get composeReplyCheckPartial;
+
+  /// Note at the end of Reply Check: the requests were found by a few built-in rules (the demo), not by an AI model.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests found by the built-in demo, not a model.'**
+  String get composeReplyCheckDemoNote;
+
+  /// Note at the end of Reply Check: which AI model found the requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests found by {provider}.'**
+  String composeReplyCheckFoundBy(String provider);
+
+  /// Button under a request in Reply Check: leave it out of the check (it isn't really a request, or isn't for this reply).
+  ///
+  /// In en, this message translates to:
+  /// **'Don’t Check This'**
+  String get composeReplyCheckSkip;
+
+  /// At the end of Reply Check: requests the user left out with “Don’t Check This”. A Check All button follows.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 request not checked} other{{count} requests not checked}}'**
+  String composeReplyCheckSkipped(int count);
+
+  /// Button at the end of Reply Check: check the requests left out again.
+  ///
+  /// In en, this message translates to:
+  /// **'Check All'**
+  String get composeReplyCheckCheckAll;
+
+  /// Screen reader label of the button that opens Reply Check's list of requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Requests'**
+  String get composeReplyCheckShowRequests;
+
+  /// Screen reader label of the button that closes Reply Check's list of requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Requests'**
+  String get composeReplyCheckHideRequests;
+
+  /// Screen reader label of the button that hides the Reply Check panel for this message.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Reply Check'**
+  String get composeReplyCheckHide;
+
+  /// Gentle note in compose when the message's text says “attached” or “enclosed” and no file is attached. An Attach button follows; it never stops sending.
+  ///
+  /// In en, this message translates to:
+  /// **'Your text mentions an attachment, but nothing is attached.'**
+  String get composeReplyCheckNothingAttached;
+
+  /// Screen reader label of the button that hides the note about a missing attachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Reminder'**
+  String get composeReplyCheckHideReminder;
+
+  /// Heading in the demo's attach sheet: made-up documents of the demo's user, to try Reply Check with.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Documents'**
+  String get composeReplyCheckDemoFiles;
+
+  /// Row in the demo's attach sheet: pick a file from the phone instead.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Files…'**
+  String get composeReplyCheckBrowseFiles;
+
   /// Title of the compose screen while the subject is empty.
   ///
   /// In en, this message translates to:

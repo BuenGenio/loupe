@@ -5956,6 +5956,202 @@ class AppLocalizationsMk extends AppLocalizations {
   String get accountImportFailed => 'Сметката не може да се додаде. Обидете се повторно или додајте ја рачно.';
 
   @override
+  String get composeReplyCheckTitle => 'Проверка на одговорот';
+
+  @override
+  String get composeReplyCheckChecking => 'Се чита што бараат од вас…';
+
+  @override
+  String get composeReplyCheckFailed => 'Не можеше да се прочита што бараат од вас.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: 'Прикачено $attached од $total',
+      one: 'Прикачено $attached од $total',
+      zero: 'Ниеден од $total не е прикачен',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count можеби за погрешен период',
+      one: '$count можеби за погрешен период',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count не можат да се прочитаат',
+      one: '$count не може да се прочита',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count се прават надвор од е-пошта',
+      one: '$count се прави надвор од е-пошта',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count во вашиот текст',
+      one: '$count во вашиот текст',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count без одговор',
+      one: '$count без одговор',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Прикачено';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Проверете го периодот';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Не е прикачено';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Не е во одговорот';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Надвор од е-пошта';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Во вашиот текст';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Непознато';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Датотеката „$file“ е препознаена само по името.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Датотеката „$file“ е препознаена по содржината.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Проверете дали се однесува на $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Бараа $asked, а во името „$file“ пишува $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Бараа $asked, а во датотеката „$file“ пишува $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Датотеката „$file“ не можеше да се прочита, па не се знае дали е вистинската.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Се прави надвор од е-пошта, а не со прикачување датотека.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return 'Датотеката „$file“ е прикачена, но ова не се прави преку е-пошта.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Напишавте: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Од нивната порака';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Името на датотеката не покажува што има во неа. Отворете ги датотеките за да бидете сигурни.';
+
+  @override
+  String get composeReplyCheckPartial => 'Нивната порака е долга; прочитан е само нејзиниот почеток.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Барањата се пронајдени од вградената демонстрација, не од модел.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Барањата се пронајдени од $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Не го проверувај ова';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count барања не се проверени',
+      one: '$count барање не е проверено',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Провери ги сите';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Прикажи ги барањата';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Скриј ги барањата';
+
+  @override
+  String get composeReplyCheckHide => 'Скриј ја проверката на одговорот';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Во текстот спомнувате прилог, но ништо не е прикачено.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Скриј го потсетникот';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Демо документи';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Избери датотека…';
+
+  @override
   String get composeNewMessageTitle => 'Нова порака';
 
   @override

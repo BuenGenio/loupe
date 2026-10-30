@@ -5968,6 +5968,202 @@ class AppLocalizationsLb extends AppLocalizations {
       'De Kont konnt net derbäigesat ginn. Probéiert nach eng Kéier, oder setzt e manuell derbäi.';
 
   @override
+  String get composeReplyCheckTitle => 'Äntwertkontroll';
+
+  @override
+  String get composeReplyCheckChecking => 'Et gëtt gelies, wat ugefrot gouf…';
+
+  @override
+  String get composeReplyCheckFailed => 'Et konnt net gelies ginn, wat ugefrot gouf.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached vun $total ugehaangen',
+      one: '$attached vun $total ugehaangen',
+      zero: 'Keent vun $total ugehaangen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count vläicht fir de falschen Zäitraum',
+      one: '$count vläicht fir de falschen Zäitraum',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count net liesbar',
+      one: '$count net liesbar',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count baussent der E-Mail ze erleedegen',
+      one: '$count baussent der E-Mail ze erleedegen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count an Ärem Text',
+      one: '$count an Ärem Text',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ze beäntweren',
+      one: '$count ze beäntweren',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Ugehaangen';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Zäitraum iwwerpréiwen';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Net ugehaangen';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Net an Ärer Äntwert';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Baussent der E-Mail';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'An Ärem Text';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Onkloer';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '„$file“ nëmmen iwwer den Numm zougeuerdnet.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '„$file“ iwwer den Inhalt zougeuerdnet.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Iwwerpréift, ob de Fichier fir $period gëllt.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Ugefrot gouf $asked; am Numm „$file“ steet $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Ugefrot gouf $asked; an „$file“ steet $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return '„$file“ konnt net gelies ginn, dofir ass onkloer, ob et de richtege Fichier ass.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Gëtt baussent der E-Mail erleedegt, net andeems Dir e Fichier uhänkt.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '„$file“ ass ugehaangen, mee dëst gëtt net per E-Mail erleedegt.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Dir hutt geschriwwen: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Aus dem Message';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Den Numm vun engem Fichier weist net, wat dran ass. Maacht d’Fichieren op, fir sécher ze sinn.';
+
+  @override
+  String get composeReplyCheckPartial => 'De Message ass laang; nëmmen den Ufank gouf gelies.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Ufroe vun der agebauter Demo fonnt, net vun engem Modell.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Ufroe vun $provider fonnt.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Net iwwerpréiwen';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Ufroen net iwwerpréift',
+      one: '$count Ufro net iwwerpréift',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'All iwwerpréiwen';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Ufroe weisen';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Ufroe verstoppen';
+
+  @override
+  String get composeReplyCheckHide => 'Äntwertkontroll verstoppen';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Ären Text ernimmt en Unhang, mee et ass näischt ugehaangen.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Hiweis verstoppen';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demo-Dokumenter';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Fichieren duerchsichen…';
+
+  @override
   String get composeNewMessageTitle => 'Neie Message';
 
   @override

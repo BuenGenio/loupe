@@ -5977,6 +5977,196 @@ class AppLocalizationsCa extends AppLocalizations {
   String get accountImportFailed => 'No s’ha pogut afegir el compte. Torna-ho a provar o afegeix-lo manualment.';
 
   @override
+  String get composeReplyCheckTitle => 'Revisió de la resposta';
+
+  @override
+  String get composeReplyCheckChecking => 'S’està llegint el que et demanen…';
+
+  @override
+  String get composeReplyCheckFailed => 'No s’ha pogut llegir el que et demanen.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached de $total adjuntats',
+      one: '1 de $total adjuntat',
+      zero: '0 de $total adjuntats',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count poden ser d’un altre període',
+      one: '1 pot ser d’un altre període',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count no s’han pogut llegir',
+      one: '1 no s’ha pogut llegir',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count per fer fora del correu',
+      one: '1 per fer fora del correu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count al teu text', one: '1 al teu text');
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count per respondre',
+      one: '1 per respondre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Adjuntat';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Revisa el període';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'No adjuntat';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'No és a la teva resposta';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Fora del correu';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Al teu text';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'No se sap';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Coincideix amb «$file» només pel nom.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Coincideix amb «$file» pel contingut.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Comprova que sigui de $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Et demanen $asked; el nom «$file» indica $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Et demanen $asked; «$file» indica $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'No s’ha pogut llegir «$file», així que no se sap si és el fitxer correcte.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Es fa fora del correu, no amb un fitxer adjunt.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '«$file» està adjuntat, però això no es fa per correu.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Has escrit: «$text»';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Del seu missatge';
+
+  @override
+  String get composeReplyCheckByNameNote => 'El nom d’un fitxer no diu què conté. Obre els fitxers per assegurar-te’n.';
+
+  @override
+  String get composeReplyCheckPartial => 'El seu missatge és llarg; només se n’ha llegit el principi.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Peticions trobades per la demostració integrada, no per un model.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Peticions trobades per $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'No ho revisis';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count peticions sense revisar',
+      one: '1 petició sense revisar',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Revisa-les totes';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Mostra les peticions';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Amaga les peticions';
+
+  @override
+  String get composeReplyCheckHide => 'Amaga la revisió de la resposta';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'El teu text esmenta un adjunt, però no hi ha res adjuntat.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Amaga el recordatori';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Documents de demostració';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Explora els fitxers…';
+
+  @override
   String get composeNewMessageTitle => 'Missatge nou';
 
   @override

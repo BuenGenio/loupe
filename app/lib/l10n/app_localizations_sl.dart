@@ -6125,6 +6125,215 @@ class AppLocalizationsSl extends AppLocalizations {
   String get accountImportFailed => 'Računa ni bilo mogoče dodati. Poskusite znova ali ga dodajte ročno.';
 
   @override
+  String get composeReplyCheckTitle => 'Preverjanje odgovora';
+
+  @override
+  String get composeReplyCheckChecking => 'Ugotavljanje, za kaj vas prosijo …';
+
+  @override
+  String get composeReplyCheckFailed => 'Ni bilo mogoče ugotoviti, za kaj vas prosijo.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: 'Priloženih je $attached od $total',
+      few: 'Priloženi so $attached od $total',
+      two: 'Priložena sta $attached od $total',
+      one: 'Priložen je $attached od $total',
+      zero: 'Nobeden od $total ni priložen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count je morda za napačno obdobje',
+      few: '$count so morda za napačno obdobje',
+      two: '$count sta morda za napačno obdobje',
+      one: '$count je morda za napačno obdobje',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ni bilo mogoče prebrati',
+      few: '$count ni bilo mogoče prebrati',
+      two: '$count ni bilo mogoče prebrati',
+      one: '$count ni bilo mogoče prebrati',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count se opravi zunaj e-pošte',
+      few: '$count se opravijo zunaj e-pošte',
+      two: '$count se opravita zunaj e-pošte',
+      one: '$count se opravi zunaj e-pošte',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count v vašem besedilu',
+      few: '$count v vašem besedilu',
+      two: '$count v vašem besedilu',
+      one: '$count v vašem besedilu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count čaka na odgovor',
+      few: '$count čakajo na odgovor',
+      two: '$count čakata na odgovor',
+      one: '$count čaka na odgovor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Priloženo';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Preverite obdobje';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Ni priloženo';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Ni v vašem odgovoru';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Zunaj e-pošte';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'V vašem besedilu';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Ni mogoče ugotoviti';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Datoteka „$file“ se ujema samo po imenu.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Datoteka „$file“ se ujema po vsebini.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Preverite, ali je za $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Prosili so za $asked, v imenu „$file“ pa piše $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Prosili so za $asked, v datoteki „$file“ pa piše $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Datoteke „$file“ ni bilo mogoče prebrati, zato ni znano, ali je prava.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Opravi se zunaj e-pošte, ne s prilaganjem datoteke.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return 'Datoteka „$file“ je priložena, vendar se to ne opravi po e-pošti.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Napisali ste: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Iz prejetega sporočila';
+
+  @override
+  String get composeReplyCheckByNameNote => 'Ime datoteke ne pove, kaj vsebuje. Za gotovost odprite datoteke.';
+
+  @override
+  String get composeReplyCheckPartial => 'Prejeto sporočilo je dolgo; prebran je bil le njegov začetek.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Zahteve je našel vgrajeni demo, ne model.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Zahteve je našel model $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Ne preverjaj';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count zahtev ni preverjenih',
+      few: '$count zahteve niso preverjene',
+      two: '$count zahtevi nista preverjeni',
+      one: '$count zahteva ni preverjena',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Preveri vse';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Pokaži zahteve';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Skrij zahteve';
+
+  @override
+  String get composeReplyCheckHide => 'Skrij preverjanje odgovora';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Vaše besedilo omenja prilogo, a nič ni priloženo.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Skrij opomnik';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Predstavitveni dokumenti';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Prebrskaj datoteke …';
+
+  @override
   String get composeNewMessageTitle => 'Novo sporočilo';
 
   @override

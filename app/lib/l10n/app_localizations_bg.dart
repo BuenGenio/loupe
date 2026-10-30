@@ -5906,6 +5906,202 @@ class AppLocalizationsBg extends AppLocalizations {
   String get accountImportFailed => 'Профилът не можа да се добави. Опитайте отново или го добавете ръчно.';
 
   @override
+  String get composeReplyCheckTitle => 'Проверка на отговора';
+
+  @override
+  String get composeReplyCheckChecking => 'Чете се какво искат от вас…';
+
+  @override
+  String get composeReplyCheckFailed => 'Не можа да се прочете какво искат от вас.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached от $total са прикачени',
+      one: '$attached от $total е прикачен',
+      zero: 'Нито един от $total не е прикачен',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count може да са за грешен период',
+      one: '$count може да е за грешен период',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count не можаха да се прочетат',
+      one: '$count не можа да се прочете',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count се правят извън имейла',
+      one: '$count се прави извън имейла',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count в текста ви',
+      one: '$count в текста ви',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count без отговор',
+      one: '$count без отговор',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Прикачено';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Проверете периода';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Не е прикачено';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Липсва в отговора';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Извън имейла';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'В текста ви';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Неизвестно';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Файлът „$file“ е разпознат само по името.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Файлът „$file“ е разпознат по съдържанието.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Проверете дали е за $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Искат $asked, а в името „$file“ пише $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Искат $asked, а във файла „$file“ пише $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Файлът „$file“ не можа да се прочете, така че не е ясно дали е правилният.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Прави се извън имейла, а не с прикачване на файл.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return 'Файлът „$file“ е прикачен, но това не се прави по имейл.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Написахте: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'От писмото им';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Името на файла не показва какво съдържа. Отворете файловете, за да сте сигурни.';
+
+  @override
+  String get composeReplyCheckPartial => 'Писмото им е дълго; прочетено е само началото му.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Исканията са открити от вградената демонстрация, не от модел.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Исканията са открити от $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Да не се проверява';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count искания не са проверени',
+      one: '$count искане не е проверено',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Проверка на всички';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Показване на исканията';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Скриване на исканията';
+
+  @override
+  String get composeReplyCheckHide => 'Скриване на проверката на отговора';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'В текста споменавате прикачен файл, но нищо не е прикачено.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Скриване на напомнянето';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Демо документи';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Избор на файл…';
+
+  @override
   String get composeNewMessageTitle => 'Ново писмо';
 
   @override

@@ -5889,6 +5889,197 @@ class AppLocalizationsDa extends AppLocalizations {
   String get accountImportFailed => 'Kontoen kunne ikke tilføjes. Prøv igen, eller tilføj den manuelt.';
 
   @override
+  String get composeReplyCheckTitle => 'Svarkontrol';
+
+  @override
+  String get composeReplyCheckChecking => 'Læser, hvad du bliver bedt om…';
+
+  @override
+  String get composeReplyCheckFailed => 'Kunne ikke læse, hvad du bliver bedt om.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached af $total vedhæftet',
+      one: '1 af $total vedhæftet',
+      zero: 'Ingen af $total vedhæftet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count er måske for den forkerte periode',
+      one: '1 er måske for den forkerte periode',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kunne ikke læses',
+      one: '1 kunne ikke læses',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count skal klares uden for mail',
+      one: '1 skal klares uden for mail',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count i din tekst', one: '1 i din tekst');
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count skal besvares',
+      one: '1 skal besvares',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Vedhæftet';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Tjek perioden';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Ikke vedhæftet';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Ikke i dit svar';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Uden for mail';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'I din tekst';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Uvist';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '»$file« passer kun ud fra navnet.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '»$file« passer ud fra indholdet.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Tjek, at filen gælder for $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Der blev bedt om $asked; navnet »$file« siger $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Der blev bedt om $asked; »$file« siger $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return '»$file« kunne ikke læses, så det vides ikke, om det er den rigtige fil.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Klares uden for mail, ikke ved at vedhæfte en fil.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '»$file« er vedhæftet, men dette klares ikke via mail.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Du skrev: »$text«';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Fra beskeden';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'En fils navn viser ikke, hvad der står i den. Åbn filerne for at være sikker.';
+
+  @override
+  String get composeReplyCheckPartial => 'Beskeden er lang; kun begyndelsen blev læst.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Anmodningerne er fundet af den indbyggede demo, ikke af en model.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Anmodningerne er fundet af $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Tjek ikke denne';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count anmodninger ikke tjekket',
+      one: '1 anmodning ikke tjekket',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Tjek alle';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Vis anmodninger';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Skjul anmodninger';
+
+  @override
+  String get composeReplyCheckHide => 'Skjul svarkontrol';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Din tekst nævner en vedhæftet fil, men der er ikke vedhæftet noget.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Skjul påmindelse';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demodokumenter';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Gennemse filer…';
+
+  @override
   String get composeNewMessageTitle => 'Ny besked';
 
   @override

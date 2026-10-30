@@ -5980,6 +5980,202 @@ class AppLocalizationsNl extends AppLocalizations {
       'Het account kon niet worden toegevoegd. Probeer het opnieuw of voeg het handmatig toe.';
 
   @override
+  String get composeReplyCheckTitle => 'Antwoordcontrole';
+
+  @override
+  String get composeReplyCheckChecking => 'Lezen wat er gevraagd wordt…';
+
+  @override
+  String get composeReplyCheckFailed => 'Kan niet lezen wat er gevraagd wordt.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached van $total bijgevoegd',
+      one: '$attached van $total bijgevoegd',
+      zero: 'Geen van $total bijgevoegd',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mogelijk voor de verkeerde periode',
+      one: '$count mogelijk voor de verkeerde periode',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count niet leesbaar',
+      one: '$count niet leesbaar',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count buiten e-mail om te regelen',
+      one: '$count buiten e-mail om te regelen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count in je tekst',
+      one: '$count in je tekst',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count te beantwoorden',
+      one: '$count te beantwoorden',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Bijgevoegd';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Periode controleren';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Niet bijgevoegd';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Niet in je antwoord';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Buiten e-mail om';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'In je tekst';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Onduidelijk';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '“$file” alleen op naam herkend.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '“$file” herkend aan de inhoud.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Controleer of het bestand voor $period geldt.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Er is gevraagd om $asked; de naam “$file” noemt $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Er is gevraagd om $asked; in “$file” staat $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return '“$file” kon niet worden gelezen, dus het is onbekend of dit het juiste bestand is.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Gaat buiten e-mail om, niet door een bestand bij te voegen.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '“$file” is bijgevoegd, maar dit gaat niet via e-mail.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Je schreef: “$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Uit het bericht';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'De naam van een bestand zegt niet wat erin staat. Open de bestanden om zeker te zijn.';
+
+  @override
+  String get composeReplyCheckPartial => 'Het bericht is lang; alleen het begin is gelezen.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Verzoeken gevonden door de ingebouwde demo, niet door een model.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Verzoeken gevonden door $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Niet controleren';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count verzoeken niet gecontroleerd',
+      one: '$count verzoek niet gecontroleerd',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Alles controleren';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Verzoeken tonen';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Verzoeken verbergen';
+
+  @override
+  String get composeReplyCheckHide => 'Antwoordcontrole verbergen';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Je tekst noemt een bijlage, maar er is niets bijgevoegd.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Herinnering verbergen';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demodocumenten';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Bladeren door bestanden…';
+
+  @override
   String get composeNewMessageTitle => 'Nieuw bericht';
 
   @override

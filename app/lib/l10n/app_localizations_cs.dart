@@ -6067,6 +6067,215 @@ class AppLocalizationsCs extends AppLocalizations {
   String get accountImportFailed => 'Účet se nepodařilo přidat. Zkuste to znovu, nebo ho přidejte ručně.';
 
   @override
+  String get composeReplyCheckTitle => 'Kontrola odpovědi';
+
+  @override
+  String get composeReplyCheckChecking => 'Zjišťování, o co vás žádají…';
+
+  @override
+  String get composeReplyCheckFailed => 'Nepodařilo se zjistit, o co vás žádají.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: 'Přiloženo $attached z $total',
+      many: 'Přiloženo $attached z $total',
+      few: 'Přiloženo $attached z $total',
+      one: 'Přiloženo $attached z $total',
+      zero: 'Žádný z $total není přiložen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count může být za jiné období',
+      many: '$count může být za jiné období',
+      few: '$count mohou být za jiné období',
+      one: '$count může být za jiné období',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count se nepodařilo přečíst',
+      many: '$count se nepodařilo přečíst',
+      few: '$count se nepodařilo přečíst',
+      one: '$count se nepodařilo přečíst',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count k vyřízení mimo e-mail',
+      many: '$count k vyřízení mimo e-mail',
+      few: '$count k vyřízení mimo e-mail',
+      one: '$count k vyřízení mimo e-mail',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ve vašem textu',
+      many: '$count ve vašem textu',
+      few: '$count ve vašem textu',
+      one: '$count ve vašem textu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count k zodpovězení',
+      many: '$count k zodpovězení',
+      few: '$count k zodpovězení',
+      one: '$count k zodpovězení',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Přiloženo';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Zkontrolujte období';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Nepřiloženo';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Chybí v odpovědi';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Mimo e-mail';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Ve vašem textu';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Nelze určit';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Soubor „$file“ odpovídá jen podle názvu.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Soubor „$file“ odpovídá podle obsahu.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Zkontrolujte, že jde o $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Požaduje se $asked, ale název „$file“ uvádí $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Požaduje se $asked, ale soubor „$file“ uvádí $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Soubor „$file“ se nepodařilo přečíst, takže nelze říct, jestli je to ten správný.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Vyřizuje se mimo e-mail, ne přiložením souboru.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return 'Soubor „$file“ je přiložen, ale tohle se e-mailem nevyřizuje.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Napsali jste: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Z přijaté zprávy';
+
+  @override
+  String get composeReplyCheckByNameNote => 'Název souboru neprozradí, co obsahuje. Pro jistotu soubory otevřete.';
+
+  @override
+  String get composeReplyCheckPartial => 'Přijatá zpráva je dlouhá; byl přečten jen její začátek.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Požadavky našlo vestavěné demo, ne model.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Požadavky našel model $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Nekontrolovat';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count požadavků se nekontroluje',
+      many: '$count požadavku se nekontroluje',
+      few: '$count požadavky se nekontrolují',
+      one: '$count požadavek se nekontroluje',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Kontrolovat všechny';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Zobrazit požadavky';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Skrýt požadavky';
+
+  @override
+  String get composeReplyCheckHide => 'Skrýt kontrolu odpovědi';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Váš text zmiňuje přílohu, ale nic není přiloženo.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Skrýt připomínku';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Ukázkové dokumenty';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Procházet soubory…';
+
+  @override
   String get composeNewMessageTitle => 'Nová zpráva';
 
   @override

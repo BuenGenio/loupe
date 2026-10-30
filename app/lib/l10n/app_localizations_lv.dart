@@ -6036,6 +6036,208 @@ class AppLocalizationsLv extends AppLocalizations {
   String get accountImportFailed => 'Kontu neizdevās pievienot. Mēģiniet vēlreiz vai pievienojiet to manuāli.';
 
   @override
+  String get composeReplyCheckTitle => 'Atbildes pārbaude';
+
+  @override
+  String get composeReplyCheckChecking => 'Nolasa, ko sūtītājs lūdza…';
+
+  @override
+  String get composeReplyCheckFailed => 'Neizdevās nolasīt, ko sūtītājs lūdza.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached no $total pievienoti',
+      one: '$attached no $total pievienots',
+      zero: '$attached no $total pievienoti',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count var būt par nepareizu periodu',
+      one: '$count var būt par nepareizu periodu',
+      zero: '$count var būt par nepareizu periodu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nav nolasāmi',
+      one: '$count nav nolasāms',
+      zero: '$count nav nolasāmi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jāizdara ārpus e-pasta',
+      one: '$count jāizdara ārpus e-pasta',
+      zero: '$count jāizdara ārpus e-pasta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minēti jūsu tekstā',
+      one: '$count minēts jūsu tekstā',
+      zero: '$count minēti jūsu tekstā',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gaida atbildi',
+      one: '$count gaida atbildi',
+      zero: '$count gaida atbildi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Pievienots';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Pārbaudiet periodu';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Nav pievienots';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Nav jūsu atbildē';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Ārpus e-pasta';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Jūsu tekstā';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Nevar noteikt';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '„$file“ atpazīts tikai pēc nosaukuma.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '„$file“ atpazīts pēc satura.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Pārbaudiet, vai tas ir par periodu $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Tika lūgts periods $asked; nosaukumā „$file“ norādīts $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Tika lūgts periods $asked; failā „$file“ norādīts $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Failu „$file“ neizdevās nolasīt, tāpēc nav zināms, vai tas ir pareizais fails.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Jāizdara ārpus e-pasta, nevis pievienojot failu.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '„$file“ ir pievienots, bet šo nevar izdarīt ar e-pastu.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Jūs rakstījāt: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'No sākotnējā ziņojuma';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Faila nosaukums neparāda, kas tajā ir. Lai pārliecinātos, atveriet failus.';
+
+  @override
+  String get composeReplyCheckPartial => 'Ziņojums ir garš; tika nolasīts tikai tā sākums.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Pieprasījumus atrada iebūvētā demonstrācija, nevis modelis.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Pieprasījumus atrada $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Nepārbaudīt šo';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pieprasījumi nav pārbaudīti',
+      one: '$count pieprasījums nav pārbaudīts',
+      zero: '$count pieprasījumu nav pārbaudīti',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Pārbaudīt visus';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Rādīt pieprasījumus';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Paslēpt pieprasījumus';
+
+  @override
+  String get composeReplyCheckHide => 'Paslēpt atbildes pārbaudi';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Jūsu tekstā minēts pielikums, bet nekas nav pievienots.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Paslēpt atgādinājumu';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demonstrācijas dokumenti';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Pārlūkot failus…';
+
+  @override
   String get composeNewMessageTitle => 'Jauns ziņojums';
 
   @override

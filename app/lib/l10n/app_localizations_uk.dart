@@ -6089,6 +6089,215 @@ class AppLocalizationsUk extends AppLocalizations {
   String get accountImportFailed => 'Не вдалося додати обліковий запис. Спробуйте ще раз або додайте його вручну.';
 
   @override
+  String get composeReplyCheckTitle => 'Перевірка відповіді';
+
+  @override
+  String get composeReplyCheckChecking => 'Читаємо, про що вас просять…';
+
+  @override
+  String get composeReplyCheckFailed => 'Не вдалося прочитати, про що вас просять.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: 'Вкладено $attached з $total',
+      many: 'Вкладено $attached з $total',
+      few: 'Вкладено $attached з $total',
+      one: 'Вкладено $attached з $total',
+      zero: 'Жодного з $total не вкладено',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count, можливо, за інший період',
+      many: '$count, можливо, за інший період',
+      few: '$count, можливо, за інший період',
+      one: '$count, можливо, за інший період',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count не вдалося прочитати',
+      many: '$count не вдалося прочитати',
+      few: '$count не вдалося прочитати',
+      one: '$count не вдалося прочитати',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count треба зробити поза поштою',
+      many: '$count треба зробити поза поштою',
+      few: '$count треба зробити поза поштою',
+      one: '$count треба зробити поза поштою',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count у вашому тексті',
+      many: '$count у вашому тексті',
+      few: '$count у вашому тексті',
+      one: '$count у вашому тексті',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count без відповіді',
+      many: '$count без відповіді',
+      few: '$count без відповіді',
+      one: '$count без відповіді',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Вкладено';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Перевірте період';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Не вкладено';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Немає у відповіді';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Поза поштою';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'У вашому тексті';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Невідомо';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '«$file» зіставлено лише за назвою.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '«$file» зіставлено за вмістом.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Перевірте, чи файл саме за $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Просили $asked, а в назві «$file» вказано $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Просили $asked, а у файлі «$file» вказано $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Не вдалося прочитати «$file», тож невідомо, чи це потрібний файл.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Робиться поза поштою, а не вкладенням файлу.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '«$file» вкладено, але це робиться не через пошту.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Ви написали: «$text»';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'З їхнього листа';
+
+  @override
+  String get composeReplyCheckByNameNote => 'Назва файлу не показує, що в ньому. Відкрийте файли, щоб переконатися.';
+
+  @override
+  String get composeReplyCheckPartial => 'Їхній лист довгий, тож прочитано лише його початок.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Прохання знайдено вбудованою демонстрацією, а не моделлю.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Прохання знайдено за допомогою $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Не перевіряти';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count прохання не перевірено',
+      many: '$count прохань не перевірено',
+      few: '$count прохання не перевірено',
+      one: '$count прохання не перевірено',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Перевірити всі';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Показати прохання';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Сховати прохання';
+
+  @override
+  String get composeReplyCheckHide => 'Сховати перевірку відповіді';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'У тексті згадано вкладення, але нічого не вкладено.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Сховати нагадування';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Демодокументи';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Вибрати файл…';
+
+  @override
   String get composeNewMessageTitle => 'Новий лист';
 
   @override
