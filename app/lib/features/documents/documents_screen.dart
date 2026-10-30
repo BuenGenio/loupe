@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mail_documents/mail_documents.dart';
+import 'package:mail_model/mail_model.dart';
 
 import '../../l10n/l10n.dart';
 import '../../router.dart';
@@ -81,7 +82,10 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
             AsyncError(:final error) => [
               SliverFillRemaining(
                 hasScrollBody: false,
-                child: _Empty(title: l10n.documentsEmpty, detail: '$error'),
+                child: _Empty(
+                  title: l10n.documentsEmpty,
+                  detail: error is MailException ? error.message : l10n.documentsEmptyDetail,
+                ),
               ),
             ],
             _ => [const SliverFillRemaining(hasScrollBody: false, child: Center(child: CupertinoActivityIndicator()))],

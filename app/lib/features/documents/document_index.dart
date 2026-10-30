@@ -141,6 +141,9 @@ final class DocumentIndex {
   /// bytes under any name.
   AiSuccess<DocumentFacts>? cachedFacts(AiService service, ExtractedDocument doc) => _facts[_factsKey(service, doc)];
 
+  /// Forgets every Key Facts result; the next card asks the provider again.
+  void clearFacts() => _facts.clear();
+
   /// Asks [service] for [entry]'s Key Facts, through [AiService.run] and the
   /// task's parser. Successes are kept by content.
   Future<AiRun<DocumentFacts>> facts(AiService service, DocumentEntry entry) async {
@@ -159,10 +162,20 @@ final class DocumentIndex {
 }
 
 /// The index of the active repository: a new repository (demo ↔ live)
-/// starts empty.
+/// starts empty. Clearing Private AI's results (the [AiLedger]) clears the
+/// Key Facts kept here too; what was read of documents stays, since it
+/// needs no model.
 final documentIndexProvider = Provider<DocumentIndex>((ref) {
   ref.watch(repositoryProvider);
-  return DocumentIndex();
+  final index = DocumentIndex();
+  final ledger = ref.watch(aiLedgerProvider);
+  void cleared() {
+    if (ledger.resultCount == 0) index.clearFacts();
+  }
+
+  ledger.addListener(cleared);
+  ref.onDispose(() => ledger.removeListener(cleared));
+  return index;
 });
 
 /// Whether every attachment's bytes are on the phone: in the demo they are
