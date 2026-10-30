@@ -17,6 +17,7 @@ import '../../shared/grouped_list.dart';
 import '../../shared/sheets.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
+import '../actions/action_text.dart';
 import '../attachments/attachment_cache.dart';
 import '../attachments/attachment_gallery.dart';
 import '../attachments/attachment_type.dart';
@@ -458,7 +459,7 @@ class _OpenItemRow extends ConsumerWidget {
     return GroupedRow(
       leading: Icon(item.waitingOnOthers ? LoupeIcons.time : LoupeIcons.check),
       title: item.text,
-      detail: item.due == null ? null : formatListDate(item.due!, l10n: l10n),
+      detail: actionDueLabel(l10n, item.due),
       onTap: () async {
         final found = await matterRecordsOf(ref.read(repositoryProvider))?.locateMessage(item.source);
         if (found != null && context.mounted) await context.push(Routes.message(found.id));

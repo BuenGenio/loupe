@@ -45,7 +45,12 @@ List<Matter> mattersWith(List<Matter> matters, Iterable<EmailSummary> conversati
 /// An open request or a wait about a matter's mail, from Needs My Action
 /// and Waiting on Others ([matterOpenItemsProvider]).
 final class MatterOpenItem {
-  const MatterOpenItem({required this.text, required this.source, this.waitingOnOthers = false, this.due});
+  const MatterOpenItem({
+    required this.text,
+    required this.source,
+    this.waitingOnOthers = false,
+    this.due = ActionDue.none,
+  });
 
   /// The request in a few words, as the action shows it.
   final String text;
@@ -55,7 +60,9 @@ final class MatterOpenItem {
 
   /// Someone else has to act (Waiting on Others), not the user.
   final bool waitingOnOthers;
-  final DateTime? due;
+
+  /// When, as the action has it: a date, or the timing as written.
+  final ActionDue due;
 }
 
 /// The open actions and waits of matter [matterId]'s messages, from Needs My
@@ -71,7 +78,7 @@ final matterOpenItemsProvider = Provider.autoDispose.family<List<MatterOpenItem>
           text: a.currentRequest,
           source: a.source,
           waitingOnOthers: folder == VirtualMailbox.waitingOnOthers,
-          due: a.due.date,
+          due: a.due,
         ),
   ];
 });
