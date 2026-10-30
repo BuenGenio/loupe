@@ -10,6 +10,284 @@ class AppLocalizationsCa extends AppLocalizations {
   AppLocalizationsCa([String locale = 'ca']) : super(locale);
 
   @override
+  String get mattersTitle => 'Expedients';
+
+  @override
+  String get mattersNewMatter => 'Expedient nou…';
+
+  @override
+  String get mattersNewMatterTitle => 'Expedient nou';
+
+  @override
+  String get mattersNameHint => 'Compra d’una casa, un sinistre de l’assegurança…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Mantén juntes les converses sobre una mateixa cosa, com ara la compra d’una casa, siguin de qui siguin.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count converses',
+      one: '1 conversa',
+      zero: 'Cap conversa',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Accions de l’expedient';
+
+  @override
+  String get mattersRename => 'Canvia el nom…';
+
+  @override
+  String get mattersRenameTitle => 'Canvia el nom de l’expedient';
+
+  @override
+  String get mattersSplit => 'Divideix…';
+
+  @override
+  String get mattersMergeInto => 'Fusiona amb…';
+
+  @override
+  String get mattersDelete => 'Suprimeix l’expedient';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return 'Vols suprimir «$name»?';
+  }
+
+  @override
+  String get mattersDeleteMessage =>
+      'Les seves converses es queden a les teves bústies. Només se suprimeix l’expedient.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return 'Fusiona «$name» amb';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'S’ha fusionat amb «$name»';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'No hi ha cap altre expedient amb què fusionar-lo.';
+
+  @override
+  String get mattersSplitTitle => 'Tria les converses';
+
+  @override
+  String get mattersSplitMove => 'Mou a un expedient nou…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'S’han mogut $count converses a «$name»',
+      one: 'S’ha mogut 1 conversa a «$name»',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Converses';
+
+  @override
+  String get mattersNoConversations =>
+      'Encara no hi ha converses. Afegeix-ne una des del menú ⋯ d’una conversa amb Afegeix a un expedient…, o des dels suggeriments.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count missatges', one: '1 missatge');
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'No és en aquest telèfon, o només és a la paperera';
+
+  @override
+  String get mattersAddToMatter => 'Afegeix a un expedient…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Afegeix a un expedient';
+
+  @override
+  String get mattersAlreadyIn => 'Ja hi és';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'S’ha afegit a «$name»';
+  }
+
+  @override
+  String get mattersRemove => 'Treu de l’expedient';
+
+  @override
+  String get mattersRemoveWhich => 'De quin expedient la vols treure?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'S’ha tret de «$name»';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Obre l’expedient «$name»';
+  }
+
+  @override
+  String get mattersGone => 'Aquest expedient ja no existeix.';
+
+  @override
+  String get mattersStatusTitle => 'En quin punt som';
+
+  @override
+  String get mattersStatusHint =>
+      'Unes quantes línies sobre la situació més recent, cadascuna treta d’un missatge d’aquí.';
+
+  @override
+  String get mattersStatusWorking => 'S’estan llegint els últims missatges…';
+
+  @override
+  String get mattersStatusFailed => 'Loupe no ha pogut esbrinar en quin punt som.';
+
+  @override
+  String get mattersStatusOutdated => 'Han arribat missatges nous des que es va escriure.';
+
+  @override
+  String get mattersStatusUpdate => 'Actualitza';
+
+  @override
+  String get mattersStatusDemoNote => 'Escrit per la demostració integrada, no per un model.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Escrit per $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Només s’han llegit els missatges més recents.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return 'El correu de $accounts es queda en aquest telèfon, així que no s’hi inclou.';
+  }
+
+  @override
+  String get mattersStatusEncrypted => 'Els missatges xifrats es queden en aquest telèfon, així que no s’hi inclouen.';
+
+  @override
+  String get mattersStatusNoInput => 'Cap d’aquests missatges no es pot enviar a aquest proveïdor.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Accions pendents';
+
+  @override
+  String get mattersWaiting => 'A l’espera d’altres';
+
+  @override
+  String get mattersDocuments => 'Documents';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete =>
+      'No s’han pogut obrir alguns missatges, així que els seus fitxers no surten a la llista.';
+
+  @override
+  String get mattersPeople => 'Persones implicades';
+
+  @override
+  String get mattersHistory => 'Historial';
+
+  @override
+  String get mattersSuggestions => 'Converses suggerides';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Trobades en aquest telèfon per paraules, referències i remitents en comú. No s’afegeix res fins que no ho triïs.';
+
+  @override
+  String get mattersNotThisOne => 'Aquesta no';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Menciona «$words»';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'També és de $name. Que el remitent coincideixi no vol dir, per si sol, que en formi part.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'També és de $domain. Que el domini coincideixi no vol dir, per si sol, que en formi part.';
+  }
+
+  @override
+  String get mattersActivity => 'Activitat';
+
+  @override
+  String get mattersEventCreated => 'S’ha creat l’expedient';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'S’ha canviat el nom a «$name»';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return 'S’ha afegit «$subject»';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return 'S’ha afegit «$subject» des d’un suggeriment';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return 'S’ha tret «$subject»';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'S’hi ha incorporat «$name», amb $count converses',
+      one: 'S’hi ha incorporat «$name», amb 1 conversa',
+      zero: 'S’hi ha incorporat «$name»',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'S’ha creat amb $count converses de «$name»',
+      one: 'S’ha creat amb 1 conversa de «$name»',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Afegeix';
 
   @override

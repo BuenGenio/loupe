@@ -10,6 +10,282 @@ class AppLocalizationsLb extends AppLocalizations {
   AppLocalizationsLb([String locale = 'lb']) : super(locale);
 
   @override
+  String get mattersTitle => 'Ugeleeënheeten';
+
+  @override
+  String get mattersNewMatter => 'Nei Ugeleeënheet…';
+
+  @override
+  String get mattersNewMatterTitle => 'Nei Ugeleeënheet';
+
+  @override
+  String get mattersNameHint => 'En Haus kafen, e Versécherungsfall…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Haalt d’Konversatiounen iwwer eng Saach zesummen, wéi en Hauskaf, egal vu wiem se kommen.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Konversatiounen',
+      one: '$count Konversatioun',
+      zero: 'Keng Konversatiounen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Aktioune fir d’Ugeleeënheet';
+
+  @override
+  String get mattersRename => 'Ëmbenennen…';
+
+  @override
+  String get mattersRenameTitle => 'Ugeleeënheet ëmbenennen';
+
+  @override
+  String get mattersSplit => 'Opdeelen…';
+
+  @override
+  String get mattersMergeInto => 'Fusionéiere mat…';
+
+  @override
+  String get mattersDelete => 'Ugeleeënheet läschen';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return '„$name“ läschen?';
+  }
+
+  @override
+  String get mattersDeleteMessage => 'D’Konversatioune bleiwen an Äre Mailboxen. Just d’Ugeleeënheet gëtt geläscht.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return '„$name“ fusionéiere mat';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'Mat „$name“ fusionéiert';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'Et gëtt keng aner Ugeleeënheet, mat där se fusionéiert ka ginn.';
+
+  @override
+  String get mattersSplitTitle => 'Konversatiounen auswielen';
+
+  @override
+  String get mattersSplitMove => 'An eng nei Ugeleeënheet verréckelen…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Konversatiounen an „$name“ verréckelt',
+      one: '$count Konversatioun an „$name“ verréckelt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Konversatiounen';
+
+  @override
+  String get mattersNoConversations =>
+      'Nach keng Konversatiounen. Setzt eng mat „Bei enger Ugeleeënheet derbäisetzen…“ am ⋯-Menü vun enger Konversatioun derbäi, oder aus de Virschléi.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count Messagen', one: '$count Message');
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Net op dësem Handy, oder just am Pabeierkuerf';
+
+  @override
+  String get mattersAddToMatter => 'Bei enger Ugeleeënheet derbäisetzen…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Bei enger Ugeleeënheet derbäisetzen';
+
+  @override
+  String get mattersAlreadyIn => 'Ass schonn dran';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'Bei „$name“ derbäigesat';
+  }
+
+  @override
+  String get mattersRemove => 'Aus der Ugeleeënheet ewechhuelen';
+
+  @override
+  String get mattersRemoveWhich => 'Aus wéi enger Ugeleeënheet ewechhuelen?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'Aus „$name“ ewechgeholl';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Ugeleeënheet „$name“ opmaachen';
+  }
+
+  @override
+  String get mattersGone => 'Dës Ugeleeënheet gëtt et net méi.';
+
+  @override
+  String get mattersStatusTitle => 'Aktuelle Stand';
+
+  @override
+  String get mattersStatusHint => 'E puer Zeilen zum aktuelle Stand, all eng aus engem Message hei.';
+
+  @override
+  String get mattersStatusWorking => 'Déi neiste Message gi gelies…';
+
+  @override
+  String get mattersStatusFailed => 'Loupe konnt den aktuelle Stand net erausfannen.';
+
+  @override
+  String get mattersStatusOutdated => 'Zanter dësen Text geschriwwe gouf, sinn nei Messagen erakomm.';
+
+  @override
+  String get mattersStatusUpdate => 'Aktualiséieren';
+
+  @override
+  String get mattersStatusDemoNote => 'Geschriwwe vun der agebauter Demo, net vun engem Modell.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Geschriwwe vun $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Just déi neiste Message goufe gelies.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return 'Maile vun $accounts bleiwen op dësem Handy, dofir sinn se net dobäi.';
+  }
+
+  @override
+  String get mattersStatusEncrypted => 'Verschlësselt Message bleiwen op dësem Handy, dofir sinn se net dobäi.';
+
+  @override
+  String get mattersStatusNoInput => 'Kee vun dëse Messagen däerf un dëse Provider goen.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Oppen Aktiounen';
+
+  @override
+  String get mattersWaiting => 'Waart op anerer';
+
+  @override
+  String get mattersDocuments => 'Dokumenter';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete =>
+      'Verschidde Message konnten net opgemaach ginn, dofir sinn hir Fichieren net opgelëscht.';
+
+  @override
+  String get mattersPeople => 'Bedeelegt Persounen';
+
+  @override
+  String get mattersHistory => 'Verlaf';
+
+  @override
+  String get mattersSuggestions => 'Virgeschloe Konversatiounen';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Op dësem Handy fonnt iwwer gemeinsam Wierder, Referenzen an Ofsender. Näischt gëtt derbäigesat, ier Dir et auswielt.';
+
+  @override
+  String get mattersNotThisOne => 'Gehéiert net dozou';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Ernimmt „$words“';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Och vun $name. E gemeinsamen Ofsender eleng heescht net, datt se dozou gehéiert.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Och vun $domain. Eng gemeinsam Domain eleng heescht net, datt se dozou gehéiert.';
+  }
+
+  @override
+  String get mattersActivity => 'Aktivitéit';
+
+  @override
+  String get mattersEventCreated => 'Ugeleeënheet erstallt';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'Ëmbenannt an „$name“';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return '„$subject“ derbäigesat';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return '„$subject“ aus engem Virschlag derbäigesat';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return '„$subject“ ewechgeholl';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '„$name“ mat $count Konversatiounen iwwerholl',
+      one: '„$name“ mat $count Konversatioun iwwerholl',
+      zero: '„$name“ iwwerholl',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Aus $count Konversatioune vun „$name“ erstallt',
+      one: 'Aus $count Konversatioun vun „$name“ erstallt',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Derbäisetzen';
 
   @override

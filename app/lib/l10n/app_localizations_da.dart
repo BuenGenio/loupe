@@ -10,6 +10,280 @@ class AppLocalizationsDa extends AppLocalizations {
   AppLocalizationsDa([String locale = 'da']) : super(locale);
 
   @override
+  String get mattersTitle => 'Sager';
+
+  @override
+  String get mattersNewMatter => 'Ny sag…';
+
+  @override
+  String get mattersNewMatterTitle => 'Ny sag';
+
+  @override
+  String get mattersNameHint => 'Huskøb, en forsikringssag…';
+
+  @override
+  String get mattersEmptyFooter => 'Hold samtalerne om én ting samlet, f.eks. et huskøb, uanset hvem de er fra.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count samtaler',
+      one: '1 samtale',
+      zero: 'Ingen samtaler',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Handlinger for sagen';
+
+  @override
+  String get mattersRename => 'Omdøb…';
+
+  @override
+  String get mattersRenameTitle => 'Omdøb sag';
+
+  @override
+  String get mattersSplit => 'Opdel…';
+
+  @override
+  String get mattersMergeInto => 'Slå sammen med…';
+
+  @override
+  String get mattersDelete => 'Slet sag';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return 'Vil du slette »$name«?';
+  }
+
+  @override
+  String get mattersDeleteMessage => 'Samtalerne bliver i dine postkasser. Det er kun sagen, der forsvinder.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return 'Slå »$name« sammen med';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'Slået sammen med »$name«';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'Der er ingen anden sag at slå sammen med.';
+
+  @override
+  String get mattersSplitTitle => 'Vælg samtaler';
+
+  @override
+  String get mattersSplitMove => 'Flyt til ny sag…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count samtaler flyttet til »$name«',
+      one: '1 samtale flyttet til »$name«',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Samtaler';
+
+  @override
+  String get mattersNoConversations =>
+      'Ingen samtaler endnu. Tilføj en med Føj til sag… i en samtales ⋯-menu, eller fra forslagene.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count beskeder', one: '1 besked');
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Ikke på denne telefon, eller kun i papirkurven';
+
+  @override
+  String get mattersAddToMatter => 'Føj til sag…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Føj til sag';
+
+  @override
+  String get mattersAlreadyIn => 'Allerede tilføjet';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'Føjet til »$name«';
+  }
+
+  @override
+  String get mattersRemove => 'Fjern fra sag';
+
+  @override
+  String get mattersRemoveWhich => 'Fjern fra hvilken sag?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'Fjernet fra »$name«';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Åbn sagen »$name«';
+  }
+
+  @override
+  String get mattersGone => 'Denne sag findes ikke længere.';
+
+  @override
+  String get mattersStatusTitle => 'Status lige nu';
+
+  @override
+  String get mattersStatusHint => 'Et par linjer om, hvordan sagen står nu, hver hentet fra en besked her.';
+
+  @override
+  String get mattersStatusWorking => 'Læser de seneste beskeder…';
+
+  @override
+  String get mattersStatusFailed => 'Loupe kunne ikke finde ud af, hvordan sagen står.';
+
+  @override
+  String get mattersStatusOutdated => 'Der er kommet nye beskeder, siden dette blev skrevet.';
+
+  @override
+  String get mattersStatusUpdate => 'Opdater';
+
+  @override
+  String get mattersStatusDemoNote => 'Skrevet af den indbyggede demo, ikke af en model.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Skrevet af $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Kun de seneste beskeder blev læst.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return 'Mail fra $accounts bliver på denne telefon, så den er ikke med.';
+  }
+
+  @override
+  String get mattersStatusEncrypted => 'Krypterede beskeder bliver på denne telefon, så de er ikke med.';
+
+  @override
+  String get mattersStatusNoInput => 'Ingen af disse beskeder må sendes til denne udbyder.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Udestående opgaver';
+
+  @override
+  String get mattersWaiting => 'Venter på andre';
+
+  @override
+  String get mattersDocuments => 'Dokumenter';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete => 'Nogle beskeder kunne ikke åbnes, så deres filer er ikke vist.';
+
+  @override
+  String get mattersPeople => 'Involverede personer';
+
+  @override
+  String get mattersHistory => 'Historik';
+
+  @override
+  String get mattersSuggestions => 'Foreslåede samtaler';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Fundet på denne telefon ud fra fælles ord, referencer og afsendere. Intet tilføjes, før du vælger det.';
+
+  @override
+  String get mattersNotThisOne => 'Ikke denne';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Nævner »$words«';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Også fra $name. En fælles afsender betyder ikke i sig selv, at den hører til her.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Også fra $domain. Et fælles domæne betyder ikke i sig selv, at den hører til her.';
+  }
+
+  @override
+  String get mattersActivity => 'Aktivitet';
+
+  @override
+  String get mattersEventCreated => 'Sag oprettet';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'Omdøbt til »$name«';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return '»$subject« tilføjet';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return '»$subject« tilføjet fra et forslag';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return '»$subject« fjernet';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '»$name« slået sammen med sagen ($count samtaler)',
+      one: '»$name« slået sammen med sagen (1 samtale)',
+      zero: '»$name« slået sammen med sagen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Oprettet ud fra $count samtaler i »$name«',
+      one: 'Oprettet ud fra 1 samtale i »$name«',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Tilføj';
 
   @override

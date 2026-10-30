@@ -10,6 +10,281 @@ class AppLocalizationsNb extends AppLocalizations {
   AppLocalizationsNb([String locale = 'nb']) : super(locale);
 
   @override
+  String get mattersTitle => 'Saker';
+
+  @override
+  String get mattersNewMatter => 'Ny sak…';
+
+  @override
+  String get mattersNewMatterTitle => 'Ny sak';
+
+  @override
+  String get mattersNameHint => 'Boligkjøp, en forsikringssak…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Hold samtalene om én ting samlet, for eksempel et boligkjøp, uansett hvem de er fra.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count samtaler',
+      one: '1 samtale',
+      zero: 'Ingen samtaler',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Handlinger for saken';
+
+  @override
+  String get mattersRename => 'Gi nytt navn…';
+
+  @override
+  String get mattersRenameTitle => 'Gi saken nytt navn';
+
+  @override
+  String get mattersSplit => 'Del opp…';
+
+  @override
+  String get mattersMergeInto => 'Slå sammen med…';
+
+  @override
+  String get mattersDelete => 'Slett sak';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return 'Vil du slette «$name»?';
+  }
+
+  @override
+  String get mattersDeleteMessage => 'Samtalene blir værende i postkassene dine. Det er bare saken som forsvinner.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return 'Slå sammen «$name» med';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'Slått sammen med «$name»';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'Det finnes ingen annen sak å slå sammen med.';
+
+  @override
+  String get mattersSplitTitle => 'Velg samtaler';
+
+  @override
+  String get mattersSplitMove => 'Flytt til ny sak…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count samtaler flyttet til «$name»',
+      one: '1 samtale flyttet til «$name»',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Samtaler';
+
+  @override
+  String get mattersNoConversations =>
+      'Ingen samtaler ennå. Legg til en med Legg til i sak… i ⋯-menyen til en samtale, eller fra forslagene.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count meldinger', one: '1 melding');
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Ikke på denne telefonen, eller bare i papirkurven';
+
+  @override
+  String get mattersAddToMatter => 'Legg til i sak…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Legg til i sak';
+
+  @override
+  String get mattersAlreadyIn => 'Allerede lagt til';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'Lagt til i «$name»';
+  }
+
+  @override
+  String get mattersRemove => 'Fjern fra sak';
+
+  @override
+  String get mattersRemoveWhich => 'Fjern fra hvilken sak?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'Fjernet fra «$name»';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Åpne saken «$name»';
+  }
+
+  @override
+  String get mattersGone => 'Denne saken finnes ikke lenger.';
+
+  @override
+  String get mattersStatusTitle => 'Slik står saken';
+
+  @override
+  String get mattersStatusHint => 'Noen linjer om hvordan saken står nå, hver hentet fra en melding her.';
+
+  @override
+  String get mattersStatusWorking => 'Leser de nyeste meldingene…';
+
+  @override
+  String get mattersStatusFailed => 'Loupe klarte ikke å finne ut hvordan saken står.';
+
+  @override
+  String get mattersStatusOutdated => 'Det har kommet nye meldinger siden dette ble skrevet.';
+
+  @override
+  String get mattersStatusUpdate => 'Oppdater';
+
+  @override
+  String get mattersStatusDemoNote => 'Skrevet av den innebygde demoen, ikke av en modell.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Skrevet av $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Bare de nyeste meldingene ble lest.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return 'E-post fra $accounts blir værende på denne telefonen, så den er ikke tatt med.';
+  }
+
+  @override
+  String get mattersStatusEncrypted => 'Krypterte meldinger blir værende på denne telefonen, så de er ikke tatt med.';
+
+  @override
+  String get mattersStatusNoInput => 'Ingen av disse meldingene får sendes til denne leverandøren.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Gjenstående oppgaver';
+
+  @override
+  String get mattersWaiting => 'Venter på andre';
+
+  @override
+  String get mattersDocuments => 'Dokumenter';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete => 'Noen meldinger kunne ikke åpnes, så filene deres vises ikke.';
+
+  @override
+  String get mattersPeople => 'Involverte personer';
+
+  @override
+  String get mattersHistory => 'Historikk';
+
+  @override
+  String get mattersSuggestions => 'Foreslåtte samtaler';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Funnet på denne telefonen ut fra felles ord, referanser og avsendere. Ingenting legges til før du velger det.';
+
+  @override
+  String get mattersNotThisOne => 'Ikke denne';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Nevner «$words»';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Også fra $name. Samme avsender alene betyr ikke at den hører hjemme her.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Også fra $domain. Samme domene alene betyr ikke at den hører hjemme her.';
+  }
+
+  @override
+  String get mattersActivity => 'Aktivitet';
+
+  @override
+  String get mattersEventCreated => 'Sak opprettet';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'Navn endret til «$name»';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return '«$subject» lagt til';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return '«$subject» lagt til fra et forslag';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return '«$subject» fjernet';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '«$name» slått sammen med saken ($count samtaler)',
+      one: '«$name» slått sammen med saken (1 samtale)',
+      zero: '«$name» slått sammen med saken',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Opprettet fra $count samtaler i «$name»',
+      one: 'Opprettet fra 1 samtale i «$name»',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Legg til';
 
   @override

@@ -10,6 +10,282 @@ class AppLocalizationsFi extends AppLocalizations {
   AppLocalizationsFi([String locale = 'fi']) : super(locale);
 
   @override
+  String get mattersTitle => 'Asiat';
+
+  @override
+  String get mattersNewMatter => 'Uusi asia…';
+
+  @override
+  String get mattersNewMatterTitle => 'Uusi asia';
+
+  @override
+  String get mattersNameHint => 'Asuntokauppa, vakuutusasia…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Kokoa yhtä asiaa, kuten asuntokauppaa, koskevat keskustelut yhteen lähettäjästä riippumatta.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count keskustelua',
+      one: '$count keskustelu',
+      zero: 'Ei keskusteluja',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Asian toiminnot';
+
+  @override
+  String get mattersRename => 'Nimeä uudelleen…';
+
+  @override
+  String get mattersRenameTitle => 'Nimeä asia uudelleen';
+
+  @override
+  String get mattersSplit => 'Jaa osiin…';
+
+  @override
+  String get mattersMergeInto => 'Yhdistä toiseen asiaan…';
+
+  @override
+  String get mattersDelete => 'Poista asia';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return 'Poistetaanko ”$name”?';
+  }
+
+  @override
+  String get mattersDeleteMessage => 'Sen keskustelut säilyvät postilaatikoissasi. Vain asia poistuu.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return 'Yhdistä ”$name” toiseen asiaan';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'Yhdistetty asiaan ”$name”';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'Ei ole toista asiaa, johon yhdistää.';
+
+  @override
+  String get mattersSplitTitle => 'Valitse keskustelut';
+
+  @override
+  String get mattersSplitMove => 'Siirrä uuteen asiaan…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count keskustelua siirretty asiaan ”$name”',
+      one: '$count keskustelu siirretty asiaan ”$name”',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Keskustelut';
+
+  @override
+  String get mattersNoConversations =>
+      'Ei vielä keskusteluja. Lisää keskustelu sen ⋯-valikon kohdasta Lisää asiaan… tai ehdotuksista.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count viestiä', one: '$count viesti');
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Ei tässä puhelimessa tai vain roskakorissa';
+
+  @override
+  String get mattersAddToMatter => 'Lisää asiaan…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Lisää asiaan';
+
+  @override
+  String get mattersAlreadyIn => 'Jo lisätty';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'Lisätty asiaan ”$name”';
+  }
+
+  @override
+  String get mattersRemove => 'Poista asiasta';
+
+  @override
+  String get mattersRemoveWhich => 'Mistä asiasta poistetaan?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'Poistettu asiasta ”$name”';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Avaa asia ”$name”';
+  }
+
+  @override
+  String get mattersGone => 'Tätä asiaa ei ole enää.';
+
+  @override
+  String get mattersStatusTitle => 'Tilanne nyt';
+
+  @override
+  String get mattersStatusHint =>
+      'Muutama rivi tämänhetkisestä tilanteesta, kukin jonkin tämän asian viestin pohjalta.';
+
+  @override
+  String get mattersStatusWorking => 'Luetaan uusimpia viestejä…';
+
+  @override
+  String get mattersStatusFailed => 'Loupe ei pystynyt selvittämään tilannetta.';
+
+  @override
+  String get mattersStatusOutdated => 'Uusia viestejä on tullut tämän kirjoittamisen jälkeen.';
+
+  @override
+  String get mattersStatusUpdate => 'Päivitä';
+
+  @override
+  String get mattersStatusDemoNote => 'Kirjoittanut sisäänrakennettu demo, ei malli.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Kirjoittanut $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Vain uusimmat viestit luettiin.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return '$accounts: posti pysyy tässä puhelimessa, joten sitä ei ole otettu mukaan.';
+  }
+
+  @override
+  String get mattersStatusEncrypted => 'Salatut viestit pysyvät tässä puhelimessa, joten niitä ei ole otettu mukaan.';
+
+  @override
+  String get mattersStatusNoInput => 'Mitään näistä viesteistä ei saa lähettää tälle palveluntarjoajalle.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Avoimet tehtävät';
+
+  @override
+  String get mattersWaiting => 'Odottaa muita';
+
+  @override
+  String get mattersDocuments => 'Dokumentit';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete => 'Joitakin viestejä ei voitu avata, joten niiden tiedostoja ei näytetä.';
+
+  @override
+  String get mattersPeople => 'Osalliset';
+
+  @override
+  String get mattersHistory => 'Historia';
+
+  @override
+  String get mattersSuggestions => 'Ehdotetut keskustelut';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Löydetty tästä puhelimesta yhteisten sanojen, viitteiden ja lähettäjien perusteella. Mitään ei lisätä, ennen kuin valitset.';
+
+  @override
+  String get mattersNotThisOne => 'Ei tämä';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Mainitsee ”$words”';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Myös lähettäjältä $name. Pelkkä sama lähettäjä ei vielä tarkoita, että keskustelu kuuluu tähän.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Myös verkkotunnuksesta $domain. Pelkkä sama verkkotunnus ei vielä tarkoita, että keskustelu kuuluu tähän.';
+  }
+
+  @override
+  String get mattersActivity => 'Muutokset';
+
+  @override
+  String get mattersEventCreated => 'Asia luotu';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'Nimetty uudelleen: ”$name”';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return 'Lisätty: ”$subject”';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return 'Lisätty ehdotuksesta: ”$subject”';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return 'Poistettu: ”$subject”';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Yhdistetty tähän: ”$name” ($count keskustelua)',
+      one: 'Yhdistetty tähän: ”$name” ($count keskustelu)',
+      zero: 'Yhdistetty tähän: ”$name”',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Erotettu asiasta ”$name” ($count keskustelua)',
+      one: 'Erotettu asiasta ”$name” ($count keskustelu)',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Lisää';
 
   @override

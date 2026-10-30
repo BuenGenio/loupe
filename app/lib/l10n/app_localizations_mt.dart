@@ -10,6 +10,303 @@ class AppLocalizationsMt extends AppLocalizations {
   AppLocalizationsMt([String locale = 'mt']) : super(locale);
 
   @override
+  String get mattersTitle => 'Każijiet';
+
+  @override
+  String get mattersNewMatter => 'Każ ġdid…';
+
+  @override
+  String get mattersNewMatterTitle => 'Każ ġdid';
+
+  @override
+  String get mattersNameHint => 'Xiri ta’ dar, talba tal-assigurazzjoni…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Żomm flimkien il-konversazzjonijiet dwar ħaġa waħda, bħax-xiri ta’ dar, ikunu minn għand min ikunu.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count konversazzjoni',
+      many: '$count-il konversazzjoni',
+      few: '$count konversazzjonijiet',
+      two: '$count konversazzjonijiet',
+      one: 'Konversazzjoni waħda',
+      zero: 'L-ebda konversazzjoni',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Azzjonijiet tal-każ';
+
+  @override
+  String get mattersRename => 'Ibdel l-isem…';
+
+  @override
+  String get mattersRenameTitle => 'Ibdel l-isem tal-każ';
+
+  @override
+  String get mattersSplit => 'Aqsam…';
+
+  @override
+  String get mattersMergeInto => 'Għaqqad ma’…';
+
+  @override
+  String get mattersDelete => 'Ħassar il-każ';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return 'Tħassar “$name”?';
+  }
+
+  @override
+  String get mattersDeleteMessage =>
+      'Il-konversazzjonijiet tal-każ jibqgħu fil-mailboxes tiegħek. Jitħassar il-każ biss.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return 'Ma’ liema każ tgħaqqad “$name”?';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'Ingħaqad ma’ “$name”';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'M’hemmx każ ieħor x’tgħaqqad miegħu.';
+
+  @override
+  String get mattersSplitTitle => 'Agħżel il-konversazzjonijiet';
+
+  @override
+  String get mattersSplitMove => 'Ċaqlaq għal każ ġdid…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count konversazzjoni ġew imċaqalqin għal “$name”',
+      many: '$count-il konversazzjoni ġew imċaqalqin għal “$name”',
+      few: '$count konversazzjonijiet ġew imċaqalqin għal “$name”',
+      two: '$count konversazzjonijiet ġew imċaqalqin għal “$name”',
+      one: 'Konversazzjoni waħda ġiet imċaqalqa għal “$name”',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Konversazzjonijiet';
+
+  @override
+  String get mattersNoConversations =>
+      'Għad m’hemmx konversazzjonijiet. Żid waħda mill-menu ⋯ ta’ konversazzjoni b’“Żid mal-każ…”, jew mis-suġġerimenti.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count messaġġ',
+      many: '$count-il messaġġ',
+      few: '$count messaġġi',
+      two: '$count messaġġi',
+      one: '$count messaġġ',
+    );
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Mhux fuq dan il-mowbajl, jew fl-Iskart biss';
+
+  @override
+  String get mattersAddToMatter => 'Żid mal-każ…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Żid mal-każ';
+
+  @override
+  String get mattersAlreadyIn => 'Diġà fih';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'Miżjuda ma’ “$name”';
+  }
+
+  @override
+  String get mattersRemove => 'Neħħi mill-każ';
+
+  @override
+  String get mattersRemoveWhich => 'Neħħi minn liema każ?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'Imneħħija minn “$name”';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Iftaħ il-każ “$name”';
+  }
+
+  @override
+  String get mattersGone => 'Dan il-każ m’għadux jeżisti.';
+
+  @override
+  String get mattersStatusTitle => 'Fejn wasal il-każ';
+
+  @override
+  String get mattersStatusHint => 'Ftit linji dwar l-aħħar pożizzjoni, kull waħda minn messaġġ ta’ dan il-każ.';
+
+  @override
+  String get mattersStatusWorking => 'Qed jinqraw l-aħħar messaġġi…';
+
+  @override
+  String get mattersStatusFailed => 'Loupe ma setax jifhem fejn wasal il-każ.';
+
+  @override
+  String get mattersStatusOutdated => 'Waslu messaġġi ġodda minn meta nkiteb dan.';
+
+  @override
+  String get mattersStatusUpdate => 'Aġġorna';
+
+  @override
+  String get mattersStatusDemoNote => 'Miktub mid-demo inkorporata, mhux minn mudell.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Miktub minn $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Inqraw biss l-aħħar messaġġi.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return 'Il-posta minn $accounts tibqa’ fuq dan il-mowbajl, għalhekk mhix inkluża.';
+  }
+
+  @override
+  String get mattersStatusEncrypted => 'Il-messaġġi kriptati jibqgħu fuq dan il-mowbajl, għalhekk mhumiex inklużi.';
+
+  @override
+  String get mattersStatusNoInput => 'L-ebda wieħed minn dawn il-messaġġi ma jista’ jmur għand dan il-fornitur.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Azzjonijiet pendenti';
+
+  @override
+  String get mattersWaiting => 'Nistennew lil ħaddieħor';
+
+  @override
+  String get mattersDocuments => 'Dokumenti';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete =>
+      'Xi messaġġi ma setgħux jinfetħu, għalhekk il-fajls tagħhom mhumiex elenkati.';
+
+  @override
+  String get mattersPeople => 'Nies involuti';
+
+  @override
+  String get mattersHistory => 'Storja';
+
+  @override
+  String get mattersSuggestions => 'Konversazzjonijiet issuġġeriti';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Instabu fuq dan il-mowbajl minn kliem, referenzi u mittenti komuni. Xejn ma jiżdied sakemm ma tagħżilx int.';
+
+  @override
+  String get mattersNotThisOne => 'Mhux din';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Isemmi “$words”';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Anki minn $name. L-istess mittent waħdu ma jfissirx li tagħmel parti minn dan il-każ.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Anki minn $domain. L-istess dominju waħdu ma jfissirx li tagħmel parti minn dan il-każ.';
+  }
+
+  @override
+  String get mattersActivity => 'Attività';
+
+  @override
+  String get mattersEventCreated => 'Il-każ inħoloq';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'L-isem inbidel għal “$name”';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return 'Żdiedet il-konversazzjoni “$subject”';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return 'Żdiedet il-konversazzjoni “$subject” minn suġġeriment';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return 'Tneħħiet il-konversazzjoni “$subject”';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ingħaqad hawn “$name”, ma’ $count konversazzjoni',
+      many: 'Ingħaqad hawn “$name”, ma’ $count-il konversazzjoni',
+      few: 'Ingħaqad hawn “$name”, ma’ $count konversazzjonijiet',
+      two: 'Ingħaqad hawn “$name”, ma’ $count konversazzjonijiet',
+      one: 'Ingħaqad hawn “$name”, ma’ konversazzjoni waħda',
+      zero: 'Ingħaqad hawn “$name”',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Inħoloq minn $count konversazzjoni ta’ “$name”',
+      many: 'Inħoloq minn $count-il konversazzjoni ta’ “$name”',
+      few: 'Inħoloq minn $count konversazzjonijiet ta’ “$name”',
+      two: 'Inħoloq minn $count konversazzjonijiet ta’ “$name”',
+      one: 'Inħoloq minn konversazzjoni waħda ta’ “$name”',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Żid';
 
   @override

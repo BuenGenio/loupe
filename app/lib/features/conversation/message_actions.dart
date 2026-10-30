@@ -20,6 +20,10 @@ enum MessageAction {
   forward,
   mute,
   unmute,
+
+  /// Puts the conversation into a matter, or takes it out.
+  addToMatter,
+  removeFromMatter,
   toggleSeen,
   toggleFlag,
   tags,
@@ -45,6 +49,8 @@ enum MessageAction {
 /// mailbox and the message isn't in it. [mailboxRole]: where it lives now.
 /// [snoozed]: it waits in the Snoozed folder (Wake Now, Change Time).
 /// [muted]: whether its thread is muted; null when muting isn't available.
+/// [inMatter]: whether its conversation is in a matter; null when there are
+/// no matters (the repository keeps none).
 Future<MessageAction?> showMessageMenu(
   BuildContext context, {
   required EmailSummary message,
@@ -52,6 +58,7 @@ Future<MessageAction?> showMessageMenu(
   required MailboxRole mailboxRole,
   bool snoozed = false,
   bool? muted,
+  bool? inMatter,
   bool canCompare = false,
 }) {
   final toList = listPostAddress(message.listPost) != null;
@@ -103,6 +110,19 @@ Future<MessageAction?> showMessageMenu(
                     icon: muted ? LoupeIcons.notifications : LoupeIcons.mute,
                     onTap: () => pick(muted ? MessageAction.unmute : MessageAction.mute),
                   ),
+                if (inMatter != null) ...[
+                  SheetRow(
+                    label: l10n.mattersAddToMatter,
+                    icon: LoupeIcons.addToMatter,
+                    onTap: () => pick(MessageAction.addToMatter),
+                  ),
+                  if (inMatter)
+                    SheetRow(
+                      label: l10n.mattersRemove,
+                      icon: LoupeIcons.removeFromMatter,
+                      onTap: () => pick(MessageAction.removeFromMatter),
+                    ),
+                ],
               ],
             ),
             SheetGroup(

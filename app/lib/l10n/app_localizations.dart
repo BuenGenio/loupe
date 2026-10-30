@@ -165,6 +165,408 @@ abstract class AppLocalizations {
     Locale('uk'),
   ];
 
+  /// Section header on the Mailboxes screen. A matter is a set of conversations about one affair the user is dealing with (a house purchase, an insurance claim), like a solicitor's or an accountant's matter.
+  ///
+  /// In en, this message translates to:
+  /// **'Matters'**
+  String get mattersTitle;
+
+  /// Row on the Mailboxes screen and choice in Add to Matter: makes a new matter, asking for its name first.
+  ///
+  /// In en, this message translates to:
+  /// **'New Matter…'**
+  String get mattersNewMatter;
+
+  /// Title of the prompt asking for a new matter's name.
+  ///
+  /// In en, this message translates to:
+  /// **'New Matter'**
+  String get mattersNewMatterTitle;
+
+  /// Placeholder in the name field of a new matter: examples of what a matter can be.
+  ///
+  /// In en, this message translates to:
+  /// **'Buying a house, an insurance claim…'**
+  String get mattersNameHint;
+
+  /// Footer under the Matters section of the Mailboxes screen while there are no matters.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the conversations about one thing together, such as a house purchase, whoever they’re from.'**
+  String get mattersEmptyFooter;
+
+  /// Under a matter's name on the Mailboxes screen.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No conversations} =1{1 conversation} other{{count} conversations}}'**
+  String mattersRowDetail(int count);
+
+  /// Tooltip of the ⋯ button at the top of a matter: rename, split, merge, delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Matter Actions'**
+  String get mattersMenu;
+
+  /// Menu item: renames the matter.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename…'**
+  String get mattersRename;
+
+  /// Title of the prompt for a matter's new name.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename Matter'**
+  String get mattersRenameTitle;
+
+  /// Menu item: choose some of the matter's conversations and move them to a new matter.
+  ///
+  /// In en, this message translates to:
+  /// **'Split…'**
+  String get mattersSplit;
+
+  /// Menu item: moves all of this matter's conversations into another matter, then deletes this one.
+  ///
+  /// In en, this message translates to:
+  /// **'Merge Into…'**
+  String get mattersMergeInto;
+
+  /// Menu item and confirmation button. Deletes the matter only; no mail is deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Matter'**
+  String get mattersDelete;
+
+  /// Asks before deleting a matter.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete “{name}”?'**
+  String mattersDeleteTitle(String name);
+
+  /// Under the question before deleting a matter.
+  ///
+  /// In en, this message translates to:
+  /// **'Its conversations stay in your mailboxes. Only the matter goes.'**
+  String get mattersDeleteMessage;
+
+  /// Title of the list of matters to merge this one into.
+  ///
+  /// In en, this message translates to:
+  /// **'Merge “{name}” Into'**
+  String mattersMergeTitle(String name);
+
+  /// Snack bar after merging a matter into another.
+  ///
+  /// In en, this message translates to:
+  /// **'Merged into “{name}”'**
+  String mattersMerged(String name);
+
+  /// Snack bar after Merge Into… when there is only one matter.
+  ///
+  /// In en, this message translates to:
+  /// **'There’s no other matter to merge into.'**
+  String get mattersNoOtherMatter;
+
+  /// Title of a matter while the user picks the conversations to move to a new matter.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Conversations'**
+  String get mattersSplitTitle;
+
+  /// Button while splitting: moves the chosen conversations to a new matter, asking for its name.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to New Matter…'**
+  String get mattersSplitMove;
+
+  /// Snack bar after splitting, and the entry in the matter's activity.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Moved 1 conversation to “{name}”} other{Moved {count} conversations to “{name}”}}'**
+  String mattersMovedTo(int count, String name);
+
+  /// Section header on a matter: the conversations in it.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversations'**
+  String get mattersConversations;
+
+  /// Shown in a matter that has no conversations. Mentions the menu item Add to Matter….
+  ///
+  /// In en, this message translates to:
+  /// **'No conversations yet. Add one from a conversation’s ⋯ menu with Add to Matter…, or from the suggestions.'**
+  String get mattersNoConversations;
+
+  /// Under a conversation of a matter: who wrote in it and how many messages it has.
+  ///
+  /// In en, this message translates to:
+  /// **'{people}, {count, plural, =1{1 message} other{{count} messages}}'**
+  String mattersConversationDetail(String people, int count);
+
+  /// Under a conversation of a matter whose messages can't be shown here.
+  ///
+  /// In en, this message translates to:
+  /// **'Not on this phone, or only in Trash'**
+  String get mattersConversationGone;
+
+  /// Menu item of a message: puts its conversation into a matter, chosen next.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Matter…'**
+  String get mattersAddToMatter;
+
+  /// Title of the list of matters to add a conversation to.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Matter'**
+  String get mattersAddToMatterTitle;
+
+  /// Next to a matter the conversation is already in, in the Add to Matter list.
+  ///
+  /// In en, this message translates to:
+  /// **'Already in it'**
+  String get mattersAlreadyIn;
+
+  /// Snack bar after adding a conversation to a matter.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to “{name}”'**
+  String mattersAddedTo(String name);
+
+  /// Menu item and swipe action: takes the conversation out of the matter. Its mail stays.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from Matter'**
+  String get mattersRemove;
+
+  /// Title of the choice when a conversation is in several matters.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from Which Matter?'**
+  String get mattersRemoveWhich;
+
+  /// Snack bar after taking a conversation out of a matter, with Undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from “{name}”'**
+  String mattersRemoved(String name);
+
+  /// Screen reader label of the matter's name shown above a conversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Open matter “{name}”'**
+  String mattersOpenMatter(String name);
+
+  /// Shown when an open matter was deleted or merged into another.
+  ///
+  /// In en, this message translates to:
+  /// **'This matter no longer exists.'**
+  String get mattersGone;
+
+  /// Title of the matter's short status written by Private AI, and the row that asks for it.
+  ///
+  /// In en, this message translates to:
+  /// **'Where Things Stand'**
+  String get mattersStatusTitle;
+
+  /// Under Where Things Stand before it has been written; tapping writes it.
+  ///
+  /// In en, this message translates to:
+  /// **'A few lines on the latest position, each from a message here.'**
+  String get mattersStatusHint;
+
+  /// While Private AI writes where a matter stands.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading the latest messages…'**
+  String get mattersStatusWorking;
+
+  /// When writing where a matter stands failed; Retry follows.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe couldn’t work out where things stand.'**
+  String get mattersStatusFailed;
+
+  /// Above an older Where Things Stand; Update writes it again.
+  ///
+  /// In en, this message translates to:
+  /// **'New messages have come in since this was written.'**
+  String get mattersStatusOutdated;
+
+  /// Button: writes Where Things Stand again from the new messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get mattersStatusUpdate;
+
+  /// Footnote under Where Things Stand when the demo wrote it.
+  ///
+  /// In en, this message translates to:
+  /// **'Written by the built-in demo, not a model.'**
+  String get mattersStatusDemoNote;
+
+  /// Footnote under Where Things Stand: which AI provider and model wrote it.
+  ///
+  /// In en, this message translates to:
+  /// **'Written by {provider}'**
+  String mattersStatusProvider(String provider);
+
+  /// Footnote when Where Things Stand left older messages out or cut long ones short.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the latest messages were read.'**
+  String get mattersStatusPartial;
+
+  /// Note under Where Things Stand when the provider isn't on the phone and some accounts keep their mail local.
+  ///
+  /// In en, this message translates to:
+  /// **'Mail from {accounts} stays on this phone, so it isn’t included.'**
+  String mattersStatusLocalOnly(String accounts);
+
+  /// Note under Where Things Stand when the provider isn't on the phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypted messages stay on this phone, so they aren’t included.'**
+  String get mattersStatusEncrypted;
+
+  /// Under Where Things Stand when every message must stay on the phone and the provider isn't on it.
+  ///
+  /// In en, this message translates to:
+  /// **'None of these messages may go to this provider.'**
+  String get mattersStatusNoInput;
+
+  /// Under a statement of Where Things Stand: the message it comes from. Tapping opens it.
+  ///
+  /// In en, this message translates to:
+  /// **'{sender}, {date}'**
+  String mattersStatusSource(String sender, String date);
+
+  /// Section header on a matter: what the user still has to do, from Needs My Action.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Actions'**
+  String get mattersOpenActions;
+
+  /// Section header on a matter: what other people still have to do. Same words as the Waiting on Others folder.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting on Others'**
+  String get mattersWaiting;
+
+  /// Section header on a matter: the files attached to its messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get mattersDocuments;
+
+  /// Under a document of a matter: who sent it and when.
+  ///
+  /// In en, this message translates to:
+  /// **'{sender}, {date}'**
+  String mattersDocumentDetail(String sender, String date);
+
+  /// Under a matter's documents when some messages couldn't be loaded (offline).
+  ///
+  /// In en, this message translates to:
+  /// **'Some messages couldn’t be opened, so their files aren’t listed.'**
+  String get mattersDocumentsIncomplete;
+
+  /// Section header on a matter: who wrote or was written to.
+  ///
+  /// In en, this message translates to:
+  /// **'People Involved'**
+  String get mattersPeople;
+
+  /// Section header on a matter: all its messages in the order they came.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get mattersHistory;
+
+  /// Section header on a matter: conversations that may belong to it, for the user to add or not.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested Conversations'**
+  String get mattersSuggestions;
+
+  /// Footer under the suggested conversations.
+  ///
+  /// In en, this message translates to:
+  /// **'Found on this phone by shared words, references and senders. Nothing is added until you choose.'**
+  String get mattersSuggestionsFooter;
+
+  /// Button on a suggested conversation: it doesn't belong, and isn't suggested again.
+  ///
+  /// In en, this message translates to:
+  /// **'Not This One'**
+  String get mattersNotThisOne;
+
+  /// Why a conversation is suggested for a matter: it has the matter's words or reference.
+  ///
+  /// In en, this message translates to:
+  /// **'Mentions “{words}”'**
+  String mattersReasonMentions(String words);
+
+  /// Why a conversation is suggested: same sender as one in the matter, which is weak evidence (an adviser can handle several cases).
+  ///
+  /// In en, this message translates to:
+  /// **'Also from {name}. A shared sender alone doesn’t mean it belongs.'**
+  String mattersReasonSameSender(String name);
+
+  /// Why a conversation is suggested: same sender domain as one in the matter, which is weak evidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Also from {domain}. A shared domain alone doesn’t mean it belongs.'**
+  String mattersReasonSameDomain(String domain);
+
+  /// Section header on a matter: the changes the user made to it, newest first.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get mattersActivity;
+
+  /// An entry of a matter's activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Matter created'**
+  String get mattersEventCreated;
+
+  /// An entry of a matter's activity: it got this new name.
+  ///
+  /// In en, this message translates to:
+  /// **'Renamed to “{name}”'**
+  String mattersEventRenamed(String name);
+
+  /// An entry of a matter's activity: a conversation was added.
+  ///
+  /// In en, this message translates to:
+  /// **'Added “{subject}”'**
+  String mattersEventAdded(String subject);
+
+  /// An entry of a matter's activity: a suggested conversation was added.
+  ///
+  /// In en, this message translates to:
+  /// **'Added “{subject}” from a suggestion'**
+  String mattersEventAddedSuggested(String subject);
+
+  /// An entry of a matter's activity: a conversation was taken out.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed “{subject}”'**
+  String mattersEventRemoved(String subject);
+
+  /// An entry of a matter's activity: another matter was merged into it.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Merged in “{name}”} =1{Merged in “{name}”, with 1 conversation} other{Merged in “{name}”, with {count} conversations}}'**
+  String mattersEventMerged(int count, String name);
+
+  /// An entry of a matter's activity: it was split off from another matter.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Made from 1 conversation of “{name}”} other{Made from {count} conversations of “{name}”}}'**
+  String mattersEventSplitFrom(int count, String name);
+
   /// No description provided for @commonAdd.
   ///
   /// In en, this message translates to:

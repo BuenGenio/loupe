@@ -10,6 +10,285 @@ class AppLocalizationsEl extends AppLocalizations {
   AppLocalizationsEl([String locale = 'el']) : super(locale);
 
   @override
+  String get mattersTitle => 'Υποθέσεις';
+
+  @override
+  String get mattersNewMatter => 'Νέα υπόθεση…';
+
+  @override
+  String get mattersNewMatterTitle => 'Νέα υπόθεση';
+
+  @override
+  String get mattersNameHint => 'Αγορά σπιτιού, ασφαλιστική αποζημίωση…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Κρατήστε μαζί τις συζητήσεις για την ίδια υπόθεση, όπως μια αγορά σπιτιού, όποιος κι αν τις στέλνει.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count συζητήσεις',
+      one: '1 συζήτηση',
+      zero: 'Καμία συζήτηση',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Ενέργειες υπόθεσης';
+
+  @override
+  String get mattersRename => 'Μετονομασία…';
+
+  @override
+  String get mattersRenameTitle => 'Μετονομασία υπόθεσης';
+
+  @override
+  String get mattersSplit => 'Διαχωρισμός…';
+
+  @override
+  String get mattersMergeInto => 'Συγχώνευση σε…';
+
+  @override
+  String get mattersDelete => 'Διαγραφή υπόθεσης';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return 'Διαγραφή της υπόθεσης «$name»;';
+  }
+
+  @override
+  String get mattersDeleteMessage =>
+      'Οι συζητήσεις της παραμένουν στα γραμματοκιβώτιά σας. Διαγράφεται μόνο η υπόθεση.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return 'Συγχώνευση της «$name» σε άλλη υπόθεση';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'Συγχωνεύτηκε στην «$name»';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'Δεν υπάρχει άλλη υπόθεση για συγχώνευση.';
+
+  @override
+  String get mattersSplitTitle => 'Επιλέξτε συζητήσεις';
+
+  @override
+  String get mattersSplitMove => 'Μετακίνηση σε νέα υπόθεση…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Μετακινήθηκαν $count συζητήσεις στην «$name»',
+      one: 'Μετακινήθηκε 1 συζήτηση στην «$name»',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Συζητήσεις';
+
+  @override
+  String get mattersNoConversations =>
+      'Δεν υπάρχουν ακόμη συζητήσεις. Προσθέστε μία από το μενού ⋯ μιας συζήτησης με «Προσθήκη σε υπόθεση…» ή από τις προτάσεις.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count μηνύματα', one: '1 μήνυμα');
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Δεν υπάρχει σε αυτό το τηλέφωνο ή είναι μόνο στον Κάδο απορριμμάτων';
+
+  @override
+  String get mattersAddToMatter => 'Προσθήκη σε υπόθεση…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Προσθήκη σε υπόθεση';
+
+  @override
+  String get mattersAlreadyIn => 'Περιέχεται ήδη';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'Προστέθηκε στην «$name»';
+  }
+
+  @override
+  String get mattersRemove => 'Αφαίρεση από την υπόθεση';
+
+  @override
+  String get mattersRemoveWhich => 'Αφαίρεση από ποια υπόθεση;';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'Αφαιρέθηκε από την «$name»';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Άνοιγμα υπόθεσης «$name»';
+  }
+
+  @override
+  String get mattersGone => 'Αυτή η υπόθεση δεν υπάρχει πλέον.';
+
+  @override
+  String get mattersStatusTitle => 'Πού βρισκόμαστε';
+
+  @override
+  String get mattersStatusHint =>
+      'Λίγες γραμμές για την τρέχουσα κατάσταση, καθεμία βασισμένη σε ένα μήνυμα της υπόθεσης.';
+
+  @override
+  String get mattersStatusWorking => 'Ανάγνωση των πιο πρόσφατων μηνυμάτων…';
+
+  @override
+  String get mattersStatusFailed => 'Το Loupe δεν μπόρεσε να διαπιστώσει πού βρισκόμαστε.';
+
+  @override
+  String get mattersStatusOutdated => 'Έχουν έρθει νέα μηνύματα από τότε που γράφτηκε αυτό.';
+
+  @override
+  String get mattersStatusUpdate => 'Ενημέρωση';
+
+  @override
+  String get mattersStatusDemoNote => 'Γράφτηκε από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Γράφτηκε από $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Διαβάστηκαν μόνο τα πιο πρόσφατα μηνύματα.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return 'Η αλληλογραφία από $accounts μένει σε αυτό το τηλέφωνο, γι’ αυτό δεν περιλαμβάνεται.';
+  }
+
+  @override
+  String get mattersStatusEncrypted =>
+      'Τα κρυπτογραφημένα μηνύματα μένουν σε αυτό το τηλέφωνο, γι’ αυτό δεν περιλαμβάνονται.';
+
+  @override
+  String get mattersStatusNoInput => 'Κανένα από αυτά τα μηνύματα δεν επιτρέπεται να σταλεί σε αυτόν τον πάροχο.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Εκκρεμείς ενέργειες';
+
+  @override
+  String get mattersWaiting => 'Σε αναμονή άλλων';
+
+  @override
+  String get mattersDocuments => 'Έγγραφα';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete =>
+      'Ορισμένα μηνύματα δεν ήταν δυνατό να ανοιχτούν, γι’ αυτό τα αρχεία τους δεν εμφανίζονται.';
+
+  @override
+  String get mattersPeople => 'Εμπλεκόμενα άτομα';
+
+  @override
+  String get mattersHistory => 'Ιστορικό';
+
+  @override
+  String get mattersSuggestions => 'Προτεινόμενες συζητήσεις';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Βρέθηκαν σε αυτό το τηλέφωνο με βάση κοινές λέξεις, κωδικούς αναφοράς και αποστολείς. Δεν προστίθεται τίποτα μέχρι να επιλέξετε.';
+
+  @override
+  String get mattersNotThisOne => 'Όχι αυτή';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Αναφέρει «$words»';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Επίσης από $name. Ο ίδιος αποστολέας από μόνος του δεν σημαίνει ότι ανήκει εδώ.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Επίσης από τον τομέα $domain. Ο ίδιος τομέας από μόνος του δεν σημαίνει ότι ανήκει εδώ.';
+  }
+
+  @override
+  String get mattersActivity => 'Δραστηριότητα';
+
+  @override
+  String get mattersEventCreated => 'Η υπόθεση δημιουργήθηκε';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'Μετονομάστηκε σε «$name»';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return 'Προστέθηκε η συζήτηση «$subject»';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return 'Προστέθηκε η συζήτηση «$subject» από πρόταση';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return 'Αφαιρέθηκε η συζήτηση «$subject»';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Συγχωνεύτηκε εδώ η «$name», με $count συζητήσεις',
+      one: 'Συγχωνεύτηκε εδώ η «$name», με 1 συζήτηση',
+      zero: 'Συγχωνεύτηκε εδώ η «$name»',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Δημιουργήθηκε από $count συζητήσεις της «$name»',
+      one: 'Δημιουργήθηκε από 1 συζήτηση της «$name»',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Προσθήκη';
 
   @override

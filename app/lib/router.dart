@@ -13,6 +13,7 @@ import 'features/compose/compose_screen.dart';
 import 'features/conversation/conversation_screen.dart';
 import 'features/conversation/raw_source_screen.dart';
 import 'features/mailing_lists/mailing_list_screen.dart';
+import 'features/matters/matter_screen.dart';
 import 'features/message_list/message_list_screen.dart';
 import 'features/onboarding/welcome_screen.dart';
 import 'features/openpgp/address_settings_screens.dart';
@@ -125,6 +126,9 @@ abstract final class Routes {
   static String message(String emailId) => '/message/${Uri.encodeComponent(emailId)}';
   static String source(String emailId) => '/source/${Uri.encodeComponent(emailId)}';
 
+  /// A matter: conversations about one affair, grouped by the user.
+  static String matter(String id) => '/matter/${Uri.encodeComponent(id)}';
+
   /// The attachment viewer for one part of a message.
   static String attachment(String emailId, String partId) =>
       '/attachment/${Uri.encodeComponent(emailId)}/${Uri.encodeComponent(partId)}';
@@ -217,6 +221,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/message/:id',
         builder: (context, state) => ConversationScreen(emailId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/matter/:id',
+        builder: (context, state) => MatterScreen(matterId: state.pathParameters['id']!),
       ),
       GoRoute(
         path: '/source/:id',

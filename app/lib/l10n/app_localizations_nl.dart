@@ -10,6 +10,282 @@ class AppLocalizationsNl extends AppLocalizations {
   AppLocalizationsNl([String locale = 'nl']) : super(locale);
 
   @override
+  String get mattersTitle => 'Dossiers';
+
+  @override
+  String get mattersNewMatter => 'Nieuw dossier…';
+
+  @override
+  String get mattersNewMatterTitle => 'Nieuw dossier';
+
+  @override
+  String get mattersNameHint => 'Een huis kopen, een verzekeringsclaim…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Houd de gesprekken over één onderwerp bij elkaar, zoals de aankoop van een huis, van wie ze ook komen.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gesprekken',
+      one: '$count gesprek',
+      zero: 'Geen gesprekken',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Dossieracties';
+
+  @override
+  String get mattersRename => 'Naam wijzigen…';
+
+  @override
+  String get mattersRenameTitle => 'Naam van dossier wijzigen';
+
+  @override
+  String get mattersSplit => 'Splitsen…';
+
+  @override
+  String get mattersMergeInto => 'Samenvoegen met…';
+
+  @override
+  String get mattersDelete => 'Dossier verwijderen';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return '“$name” verwijderen?';
+  }
+
+  @override
+  String get mattersDeleteMessage => 'De gesprekken blijven in je mailboxen. Alleen het dossier verdwijnt.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return '“$name” samenvoegen met';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'Samengevoegd met “$name”';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'Er is geen ander dossier om mee samen te voegen.';
+
+  @override
+  String get mattersSplitTitle => 'Kies gesprekken';
+
+  @override
+  String get mattersSplitMove => 'Naar nieuw dossier verplaatsen…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gesprekken naar “$name” verplaatst',
+      one: '$count gesprek naar “$name” verplaatst',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Gesprekken';
+
+  @override
+  String get mattersNoConversations =>
+      'Nog geen gesprekken. Voeg er een toe met “Aan dossier toevoegen…” in het ⋯-menu van een gesprek, of uit de suggesties.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count berichten', one: '$count bericht');
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Niet op deze telefoon, of alleen in de prullenbak';
+
+  @override
+  String get mattersAddToMatter => 'Aan dossier toevoegen…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Aan dossier toevoegen';
+
+  @override
+  String get mattersAlreadyIn => 'Zit er al in';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'Toegevoegd aan “$name”';
+  }
+
+  @override
+  String get mattersRemove => 'Uit dossier verwijderen';
+
+  @override
+  String get mattersRemoveWhich => 'Uit welk dossier verwijderen?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'Verwijderd uit “$name”';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Dossier “$name” openen';
+  }
+
+  @override
+  String get mattersGone => 'Dit dossier bestaat niet meer.';
+
+  @override
+  String get mattersStatusTitle => 'Stand van zaken';
+
+  @override
+  String get mattersStatusHint => 'Een paar regels over de laatste stand, elk uit een bericht hier.';
+
+  @override
+  String get mattersStatusWorking => 'Nieuwste berichten worden gelezen…';
+
+  @override
+  String get mattersStatusFailed => 'Loupe kon de stand van zaken niet bepalen.';
+
+  @override
+  String get mattersStatusOutdated => 'Er zijn nieuwe berichten binnengekomen sinds dit is geschreven.';
+
+  @override
+  String get mattersStatusUpdate => 'Bijwerken';
+
+  @override
+  String get mattersStatusDemoNote => 'Geschreven door de ingebouwde demo, niet door een model.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Geschreven door $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Alleen de nieuwste berichten zijn gelezen.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return 'Mail van $accounts blijft op deze telefoon en is dus niet meegenomen.';
+  }
+
+  @override
+  String get mattersStatusEncrypted => 'Versleutelde berichten blijven op deze telefoon en zijn dus niet meegenomen.';
+
+  @override
+  String get mattersStatusNoInput => 'Geen van deze berichten mag naar deze provider.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Openstaande acties';
+
+  @override
+  String get mattersWaiting => 'Wachten op anderen';
+
+  @override
+  String get mattersDocuments => 'Documenten';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete =>
+      'Sommige berichten konden niet worden geopend, dus hun bestanden staan er niet bij.';
+
+  @override
+  String get mattersPeople => 'Betrokkenen';
+
+  @override
+  String get mattersHistory => 'Geschiedenis';
+
+  @override
+  String get mattersSuggestions => 'Voorgestelde gesprekken';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Op deze telefoon gevonden aan de hand van gedeelde woorden, referentienummers en afzenders. Er wordt niets toegevoegd tot je kiest.';
+
+  @override
+  String get mattersNotThisOne => 'Hoort er niet bij';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Noemt “$words”';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Ook van $name. Een gedeelde afzender alleen betekent niet dat het erbij hoort.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Ook van $domain. Een gedeeld domein alleen betekent niet dat het erbij hoort.';
+  }
+
+  @override
+  String get mattersActivity => 'Activiteit';
+
+  @override
+  String get mattersEventCreated => 'Dossier aangemaakt';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'Naam gewijzigd in “$name”';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return '“$subject” toegevoegd';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return '“$subject” toegevoegd uit een suggestie';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return '“$subject” verwijderd';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '“$name” hierin samengevoegd, met $count gesprekken',
+      one: '“$name” hierin samengevoegd, met $count gesprek',
+      zero: '“$name” hierin samengevoegd',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Gemaakt van $count gesprekken uit “$name”',
+      one: 'Gemaakt van $count gesprek uit “$name”',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Toevoegen';
 
   @override

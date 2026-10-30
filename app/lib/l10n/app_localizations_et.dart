@@ -10,6 +10,281 @@ class AppLocalizationsEt extends AppLocalizations {
   AppLocalizationsEt([String locale = 'et']) : super(locale);
 
   @override
+  String get mattersTitle => 'Toimikud';
+
+  @override
+  String get mattersNewMatter => 'Uus toimik…';
+
+  @override
+  String get mattersNewMatterTitle => 'Uus toimik';
+
+  @override
+  String get mattersNameHint => 'Maja ostmine, kindlustusjuhtum…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Hoia koos vestlused, mis puudutavad üht asja, näiteks maja ostmist, olenemata sellest, kellelt need on.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count vestlust',
+      one: '$count vestlus',
+      zero: 'Vestlusi pole',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Toimiku toimingud';
+
+  @override
+  String get mattersRename => 'Nimeta ümber…';
+
+  @override
+  String get mattersRenameTitle => 'Nimeta toimik ümber';
+
+  @override
+  String get mattersSplit => 'Jaga osadeks…';
+
+  @override
+  String get mattersMergeInto => 'Ühenda teise toimikuga…';
+
+  @override
+  String get mattersDelete => 'Kustuta toimik';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return 'Kas kustutada „$name“?';
+  }
+
+  @override
+  String get mattersDeleteMessage => 'Selle vestlused jäävad sinu postkastidesse. Kustutatakse ainult toimik.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return 'Ühenda „$name“ toimikuga';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'Ühendatud toimikuga „$name“';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'Pole teist toimikut, millega ühendada.';
+
+  @override
+  String get mattersSplitTitle => 'Vali vestlused';
+
+  @override
+  String get mattersSplitMove => 'Teisalda uude toimikusse…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count vestlust teisaldati toimikusse „$name“',
+      one: '$count vestlus teisaldati toimikusse „$name“',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Vestlused';
+
+  @override
+  String get mattersNoConversations =>
+      'Vestlusi veel pole. Lisa vestlus selle ⋯-menüü valikuga „Lisa toimikusse…“ või soovituste seast.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count kirja', one: '$count kiri');
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Pole selles telefonis või on ainult prügikastis';
+
+  @override
+  String get mattersAddToMatter => 'Lisa toimikusse…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Lisa toimikusse';
+
+  @override
+  String get mattersAlreadyIn => 'Juba lisatud';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'Lisatud toimikusse „$name“';
+  }
+
+  @override
+  String get mattersRemove => 'Eemalda toimikust';
+
+  @override
+  String get mattersRemoveWhich => 'Millisest toimikust eemaldada?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'Eemaldatud toimikust „$name“';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Ava toimik „$name“';
+  }
+
+  @override
+  String get mattersGone => 'Seda toimikut pole enam olemas.';
+
+  @override
+  String get mattersStatusTitle => 'Asjade seis';
+
+  @override
+  String get mattersStatusHint => 'Paar rida viimase seisu kohta, iga rida mõne siinse kirja põhjal.';
+
+  @override
+  String get mattersStatusWorking => 'Viimaste kirjade lugemine…';
+
+  @override
+  String get mattersStatusFailed => 'Loupe ei suutnud asjade seisu välja selgitada.';
+
+  @override
+  String get mattersStatusOutdated => 'Pärast selle kirjutamist on saabunud uusi kirju.';
+
+  @override
+  String get mattersStatusUpdate => 'Uuenda';
+
+  @override
+  String get mattersStatusDemoNote => 'Kirjutas sisseehitatud demo, mitte mudel.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Kirjutas $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Loeti ainult viimaseid kirju.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return '$accounts: kirjad jäävad sellesse telefoni, seega neid pole kaasatud.';
+  }
+
+  @override
+  String get mattersStatusEncrypted => 'Krüpteeritud kirjad jäävad sellesse telefoni, seega neid pole kaasatud.';
+
+  @override
+  String get mattersStatusNoInput => 'Ühtegi neist kirjadest ei tohi sellele teenusepakkujale saata.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Tegemata ülesanded';
+
+  @override
+  String get mattersWaiting => 'Ootab teiste järel';
+
+  @override
+  String get mattersDocuments => 'Dokumendid';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete => 'Mõnda kirja ei saanud avada, seega nende faile pole loendis.';
+
+  @override
+  String get mattersPeople => 'Osalised';
+
+  @override
+  String get mattersHistory => 'Ajalugu';
+
+  @override
+  String get mattersSuggestions => 'Soovitatud vestlused';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Leitud selles telefonis ühiste sõnade, viidete ja saatjate põhjal. Midagi ei lisata enne, kui sa ise valid.';
+
+  @override
+  String get mattersNotThisOne => 'Mitte see';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Mainib „$words“';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Samuti saatjalt $name. Ainuüksi sama saatja ei tähenda, et vestlus siia kuulub.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Samuti domeenilt $domain. Ainuüksi sama domeen ei tähenda, et vestlus siia kuulub.';
+  }
+
+  @override
+  String get mattersActivity => 'Muudatused';
+
+  @override
+  String get mattersEventCreated => 'Toimik loodud';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'Nimetati ümber: „$name“';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return 'Lisati „$subject“';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return 'Soovituse põhjal lisati „$subject“';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return 'Eemaldati „$subject“';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Siia ühendati „$name“ ($count vestlust)',
+      one: 'Siia ühendati „$name“ ($count vestlus)',
+      zero: 'Siia ühendati „$name“',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Eraldatud toimikust „$name“ ($count vestlust)',
+      one: 'Eraldatud toimikust „$name“ ($count vestlus)',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Lisa';
 
   @override

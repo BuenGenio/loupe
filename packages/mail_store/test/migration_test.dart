@@ -54,7 +54,7 @@ void main() {
     return schemaOf(path);
   }
 
-  for (final version in [1, 2, 3, 4, 5, 6, 7]) {
+  for (final version in [1, 2, 3, 4, 5, 6, 7, 8]) {
     group('version $version upgrades to $latestSchemaVersion', () {
       late String path;
       setUp(() {
@@ -159,6 +159,28 @@ void main() {
         expect(await store.calendarRecord('uid-1', recurrenceId: '20261008T090000Z'), '{"one":true}');
         await store.putCalendarRecord('uid-1', null);
         expect(await store.calendarRecord('uid-1'), isNull);
+      }, skip: version < 8 ? false : 'version 8 cached invitations with their calendar part');
+
+      test('with matters, whose conversations go with their account', () async {
+        final store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
+        addTearDown(store.close);
+        expect(await store.watchMatters().first, isEmpty);
+        final before = (await store.getEmail(eid('INBOX', 1)))!;
+        final at = DateTime(2026, 10, 20, 9);
+        await store.writeMatters(
+          save: [
+            Matter.create(
+              id: 'm1',
+              name: 'Buying a house',
+              at: at,
+            ).adding(MatterMember.of(before, at: at), subject: 'x'),
+          ],
+        );
+        final matter = (await store.watchMatters().first).single;
+        expect(matter.members.single.ref.emailId, before.id);
+        expect((await store.watchMatterMessages('m1').first).single.subject, 'Before the upgrade');
+        await store.deleteAccount(accountId);
+        expect((await store.watchMatters().first).single.members, isEmpty);
       });
 
       test('keeping the data; outbox entries are not held', () async {

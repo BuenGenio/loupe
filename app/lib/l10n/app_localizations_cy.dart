@@ -10,6 +10,306 @@ class AppLocalizationsCy extends AppLocalizations {
   AppLocalizationsCy([String locale = 'cy']) : super(locale);
 
   @override
+  String get mattersTitle => 'Materion';
+
+  @override
+  String get mattersNewMatter => 'Mater newydd…';
+
+  @override
+  String get mattersNewMatterTitle => 'Mater newydd';
+
+  @override
+  String get mattersNameHint => 'Prynu tŷ, hawliad yswiriant…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Cadwch y sgyrsiau am un peth gyda’i gilydd, fel prynu tŷ, pwy bynnag a’u hanfonodd.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sgwrs',
+      many: '$count sgwrs',
+      few: '$count sgwrs',
+      two: '$count sgwrs',
+      one: '$count sgwrs',
+      zero: 'Dim sgyrsiau',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Gweithredoedd y mater';
+
+  @override
+  String get mattersRename => 'Ailenwi…';
+
+  @override
+  String get mattersRenameTitle => 'Ailenwi’r mater';
+
+  @override
+  String get mattersSplit => 'Rhannu…';
+
+  @override
+  String get mattersMergeInto => 'Uno â…';
+
+  @override
+  String get mattersDelete => 'Dileu’r mater';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return 'Dileu “$name”?';
+  }
+
+  @override
+  String get mattersDeleteMessage => 'Mae ei sgyrsiau’n aros yn eich blychau post. Dim ond y mater sy’n mynd.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return 'Uno “$name” â';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'Wedi’i uno â “$name”';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'Does dim mater arall i uno ag ef.';
+
+  @override
+  String get mattersSplitTitle => 'Dewiswch sgyrsiau';
+
+  @override
+  String get mattersSplitMove => 'Symud i fater newydd…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Symudwyd $count sgwrs i “$name”',
+      many: 'Symudwyd $count sgwrs i “$name”',
+      few: 'Symudwyd $count sgwrs i “$name”',
+      two: 'Symudwyd $count sgwrs i “$name”',
+      one: 'Symudwyd 1 sgwrs i “$name”',
+      zero: 'Symudwyd $count sgwrs i “$name”',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Sgyrsiau';
+
+  @override
+  String get mattersNoConversations =>
+      'Dim sgyrsiau eto. Ychwanegwch un gydag “Ychwanegu at fater…” yn newislen ⋯ sgwrs, neu o’r awgrymiadau.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count neges',
+      many: '$count neges',
+      few: '$count neges',
+      two: '$count neges',
+      one: '$count neges',
+      zero: '$count neges',
+    );
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Ddim ar y ffôn hwn, neu yn y Sbwriel yn unig';
+
+  @override
+  String get mattersAddToMatter => 'Ychwanegu at fater…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Ychwanegu at fater';
+
+  @override
+  String get mattersAlreadyIn => 'Eisoes ynddo';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'Wedi’i ychwanegu at “$name”';
+  }
+
+  @override
+  String get mattersRemove => 'Tynnu o’r mater';
+
+  @override
+  String get mattersRemoveWhich => 'Tynnu o ba fater?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'Wedi’i dynnu o “$name”';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Agor y mater “$name”';
+  }
+
+  @override
+  String get mattersGone => 'Dyw’r mater hwn ddim yn bodoli bellach.';
+
+  @override
+  String get mattersStatusTitle => 'Sut mae pethau’n sefyll';
+
+  @override
+  String get mattersStatusHint => 'Ychydig o linellau am y sefyllfa ddiweddaraf, pob un o neges yma.';
+
+  @override
+  String get mattersStatusWorking => 'Wrthi’n darllen y negeseuon diweddaraf…';
+
+  @override
+  String get mattersStatusFailed => 'Doedd Loupe ddim yn gallu gweld sut mae pethau’n sefyll.';
+
+  @override
+  String get mattersStatusOutdated => 'Mae negeseuon newydd wedi cyrraedd ers i hyn gael ei ysgrifennu.';
+
+  @override
+  String get mattersStatusUpdate => 'Diweddaru';
+
+  @override
+  String get mattersStatusDemoNote => 'Ysgrifennwyd gan y demo mewnol, nid gan fodel.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Ysgrifennwyd gan $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Dim ond y negeseuon diweddaraf a ddarllenwyd.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return 'Mae e-bost o $accounts yn aros ar y ffôn hwn, felly dyw e ddim wedi’i gynnwys.';
+  }
+
+  @override
+  String get mattersStatusEncrypted =>
+      'Mae negeseuon wedi’u hamgryptio yn aros ar y ffôn hwn, felly dydyn nhw ddim wedi’u cynnwys.';
+
+  @override
+  String get mattersStatusNoInput => 'Chaiff dim un o’r negeseuon hyn fynd i’r darparwr hwn.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'I’w gwneud';
+
+  @override
+  String get mattersWaiting => 'Aros am eraill';
+
+  @override
+  String get mattersDocuments => 'Dogfennau';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete =>
+      'Doedd dim modd agor rhai negeseuon, felly dyw eu ffeiliau ddim wedi’u rhestru.';
+
+  @override
+  String get mattersPeople => 'Pobl sy’n rhan ohono';
+
+  @override
+  String get mattersHistory => 'Hanes';
+
+  @override
+  String get mattersSuggestions => 'Sgyrsiau a awgrymir';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Wedi’u canfod ar y ffôn hwn drwy eiriau, cyfeirnodau ac anfonwyr cyffredin. Does dim yn cael ei ychwanegu nes i chi ddewis.';
+
+  @override
+  String get mattersNotThisOne => 'Nid hon';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Yn sôn am “$words”';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Hefyd gan $name. Dyw anfonwr cyffredin ar ei ben ei hun ddim yn golygu ei bod yn perthyn.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Hefyd o $domain. Dyw parth cyffredin ar ei ben ei hun ddim yn golygu ei bod yn perthyn.';
+  }
+
+  @override
+  String get mattersActivity => 'Gweithgarwch';
+
+  @override
+  String get mattersEventCreated => 'Crëwyd y mater';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'Ailenwyd yn “$name”';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return 'Ychwanegwyd “$subject”';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return 'Ychwanegwyd “$subject” o awgrym';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return 'Tynnwyd “$subject”';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Unwyd “$name” i mewn, gyda $count sgwrs',
+      many: 'Unwyd “$name” i mewn, gyda $count sgwrs',
+      few: 'Unwyd “$name” i mewn, gyda $count sgwrs',
+      two: 'Unwyd “$name” i mewn, gyda $count sgwrs',
+      one: 'Unwyd “$name” i mewn, gydag 1 sgwrs',
+      zero: 'Unwyd “$name” i mewn',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Crëwyd o $count sgwrs yn “$name”',
+      many: 'Crëwyd o $count sgwrs yn “$name”',
+      few: 'Crëwyd o $count sgwrs yn “$name”',
+      two: 'Crëwyd o $count sgwrs yn “$name”',
+      one: 'Crëwyd o 1 sgwrs yn “$name”',
+      zero: 'Crëwyd o $count sgwrs yn “$name”',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Ychwanegu';
 
   @override

@@ -10,6 +10,281 @@ class AppLocalizationsIs extends AppLocalizations {
   AppLocalizationsIs([String locale = 'is']) : super(locale);
 
   @override
+  String get mattersTitle => 'Mál';
+
+  @override
+  String get mattersNewMatter => 'Nýtt mál…';
+
+  @override
+  String get mattersNewMatterTitle => 'Nýtt mál';
+
+  @override
+  String get mattersNameHint => 'Íbúðarkaup, tryggingamál…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Haltu saman samtölum um eitt tiltekið mál, til dæmis íbúðarkaup, óháð því frá hverjum þau eru.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count samtöl',
+      one: '$count samtal',
+      zero: 'Engin samtöl',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Aðgerðir fyrir málið';
+
+  @override
+  String get mattersRename => 'Endurnefna…';
+
+  @override
+  String get mattersRenameTitle => 'Endurnefna mál';
+
+  @override
+  String get mattersSplit => 'Skipta upp…';
+
+  @override
+  String get mattersMergeInto => 'Sameina við…';
+
+  @override
+  String get mattersDelete => 'Eyða máli';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return 'Eyða „$name“?';
+  }
+
+  @override
+  String get mattersDeleteMessage => 'Samtölin verða áfram í pósthólfunum þínum. Aðeins málinu er eytt.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return 'Sameina „$name“ við';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'Sameinað við „$name“';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'Ekkert annað mál er til að sameina við.';
+
+  @override
+  String get mattersSplitTitle => 'Veldu samtöl';
+
+  @override
+  String get mattersSplitMove => 'Færa í nýtt mál…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count samtöl færð í „$name“',
+      one: '$count samtal fært í „$name“',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Samtöl';
+
+  @override
+  String get mattersNoConversations =>
+      'Engin samtöl enn. Bættu samtali við með Bæta við mál… í ⋯-valmynd þess, eða úr tillögunum.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count skilaboð', one: '$count skilaboð');
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Ekki í þessum síma, eða aðeins í ruslinu';
+
+  @override
+  String get mattersAddToMatter => 'Bæta við mál…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Bæta við mál';
+
+  @override
+  String get mattersAlreadyIn => 'Þegar í málinu';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'Bætt við „$name“';
+  }
+
+  @override
+  String get mattersRemove => 'Fjarlægja úr máli';
+
+  @override
+  String get mattersRemoveWhich => 'Fjarlægja úr hvaða máli?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'Fjarlægt úr „$name“';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Opna málið „$name“';
+  }
+
+  @override
+  String get mattersGone => 'Þetta mál er ekki lengur til.';
+
+  @override
+  String get mattersStatusTitle => 'Staða málsins';
+
+  @override
+  String get mattersStatusHint => 'Nokkrar línur um nýjustu stöðuna, hver þeirra byggð á skilaboðum hér.';
+
+  @override
+  String get mattersStatusWorking => 'Les nýjustu skilaboðin…';
+
+  @override
+  String get mattersStatusFailed => 'Loupe gat ekki áttað sig á stöðu málsins.';
+
+  @override
+  String get mattersStatusOutdated => 'Ný skilaboð hafa borist síðan þetta var skrifað.';
+
+  @override
+  String get mattersStatusUpdate => 'Uppfæra';
+
+  @override
+  String get mattersStatusDemoNote => 'Skrifað af innbyggðu sýnisútgáfunni, ekki af líkani.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Skrifað af $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Aðeins nýjustu skilaboðin voru lesin.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return 'Póstur frá $accounts fer ekki úr þessum síma, svo hann er ekki tekinn með.';
+  }
+
+  @override
+  String get mattersStatusEncrypted => 'Dulkóðuð skilaboð fara ekki úr þessum síma, svo þau eru ekki tekin með.';
+
+  @override
+  String get mattersStatusNoInput => 'Ekkert þessara skilaboða má senda til þessarar þjónustu.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Óloknar aðgerðir';
+
+  @override
+  String get mattersWaiting => 'Beðið eftir öðrum';
+
+  @override
+  String get mattersDocuments => 'Skjöl';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete => 'Ekki tókst að opna sum skilaboð, svo skrár þeirra eru ekki á listanum.';
+
+  @override
+  String get mattersPeople => 'Þátttakendur';
+
+  @override
+  String get mattersHistory => 'Ferill';
+
+  @override
+  String get mattersSuggestions => 'Tillögur að samtölum';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Fundið í þessum síma út frá sameiginlegum orðum, tilvísunum og sendendum. Engu er bætt við fyrr en þú velur.';
+
+  @override
+  String get mattersNotThisOne => 'Ekki þetta';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Nefnir „$words“';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Líka frá $name. Sami sendandi einn og sér þýðir ekki að samtalið eigi heima hér.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Líka frá $domain. Sama lén eitt og sér þýðir ekki að samtalið eigi heima hér.';
+  }
+
+  @override
+  String get mattersActivity => 'Breytingar';
+
+  @override
+  String get mattersEventCreated => 'Mál stofnað';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'Endurnefnt í „$name“';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return '„$subject“ bætt við';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return '„$subject“ bætt við úr tillögu';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return '„$subject“ fjarlægt';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '„$name“ sameinað þessu máli ($count samtöl)',
+      one: '„$name“ sameinað þessu máli ($count samtal)',
+      zero: '„$name“ sameinað þessu máli',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Stofnað úr $count samtölum í „$name“',
+      one: 'Stofnað úr $count samtali í „$name“',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Bæta við';
 
   @override

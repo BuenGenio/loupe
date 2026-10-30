@@ -10,6 +10,281 @@ class AppLocalizationsSq extends AppLocalizations {
   AppLocalizationsSq([String locale = 'sq']) : super(locale);
 
   @override
+  String get mattersTitle => 'Çështjet';
+
+  @override
+  String get mattersNewMatter => 'Çështje e re…';
+
+  @override
+  String get mattersNewMatterTitle => 'Çështje e re';
+
+  @override
+  String get mattersNameHint => 'Blerja e shtëpisë, një kërkesë dëmshpërblimi…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Mbani bashkë bisedat për të njëjtën çështje, si blerja e një shtëpie, kushdo qoftë dërguesi.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count biseda',
+      one: '1 bisedë',
+      zero: 'Asnjë bisedë',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Veprimet e çështjes';
+
+  @override
+  String get mattersRename => 'Riemërto…';
+
+  @override
+  String get mattersRenameTitle => 'Riemërto çështjen';
+
+  @override
+  String get mattersSplit => 'Ndaj…';
+
+  @override
+  String get mattersMergeInto => 'Bashko me…';
+
+  @override
+  String get mattersDelete => 'Fshi çështjen';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return 'Të fshihet “$name”?';
+  }
+
+  @override
+  String get mattersDeleteMessage => 'Bisedat e çështjes mbeten në kutitë tuaja postare. Fshihet vetëm vetë çështja.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return 'Me cilën çështje të bashkohet “$name”?';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'U bashkua me “$name”';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'S’ka çështje tjetër me të cilën të bashkohet.';
+
+  @override
+  String get mattersSplitTitle => 'Zgjidhni bisedat';
+
+  @override
+  String get mattersSplitMove => 'Zhvendos te një çështje e re…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count biseda u zhvendosën te “$name”',
+      one: '1 bisedë u zhvendos te “$name”',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Bisedat';
+
+  @override
+  String get mattersNoConversations =>
+      'Ende s’ka biseda. Shtoni një nga menyja ⋯ e një bisede me “Shto në çështje…”, ose nga sugjerimet.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count mesazhe', one: '1 mesazh');
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Jo në këtë telefon, ose vetëm në Kosh';
+
+  @override
+  String get mattersAddToMatter => 'Shto në çështje…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Shto në çështje';
+
+  @override
+  String get mattersAlreadyIn => 'Është tashmë aty';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'U shtua te “$name”';
+  }
+
+  @override
+  String get mattersRemove => 'Hiq nga çështja';
+
+  @override
+  String get mattersRemoveWhich => 'Nga cila çështje të hiqet?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'U hoq nga “$name”';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Hap çështjen “$name”';
+  }
+
+  @override
+  String get mattersGone => 'Kjo çështje nuk ekziston më.';
+
+  @override
+  String get mattersStatusTitle => 'Si qëndron çështja';
+
+  @override
+  String get mattersStatusHint => 'Disa rreshta për gjendjen më të fundit, secili nga një mesazh këtu.';
+
+  @override
+  String get mattersStatusWorking => 'Po lexohen mesazhet më të fundit…';
+
+  @override
+  String get mattersStatusFailed => 'Loupe s’arriti të kuptonte si qëndron çështja.';
+
+  @override
+  String get mattersStatusOutdated => 'Kanë ardhur mesazhe të reja që kur u shkrua kjo.';
+
+  @override
+  String get mattersStatusUpdate => 'Përditëso';
+
+  @override
+  String get mattersStatusDemoNote => 'Shkruar nga demonstrimi i integruar, jo nga një model.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Shkruar nga $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'U lexuan vetëm mesazhet më të fundit.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return 'Posta nga $accounts mbetet në këtë telefon, prandaj nuk përfshihet.';
+  }
+
+  @override
+  String get mattersStatusEncrypted => 'Mesazhet e enkriptuara mbeten në këtë telefon, prandaj nuk përfshihen.';
+
+  @override
+  String get mattersStatusNoInput => 'Asnjë nga këto mesazhe nuk lejohet të shkojë te ky ofrues.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Veprimet e pakryera';
+
+  @override
+  String get mattersWaiting => 'Në pritje të të tjerëve';
+
+  @override
+  String get mattersDocuments => 'Dokumentet';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete => 'Disa mesazhe nuk u hapën dot, prandaj skedarët e tyre nuk shfaqen.';
+
+  @override
+  String get mattersPeople => 'Personat e përfshirë';
+
+  @override
+  String get mattersHistory => 'Historiku';
+
+  @override
+  String get mattersSuggestions => 'Bisedat e sugjeruara';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Gjetur në këtë telefon nga fjalë, referenca dhe dërgues të përbashkët. Asgjë nuk shtohet derisa të zgjidhni ju.';
+
+  @override
+  String get mattersNotThisOne => 'Jo kjo';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Përmend “$words”';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Edhe kjo nga $name. Vetëm një dërgues i përbashkët nuk do të thotë se i përket kësaj çështjeje.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Edhe kjo nga $domain. Vetëm një domen i përbashkët nuk do të thotë se i përket kësaj çështjeje.';
+  }
+
+  @override
+  String get mattersActivity => 'Aktiviteti';
+
+  @override
+  String get mattersEventCreated => 'Çështja u krijua';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'U riemërtua “$name”';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return 'U shtua “$subject”';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return 'U shtua “$subject” nga një sugjerim';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return 'U hoq “$subject”';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'U bashkua këtu “$name”, me $count biseda',
+      one: 'U bashkua këtu “$name”, me 1 bisedë',
+      zero: 'U bashkua këtu “$name”',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'U krijua nga $count biseda të “$name”',
+      one: 'U krijua nga 1 bisedë e “$name”',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Shto';
 
   @override

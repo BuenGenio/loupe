@@ -10,6 +10,291 @@ class AppLocalizationsSk extends AppLocalizations {
   AppLocalizationsSk([String locale = 'sk']) : super(locale);
 
   @override
+  String get mattersTitle => 'Záležitosti';
+
+  @override
+  String get mattersNewMatter => 'Nová záležitosť…';
+
+  @override
+  String get mattersNewMatterTitle => 'Nová záležitosť';
+
+  @override
+  String get mattersNameHint => 'Kúpa domu, poistná udalosť…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Majte konverzácie o jednej veci pokope, napríklad o kúpe domu, nech sú od kohokoľvek.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count konverzácií',
+      few: '$count konverzácie',
+      one: '$count konverzácia',
+      zero: 'Žiadne konverzácie',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Akcie záležitosti';
+
+  @override
+  String get mattersRename => 'Premenovať…';
+
+  @override
+  String get mattersRenameTitle => 'Premenovať záležitosť';
+
+  @override
+  String get mattersSplit => 'Rozdeliť…';
+
+  @override
+  String get mattersMergeInto => 'Zlúčiť do…';
+
+  @override
+  String get mattersDelete => 'Odstrániť záležitosť';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return 'Odstrániť „$name“?';
+  }
+
+  @override
+  String get mattersDeleteMessage => 'Jej konverzácie zostanú vo vašich schránkach. Zmizne len záležitosť.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return 'Kam zlúčiť „$name“';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'Zlúčené do „$name“';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'Neexistuje iná záležitosť, do ktorej by sa dala zlúčiť.';
+
+  @override
+  String get mattersSplitTitle => 'Vyberte konverzácie';
+
+  @override
+  String get mattersSplitMove => 'Presunúť do novej záležitosti…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count konverzácií presunutých do „$name“',
+      few: '$count konverzácie presunuté do „$name“',
+      one: '$count konverzácia presunutá do „$name“',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Konverzácie';
+
+  @override
+  String get mattersNoConversations =>
+      'Zatiaľ žiadne konverzácie. Pridajte ich z ponuky ⋯ konverzácie pomocou „Pridať do záležitosti…“ alebo z návrhov.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count správ',
+      few: '$count správy',
+      one: '$count správa',
+    );
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Nie je v tomto telefóne alebo je len v koši';
+
+  @override
+  String get mattersAddToMatter => 'Pridať do záležitosti…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Pridať do záležitosti';
+
+  @override
+  String get mattersAlreadyIn => 'Už pridané';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'Pridané do „$name“';
+  }
+
+  @override
+  String get mattersRemove => 'Odobrať zo záležitosti';
+
+  @override
+  String get mattersRemoveWhich => 'Z ktorej záležitosti odobrať?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'Odobraté z „$name“';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Otvoriť záležitosť „$name“';
+  }
+
+  @override
+  String get mattersGone => 'Táto záležitosť už neexistuje.';
+
+  @override
+  String get mattersStatusTitle => 'Ako to vyzerá';
+
+  @override
+  String get mattersStatusHint => 'Pár riadkov o aktuálnom stave, každý podľa niektorej správy z tejto záležitosti.';
+
+  @override
+  String get mattersStatusWorking => 'Čítajú sa najnovšie správy…';
+
+  @override
+  String get mattersStatusFailed => 'Loupe nedokázala zistiť, ako to vyzerá.';
+
+  @override
+  String get mattersStatusOutdated => 'Od napísania tohto zhrnutia prišli nové správy.';
+
+  @override
+  String get mattersStatusUpdate => 'Aktualizovať';
+
+  @override
+  String get mattersStatusDemoNote => 'Napísalo vstavané demo, nie model.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Autor: $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Prečítali sa len najnovšie správy.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return 'Pošta z $accounts zostáva v tomto telefóne, takže nie je zahrnutá.';
+  }
+
+  @override
+  String get mattersStatusEncrypted => 'Zašifrované správy zostávajú v tomto telefóne, takže nie sú zahrnuté.';
+
+  @override
+  String get mattersStatusNoInput => 'Žiadna z týchto správ sa nesmie dostať k tomuto poskytovateľovi.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Na vybavenie';
+
+  @override
+  String get mattersWaiting => 'Čaká sa na ostatných';
+
+  @override
+  String get mattersDocuments => 'Dokumenty';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete => 'Niektoré správy sa nepodarilo otvoriť, takže ich súbory tu nie sú uvedené.';
+
+  @override
+  String get mattersPeople => 'Zúčastnené osoby';
+
+  @override
+  String get mattersHistory => 'História';
+
+  @override
+  String get mattersSuggestions => 'Navrhnuté konverzácie';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Nájdené v tomto telefóne podľa spoločných slov, referenčných čísel a odosielateľov. Nič sa nepridá, kým to sami nezvolíte.';
+
+  @override
+  String get mattersNotThisOne => 'Sem nepatrí';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Spomína „$words“';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Rovnaký odosielateľ: $name. Samo osebe to neznamená, že sem patrí.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Rovnaká doména: $domain. Samo osebe to neznamená, že sem patrí.';
+  }
+
+  @override
+  String get mattersActivity => 'Aktivita';
+
+  @override
+  String get mattersEventCreated => 'Záležitosť vytvorená';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'Premenované na „$name“';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return 'Pridané: „$subject“';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return 'Pridané z návrhu: „$subject“';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return 'Odobraté: „$subject“';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pripojená záležitosť „$name“ ($count konverzácií)',
+      few: 'Pripojená záležitosť „$name“ ($count konverzácie)',
+      one: 'Pripojená záležitosť „$name“ ($count konverzácia)',
+      zero: 'Pripojená záležitosť „$name“',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Vznikla rozdelením záležitosti „$name“ ($count konverzácií)',
+      few: 'Vznikla rozdelením záležitosti „$name“ ($count konverzácie)',
+      one: 'Vznikla rozdelením záležitosti „$name“ ($count konverzácia)',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Pridať';
 
   @override

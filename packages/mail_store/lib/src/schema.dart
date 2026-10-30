@@ -330,6 +330,71 @@ class ListKinds extends Table {
   Set<Column> get primaryKey => {listId};
 }
 
+/// Matters (`MatterRecords`): conversations the user grouped because they are
+/// about one thing, kept on this device. Their members, exclusions and history
+/// entries go with them, and with their account. Schema version 10.
+@DataClassName('MatterRow')
+class Matters extends Table {
+  TextColumn get id => text()();
+  TextColumn get name => text()();
+  IntColumn get createdAt => integer()();
+  IntColumn get updatedAt => integer()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+/// One conversation of a matter, in the order they were added ([position]).
+/// [ref] is a `MessageRef` as JSON, [reason] a `MatterReason`'s; [source] is
+/// `MatterSource.name`.
+@DataClassName('MatterMemberRow')
+@TableIndex(name: 'matter_members_thread', columns: {#accountId, #threadId})
+class MatterMembers extends Table {
+  TextColumn get matterId => text().references(Matters, #id, onDelete: KeyAction.cascade)();
+  TextColumn get accountId => text().references(Accounts, #id, onDelete: KeyAction.cascade)();
+  TextColumn get threadId => text()();
+  TextColumn get ref => text()();
+  TextColumn get source => text()();
+  TextColumn get reason => text().nullable()();
+  IntColumn get addedAt => integer()();
+  IntColumn get position => integer()();
+
+  @override
+  Set<Column> get primaryKey => {matterId, accountId, threadId};
+}
+
+/// A conversation the user said is not part of a matter (`MatterExclusion`):
+/// a declined suggestion, or a member they [removed]. [ref] as for members.
+@DataClassName('MatterExclusionRow')
+class MatterExclusions extends Table {
+  TextColumn get matterId => text().references(Matters, #id, onDelete: KeyAction.cascade)();
+  TextColumn get accountId => text().references(Accounts, #id, onDelete: KeyAction.cascade)();
+  TextColumn get threadId => text()();
+  TextColumn get ref => text().nullable()();
+  BoolColumn get removed => boolean().withDefault(const Constant(false))();
+  IntColumn get at => integer()();
+
+  @override
+  Set<Column> get primaryKey => {matterId, accountId, threadId};
+}
+
+/// A matter's history (`MatterEvent`), in [seq] order; [kind] is
+/// `MatterEventKind.name`. Entries naming a conversation have its account.
+@DataClassName('MatterEventRow')
+class MatterEvents extends Table {
+  TextColumn get matterId => text().references(Matters, #id, onDelete: KeyAction.cascade)();
+  IntColumn get seq => integer()();
+  TextColumn get kind => text()();
+  IntColumn get at => integer()();
+  TextColumn get detail => text().withDefault(const Constant(''))();
+  IntColumn get count => integer().withDefault(const Constant(0))();
+  TextColumn get accountId => text().nullable().references(Accounts, #id, onDelete: KeyAction.cascade)();
+  TextColumn get source => text().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {matterId, seq};
+}
+
 /// What the device remembers about calendar invitations (`CalendarRecords`):
 /// by UID and RECURRENCE-ID, the JSON the app writes. Schema version 8; plain
 /// SQL, read and written by [MailStore.calendarRecord] and
@@ -580,6 +645,10 @@ END;''',
     RuleWatermarks,
     MutedThreads,
     ListKinds,
+    Matters,
+    MatterMembers,
+    MatterExclusions,
+    MatterEvents,
   ],
 )
 class StoreDatabase extends _$StoreDatabase {
@@ -599,9 +668,10 @@ class StoreDatabase extends _$StoreDatabase {
   /// ([_subscriptionCache], made again), and the user's choices
   /// ([ListKinds]). 8: calendar invitations: what the device remembers about
   /// them ([_calendarRecords]); cached contents of invitations from before,
-  /// whose `text/calendar` part wasn't listed, are fetched again.
+  /// whose `text/calendar` part wasn't listed, are fetched again. 10:
+  /// matters ([Matters], [MatterMembers], [MatterExclusions], [MatterEvents]).
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 10;
 
   /// Creates or upgrades the file in one write transaction, from the
   /// version it has then. The app and a background isolate can open it at
@@ -697,6 +767,13 @@ class StoreDatabase extends _$StoreDatabase {
         "DELETE FROM contents WHERE attachments_json NOT LIKE '%text/calendar%' "
         "AND (headers_json LIKE '%calendarmessage%' OR headers_json LIKE '%text/calendar%')",
       );
+    }
+    if (from < 10) {
+      await m.createTable(matters);
+      await m.createTable(matterMembers);
+      await m.createIndex(matterMembersThread);
+      await m.createTable(matterExclusions);
+      await m.createTable(matterEvents);
     }
   }
 

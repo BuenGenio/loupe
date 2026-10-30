@@ -260,6 +260,9 @@ final class MailStore {
         _db.outboxItems,
         _db.pendingOps,
         _db.threadRefs,
+        _db.matterMembers,
+        _db.matterExclusions,
+        _db.matterEvents,
       ])
         TableUpdate.onTable(t, kind: UpdateKind.delete),
     });
@@ -1765,6 +1768,213 @@ ORDER BY e.received_at DESC, e.seq DESC LIMIT ?''';
 
   /// Takes every decrypted text out of the search index. Returns how many.
   Future<int> deleteDecryptedTexts() => _db.customUpdate('DELETE FROM decrypted_texts');
+
+  // Matters -----------------------------------------------------------------
+
+  /// Every matter, the oldest first; see `MatterRecords`.
+  Stream<List<Matter>> watchMatters() =>
+      _recomputed('matters', {_db.matters, _db.matterMembers, _db.matterExclusions, _db.matterEvents}, getMatters);
+
+  Future<List<Matter>> getMatters() async {
+    final rows = await (_db.select(
+      _db.matters,
+    )..orderBy([(m) => OrderingTerm.asc(m.createdAt), (m) => OrderingTerm.asc(m.id)])).get();
+    final members = <String, List<MatterMember>>{};
+    for (final r in await (_db.select(_db.matterMembers)..orderBy([(m) => OrderingTerm.asc(m.position)])).get()) {
+      (members[r.matterId] ??= []).add(
+        MatterMember(
+          accountId: r.accountId,
+          threadId: r.threadId,
+          ref: MessageRef.fromJson((jsonDecode(r.ref) as Map).cast()),
+          addedAt: fromMillis(r.addedAt),
+          source: MatterSource.values.asNameMap()[r.source] ?? MatterSource.manual,
+          reason: switch (r.reason) {
+            final String json => MatterReason.fromJson((jsonDecode(json) as Map).cast()),
+            null => null,
+          },
+        ),
+      );
+    }
+    final exclusions = <String, List<MatterExclusion>>{};
+    for (final r in await (_db.select(_db.matterExclusions)..orderBy([(x) => OrderingTerm.asc(x.at)])).get()) {
+      (exclusions[r.matterId] ??= []).add(
+        MatterExclusion(
+          accountId: r.accountId,
+          threadId: r.threadId,
+          at: fromMillis(r.at),
+          ref: switch (r.ref) {
+            final String json => MessageRef.fromJson((jsonDecode(json) as Map).cast()),
+            null => null,
+          },
+          removed: r.removed,
+        ),
+      );
+    }
+    final events = <String, List<MatterEvent>>{};
+    for (final r in await (_db.select(_db.matterEvents)..orderBy([(e) => OrderingTerm.asc(e.seq)])).get()) {
+      final kind = MatterEventKind.values.asNameMap()[r.kind];
+      if (kind == null) continue;
+      (events[r.matterId] ??= []).add(
+        MatterEvent(
+          kind,
+          fromMillis(r.at),
+          text: r.detail,
+          count: r.count,
+          accountId: r.accountId,
+          source: MatterSource.values.asNameMap()[r.source],
+        ),
+      );
+    }
+    return [
+      for (final r in rows)
+        Matter(
+          id: r.id,
+          name: r.name,
+          createdAt: fromMillis(r.createdAt),
+          updatedAt: fromMillis(r.updatedAt),
+          members: members[r.id] ?? const [],
+          exclusions: exclusions[r.id] ?? const [],
+          history: events[r.id] ?? const [],
+        ),
+    ];
+  }
+
+  /// Saves [save] and deletes [delete] in one transaction; rows of accounts
+  /// that are gone are dropped. See `MatterRecords.writeMatters`.
+  Future<void> writeMatters({List<Matter> save = const [], List<String> delete = const []}) =>
+      _db.transaction(() async {
+        final accounts = {for (final a in await _db.select(_db.accounts).get()) a.id};
+        for (final id in {...delete, for (final m in save) m.id}) {
+          await (_db.delete(_db.matterMembers)..where((r) => r.matterId.equals(id))).go();
+          await (_db.delete(_db.matterExclusions)..where((r) => r.matterId.equals(id))).go();
+          await (_db.delete(_db.matterEvents)..where((r) => r.matterId.equals(id))).go();
+        }
+        for (final id in delete) {
+          await (_db.delete(_db.matters)..where((r) => r.id.equals(id))).go();
+        }
+        for (final m in save) {
+          await _db
+              .into(_db.matters)
+              .insertOnConflictUpdate(
+                MattersCompanion.insert(
+                  id: m.id,
+                  name: m.name,
+                  createdAt: m.createdAt.millisecondsSinceEpoch,
+                  updatedAt: m.updatedAt.millisecondsSinceEpoch,
+                ),
+              );
+          await _db.batch((b) {
+            b.insertAll(_db.matterMembers, [
+              for (final (i, x) in m.members.indexed)
+                if (accounts.contains(x.accountId))
+                  MatterMembersCompanion.insert(
+                    matterId: m.id,
+                    accountId: x.accountId,
+                    threadId: x.threadId,
+                    ref: jsonEncode(x.ref.toJson()),
+                    source: x.source.name,
+                    reason: Value(x.reason == null ? null : jsonEncode(x.reason!.toJson())),
+                    addedAt: x.addedAt.millisecondsSinceEpoch,
+                    position: i,
+                  ),
+            ], mode: InsertMode.insertOrReplace);
+            b.insertAll(_db.matterExclusions, [
+              for (final x in m.exclusions)
+                if (accounts.contains(x.accountId))
+                  MatterExclusionsCompanion.insert(
+                    matterId: m.id,
+                    accountId: x.accountId,
+                    threadId: x.threadId,
+                    ref: Value(x.ref == null ? null : jsonEncode(x.ref!.toJson())),
+                    removed: Value(x.removed),
+                    at: x.at.millisecondsSinceEpoch,
+                  ),
+            ], mode: InsertMode.insertOrReplace);
+            b.insertAll(_db.matterEvents, [
+              for (final (i, e) in m.history.indexed)
+                if (e.accountId == null || accounts.contains(e.accountId))
+                  MatterEventsCompanion.insert(
+                    matterId: m.id,
+                    seq: i,
+                    kind: e.kind.name,
+                    at: e.at.millisecondsSinceEpoch,
+                    detail: Value(e.text),
+                    count: Value(e.count),
+                    accountId: Value(e.accountId),
+                    source: Value(e.source?.name),
+                  ),
+            ]);
+          });
+        }
+      });
+
+  /// One copy of every message of matter [matterId]'s conversations, outside
+  /// Trash and Junk, oldest first. Copies rank as in the lists: the Inbox's
+  /// first, Gmail's All Mail last.
+  Stream<List<EmailSummary>> watchMatterMessages(String matterId) {
+    const sql =
+        '''
+SELECT * FROM (
+  SELECT e.*, ROW_NUMBER() OVER (PARTITION BY e.account_id, coalesce(e.message_id_header, e.id)
+    ORDER BY $_copyRank, e.seq) AS copy_rank
+  FROM matter_members mm
+  JOIN emails e ON e.account_id = mm.account_id AND e.thread_id = mm.thread_id
+  JOIN mailboxes m ON m.id = e.mailbox_id
+  WHERE mm.matter_id = ?1 AND m.role NOT IN ('trash', 'junk')
+) WHERE copy_rank = 1 ORDER BY received_at ASC, seq ASC''';
+    return _select(
+      sql,
+      [matterId],
+      {_db.matterMembers, _db.emails, _db.mailboxes},
+    ).watch().distinct(_rowsEqual).map((rows) => [for (final r in rows) summaryFromRow(_emailRow(r))]);
+  }
+
+  /// The newest arrival in each matter's conversations, outside Trash and
+  /// Junk, by matter id.
+  Stream<Map<String, DateTime>> watchMatterActivity() =>
+      _select(
+            'SELECT mm.matter_id AS matter_id, max(e.received_at) AS at FROM matter_members mm '
+            'JOIN emails e ON e.account_id = mm.account_id AND e.thread_id = mm.thread_id '
+            "JOIN mailboxes m ON m.id = e.mailbox_id WHERE m.role NOT IN ('trash', 'junk') GROUP BY mm.matter_id",
+            const [],
+            {_db.matterMembers, _db.emails, _db.mailboxes},
+          )
+          .watch()
+          .distinct(_rowsEqual)
+          .map((rows) => {for (final r in rows) r.read<String>('matter_id'): fromMillis(r.read<int>('at'))});
+
+  /// The message [ref] refers to, wherever it is now: its own id (or the id
+  /// a move here gave it), else a copy with its Message-ID that
+  /// [MessageRef.matches] accepts. A copy outside Trash and Junk comes first.
+  Future<EmailSummary?> locateMessage(MessageRef ref) async {
+    final found = <EmailSummary>[];
+    final resolved = await resolveId(ref.emailId);
+    final direct = await getEmail(resolved);
+    // An alias is this device's own record of a move: the same message.
+    if (direct != null && direct.accountId == ref.accountId && (resolved != ref.emailId || ref.matches(direct))) {
+      found.add(direct);
+    }
+    final messageId = ref.messageIdHeader;
+    if (messageId != null && messageId.trim().isNotEmpty) {
+      final rows =
+          await (_db.select(_db.emails)..where(
+                (e) => e.accountId.equals(ref.accountId) & e.messageIdHeader.equals(normalizeMessageId(messageId)),
+              ))
+              .get();
+      for (final r in rows) {
+        final e = summaryFromRow(r);
+        if (e.id != direct?.id && ref.matches(e)) found.add(e);
+      }
+    }
+    if (found.length < 2) return found.firstOrNull;
+    final roles = {for (final m in await getMailboxes(accountId: ref.accountId)) m.id: m.role};
+    int rank(EmailSummary e) => switch (roles[e.mailboxId]) {
+      MailboxRole.trash || MailboxRole.junk => 2,
+      MailboxRole.all => 1,
+      _ => 0,
+    };
+    return found.reduce((a, b) => rank(b) < rank(a) ? b : a);
+  }
 
   // Calendar invitations ----------------------------------------------------
 

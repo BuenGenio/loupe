@@ -10,6 +10,291 @@ class AppLocalizationsUk extends AppLocalizations {
   AppLocalizationsUk([String locale = 'uk']) : super(locale);
 
   @override
+  String get mattersTitle => 'Справи';
+
+  @override
+  String get mattersNewMatter => 'Нова справа…';
+
+  @override
+  String get mattersNewMatterTitle => 'Нова справа';
+
+  @override
+  String get mattersNameHint => 'Купівля будинку, страховий випадок…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Тримайте разом розмови про одну справу, як-от купівлю будинку, хоч би від кого вони надходили.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count розмов',
+      few: '$count розмови',
+      one: '$count розмова',
+      zero: 'Немає розмов',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Дії зі справою';
+
+  @override
+  String get mattersRename => 'Перейменувати…';
+
+  @override
+  String get mattersRenameTitle => 'Перейменувати справу';
+
+  @override
+  String get mattersSplit => 'Розділити…';
+
+  @override
+  String get mattersMergeInto => 'Об’єднати з…';
+
+  @override
+  String get mattersDelete => 'Видалити справу';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return 'Видалити «$name»?';
+  }
+
+  @override
+  String get mattersDeleteMessage => 'Її розмови залишаться у ваших скриньках. Буде видалено лише саму справу.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return 'Об’єднати «$name» з іншою справою';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'Об’єднано з «$name»';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'Немає іншої справи, з якою можна об’єднати цю.';
+
+  @override
+  String get mattersSplitTitle => 'Виберіть розмови';
+
+  @override
+  String get mattersSplitMove => 'Перемістити в нову справу…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Переміщено $count розмов до «$name»',
+      few: 'Переміщено $count розмови до «$name»',
+      one: 'Переміщено $count розмову до «$name»',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Розмови';
+
+  @override
+  String get mattersNoConversations =>
+      'Розмов поки немає. Додайте розмову з її меню ⋯ пунктом «Додати до справи…» або з пропозицій.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count листів',
+      few: '$count листи',
+      one: '$count лист',
+    );
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Немає на цьому телефоні або є лише в кошику';
+
+  @override
+  String get mattersAddToMatter => 'Додати до справи…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Додати до справи';
+
+  @override
+  String get mattersAlreadyIn => 'Уже додано';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'Додано до «$name»';
+  }
+
+  @override
+  String get mattersRemove => 'Вилучити зі справи';
+
+  @override
+  String get mattersRemoveWhich => 'З якої справи вилучити?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'Вилучено з «$name»';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Відкрити справу «$name»';
+  }
+
+  @override
+  String get mattersGone => 'Цієї справи більше не існує.';
+
+  @override
+  String get mattersStatusTitle => 'Стан справи';
+
+  @override
+  String get mattersStatusHint => 'Кілька рядків про поточний стан справи, кожен — на основі одного з цих листів.';
+
+  @override
+  String get mattersStatusWorking => 'Читаємо останні листи…';
+
+  @override
+  String get mattersStatusFailed => 'Loupe не вдалося з’ясувати стан справи.';
+
+  @override
+  String get mattersStatusOutdated => 'Відколи це написано, надійшли нові листи.';
+
+  @override
+  String get mattersStatusUpdate => 'Оновити';
+
+  @override
+  String get mattersStatusDemoNote => 'Написано вбудованою демонстрацією, а не моделлю.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Написано за допомогою $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Прочитано лише останні листи.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return 'Пошта з $accounts залишається на цьому телефоні, тому її не враховано.';
+  }
+
+  @override
+  String get mattersStatusEncrypted => 'Зашифровані листи залишаються на цьому телефоні, тому їх не враховано.';
+
+  @override
+  String get mattersStatusNoInput => 'Жоден із цих листів не можна передавати цьому провайдеру.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Маю зробити';
+
+  @override
+  String get mattersWaiting => 'Чекаю на інших';
+
+  @override
+  String get mattersDocuments => 'Документи';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete => 'Деякі листи не вдалося відкрити, тому їхні файли не показано.';
+
+  @override
+  String get mattersPeople => 'Учасники';
+
+  @override
+  String get mattersHistory => 'Історія';
+
+  @override
+  String get mattersSuggestions => 'Запропоновані розмови';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Знайдено на цьому телефоні за спільними словами, номерами й відправниками. Нічого не додається, доки ви не виберете.';
+
+  @override
+  String get mattersNotThisOne => 'Не стосується';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Згадується «$words»';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Теж від $name. Сам лише спільний відправник ще не означає, що розмова сюди належить.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Теж з $domain. Сам лише спільний домен ще не означає, що розмова сюди належить.';
+  }
+
+  @override
+  String get mattersActivity => 'Журнал змін';
+
+  @override
+  String get mattersEventCreated => 'Справу створено';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'Перейменовано на «$name»';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return 'Додано «$subject»';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return 'Додано «$subject» із пропозицій';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return 'Вилучено «$subject»';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Приєднано справу «$name» з $count розмовами',
+      few: 'Приєднано справу «$name» з $count розмовами',
+      one: 'Приєднано справу «$name» з $count розмовою',
+      zero: 'Приєднано справу «$name»',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Створено з $count розмов справи «$name»',
+      few: 'Створено з $count розмов справи «$name»',
+      one: 'Створено з $count розмови справи «$name»',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Додати';
 
   @override

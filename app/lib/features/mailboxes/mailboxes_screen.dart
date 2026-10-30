@@ -26,6 +26,7 @@ import '../compose/compose_recovery.dart';
 import '../compose/send_later.dart';
 import '../export/export_actions.dart';
 import '../keyboard/mail_commands.dart';
+import '../matters/matters_section.dart';
 import '../outbox/outbox_screen.dart';
 import '../palette/command_palette.dart';
 import '../panes/mail_selection.dart';
@@ -39,7 +40,7 @@ import 'vip_screen.dart';
 import '../../theme/loupe_icons.dart';
 
 /// The first screen: unified mailboxes and Subscriptions, each account's
-/// folder tree, pinned mailing lists, smart mailboxes and tags. Pull down
+/// folder tree, pinned mailing lists, matters, smart mailboxes and tags. Pull down
 /// for search; Edit hides items.
 class MailboxesScreen extends ConsumerStatefulWidget {
   const MailboxesScreen({super.key});
@@ -214,6 +215,7 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> with CommandS
                   child: _AccountSection(key: ValueKey(account.id), account: account, editing: _editing, onOpen: _open),
                 ),
               SliverToBoxAdapter(child: _PinnedListsSection(editing: _editing)),
+              SliverToBoxAdapter(child: MattersSection(editing: _editing)),
               SliverToBoxAdapter(child: _SmartSection(editing: _editing)),
               SliverToBoxAdapter(child: _TagSection(editing: _editing)),
               const SliverToBoxAdapter(child: SizedBox(height: 24)),

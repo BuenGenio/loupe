@@ -10,6 +10,304 @@ class AppLocalizationsGa extends AppLocalizations {
   AppLocalizationsGa([String locale = 'ga']) : super(locale);
 
   @override
+  String get mattersTitle => 'Cásanna';
+
+  @override
+  String get mattersNewMatter => 'Cás nua…';
+
+  @override
+  String get mattersNewMatterTitle => 'Cás nua';
+
+  @override
+  String get mattersNameHint => 'Teach a cheannach, éileamh árachais…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Coinnigh na comhráite faoi rud amháin le chéile, ar nós ceannach tí, is cuma cé a sheol iad.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count comhrá',
+      many: '$count gcomhrá',
+      few: '$count chomhrá',
+      two: '$count chomhrá',
+      one: '$count chomhrá',
+      zero: 'Gan aon chomhrá',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Gníomhartha an cháis';
+
+  @override
+  String get mattersRename => 'Athainmnigh…';
+
+  @override
+  String get mattersRenameTitle => 'Athainmnigh an cás';
+
+  @override
+  String get mattersSplit => 'Roinn…';
+
+  @override
+  String get mattersMergeInto => 'Cumaisc le…';
+
+  @override
+  String get mattersDelete => 'Scrios an cás';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return '“$name” a scriosadh?';
+  }
+
+  @override
+  String get mattersDeleteMessage => 'Fanann a chomhráite i do bhoscaí poist. Ní scriostar ach an cás.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return 'Cumaisc “$name” le';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'Cumascadh le “$name”';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'Níl aon chás eile ann le cumasc leis.';
+
+  @override
+  String get mattersSplitTitle => 'Roghnaigh comhráite';
+
+  @override
+  String get mattersSplitMove => 'Bog go cás nua…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Bogadh $count comhrá go “$name”',
+      many: 'Bogadh $count gcomhrá go “$name”',
+      few: 'Bogadh $count chomhrá go “$name”',
+      two: 'Bogadh $count chomhrá go “$name”',
+      one: 'Bogadh $count chomhrá go “$name”',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Comhráite';
+
+  @override
+  String get mattersNoConversations =>
+      'Níl aon chomhrá ann fós. Cuir ceann leis le “Cuir le cás…” i roghchlár ⋯ comhrá, nó ó na moltaí.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count teachtaireacht',
+      many: '$count dteachtaireacht',
+      few: '$count theachtaireacht',
+      two: '$count theachtaireacht',
+      one: '$count teachtaireacht',
+    );
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Níl sé ar an bhfón seo, nó sa Bhruscar amháin';
+
+  @override
+  String get mattersAddToMatter => 'Cuir le cás…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Cuir le cás';
+
+  @override
+  String get mattersAlreadyIn => 'Ann cheana';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'Curtha le “$name”';
+  }
+
+  @override
+  String get mattersRemove => 'Bain den chás';
+
+  @override
+  String get mattersRemoveWhich => 'Cén cás óna mbainfear é?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'Bainte de “$name”';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Oscail an cás “$name”';
+  }
+
+  @override
+  String get mattersGone => 'Níl an cás seo ann a thuilleadh.';
+
+  @override
+  String get mattersStatusTitle => 'Mar atá cúrsaí';
+
+  @override
+  String get mattersStatusHint => 'Cúpla líne faoin staid is déanaí, gach ceann acu ó theachtaireacht anseo.';
+
+  @override
+  String get mattersStatusWorking => 'Ag léamh na dteachtaireachtaí is déanaí…';
+
+  @override
+  String get mattersStatusFailed => 'Níorbh fhéidir le Loupe a dhéanamh amach conas atá cúrsaí.';
+
+  @override
+  String get mattersStatusOutdated => 'Tá teachtaireachtaí nua tagtha ó scríobhadh é seo.';
+
+  @override
+  String get mattersStatusUpdate => 'Nuashonraigh';
+
+  @override
+  String get mattersStatusDemoNote => 'Scríofa ag an taispeántas ionsuite, ní ag samhail.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Scríofa ag $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Níor léadh ach na teachtaireachtaí is déanaí.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return 'Fanann ríomhphost ó $accounts ar an bhfón seo, mar sin níl sé san áireamh.';
+  }
+
+  @override
+  String get mattersStatusEncrypted =>
+      'Fanann teachtaireachtaí criptithe ar an bhfón seo, mar sin níl siad san áireamh.';
+
+  @override
+  String get mattersStatusNoInput =>
+      'Ní cheadaítear aon cheann de na teachtaireachtaí seo a sheoladh chuig an soláthraí seo.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Le déanamh';
+
+  @override
+  String get mattersWaiting => 'Ag fanacht ar dhaoine eile';
+
+  @override
+  String get mattersDocuments => 'Doiciméid';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete =>
+      'Níorbh fhéidir roinnt teachtaireachtaí a oscailt, mar sin níl a gcomhaid liostaithe.';
+
+  @override
+  String get mattersPeople => 'Rannpháirtithe';
+
+  @override
+  String get mattersHistory => 'Stair';
+
+  @override
+  String get mattersSuggestions => 'Comhráite molta';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Aimsithe ar an bhfón seo de réir focal, tagairtí agus seoltóirí i gcoiteann. Ní chuirtear aon rud leis go dtí go roghnaíonn tú.';
+
+  @override
+  String get mattersNotThisOne => 'Ní bhaineann sé leis';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Luann sé “$words”';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Ó $name freisin. Ní chiallaíonn seoltóir comónta leis féin go mbaineann sé leis.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Ó $domain freisin. Ní chiallaíonn fearann comónta leis féin go mbaineann sé leis.';
+  }
+
+  @override
+  String get mattersActivity => 'Gníomhaíocht';
+
+  @override
+  String get mattersEventCreated => 'Cruthaíodh an cás';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'Athainmníodh mar “$name”';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return 'Cuireadh “$subject” leis';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return 'Cuireadh “$subject” leis ó mholadh';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return 'Baineadh “$subject” as';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Cumascadh “$name” isteach, le $count comhrá',
+      many: 'Cumascadh “$name” isteach, le $count gcomhrá',
+      few: 'Cumascadh “$name” isteach, le $count chomhrá',
+      two: 'Cumascadh “$name” isteach, le $count chomhrá',
+      one: 'Cumascadh “$name” isteach, le $count chomhrá',
+      zero: 'Cumascadh “$name” isteach',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Cruthaithe as $count comhrá de chuid “$name”',
+      many: 'Cruthaithe as $count gcomhrá de chuid “$name”',
+      few: 'Cruthaithe as $count chomhrá de chuid “$name”',
+      two: 'Cruthaithe as $count chomhrá de chuid “$name”',
+      one: 'Cruthaithe as $count chomhrá de chuid “$name”',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Cuir leis';
 
   @override

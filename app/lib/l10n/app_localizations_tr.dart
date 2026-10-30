@@ -10,6 +10,280 @@ class AppLocalizationsTr extends AppLocalizations {
   AppLocalizationsTr([String locale = 'tr']) : super(locale);
 
   @override
+  String get mattersTitle => 'Süreçler';
+
+  @override
+  String get mattersNewMatter => 'Yeni süreç…';
+
+  @override
+  String get mattersNewMatterTitle => 'Yeni süreç';
+
+  @override
+  String get mattersNameHint => 'Ev alımı, sigorta talebi…';
+
+  @override
+  String get mattersEmptyFooter => 'Ev alımı gibi aynı işle ilgili yazışmaları, kimden gelirse gelsin bir arada tutun.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count yazışma',
+      one: '$count yazışma',
+      zero: 'Yazışma yok',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Süreç işlemleri';
+
+  @override
+  String get mattersRename => 'Yeniden adlandır…';
+
+  @override
+  String get mattersRenameTitle => 'Süreci yeniden adlandır';
+
+  @override
+  String get mattersSplit => 'Böl…';
+
+  @override
+  String get mattersMergeInto => 'Şununla birleştir…';
+
+  @override
+  String get mattersDelete => 'Süreci sil';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return '“$name” silinsin mi?';
+  }
+
+  @override
+  String get mattersDeleteMessage => 'Süreçteki yazışmalar posta kutularınızda kalır. Yalnızca süreç silinir.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return '“$name” sürecini şununla birleştir';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return '“$name” süreciyle birleştirildi';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'Birleştirilecek başka süreç yok.';
+
+  @override
+  String get mattersSplitTitle => 'Yazışmaları seçin';
+
+  @override
+  String get mattersSplitMove => 'Yeni sürece taşı…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count yazışma “$name” sürecine taşındı',
+      one: '$count yazışma “$name” sürecine taşındı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Yazışmalar';
+
+  @override
+  String get mattersNoConversations =>
+      'Henüz yazışma yok. Bir yazışmanın ⋯ menüsündeki “Sürece ekle…” seçeneğiyle ya da önerilerden ekleyin.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ileti', one: '$count ileti');
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Bu telefonda yok ya da yalnızca Çöp Kutusu’nda';
+
+  @override
+  String get mattersAddToMatter => 'Sürece ekle…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Sürece ekle';
+
+  @override
+  String get mattersAlreadyIn => 'Zaten ekli';
+
+  @override
+  String mattersAddedTo(String name) {
+    return '“$name” sürecine eklendi';
+  }
+
+  @override
+  String get mattersRemove => 'Süreçten kaldır';
+
+  @override
+  String get mattersRemoveWhich => 'Hangi süreçten kaldırılsın?';
+
+  @override
+  String mattersRemoved(String name) {
+    return '“$name” sürecinden kaldırıldı';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return '“$name” sürecini aç';
+  }
+
+  @override
+  String get mattersGone => 'Bu süreç artık yok.';
+
+  @override
+  String get mattersStatusTitle => 'Son durum';
+
+  @override
+  String get mattersStatusHint => 'Son duruma dair birkaç satır; her biri buradaki bir iletiye dayanır.';
+
+  @override
+  String get mattersStatusWorking => 'Son iletiler okunuyor…';
+
+  @override
+  String get mattersStatusFailed => 'Loupe son durumu çıkaramadı.';
+
+  @override
+  String get mattersStatusOutdated => 'Bu yazıldığından beri yeni iletiler geldi.';
+
+  @override
+  String get mattersStatusUpdate => 'Güncelle';
+
+  @override
+  String get mattersStatusDemoNote => 'Yerleşik demo yazdı, bir model değil.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Yazan: $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Yalnızca son iletiler okundu.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return '$accounts e-postaları bu telefonda kalır, bu yüzden dahil edilmez.';
+  }
+
+  @override
+  String get mattersStatusEncrypted => 'Şifreli iletiler bu telefonda kalır, bu yüzden dahil edilmez.';
+
+  @override
+  String get mattersStatusNoInput => 'Bu iletilerin hiçbiri bu sağlayıcıya gönderilemez.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Yapılacaklar';
+
+  @override
+  String get mattersWaiting => 'Başkalarından beklenenler';
+
+  @override
+  String get mattersDocuments => 'Belgeler';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete => 'Bazı iletiler açılamadı, bu yüzden ekleri listelenmiyor.';
+
+  @override
+  String get mattersPeople => 'İlgili kişiler';
+
+  @override
+  String get mattersHistory => 'Geçmiş';
+
+  @override
+  String get mattersSuggestions => 'Önerilen yazışmalar';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Ortak sözcüklere, referans numaralarına ve gönderenlere bakılarak bu telefonda bulundu. Siz seçmeden hiçbir şey eklenmez.';
+
+  @override
+  String get mattersNotThisOne => 'Bu değil';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return '“$words” geçiyor';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Gönderen yine $name. Gönderenin aynı olması tek başına buraya ait olduğunu göstermez.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Yine $domain alan adından. Alan adının aynı olması tek başına buraya ait olduğunu göstermez.';
+  }
+
+  @override
+  String get mattersActivity => 'Değişiklikler';
+
+  @override
+  String get mattersEventCreated => 'Süreç oluşturuldu';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'Adı “$name” olarak değiştirildi';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return '“$subject” eklendi';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return '“$subject” bir öneriden eklendi';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return '“$subject” kaldırıldı';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '“$name”, $count yazışmasıyla birlikte bununla birleştirildi',
+      one: '“$name”, $count yazışmasıyla birlikte bununla birleştirildi',
+      zero: '“$name” bununla birleştirildi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '“$name” sürecinden $count yazışmayla oluşturuldu',
+      one: '“$name” sürecinden $count yazışmayla oluşturuldu',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Ekle';
 
   @override

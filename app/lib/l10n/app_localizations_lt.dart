@@ -10,6 +10,291 @@ class AppLocalizationsLt extends AppLocalizations {
   AppLocalizationsLt([String locale = 'lt']) : super(locale);
 
   @override
+  String get mattersTitle => 'Reikalai';
+
+  @override
+  String get mattersNewMatter => 'Naujas reikalas…';
+
+  @override
+  String get mattersNewMatterTitle => 'Naujas reikalas';
+
+  @override
+  String get mattersNameHint => 'Namo pirkimas, draudimo išmoka…';
+
+  @override
+  String get mattersEmptyFooter =>
+      'Laikykite kartu pokalbius apie vieną reikalą, pavyzdžiui, namo pirkimą, nesvarbu, kas juos siunčia.';
+
+  @override
+  String mattersRowDetail(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pokalbių',
+      few: '$count pokalbiai',
+      one: '$count pokalbis',
+      zero: 'Pokalbių nėra',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersMenu => 'Reikalo veiksmai';
+
+  @override
+  String get mattersRename => 'Pervardyti…';
+
+  @override
+  String get mattersRenameTitle => 'Pervardyti reikalą';
+
+  @override
+  String get mattersSplit => 'Atskirti…';
+
+  @override
+  String get mattersMergeInto => 'Sujungti su…';
+
+  @override
+  String get mattersDelete => 'Ištrinti reikalą';
+
+  @override
+  String mattersDeleteTitle(String name) {
+    return 'Ištrinti „$name“?';
+  }
+
+  @override
+  String get mattersDeleteMessage => 'Reikalo pokalbiai liks jūsų pašto dėžutėse. Ištrinamas tik pats reikalas.';
+
+  @override
+  String mattersMergeTitle(String name) {
+    return 'Su kuo sujungti „$name“?';
+  }
+
+  @override
+  String mattersMerged(String name) {
+    return 'Sujungta su „$name“';
+  }
+
+  @override
+  String get mattersNoOtherMatter => 'Nėra kito reikalo, su kuriuo būtų galima sujungti.';
+
+  @override
+  String get mattersSplitTitle => 'Pasirinkite pokalbius';
+
+  @override
+  String get mattersSplitMove => 'Perkelti į naują reikalą…';
+
+  @override
+  String mattersMovedTo(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pokalbių perkelta į „$name“',
+      few: '$count pokalbiai perkelti į „$name“',
+      one: '$count pokalbis perkeltas į „$name“',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mattersConversations => 'Pokalbiai';
+
+  @override
+  String get mattersNoConversations =>
+      'Pokalbių dar nėra. Pridėkite pokalbį per jo meniu ⋯ pasirinkę „Pridėti prie reikalo…“ arba iš pasiūlymų.';
+
+  @override
+  String mattersConversationDetail(String people, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count laiškų',
+      few: '$count laiškai',
+      one: '$count laiškas',
+    );
+    return '$people, $_temp0';
+  }
+
+  @override
+  String get mattersConversationGone => 'Nėra šiame telefone arba yra tik šiukšliadėžėje';
+
+  @override
+  String get mattersAddToMatter => 'Pridėti prie reikalo…';
+
+  @override
+  String get mattersAddToMatterTitle => 'Pridėti prie reikalo';
+
+  @override
+  String get mattersAlreadyIn => 'Jau pridėta';
+
+  @override
+  String mattersAddedTo(String name) {
+    return 'Pridėta prie „$name“';
+  }
+
+  @override
+  String get mattersRemove => 'Pašalinti iš reikalo';
+
+  @override
+  String get mattersRemoveWhich => 'Iš kurio reikalo pašalinti?';
+
+  @override
+  String mattersRemoved(String name) {
+    return 'Pašalinta iš „$name“';
+  }
+
+  @override
+  String mattersOpenMatter(String name) {
+    return 'Atidaryti reikalą „$name“';
+  }
+
+  @override
+  String get mattersGone => 'Šio reikalo nebėra.';
+
+  @override
+  String get mattersStatusTitle => 'Dabartinė padėtis';
+
+  @override
+  String get mattersStatusHint => 'Kelios eilutės apie naujausią padėtį, kiekviena paremta čia esančiu laišku.';
+
+  @override
+  String get mattersStatusWorking => 'Skaitomi naujausi laiškai…';
+
+  @override
+  String get mattersStatusFailed => 'Loupe nepavyko nustatyti dabartinės padėties.';
+
+  @override
+  String get mattersStatusOutdated => 'Nuo tada, kai tai buvo parašyta, gauta naujų laiškų.';
+
+  @override
+  String get mattersStatusUpdate => 'Atnaujinti';
+
+  @override
+  String get mattersStatusDemoNote => 'Parašė įtaisytoji demonstracija, ne modelis.';
+
+  @override
+  String mattersStatusProvider(String provider) {
+    return 'Parašė $provider';
+  }
+
+  @override
+  String get mattersStatusPartial => 'Perskaityti tik naujausi laiškai.';
+
+  @override
+  String mattersStatusLocalOnly(String accounts) {
+    return 'Paštas iš $accounts lieka šiame telefone, todėl neįtraukiamas.';
+  }
+
+  @override
+  String get mattersStatusEncrypted => 'Šifruoti laiškai lieka šiame telefone, todėl neįtraukiami.';
+
+  @override
+  String get mattersStatusNoInput => 'Nė vieno iš šių laiškų negalima siųsti šiam paslaugų teikėjui.';
+
+  @override
+  String mattersStatusSource(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersOpenActions => 'Neatlikti veiksmai';
+
+  @override
+  String get mattersWaiting => 'Laukiama kitų';
+
+  @override
+  String get mattersDocuments => 'Dokumentai';
+
+  @override
+  String mattersDocumentDetail(String sender, String date) {
+    return '$sender, $date';
+  }
+
+  @override
+  String get mattersDocumentsIncomplete => 'Kai kurių laiškų nepavyko atidaryti, todėl jų failai nerodomi.';
+
+  @override
+  String get mattersPeople => 'Dalyviai';
+
+  @override
+  String get mattersHistory => 'Istorija';
+
+  @override
+  String get mattersSuggestions => 'Siūlomi pokalbiai';
+
+  @override
+  String get mattersSuggestionsFooter =>
+      'Rasta šiame telefone pagal bendrus žodžius, nuorodas ir siuntėjus. Niekas nepridedama, kol nepasirinksite.';
+
+  @override
+  String get mattersNotThisOne => 'Ne šis';
+
+  @override
+  String mattersReasonMentions(String words) {
+    return 'Minima „$words“';
+  }
+
+  @override
+  String mattersReasonSameSender(String name) {
+    return 'Taip pat nuo $name. Vien tas pats siuntėjas dar nereiškia, kad pokalbis priklauso šiam reikalui.';
+  }
+
+  @override
+  String mattersReasonSameDomain(String domain) {
+    return 'Taip pat iš $domain. Vien tas pats domenas dar nereiškia, kad pokalbis priklauso šiam reikalui.';
+  }
+
+  @override
+  String get mattersActivity => 'Veikla';
+
+  @override
+  String get mattersEventCreated => 'Reikalas sukurtas';
+
+  @override
+  String mattersEventRenamed(String name) {
+    return 'Pervardyta į „$name“';
+  }
+
+  @override
+  String mattersEventAdded(String subject) {
+    return 'Pridėtas pokalbis „$subject“';
+  }
+
+  @override
+  String mattersEventAddedSuggested(String subject) {
+    return 'Pridėtas pasiūlytas pokalbis „$subject“';
+  }
+
+  @override
+  String mattersEventRemoved(String subject) {
+    return 'Pašalintas pokalbis „$subject“';
+  }
+
+  @override
+  String mattersEventMerged(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Prijungtas „$name“ su $count pokalbių',
+      few: 'Prijungtas „$name“ su $count pokalbiais',
+      one: 'Prijungtas „$name“ su $count pokalbiu',
+      zero: 'Prijungtas „$name“',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mattersEventSplitFrom(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Atskirtas nuo „$name“ su $count pokalbių',
+      few: 'Atskirtas nuo „$name“ su $count pokalbiais',
+      one: 'Atskirtas nuo „$name“ su $count pokalbiu',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get commonAdd => 'Pridėti';
 
   @override
