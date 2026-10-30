@@ -4509,6 +4509,18 @@ abstract class AppLocalizations {
   /// **'Not checked: only certificates from an authority Loupe trusts are checked.'**
   String get smimeRevocationNotChecked;
 
+  /// Mailbox (a virtual folder) of the conversations with something the user has to do: requests from others the user tracks as actions.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs My Action'**
+  String get actionsNeedsMyAction;
+
+  /// Mailbox (a virtual folder) of the conversations where the user waits for someone else: their promises, and what the user sent and waits to see acknowledged.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting on Others'**
+  String get actionsWaitingOnOthers;
+
   /// Settings row and page title: the language the app shows.
   ///
   /// In en, this message translates to:

@@ -2680,6 +2680,12 @@ class AppLocalizationsLb extends AppLocalizations {
       'Net iwwerpréift: Nëmmen Zertifikater vu Stellen, deene Loupe vertraut, ginn iwwerpréift.';
 
   @override
+  String get actionsNeedsMyAction => 'Brauch meng Aktioun';
+
+  @override
+  String get actionsWaitingOnOthers => 'Waart op anerer';
+
+  @override
   String get settingsLanguage => 'Sprooch';
 
   @override

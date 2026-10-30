@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Die Zertifizierungsstelle hat mit {status} geantwortet.",
   "smimeAuthorityAnswerTooLarge": "Die Antwort der Zertifizierungsstelle ist zu groß.",
   "smimeRevocationNotChecked": "Nicht geprüft: Nur Zertifikate von Stellen, denen Loupe vertraut, werden geprüft.",
+  "actionsNeedsMyAction": "Wartet auf mich",
+  "actionsWaitingOnOthers": "Wartet auf andere",
   "settingsLanguage": "Sprache",
   "settingsLanguageSystem": "Wie Smartphone",
   "settingsLanguageFooter": "Loupe verwendet die Sprache deines Smartphones, wenn es sie hat, und sonst Englisch. Die Sprache, die du hier wählst, gilt nur für Loupe, Benachrichtigungen eingeschlossen.",

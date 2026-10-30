@@ -2672,6 +2672,12 @@ class AppLocalizationsMk extends AppLocalizations {
       'Не е проверено: се проверуваат само сертификати издадени од сертификациски тела на кои Loupe им верува.';
 
   @override
+  String get actionsNeedsMyAction => 'Потребна е моја акција';
+
+  @override
+  String get actionsWaitingOnOthers => 'Чекам други';
+
+  @override
   String get settingsLanguage => 'Јазик';
 
   @override

@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "L’autoritat de certificació ha respost {status}.",
   "smimeAuthorityAnswerTooLarge": "La resposta de l’autoritat de certificació és massa gran.",
   "smimeRevocationNotChecked": "No comprovat: només es comproven els certificats d’autoritats en què Loupe confia.",
+  "actionsNeedsMyAction": "Requereix la meva acció",
+  "actionsWaitingOnOthers": "Esperant els altres",
   "settingsLanguage": "Idioma",
   "settingsLanguageSystem": "El mateix que el telèfon",
   "settingsLanguageFooter": "Loupe fa servir l’idioma del teu telèfon si el té, i l’anglès si no. L’idioma que triïs aquí és només per a Loupe, notificacions incloses.",

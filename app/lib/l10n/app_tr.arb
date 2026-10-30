@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Sertifika yetkilisi {status} yanıtını verdi.",
   "smimeAuthorityAnswerTooLarge": "Sertifika yetkilisinin yanıtı çok büyük.",
   "smimeRevocationNotChecked": "Denetlenmedi: yalnızca Loupe’un güvendiği bir yetkilinin sertifikaları denetlenir.",
+  "actionsNeedsMyAction": "Yapmam gerekenler",
+  "actionsWaitingOnOthers": "Başkalarından beklenenler",
   "settingsLanguage": "Dil",
   "settingsLanguageSystem": "Telefonla aynı",
   "settingsLanguageFooter": "Loupe, telefonunuzun dili varsa onu, yoksa İngilizceyi kullanır. Burada seçtiğiniz dil, bildirimler dahil yalnızca Loupe içindir.",

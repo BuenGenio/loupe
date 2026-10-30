@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Центр сертифікації відповів кодом {status}.",
   "smimeAuthorityAnswerTooLarge": "Відповідь центру сертифікації завелика.",
   "smimeRevocationNotChecked": "Не перевірено: перевіряються лише сертифікати від центрів, яким довіряє Loupe.",
+  "actionsNeedsMyAction": "Потребує моєї дії",
+  "actionsWaitingOnOthers": "Чекаю на інших",
   "settingsLanguage": "Мова",
   "settingsLanguageSystem": "Як на телефоні",
   "settingsLanguageFooter": "Loupe використовує мову телефона, якщо підтримує її, а інакше — англійську. Мова, яку ви виберете тут, діятиме лише для Loupe, зокрема для сповіщень.",

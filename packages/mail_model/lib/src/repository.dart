@@ -82,11 +82,15 @@ abstract interface class MailRepository {
   /// once and the server catches up).
   Future<void> setMailboxSubscribed(String mailboxId, {required bool subscribed});
 
-  /// Unread counts of the virtual mailboxes.
+  /// Badge counts of the virtual mailboxes: unread messages for most; for
+  /// [VirtualMailbox.needsMyAction] and [VirtualMailbox.waitingOnOthers], the
+  /// conversations with open actions in that folder.
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts();
 
   /// The message list, newest first. With [threaded], one row per
-  /// conversation; otherwise every row has messageCount 1.
+  /// conversation; otherwise every row has messageCount 1. The action folders
+  /// list the messages of the conversations with open actions there, outside
+  /// Trash and Junk.
   Stream<List<ThreadSummary>> watchList(
     MailboxRef ref, {
     Set<QuickFilter> filters = const {},

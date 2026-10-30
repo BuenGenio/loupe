@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Sertifikātu iestāde atbildēja ar {status}.",
   "smimeAuthorityAnswerTooLarge": "Sertifikātu iestādes atbilde ir pārāk liela.",
   "smimeRevocationNotChecked": "Nav pārbaudīts: tiek pārbaudīti tikai sertifikāti no iestādēm, kurām Loupe uzticas.",
+  "actionsNeedsMyAction": "Nepieciešama mana rīcība",
+  "actionsWaitingOnOthers": "Gaidu citus",
   "settingsLanguage": "Valoda",
   "settingsLanguageSystem": "Tāda pati kā tālrunī",
   "settingsLanguageFooter": "Loupe izmanto jūsu tālruņa valodu, ja tā ir pieejama, un angļu valodu, ja nav. Šeit izvēlētā valoda attiecas tikai uz Loupe, arī uz paziņojumiem.",

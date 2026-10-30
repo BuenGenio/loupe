@@ -2723,6 +2723,12 @@ class AppLocalizationsUk extends AppLocalizations {
       'Не перевірено: перевіряються лише сертифікати від центрів, яким довіряє Loupe.';
 
   @override
+  String get actionsNeedsMyAction => 'Потребує моєї дії';
+
+  @override
+  String get actionsWaitingOnOthers => 'Чекаю на інших';
+
+  @override
   String get settingsLanguage => 'Мова';
 
   @override

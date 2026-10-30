@@ -2642,6 +2642,12 @@ class AppLocalizationsDa extends AppLocalizations {
       'Ikke tjekket: kun certifikater fra en udsteder, som Loupe stoler på, bliver tjekket.';
 
   @override
+  String get actionsNeedsMyAction => 'Kræver min handling';
+
+  @override
+  String get actionsWaitingOnOthers => 'Venter på andre';
+
+  @override
   String get settingsLanguage => 'Sprog';
 
   @override

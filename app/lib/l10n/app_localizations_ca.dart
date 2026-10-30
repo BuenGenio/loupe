@@ -2682,6 +2682,12 @@ class AppLocalizationsCa extends AppLocalizations {
       'No comprovat: només es comproven els certificats d’autoritats en què Loupe confia.';
 
   @override
+  String get actionsNeedsMyAction => 'Requereix la meva acció';
+
+  @override
+  String get actionsWaitingOnOthers => 'Esperant els altres';
+
+  @override
   String get settingsLanguage => 'Idioma';
 
   @override

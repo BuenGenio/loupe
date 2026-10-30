@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Atebodd yr awdurdod tystysgrifau {status}.",
   "smimeAuthorityAnswerTooLarge": "Mae ateb yr awdurdod tystysgrifau’n rhy fawr.",
   "smimeRevocationNotChecked": "Heb ei gwirio: dim ond tystysgrifau gan awdurdod mae Loupe yn ymddiried ynddo sy’n cael eu gwirio.",
+  "actionsNeedsMyAction": "Angen i mi weithredu",
+  "actionsWaitingOnOthers": "Aros am eraill",
   "settingsLanguage": "Iaith",
   "settingsLanguageSystem": "Yr un fath â’r ffôn",
   "settingsLanguageFooter": "Mae Loupe yn defnyddio iaith eich ffôn pan fydd hi ganddo, a Saesneg pan nad yw hi. Mae’r iaith rydych chi’n ei dewis yma ar gyfer Loupe yn unig, gan gynnwys hysbysiadau.",

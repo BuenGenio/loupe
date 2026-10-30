@@ -34,6 +34,32 @@ abstract final class LoupeIcons {
   /// Export Folder… (as an mbox file).
   static const IconData exportFolder = FluentIcons.folder_arrow_up_24_regular;
 
+  // Actions: Needs My Action and Waiting on Others ---------------------------
+
+  static const IconData needsMyAction = FluentIcons.clipboard_task_list_ltr_24_regular;
+  static const IconData waitingOnOthers = FluentIcons.hourglass_half_24_regular;
+  static const IconData addAction = FluentIcons.task_list_add_24_regular;
+
+  /// Suggest Actions: Private AI reads the message.
+  static const IconData suggestActions = FluentIcons.sparkle_24_regular;
+
+  /// An action's state, as the mark at the start of its row.
+  static const IconData actionOpen = FluentIcons.circle_24_regular;
+  static const IconData actionInProgress = FluentIcons.circle_half_fill_24_regular;
+  static const IconData actionSent = FluentIcons.send_24_regular;
+  static const IconData actionWaiting = FluentIcons.mail_clock_24_regular;
+  static const IconData actionAcknowledged = FluentIcons.mail_checkmark_24_regular;
+  static const IconData actionDone = FluentIcons.checkmark_circle_24_filled;
+  static const IconData actionDismissed = FluentIcons.dismiss_circle_24_regular;
+  static const IconData actionSuperseded = FluentIcons.arrow_sync_circle_24_regular;
+
+  /// A reminder for one action (not a message snooze).
+  static const IconData actionReminder = FluentIcons.alert_24_regular;
+
+  /// The passage of the message an action comes from.
+  static const IconData actionQuote = FluentIcons.text_quote_24_regular;
+  static const IconData actionHistory = FluentIcons.history_24_regular;
+
   // Mailing lists -------------------------------------------------------------
 
   static const IconData mailingList = FluentIcons.people_community_24_regular;

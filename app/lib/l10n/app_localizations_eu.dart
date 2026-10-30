@@ -2674,6 +2674,12 @@ class AppLocalizationsEu extends AppLocalizations {
       'Egiaztatu gabe: Loupe-k fidagarritzat jotzen dituen autoritateen ziurtagiriak bakarrik egiaztatzen dira.';
 
   @override
+  String get actionsNeedsMyAction => 'Nire ekintza behar du';
+
+  @override
+  String get actionsWaitingOnOthers => 'Besteen zain';
+
+  @override
   String get settingsLanguage => 'Hizkuntza';
 
   @override

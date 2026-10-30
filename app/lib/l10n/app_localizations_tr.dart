@@ -2648,6 +2648,12 @@ class AppLocalizationsTr extends AppLocalizations {
       'Denetlenmedi: yalnızca Loupe’un güvendiği bir yetkilinin sertifikaları denetlenir.';
 
   @override
+  String get actionsNeedsMyAction => 'Yapmam gerekenler';
+
+  @override
+  String get actionsWaitingOnOthers => 'Başkalarından beklenenler';
+
+  @override
   String get settingsLanguage => 'Dil';
 
   @override

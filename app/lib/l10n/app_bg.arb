@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Сертифициращият орган отговори с {status}.",
   "smimeAuthorityAnswerTooLarge": "Отговорът на сертифициращия орган е твърде голям.",
   "smimeRevocationNotChecked": "Не е проверено: проверяват се само сертификати от органи, на които Loupe има доверие.",
+  "actionsNeedsMyAction": "Изисква действие от мен",
+  "actionsWaitingOnOthers": "Очаквам от други",
   "settingsLanguage": "Език",
   "settingsLanguageSystem": "Като на телефона",
   "settingsLanguageFooter": "Loupe използва езика на телефона ви, когато го поддържа, а иначе – английски. Езикът, който изберете тук, е само за Loupe, включително известията.",

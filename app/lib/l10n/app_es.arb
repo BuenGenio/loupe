@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "La autoridad de certificación ha respondido {status}.",
   "smimeAuthorityAnswerTooLarge": "La respuesta de la autoridad de certificación es demasiado grande.",
   "smimeRevocationNotChecked": "No comprobado: solo se comprueban los certificados de autoridades en las que Loupe confía.",
+  "actionsNeedsMyAction": "Requiere mi acción",
+  "actionsWaitingOnOthers": "Esperando a otros",
   "settingsLanguage": "Idioma",
   "settingsLanguageSystem": "El mismo que el teléfono",
   "settingsLanguageFooter": "Loupe usa el idioma de tu teléfono si lo tiene, y el inglés si no. El idioma que elijas aquí es solo para Loupe, notificaciones incluidas.",

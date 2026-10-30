@@ -920,6 +920,7 @@ final class MailStore {
                 "AND $m.role NOT IN ($_virtualExcludedRoles, 'sent', 'drafts') AND NOT $snoozeFolder",
           VirtualMailbox.allDrafts => "$m.role = 'drafts'",
           VirtualMailbox.allSent => "$m.role = 'sent'",
+          VirtualMailbox.needsMyAction || VirtualMailbox.waitingOnOthers => '0',
         };
     }
   }

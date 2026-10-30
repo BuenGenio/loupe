@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Autoritatea de certificare a răspuns {status}.",
   "smimeAuthorityAnswerTooLarge": "Răspunsul autorității de certificare este prea mare.",
   "smimeRevocationNotChecked": "Neverificat: sunt verificate doar certificatele de la autorități în care Loupe are încredere.",
+  "actionsNeedsMyAction": "Necesită acțiunea mea",
+  "actionsWaitingOnOthers": "În așteptarea altora",
   "settingsLanguage": "Limbă",
   "settingsLanguageSystem": "La fel ca telefonul",
   "settingsLanguageFooter": "Loupe folosește limba telefonului când o are, iar engleza când nu o are. Limba pe care o alegi aici se aplică doar pentru Loupe, inclusiv pentru notificări.",

@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Certifikacijsko tijelo je odgovorilo kodom {status}.",
   "smimeAuthorityAnswerTooLarge": "Odgovor certifikacijskog tijela je prevelik.",
   "smimeRevocationNotChecked": "Nije provjereno: provjeravaju se samo certifikati koje izdaju certifikacijska tijela kojima Loupe vjeruje.",
+  "actionsNeedsMyAction": "Potrebna moja akcija",
+  "actionsWaitingOnOthers": "Čekam druge",
   "settingsLanguage": "Jezik",
   "settingsLanguageSystem": "Kao na telefonu",
   "settingsLanguageFooter": "Loupe koristi jezik telefona kada ga ima, a engleski kada ga nema. Jezik koji ovdje odaberete važi samo za Loupe, uključujući obavještenja.",

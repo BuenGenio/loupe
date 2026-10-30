@@ -2801,6 +2801,12 @@ class AppLocalizationsGa extends AppLocalizations {
       'Gan seiceáil: ní sheiceáiltear ach teastais ó údarás a bhfuil muinín ag Loupe as.';
 
   @override
+  String get actionsNeedsMyAction => 'Gníomh de dhíth uaim';
+
+  @override
+  String get actionsWaitingOnOthers => 'Ag fanacht ar dhaoine eile';
+
+  @override
   String get settingsLanguage => 'Teanga';
 
   @override

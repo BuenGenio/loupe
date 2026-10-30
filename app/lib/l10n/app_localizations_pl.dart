@@ -2726,6 +2726,12 @@ class AppLocalizationsPl extends AppLocalizations {
       'Nie sprawdzono: sprawdzane są tylko certyfikaty od urzędów, którym ufa Loupe.';
 
   @override
+  String get actionsNeedsMyAction => 'Wymaga mojego działania';
+
+  @override
+  String get actionsWaitingOnOthers => 'Czekam na innych';
+
+  @override
   String get settingsLanguage => 'Język';
 
   @override

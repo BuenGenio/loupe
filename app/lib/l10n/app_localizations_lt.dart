@@ -2718,6 +2718,12 @@ class AppLocalizationsLt extends AppLocalizations {
   String get smimeRevocationNotChecked => 'Netikrinta: tikrinami tik sertifikatai iš įstaigų, kuriomis Loupe pasitiki.';
 
   @override
+  String get actionsNeedsMyAction => 'Reikia mano veiksmo';
+
+  @override
+  String get actionsWaitingOnOthers => 'Laukiu kitų';
+
+  @override
   String get settingsLanguage => 'Kalba';
 
   @override

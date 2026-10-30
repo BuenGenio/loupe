@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Varmenteen myöntäjä vastasi koodilla {status}.",
   "smimeAuthorityAnswerTooLarge": "Varmenteen myöntäjän vastaus on liian suuri.",
   "smimeRevocationNotChecked": "Ei tarkistettu: vain niiden myöntäjien varmenteet tarkistetaan, joihin Loupe luottaa.",
+  "actionsNeedsMyAction": "Vaatii toimiani",
+  "actionsWaitingOnOthers": "Odottaa muita",
   "settingsLanguage": "Kieli",
   "settingsLanguageSystem": "Sama kuin puhelimessa",
   "settingsLanguageFooter": "Loupe käyttää puhelimesi kieltä, jos se on saatavilla, ja muuten englantia. Tässä valitsemasi kieli koskee vain Loupea, ilmoitukset mukaan lukien.",

@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "De certificeringsinstantie antwoordde met {status}.",
   "smimeAuthorityAnswerTooLarge": "Het antwoord van de certificeringsinstantie is te groot.",
   "smimeRevocationNotChecked": "Niet gecontroleerd: alleen certificaten van een instantie die Loupe vertrouwt, worden gecontroleerd.",
+  "actionsNeedsMyAction": "Actie van mij nodig",
+  "actionsWaitingOnOthers": "Wachten op anderen",
   "settingsLanguage": "Taal",
   "settingsLanguageSystem": "Zelfde als telefoon",
   "settingsLanguageFooter": "Loupe gebruikt de taal van je telefoon als het die heeft, en anders Engels. De taal die je hier kiest, geldt alleen voor Loupe, meldingen inbegrepen.",

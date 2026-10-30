@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "A hitelesítésszolgáltató válasza: {status}.",
   "smimeAuthorityAnswerTooLarge": "A hitelesítésszolgáltató válasza túl nagy.",
   "smimeRevocationNotChecked": "Nincs ellenőrizve: csak a Loupe által megbízhatónak tartott szolgáltatóktól származó tanúsítványok ellenőrzése történik meg.",
+  "actionsNeedsMyAction": "Teendőim",
+  "actionsWaitingOnOthers": "Másokra várok",
   "settingsLanguage": "Nyelv",
   "settingsLanguageSystem": "A telefonnal azonos",
   "settingsLanguageFooter": "A Loupe a telefonod nyelvét használja, ha elérhető, egyébként az angolt. Az itt kiválasztott nyelv csak a Loupe-ra vonatkozik, az értesítéseket is beleértve.",

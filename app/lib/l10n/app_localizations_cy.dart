@@ -2824,6 +2824,12 @@ class AppLocalizationsCy extends AppLocalizations {
       'Heb ei gwirio: dim ond tystysgrifau gan awdurdod mae Loupe yn ymddiried ynddo sy’n cael eu gwirio.';
 
   @override
+  String get actionsNeedsMyAction => 'Angen i mi weithredu';
+
+  @override
+  String get actionsWaitingOnOthers => 'Aros am eraill';
+
+  @override
   String get settingsLanguage => 'Iaith';
 
   @override

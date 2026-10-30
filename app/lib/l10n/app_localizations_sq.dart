@@ -2667,6 +2667,12 @@ class AppLocalizationsSq extends AppLocalizations {
       'S’u kontrollua: kontrollohen vetëm certifikatat nga autoritete që Loupe u beson.';
 
   @override
+  String get actionsNeedsMyAction => 'Kërkon veprimin tim';
+
+  @override
+  String get actionsWaitingOnOthers => 'Në pritje të të tjerëve';
+
+  @override
   String get settingsLanguage => 'Gjuha';
 
   @override

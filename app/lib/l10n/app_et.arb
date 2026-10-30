@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Sertifitseerimisasutus vastas koodiga {status}.",
   "smimeAuthorityAnswerTooLarge": "Sertifitseerimisasutuse vastus on liiga suur.",
   "smimeRevocationNotChecked": "Pole kontrollitud: kontrollitakse ainult nende asutuste sertifikaate, mida Loupe usaldab.",
+  "actionsNeedsMyAction": "Vajab minu tegevust",
+  "actionsWaitingOnOthers": "Ootan teisi",
   "settingsLanguage": "Keel",
   "settingsLanguageSystem": "Sama mis telefonis",
   "settingsLanguageFooter": "Loupe kasutab sinu telefoni keelt, kui see on saadaval, ja muidu inglise keelt. Siin valitud keel kehtib ainult Loupe’is, ka teavitustes.",

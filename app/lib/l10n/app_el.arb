@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Η αρχή πιστοποίησης απάντησε με {status}.",
   "smimeAuthorityAnswerTooLarge": "Η απάντηση της αρχής πιστοποίησης είναι πολύ μεγάλη.",
   "smimeRevocationNotChecked": "Δεν ελέγχθηκε: ελέγχονται μόνο πιστοποιητικά από αρχές που εμπιστεύεται το Loupe.",
+  "actionsNeedsMyAction": "Χρειάζεται ενέργειά μου",
+  "actionsWaitingOnOthers": "Αναμονή για άλλους",
   "settingsLanguage": "Γλώσσα",
   "settingsLanguageSystem": "Ίδια με το τηλέφωνο",
   "settingsLanguageFooter": "Το Loupe χρησιμοποιεί τη γλώσσα του τηλεφώνου σας όταν τη διαθέτει, αλλιώς τα αγγλικά. Η γλώσσα που επιλέγετε εδώ ισχύει μόνο για το Loupe, μαζί με τις ειδοποιήσεις.",

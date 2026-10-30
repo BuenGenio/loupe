@@ -2661,6 +2661,12 @@ class AppLocalizationsEt extends AppLocalizations {
       'Pole kontrollitud: kontrollitakse ainult nende asutuste sertifikaate, mida Loupe usaldab.';
 
   @override
+  String get actionsNeedsMyAction => 'Vajab minu tegevust';
+
+  @override
+  String get actionsWaitingOnOthers => 'Ootan teisi';
+
+  @override
   String get settingsLanguage => 'Keel';
 
   @override

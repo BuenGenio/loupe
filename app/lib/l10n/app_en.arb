@@ -1479,6 +1479,13 @@
   "smimeRevocationNotChecked": "Not checked: only certificates from an authority Loupe trusts are checked.",
   "@smimeRevocationNotChecked": {"description": "Why revocation wasn’t checked."},
 
+  "@@x-section-actions": "Needs My Action and Waiting on Others: action records, folders, suggestions",
+
+  "actionsNeedsMyAction": "Needs My Action",
+  "@actionsNeedsMyAction": {"description": "Mailbox (a virtual folder) of the conversations with something the user has to do: requests from others the user tracks as actions."},
+  "actionsWaitingOnOthers": "Waiting on Others",
+  "@actionsWaitingOnOthers": {"description": "Mailbox (a virtual folder) of the conversations where the user waits for someone else: their promises, and what the user sent and waits to see acknowledged."},
+
   "@@x-section-settings": "Settings, rules, subscriptions",
 
   "settingsLanguage": "Language",

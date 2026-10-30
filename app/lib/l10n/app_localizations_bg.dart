@@ -2649,6 +2649,12 @@ class AppLocalizationsBg extends AppLocalizations {
       'Не е проверено: проверяват се само сертификати от органи, на които Loupe има доверие.';
 
   @override
+  String get actionsNeedsMyAction => 'Изисква действие от мен';
+
+  @override
+  String get actionsWaitingOnOthers => 'Очаквам от други';
+
+  @override
   String get settingsLanguage => 'Език';
 
   @override

@@ -513,6 +513,7 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
         VirtualMailbox.vip => _isVip(s) && _isRegular(box),
         VirtualMailbox.allDrafts => box.role == MailboxRole.drafts,
         VirtualMailbox.allSent => box.role == MailboxRole.sent,
+        VirtualMailbox.needsMyAction || VirtualMailbox.waitingOnOthers => false,
       },
     };
   }

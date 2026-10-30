@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Autoriteti i certifikatave u përgjigj me {status}.",
   "smimeAuthorityAnswerTooLarge": "Përgjigjja e autoritetit të certifikatave është shumë e madhe.",
   "smimeRevocationNotChecked": "S’u kontrollua: kontrollohen vetëm certifikatat nga autoritete që Loupe u beson.",
+  "actionsNeedsMyAction": "Kërkon veprimin tim",
+  "actionsWaitingOnOthers": "Në pritje të të tjerëve",
   "settingsLanguage": "Gjuha",
   "settingsLanguageSystem": "Si telefoni",
   "settingsLanguageFooter": "Loupe përdor gjuhën e telefonit tuaj kur e ka, ndryshe anglishten. Gjuha që zgjidhni këtu vlen vetëm për Loupe, përfshirë njoftimet.",

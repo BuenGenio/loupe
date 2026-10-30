@@ -2785,6 +2785,12 @@ class AppLocalizationsMt extends AppLocalizations {
       'Mhux iċċekkjat: jiġu ċċekkjati biss ċertifikati minn awtorità li Loupe tafda.';
 
   @override
+  String get actionsNeedsMyAction => 'Jeħtieġ azzjoni minni';
+
+  @override
+  String get actionsWaitingOnOthers => 'Qed nistenna lil ħaddieħor';
+
+  @override
   String get settingsLanguage => 'Lingwa';
 
   @override

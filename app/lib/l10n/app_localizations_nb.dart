@@ -2648,6 +2648,12 @@ class AppLocalizationsNb extends AppLocalizations {
       'Ikke sjekket: bare sertifikater fra en utsteder Loupe stoler på, blir sjekket.';
 
   @override
+  String get actionsNeedsMyAction => 'Krever handling fra meg';
+
+  @override
+  String get actionsWaitingOnOthers => 'Venter på andre';
+
+  @override
   String get settingsLanguage => 'Språk';
 
   @override

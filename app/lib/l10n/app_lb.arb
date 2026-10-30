@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "D’Zertifizéierungsstell huet mat {status} geäntwert.",
   "smimeAuthorityAnswerTooLarge": "D’Äntwert vun der Zertifizéierungsstell ass ze grouss.",
   "smimeRevocationNotChecked": "Net iwwerpréift: Nëmmen Zertifikater vu Stellen, deene Loupe vertraut, ginn iwwerpréift.",
+  "actionsNeedsMyAction": "Brauch meng Aktioun",
+  "actionsWaitingOnOthers": "Waart op anerer",
   "settingsLanguage": "Sprooch",
   "settingsLanguageSystem": "Wéi den Handy",
   "settingsLanguageFooter": "Loupe benotzt d’Sprooch vun Ärem Handy, wann et se huet, a soss Englesch. D’Sprooch, déi Dir hei wielt, gëllt nëmme fir Loupe, Notifikatiounen inklusiv.",

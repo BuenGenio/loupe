@@ -2722,6 +2722,12 @@ class AppLocalizationsSr extends AppLocalizations {
       'Није проверено: проверавају се само сертификати које издају сертификациона тела којима Loupe верује.';
 
   @override
+  String get actionsNeedsMyAction => 'Потребна моја радња';
+
+  @override
+  String get actionsWaitingOnOthers => 'Чекам друге';
+
+  @override
   String get settingsLanguage => 'Језик';
 
   @override

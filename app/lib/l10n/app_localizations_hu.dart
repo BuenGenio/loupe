@@ -2671,6 +2671,12 @@ class AppLocalizationsHu extends AppLocalizations {
       'Nincs ellenőrizve: csak a Loupe által megbízhatónak tartott szolgáltatóktól származó tanúsítványok ellenőrzése történik meg.';
 
   @override
+  String get actionsNeedsMyAction => 'Teendőim';
+
+  @override
+  String get actionsWaitingOnOthers => 'Másokra várok';
+
+  @override
   String get settingsLanguage => 'Nyelv';
 
   @override

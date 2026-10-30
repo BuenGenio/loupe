@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Certifikační autorita odpověděla kódem {status}.",
   "smimeAuthorityAnswerTooLarge": "Odpověď certifikační autority je příliš velká.",
   "smimeRevocationNotChecked": "Nezkontrolováno: kontrolují se jen certifikáty od autorit, kterým Loupe důvěřuje.",
+  "actionsNeedsMyAction": "Vyžaduje mou akci",
+  "actionsWaitingOnOthers": "Čekám na ostatní",
   "settingsLanguage": "Jazyk",
   "settingsLanguageSystem": "Stejný jako v telefonu",
   "settingsLanguageFooter": "Loupe používá jazyk telefonu, pokud ho podporuje, a jinak angličtinu. Jazyk, který zde vyberete, platí jen pro Loupe, včetně oznámení.",

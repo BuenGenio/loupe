@@ -2632,6 +2632,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get smimeRevocationNotChecked => 'Not checked: only certificates from an authority Loupe trusts are checked.';
 
   @override
+  String get actionsNeedsMyAction => 'Needs My Action';
+
+  @override
+  String get actionsWaitingOnOthers => 'Waiting on Others';
+
+  @override
   String get settingsLanguage => 'Language';
 
   @override

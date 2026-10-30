@@ -2677,6 +2677,12 @@ class AppLocalizationsGl extends AppLocalizations {
       'Non comprobado: só se comproban os certificados de autoridades nas que Loupe confía.';
 
   @override
+  String get actionsNeedsMyAction => 'Require a miña acción';
+
+  @override
+  String get actionsWaitingOnOthers => 'Á espera doutros';
+
+  @override
   String get settingsLanguage => 'Idioma';
 
   @override

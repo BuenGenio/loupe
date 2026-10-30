@@ -2667,6 +2667,12 @@ class AppLocalizationsIs extends AppLocalizations {
       'Ekki athugað: aðeins skilríki frá vottunarstöð sem Loupe treystir eru athuguð.';
 
   @override
+  String get actionsNeedsMyAction => 'Þarfnast aðgerðar minnar';
+
+  @override
+  String get actionsWaitingOnOthers => 'Bíð eftir öðrum';
+
+  @override
   String get settingsLanguage => 'Tungumál';
 
   @override

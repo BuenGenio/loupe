@@ -2720,6 +2720,12 @@ class AppLocalizationsCs extends AppLocalizations {
       'Nezkontrolováno: kontrolují se jen certifikáty od autorit, kterým Loupe důvěřuje.';
 
   @override
+  String get actionsNeedsMyAction => 'Vyžaduje mou akci';
+
+  @override
+  String get actionsWaitingOnOthers => 'Čekám na ostatní';
+
+  @override
   String get settingsLanguage => 'Jazyk';
 
   @override

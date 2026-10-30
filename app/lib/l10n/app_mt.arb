@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "L-awtorità taċ-ċertifikazzjoni wieġbet {status}.",
   "smimeAuthorityAnswerTooLarge": "It-tweġiba tal-awtorità taċ-ċertifikazzjoni hija kbira wisq.",
   "smimeRevocationNotChecked": "Mhux iċċekkjat: jiġu ċċekkjati biss ċertifikati minn awtorità li Loupe tafda.",
+  "actionsNeedsMyAction": "Jeħtieġ azzjoni minni",
+  "actionsWaitingOnOthers": "Qed nistenna lil ħaddieħor",
   "settingsLanguage": "Lingwa",
   "settingsLanguageSystem": "L-istess bħall-mowbajl",
   "settingsLanguageFooter": "Loupe tuża l-lingwa tal-mowbajl tiegħek meta jkollha, u l-Ingliż meta ma jkollhiex. Il-lingwa li tagħżel hawn hija għal Loupe biss, inklużi n-notifiki.",

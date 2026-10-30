@@ -2726,6 +2726,12 @@ class AppLocalizationsRo extends AppLocalizations {
       'Neverificat: sunt verificate doar certificatele de la autorități în care Loupe are încredere.';
 
   @override
+  String get actionsNeedsMyAction => 'Necesită acțiunea mea';
+
+  @override
+  String get actionsWaitingOnOthers => 'În așteptarea altora';
+
+  @override
   String get settingsLanguage => 'Limbă';
 
   @override

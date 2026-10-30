@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Sertifikavimo įstaiga atsakė {status}.",
   "smimeAuthorityAnswerTooLarge": "Sertifikavimo įstaigos atsakymas per didelis.",
   "smimeRevocationNotChecked": "Netikrinta: tikrinami tik sertifikatai iš įstaigų, kuriomis Loupe pasitiki.",
+  "actionsNeedsMyAction": "Reikia mano veiksmo",
+  "actionsWaitingOnOthers": "Laukiu kitų",
   "settingsLanguage": "Kalba",
   "settingsLanguageSystem": "Kaip telefone",
   "settingsLanguageFooter": "Loupe naudoja jūsų telefono kalbą, jei ją turi, o jei ne – anglų. Čia pasirinkta kalba taikoma tik Loupe, įskaitant pranešimus.",

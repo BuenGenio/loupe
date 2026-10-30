@@ -2642,6 +2642,12 @@ class AppLocalizationsSv extends AppLocalizations {
       'Inte kontrollerat: bara certifikat från en utfärdare som Loupe litar på kontrolleras.';
 
   @override
+  String get actionsNeedsMyAction => 'Kräver min åtgärd';
+
+  @override
+  String get actionsWaitingOnOthers => 'Väntar på andra';
+
+  @override
   String get settingsLanguage => 'Språk';
 
   @override

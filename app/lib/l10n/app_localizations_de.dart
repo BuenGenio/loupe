@@ -2699,6 +2699,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Nicht geprüft: Nur Zertifikate von Stellen, denen Loupe vertraut, werden geprüft.';
 
   @override
+  String get actionsNeedsMyAction => 'Wartet auf mich';
+
+  @override
+  String get actionsWaitingOnOthers => 'Wartet auf andere';
+
+  @override
   String get settingsLanguage => 'Sprache';
 
   @override

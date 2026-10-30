@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Overitelj potrdil je odgovoril s kodo {status}.",
   "smimeAuthorityAnswerTooLarge": "Odgovor overitelja potrdil je prevelik.",
   "smimeRevocationNotChecked": "Ni preverjeno: preverjajo se le potrdila overiteljev, ki jim Loupe zaupa.",
+  "actionsNeedsMyAction": "Potrebno moje ukrepanje",
+  "actionsWaitingOnOthers": "Čakam na druge",
   "settingsLanguage": "Jezik",
   "settingsLanguageSystem": "Enako kot v telefonu",
   "settingsLanguageFooter": "Loupe uporablja jezik vašega telefona, če ga ima, sicer pa angleščino. Jezik, ki ga izberete tukaj, velja samo za Loupe, vključno z obvestili.",

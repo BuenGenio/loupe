@@ -1065,6 +1065,9 @@ final class LiveMailRepository
             final vips = await store.watchVipAddresses().first;
             bool isVip(EmailSummary e) => e.from.any((a) => vips.contains(a.email.toLowerCase()));
             return [for (final s in _syncers.values) _SearchTarget(s, request.expr, filter: isVip)];
+          // Actions are kept on this device: there is nothing for a server to search.
+          case VirtualMailbox.needsMyAction || VirtualMailbox.waitingOnOthers:
+            return const [];
         }
     }
   }

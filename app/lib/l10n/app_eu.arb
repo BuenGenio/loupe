@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Ziurtagiri-autoritateak {status} erantzun du.",
   "smimeAuthorityAnswerTooLarge": "Ziurtagiri-autoritatearen erantzuna handiegia da.",
   "smimeRevocationNotChecked": "Egiaztatu gabe: Loupe-k fidagarritzat jotzen dituen autoritateen ziurtagiriak bakarrik egiaztatzen dira.",
+  "actionsNeedsMyAction": "Nire ekintza behar du",
+  "actionsWaitingOnOthers": "Besteen zain",
   "settingsLanguage": "Hizkuntza",
   "settingsLanguageSystem": "Telefonoaren bera",
   "settingsLanguageFooter": "Loupe-k zure telefonoaren hizkuntza erabiltzen du baldin badauka, eta ingelesa bestela. Hemen aukeratzen duzun hizkuntza Loupe-rentzat bakarrik da, jakinarazpenak barne.",

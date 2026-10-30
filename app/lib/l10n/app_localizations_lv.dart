@@ -2724,6 +2724,12 @@ class AppLocalizationsLv extends AppLocalizations {
       'Nav pārbaudīts: tiek pārbaudīti tikai sertifikāti no iestādēm, kurām Loupe uzticas.';
 
   @override
+  String get actionsNeedsMyAction => 'Nepieciešama mana rīcība';
+
+  @override
+  String get actionsWaitingOnOthers => 'Gaidu citus';
+
+  @override
   String get settingsLanguage => 'Valoda';
 
   @override

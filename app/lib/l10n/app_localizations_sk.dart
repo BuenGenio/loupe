@@ -2710,6 +2710,12 @@ class AppLocalizationsSk extends AppLocalizations {
       'Nekontrolované: kontrolujú sa len certifikáty od autorít, ktorým Loupe dôveruje.';
 
   @override
+  String get actionsNeedsMyAction => 'Vyžaduje moju akciu';
+
+  @override
+  String get actionsWaitingOnOthers => 'Čakám na ostatných';
+
+  @override
   String get settingsLanguage => 'Jazyk';
 
   @override

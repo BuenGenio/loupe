@@ -2735,6 +2735,12 @@ class AppLocalizationsFr extends AppLocalizations {
       'Non vérifié : seuls les certificats d’une autorité approuvée par Loupe sont vérifiés.';
 
   @override
+  String get actionsNeedsMyAction => 'Requiert mon action';
+
+  @override
+  String get actionsWaitingOnOthers => 'En attente des autres';
+
+  @override
   String get settingsLanguage => 'Langue';
 
   @override

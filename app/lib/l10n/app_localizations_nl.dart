@@ -2675,6 +2675,12 @@ class AppLocalizationsNl extends AppLocalizations {
       'Niet gecontroleerd: alleen certificaten van een instantie die Loupe vertrouwt, worden gecontroleerd.';
 
   @override
+  String get actionsNeedsMyAction => 'Actie van mij nodig';
+
+  @override
+  String get actionsWaitingOnOthers => 'Wachten op anderen';
+
+  @override
   String get settingsLanguage => 'Taal';
 
   @override

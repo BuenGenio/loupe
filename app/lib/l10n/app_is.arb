@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Vottunarstöðin svaraði með {status}.",
   "smimeAuthorityAnswerTooLarge": "Svar vottunarstöðvarinnar er of stórt.",
   "smimeRevocationNotChecked": "Ekki athugað: aðeins skilríki frá vottunarstöð sem Loupe treystir eru athuguð.",
+  "actionsNeedsMyAction": "Þarfnast aðgerðar minnar",
+  "actionsWaitingOnOthers": "Bíð eftir öðrum",
   "settingsLanguage": "Tungumál",
   "settingsLanguageSystem": "Sama og í símanum",
   "settingsLanguageFooter": "Loupe notar tungumál símans ef það er í boði, annars ensku. Tungumálið sem þú velur hér gildir aðeins um Loupe, tilkynningar meðtaldar.",

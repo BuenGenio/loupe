@@ -2726,6 +2726,12 @@ class AppLocalizationsHr extends AppLocalizations {
       'Nije provjereno: provjeravaju se samo certifikati tijela kojima Loupe vjeruje.';
 
   @override
+  String get actionsNeedsMyAction => 'Potrebna moja radnja';
+
+  @override
+  String get actionsWaitingOnOthers => 'Čekam druge';
+
+  @override
   String get settingsLanguage => 'Jezik';
 
   @override

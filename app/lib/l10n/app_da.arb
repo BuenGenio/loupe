@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Certifikatudstederen svarede {status}.",
   "smimeAuthorityAnswerTooLarge": "Certifikatudstederens svar er for stort.",
   "smimeRevocationNotChecked": "Ikke tjekket: kun certifikater fra en udsteder, som Loupe stoler på, bliver tjekket.",
+  "actionsNeedsMyAction": "Kræver min handling",
+  "actionsWaitingOnOthers": "Venter på andre",
   "settingsLanguage": "Sprog",
   "settingsLanguageSystem": "Samme som telefonen",
   "settingsLanguageFooter": "Loupe bruger telefonens sprog, når appen har det, og ellers engelsk. Det sprog, du vælger her, gælder kun for Loupe, også notifikationer.",

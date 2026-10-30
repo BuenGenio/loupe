@@ -2673,6 +2673,12 @@ class AppLocalizationsEl extends AppLocalizations {
       'Δεν ελέγχθηκε: ελέγχονται μόνο πιστοποιητικά από αρχές που εμπιστεύεται το Loupe.';
 
   @override
+  String get actionsNeedsMyAction => 'Χρειάζεται ενέργειά μου';
+
+  @override
+  String get actionsWaitingOnOthers => 'Αναμονή για άλλους';
+
+  @override
   String get settingsLanguage => 'Γλώσσα';
 
   @override

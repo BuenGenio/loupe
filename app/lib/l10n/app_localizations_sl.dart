@@ -2754,6 +2754,12 @@ class AppLocalizationsSl extends AppLocalizations {
   String get smimeRevocationNotChecked => 'Ni preverjeno: preverjajo se le potrdila overiteljev, ki jim Loupe zaupa.';
 
   @override
+  String get actionsNeedsMyAction => 'Potrebno moje ukrepanje';
+
+  @override
+  String get actionsWaitingOnOthers => 'Čakam na druge';
+
+  @override
   String get settingsLanguage => 'Jezik';
 
   @override

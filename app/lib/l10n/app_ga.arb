@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "D’fhreagair an t-údarás deimhnithe {status}.",
   "smimeAuthorityAnswerTooLarge": "Tá freagra an údaráis dheimhnithe rómhór.",
   "smimeRevocationNotChecked": "Gan seiceáil: ní sheiceáiltear ach teastais ó údarás a bhfuil muinín ag Loupe as.",
+  "actionsNeedsMyAction": "Gníomh de dhíth uaim",
+  "actionsWaitingOnOthers": "Ag fanacht ar dhaoine eile",
   "settingsLanguage": "Teanga",
   "settingsLanguageSystem": "Mar an gcéanna leis an bhfón",
   "settingsLanguageFooter": "Úsáideann Loupe teanga d’fhóin nuair atá sí aige, agus Béarla nuair nach bhfuil. Is do Loupe amháin an teanga a roghnaíonn tú anseo, fógraí san áireamh.",

@@ -2678,6 +2678,12 @@ class AppLocalizationsEs extends AppLocalizations {
       'No comprobado: solo se comprueban los certificados de autoridades en las que Loupe confía.';
 
   @override
+  String get actionsNeedsMyAction => 'Requiere mi acción';
+
+  @override
+  String get actionsWaitingOnOthers => 'Esperando a otros';
+
+  @override
   String get settingsLanguage => 'Idioma';
 
   @override

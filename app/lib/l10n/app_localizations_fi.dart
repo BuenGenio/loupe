@@ -2661,6 +2661,12 @@ class AppLocalizationsFi extends AppLocalizations {
       'Ei tarkistettu: vain niiden myöntäjien varmenteet tarkistetaan, joihin Loupe luottaa.';
 
   @override
+  String get actionsNeedsMyAction => 'Vaatii toimiani';
+
+  @override
+  String get actionsWaitingOnOthers => 'Odottaa muita';
+
+  @override
   String get settingsLanguage => 'Kieli';
 
   @override

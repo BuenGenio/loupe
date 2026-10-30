@@ -724,6 +724,8 @@
   "smimeAuthorityStatus": "Сертификационо тело је одговорило кодом {status}.",
   "smimeAuthorityAnswerTooLarge": "Одговор сертификационог тела је превелик.",
   "smimeRevocationNotChecked": "Није проверено: проверавају се само сертификати које издају сертификациона тела којима Loupe верује.",
+  "actionsNeedsMyAction": "Потребна моја радња",
+  "actionsWaitingOnOthers": "Чекам друге",
   "settingsLanguage": "Језик",
   "settingsLanguageSystem": "Као на телефону",
   "settingsLanguageFooter": "Loupe користи језик телефона када га има, а енглески када га нема. Језик који овде изаберете важи само за Loupe, укључујући обавештења.",
