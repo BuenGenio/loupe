@@ -6575,6 +6575,209 @@ class AppLocalizationsRo extends AppLocalizations {
   String get accountImportFailed => 'Contul nu a putut fi adăugat. Încearcă din nou sau adaugă-l manual.';
 
   @override
+  String get composeReplyCheckTitle => 'Verificarea răspunsului';
+
+  @override
+  String get composeReplyCheckChecking => 'Se citește ce ți-au cerut…';
+
+  @override
+  String get composeReplyCheckFailed => 'Nu s-a putut citi ce ți-au cerut.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached din $total atașate',
+      few: '$attached din $total atașate',
+      one: '$attached din $total atașat',
+      zero: 'Niciunul din $total nu e atașat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pot fi pentru perioada greșită',
+      few: '$count pot fi pentru perioada greșită',
+      one: '$count poate fi pentru perioada greșită',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nu au putut fi citite',
+      few: '$count nu au putut fi citite',
+      one: '$count nu a putut fi citit',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count de făcut în afara e-mailului',
+      few: '$count de făcut în afara e-mailului',
+      one: '$count de făcut în afara e-mailului',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count în textul tău',
+      few: '$count în textul tău',
+      one: '$count în textul tău',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count fără răspuns',
+      few: '$count fără răspuns',
+      one: '$count fără răspuns',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Atașat';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Verifică perioada';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Neatașat';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Nu apare în răspuns';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'În afara e-mailului';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'În textul tău';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Nu se știe';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Fișierul „$file” a fost recunoscut doar după nume.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Fișierul „$file” a fost recunoscut după conținut.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Verifică dacă este pentru $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Au cerut $asked, dar numele „$file” indică $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Au cerut $asked, dar în fișierul „$file” apare $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Fișierul „$file” nu a putut fi citit, așa că nu se știe dacă este cel potrivit.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Se face în afara e-mailului, nu prin atașarea unui fișier.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return 'Fișierul „$file” este atașat, dar asta nu se face prin e-mail.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Ai scris: „$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Din mesajul lor';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Numele unui fișier nu arată ce conține. Deschide fișierele ca să fii sigur.';
+
+  @override
+  String get composeReplyCheckPartial => 'Mesajul lor este lung; s-a citit doar începutul.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Cererile au fost găsite de demonstrația încorporată, nu de un model.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Cererile au fost găsite de $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Nu verifica asta';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count de cereri neverificate',
+      few: '$count cereri neverificate',
+      one: '$count cerere neverificată',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Verifică toate';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Afișează cererile';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Ascunde cererile';
+
+  @override
+  String get composeReplyCheckHide => 'Ascunde verificarea răspunsului';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Textul tău menționează un atașament, dar nu e atașat nimic.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Ascunde mementoul';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Documente demo';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Alege un fișier…';
+
+  @override
   String get composeNewMessageTitle => 'Mesaj nou';
 
   @override

@@ -6404,6 +6404,203 @@ class AppLocalizationsSq extends AppLocalizations {
   String get accountImportFailed => 'Llogaria nuk u shtua dot. Provoni sërish, ose shtojeni dorazi.';
 
   @override
+  String get composeReplyCheckTitle => 'Kontrolli i përgjigjes';
+
+  @override
+  String get composeReplyCheckChecking => 'Po lexohet çfarë kërkuan…';
+
+  @override
+  String get composeReplyCheckFailed => 'Nuk u lexua dot çfarë kërkuan.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached nga $total janë bashkëngjitur',
+      one: '1 nga $total është bashkëngjitur',
+      zero: 'Asnjë nga $total s’është bashkëngjitur',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mund të jenë për periudhën e gabuar',
+      one: '1 mund të jetë për periudhën e gabuar',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nuk u lexuan dot',
+      one: '1 nuk u lexua dot',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count për t’u bërë jashtë email-it',
+      one: '1 për t’u bërë jashtë email-it',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count në tekstin tuaj',
+      one: '1 në tekstin tuaj',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count për t’u përgjigjur',
+      one: '1 për t’u përgjigjur',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Bashkëngjitur';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Kontrolloni periudhën';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Nuk është bashkëngjitur';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Nuk është në përgjigjen tuaj';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Jashtë email-it';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Në tekstin tuaj';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'S’dihet';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '“$file” u përputh vetëm sipas emrit.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '“$file” u përputh sipas përmbajtjes.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Kontrolloni nëse është për $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Kërkuan $asked; emri “$file” thotë $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Kërkuan $asked; “$file” thotë $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return '“$file” nuk u lexua dot, ndaj nuk dihet nëse është skedari i duhur.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Bëhet jashtë email-it, jo duke bashkëngjitur një skedar.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '“$file” është bashkëngjitur, por ky hap nuk bëhet me email.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Shkruat: “$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Nga mesazhi i tyre';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Emri i një skedari nuk tregon çfarë ka brenda. Hapini skedarët për të qenë të sigurt.';
+
+  @override
+  String get composeReplyCheckPartial => 'Mesazhi i tyre është i gjatë; u lexua vetëm fillimi.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Kërkesat u gjetën nga demonstrimi i integruar, jo nga një model.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Kërkesat u gjetën nga $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Mos e kontrollo këtë';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kërkesa të pakontrolluara',
+      one: '1 kërkesë e pakontrolluar',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Kontrollo të gjitha';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Shfaq kërkesat';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Fshih kërkesat';
+
+  @override
+  String get composeReplyCheckHide => 'Fshih kontrollin e përgjigjes';
+
+  @override
+  String get composeReplyCheckNothingAttached =>
+      'Teksti juaj përmend një bashkëngjitje, por s’është bashkëngjitur asgjë.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Fshih kujtesën';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Dokumente demo';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Shfleto skedarët…';
+
+  @override
   String get composeNewMessageTitle => 'Mesazh i ri';
 
   @override

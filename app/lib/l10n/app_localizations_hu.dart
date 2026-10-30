@@ -6457,6 +6457,202 @@ class AppLocalizationsHu extends AppLocalizations {
   String get accountImportFailed => 'A fiókot nem sikerült hozzáadni. Próbáld újra, vagy add hozzá kézzel.';
 
   @override
+  String get composeReplyCheckTitle => 'Válaszellenőrzés';
+
+  @override
+  String get composeReplyCheckChecking => 'Kérések beolvasása…';
+
+  @override
+  String get composeReplyCheckFailed => 'Nem sikerült beolvasni, mit kértek.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$total közül $attached csatolva',
+      one: '$total közül $attached csatolva',
+      zero: '$total közül egy sincs csatolva',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count rossz időszakra vonatkozhat',
+      one: '$count rossz időszakra vonatkozhat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nem olvasható',
+      one: '$count nem olvasható',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count e-mailen kívül intézendő',
+      one: '$count e-mailen kívül intézendő',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count szerepel a szövegedben',
+      one: '$count szerepel a szövegedben',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count válaszra vár',
+      one: '$count válaszra vár',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Csatolva';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Ellenőrizd az időszakot';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Nincs csatolva';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Nincs a válaszodban';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'E-mailen kívül';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'A szövegedben';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Nem állapítható meg';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '„$file” párosítása csak a neve alapján történt.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '„$file” párosítása a tartalma alapján történt.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Ellenőrizd, hogy erre az időszakra vonatkozik-e: $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'A kért időszak: $asked; a fájlnév („$file”) szerint: $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'A kért időszak: $asked; a fájl („$file”) tartalma szerint: $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return '„$file” nem olvasható be, ezért nem tudni, hogy a megfelelő fájl-e.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'E-mailen kívül intézendő, nem fájl csatolásával.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '„$file” csatolva van, de ez nem e-mailben intézhető.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Ezt írtad: „$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Az eredeti üzenetből';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'A fájl nevéből nem derül ki, mi van benne. A biztonság kedvéért nyisd meg a fájlokat.';
+
+  @override
+  String get composeReplyCheckPartial => 'Az üzenet hosszú; csak az eleje lett beolvasva.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'A kéréseket a beépített demó találta meg, nem modell.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'A kéréseket ez találta meg: $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Ezt ne ellenőrizd';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kérés nincs ellenőrizve',
+      one: '$count kérés nincs ellenőrizve',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Összes ellenőrzése';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Kérések megjelenítése';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Kérések elrejtése';
+
+  @override
+  String get composeReplyCheckHide => 'Válaszellenőrzés elrejtése';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'A szöveged mellékletet említ, de nincs semmi csatolva.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Emlékeztető elrejtése';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demó dokumentumok';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Fájlok tallózása…';
+
+  @override
   String get composeNewMessageTitle => 'Új üzenet';
 
   @override

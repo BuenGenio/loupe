@@ -6463,6 +6463,197 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accountImportFailed => 'No se ha podido añadir la cuenta. Vuelve a intentarlo o añádela manualmente.';
 
   @override
+  String get composeReplyCheckTitle => 'Revisión de la respuesta';
+
+  @override
+  String get composeReplyCheckChecking => 'Leyendo lo que te piden…';
+
+  @override
+  String get composeReplyCheckFailed => 'No se ha podido leer lo que te piden.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached de $total adjuntos',
+      one: '1 de $total adjunto',
+      zero: '0 de $total adjuntos',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pueden ser de otro periodo',
+      one: '1 puede ser de otro periodo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count no se han podido leer',
+      one: '1 no se ha podido leer',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count por hacer fuera del correo',
+      one: '1 por hacer fuera del correo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count en tu texto', one: '1 en tu texto');
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count por responder',
+      one: '1 por responder',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Adjunto';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Revisa el periodo';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'No adjunto';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'No está en tu respuesta';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Fuera del correo';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'En tu texto';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'No se sabe';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Coincide con «$file» solo por el nombre.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Coincide con «$file» por su contenido.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Comprueba que sea de $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Te piden $asked; el nombre «$file» indica $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Te piden $asked; «$file» indica $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'No se ha podido leer «$file», así que no se sabe si es el archivo correcto.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Se hace fuera del correo, no con un archivo adjunto.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '«$file» está adjunto, pero esto no se hace por correo.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Has escrito: «$text»';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'De su mensaje';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'El nombre de un archivo no dice lo que contiene. Abre los archivos para asegurarte.';
+
+  @override
+  String get composeReplyCheckPartial => 'Su mensaje es largo; solo se ha leído el principio.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Peticiones encontradas por la demo integrada, no por un modelo.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Peticiones encontradas por $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'No revisar';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count peticiones sin revisar',
+      one: '1 petición sin revisar',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Revisar todas';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Mostrar peticiones';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Ocultar peticiones';
+
+  @override
+  String get composeReplyCheckHide => 'Ocultar la revisión de la respuesta';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Tu texto menciona un adjunto, pero no hay nada adjunto.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Ocultar recordatorio';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Documentos de demostración';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Explorar archivos…';
+
+  @override
   String get composeNewMessageTitle => 'Mensaje nuevo';
 
   @override

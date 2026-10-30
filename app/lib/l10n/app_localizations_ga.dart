@@ -6781,6 +6781,222 @@ class AppLocalizationsGa extends AppLocalizations {
       'Níorbh fhéidir an cuntas a chur leis. Bain triail eile as, nó cuir leis de láimh é.';
 
   @override
+  String get composeReplyCheckTitle => 'Seiceáil an fhreagra';
+
+  @override
+  String get composeReplyCheckChecking => 'Ag léamh a bhfuil iarrtha acu…';
+
+  @override
+  String get composeReplyCheckFailed => 'Níorbh fhéidir a bhfuil iarrtha acu a léamh.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached as $total ceangailte',
+      many: '$attached as $total ceangailte',
+      few: '$attached as $total ceangailte',
+      two: '$attached as $total ceangailte',
+      one: '1 as $total ceangailte',
+      zero: 'Níl aon cheann as $total ceangailte',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count doiciméad don tréimhse mhícheart, b’fhéidir',
+      many: '$count ndoiciméad don tréimhse mhícheart, b’fhéidir',
+      few: '$count dhoiciméad don tréimhse mhícheart, b’fhéidir',
+      two: '$count dhoiciméad don tréimhse mhícheart, b’fhéidir',
+      one: '1 doiciméad don tréimhse mhícheart, b’fhéidir',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count comhad nárbh fhéidir a léamh',
+      many: '$count gcomhad nárbh fhéidir a léamh',
+      few: '$count chomhad nárbh fhéidir a léamh',
+      two: '$count chomhad nárbh fhéidir a léamh',
+      one: '1 chomhad nárbh fhéidir a léamh',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count le déanamh lasmuigh den ríomhphost',
+      many: '$count le déanamh lasmuigh den ríomhphost',
+      few: '$count le déanamh lasmuigh den ríomhphost',
+      two: '$count le déanamh lasmuigh den ríomhphost',
+      one: '1 le déanamh lasmuigh den ríomhphost',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count i do théacs',
+      many: '$count i do théacs',
+      few: '$count i do théacs',
+      two: '$count i do théacs',
+      one: '1 i do théacs',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count le freagairt',
+      many: '$count le freagairt',
+      few: '$count le freagairt',
+      two: '$count le freagairt',
+      one: '1 le freagairt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Ceangailte';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Seiceáil an tréimhse';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Níl sé ceangailte';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Níl sé i d’fhreagra';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Lasmuigh den ríomhphost';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'I do théacs';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Ní féidir a rá';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Meaitseáladh “$file” de réir a ainm amháin.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Meaitseáladh “$file” de réir a bhfuil scríofa ann.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Seiceáil gur le haghaidh $period é.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'D’iarr siad $asked; tá $found san ainm “$file”.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'D’iarr siad $asked; tá $found scríofa sa chomhad “$file”.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Níorbh fhéidir “$file” a léamh, mar sin níl a fhios an é an comhad ceart é.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Déantar é seo lasmuigh den ríomhphost, ní trí chomhad a cheangal.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return 'Tá “$file” ceangailte, ach ní trí ríomhphost a dhéantar é seo.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Scríobh tú: “$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Óna dteachtaireacht';
+
+  @override
+  String get composeReplyCheckByNameNote => 'Ní léiríonn ainm comhaid cad atá ann. Oscail na comhaid le bheith cinnte.';
+
+  @override
+  String get composeReplyCheckPartial => 'Tá a dteachtaireacht fada; níor léadh ach a tús.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Iarratais aimsithe ag an taispeántas ionsuite, ní ag samhail.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Iarratais aimsithe ag $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Ná seiceáil é seo';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count iarratas gan seiceáil',
+      many: '$count n-iarratas gan seiceáil',
+      few: '$count iarratas gan seiceáil',
+      two: '$count iarratas gan seiceáil',
+      one: '1 iarratas gan seiceáil',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Seiceáil gach ceann';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Taispeáin na hiarratais';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Folaigh na hiarratais';
+
+  @override
+  String get composeReplyCheckHide => 'Folaigh seiceáil an fhreagra';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Luann do théacs ceangaltán, ach níl aon rud ceangailte.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Folaigh an meabhrúchán';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Doiciméid taispeántais';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Brabhsáil comhaid…';
+
+  @override
   String get composeNewMessageTitle => 'Teachtaireacht nua';
 
   @override

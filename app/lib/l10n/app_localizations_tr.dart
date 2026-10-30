@@ -6408,6 +6408,202 @@ class AppLocalizationsTr extends AppLocalizations {
   String get accountImportFailed => 'Hesap eklenemedi. Tekrar deneyin ya da elle ekleyin.';
 
   @override
+  String get composeReplyCheckTitle => 'Yanıt kontrolü';
+
+  @override
+  String get composeReplyCheckChecking => 'İstenenler okunuyor…';
+
+  @override
+  String get composeReplyCheckFailed => 'İstenenler okunamadı.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$total belgeden $attached tanesi ekli',
+      one: '$total belgeden 1 tanesi ekli',
+      zero: '$total belgeden hiçbiri ekli değil',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count belge yanlış döneme ait olabilir',
+      one: '1 belge yanlış döneme ait olabilir',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dosya okunamadı',
+      one: '1 dosya okunamadı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count adım e-posta dışında yapılacak',
+      one: '1 adım e-posta dışında yapılacak',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count istek metninizde geçiyor',
+      one: '1 istek metninizde geçiyor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count istek yanıt bekliyor',
+      one: '1 istek yanıt bekliyor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Ekli';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Dönemi kontrol edin';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Ekli değil';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Yanıtınızda yok';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'E-posta dışında';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Metninizde';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Belli değil';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '“$file” yalnızca adına göre eşleştirildi.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '“$file” içeriğine göre eşleştirildi.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Dönemin $period olduğunu kontrol edin.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'İstenen dönem $asked; “$file” dosya adına göre $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'İstenen dönem $asked; “$file” içeriğine göre $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return '“$file” okunamadı; doğru dosya olup olmadığı bilinmiyor.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Dosya ekleyerek değil, e-posta dışında yapılır.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '“$file” ekli, ancak bu adım e-postayla yapılmaz.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Şunu yazdınız: “$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Gelen iletiden';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Dosya adı, dosyanın içinde ne olduğunu göstermez. Emin olmak için dosyaları açın.';
+
+  @override
+  String get composeReplyCheckPartial => 'Gelen ileti uzun; yalnızca baş kısmı okundu.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'İstekleri yerleşik demo buldu, bir model değil.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'İstekleri $provider modeli buldu.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Bunu kontrol etme';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count istek kontrol edilmedi',
+      one: '1 istek kontrol edilmedi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Tümünü kontrol et';
+
+  @override
+  String get composeReplyCheckShowRequests => 'İstekleri göster';
+
+  @override
+  String get composeReplyCheckHideRequests => 'İstekleri gizle';
+
+  @override
+  String get composeReplyCheckHide => 'Yanıt kontrolünü gizle';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Metninizde bir ekten söz ediliyor, ancak ekli bir şey yok.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Hatırlatmayı gizle';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demo belgeleri';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Dosyalara göz at…';
+
+  @override
   String get composeNewMessageTitle => 'Yeni ileti';
 
   @override

@@ -6438,6 +6438,197 @@ class AppLocalizationsEu extends AppLocalizations {
   String get accountImportFailed => 'Ezin izan da kontua gehitu. Saiatu berriro, edo gehitu eskuz.';
 
   @override
+  String get composeReplyCheckTitle => 'Erantzunaren egiaztapena';
+
+  @override
+  String get composeReplyCheckChecking => 'Eskatu dutena irakurtzen…';
+
+  @override
+  String get composeReplyCheckFailed => 'Ezin izan da irakurri zer eskatu duten.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$total dokumentutatik $attached erantsita',
+      one: '$total dokumentutatik 1 erantsita',
+      zero: '$total dokumentutatik bat ere ez dago erantsita',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count aldi okerrekoak izan daitezke',
+      one: '1 aldi okerrekoa izan daiteke',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ezin izan dira irakurri',
+      one: '1 ezin izan da irakurri',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count postatik kanpo egiteko',
+      one: '1 postatik kanpo egiteko',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count zure testuan',
+      one: '1 zure testuan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count erantzuteko', one: '1 erantzuteko');
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Erantsita';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Egiaztatu aldia';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Erantsi gabe';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Ez dago zure erantzunean';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Postatik kanpo';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Zure testuan';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Ezin da jakin';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '«$file» izenaren arabera soilik parekatu da.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '«$file» edukiaren arabera parekatu da.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Egiaztatu aldia $period dela.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return '$asked eskatu dute; «$file» izenean $found ageri da.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return '$asked eskatu dute; «$file» fitxategian $found ageri da.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Ezin izan da «$file» irakurri; beraz, ezin da jakin fitxategi zuzena den.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Postatik kanpo egiten da, ez fitxategi bat erantsiz.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '«$file» erantsita dago, baina hau ez da posta bidez egiten.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Hau idatzi duzu: «$text»';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Haien mezutik';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Fitxategi baten izenak ez du erakusten zer duen barruan. Ireki fitxategiak ziur egoteko.';
+
+  @override
+  String get composeReplyCheckPartial => 'Haien mezua luzea da; hasiera bakarrik irakurri da.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Eskaerak demo integratuak aurkitu ditu, ez eredu batek.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Eskaerak $provider ereduak aurkitu ditu.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Ez egiaztatu hau';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count eskaera egiaztatu gabe',
+      one: 'Eskaera $count egiaztatu gabe',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Egiaztatu denak';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Erakutsi eskaerak';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Ezkutatu eskaerak';
+
+  @override
+  String get composeReplyCheckHide => 'Ezkutatu erantzunaren egiaztapena';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Zure testuak eranskin bat aipatzen du, baina ez dago ezer erantsita.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Ezkutatu oroigarria';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demo-dokumentuak';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Arakatu fitxategiak…';
+
+  @override
   String get composeNewMessageTitle => 'Mezu berria';
 
   @override

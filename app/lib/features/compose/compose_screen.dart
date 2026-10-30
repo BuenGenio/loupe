@@ -15,6 +15,7 @@ import '../../router.dart';
 import '../../settings/app_settings.dart';
 import '../../shared/format.dart';
 import '../../theme/theme.dart';
+import '../ai/ai_providers.dart';
 import '../conversation/attachments.dart';
 import '../conversation/sheets.dart';
 import '../keyboard/mail_commands.dart';
@@ -25,11 +26,14 @@ import '../smime/smime_providers.dart';
 
 import 'package:mail_crypto/mail_crypto.dart' show draftSecurityFrom;
 
+import 'attach_sheet.dart';
 import 'compose_args.dart';
 import 'compose_recovery.dart';
 import 'compose_text.dart';
 import 'identity_selection.dart';
 import 'recipient_field.dart';
+import 'reply_check.dart';
+import 'reply_check_panel.dart';
 import 'send_later.dart';
 import '../../theme/loupe_icons.dart';
 
@@ -46,6 +50,11 @@ import '../../theme/loupe_icons.dart';
 /// a local copy is kept in [ComposeRecoveryStore] soon after every edit and
 /// when the app goes to the background, so a crash loses nothing. Closing
 /// still offers Delete Draft (which deletes both) and Save Draft.
+///
+/// Reply Check (Private AI): a reply or forward shows what the original
+/// asked for against the text and the attachments ([ReplyCheckPanel]). The
+/// text saying "attached" with nothing attached gets a note
+/// ([AttachmentReminder]), with or without Private AI. Neither holds up Send.
 class ComposeScreen extends ConsumerStatefulWidget {
   const ComposeScreen({super.key, this.args = const ComposeArgs()});
 
@@ -79,6 +88,13 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
   final _bodyFocus = FocusNode();
 
   final _attachments = <OutgoingAttachment>[];
+
+  /// The message replied to or forwarded, for Reply Check.
+  ReplyCheckSource? _checkSource;
+  final _replyCheck = ReplyCheckController();
+
+  /// The note about a missing attachment was waved away.
+  bool _reminderHidden = false;
 
   /// Encrypt and Sign (OpenPGP).
   final _security = ComposeSecurityController();
@@ -179,6 +195,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     _ccFocus.dispose();
     _bodyFocus.dispose();
     _security.dispose();
+    _replyCheck.dispose();
     super.dispose();
   }
 
@@ -436,6 +453,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     _attachments.addAll(m.attachments);
     _mode = m.mode;
     _sourceEmailId = m.sourceEmailId;
+    if (m.sourceEmailId case final id? when _answers) _checkSource = (emailId: id, accountId: m.accountId);
     _draftId = m.draftId;
     _inReplyTo = m.inReplyTo;
     _references = m.references;
@@ -454,6 +472,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
       return l10n.composeOriginalNotFound;
     }
     _sourceEmailId = source.id;
+    _checkSource = (emailId: source.id, accountId: source.accountId);
     String? warning;
     EmailContent? content;
     try {
@@ -584,6 +603,18 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
   }
 
   bool get _replying => _mode == ComposeMode.reply || _mode == ComposeMode.replyAll;
+
+  /// A reply or forward: the original's requests can be checked.
+  bool get _answers => _replying || _mode == ComposeMode.forward;
+
+  /// The user's own text: the body without the quoted or forwarded original
+  /// and the signature.
+  String _ownText() {
+    final body = _body.text;
+    final head = body.substring(0, ComposeText.quoteStart(body));
+    final signature = ComposeText.signatureRange(head, block: ComposeText.signatureBlock(_identity?.signature));
+    return signature == null ? head : head.replaceRange(signature.$1, signature.$2, '');
+  }
 
   /// The From picker: the alias to offer, then every identity by account.
   Future<void> _pickIdentity() async {
@@ -725,14 +756,21 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     );
   }
 
+  /// Adds files from the phone. The demo first offers its own documents.
   Future<void> _attach() async {
     final messenger = ScaffoldMessenger.of(context);
     final l10n = context.l10n;
     try {
-      final files = await FilePicker.pickFiles();
-      for (final f in files) {
-        final data = await f.readAsBytes();
-        _attachments.add(OutgoingAttachment(filename: f.name, mimeType: mimeTypeFor(f.name), data: data));
+      final demo = ref.read(demoAttachmentsProvider);
+      final choice = demo.isEmpty ? null : await showDemoAttachSheet(context, demo);
+      if (demo.isNotEmpty && (choice == null || !mounted)) return;
+      if (choice?.file case final file?) {
+        _attachments.add(file);
+      } else {
+        for (final f in await FilePicker.pickFiles()) {
+          final data = await f.readAsBytes();
+          _attachments.add(OutgoingAttachment(filename: f.name, mimeType: mimeTypeFor(f.name), data: data));
+        }
       }
       _changed();
       final total = _attachments.fold<int>(0, (n, a) => n + a.data.length);
@@ -1003,6 +1041,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     final l10n = context.l10n;
     final noAccount = !_preparing && _identity == null;
     final title = _subject.text.trim().isEmpty ? l10n.composeNewMessageTitle : _subject.text.trim();
+    final ownText = _ownText();
     return PopScope(
       // Back closes an untouched message at once; anything autosave may
       // have left behind goes through Cancel's cleanup.
@@ -1187,6 +1226,20 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
                         ),
                     ],
                   ),
+                ),
+              if (_attachments.isEmpty && !_reminderHidden && ReplyCheck.mentionsAttachment(ownText))
+                AttachmentReminder(
+                  onAttach: _preparing || _busy ? null : _attach,
+                  onHide: () => setState(() => _reminderHidden = true),
+                ),
+              if (_checkSource case final source?
+                  when ref.watch(aiServiceForProvider((AiFeature.replyCheck, source.accountId))) != null)
+                ReplyCheckPanel(
+                  controller: _replyCheck,
+                  requests: ref.watch(replyRequestsProvider(source)),
+                  draft: ownText,
+                  attachments: _attachments,
+                  onRetry: () => ref.invalidate(replyRequestsProvider(source)),
                 ),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,

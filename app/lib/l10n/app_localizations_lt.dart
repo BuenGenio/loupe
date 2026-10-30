@@ -6537,6 +6537,209 @@ class AppLocalizationsLt extends AppLocalizations {
   String get accountImportFailed => 'Nepavyko pridėti paskyros. Bandykite dar kartą arba pridėkite ją rankiniu būdu.';
 
   @override
+  String get composeReplyCheckTitle => 'Atsakymo patikra';
+
+  @override
+  String get composeReplyCheckChecking => 'Skaitoma, ko buvo prašoma…';
+
+  @override
+  String get composeReplyCheckFailed => 'Nepavyko perskaityti, ko buvo prašoma.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached iš $total pridėta',
+      few: '$attached iš $total pridėti',
+      one: '$attached iš $total pridėtas',
+      zero: 'Nė vienas iš $total nepridėtas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gali būti ne už tą laikotarpį',
+      few: '$count gali būti ne už tą laikotarpį',
+      one: '$count gali būti ne už tą laikotarpį',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count neperskaitoma',
+      few: '$count neperskaitomi',
+      one: '$count neperskaitomas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count reikia atlikti ne el. paštu',
+      few: '$count reikia atlikti ne el. paštu',
+      one: '$count reikia atlikti ne el. paštu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count paminėta jūsų tekste',
+      few: '$count paminėti jūsų tekste',
+      one: '$count paminėtas jūsų tekste',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count laukia atsakymo',
+      few: '$count laukia atsakymo',
+      one: '$count laukia atsakymo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Pridėtas';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Patikrinkite laikotarpį';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Nepridėtas';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Nėra jūsų atsakyme';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Ne el. paštu';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Jūsų tekste';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Neaišku';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '„$file“ atpažintas tik pagal pavadinimą.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '„$file“ atpažintas pagal turinį.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Patikrinkite, ar jis už laikotarpį $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Prašyta laikotarpio $asked; pavadinime „$file“ nurodyta $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Prašyta laikotarpio $asked; faile „$file“ nurodyta $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Failo „$file“ nepavyko perskaityti, todėl nežinoma, ar tai tinkamas failas.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Atliekama ne el. paštu ir ne pridedant failą.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '„$file“ pridėtas, bet tai atliekama ne el. paštu.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Jūs parašėte: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Iš pradinio laiško';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Iš failo pavadinimo nematyti, kas jame yra. Kad būtumėte tikri, atidarykite failus.';
+
+  @override
+  String get composeReplyCheckPartial => 'Laiškas ilgas; perskaityta tik jo pradžia.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Prašymus rado įtaisytoji demonstracija, ne modelis.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Prašymus rado $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Netikrinti šio';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count prašymų nepatikrinta',
+      few: '$count prašymai nepatikrinti',
+      one: '$count prašymas nepatikrintas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Patikrinti visus';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Rodyti prašymus';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Slėpti prašymus';
+
+  @override
+  String get composeReplyCheckHide => 'Slėpti atsakymo patikrą';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Jūsų tekste minimas priedas, bet nieko nepridėta.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Slėpti priminimą';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demonstraciniai dokumentai';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Naršyti failus…';
+
+  @override
   String get composeNewMessageTitle => 'Naujas laiškas';
 
   @override

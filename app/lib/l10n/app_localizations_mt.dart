@@ -6663,6 +6663,222 @@ class AppLocalizationsMt extends AppLocalizations {
   String get accountImportFailed => 'Il-kont ma setax jiżdied. Erġa’ pprova, jew żidu manwalment.';
 
   @override
+  String get composeReplyCheckTitle => 'Verifika tat-tweġiba';
+
+  @override
+  String get composeReplyCheckChecking => 'Qed jinqara dak li talbu…';
+
+  @override
+  String get composeReplyCheckFailed => 'Ma setax jinqara dak li talbu.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached minn $total mehmuża',
+      many: '$attached minn $total mehmuża',
+      few: '$attached minn $total mehmuża',
+      two: '$attached minn $total mehmuża',
+      one: '1 minn $total mehmuż',
+      zero: 'L-ebda wieħed minn $total mhu mehmuż',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jistgħu jkunu għall-perjodu żbaljat',
+      many: '$count jistgħu jkunu għall-perjodu żbaljat',
+      few: '$count jistgħu jkunu għall-perjodu żbaljat',
+      two: '$count jistgħu jkunu għall-perjodu żbaljat',
+      one: '1 jista’ jkun għall-perjodu żbaljat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ma setgħux jinqraw',
+      many: '$count ma setgħux jinqraw',
+      few: '$count ma setgħux jinqraw',
+      two: '$count ma setgħux jinqraw',
+      one: '1 ma setax jinqara',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count għandhom isiru barra mill-imejl',
+      many: '$count għandhom isiru barra mill-imejl',
+      few: '$count għandhom isiru barra mill-imejl',
+      two: '$count għandhom isiru barra mill-imejl',
+      one: '1 għandu jsir barra mill-imejl',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count fit-test tiegħek',
+      many: '$count fit-test tiegħek',
+      few: '$count fit-test tiegħek',
+      two: '$count fit-test tiegħek',
+      one: '1 fit-test tiegħek',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count għadhom jeħtieġu tweġiba',
+      many: '$count għadhom jeħtieġu tweġiba',
+      few: '$count għadhom jeħtieġu tweġiba',
+      two: '$count għadhom jeħtieġu tweġiba',
+      one: '1 għadu jeħtieġ tweġiba',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Mehmuż';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Iċċekkja l-perjodu';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Mhux mehmuż';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Mhux fit-tweġiba tiegħek';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Barra mill-imejl';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Fit-test tiegħek';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Mhux ċert';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Imqabbel ma’ “$file” skont l-isem tiegħu biss.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Imqabbel ma’ “$file” skont x’fih.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Iċċekkja li huwa għal $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Talbu $asked; l-isem “$file” jgħid $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Talbu $asked; “$file” jgħid $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return '“$file” ma setax jinqara, għalhekk mhux magħruf jekk huwiex il-fajl it-tajjeb.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Isir barra mill-imejl, mhux billi tehmeż fajl.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '“$file” huwa mehmuż, iżda dan ma jsirx bl-imejl.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Ktibt: “$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Mill-messaġġ tagħhom';
+
+  @override
+  String get composeReplyCheckByNameNote => 'L-isem ta’ fajl ma jurix x’fih. Iftaħ il-fajls biex tkun żgur.';
+
+  @override
+  String get composeReplyCheckPartial => 'Il-messaġġ tagħhom huwa twil; inqara biss il-bidu tiegħu.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Talbiet misjuba mid-demo inkorporata, mhux minn mudell.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Talbiet misjuba minn $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Tiċċekkjax dan';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count talba mhux iċċekkjati',
+      many: '$count-il talba mhux iċċekkjati',
+      few: '$count talbiet mhux iċċekkjati',
+      two: '$count talbiet mhux iċċekkjati',
+      one: '$count talba mhux iċċekkjata',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Iċċekkja kollox';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Uri t-talbiet';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Aħbi t-talbiet';
+
+  @override
+  String get composeReplyCheckHide => 'Aħbi l-verifika tat-tweġiba';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'It-test tiegħek isemmi anness, iżda m’hemm xejn mehmuż.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Aħbi t-tfakkira';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Dokumenti demo';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Esplora l-fajls…';
+
+  @override
   String get composeNewMessageTitle => 'Messaġġ ġdid';
 
   @override
