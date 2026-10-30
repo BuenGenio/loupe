@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:clock/clock.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mail_model/mail_model.dart';
 
@@ -70,7 +71,7 @@ final matterOpenItemsProvider = Provider.autoDispose.family<List<MatterOpenItem>
 /// what an edit means is mail_model's, the same in the demo and live.
 final class MattersController {
   MattersController(this.records, {DateTime Function()? now, Random? random})
-    : _now = now ?? DateTime.now,
+    : _now = now ?? (() => clock.now()),
       _random = random ?? Random();
 
   final MatterRecords records;
