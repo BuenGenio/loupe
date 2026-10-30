@@ -4394,6 +4394,202 @@ class AppLocalizationsEt extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Kirjelda reeglit…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Ütle ühe lausega, mida reegel peaks tegema. Sa kontrollid Loupe’i ettepanekut ja midagi ei salvestata enne, kui salvestad selle reegliredaktoris.';
+
+  @override
+  String get rulesDescribeTitle => 'Kirjelda reeglit';
+
+  @override
+  String get rulesDescribeAccount => 'Konto';
+
+  @override
+  String get rulesDescribeHint => 'Teisalda Harbor Coffee kviitungid kausta Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Kasutatakse ainult seda lauset ning konto $account kaustade ja siltide nimesid, mitte kunagi sinu kirju.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Paku reegel';
+
+  @override
+  String get rulesDescribeWorking => 'Reegli koostamine…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe ei suutnud sellest reeglit teha.';
+
+  @override
+  String get rulesDescribeProposed => 'Pakutud reegel';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Reeglid otsivad siin näidatud sõnu, aadresse ja kuupäevi, mitte seda, millest kiri räägib.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Saadab sobivad kirjad aadressile $address, väljapoole seda kontot.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Selles telefonis, konto $account sisendkausta uutele kirjadele, iga kord, kui Loupe kirju kontrollib.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Konto $account e-posti serveris, kirjade saabumisel. Edastamine töötab ainult seal.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Kus reeglit käivitada, valid reegliredaktoris.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Loupe ei saa neid osi teha',
+      one: 'Loupe ei saa seda osa teha',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Need on reeglist välja jäetud ja nende asemele pole midagi pandud.',
+      one: 'See on reeglist välja jäetud ja selle asemele pole midagi pandud.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '„$request“';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Reeglid ei saa teavitusi muuta. Kirja loetuks märkimine või teisaldamine pole sama mis selle vaigistamine.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe ei tunne seda liiki kirju ära. Reegel saab otsida ainult sinu valitud sõnu.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return 'Kontol $account pole sellenimelist kausta.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Sellenimelist silti pole.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Reeglid ei saa seda teha.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Sõnad, mida Loupe saab selle asemel otsida:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe peab teadma';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Proovikäivitus';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Selle telefoni kirjade kontrollimine…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Konto $account $totalString allalaaditud kirjast sobiks $matchedString',
+      one: 'Konto $account $totalString allalaaditud kirjast sobiks $matchedString',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Sobiks';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Ei sobiks';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Kontrolliti ainult sellesse telefoni alla laaditud kirju väljaspool kaustu Saadetud, Mustandid, Rämpspost ja Prügikast, seadme reegleid käivitava koodiga. Serveris ja vanemate kirjade seas võib neid olla rohkem.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Kontrolliti ainult $countString uusimat kirja.',
+      one: 'Kontrolliti ainult uusimat kirja.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString kirja ei saanud kontrollida ilma nende teksti alla laadimata.',
+      one: '$countString kirja ei saanud kontrollida ilma selle teksti alla laadimata.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe ei suutnud selle telefoni kirju kontrollida.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Ava reegliredaktoris';
+
+  @override
+  String get rulesDescribeDemoNote => 'Pakkus sisseehitatud demo, mitte mudel.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Pakkus $provider. Kontrolli seda enne salvestamist.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Pole selles reeglis';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Sa kirjeldasid neid, aga Loupe ei saa neid teha, seega jäeti need välja ja nende asemele ei pandud midagi.',
+      one: 'Sa kirjeldasid seda, aga Loupe ei saa seda teha, seega jäeti see välja ja selle asemele ei pandud midagi.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Sinu kontosid ei õnnestunud avada';
 
   @override

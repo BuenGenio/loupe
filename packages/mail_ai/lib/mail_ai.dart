@@ -16,7 +16,9 @@
 /// reads one message for what it requires of the reader, every item tied to
 /// a passage that is really there. [ChangeExplanationTask] explains what
 /// changed between two messages of a conversation, each change tied to both
-/// passages, with the literal line diff as its evidence.
+/// passages, with the literal line diff as its evidence. [RuleProposalTask]
+/// turns a sentence into a typed rule draft for the rule editor, with what
+/// rules can't do left visibly unresolved.
 library;
 
 export 'src/fake_provider.dart' show FakeProvider;
@@ -38,4 +40,5 @@ export 'src/tasks/brief.dart'
     show Brief, BriefDue, BriefEvidence, BriefInput, BriefItem, BriefItemKind, BriefOwner, BriefTask, DueKind;
 export 'src/tasks/change_explanation.dart'
     show ChangeExplanation, ChangeExplanationTask, ChangeKind, ChangePassage, ChangeSide, ChangeSource, ExplainedChange;
+export 'src/tasks/rule_proposal.dart' show RuleProposal, RuleProposalTask, UnsupportedRulePart, UnsupportedRuleReason;
 export 'src/tasks/search_translation.dart' show SearchTranslation, SearchTranslationTask;

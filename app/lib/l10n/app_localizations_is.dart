@@ -4402,6 +4402,194 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Lýsa reglu…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Segðu í einni setningu hvað regla á að gera. Þú ferð yfir það sem Loupe leggur til, og ekkert er vistað fyrr en þú vistar það í regluritlinum.';
+
+  @override
+  String get rulesDescribeTitle => 'Lýsa reglu';
+
+  @override
+  String get rulesDescribeAccount => 'Aðgangur';
+
+  @override
+  String get rulesDescribeHint => 'Færa kvittanir frá Harbor Coffee í Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Aðeins þessi setning og nöfn mappa og merkja í $account eru notuð, aldrei pósturinn þinn.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Leggja til reglu';
+
+  @override
+  String get rulesDescribeWorking => 'Regla undirbúin…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe gat ekki gert reglu úr þessu.';
+
+  @override
+  String get rulesDescribeProposed => 'Tillaga að reglu';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Reglur passa við orðin, netföngin og dagsetningarnar sem sjást hér, ekki við það sem skilaboðin fjalla um.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Sendir samsvarandi póst á $address, út fyrir þennan aðgang.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Í þessum síma, á nýjan póst í innhólfi $account, í hvert sinn sem Loupe athugar með póst.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Á póstþjóni $account, um leið og póstur berst. Áframsending keyrir aðeins þar.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Þú velur hvar hún keyrir í regluritlinum.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Það sem Loupe getur ekki gert');
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Því er sleppt úr reglunni og ekkert sett í staðinn.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '„$request“';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Reglur geta ekki breytt tilkynningum. Að merkja póst sem lesinn eða færa hann er ekki það sama og að þagga niður í honum.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe getur ekki þekkt þessa tegund pósts. Regla getur aðeins passað við orð sem þú velur.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return '$account er ekki með möppu með þessu nafni.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Það er ekkert merki með þessu nafni.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Reglur geta ekki gert þetta.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Orð sem Loupe getur passað við í staðinn:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe þarf að vita';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Prufukeyrsla';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Athuga póstinn í þessum síma…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Myndi passa við $matchedString af $totalString sóttum skilaboðum í $account',
+      one: 'Myndi passa við $matchedString af $totalString sóttum skilaboðum í $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Myndu passa';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Myndu ekki passa';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Aðeins póstur sem hefur verið sóttur í þennan síma var athugaður, ekki í möppunum Sendur póstur, Drög, Ruslpóstur og Rusl, með sama kóða og keyrir reglur í tækinu. Á netþjóninum og í eldri pósti gæti verið meira.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Aðeins $countString nýjustu skilaboðin voru athuguð.',
+      one: 'Aðeins $countString nýjustu skilaboðin voru athuguð.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString skilaboð var ekki hægt að athuga án þess að sækja texta þeirra.',
+      one: '$countString skilaboð var ekki hægt að athuga án þess að sækja texta þeirra.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe gat ekki athugað póstinn í þessum síma.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Opna í regluritli';
+
+  @override
+  String get rulesDescribeDemoNote => 'Lagt til af innbyggðu sýnisútgáfunni, ekki af líkani.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Lagt til af $provider. Farðu yfir hana áður en þú vistar hana.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Ekki í þessari reglu';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Þú lýstir þessu, en Loupe getur það ekki, svo því var sleppt og ekkert sett í staðinn.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Ekki tókst að opna aðgangana þína';
 
   @override

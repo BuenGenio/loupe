@@ -4407,6 +4407,201 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Περιγραφή κανόνα…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Πείτε με μια πρόταση τι πρέπει να κάνει ένας κανόνας. Ελέγχετε εσείς τι προτείνει το Loupe και τίποτα δεν αποθηκεύεται μέχρι να το αποθηκεύσετε στην επεξεργασία κανόνα.';
+
+  @override
+  String get rulesDescribeTitle => 'Περιγραφή κανόνα';
+
+  @override
+  String get rulesDescribeAccount => 'Λογαριασμός';
+
+  @override
+  String get rulesDescribeHint => 'Μετακίνησε τις αποδείξεις από το Harbor Coffee στο Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Χρησιμοποιούνται μόνο αυτή η πρόταση και τα ονόματα των φακέλων και των ετικετών του λογαριασμού $account, ποτέ τα μηνύματά σας.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Πρόταση κανόνα';
+
+  @override
+  String get rulesDescribeWorking => 'Προετοιμασία κανόνα…';
+
+  @override
+  String get rulesDescribeFailed => 'Το Loupe δεν μπόρεσε να το μετατρέψει σε κανόνα.';
+
+  @override
+  String get rulesDescribeProposed => 'Προτεινόμενος κανόνας';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Οι κανόνες ταιριάζουν με τις λέξεις, τις διευθύνσεις και τις ημερομηνίες που φαίνονται εδώ, όχι με το τι αφορά ένα μήνυμα.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Στέλνει τα μηνύματα που ταιριάζουν στο $address, έξω από αυτόν τον λογαριασμό.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Σε αυτό το τηλέφωνο, στα νέα μηνύματα των Εισερχομένων του λογαριασμού $account, κάθε φορά που το Loupe ελέγχει για μηνύματα.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Στον διακομιστή αλληλογραφίας του λογαριασμού $account, καθώς φτάνουν τα μηνύματα. Η προώθηση λειτουργεί μόνο εκεί.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Επιλέγετε εσείς πού θα εκτελείται, στην επεξεργασία κανόνα.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Το Loupe δεν μπορεί να κάνει αυτά τα μέρη',
+      one: 'Το Loupe δεν μπορεί να κάνει αυτό το μέρος',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Παραλείπονται από τον κανόνα και δεν μπήκε τίποτα στη θέση τους.',
+      one: 'Παραλείπεται από τον κανόνα και δεν μπήκε τίποτα στη θέση του.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '«$request»';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Οι κανόνες δεν μπορούν να αλλάξουν τις ειδοποιήσεις. Η σήμανση των μηνυμάτων ως αναγνωσμένων ή η μετακίνησή τους δεν είναι το ίδιο με τη σίγασή τους.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Το Loupe δεν μπορεί να αναγνωρίσει αυτό το είδος μηνυμάτων. Ένας κανόνας μπορεί να ταιριάζει μόνο με λέξεις που επιλέγετε εσείς.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return 'Ο λογαριασμός $account δεν έχει φάκελο με αυτό το όνομα.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Δεν υπάρχει ετικέτα με αυτό το όνομα.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Οι κανόνες δεν μπορούν να το κάνουν αυτό.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Λέξεις που μπορεί να εντοπίσει το Loupe αντί γι’ αυτό:';
+
+  @override
+  String get rulesDescribeQuestions => 'Το Loupe χρειάζεται να ξέρει';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Δοκιμαστική εκτέλεση';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Έλεγχος των μηνυμάτων σε αυτό το τηλέφωνο…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Θα ταίριαζε με $matchedString από $totalString μηνύματα που έχουν ληφθεί στον λογαριασμό $account',
+      one: 'Θα ταίριαζε με $matchedString από 1 μήνυμα που έχει ληφθεί στον λογαριασμό $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Θα ταίριαζαν';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Δεν θα ταίριαζαν';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Ελέγχθηκαν μόνο τα μηνύματα που έχουν ληφθεί σε αυτό το τηλέφωνο, εκτός από τα Απεσταλμένα, τα Πρόχειρα, τα Ανεπιθύμητα και τον Κάδο απορριμμάτων, από τον κώδικα που εκτελεί τους κανόνες συσκευής. Ο διακομιστής και τα παλαιότερα μηνύματα μπορεί να περιέχουν περισσότερα.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ελέγχθηκαν μόνο τα $countString πιο πρόσφατα.',
+      one: 'Ελέγχθηκε μόνο το πιο πρόσφατο μήνυμα.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString μηνύματα δεν ήταν δυνατό να ελεγχθούν χωρίς λήψη του κειμένου τους.',
+      one: '1 μήνυμα δεν ήταν δυνατό να ελεγχθεί χωρίς λήψη του κειμένου του.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Το Loupe δεν μπόρεσε να ελέγξει τα μηνύματα σε αυτό το τηλέφωνο.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Άνοιγμα στην επεξεργασία κανόνα';
+
+  @override
+  String get rulesDescribeDemoNote => 'Προτάθηκε από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Προτάθηκε από $provider. Ελέγξτε τον πριν τον αποθηκεύσετε.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Δεν περιλαμβάνεται στον κανόνα';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Τα περιγράψατε, αλλά το Loupe δεν μπορεί να τα κάνει, γι’ αυτό παραλείφθηκαν και δεν μπήκε τίποτα στη θέση τους.',
+      one: 'Το περιγράψατε, αλλά το Loupe δεν μπορεί να το κάνει, γι’ αυτό παραλείφθηκε και δεν μπήκε τίποτα στη θέση του.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Δεν ήταν δυνατό το άνοιγμα των λογαριασμών σας';
 
   @override

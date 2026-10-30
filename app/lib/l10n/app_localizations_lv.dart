@@ -4452,6 +4452,209 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Aprakstīt kārtulu…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Vienā teikumā pasakiet, kas kārtulai jādara. Jūs pārbaudāt, ko iesaka Loupe, un nekas netiek saglabāts, kamēr to nesaglabājat kārtulu redaktorā.';
+
+  @override
+  String get rulesDescribeTitle => 'Aprakstīt kārtulu';
+
+  @override
+  String get rulesDescribeAccount => 'Konts';
+
+  @override
+  String get rulesDescribeHint => 'Pārvietot čekus no Harbor Coffee uz mapi Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Tiek izmantots tikai šis teikums un konta $account mapju un birku nosaukumi, nekad jūsu pasts.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Ieteikt kārtulu';
+
+  @override
+  String get rulesDescribeWorking => 'Gatavo kārtulu…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe nevarēja to pārvērst kārtulā.';
+
+  @override
+  String get rulesDescribeProposed => 'Ieteiktā kārtula';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Kārtulas atpazīst šeit redzamos vārdus, adreses un datumus, nevis to, par ko ir ziņojums.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Nosūta atbilstošo pastu uz $address, ārpus šī konta.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Šajā tālrunī, jaunam pastam konta $account iesūtnē, ikreiz, kad Loupe pārbauda pastu.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Konta $account pasta serverī, kad pasts pienāk. Pārsūtīšana darbojas tikai tur.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Kur to izpildīt, izvēlaties kārtulu redaktorā.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count daļas, ko Loupe nevar izpildīt',
+      one: '$count daļa, ko Loupe nevar izpildīt',
+      zero: '$count daļas, ko Loupe nevar izpildīt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count daļas nav iekļautas kārtulā, un to vietā nekas netika ielikts.',
+      one: '$count daļa nav iekļauta kārtulā, un tās vietā nekas netika ielikts.',
+      zero: '$count daļas nav iekļautas kārtulā, un to vietā nekas netika ielikts.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '„$request“';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Kārtulas nevar mainīt paziņojumus. Atzīmēt pastu kā lasītu vai to pārvietot nav tas pats, kas to apklusināt.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe nevar atpazīt šāda veida pastu. Kārtula var atpazīt tikai jūsu izvēlētus vārdus.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return 'Kontā $account nav mapes ar šādu nosaukumu.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Nav birkas ar šādu nosaukumu.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Kārtulas to nevar izdarīt.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Vārdi, ko Loupe var atpazīt tā vietā:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe ir jāzina';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Izmēģinājuma izpilde';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Pārbauda pastu šajā tālrunī…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Kārtulai atbilstu $matchedString no $totalString lejupielādētajiem ziņojumiem kontā $account',
+      one: 'Kārtulai atbilstu $matchedString no $totalString lejupielādētā ziņojuma kontā $account',
+      zero: 'Kārtulai atbilstu $matchedString no $totalString lejupielādētajiem ziņojumiem kontā $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Atbilstu';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Neatbilstu';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Pārbaudīts tikai uz šo tālruni lejupielādētais pasts, izņemot mapes Nosūtītie, Melnraksti, Mēstules un Miskaste, ar kodu, kas izpilda ierīces kārtulas. Serverī un vecākajā pastā var būt vēl vairāk ziņojumu.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pārbaudīti tikai $countString jaunākie ziņojumi.',
+      one: 'Pārbaudīts tikai $countString jaunākais ziņojums.',
+      zero: 'Pārbaudīti tikai $countString jaunākie ziņojumi.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Nevarēja pārbaudīt $countString ziņojumus, nelejupielādējot to tekstu.',
+      one: 'Nevarēja pārbaudīt $countString ziņojumu, nelejupielādējot tā tekstu.',
+      zero: 'Nevarēja pārbaudīt $countString ziņojumus, nelejupielādējot to tekstu.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe nevarēja pārbaudīt pastu šajā tālrunī.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Atvērt kārtulu redaktorā';
+
+  @override
+  String get rulesDescribeDemoNote => 'Ieteica iebūvētā demonstrācija, nevis modelis.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Ieteica $provider. Pārbaudiet to, pirms saglabājat.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Nav iekļauts šajā kārtulā';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Jūs aprakstījāt $count daļas, ko Loupe nevar izpildīt, tāpēc tās ir izlaistas un to vietā nekas nav ielikts.',
+      one: 'Jūs aprakstījāt $count daļu, ko Loupe nevar izpildīt, tāpēc tā ir izlaista un tās vietā nekas nav ielikts.',
+      zero:
+          'Jūs aprakstījāt $count daļas, ko Loupe nevar izpildīt, tāpēc tās ir izlaistas un to vietā nekas nav ielikts.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Jūsu kontus neizdevās atvērt';
 
   @override

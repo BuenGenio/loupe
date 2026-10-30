@@ -4410,6 +4410,201 @@ class AppLocalizationsGl extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Describir unha regra…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Di nunha frase que debe facer unha regra. Ti revisas o que propón Loupe, e non se garda nada ata que o gardes no editor de regras.';
+
+  @override
+  String get rulesDescribeTitle => 'Describir unha regra';
+
+  @override
+  String get rulesDescribeAccount => 'Conta';
+
+  @override
+  String get rulesDescribeHint => 'Mover os recibos de Harbor Coffee a Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Só se usan esta frase e os nomes dos cartafoles e das etiquetas de $account, nunca o teu correo.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Propoñer unha regra';
+
+  @override
+  String get rulesDescribeWorking => 'Preparando a regra…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe non puido convertelo nunha regra.';
+
+  @override
+  String get rulesDescribeProposed => 'Regra proposta';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'As regras buscan as palabras, os enderezos e as datas que ves aquí, non de que trata unha mensaxe.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Envía o correo que coincida a $address, fóra desta conta.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Neste teléfono, sobre o correo novo da caixa de entrada de $account, cada vez que Loupe busca correo.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'No servidor de correo de $account, a medida que chega o correo. O reenvío só funciona alí.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'No editor de regras escolles onde se executa.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Loupe non pode facer estas partes',
+      one: 'Loupe non pode facer esta parte',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Quedaron fóra da regra e non se puxo nada no seu lugar.',
+      one: 'Quedou fóra da regra e non se puxo nada no seu lugar.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '“$request”';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'As regras non poden cambiar as notificacións. Marcar o correo como lido ou movelo non é o mesmo que silencialo.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe non sabe recoñecer este tipo de correo. Unha regra só pode buscar palabras que escollas ti.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return '$account non ten ningún cartafol con ese nome.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Non hai ningunha etiqueta con ese nome.';
+
+  @override
+  String get rulesDescribeReasonOther => 'As regras non poden facer isto.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Palabras que Loupe pode buscar no seu lugar:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe precisa saber';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Simulación';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Comprobando o correo deste teléfono…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Coincidiría con $matchedString das $totalString mensaxes descargadas de $account',
+      one: 'Coincidiría con $matchedString de 1 mensaxe descargada de $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Coincidirían';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Non coincidirían';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Só se comprobou o correo descargado neste teléfono, fóra de Enviados, Borradores, Correo lixo e Papeleira, co código que executa as regras do dispositivo. O servidor e o correo máis antigo poden ter máis.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Só se comprobaron as $countString máis recentes.',
+      one: 'Só se comprobou a mensaxe máis recente.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Non se puideron comprobar $countString mensaxes sen descargar o seu texto.',
+      one: 'Non se puido comprobar 1 mensaxe sen descargar o seu texto.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe non puido comprobar o correo deste teléfono.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Abrir no editor de regras';
+
+  @override
+  String get rulesDescribeDemoNote => 'Proposta pola demostración integrada, non por un modelo.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Proposta por $provider. Revísaa antes de gardala.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Non incluído nesta regra';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Describiches estas partes, pero Loupe non as pode facer, así que quedaron fóra e non se puxo nada no seu lugar.',
+      one: 'Describiches esta parte, pero Loupe non a pode facer, así que quedou fóra e non se puxo nada no seu lugar.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Non se puideron abrir as túas contas';
 
   @override

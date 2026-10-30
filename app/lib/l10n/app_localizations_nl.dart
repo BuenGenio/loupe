@@ -4416,6 +4416,201 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Regel beschrijven…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Zeg in één zin wat een regel moet doen. Je controleert wat Loupe voorstelt, en er wordt pas iets opgeslagen als je het in de regeleditor opslaat.';
+
+  @override
+  String get rulesDescribeTitle => 'Regel beschrijven';
+
+  @override
+  String get rulesDescribeAccount => 'Account';
+
+  @override
+  String get rulesDescribeHint => 'Bonnetjes van Harbor Coffee naar Receipts verplaatsen';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Alleen deze zin en de namen van mappen en tags van $account worden gebruikt, nooit je mail.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Regel voorstellen';
+
+  @override
+  String get rulesDescribeWorking => 'Regel wordt bepaald…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe kon hier geen regel van maken.';
+
+  @override
+  String get rulesDescribeProposed => 'Voorgestelde regel';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Regels herkennen de woorden, adressen en datums die hier staan, niet waar een bericht over gaat.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Stuurt overeenkomende mail naar $address, buiten dit account.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Op deze telefoon, op nieuwe mail in de inbox van $account, telkens wanneer Loupe op mail controleert.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Op de mailserver van $account, wanneer mail binnenkomt. Doorsturen werkt alleen daar.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Waar hij draait, kies je in de regeleditor.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Deze delen kan Loupe niet uitvoeren',
+      one: 'Dit deel kan Loupe niet uitvoeren',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ze zijn uit de regel weggelaten en er is niets voor in de plaats gezet.',
+      one: 'Het is uit de regel weggelaten en er is niets voor in de plaats gezet.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '“$request”';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Regels kunnen meldingen niet wijzigen. Mail als gelezen markeren of verplaatsen is niet hetzelfde als hem dempen.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe kan dit soort mail niet herkennen. Een regel kan alleen woorden herkennen die je kiest.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return '$account heeft geen map met die naam.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Er is geen tag met die naam.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Dat kunnen regels niet.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Woorden die Loupe in plaats daarvan kan herkennen:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe moet weten';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Proefrun';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Mail op deze telefoon wordt gecontroleerd…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Zou overeenkomen met $matchedString van $totalString gedownloade berichten in $account',
+      one: 'Zou overeenkomen met $matchedString van 1 gedownload bericht in $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Zou overeenkomen';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Zou niet overeenkomen';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Alleen mail die naar deze telefoon is gedownload, is gecontroleerd, buiten Verzonden, Concepten, Spam en Prullenbak, door de code die apparaatregels uitvoert. De server en oudere mail kunnen meer bevatten.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Alleen de $countString nieuwste berichten zijn gecontroleerd.',
+      one: 'Alleen het nieuwste bericht is gecontroleerd.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString berichten konden niet worden gecontroleerd zonder hun tekst te downloaden.',
+      one: '1 bericht kon niet worden gecontroleerd zonder de tekst ervan te downloaden.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe kon de mail op deze telefoon niet controleren.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Openen in regeleditor';
+
+  @override
+  String get rulesDescribeDemoNote => 'Voorgesteld door de ingebouwde demo, niet door een model.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Voorgesteld door $provider. Controleer hem voordat je hem opslaat.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Niet in deze regel';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Je hebt deze dingen beschreven, maar Loupe kan ze niet uitvoeren, dus ze zijn weggelaten en er is niets voor in de plaats gezet.',
+      one: 'Je hebt dit beschreven, maar Loupe kan het niet uitvoeren, dus het is weggelaten en er is niets voor in de plaats gezet.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Je accounts konden niet worden geopend';
 
   @override

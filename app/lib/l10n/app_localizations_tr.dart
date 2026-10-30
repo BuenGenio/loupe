@@ -4379,6 +4379,202 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Bir kural tarif edin…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Bir kuralın ne yapması gerektiğini bir cümleyle anlatın. Loupe’un önerdiğini siz denetlersiniz ve kural düzenleyicide siz kaydedene kadar hiçbir şey kaydedilmez.';
+
+  @override
+  String get rulesDescribeTitle => 'Bir kural tarif edin';
+
+  @override
+  String get rulesDescribeAccount => 'Hesap';
+
+  @override
+  String get rulesDescribeHint => 'Harbor Coffee’den gelen fişleri Receipts klasörüne taşı';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Yalnızca bu cümle ile $account hesabındaki klasör ve etiket adları kullanılır, e-postalarınız asla kullanılmaz.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Kural öner';
+
+  @override
+  String get rulesDescribeWorking => 'Kural hazırlanıyor…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe bunu bir kurala dönüştüremedi.';
+
+  @override
+  String get rulesDescribeProposed => 'Önerilen kural';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Kurallar, bir iletinin ne hakkında olduğuyla değil, burada gösterilen sözcükler, adresler ve tarihlerle eşleşir.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Eşleşen e-postaları bu hesabın dışına, $address adresine gönderir.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Bu telefonda, $account hesabının Gelen Kutusu’na gelen yeni e-postalarda, Loupe her e-posta denetlediğinde.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return '$account hesabının e-posta sunucusunda, e-postalar geldikçe. Yönlendirme yalnızca orada çalışır.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Nerede çalışacağını kural düzenleyicide siz seçersiniz.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Loupe bu kısımları yapamaz',
+      one: 'Loupe bu kısmı yapamaz',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Kurala dahil edilmediler ve yerlerine hiçbir şey konmadı.',
+      one: 'Kurala dahil edilmedi ve yerine hiçbir şey konmadı.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '“$request”';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Kurallar bildirimleri değiştiremez. E-postaları okundu olarak işaretlemek ya da taşımak, onları sessize almakla aynı şey değildir.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe bu tür e-postaları tanıyamaz. Bir kural yalnızca sizin seçtiğiniz sözcüklerle eşleşebilir.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return '$account hesabında bu adda bir klasör yok.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Bu adda bir etiket yok.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Kurallar bunu yapamaz.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Loupe’un bunun yerine eşleştirebileceği sözcükler:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe’un bilmesi gerekenler';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Deneme çalıştırması';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Bu telefondaki e-postalar denetleniyor…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$account hesabında indirilmiş $totalString iletiden $matchedString tanesiyle eşleşirdi',
+      one: '$account hesabında indirilmiş 1 iletiden $matchedString tanesiyle eşleşirdi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Eşleşenler';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Eşleşmeyenler';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Yalnızca bu telefona indirilmiş e-postalar, Gönderilmiş, Taslaklar, Gereksiz ve Çöp Kutusu dışında, cihaz kurallarını çalıştıran kodla denetlendi. Sunucuda ve daha eski e-postalarda daha fazlası olabilir.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Yalnızca en yeni $countString ileti denetlendi.',
+      one: 'Yalnızca en yeni ileti denetlendi.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString ileti, metinleri indirilmeden denetlenemedi.',
+      one: '1 ileti, metni indirilmeden denetlenemedi.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe bu telefondaki e-postaları denetleyemedi.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Kural düzenleyicide aç';
+
+  @override
+  String get rulesDescribeDemoNote => 'Yerleşik demo önerdi, bir model değil.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return '$provider önerdi. Kaydetmeden önce denetleyin.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Bu kuralda yok';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Bunları tarif ettiniz ama Loupe bunları yapamadığı için kurala alınmadılar ve yerlerine hiçbir şey konmadı.',
+      one: 'Bunu tarif ettiniz ama Loupe bunu yapamadığı için kurala alınmadı ve yerine hiçbir şey konmadı.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Hesaplarınız açılamadı';
 
   @override

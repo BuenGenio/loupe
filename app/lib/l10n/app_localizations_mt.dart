@@ -4535,6 +4535,211 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Iddeskrivi regola…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Għid f’sentenza x’għandha tagħmel regola. Int tiċċekkja dak li tipproponi Loupe, u xejn ma jinħażen qabel ma taħżnu fl-editur tar-regoli.';
+
+  @override
+  String get rulesDescribeTitle => 'Iddeskrivi regola';
+
+  @override
+  String get rulesDescribeAccount => 'Kont';
+
+  @override
+  String get rulesDescribeHint => 'Ċaqlaq l-irċevuti minn Harbor Coffee għal Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Jintużaw biss din is-sentenza u l-ismijiet tal-folders u tat-tikketti ta’ $account, qatt il-posta tiegħek.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Ipproponi regola';
+
+  @override
+  String get rulesDescribeWorking => 'Qed titħejja r-regola…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe ma setgħetx tagħmel regola minn dan.';
+
+  @override
+  String get rulesDescribeProposed => 'Regola proposta';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Ir-regoli jaqblu mal-kliem, l-indirizzi u d-dati murija hawn, mhux ma’ dak li jkun dwaru messaġġ.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Tibgħat il-posta li taqbel lil $address, barra minn dan il-kont.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Fuq dan il-mowbajl, fuq il-posta l-ġdida fl-Inbox ta’ $account, kull darba li Loupe tiċċekkja l-posta.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Fuq is-server tal-imejl ta’ $account, hekk kif tasal il-posta. Għaddi jaħdem biss hemmhekk.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Int tagħżel fejn taħdem fl-editur tar-regoli.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Loupe ma tistax tagħmel dawn il-partijiet',
+      one: 'Loupe ma tistax tagħmel din il-parti',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tħallew barra mir-regola, u xejn ma tqiegħed minflokhom.',
+      one: 'Tħalliet barra mir-regola, u xejn ma tqiegħed minflokha.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '“$request”';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Ir-regoli ma jistgħux ibiddlu n-notifiki. Li timmarka l-posta bħala moqrija jew li ċċaqlaqha mhuwiex l-istess bħal li żżommha siekta.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe ma tistax tagħraf dan it-tip ta’ posta. Regola tista’ taqbel biss ma’ kliem li tagħżel int.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return 'M’hemm l-ebda folder b’dak l-isem fil-kont $account.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'M’hemm l-ebda tikketta b’dak l-isem.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Ir-regoli ma jistgħux jagħmlu dan.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Kliem li Loupe tista’ tfittex minflok:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe għandha bżonn tkun taf';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Simulazzjoni';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Qed tiġi ċċekkjata l-posta fuq dan il-mowbajl…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Taqbel ma’ $matchedString minn $totalString messaġġ li tniżżlu fil-kont $account',
+      many: 'Taqbel ma’ $matchedString minn $totalString-il messaġġ li tniżżlu fil-kont $account',
+      few: 'Taqbel ma’ $matchedString minn $totalString messaġġi li tniżżlu fil-kont $account',
+      two: 'Taqbel ma’ $matchedString minn $totalString messaġġi li tniżżlu fil-kont $account',
+      one: 'Taqbel ma’ $matchedString minn messaġġ wieħed li tniżżel fil-kont $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Jaqblu';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Ma jaqblux';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Ġiet iċċekkjata biss il-posta mniżżla fuq dan il-mowbajl, minbarra Mibgħuta, Abbozzi, Spam u Skart, bil-kodiċi li jħaddem ir-regoli fuq l-apparat. Is-server u posta eqdem jista’ jkun fihom aktar.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ġew iċċekkjati biss l-aħħar $countString messaġġ.',
+      many: 'Ġew iċċekkjati biss l-aħħar $countString-il messaġġ.',
+      few: 'Ġew iċċekkjati biss l-aħħar $countString messaġġi.',
+      two: 'Ġew iċċekkjati biss l-aħħar $countString messaġġi.',
+      one: 'Ġie ċċekkjat biss l-aħħar messaġġ.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString messaġġ ma setgħux jiġu ċċekkjati mingħajr ma jitniżżel it-test tagħhom.',
+      many: '$countString-il messaġġ ma setgħux jiġu ċċekkjati mingħajr ma jitniżżel it-test tagħhom.',
+      few: '$countString messaġġi ma setgħux jiġu ċċekkjati mingħajr ma jitniżżel it-test tagħhom.',
+      two: '$countString messaġġi ma setgħux jiġu ċċekkjati mingħajr ma jitniżżel it-test tagħhom.',
+      one: 'Messaġġ wieħed ma setax jiġi ċċekkjat mingħajr ma jitniżżel it-test tiegħu.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe ma setgħetx tiċċekkja l-posta fuq dan il-mowbajl.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Iftaħ fl-editur tar-regoli';
+
+  @override
+  String get rulesDescribeDemoNote => 'Proposta mid-demo inkorporata, mhux minn mudell.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Proposta minn $provider. Iċċekkjaha qabel ma taħżinha.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Mhux f’din ir-regola';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Iddeskrivejt dawn, iżda Loupe ma tistax tagħmilhom, għalhekk tħallew barra u xejn ma tqiegħed minflokhom.',
+      one: 'Iddeskrivejt dan, iżda Loupe ma tistax tagħmlu, għalhekk tħalla barra u xejn ma tqiegħed minfloku.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Il-kontijiet tiegħek ma setgħux jinfetħu';
 
   @override

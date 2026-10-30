@@ -13,11 +13,14 @@ import '../../shared/bars.dart';
 import '../../shared/grouped_list.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
+import 'describe_rule_sheet.dart';
 import 'include_sheet.dart';
 import 'rule_format.dart';
 
 /// Settings › Rules: every rule in the order they run, with a switch each,
 /// touch and hold to reorder, and how server rules stand per account.
+/// Describe a Rule… is there only while Private AI may propose rules for at
+/// least one account.
 class RulesScreen extends ConsumerWidget {
   const RulesScreen({super.key});
 
@@ -33,6 +36,7 @@ class RulesScreen extends ConsumerWidget {
       for (final a in accounts)
         if (list.any((r) => r.location == RuleLocation.server && r.appliesTo(a.id))) a,
     ];
+    final describable = describableAccounts(ref).isNotEmpty;
     return Scaffold(
       backgroundColor: colors.groupedBackground,
       body: CustomScrollView(
@@ -60,6 +64,22 @@ class RulesScreen extends ConsumerWidget {
             )
           else
             SliverToBoxAdapter(child: _RuleList(rules: list)),
+          if (describable)
+            SliverToBoxAdapter(
+              child: InsetGroup(
+                footer: l10n.rulesDescribeRuleFooter,
+                children: [
+                  GroupedRow(
+                    key: const ValueKey('describe-rule'),
+                    leading: Icon(LoupeIcons.ask, color: colors.unreadDot, size: 22),
+                    title: l10n.rulesDescribeRule,
+                    titleStyle: styles.body.copyWith(color: colors.unreadDot),
+                    chevron: false,
+                    onTap: () => unawaited(describeRule(context)),
+                  ),
+                ],
+              ),
+            ),
           if (serverAccounts.isNotEmpty)
             SliverToBoxAdapter(
               child: InsetGroup(

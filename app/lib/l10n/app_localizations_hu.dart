@@ -4410,6 +4410,201 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Szabály leírása…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Írd le egy mondatban, mit csináljon a szabály. A Loupe javaslatát te ellenőrzöd, és semmi sem mentődik el, amíg a szabályszerkesztőben el nem mented.';
+
+  @override
+  String get rulesDescribeTitle => 'Szabály leírása';
+
+  @override
+  String get rulesDescribeAccount => 'Fiók';
+
+  @override
+  String get rulesDescribeHint => 'Helyezd át a Harbor Coffee nyugtáit a Receipts mappába';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Csak ezt a mondatot, valamint $account mappa- és címkeneveit használja, a leveleidet soha.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Szabályjavaslat kérése';
+
+  @override
+  String get rulesDescribeWorking => 'Szabály összeállítása…';
+
+  @override
+  String get rulesDescribeFailed => 'A Loupe nem tudott ebből szabályt készíteni.';
+
+  @override
+  String get rulesDescribeProposed => 'Javasolt szabály';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'A szabályok az itt látható szavakat, címeket és dátumokat keresik, nem azt, hogy miről szól egy üzenet.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Az egyező leveleket ezen a fiókon kívülre küldi: $address.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Ezen a telefonon, $account Beérkező levelek mappájának új leveleire, minden levélellenőrzéskor.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return '$account levelezőszerverén, amint a levél megérkezik. A továbbítás csak ott működik.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Azt, hogy hol fusson, a szabályszerkesztőben választod ki.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ezeket a részeket a Loupe nem tudja elvégezni',
+      one: 'Ezt a részt a Loupe nem tudja elvégezni',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ezek kimaradtak a szabályból, és semmi sem került a helyükre.',
+      one: 'Ez kimaradt a szabályból, és semmi sem került a helyére.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '„$request”';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'A szabályok nem módosíthatják az értesítéseket. Ha egy levelet olvasottként jelölsz meg vagy áthelyezel, az nem ugyanaz, mint elnémítani.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'A Loupe nem ismeri fel az ilyen fajta leveleket. Egy szabály csak az általad választott szavakat keresheti.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return 'Nincs ilyen nevű mappa ebben a fiókban: $account.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Nincs ilyen nevű címke.';
+
+  @override
+  String get rulesDescribeReasonOther => 'A szabályok erre nem képesek.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Szavak, amelyeket a Loupe helyette kereshet:';
+
+  @override
+  String get rulesDescribeQuestions => 'A Loupe-nak tudnia kell';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Próbafuttatás';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'A telefonon lévő levelek ellenőrzése…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$account: $totalString letöltött üzenetből $matchedString egyezne',
+      one: '$account: $totalString letöltött üzenetből $matchedString egyezne',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Egyezne';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Nem egyezne';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Az eszközoldali szabályokat futtató kód csak a telefonra letöltött leveleket ellenőrizte, az Elküldött, a Piszkozatok, a Levélszemét és a Kuka mappát kivéve. A szerveren és a régebbi levelek között több is lehet.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Csak a legújabb $countString üzenetet ellenőrizte.',
+      one: 'Csak a legújabb üzenetet ellenőrizte.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString üzenetet nem lehetett ellenőrizni a szövegük letöltése nélkül.',
+      one: '$countString üzenetet nem lehetett ellenőrizni a szövegének letöltése nélkül.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'A Loupe nem tudta ellenőrizni a telefonon lévő leveleket.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Megnyitás a szabályszerkesztőben';
+
+  @override
+  String get rulesDescribeDemoNote => 'A beépített demó javasolta, nem modell.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Javasolta: $provider. Mentés előtt ellenőrizd.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Nincs ebben a szabályban';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ezeket leírtad, de a Loupe nem tudja megcsinálni őket, ezért kimaradtak, és semmi sem került a helyükre.',
+      one: 'Ezt leírtad, de a Loupe nem tudja megcsinálni, ezért kimaradt, és semmi sem került a helyére.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'A fiókjaidat nem sikerült megnyitni';
 
   @override

@@ -4417,6 +4417,201 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Descrivi una regola…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Scrivi in una frase cosa deve fare una regola. Controlli tu ciò che Loupe propone e non viene salvato nulla finché non lo salvi nell’editor delle regole.';
+
+  @override
+  String get rulesDescribeTitle => 'Descrivi una regola';
+
+  @override
+  String get rulesDescribeAccount => 'Account';
+
+  @override
+  String get rulesDescribeHint => 'Sposta le ricevute di Harbor Coffee in Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Vengono usati solo questa frase e i nomi delle cartelle e dei tag di $account, mai la tua posta.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Proponi regola';
+
+  @override
+  String get rulesDescribeWorking => 'Preparazione della regola…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe non è riuscita a trasformarlo in una regola.';
+
+  @override
+  String get rulesDescribeProposed => 'Regola proposta';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Le regole confrontano le parole, gli indirizzi e le date mostrati qui, non ciò di cui parla un messaggio.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Invia la posta corrispondente a $address, fuori da questo account.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Su questo telefono, sulla nuova posta nella Posta in arrivo di $account, ogni volta che Loupe controlla la posta.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Sul server di posta di $account, all’arrivo della posta. L’inoltro funziona solo lì.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Scegli tu dove eseguirla nell’editor delle regole.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Loupe non può fare queste parti',
+      one: 'Loupe non può fare questa parte',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Sono escluse dalla regola e al loro posto non è stato messo nulla.',
+      one: 'È esclusa dalla regola e al suo posto non è stato messo nulla.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '«$request»';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Le regole non possono modificare le notifiche. Segnare la posta come letta o spostarla non equivale a silenziarla.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe non sa riconoscere questo tipo di posta. Una regola può cercare solo le parole che scegli tu.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return '$account non ha nessuna cartella con quel nome.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Non c’è nessun tag con quel nome.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Le regole non possono farlo.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Parole che Loupe può cercare in alternativa:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe deve sapere';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Simulazione';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Controllo della posta su questo telefono…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Corrisponderebbe a $matchedString su $totalString messaggi scaricati in $account',
+      one: 'Corrisponderebbe a $matchedString su 1 messaggio scaricato in $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Corrisponderebbero';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Non corrisponderebbero';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'È stata controllata solo la posta scaricata su questo telefono, esclusi Inviati, Bozze, Spam e Cestino, dal codice che esegue le regole sul dispositivo. Sul server e nella posta meno recente potrebbe essercene altra.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Sono stati controllati solo i $countString più recenti.',
+      one: 'È stato controllato solo il messaggio più recente.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Non è stato possibile controllare $countString messaggi senza scaricarne il testo.',
+      one: 'Non è stato possibile controllare 1 messaggio senza scaricarne il testo.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe non è riuscita a controllare la posta su questo telefono.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Apri nell’editor delle regole';
+
+  @override
+  String get rulesDescribeDemoNote => 'Proposta dalla demo integrata, non da un modello.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Proposta da $provider. Controllala prima di salvarla.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Non incluso in questa regola';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Li hai descritti, ma Loupe non può farli, quindi sono stati esclusi e al loro posto non è stato messo nulla.',
+      one: 'L’hai descritto, ma Loupe non può farlo, quindi è stato escluso e al suo posto non è stato messo nulla.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Impossibile aprire i tuoi account';
 
   @override

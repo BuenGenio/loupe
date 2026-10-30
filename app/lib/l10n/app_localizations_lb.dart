@@ -4419,6 +4419,201 @@ class AppLocalizationsLb extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Reegel beschreiwen…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Sot an engem Saz, wat eng Reegel maache soll. Dir kontrolléiert, wat Loupe proposéiert, an et gëtt näischt gespäichert, bis Dir et am Reegel-Editor späichert.';
+
+  @override
+  String get rulesDescribeTitle => 'Reegel beschreiwen';
+
+  @override
+  String get rulesDescribeAccount => 'Kont';
+
+  @override
+  String get rulesDescribeHint => 'Quittunge vun Harbor Coffee an den Dossier Receipts verréckelen';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Nëmmen dëse Saz an d’Nimm vun den Dossieren an Tags vun $account gi benotzt, ni Är Mailen.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Reegel proposéieren';
+
+  @override
+  String get rulesDescribeWorking => 'D’Reegel gëtt ausgeschafft…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe konnt doraus keng Reegel maachen.';
+
+  @override
+  String get rulesDescribeProposed => 'Proposéiert Reegel';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Reegele reagéieren op d’Wierder, Adressen an Datumen, déi hei stinn, net drop, ëm wat et an engem Message geet.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Schéckt passend Mailen un $address, ausserhalb vun dësem Kont.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Op dësem Handy, op neie Mailen an der Inbox vun $account, all Kéier wa Loupe no Maile kuckt.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Um Mailserver vun $account, wa Mailen ukommen. Weiderleede funktionéiert nëmmen do.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Wou se leeft, wielt Dir am Reegel-Editor.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dës Deeler kann Loupe net maachen',
+      one: 'Dësen Deel kann Loupe net maachen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Si ginn aus der Reegel ewechgelooss, an et gouf näischt amplaz dovun agesat.',
+      one: 'Hie gëtt aus der Reegel ewechgelooss, an et gouf näischt amplaz dovun agesat.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '„$request“';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Reegele kënnen Notifikatiounen net änneren. Eng Mail als gelies ze markéieren oder ze verréckelen, ass net datselwecht wéi se stommzeschalten.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe kann dës Zort Mail net erkennen. Eng Reegel ka just op Wierder reagéieren, déi Dir auswielt.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return '$account huet keen Dossier mat deem Numm.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Et gëtt keen Tag mat deem Numm.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Dat kënne Reegelen net.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Wierder, op déi Loupe amplaz reagéiere kann:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe muss wëssen';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Probelaf';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'D’Mailen op dësem Handy ginn iwwerpréift…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Géif op $matchedString vun $totalString erofgeluedene Messagen an $account passen',
+      one: 'Géif op $matchedString vun 1 erofgeluedene Message an $account passen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Géif passen';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Géif net passen';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Iwwerpréift goufen nëmmen d’Mailen, déi op dësen Handy erofgeluede goufen, ausserhalb vu Geschéckt, Entwërf, Spam a Pabeierkuerf, mam Code, deen d’Apparat-Reegelen ausféiert. De Server an eeler Maile kënne méi enthalen.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Nëmmen déi $countString neiste Message goufen iwwerpréift.',
+      one: 'Nëmmen den neiste Message gouf iwwerpréift.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString Message konnten net iwwerpréift ginn, ouni hiren Text erofzelueden.',
+      one: '1 Message konnt net iwwerpréift ginn, ouni säin Text erofzelueden.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe konnt d’Mailen op dësem Handy net iwwerpréiwen.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Am Reegel-Editor opmaachen';
+
+  @override
+  String get rulesDescribeDemoNote => 'Proposéiert vun der agebauter Demo, net vun engem Modell.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Proposéiert vun $provider. Kontrolléiert se, ier Dir se späichert.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Net an dëser Reegel';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dir hutt dës Saache beschriwwen, mee Loupe ka se net maachen, dofir goufe se ewechgelooss an näischt amplaz dovun agesat.',
+      one: 'Dir hutt dat beschriwwen, mee Loupe kann et net maachen, dofir gouf et ewechgelooss an näischt amplaz dovun agesat.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Är Konte konnten net opgemaach ginn';
 
   @override

@@ -4471,6 +4471,208 @@ class AppLocalizationsSr extends AppLocalizations {
   }
 
   @override
+  String get rulesDescribeRule => 'Опиши правило…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Једном реченицом реците шта правило треба да ради. Ви проверавате шта Loupe предлаже, а ништа се не чува док га не сачувате у уређивачу правила.';
+
+  @override
+  String get rulesDescribeTitle => 'Опиши правило';
+
+  @override
+  String get rulesDescribeAccount => 'Налог';
+
+  @override
+  String get rulesDescribeHint => 'Премештај рачуне од Harbor Coffee у фасциклу Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Користе се само ова реченица и називи фасцикли и ознака налога $account, никад ваша пошта.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Предложи правило';
+
+  @override
+  String get rulesDescribeWorking => 'Припрема правила…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe није могао то да претвори у правило.';
+
+  @override
+  String get rulesDescribeProposed => 'Предложено правило';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Правила проверавају речи, адресе и датуме приказане овде, а не то о чему порука говори.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Шаље поруке које одговарају услову на $address, ван овог налога.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'На овом телефону, на нову пошту у пријемном сандучету налога $account, сваки пут када Loupe провери пошту.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'На серверу е-поште налога $account, чим пошта стигне. Прослеђивање ради само тамо.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'У уређивачу правила бирате где ће се извршавати.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Loupe не може да уради $count делова',
+      few: 'Loupe не може да уради $count дела',
+      one: 'Loupe не може да уради $count део',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count делова је изостављено из правила и ништа није стављено уместо њих.',
+      few: '$count дела су изостављена из правила и ништа није стављено уместо њих.',
+      one: '$count део је изостављен из правила и ништа није стављено уместо њега.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '„$request“';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Правила не могу да мењају обавештења. Означавање поште као прочитане или њено премештање није исто што и утишавање.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe не може да препозна ову врсту поште. Правило може да препознаје само речи које изаберете.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return 'Налог $account нема фасциклу с тим називом.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Нема ознаке с тим називом.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Правила то не могу да ураде.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Речи које Loupe уместо тога може да препозна:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe треба да зна';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Пробно извршавање';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Провера поште на овом телефону…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Правило би обухватило $matchedString од $totalString преузетих порука у налогу $account',
+      few: 'Правило би обухватило $matchedString од $totalString преузете поруке у налогу $account',
+      one: 'Правило би обухватило $matchedString од $totalString преузете поруке у налогу $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Одговарале би';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Не би одговарале';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Проверена је само пошта преузета на овај телефон, ван фасцикли Послато, Нацрти, Непожељно и Смеће, кодом који извршава правила на уређају. На серверу и у старијој пошти може бити још порука.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Проверено је само $countString најновијих порука.',
+      few: 'Проверене су само $countString најновије поруке.',
+      one: 'Проверена је само $countString најновија порука.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString порука није могло да се провери без преузимања њиховог текста.',
+      few: '$countString поруке нису могле да се провере без преузимања њиховог текста.',
+      one: '$countString порука није могла да се провери без преузимања њеног текста.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe није могао да провери пошту на овом телефону.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Отвори у уређивачу правила';
+
+  @override
+  String get rulesDescribeDemoNote => 'Предложио уграђени демо, а не модел.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Предложио $provider. Проверите правило пре него што га сачувате.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Није у овом правилу';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Описали сте $count делова које Loupe не може да уради, па је изостављено и ништа није стављено уместо њих.',
+      few: 'Описали сте $count дела која Loupe не може да уради, па су изостављена и ништа није стављено уместо њих.',
+      one: 'Описали сте $count део који Loupe не може да уради, па је изостављен и ништа није стављено уместо њега.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appLiveGateTitle => 'Ваши налози нису могли да се отворе';
 
   @override
