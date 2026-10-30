@@ -6,6 +6,7 @@ import 'package:mail_model/mail_model.dart';
 import 'demo_attachments.dart';
 import 'demo_bodies.dart';
 import 'demo_calendar.dart';
+import 'demo_matters.dart';
 import 'demo_mime.dart';
 import 'demo_openpgp.dart';
 import 'demo_patches.dart';
@@ -170,6 +171,7 @@ final class DemoSeed {
     _espNewsletters();
     calendarCases();
     privateAiCases();
+    matterCases();
   }
 
   void _accounts() {

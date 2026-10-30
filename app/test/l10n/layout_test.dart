@@ -29,6 +29,7 @@ const _routes = <String, String>{
   'Compose': Routes.compose,
   'Outbox': Routes.outbox,
   'Snoozed': Routes.snoozed,
+  'Matter': '/matter/demo-quay-street',
 };
 
 /// A small phone: 4.7", which is as narrow as Android gets in practice.

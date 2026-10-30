@@ -22,6 +22,8 @@ import '../keyboard/mail_commands.dart';
 import '../openpgp/content_loader.dart';
 import '../openpgp/pgp_status.dart';
 import '../mailing_lists/list_providers.dart';
+import '../matters/matter_providers.dart';
+import '../matters/matter_sheets.dart';
 import 'conversation_bar.dart';
 import 'changes/comparison_content.dart';
 import 'changes/email_changes_sheet.dart';
@@ -452,6 +454,10 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
     final muted = mailingListsOf(_repo) == null
         ? null
         : (ref.read(mutedThreadsProvider).value ?? const <String>{}).contains(m.threadId);
+    final conversation = _messages ?? [m];
+    final inMatter = matterRecordsOf(_repo) == null
+        ? null
+        : mattersWith(ref.read(mattersProvider).value ?? const <Matter>[], conversation).isNotEmpty;
     final action = await showMessageMenu(
       context,
       message: m,
@@ -459,6 +465,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
       mailboxRole: role,
       snoozed: _mailActions.isSnoozed(m),
       muted: muted,
+      inMatter: inMatter,
       canCompare: (_messages?.length ?? 0) > 1,
     );
     if (action == null || !mounted) return;
@@ -472,6 +479,10 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
         _reply(m, ComposeMode.reply, toList: true);
       case MessageAction.mute || MessageAction.unmute:
         await _setMuted(m, action == MessageAction.mute);
+      case MessageAction.addToMatter:
+        await showAddToMatterSheet(context, ref, m, conversation: conversation);
+      case MessageAction.removeFromMatter:
+        await removeFromMatter(context, ref, m, conversation: conversation);
       case MessageAction.forward:
         _reply(m, ComposeMode.forward);
       case MessageAction.toggleSeen:
@@ -781,6 +792,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
               ),
             ),
           ),
+          SliverToBoxAdapter(child: MatterLinks(messages: messages)),
           SliverToBoxAdapter(child: Divider(color: colors.separator)),
           // Built eagerly (threads are short) so the target can be scrolled to.
           SliverToBoxAdapter(

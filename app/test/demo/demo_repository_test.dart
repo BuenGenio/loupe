@@ -32,7 +32,7 @@ void main() {
 
   test('has a realistic mailbox: ~150 messages, a long thread, tags, flags, VIPs', () async {
     final emails = await all();
-    expect(emails.length, inInclusiveRange(130, 190));
+    expect(emails.length, inInclusiveRange(130, 200));
     expect(emails.every((e) => now.difference(e.receivedAt).inDays <= 45), isTrue);
     final threads = <String, int>{};
     for (final e in emails) {

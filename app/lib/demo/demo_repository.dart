@@ -8,6 +8,7 @@ import 'package:mail_model/mail_model.dart';
 
 import 'demo_calendar.dart';
 import 'demo_data.dart';
+import 'demo_matters.dart';
 import 'demo_mime.dart';
 import 'demo_openpgp.dart';
 import 'demo_rules.dart';
@@ -74,7 +75,8 @@ final class _Queued {
 ///   [SearchResults.fromServerIds]); acting on such a message syncs it.
 /// - Sending to an address at a `.invalid` domain fails, so the Outbox
 ///   shows a failed message with an error and Retry.
-class DemoMailRepository implements MailRepository, MailingLists, MailSubscriptions, DecryptedMail, CalendarRecords {
+class DemoMailRepository
+    implements MailRepository, MailingLists, MailSubscriptions, DecryptedMail, CalendarRecords, MatterRecords {
   DemoMailRepository({
     this.latency = const DemoLatency(),
     DateTime Function()? clock,
@@ -105,6 +107,9 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
     }
     _vips.addAll(DemoPeople.vips);
     calendarRecords.addAll(data.seedCalendarRecords());
+    for (final m in data.seedMatters()) {
+      _matters[m.id] = m;
+    }
     _startupSync();
   }
 
@@ -137,6 +142,9 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
   /// What the device remembers about invitations ([CalendarRecords]), by
   /// UID and RECURRENCE-ID.
   final calendarRecords = <(String, String), String>{};
+
+  /// Matters ([MatterRecords]), by id; "Buying 14 Quay Street" to start with.
+  final _matters = <String, Matter>{};
 
   /// Documents "on the server": account id → document name → content.
   /// Tests write here to play another device.
@@ -444,6 +452,9 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
     _serverOnly.remove(accountId);
     _sync.remove(accountId);
     serverDocuments.remove(accountId);
+    for (final m in [..._matters.values]) {
+      _matters[m.id] = _withAccounts(m);
+    }
     _notify();
   }
 
@@ -861,6 +872,85 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
     } else {
       calendarRecords[(uid, recurrenceId)] = data;
     }
+  }
+
+  // Matters ---------------------------------------------------------------
+
+  /// [m] without what belongs to accounts that are gone, as the store keeps it.
+  Matter _withAccounts(Matter m) {
+    final known = {for (final a in _accounts) a.id};
+    return Matter(
+      id: m.id,
+      name: m.name,
+      createdAt: m.createdAt,
+      updatedAt: m.updatedAt,
+      members: [
+        for (final x in m.members)
+          if (known.contains(x.accountId)) x,
+      ],
+      exclusions: [
+        for (final x in m.exclusions)
+          if (known.contains(x.accountId)) x,
+      ],
+      history: [
+        for (final e in m.history)
+          if (e.accountId == null || known.contains(e.accountId)) e,
+      ],
+    );
+  }
+
+  @override
+  Stream<List<Matter>> watchMatters() =>
+      _watch(() => [..._matters.values]..sort((a, b) => a.createdAt.compareTo(b.createdAt)));
+
+  @override
+  Future<void> writeMatters({List<Matter> save = const [], List<String> delete = const []}) async {
+    for (final id in delete) {
+      _matters.remove(id);
+    }
+    for (final m in save) {
+      _matters[m.id] = _withAccounts(m);
+    }
+    _notify();
+  }
+
+  /// One copy of each message of [matter]'s conversations outside Trash and
+  /// Junk, oldest first.
+  List<EmailSummary> _matterMessages(Matter matter) {
+    final seen = <String>{};
+    return [
+      for (final m in [..._messages.values]..sort((a, b) => a.summary.receivedAt.compareTo(b.summary.receivedAt)))
+        if (!(_mailboxes[m.summary.mailboxId]?.let(_isBin) ?? true) &&
+            matter.members.any(
+              (x) => x.accountId == m.summary.accountId && x.threadId == (m.summary.threadId ?? m.id),
+            ) &&
+            seen.add('${m.summary.accountId}|${m.summary.messageIdHeader ?? m.id}'))
+          m.summary,
+    ];
+  }
+
+  @override
+  Stream<List<EmailSummary>> watchMatterMessages(String matterId) => _watch(() {
+    final matter = _matters[matterId];
+    return matter == null ? const <EmailSummary>[] : _matterMessages(matter);
+  });
+
+  @override
+  Stream<Map<String, DateTime>> watchMatterActivity() => _watch(
+    () => {
+      for (final m in _matters.values)
+        if (_matterMessages(m).lastOrNull case final latest?) m.id: latest.receivedAt,
+    },
+  );
+
+  @override
+  Future<EmailSummary?> locateMessage(MessageRef ref) async {
+    final found = [
+      for (final m in _messages.values)
+        if (ref.matches(m.summary)) m.summary,
+    ];
+    if (found.isEmpty) return null;
+    return found.where((s) => !(_mailboxes[s.mailboxId]?.let(_isBin) ?? true)).firstOrNull ?? found.first;
   }
 
   Future<Uint8List> _bytesOf(DemoAttachment a) async {

@@ -504,6 +504,34 @@ Issue #27. An invitation shows as a card above the message body (`InvitationCard
 - **Privacy:** nothing an invitation links to is fetched (no ATTACH, no images, no URL); Map and Join open only
   on a tap.
 
+## Matters
+
+Plan §8. A matter groups conversations about one affair (buying a house: the adviser, the solicitor, the lender,
+the removal firm), whoever sent them and wherever they are filed. Mailboxes › Matters lists them; the Matter screen
+(`app/lib/features/matters/`) shows Where Things Stand, open actions and waits, the conversations, suggestions,
+documents, the people involved, every message in order and the matter's own history.
+
+- **Records, not folders** (`MatterRecords`, `Matter` in mail_model): members are conversations by account and
+  thread id, each with a `MessageRef`, so filing a message, a move by another client or a UIDVALIDITY reset keeps it
+  (`locateMessage`: the id alias, else the Message-ID guarded by subject and date); a member whose thread came up
+  empty is looked for and followed (a late reply can merge threads). Removals and declined suggestions are kept as
+  exclusions. The edits (add, remove, merge, split, rename) are `Matter`'s, as values; the repositories only store
+  them, so the demo and the store agree. Deleting a matter leaves the mail alone.
+- **Store** (schema version 10): `matters`, `matter_members`, `matter_exclusions`, `matter_events`, on this device
+  only. Members, exclusions and history entries naming a conversation cascade with their account; a write skips
+  accounts already gone. `watchMatterMessages` is one join over the members' threads: one copy per message (Inbox
+  first, Gmail's All Mail last), none in Trash or Junk.
+- **Suggestions** (`findMatterCandidates`): only local search, no model and no server. Conversations mentioning the
+  matter's references (QS-4471), addresses (14 Quay Street) or the distinctive part of its name come first; a shared
+  sender or domain alone is weak and says so (one adviser handles several cases); list mail and shared free-mail
+  domains don't count. Nothing is added without a tap; Not This One is remembered.
+- **Where Things Stand** (`MatterStatusTask`, Private AI, on a tap): the newest messages' own text, bounded; each
+  statement names a message and quotes it, and its figures must be in the quote. The task has no date in it, so the
+  same messages hit `AiService`'s cache and the status is only written again when they change. A provider off the
+  phone gets no mail of local-only accounts and no encrypted mail, and the card says so.
+- **Not yet:** the tag and Smart Mailbox projections of membership, sync between devices, model-assisted grouping,
+  and the open actions (`matterOpenItemsProvider` is the hook for the action folders).
+
 ## Wide screens and keyboards
 
 The `/` route is `MailHome`: Mailboxes on a phone, mail panes from 840 dp. In the panes `mailSelectionProvider` says

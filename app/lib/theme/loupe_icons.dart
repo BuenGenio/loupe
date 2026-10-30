@@ -292,6 +292,18 @@ abstract final class LoupeIcons {
   static const IconData mobileData = FluentIcons.cellular_data_1_24_regular;
   static const IconData fileError = FluentIcons.document_error_24_regular;
 
+  // Matters -----------------------------------------------------------------
+
+  /// A matter: conversations about one affair, grouped by the user.
+  static const IconData matter = FluentIcons.briefcase_24_regular;
+  static const IconData addToMatter = FluentIcons.briefcase_24_filled;
+  static const IconData removeFromMatter = FluentIcons.link_dismiss_24_regular;
+  static const IconData splitMatter = FluentIcons.arrow_split_24_regular;
+  static const IconData mergeMatter = FluentIcons.merge_24_regular;
+
+  /// A suggestion that rests on a mention of the matter's words.
+  static const IconData suggestion = FluentIcons.lightbulb_24_regular;
+
   // Calendar invitations ------------------------------------------------------
 
   static const IconData recurring = FluentIcons.arrow_repeat_all_24_regular;
