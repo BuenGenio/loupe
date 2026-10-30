@@ -24,7 +24,9 @@ const l = (path: string) => localize(lang, path);
   image={lang === 'en' ? '/og/download.jpg' : `/og/${lang}/download.jpg`}
   jsonLd={[softwareApplication(), breadcrumbs([{ name: 'Loupe', path: l('/') }, { name: t('download.h1'), path: l('/download/') }])]}
 >
-  <section class="top">
+  <section class="top night">
+    <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="gridlines" aria-hidden="true"></div>
     <div class="wrap grid">
       <div class="intro">
         <p class="eyebrow"><Icon name="arrow-download" size={16} /> {t('download.eyebrow')}</p>
@@ -117,8 +119,7 @@ const l = (path: string) => localize(lang, path);
 
 <style>
   .top {
-    padding-block: clamp(40px, 6vw, 80px);
-    background: radial-gradient(800px 400px at 100% 0%, color-mix(in srgb, var(--glass) 70%, transparent), transparent 70%);
+    padding-block: clamp(48px, 7vw, 88px) clamp(40px, 6vw, 72px);
   }
 
   .grid {
@@ -129,7 +130,9 @@ const l = (path: string) => localize(lang, path);
   }
 
   h1 {
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2.75rem, 6.6vw, 4.6rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
   }
 
   .why {
