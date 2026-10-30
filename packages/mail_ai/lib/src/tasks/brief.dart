@@ -376,26 +376,45 @@ Rules:
 
   /// Finds [quote] in the message. Whitespace is compared normalised; the
   /// match must be in this message's own lines, not only in quoted ones.
+  ///
+  /// Plain text is often wrapped at 72 columns or so, and a model copies a
+  /// sentence across the wrap with a space (or keeps a break the text doesn't
+  /// have). A line break and a space are one character each in normalised
+  /// text, so when the exact passage isn't there they are compared as equal;
+  /// the offsets stay right and the evidence keeps the message's own text.
   _Location _locate(String quote) {
     final needle = BriefInput.normaliseWhitespace(quote);
     if (needle.isEmpty) return const _NotFound();
-    final hay = message.normalisedText;
+    final text = message.normalisedText;
+    final exact = _search(text, needle, text);
+    if (exact is _Located) return exact;
+    final wrapped = text.contains('\n') || needle.contains('\n')
+        ? _search(text.replaceAll('\n', ' '), needle.replaceAll('\n', ' '), text)
+        : const _NotFound();
+    if (wrapped is _Located) return wrapped;
+    for (final name in message.attachments) {
+      if (BriefInput.normaliseWhitespace(name) == needle) {
+        return _Located(BriefEvidence(quote: needle, start: -1, end: -1));
+      }
+    }
+    return exact is _OnlyQuotedMail || wrapped is _OnlyQuotedMail ? const _OnlyQuotedMail() : const _NotFound();
+  }
+
+  /// The first place [needle] is in [hay] outside quoted mail. [hay] has
+  /// [text]'s offsets; quoted lines are told by [text]'s line breaks.
+  static _Location _search(String hay, String needle, String text) {
     var from = 0;
     var sawQuotedOnly = false;
     while (true) {
       final at = hay.indexOf(needle, from);
       if (at < 0) break;
-      if (_inQuotedLine(hay, at, at + needle.length)) {
+      final end = at + needle.length;
+      if (_inQuotedLine(text, at, end)) {
         sawQuotedOnly = true;
         from = at + 1;
         continue;
       }
-      return _Located(BriefEvidence(quote: needle, start: at, end: at + needle.length));
-    }
-    for (final name in message.attachments) {
-      if (BriefInput.normaliseWhitespace(name) == needle) {
-        return _Located(BriefEvidence(quote: needle, start: -1, end: -1));
-      }
+      return _Located(BriefEvidence(quote: text.substring(at, end), start: at, end: end));
     }
     return sawQuotedOnly ? const _OnlyQuotedMail() : const _NotFound();
   }
