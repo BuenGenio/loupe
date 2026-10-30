@@ -5424,21 +5424,21 @@ class AppLocalizationsGl extends AppLocalizations {
   String get sharedNotJunk => 'Non é correo lixo';
 
   @override
-  String get documentsTitle => 'Documents';
+  String get documentsTitle => 'Documentos';
 
   @override
-  String get documentsSearchPlaceholder => 'Search in Documents';
+  String get documentsSearchPlaceholder => 'Buscar nos documentos';
 
   @override
-  String get documentsSearchInDocuments => 'Search in Documents';
+  String get documentsSearchInDocuments => 'Buscar en Documentos';
 
   @override
   String documentsLibraryCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count documentos descargados',
+      one: '1 documento descargado',
     );
     return '$_temp0';
   }
@@ -5448,14 +5448,14 @@ class AppLocalizationsGl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count documentos descargados',
+      one: '1 documento descargado',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable can’t be read',
-      one: '1 can’t be read',
+      other: '$unreadable non se poden ler',
+      one: '1 non se pode ler',
     );
     return '$_temp0 · $_temp1';
   }
@@ -5465,8 +5465,8 @@ class AppLocalizationsGl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Buscouse en $count documentos descargados',
+      one: 'Buscouse en 1 documento descargado',
     );
     return '$_temp0';
   }
@@ -5476,129 +5476,132 @@ class AppLocalizationsGl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Buscouse en $count documentos descargados',
+      one: 'Buscouse en 1 documento descargado',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable couldn’t be read',
-      one: '1 couldn’t be read',
+      other: '$unreadable non se puideron ler',
+      one: '1 non se puido ler',
     );
     return '$_temp0 · $_temp1';
   }
 
   @override
   String get documentsScopeNote =>
-      'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.';
+      'Busca nos anexos deste teléfono, non en toda a túa caixa de correo. Abre un anexo para engadilo.';
 
   @override
-  String get documentsEmpty => 'No Documents Yet';
+  String get documentsEmpty => 'Aínda non hai documentos';
 
   @override
   String get documentsEmptyDetail =>
-      'PDFs and text files you open from mail show up here, so you can search inside them.';
+      'Os PDF e os ficheiros de texto que abras desde o correo aparecen aquí, para que poidas buscar no seu contido.';
 
   @override
-  String get documentsNoResults => 'No Matches';
+  String get documentsNoResults => 'Sen coincidencias';
 
   @override
   String documentsNoResultsDetail(String query) {
-    return 'No downloaded document contains “$query”.';
+    return 'Ningún documento descargado contén “$query”.';
   }
 
   @override
   String documentsMatchedOnPage(int page) {
-    return 'Matched on page $page';
+    return 'Coincidencia na páxina $page';
   }
 
   @override
   String documentsMatchedOnLine(int line) {
-    return 'Matched on line $line';
+    return 'Coincidencia na liña $line';
   }
 
   @override
   String documentsMoreMatches(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count more matches', one: '1 more match');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count coincidencias máis',
+      one: '1 coincidencia máis',
+    );
     return '$_temp0';
   }
 
   @override
   String documentsPage(int page) {
-    return 'Page $page';
+    return 'Páxina $page';
   }
 
   @override
-  String get documentsReading => 'Reading…';
+  String get documentsStatusNotDownloaded => 'Non descargado: ábreo para lelo e buscar nel.';
 
   @override
-  String get documentsStatusNotDownloaded => 'Not downloaded: open it to read and search it.';
+  String get documentsStatusEncrypted => 'Protexido con contrasinal: Loupe non o pode ler.';
 
   @override
-  String get documentsStatusEncrypted => 'Password protected: Loupe can’t read it.';
+  String get documentsStatusNoText =>
+      'Non se atopou texto: pode que sexa un documento escaneado ou unha foto, que Loupe aínda non pode ler.';
 
   @override
-  String get documentsStatusNoText => 'No text found: it may be a scan or a photo, which Loupe can’t read yet.';
+  String get documentsStatusEmpty => 'Este ficheiro non ten texto.';
 
   @override
-  String get documentsStatusEmpty => 'This file has no text.';
+  String get documentsStatusUnsupported => 'Loupe aínda non pode ler este tipo de documento.';
 
   @override
-  String get documentsStatusUnsupported => 'Loupe can’t read this kind of document yet.';
+  String get documentsStatusTooLarge => 'É demasiado grande para lelo neste teléfono.';
 
   @override
-  String get documentsStatusTooLarge => 'Too large to read on this phone.';
-
-  @override
-  String get documentsStatusDamaged => 'Couldn’t be read: the file may be damaged.';
+  String get documentsStatusDamaged => 'Non se puido ler: pode que o ficheiro estea danado.';
 
   @override
   String documentsStatusPartial(int read, int total) {
-    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total pages', one: '1 page');
-    return 'Read $read of $_temp0; the rest isn’t searched.';
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total páxinas', one: '1 páxina');
+    return 'Léronse $read de $_temp0; o resto non se inclúe na busca.';
   }
 
   @override
-  String get documentsStatusPartialText => 'Only the beginning was read; the rest isn’t searched.';
+  String get documentsStatusPartialText => 'Só se leu o principio; o resto non se inclúe na busca.';
 
   @override
-  String get documentsOpenDocument => 'Open Document';
+  String get documentsOpenDocument => 'Abrir o documento';
 
   @override
-  String get documentsOpenMessage => 'Open Message';
+  String get documentsOpenMessage => 'Abrir a mensaxe';
 
   @override
-  String get documentsDetails => 'Document Details';
+  String get documentsDetails => 'Detalles do documento';
 
   @override
   String documentsFingerprint(String hash) {
-    return 'Contents fingerprint $hash';
+    return 'Impresión dixital do contido $hash';
   }
 
   @override
-  String get documentsPagesHeader => 'Text by Page';
+  String get documentsPagesHeader => 'Texto por páxina';
 
   @override
-  String get documentsVersionsHeader => 'Other Copies';
+  String get documentsVersionsHeader => 'Outras copias';
 
   @override
   String documentsVersionDifferentEarlier(String date) {
-    return 'Different contents from the earlier copy ($date)';
+    return 'Contido distinto do da copia anterior ($date)';
   }
 
   @override
   String documentsVersionDifferentLater(String date) {
-    return 'A newer copy ($date) has different contents';
+    return 'Unha copia máis recente ($date) ten un contido distinto';
   }
 
   @override
   String documentsVersionSame(String date) {
-    return 'Same contents as the copy of $date';
+    return 'Mesmo contido que a copia do $date';
   }
 
   @override
   String documentsVersionNotDownloaded(String date) {
-    return 'Same name as the copy of $date; contents not compared until both are downloaded';
+    return 'Mesmo nome que a copia do $date; o contido non se compara ata que as dúas estean descargadas';
   }
 
   @override
@@ -5607,125 +5610,126 @@ class AppLocalizationsGl extends AppLocalizations {
   }
 
   @override
-  String get documentsNoFactChanges => 'The Key Facts are the same; other text differs.';
+  String get documentsNoFactChanges => 'Os datos clave son iguais; hai diferenzas noutras partes do texto.';
 
   @override
-  String get documentsKeyFacts => 'Key Facts';
+  String get documentsKeyFacts => 'Datos clave';
 
   @override
-  String get documentsKeyFactsFind => 'Find Key Facts';
+  String get documentsKeyFactsFind => 'Atopar os datos clave';
 
   @override
-  String get documentsKeyFactsWorking => 'Reading the document…';
+  String get documentsKeyFactsWorking => 'Lendo o documento…';
 
   @override
-  String get documentsKeyFactsFailed => 'Couldn’t find the Key Facts.';
+  String get documentsKeyFactsFailed => 'Non se puideron atopar os datos clave.';
 
   @override
-  String get documentsKeyFactsDemoNote => 'Made by the built-in demo, not a model.';
+  String get documentsKeyFactsDemoNote => 'Xerados pola demostración integrada, non por un modelo.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
-    return 'Made by $provider.';
+    return 'Xerados por $provider.';
   }
 
   @override
-  String get documentsKeyFactsHint => 'Tap a fact to see where the document says it.';
+  String get documentsKeyFactsHint => 'Toca un dato para ver onde o di o documento.';
 
   @override
-  String get documentsKeyFactsNone => 'Loupe has no Key Facts for this kind of document yet.';
+  String get documentsKeyFactsNone => 'Loupe aínda non ten datos clave para este tipo de documento.';
 
   @override
-  String get documentsKeyFactsPartial => 'Only the first pages were read; facts on later pages are unknown.';
+  String get documentsKeyFactsPartial =>
+      'Só se leron as primeiras páxinas; descoñécense os datos das páxinas seguintes.';
 
   @override
-  String get documentsKeyFactsNotStated => 'Not stated';
+  String get documentsKeyFactsNotStated => 'Non indicado';
 
   @override
-  String get documentsKeyFactsConflicting => 'Stated differently';
+  String get documentsKeyFactsConflicting => 'Valores distintos';
 
   @override
   String documentsEvidenceAlso(int page) {
-    return 'Also on page $page:';
+    return 'Tamén na páxina $page:';
   }
 
   @override
-  String get documentsTypeMortgageIllustration => 'Mortgage illustration';
+  String get documentsTypeMortgageIllustration => 'Hipoteca (FEIN)';
 
   @override
-  String get documentsTypeInvoice => 'Invoice';
+  String get documentsTypeInvoice => 'Factura';
 
   @override
-  String get documentsTypeBooking => 'Booking';
+  String get documentsTypeBooking => 'Reserva';
 
   @override
-  String get documentsTypeOther => 'Other document';
+  String get documentsTypeOther => 'Outro documento';
 
   @override
-  String get documentsFieldInitialRate => 'Initial rate';
+  String get documentsFieldInitialRate => 'Tipo de xuro inicial';
 
   @override
-  String get documentsFieldRatePeriod => 'Rate period';
+  String get documentsFieldRatePeriod => 'Duración do tipo inicial';
 
   @override
-  String get documentsFieldMonthlyPayment => 'Monthly payment';
+  String get documentsFieldMonthlyPayment => 'Cota mensual';
 
   @override
-  String get documentsFieldTerm => 'Term';
+  String get documentsFieldTerm => 'Prazo';
 
   @override
-  String get documentsFieldLoanAmount => 'Loan amount';
+  String get documentsFieldLoanAmount => 'Importe do préstamo';
 
   @override
-  String get documentsFieldArrangementFee => 'Arrangement fee';
+  String get documentsFieldArrangementFee => 'Comisión de apertura';
 
   @override
-  String get documentsFieldValuationFee => 'Valuation fee';
+  String get documentsFieldValuationFee => 'Gastos de taxación';
 
   @override
-  String get documentsFieldBrokerFee => 'Broker fee';
+  String get documentsFieldBrokerFee => 'Honorarios do intermediario';
 
   @override
-  String get documentsFieldEarlyRepaymentCharges => 'Early repayment charges';
+  String get documentsFieldEarlyRepaymentCharges => 'Comisión por amortización anticipada';
 
   @override
-  String get documentsFieldTotalAmountPayable => 'Total amount payable';
+  String get documentsFieldTotalAmountPayable => 'Importe total debido';
 
   @override
-  String get documentsFieldAmountDue => 'Amount due';
+  String get documentsFieldAmountDue => 'Importe por pagar';
 
   @override
-  String get documentsFieldCurrency => 'Currency';
+  String get documentsFieldCurrency => 'Moeda';
 
   @override
-  String get documentsFieldDueDate => 'Due date';
+  String get documentsFieldDueDate => 'Data de vencemento';
 
   @override
-  String get documentsFieldPayee => 'Payee';
+  String get documentsFieldPayee => 'Beneficiario';
 
   @override
-  String get documentsFieldReference => 'Reference';
+  String get documentsFieldReference => 'Referencia';
 
   @override
   String get documentsFieldSubtotal => 'Subtotal';
 
   @override
-  String get documentsFieldTax => 'Tax';
+  String get documentsFieldTax => 'Impostos';
 
   @override
-  String get documentsFieldDate => 'Date';
+  String get documentsFieldDate => 'Data';
 
   @override
-  String get documentsFieldTime => 'Time';
+  String get documentsFieldTime => 'Hora';
 
   @override
-  String get documentsFieldTimeZone => 'Time zone';
+  String get documentsFieldTimeZone => 'Fuso horario';
 
   @override
-  String get documentsFieldAddress => 'Address';
+  String get documentsFieldAddress => 'Enderezo';
 
   @override
-  String get documentsFieldPerson => 'Person';
+  String get documentsFieldPerson => 'Persoa';
 
   @override
   String get accountSetupTitle => 'Engadir conta';

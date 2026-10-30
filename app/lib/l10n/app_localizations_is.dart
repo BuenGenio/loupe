@@ -5406,21 +5406,21 @@ class AppLocalizationsIs extends AppLocalizations {
   String get sharedNotJunk => 'Ekki ruslpóstur';
 
   @override
-  String get documentsTitle => 'Documents';
+  String get documentsTitle => 'Skjöl';
 
   @override
-  String get documentsSearchPlaceholder => 'Search in Documents';
+  String get documentsSearchPlaceholder => 'Leita í skjölum';
 
   @override
-  String get documentsSearchInDocuments => 'Search in Documents';
+  String get documentsSearchInDocuments => 'Leita í skjölum';
 
   @override
   String documentsLibraryCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count sótt skjöl',
+      one: '$count sótt skjal',
     );
     return '$_temp0';
   }
@@ -5430,14 +5430,14 @@ class AppLocalizationsIs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count sótt skjöl',
+      one: '$count sótt skjal',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable can’t be read',
-      one: '1 can’t be read',
+      other: 'ekki hægt að lesa $unreadable',
+      one: 'ekki hægt að lesa $unreadable',
     );
     return '$_temp0 · $_temp1';
   }
@@ -5447,8 +5447,8 @@ class AppLocalizationsIs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Leitað í $count sóttum skjölum',
+      one: 'Leitað í $count sóttu skjali',
     );
     return '$_temp0';
   }
@@ -5458,129 +5458,132 @@ class AppLocalizationsIs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Leitað í $count sóttum skjölum',
+      one: 'Leitað í $count sóttu skjali',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable couldn’t be read',
-      one: '1 couldn’t be read',
+      other: 'ekki tókst að lesa $unreadable',
+      one: 'ekki tókst að lesa $unreadable',
     );
     return '$_temp0 · $_temp1';
   }
 
   @override
   String get documentsScopeNote =>
-      'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.';
+      'Leitar í viðhengjum í þessum síma, ekki í öllu pósthólfinu þínu. Opnaðu viðhengi til að bæta því við.';
 
   @override
-  String get documentsEmpty => 'No Documents Yet';
+  String get documentsEmpty => 'Engin skjöl enn';
 
   @override
   String get documentsEmptyDetail =>
-      'PDFs and text files you open from mail show up here, so you can search inside them.';
+      'PDF-skjöl og textaskrár sem þú opnar úr pósti birtast hér svo þú getir leitað í þeim.';
 
   @override
-  String get documentsNoResults => 'No Matches';
+  String get documentsNoResults => 'Ekkert passar';
 
   @override
   String documentsNoResultsDetail(String query) {
-    return 'No downloaded document contains “$query”.';
+    return 'Ekkert sótt skjal inniheldur „$query“.';
   }
 
   @override
   String documentsMatchedOnPage(int page) {
-    return 'Matched on page $page';
+    return 'Fannst á síðu $page';
   }
 
   @override
   String documentsMatchedOnLine(int line) {
-    return 'Matched on line $line';
+    return 'Fannst í línu $line';
   }
 
   @override
   String documentsMoreMatches(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count more matches', one: '1 more match');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count samsvaranir í viðbót',
+      one: '$count samsvörun í viðbót',
+    );
     return '$_temp0';
   }
 
   @override
   String documentsPage(int page) {
-    return 'Page $page';
+    return 'Síða $page';
   }
 
   @override
-  String get documentsReading => 'Reading…';
+  String get documentsStatusNotDownloaded => 'Ekki sótt: opnaðu það til að lesa það og leita í því.';
 
   @override
-  String get documentsStatusNotDownloaded => 'Not downloaded: open it to read and search it.';
+  String get documentsStatusEncrypted => 'Varið með lykilorði: Loupe getur ekki lesið það.';
 
   @override
-  String get documentsStatusEncrypted => 'Password protected: Loupe can’t read it.';
+  String get documentsStatusNoText =>
+      'Enginn texti fannst: þetta gæti verið skönnuð mynd eða ljósmynd, sem Loupe getur ekki lesið enn.';
 
   @override
-  String get documentsStatusNoText => 'No text found: it may be a scan or a photo, which Loupe can’t read yet.';
+  String get documentsStatusEmpty => 'Enginn texti er í þessari skrá.';
 
   @override
-  String get documentsStatusEmpty => 'This file has no text.';
+  String get documentsStatusUnsupported => 'Loupe getur ekki enn lesið þessa tegund skjala.';
 
   @override
-  String get documentsStatusUnsupported => 'Loupe can’t read this kind of document yet.';
+  String get documentsStatusTooLarge => 'Of stórt til að lesa í þessum síma.';
 
   @override
-  String get documentsStatusTooLarge => 'Too large to read on this phone.';
-
-  @override
-  String get documentsStatusDamaged => 'Couldn’t be read: the file may be damaged.';
+  String get documentsStatusDamaged => 'Ekki tókst að lesa það: skráin gæti verið skemmd.';
 
   @override
   String documentsStatusPartial(int read, int total) {
-    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total pages', one: '1 page');
-    return 'Read $read of $_temp0; the rest isn’t searched.';
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total síðum', one: '$total síðu');
+    return 'Búið að lesa $read af $_temp0; ekki er leitað í afganginum.';
   }
 
   @override
-  String get documentsStatusPartialText => 'Only the beginning was read; the rest isn’t searched.';
+  String get documentsStatusPartialText => 'Aðeins upphafið var lesið; ekki er leitað í afganginum.';
 
   @override
-  String get documentsOpenDocument => 'Open Document';
+  String get documentsOpenDocument => 'Opna skjal';
 
   @override
-  String get documentsOpenMessage => 'Open Message';
+  String get documentsOpenMessage => 'Opna skilaboð';
 
   @override
-  String get documentsDetails => 'Document Details';
+  String get documentsDetails => 'Upplýsingar um skjal';
 
   @override
   String documentsFingerprint(String hash) {
-    return 'Contents fingerprint $hash';
+    return 'Fingrafar innihalds $hash';
   }
 
   @override
-  String get documentsPagesHeader => 'Text by Page';
+  String get documentsPagesHeader => 'Texti eftir síðum';
 
   @override
-  String get documentsVersionsHeader => 'Other Copies';
+  String get documentsVersionsHeader => 'Önnur eintök';
 
   @override
   String documentsVersionDifferentEarlier(String date) {
-    return 'Different contents from the earlier copy ($date)';
+    return 'Annað innihald en í eldra eintakinu ($date)';
   }
 
   @override
   String documentsVersionDifferentLater(String date) {
-    return 'A newer copy ($date) has different contents';
+    return 'Nýrra eintak ($date) er með annað innihald';
   }
 
   @override
   String documentsVersionSame(String date) {
-    return 'Same contents as the copy of $date';
+    return 'Sama innihald og í eintakinu frá $date';
   }
 
   @override
   String documentsVersionNotDownloaded(String date) {
-    return 'Same name as the copy of $date; contents not compared until both are downloaded';
+    return 'Sama nafn og á eintakinu frá $date; innihaldið er ekki borið saman fyrr en bæði hafa verið sótt';
   }
 
   @override
@@ -5589,125 +5592,125 @@ class AppLocalizationsIs extends AppLocalizations {
   }
 
   @override
-  String get documentsNoFactChanges => 'The Key Facts are the same; other text differs.';
+  String get documentsNoFactChanges => 'Lykilatriðin eru þau sömu; annar texti er ólíkur.';
 
   @override
-  String get documentsKeyFacts => 'Key Facts';
+  String get documentsKeyFacts => 'Lykilatriði';
 
   @override
-  String get documentsKeyFactsFind => 'Find Key Facts';
+  String get documentsKeyFactsFind => 'Finna lykilatriði';
 
   @override
-  String get documentsKeyFactsWorking => 'Reading the document…';
+  String get documentsKeyFactsWorking => 'Les skjalið…';
 
   @override
-  String get documentsKeyFactsFailed => 'Couldn’t find the Key Facts.';
+  String get documentsKeyFactsFailed => 'Ekki tókst að finna lykilatriðin.';
 
   @override
-  String get documentsKeyFactsDemoNote => 'Made by the built-in demo, not a model.';
+  String get documentsKeyFactsDemoNote => 'Útbúið af innbyggðu sýnisútgáfunni, ekki af líkani.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
-    return 'Made by $provider.';
+    return 'Útbúið af $provider.';
   }
 
   @override
-  String get documentsKeyFactsHint => 'Tap a fact to see where the document says it.';
+  String get documentsKeyFactsHint => 'Ýttu á atriði til að sjá hvar það kemur fram í skjalinu.';
 
   @override
-  String get documentsKeyFactsNone => 'Loupe has no Key Facts for this kind of document yet.';
+  String get documentsKeyFactsNone => 'Loupe er ekki enn með lykilatriði fyrir þessa tegund skjala.';
 
   @override
-  String get documentsKeyFactsPartial => 'Only the first pages were read; facts on later pages are unknown.';
+  String get documentsKeyFactsPartial => 'Aðeins fyrstu síðurnar voru lesnar; atriði á síðari síðum eru óþekkt.';
 
   @override
-  String get documentsKeyFactsNotStated => 'Not stated';
+  String get documentsKeyFactsNotStated => 'Ekki tilgreint';
 
   @override
-  String get documentsKeyFactsConflicting => 'Stated differently';
+  String get documentsKeyFactsConflicting => 'Tilgreint á ólíka vegu';
 
   @override
   String documentsEvidenceAlso(int page) {
-    return 'Also on page $page:';
+    return 'Einnig á síðu $page:';
   }
 
   @override
-  String get documentsTypeMortgageIllustration => 'Mortgage illustration';
+  String get documentsTypeMortgageIllustration => 'Greiðsluáætlun íbúðaláns';
 
   @override
-  String get documentsTypeInvoice => 'Invoice';
+  String get documentsTypeInvoice => 'Reikningur';
 
   @override
-  String get documentsTypeBooking => 'Booking';
+  String get documentsTypeBooking => 'Bókun';
 
   @override
-  String get documentsTypeOther => 'Other document';
+  String get documentsTypeOther => 'Annað skjal';
 
   @override
-  String get documentsFieldInitialRate => 'Initial rate';
+  String get documentsFieldInitialRate => 'Upphafsvextir';
 
   @override
-  String get documentsFieldRatePeriod => 'Rate period';
+  String get documentsFieldRatePeriod => 'Binditími vaxta';
 
   @override
-  String get documentsFieldMonthlyPayment => 'Monthly payment';
+  String get documentsFieldMonthlyPayment => 'Mánaðarleg greiðsla';
 
   @override
-  String get documentsFieldTerm => 'Term';
+  String get documentsFieldTerm => 'Lánstími';
 
   @override
-  String get documentsFieldLoanAmount => 'Loan amount';
+  String get documentsFieldLoanAmount => 'Lánsfjárhæð';
 
   @override
-  String get documentsFieldArrangementFee => 'Arrangement fee';
+  String get documentsFieldArrangementFee => 'Lántökugjald';
 
   @override
-  String get documentsFieldValuationFee => 'Valuation fee';
+  String get documentsFieldValuationFee => 'Verðmatsgjald';
 
   @override
-  String get documentsFieldBrokerFee => 'Broker fee';
+  String get documentsFieldBrokerFee => 'Þóknun miðlara';
 
   @override
-  String get documentsFieldEarlyRepaymentCharges => 'Early repayment charges';
+  String get documentsFieldEarlyRepaymentCharges => 'Uppgreiðslugjald';
 
   @override
-  String get documentsFieldTotalAmountPayable => 'Total amount payable';
+  String get documentsFieldTotalAmountPayable => 'Heildarfjárhæð til greiðslu';
 
   @override
-  String get documentsFieldAmountDue => 'Amount due';
+  String get documentsFieldAmountDue => 'Upphæð til greiðslu';
 
   @override
-  String get documentsFieldCurrency => 'Currency';
+  String get documentsFieldCurrency => 'Gjaldmiðill';
 
   @override
-  String get documentsFieldDueDate => 'Due date';
+  String get documentsFieldDueDate => 'Gjalddagi';
 
   @override
-  String get documentsFieldPayee => 'Payee';
+  String get documentsFieldPayee => 'Viðtakandi greiðslu';
 
   @override
-  String get documentsFieldReference => 'Reference';
+  String get documentsFieldReference => 'Tilvísun';
 
   @override
-  String get documentsFieldSubtotal => 'Subtotal';
+  String get documentsFieldSubtotal => 'Millisamtala';
 
   @override
-  String get documentsFieldTax => 'Tax';
+  String get documentsFieldTax => 'VSK';
 
   @override
-  String get documentsFieldDate => 'Date';
+  String get documentsFieldDate => 'Dagsetning';
 
   @override
-  String get documentsFieldTime => 'Time';
+  String get documentsFieldTime => 'Tími';
 
   @override
-  String get documentsFieldTimeZone => 'Time zone';
+  String get documentsFieldTimeZone => 'Tímabelti';
 
   @override
-  String get documentsFieldAddress => 'Address';
+  String get documentsFieldAddress => 'Heimilisfang';
 
   @override
-  String get documentsFieldPerson => 'Person';
+  String get documentsFieldPerson => 'Tengiliður';
 
   @override
   String get accountSetupTitle => 'Bæta við aðgangi';

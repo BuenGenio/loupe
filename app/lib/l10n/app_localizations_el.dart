@@ -5411,21 +5411,21 @@ class AppLocalizationsEl extends AppLocalizations {
   String get sharedNotJunk => 'Όχι ανεπιθύμητο';
 
   @override
-  String get documentsTitle => 'Documents';
+  String get documentsTitle => 'Έγγραφα';
 
   @override
-  String get documentsSearchPlaceholder => 'Search in Documents';
+  String get documentsSearchPlaceholder => 'Αναζήτηση στα έγγραφα';
 
   @override
-  String get documentsSearchInDocuments => 'Search in Documents';
+  String get documentsSearchInDocuments => 'Αναζήτηση στα έγγραφα';
 
   @override
   String documentsLibraryCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count ληφθέντα έγγραφα',
+      one: '1 ληφθέν έγγραφο',
     );
     return '$_temp0';
   }
@@ -5435,14 +5435,14 @@ class AppLocalizationsEl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count ληφθέντα έγγραφα',
+      one: '1 ληφθέν έγγραφο',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable can’t be read',
-      one: '1 can’t be read',
+      other: '$unreadable δεν διαβάζονται',
+      one: '1 δεν διαβάζεται',
     );
     return '$_temp0 · $_temp1';
   }
@@ -5452,8 +5452,8 @@ class AppLocalizationsEl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Έγινε αναζήτηση σε $count ληφθέντα έγγραφα',
+      one: 'Έγινε αναζήτηση σε 1 ληφθέν έγγραφο',
     );
     return '$_temp0';
   }
@@ -5463,129 +5463,133 @@ class AppLocalizationsEl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Έγινε αναζήτηση σε $count ληφθέντα έγγραφα',
+      one: 'Έγινε αναζήτηση σε 1 ληφθέν έγγραφο',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable couldn’t be read',
-      one: '1 couldn’t be read',
+      other: '$unreadable δεν ήταν δυνατό να διαβαστούν',
+      one: '1 δεν ήταν δυνατό να διαβαστεί',
     );
     return '$_temp0 · $_temp1';
   }
 
   @override
   String get documentsScopeNote =>
-      'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.';
+      'Αναζητά στα συνημμένα που βρίσκονται σε αυτό το τηλέφωνο, όχι σε όλη την αλληλογραφία σας. Ανοίξτε ένα συνημμένο για να το προσθέσετε.';
 
   @override
-  String get documentsEmpty => 'No Documents Yet';
+  String get documentsEmpty => 'Δεν υπάρχουν ακόμη έγγραφα';
 
   @override
   String get documentsEmptyDetail =>
-      'PDFs and text files you open from mail show up here, so you can search inside them.';
+      'Τα PDF και τα αρχεία κειμένου που ανοίγετε από την αλληλογραφία εμφανίζονται εδώ, ώστε να μπορείτε να κάνετε αναζήτηση μέσα σε αυτά.';
 
   @override
-  String get documentsNoResults => 'No Matches';
+  String get documentsNoResults => 'Καμία αντιστοιχία';
 
   @override
   String documentsNoResultsDetail(String query) {
-    return 'No downloaded document contains “$query”.';
+    return 'Κανένα ληφθέν έγγραφο δεν περιέχει «$query».';
   }
 
   @override
   String documentsMatchedOnPage(int page) {
-    return 'Matched on page $page';
+    return 'Βρέθηκε στη σελίδα $page';
   }
 
   @override
   String documentsMatchedOnLine(int line) {
-    return 'Matched on line $line';
+    return 'Βρέθηκε στη γραμμή $line';
   }
 
   @override
   String documentsMoreMatches(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count more matches', one: '1 more match');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ακόμη $count αντιστοιχίες',
+      one: 'Ακόμη 1 αντιστοιχία',
+    );
     return '$_temp0';
   }
 
   @override
   String documentsPage(int page) {
-    return 'Page $page';
+    return 'Σελίδα $page';
   }
 
   @override
-  String get documentsReading => 'Reading…';
+  String get documentsStatusNotDownloaded =>
+      'Δεν έχει ληφθεί: ανοίξτε το για να διαβαστεί και να γίνεται αναζήτηση σε αυτό.';
 
   @override
-  String get documentsStatusNotDownloaded => 'Not downloaded: open it to read and search it.';
+  String get documentsStatusEncrypted => 'Προστατεύεται με κωδικό πρόσβασης: το Loupe δεν μπορεί να το διαβάσει.';
 
   @override
-  String get documentsStatusEncrypted => 'Password protected: Loupe can’t read it.';
+  String get documentsStatusNoText =>
+      'Δεν βρέθηκε κείμενο: ίσως είναι σάρωση ή φωτογραφία, που το Loupe δεν μπορεί ακόμη να διαβάσει.';
 
   @override
-  String get documentsStatusNoText => 'No text found: it may be a scan or a photo, which Loupe can’t read yet.';
+  String get documentsStatusEmpty => 'Αυτό το αρχείο δεν έχει κείμενο.';
 
   @override
-  String get documentsStatusEmpty => 'This file has no text.';
+  String get documentsStatusUnsupported => 'Το Loupe δεν μπορεί ακόμη να διαβάσει αυτό το είδος εγγράφου.';
 
   @override
-  String get documentsStatusUnsupported => 'Loupe can’t read this kind of document yet.';
+  String get documentsStatusTooLarge => 'Πολύ μεγάλο για να διαβαστεί σε αυτό το τηλέφωνο.';
 
   @override
-  String get documentsStatusTooLarge => 'Too large to read on this phone.';
-
-  @override
-  String get documentsStatusDamaged => 'Couldn’t be read: the file may be damaged.';
+  String get documentsStatusDamaged => 'Δεν ήταν δυνατή η ανάγνωση: το αρχείο ίσως είναι κατεστραμμένο.';
 
   @override
   String documentsStatusPartial(int read, int total) {
-    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total pages', one: '1 page');
-    return 'Read $read of $_temp0; the rest isn’t searched.';
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total σελίδες', one: '1 σελίδα');
+    return 'Διαβάστηκαν $read από $_temp0· στις υπόλοιπες δεν γίνεται αναζήτηση.';
   }
 
   @override
-  String get documentsStatusPartialText => 'Only the beginning was read; the rest isn’t searched.';
+  String get documentsStatusPartialText => 'Διαβάστηκε μόνο η αρχή· στο υπόλοιπο δεν γίνεται αναζήτηση.';
 
   @override
-  String get documentsOpenDocument => 'Open Document';
+  String get documentsOpenDocument => 'Άνοιγμα εγγράφου';
 
   @override
-  String get documentsOpenMessage => 'Open Message';
+  String get documentsOpenMessage => 'Άνοιγμα μηνύματος';
 
   @override
-  String get documentsDetails => 'Document Details';
+  String get documentsDetails => 'Λεπτομέρειες εγγράφου';
 
   @override
   String documentsFingerprint(String hash) {
-    return 'Contents fingerprint $hash';
+    return 'Αποτύπωμα περιεχομένου $hash';
   }
 
   @override
-  String get documentsPagesHeader => 'Text by Page';
+  String get documentsPagesHeader => 'Κείμενο ανά σελίδα';
 
   @override
-  String get documentsVersionsHeader => 'Other Copies';
+  String get documentsVersionsHeader => 'Άλλα αντίγραφα';
 
   @override
   String documentsVersionDifferentEarlier(String date) {
-    return 'Different contents from the earlier copy ($date)';
+    return 'Διαφορετικό περιεχόμενο από το προηγούμενο αντίγραφο ($date)';
   }
 
   @override
   String documentsVersionDifferentLater(String date) {
-    return 'A newer copy ($date) has different contents';
+    return 'Ένα νεότερο αντίγραφο ($date) έχει διαφορετικό περιεχόμενο';
   }
 
   @override
   String documentsVersionSame(String date) {
-    return 'Same contents as the copy of $date';
+    return 'Ίδιο περιεχόμενο με το αντίγραφο της $date';
   }
 
   @override
   String documentsVersionNotDownloaded(String date) {
-    return 'Same name as the copy of $date; contents not compared until both are downloaded';
+    return 'Ίδιο όνομα με το αντίγραφο της $date· το περιεχόμενο δεν συγκρίνεται μέχρι να ληφθούν και τα δύο';
   }
 
   @override
@@ -5594,125 +5598,126 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get documentsNoFactChanges => 'The Key Facts are the same; other text differs.';
+  String get documentsNoFactChanges => 'Τα βασικά στοιχεία είναι ίδια· οι διαφορές είναι σε άλλο σημείο του κειμένου.';
 
   @override
-  String get documentsKeyFacts => 'Key Facts';
+  String get documentsKeyFacts => 'Βασικά στοιχεία';
 
   @override
-  String get documentsKeyFactsFind => 'Find Key Facts';
+  String get documentsKeyFactsFind => 'Εύρεση βασικών στοιχείων';
 
   @override
-  String get documentsKeyFactsWorking => 'Reading the document…';
+  String get documentsKeyFactsWorking => 'Ανάγνωση του εγγράφου…';
 
   @override
-  String get documentsKeyFactsFailed => 'Couldn’t find the Key Facts.';
+  String get documentsKeyFactsFailed => 'Δεν ήταν δυνατή η εύρεση των βασικών στοιχείων.';
 
   @override
-  String get documentsKeyFactsDemoNote => 'Made by the built-in demo, not a model.';
+  String get documentsKeyFactsDemoNote => 'Δημιουργήθηκε από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
-    return 'Made by $provider.';
+    return 'Δημιουργήθηκε από $provider.';
   }
 
   @override
-  String get documentsKeyFactsHint => 'Tap a fact to see where the document says it.';
+  String get documentsKeyFactsHint => 'Πατήστε ένα στοιχείο για να δείτε πού το αναφέρει το έγγραφο.';
 
   @override
-  String get documentsKeyFactsNone => 'Loupe has no Key Facts for this kind of document yet.';
+  String get documentsKeyFactsNone => 'Το Loupe δεν έχει ακόμη βασικά στοιχεία για αυτό το είδος εγγράφου.';
 
   @override
-  String get documentsKeyFactsPartial => 'Only the first pages were read; facts on later pages are unknown.';
+  String get documentsKeyFactsPartial =>
+      'Διαβάστηκαν μόνο οι πρώτες σελίδες· τα στοιχεία στις επόμενες σελίδες δεν είναι γνωστά.';
 
   @override
-  String get documentsKeyFactsNotStated => 'Not stated';
+  String get documentsKeyFactsNotStated => 'Δεν αναφέρεται';
 
   @override
-  String get documentsKeyFactsConflicting => 'Stated differently';
+  String get documentsKeyFactsConflicting => 'Αναφέρεται διαφορετικά';
 
   @override
   String documentsEvidenceAlso(int page) {
-    return 'Also on page $page:';
+    return 'Επίσης στη σελίδα $page:';
   }
 
   @override
-  String get documentsTypeMortgageIllustration => 'Mortgage illustration';
+  String get documentsTypeMortgageIllustration => 'Προσφορά στεγαστικού δανείου';
 
   @override
-  String get documentsTypeInvoice => 'Invoice';
+  String get documentsTypeInvoice => 'Τιμολόγιο';
 
   @override
-  String get documentsTypeBooking => 'Booking';
+  String get documentsTypeBooking => 'Κράτηση';
 
   @override
-  String get documentsTypeOther => 'Other document';
+  String get documentsTypeOther => 'Άλλο έγγραφο';
 
   @override
-  String get documentsFieldInitialRate => 'Initial rate';
+  String get documentsFieldInitialRate => 'Αρχικό επιτόκιο';
 
   @override
-  String get documentsFieldRatePeriod => 'Rate period';
+  String get documentsFieldRatePeriod => 'Διάρκεια αρχικού επιτοκίου';
 
   @override
-  String get documentsFieldMonthlyPayment => 'Monthly payment';
+  String get documentsFieldMonthlyPayment => 'Μηνιαία δόση';
 
   @override
-  String get documentsFieldTerm => 'Term';
+  String get documentsFieldTerm => 'Διάρκεια δανείου';
 
   @override
-  String get documentsFieldLoanAmount => 'Loan amount';
+  String get documentsFieldLoanAmount => 'Ποσό δανείου';
 
   @override
-  String get documentsFieldArrangementFee => 'Arrangement fee';
+  String get documentsFieldArrangementFee => 'Έξοδα φακέλου';
 
   @override
-  String get documentsFieldValuationFee => 'Valuation fee';
+  String get documentsFieldValuationFee => 'Έξοδα εκτίμησης';
 
   @override
-  String get documentsFieldBrokerFee => 'Broker fee';
+  String get documentsFieldBrokerFee => 'Αμοιβή μεσίτη πιστώσεων';
 
   @override
-  String get documentsFieldEarlyRepaymentCharges => 'Early repayment charges';
+  String get documentsFieldEarlyRepaymentCharges => 'Έξοδα πρόωρης εξόφλησης';
 
   @override
-  String get documentsFieldTotalAmountPayable => 'Total amount payable';
+  String get documentsFieldTotalAmountPayable => 'Συνολικό ποσό αποπληρωμής';
 
   @override
-  String get documentsFieldAmountDue => 'Amount due';
+  String get documentsFieldAmountDue => 'Πληρωτέο ποσό';
 
   @override
-  String get documentsFieldCurrency => 'Currency';
+  String get documentsFieldCurrency => 'Νόμισμα';
 
   @override
-  String get documentsFieldDueDate => 'Due date';
+  String get documentsFieldDueDate => 'Προθεσμία πληρωμής';
 
   @override
-  String get documentsFieldPayee => 'Payee';
+  String get documentsFieldPayee => 'Δικαιούχος';
 
   @override
-  String get documentsFieldReference => 'Reference';
+  String get documentsFieldReference => 'Αριθμός αναφοράς';
 
   @override
-  String get documentsFieldSubtotal => 'Subtotal';
+  String get documentsFieldSubtotal => 'Μερικό σύνολο';
 
   @override
-  String get documentsFieldTax => 'Tax';
+  String get documentsFieldTax => 'Φόρος';
 
   @override
-  String get documentsFieldDate => 'Date';
+  String get documentsFieldDate => 'Ημερομηνία';
 
   @override
-  String get documentsFieldTime => 'Time';
+  String get documentsFieldTime => 'Ώρα';
 
   @override
-  String get documentsFieldTimeZone => 'Time zone';
+  String get documentsFieldTimeZone => 'Ζώνη ώρας';
 
   @override
-  String get documentsFieldAddress => 'Address';
+  String get documentsFieldAddress => 'Διεύθυνση';
 
   @override
-  String get documentsFieldPerson => 'Person';
+  String get documentsFieldPerson => 'Πρόσωπο';
 
   @override
   String get accountSetupTitle => 'Προσθήκη λογαριασμού';

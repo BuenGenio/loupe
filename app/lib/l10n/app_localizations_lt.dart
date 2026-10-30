@@ -5493,21 +5493,22 @@ class AppLocalizationsLt extends AppLocalizations {
   String get sharedNotJunk => 'Ne šlamštas';
 
   @override
-  String get documentsTitle => 'Documents';
+  String get documentsTitle => 'Dokumentai';
 
   @override
-  String get documentsSearchPlaceholder => 'Search in Documents';
+  String get documentsSearchPlaceholder => 'Ieškoti dokumentuose';
 
   @override
-  String get documentsSearchInDocuments => 'Search in Documents';
+  String get documentsSearchInDocuments => 'Ieškoti dokumentuose';
 
   @override
   String documentsLibraryCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count atsisiųstų dokumentų',
+      few: '$count atsisiųsti dokumentai',
+      one: '$count atsisiųstas dokumentas',
     );
     return '$_temp0';
   }
@@ -5517,14 +5518,16 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count atsisiųstų dokumentų',
+      few: '$count atsisiųsti dokumentai',
+      one: '$count atsisiųstas dokumentas',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable can’t be read',
-      one: '1 can’t be read',
+      other: '$unreadable negalima perskaityti',
+      few: '$unreadable negalima perskaityti',
+      one: '$unreadable negalima perskaityti',
     );
     return '$_temp0 · $_temp1';
   }
@@ -5534,8 +5537,9 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Ieškota tarp $count atsisiųstų dokumentų',
+      few: 'Ieškota tarp $count atsisiųstų dokumentų',
+      one: 'Ieškota $count atsisiųstame dokumente',
     );
     return '$_temp0';
   }
@@ -5545,129 +5549,141 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Ieškota tarp $count atsisiųstų dokumentų',
+      few: 'Ieškota tarp $count atsisiųstų dokumentų',
+      one: 'Ieškota $count atsisiųstame dokumente',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable couldn’t be read',
-      one: '1 couldn’t be read',
+      other: '$unreadable nepavyko perskaityti',
+      few: '$unreadable nepavyko perskaityti',
+      one: '$unreadable nepavyko perskaityti',
     );
     return '$_temp0 · $_temp1';
   }
 
   @override
   String get documentsScopeNote =>
-      'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.';
+      'Ieškoma šio telefono prieduose, o ne visoje jūsų pašto dėžutėje. Atidarykite priedą, kad jį pridėtumėte.';
 
   @override
-  String get documentsEmpty => 'No Documents Yet';
+  String get documentsEmpty => 'Dokumentų dar nėra';
 
   @override
   String get documentsEmptyDetail =>
-      'PDFs and text files you open from mail show up here, so you can search inside them.';
+      'Čia rodomi iš laiškų atidaryti PDF ir tekstiniai failai, kad galėtumėte ieškoti jų turinyje.';
 
   @override
-  String get documentsNoResults => 'No Matches';
+  String get documentsNoResults => 'Atitikmenų nėra';
 
   @override
   String documentsNoResultsDetail(String query) {
-    return 'No downloaded document contains “$query”.';
+    return 'Nė viename atsisiųstame dokumente nėra „$query“.';
   }
 
   @override
   String documentsMatchedOnPage(int page) {
-    return 'Matched on page $page';
+    return 'Rasta puslapyje $page';
   }
 
   @override
   String documentsMatchedOnLine(int line) {
-    return 'Matched on line $line';
+    return 'Rasta eilutėje $line';
   }
 
   @override
   String documentsMoreMatches(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count more matches', one: '1 more match');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dar $count atitikmenų',
+      few: 'Dar $count atitikmenys',
+      one: 'Dar $count atitikmuo',
+    );
     return '$_temp0';
   }
 
   @override
   String documentsPage(int page) {
-    return 'Page $page';
+    return 'Puslapis $page';
   }
 
   @override
-  String get documentsReading => 'Reading…';
+  String get documentsStatusNotDownloaded => 'Neatsisiųsta: atidarykite, kad galėtumėte skaityti ir ieškoti jame.';
 
   @override
-  String get documentsStatusNotDownloaded => 'Not downloaded: open it to read and search it.';
+  String get documentsStatusEncrypted => 'Apsaugotas slaptažodžiu: Loupe negali jo perskaityti.';
 
   @override
-  String get documentsStatusEncrypted => 'Password protected: Loupe can’t read it.';
+  String get documentsStatusNoText =>
+      'Teksto nerasta: tai gali būti skenuotas vaizdas ar nuotrauka, o tokių Loupe dar negali perskaityti.';
 
   @override
-  String get documentsStatusNoText => 'No text found: it may be a scan or a photo, which Loupe can’t read yet.';
+  String get documentsStatusEmpty => 'Šiame faile nėra teksto.';
 
   @override
-  String get documentsStatusEmpty => 'This file has no text.';
+  String get documentsStatusUnsupported => 'Loupe dar negali perskaityti tokio tipo dokumentų.';
 
   @override
-  String get documentsStatusUnsupported => 'Loupe can’t read this kind of document yet.';
+  String get documentsStatusTooLarge => 'Per didelis, kad būtų galima perskaityti šiame telefone.';
 
   @override
-  String get documentsStatusTooLarge => 'Too large to read on this phone.';
-
-  @override
-  String get documentsStatusDamaged => 'Couldn’t be read: the file may be damaged.';
+  String get documentsStatusDamaged => 'Nepavyko perskaityti: failas gali būti sugadintas.';
 
   @override
   String documentsStatusPartial(int read, int total) {
-    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total pages', one: '1 page');
-    return 'Read $read of $_temp0; the rest isn’t searched.';
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total puslapių',
+      few: '$total puslapių',
+      one: '$total puslapio',
+    );
+    return 'Perskaityta $read iš $_temp0; likusioje dalyje neieškoma.';
   }
 
   @override
-  String get documentsStatusPartialText => 'Only the beginning was read; the rest isn’t searched.';
+  String get documentsStatusPartialText => 'Perskaityta tik pradžia; likusioje dalyje neieškoma.';
 
   @override
-  String get documentsOpenDocument => 'Open Document';
+  String get documentsOpenDocument => 'Atidaryti dokumentą';
 
   @override
-  String get documentsOpenMessage => 'Open Message';
+  String get documentsOpenMessage => 'Atidaryti laišką';
 
   @override
-  String get documentsDetails => 'Document Details';
+  String get documentsDetails => 'Dokumento informacija';
 
   @override
   String documentsFingerprint(String hash) {
-    return 'Contents fingerprint $hash';
+    return 'Turinio kontrolinis kodas $hash';
   }
 
   @override
-  String get documentsPagesHeader => 'Text by Page';
+  String get documentsPagesHeader => 'Tekstas pagal puslapius';
 
   @override
-  String get documentsVersionsHeader => 'Other Copies';
+  String get documentsVersionsHeader => 'Kitos kopijos';
 
   @override
   String documentsVersionDifferentEarlier(String date) {
-    return 'Different contents from the earlier copy ($date)';
+    return 'Turinys skiriasi nuo ankstesnės kopijos ($date)';
   }
 
   @override
   String documentsVersionDifferentLater(String date) {
-    return 'A newer copy ($date) has different contents';
+    return 'Naujesnės kopijos ($date) turinys skiriasi';
   }
 
   @override
   String documentsVersionSame(String date) {
-    return 'Same contents as the copy of $date';
+    return 'Toks pat turinys kaip kopijoje ($date)';
   }
 
   @override
   String documentsVersionNotDownloaded(String date) {
-    return 'Same name as the copy of $date; contents not compared until both are downloaded';
+    return 'Toks pat pavadinimas kaip kopijos ($date); turinys nelyginamas, kol nebus atsisiųstos abi';
   }
 
   @override
@@ -5676,125 +5692,126 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get documentsNoFactChanges => 'The Key Facts are the same; other text differs.';
+  String get documentsNoFactChanges => 'Pagrindiniai faktai tokie patys; skiriasi kitas tekstas.';
 
   @override
-  String get documentsKeyFacts => 'Key Facts';
+  String get documentsKeyFacts => 'Pagrindiniai faktai';
 
   @override
-  String get documentsKeyFactsFind => 'Find Key Facts';
+  String get documentsKeyFactsFind => 'Rasti pagrindinius faktus';
 
   @override
-  String get documentsKeyFactsWorking => 'Reading the document…';
+  String get documentsKeyFactsWorking => 'Skaitomas dokumentas…';
 
   @override
-  String get documentsKeyFactsFailed => 'Couldn’t find the Key Facts.';
+  String get documentsKeyFactsFailed => 'Nepavyko rasti pagrindinių faktų.';
 
   @override
-  String get documentsKeyFactsDemoNote => 'Made by the built-in demo, not a model.';
+  String get documentsKeyFactsDemoNote => 'Sukūrė įtaisytoji demonstracija, ne modelis.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
-    return 'Made by $provider.';
+    return 'Sukūrė $provider.';
   }
 
   @override
-  String get documentsKeyFactsHint => 'Tap a fact to see where the document says it.';
+  String get documentsKeyFactsHint => 'Palieskite faktą, kad pamatytumėte, kur dokumente jis nurodytas.';
 
   @override
-  String get documentsKeyFactsNone => 'Loupe has no Key Facts for this kind of document yet.';
+  String get documentsKeyFactsNone => 'Loupe dar neturi pagrindinių faktų šio tipo dokumentams.';
 
   @override
-  String get documentsKeyFactsPartial => 'Only the first pages were read; facts on later pages are unknown.';
+  String get documentsKeyFactsPartial =>
+      'Perskaityti tik pirmieji puslapiai; vėlesniuose puslapiuose esantys faktai nežinomi.';
 
   @override
-  String get documentsKeyFactsNotStated => 'Not stated';
+  String get documentsKeyFactsNotStated => 'Nenurodyta';
 
   @override
-  String get documentsKeyFactsConflicting => 'Stated differently';
+  String get documentsKeyFactsConflicting => 'Nurodyta skirtingai';
 
   @override
   String documentsEvidenceAlso(int page) {
-    return 'Also on page $page:';
+    return 'Taip pat puslapyje $page:';
   }
 
   @override
-  String get documentsTypeMortgageIllustration => 'Mortgage illustration';
+  String get documentsTypeMortgageIllustration => 'Būsto paskolos pasiūlymas';
 
   @override
-  String get documentsTypeInvoice => 'Invoice';
+  String get documentsTypeInvoice => 'Sąskaita faktūra';
 
   @override
-  String get documentsTypeBooking => 'Booking';
+  String get documentsTypeBooking => 'Rezervacija';
 
   @override
-  String get documentsTypeOther => 'Other document';
+  String get documentsTypeOther => 'Kitas dokumentas';
 
   @override
-  String get documentsFieldInitialRate => 'Initial rate';
+  String get documentsFieldInitialRate => 'Pradinė palūkanų norma';
 
   @override
-  String get documentsFieldRatePeriod => 'Rate period';
+  String get documentsFieldRatePeriod => 'Palūkanų normos laikotarpis';
 
   @override
-  String get documentsFieldMonthlyPayment => 'Monthly payment';
+  String get documentsFieldMonthlyPayment => 'Mėnesinė įmoka';
 
   @override
-  String get documentsFieldTerm => 'Term';
+  String get documentsFieldTerm => 'Paskolos terminas';
 
   @override
-  String get documentsFieldLoanAmount => 'Loan amount';
+  String get documentsFieldLoanAmount => 'Paskolos suma';
 
   @override
-  String get documentsFieldArrangementFee => 'Arrangement fee';
+  String get documentsFieldArrangementFee => 'Sutarties sudarymo mokestis';
 
   @override
-  String get documentsFieldValuationFee => 'Valuation fee';
+  String get documentsFieldValuationFee => 'Turto vertinimo mokestis';
 
   @override
-  String get documentsFieldBrokerFee => 'Broker fee';
+  String get documentsFieldBrokerFee => 'Tarpininko mokestis';
 
   @override
-  String get documentsFieldEarlyRepaymentCharges => 'Early repayment charges';
+  String get documentsFieldEarlyRepaymentCharges => 'Išankstinio grąžinimo mokesčiai';
 
   @override
-  String get documentsFieldTotalAmountPayable => 'Total amount payable';
+  String get documentsFieldTotalAmountPayable => 'Bendra mokėtina suma';
 
   @override
-  String get documentsFieldAmountDue => 'Amount due';
+  String get documentsFieldAmountDue => 'Mokėtina suma';
 
   @override
-  String get documentsFieldCurrency => 'Currency';
+  String get documentsFieldCurrency => 'Valiuta';
 
   @override
-  String get documentsFieldDueDate => 'Due date';
+  String get documentsFieldDueDate => 'Mokėjimo terminas';
 
   @override
-  String get documentsFieldPayee => 'Payee';
+  String get documentsFieldPayee => 'Gavėjas';
 
   @override
-  String get documentsFieldReference => 'Reference';
+  String get documentsFieldReference => 'Numeris';
 
   @override
-  String get documentsFieldSubtotal => 'Subtotal';
+  String get documentsFieldSubtotal => 'Tarpinė suma';
 
   @override
-  String get documentsFieldTax => 'Tax';
+  String get documentsFieldTax => 'Mokestis';
 
   @override
-  String get documentsFieldDate => 'Date';
+  String get documentsFieldDate => 'Data';
 
   @override
-  String get documentsFieldTime => 'Time';
+  String get documentsFieldTime => 'Laikas';
 
   @override
-  String get documentsFieldTimeZone => 'Time zone';
+  String get documentsFieldTimeZone => 'Laiko juosta';
 
   @override
-  String get documentsFieldAddress => 'Address';
+  String get documentsFieldAddress => 'Adresas';
 
   @override
-  String get documentsFieldPerson => 'Person';
+  String get documentsFieldPerson => 'Asmuo';
 
   @override
   String get accountSetupTitle => 'Pridėti paskyrą';

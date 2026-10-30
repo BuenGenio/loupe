@@ -8871,12 +8871,6 @@ abstract class AppLocalizations {
   /// **'Page {page}'**
   String documentsPage(int page);
 
-  /// While Loupe reads a document's text.
-  ///
-  /// In en, this message translates to:
-  /// **'Reading…'**
-  String get documentsReading;
-
   /// No description provided for @documentsStatusNotDownloaded.
   ///
   /// In en, this message translates to:

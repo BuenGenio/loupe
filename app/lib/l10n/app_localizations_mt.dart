@@ -5611,21 +5611,24 @@ class AppLocalizationsMt extends AppLocalizations {
   String get sharedNotJunk => 'Mhux spam';
 
   @override
-  String get documentsTitle => 'Documents';
+  String get documentsTitle => 'Dokumenti';
 
   @override
-  String get documentsSearchPlaceholder => 'Search in Documents';
+  String get documentsSearchPlaceholder => 'Fittex fid-dokumenti';
 
   @override
-  String get documentsSearchInDocuments => 'Search in Documents';
+  String get documentsSearchInDocuments => 'Fittex fid-dokumenti';
 
   @override
   String documentsLibraryCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count dokument imniżżel',
+      many: '$count-il dokument imniżżel',
+      few: '$count dokumenti mniżżla',
+      two: '$count dokumenti mniżżla',
+      one: '$count dokument imniżżel',
     );
     return '$_temp0';
   }
@@ -5635,14 +5638,20 @@ class AppLocalizationsMt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count dokument imniżżel',
+      many: '$count-il dokument imniżżel',
+      few: '$count dokumenti mniżżla',
+      two: '$count dokumenti mniżżla',
+      one: '$count dokument imniżżel',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable can’t be read',
-      one: '1 can’t be read',
+      other: '$unreadable ma jistgħux jinqraw',
+      many: '$unreadable ma jistgħux jinqraw',
+      few: '$unreadable ma jistgħux jinqraw',
+      two: '$unreadable ma jistgħux jinqraw',
+      one: '$unreadable ma jistax jinqara',
     );
     return '$_temp0 · $_temp1';
   }
@@ -5652,8 +5661,11 @@ class AppLocalizationsMt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Ġew imfittxija $count dokument imniżżel',
+      many: 'Ġew imfittxija $count-il dokument imniżżel',
+      few: 'Ġew imfittxija $count dokumenti mniżżla',
+      two: 'Ġew imfittxija $count dokumenti mniżżla',
+      one: 'Ġie mfittex $count dokument imniżżel',
     );
     return '$_temp0';
   }
@@ -5663,129 +5675,149 @@ class AppLocalizationsMt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Ġew imfittxija $count dokument imniżżel',
+      many: 'Ġew imfittxija $count-il dokument imniżżel',
+      few: 'Ġew imfittxija $count dokumenti mniżżla',
+      two: 'Ġew imfittxija $count dokumenti mniżżla',
+      one: 'Ġie mfittex $count dokument imniżżel',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable couldn’t be read',
-      one: '1 couldn’t be read',
+      other: '$unreadable ma setgħux jinqraw',
+      many: '$unreadable ma setgħux jinqraw',
+      few: '$unreadable ma setgħux jinqraw',
+      two: '$unreadable ma setgħux jinqraw',
+      one: '$unreadable ma setax jinqara',
     );
     return '$_temp0 · $_temp1';
   }
 
   @override
   String get documentsScopeNote =>
-      'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.';
+      'Jiġu mfittxija biss l-annessi fuq dan il-mowbajl, mhux il-mailbox kollha tiegħek. Iftaħ anness biex iżżidu.';
 
   @override
-  String get documentsEmpty => 'No Documents Yet';
+  String get documentsEmpty => 'Għad m’hemmx dokumenti';
 
   @override
   String get documentsEmptyDetail =>
-      'PDFs and text files you open from mail show up here, so you can search inside them.';
+      'Il-PDFs u l-fajls tat-test li tiftaħ mill-posta jidhru hawn, biex tkun tista’ tfittex fihom.';
 
   @override
-  String get documentsNoResults => 'No Matches';
+  String get documentsNoResults => 'L-ebda riżultat';
 
   @override
   String documentsNoResultsDetail(String query) {
-    return 'No downloaded document contains “$query”.';
+    return 'L-ebda dokument imniżżel ma fih “$query”.';
   }
 
   @override
   String documentsMatchedOnPage(int page) {
-    return 'Matched on page $page';
+    return 'Instab fil-paġna $page';
   }
 
   @override
   String documentsMatchedOnLine(int line) {
-    return 'Matched on line $line';
+    return 'Instab fil-linja $line';
   }
 
   @override
   String documentsMoreMatches(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count more matches', one: '1 more match');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count riżultat ieħor',
+      many: '$count-il riżultat ieħor',
+      few: '$count riżultati oħra',
+      two: '$count riżultati oħra',
+      one: 'Riżultat ieħor',
+    );
     return '$_temp0';
   }
 
   @override
   String documentsPage(int page) {
-    return 'Page $page';
+    return 'Paġna $page';
   }
 
   @override
-  String get documentsReading => 'Reading…';
+  String get documentsStatusNotDownloaded => 'Mhux imniżżel: iftħu biex taqrah u tfittex fih.';
 
   @override
-  String get documentsStatusNotDownloaded => 'Not downloaded: open it to read and search it.';
+  String get documentsStatusEncrypted => 'Protett b’password: Loupe ma tistax taqrah.';
 
   @override
-  String get documentsStatusEncrypted => 'Password protected: Loupe can’t read it.';
+  String get documentsStatusNoText =>
+      'Ma nstab l-ebda test: jista’ jkun skan jew ritratt, li Loupe għadha ma tistax taqra.';
 
   @override
-  String get documentsStatusNoText => 'No text found: it may be a scan or a photo, which Loupe can’t read yet.';
+  String get documentsStatusEmpty => 'Dan il-fajl m’għandux test.';
 
   @override
-  String get documentsStatusEmpty => 'This file has no text.';
+  String get documentsStatusUnsupported => 'Loupe għadha ma tistax taqra dan it-tip ta’ dokument.';
 
   @override
-  String get documentsStatusUnsupported => 'Loupe can’t read this kind of document yet.';
+  String get documentsStatusTooLarge => 'Kbir wisq biex jinqara fuq dan il-mowbajl.';
 
   @override
-  String get documentsStatusTooLarge => 'Too large to read on this phone.';
-
-  @override
-  String get documentsStatusDamaged => 'Couldn’t be read: the file may be damaged.';
+  String get documentsStatusDamaged => 'Ma setax jinqara: il-fajl jista’ jkollu ħsara.';
 
   @override
   String documentsStatusPartial(int read, int total) {
-    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total pages', one: '1 page');
-    return 'Read $read of $_temp0; the rest isn’t searched.';
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total paġna',
+      many: '$total-il paġna',
+      few: '$total paġni',
+      two: '$total paġni',
+      one: '$total paġna',
+    );
+    return 'Inqraw $read minn $_temp0; il-bqija ma jiġix imfittex.';
   }
 
   @override
-  String get documentsStatusPartialText => 'Only the beginning was read; the rest isn’t searched.';
+  String get documentsStatusPartialText => 'Inqara l-bidu biss; il-bqija ma jiġix imfittex.';
 
   @override
-  String get documentsOpenDocument => 'Open Document';
+  String get documentsOpenDocument => 'Iftaħ id-dokument';
 
   @override
-  String get documentsOpenMessage => 'Open Message';
+  String get documentsOpenMessage => 'Iftaħ il-messaġġ';
 
   @override
-  String get documentsDetails => 'Document Details';
+  String get documentsDetails => 'Dettalji tad-dokument';
 
   @override
   String documentsFingerprint(String hash) {
-    return 'Contents fingerprint $hash';
+    return 'Fingerprint tal-kontenut $hash';
   }
 
   @override
-  String get documentsPagesHeader => 'Text by Page';
+  String get documentsPagesHeader => 'Test paġna b’paġna';
 
   @override
-  String get documentsVersionsHeader => 'Other Copies';
+  String get documentsVersionsHeader => 'Kopji oħra';
 
   @override
   String documentsVersionDifferentEarlier(String date) {
-    return 'Different contents from the earlier copy ($date)';
+    return 'Kontenut differenti mill-kopja ta’ qabel ($date)';
   }
 
   @override
   String documentsVersionDifferentLater(String date) {
-    return 'A newer copy ($date) has different contents';
+    return 'Kopja aktar ġdida ($date) għandha kontenut differenti';
   }
 
   @override
   String documentsVersionSame(String date) {
-    return 'Same contents as the copy of $date';
+    return 'L-istess kontenut bħall-kopja ta’ $date';
   }
 
   @override
   String documentsVersionNotDownloaded(String date) {
-    return 'Same name as the copy of $date; contents not compared until both are downloaded';
+    return 'L-istess isem bħall-kopja ta’ $date; il-kontenut ma jitqabbilx sakemm it-tnejn ikunu mniżżla';
   }
 
   @override
@@ -5794,125 +5826,125 @@ class AppLocalizationsMt extends AppLocalizations {
   }
 
   @override
-  String get documentsNoFactChanges => 'The Key Facts are the same; other text differs.';
+  String get documentsNoFactChanges => 'Il-fatti ewlenin huma l-istess; parti oħra mit-test hija differenti.';
 
   @override
-  String get documentsKeyFacts => 'Key Facts';
+  String get documentsKeyFacts => 'Fatti ewlenin';
 
   @override
-  String get documentsKeyFactsFind => 'Find Key Facts';
+  String get documentsKeyFactsFind => 'Sib il-fatti ewlenin';
 
   @override
-  String get documentsKeyFactsWorking => 'Reading the document…';
+  String get documentsKeyFactsWorking => 'Qed jinqara d-dokument…';
 
   @override
-  String get documentsKeyFactsFailed => 'Couldn’t find the Key Facts.';
+  String get documentsKeyFactsFailed => 'Il-fatti ewlenin ma setgħux jinstabu.';
 
   @override
-  String get documentsKeyFactsDemoNote => 'Made by the built-in demo, not a model.';
+  String get documentsKeyFactsDemoNote => 'Magħmula mid-demo inkorporata, mhux minn mudell.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
-    return 'Made by $provider.';
+    return 'Magħmula minn $provider.';
   }
 
   @override
-  String get documentsKeyFactsHint => 'Tap a fact to see where the document says it.';
+  String get documentsKeyFactsHint => 'Agħfas fuq fatt biex tara fejn id-dokument jgħidu.';
 
   @override
-  String get documentsKeyFactsNone => 'Loupe has no Key Facts for this kind of document yet.';
+  String get documentsKeyFactsNone => 'Loupe għad m’għandhiex fatti ewlenin għal dan it-tip ta’ dokument.';
 
   @override
-  String get documentsKeyFactsPartial => 'Only the first pages were read; facts on later pages are unknown.';
+  String get documentsKeyFactsPartial => 'Inqraw l-ewwel paġni biss; il-fatti fil-paġni ta’ wara mhumiex magħrufa.';
 
   @override
-  String get documentsKeyFactsNotStated => 'Not stated';
+  String get documentsKeyFactsNotStated => 'Mhux imsemmi';
 
   @override
-  String get documentsKeyFactsConflicting => 'Stated differently';
+  String get documentsKeyFactsConflicting => 'Imsemmi b’mod differenti';
 
   @override
   String documentsEvidenceAlso(int page) {
-    return 'Also on page $page:';
+    return 'Ukoll fil-paġna $page:';
   }
 
   @override
-  String get documentsTypeMortgageIllustration => 'Mortgage illustration';
+  String get documentsTypeMortgageIllustration => 'Offerta ta’ self għad-dar';
 
   @override
-  String get documentsTypeInvoice => 'Invoice';
+  String get documentsTypeInvoice => 'Fattura';
 
   @override
-  String get documentsTypeBooking => 'Booking';
+  String get documentsTypeBooking => 'Prenotazzjoni';
 
   @override
-  String get documentsTypeOther => 'Other document';
+  String get documentsTypeOther => 'Dokument ieħor';
 
   @override
-  String get documentsFieldInitialRate => 'Initial rate';
+  String get documentsFieldInitialRate => 'Rata inizjali';
 
   @override
-  String get documentsFieldRatePeriod => 'Rate period';
+  String get documentsFieldRatePeriod => 'Perjodu tar-rata inizjali';
 
   @override
-  String get documentsFieldMonthlyPayment => 'Monthly payment';
+  String get documentsFieldMonthlyPayment => 'Pagament ta’ kull xahar';
 
   @override
-  String get documentsFieldTerm => 'Term';
+  String get documentsFieldTerm => 'Tul tas-self';
 
   @override
-  String get documentsFieldLoanAmount => 'Loan amount';
+  String get documentsFieldLoanAmount => 'Ammont tas-self';
 
   @override
-  String get documentsFieldArrangementFee => 'Arrangement fee';
+  String get documentsFieldArrangementFee => 'Miżata tal-ipproċessar';
 
   @override
-  String get documentsFieldValuationFee => 'Valuation fee';
+  String get documentsFieldValuationFee => 'Miżata tal-valutazzjoni';
 
   @override
-  String get documentsFieldBrokerFee => 'Broker fee';
+  String get documentsFieldBrokerFee => 'Miżata tal-intermedjarju';
 
   @override
-  String get documentsFieldEarlyRepaymentCharges => 'Early repayment charges';
+  String get documentsFieldEarlyRepaymentCharges => 'Miżati għal ħlas lura bikri';
 
   @override
-  String get documentsFieldTotalAmountPayable => 'Total amount payable';
+  String get documentsFieldTotalAmountPayable => 'Ammont totali pagabbli';
 
   @override
-  String get documentsFieldAmountDue => 'Amount due';
+  String get documentsFieldAmountDue => 'Ammont dovut';
 
   @override
-  String get documentsFieldCurrency => 'Currency';
+  String get documentsFieldCurrency => 'Munita';
 
   @override
-  String get documentsFieldDueDate => 'Due date';
+  String get documentsFieldDueDate => 'Data tal-iskadenza';
 
   @override
-  String get documentsFieldPayee => 'Payee';
+  String get documentsFieldPayee => 'Benefiċjarju';
 
   @override
-  String get documentsFieldReference => 'Reference';
+  String get documentsFieldReference => 'Referenza';
 
   @override
   String get documentsFieldSubtotal => 'Subtotal';
 
   @override
-  String get documentsFieldTax => 'Tax';
+  String get documentsFieldTax => 'VAT';
 
   @override
-  String get documentsFieldDate => 'Date';
+  String get documentsFieldDate => 'Data';
 
   @override
-  String get documentsFieldTime => 'Time';
+  String get documentsFieldTime => 'Ħin';
 
   @override
-  String get documentsFieldTimeZone => 'Time zone';
+  String get documentsFieldTimeZone => 'Żona tal-ħin';
 
   @override
-  String get documentsFieldAddress => 'Address';
+  String get documentsFieldAddress => 'Indirizz';
 
   @override
-  String get documentsFieldPerson => 'Person';
+  String get documentsFieldPerson => 'Persuna';
 
   @override
   String get accountSetupTitle => 'Żid kont';

@@ -5707,21 +5707,24 @@ class AppLocalizationsGa extends AppLocalizations {
   String get sharedNotJunk => 'Ní turscar é';
 
   @override
-  String get documentsTitle => 'Documents';
+  String get documentsTitle => 'Doiciméid';
 
   @override
-  String get documentsSearchPlaceholder => 'Search in Documents';
+  String get documentsSearchPlaceholder => 'Cuardaigh sna doiciméid';
 
   @override
-  String get documentsSearchInDocuments => 'Search in Documents';
+  String get documentsSearchInDocuments => 'Cuardaigh sna doiciméid';
 
   @override
   String documentsLibraryCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count doiciméad íoslódáilte',
+      many: '$count ndoiciméad íoslódáilte',
+      few: '$count dhoiciméad íoslódáilte',
+      two: '$count dhoiciméad íoslódáilte',
+      one: '1 doiciméad íoslódáilte',
     );
     return '$_temp0';
   }
@@ -5731,14 +5734,20 @@ class AppLocalizationsGa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count doiciméad íoslódáilte',
+      many: '$count ndoiciméad íoslódáilte',
+      few: '$count dhoiciméad íoslódáilte',
+      two: '$count dhoiciméad íoslódáilte',
+      one: '1 doiciméad íoslódáilte',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable can’t be read',
-      one: '1 can’t be read',
+      other: 'Ní féidir $unreadable ceann a léamh',
+      many: 'Ní féidir $unreadable gcinn a léamh',
+      few: 'Ní féidir $unreadable cinn a léamh',
+      two: 'Ní féidir $unreadable cheann a léamh',
+      one: 'Ní féidir 1 cheann a léamh',
     );
     return '$_temp0 · $_temp1';
   }
@@ -5748,8 +5757,11 @@ class AppLocalizationsGa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Cuardaíodh $count doiciméad íoslódáilte',
+      many: 'Cuardaíodh $count ndoiciméad íoslódáilte',
+      few: 'Cuardaíodh $count dhoiciméad íoslódáilte',
+      two: 'Cuardaíodh $count dhoiciméad íoslódáilte',
+      one: 'Cuardaíodh 1 doiciméad íoslódáilte',
     );
     return '$_temp0';
   }
@@ -5759,129 +5771,150 @@ class AppLocalizationsGa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Cuardaíodh $count doiciméad íoslódáilte',
+      many: 'Cuardaíodh $count ndoiciméad íoslódáilte',
+      few: 'Cuardaíodh $count dhoiciméad íoslódáilte',
+      two: 'Cuardaíodh $count dhoiciméad íoslódáilte',
+      one: 'Cuardaíodh 1 doiciméad íoslódáilte',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable couldn’t be read',
-      one: '1 couldn’t be read',
+      other: 'Níorbh fhéidir $unreadable ceann a léamh',
+      many: 'Níorbh fhéidir $unreadable gcinn a léamh',
+      few: 'Níorbh fhéidir $unreadable cinn a léamh',
+      two: 'Níorbh fhéidir $unreadable cheann a léamh',
+      one: 'Níorbh fhéidir 1 cheann a léamh',
     );
     return '$_temp0 · $_temp1';
   }
 
   @override
   String get documentsScopeNote =>
-      'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.';
+      'Déantar cuardach sna ceangaltáin ar an bhfón seo, ní i do bhosca poist ar fad. Oscail ceangaltán chun é a chur leis.';
 
   @override
-  String get documentsEmpty => 'No Documents Yet';
+  String get documentsEmpty => 'Gan doiciméid fós';
 
   @override
   String get documentsEmptyDetail =>
-      'PDFs and text files you open from mail show up here, so you can search inside them.';
+      'Taispeántar anseo na PDFanna agus na comhaid téacs a osclaíonn tú ón ríomhphost, ionas gur féidir leat cuardach a dhéanamh iontu.';
 
   @override
-  String get documentsNoResults => 'No Matches';
+  String get documentsNoResults => 'Gan torthaí';
 
   @override
   String documentsNoResultsDetail(String query) {
-    return 'No downloaded document contains “$query”.';
+    return 'Níl “$query” in aon doiciméad íoslódáilte.';
   }
 
   @override
   String documentsMatchedOnPage(int page) {
-    return 'Matched on page $page';
+    return 'Aimsithe ar leathanach $page';
   }
 
   @override
   String documentsMatchedOnLine(int line) {
-    return 'Matched on line $line';
+    return 'Aimsithe ar líne $line';
   }
 
   @override
   String documentsMoreMatches(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count more matches', one: '1 more match');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count toradh eile',
+      many: '$count dtoradh eile',
+      few: '$count thoradh eile',
+      two: '$count thoradh eile',
+      one: '1 toradh eile',
+    );
     return '$_temp0';
   }
 
   @override
   String documentsPage(int page) {
-    return 'Page $page';
+    return 'Leathanach $page';
   }
 
   @override
-  String get documentsReading => 'Reading…';
+  String get documentsStatusNotDownloaded =>
+      'Níl sé íoslódáilte: oscail é chun é a léamh agus cuardach a dhéanamh ann.';
 
   @override
-  String get documentsStatusNotDownloaded => 'Not downloaded: open it to read and search it.';
+  String get documentsStatusEncrypted => 'Cosanta le pasfhocal: ní féidir le Loupe é a léamh.';
 
   @override
-  String get documentsStatusEncrypted => 'Password protected: Loupe can’t read it.';
+  String get documentsStatusNoText =>
+      'Níor aimsíodh aon téacs: b’fhéidir gur íomhá scanta nó grianghraf é, rud nach féidir le Loupe a léamh fós.';
 
   @override
-  String get documentsStatusNoText => 'No text found: it may be a scan or a photo, which Loupe can’t read yet.';
+  String get documentsStatusEmpty => 'Níl aon téacs sa chomhad seo.';
 
   @override
-  String get documentsStatusEmpty => 'This file has no text.';
+  String get documentsStatusUnsupported => 'Ní féidir le Loupe an cineál seo doiciméid a léamh fós.';
 
   @override
-  String get documentsStatusUnsupported => 'Loupe can’t read this kind of document yet.';
+  String get documentsStatusTooLarge => 'Rómhór le léamh ar an bhfón seo.';
 
   @override
-  String get documentsStatusTooLarge => 'Too large to read on this phone.';
-
-  @override
-  String get documentsStatusDamaged => 'Couldn’t be read: the file may be damaged.';
+  String get documentsStatusDamaged => 'Níorbh fhéidir é a léamh: b’fhéidir go bhfuil an comhad damáistithe.';
 
   @override
   String documentsStatusPartial(int read, int total) {
-    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total pages', one: '1 page');
-    return 'Read $read of $_temp0; the rest isn’t searched.';
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total leathanach',
+      many: '$total leathanach',
+      few: '$total leathanach',
+      two: '$total leathanach',
+      one: '1 leathanach',
+    );
+    return 'Léadh $read as $_temp0; ní dhéantar cuardach sa chuid eile.';
   }
 
   @override
-  String get documentsStatusPartialText => 'Only the beginning was read; the rest isn’t searched.';
+  String get documentsStatusPartialText => 'Níor léadh ach an tús; ní dhéantar cuardach sa chuid eile.';
 
   @override
-  String get documentsOpenDocument => 'Open Document';
+  String get documentsOpenDocument => 'Oscail an doiciméad';
 
   @override
-  String get documentsOpenMessage => 'Open Message';
+  String get documentsOpenMessage => 'Oscail an teachtaireacht';
 
   @override
-  String get documentsDetails => 'Document Details';
+  String get documentsDetails => 'Sonraí an doiciméid';
 
   @override
   String documentsFingerprint(String hash) {
-    return 'Contents fingerprint $hash';
+    return 'Méarlorg an inneachair $hash';
   }
 
   @override
-  String get documentsPagesHeader => 'Text by Page';
+  String get documentsPagesHeader => 'Téacs de réir leathanaigh';
 
   @override
-  String get documentsVersionsHeader => 'Other Copies';
+  String get documentsVersionsHeader => 'Cóipeanna eile';
 
   @override
   String documentsVersionDifferentEarlier(String date) {
-    return 'Different contents from the earlier copy ($date)';
+    return 'Inneachar difriúil ón gcóip níos luaithe ($date)';
   }
 
   @override
   String documentsVersionDifferentLater(String date) {
-    return 'A newer copy ($date) has different contents';
+    return 'Tá inneachar difriúil i gcóip níos nuaí ($date)';
   }
 
   @override
   String documentsVersionSame(String date) {
-    return 'Same contents as the copy of $date';
+    return 'An t-inneachar céanna atá sa chóip dar dáta $date';
   }
 
   @override
   String documentsVersionNotDownloaded(String date) {
-    return 'Same name as the copy of $date; contents not compared until both are downloaded';
+    return 'An t-ainm céanna atá ar an gcóip dar dáta $date; ní chuirfear an t-inneachar i gcomparáid go dtí go mbeidh an dá cheann íoslódáilte';
   }
 
   @override
@@ -5890,125 +5923,126 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get documentsNoFactChanges => 'The Key Facts are the same; other text differs.';
+  String get documentsNoFactChanges => 'Tá na príomhfhíricí mar an gcéanna; tá téacs eile difriúil.';
 
   @override
-  String get documentsKeyFacts => 'Key Facts';
+  String get documentsKeyFacts => 'Príomhfhíricí';
 
   @override
-  String get documentsKeyFactsFind => 'Find Key Facts';
+  String get documentsKeyFactsFind => 'Aimsigh na príomhfhíricí';
 
   @override
-  String get documentsKeyFactsWorking => 'Reading the document…';
+  String get documentsKeyFactsWorking => 'Ag léamh an doiciméid…';
 
   @override
-  String get documentsKeyFactsFailed => 'Couldn’t find the Key Facts.';
+  String get documentsKeyFactsFailed => 'Níorbh fhéidir na príomhfhíricí a aimsiú.';
 
   @override
-  String get documentsKeyFactsDemoNote => 'Made by the built-in demo, not a model.';
+  String get documentsKeyFactsDemoNote => 'Déanta ag an taispeántas ionsuite, ní ag samhail.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
-    return 'Made by $provider.';
+    return 'Déanta ag $provider.';
   }
 
   @override
-  String get documentsKeyFactsHint => 'Tap a fact to see where the document says it.';
+  String get documentsKeyFactsHint => 'Tapáil fíric le feiceáil cá háit a luann an doiciméad í.';
 
   @override
-  String get documentsKeyFactsNone => 'Loupe has no Key Facts for this kind of document yet.';
+  String get documentsKeyFactsNone => 'Níl príomhfhíricí ag Loupe don chineál seo doiciméid fós.';
 
   @override
-  String get documentsKeyFactsPartial => 'Only the first pages were read; facts on later pages are unknown.';
+  String get documentsKeyFactsPartial =>
+      'Níor léadh ach na chéad leathanaigh; níl eolas ar fhíricí sna leathanaigh ina dhiaidh sin.';
 
   @override
-  String get documentsKeyFactsNotStated => 'Not stated';
+  String get documentsKeyFactsNotStated => 'Gan lua';
 
   @override
-  String get documentsKeyFactsConflicting => 'Stated differently';
+  String get documentsKeyFactsConflicting => 'Luaite ar bhealaí difriúla';
 
   @override
   String documentsEvidenceAlso(int page) {
-    return 'Also on page $page:';
+    return 'Ar leathanach $page freisin:';
   }
 
   @override
-  String get documentsTypeMortgageIllustration => 'Mortgage illustration';
+  String get documentsTypeMortgageIllustration => 'Léiriú morgáiste';
 
   @override
-  String get documentsTypeInvoice => 'Invoice';
+  String get documentsTypeInvoice => 'Sonrasc';
 
   @override
-  String get documentsTypeBooking => 'Booking';
+  String get documentsTypeBooking => 'Áirithint';
 
   @override
-  String get documentsTypeOther => 'Other document';
+  String get documentsTypeOther => 'Doiciméad eile';
 
   @override
-  String get documentsFieldInitialRate => 'Initial rate';
+  String get documentsFieldInitialRate => 'Ráta tosaigh';
 
   @override
-  String get documentsFieldRatePeriod => 'Rate period';
+  String get documentsFieldRatePeriod => 'Tréimhse an ráta tosaigh';
 
   @override
-  String get documentsFieldMonthlyPayment => 'Monthly payment';
+  String get documentsFieldMonthlyPayment => 'Íocaíocht mhíosúil';
 
   @override
-  String get documentsFieldTerm => 'Term';
+  String get documentsFieldTerm => 'Téarma';
 
   @override
-  String get documentsFieldLoanAmount => 'Loan amount';
+  String get documentsFieldLoanAmount => 'Méid na hiasachta';
 
   @override
-  String get documentsFieldArrangementFee => 'Arrangement fee';
+  String get documentsFieldArrangementFee => 'Táille socraithe';
 
   @override
-  String get documentsFieldValuationFee => 'Valuation fee';
+  String get documentsFieldValuationFee => 'Táille luachála';
 
   @override
-  String get documentsFieldBrokerFee => 'Broker fee';
+  String get documentsFieldBrokerFee => 'Táille bróicéara';
 
   @override
-  String get documentsFieldEarlyRepaymentCharges => 'Early repayment charges';
+  String get documentsFieldEarlyRepaymentCharges => 'Táillí aisíocaíochta luaithe';
 
   @override
-  String get documentsFieldTotalAmountPayable => 'Total amount payable';
+  String get documentsFieldTotalAmountPayable => 'Méid iomlán iníoctha';
 
   @override
-  String get documentsFieldAmountDue => 'Amount due';
+  String get documentsFieldAmountDue => 'Méid dlite';
 
   @override
-  String get documentsFieldCurrency => 'Currency';
+  String get documentsFieldCurrency => 'Airgeadra';
 
   @override
-  String get documentsFieldDueDate => 'Due date';
+  String get documentsFieldDueDate => 'Dáta dlite';
 
   @override
-  String get documentsFieldPayee => 'Payee';
+  String get documentsFieldPayee => 'Íocaí';
 
   @override
-  String get documentsFieldReference => 'Reference';
+  String get documentsFieldReference => 'Tagairt';
 
   @override
-  String get documentsFieldSubtotal => 'Subtotal';
+  String get documentsFieldSubtotal => 'Fo-iomlán';
 
   @override
-  String get documentsFieldTax => 'Tax';
+  String get documentsFieldTax => 'CBL';
 
   @override
-  String get documentsFieldDate => 'Date';
+  String get documentsFieldDate => 'Dáta';
 
   @override
-  String get documentsFieldTime => 'Time';
+  String get documentsFieldTime => 'Am';
 
   @override
-  String get documentsFieldTimeZone => 'Time zone';
+  String get documentsFieldTimeZone => 'Crios ama';
 
   @override
-  String get documentsFieldAddress => 'Address';
+  String get documentsFieldAddress => 'Seoladh';
 
   @override
-  String get documentsFieldPerson => 'Person';
+  String get documentsFieldPerson => 'Duine';
 
   @override
   String get accountSetupTitle => 'Cuir cuntas leis';

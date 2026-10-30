@@ -3103,8 +3103,6 @@
     "description": "A page of a document: a row in the list of pages, and the title of the sheet showing its text.",
     "placeholders": {"page": {"type": "int", "example": "2"}}
   },
-  "documentsReading": "Reading…",
-  "@documentsReading": {"description": "While Loupe reads a document's text."},
   "documentsStatusNotDownloaded": "Not downloaded: open it to read and search it.",
   "documentsStatusEncrypted": "Password protected: Loupe can’t read it.",
   "documentsStatusNoText": "No text found: it may be a scan or a photo, which Loupe can’t read yet.",

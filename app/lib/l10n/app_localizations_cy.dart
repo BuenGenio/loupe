@@ -5761,21 +5761,25 @@ class AppLocalizationsCy extends AppLocalizations {
   String get sharedNotJunk => 'Nid sothach';
 
   @override
-  String get documentsTitle => 'Documents';
+  String get documentsTitle => 'Dogfennau';
 
   @override
-  String get documentsSearchPlaceholder => 'Search in Documents';
+  String get documentsSearchPlaceholder => 'Chwilio yn y dogfennau';
 
   @override
-  String get documentsSearchInDocuments => 'Search in Documents';
+  String get documentsSearchInDocuments => 'Chwilio yn y dogfennau';
 
   @override
   String documentsLibraryCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count dogfen wedi’u llwytho i lawr',
+      many: '$count dogfen wedi’u llwytho i lawr',
+      few: '$count dogfen wedi’u llwytho i lawr',
+      two: '$count ddogfen wedi’u llwytho i lawr',
+      one: '1 ddogfen wedi’i llwytho i lawr',
+      zero: '$count dogfen wedi’u llwytho i lawr',
     );
     return '$_temp0';
   }
@@ -5785,14 +5789,22 @@ class AppLocalizationsCy extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count dogfen wedi’u llwytho i lawr',
+      many: '$count dogfen wedi’u llwytho i lawr',
+      few: '$count dogfen wedi’u llwytho i lawr',
+      two: '$count ddogfen wedi’u llwytho i lawr',
+      one: '1 ddogfen wedi’i llwytho i lawr',
+      zero: '$count dogfen wedi’u llwytho i lawr',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable can’t be read',
-      one: '1 can’t be read',
+      other: 'Does dim modd darllen $unreadable',
+      many: 'Does dim modd darllen $unreadable',
+      few: 'Does dim modd darllen $unreadable',
+      two: 'Does dim modd darllen $unreadable',
+      one: 'Does dim modd darllen 1',
+      zero: 'Does dim modd darllen $unreadable',
     );
     return '$_temp0 · $_temp1';
   }
@@ -5802,8 +5814,12 @@ class AppLocalizationsCy extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
+      many: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
+      few: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
+      two: 'Chwiliwyd $count ddogfen wedi’u llwytho i lawr',
+      one: 'Chwiliwyd 1 ddogfen wedi’i llwytho i lawr',
+      zero: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
     );
     return '$_temp0';
   }
@@ -5813,129 +5829,153 @@ class AppLocalizationsCy extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
+      many: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
+      few: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
+      two: 'Chwiliwyd $count ddogfen wedi’u llwytho i lawr',
+      one: 'Chwiliwyd 1 ddogfen wedi’i llwytho i lawr',
+      zero: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable couldn’t be read',
-      one: '1 couldn’t be read',
+      other: 'Doedd dim modd darllen $unreadable',
+      many: 'Doedd dim modd darllen $unreadable',
+      few: 'Doedd dim modd darllen $unreadable',
+      two: 'Doedd dim modd darllen $unreadable',
+      one: 'Doedd dim modd darllen 1',
+      zero: 'Doedd dim modd darllen $unreadable',
     );
     return '$_temp0 · $_temp1';
   }
 
   @override
   String get documentsScopeNote =>
-      'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.';
+      'Yn chwilio atodiadau ar y ffôn hwn, nid eich blwch post cyfan. Agorwch atodiad i’w ychwanegu.';
 
   @override
-  String get documentsEmpty => 'No Documents Yet';
+  String get documentsEmpty => 'Dim dogfennau eto';
 
   @override
   String get documentsEmptyDetail =>
-      'PDFs and text files you open from mail show up here, so you can search inside them.';
+      'Mae PDFs a ffeiliau testun rydych chi’n eu hagor o’ch e-bost yn ymddangos yma, er mwyn i chi allu chwilio ynddyn nhw.';
 
   @override
-  String get documentsNoResults => 'No Matches';
+  String get documentsNoResults => 'Dim yn cyfateb';
 
   @override
   String documentsNoResultsDetail(String query) {
-    return 'No downloaded document contains “$query”.';
+    return 'Does dim un o’r dogfennau a lwythwyd i lawr yn cynnwys “$query”.';
   }
 
   @override
   String documentsMatchedOnPage(int page) {
-    return 'Matched on page $page';
+    return 'Canfuwyd ar dudalen $page';
   }
 
   @override
   String documentsMatchedOnLine(int line) {
-    return 'Matched on line $line';
+    return 'Canfuwyd ar linell $line';
   }
 
   @override
   String documentsMoreMatches(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count more matches', one: '1 more match');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count cyfatebiaeth arall',
+      many: '$count chyfatebiaeth arall',
+      few: '$count cyfatebiaeth arall',
+      two: '$count gyfatebiaeth arall',
+      one: '1 gyfatebiaeth arall',
+      zero: '$count cyfatebiaeth arall',
+    );
     return '$_temp0';
   }
 
   @override
   String documentsPage(int page) {
-    return 'Page $page';
+    return 'Tudalen $page';
   }
 
   @override
-  String get documentsReading => 'Reading…';
+  String get documentsStatusNotDownloaded => 'Heb ei llwytho i lawr: agorwch hi i’w darllen a chwilio ynddi.';
 
   @override
-  String get documentsStatusNotDownloaded => 'Not downloaded: open it to read and search it.';
+  String get documentsStatusEncrypted => 'Wedi’i diogelu â chyfrinair: does dim modd i Loupe ei darllen.';
 
   @override
-  String get documentsStatusEncrypted => 'Password protected: Loupe can’t read it.';
+  String get documentsStatusNoText =>
+      'Dim testun wedi’i ganfod: gallai fod yn sgan neu’n llun, a dyw Loupe ddim yn gallu darllen y rheini eto.';
 
   @override
-  String get documentsStatusNoText => 'No text found: it may be a scan or a photo, which Loupe can’t read yet.';
+  String get documentsStatusEmpty => 'Does dim testun yn y ffeil hon.';
 
   @override
-  String get documentsStatusEmpty => 'This file has no text.';
+  String get documentsStatusUnsupported => 'Dyw Loupe ddim yn gallu darllen y math hwn o ddogfen eto.';
 
   @override
-  String get documentsStatusUnsupported => 'Loupe can’t read this kind of document yet.';
+  String get documentsStatusTooLarge => 'Rhy fawr i’w darllen ar y ffôn hwn.';
 
   @override
-  String get documentsStatusTooLarge => 'Too large to read on this phone.';
-
-  @override
-  String get documentsStatusDamaged => 'Couldn’t be read: the file may be damaged.';
+  String get documentsStatusDamaged => 'Methu ei darllen: efallai fod y ffeil wedi’i difrodi.';
 
   @override
   String documentsStatusPartial(int read, int total) {
-    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total pages', one: '1 page');
-    return 'Read $read of $_temp0; the rest isn’t searched.';
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total tudalen',
+      many: '$total tudalen',
+      few: '$total tudalen',
+      two: '$total dudalen',
+      one: '1 dudalen',
+      zero: '$total tudalen',
+    );
+    return 'Darllenwyd $read o $_temp0; dyw’r gweddill ddim yn cael ei chwilio.';
   }
 
   @override
-  String get documentsStatusPartialText => 'Only the beginning was read; the rest isn’t searched.';
+  String get documentsStatusPartialText => 'Dim ond y dechrau a ddarllenwyd; dyw’r gweddill ddim yn cael ei chwilio.';
 
   @override
-  String get documentsOpenDocument => 'Open Document';
+  String get documentsOpenDocument => 'Agor y ddogfen';
 
   @override
-  String get documentsOpenMessage => 'Open Message';
+  String get documentsOpenMessage => 'Agor y neges';
 
   @override
-  String get documentsDetails => 'Document Details';
+  String get documentsDetails => 'Manylion y ddogfen';
 
   @override
   String documentsFingerprint(String hash) {
-    return 'Contents fingerprint $hash';
+    return 'Ôl bys y cynnwys $hash';
   }
 
   @override
-  String get documentsPagesHeader => 'Text by Page';
+  String get documentsPagesHeader => 'Testun fesul tudalen';
 
   @override
-  String get documentsVersionsHeader => 'Other Copies';
+  String get documentsVersionsHeader => 'Copïau eraill';
 
   @override
   String documentsVersionDifferentEarlier(String date) {
-    return 'Different contents from the earlier copy ($date)';
+    return 'Cynnwys gwahanol i’r copi cynharach ($date)';
   }
 
   @override
   String documentsVersionDifferentLater(String date) {
-    return 'A newer copy ($date) has different contents';
+    return 'Mae gan gopi mwy newydd ($date) gynnwys gwahanol';
   }
 
   @override
   String documentsVersionSame(String date) {
-    return 'Same contents as the copy of $date';
+    return 'Yr un cynnwys â’r copi o $date';
   }
 
   @override
   String documentsVersionNotDownloaded(String date) {
-    return 'Same name as the copy of $date; contents not compared until both are downloaded';
+    return 'Yr un enw â’r copi o $date; ni fydd y cynnwys yn cael ei gymharu nes bod y ddau wedi’u llwytho i lawr';
   }
 
   @override
@@ -5944,122 +5984,123 @@ class AppLocalizationsCy extends AppLocalizations {
   }
 
   @override
-  String get documentsNoFactChanges => 'The Key Facts are the same; other text differs.';
+  String get documentsNoFactChanges => 'Mae’r ffeithiau allweddol yr un fath; mae testun arall yn wahanol.';
 
   @override
-  String get documentsKeyFacts => 'Key Facts';
+  String get documentsKeyFacts => 'Ffeithiau allweddol';
 
   @override
-  String get documentsKeyFactsFind => 'Find Key Facts';
+  String get documentsKeyFactsFind => 'Dod o hyd i’r ffeithiau allweddol';
 
   @override
-  String get documentsKeyFactsWorking => 'Reading the document…';
+  String get documentsKeyFactsWorking => 'Wrthi’n darllen y ddogfen…';
 
   @override
-  String get documentsKeyFactsFailed => 'Couldn’t find the Key Facts.';
+  String get documentsKeyFactsFailed => 'Methu dod o hyd i’r ffeithiau allweddol.';
 
   @override
-  String get documentsKeyFactsDemoNote => 'Made by the built-in demo, not a model.';
+  String get documentsKeyFactsDemoNote => 'Gwnaed gan y demo mewnol, nid gan fodel.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
-    return 'Made by $provider.';
+    return 'Gwnaed gan $provider.';
   }
 
   @override
-  String get documentsKeyFactsHint => 'Tap a fact to see where the document says it.';
+  String get documentsKeyFactsHint => 'Tapiwch ffaith i weld ble mae’r ddogfen yn ei nodi.';
 
   @override
-  String get documentsKeyFactsNone => 'Loupe has no Key Facts for this kind of document yet.';
+  String get documentsKeyFactsNone => 'Does gan Loupe ddim ffeithiau allweddol ar gyfer y math hwn o ddogfen eto.';
 
   @override
-  String get documentsKeyFactsPartial => 'Only the first pages were read; facts on later pages are unknown.';
+  String get documentsKeyFactsPartial =>
+      'Dim ond y tudalennau cyntaf a ddarllenwyd; does dim gwybod beth yw’r ffeithiau ar dudalennau diweddarach.';
 
   @override
-  String get documentsKeyFactsNotStated => 'Not stated';
+  String get documentsKeyFactsNotStated => 'Heb ei nodi';
 
   @override
-  String get documentsKeyFactsConflicting => 'Stated differently';
+  String get documentsKeyFactsConflicting => 'Wedi’i nodi’n wahanol';
 
   @override
   String documentsEvidenceAlso(int page) {
-    return 'Also on page $page:';
+    return 'Hefyd ar dudalen $page:';
   }
 
   @override
-  String get documentsTypeMortgageIllustration => 'Mortgage illustration';
+  String get documentsTypeMortgageIllustration => 'Darlun morgais';
 
   @override
-  String get documentsTypeInvoice => 'Invoice';
+  String get documentsTypeInvoice => 'Anfoneb';
 
   @override
-  String get documentsTypeBooking => 'Booking';
+  String get documentsTypeBooking => 'Archeb';
 
   @override
-  String get documentsTypeOther => 'Other document';
+  String get documentsTypeOther => 'Dogfen arall';
 
   @override
-  String get documentsFieldInitialRate => 'Initial rate';
+  String get documentsFieldInitialRate => 'Cyfradd gychwynnol';
 
   @override
-  String get documentsFieldRatePeriod => 'Rate period';
+  String get documentsFieldRatePeriod => 'Cyfnod y gyfradd gychwynnol';
 
   @override
-  String get documentsFieldMonthlyPayment => 'Monthly payment';
+  String get documentsFieldMonthlyPayment => 'Taliad misol';
 
   @override
-  String get documentsFieldTerm => 'Term';
+  String get documentsFieldTerm => 'Tymor';
 
   @override
-  String get documentsFieldLoanAmount => 'Loan amount';
+  String get documentsFieldLoanAmount => 'Swm y benthyciad';
 
   @override
-  String get documentsFieldArrangementFee => 'Arrangement fee';
+  String get documentsFieldArrangementFee => 'Ffi trefnu';
 
   @override
-  String get documentsFieldValuationFee => 'Valuation fee';
+  String get documentsFieldValuationFee => 'Ffi prisio';
 
   @override
-  String get documentsFieldBrokerFee => 'Broker fee';
+  String get documentsFieldBrokerFee => 'Ffi brocer';
 
   @override
-  String get documentsFieldEarlyRepaymentCharges => 'Early repayment charges';
+  String get documentsFieldEarlyRepaymentCharges => 'Ffioedd ad-dalu cynnar';
 
   @override
-  String get documentsFieldTotalAmountPayable => 'Total amount payable';
+  String get documentsFieldTotalAmountPayable => 'Cyfanswm sy’n daladwy';
 
   @override
-  String get documentsFieldAmountDue => 'Amount due';
+  String get documentsFieldAmountDue => 'Swm sy’n ddyledus';
 
   @override
-  String get documentsFieldCurrency => 'Currency';
+  String get documentsFieldCurrency => 'Arian cyfred';
 
   @override
-  String get documentsFieldDueDate => 'Due date';
+  String get documentsFieldDueDate => 'Dyddiad dyledus';
 
   @override
-  String get documentsFieldPayee => 'Payee';
+  String get documentsFieldPayee => 'Talai';
 
   @override
-  String get documentsFieldReference => 'Reference';
+  String get documentsFieldReference => 'Cyfeirnod';
 
   @override
-  String get documentsFieldSubtotal => 'Subtotal';
+  String get documentsFieldSubtotal => 'Is-gyfanswm';
 
   @override
-  String get documentsFieldTax => 'Tax';
+  String get documentsFieldTax => 'TAW';
 
   @override
-  String get documentsFieldDate => 'Date';
+  String get documentsFieldDate => 'Dyddiad';
 
   @override
-  String get documentsFieldTime => 'Time';
+  String get documentsFieldTime => 'Amser';
 
   @override
-  String get documentsFieldTimeZone => 'Time zone';
+  String get documentsFieldTimeZone => 'Cylchfa amser';
 
   @override
-  String get documentsFieldAddress => 'Address';
+  String get documentsFieldAddress => 'Cyfeiriad';
 
   @override
   String get documentsFieldPerson => 'Person';

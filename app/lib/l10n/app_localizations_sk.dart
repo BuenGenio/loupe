@@ -5499,21 +5499,22 @@ class AppLocalizationsSk extends AppLocalizations {
   String get sharedNotJunk => 'Nie je nevyžiadaná';
 
   @override
-  String get documentsTitle => 'Documents';
+  String get documentsTitle => 'Dokumenty';
 
   @override
-  String get documentsSearchPlaceholder => 'Search in Documents';
+  String get documentsSearchPlaceholder => 'Hľadať v dokumentoch';
 
   @override
-  String get documentsSearchInDocuments => 'Search in Documents';
+  String get documentsSearchInDocuments => 'Hľadať v dokumentoch';
 
   @override
   String documentsLibraryCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count stiahnutých dokumentov',
+      few: '$count stiahnuté dokumenty',
+      one: '$count stiahnutý dokument',
     );
     return '$_temp0';
   }
@@ -5523,14 +5524,16 @@ class AppLocalizationsSk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count downloaded documents',
-      one: '1 downloaded document',
+      other: '$count stiahnutých dokumentov',
+      few: '$count stiahnuté dokumenty',
+      one: '$count stiahnutý dokument',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable can’t be read',
-      one: '1 can’t be read',
+      other: '$unreadable sa nedá prečítať',
+      few: '$unreadable sa nedajú prečítať',
+      one: '$unreadable sa nedá prečítať',
     );
     return '$_temp0 · $_temp1';
   }
@@ -5540,8 +5543,9 @@ class AppLocalizationsSk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Prehľadaných $count stiahnutých dokumentov',
+      few: 'Prehľadané $count stiahnuté dokumenty',
+      one: 'Prehľadaný $count stiahnutý dokument',
     );
     return '$_temp0';
   }
@@ -5551,129 +5555,141 @@ class AppLocalizationsSk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Searched $count downloaded documents',
-      one: 'Searched 1 downloaded document',
+      other: 'Prehľadaných $count stiahnutých dokumentov',
+      few: 'Prehľadané $count stiahnuté dokumenty',
+      one: 'Prehľadaný $count stiahnutý dokument',
     );
     String _temp1 = intl.Intl.pluralLogic(
       unreadable,
       locale: localeName,
-      other: '$unreadable couldn’t be read',
-      one: '1 couldn’t be read',
+      other: '$unreadable sa nepodarilo prečítať',
+      few: '$unreadable sa nepodarilo prečítať',
+      one: '$unreadable sa nepodarilo prečítať',
     );
     return '$_temp0 · $_temp1';
   }
 
   @override
   String get documentsScopeNote =>
-      'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.';
+      'Prehľadáva prílohy v tomto telefóne, nie celú vašu schránku. Prílohu pridáte tak, že ju otvoríte.';
 
   @override
-  String get documentsEmpty => 'No Documents Yet';
+  String get documentsEmpty => 'Zatiaľ žiadne dokumenty';
 
   @override
   String get documentsEmptyDetail =>
-      'PDFs and text files you open from mail show up here, so you can search inside them.';
+      'Súbory PDF a textové súbory, ktoré otvoríte z pošty, sa zobrazia tu, aby ste v nich mohli hľadať.';
 
   @override
-  String get documentsNoResults => 'No Matches';
+  String get documentsNoResults => 'Žiadne zhody';
 
   @override
   String documentsNoResultsDetail(String query) {
-    return 'No downloaded document contains “$query”.';
+    return 'Žiadny stiahnutý dokument neobsahuje „$query“.';
   }
 
   @override
   String documentsMatchedOnPage(int page) {
-    return 'Matched on page $page';
+    return 'Nájdené na strane $page';
   }
 
   @override
   String documentsMatchedOnLine(int line) {
-    return 'Matched on line $line';
+    return 'Nájdené v riadku $line';
   }
 
   @override
   String documentsMoreMatches(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count more matches', one: '1 more match');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ďalších $count zhôd',
+      few: 'Ďalšie $count zhody',
+      one: 'Ďalšia $count zhoda',
+    );
     return '$_temp0';
   }
 
   @override
   String documentsPage(int page) {
-    return 'Page $page';
+    return 'Strana $page';
   }
 
   @override
-  String get documentsReading => 'Reading…';
+  String get documentsStatusNotDownloaded => 'Nestiahnuté: po otvorení ho bude možné prečítať a prehľadať.';
 
   @override
-  String get documentsStatusNotDownloaded => 'Not downloaded: open it to read and search it.';
+  String get documentsStatusEncrypted => 'Chránené heslom: Loupe ho nedokáže prečítať.';
 
   @override
-  String get documentsStatusEncrypted => 'Password protected: Loupe can’t read it.';
+  String get documentsStatusNoText =>
+      'Nenašiel sa žiadny text: možno ide o sken alebo fotografiu, čo Loupe zatiaľ nevie prečítať.';
 
   @override
-  String get documentsStatusNoText => 'No text found: it may be a scan or a photo, which Loupe can’t read yet.';
+  String get documentsStatusEmpty => 'Tento súbor neobsahuje žiadny text.';
 
   @override
-  String get documentsStatusEmpty => 'This file has no text.';
+  String get documentsStatusUnsupported => 'Loupe zatiaľ nevie čítať tento druh dokumentov.';
 
   @override
-  String get documentsStatusUnsupported => 'Loupe can’t read this kind of document yet.';
+  String get documentsStatusTooLarge => 'Príliš veľké na čítanie v tomto telefóne.';
 
   @override
-  String get documentsStatusTooLarge => 'Too large to read on this phone.';
-
-  @override
-  String get documentsStatusDamaged => 'Couldn’t be read: the file may be damaged.';
+  String get documentsStatusDamaged => 'Nepodarilo sa prečítať: súbor môže byť poškodený.';
 
   @override
   String documentsStatusPartial(int read, int total) {
-    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total pages', one: '1 page');
-    return 'Read $read of $_temp0; the rest isn’t searched.';
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total strán',
+      few: '$total strán',
+      one: '$total strany',
+    );
+    return 'Prečítané $read z $_temp0; zvyšok sa neprehľadáva.';
   }
 
   @override
-  String get documentsStatusPartialText => 'Only the beginning was read; the rest isn’t searched.';
+  String get documentsStatusPartialText => 'Prečítal sa len začiatok; zvyšok sa neprehľadáva.';
 
   @override
-  String get documentsOpenDocument => 'Open Document';
+  String get documentsOpenDocument => 'Otvoriť dokument';
 
   @override
-  String get documentsOpenMessage => 'Open Message';
+  String get documentsOpenMessage => 'Otvoriť správu';
 
   @override
-  String get documentsDetails => 'Document Details';
+  String get documentsDetails => 'Podrobnosti dokumentu';
 
   @override
   String documentsFingerprint(String hash) {
-    return 'Contents fingerprint $hash';
+    return 'Odtlačok obsahu $hash';
   }
 
   @override
-  String get documentsPagesHeader => 'Text by Page';
+  String get documentsPagesHeader => 'Text podľa strán';
 
   @override
-  String get documentsVersionsHeader => 'Other Copies';
+  String get documentsVersionsHeader => 'Ďalšie kópie';
 
   @override
   String documentsVersionDifferentEarlier(String date) {
-    return 'Different contents from the earlier copy ($date)';
+    return 'Obsah sa líši od staršej kópie ($date)';
   }
 
   @override
   String documentsVersionDifferentLater(String date) {
-    return 'A newer copy ($date) has different contents';
+    return 'Novšia kópia ($date) má iný obsah';
   }
 
   @override
   String documentsVersionSame(String date) {
-    return 'Same contents as the copy of $date';
+    return 'Rovnaký obsah ako kópia z $date';
   }
 
   @override
   String documentsVersionNotDownloaded(String date) {
-    return 'Same name as the copy of $date; contents not compared until both are downloaded';
+    return 'Rovnaký názov ako kópia z $date; obsah sa porovná, až keď budú stiahnuté obe';
   }
 
   @override
@@ -5682,125 +5698,125 @@ class AppLocalizationsSk extends AppLocalizations {
   }
 
   @override
-  String get documentsNoFactChanges => 'The Key Facts are the same; other text differs.';
+  String get documentsNoFactChanges => 'Kľúčové údaje sú rovnaké; líši sa iná časť textu.';
 
   @override
-  String get documentsKeyFacts => 'Key Facts';
+  String get documentsKeyFacts => 'Kľúčové údaje';
 
   @override
-  String get documentsKeyFactsFind => 'Find Key Facts';
+  String get documentsKeyFactsFind => 'Nájsť kľúčové údaje';
 
   @override
-  String get documentsKeyFactsWorking => 'Reading the document…';
+  String get documentsKeyFactsWorking => 'Číta sa dokument…';
 
   @override
-  String get documentsKeyFactsFailed => 'Couldn’t find the Key Facts.';
+  String get documentsKeyFactsFailed => 'Kľúčové údaje sa nepodarilo nájsť.';
 
   @override
-  String get documentsKeyFactsDemoNote => 'Made by the built-in demo, not a model.';
+  String get documentsKeyFactsDemoNote => 'Vytvorilo vstavané demo, nie model.';
 
   @override
   String documentsKeyFactsMadeBy(String provider) {
-    return 'Made by $provider.';
+    return 'Vytvorené pomocou $provider.';
   }
 
   @override
-  String get documentsKeyFactsHint => 'Tap a fact to see where the document says it.';
+  String get documentsKeyFactsHint => 'Ťuknutím na údaj zobrazíte, kde ho dokument uvádza.';
 
   @override
-  String get documentsKeyFactsNone => 'Loupe has no Key Facts for this kind of document yet.';
+  String get documentsKeyFactsNone => 'Pre tento druh dokumentov Loupe zatiaľ nemá kľúčové údaje.';
 
   @override
-  String get documentsKeyFactsPartial => 'Only the first pages were read; facts on later pages are unknown.';
+  String get documentsKeyFactsPartial => 'Prečítali sa len prvé strany; údaje na ďalších stranách nie sú známe.';
 
   @override
-  String get documentsKeyFactsNotStated => 'Not stated';
+  String get documentsKeyFactsNotStated => 'Neuvedené';
 
   @override
-  String get documentsKeyFactsConflicting => 'Stated differently';
+  String get documentsKeyFactsConflicting => 'Uvedené rôzne';
 
   @override
   String documentsEvidenceAlso(int page) {
-    return 'Also on page $page:';
+    return 'Aj na strane $page:';
   }
 
   @override
-  String get documentsTypeMortgageIllustration => 'Mortgage illustration';
+  String get documentsTypeMortgageIllustration => 'Ponuka hypotéky';
 
   @override
-  String get documentsTypeInvoice => 'Invoice';
+  String get documentsTypeInvoice => 'Faktúra';
 
   @override
-  String get documentsTypeBooking => 'Booking';
+  String get documentsTypeBooking => 'Rezervácia';
 
   @override
-  String get documentsTypeOther => 'Other document';
+  String get documentsTypeOther => 'Iný dokument';
 
   @override
-  String get documentsFieldInitialRate => 'Initial rate';
+  String get documentsFieldInitialRate => 'Počiatočná úroková sadzba';
 
   @override
-  String get documentsFieldRatePeriod => 'Rate period';
+  String get documentsFieldRatePeriod => 'Doba fixácie';
 
   @override
-  String get documentsFieldMonthlyPayment => 'Monthly payment';
+  String get documentsFieldMonthlyPayment => 'Mesačná splátka';
 
   @override
-  String get documentsFieldTerm => 'Term';
+  String get documentsFieldTerm => 'Doba splatnosti';
 
   @override
-  String get documentsFieldLoanAmount => 'Loan amount';
+  String get documentsFieldLoanAmount => 'Výška úveru';
 
   @override
-  String get documentsFieldArrangementFee => 'Arrangement fee';
+  String get documentsFieldArrangementFee => 'Poplatok za poskytnutie úveru';
 
   @override
-  String get documentsFieldValuationFee => 'Valuation fee';
+  String get documentsFieldValuationFee => 'Poplatok za ohodnotenie nehnuteľnosti';
 
   @override
-  String get documentsFieldBrokerFee => 'Broker fee';
+  String get documentsFieldBrokerFee => 'Odmena sprostredkovateľa';
 
   @override
-  String get documentsFieldEarlyRepaymentCharges => 'Early repayment charges';
+  String get documentsFieldEarlyRepaymentCharges => 'Poplatky za predčasné splatenie';
 
   @override
-  String get documentsFieldTotalAmountPayable => 'Total amount payable';
+  String get documentsFieldTotalAmountPayable => 'Celková splatná suma';
 
   @override
-  String get documentsFieldAmountDue => 'Amount due';
+  String get documentsFieldAmountDue => 'Suma na úhradu';
 
   @override
-  String get documentsFieldCurrency => 'Currency';
+  String get documentsFieldCurrency => 'Mena';
 
   @override
-  String get documentsFieldDueDate => 'Due date';
+  String get documentsFieldDueDate => 'Dátum splatnosti';
 
   @override
-  String get documentsFieldPayee => 'Payee';
+  String get documentsFieldPayee => 'Príjemca platby';
 
   @override
-  String get documentsFieldReference => 'Reference';
+  String get documentsFieldReference => 'Referenčné číslo';
 
   @override
-  String get documentsFieldSubtotal => 'Subtotal';
+  String get documentsFieldSubtotal => 'Medzisúčet';
 
   @override
-  String get documentsFieldTax => 'Tax';
+  String get documentsFieldTax => 'Daň';
 
   @override
-  String get documentsFieldDate => 'Date';
+  String get documentsFieldDate => 'Dátum';
 
   @override
-  String get documentsFieldTime => 'Time';
+  String get documentsFieldTime => 'Čas';
 
   @override
-  String get documentsFieldTimeZone => 'Time zone';
+  String get documentsFieldTimeZone => 'Časové pásmo';
 
   @override
-  String get documentsFieldAddress => 'Address';
+  String get documentsFieldAddress => 'Adresa';
 
   @override
-  String get documentsFieldPerson => 'Person';
+  String get documentsFieldPerson => 'Osoba';
 
   @override
   String get accountSetupTitle => 'Pridať účet';
