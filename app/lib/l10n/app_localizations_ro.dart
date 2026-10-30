@@ -3304,6 +3304,328 @@ class AppLocalizationsRo extends AppLocalizations {
       'Neverificat: sunt verificate doar certificatele de la autorități în care Loupe are încredere.';
 
   @override
+  String get actionsNeedsMyAction => 'Necesită acțiunea mea';
+
+  @override
+  String get actionsWaitingOnOthers => 'În așteptarea altora';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Nimic nu necesită acțiunea ta';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Nu aștepți pe nimeni';
+
+  @override
+  String get actionsFolderEmptyDetail => 'Ca să urmărești ceva, atinge ⋯ la un mesaj și alege Adaugă o acțiune…';
+
+  @override
+  String get actionsTitle => 'Acțiuni';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count de făcut',
+      few: '$count de făcut',
+      one: '$count de făcut',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count în așteptare',
+      few: '$count în așteptare',
+      one: '$count în așteptare',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count de acțiuni rezolvate',
+      few: '$count acțiuni rezolvate',
+      one: '$count acțiune rezolvată',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Rezolvate';
+
+  @override
+  String get actionsNoneInConversation => 'Această conversație nu are acțiuni.';
+
+  @override
+  String get actionsFooter =>
+      'Acțiunile sunt păstrate pe acest telefon. E-mailurile nu le modifică niciodată, nici măcar un răspuns care spune „Mulțumesc”: doar tu le modifici.';
+
+  @override
+  String get actionsMarkDone => 'Marchează ca făcută';
+
+  @override
+  String get actionsReopen => 'Redeschide';
+
+  @override
+  String get actionsStateNeedsAction => 'Necesită acțiune';
+
+  @override
+  String get actionsStateInProgress => 'În curs';
+
+  @override
+  String get actionsStateSent => 'Trimisă';
+
+  @override
+  String get actionsStateWaiting => 'Așteaptă confirmarea';
+
+  @override
+  String get actionsStateAcknowledged => 'Confirmată';
+
+  @override
+  String get actionsStateDone => 'Făcută';
+
+  @override
+  String get actionsStateDismissed => 'Ignorată';
+
+  @override
+  String get actionsStateSuperseded => 'Înlocuită';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Marcată ca necesitând acțiune',
+      'inProgress': 'Marcată ca în curs',
+      'sent': 'Marcată ca trimisă',
+      'waitingForAcknowledgement': 'Așteaptă confirmarea',
+      'acknowledged': 'Marcată ca confirmată',
+      'done': 'Marcată ca făcută',
+      'dismissed': 'Acțiune ignorată',
+      'superseded': 'Marcată ca înlocuită',
+      'other': 'Acțiune modificată',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Acțiune reformulată';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Memento setat pentru $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Memento eliminat';
+
+  @override
+  String get actionsDeleted => 'Acțiune ștearsă';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count de acțiuni adăugate',
+      few: '$count acțiuni adăugate',
+      one: 'Acțiune adăugată',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Acțiunea nu a putut fi salvată.';
+
+  @override
+  String get actionsStatusHeader => 'Stare';
+
+  @override
+  String get actionsEditText => 'Editează textul…';
+
+  @override
+  String get actionsEditTitle => 'Editează acțiunea';
+
+  @override
+  String get actionsRemindMe => 'Amintește-mi…';
+
+  @override
+  String get actionsChangeReminder => 'Schimbă mementoul…';
+
+  @override
+  String get actionsClearReminder => 'Elimină mementoul';
+
+  @override
+  String get actionsRemindTitle => 'Amintește-mi';
+
+  @override
+  String get actionsDelete => 'Șterge acțiunea';
+
+  @override
+  String get actionsHistoryHeader => 'Istoric';
+
+  @override
+  String get actionsHistoryAdded => 'Adăugată';
+
+  @override
+  String get actionsHistoryEdited => 'Reformulată';
+
+  @override
+  String get actionsHistoryDue => 'Termen modificat';
+
+  @override
+  String get actionsHistoryReminder => 'Memento modificat';
+
+  @override
+  String get actionsHistoryRevised => 'Actualizată dintr-o sugestie nouă';
+
+  @override
+  String get actionsHistoryDeleted => 'Ștearsă';
+
+  @override
+  String get actionsHistoryRestored => 'Restaurată';
+
+  @override
+  String get actionsOwnerMe => 'Trebuie să fac eu';
+
+  @override
+  String get actionsOwnerThem => 'Vor face alții';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Inițial: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '„$quote”';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Mesaj de la $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Adăugată de tine';
+
+  @override
+  String get actionsOriginDemo => 'Sugerată de demonstrația încorporată: reguli, fără model';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Sugerată de $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Sugerată de $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Termen: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Ideal până la $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '„$timing”';
+  }
+
+  @override
+  String get actionsAddMenu => 'Adaugă o acțiune…';
+
+  @override
+  String get actionsSuggestMenu => 'Sugerează acțiuni';
+
+  @override
+  String get actionsAddTitle => 'Adaugă o acțiune';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Ce trebuie să faci?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Ce aștepți?';
+
+  @override
+  String get actionsDueDate => 'Termen-limită';
+
+  @override
+  String get actionsClearDueDate => 'Fără termen-limită';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Despre „$subject”';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Acțiuni sugerate';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'pe acest telefon',
+      'myServer': 'pe serverul tău',
+      'other': 'în cloud',
+    });
+    return 'De la $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'De la demonstrația încorporată: reguli, fără model. Nimic nu părăsește acest telefon.';
+
+  @override
+  String get actionsSuggestNone => 'Nimic de urmărit în acest mesaj.';
+
+  @override
+  String get actionsSuggestPartial => 'Acest mesaj este lung: s-a citit doar începutul.';
+
+  @override
+  String get actionsSuggestTracked => 'Urmărită';
+
+  @override
+  String get actionsSuggestUpdate => 'Actualizează';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Adaugă-le pe toate cele $count',
+      few: 'Adaugă-le pe toate cele $count',
+      two: 'Adaugă-le pe amândouă',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Fiecare sugestie citează mesajul și nimic nu este urmărit până nu îl adaugi. E-mailurile anterioare citate nu contează.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Acest mesaj este prea lung pentru modelul ales.';
+
+  @override
+  String get actionsSuggestInvalid => 'Răspunsul nu s-a potrivit cu mesajul, așa că nu se sugerează nimic.';
+
+  @override
+  String get actionsSuggestCancelled => 'Oprit.';
+
+  @override
+  String get actionsSuggestFailed => 'Sugestiile nu sunt disponibile acum.';
+
+  @override
   String get settingsLanguage => 'Limbă';
 
   @override

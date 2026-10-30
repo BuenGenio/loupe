@@ -69,7 +69,9 @@ final class Mailbox {
 }
 
 /// Mailboxes that span accounts (the top of the Mailboxes screen).
-enum VirtualMailbox { allInboxes, unread, flagged, vip, allDrafts, allSent }
+/// [needsMyAction] and [waitingOnOthers] hold the conversations with open
+/// actions (`ActionRecords`, `ActionRecord.folder`).
+enum VirtualMailbox { allInboxes, unread, flagged, vip, allDrafts, allSent, needsMyAction, waitingOnOthers }
 
 /// What a message list shows: one real mailbox or a virtual one.
 sealed class MailboxRef {

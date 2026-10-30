@@ -3314,6 +3314,327 @@ class AppLocalizationsFr extends AppLocalizations {
       'Non vérifié : seuls les certificats d’une autorité approuvée par Loupe sont vérifiés.';
 
   @override
+  String get actionsNeedsMyAction => 'Requiert mon action';
+
+  @override
+  String get actionsWaitingOnOthers => 'En attente des autres';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Rien ne requiert votre action';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Vous n’attendez rien de personne';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Pour suivre quelque chose, touchez ⋯ sur un message et choisissez « Ajouter une action… »';
+
+  @override
+  String get actionsTitle => 'Actions';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count à faire',
+      many: '$count à faire',
+      one: '$count à faire',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count en attente',
+      many: '$count en attente',
+      one: '$count en attente',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count actions réglées',
+      many: '$count d’actions réglées',
+      one: '$count action réglée',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Réglées';
+
+  @override
+  String get actionsNoneInConversation => 'Cette conversation n’a aucune action.';
+
+  @override
+  String get actionsFooter =>
+      'Les actions sont conservées sur ce téléphone. Les e-mails ne les modifient jamais, pas même une réponse disant « Merci » : elles ne changent que si vous les modifiez.';
+
+  @override
+  String get actionsMarkDone => 'Marquer comme faite';
+
+  @override
+  String get actionsReopen => 'Rouvrir';
+
+  @override
+  String get actionsStateNeedsAction => 'Action requise';
+
+  @override
+  String get actionsStateInProgress => 'En cours';
+
+  @override
+  String get actionsStateSent => 'Envoyée';
+
+  @override
+  String get actionsStateWaiting => 'En attente de confirmation';
+
+  @override
+  String get actionsStateAcknowledged => 'Confirmée';
+
+  @override
+  String get actionsStateDone => 'Faite';
+
+  @override
+  String get actionsStateDismissed => 'Écartée';
+
+  @override
+  String get actionsStateSuperseded => 'Remplacée';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Marquée comme à faire',
+      'inProgress': 'Marquée comme en cours',
+      'sent': 'Marquée comme envoyée',
+      'waitingForAcknowledgement': 'En attente de confirmation',
+      'acknowledged': 'Marquée comme confirmée',
+      'done': 'Marquée comme faite',
+      'dismissed': 'Action écartée',
+      'superseded': 'Marquée comme remplacée',
+      'other': 'Action modifiée',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Action reformulée';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Rappel programmé pour $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Rappel supprimé';
+
+  @override
+  String get actionsDeleted => 'Action supprimée';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count actions ajoutées',
+      many: '$count d’actions ajoutées',
+      one: '$count action ajoutée',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'L’action n’a pas pu être enregistrée.';
+
+  @override
+  String get actionsStatusHeader => 'État';
+
+  @override
+  String get actionsEditText => 'Modifier le texte…';
+
+  @override
+  String get actionsEditTitle => 'Modifier l’action';
+
+  @override
+  String get actionsRemindMe => 'Me le rappeler…';
+
+  @override
+  String get actionsChangeReminder => 'Modifier le rappel…';
+
+  @override
+  String get actionsClearReminder => 'Supprimer le rappel';
+
+  @override
+  String get actionsRemindTitle => 'Me le rappeler';
+
+  @override
+  String get actionsDelete => 'Supprimer l’action';
+
+  @override
+  String get actionsHistoryHeader => 'Historique';
+
+  @override
+  String get actionsHistoryAdded => 'Ajoutée';
+
+  @override
+  String get actionsHistoryEdited => 'Reformulée';
+
+  @override
+  String get actionsHistoryDue => 'Échéance modifiée';
+
+  @override
+  String get actionsHistoryReminder => 'Rappel modifié';
+
+  @override
+  String get actionsHistoryRevised => 'Mise à jour d’après une nouvelle suggestion';
+
+  @override
+  String get actionsHistoryDeleted => 'Supprimée';
+
+  @override
+  String get actionsHistoryRestored => 'Restaurée';
+
+  @override
+  String get actionsOwnerMe => 'À moi de faire';
+
+  @override
+  String get actionsOwnerThem => 'Aux autres de faire';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'À l’origine : $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '« $quote »';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Message de $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Ajoutée par vous';
+
+  @override
+  String get actionsOriginDemo => 'Suggérée par la démo intégrée : règles, sans modèle';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Suggérée par $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Suggérée par $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Échéance : $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Échéance souhaitée : $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '« $timing »';
+  }
+
+  @override
+  String get actionsAddMenu => 'Ajouter une action…';
+
+  @override
+  String get actionsSuggestMenu => 'Suggérer des actions';
+
+  @override
+  String get actionsAddTitle => 'Ajouter une action';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Que devez-vous faire ?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Qu’attendez-vous ?';
+
+  @override
+  String get actionsDueDate => 'Échéance';
+
+  @override
+  String get actionsClearDueDate => 'Aucune échéance';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'À propos de « $subject »';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Actions suggérées';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'sur ce téléphone',
+      'myServer': 'sur votre serveur',
+      'other': 'dans le cloud',
+    });
+    return 'Par $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'Par la démo intégrée : règles, sans modèle. Rien ne quitte ce téléphone.';
+
+  @override
+  String get actionsSuggestNone => 'Rien à suivre dans ce message.';
+
+  @override
+  String get actionsSuggestPartial => 'Ce message est long : seul son début a été lu.';
+
+  @override
+  String get actionsSuggestTracked => 'Suivie';
+
+  @override
+  String get actionsSuggestUpdate => 'Mettre à jour';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ajouter les $count',
+      two: 'Ajouter les deux',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Chaque suggestion cite le message, et rien n’est suivi tant que vous ne l’avez pas ajouté. Les anciens e-mails cités ne comptent pas.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Ce message est trop long pour le modèle choisi.';
+
+  @override
+  String get actionsSuggestInvalid => 'La réponse ne correspondait pas au message, donc rien n’est suggéré.';
+
+  @override
+  String get actionsSuggestCancelled => 'Arrêté.';
+
+  @override
+  String get actionsSuggestFailed => 'Les suggestions ne sont pas disponibles pour le moment.';
+
+  @override
   String get settingsLanguage => 'Langue';
 
   @override

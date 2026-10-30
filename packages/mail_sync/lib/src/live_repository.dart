@@ -27,7 +27,8 @@ final class LiveMailRepository
         SignInRenewal,
         DecryptedMail,
         CalendarRecords,
-        MatterRecords {
+        MatterRecords,
+        ActionRecords {
   LiveMailRepository(
     this.store,
     this.transports,
@@ -430,13 +431,16 @@ final class LiveMailRepository
     return store.watchList(ref, filters: filters, threaded: threaded, limit: limit);
   }
 
-  /// The mailbox of each account that a virtual mailbox draws from.
+  /// The mailbox of each account that a virtual mailbox draws from; none for
+  /// the action folders, which hold what is on this device.
   Future<List<(AccountSyncer, String)>> _roleMailboxes(VirtualMailbox kind) async {
     final role = switch (kind) {
       VirtualMailbox.allDrafts => MailboxRole.drafts,
       VirtualMailbox.allSent => MailboxRole.sent,
+      VirtualMailbox.needsMyAction || VirtualMailbox.waitingOnOthers => null,
       _ => MailboxRole.inbox,
     };
+    if (role == null) return const [];
     return [
       for (final s in _syncers.values)
         if (await store.mailboxByRole(s.account.id, role) case final m?) (s, m.id),
@@ -586,6 +590,19 @@ final class LiveMailRepository
 
   @override
   Future<EmailSummary?> locateMessage(MessageRef ref) => store.locateMessage(ref);
+
+  // Needs My Action and Waiting on Others ------------------------------------
+
+  /// Kept in the store on this device; nothing goes to the server.
+  @override
+  Stream<List<ActionRecord>> watchActions({bool includeDeleted = false}) =>
+      store.watchActions(includeDeleted: includeDeleted);
+
+  @override
+  Future<void> saveActions(List<ActionRecord> records) => store.putActions(records);
+
+  @override
+  Future<void> forgetActions(List<String> ids) => store.deleteActions(ids);
 
   // Actions -----------------------------------------------------------------
 
@@ -1092,6 +1109,9 @@ final class LiveMailRepository
             final vips = await store.watchVipAddresses().first;
             bool isVip(EmailSummary e) => e.from.any((a) => vips.contains(a.email.toLowerCase()));
             return [for (final s in _syncers.values) _SearchTarget(s, request.expr, filter: isVip)];
+          // Actions are kept on this device: there is nothing for a server to search.
+          case VirtualMailbox.needsMyAction || VirtualMailbox.waitingOnOthers:
+            return const [];
         }
     }
   }

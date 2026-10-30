@@ -6640,6 +6640,567 @@ class ListKindsCompanion extends UpdateCompanion<ListKindRow> {
   }
 }
 
+class $TrackedActionsTable extends TrackedActions with TableInfo<$TrackedActionsTable, TrackedActionRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TrackedActionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _accountIdMeta = const VerificationMeta('accountId');
+  @override
+  late final GeneratedColumn<String> accountId = GeneratedColumn<String>(
+    'account_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('REFERENCES accounts (id) ON DELETE CASCADE'),
+  );
+  static const VerificationMeta _emailIdMeta = const VerificationMeta('emailId');
+  @override
+  late final GeneratedColumn<String> emailId = GeneratedColumn<String>(
+    'email_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _messageIdHeaderMeta = const VerificationMeta('messageIdHeader');
+  @override
+  late final GeneratedColumn<String> messageIdHeader = GeneratedColumn<String>(
+    'message_id_header',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _subjectMeta = const VerificationMeta('subject');
+  @override
+  late final GeneratedColumn<String> subject = GeneratedColumn<String>(
+    'subject',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _receivedAtMeta = const VerificationMeta('receivedAt');
+  @override
+  late final GeneratedColumn<int> receivedAt = GeneratedColumn<int>(
+    'received_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _ownerMeta = const VerificationMeta('owner');
+  @override
+  late final GeneratedColumn<String> owner = GeneratedColumn<String>(
+    'owner',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _stateMeta = const VerificationMeta('state');
+  @override
+  late final GeneratedColumn<String> state = GeneratedColumn<String>(
+    'state',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  @override
+  late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
+    'deleted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("deleted" IN (0, 1))'),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _jsonMeta = const VerificationMeta('json');
+  @override
+  late final GeneratedColumn<String> json = GeneratedColumn<String>(
+    'json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    accountId,
+    emailId,
+    messageIdHeader,
+    subject,
+    receivedAt,
+    owner,
+    state,
+    deleted,
+    updatedAt,
+    json,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'tracked_actions';
+  @override
+  VerificationContext validateIntegrity(Insertable<TrackedActionRow> instance, {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('account_id')) {
+      context.handle(_accountIdMeta, accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta));
+    } else if (isInserting) {
+      context.missing(_accountIdMeta);
+    }
+    if (data.containsKey('email_id')) {
+      context.handle(_emailIdMeta, emailId.isAcceptableOrUnknown(data['email_id']!, _emailIdMeta));
+    } else if (isInserting) {
+      context.missing(_emailIdMeta);
+    }
+    if (data.containsKey('message_id_header')) {
+      context.handle(
+        _messageIdHeaderMeta,
+        messageIdHeader.isAcceptableOrUnknown(data['message_id_header']!, _messageIdHeaderMeta),
+      );
+    }
+    if (data.containsKey('subject')) {
+      context.handle(_subjectMeta, subject.isAcceptableOrUnknown(data['subject']!, _subjectMeta));
+    }
+    if (data.containsKey('received_at')) {
+      context.handle(_receivedAtMeta, receivedAt.isAcceptableOrUnknown(data['received_at']!, _receivedAtMeta));
+    }
+    if (data.containsKey('owner')) {
+      context.handle(_ownerMeta, owner.isAcceptableOrUnknown(data['owner']!, _ownerMeta));
+    } else if (isInserting) {
+      context.missing(_ownerMeta);
+    }
+    if (data.containsKey('state')) {
+      context.handle(_stateMeta, state.isAcceptableOrUnknown(data['state']!, _stateMeta));
+    } else if (isInserting) {
+      context.missing(_stateMeta);
+    }
+    if (data.containsKey('deleted')) {
+      context.handle(_deletedMeta, deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta, updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('json')) {
+      context.handle(_jsonMeta, json.isAcceptableOrUnknown(data['json']!, _jsonMeta));
+    } else if (isInserting) {
+      context.missing(_jsonMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  TrackedActionRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TrackedActionRow(
+      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      accountId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}account_id'])!,
+      emailId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}email_id'])!,
+      messageIdHeader: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}message_id_header'],
+      ),
+      subject: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}subject'])!,
+      receivedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}received_at']),
+      owner: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}owner'])!,
+      state: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}state'])!,
+      deleted: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}deleted'])!,
+      updatedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!,
+      json: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}json'])!,
+    );
+  }
+
+  @override
+  $TrackedActionsTable createAlias(String alias) {
+    return $TrackedActionsTable(attachedDatabase, alias);
+  }
+}
+
+class TrackedActionRow extends DataClass implements Insertable<TrackedActionRow> {
+  final String id;
+  final String accountId;
+  final String emailId;
+  final String? messageIdHeader;
+  final String subject;
+  final int? receivedAt;
+
+  /// `ActionOwner.name`.
+  final String owner;
+
+  /// `ActionState.name`.
+  final String state;
+  final bool deleted;
+  final int updatedAt;
+  final String json;
+  const TrackedActionRow({
+    required this.id,
+    required this.accountId,
+    required this.emailId,
+    this.messageIdHeader,
+    required this.subject,
+    this.receivedAt,
+    required this.owner,
+    required this.state,
+    required this.deleted,
+    required this.updatedAt,
+    required this.json,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['account_id'] = Variable<String>(accountId);
+    map['email_id'] = Variable<String>(emailId);
+    if (!nullToAbsent || messageIdHeader != null) {
+      map['message_id_header'] = Variable<String>(messageIdHeader);
+    }
+    map['subject'] = Variable<String>(subject);
+    if (!nullToAbsent || receivedAt != null) {
+      map['received_at'] = Variable<int>(receivedAt);
+    }
+    map['owner'] = Variable<String>(owner);
+    map['state'] = Variable<String>(state);
+    map['deleted'] = Variable<bool>(deleted);
+    map['updated_at'] = Variable<int>(updatedAt);
+    map['json'] = Variable<String>(json);
+    return map;
+  }
+
+  TrackedActionsCompanion toCompanion(bool nullToAbsent) {
+    return TrackedActionsCompanion(
+      id: Value(id),
+      accountId: Value(accountId),
+      emailId: Value(emailId),
+      messageIdHeader: messageIdHeader == null && nullToAbsent ? const Value.absent() : Value(messageIdHeader),
+      subject: Value(subject),
+      receivedAt: receivedAt == null && nullToAbsent ? const Value.absent() : Value(receivedAt),
+      owner: Value(owner),
+      state: Value(state),
+      deleted: Value(deleted),
+      updatedAt: Value(updatedAt),
+      json: Value(json),
+    );
+  }
+
+  factory TrackedActionRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TrackedActionRow(
+      id: serializer.fromJson<String>(json['id']),
+      accountId: serializer.fromJson<String>(json['accountId']),
+      emailId: serializer.fromJson<String>(json['emailId']),
+      messageIdHeader: serializer.fromJson<String?>(json['messageIdHeader']),
+      subject: serializer.fromJson<String>(json['subject']),
+      receivedAt: serializer.fromJson<int?>(json['receivedAt']),
+      owner: serializer.fromJson<String>(json['owner']),
+      state: serializer.fromJson<String>(json['state']),
+      deleted: serializer.fromJson<bool>(json['deleted']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      json: serializer.fromJson<String>(json['json']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'accountId': serializer.toJson<String>(accountId),
+      'emailId': serializer.toJson<String>(emailId),
+      'messageIdHeader': serializer.toJson<String?>(messageIdHeader),
+      'subject': serializer.toJson<String>(subject),
+      'receivedAt': serializer.toJson<int?>(receivedAt),
+      'owner': serializer.toJson<String>(owner),
+      'state': serializer.toJson<String>(state),
+      'deleted': serializer.toJson<bool>(deleted),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'json': serializer.toJson<String>(json),
+    };
+  }
+
+  TrackedActionRow copyWith({
+    String? id,
+    String? accountId,
+    String? emailId,
+    Value<String?> messageIdHeader = const Value.absent(),
+    String? subject,
+    Value<int?> receivedAt = const Value.absent(),
+    String? owner,
+    String? state,
+    bool? deleted,
+    int? updatedAt,
+    String? json,
+  }) => TrackedActionRow(
+    id: id ?? this.id,
+    accountId: accountId ?? this.accountId,
+    emailId: emailId ?? this.emailId,
+    messageIdHeader: messageIdHeader.present ? messageIdHeader.value : this.messageIdHeader,
+    subject: subject ?? this.subject,
+    receivedAt: receivedAt.present ? receivedAt.value : this.receivedAt,
+    owner: owner ?? this.owner,
+    state: state ?? this.state,
+    deleted: deleted ?? this.deleted,
+    updatedAt: updatedAt ?? this.updatedAt,
+    json: json ?? this.json,
+  );
+  TrackedActionRow copyWithCompanion(TrackedActionsCompanion data) {
+    return TrackedActionRow(
+      id: data.id.present ? data.id.value : this.id,
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      emailId: data.emailId.present ? data.emailId.value : this.emailId,
+      messageIdHeader: data.messageIdHeader.present ? data.messageIdHeader.value : this.messageIdHeader,
+      subject: data.subject.present ? data.subject.value : this.subject,
+      receivedAt: data.receivedAt.present ? data.receivedAt.value : this.receivedAt,
+      owner: data.owner.present ? data.owner.value : this.owner,
+      state: data.state.present ? data.state.value : this.state,
+      deleted: data.deleted.present ? data.deleted.value : this.deleted,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      json: data.json.present ? data.json.value : this.json,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TrackedActionRow(')
+          ..write('id: $id, ')
+          ..write('accountId: $accountId, ')
+          ..write('emailId: $emailId, ')
+          ..write('messageIdHeader: $messageIdHeader, ')
+          ..write('subject: $subject, ')
+          ..write('receivedAt: $receivedAt, ')
+          ..write('owner: $owner, ')
+          ..write('state: $state, ')
+          ..write('deleted: $deleted, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('json: $json')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, accountId, emailId, messageIdHeader, subject, receivedAt, owner, state, deleted, updatedAt, json);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TrackedActionRow &&
+          other.id == this.id &&
+          other.accountId == this.accountId &&
+          other.emailId == this.emailId &&
+          other.messageIdHeader == this.messageIdHeader &&
+          other.subject == this.subject &&
+          other.receivedAt == this.receivedAt &&
+          other.owner == this.owner &&
+          other.state == this.state &&
+          other.deleted == this.deleted &&
+          other.updatedAt == this.updatedAt &&
+          other.json == this.json);
+}
+
+class TrackedActionsCompanion extends UpdateCompanion<TrackedActionRow> {
+  final Value<String> id;
+  final Value<String> accountId;
+  final Value<String> emailId;
+  final Value<String?> messageIdHeader;
+  final Value<String> subject;
+  final Value<int?> receivedAt;
+  final Value<String> owner;
+  final Value<String> state;
+  final Value<bool> deleted;
+  final Value<int> updatedAt;
+  final Value<String> json;
+  final Value<int> rowid;
+  const TrackedActionsCompanion({
+    this.id = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.emailId = const Value.absent(),
+    this.messageIdHeader = const Value.absent(),
+    this.subject = const Value.absent(),
+    this.receivedAt = const Value.absent(),
+    this.owner = const Value.absent(),
+    this.state = const Value.absent(),
+    this.deleted = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.json = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TrackedActionsCompanion.insert({
+    required String id,
+    required String accountId,
+    required String emailId,
+    this.messageIdHeader = const Value.absent(),
+    this.subject = const Value.absent(),
+    this.receivedAt = const Value.absent(),
+    required String owner,
+    required String state,
+    this.deleted = const Value.absent(),
+    required int updatedAt,
+    required String json,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       accountId = Value(accountId),
+       emailId = Value(emailId),
+       owner = Value(owner),
+       state = Value(state),
+       updatedAt = Value(updatedAt),
+       json = Value(json);
+  static Insertable<TrackedActionRow> custom({
+    Expression<String>? id,
+    Expression<String>? accountId,
+    Expression<String>? emailId,
+    Expression<String>? messageIdHeader,
+    Expression<String>? subject,
+    Expression<int>? receivedAt,
+    Expression<String>? owner,
+    Expression<String>? state,
+    Expression<bool>? deleted,
+    Expression<int>? updatedAt,
+    Expression<String>? json,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (accountId != null) 'account_id': accountId,
+      if (emailId != null) 'email_id': emailId,
+      if (messageIdHeader != null) 'message_id_header': messageIdHeader,
+      if (subject != null) 'subject': subject,
+      if (receivedAt != null) 'received_at': receivedAt,
+      if (owner != null) 'owner': owner,
+      if (state != null) 'state': state,
+      if (deleted != null) 'deleted': deleted,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (json != null) 'json': json,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TrackedActionsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? accountId,
+    Value<String>? emailId,
+    Value<String?>? messageIdHeader,
+    Value<String>? subject,
+    Value<int?>? receivedAt,
+    Value<String>? owner,
+    Value<String>? state,
+    Value<bool>? deleted,
+    Value<int>? updatedAt,
+    Value<String>? json,
+    Value<int>? rowid,
+  }) {
+    return TrackedActionsCompanion(
+      id: id ?? this.id,
+      accountId: accountId ?? this.accountId,
+      emailId: emailId ?? this.emailId,
+      messageIdHeader: messageIdHeader ?? this.messageIdHeader,
+      subject: subject ?? this.subject,
+      receivedAt: receivedAt ?? this.receivedAt,
+      owner: owner ?? this.owner,
+      state: state ?? this.state,
+      deleted: deleted ?? this.deleted,
+      updatedAt: updatedAt ?? this.updatedAt,
+      json: json ?? this.json,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(accountId.value);
+    }
+    if (emailId.present) {
+      map['email_id'] = Variable<String>(emailId.value);
+    }
+    if (messageIdHeader.present) {
+      map['message_id_header'] = Variable<String>(messageIdHeader.value);
+    }
+    if (subject.present) {
+      map['subject'] = Variable<String>(subject.value);
+    }
+    if (receivedAt.present) {
+      map['received_at'] = Variable<int>(receivedAt.value);
+    }
+    if (owner.present) {
+      map['owner'] = Variable<String>(owner.value);
+    }
+    if (state.present) {
+      map['state'] = Variable<String>(state.value);
+    }
+    if (deleted.present) {
+      map['deleted'] = Variable<bool>(deleted.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (json.present) {
+      map['json'] = Variable<String>(json.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TrackedActionsCompanion(')
+          ..write('id: $id, ')
+          ..write('accountId: $accountId, ')
+          ..write('emailId: $emailId, ')
+          ..write('messageIdHeader: $messageIdHeader, ')
+          ..write('subject: $subject, ')
+          ..write('receivedAt: $receivedAt, ')
+          ..write('owner: $owner, ')
+          ..write('state: $state, ')
+          ..write('deleted: $deleted, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('json: $json, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $MattersTable extends Matters with TableInfo<$MattersTable, MatterRow> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -8128,6 +8689,7 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
   late final $RuleWatermarksTable ruleWatermarks = $RuleWatermarksTable(this);
   late final $MutedThreadsTable mutedThreads = $MutedThreadsTable(this);
   late final $ListKindsTable listKinds = $ListKindsTable(this);
+  late final $TrackedActionsTable trackedActions = $TrackedActionsTable(this);
   late final $MattersTable matters = $MattersTable(this);
   late final $MatterMembersTable matterMembers = $MatterMembersTable(this);
   late final $MatterExclusionsTable matterExclusions = $MatterExclusionsTable(this);
@@ -8182,6 +8744,7 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     ruleWatermarks,
     mutedThreads,
     listKinds,
+    trackedActions,
     matters,
     matterMembers,
     matterExclusions,
@@ -8265,6 +8828,10 @@ abstract class _$StoreDatabase extends GeneratedDatabase {
     WritePropagation(
       on: TableUpdateQuery.onTableName('accounts', limitUpdateKind: UpdateKind.delete),
       result: [TableUpdate('muted_threads', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName('accounts', limitUpdateKind: UpdateKind.delete),
+      result: [TableUpdate('tracked_actions', kind: UpdateKind.delete)],
     ),
     WritePropagation(
       on: TableUpdateQuery.onTableName('matters', limitUpdateKind: UpdateKind.delete),
@@ -8375,6 +8942,20 @@ final class $$AccountsTableReferences extends BaseReferences<_$StoreDatabase, $A
     ).filter((f) => f.accountId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_mutedThreadsRefsTable($_db));
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$TrackedActionsTable, List<TrackedActionRow>> _trackedActionsRefsTable(
+    _$StoreDatabase db,
+  ) => MultiTypedResultKey.fromTable(db.trackedActions, aliasName: 'accounts__id__tracked_actions__account_id');
+
+  $$TrackedActionsTableProcessedTableManager get trackedActionsRefs {
+    final manager = $$TrackedActionsTableTableManager(
+      $_db,
+      $_db.trackedActions,
+    ).filter((f) => f.accountId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_trackedActionsRefsTable($_db));
     return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
   }
 
@@ -8522,6 +9103,24 @@ class $$AccountsTableFilterComposer extends Composer<_$StoreDatabase, $AccountsT
           $$MutedThreadsTableFilterComposer(
             $db: $db,
             $table: $db.mutedThreads,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> trackedActionsRefs(Expression<bool> Function($$TrackedActionsTableFilterComposer f) f) {
+    final $$TrackedActionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.trackedActions,
+      getReferencedColumn: (t) => t.accountId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$TrackedActionsTableFilterComposer(
+            $db: $db,
+            $table: $db.trackedActions,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
@@ -8717,6 +9316,26 @@ class $$AccountsTableAnnotationComposer extends Composer<_$StoreDatabase, $Accou
     return f(composer);
   }
 
+  Expression<T> trackedActionsRefs<T extends Object>(
+    Expression<T> Function($$TrackedActionsTableAnnotationComposer a) f,
+  ) {
+    final $$TrackedActionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.trackedActions,
+      getReferencedColumn: (t) => t.accountId,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$TrackedActionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.trackedActions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
   Expression<T> matterMembersRefs<T extends Object>(
     Expression<T> Function($$MatterMembersTableAnnotationComposer a) f,
   ) {
@@ -8795,6 +9414,7 @@ class $$AccountsTableTableManager
             bool pendingOpsRefs,
             bool threadRefsRefs,
             bool mutedThreadsRefs,
+            bool trackedActionsRefs,
             bool matterMembersRefs,
             bool matterExclusionsRefs,
             bool matterEventsRefs,
@@ -8850,6 +9470,7 @@ class $$AccountsTableTableManager
                 pendingOpsRefs = false,
                 threadRefsRefs = false,
                 mutedThreadsRefs = false,
+                trackedActionsRefs = false,
                 matterMembersRefs = false,
                 matterExclusionsRefs = false,
                 matterEventsRefs = false,
@@ -8862,6 +9483,7 @@ class $$AccountsTableTableManager
                     if (pendingOpsRefs) db.pendingOps,
                     if (threadRefsRefs) db.threadRefs,
                     if (mutedThreadsRefs) db.mutedThreads,
+                    if (trackedActionsRefs) db.trackedActions,
                     if (matterMembersRefs) db.matterMembers,
                     if (matterExclusionsRefs) db.matterExclusions,
                     if (matterEventsRefs) db.matterEvents,
@@ -8910,6 +9532,15 @@ class $$AccountsTableTableManager
                           currentTable: table,
                           referencedTable: $$AccountsTableReferences._mutedThreadsRefsTable(db),
                           managerFromTypedResult: (p0) => $$AccountsTableReferences(db, table, p0).mutedThreadsRefs,
+                          referencedItemsForCurrentItem: (item, referencedItems) =>
+                              referencedItems.where((e) => e.accountId == item.id),
+                          typedResults: items,
+                        ),
+                      if (trackedActionsRefs)
+                        await $_getPrefetchedData<AccountRow, $AccountsTable, TrackedActionRow>(
+                          currentTable: table,
+                          referencedTable: $$AccountsTableReferences._trackedActionsRefsTable(db),
+                          managerFromTypedResult: (p0) => $$AccountsTableReferences(db, table, p0).trackedActionsRefs,
                           referencedItemsForCurrentItem: (item, referencedItems) =>
                               referencedItems.where((e) => e.accountId == item.id),
                           typedResults: items,
@@ -8967,6 +9598,7 @@ typedef $$AccountsTableProcessedTableManager =
         bool pendingOpsRefs,
         bool threadRefsRefs,
         bool mutedThreadsRefs,
+        bool trackedActionsRefs,
         bool matterMembersRefs,
         bool matterExclusionsRefs,
         bool matterEventsRefs,
@@ -13858,6 +14490,352 @@ typedef $$ListKindsTableProcessedTableManager =
       ListKindRow,
       PrefetchHooks Function()
     >;
+typedef $$TrackedActionsTableCreateCompanionBuilder = TrackedActionsCompanion Function({
+  required String id,
+  required String accountId,
+  required String emailId,
+  Value<String?> messageIdHeader,
+  Value<String> subject,
+  Value<int?> receivedAt,
+  required String owner,
+  required String state,
+  Value<bool> deleted,
+  required int updatedAt,
+  required String json,
+  Value<int> rowid,
+});
+typedef $$TrackedActionsTableUpdateCompanionBuilder = TrackedActionsCompanion Function({
+  Value<String> id,
+  Value<String> accountId,
+  Value<String> emailId,
+  Value<String?> messageIdHeader,
+  Value<String> subject,
+  Value<int?> receivedAt,
+  Value<String> owner,
+  Value<String> state,
+  Value<bool> deleted,
+  Value<int> updatedAt,
+  Value<String> json,
+  Value<int> rowid,
+});
+
+final class $$TrackedActionsTableReferences
+    extends BaseReferences<_$StoreDatabase, $TrackedActionsTable, TrackedActionRow> {
+  $$TrackedActionsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $AccountsTable _accountIdTable(_$StoreDatabase db) =>
+      db.accounts.createAlias('tracked_actions__account_id__accounts__id');
+
+  $$AccountsTableProcessedTableManager get accountId {
+    final $_column = $_itemColumn<String>('account_id')!;
+
+    final manager = $$AccountsTableTableManager($_db, $_db.accounts).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_accountIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$TrackedActionsTableFilterComposer extends Composer<_$StoreDatabase, $TrackedActionsTable> {
+  $$TrackedActionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get emailId =>
+      $composableBuilder(column: $table.emailId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get messageIdHeader =>
+      $composableBuilder(column: $table.messageIdHeader, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get subject =>
+      $composableBuilder(column: $table.subject, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get receivedAt =>
+      $composableBuilder(column: $table.receivedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get owner =>
+      $composableBuilder(column: $table.owner, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get state =>
+      $composableBuilder(column: $table.state, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get json => $composableBuilder(column: $table.json, builder: (column) => ColumnFilters(column));
+
+  $$AccountsTableFilterComposer get accountId {
+    final $$AccountsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableFilterComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$TrackedActionsTableOrderingComposer extends Composer<_$StoreDatabase, $TrackedActionsTable> {
+  $$TrackedActionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get emailId =>
+      $composableBuilder(column: $table.emailId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get messageIdHeader =>
+      $composableBuilder(column: $table.messageIdHeader, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get subject =>
+      $composableBuilder(column: $table.subject, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get receivedAt =>
+      $composableBuilder(column: $table.receivedAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get owner =>
+      $composableBuilder(column: $table.owner, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get state =>
+      $composableBuilder(column: $table.state, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get json =>
+      $composableBuilder(column: $table.json, builder: (column) => ColumnOrderings(column));
+
+  $$AccountsTableOrderingComposer get accountId {
+    final $$AccountsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableOrderingComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$TrackedActionsTableAnnotationComposer extends Composer<_$StoreDatabase, $TrackedActionsTable> {
+  $$TrackedActionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get emailId => $composableBuilder(column: $table.emailId, builder: (column) => column);
+
+  GeneratedColumn<String> get messageIdHeader =>
+      $composableBuilder(column: $table.messageIdHeader, builder: (column) => column);
+
+  GeneratedColumn<String> get subject => $composableBuilder(column: $table.subject, builder: (column) => column);
+
+  GeneratedColumn<int> get receivedAt => $composableBuilder(column: $table.receivedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get owner => $composableBuilder(column: $table.owner, builder: (column) => column);
+
+  GeneratedColumn<String> get state => $composableBuilder(column: $table.state, builder: (column) => column);
+
+  GeneratedColumn<bool> get deleted => $composableBuilder(column: $table.deleted, builder: (column) => column);
+
+  GeneratedColumn<int> get updatedAt => $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get json => $composableBuilder(column: $table.json, builder: (column) => column);
+
+  $$AccountsTableAnnotationComposer get accountId {
+    final $$AccountsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder: (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) =>
+          $$AccountsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$TrackedActionsTableTableManager
+    extends
+        RootTableManager<
+          _$StoreDatabase,
+          $TrackedActionsTable,
+          TrackedActionRow,
+          $$TrackedActionsTableFilterComposer,
+          $$TrackedActionsTableOrderingComposer,
+          $$TrackedActionsTableAnnotationComposer,
+          $$TrackedActionsTableCreateCompanionBuilder,
+          $$TrackedActionsTableUpdateCompanionBuilder,
+          (TrackedActionRow, $$TrackedActionsTableReferences),
+          TrackedActionRow,
+          PrefetchHooks Function({bool accountId})
+        > {
+  $$TrackedActionsTableTableManager(_$StoreDatabase db, $TrackedActionsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () => $$TrackedActionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$TrackedActionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$TrackedActionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> accountId = const Value.absent(),
+                Value<String> emailId = const Value.absent(),
+                Value<String?> messageIdHeader = const Value.absent(),
+                Value<String> subject = const Value.absent(),
+                Value<int?> receivedAt = const Value.absent(),
+                Value<String> owner = const Value.absent(),
+                Value<String> state = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                Value<int> updatedAt = const Value.absent(),
+                Value<String> json = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TrackedActionsCompanion(
+                id: id,
+                accountId: accountId,
+                emailId: emailId,
+                messageIdHeader: messageIdHeader,
+                subject: subject,
+                receivedAt: receivedAt,
+                owner: owner,
+                state: state,
+                deleted: deleted,
+                updatedAt: updatedAt,
+                json: json,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String accountId,
+                required String emailId,
+                Value<String?> messageIdHeader = const Value.absent(),
+                Value<String> subject = const Value.absent(),
+                Value<int?> receivedAt = const Value.absent(),
+                required String owner,
+                required String state,
+                Value<bool> deleted = const Value.absent(),
+                required int updatedAt,
+                required String json,
+                Value<int> rowid = const Value.absent(),
+              }) => TrackedActionsCompanion.insert(
+                id: id,
+                accountId: accountId,
+                emailId: emailId,
+                messageIdHeader: messageIdHeader,
+                subject: subject,
+                receivedAt: receivedAt,
+                owner: owner,
+                state: state,
+                deleted: deleted,
+                updatedAt: updatedAt,
+                json: json,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$TrackedActionsTable, TrackedActionRow>(table),
+                  $$TrackedActionsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({accountId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (accountId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.accountId,
+                        referencedTable: $$TrackedActionsTableReferences._accountIdTable(db),
+                        referencedColumn: $$TrackedActionsTableReferences._accountIdTable(db).id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$TrackedActionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$StoreDatabase,
+      $TrackedActionsTable,
+      TrackedActionRow,
+      $$TrackedActionsTableFilterComposer,
+      $$TrackedActionsTableOrderingComposer,
+      $$TrackedActionsTableAnnotationComposer,
+      $$TrackedActionsTableCreateCompanionBuilder,
+      $$TrackedActionsTableUpdateCompanionBuilder,
+      (TrackedActionRow, $$TrackedActionsTableReferences),
+      TrackedActionRow,
+      PrefetchHooks Function({bool accountId})
+    >;
 typedef $$MattersTableCreateCompanionBuilder = MattersCompanion Function({
   required String id,
   required String name,
@@ -15285,6 +16263,7 @@ class $StoreDatabaseManager {
   $$RuleWatermarksTableTableManager get ruleWatermarks => $$RuleWatermarksTableTableManager(_db, _db.ruleWatermarks);
   $$MutedThreadsTableTableManager get mutedThreads => $$MutedThreadsTableTableManager(_db, _db.mutedThreads);
   $$ListKindsTableTableManager get listKinds => $$ListKindsTableTableManager(_db, _db.listKinds);
+  $$TrackedActionsTableTableManager get trackedActions => $$TrackedActionsTableTableManager(_db, _db.trackedActions);
   $$MattersTableTableManager get matters => $$MattersTableTableManager(_db, _db.matters);
   $$MatterMembersTableTableManager get matterMembers => $$MatterMembersTableTableManager(_db, _db.matterMembers);
   $$MatterExclusionsTableTableManager get matterExclusions =>

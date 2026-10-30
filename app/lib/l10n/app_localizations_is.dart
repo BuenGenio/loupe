@@ -3234,6 +3234,313 @@ class AppLocalizationsIs extends AppLocalizations {
       'Ekki athugað: aðeins skilríki frá vottunarstöð sem Loupe treystir eru athuguð.';
 
   @override
+  String get actionsNeedsMyAction => 'Þarfnast aðgerðar minnar';
+
+  @override
+  String get actionsWaitingOnOthers => 'Bíð eftir öðrum';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Ekkert þarfnast aðgerðar þinnar';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Þú bíður ekki eftir neinum';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Til að fylgjast með einhverju skaltu ýta á ⋯ í skilaboðum og velja Bæta við aðgerð…';
+
+  @override
+  String get actionsTitle => 'Aðgerðir';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count eftir', one: '$count eftir');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count í bið', one: '$count í bið');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count afgreiddar aðgerðir',
+      one: '$count afgreidd aðgerð',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Afgreitt';
+
+  @override
+  String get actionsNoneInConversation => 'Þetta samtal hefur engar aðgerðir.';
+
+  @override
+  String get actionsFooter =>
+      'Aðgerðir eru geymdar í þessum síma. Póstur breytir þeim aldrei, ekki einu sinni svar sem segir „Takk“: það gerir aðeins þú.';
+
+  @override
+  String get actionsMarkDone => 'Merkja sem lokið';
+
+  @override
+  String get actionsReopen => 'Opna aftur';
+
+  @override
+  String get actionsStateNeedsAction => 'Þarfnast aðgerðar';
+
+  @override
+  String get actionsStateInProgress => 'Í vinnslu';
+
+  @override
+  String get actionsStateSent => 'Sent';
+
+  @override
+  String get actionsStateWaiting => 'Bíður staðfestingar';
+
+  @override
+  String get actionsStateAcknowledged => 'Staðfest';
+
+  @override
+  String get actionsStateDone => 'Lokið';
+
+  @override
+  String get actionsStateDismissed => 'Sleppt';
+
+  @override
+  String get actionsStateSuperseded => 'Leyst af hólmi';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Merkt sem þarfnast aðgerðar',
+      'inProgress': 'Merkt sem í vinnslu',
+      'sent': 'Merkt sem sent',
+      'waitingForAcknowledgement': 'Bíður staðfestingar',
+      'acknowledged': 'Merkt sem staðfest',
+      'done': 'Merkt sem lokið',
+      'dismissed': 'Aðgerð sleppt',
+      'superseded': 'Merkt sem leyst af hólmi',
+      'other': 'Aðgerð breytt',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Aðgerð endurorðuð';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Áminning stillt á $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Áminning fjarlægð';
+
+  @override
+  String get actionsDeleted => 'Aðgerð eytt';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count aðgerðum bætt við',
+      one: '$count aðgerð bætt við',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Ekki tókst að vista aðgerðina.';
+
+  @override
+  String get actionsStatusHeader => 'Staða';
+
+  @override
+  String get actionsEditText => 'Breyta texta…';
+
+  @override
+  String get actionsEditTitle => 'Breyta aðgerð';
+
+  @override
+  String get actionsRemindMe => 'Minna mig á…';
+
+  @override
+  String get actionsChangeReminder => 'Breyta áminningu…';
+
+  @override
+  String get actionsClearReminder => 'Fjarlægja áminningu';
+
+  @override
+  String get actionsRemindTitle => 'Minna mig á';
+
+  @override
+  String get actionsDelete => 'Eyða aðgerð';
+
+  @override
+  String get actionsHistoryHeader => 'Ferill';
+
+  @override
+  String get actionsHistoryAdded => 'Bætt við';
+
+  @override
+  String get actionsHistoryEdited => 'Endurorðað';
+
+  @override
+  String get actionsHistoryDue => 'Tímasetningu breytt';
+
+  @override
+  String get actionsHistoryReminder => 'Áminningu breytt';
+
+  @override
+  String get actionsHistoryRevised => 'Uppfært út frá nýrri tillögu';
+
+  @override
+  String get actionsHistoryDeleted => 'Eytt';
+
+  @override
+  String get actionsHistoryRestored => 'Endurheimt';
+
+  @override
+  String get actionsOwnerMe => 'Ég þarf';
+
+  @override
+  String get actionsOwnerThem => 'Aðrir sjá um';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Upphaflega: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '„$quote“';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Skilaboð frá $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Þú bættir við';
+
+  @override
+  String get actionsOriginDemo => 'Tillaga frá innbyggðu sýnisútgáfunni: reglur, ekkert líkan';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Tillaga frá $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Tillaga frá $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Skilafrestur: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Helst fyrir $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '„$timing“';
+  }
+
+  @override
+  String get actionsAddMenu => 'Bæta við aðgerð…';
+
+  @override
+  String get actionsSuggestMenu => 'Stinga upp á aðgerðum';
+
+  @override
+  String get actionsAddTitle => 'Bæta við aðgerð';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Hvað þarftu að gera?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Eftir hverju ertu að bíða?';
+
+  @override
+  String get actionsDueDate => 'Skiladagur';
+
+  @override
+  String get actionsClearDueDate => 'Enginn skiladagur';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Varðandi „$subject“';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Tillögur að aðgerðum';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'í þessum síma',
+      'myServer': 'á þjóninum þínum',
+      'other': 'í skýinu',
+    });
+    return 'Frá $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'Frá innbyggðu sýnisútgáfunni: reglur, ekkert líkan. Ekkert fer úr þessum síma.';
+
+  @override
+  String get actionsSuggestNone => 'Ekkert í þessum skilaboðum til að fylgjast með.';
+
+  @override
+  String get actionsSuggestPartial => 'Þessi skilaboð eru löng: aðeins upphaf þeirra var lesið.';
+
+  @override
+  String get actionsSuggestTracked => 'Fylgst með';
+
+  @override
+  String get actionsSuggestUpdate => 'Uppfæra';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Bæta öllum $count við',
+      two: 'Bæta báðum við',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Hver tillaga vitnar í skilaboðin og ekki er fylgst með neinu fyrr en þú bætir því við. Eldri póstur sem vitnað er í telst ekki með.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Þessi skilaboð eru of löng fyrir valið líkan.';
+
+  @override
+  String get actionsSuggestInvalid => 'Svarið stemmdi ekki við skilaboðin, svo engu er stungið upp á.';
+
+  @override
+  String get actionsSuggestCancelled => 'Stöðvað.';
+
+  @override
+  String get actionsSuggestFailed => 'Tillögur eru ekki í boði eins og er.';
+
+  @override
   String get settingsLanguage => 'Tungumál';
 
   @override

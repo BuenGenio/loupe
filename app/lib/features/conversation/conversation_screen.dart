@@ -16,6 +16,10 @@ import '../../settings/app_settings.dart';
 import '../../shared/bars.dart';
 import '../../shared/mail_actions.dart';
 import '../../theme/theme.dart';
+import '../actions/action_providers.dart';
+import '../actions/add_action_sheet.dart';
+import '../actions/conversation_actions.dart';
+import '../actions/suggest_actions_sheet.dart';
 import '../ai/ai_providers.dart';
 import '../compose/compose_args.dart';
 import '../export/export_actions.dart';
@@ -485,6 +489,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
     final inMatter = matterRecordsOf(_repo) == null
         ? null
         : mattersWith(ref.read(mattersProvider).value ?? const <Matter>[], conversation).isNotEmpty;
+    final suggest = ref.read(aiServiceForProvider((AiFeature.actions, m.accountId)));
     final action = await showMessageMenu(
       context,
       message: m,
@@ -494,6 +499,8 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
       muted: muted,
       inMatter: inMatter,
       canCompare: (_messages?.length ?? 0) > 1,
+      canAddAction: actionRecordsOf(_repo) != null,
+      canSuggestActions: suggest != null,
     );
     if (action == null || !mounted) return;
     final single = (_messages?.length ?? 0) <= 1;
@@ -523,6 +530,10 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
           onToggle: (k, on) =>
               _act(() => _repo.setKeywords([m.id], add: on ? {k} : const {}, remove: on ? const {} : {k})),
         );
+      case MessageAction.addAction:
+        await addActionFor(context, ref, m);
+      case MessageAction.suggestActions:
+        if (suggest != null) await suggestActionsFor(context, m, suggest);
       case MessageAction.snooze:
         await _snooze(m);
       case MessageAction.wakeNow:
@@ -820,6 +831,8 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
             ),
           ),
           SliverToBoxAdapter(child: MatterLinks(messages: messages)),
+          // What the conversation asks of the user, and what they wait for.
+          SliverToBoxAdapter(child: ConversationActionsRow(messages: messages)),
           SliverToBoxAdapter(child: Divider(color: colors.separator)),
           // Built eagerly (threads are short) so the target can be scrolled to.
           SliverToBoxAdapter(

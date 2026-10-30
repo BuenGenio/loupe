@@ -147,8 +147,10 @@ void main() {
         db.close();
         final store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
         addTearDown(store.close);
-        expect(await store.getContent(eid('INBOX', 4)), isNull);
-        expect(await store.getContent(eid('INBOX', 5)), isNull);
+        if (version < 8) {
+          expect(await store.getContent(eid('INBOX', 4)), isNull);
+          expect(await store.getContent(eid('INBOX', 5)), isNull);
+        }
         expect(await store.getContent(eid('INBOX', 6)), isNotNull, reason: 'its calendar part was listed');
         expect((await store.getContent(eid('INBOX', 1)))!.text, 'kumquat');
         expect(await store.calendarRecord('uid-1'), isNull);
@@ -181,6 +183,30 @@ void main() {
         expect((await store.watchMatterMessages('m1').first).single.subject, 'Before the upgrade');
         await store.deleteAccount(accountId);
         expect((await store.watchMatters().first).single.members, isEmpty);
+      });
+
+      test('with action records for the mail from before', () async {
+        final store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
+        addTearDown(store.close);
+        expect(await store.watchActions().first, isEmpty);
+        final source = (await store.getEmail(eid('INBOX', 1)))!;
+        final at = DateTime.utc(2026, 9, 2);
+        await store.putActions([
+          ActionRecord(
+            id: 'a1',
+            owner: ActionOwner.me,
+            kind: ActionKind.document,
+            source: MessageRef.of(source),
+            originalRequest: 'Send the statement',
+            currentRequest: 'Send the statement',
+            createdAt: at,
+            updatedAt: at,
+          ),
+        ]);
+        expect((await store.watchActions().first).single.source.emailId, eid('INBOX', 1));
+        expect((await store.watchVirtualCounts().first)[VirtualMailbox.needsMyAction], 1);
+        final list = await store.watchList(const VirtualMailboxRef(VirtualMailbox.needsMyAction)).first;
+        expect(list.single.latest.subject, 'Before the upgrade');
       });
 
       test('keeping the data; outbox entries are not held', () async {

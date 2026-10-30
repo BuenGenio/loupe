@@ -23,6 +23,8 @@ import '../../shared/swipe_row.dart';
 import '../../shared/sync_status.dart';
 import '../../theme/theme.dart';
 import '../compose/compose_args.dart';
+import '../actions/action_providers.dart';
+import '../actions/action_widgets.dart';
 import '../conversation/sheets.dart' show showSnack;
 import '../export/export_actions.dart';
 import '../keyboard/mail_commands.dart';
@@ -356,6 +358,14 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
     return top >= bar && top + row.size.height <= view.size.height;
   }
 
+  /// Needs My Action or Waiting on Others, when this lists one of them.
+  VirtualMailbox? get _actionFolder => switch (widget.mailboxRef) {
+    VirtualMailboxRef(:final kind)
+        when kind == VirtualMailbox.needsMyAction || kind == VirtualMailbox.waitingOnOthers =>
+      kind,
+    _ => null,
+  };
+
   /// The folder listed, when it is one (not a unified mailbox).
   Mailbox? get _folder => switch (widget.mailboxRef) {
     RealMailboxRef(:final mailboxId) =>
@@ -632,7 +642,19 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
                   action: l10n.messageListTurnOffFilter,
                   onAction: () => setState(() => _filterOn = false),
                 )
-              : _EmptyState(icon: LoupeIcons.inbox, title: l10n.messageListEmpty),
+              : switch (_actionFolder) {
+                  VirtualMailbox.needsMyAction => _EmptyState(
+                    icon: LoupeIcons.needsMyAction,
+                    title: l10n.actionsNeedsMyActionEmpty,
+                    detail: l10n.actionsFolderEmptyDetail,
+                  ),
+                  VirtualMailbox.waitingOnOthers => _EmptyState(
+                    icon: LoupeIcons.waitingOnOthers,
+                    title: l10n.actionsWaitingOnOthersEmpty,
+                    detail: l10n.actionsFolderEmptyDetail,
+                  ),
+                  _ => _EmptyState(icon: LoupeIcons.inbox, title: l10n.messageListEmpty),
+                },
         ),
       ];
     }
@@ -641,6 +663,11 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
     final boxes = {for (final m in mailboxes) m.id: m};
     final vips = ref.watch(vipAddressesProvider).value ?? const <String>{};
     final unified = widget.mailboxRef is VirtualMailboxRef && accounts.length > 1;
+    final actionFolder = _actionFolder;
+    // In Needs My Action and Waiting on Others, each row says what is open.
+    final open = actionFolder == null
+        ? null
+        : openActionsByConversation(ref.watch(actionsProvider).value ?? const [], actionFolder);
     final selection = _inPane ? ref.watch(mailSelectionProvider) : null;
     if (selection != null) {
       final shown = rows.indexWhere(selection.shows);
@@ -676,6 +703,12 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
             editing: _editing,
             checked: checked,
             showRecipients: role == MailboxRole.sent || role == MailboxRole.drafts,
+            footer: open == null
+                ? null
+                : ActionFolderRowFooter(
+                    folder: actionFolder!,
+                    actions: open[(email.accountId, row.threadId)] ?? const [],
+                  ),
             onTap: _editing
                 ? () => setState(() => checked ? _selected.remove(row.threadId) : _selected.add(row.threadId))
                 : () => _openRow(row, role: role, actions: actions),

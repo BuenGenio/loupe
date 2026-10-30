@@ -3285,6 +3285,331 @@ class AppLocalizationsSk extends AppLocalizations {
       'Nekontrolované: kontrolujú sa len certifikáty od autorít, ktorým Loupe dôveruje.';
 
   @override
+  String get actionsNeedsMyAction => 'Vyžaduje moju akciu';
+
+  @override
+  String get actionsWaitingOnOthers => 'Čakám na ostatných';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Nič nevyžaduje vašu akciu';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Na nikoho nečakáte';
+
+  @override
+  String get actionsFolderEmptyDetail => 'Ak chcete niečo sledovať, ťuknite pri správe na ⋯ a vyberte Pridať akciu…';
+
+  @override
+  String get actionsTitle => 'Akcie';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count na vybavenie',
+      many: '$count na vybavenie',
+      few: '$count na vybavenie',
+      one: '$count na vybavenie',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count čaká',
+      many: '$count čaká',
+      few: '$count čakajú',
+      one: '$count čaká',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count vybavených akcií',
+      many: '$count vybavenej akcie',
+      few: '$count vybavené akcie',
+      one: '$count vybavená akcia',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Vybavené';
+
+  @override
+  String get actionsNoneInConversation => 'Táto konverzácia nemá žiadne akcie.';
+
+  @override
+  String get actionsFooter =>
+      'Akcie sa uchovávajú v tomto telefóne. Pošta ich nikdy nezmení, ani odpoveď „Ďakujem“: meníte ich len vy.';
+
+  @override
+  String get actionsMarkDone => 'Označiť ako hotovú';
+
+  @override
+  String get actionsReopen => 'Znova otvoriť';
+
+  @override
+  String get actionsStateNeedsAction => 'Vyžaduje akciu';
+
+  @override
+  String get actionsStateInProgress => 'Prebieha';
+
+  @override
+  String get actionsStateSent => 'Odoslané';
+
+  @override
+  String get actionsStateWaiting => 'Čaká na potvrdenie';
+
+  @override
+  String get actionsStateAcknowledged => 'Potvrdené';
+
+  @override
+  String get actionsStateDone => 'Hotovo';
+
+  @override
+  String get actionsStateDismissed => 'Zamietnuté';
+
+  @override
+  String get actionsStateSuperseded => 'Nahradené';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Označené ako vyžadujúce akciu',
+      'inProgress': 'Označené ako prebiehajúce',
+      'sent': 'Označené ako odoslané',
+      'waitingForAcknowledgement': 'Čaká na potvrdenie',
+      'acknowledged': 'Označené ako potvrdené',
+      'done': 'Označené ako hotové',
+      'dismissed': 'Akcia zamietnutá',
+      'superseded': 'Označené ako nahradené',
+      'other': 'Akcia zmenená',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Akcia preformulovaná';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Pripomenutie nastavené na $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Pripomenutie zrušené';
+
+  @override
+  String get actionsDeleted => 'Akcia odstránená';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pridaných $count akcií',
+      many: 'Pridané $count akcie',
+      few: 'Pridané $count akcie',
+      one: 'Akcia pridaná',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Akciu sa nepodarilo uložiť.';
+
+  @override
+  String get actionsStatusHeader => 'Stav';
+
+  @override
+  String get actionsEditText => 'Upraviť text…';
+
+  @override
+  String get actionsEditTitle => 'Upraviť akciu';
+
+  @override
+  String get actionsRemindMe => 'Pripomenúť…';
+
+  @override
+  String get actionsChangeReminder => 'Zmeniť pripomenutie…';
+
+  @override
+  String get actionsClearReminder => 'Zrušiť pripomenutie';
+
+  @override
+  String get actionsRemindTitle => 'Pripomenúť';
+
+  @override
+  String get actionsDelete => 'Odstrániť akciu';
+
+  @override
+  String get actionsHistoryHeader => 'História';
+
+  @override
+  String get actionsHistoryAdded => 'Pridané';
+
+  @override
+  String get actionsHistoryEdited => 'Preformulované';
+
+  @override
+  String get actionsHistoryDue => 'Termín zmenený';
+
+  @override
+  String get actionsHistoryReminder => 'Pripomenutie zmenené';
+
+  @override
+  String get actionsHistoryRevised => 'Aktualizované podľa nového návrhu';
+
+  @override
+  String get actionsHistoryDeleted => 'Odstránené';
+
+  @override
+  String get actionsHistoryRestored => 'Obnovené';
+
+  @override
+  String get actionsOwnerMe => 'Musím ja';
+
+  @override
+  String get actionsOwnerThem => 'Urobia iní';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Pôvodne: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '„$quote“';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Správa od $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Pridané vami';
+
+  @override
+  String get actionsOriginDemo => 'Navrhlo vstavané demo: pravidlá, bez modelu';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Navrhnuté pomocou $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Navrhnuté pomocou $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Termín: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Ideálne do $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '„$timing“';
+  }
+
+  @override
+  String get actionsAddMenu => 'Pridať akciu…';
+
+  @override
+  String get actionsSuggestMenu => 'Navrhnúť akcie';
+
+  @override
+  String get actionsAddTitle => 'Pridať akciu';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Čo musíte urobiť?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Na čo čakáte?';
+
+  @override
+  String get actionsDueDate => 'Termín';
+
+  @override
+  String get actionsClearDueDate => 'Bez termínu';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'K správe „$subject“';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Navrhnuté akcie';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'v tomto telefóne',
+      'myServer': 'na vašom serveri',
+      'other': 'v cloude',
+    });
+    return 'Pomocou $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'Pomocou vstavaného dema: pravidlá, bez modelu. Nič neopustí tento telefón.';
+
+  @override
+  String get actionsSuggestNone => 'V tejto správe nie je nič na sledovanie.';
+
+  @override
+  String get actionsSuggestPartial => 'Táto správa je dlhá: prečítal sa len jej začiatok.';
+
+  @override
+  String get actionsSuggestTracked => 'Sleduje sa';
+
+  @override
+  String get actionsSuggestUpdate => 'Aktualizovať';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pridať všetkých $count',
+      few: 'Pridať všetky $count',
+      two: 'Pridať obe',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Každý návrh cituje správu a nič sa nesleduje, kým ho nepridáte. Citovaná staršia pošta sa nepočíta.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Táto správa je pre zvolený model príliš dlhá.';
+
+  @override
+  String get actionsSuggestInvalid => 'Odpoveď sa nezhodovala so správou, takže sa nič nenavrhuje.';
+
+  @override
+  String get actionsSuggestCancelled => 'Zastavené.';
+
+  @override
+  String get actionsSuggestFailed => 'Návrhy teraz nie sú k dispozícii.';
+
+  @override
   String get settingsLanguage => 'Jazyk';
 
   @override

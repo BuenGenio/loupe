@@ -3212,6 +3212,323 @@ class AppLocalizationsTr extends AppLocalizations {
       'Denetlenmedi: yalnızca Loupe’un güvendiği bir yetkilinin sertifikaları denetlenir.';
 
   @override
+  String get actionsNeedsMyAction => 'Yapmam gerekenler';
+
+  @override
+  String get actionsWaitingOnOthers => 'Başkalarından beklenenler';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Yapmanız gereken bir şey yok';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Kimseden bir şey beklemiyorsunuz';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Bir şeyi takip etmek için iletide ⋯ simgesine dokunun ve Eylem ekle… seçeneğini belirleyin';
+
+  @override
+  String get actionsTitle => 'Eylemler';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count yapılacak',
+      one: '$count yapılacak',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bekleniyor',
+      one: '$count bekleniyor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kapanmış eylem',
+      one: '$count kapanmış eylem',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Kapananlar';
+
+  @override
+  String get actionsNoneInConversation => 'Bu yazışmada eylem yok.';
+
+  @override
+  String get actionsFooter =>
+      'Eylemler bu telefonda tutulur. E-postalar onları asla değiştirmez, “Teşekkürler” diyen bir yanıt bile: onları yalnızca siz değiştirirsiniz.';
+
+  @override
+  String get actionsMarkDone => 'Yapıldı olarak işaretle';
+
+  @override
+  String get actionsReopen => 'Yeniden aç';
+
+  @override
+  String get actionsStateNeedsAction => 'Eylem gerekiyor';
+
+  @override
+  String get actionsStateInProgress => 'Devam ediyor';
+
+  @override
+  String get actionsStateSent => 'Gönderildi';
+
+  @override
+  String get actionsStateWaiting => 'Onay bekleniyor';
+
+  @override
+  String get actionsStateAcknowledged => 'Onaylandı';
+
+  @override
+  String get actionsStateDone => 'Yapıldı';
+
+  @override
+  String get actionsStateDismissed => 'Yok sayıldı';
+
+  @override
+  String get actionsStateSuperseded => 'Yerine yenisi geldi';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Eylem gerekiyor olarak işaretlendi',
+      'inProgress': 'Devam ediyor olarak işaretlendi',
+      'sent': 'Gönderildi olarak işaretlendi',
+      'waitingForAcknowledgement': 'Onay bekleniyor',
+      'acknowledged': 'Onaylandı olarak işaretlendi',
+      'done': 'Yapıldı olarak işaretlendi',
+      'dismissed': 'Eylem yok sayıldı',
+      'superseded': 'Yerine yenisi geldi olarak işaretlendi',
+      'other': 'Eylem değiştirildi',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Eylem yeniden ifade edildi';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Hatırlatıcı ayarlandı: $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Hatırlatıcı kaldırıldı';
+
+  @override
+  String get actionsDeleted => 'Eylem silindi';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count eylem eklendi',
+      one: 'Eylem eklendi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Eylem kaydedilemedi.';
+
+  @override
+  String get actionsStatusHeader => 'Durum';
+
+  @override
+  String get actionsEditText => 'Metni düzenle…';
+
+  @override
+  String get actionsEditTitle => 'Eylemi düzenle';
+
+  @override
+  String get actionsRemindMe => 'Bana hatırlat…';
+
+  @override
+  String get actionsChangeReminder => 'Hatırlatıcıyı değiştir…';
+
+  @override
+  String get actionsClearReminder => 'Hatırlatıcıyı kaldır';
+
+  @override
+  String get actionsRemindTitle => 'Bana hatırlat';
+
+  @override
+  String get actionsDelete => 'Eylemi sil';
+
+  @override
+  String get actionsHistoryHeader => 'Geçmiş';
+
+  @override
+  String get actionsHistoryAdded => 'Eklendi';
+
+  @override
+  String get actionsHistoryEdited => 'Yeniden ifade edildi';
+
+  @override
+  String get actionsHistoryDue => 'Zamanlama değişti';
+
+  @override
+  String get actionsHistoryReminder => 'Hatırlatıcı değişti';
+
+  @override
+  String get actionsHistoryRevised => 'Yeni bir öneriyle güncellendi';
+
+  @override
+  String get actionsHistoryDeleted => 'Silindi';
+
+  @override
+  String get actionsHistoryRestored => 'Geri yüklendi';
+
+  @override
+  String get actionsOwnerMe => 'Ben yapmalıyım';
+
+  @override
+  String get actionsOwnerThem => 'Başkaları yapacak';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'İlk hâli: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '“$quote”';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return '$sender tarafından gönderilen ileti, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Sizin eklediğiniz';
+
+  @override
+  String get actionsOriginDemo => 'Yerleşik demo önerdi: kurallar, model yok';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Öneren: $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Öneren: $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Son tarih: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Tercihen şu tarihe kadar: $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '“$timing”';
+  }
+
+  @override
+  String get actionsAddMenu => 'Eylem ekle…';
+
+  @override
+  String get actionsSuggestMenu => 'Eylem öner';
+
+  @override
+  String get actionsAddTitle => 'Eylem ekle';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Ne yapmanız gerekiyor?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Ne bekliyorsunuz?';
+
+  @override
+  String get actionsDueDate => 'Son tarih';
+
+  @override
+  String get actionsClearDueDate => 'Son tarih yok';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Konu: “$subject”';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Önerilen eylemler';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'bu telefonda',
+      'myServer': 'sunucunuzda',
+      'other': 'bulutta',
+    });
+    return 'Öneren: $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'Yerleşik demo önerdi: kurallar, model yok. Hiçbir şey bu telefondan çıkmaz.';
+
+  @override
+  String get actionsSuggestNone => 'Bu iletide takip edilecek bir şey yok.';
+
+  @override
+  String get actionsSuggestPartial => 'Bu ileti uzun: yalnızca başı okundu.';
+
+  @override
+  String get actionsSuggestTracked => 'Takipte';
+
+  @override
+  String get actionsSuggestUpdate => 'Güncelle';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tümünü ekle ($count)',
+      two: 'İkisini de ekle',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Her öneri iletiden alıntı yapar ve siz eklemeden hiçbir şey takip edilmez. Alıntılanan eski e-postalar sayılmaz.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Bu ileti seçilen model için çok uzun.';
+
+  @override
+  String get actionsSuggestInvalid => 'Yanıt iletiyle uyuşmadı, bu yüzden bir şey önerilmiyor.';
+
+  @override
+  String get actionsSuggestCancelled => 'Durduruldu.';
+
+  @override
+  String get actionsSuggestFailed => 'Öneriler şu anda kullanılamıyor.';
+
+  @override
   String get settingsLanguage => 'Dil';
 
   @override

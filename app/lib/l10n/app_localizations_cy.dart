@@ -3419,6 +3419,340 @@ class AppLocalizationsCy extends AppLocalizations {
       'Heb ei gwirio: dim ond tystysgrifau gan awdurdod mae Loupe yn ymddiried ynddo sy’n cael eu gwirio.';
 
   @override
+  String get actionsNeedsMyAction => 'Angen i mi weithredu';
+
+  @override
+  String get actionsWaitingOnOthers => 'Aros am eraill';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Does dim angen i chi weithredu';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Dydych chi ddim yn aros am neb';
+
+  @override
+  String get actionsFolderEmptyDetail => 'I ddilyn rhywbeth, tapiwch ⋯ ar neges a dewiswch Ychwanegu cam gweithredu…';
+
+  @override
+  String get actionsTitle => 'Camau gweithredu';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count i’w gwneud',
+      many: '$count i’w gwneud',
+      few: '$count i’w gwneud',
+      two: '$count i’w gwneud',
+      one: '$count i’w wneud',
+      zero: '$count i’w gwneud',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count yn aros',
+      many: '$count yn aros',
+      few: '$count yn aros',
+      two: '$count yn aros',
+      one: '$count yn aros',
+      zero: '$count yn aros',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count cam gweithredu wedi’u datrys',
+      many: '$count cam gweithredu wedi’u datrys',
+      few: '$count cam gweithredu wedi’u datrys',
+      two: '$count gam gweithredu wedi’u datrys',
+      one: '$count cam gweithredu wedi’i ddatrys',
+      zero: '$count cam gweithredu wedi’u datrys',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Wedi’u datrys';
+
+  @override
+  String get actionsNoneInConversation => 'Does dim camau gweithredu yn y sgwrs hon.';
+
+  @override
+  String get actionsFooter =>
+      'Mae camau gweithredu’n cael eu cadw ar y ffôn hwn. Dyw e-bost byth yn eu newid, dim hyd yn oed ateb sy’n dweud “Diolch”: dim ond chi sy’n gwneud hynny.';
+
+  @override
+  String get actionsMarkDone => 'Marcio fel wedi’i wneud';
+
+  @override
+  String get actionsReopen => 'Ailagor';
+
+  @override
+  String get actionsStateNeedsAction => 'Angen gweithredu';
+
+  @override
+  String get actionsStateInProgress => 'Ar y gweill';
+
+  @override
+  String get actionsStateSent => 'Wedi’i anfon';
+
+  @override
+  String get actionsStateWaiting => 'Aros am gadarnhad';
+
+  @override
+  String get actionsStateAcknowledged => 'Wedi’i gadarnhau';
+
+  @override
+  String get actionsStateDone => 'Wedi’i wneud';
+
+  @override
+  String get actionsStateDismissed => 'Wedi’i ddiystyru';
+
+  @override
+  String get actionsStateSuperseded => 'Wedi’i ddisodli';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Marciwyd fel angen gweithredu',
+      'inProgress': 'Marciwyd fel ar y gweill',
+      'sent': 'Marciwyd fel wedi’i anfon',
+      'waitingForAcknowledgement': 'Yn aros am gadarnhad',
+      'acknowledged': 'Marciwyd fel wedi’i gadarnhau',
+      'done': 'Marciwyd fel wedi’i wneud',
+      'dismissed': 'Diystyrwyd y cam gweithredu',
+      'superseded': 'Marciwyd fel wedi’i ddisodli',
+      'other': 'Newidiwyd y cam gweithredu',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Ail-eiriwyd y cam gweithredu';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Nodyn atgoffa wedi’i osod ar gyfer $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Nodyn atgoffa wedi’i glirio';
+
+  @override
+  String get actionsDeleted => 'Dilëwyd y cam gweithredu';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ychwanegwyd $count cam gweithredu',
+      many: 'Ychwanegwyd $count cam gweithredu',
+      few: 'Ychwanegwyd $count cam gweithredu',
+      two: 'Ychwanegwyd $count gam gweithredu',
+      one: 'Ychwanegwyd cam gweithredu',
+      zero: 'Ychwanegwyd $count cam gweithredu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Methu cadw’r cam gweithredu.';
+
+  @override
+  String get actionsStatusHeader => 'Statws';
+
+  @override
+  String get actionsEditText => 'Golygu’r testun…';
+
+  @override
+  String get actionsEditTitle => 'Golygu cam gweithredu';
+
+  @override
+  String get actionsRemindMe => 'Fy atgoffa…';
+
+  @override
+  String get actionsChangeReminder => 'Newid y nodyn atgoffa…';
+
+  @override
+  String get actionsClearReminder => 'Clirio’r nodyn atgoffa';
+
+  @override
+  String get actionsRemindTitle => 'Fy atgoffa';
+
+  @override
+  String get actionsDelete => 'Dileu’r cam gweithredu';
+
+  @override
+  String get actionsHistoryHeader => 'Hanes';
+
+  @override
+  String get actionsHistoryAdded => 'Ychwanegwyd';
+
+  @override
+  String get actionsHistoryEdited => 'Ail-eiriwyd';
+
+  @override
+  String get actionsHistoryDue => 'Newidiwyd yr amseru';
+
+  @override
+  String get actionsHistoryReminder => 'Newidiwyd y nodyn atgoffa';
+
+  @override
+  String get actionsHistoryRevised => 'Diweddarwyd o awgrym newydd';
+
+  @override
+  String get actionsHistoryDeleted => 'Dilëwyd';
+
+  @override
+  String get actionsHistoryRestored => 'Adferwyd';
+
+  @override
+  String get actionsOwnerMe => 'Rhaid i mi';
+
+  @override
+  String get actionsOwnerThem => 'Nhw fydd';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Yn wreiddiol: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '“$quote”';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Neges gan $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Ychwanegwyd gennych chi';
+
+  @override
+  String get actionsOriginDemo => 'Awgrymwyd gan y demo mewnol: rheolau, dim model';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Awgrymwyd gan $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Awgrymwyd gan $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Dyddiad cau: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Yn ddelfrydol erbyn $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '“$timing”';
+  }
+
+  @override
+  String get actionsAddMenu => 'Ychwanegu cam gweithredu…';
+
+  @override
+  String get actionsSuggestMenu => 'Awgrymu camau gweithredu';
+
+  @override
+  String get actionsAddTitle => 'Ychwanegu cam gweithredu';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Beth sydd angen i chi ei wneud?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Am beth ydych chi’n aros?';
+
+  @override
+  String get actionsDueDate => 'Dyddiad cau';
+
+  @override
+  String get actionsClearDueDate => 'Dim dyddiad cau';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Ynghylch “$subject”';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Camau gweithredu a awgrymwyd';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'ar y ffôn hwn',
+      'myServer': 'ar eich gweinydd',
+      'other': 'yn y cwmwl',
+    });
+    return 'Gan $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'Gan y demo mewnol: rheolau, dim model. Does dim byd yn gadael y ffôn hwn.';
+
+  @override
+  String get actionsSuggestNone => 'Does dim byd i’w ddilyn yn y neges hon.';
+
+  @override
+  String get actionsSuggestPartial => 'Mae’r neges hon yn hir: dim ond ei dechrau a ddarllenwyd.';
+
+  @override
+  String get actionsSuggestTracked => 'Wedi’i ychwanegu';
+
+  @override
+  String get actionsSuggestUpdate => 'Diweddaru';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ychwanegu’r $count',
+      many: 'Ychwanegu’r $count',
+      few: 'Ychwanegu’r $count',
+      two: 'Ychwanegu’r ddau',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Mae pob awgrym yn dyfynnu’r neges, a does dim byd yn cael ei ddilyn nes i chi ei ychwanegu. Dyw e-bost cynharach sydd wedi’i ddyfynnu ddim yn cyfrif.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Mae’r neges hon yn rhy hir i’r model a ddewiswyd.';
+
+  @override
+  String get actionsSuggestInvalid => 'Doedd yr ateb ddim yn cyfateb i’r neges, felly does dim byd wedi’i awgrymu.';
+
+  @override
+  String get actionsSuggestCancelled => 'Wedi stopio.';
+
+  @override
+  String get actionsSuggestFailed => 'Dyw awgrymiadau ddim ar gael ar hyn o bryd.';
+
+  @override
   String get settingsLanguage => 'Iaith';
 
   @override

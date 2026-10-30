@@ -6,6 +6,7 @@ import 'package:expr_search/expr_search.dart';
 import 'package:flutter/services.dart';
 import 'package:mail_model/mail_model.dart';
 
+import 'demo_actions.dart';
 import 'demo_calendar.dart';
 import 'demo_data.dart';
 import 'demo_matters.dart';
@@ -76,7 +77,14 @@ final class _Queued {
 /// - Sending to an address at a `.invalid` domain fails, so the Outbox
 ///   shows a failed message with an error and Retry.
 class DemoMailRepository
-    implements MailRepository, MailingLists, MailSubscriptions, DecryptedMail, CalendarRecords, MatterRecords {
+    implements
+        MailRepository,
+        MailingLists,
+        MailSubscriptions,
+        DecryptedMail,
+        CalendarRecords,
+        MatterRecords,
+        ActionRecords {
   DemoMailRepository({
     this.latency = const DemoLatency(),
     DateTime Function()? clock,
@@ -109,6 +117,9 @@ class DemoMailRepository
     calendarRecords.addAll(data.seedCalendarRecords());
     for (final m in data.seedMatters()) {
       _matters[m.id] = m;
+    }
+    for (final a in data.seedActions()) {
+      _actions[a.id] = a;
     }
     _startupSync();
   }
@@ -145,6 +156,10 @@ class DemoMailRepository
 
   /// Matters ([MatterRecords]), by id; "Buying 14 Quay Street" to start with.
   final _matters = <String, Matter>{};
+
+  /// The actions the user tracks ([ActionRecords]), by id; deleted ones
+  /// included.
+  final _actions = <String, ActionRecord>{};
 
   /// Documents "on the server": account id → document name → content.
   /// Tests write here to play another device.
@@ -455,6 +470,7 @@ class DemoMailRepository
     for (final m in [..._matters.values]) {
       _matters[m.id] = _withAccounts(m);
     }
+    _actions.removeWhere((_, a) => a.accountId == accountId);
     _notify();
   }
 
@@ -501,6 +517,7 @@ class DemoMailRepository
       }
     }
     // Flagged shows how many messages are flagged, as Apple Mail does; the
+    // action folders, how many conversations have open actions there; the
     // others count unread messages.
     return {
       VirtualMailbox.allInboxes: inboxes,
@@ -509,10 +526,12 @@ class DemoMailRepository
       VirtualMailbox.vip: vip,
       VirtualMailbox.allDrafts: drafts,
       VirtualMailbox.allSent: 0,
+      for (final folder in const [VirtualMailbox.needsMyAction, VirtualMailbox.waitingOnOthers])
+        folder: _actionConversations(folder).length,
     };
   });
 
-  bool _inScope(EmailSummary s, MailboxRef ref) {
+  bool _inScope(EmailSummary s, MailboxRef ref, {Set<(String, String)>? actionThreads}) {
     final box = _mailboxes[s.mailboxId];
     if (box == null) return false;
     return switch (ref) {
@@ -524,6 +543,8 @@ class DemoMailRepository
         VirtualMailbox.vip => _isVip(s) && _isRegular(box),
         VirtualMailbox.allDrafts => box.role == MailboxRole.drafts,
         VirtualMailbox.allSent => box.role == MailboxRole.sent,
+        VirtualMailbox.needsMyAction || VirtualMailbox.waitingOnOthers =>
+          !_isBin(box) && (actionThreads ?? _actionThreads(kind)).contains((s.accountId, s.threadId ?? s.id)),
       },
     };
   }
@@ -585,9 +606,13 @@ class DemoMailRepository
     bool threaded = true,
     int limit = 200,
   }) => _watch(() {
+    final actionThreads = switch (ref) {
+      VirtualMailboxRef(:final kind) => _actionThreads(kind),
+      RealMailboxRef() => null,
+    };
     final matching = [
       for (final m in _messages.values)
-        if (_inScope(m.summary, ref) && _passes(m.summary, filters)) m,
+        if (_inScope(m.summary, ref, actionThreads: actionThreads) && _passes(m.summary, filters)) m,
     ]..sort(_newestFirst);
     if (!threaded) {
       return [
@@ -951,6 +976,58 @@ class DemoMailRepository
     ];
     if (found.isEmpty) return null;
     return found.where((s) => !(_mailboxes[s.mailboxId]?.let(_isBin) ?? true)).firstOrNull ?? found.first;
+  }
+
+  // Needs My Action and Waiting on Others ------------------------------------
+
+  /// The stored message [ref] refers to, wherever it is now.
+  DemoMessage? _sourceOf(MessageRef ref) =>
+      _messages[ref.emailId] ?? _messages.values.where((m) => ref.matches(m.summary)).firstOrNull;
+
+  /// The conversations (account id, thread id) with open actions in [folder].
+  Set<(String, String)> _actionThreads(VirtualMailbox folder) => {
+    for (final a in _actions.values)
+      if (a.folder == folder)
+        if (_sourceOf(a.source)?.summary case final s?) (s.accountId, s.threadId ?? s.id),
+  };
+
+  /// Those of [_actionThreads] with a message outside Trash and Junk, as the
+  /// folder's list shows them.
+  Set<(String, String)> _actionConversations(VirtualMailbox folder) {
+    final threads = _actionThreads(folder);
+    return {
+      for (final m in _messages.values)
+        if ((m.summary.accountId, m.summary.threadId ?? m.id) case final t
+            when threads.contains(t) && !(_mailboxes[m.summary.mailboxId]?.let(_isBin) ?? true))
+          t,
+    };
+  }
+
+  @override
+  Stream<List<ActionRecord>> watchActions({bool includeDeleted = false}) => _watch(() {
+    final out = [
+      for (final a in _actions.values)
+        if (includeDeleted || !a.deleted)
+          switch (_sourceOf(a.source)) {
+            final m? => a.seenAt(a.source.seenAs(m.summary)),
+            null => a,
+          },
+    ]..sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+    return List<ActionRecord>.unmodifiable(out);
+  });
+
+  @override
+  Future<void> saveActions(List<ActionRecord> records) async {
+    for (final r in records) {
+      _actions[r.id] = r;
+    }
+    _notify();
+  }
+
+  @override
+  Future<void> forgetActions(List<String> ids) async {
+    ids.forEach(_actions.remove);
+    _notify();
   }
 
   Future<Uint8List> _bytesOf(DemoAttachment a) async {

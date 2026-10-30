@@ -3245,6 +3245,318 @@ class AppLocalizationsNl extends AppLocalizations {
       'Niet gecontroleerd: alleen certificaten van een instantie die Loupe vertrouwt, worden gecontroleerd.';
 
   @override
+  String get actionsNeedsMyAction => 'Actie van mij nodig';
+
+  @override
+  String get actionsWaitingOnOthers => 'Wachten op anderen';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Er is geen actie van je nodig';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Je wacht op niemand';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Om iets bij te houden, tik je bij een bericht op ⋯ en kies je Actie toevoegen…';
+
+  @override
+  String get actionsTitle => 'Acties';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count te doen', one: '1 te doen');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count in afwachting',
+      one: '1 in afwachting',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count afgehandelde acties',
+      one: '1 afgehandelde actie',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Afgehandeld';
+
+  @override
+  String get actionsNoneInConversation => 'Dit gesprek heeft geen acties.';
+
+  @override
+  String get actionsFooter =>
+      'Acties worden op deze telefoon bewaard. Mail verandert ze nooit, zelfs niet een antwoord met “Bedankt”: alleen jij doet dat.';
+
+  @override
+  String get actionsMarkDone => 'Markeren als gedaan';
+
+  @override
+  String get actionsReopen => 'Heropenen';
+
+  @override
+  String get actionsStateNeedsAction => 'Actie nodig';
+
+  @override
+  String get actionsStateInProgress => 'Bezig';
+
+  @override
+  String get actionsStateSent => 'Verzonden';
+
+  @override
+  String get actionsStateWaiting => 'Wacht op bevestiging';
+
+  @override
+  String get actionsStateAcknowledged => 'Bevestigd';
+
+  @override
+  String get actionsStateDone => 'Gedaan';
+
+  @override
+  String get actionsStateDismissed => 'Genegeerd';
+
+  @override
+  String get actionsStateSuperseded => 'Vervangen';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Gemarkeerd als actie nodig',
+      'inProgress': 'Gemarkeerd als bezig',
+      'sent': 'Gemarkeerd als verzonden',
+      'waitingForAcknowledgement': 'Wacht op bevestiging',
+      'acknowledged': 'Gemarkeerd als bevestigd',
+      'done': 'Gemarkeerd als gedaan',
+      'dismissed': 'Actie genegeerd',
+      'superseded': 'Gemarkeerd als vervangen',
+      'other': 'Actie gewijzigd',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Actie geherformuleerd';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Herinnering ingesteld voor $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Herinnering verwijderd';
+
+  @override
+  String get actionsDeleted => 'Actie verwijderd';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count acties toegevoegd',
+      one: 'Actie toegevoegd',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'De actie kon niet worden opgeslagen.';
+
+  @override
+  String get actionsStatusHeader => 'Status';
+
+  @override
+  String get actionsEditText => 'Tekst bewerken…';
+
+  @override
+  String get actionsEditTitle => 'Actie bewerken';
+
+  @override
+  String get actionsRemindMe => 'Herinner me…';
+
+  @override
+  String get actionsChangeReminder => 'Herinnering wijzigen…';
+
+  @override
+  String get actionsClearReminder => 'Herinnering verwijderen';
+
+  @override
+  String get actionsRemindTitle => 'Herinner me';
+
+  @override
+  String get actionsDelete => 'Actie verwijderen';
+
+  @override
+  String get actionsHistoryHeader => 'Geschiedenis';
+
+  @override
+  String get actionsHistoryAdded => 'Toegevoegd';
+
+  @override
+  String get actionsHistoryEdited => 'Geherformuleerd';
+
+  @override
+  String get actionsHistoryDue => 'Termijn gewijzigd';
+
+  @override
+  String get actionsHistoryReminder => 'Herinnering gewijzigd';
+
+  @override
+  String get actionsHistoryRevised => 'Bijgewerkt op basis van een nieuwe suggestie';
+
+  @override
+  String get actionsHistoryDeleted => 'Verwijderd';
+
+  @override
+  String get actionsHistoryRestored => 'Hersteld';
+
+  @override
+  String get actionsOwnerMe => 'Ik moet';
+
+  @override
+  String get actionsOwnerThem => 'Anderen moeten';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Oorspronkelijk: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '“$quote”';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Bericht van $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Door jou toegevoegd';
+
+  @override
+  String get actionsOriginDemo => 'Voorgesteld door de ingebouwde demo: regels, geen model';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Voorgesteld door $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Voorgesteld door $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Deadline: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Bij voorkeur vóór $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '“$timing”';
+  }
+
+  @override
+  String get actionsAddMenu => 'Actie toevoegen…';
+
+  @override
+  String get actionsSuggestMenu => 'Acties voorstellen';
+
+  @override
+  String get actionsAddTitle => 'Actie toevoegen';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Wat moet je doen?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Waar wacht je op?';
+
+  @override
+  String get actionsDueDate => 'Deadline';
+
+  @override
+  String get actionsClearDueDate => 'Geen deadline';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Over “$subject”';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Voorgestelde acties';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'op deze telefoon',
+      'myServer': 'op je server',
+      'other': 'in de cloud',
+    });
+    return 'Door $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'Door de ingebouwde demo: regels, geen model. Niets verlaat deze telefoon.';
+
+  @override
+  String get actionsSuggestNone => 'Niets in dit bericht om bij te houden.';
+
+  @override
+  String get actionsSuggestPartial => 'Dit bericht is lang: alleen het begin is gelezen.';
+
+  @override
+  String get actionsSuggestTracked => 'Al toegevoegd';
+
+  @override
+  String get actionsSuggestUpdate => 'Bijwerken';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Alle $count toevoegen',
+      two: 'Beide toevoegen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Elke suggestie citeert het bericht, en niets wordt bijgehouden totdat je het toevoegt. Geciteerde eerdere mail telt niet mee.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Dit bericht is te lang voor het gekozen model.';
+
+  @override
+  String get actionsSuggestInvalid => 'Het antwoord klopte niet met het bericht, dus er wordt niets voorgesteld.';
+
+  @override
+  String get actionsSuggestCancelled => 'Gestopt.';
+
+  @override
+  String get actionsSuggestFailed => 'Suggesties zijn nu niet beschikbaar.';
+
+  @override
   String get settingsLanguage => 'Taal';
 
   @override

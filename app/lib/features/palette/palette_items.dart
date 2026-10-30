@@ -220,6 +220,8 @@ List<PaletteItem> paletteItems(ProviderContainer container, AppLocalizations l10
     VirtualMailbox.vip,
     VirtualMailbox.flagged,
     VirtualMailbox.unread,
+    VirtualMailbox.needsMyAction,
+    VirtualMailbox.waitingOnOthers,
     VirtualMailbox.allDrafts,
     VirtualMailbox.allSent,
   ]) {

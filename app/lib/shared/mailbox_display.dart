@@ -31,6 +31,8 @@ String virtualMailboxTitle(VirtualMailbox kind, {AppLocalizations? l10n}) {
     VirtualMailbox.vip => strings.sharedMailboxVip,
     VirtualMailbox.allDrafts => strings.sharedMailboxAllDrafts,
     VirtualMailbox.allSent => strings.sharedMailboxAllSent,
+    VirtualMailbox.needsMyAction => strings.actionsNeedsMyAction,
+    VirtualMailbox.waitingOnOthers => strings.actionsWaitingOnOthers,
   };
 }
 
@@ -41,6 +43,8 @@ IconData virtualMailboxIcon(VirtualMailbox kind) => switch (kind) {
   VirtualMailbox.vip => LoupeIcons.vip,
   VirtualMailbox.allDrafts => LoupeIcons.drafts,
   VirtualMailbox.allSent => LoupeIcons.sent,
+  VirtualMailbox.needsMyAction => LoupeIcons.needsMyAction,
+  VirtualMailbox.waitingOnOthers => LoupeIcons.waitingOnOthers,
 };
 
 /// Sort key that puts special mailboxes first, in Apple Mail's order.
