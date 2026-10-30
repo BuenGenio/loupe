@@ -12,9 +12,10 @@ import '../../providers.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../ai/ai_providers.dart';
+import '../brief/brief_input.dart';
+import '../calendar/invitation_card.dart' show invitationZoneProvider;
 import '../conversation/sheets.dart';
 import '../openpgp/content_loader.dart';
-import 'compose_text.dart';
 import 'reply_check.dart';
 
 // Reading the selected files ---------------------------------------------------------
@@ -72,7 +73,7 @@ final class ReplyRequestsFailed implements Exception {
 /// The original's requests, from a Brief of it: [BriefTask] run through
 /// [AiService.run], so the reader's Brief of the same message is reused
 /// rather than asked for again, when it was made from the same input
-/// ([briefInputFor]) the same day. Null when Reply Check doesn't run:
+/// ([briefTaskFor]) the same day. Null when Reply Check doesn't run:
 /// Private AI or the feature is off, the message is gone, or it came
 /// encrypted and the provider isn't on this phone. Fails with
 /// [ReplyRequestsFailed], and is not retried by itself: the panel offers
@@ -95,7 +96,9 @@ final replyRequestsProvider = FutureProvider.autoDispose.family<ReplyRequests?, 
   final (email, content) = loaded;
   // Decrypted mail doesn't leave the phone.
   if (encryptedWith(content) != null && service.provider.location != ProviderLocation.onThisPhone) return null;
-  final run = await service.run(BriefTask(briefInputFor(email, content), now: clock.now()), cancel: cancel);
+  final read = await briefSource(email, content);
+  final task = briefTaskFor(read.input, now: clock.now(), zone: ref.read(invitationZoneProvider)?.ianaName);
+  final run = await service.run(task, cancel: cancel);
   return switch (run) {
     AiSuccess(:final value, :final record) => ReplyRequests(
       ReplyCheck.requestsIn(value),
@@ -106,20 +109,6 @@ final replyRequestsProvider = FutureProvider.autoDispose.family<ReplyRequests?, 
     AiFailure(:final message) => throw ReplyRequestsFailed(message),
   };
 }, retry: (_, _) => null);
-
-/// What a Brief of [email] reads: its subject, sender, date, text and the
-/// names of its attachments. The reader's Brief needs the same input for
-/// [AiService] to share one result between the two.
-BriefInput briefInputFor(EmailSummary email, EmailContent content) => BriefInput(
-  subject: protectedSubjectIn(content) ?? email.subject,
-  from: email.sender?.toString() ?? '',
-  date: email.sentAt ?? email.receivedAt,
-  text: ComposeText.plainTextOf(content),
-  attachments: [
-    for (final a in content.visibleAttachments)
-      if (a.filename case final name? when name.trim().isNotEmpty) name,
-  ],
-);
 
 // The panel ------------------------------------------------------------------------------
 

@@ -187,7 +187,7 @@ class _BriefViewState extends ConsumerState<BriefView> {
     }
     final today = DateTime.now();
     final zone = ref.read(invitationZoneProvider);
-    final task = BriefTask(source.input, now: today, timeZone: zone?.ianaName ?? today.timeZoneName);
+    final task = briefTaskFor(source.input, now: today, zone: zone?.ianaName);
     if (widget.service.cached(task) case final hit?) return show(_Finished(source, hit));
     beforeBuild = false;
     final run = await widget.service.run(task, cancel: cancel);
