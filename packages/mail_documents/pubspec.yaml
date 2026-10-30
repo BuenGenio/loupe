@@ -1,0 +1,12 @@
+name: mail_documents
+description: "Documents for Loupe: bounded text extraction from downloaded attachments (plain text, CSV and text-based PDFs) and exact search with page and passage. Pure Dart: no PDF library, no native code, no OCR."
+publish_to: none
+version: 0.1.0
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  # BSD-3 (the Dart team); SHA-256 of a document's bytes, its identity.
+  crypto: ^3.0.0
+dev_dependencies:
+  test: any
