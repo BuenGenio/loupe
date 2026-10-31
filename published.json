@@ -434,6 +434,38 @@
       "mode": "postiz",
       "status": "skipped",
       "note": "2026-10-28-snooze-carousel → threads: 16h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-31T06:21:07.893Z",
+      "id": "2026-10-30-phishing",
+      "platform": "bluesky",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-10-30-phishing → bluesky: 15h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-31T06:21:07.893Z",
+      "id": "2026-10-30-phishing",
+      "platform": "mastodon",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-10-30-phishing → mastodon: 15h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-31T06:21:07.894Z",
+      "id": "2026-10-30-phishing",
+      "platform": "instagram",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-30-phishing → instagram: 15h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-10-31T06:21:07.894Z",
+      "id": "2026-10-30-phishing",
+      "platform": "threads",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-10-30-phishing → threads: 15h late (limit 12h); skipped"
     }
   ]
 }
