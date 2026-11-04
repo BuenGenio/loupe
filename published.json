@@ -466,6 +466,38 @@
       "mode": "postiz",
       "status": "skipped",
       "note": "2026-10-30-phishing → threads: 15h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-04T07:29:21.089Z",
+      "id": "2026-11-03-search-tour",
+      "platform": "bluesky",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-11-03-search-tour → bluesky: 18h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-04T07:29:21.089Z",
+      "id": "2026-11-03-search-tour",
+      "platform": "mastodon",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-11-03-search-tour → mastodon: 18h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-04T07:29:21.090Z",
+      "id": "2026-11-03-search-tour",
+      "platform": "linkedin",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-11-03-search-tour → linkedin: 18h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-04T07:29:21.090Z",
+      "id": "2026-11-03-search-tour",
+      "platform": "threads",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-11-03-search-tour → threads: 18h late (limit 12h); skipped"
     }
   ]
 }
