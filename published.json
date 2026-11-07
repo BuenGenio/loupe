@@ -530,6 +530,38 @@
       "mode": "postiz",
       "status": "skipped",
       "note": "2026-11-04-tip-unread → threads: 18h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-07T03:13:26.999Z",
+      "id": "2026-11-06-smart-mailboxes",
+      "platform": "bluesky",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-11-06-smart-mailboxes → bluesky: 12h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-07T03:13:26.999Z",
+      "id": "2026-11-06-smart-mailboxes",
+      "platform": "mastodon",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-11-06-smart-mailboxes → mastodon: 12h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-07T03:13:27.000Z",
+      "id": "2026-11-06-smart-mailboxes",
+      "platform": "instagram",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-11-06-smart-mailboxes → instagram: 12h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-07T03:13:27.000Z",
+      "id": "2026-11-06-smart-mailboxes",
+      "platform": "threads",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-11-06-smart-mailboxes → threads: 12h late (limit 12h); skipped"
     }
   ]
 }
