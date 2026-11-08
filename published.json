@@ -562,6 +562,30 @@
       "mode": "postiz",
       "status": "skipped",
       "note": "2026-11-06-smart-mailboxes → threads: 12h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-08T05:58:47.408Z",
+      "id": "2026-11-07-tip-attachments",
+      "platform": "bluesky",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-11-07-tip-attachments → bluesky: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-08T05:58:47.409Z",
+      "id": "2026-11-07-tip-attachments",
+      "platform": "mastodon",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-11-07-tip-attachments → mastodon: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-08T05:58:47.409Z",
+      "id": "2026-11-07-tip-attachments",
+      "platform": "threads",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-11-07-tip-attachments → threads: 14h late (limit 12h); skipped"
     }
   ]
 }
