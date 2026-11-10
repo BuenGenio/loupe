@@ -7,6 +7,8 @@
 //   node bin/social.mjs preview [<id>] [--platform <p>]
 //   node bin/social.mjs calendar [--out <file>]
 //   node bin/social.mjs postiz-integrations         list Postiz channel ids for config.json
+//   node bin/social.mjs vista-profiles              list Vista Social profile ids for config.json
+//   node bin/social.mjs vista-boosts [<profile id>] list Vista Social boost configurations
 //
 // Shared options: --dir <posts dir>  --ledger <file>  --now <ISO time>  --config <file>
 
@@ -18,6 +20,7 @@ import { loadConfig } from '../src/config.mjs';
 import { Ledger } from '../src/ledger.mjs';
 import { PLATFORMS } from '../src/platforms.mjs';
 import { createPostiz } from '../src/platforms/postiz.mjs';
+import { createVista } from '../src/platforms/vista.mjs';
 import { loadPosts } from '../src/posts.mjs';
 import { publish, summaryMarkdown } from '../src/publish.mjs';
 import { renderPost } from '../src/render.mjs';
@@ -54,7 +57,7 @@ const { values: opts, positionals } = parseArgs({
 
 const [command, ...rest] = positionals;
 if (opts.help || !command) {
-  console.log(`usage: social <check|due|publish|preview|calendar|postiz-integrations> [options]
+  console.log(`usage: social <check|due|publish|preview|calendar|postiz-integrations|vista-profiles|vista-boosts> [options]
 
   publish   --dry-run  --only <id>  --platform <name>  --ignore-lateness  --strict
   preview   [<id>] --platform <name>
@@ -191,6 +194,54 @@ const commands = {
     const list = await postiz.integrations();
     console.log(`Postiz channels at ${cfg.postiz.url} (put the id into config.json → platforms.<name>.integration):\n`);
     for (const i of list) console.log(`  ${String(i.identifier).padEnd(22)} ${i.id}  ${i.name}${i.disabled ? '  (disabled)' : ''}`);
+    return 0;
+  },
+
+  async 'vista-profiles'() {
+    if (!process.env.VISTA_API_KEY) {
+      console.error('VISTA_API_KEY is not set');
+      return 1;
+    }
+    const vista = createVista({ cfg, env: process.env, fetch: globalThis.fetch, log });
+    const me = await vista.me();
+    console.log(`Vista Social key belongs to ${me?.name ?? '?'} <${me?.email ?? '?'}> (${cfg.vista.url})`);
+    const data = await vista.profiles();
+    const rows = Array.isArray(data) ? data : (data?.profiles ?? data?.rows ?? data?.items ?? []);
+    console.log(`\nConnected profiles (put the id into config.json → platforms.<name>.profile):\n`);
+    if (!rows.length) console.log(JSON.stringify(data, null, 2));
+    for (const p of rows) {
+      const net = p.network_code ?? p.network ?? '?';
+      console.log(`  ${String(net).padEnd(16)} ${String(p.id).padEnd(10)} ${p.name ?? ''}${p.username ? `  @${p.username}` : ''}${p.status && p.status !== 'active' ? `  (${p.status})` : ''}`);
+    }
+    return 0;
+  },
+
+  async 'vista-boosts'() {
+    if (!process.env.VISTA_API_KEY) {
+      console.error('VISTA_API_KEY is not set');
+      return 1;
+    }
+    const vista = createVista({ cfg, env: process.env, fetch: globalThis.fetch, log });
+    const wanted = rest[0]
+      ? [[rest[0], `profile ${rest[0]}`]]
+      : Object.entries(cfg.platforms)
+          .filter(([, p]) => p.mode === 'vista' && p.profile)
+          .map(([name, p]) => [p.profile, `${name} (profile ${p.profile})`]);
+    if (!wanted.length) {
+      console.error('no Vista Social profile ids in config.json yet; pass one: npm run vista:boosts -- <profile id>');
+      return 1;
+    }
+    console.log('Boost configurations (put the id into config.json → platforms.<name>.boost, or boost: <id> in a post):');
+    for (const [id, label] of wanted) {
+      const data = await vista.boosts(id);
+      const rows = Array.isArray(data) ? data : (data?.boosts ?? data?.configurations ?? data?.items ?? []);
+      console.log(`\n  ${label}`);
+      if (!rows.length) console.log(`    ${rows.length === 0 && Array.isArray(data) ? 'none' : JSON.stringify(data)}`);
+      for (const b of rows) {
+        const gid = b.gid ?? b.id ?? b.boost_gid ?? '?';
+        console.log(`    ${String(gid).padEnd(28)} ${b.name ?? b.title ?? ''}${b.status ? `  [${b.status}]` : ''}${b.default ? '  (default)' : ''}`);
+      }
+    }
     return 0;
   },
 };
