@@ -198,13 +198,15 @@ const commands = {
   },
 
   async 'vista-profiles'() {
-    if (!process.env.VISTA_API_KEY) {
-      console.error('VISTA_API_KEY is not set');
+    const vista = createVista({ cfg, env: process.env, fetch: globalThis.fetch, log });
+    const why = vista.credentialsMissing();
+    if (why) {
+      console.error(why);
       return 1;
     }
-    const vista = createVista({ cfg, env: process.env, fetch: globalThis.fetch, log });
     const me = await vista.me();
-    console.log(`Vista Social key belongs to ${me?.name ?? '?'} <${me?.email ?? '?'}> (${cfg.vista.url})`);
+    const who = me?.user ?? me?.data ?? me ?? {};
+    console.log(`Vista Social (${vista.transport()}) key belongs to ${who.name ?? '?'} <${who.email ?? '?'}>`);
     const data = await vista.profiles();
     const rows = Array.isArray(data) ? data : (data?.profiles ?? data?.rows ?? data?.items ?? []);
     console.log(`\nConnected profiles (put the id into config.json → platforms.<name>.profile):\n`);
@@ -217,11 +219,12 @@ const commands = {
   },
 
   async 'vista-boosts'() {
-    if (!process.env.VISTA_API_KEY) {
-      console.error('VISTA_API_KEY is not set');
+    const vista = createVista({ cfg, env: process.env, fetch: globalThis.fetch, log });
+    const why = vista.credentialsMissing();
+    if (why) {
+      console.error(why);
       return 1;
     }
-    const vista = createVista({ cfg, env: process.env, fetch: globalThis.fetch, log });
     const wanted = rest[0]
       ? [[rest[0], `profile ${rest[0]}`]]
       : Object.entries(cfg.platforms)

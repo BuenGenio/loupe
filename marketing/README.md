@@ -229,8 +229,9 @@ non-secret ones may be Variables instead of Secrets.
 | `MASTODON_TOKEN` | secret | access token with `write:statuses write:media` |
 | `POSTIZ_URL` | variable | optional: only for self-hosted Postiz, e.g. `https://social.example.org` |
 | `POSTIZ_API_KEY` | secret | Postiz → Settings → Public API |
-| `VISTA_API_KEY` | secret | Vista Social → Settings → Integrations → Vista Social API (needs the API add-on on Professional) |
-| `VISTA_URL` | variable | optional: API origin, default `https://api.vistasocial.com` |
+| `VISTA_MCP_URL` | secret | Vista Social → Settings → Account Settings → Integrations → MCP → "link with API key" (transport `mcp`, included with every paid plan) |
+| `VISTA_API_KEY` | secret | transport `rest` only: Settings → Integrations → Vista Social API (an add-on on Professional) |
+| `VISTA_URL` | variable | optional, `rest` only: API origin, default `https://api.vistasocial.com` |
 | `VISTA_MEDIA_BASE_URL` | variable | optional: public URL prefix for `marketing/`; Actions derives raw.githubusercontent.com of this repo |
 
 `GITHUB_TOKEN` and `GITHUB_REPOSITORY` come from Actions automatically. Locally,
@@ -271,7 +272,8 @@ In `vista` mode a platform has `profile` (the Vista Social profile id, from
 `VISTA_API_KEY=… npm run vista:profiles`), an optional default `boost`
 configuration id, and an optional `customization` object merged into every
 post (Vista's per-network fields, see the API reference). The `vista` block
-holds `url`, `mediaBaseUrl` (where Vista fetches repo media; empty means the
+holds `transport` (`mcp`, the default, or `rest`), `url` (`rest` only),
+`mediaBaseUrl` (where Vista fetches repo media; empty means the
 public repo on raw.githubusercontent.com at `assist.ref`, derived in Actions),
 `scheduleAheadHours` (hand posts to Vista this early, with their real time, so
 Vista publishes on the minute even when the GitHub cron is late; `0` means
@@ -371,10 +373,16 @@ the paid promotion. Checked 2026-11-10 against
 
 1. Connect each profile in Vista Social (Professional plan: 15 profiles).
    X is a separate add-on there, so it stays `off` until paid for.
-2. The REST API is included with Enterprise and otherwise sold as an add-on;
-   generate the key under Settings → Integrations → Vista Social API and
-   store it as `VISTA_API_KEY`. Only account managers can generate one, and a
-   new key deactivates the old one.
+2. Credentials. The default transport is Vista's MCP server, included with
+   every paid plan: under Settings → Account Settings → Integrations → MCP,
+   copy the **link with API key** and store it whole as `VISTA_MCP_URL`. The
+   publisher calls its `createOrUpdatePost`, `findProfiles`,
+   `listBoostConfigurations` and `whoami` tools, which take the same fields
+   as the REST endpoints. The REST API (`transport: "rest"`, `VISTA_API_KEY`)
+   is included with Enterprise and otherwise an add-on; on Professional it
+   answers `forbidden: Your subscription does not offer API access`. Only
+   account managers can generate either key, and a new key deactivates the
+   old one. The MCP token is revoked from the same Integrations page.
 3. `npm run vista:profiles` lists the connected profiles; put each id into
    `config.json` → `platforms.<name>.profile` and set `mode` to `vista`.
 4. For paid promotion, create boost configurations in Vista (Settings →
@@ -396,8 +404,9 @@ the paid promotion. Checked 2026-11-10 against
    miss its slot. Edits after hand-over must be made in Vista (or delete the
    post there and remove the ledger entry).
 
-The API answers `{ ok, data }`; a `forbidden` error means the plan has no API
-access. Rate limit: 60 requests a minute per integration.
+Rate limits: 180 requests a minute per workspace over MCP, 60 a minute per
+integration over REST. A REST `forbidden` error means the plan has no API
+access.
 
 ### Postiz (Instagram, TikTok, YouTube, Threads, LinkedIn, X, Facebook)
 

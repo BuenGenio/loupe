@@ -12,7 +12,8 @@
     "url": "https://api.postiz.com/public/v1"
   },
   "vista": {
-    "$comment": "Vista Social REST API (https://vistasocial.com/api-docs). mediaBaseUrl: where Vista fetches repo media from; empty = raw.githubusercontent.com of this repo at assist.ref (set by Actions). scheduleAheadHours: hand posts to Vista this early with their real publish time, so Vista publishes on time even when the GitHub cron runs late (0 = publish when due). tags: Vista tags added to every post.",
+    "$comment": "Vista Social. transport: mcp (the MCP server, included with every paid plan; VISTA_MCP_URL is the \"link with API key\" from Settings \u2192 Account Settings \u2192 Integrations \u2192 MCP) or rest (https://api.vistasocial.com with VISTA_API_KEY; an add-on on Professional). mediaBaseUrl: where Vista fetches repo media from; empty = raw.githubusercontent.com of this repo at assist.ref (set by Actions). scheduleAheadHours: hand posts to Vista this early with their real publish time, so Vista publishes on time even when the GitHub cron runs late (0 = publish when due). tags: Vista tags added to every post.",
+    "transport": "mcp",
     "url": "https://api.vistasocial.com",
     "mediaBaseUrl": "",
     "scheduleAheadHours": 168,

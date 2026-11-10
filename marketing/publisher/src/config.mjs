@@ -15,7 +15,7 @@ const DEFAULTS = {
   ledgerFile: '.state/published.json',
   platforms: {},
   postiz: { url: 'https://api.postiz.com/public/v1' },
-  vista: { url: 'https://api.vistasocial.com', mediaBaseUrl: '', scheduleAheadHours: 0, tags: [] },
+  vista: { transport: 'mcp', url: 'https://api.vistasocial.com', mediaBaseUrl: '', scheduleAheadHours: 0, tags: [] },
   assist: { repository: '', labels: ['social'], ref: 'main' },
 };
 
@@ -59,6 +59,8 @@ export function loadConfig(overrides = {}, env = process.env) {
   cfg.postiz.url = normalizePostizUrl(cfg.postiz.url);
   if (!cfg.assist.repository) cfg.assist.repository = env.GITHUB_REPOSITORY ?? '';
   if (env.VISTA_URL) cfg.vista.url = env.VISTA_URL;
+  if (env.VISTA_TRANSPORT) cfg.vista.transport = env.VISTA_TRANSPORT;
+  if (!['mcp', 'rest'].includes(cfg.vista.transport)) throw new Error('config.json: vista.transport must be "mcp" or "rest"');
   if (env.VISTA_MEDIA_BASE_URL) cfg.vista.mediaBaseUrl = env.VISTA_MEDIA_BASE_URL;
   // Media must be fetchable by Vista Social: the public repo at the published ref.
   if (!cfg.vista.mediaBaseUrl && env.GITHUB_REPOSITORY) {

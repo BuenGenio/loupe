@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { createVista, vistaBoost, vistaCustomization, vistaMediaUrl, vistaMessage, vistaPublishAt, vistaRemoteId } from '../src/platforms/vista.mjs';
+import { createVista, mcpResultData, parseJsonRpc, vistaBoost, vistaCustomization, vistaMediaUrl, vistaMessage, vistaPublishAt, vistaRemoteId } from '../src/platforms/vista.mjs';
 import { parsePost } from '../src/posts.mjs';
 import { renderPost } from '../src/render.mjs';
 import { planTasks } from '../src/schedule.mjs';
@@ -16,8 +16,10 @@ const cfg = testConfig(dir, {
     youtube: { mode: 'vista', profile: '303' },
     reddit: { mode: 'vista', profile: '404' },
   },
-  vista: { mediaBaseUrl: 'https://media.example/marketing', scheduleAheadHours: 168, tags: ['posts-as-code'] },
+  vista: { transport: 'rest', mediaBaseUrl: 'https://media.example/marketing', scheduleAheadHours: 168, tags: ['posts-as-code'] },
 });
+const mcpCfg = { ...cfg, vista: { ...cfg.vista, transport: 'mcp' } };
+const MCP_URL = 'https://vistasocial.com/api/integration/mcp?api_key=secret';
 const post = (fm, body = 'Hello {link}') =>
   parsePost(`---\nid: launch\ndate: 2026-10-20T15:00:00Z\nstatus: scheduled\ncampaign: launch\nlink: https://loupe.mx/\n${fm}\n---\n${body}`, { file: 'x.md' });
 const ctx = (fetch, { env = { ...ENV, VISTA_API_KEY: 'vista-key' }, now = new Date('2026-10-18T10:00:00Z') } = {}) => ({
@@ -105,8 +107,10 @@ describe('Vista Social', () => {
     await assert.rejects(createVista(ctx(busy)).publish(r), /retry after 30s.*retried next run/);
   });
 
-  it('is unconfigured without an API key or a profile id', () => {
+  it('is unconfigured without credentials or a profile id', () => {
     assert.match(createVista(ctx(mockFetch(), { env: {} })).unconfigured('instagram'), /VISTA_API_KEY/);
+    assert.match(createVista({ ...ctx(mockFetch(), { env: {} }), cfg: mcpCfg }).unconfigured('instagram'), /VISTA_MCP_URL not set/);
+    assert.match(createVista({ ...ctx(mockFetch(), { env: { VISTA_MCP_URL: 'http://x' } }), cfg: mcpCfg }).unconfigured('instagram'), /https/);
     assert.match(createVista(ctx(mockFetch())).unconfigured('threads'), /profile id/);
     assert.equal(createVista(ctx(mockFetch())).unconfigured('instagram'), null);
   });
@@ -125,5 +129,55 @@ describe('Vista Social', () => {
     assert.equal(soon.find((t) => t.platform === 'bluesky').state, 'future');
     const far = planTasks([p], cfg, null, { now: new Date('2026-10-01T15:00:00Z') });
     assert.equal(far.find((t) => t.platform === 'instagram').state, 'future');
+  });
+
+  it('over MCP, calls createOrUpdatePost with the same body via JSON-RPC and reads the text content', async () => {
+    const fetch = mockFetch([
+      [
+        'POST vistasocial.com/api/integration/mcp',
+        async (c) => {
+          assert.equal(c.query.get('api_key'), 'secret');
+          assert.match(c.headers.get('accept'), /text\/event-stream/);
+          const rpc = await c.json();
+          assert.equal(rpc.jsonrpc, '2.0');
+          assert.equal(rpc.method, 'tools/call');
+          assert.equal(rpc.params.name, 'createOrUpdatePost');
+          const a = rpc.params.arguments;
+          assert.equal(a.profile_id, 101);
+          assert.equal(a.publish_at, '2026-10-20T15:00:00.000Z');
+          assert.equal(a.customization.boost_gid, 'boost-ig-default');
+          assert.deepEqual(a.media_url, ['https://media.example/marketing/media/a.png']);
+          return { jsonrpc: '2.0', id: rpc.id, result: { content: [{ type: 'text', text: JSON.stringify({ publication_id: 'pub-9' }) }] } };
+        },
+      ],
+    ]);
+    const r = renderPost(post('platforms: [instagram]\nmedia:\n  - path: media/a.png\n    alt: x'), 'instagram', mcpCfg);
+    const v = createVista({ ...ctx(fetch, { env: { VISTA_MCP_URL: MCP_URL } }), cfg: mcpCfg });
+    assert.equal(v.unconfigured('instagram'), null);
+    const res = await v.publish(r);
+    assert.equal(res.remoteId, 'pub-9');
+    assert.match(res.note, /^scheduled in Vista Social for 2026-10-20T15:00:00.000Z, boost boost-ig-default$/);
+  });
+
+  it('over MCP, surfaces tool errors, JSON-RPC errors and SSE bodies', async () => {
+    const r = renderPost(post('platforms: [linkedin]'), 'linkedin', mcpCfg);
+    const mk = (handler) => createVista({ ...ctx(mockFetch([['POST vistasocial.com/api/integration/mcp', handler]]), { env: { VISTA_MCP_URL: MCP_URL } }), cfg: mcpCfg });
+    await assert.rejects(
+      mk(async (c) => ({ jsonrpc: '2.0', id: (await c.json()).id, result: { isError: true, content: [{ type: 'text', text: 'profile 202 is not connected' }] } })).publish(r),
+      /createOrUpdatePost: profile 202 is not connected/,
+    );
+    await assert.rejects(
+      mk(async (c) => ({ jsonrpc: '2.0', id: (await c.json()).id, error: { code: -32602, message: 'Invalid params' } })).publish(r),
+      /-32602 Invalid params/,
+    );
+    const sse = mk(
+      async (c) =>
+        new Response(`event: message\ndata: ${JSON.stringify({ jsonrpc: '2.0', id: (await c.json()).id, result: { structuredContent: { id: 'sse-1' } } })}\n\n`, {
+          headers: { 'content-type': 'text/event-stream' },
+        }),
+    );
+    assert.equal((await sse.publish(r)).remoteId, 'sse-1');
+    assert.equal(parseJsonRpc('[{"id":1},{"id":2,"result":1}]', 2).result, 1);
+    assert.equal(mcpResultData({ content: [{ type: 'text', text: 'plain' }] }), 'plain');
   });
 });
