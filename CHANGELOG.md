@@ -10,6 +10,11 @@ creating the heading if it isn't there yet. Say what changed for the person
 using the app, in a line or two; leave out internals, refactors and tests.
 -->
 
+## 2026-11-11
+
+- **Two kinds of Loupe.** The Free release type has no Google code at all, and is the one going to F-Droid. The NonFree type adds Push through Google's push service; the Nightly stays NonFree. Either installs over the other.
+- **Numbered releases** on GitHub, starting with 0.2.0, each in both types and also for older 32-bit phones (`armeabi-v7a`).
+
 ## 2026-10-08
 
 - **Loupe speaks your language.** The app is translated into 37 languages, and follows your phone's. Settings › Language picks a different one for Loupe alone; notifications follow it too.

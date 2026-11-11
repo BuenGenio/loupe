@@ -1,5 +1,5 @@
 // Writes the Google Play store listing for every language Play supports into
-// app/android/fastlane/metadata/android/<locale>/ (fastlane supply's layout):
+// fastlane/metadata/android/<locale>/ (fastlane supply's layout):
 // title, short and full description from the website's translations
 // (site/v2/src/i18n), a localised feature graphic, framed phone screenshots with
 // localised captions, tablet screenshots and the 512 px icon.
@@ -8,8 +8,11 @@
 //   node play.mjs --images-only                                  images only (CI)
 //
 // The texts are committed (edit the site's translations, or the files, then
-// review the diff); the images are git-ignored and regenerated from the
-// screenshots by .github/workflows/play-listing.yml.
+// review the diff). F-Droid reads the same files from the repository, and its
+// graphics too: en-US's images are committed (F-Droid shows them for every
+// language), the other languages' are git-ignored and regenerated from the
+// screenshots by .github/workflows/play-listing.yml. Re-run after the
+// screenshots change and commit en-US's.
 import { readFile, mkdir, writeFile, rm } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { dirname, join, resolve } from 'node:path';
@@ -21,7 +24,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const repo = resolve(here, '../..');
 const i18n = join(repo, 'site/v2/src/i18n');
 const shots = join(repo, 'site/v2/src/assets/screenshots');
-const out = join(repo, 'app/android/fastlane/metadata/android');
+const out = join(repo, 'fastlane/metadata/android');
 const require = createRequire(import.meta.url);
 
 // Site language → Play listing locale. Bosnian, Irish, Luxembourgish, Maltese
@@ -172,6 +175,5 @@ for (const [lang, locales] of Object.entries(PLAY)) {
     report.push(`${locale.padEnd(6)} title ${String(text.title.length).padStart(2)}/30  short ${String(text.short.length).padStart(2)}/80  full ${String(text.full.length).padStart(4)}/4000  "${text.title}"`);
   }
 }
-await mkdir(join(out, 'en-US/changelogs'), { recursive: true });
-if (!imagesOnly) await writeFile(join(out, 'en-US/changelogs/default.txt'), 'Nightly build from the main branch. What changed: https://github.com/BuenGenio/loupe/blob/main/CHANGELOG.md\n');
+// Release notes (en-US/changelogs/<version code>.txt) come from tool/release_prepare.sh.
 console.log(report.join('\n'));

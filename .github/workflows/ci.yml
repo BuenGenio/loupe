@@ -11,7 +11,9 @@ on:
       - ".github/workflows/site.yml"
       - ".github/workflows/social.yml"
       - ".github/workflows/play-listing.yml"
-      - "app/android/fastlane/**"
+      - ".github/workflows/release.yml"
+      - ".github/workflows/fdroid-check.yml"
+      - "fastlane/**"
   pull_request:
     paths-ignore:
       - "site/**"
@@ -19,7 +21,7 @@ on:
       - ".github/workflows/site.yml"
       - ".github/workflows/social.yml"
       - ".github/workflows/play-listing.yml"
-      - "app/android/fastlane/**"
+      - "fastlane/**"
   workflow_dispatch:
 
 concurrency:
@@ -27,6 +29,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  # Also the .flutter submodule's version, which releases and F-Droid build
+  # with: tool/ci/check_free.sh checks they match (docs/releasing.md).
   FLUTTER_VERSION: "3.47.6"
 
 jobs:
@@ -35,20 +39,23 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
+      - name: The committed tree is the Free release type
+        run: tool/ci/check_free.sh
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
-      - run: flutter pub get
+      - run: flutter pub get --enforce-lockfile
       - run: dart analyze
       - run: tool/ci/test.sh
 
+  # Both release types from every change (docs/releasing.md). The Free APKs
+  # are checked and kept as an artifact; the NonFree ones are the Nightly.
+  # Numbered releases (tags v*) are .github/workflows/release.yml.
   android:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
-    env:
-      HAS_PLAY_KEY: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON != '' }}
+    timeout-minutes: 75
     permissions:
       contents: write
     steps:
@@ -63,7 +70,7 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
-      - run: flutter pub get
+      - run: flutter pub get --enforce-lockfile
       - name: Release keystore
         env:
           KEYSTORE_BASE64: ${{ secrets.LOUPE_KEYSTORE_BASE64 }}
@@ -72,31 +79,49 @@ jobs:
             echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/loupe-release.jks"
             echo "LOUPE_KEYSTORE_FILE=$RUNNER_TEMP/loupe-release.jks" >> "$GITHUB_ENV"
           else
-            echo "::warning::No release keystore secret; signing with the debug key."
+            echo "::warning::No release keystore secret; the APKs are unsigned."
           fi
-      - name: Build APKs
+      - name: Version
+        # app/pubspec.yaml's version with the run number: 0.2.0-nightly.123.
+        # The version code stays the pubspec's, so a Nightly installs over the
+        # release it follows and the next release installs over it.
+        run: |
+          version=$(sed -n 's/^version: //p' app/pubspec.yaml)
+          echo "NAME=${version%%+*}-nightly.${{ github.run_number }}" >> "$GITHUB_ENV"
+      - name: Build the Free APKs
         working-directory: app
         env:
           LOUPE_KEYSTORE_PASSWORD: ${{ secrets.LOUPE_KEYSTORE_PASSWORD }}
           LOUPE_KEY_ALIAS: ${{ secrets.LOUPE_KEY_ALIAS }}
           LOUPE_KEY_PASSWORD: ${{ secrets.LOUPE_KEY_PASSWORD }}
-          # OAuth client ids (docs/oauth-setup.md). Empty (no secret, or a pull
-          # request from a fork) leaves "Sign in with Google/Microsoft" hidden.
-          # Passed through the environment, not spliced into the script.
-          LOUPE_GOOGLE_CLIENT_ID: ${{ secrets.LOUPE_GOOGLE_CLIENT_ID }}
-          LOUPE_MICROSOFT_CLIENT_ID: ${{ secrets.LOUPE_MICROSOFT_CLIENT_ID }}
         run: |
-          echo "Sign in with Google: $([ -n "$LOUPE_GOOGLE_CLIENT_ID" ] && echo on || echo off)"
-          echo "Sign in with Microsoft: $([ -n "$LOUPE_MICROSOFT_CLIENT_ID" ] && echo on || echo off)"
           flutter build apk --release --split-per-abi \
             --target-platform android-arm64,android-x64 \
-            --build-number=${{ github.run_number }} \
-            --build-name=0.1.${{ github.run_number }} \
-            --dart-define=LOUPE_GOOGLE_CLIENT_ID="$LOUPE_GOOGLE_CLIENT_ID" \
-            --dart-define=LOUPE_MICROSOFT_CLIENT_ID="$LOUPE_MICROSOFT_CLIENT_ID"
+            --build-name="$NAME"
+          mkdir -p ../dist-free
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk "../dist-free/loupe-free-$NAME-arm64.apk"
+          cp build/app/outputs/flutter-apk/app-x86_64-release.apk "../dist-free/loupe-free-$NAME-x86_64.apk"
+      - uses: actions/upload-artifact@v5
+        with:
+          name: loupe-free-apk-${{ github.run_number }}
+          path: dist-free/*.apk
+          retention-days: 14
+      - name: Switch to the NonFree release type
+        run: tool/release_type.sh nonfree
+      - name: Build the NonFree APKs
+        working-directory: app
+        env:
+          LOUPE_KEYSTORE_PASSWORD: ${{ secrets.LOUPE_KEYSTORE_PASSWORD }}
+          LOUPE_KEY_ALIAS: ${{ secrets.LOUPE_KEY_ALIAS }}
+          LOUPE_KEY_PASSWORD: ${{ secrets.LOUPE_KEY_PASSWORD }}
+        run: |
+          flutter build apk --release --split-per-abi \
+            --target-platform android-arm64,android-x64 \
+            --build-name="$NAME"
           mkdir -p ../dist
-          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk ../dist/loupe-0.1.${{ github.run_number }}-arm64.apk
-          cp build/app/outputs/flutter-apk/app-x86_64-release.apk ../dist/loupe-0.1.${{ github.run_number }}-x86_64.apk
+          # The website links to the asset ending in -arm64.apk (site/*/worker).
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk "../dist/loupe-$NAME-arm64.apk"
+          cp build/app/outputs/flutter-apk/app-x86_64-release.apk "../dist/loupe-$NAME-x86_64.apk"
       - uses: actions/upload-artifact@v5
         with:
           name: loupe-apk-${{ github.run_number }}
@@ -112,48 +137,10 @@ jobs:
           {
             awk '/^## /{n++} n==1' CHANGELOG.md
             echo
-            echo "Build ${{ github.run_number }} from ${GITHUB_SHA::7}. Earlier changes: [CHANGELOG.md]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/main/CHANGELOG.md)"
+            echo "Build ${{ github.run_number }} from ${GITHUB_SHA::7}, the NonFree release type (with Push; docs/releasing.md). Earlier changes: [CHANGELOG.md]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/main/CHANGELOG.md)"
           } > "$notes"
           git tag -f nightly && git push -f origin refs/tags/nightly
           gh release view nightly >/dev/null 2>&1 || gh release create nightly --prerelease --title "Nightly" --notes-file "$notes"
-          gh release edit nightly --prerelease --title "Nightly 0.1.${{ github.run_number }}" --notes-file "$notes"
+          gh release edit nightly --prerelease --title "Nightly $NAME" --notes-file "$notes"
           for f in $(gh release view nightly --json assets --jq '.assets[].name'); do gh release delete-asset nightly "$f" --yes; done
           gh release upload nightly dist/*.apk --clobber
-      # Google Play: the same build as an app bundle, signed with the upload key
-      # (the release keystore). After the Nightly so the APKs aren't held up.
-      - name: Build the app bundle for Google Play
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-        working-directory: app
-        env:
-          LOUPE_KEYSTORE_PASSWORD: ${{ secrets.LOUPE_KEYSTORE_PASSWORD }}
-          LOUPE_KEY_ALIAS: ${{ secrets.LOUPE_KEY_ALIAS }}
-          LOUPE_KEY_PASSWORD: ${{ secrets.LOUPE_KEY_PASSWORD }}
-          LOUPE_GOOGLE_CLIENT_ID: ${{ secrets.LOUPE_GOOGLE_CLIENT_ID }}
-          LOUPE_MICROSOFT_CLIENT_ID: ${{ secrets.LOUPE_MICROSOFT_CLIENT_ID }}
-        run: |
-          flutter build appbundle --release \
-            --build-number=${{ github.run_number }} \
-            --build-name=0.1.${{ github.run_number }} \
-            --dart-define=LOUPE_GOOGLE_CLIENT_ID="$LOUPE_GOOGLE_CLIENT_ID" \
-            --dart-define=LOUPE_MICROSOFT_CLIENT_ID="$LOUPE_MICROSOFT_CLIENT_ID"
-          mkdir -p ../dist-play
-          cp build/app/outputs/bundle/release/app-release.aab ../dist-play/loupe-0.1.${{ github.run_number }}.aab
-      - uses: actions/upload-artifact@v5
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-        with:
-          name: loupe-aab-${{ github.run_number }}
-          path: dist-play/*.aab
-          retention-days: 30
-      # Uploads to the internal testing track once the PLAY_SERVICE_ACCOUNT_JSON
-      # secret exists (docs/play-store.md). New apps only accept draft releases
-      # until the first one is published: set the repository variable
-      # PLAY_RELEASE_STATUS to "completed" after that.
-      - name: Upload to Google Play (internal testing)
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && env.HAS_PLAY_KEY == 'true'
-        uses: r0adkll/upload-google-play@v1
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
-          packageName: io.github.buengenio.loupe
-          releaseFiles: dist-play/*.aab
-          track: internal
-          status: ${{ vars.PLAY_RELEASE_STATUS || 'draft' }}
