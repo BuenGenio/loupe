@@ -1,16 +1,15 @@
+import com.android.build.api.variant.FilterConfiguration
 import java.util.Properties
 
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
-    // Push (docs/push.md): turns google-services.json (the Firebase project's public client settings) into
-    // resources Firebase starts from.
-    id("com.google.gms.google-services")
 }
 
 // Release signing: android/key.properties locally, or LOUPE_KEYSTORE_* environment
-// variables in CI. Without either, release builds fall back to the debug key.
+// variables in CI. Without either, release builds are unsigned, as F-Droid builds
+// them (docs/releasing.md): `flutter run --release` then needs a key.
 val keyProperties = Properties().apply {
     val f = rootProject.file("key.properties")
     if (f.exists()) f.inputStream().use { load(it) }
@@ -35,11 +34,8 @@ android {
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
-        // Uses the version code from pubspec.yaml. When using split APKs, 1000 * ABI_VERSION
-        // is added automatically by Flutter. (https://developer.android.com/studio/build/configure-apk-splits#configure-APK-versions)
-        // You can force using the value of versionCode by specifying the `-P force-version-code-ignoring-abi=true`
-        // flag during build.
-        versionCode = flutter.versionCode
+        // Ten times pubspec.yaml's build number; per-ABI APKs add their digit (androidComponents below).
+        versionCode = flutter.versionCode * 10
         versionName = flutter.versionName
         // As flutter_local_notifications' setup asks, with desugaring.
         multiDexEnabled = true
@@ -63,7 +59,27 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.findByName("release")
+        }
+    }
+
+    // No dependency list in APKs: AGP adds one encrypted with Google's public key, for Google Play only,
+    // which nobody else can read and F-Droid's scanner reports. App bundles (Play) keep it.
+    dependenciesInfo {
+        includeInApk = false
+    }
+}
+
+// Version codes (docs/releasing.md): ten times pubspec.yaml's build number, and the ABI in the last digit
+// for per-ABI APKs (`--split-per-abi`), as F-Droid asks: then every APK of a version outranks every APK of
+// the one before. Replaces Flutter's 1000/2000/4000 + build number, which force-version-code-ignoring-abi in
+// gradle.properties turns off. App bundles and universal APKs end in 0.
+val abiDigits = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 4)
+androidComponents {
+    onVariants { variant ->
+        for (output in variant.outputs) {
+            val abi = output.filters.find { it.filterType == FilterConfiguration.FilterType.ABI }?.identifier
+            output.versionCode.set(flutter.versionCode * 10 + (abiDigits[abi] ?: 0))
         }
     }
 }

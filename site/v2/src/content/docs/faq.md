@@ -45,7 +45,7 @@ Not yet. Loupe is built for both Android and iOS, and the iOS version is prepare
 
 ### Why do I install Loupe from an APK instead of an app store?
 
-Loupe is in early development and isn't in an app store yet. The APK on [loupe.mx/download](https://loupe.mx/download/) is the current Nightly build, made automatically from the latest code. The plan is a public beta on Google Play's testing track and on Apple's TestFlight; there is no date yet. F-Droid isn't part of the current plan.
+Loupe is in early development and isn't in an app store yet. The APK on [loupe.mx/download](https://loupe.mx/download/) is the current Nightly build, made automatically from the latest code. The plan is a public beta on Google Play's testing track and on Apple's TestFlight, and a listing on F-Droid, for which the Free release type (no Google code at all) is ready; there are no dates yet.
 
 ### How do I update Loupe?
 

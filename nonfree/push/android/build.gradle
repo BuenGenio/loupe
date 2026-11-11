@@ -1,0 +1,39 @@
+// NonFree push's Android module: Firebase's settings (res/values/firebase.xml)
+// and manifest entries for the app to merge, and a plugin class that does
+// nothing. The Firebase libraries come with firebase_core and
+// firebase_messaging; the code is in Dart (lib/loupe_push.dart).
+group 'io.github.buengenio.loupe.push'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.11.1'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    namespace 'io.github.buengenio.loupe.push'
+    compileSdk 36
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    defaultConfig {
+        minSdkVersion 24
+    }
+}
