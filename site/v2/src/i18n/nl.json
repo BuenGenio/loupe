@@ -404,6 +404,7 @@
     "arch": "Telefoon: de download is voor 64-bit ARM (vrijwel elke Android-telefoon sinds 2017).",
     "x86": "De x86_64-build nodig voor een emulator?",
     "alternatives": "Liever op een andere manier bijdragen?",
+    "via": "De betaling loopt via {name}; Loupe ziet je kaartgegevens nooit.",
     "noscript_html": "Zonder JavaScript: <a href=\"{start}\">gratis downloaden</a>."
   },
   "install": {

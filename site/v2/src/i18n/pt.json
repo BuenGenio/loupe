@@ -404,6 +404,7 @@
     "arch": "Telemóvel: a transferência é para ARM de 64 bits (quase todos os telemóveis Android desde 2017).",
     "x86": "Precisa da compilação x86_64 para um emulador?",
     "alternatives": "Prefere contribuir de outra forma?",
+    "via": "O pagamento é feito através de {name}; o Loupe nunca vê os dados do seu cartão.",
     "noscript_html": "Sem JavaScript: <a href=\"{start}\">transferir grátis</a>."
   },
   "install": {

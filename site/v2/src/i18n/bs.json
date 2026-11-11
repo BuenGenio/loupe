@@ -404,6 +404,7 @@
     "arch": "Telefon: preuzimanje je za 64-bitni ARM (gotovo svaki Android telefon od 2017. godine).",
     "x86": "Trebate x86_64 verziju za emulator?",
     "alternatives": "Radije biste dali na drugi način?",
+    "via": "Plaćanje obrađuje {name}; Loupe nikada ne vidi podatke vaše kartice.",
     "noscript_html": "Bez JavaScripta: <a href=\"{start}\">preuzmi besplatno</a>."
   },
   "install": {

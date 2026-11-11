@@ -404,6 +404,7 @@
     "arch": "Telefoni: shkarkimi është për ARM 64-bit (pothuajse çdo telefon Android që nga viti 2017).",
     "x86": "Ju duhet ndërtimi x86_64 për një emulator?",
     "alternatives": "Preferoni të jepni në një mënyrë tjetër?",
+    "via": "Pagesa kryhet përmes {name}; Loupe nuk i sheh kurrë të dhënat e kartës suaj.",
     "noscript_html": "Pa JavaScript: <a href=\"{start}\">shkarko falas</a>."
   },
   "install": {

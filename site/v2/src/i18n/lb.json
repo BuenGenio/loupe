@@ -404,6 +404,7 @@
     "arch": "Handy: Den Download ass fir 64-Bit-ARM (bal all Android-Handy zënter 2017).",
     "x86": "Braucht Dir den x86_64-Build fir en Emulator?",
     "alternatives": "Wëllt Dir anescht ënnerstëtzen?",
+    "via": "D'Bezuelung leeft iwwer {name}; Loupe gesäit Är Kaartendaten ni.",
     "noscript_html": "Ouni JavaScript: <a href=\"{start}\">gratis eroflueden</a>."
   },
   "install": {

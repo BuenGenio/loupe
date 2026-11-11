@@ -404,6 +404,7 @@
     "arch": "Telefonas: atsisiunčiama versija skirta 64 bitų ARM (beveik visiems Android telefonams nuo 2017 m.).",
     "x86": "Reikia x86_64 versijos emuliatoriui?",
     "alternatives": "Norite paremti kitaip?",
+    "via": "Mokėjimą apdoroja {name}; Loupe niekada nemato jūsų kortelės duomenų.",
     "noscript_html": "Be JavaScript: <a href=\"{start}\">atsisiųsti nemokamai</a>."
   },
   "install": {

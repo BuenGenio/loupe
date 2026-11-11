@@ -404,6 +404,7 @@
     "arch": "Telefon: a letöltés 64 bites ARM-ra készült (ez szinte minden 2017 óta gyártott androidos telefon).",
     "x86": "Emulátorhoz kell az x86_64 build?",
     "alternatives": "Inkább máshogy támogatnál?",
+    "via": "A fizetést a(z) {name} kezeli; a Loupe soha nem látja a kártyaadataidat.",
     "noscript_html": "JavaScript nélkül: <a href=\"{start}\">ingyenes letöltés</a>."
   },
   "install": {

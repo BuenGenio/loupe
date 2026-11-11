@@ -404,6 +404,7 @@
     "arch": "Sími: niðurhalið er fyrir 64 bita ARM (nánast alla Android-síma síðan 2017).",
     "x86": "Þarftu x86_64-útgáfuna fyrir hermi?",
     "alternatives": "Viltu frekar styðja á annan hátt?",
+    "via": "Greiðslan fer í gegnum {name}; Loupe sér aldrei kortaupplýsingarnar þínar.",
     "noscript_html": "Án JavaScript: <a href=\"{start}\">sækja ókeypis</a>."
   },
   "install": {

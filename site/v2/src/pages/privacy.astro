@@ -1,12 +1,19 @@
 ---
 import { getEntry, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { contact, site } from '../config';
+import { contact, donate, site } from '../config';
 import { breadcrumbs } from '../lib/schema';
 
 const policy = (await getEntry('legal', 'privacy-policy'))!;
 const { Content } = await render(policy);
 const updated = policy.data.updated.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// The payment services the site actually links to (src/config.ts → donate).
+const stripe = donate.tiers.some((t) => t.href) || Boolean(donate.custom.href);
+const payments = [
+  ...(stripe ? [{ name: 'Stripe', privacy: 'https://stripe.com/privacy' }] : []),
+  ...donate.alternatives.filter((a) => a.href),
+];
 ---
 
 <Base
@@ -45,12 +52,21 @@ const updated = policy.data.updated.toLocaleDateString('en-GB', { day: 'numeric'
             <strong>Downloads</strong> come from GitHub Releases, so GitHub sees the download request
             (<a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub's privacy statement</a>).
           </li>
-          <li>
-            <strong>Payments.</strong> If you choose to pay, Stripe handles the payment on its own pages. Loupe receives
-            your name, email address and the amount, never your card details
-            (<a href="https://stripe.com/privacy" rel="noopener">Stripe's privacy policy</a>). They are used only for
-            receipts and accounting.
-          </li>
+          {
+            payments.length > 0 && (
+              <li>
+                <strong>Payments.</strong> If you choose to pay, {payments.length === 1 ? payments[0].name : 'the service you pick'}
+                {' '}handles the payment on its own pages. Loupe receives what you enter there (usually your name, email
+                address and the amount, and any message you add), never your card details
+                ({payments.filter((p) => p.privacy).map((p, i) => (
+                  <>
+                    {i > 0 && ', '}
+                    <a href={p.privacy} rel="noopener">{p.name}'s privacy policy</a>
+                  </>
+                ))}). It is used only for receipts and accounting.
+              </li>
+            )
+          }
           <li>
             <strong>Mail you send us</strong> is used to answer you and is not shared. Write to
             <a href={`mailto:${contact.hello}`}>{contact.hello}</a> to have it deleted.

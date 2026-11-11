@@ -404,6 +404,7 @@
     "arch": "Teléfono: la descarga es para ARM de 64 bits (casi todos los teléfonos Android desde 2017).",
     "x86": "¿Necesitas la versión x86_64 para un emulador?",
     "alternatives": "¿Prefieres contribuir de otra forma?",
+    "via": "El pago se hace a través de {name}; Loupe nunca ve los datos de tu tarjeta.",
     "noscript_html": "Sin JavaScript: <a href=\"{start}\">descargar gratis</a>."
   },
   "install": {

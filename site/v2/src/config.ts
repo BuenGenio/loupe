@@ -71,11 +71,19 @@ export const donate = {
     { amount: 30, note: 'wall.tier30', href: '' },
   ],
   custom: { href: '' },
-  // Other ways to give, shown under the wall and on /donate/.
+  // Other ways to give, shown under the wall and on /donate/. Empty href = hidden.
+  // While no Stripe link is set, the first one with an href becomes the Donate
+  // button on /donate/. `privacy` is linked from the privacy page.
   alternatives: [
-    { name: 'GitHub Sponsors', href: '', note: 'Monthly or one-off, no fees for the developer.' },
-    { name: 'Liberapay', href: '', note: 'Recurring donations, run by a non-profit.' },
-    { name: 'Ko-fi', href: '', note: 'One-off tips with PayPal or card.' },
+    {
+      name: 'Buy Me a Coffee',
+      href: 'https://buymeacoffee.com/buengenio',
+      note: 'One-off tips, no account needed.',
+      privacy: 'https://buymeacoffee.com/privacy-policy',
+    },
+    { name: 'GitHub Sponsors', href: '', note: 'Monthly or one-off, no fees for the developer.', privacy: '' },
+    { name: 'Liberapay', href: '', note: 'Recurring donations, run by a non-profit.', privacy: '' },
+    { name: 'Ko-fi', href: '', note: 'One-off tips with PayPal or card.', privacy: '' },
   ],
 };
 

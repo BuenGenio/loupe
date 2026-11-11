@@ -404,6 +404,7 @@
     "arch": "Ffôn: mae'r ffeil ar gyfer ARM 64-did (bron pob ffôn Android ers 2017).",
     "x86": "Angen yr adeiliad x86_64 ar gyfer efelychydd?",
     "alternatives": "Mae'n well gennych chi roi mewn ffordd arall?",
+    "via": "Mae {name} yn delio â'r taliad; dydy Loupe byth yn gweld manylion eich cerdyn.",
     "noscript_html": "Heb JavaScript: <a href=\"{start}\">llwytho i lawr am ddim</a>."
   },
   "install": {

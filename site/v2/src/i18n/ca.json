@@ -404,6 +404,7 @@
     "arch": "Telèfon: la baixada és per a ARM de 64 bits (gairebé tots els telèfons Android des del 2017).",
     "x86": "Necessites la compilació x86_64 per a un emulador?",
     "alternatives": "Prefereixes contribuir d'una altra manera?",
+    "via": "El pagament es fa a través de {name}; Loupe no veu mai les dades de la teva targeta.",
     "noscript_html": "Sense JavaScript: <a href=\"{start}\">baixa-la gratis</a>."
   },
   "install": {

@@ -404,6 +404,7 @@
     "arch": "Telefon: allalaaditav fail on 64-bitise ARM-i jaoks (peaaegu iga Android-telefon alates 2017. aastast).",
     "x86": "Vajad emulaatori jaoks x86_64 versiooni?",
     "alternatives": "Eelistad toetada muul viisil?",
+    "via": "Makset töötleb {name}; Loupe ei näe kunagi sinu kaardiandmeid.",
     "noscript_html": "Ilma JavaScriptita: <a href=\"{start}\">laadi tasuta alla</a>."
   },
   "install": {

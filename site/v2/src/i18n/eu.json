@@ -404,6 +404,7 @@
     "arch": "Telefonoa: deskarga 64 biteko ARM-rako da (2017az geroztiko ia Android telefono guztiak).",
     "x86": "x86_64 bertsioa behar duzu emulagailu baterako?",
     "alternatives": "Beste modu batera eman nahiago duzu?",
+    "via": "Ordainketa {name}-ren bidez egiten da; Loupe-k ez ditu inoiz zure txartelaren datuak ikusten.",
     "noscript_html": "JavaScript gabe: <a href=\"{start}\">deskargatu doan</a>."
   },
   "install": {

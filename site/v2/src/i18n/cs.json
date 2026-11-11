@@ -404,6 +404,7 @@
     "arch": "Telefon: soubor ke stažení je pro 64bitový ARM (téměř každý telefon s Androidem od roku 2017).",
     "x86": "Potřebujete sestavení x86_64 pro emulátor?",
     "alternatives": "Chcete přispět jinak?",
+    "via": "Platbu zajišťuje {name}; Loupe údaje o vaší kartě nikdy nevidí.",
     "noscript_html": "Bez JavaScriptu: <a href=\"{start}\">stáhnout zdarma</a>."
   },
   "install": {
