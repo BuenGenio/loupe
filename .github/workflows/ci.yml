@@ -65,6 +65,9 @@ jobs:
           distribution: temurin
           java-version: "21"
           cache: gradle
+      # The release's toolchain (docs/releasing.md), so pull requests try it out.
+      - name: Android SDK as F-Droid has it
+        run: tool/ci/android_sdk.sh
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}

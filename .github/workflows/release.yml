@@ -7,8 +7,10 @@
 # here, with our signature, when its build is identical (reproducible
 # builds). So this job builds as F-Droid's recipe does
 # (docs/fdroid/io.github.buengenio.loupe.yml): Flutter from the .flutter
-# submodule, the pub cache inside the checkout, JDK 17, and the checkout at
-# /home/runner/work/loupe/loupe, the path the recipe moves its copy to.
+# submodule, the pub cache inside the checkout, JDK 17, the checkout at
+# /home/runner/work/loupe/loupe (the path the recipe moves its copy to), and
+# the Android SDK in /opt/android-sdk with only the app's NDK
+# (tool/ci/android_sdk.sh).
 
 name: Release
 
@@ -38,6 +40,8 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
+      - name: Android SDK as F-Droid has it
+        run: tool/ci/android_sdk.sh
       - name: Version
         run: |
           [ "$GITHUB_WORKSPACE" = /home/runner/work/loupe/loupe ] || { echo "::error::F-Droid's recipe expects the checkout at /home/runner/work/loupe/loupe, not $GITHUB_WORKSPACE"; exit 1; }

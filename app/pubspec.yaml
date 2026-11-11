@@ -4,7 +4,7 @@ publish_to: none
 # Version name + build number (docs/releasing.md). Release tags are v<name>;
 # Android's version code is ten times the build number, plus 1 (armeabi-v7a),
 # 2 (arm64-v8a) or 4 (x86_64) per APK. tool/release_prepare.sh sets it.
-version: 0.2.0+500
+version: 0.2.1+501
 resolution: workspace
 environment:
   sdk: ^3.13.0
