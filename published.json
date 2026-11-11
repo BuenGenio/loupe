@@ -586,6 +586,46 @@
       "mode": "postiz",
       "status": "skipped",
       "note": "2026-11-07-tip-attachments → threads: 14h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-11T03:01:58.907Z",
+      "id": "2026-11-10-subscriptions",
+      "platform": "bluesky",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-11-10-subscriptions → bluesky: 12h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-11T03:01:58.907Z",
+      "id": "2026-11-10-subscriptions",
+      "platform": "mastodon",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-11-10-subscriptions → mastodon: 12h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-11T03:01:58.908Z",
+      "id": "2026-11-10-subscriptions",
+      "platform": "instagram",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-11-10-subscriptions → instagram: 12h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-11T03:01:58.908Z",
+      "id": "2026-11-10-subscriptions",
+      "platform": "threads",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-11-10-subscriptions → threads: 12h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-11T03:01:58.909Z",
+      "id": "2026-11-10-subscriptions",
+      "platform": "linkedin",
+      "mode": "postiz",
+      "status": "skipped",
+      "note": "2026-11-10-subscriptions → linkedin: 12h late (limit 12h); skipped"
     }
   ]
 }
