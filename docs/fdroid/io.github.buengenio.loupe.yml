@@ -2,6 +2,7 @@ Categories:
   - Email
   - Internet
 License: MPL-2.0
+AuthorName: BuenGenio
 WebSite: https://loupe.mx
 SourceCode: https://github.com/BuenGenio/loupe
 IssueTracker: https://github.com/BuenGenio/loupe/issues
@@ -15,7 +16,7 @@ Repo: https://github.com/BuenGenio/loupe.git
 Builds:
   - versionName: 0.2.0
     versionCode: 5001
-    commit: v0.2.0
+    commit: 3818f241fbe3e62576b072af1f6ccc5344844f43
     submodules: true
     sudo:
       - mkdir -p /home/runner/work/loupe
@@ -55,7 +56,7 @@ Builds:
 
   - versionName: 0.2.0
     versionCode: 5002
-    commit: v0.2.0
+    commit: 3818f241fbe3e62576b072af1f6ccc5344844f43
     submodules: true
     sudo:
       - mkdir -p /home/runner/work/loupe
@@ -95,7 +96,7 @@ Builds:
 
   - versionName: 0.2.0
     versionCode: 5004
-    commit: v0.2.0
+    commit: 3818f241fbe3e62576b072af1f6ccc5344844f43
     submodules: true
     sudo:
       - mkdir -p /home/runner/work/loupe
