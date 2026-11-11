@@ -15,6 +15,9 @@ export const site = {
   licence: { name: 'MPL-2.0', url: 'https://www.mozilla.org/MPL/2.0/' },
   // Cloudflare Web Analytics beacon token (cookieless). Empty = no analytics.
   analyticsToken: '',
+  // Matomo visit statistics, run without cookies. Empty url = off. The host is
+  // also allowed in the Content-Security-Policy in public/_headers.
+  matomo: { url: 'https://matomo.matumi.anthill.hk/', siteId: '17' },
 };
 
 export const contact = {

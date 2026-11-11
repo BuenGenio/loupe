@@ -11,7 +11,7 @@ const updated = policy.data.updated.toLocaleDateString('en-GB', { day: 'numeric'
 
 <Base
   title="Privacy policy"
-  description="Loupe collects nothing: no analytics, telemetry or ads, and no servers of its own. What the app stores on your phone, who it talks to, and this website."
+  description="The Loupe app collects nothing: no analytics, telemetry or ads, and no servers of its own. What the app stores on your phone, who it talks to, and what this website records."
   image="/og/privacy.jpg"
   modified={policy.data.updated}
   jsonLd={[breadcrumbs([{ name: 'Home', path: '/' }, { name: 'Privacy', path: '/privacy/' }])]}
@@ -27,7 +27,17 @@ const updated = policy.data.updated.toLocaleDateString('en-GB', { day: 'numeric'
         <h2 id="website">This website</h2>
         <ul>
           <li>
-            <strong>No tracking.</strong> loupe.mx has no advertising or tracking scripts. It sets one cookie, and only
+            {
+              site.matomo.url ? (
+                <>
+                  <strong>No advertising.</strong> loupe.mx has no advertising scripts. It sets one cookie, and only
+                </>
+              ) : (
+                <>
+                  <strong>No tracking.</strong> loupe.mx has no advertising or tracking scripts. It sets one cookie, and only
+                </>
+              )
+            }
             if you pick a language from the menu: <code>lang</code>, which remembers that choice for a year so the site
             doesn't switch you back to your browser's language. Your browser's language preference is used, without
             storing it, to send you to that language on your first visit.{
@@ -36,6 +46,17 @@ const updated = policy.data.updated.toLocaleDateString('en-GB', { day: 'numeric'
                 : ''
             }
           </li>
+          {
+            site.matomo.url && (
+              <li>
+                <strong>Visit statistics.</strong> loupe.mx counts visits with Matomo, open-source analytics software, on
+                the server <code>{new URL(site.matomo.url).host}</code>. It uses no cookies. For each page you open,
+                Matomo receives the page address, the page that linked to it, your browser, operating system, screen
+                size and language, and your IP address, from which it estimates your country. The statistics show which
+                pages people read; they are not used for advertising.
+              </li>
+            )
+          }
           <li>
             <strong>Hosting.</strong> The site is served by Cloudflare. Like any web host, Cloudflare processes your IP
             address to deliver pages and stop attacks; see
