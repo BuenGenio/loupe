@@ -10,6 +10,7 @@ import { createAssist } from './platforms/assist.mjs';
 import { createBluesky } from './platforms/bluesky.mjs';
 import { createMastodon } from './platforms/mastodon.mjs';
 import { createPostiz } from './platforms/postiz.mjs';
+import { createVista } from './platforms/vista.mjs';
 
 export function createAdapters(ctx) {
   const lazy = (make) => {
@@ -19,9 +20,11 @@ export function createAdapters(ctx) {
   const bluesky = lazy(createBluesky);
   const mastodon = lazy(createMastodon);
   const postiz = lazy(createPostiz);
+  const vista = lazy(createVista);
   const assist = lazy(createAssist);
   return (platform, mode) => {
     if (mode === 'postiz') return postiz();
+    if (mode === 'vista') return vista();
     if (mode === 'assist') return assist();
     if (mode === 'api' && platform === 'bluesky') return bluesky();
     if (mode === 'api' && platform === 'mastodon') return mastodon();
@@ -60,7 +63,7 @@ export async function publish({
         throw new Error('dry run: network access is not allowed');
       }
     : fetch;
-  const ctx = { cfg, env, fetch: guardedFetch, sleep, log };
+  const ctx = { cfg, env, fetch: guardedFetch, sleep, log, now };
   adapterFor ??= createAdapters(ctx);
 
   const checked = new Map(validateAll(posts, cfg, { now }).map((v) => [v.post, v]));

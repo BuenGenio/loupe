@@ -5,7 +5,9 @@ Actions workflow publishes each one when it falls due:
 
 - **Bluesky** and **Mastodon** directly through their APIs.
 - **Instagram, TikTok, YouTube, Threads, LinkedIn** (and X or Facebook if
-  switched on) through [Postiz](https://postiz.com), Cloud or self-hosted.
+  switched on) through [Vista Social](https://vistasocial.com), which also
+  buys the paid promotion ("boost") a post asks for. [Postiz](https://postiz.com),
+  Cloud or self-hosted, is the alternative route for the same networks.
 - **Reddit** by hand: when a Reddit post is due, the workflow opens a GitHub
   issue with the finished text and a one-click prefilled submit link.
 
@@ -82,6 +84,13 @@ platform's tracked link.
 
 Every override field is optional. Unknown keys get a warning, which catches
 typos.
+
+**Paid promotion.** On a platform in `vista` mode, `boost: <id>` inside the
+platform's block names a Vista Social boost configuration (ad account,
+budget, audience, duration; set up once in Vista → Settings → Boosts, listed
+by `npm run vista:boosts`). Vista buys the ads when the post publishes.
+`boost: false` skips the platform's default boost from `config.json` for this
+post. Bluesky and Mastodon have no ads, so `boost` means nothing there.
 
 **Text.** The body is posted as plain text, because no network renders
 Markdown. `<!-- HTML comments -->` are notes for authors and are removed.
@@ -220,6 +229,10 @@ non-secret ones may be Variables instead of Secrets.
 | `MASTODON_TOKEN` | secret | access token with `write:statuses write:media` |
 | `POSTIZ_URL` | variable | optional: only for self-hosted Postiz, e.g. `https://social.example.org` |
 | `POSTIZ_API_KEY` | secret | Postiz → Settings → Public API |
+| `VISTA_MCP_URL` | secret | Vista Social → Settings → Account Settings → Integrations → MCP → "link with API key" (transport `mcp`, included with every paid plan) |
+| `VISTA_API_KEY` | secret | transport `rest` only: Settings → Integrations → Vista Social API (an add-on on Professional) |
+| `VISTA_URL` | variable | optional, `rest` only: API origin, default `https://api.vistasocial.com` |
+| `VISTA_MEDIA_BASE_URL` | variable | optional: public URL prefix for `marketing/`; Actions derives raw.githubusercontent.com of this repo |
 
 `GITHUB_TOKEN` and `GITHUB_REPOSITORY` come from Actions automatically. Locally,
 the assist mode falls back to `gh auth token`. `BLUESKY_SERVICE` (default
@@ -254,6 +267,17 @@ the assist mode falls back to `gh auth token`. `BLUESKY_SERVICE` (default
 `settings` is merged into the Postiz provider settings, which are documented at
 [docs.postiz.com/public-api/providers](https://docs.postiz.com/public-api/providers/x).
 Get integration ids with `POSTIZ_API_KEY=… npm run postiz:integrations`.
+
+In `vista` mode a platform has `profile` (the Vista Social profile id, from
+`VISTA_API_KEY=… npm run vista:profiles`), an optional default `boost`
+configuration id, and an optional `customization` object merged into every
+post (Vista's per-network fields, see the API reference). The `vista` block
+holds `transport` (`mcp`, the default, or `rest`), `url` (`rest` only),
+`mediaBaseUrl` (where Vista fetches repo media; empty means the
+public repo on raw.githubusercontent.com at `assist.ref`, derived in Actions),
+`scheduleAheadHours` (hand posts to Vista this early, with their real time, so
+Vista publishes on the minute even when the GitHub cron is late; `0` means
+publish when due) and `tags` added to every post in Vista.
 
 ## Recommended setup
 
@@ -338,6 +362,51 @@ Sources:
 [media](https://docs.joinmastodon.org/methods/media/) ·
 [rate limits](https://docs.joinmastodon.org/api/rate-limits/) ·
 [posting/URL length](https://docs.joinmastodon.org/user/posting/)
+
+### Vista Social (Instagram, TikTok, YouTube, Threads, LinkedIn, X, Facebook, Reddit, Bluesky)
+
+Vista Social holds the network connections (its own approved developer
+apps, so nothing to register with Meta, TikTok or Google), the calendar, and
+the paid promotion. Checked 2026-11-10 against
+[the API reference](https://vistasocial.com/api-docs) and the
+[API article](https://support.vistasocial.com/hc/en-us/articles/32993061787035-Vista-Social-API).
+
+1. Connect each profile in Vista Social (Professional plan: 15 profiles).
+   X is a separate add-on there, so it stays `off` until paid for.
+2. Credentials. The default transport is Vista's MCP server, included with
+   every paid plan: under Settings → Account Settings → Integrations → MCP,
+   copy the **link with API key** and store it whole as `VISTA_MCP_URL`. The
+   publisher calls its `createOrUpdatePost`, `findProfiles`,
+   `listBoostConfigurations` and `whoami` tools, which take the same fields
+   as the REST endpoints. The REST API (`transport: "rest"`, `VISTA_API_KEY`)
+   is included with Enterprise and otherwise an add-on; on Professional it
+   answers `forbidden: Your subscription does not offer API access`. Only
+   account managers can generate either key, and a new key deactivates the
+   old one. The MCP token is revoked from the same Integrations page.
+3. `npm run vista:profiles` lists the connected profiles; put each id into
+   `config.json` → `platforms.<name>.profile` and set `mode` to `vista`.
+4. For paid promotion, create boost configurations in Vista (Settings →
+   Boosts: ad account, daily budget, audience, duration, optional delay after
+   the organic post). `npm run vista:boosts` lists their ids. A default per
+   platform goes in `config.json` → `boost`; a post overrides it with
+   `boost: <id>` or opts out with `boost: false`. Ad spend is billed by each
+   network's ad account, not by Vista and not by this tool. Boosts exist on
+   Meta (Facebook, Instagram, Threads), LinkedIn Pages, TikTok and X;
+   Bluesky has none.
+5. Media: Vista downloads media from a public URL. In Actions the publisher
+   builds `https://raw.githubusercontent.com/<repo>/<ref>/marketing/<path>`
+   (this repository is public). Set `VISTA_MEDIA_BASE_URL` to use another
+   host, and always for a private repository.
+6. Timing: with `scheduleAheadHours` (default 168 in `config.json`) a post is
+   created in Vista up to a week early with `publish_at` set to its real
+   time, appears on the Vista calendar, and is published by Vista. The ledger
+   records it at hand-over, so a late GitHub cron can no longer make a post
+   miss its slot. Edits after hand-over must be made in Vista (or delete the
+   post there and remove the ledger entry).
+
+Rate limits: 180 requests a minute per workspace over MCP, 60 a minute per
+integration over REST. A REST `forbidden` error means the plan has no API
+access.
 
 ### Postiz (Instagram, TikTok, YouTube, Threads, LinkedIn, X, Facebook)
 
