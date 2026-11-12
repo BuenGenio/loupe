@@ -11,6 +11,9 @@
 # For GitHub Actions: copies the runner's SDK licences, installs into
 # /opt/android-sdk, and writes the variables to $GITHUB_ENV. Gradle installs
 # the rest (platforms, CMake) there as it needs them, as in F-Droid's build.
+# The command-line tools are for `flutter build appbundle`, which checks the
+# bundle's native libraries are stripped with their apkanalyzer, and fails
+# without it. They don't take part in the build, so the APKs stay F-Droid's.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 sdk=/opt/android-sdk
@@ -21,7 +24,8 @@ sudo mkdir -p "$sdk"
 sudo chown "$(id -u):$(id -g)" "$sdk"
 cp -r "${ANDROID_HOME:?}/licenses" "$sdk/"
 "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$sdk" \
-  "platform-tools" "platforms;android-36" "build-tools;36.0.0" "ndk;$ndk" > /dev/null
+  "cmdline-tools;latest" "platform-tools" "platforms;android-36" "build-tools;36.0.0" "ndk;$ndk" > /dev/null
+[ -x "$sdk/cmdline-tools/latest/bin/apkanalyzer" ] || { echo "::error::No apkanalyzer in $sdk/cmdline-tools/latest"; exit 1; }
 
 {
   echo "ANDROID_HOME=$sdk"
