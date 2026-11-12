@@ -19,7 +19,9 @@ fun signingValue(name: String, env: String): String? = keyProperties.getProperty
 android {
     namespace = "io.github.buengenio.loupe"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // Flutter 3.47's default, written out: releases and F-Droid's build must use the same NDK
+    // (docs/releasing.md). tool/ci/android_sdk.sh reads it; F-Droid's recipe has it as `ndk:`.
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         // flutter_local_notifications needs core library desugaring (java.time on older Android).
