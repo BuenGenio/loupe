@@ -65,6 +65,10 @@ jobs:
               fdroid checkupdates --allow-dirty io.github.buengenio.loupe
               fdroid build --verbose --on-server --no-tarball "io.github.buengenio.loupe:$VERCODE"
             '
+      # The container's user wrote them, readable only by itself.
+      - name: Hand F-Droid's files back to the runner
+        if: always()
+        run: sudo chown -R "$(id -u):$(id -g)" "$RUNNER_TEMP/fdroiddata"
       - name: Keep F-Droid's APK and logs
         if: always()
         uses: actions/upload-artifact@v5

@@ -77,8 +77,8 @@ If F-Droid's build ever isn't identical to ours, it won't publish that version. 
 
 ### Submitting
 
-After the first release (`v0.2.0`) is published:
+Loupe was submitted with 0.2.1, the first reproducible release: [fdroiddata!57027](https://gitlab.com/fdroid/fdroiddata/-/merge_requests/57027) (November 2026). In fdroiddata, `commit:` must be the full hash, not the tag. How it was done, and how to do it again:
 
-1. The **F-Droid check** workflow (`.github/workflows/fdroid-check.yml`) runs after each Release, and by hand for a tag. It builds every APK in F-Droid's own build container from the recipe, as F-Droid's servers do (`fdroid build --on-server`: the scanner, the build, and the comparison with the APK on the GitHub release). Green means F-Droid will ship our APKs; its artifacts keep F-Droid's APK and logs for `diffoscope` when not. It needs an x86-64 machine, so it doesn't run on the Asahi laptop.
+1. The **F-Droid check** workflow (`.github/workflows/fdroid-check.yml`) runs after each Release, and by hand for a tag. It builds every APK in F-Droid's own build container from the recipe, as F-Droid's servers do (`fdroid build --on-server`: the scanner, the build, and the comparison with the APK on the GitHub release). Green means F-Droid will ship our APKs: its log says `compared built binary to supplied reference binary successfully` for each. Its artifacts keep F-Droid's APK and logs for `diffoscope` when not. It needs an x86-64 machine, so it doesn't run on the Asahi laptop.
 2. Fork fdroiddata on GitLab, add the recipe as `metadata/io.github.buengenio.loupe.yml` (on a branch named `io.github.buengenio.loupe`), commit as `New App: io.github.buengenio.loupe`, and open a merge request with the **App inclusion** template. Its pipeline builds the app again; reviewers may ask for changes. `fdroid lint` passes on the recipe (checked against fdroiddata's config, November 2026).
 3. No anti-features are expected for the Free type. When Private AI's cloud providers (Anthropic, OpenAI-compatible) ship, F-Droid will likely add **NonFreeNet**: it connects to non-free network services, even though only when the user sets one up.
