@@ -125,6 +125,15 @@ jobs:
           # The website links to the asset ending in -arm64.apk (site/*/worker).
           cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk "../dist/loupe-$NAME-arm64.apk"
           cp build/app/outputs/flutter-apk/app-x86_64-release.apk "../dist/loupe-$NAME-x86_64.apk"
+      # Only releases ship the app bundle (Google Play), but building it here
+      # finds what breaks it before a tag does.
+      - name: Build the NonFree app bundle
+        working-directory: app
+        env:
+          LOUPE_KEYSTORE_PASSWORD: ${{ secrets.LOUPE_KEYSTORE_PASSWORD }}
+          LOUPE_KEY_ALIAS: ${{ secrets.LOUPE_KEY_ALIAS }}
+          LOUPE_KEY_PASSWORD: ${{ secrets.LOUPE_KEY_PASSWORD }}
+        run: flutter build appbundle --release --build-name="$NAME"
       - uses: actions/upload-artifact@v5
         with:
           name: loupe-apk-${{ github.run_number }}
