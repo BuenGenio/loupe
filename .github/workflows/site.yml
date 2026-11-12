@@ -1,5 +1,5 @@
-# loupe.mx: builds the Astro site in site/ and deploys it to Cloudflare
-# (Workers with static assets, see site/wrangler.jsonc).
+# loupe.mx: builds the Astro site in site/v2/ and deploys it to Cloudflare
+# (Workers with static assets, see site/v2/wrangler.jsonc).
 #
 # Secrets: CLOUDFLARE_API_TOKEN (template "Edit Cloudflare Workers"),
 #          CLOUDFLARE_ACCOUNT_ID. Without them the site is built, not deployed.
@@ -10,13 +10,13 @@ on:
   push:
     branches: [main]
     paths:
-      - "site/**"
+      - "site/v2/**"
       - "CHANGELOG.md"
       - "docs/privacy-policy.md"
       - ".github/workflows/site.yml"
   pull_request:
     paths:
-      - "site/**"
+      - "site/v2/**"
       - "CHANGELOG.md"
       - "docs/privacy-policy.md"
       - ".github/workflows/site.yml"
@@ -38,7 +38,7 @@ jobs:
       contents: read
     defaults:
       run:
-        working-directory: site
+        working-directory: site/v2
     steps:
       - uses: actions/checkout@v5
         with:
@@ -47,7 +47,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: site/package-lock.json
+          cache-dependency-path: site/v2/package-lock.json
       - run: npm ci
       - run: npm run build
       - name: Deploy to Cloudflare

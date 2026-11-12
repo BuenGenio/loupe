@@ -1,0 +1,134 @@
+---
+// Current app capture beside an explicitly labelled concept for planned AI.
+// Private AI preview copy is English-only, as on /private-ai/.
+import Device from './Device.astro';
+import AiSearchScreen from './AiSearchScreen.astro';
+import Icon from './Icon.astro';
+import { shot } from '../lib/screenshots';
+import { soonLabel } from '../lib/private-ai';
+
+interface Props {
+  lang: string;
+}
+const { lang } = Astro.props;
+---
+
+<div class="search-examples" data-search-examples lang="en">
+  <div class="example-controls" role="tablist" aria-label="Search examples">
+    <button
+      type="button"
+      role="tab"
+      id="search-example-current-tab"
+      aria-controls="search-example-current"
+      aria-selected="true"
+      data-search-choice="current"
+    >Search today</button>
+    <button
+      type="button"
+      role="tab"
+      id="search-example-ai-tab"
+      aria-controls="search-example-ai"
+      aria-selected="false"
+      tabindex="-1"
+      data-search-choice="ai"
+    ><Icon name="sparkle" size={15} /> With Private AI</button>
+  </div>
+
+  <div id="search-example-current" class="example-panel" role="tabpanel" aria-labelledby="search-example-current-tab" data-search-example="current">
+    <p class="example-status">Available today · No model required</p>
+    <div class="phone-stage"><Device shot={shot('search')} /></div>
+    <p class="example-caption">Search with words, filters or expressions. The interactive playground is under “One query, four engines”.</p>
+  </div>
+
+  <div id="search-example-ai" class="example-panel" role="tabpanel" aria-labelledby="search-example-ai-tab" data-search-example="ai">
+    <p class="example-status planned"><span>{soonLabel}</span> · Concept preview</p>
+    <div class="phone-stage"><Device><AiSearchScreen lang={lang} /></Device></div>
+    <p class="example-caption">With a configured local or cloud model, describe what you want in plain English. This preview shows the planned experience; no model runs here.</p>
+  </div>
+</div>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('[data-search-examples]')) {
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-search-choice]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-search-example]')];
+    const select = (key: string, focus = false) => {
+      for (const button of buttons) {
+        const selected = button.dataset.searchChoice === key;
+        button.setAttribute('aria-selected', String(selected));
+        button.tabIndex = selected ? 0 : -1;
+        if (selected && focus) button.focus();
+      }
+      for (const panel of panels) panel.hidden = panel.dataset.searchExample !== key;
+    };
+
+    root.classList.add('examples-ready');
+    select('current');
+    for (const [index, button] of buttons.entries()) {
+      button.addEventListener('click', () => select(button.dataset.searchChoice!));
+      button.addEventListener('keydown', (event) => {
+        const next = event.key === 'Home' ? 0
+          : event.key === 'End' ? buttons.length - 1
+          : event.key === 'ArrowRight' ? (index + 1) % buttons.length
+          : event.key === 'ArrowLeft' ? (index - 1 + buttons.length) % buttons.length
+          : null;
+        if (next === null) return;
+        event.preventDefault();
+        select(buttons[next].dataset.searchChoice!, true);
+      });
+    }
+  }
+</script>
+
+<style>
+  .search-examples {
+    display: grid;
+    gap: 14px;
+    width: 100%;
+    min-width: 0;
+    max-width: 380px;
+  }
+
+  .example-controls {
+    display: none;
+    justify-content: center;
+    gap: 6px;
+    padding: 4px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg);
+  }
+
+  .examples-ready .example-controls { display: flex; }
+
+  .example-controls button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex: 1;
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink-2);
+    font: inherit;
+    font-size: .875rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .example-controls button[aria-selected='true'] {
+    background: var(--brand);
+    color: var(--bg-elev);
+  }
+
+  .example-controls button:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+  .example-panel { display: grid; justify-items: center; gap: 16px; min-width: 0; }
+  .example-panel[hidden] { display: none; }
+  .example-status { margin: 0; color: var(--ink-3); font-size: .8125rem; text-align: center; }
+  .example-status.planned { color: var(--brand-ink); }
+  .example-status.planned span { font-weight: 500; }
+  .phone-stage { display: grid; justify-items: center; width: calc(100% - 20px); }
+  .example-caption { margin: 0; color: var(--ink-3); font-size: .8125rem; line-height: 1.55; text-align: center; }
+</style>

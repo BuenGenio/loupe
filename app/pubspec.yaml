@@ -1,7 +1,10 @@
 name: loupe
 description: "Loupe: a mail app, simple on the surface, powerful underneath."
 publish_to: none
-version: 0.1.0+1
+# Version name + build number (docs/releasing.md). Release tags are v<name>;
+# Android's version code is ten times the build number, plus 1 (armeabi-v7a),
+# 2 (arm64-v8a) or 4 (x86_64) per APK. tool/release_prepare.sh sets it.
+version: 0.2.1+501
 resolution: workspace
 environment:
   sdk: ^3.13.0
@@ -44,10 +47,9 @@ dependencies:
   flutter_local_notifications: ^22.3.1
   # MIT; Instant Delivery (experimental): the specialUse foreground service holding IMAP IDLE.
   flutter_foreground_task: ^11.0.3
-  # BSD-3 (FlutterFire); Push: a content-free "check now" through Firebase Cloud Messaging (docs/push.md).
-  # Android only for now, and only with Google Play services; no Analytics (android/app/build.gradle.kts).
-  firebase_core: ^4.15.0
-  firebase_messaging: ^16.7.0
+  # Push (docs/push.md): none in the Free release type, which this is. NonFree builds swap this
+  # package for nonfree/push, Firebase Cloud Messaging (tool/release_type.sh, docs/releasing.md).
+  loupe_push: {path: ../packages/push}
   # MIT; the PDF attachment viewer. Renders with the platform (Android PdfRenderer,
   # iOS CGPDF), so no PDFium in the APK.
   pdfx: ^2.11.0

@@ -9,8 +9,12 @@
 /// the chosen provider is a network one.
 ///
 /// [FakeProvider] runs tasks without a model, for tests and the demo.
+/// [AnthropicProvider] and [OpenAiCompatibleProvider] are the network
+/// adapters: a cloud the user chose, or a server they run.
 /// [SearchTranslationTask] is the first consumer: a sentence becomes an
-/// expression of the search language, checked by its parser.
+/// expression of the search language, checked by its parser. [BriefTask]
+/// reads one message for what it requires of the reader, every item tied to
+/// a passage that is really there.
 library;
 
 export 'src/fake_provider.dart' show FakeProvider;
@@ -24,6 +28,10 @@ export 'src/provider.dart'
         CancelToken,
         ProviderCapabilities,
         ProviderLocation;
+export 'src/providers/anthropic_provider.dart' show AnthropicProvider;
+export 'src/providers/openai_compatible_provider.dart' show OpenAiCompatibleProvider;
 export 'src/runner.dart' show AiFailure, AiFailureReason, AiRun, AiRunRecord, AiRunner, AiSuccess, inputHash;
 export 'src/task.dart' show AiTask, Parsed, Rejected, TaskParse, TaskSize, parseJsonObject, unfence;
+export 'src/tasks/brief.dart'
+    show Brief, BriefDue, BriefEvidence, BriefInput, BriefItem, BriefItemKind, BriefOwner, BriefTask, DueKind;
 export 'src/tasks/search_translation.dart' show SearchTranslation, SearchTranslationTask;

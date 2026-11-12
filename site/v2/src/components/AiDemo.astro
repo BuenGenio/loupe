@@ -1,0 +1,572 @@
+---
+// A playable preview of the planned Private AI features (src/lib/private-ai.ts):
+// to-dos from an email, plain-English search, a rule and key facts. It shows
+// mock output, labelled "Coming soon"; nothing here runs a model.
+import Icon from './Icon.astro';
+import { demo, soonLabel } from '../lib/private-ai';
+
+const tabs = [
+  { key: 'todo', label: 'Brief', icon: 'checkmark' },
+  { key: 'search', label: 'Search', icon: 'search-sparkle' },
+  { key: 'rules', label: 'Rules', icon: 'flow' },
+  { key: 'facts', label: 'Key facts', icon: 'document-text' },
+] as const;
+---
+
+<div class="ai-demo glass-panel glow-border" data-ai-demo>
+  <div class="demo-top">
+    <div class="demo-tabs" role="tablist" aria-label="Private AI preview">
+      {
+        tabs.map((tab, i) => (
+          <button role="tab" type="button" id={`ai-tab-${tab.key}`} aria-controls={`ai-panel-${tab.key}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-tab={tab.key}>
+            <Icon name={tab.icon} size={16} /> {tab.label}
+          </button>
+        ))
+      }
+    </div>
+    <span class="soon">{soonLabel}</span>
+  </div>
+
+  <div class="panel" role="tabpanel" id="ai-panel-todo" aria-labelledby="ai-tab-todo" data-panel="todo">
+    <div class="mail">
+      <p class="mail-from"><strong>{demo.email.from}</strong></p>
+      <p class="mail-subject">{demo.email.subject}</p>
+      {demo.email.body.map((line, i) => <p class="mail-line" data-line={i}>{line}</p>)}
+    </div>
+    <div class="todo-card">
+      <p class="card-title"><Icon name="sparkle" size={16} /> Brief</p>
+      <ul class="todos">
+        {
+          demo.todos.map((todo, i) => (
+            <li style={`--i:${i}`} data-from={todo.from}>
+              <label>
+                <input type="checkbox" />
+                <span class="todo-text">{todo.text}</span>
+              </label>
+              <span class={`tag tag-${todo.tag.toLowerCase()}`}>{todo.tag}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="card-note">Point at an item to see where it came from.</p>
+    </div>
+  </div>
+
+  <div class="panel" role="tabpanel" id="ai-panel-search" aria-labelledby="ai-tab-search" data-panel="search" hidden>
+    <div class="searchbar">
+      <Icon name="search" size={20} />
+      <span class="typed" data-type={demo.query}>{demo.query}</span><span class="caret" aria-hidden="true"></span>
+    </div>
+    <div class="arrow-down" aria-hidden="true"><Icon name="sparkle" size={18} /></div>
+    <div class="expr">
+      <p class="card-title">Loupe wrote this search</p>
+      <code>{demo.expression}</code>
+      <div class="expr-chips">
+        <span class="chip">From: harbour</span>
+        <span class="chip">Has attachment</span>
+        <span class="chip">After 1 Sep 2026</span>
+      </div>
+      <div class="expr-actions">
+        <span class="mini-btn">Edit</span>
+        <span class="mini-btn">Save as Smart Mailbox</span>
+        <span class="mini-btn">Make a rule</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" role="tabpanel" id="ai-panel-rules" aria-labelledby="ai-tab-rules" data-panel="rules" hidden>
+    <div class="searchbar">
+      <Icon name="flow" size={20} />
+      <span>{demo.rule}</span>
+    </div>
+    <pre class="sieve"><code>{demo.sieve.join('\n')}</code></pre>
+    <p class="dry"><Icon name="checkmark" size={18} /> {demo.dryRun}</p>
+  </div>
+
+  <div class="panel" role="tabpanel" id="ai-panel-facts" aria-labelledby="ai-tab-facts" data-panel="facts" hidden>
+    <p class="file"><Icon name="document-text" size={20} /> Mortgage illustration.pdf <span class="muted-n">· 6 pages</span></p>
+    <dl class="facts-grid">
+      {
+        demo.facts.map((fact, i) => (
+          <div style={`--i:${i}`}>
+            <dt>{fact.label}</dt>
+            <dd>{fact.value}</dd>
+            <span class="page">Page {fact.page}</span>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</div>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('[data-ai-demo]')) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let timer: number | undefined;
+
+    const typeOut = (el: HTMLElement) => {
+      const text = el.dataset.type ?? '';
+      if (reduce) return;
+      clearInterval(timer);
+      let n = 0;
+      el.textContent = '';
+      timer = window.setInterval(() => {
+        el.textContent = text.slice(0, ++n);
+        if (n >= text.length) clearInterval(timer);
+      }, 38);
+    };
+
+    const select = (key: string, focus = false) => {
+      for (const tab of tabs) {
+        const on = tab.dataset.tab === key;
+        tab.setAttribute('aria-selected', String(on));
+        tab.tabIndex = on ? 0 : -1;
+        if (on && focus) tab.focus();
+      }
+      for (const panel of panels) {
+        const on = panel.dataset.panel === key;
+        panel.hidden = !on;
+        // Restart the entrance animations.
+        if (on) {
+          panel.classList.remove('play');
+          void panel.offsetWidth;
+          panel.classList.add('play');
+          const typed = panel.querySelector<HTMLElement>('[data-type]');
+          if (typed) typeOut(typed);
+        }
+      }
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(tab.dataset.tab!));
+      tab.addEventListener('keydown', (e) => {
+        const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (step) select(tabs[(i + step + tabs.length) % tabs.length].dataset.tab!, true);
+      });
+    });
+
+    // Pointing at a to-do lights up the sentence it came from.
+    for (const item of root.querySelectorAll<HTMLElement>('[data-from]')) {
+      const line = root.querySelector<HTMLElement>(`[data-line="${item.dataset.from}"]`);
+      const on = () => line?.classList.add('lit');
+      const off = () => line?.classList.remove('lit');
+      item.addEventListener('pointerenter', on);
+      item.addEventListener('pointerleave', off);
+      item.addEventListener('focusin', on);
+      item.addEventListener('focusout', off);
+    }
+
+    // Play the first panel when the demo scrolls into view.
+    new IntersectionObserver((entries, obs) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        root.querySelector('[data-panel]:not([hidden])')?.classList.add('play');
+        obs.disconnect();
+      }
+    }, { threshold: 0.3 }).observe(root);
+  }
+</script>
+
+<style>
+  .ai-demo {
+    padding: clamp(16px, 3vw, 24px);
+    border-radius: 26px;
+    color: var(--night-ink);
+    text-align: left;
+  }
+
+  .demo-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .demo-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 4px;
+    border: 1px solid var(--glass-line);
+    border-radius: 999px;
+    background: var(--night-surface);
+  }
+
+  .demo-tabs button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 36px;
+    padding: 6px 14px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--night-ink-2);
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .demo-tabs button:hover {
+    color: var(--night-ink);
+  }
+
+  .demo-tabs button[aria-selected='true'] {
+    background: var(--grad-brand);
+    color: #fff;
+    box-shadow: 0 6px 18px -8px var(--aurora-2);
+  }
+
+  .panel {
+    display: grid;
+    gap: 16px;
+    min-height: 300px;
+  }
+
+  .panel[hidden] {
+    display: none;
+  }
+
+  .panel[data-panel='todo'] {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  .mail,
+  .todo-card,
+  .expr,
+  .sieve,
+  .searchbar,
+  .facts-grid div {
+    border: 1px solid var(--glass-line);
+    border-radius: 16px;
+    background: var(--glass-bg);
+  }
+
+  .mail {
+    padding: 18px;
+    font-size: 0.9375rem;
+  }
+
+  .mail p {
+    margin: 0 0 8px;
+    color: var(--night-ink-2);
+  }
+
+  .mail .mail-from strong {
+    color: var(--night-ink);
+  }
+
+  .mail .mail-subject {
+    color: var(--night-ink);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  .mail-line {
+    padding: 2px 6px;
+    margin-inline: -6px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .mail-line.lit {
+    background: color-mix(in srgb, var(--aurora-4) 28%, transparent);
+    color: var(--night-ink) !important;
+  }
+
+  .todo-card {
+    padding: 18px;
+    background: linear-gradient(160deg, rgb(67 195 205 / 14%), rgb(122 108 240 / 10%));
+  }
+
+  .card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px;
+    color: var(--night-accent) !important;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .todos {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .todos li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: var(--night-surface);
+    transition: background-color 0.2s ease;
+  }
+
+  .todos li:hover {
+    background: var(--night-hover);
+  }
+
+  .todos label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9375rem;
+    color: var(--night-ink);
+  }
+
+  .todos input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--night-accent);
+    flex: none;
+  }
+
+  .todos input:checked + .todo-text {
+    color: var(--night-ink-2);
+    text-decoration: line-through;
+  }
+
+  .tag {
+    flex: none;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--night-surface);
+    color: var(--night-ink-2);
+  }
+
+  .tag-document {
+    background: rgb(95 179 230 / 20%);
+    color: var(--brand-2);
+  }
+
+  .tag-action {
+    background: rgb(67 195 205 / 20%);
+    color: var(--night-accent);
+  }
+
+  .tag-deadline {
+    background: rgb(240 166 90 / 20%);
+    color: color-mix(in srgb, var(--warm) 75%, var(--night-ink));
+  }
+
+  .card-note {
+    margin: 12px 0 0;
+    font-size: 0.8125rem;
+  }
+
+  .searchbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 999px;
+    color: var(--night-ink);
+    font-size: 1rem;
+  }
+
+  .searchbar :global(svg) {
+    flex: none;
+    color: var(--night-accent);
+  }
+
+  .caret {
+    width: 2px;
+    height: 1.2em;
+    margin-left: -10px;
+    background: var(--night-accent);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .caret {
+      animation: blink 1s steps(1) infinite;
+    }
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .arrow-down {
+    justify-self: center;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--grad-brand);
+    color: #fff;
+    box-shadow: 0 0 24px -4px var(--aurora-2);
+  }
+
+  .expr {
+    padding: 18px;
+  }
+
+  .expr code {
+    display: block;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--night-surface);
+    color: var(--night-accent);
+    font-size: 1.0625rem;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .expr-chips,
+  .expr-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .expr-chips .chip {
+    background: var(--night-surface);
+    border-color: var(--glass-line);
+    color: var(--night-ink);
+  }
+
+  .mini-btn {
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--glass-line);
+    color: var(--night-ink-2);
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
+  .sieve {
+    margin: 0;
+    padding: 16px 18px;
+    overflow-x: auto;
+    background: var(--night-surface);
+    color: var(--night-ink);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .dry {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    color: var(--night-ok) !important;
+    font-weight: 500;
+  }
+
+  .file {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    color: var(--night-ink) !important;
+    font-weight: 500;
+  }
+
+  .muted-n {
+    color: var(--night-ink-2);
+    font-weight: 300;
+  }
+
+  .facts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 0;
+  }
+
+  .facts-grid div {
+    position: relative;
+    padding: 18px;
+  }
+
+  .facts-grid dt {
+    color: var(--night-ink-2);
+    font-size: 0.875rem;
+  }
+
+  .facts-grid dd {
+    margin: 4px 0 0;
+    font-size: clamp(1.6rem, 3.4vw, 2.2rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--night-ink);
+  }
+
+  .page {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--night-surface);
+    color: var(--night-accent);
+    font-size: 0.75rem;
+  }
+
+  /* Entrance: items rise in one after another. */
+  @media (prefers-reduced-motion: no-preference) {
+    .panel.play .todos li,
+    .panel.play .facts-grid div {
+      animation: pop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      animation-delay: calc(var(--i) * 140ms + 150ms);
+    }
+    .panel.play .expr {
+      animation: pop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 1.9s both;
+    }
+    .panel.play .arrow-down {
+      animation: pop 0.4s ease 1.7s both;
+    }
+    .panel.play .sieve,
+    .panel.play .dry {
+      animation: pop 0.5s ease 0.2s both;
+    }
+    .panel.play .dry {
+      animation-delay: 0.5s;
+    }
+  }
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .panel[data-panel='todo'] {
+      grid-template-columns: 1fr;
+    }
+    .facts-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .facts-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

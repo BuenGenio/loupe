@@ -27,10 +27,14 @@ dev_dependencies:
 dependency_overrides:
   dbus: ^0.8.0
 
-# Build hook options. package:sqlite3 bundles SQLite3MultipleCiphers (MIT) so
-# mail_store can encrypt the database; it includes FTS5. Hook user-defines
-# are only read from the workspace root.
+# Build hook options. package:sqlite3 compiles SQLite3MultipleCiphers (MIT)
+# from third_party/sqlite3mc, so mail_store can encrypt the database; it
+# includes FTS5. From source rather than `source: sqlite3mc`, which downloads
+# a prebuilt library (F-Droid builds only from source): the same source and
+# options as that library (third_party/sqlite3mc/README.md). Hook
+# user-defines are only read from the workspace root.
 hooks:
   user_defines:
     sqlite3:
-      source: sqlite3mc
+      source: source
+      path: third_party/sqlite3mc/sqlite3mc_amalgamation.c

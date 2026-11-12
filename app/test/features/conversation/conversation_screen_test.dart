@@ -521,6 +521,21 @@ void main() {
     });
   });
 
+  testWidgets("an older message's full date leaves the sender room on a 360 dp phone with large text", (tester) async {
+    tester.view.physicalSize = const Size(360 * 3, 740 * 3);
+    tester.view.devicePixelRatio = 3;
+    tester.platformDispatcher.textScaleFactorTestValue = 2;
+    addTearDown(tester.view.reset);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    // The test messages are from 4 October 2026, so the header shows the full date.
+    await openThread(tester);
+    expect(tester.takeException(), isNull);
+    final header = find.byKey(const ValueKey('sender-m3'));
+    expect(tester.getSize(header).width, greaterThanOrEqualTo(100));
+    final date = find.descendant(of: find.byType(MessageCard), matching: find.byType(FittedBox));
+    expect(tester.getSize(date.first).width, lessThanOrEqualTo(340 / 3));
+  });
+
   testWidgets('shows the empty state when the message is gone', (tester) async {
     final repo = FakeMailRepository();
     final router = await pumpTestApp(tester, repository: repo);
