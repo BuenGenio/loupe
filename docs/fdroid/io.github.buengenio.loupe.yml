@@ -22,7 +22,8 @@ Builds:
       - mkdir -p /home/runner/work/loupe
       - chown -R vagrant /home/runner/work/loupe
     output: app/build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: https://github.com/BuenGenio/loupe/releases/download/v%v/loupe-free-%v-armeabi-v7a.apk
+    binary: 
+      https://github.com/BuenGenio/loupe/releases/download/v%v/loupe-free-%v-armeabi-v7a.apk
     rm:
       - app/ios
       - nonfree
@@ -62,7 +63,8 @@ Builds:
       - mkdir -p /home/runner/work/loupe
       - chown -R vagrant /home/runner/work/loupe
     output: app/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: https://github.com/BuenGenio/loupe/releases/download/v%v/loupe-free-%v-arm64-v8a.apk
+    binary: 
+      https://github.com/BuenGenio/loupe/releases/download/v%v/loupe-free-%v-arm64-v8a.apk
     rm:
       - app/ios
       - nonfree
@@ -102,7 +104,8 @@ Builds:
       - mkdir -p /home/runner/work/loupe
       - chown -R vagrant /home/runner/work/loupe
     output: app/build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://github.com/BuenGenio/loupe/releases/download/v%v/loupe-free-%v-x86_64.apk
+    binary: 
+      https://github.com/BuenGenio/loupe/releases/download/v%v/loupe-free-%v-x86_64.apk
     rm:
       - app/ios
       - nonfree
