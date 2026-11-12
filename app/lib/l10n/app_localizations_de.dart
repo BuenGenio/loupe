@@ -6400,4 +6400,32 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Mit Demo-Mails ausprobieren';
+
+  @override
+  String get searchAskPlainEnglish => 'Mit eigenen Worten fragen';
+
+  @override
+  String get searchAskWorking => 'Suche wird ermittelt …';
+
+  @override
+  String get searchAskProposed => 'Vorgeschlagene Suche';
+
+  @override
+  String get searchAskUse => 'Diese Suche verwenden';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe muss wissen:';
+
+  @override
+  String get searchAskFailed => 'Loupe konnte daraus keine Suche machen.';
+
+  @override
+  String get searchAskDemoNote => 'Übersetzt von der eingebauten Demo, nicht von einem Modell.';
+
+  @override
+  String get settingsAiHeader => 'Private KI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Macht aus einem Satz eine Suche, die sich prüfen und ändern lässt. Vorerst übersetzt die eingebaute Demo: kein Modell, kein Netzwerk.';
 }

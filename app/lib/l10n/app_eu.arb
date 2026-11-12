@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Jarraipenik ez. Urruneko irudiak blokeatuta daude zuk esan arte.",
   "welcomeAddAccount": "Gehitu kontua",
   "welcomeImport": "Inportatu Thunderbird-etik",
-  "welcomeTryDemo": "Probatu demo-postarekin"
+  "welcomeTryDemo": "Probatu demo-postarekin",
+  "searchAskPlainEnglish": "Galdetu zure hitzekin",
+  "searchAskWorking": "Bilaketa prestatzen…",
+  "searchAskProposed": "Proposatutako bilaketa",
+  "searchAskUse": "Erabili bilaketa hau",
+  "searchAskNeedsAnswer": "Loupek jakin behar du:",
+  "searchAskFailed": "Loupek ezin izan du hori bilaketa bihurtu.",
+  "searchAskDemoNote": "Demo integratuak itzulia, ez eredu batek.",
+  "settingsAiHeader": "AA pribatua",
+  "settingsAiAssistDetail": "Esaldi bat egiaztatu eta edita dezakezun bilaketa bihurtzen du. Oraingoz demo integratuak itzultzen du: eredurik ez, sarerik ez."
 }

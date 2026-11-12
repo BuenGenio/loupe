@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Keen Tracking. Extern Biller bleiwe blockéiert, bis Dir et sot.",
   "welcomeAddAccount": "Kont derbäisetzen",
   "welcomeImport": "Aus Thunderbird importéieren",
-  "welcomeTryDemo": "Mat Demo-Mailen ausprobéieren"
+  "welcomeTryDemo": "Mat Demo-Mailen ausprobéieren",
+  "searchAskPlainEnglish": "Mat eegene Wierder froen",
+  "searchAskWorking": "Sich gëtt virbereet …",
+  "searchAskProposed": "Proposéiert Sich",
+  "searchAskUse": "Dës Sich benotzen",
+  "searchAskNeedsAnswer": "Loupe muss wëssen:",
+  "searchAskFailed": "Loupe konnt doraus keng Sich maachen.",
+  "searchAskDemoNote": "Iwwersat vun der agebauter Demo, net vun engem Modell.",
+  "settingsAiHeader": "Privat KI",
+  "settingsAiAssistDetail": "Mécht aus engem Saz eng Sich, déi sech kontrolléieren an änneren léisst. Fir de Moment iwwersetzt déi agebaute Demo: kee Modell, kee Netz."
 }

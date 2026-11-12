@@ -6494,4 +6494,32 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Wypróbuj z pocztą demonstracyjną';
+
+  @override
+  String get searchAskPlainEnglish => 'Zapytaj własnymi słowami';
+
+  @override
+  String get searchAskWorking => 'Układanie wyszukiwania…';
+
+  @override
+  String get searchAskProposed => 'Proponowane wyszukiwanie';
+
+  @override
+  String get searchAskUse => 'Użyj tego wyszukiwania';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe musi wiedzieć:';
+
+  @override
+  String get searchAskFailed => 'Loupe nie zdołał zamienić tego w wyszukiwanie.';
+
+  @override
+  String get searchAskDemoNote => 'Przetłumaczone przez wbudowane demo, nie przez model.';
+
+  @override
+  String get settingsAiHeader => 'Prywatna SI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Zamienia zdanie w wyszukiwanie, które można sprawdzić i zmienić. Na razie tłumaczy wbudowane demo: bez modelu, bez sieci.';
 }

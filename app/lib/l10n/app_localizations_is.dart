@@ -6345,4 +6345,32 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Prófa með sýnipósti';
+
+  @override
+  String get searchAskPlainEnglish => 'Spyrja með eigin orðum';
+
+  @override
+  String get searchAskWorking => 'Leit undirbúin…';
+
+  @override
+  String get searchAskProposed => 'Tillaga að leit';
+
+  @override
+  String get searchAskUse => 'Nota þessa leit';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe þarf að vita:';
+
+  @override
+  String get searchAskFailed => 'Loupe gat ekki gert leit úr þessu.';
+
+  @override
+  String get searchAskDemoNote => 'Þýtt af innbyggðu sýnisútgáfunni, ekki af líkani.';
+
+  @override
+  String get settingsAiHeader => 'Einkagervigreind';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Breytir setningu í leit sem þú getur skoðað og breytt. Í bili þýðir innbyggða sýnisútgáfan: ekkert líkan, ekkert net.';
 }

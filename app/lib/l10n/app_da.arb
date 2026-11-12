@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Ingen sporing. Eksterne billeder forbliver blokeret, indtil du siger til.",
   "welcomeAddAccount": "Tilføj konto",
   "welcomeImport": "Importér fra Thunderbird",
-  "welcomeTryDemo": "Prøv med demomail"
+  "welcomeTryDemo": "Prøv med demomail",
+  "searchAskPlainEnglish": "Spørg med dine egne ord",
+  "searchAskWorking": "Finder søgningen…",
+  "searchAskProposed": "Foreslået søgning",
+  "searchAskUse": "Brug denne søgning",
+  "searchAskNeedsAnswer": "Loupe skal vide:",
+  "searchAskFailed": "Loupe kunne ikke lave det om til en søgning.",
+  "searchAskDemoNote": "Oversat af den indbyggede demo, ikke af en model.",
+  "settingsAiHeader": "Privat AI",
+  "settingsAiAssistDetail": "Gør en sætning til en søgning, du kan tjekke og redigere. Indtil videre oversætter den indbyggede demo: ingen model, intet netværk."
 }

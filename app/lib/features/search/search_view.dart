@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mail_ai/mail_ai.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../l10n/l10n.dart';
@@ -23,6 +24,8 @@ import '../../shared/sheets.dart';
 import '../../shared/swipe_row.dart';
 import '../../shared/tags.dart';
 import '../../theme/theme.dart';
+import '../ai/ai_providers.dart';
+import 'ask_sheet.dart';
 import 'search_session.dart';
 import '../../theme/loupe_icons.dart';
 
@@ -116,6 +119,29 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
       case 'smart':
         await _saveSmartMailbox();
     }
+  }
+
+  /// Ask in Plain English: the sentence goes to the configured provider as a
+  /// SearchTranslationTask; the sheet shows what came back, and only an
+  /// expression the parser accepted can land in the field, where it is
+  /// editable like any typed query.
+  Future<void> _ask(AiProvider provider) async {
+    final sentence = _session.query.trim();
+    final accounts = [for (final a in ref.read(accountsProvider).value ?? const <MailAccount>[]) a.displayName];
+    FocusManager.instance.primaryFocus?.unfocus();
+    final expression = await showAskSheet(
+      context,
+      sentence: sentence,
+      providerId: provider.id,
+      run: () {
+        final now = DateTime.now();
+        return AiRunner(
+          provider,
+        ).run(SearchTranslationTask(sentence, now: now, timeZone: now.timeZoneName, accounts: accounts));
+      },
+    );
+    if (expression == null || !mounted) return;
+    _pick('$expression ');
   }
 
   Future<void> _editChip(List<SearchExpr> terms, int index) async {
@@ -292,6 +318,8 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
     final lastWord = _session.query.split(RegExp(r'\s+')).lastWhere((w) => w.isNotEmpty, orElse: () => '');
     final suggestPeople = widget.showSuggestions && lastWord.length >= 2 && !lastWord.contains(':');
     final word = _session.currentWord;
+    final aiProvider = ref.watch(aiProviderProvider);
+    final offerAsk = widget.showSuggestions && aiProvider != null && looksLikeASentence(_session.query, parsed);
     final completions = widget.showSuggestions && word.isNotEmpty
         ? suggest(_session.query, _cursor).where((c) => c.insertText != word).take(4).toList()
         : const <QuerySuggestion>[];
@@ -319,6 +347,10 @@ class _SearchSliversState extends ConsumerState<SearchSlivers> {
               ],
             ),
           ),
+        ),
+      if (offerAsk)
+        SliverToBoxAdapter(
+          child: _SuggestionRow(icon: LoupeIcons.ask, label: l10n.searchAskPlainEnglish, onTap: () => _ask(aiProvider)),
         ),
       if (completions.isNotEmpty)
         SliverList.list(

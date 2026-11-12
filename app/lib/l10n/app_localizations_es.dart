@@ -6377,4 +6377,32 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Probar con correo de demostración';
+
+  @override
+  String get searchAskPlainEnglish => 'Preguntar con tus palabras';
+
+  @override
+  String get searchAskWorking => 'Preparando la búsqueda…';
+
+  @override
+  String get searchAskProposed => 'Búsqueda propuesta';
+
+  @override
+  String get searchAskUse => 'Usar esta búsqueda';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe necesita saber:';
+
+  @override
+  String get searchAskFailed => 'Loupe no pudo convertirlo en una búsqueda.';
+
+  @override
+  String get searchAskDemoNote => 'Traducido por la demo integrada, no por un modelo.';
+
+  @override
+  String get settingsAiHeader => 'IA privada';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Convierte una frase en una búsqueda que puedes revisar y editar. Por ahora traduce la demo integrada: sin modelo, sin red.';
 }

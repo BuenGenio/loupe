@@ -6305,4 +6305,32 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Изпробване с демо поща';
+
+  @override
+  String get searchAskPlainEnglish => 'Попитайте със свои думи';
+
+  @override
+  String get searchAskWorking => 'Подготвяне на търсенето…';
+
+  @override
+  String get searchAskProposed => 'Предложено търсене';
+
+  @override
+  String get searchAskUse => 'Използване на това търсене';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe трябва да знае:';
+
+  @override
+  String get searchAskFailed => 'Loupe не успя да превърне това в търсене.';
+
+  @override
+  String get searchAskDemoNote => 'Преведено от вградената демонстрация, не от модел.';
+
+  @override
+  String get settingsAiHeader => 'Личен ИИ';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Превръща изречение в търсене, което можете да проверите и промените. Засега превежда вградената демонстрация: без модел, без мрежа.';
 }

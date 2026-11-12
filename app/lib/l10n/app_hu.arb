@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Nincs követés. A távoli képek letiltva maradnak, amíg nem engedélyezed őket.",
   "welcomeAddAccount": "Fiók hozzáadása",
   "welcomeImport": "Importálás Thunderbirdből",
-  "welcomeTryDemo": "Kipróbálás demó levelekkel"
+  "welcomeTryDemo": "Kipróbálás demó levelekkel",
+  "searchAskPlainEnglish": "Kérdezz a saját szavaiddal",
+  "searchAskWorking": "Keresés összeállítása…",
+  "searchAskProposed": "Javasolt keresés",
+  "searchAskUse": "Keresés használata",
+  "searchAskNeedsAnswer": "A Loupe-nak tudnia kell:",
+  "searchAskFailed": "A Loupe nem tudott ebből keresést készíteni.",
+  "searchAskDemoNote": "A beépített demó fordította, nem modell.",
+  "settingsAiHeader": "Privát MI",
+  "settingsAiAssistDetail": "Egy mondatból ellenőrizhető és szerkeszthető keresést készít. Egyelőre a beépített demó fordít: nincs modell, nincs hálózat."
 }

@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "L-ebda traċċar. L-istampi remoti jibqgħu mblukkati sakemm tgħid int.",
   "welcomeAddAccount": "Żid kont",
   "welcomeImport": "Importa minn Thunderbird",
-  "welcomeTryDemo": "Ipprova bil-posta demo"
+  "welcomeTryDemo": "Ipprova bil-posta demo",
+  "searchAskPlainEnglish": "Staqsi bi kliemek",
+  "searchAskWorking": "Qed titħejja t-tfittxija…",
+  "searchAskProposed": "Tfittxija proposta",
+  "searchAskUse": "Uża din it-tfittxija",
+  "searchAskNeedsAnswer": "Loupe jeħtieġ ikun jaf:",
+  "searchAskFailed": "Loupe ma setax jagħmel tfittxija minn dan.",
+  "searchAskDemoNote": "Tradott mid-demo inkorporata, mhux minn mudell.",
+  "settingsAiHeader": "IA privata",
+  "settingsAiAssistDetail": "Jibdel sentenza fi tfittxija li tista' tiċċekkja u teditja. Għalissa tittraduċi d-demo inkorporata: l-ebda mudell, l-ebda netwerk."
 }

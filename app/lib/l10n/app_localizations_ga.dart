@@ -6679,4 +6679,32 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Bain triail as le ríomhphost taispeántais';
+
+  @override
+  String get searchAskPlainEnglish => 'Fiafraigh i d\'fhocail féin';
+
+  @override
+  String get searchAskWorking => 'Ag ullmhú an chuardaigh…';
+
+  @override
+  String get searchAskProposed => 'Cuardach molta';
+
+  @override
+  String get searchAskUse => 'Úsáid an cuardach seo';
+
+  @override
+  String get searchAskNeedsAnswer => 'Teastaíonn ó Loupe a fháil amach:';
+
+  @override
+  String get searchAskFailed => 'Níorbh fhéidir le Loupe cuardach a dhéanamh de sin.';
+
+  @override
+  String get searchAskDemoNote => 'Aistrithe ag an taispeántas ionsuite, ní ag samhail.';
+
+  @override
+  String get settingsAiHeader => 'IS príobháideach';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Déanann sé cuardach d\'abairt is féidir leat a sheiceáil agus a chur in eagar. Go fóill is é an taispeántas ionsuite a aistríonn: gan samhail, gan líonra.';
 }

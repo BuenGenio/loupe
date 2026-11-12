@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Engin rakning. Fjartengdar myndir eru lokaðar þar til þú segir annað.",
   "welcomeAddAccount": "Bæta við aðgangi",
   "welcomeImport": "Flytja inn úr Thunderbird",
-  "welcomeTryDemo": "Prófa með sýnipósti"
+  "welcomeTryDemo": "Prófa með sýnipósti",
+  "searchAskPlainEnglish": "Spyrja með eigin orðum",
+  "searchAskWorking": "Leit undirbúin…",
+  "searchAskProposed": "Tillaga að leit",
+  "searchAskUse": "Nota þessa leit",
+  "searchAskNeedsAnswer": "Loupe þarf að vita:",
+  "searchAskFailed": "Loupe gat ekki gert leit úr þessu.",
+  "searchAskDemoNote": "Þýtt af innbyggðu sýnisútgáfunni, ekki af líkani.",
+  "settingsAiHeader": "Einkagervigreind",
+  "settingsAiAssistDetail": "Breytir setningu í leit sem þú getur skoðað og breytt. Í bili þýðir innbyggða sýnisútgáfan: ekkert líkan, ekkert net."
 }

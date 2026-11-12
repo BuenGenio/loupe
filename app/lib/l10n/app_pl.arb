@@ -1679,5 +1679,14 @@
   "welcomePrivacyText": "Bez śledzenia. Zdalne obrazy pozostają zablokowane, dopóki na nie nie pozwolisz.",
   "welcomeAddAccount": "Dodaj konto",
   "welcomeImport": "Importuj z Thunderbirda",
-  "welcomeTryDemo": "Wypróbuj z pocztą demonstracyjną"
+  "welcomeTryDemo": "Wypróbuj z pocztą demonstracyjną",
+  "searchAskPlainEnglish": "Zapytaj własnymi słowami",
+  "searchAskWorking": "Układanie wyszukiwania…",
+  "searchAskProposed": "Proponowane wyszukiwanie",
+  "searchAskUse": "Użyj tego wyszukiwania",
+  "searchAskNeedsAnswer": "Loupe musi wiedzieć:",
+  "searchAskFailed": "Loupe nie zdołał zamienić tego w wyszukiwanie.",
+  "searchAskDemoNote": "Przetłumaczone przez wbudowane demo, nie przez model.",
+  "settingsAiHeader": "Prywatna SI",
+  "settingsAiAssistDetail": "Zamienia zdanie w wyszukiwanie, które można sprawdzić i zmienić. Na razie tłumaczy wbudowane demo: bez modelu, bez sieci."
 }
