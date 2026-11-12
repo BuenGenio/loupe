@@ -47,6 +47,16 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
         <a class="icon-btn hide-s" href={site.repo} aria-label={t('common.github')} rel="noopener">
           <BrandIcon name="github" size={20} />
         </a>
+        <a
+          class="btn btn-small donate"
+          href={localize(lang, '/donate/')}
+          aria-label={t('wall.donate')}
+          title={t('wall.donate')}
+          aria-current={isActive('/donate/') ? 'page' : undefined}
+        >
+          <Icon name="heart" size={18} />
+          <span>{t('wall.donate')}</span>
+        </a>
         <a class="btn btn-primary btn-small" href={localize(lang, '/download/')} aria-label={t('common.download')}>
           <Icon name="arrow-download" size={18} />
           <span>{t('common.download')}</span>
@@ -91,11 +101,17 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
   const primary = header?.querySelector<HTMLElement>('.primary');
   const controls = header?.querySelector<HTMLElement>('.controls');
   const menu = header?.querySelector<HTMLDetailsElement>('.menu');
+  const donate = controls?.querySelector<HTMLElement>('.donate');
+  const donateLabel = donate?.querySelector<HTMLElement>('span');
   if (header && bar && brand && primary && controls && menu) {
     const fitNavigation = () => {
       const style = getComputedStyle(bar);
       const available = bar.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
-      const required = brand.offsetWidth + primary.offsetWidth + controls.offsetWidth + 2 * parseFloat(style.columnGap);
+      // Donate shows its label only while the menu is compact; measure it as
+      // the circle it becomes next to the full navigation.
+      const donateLabelWidth = donate && donateLabel?.offsetWidth ? donate.offsetWidth - donate.offsetHeight : 0;
+      const required =
+        brand.offsetWidth + primary.offsetWidth + controls.offsetWidth - donateLabelWidth + 2 * parseFloat(style.columnGap);
       const compact = required > available;
       header.dataset.compact = String(compact);
       primary.inert = compact;
@@ -221,6 +237,29 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
 
   .actions .btn {
     white-space: nowrap;
+  }
+
+  .donate {
+    margin-inline-end: 4px;
+  }
+
+  .donate :global(svg) {
+    color: var(--warm);
+  }
+
+  .donate[aria-current='page'] {
+    border-color: var(--warm);
+    background: var(--warm-soft);
+  }
+
+  /* Next to the full navigation there is room for the heart only. */
+  .site-header[data-compact='false'] .donate {
+    width: 38px;
+    padding: 0;
+  }
+
+  .site-header[data-compact='false'] .donate span {
+    display: none;
   }
 
   .icon-btn {

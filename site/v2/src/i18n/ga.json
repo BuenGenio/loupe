@@ -404,6 +404,7 @@
     "arch": "Fón: is le haghaidh ARM 64-giotán an íoslódáil (beagnach gach fón Android ó 2017 i leith).",
     "x86": "An bhfuil an leagan x86_64 uait le haghaidh aithriseora?",
     "alternatives": "Arbh fhearr leat tacú ar bhealach eile?",
+    "via": "Íocaíocht trí {name}; ní fheiceann Loupe sonraí do chárta riamh.",
     "noscript_html": "Gan JavaScript: <a href=\"{start}\">íoslódáil saor in aisce</a>."
   },
   "install": {

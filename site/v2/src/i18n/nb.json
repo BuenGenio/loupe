@@ -404,6 +404,7 @@
     "arch": "Telefon: nedlastingen er for 64-biters ARM (nesten alle Android-telefoner siden 2017).",
     "x86": "Trenger du x86_64-bygget for en emulator?",
     "alternatives": "Vil du heller gi på en annen måte?",
+    "via": "Betalingen håndteres av {name}; Loupe ser aldri kortopplysningene dine.",
     "noscript_html": "Uten JavaScript: <a href=\"{start}\">last ned gratis</a>."
   },
   "install": {

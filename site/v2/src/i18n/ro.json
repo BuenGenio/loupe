@@ -404,6 +404,7 @@
     "arch": "Telefon: descărcarea este pentru ARM pe 64 de biți (aproape orice telefon Android din 2017 încoace).",
     "x86": "Ai nevoie de versiunea x86_64 pentru un emulator?",
     "alternatives": "Preferi să contribui altfel?",
+    "via": "Plata este procesată de {name}; Loupe nu vede niciodată datele cardului tău.",
     "noscript_html": "Fără JavaScript: <a href=\"{start}\">descarcă gratuit</a>."
   },
   "install": {

@@ -404,6 +404,7 @@
     "arch": "Telefon: prenos je za 64-bitni ARM (skoraj vsak telefon Android od leta 2017).",
     "x86": "Potrebujete različico x86_64 za emulator?",
     "alternatives": "Bi raje prispevali drugače?",
+    "via": "Plačilo obdeluje {name}; Loupe podatkov vaše kartice nikoli ne vidi.",
     "noscript_html": "Brez JavaScripta: <a href=\"{start}\">prenesite brezplačno</a>."
   },
   "install": {

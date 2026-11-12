@@ -404,6 +404,7 @@
     "arch": "Telefón: súbor je pre 64-bitové ARM (takmer každý telefón s Androidom od roku 2017).",
     "x86": "Potrebujete zostavu x86_64 pre emulátor?",
     "alternatives": "Chcete prispieť inak?",
+    "via": "Platbu spracúva {name}; Loupe údaje o vašej karte nikdy neuvidí.",
     "noscript_html": "Bez JavaScriptu: <a href=\"{start}\">stiahnuť zadarmo</a>."
   },
   "install": {

@@ -404,6 +404,7 @@
     "arch": "Tālrunis: lejupielāde ir paredzēta 64 bitu ARM (gandrīz visiem Android tālruņiem kopš 2017. gada).",
     "x86": "Vajadzīgs x86_64 būvējums emulatoram?",
     "alternatives": "Vēlaties atbalstīt citādi?",
+    "via": "Maksājumu apstrādā {name}; Loupe nekad neredz jūsu kartes datus.",
     "noscript_html": "Bez JavaScript: <a href=\"{start}\">lejupielādēt bez maksas</a>."
   },
   "install": {

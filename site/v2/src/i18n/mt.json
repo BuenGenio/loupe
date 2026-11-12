@@ -404,6 +404,7 @@
     "arch": "Mowbajl: id-download huwa għal ARM ta' 64 bit (kważi kull mowbajl Android mill-2017 'l hawn).",
     "x86": "Għandek bżonn il-verżjoni x86_64 għal emulatur?",
     "alternatives": "Tippreferi tagħti b'mod ieħor?",
+    "via": "Il-ħlas isir permezz ta' {name}; Loupe qatt ma tara d-dettalji tal-kard tiegħek.",
     "noscript_html": "Mingħajr JavaScript: <a href=\"{start}\">niżżel b'xejn</a>."
   },
   "install": {

@@ -404,6 +404,7 @@
     "arch": "Puhelin: lataus on 64-bittisille ARM-suorittimille (lähes jokainen Android-puhelin vuodesta 2017 lähtien).",
     "x86": "Tarvitsetko x86_64-version emulaattoria varten?",
     "alternatives": "Haluatko tukea jollain muulla tavalla?",
+    "via": "Maksun hoitaa {name}; Loupe ei koskaan näe korttitietojasi.",
     "noscript_html": "Ilman JavaScriptiä: <a href=\"{start}\">lataa ilmaiseksi</a>."
   },
   "install": {

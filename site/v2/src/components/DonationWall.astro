@@ -5,6 +5,10 @@
 // mode="download": $0 starts the download; paid amounts go to the payment
 //   link, which redirects to /thanks/ (which starts the download).
 // mode="donate": no download; paid amounts only.
+//
+// Without Stripe links, the first of donate.alternatives (Buy Me a Coffee)
+// takes the Donate button on /donate/, and the download wall offers the
+// alternatives under the free download.
 import { donate } from '../config';
 import { useT, localize } from '../i18n';
 import Icon from './Icon.astro';
@@ -21,10 +25,15 @@ const dev = import.meta.env.DEV;
 const tiers = donate.tiers.filter((t) => t.href || dev);
 const custom = donate.custom.href || dev ? donate.custom : null;
 const paidReady = donate.tiers.some((t) => t.href) || Boolean(donate.custom.href);
-if (!paidReady && !dev && lang === 'en') console.warn('[donate] No payment links in src/config.ts: the donation wall shows the free download only.');
+const live = donate.alternatives.filter((a) => a.href);
+if (!paidReady && !dev && lang === 'en')
+  console.warn(`[donate] No Stripe links in src/config.ts: the wall offers the free download${live.length ? ` and ${live.map((a) => a.name).join(', ')}` : ' only'}.`);
 const suggested = tiers.find((t) => 'suggested' in t && t.suggested) ?? tiers[0];
 const initial = mode === 'download' && !paidReady && !dev ? 0 : (suggested?.amount ?? 0);
-const alternatives = donate.alternatives.filter((a) => a.href);
+const stripe = paidReady || dev;
+const lead = mode === 'donate' && !stripe ? live[0] : undefined;
+const alternatives = lead ? live.slice(1) : live;
+const brand = (name: string) => name.toLowerCase().replace(/[^a-z]/g, '');
 const fmt = (n: number) => new Intl.NumberFormat(lang, { style: 'currency', currency: donate.currency, maximumFractionDigits: 0 }).format(n);
 const start = localize(lang, '/download/start/');
 ---
@@ -77,23 +86,29 @@ const start = localize(lang, '/download/start/');
     )
   }
 
-  <a class="btn btn-primary go" href={mode === 'download' ? start : '#'}>
-    <Icon name={mode === 'download' ? 'arrow-download' : 'heart'} size={20} />
-    <span class="go-label">{mode === 'download' ? t('wall.downloadFree') : t('wall.donate')}</span>
-  </a>
+  {
+    (mode === 'download' || stripe || lead) && (
+      <a class="btn btn-primary go" href={mode === 'download' ? start : (lead?.href ?? '#')} rel={lead ? 'noopener' : undefined}>
+        <Icon name={mode === 'download' ? 'arrow-download' : 'heart'} size={20} />
+        <span class="go-label">{mode === 'download' ? t('wall.downloadFree') : t('wall.donate')}</span>
+      </a>
+    )
+  }
 
-  <p class="fine">
-    {
-      paidReady || dev ? (
-        <>
-          <Icon name="lock-closed" size={14} /> {t('wall.stripe')}
-          {mode === 'download' && ` ${t('wall.optional')}`}
-        </>
-      ) : (
-        <>{t('wall.soon')}</>
-      )
-    }
-  </p>
+  {
+    stripe ? (
+      <p class="fine">
+        <Icon name="lock-closed" size={14} /> {t('wall.stripe')}
+        {mode === 'download' && ` ${t('wall.optional')}`}
+      </p>
+    ) : lead ? (
+      <p class="fine via">
+        <BrandIcon name={brand(lead.name)} size={14} /> {t('wall.via', { name: lead.name })}
+      </p>
+    ) : (
+      alternatives.length === 0 && <p class="fine">{t('wall.soon')}</p>
+    )
+  }
 
   {
     mode === 'download' && (
@@ -106,12 +121,12 @@ const start = localize(lang, '/download/start/');
   {
     alternatives.length > 0 && (
       <div class="alts">
-        <p>{t('wall.alternatives')}</p>
+        <p>{stripe ? t('wall.alternatives') : t('donate.title')}</p>
         <ul>
           {alternatives.map((a) => (
             <li>
               <a href={a.href} rel="noopener">
-                <BrandIcon name={a.name.toLowerCase().replace(/[^a-z]/g, '')} size={16} />
+                <BrandIcon name={brand(a.name)} size={16} />
                 {a.name}
               </a>
             </li>
@@ -269,6 +284,17 @@ const start = localize(lang, '/download/start/');
     font-size: 0.8125rem;
     font-weight: 400;
     line-height: 1.5;
+  }
+
+  /* One sentence: the mark stays on its first line when it wraps. */
+  .via {
+    display: block;
+  }
+
+  .via :global(svg) {
+    display: inline;
+    margin-inline-end: 2px;
+    vertical-align: -2px;
   }
 
   .arch {

@@ -404,6 +404,7 @@
     "arch": "Telefon: indirilen dosya 64 bit ARM içindir (2017'den bu yana neredeyse tüm Android telefonlar).",
     "x86": "Emülatör için x86_64 derlemesi mi gerekiyor?",
     "alternatives": "Başka bir yolla destek olmayı mı tercih edersiniz?",
+    "via": "Ödeme {name} üzerinden yapılır; Loupe kart bilgilerinizi asla görmez.",
     "noscript_html": "JavaScript olmadan: <a href=\"{start}\">ücretsiz indir</a>."
   },
   "install": {
