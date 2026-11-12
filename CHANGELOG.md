@@ -10,6 +10,10 @@ creating the heading if it isn't there yet. Say what changed for the person
 using the app, in a line or two; leave out internals, refactors and tests.
 -->
 
+## 2026-11-12
+
+- **One permission fewer.** Loupe no longer asks Android for access to your phone's storage. It never needed it: attachments open from Loupe's own folders, and you pick files with Android's file picker.
+
 ## 2026-11-11
 
 - **Two kinds of Loupe.** The Free release type has no Google code at all, and is the one going to F-Droid. The NonFree type adds Push through Google's push service; the Nightly stays NonFree. Either installs over the other.
