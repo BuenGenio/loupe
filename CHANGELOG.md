@@ -13,6 +13,7 @@ using the app, in a line or two; leave out internals, refactors and tests.
 ## 2026-11-12
 
 - **Large text:** an older message's date no longer squeezes the sender's name out of its header. Past a third of the width, the date shrinks to fit.
+- **One permission fewer.** Loupe no longer asks Android for access to your phone's storage. It never needed it: attachments open from Loupe's own folders, and you pick files with Android's file picker.
 
 ## 2026-11-11
 

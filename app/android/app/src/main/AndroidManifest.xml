@@ -26,10 +26,13 @@
     <!-- Scanning Thunderbird's "Export for Mobile" QR codes (flutter_zxing on camera_android_camerax 0.7), asked
          for only when the scanner opens. The camera plugin also merges a microphone permission and old storage
          access for video recording, which Loupe never does: dropped. Phones without a camera can still install
-         Loupe (the import takes pasted text too). -->
+         Loupe (the import takes pasted text too). The manifest merger adds read access to storage, for every
+         Android version, alongside the plugin's write access; dropped too. Loupe opens and shares attachments
+         from its own folders, and picks files with the system picker, which need neither. -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" tools:node="remove" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />
     <!-- Loupe has no ads and no Analytics: no advertising ID, should any Google library ask for it. Only NonFree
          builds have Google libraries (Push: Firebase Cloud Messaging, nonfree/push), which merge c2dm RECEIVE
          and WAKE_LOCK; Free builds have none, and this line removes nothing there. -->
