@@ -12,8 +12,10 @@ import 'compile/jmap.dart';
 import 'eval/matcher.dart';
 import 'eval/normal_form.dart';
 import 'syntax/format.dart';
+import 'syntax/operators.dart';
 import 'syntax/parser.dart';
 import 'syntax/suggest.dart';
+import 'syntax/values.dart';
 
 /// A parse problem, with the character range it refers to.
 final class QueryError {
@@ -223,3 +225,42 @@ Map<String, Object?> compileJmapFilter(SearchExpr expr) => compileJmap(expr);
 
 /// Whether [compileJmapFilter] keeps [term] (rather than widening it).
 bool jmapSupports(SearchExpr term) => jmapCanExpress(term);
+
+/// One operator of the language, for whatever explains it: help pages,
+/// completions, and the prompt that teaches a model the language (mail_ai).
+final class OperatorInfo {
+  const OperatorInfo({
+    required this.name,
+    required this.aliases,
+    required this.summary,
+    required this.example,
+    this.values = const [],
+  });
+
+  /// Canonical name, as [formatQuery] writes it.
+  final String name;
+  final List<String> aliases;
+
+  /// A few words, e.g. "sender contains".
+  final String summary;
+  final String example;
+
+  /// The fixed values an operator takes (`is:`, `has:`); empty when free.
+  final List<String> values;
+}
+
+/// Every operator, in the order completions list them.
+List<OperatorInfo> operatorCatalogue() => [
+  for (final op in operators)
+    OperatorInfo(
+      name: op.name,
+      aliases: op.aliases,
+      summary: op.summary,
+      example: op.example,
+      values: switch (op.kind) {
+        OpKind.status => statusValues.keys.toList(),
+        OpKind.has => const ['attachment'],
+        _ => const [],
+      },
+    ),
+];
