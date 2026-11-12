@@ -1,0 +1,24 @@
+name: loupe_push
+description: "Push in Loupe's NonFree release type: Firebase Cloud Messaging (docs/push.md, docs/releasing.md)."
+publish_to: none
+# Replaces packages/push in NonFree builds (tool/release_type.sh nonfree).
+# Not part of the workspace, and never part of a Free build.
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  # BSD-3 (FlutterFire), but they bring Google Play services' Firebase
+  # libraries, which aren't free software. Pinned: NonFree builds resolve
+  # them when they're made (the committed pubspec.lock is the Free one).
+  firebase_core: 4.15.0
+  firebase_messaging: 16.7.0
+flutter:
+  plugin:
+    platforms:
+      # The Android module carries Firebase's settings (res/values/firebase.xml)
+      # and manifest entries; the code is all in Dart.
+      android:
+        package: io.github.buengenio.loupe.push
+        pluginClass: LoupePushPlugin

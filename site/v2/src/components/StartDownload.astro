@@ -1,0 +1,98 @@
+---
+// Starts the APK download (via the Worker's /get/ redirect) and shows the
+// install steps. Used by /download/start/ ($0) and /thanks/ (after paying).
+import InstallSteps from './InstallSteps.astro';
+import { downloads } from '../config';
+import { useT } from '../i18n';
+
+interface Props {
+  lang: string;
+  // Start automatically, or only when the page URL says so (utm_content=download).
+  auto: 'always' | 'when-downloading';
+}
+const { lang, auto } = Astro.props;
+const t = useT(lang);
+const text = { started: t('start.started'), ready: t('start.ready'), button: t('start.directButton'), x86: t('start.x86Note') };
+---
+
+<div class="start" data-auto={auto} data-arm64={downloads.arm64} data-x86={downloads.x86_64} data-text={JSON.stringify(text)}>
+  <p class="status" aria-live="polite">
+    <span class="spinner" aria-hidden="true"></span>
+    <span class="msg">{t('start.starting')}</span>
+  </p>
+  <p class="manual">
+    <span class="nothing">{t('start.nothing')}</span> <a class="direct" href={downloads.arm64}>{t('start.direct')}</a>
+    <span class="arch-note"></span>
+  </p>
+  <InstallSteps lang={lang} />
+</div>
+
+<script>
+  for (const el of document.querySelectorAll<HTMLElement>('.start')) {
+    const text = JSON.parse(el.dataset.text ?? '{}');
+    const params = new URLSearchParams(location.search);
+    const x86 = params.get('arch') === 'x86_64';
+    const href = x86 ? el.dataset.x86! : el.dataset.arm64!;
+    const direct = el.querySelector<HTMLAnchorElement>('.direct')!;
+    direct.href = href;
+    if (x86) el.querySelector('.arch-note')!.textContent = text.x86;
+
+    const go = el.dataset.auto === 'always' || params.get('utm_content') === 'download';
+    const status = el.querySelector<HTMLElement>('.status')!;
+    if (!go) {
+      status.querySelector('.msg')!.textContent = text.ready;
+      status.classList.add('idle');
+      direct.textContent = text.button;
+      direct.classList.add('btn', 'btn-primary');
+      el.querySelector<HTMLElement>('.nothing')!.hidden = true;
+      continue;
+    }
+    setTimeout(() => {
+      location.href = href;
+      setTimeout(() => {
+        status.querySelector('.msg')!.textContent = text.started;
+        status.classList.add('done');
+      }, 1500);
+    }, 700);
+  }
+</script>
+
+<style>
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 8px;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+
+  .spinner {
+    width: 22px;
+    height: 22px;
+    border: 3px solid var(--brand-soft);
+    border-top-color: var(--brand);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  .done .spinner,
+  .idle .spinner {
+    display: none;
+  }
+
+  @keyframes spin {
+    to {
+      rotate: 1turn;
+    }
+  }
+
+  .manual {
+    margin: 0 0 32px;
+    color: var(--ink-2);
+  }
+
+  .manual :global(.btn) {
+    margin-top: 8px;
+  }
+</style>

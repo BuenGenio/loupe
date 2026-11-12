@@ -10,9 +10,16 @@ creating the heading if it isn't there yet. Say what changed for the person
 using the app, in a line or two; leave out internals, refactors and tests.
 -->
 
-## 2026-10-29
+## 2026-11-12
 
 - **Compare Messages…** in a message's ⋯ menu compares two messages in its conversation, highlighting added and removed text. Attachment names, types and sizes are compared separately; file contents are not checked. Works locally with downloaded messages, in all 37 app languages.
+- **Large text:** an older message's date no longer squeezes the sender's name out of its header. Past a third of the width, the date shrinks to fit.
+- **One permission fewer.** Loupe no longer asks Android for access to your phone's storage. It never needed it: attachments open from Loupe's own folders, and you pick files with Android's file picker.
+
+## 2026-11-11
+
+- **Two kinds of Loupe.** The Free release type has no Google code at all, and is the one going to F-Droid. The NonFree type adds Push through Google's push service; the Nightly stays NonFree. Either installs over the other.
+- **Numbered releases** on GitHub, starting with 0.2.0, each in both types and also for older 32-bit phones (`armeabi-v7a`).
 
 ## 2026-10-08
 

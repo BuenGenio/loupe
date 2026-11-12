@@ -1,4 +1,4 @@
-# Google Play store listing: texts from app/android/fastlane/metadata/android
+# Google Play store listing: texts from fastlane/metadata/android
 # (generated from the website's translations by marketing/creative/play.mjs),
 # images regenerated from the app screenshots, pushed with fastlane supply.
 # Manual only. Needs the PLAY_SERVICE_ACCOUNT_JSON secret (docs/play-store.md).
@@ -44,7 +44,7 @@ jobs:
           fastlane supply \
             --package_name io.github.buengenio.loupe \
             --json_key_data "$PLAY_JSON" \
-            --metadata_path app/android/fastlane/metadata/android \
+            --metadata_path fastlane/metadata/android \
             --skip_upload_apk true --skip_upload_aab true --skip_upload_changelogs true \
             --skip_upload_images ${{ !inputs.images }} --skip_upload_screenshots ${{ !inputs.images }} \
             --validate_only ${{ inputs.validate_only }}

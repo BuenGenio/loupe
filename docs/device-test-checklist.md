@@ -424,9 +424,9 @@ account), and Loupe having both keys (Autocrypt from a signed message of each, o
    - "Paste Text Instead" accepts the export text.
 3. **If not:** the import screen says why an account can't be added (POP3, Kerberos, NTLM, a Microsoft sign-in without a client id). See [thunderbird-qr-format.md](thunderbird-qr-format.md).
 
-## 16. OAuth (only when the build has client ids, 15 min)
+## 16. OAuth (Android builds have Loupe's client ids, 15 min)
 
-1. **Do:** check that the CI log's "Build APKs" step says "Sign in with Google: on" (or Microsoft). Then follow [oauth-setup.md › Test after adding the secrets](oauth-setup.md#test-after-adding-the-secrets):
+1. **Do:** follow [oauth-setup.md › Test after changing a client id](oauth-setup.md#test-after-changing-a-client-id):
    - Add Account › Gmail address › **Sign in with Google**;
    - send yourself mail;
    - revoke Loupe in your Google account;
