@@ -177,101 +177,115 @@ class _MessageCardState extends State<MessageCard> {
     final tags = _m.tags.toList();
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 14, 4, 0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            key: ValueKey('avatar-${_m.id}'),
-            onTap: widget.onToggle,
-            child: SenderAvatar(address: sender, size: 40),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final width = constraints.maxWidth;
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                key: ValueKey('avatar-${_m.id}'),
+                onTap: widget.onToggle,
+                child: SenderAvatar(address: sender, size: 40),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Flexible(
-                      child: GestureDetector(
-                        key: ValueKey('sender-${_m.id}'),
-                        onTap: sender == null ? null : () => widget.onAddressTap(sender),
-                        child: Text(
-                          sender == null ? l10n.conversationNoSender : _name(sender),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.titleSmall?.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: GestureDetector(
+                            key: ValueKey('sender-${_m.id}'),
+                            onTap: sender == null ? null : () => widget.onAddressTap(sender),
+                            child: Text(
+                              sender == null ? l10n.conversationNoSender : _name(sender),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.textTheme.titleSmall?.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ),
+                        SecurityBadge(message: _m, content: content),
+                        PgpHeaderMark(message: _m, content: content, onRetry: widget.onRetry),
+                        SmimeHeaderMark(message: _m, content: content, onRetry: widget.onRetry),
+                      ],
+                    ),
+                    InkWell(
+                      key: ValueKey('recipients-${_m.id}'),
+                      onTap: () => setState(() => _details = !_details),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2),
+                        child: Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                recipients.isEmpty
+                                    ? l10n.conversationNoRecipients
+                                    : recipients.length > 2
+                                    ? l10n.conversationRecipientsMore(shown, recipients.length - 2)
+                                    : l10n.conversationRecipients(shown),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.bodySmall?.copyWith(color: colors.secondaryText, fontSize: 14),
+                              ),
+                            ),
+                            Icon(
+                              _details ? LoupeIcons.collapse : LoupeIcons.disclosure,
+                              size: 16,
+                              color: colors.secondaryText,
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    SecurityBadge(message: _m, content: content),
-                    PgpHeaderMark(message: _m, content: content, onRetry: widget.onRetry),
-                    SmimeHeaderMark(message: _m, content: content, onRetry: widget.onRetry),
+                    PgpStatusLine(message: _m, content: content, onRetry: widget.onRetry),
+                    SmimeStatusLine(message: _m, content: content, onRetry: widget.onRetry),
+                    if (tags.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Wrap(spacing: 6, runSpacing: 4, children: [for (final t in tags) TagChip(keyword: t)]),
+                      ),
                   ],
                 ),
-                InkWell(
-                  key: ValueKey('recipients-${_m.id}'),
-                  onTap: () => setState(() => _details = !_details),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2),
-                    child: Row(
-                      children: [
-                        Flexible(
-                          child: Text(
-                            recipients.isEmpty
-                                ? l10n.conversationNoRecipients
-                                : recipients.length > 2
-                                ? l10n.conversationRecipientsMore(shown, recipients.length - 2)
-                                : l10n.conversationRecipients(shown),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.bodySmall?.copyWith(color: colors.secondaryText, fontSize: 14),
-                          ),
+              ),
+              // The date takes at most a third of the header, and shrinks to fit beyond that, so that with very
+              // large text and an older message's full date the sender keeps the room for their name.
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: width / 3),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 2, left: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          formatListDate(_m.receivedAt),
+                          maxLines: 1,
+                          style: theme.textTheme.bodySmall?.copyWith(color: colors.secondaryText),
                         ),
-                        Icon(
-                          _details ? LoupeIcons.collapse : LoupeIcons.disclosure,
-                          size: 16,
-                          color: colors.secondaryText,
+                      ),
+                      if (_m.isFlagged)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Icon(LoupeIcons.flaggedFilled, size: 16, color: colors.flag),
                         ),
-                      ],
-                    ),
+                    ],
                   ),
                 ),
-                PgpStatusLine(message: _m, content: content, onRetry: widget.onRetry),
-                SmimeStatusLine(message: _m, content: content, onRetry: widget.onRetry),
-                if (tags.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Wrap(spacing: 6, runSpacing: 4, children: [for (final t in tags) TagChip(keyword: t)]),
-                  ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 2, left: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  formatListDate(_m.receivedAt),
-                  style: theme.textTheme.bodySmall?.copyWith(color: colors.secondaryText),
-                ),
-                if (_m.isFlagged)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Icon(LoupeIcons.flaggedFilled, size: 16, color: colors.flag),
-                  ),
-              ],
-            ),
-          ),
-          IconButton(
-            key: ValueKey('more-${_m.id}'),
-            tooltip: l10n.commonMore,
-            visualDensity: VisualDensity.compact,
-            icon: Icon(LoupeIcons.more, color: theme.colorScheme.primary),
-            onPressed: widget.onMore,
-          ),
-        ],
+              ),
+              IconButton(
+                key: ValueKey('more-${_m.id}'),
+                tooltip: l10n.commonMore,
+                visualDensity: VisualDensity.compact,
+                icon: Icon(LoupeIcons.more, color: theme.colorScheme.primary),
+                onPressed: widget.onMore,
+              ),
+            ],
+          );
+        },
       ),
     );
   }
