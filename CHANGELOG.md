@@ -13,6 +13,7 @@ using the app, in a line or two; leave out internals, refactors and tests.
 ## 2026-11-12
 
 - **Compare Messages…** in a message's ⋯ menu compares two messages in its conversation, highlighting added and removed text. Attachment names, types and sizes are compared separately; file contents are not checked. Works locally with downloaded messages, in all 37 app languages.
+- **Ask in Plain English** (preview, off by default: Settings › Private AI). Type a sentence in search and Loupe proposes an expression you can check and edit before it runs. For now the built-in demo does the translating, with a few rules; no model and no network are involved.
 - **Large text:** an older message's date no longer squeezes the sender's name out of its header. Past a third of the width, the date shrinks to fit.
 - **One permission fewer.** Loupe no longer asks Android for access to your phone's storage. It never needed it: attachments open from Loupe's own folders, and you pick files with Android's file picker.
 

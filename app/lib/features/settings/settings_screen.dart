@@ -279,6 +279,25 @@ class SettingsScreen extends ConsumerWidget {
           ],
         ),
         InsetGroup(
+          header: l10n.settingsAiHeader,
+          separatorIndent: 58,
+          children: [
+            GroupedRow(
+              key: const Key('ai-assist'),
+              leading: SettingsIcon(LoupeIcons.ask, colors.swipeMore),
+              title: l10n.searchAskPlainEnglish,
+              subtitle: l10n.settingsAiAssistDetail,
+              chevron: false,
+              onTap: () => controller.update((s) => s.copyWith(aiAssist: !s.aiAssist)),
+              trailing: CupertinoSwitch(
+                value: settings.aiAssist,
+                activeTrackColor: colors.success,
+                onChanged: (v) => controller.update((s) => s.copyWith(aiAssist: v)),
+              ),
+            ),
+          ],
+        ),
+        InsetGroup(
           header: l10n.settingsSecurityHeader,
           separatorIndent: 58,
           footer: appLock.enabled ? l10n.settingsAppLockFooterOn : l10n.settingsAppLockFooterOff,
