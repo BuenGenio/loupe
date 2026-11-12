@@ -82,7 +82,7 @@ If F-Droid's build ever isn't identical to ours, it won't publish that version. 
 - **Under three months old.** The inclusion policy's Quality point 6 asks for "at least 3 months" of active development. The exceptions are proven users, an author who already maintains other F-Droid apps, or an app made only for an event. Loupe's first commit was on 4 October 2026, so it can go back **from 4 January 2027**.
 - **The template wasn't filled in.** GitLab put the blank **Default** template into the merge request, all boxes unticked. The text has to be the template's own, every line kept, each box ticked, with notes added beneath.
 
-To go back: update the recipe to the newest release (only the latest versions; `commit:` the full hash, never the tag) and lint it. Then push it to the same branch, put the filled-in template in the description, and reopen !57027 with a line saying the three months have passed. The pipeline's Reports tab lists the APK's permissions; the description should explain each one flagged.
+To go back: update the recipe to the newest release (only the latest versions; `commit:` the full hash, never the tag) and lint it. Then push it to the same branch, paste [`fdroid/merge-request.md`](fdroid/merge-request.md) (the template, filled in) as the description, and reopen !57027 with a line saying the three months have passed. The pipeline's Reports tab lists the APK's permissions, and the description explains them: check it against a new permission there.
 
 How the submission works:
 
