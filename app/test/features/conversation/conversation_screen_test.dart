@@ -298,6 +298,7 @@ void main() {
 
     await tester.tap(find.byKey(const ValueKey('more-m3')));
     await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Show All Headers'));
     await tester.tap(find.text('Show All Headers'));
     await tester.pumpAndSettle();
     expect(find.text('All Headers'), findsOneWidget);

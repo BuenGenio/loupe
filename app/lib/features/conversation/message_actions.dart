@@ -32,6 +32,7 @@ enum MessageAction {
   notJunk,
   headers,
   source,
+  compare,
 
   /// The raw message as a `.eml` file, through the save dialog or to
   /// another app.
@@ -51,6 +52,7 @@ Future<MessageAction?> showMessageMenu(
   required MailboxRole mailboxRole,
   bool snoozed = false,
   bool? muted,
+  bool canCompare = false,
 }) {
   final toList = listPostAddress(message.listPost) != null;
   final junk = mailboxRole == MailboxRole.junk || message.keywords.contains(Keywords.junk);
@@ -148,6 +150,12 @@ Future<MessageAction?> showMessageMenu(
             ),
             SheetGroup(
               children: [
+                if (canCompare)
+                  SheetRow(
+                    label: l10n.conversationCompareMessages,
+                    icon: LoupeIcons.compare,
+                    onTap: () => pick(MessageAction.compare),
+                  ),
                 SheetRow(
                   label: l10n.conversationShowAllHeaders,
                   icon: LoupeIcons.headers,

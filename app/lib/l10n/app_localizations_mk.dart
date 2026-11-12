@@ -148,6 +148,51 @@ class AppLocalizationsMk extends AppLocalizations {
   String get mailboxTrash => 'Корпа';
 
   @override
+  String get conversationCompareMessages => 'Спореди пораки…';
+
+  @override
+  String get conversationChangesTitle => 'Промени';
+
+  @override
+  String get conversationChangesFrom => 'Почетна порака';
+
+  @override
+  String get conversationChangesTo => 'Крајна порака';
+
+  @override
+  String get conversationChangesText => 'Текст на пораката';
+
+  @override
+  String get conversationChangesAdded => 'Додадено';
+
+  @override
+  String get conversationChangesRemoved => 'Отстрането';
+
+  @override
+  String get conversationChangesNoText => 'Нема промени во текстот.';
+
+  @override
+  String get conversationChangesAttachments => 'Прилози';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Се споредуваат имињата, типовите и големините на прилозите. Содржината на датотеките не се проверува.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Податоци што се совпаѓаат';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Се споредува целиот текст на пораката, вклучувајќи ги цитатите и потписите.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Оваа порака е преголема за детална споредба. Дел од текстот може да биде изоставен или прикажан како цел блок.';
+
+  @override
+  String get conversationChangesLoadError => 'Овие пораки не можеа да се споредат.';
+
+  @override
   String get conversationSomethingWentWrong => 'Настана грешка. Обидете се повторно.';
 
   @override
