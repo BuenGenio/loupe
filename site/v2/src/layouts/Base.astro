@@ -57,6 +57,23 @@ const t = useT(lang);
       } catch {}
     </script>
     <slot name="head" />
+    {
+      /* Matomo without cookies: the site's only cookie stays the language choice (see /privacy/). */
+      site.matomo.url && (
+        <script is:inline define:vars={{ matomoUrl: site.matomo.url, matomoSite: site.matomo.siteId }}>
+          var _paq = (window._paq = window._paq || []);
+          _paq.push(['disableCookies']);
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          _paq.push(['setTrackerUrl', matomoUrl + 'matomo.php']);
+          _paq.push(['setSiteId', matomoSite]);
+          var g = document.createElement('script');
+          g.async = true;
+          g.src = matomoUrl + 'matomo.js';
+          document.head.appendChild(g);
+        </script>
+      )
+    }
   </head>
   <body>
     <a class="skip-link" href="#main">{t('common.skip')}</a>
@@ -73,6 +90,18 @@ const t = useT(lang);
           src="https://static.cloudflareinsights.com/beacon.min.js"
           data-cf-beacon={JSON.stringify({ token: site.analyticsToken })}
         />
+      )
+    }
+    {
+      site.matomo.url && (
+        <noscript>
+          <img
+            referrerpolicy="no-referrer-when-downgrade"
+            src={`${site.matomo.url}matomo.php?idsite=${site.matomo.siteId}&rec=1`}
+            style="border:0"
+            alt=""
+          />
+        </noscript>
       )
     }
   </body>

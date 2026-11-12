@@ -83,4 +83,6 @@ Until then, production shows only the free download (dev shows every tier marked
 
 ## Analytics
 
-None by default. To count visits without cookies, create a Cloudflare Web Analytics site and put its token in `site.analyticsToken`; the privacy page then mentions it automatically.
+Matomo, without cookies: `site.matomo` in `src/config.ts` (server URL and site ID). `src/layouts/Base.astro` adds the tracker to every page, `public/_headers` allows the Matomo host in the Content-Security-Policy (change both together), and the privacy page describes it while `site.matomo.url` is set.
+
+Cloudflare Web Analytics also works: create a site and put its token in `site.analyticsToken`; the privacy page then mentions it automatically.
