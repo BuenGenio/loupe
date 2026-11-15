@@ -12,7 +12,7 @@ How Loupe is versioned, built in two release types, released, and published on F
 | Where it goes | F-Droid; GitHub releases (`loupe-free-…`) | The Nightly; Google Play; GitHub releases (`loupe-nonfree-…`) |
 | Who else gets it | `flutter run`, tests, iOS builds, forks | |
 
-Both have the same application id, signing key and version codes, so either installs over the other, and over the Nightly.
+Both have the same application id, signing key and version codes, so either installs over the other, and over the Nightly. Google Play's copy does too, as long as Play signs with our key rather than one of Google's ([play-store.md](play-store.md), step 3).
 
 ### How the switch works
 
