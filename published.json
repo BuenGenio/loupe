@@ -626,6 +626,38 @@
       "mode": "postiz",
       "status": "skipped",
       "note": "2026-11-10-subscriptions → linkedin: 12h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-18T11:39:21.006Z",
+      "id": "2026-11-17-openpgp",
+      "platform": "bluesky",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-11-17-openpgp → bluesky: 21h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-18T11:39:21.006Z",
+      "id": "2026-11-17-openpgp",
+      "platform": "mastodon",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-11-17-openpgp → mastodon: 21h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-18T11:39:21.009Z",
+      "id": "2026-11-17-openpgp",
+      "platform": "instagram",
+      "mode": "vista",
+      "status": "skipped",
+      "note": "2026-11-17-openpgp → instagram: 21h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-18T11:39:21.009Z",
+      "id": "2026-11-17-openpgp",
+      "platform": "threads",
+      "mode": "vista",
+      "status": "skipped",
+      "note": "2026-11-17-openpgp → threads: 21h late (limit 12h); skipped"
     }
   ]
 }
