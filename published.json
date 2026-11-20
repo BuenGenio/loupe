@@ -658,6 +658,38 @@
       "mode": "vista",
       "status": "skipped",
       "note": "2026-11-17-openpgp → threads: 21h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-20T08:31:58.084Z",
+      "id": "2026-11-19-smime",
+      "platform": "bluesky",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-11-19-smime → bluesky: 18h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-20T08:31:58.085Z",
+      "id": "2026-11-19-smime",
+      "platform": "linkedin",
+      "mode": "vista",
+      "status": "skipped",
+      "note": "2026-11-19-smime → linkedin: 18h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-20T08:31:58.085Z",
+      "id": "2026-11-19-smime",
+      "platform": "mastodon",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-11-19-smime → mastodon: 18h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-20T08:31:58.086Z",
+      "id": "2026-11-19-smime",
+      "platform": "threads",
+      "mode": "vista",
+      "status": "skipped",
+      "note": "2026-11-19-smime → threads: 18h late (limit 12h); skipped"
     }
   ]
 }
