@@ -921,6 +921,11 @@ final class MailStore {
           VirtualMailbox.allDrafts => "$m.role = 'drafts'",
           VirtualMailbox.allSent => "$m.role = 'sent'",
         };
+      case KeywordMailboxRef(:final keyword):
+        args.add(Keywords.normalize(keyword));
+        // Driven by the keyword's messages (email_keywords_keyword), not
+        // the whole table.
+        return "$e.id IN (SELECT email_id FROM email_keywords WHERE keyword = ?) AND $m.role NOT IN ('trash', 'junk')";
     }
   }
 
@@ -963,7 +968,7 @@ final class MailStore {
   }) {
     final args = <Object?>[];
     // Virtual mailboxes may hold several copies of one message (labels).
-    final dedup = ref is VirtualMailboxRef;
+    final dedup = ref is VirtualMailboxRef || ref is KeywordMailboxRef;
     final copyRank = dedup
         ? 'ROW_NUMBER() OVER (PARTITION BY e.account_id, coalesce(e.message_id_header, e.id) ORDER BY $_copyRank, e.seq)'
         : '1';
@@ -1144,6 +1149,58 @@ SELECT
         VirtualMailbox.allSent: 0,
       };
     });
+  }
+
+  /// Unread messages with each of [keywords]; see
+  /// `MailRepository.watchKeywordUnread`.
+  Stream<Map<String, int>> watchKeywordUnread(Set<String> keywords) {
+    final wanted = {for (final k in keywords) Keywords.normalize(k)}.toList()..sort();
+    if (wanted.isEmpty) return Stream.value(const {});
+    final sql =
+        "SELECT k.keyword, count(DISTINCT e.account_id || '|' || coalesce(e.message_id_header, '#' || e.seq)) AS n "
+        'FROM email_keywords k INDEXED BY email_keywords_keyword JOIN emails e ON e.id = k.email_id '
+        'JOIN mailboxes m ON m.id = e.mailbox_id '
+        "WHERE k.keyword IN (${List.filled(wanted.length, '?').join(', ')}) AND e.is_seen = 0 "
+        "AND m.role NOT IN ('trash', 'junk') GROUP BY k.keyword";
+    return _select(sql, wanted, {_db.emails, _db.emailKeywords, _db.mailboxes}).watch().distinct(_rowsEqual).map((
+      rows,
+    ) {
+      final counts = {for (final k in wanted) k: 0};
+      for (final r in rows) {
+        counts[r.read<String>('keyword')] = r.read<int>('n');
+      }
+      return counts;
+    });
+  }
+
+  /// Project keywords sort from this up to [_projectPrefixEnd] (`-` + 1).
+  static const _projectPrefix = Projects.keywordPrefix;
+  static final _projectPrefixEnd = '${_projectPrefix.substring(0, _projectPrefix.length - 1)}.';
+
+  /// For messages that just arrived ([emailIds]): the project keywords
+  /// (see `Projects`) other messages of their conversation have and they
+  /// lack, so a project follows its conversations. Ids without any are
+  /// left out.
+  Future<Map<String, Set<String>>> projectKeywordsToFollow(Iterable<String> emailIds) async {
+    final out = <String, Set<String>>{};
+    for (final chunk in _chunks(emailIds.toSet().toList())) {
+      final rows = await _select(
+        'SELECT DISTINCT e.id, k.keyword FROM emails e '
+        'JOIN emails o INDEXED BY emails_thread ON o.account_id = e.account_id AND o.thread_id = e.thread_id '
+        'AND o.id <> e.id '
+        'JOIN email_keywords k ON k.email_id = o.id '
+        "WHERE e.id IN (${List.filled(chunk.length, '?').join(', ')}) AND k.keyword >= ? AND k.keyword < ? "
+        'AND NOT EXISTS (SELECT 1 FROM email_keywords x WHERE x.email_id = e.id AND x.keyword = k.keyword)',
+        [...chunk, _projectPrefix, _projectPrefixEnd],
+        {_db.emails, _db.emailKeywords},
+      ).get();
+      for (final r in rows) {
+        final keyword = r.read<String>('keyword');
+        if (Projects.idOf(keyword) == null) continue;
+        (out[r.read<String>('id')] ??= {}).add(keyword);
+      }
+    }
+    return out;
   }
 
   /// Messages in every account's snooze folder (see `Snooze`), in no

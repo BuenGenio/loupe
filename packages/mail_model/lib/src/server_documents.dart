@@ -43,6 +43,9 @@ abstract final class ServerDocuments {
   /// Smart Mailboxes (docs/smart-mailboxes-format.md).
   static const smartMailboxes = 'smart-mailboxes';
 
+  /// Projects (docs/projects-format.md).
+  static const projects = 'projects';
+
   /// The METADATA entry of document [name] on the server itself (the empty
   /// mailbox name).
   static String metadataEntry(String name) => '/private/vendor/loupe/$name';

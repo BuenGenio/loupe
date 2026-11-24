@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart' show QuillEditor;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loupe/demo/demo_repository.dart';
 import 'package:loupe/router.dart';
@@ -15,10 +16,20 @@ Future<void> _type(WidgetTester tester, String key, String text) async {
 }
 
 Future<void> _tap(WidgetTester tester, Finder finder) async {
+  // Rows far down the page aren't built until scrolled to.
+  if (finder.evaluate().isEmpty) await tester.scrollTo(finder);
   await tester.ensureVisible(finder);
   await tester.pumpAndSettle();
   await tester.tap(finder);
   await tester.pumpAndSettle();
+}
+
+/// Adds a signature of plain [text] through the signature editor.
+Future<void> _addSignature(WidgetTester tester, String text) async {
+  await _tap(tester, find.byKey(const Key('identity-add-signature')));
+  tester.widget<QuillEditor>(find.byType(QuillEditor)).controller.replaceText(0, 0, text, null);
+  await tester.pump();
+  await _tap(tester, find.byKey(const Key('signature-done')));
 }
 
 void main() {
@@ -59,7 +70,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await _type(tester, 'identity-reply-to', 'atlas-replies@northwind.example');
-    await tester.enterText(find.byKey(const Key('identity-signature')), 'Sam\nAtlas');
+    await _addSignature(tester, 'Sam\nAtlas');
     await _type(tester, 'identity-bcc', 'archive@rivera.example');
 
     await _tap(tester, find.byKey(const Key('identity-add-pattern')));
@@ -88,7 +99,7 @@ void main() {
     expect(added.name, 'Sam Rivera');
     expect(added.email, 'sam+atlas@northwind.example');
     expect(added.replyTo, 'atlas-replies@northwind.example');
-    expect(added.signature, 'Sam\nAtlas');
+    expect(added.signatures.single.plainText, 'Sam\nAtlas');
     expect(added.autoCc, isNull);
     expect(added.autoBcc, 'archive@rivera.example');
     expect(added.replyPatterns, ['*@atlas.northwind.example']);
@@ -99,24 +110,23 @@ void main() {
     final repo = await pumpLoupe(tester);
     await goTo(tester, Routes.identities('work'));
     await _tap(tester, find.text('Atlas Team'));
-    await tester.enterText(find.byKey(const Key('identity-signature')), 'The Atlas team');
-    await tester.pump();
+    await _addSignature(tester, 'The Atlas team');
 
     await systemBack(tester);
     expect(find.text('Discard Changes'), findsOneWidget);
     await tester.tap(find.text('Save Identity'));
     await tester.pumpAndSettle();
     final atlas = (await _identities(repo, 'work')).firstWhere((i) => i.id == 'work/atlas');
-    expect(atlas.signature, 'The Atlas team');
+    expect(atlas.signatures.single.plainText, 'The Atlas team');
     expect(atlas.email, 'atlas-team@northwind.example');
 
     await _tap(tester, find.text('Atlas Team'));
-    await tester.enterText(find.byKey(const Key('identity-signature')), 'Thrown away');
-    await tester.pump();
+    await _addSignature(tester, 'Thrown away');
     await systemBack(tester);
     await tester.tap(find.text('Discard Changes'));
     await tester.pumpAndSettle();
-    expect((await _identities(repo, 'work')).firstWhere((i) => i.id == 'work/atlas').signature, 'The Atlas team');
+    final kept = (await _identities(repo, 'work')).firstWhere((i) => i.id == 'work/atlas');
+    expect([for (final s in kept.signatures) s.plainText], ['The Atlas team']);
     expect(find.text('Default'), findsOneWidget, reason: 'back on the list');
   });
 
@@ -133,6 +143,7 @@ void main() {
     expect(find.text('Default'), findsNothing, reason: 'nothing to tell apart');
 
     await _tap(tester, find.text('Sam Rivera'));
+    await tester.scrollTo(find.text('An account needs at least one identity.'));
     expect(find.text('An account needs at least one identity.'), findsOneWidget);
     await _tap(tester, find.byKey(const Key('identity-delete')));
     expect(find.textContaining('Delete “'), findsNothing);

@@ -81,6 +81,9 @@ Future<String?> showTextPrompt(
 
   /// The confirming button; Save unless given.
   String? confirm,
+
+  /// Hides what is typed (a key).
+  bool obscure = false,
 }) {
   final controller = TextEditingController(text: initial)
     ..selection = TextSelection(baseOffset: 0, extentOffset: initial.length);
@@ -99,6 +102,8 @@ Future<String?> showTextPrompt(
               controller: controller,
               autofocus: true,
               placeholder: placeholder,
+              obscureText: obscure,
+              autocorrect: !obscure,
               onSubmitted: (v) => Navigator.of(context).pop(v.trim()),
             ),
           ],

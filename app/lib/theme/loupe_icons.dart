@@ -31,6 +31,19 @@ abstract final class LoupeIcons {
   static const IconData tag = FluentIcons.tag_24_regular;
   static const IconData tagFilled = FluentIcons.tag_24_filled;
 
+  /// Projects (conversations grouped across folders and accounts).
+  static const IconData project = FluentIcons.briefcase_24_regular;
+  static const IconData projectFilled = FluentIcons.briefcase_24_filled;
+  static const IconData projectDone = FluentIcons.checkmark_circle_24_regular;
+  static const IconData newProject = FluentIcons.add_circle_24_regular;
+
+  /// A topic the AI server named.
+  static const IconData sparkle = FluentIcons.sparkle_24_regular;
+
+  /// The Inbox as tiles (projects), and back to the list.
+  static const IconData tilesView = FluentIcons.grid_24_regular;
+  static const IconData listView = FluentIcons.text_bullet_list_ltr_24_regular;
+
   /// Export Folder… (as an mbox file).
   static const IconData exportFolder = FluentIcons.folder_arrow_up_24_regular;
 
@@ -266,6 +279,12 @@ abstract final class LoupeIcons {
   static const IconData file = FluentIcons.document_24_regular;
   static const IconData pdf = FluentIcons.document_pdf_24_regular;
   static const IconData image = FluentIcons.image_24_regular;
+
+  // Signatures ----------------------------------------------------------------
+
+  static const IconData signature = FluentIcons.signature_24_regular;
+  static const IconData addImage = FluentIcons.image_add_24_regular;
+  static const IconData addField = FluentIcons.braces_variable_24_regular;
   static const IconData video = FluentIcons.video_clip_24_regular;
   static const IconData audio = FluentIcons.music_note_2_24_regular;
   static const IconData textDocument = FluentIcons.document_one_page_24_regular;

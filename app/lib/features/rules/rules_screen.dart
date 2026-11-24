@@ -13,6 +13,7 @@ import '../../shared/bars.dart';
 import '../../shared/grouped_list.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
+import '../projects/projects_state.dart' show projectNamesProvider;
 import 'include_sheet.dart';
 import 'rule_format.dart';
 
@@ -190,7 +191,7 @@ class _RuleListState extends ConsumerState<_RuleList> {
                     child: _RuleRow(
                       rule: rule,
                       index: i,
-                      summary: describeActions(l10n, rule, mailboxes),
+                      summary: describeActions(l10n, rule, mailboxes, projectNames: ref.watch(projectNamesProvider)),
                       last: i == rules.length - 1,
                       onToggle: (v) => _toggle(rule, v),
                     ),

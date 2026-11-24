@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mail_model/mail_model.dart';
 
 import '../../l10n/l10n.dart';
+import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../conversation/sheets.dart';
 
@@ -75,6 +76,15 @@ class ServerSettingsController {
     host.dispose();
     port.dispose();
     username.dispose();
+  }
+}
+
+/// Pins [fingerprint] on the servers of [servers] that [error] names (the
+/// certificate is theirs), or on all of them when it names none.
+void trustCertificateOn(List<ServerSettingsController> servers, String fingerprint, String error) {
+  final named = servers.where((s) => s.host.text.trim().isNotEmpty && error.contains(s.host.text.trim()));
+  for (final s in named.isEmpty ? servers : named) {
+    s.trustedCertificate = fingerprint;
   }
 }
 
@@ -270,6 +280,53 @@ Future<bool> confirmNoEncryption(BuildContext context) async =>
       ),
     ) ??
     false;
+
+/// A failed sign-in or connection: the message and, for an untrusted
+/// certificate, its fingerprint with "Trust This Certificate".
+class ConnectionErrorNote extends StatelessWidget {
+  const ConnectionErrorNote({
+    super.key = const Key('setup-error'),
+    required this.error,
+    this.fingerprint,
+    this.onTrust,
+  });
+
+  final String error;
+
+  /// SHA-256 of the certificate the server presented, offered for trust.
+  final String? fingerprint;
+
+  /// Null while busy.
+  final VoidCallback? onTrust;
+
+  @override
+  Widget build(BuildContext context) => NoteCard(
+    icon: LoupeIcons.error,
+    color: CupertinoColors.systemRed.resolveFrom(context),
+    actions: [
+      if (fingerprint != null)
+        TextButton(
+          key: const Key('trust-certificate'),
+          onPressed: onTrust,
+          child: Text(context.l10n.accountSetupTrustCertificate),
+        ),
+    ],
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(error),
+        if (fingerprint != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: SelectableText(
+              'SHA-256 $fingerprint',
+              style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+            ),
+          ),
+      ],
+    ),
+  );
+}
 
 /// A tinted note card (provider hints, errors).
 class NoteCard extends StatelessWidget {

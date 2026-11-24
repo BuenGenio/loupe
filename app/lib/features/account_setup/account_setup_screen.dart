@@ -297,12 +297,7 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
   Future<void> _trustCertificate() async {
     final fp = _fingerprint;
     if (fp == null) return;
-    final message = _error ?? '';
-    final servers = [_incoming!, if (_protocol != ServerProtocol.jmap) _outgoing!];
-    final named = servers.where((s) => s.host.text.trim().isNotEmpty && message.contains(s.host.text.trim()));
-    for (final s in named.isEmpty ? servers : named) {
-      s.trustedCertificate = fp;
-    }
+    trustCertificateOn([_incoming!, if (_protocol != ServerProtocol.jmap) _outgoing!], fp, _error ?? '');
     await _signIn();
   }
 
@@ -404,35 +399,14 @@ class _AccountSetupScreenState extends ConsumerState<AccountSetupScreen> {
     );
   }
 
-  Widget _errorNote() => _error == null
-      ? const SizedBox.shrink()
-      : NoteCard(
-          key: const Key('setup-error'),
-          icon: LoupeIcons.error,
-          color: CupertinoColors.systemRed.resolveFrom(context),
-          actions: [
-            if (_fingerprint != null)
-              TextButton(
-                key: const Key('trust-certificate'),
-                onPressed: _busy ? null : _trustCertificate,
-                child: Text(context.l10n.accountSetupTrustCertificate),
-              ),
-          ],
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(_error!),
-              if (_fingerprint != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 6),
-                  child: SelectableText(
-                    'SHA-256 $_fingerprint',
-                    style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-                  ),
-                ),
-            ],
-          ),
-        );
+  Widget _errorNote() => switch (_error) {
+    null => const SizedBox.shrink(),
+    final error => ConnectionErrorNote(
+      error: error,
+      fingerprint: _fingerprint,
+      onTrust: _busy ? null : _trustCertificate,
+    ),
+  };
 
   Widget _primaryButton({required Key key, required String label, required String busyLabel, VoidCallback? onTap}) =>
       Padding(

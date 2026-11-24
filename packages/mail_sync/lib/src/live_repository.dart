@@ -91,11 +91,38 @@ final class LiveMailRepository
     await _scheduleSnoozeTimer();
   }
 
+  /// Brings the syncers in line with the stored accounts, which another
+  /// isolate may have changed meanwhile (the app, while Instant Delivery's
+  /// service was paused): new ones get a syncer, removed ones lose theirs,
+  /// and changed ones take the new settings.
   Future<void> _loadAccounts() async {
-    for (final a in await store.getAccounts()) {
-      _syncers[a.id] ??= AccountSyncer(_host, a);
+    final stored = {for (final a in await store.getAccounts()) a.id: a};
+    for (final id in [..._syncers.keys]) {
+      if (stored.containsKey(id)) continue;
+      final gone = _syncers.remove(id);
+      _statusById.remove(id);
+      _setSignInRequired(id, false);
+      await gone?.dispose();
+    }
+    for (final a in stored.values) {
+      if (_syncers[a.id] case final s?) {
+        await _applyAccount(s.account, a);
+      } else {
+        _syncers[a.id] = AccountSyncer(_host, a);
+      }
     }
     _publishStatuses();
+  }
+
+  /// Hands [account] to its syncer: a new one if the servers changed from
+  /// [old], otherwise the same one (name, colour, IDLE).
+  Future<void> _applyAccount(MailAccount old, MailAccount account) async {
+    String servers(MailAccount a) => jsonEncode([a.incoming.toJson(), a.outgoing?.toJson()]);
+    if (servers(old) != servers(account)) {
+      await _restartSyncer(account);
+    } else {
+      _syncers[account.id]?.updateAccount(account);
+    }
   }
 
   /// Stops polling and IDLE and closes connections (app in background).
@@ -108,10 +135,13 @@ final class LiveMailRepository
     await Future.wait([for (final s in _syncers.values) s.pause()]);
   }
 
-  /// Restarts polling and IDLE and syncs at once.
+  /// Restarts polling and IDLE and syncs at once, with the accounts as
+  /// stored now.
   Future<void> resume() async {
     if (_disposed) return;
     _paused = false;
+    if (_started) await _loadAccounts();
+    if (_disposed || _paused) return;
     for (final s in _syncers.values) {
       s.start();
     }
@@ -291,8 +321,13 @@ final class LiveMailRepository
     _setSignInRequired(accountId, false);
     if (_disposed) return;
     if (!_paused) unawaited(_syncers[accountId]?.syncAll());
-    // Sends that failed for want of a sign-in go out now, not after their
-    // backoff. Those the server refused for good wait for Retry.
+    await _retryFailedSends(accountId);
+  }
+
+  /// Sends that failed for want of a sign-in (or of the right server) go
+  /// out now, not after their backoff. Those the server refused for good
+  /// wait for Retry.
+  Future<void> _retryFailedSends(String accountId) async {
     for (final e in await store.outboxEntries()) {
       if (e.accountId == accountId && e.status == OutboxStatus.failed && !e.held) {
         await store.rescheduleOutbox(e.id, sendAfter: _now(), status: OutboxStatus.queued);
@@ -360,17 +395,71 @@ final class LiveMailRepository
   Future<void> updateAccount(MailAccount account) async {
     final old = await store.getAccount(account.id);
     await store.saveAccount(account);
+    await _applyAccount(old ?? account, account);
+  }
+
+  /// Replaces the syncer of [account] with a fresh one: new connections,
+  /// with the stored settings and credentials. It runs if the old one did.
+  Future<void> _restartSyncer(MailAccount account) async {
     final syncer = _syncers[account.id];
     if (syncer == null) return;
-    String servers(MailAccount a) => jsonEncode([a.incoming.toJson(), a.outgoing?.toJson()]);
-    if (old != null && servers(old) != servers(account)) {
-      await syncer.dispose();
-      final fresh = AccountSyncer(_host, account);
-      _syncers[account.id] = fresh;
-      if (_started && !_paused && !_disposed) fresh.start();
-    } else {
-      syncer.updateAccount(account);
+    final running = syncer.isRunning;
+    await syncer.dispose();
+    // Removed while the old one closed.
+    if (_syncers[account.id] != syncer) return;
+    final fresh = AccountSyncer(_host, account);
+    _syncers[account.id] = fresh;
+    if ((running || _started) && !_paused && !_disposed) fresh.start();
+  }
+
+  @override
+  Future<MailAccount> changeServers(
+    String accountId, {
+    required ServerConfig incoming,
+    ServerConfig? outgoing,
+    Credentials? credentials,
+  }) async {
+    final old =
+        await store.getAccount(accountId) ??
+        (throw const MailException(MailErrorKind.notFound, 'This account no longer exists'));
+    if (incoming.protocol != old.incoming.protocol) {
+      throw const MailException(MailErrorKind.unsupported, 'An account can’t switch between IMAP and JMAP.');
     }
+    final account = MailAccount(
+      id: old.id,
+      email: old.email,
+      displayName: old.displayName,
+      provider: old.provider,
+      authKind: old.authKind,
+      incoming: incoming,
+      outgoing: incoming.protocol == ServerProtocol.jmap ? null : (outgoing ?? old.outgoing),
+      identities: old.identities,
+      colorIndex: old.colorIndex,
+      useIdle: old.useIdle,
+    );
+    // Check them on a connection of their own, as renewSignIn does: the
+    // syncer keeps the working settings until these log in.
+    final check = transports.createTransport(
+      account,
+      credentials == null ? _credentialsFor(account) : ({bool forceRefresh = false}) async => credentials,
+    );
+    try {
+      await check.connect();
+    } finally {
+      try {
+        await check.disconnect();
+      } catch (_) {
+        // Never connected, or already gone.
+      }
+    }
+    if (credentials != null) await this.credentials.write(accountId, credentials);
+    await store.saveAccount(account);
+    // Restarted even when only the password changed: the old connections
+    // may be refusing the old one (see AccountSyncer.throwIfRejected).
+    await _restartSyncer(account);
+    if (_disposed) return account;
+    await _retryFailedSends(accountId);
+    return account;
   }
 
   @override
@@ -411,6 +500,9 @@ final class LiveMailRepository
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts() => store.watchVirtualCounts();
 
   @override
+  Stream<Map<String, int>> watchKeywordUnread(Set<String> keywords) => store.watchKeywordUnread(keywords);
+
+  @override
   Stream<List<ThreadSummary>> watchList(
     MailboxRef ref, {
     Set<QuickFilter> filters = const {},
@@ -445,7 +537,33 @@ final class LiveMailRepository
       case VirtualMailboxRef(:final kind):
         final results = await Future.wait([for (final (s, id) in await _roleMailboxes(kind)) s.loadOlder(id)]);
         return results.any((r) => r);
+      case KeywordMailboxRef(:final keyword):
+        return _loadKeyword(keyword);
     }
+  }
+
+  /// Keywords whose messages were searched for on the servers.
+  final _keywordsLoaded = <String>{};
+
+  /// A keyword list's older messages: those the servers have with it that
+  /// aren't stored here (older than what syncing keeps, or tagged on another
+  /// device), found with a server search once per session and stored.
+  Future<bool> _loadKeyword(String keyword) async {
+    if (!_keywordsLoaded.add(Keywords.normalize(keyword))) return false;
+    final token = Object();
+    final found = await Future.wait([
+      for (final s in _syncers.values)
+        () async {
+          try {
+            final hits = await s.serverSearch(KeywordTerm(keyword), token: token, isCancelled: () => _disposed);
+            return hits.fromServer.isNotEmpty;
+          } on Object {
+            // Offline, or the server can't search keywords: what is here stays.
+            return false;
+          }
+        }(),
+    ]);
+    return found.any((f) => f);
   }
 
   @override
@@ -459,7 +577,7 @@ final class LiveMailRepository
         await Future.wait([
           for (final (s, id) in await _roleMailboxes(ref.kind)) s.syncMailboxes([id]),
         ]);
-      case VirtualMailboxRef():
+      case VirtualMailboxRef() || KeywordMailboxRef():
         await Future.wait([for (final s in _syncers.values) s.syncAll()]);
     }
   }
@@ -1066,6 +1184,9 @@ final class LiveMailRepository
             bool isVip(EmailSummary e) => e.from.any((a) => vips.contains(a.email.toLowerCase()));
             return [for (final s in _syncers.values) _SearchTarget(s, request.expr, filter: isVip)];
         }
+      case MailboxScope(ref: KeywordMailboxRef(:final keyword)):
+        final expr = SearchAnd([request.expr, KeywordTerm(keyword)]);
+        return [for (final s in _syncers.values) _SearchTarget(s, expr)];
     }
   }
 

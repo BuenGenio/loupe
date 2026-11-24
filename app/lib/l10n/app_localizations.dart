@@ -1731,6 +1731,240 @@ abstract class AppLocalizations {
   /// **'Tags'**
   String get mailboxesTags;
 
+  /// Header of the projects on Mailboxes, and title of the sheet that puts conversations in projects. A project groups the conversations about one thing (a house move, a client) from any folder or account.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects'**
+  String get mailboxesProjects;
+
+  /// Footer of the empty Projects section on Mailboxes. “Add to Project…” is projectsAddToMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Group the conversations about one thing, from any folder or account. Choose Add to Project… on a conversation.'**
+  String get mailboxesProjectsEmpty;
+
+  /// Row on Mailboxes and in the Projects sheet: makes a project.
+  ///
+  /// In en, this message translates to:
+  /// **'New Project…'**
+  String get projectsNewMenu;
+
+  /// Title of the sheet that makes a project (its name and colour).
+  ///
+  /// In en, this message translates to:
+  /// **'New Project'**
+  String get projectsNewTitle;
+
+  /// Menu item of a project and title of the sheet that renames or recolours it.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Project'**
+  String get projectsEditTitle;
+
+  /// Menu item of a conversation or selection: puts the whole conversation in projects, or takes it out.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Project…'**
+  String get projectsAddToMenu;
+
+  /// Menu item of a project: it is finished and moves to the end of the list.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Done'**
+  String get projectsMarkDone;
+
+  /// Menu item of a project marked as done: makes it active again.
+  ///
+  /// In en, this message translates to:
+  /// **'Reopen Project'**
+  String get projectsReopen;
+
+  /// Menu item and confirm button: deletes a project (not its messages).
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Project'**
+  String get projectsDelete;
+
+  /// Shown when confirming Delete Project.
+  ///
+  /// In en, this message translates to:
+  /// **'Its conversations stay where they are, out of the project.'**
+  String get projectsDeleteMessage;
+
+  /// Title of a project's message list when the project isn't known here (deleted on another device).
+  ///
+  /// In en, this message translates to:
+  /// **'Project'**
+  String get projectsUntitled;
+
+  /// Tile and list title in the Tiles view: the Inbox mail that is in no project.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything Else'**
+  String get projectsEverythingElse;
+
+  /// The Tiles view with no project, suggestion or Everything Else tile.
+  ///
+  /// In en, this message translates to:
+  /// **'No projects yet. Make one with New Project… on Mailboxes, or choose Add to Project… on a conversation.'**
+  String get projectsTilesEmpty;
+
+  /// Second line of a suggested topic's tile.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{Suggested · 1 conversation} other{Suggested · {count} conversations}}'**
+  String projectsSuggested(int count);
+
+  /// Button on a suggested topic: makes it a project and puts its conversations in it.
+  ///
+  /// In en, this message translates to:
+  /// **'Make Project'**
+  String get projectsMakeProject;
+
+  /// Button on a suggested topic: hides it for good.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a Topic'**
+  String get projectsNotATopic;
+
+  /// Under the tiles while the AI server groups the suggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Asking the AI server…'**
+  String get projectsAiThinking;
+
+  /// Under the tiles or in a message when the AI server failed; the suggestions are the device's own.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestions with AI: {error}'**
+  String projectsAiFailed(String error);
+
+  /// No description provided for @projectsAiUnreachable.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t reach the server.'**
+  String get projectsAiUnreachable;
+
+  /// No description provided for @projectsAiRefused.
+  ///
+  /// In en, this message translates to:
+  /// **'The server refused the key.'**
+  String get projectsAiRefused;
+
+  /// No description provided for @projectsAiStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'The server answered with error {code}.'**
+  String projectsAiStatus(String code);
+
+  /// No description provided for @projectsAiTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'The server took too long.'**
+  String get projectsAiTimeout;
+
+  /// No description provided for @projectsAiBadAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'The server’s answer couldn’t be read.'**
+  String get projectsAiBadAnswer;
+
+  /// No description provided for @projectsAiNoModel.
+  ///
+  /// In en, this message translates to:
+  /// **'The server has no such model. It has: {models}.'**
+  String projectsAiNoModel(String models);
+
+  /// Row in a project's editor: a new rule whose matches join the project.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Rule…'**
+  String get projectsAddRule;
+
+  /// No description provided for @projectsRulesFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'New mail that matches a rule joins the project. Replies always follow their conversation.'**
+  String get projectsRulesFooter;
+
+  /// Settings › Projects switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Everything Else'**
+  String get projectsSettingsEverythingElse;
+
+  /// No description provided for @projectsSettingsEverythingElseFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'In the Tiles view, a tile for the Inbox mail that is in no project.'**
+  String get projectsSettingsEverythingElseFooter;
+
+  /// No description provided for @projectsSettingsSuggest.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest Topics'**
+  String get projectsSettingsSuggest;
+
+  /// No description provided for @projectsSettingsSuggestFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe looks at the conversations you took part in over the last 90 days, on this device, and suggests those that seem to belong together.'**
+  String get projectsSettingsSuggestFooter;
+
+  /// Settings › Projects: forgets every Not a Topic answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Dismissed Topics Again'**
+  String get projectsSettingsForget;
+
+  /// Settings › Projects section header.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestions with AI'**
+  String get projectsSettingsAi;
+
+  /// No description provided for @projectsSettingsAiSwitch.
+  ///
+  /// In en, this message translates to:
+  /// **'Use an AI Server'**
+  String get projectsSettingsAiSwitch;
+
+  /// No description provided for @projectsSettingsAiFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'An OpenAI-compatible server, such as LocalAI or Ollama on your own network, names and groups the suggestions. Loupe sends it the subjects, names, organisation domains and dates of those conversations, never their text or addresses.'**
+  String get projectsSettingsAiFooter;
+
+  /// No description provided for @projectsSettingsAiKey.
+  ///
+  /// In en, this message translates to:
+  /// **'API Key'**
+  String get projectsSettingsAiKey;
+
+  /// The AI model the server runs, e.g. qwen3-4b.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get projectsSettingsAiModel;
+
+  /// No description provided for @projectsSettingsNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Set'**
+  String get projectsSettingsNotSet;
+
+  /// No description provided for @projectsSettingsAiTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Test Server'**
+  String get projectsSettingsAiTest;
+
+  /// No description provided for @projectsSettingsAiWorks.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected. The server has {model}.'**
+  String projectsSettingsAiWorks(String model);
+
   /// Title of the list of VIPs: people whose mail gets a star and its own mailbox.
   ///
   /// In en, this message translates to:
@@ -1886,6 +2120,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Filter'**
   String get messageListFilter;
+
+  /// Inbox title bar button: shows projects as tiles instead of the message list.
+  ///
+  /// In en, this message translates to:
+  /// **'Show as Tiles'**
+  String get messageListShowTiles;
+
+  /// Inbox title bar button in the Tiles view: back to the message list.
+  ///
+  /// In en, this message translates to:
+  /// **'Show as List'**
+  String get messageListShowList;
 
   /// Screen reader label of the filters in the toolbar; a tap changes them.
   ///
@@ -4425,6 +4671,198 @@ abstract class AppLocalizations {
   /// **'Not checked: only certificates from an authority Loupe trusts are checked.'**
   String get smimeRevocationNotChecked;
 
+  /// Switch in an account's Server section: the server tells Loupe about new Inbox mail at once. IDLE is IMAP's name for this and stays as is; Push is JMAP's (keep the word your language uses for JMAP or e-mail push).
+  ///
+  /// In en, this message translates to:
+  /// **'{protocol, select, jmap{Push} other{IDLE}}'**
+  String settingsIdle(String protocol);
+
+  /// Below an account's Server section, explaining the IDLE (or Push) switch.
+  ///
+  /// In en, this message translates to:
+  /// **'The server reports new mail in the Inbox at once, over a connection Loupe keeps open. Off, Loupe checks every few minutes and uses one connection fewer.'**
+  String get settingsIdleFooter;
+
+  /// Hint in the empty password field of an account's Server Settings: left empty, the saved password stays.
+  ///
+  /// In en, this message translates to:
+  /// **'Unchanged'**
+  String get settingsPasswordUnchanged;
+
+  /// Section header in an identity: its signatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Signatures'**
+  String get settingsSignatures;
+
+  /// Below the list of an identity's signatures, explaining how one is chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe picks one for each message: a “when copied” signature while someone is in Cc, a scheduled one between its days, one in rotation at random, otherwise the default.'**
+  String get settingsSignaturesFooter;
+
+  /// Row below an identity's signatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Signature'**
+  String get settingsAddSignature;
+
+  /// Title of the signature editor for a new one.
+  ///
+  /// In en, this message translates to:
+  /// **'New Signature'**
+  String get settingsNewSignature;
+
+  /// A signature without a name or text, by its place in the list.
+  ///
+  /// In en, this message translates to:
+  /// **'Signature {number}'**
+  String settingsSignatureNumbered(int number);
+
+  /// Under the signature a message gets when no rule picks another.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get settingsSignatureDefault;
+
+  /// Under a signature used for messages with anyone in Cc.
+  ///
+  /// In en, this message translates to:
+  /// **'When someone is copied'**
+  String get settingsSignatureWhenCopiedAnyone;
+
+  /// Under a signature used when one of these addresses or domains is in Cc.
+  ///
+  /// In en, this message translates to:
+  /// **'When copying {addresses}'**
+  String settingsSignatureWhenCopying(String addresses);
+
+  /// Under a scheduled signature: its first and last day.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} – {until}'**
+  String settingsSignatureBetween(String from, String until);
+
+  /// Under a signature picked at random among those in rotation.
+  ///
+  /// In en, this message translates to:
+  /// **'In rotation'**
+  String get settingsSignatureInRotation;
+
+  /// Hint in the signature editor's name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (Work, Short…)'**
+  String get settingsSignatureNameHint;
+
+  /// Hint in the empty signature editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Your signature'**
+  String get settingsSignatureHint;
+
+  /// Below the signature editor: what the Add Field button does.
+  ///
+  /// In en, this message translates to:
+  /// **'Fields fill in the sender’s name or address, so one signature suits every identity and alias.'**
+  String get settingsSignatureEditorFooter;
+
+  /// Toolbar button tooltip in the signature editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Image'**
+  String get settingsSignatureAddImage;
+
+  /// Toolbar button in the signature editor: inserts the sender's name or address, filled in when sending.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Field'**
+  String get settingsSignatureAddField;
+
+  /// Snack bar when an image can't be put in a signature.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t add that image. Try a smaller PNG or JPEG.'**
+  String get settingsSignatureImageFailed;
+
+  /// Section header in the signature editor: the rules that pick it.
+  ///
+  /// In en, this message translates to:
+  /// **'When to Use'**
+  String get settingsSignatureWhenToUse;
+
+  /// Switch in the signature editor: use it for messages with someone in Cc.
+  ///
+  /// In en, this message translates to:
+  /// **'When Someone Is Copied'**
+  String get settingsSignatureWhenCopied;
+
+  /// Below the When Someone Is Copied switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Used instead of the default while anyone is in Cc. Add addresses or domains to use it only when they are copied.'**
+  String get settingsSignatureWhenCopiedFooter;
+
+  /// Row and dialog title: who in Cc makes this signature apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Address or Domain…'**
+  String get settingsSignatureAddCopied;
+
+  /// Message of the Add Address or Domain dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'An address, or a domain such as client.example.'**
+  String get settingsSignatureCopiedPrompt;
+
+  /// Switch in the signature editor: use it only between two days.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get settingsSignatureScheduled;
+
+  /// Row with the first day of a scheduled signature.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts'**
+  String get settingsSignatureStarts;
+
+  /// Row with the last day of a scheduled signature.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends'**
+  String get settingsSignatureEnds;
+
+  /// Below the Scheduled switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Between these days it takes the place of the default, for a campaign or holiday hours.'**
+  String get settingsSignatureScheduledFooter;
+
+  /// Switch in the signature editor: picked at random among the signatures in rotation.
+  ///
+  /// In en, this message translates to:
+  /// **'In Rotation'**
+  String get settingsSignatureRotation;
+
+  /// Below the In Rotation switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Each new message gets one of the signatures in rotation, at random.'**
+  String get settingsSignatureRotationFooter;
+
+  /// Row in the signature editor: put it first, as the default.
+  ///
+  /// In en, this message translates to:
+  /// **'Make Default'**
+  String get settingsSignatureMakeDefault;
+
+  /// Row in the signature editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Signature'**
+  String get settingsDeleteSignature;
+
   /// Settings row and page title: the language the app shows.
   ///
   /// In en, this message translates to:
@@ -5307,18 +5745,6 @@ abstract class AppLocalizations {
   /// **'Signature'**
   String get settingsSignature;
 
-  /// “-- ” (two dashes and a space) is the standard signature separator; keep it as it is.
-  ///
-  /// In en, this message translates to:
-  /// **'Added below “-- ” in messages from this identity.'**
-  String get settingsSignatureFooter;
-
-  /// Placeholder of the empty signature field.
-  ///
-  /// In en, this message translates to:
-  /// **'No signature'**
-  String get settingsNoSignature;
-
   /// Section header: addresses copied (Cc or Bcc) on every message from the identity.
   ///
   /// In en, this message translates to:
@@ -5582,6 +6008,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tag {tag}'**
   String rulesActionTag(String tag);
+
+  /// A rule's action that puts the message in a project.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to {project}'**
+  String rulesActionProject(String project);
 
   /// A rule's action.
   ///
@@ -8690,6 +9122,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not Junk'**
   String get sharedNotJunk;
+
+  /// Compose toolbar button and the title of its sheet: picks the signature for this message.
+  ///
+  /// In en, this message translates to:
+  /// **'Signature'**
+  String get composeSignature;
+
+  /// In the compose signature sheet: send without one.
+  ///
+  /// In en, this message translates to:
+  /// **'No Signature'**
+  String get composeNoSignature;
 
   /// Title of the account setup screen.
   ///

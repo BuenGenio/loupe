@@ -9,6 +9,7 @@ import 'package:mail_model/mail_model.dart';
 import '../features/compose/compose_args.dart';
 import '../features/compose/send_later.dart' show formatSendTimeFor, wakeUpAt;
 import '../features/conversation/sheets.dart' show showSnack;
+import '../features/projects/project_sheets.dart' show pickProjectsFor;
 import '../features/snooze/snooze_sheet.dart';
 import '../l10n/l10n.dart';
 import '../providers.dart';
@@ -113,6 +114,18 @@ class MailActions {
     add: flagged ? const {Keywords.flagged} : const {},
     remove: flagged ? const {} : const {Keywords.flagged},
   );
+
+  /// Add to Project…: whole conversations, your replies in Sent included,
+  /// so the project follows the conversation.
+  Future<void> chooseProjects(Iterable<ThreadSummary> rows) async {
+    final repo = _repo;
+    final conversations = [
+      for (final r in rows)
+        threaded && r.messageCount > 1 ? await repo.watchConversation(r.latest.id).first : [r.latest],
+    ];
+    if (!context.mounted) return;
+    await pickProjectsFor(context, repo, conversations);
+  }
 
   Future<void> setTags(ThreadSummary row, Set<String> tags) async {
     final current = row.latest.tags.toSet();
@@ -459,6 +472,7 @@ class MailActions {
         ] else
           SheetAction(_l10n.sharedSnooze, 'snooze', icon: LoupeIcons.snooze),
         SheetAction(_l10n.sharedTag, 'tag', icon: LoupeIcons.tag),
+        SheetAction(_l10n.projectsAddToMenu, 'project', icon: LoupeIcons.project),
         SheetAction(_l10n.sharedMoveMessage, 'move', icon: LoupeIcons.move),
         if (role == MailboxRole.junk)
           SheetAction(_l10n.sharedNotJunk, 'notJunk', icon: LoupeIcons.notJunk)
@@ -493,6 +507,8 @@ class MailActions {
       case 'tag':
         final tags = await showTagPicker(context, current: latest.tags.toSet());
         if (tags != null) await setTags(row, tags);
+      case 'project':
+        await chooseProjects([row]);
       case 'move':
         await moveWithPicker([row]);
       case 'junk':

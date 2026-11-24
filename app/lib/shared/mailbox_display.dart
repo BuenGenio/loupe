@@ -114,14 +114,21 @@ String mailboxDisplayName(Mailbox box, {AppLocalizations? l10n}) {
   };
 }
 
-/// The title of a message list.
-String mailboxRefTitle(MailboxRef ref, Iterable<Mailbox> mailboxes, {AppLocalizations? l10n}) {
+/// The title of a message list. A keyword's list (a project) is named by
+/// [keywordNames].
+String mailboxRefTitle(
+  MailboxRef ref,
+  Iterable<Mailbox> mailboxes, {
+  AppLocalizations? l10n,
+  Map<String, String> keywordNames = const {},
+}) {
   final strings = l10n ?? deviceL10n();
   return switch (ref) {
     VirtualMailboxRef(:final kind) => virtualMailboxTitle(kind, l10n: strings),
     RealMailboxRef(:final mailboxId) =>
       mailboxes.where((m) => m.id == mailboxId).map((m) => mailboxDisplayName(m, l10n: strings)).firstOrNull ??
           strings.sharedMailboxUntitled,
+    KeywordMailboxRef(:final keyword) => keywordNames[keyword] ?? strings.projectsUntitled,
   };
 }
 

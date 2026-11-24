@@ -995,6 +995,144 @@ class AppLocalizationsEt extends AppLocalizations {
   String get mailboxesTags => 'Sildid';
 
   @override
+  String get mailboxesProjects => 'Projektid';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Rühmita ühe asja vestlused kokku, ükskõik millisest kaustast või kontolt. Vali vestluse juures Lisa projekti…';
+
+  @override
+  String get projectsNewMenu => 'Uus projekt…';
+
+  @override
+  String get projectsNewTitle => 'Uus projekt';
+
+  @override
+  String get projectsEditTitle => 'Muuda projekti';
+
+  @override
+  String get projectsAddToMenu => 'Lisa projekti…';
+
+  @override
+  String get projectsMarkDone => 'Märgi tehtuks';
+
+  @override
+  String get projectsReopen => 'Ava projekt uuesti';
+
+  @override
+  String get projectsDelete => 'Kustuta projekt';
+
+  @override
+  String get projectsDeleteMessage => 'Selle vestlused jäävad oma kohale, projektist välja.';
+
+  @override
+  String get projectsUntitled => 'Projekt';
+
+  @override
+  String get projectsEverythingElse => 'Kõik muu';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Projekte veel pole. Loo üks Postkastides valikuga Uus projekt… või vali vestluse juures Lisa projekti…';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Soovitus · $count vestlust',
+      one: 'Soovitus · 1 vestlus',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Loo projekt';
+
+  @override
+  String get projectsNotATopic => 'Pole teema';
+
+  @override
+  String get projectsAiThinking => 'Küsin tehisintellekti serverilt…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Tehisintellekti soovitused: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Serveriga ei saanud ühendust.';
+
+  @override
+  String get projectsAiRefused => 'Server lükkas võtme tagasi.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Server vastas veaga $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Serveril läks liiga kaua.';
+
+  @override
+  String get projectsAiBadAnswer => 'Serveri vastust ei õnnestunud lugeda.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Serveril pole seda mudelit. Tal on: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Lisa reegel…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Uus kiri, mis vastab reeglile, läheb projekti. Vastused järgivad alati oma vestlust.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Näita kõike muud';
+
+  @override
+  String get projectsSettingsEverythingElseFooter => 'Paanivaates paan postkasti kirjadele, mis pole üheski projektis.';
+
+  @override
+  String get projectsSettingsSuggest => 'Soovita teemasid';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe vaatab selles seadmes läbi viimase 90 päeva vestlused, milles osalesid, ja soovitab neid, mis näivad kokku kuuluvat.';
+
+  @override
+  String get projectsSettingsForget => 'Näita tagasilükatud teemasid uuesti';
+
+  @override
+  String get projectsSettingsAi => 'Tehisintellekti soovitused';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Kasuta tehisintellekti serverit';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'OpenAI-ga ühilduv server, näiteks LocalAI või Ollama sinu enda võrgus, annab soovitustele nimed ja rühmitab need. Loupe saadab talle nende vestluste teemad, nimed, organisatsioonide domeenid ja kuupäevad, mitte kunagi teksti ega aadresse.';
+
+  @override
+  String get projectsSettingsAiKey => 'API-võti';
+
+  @override
+  String get projectsSettingsAiModel => 'Mudel';
+
+  @override
+  String get projectsSettingsNotSet => 'Määramata';
+
+  @override
+  String get projectsSettingsAiTest => 'Testi serverit';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Ühendatud. Serveril on $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1084,6 +1222,12 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filtreeri';
+
+  @override
+  String get messageListShowTiles => 'Näita paanidena';
+
+  @override
+  String get messageListShowList => 'Näita loendina';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2617,6 +2761,116 @@ class AppLocalizationsEt extends AppLocalizations {
       'Pole kontrollitud: kontrollitakse ainult nende asutuste sertifikaate, mida Loupe usaldab.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Server teatab uutest kirjadest sisendkaustas kohe, ühenduse kaudu, mida Loupe hoiab avatuna. Välja lülitatuna kontrollib Loupe kirju iga paari minuti järel ja kasutab ühe ühenduse vähem.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Muutmata';
+
+  @override
+  String get settingsSignatures => 'Allkirjad';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe valib iga kirja jaoks ühe: kui keegi on väljal Koopia, siis koopia allkirja, oma päevadel ajastatud allkirja, juhusliku vahelduvate seast, muidu vaikimisi allkirja.';
+
+  @override
+  String get settingsAddSignature => 'Lisa allkiri';
+
+  @override
+  String get settingsNewSignature => 'Uus allkiri';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Allkiri $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Vaikimisi';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Kui keegi saab koopia';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Kui koopia saab $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'Vaheldumisi';
+
+  @override
+  String get settingsSignatureNameHint => 'Nimi (Töö, Lühike…)';
+
+  @override
+  String get settingsSignatureHint => 'Sinu allkiri';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Väljad täidetakse saatja nime või aadressiga, nii sobib üks allkiri igale identiteedile ja aliasele.';
+
+  @override
+  String get settingsSignatureAddImage => 'Lisa pilt';
+
+  @override
+  String get settingsSignatureAddField => 'Lisa väli';
+
+  @override
+  String get settingsSignatureImageFailed => 'Seda pilti ei saanud lisada. Proovi väiksemat PNG- või JPEG-faili.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Millal kasutada';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Kui keegi saab koopia';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Kasutatakse vaikimisi allkirja asemel, kui keegi on väljal Koopia. Lisa aadressid või domeenid, et kasutada seda ainult siis, kui nemad koopia saavad.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Lisa aadress või domeen…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Aadress või domeen, näiteks client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Ajastatud';
+
+  @override
+  String get settingsSignatureStarts => 'Algab';
+
+  @override
+  String get settingsSignatureEnds => 'Lõpeb';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Nendel päevadel asendab see vaikimisi allkirja, näiteks kampaania või pühade lahtiolekuaegade ajaks.';
+
+  @override
+  String get settingsSignatureRotation => 'Vaheldumisi';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Iga uus kiri saab juhuslikult ühe vahelduvatest allkirjadest.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Tee vaikimisi allkirjaks';
+
+  @override
+  String get settingsDeleteSignature => 'Kustuta allkiri';
+
+  @override
   String get settingsLanguage => 'Keel';
 
   @override
@@ -3106,12 +3360,6 @@ class AppLocalizationsEt extends AppLocalizations {
   String get settingsSignature => 'Allkiri';
 
   @override
-  String get settingsSignatureFooter => 'Lisatakse selle identiteedi kirjades rea „-- “ alla.';
-
-  @override
-  String get settingsNoSignature => 'Allkiri puudub';
-
-  @override
   String get settingsCopyToMyself => 'Koopia endale';
 
   @override
@@ -3272,6 +3520,11 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Lisa silt $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Lisa projekti $project';
   }
 
   @override
@@ -5363,6 +5616,12 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Pole rämpspost';
+
+  @override
+  String get composeSignature => 'Allkiri';
+
+  @override
+  String get composeNoSignature => 'Allkirjata';
 
   @override
   String get accountSetupTitle => 'Lisa konto';

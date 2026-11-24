@@ -10,6 +10,19 @@ creating the heading if it isn't there yet. Say what changed for the person
 using the app, in a line or two; leave out internals, refactors and tests.
 -->
 
+## 2026-11-21
+
+- **Projects.** Group the conversations about one thing, from any folder or account: **Add to Project…** on a conversation puts all of it in, and replies join by themselves. Projects have their own section on Mailboxes, with unread counts, and are kept on your mail server like Smart Mailboxes, so they follow you to other devices.
+- **Tiles view of the Inbox.** A button in the title bar of All Inboxes (or any Inbox) shows your projects as tiles: unread count, latest sender and subject. An **Everything Else** tile holds the rest.
+- **Suggested projects.** Loupe notices conversations that belong together (an organisation you deal with, a word that keeps coming up) and offers them as tiles with **Make Project** and **Not a Topic**. It looks only on your phone. Optionally, in Settings › Projects, an AI server you choose (such as LocalAI on your own network) names and groups them. It gets subjects, names and dates, never message text.
+- **Project rules.** A project's editor lists the rules that file new mail into it, and **Add Rule…** makes one, on the phone or on the mail server.
+
+## 2026-11-18
+
+- **Several signatures, with formatting and images.** Each identity can have more than one: bold, italic, colours, sizes, fonts, links, alignment, images, and fields that fill in the sender's name or address. A Signature button in compose switches between them.
+- **Signatures that pick themselves.** A signature can be for messages that copy someone (anyone, or certain addresses or domains), run between two dates, or rotate at random with others. Compose swaps it as you add or remove Cc.
+- **Change an account's servers and password.** Settings › the account › Incoming, Outgoing or Sign-in edits the server, port, security, username and password; Loupe connects with them before saving. A new **IDLE** switch (Push for JMAP) turns off the always-open Inbox connection, for servers that limit connections.
+
 ## 2026-10-08
 
 - **Loupe speaks your language.** The app is translated into 37 languages, and follows your phone's. Settings › Language picks a different one for Loupe alone; notifications follow it too.

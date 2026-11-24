@@ -71,7 +71,8 @@ final class Mailbox {
 /// Mailboxes that span accounts (the top of the Mailboxes screen).
 enum VirtualMailbox { allInboxes, unread, flagged, vip, allDrafts, allSent }
 
-/// What a message list shows: one real mailbox or a virtual one.
+/// What a message list shows: one real mailbox, a virtual one, or the
+/// messages with a keyword.
 sealed class MailboxRef {
   const MailboxRef();
 }
@@ -96,6 +97,22 @@ final class VirtualMailboxRef extends MailboxRef {
 
   @override
   int get hashCode => kind.hashCode;
+}
+
+/// The messages with [keyword] in every account, Trash and Junk aside: a
+/// project's list (see `Projects`). Copies of one message in several
+/// mailboxes are shown once.
+final class KeywordMailboxRef extends MailboxRef {
+  const KeywordMailboxRef(this.keyword);
+
+  /// Lower-cased (see `Keywords.normalize`).
+  final String keyword;
+
+  @override
+  bool operator ==(Object other) => other is KeywordMailboxRef && other.keyword == keyword;
+
+  @override
+  int get hashCode => Object.hash('keyword', keyword);
 }
 
 /// Quick filters on a message list (the Filter button).

@@ -89,8 +89,12 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
       _mailboxes[m.id] = m;
     }
     for (final m in data.messages) {
+      final projects = DemoProjects.keywordsOf(m.summary.threadId);
+      if (projects.isNotEmpty) m.summary = m.summary.copyWith(keywords: {...m.summary.keywords, ...projects});
       _messages[m.id] = m;
     }
+    // The projects, kept by the home account (the first that isn't Gmail).
+    serverDocuments[DemoAccounts.work] = {ServerDocuments.projects: DemoProjects.document(_clock())};
     for (final MapEntry(:key, :value) in data.older.entries) {
       _older[key] = value;
       for (final m in value) {
@@ -434,6 +438,31 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
     _notify();
   }
 
+  /// Like [addAccount]: the password "wrong" and hosts containing
+  /// "unreachable" fail, so the editor's errors can be tried.
+  @override
+  Future<MailAccount> changeServers(
+    String accountId, {
+    required ServerConfig incoming,
+    ServerConfig? outgoing,
+    Credentials? credentials,
+  }) async {
+    await _wait(_jitter(latency.network * 1.5));
+    final i = _accounts.indexWhere((a) => a.id == accountId);
+    if (i < 0) throw const MailException(MailErrorKind.notFound, 'This account no longer exists.');
+    final old = _accounts[i];
+    if (credentials is PasswordCredentials && credentials.password == 'wrong') {
+      throw MailException(MailErrorKind.authentication, 'The server rejected the password for ${old.email}.');
+    }
+    if (incoming.host.contains('unreachable')) {
+      throw MailException(MailErrorKind.connection, 'Couldn’t connect to ${incoming.host}.');
+    }
+    final account = old.copyWith(incoming: incoming, outgoing: outgoing);
+    _accounts[i] = account;
+    _notify();
+    return account;
+  }
+
   @override
   Future<void> removeAccount(String accountId) async {
     _accounts.removeWhere((a) => a.id == accountId);
@@ -501,10 +530,28 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
     };
   });
 
+  @override
+  Stream<Map<String, int>> watchKeywordUnread(Set<String> keywords) => _watch(() {
+    final counts = {for (final k in keywords) Keywords.normalize(k): 0};
+    for (final m in _messages.values) {
+      final s = m.summary;
+      final box = _mailboxes[s.mailboxId];
+      if (box == null || s.isSeen || box.role == MailboxRole.trash || box.role == MailboxRole.junk) continue;
+      for (final k in s.keywords) {
+        if (counts[k] case final n?) counts[k] = n + 1;
+      }
+    }
+    return counts;
+  });
+
   bool _inScope(EmailSummary s, MailboxRef ref) {
     final box = _mailboxes[s.mailboxId];
     if (box == null) return false;
     return switch (ref) {
+      KeywordMailboxRef(:final keyword) =>
+        s.keywords.contains(Keywords.normalize(keyword)) &&
+            box.role != MailboxRole.trash &&
+            box.role != MailboxRole.junk,
       RealMailboxRef(:final mailboxId) => s.mailboxId == mailboxId,
       VirtualMailboxRef(:final kind) => switch (kind) {
         VirtualMailbox.allInboxes => box.role == MailboxRole.inbox,
@@ -606,7 +653,7 @@ class DemoMailRepository implements MailRepository, MailingLists, MailSubscripti
       for (final m in _mailboxes.values)
         if (m.role == MailboxRole.inbox) m.id,
     ],
-    VirtualMailboxRef() => const [],
+    VirtualMailboxRef() || KeywordMailboxRef() => const [],
   };
 
   @override

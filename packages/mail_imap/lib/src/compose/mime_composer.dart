@@ -12,6 +12,9 @@ import 'package:mail_model/mail_model.dart';
 /// - `multipart/alternative` with an HTML part when [OutgoingMessage.html] is set,
 ///   and with the `text/calendar` part of an invitation reply
 ///   ([OutgoingMessage.calendar], last: iMIP, RFC 6047);
+/// - the HTML in `multipart/related` with the images it shows by `cid:`
+///   ([OutgoingMessage.inline], RFC 2387), as Thunderbird writes it: the
+///   text alternative stays outside, so plain-text readers skip them;
 /// - `multipart/mixed` around it when there are attachments (base64);
 /// - RFC 2047 encoded headers, RFC 2231 file names;
 /// - Date, Message-ID, In-Reply-To, References, MIME-Version, User-Agent.
@@ -66,12 +69,15 @@ final class MimeMessageComposer implements MessageComposer {
     final alternatives = [text];
     final html = message.html;
     if (html != null && html.trim().isNotEmpty) {
-      alternatives.add(
-        _MimePart([
-          'Content-Type: text/html; charset=utf-8',
-          'Content-Transfer-Encoding: quoted-printable',
-        ], encodeQuotedPrintable(utf8.encode(_crlf(html)))),
-      );
+      final htmlPart = _MimePart([
+        'Content-Type: text/html; charset=utf-8',
+        'Content-Transfer-Encoding: quoted-printable',
+      ], encodeQuotedPrintable(utf8.encode(_crlf(html))));
+      final inline = [
+        for (final p in message.inline)
+          if (p.contentId case final id? when html.contains('cid:$id')) _inline(p, id),
+      ];
+      alternatives.add(inline.isEmpty ? htmlPart : _multipart('related', [htmlPart, ...inline], type: 'text/html'));
     }
     if (message.calendar case final calendar?) alternatives.add(_calendar(calendar));
     var body = alternatives.length == 1 ? text : _multipart('alternative', alternatives);
@@ -87,7 +93,7 @@ final class MimeMessageComposer implements MessageComposer {
     return Uint8List.fromList(ascii.encode(out.toString()));
   }
 
-  _MimePart _multipart(String subtype, List<_MimePart> parts) {
+  _MimePart _multipart(String subtype, List<_MimePart> parts, {String? type}) {
     final boundary =
         '----=_Loupe_${List.generate(16, (_) => _random.nextInt(256).toRadixString(16).padLeft(2, '0')).join()}';
     final body = StringBuffer();
@@ -102,7 +108,8 @@ final class MimeMessageComposer implements MessageComposer {
       if (!p.body.endsWith('\r\n')) body.write('\r\n');
     }
     body.write('--$boundary--\r\n');
-    return _MimePart(['Content-Type: multipart/$subtype;\r\n boundary="$boundary"'], body.toString());
+    final typeParam = type == null ? '' : ';\r\n type="$type"';
+    return _MimePart(['Content-Type: multipart/$subtype;\r\n boundary="$boundary"$typeParam'], body.toString());
   }
 
   /// `text/calendar; method=REPLY; charset=UTF-8`, as Outlook and Gmail
@@ -124,6 +131,21 @@ final class MimeMessageComposer implements MessageComposer {
       'Content-Type: $type',
       'Content-Transfer-Encoding: base64',
     ], _base64Lines(Uint8List.fromList(utf8.encode(text))));
+  }
+
+  /// An image the HTML shows: `Content-ID`, inline disposition, base64.
+  _MimePart _inline(OutgoingAttachment a, String contentId) {
+    final type = RegExp(r'^image/[\w.+-]+$').hasMatch(a.mimeType.trim())
+        ? a.mimeType.trim().toLowerCase()
+        : 'application/octet-stream';
+    final name = a.filename.replaceAll(RegExp(r'[^\w.+-]'), '_');
+    final id = contentId.replaceAll(RegExp(r'[<>\s]'), '');
+    return _MimePart([
+      'Content-Type: $type;\r\n name="$name"',
+      'Content-Disposition: inline;\r\n filename="$name"',
+      'Content-ID: <$id>',
+      'Content-Transfer-Encoding: base64',
+    ], _base64Lines(a.data));
   }
 
   _MimePart _attachment(OutgoingAttachment a) {

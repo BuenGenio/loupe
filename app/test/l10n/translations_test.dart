@@ -7,34 +7,20 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 Map<String, Object?> _arb(String lang) =>
-    jsonDecode(File('lib/l10n/app_$lang.arb').readAsStringSync())
-        as Map<String, Object?>;
+    jsonDecode(File('lib/l10n/app_$lang.arb').readAsStringSync()) as Map<String, Object?>;
 
 /// The languages there are ARB files for, English first.
 List<String> _languages() {
   final found = [
     for (final f in Directory('lib/l10n').listSync().whereType<File>())
-      if (RegExp(r'app_([a-z]{2,3})\.arb$').firstMatch(f.path) case final m?)
-        m[1]!,
+      if (RegExp(r'app_([a-z]{2,3})\.arb$').firstMatch(f.path) case final m?) m[1]!,
   ]..sort();
   return ['en', ...found.where((l) => l != 'en')];
 }
 
 /// Languages whose plural category `one` holds other numbers than 1 (21 in
 /// Ukrainian, 0 in French): a `one` form there must show the number.
-const _oneIsNotJustOne = {
-  'bs',
-  'fr',
-  'hr',
-  'is',
-  'lt',
-  'lv',
-  'mk',
-  'pt',
-  'sl',
-  'sr',
-  'uk',
-};
+const _oneIsNotJustOne = {'bs', 'fr', 'hr', 'is', 'lt', 'lv', 'mk', 'pt', 'sl', 'sr', 'uk'};
 
 /// The branches of each plural in [message], as `{variable: {form: text}}`.
 Map<String, Map<String, String>> plurals(String message) {
@@ -71,8 +57,7 @@ void main() {
       if (!k.startsWith('@')) k,
   };
   Iterable<String> placeholders(String key) =>
-      (((en['@$key'] as Map?)?['placeholders'] as Map?)?.keys ?? const [])
-          .cast<String>();
+      (((en['@$key'] as Map?)?['placeholders'] as Map?)?.keys ?? const []).cast<String>();
 
   for (final lang in _languages().skip(1)) {
     group('app_$lang.arb', () {
@@ -91,8 +76,7 @@ void main() {
         final wrong = [
           for (final key in keys.intersection(messages))
             for (final p in placeholders(key))
-              if (!RegExp('\\{\\s*$p\\s*[,}]').hasMatch(arb[key]! as String))
-                '$key: {$p}',
+              if (!RegExp('\\{\\s*$p\\s*[,}]').hasMatch(arb[key]! as String)) '$key: {$p}',
         ];
         expect(wrong, isEmpty);
       });
@@ -100,14 +84,10 @@ void main() {
       test('has an other form in every plural, and the number where one means more than 1', () {
         final wrong = <String>[];
         for (final key in messages) {
-          for (final MapEntry(key: variable, value: forms) in plurals(
-            arb[key]! as String,
-          ).entries) {
+          for (final MapEntry(key: variable, value: forms) in plurals(arb[key]! as String).entries) {
             if (!forms.containsKey('other')) wrong.add('$key: no other');
             final one = forms['one'] ?? forms['=1'];
-            if (_oneIsNotJustOne.contains(lang) &&
-                one != null &&
-                !one.contains('{$variable}')) {
+            if (_oneIsNotJustOne.contains(lang) && one != null && !one.contains('{$variable}')) {
               wrong.add('$key: one without {$variable}');
             }
           }
@@ -119,27 +99,14 @@ void main() {
 
   test('Android and iOS list the languages there are strings for', () {
     final languages = _languages()..sort();
-    final android = File('android/app/src/main/res/xml/locales_config.xml')
-        .readAsStringSync();
-    expect(
-      [
-        for (final m in RegExp(r'android:name="([^"]+)"').allMatches(android))
-          m[1],
-      ]..sort(),
-      languages,
-    );
+    final android = File('android/app/src/main/res/xml/locales_config.xml').readAsStringSync();
+    expect([for (final m in RegExp(r'android:name="([^"]+)"').allMatches(android)) m[1]]..sort(), languages);
     final plist = File('ios/Runner/Info.plist').readAsStringSync();
     final array = RegExp(
       r'<key>CFBundleLocalizations</key>\s*<array>(.*?)</array>',
       dotAll: true,
     ).firstMatch(plist)![1]!;
-    expect(
-      [
-        for (final m in RegExp(r'<string>([^<]+)</string>').allMatches(array))
-          m[1],
-      ]..sort(),
-      languages,
-    );
+    expect([for (final m in RegExp(r'<string>([^<]+)</string>').allMatches(array)) m[1]]..sort(), languages);
   });
 
   test('plurals', () {

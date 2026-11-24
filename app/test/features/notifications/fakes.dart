@@ -116,6 +116,7 @@ class FakeMail implements MailRepository, DecryptedMail {
               role != MailboxRole.trash &&
               role != MailboxRole.junk,
         VirtualMailboxRef() => true,
+        KeywordMailboxRef(:final keyword) => e.keywords.contains(keyword),
       };
     }
 

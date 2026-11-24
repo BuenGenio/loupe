@@ -443,6 +443,10 @@ const _countIndexes = [
       'WHERE is_flagged = 1',
 ];
 
+/// Messages by keyword, for the lists and counts of projects
+/// (`KeywordMailboxRef`, `watchKeywordUnread`).
+const _keywordIndex = 'CREATE INDEX IF NOT EXISTS email_keywords_keyword ON email_keywords (keyword, email_id)';
+
 /// Message-ID domains of bulk-mail services as schema version 5 has them in
 /// `emails.sub_key`: mail_model's `bulkMessageIdDomains` when it was made.
 /// A test checks they still agree; changing the list needs a schema version
@@ -600,8 +604,9 @@ class StoreDatabase extends _$StoreDatabase {
   /// ([ListKinds]). 8: calendar invitations: what the device remembers about
   /// them ([_calendarRecords]); cached contents of invitations from before,
   /// whose `text/calendar` part wasn't listed, are fetched again.
+  /// 9: messages by keyword, for projects ([_keywordIndex]).
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   /// Creates or upgrades the file in one write transaction, from the
   /// version it has then. The app and a background isolate can open it at
@@ -623,7 +628,7 @@ class StoreDatabase extends _$StoreDatabase {
 
   Future<void> _create(Migrator m) async {
     await m.createAll();
-    for (final sql in [..._ftsAndTriggers, ..._countIndexes, ..._subscriptionSchema, _calendarRecords]) {
+    for (final sql in [..._ftsAndTriggers, ..._countIndexes, ..._subscriptionSchema, _calendarRecords, _keywordIndex]) {
       await customStatement(sql);
     }
   }
@@ -698,6 +703,7 @@ class StoreDatabase extends _$StoreDatabase {
         "AND (headers_json LIKE '%calendarmessage%' OR headers_json LIKE '%text/calendar%')",
       );
     }
+    if (from < 9) await customStatement(_keywordIndex);
   }
 
   @override

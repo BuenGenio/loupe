@@ -54,7 +54,7 @@ void main() {
     return schemaOf(path);
   }
 
-  for (final version in [1, 2, 3, 4, 5, 6, 7]) {
+  for (final version in [1, 2, 3, 4, 5, 6, 7, 8]) {
     group('version $version upgrades to $latestSchemaVersion', () {
       late String path;
       setUp(() {
@@ -147,8 +147,9 @@ void main() {
         db.close();
         final store = await MailStore.open(path, encryptionKey: 'k', inBackground: false);
         addTearDown(store.close);
-        expect(await store.getContent(eid('INBOX', 4)), isNull);
-        expect(await store.getContent(eid('INBOX', 5)), isNull);
+        // Version 8 fetched them with their calendar part listed already.
+        expect(await store.getContent(eid('INBOX', 4)), version < 8 ? isNull : isNotNull);
+        expect(await store.getContent(eid('INBOX', 5)), version < 8 ? isNull : isNotNull);
         expect(await store.getContent(eid('INBOX', 6)), isNotNull, reason: 'its calendar part was listed');
         expect((await store.getContent(eid('INBOX', 1)))!.text, 'kumquat');
         expect(await store.calendarRecord('uid-1'), isNull);

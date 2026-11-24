@@ -31,6 +31,8 @@ import '../palette/command_palette.dart';
 import '../panes/mail_selection.dart';
 import '../panes/message_drag.dart';
 import '../panes/pane_layout.dart';
+import '../projects/project_sheets.dart';
+import '../projects/projects_state.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
 import '../snooze/snoozed_screen.dart';
@@ -213,6 +215,9 @@ class _MailboxesScreenState extends ConsumerState<MailboxesScreen> with CommandS
                 SliverToBoxAdapter(
                   child: _AccountSection(key: ValueKey(account.id), account: account, editing: _editing, onOpen: _open),
                 ),
+              SliverToBoxAdapter(
+                child: _ProjectSection(editing: _editing, onOpen: _open),
+              ),
               SliverToBoxAdapter(child: _PinnedListsSection(editing: _editing)),
               SliverToBoxAdapter(child: _SmartSection(editing: _editing)),
               SliverToBoxAdapter(child: _TagSection(editing: _editing)),
@@ -619,6 +624,57 @@ class _PinnedListsSection extends ConsumerWidget {
     ];
     if (rows.isEmpty) return const SizedBox.shrink();
     return InsetGroup(header: context.l10n.mailboxesLists, largeHeader: true, separatorIndent: 51, children: rows);
+  }
+}
+
+/// Projects: the active ones with their unread counts, then the done
+/// ones, and New Project….
+class _ProjectSection extends ConsumerWidget {
+  const _ProjectSection({required this.editing, required this.onOpen});
+
+  final bool editing;
+  final void Function(MailboxRef) onOpen;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final projects = ref.watch(projectsProvider);
+    final unread = ref.watch(projectUnreadProvider).value ?? const <String, int>{};
+    final colors = LoupeColors.of(context);
+    final v = _visibility(ref);
+    return InsetGroup(
+      header: l10n.mailboxesProjects,
+      largeHeader: true,
+      separatorIndent: 51,
+      footer: projects.isEmpty ? l10n.mailboxesProjectsEmpty : null,
+      children: [
+        for (final p in projects)
+          if (editing || v.visible('project.${p.id}'))
+            _MailboxTile(
+              key: ValueKey('project-${p.id}'),
+              title: p.name,
+              icon: p.done ? LoupeIcons.projectDone : LoupeIcons.projectFilled,
+              iconColor: p.done ? colors.secondaryText : p.color,
+              count: p.done ? null : unread[p.keyword],
+              editing: editing,
+              visible: v.visible('project.${p.id}'),
+              onToggleVisible: () => v.toggle('project.${p.id}'),
+              onTap: () => onOpen(p.ref),
+              target: MailboxTarget(p.ref),
+            ),
+        if (!editing)
+          _MailboxTile(
+            key: const ValueKey('project-new'),
+            title: l10n.projectsNewMenu,
+            icon: LoupeIcons.newProject,
+            editing: false,
+            visible: true,
+            onToggleVisible: () {},
+            trailing: const SizedBox.shrink(),
+            onTap: () => showProjectEditor(context),
+          ),
+      ],
+    );
   }
 }
 

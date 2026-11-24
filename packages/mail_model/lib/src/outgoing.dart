@@ -2,12 +2,17 @@ import 'dart:typed_data';
 
 import 'address.dart';
 
-/// A file attached to an outgoing message.
+/// A file attached to an outgoing message, or (with [contentId]) a part
+/// its HTML shows inline, such as a signature's logo.
 final class OutgoingAttachment {
-  const OutgoingAttachment({required this.filename, required this.mimeType, required this.data});
+  const OutgoingAttachment({required this.filename, required this.mimeType, required this.data, this.contentId});
   final String filename;
   final String mimeType;
   final Uint8List data;
+
+  /// For [OutgoingMessage.inline]: the Content-ID the HTML refers to as
+  /// `cid:…`, without angle brackets.
+  final String? contentId;
 }
 
 /// An iCalendar object sent next to the text, as the message's
@@ -150,6 +155,7 @@ final class OutgoingMessage {
     this.subject = '',
     this.text = '',
     this.html,
+    this.inline = const [],
     this.attachments = const [],
     this.inReplyTo,
     this.references = const [],
@@ -173,6 +179,11 @@ final class OutgoingMessage {
 
   /// Optional simple rich-text body.
   final String? html;
+
+  /// The images [html] shows (`cid:` + [OutgoingAttachment.contentId]),
+  /// sent with it as `multipart/related`. Not attachments: the compose
+  /// screen doesn't list them.
+  final List<OutgoingAttachment> inline;
   final List<OutgoingAttachment> attachments;
 
   /// Message-ID being replied to, without angle brackets.
@@ -264,6 +275,7 @@ final class OutgoingMessage {
     subject: subject ?? this.subject,
     text: text ?? this.text,
     html: html,
+    inline: inline,
     attachments: attachments ?? this.attachments,
     inReplyTo: inReplyTo,
     references: references,
@@ -285,6 +297,7 @@ final class OutgoingMessage {
     subject: subject,
     text: text,
     html: html,
+    inline: inline,
     attachments: attachments,
     inReplyTo: inReplyTo,
     references: references,

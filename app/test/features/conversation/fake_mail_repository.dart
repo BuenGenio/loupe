@@ -142,6 +142,22 @@ class FakeMailRepository implements MailRepository, DecryptedMail {
   }
 
   @override
+  Future<MailAccount> changeServers(
+    String accountId, {
+    required ServerConfig incoming,
+    ServerConfig? outgoing,
+    Credentials? credentials,
+  }) async {
+    log.add('changeServers $accountId ${incoming.host}');
+    final i = accounts.indexWhere((a) => a.id == accountId);
+    if (i < 0) throw const MailException(MailErrorKind.notFound, 'This account no longer exists.');
+    final account = accounts[i].copyWith(incoming: incoming, outgoing: outgoing);
+    accounts[i] = account;
+    _changed();
+    return account;
+  }
+
+  @override
   Future<void> removeAccount(String accountId) async => log.add('removeAccount $accountId');
 
   // Mailboxes and lists ------------------------------------------------------
@@ -165,6 +181,9 @@ class FakeMailRepository implements MailRepository, DecryptedMail {
 
   @override
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts() => _watch(() => const {});
+
+  @override
+  Stream<Map<String, int>> watchKeywordUnread(Set<String> keywords) => _watch(() => {for (final k in keywords) k: 0});
 
   @override
   Stream<List<ThreadSummary>> watchList(
@@ -440,7 +459,14 @@ const testAccount = MailAccount(
   authKind: AuthKind.password,
   incoming: ServerConfig(protocol: ServerProtocol.imap, host: 'imap.example.com', port: 993),
   outgoing: ServerConfig(protocol: ServerProtocol.smtp, host: 'smtp.example.com', port: 465),
-  identities: [Identity(id: 'acc/me', email: 'me@example.com', name: 'Me Myself', signature: 'Cheers,\nMe')],
+  identities: [
+    Identity(
+      id: 'acc/me',
+      email: 'me@example.com',
+      name: 'Me Myself',
+      signatures: [Signature(id: 'acc/me-sig', content: r'[{"insert":"Cheers,\nMe\n"}]')],
+    ),
+  ],
 );
 
 const testMailboxes = [

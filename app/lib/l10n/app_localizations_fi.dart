@@ -994,6 +994,145 @@ class AppLocalizationsFi extends AppLocalizations {
   String get mailboxesTags => 'Tunnisteet';
 
   @override
+  String get mailboxesProjects => 'Projektit';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Kokoa yhden asian keskustelut yhteen mistä tahansa kansiosta tai tililtä. Valitse keskustelussa Lisää projektiin…';
+
+  @override
+  String get projectsNewMenu => 'Uusi projekti…';
+
+  @override
+  String get projectsNewTitle => 'Uusi projekti';
+
+  @override
+  String get projectsEditTitle => 'Muokkaa projektia';
+
+  @override
+  String get projectsAddToMenu => 'Lisää projektiin…';
+
+  @override
+  String get projectsMarkDone => 'Merkitse valmiiksi';
+
+  @override
+  String get projectsReopen => 'Avaa projekti uudelleen';
+
+  @override
+  String get projectsDelete => 'Poista projekti';
+
+  @override
+  String get projectsDeleteMessage => 'Sen keskustelut jäävät paikoilleen, projektin ulkopuolelle.';
+
+  @override
+  String get projectsUntitled => 'Projekti';
+
+  @override
+  String get projectsEverythingElse => 'Kaikki muu';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Projekteja ei vielä ole. Luo sellainen Postilaatikoissa valinnalla Uusi projekti… tai valitse keskustelussa Lisää projektiin…';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ehdotus · $count keskustelua',
+      one: 'Ehdotus · 1 keskustelu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Luo projekti';
+
+  @override
+  String get projectsNotATopic => 'Ei aihe';
+
+  @override
+  String get projectsAiThinking => 'Kysytään tekoälypalvelimelta…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Ehdotukset tekoälyllä: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Palvelimeen ei saatu yhteyttä.';
+
+  @override
+  String get projectsAiRefused => 'Palvelin hylkäsi avaimen.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Palvelin vastasi virheellä $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Palvelimelta kesti liian kauan.';
+
+  @override
+  String get projectsAiBadAnswer => 'Palvelimen vastausta ei voitu lukea.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Palvelimella ei ole tätä mallia. Sillä on: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Lisää sääntö…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Uusi posti, joka vastaa sääntöä, liittyy projektiin. Vastaukset seuraavat aina keskusteluaan.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Näytä Kaikki muu';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'Ruutunäkymässä ruutu saapuneille viesteille, jotka eivät ole missään projektissa.';
+
+  @override
+  String get projectsSettingsSuggest => 'Ehdota aiheita';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe käy tällä laitteella läpi viimeisten 90 päivän keskustelut, joihin osallistuit, ja ehdottaa niitä, jotka näyttävät kuuluvan yhteen.';
+
+  @override
+  String get projectsSettingsForget => 'Näytä hylätyt aiheet uudelleen';
+
+  @override
+  String get projectsSettingsAi => 'Ehdotukset tekoälyllä';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Käytä tekoälypalvelinta';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'OpenAI-yhteensopiva palvelin, kuten LocalAI tai Ollama omassa verkossasi, nimeää ja ryhmittelee ehdotukset. Loupe lähettää sille näiden keskustelujen aiheet, nimet, organisaatioiden verkkotunnukset ja päivämäärät, ei koskaan tekstiä tai osoitteita.';
+
+  @override
+  String get projectsSettingsAiKey => 'API-avain';
+
+  @override
+  String get projectsSettingsAiModel => 'Malli';
+
+  @override
+  String get projectsSettingsNotSet => 'Ei asetettu';
+
+  @override
+  String get projectsSettingsAiTest => 'Testaa palvelin';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Yhdistetty. Palvelimella on $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1083,6 +1222,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Suodata';
+
+  @override
+  String get messageListShowTiles => 'Näytä ruutuina';
+
+  @override
+  String get messageListShowList => 'Näytä luettelona';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2616,6 +2761,117 @@ class AppLocalizationsFi extends AppLocalizations {
       'Ei tarkistettu: vain niiden myöntäjien varmenteet tarkistetaan, joihin Loupe luottaa.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Palvelin ilmoittaa Saapuneet-kansion uudesta postista heti yhteyden kautta, jonka Loupe pitää auki. Pois päältä Loupe tarkistaa postin muutaman minuutin välein ja käyttää yhden yhteyden vähemmän.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Ennallaan';
+
+  @override
+  String get settingsSignatures => 'Allekirjoitukset';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe valitsee jokaiselle viestille yhden: kopion allekirjoituksen, kun joku on Kopio-kentässä, ajastetun sen päivinä, satunnaisen vuorottelevista, muuten oletuksen.';
+
+  @override
+  String get settingsAddSignature => 'Lisää allekirjoitus';
+
+  @override
+  String get settingsNewSignature => 'Uusi allekirjoitus';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Allekirjoitus $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Oletus';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Kun joku saa kopion';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Kun kopion saa $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'Vuorottelussa';
+
+  @override
+  String get settingsSignatureNameHint => 'Nimi (Työ, Lyhyt…)';
+
+  @override
+  String get settingsSignatureHint => 'Allekirjoituksesi';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Kentät täyttävät lähettäjän nimen tai osoitteen, joten yksi allekirjoitus sopii jokaiselle identiteetille ja aliakselle.';
+
+  @override
+  String get settingsSignatureAddImage => 'Lisää kuva';
+
+  @override
+  String get settingsSignatureAddField => 'Lisää kenttä';
+
+  @override
+  String get settingsSignatureImageFailed => 'Kuvaa ei voitu lisätä. Kokeile pienempää PNG- tai JPEG-kuvaa.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Milloin käytetään';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Kun joku saa kopion';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Käytetään oletuksen sijaan, kun Kopio-kentässä on joku. Lisää osoitteita tai verkkotunnuksia, jos haluat käyttää sitä vain, kun he saavat kopion.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Lisää osoite tai verkkotunnus…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Osoite tai verkkotunnus, kuten client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Ajastettu';
+
+  @override
+  String get settingsSignatureStarts => 'Alkaa';
+
+  @override
+  String get settingsSignatureEnds => 'Päättyy';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Näinä päivinä se korvaa oletuksen, esimerkiksi kampanjan tai lomien aukioloaikojen ajan.';
+
+  @override
+  String get settingsSignatureRotation => 'Vuorottelussa';
+
+  @override
+  String get settingsSignatureRotationFooter =>
+      'Jokainen uusi viesti saa satunnaisesti yhden vuorottelevista allekirjoituksista.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Aseta oletukseksi';
+
+  @override
+  String get settingsDeleteSignature => 'Poista allekirjoitus';
+
+  @override
   String get settingsLanguage => 'Kieli';
 
   @override
@@ -3105,12 +3361,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsSignature => 'Allekirjoitus';
 
   @override
-  String get settingsSignatureFooter => 'Lisätään tämän identiteetin viesteihin ”-- ”-rivin alle.';
-
-  @override
-  String get settingsNoSignature => 'Ei allekirjoitusta';
-
-  @override
   String get settingsCopyToMyself => 'Kopio itselle';
 
   @override
@@ -3271,6 +3521,11 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Lisää tunniste $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Lisää projektiin $project';
   }
 
   @override
@@ -5355,6 +5610,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Ei roskapostia';
+
+  @override
+  String get composeSignature => 'Allekirjoitus';
+
+  @override
+  String get composeNoSignature => 'Ei allekirjoitusta';
 
   @override
   String get accountSetupTitle => 'Lisää tili';

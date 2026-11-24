@@ -25,7 +25,10 @@ import '../smime/smime_providers.dart';
 
 import 'package:mail_crypto/mail_crypto.dart' show draftSecurityFrom;
 
+import '../signatures/signature_render.dart';
+import '../signatures/signature_text.dart';
 import 'compose_args.dart';
+import 'compose_body.dart';
 import 'compose_recovery.dart';
 import 'compose_text.dart';
 import 'identity_selection.dart';
@@ -73,7 +76,14 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
   final _cc = RecipientController();
   final _bcc = RecipientController();
   final _subject = TextEditingController();
-  final _body = TextEditingController();
+  final _body = ComposeBodyController();
+
+  /// Whether the signature follows its rules (signature.cc): it changes as
+  /// Cc does, until the user picks one or edits it.
+  bool _signatureAuto = true;
+
+  /// Keeps a rotating signature's random pick for this message.
+  final int _signatureSeed = Random().nextInt(1 << 30);
   final _toFocus = FocusNode();
   final _ccFocus = FocusNode();
   final _bodyFocus = FocusNode();
@@ -201,6 +211,8 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
 
   void _changed() {
     if (!mounted) return;
+    _checkSignature();
+    if (!_preparing) _reconsiderSignature();
     _updateSecurity();
     setState(() {});
     _scheduleAutosave();
@@ -378,6 +390,8 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
           warning = await _prepareDraft(args);
       }
       if (!mounted) return;
+      // Recipients are in now: Cc may call for another signature.
+      _reconsiderSignature();
       _initial = _snapshot();
     }
     _showCcBcc = _cc.items.isNotEmpty || _bcc.items.isNotEmpty;
@@ -420,9 +434,102 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
   }
 
   String _withSignature(String text) {
-    final sig = ComposeText.signatureBlock(_identity?.signature);
+    _body.signature = _render(_chooseSignature(_identity), _identity);
+    final sig = _body.block ?? '';
     if (sig.isEmpty) return text;
     return text.isEmpty ? '\n\n$sig' : '$text\n\n$sig';
+  }
+
+  // Signatures (several per identity, chosen by their rules) ------------------------
+
+  /// The signature [identity]'s rules pick for this message now.
+  Signature? _chooseSignature(Identity? identity) => identity == null
+      ? null
+      : chooseSignature(identity.signatures, now: clock.now(), cc: _cc.withPending, seed: _signatureSeed);
+
+  RenderedSignature? _render(Signature? signature, Identity? identity) =>
+      signature == null || identity == null ? null : RenderedSignature.of(signature, SignatureFields.of(identity));
+
+  /// An edited signature is plain text: the formatting and images go, and
+  /// the rules stop changing it.
+  void _checkSignature() {
+    if (_body.signature != null && _body.intactRange() == null) {
+      _body.signature = null;
+      _signatureAuto = false;
+    }
+    if (_body.signature == null && _body.text.contains(objectReplacement)) {
+      final v = _body.value;
+      int strip(int offset) =>
+          offset < 0 ? offset : offset - v.text.substring(0, offset).split(objectReplacement).length + 1;
+      _body.value = TextEditingValue(
+        text: v.text.replaceAll(objectReplacement, ''),
+        selection: TextSelection(
+          baseOffset: strip(v.selection.baseOffset),
+          extentOffset: strip(v.selection.extentOffset),
+        ),
+      );
+    }
+  }
+
+  /// Follows the rules while they decide: a "when copied" signature as
+  /// someone is added to Cc, the usual one when they go.
+  void _reconsiderSignature() {
+    final identity = _identity;
+    if (!_signatureAuto || identity == null) return;
+    final current = _body.signature;
+    // A signature the user wrote themselves stays.
+    if (current == null && ComposeText.signatureRange(_body.text) != null) {
+      _signatureAuto = false;
+      return;
+    }
+    final next = _chooseSignature(identity);
+    if (next?.id == current?.signature.id) return;
+    _useSignature(_render(next, identity));
+  }
+
+  /// Puts [next] in place of the signature in the body (or none).
+  void _useSignature(RenderedSignature? next) {
+    final from = _body.signature?.display;
+    _body.signature = next == null || next.isEmpty ? null : next;
+    _setBody(ComposeText.replaceSignature(_body.text, from, _body.signature?.display));
+  }
+
+  /// Text that came back as plain text (a draft, Undo, crash recovery): its
+  /// signature, if it is one of the identity's as sent, is drawn again.
+  void _attachSignature() {
+    final identity = _identity;
+    if (identity == null) return;
+    for (final s in identity.signatures) {
+      final rendered = _render(s, identity)!;
+      if (rendered.isEmpty) continue;
+      final sent = ComposeText.signatureBlock(rendered.plain);
+      final range = ComposeText.signatureRange(_body.text, block: sent);
+      if (range == null || _body.text.substring(range.$1, range.$2) != sent) continue;
+      _body.signature = rendered;
+      _body.text = _body.text.replaceRange(range.$1, range.$2, _body.block!);
+      return;
+    }
+  }
+
+  Future<void> _pickSignature() async {
+    final identity = _identity;
+    if (identity == null) return;
+    final l10n = context.l10n;
+    final current = _body.signature?.signature.id;
+    final picked = await showActionSheet<String>(
+      context,
+      title: l10n.composeSignature,
+      actions: [
+        for (final (i, s) in identity.signatures.indexed)
+          SheetAction(signatureLabel(l10n, s, i), s.id, isDefault: s.id == current),
+        SheetAction(l10n.composeNoSignature, '', isDefault: current == null),
+      ],
+    );
+    if (picked == null || !mounted) return;
+    _signatureAuto = false;
+    final signature = identity.signatures.where((s) => s.id == picked).firstOrNull;
+    _useSignature(_render(signature, identity));
+    _changed();
   }
 
   void _restore(OutgoingMessage m) {
@@ -433,6 +540,8 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     m.bcc.forEach(_bcc.add);
     _subject.text = m.subject;
     _body.text = m.text;
+    _signatureAuto = false;
+    _attachSignature();
     _attachments.addAll(m.attachments);
     _mode = m.mode;
     _sourceEmailId = m.sourceEmailId;
@@ -526,6 +635,8 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
       final inside = protectedSubjectIn(content);
       if (inside != null && isProtectedSubjectPlaceholder(_subject.text)) _subject.text = inside;
       _body.text = ComposeText.plainTextOf(content);
+      _signatureAuto = false;
+      _attachSignature();
       return await _loadAttachments(draft.id, content);
     } on MailException catch (e) {
       _body.text = draft.preview;
@@ -658,7 +769,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     final old = _identity;
     _account = account;
     _identity = identity;
-    _setBody(ComposeText.replaceSignature(_body.text, old?.signature, identity.signature));
+    _useSignature(_render(_chooseSignature(identity), identity));
     _swapAutoCopies(old, identity);
     // Replying to everyone from an address takes it out of the recipients.
     if (_mode == ComposeMode.replyAll) {
@@ -676,7 +787,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
       id: newIdentityId(account),
       email: alias.email,
       name: alias.name,
-      signature: alias.signature,
+      signatures: alias.signatures,
     );
     MailAccount next;
     try {
@@ -748,6 +859,7 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
     final account = _account;
     final identity = _identity;
     if (account == null || identity == null) return null;
+    final body = _body.toMessage();
     return OutgoingMessage(
       accountId: account.id,
       identityId: identity.id,
@@ -755,7 +867,9 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
       cc: _cc.withPending,
       bcc: _bcc.withPending,
       subject: _subject.text.trim(),
-      text: _body.text,
+      text: body.text,
+      html: body.html,
+      inline: body.inline,
       attachments: List.of(_attachments),
       inReplyTo: _inReplyTo,
       references: _references,
@@ -1020,6 +1134,13 @@ class _ComposeScreenState extends ConsumerState<ComposeScreen> with CommandScope
           ),
           title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 17)),
           actions: [
+            if (_identity?.signatures.isNotEmpty ?? false)
+              IconButton(
+                key: const Key('compose-signature'),
+                tooltip: l10n.composeSignature,
+                icon: const Icon(LoupeIcons.signature),
+                onPressed: _preparing || _busy ? null : _pickSignature,
+              ),
             IconButton(
               tooltip: l10n.composeAttach,
               icon: const Icon(LoupeIcons.attachment),

@@ -1002,6 +1002,145 @@ class AppLocalizationsEu extends AppLocalizations {
   String get mailboxesTags => 'Etiketak';
 
   @override
+  String get mailboxesProjects => 'Proiektuak';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Taldekatu gauza bati buruzko elkarrizketak, edozein karpeta edo kontutakoak. Elkarrizketa batean, aukeratu Gehitu proiektu bati…';
+
+  @override
+  String get projectsNewMenu => 'Proiektu berria…';
+
+  @override
+  String get projectsNewTitle => 'Proiektu berria';
+
+  @override
+  String get projectsEditTitle => 'Editatu proiektua';
+
+  @override
+  String get projectsAddToMenu => 'Gehitu proiektu bati…';
+
+  @override
+  String get projectsMarkDone => 'Markatu amaitutzat';
+
+  @override
+  String get projectsReopen => 'Ireki berriro proiektua';
+
+  @override
+  String get projectsDelete => 'Ezabatu proiektua';
+
+  @override
+  String get projectsDeleteMessage => 'Haren elkarrizketak dauden lekuan geratzen dira, proiektutik kanpo.';
+
+  @override
+  String get projectsUntitled => 'Proiektua';
+
+  @override
+  String get projectsEverythingElse => 'Gainerako guztia';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Oraindik ez dago proiekturik. Sortu bat Postontziak atalean Proiektu berria… erabiliz, edo aukeratu Gehitu proiektu bati… elkarrizketa batean.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Iradokizuna · $count elkarrizketa',
+      one: 'Iradokizuna · elkarrizketa 1',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Sortu proiektua';
+
+  @override
+  String get projectsNotATopic => 'Ez da gai bat';
+
+  @override
+  String get projectsAiThinking => 'AA zerbitzariari galdetzen…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'AA bidezko iradokizunak: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Ezin izan da zerbitzaria atzitu.';
+
+  @override
+  String get projectsAiRefused => 'Zerbitzariak gakoa ukatu du.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Zerbitzariak $code errorearekin erantzun du.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Zerbitzariak gehiegi behar izan du.';
+
+  @override
+  String get projectsAiBadAnswer => 'Ezin izan da zerbitzariaren erantzuna irakurri.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Zerbitzariak ez du eredu hori. Hauek ditu: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Gehitu araua…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Arau batekin bat datorren mezu berria proiektura doa. Erantzunek beti beren elkarrizketari jarraitzen diote.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Erakutsi gainerako guztia';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'Lauza-ikuspegian, lauza bat proiekturik gabeko sarrera-ontziko mezuentzat.';
+
+  @override
+  String get projectsSettingsSuggest => 'Iradoki gaiak';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe-k gailu honetan aztertzen ditu azken 90 egunetan parte hartu duzun elkarrizketak, eta elkarrekin doazela dirudienak iradokitzen ditu.';
+
+  @override
+  String get projectsSettingsForget => 'Erakutsi berriro baztertutako gaiak';
+
+  @override
+  String get projectsSettingsAi => 'AA bidezko iradokizunak';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Erabili AA zerbitzari bat';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'OpenAIrekin bateragarria den zerbitzari batek, adibidez zure sareko LocalAI edo Ollama, iradokizunei izena jarri eta multzokatzen ditu. Loupe-k elkarrizketa horien gaiak, izenak, erakunde-domeinuak eta datak bidaltzen dizkio, inoiz ez testua edo helbideak.';
+
+  @override
+  String get projectsSettingsAiKey => 'API gakoa';
+
+  @override
+  String get projectsSettingsAiModel => 'Eredua';
+
+  @override
+  String get projectsSettingsNotSet => 'Ezarri gabe';
+
+  @override
+  String get projectsSettingsAiTest => 'Probatu zerbitzaria';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Konektatuta. Zerbitzariak $model du.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1096,6 +1235,12 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Iragazi';
+
+  @override
+  String get messageListShowTiles => 'Erakutsi lauza gisa';
+
+  @override
+  String get messageListShowList => 'Erakutsi zerrenda gisa';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2630,6 +2775,117 @@ class AppLocalizationsEu extends AppLocalizations {
       'Egiaztatu gabe: Loupe-k fidagarritzat jotzen dituen autoritateen ziurtagiriak bakarrik egiaztatzen dira.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Zerbitzariak berehala jakinarazten du sarrera-ontziko posta berria, Loupe-k irekita mantentzen duen konexio baten bidez. Desaktibatuta, Loupe-k minutu gutxiro egiaztatzen du posta, eta konexio bat gutxiago erabiltzen du.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Aldatu gabe';
+
+  @override
+  String get settingsSignatures => 'Sinadurak';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe-k bat aukeratzen du mezu bakoitzerako: norbait Cc-n badago, kopiarako sinadura; bere egunetan, programatutakoa; txandakatzekoetako bat ausaz; bestela, lehenetsia.';
+
+  @override
+  String get settingsAddSignature => 'Gehitu sinadura';
+
+  @override
+  String get settingsNewSignature => 'Sinadura berria';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return '$number. sinadura';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Lehenetsia';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Norbaiti kopia bidaltzean';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return '$addresses kopian daudenean';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'Txandaka';
+
+  @override
+  String get settingsSignatureNameHint => 'Izena (Lana, Laburra…)';
+
+  @override
+  String get settingsSignatureHint => 'Zure sinadura';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Eremuek igorlearen izena edo helbidea betetzen dute; horrela, sinadura bakar batek balio du identitate eta alias guztietarako.';
+
+  @override
+  String get settingsSignatureAddImage => 'Gehitu irudia';
+
+  @override
+  String get settingsSignatureAddField => 'Gehitu eremua';
+
+  @override
+  String get settingsSignatureImageFailed => 'Ezin izan da irudia gehitu. Saiatu PNG edo JPEG txikiago batekin.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Noiz erabili';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Norbaiti kopia bidaltzean';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Lehenetsiaren ordez erabiltzen da norbait Cc-n dagoen bitartean. Gehitu helbideak edo domeinuak haiek kopian daudenean bakarrik erabiltzeko.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Gehitu helbidea edo domeinua…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Helbide bat, edo domeinu bat, adibidez client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Programatua';
+
+  @override
+  String get settingsSignatureStarts => 'Hasiera';
+
+  @override
+  String get settingsSignatureEnds => 'Amaiera';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Egun hauetan lehenetsiaren ordez erabiltzen da, kanpaina baterako edo oporretako ordutegirako.';
+
+  @override
+  String get settingsSignatureRotation => 'Txandaka';
+
+  @override
+  String get settingsSignatureRotationFooter =>
+      'Mezu berri bakoitzak txandakatzeko sinaduretako bat jasotzen du, ausaz.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Ezarri lehenetsi gisa';
+
+  @override
+  String get settingsDeleteSignature => 'Ezabatu sinadura';
+
+  @override
   String get settingsLanguage => 'Hizkuntza';
 
   @override
@@ -3122,12 +3378,6 @@ class AppLocalizationsEu extends AppLocalizations {
   String get settingsSignature => 'Sinadura';
 
   @override
-  String get settingsSignatureFooter => '«-- » marraren azpian gehitzen da identitate honetako mezuetan.';
-
-  @override
-  String get settingsNoSignature => 'Sinadurarik ez';
-
-  @override
   String get settingsCopyToMyself => 'Kopia niri';
 
   @override
@@ -3288,6 +3538,11 @@ class AppLocalizationsEu extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Etiketatu: $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Gehitu $project proiektura';
   }
 
   @override
@@ -5372,6 +5627,12 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Ez da zabor-posta';
+
+  @override
+  String get composeSignature => 'Sinadura';
+
+  @override
+  String get composeNoSignature => 'Sinadurarik gabe';
 
   @override
   String get accountSetupTitle => 'Gehitu kontua';

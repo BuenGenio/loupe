@@ -977,6 +977,145 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mailboxesTags => 'Tags';
 
   @override
+  String get mailboxesProjects => 'Projects';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Group the conversations about one thing, from any folder or account. Choose Add to Project… on a conversation.';
+
+  @override
+  String get projectsNewMenu => 'New Project…';
+
+  @override
+  String get projectsNewTitle => 'New Project';
+
+  @override
+  String get projectsEditTitle => 'Edit Project';
+
+  @override
+  String get projectsAddToMenu => 'Add to Project…';
+
+  @override
+  String get projectsMarkDone => 'Mark as Done';
+
+  @override
+  String get projectsReopen => 'Reopen Project';
+
+  @override
+  String get projectsDelete => 'Delete Project';
+
+  @override
+  String get projectsDeleteMessage => 'Its conversations stay where they are, out of the project.';
+
+  @override
+  String get projectsUntitled => 'Project';
+
+  @override
+  String get projectsEverythingElse => 'Everything Else';
+
+  @override
+  String get projectsTilesEmpty =>
+      'No projects yet. Make one with New Project… on Mailboxes, or choose Add to Project… on a conversation.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Suggested · $count conversations',
+      one: 'Suggested · 1 conversation',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Make Project';
+
+  @override
+  String get projectsNotATopic => 'Not a Topic';
+
+  @override
+  String get projectsAiThinking => 'Asking the AI server…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Suggestions with AI: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Couldn’t reach the server.';
+
+  @override
+  String get projectsAiRefused => 'The server refused the key.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'The server answered with error $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'The server took too long.';
+
+  @override
+  String get projectsAiBadAnswer => 'The server’s answer couldn’t be read.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'The server has no such model. It has: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Add Rule…';
+
+  @override
+  String get projectsRulesFooter =>
+      'New mail that matches a rule joins the project. Replies always follow their conversation.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Show Everything Else';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'In the Tiles view, a tile for the Inbox mail that is in no project.';
+
+  @override
+  String get projectsSettingsSuggest => 'Suggest Topics';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe looks at the conversations you took part in over the last 90 days, on this device, and suggests those that seem to belong together.';
+
+  @override
+  String get projectsSettingsForget => 'Show Dismissed Topics Again';
+
+  @override
+  String get projectsSettingsAi => 'Suggestions with AI';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Use an AI Server';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'An OpenAI-compatible server, such as LocalAI or Ollama on your own network, names and groups the suggestions. Loupe sends it the subjects, names, organisation domains and dates of those conversations, never their text or addresses.';
+
+  @override
+  String get projectsSettingsAiKey => 'API Key';
+
+  @override
+  String get projectsSettingsAiModel => 'Model';
+
+  @override
+  String get projectsSettingsNotSet => 'Not Set';
+
+  @override
+  String get projectsSettingsAiTest => 'Test Server';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Connected. The server has $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1066,6 +1205,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filter';
+
+  @override
+  String get messageListShowTiles => 'Show as Tiles';
+
+  @override
+  String get messageListShowList => 'Show as List';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2588,6 +2733,116 @@ class AppLocalizationsEn extends AppLocalizations {
   String get smimeRevocationNotChecked => 'Not checked: only certificates from an authority Loupe trusts are checked.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'The server reports new mail in the Inbox at once, over a connection Loupe keeps open. Off, Loupe checks every few minutes and uses one connection fewer.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Unchanged';
+
+  @override
+  String get settingsSignatures => 'Signatures';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe picks one for each message: a “when copied” signature while someone is in Cc, a scheduled one between its days, one in rotation at random, otherwise the default.';
+
+  @override
+  String get settingsAddSignature => 'Add Signature';
+
+  @override
+  String get settingsNewSignature => 'New Signature';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Signature $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Default';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'When someone is copied';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'When copying $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'In rotation';
+
+  @override
+  String get settingsSignatureNameHint => 'Name (Work, Short…)';
+
+  @override
+  String get settingsSignatureHint => 'Your signature';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Fields fill in the sender’s name or address, so one signature suits every identity and alias.';
+
+  @override
+  String get settingsSignatureAddImage => 'Add Image';
+
+  @override
+  String get settingsSignatureAddField => 'Add Field';
+
+  @override
+  String get settingsSignatureImageFailed => 'Couldn’t add that image. Try a smaller PNG or JPEG.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'When to Use';
+
+  @override
+  String get settingsSignatureWhenCopied => 'When Someone Is Copied';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Used instead of the default while anyone is in Cc. Add addresses or domains to use it only when they are copied.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Add Address or Domain…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'An address, or a domain such as client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Scheduled';
+
+  @override
+  String get settingsSignatureStarts => 'Starts';
+
+  @override
+  String get settingsSignatureEnds => 'Ends';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Between these days it takes the place of the default, for a campaign or holiday hours.';
+
+  @override
+  String get settingsSignatureRotation => 'In Rotation';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Each new message gets one of the signatures in rotation, at random.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Make Default';
+
+  @override
+  String get settingsDeleteSignature => 'Delete Signature';
+
+  @override
   String get settingsLanguage => 'Language';
 
   @override
@@ -3071,12 +3326,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsSignature => 'Signature';
 
   @override
-  String get settingsSignatureFooter => 'Added below “-- ” in messages from this identity.';
-
-  @override
-  String get settingsNoSignature => 'No signature';
-
-  @override
   String get settingsCopyToMyself => 'Copy to Myself';
 
   @override
@@ -3236,6 +3485,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Tag $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Add to $project';
   }
 
   @override
@@ -5289,6 +5543,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Not Junk';
+
+  @override
+  String get composeSignature => 'Signature';
+
+  @override
+  String get composeNoSignature => 'No Signature';
 
   @override
   String get accountSetupTitle => 'Add Account';

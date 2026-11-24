@@ -975,6 +975,145 @@ class AppLocalizationsSv extends AppLocalizations {
   String get mailboxesTags => 'Taggar';
 
   @override
+  String get mailboxesProjects => 'Projekt';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Samla konversationerna om en sak, från vilken mapp eller vilket konto som helst. Välj Lägg till i projekt… på en konversation.';
+
+  @override
+  String get projectsNewMenu => 'Nytt projekt…';
+
+  @override
+  String get projectsNewTitle => 'Nytt projekt';
+
+  @override
+  String get projectsEditTitle => 'Redigera projekt';
+
+  @override
+  String get projectsAddToMenu => 'Lägg till i projekt…';
+
+  @override
+  String get projectsMarkDone => 'Markera som klart';
+
+  @override
+  String get projectsReopen => 'Öppna projektet igen';
+
+  @override
+  String get projectsDelete => 'Radera projekt';
+
+  @override
+  String get projectsDeleteMessage => 'Konversationerna stannar där de är, utanför projektet.';
+
+  @override
+  String get projectsUntitled => 'Projekt';
+
+  @override
+  String get projectsEverythingElse => 'Allt annat';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Inga projekt än. Skapa ett med Nytt projekt… under Brevlådor, eller välj Lägg till i projekt… på en konversation.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Förslag · $count konversationer',
+      one: 'Förslag · 1 konversation',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Skapa projekt';
+
+  @override
+  String get projectsNotATopic => 'Inte ett ämne';
+
+  @override
+  String get projectsAiThinking => 'Frågar AI-servern…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Förslag med AI: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Kunde inte nå servern.';
+
+  @override
+  String get projectsAiRefused => 'Servern avvisade nyckeln.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Servern svarade med fel $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Servern tog för lång tid.';
+
+  @override
+  String get projectsAiBadAnswer => 'Serverns svar gick inte att läsa.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Servern har inte den modellen. Den har: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Lägg till regel…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Ny e-post som matchar en regel hamnar i projektet. Svar följer alltid sin konversation.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Visa Allt annat';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'I rutvyn en ruta för e-posten i inkorgen som inte ingår i något projekt.';
+
+  @override
+  String get projectsSettingsSuggest => 'Föreslå ämnen';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe tittar på den här enheten på de konversationer från de senaste 90 dagarna som du deltagit i, och föreslår dem som verkar höra ihop.';
+
+  @override
+  String get projectsSettingsForget => 'Visa avfärdade ämnen igen';
+
+  @override
+  String get projectsSettingsAi => 'Förslag med AI';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Använd en AI-server';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'En OpenAI-kompatibel server, som LocalAI eller Ollama i ditt eget nätverk, namnger och grupperar förslagen. Loupe skickar ämnesrader, namn, organisationsdomäner och datum för de konversationerna, aldrig deras text eller adresser.';
+
+  @override
+  String get projectsSettingsAiKey => 'API-nyckel';
+
+  @override
+  String get projectsSettingsAiModel => 'Modell';
+
+  @override
+  String get projectsSettingsNotSet => 'Inte angivet';
+
+  @override
+  String get projectsSettingsAiTest => 'Testa servern';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Ansluten. Servern har $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1064,6 +1203,12 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filter';
+
+  @override
+  String get messageListShowTiles => 'Visa som rutor';
+
+  @override
+  String get messageListShowList => 'Visa som lista';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2598,6 +2743,116 @@ class AppLocalizationsSv extends AppLocalizations {
       'Inte kontrollerat: bara certifikat från en utfärdare som Loupe litar på kontrolleras.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Servern meddelar ny e-post i inkorgen direkt, över en anslutning som Loupe håller öppen. Av: Loupe kollar med några minuters mellanrum och använder en anslutning mindre.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Oförändrat';
+
+  @override
+  String get settingsSignatures => 'Signaturer';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe väljer en för varje meddelande: den för kopior när någon står på Kopia, en schemalagd mellan sina dagar, en slumpvis ur rotationen, annars standard.';
+
+  @override
+  String get settingsAddSignature => 'Lägg till signatur';
+
+  @override
+  String get settingsNewSignature => 'Ny signatur';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Signatur $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Standard';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'När någon får kopia';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'När $addresses får kopia';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'I rotation';
+
+  @override
+  String get settingsSignatureNameHint => 'Namn (Jobb, Kort…)';
+
+  @override
+  String get settingsSignatureHint => 'Din signatur';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Fält fyller i avsändarens namn eller adress, så en signatur passar varje identitet och alias.';
+
+  @override
+  String get settingsSignatureAddImage => 'Lägg till bild';
+
+  @override
+  String get settingsSignatureAddField => 'Lägg till fält';
+
+  @override
+  String get settingsSignatureImageFailed => 'Bilden kunde inte läggas till. Prova en mindre PNG eller JPEG.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'När den används';
+
+  @override
+  String get settingsSignatureWhenCopied => 'När någon får kopia';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Används i stället för standard medan någon står på Kopia. Lägg till adresser eller domäner för att bara använda den när de får kopia.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Lägg till adress eller domän…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'En adress, eller en domän som client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Schemalagd';
+
+  @override
+  String get settingsSignatureStarts => 'Börjar';
+
+  @override
+  String get settingsSignatureEnds => 'Slutar';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Mellan dessa dagar ersätter den standard, för en kampanj eller öppettider under helger.';
+
+  @override
+  String get settingsSignatureRotation => 'I rotation';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Varje nytt meddelande får slumpvis en av signaturerna i rotation.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Gör till standard';
+
+  @override
+  String get settingsDeleteSignature => 'Radera signatur';
+
+  @override
   String get settingsLanguage => 'Språk';
 
   @override
@@ -3082,12 +3337,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get settingsSignature => 'Signatur';
 
   @override
-  String get settingsSignatureFooter => 'Läggs till under ”-- ” i meddelanden från den här identiteten.';
-
-  @override
-  String get settingsNoSignature => 'Ingen signatur';
-
-  @override
   String get settingsCopyToMyself => 'Kopia till mig själv';
 
   @override
@@ -3247,6 +3496,11 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Tagga $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Lägg till i $project';
   }
 
   @override
@@ -5318,6 +5572,12 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Inte skräppost';
+
+  @override
+  String get composeSignature => 'Signatur';
+
+  @override
+  String get composeNoSignature => 'Ingen signatur';
 
   @override
   String get accountSetupTitle => 'Lägg till konto';

@@ -125,6 +125,9 @@ final class AccountSyncer {
   MailAccount get account => _account;
   AccountSyncStatus get status => _status;
 
+  /// Between [start] and [pause]: polling, and IDLE when wanted.
+  bool get isRunning => _running;
+
   /// Whether the server keeps snooze keywords: what the Snoozed folder, or
   /// else the Inbox, last said. Assumed until a sync says otherwise.
   bool get storesKeywords => _snoozeKeywords ?? _inboxKeywords ?? true;
@@ -160,7 +163,20 @@ final class AccountSyncer {
     await pause();
   }
 
-  void updateAccount(MailAccount account) => _account = account;
+  /// Takes a changed name, colour or IDLE choice; other server settings
+  /// need a new syncer.
+  void updateAccount(MailAccount account) {
+    final idle = account.useIdle != _account.useIdle;
+    _account = account;
+    if (!idle) return;
+    if (account.useIdle) {
+      _ensureIdle();
+    } else {
+      _idleDebounce?.cancel();
+      _idleDebounce = null;
+      unawaited(_stopIdle());
+    }
+  }
 
   // Status ------------------------------------------------------------------
 
@@ -390,12 +406,14 @@ final class AccountSyncer {
     final fetched = await t.syncMailbox(_remoteFor(m), info?.state, initialWindow: _config.initialWindow);
     _noteKeywordSupport(m, fetched.canStoreKeywords);
     final result = await _overlay(fetched);
-    // One transaction: lists never show a muted thread's new mail unread.
-    final readMuted = await _store.transaction(() async {
+    // One transaction: lists never show a muted thread's new mail unread,
+    // or a project's new mail outside it.
+    final queued = await _store.transaction(() async {
       await _store.applySync(m.id, result, now: _host.now());
-      return _readMutedArrivals(result.added);
+      final readMuted = await _readMutedArrivals(result.added);
+      return await _followProjects(result.added) || readMuted;
     });
-    if (readMuted) kickOps();
+    if (queued) kickOps();
     if (info != null && info.staleHeaders) unawaited(_refetchHeaders(m));
   }
 
@@ -419,6 +437,38 @@ final class AccountSyncer {
       'previous': {for (final id in changed) id: previous[id]!.toList()},
     }, now: _host.now());
     return true;
+  }
+
+  /// New mail of a conversation in a project joins the project (a reply,
+  /// or the user's own message in Sent): it gets the project keywords the
+  /// conversation's other messages have, here and on the server. Returns
+  /// whether an operation was queued.
+  Future<bool> _followProjects(List<EmailSummary> added) async {
+    if (added.isEmpty) return false;
+    final follow = await _store.projectKeywordsToFollow([for (final e in added) e.id]);
+    // One change per set of keywords.
+    final byKeywords = <String, List<String>>{};
+    for (final MapEntry(:key, :value) in follow.entries) {
+      (byKeywords[(value.toList()..sort()).join(' ')] ??= []).add(key);
+    }
+    var queued = false;
+    for (final MapEntry(key: keywords, value: ids) in byKeywords.entries) {
+      final add = keywords.split(' ').toSet();
+      final previous = await _store.updateKeywords(ids, add: add);
+      final changed = [
+        for (final id in previous.keys)
+          if (!isLocalEmailId(id)) id,
+      ];
+      if (changed.isEmpty) continue;
+      await _store.enqueueOp(_account.id, OpType.setKeywords, {
+        'ids': changed,
+        'add': add.toList(),
+        'remove': <String>[],
+        'previous': {for (final id in changed) id: previous[id]!.toList()},
+      }, now: _host.now());
+      queued = true;
+    }
+    return queued;
   }
 
   /// Mailboxes whose headers are being fetched again.
@@ -558,17 +608,19 @@ final class AccountSyncer {
 
   // IDLE --------------------------------------------------------------------
 
+  bool get _wantsIdle => _running && _config.useIdle && _account.useIdle;
+
   void _ensureIdle() {
-    if (!_running || !_config.useIdle || _idleSub != null || _idleStarting) return;
+    if (!_wantsIdle || _idleSub != null || _idleStarting) return;
     if (!main.capabilities.supportsIdle) return;
     _idleStarting = true;
     unawaited(() async {
       try {
         final inbox = await _store.mailboxByRole(_account.id, MailboxRole.inbox);
-        if (inbox == null || !_running) return;
+        if (inbox == null || !_wantsIdle) return;
         _idleCreated = true;
         if (!_idle.isConnected) await _idle.connect();
-        if (!_running) {
+        if (!_wantsIdle) {
           await _quietDisconnect(_idle);
           return;
         }

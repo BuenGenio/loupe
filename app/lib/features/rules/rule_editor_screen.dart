@@ -16,6 +16,7 @@ import '../../shared/sheets.dart';
 import '../../theme/loupe_icons.dart';
 import '../../theme/theme.dart';
 import '../search/search_session.dart';
+import '../projects/projects_state.dart' show projectNamesProvider;
 import 'include_sheet.dart';
 import 'rule_format.dart';
 
@@ -537,11 +538,13 @@ class _RuleEditorScreenState extends ConsumerState<RuleEditorScreen> {
             GroupedRow(
               key: ValueKey('action-$a'),
               leading: Icon(actionIcon(a), color: colors.unreadDot, size: 22),
-              title: describeAction(l10n, a, mailboxes),
+              title: describeAction(l10n, a, mailboxes, projectNames: ref.watch(projectNamesProvider)),
               chevron: false,
               trailing: Semantics(
                 button: true,
-                label: l10n.rulesRemoveAction(describeAction(l10n, a, mailboxes)),
+                label: l10n.rulesRemoveAction(
+                  describeAction(l10n, a, mailboxes, projectNames: ref.watch(projectNamesProvider)),
+                ),
                 child: CupertinoButton(
                   padding: EdgeInsets.zero,
                   minimumSize: const Size(36, 36),

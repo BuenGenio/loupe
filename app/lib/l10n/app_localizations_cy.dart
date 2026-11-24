@@ -1059,6 +1059,149 @@ class AppLocalizationsCy extends AppLocalizations {
   String get mailboxesTags => 'Tagiau';
 
   @override
+  String get mailboxesProjects => 'Prosiectau';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Grwpiwch y sgyrsiau am un peth, o unrhyw ffolder neu gyfrif. Dewiswch Ychwanegu at brosiect… ar sgwrs.';
+
+  @override
+  String get projectsNewMenu => 'Prosiect newydd…';
+
+  @override
+  String get projectsNewTitle => 'Prosiect newydd';
+
+  @override
+  String get projectsEditTitle => 'Golygu’r prosiect';
+
+  @override
+  String get projectsAddToMenu => 'Ychwanegu at brosiect…';
+
+  @override
+  String get projectsMarkDone => 'Marcio’n orffenedig';
+
+  @override
+  String get projectsReopen => 'Ailagor y prosiect';
+
+  @override
+  String get projectsDelete => 'Dileu’r prosiect';
+
+  @override
+  String get projectsDeleteMessage => 'Mae ei sgyrsiau’n aros lle maen nhw, y tu allan i’r prosiect.';
+
+  @override
+  String get projectsUntitled => 'Prosiect';
+
+  @override
+  String get projectsEverythingElse => 'Popeth arall';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Dim prosiectau eto. Crëwch un gyda Prosiect newydd… yn Blychau post, neu dewiswch Ychwanegu at brosiect… ar sgwrs.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Awgrym · $count sgwrs',
+      many: 'Awgrym · $count sgwrs',
+      few: 'Awgrym · $count sgwrs',
+      two: 'Awgrym · $count sgwrs',
+      one: 'Awgrym · $count sgwrs',
+      zero: 'Awgrym · $count sgwrs',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Creu prosiect';
+
+  @override
+  String get projectsNotATopic => 'Nid pwnc';
+
+  @override
+  String get projectsAiThinking => 'Yn holi’r gweinydd DA…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Awgrymiadau gyda DA: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Methu cyrraedd y gweinydd.';
+
+  @override
+  String get projectsAiRefused => 'Gwrthododd y gweinydd yr allwedd.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Atebodd y gweinydd gyda gwall $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Cymerodd y gweinydd ormod o amser.';
+
+  @override
+  String get projectsAiBadAnswer => 'Doedd dim modd darllen ateb y gweinydd.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Does gan y gweinydd mo’r model hwnnw. Mae ganddo: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Ychwanegu rheol…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Mae post newydd sy’n cyfateb i reol yn ymuno â’r prosiect. Mae atebion bob amser yn dilyn eu sgwrs.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Dangos Popeth arall';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'Yn y wedd teils, teilsen ar gyfer y post yn y mewnflwch nad yw mewn unrhyw brosiect.';
+
+  @override
+  String get projectsSettingsSuggest => 'Awgrymu pynciau';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Mae Loupe yn edrych ar y ddyfais hon ar y sgyrsiau o’r 90 diwrnod diwethaf y buoch chi’n rhan ohonyn nhw, ac yn awgrymu’r rhai sy’n ymddangos fel petaen nhw’n perthyn i’w gilydd.';
+
+  @override
+  String get projectsSettingsForget => 'Dangos pynciau a wrthodwyd eto';
+
+  @override
+  String get projectsSettingsAi => 'Awgrymiadau gyda DA';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Defnyddio gweinydd DA';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Mae gweinydd sy’n gydnaws ag OpenAI, fel LocalAI neu Ollama ar eich rhwydwaith eich hun, yn enwi ac yn grwpio’r awgrymiadau. Mae Loupe yn anfon pynciau, enwau, parthau sefydliadau a dyddiadau’r sgyrsiau hynny ato, byth eu testun na’u cyfeiriadau.';
+
+  @override
+  String get projectsSettingsAiKey => 'Allwedd API';
+
+  @override
+  String get projectsSettingsAiModel => 'Model';
+
+  @override
+  String get projectsSettingsNotSet => 'Heb ei osod';
+
+  @override
+  String get projectsSettingsAiTest => 'Profi’r gweinydd';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Wedi cysylltu. Mae gan y gweinydd $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1161,6 +1304,12 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Hidlo';
+
+  @override
+  String get messageListShowTiles => 'Dangos fel teils';
+
+  @override
+  String get messageListShowList => 'Dangos fel rhestr';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2780,6 +2929,116 @@ class AppLocalizationsCy extends AppLocalizations {
       'Heb ei gwirio: dim ond tystysgrifau gan awdurdod mae Loupe yn ymddiried ynddo sy’n cael eu gwirio.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Gwthio', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Mae’r gweinydd yn rhoi gwybod am e-bost newydd yn y Mewnflwch ar unwaith, dros gysylltiad y mae Loupe yn ei gadw ar agor. I ffwrdd, mae Loupe yn gwirio bob ychydig funudau ac yn defnyddio un cysylltiad yn llai.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Heb newid';
+
+  @override
+  String get settingsSignatures => 'Llofnodion';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Mae Loupe yn dewis un ar gyfer pob neges: llofnod copïo pan fydd rhywun yn Cc, un wedi’i amserlennu rhwng ei ddyddiau, un ar hap o’r cylchdro, neu’r un diofyn fel arall.';
+
+  @override
+  String get settingsAddSignature => 'Ychwanegu llofnod';
+
+  @override
+  String get settingsNewSignature => 'Llofnod newydd';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Llofnod $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Diofyn';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Pan fydd rhywun yn cael copi';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Wrth gopïo $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'Mewn cylchdro';
+
+  @override
+  String get settingsSignatureNameHint => 'Enw (Gwaith, Byr…)';
+
+  @override
+  String get settingsSignatureHint => 'Eich llofnod';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Mae meysydd yn llenwi enw neu gyfeiriad yr anfonwr, felly mae un llofnod yn addas i bob hunaniaeth ac alias.';
+
+  @override
+  String get settingsSignatureAddImage => 'Ychwanegu delwedd';
+
+  @override
+  String get settingsSignatureAddField => 'Ychwanegu maes';
+
+  @override
+  String get settingsSignatureImageFailed => 'Methu ychwanegu’r ddelwedd honno. Rhowch gynnig ar PNG neu JPEG llai.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Pryd i’w ddefnyddio';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Pan fydd rhywun yn cael copi';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Yn cael ei ddefnyddio yn lle’r un diofyn tra bo unrhyw un yn Cc. Ychwanegwch gyfeiriadau neu barthau i’w ddefnyddio dim ond pan fyddan nhw’n cael copi.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Ychwanegu cyfeiriad neu barth…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Cyfeiriad, neu barth fel client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Wedi’i amserlennu';
+
+  @override
+  String get settingsSignatureStarts => 'Dechrau';
+
+  @override
+  String get settingsSignatureEnds => 'Gorffen';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Rhwng y dyddiau hyn mae’n cymryd lle’r un diofyn, ar gyfer ymgyrch neu oriau gwyliau.';
+
+  @override
+  String get settingsSignatureRotation => 'Mewn cylchdro';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Mae pob neges newydd yn cael un o’r llofnodion yn y cylchdro, ar hap.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Gwneud yn ddiofyn';
+
+  @override
+  String get settingsDeleteSignature => 'Dileu’r llofnod';
+
+  @override
   String get settingsLanguage => 'Iaith';
 
   @override
@@ -3275,12 +3534,6 @@ class AppLocalizationsCy extends AppLocalizations {
   String get settingsSignature => 'Llofnod';
 
   @override
-  String get settingsSignatureFooter => 'Wedi’i ychwanegu o dan “-- ” mewn negeseuon o’r hunaniaeth hon.';
-
-  @override
-  String get settingsNoSignature => 'Dim llofnod';
-
-  @override
   String get settingsCopyToMyself => 'Copi i mi fy hun';
 
   @override
@@ -3441,6 +3694,11 @@ class AppLocalizationsCy extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Tagio $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Ychwanegu at $project';
   }
 
   @override
@@ -5715,6 +5973,12 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Nid sothach';
+
+  @override
+  String get composeSignature => 'Llofnod';
+
+  @override
+  String get composeNoSignature => 'Dim llofnod';
 
   @override
   String get accountSetupTitle => 'Ychwanegu cyfrif';

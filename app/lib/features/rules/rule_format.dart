@@ -40,7 +40,18 @@ String? mailboxLabel(String mailboxId, Map<String, Mailbox> mailboxes) {
 }
 
 /// How an action reads ("Move to Receipts", "Tag Work").
-String describeAction(AppLocalizations l10n, RuleAction action, Map<String, Mailbox> mailboxes) => switch (action) {
+///
+/// A tag that is a project's keyword reads as the project ([projectNames]:
+/// keyword → name).
+String describeAction(
+  AppLocalizations l10n,
+  RuleAction action,
+  Map<String, Mailbox> mailboxes, {
+  Map<String, String> projectNames = const {},
+}) => switch (action) {
+  AddTagAction(:final keyword) when projectNames.containsKey(keyword) => l10n.rulesActionProject(
+    projectNames[keyword]!,
+  ),
   MoveToMailboxAction(:final mailboxId) => switch (mailboxLabel(mailboxId, mailboxes)) {
     final folder? => l10n.rulesActionMove(folder),
     null => l10n.rulesActionMoveUnknown,
@@ -66,8 +77,13 @@ IconData actionIcon(RuleAction action) => switch (action) {
 };
 
 /// One line summing up what a rule does.
-String describeActions(AppLocalizations l10n, Rule rule, Map<String, Mailbox> mailboxes) {
-  final parts = [for (final a in rule.actions) describeAction(l10n, a, mailboxes)];
+String describeActions(
+  AppLocalizations l10n,
+  Rule rule,
+  Map<String, Mailbox> mailboxes, {
+  Map<String, String> projectNames = const {},
+}) {
+  final parts = [for (final a in rule.actions) describeAction(l10n, a, mailboxes, projectNames: projectNames)];
   if (rule.stopProcessing && !rule.actions.any((a) => a is KeepInInboxAction)) parts.add(l10n.rulesActionStop);
   return parts.isEmpty ? l10n.rulesNoActions : parts.join(', ');
 }

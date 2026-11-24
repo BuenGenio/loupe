@@ -32,6 +32,7 @@ class ListingRepository extends FakeMailRepository {
       VirtualMailboxRef(kind: VirtualMailbox.allInboxes) => roles[e.mailboxId] == MailboxRole.inbox,
       VirtualMailboxRef(kind: VirtualMailbox.flagged) => e.isFlagged,
       VirtualMailboxRef() => true,
+      KeywordMailboxRef(:final keyword) => e.keywords.contains(keyword),
     };
     final shown = [
       for (final e in emails)

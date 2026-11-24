@@ -1,3 +1,5 @@
+import 'signatures.dart';
+
 /// Which kind of service an account talks to. Drives defaults and quirks
 /// (Gmail labels and X-GM-RAW search, Microsoft OAuth, iCloud app passwords).
 enum ProviderKind { generic, gmail, microsoft, icloud, yahoo, fastmail }
@@ -71,13 +73,13 @@ final class ServerConfig {
 
 enum AuthKind { password, oauth2 }
 
-/// A sending identity: the From address and its signature.
+/// A sending identity: the From address and its signatures.
 final class Identity {
   const Identity({
     required this.id,
     required this.email,
     this.name,
-    this.signature,
+    this.signatures = const [],
     this.replyTo,
     this.autoCc,
     this.autoBcc,
@@ -88,8 +90,10 @@ final class Identity {
   final String email;
   final String? name;
 
-  /// Plain-text signature, appended after "-- ".
-  final String? signature;
+  /// The identity's signatures, appended after "-- ". Which one a message
+  /// gets follows their rules ([chooseSignature]); the first ordinary one
+  /// is the default.
+  final List<Signature> signatures;
   final String? replyTo;
 
   /// Added to Cc of every message from this identity (a copy to oneself).
@@ -108,7 +112,7 @@ final class Identity {
     String? id,
     String? email,
     String? name,
-    String? signature,
+    List<Signature>? signatures,
     String? replyTo,
     String? autoCc,
     String? autoBcc,
@@ -117,7 +121,7 @@ final class Identity {
     id: id ?? this.id,
     email: email ?? this.email,
     name: name ?? this.name,
-    signature: signature ?? this.signature,
+    signatures: signatures ?? this.signatures,
     replyTo: replyTo ?? this.replyTo,
     autoCc: autoCc ?? this.autoCc,
     autoBcc: autoBcc ?? this.autoBcc,
@@ -128,7 +132,7 @@ final class Identity {
     'id': id,
     'email': email,
     'name': name,
-    'signature': signature,
+    if (signatures.isNotEmpty) 'signatures': [for (final s in signatures) s.toJson()],
     'replyTo': replyTo,
     if (autoCc != null) 'autoCc': autoCc,
     if (autoBcc != null) 'autoBcc': autoBcc,
@@ -139,7 +143,12 @@ final class Identity {
     id: json['id']! as String,
     email: json['email']! as String,
     name: json['name'] as String?,
-    signature: json['signature'] as String?,
+    signatures: switch (json) {
+      {'signatures': final List<Object?> list} => [for (final s in list) Signature.fromJson((s! as Map).cast())],
+      // Before several signatures: one plain-text signature.
+      {'signature': final String text} when text.trim().isNotEmpty => [Signature.plain('${json['id']}/sig', text)],
+      _ => const [],
+    },
     replyTo: json['replyTo'] as String?,
     autoCc: json['autoCc'] as String?,
     autoBcc: json['autoBcc'] as String?,
@@ -160,6 +169,7 @@ final class MailAccount {
     this.outgoing,
     this.identities = const [],
     this.colorIndex = 0,
+    this.useIdle = true,
   });
 
   final String id;
@@ -180,15 +190,21 @@ final class MailAccount {
   /// Index into the app's account colour palette (the stripe in lists).
   final int colorIndex;
 
+  /// Whether the sync engine keeps a connection watching the Inbox (IMAP
+  /// IDLE, JMAP push) when the server offers it. Off, the account is only
+  /// polled: one connection fewer, for servers that limit them or handle
+  /// IDLE badly.
+  final bool useIdle;
+
   Identity get defaultIdentity => identities.isNotEmpty ? identities.first : Identity(id: '$id/default', email: email);
 
   /// An unsaved identity sending as [email]: an address of this account that
   /// isn't one of its [identities], such as a catch-all alias. It has the
-  /// default identity's name and signature. Its id names the address, so a
+  /// default identity's name and signatures. Its id names the address, so a
   /// draft, the Outbox and crash recovery keep it (see [identityById]).
   Identity aliasIdentity(String email) {
     final d = defaultIdentity;
-    return Identity(id: '$id$_aliasMark${email.trim()}', email: email.trim(), name: d.name, signature: d.signature);
+    return Identity(id: '$id$_aliasMark${email.trim()}', email: email.trim(), name: d.name, signatures: d.signatures);
   }
 
   /// Whether [identity] is an unsaved [aliasIdentity].
@@ -215,6 +231,7 @@ final class MailAccount {
     int? colorIndex,
     ServerConfig? incoming,
     ServerConfig? outgoing,
+    bool? useIdle,
   }) => MailAccount(
     id: id,
     email: email,
@@ -225,6 +242,7 @@ final class MailAccount {
     outgoing: outgoing ?? this.outgoing,
     identities: identities ?? this.identities,
     colorIndex: colorIndex ?? this.colorIndex,
+    useIdle: useIdle ?? this.useIdle,
   );
 
   Map<String, Object?> toJson() => {
@@ -237,6 +255,7 @@ final class MailAccount {
     'outgoing': outgoing?.toJson(),
     'identities': [for (final i in identities) i.toJson()],
     'colorIndex': colorIndex,
+    'useIdle': useIdle,
   };
 
   factory MailAccount.fromJson(Map<String, Object?> json) => MailAccount(
@@ -249,6 +268,7 @@ final class MailAccount {
     outgoing: json['outgoing'] == null ? null : ServerConfig.fromJson((json['outgoing']! as Map).cast()),
     identities: [for (final i in (json['identities'] as List? ?? const [])) Identity.fromJson((i as Map).cast())],
     colorIndex: json['colorIndex'] as int? ?? 0,
+    useIdle: json['useIdle'] as bool? ?? true,
   );
 }
 

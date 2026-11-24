@@ -30,6 +30,10 @@ import '../palette/command_palette.dart';
 import '../panes/mail_selection.dart';
 import '../panes/message_drag.dart';
 import '../panes/pane_layout.dart';
+import '../projects/project_settings.dart';
+import '../projects/project_sheets.dart';
+import '../projects/project_tiles.dart';
+import '../projects/projects_state.dart';
 import '../search/search_session.dart';
 import '../search/search_view.dart';
 import '../../theme/loupe_icons.dart';
@@ -64,9 +68,12 @@ IconData quickFilterIcon(QuickFilter f) => switch (f) {
 /// list pane of the wide layout ([MailHome]) rows open in the conversation
 /// pane.
 class MessageListScreen extends ConsumerStatefulWidget {
-  const MessageListScreen({super.key, required this.mailboxRef});
+  const MessageListScreen({super.key, required this.mailboxRef, this.outsideProjects = false});
 
   final MailboxRef mailboxRef;
+
+  /// Only the conversations in no project (the Everything Else tile).
+  final bool outsideProjects;
 
   @override
   ConsumerState<MessageListScreen> createState() => _MessageListScreenState();
@@ -360,7 +367,26 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
   Mailbox? get _folder => switch (widget.mailboxRef) {
     RealMailboxRef(:final mailboxId) =>
       (ref.read(mailboxesProvider).value ?? const <Mailbox>[]).where((m) => m.id == mailboxId).firstOrNull,
-    VirtualMailboxRef() => null,
+    VirtualMailboxRef() || KeywordMailboxRef() => null,
+  };
+
+  /// Inbox lists (All Inboxes, an account's Inbox) offer the Tiles view.
+  bool _offersTiles(List<Mailbox> mailboxes) =>
+      !widget.outsideProjects &&
+      switch (widget.mailboxRef) {
+        VirtualMailboxRef(kind: VirtualMailbox.allInboxes) => true,
+        RealMailboxRef(:final mailboxId) =>
+          mailboxes.where((m) => m.id == mailboxId).firstOrNull?.role == MailboxRole.inbox,
+        _ => false,
+      };
+
+  /// The project listed, when it is one.
+  Project? get _project => switch (widget.mailboxRef) {
+    KeywordMailboxRef(:final keyword) => switch (Projects.idOf(keyword)) {
+      final id? => ref.watch(projectsByIdProvider)[id],
+      null => null,
+    },
+    _ => null,
   };
 
   /// Marks every unread message of this mailbox read (those on the phone).
@@ -442,6 +468,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
         ),
         SheetAction(anyUnflagged ? l10n.mailFlag : l10n.mailUnflag, 'flag', icon: LoupeIcons.flagged),
         SheetAction(l10n.snoozeMenu, 'snooze', icon: LoupeIcons.snooze),
+        SheetAction(l10n.projectsAddToMenu, 'project', icon: LoupeIcons.project),
         SheetAction(l10n.mailMoveToJunk, 'junk', icon: LoupeIcons.junk),
       ],
     );
@@ -453,6 +480,8 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
       case 'snooze':
         // Cancelling the time keeps the selection.
         if (!await actions.snooze(rows)) return;
+      case 'project':
+        await actions.chooseProjects(rows);
       case 'junk':
         await actions.junk(rows, junk: true);
       default:
@@ -466,9 +495,22 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
     final colors = LoupeColors.of(context);
     final settings = ref.watch(appSettingsProvider);
     final mailboxes = ref.watch(mailboxesProvider).value ?? const <Mailbox>[];
-    final title = mailboxRefTitle(widget.mailboxRef, mailboxes);
+    final title = widget.outsideProjects
+        ? context.l10n.projectsEverythingElse
+        : mailboxRefTitle(
+            widget.mailboxRef,
+            mailboxes,
+            keywordNames: {for (final p in ref.watch(projectsProvider)) p.keyword: p.name},
+          );
     final async = ref.watch(messageListProvider(_query(settings)));
-    final rows = async.value ?? const <ThreadSummary>[];
+    final listed = async.value ?? const <ThreadSummary>[];
+    final rows = widget.outsideProjects
+        ? [
+            for (final r in listed)
+              if (r.latest.projectIds.isEmpty) r,
+          ]
+        : listed;
+    final tiles = _offersTiles(mailboxes) && ref.watch(inboxTilesProvider) && !_editing;
     if (!_searchHidden && rows.isNotEmpty) {
       _searchHidden = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -518,7 +560,10 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
                     unawaited(HapticFeedback.lightImpact());
                   },
                 ),
-                ..._rowsSlivers(context, async, rows, settings, actions, mailboxes),
+                if (tiles)
+                  ...projectTileSlivers(context, ref, widget.mailboxRef)
+                else
+                  ..._rowsSlivers(context, async, rows, settings, actions, mailboxes),
               ],
             ],
           ),
@@ -574,6 +619,20 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
             )
           : null,
       trailing: [
+        if (!_editing && _offersTiles(mailboxes))
+          BarIconButton(
+            key: const Key('inbox-tiles'),
+            icon: ref.watch(inboxTilesProvider) ? LoupeIcons.listView : LoupeIcons.tilesView,
+            tooltip: ref.watch(inboxTilesProvider) ? l10n.messageListShowList : l10n.messageListShowTiles,
+            onPressed: () => ref.read(inboxTilesProvider.notifier).set(!ref.read(inboxTilesProvider)),
+          ),
+        if (_project case final project? when !_editing)
+          BarIconButton(
+            key: const Key('project-menu'),
+            icon: LoupeIcons.moreCircle,
+            tooltip: l10n.commonMore,
+            onPressed: () => showProjectMenu(context, ref, project),
+          ),
         BarTextButton(label: _editing ? l10n.commonDone : l10n.commonEdit, bold: _editing, onPressed: _toggleEditing),
       ],
       searching: _searching,
@@ -640,7 +699,9 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
     final accounts = {for (final a in ref.watch(accountsProvider).value ?? const <MailAccount>[]) a.id: a};
     final boxes = {for (final m in mailboxes) m.id: m};
     final vips = ref.watch(vipAddressesProvider).value ?? const <String>{};
-    final unified = widget.mailboxRef is VirtualMailboxRef && accounts.length > 1;
+    final unified = widget.mailboxRef is! RealMailboxRef && accounts.length > 1;
+    final projects = ref.watch(projectsByIdProvider);
+    final listed = _project?.id;
     final selection = _inPane ? ref.watch(mailSelectionProvider) : null;
     if (selection != null) {
       final shown = rows.indexWhere(selection.shows);
@@ -676,6 +737,10 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
             editing: _editing,
             checked: checked,
             showRecipients: role == MailboxRole.sent || role == MailboxRole.drafts,
+            projects: [
+              for (final id in email.projectIds)
+                if (id != listed) ?projects[id],
+            ].map((p) => (name: p.name, color: p.color)).toList(),
             onTap: _editing
                 ? () => setState(() => checked ? _selected.remove(row.threadId) : _selected.add(row.threadId))
                 : () => _openRow(row, role: role, actions: actions),
@@ -730,6 +795,7 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
           when kind == VirtualMailbox.allInboxes || kind == VirtualMailbox.unread || kind == VirtualMailbox.vip =>
         ref.watch(virtualCountsProvider).value?[kind] ?? local,
       VirtualMailboxRef() => local,
+      KeywordMailboxRef(:final keyword) => ref.watch(projectUnreadProvider).value?[keyword] ?? local,
     };
   }
 
@@ -785,14 +851,14 @@ class _MessageListScreenState extends ConsumerState<MessageListScreen>
 
   String? _accountOfRef() => switch (widget.mailboxRef) {
     RealMailboxRef(:final mailboxId) => MailIds.accountOf(mailboxId),
-    VirtualMailboxRef() => null,
+    VirtualMailboxRef() || KeywordMailboxRef() => null,
   };
 
   Widget _editBar(List<ThreadSummary> selected, MailActions actions, List<Mailbox> mailboxes) {
     final settings = ref.read(appSettingsProvider);
     final role = switch (widget.mailboxRef) {
       RealMailboxRef(:final mailboxId) => mailboxes.where((m) => m.id == mailboxId).firstOrNull?.role,
-      VirtualMailboxRef() => null,
+      VirtualMailboxRef() || KeywordMailboxRef() => null,
     };
     final useTrash =
         settings.swipeTrailing == SwipeAction.trash ||

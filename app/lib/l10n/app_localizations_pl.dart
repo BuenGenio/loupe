@@ -1018,6 +1018,147 @@ class AppLocalizationsPl extends AppLocalizations {
   String get mailboxesTags => 'Tagi';
 
   @override
+  String get mailboxesProjects => 'Projekty';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Grupuj rozmowy o jednej sprawie z dowolnego folderu lub konta. W rozmowie wybierz Dodaj do projektu…';
+
+  @override
+  String get projectsNewMenu => 'Nowy projekt…';
+
+  @override
+  String get projectsNewTitle => 'Nowy projekt';
+
+  @override
+  String get projectsEditTitle => 'Edytuj projekt';
+
+  @override
+  String get projectsAddToMenu => 'Dodaj do projektu…';
+
+  @override
+  String get projectsMarkDone => 'Oznacz jako zakończony';
+
+  @override
+  String get projectsReopen => 'Otwórz projekt ponownie';
+
+  @override
+  String get projectsDelete => 'Usuń projekt';
+
+  @override
+  String get projectsDeleteMessage => 'Jego rozmowy zostają tam, gdzie są, poza projektem.';
+
+  @override
+  String get projectsUntitled => 'Projekt';
+
+  @override
+  String get projectsEverythingElse => 'Wszystko inne';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Nie ma jeszcze projektów. Utwórz projekt w Skrzynkach, wybierając Nowy projekt…, albo wybierz Dodaj do projektu… w rozmowie.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Propozycja · $count rozmowy',
+      many: 'Propozycja · $count rozmów',
+      few: 'Propozycja · $count rozmowy',
+      one: 'Propozycja · 1 rozmowa',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Utwórz projekt';
+
+  @override
+  String get projectsNotATopic => 'To nie temat';
+
+  @override
+  String get projectsAiThinking => 'Pytanie serwera AI…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Propozycje z AI: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Nie można połączyć się z serwerem.';
+
+  @override
+  String get projectsAiRefused => 'Serwer odrzucił klucz.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Serwer odpowiedział błędem $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Serwer odpowiadał zbyt długo.';
+
+  @override
+  String get projectsAiBadAnswer => 'Nie udało się odczytać odpowiedzi serwera.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Serwer nie ma takiego modelu. Ma: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Dodaj regułę…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Nowa poczta pasująca do reguły trafia do projektu. Odpowiedzi zawsze idą za swoją rozmową.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Pokaż Wszystko inne';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'W widoku kafelków kafelek dla poczty w skrzynce odbiorczej, która nie należy do żadnego projektu.';
+
+  @override
+  String get projectsSettingsSuggest => 'Proponuj tematy';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe przegląda na tym urządzeniu rozmowy z ostatnich 90 dni z Twoim udziałem i proponuje te, które wydają się powiązane.';
+
+  @override
+  String get projectsSettingsForget => 'Pokaż ponownie odrzucone tematy';
+
+  @override
+  String get projectsSettingsAi => 'Propozycje z AI';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Używaj serwera AI';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Serwer zgodny z OpenAI, np. LocalAI lub Ollama w Twojej sieci, nazywa i grupuje propozycje. Loupe wysyła mu tematy, nazwiska, domeny organizacji i daty tych rozmów, nigdy ich treść ani adresy.';
+
+  @override
+  String get projectsSettingsAiKey => 'Klucz API';
+
+  @override
+  String get projectsSettingsAiModel => 'Model';
+
+  @override
+  String get projectsSettingsNotSet => 'Nie ustawiono';
+
+  @override
+  String get projectsSettingsAiTest => 'Testuj serwer';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Połączono. Serwer ma $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1114,6 +1255,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filtr';
+
+  @override
+  String get messageListShowTiles => 'Pokaż jako kafelki';
+
+  @override
+  String get messageListShowList => 'Pokaż jako listę';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2682,6 +2829,116 @@ class AppLocalizationsPl extends AppLocalizations {
       'Nie sprawdzono: sprawdzane są tylko certyfikaty od urzędów, którym ufa Loupe.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Serwer od razu zgłasza nową pocztę w folderze Odebrane przez połączenie, które Loupe utrzymuje otwarte. Po wyłączeniu Loupe sprawdza pocztę co kilka minut i używa o jedno połączenie mniej.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Bez zmian';
+
+  @override
+  String get settingsSignatures => 'Podpisy';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe wybiera jeden dla każdej wiadomości: podpis do kopii, gdy ktoś jest w polu DW, zaplanowany w jego dniach, losowy z rotacji, a w pozostałych przypadkach domyślny.';
+
+  @override
+  String get settingsAddSignature => 'Dodaj podpis';
+
+  @override
+  String get settingsNewSignature => 'Nowy podpis';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Podpis $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Domyślny';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Gdy ktoś dostaje kopię';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Gdy kopię dostaje $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'W rotacji';
+
+  @override
+  String get settingsSignatureNameHint => 'Nazwa (Praca, Krótki…)';
+
+  @override
+  String get settingsSignatureHint => 'Twój podpis';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Pola wstawiają imię lub adres nadawcy, więc jeden podpis pasuje do każdej tożsamości i aliasu.';
+
+  @override
+  String get settingsSignatureAddImage => 'Dodaj obraz';
+
+  @override
+  String get settingsSignatureAddField => 'Dodaj pole';
+
+  @override
+  String get settingsSignatureImageFailed => 'Nie udało się dodać obrazu. Spróbuj mniejszego pliku PNG lub JPEG.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Kiedy używać';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Gdy ktoś dostaje kopię';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Używany zamiast domyślnego, gdy ktoś jest w polu DW. Dodaj adresy lub domeny, aby używać go tylko wtedy, gdy to one dostają kopię.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Dodaj adres lub domenę…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Adres lub domena, np. client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Zaplanowany';
+
+  @override
+  String get settingsSignatureStarts => 'Początek';
+
+  @override
+  String get settingsSignatureEnds => 'Koniec';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'W te dni zastępuje domyślny, np. na czas kampanii lub godzin otwarcia w święta.';
+
+  @override
+  String get settingsSignatureRotation => 'W rotacji';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Każda nowa wiadomość dostaje losowo jeden z podpisów w rotacji.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Ustaw jako domyślny';
+
+  @override
+  String get settingsDeleteSignature => 'Usuń podpis';
+
+  @override
   String get settingsLanguage => 'Język';
 
   @override
@@ -3172,12 +3429,6 @@ class AppLocalizationsPl extends AppLocalizations {
   String get settingsSignature => 'Podpis';
 
   @override
-  String get settingsSignatureFooter => 'Dodawany pod „-- ” w wiadomościach z tej tożsamości.';
-
-  @override
-  String get settingsNoSignature => 'Brak podpisu';
-
-  @override
   String get settingsCopyToMyself => 'Kopia do siebie';
 
   @override
@@ -3338,6 +3589,11 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Dodaj tag $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Dodaj do $project';
   }
 
   @override
@@ -5501,6 +5757,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'To nie spam';
+
+  @override
+  String get composeSignature => 'Podpis';
+
+  @override
+  String get composeNoSignature => 'Bez podpisu';
 
   @override
   String get accountSetupTitle => 'Dodaj konto';

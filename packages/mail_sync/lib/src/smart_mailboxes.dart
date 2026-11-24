@@ -9,6 +9,7 @@ import 'dart:convert';
 
 import 'package:mail_model/mail_model.dart';
 
+import 'synced_entries.dart';
 import 'util.dart';
 
 /// `format` of the document.
@@ -17,11 +18,8 @@ const smartMailboxesFormat = 'loupe.smart-mailboxes';
 /// The newest document `version` this code reads and writes.
 const smartMailboxesVersion = 1;
 
-/// How long a deletion is remembered, so other devices learn of it.
-const tombstoneLifetime = Duration(days: 30);
-
 /// One Smart Mailbox in the shared format (an entry of the document).
-final class SmartMailboxEntry {
+final class SmartMailboxEntry implements SyncedEntry {
   const SmartMailboxEntry({
     required this.id,
     required this.modifiedAt,
@@ -34,6 +32,7 @@ final class SmartMailboxEntry {
 
   /// Unique and stable (Loupe: base-36 creation time in microseconds; any
   /// string will do).
+  @override
   final String id;
   final String name;
 
@@ -47,9 +46,11 @@ final class SmartMailboxEntry {
   final Map<String, Object?>? scope;
 
   /// When it last changed (UTC, millisecond precision): the newest wins.
+  @override
   final DateTime modifiedAt;
 
   /// A tombstone: deleted at [modifiedAt].
+  @override
   final bool deleted;
 
   /// Fields this version doesn't know (an icon, a colour, add-on data…),
@@ -116,13 +117,8 @@ final class SmartMailboxEntry {
   }
 
   /// The canonical JSON, for comparisons and tie-breaks.
-  String get canonical => jsonEncode(_sorted(toJson()));
-
-  static Object? _sorted(Object? v) => switch (v) {
-    final Map<Object?, Object?> m => {for (final k in (m.keys.map((k) => '$k').toList()..sort())) k: _sorted(m[k])},
-    final List<Object?> l => [for (final e in l) _sorted(e)],
-    _ => v,
-  };
+  @override
+  String get canonical => jsonEncode(sortedJson(toJson()));
 
   @override
   String toString() => 'SmartMailboxEntry($canonical)';
@@ -183,45 +179,15 @@ final class SmartMailboxDocument {
 
   String _fingerprint() => ([
     for (final e in entries) e.canonical,
-    for (final u in unreadable) jsonEncode(SmartMailboxEntry._sorted(u)),
+    for (final u in unreadable) jsonEncode(sortedJson(u)),
   ]..sort()).join('\n');
-}
-
-/// Whether [a] wins over [b] (same id): the later `modifiedAt`; on a tie a
-/// tombstone, then the larger canonical JSON, so every device agrees.
-bool _wins(SmartMailboxEntry a, SmartMailboxEntry b) {
-  final c = a.modifiedAt.compareTo(b.modifiedAt);
-  if (c != 0) return c > 0;
-  if (a.deleted != b.deleted) return a.deleted;
-  return a.canonical.compareTo(b.canonical) > 0;
-}
-
-/// The `modifiedAt` for a change made [now] to an entry last changed at
-/// [previous]: never earlier, so an edit always wins over the version it
-/// replaces, even when another device's clock ran ahead.
-DateTime nextModifiedAt(DateTime? previous, DateTime now) {
-  final t = DateTime.fromMillisecondsSinceEpoch(now.millisecondsSinceEpoch, isUtc: true);
-  if (previous == null || t.isAfter(previous)) return t;
-  return previous.toUtc().add(const Duration(milliseconds: 1));
 }
 
 /// Merges entry lists by id: last writer wins per entry, and tombstones
 /// older than [tombstoneLifetime] are dropped. Order: first appearance
 /// across [lists] (so the local order stays and new entries follow it).
-List<SmartMailboxEntry> mergeSmartMailboxes(Iterable<Iterable<SmartMailboxEntry>> lists, {required DateTime now}) {
-  final byId = <String, SmartMailboxEntry>{};
-  for (final list in lists) {
-    for (final e in list) {
-      final current = byId[e.id];
-      if (current == null || _wins(e, current)) byId[e.id] = e;
-    }
-  }
-  final horizon = now.toUtc().subtract(tombstoneLifetime);
-  return [
-    for (final e in byId.values)
-      if (!e.deleted || e.modifiedAt.isAfter(horizon)) e,
-  ];
-}
+List<SmartMailboxEntry> mergeSmartMailboxes(Iterable<Iterable<SmartMailboxEntry>> lists, {required DateTime now}) =>
+    mergeEntries(lists, now: now);
 
 /// A Smart Mailbox as this device keeps it: the shared entry plus the
 /// account whose document holds it. [accountId] is null for those that
@@ -337,7 +303,7 @@ Future<SmartMailboxSyncReport> syncSmartMailboxes(
           ...merged,
           ...mergeSmartMailboxes([foreign], now: now),
         ],
-        unreadable: _unique(unreadable),
+        unreadable: uniqueJson(unreadable),
       );
       if (copies.length == 1 && docs.length == 1 && docs.single.sameContent(next)) {
         synced[accountId] = copies.single.storage;
@@ -391,14 +357,6 @@ List<SmartMailboxRecord> _apply(
     if (seen.add(e.id)) out.add(record(e, null));
   }
   return out;
-}
-
-List<Object?> _unique(List<Object?> raw) {
-  final seen = <String>{};
-  return [
-    for (final r in raw)
-      if (seen.add(jsonEncode(SmartMailboxEntry._sorted(r)))) r,
-  ];
 }
 
 extension on SmartMailboxEntry {

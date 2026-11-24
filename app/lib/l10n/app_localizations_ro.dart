@@ -1021,6 +1021,146 @@ class AppLocalizationsRo extends AppLocalizations {
   String get mailboxesTags => 'Etichete';
 
   @override
+  String get mailboxesProjects => 'Proiecte';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Grupează conversațiile despre un singur lucru, din orice dosar sau cont. Alege Adaugă la proiect… pe o conversație.';
+
+  @override
+  String get projectsNewMenu => 'Proiect nou…';
+
+  @override
+  String get projectsNewTitle => 'Proiect nou';
+
+  @override
+  String get projectsEditTitle => 'Editează proiectul';
+
+  @override
+  String get projectsAddToMenu => 'Adaugă la proiect…';
+
+  @override
+  String get projectsMarkDone => 'Marchează ca terminat';
+
+  @override
+  String get projectsReopen => 'Redeschide proiectul';
+
+  @override
+  String get projectsDelete => 'Șterge proiectul';
+
+  @override
+  String get projectsDeleteMessage => 'Conversațiile lui rămân unde sunt, în afara proiectului.';
+
+  @override
+  String get projectsUntitled => 'Proiect';
+
+  @override
+  String get projectsEverythingElse => 'Tot restul';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Încă nu ai proiecte. Creează unul cu Proiect nou… în Căsuțe poștale sau alege Adaugă la proiect… pe o conversație.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Sugestie · $count de conversații',
+      few: 'Sugestie · $count conversații',
+      one: 'Sugestie · 1 conversație',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Creează proiectul';
+
+  @override
+  String get projectsNotATopic => 'Nu e un subiect';
+
+  @override
+  String get projectsAiThinking => 'Se întreabă serverul AI…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Sugestii cu AI: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Serverul nu a putut fi contactat.';
+
+  @override
+  String get projectsAiRefused => 'Serverul a refuzat cheia.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Serverul a răspuns cu eroarea $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Serverului i-a luat prea mult.';
+
+  @override
+  String get projectsAiBadAnswer => 'Răspunsul serverului nu a putut fi citit.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Serverul nu are acest model. Are: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Adaugă o regulă…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Mesajele noi care se potrivesc unei reguli intră în proiect. Răspunsurile își urmează mereu conversația.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Afișează Tot restul';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'În vizualizarea cu dale, o dală pentru mesajele din Inbox care nu sunt în niciun proiect.';
+
+  @override
+  String get projectsSettingsSuggest => 'Sugerează subiecte';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe se uită pe acest dispozitiv la conversațiile din ultimele 90 de zile la care ai participat și le sugerează pe cele care par să meargă împreună.';
+
+  @override
+  String get projectsSettingsForget => 'Afișează din nou subiectele respinse';
+
+  @override
+  String get projectsSettingsAi => 'Sugestii cu AI';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Folosește un server AI';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Un server compatibil cu OpenAI, cum ar fi LocalAI sau Ollama din rețeaua ta, denumește și grupează sugestiile. Loupe îi trimite subiectele, numele, domeniile organizațiilor și datele acestor conversații, niciodată textul sau adresele.';
+
+  @override
+  String get projectsSettingsAiKey => 'Cheie API';
+
+  @override
+  String get projectsSettingsAiModel => 'Model';
+
+  @override
+  String get projectsSettingsNotSet => 'Nesetat';
+
+  @override
+  String get projectsSettingsAiTest => 'Testează serverul';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Conectat. Serverul are $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1111,6 +1251,12 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filtrează';
+
+  @override
+  String get messageListShowTiles => 'Afișează ca dale';
+
+  @override
+  String get messageListShowList => 'Afișează ca listă';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2681,6 +2827,117 @@ class AppLocalizationsRo extends AppLocalizations {
       'Neverificat: sunt verificate doar certificatele de la autorități în care Loupe are încredere.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Serverul anunță imediat e-mailurile noi din Inbox, printr-o conexiune pe care Loupe o ține deschisă. Dezactivat, Loupe verifică la câteva minute și folosește o conexiune mai puțin.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Neschimbată';
+
+  @override
+  String get settingsSignatures => 'Semnături';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe alege câte una pentru fiecare mesaj: cea pentru copii când cineva e în Cc, una programată în zilele ei, una la întâmplare din rotație, altfel cea implicită.';
+
+  @override
+  String get settingsAddSignature => 'Adaugă o semnătură';
+
+  @override
+  String get settingsNewSignature => 'Semnătură nouă';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Semnătura $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Implicită';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Când cineva primește o copie';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Când primesc copie $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'În rotație';
+
+  @override
+  String get settingsSignatureNameHint => 'Nume (Serviciu, Scurtă…)';
+
+  @override
+  String get settingsSignatureHint => 'Semnătura ta';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Câmpurile completează numele sau adresa expeditorului, așa că o singură semnătură se potrivește fiecărei identități și fiecărui alias.';
+
+  @override
+  String get settingsSignatureAddImage => 'Adaugă o imagine';
+
+  @override
+  String get settingsSignatureAddField => 'Adaugă un câmp';
+
+  @override
+  String get settingsSignatureImageFailed => 'Imaginea nu a putut fi adăugată. Încearcă un PNG sau JPEG mai mic.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Când se folosește';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Când cineva primește o copie';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Se folosește în locul celei implicite cât timp cineva e în Cc. Adaugă adrese sau domenii ca să fie folosită doar când primesc ei copie.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Adaugă o adresă sau un domeniu…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'O adresă sau un domeniu precum client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Programată';
+
+  @override
+  String get settingsSignatureStarts => 'Începe';
+
+  @override
+  String get settingsSignatureEnds => 'Se termină';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'În aceste zile ține locul celei implicite, pentru o campanie sau programul de sărbători.';
+
+  @override
+  String get settingsSignatureRotation => 'În rotație';
+
+  @override
+  String get settingsSignatureRotationFooter =>
+      'Fiecare mesaj nou primește la întâmplare una dintre semnăturile din rotație.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Setează ca implicită';
+
+  @override
+  String get settingsDeleteSignature => 'Șterge semnătura';
+
+  @override
   String get settingsLanguage => 'Limbă';
 
   @override
@@ -3172,12 +3429,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsSignature => 'Semnătură';
 
   @override
-  String get settingsSignatureFooter => 'Adăugată sub „-- ” în mesajele de pe această identitate.';
-
-  @override
-  String get settingsNoSignature => 'Fără semnătură';
-
-  @override
   String get settingsCopyToMyself => 'Copie pentru mine';
 
   @override
@@ -3338,6 +3589,11 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Etichetează cu $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Adaugă la $project';
   }
 
   @override
@@ -5493,6 +5749,12 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Nu este spam';
+
+  @override
+  String get composeSignature => 'Semnătură';
+
+  @override
+  String get composeNoSignature => 'Fără semnătură';
 
   @override
   String get accountSetupTitle => 'Adaugă un cont';
