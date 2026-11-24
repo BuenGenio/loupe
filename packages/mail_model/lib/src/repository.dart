@@ -70,6 +70,18 @@ abstract interface class MailRepository {
   /// credentials and starts syncing. Throws [MailException] on failure.
   Future<MailAccount> addAccount(AccountSetup setup);
   Future<void> updateAccount(MailAccount account);
+
+  /// Replaces the servers of [accountId] and, with [credentials], its
+  /// password. Connects to [incoming] with them first: on a failure it
+  /// throws [MailException] (as [addAccount] does) and keeps the old
+  /// settings. On success the account reconnects and syncs at once. The
+  /// protocol (IMAP or JMAP) can't change; [outgoing] is null for JMAP.
+  Future<MailAccount> changeServers(
+    String accountId, {
+    required ServerConfig incoming,
+    ServerConfig? outgoing,
+    Credentials? credentials,
+  });
   Future<void> removeAccount(String accountId);
 
   // Mailboxes and lists ------------------------------------------------------
@@ -84,6 +96,11 @@ abstract interface class MailRepository {
 
   /// Unread counts of the virtual mailboxes.
   Stream<Map<VirtualMailbox, int>> watchVirtualCounts();
+
+  /// Unread messages with each of [keywords], counted as their
+  /// [KeywordMailboxRef] lists show them (a message in several mailboxes
+  /// once). Keywords without any are 0.
+  Stream<Map<String, int>> watchKeywordUnread(Set<String> keywords);
 
   /// The message list, newest first. With [threaded], one row per
   /// conversation; otherwise every row has messageCount 1.

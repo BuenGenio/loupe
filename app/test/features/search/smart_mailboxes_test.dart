@@ -135,7 +135,7 @@ void main() {
     final c = await _container(demo, prefs: {SmartMailboxSyncVia.key: SmartMailboxSyncVia.off});
     final box = await c.read(smartMailboxesProvider.notifier).add('Local', 'is:unread');
     await c.read(smartMailboxesProvider.notifier).sync();
-    expect(demo.serverDocuments, isEmpty);
+    expect([for (final docs in demo.serverDocuments.values) ?docs[_name]], isEmpty);
     final (icon, text) = smartMailboxSyncLabel(
       box,
       home: c.read(smartMailboxHomeProvider),

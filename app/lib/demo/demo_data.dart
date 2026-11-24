@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -124,6 +125,29 @@ abstract final class DemoAccounts {
   static const fastmail = 'fastmail';
 }
 
+/// The demo's projects, and the threads (by `thread:` name) each holds.
+abstract final class DemoProjects {
+  static const all = [
+    (id: 'lisbon', name: 'Lisbon Trip', color: '#ff9500', threads: ['lisbon']),
+    (id: 'atlas', name: 'Atlas Launch', color: '#007aff', threads: ['roadmap', 'offsite']),
+  ];
+
+  /// The projects document as the home account's server keeps it.
+  static String document(DateTime now) => jsonEncode({
+    'format': 'loupe.projects',
+    'version': 1,
+    'entries': [
+      for (final p in all) {'id': p.id, 'name': p.name, 'color': p.color, 'modifiedAt': now.toUtc().toIso8601String()},
+    ],
+  });
+
+  /// The project keywords of a message in [threadId] (`T-<account>-<thread>`).
+  static Set<String> keywordsOf(String? threadId) => {
+    for (final p in all)
+      if (p.threads.any((t) => threadId != null && threadId.endsWith('-$t'))) Projects.keyword(p.id),
+  };
+}
+
 /// Everything the demo repository starts with.
 final class DemoSeed {
   DemoSeed._(this.now, int seed) : _random = Random(seed);
@@ -181,7 +205,12 @@ final class DemoSeed {
         incoming: const ServerConfig(protocol: ServerProtocol.imap, host: 'imap.gmail.com', port: 993),
         outgoing: const ServerConfig(protocol: ServerProtocol.smtp, host: 'smtp.gmail.com', port: 465),
         identities: const [
-          Identity(id: 'personal/default', email: 'sam.rivera@gmail.example', name: 'Sam Rivera', signature: 'Sam'),
+          Identity(
+            id: 'personal/default',
+            email: 'sam.rivera@gmail.example',
+            name: 'Sam Rivera',
+            signatures: [Signature(id: 'personal/sig', content: r'[{"insert":"Sam\n"}]')],
+          ),
         ],
         colorIndex: 0,
       ),
@@ -203,7 +232,28 @@ final class DemoSeed {
             id: 'work/default',
             email: 'sam.rivera@northwind.example',
             name: 'Sam Rivera',
-            signature: 'Sam Rivera\nProduct Lead, Atlas · Northwind Labs',
+            signatures: [
+              // Formatted, with a link.
+              Signature(
+                id: 'work/sig',
+                name: 'Work',
+                content:
+                    r'[{"insert":"Sam Rivera","attributes":{"bold":true}},{"insert":"\n"},'
+                    r'{"insert":"Product Lead, Atlas · ","attributes":{"color":"#3b4fc9"}},'
+                    r'{"insert":"Northwind Labs","attributes":{"color":"#3b4fc9","link":"https://northwind.example"}},'
+                    r'{"insert":"\n"}]',
+              ),
+              // signature.cc: when others are copied.
+              Signature(
+                id: 'work/copied',
+                name: 'Copied',
+                content:
+                    r'[{"insert":{"loupe-field":"name"},"attributes":{"bold":true}},{"insert":" · Northwind Labs\n"},'
+                    r'{"insert":"Others are copied on this message.","attributes":{"italic":true,"size":"small"}},'
+                    r'{"insert":"\n"}]',
+                rule: SignatureRule(whenCopied: true),
+              ),
+            ],
           ),
           Identity(id: 'work/atlas', email: 'atlas-team@northwind.example', name: 'Atlas Team'),
         ],
@@ -219,12 +269,17 @@ final class DemoSeed {
         outgoing: const ServerConfig(protocol: ServerProtocol.smtp, host: 'smtp.fastmail.com', port: 465),
         // A custom domain with a catch-all: replies to bookclub@ offer to go out from it.
         identities: const [
-          Identity(id: 'fastmail/default', email: 'sam@rivera.example', name: 'Sam Rivera', signature: '— Sam'),
+          Identity(
+            id: 'fastmail/default',
+            email: 'sam@rivera.example',
+            name: 'Sam Rivera',
+            signatures: [Signature(id: 'fastmail/sig', content: r'[{"insert":"— Sam\n"}]')],
+          ),
           Identity(
             id: 'fastmail/shop',
             email: 'sam+shop@rivera.example',
             name: 'Sam Rivera',
-            signature: '— Sam',
+            signatures: [Signature(id: 'fastmail/shop-sig', content: r'[{"insert":"— Sam\n"}]')],
             replyTo: 'sam@rivera.example',
           ),
           Identity(

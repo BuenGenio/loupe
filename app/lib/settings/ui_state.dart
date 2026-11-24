@@ -447,6 +447,9 @@ class SmartMailboxes extends Notifier<List<SmartMailbox>> {
           return ({'mailbox': path}, accountId);
         case VirtualMailboxRef(:final kind):
           return ({'virtual': kind.name}, null);
+        case KeywordMailboxRef():
+          // The format has no project scope: every mailbox.
+          return (null, null);
       }
     } on Object {
       return (null, null);

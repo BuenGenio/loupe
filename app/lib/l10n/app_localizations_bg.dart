@@ -1035,6 +1035,145 @@ class AppLocalizationsBg extends AppLocalizations {
   String get mailboxesTags => 'Етикети';
 
   @override
+  String get mailboxesProjects => 'Проекти';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Групирайте разговорите за едно нещо от всяка папка или акаунт. Изберете Добавяне към проект… в разговор.';
+
+  @override
+  String get projectsNewMenu => 'Нов проект…';
+
+  @override
+  String get projectsNewTitle => 'Нов проект';
+
+  @override
+  String get projectsEditTitle => 'Редактиране на проекта';
+
+  @override
+  String get projectsAddToMenu => 'Добавяне към проект…';
+
+  @override
+  String get projectsMarkDone => 'Отбелязване като завършен';
+
+  @override
+  String get projectsReopen => 'Повторно отваряне на проекта';
+
+  @override
+  String get projectsDelete => 'Изтриване на проекта';
+
+  @override
+  String get projectsDeleteMessage => 'Разговорите му остават, където са, извън проекта.';
+
+  @override
+  String get projectsUntitled => 'Проект';
+
+  @override
+  String get projectsEverythingElse => 'Всичко останало';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Още няма проекти. Създайте с Нов проект… в Пощенски кутии или изберете Добавяне към проект… в разговор.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Предложение · $count разговора',
+      one: 'Предложение · 1 разговор',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Създаване на проект';
+
+  @override
+  String get projectsNotATopic => 'Не е тема';
+
+  @override
+  String get projectsAiThinking => 'Питане на сървъра с ИИ…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Предложения с ИИ: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Сървърът е недостъпен.';
+
+  @override
+  String get projectsAiRefused => 'Сървърът отхвърли ключа.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Сървърът отговори с грешка $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Сървърът се забави твърде много.';
+
+  @override
+  String get projectsAiBadAnswer => 'Отговорът на сървъра не може да бъде прочетен.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Сървърът няма такъв модел. Има: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Добавяне на правило…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Новите писма, които отговарят на правило, влизат в проекта. Отговорите винаги следват разговора си.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Показване на Всичко останало';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'В изгледа с плочки – плочка за писмата във входящата поща, които не са в проект.';
+
+  @override
+  String get projectsSettingsSuggest => 'Предлагане на теми';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe преглежда на това устройство разговорите от последните 90 дни, в които сте участвали, и предлага тези, които изглеждат свързани.';
+
+  @override
+  String get projectsSettingsForget => 'Повторно показване на отхвърлените теми';
+
+  @override
+  String get projectsSettingsAi => 'Предложения с ИИ';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Използване на сървър с ИИ';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Сървър, съвместим с OpenAI, например LocalAI или Ollama във вашата мрежа, именува и групира предложенията. Loupe му изпраща темите, имената, домейните на организациите и датите на тези разговори, никога текста или адресите им.';
+
+  @override
+  String get projectsSettingsAiKey => 'API ключ';
+
+  @override
+  String get projectsSettingsAiModel => 'Модел';
+
+  @override
+  String get projectsSettingsNotSet => 'Не е зададено';
+
+  @override
+  String get projectsSettingsAiTest => 'Проверка на сървъра';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Свързано. Сървърът има $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1124,6 +1263,12 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Филтър';
+
+  @override
+  String get messageListShowTiles => 'Показване като плочки';
+
+  @override
+  String get messageListShowList => 'Показване като списък';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2649,6 +2794,117 @@ class AppLocalizationsBg extends AppLocalizations {
       'Не е проверено: проверяват се само сертификати от органи, на които Loupe има доверие.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Сървърът съобщава веднага за нова поща във „Входящи“ чрез връзка, която Loupe държи отворена. Когато е изключено, Loupe проверява на всеки няколко минути и използва една връзка по-малко.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Без промяна';
+
+  @override
+  String get settingsSignatures => 'Подписи';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe избира подпис за всяко съобщение: за копие, когато някой е в „Копие“; планиран — между неговите дни; случаен от ротацията; иначе този по подразбиране.';
+
+  @override
+  String get settingsAddSignature => 'Добавяне на подпис';
+
+  @override
+  String get settingsNewSignature => 'Нов подпис';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Подпис $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'По подразбиране';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Когато някой е в копие';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'При копие до $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'В ротация';
+
+  @override
+  String get settingsSignatureNameHint => 'Име (Работа, Кратък…)';
+
+  @override
+  String get settingsSignatureHint => 'Вашият подпис';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Полетата се попълват с името или адреса на подателя, така че един подпис става за всяка самоличност и псевдоним.';
+
+  @override
+  String get settingsSignatureAddImage => 'Добавяне на изображение';
+
+  @override
+  String get settingsSignatureAddField => 'Добавяне на поле';
+
+  @override
+  String get settingsSignatureImageFailed =>
+      'Изображението не може да бъде добавено. Опитайте с по-малък PNG или JPEG.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Кога да се използва';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Когато някой е в копие';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Използва се вместо подписа по подразбиране, докато има някой в „Копие“. Добавете адреси или домейни, за да се използва само когато те са в копие.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Добавяне на адрес или домейн…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Адрес или домейн, например client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'По график';
+
+  @override
+  String get settingsSignatureStarts => 'Начало';
+
+  @override
+  String get settingsSignatureEnds => 'Край';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Между тези дни замества подписа по подразбиране, например за кампания или празнично работно време.';
+
+  @override
+  String get settingsSignatureRotation => 'В ротация';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Всяко ново съобщение получава случаен подпис от тези в ротация.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Задаване по подразбиране';
+
+  @override
+  String get settingsDeleteSignature => 'Изтриване на подписа';
+
+  @override
   String get settingsLanguage => 'Език';
 
   @override
@@ -3136,12 +3392,6 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsSignature => 'Подпис';
 
   @override
-  String get settingsSignatureFooter => 'Добавя се под „-- “ в писмата от тази самоличност.';
-
-  @override
-  String get settingsNoSignature => 'Без подпис';
-
-  @override
   String get settingsCopyToMyself => 'Копие до мен';
 
   @override
@@ -3302,6 +3552,11 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Етикет $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Добавяне към $project';
   }
 
   @override
@@ -5371,6 +5626,12 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Не е спам';
+
+  @override
+  String get composeSignature => 'Подпис';
+
+  @override
+  String get composeNoSignature => 'Без подпис';
 
   @override
   String get accountSetupTitle => 'Добавяне на профил';

@@ -1032,6 +1032,145 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mailboxesTags => 'Etiketler';
 
   @override
+  String get mailboxesProjects => 'Projeler';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Tek bir konuyla ilgili yazışmaları herhangi bir klasörden veya hesaptan gruplayın. Bir yazışmada Projeye ekle… seçeneğini seçin.';
+
+  @override
+  String get projectsNewMenu => 'Yeni proje…';
+
+  @override
+  String get projectsNewTitle => 'Yeni proje';
+
+  @override
+  String get projectsEditTitle => 'Projeyi düzenle';
+
+  @override
+  String get projectsAddToMenu => 'Projeye ekle…';
+
+  @override
+  String get projectsMarkDone => 'Bitti olarak işaretle';
+
+  @override
+  String get projectsReopen => 'Projeyi yeniden aç';
+
+  @override
+  String get projectsDelete => 'Projeyi sil';
+
+  @override
+  String get projectsDeleteMessage => 'Yazışmaları bulundukları yerde kalır ve projeden çıkar.';
+
+  @override
+  String get projectsUntitled => 'Proje';
+
+  @override
+  String get projectsEverythingElse => 'Diğer her şey';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Henüz proje yok. Posta kutuları’nda Yeni proje… ile bir proje oluşturun veya bir yazışmada Projeye ekle… seçeneğini seçin.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Öneri · $count yazışma',
+      one: 'Öneri · 1 yazışma',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Proje oluştur';
+
+  @override
+  String get projectsNotATopic => 'Konu değil';
+
+  @override
+  String get projectsAiThinking => 'Yapay zekâ sunucusuna soruluyor…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Yapay zekâ ile öneriler: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Sunucuya ulaşılamadı.';
+
+  @override
+  String get projectsAiRefused => 'Sunucu anahtarı reddetti.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Sunucu $code hatasıyla yanıt verdi.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Sunucu çok uzun sürdü.';
+
+  @override
+  String get projectsAiBadAnswer => 'Sunucunun yanıtı okunamadı.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Sunucuda bu model yok. Olanlar: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Kural ekle…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Bir kurala uyan yeni postalar projeye katılır. Yanıtlar her zaman kendi yazışmalarını izler.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Diğer her şeyi göster';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'Döşeme görünümünde, hiçbir projede olmayan gelen kutusu postaları için bir döşeme.';
+
+  @override
+  String get projectsSettingsSuggest => 'Konu öner';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe bu cihazda, katıldığınız son 90 günün yazışmalarına bakar ve birbirine ait görünenleri önerir.';
+
+  @override
+  String get projectsSettingsForget => 'Reddedilen konuları yeniden göster';
+
+  @override
+  String get projectsSettingsAi => 'Yapay zekâ ile öneriler';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Yapay zekâ sunucusu kullan';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'OpenAI uyumlu bir sunucu, örneğin kendi ağınızdaki LocalAI veya Ollama, önerileri adlandırır ve gruplar. Loupe ona bu yazışmaların konularını, adlarını, kuruluş alan adlarını ve tarihlerini gönderir; metinlerini veya adreslerini asla göndermez.';
+
+  @override
+  String get projectsSettingsAiKey => 'API anahtarı';
+
+  @override
+  String get projectsSettingsAiModel => 'Model';
+
+  @override
+  String get projectsSettingsNotSet => 'Ayarlanmadı';
+
+  @override
+  String get projectsSettingsAiTest => 'Sunucuyu test et';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Bağlandı. Sunucuda $model var.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1121,6 +1260,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filtre';
+
+  @override
+  String get messageListShowTiles => 'Döşeme olarak göster';
+
+  @override
+  String get messageListShowList => 'Liste olarak göster';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2648,6 +2793,116 @@ class AppLocalizationsTr extends AppLocalizations {
       'Denetlenmedi: yalnızca Loupe’un güvendiği bir yetkilinin sertifikaları denetlenir.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Sunucu, Gelen Kutusu’ndaki yeni e-postaları Loupe’un açık tuttuğu bir bağlantı üzerinden hemen bildirir. Kapalıyken Loupe birkaç dakikada bir denetler ve bir bağlantı daha az kullanır.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Değiştirilmedi';
+
+  @override
+  String get settingsSignatures => 'İmzalar';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe her ileti için birini seçer: Cc’de biri varsa kopya imzasını, günleri gelince zamanlanmış olanı, dönüşümlü olanlardan rastgele birini, aksi hâlde varsayılanı.';
+
+  @override
+  String get settingsAddSignature => 'İmza ekle';
+
+  @override
+  String get settingsNewSignature => 'Yeni imza';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'İmza $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Varsayılan';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Birine kopya gittiğinde';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return '$addresses kopyadayken';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'Dönüşümlü';
+
+  @override
+  String get settingsSignatureNameHint => 'Ad (İş, Kısa…)';
+
+  @override
+  String get settingsSignatureHint => 'İmzanız';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Alanlar gönderenin adını veya adresini doldurur; böylece tek bir imza her kimliğe ve takma ada uyar.';
+
+  @override
+  String get settingsSignatureAddImage => 'Görsel ekle';
+
+  @override
+  String get settingsSignatureAddField => 'Alan ekle';
+
+  @override
+  String get settingsSignatureImageFailed => 'Bu görsel eklenemedi. Daha küçük bir PNG veya JPEG deneyin.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Ne zaman kullanılır';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Birine kopya gittiğinde';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Cc’de biri olduğu sürece varsayılanın yerine kullanılır. Yalnızca onlar kopyadayken kullanılması için adres veya alan adı ekleyin.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Adres veya alan adı ekle…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Bir adres ya da client.example gibi bir alan adı.';
+
+  @override
+  String get settingsSignatureScheduled => 'Zamanlanmış';
+
+  @override
+  String get settingsSignatureStarts => 'Başlangıç';
+
+  @override
+  String get settingsSignatureEnds => 'Bitiş';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Bu günler arasında varsayılanın yerini alır; bir kampanya ya da tatil çalışma saatleri için.';
+
+  @override
+  String get settingsSignatureRotation => 'Dönüşümlü';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Her yeni ileti, dönüşümlü imzalardan birini rastgele alır.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Varsayılan yap';
+
+  @override
+  String get settingsDeleteSignature => 'İmzayı sil';
+
+  @override
   String get settingsLanguage => 'Dil';
 
   @override
@@ -3133,12 +3388,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsSignature => 'İmza';
 
   @override
-  String get settingsSignatureFooter => 'Bu kimlikten gönderilen iletilerde “-- ” satırının altına eklenir.';
-
-  @override
-  String get settingsNoSignature => 'İmza yok';
-
-  @override
   String get settingsCopyToMyself => 'Kendime kopya';
 
   @override
@@ -3299,6 +3548,11 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Etiketle: $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return '$project projesine ekle';
   }
 
   @override
@@ -5385,6 +5639,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Gereksiz değil';
+
+  @override
+  String get composeSignature => 'İmza';
+
+  @override
+  String get composeNoSignature => 'İmzasız';
 
   @override
   String get accountSetupTitle => 'Hesap ekle';

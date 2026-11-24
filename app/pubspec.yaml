@@ -78,6 +78,10 @@ dependencies:
   # BiometricPrompt, iOS's LocalAuthentication). local_auth_android for the prompt's wording.
   local_auth: ^3.0.2
   local_auth_android: ^2.2.0
+  # MIT (Flutter Quill project; its dependencies MIT, BSD-3 or Apache-2.0); the signature editor:
+  # formatting, links, alignment, and images and fields as embeds. Signatures are sent as HTML by Loupe's
+  # own renderer (features/signatures/signature_render.dart), not Quill's.
+  flutter_quill: ^11.6.0
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:

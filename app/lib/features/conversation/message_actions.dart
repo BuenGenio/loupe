@@ -23,6 +23,9 @@ enum MessageAction {
   toggleSeen,
   toggleFlag,
   tags,
+
+  /// Add to Project… (the whole conversation).
+  project,
   snooze,
   wakeNow,
   move,
@@ -97,6 +100,11 @@ Future<MessageAction?> showMessageMenu(
                   onTap: () => pick(MessageAction.toggleFlag),
                 ),
                 SheetRow(label: l10n.conversationTagsMenu, icon: LoupeIcons.tag, onTap: () => pick(MessageAction.tags)),
+                SheetRow(
+                  label: l10n.projectsAddToMenu,
+                  icon: LoupeIcons.project,
+                  onTap: () => pick(MessageAction.project),
+                ),
                 if (muted != null)
                   SheetRow(
                     label: muted ? l10n.conversationUnmuteThread : l10n.conversationMuteThread,

@@ -44,6 +44,8 @@ The packages are developed in parallel. These are the seams:
 | `compileSieve`, `generateLoupeScript`, `parseLoupeScript`, `planInclude`, `SieveConnector`, `ServerRules`, `RuleRunner` | mail_sieve `lib/mail_sieve.dart` | mail_sieve (ManageSieve); mail_jmap `JmapSieveConnector` (RFC 9661) | mail_sync, app demo |
 | `PgpBackend` (swappable OpenPGP engine), `Keyring`, `PgpMimeReader`, `PgpMessageComposer` (a `MessageComposer` around another), `OutgoingMessage.security` | mail_crypto `lib/mail_crypto.dart`, mail_model `src/outgoing.dart` | mail_crypto (`DartPgBackend`) | app (reader, compose, settings, live composer) |
 | `OutgoingMessage.calendar` (`OutgoingCalendar`: an iCalendar object sent as the text's `text/calendar` alternative), `CalendarRecords` (what the device remembers about invitations) | mail_model `src/outgoing.dart`, `src/calendar_records.dart` | mail_imap `MimeMessageComposer`; mail_store + mail_sync `LiveMailRepository`, app demo repository | app (invitation card) |
+| `Identity.signatures` (`Signature`, `SignatureRule`, `chooseSignature`: several signatures and signature.cc's rules), `OutgoingMessage.inline` (images the HTML shows by `cid:`), `MailRepository.changeServers` (servers and password, checked first) | mail_model `src/signatures.dart`, `src/account.dart`, `src/outgoing.dart`, `src/repository.dart` | mail_imap `MimeMessageComposer` (`multipart/related`); mail_sync `LiveMailRepository`, app demo repository | app (Settings, compose) |
+| `Projects` (the `$loupe-project-<id>` keywords), `KeywordMailboxRef` (a keyword's list across accounts), `MailRepository.watchKeywordUnread`, `ServerDocuments.projects` | mail_model `src/projects.dart`, `src/mailbox.dart`, `src/repository.dart` | mail_store (lists, counts, `projectKeywordsToFollow`); mail_sync `LiveMailRepository`, `syncProjects`; app demo repository | app (Mailboxes, lists, Add to Project…) |
 | `Calendar`, `CalendarEvent`, `ZoneResolver`, `eventSpan`, `eventOccurrences`, `describeRule`, `buildReply`, `InvitationRecord` | mail_calendar `lib/mail_calendar.dart` | mail_calendar | app |
 | `SmimeBackend` (swappable S/MIME engine), `SmimeStore`, `SmimeReader`, `checkTrust`, `planSmime`, `chooseTechnology`, `SmimeMessageComposer` (around the OpenPGP one), `OutgoingSecurity.technology` | mail_crypto `lib/mail_crypto.dart`, mail_model `src/outgoing.dart` | mail_crypto (`DartSmimeBackend`) | app (reader, compose, settings, live composer) |
 | `SmimeKeyHandle`, `SmimePlatformKeys` (keys that stay in the platform's keystore) | mail_crypto `src/smime/key_handle.dart` | app (`KeyChainCertificates`, Android); mail_crypto (`SoftwareSmimeKeystore`, tests) | mail_crypto (CMS), app (reader, live composer) |
@@ -62,8 +64,9 @@ Rules:
   - The transport compiles it for the server via expr_search and widens what the server can't do.
   - mail_sync post-filters server hits with `matchesEmail`.
 - **Settings on the server:** `MailTransport.readDocuments`/`writeDocument` keep small app documents on the user's
-  mail server (an IMAP METADATA annotation, else a message in the `Loupe Settings` folder). Smart Mailboxes use them;
-  see [smart-mailboxes-format.md](smart-mailboxes-format.md).
+  mail server (an IMAP METADATA annotation, else a message in the `Loupe Settings` folder). Smart Mailboxes and
+  projects use them; see [smart-mailboxes-format.md](smart-mailboxes-format.md) and
+  [projects-format.md](projects-format.md). Both merge per entry (`mergeEntries` in mail_sync).
 - **Message bodies in the app** come from `contentLoaderProvider` (`ContentLoader.loadContent` and
   `loadAttachment`), not the repository directly: it decrypts and verifies OpenPGP and S/MIME mail,
   learns Autocrypt keys and collects S/MIME certificates. Decrypted attachments (both standards) have
@@ -502,6 +505,61 @@ Issue #27. An invitation shows as a card above the message body (`InvitationCard
   RRULE goes along (Android as written, iOS its frequency, interval and end).
 - **Privacy:** nothing an invitation links to is fetched (no ATTACH, no images, no URL); Map and Join open only
   on a tap.
+
+## Signatures
+
+- **Several per identity** (`Identity.signatures`; an identity's old single `signature` loads as the first). Each is a
+  Quill Delta (JSON) edited with flutter_quill in Settings › the account › Identities › an identity › Signatures:
+  bold, italic, underline, colour, size (Quill's small, large, huge), font (sans, serif, mono, sent as CSS stacks),
+  links (http, https, mailto, tel), alignment, images (`data:` URIs, scaled to at most 600 px and 512 KB) and fields
+  (`{"loupe-field": "name"}` or `"email"`, filled in from the sending identity, so an alias gets its own address).
+- **Which one** (`chooseSignature`, the rules of signature.cc): a "when copied" signature while someone is in Cc
+  (one naming a copied address or domain first), else a scheduled one between its days, else the ordinary ones;
+  among those, one in rotation at random (seeded per message, so the pick holds while Cc changes), else the first.
+  Compose follows the rules as Cc changes until the user picks one (the Signature button) or edits it.
+- **In compose** (`ComposeBodyController`) the body stays plain text. The block after `-- ` is drawn with its
+  formatting and images while it stands as inserted: images are U+FFFC in the text, one each, drawn as `WidgetSpan`s.
+  Once edited it is plain text, and its images go.
+- **Sending** (`RenderedSignature`): the text part has the signature's plain text (links as `text <url>`). A
+  formatted one adds an HTML alternative (the user's text with `>` quotes as blockquotes, the signature in
+  Thunderbird's `moz-signature` div) with its images as `multipart/related` parts by Content-ID. Drafts, Undo and
+  crash recovery come back as plain text; a signature that matches one of the identity's as sent is drawn again.
+- **Toolbar strings**: flutter_quill has its own for 25 of Loupe's languages (Norwegian Bokmål through its `no`);
+  the others show English tooltips (`_QuillLocalizations` in `l10n.dart`).
+
+## Projects
+
+Plan: [plan/projects.md](plan/projects.md). Format: [projects-format.md](projects-format.md).
+
+- **Membership is a keyword** on each message (`$loupe-project-<id>`), so it syncs like any flag, works across
+  accounts and survives other clients. A project's list is `KeywordMailboxRef(keyword)`: the store selects the
+  keyword's messages through `email_keywords_keyword` (schema 9), apart from Trash and Junk, one copy per message, in
+  threads like any list. `loadOlder` searches the servers for the keyword once per session and stores what it finds
+  (older mail, or mail tagged on another device).
+- **Conversations follow:** `AccountSyncer` gives new mail the project keywords of its conversation's other messages
+  (`MailStore.projectKeywordsToFollow`) in the transaction that stores it, as muted threads' mail arrives read, and
+  queues the change for the server.
+- **The projects** (name, colour, done, a rule for later) are the `projects` document of the home account (the Smart
+  Mailboxes' Sync via), synced by `ProjectsNotifier` in the app with `syncProjects`: after every change and every
+  mail sync, idempotent, last writer wins per entry.
+- **In the app:** a Projects section on Mailboxes (unread counts from `watchKeywordUnread`), the project's list with
+  its menu (Edit, Mark as Done, Delete), Add to Project… on a row's More sheet, a selection and a message (the whole
+  conversation each time), and small project badges on rows.
+- **Tiles** (`projectTileSlivers`): a title-bar switch on All Inboxes and each Inbox (`inboxTilesProvider`, per
+  device). A tile per active project (its newest thread from `watchList(KeywordMailboxRef, limit: 1)`), the
+  suggestions, and Everything Else (the list's rows whose newest message has no project keyword; the list route's
+  `?outside=1`).
+- **Suggestions** (`suggestTopics` in mail_model, pure): conversations of the last 90 days from a local-only search,
+  grouped into threads (`topicThreads`). A thread counts when the user wrote in it, or it was written to them and isn't
+  bulk or machine-made. Clusters by organisation domain (free-mail and the user's own domains aside), distinctive
+  subject word (document frequency at most 20 %) and discussion list. Each needs 3 threads over 2 weeks; near-duplicates
+  are dropped. `TopicSuggestions` reruns after mail syncs and on changes. Not a Topic keys are kept in the preferences.
+- **AI pass** (`TopicAi`, opt-in): `POST <server>/chat/completions` on an OpenAI-compatible server. It sends per
+  thread: subject, the other people's names and organisation domains, and dates. It parses JSON (code fences and
+  `<think>` blocks tolerated), drops unknown ids and groups of one, and runs at most hourly. The key is in the
+  keychain (`projectSecretsProvider`), the address and model in the preferences. Errors are kinds (`TopicAiError`)
+  that the app translates.
+- **Rules:** a project's rules are `Rule`s with `AddTagAction(<project keyword>)`; `describeAction` names the project.
 
 ## Wide screens and keyboards
 

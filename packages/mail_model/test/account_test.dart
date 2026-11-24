@@ -13,7 +13,7 @@ const _account = MailAccount(
       id: 'acc/default',
       email: 'alex@acme.example',
       name: 'Alex',
-      signature: 'E.',
+      signatures: [Signature(id: 'acc/sig', content: '[{"insert":"E.\\n"}]')],
       replyTo: 'replies@acme.example',
       autoBcc: 'archive@acme.example',
     ),
@@ -27,7 +27,14 @@ void main() {
       id: 'acc/x',
       email: 'x@acme.example',
       name: 'X',
-      signature: 'Sig',
+      signatures: [
+        Signature(id: 's1', name: 'Work', content: '[{"insert":"Sig\\n"}]'),
+        Signature(
+          id: 's2',
+          content: '[{"insert":"Copied\\n"}]',
+          rule: SignatureRule(whenCopied: true, copied: ['*@client.example'], rotate: true),
+        ),
+      ],
       replyTo: 'r@acme.example',
       autoCc: 'cc@acme.example',
       autoBcc: 'bcc@acme.example',
@@ -38,11 +45,20 @@ void main() {
     expect(back.autoBcc, 'bcc@acme.example');
     expect(back.replyPatterns, ['*@acme.example', 'x+*@acme.example']);
     expect(back.replyTo, 'r@acme.example');
+    expect([for (final s in back.signatures) s.plainText], ['Sig', 'Copied']);
+    expect(back.signatures.first.name, 'Work');
+    expect(back.signatures.last.rule.copied, ['*@client.example']);
+    expect(back.signatures.last.rule.rotate, isTrue);
   });
 
   test('identities saved before the new fields still load', () {
     final old = Identity.fromJson(const {'id': 'a', 'email': 'a@b.example', 'name': null, 'signature': null});
     expect(old.replyPatterns, isEmpty);
+    expect(old.signatures, isEmpty);
+    // One plain-text signature becomes the first of the list.
+    final signed = Identity.fromJson(const {'id': 'a', 'email': 'a@b.example', 'signature': 'Alex\n-- Acme'});
+    expect(signed.signatures.single.plainText, 'Alex\n-- Acme');
+    expect(signed.signatures.single.rule.isAlways, isTrue);
     expect(old.autoCc, isNull);
     final account = MailAccount.fromJson(_account.toJson());
     expect(account.identities.first.autoBcc, 'archive@acme.example');
@@ -52,7 +68,7 @@ void main() {
     final alias = _account.aliasIdentity('shop-xyz@acme.example');
     expect(alias.email, 'shop-xyz@acme.example');
     expect(alias.name, 'Alex');
-    expect(alias.signature, 'E.');
+    expect(alias.signatures.single.plainText, 'E.');
     expect(alias.replyTo, isNull, reason: 'replies come back to the alias');
     expect(alias.autoBcc, isNull);
     expect(_account.isAliasIdentity(alias), isTrue);

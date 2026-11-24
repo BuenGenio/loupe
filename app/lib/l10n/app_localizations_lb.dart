@@ -1043,6 +1043,145 @@ class AppLocalizationsLb extends AppLocalizations {
   String get mailboxesTags => 'Tags';
 
   @override
+  String get mailboxesProjects => 'Projeten';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Gruppéiert d’Gespréicher iwwer eng Saach, aus all Dossier a Kont. Wielt An e Projet derbäisetzen… bei engem Gespréich.';
+
+  @override
+  String get projectsNewMenu => 'Neie Projet…';
+
+  @override
+  String get projectsNewTitle => 'Neie Projet';
+
+  @override
+  String get projectsEditTitle => 'Projet beaarbechten';
+
+  @override
+  String get projectsAddToMenu => 'An e Projet derbäisetzen…';
+
+  @override
+  String get projectsMarkDone => 'Als fäerdeg markéieren';
+
+  @override
+  String get projectsReopen => 'Projet erëm opmaachen';
+
+  @override
+  String get projectsDelete => 'Projet läschen';
+
+  @override
+  String get projectsDeleteMessage => 'Seng Gespréicher bleiwen, wou se sinn, ausserhalb vum Projet.';
+
+  @override
+  String get projectsUntitled => 'Projet';
+
+  @override
+  String get projectsEverythingElse => 'Alles anescht';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Nach keng Projeten. Maacht eent mat Neie Projet… ënner Mailboxen, oder wielt An e Projet derbäisetzen… bei engem Gespréich.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Virschlag · $count Gespréicher',
+      one: 'Virschlag · 1 Gespréich',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Projet maachen';
+
+  @override
+  String get projectsNotATopic => 'Keen Thema';
+
+  @override
+  String get projectsAiThinking => 'De KI-Server gëtt gefrot…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Virschléi mat KI: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'De Server ass net z’erreechen.';
+
+  @override
+  String get projectsAiRefused => 'De Server huet de Schlëssel refuséiert.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'De Server huet mam Feeler $code geäntwert.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'De Server huet ze laang gebraucht.';
+
+  @override
+  String get projectsAiBadAnswer => 'D’Äntwert vum Server konnt net gelies ginn.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'De Server huet dee Modell net. En huet: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Regel derbäisetzen…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Nei Mail, déi zu enger Regel passt, kënnt an de Projet. Äntwerte verfollegen ëmmer hiert Gespréich.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Alles anescht weisen';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'An der Kachelvue eng Kachel fir d’Mail an der Inbox, déi a kengem Projet ass.';
+
+  @override
+  String get projectsSettingsSuggest => 'Themen virschloen';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe kuckt op dësem Apparat d’Gespréicher vun de leschten 90 Deeg, un deenen Dir deelgeholl hutt, a schléit déi vir, déi schéngen zesummenzegehéieren.';
+
+  @override
+  String get projectsSettingsForget => 'Ofgeleent Themen erëm weisen';
+
+  @override
+  String get projectsSettingsAi => 'Virschléi mat KI';
+
+  @override
+  String get projectsSettingsAiSwitch => 'E KI-Server benotzen';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'En OpenAI-kompatibele Server, wéi LocalAI oder Ollama an Ärem eegene Netz, gëtt de Virschléi Nimm a gruppéiert se. Loupe schéckt him d’Betreffer, Nimm, Organisatiounsdomainen an Datume vun dëse Gespréicher, ni hiren Text oder d’Adressen.';
+
+  @override
+  String get projectsSettingsAiKey => 'API-Schlëssel';
+
+  @override
+  String get projectsSettingsAiModel => 'Modell';
+
+  @override
+  String get projectsSettingsNotSet => 'Net festgeluecht';
+
+  @override
+  String get projectsSettingsAiTest => 'Server testen';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Verbonnen. De Server huet $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1137,6 +1276,12 @@ class AppLocalizationsLb extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filter';
+
+  @override
+  String get messageListShowTiles => 'Als Kachele weisen';
+
+  @override
+  String get messageListShowList => 'Als Lëscht weisen';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2680,6 +2825,116 @@ class AppLocalizationsLb extends AppLocalizations {
       'Net iwwerpréift: Nëmmen Zertifikater vu Stellen, deene Loupe vertraut, ginn iwwerpréift.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'De Server mellt nei Mailen an der Inbox direkt, iwwer eng Verbindung, déi Loupe op hält. Aus: Loupe kuckt all puer Minutten no a brauch eng Verbindung manner.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Onverännert';
+
+  @override
+  String get settingsSignatures => 'Signaturen';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe wielt fir all Message eng: bei Leit am Cc déi fir Kopien, tëscht hiren Deeg eng geplangten, per Zoufall eng aus der Rotatioun, soss d’Standardsignatur.';
+
+  @override
+  String get settingsAddSignature => 'Signatur derbäisetzen';
+
+  @override
+  String get settingsNewSignature => 'Nei Signatur';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Signatur $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Standard';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Wann een a Kopie ass';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Wann $addresses a Kopie';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'A Rotatioun';
+
+  @override
+  String get settingsSignatureNameHint => 'Numm (Aarbecht, Kuerz…)';
+
+  @override
+  String get settingsSignatureHint => 'Är Signatur';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Felder setzen den Numm oder d’Adress vum Ofsender an, sou passt eng Signatur fir all Identitéit an all Alias.';
+
+  @override
+  String get settingsSignatureAddImage => 'Bild derbäisetzen';
+
+  @override
+  String get settingsSignatureAddField => 'Feld derbäisetzen';
+
+  @override
+  String get settingsSignatureImageFailed => 'D’Bild konnt net derbäigesat ginn. Probéiert e méi klengt PNG oder JPEG.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Wéini benotzen';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Wann een a Kopie ass';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Ersetzt d’Standardsignatur, soulaang een am Cc ass. Setzt Adressen oder Domainen derbäi, fir se nëmmen ze benotzen, wa si a Kopie sinn.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Adress oder Domain derbäisetzen…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Eng Adress oder eng Domain wéi client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Geplangt';
+
+  @override
+  String get settingsSignatureStarts => 'Fänkt un';
+
+  @override
+  String get settingsSignatureEnds => 'Hält op';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Op dësen Deeg ersetzt se d’Standardsignatur, fir eng Aktioun oder Vakanzenzäiten.';
+
+  @override
+  String get settingsSignatureRotation => 'A Rotatioun';
+
+  @override
+  String get settingsSignatureRotationFooter => 'All nei Message kritt per Zoufall eng vun de Signaturen a Rotatioun.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Als Standard festleeën';
+
+  @override
+  String get settingsDeleteSignature => 'Signatur läschen';
+
+  @override
   String get settingsLanguage => 'Sprooch';
 
   @override
@@ -3171,12 +3426,6 @@ class AppLocalizationsLb extends AppLocalizations {
   String get settingsSignature => 'Signatur';
 
   @override
-  String get settingsSignatureFooter => 'Gëtt a Message vun dëser Identitéit ënner „-- “ derbäigesat.';
-
-  @override
-  String get settingsNoSignature => 'Keng Signatur';
-
-  @override
   String get settingsCopyToMyself => 'Kopie u mech';
 
   @override
@@ -3337,6 +3586,11 @@ class AppLocalizationsLb extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Tag $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'An $project derbäisetzen';
   }
 
   @override
@@ -5425,6 +5679,12 @@ class AppLocalizationsLb extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Kee Spam';
+
+  @override
+  String get composeSignature => 'Signatur';
+
+  @override
+  String get composeNoSignature => 'Keng Signatur';
 
   @override
   String get accountSetupTitle => 'Kont derbäisetzen';

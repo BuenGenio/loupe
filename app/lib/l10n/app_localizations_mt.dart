@@ -1090,6 +1090,147 @@ class AppLocalizationsMt extends AppLocalizations {
   String get mailboxesTags => 'Tikketti';
 
   @override
+  String get mailboxesProjects => 'Proġetti';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Iġbor flimkien il-konversazzjonijiet dwar ħaġa waħda, minn kwalunkwe folder jew kont. Agħżel Żid ma’ proġett… f’konversazzjoni.';
+
+  @override
+  String get projectsNewMenu => 'Proġett ġdid…';
+
+  @override
+  String get projectsNewTitle => 'Proġett ġdid';
+
+  @override
+  String get projectsEditTitle => 'Editja l-proġett';
+
+  @override
+  String get projectsAddToMenu => 'Żid ma’ proġett…';
+
+  @override
+  String get projectsMarkDone => 'Immarka bħala lest';
+
+  @override
+  String get projectsReopen => 'Erġa’ iftaħ il-proġett';
+
+  @override
+  String get projectsDelete => 'Ħassar il-proġett';
+
+  @override
+  String get projectsDeleteMessage => 'Il-konversazzjonijiet tiegħu jibqgħu fejn huma, barra l-proġett.';
+
+  @override
+  String get projectsUntitled => 'Proġett';
+
+  @override
+  String get projectsEverythingElse => 'Kull ħaġa oħra';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Għad m’hemmx proġetti. Oħloq wieħed b’Proġett ġdid… f’Mailboxes, jew agħżel Żid ma’ proġett… f’konversazzjoni.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Suġġeriment · $count konversazzjoni',
+      many: 'Suġġeriment · $count-il konversazzjoni',
+      few: 'Suġġeriment · $count konversazzjonijiet',
+      one: 'Suġġeriment · konversazzjoni waħda',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Oħloq proġett';
+
+  @override
+  String get projectsNotATopic => 'Mhux suġġett';
+
+  @override
+  String get projectsAiThinking => 'Qed nistaqsi lis-server tal-IA…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Suġġerimenti bl-IA: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Is-server ma setax jintlaħaq.';
+
+  @override
+  String get projectsAiRefused => 'Is-server ċaħad iċ-ċavetta.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Is-server wieġeb bl-iżball $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Is-server dam wisq.';
+
+  @override
+  String get projectsAiBadAnswer => 'It-tweġiba tas-server ma setgħetx tinqara.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Is-server m’għandux dak il-mudell. Għandu: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Żid regola…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Posta ġdida li taqbel ma’ regola tidħol fil-proġett. It-tweġibiet dejjem isegwu l-konversazzjoni tagħhom.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Uri Kull ħaġa oħra';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'Fil-veduta tal-madum, madum għall-posta fl-inbox li mhix f’ebda proġett.';
+
+  @override
+  String get projectsSettingsSuggest => 'Issuġġerixxi suġġetti';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe iħares fuq dan l-apparat lejn il-konversazzjonijiet tal-aħħar 90 jum li ħadt sehem fihom, u jissuġġerixxi dawk li jidhru li jmorru flimkien.';
+
+  @override
+  String get projectsSettingsForget => 'Uri mill-ġdid is-suġġetti miċħuda';
+
+  @override
+  String get projectsSettingsAi => 'Suġġerimenti bl-IA';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Uża server tal-IA';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Server kompatibbli ma’ OpenAI, bħal LocalAI jew Ollama fuq in-netwerk tiegħek, jagħti isem lis-suġġerimenti u jiġborhom. Loupe jibgħatlu s-suġġetti, l-ismijiet, id-dominji tal-organizzazzjonijiet u d-dati ta’ dawk il-konversazzjonijiet, qatt it-test jew l-indirizzi tagħhom.';
+
+  @override
+  String get projectsSettingsAiKey => 'Ċavetta API';
+
+  @override
+  String get projectsSettingsAiModel => 'Mudell';
+
+  @override
+  String get projectsSettingsNotSet => 'Mhux issettjat';
+
+  @override
+  String get projectsSettingsAiTest => 'Ittestja s-server';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Imqabbad. Is-server għandu $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1190,6 +1331,12 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Iffiltra';
+
+  @override
+  String get messageListShowTiles => 'Uri bħala madum';
+
+  @override
+  String get messageListShowList => 'Uri bħala lista';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2785,6 +2932,116 @@ class AppLocalizationsMt extends AppLocalizations {
       'Mhux iċċekkjat: jiġu ċċekkjati biss ċertifikati minn awtorità li Loupe tafda.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Is-server jgħarraf mill-ewwel bil-posta l-ġdida fl-Inbox, permezz ta’ konnessjoni li Loupe iżomm miftuħa. Mitfi, Loupe jiċċekkja kull ftit minuti u juża konnessjoni waħda inqas.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Bla bidla';
+
+  @override
+  String get settingsSignatures => 'Firem';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe jagħżel waħda għal kull messaġġ: dik tal-kopji meta xi ħadd ikun f’Cc, waħda skedata bejn il-jiem tagħha, waħda bl-addoċċ mir-rotazzjoni, inkella d-default.';
+
+  @override
+  String get settingsAddSignature => 'Żid firma';
+
+  @override
+  String get settingsNewSignature => 'Firma ġdida';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Firma $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Default';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Meta xi ħadd ikollu kopja';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Meta $addresses ikollhom kopja';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'F’rotazzjoni';
+
+  @override
+  String get settingsSignatureNameHint => 'Isem (Xogħol, Qasira…)';
+
+  @override
+  String get settingsSignatureHint => 'Il-firma tiegħek';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'L-oqsma jimlew l-isem jew l-indirizz ta’ min jibgħat, għalhekk firma waħda tajba għal kull identità u alias.';
+
+  @override
+  String get settingsSignatureAddImage => 'Żid stampa';
+
+  @override
+  String get settingsSignatureAddField => 'Żid qasam';
+
+  @override
+  String get settingsSignatureImageFailed => 'Ma setgħetx tiżdied dik l-istampa. Ipprova PNG jew JPEG iżgħar.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Meta tintuża';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Meta xi ħadd ikollu kopja';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Tintuża minflok id-default sakemm ikun hemm xi ħadd f’Cc. Żid indirizzi jew dominji biex tintuża biss meta jkollhom kopja huma.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Żid indirizz jew dominju…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Indirizz, jew dominju bħal client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Skedata';
+
+  @override
+  String get settingsSignatureStarts => 'Tibda';
+
+  @override
+  String get settingsSignatureEnds => 'Tispiċċa';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Bejn dawn il-jiem tieħu post id-default, għal kampanja jew ħinijiet tal-vaganzi.';
+
+  @override
+  String get settingsSignatureRotation => 'F’rotazzjoni';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Kull messaġġ ġdid jieħu waħda mill-firem f’rotazzjoni, bl-addoċċ.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Agħmilha d-default';
+
+  @override
+  String get settingsDeleteSignature => 'Ħassar il-firma';
+
+  @override
   String get settingsLanguage => 'Lingwa';
 
   @override
@@ -3277,12 +3534,6 @@ class AppLocalizationsMt extends AppLocalizations {
   String get settingsSignature => 'Firma';
 
   @override
-  String get settingsSignatureFooter => 'Tiżdied taħt “-- ” fil-messaġġi minn din l-identità.';
-
-  @override
-  String get settingsNoSignature => 'L-ebda firma';
-
-  @override
   String get settingsCopyToMyself => 'Kopja lili nnifsi';
 
   @override
@@ -3443,6 +3694,11 @@ class AppLocalizationsMt extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Ittikkettja $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Żid ma’ $project';
   }
 
   @override
@@ -5609,6 +5865,12 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Mhux spam';
+
+  @override
+  String get composeSignature => 'Firma';
+
+  @override
+  String get composeNoSignature => 'Ebda firma';
 
   @override
   String get accountSetupTitle => 'Żid kont';

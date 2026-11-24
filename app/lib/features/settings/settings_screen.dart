@@ -25,6 +25,7 @@ import '../search/smart_mailbox_settings_screen.dart';
 import 'language_settings_screen.dart';
 import 'settings_widgets.dart';
 import '../../theme/loupe_icons.dart';
+import '../projects/project_settings_screen.dart';
 
 String _readerModeLabel(AppLocalizations l10n, ReaderMode m) => switch (m) {
   ReaderMode.readable => l10n.settingsViewReadable,
@@ -163,6 +164,12 @@ class SettingsScreen extends ConsumerWidget {
               title: l10n.settingsSmartMailboxes,
               detail: SmartMailboxSettingsScreen.syncViaLabel(ref.watch(smartMailboxHomeProvider), accounts),
               onTap: () => SmartMailboxSettingsScreen.push(context),
+            ),
+            GroupedRow(
+              key: const Key('project-settings'),
+              leading: SettingsIcon(LoupeIcons.project, colors.flag),
+              title: l10n.mailboxesProjects,
+              onTap: () => ProjectSettingsScreen.push(context),
             ),
           ],
         ),

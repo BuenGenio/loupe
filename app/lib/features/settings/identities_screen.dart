@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ import '../../theme/theme.dart';
 import '../compose/compose_text.dart';
 import '../compose/identity_selection.dart';
 import '../conversation/sheets.dart' show showSnack;
+import '../signatures/signature_editor_screen.dart';
+import '../signatures/signature_text.dart';
 
 /// Settings › account › Identities: the addresses an account sends from.
 /// Tap to edit, drag to reorder; the first one is the default.
@@ -171,7 +174,7 @@ final class IdentityEdit {
   final Identity? saved;
 }
 
-/// Edits one identity: name, address, Reply-To, signature, automatic Cc and
+/// Edits one identity: name, address, Reply-To, signatures, automatic Cc and
 /// Bcc, and the addresses whose replies use it. Resolves to an [IdentityEdit].
 class IdentityEditorScreen extends StatefulWidget {
   const IdentityEditorScreen({super.key, required this.account, this.identity});
@@ -190,14 +193,14 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
   late final _name = TextEditingController(text: _original?.name ?? widget.account.defaultIdentity.name ?? '');
   late final _email = TextEditingController(text: _original?.email ?? '');
   late final _replyTo = TextEditingController(text: _original?.replyTo ?? '');
-  late final _signature = TextEditingController(text: _original?.signature ?? '');
+  late final List<Signature> _signatures = [...?_original?.signatures];
   late final _cc = TextEditingController(text: _original?.autoCc ?? '');
   late final _bcc = TextEditingController(text: _original?.autoBcc ?? '');
   late final List<String> _patterns = [...?_original?.replyPatterns];
   late final String _initial;
   bool _leaving = false;
 
-  List<TextEditingController> get _fields => [_name, _email, _replyTo, _signature, _cc, _bcc];
+  List<TextEditingController> get _fields => [_name, _email, _replyTo, _cc, _bcc];
 
   @override
   void initState() {
@@ -218,7 +221,11 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
 
   void _changed() => setState(() {});
 
-  String _snapshot() => [for (final c in _fields) c.text, ..._patterns].join('\u0000');
+  String _snapshot() => [
+    for (final c in _fields) c.text,
+    ..._patterns,
+    jsonEncode([for (final s in _signatures) s.toJson()]),
+  ].join('\u0000');
 
   bool get _dirty => _snapshot() != _initial;
 
@@ -237,7 +244,6 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
       }
     }
     String? opt(TextEditingController c) => c.text.trim().isEmpty ? null : c.text.trim();
-    final signature = _signature.text.trimRight();
     _leave(
       IdentityEdit.save(
         Identity(
@@ -245,7 +251,7 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
           email: email,
           name: opt(_name),
           replyTo: opt(_replyTo),
-          signature: signature.isEmpty ? null : signature,
+          signatures: List.unmodifiable(_signatures),
           autoCc: opt(_cc),
           autoBcc: opt(_bcc),
           replyPatterns: List.unmodifiable(_patterns),
@@ -301,6 +307,39 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
     if (!_patterns.contains(pattern)) setState(() => _patterns.add(pattern));
   }
 
+  /// Opens the signature at [index] (null: a new one) and takes the edit.
+  Future<void> _editSignature(int? index) async {
+    final edit = await Navigator.of(context).push<SignatureEdit>(
+      MaterialPageRoute(
+        builder: (_) => SignatureEditorScreen(
+          signature: index == null ? null : _signatures[index],
+          canMakeDefault: index != null && index != _defaultSignature,
+        ),
+      ),
+    );
+    if (edit == null || !mounted) return;
+    setState(() {
+      switch (edit) {
+        case SignatureDeleted():
+          if (index != null) _signatures.removeAt(index);
+        case SignatureSaved(:final signature, :final makeDefault):
+          if (index == null) {
+            _signatures.add(signature);
+          } else {
+            _signatures[index] = signature;
+          }
+          if (makeDefault) {
+            _signatures
+              ..remove(signature)
+              ..insert(0, signature.copyWith(rule: SignatureRule.always));
+          }
+      }
+    });
+  }
+
+  /// Where the default is: the first signature without rules.
+  int get _defaultSignature => _signatures.indexWhere((s) => s.rule.isAlways);
+
   Future<void> _alert(String title, String message) => showCupertinoDialog<void>(
     context: context,
     builder: (context) => CupertinoAlertDialog(
@@ -321,17 +360,6 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
     final colors = LoupeColors.of(context);
     final styles = LoupeTextStyles.of(context);
     final l10n = context.l10n;
-    Widget multiline(Key key, TextEditingController controller, String hint) => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: TextField(
-        key: key,
-        controller: controller,
-        minLines: 3,
-        maxLines: 8,
-        style: styles.body,
-        decoration: InputDecoration.collapsed(hintText: hint),
-      ),
-    );
     return PopScope(
       canPop: _leaving || !_dirty,
       onPopInvokedWithResult: (didPop, _) {
@@ -372,9 +400,28 @@ class _IdentityEditorScreenState extends State<IdentityEditorScreen> {
             ],
           ),
           InsetGroup(
-            header: l10n.settingsSignature,
-            footer: l10n.settingsSignatureFooter,
-            children: [multiline(const Key('identity-signature'), _signature, l10n.settingsNoSignature)],
+            header: l10n.settingsSignatures,
+            footer: l10n.settingsSignaturesFooter,
+            separatorIndent: 16,
+            children: [
+              for (final (i, s) in _signatures.indexed)
+                GroupedRow(
+                  key: ValueKey('identity-signature-$i'),
+                  title: signatureLabel(l10n, s, i),
+                  subtitle: switch (signatureRuleSummary(l10n, s, isDefault: i == _defaultSignature)) {
+                    '' => null,
+                    final summary => summary,
+                  },
+                  onTap: () => _editSignature(i),
+                ),
+              GroupedRow(
+                key: const Key('identity-add-signature'),
+                title: l10n.settingsAddSignature,
+                titleStyle: styles.body.copyWith(color: colors.unreadDot),
+                chevron: false,
+                onTap: () => _editSignature(null),
+              ),
+            ],
           ),
           InsetGroup(
             header: l10n.settingsCopyToMyself,

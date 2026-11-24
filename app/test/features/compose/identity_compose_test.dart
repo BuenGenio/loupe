@@ -17,12 +17,17 @@ const _store = EmailAddress('orders@store.test', 'Store');
 
 final _account = testAccount.copyWith(
   identities: const [
-    Identity(id: 'acc/me', email: 'me@example.com', name: 'Me Myself', signature: 'Cheers,\nMe'),
+    Identity(
+      id: 'acc/me',
+      email: 'me@example.com',
+      name: 'Me Myself',
+      signatures: [Signature(id: 'acc/me-sig', content: r'[{"insert":"Cheers,\nMe\n"}]')],
+    ),
     Identity(
       id: 'acc/shop',
       email: 'shop@example.com',
       name: 'Example Shop',
-      signature: 'The Shop',
+      signatures: [Signature(id: 'acc/shop-sig', content: r'[{"insert":"The Shop\n"}]')],
       replyTo: 'help@example.com',
       autoBcc: 'archive@example.com',
     ),
@@ -175,7 +180,7 @@ void main() {
       final saved = r.accounts.first.identities;
       expect(saved.map((i) => i.email), ['me@example.com', 'shop@example.com', 'store-17@example.com']);
       expect(saved.last.name, 'Me Myself');
-      expect(saved.last.signature, 'Cheers,\nMe');
+      expect(saved.last.signatures.single.plainText, 'Cheers,\nMe');
       expect(find.text('From: Me Myself <store-17@example.com>', findRichText: true), findsOneWidget);
       expect(find.text('store-17@example.com is saved as an identity.'), findsOneWidget);
 

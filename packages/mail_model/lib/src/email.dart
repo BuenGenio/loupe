@@ -4,6 +4,7 @@ import 'address.dart';
 import 'decrypted.dart';
 import 'keywords.dart';
 import 'lists.dart';
+import 'projects.dart';
 import 'snooze.dart';
 
 /// What the message list needs for one row. Cheap to load in bulk.
@@ -115,8 +116,14 @@ final class EmailSummary {
   bool get isAnswered => keywords.contains(Keywords.answered);
   bool get isDraft => keywords.contains(Keywords.draft);
 
-  /// User-visible tags (keywords that are not system or snooze state).
-  Iterable<String> get tags => keywords.where((k) => !Keywords.system.contains(k) && !Snooze.isSnoozeKeyword(k));
+  /// User-visible tags (keywords that are not system, snooze or project
+  /// state).
+  Iterable<String> get tags => keywords.where(
+    (k) => !Keywords.system.contains(k) && !Snooze.isSnoozeKeyword(k) && !Projects.isProjectKeyword(k),
+  );
+
+  /// The projects the message is in (see [Projects]).
+  Set<String> get projectIds => Projects.idsIn(keywords);
 
   /// When the message wakes from snooze (its earliest `$snoozed-…`
   /// keyword), or null.

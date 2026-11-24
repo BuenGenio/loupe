@@ -25,6 +25,7 @@ class MessageRow extends StatelessWidget {
     this.location,
     this.showRecipients = false,
     this.wakeTime,
+    this.projects = const [],
     this.onTap,
     this.onLongPress,
   });
@@ -60,6 +61,10 @@ class MessageRow extends StatelessWidget {
   /// When a snoozed message comes back ("Tomorrow 08:00"), shown with a
   /// clock instead of the date (the Snoozed mailbox).
   final String? wakeTime;
+
+  /// The projects the message is in (besides the one listed), shown as
+  /// small coloured badges after its tags.
+  final List<({String name, Color color})> projects;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
 
@@ -191,6 +196,14 @@ class MessageRow extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
+            for (final p in projects.take(3))
+              Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: Tooltip(
+                  message: p.name,
+                  child: Icon(LoupeIcons.projectFilled, size: 11, color: p.color, semanticLabel: p.name),
+                ),
+              ),
             for (final t in tags.take(4))
               Padding(
                 padding: const EdgeInsets.only(left: 5),

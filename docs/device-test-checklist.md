@@ -131,6 +131,18 @@ Keep this device for step 10 (Smart Mailbox sync).
 5. **If not:**
    - The red card says which: the password, "Can't reach server", or the certificate. A certificate error offers "Trust This Certificate" with its SHA-256 fingerprint.
    - Server Settings › Edit Settings shows what discovery found.
+6. **Do:** Settings › the account › **Incoming**: type a wrong password, tap **Save**, then **Cancel**.
+7. **Expect:** "Password rejected. Check it and try again." on the Server Settings screen; after Cancel the account still syncs with the old password.
+8. **Do:** in the account, switch **IDLE** off and send yourself mail with Loupe open. Then switch it on and send another.
+9. **Expect:** the first arrives at the next check (within 5 minutes), the second within seconds.
+
+## 5a. Signatures (5 min)
+
+1. **Do:** Settings › the account › Identities › yours › **Add Signature**. Make the name bold and coloured, add a link, an image and the Name field; turn on **When Someone Is Copied**. Save the identity.
+2. **Do:** compose a new message: the default signature shows. Add someone in Cc, then remove them.
+3. **Expect:** the copied signature appears while Cc has someone and goes when it is empty, with its image and formatting drawn.
+4. **Do:** send it to the second address and open it there (Gmail or Thunderbird).
+5. **Expect:** the formatting and image show without "load remote images"; the plain-text version has the link as `text <url>`.
 
 ## 6. Notifications and background, Instant Delivery off (15–30 min, mostly waiting)
 
@@ -243,6 +255,26 @@ Keep this device for step 10 (Smart Mailbox sync).
 5. **If not:**
    - "On the Server" shows "Couldn’t sync", "Not supported" or "Newer format". Try **Sync Now**.
    - A refused password stops it until the next sync logs in (fail2ban protection).
+
+## 10a. Projects (10 min, two devices or Thunderbird)
+
+1. **Do (phone):** Mailboxes › **New Project…**, name it and pick a colour. Long-press a conversation of several messages › **Add to Project…** › tick the project › Done.
+2. **Expect:** the project's row on Mailboxes shows the conversation's unread count. Opening it lists the conversation, with your replies from Sent.
+3. **Do:** reply to that conversation from the second address (Thunderbird or Gmail), then pull to refresh.
+4. **Expect:** the reply appears in the project without being added. On the server the conversation's messages carry the keyword `$loupe-project-…` (`UID FETCH 1:* FLAGS` over IMAP, or a Thunderbird tag defined with that key).
+5. **Do (second device, same "Sync via"):** pull to refresh in Mailboxes.
+6. **Expect:** the project is there with its name and colour, and lists the same conversation. **Mark as Done** on one device moves it to the end on the other after its next check.
+7. **Do:** ⋯ › **Delete Project** on the phone.
+8. **Expect:** it goes from both devices; the conversation stays in its folders.
+
+## 10b. Tiles, suggestions and the AI pass (10 min)
+
+1. **Do:** All Inboxes › the tiles button in the title bar.
+2. **Expect:** a tile per active project (most recently active first, with its unread count), dashed suggestion tiles, and Everything Else. Bank alerts and receipts are not suggested.
+3. **Do:** **Make Project** on a suggestion; **Not a Topic** on another.
+4. **Expect:** the first becomes a project tile, with its conversations in it and a rule in Settings › Rules ("Add to …"). The second doesn't come back after a refresh.
+5. **Do:** Settings › Projects › **Use an AI Server**. Enter the server (for example `http://<host>:8080/v1`), the API key and the model, then **Test Server**.
+6. **Expect:** "Connected". Back in the tiles, "Asking the AI server…", then suggestions named by the server (sparkle icon). With a wrong key: "Suggestions with AI: The server refused the key.", and the phone's own suggestions stay.
 
 ## 11. OpenPGP with Thunderbird (15 min)
 

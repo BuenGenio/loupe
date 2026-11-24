@@ -136,10 +136,14 @@ class SheetRow extends StatelessWidget {
     this.trailing,
     this.destructive = false,
     this.subtitle,
+    this.iconColor,
   });
 
   final String label;
   final IconData? icon;
+
+  /// The icon's colour, when not the accent (a project's colour).
+  final Color? iconColor;
   final VoidCallback? onTap;
   final Widget? trailing;
   final bool destructive;
@@ -152,7 +156,7 @@ class SheetRow extends StatelessWidget {
     return ListTile(
       dense: true,
       minLeadingWidth: 24,
-      leading: icon == null ? null : Icon(icon, color: color ?? scheme.primary, size: 22),
+      leading: icon == null ? null : Icon(icon, color: color ?? iconColor ?? scheme.primary, size: 22),
       title: Text(label, style: TextStyle(fontSize: 16, color: color)),
       subtitle: subtitle == null ? null : Text(subtitle!, maxLines: 1, overflow: TextOverflow.ellipsis),
       trailing: trailing,

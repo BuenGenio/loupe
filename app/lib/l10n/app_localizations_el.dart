@@ -1038,6 +1038,145 @@ class AppLocalizationsEl extends AppLocalizations {
   String get mailboxesTags => 'Ετικέτες';
 
   @override
+  String get mailboxesProjects => 'Έργα';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Ομαδοποιήστε τις συζητήσεις για ένα θέμα, από οποιονδήποτε φάκελο ή λογαριασμό. Επιλέξτε Προσθήκη σε έργο… σε μια συζήτηση.';
+
+  @override
+  String get projectsNewMenu => 'Νέο έργο…';
+
+  @override
+  String get projectsNewTitle => 'Νέο έργο';
+
+  @override
+  String get projectsEditTitle => 'Επεξεργασία έργου';
+
+  @override
+  String get projectsAddToMenu => 'Προσθήκη σε έργο…';
+
+  @override
+  String get projectsMarkDone => 'Σήμανση ως ολοκληρωμένο';
+
+  @override
+  String get projectsReopen => 'Εκ νέου άνοιγμα έργου';
+
+  @override
+  String get projectsDelete => 'Διαγραφή έργου';
+
+  @override
+  String get projectsDeleteMessage => 'Οι συζητήσεις του μένουν εκεί που είναι, εκτός έργου.';
+
+  @override
+  String get projectsUntitled => 'Έργο';
+
+  @override
+  String get projectsEverythingElse => 'Όλα τα υπόλοιπα';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Δεν υπάρχουν ακόμη έργα. Δημιουργήστε ένα με Νέο έργο… στα Γραμματοκιβώτια ή επιλέξτε Προσθήκη σε έργο… σε μια συζήτηση.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Πρόταση · $count συζητήσεις',
+      one: 'Πρόταση · 1 συζήτηση',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Δημιουργία έργου';
+
+  @override
+  String get projectsNotATopic => 'Δεν είναι θέμα';
+
+  @override
+  String get projectsAiThinking => 'Ερώτηση στον διακομιστή ΤΝ…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Προτάσεις με ΤΝ: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Ο διακομιστής δεν είναι προσβάσιμος.';
+
+  @override
+  String get projectsAiRefused => 'Ο διακομιστής απέρριψε το κλειδί.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Ο διακομιστής απάντησε με σφάλμα $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Ο διακομιστής άργησε πολύ.';
+
+  @override
+  String get projectsAiBadAnswer => 'Η απάντηση του διακομιστή δεν διαβάστηκε.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Ο διακομιστής δεν έχει αυτό το μοντέλο. Έχει: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Προσθήκη κανόνα…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Τα νέα μηνύματα που ταιριάζουν σε έναν κανόνα μπαίνουν στο έργο. Οι απαντήσεις ακολουθούν πάντα τη συζήτησή τους.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Εμφάνιση του Όλα τα υπόλοιπα';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'Στην προβολή πλακιδίων, ένα πλακίδιο για τα εισερχόμενα που δεν ανήκουν σε κανένα έργο.';
+
+  @override
+  String get projectsSettingsSuggest => 'Πρόταση θεμάτων';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Το Loupe εξετάζει σε αυτήν τη συσκευή τις συζητήσεις των τελευταίων 90 ημερών στις οποίες συμμετείχατε και προτείνει όσες μοιάζουν να ανήκουν μαζί.';
+
+  @override
+  String get projectsSettingsForget => 'Εμφάνιση ξανά των απορριφθέντων θεμάτων';
+
+  @override
+  String get projectsSettingsAi => 'Προτάσεις με ΤΝ';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Χρήση διακομιστή ΤΝ';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Ένας διακομιστής συμβατός με OpenAI, όπως το LocalAI ή το Ollama στο δικό σας δίκτυο, ονομάζει και ομαδοποιεί τις προτάσεις. Το Loupe του στέλνει τα θέματα, τα ονόματα, τους τομείς οργανισμών και τις ημερομηνίες αυτών των συζητήσεων, ποτέ το κείμενο ή τις διευθύνσεις τους.';
+
+  @override
+  String get projectsSettingsAiKey => 'Κλειδί API';
+
+  @override
+  String get projectsSettingsAiModel => 'Μοντέλο';
+
+  @override
+  String get projectsSettingsNotSet => 'Δεν έχει οριστεί';
+
+  @override
+  String get projectsSettingsAiTest => 'Δοκιμή διακομιστή';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Συνδέθηκε. Ο διακομιστής έχει το $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1129,6 +1268,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Φίλτρο';
+
+  @override
+  String get messageListShowTiles => 'Εμφάνιση ως πλακίδια';
+
+  @override
+  String get messageListShowList => 'Εμφάνιση ως λίστα';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2673,6 +2818,116 @@ class AppLocalizationsEl extends AppLocalizations {
       'Δεν ελέγχθηκε: ελέγχονται μόνο πιστοποιητικά από αρχές που εμπιστεύεται το Loupe.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Ο διακομιστής ενημερώνει αμέσως για νέα μηνύματα στα Εισερχόμενα, μέσω μιας σύνδεσης που το Loupe κρατά ανοιχτή. Όταν είναι ανενεργό, το Loupe ελέγχει κάθε λίγα λεπτά και χρησιμοποιεί μία σύνδεση λιγότερη.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Χωρίς αλλαγή';
+
+  @override
+  String get settingsSignatures => 'Υπογραφές';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Το Loupe επιλέγει μία για κάθε μήνυμα: την υπογραφή κοινοποίησης όταν κάποιος είναι στο Κοιν., μια προγραμματισμένη στις ημέρες της, μια τυχαία από την εναλλαγή, αλλιώς την προεπιλεγμένη.';
+
+  @override
+  String get settingsAddSignature => 'Προσθήκη υπογραφής';
+
+  @override
+  String get settingsNewSignature => 'Νέα υπογραφή';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Υπογραφή $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Προεπιλογή';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Όταν κάποιος είναι σε κοινοποίηση';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Όταν κοινοποιείται σε $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'Σε εναλλαγή';
+
+  @override
+  String get settingsSignatureNameHint => 'Όνομα (Εργασία, Σύντομη…)';
+
+  @override
+  String get settingsSignatureHint => 'Η υπογραφή σας';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Τα πεδία συμπληρώνουν το όνομα ή τη διεύθυνση του αποστολέα, ώστε μία υπογραφή να ταιριάζει σε κάθε ταυτότητα και ψευδώνυμο.';
+
+  @override
+  String get settingsSignatureAddImage => 'Προσθήκη εικόνας';
+
+  @override
+  String get settingsSignatureAddField => 'Προσθήκη πεδίου';
+
+  @override
+  String get settingsSignatureImageFailed => 'Δεν ήταν δυνατή η προσθήκη της εικόνας. Δοκιμάστε μικρότερο PNG ή JPEG.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Πότε χρησιμοποιείται';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Όταν κάποιος είναι σε κοινοποίηση';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Χρησιμοποιείται αντί της προεπιλεγμένης όσο υπάρχει κάποιος στο Κοιν. Προσθέστε διευθύνσεις ή τομείς για να χρησιμοποιείται μόνο όταν κοινοποιούνται αυτοί.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Προσθήκη διεύθυνσης ή τομέα…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Μια διεύθυνση ή ένας τομέας, όπως client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Προγραμματισμένη';
+
+  @override
+  String get settingsSignatureStarts => 'Έναρξη';
+
+  @override
+  String get settingsSignatureEnds => 'Λήξη';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Αυτές τις ημέρες αντικαθιστά την προεπιλεγμένη, για μια καμπάνια ή ωράριο αργιών.';
+
+  @override
+  String get settingsSignatureRotation => 'Σε εναλλαγή';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Κάθε νέο μήνυμα παίρνει τυχαία μία από τις υπογραφές σε εναλλαγή.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Ορισμός ως προεπιλογή';
+
+  @override
+  String get settingsDeleteSignature => 'Διαγραφή υπογραφής';
+
+  @override
   String get settingsLanguage => 'Γλώσσα';
 
   @override
@@ -3166,12 +3421,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsSignature => 'Υπογραφή';
 
   @override
-  String get settingsSignatureFooter => 'Προστίθεται κάτω από το «-- » στα μηνύματα από αυτή την ταυτότητα.';
-
-  @override
-  String get settingsNoSignature => 'Χωρίς υπογραφή';
-
-  @override
   String get settingsCopyToMyself => 'Αντίγραφο σε εμένα';
 
   @override
@@ -3332,6 +3581,11 @@ class AppLocalizationsEl extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Ετικέτα $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Προσθήκη σε $project';
   }
 
   @override
@@ -5409,6 +5663,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Όχι ανεπιθύμητο';
+
+  @override
+  String get composeSignature => 'Υπογραφή';
+
+  @override
+  String get composeNoSignature => 'Χωρίς υπογραφή';
 
   @override
   String get accountSetupTitle => 'Προσθήκη λογαριασμού';

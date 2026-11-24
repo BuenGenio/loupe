@@ -243,7 +243,14 @@ void main() {
       accounts: [
         testAccount,
         testAccount.copyWith(
-          identities: const [Identity(id: 'home/me', email: 'me@home.test', name: 'Me', signature: 'From home')],
+          identities: const [
+            Identity(
+              id: 'home/me',
+              email: 'me@home.test',
+              name: 'Me',
+              signatures: [Signature(id: 'home/sig', content: r'[{"insert":"From home\n"}]')],
+            ),
+          ],
         ),
       ],
     );

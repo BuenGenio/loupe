@@ -11,6 +11,7 @@ import 'dart:ui' show PlatformDispatcher;
 import 'package:flutter/cupertino.dart' show CupertinoLocalizations;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_quill/flutter_quill.dart' show FlutterQuillLocalizations;
 import 'package:intl/intl.dart';
 
 import 'app_localizations.dart';
@@ -31,6 +32,7 @@ const List<LocalizationsDelegate<dynamic>> loupeLocalizationsDelegates = [
   _EnglishMaterial(),
   _EnglishCupertino(),
   _EnglishWidgets(),
+  _QuillLocalizations(),
 ];
 
 /// MaterialApp's localeListResolutionCallback: [resolveLocale], and dates
@@ -142,6 +144,29 @@ const languageNames = {
 };
 
 const _english = Locale('en');
+
+/// The signature editor's toolbar (flutter_quill) in every language Loupe
+/// speaks: Quill's own words where it has them (Norwegian Bokmål as its
+/// `no`), English tooltips otherwise.
+class _QuillLocalizations extends LocalizationsDelegate<FlutterQuillLocalizations> {
+  const _QuillLocalizations();
+
+  static const _quill = FlutterQuillLocalizations.delegate;
+
+  @override
+  bool isSupported(Locale locale) => true;
+
+  @override
+  Future<FlutterQuillLocalizations> load(Locale locale) {
+    for (final l in [locale, Locale(locale.languageCode == 'nb' ? 'no' : locale.languageCode)]) {
+      if (_quill.isSupported(l)) return _quill.load(l);
+    }
+    return _quill.load(_english);
+  }
+
+  @override
+  bool shouldReload(_QuillLocalizations old) => false;
+}
 
 class _EnglishMaterial extends LocalizationsDelegate<MaterialLocalizations> {
   const _EnglishMaterial();

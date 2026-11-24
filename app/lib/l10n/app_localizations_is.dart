@@ -1036,6 +1036,144 @@ class AppLocalizationsIs extends AppLocalizations {
   String get mailboxesTags => 'Merki';
 
   @override
+  String get mailboxesProjects => 'Verkefni';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Flokkaðu saman samtöl um eitt málefni, úr hvaða möppu eða reikningi sem er. Veldu Bæta í verkefni… á samtali.';
+
+  @override
+  String get projectsNewMenu => 'Nýtt verkefni…';
+
+  @override
+  String get projectsNewTitle => 'Nýtt verkefni';
+
+  @override
+  String get projectsEditTitle => 'Breyta verkefni';
+
+  @override
+  String get projectsAddToMenu => 'Bæta í verkefni…';
+
+  @override
+  String get projectsMarkDone => 'Merkja sem lokið';
+
+  @override
+  String get projectsReopen => 'Opna verkefni aftur';
+
+  @override
+  String get projectsDelete => 'Eyða verkefni';
+
+  @override
+  String get projectsDeleteMessage => 'Samtöl þess verða áfram þar sem þau eru, utan verkefnisins.';
+
+  @override
+  String get projectsUntitled => 'Verkefni';
+
+  @override
+  String get projectsEverythingElse => 'Allt annað';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Engin verkefni enn. Búðu til eitt með Nýtt verkefni… í Pósthólfum, eða veldu Bæta í verkefni… á samtali.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tillaga · $count samtöl',
+      one: 'Tillaga · $count samtal',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Búa til verkefni';
+
+  @override
+  String get projectsNotATopic => 'Ekki efni';
+
+  @override
+  String get projectsAiThinking => 'Spyr gervigreindarþjóninn…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Tillögur með gervigreind: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Náði ekki sambandi við þjóninn.';
+
+  @override
+  String get projectsAiRefused => 'Þjónninn hafnaði lyklinum.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Þjónninn svaraði með villu $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Þjónninn var of lengi.';
+
+  @override
+  String get projectsAiBadAnswer => 'Ekki tókst að lesa svar þjónsins.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Þjónninn er ekki með það líkan. Hann er með: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Bæta við reglu…';
+
+  @override
+  String get projectsRulesFooter => 'Nýr póstur sem passar við reglu fer í verkefnið. Svör fylgja alltaf sínu samtali.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Sýna Allt annað';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'Í reitasýn, reitur fyrir póst í innhólfi sem er ekki í neinu verkefni.';
+
+  @override
+  String get projectsSettingsSuggest => 'Stinga upp á efnum';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe skoðar á þessu tæki samtöl síðustu 90 daga sem þú tókst þátt í og stingur upp á þeim sem virðast eiga saman.';
+
+  @override
+  String get projectsSettingsForget => 'Sýna höfnuð efni aftur';
+
+  @override
+  String get projectsSettingsAi => 'Tillögur með gervigreind';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Nota gervigreindarþjón';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Þjónn sem er samhæfður OpenAI, til dæmis LocalAI eða Ollama á þínu eigin neti, nefnir og flokkar tillögurnar. Loupe sendir honum efni, nöfn, lén fyrirtækja og dagsetningar þessara samtala, aldrei texta þeirra eða netföng.';
+
+  @override
+  String get projectsSettingsAiKey => 'API-lykill';
+
+  @override
+  String get projectsSettingsAiModel => 'Líkan';
+
+  @override
+  String get projectsSettingsNotSet => 'Ekki stillt';
+
+  @override
+  String get projectsSettingsAiTest => 'Prófa þjón';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Tengt. Þjónninn er með $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1125,6 +1263,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Sía';
+
+  @override
+  String get messageListShowTiles => 'Sýna sem reiti';
+
+  @override
+  String get messageListShowList => 'Sýna sem lista';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2667,6 +2811,116 @@ class AppLocalizationsIs extends AppLocalizations {
       'Ekki athugað: aðeins skilríki frá vottunarstöð sem Loupe treystir eru athuguð.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Þjónninn lætur strax vita af nýjum pósti í innhólfinu, um tengingu sem Loupe heldur opinni. Sé slökkt á þessu athugar Loupe póstinn á nokkurra mínútna fresti og notar einni tengingu færra.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Óbreytt';
+
+  @override
+  String get settingsSignatures => 'Undirskriftir';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe velur eina fyrir hvert bréf: afritsundirskrift þegar einhver er í Afrit, tímasetta á sínum dögum, af handahófi úr skiptum, annars þá sjálfgefnu.';
+
+  @override
+  String get settingsAddSignature => 'Bæta við undirskrift';
+
+  @override
+  String get settingsNewSignature => 'Ný undirskrift';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Undirskrift $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Sjálfgefin';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Þegar einhver fær afrit';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Þegar $addresses fá afrit';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'Í skiptum';
+
+  @override
+  String get settingsSignatureNameHint => 'Heiti (Vinna, Stutt…)';
+
+  @override
+  String get settingsSignatureHint => 'Undirskriftin þín';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Reitir fylla inn nafn eða netfang sendanda, svo ein undirskrift hentar öllum auðkennum og samnefnum.';
+
+  @override
+  String get settingsSignatureAddImage => 'Bæta við mynd';
+
+  @override
+  String get settingsSignatureAddField => 'Bæta við reit';
+
+  @override
+  String get settingsSignatureImageFailed => 'Ekki tókst að bæta myndinni við. Prófaðu minni PNG- eða JPEG-mynd.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Hvenær á að nota';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Þegar einhver fær afrit';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Notuð í stað þeirrar sjálfgefnu meðan einhver er í Afrit. Bættu við netföngum eða lénum til að nota hana aðeins þegar þau fá afrit.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Bæta við netfangi eða léni…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Netfang, eða lén eins og client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Tímasett';
+
+  @override
+  String get settingsSignatureStarts => 'Hefst';
+
+  @override
+  String get settingsSignatureEnds => 'Lýkur';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Þessa daga kemur hún í stað þeirrar sjálfgefnu, fyrir herferð eða opnunartíma yfir hátíðir.';
+
+  @override
+  String get settingsSignatureRotation => 'Í skiptum';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Hvert nýtt bréf fær af handahófi eina af undirskriftunum í skiptum.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Gera sjálfgefna';
+
+  @override
+  String get settingsDeleteSignature => 'Eyða undirskrift';
+
+  @override
   String get settingsLanguage => 'Tungumál';
 
   @override
@@ -3155,12 +3409,6 @@ class AppLocalizationsIs extends AppLocalizations {
   String get settingsSignature => 'Undirskrift';
 
   @override
-  String get settingsSignatureFooter => 'Bætt við fyrir neðan „-- “ í skilaboðum frá þessu auðkenni.';
-
-  @override
-  String get settingsNoSignature => 'Engin undirskrift';
-
-  @override
   String get settingsCopyToMyself => 'Afrit til mín';
 
   @override
@@ -3321,6 +3569,11 @@ class AppLocalizationsIs extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Merkja með $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Bæta í $project';
   }
 
   @override
@@ -5404,6 +5657,12 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Ekki ruslpóstur';
+
+  @override
+  String get composeSignature => 'Undirskrift';
+
+  @override
+  String get composeNoSignature => 'Engin undirskrift';
 
   @override
   String get accountSetupTitle => 'Bæta við aðgangi';

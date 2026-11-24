@@ -1040,6 +1040,145 @@ class AppLocalizationsNl extends AppLocalizations {
   String get mailboxesTags => 'Tags';
 
   @override
+  String get mailboxesProjects => 'Projecten';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Groepeer de gesprekken over één ding, uit elke map of account. Kies Aan project toevoegen… bij een gesprek.';
+
+  @override
+  String get projectsNewMenu => 'Nieuw project…';
+
+  @override
+  String get projectsNewTitle => 'Nieuw project';
+
+  @override
+  String get projectsEditTitle => 'Project bewerken';
+
+  @override
+  String get projectsAddToMenu => 'Aan project toevoegen…';
+
+  @override
+  String get projectsMarkDone => 'Markeren als klaar';
+
+  @override
+  String get projectsReopen => 'Project heropenen';
+
+  @override
+  String get projectsDelete => 'Project verwijderen';
+
+  @override
+  String get projectsDeleteMessage => 'De gesprekken blijven waar ze zijn, buiten het project.';
+
+  @override
+  String get projectsUntitled => 'Project';
+
+  @override
+  String get projectsEverythingElse => 'Al het andere';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Nog geen projecten. Maak er een met Nieuw project… bij Mailboxen, of kies Aan project toevoegen… bij een gesprek.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Voorstel · $count gesprekken',
+      one: 'Voorstel · 1 gesprek',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Project maken';
+
+  @override
+  String get projectsNotATopic => 'Geen onderwerp';
+
+  @override
+  String get projectsAiThinking => 'AI-server wordt gevraagd…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Voorstellen met AI: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Kan de server niet bereiken.';
+
+  @override
+  String get projectsAiRefused => 'De server weigerde de sleutel.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'De server antwoordde met fout $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'De server deed er te lang over.';
+
+  @override
+  String get projectsAiBadAnswer => 'Het antwoord van de server is onleesbaar.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'De server heeft dat model niet. Hij heeft: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Regel toevoegen…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Nieuwe mail die bij een regel past, komt in het project. Antwoorden volgen altijd hun gesprek.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Al het andere tonen';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'In de tegelweergave een tegel voor de mail in de inbox die in geen project zit.';
+
+  @override
+  String get projectsSettingsSuggest => 'Onderwerpen voorstellen';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe bekijkt op dit apparaat de gesprekken van de laatste 90 dagen waaraan je meedeed, en stelt voor welke bij elkaar lijken te horen.';
+
+  @override
+  String get projectsSettingsForget => 'Afgewezen onderwerpen weer tonen';
+
+  @override
+  String get projectsSettingsAi => 'Voorstellen met AI';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Een AI-server gebruiken';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Een OpenAI-compatibele server, zoals LocalAI of Ollama in je eigen netwerk, geeft de voorstellen een naam en groepeert ze. Loupe stuurt hem de onderwerpen, namen, organisatiedomeinen en datums van die gesprekken, nooit de tekst of adressen.';
+
+  @override
+  String get projectsSettingsAiKey => 'API-sleutel';
+
+  @override
+  String get projectsSettingsAiModel => 'Model';
+
+  @override
+  String get projectsSettingsNotSet => 'Niet ingesteld';
+
+  @override
+  String get projectsSettingsAiTest => 'Server testen';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Verbonden. De server heeft $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1134,6 +1273,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filter';
+
+  @override
+  String get messageListShowTiles => 'Als tegels tonen';
+
+  @override
+  String get messageListShowList => 'Als lijst tonen';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2675,6 +2820,117 @@ class AppLocalizationsNl extends AppLocalizations {
       'Niet gecontroleerd: alleen certificaten van een instantie die Loupe vertrouwt, worden gecontroleerd.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'De server meldt nieuwe mail in de inbox meteen, via een verbinding die Loupe openhoudt. Uit: Loupe kijkt om de paar minuten en gebruikt één verbinding minder.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Ongewijzigd';
+
+  @override
+  String get settingsSignatures => 'Handtekeningen';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe kiest er één per bericht: die voor kopieën als er iemand in de cc staat, een geplande tussen haar dagen, een willekeurige uit de rotatie, anders de standaard.';
+
+  @override
+  String get settingsAddSignature => 'Handtekening toevoegen';
+
+  @override
+  String get settingsNewSignature => 'Nieuwe handtekening';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Handtekening $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Standaard';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Als iemand een kopie krijgt';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Als $addresses een kopie krijgt';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'In rotatie';
+
+  @override
+  String get settingsSignatureNameHint => 'Naam (Werk, Kort…)';
+
+  @override
+  String get settingsSignatureHint => 'Je handtekening';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Velden vullen de naam of het adres van de afzender in, zo past één handtekening bij elke identiteit en alias.';
+
+  @override
+  String get settingsSignatureAddImage => 'Afbeelding toevoegen';
+
+  @override
+  String get settingsSignatureAddField => 'Veld toevoegen';
+
+  @override
+  String get settingsSignatureImageFailed => 'Kan die afbeelding niet toevoegen. Probeer een kleinere PNG of JPEG.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Wanneer gebruiken';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Als iemand een kopie krijgt';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Gebruikt in plaats van de standaard zolang er iemand in de cc staat. Voeg adressen of domeinen toe om haar alleen te gebruiken als zij een kopie krijgen.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Adres of domein toevoegen…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Een adres, of een domein zoals client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Gepland';
+
+  @override
+  String get settingsSignatureStarts => 'Begint';
+
+  @override
+  String get settingsSignatureEnds => 'Eindigt';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Tussen deze dagen vervangt ze de standaard, voor een campagne of openingstijden tijdens de feestdagen.';
+
+  @override
+  String get settingsSignatureRotation => 'In rotatie';
+
+  @override
+  String get settingsSignatureRotationFooter =>
+      'Elk nieuw bericht krijgt willekeurig een van de handtekeningen in rotatie.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Als standaard instellen';
+
+  @override
+  String get settingsDeleteSignature => 'Handtekening verwijderen';
+
+  @override
   String get settingsLanguage => 'Taal';
 
   @override
@@ -3166,12 +3422,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get settingsSignature => 'Handtekening';
 
   @override
-  String get settingsSignatureFooter => 'Wordt onder “-- ” toegevoegd in berichten van deze identiteit.';
-
-  @override
-  String get settingsNoSignature => 'Geen handtekening';
-
-  @override
   String get settingsCopyToMyself => 'Kopie naar mezelf';
 
   @override
@@ -3332,6 +3582,11 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Tag $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Toevoegen aan $project';
   }
 
   @override
@@ -5438,6 +5693,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Geen spam';
+
+  @override
+  String get composeSignature => 'Handtekening';
+
+  @override
+  String get composeNoSignature => 'Geen handtekening';
 
   @override
   String get accountSetupTitle => 'Account toevoegen';

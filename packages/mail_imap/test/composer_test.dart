@@ -108,6 +108,41 @@ void main() {
     expect(attachments[1].mediaType?.text, 'application/octet-stream');
   });
 
+  test('a signature image goes in multipart/related with the HTML, outside the text', () {
+    final png = Uint8List.fromList([0x89, 0x50, 0x4e, 0x47, 1, 2, 3]);
+    final bytes = compose(
+      OutgoingMessage(
+        accountId: 'a',
+        identityId: 'i1',
+        to: const [EmailAddress('ann@example.com')],
+        subject: 'Hello',
+        text: 'Hi\n\n-- \nJo',
+        html: '<p>Hi</p><div class="moz-signature">-- <br><img src="cid:logo.1@loupe"> Jo</div>',
+        inline: [
+          OutgoingAttachment(filename: 'logo.png', mimeType: 'image/png', data: png, contentId: 'logo.1@loupe'),
+          // Not in the HTML: left out.
+          OutgoingAttachment(filename: 'unused.png', mimeType: 'image/png', data: png, contentId: 'unused@loupe'),
+        ],
+        attachments: [OutgoingAttachment(filename: 'a.txt', mimeType: 'text/plain', data: Uint8List.fromList([65]))],
+      ),
+    );
+    final raw = ascii.decode(bytes);
+    expect(raw, contains('type="text/html"'));
+    expect(raw, contains('Content-ID: <logo.1@loupe>'));
+    expect(raw, isNot(contains('unused')));
+    final m = parseBack(bytes);
+    expect(m.mediaType.sub, em.MediaSubtype.multipartMixed);
+    final alternative = m.parts![0];
+    expect(alternative.mediaType.sub, em.MediaSubtype.multipartAlternative);
+    expect(alternative.parts!.map((p) => p.mediaType.text), ['text/plain', 'multipart/related']);
+    final related = alternative.parts![1];
+    expect(related.parts!.map((p) => p.mediaType.text), ['text/html', 'image/png']);
+    expect(related.parts![1].decodeContentBinary(), png);
+    expect(related.parts![1].getHeaderContentDisposition()?.disposition, em.ContentDisposition.inline);
+    expect(m.decodeTextPlainPart()?.replaceAll('\r\n', '\n').trimRight(), 'Hi\n\n-- \nJo');
+    expect(m.findContentInfo(disposition: em.ContentDisposition.attachment).single.fileName, 'a.txt');
+  });
+
   group('an invitation reply (iMIP)', () {
     const ics =
         'BEGIN:VCALENDAR\r\nPRODID:-//Loupe//Loupe Mail//EN\r\nVERSION:2.0\r\nMETHOD:REPLY\r\nBEGIN:VEVENT\r\n'

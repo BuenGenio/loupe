@@ -21,6 +21,7 @@ import '../export/export_actions.dart';
 import '../keyboard/mail_commands.dart';
 import '../openpgp/content_loader.dart';
 import '../openpgp/pgp_status.dart';
+import '../projects/project_sheets.dart' show pickProjectsFor;
 import '../mailing_lists/list_providers.dart';
 import 'conversation_bar.dart';
 import 'changes/comparison_content.dart';
@@ -478,6 +479,11 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
         _setSeen(m, !m.isSeen);
       case MessageAction.toggleFlag:
         _setFlag(m, !m.isFlagged);
+      case MessageAction.project:
+        // The whole conversation, so the project follows it.
+        await pickProjectsFor(context, _repo, [
+          _messages ?? [m],
+        ]);
       case MessageAction.tags:
         await showTagsSheet(
           context,

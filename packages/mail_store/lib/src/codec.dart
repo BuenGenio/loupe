@@ -153,6 +153,11 @@ String encodeOutgoing(OutgoingMessage m) => jsonEncode({
   'subject': m.subject,
   'text': m.text,
   'html': m.html,
+  if (m.inline.isNotEmpty)
+    'inline': [
+      for (final a in m.inline)
+        {'filename': a.filename, 'mimeType': a.mimeType, 'data': base64Encode(a.data), 'contentId': a.contentId},
+    ],
   'attachments': [
     for (final a in m.attachments) {'filename': a.filename, 'mimeType': a.mimeType, 'data': base64Encode(a.data)},
   ],
@@ -177,6 +182,15 @@ OutgoingMessage decodeOutgoing(String json) {
     subject: j['subject']! as String,
     text: j['text']! as String,
     html: j['html'] as String?,
+    inline: [
+      for (final a in (j['inline'] as List<Object?>? ?? const []).cast<Map<String, Object?>>())
+        OutgoingAttachment(
+          filename: a['filename']! as String,
+          mimeType: a['mimeType']! as String,
+          data: Uint8List.fromList(base64Decode(a['data']! as String)),
+          contentId: a['contentId'] as String?,
+        ),
+    ],
     attachments: [
       for (final a in (j['attachments']! as List<Object?>).cast<Map<String, Object?>>())
         OutgoingAttachment(

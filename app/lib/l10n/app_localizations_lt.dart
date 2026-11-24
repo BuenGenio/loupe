@@ -1060,6 +1060,146 @@ class AppLocalizationsLt extends AppLocalizations {
   String get mailboxesTags => 'Žymės';
 
   @override
+  String get mailboxesProjects => 'Projektai';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Sugrupuokite pokalbius apie vieną dalyką iš bet kurio aplanko ar paskyros. Pokalbyje pasirinkite Pridėti prie projekto…';
+
+  @override
+  String get projectsNewMenu => 'Naujas projektas…';
+
+  @override
+  String get projectsNewTitle => 'Naujas projektas';
+
+  @override
+  String get projectsEditTitle => 'Redaguoti projektą';
+
+  @override
+  String get projectsAddToMenu => 'Pridėti prie projekto…';
+
+  @override
+  String get projectsMarkDone => 'Pažymėti kaip užbaigtą';
+
+  @override
+  String get projectsReopen => 'Vėl atidaryti projektą';
+
+  @override
+  String get projectsDelete => 'Ištrinti projektą';
+
+  @override
+  String get projectsDeleteMessage => 'Jo pokalbiai lieka ten, kur yra, už projekto ribų.';
+
+  @override
+  String get projectsUntitled => 'Projektas';
+
+  @override
+  String get projectsEverythingElse => 'Visa kita';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Projektų dar nėra. Sukurkite projektą Pašto dėžutėse pasirinkę Naujas projektas… arba pokalbyje pasirinkite Pridėti prie projekto…';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pasiūlymas · $count pokalbių',
+      few: 'Pasiūlymas · $count pokalbiai',
+      one: 'Pasiūlymas · $count pokalbis',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Sukurti projektą';
+
+  @override
+  String get projectsNotATopic => 'Ne tema';
+
+  @override
+  String get projectsAiThinking => 'Klausiama DI serverio…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'DI pasiūlymai: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Nepavyko pasiekti serverio.';
+
+  @override
+  String get projectsAiRefused => 'Serveris atmetė raktą.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Serveris atsakė klaida $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Serveris užtruko per ilgai.';
+
+  @override
+  String get projectsAiBadAnswer => 'Nepavyko perskaityti serverio atsakymo.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Serveris neturi tokio modelio. Jis turi: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Pridėti taisyklę…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Naujas laiškas, atitinkantis taisyklę, patenka į projektą. Atsakymai visada seka savo pokalbį.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Rodyti viską kita';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'Plytelių rodinyje – plytelė gautų laiškų, nepriskirtų jokiam projektui.';
+
+  @override
+  String get projectsSettingsSuggest => 'Siūlyti temas';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe šiame įrenginyje peržiūri pastarųjų 90 dienų pokalbius, kuriuose dalyvavote, ir siūlo tuos, kurie atrodo susiję.';
+
+  @override
+  String get projectsSettingsForget => 'Vėl rodyti atmestas temas';
+
+  @override
+  String get projectsSettingsAi => 'DI pasiūlymai';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Naudoti DI serverį';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Su OpenAI suderinamas serveris, pvz., LocalAI ar Ollama jūsų tinkle, pavadina ir sugrupuoja pasiūlymus. Loupe siunčia jam šių pokalbių temas, vardus, organizacijų domenus ir datas, bet niekada ne tekstą ar adresus.';
+
+  @override
+  String get projectsSettingsAiKey => 'API raktas';
+
+  @override
+  String get projectsSettingsAiModel => 'Modelis';
+
+  @override
+  String get projectsSettingsNotSet => 'Nenustatyta';
+
+  @override
+  String get projectsSettingsAiTest => 'Išbandyti serverį';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Prisijungta. Serveris turi $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1156,6 +1296,12 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filtras';
+
+  @override
+  String get messageListShowTiles => 'Rodyti plytelėmis';
+
+  @override
+  String get messageListShowList => 'Rodyti sąrašu';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2718,6 +2864,117 @@ class AppLocalizationsLt extends AppLocalizations {
   String get smimeRevocationNotChecked => 'Netikrinta: tikrinami tik sertifikatai iš įstaigų, kuriomis Loupe pasitiki.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Serveris iškart praneša apie naujus laiškus aplanke „Gauti laiškai“ per ryšį, kurį Loupe laiko atvirą. Išjungus Loupe tikrina paštą kas kelias minutes ir naudoja vienu ryšiu mažiau.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Nepakeistas';
+
+  @override
+  String get settingsSignatures => 'Parašai';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe kiekvienam laiškui parenka vieną: kopijų parašą, kai kas nors yra lauke „Kopija“, suplanuotą jo dienomis, atsitiktinį iš rotacijos, kitaip numatytąjį.';
+
+  @override
+  String get settingsAddSignature => 'Pridėti parašą';
+
+  @override
+  String get settingsNewSignature => 'Naujas parašas';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Parašas $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Numatytasis';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Kai kas nors gauna kopiją';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Kai kopiją gauna $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'Rotacijoje';
+
+  @override
+  String get settingsSignatureNameHint => 'Pavadinimas (Darbas, Trumpas…)';
+
+  @override
+  String get settingsSignatureHint => 'Jūsų parašas';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Laukai įrašo siuntėjo vardą arba adresą, todėl vienas parašas tinka kiekvienai tapatybei ir slapyvardžiui.';
+
+  @override
+  String get settingsSignatureAddImage => 'Pridėti paveikslėlį';
+
+  @override
+  String get settingsSignatureAddField => 'Pridėti lauką';
+
+  @override
+  String get settingsSignatureImageFailed => 'Nepavyko pridėti paveikslėlio. Bandykite mažesnį PNG arba JPEG.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Kada naudoti';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Kai kas nors gauna kopiją';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Naudojamas vietoj numatytojo, kol kas nors yra lauke „Kopija“. Pridėkite adresų ar domenų, kad būtų naudojamas tik tada, kai jie gauna kopiją.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Pridėti adresą arba domeną…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Adresas arba domenas, pvz., client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Suplanuotas';
+
+  @override
+  String get settingsSignatureStarts => 'Pradžia';
+
+  @override
+  String get settingsSignatureEnds => 'Pabaiga';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Šiomis dienomis jis pakeičia numatytąjį, pvz., akcijai ar švenčių darbo laikui.';
+
+  @override
+  String get settingsSignatureRotation => 'Rotacijoje';
+
+  @override
+  String get settingsSignatureRotationFooter =>
+      'Kiekvienas naujas laiškas atsitiktinai gauna vieną iš rotacijoje esančių parašų.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Nustatyti numatytuoju';
+
+  @override
+  String get settingsDeleteSignature => 'Ištrinti parašą';
+
+  @override
   String get settingsLanguage => 'Kalba';
 
   @override
@@ -3208,12 +3465,6 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsSignature => 'Parašas';
 
   @override
-  String get settingsSignatureFooter => 'Pridedamas po „-- “ šios tapatybės laiškuose.';
-
-  @override
-  String get settingsNoSignature => 'Nėra parašo';
-
-  @override
   String get settingsCopyToMyself => 'Kopija sau';
 
   @override
@@ -3374,6 +3625,11 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Pažymėti žyme $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Pridėti prie $project';
   }
 
   @override
@@ -5491,6 +5747,12 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Ne šlamštas';
+
+  @override
+  String get composeSignature => 'Parašas';
+
+  @override
+  String get composeNoSignature => 'Be parašo';
 
   @override
   String get accountSetupTitle => 'Pridėti paskyrą';

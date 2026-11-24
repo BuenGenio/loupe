@@ -24,6 +24,7 @@ import 'features/rules/rule_editor_screen.dart';
 import 'features/rules/rules_screen.dart';
 import 'features/search/search_screen.dart';
 import 'features/search/smart_mailbox_screen.dart';
+import 'features/settings/account_servers_screen.dart';
 import 'features/settings/account_settings_screen.dart';
 import 'features/settings/advanced_settings_screen.dart';
 import 'features/settings/identities_screen.dart';
@@ -114,6 +115,9 @@ abstract final class Routes {
 
   static String list(MailboxRef ref) => '/list/${MailboxRefCodec.encode(ref)}';
 
+  /// [ref]'s conversations that are in no project (the Everything Else tile).
+  static String listOutsideProjects(MailboxRef ref) => '${list(ref)}?outside=1';
+
   /// A mailing list's threads, by List-Id.
   static String mailingList(String listId) => '/mailing-list/${Uri.encodeComponent(listId)}';
   static String message(String emailId) => '/message/${Uri.encodeComponent(emailId)}';
@@ -139,6 +143,9 @@ abstract final class Routes {
 
   /// The addresses an account sends from.
   static String identities(String accountId) => '${accountSettings(accountId)}/identities';
+
+  /// An account's password and server settings.
+  static String accountServers(String accountId) => '${accountSettings(accountId)}/servers';
 }
 
 /// Where `/subscriptions/<key>` goes when [key] is no newsletter's: to the
@@ -201,8 +208,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/list/:ref',
-        builder: (context, state) =>
-            MessageListScreen(mailboxRef: MailboxRefCodec.decode(state.pathParameters['ref']!)),
+        builder: (context, state) => MessageListScreen(
+          mailboxRef: MailboxRefCodec.decode(state.pathParameters['ref']!),
+          outsideProjects: state.uri.queryParameters['outside'] == '1',
+        ),
       ),
       GoRoute(
         path: '/mailing-list/:id',
@@ -298,6 +307,10 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: 'identities',
                 builder: (context, state) => IdentitiesScreen(accountId: state.pathParameters['id']!),
+              ),
+              GoRoute(
+                path: 'servers',
+                builder: (context, state) => AccountServersScreen(accountId: state.pathParameters['id']!),
               ),
             ],
           ),

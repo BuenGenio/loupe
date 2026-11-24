@@ -645,10 +645,13 @@ final class FakeTransport implements MailTransport {
     final custom = server.onSearch;
     if (custom != null) return custom(expr, mailbox?.path);
     final words = <String>[];
+    final keywords = <String>[];
     void collect(SearchExpr e) {
       switch (e) {
         case TextTerm(:final value):
           words.add(value.toLowerCase());
+        case KeywordTerm(:final keyword) when Projects.isProjectKeyword(keyword):
+          keywords.add(Keywords.normalize(keyword));
         case SearchAnd(:final children) || SearchOr(:final children):
           children.forEach(collect);
         default:
@@ -665,7 +668,8 @@ final class FakeTransport implements MailTransport {
     for (final mb in boxes) {
       for (final m in mb.messages.values) {
         final hay = '${m.subject} ${m.text}'.toLowerCase();
-        if (words.isEmpty || words.any(hay.contains)) out.add(_id(mb, m.uid));
+        final tagged = keywords.every((k) => m.keywords.map(Keywords.normalize).contains(k));
+        if ((words.isEmpty || words.any(hay.contains)) && tagged) out.add(_id(mb, m.uid));
       }
     }
     return out.take(limit).toList();

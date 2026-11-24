@@ -1032,6 +1032,145 @@ class AppLocalizationsSq extends AppLocalizations {
   String get mailboxesTags => 'Etiketat';
 
   @override
+  String get mailboxesProjects => 'Projektet';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Gruponi bisedat për një gjë, nga çdo dosje ose llogari. Zgjidhni Shto te projekti… te një bisedë.';
+
+  @override
+  String get projectsNewMenu => 'Projekt i ri…';
+
+  @override
+  String get projectsNewTitle => 'Projekt i ri';
+
+  @override
+  String get projectsEditTitle => 'Redakto projektin';
+
+  @override
+  String get projectsAddToMenu => 'Shto te projekti…';
+
+  @override
+  String get projectsMarkDone => 'Shëno si të përfunduar';
+
+  @override
+  String get projectsReopen => 'Rihape projektin';
+
+  @override
+  String get projectsDelete => 'Fshi projektin';
+
+  @override
+  String get projectsDeleteMessage => 'Bisedat e tij mbeten ku janë, jashtë projektit.';
+
+  @override
+  String get projectsUntitled => 'Projekt';
+
+  @override
+  String get projectsEverythingElse => 'Gjithçka tjetër';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Ende nuk ka projekte. Krijoni një me Projekt i ri… te Kutitë postare ose zgjidhni Shto te projekti… te një bisedë.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Sugjerim · $count biseda',
+      one: 'Sugjerim · 1 bisedë',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Krijo projektin';
+
+  @override
+  String get projectsNotATopic => 'Nuk është temë';
+
+  @override
+  String get projectsAiThinking => 'Po pyetet serveri i IA-së…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Sugjerime me IA: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Serveri nuk u arrit.';
+
+  @override
+  String get projectsAiRefused => 'Serveri e refuzoi çelësin.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Serveri u përgjigj me gabimin $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Serveri vonoi shumë.';
+
+  @override
+  String get projectsAiBadAnswer => 'Përgjigjja e serverit nuk u lexua dot.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Serveri nuk e ka këtë model. Ka: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Shto rregull…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Postat e reja që përputhen me një rregull hyjnë në projekt. Përgjigjet ndjekin gjithmonë bisedën e tyre.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Shfaq Gjithçka tjetër';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'Në pamjen me pllaka, një pllakë për postën në kutinë hyrëse që nuk është në asnjë projekt.';
+
+  @override
+  String get projectsSettingsSuggest => 'Sugjero tema';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe shqyrton në këtë pajisje bisedat e 90 ditëve të fundit ku keni marrë pjesë dhe sugjeron ato që duket se shkojnë bashkë.';
+
+  @override
+  String get projectsSettingsForget => 'Shfaq sërish temat e hedhura poshtë';
+
+  @override
+  String get projectsSettingsAi => 'Sugjerime me IA';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Përdor një server IA-je';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Një server i përputhshëm me OpenAI, si LocalAI ose Ollama në rrjetin tuaj, i emërton dhe i grupon sugjerimet. Loupe i dërgon subjektet, emrat, domenet e organizatave dhe datat e këtyre bisedave, kurrë tekstin apo adresat e tyre.';
+
+  @override
+  String get projectsSettingsAiKey => 'Çelësi API';
+
+  @override
+  String get projectsSettingsAiModel => 'Modeli';
+
+  @override
+  String get projectsSettingsNotSet => 'Pa caktuar';
+
+  @override
+  String get projectsSettingsAiTest => 'Testo serverin';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'U lidh. Serveri ka $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1127,6 +1266,12 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filtro';
+
+  @override
+  String get messageListShowTiles => 'Shfaq si pllaka';
+
+  @override
+  String get messageListShowList => 'Shfaq si listë';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2667,6 +2812,116 @@ class AppLocalizationsSq extends AppLocalizations {
       'S’u kontrollua: kontrollohen vetëm certifikatat nga autoritete që Loupe u beson.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Serveri njofton menjëherë për postë të re në Kutinë hyrëse, përmes një lidhjeje që Loupe e mban të hapur. Kur është çaktivizuar, Loupe kontrollon çdo disa minuta dhe përdor një lidhje më pak.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Pa ndryshim';
+
+  @override
+  String get settingsSignatures => 'Nënshkrimet';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe zgjedh një për çdo mesazh: atë për kopjet kur dikush është në Cc, një të planifikuar në ditët e tij, një rastësor nga rotacioni, përndryshe të parazgjedhurin.';
+
+  @override
+  String get settingsAddSignature => 'Shto nënshkrim';
+
+  @override
+  String get settingsNewSignature => 'Nënshkrim i ri';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Nënshkrimi $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'I parazgjedhur';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Kur dikush merr kopje';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Kur kopje marrin $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'Në rotacion';
+
+  @override
+  String get settingsSignatureNameHint => 'Emri (Puna, I shkurtër…)';
+
+  @override
+  String get settingsSignatureHint => 'Nënshkrimi juaj';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Fushat plotësojnë emrin ose adresën e dërguesit, kështu një nënshkrim i përshtatet çdo identiteti dhe pseudonimi.';
+
+  @override
+  String get settingsSignatureAddImage => 'Shto figurë';
+
+  @override
+  String get settingsSignatureAddField => 'Shto fushë';
+
+  @override
+  String get settingsSignatureImageFailed => 'Figura nuk u shtua dot. Provoni një PNG ose JPEG më të vogël.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Kur përdoret';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Kur dikush merr kopje';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Përdoret në vend të të parazgjedhurit sa kohë dikush është në Cc. Shtoni adresa ose domene që të përdoret vetëm kur kopje marrin ata.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Shto adresë ose domen…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Një adresë, ose një domen si client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'I planifikuar';
+
+  @override
+  String get settingsSignatureStarts => 'Fillon';
+
+  @override
+  String get settingsSignatureEnds => 'Mbaron';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Në këto ditë zë vendin e të parazgjedhurit, për një fushatë ose orare festash.';
+
+  @override
+  String get settingsSignatureRotation => 'Në rotacion';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Çdo mesazh i ri merr rastësisht një nga nënshkrimet në rotacion.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Bëje të parazgjedhur';
+
+  @override
+  String get settingsDeleteSignature => 'Fshi nënshkrimin';
+
+  @override
   String get settingsLanguage => 'Gjuha';
 
   @override
@@ -3151,12 +3406,6 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsSignature => 'Nënshkrimi';
 
   @override
-  String get settingsSignatureFooter => 'Shtohet poshtë “-- ” në mesazhet nga ky identitet.';
-
-  @override
-  String get settingsNoSignature => 'Pa nënshkrim';
-
-  @override
   String get settingsCopyToMyself => 'Kopje për veten';
 
   @override
@@ -3317,6 +3566,11 @@ class AppLocalizationsSq extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Etiketo me $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Shto te $project';
   }
 
   @override
@@ -5384,6 +5638,12 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Jo i padëshiruar';
+
+  @override
+  String get composeSignature => 'Nënshkrimi';
+
+  @override
+  String get composeNoSignature => 'Pa nënshkrim';
 
   @override
   String get accountSetupTitle => 'Shto llogari';

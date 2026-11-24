@@ -28,7 +28,8 @@ String _security(AppLocalizations l10n, ConnectionSecurity s) => switch (s) {
 String _server(AppLocalizations l10n, ServerConfig c) =>
     '${c.protocol.name.toUpperCase()} · ${c.host}:${c.port} · ${_security(l10n, c.security)}';
 
-/// One account: name, colour, identities, server details, and Remove.
+/// One account: name, colour, identities, servers (edited on their own
+/// screen), IDLE, and Remove.
 class AccountSettingsScreen extends ConsumerStatefulWidget {
   const AccountSettingsScreen({super.key, required this.accountId});
 
@@ -109,6 +110,10 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
     if (_account?.id != account.id) _name.text = account.displayName;
     _account = account;
     final needsSignIn = ref.watch(signInRequiredProvider).value?.contains(account.id) ?? false;
+    // OAuth accounts use their provider's servers and sign in in the browser.
+    final VoidCallback? editServers = account.authKind == AuthKind.password
+        ? () => context.push(Routes.accountServers(account.id))
+        : null;
     final signInAgainRow = canSignInAgain(ref, account)
         ? GroupedRow(
             key: const Key('account-sign-in-again'),
@@ -204,18 +209,36 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
         InsetGroup(
           header: l10n.commonServer,
           separatorIndent: 16,
+          footer: l10n.settingsIdleFooter,
           children: [
-            GroupedRow(title: l10n.settingsIncoming, subtitle: _server(l10n, account.incoming), chevron: false),
-            if (account.outgoing != null)
-              GroupedRow(title: l10n.settingsOutgoing, subtitle: _server(l10n, account.outgoing!), chevron: false),
             GroupedRow(
+              key: const Key('account-incoming'),
+              title: l10n.settingsIncoming,
+              subtitle: _server(l10n, account.incoming),
+              onTap: editServers,
+            ),
+            if (account.outgoing != null)
+              GroupedRow(
+                key: const Key('account-outgoing'),
+                title: l10n.settingsOutgoing,
+                subtitle: _server(l10n, account.outgoing!),
+                onTap: editServers,
+              ),
+            GroupedRow(
+              key: const Key('account-sign-in'),
               title: l10n.settingsSignIn,
               detail: account.authKind == AuthKind.oauth2
                   ? (needsSignIn ? l10n.settingsSignInExpired : oauthProviderName(account.provider))
                   : l10n.commonPassword,
-              chevron: false,
+              onTap: editServers,
             ),
             if (!needsSignIn) ?signInAgainRow,
+            SwitchRow(
+              key: const Key('account-idle'),
+              title: l10n.settingsIdle(account.incoming.protocol.name),
+              value: account.useIdle,
+              onChanged: (on) => _repo.updateAccount(account.copyWith(useIdle: on)),
+            ),
           ],
         ),
         InsetGroup(

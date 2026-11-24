@@ -1049,6 +1049,145 @@ class AppLocalizationsCa extends AppLocalizations {
   String get mailboxesTags => 'Etiquetes';
 
   @override
+  String get mailboxesProjects => 'Projectes';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Agrupa les converses sobre una mateixa cosa, de qualsevol carpeta o compte. Tria Afegeix a un projecte… en una conversa.';
+
+  @override
+  String get projectsNewMenu => 'Projecte nou…';
+
+  @override
+  String get projectsNewTitle => 'Projecte nou';
+
+  @override
+  String get projectsEditTitle => 'Edita el projecte';
+
+  @override
+  String get projectsAddToMenu => 'Afegeix a un projecte…';
+
+  @override
+  String get projectsMarkDone => 'Marca com a acabat';
+
+  @override
+  String get projectsReopen => 'Reobre el projecte';
+
+  @override
+  String get projectsDelete => 'Suprimeix el projecte';
+
+  @override
+  String get projectsDeleteMessage => 'Les seves converses es queden on són, fora del projecte.';
+
+  @override
+  String get projectsUntitled => 'Projecte';
+
+  @override
+  String get projectsEverythingElse => 'Tota la resta';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Encara no hi ha projectes. Crea’n un amb Projecte nou… a Bústies, o tria Afegeix a un projecte… en una conversa.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Suggeriment · $count converses',
+      one: 'Suggeriment · 1 conversa',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Crea el projecte';
+
+  @override
+  String get projectsNotATopic => 'No és un tema';
+
+  @override
+  String get projectsAiThinking => 'Es pregunta al servidor d’IA…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Suggeriments amb IA: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'No s’ha pogut connectar amb el servidor.';
+
+  @override
+  String get projectsAiRefused => 'El servidor ha rebutjat la clau.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'El servidor ha respost amb l’error $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'El servidor ha trigat massa.';
+
+  @override
+  String get projectsAiBadAnswer => 'No s’ha pogut llegir la resposta del servidor.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'El servidor no té aquest model. Té: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Afegeix una regla…';
+
+  @override
+  String get projectsRulesFooter =>
+      'El correu nou que coincideix amb una regla entra al projecte. Les respostes sempre segueixen la seva conversa.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Mostra Tota la resta';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'A la vista de mosaics, un mosaic per al correu de la safata d’entrada que no és a cap projecte.';
+
+  @override
+  String get projectsSettingsSuggest => 'Suggereix temes';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'El Loupe mira en aquest dispositiu les converses dels darrers 90 dies en què has participat i suggereix les que semblen anar juntes.';
+
+  @override
+  String get projectsSettingsForget => 'Torna a mostrar els temes descartats';
+
+  @override
+  String get projectsSettingsAi => 'Suggeriments amb IA';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Fes servir un servidor d’IA';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Un servidor compatible amb OpenAI, com LocalAI o Ollama a la teva xarxa, posa nom als suggeriments i els agrupa. El Loupe li envia els assumptes, noms, dominis d’organització i dates d’aquestes converses, mai el text ni les adreces.';
+
+  @override
+  String get projectsSettingsAiKey => 'Clau d’API';
+
+  @override
+  String get projectsSettingsAiModel => 'Model';
+
+  @override
+  String get projectsSettingsNotSet => 'Sense definir';
+
+  @override
+  String get projectsSettingsAiTest => 'Prova el servidor';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Connectat. El servidor té $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1143,6 +1282,12 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filtre';
+
+  @override
+  String get messageListShowTiles => 'Mostra com a mosaics';
+
+  @override
+  String get messageListShowList => 'Mostra com a llista';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2682,6 +2827,116 @@ class AppLocalizationsCa extends AppLocalizations {
       'No comprovat: només es comproven els certificats d’autoritats en què Loupe confia.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'El servidor avisa de seguida del correu nou a la safata d’entrada, a través d’una connexió que Loupe manté oberta. Desactivat, Loupe comprova el correu cada pocs minuts i fa servir una connexió menys.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Sense canvis';
+
+  @override
+  String get settingsSignatures => 'Signatures';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe en tria una per a cada missatge: la de còpia si hi ha algú a Cc, una de programada entre els seus dies, una a l’atzar de la rotació i, si no, la predeterminada.';
+
+  @override
+  String get settingsAddSignature => 'Afegeix una signatura';
+
+  @override
+  String get settingsNewSignature => 'Signatura nova';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Signatura $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Predeterminada';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Quan hi ha algú en còpia';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Quan hi ha en còpia $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'En rotació';
+
+  @override
+  String get settingsSignatureNameHint => 'Nom (Feina, Curta…)';
+
+  @override
+  String get settingsSignatureHint => 'La teva signatura';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Els camps s’omplen amb el nom o l’adreça del remitent, així una sola signatura serveix per a cada identitat i àlies.';
+
+  @override
+  String get settingsSignatureAddImage => 'Afegeix una imatge';
+
+  @override
+  String get settingsSignatureAddField => 'Afegeix un camp';
+
+  @override
+  String get settingsSignatureImageFailed => 'No s’ha pogut afegir la imatge. Prova amb un PNG o JPEG més petit.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Quan s’utilitza';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Quan hi ha algú en còpia';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'S’utilitza en lloc de la predeterminada mentre hi hagi algú a Cc. Afegeix adreces o dominis perquè només s’utilitzi quan siguin en còpia.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Afegeix una adreça o un domini…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Una adreça, o un domini com client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Programada';
+
+  @override
+  String get settingsSignatureStarts => 'Comença';
+
+  @override
+  String get settingsSignatureEnds => 'Acaba';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Entre aquests dies substitueix la predeterminada, per a una campanya o un horari de vacances.';
+
+  @override
+  String get settingsSignatureRotation => 'En rotació';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Cada missatge nou rep a l’atzar una de les signatures en rotació.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Fes-la predeterminada';
+
+  @override
+  String get settingsDeleteSignature => 'Suprimeix la signatura';
+
+  @override
   String get settingsLanguage => 'Idioma';
 
   @override
@@ -3169,12 +3424,6 @@ class AppLocalizationsCa extends AppLocalizations {
   String get settingsSignature => 'Signatura';
 
   @override
-  String get settingsSignatureFooter => 'S’afegeix a sota de «-- » als missatges d’aquesta identitat.';
-
-  @override
-  String get settingsNoSignature => 'Sense signatura';
-
-  @override
   String get settingsCopyToMyself => 'Còpia per a mi';
 
   @override
@@ -3335,6 +3584,11 @@ class AppLocalizationsCa extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Etiqueta com a $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Afegeix a $project';
   }
 
   @override
@@ -5434,6 +5688,12 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'No és correu brossa';
+
+  @override
+  String get composeSignature => 'Signatura';
+
+  @override
+  String get composeNoSignature => 'Sense signatura';
 
   @override
   String get accountSetupTitle => 'Afegeix un compte';

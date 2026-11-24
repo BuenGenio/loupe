@@ -15,6 +15,8 @@ void main() {
     expect(find.text('Accounts'.toUpperCase()), findsOneWidget);
 
     await tester.tap(find.text('Organize by Conversation'));
+    await tester.ensureVisible(find.text('Compact'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Compact'));
     await tester.pumpAndSettle();
 

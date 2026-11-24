@@ -1065,6 +1065,145 @@ class AppLocalizationsLv extends AppLocalizations {
   String get mailboxesTags => 'Birkas';
 
   @override
+  String get mailboxesProjects => 'Projekti';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Grupējiet sarunas par vienu lietu no jebkuras mapes vai konta. Sarunā izvēlieties Pievienot projektam…';
+
+  @override
+  String get projectsNewMenu => 'Jauns projekts…';
+
+  @override
+  String get projectsNewTitle => 'Jauns projekts';
+
+  @override
+  String get projectsEditTitle => 'Rediģēt projektu';
+
+  @override
+  String get projectsAddToMenu => 'Pievienot projektam…';
+
+  @override
+  String get projectsMarkDone => 'Atzīmēt kā pabeigtu';
+
+  @override
+  String get projectsReopen => 'Atvērt projektu atkārtoti';
+
+  @override
+  String get projectsDelete => 'Dzēst projektu';
+
+  @override
+  String get projectsDeleteMessage => 'Tā sarunas paliek, kur ir, ārpus projekta.';
+
+  @override
+  String get projectsUntitled => 'Projekts';
+
+  @override
+  String get projectsEverythingElse => 'Viss pārējais';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Projektu vēl nav. Izveidojiet to sadaļā Pastkastes ar Jauns projekts… vai sarunā izvēlieties Pievienot projektam…';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ieteikums · $count sarunas',
+      one: 'Ieteikums · $count saruna',
+      zero: 'Ieteikums · $count sarunu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Izveidot projektu';
+
+  @override
+  String get projectsNotATopic => 'Nav tēma';
+
+  @override
+  String get projectsAiThinking => 'Jautā MI serverim…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Ieteikumi ar MI: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Neizdevās sasniegt serveri.';
+
+  @override
+  String get projectsAiRefused => 'Serveris noraidīja atslēgu.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Serveris atbildēja ar kļūdu $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Serverim vajadzēja pārāk ilgi.';
+
+  @override
+  String get projectsAiBadAnswer => 'Servera atbildi nevarēja nolasīt.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Serverim nav šāda modeļa. Tam ir: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Pievienot kārtulu…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Jauns pasts, kas atbilst kārtulai, nonāk projektā. Atbildes vienmēr seko savai sarunai.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Rādīt visu pārējo';
+
+  @override
+  String get projectsSettingsEverythingElseFooter => 'Flīžu skatā flīze iesūtnes pastam, kas nav nevienā projektā.';
+
+  @override
+  String get projectsSettingsSuggest => 'Ieteikt tēmas';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe šajā ierīcē aplūko pēdējo 90 dienu sarunas, kurās piedalījāties, un iesaka tās, kas šķiet saistītas.';
+
+  @override
+  String get projectsSettingsForget => 'Atkal rādīt noraidītās tēmas';
+
+  @override
+  String get projectsSettingsAi => 'Ieteikumi ar MI';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Izmantot MI serveri';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Ar OpenAI saderīgs serveris, piemēram, LocalAI vai Ollama jūsu tīklā, nosauc un grupē ieteikumus. Loupe nosūta tam šo sarunu tēmas, vārdus, organizāciju domēnus un datumus, nekad to tekstu vai adreses.';
+
+  @override
+  String get projectsSettingsAiKey => 'API atslēga';
+
+  @override
+  String get projectsSettingsAiModel => 'Modelis';
+
+  @override
+  String get projectsSettingsNotSet => 'Nav iestatīts';
+
+  @override
+  String get projectsSettingsAiTest => 'Pārbaudīt serveri';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Savienots. Serverim ir $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1161,6 +1300,12 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filtrs';
+
+  @override
+  String get messageListShowTiles => 'Rādīt kā flīzes';
+
+  @override
+  String get messageListShowList => 'Rādīt kā sarakstu';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2724,6 +2869,117 @@ class AppLocalizationsLv extends AppLocalizations {
       'Nav pārbaudīts: tiek pārbaudīti tikai sertifikāti no iestādēm, kurām Loupe uzticas.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Serveris uzreiz ziņo par jaunu pastu iesūtnē, izmantojot savienojumu, ko Loupe uztur atvērtu. Kad izslēgts, Loupe pārbauda pastu ik pēc dažām minūtēm un izmanto par vienu savienojumu mazāk.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Nemainīta';
+
+  @override
+  String get settingsSignatures => 'Paraksti';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe katrai vēstulei izvēlas vienu: kopiju parakstu, ja kāds ir laukā Kopija, ieplānoto tā dienās, nejaušu no rotācijas, citādi noklusējuma.';
+
+  @override
+  String get settingsAddSignature => 'Pievienot parakstu';
+
+  @override
+  String get settingsNewSignature => 'Jauns paraksts';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Paraksts $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Noklusējuma';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Kad kāds saņem kopiju';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Kad kopiju saņem $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'Rotācijā';
+
+  @override
+  String get settingsSignatureNameHint => 'Nosaukums (Darbs, Īss…)';
+
+  @override
+  String get settingsSignatureHint => 'Jūsu paraksts';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Lauki ievieto sūtītāja vārdu vai adresi, tāpēc viens paraksts der katrai identitātei un aizstājvārdam.';
+
+  @override
+  String get settingsSignatureAddImage => 'Pievienot attēlu';
+
+  @override
+  String get settingsSignatureAddField => 'Pievienot lauku';
+
+  @override
+  String get settingsSignatureImageFailed => 'Neizdevās pievienot attēlu. Mēģiniet mazāku PNG vai JPEG.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Kad izmantot';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Kad kāds saņem kopiju';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Tiek izmantots noklusējuma vietā, kamēr kāds ir laukā Kopija. Pievienojiet adreses vai domēnus, lai to izmantotu tikai tad, kad kopiju saņem viņi.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Pievienot adresi vai domēnu…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Adrese vai domēns, piemēram, client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Ieplānots';
+
+  @override
+  String get settingsSignatureStarts => 'Sākas';
+
+  @override
+  String get settingsSignatureEnds => 'Beidzas';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Šajās dienās tas aizstāj noklusējuma parakstu, piemēram, kampaņai vai svētku darba laikam.';
+
+  @override
+  String get settingsSignatureRotation => 'Rotācijā';
+
+  @override
+  String get settingsSignatureRotationFooter =>
+      'Katra jauna vēstule nejauši saņem vienu no rotācijā esošajiem parakstiem.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Iestatīt kā noklusējuma';
+
+  @override
+  String get settingsDeleteSignature => 'Dzēst parakstu';
+
+  @override
   String get settingsLanguage => 'Valoda';
 
   @override
@@ -3214,12 +3470,6 @@ class AppLocalizationsLv extends AppLocalizations {
   String get settingsSignature => 'Paraksts';
 
   @override
-  String get settingsSignatureFooter => 'Tiek pievienots zem „-- “ šīs identitātes ziņojumos.';
-
-  @override
-  String get settingsNoSignature => 'Nav paraksta';
-
-  @override
   String get settingsCopyToMyself => 'Kopija sev';
 
   @override
@@ -3380,6 +3630,11 @@ class AppLocalizationsLv extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Pievienot birku $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Pievienot projektam $project';
   }
 
   @override
@@ -5494,6 +5749,12 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Nav mēstule';
+
+  @override
+  String get composeSignature => 'Paraksts';
+
+  @override
+  String get composeNoSignature => 'Bez paraksta';
 
   @override
   String get accountSetupTitle => 'Pievienot kontu';

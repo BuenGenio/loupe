@@ -1022,6 +1022,145 @@ class AppLocalizationsDa extends AppLocalizations {
   String get mailboxesTags => 'Mærkater';
 
   @override
+  String get mailboxesProjects => 'Projekter';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Saml samtalerne om én ting, fra enhver mappe eller konto. Vælg Føj til projekt… på en samtale.';
+
+  @override
+  String get projectsNewMenu => 'Nyt projekt…';
+
+  @override
+  String get projectsNewTitle => 'Nyt projekt';
+
+  @override
+  String get projectsEditTitle => 'Rediger projekt';
+
+  @override
+  String get projectsAddToMenu => 'Føj til projekt…';
+
+  @override
+  String get projectsMarkDone => 'Markér som færdigt';
+
+  @override
+  String get projectsReopen => 'Genåbn projekt';
+
+  @override
+  String get projectsDelete => 'Slet projekt';
+
+  @override
+  String get projectsDeleteMessage => 'Dets samtaler bliver, hvor de er, uden for projektet.';
+
+  @override
+  String get projectsUntitled => 'Projekt';
+
+  @override
+  String get projectsEverythingElse => 'Alt andet';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Ingen projekter endnu. Opret et med Nyt projekt… under Postkasser, eller vælg Føj til projekt… på en samtale.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Forslag · $count samtaler',
+      one: 'Forslag · 1 samtale',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Opret projekt';
+
+  @override
+  String get projectsNotATopic => 'Ikke et emne';
+
+  @override
+  String get projectsAiThinking => 'Spørger AI-serveren…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Forslag med AI: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Kunne ikke nå serveren.';
+
+  @override
+  String get projectsAiRefused => 'Serveren afviste nøglen.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Serveren svarede med fejl $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Serveren var for længe om det.';
+
+  @override
+  String get projectsAiBadAnswer => 'Serverens svar kunne ikke læses.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Serveren har ikke den model. Den har: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Tilføj regel…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Ny post, der passer til en regel, kommer med i projektet. Svar følger altid deres samtale.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Vis Alt andet';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'I feltvisningen et felt til posten i indbakken, der ikke er i noget projekt.';
+
+  @override
+  String get projectsSettingsSuggest => 'Foreslå emner';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe ser på denne enhed på de samtaler fra de seneste 90 dage, du har deltaget i, og foreslår dem, der ser ud til at høre sammen.';
+
+  @override
+  String get projectsSettingsForget => 'Vis afviste emner igen';
+
+  @override
+  String get projectsSettingsAi => 'Forslag med AI';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Brug en AI-server';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'En OpenAI-kompatibel server, fx LocalAI eller Ollama på dit eget netværk, navngiver og grupperer forslagene. Loupe sender den emnelinjer, navne, organisationsdomæner og datoer for de samtaler, aldrig deres tekst eller adresser.';
+
+  @override
+  String get projectsSettingsAiKey => 'API-nøgle';
+
+  @override
+  String get projectsSettingsAiModel => 'Model';
+
+  @override
+  String get projectsSettingsNotSet => 'Ikke angivet';
+
+  @override
+  String get projectsSettingsAiTest => 'Test server';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Forbundet. Serveren har $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1111,6 +1250,12 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filter';
+
+  @override
+  String get messageListShowTiles => 'Vis som felter';
+
+  @override
+  String get messageListShowList => 'Vis som liste';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2642,6 +2787,116 @@ class AppLocalizationsDa extends AppLocalizations {
       'Ikke tjekket: kun certifikater fra en udsteder, som Loupe stoler på, bliver tjekket.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Serveren melder ny mail i indbakken med det samme over en forbindelse, som Loupe holder åben. Slået fra tjekker Loupe hvert par minutter og bruger én forbindelse mindre.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Uændret';
+
+  @override
+  String get settingsSignatures => 'Signaturer';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe vælger én til hver besked: en til kopier, når nogen står i Cc, en planlagt mellem sine dage, en tilfældig fra rotationen, ellers standarden.';
+
+  @override
+  String get settingsAddSignature => 'Tilføj signatur';
+
+  @override
+  String get settingsNewSignature => 'Ny signatur';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Signatur $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Standard';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Når nogen får kopi';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Når $addresses får kopi';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'I rotation';
+
+  @override
+  String get settingsSignatureNameHint => 'Navn (Arbejde, Kort…)';
+
+  @override
+  String get settingsSignatureHint => 'Din signatur';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Felter udfyldes med afsenderens navn eller adresse, så én signatur passer til alle identiteter og aliasser.';
+
+  @override
+  String get settingsSignatureAddImage => 'Tilføj billede';
+
+  @override
+  String get settingsSignatureAddField => 'Tilføj felt';
+
+  @override
+  String get settingsSignatureImageFailed => 'Billedet kunne ikke tilføjes. Prøv en mindre PNG eller JPEG.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Hvornår den bruges';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Når nogen får kopi';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Bruges i stedet for standarden, mens nogen står i Cc. Tilføj adresser eller domæner for kun at bruge den, når de får kopi.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Tilføj adresse eller domæne…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'En adresse eller et domæne som client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Planlagt';
+
+  @override
+  String get settingsSignatureStarts => 'Starter';
+
+  @override
+  String get settingsSignatureEnds => 'Slutter';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Mellem disse dage træder den i stedet for standarden, til en kampagne eller ferieåbningstider.';
+
+  @override
+  String get settingsSignatureRotation => 'I rotation';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Hver ny besked får tilfældigt en af signaturerne i rotation.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Gør til standard';
+
+  @override
+  String get settingsDeleteSignature => 'Slet signatur';
+
+  @override
   String get settingsLanguage => 'Sprog';
 
   @override
@@ -3126,12 +3381,6 @@ class AppLocalizationsDa extends AppLocalizations {
   String get settingsSignature => 'Signatur';
 
   @override
-  String get settingsSignatureFooter => 'Tilføjes under »-- « i beskeder fra denne identitet.';
-
-  @override
-  String get settingsNoSignature => 'Ingen signatur';
-
-  @override
   String get settingsCopyToMyself => 'Kopi til mig selv';
 
   @override
@@ -3292,6 +3541,11 @@ class AppLocalizationsDa extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Tilføj mærkat $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Føj til $project';
   }
 
   @override
@@ -5359,6 +5613,12 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Ikke uønsket';
+
+  @override
+  String get composeSignature => 'Signatur';
+
+  @override
+  String get composeNoSignature => 'Ingen signatur';
 
   @override
   String get accountSetupTitle => 'Tilføj konto';

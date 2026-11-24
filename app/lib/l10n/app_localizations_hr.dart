@@ -1064,6 +1064,146 @@ class AppLocalizationsHr extends AppLocalizations {
   String get mailboxesTags => 'Oznake';
 
   @override
+  String get mailboxesProjects => 'Projekti';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Grupirajte razgovore o jednoj stvari iz bilo koje mape ili računa. Odaberite Dodaj u projekt… na razgovoru.';
+
+  @override
+  String get projectsNewMenu => 'Novi projekt…';
+
+  @override
+  String get projectsNewTitle => 'Novi projekt';
+
+  @override
+  String get projectsEditTitle => 'Uredi projekt';
+
+  @override
+  String get projectsAddToMenu => 'Dodaj u projekt…';
+
+  @override
+  String get projectsMarkDone => 'Označi kao završeno';
+
+  @override
+  String get projectsReopen => 'Ponovno otvori projekt';
+
+  @override
+  String get projectsDelete => 'Izbriši projekt';
+
+  @override
+  String get projectsDeleteMessage => 'Njegovi razgovori ostaju gdje jesu, izvan projekta.';
+
+  @override
+  String get projectsUntitled => 'Projekt';
+
+  @override
+  String get projectsEverythingElse => 'Sve ostalo';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Još nema projekata. Napravite ga s Novi projekt… u Sandučićima ili odaberite Dodaj u projekt… na razgovoru.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Prijedlog · $count razgovora',
+      few: 'Prijedlog · $count razgovora',
+      one: 'Prijedlog · $count razgovor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Napravi projekt';
+
+  @override
+  String get projectsNotATopic => 'Nije tema';
+
+  @override
+  String get projectsAiThinking => 'Pitam poslužitelj s UI-jem…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Prijedlozi s UI-jem: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Poslužitelj nije dostupan.';
+
+  @override
+  String get projectsAiRefused => 'Poslužitelj je odbio ključ.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Poslužitelj je odgovorio pogreškom $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Poslužitelju je trebalo predugo.';
+
+  @override
+  String get projectsAiBadAnswer => 'Odgovor poslužitelja nije se mogao pročitati.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Poslužitelj nema taj model. Ima: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Dodaj pravilo…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Nova pošta koja odgovara pravilu ulazi u projekt. Odgovori uvijek prate svoj razgovor.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Prikaži Sve ostalo';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'U prikazu pločica, pločica za poštu u ulaznom sandučiću koja nije ni u jednom projektu.';
+
+  @override
+  String get projectsSettingsSuggest => 'Predlaži teme';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe na ovom uređaju pregledava razgovore iz posljednjih 90 dana u kojima ste sudjelovali i predlaže one koji se čine povezanima.';
+
+  @override
+  String get projectsSettingsForget => 'Ponovno prikaži odbačene teme';
+
+  @override
+  String get projectsSettingsAi => 'Prijedlozi s UI-jem';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Koristi poslužitelj s UI-jem';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Poslužitelj kompatibilan s OpenAI-jem, primjerice LocalAI ili Ollama u vašoj mreži, imenuje i grupira prijedloge. Loupe mu šalje predmete, imena, domene organizacija i datume tih razgovora, nikad njihov tekst ni adrese.';
+
+  @override
+  String get projectsSettingsAiKey => 'API ključ';
+
+  @override
+  String get projectsSettingsAiModel => 'Model';
+
+  @override
+  String get projectsSettingsNotSet => 'Nije postavljeno';
+
+  @override
+  String get projectsSettingsAiTest => 'Testiraj poslužitelj';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Povezano. Poslužitelj ima $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1160,6 +1300,12 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filtar';
+
+  @override
+  String get messageListShowTiles => 'Prikaži kao pločice';
+
+  @override
+  String get messageListShowList => 'Prikaži kao popis';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2726,6 +2872,116 @@ class AppLocalizationsHr extends AppLocalizations {
       'Nije provjereno: provjeravaju se samo certifikati tijela kojima Loupe vjeruje.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Poslužitelj odmah javlja novu poštu u mapi Pristigla pošta, preko veze koju Loupe drži otvorenom. Kad je isključeno, Loupe provjerava svakih nekoliko minuta i koristi jednu vezu manje.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Bez promjene';
+
+  @override
+  String get settingsSignatures => 'Potpisi';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe za svaku poruku bira jedan: potpis za kopije kad je netko u polju Kopija, zakazani između svojih dana, nasumični iz rotacije, inače zadani.';
+
+  @override
+  String get settingsAddSignature => 'Dodaj potpis';
+
+  @override
+  String get settingsNewSignature => 'Novi potpis';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Potpis $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Zadani';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Kad je netko u kopiji';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Kad su u kopiji $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'U rotaciji';
+
+  @override
+  String get settingsSignatureNameHint => 'Naziv (Posao, Kratki…)';
+
+  @override
+  String get settingsSignatureHint => 'Vaš potpis';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Polja upisuju ime ili adresu pošiljatelja, pa jedan potpis odgovara svakom identitetu i aliasu.';
+
+  @override
+  String get settingsSignatureAddImage => 'Dodaj sliku';
+
+  @override
+  String get settingsSignatureAddField => 'Dodaj polje';
+
+  @override
+  String get settingsSignatureImageFailed => 'Sliku nije moguće dodati. Pokušajte s manjim PNG-om ili JPEG-om.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Kada koristiti';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Kad je netko u kopiji';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Koristi se umjesto zadanog dok je itko u polju Kopija. Dodajte adrese ili domene da se koristi samo kad su oni u kopiji.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Dodaj adresu ili domenu…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Adresa ili domena, npr. client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Zakazano';
+
+  @override
+  String get settingsSignatureStarts => 'Počinje';
+
+  @override
+  String get settingsSignatureEnds => 'Završava';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Između tih dana zamjenjuje zadani, za kampanju ili blagdansko radno vrijeme.';
+
+  @override
+  String get settingsSignatureRotation => 'U rotaciji';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Svaka nova poruka nasumično dobiva jedan od potpisa u rotaciji.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Postavi kao zadani';
+
+  @override
+  String get settingsDeleteSignature => 'Izbriši potpis';
+
+  @override
   String get settingsLanguage => 'Jezik';
 
   @override
@@ -3216,12 +3472,6 @@ class AppLocalizationsHr extends AppLocalizations {
   String get settingsSignature => 'Potpis';
 
   @override
-  String get settingsSignatureFooter => 'Dodaje se ispod „-- “ u porukama s ovog identiteta.';
-
-  @override
-  String get settingsNoSignature => 'Bez potpisa';
-
-  @override
   String get settingsCopyToMyself => 'Kopija meni';
 
   @override
@@ -3382,6 +3632,11 @@ class AppLocalizationsHr extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Dodaj oznaku $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Dodaj u $project';
   }
 
   @override
@@ -5526,6 +5781,12 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Nije neželjena pošta';
+
+  @override
+  String get composeSignature => 'Potpis';
+
+  @override
+  String get composeNoSignature => 'Bez potpisa';
 
   @override
   String get accountSetupTitle => 'Dodaj račun';

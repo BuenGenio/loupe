@@ -60,6 +60,11 @@ final class ComposeRecord {
         'subject': message.subject,
         'text': message.text,
         'html': message.html,
+        if (message.inline.isNotEmpty)
+          'inline': [
+            for (final a in message.inline)
+              {'filename': a.filename, 'mimeType': a.mimeType, 'data': base64Encode(a.data), 'contentId': a.contentId},
+          ],
         'attachments': [
           if (keep)
             for (final a in message.attachments)
@@ -100,6 +105,15 @@ final class ComposeRecord {
           subject: m['subject']! as String,
           text: m['text']! as String,
           html: m['html'] as String?,
+          inline: [
+            for (final a in (m['inline'] as List? ?? const []).cast<Map<String, Object?>>())
+              OutgoingAttachment(
+                filename: a['filename']! as String,
+                mimeType: a['mimeType']! as String,
+                data: base64Decode(a['data']! as String),
+                contentId: a['contentId'] as String?,
+              ),
+          ],
           attachments: [
             for (final a in (m['attachments']! as List).cast<Map<String, Object?>>())
               OutgoingAttachment(

@@ -1042,6 +1042,145 @@ class AppLocalizationsHu extends AppLocalizations {
   String get mailboxesTags => 'Címkék';
 
   @override
+  String get mailboxesProjects => 'Projektek';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Csoportosítsd az egy dologról szóló beszélgetéseket bármelyik mappából vagy fiókból. Egy beszélgetésnél válaszd a Hozzáadás projekthez… lehetőséget.';
+
+  @override
+  String get projectsNewMenu => 'Új projekt…';
+
+  @override
+  String get projectsNewTitle => 'Új projekt';
+
+  @override
+  String get projectsEditTitle => 'Projekt szerkesztése';
+
+  @override
+  String get projectsAddToMenu => 'Hozzáadás projekthez…';
+
+  @override
+  String get projectsMarkDone => 'Megjelölés késznek';
+
+  @override
+  String get projectsReopen => 'Projekt újranyitása';
+
+  @override
+  String get projectsDelete => 'Projekt törlése';
+
+  @override
+  String get projectsDeleteMessage => 'A beszélgetései ott maradnak, ahol vannak, a projekten kívül.';
+
+  @override
+  String get projectsUntitled => 'Projekt';
+
+  @override
+  String get projectsEverythingElse => 'Minden más';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Még nincs projekt. Hozz létre egyet a Postafiókokban az Új projekt… lehetőséggel, vagy egy beszélgetésnél válaszd a Hozzáadás projekthez… lehetőséget.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Javaslat · $count beszélgetés',
+      one: 'Javaslat · 1 beszélgetés',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Projekt létrehozása';
+
+  @override
+  String get projectsNotATopic => 'Nem téma';
+
+  @override
+  String get projectsAiThinking => 'Kérdezem az MI-szervert…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Javaslatok MI-vel: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'A szerver nem érhető el.';
+
+  @override
+  String get projectsAiRefused => 'A szerver elutasította a kulcsot.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'A szerver $code hibával válaszolt.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'A szerver túl sokáig válaszolt.';
+
+  @override
+  String get projectsAiBadAnswer => 'A szerver válasza nem olvasható.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'A szervernek nincs ilyen modellje. Ezek vannak: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Szabály hozzáadása…';
+
+  @override
+  String get projectsRulesFooter =>
+      'A szabálynak megfelelő új levelek a projektbe kerülnek. A válaszok mindig követik a beszélgetésüket.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Minden más megjelenítése';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'Csempe nézetben egy csempe a beérkezett levelekhez, amelyek nincsenek projektben.';
+
+  @override
+  String get projectsSettingsSuggest => 'Témák javaslása';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'A Loupe ezen az eszközön átnézi az utolsó 90 nap beszélgetéseit, amelyekben részt vettél, és javasolja azokat, amelyek összetartozónak tűnnek.';
+
+  @override
+  String get projectsSettingsForget => 'Elvetett témák újbóli megjelenítése';
+
+  @override
+  String get projectsSettingsAi => 'Javaslatok MI-vel';
+
+  @override
+  String get projectsSettingsAiSwitch => 'MI-szerver használata';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Egy OpenAI-kompatibilis szerver, például a saját hálózatodon futó LocalAI vagy Ollama, elnevezi és csoportosítja a javaslatokat. A Loupe elküldi neki ezeknek a beszélgetéseknek a tárgyát, a neveket, a szervezetek domainjeit és a dátumokat, a szövegüket vagy a címeket soha.';
+
+  @override
+  String get projectsSettingsAiKey => 'API-kulcs';
+
+  @override
+  String get projectsSettingsAiModel => 'Modell';
+
+  @override
+  String get projectsSettingsNotSet => 'Nincs beállítva';
+
+  @override
+  String get projectsSettingsAiTest => 'Szerver tesztelése';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Kapcsolódva. A szerveren van $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1137,6 +1276,12 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Szűrő';
+
+  @override
+  String get messageListShowTiles => 'Megjelenítés csempeként';
+
+  @override
+  String get messageListShowList => 'Megjelenítés listaként';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2671,6 +2816,117 @@ class AppLocalizationsHu extends AppLocalizations {
       'Nincs ellenőrizve: csak a Loupe által megbízhatónak tartott szolgáltatóktól származó tanúsítványok ellenőrzése történik meg.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'A szerver azonnal jelzi a Beérkező levelek új leveleit egy kapcsolaton át, amelyet a Loupe nyitva tart. Kikapcsolva a Loupe néhány percenként ellenőriz, és eggyel kevesebb kapcsolatot használ.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Változatlan';
+
+  @override
+  String get settingsSignatures => 'Aláírások';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'A Loupe minden levélhez egyet választ: a másolatos aláírást, ha valaki a Másolat mezőben van, ütemezettet a napjain, véletlenszerűt a váltakozók közül, egyébként az alapértelmezettet.';
+
+  @override
+  String get settingsAddSignature => 'Aláírás hozzáadása';
+
+  @override
+  String get settingsNewSignature => 'Új aláírás';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return '$number. aláírás';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Alapértelmezett';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Ha valaki másolatot kap';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Ha másolatot kap: $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'Váltakozva';
+
+  @override
+  String get settingsSignatureNameHint => 'Név (Munka, Rövid…)';
+
+  @override
+  String get settingsSignatureHint => 'Az aláírásod';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'A mezők a feladó nevét vagy címét írják be, így egy aláírás minden identitáshoz és aliashoz illik.';
+
+  @override
+  String get settingsSignatureAddImage => 'Kép hozzáadása';
+
+  @override
+  String get settingsSignatureAddField => 'Mező hozzáadása';
+
+  @override
+  String get settingsSignatureImageFailed => 'A képet nem sikerült hozzáadni. Próbálj kisebb PNG-t vagy JPEG-et.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Mikor használja';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Ha valaki másolatot kap';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Az alapértelmezett helyett használja, amíg valaki a Másolat mezőben van. Adj meg címeket vagy domaineket, hogy csak akkor használja, ha ők kapnak másolatot.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Cím vagy domain hozzáadása…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Egy cím vagy egy domain, például client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Ütemezett';
+
+  @override
+  String get settingsSignatureStarts => 'Kezdete';
+
+  @override
+  String get settingsSignatureEnds => 'Vége';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Ezeken a napokon az alapértelmezett helyére lép, például kampányhoz vagy ünnepi nyitvatartáshoz.';
+
+  @override
+  String get settingsSignatureRotation => 'Váltakozva';
+
+  @override
+  String get settingsSignatureRotationFooter =>
+      'Minden új levél véletlenszerűen kap egyet a váltakozó aláírások közül.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Legyen alapértelmezett';
+
+  @override
+  String get settingsDeleteSignature => 'Aláírás törlése';
+
+  @override
   String get settingsLanguage => 'Nyelv';
 
   @override
@@ -3161,12 +3417,6 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settingsSignature => 'Aláírás';
 
   @override
-  String get settingsSignatureFooter => 'A „-- ” alá kerül az ebből az identitásból küldött üzenetekben.';
-
-  @override
-  String get settingsNoSignature => 'Nincs aláírás';
-
-  @override
   String get settingsCopyToMyself => 'Másolat magamnak';
 
   @override
@@ -3327,6 +3577,11 @@ class AppLocalizationsHu extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Címke: $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Hozzáadás ehhez: $project';
   }
 
   @override
@@ -5430,6 +5685,12 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Nem levélszemét';
+
+  @override
+  String get composeSignature => 'Aláírás';
+
+  @override
+  String get composeNoSignature => 'Nincs aláírás';
 
   @override
   String get accountSetupTitle => 'Fiók hozzáadása';

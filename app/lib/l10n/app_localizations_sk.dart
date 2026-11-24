@@ -1054,6 +1054,146 @@ class AppLocalizationsSk extends AppLocalizations {
   String get mailboxesTags => 'Štítky';
 
   @override
+  String get mailboxesProjects => 'Projekty';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Zoskupte konverzácie o jednej veci z ľubovoľného priečinka alebo účtu. Pri konverzácii zvoľte Pridať do projektu…';
+
+  @override
+  String get projectsNewMenu => 'Nový projekt…';
+
+  @override
+  String get projectsNewTitle => 'Nový projekt';
+
+  @override
+  String get projectsEditTitle => 'Upraviť projekt';
+
+  @override
+  String get projectsAddToMenu => 'Pridať do projektu…';
+
+  @override
+  String get projectsMarkDone => 'Označiť ako hotový';
+
+  @override
+  String get projectsReopen => 'Znova otvoriť projekt';
+
+  @override
+  String get projectsDelete => 'Odstrániť projekt';
+
+  @override
+  String get projectsDeleteMessage => 'Jeho konverzácie zostanú, kde sú, mimo projektu.';
+
+  @override
+  String get projectsUntitled => 'Projekt';
+
+  @override
+  String get projectsEverythingElse => 'Všetko ostatné';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Zatiaľ žiadne projekty. Vytvorte projekt v Schránkach voľbou Nový projekt…, alebo pri konverzácii zvoľte Pridať do projektu…';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Návrh · $count konverzácií',
+      few: 'Návrh · $count konverzácie',
+      one: 'Návrh · 1 konverzácia',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Vytvoriť projekt';
+
+  @override
+  String get projectsNotATopic => 'Nie je to téma';
+
+  @override
+  String get projectsAiThinking => 'Pýtam sa servera AI…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Návrhy s AI: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Server sa nepodarilo zastihnúť.';
+
+  @override
+  String get projectsAiRefused => 'Server kľúč odmietol.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'Server odpovedal chybou $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Serveru to trvalo príliš dlho.';
+
+  @override
+  String get projectsAiBadAnswer => 'Odpoveď servera sa nedala prečítať.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Server tento model nemá. Má: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Pridať pravidlo…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Nová pošta, ktorá zodpovedá pravidlu, pribudne do projektu. Odpovede vždy nasledujú svoju konverzáciu.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Zobraziť Všetko ostatné';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'V zobrazení dlaždíc dlaždica pre poštu v doručenej pošte, ktorá nie je v žiadnom projekte.';
+
+  @override
+  String get projectsSettingsSuggest => 'Navrhovať témy';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Loupe na tomto zariadení prejde konverzácie za posledných 90 dní, na ktorých ste sa zúčastnili, a navrhne tie, ktoré k sebe zrejme patria.';
+
+  @override
+  String get projectsSettingsForget => 'Znova zobraziť odmietnuté témy';
+
+  @override
+  String get projectsSettingsAi => 'Návrhy s AI';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Používať server AI';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Server kompatibilný s OpenAI, napríklad LocalAI alebo Ollama vo vašej sieti, návrhy pomenuje a zoskupí. Loupe mu posiela predmety, mená, domény organizácií a dátumy týchto konverzácií, nikdy ich text ani adresy.';
+
+  @override
+  String get projectsSettingsAiKey => 'Kľúč API';
+
+  @override
+  String get projectsSettingsAiModel => 'Model';
+
+  @override
+  String get projectsSettingsNotSet => 'Nenastavené';
+
+  @override
+  String get projectsSettingsAiTest => 'Otestovať server';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Pripojené. Server má $model.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1150,6 +1290,12 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Filter';
+
+  @override
+  String get messageListShowTiles => 'Zobraziť ako dlaždice';
+
+  @override
+  String get messageListShowList => 'Zobraziť ako zoznam';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2710,6 +2856,116 @@ class AppLocalizationsSk extends AppLocalizations {
       'Nekontrolované: kontrolujú sa len certifikáty od autorít, ktorým Loupe dôveruje.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Push', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Server hneď hlási novú poštu v Doručenej pošte cez pripojenie, ktoré Loupe udržiava otvorené. Keď je vypnuté, Loupe kontroluje poštu každých pár minút a používa o jedno pripojenie menej.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Bez zmeny';
+
+  @override
+  String get settingsSignatures => 'Podpisy';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Loupe vyberie pre každú správu jeden: podpis pre kópie, keď je niekto v poli Kópia, naplánovaný v jeho dňoch, náhodný z rotácie, inak predvolený.';
+
+  @override
+  String get settingsAddSignature => 'Pridať podpis';
+
+  @override
+  String get settingsNewSignature => 'Nový podpis';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Podpis $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Predvolený';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Keď niekto dostane kópiu';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Keď kópiu dostanú $addresses';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'V rotácii';
+
+  @override
+  String get settingsSignatureNameHint => 'Názov (Práca, Krátky…)';
+
+  @override
+  String get settingsSignatureHint => 'Váš podpis';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Polia doplnia meno alebo adresu odosielateľa, takže jeden podpis sa hodí ku každej identite aj aliasu.';
+
+  @override
+  String get settingsSignatureAddImage => 'Pridať obrázok';
+
+  @override
+  String get settingsSignatureAddField => 'Pridať pole';
+
+  @override
+  String get settingsSignatureImageFailed => 'Obrázok sa nepodarilo pridať. Skúste menší PNG alebo JPEG.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Kedy použiť';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Keď niekto dostane kópiu';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Použije sa namiesto predvoleného, kým je niekto v poli Kópia. Pridajte adresy alebo domény, aby sa použil len vtedy, keď kópiu dostanú oni.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Pridať adresu alebo doménu…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Adresa alebo doména, napríklad client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Naplánovaný';
+
+  @override
+  String get settingsSignatureStarts => 'Začiatok';
+
+  @override
+  String get settingsSignatureEnds => 'Koniec';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'V týchto dňoch nahradí predvolený, napríklad pre kampaň alebo sviatočné otváracie hodiny.';
+
+  @override
+  String get settingsSignatureRotation => 'V rotácii';
+
+  @override
+  String get settingsSignatureRotationFooter => 'Každá nová správa dostane náhodne jeden z podpisov v rotácii.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Nastaviť ako predvolený';
+
+  @override
+  String get settingsDeleteSignature => 'Odstrániť podpis';
+
+  @override
   String get settingsLanguage => 'Jazyk';
 
   @override
@@ -3200,12 +3456,6 @@ class AppLocalizationsSk extends AppLocalizations {
   String get settingsSignature => 'Podpis';
 
   @override
-  String get settingsSignatureFooter => 'Pridáva sa pod „-- “ v správach z tejto identity.';
-
-  @override
-  String get settingsNoSignature => 'Bez podpisu';
-
-  @override
   String get settingsCopyToMyself => 'Kópia pre mňa';
 
   @override
@@ -3366,6 +3616,11 @@ class AppLocalizationsSk extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Pridať štítok $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Pridať do $project';
   }
 
   @override
@@ -5497,6 +5752,12 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Nie je nevyžiadaná';
+
+  @override
+  String get composeSignature => 'Podpis';
+
+  @override
+  String get composeNoSignature => 'Bez podpisu';
 
   @override
   String get accountSetupTitle => 'Pridať účet';

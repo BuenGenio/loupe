@@ -1098,6 +1098,148 @@ class AppLocalizationsGa extends AppLocalizations {
   String get mailboxesTags => 'Clibeanna';
 
   @override
+  String get mailboxesProjects => 'Tionscadail';
+
+  @override
+  String get mailboxesProjectsEmpty =>
+      'Grúpáil na comhráite faoi rud amháin, ó fhillteán nó cuntas ar bith. Roghnaigh Cuir le tionscadal… ar chomhrá.';
+
+  @override
+  String get projectsNewMenu => 'Tionscadal nua…';
+
+  @override
+  String get projectsNewTitle => 'Tionscadal nua';
+
+  @override
+  String get projectsEditTitle => 'Cuir an tionscadal in eagar';
+
+  @override
+  String get projectsAddToMenu => 'Cuir le tionscadal…';
+
+  @override
+  String get projectsMarkDone => 'Marcáil mar déanta';
+
+  @override
+  String get projectsReopen => 'Athoscail an tionscadal';
+
+  @override
+  String get projectsDelete => 'Scrios an tionscadal';
+
+  @override
+  String get projectsDeleteMessage => 'Fanann a chomhráite mar a bhfuil siad, lasmuigh den tionscadal.';
+
+  @override
+  String get projectsUntitled => 'Tionscadal';
+
+  @override
+  String get projectsEverythingElse => 'Gach rud eile';
+
+  @override
+  String get projectsTilesEmpty =>
+      'Níl aon tionscadal fós. Cruthaigh ceann le Tionscadal nua… i mBoscaí poist, nó roghnaigh Cuir le tionscadal… ar chomhrá.';
+
+  @override
+  String projectsSuggested(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Moladh · $count comhrá',
+      many: 'Moladh · $count gcomhrá',
+      few: 'Moladh · $count chomhrá',
+      two: 'Moladh · $count chomhrá',
+      one: 'Moladh · $count chomhrá',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get projectsMakeProject => 'Déan tionscadal';
+
+  @override
+  String get projectsNotATopic => 'Ní ábhar é';
+
+  @override
+  String get projectsAiThinking => 'Ag fiafraí den fhreastalaí IS…';
+
+  @override
+  String projectsAiFailed(String error) {
+    return 'Moltaí le IS: $error';
+  }
+
+  @override
+  String get projectsAiUnreachable => 'Níorbh fhéidir an freastalaí a shroicheadh.';
+
+  @override
+  String get projectsAiRefused => 'Dhiúltaigh an freastalaí an eochair.';
+
+  @override
+  String projectsAiStatus(String code) {
+    return 'D’fhreagair an freastalaí le hearráid $code.';
+  }
+
+  @override
+  String get projectsAiTimeout => 'Thóg an freastalaí rófhada.';
+
+  @override
+  String get projectsAiBadAnswer => 'Níorbh fhéidir freagra an fhreastalaí a léamh.';
+
+  @override
+  String projectsAiNoModel(String models) {
+    return 'Níl an tsamhail sin ag an bhfreastalaí. Tá na cinn seo aige: $models.';
+  }
+
+  @override
+  String get projectsAddRule => 'Cuir riail leis…';
+
+  @override
+  String get projectsRulesFooter =>
+      'Téann post nua a mheaitseálann riail isteach sa tionscadal. Leanann freagraí a gcomhrá i gcónaí.';
+
+  @override
+  String get projectsSettingsEverythingElse => 'Taispeáin Gach rud eile';
+
+  @override
+  String get projectsSettingsEverythingElseFooter =>
+      'San amharc tíleanna, tíl don phost sa bhosca isteach nach bhfuil in aon tionscadal.';
+
+  @override
+  String get projectsSettingsSuggest => 'Mol ábhair';
+
+  @override
+  String get projectsSettingsSuggestFooter =>
+      'Breathnaíonn Loupe ar an ngléas seo ar chomhráite na 90 lá deireanach a raibh tú páirteach iontu, agus molann sé na cinn a bhfuil an chuma orthu gur le chéile iad.';
+
+  @override
+  String get projectsSettingsForget => 'Taispeáin ábhair a diúltaíodh arís';
+
+  @override
+  String get projectsSettingsAi => 'Moltaí le IS';
+
+  @override
+  String get projectsSettingsAiSwitch => 'Úsáid freastalaí IS';
+
+  @override
+  String get projectsSettingsAiFooter =>
+      'Ainmníonn agus grúpálann freastalaí atá comhoiriúnach le OpenAI, ar nós LocalAI nó Ollama ar do líonra féin, na moltaí. Seolann Loupe chuige ábhair, ainmneacha, fearainn eagraíochtaí agus dátaí na gcomhráite sin, ach riamh a dtéacs ná na seoltaí.';
+
+  @override
+  String get projectsSettingsAiKey => 'Eochair API';
+
+  @override
+  String get projectsSettingsAiModel => 'Samhail';
+
+  @override
+  String get projectsSettingsNotSet => 'Gan socrú';
+
+  @override
+  String get projectsSettingsAiTest => 'Tástáil an freastalaí';
+
+  @override
+  String projectsSettingsAiWorks(String model) {
+    return 'Ceangailte. Tá $model ag an bhfreastalaí.';
+  }
+
+  @override
   String get mailboxesVipTitle => 'VIP';
 
   @override
@@ -1200,6 +1342,12 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String get messageListFilter => 'Scagaire';
+
+  @override
+  String get messageListShowTiles => 'Taispeáin mar thíleanna';
+
+  @override
+  String get messageListShowList => 'Taispeáin mar liosta';
 
   @override
   String messageListFilterCriteria(String filters) {
@@ -2801,6 +2949,118 @@ class AppLocalizationsGa extends AppLocalizations {
       'Gan seiceáil: ní sheiceáiltear ach teastais ó údarás a bhfuil muinín ag Loupe as.';
 
   @override
+  String settingsIdle(String protocol) {
+    String _temp0 = intl.Intl.selectLogic(protocol, {'jmap': 'Brú', 'other': 'IDLE'});
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsIdleFooter =>
+      'Insíonn an freastalaí láithreach faoi ríomhphost nua sa Bhosca Isteach, thar cheangal a choinníonn Loupe oscailte. Nuair atá sé múchta, seiceálann Loupe gach cúpla nóiméad agus úsáideann sé ceangal amháin níos lú.';
+
+  @override
+  String get settingsPasswordUnchanged => 'Gan athrú';
+
+  @override
+  String get settingsSignatures => 'Sínithe';
+
+  @override
+  String get settingsSignaturesFooter =>
+      'Roghnaíonn Loupe ceann do gach teachtaireacht: síniú cóipe nuair a bhíonn duine i Cc, ceann sceidealta idir a laethanta, ceann randamach ón uainíocht, nó an réamhshocrú.';
+
+  @override
+  String get settingsAddSignature => 'Cuir síniú leis';
+
+  @override
+  String get settingsNewSignature => 'Síniú nua';
+
+  @override
+  String settingsSignatureNumbered(int number) {
+    return 'Síniú $number';
+  }
+
+  @override
+  String get settingsSignatureDefault => 'Réamhshocrú';
+
+  @override
+  String get settingsSignatureWhenCopiedAnyone => 'Nuair a fhaigheann duine cóip';
+
+  @override
+  String settingsSignatureWhenCopying(String addresses) {
+    return 'Nuair a fhaigheann $addresses cóip';
+  }
+
+  @override
+  String settingsSignatureBetween(String from, String until) {
+    return '$from – $until';
+  }
+
+  @override
+  String get settingsSignatureInRotation => 'Ar uainíocht';
+
+  @override
+  String get settingsSignatureNameHint => 'Ainm (Obair, Gearr…)';
+
+  @override
+  String get settingsSignatureHint => 'Do shíniú';
+
+  @override
+  String get settingsSignatureEditorFooter =>
+      'Líonann réimsí ainm nó seoladh an tseoltóra, mar sin oireann síniú amháin do gach aitheantas agus ailias.';
+
+  @override
+  String get settingsSignatureAddImage => 'Cuir íomhá leis';
+
+  @override
+  String get settingsSignatureAddField => 'Cuir réimse leis';
+
+  @override
+  String get settingsSignatureImageFailed =>
+      'Níorbh fhéidir an íomhá sin a chur leis. Bain triail as PNG nó JPEG níos lú.';
+
+  @override
+  String get settingsSignatureWhenToUse => 'Cathain a úsáidtear é';
+
+  @override
+  String get settingsSignatureWhenCopied => 'Nuair a fhaigheann duine cóip';
+
+  @override
+  String get settingsSignatureWhenCopiedFooter =>
+      'Úsáidtear é in ionad an réamhshocraithe fad a bhíonn duine ar bith i Cc. Cuir seoltaí nó fearainn leis chun é a úsáid ach amháin nuair a fhaigheann siadsan cóip.';
+
+  @override
+  String get settingsSignatureAddCopied => 'Cuir seoladh nó fearann leis…';
+
+  @override
+  String get settingsSignatureCopiedPrompt => 'Seoladh, nó fearann mar client.example.';
+
+  @override
+  String get settingsSignatureScheduled => 'Sceidealta';
+
+  @override
+  String get settingsSignatureStarts => 'Tosaíonn';
+
+  @override
+  String get settingsSignatureEnds => 'Críochnaíonn';
+
+  @override
+  String get settingsSignatureScheduledFooter =>
+      'Idir na laethanta seo glacann sé áit an réamhshocraithe, d’fheachtas nó d’uaireanta saoire.';
+
+  @override
+  String get settingsSignatureRotation => 'Ar uainíocht';
+
+  @override
+  String get settingsSignatureRotationFooter =>
+      'Faigheann gach teachtaireacht nua ceann de na sínithe ar uainíocht, go randamach.';
+
+  @override
+  String get settingsSignatureMakeDefault => 'Déan réamhshocrú de';
+
+  @override
+  String get settingsDeleteSignature => 'Scrios an síniú';
+
+  @override
   String get settingsLanguage => 'Teanga';
 
   @override
@@ -3296,12 +3556,6 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsSignature => 'Síniú';
 
   @override
-  String get settingsSignatureFooter => 'Curtha faoi “-- ” i dteachtaireachtaí ón aitheantas seo.';
-
-  @override
-  String get settingsNoSignature => 'Gan síniú';
-
-  @override
   String get settingsCopyToMyself => 'Cóip chugam féin';
 
   @override
@@ -3462,6 +3716,11 @@ class AppLocalizationsGa extends AppLocalizations {
   @override
   String rulesActionTag(String tag) {
     return 'Clib $tag';
+  }
+
+  @override
+  String rulesActionProject(String project) {
+    return 'Cuir le $project';
   }
 
   @override
@@ -5705,6 +5964,12 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String get sharedNotJunk => 'Ní turscar é';
+
+  @override
+  String get composeSignature => 'Síniú';
+
+  @override
+  String get composeNoSignature => 'Gan síniú';
 
   @override
   String get accountSetupTitle => 'Cuir cuntas leis';

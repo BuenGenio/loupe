@@ -14,7 +14,12 @@ MailAccount _account(String id, String email, List<Identity> identities) => Mail
 
 /// The owner's setup: a custom domain with a catch-all, and a Gmail account.
 final acme = _account('acme', 'alex@acme.example', const [
-  Identity(id: 'acme/alex', email: 'alex@acme.example', name: 'Alex', signature: 'E.'),
+  Identity(
+    id: 'acme/alex',
+    email: 'alex@acme.example',
+    name: 'Alex',
+    signatures: [Signature(id: 'acme/alex-sig', content: r'[{"insert":"E.\n"}]')],
+  ),
   Identity(id: 'acme/shop', email: 'shop@acme.example', name: 'Acme Shop'),
   Identity(id: 'acme/lists', email: 'lists@acme.example', replyPatterns: ['*@lists.acme.example']),
 ]);
@@ -223,7 +228,7 @@ void main() {
     )!;
     expect(choice.aliasAccount, acme);
     expect(choice.alias!.name, 'Alex');
-    expect(choice.alias!.signature, 'E.');
+    expect(choice.alias!.signatures.single.plainText, 'E.');
     expect(acme.isAliasIdentity(choice.alias!), isTrue);
     expect(choice.suggestsAlias, isTrue);
   });
