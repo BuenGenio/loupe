@@ -154,6 +154,50 @@ class AppLocalizationsPl extends AppLocalizations {
   String get mailboxTrash => 'Kosz';
 
   @override
+  String get conversationCompareMessages => 'Porównaj wiadomości…';
+
+  @override
+  String get conversationChangesTitle => 'Zmiany';
+
+  @override
+  String get conversationChangesFrom => 'Wiadomość początkowa';
+
+  @override
+  String get conversationChangesTo => 'Wiadomość końcowa';
+
+  @override
+  String get conversationChangesText => 'Tekst wiadomości';
+
+  @override
+  String get conversationChangesAdded => 'Dodano';
+
+  @override
+  String get conversationChangesRemoved => 'Usunięto';
+
+  @override
+  String get conversationChangesNoText => 'Brak zmian w tekście.';
+
+  @override
+  String get conversationChangesAttachments => 'Załączniki';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Porównywane są nazwy, typy i rozmiary załączników. Zawartość plików nie jest sprawdzana.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Zgodne dane';
+
+  @override
+  String get conversationChangesFullTextNote => 'Porównywany jest pełny tekst wiadomości, w tym cytaty i podpisy.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Ta wiadomość jest zbyt duża do szczegółowego porównania. Część tekstu może zostać pominięta lub pokazana jako cały blok.';
+
+  @override
+  String get conversationChangesLoadError => 'Nie udało się porównać tych wiadomości.';
+
+  @override
   String get conversationSomethingWentWrong => 'Coś poszło nie tak. Spróbuj ponownie.';
 
   @override
@@ -6756,4 +6800,32 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Wypróbuj z pocztą demonstracyjną';
+
+  @override
+  String get searchAskPlainEnglish => 'Zapytaj własnymi słowami';
+
+  @override
+  String get searchAskWorking => 'Układanie wyszukiwania…';
+
+  @override
+  String get searchAskProposed => 'Proponowane wyszukiwanie';
+
+  @override
+  String get searchAskUse => 'Użyj tego wyszukiwania';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe musi wiedzieć:';
+
+  @override
+  String get searchAskFailed => 'Loupe nie zdołał zamienić tego w wyszukiwanie.';
+
+  @override
+  String get searchAskDemoNote => 'Przetłumaczone przez wbudowane demo, nie przez model.';
+
+  @override
+  String get settingsAiHeader => 'Prywatna SI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Zamienia zdanie w wyszukiwanie, które można sprawdzić i zmienić. Na razie tłumaczy wbudowane demo: bez modelu, bez sieci.';
 }

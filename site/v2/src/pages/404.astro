@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+import DocsSearch from '../components/DocsSearch.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<Base title="Page not found" description="This page doesn't exist. Try the docs search, or head back to the Loupe home page." noindex>
+  <section class="section">
+    <div class="wrap narrow">
+      <div class="lens" aria-hidden="true"><span>404</span></div>
+      <h1>Even under a loupe, this page isn't here.</h1>
+      <p class="lead">The link may be old, or mistyped. Search the docs, or try one of these.</p>
+      <div class="search"><DocsSearch /></div>
+      <p class="links">
+        <a class="btn btn-primary" href="/"><Icon name="mail-inbox" size={18} /> Home</a>
+        <a class="btn" href="/download/">Download</a>
+        <a class="btn" href="/docs/">Docs</a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .narrow {
+    max-width: 680px;
+    text-align: center;
+  }
+
+  .lens {
+    display: grid;
+    place-items: center;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 32px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, rgb(255 255 255 / 55%), transparent 40%), var(--glass);
+    box-shadow:
+      inset 0 0 0 3px #dce8ee,
+      0 0 0 12px #0f8494,
+      0 0 0 14px #075663,
+      var(--shadow-l);
+  }
+
+  .lens span {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 500;
+    color: var(--navy);
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+  }
+
+  .search {
+    max-width: 440px;
+    margin: 28px auto;
+    text-align: left;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+</style>

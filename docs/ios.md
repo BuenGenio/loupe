@@ -209,8 +209,7 @@ Pick one:
 | `IOS_DISTRIBUTION_CERTIFICATE_PASSWORD` | its password |
 | `IOS_PROVISIONING_PROFILE` | the `.mobileprovision`, base64 |
 | `APPLE_TEAM_ID` | the 10-character Team ID (Membership details) |
-| `LOUPE_GOOGLE_IOS_CLIENT_ID` | optional, see below |
-| `LOUPE_MICROSOFT_CLIENT_ID` | optional, the same client ID as on Android |
+| `LOUPE_GOOGLE_IOS_CLIENT_ID` | optional, see below (Microsoft's client id is in the source) |
 
 **Sign-in with Google and Microsoft:** [oauth-setup.md](oauth-setup.md) has the steps.
 

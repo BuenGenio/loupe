@@ -10,12 +10,15 @@ import 'package:mail_model/mail_model.dart';
 
 import '../conversation/fake_mail_repository.dart';
 import '../conversation/test_app.dart';
+import 'fake_oauth.dart';
 
-Future<void> openSetup(WidgetTester tester, FakeMailRepository repo) async {
+/// Opens account setup; with [oauth] false, as a build without client ids.
+Future<void> openSetup(WidgetTester tester, FakeMailRepository repo, {bool oauth = true}) async {
   final router = await pumpTestApp(
     tester,
     repository: repo,
     extraRoutes: [GoRoute(path: '/add-account', builder: (_, _) => const AccountSetupScreen())],
+    overrides: [if (!oauth) oauthOverride(unconfiguredOAuth())],
   );
   unawaited(router.push('/add-account'));
   await tester.pumpAndSettle();
@@ -123,7 +126,7 @@ void main() {
         outgoing: const ServerConfig(protocol: ServerProtocol.smtp, host: 'smtp.gmail.com', port: 465),
         source: 'provider rules',
       );
-    await openSetup(tester, repo);
+    await openSetup(tester, repo, oauth: false);
     await enterAddress(tester, 'jane@gmail.com');
     expect(find.byKey(const Key('setup-password')), findsNothing);
     await tester.tap(find.byKey(const Key('use-app-password')));

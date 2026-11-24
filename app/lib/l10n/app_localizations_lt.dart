@@ -154,6 +154,50 @@ class AppLocalizationsLt extends AppLocalizations {
   String get mailboxTrash => 'Šiukšliadėžė';
 
   @override
+  String get conversationCompareMessages => 'Palyginti laiškus…';
+
+  @override
+  String get conversationChangesTitle => 'Pakeitimai';
+
+  @override
+  String get conversationChangesFrom => 'Pradinis laiškas';
+
+  @override
+  String get conversationChangesTo => 'Galutinis laiškas';
+
+  @override
+  String get conversationChangesText => 'Laiško tekstas';
+
+  @override
+  String get conversationChangesAdded => 'Pridėta';
+
+  @override
+  String get conversationChangesRemoved => 'Pašalinta';
+
+  @override
+  String get conversationChangesNoText => 'Teksto pakeitimų nėra.';
+
+  @override
+  String get conversationChangesAttachments => 'Priedai';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Lyginami priedų pavadinimai, tipai ir dydžiai. Failų turinys netikrinamas.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Sutampantys duomenys';
+
+  @override
+  String get conversationChangesFullTextNote => 'Lyginamas visas laiško tekstas, įskaitant citatas ir parašus.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Šis laiškas per didelis išsamiam palyginimui. Dalis teksto gali būti praleista arba parodyta kaip visas blokas.';
+
+  @override
+  String get conversationChangesLoadError => 'Šių laiškų nepavyko palyginti.';
+
+  @override
   String get conversationSomethingWentWrong => 'Kažkas nepavyko. Bandykite dar kartą.';
 
   @override
@@ -6707,4 +6751,32 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Išbandyti su demonstraciniu paštu';
+
+  @override
+  String get searchAskPlainEnglish => 'Klausti savais žodžiais';
+
+  @override
+  String get searchAskWorking => 'Ruošiama paieška…';
+
+  @override
+  String get searchAskProposed => 'Siūloma paieška';
+
+  @override
+  String get searchAskUse => 'Naudoti šią paiešką';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe reikia žinoti:';
+
+  @override
+  String get searchAskFailed => 'Loupe nepavyko to paversti paieška.';
+
+  @override
+  String get searchAskDemoNote => 'Išvertė įtaisytoji demonstracija, ne modelis.';
+
+  @override
+  String get settingsAiHeader => 'Privatus DI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Paverčia sakinį paieška, kurią galite patikrinti ir pakeisti. Kol kas verčia įtaisytoji demonstracija: be modelio, be tinklo.';
 }

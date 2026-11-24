@@ -21,13 +21,15 @@ export function planTasks(posts, cfg, ledger, { now = new Date(), only, platform
       if (!PLATFORMS[p]) continue;
       if (platform && p !== platform) continue;
       const mode = cfg.platforms[p]?.mode ?? 'off';
+      // Vista Social can hold a post and publish it on time, so hand it over early.
+      const aheadHours = mode === 'vista' ? Number(cfg.vista?.scheduleAheadHours ?? 0) : 0;
       const lateHours = post.date ? (now - post.date) / 3_600_000 : null;
       let state;
       if (post.status !== 'scheduled') state = 'draft';
       else if (mode === 'off') state = 'off';
       else if (ledger?.isDone(post.id, p)) state = 'done';
       else if (!post.date) state = 'invalid';
-      else if (lateHours < 0) state = 'future';
+      else if (lateHours < -aheadHours) state = 'future';
       else if (lateHours > maxLateH && !ignoreLateness) state = ledger?.isSkipped(post.id, p) ? 'skipped' : 'late';
       else state = 'due';
       tasks.push({ post, platform: p, mode, state, lateHours });

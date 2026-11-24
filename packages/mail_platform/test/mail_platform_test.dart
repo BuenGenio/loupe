@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -143,6 +144,18 @@ void main() {
       expect(both.isConfigured(ProviderKind.microsoft), isTrue);
       expect(both.isConfigured(ProviderKind.icloud), isFalse);
       expect(none.signIn(ProviderKind.gmail), failsWith(OAuthFailure.misconfigured));
+    });
+
+    test('Loupe’s own clients by default: Google’s Android client on Android only', () {
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      final android = OAuthSignIn(agent: FakeAgent());
+      expect(android.configFor(ProviderKind.gmail)!.clientId, OAuthSignIn.loupeGoogleAndroidClientId);
+      expect(android.configFor(ProviderKind.microsoft)!.clientId, OAuthSignIn.loupeMicrosoftClientId);
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+      final ios = OAuthSignIn(agent: FakeAgent());
+      expect(ios.isConfigured(ProviderKind.gmail), isFalse, reason: 'iOS has a client of its own');
+      expect(ios.isConfigured(ProviderKind.microsoft), isTrue);
     });
 
     test('Google and Microsoft scopes, endpoints and redirects', () async {
@@ -342,6 +355,8 @@ void main() {
       final unconfigured = OAuthSignIn(
         agent: NoBrowserAgent(),
         tokens: TokenEndpointClient(client: endpoint.client),
+        // As with --dart-define=LOUPE_MICROSOFT_CLIENT_ID= (empty).
+        microsoftClientId: '',
       );
       await expectLater(unconfigured.refresh(ProviderKind.microsoft, current()), mailError(MailErrorKind.unsupported));
       expect(endpoint.requests, isEmpty);

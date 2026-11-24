@@ -154,6 +154,50 @@ class AppLocalizationsSk extends AppLocalizations {
   String get mailboxTrash => 'Kôš';
 
   @override
+  String get conversationCompareMessages => 'Porovnať správy…';
+
+  @override
+  String get conversationChangesTitle => 'Zmeny';
+
+  @override
+  String get conversationChangesFrom => 'Východisková správa';
+
+  @override
+  String get conversationChangesTo => 'Cieľová správa';
+
+  @override
+  String get conversationChangesText => 'Text správy';
+
+  @override
+  String get conversationChangesAdded => 'Pridané';
+
+  @override
+  String get conversationChangesRemoved => 'Odstránené';
+
+  @override
+  String get conversationChangesNoText => 'Žiadne zmeny v texte.';
+
+  @override
+  String get conversationChangesAttachments => 'Prílohy';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Porovnávajú sa názvy, typy a veľkosti príloh. Obsah súborov sa nekontroluje.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Zhodné údaje';
+
+  @override
+  String get conversationChangesFullTextNote => 'Porovnáva sa celý text správy vrátane citácií a podpisov.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Táto správa je príliš veľká na podrobné porovnanie. Časť textu môže byť vynechaná alebo zobrazená ako jeden celý blok.';
+
+  @override
+  String get conversationChangesLoadError => 'Tieto správy sa nepodarilo porovnať.';
+
+  @override
   String get conversationSomethingWentWrong => 'Niečo sa pokazilo. Skúste to znova.';
 
   @override
@@ -6703,4 +6747,32 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Vyskúšať s ukážkovou poštou';
+
+  @override
+  String get searchAskPlainEnglish => 'Opýtať sa vlastnými slovami';
+
+  @override
+  String get searchAskWorking => 'Pripravuje sa hľadanie…';
+
+  @override
+  String get searchAskProposed => 'Navrhnuté hľadanie';
+
+  @override
+  String get searchAskUse => 'Použiť toto hľadanie';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe potrebuje vedieť:';
+
+  @override
+  String get searchAskFailed => 'Loupe z toho nedokázal urobiť hľadanie.';
+
+  @override
+  String get searchAskDemoNote => 'Preložilo vstavané demo, nie model.';
+
+  @override
+  String get settingsAiHeader => 'Súkromná AI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Premení vetu na hľadanie, ktoré môžete skontrolovať a upraviť. Zatiaľ prekladá vstavané demo: bez modelu, bez siete.';
 }

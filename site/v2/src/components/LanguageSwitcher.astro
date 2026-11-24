@@ -1,0 +1,262 @@
+---
+// The language menu: a flag and the language's own name for every locale.
+// Picking one stores a `lang` cookie, so the Worker stops redirecting by
+// browser language (worker/index.ts). On English-only pages (docs, news…)
+// other languages lead to that language's home page.
+import { useT, localize, hasStrings } from '../i18n';
+import { locale, locales, popular, translatedPaths } from '../i18n/locales';
+
+interface Props {
+  lang: string;
+  path: string;
+}
+const { lang, path } = Astro.props;
+const t = useT(lang);
+const current = locale(lang);
+const translated = translatedPaths.includes(path);
+// Each language also gets its name in the page's language ("Shqip · Albanisch"
+// on a German page), from the ICU data in Node, sorted by that name.
+const displayNames = new Intl.DisplayNames([lang], { type: 'language' });
+const local = (code: string, fallback: string) => {
+  const n = displayNames.of(code) ?? fallback;
+  return n.charAt(0).toLocaleUpperCase(lang) + n.slice(1);
+};
+const available = locales
+  .filter((l) => hasStrings(l.code))
+  .map((l) => ({ ...l, local: local(l.code, l.english) }));
+const top = popular.map((c) => available.find((l) => l.code === c)).filter((l) => l !== undefined);
+const rest = available.filter((l) => !popular.includes(l.code)).sort((a, b) => a.local.localeCompare(b.local, lang));
+const search = (l: (typeof available)[number]) => `${l.name} ${l.local} ${l.english} ${l.code}`.toLowerCase();
+const secondary = (l: (typeof available)[number]) => (l.local.toLowerCase() === l.name.toLowerCase() ? '' : l.local);
+const href = (code: string) => (translated || code === 'en' ? localize(code, translated ? path : '/') : `/${code}/`);
+---
+
+<details class="lang-switch">
+  <summary aria-label={`${t('common.language')}: ${current.name}`}>
+    <img src={`/flags/${current.flag}.webp`} width="20" height="15" alt="" />
+    <span class="code">{current.code.toUpperCase()}</span>
+    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
+  </summary>
+  <div class="panel">
+    <label class="filter">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.1 17.16a8 8 0 1 1 1.06-1.06l4.62 4.62a.75.75 0 1 1-1.06 1.06zM17.5 11a6.5 6.5 0 1 0-13 0 6.5 6.5 0 0 0 13 0" /></svg>
+      <input type="search" aria-label={t('common.language')} autocomplete="off" spellcheck="false" />
+    </label>
+    <p class="group">{t('common.popular')}</p>
+    <ul class="list">
+      {
+        top.map((l) => (
+          <li>
+            <a href={href(l.code)} hreflang={l.code} data-lang={l.code} data-search={search(l)} aria-current={l.code === lang ? 'true' : undefined}>
+              <img src={`/flags/${l.flag}.webp`} width="20" height="15" alt="" loading="lazy" />
+              <span class="names"><span lang={l.code}>{l.name}</span>{secondary(l) && <small>{secondary(l)}</small>}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="group">{t('common.allLanguages')}</p>
+    <ul class="list cols">
+      {
+        rest.map((l) => (
+          <li>
+            <a href={href(l.code)} hreflang={l.code} data-lang={l.code} data-search={search(l)} aria-current={l.code === lang ? 'true' : undefined}>
+              <img src={`/flags/${l.flag}.webp`} width="20" height="15" alt="" loading="lazy" />
+              <span class="names"><span lang={l.code}>{l.name}</span>{secondary(l) && <small>{secondary(l)}</small>}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    {!translated && <p class="note">{t('common.englishOnly')}</p>}
+  </div>
+</details>
+
+<script>
+  for (const a of document.querySelectorAll<HTMLAnchorElement>('.lang-switch a[data-lang]')) {
+    a.addEventListener('click', () => {
+      document.cookie = `lang=${a.dataset.lang}; path=/; max-age=31536000; SameSite=Lax; Secure`;
+    });
+  }
+  document.addEventListener('click', (e) => {
+    for (const d of document.querySelectorAll<HTMLDetailsElement>('.lang-switch[open]')) if (!d.contains(e.target as Node)) d.open = false;
+  });
+  for (const d of document.querySelectorAll<HTMLDetailsElement>('.lang-switch')) {
+    const input = d.querySelector<HTMLInputElement>('.filter input')!;
+    const items = [...d.querySelectorAll<HTMLAnchorElement>('a[data-search]')];
+    const groups = [...d.querySelectorAll<HTMLElement>('.group')];
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      for (const a of items) a.parentElement!.hidden = Boolean(q) && !a.dataset.search!.includes(q);
+      for (const g of groups) g.hidden = Boolean(q);
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') items.find((a) => !a.parentElement!.hidden)?.click();
+    });
+    d.addEventListener('toggle', () => {
+      if (d.open && matchMedia('(pointer: fine)').matches) input.focus();
+    });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') for (const d of document.querySelectorAll<HTMLDetailsElement>('.lang-switch[open]')) d.open = false;
+  });
+</script>
+
+<style>
+  .lang-switch {
+    position: relative;
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 10px;
+    border-radius: 999px;
+    color: var(--ink-2);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:hover,
+  .lang-switch[open] summary {
+    background: var(--bg-sunk);
+    color: var(--ink);
+  }
+
+  summary img,
+  .list img {
+    flex: none;
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 10%);
+  }
+
+  .panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    z-index: 60;
+    width: min(440px, calc(100vw - 32px));
+    max-height: min(70vh, 560px);
+    padding: 10px;
+    overflow: auto;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-l);
+  }
+
+  .group {
+    margin: 8px 10px 4px;
+    color: var(--ink-3);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 6px;
+    padding: 0 12px;
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--ink-3);
+  }
+
+  .filter:focus-within {
+    border-color: var(--brand);
+  }
+
+  .filter input {
+    flex: 1;
+    min-width: 0;
+    height: 36px;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.9375rem;
+    outline: none;
+  }
+
+  .list {
+    columns: 2;
+    column-gap: 4px;
+    margin: 0 0 6px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .list li {
+    break-inside: avoid;
+  }
+
+  .list li[hidden],
+  .group[hidden] {
+    display: none;
+  }
+
+  .names {
+    display: grid;
+    line-height: 1.2;
+  }
+
+  .names small {
+    color: var(--ink-3);
+    font-size: 0.75rem;
+    font-weight: 300;
+  }
+
+  .list a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    text-decoration: none;
+  }
+
+  .list a:hover {
+    background: var(--bg-sunk);
+  }
+
+  .list a[aria-current='true'] {
+    background: var(--brand-soft);
+    color: var(--brand-ink);
+    font-weight: 500;
+  }
+
+  .note {
+    margin: 6px 10px 4px;
+    color: var(--ink-3);
+    font-size: 0.8125rem;
+  }
+
+  @media (max-width: 900px) {
+    .panel {
+      position: fixed;
+      right: var(--gutter);
+      top: calc(var(--header-h) + 8px);
+      width: min(440px, calc(100vw - 2 * var(--gutter)));
+    }
+  }
+
+  @media (max-width: 480px) {
+    .code {
+      display: none;
+    }
+  }
+</style>

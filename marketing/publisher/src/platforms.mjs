@@ -100,32 +100,36 @@ export const PLATFORMS = {
 
 export const PLATFORM_NAMES = Object.keys(PLATFORMS);
 
-/** Keys allowed inside each per-platform override block. */
+/**
+ * Keys allowed inside each per-platform override block. `boost` (vista mode)
+ * names a Vista Social boost configuration id, or `false` to skip the
+ * platform's default boost for this post.
+ */
 export const OVERRIDE_KEYS = {
-  bluesky: ['text', 'langs'],
+  bluesky: ['text', 'langs', 'boost'],
   mastodon: ['text', 'spoiler', 'visibility', 'language'],
-  threads: ['text'],
-  x: ['text'],
-  linkedin: ['text'],
-  facebook: ['text'],
-  instagram: ['caption', 'kind'],
-  tiktok: ['caption', 'title'],
-  youtube: ['title', 'description', 'tags', 'short', 'visibility'],
-  reddit: ['subreddit', 'title', 'text', 'flair', 'kind'],
+  threads: ['text', 'boost'],
+  x: ['text', 'boost'],
+  linkedin: ['text', 'boost'],
+  facebook: ['text', 'boost'],
+  instagram: ['caption', 'kind', 'boost'],
+  tiktok: ['caption', 'title', 'boost'],
+  youtube: ['title', 'description', 'tags', 'short', 'visibility', 'boost'],
+  reddit: ['subreddit', 'title', 'text', 'flair', 'kind', 'boost'],
 };
 
-export const MODES = ['api', 'postiz', 'assist', 'off'];
+export const MODES = ['api', 'postiz', 'vista', 'assist', 'off'];
 
 /** Which modes each platform can actually run in. */
 export const SUPPORTED_MODES = {
-  bluesky: ['api', 'postiz', 'assist', 'off'],
-  mastodon: ['api', 'postiz', 'assist', 'off'],
-  threads: ['postiz', 'assist', 'off'],
-  x: ['postiz', 'assist', 'off'],
-  linkedin: ['postiz', 'assist', 'off'],
-  facebook: ['postiz', 'assist', 'off'],
-  instagram: ['postiz', 'assist', 'off'],
-  tiktok: ['postiz', 'assist', 'off'],
-  youtube: ['postiz', 'assist', 'off'],
-  reddit: ['postiz', 'assist', 'off'],
+  bluesky: ['api', 'postiz', 'vista', 'assist', 'off'],
+  mastodon: ['api', 'postiz', 'assist', 'off'], // Vista Social has no Mastodon
+  threads: ['postiz', 'vista', 'assist', 'off'],
+  x: ['postiz', 'vista', 'assist', 'off'],
+  linkedin: ['postiz', 'vista', 'assist', 'off'],
+  facebook: ['postiz', 'vista', 'assist', 'off'],
+  instagram: ['postiz', 'vista', 'assist', 'off'],
+  tiktok: ['postiz', 'vista', 'assist', 'off'],
+  youtube: ['postiz', 'vista', 'assist', 'off'],
+  reddit: ['postiz', 'vista', 'assist', 'off'],
 };

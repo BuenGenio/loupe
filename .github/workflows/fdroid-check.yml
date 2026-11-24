@@ -1,0 +1,82 @@
+# Builds a release the way F-Droid will, in F-Droid's own build container with
+# Loupe's recipe (docs/fdroid/io.github.buengenio.loupe.yml), and checks that
+# each APK is identical to the one on the GitHub release: then F-Droid can ship
+# ours, with our signature (reproducible builds, docs/releasing.md). F-Droid's
+# `fdroid build` does the comparison itself (the recipe's `binary:`), and fails
+# when they differ. Runs after each Release, or by hand for a tag.
+
+name: F-Droid check
+
+on:
+  workflow_run:
+    workflows: [Release]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag, e.g. v0.2.0"
+        required: true
+
+jobs:
+  fdroid:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        # The version code's last digit (docs/releasing.md).
+        abi: [{name: armeabi-v7a, digit: 1}, {name: arm64-v8a, digit: 2}, {name: x86_64, digit: 4}]
+    name: F-Droid build (${{ matrix.abi.name }})
+    steps:
+      - name: Tag
+        env:
+          TAG: ${{ inputs.tag || github.event.workflow_run.head_branch }}
+        run: echo "TAG=$TAG" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ env.TAG }}
+      - name: F-Droid's tools and data, with Loupe's recipe
+        run: |
+          git clone -q --depth=1 https://gitlab.com/fdroid/fdroidserver "$RUNNER_TEMP/fdroidserver"
+          git clone -q --depth=1 --filter=blob:none --sparse https://gitlab.com/fdroid/fdroiddata "$RUNNER_TEMP/fdroiddata"
+          git -C "$RUNNER_TEMP/fdroiddata" sparse-checkout set config
+          mkdir -p "$RUNNER_TEMP/fdroiddata/metadata"
+          cp docs/fdroid/io.github.buengenio.loupe.yml "$RUNNER_TEMP/fdroiddata/metadata/"
+          # The container builds as its own user.
+          chmod -R a+rwX "$RUNNER_TEMP/fdroiddata" "$RUNNER_TEMP/fdroidserver"
+          code=$(sed -n 's/^version: .*+//p' app/pubspec.yaml)
+          echo "VERCODE=$((code * 10 + ${{ matrix.abi.digit }}))" >> "$GITHUB_ENV"
+      - name: Build in F-Droid's container and compare with the release
+        run: |
+          docker run --rm -u vagrant --entrypoint /bin/bash \
+            -v "$RUNNER_TEMP/fdroiddata:/build" \
+            -v "$RUNNER_TEMP/fdroidserver:/home/vagrant/fdroidserver" \
+            -e VERCODE \
+            registry.gitlab.com/fdroid/fdroidserver:buildserver -c '
+              set -e
+              . /etc/profile
+              export PATH="/home/vagrant/fdroidserver:$PATH" PYTHONPATH=/home/vagrant/fdroidserver
+              export JAVA_HOME=$(java -XshowSettings:properties -version 2>&1 > /dev/null | grep "java.home" | awk -F= "{print \$2}" | tr -d " ")
+              cd /build
+              fdroid readmeta
+              fdroid lint io.github.buengenio.loupe
+              # Adds build entries for a tag newer than the recipe, as F-Droid does.
+              fdroid checkupdates --allow-dirty io.github.buengenio.loupe
+              fdroid build --verbose --on-server --no-tarball "io.github.buengenio.loupe:$VERCODE"
+            '
+      # The container's user wrote them, readable only by itself.
+      - name: Hand F-Droid's files back to the runner
+        if: always()
+        run: sudo chown -R "$(id -u):$(id -g)" "$RUNNER_TEMP/fdroiddata"
+      - name: Keep F-Droid's APK and logs
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: fdroid-${{ env.TAG }}-${{ matrix.abi.name }}
+          path: |
+            ${{ runner.temp }}/fdroiddata/unsigned/
+            ${{ runner.temp }}/fdroiddata/logs/
+            ${{ runner.temp }}/fdroiddata/tmp/*.apk
+          if-no-files-found: ignore
+          retention-days: 30

@@ -1,0 +1,363 @@
+---
+import Base from './Base.astro';
+import DocsSearch from '../components/DocsSearch.astro';
+import Icon from '../components/Icon.astro';
+import { docsBySection } from '../lib/docs';
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  title: string;
+  description: string;
+  section?: string;
+  headings?: MarkdownHeading[];
+  image?: string;
+  jsonLd?: object[];
+  editUrl?: string;
+  prev?: { href: string; title: string };
+  next?: { href: string; title: string };
+  updated?: Date;
+}
+
+const { title, description, section, headings = [], image, jsonLd, editUrl, prev, next, updated } = Astro.props;
+const groups = await docsBySection();
+const path = Astro.url.pathname;
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+<Base title={title} description={description} image={image} jsonLd={jsonLd} type="article" modified={updated}>
+  <div class="wrap docs">
+    <aside class="sidebar" aria-label="Documentation">
+      <DocsSearch />
+      <details class="nav-toggle" open>
+        <summary>Docs menu</summary>
+        <nav>
+          <a class:list={['home', { active: path === '/docs/' }]} href="/docs/">Overview</a>
+          {
+            groups.map((g) => (
+              <div class="group">
+                <h2>{g.section}</h2>
+                <ul>
+                  {g.docs.map((d) => (
+                    <li>
+                      <a href={`/docs/${d.id}/`} aria-current={path === `/docs/${d.id}/` ? 'page' : undefined}>
+                        {d.data.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </nav>
+      </details>
+    </aside>
+
+    <article class="content">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/docs/">Docs</a>
+        {section && <><span aria-hidden="true">/</span> <span>{section}</span></>}
+      </nav>
+      <h1>{title}</h1>
+      <div class="prose">
+        <slot />
+      </div>
+
+      {
+        (prev || next) && (
+          <nav class="pager" aria-label="More docs">
+            {prev ? (
+              <a class="prev" href={prev.href}>
+                <span>Previous</span>
+                {prev.title}
+              </a>
+            ) : (
+              <span />
+            )}
+            {next && (
+              <a class="next" href={next.href}>
+                <span>Next</span>
+                {next.title}
+              </a>
+            )}
+          </nav>
+        )
+      }
+      <footer class="meta">
+        {updated && <span>Updated {updated.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>}
+        {editUrl && <a href={editUrl} rel="noopener"><Icon name="mail-edit" size={16} /> Suggest an edit</a>}
+        <a href="/contact/">Still stuck? Ask</a>
+      </footer>
+    </article>
+
+    {
+      toc.length > 1 && (
+        <aside class="toc" aria-label="On this page">
+          <h2>On this page</h2>
+          <ul>
+            {toc.map((h) => (
+              <li class={`d${h.depth}`}>
+                <a href={`#${h.slug}`}>{h.text}</a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )
+    }
+  </div>
+</Base>
+
+<script>
+  // Highlight the section being read in the table of contents.
+  const links = new Map(
+    [...document.querySelectorAll<HTMLAnchorElement>('.toc a')].map((a) => [decodeURIComponent(a.hash.slice(1)), a]),
+  );
+  if (links.size) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          links.forEach((a) => a.classList.remove('active'));
+          links.get(e.target.id)?.classList.add('active');
+        }
+      },
+      { rootMargin: '-80px 0px -70% 0px' },
+    );
+    document.querySelectorAll('.prose h2[id], .prose h3[id]').forEach((h) => io.observe(h));
+  }
+  // On small screens the menu starts closed.
+  if (matchMedia('(max-width: 900px)').matches) document.querySelector<HTMLDetailsElement>('.nav-toggle')?.removeAttribute('open');
+</script>
+
+<style>
+  .docs {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr) 220px;
+    gap: 48px;
+    padding-block: 40px 80px;
+  }
+
+  .sidebar,
+  .toc {
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+    align-self: start;
+    max-height: calc(100dvh - var(--header-h) - 48px);
+    overflow: auto;
+  }
+
+  .sidebar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    padding: 2px 4px 2px 2px;
+  }
+
+  .nav-toggle summary {
+    display: none;
+  }
+
+  .sidebar nav {
+    display: grid;
+    gap: 18px;
+  }
+
+  .sidebar h2 {
+    margin: 0 0 6px;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .sidebar ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sidebar a {
+    display: block;
+    padding: 5px 10px;
+    border-radius: 8px;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    text-decoration: none;
+  }
+
+  .sidebar a:hover {
+    background: var(--bg-sunk);
+    color: var(--ink);
+  }
+
+  .sidebar a[aria-current='page'],
+  .sidebar a.active {
+    background: var(--brand-soft);
+    color: var(--brand-ink);
+    font-weight: 500;
+  }
+
+  .crumbs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: var(--ink-3);
+    font-size: 0.875rem;
+  }
+
+  .crumbs a {
+    color: inherit;
+  }
+
+  .content h1 {
+    font-size: clamp(2.2rem, 4.5vw, 3rem);
+    margin-bottom: 20px;
+  }
+
+  .content .prose {
+    max-width: 74ch;
+  }
+
+  .content .prose > :global(p:first-child) {
+    color: var(--ink-2);
+    font-size: 1.1875rem;
+  }
+
+  .pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 74ch;
+    margin-top: 56px;
+  }
+
+  .pager a {
+    display: grid;
+    gap: 2px;
+    padding: 16px 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .pager a:hover {
+    border-color: var(--brand);
+  }
+
+  .pager span {
+    color: var(--ink-3);
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
+  .pager .next {
+    grid-column: 2;
+    text-align: right;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    max-width: 74ch;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-3);
+    font-size: 0.875rem;
+  }
+
+  .meta a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ink-2);
+  }
+
+  .toc h2 {
+    margin: 0 0 10px;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .toc ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-left: 1px solid var(--line);
+  }
+
+  .toc a {
+    display: block;
+    margin-left: -1px;
+    padding: 4px 0 4px 14px;
+    border-left: 2px solid transparent;
+    color: var(--ink-3);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    text-decoration: none;
+  }
+
+  .toc .d3 a {
+    padding-left: 26px;
+    font-size: 0.8125rem;
+  }
+
+  .toc a:hover {
+    color: var(--ink);
+  }
+
+  .toc a.active {
+    border-left-color: var(--brand);
+    color: var(--brand-ink);
+  }
+
+  @media (max-width: 1180px) {
+    .docs {
+      grid-template-columns: 230px minmax(0, 1fr);
+    }
+    .toc {
+      display: none;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .docs {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding-top: 24px;
+    }
+    .sidebar {
+      position: static;
+      max-height: none;
+      overflow: visible;
+    }
+    .nav-toggle summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--bg-elev);
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .nav-toggle[open] summary {
+      margin-bottom: 16px;
+    }
+    .pager {
+      grid-template-columns: 1fr;
+    }
+    .pager .next {
+      grid-column: 1;
+    }
+  }
+</style>

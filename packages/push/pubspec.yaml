@@ -1,0 +1,7 @@
+name: loupe_push
+description: "Push in Loupe's Free release type: there is none. NonFree builds use nonfree/push instead (docs/releasing.md)."
+publish_to: none
+# Not a workspace member, on purpose: the NonFree build overrides this package
+# with nonfree/push (tool/release_type.sh), and pub can't override members.
+environment:
+  sdk: ^3.13.0

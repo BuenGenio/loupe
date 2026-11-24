@@ -148,6 +148,51 @@ class AppLocalizationsHu extends AppLocalizations {
   String get mailboxTrash => 'Kuka';
 
   @override
+  String get conversationCompareMessages => 'Üzenetek összehasonlítása…';
+
+  @override
+  String get conversationChangesTitle => 'Változások';
+
+  @override
+  String get conversationChangesFrom => 'Kiinduló üzenet';
+
+  @override
+  String get conversationChangesTo => 'Célüzenet';
+
+  @override
+  String get conversationChangesText => 'Üzenetszöveg';
+
+  @override
+  String get conversationChangesAdded => 'Hozzáadva';
+
+  @override
+  String get conversationChangesRemoved => 'Eltávolítva';
+
+  @override
+  String get conversationChangesNoText => 'Nincs szöveges változás.';
+
+  @override
+  String get conversationChangesAttachments => 'Mellékletek';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'A mellékletek neve, típusa és mérete kerül összehasonlításra. A fájlok tartalmát nem ellenőrizzük.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Egyező adatok';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Az üzenet teljes szövegét összehasonlítjuk, az idézetekkel és az aláírásokkal együtt.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Ez az üzenet túl nagy a részletes összehasonlításhoz. Előfordulhat, hogy a szöveg egy része kimarad, vagy egyetlen teljes blokként jelenik meg.';
+
+  @override
+  String get conversationChangesLoadError => 'Ezeket az üzeneteket nem sikerült összehasonlítani.';
+
+  @override
   String get conversationSomethingWentWrong => 'Hiba történt. Próbáld újra.';
 
   @override
@@ -6636,4 +6681,32 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Kipróbálás demó levelekkel';
+
+  @override
+  String get searchAskPlainEnglish => 'Kérdezz a saját szavaiddal';
+
+  @override
+  String get searchAskWorking => 'Keresés összeállítása…';
+
+  @override
+  String get searchAskProposed => 'Javasolt keresés';
+
+  @override
+  String get searchAskUse => 'Keresés használata';
+
+  @override
+  String get searchAskNeedsAnswer => 'A Loupe-nak tudnia kell:';
+
+  @override
+  String get searchAskFailed => 'A Loupe nem tudott ebből keresést készíteni.';
+
+  @override
+  String get searchAskDemoNote => 'A beépített demó fordította, nem modell.';
+
+  @override
+  String get settingsAiHeader => 'Privát MI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Egy mondatból ellenőrizhető és szerkeszthető keresést készít. Egyelőre a beépített demó fordít: nincs modell, nincs hálózat.';
 }

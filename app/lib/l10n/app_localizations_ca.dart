@@ -148,6 +148,51 @@ class AppLocalizationsCa extends AppLocalizations {
   String get mailboxTrash => 'Paperera';
 
   @override
+  String get conversationCompareMessages => 'Compara els missatges…';
+
+  @override
+  String get conversationChangesTitle => 'Canvis';
+
+  @override
+  String get conversationChangesFrom => 'Missatge inicial';
+
+  @override
+  String get conversationChangesTo => 'Missatge final';
+
+  @override
+  String get conversationChangesText => 'Text del missatge';
+
+  @override
+  String get conversationChangesAdded => 'Afegit';
+
+  @override
+  String get conversationChangesRemoved => 'Suprimit';
+
+  @override
+  String get conversationChangesNoText => 'No hi ha canvis en el text.';
+
+  @override
+  String get conversationChangesAttachments => 'Fitxers adjunts';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Es comparen els noms, els tipus i les mides dels fitxers adjunts. No es comprova el contingut dels fitxers.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Dades coincidents';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Es compara tot el text del missatge, incloses les citacions i les signatures.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Aquest missatge és massa gran per fer-ne una comparació detallada. És possible que s’ometi part del text o que es mostri com un bloc sencer.';
+
+  @override
+  String get conversationChangesLoadError => 'No s’han pogut comparar aquests missatges.';
+
+  @override
   String get conversationSomethingWentWrong => 'Alguna cosa ha fallat. Torna-ho a provar.';
 
   @override
@@ -6641,4 +6686,32 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Prova-ho amb correu de demostració';
+
+  @override
+  String get searchAskPlainEnglish => 'Pregunta amb les teves paraules';
+
+  @override
+  String get searchAskWorking => 'S\'està preparant la cerca…';
+
+  @override
+  String get searchAskProposed => 'Cerca proposada';
+
+  @override
+  String get searchAskUse => 'Utilitza aquesta cerca';
+
+  @override
+  String get searchAskNeedsAnswer => 'El Loupe necessita saber:';
+
+  @override
+  String get searchAskFailed => 'El Loupe no ha pogut convertir-ho en una cerca.';
+
+  @override
+  String get searchAskDemoNote => 'Traduït per la demostració integrada, no per un model.';
+
+  @override
+  String get settingsAiHeader => 'IA privada';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Converteix una frase en una cerca que pots revisar i editar. De moment tradueix la demostració integrada: sense model, sense xarxa.';
 }

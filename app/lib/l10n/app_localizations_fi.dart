@@ -148,6 +148,51 @@ class AppLocalizationsFi extends AppLocalizations {
   String get mailboxTrash => 'Roskakori';
 
   @override
+  String get conversationCompareMessages => 'Vertaa viestejä…';
+
+  @override
+  String get conversationChangesTitle => 'Muutokset';
+
+  @override
+  String get conversationChangesFrom => 'Lähtöviesti';
+
+  @override
+  String get conversationChangesTo => 'Kohdeviesti';
+
+  @override
+  String get conversationChangesText => 'Viestin teksti';
+
+  @override
+  String get conversationChangesAdded => 'Lisätty';
+
+  @override
+  String get conversationChangesRemoved => 'Poistettu';
+
+  @override
+  String get conversationChangesNoText => 'Ei tekstimuutoksia.';
+
+  @override
+  String get conversationChangesAttachments => 'Liitteet';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Liitteiden nimiä, tyyppejä ja kokoja verrataan. Tiedostojen sisältöä ei tarkisteta.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Vastaavat tiedot';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Viestin koko tekstiä verrataan, mukaan lukien lainaukset ja allekirjoitukset.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Tämä viesti on liian suuri yksityiskohtaiseen vertailuun. Osa tekstistä saatetaan jättää pois tai näyttää yhtenä kokonaisena lohkona.';
+
+  @override
+  String get conversationChangesLoadError => 'Näitä viestejä ei voitu verrata.';
+
+  @override
   String get conversationSomethingWentWrong => 'Jokin meni vikaan. Yritä uudelleen.';
 
   @override
@@ -6598,4 +6643,32 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Kokeile demopostilla';
+
+  @override
+  String get searchAskPlainEnglish => 'Kysy omin sanoin';
+
+  @override
+  String get searchAskWorking => 'Hakua muodostetaan…';
+
+  @override
+  String get searchAskProposed => 'Ehdotettu haku';
+
+  @override
+  String get searchAskUse => 'Käytä tätä hakua';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupen täytyy tietää:';
+
+  @override
+  String get searchAskFailed => 'Loupe ei saanut tästä hakua.';
+
+  @override
+  String get searchAskDemoNote => 'Kääntänyt sisäänrakennettu demo, ei malli.';
+
+  @override
+  String get settingsAiHeader => 'Yksityinen tekoäly';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Muuttaa lauseen hauksi, jonka voit tarkistaa ja muokata. Toistaiseksi kääntää sisäänrakennettu demo: ei mallia, ei verkkoa.';
 }

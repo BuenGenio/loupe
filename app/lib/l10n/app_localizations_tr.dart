@@ -148,6 +148,50 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mailboxTrash => 'Çöp Kutusu';
 
   @override
+  String get conversationCompareMessages => 'İletileri karşılaştır…';
+
+  @override
+  String get conversationChangesTitle => 'Değişiklikler';
+
+  @override
+  String get conversationChangesFrom => 'Başlangıç iletisi';
+
+  @override
+  String get conversationChangesTo => 'Hedef ileti';
+
+  @override
+  String get conversationChangesText => 'İleti metni';
+
+  @override
+  String get conversationChangesAdded => 'Eklenen';
+
+  @override
+  String get conversationChangesRemoved => 'Kaldırılan';
+
+  @override
+  String get conversationChangesNoText => 'Metinde değişiklik yok.';
+
+  @override
+  String get conversationChangesAttachments => 'Ekler';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Eklerin adları, türleri ve boyutları karşılaştırılır. Dosya içerikleri kontrol edilmez.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Eşleşen ayrıntılar';
+
+  @override
+  String get conversationChangesFullTextNote => 'Alıntılar ve imzalar dahil iletinin tüm metni karşılaştırılır.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Bu ileti, ayrıntılı bir karşılaştırma için çok büyük. Metnin bir kısmı atlanabilir veya bütün bir blok olarak gösterilebilir.';
+
+  @override
+  String get conversationChangesLoadError => 'Bu iletiler karşılaştırılamadı.';
+
+  @override
   String get conversationSomethingWentWrong => 'Bir sorun oluştu. Tekrar deneyin.';
 
   @override
@@ -6582,4 +6626,32 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Demo e-postayla deneyin';
+
+  @override
+  String get searchAskPlainEnglish => 'Kendi sözcüklerinizle sorun';
+
+  @override
+  String get searchAskWorking => 'Arama hazırlanıyor…';
+
+  @override
+  String get searchAskProposed => 'Önerilen arama';
+
+  @override
+  String get searchAskUse => 'Bu aramayı kullan';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe\'un bilmesi gereken:';
+
+  @override
+  String get searchAskFailed => 'Loupe bunu bir aramaya dönüştüremedi.';
+
+  @override
+  String get searchAskDemoNote => 'Yerleşik demo çevirdi, bir model değil.';
+
+  @override
+  String get settingsAiHeader => 'Özel yapay zekâ';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Bir cümleyi denetleyip düzenleyebileceğiniz bir aramaya dönüştürür. Şimdilik yerleşik demo çevirir: model yok, ağ yok.';
 }

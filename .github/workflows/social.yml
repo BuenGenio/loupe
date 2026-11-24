@@ -120,6 +120,10 @@ jobs:
           MASTODON_TOKEN: ${{ secrets.MASTODON_TOKEN }}
           POSTIZ_URL: ${{ vars.POSTIZ_URL || secrets.POSTIZ_URL }}
           POSTIZ_API_KEY: ${{ secrets.POSTIZ_API_KEY }}
+          VISTA_URL: ${{ vars.VISTA_URL || secrets.VISTA_URL }}
+          VISTA_API_KEY: ${{ secrets.VISTA_API_KEY }}
+          VISTA_MCP_URL: ${{ secrets.VISTA_MCP_URL }}
+          VISTA_MEDIA_BASE_URL: ${{ vars.VISTA_MEDIA_BASE_URL }}
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail

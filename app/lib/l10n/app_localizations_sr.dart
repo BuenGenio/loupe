@@ -154,6 +154,50 @@ class AppLocalizationsSr extends AppLocalizations {
   String get mailboxTrash => 'Смеће';
 
   @override
+  String get conversationCompareMessages => 'Упореди поруке…';
+
+  @override
+  String get conversationChangesTitle => 'Промене';
+
+  @override
+  String get conversationChangesFrom => 'Полазна порука';
+
+  @override
+  String get conversationChangesTo => 'Одредишна порука';
+
+  @override
+  String get conversationChangesText => 'Текст поруке';
+
+  @override
+  String get conversationChangesAdded => 'Додато';
+
+  @override
+  String get conversationChangesRemoved => 'Уклоњено';
+
+  @override
+  String get conversationChangesNoText => 'Нема промена у тексту.';
+
+  @override
+  String get conversationChangesAttachments => 'Прилози';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Упоређују се називи, типови и величине прилога. Садржај датотека се не проверава.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Подударајући подаци';
+
+  @override
+  String get conversationChangesFullTextNote => 'Упоређује се цео текст поруке, укључујући цитате и потписе.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Ова порука је превелика за детаљно поређење. Део текста може бити изостављен или приказан као цео блок.';
+
+  @override
+  String get conversationChangesLoadError => 'Ове поруке није било могуће упоредити.';
+
+  @override
   String get conversationSomethingWentWrong => 'Дошло је до грешке. Покушајте поново.';
 
   @override
@@ -6757,4 +6801,32 @@ class AppLocalizationsSr extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Испробај уз демо пошту';
+
+  @override
+  String get searchAskPlainEnglish => 'Питајте својим речима';
+
+  @override
+  String get searchAskWorking => 'Припрема претраге…';
+
+  @override
+  String get searchAskProposed => 'Предложена претрага';
+
+  @override
+  String get searchAskUse => 'Користи ову претрагу';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe треба да зна:';
+
+  @override
+  String get searchAskFailed => 'Loupe није могао то да претвори у претрагу.';
+
+  @override
+  String get searchAskDemoNote => 'Превео уграђени демо, а не модел.';
+
+  @override
+  String get settingsAiHeader => 'Приватна ВИ';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Претвара реченицу у претрагу коју можете да проверите и измените. Засад преводи уграђени демо: без модела, без мреже.';
 }

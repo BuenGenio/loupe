@@ -148,6 +148,51 @@ class AppLocalizationsLb extends AppLocalizations {
   String get mailboxTrash => 'Pabeierkuerf';
 
   @override
+  String get conversationCompareMessages => 'Messagë vergläichen…';
+
+  @override
+  String get conversationChangesTitle => 'Ännerungen';
+
+  @override
+  String get conversationChangesFrom => 'Ausgangsmessage';
+
+  @override
+  String get conversationChangesTo => 'Zilmessage';
+
+  @override
+  String get conversationChangesText => 'Messagetext';
+
+  @override
+  String get conversationChangesAdded => 'Dobäigesat';
+
+  @override
+  String get conversationChangesRemoved => 'Ewechgeholl';
+
+  @override
+  String get conversationChangesNoText => 'Keng Textännerungen.';
+
+  @override
+  String get conversationChangesAttachments => 'Unhäng';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'D’Nimm, d’Typen an d’Gréisste vun den Unhäng gi verglach. Den Inhalt vun de Fichiere gëtt net iwwerpréift.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Iwwereneestëmmend Detailer';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'De ganzen Text vum Message gëtt verglach, mat Zitater an Ënnerschrëften.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Dëse Message ass ze grouss fir en detailléierte Verglach. En Deel vum Text ka fortgelooss oder als ganze Block ugewise ginn.';
+
+  @override
+  String get conversationChangesLoadError => 'Dës Messagë konnten net verglach ginn.';
+
+  @override
   String get conversationSomethingWentWrong => 'Eppes ass schifgaang. Probéiert nach eng Kéier.';
 
   @override
@@ -6631,4 +6676,32 @@ class AppLocalizationsLb extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Mat Demo-Mailen ausprobéieren';
+
+  @override
+  String get searchAskPlainEnglish => 'Mat eegene Wierder froen';
+
+  @override
+  String get searchAskWorking => 'Sich gëtt virbereet …';
+
+  @override
+  String get searchAskProposed => 'Proposéiert Sich';
+
+  @override
+  String get searchAskUse => 'Dës Sich benotzen';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe muss wëssen:';
+
+  @override
+  String get searchAskFailed => 'Loupe konnt doraus keng Sich maachen.';
+
+  @override
+  String get searchAskDemoNote => 'Iwwersat vun der agebauter Demo, net vun engem Modell.';
+
+  @override
+  String get settingsAiHeader => 'Privat KI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Mécht aus engem Saz eng Sich, déi sech kontrolléieren an änneren léisst. Fir de Moment iwwersetzt déi agebaute Demo: kee Modell, kee Netz.';
 }

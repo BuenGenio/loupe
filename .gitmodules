@@ -1,0 +1,8 @@
+# The Flutter SDK that releases are built with, for F-Droid's builds
+# (docs/releasing.md). Not needed to develop: CI and you can use any Flutter
+# install of the same version (FLUTTER_VERSION in .github/workflows/ci.yml,
+# which CI checks against this). `git submodule update --init .flutter` gets it.
+[submodule ".flutter"]
+	path = .flutter
+	url = https://github.com/flutter/flutter.git
+	branch = stable

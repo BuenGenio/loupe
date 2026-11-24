@@ -53,6 +53,7 @@ export function renderPost(post, platform, cfg) {
     linkSpans: [],
     options: {},
   };
+  if (o.boost !== undefined) out.options.boost = o.boost;
 
   let kind = null;
   if (platform === 'reddit') {

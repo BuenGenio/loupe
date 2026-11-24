@@ -29,12 +29,12 @@ Manual test plan for a device: [docs/device-test-checklist.md](docs/device-test-
 
 ## Try it on Android
 
-Every push to `main` builds signed APKs and attaches them to the rolling **Nightly** pre-release on GitHub:
+Loupe comes in two release types ([docs/releasing.md](docs/releasing.md)): **Free**, with no Google code at all, and **NonFree**, which adds Push through Google's push service. Both install over each other.
 
-- `loupe-<version>-arm64.apk` for phones
-- `loupe-<version>-x86_64.apk` for emulators
+- **Releases** (GitHub Releases, tags `v<version>`): both types, `loupe-free-<version>-<abi>.apk` and `loupe-nonfree-<version>-<abi>.apk`. `arm64-v8a` is for phones, `armeabi-v7a` for older 32-bit phones, `x86_64` for emulators. The Free type is headed for F-Droid.
+- **Nightly:** every push to `main` builds signed NonFree APKs and attaches them to the rolling **Nightly** pre-release: `loupe-<version>-arm64.apk` for phones, `loupe-<version>-x86_64.apk` for emulators.
 
-Install the APK; newer builds install over older ones. The release notes show what's new, from [CHANGELOG.md](CHANGELOG.md). On first start, choose **Try with demo mail** to explore the UI without an account.
+Newer builds install over older ones. The release notes show what's new, from [CHANGELOG.md](CHANGELOG.md). On first start, choose **Try with demo mail** to explore the UI without an account.
 
 ## Develop
 
@@ -61,6 +61,12 @@ cd app && flutter run    # on a device or emulator
 | `packages/mail_sieve` | Rules: device rule runner, Sieve generation, ManageSieve client |
 | `packages/mail_crypto` | OpenPGP (PGP/MIME, Autocrypt) and S/MIME |
 | `packages/mail_calendar` | Calendar invitations: iCalendar, time zones, iMIP replies |
+| `packages/push` | Push in the Free release type: none |
+| `nonfree/push` | Push in the NonFree release type: Firebase Cloud Messaging ([docs/push.md](docs/push.md)) |
+| `third_party/` | Vendored source: dart_pg (OpenPGP), SQLite3 Multiple Ciphers |
+| `fastlane/` | Store listing texts and graphics (Google Play, F-Droid) |
+
+`tool/release_type.sh nonfree` switches a checkout to the NonFree type, `free` back; releasing is in [docs/releasing.md](docs/releasing.md).
 
 ## Licence
 

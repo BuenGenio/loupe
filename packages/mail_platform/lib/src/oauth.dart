@@ -2,6 +2,7 @@
 /// the system browser (AppAuth), refreshes with a plain HTTPS POST.
 library;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:mail_model/mail_model.dart';
@@ -169,8 +170,10 @@ OAuthFailure classifyOAuthError(Object error) {
 
 /// Signs in to Gmail and Microsoft accounts and refreshes their tokens.
 ///
-/// Client ids come from `--dart-define=LOUPE_GOOGLE_CLIENT_ID=…` and
-/// `--dart-define=LOUPE_MICROSOFT_CLIENT_ID=…`; a provider without one is not
+/// Client ids: Loupe's own ([loupeGoogleAndroidClientId],
+/// [loupeMicrosoftClientId]) unless `--dart-define=LOUPE_GOOGLE_CLIENT_ID=…`
+/// or `--dart-define=LOUPE_MICROSOFT_CLIENT_ID=…` names others; an empty
+/// define turns that provider off. A provider without one is not
 /// [isConfigured] and the UI hides it. See docs/oauth-setup.md.
 final class OAuthSignIn {
   OAuthSignIn({
@@ -180,9 +183,30 @@ final class OAuthSignIn {
     String? microsoftClientId,
     DateTime Function()? clock,
   }) : _tokens = tokens ?? TokenEndpointClient(clock: clock),
-       _googleClientId = (googleClientId ?? const String.fromEnvironment('LOUPE_GOOGLE_CLIENT_ID')).trim(),
-       _microsoftClientId = (microsoftClientId ?? const String.fromEnvironment('LOUPE_MICROSOFT_CLIENT_ID')).trim(),
+       _googleClientId = (googleClientId ?? _buildGoogleClientId()).trim(),
+       _microsoftClientId =
+           (microsoftClientId ??
+                   const String.fromEnvironment('LOUPE_MICROSOFT_CLIENT_ID', defaultValue: loupeMicrosoftClientId))
+               .trim(),
        _clock = clock ?? DateTime.now;
+
+  /// Loupe's OAuth clients (docs/oauth-setup.md). Client ids of apps aren't
+  /// confidential: every APK carries them. They are in the source so that
+  /// every build of a commit, F-Droid's included, is the same app.
+  ///
+  /// Google's Android client: Google checks the app's package name and
+  /// signing certificate, so it works in builds signed with Loupe's key.
+  /// iOS has a client of its own, passed with `--dart-define` (docs/ios.md).
+  static const loupeGoogleAndroidClientId =
+      '714283931332-h2olfrl16vdda195b020qo417f92j3le.apps.googleusercontent.com';
+
+  /// Microsoft Entra's registration, the same for Android and iOS.
+  static const loupeMicrosoftClientId = 'daeb2ab5-5a3f-49e7-8861-2c5b8189d0bf';
+
+  static String _buildGoogleClientId() {
+    if (const bool.hasEnvironment('LOUPE_GOOGLE_CLIENT_ID')) return const String.fromEnvironment('LOUPE_GOOGLE_CLIENT_ID');
+    return defaultTargetPlatform == TargetPlatform.android ? loupeGoogleAndroidClientId : '';
+  }
 
   /// Created on first sign-in, so background isolates never touch the plugin.
   OAuthAgent? _agent;

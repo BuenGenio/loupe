@@ -1,6 +1,6 @@
 # Sign in with Google and Microsoft: registration guide
 
-The code is ready: account setup, the Thunderbird import, token refresh (also in background sync) and "Sign In Again" all work once the build has client ids. This guide is what the owner does by hand: register Loupe with Google and Microsoft, put the client ids into GitHub secrets, and test.
+The code is ready: account setup, the Thunderbird import, token refresh (also in background sync) and "Sign In Again" all work once the build has client ids. This guide is what the owner does by hand: register Loupe with Google and Microsoft, put the client ids into the source (`OAuthSignIn` in `packages/mail_platform/lib/src/oauth.dart`), and test.
 
 Issues: #2 (Google), #3 (Microsoft).
 
@@ -13,17 +13,16 @@ Issues: #2 (Google), #3 (Microsoft).
 | Redirect URI | `io.github.buengenio.loupe:/oauth2redirect` | `msauth.io.github.buengenio.loupe://auth` |
 | Scopes | `https://mail.google.com/` | `IMAP.AccessAsUser.All`, `SMTP.Send`, `offline_access`, `openid`, `email` |
 | Client secret | None | None |
-| GitHub secret | `LOUPE_GOOGLE_CLIENT_ID` (Android client), `LOUPE_GOOGLE_IOS_CLIENT_ID` (iOS client) | `LOUPE_MICROSOFT_CLIENT_ID` (Android and iOS) |
+| Client id | `OAuthSignIn.loupeGoogleAndroidClientId` (Android client); the iOS client from the `LOUPE_GOOGLE_IOS_CLIENT_ID` secret | `OAuthSignIn.loupeMicrosoftClientId` (Android and iOS) |
 | Facts | Package and bundle id `io.github.buengenio.loupe`; release SHA-1 `96:95:1E:A5:48:FB:41:B4:17:DE:D0:20:63:2E:BE:5A:8F:E2:EB:13` | |
 
-Client ids aren't confidential: anyone can read them from the APK. The secrets keep them out of the repository and out of forks' builds. A build without one hides that provider's button and shows the old notes.
+Client ids aren't confidential: anyone can read them from the APK. They are in the source so that every build of a commit is the same app, F-Droid's included ([releasing.md](releasing.md)); until November 2026 they were GitHub secrets, and `LOUPE_GOOGLE_CLIENT_ID` and `LOUPE_MICROSOFT_CLIENT_ID` are no longer read. Forks' builds show the buttons too, but Google refuses them (they aren't signed with Loupe's key): a fork registers its own clients and passes them with `--dart-define`.
 
 ## How the code uses them
 
-- **Build:** `--dart-define=LOUPE_GOOGLE_CLIENT_ID=…` and `--dart-define=LOUPE_MICROSOFT_CLIENT_ID=…`.
-  - CI passes both from the secrets to `flutter build apk` (`.github/workflows/ci.yml`).
-  - The iOS TestFlight job (commented out in `.github/workflows/ios.yml`) passes `LOUPE_GOOGLE_IOS_CLIENT_ID` as `LOUPE_GOOGLE_CLIENT_ID`.
-  - Locally: `flutter run --dart-define=LOUPE_GOOGLE_CLIENT_ID=… --dart-define=LOUPE_MICROSOFT_CLIENT_ID=…`.
+- **Build:** Loupe's ids are the defaults. `--dart-define=LOUPE_GOOGLE_CLIENT_ID=…` or `--dart-define=LOUPE_MICROSOFT_CLIENT_ID=…` replaces one; an empty value (`--dart-define=LOUPE_GOOGLE_CLIENT_ID=`) hides that provider's button and shows the old notes.
+  - Android builds (CI, releases, F-Droid, `flutter run`) pass nothing and have both.
+  - Google's Android client is the default on Android only. iOS needs the iOS client: the iOS TestFlight job (commented out in `.github/workflows/ios.yml`) passes the `LOUPE_GOOGLE_IOS_CLIENT_ID` secret as `LOUPE_GOOGLE_CLIENT_ID`; without it, iOS builds offer Microsoft only.
 - **Sign-in** (`packages/mail_platform/lib/src/oauth.dart`):
   - Authorization code with PKCE in the system browser, through flutter_appauth (Custom Tabs on Android, `ASWebAuthenticationSession` on iOS).
   - The address the user typed goes along as `login_hint`.
@@ -142,14 +141,10 @@ Use the Google account that should own Loupe's registration for good. Add a seco
    - App Store ID and Team ID: empty until the app exists in App Store Connect. Don't turn on App Check yet: it locks the bundle id.
 3. Click **Create**, then copy the Client ID.
 
-### 5. Secrets
+### 5. Client ids
 
-Go to GitHub › BuenGenio/loupe › **Settings › Secrets and variables › Actions** › **New repository secret**:
-
-| Secret | Value |
-|---|---|
-| `LOUPE_GOOGLE_CLIENT_ID` | the **Android** client's id |
-| `LOUPE_GOOGLE_IOS_CLIENT_ID` | the **iOS** client's id (only read by the iOS TestFlight job) |
+- The **Android** client's id: `OAuthSignIn.loupeGoogleAndroidClientId` in `packages/mail_platform/lib/src/oauth.dart`.
+- The **iOS** client's id: GitHub › BuenGenio/loupe › **Settings › Secrets and variables › Actions** › **New repository secret** `LOUPE_GOOGLE_IOS_CLIENT_ID` (only read by the iOS TestFlight job).
 
 ### 6. Testing, then production
 
@@ -262,11 +257,9 @@ Prepare:
   3. Signed in with MFA as a user who is Application Administrator in Entra and Partner Admin or Account Admin in Partner Center, go to App registrations › Loupe › **Branding & properties** › **Add Partner ID to verify publisher**. Enter the ID, then **Verify and save**.
 - **Result:** a blue "verified" badge appears on the consent prompt. Requirements in full: [Mark an app as publisher verified](https://learn.microsoft.com/en-us/entra/identity-platform/mark-app-as-publisher-verified).
 
-### 7. Secret
+### 7. Client id
 
-| Secret | Value |
-|---|---|
-| `LOUPE_MICROSOFT_CLIENT_ID` | the Application (client) ID (used by the Android and iOS builds) |
+The Application (client) ID, used by the Android and iOS builds: `OAuthSignIn.loupeMicrosoftClientId` in `packages/mail_platform/lib/src/oauth.dart`.
 
 ### 8. Work and school accounts: what their admins may need to do
 
@@ -280,12 +273,10 @@ These aren't Loupe settings: they belong to the user's organisation. The app exp
 
 ---
 
-## Test after adding the secrets
+## Test after changing a client id
 
-1. **Add the secrets** ([Google step 5](#5-secrets) and [Microsoft step 7](#7-secret)). Secrets only reach workflows on this repository, not forks' pull requests.
-2. **Build:**
-   - Push any commit to `main`, or go to Actions › CI › **Run workflow** on `main`.
-   - In the "Build APKs" step the log says `Sign in with Google: on` and `Sign in with Microsoft: on`.
+1. **Change the id** ([Google step 5](#5-client-ids) and [Microsoft step 7](#7-client-id)).
+2. **Build:** push the change to `main`, or go to Actions › CI › **Run workflow** on `main`.
 3. **Install:** the "Nightly" pre-release's `loupe-<version>-arm64.apk` (Releases › Nightly). It installs over an older nightly.
 4. **Gmail:**
    1. Add Account › your test user's Gmail address › **Sign in with Google**.

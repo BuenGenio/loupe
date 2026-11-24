@@ -148,6 +148,51 @@ class AppLocalizationsIs extends AppLocalizations {
   String get mailboxTrash => 'Rusl';
 
   @override
+  String get conversationCompareMessages => 'Bera saman skilaboð…';
+
+  @override
+  String get conversationChangesTitle => 'Breytingar';
+
+  @override
+  String get conversationChangesFrom => 'Upphafleg skilaboð';
+
+  @override
+  String get conversationChangesTo => 'Lokaskilaboð';
+
+  @override
+  String get conversationChangesText => 'Texti skilaboða';
+
+  @override
+  String get conversationChangesAdded => 'Bætt við';
+
+  @override
+  String get conversationChangesRemoved => 'Fjarlægt';
+
+  @override
+  String get conversationChangesNoText => 'Engar breytingar á texta.';
+
+  @override
+  String get conversationChangesAttachments => 'Viðhengi';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Nöfn, tegundir og stærðir viðhengja eru borin saman. Innihald skráa er ekki athugað.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Samsvarandi upplýsingar';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Allur texti skilaboðanna er borinn saman, þar á meðal tilvitnanir og undirskriftir.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Þessi skilaboð eru of stór fyrir ítarlegan samanburð. Hluta textans kann að vera sleppt eða hann birtur sem ein heild.';
+
+  @override
+  String get conversationChangesLoadError => 'Ekki tókst að bera þessi skilaboð saman.';
+
+  @override
   String get conversationSomethingWentWrong => 'Eitthvað fór úrskeiðis. Reyndu aftur.';
 
   @override
@@ -6604,4 +6649,32 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Prófa með sýnipósti';
+
+  @override
+  String get searchAskPlainEnglish => 'Spyrja með eigin orðum';
+
+  @override
+  String get searchAskWorking => 'Leit undirbúin…';
+
+  @override
+  String get searchAskProposed => 'Tillaga að leit';
+
+  @override
+  String get searchAskUse => 'Nota þessa leit';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe þarf að vita:';
+
+  @override
+  String get searchAskFailed => 'Loupe gat ekki gert leit úr þessu.';
+
+  @override
+  String get searchAskDemoNote => 'Þýtt af innbyggðu sýnisútgáfunni, ekki af líkani.';
+
+  @override
+  String get settingsAiHeader => 'Einkagervigreind';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Breytir setningu í leit sem þú getur skoðað og breytt. Í bili þýðir innbyggða sýnisútgáfan: ekkert líkan, ekkert net.';
 }

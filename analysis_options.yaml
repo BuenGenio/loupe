@@ -7,6 +7,11 @@ analyzer:
   exclude:
     - "**/*.g.dart"
     - "**/build/**"
+    # The NonFree release type's packages: their dependencies resolve only in
+    # a NonFree checkout (tool/release_type.sh), whose build CI checks.
+    - "nonfree/**"
+    # F-Droid's copy of the Flutter SDK, a submodule (docs/releasing.md).
+    - ".flutter/**"
 
 linter:
   rules:

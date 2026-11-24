@@ -15,6 +15,7 @@ const DEFAULTS = {
   ledgerFile: '.state/published.json',
   platforms: {},
   postiz: { url: 'https://api.postiz.com/public/v1' },
+  vista: { transport: 'mcp', url: 'https://api.vistasocial.com', mediaBaseUrl: '', scheduleAheadHours: 0, tags: [] },
   assist: { repository: '', labels: ['social'], ref: 'main' },
 };
 
@@ -30,6 +31,7 @@ export function loadConfig(overrides = {}, env = process.env) {
     ...raw,
     utm: { ...DEFAULTS.utm, ...raw.utm },
     postiz: { ...DEFAULTS.postiz, ...raw.postiz },
+    vista: { ...DEFAULTS.vista, ...raw.vista },
     assist: { ...DEFAULTS.assist, ...raw.assist },
   };
   cfg.marketingDir = overrides.marketingDir ?? MARKETING_DIR;
@@ -56,6 +58,17 @@ export function loadConfig(overrides = {}, env = process.env) {
   if (env.POSTIZ_URL) cfg.postiz.url = env.POSTIZ_URL;
   cfg.postiz.url = normalizePostizUrl(cfg.postiz.url);
   if (!cfg.assist.repository) cfg.assist.repository = env.GITHUB_REPOSITORY ?? '';
+  if (env.VISTA_URL) cfg.vista.url = env.VISTA_URL;
+  if (env.VISTA_TRANSPORT) cfg.vista.transport = env.VISTA_TRANSPORT;
+  if (!['mcp', 'rest'].includes(cfg.vista.transport)) throw new Error('config.json: vista.transport must be "mcp" or "rest"');
+  if (env.VISTA_MEDIA_BASE_URL) cfg.vista.mediaBaseUrl = env.VISTA_MEDIA_BASE_URL;
+  // Media must be fetchable by Vista Social: the public repo at the published ref.
+  if (!cfg.vista.mediaBaseUrl && env.GITHUB_REPOSITORY) {
+    cfg.vista.mediaBaseUrl = `https://raw.githubusercontent.com/${env.GITHUB_REPOSITORY}/${cfg.assist.ref || 'main'}/marketing`;
+  }
+  const ahead = Number(cfg.vista.scheduleAheadHours);
+  if (!Number.isFinite(ahead) || ahead < 0) throw new Error('config.json: vista.scheduleAheadHours must be a number of hours (0 = publish when due)');
+  cfg.vista.scheduleAheadHours = ahead;
   return cfg;
 }
 

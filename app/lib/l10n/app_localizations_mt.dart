@@ -156,6 +156,51 @@ class AppLocalizationsMt extends AppLocalizations {
   String get mailboxTrash => 'Skart';
 
   @override
+  String get conversationCompareMessages => 'Qabbel il-messaġġi…';
+
+  @override
+  String get conversationChangesTitle => 'Bidliet';
+
+  @override
+  String get conversationChangesFrom => 'Messaġġ inizjali';
+
+  @override
+  String get conversationChangesTo => 'Messaġġ finali';
+
+  @override
+  String get conversationChangesText => 'Test tal-messaġġ';
+
+  @override
+  String get conversationChangesAdded => 'Miżjud';
+
+  @override
+  String get conversationChangesRemoved => 'Imneħħi';
+
+  @override
+  String get conversationChangesNoText => 'Ebda bidla fit-test.';
+
+  @override
+  String get conversationChangesAttachments => 'Mehmużin';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Jitqabblu l-ismijiet, it-tipi u d-daqsijiet tal-mehmużin. Il-kontenut tal-fajls ma jiġix iċċekkjat.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Dettalji li jaqblu';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Jitqabbel it-test kollu tal-messaġġ, inklużi l-kwotazzjonijiet u l-firem.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Dan il-messaġġ huwa kbir wisq għal tqabbil dettaljat. Xi test jista’ jitħalla barra jew jintwera bħala blokka sħiħa.';
+
+  @override
+  String get conversationChangesLoadError => 'Ma setgħux jitqabblu dawn il-messaġġi.';
+
+  @override
   String get conversationSomethingWentWrong => 'Xi ħaġa marret ħażin. Erġa’ pprova.';
 
   @override
@@ -6831,4 +6876,32 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Ipprova bil-posta demo';
+
+  @override
+  String get searchAskPlainEnglish => 'Staqsi bi kliemek';
+
+  @override
+  String get searchAskWorking => 'Qed titħejja t-tfittxija…';
+
+  @override
+  String get searchAskProposed => 'Tfittxija proposta';
+
+  @override
+  String get searchAskUse => 'Uża din it-tfittxija';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe jeħtieġ ikun jaf:';
+
+  @override
+  String get searchAskFailed => 'Loupe ma setax jagħmel tfittxija minn dan.';
+
+  @override
+  String get searchAskDemoNote => 'Tradott mid-demo inkorporata, mhux minn mudell.';
+
+  @override
+  String get settingsAiHeader => 'IA privata';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Jibdel sentenza fi tfittxija li tista\' tiċċekkja u teditja. Għalissa tittraduċi d-demo inkorporata: l-ebda mudell, l-ebda netwerk.';
 }

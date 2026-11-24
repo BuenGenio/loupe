@@ -148,6 +148,50 @@ class AppLocalizationsEu extends AppLocalizations {
   String get mailboxTrash => 'Zakarrontzia';
 
   @override
+  String get conversationCompareMessages => 'Konparatu mezuak…';
+
+  @override
+  String get conversationChangesTitle => 'Aldaketak';
+
+  @override
+  String get conversationChangesFrom => 'Hasierako mezua';
+
+  @override
+  String get conversationChangesTo => 'Amaierako mezua';
+
+  @override
+  String get conversationChangesText => 'Mezuaren testua';
+
+  @override
+  String get conversationChangesAdded => 'Gehituta';
+
+  @override
+  String get conversationChangesRemoved => 'Kenduta';
+
+  @override
+  String get conversationChangesNoText => 'Ez dago testu-aldaketarik.';
+
+  @override
+  String get conversationChangesAttachments => 'Eranskinak';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Eranskinen izenak, motak eta tamainak konparatzen dira. Fitxategien edukia ez da egiaztatzen.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Bat datozen xehetasunak';
+
+  @override
+  String get conversationChangesFullTextNote => 'Mezuaren testu osoa konparatzen da, aipuak eta sinadurak barne.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Mezu hau handiegia da konparazio xehea egiteko. Baliteke testuaren zati bat ez agertzea edo bloke oso gisa erakustea.';
+
+  @override
+  String get conversationChangesLoadError => 'Ezin izan dira mezu hauek konparatu.';
+
+  @override
   String get conversationSomethingWentWrong => 'Zerbait gaizki joan da. Saiatu berriro.';
 
   @override
@@ -6619,4 +6663,32 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Probatu demo-postarekin';
+
+  @override
+  String get searchAskPlainEnglish => 'Galdetu zure hitzekin';
+
+  @override
+  String get searchAskWorking => 'Bilaketa prestatzen…';
+
+  @override
+  String get searchAskProposed => 'Proposatutako bilaketa';
+
+  @override
+  String get searchAskUse => 'Erabili bilaketa hau';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupek jakin behar du:';
+
+  @override
+  String get searchAskFailed => 'Loupek ezin izan du hori bilaketa bihurtu.';
+
+  @override
+  String get searchAskDemoNote => 'Demo integratuak itzulia, ez eredu batek.';
+
+  @override
+  String get settingsAiHeader => 'AA pribatua';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Esaldi bat egiaztatu eta edita dezakezun bilaketa bihurtzen du. Oraingoz demo integratuak itzultzen du: eredurik ez, sarerik ez.';
 }

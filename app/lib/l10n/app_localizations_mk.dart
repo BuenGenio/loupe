@@ -148,6 +148,51 @@ class AppLocalizationsMk extends AppLocalizations {
   String get mailboxTrash => 'Корпа';
 
   @override
+  String get conversationCompareMessages => 'Спореди пораки…';
+
+  @override
+  String get conversationChangesTitle => 'Промени';
+
+  @override
+  String get conversationChangesFrom => 'Почетна порака';
+
+  @override
+  String get conversationChangesTo => 'Крајна порака';
+
+  @override
+  String get conversationChangesText => 'Текст на пораката';
+
+  @override
+  String get conversationChangesAdded => 'Додадено';
+
+  @override
+  String get conversationChangesRemoved => 'Отстрането';
+
+  @override
+  String get conversationChangesNoText => 'Нема промени во текстот.';
+
+  @override
+  String get conversationChangesAttachments => 'Прилози';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Се споредуваат имињата, типовите и големините на прилозите. Содржината на датотеките не се проверува.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Податоци што се совпаѓаат';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Се споредува целиот текст на пораката, вклучувајќи ги цитатите и потписите.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Оваа порака е преголема за детална споредба. Дел од текстот може да биде изоставен или прикажан како цел блок.';
+
+  @override
+  String get conversationChangesLoadError => 'Овие пораки не можеа да се споредат.';
+
+  @override
   String get conversationSomethingWentWrong => 'Настана грешка. Обидете се повторно.';
 
   @override
@@ -6621,4 +6666,32 @@ class AppLocalizationsMk extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Пробај со демо пошта';
+
+  @override
+  String get searchAskPlainEnglish => 'Прашајте со свои зборови';
+
+  @override
+  String get searchAskWorking => 'Се подготвува пребарувањето…';
+
+  @override
+  String get searchAskProposed => 'Предложено пребарување';
+
+  @override
+  String get searchAskUse => 'Користи го ова пребарување';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe треба да знае:';
+
+  @override
+  String get searchAskFailed => 'Loupe не можеше да го претвори ова во пребарување.';
+
+  @override
+  String get searchAskDemoNote => 'Преведено од вградената демонстрација, не од модел.';
+
+  @override
+  String get settingsAiHeader => 'Приватна ВИ';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Претвора реченица во пребарување што можете да го проверите и уредите. Засега преведува вградената демонстрација: без модел, без мрежа.';
 }

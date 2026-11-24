@@ -148,6 +148,50 @@ class AppLocalizationsDa extends AppLocalizations {
   String get mailboxTrash => 'Papirkurv';
 
   @override
+  String get conversationCompareMessages => 'Sammenlign beskeder…';
+
+  @override
+  String get conversationChangesTitle => 'Ændringer';
+
+  @override
+  String get conversationChangesFrom => 'Udgangsbesked';
+
+  @override
+  String get conversationChangesTo => 'Målbesked';
+
+  @override
+  String get conversationChangesText => 'Beskedtekst';
+
+  @override
+  String get conversationChangesAdded => 'Tilføjet';
+
+  @override
+  String get conversationChangesRemoved => 'Fjernet';
+
+  @override
+  String get conversationChangesNoText => 'Ingen tekstændringer.';
+
+  @override
+  String get conversationChangesAttachments => 'Vedhæftninger';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Vedhæftningernes navne, typer og størrelser sammenlignes. Filernes indhold kontrolleres ikke.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Matchende oplysninger';
+
+  @override
+  String get conversationChangesFullTextNote => 'Hele beskedteksten sammenlignes, inklusive citater og signaturer.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Denne besked er for stor til en detaljeret sammenligning. Noget tekst kan blive udeladt eller vist som en hel blok.';
+
+  @override
+  String get conversationChangesLoadError => 'Disse beskeder kunne ikke sammenlignes.';
+
+  @override
   String get conversationSomethingWentWrong => 'Noget gik galt. Prøv igen.';
 
   @override
@@ -6548,4 +6592,32 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Prøv med demomail';
+
+  @override
+  String get searchAskPlainEnglish => 'Spørg med dine egne ord';
+
+  @override
+  String get searchAskWorking => 'Finder søgningen…';
+
+  @override
+  String get searchAskProposed => 'Foreslået søgning';
+
+  @override
+  String get searchAskUse => 'Brug denne søgning';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe skal vide:';
+
+  @override
+  String get searchAskFailed => 'Loupe kunne ikke lave det om til en søgning.';
+
+  @override
+  String get searchAskDemoNote => 'Oversat af den indbyggede demo, ikke af en model.';
+
+  @override
+  String get settingsAiHeader => 'Privat AI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Gør en sætning til en søgning, du kan tjekke og redigere. Indtil videre oversætter den indbyggede demo: ingen model, intet netværk.';
 }

@@ -60,12 +60,16 @@ Future<void> main() async {
       } on Object catch (e) {
         debugPrint('Instant Delivery unavailable: $e');
       }
-      // Push: Firebase Cloud Messaging. iOS follows once it has an APNs key.
+      // Push: Firebase Cloud Messaging, in NonFree builds only (docs/releasing.md);
+      // Free builds have none. iOS follows once it has an APNs key.
       try {
-        overrides.addAll([
-          pushServiceProvider.overrideWithValue(await FirebasePushService.initialize()),
-          pushAvailableProvider.overrideWithValue(true),
-        ]);
+        final push = await startPush(onBackgroundPush: onBackgroundPush);
+        if (push != null) {
+          overrides.addAll([
+            pushServiceProvider.overrideWithValue(push),
+            pushAvailableProvider.overrideWithValue(true),
+          ]);
+        }
       } on Object catch (e) {
         debugPrint('Push unavailable: $e');
       }

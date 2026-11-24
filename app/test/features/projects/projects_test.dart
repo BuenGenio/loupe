@@ -181,7 +181,7 @@ Future<void> _suggestionsAndMakeProject(WidgetTester tester) async {
     expect(rule.actions, [AddTagAction(made.keyword)]);
 
     final other = find.byWidgetPredicate(
-      (w) => w.key is ValueKey<String> && '${(w.key! as ValueKey<String>).value}'.startsWith('dismiss-'),
+      (w) => w.key is ValueKey<String> && (w.key! as ValueKey<String>).value.startsWith('dismiss-'),
     );
     final key = ((tester.widget(other.first).key! as ValueKey<String>).value).substring('dismiss-'.length);
     await tester.tap(other.first);

@@ -206,6 +206,11 @@ export function configNotes(cfg, env = process.env) {
   const byMode = (m) => Object.entries(cfg.platforms).filter(([, p]) => p.mode === m).map(([k]) => k);
   const missingIds = byMode('postiz').filter((k) => !cfg.platforms[k].integration);
   if (missingIds.length) notes.push(`no Postiz integration id yet for: ${missingIds.join(', ')} (skipped until set; npm run postiz:integrations lists them)`);
+  const missingProfiles = byMode('vista').filter((k) => !cfg.platforms[k].profile);
+  if (missingProfiles.length) notes.push(`no Vista Social profile id yet for: ${missingProfiles.join(', ')} (skipped until set; npm run vista:profiles lists them)`);
+  const boosted = byMode('vista').filter((k) => cfg.platforms[k].boost);
+  if (boosted.length) notes.push(`default boost (paid promotion) on every post for: ${boosted.join(', ')} (a post opts out with boost: false)`);
+  if (byMode('vista').length && Number(cfg.vista?.scheduleAheadHours) > 0) notes.push(`vista: posts are handed to Vista Social up to ${cfg.vista.scheduleAheadHours}h early and published by Vista on time`);
   if (byMode('off').length) notes.push(`off: ${byMode('off').join(', ')}`);
   if (byMode('assist').length) notes.push(`assist (a GitHub issue for a human to post): ${byMode('assist').join(', ')}`);
   return notes;

@@ -20,6 +20,7 @@ import 'package:mail_model/mail_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helpers.dart' show testNow;
+import '../account_setup/fake_oauth.dart';
 import '../conversation/fake_mail_repository.dart';
 import 'tb_payloads.dart';
 
@@ -380,7 +381,8 @@ void main() {
   testWidgets('OAuth and unsupported accounts explain themselves', (tester) async {
     final repo = FakeMailRepository(accounts: []);
     final scanner = FakeScanner();
-    await pumpImport(tester, repo, scanner);
+    // A build without client ids.
+    await pumpImport(tester, repo, scanner, overrides: [oauthOverride(unconfiguredOAuth())]);
     await scan(
       tester,
       scanner,

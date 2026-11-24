@@ -97,7 +97,7 @@ jobs:
   #                                  io.github.buengenio.loupe, base64
   #   APPLE_TEAM_ID                  the 10-character Team ID
   #   LOUPE_GOOGLE_IOS_CLIENT_ID     optional: Google sign-in (an iOS client)
-  #   LOUPE_MICROSOFT_CLIENT_ID      optional: Microsoft sign-in
+  #                                  (Microsoft's client id is in the source)
   #
   # (base64 -i file | pbcopy, then paste as the secret.)
   # ---------------------------------------------------------------------------
@@ -174,12 +174,10 @@ jobs:
   #       working-directory: app
   #       env:
   #         GOOGLE_CLIENT_ID: ${{ secrets.LOUPE_GOOGLE_IOS_CLIENT_ID }}
-  #         MICROSOFT_CLIENT_ID: ${{ secrets.LOUPE_MICROSOFT_CLIENT_ID }}
   #       run: |
   #         flutter build ipa --release \
   #           --export-options-plist="$RUNNER_TEMP/ExportOptions.plist" \
   #           --dart-define=LOUPE_GOOGLE_CLIENT_ID="$GOOGLE_CLIENT_ID" \
-  #           --dart-define=LOUPE_MICROSOFT_CLIENT_ID="$MICROSOFT_CLIENT_ID" \
   #           --build-number=${{ github.run_number }} \
   #           --build-name=0.1.${{ github.run_number }}
   #     - name: Upload to TestFlight

@@ -148,6 +148,51 @@ class AppLocalizationsBg extends AppLocalizations {
   String get mailboxTrash => 'Кошче';
 
   @override
+  String get conversationCompareMessages => 'Сравняване на съобщения…';
+
+  @override
+  String get conversationChangesTitle => 'Промени';
+
+  @override
+  String get conversationChangesFrom => 'Начално съобщение';
+
+  @override
+  String get conversationChangesTo => 'Крайно съобщение';
+
+  @override
+  String get conversationChangesText => 'Текст на съобщението';
+
+  @override
+  String get conversationChangesAdded => 'Добавено';
+
+  @override
+  String get conversationChangesRemoved => 'Премахнато';
+
+  @override
+  String get conversationChangesNoText => 'Няма промени в текста.';
+
+  @override
+  String get conversationChangesAttachments => 'Прикачени файлове';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Сравняват се имената, типовете и размерите на прикачените файлове. Съдържанието на файловете не се проверява.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Съвпадащи данни';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Сравнява се пълният текст на съобщението, включително цитатите и подписите.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Това съобщение е твърде голямо за подробно сравнение. Част от текста може да бъде пропусната или показана като цял блок.';
+
+  @override
+  String get conversationChangesLoadError => 'Тези съобщения не можаха да бъдат сравнени.';
+
+  @override
   String get conversationSomethingWentWrong => 'Нещо се обърка. Опитайте отново.';
 
   @override
@@ -6566,4 +6611,32 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Изпробване с демо поща';
+
+  @override
+  String get searchAskPlainEnglish => 'Попитайте със свои думи';
+
+  @override
+  String get searchAskWorking => 'Подготвяне на търсенето…';
+
+  @override
+  String get searchAskProposed => 'Предложено търсене';
+
+  @override
+  String get searchAskUse => 'Използване на това търсене';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe трябва да знае:';
+
+  @override
+  String get searchAskFailed => 'Loupe не успя да превърне това в търсене.';
+
+  @override
+  String get searchAskDemoNote => 'Преведено от вградената демонстрация, не от модел.';
+
+  @override
+  String get settingsAiHeader => 'Личен ИИ';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Превръща изречение в търсене, което можете да проверите и промените. Засега превежда вградената демонстрация: без модел, без мрежа.';
 }

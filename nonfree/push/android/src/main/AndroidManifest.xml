@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- No token until Loupe turns push on (live mode, Settings › Notifications › Push), so a phone that
+             only tries the demo never contacts Firebase. Loupe sets the flag itself after that. -->
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
+    </application>
+</manifest>

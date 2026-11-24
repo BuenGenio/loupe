@@ -155,6 +155,51 @@ class AppLocalizationsSl extends AppLocalizations {
   String get mailboxTrash => 'Smeti';
 
   @override
+  String get conversationCompareMessages => 'Primerjaj sporočila…';
+
+  @override
+  String get conversationChangesTitle => 'Spremembe';
+
+  @override
+  String get conversationChangesFrom => 'Začetno sporočilo';
+
+  @override
+  String get conversationChangesTo => 'Končno sporočilo';
+
+  @override
+  String get conversationChangesText => 'Besedilo sporočila';
+
+  @override
+  String get conversationChangesAdded => 'Dodano';
+
+  @override
+  String get conversationChangesRemoved => 'Odstranjeno';
+
+  @override
+  String get conversationChangesNoText => 'Ni sprememb besedila.';
+
+  @override
+  String get conversationChangesAttachments => 'Priloge';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Primerjajo se imena, vrste in velikosti prilog. Vsebina datotek se ne preverja.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Ujemajoči se podatki';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Primerja se celotno besedilo sporočila, vključno z navedki in podpisi.';
+
+  @override
+  String get conversationChangesLimited =>
+      'To sporočilo je preveliko za podrobno primerjavo. Nekaj besedila je lahko izpuščenega ali prikazanega kot celoten blok.';
+
+  @override
+  String get conversationChangesLoadError => 'Teh sporočil ni bilo mogoče primerjati.';
+
+  @override
   String get conversationSomethingWentWrong => 'Prišlo je do napake. Poskusite znova.';
 
   @override
@@ -6792,4 +6837,32 @@ class AppLocalizationsSl extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Preizkusi s predstavitveno pošto';
+
+  @override
+  String get searchAskPlainEnglish => 'Vprašaj s svojimi besedami';
+
+  @override
+  String get searchAskWorking => 'Priprava iskanja…';
+
+  @override
+  String get searchAskProposed => 'Predlagano iskanje';
+
+  @override
+  String get searchAskUse => 'Uporabi to iskanje';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe mora vedeti:';
+
+  @override
+  String get searchAskFailed => 'Loupe iz tega ni mogel narediti iskanja.';
+
+  @override
+  String get searchAskDemoNote => 'Prevedel vgrajeni demo, ne model.';
+
+  @override
+  String get settingsAiHeader => 'Zasebna UI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Stavek spremeni v iskanje, ki ga lahko preverite in uredite. Zaenkrat prevaja vgrajeni demo: brez modela, brez omrežja.';
 }

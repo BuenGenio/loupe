@@ -148,6 +148,51 @@ class AppLocalizationsSq extends AppLocalizations {
   String get mailboxTrash => 'Koshi';
 
   @override
+  String get conversationCompareMessages => 'Krahaso mesazhet…';
+
+  @override
+  String get conversationChangesTitle => 'Ndryshimet';
+
+  @override
+  String get conversationChangesFrom => 'Mesazhi fillestar';
+
+  @override
+  String get conversationChangesTo => 'Mesazhi përfundimtar';
+
+  @override
+  String get conversationChangesText => 'Teksti i mesazhit';
+
+  @override
+  String get conversationChangesAdded => 'Shtuar';
+
+  @override
+  String get conversationChangesRemoved => 'Hequr';
+
+  @override
+  String get conversationChangesNoText => 'Nuk ka ndryshime në tekst.';
+
+  @override
+  String get conversationChangesAttachments => 'Bashkëngjitjet';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Krahasohen emrat, llojet dhe madhësitë e bashkëngjitjeve. Përmbajtja e skedarëve nuk kontrollohet.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Të dhëna që përputhen';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Krahasohet teksti i plotë i mesazhit, përfshirë citimet dhe nënshkrimet.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Ky mesazh është tepër i madh për një krahasim të hollësishëm. Një pjesë e tekstit mund të lihet jashtë ose të shfaqet si një bllok i plotë.';
+
+  @override
+  String get conversationChangesLoadError => 'Këto mesazhe nuk mund të krahasoheshin.';
+
+  @override
   String get conversationSomethingWentWrong => 'Diçka shkoi keq. Provoni sërish.';
 
   @override
@@ -6580,4 +6625,32 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Provojeni me postë demo';
+
+  @override
+  String get searchAskPlainEnglish => 'Pyet me fjalët e tua';
+
+  @override
+  String get searchAskWorking => 'Po përgatitet kërkimi…';
+
+  @override
+  String get searchAskProposed => 'Kërkimi i propozuar';
+
+  @override
+  String get searchAskUse => 'Përdor këtë kërkim';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe duhet të dijë:';
+
+  @override
+  String get searchAskFailed => 'Loupe nuk mundi ta kthente këtë në kërkim.';
+
+  @override
+  String get searchAskDemoNote => 'Përkthyer nga demonstrimi i integruar, jo nga një model.';
+
+  @override
+  String get settingsAiHeader => 'IA private';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Kthen një fjali në një kërkim që mund ta kontrollosh dhe ta ndryshosh. Tani për tani përkthen demonstrimi i integruar: pa model, pa rrjet.';
 }

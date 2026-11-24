@@ -1,0 +1,5 @@
+# Store images are generated from the screenshots (marketing/creative/play.mjs).
+# en-US's are committed: F-Droid reads them from the repository and shows them
+# for every language.
+/metadata/android/*/images/
+!/metadata/android/en-US/images/

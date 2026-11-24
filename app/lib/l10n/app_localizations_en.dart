@@ -148,6 +148,50 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mailboxTrash => 'Trash';
 
   @override
+  String get conversationCompareMessages => 'Compare Messages…';
+
+  @override
+  String get conversationChangesTitle => 'Changes';
+
+  @override
+  String get conversationChangesFrom => 'From Message';
+
+  @override
+  String get conversationChangesTo => 'To Message';
+
+  @override
+  String get conversationChangesText => 'Message Text';
+
+  @override
+  String get conversationChangesAdded => 'Added';
+
+  @override
+  String get conversationChangesRemoved => 'Removed';
+
+  @override
+  String get conversationChangesNoText => 'No text changes.';
+
+  @override
+  String get conversationChangesAttachments => 'Attachments';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Attachment names, types and sizes are compared. File contents are not checked.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Matching Details';
+
+  @override
+  String get conversationChangesFullTextNote => 'Full message text is compared, including quotes and signatures.';
+
+  @override
+  String get conversationChangesLimited =>
+      'This message is too large for a detailed comparison. Some text may be omitted or shown as a whole block.';
+
+  @override
+  String get conversationChangesLoadError => 'These messages couldn’t be compared.';
+
+  @override
   String get conversationSomethingWentWrong => 'Something went wrong. Try again.';
 
   @override
@@ -6523,4 +6567,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Try with demo mail';
+
+  @override
+  String get searchAskPlainEnglish => 'Ask in Plain English';
+
+  @override
+  String get searchAskWorking => 'Working out the search…';
+
+  @override
+  String get searchAskProposed => 'Proposed search';
+
+  @override
+  String get searchAskUse => 'Use This Search';
+
+  @override
+  String get searchAskNeedsAnswer => 'Loupe needs to know:';
+
+  @override
+  String get searchAskFailed => 'Loupe couldn\'t turn that into a search.';
+
+  @override
+  String get searchAskDemoNote => 'Translated by the built-in demo, not a model.';
+
+  @override
+  String get settingsAiHeader => 'Private AI';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Turn a sentence into a search you can check and edit. For now the built-in demo translates; no model, no network.';
 }

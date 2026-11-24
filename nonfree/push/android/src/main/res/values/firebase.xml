@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Firebase project loupe-18212's client settings for io.github.buengenio.loupe (docs/push.md): what the
+     google-services Gradle plugin used to generate from google-services.json, written out instead, so the
+     build needs no Google Gradle plugin. Firebase starts from these (FirebaseInitProvider reads them by name).
+     They ship inside every NonFree APK and are not secrets. -->
+<resources>
+    <string name="google_app_id" translatable="false">1:641626010779:android:1cc35101541e97a573423e</string>
+    <string name="gcm_defaultSenderId" translatable="false">641626010779</string>
+    <string name="google_api_key" translatable="false">AIzaSyCUO-glkizCLGu6hjqNIV0Wao1STBReQ70</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCUO-glkizCLGu6hjqNIV0Wao1STBReQ70</string>
+    <string name="project_id" translatable="false">loupe-18212</string>
+    <string name="google_storage_bucket" translatable="false">loupe-18212.firebasestorage.app</string>
+</resources>

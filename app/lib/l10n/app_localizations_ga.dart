@@ -156,6 +156,51 @@ class AppLocalizationsGa extends AppLocalizations {
   String get mailboxTrash => 'Bruscar';
 
   @override
+  String get conversationCompareMessages => 'Cuir teachtaireachtaí i gcomparáid…';
+
+  @override
+  String get conversationChangesTitle => 'Athruithe';
+
+  @override
+  String get conversationChangesFrom => 'Teachtaireacht tosaigh';
+
+  @override
+  String get conversationChangesTo => 'Teachtaireacht deiridh';
+
+  @override
+  String get conversationChangesText => 'Téacs na teachtaireachta';
+
+  @override
+  String get conversationChangesAdded => 'Curtha leis';
+
+  @override
+  String get conversationChangesRemoved => 'Bainte';
+
+  @override
+  String get conversationChangesNoText => 'Níl aon athruithe ar an téacs.';
+
+  @override
+  String get conversationChangesAttachments => 'Ceangaltáin';
+
+  @override
+  String get conversationChangesAttachmentNote =>
+      'Cuirtear ainmneacha, cineálacha agus méideanna na gceangaltán i gcomparáid. Ní dhéantar inneachar na gcomhad a sheiceáil.';
+
+  @override
+  String get conversationChangesSameMetadata => 'Sonraí atá mar an gcéanna';
+
+  @override
+  String get conversationChangesFullTextNote =>
+      'Cuirtear téacs iomlán na teachtaireachta i gcomparáid, lena n-áirítear sleachta agus sínithe.';
+
+  @override
+  String get conversationChangesLimited =>
+      'Tá an teachtaireacht seo rómhór le haghaidh comparáid mhionsonraithe. D’fhéadfaí cuid den téacs a fhágáil ar lár nó a thaispeáint mar bhloc iomlán.';
+
+  @override
+  String get conversationChangesLoadError => 'Níorbh fhéidir na teachtaireachtaí seo a chur i gcomparáid.';
+
+  @override
   String get conversationSomethingWentWrong => 'Chuaigh rud éigin mícheart. Bain triail eile as.';
 
   @override
@@ -6944,4 +6989,32 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String get welcomeTryDemo => 'Bain triail as le ríomhphost taispeántais';
+
+  @override
+  String get searchAskPlainEnglish => 'Fiafraigh i d\'fhocail féin';
+
+  @override
+  String get searchAskWorking => 'Ag ullmhú an chuardaigh…';
+
+  @override
+  String get searchAskProposed => 'Cuardach molta';
+
+  @override
+  String get searchAskUse => 'Úsáid an cuardach seo';
+
+  @override
+  String get searchAskNeedsAnswer => 'Teastaíonn ó Loupe a fháil amach:';
+
+  @override
+  String get searchAskFailed => 'Níorbh fhéidir le Loupe cuardach a dhéanamh de sin.';
+
+  @override
+  String get searchAskDemoNote => 'Aistrithe ag an taispeántas ionsuite, ní ag samhail.';
+
+  @override
+  String get settingsAiHeader => 'IS príobháideach';
+
+  @override
+  String get settingsAiAssistDetail =>
+      'Déanann sé cuardach d\'abairt is féidir leat a sheiceáil agus a chur in eagar. Go fóill is é an taispeántas ionsuite a aistríonn: gan samhail, gan líonra.';
 }

@@ -23,6 +23,18 @@ using the app, in a line or two; leave out internals, refactors and tests.
 - **Signatures that pick themselves.** A signature can be for messages that copy someone (anyone, or certain addresses or domains), run between two dates, or rotate at random with others. Compose swaps it as you add or remove Cc.
 - **Change an account's servers and password.** Settings › the account › Incoming, Outgoing or Sign-in edits the server, port, security, username and password; Loupe connects with them before saving. A new **IDLE** switch (Push for JMAP) turns off the always-open Inbox connection, for servers that limit connections.
 
+## 2026-11-12
+
+- **Compare Messages…** in a message's ⋯ menu compares two messages in its conversation, highlighting added and removed text. Attachment names, types and sizes are compared separately; file contents are not checked. Works locally with downloaded messages, in all 37 app languages.
+- **Ask in Plain English** (preview, off by default: Settings › Private AI). Type a sentence in search and Loupe proposes an expression you can check and edit before it runs. For now the built-in demo does the translating, with a few rules; no model and no network are involved.
+- **Large text:** an older message's date no longer squeezes the sender's name out of its header. Past a third of the width, the date shrinks to fit.
+- **One permission fewer.** Loupe no longer asks Android for access to your phone's storage. It never needed it: attachments open from Loupe's own folders, and you pick files with Android's file picker.
+
+## 2026-11-11
+
+- **Two kinds of Loupe.** The Free release type has no Google code at all, and is the one going to F-Droid. The NonFree type adds Push through Google's push service; the Nightly stays NonFree. Either installs over the other.
+- **Numbered releases** on GitHub, starting with 0.2.0, each in both types and also for older 32-bit phones (`armeabi-v7a`).
+
 ## 2026-10-08
 
 - **Loupe speaks your language.** The app is translated into 37 languages, and follows your phone's. Settings › Language picks a different one for Loupe alone; notifications follow it too.
