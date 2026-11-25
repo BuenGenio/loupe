@@ -690,6 +690,46 @@
       "mode": "vista",
       "status": "skipped",
       "note": "2026-11-19-smime → threads: 18h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-25T10:29:41.370Z",
+      "id": "2026-11-24-rules",
+      "platform": "bluesky",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-11-24-rules → bluesky: 19h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-25T10:29:41.370Z",
+      "id": "2026-11-24-rules",
+      "platform": "mastodon",
+      "mode": "api",
+      "status": "skipped",
+      "note": "2026-11-24-rules → mastodon: 19h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-25T10:29:41.371Z",
+      "id": "2026-11-24-rules",
+      "platform": "instagram",
+      "mode": "vista",
+      "status": "skipped",
+      "note": "2026-11-24-rules → instagram: 19h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-25T10:29:41.371Z",
+      "id": "2026-11-24-rules",
+      "platform": "threads",
+      "mode": "vista",
+      "status": "skipped",
+      "note": "2026-11-24-rules → threads: 19h late (limit 12h); skipped"
+    },
+    {
+      "publishedAt": "2026-11-25T10:29:41.372Z",
+      "id": "2026-11-24-rules",
+      "platform": "linkedin",
+      "mode": "vista",
+      "status": "skipped",
+      "note": "2026-11-24-rules → linkedin: 19h late (limit 12h); skipped"
     }
   ]
 }
