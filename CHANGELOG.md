@@ -12,6 +12,7 @@ using the app, in a line or two; leave out internals, refactors and tests.
 
 ## 2026-11-28
 
+- **Loupe 0.3.0** on [GitHub](https://github.com/BuenGenio/loupe/releases/tag/v0.3.0), in both release types: Special Folders below, and everything from 12 November.
 - **Pick your Sent, Drafts and Trash folders** (Settings › account › Special Folders, for IMAP accounts). When the server marks the wrong folders, or none, choose where Loupe files sent mail, saves drafts and moves deleted mail; Automatic goes back to the server’s choice. Mail already in a folder stays there. In all 37 app languages.
 
 ## 2026-11-12
