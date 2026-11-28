@@ -209,24 +209,28 @@ class _MessageCardState extends State<MessageCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          child: GestureDetector(
-                            key: ValueKey('sender-${_m.id}'),
-                            onTap: sender == null ? null : () => widget.onAddressTap(sender),
-                            child: Text(
-                              sender == null ? l10n.conversationNoSender : _name(sender),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.titleSmall?.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
+                    // Below 220 points (a narrow pane, or a phone with an older message's
+                    // wide date) the security badge shows its icon only.
+                    LayoutBuilder(
+                      builder: (context, row) => Row(
+                        children: [
+                          Flexible(
+                            child: GestureDetector(
+                              key: ValueKey('sender-${_m.id}'),
+                              onTap: sender == null ? null : () => widget.onAddressTap(sender),
+                              child: Text(
+                                sender == null ? l10n.conversationNoSender : _name(sender),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.titleSmall?.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
+                              ),
                             ),
                           ),
-                        ),
-                        SecurityBadge(message: _m, content: content),
-                        PgpHeaderMark(message: _m, content: content, onRetry: widget.onRetry),
-                        SmimeHeaderMark(message: _m, content: content, onRetry: widget.onRetry),
-                      ],
+                          SecurityBadge(message: _m, content: content, compact: row.maxWidth < 220),
+                          PgpHeaderMark(message: _m, content: content, onRetry: widget.onRetry),
+                          SmimeHeaderMark(message: _m, content: content, onRetry: widget.onRetry),
+                        ],
+                      ),
                     ),
                     InkWell(
                       key: ValueKey('recipients-${_m.id}'),

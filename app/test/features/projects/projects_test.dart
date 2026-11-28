@@ -47,6 +47,10 @@ void main() {
     expect(find.text('Lisbon Trip'), findsOneWidget);
     expect(find.text('New Project…'), findsOneWidget);
 
+    // Needs My Action and Waiting on Others make Mailboxes longer: the row is
+    // built but just below the screen.
+    await tester.ensureVisible(find.text('Lisbon Trip'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Lisbon Trip'));
     await tester.pumpAndSettle();
     expect(find.text('Lisbon Trip'), findsWidgets, reason: 'the title');
