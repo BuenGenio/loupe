@@ -2710,6 +2710,20 @@ class AppLocalizationsSk extends AppLocalizations {
       'Nekontrolované: kontrolujú sa len certifikáty od autorít, ktorým Loupe dôveruje.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Špeciálne priečinky';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Kam Loupe ukladá odoslanú poštu, koncepty a odstránenú poštu. Ak priečinok nevyberiete, použije ten, ktorý označí server, alebo priečinok s obvyklým názvom.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automaticky';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Už zaradená pošta zostane, kde je. Odteraz Loupe použije priečinok, ktorý vyberiete.';
+
+  @override
   String get settingsLanguage => 'Jazyk';
 
   @override

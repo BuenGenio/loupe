@@ -2648,6 +2648,20 @@ class AppLocalizationsNb extends AppLocalizations {
       'Ikke sjekket: bare sertifikater fra en utsteder Loupe stoler på, blir sjekket.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Spesialmapper';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Hvor Loupe legger sendt e-post, utkast og slettet e-post. Hvis du ikke velger en mappe, bruker Loupe den serveren markerer, eller en med det vanlige navnet.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatisk';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'E-post som allerede er arkivert, blir der den er. Fra nå av bruker Loupe mappen du velger.';
+
+  @override
   String get settingsLanguage => 'Språk';
 
   @override

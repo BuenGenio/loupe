@@ -2667,6 +2667,20 @@ class AppLocalizationsSq extends AppLocalizations {
       'S’u kontrollua: kontrollohen vetëm certifikatat nga autoritete që Loupe u beson.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Dosje të veçanta';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Ku i mban Loupe postën e dërguar, skicat dhe postën e fshirë. Nëse nuk zgjidhni një dosje, Loupe përdor atë që shënon serveri ose një me emrin e zakonshëm.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatike';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Posta e vendosur tashmë mbetet aty ku është. Tani e tutje, Loupe përdor dosjen që zgjidhni.';
+
+  @override
   String get settingsLanguage => 'Gjuha';
 
   @override

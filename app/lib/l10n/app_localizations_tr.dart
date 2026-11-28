@@ -2648,6 +2648,20 @@ class AppLocalizationsTr extends AppLocalizations {
       'Denetlenmedi: yalnızca Loupe’un güvendiği bir yetkilinin sertifikaları denetlenir.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Özel klasörler';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Loupe’un gönderilmiş postaları, taslakları ve silinmiş postaları tuttuğu yer. Bir klasör seçmezseniz, sunucunuzun işaretlediği klasörü veya alışılmış adı taşıyan bir klasörü kullanır.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Otomatik';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Zaten yerleştirilmiş postalar olduğu yerde kalır. Bundan sonra Loupe, seçtiğiniz klasörü kullanır.';
+
+  @override
   String get settingsLanguage => 'Dil';
 
   @override

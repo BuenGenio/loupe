@@ -2723,6 +2723,20 @@ class AppLocalizationsUk extends AppLocalizations {
       'Не перевірено: перевіряються лише сертифікати від центрів, яким довіряє Loupe.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Спеціальні теки';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Куди Loupe кладе надіслані листи, чернетки та видалені листи. Якщо ви не виберете теку, Loupe використовує ту, яку позначає сервер, або теку зі звичною назвою.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Автоматично';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Уже розкладені листи лишаються там, де є. Відтепер Loupe використовує теку, яку ви виберете.';
+
+  @override
   String get settingsLanguage => 'Мова';
 
   @override

@@ -26,6 +26,7 @@ import 'features/search/search_screen.dart';
 import 'features/search/smart_mailbox_screen.dart';
 import 'features/settings/account_settings_screen.dart';
 import 'features/settings/advanced_settings_screen.dart';
+import 'features/settings/folder_role_screen.dart';
 import 'features/settings/identities_screen.dart';
 import 'features/settings/manage_folders_screen.dart';
 import 'features/settings/notification_settings_screen.dart';
@@ -136,6 +137,10 @@ abstract final class Routes {
 
   /// Every server folder of an account, with subscribe switches.
   static String manageFolders(String accountId) => '${accountSettings(accountId)}/folders';
+
+  /// The folder an account files sent mail in, saves drafts in or moves
+  /// deleted mail to ([MailAccount.pickableFolderRoles]).
+  static String folderRole(String accountId, MailboxRole role) => '${accountSettings(accountId)}/folder/${role.name}';
 
   /// The addresses an account sends from.
   static String identities(String accountId) => '${accountSettings(accountId)}/identities';
@@ -294,6 +299,17 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: 'folders',
                 builder: (context, state) => ManageFoldersScreen(accountId: state.pathParameters['id']!),
+              ),
+              GoRoute(
+                path: 'folder/:role',
+                redirect: (context, state) =>
+                    MailAccount.pickableFolderRoles.any((r) => r.name == state.pathParameters['role'])
+                    ? null
+                    : Routes.accountSettings(state.pathParameters['id']!),
+                builder: (context, state) => FolderRoleScreen(
+                  accountId: state.pathParameters['id']!,
+                  role: MailboxRole.values.byName(state.pathParameters['role']!),
+                ),
               ),
               GoRoute(
                 path: 'identities',

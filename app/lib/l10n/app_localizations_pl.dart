@@ -2726,6 +2726,20 @@ class AppLocalizationsPl extends AppLocalizations {
       'Nie sprawdzono: sprawdzane są tylko certyfikaty od urzędów, którym ufa Loupe.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Foldery specjalne';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Gdzie Loupe przechowuje wysłaną pocztę, wersje robocze i usuniętą pocztę. Jeśli nie wybrano folderu, Loupe używa tego, który oznacza serwer, albo folderu o zwykłej nazwie.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatycznie';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Poczta już rozłożona zostaje tam, gdzie jest. Od teraz Loupe używa wybranego folderu.';
+
+  @override
   String get settingsLanguage => 'Język';
 
   @override

@@ -2824,6 +2824,20 @@ class AppLocalizationsCy extends AppLocalizations {
       'Heb ei gwirio: dim ond tystysgrifau gan awdurdod mae Loupe yn ymddiried ynddo sy’n cael eu gwirio.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Ffolderi arbennig';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Ble mae Loupe yn cadw post wedi’i anfon, drafftiau a phost wedi’i ddileu. Oni bai eich bod chi’n dewis ffolder, mae’n defnyddio’r un mae eich gweinydd yn ei nodi, neu un â’r enw arferol.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Awtomatig';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Mae post sydd eisoes wedi’i ffeilio yn aros lle mae. O hyn ymlaen, mae Loupe yn defnyddio’r ffolder rydych chi’n ei dewis.';
+
+  @override
   String get settingsLanguage => 'Iaith';
 
   @override

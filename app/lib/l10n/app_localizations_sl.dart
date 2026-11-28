@@ -2754,6 +2754,20 @@ class AppLocalizationsSl extends AppLocalizations {
   String get smimeRevocationNotChecked => 'Ni preverjeno: preverjajo se le potrdila overiteljev, ki jim Loupe zaupa.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Posebne mape';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Kam Loupe shranjuje poslano pošto, osnutke in izbrisano pošto. Če mape ne izberete, uporabi tisto, ki jo označi strežnik, ali mapo z običajnim imenom.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Samodejno';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Že razvrščena pošta ostane, kjer je. Od zdaj Loupe uporablja mapo, ki jo izberete.';
+
+  @override
   String get settingsLanguage => 'Jezik';
 
   @override

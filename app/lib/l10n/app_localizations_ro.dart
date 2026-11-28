@@ -2726,6 +2726,20 @@ class AppLocalizationsRo extends AppLocalizations {
       'Neverificat: sunt verificate doar certificatele de la autorități în care Loupe are încredere.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Dosare speciale';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Unde păstrează Loupe e-mailurile trimise, ciornele și e-mailurile șterse. Dacă nu alegi un dosar, Loupe îl folosește pe cel marcat de server sau unul cu numele obișnuit.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automat';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'E-mailurile deja arhivate rămân unde sunt. De acum, Loupe folosește dosarul pe care îl alegi.';
+
+  @override
   String get settingsLanguage => 'Limbă';
 
   @override

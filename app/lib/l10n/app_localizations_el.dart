@@ -2673,6 +2673,20 @@ class AppLocalizationsEl extends AppLocalizations {
       'Δεν ελέγχθηκε: ελέγχονται μόνο πιστοποιητικά από αρχές που εμπιστεύεται το Loupe.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Ειδικοί φάκελοι';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Πού φυλάει το Loupe τα απεσταλμένα, τα πρόχειρα και τα διαγραμμένα μηνύματα. Αν δεν επιλέξετε φάκελο, χρησιμοποιεί αυτόν που επισημαίνει ο διακομιστής σας ή έναν με το συνηθισμένο όνομα.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Αυτόματα';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Τα μηνύματα που έχουν ήδη αρχειοθετηθεί μένουν εκεί που είναι. Από εδώ και πέρα, το Loupe χρησιμοποιεί τον φάκελο που επιλέγετε.';
+
+  @override
   String get settingsLanguage => 'Γλώσσα';
 
   @override

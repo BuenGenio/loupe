@@ -2667,6 +2667,20 @@ class AppLocalizationsIs extends AppLocalizations {
       'Ekki athugað: aðeins skilríki frá vottunarstöð sem Loupe treystir eru athuguð.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Sérstakar möppur';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Hvar Loupe geymir sendan póst, drög og eyddan póst. Nema þú veljir möppu notar Loupe þá sem þjónninn merkir, eða möppu með venjulega heitinu.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Sjálfvirkt';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Póstur sem þegar hefur verið settur í möppu verður kyrr. Héðan í frá notar Loupe möppuna sem þú velur.';
+
+  @override
   String get settingsLanguage => 'Tungumál';
 
   @override

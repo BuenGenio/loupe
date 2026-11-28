@@ -2661,6 +2661,20 @@ class AppLocalizationsFi extends AppLocalizations {
       'Ei tarkistettu: vain niiden myöntäjien varmenteet tarkistetaan, joihin Loupe luottaa.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Erikoiskansiot';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Mihin Loupe tallentaa lähetetyt viestit, luonnokset ja poistetut viestit. Jos et valitse kansiota, Loupe käyttää sitä, jonka palvelimesi on merkinnyt, tai tavallisella nimellä olevaa kansiota.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automaattinen';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Jo arkistoidut viestit pysyvät paikallaan. Tästä eteenpäin Loupe käyttää valitsemaasi kansiota.';
+
+  @override
   String get settingsLanguage => 'Kieli';
 
   @override

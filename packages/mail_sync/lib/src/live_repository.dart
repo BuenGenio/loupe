@@ -369,7 +369,7 @@ final class LiveMailRepository
       _syncers[account.id] = fresh;
       if (_started && !_paused && !_disposed) fresh.start();
     } else {
-      syncer.updateAccount(account);
+      await syncer.updateAccount(account);
     }
   }
 

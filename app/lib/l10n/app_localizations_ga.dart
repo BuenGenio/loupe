@@ -2801,6 +2801,20 @@ class AppLocalizationsGa extends AppLocalizations {
       'Gan seiceáil: ní sheiceáiltear ach teastais ó údarás a bhfuil muinín ag Loupe as.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Fillteáin speisialta';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'An áit a gcoinníonn Loupe post seolta, dréachtaí agus post scriosta. Mura roghnaíonn tú fillteán, úsáideann sé an ceann a mharcálann do fhreastalaí, nó ceann leis an ngnáthainm.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Uathoibríoch';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Fanann post atá comhdaithe cheana féin san áit a bhfuil sé. As seo amach, úsáideann Loupe an fillteán a roghnaíonn tú.';
+
+  @override
   String get settingsLanguage => 'Teanga';
 
   @override

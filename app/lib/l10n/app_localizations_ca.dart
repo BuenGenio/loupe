@@ -2682,6 +2682,20 @@ class AppLocalizationsCa extends AppLocalizations {
       'No comprovat: només es comproven els certificats d’autoritats en què Loupe confia.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Carpetes especials';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'On Loupe desa el correu enviat, els esborranys i el correu suprimit. Si no tries cap carpeta, fa servir la que marca el servidor o una amb el nom habitual.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automàtic';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'El correu ja desat es queda on és. A partir d’ara, Loupe fa servir la carpeta que triïs.';
+
+  @override
   String get settingsLanguage => 'Idioma';
 
   @override

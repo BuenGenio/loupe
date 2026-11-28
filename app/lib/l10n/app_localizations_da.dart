@@ -2642,6 +2642,20 @@ class AppLocalizationsDa extends AppLocalizations {
       'Ikke tjekket: kun certifikater fra en udsteder, som Loupe stoler på, bliver tjekket.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Særlige mapper';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Hvor Loupe gemmer sendt post, kladder og slettet post. Medmindre du vælger en mappe, bruger Loupe den, din server markerer, eller en med det sædvanlige navn.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatisk';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Post, der allerede er lagt i en mappe, bliver, hvor den er. Fra nu af bruger Loupe den mappe, du vælger.';
+
+  @override
   String get settingsLanguage => 'Sprog';
 
   @override

@@ -2632,6 +2632,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get smimeRevocationNotChecked => 'Not checked: only certificates from an authority Loupe trusts are checked.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Special Folders';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Where Loupe keeps sent mail, drafts and deleted mail. Unless you pick a folder, it uses the one your server marks, or one with the usual name.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatic';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Mail already filed stays where it is. From now on, Loupe uses the folder you pick.';
+
+  @override
   String get settingsLanguage => 'Language';
 
   @override

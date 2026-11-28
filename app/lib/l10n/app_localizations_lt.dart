@@ -2718,6 +2718,20 @@ class AppLocalizationsLt extends AppLocalizations {
   String get smimeRevocationNotChecked => 'Netikrinta: tikrinami tik sertifikatai iš įstaigų, kuriomis Loupe pasitiki.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Specialūs aplankai';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Kur Loupe laiko išsiųstus laiškus, juodraščius ir ištrintus laiškus. Jei nepasirinksite aplanko, Loupe naudos tą, kurį pažymi serveris, arba aplanką įprastu pavadinimu.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatiškai';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Jau sudėti laiškai lieka, kur yra. Nuo šiol Loupe naudos jūsų pasirinktą aplanką.';
+
+  @override
   String get settingsLanguage => 'Kalba';
 
   @override

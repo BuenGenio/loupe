@@ -2674,6 +2674,20 @@ class AppLocalizationsEu extends AppLocalizations {
       'Egiaztatu gabe: Loupe-k fidagarritzat jotzen dituen autoritateen ziurtagiriak bakarrik egiaztatzen dira.';
 
   @override
+  String get settingsSpecialFoldersHeader => 'Karpeta bereziak';
+
+  @override
+  String get settingsSpecialFoldersFooter =>
+      'Loupe-k non gordetzen dituen bidalitako mezuak, zirriborroak eta ezabatutako mezuak. Karpetarik aukeratzen ez baduzu, zerbitzariak markatzen duena erabiltzen du, edo ohiko izena duen bat.';
+
+  @override
+  String get settingsFolderRoleAutomatic => 'Automatikoa';
+
+  @override
+  String get settingsFolderRoleFooter =>
+      'Dagoeneko gordetako mezuak dauden lekuan geratzen dira. Hemendik aurrera, Loupe-k zuk aukeratzen duzun karpeta erabiliko du.';
+
+  @override
   String get settingsLanguage => 'Hizkuntza';
 
   @override
