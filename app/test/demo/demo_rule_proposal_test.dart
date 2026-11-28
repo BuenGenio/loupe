@@ -98,7 +98,8 @@ void main() {
     expect(p.condition, contains('from:dana'));
     expect(p.condition, contains('is:unread'));
     expect(p.condition, contains('attachment:yes'));
-    expect(p.condition, contains('after:2026-09-01'));
+    // after: is exclusive, so "since September" starts from the day before the 1st.
+    expect(p.condition, contains('after:2026-08-31'));
     expect(terms, isNot(isA<MatchAll>()));
   });
 
