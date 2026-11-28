@@ -1,3 +1,6 @@
+import 'mailbox.dart';
+import 'transport.dart';
+
 /// Which kind of service an account talks to. Drives defaults and quirks
 /// (Gmail labels and X-GM-RAW search, Microsoft OAuth, iCloud app passwords).
 enum ProviderKind { generic, gmail, microsoft, icloud, yahoo, fastmail }
@@ -160,6 +163,7 @@ final class MailAccount {
     this.outgoing,
     this.identities = const [],
     this.colorIndex = 0,
+    this.folderRoles = const {},
   });
 
   final String id;
@@ -179,6 +183,50 @@ final class MailAccount {
 
   /// Index into the app's account colour palette (the stripe in lists).
   final int colorIndex;
+
+  /// The folders the user picked for [pickableFolderRoles], by server path
+  /// (Settings › account › Special Folders). A role that isn't here, or whose
+  /// folder the server no longer lists, goes to the folder the server marks
+  /// with it (SPECIAL-USE), else to one with its usual name.
+  final Map<MailboxRole, String> folderRoles;
+
+  /// The roles the user can give another folder: where sent mail is filed,
+  /// drafts are saved and deleted mail goes.
+  static const pickableFolderRoles = [MailboxRole.sent, MailboxRole.drafts, MailboxRole.trash];
+
+  /// This account with the folder at [path] for [role], or with the server's
+  /// choice again when [path] is null. A folder holds one role, so a folder
+  /// picked for [role] stops being picked for any other.
+  MailAccount withFolderRole(MailboxRole role, String? path) => copyWith(
+    folderRoles: {
+      for (final MapEntry(key: r, value: p) in folderRoles.entries)
+        if (r != role && p != path) r: p,
+      role: ?path,
+    },
+  );
+
+  /// [listed], the server's folders with the roles it gave them, with
+  /// [folderRoles] applied: each picked folder the server lists (one that can
+  /// hold mail, and not the Inbox) takes its role from the folder that had
+  /// it, and gives up any role of its own.
+  List<RemoteMailbox> applyFolderRoles(List<RemoteMailbox> listed) {
+    if (folderRoles.isEmpty) return listed;
+    final byPath = {for (final m in listed) m.path: m};
+    final picked = <String, MailboxRole>{
+      for (final MapEntry(key: role, value: path) in folderRoles.entries)
+        if (byPath[path] case final m? when m.isSelectable && m.role != MailboxRole.inbox) path: role,
+    };
+    if (picked.isEmpty) return listed;
+    final taken = picked.values.toSet();
+    return [
+      for (final m in listed)
+        switch (picked[m.path]) {
+          final role? => m.withRole(role),
+          null when taken.contains(m.role) => m.withRole(MailboxRole.none),
+          null => m,
+        },
+    ];
+  }
 
   Identity get defaultIdentity => identities.isNotEmpty ? identities.first : Identity(id: '$id/default', email: email);
 
@@ -215,6 +263,7 @@ final class MailAccount {
     int? colorIndex,
     ServerConfig? incoming,
     ServerConfig? outgoing,
+    Map<MailboxRole, String>? folderRoles,
   }) => MailAccount(
     id: id,
     email: email,
@@ -225,6 +274,7 @@ final class MailAccount {
     outgoing: outgoing ?? this.outgoing,
     identities: identities ?? this.identities,
     colorIndex: colorIndex ?? this.colorIndex,
+    folderRoles: folderRoles ?? this.folderRoles,
   );
 
   Map<String, Object?> toJson() => {
@@ -237,6 +287,8 @@ final class MailAccount {
     'outgoing': outgoing?.toJson(),
     'identities': [for (final i in identities) i.toJson()],
     'colorIndex': colorIndex,
+    if (folderRoles.isNotEmpty)
+      'folderRoles': {for (final MapEntry(:key, :value) in folderRoles.entries) key.name: value},
   };
 
   factory MailAccount.fromJson(Map<String, Object?> json) => MailAccount(
@@ -249,6 +301,10 @@ final class MailAccount {
     outgoing: json['outgoing'] == null ? null : ServerConfig.fromJson((json['outgoing']! as Map).cast()),
     identities: [for (final i in (json['identities'] as List? ?? const [])) Identity.fromJson((i as Map).cast())],
     colorIndex: json['colorIndex'] as int? ?? 0,
+    folderRoles: {
+      for (final MapEntry(:key, :value) in (json['folderRoles'] as Map? ?? const {}).entries)
+        ?MailboxRole.values.asNameMap()[key]: value as String,
+    },
   );
 }
 
