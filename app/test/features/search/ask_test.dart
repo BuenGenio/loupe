@@ -53,12 +53,44 @@ void main() {
     await drainTimers(tester);
   });
 
+  testWidgets('the offer is absent when Ask in Plain English is switched off in Private AI', (tester) async {
+    await pumpLoupe(
+      tester,
+      prefs: {
+        'settings.aiAssist': true,
+        'ai.features.off': ['search'],
+      },
+    );
+    await goTo(tester, Routes.search(''));
+    await tester.enterText(find.byType(CupertinoSearchTextField), 'unread from dana with attachments');
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pumpAndSettle();
+    expect(find.text('Ask in Plain English'), findsNothing);
+    await drainTimers(tester);
+  });
+
   testWidgets('Settings has the switch under Private AI', (tester) async {
     await pumpLoupe(tester);
     await goTo(tester, Routes.settings);
+    final entry = find.byKey(const Key('private-ai'));
+    await tester.scrollUntilVisible(entry, 200, scrollable: find.byType(Scrollable).first);
+    await tester.tap(entry);
+    await tester.pumpAndSettle();
     final row = find.byKey(const Key('ai-assist'));
-    await tester.scrollUntilVisible(row, 200, scrollable: find.byType(Scrollable).first);
-    expect(find.descendant(of: row, matching: find.text('Ask in Plain English')), findsOneWidget);
+    expect(find.descendant(of: row, matching: find.text('Private AI')), findsOneWidget);
     expect(find.descendant(of: row, matching: find.byType(CupertinoSwitch)), findsOneWidget);
+    // The feature has its own switch there too.
+    expect(find.byKey(const Key('ai-feature-search')), findsNothing);
+    await tester.tap(row);
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('ai-feature-search')),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(
+      find.descendant(of: find.byKey(const Key('ai-feature-search')), matching: find.text('Ask in Plain English')),
+      findsOne,
+    );
   });
 }

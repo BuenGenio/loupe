@@ -10,6 +10,10 @@ creating the heading if it isn't there yet. Say what changed for the person
 using the app, in a line or two; leave out internals, refactors and tests.
 -->
 
+## 2026-11-28
+
+- **Settings › Private AI** (off by default). Choose who answers: the built-in demo on the phone, Anthropic with your own API key, or your own OpenAI-compatible server. Keys go to the phone's secure storage. A switch per feature, **Keep Mail on the Phone** per account, Test Connection, Usage & Estimated Cost, and Delete Derived Results. Ask in Plain English uses the provider you pick.
+
 ## 2026-11-21
 
 - **Projects.** Group the conversations about one thing, from any folder or account: **Add to Project…** on a conversation puts all of it in, and replies join by themselves. Projects have their own section on Mailboxes, with unread counts, and are kept on your mail server like Smart Mailboxes, so they follow you to other devices.

@@ -11,6 +11,7 @@ Loupe is an open-source mail app for Android and iOS, developed by [owner name] 
 - Loupe has no servers. Your mail goes directly between your phone and your mail provider.
 - Loupe collects nothing: no analytics, no telemetry, no advertising, no tracking, no crash reports.
 - On Android, Push lets new mail wake Loupe through Google's push service. A push carries no mail, only "check now".
+- Private AI is off by default. If you turn it on and choose a cloud provider or your own server, Loupe sends the parts of your mail a feature needs directly from your phone to that provider, under your own agreement with it. Never to us.
 - Your mail, your settings and your sign-in stay on your phone and with your mail provider. We never receive them, and so we can't read, sell or share them.
 
 ## What Loupe stores, and where
@@ -25,6 +26,10 @@ Loupe keeps the following on your phone only:
   - They never leave the phone except to sign in to your own mail provider.
 - **Your settings:** accounts, signatures, rules, smart mailboxes and display preferences.
   - Some settings (for example smart mailboxes) can be saved on your own mail server, in your own mailbox, so your other devices can use them.
+- **Private AI, if you turn it on:**
+  - The API key or server address you enter for an AI provider, in the phone's secure storage like your sign-in.
+  - What the AI features produced, such as a message's Brief, on the phone only. Settings › Private AI › Delete Derived Results removes them; your mail and your own decisions stay.
+  - A record of each request for Usage & Estimated Cost: the feature, provider, model, times and token counts. Never what was sent or the answer.
 
 Removing an account in Loupe deletes its mail, settings and sign-in from your phone. Uninstalling Loupe deletes everything it stored.
 
@@ -45,15 +50,23 @@ Loupe connects only to:
   - Turning Push off deletes the token. Phones without Google Play services don't use Push.
 - **Websites you choose to open,** like links in a message, or a mailing list's unsubscribe address when you tap Unsubscribe.
 - **Senders' servers, for images in a message,** only when you choose to load remote content. Loupe blocks it by default.
+- **The AI provider you choose, only if you turn on Private AI** (Settings › Private AI; off by default):
+  - The built-in demo works on the phone and sends nothing.
+  - With a cloud provider (Anthropic) or your own server (any OpenAI-compatible address), Loupe sends each request from your phone directly to that provider, with your key. A request holds only what the feature needs: for a search, your sentence and your account names; for a message, its subject, sender, date, text and attachment names. Never attachments themselves, your passwords or your key.
+  - What the provider keeps, and for how long, is set by the provider and your agreement with it. Settings › Private AI links to its policy.
+  - Each feature has its own switch. **Keep Mail on the Phone** stops an account's mail from going to any Private AI network provider.
+  - Removing the key or server stops all requests to it. No other provider takes over.
+- **The AI server you choose for Projects, only if you turn it on** (Settings › Projects; off by default; separate from Private AI and its per-account setting). To suggest how to group conversations, Loupe sends it their subjects, the senders' names, the domains of their organisations and the dates. Never message text or addresses.
 - **Certificate authorities, only if you turn on "Check Certificate Revocation Online"** (off by default). When you read S/MIME-signed mail, Loupe then asks the authority that issued the sender's certificate whether it was revoked, which tells that authority whose certificate is being checked and when.
 
 ## Google user data
 
 Loupe uses the Gmail scope `https://mail.google.com/` only so that you can read, write, send, organise and delete your Gmail in Loupe, over IMAP and SMTP, on your own device.
 
-- Loupe doesn't transfer Google user data to us or to anyone else.
-- Loupe doesn't use it for advertising and doesn't sell it.
-- No human reads it.
+- Loupe doesn't transfer Google user data to us.
+- It sends Google user data to anyone else only when you ask it to. If you turn on Private AI or Projects' AI grouping and choose a network provider, Loupe sends the parts of your mail a feature needs from your phone directly to that provider, to give you that feature (see [Who Loupe talks to](#who-loupe-talks-to)). Turning the feature off stops it; for Private AI, Keep Mail on the Phone also stops it for one account.
+- Loupe doesn't use Google user data for advertising, doesn't sell it, and doesn't use it to develop, improve or train AI or machine-learning models.
+- No human at Loupe reads it.
 
 Loupe's use and transfer to any other app of information received from Google APIs will adhere to the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements.
 

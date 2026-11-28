@@ -10,6 +10,7 @@ import 'demo_calendar.dart';
 import 'demo_mime.dart';
 import 'demo_openpgp.dart';
 import 'demo_patches.dart';
+import 'demo_private_ai.dart';
 import 'demo_security.dart';
 import 'demo_smime.dart';
 
@@ -192,6 +193,7 @@ final class DemoSeed {
     smimeCases();
     _espNewsletters();
     calendarCases();
+    privateAiCases();
   }
 
   void _accounts() {
