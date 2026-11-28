@@ -9,6 +9,10 @@ import 'sheets.dart';
 
 /// Opens the "Aa" sheet. Every change is reported at once through
 /// [onChanged], so the message behind the sheet updates live.
+///
+/// [brief] adds Brief to the views: whether the message shows its Brief, or
+/// null when Brief isn't offered. [onBrief] hears true when Brief is picked,
+/// false when another view is.
 Future<void> showReaderOptionsSheet(
   BuildContext context, {
   required ReaderSettings initial,
@@ -16,6 +20,8 @@ Future<void> showReaderOptionsSheet(
   required String? senderName,
   required ValueChanged<ReaderSettings> onChanged,
   required ValueChanged<bool> onRememberChanged,
+  bool? brief,
+  ValueChanged<bool>? onBrief,
 }) => showLoupeSheet<void>(
   context,
   builder: (context) => ReaderOptionsSheet(
@@ -24,8 +30,21 @@ Future<void> showReaderOptionsSheet(
     senderName: senderName,
     onChanged: onChanged,
     onRememberChanged: onRememberChanged,
+    brief: brief,
+    onBrief: onBrief,
   ),
 );
+
+/// The views of the sheet's first control: the reader's modes, and Brief.
+enum _View {
+  readable(ReaderMode.readable),
+  original(ReaderMode.original),
+  plain(ReaderMode.plain),
+  brief(null);
+
+  const _View(this.mode);
+  final ReaderMode? mode;
+}
 
 /// The content of the "Aa" sheet: view mode, plain-text font, text size,
 /// "Keep original colours" and "Remember for this sender".
@@ -37,6 +56,8 @@ class ReaderOptionsSheet extends StatefulWidget {
     required this.senderName,
     required this.onChanged,
     required this.onRememberChanged,
+    this.brief,
+    this.onBrief,
   });
 
   final ReaderSettings initial;
@@ -45,6 +66,12 @@ class ReaderOptionsSheet extends StatefulWidget {
   final ValueChanged<ReaderSettings> onChanged;
   final ValueChanged<bool> onRememberChanged;
 
+  /// Whether the message shows its Brief; null when Brief isn't offered.
+  final bool? brief;
+
+  /// True when Brief is picked, false when another view is.
+  final ValueChanged<bool>? onBrief;
+
   @override
   State<ReaderOptionsSheet> createState() => _ReaderOptionsSheetState();
 }
@@ -52,6 +79,7 @@ class ReaderOptionsSheet extends StatefulWidget {
 class _ReaderOptionsSheetState extends State<ReaderOptionsSheet> {
   late ReaderSettings _settings = widget.initial;
   late bool _remember = widget.remembered;
+  late bool _brief = widget.brief ?? false;
 
   void _set(ReaderSettings s) {
     setState(() => _settings = s);
@@ -72,22 +100,27 @@ class _ReaderOptionsSheetState extends State<ReaderOptionsSheet> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            child: CupertinoSlidingSegmentedControl<ReaderMode>(
+            child: CupertinoSlidingSegmentedControl<_View>(
               key: const Key('reader-mode'),
-              groupValue: s.mode,
-              onValueChanged: (m) {
-                if (m != null) _set(s.copyWith(mode: m));
+              groupValue: _brief ? _View.brief : _View.values.firstWhere((v) => v.mode == s.mode),
+              onValueChanged: (v) {
+                if (v == null) return;
+                final mode = v.mode;
+                setState(() => _brief = mode == null);
+                widget.onBrief?.call(mode == null);
+                if (mode != null) _set(s.copyWith(mode: mode));
               },
               children: {
-                ReaderMode.readable: _Segment(l10n.conversationReaderReadable),
-                ReaderMode.original: _Segment(l10n.conversationReaderOriginal),
-                ReaderMode.plain: _Segment(l10n.conversationReaderPlain),
+                _View.readable: _Segment(l10n.conversationReaderReadable),
+                _View.original: _Segment(l10n.conversationReaderOriginal),
+                _View.plain: _Segment(l10n.conversationReaderPlain),
+                if (widget.brief != null) _View.brief: _Segment(l10n.briefReaderView),
               },
             ),
           ),
           AnimatedSize(
             duration: const Duration(milliseconds: 180),
-            child: s.mode == ReaderMode.plain
+            child: s.mode == ReaderMode.plain && !_brief
                 ? Padding(
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                     child: CupertinoSlidingSegmentedControl<PlainTextFont>(
@@ -130,7 +163,9 @@ class _ReaderOptionsSheetState extends State<ReaderOptionsSheet> {
                 dense: true,
                 title: Text(l10n.conversationReaderKeepColours, style: const TextStyle(fontSize: 16)),
                 value: s.keepOriginalColors,
-                onChanged: s.mode == ReaderMode.readable ? (v) => _set(s.copyWith(keepOriginalColors: v)) : null,
+                onChanged: s.mode == ReaderMode.readable && !_brief
+                    ? (v) => _set(s.copyWith(keepOriginalColors: v))
+                    : null,
               ),
             ],
           ),
@@ -167,6 +202,10 @@ class _Segment extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 6),
-    child: Text(label, style: TextStyle(fontSize: 14, fontFamily: mono ? 'monospace' : null)),
+    // Four views share a phone's width: a long word shrinks rather than breaks.
+    child: FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Text(label, maxLines: 1, style: TextStyle(fontSize: 14, fontFamily: mono ? 'monospace' : null)),
+    ),
   );
 }

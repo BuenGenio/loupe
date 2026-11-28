@@ -13,6 +13,8 @@ using the app, in a line or two; leave out internals, refactors and tests.
 ## 2026-11-28
 
 - **Settings › Private AI** (off by default). Choose who answers: the built-in demo on the phone, Anthropic with your own API key, or your own OpenAI-compatible server. Keys go to the phone's secure storage. A switch per feature, **Keep Mail on the Phone** per account, Test Connection, Usage & Estimated Cost, and Delete Derived Results. Ask in Plain English uses the provider you pick.
+- **Brief** (with Private AI on). A Brief button above a message's text shows what it asks of you: To Do, Documents to Send, Dates, Conditions and What Happens Next. Tap an item to see its passage in the message. Tick items off, copy them, add a dated one to your calendar, or Track it.
+- **Needs My Action and Waiting on Others.** Two new folders in Mailboxes, built from the actions you track: **Add Action…** in a message's ⋯ menu, and with Private AI, **Suggest Actions** and a Brief item's Track. Each action has its state, a reminder and Undo; a reply never settles one by itself.
 
 ## 2026-11-21
 

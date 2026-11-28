@@ -1387,6 +1387,214 @@ class AppLocalizationsMk extends AppLocalizations {
   String get snoozeEmptyText => 'Одложете ја пораката и таа ќе се врати во Влезното сандаче кога ќе ви треба.';
 
   @override
+  String get briefButton => 'Накратко';
+
+  @override
+  String get briefButtonHint => 'Наведува што бара оваа порака од вас';
+
+  @override
+  String get briefReaderView => 'Накратко';
+
+  @override
+  String get briefTitle => 'Накратко';
+
+  @override
+  String get briefShowOriginal => 'Прикажи оригинал';
+
+  @override
+  String get briefWorking => 'Се чита пораката…';
+
+  @override
+  String get briefStopped => 'Го запревте резимето.';
+
+  @override
+  String get briefFailedTooLarge => 'Пораката е предолга за моделот, па ништо не е испратено.';
+
+  @override
+  String get briefFailedProvider => 'Моделот не успеа да ја резимира оваа порака.';
+
+  @override
+  String get briefFailedInvalid => 'Одговорот не ги помина проверките на Loupe, па списокот не се прикажува.';
+
+  @override
+  String get briefNothingTitle => 'Нема што да се резимира';
+
+  @override
+  String get briefPartial =>
+      'Пораката е долга, па резимето го опфаќа само нејзиниот почеток. Остатокот прочитајте го во самата порака.';
+
+  @override
+  String get briefSectionToDo => 'За правење';
+
+  @override
+  String get briefSectionDocuments => 'Документи за испраќање';
+
+  @override
+  String get briefSectionOtherDocuments => 'Документи';
+
+  @override
+  String get briefSectionDates => 'Датуми';
+
+  @override
+  String get briefSectionConditions => 'Услови';
+
+  @override
+  String get briefSectionNext => 'Што следува';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Рок: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Датум: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Цел, не рок: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Се смета од настан: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Не е наведен рок';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Вие', 'them': 'Други', 'other': 'Не е наведено'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Означи како завршено';
+
+  @override
+  String get briefMarkNotDone => 'Означи како незавршено';
+
+  @override
+  String get briefDismiss => 'Отфрли';
+
+  @override
+  String get briefRestore => 'Врати';
+
+  @override
+  String get briefCopy => 'Копирај';
+
+  @override
+  String get briefAddToCalendar => 'Додај во календар…';
+
+  @override
+  String get briefTrack => 'Следи';
+
+  @override
+  String get briefShowInMessage => 'Прикажи во пораката';
+
+  @override
+  String get briefMarkedDone => 'Означено како завршено';
+
+  @override
+  String get briefDismissed => 'Отфрлено';
+
+  @override
+  String get briefItemCopied => 'Копирано';
+
+  @override
+  String get briefChecklistCopied => 'Списокот е копиран';
+
+  @override
+  String briefTracking(String item) {
+    return 'Се следи „$item“';
+  }
+
+  @override
+  String get briefTrackFailed => 'Не успеа следењето на оваа ставка.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Прикажи $count отфрлени ставки',
+      one: 'Прикажи $count отфрлена ставка',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Скриј ги отфрлените ставки';
+
+  @override
+  String get briefCopyChecklist => 'Копирај го списокот';
+
+  @override
+  String get briefMadeByDemo => 'Направено од вградената демонстрација, не од модел.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Направено на овој телефон од $name.',
+      'myServer': 'Направено на вашиот сервер од $name.',
+      'other': 'Направено во облакот од $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Резимето може нешто да пропушти или погрешно да разбере. Важи самата порака.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Проверете ја самата порака пред да направите што било од ова резиме.';
+  }
+
+  @override
+  String get briefSecurityText => 'Проверете ја самата порака пред да направите што било од ова резиме.';
+
+  @override
+  String get briefSourceTitle => 'Во пораката';
+
+  @override
+  String get briefSourceAttachment =>
+      'Ова доаѓа од името на приложена датотека. Резимето не ја чита содржината на прилозите.';
+
+  @override
+  String get briefEventTitle => 'Нов настан';
+
+  @override
+  String get briefEventDate => 'Датум';
+
+  @override
+  String get briefEventTime => 'Време';
+
+  @override
+  String get briefEventAllDay => 'Цел ден';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Временска зона';
+
+  @override
+  String get briefEventNotes => 'Белешки';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Од „$subject“, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Апликацијата за календар се отвора со овој настан. Ништо не се зачувува додека не го зачувате таму.';
+
+  @override
   String get appLockUnlock => 'Отклучи';
 
   @override
@@ -2815,6 +3023,323 @@ class AppLocalizationsMk extends AppLocalizations {
   @override
   String get smimeRevocationNotChecked =>
       'Не е проверено: се проверуваат само сертификати издадени од сертификациски тела на кои Loupe им верува.';
+
+  @override
+  String get actionsNeedsMyAction => 'Потребна е моја акција';
+
+  @override
+  String get actionsWaitingOnOthers => 'Чекам други';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Ништо не бара ваша акција';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Не чекате никого';
+
+  @override
+  String get actionsFolderEmptyDetail => 'За да следите нешто, допрете ⋯ на порака и изберете „Додај акција…“';
+
+  @override
+  String get actionsTitle => 'Акции';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count за правење',
+      one: '$count за правење',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count на чекање',
+      one: '$count на чекање',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count решени акции',
+      one: '$count решена акција',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Решени';
+
+  @override
+  String get actionsNoneInConversation => 'Овој разговор нема акции.';
+
+  @override
+  String get actionsFooter =>
+      'Акциите се чуваат на овој телефон. Поштата никогаш не ги менува, дури ни одговор „Благодарам“: ги менувате само вие.';
+
+  @override
+  String get actionsMarkDone => 'Означи како завршена';
+
+  @override
+  String get actionsReopen => 'Отвори повторно';
+
+  @override
+  String get actionsStateNeedsAction => 'Потребна е акција';
+
+  @override
+  String get actionsStateInProgress => 'Во тек';
+
+  @override
+  String get actionsStateSent => 'Испратено';
+
+  @override
+  String get actionsStateWaiting => 'Чека потврда';
+
+  @override
+  String get actionsStateAcknowledged => 'Потврдено';
+
+  @override
+  String get actionsStateDone => 'Завршено';
+
+  @override
+  String get actionsStateDismissed => 'Отфрлено';
+
+  @override
+  String get actionsStateSuperseded => 'Заменето';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Означено дека е потребна акција',
+      'inProgress': 'Означено како во тек',
+      'sent': 'Означено како испратено',
+      'waitingForAcknowledgement': 'Чека потврда',
+      'acknowledged': 'Означено како потврдено',
+      'done': 'Означено како завршено',
+      'dismissed': 'Акцијата е отфрлена',
+      'superseded': 'Означено како заменето',
+      'other': 'Акцијата е променета',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Акцијата е преформулирана';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Потсетникот е поставен за $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Потсетникот е отстранет';
+
+  @override
+  String get actionsDeleted => 'Акцијата е избришана';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Додадени се $count акции',
+      one: 'Додадена е $count акција',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Акцијата не можеше да се зачува.';
+
+  @override
+  String get actionsStatusHeader => 'Статус';
+
+  @override
+  String get actionsEditText => 'Уреди текст…';
+
+  @override
+  String get actionsEditTitle => 'Уреди акција';
+
+  @override
+  String get actionsRemindMe => 'Потсети ме…';
+
+  @override
+  String get actionsChangeReminder => 'Промени потсетник…';
+
+  @override
+  String get actionsClearReminder => 'Отстрани потсетник';
+
+  @override
+  String get actionsRemindTitle => 'Потсети ме';
+
+  @override
+  String get actionsDelete => 'Избриши акција';
+
+  @override
+  String get actionsHistoryHeader => 'Историја';
+
+  @override
+  String get actionsHistoryAdded => 'Додадено';
+
+  @override
+  String get actionsHistoryEdited => 'Преформулирано';
+
+  @override
+  String get actionsHistoryDue => 'Рокот е променет';
+
+  @override
+  String get actionsHistoryReminder => 'Потсетникот е променет';
+
+  @override
+  String get actionsHistoryRevised => 'Ажурирано според нов предлог';
+
+  @override
+  String get actionsHistoryDeleted => 'Избришано';
+
+  @override
+  String get actionsHistoryRestored => 'Вратено';
+
+  @override
+  String get actionsOwnerMe => 'Морам јас';
+
+  @override
+  String get actionsOwnerThem => 'Ќе направат други';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Првично: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '„$quote“';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Порака од $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Додадено од вас';
+
+  @override
+  String get actionsOriginDemo => 'Предложено од вградената демонстрација: правила, без модел';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Предложено од $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Предложено од $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Рок: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'По можност до $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '„$timing“';
+  }
+
+  @override
+  String get actionsAddMenu => 'Додај акција…';
+
+  @override
+  String get actionsSuggestMenu => 'Предложи акции';
+
+  @override
+  String get actionsAddTitle => 'Додај акција';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Што треба да направите?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Што чекате?';
+
+  @override
+  String get actionsDueDate => 'Рок';
+
+  @override
+  String get actionsClearDueDate => 'Без рок';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'За „$subject“';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Предложени акции';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'на овој телефон',
+      'myServer': 'на вашиот сервер',
+      'other': 'во облакот',
+    });
+    return 'Од $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'Од вградената демонстрација: правила, без модел. Ништо не го напушта овој телефон.';
+
+  @override
+  String get actionsSuggestNone => 'Во оваа порака нема ништо за следење.';
+
+  @override
+  String get actionsSuggestPartial => 'Оваа порака е долга: прочитан е само нејзиниот почеток.';
+
+  @override
+  String get actionsSuggestTracked => 'Се следи';
+
+  @override
+  String get actionsSuggestUpdate => 'Ажурирај';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Додај ги сите $count',
+      two: 'Додај ги двете',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Секој предлог ја цитира пораката и ништо не се следи додека не го додадете. Цитираната претходна пошта не се смета.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Оваа порака е премногу долга за избраниот модел.';
+
+  @override
+  String get actionsSuggestInvalid => 'Одговорот не се совпадна со пораката, па ништо не е предложено.';
+
+  @override
+  String get actionsSuggestCancelled => 'Запрено.';
+
+  @override
+  String get actionsSuggestFailed => 'Предлозите моментално не се достапни.';
 
   @override
   String settingsIdle(String protocol) {

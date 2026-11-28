@@ -40,10 +40,13 @@ import 'security_sheet.dart';
 /// small privacy shield with the number of trackers. Tapping it explains.
 /// Nothing while the message loads.
 class SecurityBadge extends ConsumerWidget {
-  const SecurityBadge({super.key, required this.message, required this.content});
+  const SecurityBadge({super.key, required this.message, required this.content, this.compact = false});
 
   final EmailSummary message;
   final EmailContent? content;
+
+  /// The icon without its label, for a row too narrow for both.
+  final bool compact;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -51,24 +54,28 @@ class SecurityBadge extends ConsumerWidget {
     if (c == null) return const SizedBox.shrink();
     final report = ref.watch(securityReportProvider(SecurityKey(message, c))).value;
     if (report == null) return const SizedBox.shrink();
-    return SecurityBadgeView(report: report, onTap: () => showSecuritySheet(context, report));
+    return SecurityBadgeView(report: report, compact: compact, onTap: () => showSecuritySheet(context, report));
   }
 }
 
 /// The badge for a finished [report].
 class SecurityBadgeView extends StatelessWidget {
-  const SecurityBadgeView({super.key, required this.report, required this.onTap});
+  const SecurityBadgeView({super.key, required this.report, required this.onTap, this.compact = false});
 
   final SecurityReport report;
   final VoidCallback onTap;
+
+  /// The icon without its label, for a row too narrow for both.
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     final style = verdictStyle(context, report);
     final colors = LoupeColors.of(context);
     final trackers = report.privacy.total;
-    // With very large text the label would crowd out the sender's name.
-    final iconOnly = MediaQuery.textScalerOf(context).scale(12) > 16;
+    // With very large text, or in a narrow row, the label would crowd out the
+    // sender's name. The sheet still says it all, and Semantics keeps the label.
+    final iconOnly = compact || MediaQuery.textScalerOf(context).scale(12) > 16;
     final mark = switch (report.verdict) {
       Verdict.likelyPhishing || Verdict.beCareful => Container(
         key: const ValueKey('security-pill'),

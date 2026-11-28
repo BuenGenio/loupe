@@ -2391,6 +2391,348 @@ abstract class AppLocalizations {
   /// **'Snooze a message to have it come back to the Inbox when you need it.'**
   String get snoozeEmptyText;
 
+  /// Button above a message's text (Private AI): shows what the message asks of you, item by item, in place of the text.
+  ///
+  /// In en, this message translates to:
+  /// **'Brief'**
+  String get briefButton;
+
+  /// Screen reader hint of the Brief button above a message.
+  ///
+  /// In en, this message translates to:
+  /// **'Lists what this message asks of you'**
+  String get briefButtonHint;
+
+  /// View of a message in the “Aa” sheet, next to Readable, Original and Plain: what the message asks of you (Private AI).
+  ///
+  /// In en, this message translates to:
+  /// **'Brief'**
+  String get briefReaderView;
+
+  /// Heading of a message's Brief, shown in place of the message's text.
+  ///
+  /// In en, this message translates to:
+  /// **'Brief'**
+  String get briefTitle;
+
+  /// Button in a Brief: shows the message's own text again, in its usual view.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Original'**
+  String get briefShowOriginal;
+
+  /// While Private AI makes the Brief of a message.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading the message…'**
+  String get briefWorking;
+
+  /// After Cancel while the Brief was being made.
+  ///
+  /// In en, this message translates to:
+  /// **'You stopped the Brief.'**
+  String get briefStopped;
+
+  /// The Brief failed: the message is bigger than the model takes.
+  ///
+  /// In en, this message translates to:
+  /// **'This message is too long for the model, so nothing was sent.'**
+  String get briefFailedTooLarge;
+
+  /// The Brief failed: the model or its server failed (no network, a quota, a model not downloaded). The model's own reason may follow.
+  ///
+  /// In en, this message translates to:
+  /// **'The model couldn’t make a Brief of this message.'**
+  String get briefFailedProvider;
+
+  /// The Brief failed: the model's answer was rejected twice, for example an item quoted a passage that isn't in the message.
+  ///
+  /// In en, this message translates to:
+  /// **'The answer didn’t pass Loupe’s checks, so no checklist is shown.'**
+  String get briefFailedInvalid;
+
+  /// Brief of a short message that asks nothing of you (“Thanks, all received”). The model's one-line summary follows.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to Summarise'**
+  String get briefNothingTitle;
+
+  /// Above the items of a Brief when the message was longer than the model reads.
+  ///
+  /// In en, this message translates to:
+  /// **'This message is long, so the Brief covers only its beginning. Read the rest in the message itself.'**
+  String get briefPartial;
+
+  /// Group of a Brief: what you have to do.
+  ///
+  /// In en, this message translates to:
+  /// **'To Do'**
+  String get briefSectionToDo;
+
+  /// Group of a Brief: documents you have to provide.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents to Send'**
+  String get briefSectionDocuments;
+
+  /// Group of a Brief: documents the message mentions that aren't yours to send (an attached illustration, say).
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get briefSectionOtherDocuments;
+
+  /// Group of a Brief: dates the message states.
+  ///
+  /// In en, this message translates to:
+  /// **'Dates'**
+  String get briefSectionDates;
+
+  /// Group of a Brief: conditions the message attaches to something (“once we have all of the above”).
+  ///
+  /// In en, this message translates to:
+  /// **'Conditions'**
+  String get briefSectionConditions;
+
+  /// Group of a Brief: what the message says happens next.
+  ///
+  /// In en, this message translates to:
+  /// **'What Happens Next'**
+  String get briefSectionNext;
+
+  /// Under an item of a Brief: a deadline the message states, as written there.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline: {when}'**
+  String briefDueDeadline(String when);
+
+  /// Under a date of a Brief: the calendar date the message states.
+  ///
+  /// In en, this message translates to:
+  /// **'On {date}'**
+  String briefDueOn(String date);
+
+  /// Under an item of a Brief: a target or an “ideally by” the message suggests, as written there.
+  ///
+  /// In en, this message translates to:
+  /// **'Target, not a deadline: {when}'**
+  String briefDueSuggested(String when);
+
+  /// Under an item of a Brief: a timing that counts from an event, not from today, so it is no date. As written in the message.
+  ///
+  /// In en, this message translates to:
+  /// **'Measured from an event: {when}'**
+  String briefDueConditional(String when);
+
+  /// Under something you have to do or send, in a Brief: the message gives no deadline.
+  ///
+  /// In en, this message translates to:
+  /// **'No deadline stated'**
+  String get briefDueNone;
+
+  /// Under an item of a Brief: who does it, you or the sender and others.
+  ///
+  /// In en, this message translates to:
+  /// **'{owner, select, me{You} them{Them} other{Not stated}}'**
+  String briefOwner(String owner);
+
+  /// Action on an item of a Brief, and the screen reader label of its tick box.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Done'**
+  String get briefMarkDone;
+
+  /// Action on a ticked item of a Brief.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Not Done'**
+  String get briefMarkNotDone;
+
+  /// Action on an item of a Brief: hides it from the checklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get briefDismiss;
+
+  /// Action on a dismissed item of a Brief: shows it in the checklist again.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get briefRestore;
+
+  /// Action on an item of a Brief: copies its text.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get briefCopy;
+
+  /// Action on a dated item of a Brief: shows the event, then hands it to the calendar app.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Calendar…'**
+  String get briefAddToCalendar;
+
+  /// Action on an item of a Brief: keeps it as an action of yours until you mark it done.
+  ///
+  /// In en, this message translates to:
+  /// **'Track'**
+  String get briefTrack;
+
+  /// Action on an item of a Brief, and the screen reader hint of the item: shows the passage of the message it comes from.
+  ///
+  /// In en, this message translates to:
+  /// **'Show in Message'**
+  String get briefShowInMessage;
+
+  /// Snack bar after ticking an item of a Brief, with Undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as done'**
+  String get briefMarkedDone;
+
+  /// Snack bar after dismissing an item of a Brief, with Undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismissed'**
+  String get briefDismissed;
+
+  /// Snack bar after copying an item of a Brief.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied'**
+  String get briefItemCopied;
+
+  /// Snack bar after Copy Checklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklist copied'**
+  String get briefChecklistCopied;
+
+  /// Snack bar after Track on an item of a Brief.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracking “{item}”'**
+  String briefTracking(String item);
+
+  /// Snack bar when Track on an item of a Brief failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t track this item.'**
+  String get briefTrackFailed;
+
+  /// Button under a Brief: shows the items you dismissed.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Show 1 Dismissed Item} other{Show {count} Dismissed Items}}'**
+  String briefShowDismissed(int count);
+
+  /// Button under a Brief: hides the dismissed items again.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Dismissed Items'**
+  String get briefHideDismissed;
+
+  /// Button under a Brief: copies all its items as a plain-text checklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Checklist'**
+  String get briefCopyChecklist;
+
+  /// Under a Brief made by the demo's rules.
+  ///
+  /// In en, this message translates to:
+  /// **'Made by the built-in demo, not a model.'**
+  String get briefMadeByDemo;
+
+  /// Under a Brief: where the model ran and which it is.
+  ///
+  /// In en, this message translates to:
+  /// **'{location, select, onThisPhone{Made on this phone by {name}.} myServer{Made on your server by {name}.} other{Made in the cloud by {name}.}}'**
+  String briefMadeBy(String location, String name);
+
+  /// Under a Brief.
+  ///
+  /// In en, this message translates to:
+  /// **'A Brief can miss or misread things. The message itself is what counts.'**
+  String get briefCaution;
+
+  /// Above a Brief, under “This looks like phishing” or “Be careful with this message”, with the strongest sign first.
+  ///
+  /// In en, this message translates to:
+  /// **'{reason}. Check the message itself before you act on anything in this Brief.'**
+  String briefSecurityReason(String reason);
+
+  /// Above a Brief, under “This looks like phishing” or “Be careful with this message”.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the message itself before you act on anything in this Brief.'**
+  String get briefSecurityText;
+
+  /// Title of the sheet that shows the passage of the message an item of a Brief comes from.
+  ///
+  /// In en, this message translates to:
+  /// **'In the Message'**
+  String get briefSourceTitle;
+
+  /// In the In the Message sheet, when an item of a Brief comes from the file name of an attachment, which is shown below.
+  ///
+  /// In en, this message translates to:
+  /// **'This comes from the name of an attached file. The Brief doesn’t read what’s in attachments.'**
+  String get briefSourceAttachment;
+
+  /// Title of the sheet that shows an event made from a Brief item before it goes to the calendar app.
+  ///
+  /// In en, this message translates to:
+  /// **'New Event'**
+  String get briefEventTitle;
+
+  /// Label in the New Event sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get briefEventDate;
+
+  /// Label in the New Event sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get briefEventTime;
+
+  /// The time of an event from a Brief when the message states no time.
+  ///
+  /// In en, this message translates to:
+  /// **'All day'**
+  String get briefEventAllDay;
+
+  /// The time of an event from a Brief.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} – {end}'**
+  String briefEventTimeRange(String start, String end);
+
+  /// Label in the New Event sheet: the phone's time zone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone'**
+  String get briefEventZone;
+
+  /// Label in the New Event sheet: the event's notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get briefEventNotes;
+
+  /// Notes of an event made from a Brief: the message it comes from.
+  ///
+  /// In en, this message translates to:
+  /// **'From “{subject}”, {sender}'**
+  String briefEventFrom(String subject, String sender);
+
+  /// Under the Add to Calendar button of the New Event sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Your calendar app opens with this event. Nothing is saved until you save it there.'**
+  String get briefEventFootnote;
+
   /// Button on the lock screen that shows the phone’s fingerprint, face or screen-lock prompt.
   ///
   /// In en, this message translates to:
@@ -4754,6 +5096,474 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not checked: only certificates from an authority Loupe trusts are checked.'**
   String get smimeRevocationNotChecked;
+
+  /// Mailbox (a virtual folder) of the conversations with something the user has to do: requests from others the user tracks as actions. Also a section header on a conversation's Actions page.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs My Action'**
+  String get actionsNeedsMyAction;
+
+  /// Mailbox (a virtual folder) of the conversations where the user waits for someone else: their promises, and what the user sent and waits to see acknowledged. Also a section header on a conversation's Actions page.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting on Others'**
+  String get actionsWaitingOnOthers;
+
+  /// Empty Needs My Action mailbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing needs your action'**
+  String get actionsNeedsMyActionEmpty;
+
+  /// Empty Waiting on Others mailbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Not waiting on anyone'**
+  String get actionsWaitingOnOthersEmpty;
+
+  /// Under actionsNeedsMyActionEmpty or actionsWaitingOnOthersEmpty. ⋯ is the message's More button; Add Action… is actionsAddMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'To track something, tap ⋯ on a message and choose Add Action…'**
+  String get actionsFolderEmptyDetail;
+
+  /// Title of a conversation's page of actions (things to do and things waited for), and of the row under its subject that opens it.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get actionsTitle;
+
+  /// Open actions the user has to do, in a conversation's Actions row and in the Needs My Action list.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 to do} other{{count} to do}}'**
+  String actionsCountMine(int count);
+
+  /// Open actions the user waits for from others, in a conversation's Actions row and in the Waiting on Others list.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 waiting} other{{count} waiting}}'**
+  String actionsCountWaiting(int count);
+
+  /// A conversation's Actions row when none of its actions is open any more (all done, sent, acknowledged or dismissed).
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 settled action} other{{count} settled actions}}'**
+  String actionsAllSettled(int count);
+
+  /// Section header on a conversation's Actions page: actions that are done, sent, acknowledged, dismissed or superseded.
+  ///
+  /// In en, this message translates to:
+  /// **'Settled'**
+  String get actionsSettledHeader;
+
+  /// No description provided for @actionsNoneInConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'This conversation has no actions.'**
+  String get actionsNoneInConversation;
+
+  /// Under the list on a conversation's Actions page.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions are kept on this phone. Mail never changes them, not even a reply saying “Thanks”: only you do.'**
+  String get actionsFooter;
+
+  /// Screen-reader label of the round mark at the start of an open action's row.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Done'**
+  String get actionsMarkDone;
+
+  /// Screen-reader label of the mark at the start of a settled action's row: it needs action again.
+  ///
+  /// In en, this message translates to:
+  /// **'Reopen'**
+  String get actionsReopen;
+
+  /// An action's state (and the menu item that sets it): open, nothing done yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs Action'**
+  String get actionsStateNeedsAction;
+
+  /// An action's state: started.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get actionsStateInProgress;
+
+  /// An action's state: the document or answer was sent. It doesn't mean it was received or accepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent'**
+  String get actionsStateSent;
+
+  /// An action's state: sent, and waiting for the other side to confirm they have it.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for Acknowledgement'**
+  String get actionsStateWaiting;
+
+  /// An action's state: the other side confirmed they have it.
+  ///
+  /// In en, this message translates to:
+  /// **'Acknowledged'**
+  String get actionsStateAcknowledged;
+
+  /// An action's state: completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get actionsStateDone;
+
+  /// An action's state: the user decided it needs nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismissed'**
+  String get actionsStateDismissed;
+
+  /// An action's state: a newer request took its place.
+  ///
+  /// In en, this message translates to:
+  /// **'Superseded'**
+  String get actionsStateSuperseded;
+
+  /// Snack bar (with Undo) after the user changed an action's state. state: the new state, one of the actionsState… strings.
+  ///
+  /// In en, this message translates to:
+  /// **'{state, select, needsAction{Marked as needing action} inProgress{Marked as in progress} sent{Marked as sent} waitingForAcknowledgement{Waiting for acknowledgement} acknowledged{Marked as acknowledged} done{Marked as done} dismissed{Action dismissed} superseded{Marked as superseded} other{Action changed}}'**
+  String actionsMarked(String state);
+
+  /// Snack bar (with Undo) after editing an action's text.
+  ///
+  /// In en, this message translates to:
+  /// **'Action reworded'**
+  String get actionsEdited;
+
+  /// Snack bar (with Undo) after setting a reminder for one action.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder set for {time}'**
+  String actionsReminderSet(String time);
+
+  /// Snack bar (with Undo).
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder cleared'**
+  String get actionsReminderCleared;
+
+  /// Snack bar (with Undo).
+  ///
+  /// In en, this message translates to:
+  /// **'Action deleted'**
+  String get actionsDeleted;
+
+  /// Snack bar (with Undo) after adding actions.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Action added} other{{count} actions added}}'**
+  String actionsAdded(int count);
+
+  /// Error.
+  ///
+  /// In en, this message translates to:
+  /// **'The action couldn’t be saved.'**
+  String get actionsSaveFailed;
+
+  /// Header of the list of states in an action's details.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get actionsStatusHeader;
+
+  /// In an action's details: change its words.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Text…'**
+  String get actionsEditText;
+
+  /// Title of the dialog that changes an action's words.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Action'**
+  String get actionsEditTitle;
+
+  /// In an action's details: set a reminder for this action alone (not a snooze of the message).
+  ///
+  /// In en, this message translates to:
+  /// **'Remind Me…'**
+  String get actionsRemindMe;
+
+  /// In an action's details, when it has a reminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Reminder…'**
+  String get actionsChangeReminder;
+
+  /// In an action's details, when it has a reminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Reminder'**
+  String get actionsClearReminder;
+
+  /// Title of the sheet of times for an action's reminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind Me'**
+  String get actionsRemindTitle;
+
+  /// In an action's details. It can be undone.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Action'**
+  String get actionsDelete;
+
+  /// Header of what happened to an action, in its details.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get actionsHistoryHeader;
+
+  /// A step of an action's history: it was tracked.
+  ///
+  /// In en, this message translates to:
+  /// **'Added'**
+  String get actionsHistoryAdded;
+
+  /// A step of an action's history: the user changed its words.
+  ///
+  /// In en, this message translates to:
+  /// **'Reworded'**
+  String get actionsHistoryEdited;
+
+  /// A step of an action's history: its due date changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Timing changed'**
+  String get actionsHistoryDue;
+
+  /// A step of an action's history.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder changed'**
+  String get actionsHistoryReminder;
+
+  /// A step of an action's history: the user accepted an update from Suggest Actions.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated from a new suggestion'**
+  String get actionsHistoryRevised;
+
+  /// A step of an action's history.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted'**
+  String get actionsHistoryDeleted;
+
+  /// A step of an action's history: brought back after it was deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored'**
+  String get actionsHistoryRestored;
+
+  /// Who has to act: the user. A choice in Add Action, and the label over the user's own actions.
+  ///
+  /// In en, this message translates to:
+  /// **'I Need To'**
+  String get actionsOwnerMe;
+
+  /// Who has to act: someone else (a promise, an answer the user waits for). A choice in Add Action, and the label over such actions.
+  ///
+  /// In en, this message translates to:
+  /// **'They Will'**
+  String get actionsOwnerThem;
+
+  /// In an action's details, after the user reworded it: how it first read.
+  ///
+  /// In en, this message translates to:
+  /// **'Originally: {text}'**
+  String actionsOriginally(String text);
+
+  /// The exact passage of the message an action comes from, in quotation marks (use your language's).
+  ///
+  /// In en, this message translates to:
+  /// **'“{quote}”'**
+  String actionsQuote(String quote);
+
+  /// In an action's details: which message it comes from.
+  ///
+  /// In en, this message translates to:
+  /// **'Message from {sender}, {date}'**
+  String actionsFromMessage(String sender, String date);
+
+  /// In an action's details: the user wrote it (Add Action…).
+  ///
+  /// In en, this message translates to:
+  /// **'Added by you'**
+  String get actionsOriginManual;
+
+  /// In an action's details: it came from Suggest Actions with the built-in demo, which uses a few rules instead of a model.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested by the built-in demo: rules, no model'**
+  String get actionsOriginDemo;
+
+  /// In an action's details: it came from Suggest Actions.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested by {provider}'**
+  String actionsOriginSuggested(String provider);
+
+  /// In an action's details: it came from Suggest Actions, with that provider and model.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested by {provider} ({model})'**
+  String actionsOriginSuggestedModel(String provider, String model);
+
+  /// When an action is due, as the message states it.
+  ///
+  /// In en, this message translates to:
+  /// **'Due {date}'**
+  String actionsDueOn(String date);
+
+  /// A target date the message suggests, not a deadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Ideally by {date}'**
+  String actionsTargetOn(String date);
+
+  /// An action's timing as the message words it, when it has no date (“as soon as you receive it”), in quotation marks (use your language's).
+  ///
+  /// In en, this message translates to:
+  /// **'“{timing}”'**
+  String actionsDueAsWritten(String timing);
+
+  /// Message menu item: track something the user has to do, or waits for, from this message.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Action…'**
+  String get actionsAddMenu;
+
+  /// Message menu item: Private AI reads the message for actions to track.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest Actions'**
+  String get actionsSuggestMenu;
+
+  /// Title of the sheet that adds an action.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Action'**
+  String get actionsAddTitle;
+
+  /// Placeholder of the text field in Add Action, with I Need To chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'What do you need to do?'**
+  String get actionsAddPlaceholderMe;
+
+  /// Placeholder of the text field in Add Action, with They Will chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'What are you waiting for?'**
+  String get actionsAddPlaceholderThem;
+
+  /// Row in Add Action, and the title of its date picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Due Date'**
+  String get actionsDueDate;
+
+  /// Tooltip of the button that removes the due date in Add Action.
+  ///
+  /// In en, this message translates to:
+  /// **'No Due Date'**
+  String get actionsClearDueDate;
+
+  /// Under the form in Add Action: the message it is about.
+  ///
+  /// In en, this message translates to:
+  /// **'About “{subject}”'**
+  String actionsAddSource(String subject);
+
+  /// Title of the sheet of Suggest Actions.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested Actions'**
+  String get actionsSuggestTitle;
+
+  /// Under Suggested Actions: which Private AI provider made them, and where it runs.
+  ///
+  /// In en, this message translates to:
+  /// **'By {provider}, {location, select, onThisPhone{on this phone} myServer{on your server} other{in the cloud}}'**
+  String actionsSuggestBy(String provider, String location);
+
+  /// Under Suggested Actions when the built-in demo made them.
+  ///
+  /// In en, this message translates to:
+  /// **'By the built-in demo: rules, no model. Nothing leaves this phone.'**
+  String get actionsSuggestByDemo;
+
+  /// Suggest Actions found no request and no promise.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing in this message to track.'**
+  String get actionsSuggestNone;
+
+  /// No description provided for @actionsSuggestPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'This message is long: only its beginning was read.'**
+  String get actionsSuggestPartial;
+
+  /// Beside a suggestion that is already an action.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracked'**
+  String get actionsSuggestTracked;
+
+  /// Button beside a suggestion that would change an action already tracked (in what the user didn't change).
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get actionsSuggestUpdate;
+
+  /// Button under the suggestions; count is 2 or more.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =2{Add Both} other{Add All {count}}}'**
+  String actionsSuggestAddAll(int count);
+
+  /// Under the suggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Each suggestion quotes the message, and nothing is tracked until you add it. Quoted earlier mail doesn’t count.'**
+  String get actionsSuggestFootnote;
+
+  /// Suggest Actions failed.
+  ///
+  /// In en, this message translates to:
+  /// **'This message is too long for the chosen model.'**
+  String get actionsSuggestTooLarge;
+
+  /// Suggest Actions failed: the model's answer didn't quote the message correctly.
+  ///
+  /// In en, this message translates to:
+  /// **'The answer didn’t check out against the message, so nothing is suggested.'**
+  String get actionsSuggestInvalid;
+
+  /// Suggest Actions was stopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopped.'**
+  String get actionsSuggestCancelled;
+
+  /// Suggest Actions failed for another reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestions aren’t available right now.'**
+  String get actionsSuggestFailed;
 
   /// Switch in an account's Server section: the server tells Loupe about new Inbox mail at once. IDLE is IMAP's name for this and stays as is; Push is JMAP's (keep the word your language uses for JMAP or e-mail push).
   ///

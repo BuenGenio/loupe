@@ -1377,6 +1377,214 @@ class AppLocalizationsEl extends AppLocalizations {
   String get snoozeEmptyText => 'Αναβάλετε ένα μήνυμα για να επιστρέψει στα Εισερχόμενα όταν το χρειάζεστε.';
 
   @override
+  String get briefButton => 'Σύνοψη';
+
+  @override
+  String get briefButtonHint => 'Απαριθμεί τι σας ζητά αυτό το μήνυμα';
+
+  @override
+  String get briefReaderView => 'Σύνοψη';
+
+  @override
+  String get briefTitle => 'Σύνοψη';
+
+  @override
+  String get briefShowOriginal => 'Εμφάνιση πρωτότυπου';
+
+  @override
+  String get briefWorking => 'Ανάγνωση του μηνύματος…';
+
+  @override
+  String get briefStopped => 'Σταματήσατε τη σύνοψη.';
+
+  @override
+  String get briefFailedTooLarge => 'Το μήνυμα είναι πολύ μεγάλο για το μοντέλο, γι’ αυτό δεν στάλθηκε τίποτα.';
+
+  @override
+  String get briefFailedProvider => 'Το μοντέλο δεν μπόρεσε να συνοψίσει αυτό το μήνυμα.';
+
+  @override
+  String get briefFailedInvalid => 'Η απάντηση δεν πέρασε τους ελέγχους του Loupe, γι’ αυτό δεν εμφανίζεται λίστα.';
+
+  @override
+  String get briefNothingTitle => 'Τίποτα για σύνοψη';
+
+  @override
+  String get briefPartial =>
+      'Το μήνυμα είναι μεγάλο, γι’ αυτό η σύνοψη καλύπτει μόνο την αρχή του. Διαβάστε τα υπόλοιπα στο ίδιο το μήνυμα.';
+
+  @override
+  String get briefSectionToDo => 'Για να γίνουν';
+
+  @override
+  String get briefSectionDocuments => 'Έγγραφα για αποστολή';
+
+  @override
+  String get briefSectionOtherDocuments => 'Έγγραφα';
+
+  @override
+  String get briefSectionDates => 'Ημερομηνίες';
+
+  @override
+  String get briefSectionConditions => 'Προϋποθέσεις';
+
+  @override
+  String get briefSectionNext => 'Τι ακολουθεί';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Προθεσμία: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Ημερομηνία: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Στόχος, όχι προθεσμία: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Μετράει από ένα γεγονός: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Δεν αναφέρεται προθεσμία';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Εσείς', 'them': 'Άλλοι', 'other': 'Δεν αναφέρεται'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Σήμανση ως ολοκληρωμένο';
+
+  @override
+  String get briefMarkNotDone => 'Σήμανση ως μη ολοκληρωμένο';
+
+  @override
+  String get briefDismiss => 'Απόρριψη';
+
+  @override
+  String get briefRestore => 'Επαναφορά';
+
+  @override
+  String get briefCopy => 'Αντιγραφή';
+
+  @override
+  String get briefAddToCalendar => 'Προσθήκη στο ημερολόγιο…';
+
+  @override
+  String get briefTrack => 'Παρακολούθηση';
+
+  @override
+  String get briefShowInMessage => 'Εμφάνιση στο μήνυμα';
+
+  @override
+  String get briefMarkedDone => 'Σημειώθηκε ως ολοκληρωμένο';
+
+  @override
+  String get briefDismissed => 'Απορρίφθηκε';
+
+  @override
+  String get briefItemCopied => 'Αντιγράφηκε';
+
+  @override
+  String get briefChecklistCopied => 'Η λίστα αντιγράφηκε';
+
+  @override
+  String briefTracking(String item) {
+    return 'Παρακολουθείται: «$item»';
+  }
+
+  @override
+  String get briefTrackFailed => 'Δεν ήταν δυνατή η παρακολούθηση αυτού του στοιχείου.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Εμφάνιση $count απορριφθέντων στοιχείων',
+      one: 'Εμφάνιση $count απορριφθέντος στοιχείου',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Απόκρυψη απορριφθέντων στοιχείων';
+
+  @override
+  String get briefCopyChecklist => 'Αντιγραφή λίστας';
+
+  @override
+  String get briefMadeByDemo => 'Έγινε από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Έγινε σε αυτό το τηλέφωνο από $name.',
+      'myServer': 'Έγινε στον διακομιστή σας από $name.',
+      'other': 'Έγινε στο cloud από $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Μια σύνοψη μπορεί να παραλείψει ή να παρερμηνεύσει κάτι. Ισχύει το ίδιο το μήνυμα.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Ελέγξτε το ίδιο το μήνυμα πριν κάνετε οτιδήποτε από αυτή τη σύνοψη.';
+  }
+
+  @override
+  String get briefSecurityText => 'Ελέγξτε το ίδιο το μήνυμα πριν κάνετε οτιδήποτε από αυτή τη σύνοψη.';
+
+  @override
+  String get briefSourceTitle => 'Στο μήνυμα';
+
+  @override
+  String get briefSourceAttachment =>
+      'Αυτό προέρχεται από το όνομα ενός συνημμένου αρχείου. Η σύνοψη δεν διαβάζει το περιεχόμενο των συνημμένων.';
+
+  @override
+  String get briefEventTitle => 'Νέο συμβάν';
+
+  @override
+  String get briefEventDate => 'Ημερομηνία';
+
+  @override
+  String get briefEventTime => 'Ώρα';
+
+  @override
+  String get briefEventAllDay => 'Ολοήμερο';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Ζώνη ώρας';
+
+  @override
+  String get briefEventNotes => 'Σημειώσεις';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Από «$subject», $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Η εφαρμογή ημερολογίου ανοίγει με αυτό το συμβάν. Τίποτα δεν αποθηκεύεται μέχρι να το αποθηκεύσετε εκεί.';
+
+  @override
   String get appLockUnlock => 'Ξεκλείδωμα';
 
   @override
@@ -2816,6 +3024,319 @@ class AppLocalizationsEl extends AppLocalizations {
   @override
   String get smimeRevocationNotChecked =>
       'Δεν ελέγχθηκε: ελέγχονται μόνο πιστοποιητικά από αρχές που εμπιστεύεται το Loupe.';
+
+  @override
+  String get actionsNeedsMyAction => 'Χρειάζεται ενέργειά μου';
+
+  @override
+  String get actionsWaitingOnOthers => 'Αναμονή για άλλους';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Τίποτα δεν χρειάζεται ενέργειά σας';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Δεν περιμένετε κανέναν';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Για να παρακολουθείτε κάτι, πατήστε ⋯ σε ένα μήνυμα και επιλέξτε «Προσθήκη ενέργειας…»';
+
+  @override
+  String get actionsTitle => 'Ενέργειες';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count προς εκτέλεση',
+      one: '1 προς εκτέλεση',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count σε αναμονή', one: '1 σε αναμονή');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count διευθετημένες ενέργειες',
+      one: '1 διευθετημένη ενέργεια',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Διευθετημένες';
+
+  @override
+  String get actionsNoneInConversation => 'Αυτή η συζήτηση δεν έχει ενέργειες.';
+
+  @override
+  String get actionsFooter =>
+      'Οι ενέργειες φυλάσσονται σε αυτό το τηλέφωνο. Η αλληλογραφία δεν τις αλλάζει ποτέ, ούτε καν μια απάντηση που λέει «Ευχαριστώ»: τις αλλάζετε μόνο εσείς.';
+
+  @override
+  String get actionsMarkDone => 'Σήμανση ως ολοκληρωμένη';
+
+  @override
+  String get actionsReopen => 'Άνοιγμα ξανά';
+
+  @override
+  String get actionsStateNeedsAction => 'Χρειάζεται ενέργεια';
+
+  @override
+  String get actionsStateInProgress => 'Σε εξέλιξη';
+
+  @override
+  String get actionsStateSent => 'Στάλθηκε';
+
+  @override
+  String get actionsStateWaiting => 'Αναμονή επιβεβαίωσης';
+
+  @override
+  String get actionsStateAcknowledged => 'Επιβεβαιώθηκε';
+
+  @override
+  String get actionsStateDone => 'Ολοκληρώθηκε';
+
+  @override
+  String get actionsStateDismissed => 'Απορρίφθηκε';
+
+  @override
+  String get actionsStateSuperseded => 'Αντικαταστάθηκε';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Σημειώθηκε ότι χρειάζεται ενέργεια',
+      'inProgress': 'Σημειώθηκε ως σε εξέλιξη',
+      'sent': 'Σημειώθηκε ότι στάλθηκε',
+      'waitingForAcknowledgement': 'Αναμονή επιβεβαίωσης',
+      'acknowledged': 'Σημειώθηκε ως επιβεβαιωμένη',
+      'done': 'Σημειώθηκε ως ολοκληρωμένη',
+      'dismissed': 'Η ενέργεια απορρίφθηκε',
+      'superseded': 'Σημειώθηκε ότι αντικαταστάθηκε',
+      'other': 'Η ενέργεια άλλαξε',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Η ενέργεια αναδιατυπώθηκε';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Ορίστηκε υπενθύμιση για $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Η υπενθύμιση αφαιρέθηκε';
+
+  @override
+  String get actionsDeleted => 'Η ενέργεια διαγράφηκε';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Προστέθηκαν $count ενέργειες',
+      one: 'Η ενέργεια προστέθηκε',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Δεν ήταν δυνατή η αποθήκευση της ενέργειας.';
+
+  @override
+  String get actionsStatusHeader => 'Κατάσταση';
+
+  @override
+  String get actionsEditText => 'Επεξεργασία κειμένου…';
+
+  @override
+  String get actionsEditTitle => 'Επεξεργασία ενέργειας';
+
+  @override
+  String get actionsRemindMe => 'Υπενθύμιση…';
+
+  @override
+  String get actionsChangeReminder => 'Αλλαγή υπενθύμισης…';
+
+  @override
+  String get actionsClearReminder => 'Αφαίρεση υπενθύμισης';
+
+  @override
+  String get actionsRemindTitle => 'Υπενθύμιση';
+
+  @override
+  String get actionsDelete => 'Διαγραφή ενέργειας';
+
+  @override
+  String get actionsHistoryHeader => 'Ιστορικό';
+
+  @override
+  String get actionsHistoryAdded => 'Προστέθηκε';
+
+  @override
+  String get actionsHistoryEdited => 'Αναδιατυπώθηκε';
+
+  @override
+  String get actionsHistoryDue => 'Άλλαξε η προθεσμία';
+
+  @override
+  String get actionsHistoryReminder => 'Άλλαξε η υπενθύμιση';
+
+  @override
+  String get actionsHistoryRevised => 'Ενημερώθηκε από νέα πρόταση';
+
+  @override
+  String get actionsHistoryDeleted => 'Διαγράφηκε';
+
+  @override
+  String get actionsHistoryRestored => 'Επαναφέρθηκε';
+
+  @override
+  String get actionsOwnerMe => 'Πρέπει να κάνω';
+
+  @override
+  String get actionsOwnerThem => 'Θα κάνουν άλλοι';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Αρχικά: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '«$quote»';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Μήνυμα από $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Προστέθηκε από εσάς';
+
+  @override
+  String get actionsOriginDemo => 'Προτάθηκε από την ενσωματωμένη επίδειξη: κανόνες, χωρίς μοντέλο';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Προτάθηκε από $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Προτάθηκε από $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Προθεσμία: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Ιδανικά έως $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '«$timing»';
+  }
+
+  @override
+  String get actionsAddMenu => 'Προσθήκη ενέργειας…';
+
+  @override
+  String get actionsSuggestMenu => 'Πρόταση ενεργειών';
+
+  @override
+  String get actionsAddTitle => 'Προσθήκη ενέργειας';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Τι πρέπει να κάνετε;';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Τι περιμένετε;';
+
+  @override
+  String get actionsDueDate => 'Προθεσμία';
+
+  @override
+  String get actionsClearDueDate => 'Χωρίς προθεσμία';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Σχετικά με «$subject»';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Προτεινόμενες ενέργειες';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'σε αυτό το τηλέφωνο',
+      'myServer': 'στον διακομιστή σας',
+      'other': 'στο cloud',
+    });
+    return 'Από $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'Από την ενσωματωμένη επίδειξη: κανόνες, χωρίς μοντέλο. Τίποτα δεν φεύγει από αυτό το τηλέφωνο.';
+
+  @override
+  String get actionsSuggestNone => 'Δεν υπάρχει τίποτα για παρακολούθηση σε αυτό το μήνυμα.';
+
+  @override
+  String get actionsSuggestPartial => 'Αυτό το μήνυμα είναι μεγάλο: διαβάστηκε μόνο η αρχή του.';
+
+  @override
+  String get actionsSuggestTracked => 'Παρακολουθείται';
+
+  @override
+  String get actionsSuggestUpdate => 'Ενημέρωση';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Προσθήκη και των $count',
+      two: 'Προσθήκη και των δύο',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Κάθε πρόταση παραθέτει το μήνυμα, και τίποτα δεν παρακολουθείται μέχρι να το προσθέσετε. Η παλαιότερη αλληλογραφία σε παράθεση δεν μετράει.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Αυτό το μήνυμα είναι πολύ μεγάλο για το επιλεγμένο μοντέλο.';
+
+  @override
+  String get actionsSuggestInvalid => 'Η απάντηση δεν συμφωνούσε με το μήνυμα, οπότε δεν προτείνεται τίποτα.';
+
+  @override
+  String get actionsSuggestCancelled => 'Διακόπηκε.';
+
+  @override
+  String get actionsSuggestFailed => 'Οι προτάσεις δεν είναι διαθέσιμες αυτή τη στιγμή.';
 
   @override
   String settingsIdle(String protocol) {

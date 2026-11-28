@@ -1411,6 +1411,214 @@ class AppLocalizationsCs extends AppLocalizations {
   String get snoozeEmptyText => 'Odložte zprávu a vrátí se do Doručené pošty, až ji budete potřebovat.';
 
   @override
+  String get briefButton => 'Ve zkratce';
+
+  @override
+  String get briefButtonHint => 'Vypíše, co od vás tato zpráva žádá';
+
+  @override
+  String get briefReaderView => 'Ve zkratce';
+
+  @override
+  String get briefTitle => 'Ve zkratce';
+
+  @override
+  String get briefShowOriginal => 'Zobrazit originál';
+
+  @override
+  String get briefWorking => 'Čte se zpráva…';
+
+  @override
+  String get briefStopped => 'Shrnutí jste zastavili.';
+
+  @override
+  String get briefFailedTooLarge => 'Zpráva je pro model příliš dlouhá, proto nebylo nic odesláno.';
+
+  @override
+  String get briefFailedProvider => 'Model nedokázal tuto zprávu shrnout.';
+
+  @override
+  String get briefFailedInvalid => 'Odpověď neprošla kontrolami Loupe, proto se žádný seznam nezobrazuje.';
+
+  @override
+  String get briefNothingTitle => 'Není co shrnout';
+
+  @override
+  String get briefPartial =>
+      'Zpráva je dlouhá, proto shrnutí pokrývá jen její začátek. Zbytek si přečtěte v samotné zprávě.';
+
+  @override
+  String get briefSectionToDo => 'Úkoly';
+
+  @override
+  String get briefSectionDocuments => 'Dokumenty k odeslání';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumenty';
+
+  @override
+  String get briefSectionDates => 'Termíny';
+
+  @override
+  String get briefSectionConditions => 'Podmínky';
+
+  @override
+  String get briefSectionNext => 'Co bude dál';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Termín: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Datum: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Cíl, ne termín: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Počítáno od události: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Termín neuveden';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Vy', 'them': 'Ostatní', 'other': 'Neuvedeno'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Označit jako hotové';
+
+  @override
+  String get briefMarkNotDone => 'Označit jako nehotové';
+
+  @override
+  String get briefDismiss => 'Odmítnout';
+
+  @override
+  String get briefRestore => 'Obnovit';
+
+  @override
+  String get briefCopy => 'Kopírovat';
+
+  @override
+  String get briefAddToCalendar => 'Přidat do kalendáře…';
+
+  @override
+  String get briefTrack => 'Sledovat';
+
+  @override
+  String get briefShowInMessage => 'Zobrazit ve zprávě';
+
+  @override
+  String get briefMarkedDone => 'Označeno jako hotové';
+
+  @override
+  String get briefDismissed => 'Odmítnuto';
+
+  @override
+  String get briefItemCopied => 'Zkopírováno';
+
+  @override
+  String get briefChecklistCopied => 'Seznam zkopírován';
+
+  @override
+  String briefTracking(String item) {
+    return 'Sleduje se „$item“';
+  }
+
+  @override
+  String get briefTrackFailed => 'Tuto položku se nepodařilo sledovat.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Zobrazit $count odmítnutých položek',
+      few: 'Zobrazit $count odmítnuté položky',
+      one: 'Zobrazit $count odmítnutou položku',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Skrýt odmítnuté položky';
+
+  @override
+  String get briefCopyChecklist => 'Kopírovat seznam';
+
+  @override
+  String get briefMadeByDemo => 'Vytvořilo vestavěné demo, ne model.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Vytvořeno v tomto telefonu: $name.',
+      'myServer': 'Vytvořeno na vašem serveru: $name.',
+      'other': 'Vytvořeno v cloudu: $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Shrnutí může něco vynechat nebo špatně pochopit. Platí samotná zpráva.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Než podle tohoto shrnutí cokoli uděláte, zkontrolujte samotnou zprávu.';
+  }
+
+  @override
+  String get briefSecurityText => 'Než podle tohoto shrnutí cokoli uděláte, zkontrolujte samotnou zprávu.';
+
+  @override
+  String get briefSourceTitle => 'Ve zprávě';
+
+  @override
+  String get briefSourceAttachment => 'Pochází to z názvu přiloženého souboru. Shrnutí obsah příloh nečte.';
+
+  @override
+  String get briefEventTitle => 'Nová událost';
+
+  @override
+  String get briefEventDate => 'Datum';
+
+  @override
+  String get briefEventTime => 'Čas';
+
+  @override
+  String get briefEventAllDay => 'Celý den';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Časové pásmo';
+
+  @override
+  String get briefEventNotes => 'Poznámky';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Ze zprávy „$subject“, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Kalendářová aplikace se otevře s touto událostí. Nic se neuloží, dokud ji tam neuložíte.';
+
+  @override
   String get appLockUnlock => 'Odemknout';
 
   @override
@@ -2864,6 +3072,331 @@ class AppLocalizationsCs extends AppLocalizations {
   @override
   String get smimeRevocationNotChecked =>
       'Nezkontrolováno: kontrolují se jen certifikáty od autorit, kterým Loupe důvěřuje.';
+
+  @override
+  String get actionsNeedsMyAction => 'Vyžaduje mou akci';
+
+  @override
+  String get actionsWaitingOnOthers => 'Čekám na ostatní';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Nic nevyžaduje vaši akci';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Na nikoho nečekáte';
+
+  @override
+  String get actionsFolderEmptyDetail => 'Chcete-li něco sledovat, klepněte u zprávy na ⋯ a vyberte Přidat akci…';
+
+  @override
+  String get actionsTitle => 'Akce';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count k vyřízení',
+      many: '$count k vyřízení',
+      few: '$count k vyřízení',
+      one: '$count k vyřízení',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count čeká',
+      many: '$count čeká',
+      few: '$count čekají',
+      one: '$count čeká',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count vyřízených akcí',
+      many: '$count vyřízené akce',
+      few: '$count vyřízené akce',
+      one: '$count vyřízená akce',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Vyřízené';
+
+  @override
+  String get actionsNoneInConversation => 'Tato konverzace nemá žádné akce.';
+
+  @override
+  String get actionsFooter =>
+      'Akce se uchovávají v tomto telefonu. Pošta je nikdy nezmění, ani odpověď „Děkuji“: měníte je jen vy.';
+
+  @override
+  String get actionsMarkDone => 'Označit jako hotovou';
+
+  @override
+  String get actionsReopen => 'Znovu otevřít';
+
+  @override
+  String get actionsStateNeedsAction => 'Vyžaduje akci';
+
+  @override
+  String get actionsStateInProgress => 'Probíhá';
+
+  @override
+  String get actionsStateSent => 'Odesláno';
+
+  @override
+  String get actionsStateWaiting => 'Čeká na potvrzení';
+
+  @override
+  String get actionsStateAcknowledged => 'Potvrzeno';
+
+  @override
+  String get actionsStateDone => 'Hotovo';
+
+  @override
+  String get actionsStateDismissed => 'Zamítnuto';
+
+  @override
+  String get actionsStateSuperseded => 'Nahrazeno';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Označeno jako vyžadující akci',
+      'inProgress': 'Označeno jako probíhající',
+      'sent': 'Označeno jako odeslané',
+      'waitingForAcknowledgement': 'Čeká na potvrzení',
+      'acknowledged': 'Označeno jako potvrzené',
+      'done': 'Označeno jako hotové',
+      'dismissed': 'Akce zamítnuta',
+      'superseded': 'Označeno jako nahrazené',
+      'other': 'Akce změněna',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Akce přeformulována';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Připomenutí nastaveno na $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Připomenutí zrušeno';
+
+  @override
+  String get actionsDeleted => 'Akce smazána';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Přidáno $count akcí',
+      many: 'Přidáno $count akce',
+      few: 'Přidány $count akce',
+      one: 'Akce přidána',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Akci se nepodařilo uložit.';
+
+  @override
+  String get actionsStatusHeader => 'Stav';
+
+  @override
+  String get actionsEditText => 'Upravit text…';
+
+  @override
+  String get actionsEditTitle => 'Upravit akci';
+
+  @override
+  String get actionsRemindMe => 'Připomenout…';
+
+  @override
+  String get actionsChangeReminder => 'Změnit připomenutí…';
+
+  @override
+  String get actionsClearReminder => 'Zrušit připomenutí';
+
+  @override
+  String get actionsRemindTitle => 'Připomenout';
+
+  @override
+  String get actionsDelete => 'Smazat akci';
+
+  @override
+  String get actionsHistoryHeader => 'Historie';
+
+  @override
+  String get actionsHistoryAdded => 'Přidáno';
+
+  @override
+  String get actionsHistoryEdited => 'Přeformulováno';
+
+  @override
+  String get actionsHistoryDue => 'Termín změněn';
+
+  @override
+  String get actionsHistoryReminder => 'Připomenutí změněno';
+
+  @override
+  String get actionsHistoryRevised => 'Aktualizováno podle nového návrhu';
+
+  @override
+  String get actionsHistoryDeleted => 'Smazáno';
+
+  @override
+  String get actionsHistoryRestored => 'Obnoveno';
+
+  @override
+  String get actionsOwnerMe => 'Musím já';
+
+  @override
+  String get actionsOwnerThem => 'Udělají oni';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Původně: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '„$quote“';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Zpráva od $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Přidáno vámi';
+
+  @override
+  String get actionsOriginDemo => 'Navrhlo vestavěné demo: pravidla, bez modelu';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Navrženo pomocí $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Navrženo pomocí $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Termín: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Ideálně do $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '„$timing“';
+  }
+
+  @override
+  String get actionsAddMenu => 'Přidat akci…';
+
+  @override
+  String get actionsSuggestMenu => 'Navrhnout akce';
+
+  @override
+  String get actionsAddTitle => 'Přidat akci';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Co musíte udělat?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Na co čekáte?';
+
+  @override
+  String get actionsDueDate => 'Termín';
+
+  @override
+  String get actionsClearDueDate => 'Bez termínu';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Ke zprávě „$subject“';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Navržené akce';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'v tomto telefonu',
+      'myServer': 'na vašem serveru',
+      'other': 'v cloudu',
+    });
+    return 'Pomocí $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'Pomocí vestavěného dema: pravidla, bez modelu. Nic neopustí tento telefon.';
+
+  @override
+  String get actionsSuggestNone => 'V této zprávě není nic ke sledování.';
+
+  @override
+  String get actionsSuggestPartial => 'Tato zpráva je dlouhá: byl přečten jen její začátek.';
+
+  @override
+  String get actionsSuggestTracked => 'Sleduje se';
+
+  @override
+  String get actionsSuggestUpdate => 'Aktualizovat';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Přidat všech $count',
+      few: 'Přidat všechny $count',
+      two: 'Přidat obě',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Každý návrh cituje zprávu a nic se nesleduje, dokud ho nepřidáte. Citovaná dřívější pošta se nepočítá.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Tato zpráva je pro zvolený model příliš dlouhá.';
+
+  @override
+  String get actionsSuggestInvalid => 'Odpověď se se zprávou neshodovala, takže nic není navrženo.';
+
+  @override
+  String get actionsSuggestCancelled => 'Zastaveno.';
+
+  @override
+  String get actionsSuggestFailed => 'Návrhy teď nejsou k dispozici.';
 
   @override
   String settingsIdle(String protocol) {

@@ -16,7 +16,12 @@ import '../../settings/app_settings.dart';
 import '../../shared/bars.dart';
 import '../../shared/mail_actions.dart';
 import '../../theme/theme.dart';
+import '../ai/ai_providers.dart';
 import '../compose/compose_args.dart';
+import '../actions/action_providers.dart';
+import '../actions/add_action_sheet.dart';
+import '../actions/conversation_actions.dart';
+import '../actions/suggest_actions_sheet.dart';
 import '../export/export_actions.dart';
 import '../keyboard/mail_commands.dart';
 import '../openpgp/content_loader.dart';
@@ -76,6 +81,9 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
   /// Messages switched to Original from the hint.
   final _forceOriginal = <String>{};
 
+  /// Messages shown as their Brief.
+  final _brief = <String>{};
+
   /// "Aa" choices made on this screen; they apply to every message.
   ReaderSettings? _session;
 
@@ -115,7 +123,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
       _error = null;
       _markedSeen = false;
       _session = null;
-      for (final s in [_known, _expanded, _remoteAllowed, _originalHint, _forceOriginal]) {
+      for (final s in [_known, _expanded, _remoteAllowed, _originalHint, _forceOriginal, _brief]) {
         s.clear();
       }
       _content.clear();
@@ -280,6 +288,17 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
     return s;
   }
 
+  /// What makes [m]'s Brief, or null when Brief isn't offered for it: Private
+  /// AI or Brief is off, or the account's mail stays on the phone; never for
+  /// a draft or the user's own message, which ask nothing of them.
+  AiService? _briefServiceFor(EmailSummary m, Set<String> own, {bool watch = true}) {
+    if (m.isDraft || own.contains(m.sender?.email.toLowerCase())) return null;
+    final provider = aiServiceForProvider((AiFeature.brief, m.accountId));
+    return watch ? ref.watch(provider) : ref.read(provider);
+  }
+
+  void _setBrief(EmailSummary m, bool on) => setState(() => on ? _brief.add(m.id) : _brief.remove(m.id));
+
   RemoteContentPolicy _remoteFor(EmailSummary m, AppSettings app, ReaderPrefs prefs) =>
       app.loadRemoteImages || prefs.allowsRemote(m.sender?.email) || _remoteAllowed.contains(m.id)
       ? RemoteContentPolicy.allow
@@ -419,11 +438,13 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
     final sender = t.sender?.email;
     var current = _settingsFor(t, ref.read(appSettingsProvider), prefs);
     var remember = prefs.settingsFor(sender) != null;
+    final own = ownAddresses(ref.read(accountsStreamProvider).value ?? const <MailAccount>[]);
     await showReaderOptionsSheet(
       context,
       initial: current,
       remembered: remember,
       senderName: t.sender?.displayName,
+      brief: _briefServiceFor(t, own, watch: false) == null ? null : _brief.contains(t.id),
       onChanged: (s) {
         current = s;
         setState(() {
@@ -432,6 +453,16 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
         });
         if (remember && sender != null) unawaited(controller.setSenderSettings(sender, s));
       },
+      // Brief is made for the message the conversation opened at only; another
+      // view, like any "Aa" view, is for every message.
+      onBrief: (on) => setState(() {
+        if (on) {
+          _expanded.add(t.id);
+          _brief.add(t.id);
+        } else {
+          _brief.clear();
+        }
+      }),
       onRememberChanged: (v) {
         remember = v;
         if (sender != null) unawaited(controller.setSenderSettings(sender, v ? current : null));
@@ -453,6 +484,7 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
     final muted = mailingListsOf(_repo) == null
         ? null
         : (ref.read(mutedThreadsProvider).value ?? const <String>{}).contains(m.threadId);
+    final suggest = ref.read(aiServiceForProvider((AiFeature.actions, m.accountId)));
     final action = await showMessageMenu(
       context,
       message: m,
@@ -461,6 +493,8 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
       snoozed: _mailActions.isSnoozed(m),
       muted: muted,
       canCompare: (_messages?.length ?? 0) > 1,
+      canAddAction: actionRecordsOf(_repo) != null,
+      canSuggestActions: suggest != null,
     );
     if (action == null || !mounted) return;
     final single = (_messages?.length ?? 0) <= 1;
@@ -491,6 +525,10 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
           onToggle: (k, on) =>
               _act(() => _repo.setKeywords([m.id], add: on ? {k} : const {}, remove: on ? const {} : {k})),
         );
+      case MessageAction.addAction:
+        await addActionFor(context, ref, m);
+      case MessageAction.suggestActions:
+        if (suggest != null) await suggestActionsFor(context, m, suggest);
       case MessageAction.snooze:
         await _snooze(m);
       case MessageAction.wakeNow:
@@ -787,6 +825,8 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
               ),
             ),
           ),
+          // What the conversation asks of the user, and what they wait for.
+          SliverToBoxAdapter(child: ConversationActionsRow(messages: messages)),
           SliverToBoxAdapter(child: Divider(color: colors.separator)),
           // Built eagerly (threads are short) so the target can be scrolled to.
           SliverToBoxAdapter(
@@ -828,6 +868,9 @@ class _ConversationScreenState extends ConsumerState<ConversationScreen> with Co
                       _content.remove(m.id);
                     }),
                     loadAttachment: (a) => ref.read(contentLoaderProvider).loadAttachment(m.id, a.partId),
+                    briefService: _briefServiceFor(m, own),
+                    showBrief: _brief.contains(m.id),
+                    onBrief: (on) => _setBrief(m, on),
                   ),
                   Divider(color: colors.separator),
                 ],

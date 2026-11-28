@@ -399,6 +399,8 @@ class _VirtualSection extends ConsumerWidget {
       VirtualMailbox.vip,
       VirtualMailbox.flagged,
       VirtualMailbox.unread,
+      VirtualMailbox.needsMyAction,
+      VirtualMailbox.waitingOnOthers,
       VirtualMailbox.allDrafts,
       VirtualMailbox.allSent,
     ];

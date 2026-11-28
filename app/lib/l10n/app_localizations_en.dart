@@ -1352,6 +1352,213 @@ class AppLocalizationsEn extends AppLocalizations {
   String get snoozeEmptyText => 'Snooze a message to have it come back to the Inbox when you need it.';
 
   @override
+  String get briefButton => 'Brief';
+
+  @override
+  String get briefButtonHint => 'Lists what this message asks of you';
+
+  @override
+  String get briefReaderView => 'Brief';
+
+  @override
+  String get briefTitle => 'Brief';
+
+  @override
+  String get briefShowOriginal => 'Show Original';
+
+  @override
+  String get briefWorking => 'Reading the message…';
+
+  @override
+  String get briefStopped => 'You stopped the Brief.';
+
+  @override
+  String get briefFailedTooLarge => 'This message is too long for the model, so nothing was sent.';
+
+  @override
+  String get briefFailedProvider => 'The model couldn’t make a Brief of this message.';
+
+  @override
+  String get briefFailedInvalid => 'The answer didn’t pass Loupe’s checks, so no checklist is shown.';
+
+  @override
+  String get briefNothingTitle => 'Nothing to Summarise';
+
+  @override
+  String get briefPartial =>
+      'This message is long, so the Brief covers only its beginning. Read the rest in the message itself.';
+
+  @override
+  String get briefSectionToDo => 'To Do';
+
+  @override
+  String get briefSectionDocuments => 'Documents to Send';
+
+  @override
+  String get briefSectionOtherDocuments => 'Documents';
+
+  @override
+  String get briefSectionDates => 'Dates';
+
+  @override
+  String get briefSectionConditions => 'Conditions';
+
+  @override
+  String get briefSectionNext => 'What Happens Next';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Deadline: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'On $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Target, not a deadline: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Measured from an event: $when';
+  }
+
+  @override
+  String get briefDueNone => 'No deadline stated';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'You', 'them': 'Them', 'other': 'Not stated'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Mark as Done';
+
+  @override
+  String get briefMarkNotDone => 'Mark as Not Done';
+
+  @override
+  String get briefDismiss => 'Dismiss';
+
+  @override
+  String get briefRestore => 'Restore';
+
+  @override
+  String get briefCopy => 'Copy';
+
+  @override
+  String get briefAddToCalendar => 'Add to Calendar…';
+
+  @override
+  String get briefTrack => 'Track';
+
+  @override
+  String get briefShowInMessage => 'Show in Message';
+
+  @override
+  String get briefMarkedDone => 'Marked as done';
+
+  @override
+  String get briefDismissed => 'Dismissed';
+
+  @override
+  String get briefItemCopied => 'Copied';
+
+  @override
+  String get briefChecklistCopied => 'Checklist copied';
+
+  @override
+  String briefTracking(String item) {
+    return 'Tracking “$item”';
+  }
+
+  @override
+  String get briefTrackFailed => 'Couldn’t track this item.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Show $count Dismissed Items',
+      one: 'Show 1 Dismissed Item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Hide Dismissed Items';
+
+  @override
+  String get briefCopyChecklist => 'Copy Checklist';
+
+  @override
+  String get briefMadeByDemo => 'Made by the built-in demo, not a model.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Made on this phone by $name.',
+      'myServer': 'Made on your server by $name.',
+      'other': 'Made in the cloud by $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'A Brief can miss or misread things. The message itself is what counts.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Check the message itself before you act on anything in this Brief.';
+  }
+
+  @override
+  String get briefSecurityText => 'Check the message itself before you act on anything in this Brief.';
+
+  @override
+  String get briefSourceTitle => 'In the Message';
+
+  @override
+  String get briefSourceAttachment =>
+      'This comes from the name of an attached file. The Brief doesn’t read what’s in attachments.';
+
+  @override
+  String get briefEventTitle => 'New Event';
+
+  @override
+  String get briefEventDate => 'Date';
+
+  @override
+  String get briefEventTime => 'Time';
+
+  @override
+  String get briefEventAllDay => 'All day';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Time zone';
+
+  @override
+  String get briefEventNotes => 'Notes';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'From “$subject”, $sender';
+  }
+
+  @override
+  String get briefEventFootnote => 'Your calendar app opens with this event. Nothing is saved until you save it there.';
+
+  @override
   String get appLockUnlock => 'Unlock';
 
   @override
@@ -2775,6 +2982,307 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get smimeRevocationNotChecked => 'Not checked: only certificates from an authority Loupe trusts are checked.';
+
+  @override
+  String get actionsNeedsMyAction => 'Needs My Action';
+
+  @override
+  String get actionsWaitingOnOthers => 'Waiting on Others';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Nothing needs your action';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Not waiting on anyone';
+
+  @override
+  String get actionsFolderEmptyDetail => 'To track something, tap ⋯ on a message and choose Add Action…';
+
+  @override
+  String get actionsTitle => 'Actions';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count to do', one: '1 to do');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count waiting', one: '1 waiting');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count settled actions',
+      one: '1 settled action',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Settled';
+
+  @override
+  String get actionsNoneInConversation => 'This conversation has no actions.';
+
+  @override
+  String get actionsFooter =>
+      'Actions are kept on this phone. Mail never changes them, not even a reply saying “Thanks”: only you do.';
+
+  @override
+  String get actionsMarkDone => 'Mark as Done';
+
+  @override
+  String get actionsReopen => 'Reopen';
+
+  @override
+  String get actionsStateNeedsAction => 'Needs Action';
+
+  @override
+  String get actionsStateInProgress => 'In Progress';
+
+  @override
+  String get actionsStateSent => 'Sent';
+
+  @override
+  String get actionsStateWaiting => 'Waiting for Acknowledgement';
+
+  @override
+  String get actionsStateAcknowledged => 'Acknowledged';
+
+  @override
+  String get actionsStateDone => 'Done';
+
+  @override
+  String get actionsStateDismissed => 'Dismissed';
+
+  @override
+  String get actionsStateSuperseded => 'Superseded';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Marked as needing action',
+      'inProgress': 'Marked as in progress',
+      'sent': 'Marked as sent',
+      'waitingForAcknowledgement': 'Waiting for acknowledgement',
+      'acknowledged': 'Marked as acknowledged',
+      'done': 'Marked as done',
+      'dismissed': 'Action dismissed',
+      'superseded': 'Marked as superseded',
+      'other': 'Action changed',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Action reworded';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Reminder set for $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Reminder cleared';
+
+  @override
+  String get actionsDeleted => 'Action deleted';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count actions added',
+      one: 'Action added',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'The action couldn’t be saved.';
+
+  @override
+  String get actionsStatusHeader => 'Status';
+
+  @override
+  String get actionsEditText => 'Edit Text…';
+
+  @override
+  String get actionsEditTitle => 'Edit Action';
+
+  @override
+  String get actionsRemindMe => 'Remind Me…';
+
+  @override
+  String get actionsChangeReminder => 'Change Reminder…';
+
+  @override
+  String get actionsClearReminder => 'Clear Reminder';
+
+  @override
+  String get actionsRemindTitle => 'Remind Me';
+
+  @override
+  String get actionsDelete => 'Delete Action';
+
+  @override
+  String get actionsHistoryHeader => 'History';
+
+  @override
+  String get actionsHistoryAdded => 'Added';
+
+  @override
+  String get actionsHistoryEdited => 'Reworded';
+
+  @override
+  String get actionsHistoryDue => 'Timing changed';
+
+  @override
+  String get actionsHistoryReminder => 'Reminder changed';
+
+  @override
+  String get actionsHistoryRevised => 'Updated from a new suggestion';
+
+  @override
+  String get actionsHistoryDeleted => 'Deleted';
+
+  @override
+  String get actionsHistoryRestored => 'Restored';
+
+  @override
+  String get actionsOwnerMe => 'I Need To';
+
+  @override
+  String get actionsOwnerThem => 'They Will';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Originally: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '“$quote”';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Message from $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Added by you';
+
+  @override
+  String get actionsOriginDemo => 'Suggested by the built-in demo: rules, no model';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Suggested by $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Suggested by $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Due $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Ideally by $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '“$timing”';
+  }
+
+  @override
+  String get actionsAddMenu => 'Add Action…';
+
+  @override
+  String get actionsSuggestMenu => 'Suggest Actions';
+
+  @override
+  String get actionsAddTitle => 'Add Action';
+
+  @override
+  String get actionsAddPlaceholderMe => 'What do you need to do?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'What are you waiting for?';
+
+  @override
+  String get actionsDueDate => 'Due Date';
+
+  @override
+  String get actionsClearDueDate => 'No Due Date';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'About “$subject”';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Suggested Actions';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'on this phone',
+      'myServer': 'on your server',
+      'other': 'in the cloud',
+    });
+    return 'By $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'By the built-in demo: rules, no model. Nothing leaves this phone.';
+
+  @override
+  String get actionsSuggestNone => 'Nothing in this message to track.';
+
+  @override
+  String get actionsSuggestPartial => 'This message is long: only its beginning was read.';
+
+  @override
+  String get actionsSuggestTracked => 'Tracked';
+
+  @override
+  String get actionsSuggestUpdate => 'Update';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Add All $count', two: 'Add Both');
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Each suggestion quotes the message, and nothing is tracked until you add it. Quoted earlier mail doesn’t count.';
+
+  @override
+  String get actionsSuggestTooLarge => 'This message is too long for the chosen model.';
+
+  @override
+  String get actionsSuggestInvalid => 'The answer didn’t check out against the message, so nothing is suggested.';
+
+  @override
+  String get actionsSuggestCancelled => 'Stopped.';
+
+  @override
+  String get actionsSuggestFailed => 'Suggestions aren’t available right now.';
 
   @override
   String settingsIdle(String protocol) {

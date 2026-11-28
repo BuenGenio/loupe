@@ -1463,6 +1463,219 @@ class AppLocalizationsGa extends AppLocalizations {
       'Cuir teachtaireacht ar athló chun go bhfillfidh sí ar an mBosca Isteach nuair a bheidh sí uait.';
 
   @override
+  String get briefButton => 'Achoimre';
+
+  @override
+  String get briefButtonHint => 'Liostaíonn sé a n-iarrann an teachtaireacht seo ort';
+
+  @override
+  String get briefReaderView => 'Achoimre';
+
+  @override
+  String get briefTitle => 'Achoimre';
+
+  @override
+  String get briefShowOriginal => 'Taispeáin an bunleagan';
+
+  @override
+  String get briefWorking => 'Ag léamh na teachtaireachta…';
+
+  @override
+  String get briefStopped => 'Stop tú an achoimre.';
+
+  @override
+  String get briefFailedTooLarge => 'Tá an teachtaireacht seo rófhada don tsamhail, mar sin níor seoladh aon rud.';
+
+  @override
+  String get briefFailedProvider => 'Níorbh fhéidir leis an tsamhail achoimre a dhéanamh ar an teachtaireacht seo.';
+
+  @override
+  String get briefFailedInvalid =>
+      'Níor éirigh leis an bhfreagra seiceálacha Loupe, mar sin ní thaispeántar aon liosta.';
+
+  @override
+  String get briefNothingTitle => 'Níl aon rud le hachoimriú';
+
+  @override
+  String get briefPartial =>
+      'Tá an teachtaireacht seo fada, mar sin ní chlúdaíonn an achoimre ach a tús. Léigh an chuid eile sa teachtaireacht féin.';
+
+  @override
+  String get briefSectionToDo => 'Le déanamh';
+
+  @override
+  String get briefSectionDocuments => 'Doiciméid le seoladh';
+
+  @override
+  String get briefSectionOtherDocuments => 'Doiciméid';
+
+  @override
+  String get briefSectionDates => 'Dátaí';
+
+  @override
+  String get briefSectionConditions => 'Coinníollacha';
+
+  @override
+  String get briefSectionNext => 'Cad a tharlóidh ina dhiaidh sin';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Spriocdháta: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Dáta: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Sprioc, ní spriocdháta: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Comhairthe ó theagmhas: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Níl aon spriocdháta luaite';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Tusa', 'them': 'Daoine eile', 'other': 'Gan lua'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Marcáil mar déanta';
+
+  @override
+  String get briefMarkNotDone => 'Marcáil mar gan déanamh';
+
+  @override
+  String get briefDismiss => 'Ruaig';
+
+  @override
+  String get briefRestore => 'Athchóirigh';
+
+  @override
+  String get briefCopy => 'Cóipeáil';
+
+  @override
+  String get briefAddToCalendar => 'Cuir leis an bhféilire…';
+
+  @override
+  String get briefTrack => 'Lean';
+
+  @override
+  String get briefShowInMessage => 'Taispeáin sa teachtaireacht';
+
+  @override
+  String get briefMarkedDone => 'Marcáilte mar déanta';
+
+  @override
+  String get briefDismissed => 'Ruaigthe';
+
+  @override
+  String get briefItemCopied => 'Cóipeáilte';
+
+  @override
+  String get briefChecklistCopied => 'Liosta cóipeáilte';
+
+  @override
+  String briefTracking(String item) {
+    return 'Ag leanúint “$item”';
+  }
+
+  @override
+  String get briefTrackFailed => 'Níorbh fhéidir an mhír seo a leanúint.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Taispeáin míreanna ruaigthe ($count)',
+      many: 'Taispeáin míreanna ruaigthe ($count)',
+      few: 'Taispeáin míreanna ruaigthe ($count)',
+      two: 'Taispeáin míreanna ruaigthe ($count)',
+      one: 'Taispeáin míreanna ruaigthe ($count)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Folaigh míreanna ruaigthe';
+
+  @override
+  String get briefCopyChecklist => 'Cóipeáil an liosta';
+
+  @override
+  String get briefMadeByDemo => 'Déanta ag an taispeántas ionsuite, ní ag samhail.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Déanta ar an bhfón seo ag $name.',
+      'myServer': 'Déanta ar do fhreastalaí ag $name.',
+      'other': 'Déanta sa néal ag $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution =>
+      'Is féidir le hachoimre rudaí a chailleadh nó a mhíthuiscint. Is í an teachtaireacht féin atá i gceist.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Seiceáil an teachtaireacht féin sula ndéanann tú aon rud ón achoimre seo.';
+  }
+
+  @override
+  String get briefSecurityText => 'Seiceáil an teachtaireacht féin sula ndéanann tú aon rud ón achoimre seo.';
+
+  @override
+  String get briefSourceTitle => 'Sa teachtaireacht';
+
+  @override
+  String get briefSourceAttachment =>
+      'Tagann sé seo ó ainm comhaid cheangailte. Ní léann an achoimre a bhfuil i gceangaltáin.';
+
+  @override
+  String get briefEventTitle => 'Imeacht nua';
+
+  @override
+  String get briefEventDate => 'Dáta';
+
+  @override
+  String get briefEventTime => 'Am';
+
+  @override
+  String get briefEventAllDay => 'An lá ar fad';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Crios ama';
+
+  @override
+  String get briefEventNotes => 'Nótaí';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Ó “$subject”, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Osclaíonn d’aip féilire leis an imeacht seo. Ní shábháiltear aon rud go dtí go sábhálann tú ansin é.';
+
+  @override
   String get appLockUnlock => 'Díghlasáil';
 
   @override
@@ -2947,6 +3160,338 @@ class AppLocalizationsGa extends AppLocalizations {
   @override
   String get smimeRevocationNotChecked =>
       'Gan seiceáil: ní sheiceáiltear ach teastais ó údarás a bhfuil muinín ag Loupe as.';
+
+  @override
+  String get actionsNeedsMyAction => 'Gníomh de dhíth uaim';
+
+  @override
+  String get actionsWaitingOnOthers => 'Ag fanacht ar dhaoine eile';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Níl gá le gníomh uait';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Níl tú ag fanacht ar aon duine';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Chun súil a choinneáil ar rud, tapáil ⋯ ar theachtaireacht agus roghnaigh Cuir gníomh leis…';
+
+  @override
+  String get actionsTitle => 'Gníomhartha';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count le déanamh',
+      many: '$count le déanamh',
+      few: '$count le déanamh',
+      two: '$count le déanamh',
+      one: '$count le déanamh',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ag fanacht',
+      many: '$count ag fanacht',
+      few: '$count ag fanacht',
+      two: '$count ag fanacht',
+      one: '$count ag fanacht',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Gníomhartha réitithe: $count',
+      many: 'Gníomhartha réitithe: $count',
+      few: 'Gníomhartha réitithe: $count',
+      two: 'Gníomhartha réitithe: $count',
+      one: 'Gníomhartha réitithe: $count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Réitithe';
+
+  @override
+  String get actionsNoneInConversation => 'Níl aon ghníomhartha sa chomhrá seo.';
+
+  @override
+  String get actionsFooter =>
+      'Coinnítear gníomhartha ar an bhfón seo. Ní athraíonn ríomhphost iad riamh, fiú freagra a deir “Go raibh maith agat”: tusa amháin a athraíonn iad.';
+
+  @override
+  String get actionsMarkDone => 'Marcáil mar dhéanta';
+
+  @override
+  String get actionsReopen => 'Athoscail';
+
+  @override
+  String get actionsStateNeedsAction => 'Gníomh de dhíth';
+
+  @override
+  String get actionsStateInProgress => 'Ar siúl';
+
+  @override
+  String get actionsStateSent => 'Seolta';
+
+  @override
+  String get actionsStateWaiting => 'Ag fanacht ar admháil';
+
+  @override
+  String get actionsStateAcknowledged => 'Admhaithe';
+
+  @override
+  String get actionsStateDone => 'Déanta';
+
+  @override
+  String get actionsStateDismissed => 'Curtha i leataobh';
+
+  @override
+  String get actionsStateSuperseded => 'Ionadaithe';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Marcáilte mar ghníomh de dhíth',
+      'inProgress': 'Marcáilte mar ar siúl',
+      'sent': 'Marcáilte mar sheolta',
+      'waitingForAcknowledgement': 'Ag fanacht ar admháil',
+      'acknowledged': 'Marcáilte mar admhaithe',
+      'done': 'Marcáilte mar dhéanta',
+      'dismissed': 'Cuireadh an gníomh i leataobh',
+      'superseded': 'Marcáilte mar ionadaithe',
+      'other': 'Athraíodh an gníomh',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Athfhoclaíodh an gníomh';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Meabhrúchán socraithe: $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Glanadh an meabhrúchán';
+
+  @override
+  String get actionsDeleted => 'Scriosadh an gníomh';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Cuireadh $count gníomh leis',
+      many: 'Cuireadh $count ngníomh leis',
+      few: 'Cuireadh $count ghníomh leis',
+      two: 'Cuireadh $count ghníomh leis',
+      one: 'Cuireadh gníomh leis',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Níorbh fhéidir an gníomh a shábháil.';
+
+  @override
+  String get actionsStatusHeader => 'Stádas';
+
+  @override
+  String get actionsEditText => 'Cuir an téacs in eagar…';
+
+  @override
+  String get actionsEditTitle => 'Cuir gníomh in eagar';
+
+  @override
+  String get actionsRemindMe => 'Cuir i gcuimhne dom…';
+
+  @override
+  String get actionsChangeReminder => 'Athraigh an meabhrúchán…';
+
+  @override
+  String get actionsClearReminder => 'Glan an meabhrúchán';
+
+  @override
+  String get actionsRemindTitle => 'Cuir i gcuimhne dom';
+
+  @override
+  String get actionsDelete => 'Scrios an gníomh';
+
+  @override
+  String get actionsHistoryHeader => 'Stair';
+
+  @override
+  String get actionsHistoryAdded => 'Curtha leis';
+
+  @override
+  String get actionsHistoryEdited => 'Athfhoclaithe';
+
+  @override
+  String get actionsHistoryDue => 'Athraíodh an t-am';
+
+  @override
+  String get actionsHistoryReminder => 'Athraíodh an meabhrúchán';
+
+  @override
+  String get actionsHistoryRevised => 'Nuashonraithe ó mholadh nua';
+
+  @override
+  String get actionsHistoryDeleted => 'Scriosta';
+
+  @override
+  String get actionsHistoryRestored => 'Athchóirithe';
+
+  @override
+  String get actionsOwnerMe => 'Caithfidh mé';
+
+  @override
+  String get actionsOwnerThem => 'Déanfaidh siad';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Ar dtús: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '“$quote”';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Teachtaireacht ó $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Curtha leis agatsa';
+
+  @override
+  String get actionsOriginDemo => 'Molta ag an taispeántas ionsuite: rialacha, gan samhail';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Molta ag $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Molta ag $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Spriocdháta: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Dáta molta: $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '“$timing”';
+  }
+
+  @override
+  String get actionsAddMenu => 'Cuir gníomh leis…';
+
+  @override
+  String get actionsSuggestMenu => 'Mol gníomhartha';
+
+  @override
+  String get actionsAddTitle => 'Cuir gníomh leis';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Cad atá le déanamh agat?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Cad air a bhfuil tú ag fanacht?';
+
+  @override
+  String get actionsDueDate => 'Spriocdháta';
+
+  @override
+  String get actionsClearDueDate => 'Gan spriocdháta';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Maidir le “$subject”';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Gníomhartha molta';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'ar an bhfón seo',
+      'myServer': 'ar d’fhreastalaí',
+      'other': 'sa néal',
+    });
+    return 'Molta ag $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'Molta ag an taispeántas ionsuite: rialacha, gan samhail. Ní fhágann aon rud an fón seo.';
+
+  @override
+  String get actionsSuggestNone => 'Níl aon rud le leanúint sa teachtaireacht seo.';
+
+  @override
+  String get actionsSuggestPartial => 'Tá an teachtaireacht seo fada: níor léadh ach a tús.';
+
+  @override
+  String get actionsSuggestTracked => 'Á leanúint';
+
+  @override
+  String get actionsSuggestUpdate => 'Nuashonraigh';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Cuir iad go léir leis ($count)',
+      many: 'Cuir iad go léir leis ($count)',
+      few: 'Cuir iad go léir leis ($count)',
+      two: 'Cuir an dá cheann leis',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Luann gach moladh an teachtaireacht, agus ní leantar aon rud go dtí go gcuireann tú leis é. Ní áirítear ríomhphost níos luaithe atá luaite.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Tá an teachtaireacht seo rófhada don tsamhail roghnaithe.';
+
+  @override
+  String get actionsSuggestInvalid => 'Níor réitigh an freagra leis an teachtaireacht, mar sin níl aon rud molta.';
+
+  @override
+  String get actionsSuggestCancelled => 'Stoptha.';
+
+  @override
+  String get actionsSuggestFailed => 'Níl moltaí ar fáil faoi láthair.';
 
   @override
   String settingsIdle(String protocol) {

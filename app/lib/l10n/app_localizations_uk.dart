@@ -1413,6 +1413,213 @@ class AppLocalizationsUk extends AppLocalizations {
   String get snoozeEmptyText => 'Відкладіть лист, і він повернеться у «Вхідні», коли знадобиться.';
 
   @override
+  String get briefButton => 'Коротко';
+
+  @override
+  String get briefButtonHint => 'Перелічує, чого цей лист вимагає від вас';
+
+  @override
+  String get briefReaderView => 'Коротко';
+
+  @override
+  String get briefTitle => 'Коротко';
+
+  @override
+  String get briefShowOriginal => 'Показати оригінал';
+
+  @override
+  String get briefWorking => 'Читаємо лист…';
+
+  @override
+  String get briefStopped => 'Ви зупинили підсумок.';
+
+  @override
+  String get briefFailedTooLarge => 'Лист задовгий для моделі, тож нічого не надіслано.';
+
+  @override
+  String get briefFailedProvider => 'Моделі не вдалося підсумувати цей лист.';
+
+  @override
+  String get briefFailedInvalid => 'Відповідь не пройшла перевірок Loupe, тож список не показано.';
+
+  @override
+  String get briefNothingTitle => 'Нічого підсумовувати';
+
+  @override
+  String get briefPartial => 'Лист довгий, тож підсумок охоплює лише його початок. Решту прочитайте в самому листі.';
+
+  @override
+  String get briefSectionToDo => 'Зробити';
+
+  @override
+  String get briefSectionDocuments => 'Документи, які треба надіслати';
+
+  @override
+  String get briefSectionOtherDocuments => 'Документи';
+
+  @override
+  String get briefSectionDates => 'Дати';
+
+  @override
+  String get briefSectionConditions => 'Умови';
+
+  @override
+  String get briefSectionNext => 'Що далі';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Термін: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Дата: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Мета, не термін: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Відлік від події: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Термін не вказано';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Ви', 'them': 'Інші', 'other': 'Не вказано'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Позначити як виконане';
+
+  @override
+  String get briefMarkNotDone => 'Позначити як невиконане';
+
+  @override
+  String get briefDismiss => 'Відхилити';
+
+  @override
+  String get briefRestore => 'Відновити';
+
+  @override
+  String get briefCopy => 'Копіювати';
+
+  @override
+  String get briefAddToCalendar => 'Додати в календар…';
+
+  @override
+  String get briefTrack => 'Відстежувати';
+
+  @override
+  String get briefShowInMessage => 'Показати в листі';
+
+  @override
+  String get briefMarkedDone => 'Позначено як виконане';
+
+  @override
+  String get briefDismissed => 'Відхилено';
+
+  @override
+  String get briefItemCopied => 'Скопійовано';
+
+  @override
+  String get briefChecklistCopied => 'Список скопійовано';
+
+  @override
+  String briefTracking(String item) {
+    return 'Відстежується «$item»';
+  }
+
+  @override
+  String get briefTrackFailed => 'Не вдалося відстежувати цей пункт.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Показати $count відхилених пунктів',
+      few: 'Показати $count відхилені пункти',
+      one: 'Показати $count відхилений пункт',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Сховати відхилені пункти';
+
+  @override
+  String get briefCopyChecklist => 'Копіювати список';
+
+  @override
+  String get briefMadeByDemo => 'Зроблено вбудованою демонстрацією, а не моделлю.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Зроблено на цьому телефоні: $name.',
+      'myServer': 'Зроблено на вашому сервері: $name.',
+      'other': 'Зроблено в хмарі: $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Підсумок може щось пропустити або неправильно зрозуміти. Важить сам лист.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Перевірте сам лист, перш ніж робити щось із цього підсумку.';
+  }
+
+  @override
+  String get briefSecurityText => 'Перевірте сам лист, перш ніж робити щось із цього підсумку.';
+
+  @override
+  String get briefSourceTitle => 'У листі';
+
+  @override
+  String get briefSourceAttachment => 'Це взято з назви вкладеного файлу. Підсумок не читає вміст вкладень.';
+
+  @override
+  String get briefEventTitle => 'Нова подія';
+
+  @override
+  String get briefEventDate => 'Дата';
+
+  @override
+  String get briefEventTime => 'Час';
+
+  @override
+  String get briefEventAllDay => 'Увесь день';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Часовий пояс';
+
+  @override
+  String get briefEventNotes => 'Нотатки';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'З листа «$subject», $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Застосунок календаря відкриється з цією подією. Нічого не збережеться, доки ви не збережете її там.';
+
+  @override
   String get appLockUnlock => 'Розблокувати';
 
   @override
@@ -2868,6 +3075,333 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get smimeRevocationNotChecked =>
       'Не перевірено: перевіряються лише сертифікати від центрів, яким довіряє Loupe.';
+
+  @override
+  String get actionsNeedsMyAction => 'Потребує моєї дії';
+
+  @override
+  String get actionsWaitingOnOthers => 'Чекаю на інших';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Ніщо не потребує вашої дії';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Ви ні на кого не чекаєте';
+
+  @override
+  String get actionsFolderEmptyDetail => 'Щоб відстежувати щось, торкніться ⋯ у листі й виберіть «Додати дію…»';
+
+  @override
+  String get actionsTitle => 'Дії';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count до виконання',
+      many: '$count до виконання',
+      few: '$count до виконання',
+      one: '$count до виконання',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count в очікуванні',
+      many: '$count в очікуванні',
+      few: '$count в очікуванні',
+      one: '$count в очікуванні',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count завершеної дії',
+      many: '$count завершених дій',
+      few: '$count завершені дії',
+      one: '$count завершена дія',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Завершені';
+
+  @override
+  String get actionsNoneInConversation => 'У цій розмові немає дій.';
+
+  @override
+  String get actionsFooter =>
+      'Дії зберігаються на цьому телефоні. Пошта ніколи їх не змінює, навіть відповідь «Дякую»: змінюєте їх лише ви.';
+
+  @override
+  String get actionsMarkDone => 'Позначити як виконану';
+
+  @override
+  String get actionsReopen => 'Відкрити знову';
+
+  @override
+  String get actionsStateNeedsAction => 'Потребує дії';
+
+  @override
+  String get actionsStateInProgress => 'Виконується';
+
+  @override
+  String get actionsStateSent => 'Надіслано';
+
+  @override
+  String get actionsStateWaiting => 'Очікує підтвердження';
+
+  @override
+  String get actionsStateAcknowledged => 'Підтверджено';
+
+  @override
+  String get actionsStateDone => 'Виконано';
+
+  @override
+  String get actionsStateDismissed => 'Відхилено';
+
+  @override
+  String get actionsStateSuperseded => 'Замінено';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Позначено як таку, що потребує дії',
+      'inProgress': 'Позначено як таку, що виконується',
+      'sent': 'Позначено як надіслану',
+      'waitingForAcknowledgement': 'Очікує підтвердження',
+      'acknowledged': 'Позначено як підтверджену',
+      'done': 'Позначено як виконану',
+      'dismissed': 'Дію відхилено',
+      'superseded': 'Позначено як замінену',
+      'other': 'Дію змінено',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Дію переформульовано';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Нагадування встановлено на $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Нагадування вилучено';
+
+  @override
+  String get actionsDeleted => 'Дію видалено';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Додано $count дії',
+      many: 'Додано $count дій',
+      few: 'Додано $count дії',
+      one: 'Додано $count дію',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Не вдалося зберегти дію.';
+
+  @override
+  String get actionsStatusHeader => 'Стан';
+
+  @override
+  String get actionsEditText => 'Змінити текст…';
+
+  @override
+  String get actionsEditTitle => 'Змінити дію';
+
+  @override
+  String get actionsRemindMe => 'Нагадати…';
+
+  @override
+  String get actionsChangeReminder => 'Змінити нагадування…';
+
+  @override
+  String get actionsClearReminder => 'Вилучити нагадування';
+
+  @override
+  String get actionsRemindTitle => 'Нагадати';
+
+  @override
+  String get actionsDelete => 'Видалити дію';
+
+  @override
+  String get actionsHistoryHeader => 'Історія';
+
+  @override
+  String get actionsHistoryAdded => 'Додано';
+
+  @override
+  String get actionsHistoryEdited => 'Переформульовано';
+
+  @override
+  String get actionsHistoryDue => 'Змінено строк';
+
+  @override
+  String get actionsHistoryReminder => 'Змінено нагадування';
+
+  @override
+  String get actionsHistoryRevised => 'Оновлено за новою пропозицією';
+
+  @override
+  String get actionsHistoryDeleted => 'Видалено';
+
+  @override
+  String get actionsHistoryRestored => 'Відновлено';
+
+  @override
+  String get actionsOwnerMe => 'Маю я';
+
+  @override
+  String get actionsOwnerThem => 'Зроблять інші';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Спочатку: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '«$quote»';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Лист від відправника $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Додано вами';
+
+  @override
+  String get actionsOriginDemo => 'Запропонувала вбудована демонстрація: правила, без моделі';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Запропоновано: $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Запропоновано: $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Строк: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Бажаний строк: $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '«$timing»';
+  }
+
+  @override
+  String get actionsAddMenu => 'Додати дію…';
+
+  @override
+  String get actionsSuggestMenu => 'Запропонувати дії';
+
+  @override
+  String get actionsAddTitle => 'Додати дію';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Що вам потрібно зробити?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'На що ви чекаєте?';
+
+  @override
+  String get actionsDueDate => 'Строк';
+
+  @override
+  String get actionsClearDueDate => 'Без строку';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Щодо «$subject»';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Запропоновані дії';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'на цьому телефоні',
+      'myServer': 'на вашому сервері',
+      'other': 'у хмарі',
+    });
+    return 'Запропоновано: $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'Запропонувала вбудована демонстрація: правила, без моделі. Ніщо не залишає цей телефон.';
+
+  @override
+  String get actionsSuggestNone => 'У цьому листі немає нічого для відстеження.';
+
+  @override
+  String get actionsSuggestPartial => 'Цей лист довгий: прочитано лише його початок.';
+
+  @override
+  String get actionsSuggestTracked => 'Відстежується';
+
+  @override
+  String get actionsSuggestUpdate => 'Оновити';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Додати всі $count',
+      many: 'Додати всі $count',
+      few: 'Додати всі $count',
+      two: 'Додати обидві',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Кожна пропозиція цитує лист, і нічого не відстежується, доки ви її не додасте. Процитовані попередні листи не враховуються.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Цей лист задовгий для вибраної моделі.';
+
+  @override
+  String get actionsSuggestInvalid => 'Відповідь не збіглася з листом, тому нічого не запропоновано.';
+
+  @override
+  String get actionsSuggestCancelled => 'Зупинено.';
+
+  @override
+  String get actionsSuggestFailed => 'Пропозиції зараз недоступні.';
 
   @override
   String settingsIdle(String protocol) {

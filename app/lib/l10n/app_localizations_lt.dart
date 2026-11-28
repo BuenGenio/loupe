@@ -1411,6 +1411,214 @@ class AppLocalizationsLt extends AppLocalizations {
   String get snoozeEmptyText => 'Atidėkite laišką, kad jis grįžtų į aplanką „Gauti laiškai“ tada, kai jums jo reikės.';
 
   @override
+  String get briefButton => 'Trumpai';
+
+  @override
+  String get briefButtonHint => 'Išvardija, ko šis laiškas iš jūsų prašo';
+
+  @override
+  String get briefReaderView => 'Trumpai';
+
+  @override
+  String get briefTitle => 'Trumpai';
+
+  @override
+  String get briefShowOriginal => 'Rodyti originalą';
+
+  @override
+  String get briefWorking => 'Skaitomas laiškas…';
+
+  @override
+  String get briefStopped => 'Sustabdėte santrauką.';
+
+  @override
+  String get briefFailedTooLarge => 'Šis laiškas per ilgas modeliui, todėl niekas nebuvo išsiųsta.';
+
+  @override
+  String get briefFailedProvider => 'Modeliui nepavyko apibendrinti šio laiško.';
+
+  @override
+  String get briefFailedInvalid => 'Atsakymas neperėjo „Loupe“ patikrų, todėl kontrolinis sąrašas nerodomas.';
+
+  @override
+  String get briefNothingTitle => 'Nėra ką apibendrinti';
+
+  @override
+  String get briefPartial =>
+      'Šis laiškas ilgas, todėl santrauka apima tik jo pradžią. Likusią dalį perskaitykite pačiame laiške.';
+
+  @override
+  String get briefSectionToDo => 'Reikia atlikti';
+
+  @override
+  String get briefSectionDocuments => 'Dokumentai, kuriuos reikia išsiųsti';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumentai';
+
+  @override
+  String get briefSectionDates => 'Datos';
+
+  @override
+  String get briefSectionConditions => 'Sąlygos';
+
+  @override
+  String get briefSectionNext => 'Kas bus toliau';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Terminas: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Data: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Tikslas, ne terminas: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Skaičiuojama nuo įvykio: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Terminas nenurodytas';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Jūs', 'them': 'Kiti', 'other': 'Nenurodyta'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Pažymėti kaip atliktą';
+
+  @override
+  String get briefMarkNotDone => 'Pažymėti kaip neatliktą';
+
+  @override
+  String get briefDismiss => 'Atmesti';
+
+  @override
+  String get briefRestore => 'Atkurti';
+
+  @override
+  String get briefCopy => 'Kopijuoti';
+
+  @override
+  String get briefAddToCalendar => 'Įtraukti į kalendorių…';
+
+  @override
+  String get briefTrack => 'Sekti';
+
+  @override
+  String get briefShowInMessage => 'Rodyti laiške';
+
+  @override
+  String get briefMarkedDone => 'Pažymėta kaip atlikta';
+
+  @override
+  String get briefDismissed => 'Atmesta';
+
+  @override
+  String get briefItemCopied => 'Nukopijuota';
+
+  @override
+  String get briefChecklistCopied => 'Kontrolinis sąrašas nukopijuotas';
+
+  @override
+  String briefTracking(String item) {
+    return 'Sekama: „$item“';
+  }
+
+  @override
+  String get briefTrackFailed => 'Nepavyko sekti šio punkto.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Rodyti atmestus ($count)',
+      few: 'Rodyti atmestus ($count)',
+      one: 'Rodyti atmestus ($count)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Slėpti atmestus punktus';
+
+  @override
+  String get briefCopyChecklist => 'Kopijuoti sąrašą';
+
+  @override
+  String get briefMadeByDemo => 'Sukūrė įtaisytoji demonstracija, ne modelis.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Sukurta šiame telefone, kūrė $name.',
+      'myServer': 'Sukurta jūsų serveryje, kūrė $name.',
+      'other': 'Sukurta debesyje, kūrė $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Santrauka gali ką nors praleisti ar klaidingai suprasti. Svarbiausia – pats laiškas.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Prieš ką nors darydami pagal šią santrauką, patikrinkite patį laišką.';
+  }
+
+  @override
+  String get briefSecurityText => 'Prieš ką nors darydami pagal šią santrauką, patikrinkite patį laišką.';
+
+  @override
+  String get briefSourceTitle => 'Laiške';
+
+  @override
+  String get briefSourceAttachment => 'Tai paimta iš pridėto failo pavadinimo. Santrauka neskaito priedų turinio.';
+
+  @override
+  String get briefEventTitle => 'Naujas įvykis';
+
+  @override
+  String get briefEventDate => 'Data';
+
+  @override
+  String get briefEventTime => 'Laikas';
+
+  @override
+  String get briefEventAllDay => 'Visą dieną';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Laiko juosta';
+
+  @override
+  String get briefEventNotes => 'Pastabos';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Iš laiško „$subject“, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Kalendoriaus programa atsidarys su šiuo įvykiu. Niekas neišsaugoma, kol neišsaugosite ten.';
+
+  @override
   String get appLockUnlock => 'Atrakinti';
 
   @override
@@ -2862,6 +3070,323 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get smimeRevocationNotChecked => 'Netikrinta: tikrinami tik sertifikatai iš įstaigų, kuriomis Loupe pasitiki.';
+
+  @override
+  String get actionsNeedsMyAction => 'Reikia mano veiksmo';
+
+  @override
+  String get actionsWaitingOnOthers => 'Laukiu kitų';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Niekam nereikia jūsų veiksmo';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Nieko nelaukiate';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Norėdami ką nors stebėti, laiške bakstelėkite ⋯ ir pasirinkite „Pridėti veiksmą…“';
+
+  @override
+  String get actionsTitle => 'Veiksmai';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count reikia atlikti',
+      few: '$count reikia atlikti',
+      one: '$count reikia atlikti',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count laukiama',
+      few: '$count laukiama',
+      one: '$count laukiama',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count užbaigtų veiksmų',
+      few: '$count užbaigti veiksmai',
+      one: '$count užbaigtas veiksmas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Užbaigti';
+
+  @override
+  String get actionsNoneInConversation => 'Šiame pokalbyje veiksmų nėra.';
+
+  @override
+  String get actionsFooter =>
+      'Veiksmai saugomi šiame telefone. Paštas jų niekada nekeičia, net atsakymas „Ačiū“: tai darote tik jūs.';
+
+  @override
+  String get actionsMarkDone => 'Pažymėti kaip atliktą';
+
+  @override
+  String get actionsReopen => 'Atidaryti iš naujo';
+
+  @override
+  String get actionsStateNeedsAction => 'Reikia veiksmo';
+
+  @override
+  String get actionsStateInProgress => 'Vykdoma';
+
+  @override
+  String get actionsStateSent => 'Išsiųsta';
+
+  @override
+  String get actionsStateWaiting => 'Laukiama patvirtinimo';
+
+  @override
+  String get actionsStateAcknowledged => 'Patvirtinta';
+
+  @override
+  String get actionsStateDone => 'Atlikta';
+
+  @override
+  String get actionsStateDismissed => 'Atmesta';
+
+  @override
+  String get actionsStateSuperseded => 'Pakeista nauju';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Pažymėta, kad reikia veiksmo',
+      'inProgress': 'Pažymėta kaip vykdoma',
+      'sent': 'Pažymėta kaip išsiųsta',
+      'waitingForAcknowledgement': 'Laukiama patvirtinimo',
+      'acknowledged': 'Pažymėta kaip patvirtinta',
+      'done': 'Pažymėta kaip atlikta',
+      'dismissed': 'Veiksmas atmestas',
+      'superseded': 'Pažymėta kaip pakeista nauju',
+      'other': 'Veiksmas pakeistas',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Veiksmas performuluotas';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Priminimas nustatytas: $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Priminimas pašalintas';
+
+  @override
+  String get actionsDeleted => 'Veiksmas ištrintas';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pridėta $count veiksmų',
+      few: 'Pridėti $count veiksmai',
+      one: 'Pridėtas $count veiksmas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Veiksmo nepavyko išsaugoti.';
+
+  @override
+  String get actionsStatusHeader => 'Būsena';
+
+  @override
+  String get actionsEditText => 'Redaguoti tekstą…';
+
+  @override
+  String get actionsEditTitle => 'Redaguoti veiksmą';
+
+  @override
+  String get actionsRemindMe => 'Priminti…';
+
+  @override
+  String get actionsChangeReminder => 'Keisti priminimą…';
+
+  @override
+  String get actionsClearReminder => 'Pašalinti priminimą';
+
+  @override
+  String get actionsRemindTitle => 'Priminti';
+
+  @override
+  String get actionsDelete => 'Ištrinti veiksmą';
+
+  @override
+  String get actionsHistoryHeader => 'Istorija';
+
+  @override
+  String get actionsHistoryAdded => 'Pridėta';
+
+  @override
+  String get actionsHistoryEdited => 'Performuluota';
+
+  @override
+  String get actionsHistoryDue => 'Pakeistas terminas';
+
+  @override
+  String get actionsHistoryReminder => 'Pakeistas priminimas';
+
+  @override
+  String get actionsHistoryRevised => 'Atnaujinta pagal naują pasiūlymą';
+
+  @override
+  String get actionsHistoryDeleted => 'Ištrinta';
+
+  @override
+  String get actionsHistoryRestored => 'Atkurta';
+
+  @override
+  String get actionsOwnerMe => 'Turiu aš';
+
+  @override
+  String get actionsOwnerThem => 'Atliks kiti';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Iš pradžių: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '„$quote“';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Siuntėjo $sender laiškas, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Pridėjote jūs';
+
+  @override
+  String get actionsOriginDemo => 'Pasiūlė įtaisytoji demonstracija: taisyklės, be modelio';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Pasiūlė $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Pasiūlė $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Terminas: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Pageidaujamas terminas: $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '„$timing“';
+  }
+
+  @override
+  String get actionsAddMenu => 'Pridėti veiksmą…';
+
+  @override
+  String get actionsSuggestMenu => 'Pasiūlyti veiksmų';
+
+  @override
+  String get actionsAddTitle => 'Pridėti veiksmą';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Ką turite padaryti?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Ko laukiate?';
+
+  @override
+  String get actionsDueDate => 'Terminas';
+
+  @override
+  String get actionsClearDueDate => 'Be termino';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Apie „$subject“';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Siūlomi veiksmai';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'šiame telefone',
+      'myServer': 'jūsų serveryje',
+      'other': 'debesyje',
+    });
+    return 'Pasiūlė $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'Pasiūlė įtaisytoji demonstracija: taisyklės, be modelio. Niekas nepalieka šio telefono.';
+
+  @override
+  String get actionsSuggestNone => 'Šiame laiške nėra ko stebėti.';
+
+  @override
+  String get actionsSuggestPartial => 'Šis laiškas ilgas: perskaityta tik jo pradžia.';
+
+  @override
+  String get actionsSuggestTracked => 'Stebima';
+
+  @override
+  String get actionsSuggestUpdate => 'Atnaujinti';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Pridėti visus $count', two: 'Pridėti abu');
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Kiekvienas pasiūlymas cituoja laišką, ir niekas nestebima, kol to nepridedate. Cituojami ankstesni laiškai neskaičiuojami.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Šis laiškas per ilgas pasirinktam modeliui.';
+
+  @override
+  String get actionsSuggestInvalid => 'Atsakymas neatitiko laiško, todėl nieko nesiūloma.';
+
+  @override
+  String get actionsSuggestCancelled => 'Sustabdyta.';
+
+  @override
+  String get actionsSuggestFailed => 'Pasiūlymai šiuo metu nepasiekiami.';
 
   @override
   String settingsIdle(String protocol) {

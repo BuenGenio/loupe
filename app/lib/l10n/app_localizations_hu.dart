@@ -1386,6 +1386,214 @@ class AppLocalizationsHu extends AppLocalizations {
       'Szundiztass egy üzenetet, és akkor kerül vissza a Beérkező levelek közé, amikor szükséged van rá.';
 
   @override
+  String get briefButton => 'Röviden';
+
+  @override
+  String get briefButtonHint => 'Felsorolja, mit kér tőled ez az üzenet';
+
+  @override
+  String get briefReaderView => 'Röviden';
+
+  @override
+  String get briefTitle => 'Röviden';
+
+  @override
+  String get briefShowOriginal => 'Eredeti megjelenítése';
+
+  @override
+  String get briefWorking => 'Az üzenet olvasása…';
+
+  @override
+  String get briefStopped => 'Leállítottad az összefoglalót.';
+
+  @override
+  String get briefFailedTooLarge => 'Az üzenet túl hosszú a modellnek, ezért semmi sem lett elküldve.';
+
+  @override
+  String get briefFailedProvider => 'A modell nem tudta összefoglalni ezt az üzenetet.';
+
+  @override
+  String get briefFailedInvalid => 'A válasz nem ment át a Loupe ellenőrzésein, ezért nem jelenik meg lista.';
+
+  @override
+  String get briefNothingTitle => 'Nincs mit összefoglalni';
+
+  @override
+  String get briefPartial =>
+      'Az üzenet hosszú, ezért az összefoglaló csak az elejét fedi le. A többit olvasd el magában az üzenetben.';
+
+  @override
+  String get briefSectionToDo => 'Teendők';
+
+  @override
+  String get briefSectionDocuments => 'Elküldendő dokumentumok';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumentumok';
+
+  @override
+  String get briefSectionDates => 'Dátumok';
+
+  @override
+  String get briefSectionConditions => 'Feltételek';
+
+  @override
+  String get briefSectionNext => 'Mi következik';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Határidő: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Dátum: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Cél, nem határidő: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Egy eseménytől számítva: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Nincs megadott határidő';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Te', 'them': 'Mások', 'other': 'Nincs megadva'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Megjelölés késznek';
+
+  @override
+  String get briefMarkNotDone => 'Megjelölés nem késznek';
+
+  @override
+  String get briefDismiss => 'Elvetés';
+
+  @override
+  String get briefRestore => 'Visszaállítás';
+
+  @override
+  String get briefCopy => 'Másolás';
+
+  @override
+  String get briefAddToCalendar => 'Hozzáadás a naptárhoz…';
+
+  @override
+  String get briefTrack => 'Követés';
+
+  @override
+  String get briefShowInMessage => 'Megjelenítés az üzenetben';
+
+  @override
+  String get briefMarkedDone => 'Késznek jelölve';
+
+  @override
+  String get briefDismissed => 'Elvetve';
+
+  @override
+  String get briefItemCopied => 'Másolva';
+
+  @override
+  String get briefChecklistCopied => 'Lista másolva';
+
+  @override
+  String briefTracking(String item) {
+    return 'Követés: „$item”';
+  }
+
+  @override
+  String get briefTrackFailed => 'Ezt a tételt nem sikerült követni.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count elvetett tétel megjelenítése',
+      one: '$count elvetett tétel megjelenítése',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Elvetett tételek elrejtése';
+
+  @override
+  String get briefCopyChecklist => 'Lista másolása';
+
+  @override
+  String get briefMadeByDemo => 'A beépített demó készítette, nem modell.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Ezen a telefonon készítette: $name.',
+      'myServer': 'A saját szervereden készítette: $name.',
+      'other': 'A felhőben készítette: $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Az összefoglaló kihagyhat vagy félreérthet dolgokat. Maga az üzenet a mérvadó.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Mielőtt bármit megtennél ebből az összefoglalóból, ellenőrizd magát az üzenetet.';
+  }
+
+  @override
+  String get briefSecurityText => 'Mielőtt bármit megtennél ebből az összefoglalóból, ellenőrizd magát az üzenetet.';
+
+  @override
+  String get briefSourceTitle => 'Az üzenetben';
+
+  @override
+  String get briefSourceAttachment =>
+      'Ez egy csatolt fájl nevéből származik. Az összefoglaló nem olvassa a mellékletek tartalmát.';
+
+  @override
+  String get briefEventTitle => 'Új esemény';
+
+  @override
+  String get briefEventDate => 'Dátum';
+
+  @override
+  String get briefEventTime => 'Időpont';
+
+  @override
+  String get briefEventAllDay => 'Egész nap';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Időzóna';
+
+  @override
+  String get briefEventNotes => 'Jegyzetek';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Innen: „$subject”, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'A naptáralkalmazás ezzel az eseménnyel nyílik meg. Semmi sem mentődik, amíg ott el nem mented.';
+
+  @override
   String get appLockUnlock => 'Feloldás';
 
   @override
@@ -2814,6 +3022,319 @@ class AppLocalizationsHu extends AppLocalizations {
   @override
   String get smimeRevocationNotChecked =>
       'Nincs ellenőrizve: csak a Loupe által megbízhatónak tartott szolgáltatóktól származó tanúsítványok ellenőrzése történik meg.';
+
+  @override
+  String get actionsNeedsMyAction => 'Teendőim';
+
+  @override
+  String get actionsWaitingOnOthers => 'Másokra várok';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Nincs teendőd';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Senkire sem vársz';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Ha követni szeretnél valamit, koppints egy üzenetben a ⋯ gombra, és válaszd a Teendő hozzáadása… lehetőséget';
+
+  @override
+  String get actionsTitle => 'Teendők';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count elvégzendő',
+      one: '$count elvégzendő',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count várakozó', one: '$count várakozó');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lezárt teendő',
+      one: '$count lezárt teendő',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Lezárva';
+
+  @override
+  String get actionsNoneInConversation => 'Ebben a beszélgetésben nincsenek teendők.';
+
+  @override
+  String get actionsFooter =>
+      'A teendők ezen a telefonon tárolódnak. A levelek sosem módosítják őket, még egy „Köszönöm” válasz sem: csak te módosíthatod őket.';
+
+  @override
+  String get actionsMarkDone => 'Megjelölés elvégzettként';
+
+  @override
+  String get actionsReopen => 'Újranyitás';
+
+  @override
+  String get actionsStateNeedsAction => 'Elvégzendő';
+
+  @override
+  String get actionsStateInProgress => 'Folyamatban';
+
+  @override
+  String get actionsStateSent => 'Elküldve';
+
+  @override
+  String get actionsStateWaiting => 'Visszaigazolásra vár';
+
+  @override
+  String get actionsStateAcknowledged => 'Visszaigazolva';
+
+  @override
+  String get actionsStateDone => 'Elvégezve';
+
+  @override
+  String get actionsStateDismissed => 'Elvetve';
+
+  @override
+  String get actionsStateSuperseded => 'Lecserélve';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Megjelölve elvégzendőként',
+      'inProgress': 'Megjelölve folyamatban lévőként',
+      'sent': 'Megjelölve elküldöttként',
+      'waitingForAcknowledgement': 'Visszaigazolásra vár',
+      'acknowledged': 'Megjelölve visszaigazoltként',
+      'done': 'Megjelölve elvégzettként',
+      'dismissed': 'Teendő elvetve',
+      'superseded': 'Megjelölve lecseréltként',
+      'other': 'Teendő módosítva',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Teendő átfogalmazva';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Emlékeztető beállítva: $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Emlékeztető törölve';
+
+  @override
+  String get actionsDeleted => 'Teendő törölve';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count teendő hozzáadva',
+      one: 'Teendő hozzáadva',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'A teendőt nem sikerült menteni.';
+
+  @override
+  String get actionsStatusHeader => 'Állapot';
+
+  @override
+  String get actionsEditText => 'Szöveg szerkesztése…';
+
+  @override
+  String get actionsEditTitle => 'Teendő szerkesztése';
+
+  @override
+  String get actionsRemindMe => 'Emlékeztető beállítása…';
+
+  @override
+  String get actionsChangeReminder => 'Emlékeztető módosítása…';
+
+  @override
+  String get actionsClearReminder => 'Emlékeztető törlése';
+
+  @override
+  String get actionsRemindTitle => 'Emlékeztető';
+
+  @override
+  String get actionsDelete => 'Teendő törlése';
+
+  @override
+  String get actionsHistoryHeader => 'Előzmények';
+
+  @override
+  String get actionsHistoryAdded => 'Hozzáadva';
+
+  @override
+  String get actionsHistoryEdited => 'Átfogalmazva';
+
+  @override
+  String get actionsHistoryDue => 'Határidő módosítva';
+
+  @override
+  String get actionsHistoryReminder => 'Emlékeztető módosítva';
+
+  @override
+  String get actionsHistoryRevised => 'Frissítve egy új javaslat alapján';
+
+  @override
+  String get actionsHistoryDeleted => 'Törölve';
+
+  @override
+  String get actionsHistoryRestored => 'Visszaállítva';
+
+  @override
+  String get actionsOwnerMe => 'Nekem kell';
+
+  @override
+  String get actionsOwnerThem => 'Másoknak kell';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Eredetileg: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '„$quote”';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return '$sender üzenete, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Te adtad hozzá';
+
+  @override
+  String get actionsOriginDemo => 'A beépített demó javasolta: szabályok, modell nélkül';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Javasolta: $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Javasolta: $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Határidő: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Lehetőleg eddig: $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '„$timing”';
+  }
+
+  @override
+  String get actionsAddMenu => 'Teendő hozzáadása…';
+
+  @override
+  String get actionsSuggestMenu => 'Teendők javaslása';
+
+  @override
+  String get actionsAddTitle => 'Teendő hozzáadása';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Mit kell tenned?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Mire vársz?';
+
+  @override
+  String get actionsDueDate => 'Határidő';
+
+  @override
+  String get actionsClearDueDate => 'Nincs határidő';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Tárgy: „$subject”';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Javasolt teendők';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'ezen a telefonon',
+      'myServer': 'a saját szervereden',
+      'other': 'a felhőben',
+    });
+    return 'Javasolta: $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'A beépített demó javasolta: szabályok, modell nélkül. Semmi sem hagyja el ezt a telefont.';
+
+  @override
+  String get actionsSuggestNone => 'Ebben az üzenetben nincs semmi követnivaló.';
+
+  @override
+  String get actionsSuggestPartial => 'Ez az üzenet hosszú: csak az eleje lett elolvasva.';
+
+  @override
+  String get actionsSuggestTracked => 'Felvéve';
+
+  @override
+  String get actionsSuggestUpdate => 'Frissítés';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Összes hozzáadása ($count)',
+      two: 'Mindkettő hozzáadása',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Minden javaslat idézi az üzenetet, és semmi sem lesz követve, amíg hozzá nem adod. A korábbi, idézett levelek nem számítanak.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Ez az üzenet túl hosszú a kiválasztott modellhez.';
+
+  @override
+  String get actionsSuggestInvalid => 'A válasz nem egyezett az üzenettel, ezért nincs javaslat.';
+
+  @override
+  String get actionsSuggestCancelled => 'Leállítva.';
+
+  @override
+  String get actionsSuggestFailed => 'A javaslatok most nem érhetők el.';
 
   @override
   String settingsIdle(String protocol) {

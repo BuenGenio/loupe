@@ -1374,6 +1374,214 @@ class AppLocalizationsSq extends AppLocalizations {
   String get snoozeEmptyText => 'Shtyni një mesazh që të kthehet te Kutia hyrëse kur t’ju duhet.';
 
   @override
+  String get briefButton => 'Përmbledhje';
+
+  @override
+  String get briefButtonHint => 'Rendit çfarë ju kërkon ky mesazh';
+
+  @override
+  String get briefReaderView => 'Përmbledhje';
+
+  @override
+  String get briefTitle => 'Përmbledhje';
+
+  @override
+  String get briefShowOriginal => 'Shfaq origjinalin';
+
+  @override
+  String get briefWorking => 'Po lexohet mesazhi…';
+
+  @override
+  String get briefStopped => 'E ndalët përmbledhjen.';
+
+  @override
+  String get briefFailedTooLarge => 'Ky mesazh është shumë i gjatë për modelin, ndaj nuk u dërgua asgjë.';
+
+  @override
+  String get briefFailedProvider => 'Modeli nuk arriti ta përmbledhë këtë mesazh.';
+
+  @override
+  String get briefFailedInvalid => 'Përgjigjja nuk i kaloi kontrollet e Loupe, ndaj nuk shfaqet asnjë listë.';
+
+  @override
+  String get briefNothingTitle => 'Asgjë për të përmbledhur';
+
+  @override
+  String get briefPartial =>
+      'Ky mesazh është i gjatë, ndaj përmbledhja mbulon vetëm fillimin. Lexoni pjesën tjetër te vetë mesazhi.';
+
+  @override
+  String get briefSectionToDo => 'Për t’u bërë';
+
+  @override
+  String get briefSectionDocuments => 'Dokumente për t’u dërguar';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumente';
+
+  @override
+  String get briefSectionDates => 'Data';
+
+  @override
+  String get briefSectionConditions => 'Kushte';
+
+  @override
+  String get briefSectionNext => 'Çfarë vjen më pas';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Afati: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Data: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Synim, jo afat: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Llogaritet nga një ngjarje: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Nuk jepet afat';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Ju', 'them': 'Të tjerët', 'other': 'Nuk thuhet'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Shëno si të kryer';
+
+  @override
+  String get briefMarkNotDone => 'Shëno si të pakryer';
+
+  @override
+  String get briefDismiss => 'Hidh poshtë';
+
+  @override
+  String get briefRestore => 'Rikthe';
+
+  @override
+  String get briefCopy => 'Kopjo';
+
+  @override
+  String get briefAddToCalendar => 'Shto në kalendar…';
+
+  @override
+  String get briefTrack => 'Ndiq';
+
+  @override
+  String get briefShowInMessage => 'Shfaq te mesazhi';
+
+  @override
+  String get briefMarkedDone => 'U shënua si e kryer';
+
+  @override
+  String get briefDismissed => 'U hodh poshtë';
+
+  @override
+  String get briefItemCopied => 'U kopjua';
+
+  @override
+  String get briefChecklistCopied => 'Lista u kopjua';
+
+  @override
+  String briefTracking(String item) {
+    return 'Po ndiqet “$item”';
+  }
+
+  @override
+  String get briefTrackFailed => 'Ky element nuk mund të ndiqej.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Shfaq $count elemente të hedhura poshtë',
+      one: 'Shfaq $count element të hedhur poshtë',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Fshih elementet e hedhura poshtë';
+
+  @override
+  String get briefCopyChecklist => 'Kopjo listën';
+
+  @override
+  String get briefMadeByDemo => 'Bërë nga demonstrimi i integruar, jo nga një model.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Bërë në këtë telefon nga $name.',
+      'myServer': 'Bërë në serverin tuaj nga $name.',
+      'other': 'Bërë në re nga $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Një përmbledhje mund të anashkalojë ose të keqkuptojë gjëra. Vlen vetë mesazhi.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Kontrolloni vetë mesazhin përpara se të bëni diçka nga kjo përmbledhje.';
+  }
+
+  @override
+  String get briefSecurityText => 'Kontrolloni vetë mesazhin përpara se të bëni diçka nga kjo përmbledhje.';
+
+  @override
+  String get briefSourceTitle => 'Te mesazhi';
+
+  @override
+  String get briefSourceAttachment =>
+      'Kjo vjen nga emri i një skedari të bashkëngjitur. Përmbledhja nuk lexon përmbajtjen e bashkëngjitjeve.';
+
+  @override
+  String get briefEventTitle => 'Ngjarje e re';
+
+  @override
+  String get briefEventDate => 'Data';
+
+  @override
+  String get briefEventTime => 'Ora';
+
+  @override
+  String get briefEventAllDay => 'Gjithë ditën';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Brezi orar';
+
+  @override
+  String get briefEventNotes => 'Shënime';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Nga “$subject”, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Aplikacioni i kalendarit hapet me këtë ngjarje. Asgjë nuk ruhet derisa ta ruani atje.';
+
+  @override
   String get appLockUnlock => 'Shkyç';
 
   @override
@@ -2810,6 +3018,318 @@ class AppLocalizationsSq extends AppLocalizations {
   @override
   String get smimeRevocationNotChecked =>
       'S’u kontrollua: kontrollohen vetëm certifikatat nga autoritete që Loupe u beson.';
+
+  @override
+  String get actionsNeedsMyAction => 'Kërkon veprimin tim';
+
+  @override
+  String get actionsWaitingOnOthers => 'Në pritje të të tjerëve';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Asgjë nuk kërkon veprimin tuaj';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Nuk jeni në pritje të askujt';
+
+  @override
+  String get actionsFolderEmptyDetail => 'Për të ndjekur diçka, prekni ⋯ te një mesazh dhe zgjidhni “Shto veprim…”';
+
+  @override
+  String get actionsTitle => 'Veprime';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count për t’u bërë',
+      one: '1 për t’u bërë',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count në pritje', one: '1 në pritje');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count veprime të mbyllura',
+      one: '1 veprim i mbyllur',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Të mbyllura';
+
+  @override
+  String get actionsNoneInConversation => 'Kjo bisedë nuk ka veprime.';
+
+  @override
+  String get actionsFooter =>
+      'Veprimet ruhen në këtë telefon. Posta nuk i ndryshon kurrë, as një përgjigje që thotë “Faleminderit”: vetëm ju i ndryshoni.';
+
+  @override
+  String get actionsMarkDone => 'Shëno si të kryer';
+
+  @override
+  String get actionsReopen => 'Rihape';
+
+  @override
+  String get actionsStateNeedsAction => 'Kërkon veprim';
+
+  @override
+  String get actionsStateInProgress => 'Në vazhdim';
+
+  @override
+  String get actionsStateSent => 'U dërgua';
+
+  @override
+  String get actionsStateWaiting => 'Në pritje të konfirmimit';
+
+  @override
+  String get actionsStateAcknowledged => 'U konfirmua';
+
+  @override
+  String get actionsStateDone => 'U krye';
+
+  @override
+  String get actionsStateDismissed => 'U la mënjanë';
+
+  @override
+  String get actionsStateSuperseded => 'U zëvendësua';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'U shënua se kërkon veprim',
+      'inProgress': 'U shënua si në vazhdim',
+      'sent': 'U shënua si i dërguar',
+      'waitingForAcknowledgement': 'Në pritje të konfirmimit',
+      'acknowledged': 'U shënua si i konfirmuar',
+      'done': 'U shënua si i kryer',
+      'dismissed': 'Veprimi u la mënjanë',
+      'superseded': 'U shënua si i zëvendësuar',
+      'other': 'Veprimi u ndryshua',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Veprimi u riformulua';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Kujtesa u caktua për $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Kujtesa u hoq';
+
+  @override
+  String get actionsDeleted => 'Veprimi u fshi';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'U shtuan $count veprime',
+      one: 'Veprimi u shtua',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Veprimi nuk mund të ruhej.';
+
+  @override
+  String get actionsStatusHeader => 'Gjendja';
+
+  @override
+  String get actionsEditText => 'Redakto tekstin…';
+
+  @override
+  String get actionsEditTitle => 'Redakto veprimin';
+
+  @override
+  String get actionsRemindMe => 'Më kujto…';
+
+  @override
+  String get actionsChangeReminder => 'Ndrysho kujtesën…';
+
+  @override
+  String get actionsClearReminder => 'Hiq kujtesën';
+
+  @override
+  String get actionsRemindTitle => 'Më kujto';
+
+  @override
+  String get actionsDelete => 'Fshi veprimin';
+
+  @override
+  String get actionsHistoryHeader => 'Historiku';
+
+  @override
+  String get actionsHistoryAdded => 'U shtua';
+
+  @override
+  String get actionsHistoryEdited => 'U riformulua';
+
+  @override
+  String get actionsHistoryDue => 'Afati u ndryshua';
+
+  @override
+  String get actionsHistoryReminder => 'Kujtesa u ndryshua';
+
+  @override
+  String get actionsHistoryRevised => 'U përditësua nga një sugjerim i ri';
+
+  @override
+  String get actionsHistoryDeleted => 'U fshi';
+
+  @override
+  String get actionsHistoryRestored => 'U rikthye';
+
+  @override
+  String get actionsOwnerMe => 'Duhet ta bëj';
+
+  @override
+  String get actionsOwnerThem => 'Do ta bëjnë';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Fillimisht: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '“$quote”';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Mesazh nga $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Shtuar nga ju';
+
+  @override
+  String get actionsOriginDemo => 'Sugjeruar nga demonstrimi i integruar: rregulla, pa model';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Sugjeruar nga $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Sugjeruar nga $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Afati: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Mundësisht deri më $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '“$timing”';
+  }
+
+  @override
+  String get actionsAddMenu => 'Shto veprim…';
+
+  @override
+  String get actionsSuggestMenu => 'Sugjero veprime';
+
+  @override
+  String get actionsAddTitle => 'Shto veprim';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Çfarë duhet të bëni?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Çfarë po prisni?';
+
+  @override
+  String get actionsDueDate => 'Afati';
+
+  @override
+  String get actionsClearDueDate => 'Pa afat';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Rreth “$subject”';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Veprime të sugjeruara';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'në këtë telefon',
+      'myServer': 'në serverin tuaj',
+      'other': 'në re',
+    });
+    return 'Nga $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'Nga demonstrimi i integruar: rregulla, pa model. Asgjë nuk largohet nga ky telefon.';
+
+  @override
+  String get actionsSuggestNone => 'Në këtë mesazh nuk ka asgjë për t’u ndjekur.';
+
+  @override
+  String get actionsSuggestPartial => 'Ky mesazh është i gjatë: u lexua vetëm fillimi i tij.';
+
+  @override
+  String get actionsSuggestTracked => 'Ndiqet';
+
+  @override
+  String get actionsSuggestUpdate => 'Përditëso';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Shtoji të gjitha $count',
+      two: 'Shtoji të dyja',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Çdo sugjerim citon mesazhin dhe asgjë nuk ndiqet derisa ta shtoni. Posta e mëparshme e cituar nuk llogaritet.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Ky mesazh është shumë i gjatë për modelin e zgjedhur.';
+
+  @override
+  String get actionsSuggestInvalid => 'Përgjigjja nuk përputhej me mesazhin, ndaj nuk sugjerohet asgjë.';
+
+  @override
+  String get actionsSuggestCancelled => 'U ndal.';
+
+  @override
+  String get actionsSuggestFailed => 'Sugjerimet nuk janë të disponueshme tani.';
 
   @override
   String settingsIdle(String protocol) {

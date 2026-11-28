@@ -1374,6 +1374,213 @@ class AppLocalizationsEt extends AppLocalizations {
   String get snoozeEmptyText => 'Lükka kiri edasi ja see naaseb sisendkausta siis, kui seda vajad.';
 
   @override
+  String get briefButton => 'Lühidalt';
+
+  @override
+  String get briefButtonHint => 'Loetleb, mida see kiri sinult palub';
+
+  @override
+  String get briefReaderView => 'Lühidalt';
+
+  @override
+  String get briefTitle => 'Lühidalt';
+
+  @override
+  String get briefShowOriginal => 'Näita originaali';
+
+  @override
+  String get briefWorking => 'Kirja lugemine…';
+
+  @override
+  String get briefStopped => 'Sa peatasid kokkuvõtte.';
+
+  @override
+  String get briefFailedTooLarge => 'See kiri on mudeli jaoks liiga pikk, seega midagi ei saadetud.';
+
+  @override
+  String get briefFailedProvider => 'Mudel ei suutnud sellest kirjast kokkuvõtet teha.';
+
+  @override
+  String get briefFailedInvalid => 'Vastus ei läbinud Loupe’i kontrolle, seega kontrollnimekirja ei näidata.';
+
+  @override
+  String get briefNothingTitle => 'Pole midagi kokku võtta';
+
+  @override
+  String get briefPartial =>
+      'See kiri on pikk, seega hõlmab kokkuvõte ainult selle algust. Loe ülejäänut kirjast endast.';
+
+  @override
+  String get briefSectionToDo => 'Teha';
+
+  @override
+  String get briefSectionDocuments => 'Saadetavad dokumendid';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumendid';
+
+  @override
+  String get briefSectionDates => 'Kuupäevad';
+
+  @override
+  String get briefSectionConditions => 'Tingimused';
+
+  @override
+  String get briefSectionNext => 'Mis edasi saab';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Tähtaeg: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Kuupäev: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Eesmärk, mitte tähtaeg: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Arvestatakse sündmusest: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Tähtaega pole märgitud';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Sina', 'them': 'Teised', 'other': 'Pole märgitud'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Märgi tehtuks';
+
+  @override
+  String get briefMarkNotDone => 'Märgi tegemata';
+
+  @override
+  String get briefDismiss => 'Jäta kõrvale';
+
+  @override
+  String get briefRestore => 'Taasta';
+
+  @override
+  String get briefCopy => 'Kopeeri';
+
+  @override
+  String get briefAddToCalendar => 'Lisa kalendrisse…';
+
+  @override
+  String get briefTrack => 'Jälgi';
+
+  @override
+  String get briefShowInMessage => 'Näita kirjas';
+
+  @override
+  String get briefMarkedDone => 'Märgitud tehtuks';
+
+  @override
+  String get briefDismissed => 'Kõrvale jäetud';
+
+  @override
+  String get briefItemCopied => 'Kopeeritud';
+
+  @override
+  String get briefChecklistCopied => 'Kontrollnimekiri on kopeeritud';
+
+  @override
+  String briefTracking(String item) {
+    return 'Jälgitakse: „$item“';
+  }
+
+  @override
+  String get briefTrackFailed => 'Seda punkti ei õnnestunud jälgida.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Näita $count kõrvale jäetud punkti',
+      one: 'Näita $count kõrvale jäetud punkt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Peida kõrvale jäetud punktid';
+
+  @override
+  String get briefCopyChecklist => 'Kopeeri kontrollnimekiri';
+
+  @override
+  String get briefMadeByDemo => 'Tegi sisseehitatud demo, mitte mudel.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Tehtud selles telefonis, tegija $name.',
+      'myServer': 'Tehtud sinu serveris, tegija $name.',
+      'other': 'Tehtud pilves, tegija $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Kokkuvõte võib asju märkamata jätta või valesti mõista. Loeb kiri ise.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Kontrolli kirja ennast, enne kui teed midagi sellest kokkuvõttest.';
+  }
+
+  @override
+  String get briefSecurityText => 'Kontrolli kirja ennast, enne kui teed midagi sellest kokkuvõttest.';
+
+  @override
+  String get briefSourceTitle => 'Kirjas';
+
+  @override
+  String get briefSourceAttachment => 'See pärineb manustatud faili nimest. Kokkuvõte ei loe manuste sisu.';
+
+  @override
+  String get briefEventTitle => 'Uus sündmus';
+
+  @override
+  String get briefEventDate => 'Kuupäev';
+
+  @override
+  String get briefEventTime => 'Kellaaeg';
+
+  @override
+  String get briefEventAllDay => 'Terve päev';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start–$end';
+  }
+
+  @override
+  String get briefEventZone => 'Ajavöönd';
+
+  @override
+  String get briefEventNotes => 'Märkmed';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Kirjast „$subject“, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Kalendrirakendus avaneb selle sündmusega. Midagi ei salvestata enne, kui sa selle seal salvestad.';
+
+  @override
   String get appLockUnlock => 'Ava lukk';
 
   @override
@@ -2803,6 +3010,308 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String get smimeRevocationNotChecked =>
       'Pole kontrollitud: kontrollitakse ainult nende asutuste sertifikaate, mida Loupe usaldab.';
+
+  @override
+  String get actionsNeedsMyAction => 'Vajab minu tegevust';
+
+  @override
+  String get actionsWaitingOnOthers => 'Ootan teisi';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Miski ei vaja sinu tegevust';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Sa ei oota kedagi';
+
+  @override
+  String get actionsFolderEmptyDetail => 'Millegi jälgimiseks puuduta kirja juures ⋯ ja vali „Lisa tegevus…“';
+
+  @override
+  String get actionsTitle => 'Tegevused';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count tegemata', one: '$count tegemata');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ootel', one: '$count ootel');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lahendatud tegevust',
+      one: '$count lahendatud tegevus',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Lahendatud';
+
+  @override
+  String get actionsNoneInConversation => 'Selles vestluses pole tegevusi.';
+
+  @override
+  String get actionsFooter =>
+      'Tegevusi hoitakse selles telefonis. Kirjad ei muuda neid kunagi, isegi mitte vastus „Aitäh“: seda teed ainult sina.';
+
+  @override
+  String get actionsMarkDone => 'Märgi tehtuks';
+
+  @override
+  String get actionsReopen => 'Ava uuesti';
+
+  @override
+  String get actionsStateNeedsAction => 'Vajab tegevust';
+
+  @override
+  String get actionsStateInProgress => 'Pooleli';
+
+  @override
+  String get actionsStateSent => 'Saadetud';
+
+  @override
+  String get actionsStateWaiting => 'Ootab kinnitust';
+
+  @override
+  String get actionsStateAcknowledged => 'Kinnitatud';
+
+  @override
+  String get actionsStateDone => 'Tehtud';
+
+  @override
+  String get actionsStateDismissed => 'Kõrvale jäetud';
+
+  @override
+  String get actionsStateSuperseded => 'Asendatud';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Märgitud tegevust vajavaks',
+      'inProgress': 'Märgitud pooleliolevaks',
+      'sent': 'Märgitud saadetuks',
+      'waitingForAcknowledgement': 'Ootab kinnitust',
+      'acknowledged': 'Märgitud kinnitatuks',
+      'done': 'Märgitud tehtuks',
+      'dismissed': 'Tegevus jäeti kõrvale',
+      'superseded': 'Märgitud asendatuks',
+      'other': 'Tegevust muudeti',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Tegevus sõnastati ümber';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Meeldetuletus määratud: $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Meeldetuletus eemaldatud';
+
+  @override
+  String get actionsDeleted => 'Tegevus kustutatud';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tegevust lisatud',
+      one: 'Tegevus lisatud',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Tegevust ei saanud salvestada.';
+
+  @override
+  String get actionsStatusHeader => 'Olek';
+
+  @override
+  String get actionsEditText => 'Muuda teksti…';
+
+  @override
+  String get actionsEditTitle => 'Muuda tegevust';
+
+  @override
+  String get actionsRemindMe => 'Tuleta meelde…';
+
+  @override
+  String get actionsChangeReminder => 'Muuda meeldetuletust…';
+
+  @override
+  String get actionsClearReminder => 'Eemalda meeldetuletus';
+
+  @override
+  String get actionsRemindTitle => 'Tuleta meelde';
+
+  @override
+  String get actionsDelete => 'Kustuta tegevus';
+
+  @override
+  String get actionsHistoryHeader => 'Ajalugu';
+
+  @override
+  String get actionsHistoryAdded => 'Lisatud';
+
+  @override
+  String get actionsHistoryEdited => 'Ümber sõnastatud';
+
+  @override
+  String get actionsHistoryDue => 'Tähtaeg muudetud';
+
+  @override
+  String get actionsHistoryReminder => 'Meeldetuletus muudetud';
+
+  @override
+  String get actionsHistoryRevised => 'Uuendatud uue soovituse põhjal';
+
+  @override
+  String get actionsHistoryDeleted => 'Kustutatud';
+
+  @override
+  String get actionsHistoryRestored => 'Taastatud';
+
+  @override
+  String get actionsOwnerMe => 'Pean mina';
+
+  @override
+  String get actionsOwnerThem => 'Teevad teised';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Algselt: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '„$quote“';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Kiri saatjalt $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Lisasid sina';
+
+  @override
+  String get actionsOriginDemo => 'Soovitas sisseehitatud demo: reeglid, mudelit pole';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Soovitaja: $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Soovitaja: $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Tähtaeg: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Soovitatav tähtaeg: $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '„$timing“';
+  }
+
+  @override
+  String get actionsAddMenu => 'Lisa tegevus…';
+
+  @override
+  String get actionsSuggestMenu => 'Soovita tegevusi';
+
+  @override
+  String get actionsAddTitle => 'Lisa tegevus';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Mida sa pead tegema?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Mida sa ootad?';
+
+  @override
+  String get actionsDueDate => 'Tähtaeg';
+
+  @override
+  String get actionsClearDueDate => 'Tähtaega pole';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Teema: „$subject“';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Soovitatud tegevused';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'selles telefonis',
+      'myServer': 'sinu serveris',
+      'other': 'pilves',
+    });
+    return 'Soovitaja: $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'Soovitas sisseehitatud demo: reeglid, mudelit pole. Miski ei lahku sellest telefonist.';
+
+  @override
+  String get actionsSuggestNone => 'Selles kirjas pole midagi jälgida.';
+
+  @override
+  String get actionsSuggestPartial => 'See kiri on pikk: loeti ainult selle algust.';
+
+  @override
+  String get actionsSuggestTracked => 'Jälgitakse';
+
+  @override
+  String get actionsSuggestUpdate => 'Uuenda';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Lisa kõik $count', two: 'Lisa mõlemad');
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Iga soovitus tsiteerib kirja ja midagi ei jälgita enne, kui selle lisad. Tsiteeritud varasemad kirjad ei loe.';
+
+  @override
+  String get actionsSuggestTooLarge => 'See kiri on valitud mudeli jaoks liiga pikk.';
+
+  @override
+  String get actionsSuggestInvalid => 'Vastus ei klappinud kirjaga, seega midagi ei soovitata.';
+
+  @override
+  String get actionsSuggestCancelled => 'Peatatud.';
+
+  @override
+  String get actionsSuggestFailed => 'Soovitused pole praegu saadaval.';
 
   @override
   String settingsIdle(String protocol) {

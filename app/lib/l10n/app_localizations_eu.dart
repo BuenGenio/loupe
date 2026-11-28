@@ -1387,6 +1387,214 @@ class AppLocalizationsEu extends AppLocalizations {
   String get snoozeEmptyText => 'Atzeratu mezu bat, behar duzunean Sarrera-ontzira itzul dadin.';
 
   @override
+  String get briefButton => 'Laburpena';
+
+  @override
+  String get briefButtonHint => 'Mezu honek zuri zer eskatzen dizun zerrendatzen du';
+
+  @override
+  String get briefReaderView => 'Laburpena';
+
+  @override
+  String get briefTitle => 'Laburpena';
+
+  @override
+  String get briefShowOriginal => 'Erakutsi jatorrizkoa';
+
+  @override
+  String get briefWorking => 'Mezua irakurtzen…';
+
+  @override
+  String get briefStopped => 'Laburpena gelditu duzu.';
+
+  @override
+  String get briefFailedTooLarge => 'Mezu hau luzeegia da ereduarentzat; beraz, ez da ezer bidali.';
+
+  @override
+  String get briefFailedProvider => 'Ereduak ezin izan du mezu hau laburtu.';
+
+  @override
+  String get briefFailedInvalid =>
+      'Erantzunak ez ditu Loupe-ren egiaztapenak gainditu; beraz, ez da zerrendarik erakusten.';
+
+  @override
+  String get briefNothingTitle => 'Ez dago laburtzeko ezer';
+
+  @override
+  String get briefPartial =>
+      'Mezu hau luzea da; beraz, laburpenak hasiera baino ez du hartzen. Irakurri gainerakoa mezuan bertan.';
+
+  @override
+  String get briefSectionToDo => 'Egitekoak';
+
+  @override
+  String get briefSectionDocuments => 'Bidali beharreko dokumentuak';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumentuak';
+
+  @override
+  String get briefSectionDates => 'Datak';
+
+  @override
+  String get briefSectionConditions => 'Baldintzak';
+
+  @override
+  String get briefSectionNext => 'Zer gertatuko den gero';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Epea: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Data: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Helburua, ez epea: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Gertaera batetik zenbatuta: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Ez da eperik adierazi';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Zu', 'them': 'Besteak', 'other': 'Adierazi gabe'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Markatu eginda gisa';
+
+  @override
+  String get briefMarkNotDone => 'Markatu egin gabe gisa';
+
+  @override
+  String get briefDismiss => 'Baztertu';
+
+  @override
+  String get briefRestore => 'Leheneratu';
+
+  @override
+  String get briefCopy => 'Kopiatu';
+
+  @override
+  String get briefAddToCalendar => 'Gehitu egutegira…';
+
+  @override
+  String get briefTrack => 'Jarraitu';
+
+  @override
+  String get briefShowInMessage => 'Erakutsi mezuan';
+
+  @override
+  String get briefMarkedDone => 'Eginda gisa markatu da';
+
+  @override
+  String get briefDismissed => 'Baztertu da';
+
+  @override
+  String get briefItemCopied => 'Kopiatu da';
+
+  @override
+  String get briefChecklistCopied => 'Zerrenda kopiatu da';
+
+  @override
+  String briefTracking(String item) {
+    return '«$item» jarraitzen';
+  }
+
+  @override
+  String get briefTrackFailed => 'Ezin izan da elementu hau jarraitu.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Erakutsi baztertutako $count elementu',
+      one: 'Erakutsi baztertutako elementu $count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Ezkutatu baztertutako elementuak';
+
+  @override
+  String get briefCopyChecklist => 'Kopiatu zerrenda';
+
+  @override
+  String get briefMadeByDemo => 'Demo integratuak egina, ez eredu batek.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Telefono honetan egina, $name ereduak.',
+      'myServer': 'Zure zerbitzarian egina, $name ereduak.',
+      'other': 'Hodeian egina, $name ereduak.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Laburpen batek gauzak ahaztu edo gaizki uler ditzake. Mezua bera da balio duena.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Egiaztatu mezua bera laburpen honetako ezer egin aurretik.';
+  }
+
+  @override
+  String get briefSecurityText => 'Egiaztatu mezua bera laburpen honetako ezer egin aurretik.';
+
+  @override
+  String get briefSourceTitle => 'Mezuan';
+
+  @override
+  String get briefSourceAttachment =>
+      'Hau erantsitako fitxategi baten izenetik dator. Laburpenak ez ditu eranskinen edukiak irakurtzen.';
+
+  @override
+  String get briefEventTitle => 'Gertaera berria';
+
+  @override
+  String get briefEventDate => 'Data';
+
+  @override
+  String get briefEventTime => 'Ordua';
+
+  @override
+  String get briefEventAllDay => 'Egun osoa';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Ordu-zona';
+
+  @override
+  String get briefEventNotes => 'Oharrak';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return '«$subject» mezutik, $sender';
+  }
+
+  @override
+  String get briefEventFootnote => 'Egutegi-aplikazioa gertaera honekin irekiko da. Ez da ezer gordeko han gorde arte.';
+
+  @override
   String get appLockUnlock => 'Desblokeatu';
 
   @override
@@ -2817,6 +3025,314 @@ class AppLocalizationsEu extends AppLocalizations {
   @override
   String get smimeRevocationNotChecked =>
       'Egiaztatu gabe: Loupe-k fidagarritzat jotzen dituen autoritateen ziurtagiriak bakarrik egiaztatzen dira.';
+
+  @override
+  String get actionsNeedsMyAction => 'Nire ekintza behar du';
+
+  @override
+  String get actionsWaitingOnOthers => 'Besteen zain';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Ezerk ez du zure ekintzarik behar';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Ez zaude inoren zain';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Zerbaiten jarraipena egiteko, sakatu ⋯ mezu batean eta aukeratu «Gehitu ekintza…»';
+
+  @override
+  String get actionsTitle => 'Ekintzak';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count egiteko', one: '$count egiteko');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count zain', one: '$count zain');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ekintza ebatzita',
+      one: 'Ekintza $count ebatzita',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Ebatzitakoak';
+
+  @override
+  String get actionsNoneInConversation => 'Elkarrizketa honek ez du ekintzarik.';
+
+  @override
+  String get actionsFooter =>
+      'Ekintzak telefono honetan gordetzen dira. Postak ez ditu inoiz aldatzen, ezta «Eskerrik asko» dioen erantzun batek ere: zuk bakarrik aldatzen dituzu.';
+
+  @override
+  String get actionsMarkDone => 'Markatu egindakotzat';
+
+  @override
+  String get actionsReopen => 'Ireki berriro';
+
+  @override
+  String get actionsStateNeedsAction => 'Ekintza behar du';
+
+  @override
+  String get actionsStateInProgress => 'Abian';
+
+  @override
+  String get actionsStateSent => 'Bidalita';
+
+  @override
+  String get actionsStateWaiting => 'Berrespenaren zain';
+
+  @override
+  String get actionsStateAcknowledged => 'Berretsita';
+
+  @override
+  String get actionsStateDone => 'Eginda';
+
+  @override
+  String get actionsStateDismissed => 'Baztertuta';
+
+  @override
+  String get actionsStateSuperseded => 'Ordezkatuta';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Ekintza behar duela markatu da',
+      'inProgress': 'Abian dagoela markatu da',
+      'sent': 'Bidalitzat markatu da',
+      'waitingForAcknowledgement': 'Berrespenaren zain',
+      'acknowledged': 'Berretsitzat markatu da',
+      'done': 'Egindakotzat markatu da',
+      'dismissed': 'Ekintza baztertu da',
+      'superseded': 'Ordezkatutzat markatu da',
+      'other': 'Ekintza aldatu da',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Ekintza birformulatu da';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Gogorarazpena ezarri da: $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Gogorarazpena kendu da';
+
+  @override
+  String get actionsDeleted => 'Ekintza ezabatu da';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ekintza gehitu dira',
+      one: 'Ekintza gehitu da',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'Ezin izan da ekintza gorde.';
+
+  @override
+  String get actionsStatusHeader => 'Egoera';
+
+  @override
+  String get actionsEditText => 'Editatu testua…';
+
+  @override
+  String get actionsEditTitle => 'Editatu ekintza';
+
+  @override
+  String get actionsRemindMe => 'Gogorarazi…';
+
+  @override
+  String get actionsChangeReminder => 'Aldatu gogorarazpena…';
+
+  @override
+  String get actionsClearReminder => 'Kendu gogorarazpena';
+
+  @override
+  String get actionsRemindTitle => 'Gogorarazi';
+
+  @override
+  String get actionsDelete => 'Ezabatu ekintza';
+
+  @override
+  String get actionsHistoryHeader => 'Historia';
+
+  @override
+  String get actionsHistoryAdded => 'Gehituta';
+
+  @override
+  String get actionsHistoryEdited => 'Birformulatuta';
+
+  @override
+  String get actionsHistoryDue => 'Epea aldatu da';
+
+  @override
+  String get actionsHistoryReminder => 'Gogorarazpena aldatu da';
+
+  @override
+  String get actionsHistoryRevised => 'Iradokizun berri batekin eguneratuta';
+
+  @override
+  String get actionsHistoryDeleted => 'Ezabatuta';
+
+  @override
+  String get actionsHistoryRestored => 'Leheneratuta';
+
+  @override
+  String get actionsOwnerMe => 'Niri dagokit';
+
+  @override
+  String get actionsOwnerThem => 'Besteei dagokie';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Jatorriz: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '«$quote»';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return '$sender igorlearen mezua, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Zuk gehitua';
+
+  @override
+  String get actionsOriginDemo => 'Demo integratuak iradokia: arauak, eredurik ez';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Iradokitzailea: $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Iradokitzailea: $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Epea: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Epe gomendatua: $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '«$timing»';
+  }
+
+  @override
+  String get actionsAddMenu => 'Gehitu ekintza…';
+
+  @override
+  String get actionsSuggestMenu => 'Iradoki ekintzak';
+
+  @override
+  String get actionsAddTitle => 'Gehitu ekintza';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Zer egin behar duzu?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Zeren zain zaude?';
+
+  @override
+  String get actionsDueDate => 'Muga-eguna';
+
+  @override
+  String get actionsClearDueDate => 'Muga-egunik ez';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Gaia: «$subject»';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Iradokitako ekintzak';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'telefono honetan',
+      'myServer': 'zure zerbitzarian',
+      'other': 'hodeian',
+    });
+    return 'Iradokitzailea: $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo =>
+      'Demo integratuak iradokiak: arauak, eredurik ez. Ezer ez da telefono honetatik ateratzen.';
+
+  @override
+  String get actionsSuggestNone => 'Mezu honetan ez dago jarraitu beharreko ezer.';
+
+  @override
+  String get actionsSuggestPartial => 'Mezu hau luzea da: hasiera bakarrik irakurri da.';
+
+  @override
+  String get actionsSuggestTracked => 'Jarraipenean';
+
+  @override
+  String get actionsSuggestUpdate => 'Eguneratu';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Gehitu $count ekintzak',
+      two: 'Gehitu biak',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Iradokizun bakoitzak mezua aipatzen du, eta ez da ezeren jarraipenik egiten zuk gehitu arte. Aipatutako lehenagoko postak ez du balio.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Mezu hau luzeegia da aukeratutako eredurako.';
+
+  @override
+  String get actionsSuggestInvalid => 'Erantzuna ez dator bat mezuarekin; beraz, ez da ezer iradokitzen.';
+
+  @override
+  String get actionsSuggestCancelled => 'Geldituta.';
+
+  @override
+  String get actionsSuggestFailed => 'Iradokizunak ez daude erabilgarri une honetan.';
 
   @override
   String settingsIdle(String protocol) {

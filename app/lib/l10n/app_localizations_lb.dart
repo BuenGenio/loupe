@@ -1384,6 +1384,214 @@ class AppLocalizationsLb extends AppLocalizations {
   String get snoozeEmptyText => 'Stellt e Message zréck, da kënnt e erëm an d’Inbox, wann Dir e braucht.';
 
   @override
+  String get briefButton => 'Kuerzfassung';
+
+  @override
+  String get briefButtonHint => 'Lëscht op, wat dëse Message vun Iech wëllt';
+
+  @override
+  String get briefReaderView => 'Kuerzfassung';
+
+  @override
+  String get briefTitle => 'Kuerzfassung';
+
+  @override
+  String get briefShowOriginal => 'Original weisen';
+
+  @override
+  String get briefWorking => 'De Message gëtt gelies…';
+
+  @override
+  String get briefStopped => 'Dir hutt d’Kuerzfassung ofgebrach.';
+
+  @override
+  String get briefFailedTooLarge => 'Dëse Message ass ze laang fir de Modell, dofir gouf näischt geschéckt.';
+
+  @override
+  String get briefFailedProvider => 'De Modell konnt dëse Message net zesummefaassen.';
+
+  @override
+  String get briefFailedInvalid => 'D’Äntwert huet d’Kontrolle vu Loupe net bestanen, dofir gëtt keng Lëscht gewisen.';
+
+  @override
+  String get briefNothingTitle => 'Näischt zesummenzefaassen';
+
+  @override
+  String get briefPartial =>
+      'Dëse Message ass laang, dofir deckt d’Kuerzfassung just säin Ufank of. Liest de Rescht am Message selwer.';
+
+  @override
+  String get briefSectionToDo => 'Ze maachen';
+
+  @override
+  String get briefSectionDocuments => 'Dokumenter ze schécken';
+
+  @override
+  String get briefSectionOtherDocuments => 'Dokumenter';
+
+  @override
+  String get briefSectionDates => 'Datumer';
+
+  @override
+  String get briefSectionConditions => 'Konditiounen';
+
+  @override
+  String get briefSectionNext => 'Wéi et weidergeet';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Delai: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'Datum: $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Zil, keen Delai: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Vun engem Evenement u gerechent: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Keen Delai uginn';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Dir', 'them': 'Aner', 'other': 'Net uginn'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Als erleedegt markéieren';
+
+  @override
+  String get briefMarkNotDone => 'Als net erleedegt markéieren';
+
+  @override
+  String get briefDismiss => 'Ausblennen';
+
+  @override
+  String get briefRestore => 'Zréckhuelen';
+
+  @override
+  String get briefCopy => 'Kopéieren';
+
+  @override
+  String get briefAddToCalendar => 'An de Kalenner setzen…';
+
+  @override
+  String get briefTrack => 'Verfollegen';
+
+  @override
+  String get briefShowInMessage => 'Am Message weisen';
+
+  @override
+  String get briefMarkedDone => 'Als erleedegt markéiert';
+
+  @override
+  String get briefDismissed => 'Ausgeblent';
+
+  @override
+  String get briefItemCopied => 'Kopéiert';
+
+  @override
+  String get briefChecklistCopied => 'Lëscht kopéiert';
+
+  @override
+  String briefTracking(String item) {
+    return '„$item“ gëtt verfollegt';
+  }
+
+  @override
+  String get briefTrackFailed => 'Dëse Punkt konnt net verfollegt ginn.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ausgeblent Punkte weisen',
+      one: '$count ausgeblente Punkt weisen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Ausgeblent Punkte verstoppen';
+
+  @override
+  String get briefCopyChecklist => 'Lëscht kopéieren';
+
+  @override
+  String get briefMadeByDemo => 'Gemaach vun der agebauter Demo, net vun engem Modell.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Op dësem Telefon gemaach vun $name.',
+      'myServer': 'Op Ärem Server gemaach vun $name.',
+      'other': 'An der Cloud gemaach vun $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Eng Kuerzfassung kann eppes iwwersinn oder falsch verstoen. Et zielt de Message selwer.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Kuckt de Message selwer no, ier Dir eppes aus dëser Kuerzfassung maacht.';
+  }
+
+  @override
+  String get briefSecurityText => 'Kuckt de Message selwer no, ier Dir eppes aus dëser Kuerzfassung maacht.';
+
+  @override
+  String get briefSourceTitle => 'Am Message';
+
+  @override
+  String get briefSourceAttachment =>
+      'Dat kënnt aus dem Numm vun engem ugehaangene Fichier. D’Kuerzfassung liest net, wat an den Unhäng steet.';
+
+  @override
+  String get briefEventTitle => 'Neien Termin';
+
+  @override
+  String get briefEventDate => 'Datum';
+
+  @override
+  String get briefEventTime => 'Auerzäit';
+
+  @override
+  String get briefEventAllDay => 'De ganzen Dag';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Zäitzon';
+
+  @override
+  String get briefEventNotes => 'Notizen';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'Aus „$subject“, $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'Är Kalenner-App mécht sech mat dësem Termin op. Et gëtt näischt gespäichert, ier Dir en do späichert.';
+
+  @override
   String get appLockUnlock => 'Entspären';
 
   @override
@@ -2823,6 +3031,318 @@ class AppLocalizationsLb extends AppLocalizations {
   @override
   String get smimeRevocationNotChecked =>
       'Net iwwerpréift: Nëmmen Zertifikater vu Stellen, deene Loupe vertraut, ginn iwwerpréift.';
+
+  @override
+  String get actionsNeedsMyAction => 'Brauch meng Aktioun';
+
+  @override
+  String get actionsWaitingOnOthers => 'Waart op anerer';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Näischt brauch Är Aktioun';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'Dir waart op keen';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Fir eppes nozeverfollegen, tippt bei engem Message op ⋯ a wielt „Aktioun derbäisetzen…“';
+
+  @override
+  String get actionsTitle => 'Aktiounen';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ze maachen',
+      one: '$count ze maachen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count waarden', one: '$count waart');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ofgeschloss Aktiounen',
+      one: '$count ofgeschloss Aktioun',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Ofgeschloss';
+
+  @override
+  String get actionsNoneInConversation => 'Dës Konversatioun huet keng Aktiounen.';
+
+  @override
+  String get actionsFooter =>
+      'Aktioune ginn op dësem Handy gespäichert. Mailen änneren se ni, net emol eng Äntwert mat „Merci“: dat maacht nëmmen Dir.';
+
+  @override
+  String get actionsMarkDone => 'Als erleedegt markéieren';
+
+  @override
+  String get actionsReopen => 'Nees opmaachen';
+
+  @override
+  String get actionsStateNeedsAction => 'Brauch Aktioun';
+
+  @override
+  String get actionsStateInProgress => 'Amgaang';
+
+  @override
+  String get actionsStateSent => 'Geschéckt';
+
+  @override
+  String get actionsStateWaiting => 'Waart op Bestätegung';
+
+  @override
+  String get actionsStateAcknowledged => 'Bestätegt';
+
+  @override
+  String get actionsStateDone => 'Erleedegt';
+
+  @override
+  String get actionsStateDismissed => 'Verworf';
+
+  @override
+  String get actionsStateSuperseded => 'Ersat';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Als ze maache markéiert',
+      'inProgress': 'Als amgaang markéiert',
+      'sent': 'Als geschéckt markéiert',
+      'waitingForAcknowledgement': 'Waart op Bestätegung',
+      'acknowledged': 'Als bestätegt markéiert',
+      'done': 'Als erleedegt markéiert',
+      'dismissed': 'Aktioun verworf',
+      'superseded': 'Als ersat markéiert',
+      'other': 'Aktioun geännert',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Aktioun ëmformuléiert';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Erënnerung fir $time agestallt';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Erënnerung ewechgeholl';
+
+  @override
+  String get actionsDeleted => 'Aktioun geläscht';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Aktiounen derbäigesat',
+      one: 'Aktioun derbäigesat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'D’Aktioun konnt net gespäichert ginn.';
+
+  @override
+  String get actionsStatusHeader => 'Status';
+
+  @override
+  String get actionsEditText => 'Text änneren…';
+
+  @override
+  String get actionsEditTitle => 'Aktioun änneren';
+
+  @override
+  String get actionsRemindMe => 'Mech erënneren…';
+
+  @override
+  String get actionsChangeReminder => 'Erënnerung änneren…';
+
+  @override
+  String get actionsClearReminder => 'Erënnerung ewechhuelen';
+
+  @override
+  String get actionsRemindTitle => 'Mech erënneren';
+
+  @override
+  String get actionsDelete => 'Aktioun läschen';
+
+  @override
+  String get actionsHistoryHeader => 'Verlaf';
+
+  @override
+  String get actionsHistoryAdded => 'Derbäigesat';
+
+  @override
+  String get actionsHistoryEdited => 'Ëmformuléiert';
+
+  @override
+  String get actionsHistoryDue => 'Frist geännert';
+
+  @override
+  String get actionsHistoryReminder => 'Erënnerung geännert';
+
+  @override
+  String get actionsHistoryRevised => 'No engem neie Virschlag aktualiséiert';
+
+  @override
+  String get actionsHistoryDeleted => 'Geläscht';
+
+  @override
+  String get actionsHistoryRestored => 'Restauréiert';
+
+  @override
+  String get actionsOwnerMe => 'Ech muss';
+
+  @override
+  String get actionsOwnerThem => 'Anerer maachen et';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Ursprénglech: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '„$quote“';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Message vun $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Vun Iech derbäigesat';
+
+  @override
+  String get actionsOriginDemo => 'Proposéiert vun der agebauter Demo: Reegelen, kee Modell';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Proposéiert vun $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Proposéiert vun $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Fälleg: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Am beschte bis $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '„$timing“';
+  }
+
+  @override
+  String get actionsAddMenu => 'Aktioun derbäisetzen…';
+
+  @override
+  String get actionsSuggestMenu => 'Aktioune proposéieren';
+
+  @override
+  String get actionsAddTitle => 'Aktioun derbäisetzen';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Wat musst Dir maachen?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Op wat waart Dir?';
+
+  @override
+  String get actionsDueDate => 'Fällegkeetsdatum';
+
+  @override
+  String get actionsClearDueDate => 'Kee Fällegkeetsdatum';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Zu „$subject“';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Proposéiert Aktiounen';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'op dësem Handy',
+      'myServer': 'op Ärem Server',
+      'other': 'an der Cloud',
+    });
+    return 'Vun $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'Vun der agebauter Demo: Reegelen, kee Modell. Näischt verléisst dësen Handy.';
+
+  @override
+  String get actionsSuggestNone => 'An dësem Message gëtt et näischt nozeverfollegen.';
+
+  @override
+  String get actionsSuggestPartial => 'Dëse Message ass laang: nëmme säin Ufank gouf gelies.';
+
+  @override
+  String get actionsSuggestTracked => 'Erfaasst';
+
+  @override
+  String get actionsSuggestUpdate => 'Aktualiséieren';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'All $count derbäisetzen',
+      two: 'Allebéid derbäisetzen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'All Virschlag zitéiert de Message, an näischt gëtt nogefollegt, ier Dir en derbäisetzt. Zitéiert méi al Mailen zielen net.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Dëse Message ass ze laang fir de gewielte Modell.';
+
+  @override
+  String get actionsSuggestInvalid => 'D’Äntwert huet net zum Message gepasst, dofir gëtt näischt proposéiert.';
+
+  @override
+  String get actionsSuggestCancelled => 'Ofgebrach.';
+
+  @override
+  String get actionsSuggestFailed => 'Virschléi sinn de Moment net disponibel.';
 
   @override
   String settingsIdle(String protocol) {

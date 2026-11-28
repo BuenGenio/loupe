@@ -1390,6 +1390,215 @@ class AppLocalizationsCa extends AppLocalizations {
   String get snoozeEmptyText => 'Posposa un missatge perquè torni a la safata d’entrada quan el necessitis.';
 
   @override
+  String get briefButton => 'En breu';
+
+  @override
+  String get briefButtonHint => 'Enumera què et demana aquest missatge';
+
+  @override
+  String get briefReaderView => 'En breu';
+
+  @override
+  String get briefTitle => 'En breu';
+
+  @override
+  String get briefShowOriginal => 'Mostra l’original';
+
+  @override
+  String get briefWorking => 'S’està llegint el missatge…';
+
+  @override
+  String get briefStopped => 'Has aturat el resum.';
+
+  @override
+  String get briefFailedTooLarge => 'Aquest missatge és massa llarg per al model, així que no s’ha enviat res.';
+
+  @override
+  String get briefFailedProvider => 'El model no ha pogut resumir aquest missatge.';
+
+  @override
+  String get briefFailedInvalid =>
+      'La resposta no ha superat les comprovacions de Loupe, així que no es mostra cap llista.';
+
+  @override
+  String get briefNothingTitle => 'Res a resumir';
+
+  @override
+  String get briefPartial =>
+      'Aquest missatge és llarg, així que el resum només en cobreix el principi. Llegeix-ne la resta al mateix missatge.';
+
+  @override
+  String get briefSectionToDo => 'Per fer';
+
+  @override
+  String get briefSectionDocuments => 'Documents per enviar';
+
+  @override
+  String get briefSectionOtherDocuments => 'Documents';
+
+  @override
+  String get briefSectionDates => 'Dates';
+
+  @override
+  String get briefSectionConditions => 'Condicions';
+
+  @override
+  String get briefSectionNext => 'Què passa després';
+
+  @override
+  String briefDueDeadline(String when) {
+    return 'Termini: $when';
+  }
+
+  @override
+  String briefDueOn(String date) {
+    return 'El $date';
+  }
+
+  @override
+  String briefDueSuggested(String when) {
+    return 'Objectiu, no termini: $when';
+  }
+
+  @override
+  String briefDueConditional(String when) {
+    return 'Es compta des d’un esdeveniment: $when';
+  }
+
+  @override
+  String get briefDueNone => 'Sense termini indicat';
+
+  @override
+  String briefOwner(String owner) {
+    String _temp0 = intl.Intl.selectLogic(owner, {'me': 'Tu', 'them': 'Altres', 'other': 'No s’indica'});
+    return '$_temp0';
+  }
+
+  @override
+  String get briefMarkDone => 'Marca com a fet';
+
+  @override
+  String get briefMarkNotDone => 'Marca com a no fet';
+
+  @override
+  String get briefDismiss => 'Descarta';
+
+  @override
+  String get briefRestore => 'Restaura';
+
+  @override
+  String get briefCopy => 'Copia';
+
+  @override
+  String get briefAddToCalendar => 'Afegeix al calendari…';
+
+  @override
+  String get briefTrack => 'Fes-ne el seguiment';
+
+  @override
+  String get briefShowInMessage => 'Mostra al missatge';
+
+  @override
+  String get briefMarkedDone => 'S’ha marcat com a fet';
+
+  @override
+  String get briefDismissed => 'S’ha descartat';
+
+  @override
+  String get briefItemCopied => 'S’ha copiat';
+
+  @override
+  String get briefChecklistCopied => 'S’ha copiat la llista';
+
+  @override
+  String briefTracking(String item) {
+    return 'Seguiment de «$item»';
+  }
+
+  @override
+  String get briefTrackFailed => 'No s’ha pogut fer el seguiment d’aquest element.';
+
+  @override
+  String briefShowDismissed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Mostra $count elements descartats',
+      one: 'Mostra $count element descartat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get briefHideDismissed => 'Amaga els elements descartats';
+
+  @override
+  String get briefCopyChecklist => 'Copia la llista';
+
+  @override
+  String get briefMadeByDemo => 'Fet per la demostració integrada, no per un model.';
+
+  @override
+  String briefMadeBy(String location, String name) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'Fet en aquest telèfon per $name.',
+      'myServer': 'Fet al teu servidor per $name.',
+      'other': 'Fet al núvol per $name.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get briefCaution => 'Un resum pot passar per alt o malinterpretar coses. El que compta és el mateix missatge.';
+
+  @override
+  String briefSecurityReason(String reason) {
+    return '$reason. Comprova el mateix missatge abans de fer res d’aquest resum.';
+  }
+
+  @override
+  String get briefSecurityText => 'Comprova el mateix missatge abans de fer res d’aquest resum.';
+
+  @override
+  String get briefSourceTitle => 'Al missatge';
+
+  @override
+  String get briefSourceAttachment =>
+      'Això ve del nom d’un fitxer adjunt. El resum no llegeix el contingut dels adjunts.';
+
+  @override
+  String get briefEventTitle => 'Esdeveniment nou';
+
+  @override
+  String get briefEventDate => 'Data';
+
+  @override
+  String get briefEventTime => 'Hora';
+
+  @override
+  String get briefEventAllDay => 'Tot el dia';
+
+  @override
+  String briefEventTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get briefEventZone => 'Zona horària';
+
+  @override
+  String get briefEventNotes => 'Notes';
+
+  @override
+  String briefEventFrom(String subject, String sender) {
+    return 'De «$subject», $sender';
+  }
+
+  @override
+  String get briefEventFootnote =>
+      'L’app de calendari s’obre amb aquest esdeveniment. No es desa res fins que no el desis allà.';
+
+  @override
   String get appLockUnlock => 'Desbloqueja';
 
   @override
@@ -2825,6 +3034,313 @@ class AppLocalizationsCa extends AppLocalizations {
   @override
   String get smimeRevocationNotChecked =>
       'No comprovat: només es comproven els certificats d’autoritats en què Loupe confia.';
+
+  @override
+  String get actionsNeedsMyAction => 'Requereix la meva acció';
+
+  @override
+  String get actionsWaitingOnOthers => 'Esperant els altres';
+
+  @override
+  String get actionsNeedsMyActionEmpty => 'Res no requereix la teva acció';
+
+  @override
+  String get actionsWaitingOnOthersEmpty => 'No esperes res de ningú';
+
+  @override
+  String get actionsFolderEmptyDetail =>
+      'Per fer el seguiment d’alguna cosa, toca ⋯ en un missatge i tria Afegeix una acció…';
+
+  @override
+  String get actionsTitle => 'Accions';
+
+  @override
+  String actionsCountMine(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count per fer', one: '1 per fer');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsCountWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count en espera', one: '1 en espera');
+    return '$_temp0';
+  }
+
+  @override
+  String actionsAllSettled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count accions resoltes',
+      one: '1 acció resolta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSettledHeader => 'Resoltes';
+
+  @override
+  String get actionsNoneInConversation => 'Aquesta conversa no té cap acció.';
+
+  @override
+  String get actionsFooter =>
+      'Les accions es desen en aquest telèfon. El correu no les canvia mai, ni tan sols una resposta que digui «Gràcies»: només les canvies tu.';
+
+  @override
+  String get actionsMarkDone => 'Marca com a feta';
+
+  @override
+  String get actionsReopen => 'Torna a obrir';
+
+  @override
+  String get actionsStateNeedsAction => 'Requereix acció';
+
+  @override
+  String get actionsStateInProgress => 'En curs';
+
+  @override
+  String get actionsStateSent => 'Enviada';
+
+  @override
+  String get actionsStateWaiting => 'Pendent de confirmació';
+
+  @override
+  String get actionsStateAcknowledged => 'Confirmada';
+
+  @override
+  String get actionsStateDone => 'Feta';
+
+  @override
+  String get actionsStateDismissed => 'Descartada';
+
+  @override
+  String get actionsStateSuperseded => 'Substituïda';
+
+  @override
+  String actionsMarked(String state) {
+    String _temp0 = intl.Intl.selectLogic(state, {
+      'needsAction': 'Marcada com a pendent',
+      'inProgress': 'Marcada com en curs',
+      'sent': 'Marcada com a enviada',
+      'waitingForAcknowledgement': 'Pendent de confirmació',
+      'acknowledged': 'Marcada com a confirmada',
+      'done': 'Marcada com a feta',
+      'dismissed': 'Acció descartada',
+      'superseded': 'Marcada com a substituïda',
+      'other': 'Acció canviada',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsEdited => 'Acció reformulada';
+
+  @override
+  String actionsReminderSet(String time) {
+    return 'Recordatori programat per a $time';
+  }
+
+  @override
+  String get actionsReminderCleared => 'Recordatori eliminat';
+
+  @override
+  String get actionsDeleted => 'Acció suprimida';
+
+  @override
+  String actionsAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count accions afegides',
+      one: 'Acció afegida',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSaveFailed => 'No s’ha pogut desar l’acció.';
+
+  @override
+  String get actionsStatusHeader => 'Estat';
+
+  @override
+  String get actionsEditText => 'Edita el text…';
+
+  @override
+  String get actionsEditTitle => 'Edita l’acció';
+
+  @override
+  String get actionsRemindMe => 'Recorda-m’ho…';
+
+  @override
+  String get actionsChangeReminder => 'Canvia el recordatori…';
+
+  @override
+  String get actionsClearReminder => 'Elimina el recordatori';
+
+  @override
+  String get actionsRemindTitle => 'Recorda-m’ho';
+
+  @override
+  String get actionsDelete => 'Suprimeix l’acció';
+
+  @override
+  String get actionsHistoryHeader => 'Historial';
+
+  @override
+  String get actionsHistoryAdded => 'Afegida';
+
+  @override
+  String get actionsHistoryEdited => 'Reformulada';
+
+  @override
+  String get actionsHistoryDue => 'Termini canviat';
+
+  @override
+  String get actionsHistoryReminder => 'Recordatori canviat';
+
+  @override
+  String get actionsHistoryRevised => 'Actualitzada amb un suggeriment nou';
+
+  @override
+  String get actionsHistoryDeleted => 'Suprimida';
+
+  @override
+  String get actionsHistoryRestored => 'Restaurada';
+
+  @override
+  String get actionsOwnerMe => 'Ho he de fer jo';
+
+  @override
+  String get actionsOwnerThem => 'Ho faran ells';
+
+  @override
+  String actionsOriginally(String text) {
+    return 'Originalment: $text';
+  }
+
+  @override
+  String actionsQuote(String quote) {
+    return '«$quote»';
+  }
+
+  @override
+  String actionsFromMessage(String sender, String date) {
+    return 'Missatge de $sender, $date';
+  }
+
+  @override
+  String get actionsOriginManual => 'Afegida per tu';
+
+  @override
+  String get actionsOriginDemo => 'Suggerida per la demostració integrada: regles, sense model';
+
+  @override
+  String actionsOriginSuggested(String provider) {
+    return 'Suggerida per $provider';
+  }
+
+  @override
+  String actionsOriginSuggestedModel(String provider, String model) {
+    return 'Suggerida per $provider ($model)';
+  }
+
+  @override
+  String actionsDueOn(String date) {
+    return 'Termini: $date';
+  }
+
+  @override
+  String actionsTargetOn(String date) {
+    return 'Idealment: $date';
+  }
+
+  @override
+  String actionsDueAsWritten(String timing) {
+    return '«$timing»';
+  }
+
+  @override
+  String get actionsAddMenu => 'Afegeix una acció…';
+
+  @override
+  String get actionsSuggestMenu => 'Suggereix accions';
+
+  @override
+  String get actionsAddTitle => 'Afegeix una acció';
+
+  @override
+  String get actionsAddPlaceholderMe => 'Què has de fer?';
+
+  @override
+  String get actionsAddPlaceholderThem => 'Què estàs esperant?';
+
+  @override
+  String get actionsDueDate => 'Data límit';
+
+  @override
+  String get actionsClearDueDate => 'Sense data límit';
+
+  @override
+  String actionsAddSource(String subject) {
+    return 'Sobre «$subject»';
+  }
+
+  @override
+  String get actionsSuggestTitle => 'Accions suggerides';
+
+  @override
+  String actionsSuggestBy(String provider, String location) {
+    String _temp0 = intl.Intl.selectLogic(location, {
+      'onThisPhone': 'en aquest telèfon',
+      'myServer': 'al teu servidor',
+      'other': 'al núvol',
+    });
+    return 'Per $provider, $_temp0';
+  }
+
+  @override
+  String get actionsSuggestByDemo => 'Per la demostració integrada: regles, sense model. No surt res d’aquest telèfon.';
+
+  @override
+  String get actionsSuggestNone => 'En aquest missatge no hi ha res que calgui seguir.';
+
+  @override
+  String get actionsSuggestPartial => 'Aquest missatge és llarg: només se n’ha llegit el principi.';
+
+  @override
+  String get actionsSuggestTracked => 'En seguiment';
+
+  @override
+  String get actionsSuggestUpdate => 'Actualitza';
+
+  @override
+  String actionsSuggestAddAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Afegeix les $count',
+      two: 'Afegeix les dues',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionsSuggestFootnote =>
+      'Cada suggeriment cita el missatge, i no se’n fa cap seguiment fins que l’afegeixes. El correu anterior citat no compta.';
+
+  @override
+  String get actionsSuggestTooLarge => 'Aquest missatge és massa llarg per al model triat.';
+
+  @override
+  String get actionsSuggestInvalid => 'La resposta no quadrava amb el missatge, així que no se suggereix res.';
+
+  @override
+  String get actionsSuggestCancelled => 'Aturat.';
+
+  @override
+  String get actionsSuggestFailed => 'Ara mateix els suggeriments no estan disponibles.';
 
   @override
   String settingsIdle(String protocol) {
