@@ -155,6 +155,89 @@ class AppLocalizationsSl extends AppLocalizations {
   String get mailboxTrash => 'Smeti';
 
   @override
+  String get changesExplainTitle => 'Kaj se je spremenilo';
+
+  @override
+  String get changesExplainIntro => 'Pojasni spremenjena dejstva, vsako povezano z odlomki v obeh sporočilih.';
+
+  @override
+  String get changesExplainAction => 'Razloži spremembe';
+
+  @override
+  String get changesExplainWorking => 'Razlaganje sprememb…';
+
+  @override
+  String get changesExplainFailed => 'Loupe teh sprememb ni mogel pojasniti.';
+
+  @override
+  String get changesExplainTooLarge => 'Ta sporočila so predolga za model.';
+
+  @override
+  String get changesExplainProviderError => 'Model ni odgovoril.';
+
+  @override
+  String get changesExplainInvalid =>
+      'Odgovor ni prestal preverjanj aplikacije Loupe, zato ni prikazan noben njegov del.';
+
+  @override
+  String get changesExplainNoChange => 'Sprememba pomena ni bila najdena. Natančne spremembe besedila so spodaj.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Spremenjeno',
+      'added': 'Novo',
+      'removed': 'Ni več omenjeno',
+      'contradiction': 'V nasprotju',
+      'other': 'Spremenjeno',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first ali $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Sporočila ne povedo, kateri od teh podatkov velja.';
+
+  @override
+  String get changesExplainPartial => 'Prebran je bil le začetek dolgega sporočila.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Vrstice, ki se začnejo z „>“, navajajo starejšo pošto. Berejo se kot kontekst, ne kot vsebina katerega od sporočil.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Sporočilo lahko navaja starejšo pošto, ne da bi jo označilo, zato so lahko nekatere spremembe iz starejše pošte. Preverite odlomke.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Vsak odlomek je bil najden v svojem sporočilu. Preberite jih, preden se zanesete na spremembo.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Pojasnjeno je le besedilo sporočil. Priloge se primerjajo le po imenu, vrsti in velikosti.';
+
+  @override
+  String get changesExplainDemoNote => 'Pripravil vgrajeni demo, ne model.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Pripravil: $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'V tem sporočilu ni označen noben odlomek.';
+
+  @override
   String get conversationCompareMessages => 'Primerjaj sporočila…';
 
   @override
@@ -5006,6 +5089,213 @@ class AppLocalizationsSl extends AppLocalizations {
   @override
   String subscriptionsNowDiscussion(String sender) {
     return '$sender je zdaj med razpravami.';
+  }
+
+  @override
+  String get rulesDescribeRule => 'Opiši pravilo …';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'V enem stavku povejte, kaj naj pravilo naredi. Predlog aplikacije Loupe nato preverite, nič pa se ne shrani, dokler ga ne shranite v urejevalniku pravil.';
+
+  @override
+  String get rulesDescribeTitle => 'Opiši pravilo';
+
+  @override
+  String get rulesDescribeAccount => 'Račun';
+
+  @override
+  String get rulesDescribeHint => 'Premikaj račune od Harbor Coffee v Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Uporabijo se samo ta stavek ter imena map in oznak računa $account, nikoli vaša pošta.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Predlagaj pravilo';
+
+  @override
+  String get rulesDescribeWorking => 'Priprava pravila …';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe iz tega ni mogla narediti pravila.';
+
+  @override
+  String get rulesDescribeProposed => 'Predlagano pravilo';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Pravila iščejo besede, naslove in datume, prikazane tukaj, ne tega, o čem govori sporočilo.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Ujemajočo se pošto pošlje na $address, zunaj tega računa.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'V tem telefonu, za novo pošto v mapi Prejeto računa $account, vsakič, ko Loupe preveri pošto.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Na poštnem strežniku računa $account, ob prihodu pošte. Posredovanje deluje le tam.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Kje se pravilo izvaja, izberete v urejevalniku pravil.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count delov, ki jih Loupe ne zmore',
+      few: '$count deli, ki jih Loupe ne zmore',
+      two: '$count dela, ki ju Loupe ne zmore',
+      one: '$count del, ki ga Loupe ne zmore',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count delov je izpuščenih iz pravila in namesto njih ni bilo dodano nič.',
+      few: '$count deli so izpuščeni iz pravila in namesto njih ni bilo dodano nič.',
+      two: '$count dela sta izpuščena iz pravila in namesto njiju ni bilo dodano nič.',
+      one: '$count del je izpuščen iz pravila in namesto njega ni bilo dodano nič.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '„$request“';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Pravila ne morejo spreminjati obvestil. Če pošto označite kot prebrano ali jo premaknete, to ni isto kot utišanje.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe ne prepozna te vrste pošte. Pravilo se lahko ujema le z besedami, ki jih izberete.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return 'Račun $account nima mape s tem imenom.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Oznake s tem imenom ni.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Tega pravila ne zmorejo.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Besede, ki jih Loupe lahko išče namesto tega:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe mora vedeti';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Poskusni zagon';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Preverjanje pošte v tem telefonu …';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Pravilo bi zajelo $matchedString od $totalString prenesenih sporočil v računu $account',
+      few: 'Pravilo bi zajelo $matchedString od $totalString prenesenih sporočil v računu $account',
+      two: 'Pravilo bi zajelo $matchedString od $totalString prenesenih sporočil v računu $account',
+      one: 'Pravilo bi zajelo $matchedString od $totalString prenesenega sporočila v računu $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Ujemala bi se';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Ne bi se ujemala';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Preverjena je bila le pošta, prenesena v ta telefon, razen map Poslano, Osnutki, Neželena pošta in Smeti, in sicer s kodo, ki izvaja pravila v napravi. Na strežniku in v starejši pošti je lahko še več.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Preverjenih je bilo le $countString najnovejših sporočil.',
+      few: 'Preverjena so bila le $countString najnovejša sporočila.',
+      two: 'Preverjeni sta bili le $countString najnovejši sporočili.',
+      one: 'Preverjeno je bilo le $countString najnovejše sporočilo.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Brez prenosa besedila ni bilo mogoče preveriti $countString sporočil.',
+      few: 'Brez prenosa besedila ni bilo mogoče preveriti $countString sporočil.',
+      two: 'Brez prenosa besedila ni bilo mogoče preveriti $countString sporočil.',
+      one: 'Brez prenosa besedila ni bilo mogoče preveriti $countString sporočila.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe ni mogla preveriti pošte v tem telefonu.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Odpri v urejevalniku pravil';
+
+  @override
+  String get rulesDescribeDemoNote => 'Predlagal vgrajeni demo, ne model.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Predlagal $provider. Preverite ga, preden ga shranite.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Ni v tem pravilu';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Opisali ste $count delov, ki jih Loupe ne zmore, zato so izpuščeni in namesto njih ni bilo dodano nič.',
+      few: 'Opisali ste $count dele, ki jih Loupe ne zmore, zato so izpuščeni in namesto njih ni bilo dodano nič.',
+      two: 'Opisali ste $count dela, ki ju Loupe ne zmore, zato sta izpuščena in namesto njiju ni bilo dodano nič.',
+      one: 'Opisali ste $count del, ki ga Loupe ne zmore, zato je izpuščen in namesto njega ni bilo dodano nič.',
+    );
+    return '$_temp0';
   }
 
   @override

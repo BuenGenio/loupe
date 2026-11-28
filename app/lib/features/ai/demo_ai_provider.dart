@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:mail_ai/mail_ai.dart';
 
 import '../../demo/demo_brief.dart';
+import '../../demo/demo_changes.dart';
+import '../../demo/demo_rule_proposal.dart';
 
 /// The demo's answer to one task type: the text a model would return, made
 /// by rules from the request. [now] is the provider's clock.
@@ -32,6 +34,8 @@ final class DemoAiProvider implements AiProvider {
   static final Map<String, DemoAnswer> answers = {
     'search.translate': (request, now) => jsonEncode(demoTranslate(_sentence(request.input), now: now)),
     'brief.message': demoBrief,
+    'changes.explain': demoChangeExplanation,
+    'rules.propose': demoRuleProposal,
   };
 
   @override
@@ -154,14 +158,20 @@ Map<String, Object?> demoTranslate(String sentence, {required DateTime now}) {
         terms.add('subject:$next');
         said.add('about "$next"');
         i++;
+      // after: is exclusive (the search language's, as Gmail's), so "since
+      // the 1st" is after the day before.
       case 'since' when month > 0:
         final y = month <= now.month ? now.year : now.year - 1;
-        terms.add('after:$y-${two(month)}-01');
+        terms.add('after:${_day(DateTime(y, month, 0))}');
         said.add('since 1 ${monthName(month)} $y');
         i++;
-      case 'since' || 'after' when year != null:
-        terms.add('after:$year-01-01');
+      case 'since' when year != null:
+        terms.add('after:${year - 1}-12-31');
         said.add('since $year');
+        i++;
+      case 'after' when year != null:
+        terms.add('after:$year-12-31');
+        said.add('after $year');
         i++;
       case 'before' when month > 0:
         final y = month <= now.month ? now.year : now.year - 1;
@@ -262,3 +272,6 @@ Map<String, Object?> demoTranslate(String sentence, {required DateTime now}) {
   final interpretation = 'Mail$about${said.isEmpty ? '' : ' ${said.join(', ')}'}.';
   return {'expression': expression, 'interpretation': interpretation, 'questions': <String>[]};
 }
+
+String _day(DateTime d) =>
+    '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';

@@ -148,6 +148,88 @@ class AppLocalizationsBg extends AppLocalizations {
   String get mailboxTrash => 'Кошче';
 
   @override
+  String get changesExplainTitle => 'Какво се промени';
+
+  @override
+  String get changesExplainIntro => 'Обяснява променените факти, всеки свързан с откъсите си в двете съобщения.';
+
+  @override
+  String get changesExplainAction => 'Обясняване на промените';
+
+  @override
+  String get changesExplainWorking => 'Обясняване на промените…';
+
+  @override
+  String get changesExplainFailed => 'Loupe не успя да обясни тези промени.';
+
+  @override
+  String get changesExplainTooLarge => 'Тези съобщения са твърде дълги за модела.';
+
+  @override
+  String get changesExplainProviderError => 'Моделът не отговори.';
+
+  @override
+  String get changesExplainInvalid => 'Отговорът не премина проверките на Loupe, затова нищо от него не се показва.';
+
+  @override
+  String get changesExplainNoChange => 'Не е открита промяна в смисъла. Точните промени в текста са по-долу.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Променено',
+      'added': 'Ново',
+      'removed': 'Вече не се споменава',
+      'contradiction': 'Противоречиво',
+      'other': 'Променено',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first или $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Съобщенията не казват кое от тези е в сила.';
+
+  @override
+  String get changesExplainPartial => 'Прочетено е само началото на дълго съобщение.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Редовете, започващи с „>“, цитират по-ранна поща. Те се четат като контекст, а не като казаното в някое от съобщенията.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Съобщението може да цитира по-ранна поща, без да я отбележи, затова някои промени може да идват от по-стара поща. Проверете откъсите.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Всеки откъс е открит в своето съобщение. Прочетете ги, преди да разчитате на дадена промяна.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Обяснява се само текстът на съобщенията. Прикачените файлове се сравняват само по име, тип и размер.';
+
+  @override
+  String get changesExplainDemoNote => 'Създадено от вградената демонстрация, не от модел.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Създадено от $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'В това съобщение няма маркиран откъс.';
+
+  @override
   String get conversationCompareMessages => 'Сравняване на съобщения…';
 
   @override
@@ -4846,6 +4928,201 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String subscriptionsNowDiscussion(String sender) {
     return '$sender вече е в „Дискусии“.';
+  }
+
+  @override
+  String get rulesDescribeRule => 'Описване на правило…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Опишете с едно изречение какво трябва да прави правилото. Вие проверявате предложението на Loupe, а нищо не се запазва, докато не го запазите в редактора на правила.';
+
+  @override
+  String get rulesDescribeTitle => 'Описване на правило';
+
+  @override
+  String get rulesDescribeAccount => 'Профил';
+
+  @override
+  String get rulesDescribeHint => 'Премествай касовите бележки от Harbor Coffee в папка Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Използват се само това изречение и имената на папките и етикетите на $account, никога пощата ви.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Предлагане на правило';
+
+  @override
+  String get rulesDescribeWorking => 'Подготвяне на правилото…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe не успя да превърне това в правило.';
+
+  @override
+  String get rulesDescribeProposed => 'Предложено правило';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Правилата разпознават показаните тук думи, адреси и дати, а не за какво е писмото.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Изпраща съвпадащата поща до $address, извън този профил.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'На този телефон, върху новата поща във „Входящи“ на $account, всеки път, когато Loupe проверява за поща.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'На пощенския сървър на $account, при пристигане на пощата. Препращането работи само там.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Къде да се изпълнява, избирате в редактора на правила.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Loupe не може да изпълни тези части',
+      one: 'Loupe не може да изпълни тази част',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Те са пропуснати от правилото и нищо не е поставено на тяхно място.',
+      one: 'Тя е пропусната от правилото и нищо не е поставено на нейно място.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '„$request“';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Правилата не могат да променят известията. Маркирането на поща като прочетена или преместването ѝ не е същото като заглушаването ѝ.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe не може да разпознае този вид поща. Правилото може да разпознава само думи, които вие изберете.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return '$account няма папка с такова име.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Няма етикет с такова име.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Правилата не могат да правят това.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Думи, които Loupe може да разпознава вместо това:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe трябва да знае';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Пробно изпълнение';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Проверка на пощата на този телефон…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Правилото би обхванало $matchedString от $totalString изтеглени писма в $account',
+      one: 'Правилото би обхванало $matchedString от $totalString изтеглено писмо в $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Биха съвпаднали';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Не биха съвпаднали';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Проверена е само пощата, изтеглена на този телефон, извън „Изпратени“, „Чернови“, „Спам“ и „Кошче“, с кода, който изпълнява правилата на устройството. На сървъра и в по-старата поща може да има още.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Проверени са само най-новите $countString писма.',
+      one: 'Проверено е само най-новото писмо.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString писма не можаха да се проверят, без да се изтегли текстът им.',
+      one: '$countString писмо не можа да се провери, без да се изтегли текстът му.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe не успя да провери пощата на този телефон.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Отваряне в редактора на правила';
+
+  @override
+  String get rulesDescribeDemoNote => 'Предложено от вградената демонстрация, не от модел.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Предложено от $provider. Проверете го, преди да го запазите.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Извън това правило';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Описахте тези неща, но Loupe не може да ги изпълни, затова са пропуснати и нищо не е поставено на тяхно място.',
+      one: 'Описахте това, но Loupe не може да го изпълни, затова е пропуснато и нищо не е поставено на негово място.',
+    );
+    return '$_temp0';
   }
 
   @override

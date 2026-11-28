@@ -15,6 +15,8 @@ using the app, in a line or two; leave out internals, refactors and tests.
 - **Settings › Private AI** (off by default). Choose who answers: the built-in demo on the phone, Anthropic with your own API key, or your own OpenAI-compatible server. Keys go to the phone's secure storage. A switch per feature, **Keep Mail on the Phone** per account, Test Connection, Usage & Estimated Cost, and Delete Derived Results. Ask in Plain English uses the provider you pick.
 - **Brief** (with Private AI on). A Brief button above a message's text shows what it asks of you: To Do, Documents to Send, Dates, Conditions and What Happens Next. Tap an item to see its passage in the message. Tick items off, copy them, add a dated one to your calendar, or Track it.
 - **Needs My Action and Waiting on Others.** Two new folders in Mailboxes, built from the actions you track: **Add Action…** in a message's ⋯ menu, and with Private AI, **Suggest Actions** and a Brief item's Track. Each action has its state, a reminder and Undo; a reply never settles one by itself.
+- **Describe a Rule** (Settings › Rules, with Private AI on). Write what you want in a sentence; Loupe proposes a rule, says what it can't do, and counts what it would match in your downloaded mail before you open it in the rule editor.
+- **What Changed** (Compare Messages, with Private AI on). Above the line-by-line diff, the changed facts: what changed, what's new, what's no longer mentioned and what conflicts, each with both passages.
 
 ## 2026-11-21
 

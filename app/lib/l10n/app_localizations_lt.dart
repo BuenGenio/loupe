@@ -154,6 +154,89 @@ class AppLocalizationsLt extends AppLocalizations {
   String get mailboxTrash => 'Šiukšliadėžė';
 
   @override
+  String get changesExplainTitle => 'Kas pasikeitė';
+
+  @override
+  String get changesExplainIntro =>
+      'Paaiškina pasikeitusius faktus, kiekvieną susiedamas su jo ištraukomis abiejuose laiškuose.';
+
+  @override
+  String get changesExplainAction => 'Paaiškinti pakeitimus';
+
+  @override
+  String get changesExplainWorking => 'Aiškinami pakeitimai…';
+
+  @override
+  String get changesExplainFailed => 'Loupe nepavyko paaiškinti šių pakeitimų.';
+
+  @override
+  String get changesExplainTooLarge => 'Šie laiškai modeliui per ilgi.';
+
+  @override
+  String get changesExplainProviderError => 'Modelis neatsakė.';
+
+  @override
+  String get changesExplainInvalid => 'Atsakymas neišlaikė Loupe patikrų, todėl iš jo nieko nerodoma.';
+
+  @override
+  String get changesExplainNoChange => 'Prasmės pakeitimų nerasta. Tikslūs teksto pakeitimai pateikti žemiau.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Pakeista',
+      'added': 'Nauja',
+      'removed': 'Nebeminima',
+      'contradiction': 'Prieštaringa',
+      'other': 'Pakeista',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first arba $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Laiškuose nenurodyta, kuris iš šių galioja.';
+
+  @override
+  String get changesExplainPartial => 'Perskaityta tik ilgo laiško pradžia.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'Eilutės, prasidedančios „>“, cituoja ankstesnius laiškus. Jos skaitomos kaip kontekstas, o ne kaip kurio nors laiško teiginiai.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Laiškas gali cituoti ankstesnius laiškus jų nepažymėdamas, todėl kai kurie pakeitimai gali būti iš senesnių laiškų. Patikrinkite ištraukas.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Kiekviena ištrauka rasta savo laiške. Perskaitykite jas prieš pasikliaudami pakeitimu.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Aiškinamas tik laiškų tekstas. Priedai lyginami tik pagal pavadinimą, tipą ir dydį.';
+
+  @override
+  String get changesExplainDemoNote => 'Sukūrė įtaisytoji demonstracija, ne modelis.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Sukūrė: $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Šiame laiške nepažymėta jokia ištrauka.';
+
+  @override
   String get conversationCompareMessages => 'Palyginti laiškus…';
 
   @override
@@ -4937,6 +5020,213 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String subscriptionsNowDiscussion(String sender) {
     return '$sender dabar yra diskusijose.';
+  }
+
+  @override
+  String get rulesDescribeRule => 'Aprašyti taisyklę…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Vienu sakiniu pasakykite, ką taisyklė turi daryti. Jūs patikrinate, ką siūlo Loupe, ir niekas neišsaugoma, kol neišsaugosite taisyklių rengyklėje.';
+
+  @override
+  String get rulesDescribeTitle => 'Aprašyti taisyklę';
+
+  @override
+  String get rulesDescribeAccount => 'Paskyra';
+
+  @override
+  String get rulesDescribeHint => 'Perkelti čekius iš Harbor Coffee į aplanką Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Naudojamas tik šis sakinys ir paskyros $account aplankų bei žymių pavadinimai, bet niekada jūsų laiškai.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Pasiūlyti taisyklę';
+
+  @override
+  String get rulesDescribeWorking => 'Ruošiama taisyklė…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe nepavyko to paversti taisykle.';
+
+  @override
+  String get rulesDescribeProposed => 'Siūloma taisyklė';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Taisyklės atpažįsta čia rodomus žodžius, adresus ir datas, o ne tai, apie ką laiškas.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Siunčia atitinkančius laiškus adresu $address, už šios paskyros ribų.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Šiame telefone, naujiems paskyros $account laiškams aplanke „Gauti laiškai“, kaskart, kai Loupe tikrina paštą.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'Paskyros $account pašto serveryje, kai gaunami laiškai. Persiuntimas veikia tik ten.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Kur ji bus vykdoma, pasirinksite taisyklių rengyklėje.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dalių, kurių Loupe negali atlikti',
+      many: '$count dalių, kurių Loupe negali atlikti',
+      few: '$count dalys, kurių Loupe negali atlikti',
+      one: '$count dalis, kurios Loupe negali atlikti',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dalių neįtraukta į taisyklę ir vietoj jų nieko neįdėta.',
+      many: '$count dalių neįtraukta į taisyklę ir vietoj jų nieko neįdėta.',
+      few: '$count dalys neįtrauktos į taisyklę ir vietoj jų nieko neįdėta.',
+      one: '$count dalis neįtraukta į taisyklę ir vietoj jos nieko neįdėta.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '„$request“';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Taisyklės negali keisti pranešimų. Pažymėti laišką kaip skaitytą ar jį perkelti nėra tas pats, kas jį nutildyti.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe negali atpažinti tokios rūšies laiškų. Taisyklė gali atpažinti tik jūsų pasirinktus žodžius.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return 'Paskyroje $account nėra aplanko tokiu pavadinimu.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Žymės tokiu pavadinimu nėra.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Taisyklės to padaryti negali.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Žodžiai, kuriuos Loupe gali atpažinti vietoj to:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe reikia žinoti';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Bandomasis vykdymas';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Tikrinami laiškai šiame telefone…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Taisyklę atitiktų $matchedString iš $totalString atsisiųstų laiškų paskyroje $account',
+      many: 'Taisyklę atitiktų $matchedString iš $totalString atsisiųstų laiškų paskyroje $account',
+      few: 'Taisyklę atitiktų $matchedString iš $totalString atsisiųstų laiškų paskyroje $account',
+      one: 'Taisyklę atitiktų $matchedString iš $totalString atsisiųsto laiško paskyroje $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Atitiktų';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Neatitiktų';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Patikrinti tik į šį telefoną atsisiųsti laiškai, išskyrus aplankus „Išsiųsti laiškai“, „Juodraščiai“, „Šlamštas“ ir „Šiukšliadėžė“, kodu, kuris vykdo įrenginio taisykles. Serveryje ir tarp senesnių laiškų jų gali būti daugiau.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Patikrinta tik $countString naujausių laiškų.',
+      many: 'Patikrinta tik $countString naujausių laiškų.',
+      few: 'Patikrinti tik $countString naujausi laiškai.',
+      one: 'Patikrintas tik $countString naujausias laiškas.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Nepavyko patikrinti $countString laiškų neatsisiuntus jų teksto.',
+      many: 'Nepavyko patikrinti $countString laiškų neatsisiuntus jų teksto.',
+      few: 'Nepavyko patikrinti $countString laiškų neatsisiuntus jų teksto.',
+      one: 'Nepavyko patikrinti $countString laiško neatsisiuntus jo teksto.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe nepavyko patikrinti laiškų šiame telefone.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Atidaryti taisyklių rengyklėje';
+
+  @override
+  String get rulesDescribeDemoNote => 'Pasiūlė įtaisytoji demonstracija, ne modelis.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Pasiūlė $provider. Patikrinkite ją prieš išsaugodami.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Neįtraukta į šią taisyklę';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Aprašėte $count dalių, kurių Loupe negali atlikti, todėl jos praleistos ir vietoj jų nieko neįdėta.',
+      many: 'Aprašėte $count dalių, kurių Loupe negali atlikti, todėl jos praleistos ir vietoj jų nieko neįdėta.',
+      few: 'Aprašėte $count dalis, kurių Loupe negali atlikti, todėl jos praleistos ir vietoj jų nieko neįdėta.',
+      one: 'Aprašėte $count dalį, kurios Loupe negali atlikti, todėl ji praleista ir vietoj jos nieko neįdėta.',
+    );
+    return '$_temp0';
   }
 
   @override

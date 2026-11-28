@@ -148,6 +148,91 @@ class AppLocalizationsPt extends AppLocalizations {
   String get mailboxTrash => 'Lixo';
 
   @override
+  String get changesExplainTitle => 'O que mudou';
+
+  @override
+  String get changesExplainIntro =>
+      'Explica os factos que mudaram, cada um ligado às suas passagens em ambas as mensagens.';
+
+  @override
+  String get changesExplainAction => 'Explicar alterações';
+
+  @override
+  String get changesExplainWorking => 'A explicar as alterações…';
+
+  @override
+  String get changesExplainFailed => 'O Loupe não conseguiu explicar estas alterações.';
+
+  @override
+  String get changesExplainTooLarge => 'Estas mensagens são demasiado longas para o modelo.';
+
+  @override
+  String get changesExplainProviderError => 'O modelo não respondeu.';
+
+  @override
+  String get changesExplainInvalid =>
+      'A resposta não passou nas verificações do Loupe, pelo que nada dela é apresentado.';
+
+  @override
+  String get changesExplainNoChange =>
+      'Não foi encontrada nenhuma alteração de significado. As alterações exatas do texto estão abaixo.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Alterado',
+      'added': 'Novo',
+      'removed': 'Já não é mencionado',
+      'contradiction': 'Contraditório',
+      'other': 'Alterado',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first ou $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'As mensagens não dizem qual destes é válido.';
+
+  @override
+  String get changesExplainPartial => 'Só foi lido o início de uma mensagem longa.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      'As linhas que começam por «>» citam correio anterior. São lidas como contexto, não como o que qualquer uma das mensagens diz.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Uma mensagem pode citar correio anterior sem o assinalar, pelo que algumas alterações podem vir de correio mais antigo. Verifique as passagens.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Cada passagem foi encontrada na respetiva mensagem. Leia-as antes de confiar numa alteração.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Só é explicado o texto das mensagens. Os anexos são comparados apenas pelo nome, tipo e tamanho.';
+
+  @override
+  String get changesExplainDemoNote => 'Feito pela demonstração integrada, não por um modelo.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Feito por $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Nenhuma passagem realçada nesta mensagem.';
+
+  @override
   String get conversationCompareMessages => 'Comparar mensagens…';
 
   @override
@@ -4899,6 +4984,194 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String subscriptionsNowDiscussion(String sender) {
     return '$sender está agora em Discussões.';
+  }
+
+  @override
+  String get rulesDescribeRule => 'Descrever uma regra…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Diga numa frase o que uma regra deve fazer. Verifica o que o Loupe propõe, e nada fica guardado enquanto não a guardar no editor de regras.';
+
+  @override
+  String get rulesDescribeTitle => 'Descrever uma regra';
+
+  @override
+  String get rulesDescribeAccount => 'Conta';
+
+  @override
+  String get rulesDescribeHint => 'Mover os recibos da Harbor Coffee para Receipts';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Só são usados esta frase e os nomes das pastas e etiquetas de $account, nunca o seu e-mail.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Propor regra';
+
+  @override
+  String get rulesDescribeWorking => 'A preparar a regra…';
+
+  @override
+  String get rulesDescribeFailed => 'O Loupe não conseguiu transformar isso numa regra.';
+
+  @override
+  String get rulesDescribeProposed => 'Regra proposta';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'As regras procuram as palavras, os endereços e as datas que aparecem aqui, não aquilo de que trata uma mensagem.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Envia o e-mail correspondente para $address, fora desta conta.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Neste dispositivo, no e-mail novo da Caixa de entrada de $account, sempre que o Loupe procura e-mail.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return 'No servidor de e-mail de $account, à medida que o e-mail chega. O encaminhamento só funciona aí.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Escolhe onde é executada no editor de regras.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'O que o Loupe não consegue fazer');
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'A regra deixa isto de fora, e nada foi posto no seu lugar.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '«$request»';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'As regras não podem alterar as notificações. Marcar o e-mail como lido ou movê-lo não é o mesmo que silenciá-lo.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'O Loupe não consegue reconhecer este tipo de e-mail. Uma regra só pode procurar palavras escolhidas por si.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return '$account não tem nenhuma pasta com esse nome.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Não há nenhuma etiqueta com esse nome.';
+
+  @override
+  String get rulesDescribeReasonOther => 'As regras não podem fazer isto.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Palavras que o Loupe pode procurar em vez disso:';
+
+  @override
+  String get rulesDescribeQuestions => 'O Loupe precisa de saber';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Simulação';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'A verificar o e-mail neste dispositivo…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'Corresponderia a $matchedString das $totalString mensagens transferidas de $account',
+      one: 'Corresponderia a $matchedString de $totalString mensagem transferida de $account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Corresponderiam';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Não corresponderiam';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Só foi verificado o e-mail transferido para este dispositivo, fora de Enviados, Rascunhos, Spam e Lixo, pelo código que executa as regras no dispositivo. O servidor e o e-mail mais antigo podem ter mais.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Só foram verificadas as $countString mais recentes.',
+      one: 'Só foi verificada $countString mensagem, a mais recente.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Não foi possível verificar $countString mensagens sem transferir o seu texto.',
+      one: 'Não foi possível verificar $countString mensagem sem transferir o seu texto.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'O Loupe não conseguiu verificar o e-mail neste dispositivo.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Abrir no editor de regras';
+
+  @override
+  String get rulesDescribeDemoNote => 'Proposta pela demonstração integrada, não por um modelo.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return 'Proposta por $provider. Verifique-a antes de a guardar.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Não incluído nesta regra';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Descreveu isto, mas o Loupe não o consegue fazer, por isso ficou de fora e nada foi posto no seu lugar.',
+    );
+    return '$_temp0';
   }
 
   @override

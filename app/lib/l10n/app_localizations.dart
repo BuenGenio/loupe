@@ -435,6 +435,132 @@ abstract class AppLocalizations {
   /// **'Trash'**
   String get mailboxTrash;
 
+  /// Header of the section in Compare Messages (the Changes screen) where Private AI explains which facts changed between the two messages, above the exact text changes.
+  ///
+  /// In en, this message translates to:
+  /// **'What Changed'**
+  String get changesExplainTitle;
+
+  /// Under What Changed, before it has run, above the Explain Changes button.
+  ///
+  /// In en, this message translates to:
+  /// **'Explains the changed facts, each linked to its passages in both messages.'**
+  String get changesExplainIntro;
+
+  /// Button: asks Private AI to explain what changed between the two compared messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Explain Changes'**
+  String get changesExplainAction;
+
+  /// Progress line while Private AI explains the changes, beside a Cancel button.
+  ///
+  /// In en, this message translates to:
+  /// **'Explaining the changes…'**
+  String get changesExplainWorking;
+
+  /// What Changed failed. A line saying why and a Retry button follow.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe couldn’t explain these changes.'**
+  String get changesExplainFailed;
+
+  /// Why What Changed failed: the messages don’t fit the AI model’s limits, so nothing was sent.
+  ///
+  /// In en, this message translates to:
+  /// **'These messages are too long for the model.'**
+  String get changesExplainTooLarge;
+
+  /// Why What Changed failed: the AI model or its service reported a problem. Its own message, in English, follows.
+  ///
+  /// In en, this message translates to:
+  /// **'The model didn’t answer.'**
+  String get changesExplainProviderError;
+
+  /// Why What Changed failed: the AI model’s answer quoted text that isn’t in the messages, or broke another rule, twice. The technical reason, in English, follows.
+  ///
+  /// In en, this message translates to:
+  /// **'The answer didn’t pass Loupe’s checks, so none of it is shown.'**
+  String get changesExplainInvalid;
+
+  /// What Changed found only differences of wording, greetings or layout. The literal text comparison follows below it.
+  ///
+  /// In en, this message translates to:
+  /// **'No change in meaning found. The exact text changes are below.'**
+  String get changesExplainNoChange;
+
+  /// Small label above one explained change. changed: the two messages give it different values. added: only the To Message says it. removed: only the From Message says it; the To Message doesn’t repeat it, which is not the same as cancelling it, so don’t use a word like “cancelled” or “deleted”. contradiction: two passages disagree and the mail doesn’t say which holds.
+  ///
+  /// In en, this message translates to:
+  /// **'{kind, select, changed{Changed} added{New} removed{No longer mentioned} contradiction{Conflicting} other{Changed}}'**
+  String changesExplainKind(String kind);
+
+  /// One explained change: the value as the From Message states it, an arrow, the value as the To Message states it. Both are quoted from the mail.
+  ///
+  /// In en, this message translates to:
+  /// **'{before} → {after}'**
+  String changesExplainValues(String before, String after);
+
+  /// Two values that passages of the mail state for the same thing and that disagree; the mail doesn’t say which holds. Both are quoted from the mail.
+  ///
+  /// In en, this message translates to:
+  /// **'{first} or {second}'**
+  String changesExplainConflictValues(String first, String second);
+
+  /// Under two conflicting passages of the mail. Loupe doesn’t pick the newer one.
+  ///
+  /// In en, this message translates to:
+  /// **'The messages don’t say which of these holds.'**
+  String get changesExplainConflictNote;
+
+  /// Note under What Changed when a message was longer than Private AI’s limit.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the beginning of a long message was read.'**
+  String get changesExplainPartial;
+
+  /// Note under What Changed when a message quotes earlier mail with “>” lines.
+  ///
+  /// In en, this message translates to:
+  /// **'Lines starting with “>” quote earlier mail. They are read as context, not as what either message says.'**
+  String get changesExplainQuotedNote;
+
+  /// Note under What Changed when a message seems to contain forwarded or quoted mail that isn’t marked with “>”, so where the sender’s own words end is uncertain.
+  ///
+  /// In en, this message translates to:
+  /// **'A message may quote earlier mail without marking it, so some changes may come from older mail. Check the passages.'**
+  String get changesExplainUnmarkedQuoteNote;
+
+  /// Note under the explained changes: Loupe checked that every quoted passage is really in its message, which doesn’t prove the explanation right. Tapping a change shows its passages.
+  ///
+  /// In en, this message translates to:
+  /// **'Each passage was found in its message. Read them before relying on a change.'**
+  String get changesExplainCheckNote;
+
+  /// Note under What Changed: attachment contents are not read or compared.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the message text is explained. Attachments are compared by name, type and size only.'**
+  String get changesExplainAttachmentNote;
+
+  /// Footnote under What Changed when the built-in demo, a few rules and no AI model, made the explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Made by the built-in demo, not a model.'**
+  String get changesExplainDemoNote;
+
+  /// Footnote under What Changed naming the AI provider and model that made the explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Made by {provider}'**
+  String changesExplainMadeBy(String provider);
+
+  /// Above one of the two messages shown for an explained change, when the change quotes nothing from that message (it is new, or no longer mentioned there).
+  ///
+  /// In en, this message translates to:
+  /// **'No passage highlighted in this message.'**
+  String get changesExplainNoPassage;
+
   /// Message menu action opening a screen to compare the text and attachment details of two messages in the conversation.
   ///
   /// In en, this message translates to:
@@ -8030,6 +8156,240 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{sender} is in Discussions now.'**
   String subscriptionsNowDiscussion(String sender);
+
+  /// Row in Settings › Rules that opens Describe a Rule: the user writes in a sentence what a rule should do, and Private AI proposes the rule.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe a Rule…'**
+  String get rulesDescribeRule;
+
+  /// Footer under Describe a Rule… in Settings › Rules.
+  ///
+  /// In en, this message translates to:
+  /// **'Say in a sentence what a rule should do. You check what Loupe proposes, and nothing is saved until you save it in the rule editor.'**
+  String get rulesDescribeRuleFooter;
+
+  /// Title of the sheet where the user describes a rule in a sentence.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe a Rule'**
+  String get rulesDescribeTitle;
+
+  /// Row label in Describe a Rule: the one account the rule is for (its folders and tags are the ones the rule may use). Also the title of the sheet picking it.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get rulesDescribeAccount;
+
+  /// Placeholder of the sentence field in Describe a Rule: an example sentence. Harbor Coffee is a café's name and Receipts a folder name in the demo; keep both as they are.
+  ///
+  /// In en, this message translates to:
+  /// **'Move receipts from Harbor Coffee to Receipts'**
+  String get rulesDescribeHint;
+
+  /// Footnote under the sentence field: what the model is given.
+  ///
+  /// In en, this message translates to:
+  /// **'Only this sentence and the folder and tag names of {account} are used, never your mail.'**
+  String rulesDescribeSentNote(String account);
+
+  /// Button that sends the sentence to be turned into a proposed rule.
+  ///
+  /// In en, this message translates to:
+  /// **'Propose Rule'**
+  String get rulesDescribePropose;
+
+  /// Shown while the sentence is being turned into a rule.
+  ///
+  /// In en, this message translates to:
+  /// **'Working out the rule…'**
+  String get rulesDescribeWorking;
+
+  /// Shown when no rule could be proposed; the provider's reason and a Retry button follow.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe couldn’t turn that into a rule.'**
+  String get rulesDescribeFailed;
+
+  /// Heading above the proposed rule and its explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Proposed rule'**
+  String get rulesDescribeProposed;
+
+  /// Footer under the proposed condition: it is a word match, not an understanding of the mail.
+  ///
+  /// In en, this message translates to:
+  /// **'Rules match the words, addresses and dates shown here, not what a message is about.'**
+  String get rulesDescribeConditionNote;
+
+  /// Under a proposed Forward action: where the mail would go.
+  ///
+  /// In en, this message translates to:
+  /// **'Sends matching mail to {address}, outside this account.'**
+  String rulesDescribeForwardWarning(String address);
+
+  /// Where a proposed device rule would run.
+  ///
+  /// In en, this message translates to:
+  /// **'On this phone, on new mail in the Inbox of {account}, each time Loupe checks for mail.'**
+  String rulesDescribeScopeDevice(String account);
+
+  /// Where a proposed server rule would run (proposed when it forwards mail).
+  ///
+  /// In en, this message translates to:
+  /// **'On the mail server of {account}, as mail arrives. Forwarding only runs there.'**
+  String rulesDescribeScopeServer(String account);
+
+  /// Footer under where a proposed rule would run.
+  ///
+  /// In en, this message translates to:
+  /// **'You choose where it runs in the rule editor.'**
+  String get rulesDescribeScopeChoose;
+
+  /// Section header above the parts of the sentence no rule can express.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Loupe Can’t Do This Part} other{Loupe Can’t Do These Parts}}'**
+  String rulesDescribeCantDoHeader(int count);
+
+  /// Footer under the parts of the sentence no rule can express.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{It is left out of the rule, and nothing was put in its place.} other{They are left out of the rule, and nothing was put in their place.}}'**
+  String rulesDescribeCantDoFooter(int count);
+
+  /// Words of the user's sentence, quoted, in the language's own quotation marks.
+  ///
+  /// In en, this message translates to:
+  /// **'“{request}”'**
+  String rulesDescribeQuoted(String request);
+
+  /// Why a request about notifications or quiet was left out of the rule.
+  ///
+  /// In en, this message translates to:
+  /// **'Rules can’t change notifications. Marking mail as read or moving it isn’t the same as keeping it quiet.'**
+  String get rulesDescribeReasonNotification;
+
+  /// Why a kind of mail (invoices, important mail) was left out of the rule's condition.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe can’t recognise this kind of mail. A rule can only match words you choose.'**
+  String get rulesDescribeReasonSemantic;
+
+  /// Why a move to a folder was left out of the rule.
+  ///
+  /// In en, this message translates to:
+  /// **'{account} has no folder by that name.'**
+  String rulesDescribeReasonFolder(String account);
+
+  /// Why tagging was left out of the rule.
+  ///
+  /// In en, this message translates to:
+  /// **'There’s no tag by that name.'**
+  String get rulesDescribeReasonTag;
+
+  /// Why a part of the sentence was left out of the rule, when no other reason fits.
+  ///
+  /// In en, this message translates to:
+  /// **'Rules can’t do this.'**
+  String get rulesDescribeReasonOther;
+
+  /// Before a search expression the user could use instead of a kind of mail, e.g. subject:invoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Words Loupe can match instead:'**
+  String get rulesDescribeSuggestion;
+
+  /// Section header above questions about the sentence (which sender, which folder).
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe Needs to Know'**
+  String get rulesDescribeQuestions;
+
+  /// Section header: what the proposed rule would match in the mail on this phone, without doing anything.
+  ///
+  /// In en, this message translates to:
+  /// **'Dry Run'**
+  String get rulesDescribeDryRunHeader;
+
+  /// Shown while the dry run runs.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking the mail on this phone…'**
+  String get rulesDescribeDryRunWorking;
+
+  /// The dry run's result: how many of the messages on this phone the proposed rule matches.
+  ///
+  /// In en, this message translates to:
+  /// **'{total, plural, =1{Would match {matched} of 1 downloaded message in {account}} other{Would match {matched} of {total} downloaded messages in {account}}}'**
+  String rulesDescribeDryRunCount(int total, int matched, String account);
+
+  /// Label above messages of the dry run the rule matches.
+  ///
+  /// In en, this message translates to:
+  /// **'Would Match'**
+  String get rulesDescribeDryRunMatches;
+
+  /// Label above messages of the dry run the rule doesn't match, the nearest misses first.
+  ///
+  /// In en, this message translates to:
+  /// **'Wouldn’t Match'**
+  String get rulesDescribeDryRunMisses;
+
+  /// Footnote under the dry run: what it covers.
+  ///
+  /// In en, this message translates to:
+  /// **'Only mail downloaded to this phone was checked, outside Sent, Drafts, Junk and Trash, by the code that runs device rules. The server and older mail may hold more.'**
+  String get rulesDescribeDryRunCoverage;
+
+  /// Footnote under the dry run when the phone has more mail than it checks.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Only the newest message was checked.} other{Only the newest {count} were checked.}}'**
+  String rulesDescribeDryRunCapped(int count);
+
+  /// Footnote under the dry run: messages it couldn't decide; they count as not matching.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 message couldn’t be checked without downloading its text.} other{{count} messages couldn’t be checked without downloading their text.}}'**
+  String rulesDescribeDryRunUnchecked(int count);
+
+  /// Shown when the dry run failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe couldn’t check the mail on this phone.'**
+  String get rulesDescribeDryRunFailed;
+
+  /// Button: opens the proposed rule in the rule editor, where nothing is saved until Save.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Rule Editor'**
+  String get rulesDescribeOpenEditor;
+
+  /// Footnote: who proposed the rule, when it was the demo.
+  ///
+  /// In en, this message translates to:
+  /// **'Proposed by the built-in demo, not a model.'**
+  String get rulesDescribeDemoNote;
+
+  /// Footnote: which AI provider and model proposed the rule.
+  ///
+  /// In en, this message translates to:
+  /// **'Proposed by {provider}. Check it before you save it.'**
+  String rulesDescribeProviderNote(String provider);
+
+  /// Rule editor, opened from Describe a Rule: header above what the sentence asked for that Loupe can't do.
+  ///
+  /// In en, this message translates to:
+  /// **'Not in This Rule'**
+  String get rulesDescribeLeftOutHeader;
+
+  /// Rule editor, opened from Describe a Rule: footer under what was left out.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{You described this, but Loupe can’t do it, so it was left out and nothing was put in its place.} other{You described these, but Loupe can’t do them, so they were left out and nothing was put in their place.}}'**
+  String rulesDescribeLeftOutFooter(int count);
 
   /// Title of the screen shown instead of the app when the mail database can't be opened.
   ///

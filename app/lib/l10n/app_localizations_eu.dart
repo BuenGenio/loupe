@@ -148,6 +148,89 @@ class AppLocalizationsEu extends AppLocalizations {
   String get mailboxTrash => 'Zakarrontzia';
 
   @override
+  String get changesExplainTitle => 'Zer aldatu den';
+
+  @override
+  String get changesExplainIntro => 'Aldatutako datuak azaltzen ditu, bakoitza bi mezuetako bere pasarteekin lotuta.';
+
+  @override
+  String get changesExplainAction => 'Azaldu aldaketak';
+
+  @override
+  String get changesExplainWorking => 'Aldaketak azaltzen…';
+
+  @override
+  String get changesExplainFailed => 'Loupek ezin izan ditu aldaketa hauek azaldu.';
+
+  @override
+  String get changesExplainTooLarge => 'Mezu hauek luzeegiak dira ereduarentzat.';
+
+  @override
+  String get changesExplainProviderError => 'Ereduak ez du erantzun.';
+
+  @override
+  String get changesExplainInvalid =>
+      'Erantzunak ez ditu Loupen egiaztapenak gainditu; beraz, ez da haren ezer erakusten.';
+
+  @override
+  String get changesExplainNoChange => 'Ez da esanahi-aldaketarik aurkitu. Testuaren aldaketa zehatzak behean daude.';
+
+  @override
+  String changesExplainKind(String kind) {
+    String _temp0 = intl.Intl.selectLogic(kind, {
+      'changed': 'Aldatuta',
+      'added': 'Berria',
+      'removed': 'Jada ez da aipatzen',
+      'contradiction': 'Kontraesankorra',
+      'other': 'Aldatuta',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String changesExplainValues(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String changesExplainConflictValues(String first, String second) {
+    return '$first edo $second';
+  }
+
+  @override
+  String get changesExplainConflictNote => 'Mezuek ez dute esaten horietatik zein den baliozkoa.';
+
+  @override
+  String get changesExplainPartial => 'Mezu luze baten hasiera bakarrik irakurri da.';
+
+  @override
+  String get changesExplainQuotedNote =>
+      '«>» ikurrarekin hasten diren lerroek lehenagoko mezuak aipatzen dituzte. Testuinguru gisa irakurtzen dira, ez mezuetako batek esaten duen gisa.';
+
+  @override
+  String get changesExplainUnmarkedQuoteNote =>
+      'Mezu batek lehenagoko mezuak aipa ditzake markatu gabe; beraz, aldaketa batzuk mezu zaharragoetatik etor daitezke. Egiaztatu pasarteak.';
+
+  @override
+  String get changesExplainCheckNote =>
+      'Pasarte bakoitza bere mezuan aurkitu da. Irakurri itzazu aldaketa batean fidatu aurretik.';
+
+  @override
+  String get changesExplainAttachmentNote =>
+      'Mezuen testua bakarrik azaltzen da. Eranskinak izenaren, motaren eta tamainaren arabera bakarrik konparatzen dira.';
+
+  @override
+  String get changesExplainDemoNote => 'Demo integratuak egina, ez eredu batek.';
+
+  @override
+  String changesExplainMadeBy(String provider) {
+    return 'Egilea: $provider';
+  }
+
+  @override
+  String get changesExplainNoPassage => 'Mezu honetan ez dago pasarterik nabarmenduta.';
+
+  @override
   String get conversationCompareMessages => 'Konparatu mezuak…';
 
   @override
@@ -4891,6 +4974,201 @@ class AppLocalizationsEu extends AppLocalizations {
   @override
   String subscriptionsNowDiscussion(String sender) {
     return '$sender Eztabaidak atalean dago orain.';
+  }
+
+  @override
+  String get rulesDescribeRule => 'Deskribatu arau bat…';
+
+  @override
+  String get rulesDescribeRuleFooter =>
+      'Esan esaldi batean zer egin behar duen arau batek. Loupe-k proposatzen duena zuk egiaztatzen duzu, eta ez da ezer gordetzen arau-editorean gordetzen duzun arte.';
+
+  @override
+  String get rulesDescribeTitle => 'Deskribatu arau bat';
+
+  @override
+  String get rulesDescribeAccount => 'Kontua';
+
+  @override
+  String get rulesDescribeHint => 'Mugitu Harbor Coffee-ren ordainagiriak Receipts karpetara';
+
+  @override
+  String rulesDescribeSentNote(String account) {
+    return 'Esaldi hau eta $account kontuaren karpeta- eta etiketa-izenak bakarrik erabiltzen dira, inoiz ez zure posta.';
+  }
+
+  @override
+  String get rulesDescribePropose => 'Proposatu araua';
+
+  @override
+  String get rulesDescribeWorking => 'Araua prestatzen…';
+
+  @override
+  String get rulesDescribeFailed => 'Loupe-k ezin izan du hori arau bihurtu.';
+
+  @override
+  String get rulesDescribeProposed => 'Proposatutako araua';
+
+  @override
+  String get rulesDescribeConditionNote =>
+      'Arauek hemen ageri diren hitzak, helbideak eta datak bilatzen dituzte, ez mezua zeri buruzkoa den.';
+
+  @override
+  String rulesDescribeForwardWarning(String address) {
+    return 'Bat datorren posta $address helbidera bidaltzen du, kontu honetatik kanpo.';
+  }
+
+  @override
+  String rulesDescribeScopeDevice(String account) {
+    return 'Telefono honetan, $account kontuaren Sarrera-ontziko posta berrian, Loupe-k posta begiratzen duen bakoitzean.';
+  }
+
+  @override
+  String rulesDescribeScopeServer(String account) {
+    return '$account kontuaren posta-zerbitzarian, posta iristen den heinean. Birbidaltzea han bakarrik dabil.';
+  }
+
+  @override
+  String get rulesDescribeScopeChoose => 'Arau-editorean aukeratzen duzu non exekutatzen den.';
+
+  @override
+  String rulesDescribeCantDoHeader(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Loupe-k ezin ditu zati hauek egin',
+      one: 'Loupe-k ezin du zati hau egin',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeCantDoFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Arautik kanpo utzi dira, eta ez da ezer jarri beren lekuan.',
+      one: 'Arautik kanpo utzi da, eta ez da ezer jarri bere lekuan.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeQuoted(String request) {
+    return '«$request»';
+  }
+
+  @override
+  String get rulesDescribeReasonNotification =>
+      'Arauek ezin dituzte jakinarazpenak aldatu. Posta irakurritzat markatzea edo mugitzea eta isilaraztea ez dira gauza bera.';
+
+  @override
+  String get rulesDescribeReasonSemantic =>
+      'Loupe-k ezin du posta mota hau ezagutu. Arau batek zuk aukeratutako hitzak bakarrik bila ditzake.';
+
+  @override
+  String rulesDescribeReasonFolder(String account) {
+    return '$account kontuak ez du izen hori duen karpetarik.';
+  }
+
+  @override
+  String get rulesDescribeReasonTag => 'Ez dago izen hori duen etiketarik.';
+
+  @override
+  String get rulesDescribeReasonOther => 'Arauek ezin dute hori egin.';
+
+  @override
+  String get rulesDescribeSuggestion => 'Loupe-k horren ordez bila ditzakeen hitzak:';
+
+  @override
+  String get rulesDescribeQuestions => 'Loupe-k jakin behar du';
+
+  @override
+  String get rulesDescribeDryRunHeader => 'Simulazioa';
+
+  @override
+  String get rulesDescribeDryRunWorking => 'Telefono honetako posta egiaztatzen…';
+
+  @override
+  String rulesDescribeDryRunCount(int total, int matched, String account) {
+    final intl.NumberFormat totalNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+    final intl.NumberFormat matchedNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String matchedString = matchedNumberFormat.format(matched);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$account kontuan deskargatutako $totalString mezuetatik, bat etorriko liratekeenak: $matchedString',
+      one: '$account kontuan deskargatutako mezu bakarretik, bat etorriko liratekeenak: $matchedString',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunMatches => 'Bat etorriko liratekeenak';
+
+  @override
+  String get rulesDescribeDryRunMisses => 'Bat etorriko ez liratekeenak';
+
+  @override
+  String get rulesDescribeDryRunCoverage =>
+      'Telefono honetara deskargatutako posta bakarrik egiaztatu da, Bidalitakoak, Zirriborroak, Zabor-posta eta Zakarrontzia kanpo utzita, gailuko arauak exekutatzen dituen kodearekin. Zerbitzariak eta posta zaharragoak gehiago izan dezakete.';
+
+  @override
+  String rulesDescribeDryRunCapped(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString mezu berrienak bakarrik egiaztatu dira.',
+      one: 'Mezu berriena bakarrik egiaztatu da.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rulesDescribeDryRunUnchecked(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ezin izan dira $countString mezu egiaztatu testua deskargatu gabe.',
+      one: 'Ezin izan da mezu $countString egiaztatu testua deskargatu gabe.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rulesDescribeDryRunFailed => 'Loupe-k ezin izan du telefono honetako posta egiaztatu.';
+
+  @override
+  String get rulesDescribeOpenEditor => 'Ireki arau-editorean';
+
+  @override
+  String get rulesDescribeDemoNote => 'Demo integratuak proposatua, ez eredu batek.';
+
+  @override
+  String rulesDescribeProviderNote(String provider) {
+    return '$provider bidez proposatua. Egiaztatu gorde aurretik.';
+  }
+
+  @override
+  String get rulesDescribeLeftOutHeader => 'Arau honetatik kanpo';
+
+  @override
+  String rulesDescribeLeftOutFooter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Hauek deskribatu dituzu, baina Loupe-k ezin ditu egin; beraz, kanpo utzi dira, eta ez da ezer jarri beren lekuan.',
+      one: 'Hau deskribatu duzu, baina Loupe-k ezin du egin; beraz, kanpo utzi da, eta ez da ezer jarri bere lekuan.',
+    );
+    return '$_temp0';
   }
 
   @override
