@@ -63,7 +63,8 @@ jobs:
               fdroid lint io.github.buengenio.loupe
               # Adds build entries for a tag newer than the recipe, as F-Droid does.
               # Without --auto it only moves CurrentVersion, and the build below
-              # finds no entry for the new version code (0.3.0's first check).
+              # finds no entry for the new version code (the first check of 0.3.0).
+              # No apostrophes in here: this script is in single quotes.
               fdroid checkupdates --auto --allow-dirty io.github.buengenio.loupe
               fdroid build --verbose --on-server --no-tarball "io.github.buengenio.loupe:$VERCODE"
             '
