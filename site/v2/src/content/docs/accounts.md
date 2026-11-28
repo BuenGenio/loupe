@@ -127,11 +127,25 @@ Open Settings and tap an account.
 | **Colour** | Marks this account's messages in All Inboxes and other unified mailboxes |
 | **Identities** | The addresses you send from, with their signatures. See [Identities and signatures](/docs/identities/). |
 | **Manage Folders**, **Show All Folders** | Which folders show and sync. See [Folders](/docs/organising/#folders). |
+| **Special Folders** | IMAP accounts: where sent mail, drafts and deleted mail go. See [Special folders](#special-folders). |
 | **Server** | The incoming and outgoing servers and how you sign in, for reference |
 | **Sign In Again** | For Google and Microsoft accounts, renews the sign-in |
 | **Remove Account** | Removes the account from this phone |
 
 Server settings and passwords can't be changed after an account is added. To change them, remove the account and add it again.
+
+### Special folders
+
+Loupe files sent mail in the account's Sent folder, saves drafts in Drafts and moves deleted mail to Trash. It uses the folders your server marks for these jobs, and when the server marks none, folders with the usual names (Sent, Sent Items, Deleted Items and so on).
+
+If it picks the wrong folder, or you'd rather use another, go to Settings › *account* › **Special Folders** (IMAP accounts) and tap **Sent**, **Drafts** or **Trash**:
+
+- **Pick a folder** from the list. Folders show as a tree, and the special ones with their whole path, so two folders named Sent can be told apart. The Inbox, folders that can only hold other folders, and Loupe's own Snoozed and Loupe Settings folders can't be picked.
+- **Automatic** goes back to the server's choice. Under it, Loupe shows which folder that is.
+
+Mail already filed stays where it is: from then on, Loupe uses the folder you picked, on this phone. A folder has one job at a time: picking it for one takes it off any other. If the folder you picked disappears from the server, Loupe goes back to Automatic.
+
+JMAP accounts don't have this setting: they use the folders the server marks for each job.
 
 ### Remove an account
 
