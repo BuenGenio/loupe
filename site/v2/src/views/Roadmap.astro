@@ -93,7 +93,9 @@ const not = ['not1', 'not2', 'not3', 'not4', 'not5'];
           {
             milestones.map((m) => (
               <li class:list={['milestone', m.state]}>
-                <span class="letter" aria-hidden="true">{m.key.toUpperCase()}</span>
+                <span class="letter" aria-hidden="true">
+                  {m.state === 'done' ? <Icon name="checkmark" size={16} /> : m.key.toUpperCase()}
+                </span>
                 <div>
                   <p class="state">{milestoneStates[m.state]}</p>
                   <h3><Icon name={m.icon} size={18} /> {m.title}</h3>
@@ -292,6 +294,15 @@ const not = ['not1', 'not2', 'not3', 'not4', 'not5'];
 
   .milestone.now .state {
     color: var(--night-accent) !important;
+  }
+
+  .milestone.done .letter {
+    background: color-mix(in srgb, var(--night-ok) 22%, transparent);
+    color: var(--night-ok);
+  }
+
+  .milestone.done .state {
+    color: var(--night-ok) !important;
   }
 
   .milestone h3 {

@@ -127,8 +127,8 @@ export const demo = {
 
 // The roadmap's Private AI milestones (PLAN-combined.md, "Delivery milestones").
 // Gates, not dates: each ships when its fixtures pass on real mail and phones.
-export type MilestoneState = 'now' | 'planned';
-export const milestoneStates: Record<MilestoneState, string> = { now: 'In progress', planned: 'Planned' };
+export type MilestoneState = 'done' | 'now' | 'planned';
+export const milestoneStates: Record<MilestoneState, string> = { done: 'In the app', now: 'In progress', planned: 'Planned' };
 
 export const roadmapAi = {
   eyebrow: 'Private AI',
@@ -139,9 +139,9 @@ export const roadmapAi = {
 };
 
 export const milestones: { key: string; state: MilestoneState; icon: IconName; title: string; text: string }[] = [
-  { key: 'a', state: 'now', icon: 'code', title: 'Changes: a diff for email', text: 'Compare two messages in a conversation and see exactly what changed, line by line, with attachment names and sizes compared separately. Runs on the phone; no model involved.' },
-  { key: 'b', state: 'planned', icon: 'shield-lock', title: 'The foundation', text: 'Typed tasks, a fake provider for tests, and the first on-device and network adapters. Every result is checked before a feature sees it, and nothing is uploaded without your choice.' },
-  { key: 'c', state: 'planned', icon: 'search-sparkle', title: 'Search in plain English', text: 'A sentence becomes an expression you can see, edit and save, run through the same search as a typed query.' },
+  { key: 'a', state: 'done', icon: 'code', title: 'Changes: a diff for email', text: 'Compare two messages in a conversation and see exactly what changed, line by line, with attachment names and sizes compared separately. Runs on the phone; no model involved.' },
+  { key: 'b', state: 'now', icon: 'shield-lock', title: 'The foundation', text: 'Typed tasks, a fake provider for tests, and the first on-device and network adapters. Every result is checked before a feature sees it, and nothing is uploaded without your choice.' },
+  { key: 'c', state: 'now', icon: 'search-sparkle', title: 'Search in plain English', text: 'A sentence becomes an expression you can see, edit and save, run through the same search as a typed query. In the app as a preview, off by default, where a few built-in rules stand in for the model.' },
   { key: 'd', state: 'planned', icon: 'sparkle', title: 'Brief', text: 'What a message asks of you, every item linked to its sentence. Tested against tricky, mortgage-style mail before it ships.' },
   { key: 'e', state: 'planned', icon: 'mail-inbox', title: 'Needs my action, Waiting on others', text: 'Two folders built on durable action records, with a reminder per request. Your corrections survive new mail and new models.' },
   { key: 'f', state: 'planned', icon: 'flow', title: 'Rules in plain English', text: 'A typed proposal in the normal rule editor, with a dry run. Loupe writes the Sieve, never the model.' },
