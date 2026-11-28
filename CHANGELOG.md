@@ -17,6 +17,8 @@ using the app, in a line or two; leave out internals, refactors and tests.
 - **Needs My Action and Waiting on Others.** Two new folders in Mailboxes, built from the actions you track: **Add Action…** in a message's ⋯ menu, and with Private AI, **Suggest Actions** and a Brief item's Track. Each action has its state, a reminder and Undo; a reply never settles one by itself.
 - **Describe a Rule** (Settings › Rules, with Private AI on). Write what you want in a sentence; Loupe proposes a rule, says what it can't do, and counts what it would match in your downloaded mail before you open it in the rule editor.
 - **What Changed** (Compare Messages, with Private AI on). Above the line-by-line diff, the changed facts: what changed, what's new, what's no longer mentioned and what conflicts, each with both passages.
+- **Documents** (Mailboxes). Search inside the PDF, text and CSV attachments on your phone, with the page and the passage. A document's page says what could be read, and whether another copy in the conversation has the same contents. With Private AI on, **Key Facts** lists its key fields, each tied to its page.
+- **Reply Check** (with Private AI on). Replying to a message that asked for things, a panel says which requests your attachments and text cover ("2 of 3 attached"), each with the passage it came from. It never holds up Send.
 
 ## 2026-11-21
 
