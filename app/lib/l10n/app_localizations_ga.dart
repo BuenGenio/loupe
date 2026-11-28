@@ -6808,6 +6808,344 @@ class AppLocalizationsGa extends AppLocalizations {
   String get sharedNotJunk => 'Ní turscar é';
 
   @override
+  String get documentsTitle => 'Doiciméid';
+
+  @override
+  String get documentsSearchPlaceholder => 'Cuardaigh sna doiciméid';
+
+  @override
+  String get documentsSearchInDocuments => 'Cuardaigh sna doiciméid';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count doiciméad íoslódáilte',
+      many: '$count ndoiciméad íoslódáilte',
+      few: '$count dhoiciméad íoslódáilte',
+      two: '$count dhoiciméad íoslódáilte',
+      one: '1 doiciméad íoslódáilte',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count doiciméad íoslódáilte',
+      many: '$count ndoiciméad íoslódáilte',
+      few: '$count dhoiciméad íoslódáilte',
+      two: '$count dhoiciméad íoslódáilte',
+      one: '1 doiciméad íoslódáilte',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: 'Ní féidir $unreadable ceann a léamh',
+      many: 'Ní féidir $unreadable gcinn a léamh',
+      few: 'Ní féidir $unreadable cinn a léamh',
+      two: 'Ní féidir $unreadable cheann a léamh',
+      one: 'Ní féidir 1 cheann a léamh',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Cuardaíodh $count doiciméad íoslódáilte',
+      many: 'Cuardaíodh $count ndoiciméad íoslódáilte',
+      few: 'Cuardaíodh $count dhoiciméad íoslódáilte',
+      two: 'Cuardaíodh $count dhoiciméad íoslódáilte',
+      one: 'Cuardaíodh 1 doiciméad íoslódáilte',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Cuardaíodh $count doiciméad íoslódáilte',
+      many: 'Cuardaíodh $count ndoiciméad íoslódáilte',
+      few: 'Cuardaíodh $count dhoiciméad íoslódáilte',
+      two: 'Cuardaíodh $count dhoiciméad íoslódáilte',
+      one: 'Cuardaíodh 1 doiciméad íoslódáilte',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: 'Níorbh fhéidir $unreadable ceann a léamh',
+      many: 'Níorbh fhéidir $unreadable gcinn a léamh',
+      few: 'Níorbh fhéidir $unreadable cinn a léamh',
+      two: 'Níorbh fhéidir $unreadable cheann a léamh',
+      one: 'Níorbh fhéidir 1 cheann a léamh',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Déantar cuardach sna ceangaltáin ar an bhfón seo, ní i do bhosca poist ar fad. Oscail ceangaltán chun é a chur leis.';
+
+  @override
+  String get documentsEmpty => 'Gan doiciméid fós';
+
+  @override
+  String get documentsEmptyDetail =>
+      'Taispeántar anseo na PDFanna agus na comhaid téacs a osclaíonn tú ón ríomhphost, ionas gur féidir leat cuardach a dhéanamh iontu.';
+
+  @override
+  String get documentsNoResults => 'Gan torthaí';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Níl “$query” in aon doiciméad íoslódáilte.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Aimsithe ar leathanach $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Aimsithe ar líne $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count toradh eile',
+      many: '$count dtoradh eile',
+      few: '$count thoradh eile',
+      two: '$count thoradh eile',
+      one: '1 toradh eile',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Leathanach $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded =>
+      'Níl sé íoslódáilte: oscail é chun é a léamh agus cuardach a dhéanamh ann.';
+
+  @override
+  String get documentsStatusEncrypted => 'Cosanta le pasfhocal: ní féidir le Loupe é a léamh.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Níor aimsíodh aon téacs: b’fhéidir gur íomhá scanta nó grianghraf é, rud nach féidir le Loupe a léamh fós.';
+
+  @override
+  String get documentsStatusEmpty => 'Níl aon téacs sa chomhad seo.';
+
+  @override
+  String get documentsStatusUnsupported => 'Ní féidir le Loupe an cineál seo doiciméid a léamh fós.';
+
+  @override
+  String get documentsStatusTooLarge => 'Rómhór le léamh ar an bhfón seo.';
+
+  @override
+  String get documentsStatusDamaged => 'Níorbh fhéidir é a léamh: b’fhéidir go bhfuil an comhad damáistithe.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total leathanach',
+      many: '$total leathanach',
+      few: '$total leathanach',
+      two: '$total leathanach',
+      one: '1 leathanach',
+    );
+    return 'Léadh $read as $_temp0; ní dhéantar cuardach sa chuid eile.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Níor léadh ach an tús; ní dhéantar cuardach sa chuid eile.';
+
+  @override
+  String get documentsOpenDocument => 'Oscail an doiciméad';
+
+  @override
+  String get documentsOpenMessage => 'Oscail an teachtaireacht';
+
+  @override
+  String get documentsDetails => 'Sonraí an doiciméid';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Méarlorg an inneachair $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Téacs de réir leathanaigh';
+
+  @override
+  String get documentsVersionsHeader => 'Cóipeanna eile';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Inneachar difriúil ón gcóip níos luaithe ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Tá inneachar difriúil i gcóip níos nuaí ($date)';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'An t-inneachar céanna atá sa chóip dar dáta $date';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'An t-ainm céanna atá ar an gcóip dar dáta $date; ní chuirfear an t-inneachar i gcomparáid go dtí go mbeidh an dá cheann íoslódáilte';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Tá na príomhfhíricí mar an gcéanna; tá téacs eile difriúil.';
+
+  @override
+  String get documentsKeyFacts => 'Príomhfhíricí';
+
+  @override
+  String get documentsKeyFactsFind => 'Aimsigh na príomhfhíricí';
+
+  @override
+  String get documentsKeyFactsWorking => 'Ag léamh an doiciméid…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Níorbh fhéidir na príomhfhíricí a aimsiú.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Déanta ag an taispeántas ionsuite, ní ag samhail.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Déanta ag $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Tapáil fíric le feiceáil cá háit a luann an doiciméad í.';
+
+  @override
+  String get documentsKeyFactsNone => 'Níl príomhfhíricí ag Loupe don chineál seo doiciméid fós.';
+
+  @override
+  String get documentsKeyFactsPartial =>
+      'Níor léadh ach na chéad leathanaigh; níl eolas ar fhíricí sna leathanaigh ina dhiaidh sin.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Gan lua';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Luaite ar bhealaí difriúla';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Ar leathanach $page freisin:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Léiriú morgáiste';
+
+  @override
+  String get documentsTypeInvoice => 'Sonrasc';
+
+  @override
+  String get documentsTypeBooking => 'Áirithint';
+
+  @override
+  String get documentsTypeOther => 'Doiciméad eile';
+
+  @override
+  String get documentsFieldInitialRate => 'Ráta tosaigh';
+
+  @override
+  String get documentsFieldRatePeriod => 'Tréimhse an ráta tosaigh';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Íocaíocht mhíosúil';
+
+  @override
+  String get documentsFieldTerm => 'Téarma';
+
+  @override
+  String get documentsFieldLoanAmount => 'Méid na hiasachta';
+
+  @override
+  String get documentsFieldArrangementFee => 'Táille socraithe';
+
+  @override
+  String get documentsFieldValuationFee => 'Táille luachála';
+
+  @override
+  String get documentsFieldBrokerFee => 'Táille bróicéara';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Táillí aisíocaíochta luaithe';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Méid iomlán iníoctha';
+
+  @override
+  String get documentsFieldAmountDue => 'Méid dlite';
+
+  @override
+  String get documentsFieldCurrency => 'Airgeadra';
+
+  @override
+  String get documentsFieldDueDate => 'Dáta dlite';
+
+  @override
+  String get documentsFieldPayee => 'Íocaí';
+
+  @override
+  String get documentsFieldReference => 'Tagairt';
+
+  @override
+  String get documentsFieldSubtotal => 'Fo-iomlán';
+
+  @override
+  String get documentsFieldTax => 'CBL';
+
+  @override
+  String get documentsFieldDate => 'Dáta';
+
+  @override
+  String get documentsFieldTime => 'Am';
+
+  @override
+  String get documentsFieldTimeZone => 'Crios ama';
+
+  @override
+  String get documentsFieldAddress => 'Seoladh';
+
+  @override
+  String get documentsFieldPerson => 'Duine';
+
+  @override
   String get composeSignature => 'Síniú';
 
   @override
@@ -7376,6 +7714,222 @@ class AppLocalizationsGa extends AppLocalizations {
   @override
   String get accountImportFailed =>
       'Níorbh fhéidir an cuntas a chur leis. Bain triail eile as, nó cuir leis de láimh é.';
+
+  @override
+  String get composeReplyCheckTitle => 'Seiceáil an fhreagra';
+
+  @override
+  String get composeReplyCheckChecking => 'Ag léamh a bhfuil iarrtha acu…';
+
+  @override
+  String get composeReplyCheckFailed => 'Níorbh fhéidir a bhfuil iarrtha acu a léamh.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached as $total ceangailte',
+      many: '$attached as $total ceangailte',
+      few: '$attached as $total ceangailte',
+      two: '$attached as $total ceangailte',
+      one: '1 as $total ceangailte',
+      zero: 'Níl aon cheann as $total ceangailte',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count doiciméad don tréimhse mhícheart, b’fhéidir',
+      many: '$count ndoiciméad don tréimhse mhícheart, b’fhéidir',
+      few: '$count dhoiciméad don tréimhse mhícheart, b’fhéidir',
+      two: '$count dhoiciméad don tréimhse mhícheart, b’fhéidir',
+      one: '1 doiciméad don tréimhse mhícheart, b’fhéidir',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count comhad nárbh fhéidir a léamh',
+      many: '$count gcomhad nárbh fhéidir a léamh',
+      few: '$count chomhad nárbh fhéidir a léamh',
+      two: '$count chomhad nárbh fhéidir a léamh',
+      one: '1 chomhad nárbh fhéidir a léamh',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count le déanamh lasmuigh den ríomhphost',
+      many: '$count le déanamh lasmuigh den ríomhphost',
+      few: '$count le déanamh lasmuigh den ríomhphost',
+      two: '$count le déanamh lasmuigh den ríomhphost',
+      one: '1 le déanamh lasmuigh den ríomhphost',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count i do théacs',
+      many: '$count i do théacs',
+      few: '$count i do théacs',
+      two: '$count i do théacs',
+      one: '1 i do théacs',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count le freagairt',
+      many: '$count le freagairt',
+      few: '$count le freagairt',
+      two: '$count le freagairt',
+      one: '1 le freagairt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Ceangailte';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Seiceáil an tréimhse';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Níl sé ceangailte';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Níl sé i d’fhreagra';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Lasmuigh den ríomhphost';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'I do théacs';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Ní féidir a rá';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Meaitseáladh “$file” de réir a ainm amháin.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Meaitseáladh “$file” de réir a bhfuil scríofa ann.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Seiceáil gur le haghaidh $period é.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'D’iarr siad $asked; tá $found san ainm “$file”.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'D’iarr siad $asked; tá $found scríofa sa chomhad “$file”.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Níorbh fhéidir “$file” a léamh, mar sin níl a fhios an é an comhad ceart é.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Déantar é seo lasmuigh den ríomhphost, ní trí chomhad a cheangal.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return 'Tá “$file” ceangailte, ach ní trí ríomhphost a dhéantar é seo.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Scríobh tú: “$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Óna dteachtaireacht';
+
+  @override
+  String get composeReplyCheckByNameNote => 'Ní léiríonn ainm comhaid cad atá ann. Oscail na comhaid le bheith cinnte.';
+
+  @override
+  String get composeReplyCheckPartial => 'Tá a dteachtaireacht fada; níor léadh ach a tús.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Iarratais aimsithe ag an taispeántas ionsuite, ní ag samhail.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Iarratais aimsithe ag $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Ná seiceáil é seo';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count iarratas gan seiceáil',
+      many: '$count n-iarratas gan seiceáil',
+      few: '$count iarratas gan seiceáil',
+      two: '$count iarratas gan seiceáil',
+      one: '1 iarratas gan seiceáil',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Seiceáil gach ceann';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Taispeáin na hiarratais';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Folaigh na hiarratais';
+
+  @override
+  String get composeReplyCheckHide => 'Folaigh seiceáil an fhreagra';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Luann do théacs ceangaltán, ach níl aon rud ceangailte.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Folaigh an meabhrúchán';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Doiciméid taispeántais';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Brabhsáil comhaid…';
 
   @override
   String get composeNewMessageTitle => 'Teachtaireacht nua';

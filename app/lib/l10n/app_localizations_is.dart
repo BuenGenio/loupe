@@ -6446,6 +6446,313 @@ class AppLocalizationsIs extends AppLocalizations {
   String get sharedNotJunk => 'Ekki ruslpóstur';
 
   @override
+  String get documentsTitle => 'Skjöl';
+
+  @override
+  String get documentsSearchPlaceholder => 'Leita í skjölum';
+
+  @override
+  String get documentsSearchInDocuments => 'Leita í skjölum';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sótt skjöl',
+      one: '$count sótt skjal',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sótt skjöl',
+      one: '$count sótt skjal',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: 'ekki hægt að lesa $unreadable',
+      one: 'ekki hægt að lesa $unreadable',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Leitað í $count sóttum skjölum',
+      one: 'Leitað í $count sóttu skjali',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Leitað í $count sóttum skjölum',
+      one: 'Leitað í $count sóttu skjali',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: 'ekki tókst að lesa $unreadable',
+      one: 'ekki tókst að lesa $unreadable',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Leitar í viðhengjum í þessum síma, ekki í öllu pósthólfinu þínu. Opnaðu viðhengi til að bæta því við.';
+
+  @override
+  String get documentsEmpty => 'Engin skjöl enn';
+
+  @override
+  String get documentsEmptyDetail =>
+      'PDF-skjöl og textaskrár sem þú opnar úr pósti birtast hér svo þú getir leitað í þeim.';
+
+  @override
+  String get documentsNoResults => 'Ekkert passar';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Ekkert sótt skjal inniheldur „$query“.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Fannst á síðu $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Fannst í línu $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count samsvaranir í viðbót',
+      one: '$count samsvörun í viðbót',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Síða $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'Ekki sótt: opnaðu það til að lesa það og leita í því.';
+
+  @override
+  String get documentsStatusEncrypted => 'Varið með lykilorði: Loupe getur ekki lesið það.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Enginn texti fannst: þetta gæti verið skönnuð mynd eða ljósmynd, sem Loupe getur ekki lesið enn.';
+
+  @override
+  String get documentsStatusEmpty => 'Enginn texti er í þessari skrá.';
+
+  @override
+  String get documentsStatusUnsupported => 'Loupe getur ekki enn lesið þessa tegund skjala.';
+
+  @override
+  String get documentsStatusTooLarge => 'Of stórt til að lesa í þessum síma.';
+
+  @override
+  String get documentsStatusDamaged => 'Ekki tókst að lesa það: skráin gæti verið skemmd.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total síðum', one: '$total síðu');
+    return 'Búið að lesa $read af $_temp0; ekki er leitað í afganginum.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Aðeins upphafið var lesið; ekki er leitað í afganginum.';
+
+  @override
+  String get documentsOpenDocument => 'Opna skjal';
+
+  @override
+  String get documentsOpenMessage => 'Opna skilaboð';
+
+  @override
+  String get documentsDetails => 'Upplýsingar um skjal';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Fingrafar innihalds $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Texti eftir síðum';
+
+  @override
+  String get documentsVersionsHeader => 'Önnur eintök';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Annað innihald en í eldra eintakinu ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Nýrra eintak ($date) er með annað innihald';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Sama innihald og í eintakinu frá $date';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Sama nafn og á eintakinu frá $date; innihaldið er ekki borið saman fyrr en bæði hafa verið sótt';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Lykilatriðin eru þau sömu; annar texti er ólíkur.';
+
+  @override
+  String get documentsKeyFacts => 'Lykilatriði';
+
+  @override
+  String get documentsKeyFactsFind => 'Finna lykilatriði';
+
+  @override
+  String get documentsKeyFactsWorking => 'Les skjalið…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Ekki tókst að finna lykilatriðin.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Útbúið af innbyggðu sýnisútgáfunni, ekki af líkani.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Útbúið af $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Ýttu á atriði til að sjá hvar það kemur fram í skjalinu.';
+
+  @override
+  String get documentsKeyFactsNone => 'Loupe er ekki enn með lykilatriði fyrir þessa tegund skjala.';
+
+  @override
+  String get documentsKeyFactsPartial => 'Aðeins fyrstu síðurnar voru lesnar; atriði á síðari síðum eru óþekkt.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Ekki tilgreint';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Tilgreint á ólíka vegu';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Einnig á síðu $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Greiðsluáætlun íbúðaláns';
+
+  @override
+  String get documentsTypeInvoice => 'Reikningur';
+
+  @override
+  String get documentsTypeBooking => 'Bókun';
+
+  @override
+  String get documentsTypeOther => 'Annað skjal';
+
+  @override
+  String get documentsFieldInitialRate => 'Upphafsvextir';
+
+  @override
+  String get documentsFieldRatePeriod => 'Binditími vaxta';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Mánaðarleg greiðsla';
+
+  @override
+  String get documentsFieldTerm => 'Lánstími';
+
+  @override
+  String get documentsFieldLoanAmount => 'Lánsfjárhæð';
+
+  @override
+  String get documentsFieldArrangementFee => 'Lántökugjald';
+
+  @override
+  String get documentsFieldValuationFee => 'Verðmatsgjald';
+
+  @override
+  String get documentsFieldBrokerFee => 'Þóknun miðlara';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Uppgreiðslugjald';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Heildarfjárhæð til greiðslu';
+
+  @override
+  String get documentsFieldAmountDue => 'Upphæð til greiðslu';
+
+  @override
+  String get documentsFieldCurrency => 'Gjaldmiðill';
+
+  @override
+  String get documentsFieldDueDate => 'Gjalddagi';
+
+  @override
+  String get documentsFieldPayee => 'Viðtakandi greiðslu';
+
+  @override
+  String get documentsFieldReference => 'Tilvísun';
+
+  @override
+  String get documentsFieldSubtotal => 'Millisamtala';
+
+  @override
+  String get documentsFieldTax => 'VSK';
+
+  @override
+  String get documentsFieldDate => 'Dagsetning';
+
+  @override
+  String get documentsFieldTime => 'Tími';
+
+  @override
+  String get documentsFieldTimeZone => 'Tímabelti';
+
+  @override
+  String get documentsFieldAddress => 'Heimilisfang';
+
+  @override
+  String get documentsFieldPerson => 'Tengiliður';
+
+  @override
   String get composeSignature => 'Undirskrift';
 
   @override
@@ -6986,6 +7293,192 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'Ekki tókst að bæta aðganginum við. Reyndu aftur eða bættu honum við handvirkt.';
+
+  @override
+  String get composeReplyCheckTitle => 'Yfirferð svars';
+
+  @override
+  String get composeReplyCheckChecking => 'Les hvað beðið var um…';
+
+  @override
+  String get composeReplyCheckFailed => 'Ekki tókst að lesa hvað beðið var um.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached af $total í viðhengi',
+      one: '$attached af $total í viðhengi',
+      zero: 'Ekkert af $total í viðhengi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gætu verið fyrir rangt tímabil',
+      one: '$count gæti verið fyrir rangt tímabil',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ólæsileg', one: '$count ólæsilegt');
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count þarf að gera utan tölvupósts',
+      one: '$count þarf að gera utan tölvupósts',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nefnd í textanum þínum',
+      one: '$count nefnt í textanum þínum',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count ósvöruð', one: '$count ósvarað');
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Í viðhengi';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Athugaðu tímabilið';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Ekki í viðhengi';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Ekki í svarinu þínu';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Utan tölvupósts';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Í textanum þínum';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Óvíst';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Skráin „$file“ var pöruð eingöngu út frá heitinu.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Skráin „$file“ var pöruð út frá innihaldinu.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Athugaðu hvort þetta sé fyrir tímabilið $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Beðið var um tímabilið $asked; í heitinu „$file“ stendur $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Beðið var um tímabilið $asked; í skránni „$file“ stendur $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Ekki tókst að lesa skrána „$file“, svo óvíst er hvort hún sé sú rétta.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Gert utan tölvupósts, ekki með því að hengja skrá við.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '„$file“ er í viðhengi, en þetta er ekki gert í tölvupósti.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Þú skrifaðir: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Úr upprunalegu skilaboðunum';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Heiti skráar segir ekki til um innihaldið. Opnaðu skrárnar til að vera viss.';
+
+  @override
+  String get composeReplyCheckPartial => 'Skilaboðin eru löng; aðeins upphafið var lesið.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Beiðnir fundnar af innbyggðu sýnisútgáfunni, ekki af líkani.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return '$provider fann beiðnirnar.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Ekki athuga þetta';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count beiðnir ekki athugaðar',
+      one: '$count beiðni ekki athuguð',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Athuga allt';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Sýna beiðnir';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Fela beiðnir';
+
+  @override
+  String get composeReplyCheckHide => 'Fela yfirferð svars';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Textinn þinn nefnir viðhengi, en ekkert hefur verið hengt við.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Fela áminningu';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Sýniskjöl';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Fletta í skrám…';
 
   @override
   String get composeNewMessageTitle => 'Ný skilaboð';

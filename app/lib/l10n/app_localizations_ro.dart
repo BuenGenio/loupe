@@ -6608,6 +6608,327 @@ class AppLocalizationsRo extends AppLocalizations {
   String get sharedNotJunk => 'Nu este spam';
 
   @override
+  String get documentsTitle => 'Documente';
+
+  @override
+  String get documentsSearchPlaceholder => 'Caută în documente';
+
+  @override
+  String get documentsSearchInDocuments => 'Caută în documente';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count de documente descărcate',
+      few: '$count documente descărcate',
+      one: '$count document descărcat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count de documente descărcate',
+      few: '$count documente descărcate',
+      one: '$count document descărcat',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable nu pot fi citite',
+      few: '$unreadable nu pot fi citite',
+      one: '$unreadable nu poate fi citit',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'S-a căutat în $count de documente descărcate',
+      few: 'S-a căutat în $count documente descărcate',
+      one: 'S-a căutat în $count document descărcat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'S-a căutat în $count de documente descărcate',
+      few: 'S-a căutat în $count documente descărcate',
+      one: 'S-a căutat în $count document descărcat',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable nu au putut fi citite',
+      few: '$unreadable nu au putut fi citite',
+      one: '$unreadable nu a putut fi citit',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Caută în atașamentele de pe acest telefon, nu în toată căsuța poștală. Deschide un atașament ca să-l adaugi.';
+
+  @override
+  String get documentsEmpty => 'Niciun document încă';
+
+  @override
+  String get documentsEmptyDetail =>
+      'PDF-urile și fișierele text pe care le deschizi din e-mailuri apar aici, ca să poți căuta în ele.';
+
+  @override
+  String get documentsNoResults => 'Niciun rezultat';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Niciun document descărcat nu conține „$query”.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Găsit la pagina $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Găsit la rândul $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Încă $count de potriviri',
+      few: 'Încă $count potriviri',
+      one: 'Încă $count potrivire',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Pagina $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'Nedescărcat: deschide-l ca să-l citești și să cauți în el.';
+
+  @override
+  String get documentsStatusEncrypted => 'Protejat cu parolă: Loupe nu-l poate citi.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Nu s-a găsit text: poate fi o scanare sau o fotografie, pe care Loupe nu le poate citi încă.';
+
+  @override
+  String get documentsStatusEmpty => 'Acest fișier nu are text.';
+
+  @override
+  String get documentsStatusUnsupported => 'Loupe nu poate citi încă acest tip de document.';
+
+  @override
+  String get documentsStatusTooLarge => 'Prea mare pentru a fi citit pe acest telefon.';
+
+  @override
+  String get documentsStatusDamaged => 'Nu a putut fi citit: fișierul poate fi deteriorat.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total de pagini',
+      few: '$total pagini',
+      one: '$total pagină',
+    );
+    return 'S-au citit $read din $_temp0; restul nu este inclus în căutare.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'S-a citit doar începutul; restul nu este inclus în căutare.';
+
+  @override
+  String get documentsOpenDocument => 'Deschide documentul';
+
+  @override
+  String get documentsOpenMessage => 'Deschide mesajul';
+
+  @override
+  String get documentsDetails => 'Detaliile documentului';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Amprenta conținutului $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Text pe pagini';
+
+  @override
+  String get documentsVersionsHeader => 'Alte copii';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Conținut diferit de cel al copiei anterioare ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'O copie mai nouă ($date) are alt conținut';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Același conținut ca și copia din $date';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Același nume ca și copia din $date; conținutul nu se compară până nu sunt descărcate amândouă';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Datele-cheie sunt aceleași; alte părți ale textului diferă.';
+
+  @override
+  String get documentsKeyFacts => 'Date-cheie';
+
+  @override
+  String get documentsKeyFactsFind => 'Găsește datele-cheie';
+
+  @override
+  String get documentsKeyFactsWorking => 'Se citește documentul…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Datele-cheie nu au putut fi găsite.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Generate de demonstrația încorporată, nu de un model.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Generate de $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Atinge o informație ca să vezi unde apare în document.';
+
+  @override
+  String get documentsKeyFactsNone => 'Loupe nu are încă date-cheie pentru acest tip de document.';
+
+  @override
+  String get documentsKeyFactsPartial =>
+      'S-au citit doar primele pagini; informațiile de pe paginile următoare nu sunt cunoscute.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Nespecificat';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Menționat diferit';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Și la pagina $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Ofertă de credit ipotecar';
+
+  @override
+  String get documentsTypeInvoice => 'Factură';
+
+  @override
+  String get documentsTypeBooking => 'Rezervare';
+
+  @override
+  String get documentsTypeOther => 'Alt document';
+
+  @override
+  String get documentsFieldInitialRate => 'Dobândă inițială';
+
+  @override
+  String get documentsFieldRatePeriod => 'Perioada dobânzii inițiale';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Rată lunară';
+
+  @override
+  String get documentsFieldTerm => 'Durata creditului';
+
+  @override
+  String get documentsFieldLoanAmount => 'Valoarea creditului';
+
+  @override
+  String get documentsFieldArrangementFee => 'Comision de acordare';
+
+  @override
+  String get documentsFieldValuationFee => 'Taxă de evaluare';
+
+  @override
+  String get documentsFieldBrokerFee => 'Comision de intermediere';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Comisioane de rambursare anticipată';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Valoare totală plătibilă';
+
+  @override
+  String get documentsFieldAmountDue => 'Sumă de plată';
+
+  @override
+  String get documentsFieldCurrency => 'Monedă';
+
+  @override
+  String get documentsFieldDueDate => 'Data scadenței';
+
+  @override
+  String get documentsFieldPayee => 'Beneficiar';
+
+  @override
+  String get documentsFieldReference => 'Referință';
+
+  @override
+  String get documentsFieldSubtotal => 'Subtotal';
+
+  @override
+  String get documentsFieldTax => 'TVA';
+
+  @override
+  String get documentsFieldDate => 'Dată';
+
+  @override
+  String get documentsFieldTime => 'Oră';
+
+  @override
+  String get documentsFieldTimeZone => 'Fus orar';
+
+  @override
+  String get documentsFieldAddress => 'Adresă';
+
+  @override
+  String get documentsFieldPerson => 'Persoană';
+
+  @override
   String get composeSignature => 'Semnătură';
 
   @override
@@ -7157,6 +7478,209 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'Contul nu a putut fi adăugat. Încearcă din nou sau adaugă-l manual.';
+
+  @override
+  String get composeReplyCheckTitle => 'Verificarea răspunsului';
+
+  @override
+  String get composeReplyCheckChecking => 'Se citește ce ți-au cerut…';
+
+  @override
+  String get composeReplyCheckFailed => 'Nu s-a putut citi ce ți-au cerut.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached din $total atașate',
+      few: '$attached din $total atașate',
+      one: '$attached din $total atașat',
+      zero: 'Niciunul din $total nu e atașat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pot fi pentru perioada greșită',
+      few: '$count pot fi pentru perioada greșită',
+      one: '$count poate fi pentru perioada greșită',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nu au putut fi citite',
+      few: '$count nu au putut fi citite',
+      one: '$count nu a putut fi citit',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count de făcut în afara e-mailului',
+      few: '$count de făcut în afara e-mailului',
+      one: '$count de făcut în afara e-mailului',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count în textul tău',
+      few: '$count în textul tău',
+      one: '$count în textul tău',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count fără răspuns',
+      few: '$count fără răspuns',
+      one: '$count fără răspuns',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Atașat';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Verifică perioada';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Neatașat';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Nu apare în răspuns';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'În afara e-mailului';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'În textul tău';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Nu se știe';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Fișierul „$file” a fost recunoscut doar după nume.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Fișierul „$file” a fost recunoscut după conținut.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Verifică dacă este pentru $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Au cerut $asked, dar numele „$file” indică $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Au cerut $asked, dar în fișierul „$file” apare $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Fișierul „$file” nu a putut fi citit, așa că nu se știe dacă este cel potrivit.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Se face în afara e-mailului, nu prin atașarea unui fișier.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return 'Fișierul „$file” este atașat, dar asta nu se face prin e-mail.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Ai scris: „$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Din mesajul lor';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Numele unui fișier nu arată ce conține. Deschide fișierele ca să fii sigur.';
+
+  @override
+  String get composeReplyCheckPartial => 'Mesajul lor este lung; s-a citit doar începutul.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Cererile au fost găsite de demonstrația încorporată, nu de un model.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Cererile au fost găsite de $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Nu verifica asta';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count de cereri neverificate',
+      few: '$count cereri neverificate',
+      one: '$count cerere neverificată',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Verifică toate';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Afișează cererile';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Ascunde cererile';
+
+  @override
+  String get composeReplyCheckHide => 'Ascunde verificarea răspunsului';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Textul tău menționează un atașament, dar nu e atașat nimic.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Ascunde mementoul';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Documente demo';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Alege un fișier…';
 
   @override
   String get composeNewMessageTitle => 'Mesaj nou';

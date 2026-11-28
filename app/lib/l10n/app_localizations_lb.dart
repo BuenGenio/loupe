@@ -6480,6 +6480,315 @@ class AppLocalizationsLb extends AppLocalizations {
   String get sharedNotJunk => 'Kee Spam';
 
   @override
+  String get documentsTitle => 'Dokumenter';
+
+  @override
+  String get documentsSearchPlaceholder => 'An Dokumenter sichen';
+
+  @override
+  String get documentsSearchInDocuments => 'An Dokumenter sichen';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count erofgelueden Dokumenter',
+      one: '$count erofgeluedent Dokument',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count erofgelueden Dokumenter',
+      one: '$count erofgeluedent Dokument',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable net liesbar',
+      one: '$unreadable net liesbar',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count erofgelueden Dokumenter duerchsicht',
+      one: '$count erofgeluedent Dokument duerchsicht',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count erofgelueden Dokumenter duerchsicht',
+      one: '$count erofgeluedent Dokument duerchsicht',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable konnten net gelies ginn',
+      one: '$unreadable konnt net gelies ginn',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Duerchsicht Unhäng op dësem Handy, net Är ganz Mailbox. Maacht en Unhang op, fir en derbäizesetzen.';
+
+  @override
+  String get documentsEmpty => 'Nach keng Dokumenter';
+
+  @override
+  String get documentsEmptyDetail =>
+      'PDF- an Textfichieren, déi Dir aus Mailen opmaacht, erschéngen hei, sou datt Dir dra siche kënnt.';
+
+  @override
+  String get documentsNoResults => 'Keng Treffer';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Keen erofgeluedent Dokument enthält „$query“.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Fonnt op Säit $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Fonnt an der Zeil $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Nach $count Treffer',
+      one: 'Nach $count Treffer',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Säit $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded =>
+      'Net erofgelueden: Maacht d’Dokument op, fir et ze liesen an ze duerchsichen.';
+
+  @override
+  String get documentsStatusEncrypted => 'Mat engem Passwuert geschützt: Loupe kann et net liesen.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Keen Text fonnt: Et ka e Scan oder eng Foto sinn, an esou eppes kann Loupe nach net liesen.';
+
+  @override
+  String get documentsStatusEmpty => 'Dëse Fichier huet keen Text.';
+
+  @override
+  String get documentsStatusUnsupported => 'Loupe kann dës Zort Dokument nach net liesen.';
+
+  @override
+  String get documentsStatusTooLarge => 'Ze grouss, fir op dësem Handy gelies ze ginn.';
+
+  @override
+  String get documentsStatusDamaged => 'Konnt net gelies ginn: De Fichier ass méiglecherweis beschiedegt.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total Säite', one: '$total Säit');
+    return '$read vun $_temp0 gelies; de Rescht gëtt net duerchsicht.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Nëmmen den Ufank gouf gelies; de Rescht gëtt net duerchsicht.';
+
+  @override
+  String get documentsOpenDocument => 'Dokument opmaachen';
+
+  @override
+  String get documentsOpenMessage => 'Message opmaachen';
+
+  @override
+  String get documentsDetails => 'Detailer vum Dokument';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Fangerofdrock vum Inhalt $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Text pro Säit';
+
+  @override
+  String get documentsVersionsHeader => 'Aner Kopien';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Aneren Inhalt wéi déi fréier Kopie ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Eng méi nei Kopie ($date) huet en aneren Inhalt';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Selwechten Inhalt wéi d’Kopie vum $date';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Selwechten Numm wéi d’Kopie vum $date; den Inhalt gëtt eréischt verglach, wa béid erofgeluede sinn';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'D’Eckdate sinn d’selwecht; nëmmen aneren Text ënnerscheet sech.';
+
+  @override
+  String get documentsKeyFacts => 'Eckdaten';
+
+  @override
+  String get documentsKeyFactsFind => 'Eckdate fannen';
+
+  @override
+  String get documentsKeyFactsWorking => 'Dokument gëtt gelies…';
+
+  @override
+  String get documentsKeyFactsFailed => 'D’Eckdate konnten net fonnt ginn.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Erstallt vun der agebauter Demo, net vun engem Modell.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Erstallt vun $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Tippt op eng Angab, fir ze gesinn, wou se am Dokument steet.';
+
+  @override
+  String get documentsKeyFactsNone => 'Loupe huet nach keng Eckdate fir dës Zort Dokument.';
+
+  @override
+  String get documentsKeyFactsPartial =>
+      'Nëmmen déi éischt Säite goufe gelies; Angaben op spéidere Säite sinn onbekannt.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Net uginn';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Ënnerschiddlech uginn';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Och op Säit $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Offer fir e Wunnengskredit';
+
+  @override
+  String get documentsTypeInvoice => 'Rechnung';
+
+  @override
+  String get documentsTypeBooking => 'Reservatioun';
+
+  @override
+  String get documentsTypeOther => 'Anert Dokument';
+
+  @override
+  String get documentsFieldInitialRate => 'Zënssaz am Ufank';
+
+  @override
+  String get documentsFieldRatePeriod => 'Zënsbindung';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Mensualitéit';
+
+  @override
+  String get documentsFieldTerm => 'Laufzäit';
+
+  @override
+  String get documentsFieldLoanAmount => 'Kreditbetrag';
+
+  @override
+  String get documentsFieldArrangementFee => 'Dossierskäschten';
+
+  @override
+  String get documentsFieldValuationFee => 'Schätzungskäschten';
+
+  @override
+  String get documentsFieldBrokerFee => 'Vermëttlungskäschten';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Käschte fir e virzäitege Remboursement';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Ze bezuelende Gesamtbetrag';
+
+  @override
+  String get documentsFieldAmountDue => 'Fällege Betrag';
+
+  @override
+  String get documentsFieldCurrency => 'Währung';
+
+  @override
+  String get documentsFieldDueDate => 'Fällegkeetsdatum';
+
+  @override
+  String get documentsFieldPayee => 'Bezuelungsempfänger';
+
+  @override
+  String get documentsFieldReference => 'Referenz';
+
+  @override
+  String get documentsFieldSubtotal => 'Zwëschesumm';
+
+  @override
+  String get documentsFieldTax => 'Steier';
+
+  @override
+  String get documentsFieldDate => 'Datum';
+
+  @override
+  String get documentsFieldTime => 'Auerzäit';
+
+  @override
+  String get documentsFieldTimeZone => 'Zäitzon';
+
+  @override
+  String get documentsFieldAddress => 'Adress';
+
+  @override
+  String get documentsFieldPerson => 'Persoun';
+
+  @override
   String get composeSignature => 'Signatur';
 
   @override
@@ -7025,6 +7334,202 @@ class AppLocalizationsLb extends AppLocalizations {
   @override
   String get accountImportFailed =>
       'De Kont konnt net derbäigesat ginn. Probéiert nach eng Kéier, oder setzt e manuell derbäi.';
+
+  @override
+  String get composeReplyCheckTitle => 'Äntwertkontroll';
+
+  @override
+  String get composeReplyCheckChecking => 'Et gëtt gelies, wat ugefrot gouf…';
+
+  @override
+  String get composeReplyCheckFailed => 'Et konnt net gelies ginn, wat ugefrot gouf.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached vun $total ugehaangen',
+      one: '$attached vun $total ugehaangen',
+      zero: 'Keent vun $total ugehaangen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count vläicht fir de falschen Zäitraum',
+      one: '$count vläicht fir de falschen Zäitraum',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count net liesbar',
+      one: '$count net liesbar',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count baussent der E-Mail ze erleedegen',
+      one: '$count baussent der E-Mail ze erleedegen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count an Ärem Text',
+      one: '$count an Ärem Text',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ze beäntweren',
+      one: '$count ze beäntweren',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Ugehaangen';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Zäitraum iwwerpréiwen';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Net ugehaangen';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Net an Ärer Äntwert';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Baussent der E-Mail';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'An Ärem Text';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Onkloer';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '„$file“ nëmmen iwwer den Numm zougeuerdnet.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '„$file“ iwwer den Inhalt zougeuerdnet.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Iwwerpréift, ob de Fichier fir $period gëllt.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Ugefrot gouf $asked; am Numm „$file“ steet $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Ugefrot gouf $asked; an „$file“ steet $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return '„$file“ konnt net gelies ginn, dofir ass onkloer, ob et de richtege Fichier ass.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Gëtt baussent der E-Mail erleedegt, net andeems Dir e Fichier uhänkt.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '„$file“ ass ugehaangen, mee dëst gëtt net per E-Mail erleedegt.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Dir hutt geschriwwen: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Aus dem Message';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Den Numm vun engem Fichier weist net, wat dran ass. Maacht d’Fichieren op, fir sécher ze sinn.';
+
+  @override
+  String get composeReplyCheckPartial => 'De Message ass laang; nëmmen den Ufank gouf gelies.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Ufroe vun der agebauter Demo fonnt, net vun engem Modell.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Ufroe vun $provider fonnt.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Net iwwerpréiwen';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Ufroen net iwwerpréift',
+      one: '$count Ufro net iwwerpréift',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'All iwwerpréiwen';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Ufroe weisen';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Ufroe verstoppen';
+
+  @override
+  String get composeReplyCheckHide => 'Äntwertkontroll verstoppen';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Ären Text ernimmt en Unhang, mee et ass näischt ugehaangen.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Hiweis verstoppen';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demo-Dokumenter';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Fichieren duerchsichen…';
 
   @override
   String get composeNewMessageTitle => 'Neie Message';

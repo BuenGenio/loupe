@@ -6467,6 +6467,319 @@ class AppLocalizationsEu extends AppLocalizations {
   String get sharedNotJunk => 'Ez da zabor-posta';
 
   @override
+  String get documentsTitle => 'Dokumentuak';
+
+  @override
+  String get documentsSearchPlaceholder => 'Bilatu dokumentuetan';
+
+  @override
+  String get documentsSearchInDocuments => 'Bilatu dokumentuetan';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Deskargatutako $count dokumentu',
+      one: 'Deskargatutako dokumentu $count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Deskargatutako $count dokumentu',
+      one: 'Deskargatutako dokumentu $count',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable ezin dira irakurri',
+      one: '$unreadable ezin da irakurri',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Deskargatutako $count dokumentutan bilatu da',
+      one: 'Deskargatutako dokumentu batean bilatu da',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Deskargatutako $count dokumentutan bilatu da',
+      one: 'Deskargatutako dokumentu batean bilatu da',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable ezin izan dira irakurri',
+      one: '$unreadable ezin izan da irakurri',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Telefono honetako eranskinetan bilatzen du, ez zure postontzi osoan. Ireki eranskin bat hura gehitzeko.';
+
+  @override
+  String get documentsEmpty => 'Dokumenturik ez oraindik';
+
+  @override
+  String get documentsEmptyDetail =>
+      'Postatik irekitzen dituzun PDFak eta testu-fitxategiak hemen agertzen dira, haien barruan bilatu ahal izateko.';
+
+  @override
+  String get documentsNoResults => 'Emaitzarik ez';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Ez dago «$query» duen deskargatutako dokumenturik.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return '$page. orrian aurkitu da';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return '$line. lerroan aurkitu da';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Beste $count bat-etortze',
+      one: 'Beste bat-etortze bat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return '$page. orria';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'Deskargatu gabe: ireki irakurtzeko eta barruan bilatzeko.';
+
+  @override
+  String get documentsStatusEncrypted => 'Pasahitzez babestuta: Loupe-k ezin du irakurri.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Ez da testurik aurkitu: eskaneatutako irudi bat edo argazki bat izan daiteke, eta Loupe-k ezin ditu horiek irakurri oraindik.';
+
+  @override
+  String get documentsStatusEmpty => 'Fitxategi honek ez du testurik.';
+
+  @override
+  String get documentsStatusUnsupported => 'Loupe-k ezin du oraindik dokumentu mota hau irakurri.';
+
+  @override
+  String get documentsStatusTooLarge => 'Handiegia telefono honetan irakurtzeko.';
+
+  @override
+  String get documentsStatusDamaged => 'Ezin izan da irakurri: baliteke fitxategia hondatuta egotea.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total orritatik',
+      one: 'Orri ${total}etik',
+    );
+    return '$_temp0 $read irakurrita; gainerakoetan ez da bilatzen.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Hasiera bakarrik irakurri da; gainerakoan ez da bilatzen.';
+
+  @override
+  String get documentsOpenDocument => 'Ireki dokumentua';
+
+  @override
+  String get documentsOpenMessage => 'Ireki mezua';
+
+  @override
+  String get documentsDetails => 'Dokumentuaren xehetasunak';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Edukiaren hatz-marka: $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Testua orriz orri';
+
+  @override
+  String get documentsVersionsHeader => 'Beste kopia batzuk';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Aurreko kopiak ($date) beste eduki bat du';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Kopia berriago batek ($date) beste eduki bat du';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return '$date datako kopiaren eduki bera';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return '$date datako kopiaren izen bera; ez da edukia konparatuko biak deskargatu arte';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Datu nagusiak berdinak dira; testuaren beste zati batzuk desberdinak dira.';
+
+  @override
+  String get documentsKeyFacts => 'Datu nagusiak';
+
+  @override
+  String get documentsKeyFactsFind => 'Bilatu datu nagusiak';
+
+  @override
+  String get documentsKeyFactsWorking => 'Dokumentua irakurtzen…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Ezin izan dira datu nagusiak aurkitu.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Demo integratuak eginak, ez eredu batek.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Egilea: $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Sakatu datu bat dokumentuak non dioen ikusteko.';
+
+  @override
+  String get documentsKeyFactsNone => 'Loupe-k ez du oraindik datu nagusirik dokumentu mota honetarako.';
+
+  @override
+  String get documentsKeyFactsPartial =>
+      'Lehen orriak bakarrik irakurri dira; hurrengo orrietako datuak ez dira ezagutzen.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Adierazi gabe';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Desberdin adierazita';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return '$page. orrian ere:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Hipoteka-eskaintza';
+
+  @override
+  String get documentsTypeInvoice => 'Faktura';
+
+  @override
+  String get documentsTypeBooking => 'Erreserba';
+
+  @override
+  String get documentsTypeOther => 'Beste dokumentu bat';
+
+  @override
+  String get documentsFieldInitialRate => 'Hasierako interes-tasa';
+
+  @override
+  String get documentsFieldRatePeriod => 'Hasierako tasaren iraupena';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Hileko kuota';
+
+  @override
+  String get documentsFieldTerm => 'Epea';
+
+  @override
+  String get documentsFieldLoanAmount => 'Mailegu-zenbatekoa';
+
+  @override
+  String get documentsFieldArrangementFee => 'Irekiera-komisioa';
+
+  @override
+  String get documentsFieldValuationFee => 'Tasazio-gastuak';
+
+  @override
+  String get documentsFieldBrokerFee => 'Bitartekariaren komisioa';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Aurretiazko amortizazio-komisioak';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Ordaindu beharreko zenbateko osoa';
+
+  @override
+  String get documentsFieldAmountDue => 'Ordaintzeko zenbatekoa';
+
+  @override
+  String get documentsFieldCurrency => 'Moneta';
+
+  @override
+  String get documentsFieldDueDate => 'Muga-eguna';
+
+  @override
+  String get documentsFieldPayee => 'Onuraduna';
+
+  @override
+  String get documentsFieldReference => 'Erreferentzia';
+
+  @override
+  String get documentsFieldSubtotal => 'Subtotala';
+
+  @override
+  String get documentsFieldTax => 'BEZa';
+
+  @override
+  String get documentsFieldDate => 'Data';
+
+  @override
+  String get documentsFieldTime => 'Ordua';
+
+  @override
+  String get documentsFieldTimeZone => 'Ordu-zona';
+
+  @override
+  String get documentsFieldAddress => 'Helbidea';
+
+  @override
+  String get documentsFieldPerson => 'Pertsona';
+
+  @override
   String get composeSignature => 'Sinadura';
 
   @override
@@ -7005,6 +7318,197 @@ class AppLocalizationsEu extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'Ezin izan da kontua gehitu. Saiatu berriro, edo gehitu eskuz.';
+
+  @override
+  String get composeReplyCheckTitle => 'Erantzunaren egiaztapena';
+
+  @override
+  String get composeReplyCheckChecking => 'Eskatu dutena irakurtzen…';
+
+  @override
+  String get composeReplyCheckFailed => 'Ezin izan da irakurri zer eskatu duten.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$total dokumentutatik $attached erantsita',
+      one: '$total dokumentutatik 1 erantsita',
+      zero: '$total dokumentutatik bat ere ez dago erantsita',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count aldi okerrekoak izan daitezke',
+      one: '1 aldi okerrekoa izan daiteke',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ezin izan dira irakurri',
+      one: '1 ezin izan da irakurri',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count postatik kanpo egiteko',
+      one: '1 postatik kanpo egiteko',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count zure testuan',
+      one: '1 zure testuan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count erantzuteko', one: '1 erantzuteko');
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Erantsita';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Egiaztatu aldia';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Erantsi gabe';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Ez dago zure erantzunean';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Postatik kanpo';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Zure testuan';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Ezin da jakin';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '«$file» izenaren arabera soilik parekatu da.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '«$file» edukiaren arabera parekatu da.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Egiaztatu aldia $period dela.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return '$asked eskatu dute; «$file» izenean $found ageri da.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return '$asked eskatu dute; «$file» fitxategian $found ageri da.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Ezin izan da «$file» irakurri; beraz, ezin da jakin fitxategi zuzena den.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Postatik kanpo egiten da, ez fitxategi bat erantsiz.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '«$file» erantsita dago, baina hau ez da posta bidez egiten.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Hau idatzi duzu: «$text»';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Haien mezutik';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Fitxategi baten izenak ez du erakusten zer duen barruan. Ireki fitxategiak ziur egoteko.';
+
+  @override
+  String get composeReplyCheckPartial => 'Haien mezua luzea da; hasiera bakarrik irakurri da.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Eskaerak demo integratuak aurkitu ditu, ez eredu batek.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Eskaerak $provider ereduak aurkitu ditu.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Ez egiaztatu hau';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count eskaera egiaztatu gabe',
+      one: 'Eskaera $count egiaztatu gabe',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Egiaztatu denak';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Erakutsi eskaerak';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Ezkutatu eskaerak';
+
+  @override
+  String get composeReplyCheckHide => 'Ezkutatu erantzunaren egiaztapena';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Zure testuak eranskin bat aipatzen du, baina ez dago ezer erantsita.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Ezkutatu oroigarria';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demo-dokumentuak';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Arakatu fitxategiak…';
 
   @override
   String get composeNewMessageTitle => 'Mezu berria';

@@ -6466,6 +6466,315 @@ class AppLocalizationsEl extends AppLocalizations {
   String get sharedNotJunk => 'Όχι ανεπιθύμητο';
 
   @override
+  String get documentsTitle => 'Έγγραφα';
+
+  @override
+  String get documentsSearchPlaceholder => 'Αναζήτηση στα έγγραφα';
+
+  @override
+  String get documentsSearchInDocuments => 'Αναζήτηση στα έγγραφα';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ληφθέντα έγγραφα',
+      one: '1 ληφθέν έγγραφο',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ληφθέντα έγγραφα',
+      one: '1 ληφθέν έγγραφο',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable δεν διαβάζονται',
+      one: '1 δεν διαβάζεται',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Έγινε αναζήτηση σε $count ληφθέντα έγγραφα',
+      one: 'Έγινε αναζήτηση σε 1 ληφθέν έγγραφο',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Έγινε αναζήτηση σε $count ληφθέντα έγγραφα',
+      one: 'Έγινε αναζήτηση σε 1 ληφθέν έγγραφο',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable δεν ήταν δυνατό να διαβαστούν',
+      one: '1 δεν ήταν δυνατό να διαβαστεί',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Αναζητά στα συνημμένα που βρίσκονται σε αυτό το τηλέφωνο, όχι σε όλη την αλληλογραφία σας. Ανοίξτε ένα συνημμένο για να το προσθέσετε.';
+
+  @override
+  String get documentsEmpty => 'Δεν υπάρχουν ακόμη έγγραφα';
+
+  @override
+  String get documentsEmptyDetail =>
+      'Τα PDF και τα αρχεία κειμένου που ανοίγετε από την αλληλογραφία εμφανίζονται εδώ, ώστε να μπορείτε να κάνετε αναζήτηση μέσα σε αυτά.';
+
+  @override
+  String get documentsNoResults => 'Καμία αντιστοιχία';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Κανένα ληφθέν έγγραφο δεν περιέχει «$query».';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Βρέθηκε στη σελίδα $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Βρέθηκε στη γραμμή $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ακόμη $count αντιστοιχίες',
+      one: 'Ακόμη 1 αντιστοιχία',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Σελίδα $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded =>
+      'Δεν έχει ληφθεί: ανοίξτε το για να διαβαστεί και να γίνεται αναζήτηση σε αυτό.';
+
+  @override
+  String get documentsStatusEncrypted => 'Προστατεύεται με κωδικό πρόσβασης: το Loupe δεν μπορεί να το διαβάσει.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Δεν βρέθηκε κείμενο: ίσως είναι σάρωση ή φωτογραφία, που το Loupe δεν μπορεί ακόμη να διαβάσει.';
+
+  @override
+  String get documentsStatusEmpty => 'Αυτό το αρχείο δεν έχει κείμενο.';
+
+  @override
+  String get documentsStatusUnsupported => 'Το Loupe δεν μπορεί ακόμη να διαβάσει αυτό το είδος εγγράφου.';
+
+  @override
+  String get documentsStatusTooLarge => 'Πολύ μεγάλο για να διαβαστεί σε αυτό το τηλέφωνο.';
+
+  @override
+  String get documentsStatusDamaged => 'Δεν ήταν δυνατή η ανάγνωση: το αρχείο ίσως είναι κατεστραμμένο.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total σελίδες', one: '1 σελίδα');
+    return 'Διαβάστηκαν $read από $_temp0· στις υπόλοιπες δεν γίνεται αναζήτηση.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Διαβάστηκε μόνο η αρχή· στο υπόλοιπο δεν γίνεται αναζήτηση.';
+
+  @override
+  String get documentsOpenDocument => 'Άνοιγμα εγγράφου';
+
+  @override
+  String get documentsOpenMessage => 'Άνοιγμα μηνύματος';
+
+  @override
+  String get documentsDetails => 'Λεπτομέρειες εγγράφου';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Αποτύπωμα περιεχομένου $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Κείμενο ανά σελίδα';
+
+  @override
+  String get documentsVersionsHeader => 'Άλλα αντίγραφα';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Διαφορετικό περιεχόμενο από το προηγούμενο αντίγραφο ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Ένα νεότερο αντίγραφο ($date) έχει διαφορετικό περιεχόμενο';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Ίδιο περιεχόμενο με το αντίγραφο της $date';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Ίδιο όνομα με το αντίγραφο της $date· το περιεχόμενο δεν συγκρίνεται μέχρι να ληφθούν και τα δύο';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Τα βασικά στοιχεία είναι ίδια· οι διαφορές είναι σε άλλο σημείο του κειμένου.';
+
+  @override
+  String get documentsKeyFacts => 'Βασικά στοιχεία';
+
+  @override
+  String get documentsKeyFactsFind => 'Εύρεση βασικών στοιχείων';
+
+  @override
+  String get documentsKeyFactsWorking => 'Ανάγνωση του εγγράφου…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Δεν ήταν δυνατή η εύρεση των βασικών στοιχείων.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Δημιουργήθηκε από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Δημιουργήθηκε από $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Πατήστε ένα στοιχείο για να δείτε πού το αναφέρει το έγγραφο.';
+
+  @override
+  String get documentsKeyFactsNone => 'Το Loupe δεν έχει ακόμη βασικά στοιχεία για αυτό το είδος εγγράφου.';
+
+  @override
+  String get documentsKeyFactsPartial =>
+      'Διαβάστηκαν μόνο οι πρώτες σελίδες· τα στοιχεία στις επόμενες σελίδες δεν είναι γνωστά.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Δεν αναφέρεται';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Αναφέρεται διαφορετικά';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Επίσης στη σελίδα $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Προσφορά στεγαστικού δανείου';
+
+  @override
+  String get documentsTypeInvoice => 'Τιμολόγιο';
+
+  @override
+  String get documentsTypeBooking => 'Κράτηση';
+
+  @override
+  String get documentsTypeOther => 'Άλλο έγγραφο';
+
+  @override
+  String get documentsFieldInitialRate => 'Αρχικό επιτόκιο';
+
+  @override
+  String get documentsFieldRatePeriod => 'Διάρκεια αρχικού επιτοκίου';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Μηνιαία δόση';
+
+  @override
+  String get documentsFieldTerm => 'Διάρκεια δανείου';
+
+  @override
+  String get documentsFieldLoanAmount => 'Ποσό δανείου';
+
+  @override
+  String get documentsFieldArrangementFee => 'Έξοδα φακέλου';
+
+  @override
+  String get documentsFieldValuationFee => 'Έξοδα εκτίμησης';
+
+  @override
+  String get documentsFieldBrokerFee => 'Αμοιβή μεσίτη πιστώσεων';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Έξοδα πρόωρης εξόφλησης';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Συνολικό ποσό αποπληρωμής';
+
+  @override
+  String get documentsFieldAmountDue => 'Πληρωτέο ποσό';
+
+  @override
+  String get documentsFieldCurrency => 'Νόμισμα';
+
+  @override
+  String get documentsFieldDueDate => 'Προθεσμία πληρωμής';
+
+  @override
+  String get documentsFieldPayee => 'Δικαιούχος';
+
+  @override
+  String get documentsFieldReference => 'Αριθμός αναφοράς';
+
+  @override
+  String get documentsFieldSubtotal => 'Μερικό σύνολο';
+
+  @override
+  String get documentsFieldTax => 'Φόρος';
+
+  @override
+  String get documentsFieldDate => 'Ημερομηνία';
+
+  @override
+  String get documentsFieldTime => 'Ώρα';
+
+  @override
+  String get documentsFieldTimeZone => 'Ζώνη ώρας';
+
+  @override
+  String get documentsFieldAddress => 'Διεύθυνση';
+
+  @override
+  String get documentsFieldPerson => 'Πρόσωπο';
+
+  @override
   String get composeSignature => 'Υπογραφή';
 
   @override
@@ -7009,6 +7318,202 @@ class AppLocalizationsEl extends AppLocalizations {
   @override
   String get accountImportFailed =>
       'Δεν ήταν δυνατή η προσθήκη του λογαριασμού. Δοκιμάστε ξανά ή προσθέστε τον χειροκίνητα.';
+
+  @override
+  String get composeReplyCheckTitle => 'Έλεγχος απάντησης';
+
+  @override
+  String get composeReplyCheckChecking => 'Ανάγνωση όσων σας ζητούν…';
+
+  @override
+  String get composeReplyCheckFailed => 'Δεν ήταν δυνατή η ανάγνωση όσων σας ζητούν.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached από $total επισυνάφθηκαν',
+      one: '$attached από $total επισυνάφθηκε',
+      zero: 'Κανένα από $total δεν επισυνάφθηκε',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ίσως για λάθος περίοδο',
+      one: '$count ίσως για λάθος περίοδο',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count δεν ήταν δυνατό να διαβαστούν',
+      one: '$count δεν ήταν δυνατό να διαβαστεί',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count γίνονται εκτός email',
+      one: '$count γίνεται εκτός email',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count στο κείμενό σας',
+      one: '$count στο κείμενό σας',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count χωρίς απάντηση',
+      one: '$count χωρίς απάντηση',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Επισυνάφθηκε';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Ελέγξτε την περίοδο';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Δεν επισυνάφθηκε';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Λείπει από την απάντηση';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Εκτός email';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Στο κείμενό σας';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Άγνωστο';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Το «$file» αντιστοιχίστηκε μόνο από το όνομά του.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Το «$file» αντιστοιχίστηκε από το περιεχόμενό του.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Ελέγξτε ότι είναι για $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Ζήτησαν $asked, αλλά το όνομα «$file» γράφει $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Ζήτησαν $asked, αλλά το «$file» γράφει $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Δεν ήταν δυνατή η ανάγνωση του «$file», οπότε δεν είναι γνωστό αν είναι το σωστό αρχείο.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Γίνεται εκτός email, όχι με επισύναψη αρχείου.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return 'Το «$file» επισυνάφθηκε, αλλά αυτό δεν γίνεται μέσω email.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Γράψατε: «$text»';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Από το μήνυμά τους';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Το όνομα ενός αρχείου δεν δείχνει τι περιέχει. Ανοίξτε τα αρχεία για να βεβαιωθείτε.';
+
+  @override
+  String get composeReplyCheckPartial => 'Το μήνυμά τους είναι μεγάλο· διαβάστηκε μόνο η αρχή του.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Τα αιτήματα βρέθηκαν από την ενσωματωμένη επίδειξη, όχι από μοντέλο.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Τα αιτήματα βρέθηκαν από το $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Εξαίρεση από τον έλεγχο';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count αιτήματα δεν ελέγχθηκαν',
+      one: '$count αίτημα δεν ελέγχθηκε',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Έλεγχος όλων';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Εμφάνιση αιτημάτων';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Απόκρυψη αιτημάτων';
+
+  @override
+  String get composeReplyCheckHide => 'Απόκρυψη ελέγχου απάντησης';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Το κείμενό σας αναφέρει συνημμένο, αλλά δεν έχει επισυναφθεί τίποτα.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Απόκρυψη υπενθύμισης';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Έγγραφα επίδειξης';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Επιλογή αρχείου…';
 
   @override
   String get composeNewMessageTitle => 'Νέο μήνυμα';

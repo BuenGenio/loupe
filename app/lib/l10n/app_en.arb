@@ -3681,6 +3681,183 @@
   "sharedNotJunk": "Not Junk",
   "@sharedNotJunk": {"description": "Menu item: moves a message out of Junk."},
 
+  "@@x-section-documents": "Documents: search inside attachments, Key Facts, versions",
+
+  "documentsTitle": "Documents",
+  "@documentsTitle": {"description": "Title of the screen that lists and searches the text of downloaded attachments (PDFs, text files), and its row on the Mailboxes screen."},
+  "documentsSearchPlaceholder": "Search in Documents",
+  "@documentsSearchPlaceholder": {"description": "Placeholder of the search field on the Documents screen."},
+  "documentsSearchInDocuments": "Search in Documents",
+  "@documentsSearchInDocuments": {"description": "Row under the results of a mail search: searches the same words inside downloaded attachments instead."},
+  "documentsLibraryCount": "{count, plural, =1{1 downloaded document} other{{count} downloaded documents}}",
+  "@documentsLibraryCount": {
+    "description": "Header of the Documents screen's list: how many attachments are on this phone.",
+    "placeholders": {"count": {"type": "int", "example": "14"}}
+  },
+  "documentsLibraryCountWithUnreadable": "{count, plural, =1{1 downloaded document} other{{count} downloaded documents}} · {unreadable, plural, =1{1 can’t be read} other{{unreadable} can’t be read}}",
+  "@documentsLibraryCountWithUnreadable": {
+    "description": "Header of the Documents screen's list, when some attachments can't be read (password protected, scanned, unsupported).",
+    "placeholders": {"count": {"type": "int", "example": "14"}, "unreadable": {"type": "int", "example": "1"}}
+  },
+  "documentsCoverage": "{count, plural, =1{Searched 1 downloaded document} other{Searched {count} downloaded documents}}",
+  "@documentsCoverage": {
+    "description": "Above search results in documents: what was searched. Never the whole mailbox, only attachments on this phone.",
+    "placeholders": {"count": {"type": "int", "example": "14"}}
+  },
+  "documentsCoverageWithUnreadable": "{count, plural, =1{Searched 1 downloaded document} other{Searched {count} downloaded documents}} · {unreadable, plural, =1{1 couldn’t be read} other{{unreadable} couldn’t be read}}",
+  "@documentsCoverageWithUnreadable": {
+    "description": "Above search results in documents, when some attachments couldn't be searched.",
+    "placeholders": {"count": {"type": "int", "example": "14"}, "unreadable": {"type": "int", "example": "1"}}
+  },
+  "documentsScopeNote": "Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.",
+  "@documentsScopeNote": {"description": "Footnote on the Documents screen: only downloaded attachments are searched."},
+  "documentsEmpty": "No Documents Yet",
+  "@documentsEmpty": {"description": "Title on the Documents screen when no attachment has been downloaded."},
+  "documentsEmptyDetail": "PDFs and text files you open from mail show up here, so you can search inside them.",
+  "documentsNoResults": "No Matches",
+  "@documentsNoResults": {"description": "Title when a search in documents finds nothing."},
+  "documentsNoResultsDetail": "No downloaded document contains “{query}”.",
+  "@documentsNoResultsDetail": {"placeholders": {"query": {"type": "String", "example": "4.19%"}}},
+  "documentsMatchedOnPage": "Matched on page {page}",
+  "@documentsMatchedOnPage": {
+    "description": "Under a document search result: where the exact words were found.",
+    "placeholders": {"page": {"type": "int", "example": "2"}}
+  },
+  "documentsMatchedOnLine": "Matched on line {line}",
+  "@documentsMatchedOnLine": {
+    "description": "Under a search result in a text file, which has no pages.",
+    "placeholders": {"line": {"type": "int", "example": "12"}}
+  },
+  "documentsMoreMatches": "{count, plural, =1{1 more match} other{{count} more matches}}",
+  "@documentsMoreMatches": {
+    "description": "After the first matches in one document: how many more there are.",
+    "placeholders": {"count": {"type": "int", "example": "3"}}
+  },
+  "documentsPage": "Page {page}",
+  "@documentsPage": {
+    "description": "A page of a document: a row in the list of pages, and the title of the sheet showing its text.",
+    "placeholders": {"page": {"type": "int", "example": "2"}}
+  },
+  "documentsStatusNotDownloaded": "Not downloaded: open it to read and search it.",
+  "documentsStatusEncrypted": "Password protected: Loupe can’t read it.",
+  "documentsStatusNoText": "No text found: it may be a scan or a photo, which Loupe can’t read yet.",
+  "documentsStatusEmpty": "This file has no text.",
+  "documentsStatusUnsupported": "Loupe can’t read this kind of document yet.",
+  "documentsStatusTooLarge": "Too large to read on this phone.",
+  "documentsStatusDamaged": "Couldn’t be read: the file may be damaged.",
+  "documentsStatusPartial": "Read {read} of {total, plural, =1{1 page} other{{total} pages}}; the rest isn’t searched.",
+  "@documentsStatusPartial": {
+    "description": "A long or partly damaged document: only some pages were read.",
+    "placeholders": {"read": {"type": "int", "example": "200"}, "total": {"type": "int", "example": "340"}}
+  },
+  "documentsStatusPartialText": "Only the beginning was read; the rest isn’t searched.",
+  "@documentsStatusPartialText": {"description": "A very long text file, or a document cut short before its pages could be counted."},
+  "documentsOpenDocument": "Open Document",
+  "@documentsOpenDocument": {"description": "Button: opens the attachment in the viewer."},
+  "documentsOpenMessage": "Open Message",
+  "@documentsOpenMessage": {"description": "Button: opens the message the attachment came with."},
+  "documentsDetails": "Document Details",
+  "@documentsDetails": {"description": "Button in the attachment viewer: the document's text, Key Facts and other copies."},
+  "documentsFingerprint": "Contents fingerprint {hash}",
+  "@documentsFingerprint": {
+    "description": "Identifies the file's bytes (the start of its SHA-256), so two copies can be told apart whatever their names.",
+    "placeholders": {"hash": {"type": "String", "example": "3f2a 9c1d"}}
+  },
+  "documentsPagesHeader": "Text by Page",
+  "@documentsPagesHeader": {"description": "Section header: the text Loupe read from each page."},
+  "documentsVersionsHeader": "Other Copies",
+  "@documentsVersionsHeader": {"description": "Section header: attachments with the same name in the same conversation or from the same sender."},
+  "documentsVersionDifferentEarlier": "Different contents from the earlier copy ({date})",
+  "@documentsVersionDifferentEarlier": {
+    "description": "Under an attachment: an earlier attachment with the same name has different bytes.",
+    "placeholders": {"date": {"type": "String", "example": "28 Oct"}}
+  },
+  "documentsVersionDifferentLater": "A newer copy ({date}) has different contents",
+  "@documentsVersionDifferentLater": {"placeholders": {"date": {"type": "String", "example": "30 Oct"}}},
+  "documentsVersionSame": "Same contents as the copy of {date}",
+  "@documentsVersionSame": {
+    "description": "Another attachment with the same name has exactly the same bytes.",
+    "placeholders": {"date": {"type": "String", "example": "28 Oct"}}
+  },
+  "documentsVersionNotDownloaded": "Same name as the copy of {date}; contents not compared until both are downloaded",
+  "@documentsVersionNotDownloaded": {
+    "description": "A same-named attachment can't be compared because its bytes aren't on the phone; name and size prove nothing.",
+    "placeholders": {"date": {"type": "String", "example": "28 Oct"}}
+  },
+  "documentsChange": "{before} → {after}",
+  "@documentsChange": {
+    "description": "A Key Fact that changed between two copies, old value then new.",
+    "placeholders": {"before": {"type": "String", "example": "4.29%"}, "after": {"type": "String", "example": "4.19%"}}
+  },
+  "documentsNoFactChanges": "The Key Facts are the same; other text differs.",
+  "documentsKeyFacts": "Key Facts",
+  "@documentsKeyFacts": {"description": "Title of the card with a document's important fields (rate, amount due, date), each linked to its page. Also the button that opens it."},
+  "documentsKeyFactsFind": "Find Key Facts",
+  "@documentsKeyFactsFind": {"description": "Button: asks the Private AI provider to read the document's important fields."},
+  "documentsKeyFactsWorking": "Reading the document…",
+  "documentsKeyFactsFailed": "Couldn’t find the Key Facts.",
+  "documentsKeyFactsDemoNote": "Made by the built-in demo, not a model.",
+  "@documentsKeyFactsDemoNote": {"description": "Under Key Facts made by the demo's rules."},
+  "documentsKeyFactsMadeBy": "Made by {provider}.",
+  "@documentsKeyFactsMadeBy": {
+    "description": "Under Key Facts: which AI provider and model made them.",
+    "placeholders": {"provider": {"type": "String", "example": "anthropic: claude-haiku"}}
+  },
+  "documentsKeyFactsHint": "Tap a fact to see where the document says it.",
+  "documentsKeyFactsNone": "Loupe has no Key Facts for this kind of document yet.",
+  "documentsKeyFactsPartial": "Only the first pages were read; facts on later pages are unknown.",
+  "documentsKeyFactsNotStated": "Not stated",
+  "@documentsKeyFactsNotStated": {"description": "Value of a Key Facts field the document doesn't state (or Loupe couldn't confirm)."},
+  "documentsKeyFactsConflicting": "Stated differently",
+  "@documentsKeyFactsConflicting": {"description": "Value of a Key Facts field the document gives two different values for; neither is chosen."},
+  "documentsEvidenceAlso": "Also on page {page}:",
+  "@documentsEvidenceAlso": {
+    "description": "In the sheet showing where a fact is stated: a second passage that gives another value.",
+    "placeholders": {"page": {"type": "int", "example": "3"}}
+  },
+  "documentsTypeMortgageIllustration": "Mortgage illustration",
+  "@documentsTypeMortgageIllustration": {"description": "Kind of document, next to the Key Facts title: a lender's personalised mortgage offer summary (UK: KFI/ESIS)."},
+  "documentsTypeInvoice": "Invoice",
+  "@documentsTypeInvoice": {"description": "Kind of document, next to the Key Facts title."},
+  "documentsTypeBooking": "Booking",
+  "@documentsTypeBooking": {"description": "Kind of document, next to the Key Facts title: a booking or appointment confirmation."},
+  "documentsTypeOther": "Other document",
+  "@documentsTypeOther": {"description": "Kind of document, next to the Key Facts title: none of the kinds Loupe has fields for."},
+  "documentsFieldInitialRate": "Initial rate",
+  "@documentsFieldInitialRate": {"description": "Key Facts field of a mortgage illustration: the interest rate of the first period."},
+  "documentsFieldRatePeriod": "Rate period",
+  "@documentsFieldRatePeriod": {"description": "Key Facts field of a mortgage illustration: how long the initial rate lasts."},
+  "documentsFieldMonthlyPayment": "Monthly payment",
+  "documentsFieldTerm": "Term",
+  "@documentsFieldTerm": {"description": "Key Facts field of a mortgage illustration: how long the mortgage runs (e.g. 30 years)."},
+  "documentsFieldLoanAmount": "Loan amount",
+  "documentsFieldArrangementFee": "Arrangement fee",
+  "@documentsFieldArrangementFee": {"description": "Key Facts field of a mortgage illustration: the lender's product fee."},
+  "documentsFieldValuationFee": "Valuation fee",
+  "documentsFieldBrokerFee": "Broker fee",
+  "documentsFieldEarlyRepaymentCharges": "Early repayment charges",
+  "documentsFieldTotalAmountPayable": "Total amount payable",
+  "documentsFieldAmountDue": "Amount due",
+  "@documentsFieldAmountDue": {"description": "Key Facts field of an invoice."},
+  "documentsFieldCurrency": "Currency",
+  "documentsFieldDueDate": "Due date",
+  "documentsFieldPayee": "Payee",
+  "@documentsFieldPayee": {"description": "Key Facts field of an invoice: who is to be paid."},
+  "documentsFieldReference": "Reference",
+  "@documentsFieldReference": {"description": "Key Facts field of an invoice or booking: its number or reference."},
+  "documentsFieldSubtotal": "Subtotal",
+  "documentsFieldTax": "Tax",
+  "@documentsFieldTax": {"description": "Key Facts field of an invoice: VAT or sales tax."},
+  "documentsFieldDate": "Date",
+  "@documentsFieldDate": {"description": "Key Facts field of a booking: the day of the appointment."},
+  "documentsFieldTime": "Time",
+  "@documentsFieldTime": {"description": "Key Facts field of a booking: the time of the appointment."},
+  "documentsFieldTimeZone": "Time zone",
+  "documentsFieldAddress": "Address",
+  "@documentsFieldAddress": {"description": "Key Facts field of a booking: where it takes place."},
+  "documentsFieldPerson": "Person",
+  "@documentsFieldPerson": {"description": "Key Facts field of a booking: who comes or who to see (a valuer, an engineer)."},
+
   "@@x-section-accounts": "Accounts and writing: welcome, account setup and import, compose, outbox, notifications",
   "composeSignature": "Signature",
   "@composeSignature": {"description": "Compose toolbar button and the title of its sheet: picks the signature for this message."},
@@ -3963,6 +4140,143 @@
   "accountImportStorageFailed": "Loupe couldn’t open its account storage. Try again later.",
   "accountImportFailed": "The account couldn’t be added. Try again, or add it manually.",
 
+  "@@x-section-reply-check": "Reply Check: what the original message asked for, against the draft",
+  "composeReplyCheckTitle": "Reply Check",
+  "@composeReplyCheckTitle": {"description": "Title of a panel in compose, above the text of a reply: what the original message asked the user for (documents, steps), checked against the reply and its attachments. A Private AI feature; the name of a feature, like a title."},
+  "composeReplyCheckChecking": "Reading what they asked for…",
+  "@composeReplyCheckChecking": {"description": "Reply Check panel while Private AI reads the original message for its requests."},
+  "composeReplyCheckFailed": "Couldn’t read what they asked for.",
+  "@composeReplyCheckFailed": {"description": "Reply Check panel when reading the original message's requests failed. A Retry button follows. Sending is not affected."},
+  "composeReplyCheckSummaryAttached": "{attached, plural, =0{None of {total} attached} =1{1 of {total} attached} other{{attached} of {total} attached}}",
+  "@composeReplyCheckSummaryAttached": {
+    "description": "Part of Reply Check's one-line summary: how many of the documents the original message asked for are attached to the reply. Other parts follow after a “·”.",
+    "placeholders": {"attached": {"type": "int", "example": "2"}, "total": {"type": "int", "example": "3"}}
+  },
+  "composeReplyCheckSummaryWrongPeriod": "{count, plural, =1{1 may be for the wrong period} other{{count} may be for the wrong period}}",
+  "@composeReplyCheckSummaryWrongPeriod": {
+    "description": "Part of Reply Check's summary: attached documents that seem to be for another period (another tax year or month) than the one asked for.",
+    "placeholders": {"count": {"type": "int", "example": "1"}}
+  },
+  "composeReplyCheckSummaryUnknown": "{count, plural, =1{1 couldn’t be read} other{{count} couldn’t be read}}",
+  "@composeReplyCheckSummaryUnknown": {
+    "description": "Part of Reply Check's summary: attached documents Loupe couldn't read (protected or damaged), so it can't tell whether they are the right ones.",
+    "placeholders": {"count": {"type": "int", "example": "1"}}
+  },
+  "composeReplyCheckSummaryOutside": "{count, plural, =1{1 to do outside email} other{{count} to do outside email}}",
+  "@composeReplyCheckSummaryOutside": {
+    "description": "Part of Reply Check's summary: requests that are done somewhere else (in an app, a form at a link), not by attaching a file.",
+    "placeholders": {"count": {"type": "int", "example": "2"}}
+  },
+  "composeReplyCheckSummaryMentioned": "{count, plural, =1{1 in your text} other{{count} in your text}}",
+  "@composeReplyCheckSummaryMentioned": {
+    "description": "Part of Reply Check's summary: requests the reply's text says are done or coming (“I’ll do the ID check tonight”).",
+    "placeholders": {"count": {"type": "int", "example": "2"}}
+  },
+  "composeReplyCheckSummaryToAnswer": "{count, plural, =1{1 to answer} other{{count} to answer}}",
+  "@composeReplyCheckSummaryToAnswer": {
+    "description": "Part of Reply Check's summary: questions or confirmations the original message asked for that the reply's text doesn't mention yet.",
+    "placeholders": {"count": {"type": "int", "example": "1"}}
+  },
+  "composeReplyCheckStatusIncluded": "Attached",
+  "@composeReplyCheckStatusIncluded": {"description": "Status of a request in Reply Check: a matching file is attached."},
+  "composeReplyCheckStatusWrongPeriod": "Check the period",
+  "@composeReplyCheckStatusWrongPeriod": {"description": "Status of a request in Reply Check: the attached file seems to be for another tax year or month than the one asked for."},
+  "composeReplyCheckStatusMissing": "Not attached",
+  "@composeReplyCheckStatusMissing": {"description": "Status of a requested document in Reply Check: nothing attached matches it."},
+  "composeReplyCheckStatusToAnswer": "Not in your reply",
+  "@composeReplyCheckStatusToAnswer": {"description": "Status of a question or confirmation in Reply Check: the reply's text doesn't mention it yet."},
+  "composeReplyCheckStatusOutside": "Outside email",
+  "@composeReplyCheckStatusOutside": {"description": "Status of a request in Reply Check: it is done somewhere else (in an app, a form at a link, in person), not by attaching a file."},
+  "composeReplyCheckStatusMentioned": "In your text",
+  "@composeReplyCheckStatusMentioned": {"description": "Status of a request in Reply Check: the reply's text says it is done or coming, or answers it."},
+  "composeReplyCheckStatusUnknown": "Can’t tell",
+  "@composeReplyCheckStatusUnknown": {"description": "Status of a request in Reply Check: a matching file is attached but couldn't be read, so whether it is the right one is unknown."},
+  "composeReplyCheckByName": "Matched “{file}” by its name only.",
+  "@composeReplyCheckByName": {
+    "description": "Under a request in Reply Check: the attached file was matched to it by its file name, without reading it, so the match is tentative.",
+    "placeholders": {"file": {"type": "String", "example": "SA302 2024-25.pdf"}}
+  },
+  "composeReplyCheckByContents": "Matched “{file}” by what it says.",
+  "@composeReplyCheckByContents": {
+    "description": "Under a request in Reply Check: the attached file was matched to it by reading its text.",
+    "placeholders": {"file": {"type": "String", "example": "SA302 2024-25.pdf"}}
+  },
+  "composeReplyCheckCheckPeriod": "Check that it’s for {period}.",
+  "@composeReplyCheckCheckPeriod": {
+    "description": "Under a request in Reply Check: the attached file doesn't say which period it is for. period is copied from the original message, untranslated.",
+    "placeholders": {"period": {"type": "String", "example": "2024/25"}}
+  },
+  "composeReplyCheckPeriodInName": "They asked for {asked}; the name “{file}” says {found}.",
+  "@composeReplyCheckPeriodInName": {
+    "description": "Under a request in Reply Check: the file's name states another period than the original message asked for. asked and found are copied from the message and the file name, untranslated.",
+    "placeholders": {
+      "asked": {"type": "String", "example": "2024/25"},
+      "file": {"type": "String", "example": "SA302 2023-24.pdf"},
+      "found": {"type": "String", "example": "2023-24"}
+    }
+  },
+  "composeReplyCheckPeriodInContents": "They asked for {asked}; “{file}” says {found}.",
+  "@composeReplyCheckPeriodInContents": {
+    "description": "Under a request in Reply Check: the text inside the file states another period than the original message asked for. asked and found are copied from the message and the file, untranslated.",
+    "placeholders": {
+      "asked": {"type": "String", "example": "2024/25"},
+      "file": {"type": "String", "example": "SA302 2024-25.pdf"},
+      "found": {"type": "String", "example": "6 April 2023 to 5 April 2024"}
+    }
+  },
+  "composeReplyCheckUnreadable": "“{file}” couldn’t be read, so whether it’s the right file is unknown.",
+  "@composeReplyCheckUnreadable": {
+    "description": "Under a request in Reply Check: the attached file is protected or damaged.",
+    "placeholders": {"file": {"type": "String", "example": "Payslip.pdf"}}
+  },
+  "composeReplyCheckOutsideDetail": "Done outside email, not by attaching a file.",
+  "@composeReplyCheckOutsideDetail": {"description": "Under a request in Reply Check that is done in an app, a form at a link or in person. The way, as the message wrote it, is shown next to it."},
+  "composeReplyCheckAttachedAnyway": "“{file}” is attached, but this isn’t done by email.",
+  "@composeReplyCheckAttachedAnyway": {
+    "description": "Warning under a request done outside email (an ID check in an app) when a file that looks like it (a passport scan) is attached: attaching it doesn't do the step.",
+    "placeholders": {"file": {"type": "String", "example": "Passport scan.pdf"}}
+  },
+  "composeReplyCheckYouWrote": "You wrote: “{text}”",
+  "@composeReplyCheckYouWrote": {
+    "description": "Under a request in Reply Check: the sentence of the reply that mentions it.",
+    "placeholders": {"text": {"type": "String", "example": "I’ll do the ID check in the app tonight."}}
+  },
+  "composeReplyCheckFromMessage": "From their message",
+  "@composeReplyCheckFromMessage": {"description": "Label above the passage of the original message a request in Reply Check comes from."},
+  "composeReplyCheckByNameNote": "A file’s name doesn’t show what’s in it. Open the files to be sure.",
+  "@composeReplyCheckByNameNote": {"description": "Note at the end of Reply Check when some files were matched by their names only."},
+  "composeReplyCheckPartial": "Their message is long; only its beginning was read.",
+  "@composeReplyCheckPartial": {"description": "Note at the end of Reply Check: requests further down the original message may be missing."},
+  "composeReplyCheckDemoNote": "Requests found by the built-in demo, not a model.",
+  "@composeReplyCheckDemoNote": {"description": "Note at the end of Reply Check: the requests were found by a few built-in rules (the demo), not by an AI model."},
+  "composeReplyCheckFoundBy": "Requests found by {provider}.",
+  "@composeReplyCheckFoundBy": {
+    "description": "Note at the end of Reply Check: which AI model found the requests.",
+    "placeholders": {"provider": {"type": "String", "example": "claude-haiku-4-5"}}
+  },
+  "composeReplyCheckSkip": "Don’t Check This",
+  "@composeReplyCheckSkip": {"description": "Button under a request in Reply Check: leave it out of the check (it isn't really a request, or isn't for this reply)."},
+  "composeReplyCheckSkipped": "{count, plural, =1{1 request not checked} other{{count} requests not checked}}",
+  "@composeReplyCheckSkipped": {
+    "description": "At the end of Reply Check: requests the user left out with “Don’t Check This”. A Check All button follows.",
+    "placeholders": {"count": {"type": "int", "example": "1"}}
+  },
+  "composeReplyCheckCheckAll": "Check All",
+  "@composeReplyCheckCheckAll": {"description": "Button at the end of Reply Check: check the requests left out again."},
+  "composeReplyCheckShowRequests": "Show Requests",
+  "@composeReplyCheckShowRequests": {"description": "Screen reader label of the button that opens Reply Check's list of requests."},
+  "composeReplyCheckHideRequests": "Hide Requests",
+  "@composeReplyCheckHideRequests": {"description": "Screen reader label of the button that closes Reply Check's list of requests."},
+  "composeReplyCheckHide": "Hide Reply Check",
+  "@composeReplyCheckHide": {"description": "Screen reader label of the button that hides the Reply Check panel for this message."},
+  "composeReplyCheckNothingAttached": "Your text mentions an attachment, but nothing is attached.",
+  "@composeReplyCheckNothingAttached": {"description": "Gentle note in compose when the message's text says “attached” or “enclosed” and no file is attached. An Attach button follows; it never stops sending."},
+  "composeReplyCheckHideReminder": "Hide Reminder",
+  "@composeReplyCheckHideReminder": {"description": "Screen reader label of the button that hides the note about a missing attachment."},
+  "composeReplyCheckDemoFiles": "Demo Documents",
+  "@composeReplyCheckDemoFiles": {"description": "Heading in the demo's attach sheet: made-up documents of the demo's user, to try Reply Check with."},
+  "composeReplyCheckBrowseFiles": "Browse Files…",
+  "@composeReplyCheckBrowseFiles": {"description": "Row in the demo's attach sheet: pick a file from the phone instead."},
   "composeNewMessageTitle": "New Message",
   "@composeNewMessageTitle": {"description": "Title of the compose screen while the subject is empty."},
   "composeAttach": "Attach",

@@ -6566,6 +6566,326 @@ class AppLocalizationsLv extends AppLocalizations {
   String get sharedNotJunk => 'Nav mēstule';
 
   @override
+  String get documentsTitle => 'Dokumenti';
+
+  @override
+  String get documentsSearchPlaceholder => 'Meklēt dokumentos';
+
+  @override
+  String get documentsSearchInDocuments => 'Meklēt dokumentos';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lejupielādēti dokumenti',
+      one: '$count lejupielādēts dokuments',
+      zero: '$count lejupielādētu dokumentu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lejupielādēti dokumenti',
+      one: '$count lejupielādēts dokuments',
+      zero: '$count lejupielādētu dokumentu',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable nav nolasāmi',
+      one: '$unreadable nav nolasāms',
+      zero: '$unreadable nav nolasāmi',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pārmeklēti $count lejupielādēti dokumenti',
+      one: 'Pārmeklēts $count lejupielādēts dokuments',
+      zero: 'Pārmeklēti $count lejupielādētu dokumentu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pārmeklēti $count lejupielādēti dokumenti',
+      one: 'Pārmeklēts $count lejupielādēts dokuments',
+      zero: 'Pārmeklēti $count lejupielādētu dokumentu',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable nebija nolasāmi',
+      one: '$unreadable nebija nolasāms',
+      zero: '$unreadable nebija nolasāmi',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Meklē šī tālruņa pielikumos, nevis visā jūsu pastkastē. Atveriet pielikumu, lai to pievienotu.';
+
+  @override
+  String get documentsEmpty => 'Vēl nav dokumentu';
+
+  @override
+  String get documentsEmptyDetail =>
+      'Šeit parādās PDF un teksta faili, ko atverat no pasta, lai jūs varētu meklēt to saturā.';
+
+  @override
+  String get documentsNoResults => 'Nav atbilstību';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Neviens lejupielādētais dokuments nesatur „$query“.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Atbilstība $page. lappusē';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Atbilstība $line. rindā';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Vēl $count atbilstības',
+      one: 'Vēl $count atbilstība',
+      zero: 'Vēl $count atbilstību',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return '$page. lappuse';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'Nav lejupielādēts: atveriet to, lai lasītu un meklētu tajā.';
+
+  @override
+  String get documentsStatusEncrypted => 'Aizsargāts ar paroli: Loupe to nevar nolasīt.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Teksts netika atrasts: tas varētu būt skenējums vai fotoattēls, ko Loupe vēl nevar nolasīt.';
+
+  @override
+  String get documentsStatusEmpty => 'Šim failam nav teksta.';
+
+  @override
+  String get documentsStatusUnsupported => 'Loupe vēl nevar nolasīt šāda veida dokumentus.';
+
+  @override
+  String get documentsStatusTooLarge => 'Pārāk liels, lai to nolasītu šajā tālrunī.';
+
+  @override
+  String get documentsStatusDamaged => 'Neizdevās nolasīt: fails, iespējams, ir bojāts.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total lappusēm',
+      one: '$total lappuses',
+      zero: '$total lappusēm',
+    );
+    return 'Nolasītas: $read no $_temp0; pārējās netiek pārmeklētas.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Nolasīts tikai sākums; pārējais netiek pārmeklēts.';
+
+  @override
+  String get documentsOpenDocument => 'Atvērt dokumentu';
+
+  @override
+  String get documentsOpenMessage => 'Atvērt ziņojumu';
+
+  @override
+  String get documentsDetails => 'Dokumenta informācija';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Satura pirkstu nospiedums $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Teksts pa lappusēm';
+
+  @override
+  String get documentsVersionsHeader => 'Citas kopijas';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Saturs atšķiras no agrākās kopijas ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Jaunākai kopijai ($date) ir atšķirīgs saturs';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Tāds pats saturs kā kopijai ($date)';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Tāds pats nosaukums kā kopijai ($date); saturs netiks salīdzināts, kamēr abas nebūs lejupielādētas';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Galvenie fakti ir tādi paši; atšķiras cits teksts.';
+
+  @override
+  String get documentsKeyFacts => 'Galvenie fakti';
+
+  @override
+  String get documentsKeyFactsFind => 'Atrast galvenos faktus';
+
+  @override
+  String get documentsKeyFactsWorking => 'Lasa dokumentu…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Neizdevās atrast galvenos faktus.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Izveidoja iebūvētā demonstrācija, nevis modelis.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Izveidoja $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Pieskarieties faktam, lai redzētu, kur dokumentā tas ir norādīts.';
+
+  @override
+  String get documentsKeyFactsNone => 'Šāda veida dokumentiem Loupe vēl nepiedāvā galvenos faktus.';
+
+  @override
+  String get documentsKeyFactsPartial => 'Nolasītas tikai pirmās lappuses; fakti turpmākajās lappusēs nav zināmi.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Nav norādīts';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Norādīts atšķirīgi';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Arī $page. lappusē:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Mājokļa kredīta piedāvājums';
+
+  @override
+  String get documentsTypeInvoice => 'Rēķins';
+
+  @override
+  String get documentsTypeBooking => 'Rezervācija';
+
+  @override
+  String get documentsTypeOther => 'Cits dokuments';
+
+  @override
+  String get documentsFieldInitialRate => 'Sākotnējā procentu likme';
+
+  @override
+  String get documentsFieldRatePeriod => 'Likmes periods';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Ikmēneša maksājums';
+
+  @override
+  String get documentsFieldTerm => 'Kredīta termiņš';
+
+  @override
+  String get documentsFieldLoanAmount => 'Kredīta summa';
+
+  @override
+  String get documentsFieldArrangementFee => 'Līguma noformēšanas maksa';
+
+  @override
+  String get documentsFieldValuationFee => 'Novērtēšanas maksa';
+
+  @override
+  String get documentsFieldBrokerFee => 'Starpnieka komisija';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Pirmstermiņa atmaksas komisija';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Kopējā atmaksājamā summa';
+
+  @override
+  String get documentsFieldAmountDue => 'Maksājamā summa';
+
+  @override
+  String get documentsFieldCurrency => 'Valūta';
+
+  @override
+  String get documentsFieldDueDate => 'Apmaksas termiņš';
+
+  @override
+  String get documentsFieldPayee => 'Saņēmējs';
+
+  @override
+  String get documentsFieldReference => 'Atsauce';
+
+  @override
+  String get documentsFieldSubtotal => 'Starpsumma';
+
+  @override
+  String get documentsFieldTax => 'Nodoklis';
+
+  @override
+  String get documentsFieldDate => 'Datums';
+
+  @override
+  String get documentsFieldTime => 'Laiks';
+
+  @override
+  String get documentsFieldTimeZone => 'Laika josla';
+
+  @override
+  String get documentsFieldAddress => 'Adrese';
+
+  @override
+  String get documentsFieldPerson => 'Persona';
+
+  @override
   String get composeSignature => 'Paraksts';
 
   @override
@@ -7110,6 +7430,208 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'Kontu neizdevās pievienot. Mēģiniet vēlreiz vai pievienojiet to manuāli.';
+
+  @override
+  String get composeReplyCheckTitle => 'Atbildes pārbaude';
+
+  @override
+  String get composeReplyCheckChecking => 'Nolasa, ko sūtītājs lūdza…';
+
+  @override
+  String get composeReplyCheckFailed => 'Neizdevās nolasīt, ko sūtītājs lūdza.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached no $total pievienoti',
+      one: '$attached no $total pievienots',
+      zero: '$attached no $total pievienoti',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count var būt par nepareizu periodu',
+      one: '$count var būt par nepareizu periodu',
+      zero: '$count var būt par nepareizu periodu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nav nolasāmi',
+      one: '$count nav nolasāms',
+      zero: '$count nav nolasāmi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jāizdara ārpus e-pasta',
+      one: '$count jāizdara ārpus e-pasta',
+      zero: '$count jāizdara ārpus e-pasta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minēti jūsu tekstā',
+      one: '$count minēts jūsu tekstā',
+      zero: '$count minēti jūsu tekstā',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gaida atbildi',
+      one: '$count gaida atbildi',
+      zero: '$count gaida atbildi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Pievienots';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Pārbaudiet periodu';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Nav pievienots';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Nav jūsu atbildē';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Ārpus e-pasta';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Jūsu tekstā';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Nevar noteikt';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '„$file“ atpazīts tikai pēc nosaukuma.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '„$file“ atpazīts pēc satura.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Pārbaudiet, vai tas ir par periodu $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Tika lūgts periods $asked; nosaukumā „$file“ norādīts $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Tika lūgts periods $asked; failā „$file“ norādīts $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Failu „$file“ neizdevās nolasīt, tāpēc nav zināms, vai tas ir pareizais fails.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Jāizdara ārpus e-pasta, nevis pievienojot failu.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '„$file“ ir pievienots, bet šo nevar izdarīt ar e-pastu.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Jūs rakstījāt: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'No sākotnējā ziņojuma';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Faila nosaukums neparāda, kas tajā ir. Lai pārliecinātos, atveriet failus.';
+
+  @override
+  String get composeReplyCheckPartial => 'Ziņojums ir garš; tika nolasīts tikai tā sākums.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Pieprasījumus atrada iebūvētā demonstrācija, nevis modelis.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Pieprasījumus atrada $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Nepārbaudīt šo';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pieprasījumi nav pārbaudīti',
+      one: '$count pieprasījums nav pārbaudīts',
+      zero: '$count pieprasījumu nav pārbaudīti',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Pārbaudīt visus';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Rādīt pieprasījumus';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Paslēpt pieprasījumus';
+
+  @override
+  String get composeReplyCheckHide => 'Paslēpt atbildes pārbaudi';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Jūsu tekstā minēts pielikums, bet nekas nav pievienots.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Paslēpt atgādinājumu';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demonstrācijas dokumenti';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Pārlūkot failus…';
 
   @override
   String get composeNewMessageTitle => 'Jauns ziņojums';

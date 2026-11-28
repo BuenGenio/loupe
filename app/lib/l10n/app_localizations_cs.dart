@@ -6606,6 +6606,326 @@ class AppLocalizationsCs extends AppLocalizations {
   String get sharedNotJunk => 'Není spam';
 
   @override
+  String get documentsTitle => 'Dokumenty';
+
+  @override
+  String get documentsSearchPlaceholder => 'Hledat v dokumentech';
+
+  @override
+  String get documentsSearchInDocuments => 'Hledat v dokumentech';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count stažených dokumentů',
+      few: '$count stažené dokumenty',
+      one: '$count stažený dokument',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count stažených dokumentů',
+      few: '$count stažené dokumenty',
+      one: '$count stažený dokument',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable nelze přečíst',
+      few: '$unreadable nelze přečíst',
+      one: '$unreadable nelze přečíst',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Prohledáno $count stažených dokumentů',
+      few: 'Prohledány $count stažené dokumenty',
+      one: 'Prohledán $count stažený dokument',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Prohledáno $count stažených dokumentů',
+      few: 'Prohledány $count stažené dokumenty',
+      one: 'Prohledán $count stažený dokument',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable se nepodařilo přečíst',
+      few: '$unreadable se nepodařilo přečíst',
+      one: '$unreadable se nepodařilo přečíst',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Prohledává přílohy v tomto telefonu, ne celou vaši schránku. Přílohu přidáte tak, že ji otevřete.';
+
+  @override
+  String get documentsEmpty => 'Zatím žádné dokumenty';
+
+  @override
+  String get documentsEmptyDetail =>
+      'Soubory PDF a textové soubory, které otevřete z pošty, se zobrazí tady, abyste v nich mohli hledat.';
+
+  @override
+  String get documentsNoResults => 'Žádné shody';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Žádný stažený dokument neobsahuje „$query“.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Nalezeno na straně $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Nalezeno na řádku $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dalších $count shod',
+      few: 'Další $count shody',
+      one: 'Další $count shoda',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Strana $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'Nestaženo: po otevření ho bude možné přečíst a prohledat.';
+
+  @override
+  String get documentsStatusEncrypted => 'Chráněno heslem: Loupe ho nedokáže přečíst.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Nenalezen žádný text: možná jde o sken nebo fotografii, což Loupe zatím neumí přečíst.';
+
+  @override
+  String get documentsStatusEmpty => 'Tento soubor neobsahuje žádný text.';
+
+  @override
+  String get documentsStatusUnsupported => 'Loupe zatím neumí číst tento druh dokumentů.';
+
+  @override
+  String get documentsStatusTooLarge => 'Příliš velké na přečtení v tomto telefonu.';
+
+  @override
+  String get documentsStatusDamaged => 'Nepodařilo se přečíst: soubor může být poškozený.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total stran',
+      few: '$total stran',
+      one: '$total strany',
+    );
+    return 'Přečteno $read z $_temp0; zbytek se neprohledává.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Přečten byl jen začátek; zbytek se neprohledává.';
+
+  @override
+  String get documentsOpenDocument => 'Otevřít dokument';
+
+  @override
+  String get documentsOpenMessage => 'Otevřít zprávu';
+
+  @override
+  String get documentsDetails => 'Podrobnosti dokumentu';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Otisk obsahu $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Text podle stran';
+
+  @override
+  String get documentsVersionsHeader => 'Další kopie';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Obsah se liší od dřívější kopie ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Novější kopie ($date) má jiný obsah';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Stejný obsah jako kopie z $date';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Stejný název jako kopie z $date; obsah se porovná, až budou staženy obě';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Klíčové údaje jsou stejné; liší se jiná část textu.';
+
+  @override
+  String get documentsKeyFacts => 'Klíčové údaje';
+
+  @override
+  String get documentsKeyFactsFind => 'Najít klíčové údaje';
+
+  @override
+  String get documentsKeyFactsWorking => 'Čtení dokumentu…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Klíčové údaje se nepodařilo najít.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Vytvořilo vestavěné demo, ne model.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Vytvořeno pomocí $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Klepnutím na údaj zobrazíte, kde ho dokument uvádí.';
+
+  @override
+  String get documentsKeyFactsNone => 'Pro tento druh dokumentů Loupe zatím klíčové údaje nemá.';
+
+  @override
+  String get documentsKeyFactsPartial => 'Přečteny byly jen první strany; údaje na dalších stranách nejsou známy.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Neuvedeno';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Uvedeno různě';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Také na straně $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Nabídka hypotéky';
+
+  @override
+  String get documentsTypeInvoice => 'Faktura';
+
+  @override
+  String get documentsTypeBooking => 'Rezervace';
+
+  @override
+  String get documentsTypeOther => 'Jiný dokument';
+
+  @override
+  String get documentsFieldInitialRate => 'Počáteční úroková sazba';
+
+  @override
+  String get documentsFieldRatePeriod => 'Doba fixace';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Měsíční splátka';
+
+  @override
+  String get documentsFieldTerm => 'Doba splatnosti';
+
+  @override
+  String get documentsFieldLoanAmount => 'Výše úvěru';
+
+  @override
+  String get documentsFieldArrangementFee => 'Poplatek za zpracování úvěru';
+
+  @override
+  String get documentsFieldValuationFee => 'Poplatek za odhad nemovitosti';
+
+  @override
+  String get documentsFieldBrokerFee => 'Odměna zprostředkovatele';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Poplatky za předčasné splacení';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Celková splatná částka';
+
+  @override
+  String get documentsFieldAmountDue => 'Částka k úhradě';
+
+  @override
+  String get documentsFieldCurrency => 'Měna';
+
+  @override
+  String get documentsFieldDueDate => 'Datum splatnosti';
+
+  @override
+  String get documentsFieldPayee => 'Příjemce platby';
+
+  @override
+  String get documentsFieldReference => 'Referenční číslo';
+
+  @override
+  String get documentsFieldSubtotal => 'Mezisoučet';
+
+  @override
+  String get documentsFieldTax => 'Daň';
+
+  @override
+  String get documentsFieldDate => 'Datum';
+
+  @override
+  String get documentsFieldTime => 'Čas';
+
+  @override
+  String get documentsFieldTimeZone => 'Časové pásmo';
+
+  @override
+  String get documentsFieldAddress => 'Adresa';
+
+  @override
+  String get documentsFieldPerson => 'Osoba';
+
+  @override
   String get composeSignature => 'Podpis';
 
   @override
@@ -7148,6 +7468,215 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'Účet se nepodařilo přidat. Zkuste to znovu, nebo ho přidejte ručně.';
+
+  @override
+  String get composeReplyCheckTitle => 'Kontrola odpovědi';
+
+  @override
+  String get composeReplyCheckChecking => 'Zjišťování, o co vás žádají…';
+
+  @override
+  String get composeReplyCheckFailed => 'Nepodařilo se zjistit, o co vás žádají.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: 'Přiloženo $attached z $total',
+      many: 'Přiloženo $attached z $total',
+      few: 'Přiloženo $attached z $total',
+      one: 'Přiloženo $attached z $total',
+      zero: 'Žádný z $total není přiložen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count může být za jiné období',
+      many: '$count může být za jiné období',
+      few: '$count mohou být za jiné období',
+      one: '$count může být za jiné období',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count se nepodařilo přečíst',
+      many: '$count se nepodařilo přečíst',
+      few: '$count se nepodařilo přečíst',
+      one: '$count se nepodařilo přečíst',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count k vyřízení mimo e-mail',
+      many: '$count k vyřízení mimo e-mail',
+      few: '$count k vyřízení mimo e-mail',
+      one: '$count k vyřízení mimo e-mail',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ve vašem textu',
+      many: '$count ve vašem textu',
+      few: '$count ve vašem textu',
+      one: '$count ve vašem textu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count k zodpovězení',
+      many: '$count k zodpovězení',
+      few: '$count k zodpovězení',
+      one: '$count k zodpovězení',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Přiloženo';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Zkontrolujte období';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Nepřiloženo';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Chybí v odpovědi';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Mimo e-mail';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Ve vašem textu';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Nelze určit';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Soubor „$file“ odpovídá jen podle názvu.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Soubor „$file“ odpovídá podle obsahu.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Zkontrolujte, že jde o $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Požaduje se $asked, ale název „$file“ uvádí $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Požaduje se $asked, ale soubor „$file“ uvádí $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Soubor „$file“ se nepodařilo přečíst, takže nelze říct, jestli je to ten správný.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Vyřizuje se mimo e-mail, ne přiložením souboru.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return 'Soubor „$file“ je přiložen, ale tohle se e-mailem nevyřizuje.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Napsali jste: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Z přijaté zprávy';
+
+  @override
+  String get composeReplyCheckByNameNote => 'Název souboru neprozradí, co obsahuje. Pro jistotu soubory otevřete.';
+
+  @override
+  String get composeReplyCheckPartial => 'Přijatá zpráva je dlouhá; byl přečten jen její začátek.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Požadavky našlo vestavěné demo, ne model.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Požadavky našel model $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Nekontrolovat';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count požadavků se nekontroluje',
+      many: '$count požadavku se nekontroluje',
+      few: '$count požadavky se nekontrolují',
+      one: '$count požadavek se nekontroluje',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Kontrolovat všechny';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Zobrazit požadavky';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Skrýt požadavky';
+
+  @override
+  String get composeReplyCheckHide => 'Skrýt kontrolu odpovědi';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Váš text zmiňuje přílohu, ale nic není přiloženo.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Skrýt připomínku';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Ukázkové dokumenty';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Procházet soubory…';
 
   @override
   String get composeNewMessageTitle => 'Nová zpráva';

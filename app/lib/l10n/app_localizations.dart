@@ -10377,6 +10377,456 @@ abstract class AppLocalizations {
   /// **'Not Junk'**
   String get sharedNotJunk;
 
+  /// Title of the screen that lists and searches the text of downloaded attachments (PDFs, text files), and its row on the Mailboxes screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get documentsTitle;
+
+  /// Placeholder of the search field on the Documents screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Search in Documents'**
+  String get documentsSearchPlaceholder;
+
+  /// Row under the results of a mail search: searches the same words inside downloaded attachments instead.
+  ///
+  /// In en, this message translates to:
+  /// **'Search in Documents'**
+  String get documentsSearchInDocuments;
+
+  /// Header of the Documents screen's list: how many attachments are on this phone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 downloaded document} other{{count} downloaded documents}}'**
+  String documentsLibraryCount(int count);
+
+  /// Header of the Documents screen's list, when some attachments can't be read (password protected, scanned, unsupported).
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 downloaded document} other{{count} downloaded documents}} · {unreadable, plural, =1{1 can’t be read} other{{unreadable} can’t be read}}'**
+  String documentsLibraryCountWithUnreadable(int count, int unreadable);
+
+  /// Above search results in documents: what was searched. Never the whole mailbox, only attachments on this phone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Searched 1 downloaded document} other{Searched {count} downloaded documents}}'**
+  String documentsCoverage(int count);
+
+  /// Above search results in documents, when some attachments couldn't be searched.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Searched 1 downloaded document} other{Searched {count} downloaded documents}} · {unreadable, plural, =1{1 couldn’t be read} other{{unreadable} couldn’t be read}}'**
+  String documentsCoverageWithUnreadable(int count, int unreadable);
+
+  /// Footnote on the Documents screen: only downloaded attachments are searched.
+  ///
+  /// In en, this message translates to:
+  /// **'Searches attachments on this phone, not your whole mailbox. Open an attachment to add it.'**
+  String get documentsScopeNote;
+
+  /// Title on the Documents screen when no attachment has been downloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'No Documents Yet'**
+  String get documentsEmpty;
+
+  /// No description provided for @documentsEmptyDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'PDFs and text files you open from mail show up here, so you can search inside them.'**
+  String get documentsEmptyDetail;
+
+  /// Title when a search in documents finds nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'No Matches'**
+  String get documentsNoResults;
+
+  /// No description provided for @documentsNoResultsDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'No downloaded document contains “{query}”.'**
+  String documentsNoResultsDetail(String query);
+
+  /// Under a document search result: where the exact words were found.
+  ///
+  /// In en, this message translates to:
+  /// **'Matched on page {page}'**
+  String documentsMatchedOnPage(int page);
+
+  /// Under a search result in a text file, which has no pages.
+  ///
+  /// In en, this message translates to:
+  /// **'Matched on line {line}'**
+  String documentsMatchedOnLine(int line);
+
+  /// After the first matches in one document: how many more there are.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 more match} other{{count} more matches}}'**
+  String documentsMoreMatches(int count);
+
+  /// A page of a document: a row in the list of pages, and the title of the sheet showing its text.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page}'**
+  String documentsPage(int page);
+
+  /// No description provided for @documentsStatusNotDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Not downloaded: open it to read and search it.'**
+  String get documentsStatusNotDownloaded;
+
+  /// No description provided for @documentsStatusEncrypted.
+  ///
+  /// In en, this message translates to:
+  /// **'Password protected: Loupe can’t read it.'**
+  String get documentsStatusEncrypted;
+
+  /// No description provided for @documentsStatusNoText.
+  ///
+  /// In en, this message translates to:
+  /// **'No text found: it may be a scan or a photo, which Loupe can’t read yet.'**
+  String get documentsStatusNoText;
+
+  /// No description provided for @documentsStatusEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'This file has no text.'**
+  String get documentsStatusEmpty;
+
+  /// No description provided for @documentsStatusUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe can’t read this kind of document yet.'**
+  String get documentsStatusUnsupported;
+
+  /// No description provided for @documentsStatusTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Too large to read on this phone.'**
+  String get documentsStatusTooLarge;
+
+  /// No description provided for @documentsStatusDamaged.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t be read: the file may be damaged.'**
+  String get documentsStatusDamaged;
+
+  /// A long or partly damaged document: only some pages were read.
+  ///
+  /// In en, this message translates to:
+  /// **'Read {read} of {total, plural, =1{1 page} other{{total} pages}}; the rest isn’t searched.'**
+  String documentsStatusPartial(int read, int total);
+
+  /// A very long text file, or a document cut short before its pages could be counted.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the beginning was read; the rest isn’t searched.'**
+  String get documentsStatusPartialText;
+
+  /// Button: opens the attachment in the viewer.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Document'**
+  String get documentsOpenDocument;
+
+  /// Button: opens the message the attachment came with.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Message'**
+  String get documentsOpenMessage;
+
+  /// Button in the attachment viewer: the document's text, Key Facts and other copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Document Details'**
+  String get documentsDetails;
+
+  /// Identifies the file's bytes (the start of its SHA-256), so two copies can be told apart whatever their names.
+  ///
+  /// In en, this message translates to:
+  /// **'Contents fingerprint {hash}'**
+  String documentsFingerprint(String hash);
+
+  /// Section header: the text Loupe read from each page.
+  ///
+  /// In en, this message translates to:
+  /// **'Text by Page'**
+  String get documentsPagesHeader;
+
+  /// Section header: attachments with the same name in the same conversation or from the same sender.
+  ///
+  /// In en, this message translates to:
+  /// **'Other Copies'**
+  String get documentsVersionsHeader;
+
+  /// Under an attachment: an earlier attachment with the same name has different bytes.
+  ///
+  /// In en, this message translates to:
+  /// **'Different contents from the earlier copy ({date})'**
+  String documentsVersionDifferentEarlier(String date);
+
+  /// No description provided for @documentsVersionDifferentLater.
+  ///
+  /// In en, this message translates to:
+  /// **'A newer copy ({date}) has different contents'**
+  String documentsVersionDifferentLater(String date);
+
+  /// Another attachment with the same name has exactly the same bytes.
+  ///
+  /// In en, this message translates to:
+  /// **'Same contents as the copy of {date}'**
+  String documentsVersionSame(String date);
+
+  /// A same-named attachment can't be compared because its bytes aren't on the phone; name and size prove nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Same name as the copy of {date}; contents not compared until both are downloaded'**
+  String documentsVersionNotDownloaded(String date);
+
+  /// A Key Fact that changed between two copies, old value then new.
+  ///
+  /// In en, this message translates to:
+  /// **'{before} → {after}'**
+  String documentsChange(String before, String after);
+
+  /// No description provided for @documentsNoFactChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'The Key Facts are the same; other text differs.'**
+  String get documentsNoFactChanges;
+
+  /// Title of the card with a document's important fields (rate, amount due, date), each linked to its page. Also the button that opens it.
+  ///
+  /// In en, this message translates to:
+  /// **'Key Facts'**
+  String get documentsKeyFacts;
+
+  /// Button: asks the Private AI provider to read the document's important fields.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Key Facts'**
+  String get documentsKeyFactsFind;
+
+  /// No description provided for @documentsKeyFactsWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading the document…'**
+  String get documentsKeyFactsWorking;
+
+  /// No description provided for @documentsKeyFactsFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t find the Key Facts.'**
+  String get documentsKeyFactsFailed;
+
+  /// Under Key Facts made by the demo's rules.
+  ///
+  /// In en, this message translates to:
+  /// **'Made by the built-in demo, not a model.'**
+  String get documentsKeyFactsDemoNote;
+
+  /// Under Key Facts: which AI provider and model made them.
+  ///
+  /// In en, this message translates to:
+  /// **'Made by {provider}.'**
+  String documentsKeyFactsMadeBy(String provider);
+
+  /// No description provided for @documentsKeyFactsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a fact to see where the document says it.'**
+  String get documentsKeyFactsHint;
+
+  /// No description provided for @documentsKeyFactsNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Loupe has no Key Facts for this kind of document yet.'**
+  String get documentsKeyFactsNone;
+
+  /// No description provided for @documentsKeyFactsPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the first pages were read; facts on later pages are unknown.'**
+  String get documentsKeyFactsPartial;
+
+  /// Value of a Key Facts field the document doesn't state (or Loupe couldn't confirm).
+  ///
+  /// In en, this message translates to:
+  /// **'Not stated'**
+  String get documentsKeyFactsNotStated;
+
+  /// Value of a Key Facts field the document gives two different values for; neither is chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Stated differently'**
+  String get documentsKeyFactsConflicting;
+
+  /// In the sheet showing where a fact is stated: a second passage that gives another value.
+  ///
+  /// In en, this message translates to:
+  /// **'Also on page {page}:'**
+  String documentsEvidenceAlso(int page);
+
+  /// Kind of document, next to the Key Facts title: a lender's personalised mortgage offer summary (UK: KFI/ESIS).
+  ///
+  /// In en, this message translates to:
+  /// **'Mortgage illustration'**
+  String get documentsTypeMortgageIllustration;
+
+  /// Kind of document, next to the Key Facts title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice'**
+  String get documentsTypeInvoice;
+
+  /// Kind of document, next to the Key Facts title: a booking or appointment confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking'**
+  String get documentsTypeBooking;
+
+  /// Kind of document, next to the Key Facts title: none of the kinds Loupe has fields for.
+  ///
+  /// In en, this message translates to:
+  /// **'Other document'**
+  String get documentsTypeOther;
+
+  /// Key Facts field of a mortgage illustration: the interest rate of the first period.
+  ///
+  /// In en, this message translates to:
+  /// **'Initial rate'**
+  String get documentsFieldInitialRate;
+
+  /// Key Facts field of a mortgage illustration: how long the initial rate lasts.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate period'**
+  String get documentsFieldRatePeriod;
+
+  /// No description provided for @documentsFieldMonthlyPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly payment'**
+  String get documentsFieldMonthlyPayment;
+
+  /// Key Facts field of a mortgage illustration: how long the mortgage runs (e.g. 30 years).
+  ///
+  /// In en, this message translates to:
+  /// **'Term'**
+  String get documentsFieldTerm;
+
+  /// No description provided for @documentsFieldLoanAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan amount'**
+  String get documentsFieldLoanAmount;
+
+  /// Key Facts field of a mortgage illustration: the lender's product fee.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrangement fee'**
+  String get documentsFieldArrangementFee;
+
+  /// No description provided for @documentsFieldValuationFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Valuation fee'**
+  String get documentsFieldValuationFee;
+
+  /// No description provided for @documentsFieldBrokerFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Broker fee'**
+  String get documentsFieldBrokerFee;
+
+  /// No description provided for @documentsFieldEarlyRepaymentCharges.
+  ///
+  /// In en, this message translates to:
+  /// **'Early repayment charges'**
+  String get documentsFieldEarlyRepaymentCharges;
+
+  /// No description provided for @documentsFieldTotalAmountPayable.
+  ///
+  /// In en, this message translates to:
+  /// **'Total amount payable'**
+  String get documentsFieldTotalAmountPayable;
+
+  /// Key Facts field of an invoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount due'**
+  String get documentsFieldAmountDue;
+
+  /// No description provided for @documentsFieldCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get documentsFieldCurrency;
+
+  /// No description provided for @documentsFieldDueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date'**
+  String get documentsFieldDueDate;
+
+  /// Key Facts field of an invoice: who is to be paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Payee'**
+  String get documentsFieldPayee;
+
+  /// Key Facts field of an invoice or booking: its number or reference.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get documentsFieldReference;
+
+  /// No description provided for @documentsFieldSubtotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtotal'**
+  String get documentsFieldSubtotal;
+
+  /// Key Facts field of an invoice: VAT or sales tax.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax'**
+  String get documentsFieldTax;
+
+  /// Key Facts field of a booking: the day of the appointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get documentsFieldDate;
+
+  /// Key Facts field of a booking: the time of the appointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get documentsFieldTime;
+
+  /// No description provided for @documentsFieldTimeZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone'**
+  String get documentsFieldTimeZone;
+
+  /// Key Facts field of a booking: where it takes place.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get documentsFieldAddress;
+
+  /// Key Facts field of a booking: who comes or who to see (a valuer, an engineer).
+  ///
+  /// In en, this message translates to:
+  /// **'Person'**
+  String get documentsFieldPerson;
+
   /// Compose toolbar button and the title of its sheet: picks the signature for this message.
   ///
   /// In en, this message translates to:
@@ -11210,6 +11660,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The account couldn’t be added. Try again, or add it manually.'**
   String get accountImportFailed;
+
+  /// Title of a panel in compose, above the text of a reply: what the original message asked the user for (documents, steps), checked against the reply and its attachments. A Private AI feature; the name of a feature, like a title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply Check'**
+  String get composeReplyCheckTitle;
+
+  /// Reply Check panel while Private AI reads the original message for its requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading what they asked for…'**
+  String get composeReplyCheckChecking;
+
+  /// Reply Check panel when reading the original message's requests failed. A Retry button follows. Sending is not affected.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t read what they asked for.'**
+  String get composeReplyCheckFailed;
+
+  /// Part of Reply Check's one-line summary: how many of the documents the original message asked for are attached to the reply. Other parts follow after a “·”.
+  ///
+  /// In en, this message translates to:
+  /// **'{attached, plural, =0{None of {total} attached} =1{1 of {total} attached} other{{attached} of {total} attached}}'**
+  String composeReplyCheckSummaryAttached(int attached, int total);
+
+  /// Part of Reply Check's summary: attached documents that seem to be for another period (another tax year or month) than the one asked for.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 may be for the wrong period} other{{count} may be for the wrong period}}'**
+  String composeReplyCheckSummaryWrongPeriod(int count);
+
+  /// Part of Reply Check's summary: attached documents Loupe couldn't read (protected or damaged), so it can't tell whether they are the right ones.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 couldn’t be read} other{{count} couldn’t be read}}'**
+  String composeReplyCheckSummaryUnknown(int count);
+
+  /// Part of Reply Check's summary: requests that are done somewhere else (in an app, a form at a link), not by attaching a file.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 to do outside email} other{{count} to do outside email}}'**
+  String composeReplyCheckSummaryOutside(int count);
+
+  /// Part of Reply Check's summary: requests the reply's text says are done or coming (“I’ll do the ID check tonight”).
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 in your text} other{{count} in your text}}'**
+  String composeReplyCheckSummaryMentioned(int count);
+
+  /// Part of Reply Check's summary: questions or confirmations the original message asked for that the reply's text doesn't mention yet.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 to answer} other{{count} to answer}}'**
+  String composeReplyCheckSummaryToAnswer(int count);
+
+  /// Status of a request in Reply Check: a matching file is attached.
+  ///
+  /// In en, this message translates to:
+  /// **'Attached'**
+  String get composeReplyCheckStatusIncluded;
+
+  /// Status of a request in Reply Check: the attached file seems to be for another tax year or month than the one asked for.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the period'**
+  String get composeReplyCheckStatusWrongPeriod;
+
+  /// Status of a requested document in Reply Check: nothing attached matches it.
+  ///
+  /// In en, this message translates to:
+  /// **'Not attached'**
+  String get composeReplyCheckStatusMissing;
+
+  /// Status of a question or confirmation in Reply Check: the reply's text doesn't mention it yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not in your reply'**
+  String get composeReplyCheckStatusToAnswer;
+
+  /// Status of a request in Reply Check: it is done somewhere else (in an app, a form at a link, in person), not by attaching a file.
+  ///
+  /// In en, this message translates to:
+  /// **'Outside email'**
+  String get composeReplyCheckStatusOutside;
+
+  /// Status of a request in Reply Check: the reply's text says it is done or coming, or answers it.
+  ///
+  /// In en, this message translates to:
+  /// **'In your text'**
+  String get composeReplyCheckStatusMentioned;
+
+  /// Status of a request in Reply Check: a matching file is attached but couldn't be read, so whether it is the right one is unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Can’t tell'**
+  String get composeReplyCheckStatusUnknown;
+
+  /// Under a request in Reply Check: the attached file was matched to it by its file name, without reading it, so the match is tentative.
+  ///
+  /// In en, this message translates to:
+  /// **'Matched “{file}” by its name only.'**
+  String composeReplyCheckByName(String file);
+
+  /// Under a request in Reply Check: the attached file was matched to it by reading its text.
+  ///
+  /// In en, this message translates to:
+  /// **'Matched “{file}” by what it says.'**
+  String composeReplyCheckByContents(String file);
+
+  /// Under a request in Reply Check: the attached file doesn't say which period it is for. period is copied from the original message, untranslated.
+  ///
+  /// In en, this message translates to:
+  /// **'Check that it’s for {period}.'**
+  String composeReplyCheckCheckPeriod(String period);
+
+  /// Under a request in Reply Check: the file's name states another period than the original message asked for. asked and found are copied from the message and the file name, untranslated.
+  ///
+  /// In en, this message translates to:
+  /// **'They asked for {asked}; the name “{file}” says {found}.'**
+  String composeReplyCheckPeriodInName(String asked, String file, String found);
+
+  /// Under a request in Reply Check: the text inside the file states another period than the original message asked for. asked and found are copied from the message and the file, untranslated.
+  ///
+  /// In en, this message translates to:
+  /// **'They asked for {asked}; “{file}” says {found}.'**
+  String composeReplyCheckPeriodInContents(String asked, String file, String found);
+
+  /// Under a request in Reply Check: the attached file is protected or damaged.
+  ///
+  /// In en, this message translates to:
+  /// **'“{file}” couldn’t be read, so whether it’s the right file is unknown.'**
+  String composeReplyCheckUnreadable(String file);
+
+  /// Under a request in Reply Check that is done in an app, a form at a link or in person. The way, as the message wrote it, is shown next to it.
+  ///
+  /// In en, this message translates to:
+  /// **'Done outside email, not by attaching a file.'**
+  String get composeReplyCheckOutsideDetail;
+
+  /// Warning under a request done outside email (an ID check in an app) when a file that looks like it (a passport scan) is attached: attaching it doesn't do the step.
+  ///
+  /// In en, this message translates to:
+  /// **'“{file}” is attached, but this isn’t done by email.'**
+  String composeReplyCheckAttachedAnyway(String file);
+
+  /// Under a request in Reply Check: the sentence of the reply that mentions it.
+  ///
+  /// In en, this message translates to:
+  /// **'You wrote: “{text}”'**
+  String composeReplyCheckYouWrote(String text);
+
+  /// Label above the passage of the original message a request in Reply Check comes from.
+  ///
+  /// In en, this message translates to:
+  /// **'From their message'**
+  String get composeReplyCheckFromMessage;
+
+  /// Note at the end of Reply Check when some files were matched by their names only.
+  ///
+  /// In en, this message translates to:
+  /// **'A file’s name doesn’t show what’s in it. Open the files to be sure.'**
+  String get composeReplyCheckByNameNote;
+
+  /// Note at the end of Reply Check: requests further down the original message may be missing.
+  ///
+  /// In en, this message translates to:
+  /// **'Their message is long; only its beginning was read.'**
+  String get composeReplyCheckPartial;
+
+  /// Note at the end of Reply Check: the requests were found by a few built-in rules (the demo), not by an AI model.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests found by the built-in demo, not a model.'**
+  String get composeReplyCheckDemoNote;
+
+  /// Note at the end of Reply Check: which AI model found the requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests found by {provider}.'**
+  String composeReplyCheckFoundBy(String provider);
+
+  /// Button under a request in Reply Check: leave it out of the check (it isn't really a request, or isn't for this reply).
+  ///
+  /// In en, this message translates to:
+  /// **'Don’t Check This'**
+  String get composeReplyCheckSkip;
+
+  /// At the end of Reply Check: requests the user left out with “Don’t Check This”. A Check All button follows.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 request not checked} other{{count} requests not checked}}'**
+  String composeReplyCheckSkipped(int count);
+
+  /// Button at the end of Reply Check: check the requests left out again.
+  ///
+  /// In en, this message translates to:
+  /// **'Check All'**
+  String get composeReplyCheckCheckAll;
+
+  /// Screen reader label of the button that opens Reply Check's list of requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Requests'**
+  String get composeReplyCheckShowRequests;
+
+  /// Screen reader label of the button that closes Reply Check's list of requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Requests'**
+  String get composeReplyCheckHideRequests;
+
+  /// Screen reader label of the button that hides the Reply Check panel for this message.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Reply Check'**
+  String get composeReplyCheckHide;
+
+  /// Gentle note in compose when the message's text says “attached” or “enclosed” and no file is attached. An Attach button follows; it never stops sending.
+  ///
+  /// In en, this message translates to:
+  /// **'Your text mentions an attachment, but nothing is attached.'**
+  String get composeReplyCheckNothingAttached;
+
+  /// Screen reader label of the button that hides the note about a missing attachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Reminder'**
+  String get composeReplyCheckHideReminder;
+
+  /// Heading in the demo's attach sheet: made-up documents of the demo's user, to try Reply Check with.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Documents'**
+  String get composeReplyCheckDemoFiles;
+
+  /// Row in the demo's attach sheet: pick a file from the phone instead.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Files…'**
+  String get composeReplyCheckBrowseFiles;
 
   /// Title of the compose screen while the subject is empty.
   ///

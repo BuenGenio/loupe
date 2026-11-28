@@ -6444,6 +6444,317 @@ class AppLocalizationsTr extends AppLocalizations {
   String get sharedNotJunk => 'Gereksiz değil';
 
   @override
+  String get documentsTitle => 'Belgeler';
+
+  @override
+  String get documentsSearchPlaceholder => 'Belgelerde ara';
+
+  @override
+  String get documentsSearchInDocuments => 'Belgelerde ara';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count indirilmiş belge',
+      one: '1 indirilmiş belge',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count indirilmiş belge',
+      one: '1 indirilmiş belge',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable belge okunamıyor',
+      one: '1 belge okunamıyor',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count indirilmiş belgede arandı',
+      one: '1 indirilmiş belgede arandı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count indirilmiş belgede arandı',
+      one: '1 indirilmiş belgede arandı',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable belge okunamadı',
+      one: '1 belge okunamadı',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Tüm posta kutunuzda değil, bu telefondaki eklerde arar. Eklemek istediğiniz eki açın.';
+
+  @override
+  String get documentsEmpty => 'Henüz belge yok';
+
+  @override
+  String get documentsEmptyDetail =>
+      'E-postadan açtığınız PDF’ler ve metin dosyaları burada görünür; böylece içlerinde arama yapabilirsiniz.';
+
+  @override
+  String get documentsNoResults => 'Eşleşme yok';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'İndirilmiş belgelerin hiçbiri “$query” içermiyor.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Eşleştiği sayfa: $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Eşleştiği satır: $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count eşleşme daha',
+      one: '1 eşleşme daha',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Sayfa $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'İndirilmedi: okumak ve içinde aramak için açın.';
+
+  @override
+  String get documentsStatusEncrypted => 'Parolayla korunuyor: Loupe bunu okuyamıyor.';
+
+  @override
+  String get documentsStatusNoText => 'Metin bulunamadı: Loupe’un henüz okuyamadığı bir tarama veya fotoğraf olabilir.';
+
+  @override
+  String get documentsStatusEmpty => 'Bu dosyada metin yok.';
+
+  @override
+  String get documentsStatusUnsupported => 'Loupe bu tür belgeleri henüz okuyamıyor.';
+
+  @override
+  String get documentsStatusTooLarge => 'Bu telefonda okunamayacak kadar büyük.';
+
+  @override
+  String get documentsStatusDamaged => 'Okunamadı: dosya bozuk olabilir.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total sayfadan $read tanesi okundu',
+      one: '1 sayfadan $read tanesi okundu',
+    );
+    return '$_temp0; geri kalanında arama yapılmıyor.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Yalnızca baş kısmı okundu; geri kalanında arama yapılmıyor.';
+
+  @override
+  String get documentsOpenDocument => 'Belgeyi aç';
+
+  @override
+  String get documentsOpenMessage => 'İletiyi aç';
+
+  @override
+  String get documentsDetails => 'Belge ayrıntıları';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'İçerik parmak izi $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Sayfalara göre metin';
+
+  @override
+  String get documentsVersionsHeader => 'Diğer kopyalar';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'İçeriği önceki kopyadan ($date) farklı';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Daha yeni bir kopyanın ($date) içeriği farklı';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'İçeriği $date tarihli kopyayla aynı';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Adı $date tarihli kopyayla aynı; ikisi de indirilene kadar içerikler karşılaştırılmaz';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Temel bilgiler aynı; farklar metnin başka yerlerinde.';
+
+  @override
+  String get documentsKeyFacts => 'Temel bilgiler';
+
+  @override
+  String get documentsKeyFactsFind => 'Temel bilgileri bul';
+
+  @override
+  String get documentsKeyFactsWorking => 'Belge okunuyor…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Temel bilgiler bulunamadı.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Yerleşik demo hazırladı, bir model değil.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Hazırlayan: $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Belgenin bunu nerede belirttiğini görmek için bir bilgiye dokunun.';
+
+  @override
+  String get documentsKeyFactsNone => 'Loupe bu tür belgeler için henüz temel bilgi sunmuyor.';
+
+  @override
+  String get documentsKeyFactsPartial => 'Yalnızca ilk sayfalar okundu; sonraki sayfalardaki bilgiler bilinmiyor.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Belirtilmemiş';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Farklı belirtilmiş';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Ayrıca sayfa $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Konut kredisi teklifi';
+
+  @override
+  String get documentsTypeInvoice => 'Fatura';
+
+  @override
+  String get documentsTypeBooking => 'Rezervasyon';
+
+  @override
+  String get documentsTypeOther => 'Diğer belge';
+
+  @override
+  String get documentsFieldInitialRate => 'Başlangıç faiz oranı';
+
+  @override
+  String get documentsFieldRatePeriod => 'Başlangıç faizi süresi';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Aylık taksit';
+
+  @override
+  String get documentsFieldTerm => 'Vade';
+
+  @override
+  String get documentsFieldLoanAmount => 'Kredi tutarı';
+
+  @override
+  String get documentsFieldArrangementFee => 'Kredi tahsis ücreti';
+
+  @override
+  String get documentsFieldValuationFee => 'Ekspertiz ücreti';
+
+  @override
+  String get documentsFieldBrokerFee => 'Aracı ücreti';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Erken ödeme tazminatı';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Toplam geri ödeme tutarı';
+
+  @override
+  String get documentsFieldAmountDue => 'Ödenecek tutar';
+
+  @override
+  String get documentsFieldCurrency => 'Para birimi';
+
+  @override
+  String get documentsFieldDueDate => 'Son ödeme tarihi';
+
+  @override
+  String get documentsFieldPayee => 'Alıcı';
+
+  @override
+  String get documentsFieldReference => 'Referans numarası';
+
+  @override
+  String get documentsFieldSubtotal => 'Ara toplam';
+
+  @override
+  String get documentsFieldTax => 'Vergi';
+
+  @override
+  String get documentsFieldDate => 'Tarih';
+
+  @override
+  String get documentsFieldTime => 'Saat';
+
+  @override
+  String get documentsFieldTimeZone => 'Saat dilimi';
+
+  @override
+  String get documentsFieldAddress => 'Adres';
+
+  @override
+  String get documentsFieldPerson => 'Kişi';
+
+  @override
   String get composeSignature => 'İmza';
 
   @override
@@ -6983,6 +7294,202 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'Hesap eklenemedi. Tekrar deneyin ya da elle ekleyin.';
+
+  @override
+  String get composeReplyCheckTitle => 'Yanıt kontrolü';
+
+  @override
+  String get composeReplyCheckChecking => 'İstenenler okunuyor…';
+
+  @override
+  String get composeReplyCheckFailed => 'İstenenler okunamadı.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$total belgeden $attached tanesi ekli',
+      one: '$total belgeden 1 tanesi ekli',
+      zero: '$total belgeden hiçbiri ekli değil',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count belge yanlış döneme ait olabilir',
+      one: '1 belge yanlış döneme ait olabilir',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dosya okunamadı',
+      one: '1 dosya okunamadı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count adım e-posta dışında yapılacak',
+      one: '1 adım e-posta dışında yapılacak',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count istek metninizde geçiyor',
+      one: '1 istek metninizde geçiyor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count istek yanıt bekliyor',
+      one: '1 istek yanıt bekliyor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Ekli';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Dönemi kontrol edin';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Ekli değil';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Yanıtınızda yok';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'E-posta dışında';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Metninizde';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Belli değil';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '“$file” yalnızca adına göre eşleştirildi.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '“$file” içeriğine göre eşleştirildi.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Dönemin $period olduğunu kontrol edin.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'İstenen dönem $asked; “$file” dosya adına göre $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'İstenen dönem $asked; “$file” içeriğine göre $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return '“$file” okunamadı; doğru dosya olup olmadığı bilinmiyor.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Dosya ekleyerek değil, e-posta dışında yapılır.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '“$file” ekli, ancak bu adım e-postayla yapılmaz.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Şunu yazdınız: “$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Gelen iletiden';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Dosya adı, dosyanın içinde ne olduğunu göstermez. Emin olmak için dosyaları açın.';
+
+  @override
+  String get composeReplyCheckPartial => 'Gelen ileti uzun; yalnızca baş kısmı okundu.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'İstekleri yerleşik demo buldu, bir model değil.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'İstekleri $provider modeli buldu.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Bunu kontrol etme';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count istek kontrol edilmedi',
+      one: '1 istek kontrol edilmedi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Tümünü kontrol et';
+
+  @override
+  String get composeReplyCheckShowRequests => 'İstekleri göster';
+
+  @override
+  String get composeReplyCheckHideRequests => 'İstekleri gizle';
+
+  @override
+  String get composeReplyCheckHide => 'Yanıt kontrolünü gizle';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Metninizde bir ekten söz ediliyor, ancak ekli bir şey yok.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Hatırlatmayı gizle';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demo belgeleri';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Dosyalara göz at…';
 
   @override
   String get composeNewMessageTitle => 'Yeni ileti';

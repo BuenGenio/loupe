@@ -6411,6 +6411,313 @@ class AppLocalizationsSv extends AppLocalizations {
   String get sharedNotJunk => 'Inte skräppost';
 
   @override
+  String get documentsTitle => 'Dokument';
+
+  @override
+  String get documentsSearchPlaceholder => 'Sök i dokument';
+
+  @override
+  String get documentsSearchInDocuments => 'Sök i dokument';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nedladdade dokument',
+      one: '$count nedladdat dokument',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nedladdade dokument',
+      one: '$count nedladdat dokument',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable kan inte läsas',
+      one: '$unreadable kan inte läsas',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Sökte i $count nedladdade dokument',
+      one: 'Sökte i $count nedladdat dokument',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Sökte i $count nedladdade dokument',
+      one: 'Sökte i $count nedladdat dokument',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable kunde inte läsas',
+      one: '$unreadable kunde inte läsas',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Söker i bilagor i den här telefonen, inte i hela din brevlåda. Öppna en bilaga för att lägga till den.';
+
+  @override
+  String get documentsEmpty => 'Inga dokument än';
+
+  @override
+  String get documentsEmptyDetail =>
+      'PDF-filer och textfiler som du öppnar från e-post visas här, så att du kan söka i dem.';
+
+  @override
+  String get documentsNoResults => 'Inga träffar';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Inget nedladdat dokument innehåller ”$query”.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Träff på sidan $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Träff på rad $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count träffar till',
+      one: '$count träff till',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Sida $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'Inte nedladdat: öppna dokumentet för att läsa och söka i det.';
+
+  @override
+  String get documentsStatusEncrypted => 'Lösenordsskyddat: Loupe kan inte läsa det.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Ingen text hittades: det kan vara en skanning eller ett foto, som Loupe inte kan läsa än.';
+
+  @override
+  String get documentsStatusEmpty => 'Den här filen innehåller ingen text.';
+
+  @override
+  String get documentsStatusUnsupported => 'Loupe kan inte läsa den här typen av dokument än.';
+
+  @override
+  String get documentsStatusTooLarge => 'För stort för att läsas i den här telefonen.';
+
+  @override
+  String get documentsStatusDamaged => 'Kunde inte läsas: filen kan vara skadad.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total sidor', one: '$total sida');
+    return 'Läste $read av $_temp0; resten genomsöks inte.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Bara början lästes; resten genomsöks inte.';
+
+  @override
+  String get documentsOpenDocument => 'Öppna dokument';
+
+  @override
+  String get documentsOpenMessage => 'Öppna meddelande';
+
+  @override
+  String get documentsDetails => 'Dokumentdetaljer';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Fingeravtryck av innehållet $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Text per sida';
+
+  @override
+  String get documentsVersionsHeader => 'Andra kopior';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Annat innehåll än den tidigare kopian ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'En nyare kopia ($date) har annat innehåll';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Samma innehåll som kopian från $date';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Samma namn som kopian från $date; innehållet jämförs först när båda har laddats ned';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Nyckeluppgifterna är desamma; annan text skiljer sig.';
+
+  @override
+  String get documentsKeyFacts => 'Nyckeluppgifter';
+
+  @override
+  String get documentsKeyFactsFind => 'Hitta nyckeluppgifter';
+
+  @override
+  String get documentsKeyFactsWorking => 'Läser dokumentet…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Det gick inte att hitta nyckeluppgifterna.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Skapat av den inbyggda demon, inte av en modell.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Skapat av $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Tryck på en uppgift för att se var dokumentet anger den.';
+
+  @override
+  String get documentsKeyFactsNone => 'Loupe har inga nyckeluppgifter för den här typen av dokument än.';
+
+  @override
+  String get documentsKeyFactsPartial => 'Bara de första sidorna lästes; uppgifter på senare sidor är okända.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Anges inte';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Anges olika';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Även på sidan $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Bolåneerbjudande';
+
+  @override
+  String get documentsTypeInvoice => 'Faktura';
+
+  @override
+  String get documentsTypeBooking => 'Bokning';
+
+  @override
+  String get documentsTypeOther => 'Annat dokument';
+
+  @override
+  String get documentsFieldInitialRate => 'Inledande ränta';
+
+  @override
+  String get documentsFieldRatePeriod => 'Bindningstid';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Månadsbetalning';
+
+  @override
+  String get documentsFieldTerm => 'Löptid';
+
+  @override
+  String get documentsFieldLoanAmount => 'Lånebelopp';
+
+  @override
+  String get documentsFieldArrangementFee => 'Uppläggningsavgift';
+
+  @override
+  String get documentsFieldValuationFee => 'Värderingsavgift';
+
+  @override
+  String get documentsFieldBrokerFee => 'Förmedlingsavgift';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Ränteskillnadsersättning';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Totalt belopp att betala';
+
+  @override
+  String get documentsFieldAmountDue => 'Belopp att betala';
+
+  @override
+  String get documentsFieldCurrency => 'Valuta';
+
+  @override
+  String get documentsFieldDueDate => 'Förfallodatum';
+
+  @override
+  String get documentsFieldPayee => 'Betalningsmottagare';
+
+  @override
+  String get documentsFieldReference => 'Referens';
+
+  @override
+  String get documentsFieldSubtotal => 'Delsumma';
+
+  @override
+  String get documentsFieldTax => 'Moms';
+
+  @override
+  String get documentsFieldDate => 'Datum';
+
+  @override
+  String get documentsFieldTime => 'Tid';
+
+  @override
+  String get documentsFieldTimeZone => 'Tidszon';
+
+  @override
+  String get documentsFieldAddress => 'Adress';
+
+  @override
+  String get documentsFieldPerson => 'Person';
+
+  @override
   String get composeSignature => 'Signatur';
 
   @override
@@ -6945,6 +7252,197 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'Det gick inte att lägga till kontot. Försök igen eller lägg till det manuellt.';
+
+  @override
+  String get composeReplyCheckTitle => 'Svarskontroll';
+
+  @override
+  String get composeReplyCheckChecking => 'Läser vad som efterfrågas…';
+
+  @override
+  String get composeReplyCheckFailed => 'Det gick inte att läsa vad som efterfrågas.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached av $total bifogade',
+      one: '1 av $total bifogad',
+      zero: 'Ingen av $total bifogad',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kan gälla fel period',
+      one: '1 kan gälla fel period',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kunde inte läsas',
+      one: '1 kunde inte läsas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count måste göras utanför e-post',
+      one: '1 måste göras utanför e-post',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count i din text', one: '1 i din text');
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count behöver besvaras',
+      one: '1 behöver besvaras',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Bifogad';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Kontrollera perioden';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Inte bifogad';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Inte i ditt svar';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Utanför e-post';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'I din text';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Oklart';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '”$file” passar bara utifrån namnet.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '”$file” passar utifrån innehållet.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Kontrollera att filen gäller $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'De bad om $asked; namnet ”$file” anger $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'De bad om $asked; ”$file” anger $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return '”$file” kunde inte läsas, så det är oklart om det är rätt fil.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Görs utanför e-post, inte genom att bifoga en fil.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '”$file” är bifogad, men det här görs inte via e-post.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Du skrev: ”$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Från meddelandet';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'En fils namn visar inte vad den innehåller. Öppna filerna för att vara säker.';
+
+  @override
+  String get composeReplyCheckPartial => 'Meddelandet är långt; bara början lästes.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Förfrågningarna hittades av den inbyggda demon, inte av en modell.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Förfrågningarna hittades av $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Kontrollera inte';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count förfrågningar kontrolleras inte',
+      one: '1 förfrågan kontrolleras inte',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Kontrollera alla';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Visa förfrågningar';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Dölj förfrågningar';
+
+  @override
+  String get composeReplyCheckHide => 'Dölj svarskontroll';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Din text nämner en bilaga, men inget är bifogat.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Dölj påminnelse';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demodokument';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Bläddra bland filer…';
 
   @override
   String get composeNewMessageTitle => 'Nytt meddelande';

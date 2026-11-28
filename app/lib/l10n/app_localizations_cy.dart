@@ -6867,6 +6867,351 @@ class AppLocalizationsCy extends AppLocalizations {
   String get sharedNotJunk => 'Nid sothach';
 
   @override
+  String get documentsTitle => 'Dogfennau';
+
+  @override
+  String get documentsSearchPlaceholder => 'Chwilio yn y dogfennau';
+
+  @override
+  String get documentsSearchInDocuments => 'Chwilio yn y dogfennau';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dogfen wedi’u llwytho i lawr',
+      many: '$count dogfen wedi’u llwytho i lawr',
+      few: '$count dogfen wedi’u llwytho i lawr',
+      two: '$count ddogfen wedi’u llwytho i lawr',
+      one: '1 ddogfen wedi’i llwytho i lawr',
+      zero: '$count dogfen wedi’u llwytho i lawr',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dogfen wedi’u llwytho i lawr',
+      many: '$count dogfen wedi’u llwytho i lawr',
+      few: '$count dogfen wedi’u llwytho i lawr',
+      two: '$count ddogfen wedi’u llwytho i lawr',
+      one: '1 ddogfen wedi’i llwytho i lawr',
+      zero: '$count dogfen wedi’u llwytho i lawr',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: 'Does dim modd darllen $unreadable',
+      many: 'Does dim modd darllen $unreadable',
+      few: 'Does dim modd darllen $unreadable',
+      two: 'Does dim modd darllen $unreadable',
+      one: 'Does dim modd darllen 1',
+      zero: 'Does dim modd darllen $unreadable',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
+      many: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
+      few: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
+      two: 'Chwiliwyd $count ddogfen wedi’u llwytho i lawr',
+      one: 'Chwiliwyd 1 ddogfen wedi’i llwytho i lawr',
+      zero: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
+      many: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
+      few: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
+      two: 'Chwiliwyd $count ddogfen wedi’u llwytho i lawr',
+      one: 'Chwiliwyd 1 ddogfen wedi’i llwytho i lawr',
+      zero: 'Chwiliwyd $count dogfen wedi’u llwytho i lawr',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: 'Doedd dim modd darllen $unreadable',
+      many: 'Doedd dim modd darllen $unreadable',
+      few: 'Doedd dim modd darllen $unreadable',
+      two: 'Doedd dim modd darllen $unreadable',
+      one: 'Doedd dim modd darllen 1',
+      zero: 'Doedd dim modd darllen $unreadable',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Yn chwilio atodiadau ar y ffôn hwn, nid eich blwch post cyfan. Agorwch atodiad i’w ychwanegu.';
+
+  @override
+  String get documentsEmpty => 'Dim dogfennau eto';
+
+  @override
+  String get documentsEmptyDetail =>
+      'Mae PDFs a ffeiliau testun rydych chi’n eu hagor o’ch e-bost yn ymddangos yma, er mwyn i chi allu chwilio ynddyn nhw.';
+
+  @override
+  String get documentsNoResults => 'Dim yn cyfateb';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Does dim un o’r dogfennau a lwythwyd i lawr yn cynnwys “$query”.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Canfuwyd ar dudalen $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Canfuwyd ar linell $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count cyfatebiaeth arall',
+      many: '$count chyfatebiaeth arall',
+      few: '$count cyfatebiaeth arall',
+      two: '$count gyfatebiaeth arall',
+      one: '1 gyfatebiaeth arall',
+      zero: '$count cyfatebiaeth arall',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Tudalen $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'Heb ei llwytho i lawr: agorwch hi i’w darllen a chwilio ynddi.';
+
+  @override
+  String get documentsStatusEncrypted => 'Wedi’i diogelu â chyfrinair: does dim modd i Loupe ei darllen.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Dim testun wedi’i ganfod: gallai fod yn sgan neu’n llun, a dyw Loupe ddim yn gallu darllen y rheini eto.';
+
+  @override
+  String get documentsStatusEmpty => 'Does dim testun yn y ffeil hon.';
+
+  @override
+  String get documentsStatusUnsupported => 'Dyw Loupe ddim yn gallu darllen y math hwn o ddogfen eto.';
+
+  @override
+  String get documentsStatusTooLarge => 'Rhy fawr i’w darllen ar y ffôn hwn.';
+
+  @override
+  String get documentsStatusDamaged => 'Methu ei darllen: efallai fod y ffeil wedi’i difrodi.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total tudalen',
+      many: '$total tudalen',
+      few: '$total tudalen',
+      two: '$total dudalen',
+      one: '1 dudalen',
+      zero: '$total tudalen',
+    );
+    return 'Darllenwyd $read o $_temp0; dyw’r gweddill ddim yn cael ei chwilio.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Dim ond y dechrau a ddarllenwyd; dyw’r gweddill ddim yn cael ei chwilio.';
+
+  @override
+  String get documentsOpenDocument => 'Agor y ddogfen';
+
+  @override
+  String get documentsOpenMessage => 'Agor y neges';
+
+  @override
+  String get documentsDetails => 'Manylion y ddogfen';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Ôl bys y cynnwys $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Testun fesul tudalen';
+
+  @override
+  String get documentsVersionsHeader => 'Copïau eraill';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Cynnwys gwahanol i’r copi cynharach ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Mae gan gopi mwy newydd ($date) gynnwys gwahanol';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Yr un cynnwys â’r copi o $date';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Yr un enw â’r copi o $date; ni fydd y cynnwys yn cael ei gymharu nes bod y ddau wedi’u llwytho i lawr';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Mae’r ffeithiau allweddol yr un fath; mae testun arall yn wahanol.';
+
+  @override
+  String get documentsKeyFacts => 'Ffeithiau allweddol';
+
+  @override
+  String get documentsKeyFactsFind => 'Dod o hyd i’r ffeithiau allweddol';
+
+  @override
+  String get documentsKeyFactsWorking => 'Wrthi’n darllen y ddogfen…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Methu dod o hyd i’r ffeithiau allweddol.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Gwnaed gan y demo mewnol, nid gan fodel.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Gwnaed gan $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Tapiwch ffaith i weld ble mae’r ddogfen yn ei nodi.';
+
+  @override
+  String get documentsKeyFactsNone => 'Does gan Loupe ddim ffeithiau allweddol ar gyfer y math hwn o ddogfen eto.';
+
+  @override
+  String get documentsKeyFactsPartial =>
+      'Dim ond y tudalennau cyntaf a ddarllenwyd; does dim gwybod beth yw’r ffeithiau ar dudalennau diweddarach.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Heb ei nodi';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Wedi’i nodi’n wahanol';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Hefyd ar dudalen $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Darlun morgais';
+
+  @override
+  String get documentsTypeInvoice => 'Anfoneb';
+
+  @override
+  String get documentsTypeBooking => 'Archeb';
+
+  @override
+  String get documentsTypeOther => 'Dogfen arall';
+
+  @override
+  String get documentsFieldInitialRate => 'Cyfradd gychwynnol';
+
+  @override
+  String get documentsFieldRatePeriod => 'Cyfnod y gyfradd gychwynnol';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Taliad misol';
+
+  @override
+  String get documentsFieldTerm => 'Tymor';
+
+  @override
+  String get documentsFieldLoanAmount => 'Swm y benthyciad';
+
+  @override
+  String get documentsFieldArrangementFee => 'Ffi trefnu';
+
+  @override
+  String get documentsFieldValuationFee => 'Ffi prisio';
+
+  @override
+  String get documentsFieldBrokerFee => 'Ffi brocer';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Ffioedd ad-dalu cynnar';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Cyfanswm sy’n daladwy';
+
+  @override
+  String get documentsFieldAmountDue => 'Swm sy’n ddyledus';
+
+  @override
+  String get documentsFieldCurrency => 'Arian cyfred';
+
+  @override
+  String get documentsFieldDueDate => 'Dyddiad dyledus';
+
+  @override
+  String get documentsFieldPayee => 'Talai';
+
+  @override
+  String get documentsFieldReference => 'Cyfeirnod';
+
+  @override
+  String get documentsFieldSubtotal => 'Is-gyfanswm';
+
+  @override
+  String get documentsFieldTax => 'TAW';
+
+  @override
+  String get documentsFieldDate => 'Dyddiad';
+
+  @override
+  String get documentsFieldTime => 'Amser';
+
+  @override
+  String get documentsFieldTimeZone => 'Cylchfa amser';
+
+  @override
+  String get documentsFieldAddress => 'Cyfeiriad';
+
+  @override
+  String get documentsFieldPerson => 'Person';
+
+  @override
   String get composeSignature => 'Llofnod';
 
   @override
@@ -7440,6 +7785,229 @@ class AppLocalizationsCy extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'Methu ychwanegu’r cyfrif. Rhowch gynnig arall arni, neu ei ychwanegu â llaw.';
+
+  @override
+  String get composeReplyCheckTitle => 'Gwiriad ateb';
+
+  @override
+  String get composeReplyCheckChecking => 'Yn darllen beth maen nhw’n gofyn amdano…';
+
+  @override
+  String get composeReplyCheckFailed => 'Methu darllen beth maen nhw’n gofyn amdano.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached o $total wedi’u hatodi',
+      many: '$attached o $total wedi’u hatodi',
+      few: '$attached o $total wedi’u hatodi',
+      two: '$attached o $total wedi’u hatodi',
+      one: '1 o $total wedi’i atodi',
+      zero: 'Dim un o $total wedi’i atodi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count o bosibl ar gyfer y cyfnod anghywir',
+      many: '$count o bosibl ar gyfer y cyfnod anghywir',
+      few: '$count o bosibl ar gyfer y cyfnod anghywir',
+      two: '$count o bosibl ar gyfer y cyfnod anghywir',
+      one: '1 o bosibl ar gyfer y cyfnod anghywir',
+      zero: '$count o bosibl ar gyfer y cyfnod anghywir',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count na ellid eu darllen',
+      many: '$count na ellid eu darllen',
+      few: '$count na ellid eu darllen',
+      two: '$count na ellid eu darllen',
+      one: '1 na ellid ei ddarllen',
+      zero: '$count na ellid eu darllen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count i’w gwneud y tu allan i e-bost',
+      many: '$count i’w gwneud y tu allan i e-bost',
+      few: '$count i’w gwneud y tu allan i e-bost',
+      two: '$count i’w gwneud y tu allan i e-bost',
+      one: '1 i’w wneud y tu allan i e-bost',
+      zero: '$count i’w gwneud y tu allan i e-bost',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count yn eich testun',
+      many: '$count yn eich testun',
+      few: '$count yn eich testun',
+      two: '$count yn eich testun',
+      one: '1 yn eich testun',
+      zero: '$count yn eich testun',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count i’w hateb',
+      many: '$count i’w hateb',
+      few: '$count i’w hateb',
+      two: '$count i’w hateb',
+      one: '1 i’w ateb',
+      zero: '$count i’w hateb',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Wedi’i atodi';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Gwiriwch y cyfnod';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Heb ei atodi';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Ddim yn eich ateb';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Y tu allan i e-bost';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Yn eich testun';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Methu dweud';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Wedi paru “$file” yn ôl ei henw yn unig.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Wedi paru “$file” yn ôl ei chynnwys.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Gwiriwch ei bod ar gyfer $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Roedden nhw eisiau $asked; mae’r enw “$file” yn dweud $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Roedden nhw eisiau $asked; mae “$file” yn dweud $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Methu darllen “$file”, felly does dim modd gwybod ai dyma’r ffeil gywir.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'I’w wneud y tu allan i e-bost, nid drwy atodi ffeil.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return 'Mae “$file” wedi’i hatodi, ond dyw hyn ddim yn cael ei wneud drwy e-bost.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Ysgrifennoch chi: “$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'O’u neges';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Dyw enw ffeil ddim yn dangos beth sydd ynddi. Agorwch y ffeiliau i fod yn siŵr.';
+
+  @override
+  String get composeReplyCheckPartial => 'Mae eu neges yn hir; dim ond ei dechrau a ddarllenwyd.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Ceisiadau wedi’u canfod gan y demo mewnol, nid gan fodel.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Ceisiadau wedi’u canfod gan y model $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Peidio â gwirio hwn';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count cais heb eu gwirio',
+      many: '$count cais heb eu gwirio',
+      few: '$count cais heb eu gwirio',
+      two: '$count gais heb eu gwirio',
+      one: '1 cais heb ei wirio',
+      zero: '$count cais heb eu gwirio',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Gwirio pob un';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Dangos y ceisiadau';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Cuddio’r ceisiadau';
+
+  @override
+  String get composeReplyCheckHide => 'Cuddio’r gwiriad ateb';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Mae’ch testun yn sôn am atodiad, ond does dim byd wedi’i atodi.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Cuddio’r nodyn atgoffa';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Dogfennau demo';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Pori ffeiliau…';
 
   @override
   String get composeNewMessageTitle => 'Neges newydd';

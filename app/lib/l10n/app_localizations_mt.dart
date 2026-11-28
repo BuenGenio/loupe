@@ -6698,6 +6698,342 @@ class AppLocalizationsMt extends AppLocalizations {
   String get sharedNotJunk => 'Mhux spam';
 
   @override
+  String get documentsTitle => 'Dokumenti';
+
+  @override
+  String get documentsSearchPlaceholder => 'Fittex fid-dokumenti';
+
+  @override
+  String get documentsSearchInDocuments => 'Fittex fid-dokumenti';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dokument imniżżel',
+      many: '$count-il dokument imniżżel',
+      few: '$count dokumenti mniżżla',
+      two: '$count dokumenti mniżżla',
+      one: '$count dokument imniżżel',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dokument imniżżel',
+      many: '$count-il dokument imniżżel',
+      few: '$count dokumenti mniżżla',
+      two: '$count dokumenti mniżżla',
+      one: '$count dokument imniżżel',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable ma jistgħux jinqraw',
+      many: '$unreadable ma jistgħux jinqraw',
+      few: '$unreadable ma jistgħux jinqraw',
+      two: '$unreadable ma jistgħux jinqraw',
+      one: '$unreadable ma jistax jinqara',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ġew imfittxija $count dokument imniżżel',
+      many: 'Ġew imfittxija $count-il dokument imniżżel',
+      few: 'Ġew imfittxija $count dokumenti mniżżla',
+      two: 'Ġew imfittxija $count dokumenti mniżżla',
+      one: 'Ġie mfittex $count dokument imniżżel',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ġew imfittxija $count dokument imniżżel',
+      many: 'Ġew imfittxija $count-il dokument imniżżel',
+      few: 'Ġew imfittxija $count dokumenti mniżżla',
+      two: 'Ġew imfittxija $count dokumenti mniżżla',
+      one: 'Ġie mfittex $count dokument imniżżel',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable ma setgħux jinqraw',
+      many: '$unreadable ma setgħux jinqraw',
+      few: '$unreadable ma setgħux jinqraw',
+      two: '$unreadable ma setgħux jinqraw',
+      one: '$unreadable ma setax jinqara',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Jiġu mfittxija biss l-annessi fuq dan il-mowbajl, mhux il-mailbox kollha tiegħek. Iftaħ anness biex iżżidu.';
+
+  @override
+  String get documentsEmpty => 'Għad m’hemmx dokumenti';
+
+  @override
+  String get documentsEmptyDetail =>
+      'Il-PDFs u l-fajls tat-test li tiftaħ mill-posta jidhru hawn, biex tkun tista’ tfittex fihom.';
+
+  @override
+  String get documentsNoResults => 'L-ebda riżultat';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'L-ebda dokument imniżżel ma fih “$query”.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Instab fil-paġna $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Instab fil-linja $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count riżultat ieħor',
+      many: '$count-il riżultat ieħor',
+      few: '$count riżultati oħra',
+      two: '$count riżultati oħra',
+      one: 'Riżultat ieħor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Paġna $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'Mhux imniżżel: iftħu biex taqrah u tfittex fih.';
+
+  @override
+  String get documentsStatusEncrypted => 'Protett b’password: Loupe ma tistax taqrah.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Ma nstab l-ebda test: jista’ jkun skan jew ritratt, li Loupe għadha ma tistax taqra.';
+
+  @override
+  String get documentsStatusEmpty => 'Dan il-fajl m’għandux test.';
+
+  @override
+  String get documentsStatusUnsupported => 'Loupe għadha ma tistax taqra dan it-tip ta’ dokument.';
+
+  @override
+  String get documentsStatusTooLarge => 'Kbir wisq biex jinqara fuq dan il-mowbajl.';
+
+  @override
+  String get documentsStatusDamaged => 'Ma setax jinqara: il-fajl jista’ jkollu ħsara.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total paġna',
+      many: '$total-il paġna',
+      few: '$total paġni',
+      two: '$total paġni',
+      one: '$total paġna',
+    );
+    return 'Inqraw $read minn $_temp0; il-bqija ma jiġix imfittex.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Inqara l-bidu biss; il-bqija ma jiġix imfittex.';
+
+  @override
+  String get documentsOpenDocument => 'Iftaħ id-dokument';
+
+  @override
+  String get documentsOpenMessage => 'Iftaħ il-messaġġ';
+
+  @override
+  String get documentsDetails => 'Dettalji tad-dokument';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Fingerprint tal-kontenut $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Test paġna b’paġna';
+
+  @override
+  String get documentsVersionsHeader => 'Kopji oħra';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Kontenut differenti mill-kopja ta’ qabel ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Kopja aktar ġdida ($date) għandha kontenut differenti';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'L-istess kontenut bħall-kopja ta’ $date';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'L-istess isem bħall-kopja ta’ $date; il-kontenut ma jitqabbilx sakemm it-tnejn ikunu mniżżla';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Il-fatti ewlenin huma l-istess; parti oħra mit-test hija differenti.';
+
+  @override
+  String get documentsKeyFacts => 'Fatti ewlenin';
+
+  @override
+  String get documentsKeyFactsFind => 'Sib il-fatti ewlenin';
+
+  @override
+  String get documentsKeyFactsWorking => 'Qed jinqara d-dokument…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Il-fatti ewlenin ma setgħux jinstabu.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Magħmula mid-demo inkorporata, mhux minn mudell.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Magħmula minn $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Agħfas fuq fatt biex tara fejn id-dokument jgħidu.';
+
+  @override
+  String get documentsKeyFactsNone => 'Loupe għad m’għandhiex fatti ewlenin għal dan it-tip ta’ dokument.';
+
+  @override
+  String get documentsKeyFactsPartial => 'Inqraw l-ewwel paġni biss; il-fatti fil-paġni ta’ wara mhumiex magħrufa.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Mhux imsemmi';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Imsemmi b’mod differenti';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Ukoll fil-paġna $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Offerta ta’ self għad-dar';
+
+  @override
+  String get documentsTypeInvoice => 'Fattura';
+
+  @override
+  String get documentsTypeBooking => 'Prenotazzjoni';
+
+  @override
+  String get documentsTypeOther => 'Dokument ieħor';
+
+  @override
+  String get documentsFieldInitialRate => 'Rata inizjali';
+
+  @override
+  String get documentsFieldRatePeriod => 'Perjodu tar-rata inizjali';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Pagament ta’ kull xahar';
+
+  @override
+  String get documentsFieldTerm => 'Tul tas-self';
+
+  @override
+  String get documentsFieldLoanAmount => 'Ammont tas-self';
+
+  @override
+  String get documentsFieldArrangementFee => 'Miżata tal-ipproċessar';
+
+  @override
+  String get documentsFieldValuationFee => 'Miżata tal-valutazzjoni';
+
+  @override
+  String get documentsFieldBrokerFee => 'Miżata tal-intermedjarju';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Miżati għal ħlas lura bikri';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Ammont totali pagabbli';
+
+  @override
+  String get documentsFieldAmountDue => 'Ammont dovut';
+
+  @override
+  String get documentsFieldCurrency => 'Munita';
+
+  @override
+  String get documentsFieldDueDate => 'Data tal-iskadenza';
+
+  @override
+  String get documentsFieldPayee => 'Benefiċjarju';
+
+  @override
+  String get documentsFieldReference => 'Referenza';
+
+  @override
+  String get documentsFieldSubtotal => 'Subtotal';
+
+  @override
+  String get documentsFieldTax => 'VAT';
+
+  @override
+  String get documentsFieldDate => 'Data';
+
+  @override
+  String get documentsFieldTime => 'Ħin';
+
+  @override
+  String get documentsFieldTimeZone => 'Żona tal-ħin';
+
+  @override
+  String get documentsFieldAddress => 'Indirizz';
+
+  @override
+  String get documentsFieldPerson => 'Persuna';
+
+  @override
   String get composeSignature => 'Firma';
 
   @override
@@ -7253,6 +7589,222 @@ class AppLocalizationsMt extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'Il-kont ma setax jiżdied. Erġa’ pprova, jew żidu manwalment.';
+
+  @override
+  String get composeReplyCheckTitle => 'Verifika tat-tweġiba';
+
+  @override
+  String get composeReplyCheckChecking => 'Qed jinqara dak li talbu…';
+
+  @override
+  String get composeReplyCheckFailed => 'Ma setax jinqara dak li talbu.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached minn $total mehmuża',
+      many: '$attached minn $total mehmuża',
+      few: '$attached minn $total mehmuża',
+      two: '$attached minn $total mehmuża',
+      one: '1 minn $total mehmuż',
+      zero: 'L-ebda wieħed minn $total mhu mehmuż',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jistgħu jkunu għall-perjodu żbaljat',
+      many: '$count jistgħu jkunu għall-perjodu żbaljat',
+      few: '$count jistgħu jkunu għall-perjodu żbaljat',
+      two: '$count jistgħu jkunu għall-perjodu żbaljat',
+      one: '1 jista’ jkun għall-perjodu żbaljat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ma setgħux jinqraw',
+      many: '$count ma setgħux jinqraw',
+      few: '$count ma setgħux jinqraw',
+      two: '$count ma setgħux jinqraw',
+      one: '1 ma setax jinqara',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count għandhom isiru barra mill-imejl',
+      many: '$count għandhom isiru barra mill-imejl',
+      few: '$count għandhom isiru barra mill-imejl',
+      two: '$count għandhom isiru barra mill-imejl',
+      one: '1 għandu jsir barra mill-imejl',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count fit-test tiegħek',
+      many: '$count fit-test tiegħek',
+      few: '$count fit-test tiegħek',
+      two: '$count fit-test tiegħek',
+      one: '1 fit-test tiegħek',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count għadhom jeħtieġu tweġiba',
+      many: '$count għadhom jeħtieġu tweġiba',
+      few: '$count għadhom jeħtieġu tweġiba',
+      two: '$count għadhom jeħtieġu tweġiba',
+      one: '1 għadu jeħtieġ tweġiba',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Mehmuż';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Iċċekkja l-perjodu';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Mhux mehmuż';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Mhux fit-tweġiba tiegħek';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Barra mill-imejl';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Fit-test tiegħek';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Mhux ċert';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Imqabbel ma’ “$file” skont l-isem tiegħu biss.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Imqabbel ma’ “$file” skont x’fih.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Iċċekkja li huwa għal $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Talbu $asked; l-isem “$file” jgħid $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Talbu $asked; “$file” jgħid $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return '“$file” ma setax jinqara, għalhekk mhux magħruf jekk huwiex il-fajl it-tajjeb.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Isir barra mill-imejl, mhux billi tehmeż fajl.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '“$file” huwa mehmuż, iżda dan ma jsirx bl-imejl.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Ktibt: “$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Mill-messaġġ tagħhom';
+
+  @override
+  String get composeReplyCheckByNameNote => 'L-isem ta’ fajl ma jurix x’fih. Iftaħ il-fajls biex tkun żgur.';
+
+  @override
+  String get composeReplyCheckPartial => 'Il-messaġġ tagħhom huwa twil; inqara biss il-bidu tiegħu.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Talbiet misjuba mid-demo inkorporata, mhux minn mudell.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Talbiet misjuba minn $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Tiċċekkjax dan';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count talba mhux iċċekkjati',
+      many: '$count-il talba mhux iċċekkjati',
+      few: '$count talbiet mhux iċċekkjati',
+      two: '$count talbiet mhux iċċekkjati',
+      one: '$count talba mhux iċċekkjata',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Iċċekkja kollox';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Uri t-talbiet';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Aħbi t-talbiet';
+
+  @override
+  String get composeReplyCheckHide => 'Aħbi l-verifika tat-tweġiba';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'It-test tiegħek isemmi anness, iżda m’hemm xejn mehmuż.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Aħbi t-tfakkira';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Dokumenti demo';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Esplora l-fajls…';
 
   @override
   String get composeNewMessageTitle => 'Messaġġ ġdid';

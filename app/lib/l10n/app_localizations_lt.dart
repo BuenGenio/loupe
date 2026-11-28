@@ -6564,6 +6564,327 @@ class AppLocalizationsLt extends AppLocalizations {
   String get sharedNotJunk => 'Ne šlamštas';
 
   @override
+  String get documentsTitle => 'Dokumentai';
+
+  @override
+  String get documentsSearchPlaceholder => 'Ieškoti dokumentuose';
+
+  @override
+  String get documentsSearchInDocuments => 'Ieškoti dokumentuose';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count atsisiųstų dokumentų',
+      few: '$count atsisiųsti dokumentai',
+      one: '$count atsisiųstas dokumentas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count atsisiųstų dokumentų',
+      few: '$count atsisiųsti dokumentai',
+      one: '$count atsisiųstas dokumentas',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable negalima perskaityti',
+      few: '$unreadable negalima perskaityti',
+      one: '$unreadable negalima perskaityti',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ieškota tarp $count atsisiųstų dokumentų',
+      few: 'Ieškota tarp $count atsisiųstų dokumentų',
+      one: 'Ieškota $count atsisiųstame dokumente',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ieškota tarp $count atsisiųstų dokumentų',
+      few: 'Ieškota tarp $count atsisiųstų dokumentų',
+      one: 'Ieškota $count atsisiųstame dokumente',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable nepavyko perskaityti',
+      few: '$unreadable nepavyko perskaityti',
+      one: '$unreadable nepavyko perskaityti',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Ieškoma šio telefono prieduose, o ne visoje jūsų pašto dėžutėje. Atidarykite priedą, kad jį pridėtumėte.';
+
+  @override
+  String get documentsEmpty => 'Dokumentų dar nėra';
+
+  @override
+  String get documentsEmptyDetail =>
+      'Čia rodomi iš laiškų atidaryti PDF ir tekstiniai failai, kad galėtumėte ieškoti jų turinyje.';
+
+  @override
+  String get documentsNoResults => 'Atitikmenų nėra';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Nė viename atsisiųstame dokumente nėra „$query“.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Rasta puslapyje $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Rasta eilutėje $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dar $count atitikmenų',
+      few: 'Dar $count atitikmenys',
+      one: 'Dar $count atitikmuo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Puslapis $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'Neatsisiųsta: atidarykite, kad galėtumėte skaityti ir ieškoti jame.';
+
+  @override
+  String get documentsStatusEncrypted => 'Apsaugotas slaptažodžiu: Loupe negali jo perskaityti.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Teksto nerasta: tai gali būti skenuotas vaizdas ar nuotrauka, o tokių Loupe dar negali perskaityti.';
+
+  @override
+  String get documentsStatusEmpty => 'Šiame faile nėra teksto.';
+
+  @override
+  String get documentsStatusUnsupported => 'Loupe dar negali perskaityti tokio tipo dokumentų.';
+
+  @override
+  String get documentsStatusTooLarge => 'Per didelis, kad būtų galima perskaityti šiame telefone.';
+
+  @override
+  String get documentsStatusDamaged => 'Nepavyko perskaityti: failas gali būti sugadintas.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total puslapių',
+      few: '$total puslapių',
+      one: '$total puslapio',
+    );
+    return 'Perskaityta $read iš $_temp0; likusioje dalyje neieškoma.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Perskaityta tik pradžia; likusioje dalyje neieškoma.';
+
+  @override
+  String get documentsOpenDocument => 'Atidaryti dokumentą';
+
+  @override
+  String get documentsOpenMessage => 'Atidaryti laišką';
+
+  @override
+  String get documentsDetails => 'Dokumento informacija';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Turinio kontrolinis kodas $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Tekstas pagal puslapius';
+
+  @override
+  String get documentsVersionsHeader => 'Kitos kopijos';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Turinys skiriasi nuo ankstesnės kopijos ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Naujesnės kopijos ($date) turinys skiriasi';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Toks pat turinys kaip kopijoje ($date)';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Toks pat pavadinimas kaip kopijos ($date); turinys nelyginamas, kol nebus atsisiųstos abi';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Pagrindiniai faktai tokie patys; skiriasi kitas tekstas.';
+
+  @override
+  String get documentsKeyFacts => 'Pagrindiniai faktai';
+
+  @override
+  String get documentsKeyFactsFind => 'Rasti pagrindinius faktus';
+
+  @override
+  String get documentsKeyFactsWorking => 'Skaitomas dokumentas…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Nepavyko rasti pagrindinių faktų.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Sukūrė įtaisytoji demonstracija, ne modelis.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Sukūrė $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Palieskite faktą, kad pamatytumėte, kur dokumente jis nurodytas.';
+
+  @override
+  String get documentsKeyFactsNone => 'Loupe dar neturi pagrindinių faktų šio tipo dokumentams.';
+
+  @override
+  String get documentsKeyFactsPartial =>
+      'Perskaityti tik pirmieji puslapiai; vėlesniuose puslapiuose esantys faktai nežinomi.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Nenurodyta';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Nurodyta skirtingai';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Taip pat puslapyje $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Būsto paskolos pasiūlymas';
+
+  @override
+  String get documentsTypeInvoice => 'Sąskaita faktūra';
+
+  @override
+  String get documentsTypeBooking => 'Rezervacija';
+
+  @override
+  String get documentsTypeOther => 'Kitas dokumentas';
+
+  @override
+  String get documentsFieldInitialRate => 'Pradinė palūkanų norma';
+
+  @override
+  String get documentsFieldRatePeriod => 'Palūkanų normos laikotarpis';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Mėnesinė įmoka';
+
+  @override
+  String get documentsFieldTerm => 'Paskolos terminas';
+
+  @override
+  String get documentsFieldLoanAmount => 'Paskolos suma';
+
+  @override
+  String get documentsFieldArrangementFee => 'Sutarties sudarymo mokestis';
+
+  @override
+  String get documentsFieldValuationFee => 'Turto vertinimo mokestis';
+
+  @override
+  String get documentsFieldBrokerFee => 'Tarpininko mokestis';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Išankstinio grąžinimo mokesčiai';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Bendra mokėtina suma';
+
+  @override
+  String get documentsFieldAmountDue => 'Mokėtina suma';
+
+  @override
+  String get documentsFieldCurrency => 'Valiuta';
+
+  @override
+  String get documentsFieldDueDate => 'Mokėjimo terminas';
+
+  @override
+  String get documentsFieldPayee => 'Gavėjas';
+
+  @override
+  String get documentsFieldReference => 'Numeris';
+
+  @override
+  String get documentsFieldSubtotal => 'Tarpinė suma';
+
+  @override
+  String get documentsFieldTax => 'Mokestis';
+
+  @override
+  String get documentsFieldDate => 'Data';
+
+  @override
+  String get documentsFieldTime => 'Laikas';
+
+  @override
+  String get documentsFieldTimeZone => 'Laiko juosta';
+
+  @override
+  String get documentsFieldAddress => 'Adresas';
+
+  @override
+  String get documentsFieldPerson => 'Asmuo';
+
+  @override
   String get composeSignature => 'Parašas';
 
   @override
@@ -7114,6 +7435,209 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'Nepavyko pridėti paskyros. Bandykite dar kartą arba pridėkite ją rankiniu būdu.';
+
+  @override
+  String get composeReplyCheckTitle => 'Atsakymo patikra';
+
+  @override
+  String get composeReplyCheckChecking => 'Skaitoma, ko buvo prašoma…';
+
+  @override
+  String get composeReplyCheckFailed => 'Nepavyko perskaityti, ko buvo prašoma.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached iš $total pridėta',
+      few: '$attached iš $total pridėti',
+      one: '$attached iš $total pridėtas',
+      zero: 'Nė vienas iš $total nepridėtas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gali būti ne už tą laikotarpį',
+      few: '$count gali būti ne už tą laikotarpį',
+      one: '$count gali būti ne už tą laikotarpį',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count neperskaitoma',
+      few: '$count neperskaitomi',
+      one: '$count neperskaitomas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count reikia atlikti ne el. paštu',
+      few: '$count reikia atlikti ne el. paštu',
+      one: '$count reikia atlikti ne el. paštu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count paminėta jūsų tekste',
+      few: '$count paminėti jūsų tekste',
+      one: '$count paminėtas jūsų tekste',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count laukia atsakymo',
+      few: '$count laukia atsakymo',
+      one: '$count laukia atsakymo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Pridėtas';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Patikrinkite laikotarpį';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Nepridėtas';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Nėra jūsų atsakyme';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Ne el. paštu';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Jūsų tekste';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Neaišku';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '„$file“ atpažintas tik pagal pavadinimą.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '„$file“ atpažintas pagal turinį.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Patikrinkite, ar jis už laikotarpį $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Prašyta laikotarpio $asked; pavadinime „$file“ nurodyta $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Prašyta laikotarpio $asked; faile „$file“ nurodyta $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Failo „$file“ nepavyko perskaityti, todėl nežinoma, ar tai tinkamas failas.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Atliekama ne el. paštu ir ne pridedant failą.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '„$file“ pridėtas, bet tai atliekama ne el. paštu.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Jūs parašėte: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Iš pradinio laiško';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Iš failo pavadinimo nematyti, kas jame yra. Kad būtumėte tikri, atidarykite failus.';
+
+  @override
+  String get composeReplyCheckPartial => 'Laiškas ilgas; perskaityta tik jo pradžia.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Prašymus rado įtaisytoji demonstracija, ne modelis.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Prašymus rado $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Netikrinti šio';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count prašymų nepatikrinta',
+      few: '$count prašymai nepatikrinti',
+      one: '$count prašymas nepatikrintas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Patikrinti visus';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Rodyti prašymus';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Slėpti prašymus';
+
+  @override
+  String get composeReplyCheckHide => 'Slėpti atsakymo patikrą';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Jūsų tekste minimas priedas, bet nieko nepridėta.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Slėpti priminimą';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demonstraciniai dokumentai';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Naršyti failus…';
 
   @override
   String get composeNewMessageTitle => 'Naujas laiškas';

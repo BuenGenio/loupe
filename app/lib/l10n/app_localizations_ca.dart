@@ -6486,6 +6486,314 @@ class AppLocalizationsCa extends AppLocalizations {
   String get sharedNotJunk => 'No és correu brossa';
 
   @override
+  String get documentsTitle => 'Documents';
+
+  @override
+  String get documentsSearchPlaceholder => 'Cerca als documents';
+
+  @override
+  String get documentsSearchInDocuments => 'Cerca a Documents';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count documents baixats',
+      one: '1 document baixat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count documents baixats',
+      one: '1 document baixat',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable no es poden llegir',
+      one: '1 no es pot llegir',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'S’ha cercat en $count documents baixats',
+      one: 'S’ha cercat en 1 document baixat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'S’ha cercat en $count documents baixats',
+      one: 'S’ha cercat en 1 document baixat',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable no s’han pogut llegir',
+      one: '1 no s’ha pogut llegir',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Cerca als adjunts d’aquest telèfon, no a tota la bústia. Obre un adjunt per afegir-lo.';
+
+  @override
+  String get documentsEmpty => 'Encara no hi ha documents';
+
+  @override
+  String get documentsEmptyDetail =>
+      'Els PDF i els fitxers de text que obris des del correu apareixen aquí, perquè puguis cercar-hi.';
+
+  @override
+  String get documentsNoResults => 'Cap coincidència';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Cap document baixat no conté «$query».';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Coincidència a la pàgina $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Coincidència a la línia $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count coincidències més',
+      one: '1 coincidència més',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Pàgina $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'No baixat: obre’l per llegir-lo i cercar-hi.';
+
+  @override
+  String get documentsStatusEncrypted => 'Protegit amb contrasenya: Loupe no el pot llegir.';
+
+  @override
+  String get documentsStatusNoText =>
+      'No s’ha trobat cap text: potser és un document escanejat o una foto, que Loupe encara no pot llegir.';
+
+  @override
+  String get documentsStatusEmpty => 'Aquest fitxer no té text.';
+
+  @override
+  String get documentsStatusUnsupported => 'Loupe encara no pot llegir aquest tipus de document.';
+
+  @override
+  String get documentsStatusTooLarge => 'És massa gran per llegir-lo en aquest telèfon.';
+
+  @override
+  String get documentsStatusDamaged => 'No s’ha pogut llegir: potser el fitxer està malmès.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total pàgines', one: '1 pàgina');
+    return 'S’han llegit $read de $_temp0; la resta no s’inclou a la cerca.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Només s’ha llegit el principi; la resta no s’inclou a la cerca.';
+
+  @override
+  String get documentsOpenDocument => 'Obre el document';
+
+  @override
+  String get documentsOpenMessage => 'Obre el missatge';
+
+  @override
+  String get documentsDetails => 'Detalls del document';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Empremta digital del contingut $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Text per pàgina';
+
+  @override
+  String get documentsVersionsHeader => 'Altres còpies';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Contingut diferent del de la còpia anterior ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Una còpia més recent ($date) té un contingut diferent';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Mateix contingut que la còpia del $date';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Mateix nom que la còpia del $date; el contingut no es compara fins que no estiguin baixades totes dues';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Les dades clau són iguals; hi ha diferències en altres parts del text.';
+
+  @override
+  String get documentsKeyFacts => 'Dades clau';
+
+  @override
+  String get documentsKeyFactsFind => 'Troba les dades clau';
+
+  @override
+  String get documentsKeyFactsWorking => 'S’està llegint el document…';
+
+  @override
+  String get documentsKeyFactsFailed => 'No s’han pogut trobar les dades clau.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Generades per la demostració integrada, no per un model.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Generades per $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Toca una dada per veure on ho diu el document.';
+
+  @override
+  String get documentsKeyFactsNone => 'Loupe encara no té dades clau per a aquest tipus de document.';
+
+  @override
+  String get documentsKeyFactsPartial =>
+      'Només s’han llegit les primeres pàgines; es desconeixen les dades de les pàgines següents.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'No indicat';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Valors diferents';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'També a la pàgina $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Hipoteca (FEIN)';
+
+  @override
+  String get documentsTypeInvoice => 'Factura';
+
+  @override
+  String get documentsTypeBooking => 'Reserva';
+
+  @override
+  String get documentsTypeOther => 'Altre document';
+
+  @override
+  String get documentsFieldInitialRate => 'Tipus d’interès inicial';
+
+  @override
+  String get documentsFieldRatePeriod => 'Durada del tipus inicial';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Quota mensual';
+
+  @override
+  String get documentsFieldTerm => 'Termini';
+
+  @override
+  String get documentsFieldLoanAmount => 'Import del préstec';
+
+  @override
+  String get documentsFieldArrangementFee => 'Comissió d’obertura';
+
+  @override
+  String get documentsFieldValuationFee => 'Despeses de taxació';
+
+  @override
+  String get documentsFieldBrokerFee => 'Honoraris de l’intermediari';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Comissió per amortització anticipada';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Import total degut';
+
+  @override
+  String get documentsFieldAmountDue => 'Import a pagar';
+
+  @override
+  String get documentsFieldCurrency => 'Moneda';
+
+  @override
+  String get documentsFieldDueDate => 'Data de venciment';
+
+  @override
+  String get documentsFieldPayee => 'Beneficiari';
+
+  @override
+  String get documentsFieldReference => 'Referència';
+
+  @override
+  String get documentsFieldSubtotal => 'Subtotal';
+
+  @override
+  String get documentsFieldTax => 'Impostos';
+
+  @override
+  String get documentsFieldDate => 'Data';
+
+  @override
+  String get documentsFieldTime => 'Hora';
+
+  @override
+  String get documentsFieldTimeZone => 'Zona horària';
+
+  @override
+  String get documentsFieldAddress => 'Adreça';
+
+  @override
+  String get documentsFieldPerson => 'Persona';
+
+  @override
   String get composeSignature => 'Signatura';
 
   @override
@@ -7031,6 +7339,196 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'No s’ha pogut afegir el compte. Torna-ho a provar o afegeix-lo manualment.';
+
+  @override
+  String get composeReplyCheckTitle => 'Revisió de la resposta';
+
+  @override
+  String get composeReplyCheckChecking => 'S’està llegint el que et demanen…';
+
+  @override
+  String get composeReplyCheckFailed => 'No s’ha pogut llegir el que et demanen.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached de $total adjuntats',
+      one: '1 de $total adjuntat',
+      zero: '0 de $total adjuntats',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count poden ser d’un altre període',
+      one: '1 pot ser d’un altre període',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count no s’han pogut llegir',
+      one: '1 no s’ha pogut llegir',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count per fer fora del correu',
+      one: '1 per fer fora del correu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count al teu text', one: '1 al teu text');
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count per respondre',
+      one: '1 per respondre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Adjuntat';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Revisa el període';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'No adjuntat';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'No és a la teva resposta';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Fora del correu';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Al teu text';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'No se sap';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Coincideix amb «$file» només pel nom.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Coincideix amb «$file» pel contingut.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Comprova que sigui de $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Et demanen $asked; el nom «$file» indica $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Et demanen $asked; «$file» indica $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'No s’ha pogut llegir «$file», així que no se sap si és el fitxer correcte.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Es fa fora del correu, no amb un fitxer adjunt.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '«$file» està adjuntat, però això no es fa per correu.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Has escrit: «$text»';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Del seu missatge';
+
+  @override
+  String get composeReplyCheckByNameNote => 'El nom d’un fitxer no diu què conté. Obre els fitxers per assegurar-te’n.';
+
+  @override
+  String get composeReplyCheckPartial => 'El seu missatge és llarg; només se n’ha llegit el principi.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Peticions trobades per la demostració integrada, no per un model.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Peticions trobades per $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'No ho revisis';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count peticions sense revisar',
+      one: '1 petició sense revisar',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Revisa-les totes';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Mostra les peticions';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Amaga les peticions';
+
+  @override
+  String get composeReplyCheckHide => 'Amaga la revisió de la resposta';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'El teu text esmenta un adjunt, però no hi ha res adjuntat.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Amaga el recordatori';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Documents de demostració';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Explora els fitxers…';
 
   @override
   String get composeNewMessageTitle => 'Missatge nou';

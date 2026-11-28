@@ -6448,6 +6448,314 @@ class AppLocalizationsEt extends AppLocalizations {
   String get sharedNotJunk => 'Pole rämpspost';
 
   @override
+  String get documentsTitle => 'Dokumendid';
+
+  @override
+  String get documentsSearchPlaceholder => 'Otsi dokumentidest';
+
+  @override
+  String get documentsSearchInDocuments => 'Otsi dokumentidest';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count allalaaditud dokumenti',
+      one: '$count allalaaditud dokument',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count allalaaditud dokumenti',
+      one: '$count allalaaditud dokument',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable loetamatut',
+      one: '$unreadable loetamatu',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Otsiti $count allalaaditud dokumendist',
+      one: 'Otsiti $count allalaaditud dokumendist',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Otsiti $count allalaaditud dokumendist',
+      one: 'Otsiti $count allalaaditud dokumendist',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable jäid lugemata',
+      one: '$unreadable jäi lugemata',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Otsib selle telefoni manustest, mitte kogu sinu postkastist. Manuse lisamiseks ava see.';
+
+  @override
+  String get documentsEmpty => 'Dokumente veel pole';
+
+  @override
+  String get documentsEmptyDetail =>
+      'Kirjadest avatud PDF- ja tekstifailid ilmuvad siia, et saaksid nende sisust otsida.';
+
+  @override
+  String get documentsNoResults => 'Vasteid pole';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Ükski allalaaditud dokument ei sisalda teksti „$query“.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Vaste leheküljel $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Vaste real $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Veel $count vastet',
+      one: 'Veel $count vaste',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Lehekülg $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'Alla laadimata: ava see, et seda lugeda ja sellest otsida.';
+
+  @override
+  String get documentsStatusEncrypted => 'Parooliga kaitstud: Loupe ei saa seda lugeda.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Teksti ei leitud: see võib olla skaneering või foto, mida Loupe veel lugeda ei oska.';
+
+  @override
+  String get documentsStatusEmpty => 'Selles failis pole teksti.';
+
+  @override
+  String get documentsStatusUnsupported => 'Loupe ei oska seda tüüpi dokumenti veel lugeda.';
+
+  @override
+  String get documentsStatusTooLarge => 'Liiga suur, et selles telefonis lugeda.';
+
+  @override
+  String get documentsStatusDamaged => 'Lugeda ei õnnestunud: fail võib olla rikutud.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total lehekülge', one: '$total lehekülg');
+    return 'Loetud $read/$_temp0; ülejäänud lehekülgedelt ei otsita.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Loeti ainult algus; ülejäänud osast ei otsita.';
+
+  @override
+  String get documentsOpenDocument => 'Ava dokument';
+
+  @override
+  String get documentsOpenMessage => 'Ava kiri';
+
+  @override
+  String get documentsDetails => 'Dokumendi üksikasjad';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Sisu sõrmejälg $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Tekst lehekülgede kaupa';
+
+  @override
+  String get documentsVersionsHeader => 'Teised koopiad';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Sisu erineb varasemast koopiast ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Uuemal koopial ($date) on erinev sisu';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Sisu on sama mis koopial ($date)';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Nimi on sama mis koopial ($date); sisu võrreldakse alles siis, kui mõlemad on alla laaditud';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Põhiandmed on samad; muu tekst erineb.';
+
+  @override
+  String get documentsKeyFacts => 'Põhiandmed';
+
+  @override
+  String get documentsKeyFactsFind => 'Leia põhiandmed';
+
+  @override
+  String get documentsKeyFactsWorking => 'Dokumendi lugemine…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Põhiandmeid ei õnnestunud leida.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Koostas sisseehitatud demo, mitte mudel.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Koostas $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Puuduta kirjet, et näha, kus see dokumendis kirjas on.';
+
+  @override
+  String get documentsKeyFactsNone => 'Loupe’il pole seda tüüpi dokumendi jaoks veel põhiandmeid.';
+
+  @override
+  String get documentsKeyFactsPartial =>
+      'Loeti ainult esimesed leheküljed; hilisematel lehekülgedel olevaid andmeid pole teada.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Pole märgitud';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Märgitud erinevalt';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Ka leheküljel $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Kodulaenu pakkumine';
+
+  @override
+  String get documentsTypeInvoice => 'Arve';
+
+  @override
+  String get documentsTypeBooking => 'Broneering';
+
+  @override
+  String get documentsTypeOther => 'Muu dokument';
+
+  @override
+  String get documentsFieldInitialRate => 'Algne intressimäär';
+
+  @override
+  String get documentsFieldRatePeriod => 'Intressiperiood';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Kuumakse';
+
+  @override
+  String get documentsFieldTerm => 'Laenuperiood';
+
+  @override
+  String get documentsFieldLoanAmount => 'Laenusumma';
+
+  @override
+  String get documentsFieldArrangementFee => 'Lepingutasu';
+
+  @override
+  String get documentsFieldValuationFee => 'Hindamistasu';
+
+  @override
+  String get documentsFieldBrokerFee => 'Vahendustasu';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Ennetähtaegse tagastamise tasud';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Tagasimakstav kogusumma';
+
+  @override
+  String get documentsFieldAmountDue => 'Tasumisele kuuluv summa';
+
+  @override
+  String get documentsFieldCurrency => 'Valuuta';
+
+  @override
+  String get documentsFieldDueDate => 'Maksetähtaeg';
+
+  @override
+  String get documentsFieldPayee => 'Makse saaja';
+
+  @override
+  String get documentsFieldReference => 'Viide';
+
+  @override
+  String get documentsFieldSubtotal => 'Vahesumma';
+
+  @override
+  String get documentsFieldTax => 'Maks';
+
+  @override
+  String get documentsFieldDate => 'Kuupäev';
+
+  @override
+  String get documentsFieldTime => 'Kellaaeg';
+
+  @override
+  String get documentsFieldTimeZone => 'Ajavöönd';
+
+  @override
+  String get documentsFieldAddress => 'Aadress';
+
+  @override
+  String get documentsFieldPerson => 'Isik';
+
+  @override
   String get composeSignature => 'Allkiri';
 
   @override
@@ -6985,6 +7293,200 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'Kontot ei õnnestunud lisada. Proovi uuesti või lisa see käsitsi.';
+
+  @override
+  String get composeReplyCheckTitle => 'Vastuse kontroll';
+
+  @override
+  String get composeReplyCheckChecking => 'Palvete lugemine…';
+
+  @override
+  String get composeReplyCheckFailed => 'Palveid ei õnnestunud lugeda.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached/$total lisatud',
+      one: '$attached/$total lisatud',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count võib olla vale perioodi kohta',
+      one: '$count võib olla vale perioodi kohta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count loetamatut',
+      one: '$count loetamatu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tuleb teha väljaspool e-posti',
+      one: '$count tuleb teha väljaspool e-posti',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mainitud sinu tekstis',
+      one: '$count mainitud sinu tekstis',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count vajab vastust',
+      one: '$count vajab vastust',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Lisatud';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Kontrolli perioodi';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Pole lisatud';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Vastuses puudub';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Väljaspool e-posti';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'Sinu tekstis';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Teadmata';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '„$file“ tuvastati ainult nime järgi.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '„$file“ tuvastati sisu järgi.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Kontrolli, et periood oleks $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Paluti perioodi $asked; nimes „$file“ on $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Paluti perioodi $asked; failis „$file“ on kirjas $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Faili „$file“ ei õnnestunud lugeda, seega pole teada, kas see on õige fail.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Tehakse väljaspool e-posti, mitte faili lisamisega.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '„$file“ on lisatud, kuid seda ei tehta e-posti teel.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Kirjutasid: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Algsest kirjast';
+
+  @override
+  String get composeReplyCheckByNameNote => 'Faili nimi ei näita, mis selles on. Kindluse mõttes ava failid.';
+
+  @override
+  String get composeReplyCheckPartial => 'Kiri on pikk; loeti ainult selle algust.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Palved leidis sisseehitatud demo, mitte mudel.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Palved leidis $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Ära kontrolli seda';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count palvet jäi kontrollimata',
+      one: '$count palve jäi kontrollimata',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Kontrolli kõiki';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Näita palveid';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Peida palved';
+
+  @override
+  String get composeReplyCheckHide => 'Peida vastuse kontroll';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'Sinu tekstis mainitakse manust, kuid midagi pole lisatud.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Peida meeldetuletus';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demodokumendid';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Sirvi faile…';
 
   @override
   String get composeNewMessageTitle => 'Uus kiri';

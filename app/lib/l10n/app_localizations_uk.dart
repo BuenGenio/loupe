@@ -6622,6 +6622,333 @@ class AppLocalizationsUk extends AppLocalizations {
   String get sharedNotJunk => 'Не спам';
 
   @override
+  String get documentsTitle => 'Документи';
+
+  @override
+  String get documentsSearchPlaceholder => 'Пошук у документах';
+
+  @override
+  String get documentsSearchInDocuments => 'Шукати в документах';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count завантажених документів',
+      many: '$count завантажених документів',
+      few: '$count завантажені документи',
+      one: '$count завантажений документ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count завантажених документів',
+      many: '$count завантажених документів',
+      few: '$count завантажені документи',
+      one: '$count завантажений документ',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable не читаються',
+      many: '$unreadable не читаються',
+      few: '$unreadable не читаються',
+      one: '$unreadable не читається',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Переглянуто $count завантажених документів',
+      many: 'Переглянуто $count завантажених документів',
+      few: 'Переглянуто $count завантажені документи',
+      one: 'Переглянуто $count завантажений документ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Переглянуто $count завантажених документів',
+      many: 'Переглянуто $count завантажених документів',
+      few: 'Переглянуто $count завантажені документи',
+      one: 'Переглянуто $count завантажений документ',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable не вдалося прочитати',
+      many: '$unreadable не вдалося прочитати',
+      few: '$unreadable не вдалося прочитати',
+      one: '$unreadable не вдалося прочитати',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Шукає у вкладеннях на цьому телефоні, а не в усій вашій пошті. Відкрийте вкладення, щоб додати його.';
+
+  @override
+  String get documentsEmpty => 'Документів ще немає';
+
+  @override
+  String get documentsEmptyDetail =>
+      'PDF і текстові файли, які ви відкриваєте з пошти, з’являються тут, тож у них можна шукати.';
+
+  @override
+  String get documentsNoResults => 'Немає збігів';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Жоден завантажений документ не містить «$query».';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Збіг на сторінці $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Збіг у рядку $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ще $count збігів',
+      many: 'Ще $count збігів',
+      few: 'Ще $count збіги',
+      one: 'Ще $count збіг',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Сторінка $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'Не завантажено: відкрийте його, щоб читати його й шукати в ньому.';
+
+  @override
+  String get documentsStatusEncrypted => 'Захищено паролем: Loupe не може його прочитати.';
+
+  @override
+  String get documentsStatusNoText => 'Текст не знайдено: можливо, це скан або фото, які Loupe поки не вміє читати.';
+
+  @override
+  String get documentsStatusEmpty => 'У цьому файлі немає тексту.';
+
+  @override
+  String get documentsStatusUnsupported => 'Loupe поки не вміє читати документи такого типу.';
+
+  @override
+  String get documentsStatusTooLarge => 'Завеликий, щоб прочитати його на цьому телефоні.';
+
+  @override
+  String get documentsStatusDamaged => 'Не вдалося прочитати: можливо, файл пошкоджено.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total сторінок',
+      many: '$total сторінок',
+      few: '$total сторінок',
+      one: '$total сторінки',
+    );
+    return 'Прочитано $read з $_temp0; решту пошук не охоплює.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Прочитано лише початок; решту пошук не охоплює.';
+
+  @override
+  String get documentsOpenDocument => 'Відкрити документ';
+
+  @override
+  String get documentsOpenMessage => 'Відкрити лист';
+
+  @override
+  String get documentsDetails => 'Відомості про документ';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Відбиток вмісту $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Текст за сторінками';
+
+  @override
+  String get documentsVersionsHeader => 'Інші копії';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Вміст відрізняється від попередньої копії ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Новіша копія ($date) має інший вміст';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Такий самий вміст, як у копії від $date';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Та сама назва, що й у копії від $date; вміст не порівнюється, доки обидві не завантажено';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Ключові дані однакові; відмінності — в іншому тексті.';
+
+  @override
+  String get documentsKeyFacts => 'Ключові дані';
+
+  @override
+  String get documentsKeyFactsFind => 'Знайти ключові дані';
+
+  @override
+  String get documentsKeyFactsWorking => 'Читаємо документ…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Не вдалося знайти ключові дані.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Створено вбудованою демонстрацією, а не моделлю.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Створено за допомогою $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Торкніться пункту, щоб побачити, де його вказано в документі.';
+
+  @override
+  String get documentsKeyFactsNone => 'Loupe поки не має ключових даних для документів такого типу.';
+
+  @override
+  String get documentsKeyFactsPartial => 'Прочитано лише перші сторінки; дані з подальших сторінок невідомі.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Не вказано';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Вказано по-різному';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Також на сторінці $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Іпотечна пропозиція';
+
+  @override
+  String get documentsTypeInvoice => 'Рахунок';
+
+  @override
+  String get documentsTypeBooking => 'Бронювання';
+
+  @override
+  String get documentsTypeOther => 'Інший документ';
+
+  @override
+  String get documentsFieldInitialRate => 'Початкова ставка';
+
+  @override
+  String get documentsFieldRatePeriod => 'Строк дії початкової ставки';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Щомісячний платіж';
+
+  @override
+  String get documentsFieldTerm => 'Строк кредиту';
+
+  @override
+  String get documentsFieldLoanAmount => 'Сума кредиту';
+
+  @override
+  String get documentsFieldArrangementFee => 'Комісія за видачу кредиту';
+
+  @override
+  String get documentsFieldValuationFee => 'Плата за оцінку';
+
+  @override
+  String get documentsFieldBrokerFee => 'Комісія брокера';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Плата за дострокове погашення';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Загальна сума до сплати';
+
+  @override
+  String get documentsFieldAmountDue => 'Сума до сплати';
+
+  @override
+  String get documentsFieldCurrency => 'Валюта';
+
+  @override
+  String get documentsFieldDueDate => 'Термін оплати';
+
+  @override
+  String get documentsFieldPayee => 'Одержувач';
+
+  @override
+  String get documentsFieldReference => 'Номер';
+
+  @override
+  String get documentsFieldSubtotal => 'Проміжний підсумок';
+
+  @override
+  String get documentsFieldTax => 'Податок';
+
+  @override
+  String get documentsFieldDate => 'Дата';
+
+  @override
+  String get documentsFieldTime => 'Час';
+
+  @override
+  String get documentsFieldTimeZone => 'Часовий пояс';
+
+  @override
+  String get documentsFieldAddress => 'Адреса';
+
+  @override
+  String get documentsFieldPerson => 'Особа';
+
+  @override
   String get composeSignature => 'Підпис';
 
   @override
@@ -7172,6 +7499,215 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'Не вдалося додати обліковий запис. Спробуйте ще раз або додайте його вручну.';
+
+  @override
+  String get composeReplyCheckTitle => 'Перевірка відповіді';
+
+  @override
+  String get composeReplyCheckChecking => 'Читаємо, про що вас просять…';
+
+  @override
+  String get composeReplyCheckFailed => 'Не вдалося прочитати, про що вас просять.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: 'Вкладено $attached з $total',
+      many: 'Вкладено $attached з $total',
+      few: 'Вкладено $attached з $total',
+      one: 'Вкладено $attached з $total',
+      zero: 'Жодного з $total не вкладено',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count, можливо, за інший період',
+      many: '$count, можливо, за інший період',
+      few: '$count, можливо, за інший період',
+      one: '$count, можливо, за інший період',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count не вдалося прочитати',
+      many: '$count не вдалося прочитати',
+      few: '$count не вдалося прочитати',
+      one: '$count не вдалося прочитати',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count треба зробити поза поштою',
+      many: '$count треба зробити поза поштою',
+      few: '$count треба зробити поза поштою',
+      one: '$count треба зробити поза поштою',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count у вашому тексті',
+      many: '$count у вашому тексті',
+      few: '$count у вашому тексті',
+      one: '$count у вашому тексті',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count без відповіді',
+      many: '$count без відповіді',
+      few: '$count без відповіді',
+      one: '$count без відповіді',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Вкладено';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Перевірте період';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Не вкладено';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Немає у відповіді';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Поза поштою';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'У вашому тексті';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Невідомо';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '«$file» зіставлено лише за назвою.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '«$file» зіставлено за вмістом.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Перевірте, чи файл саме за $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Просили $asked, а в назві «$file» вказано $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Просили $asked, а у файлі «$file» вказано $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Не вдалося прочитати «$file», тож невідомо, чи це потрібний файл.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Робиться поза поштою, а не вкладенням файлу.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '«$file» вкладено, але це робиться не через пошту.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Ви написали: «$text»';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'З їхнього листа';
+
+  @override
+  String get composeReplyCheckByNameNote => 'Назва файлу не показує, що в ньому. Відкрийте файли, щоб переконатися.';
+
+  @override
+  String get composeReplyCheckPartial => 'Їхній лист довгий, тож прочитано лише його початок.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Прохання знайдено вбудованою демонстрацією, а не моделлю.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Прохання знайдено за допомогою $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Не перевіряти';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count прохання не перевірено',
+      many: '$count прохань не перевірено',
+      few: '$count прохання не перевірено',
+      one: '$count прохання не перевірено',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Перевірити всі';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Показати прохання';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Сховати прохання';
+
+  @override
+  String get composeReplyCheckHide => 'Сховати перевірку відповіді';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'У тексті згадано вкладення, але нічого не вкладено.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Сховати нагадування';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Демодокументи';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Вибрати файл…';
 
   @override
   String get composeNewMessageTitle => 'Новий лист';

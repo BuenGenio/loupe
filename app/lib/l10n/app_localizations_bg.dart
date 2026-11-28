@@ -6424,6 +6424,314 @@ class AppLocalizationsBg extends AppLocalizations {
   String get sharedNotJunk => 'Не е спам';
 
   @override
+  String get documentsTitle => 'Документи';
+
+  @override
+  String get documentsSearchPlaceholder => 'Търсене в документите';
+
+  @override
+  String get documentsSearchInDocuments => 'Търсене в документите';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count изтеглени документа',
+      one: '1 изтеглен документ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count изтеглени документа',
+      one: '1 изтеглен документ',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable не могат да се прочетат',
+      one: '1 не може да се прочете',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Претърсени са $count изтеглени документа',
+      one: 'Претърсен е 1 изтеглен документ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Претърсени са $count изтеглени документа',
+      one: 'Претърсен е 1 изтеглен документ',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable не можаха да се прочетат',
+      one: '1 не можа да се прочете',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'Търси в прикачените файлове на този телефон, а не в цялата ви поща. Отворете прикачен файл, за да го добавите.';
+
+  @override
+  String get documentsEmpty => 'Още няма документи';
+
+  @override
+  String get documentsEmptyDetail =>
+      'PDF файловете и текстовите файлове, които отваряте от пощата, се показват тук, за да можете да търсите в тях.';
+
+  @override
+  String get documentsNoResults => 'Няма съвпадения';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Нито един изтеглен документ не съдържа „$query“.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Съвпадение на страница $page';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Съвпадение на ред $line';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Още $count съвпадения',
+      one: 'Още 1 съвпадение',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return 'Страница $page';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'Не е изтеглен: отворете го, за да го прочетете и да търсите в него.';
+
+  @override
+  String get documentsStatusEncrypted => 'Защитен с парола: Loupe не може да го прочете.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Не е намерен текст: може да е сканиран документ или снимка, които Loupe още не може да чете.';
+
+  @override
+  String get documentsStatusEmpty => 'Този файл няма текст.';
+
+  @override
+  String get documentsStatusUnsupported => 'Loupe още не може да чете този вид документи.';
+
+  @override
+  String get documentsStatusTooLarge => 'Твърде голям за четене на този телефон.';
+
+  @override
+  String get documentsStatusDamaged => 'Не можа да се прочете: файлът може да е повреден.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total страници', one: '1 страница');
+    return 'Прочетени са $read от $_temp0; в останалите не се търси.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Прочетено е само началото; в останалото не се търси.';
+
+  @override
+  String get documentsOpenDocument => 'Отваряне на документа';
+
+  @override
+  String get documentsOpenMessage => 'Отваряне на писмото';
+
+  @override
+  String get documentsDetails => 'Подробности за документа';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Отпечатък на съдържанието $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Текст по страници';
+
+  @override
+  String get documentsVersionsHeader => 'Други копия';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Съдържанието се различава от по-ранното копие ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'По-ново копие ($date) има различно съдържание';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Същото съдържание като копието от $date';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Същото име като копието от $date; съдържанието не се сравнява, докато и двете не бъдат изтеглени';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'Ключовите данни са същите; разликите са в останалия текст.';
+
+  @override
+  String get documentsKeyFacts => 'Ключови данни';
+
+  @override
+  String get documentsKeyFactsFind => 'Намиране на ключовите данни';
+
+  @override
+  String get documentsKeyFactsWorking => 'Четене на документа…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Ключовите данни не можаха да бъдат намерени.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'Създадено от вградената демонстрация, не от модел.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Създадено от $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Докоснете стойност, за да видите къде я посочва документът.';
+
+  @override
+  String get documentsKeyFactsNone => 'Loupe още няма ключови данни за този вид документи.';
+
+  @override
+  String get documentsKeyFactsPartial =>
+      'Прочетени са само първите страници; данните на следващите страници не са известни.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Не е посочено';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Посочено различно';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Също на страница $page:';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Оферта за ипотечен кредит';
+
+  @override
+  String get documentsTypeInvoice => 'Фактура';
+
+  @override
+  String get documentsTypeBooking => 'Резервация';
+
+  @override
+  String get documentsTypeOther => 'Друг документ';
+
+  @override
+  String get documentsFieldInitialRate => 'Начален лихвен процент';
+
+  @override
+  String get documentsFieldRatePeriod => 'Срок на началния лихвен процент';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Месечна вноска';
+
+  @override
+  String get documentsFieldTerm => 'Срок на кредита';
+
+  @override
+  String get documentsFieldLoanAmount => 'Размер на кредита';
+
+  @override
+  String get documentsFieldArrangementFee => 'Такса за отпускане';
+
+  @override
+  String get documentsFieldValuationFee => 'Такса за оценка';
+
+  @override
+  String get documentsFieldBrokerFee => 'Такса за посредник';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Такси за предсрочно погасяване';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Обща сума за плащане';
+
+  @override
+  String get documentsFieldAmountDue => 'Дължима сума';
+
+  @override
+  String get documentsFieldCurrency => 'Валута';
+
+  @override
+  String get documentsFieldDueDate => 'Срок за плащане';
+
+  @override
+  String get documentsFieldPayee => 'Получател';
+
+  @override
+  String get documentsFieldReference => 'Референтен номер';
+
+  @override
+  String get documentsFieldSubtotal => 'Междинна сума';
+
+  @override
+  String get documentsFieldTax => 'Данък';
+
+  @override
+  String get documentsFieldDate => 'Дата';
+
+  @override
+  String get documentsFieldTime => 'Час';
+
+  @override
+  String get documentsFieldTimeZone => 'Часова зона';
+
+  @override
+  String get documentsFieldAddress => 'Адрес';
+
+  @override
+  String get documentsFieldPerson => 'Лице';
+
+  @override
   String get composeSignature => 'Подпис';
 
   @override
@@ -6961,6 +7269,202 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'Профилът не можа да се добави. Опитайте отново или го добавете ръчно.';
+
+  @override
+  String get composeReplyCheckTitle => 'Проверка на отговора';
+
+  @override
+  String get composeReplyCheckChecking => 'Чете се какво искат от вас…';
+
+  @override
+  String get composeReplyCheckFailed => 'Не можа да се прочете какво искат от вас.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$attached от $total са прикачени',
+      one: '$attached от $total е прикачен',
+      zero: 'Нито един от $total не е прикачен',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count може да са за грешен период',
+      one: '$count може да е за грешен период',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count не можаха да се прочетат',
+      one: '$count не можа да се прочете',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count се правят извън имейла',
+      one: '$count се прави извън имейла',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count в текста ви',
+      one: '$count в текста ви',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count без отговор',
+      one: '$count без отговор',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Прикачено';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Проверете периода';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Не е прикачено';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Липсва в отговора';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'Извън имейла';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'В текста ви';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Неизвестно';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return 'Файлът „$file“ е разпознат само по името.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return 'Файлът „$file“ е разпознат по съдържанието.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Проверете дали е за $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'Искат $asked, а в името „$file“ пише $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'Искат $asked, а във файла „$file“ пише $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return 'Файлът „$file“ не можа да се прочете, така че не е ясно дали е правилният.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'Прави се извън имейла, а не с прикачване на файл.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return 'Файлът „$file“ е прикачен, но това не се прави по имейл.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Написахте: „$text“';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'От писмото им';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'Името на файла не показва какво съдържа. Отворете файловете, за да сте сигурни.';
+
+  @override
+  String get composeReplyCheckPartial => 'Писмото им е дълго; прочетено е само началото му.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'Исканията са открити от вградената демонстрация, не от модел.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'Исканията са открити от $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Да не се проверява';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count искания не са проверени',
+      one: '$count искане не е проверено',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Проверка на всички';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Показване на исканията';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Скриване на исканията';
+
+  @override
+  String get composeReplyCheckHide => 'Скриване на проверката на отговора';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'В текста споменавате прикачен файл, но нищо не е прикачено.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Скриване на напомнянето';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Демо документи';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Избор на файл…';
 
   @override
   String get composeNewMessageTitle => 'Ново писмо';

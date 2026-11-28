@@ -6487,6 +6487,314 @@ class AppLocalizationsHu extends AppLocalizations {
   String get sharedNotJunk => 'Nem levélszemét';
 
   @override
+  String get documentsTitle => 'Dokumentumok';
+
+  @override
+  String get documentsSearchPlaceholder => 'Keresés a dokumentumokban';
+
+  @override
+  String get documentsSearchInDocuments => 'Keresés a dokumentumokban';
+
+  @override
+  String documentsLibraryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count letöltött dokumentum',
+      one: '$count letöltött dokumentum',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsLibraryCountWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count letöltött dokumentum',
+      one: '$count letöltött dokumentum',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable nem olvasható',
+      one: '$unreadable nem olvasható',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String documentsCoverage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Keresés $count letöltött dokumentumban',
+      one: 'Keresés $count letöltött dokumentumban',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsCoverageWithUnreadable(int count, int unreadable) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Keresés $count letöltött dokumentumban',
+      one: 'Keresés $count letöltött dokumentumban',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      unreadable,
+      locale: localeName,
+      other: '$unreadable nem volt olvasható',
+      one: '$unreadable nem volt olvasható',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get documentsScopeNote =>
+      'A telefonon lévő mellékletekben keres, nem a teljes postafiókodban. Nyiss meg egy mellékletet, hogy hozzáadd.';
+
+  @override
+  String get documentsEmpty => 'Még nincsenek dokumentumok';
+
+  @override
+  String get documentsEmptyDetail =>
+      'A levelekből megnyitott PDF- és szövegfájlok itt jelennek meg, így kereshetsz bennük.';
+
+  @override
+  String get documentsNoResults => 'Nincs találat';
+
+  @override
+  String documentsNoResultsDetail(String query) {
+    return 'Egyik letöltött dokumentum sem tartalmazza ezt: „$query”.';
+  }
+
+  @override
+  String documentsMatchedOnPage(int page) {
+    return 'Találat: $page. oldal';
+  }
+
+  @override
+  String documentsMatchedOnLine(int line) {
+    return 'Találat: $line. sor';
+  }
+
+  @override
+  String documentsMoreMatches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Még $count találat',
+      one: 'Még $count találat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentsPage(int page) {
+    return '$page. oldal';
+  }
+
+  @override
+  String get documentsStatusNotDownloaded => 'Nincs letöltve: nyisd meg, hogy elolvashasd, és kereshess benne.';
+
+  @override
+  String get documentsStatusEncrypted => 'Jelszóval védett: a Loupe nem tudja beolvasni.';
+
+  @override
+  String get documentsStatusNoText =>
+      'Nem található szöveg: lehet, hogy szkennelt kép vagy fénykép, amelyet a Loupe még nem tud beolvasni.';
+
+  @override
+  String get documentsStatusEmpty => 'Ebben a fájlban nincs szöveg.';
+
+  @override
+  String get documentsStatusUnsupported => 'A Loupe még nem tud ilyen típusú dokumentumot beolvasni.';
+
+  @override
+  String get documentsStatusTooLarge => 'Túl nagy ahhoz, hogy ezen a telefonon be lehessen olvasni.';
+
+  @override
+  String get documentsStatusDamaged => 'Nem sikerült beolvasni: lehet, hogy a fájl sérült.';
+
+  @override
+  String documentsStatusPartial(int read, int total) {
+    String _temp0 = intl.Intl.pluralLogic(total, locale: localeName, other: '$total oldal', one: '$total oldal');
+    return 'Beolvasva: $read / $_temp0; a többi oldal nem kereshető.';
+  }
+
+  @override
+  String get documentsStatusPartialText => 'Csak az eleje van beolvasva; a többi része nem kereshető.';
+
+  @override
+  String get documentsOpenDocument => 'Dokumentum megnyitása';
+
+  @override
+  String get documentsOpenMessage => 'Üzenet megnyitása';
+
+  @override
+  String get documentsDetails => 'Dokumentum részletei';
+
+  @override
+  String documentsFingerprint(String hash) {
+    return 'Tartalom ujjlenyomata: $hash';
+  }
+
+  @override
+  String get documentsPagesHeader => 'Szöveg oldalanként';
+
+  @override
+  String get documentsVersionsHeader => 'Más példányok';
+
+  @override
+  String documentsVersionDifferentEarlier(String date) {
+    return 'Tartalma eltér a korábbi példányétól ($date)';
+  }
+
+  @override
+  String documentsVersionDifferentLater(String date) {
+    return 'Egy újabb példány ($date) tartalma eltérő';
+  }
+
+  @override
+  String documentsVersionSame(String date) {
+    return 'Tartalma megegyezik a másik példányéval ($date)';
+  }
+
+  @override
+  String documentsVersionNotDownloaded(String date) {
+    return 'Neve megegyezik a másik példányéval ($date); a tartalmukat csak akkor hasonlítjuk össze, ha mindkettő le van töltve';
+  }
+
+  @override
+  String documentsChange(String before, String after) {
+    return '$before → $after';
+  }
+
+  @override
+  String get documentsNoFactChanges => 'A kulcsadatok azonosak; a szöveg más részei eltérnek.';
+
+  @override
+  String get documentsKeyFacts => 'Kulcsadatok';
+
+  @override
+  String get documentsKeyFactsFind => 'Kulcsadatok keresése';
+
+  @override
+  String get documentsKeyFactsWorking => 'Dokumentum olvasása…';
+
+  @override
+  String get documentsKeyFactsFailed => 'Nem sikerült megtalálni a kulcsadatokat.';
+
+  @override
+  String get documentsKeyFactsDemoNote => 'A beépített demó készítette, nem modell.';
+
+  @override
+  String documentsKeyFactsMadeBy(String provider) {
+    return 'Készítette: $provider.';
+  }
+
+  @override
+  String get documentsKeyFactsHint => 'Koppints egy adatra, és megnézheted, hol szerepel a dokumentumban.';
+
+  @override
+  String get documentsKeyFactsNone => 'A Loupe még nem ismer kulcsadatokat az ilyen típusú dokumentumokhoz.';
+
+  @override
+  String get documentsKeyFactsPartial =>
+      'Csak az első oldalak vannak beolvasva; a későbbi oldalakon lévő adatok ismeretlenek.';
+
+  @override
+  String get documentsKeyFactsNotStated => 'Nincs megadva';
+
+  @override
+  String get documentsKeyFactsConflicting => 'Eltérően megadva';
+
+  @override
+  String documentsEvidenceAlso(int page) {
+    return 'Itt is szerepel: $page. oldal';
+  }
+
+  @override
+  String get documentsTypeMortgageIllustration => 'Lakáshitel-ajánlat';
+
+  @override
+  String get documentsTypeInvoice => 'Számla';
+
+  @override
+  String get documentsTypeBooking => 'Foglalás';
+
+  @override
+  String get documentsTypeOther => 'Egyéb dokumentum';
+
+  @override
+  String get documentsFieldInitialRate => 'Kezdeti kamatláb';
+
+  @override
+  String get documentsFieldRatePeriod => 'Kamatperiódus';
+
+  @override
+  String get documentsFieldMonthlyPayment => 'Havi törlesztőrészlet';
+
+  @override
+  String get documentsFieldTerm => 'Futamidő';
+
+  @override
+  String get documentsFieldLoanAmount => 'Hitelösszeg';
+
+  @override
+  String get documentsFieldArrangementFee => 'Folyósítási díj';
+
+  @override
+  String get documentsFieldValuationFee => 'Értékbecslési díj';
+
+  @override
+  String get documentsFieldBrokerFee => 'Közvetítői díj';
+
+  @override
+  String get documentsFieldEarlyRepaymentCharges => 'Előtörlesztési díjak';
+
+  @override
+  String get documentsFieldTotalAmountPayable => 'Teljes visszafizetendő összeg';
+
+  @override
+  String get documentsFieldAmountDue => 'Fizetendő összeg';
+
+  @override
+  String get documentsFieldCurrency => 'Pénznem';
+
+  @override
+  String get documentsFieldDueDate => 'Fizetési határidő';
+
+  @override
+  String get documentsFieldPayee => 'Kedvezményezett';
+
+  @override
+  String get documentsFieldReference => 'Hivatkozási szám';
+
+  @override
+  String get documentsFieldSubtotal => 'Részösszeg';
+
+  @override
+  String get documentsFieldTax => 'Adó';
+
+  @override
+  String get documentsFieldDate => 'Dátum';
+
+  @override
+  String get documentsFieldTime => 'Időpont';
+
+  @override
+  String get documentsFieldTimeZone => 'Időzóna';
+
+  @override
+  String get documentsFieldAddress => 'Cím';
+
+  @override
+  String get documentsFieldPerson => 'Személy';
+
+  @override
   String get composeSignature => 'Aláírás';
 
   @override
@@ -7029,6 +7337,202 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get accountImportFailed => 'A fiókot nem sikerült hozzáadni. Próbáld újra, vagy add hozzá kézzel.';
+
+  @override
+  String get composeReplyCheckTitle => 'Válaszellenőrzés';
+
+  @override
+  String get composeReplyCheckChecking => 'Kérések beolvasása…';
+
+  @override
+  String get composeReplyCheckFailed => 'Nem sikerült beolvasni, mit kértek.';
+
+  @override
+  String composeReplyCheckSummaryAttached(int attached, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      attached,
+      locale: localeName,
+      other: '$total közül $attached csatolva',
+      one: '$total közül $attached csatolva',
+      zero: '$total közül egy sincs csatolva',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryWrongPeriod(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count rossz időszakra vonatkozhat',
+      one: '$count rossz időszakra vonatkozhat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryUnknown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nem olvasható',
+      one: '$count nem olvasható',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryOutside(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count e-mailen kívül intézendő',
+      one: '$count e-mailen kívül intézendő',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryMentioned(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count szerepel a szövegedben',
+      one: '$count szerepel a szövegedben',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String composeReplyCheckSummaryToAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count válaszra vár',
+      one: '$count válaszra vár',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckStatusIncluded => 'Csatolva';
+
+  @override
+  String get composeReplyCheckStatusWrongPeriod => 'Ellenőrizd az időszakot';
+
+  @override
+  String get composeReplyCheckStatusMissing => 'Nincs csatolva';
+
+  @override
+  String get composeReplyCheckStatusToAnswer => 'Nincs a válaszodban';
+
+  @override
+  String get composeReplyCheckStatusOutside => 'E-mailen kívül';
+
+  @override
+  String get composeReplyCheckStatusMentioned => 'A szövegedben';
+
+  @override
+  String get composeReplyCheckStatusUnknown => 'Nem állapítható meg';
+
+  @override
+  String composeReplyCheckByName(String file) {
+    return '„$file” párosítása csak a neve alapján történt.';
+  }
+
+  @override
+  String composeReplyCheckByContents(String file) {
+    return '„$file” párosítása a tartalma alapján történt.';
+  }
+
+  @override
+  String composeReplyCheckCheckPeriod(String period) {
+    return 'Ellenőrizd, hogy erre az időszakra vonatkozik-e: $period.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInName(String asked, String file, String found) {
+    return 'A kért időszak: $asked; a fájlnév („$file”) szerint: $found.';
+  }
+
+  @override
+  String composeReplyCheckPeriodInContents(String asked, String file, String found) {
+    return 'A kért időszak: $asked; a fájl („$file”) tartalma szerint: $found.';
+  }
+
+  @override
+  String composeReplyCheckUnreadable(String file) {
+    return '„$file” nem olvasható be, ezért nem tudni, hogy a megfelelő fájl-e.';
+  }
+
+  @override
+  String get composeReplyCheckOutsideDetail => 'E-mailen kívül intézendő, nem fájl csatolásával.';
+
+  @override
+  String composeReplyCheckAttachedAnyway(String file) {
+    return '„$file” csatolva van, de ez nem e-mailben intézhető.';
+  }
+
+  @override
+  String composeReplyCheckYouWrote(String text) {
+    return 'Ezt írtad: „$text”';
+  }
+
+  @override
+  String get composeReplyCheckFromMessage => 'Az eredeti üzenetből';
+
+  @override
+  String get composeReplyCheckByNameNote =>
+      'A fájl nevéből nem derül ki, mi van benne. A biztonság kedvéért nyisd meg a fájlokat.';
+
+  @override
+  String get composeReplyCheckPartial => 'Az üzenet hosszú; csak az eleje lett beolvasva.';
+
+  @override
+  String get composeReplyCheckDemoNote => 'A kéréseket a beépített demó találta meg, nem modell.';
+
+  @override
+  String composeReplyCheckFoundBy(String provider) {
+    return 'A kéréseket ez találta meg: $provider.';
+  }
+
+  @override
+  String get composeReplyCheckSkip => 'Ezt ne ellenőrizd';
+
+  @override
+  String composeReplyCheckSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kérés nincs ellenőrizve',
+      one: '$count kérés nincs ellenőrizve',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeReplyCheckCheckAll => 'Összes ellenőrzése';
+
+  @override
+  String get composeReplyCheckShowRequests => 'Kérések megjelenítése';
+
+  @override
+  String get composeReplyCheckHideRequests => 'Kérések elrejtése';
+
+  @override
+  String get composeReplyCheckHide => 'Válaszellenőrzés elrejtése';
+
+  @override
+  String get composeReplyCheckNothingAttached => 'A szöveged mellékletet említ, de nincs semmi csatolva.';
+
+  @override
+  String get composeReplyCheckHideReminder => 'Emlékeztető elrejtése';
+
+  @override
+  String get composeReplyCheckDemoFiles => 'Demó dokumentumok';
+
+  @override
+  String get composeReplyCheckBrowseFiles => 'Fájlok tallózása…';
 
   @override
   String get composeNewMessageTitle => 'Új üzenet';
